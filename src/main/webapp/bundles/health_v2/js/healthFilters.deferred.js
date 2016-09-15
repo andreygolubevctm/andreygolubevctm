@@ -250,7 +250,7 @@
 
             if ($this.hasClass('hospital')) {
                 $sidebar.find('.need-hospital').slideUp('fast', function () {
-                    $(this).addClass('hidden').find('input').prop('checked', false).trigger('change');
+                    $this.addClass('hidden');
                     $sidebar.find('.filter-remove.extras').addClass('hidden');
                     $sidebar.find('.need-no-hospital').removeClass('hidden').slideDown('fast');
                 });
@@ -258,7 +258,7 @@
             }
             else if ($this.hasClass('extras')) {
                 $sidebar.find('.need-extras').slideUp('fast', function () {
-                    $(this).addClass('hidden').find('input').prop('checked', false).trigger('change');
+                    $this.addClass('hidden');
                     $sidebar.find('.filter-remove.hospital').addClass('hidden');
                     $sidebar.find('.need-no-extras').removeClass('hidden').slideDown();
                 });
@@ -273,14 +273,14 @@
 
             if ($this.hasClass('hospital')) {
                 $sidebar.find('.need-no-hospital').slideUp('fast', function () {
-                    $(this).addClass('hidden');
+                    $this.addClass('hidden');
                     $sidebar.find('.filter-remove.extras').removeClass('hidden');
                     $sidebar.find('.need-hospital').removeClass('hidden').slideDown('fast');
                 });
             }
             else if ($this.hasClass('extras')) {
                 $sidebar.find('.need-no-extras').slideUp('fast', function () {
-                    $(this).addClass('hidden');
+                    $this.addClass('hidden');
                     $sidebar.find('.filter-remove.hospital').removeClass('hidden');
                     $sidebar.find('.need-extras').removeClass('hidden').slideDown('fast');
                 });
