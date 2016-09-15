@@ -72,8 +72,6 @@ ${newPage.init(pageContext.request, pageSettings)}
 
 	<body class="jeinit">
 
-		<snippets:benchmarketing />
-
 		<!--  content -->
 		<jsp:doBody />
 

@@ -124,8 +124,6 @@ ${newPage.init(pageContext.request, pageSettings)}
         </c:if>
     </c:if>
 
-    <snippets:benchmarketing/>
-
     <div class="navMenu-row">
 
         <!-- body content -->
