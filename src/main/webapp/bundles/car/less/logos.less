@@ -15,7 +15,8 @@
 
 .resultInsert {
 	.companyLogo {
-		.providersHighResSpriteImages(~"car"; ~"logo_"; @provider-list; @logo-results-scale);
+		//.providersHighResSpriteImages(~"car"; ~"logo_"; @provider-list; @logo-results-scale);
+		.providersHighResSpriteImages(~"car"; ~"logo_"; @provider-list; 0.5); // 75px
 	}
 }
 
@@ -29,6 +30,13 @@
 
 @media (max-width: 480px) {
 	.companyLogo {
-	  .providersHighResSpriteImages(~"car"; ~"logo_"; @provider-list; @logo-xs-scale; ~"");
+		//.providersHighResSpriteImages(~"car"; ~"logo_"; @provider-list; @logo-results-scale; ~"");
+		.providersHighResSpriteImages(~"car"; ~"logo_"; @provider-list; 0.6; ~""); // 90px
+	}
+	.resultInsert {
+		.companyLogo {
+			//.providersHighResSpriteImages(~"car"; ~"logo_"; @provider-list; @logo-xs-scale);
+			.providersHighResSpriteImages(~"car"; ~"logo_"; @provider-list; 0.4); // 60px
+		}
 	}
 }

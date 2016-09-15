@@ -290,12 +290,19 @@
 			}
 
 			.productName {
-				font-size: 30px;
+				font-size: 21px;
 				font-family: @font-family-theme-bold;
 				margin-top: 0 !important;
+				margin-bottom: 10px;
 				@media (@sm) {
 					padding-top: 15px;
 				}
+				@media (@md) {
+					font-size: 24px;
+				}
+                @media (@lg) {
+                    font-size: 30px;
+                }
 			}
 
 			.btn-more-info-apply {
@@ -322,12 +329,18 @@
 	}
 
     .companyLogo {
-		border: 1px solid @border-color;
+		//border: 1px solid @border-color;
         float: none;
-        margin: 0 auto;
+        margin-bottom: 15px;
 		@media (@sm) {
 			margin: 15px auto;
 		}
+    }
+
+    @media (@sm) {
+      .call-apply-xs-only {
+          display: none;
+      }
     }
 
 	.frequencyAmount {
@@ -335,19 +348,28 @@
 		font-family: @font-family-theme-bold;
 		.dollarSign,
 		.cents {
-			font-size: 21px;
+			font-size: 12px;
 			position: relative;
 			top: -5px;
 			vertical-align: super;
+			@media (@sm) {
+				font-size: 21px;
+			}
 		}
 		.dollars {
-			font-size: 50px;
+			font-size: 38px;
+			@media (@sm) {
+				font-size: 50px;
+			}
 		}
 		select {
-			font-size: 17px;
+			font-size: 14px;
 			position: relative;
 			top: 2px;
 			vertical-align: super;
+			@media (@sm) {
+				font-size: 17px;
+			}
 		}
 		.monthlyBreakdown {
 			font-size: 11px;
@@ -355,7 +377,7 @@
 		}
 
 		@media (@sm) {
-			margin: 15px 0;
+			margin: 15px 0 30px;
 		}
 	}
 
@@ -372,7 +394,7 @@
 
 	.referenceNo {
         font-size: 12px;
-		text-align: center;
+        text-align: center;
 		span {
 			font-weight: bold;
 		}
@@ -389,6 +411,9 @@
         .promoHeading {
             color: #000;
             font-family: @font-family-theme-bold;
+            @media (@md) {
+              font-size: 18px;
+            }
         }
         .promoText {
             position: relative;
@@ -402,6 +427,9 @@
                 height: 26px;
                 font-size: 22px;
                 line-height: 24px;
+            }
+            @media (@md) {
+              font-size: 16px;
             }
         }
 		@media (@sm) {
