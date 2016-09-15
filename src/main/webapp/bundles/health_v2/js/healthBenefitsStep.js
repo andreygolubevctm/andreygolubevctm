@@ -95,7 +95,7 @@
         }
     }
 
-    function flushHiddenBenefits(e) {
+    function flushHiddenBenefits() {
         var coverType = $coverType.find('input:checked').val().toLowerCase();
         if(coverType === 'e') {
             $allHospitalButtons.each(function() {

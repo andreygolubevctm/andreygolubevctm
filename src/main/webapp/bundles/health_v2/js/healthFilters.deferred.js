@@ -202,8 +202,8 @@
                 update: function() {
                     // Update benefits step coverType
                     coverType = coverType || meerkat.modules.health.getCoverType();
-                    $('#health_situation_coverType').find('input[value="' + coverType + '"]').prop("checked", true).trigger('change').end().trigger('change');
-
+                    $('#health_situation_coverType').find('input[value="' + coverType + '"]').prop("checked", true).change().end().change();
+                    meerkat.modules.healthBenefitsStep.flushHiddenBenefits();
                     meerkat.modules.journeyEngine.loadingShow('...updating your quotes...', true);
                     // Had to use a 100ms delay instead of a defer in order to get the loader to appear on low performance devices.
                     _.delay(function(){
