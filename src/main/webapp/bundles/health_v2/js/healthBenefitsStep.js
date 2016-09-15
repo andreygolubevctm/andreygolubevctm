@@ -96,14 +96,17 @@
     }
 
     function flushHiddenBenefits() {
-        var $extrasSection = $('.GeneralHealth_container .children').closest('fieldset');
-
-        $allHospitalButtons.not(':visible').each(function() {
+        var coverType = $coverType.find('input:checked').val().toLowerCase();
+        if(coverType === 'e') {
+            $allHospitalButtons.each(function() {
             $(this).prop('checked', false).attr('checked', null).prop('disabled', false).change();
         });
-        $extrasSection.find('input[type="checkbox"]').not(':visible').each(function() {
+        } else if(coverType === 'h') {
+            var $extrasSection = $('.GeneralHealth_container .children').closest('fieldset');
+            $extrasSection.find('input[type="checkbox"]').each(function() {
             $(this).prop('checked', false).attr('checked', null).change();
         });
+        }
     }
 
     function resetDefaultCover() {
