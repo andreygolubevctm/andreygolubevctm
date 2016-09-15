@@ -309,6 +309,7 @@
 			},
 			onBeforeLeave:function(event){
 				meerkat.modules.healthBenefitsStep.enableFields();
+				meerkat.modules.healthBenefitsStep.flushHiddenBenefits();
 			}
 		};
 		var contactStep = {
