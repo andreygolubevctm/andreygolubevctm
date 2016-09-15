@@ -962,7 +962,8 @@
         publishExtraSuperTagEvents: publishExtraSuperTagEvents,
         setLhcApplicable: setLhcApplicable,
         resultsStepIndex: resultsStepIndex,
-        setSelectedBenefitsList: setSelectedBenefitsList
+        setSelectedBenefitsList: setSelectedBenefitsList,
+        hideNavigationLink: hideNavigationLink
     });
 
 })(jQuery);
