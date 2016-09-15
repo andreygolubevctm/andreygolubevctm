@@ -17,6 +17,7 @@ import com.ctm.web.energy.apply.adapter.EnergyApplyServiceRequestAdapter;
 import com.ctm.web.energy.apply.adapter.EnergyApplyServiceResponseAdapter;
 import com.ctm.web.core.apply.exceptions.FailedToRegisterException;
 import com.ctm.web.energy.apply.model.request.EnergyApplyPostRequestPayload;
+import com.ctm.web.energy.apply.model.response.EnergyApplyResponse;
 import com.ctm.web.energy.apply.response.EnergyApplyWebResponseModel;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,18 +40,20 @@ public class EnergyApplyService extends CommonRequestService<EnergyApplicationDe
 
 
     public EnergyApplyWebResponseModel apply(EnergyApplyPostRequestPayload model, Brand brand, HttpServletRequest request) throws IOException, DaoException, ServiceConfigurationException {
-        EnergyApplyServiceResponseAdapter responseAdapter= new EnergyApplyServiceResponseAdapter();
-        EnergyApplyServiceRequestAdapter requestAdapter = new EnergyApplyServiceRequestAdapter();
+        final EnergyApplyServiceResponseAdapter responseAdapter = new EnergyApplyServiceResponseAdapter();
+        final EnergyApplyServiceRequestAdapter requestAdapter = new EnergyApplyServiceRequestAdapter();
         final EnergyApplicationDetails energyApplicationDetails = requestAdapter.adapt(model);
-        ApplyResponse applyResponse = sendApplyRequest(brand, Vertical.VerticalType.ENERGY, "applyServiceBER", Endpoint.APPLY, model, energyApplicationDetails,
-                SingleApplyResponse.class, requestAdapter.getProductId(model));
-        if(Status.REGISTERED.equals(applyResponse.getResponseStatus())) {
-            String confirmationKey = energyApplyConfirmation.createAndSaveConfirmation(request.getSession().getId(), model, applyResponse, requestAdapter);
-            return responseAdapter.adapt(applyResponse)
+        final EnergyApplyResponse applyResponse = sendApplyRequest(brand, Vertical.VerticalType.ENERGY, "applyServiceBER", Endpoint.APPLY, model, energyApplicationDetails,
+                EnergyApplyResponse.class, requestAdapter.getProductId(model));
+        final SingleApplyResponse payload = applyResponse.getPayload();
+
+        if(Status.REGISTERED.equals(applyResponse.getPayload().getResponseStatus())) {
+            String confirmationKey = energyApplyConfirmation.createAndSaveConfirmation(request.getSession().getId(), model, payload, requestAdapter);
+            return responseAdapter.adapt(payload)
                     .transactionId(model.getTransactionId())
                     .confirmationkey(confirmationKey).build();
         } else {
-            throw new FailedToRegisterException(applyResponse, model.getTransactionId());
+            throw new FailedToRegisterException(payload, model.getTransactionId());
         }
 	}
 
