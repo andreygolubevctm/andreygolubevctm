@@ -34,9 +34,6 @@
             <div class="col-xs-12 col-sm-6">
 			    <a href="{{= obj.productDisclosures.pdsb.url }}" target="_blank" class="showDoc btn btn-download">Product Disclosure B</a>
             </div>
-			<%--{{ if(obj.productDisclosures.hasOwnProperty('pdsc')) { }}--%>
-				<%--<a href="{{= obj.productDisclosures.pdsc.url }}" target="_blank" class="showDoc btn btn-sm btn-download btn-download-pds-c">Product Disclosure C</a>--%>
-			<%--{{ } }}--%>
 		{{ } }}
         </div>
 	{{ } }}
@@ -55,21 +52,21 @@
 
     <div class="row call-apply-xs-only">
         {{ if(obj.availableOnline === true) { }}
-        <div class="col-xs-12 col-sm-4 col-sm-push-8">
+        <div class="col-xs-12">
             <a target="_blank" href="javascript:;" class="btn btn-cta btn-lg btn-block btn-more-info-apply" data-productId="{{= obj.productId }}">Go to Insurer</a>
         </div>
         {{ } }}
 
         {{ if(obj.contact.allowCallDirect === true) { }}
             {{ if(obj.contact.allowCallMeBack === true) { }}
-            <div class="col-xs-6 col-sm-3 col-sm-pull-2">
+            <div class="col-xs-6">
                 <a class="btn btn-block btn-call btn-call-actions" data-callback-toggle="calldirect" data-productId="{{= obj.productId }}" href="javascript:;">Call Insurer Direct</a>
             </div>
-            <div class="col-xs-6 col-sm-3 col-sm-pull-2">
+            <div class="col-xs-6">
                 <a class="btn btn-block btn-call btn-call-actions" data-callback-toggle="callback" data-productId="{{= obj.productId }}" href="javascript:;">Get a Call Back</a>
             </div>
             {{ } else { }}
-            <div class="col-xs-12 col-sm-3 col-sm-push-1">
+            <div class="col-xs-12">
                 <a class="btn btn-block btn-call btn-call-actions" data-callback-toggle="calldirect" data-productId="{{= obj.productId }}" href="javascript:;">Call Insurer Direct</a>
             </div>
             {{ } }}
@@ -151,7 +148,9 @@
 		<div class="fieldset-card price-card">
 			<div class="row">
 				<div class="col-xs-4 col-sm-3">
-					{{= logoTemplate }}
+                    <div class="companyLogoWrapper">
+					    {{= logoTemplate }}
+                    </div>
                     <div class="referenceNo">Quote number: <span>{{= quoteNumber }}</span></div>
 				</div>
 				<div class="col-xs-8 col-sm-9">
@@ -203,26 +202,8 @@
                         {{ } }}
                         {{ } }}
                     </div>
-
-					<%--<div class="row excessQuote">--%>
-                        <%--<div class="col-xs-6 referenceNo">--%>
-                            <%--Quote number: <span>{{= quoteNumber }}</span>--%>
-                        <%--</div>--%>
-						<%--<div class="col-xs-6 text-right">--%>
-							<%--<span class="excessAmount">\${{= excess }}</span> <span class="excessTitle">EXCESS</span>--%>
-						<%--</div>--%>
-					<%--</div>--%>
 				</div>
 			</div>
-
-            <%--<div class="row">--%>
-                <%--<div class="col-xs-6 referenceNo">--%>
-                    <%--Quote number: <span>{{= quoteNumber }}</span>--%>
-                <%--</div>--%>
-                <%--<div class="col-xs-6 text-right">--%>
-                    <%--<span class="excessAmount">\${{= excess }}</span> <span class="excessTitle">EXCESS</span>--%>
-                <%--</div>--%>
-            <%--</div>--%>
 
 			<div class="promo">
                 {{= promotionOfferHtml }}

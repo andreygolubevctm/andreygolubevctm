@@ -446,21 +446,21 @@
 			priceObj = {
 				monthly: {
 					dollars: monthlyPremiumSplit[0],
-					cents: monthlyPremiumSplit[1] ? monthlyPremiumSplit[1] : '00'
+					cents: monthlyPremiumSplit[1] ? '.' + monthlyPremiumSplit[1] : ''
 				},
 				annual: {
 					dollars: annualPremiumSplit[0],
-					cents: annualPremiumSplit[1] ? annualPremiumSplit[1] : '00'
+					cents: annualPremiumSplit[1] ? '.' + annualPremiumSplit[1] : ''
 				}
 			},
 			$frequencyAmount = $('.frequencyAmount[data-productId=' + prodId + ']');
 
-		if (priceObj[frequency].cents.length === 1) {
+		if (priceObj[frequency].cents.length === 2) {
 			priceObj[frequency].cents = priceObj[frequency].cents + '0';
 		}
 
 		$frequencyAmount.find('.dollars').text(priceObj[frequency].dollars);
-		$frequencyAmount.find('.cents').text('.' + priceObj[frequency].cents);
+		$frequencyAmount.find('.cents').text(priceObj[frequency].cents);
 		$frequencyAmount.find('.monthlyBreakdown').toggleClass('invisible', frequency === 'annual');
 	}
 

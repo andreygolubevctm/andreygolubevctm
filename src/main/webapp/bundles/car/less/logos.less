@@ -10,13 +10,23 @@
 }
 
 .companyLogo {
-	.providersHighResSpriteImages(~"car"; ~"logo_"; @provider-list);
+	.providersHighResSpriteImages(~"car"; ~"logo_"; @provider-list; 0.53333); // 80px
 }
 
-.resultInsert {
-	.companyLogo {
-		//.providersHighResSpriteImages(~"car"; ~"logo_"; @provider-list; @logo-results-scale);
-		.providersHighResSpriteImages(~"car"; ~"logo_"; @provider-list; 0.5); // 75px
+.moreInfoVisibleV2 {
+	.more-info-content {
+		.companyLogo {
+			.providersHighResSpriteImages(~"car"; ~"logo_"; @provider-list; 0.6); // 90px
+			@media (@sm) {
+				.providersHighResSpriteImages(~"car"; ~"logo_"; @provider-list; 0.8); // 120px
+			}
+			@media (@md) {
+				.providersHighResSpriteImages(~"car"; ~"logo_"; @provider-list; 0.9333); // 140px
+			}
+			@media (@lg) {
+				.providersHighResSpriteImages(~"car"; ~"logo_"; @provider-list); // 150px
+			}
+		}
 	}
 }
 
@@ -30,13 +40,18 @@
 
 @media (max-width: 480px) {
 	.companyLogo {
-		//.providersHighResSpriteImages(~"car"; ~"logo_"; @provider-list; @logo-results-scale; ~"");
-		.providersHighResSpriteImages(~"car"; ~"logo_"; @provider-list; 0.6; ~""); // 90px
+		.providersHighResSpriteImages(~"car"; ~"logo_"; @provider-list; 0.6); // 90px
 	}
 	.resultInsert {
 		.companyLogo {
-			//.providersHighResSpriteImages(~"car"; ~"logo_"; @provider-list; @logo-xs-scale);
 			.providersHighResSpriteImages(~"car"; ~"logo_"; @provider-list; 0.4); // 60px
+		}
+	}
+	.moreInfoVisibleV2 {
+		.more-info-content {
+			.companyLogo {
+				.providersHighResSpriteImages(~"car"; ~"logo_"; @provider-list; 0.37333); // 56px
+			}
 		}
 	}
 }
