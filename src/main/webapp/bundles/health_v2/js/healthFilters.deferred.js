@@ -202,8 +202,8 @@
                 update: function() {
                     // Update benefits step coverType
                     coverType = coverType || meerkat.modules.health.getCoverType();
-                    $('#health_situation_coverType').find('input[value="' + coverType + '"]').prop("checked", true).trigger('change').end().trigger('change');
-
+                    $('#health_situation_coverType').find('input[value="' + coverType + '"]').prop("checked", true).change().end().change();
+                    meerkat.modules.healthBenefitsStep.flushHiddenBenefits();
                     meerkat.modules.journeyEngine.loadingShow('...updating your quotes...', true);
                     // Had to use a 100ms delay instead of a defer in order to get the loader to appear on low performance devices.
                     _.delay(function(){
@@ -250,7 +250,7 @@
 
             if ($this.hasClass('hospital')) {
                 $sidebar.find('.need-hospital').slideUp('fast', function () {
-                    $(this).addClass('hidden').find('input').prop('checked', false).trigger('change');
+                    $this.addClass('hidden');
                     $sidebar.find('.filter-remove.extras').addClass('hidden');
                     $sidebar.find('.need-no-hospital').removeClass('hidden').slideDown('fast');
                 });
@@ -258,7 +258,7 @@
             }
             else if ($this.hasClass('extras')) {
                 $sidebar.find('.need-extras').slideUp('fast', function () {
-                    $(this).addClass('hidden').find('input').prop('checked', false).trigger('change');
+                    $this.addClass('hidden');
                     $sidebar.find('.filter-remove.hospital').addClass('hidden');
                     $sidebar.find('.need-no-extras').removeClass('hidden').slideDown();
                 });
@@ -273,14 +273,14 @@
 
             if ($this.hasClass('hospital')) {
                 $sidebar.find('.need-no-hospital').slideUp('fast', function () {
-                    $(this).addClass('hidden');
+                    $this.addClass('hidden');
                     $sidebar.find('.filter-remove.extras').removeClass('hidden');
                     $sidebar.find('.need-hospital').removeClass('hidden').slideDown('fast');
                 });
             }
             else if ($this.hasClass('extras')) {
                 $sidebar.find('.need-no-extras').slideUp('fast', function () {
-                    $(this).addClass('hidden');
+                    $this.addClass('hidden');
                     $sidebar.find('.filter-remove.hospital').removeClass('hidden');
                     $sidebar.find('.need-extras').removeClass('hidden').slideDown('fast');
                 });
