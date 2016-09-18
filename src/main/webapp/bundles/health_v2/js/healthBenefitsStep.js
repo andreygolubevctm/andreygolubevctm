@@ -96,14 +96,17 @@
     }
 
     function flushHiddenBenefits() {
-        var $extrasSection = $('.GeneralHealth_container .children').closest('fieldset');
-
-        $allHospitalButtons.not(':visible').each(function() {
+        var coverType = $coverType.find('input:checked').val().toLowerCase();
+        if(coverType === 'e') {
+            $allHospitalButtons.each(function() {
             $(this).prop('checked', false).attr('checked', null).prop('disabled', false).change();
         });
-        $extrasSection.find('input[type="checkbox"]').not(':visible').each(function() {
+        } else if(coverType === 'h') {
+            var $extrasSection = $('.GeneralHealth_container .children').closest('fieldset');
+            $extrasSection.find('input[type="checkbox"]').each(function() {
             $(this).prop('checked', false).attr('checked', null).change();
         });
+        }
     }
 
     function resetDefaultCover() {
@@ -206,7 +209,7 @@
         var currentCover = 'customise',
             previousCover = 'customise',
             $hospitalBenefitsSection = $('.Hospital_container .children'),
-            $coverType = $('#health_benefits_covertype'),
+            $benefitsCoverType = $('#health_benefits_covertype'),
             $limitedCoverHidden = $hiddenFields.find("input[name='health_situation_accidentOnlyCover']");
 
         $hospitalCoverToggles.on('click', function toggleHospitalCover() {
@@ -217,7 +220,7 @@
             $hospitalCoverToggles.removeClass('active').filter('[data-category="' + currentCover + '"]').addClass('active');
 
             // set the hidden field
-            $coverType.val(currentCover);
+            $benefitsCoverType.val(currentCover);
             $limitedCoverHidden.val('N');
 
             // uncheck all tickboxes
@@ -253,9 +256,11 @@
                     $hospitalCoverButtons.each(function () {
                         $(this).prop('checked', true);
                     });
-                    $extrasCoverButtons.each(function () {
-                        $(this).prop('checked', true);
-                    });
+                    if(_.indexOf(['e','c'], $coverType.find('input:checked').val().toLowerCase()) >= 0) {
+                        $extrasCoverButtons.each(function () {
+                            $(this).prop('checked', true);
+                        });
+                    }
                     break;
             }
 
