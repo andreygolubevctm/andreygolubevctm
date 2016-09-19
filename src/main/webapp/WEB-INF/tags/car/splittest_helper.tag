@@ -6,3 +6,6 @@
 
 <%-- CAR-1206 Split Test J=4 test --%>
 <c:set var="regoLookupSplitTest" scope="request" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 4) or splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 41)}" />
+
+<%-- CAR-1294 Split Test J=8 test --%>
+<c:set var="moreInfoSplitTest" scope="request" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 8)}" />
