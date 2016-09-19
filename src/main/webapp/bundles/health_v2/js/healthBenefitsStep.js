@@ -275,6 +275,7 @@
 
             case 'ATP':
                 hospitalContent = meerkat.site.content.hospitalLimitedYoung;
+                extrasContent = meerkat.site.content.extrasLimitedDisabled;
                 extrasDisabledContent = meerkat.site.content.extrasLimitedDisabled;
                 helpContent = meerkat.site.content.hospitalLimitedHelp;
 
