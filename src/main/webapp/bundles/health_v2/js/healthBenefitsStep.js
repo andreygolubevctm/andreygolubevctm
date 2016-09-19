@@ -3,6 +3,8 @@
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
         log = meerkat.logging.info,
+        $coverType,
+        $healthSitu,
         $benefitsCoverType,
         $benefitsForm, //Stores the jQuery object for the main benefits form
         $hiddenFields,
@@ -29,6 +31,7 @@
 
             // Store the jQuery objects
             $coverType = $('#health_situation_coverType');
+            $healthSitu = $('.health-situation-healthSitu');
             $defaultCover = $('#health_benefits_covertype_customise');
             $benefitsForm = $('#benefitsForm');
             $hiddenFields = $('#mainform').find('.hiddenFields');
@@ -84,8 +87,7 @@
     }
 
     function setDefaultCover() {
-        healthSitu = $('.health-situation-healthSitu input:checked').val();
-
+        healthSitu = $healthSitu.find('input:checked').val();
         if (meerkat.modules.deviceMediaState.get() === 'xs') {
             if (!$('.hospitalCoverToggles.visible-xs a.benefit-category').hasClass('active')) {
                 if(healthSitu === 'ATP') {
@@ -139,15 +141,15 @@
             $extrasText = $('.tieredHospitalCover .extrasCover .title'),
             $helpText = $('.benefits-help');
 
-            hospitalContent = '';
-            hospitalDisabledContent = '';
-            extrasContent = '';
-            extrasDisabledContent = '';
+        var hospitalContent = '',
+            hospitalDisabledContent = '',
+            extrasContent = '',
+            extrasDisabledContent = '',
             helpContent = '';
 
-            healthCvr = $('#health_situation_healthCvr').val();
-            healthSitu = $('.health-situation-healthSitu input:checked').val();
-            healthSituText = $('.health-situation-healthSitu input:checked').parent().text();
+        var healthCvr = $('#health_situation_healthCvr').val(),
+            healthSitu = $healthSitu.find('input:checked').val(),
+            healthSituText = $healthSitu.find('input:checked').parent().text();
 
             primary_dob = $('#health_healthCover_primary_dob').val();
             age = meerkat.modules.age.returnAge(primary_dob, true);
@@ -393,7 +395,7 @@
             currentCover = $item.data('category');
 
             var healthCvr = $('.health-situation-healthCvr').val();
-            var healthSitu = $('.health-situation-healthSitu input:checked').val();
+            var healthSitu = $healthSitu.find('input:checked').val();
             var primary_dob = $('#health_healthCover_primary_dob').val();
             var age = meerkat.modules.age.returnAge(primary_dob, true);
 
@@ -411,6 +413,9 @@
 
             if(healthSitu !== 'ATP') {
                  $('.HLTicon-general-dental').addClass('customise');
+
+            } else if(currentCover !== 'limited') {
+                $('#health-situation-healthSitu_LC').parent().trigger('click');
             }
 
             $('.HLTicon-birth-related, .HLTicon-assisted-reproduction, .HLTicon-heart-surgery, .HLTicon-optical, .HLTicon-physiotherapy').removeClass('customise');
@@ -457,6 +462,8 @@
                     $hospitalBenefitsSection.slideUp(function () {
                         $(this).prop('checked', false);
                     });
+                    $('#health_situation_coverType_H').trigger('click');
+
                     $extrasBenefitsSection.slideUp();
 
                     $limitedCoverHidden.val('');
