@@ -26,6 +26,11 @@
             .datepicker('setStartDate', min)
             .datepicker('setEndDate', max);
 
+        // validate at least 1 contact number is entered (simples)
+        if(meerkat.site.isCallCentreUser === true) {
+            $('#health_application_mobileinput').addRule('requireOneContactNumber', true, 'Please include at least one phone number');
+        }
+
         meerkat.messaging.publish(meerkatEvents.healthPreviousFund.POPULATE_PARTNER,
             meerkat.modules.healthAboutYou.getPartnerCurrentCover());
 
