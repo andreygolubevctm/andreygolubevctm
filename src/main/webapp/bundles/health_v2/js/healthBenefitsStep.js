@@ -273,12 +273,6 @@
                 hospitalContent = meerkat.site.content.hospitalLimitedYoung;
                 extrasDisabledContent = meerkat.site.content.extrasLimitedDisabled;
                 helpContent = meerkat.site.content.hospitalLimitedHelp;
-                                if(healthSitu === 'ATP') {
-                    setDefaultCover();
-                } else {
-                    resetDefaultCover();
-                }
-
 
         }
 
@@ -291,6 +285,7 @@
             case 'h':
                 $hospitalSection.slideDown();
                 $extrasSection.slideUp();
+                resetDefaultCover();
 
                 extrasContent = extrasDisabledContent;
                 break;
