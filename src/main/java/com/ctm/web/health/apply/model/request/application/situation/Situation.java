@@ -7,17 +7,10 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 @JsonInclude(NON_EMPTY)
 public class Situation {
 
-    private HealthSituation healthSituation;
-
     private HealthCoverCategory coverCategory;
 
-    public Situation(final HealthSituation healthSituation, final HealthCoverCategory coverCategory) {
-        this.healthSituation = healthSituation;
+    public Situation(final HealthCoverCategory coverCategory) {
         this.coverCategory = coverCategory;
-    }
-
-    public HealthSituation getHealthSituation() {
-        return healthSituation;
     }
 
     public HealthCoverCategory getCoverCategory() {
