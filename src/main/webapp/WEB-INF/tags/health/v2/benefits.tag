@@ -22,7 +22,12 @@
                 <field_v1:hidden xpath="${pageSettings.getVerticalCode()}/benefits/covertype" defaultValue="customised"/>
                 <div class="benefits-list col-sm-12">
                     <c:set var="fieldXpath" value="${xpath}/coverType"/>
-                    <form_v3:row label="What type of cover are you looking for?" fieldXpath="${fieldXpath}">
+                    <c:set var="label" value="" />
+                    <c:if test="${not callCentre}">
+                        <c:set var="label" value="What type of cover are you looking for?" />
+                    </c:if>
+
+                    <form_v3:row label="${label}" fieldXpath="${fieldXpath}">
                         <field_v2:general_select xpath="${fieldXpath}" type="healthCvrType" className="health-situation-healthCvrType" required="true" title="your cover type"/>
                     </form_v3:row>
 

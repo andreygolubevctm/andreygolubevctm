@@ -1,0 +1,15 @@
+<jxb:bindings xmlns:xs="http://www.w3.org/2001/XMLSchema"
+              xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+              xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+              version="2.1">
+  
+    <jxb:bindings>
+    	<!-- Raise theEnumMemberSizeCap limit -->
+        <jxb:globalBindings typesafeEnumMaxMembers="2000">
+            <jxb:javaType name="org.joda.time.LocalDateTime" xmlType="xs:dateTime"
+               parseMethod="com.ctm.web.core.jaxb.Binder.parseLocalDateTime"
+               printMethod="com.ctm.web.core.jaxb.Binder.printLocalDateTime"/>
+        </jxb:globalBindings>
+    </jxb:bindings>
+  
+</jxb:bindings>

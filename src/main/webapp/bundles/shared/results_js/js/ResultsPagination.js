@@ -114,15 +114,30 @@ var ResultsPagination = {
 				Results.pagination.invalidated = false;
 
 				var pageItemTemplate = _.template(Results.settings.templates.pagination.pageItem);
+				var pageUpDownTemplate = _.template(Results.settings.templates.pagination.page);
 
 				Results.pagination.empty(Results.pagination.$pagesContainer);
 
 				if (pageMeasurements.numberOfPages > 1 && pageMeasurements.numberOfPages != Number.POSITIVE_INFINITY) {
 					for (var i=0; i<pageMeasurements.numberOfPages; i++) {
+						// Previous Button
+						if(i === 0) {
+							htmlString = pageUpDownTemplate({type:'previous', icon:'left'});
+							Results.pagination.$pagesContainer.append(htmlString);
+						}
+						// Page Numbers
 						var num = i+1;
 						htmlString = pageItemTemplate({pageNumber:num, label:num});
 						Results.pagination.$pagesContainer.append(htmlString);
+						// Next Button
+						if(num >= pageMeasurements.numberOfPages) {
+							htmlString = pageUpDownTemplate({type:'next', icon:'right'});
+							Results.pagination.$pagesContainer.append(htmlString);
+						}
 					}
+					// We need update this list so that buttons not a load time are included
+					Results.pagination.$nextButton = $('[data-results-pagination-control="next"]');
+					Results.pagination.$previousButton = $('[data-results-pagination-control="previous"]');
 				}
 
 			}

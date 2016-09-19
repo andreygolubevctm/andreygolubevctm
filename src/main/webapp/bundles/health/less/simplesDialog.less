@@ -50,3 +50,57 @@
 		padding-top: 0;
 	}
 }
+
+.simples {
+	&.outbound {
+		&[data-step=start] {
+			#pageContent {
+				background-color: rgba(158,223,183,0.3);
+			}
+		}
+
+		&[data-step=benefits] {
+			#pageContent {
+				background-color: rgba(209,216,233,1);
+			}
+		}
+
+		&[data-step=contact] {
+			#pageContent {
+				background-color: darkgrey;
+			}
+		}
+
+		&[data-step=results] {
+			#pageContent {
+				background-color: rgba(249,196,119,0.3);
+			}
+		}
+
+		&[data-step=results].moreInfoVisible,
+		&[data-step=payment],
+		&[data-step=apply] {
+			#pageContent {
+				background-color: indianred;
+			}
+		}
+
+		.simples-dialog-inbound {
+			display: none;
+		}
+	}
+
+	&.inbound {
+		.simples-dialog-outbound {
+			display: none;
+		}
+	}
+
+	.featuresMode {
+		.result-row.active {
+			.result {
+				border-color: @theme-tertiary;
+			}
+		}
+	}
+}

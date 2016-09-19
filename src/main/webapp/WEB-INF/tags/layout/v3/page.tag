@@ -66,6 +66,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
 
 	<c:if test="${pageSettings.getSetting('appleTouchIconsEnabled') eq 'Y'}">
 		<link rel="apple-touch-icon" href="${assetUrl}brand/${pageSettings.getBrandCode()}/graphics/touch-icons/phone.png">
@@ -75,11 +76,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 		<link rel="apple-touch-icon" sizes="180x180" href="${assetUrl}brand/${pageSettings.getBrandCode()}/graphics/touch-icons/phone@3x.png">
 	</c:if>
 
-	<%-- DISTIL - Comment for script injection --%>
-	<!-- <body><head><form><a></a><input /></form></head></body> -->
-
-<c:choose>
-	<c:when test="${empty skipJSCSS}">
+	<c:if test="${empty skipJSCSS}">
 		<c:set var="browserName" value="${userAgentSniffer.getBrowserName(pageContext.getRequest().getHeader('user-agent'))}" />
 		<c:set var="browserVersion" value="${userAgentSniffer.getBrowserVersion(pageContext.getRequest().getHeader('user-agent'))}" />
 
@@ -98,36 +95,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 		<%--  Modernizr --%>
 		<script src='${assetUrl}js/bundles/plugins/modernizr.min.js'></script>
 
-		<!--[if lt IE 9]>
-			<script src="${assetUrl}js/bundles/plugins/respond.min.js"></script>
-			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-			<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}libraries/jquery/js/jquery-1.11.3${pageSettings.getSetting('minifiedFileString')}.js">\x3C/script>');</script>
-		<![endif]-->
-		<!--[if gte IE 9]><!-->
-			<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-			<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}libraries/jquery/js/jquery-2.1.4${pageSettings.getSetting('minifiedFileString')}.js">\x3C/script>');</script>
-		<!--<![endif]-->
-
-			<script src="${assetUrl}js/libraries/bootstrap${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
-
-		<go:insertmarker format="HTML" name="js-href" />
-		<go:script>
-			<go:insertmarker format="SCRIPT" name="js-head" />
-		</go:script>
-
-	</c:when>
-	<c:otherwise>
-		<!--[if lt IE 9]>
-			<script src="${assetUrl}js/bundles/plugins/respond.min.js"></script>
-			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-			<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}libraries/jquery/js/jquery-1.11.3${pageSettings.getSetting('minifiedFileString')}.js">\x3C/script>');</script>
-			<![endif]-->
-			<!--[if gte IE 9]><!-->
-				<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-				<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}libraries/jquery/js/jquery-2.1.4${pageSettings.getSetting('minifiedFileString')}.js">\x3C/script>');</script>
-			<!--<![endif]-->
-	</c:otherwise>
-</c:choose>
+	</c:if>
 
 <jsp:invoke fragment="head" />
 
@@ -154,8 +122,6 @@ ${newPage.init(pageContext.request, pageSettings)}
             })(window,document,'script','CtMDataLayer','${pageSettings.getSetting('GTMPropertyId')}');</script>
         </c:if>
     </c:if>
-
-	<snippets:benchmarketing />
 
 	<div class="navMenu-row">
 
@@ -203,6 +169,12 @@ ${newPage.init(pageContext.request, pageSettings)}
 								<span class="sr-only">Toggle Navigation</span>
 								<span class="icon icon-reorder"></span>
 							</button>
+							<c:if test="${pageSettings.getVerticalCode() eq 'health'}">
+								<button type="button" class="navbar-toggle phone collapsed disabled" data-toggle="navMenuOpen" data-target=".navbar-collapse-menu">
+									<span class="sr-only">Contact Us</span>
+									<span class="icon icon-phone"></span>
+								</button>
+							</c:if>
 							<c:set var="exitUrl" value="" />
 							<c:if test="${pageSettings.hasSetting('exitUrl')}">
 							<c:set var="exitUrl" value="${fn:toLowerCase(pageSettings.getSetting('exitUrl'))}" />
@@ -249,8 +221,8 @@ ${newPage.init(pageContext.request, pageSettings)}
 
 			<!--  content -->
 			<jsp:doBody />
-
-<c:if test="${empty skipJSCSS}">
+        <c:choose>
+		<c:when test="${empty skipJSCSS}">
 
 		<%-- User Tracking --%>
 		<c:set var="isUserTrackingEnabled"><core_v2:userTrackingEnabled /></c:set>
@@ -262,11 +234,27 @@ ${newPage.init(pageContext.request, pageSettings)}
 		</c:if>
 
 		<%-- JS Libraries --%>
+            <!--[if lt IE 9]>
+            <script src="${assetUrl}js/bundles/plugins/respond.min.js"></script>
+            <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+            <script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}libraries/jquery/js/jquery-1.11.3${pageSettings.getSetting('minifiedFileString')}.js">\x3C/script>');</script>
+            <![endif]-->
+            <!--[if gte IE 9]><!-->
+            <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+            <script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}libraries/jquery/js/jquery-2.1.4${pageSettings.getSetting('minifiedFileString')}.js">\x3C/script>');</script>
+            <!--<![endif]-->
+
+			<script src="${assetUrl}js/libraries/bootstrap${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
+
+			<go:insertmarker format="HTML" name="js-href" />
+            <go:script>
+                <go:insertmarker format="SCRIPT" name="js-head" />
+            </go:script>
 		<%--  Underscore --%>
 		<c:if test="${isDev eq false}">
 			<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 		</c:if>
-		<script>window._ || document.write('<script src="${assetUrl}/libraries/underscore-1.8.3.min.js">\x3C/script>')</script>
+		<script>window._ || document.write('<script src="${assetUrl}libraries/underscore-1.8.3.min.js">\x3C/script>')</script>
 
 		<!--  Meerkat -->
 		<c:if test="${pageSettings.getVerticalCode() ne 'generic'}">
@@ -283,7 +271,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 
 		<%-- Additional Meerkat Scripts --%>
 		<jsp:invoke fragment="additional_meerkat_scripts" />
-		<!-- CouponId from either brochure site cookies or direct query string -->
+		<%-- CouponId from either brochure site cookies or direct query string --%>
 		<c:choose>
 			<c:when test="${not empty param.couponid}">
 				<c:set var="couponId" ><c:out value="${go:decodeUrl(param.couponid)}" escapeXml="true"/></c:set>
@@ -314,8 +302,8 @@ ${newPage.init(pageContext.request, pageSettings)}
 						environment: '${fn:toLowerCase(environmentService.getEnvironmentAsString())}',
 						serverDate: new Date(<fmt:formatDate value="${now}" type="DATE" pattern="yyyy"/>, <c:out value="${serverMonth}" />, <fmt:formatDate value="${now}" type="DATE" pattern="d"/>),
                         revision: '<core_v1:buildIdentifier />',
-						tokenEnabled: '${newPage.tokenEnabled}',
-						<c:if test="${param.callStack eq 'true'}">callStack: true,</c:if>
+						tokenEnabled: '${newPage.tokenEnabled}',<c:if test="${param.callStack eq 'true'}">
+                        callStack: true,</c:if>
 						verificationToken: '${newPage.createTokenForNewPage(pageContext.request , data.current.transactionId ,pageSettings)}',
 						<c:if test="${not empty data.current.transactionId}">initialTransactionId: ${data.current.transactionId}, </c:if><%-- DO NOT rely on this variable to get the transaction ID, it gets wiped by the transactionId module. Use transactionId.get() instead --%>
 						urls:{
@@ -331,7 +319,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 							brandCode: '${pageSettings.getBrandCode()}',
 							superTagEnabled: ${superTagEnabled},
 							DTMEnabled: ${DTMEnabled},
-                            			GTMEnabled: ${GTMEnabled},
+                            GTMEnabled: ${GTMEnabled},
 							userTrackingEnabled: ${isUserTrackingEnabled}
 						},
 						leavePageWarning: {
@@ -379,8 +367,19 @@ ${newPage.init(pageContext.request, pageSettings)}
 
 				})(window.meerkat);
 			</script>
-
-</c:if>
+    </c:when>
+    <c:otherwise>
+	<!--[if lt IE 9]>
+	<script src="${assetUrl}js/bundles/plugins/respond.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}libraries/jquery/js/jquery-1.11.3${pageSettings.getSetting('minifiedFileString')}.js">\x3C/script>');</script>
+	<![endif]-->
+	<!--[if gte IE 9]><!-->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}libraries/jquery/js/jquery-2.1.4${pageSettings.getSetting('minifiedFileString')}.js">\x3C/script>');</script>
+	<!--<![endif]-->
+    </c:otherwise>
+</c:choose>
 
 		<%-- Body End Fragment --%>
 		<jsp:invoke fragment="body_end" />

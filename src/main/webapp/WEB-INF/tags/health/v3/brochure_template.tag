@@ -2,12 +2,14 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="btnAttribute"><field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" /></c:set>
+
 <core_v1:js_template id="brochure-download-template">
     {{ var coverType = !_.isEmpty(promo.coverType) ? promo.coverType : meerkat.modules.health.getCoverType(); }}
     {{ if(coverType == 'C' && promo.hospitalPDF == promo.extrasPDF) { }}
-    <a class="hide-on-affix btn btn-block btn-download" href="{{= promo.hospitalPDF }}" target="_blank">Download Brochure</a>
+    <a class="hide-on-affix btn btn-block btn-download" href="{{= promo.hospitalPDF }}" target="_blank" ${btnAttribute}>Download Brochure</a>
     {{ } else if(coverType == 'C' && promo.hospitalPDF != promo.extrasPDF) { }}
-    <a class="hide-on-affix btn btn-block btn-download" href="javascript:;" data-class="brochuresTooltip" data-toggle="popover" data-adjust-y="5" data-trigger="click" data-my="top center" data-at="bottom center" data-scroll="false" data-content="#brochurePopover{{= productId }}">Download Brochures</a>
+    <a class="hide-on-affix btn btn-block btn-download" href="javascript:;" data-class="brochuresTooltip" data-toggle="popover" data-adjust-y="5" data-trigger="click" data-my="top center" data-at="bottom center" data-scroll="false" data-content="#brochurePopover{{= productId }}" ${btnAttribute}>Download Brochures</a>
     <div id="brochurePopover{{= productId }}" class="hidden">
         <div class="row">
             <div class="col-xs-12 col-md-6 brochureRow">

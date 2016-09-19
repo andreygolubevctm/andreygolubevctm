@@ -25,6 +25,7 @@ import java.time.LocalDate;
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static com.ctm.web.core.utils.common.utils.LocalDateUtils.AUS_FORMAT;
 
+@Component
 public class HealthConfirmationService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HealthConfirmationService.class);
@@ -32,6 +33,7 @@ public class HealthConfirmationService {
     private final ProviderContentService providerContentService;
     private final ConfirmationService confirmationService;
 
+    @Autowired
     public HealthConfirmationService(ProviderContentService providerContentService, ConfirmationService confirmationService) {
         this.providerContentService = providerContentService;
         this.confirmationService = confirmationService;
@@ -45,7 +47,7 @@ public class HealthConfirmationService {
             final String productSelected = StringUtils.removeEnd(
                     StringUtils.removeStart(dataBucket.getString("confirmation/health"), "<![CDATA["),
                     "]]>");
-            String frequency = Frequency.fromCode(data.getQuote().getPayment().getDetails().getFrequency()).name();
+            String frequency = Frequency.findByDescription(data.getQuote().getPayment().getDetails().getFrequency()).getCode();
             String next = getContent(request, providerName, "NXT");
             String about = getContent(request, providerName, "ABT");
             String firstName = data.getQuote().getApplication().getPrimary().getFirstname();

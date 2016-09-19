@@ -40,9 +40,7 @@
 
 		<field_v1:hidden xpath="${xpath}/partner" defaultValue="N" constantValue="N" />
 
-		<c:if test="${lif406SplitTest eq true}">
-			<life_v1:contact_optin vertical="ip" />
-		</c:if>
+		<life_v1:contact_optin vertical="ip" />
 
 	</form_v1:fieldset>
 </div>
@@ -203,6 +201,8 @@ var InsuranceHandler = {
 <go:script marker="onready">
 
 	InsuranceHandler.applyDefaults();
+	<%-- Force 'Benefit Amount' calculation coming from landing page widget. --%>
+	InsuranceHandler.calculateBenefit(true);
 
 	$(function() {
 		$("#${name}_partner").buttonset();

@@ -73,11 +73,11 @@
 				<li class="navbar-text center hidden" data-results-pagination-pagetext="true"></li>
 
 				<li>
-					<a data-results-pagination-control="previous" href="javascript:;" class="btn-pagination"><span class="icon icon-arrow-left"></span> Prev</a>
+					<a data-results-pagination-control="previous" href="javascript:;" class="btn-pagination" data-analytics="pagination previous"><span class="icon icon-arrow-left"></span> Prev</a>
 				</li>
 
 				<li class="right">
-					<a data-results-pagination-control="next" href="javascript:;" class="btn-pagination ">Next <span class="icon icon-arrow-right"></span></a>
+					<a data-results-pagination-control="next" href="javascript:;" class="btn-pagination " data-analytics="pagination next">Next <span class="icon icon-arrow-right"></span></a>
 				</li>
 			</ul>
 		</div>

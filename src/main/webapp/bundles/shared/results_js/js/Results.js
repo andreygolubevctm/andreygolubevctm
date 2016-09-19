@@ -178,11 +178,13 @@ var Results = {
 			},
 			templates:{
 				pagination:{
-					pageItem: '<li><a class="btn-pagination" data-results-pagination-control="{{= pageNumber}}">{{= label}}</a></li>',
-					pageText: 'Page {{=currentPage}} of {{=totalPages}}'
+					pageItem: '<li><a class="btn-pagination" data-results-pagination-control="{{= pageNumber}}" data-analytics="pagination {{= pageNumber}}">{{= label}}</a></li>',
+					pageText: 'Page {{=currentPage}} of {{=totalPages}}',
+					page: '<li><a class="btn-pagination icon icon-angle-{{=icon}}" data-results-pagination-control="{{= type}}" data-analytics="pagination {{= type}}"><!-- empty --></a></li>',
 				}
 			},
 			show: {
+				resultsAsRows: true, // set to false if you don't want to render result-row's (either features or price mode)
 				featuresCategories: true,
 				topResult: true,
 				currentProduct: true,

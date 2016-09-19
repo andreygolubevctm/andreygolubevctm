@@ -14,7 +14,8 @@
 			// (This is also known as Impress The Bosses On Their iPads feature)
 			// Dropped native datepicker on Android due to default date and format issues
 			if (Modernizr.inputtypes.date && iOS && !iOS5) {
-				nativePickerEnabled = true;
+				// set to false to enforce three box style picker
+				nativePickerEnabled = false;
 			}
 			// Set up each date input component
 			$('[data-provide=dateinput]').each(function initDateComponentFromDataAttribute() {

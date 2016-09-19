@@ -4,7 +4,7 @@ public class Fund {
 
     private String fundName;
 
-    private String memberId;
+    private String memberID;
 
     private String authority;
 
@@ -16,12 +16,12 @@ public class Fund {
         this.fundName = fundName;
     }
 
-    public String getMemberId() {
-        return memberId;
+    public String getMemberID() {
+        return memberID;
     }
 
-    public void setMemberId(String memberId) {
-        this.memberId = memberId;
+    public void setMemberID(String memberID) {
+        this.memberID = memberID;
     }
 
     public String getAuthority() {

@@ -1,49 +1,69 @@
 package com.ctm.web.car.services;
 
+import com.ctm.httpclient.Client;
+import com.ctm.httpclient.RestSettings;
 import com.ctm.web.car.model.form.CarQuote;
 import com.ctm.web.car.model.form.CarRequest;
 import com.ctm.web.car.model.results.CarResult;
 import com.ctm.web.car.quote.model.RequestAdapter;
+import com.ctm.web.car.quote.model.RequestAdapterV2;
 import com.ctm.web.car.quote.model.ResponseAdapter;
+import com.ctm.web.car.quote.model.ResponseAdapterV2;
 import com.ctm.web.car.quote.model.request.CarQuoteRequest;
 import com.ctm.web.car.quote.model.response.CarResponse;
+import com.ctm.web.car.quote.model.response.CarResponseV2;
 import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.RouterException;
 import com.ctm.web.core.exceptions.SessionException;
+import com.ctm.web.core.model.QuoteServiceProperties;
 import com.ctm.web.core.model.settings.Brand;
+import com.ctm.web.core.providers.model.AggregateOutgoingRequest;
+import com.ctm.web.core.providers.model.Request;
 import com.ctm.web.core.results.ResultPropertiesBuilder;
 import com.ctm.web.core.results.model.ResultProperty;
 import com.ctm.web.core.resultsData.model.AvailableType;
-import com.ctm.web.core.services.CommonQuoteService;
-import com.ctm.web.core.services.Endpoint;
+import com.ctm.web.core.services.CommonRequestServiceV2;
 import com.ctm.web.core.services.ResultsService;
+import com.ctm.web.core.services.ServiceConfigurationServiceBean;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.validation.CommencementDateValidation;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.core.web.go.xml.XmlNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.LocalDate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import static com.ctm.web.core.model.settings.Vertical.VerticalType.CAR;
 import static java.util.stream.Collectors.toList;
 
 @Component
-public class CarQuoteService extends CommonQuoteService<CarQuote, CarQuoteRequest, CarResponse> {
+public class CarQuoteService extends CommonRequestServiceV2 {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(CarQuoteService.class);
 
     private SessionDataServiceBean sessionDataServiceBean;
 
     @Autowired
-    public CarQuoteService(ProviderFilterDao providerFilterDAO, ObjectMapper objectMapper, SessionDataServiceBean sessionDataServiceBean) {
-        super(providerFilterDAO, objectMapper);
+    private Client<Request<CarQuoteRequest>, CarResponse> clientQuotes;
+
+    @Autowired
+    private Client<AggregateOutgoingRequest<CarQuoteRequest>, CarResponseV2> clientQuotesV2;
+
+    @Autowired
+    public CarQuoteService(ProviderFilterDao providerFilterDAO, ServiceConfigurationServiceBean serviceConfigurationServiceBean,
+                           SessionDataServiceBean sessionDataServiceBean) {
+        super(providerFilterDAO, serviceConfigurationServiceBean);
         this.sessionDataServiceBean = sessionDataServiceBean;
     }
 
@@ -70,11 +90,60 @@ public class CarQuoteService extends CommonQuoteService<CarQuote, CarQuoteReques
             }
         }
 
-        final CarQuoteRequest carQuoteRequest = RequestAdapter.adapt(data);
+        final QuoteServiceProperties properties = getQuoteServiceProperties("carQuoteServiceBER", brand, CAR.getCode(), Optional.ofNullable(data.getEnvironmentOverride()));
 
-        final CarResponse carResponse = sendRequest(brand, CAR, "carQuoteServiceBER", Endpoint.QUOTE, data, carQuoteRequest, CarResponse.class);
+        final List<CarResult> carResults;
+        if (properties.getServiceUrl().matches(".*://.*/car-quote-v2.*") || properties.getServiceUrl().startsWith("http://localhost")) {
+            LOGGER.info("Calling car-quote v2");
 
-        final List<CarResult> carResults = ResponseAdapter.adapt(carResponse);
+            final CarQuoteRequest carQuoteRequest = RequestAdapterV2.adapt(data);
+
+            final AggregateOutgoingRequest<CarQuoteRequest> request = AggregateOutgoingRequest.<CarQuoteRequest>build()
+                    .transactionId(data.getTransactionId())
+                    .brandCode(brand.getCode())
+                    .requestAt(data.getRequestAt())
+                    .providerFilter(quote.getFilter().getProviders())
+                    .payload(carQuoteRequest)
+                    .build();
+
+
+            final CarResponseV2 carResponse = clientQuotesV2.post(RestSettings.<AggregateOutgoingRequest<CarQuoteRequest>>builder()
+                    .request(request)
+                    .jsonHeaders()
+                    .url(properties.getServiceUrl() + "/quote")
+                    .timeout(properties.getTimeout())
+                    .responseType(MediaType.APPLICATION_JSON)
+                    .response(CarResponseV2.class)
+                    .build())
+                    .doOnError(this::logHttpClientError)
+                    .single().toBlocking().single();
+
+            carResults = ResponseAdapterV2.adapt(carResponse);
+        } else {
+            LOGGER.info("Calling car-quote v1");
+
+            final CarQuoteRequest carQuoteRequest = RequestAdapter.adapt(data);
+
+            Request<CarQuoteRequest> request = new Request<>();
+            request.setTransactionId(data.getTransactionId());
+            request.setBrandCode(brand.getCode());
+            request.setRequestAt(data.getRequestAt());
+            request.setClientIp(data.getClientIpAddress());
+            request.setPayload(carQuoteRequest);
+
+            final CarResponse carResponse = clientQuotes.post(RestSettings.<Request<CarQuoteRequest>>builder()
+                    .request(request)
+                    .jsonHeaders()
+                    .url(properties.getServiceUrl() + "/quote")
+                    .timeout(properties.getTimeout())
+                    .responseType(MediaType.APPLICATION_JSON)
+                    .response(CarResponse.class)
+                    .build())
+                    .doOnError(this::logHttpClientError)
+                    .single().toBlocking().single();
+
+            carResults = ResponseAdapter.adapt(carResponse);
+        }
 
         saveResults(data, carResults);
 

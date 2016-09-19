@@ -23,7 +23,7 @@
 			<p>Found the right product for you?</p>
 		</div>
 		<div class="col-xs-12 col-sm-4 col-md-5 col-lg-6">
-			<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}">Get Insured Now<span class="icon-arrow-right" /></a>
+			<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now<span class="icon-arrow-right" /></a>
 		</div>
 	</div>
 
@@ -70,7 +70,7 @@
 	<c:set var="variantClassName">
 		<c:if test="${moreinfo_splittest_default eq false}">more-info-content-variant</c:if>
 	</c:set>
-	<a data-slide-control="prev" href="javascript:;" class="hidden-xs btn btn-tertiary btn-close-more-info"><span class="icon icon-arrow-left"></span> Back to all results</a>
+	<a data-slide-control="prev" href="javascript:;" class="hidden-xs btn btn-tertiary btn-close-more-info" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />><span class="icon icon-arrow-left"></span> Back to all results</a>
 	<div data-product-type="{{= info.ProductType }}" class="displayNone more-info-content col-xs-12 ${variantClassName}">
 
 		<div class="fieldset-card row price-card <c:if test="${healthAlternatePricingActive eq true}">hasDualPricing</c:if> {{= dropDatePassed ? 'dropDatePassedContainer' : ''}}">
@@ -120,7 +120,7 @@
 							</c:when>
 							<c:otherwise>
 								<div class="insureNow">
-									<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}">Get Insured Now<span class="icon-arrow-right" /></a>
+									<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now<span class="icon-arrow-right" /></a>
 								</div>
 								<h3 class="text-dark">Need help? Call <span class="text-secondary">${callCentreNumber}</span></h3>
 							</c:otherwise>
@@ -136,16 +136,16 @@
 						<div class="col-xs-12 col-sm-4 text-right">
 							<c:choose>
 								<c:when test="${moreinfo_splittest_variant1 eq true}">
-									<a href="javascript:;" class="btn btn-cta old-cta btn-more-info-apply" data-productId="{{= productId }}">Buy Now</a>
+									<a href="javascript:;" class="btn btn-cta old-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Buy Now</a>
 								</c:when>
 								<c:when test="${moreinfo_splittest_variant2 eq true}">
-									<a href="javascript:;" class="btn btn-cta old-cta btn-more-info-apply" data-productId="{{= productId }}">Get insured now <span class="icon-arrow-right" /></a>
+									<a href="javascript:;" class="btn btn-cta old-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get insured now <span class="icon-arrow-right" /></a>
 								</c:when>
 								<c:when test="${moreinfo_splittest_variant3 eq true}">
-									<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}">Buy Now</a>
+									<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Buy Now</a>
 								</c:when>
 								<c:otherwise>
-							<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}">Get Insured Now<span class="icon-arrow-right" /></a>
+							<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now<span class="icon-arrow-right" /></a>
 								</c:otherwise>
 							</c:choose>
 						</div>
@@ -169,15 +169,15 @@
 						<div class="companyLogo {{= info.provider }}-mi"></div>
 						<c:choose>
 							<c:when test="${moreinfo_splittest_variant1 eq true}">
-								<a href="javascript:;" class="btn btn-cta old-cta btn-more-info-apply" data-productId="{{= productId }}">Buy Now</a>
+								<a href="javascript:;" class="btn btn-cta old-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Buy Now</a>
 							</c:when>
 							<c:when test="${moreinfo_splittest_variant2 eq true}">
-								<a href="javascript:;" class="btn btn-cta old-cta btn-more-info-apply" data-productId="{{= productId }}">Get insured now <span class="icon-arrow-right" /></a>
+								<a href="javascript:;" class="btn btn-cta old-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get insured now <span class="icon-arrow-right" /></a>
 							</c:when>
 						</c:choose>
 						{{= renderedDualPricing }}
 						<c:if test="${moreinfo_splittest_variant3 eq true}">
-							<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}">Buy Now</a>
+							<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Buy Now</a>
 						</c:if>
 					</div>
 				</c:when>
@@ -186,21 +186,21 @@
 						<div class="companyLogo {{= info.provider }}-mi"></div>
 						<c:choose>
 							<c:when test="${moreinfo_splittest_variant1 eq true}">
-								<a href="javascript:;" class="btn btn-cta old-cta btn-more-info-apply" data-productId="{{= productId }}">Buy Now</a>
+								<a href="javascript:;" class="btn btn-cta old-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Buy Now</a>
 							</c:when>
 							<c:when test="${moreinfo_splittest_variant2 eq true}">
-								<a href="javascript:;" class="btn btn-cta old-cta btn-more-info-apply" data-productId="{{= productId }}">Get insured now <span class="icon-arrow-right" /></a>
+								<a href="javascript:;" class="btn btn-cta old-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get insured now <span class="icon-arrow-right" /></a>
 							</c:when>
 						</c:choose>
 						<c:if test="${not empty callCentre or moreinfo_splittest_default eq true}">
 						<div class="row">
 							<div class="col-xs-12">
-								<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}">Get Insured Now<span class="icon-arrow-right" /></a>
+								<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now<span class="icon-arrow-right" /></a>
 							</div>
 						</div>
 						</c:if>
 						<c:if test="${moreinfo_splittest_variant3 eq true}">
-							<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}">Buy Now</a>
+							<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Buy Now</a>
 						</c:if>
 
 						<p class="needHelp">or need help? Call <span>${callCentreNumber}</span></p>
@@ -237,7 +237,7 @@
 				<p><strong>Co-payment / % Hospital Contribution:</strong> {{= hospital.inclusions.copayment }}</p>
 				<p><strong>Hospital waiting period for pre-existing conditions:</strong> 12 months. For all other conditions: 2 months. See policy brochure for more details</p>
 				{{ } }}
-
+                <c:if test="${!callCentre}">
 				{{ if(hospitalCover.inclusions.length > 0) { }}
 				<h5>You will be covered for the following services</h5>
 
@@ -271,7 +271,7 @@
 				</ul>
 				<content:get key="hospitalExclusionsDisclaimer"/>
 				{{ } }}
-
+                </c:if>
 			</div>
 			{{ } }}
 			</c:if>
@@ -279,6 +279,12 @@
 			<c:if test="${moreinfolayout_splittest_default eq true}">
 			{{ if(typeof extrasCover !== 'undefined') { }}
 			<div class="col-xs-12 col-md-6 extrasCover">
+            <c:choose>
+                <c:when test="${callCentre}">
+                <h2>Extras cover</h2>
+                <p>Please refer to the Policy Brochure or the previous page</p>
+                </c:when>
+                <c:otherwise>
                 {{ if (custom.info && custom.info.content && custom.info.content.moreInfo && custom.info.content.moreInfo.extras) { }}
                 <h2>{{= custom.info.content.moreInfo.extras.label}}</h2>
                 <p>{{= custom.info.content.moreInfo.extras.text}}</p>
@@ -306,6 +312,8 @@
 					</tbody>
 				</table>
 				{{ } }}
+                </c:otherwise>
+            </c:choose>
 			</div>
 			{{ } }}
 			</c:if>
@@ -321,13 +329,13 @@
 					<div class="row">
 						{{ if(typeof hospitalCover !== 'undefined' && typeof extrasCover !== 'undefined' && promo.hospitalPDF == promo.extrasPDF) { }}
 						<div class="col-xs-12">
-							<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn download-policy-brochure col-xs-12">Policy Brochure</a>
+							<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn download-policy-brochure col-xs-12" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>Policy Brochure</a>
 						</div>
 						{{ } else { }}
 
 						{{ if(typeof hospitalCover !== 'undefined') { }}
 						<div class="{{ if(typeof extrasCover !== 'undefined'){ }}col-sm-6{{ } }} col-xs-12">
-							<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn download-hospital-brochure col-xs-12">Hospital Policy Brochure</a>
+							<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn download-hospital-brochure col-xs-12" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>Hospital Policy Brochure</a>
 						</div>
 						{{ } }}
 
@@ -349,7 +357,7 @@
 											 placeHolder="${emailPlaceHolder}" />
 						</div>
 						<div class="col-sm-5 hidden-xs">
-							<a href="javascript:;" class="btn btn-save disabled btn-email-brochure">Email Brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' && promo.hospitalPDF != promo.extrasPDF ? "s" : "" }}</a>
+							<a href="javascript:;" class="btn btn-save disabled btn-email-brochure" <field_v1:analytics_attr analVal="email button" quoteChar="\"" />>Email Brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' && promo.hospitalPDF != promo.extrasPDF ? "s" : "" }}</a>
 						</div>
 					</div>
 					<div class="row row-content formInput optInMarketingRow">
@@ -363,7 +371,7 @@
 
 					<div class="row row-content formInput hidden-sm hidden-md hidden-lg emailBrochureButtonRow">
 						<div class="col-xs-12">
-							<a href="javascript:;" class="btn btn-save disabled btn-email-brochure">Email Brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' ? "s" : "" }}</a>
+							<a href="javascript:;" class="btn btn-save disabled btn-email-brochure" <field_v1:analytics_attr analVal="email button" quoteChar="\"" />>Email Brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' ? "s" : "" }}</a>
 						</div>
 					</div>
 					<div class="row row-content moreInfoEmailBrochuresSuccess hidden">

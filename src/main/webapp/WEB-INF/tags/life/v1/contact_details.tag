@@ -36,7 +36,7 @@
 
 		<form_v1:row label="Phone number">
 			<%--This should be cleaned up to use Flexi_contact_number when LIFE is refactored--%>
-			<field_v1:contact_telno xpath="${xpath}/contactNumber" required="${lif406SplitTest eq true}" title="phone number"  />
+			<field_v1:contact_telno xpath="${xpath}/contactNumber" required="true" title="phone number"  />
 		</form_v1:row>
 
 		<c:if test="${empty callCentre}">
@@ -145,14 +145,8 @@
 	${name}_original_phone_number = $('#${contactNumber}').val();
 
 	$("#${vertical}_privacyoptin").on("change", function(){
-		var $tel = $('#${contactNumber}input');
-		var tel = $tel.val();
-		var optin = $(this).is(":checked") && tel.length && tel != $tel.attr('placeholder') ? "Y" : "N";
-		$('#${optIn}').val(optin);
-		var $eml = $('#${name}_email');
-		var eml = $eml.val();
-		$('#${name}_optIn').val($(this).is(":checked") && eml != '' ? 'Y' : 'N');
-		$(document).trigger(SaveQuote.setMarketingEvent, [$(this).is(':checked'), eml]);
+		$('#${optIn}').val($(this).is(":checked") ? "Y" : "N");
+		$('#${name}_optIn').val($(this).is(":checked") ? 'Y' : 'N');
 	});
 
 	$("#${vertical}_privacyoptin").trigger("change");
@@ -171,8 +165,10 @@
 
 		${name}_original_phone_number = tel;
 	});
-	
-	<c:if test="${competitionEnabled eq true}">
+
+	<%-- Life split test makes phone mandatory so no
+		 need to do it here if split test is active --%>
+	<c:if test="${competitionEnabled eq true and lif406SplitTest eq false}">
 		$('#${vertical}_contactDetails_competition_optin[type="checkbox"]').on('change', function(e){
 			if(this.checked) {
 				<%-- 

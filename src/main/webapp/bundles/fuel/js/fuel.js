@@ -1,181 +1,183 @@
-/**
- * Description: External documentation:
- */
+(function ($, undefined) {
 
-
-(function($, undefined) {
-
-    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
+    var meerkat = window.meerkat,
+        meerkatEvents = meerkat.modules.events,
+        log = meerkat.logging.info;
 
     var moduleEvents = {
-        fuel: {
-
-        },
-        WEBAPP_LOCK : 'WEBAPP_LOCK',
-        WEBAPP_UNLOCK : 'WEBAPP_UNLOCK'
+        fuel: {}
     }, steps = null;
 
-    var skipToResults = false;
+    var $signup = $('#fuel-signup'),
+        $signupLink = $('.fuel-signup-link'),
+        $signupForm = $('#fuel-signup-form'),
+        $signupEmail = $('#fuel_signup_email'),
+        $signupBtn = $signupForm.find('button');
 
     function initFuel() {
-        $(document).ready(function() {
+        $(document).ready(function () {
             // Only init if fuel
             if (meerkat.site.vertical !== "fuel")
                 return false;
 
-            meerkat.modules.fuelPrefill.setHashArray();
+            //meerkat.modules.fuelPrefill.setHashArray();
 
             // Init common stuff
             initJourneyEngine();
-            eventDelegates();
 
             if (meerkat.site.pageAction === 'amend' || meerkat.site.pageAction === 'latest' || meerkat.site.pageAction === 'load' || meerkat.site.pageAction === 'start-again') {
                 meerkat.modules.form.markInitialFieldsWithValue($("#mainform"));
             }
+            applyEventListeners();
         });
     }
 
-    function eventDelegates() { }
+    function applyEventListeners() {
+        $(document).on('change', '#fuel_type_id', function () {
+            toggleCanSave(true);
+            meerkat.modules.fuelMap.addToHistory();
+            meerkat.modules.fuelResults.get();
+        });
 
+        $signupLink.on('click', function(e) {
+            e.preventDefault();
+
+            $('html,body').animate({
+                scrollTop: $signup.outerHeight() - $signupLink.outerHeight()
+            }, 300);
+        });
+
+        $signupEmail.on('keydown', function(e) {
+            if (e.keyCode === 13) {
+                $signupBtn.trigger('click');
+                return false;
+            }
+        });
+
+        $signupBtn.on('click', function(e) {
+            e.preventDefault();
+
+            if(!$signupEmail.valid()) {
+                return false;
+            }
+
+            $signupForm.removeClass('fuel-signup-success');
+            $signupBtn
+                .attr('disabled', true)
+                .find('span').hide();
+            meerkat.modules.loadingAnimation.showInside($signupBtn);
+
+            return meerkat.modules.comms.post({
+                url: "ajax/write/fuel_signup.jsp",
+                data: $signupEmail.serialize() + '&transactionId=' + meerkat.modules.transactionId.get(),
+                dataType: 'json',
+                cache: false,
+                errorLevel: "warning",
+                onSuccess: function onSubmitSuccess(resultData) {
+                    $signupForm.addClass('fuel-signup-success');
+                },
+                onComplete: function onSubmitComplete() {
+                    $signupBtn
+                        .removeAttr('disabled')
+                        .find('span').show();
+                    meerkat.modules.loadingAnimation.hide($signupBtn);
+                }
+            });
+        });
+
+        $('.change-location-fuel-text').on('click', function() {
+            // toggle form on mobile
+            meerkat.modules.fuelMap.toggleFieldRows(true);
+        });
+    }
 
     function initJourneyEngine() {
-        // Initialise the journey engine steps and bar
-        initProgressBar(false);
+        setJourneyEngineSteps();
 
         // Initialise the journey engine
         var startStepId = null;
         if (meerkat.site.isFromBrochureSite === true && meerkat.modules.address.getWindowHashAsArray().length === 1) {
             startStepId = steps.startStep.navigationId;
-            skipToResults = true;
-        }
-        // Use the stage user was on when saving their quote
-        else if (meerkat.site.journeyStage.length > 0 && meerkat.site.pageAction === 'latest') {
-            startStepId = steps.resultsStep.navigationId;
-        } else if (meerkat.site.journeyStage.length > 0 && meerkat.site.pageAction === 'amend') {
-            startStepId = steps.startStep.navigationId;
         }
 
-        $(document).ready(function(){
+        $(document).ready(function () {
+
+            meerkat.modules.fuelMap.setInitialHash(meerkat.modules.address.getWindowHashAsArray());
             meerkat.modules.journeyEngine.configure({
-                startStepId : startStepId,
-                steps : _.toArray(steps)
+                startStepId: startStepId,
+                steps: _.toArray(steps)
             });
 
             // Call initial supertag call
             var transaction_id = meerkat.modules.transactionId.get();
-
-            if(meerkat.site.isNewQuote === false){
-                meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-                    method:'trackQuoteEvent',
-                    object: {
-                        action: 'Retrieve',
-                        transactionID: parseInt(transaction_id, 10),
-                        vertical: meerkat.site.vertical
-                    }
-                });
-            } else {
-                meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-                    method: 'trackQuoteEvent',
-                    object: {
-                        action: 'Start',
-                        transactionID: parseInt(transaction_id, 10),
-                        vertical: meerkat.site.vertical
-                    }
-                });
-            }
+            meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+                method: 'trackQuoteEvent',
+                object: {
+                    action: 'Start',
+                    transactionID: parseInt(transaction_id, 10),
+                    vertical: meerkat.site.vertical
+                }
+            });
         });
-    }
-
-
-    /**
-     * Initialise and configure the progress bar.
-     *
-     * @param {bool}
-     *            render
-     */
-    function initProgressBar(render) {
-        setJourneyEngineSteps();
-        configureProgressBar();
-        if (render) {
-            meerkat.modules.journeyProgressBar.render(true);
-        }
     }
 
     function setJourneyEngineSteps() {
         var startStep = {
-            title : 'Fuel Details',
-            navigationId : 'start',
-            slideIndex : 0,
+            title: 'Fuel Prices',
+            navigationId: 'start',
+            slideIndex: 0,
             validation: {
-                validate: true
+                validate: false
             },
             externalTracking: {
                 method: 'trackQuoteForms',
                 object: meerkat.modules.fuel.getTrackingFieldsObject
             },
-            onInitialise: function(){
-                meerkat.modules.jqueryValidate.initJourneyValidator();
-                meerkat.modules.fuelPrefill.initFuelPrefill();
-            },
-            onAfterEnter: function() {
-                if (skipToResults) {
-                    meerkat.modules.journeyEngine.gotoPath("next");
-                    skipToResults = false;
-                }
-            }
-        };
-
-        var resultsStep = {
-            title : 'Fuel Prices',
-            navigationId : 'results',
-            slideIndex : 1,
-            externalTracking: {
-                method: 'trackQuoteForms',
-                object: meerkat.modules.fuel.getTrackingFieldsObject
-            },
-            additionalHashInfo: function() {
-                var fuelTypes = $("#fuel_hidden").val(),
-                    location = $("#fuel_location").val().replace(/\s/g, "+");
-
-                return location + "/" + fuelTypes;
-            },
-            onInitialise: function onResultsInit(event) {
+            onInitialise: function () {
+                // meerkat.modules.jqueryValidate.initJourneyValidator();
+                initJourneyValidator();
+                meerkat.modules.fuelMap.initGoogleAPI();
                 meerkat.modules.fuelResults.initPage();
-                meerkat.modules.showMoreQuotesPrompt.initPromptBar();
-                meerkat.modules.fuelSorting.initSorting();
-                meerkat.modules.fuelResultsMap.initFuelResultsMap();
-                meerkat.modules.fuelCharts.initFuelCharts();
-            },
-            onAfterEnter: function afterEnterResults(event) {
-                meerkat.modules.fuelResults.get();
-                meerkat.modules.fuelResultsMap.resetMap();
-            },
-            onAfterLeave: function(event) {
-                if(event.isBackward) {
-                    meerkat.modules.showMoreQuotesPrompt.disablePromptBar();
+                if(meerkat.site.isFromBrochureSite && meerkat.site.formData.location) {
+                    $('#fuel_location').val(meerkat.site.formData.location);
                 }
+                //meerkat.modules.fuelPrefill.initFuelPrefill();
             }
         };
+
+        //var resultsStep = {
+        //    title : 'Fuel Prices',
+        //    navigationId : 'results',
+        //    slideIndex : 1,
+        //    externalTracking: {
+        //        method: 'trackQuoteForms',
+        //        object: meerkat.modules.fuel.getTrackingFieldsObject
+        //    },
+        //    additionalHashInfo: function() {
+        //        var fuelTypes = $("#fuel_hidden").val(),
+        //            location = $("#fuel_location").val().replace(/\s/g, "+");
+        //
+        //        return location + "/" + fuelTypes;
+        //    },
+        //    onInitialise: function onResultsInit(event) {
+        //        meerkat.modules.fuelResults.initPage();
+        //    },
+        //    onAfterEnter: function afterEnterResults(event) {
+        //        meerkat.modules.fuelResults.get();
+        //        meerkat.modules.fuelResultsMap.resetMap();
+        //    }
+        //};
 
         /**
          * Add more steps as separate variables here
          */
         steps = {
-            startStep: startStep,
-            resultsStep: resultsStep
+            startStep: startStep
         };
     }
 
-    function configureProgressBar() {
-        meerkat.modules.journeyProgressBar.configure([
-            {
-                label: 'Fuel Details',
-                navigationId: steps.startStep.navigationId
-            }, {
-                label: 'Fuel Prices',
-                navigationId: steps.resultsStep.navigationId
-            }
-        ]);
+    function initJourneyValidator() {
+        meerkat.modules.jqueryValidate.setupDefaultValidationOnForm($('#fuel-signup-form'));
     }
 
     // Build an object to be sent by tracking.
@@ -183,21 +185,12 @@
         try {
 
             var current_step = meerkat.modules.journeyEngine.getCurrentStepIndex();
-            var furthest_step = meerkat.modules.journeyEngine.getFurtherestStepIndex();
 
-            var location = $("#fuel_location").val().split(' '),
-                actionStep = '';
+            var actionStep = '';
 
             switch (current_step) {
                 case 0:
                     actionStep = "fuel details";
-                    break;
-                case 1:
-                    if (special_case === true) {
-                        actionStep = 'fuel more info';
-                    } else {
-                        actionStep = 'fuel results';
-                    }
                     break;
             }
 
@@ -206,14 +199,6 @@
                 quoteReferenceNumber: meerkat.modules.transactionId.get()
             };
 
-            // Push in values from 2nd slide only when have been beyond it
-            if (furthest_step > meerkat.modules.journeyEngine.getStepIndex('start')) {
-                _.extend(response, {
-                    state: location[location.length-1],
-                    postcode: location[location.length-2]
-                });
-            }
-
             return response;
 
         } catch (e) {
@@ -221,10 +206,20 @@
         }
     }
 
+    function getFuelType() {
+        return $('#fuel_type_id').val();
+    }
+
+    function toggleCanSave(canSave) {
+        var value = canSave === true ? 1 : 0;
+        $('#fuel_canSave').val(value);
+    }
+
     meerkat.modules.register("fuel", {
         init: initFuel,
         events: moduleEvents,
-        initProgressBar: initProgressBar,
-        getTrackingFieldsObject: getTrackingFieldsObject
+        getTrackingFieldsObject: getTrackingFieldsObject,
+        getFuelType: getFuelType,
+        toggleCanSave: toggleCanSave
     });
 })(jQuery);

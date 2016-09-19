@@ -19,6 +19,8 @@
 		activeCallModal,
 		callDirectTrackingFlag = true; // used to flag when ok to call tracking on CallDirect (once per transaction)
 
+    var selectedFrequency = 'annual'; // selected payment frequency on the results step, default to 'annual'
+
 	/**
 	 * Specify the options within here to pass to meerkat.modules.moreInfo.
 	 */
@@ -44,7 +46,7 @@
 			onBeforeShowBridgingPage: onBeforeShowBridgingPage,
 			onBeforeShowTemplate: renderScrapes,
 			onBeforeShowModal: renderScrapes,
-			onAfterShowModal: requestTracking,
+			onAfterShowModal: onAfterShowTemplate,
 			onAfterShowTemplate: onAfterShowTemplate,
 			onBeforeHideTemplate: null,
 			onAfterHideTemplate: onAfterHideTemplate,
@@ -76,6 +78,8 @@
 		}).on('click', '.btn-submit-callback', function (event) {
 			var $el = $(this);
 			submitCallback(event, $el);
+		}).on('change', '.frequency-toggle', function() {
+			togglePremium($(this));
 		});
 
 		$('.slide-feature-closeMoreInfo a').off().on('click', function() {
@@ -88,8 +92,9 @@
 	 * Also bind validation rules.
 	 */
 	function setupCallbackForm() {
-
-		meerkat.modules.jqueryValidate.setupDefaultValidationOnForm( $('#getcallback') );
+		if (!meerkat.modules.splitTest.isActive(8)) {
+			meerkat.modules.jqueryValidate.setupDefaultValidationOnForm($('#getcallback'));
+		}
 		//$("#getcallback").validate();
 		var clientName = $('#quote_CrClientName');
 		// populate client name if empty
@@ -105,7 +110,6 @@
 			telNumInput.val($('#quote_contact_phoneinput').val()).blur();
 		}
 		telNum.attr('data-msg-required', "Please enter your contact number");
-
 	}
 
 	function resizeSidebarOnBreakpointChange(leftContainer, rightContainer, mainContainer) {
@@ -285,6 +289,13 @@
 		meerkat.messaging.subscribe(meerkatEvents.carResults.FEATURES_SUBMIT_CALLBACK, function triggerSubmitCallback(obj) {
 			submitCallback(obj.event, obj.element);
 		});
+
+        meerkat.messaging.subscribe(meerkatEvents.carFilters.CHANGED, function onFilterChange(obj) {
+            if (meerkat.modules.splitTest.isActive(8) && !obj) {
+                selectedFrequency = Results.getFrequency();
+            }
+        });
+
 	}
 
 	function callActions(event, element) {
@@ -294,17 +305,22 @@
 		event.preventDefault();
 		event.stopPropagation();
 		var $el = element;
-
-		var $e = $('#car-call-modal-template');
-		if ($e.length > 0) {
-			templateCallback = _.template($e.html());
-		}
 		var obj = Results.getResultByProductId($el.attr('data-productId'));
 
 		// If its unavailable, don't do anything
 		// This is if someone tries to fake a bridging page for a "non quote" product.
 		if(obj.available !== "Y")
 			return;
+
+		if (meerkat.modules.splitTest.isActive(8)) {
+			callActionsToggle(event, $el, obj);
+			return;
+		}
+
+		var $e = $('#car-call-modal-template');
+		if ($e.length > 0) {
+			templateCallback = _.template($e.html());
+		}
 
 		activeCallModal = $el.attr('data-callback-toggle');
 		var sessionCamStep = meerkat.modules.sessionCamHelper.getMoreInfoStep(activeCallModal);
@@ -402,6 +418,52 @@
 		return false;
 	}
 
+	function callActionsToggle(event, $el, obj) {
+		var activeCall = $el.attr('data-callback-toggle'),
+			sessionCamStep = meerkat.modules.sessionCamHelper.getMoreInfoStep(activeCall);
+
+		$('.more-info-v2 .price-card')
+			.removeClass('toggle-callback toggle-calldirect')
+			.addClass('toggle-' + $el.attr('data-callback-toggle'));
+
+		setupCallbackForm();
+
+		if (activeCall === 'callback') {
+			trackCallBack(obj);// Add CallBack request event to supertag
+		} else {
+			recordCallDirect(event, obj);
+		}
+
+		meerkat.modules.sessionCamHelper.updateVirtualPage(sessionCamStep);
+	}
+
+	function togglePremium($el) {
+		var frequency = $el.val(),
+			prodId = $el.attr('data-productId'),
+			obj = Results.getResultByProductId(prodId),
+			monthlyPremiumSplit = obj.price.monthlyPremium.toString().split('.'),
+			annualPremiumSplit = obj.price.annualPremium.toString().split('.'),
+			priceObj = {
+				monthly: {
+					dollars: monthlyPremiumSplit[0],
+					cents: monthlyPremiumSplit[1] ? '.' + monthlyPremiumSplit[1] : ''
+				},
+				annual: {
+					dollars: annualPremiumSplit[0],
+					cents: annualPremiumSplit[1] ? '.' + annualPremiumSplit[1] : ''
+				}
+			},
+			$frequencyAmount = $('.frequencyAmount[data-productId=' + prodId + ']');
+
+		if (priceObj[frequency].cents.length === 2) {
+			priceObj[frequency].cents = priceObj[frequency].cents + '0';
+		}
+
+		$frequencyAmount.find('.dollars').text(priceObj[frequency].dollars);
+		$frequencyAmount.find('.cents').text(priceObj[frequency].cents);
+		$frequencyAmount.find('.monthlyBreakdown').toggleClass('invisible', frequency === 'annual');
+	}
+
 	/**
 	 * Set the current scroll position so that it can be used when modals are closed
 	 */
@@ -424,13 +486,22 @@
 	 * Called within meerkat.modules.moreInfo.showTemplate
 	 */
 	function onAfterShowTemplate() {
-
 		requestTracking();
 
 		if (meerkat.modules.deviceMediaState.get() == 'lg' || meerkat.modules.deviceMediaState.get() == 'md') {
 			fixSidebarHeight('.paragraphedContent', '.moreInfoRightColumn', $bridgingContainer);
 		}
+
+		if (meerkat.modules.splitTest.isActive(8)) {
+			// used to target elements for styling, ie. navbar and pageContent
+			$('body').addClass('moreInfoVisibleV2');
+
+			$('.frequency-toggle')
+                .val(selectedFrequency)
+                .trigger('change');
+		}
 	}
+
 	/**
 	 * Restores the original state of the view from what you changed in onBeforeShowTemplate
 	 * or onBeforeShowBridgingPage (template only, not modal)
@@ -439,6 +510,10 @@
 	function onAfterHideTemplate() {
 		$('.resultsContainer, #navbar-filter, #navbar-compare').show();
 		$(window).scrollTop(scrollPosition);
+
+		if (meerkat.modules.splitTest.isActive(8)) {
+			$('body').removeClass('moreInfoVisibleV2');
+		}
 	}
 
 	/**

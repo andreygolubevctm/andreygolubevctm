@@ -88,7 +88,7 @@
 
 			</p>
 			<div class="footer">
-				<a href="javascript:;" class="more-info">view more info</a>
+				<a href="javascript:;" class="more-info" <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />>view more info</a>
 			</div>
 		</div>
 

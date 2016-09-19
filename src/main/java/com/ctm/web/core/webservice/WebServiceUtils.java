@@ -11,12 +11,16 @@ import org.apache.cxf.endpoint.Endpoint;
 import org.apache.cxf.interceptor.AbstractLoggingInterceptor;
 import org.apache.cxf.interceptor.Interceptor;
 import org.apache.cxf.message.Message;
+import org.apache.cxf.transport.http.HTTPConduit;
+import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
 import org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor;
 import org.apache.wss4j.dom.WSConstants;
 import org.apache.wss4j.dom.handler.WSHandlerConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +32,8 @@ public class WebServiceUtils {
 
     public static final String HTTP_PROTOCOL = "http";
     public static final String HTTPS_PROTOCOL = "https";
+    public static final String HTTPS_PROXY_HOST = "https.proxyHost";
+    public static final String HTTPS_PROXY_PORT = "https.proxyPort";
     public static final String HTTP_PROXY_USER = "http.proxyUser";
     public static final String HTTP_PROXY_PASSWORD = "http.proxyPassword";
     public static final String HTTPS_PROXY_USER = "https.proxyUser";
@@ -78,5 +84,35 @@ public class WebServiceUtils {
             }
         }
         interceptorList.removeAll(removeList);
+    }
+
+    public static void initProxy(Client cxfClient) {
+        // If system properties for proxy are set, then configure the httpconduit for cxf
+        HTTPConduit conduit = (HTTPConduit) cxfClient.getConduit();
+
+        String proxyHost = System.getenv(HTTPS_PROXY_HOST);
+        if (proxyHost != null) {
+            HTTPClientPolicy httpClientPolicy = new HTTPClientPolicy();
+            httpClientPolicy.setProxyServer(proxyHost);
+            httpClientPolicy.setProxyServerPort(Integer.parseInt(System.getenv(HTTPS_PROXY_PORT)));
+            httpClientPolicy.setAllowChunking(false);
+            conduit.setClient(httpClientPolicy);
+        }
+
+        try {
+            URL webAddressUrl = new URL(conduit.getAddress());
+            if (webAddressUrl.getProtocol().equals(HTTP_PROTOCOL) &&
+                    System.getProperty(HTTP_PROXY_USER) != null) {
+                conduit.getProxyAuthorization().setUserName(System.getProperty(HTTP_PROXY_USER));
+                conduit.getProxyAuthorization().setPassword(System.getProperty(HTTP_PROXY_PASSWORD));
+            }
+            if (webAddressUrl.getProtocol().equals(HTTPS_PROTOCOL) &&
+                    System.getProperty(HTTPS_PROXY_USER) != null) {
+                conduit.getProxyAuthorization().setUserName(System.getProperty(HTTPS_PROXY_USER));
+                conduit.getProxyAuthorization().setPassword(System.getProperty(HTTPS_PROXY_PASSWORD));
+            }
+        } catch (MalformedURLException mue) {
+            LOGGER.error("Failed to parse ws address: [{}]", conduit.getAddress());
+        }
     }
 }

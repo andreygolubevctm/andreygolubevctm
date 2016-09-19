@@ -26,6 +26,7 @@
 			$paymentFrequency : $('#health_payment_details_frequency'),
 			$paymentStartDate: $("#health_payment_details_start"),
 			$paymentTypeContainer: $('div.health-payment_details-type').siblings('div.fieldrow_legend'),
+			$claimsAccountOptin: $('#health_payment_bank_claims'),
 
           set: function() {
             $(".health_previous_fund_authority").removeClass("hidden");
@@ -121,7 +122,7 @@
               function populateDropdownOnKey(key,$dropDown,originalKey) {
                 _.defer(function() {
                   ajaxRequest = meerkat.modules.comms.get({
-                    url: "rest/health/dropdown/list.json",
+                    url: "spring/rest/health/dropdown/list.json",
                     data: {
                       type:key
                     },
@@ -222,7 +223,7 @@
               meerkat.modules.healthDependants.updateConfig({showFullTimeField :true, showSchoolFields:true, 'schoolMinAge':21, 'schoolMaxAge':25, showSchoolIdField:false,showRelationship:true,showPreferredMethodOfContact:true });
 
               <%-- Partner authority --%>
-              healthFunds._partner_authority(true);
+              healthFunds._partner_authority(false);
 
                 <%-- How to send information. Second argument = validation required --%>
                 healthApplicationDetails.showHowToSendInfo('Navy Health', true);
@@ -271,6 +272,11 @@
               "paymentTypeSelector" : $("input[name='health_payment_details_type']:checked"),
               "getSelectedPaymentMethod" :  meerkat.modules.healthPaymentStep.getSelectedPaymentMethod
             });
+
+			<%-- Unset the refund optin radio buttons --%>
+			healthFunds_NHB.$claimsAccountOptin.find("input:checked").each(function(){
+			  $(this).prop("checked",null).trigger("change");
+			});
           },
 		  renderPaymentDays: function() {
 			healthFunds_NHB.$paymentTypeContainer.text('*Navy Health offers a 2% discount on Half Yearly or a 4% discount on Annual payments').slideDown();

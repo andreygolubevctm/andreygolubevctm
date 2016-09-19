@@ -15,6 +15,7 @@
 <%@ attribute name="style"  	required="false" rtexprvalue="true"  description="Options: 'inline' = standard inline floating; 'group' = grouped together like buttons" %>
 <%@ attribute name="additionalAttributes"  	required="false" rtexprvalue="true"  description="Additional attributes" %>
 <%@ attribute name="disableErrorContainer" required="false" rtexprvalue="true"    	 description="Show or hide the error message container" %>
+<%@ attribute name="additionalLabelAttributes"  	required="false" rtexprvalue="true"  description="Additional attributes specifically for the label element" %>
 
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
@@ -75,7 +76,7 @@
 		<c:choose>
 			<%-- FOR GROUPED STYLE --%>
 			<c:when test="${style == 'group' or style == 'group-tile' or style == 'inline'}">
-				<label class="${classVar} ${active}">
+				<label class="${classVar} ${active}" ${additionalLabelAttributes}>
 					<input type="radio" name="${name}" id="${id}" value="${val}" ${checked} data-msg-required="Please choose ${title}" ${requiredAttribute} ${additionalAttributes}>
 					<c:out value="${des}" escapeXml="false" />
 				</label>
@@ -83,7 +84,7 @@
 			<%-- FOR NORMAL OR INLINE --%>
 			<c:otherwise>
 				<div class="${classVar} ${active}">
-					<label>
+					<label ${additionalLabelAttributes}>
 						<input type="radio" name="${name}" id="${id}" value="${val}" ${checked} data-msg-required="Please choose ${title}" ${requiredAttribute} ${additionalAttributes}>
 						<c:out value="${des}" escapeXml="false" />
 					</label>

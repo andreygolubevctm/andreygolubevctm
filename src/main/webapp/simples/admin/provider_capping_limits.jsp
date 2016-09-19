@@ -7,9 +7,11 @@
 <layout_v1:simples_page>
 	<jsp:attribute name="head">
 	</jsp:attribute>
+    <jsp:attribute name="body_end">
+        <script src="/${pageSettings.getContextFolder()}framework/jquery/plugins/jquery.rowsorter.min.js"></script>
+	</jsp:attribute>
 
     <jsp:body>
-        <script src="/${pageSettings.getContextFolder()}framework/jquery/plugins/jquery.rowsorter.min.js"></script>
 
         <div id="opening-hours-container" class="container">
             <div class="row">
