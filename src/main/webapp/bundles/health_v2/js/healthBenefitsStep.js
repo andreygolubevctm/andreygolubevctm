@@ -111,13 +111,13 @@
         var coverType = $coverType.find('input:checked').val().toLowerCase();
         if(coverType === 'e') {
             $allHospitalButtons.each(function() {
-                $(this).prop('checked', false).attr('checked', null).prop('disabled', false).change();
-            });
+            $(this).prop('checked', false).attr('checked', null).prop('disabled', false).change();
+        });
         } else if(coverType === 'h') {
             var $extrasSection = $('.GeneralHealth_container .children').closest('fieldset');
             $extrasSection.find('input[type="checkbox"]').each(function() {
-                $(this).prop('checked', false).attr('checked', null).change();
-            });
+            $(this).prop('checked', false).attr('checked', null).change();
+        });
         }
     }
 
