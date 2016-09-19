@@ -171,7 +171,8 @@
 				</div>
 			</div>
 		</div>
-		<div class="situation-wrapper"></div>
+		<%-- TODO Enable in part 2 --%>
+		<%--<div class="situation-wrapper"></div>--%>
 	</form_v2:fieldset>
 
 	<c:choose>

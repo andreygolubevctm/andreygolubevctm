@@ -3,7 +3,7 @@
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
         log = meerkat.logging.info,
-        $coverType,  //Stores the jQuery object for cover type select field in situation page
+        $benefitsCoverType,
         $benefitsForm, //Stores the jQuery object for the main benefits form
         $hiddenFields,
         $hospitalCoverToggles,
@@ -86,35 +86,39 @@
     function setDefaultCover() {
         healthSitu = $('.health-situation-healthSitu input:checked').val();
 
-        if (!$('.hospitalCoverToggles.hidden-xs a.benefit-category').hasClass('active')) {
-            if (meerkat.modules.deviceMediaState.get() === 'xs') {
-                $('.hospitalCoverToggles.visible-xs a.benefit-category[data-category="customise"]').trigger('click');
-            } else {
-
-                switch(healthSitu) {
-                    case 'ATP':
-                        $('.hospitalCoverToggles.hidden-xs a.benefit-category[data-category="limited"]').trigger('click');
-                        break;
-    
-                    default:
-                        $('.hospitalCoverToggles.hidden-xs a.benefit-category[data-category="customise"]').trigger('click');
-    
+        if (meerkat.modules.deviceMediaState.get() === 'xs') {
+            if (!$('.hospitalCoverToggles.visible-xs a.benefit-category').hasClass('active')) {
+                if(healthSitu === 'ATP') {
+                    $('#health_situation_coverType_H').trigger('click');
+                    $('.hospitalCoverToggles.visible-xs a.benefit-category[data-category="limited"]').trigger('click');
+                } else {
+                    $('.hospitalCoverToggles.visible-xs a.benefit-category[data-category="customise"]').trigger('click');
                 }
             }
         } else {
-            $('.hospitalCoverToggles.hidden-xs a.benefit-category[data-category="customise"]').trigger('click');
+            if (!$('.hospitalCoverToggles.hidden-xs a.benefit-category').hasClass('active')) {
+                if(healthSitu === 'ATP') {
+                    $('#health_situation_coverType_H').trigger('click');
+                    $('.hospitalCoverToggles.hidden-xs a.benefit-category[data-category="limited"]').trigger('click');
+                } else {
+                    $('.hospitalCoverToggles.hidden-xs a.benefit-category[data-category="customise"]').trigger('click');
+                }
+            }
         }
     }
 
     function flushHiddenBenefits() {
-        var $extrasSection = $('.GeneralHealth_container .children').closest('fieldset');
-
-        $allHospitalButtons.not(':visible').each(function() {
-            $(this).prop('checked', false).attr('checked', null).prop('disabled', false).change();
-        });
-        $extrasSection.find('input[type="checkbox"]').not(':visible').each(function() {
-            $(this).prop('checked', false).attr('checked', null).change();
-        });
+        var coverType = $coverType.find('input:checked').val().toLowerCase();
+        if(coverType === 'e') {
+            $allHospitalButtons.each(function() {
+                $(this).prop('checked', false).attr('checked', null).prop('disabled', false).change();
+            });
+        } else if(coverType === 'h') {
+            var $extrasSection = $('.GeneralHealth_container .children').closest('fieldset');
+            $extrasSection.find('input[type="checkbox"]').each(function() {
+                $(this).prop('checked', false).attr('checked', null).change();
+            });
+        }
     }
 
     function resetDefaultCover() {
@@ -122,9 +126,12 @@
     }
 
     function toggleBenefits() {
-        var $hospitalSection = $('.Hospital-wrapper'),
+        // TODO Temporarily re-enabling until toggle buttons are in
+        //var $hospitalSection = $('.Hospital-wrapper'),
+        //     $extrasSection = $('.GeneralHealth-wrapper'),
+        var $hospitalSection = $('.Hospital_container').closest('fieldset'),
+            $extrasSection = $('.GeneralHealth_container .children').closest('fieldset');
             $hospitalText = $('.tieredHospitalCover .hospitalCover .title'),
-            $extrasSection = $('.GeneralHealth-wrapper'),
             $extrasText = $('.tieredHospitalCover .extrasCover .title'),
             $helpText = $('.benefits-help');
 
@@ -266,6 +273,12 @@
                 hospitalContent = meerkat.site.content.hospitalLimitedYoung;
                 extrasDisabledContent = meerkat.site.content.extrasLimitedDisabled;
                 helpContent = meerkat.site.content.hospitalLimitedHelp;
+                                if(healthSitu === 'ATP') {
+                    setDefaultCover();
+                } else {
+                    resetDefaultCover();
+                }
+
 
         }
 
@@ -273,6 +286,7 @@
             case 'c':
                 $hospitalSection.slideDown();
                 $extrasSection.slideDown();
+                setDefaultCover();
                 break;
             case 'h':
                 $hospitalSection.slideDown();
@@ -283,6 +297,7 @@
             case 'e':
                 $hospitalSection.slideUp();
                 $extrasSection.slideDown();
+                resetDefaultCover();
 
                 hospitalContent = hospitalDisabledContent;
                 break;
@@ -295,10 +310,8 @@
                 break;
         }
 
-        setDefaultCover();
-
-        $hospitalText.html('<h3>Hospital Cover for '+healthSituText+'</h3>'+hospitalContent);
-        $extrasText.html('<h3>Extras Cover for '+healthSituText+'</h3>'+extrasContent);
+        $hospitalText.html(hospitalContent);
+        $extrasText.html(extrasContent);
         $helpText.html(helpContent);
 
     }
@@ -368,7 +381,11 @@
     function hospitalCoverToggleEvents() {
         var currentCover = 'customise',
             previousCover = 'customise',
+            // TODO Temporarily re-enabling until toggle buttons are in
+            //$hospitalBenefitsSection = $('.Hospital-wrapper'),
+            //$extrasBenefitSection = $('.GeneralHealth-wrapper'),
             $hospitalBenefitsSection = $('.Hospital_container .children'),
+            $extrasBenefitsSection = $('.GeneralHealth_container .children').closest('fieldset'),
             $benefitsCoverType = $('#health_benefits_covertype'),
             $limitedCoverHidden = $hiddenFields.find("input[name='health_situation_accidentOnlyCover']");
 
@@ -441,6 +458,7 @@
                     $hospitalBenefitsSection.slideUp(function () {
                         $(this).prop('checked', false);
                     });
+                    $extrasBenefitsSection.slideUp();
 
                     $limitedCoverHidden.val('');
                     break;
