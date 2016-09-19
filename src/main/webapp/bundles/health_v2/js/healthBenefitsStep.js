@@ -94,6 +94,9 @@
                 } else {
                     $('.hospitalCoverToggles.visible-xs a.benefit-category[data-category="customise"]').trigger('click');
                 }
+            } else if ($('.hospitalCoverToggles.visible-xs a.benefit-category[data-category="limited"]').hasClass('active')) {
+                    $('#health_situation_coverType_H').trigger('click');
+                    $('.hospitalCoverToggles.visible-xs a.benefit-category[data-category="limited"]').trigger('click');
             }
         } else {
             if (!$('.hospitalCoverToggles.hidden-xs a.benefit-category').hasClass('active')) {
@@ -103,6 +106,9 @@
                 } else {
                     $('.hospitalCoverToggles.hidden-xs a.benefit-category[data-category="customise"]').trigger('click');
                 }
+            } else if ($('.hospitalCoverToggles.hidden-xs a.benefit-category[data-category="limited"]').hasClass('active')) {
+                    $('#health_situation_coverType_H').trigger('click');
+                    $('.hospitalCoverToggles.hidden-xs a.benefit-category[data-category="limited"]').trigger('click');
             }
         }
     }
@@ -308,7 +314,6 @@
         $hospitalText.html(hospitalContent);
         $extrasText.html(extrasContent);
         $helpText.html(helpContent);
-
     }
 
     function showModal() {
