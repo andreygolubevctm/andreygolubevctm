@@ -5,7 +5,6 @@
         log = meerkat.logging.info,
         $coverType,
         $healthSitu,
-        $benefitsCoverType,
         $benefitsForm, //Stores the jQuery object for the main benefits form
         $hiddenFields,
         $hospitalCoverToggles,
