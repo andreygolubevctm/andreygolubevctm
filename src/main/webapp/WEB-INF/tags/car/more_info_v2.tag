@@ -48,8 +48,6 @@
     {{ var htmlTemplate = _.template(template); }}
     {{ obj.callMeBackHTML = htmlTemplate(obj); }}
 
-    {{ console.info(obj); }}
-
     <div class="row call-apply-xs-only">
         {{ if(obj.availableOnline === true) { }}
         <div class="col-xs-12">
