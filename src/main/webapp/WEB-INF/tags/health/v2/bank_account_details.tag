@@ -6,8 +6,13 @@
 <%@ attribute name="xpath" 		required="true"	 rtexprvalue="true"	 description="field group's xpath" %>
 
 <%-- VARIABLES --%>
-<c:set var="rowClass" value="bank-row" />
 <c:set var="isClaimAccount" value="${fn:contains(xpath,'claim')}" />
+<c:set var="rowClass">
+	<c:choose>
+		<c:when test="${isClaimAccount}"></c:when>
+		<c:otherwise>bank-row</c:otherwise>
+	</c:choose>
+</c:set>
 
 
 <%-- HTML --%>
