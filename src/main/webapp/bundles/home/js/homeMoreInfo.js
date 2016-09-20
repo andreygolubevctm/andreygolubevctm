@@ -317,7 +317,7 @@
 
 		var rowHTML = '';
 
-		var addRow = function(coverType, coverAmount) {
+		var addRow = function(coverType, coverAmount, extraCopy) {
 			// convert value to comma separated digits
 			coverAmount = coverAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
@@ -329,6 +329,7 @@
 				'<td class="cover-amount">',
 				'$<span>',
 				coverAmount,
+				extraCopy,
 				'</span>',
 				'</td>',
 				'</tr>'
@@ -347,7 +348,13 @@
 
 		if(coverType == "C" || coverType == "HC") {
 			var contentsCost = parseInt($('#home_coverAmounts_replaceContentsCost').val());
-			addRow('Contents Cover', contentsCost);
+			var selectedProduct = Results.getSelectedProduct();
+			if(!_.isEmpty(selectedProduct) && parseInt(selectedProduct.contentsExcess.insuredValue) !== contentsCost) {
+				contentsCost = selectedProduct.contentsExcess.insuredValue;
+				addRow('Contents Cover', contentsCost, "&nbsp;<br class='visible-md'><em>(minimum insurable value for this provider)</em>");
+			} else {
+				addRow('Contents Cover', contentsCost, "");
+			}
 
 			// Add Personal Effects to table if specified in form
 			if($('.itemsAway :checked').val() == "Y") {

@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-
+<% response.setHeader("X-Robots-Tag", "noindex, nofollow"); %>
 <c:set var="baseSingleRebateText" >Under $90,000</c:set>
 <c:set var="tier1SingleRebateText" >$90,001-$105,000</c:set>
 <c:set var="tier2SingleRebateText" >$105,001-$140,000</c:set>
