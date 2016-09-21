@@ -250,8 +250,20 @@
                 return true;
         }
 
-        return (/\bneedsclick\b/).test(target.className);
+        return (/\bneedsclick\b/).test(target.className) || _testGoogleAutoComplete(target);
     };
+
+    /**
+     * Fix for google autocomplete on iOS
+     *
+     * @param {EventTarget|Element} target Target DOM element
+     * @returns {boolean} Returns true if className of target element parents or grandparents is 'pac-item'
+     * @private
+     */
+    function _testGoogleAutoComplete(target) {
+        return (/\bpac-item\b/).test(target.parentNode.className) ||
+            (/\bpac-item\b/).test(target.parentNode.parentNode.className);
+    }
 
 
     /**

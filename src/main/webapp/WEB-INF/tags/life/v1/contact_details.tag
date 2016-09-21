@@ -36,7 +36,7 @@
 
 		<form_v1:row label="Phone number">
 			<%--This should be cleaned up to use Flexi_contact_number when LIFE is refactored--%>
-			<field_v1:contact_telno xpath="${xpath}/contactNumber" required="${lif406SplitTest eq true}" title="phone number"  />
+			<field_v1:contact_telno xpath="${xpath}/contactNumber" required="true" title="phone number"  />
 		</form_v1:row>
 
 		<c:if test="${empty callCentre}">
@@ -145,22 +145,8 @@
 	${name}_original_phone_number = $('#${contactNumber}').val();
 
 	$("#${vertical}_privacyoptin").on("change", function(){
-		<c:choose>
-			<c:when test="${lif406SplitTest eq true}">
-				$('#${optIn}').val($(this).is(":checked") ? "Y" : "N");
-				$('#${name}_optIn').val($(this).is(":checked") ? 'Y' : 'N');
-			</c:when>
-			<c:otherwise>
-				var $tel = $('#${contactNumber}input');
-				var tel = $tel.val();
-				var optin = $(this).is(":checked") && tel.length && tel != $tel.attr('placeholder') ? "Y" : "N";
-				$('#${optIn}').val(optin);
-				var $eml = $('#${name}_email');
-				var eml = $eml.val();
-				$('#${name}_optIn').val($(this).is(":checked") && eml != '' ? 'Y' : 'N');
-				$(document).trigger(SaveQuote.setMarketingEvent, [$(this).is(':checked'), eml]);
-			</c:otherwise>
-		</c:choose>
+		$('#${optIn}').val($(this).is(":checked") ? "Y" : "N");
+		$('#${name}_optIn').val($(this).is(":checked") ? 'Y' : 'N');
 	});
 
 	$("#${vertical}_privacyoptin").trigger("change");

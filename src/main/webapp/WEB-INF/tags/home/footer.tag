@@ -6,5 +6,5 @@
 
 <%-- HTML --%>
 <p>
-    <content:get key="footerText"/><content:get key="footerTextStart"/><content:get key="footerTextEnd"/>
+    <content:get key="footerText"/>
 </p>

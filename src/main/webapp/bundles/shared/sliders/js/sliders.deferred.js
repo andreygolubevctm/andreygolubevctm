@@ -228,10 +228,16 @@
 
         if (markerCount > 1) {
             markerCount = markerCount - 1;
+            var $target = $controller.find('.noUi-target').first();
+            var attr_key = $target.attr('data-marker-attr-key');
+            var attr_val = $target.attr('data-marker-attr-value');
             $htmls = $('<div />');
             for (i = 0; i < markerCount; i++) {
                 $e = $('<div />');
                 $e.addClass('slider-marker');
+                if(!_.isEmpty(attr_key) && !_.isEmpty(attr_val)) {
+                    $e.attr(attr_key,attr_val);
+                }
                 $e.css('width', (100 / markerCount) + '%');
                 $htmls.append($e);
             }

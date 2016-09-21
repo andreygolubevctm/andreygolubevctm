@@ -1,4 +1,4 @@
-<%@ tag description="Utilities Contact Details" %>
+<%@ tag description="Health Contact Details" %>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
@@ -10,8 +10,12 @@
     <c:set var="competitionValidationText" value=" to be eligible for the competition" />
 </c:if>
 
+<c:set var="subText" value="" />
+<c:if test="${not callCentre}">
+    <c:set var="subText" value="Enter your details below and we'll show you products that match your needs on the next page" />
+</c:if>
 <%-- The email and phone are required on load to set the proper validation rules, and on initialise, have their required attribute removed --%>
-<form_v2:fieldset legend="Your details" className="contact-details" postLegend="Enter your details below and we'll show you products that match your needs on the next page">
+<form_v2:fieldset legend="Your details" className="contact-details" postLegend="${subText}">
     <c:set var="fieldXPath" value="${xpath}/firstName" />
     <form_v3:row label="First name" fieldXpath="${fieldXPath}" className="clear">
         <%--<field_v2:input xpath="${fieldXPath}" required="false"/>--%>

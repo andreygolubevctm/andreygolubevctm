@@ -12,11 +12,14 @@ public class GenericOutgoingRequest<PAYLOAD> {
 
     private PAYLOAD payload;
 
+    private String providerFilter;
+
     private GenericOutgoingRequest(Builder<PAYLOAD> builder) {
         transactionId = builder.transactionId;
         requestAt = builder.requestAt;
         brandCode = builder.brandCode;
         payload = builder.payload;
+        providerFilter = builder.providerFilter;
     }
 
     public Long getTransactionId() {
@@ -35,6 +38,10 @@ public class GenericOutgoingRequest<PAYLOAD> {
         return payload;
     }
 
+    public String getProviderFilter() {
+        return providerFilter;
+    }
+
     public static <PAYLOAD> Builder<PAYLOAD> newBuilder() {
         return new Builder<>();
     }
@@ -44,6 +51,7 @@ public class GenericOutgoingRequest<PAYLOAD> {
         private LocalDateTime requestAt;
         private String brandCode;
         private PAYLOAD payload;
+        private String providerFilter;
 
         private Builder() {
         }
@@ -65,6 +73,11 @@ public class GenericOutgoingRequest<PAYLOAD> {
 
         public Builder payload(PAYLOAD val) {
             payload = val;
+            return this;
+        }
+
+        public Builder providerFilter(String val) {
+            providerFilter = val;
             return this;
         }
 

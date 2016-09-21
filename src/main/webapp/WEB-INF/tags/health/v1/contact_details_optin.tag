@@ -46,7 +46,12 @@
 
         <simples:dialogue id="52" vertical="health" />
 
-        <form_v3:fieldset id="health-contact-fieldset" legend="Your details" postLegend="Enter your details below and we'll show you products that match your needs on the next page" className="primary">
+        <c:set var="subText" value="" />
+        <c:if test="${not callCentre}">
+            <c:set var="subText" value="Enter your details below and we'll show you products that match your needs on the next page" />
+        </c:if>
+
+        <form_v3:fieldset id="health-contact-fieldset" legend="Your details" postLegend="${subText}" >
 
             <c:set var="firstNamePlaceHolder">
                 <content:get key="firstNamePlaceHolder"/>
@@ -174,7 +179,13 @@
 
         <form_v3:fieldset id="australian-government-rebate" legend="Australian Government Rebate" postLegend="Most Australians can reduce their upfront health insurance costs by applying the Government Rebate.">
             <c:set var="fieldXpath" value="${xpath}/rebate" />
-            <form_v3:row label="Would you like to reduce your upfront premium by applying the rebate?" fieldXpath="${fieldXpath}" helpId="240" className="health_cover_details_rebate">
+            <c:set var="mandatory" value=""/>
+
+            <c:if test="${callCentre}">
+                <c:set var="mandatory" value=" text-danger"/>
+            </c:if>
+
+            <form_v3:row label="Would you like to reduce your upfront premium by applying the rebate?" fieldXpath="${fieldXpath}" helpId="240" className="health_cover_details_rebate${mandatory}">
                 <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your private health cover rebate" required="true" id="${name}_health_cover_rebate" className="rebate btn-group-wrap"/>
             </form_v3:row>
 

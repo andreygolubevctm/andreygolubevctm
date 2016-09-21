@@ -4,6 +4,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<c:set var="redirectURL" value="${pageSettings.getBaseUrl()}home_contents_quote.jsp" />
+<c:redirect url="${redirectURL}" />
+
 <session:new verticalCode="HOMELMI" authenticated="true" />
 
 <core_v2:quote_check quoteType="homelmi" />

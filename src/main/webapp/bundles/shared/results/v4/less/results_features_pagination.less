@@ -15,10 +15,21 @@
       font-family: @font-family-theme-bold;
       margin-left: 10px;
 
-      a:hover, a.active:hover {
+      a:hover:not(.icon.inactive), a.active:hover {
         border-bottom-color: @theme-secondary;
         border-bottom-width: 2px;
         color: @theme-secondary;
+      }
+      a.icon.inactive {
+        cursor:default;
+        opacity:0.3;
+      }
+
+      @media (@sm-only) {
+        a {
+          padding-left:10px;
+          padding-right:10px;
+        }
       }
 
       .btn-pagination {
@@ -45,7 +56,8 @@
   }
 
   // The display arrow to indicate more pages of results to the right.
-  &.floated-next-arrow {
+  &.floated-next-arrow,
+  &.floated-previous-arrow{
 
     position: absolute;
     background-color: #BEBEBF;
@@ -95,4 +107,35 @@
     }
   }
 
+  &.floated-previous-arrow {
+    @media (@sm-only) {
+      top: 140px;
+    }
+    @media (@md-only) {
+      top: 175px;
+    }
+    @media (@lg) {
+      top: 203px;
+    }
+  }
+
+}
+
+.affixed-settings {
+  .results-pagination {
+    &.floated-next-arrow,
+    &.floated-previous-arrow {
+      position:fixed;
+      right:auto;
+      @media (@sm-only) {
+        margin-left: 478px;
+      }
+      @media (@md-only) {
+        margin-left: 710px;
+      }
+      @media (@lg) {
+        margin-left: 862px;
+      }
+    }
+  }
 }

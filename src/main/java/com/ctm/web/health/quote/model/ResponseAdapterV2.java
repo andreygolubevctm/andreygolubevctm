@@ -234,6 +234,7 @@ public class ResponseAdapterV2 {
         info.setDes(responseInfo.getDescription());
         info.setRank(responseInfo.getRank());
         info.setOtherProductFeatures(responseInfo.getOtherProductFeatures());
+        info.setSituationFilter(responseInfo.getSituationFilter());
         Map<String, String> otherInfoProperties = responseInfo.getOtherInfoProperties();
         info.setCategory(otherInfoProperties.get("Category"));
         info.setFundCode(otherInfoProperties.get("FundCode"));
