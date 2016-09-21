@@ -3,6 +3,8 @@ package com.ctm.web.health.quote.model;
 import com.ctm.web.health.model.form.Filter;
 import com.ctm.web.health.model.form.Situation;
 import com.ctm.web.health.quote.model.request.Filters;
+import com.ctm.web.health.quote.model.request.HealthQuoteRequest;
+import com.ctm.web.health.quote.model.request.ProductType;
 import org.junit.Test;
 
 import static org.mockito.Matchers.any;
@@ -40,27 +42,73 @@ public class RequestAdapterV2Test {
     @Test
     public void testSituationFilterEmpty() throws Exception {
         final Filters filters = mock(Filters.class);
-        RequestAdapterV2.addSituationFilter(filters, null);
+        RequestAdapterV2.addSituationFilter(filters, null,null);
         verify(filters, never()).setSituationFilter(any());
     }
 
     @Test
-    public void testSituationFilterTrue() throws Exception {
+    public void testSituationFilterCombinedAccidentOnlyY() throws Exception {
         final Filters filters = mock(Filters.class);
         final Situation situation = mock(Situation.class);
+        final HealthQuoteRequest quoteRequest = mock(HealthQuoteRequest.class);
+        when(quoteRequest.getProductType()).thenReturn(ProductType.COMBINED);
         when(situation.getAccidentOnlyCover()).thenReturn("Y");
-        RequestAdapterV2.addSituationFilter(filters, situation);
+        RequestAdapterV2.addSituationFilter(filters, situation,quoteRequest);
         verify(filters, times(1)).setSituationFilter(Boolean.TRUE);
     }
 
     @Test
-    public void testSituationFilterFalse() throws Exception {
+    public void testSituationFilterCombinedAccidentOnlyN() throws Exception {
         final Filters filters = mock(Filters.class);
         final Situation situation = mock(Situation.class);
+        final HealthQuoteRequest quoteRequest = mock(HealthQuoteRequest.class);
+        when(quoteRequest.getProductType()).thenReturn(ProductType.COMBINED);
         when(situation.getAccidentOnlyCover()).thenReturn("N");
-        RequestAdapterV2.addSituationFilter(filters, situation);
+        RequestAdapterV2.addSituationFilter(filters, situation,quoteRequest);
         verify(filters, times(1)).setSituationFilter(Boolean.FALSE);
     }
 
+    @Test
+    public void testSituationFilterHospitalAccidentOnlyY() throws Exception {
+        final Filters filters = mock(Filters.class);
+        final Situation situation = mock(Situation.class);
+        final HealthQuoteRequest quoteRequest = mock(HealthQuoteRequest.class);
+        when(quoteRequest.getProductType()).thenReturn(ProductType.HOSPITAL);
+        when(situation.getAccidentOnlyCover()).thenReturn("Y");
+        RequestAdapterV2.addSituationFilter(filters, situation,quoteRequest);
+        verify(filters, times(1)).setSituationFilter(Boolean.TRUE);
+    }
 
+    @Test
+    public void testSituationFilterHospitalAccidentOnlyN() throws Exception {
+        final Filters filters = mock(Filters.class);
+        final Situation situation = mock(Situation.class);
+        final HealthQuoteRequest quoteRequest = mock(HealthQuoteRequest.class);
+        when(quoteRequest.getProductType()).thenReturn(ProductType.HOSPITAL);
+        when(situation.getAccidentOnlyCover()).thenReturn("N");
+        RequestAdapterV2.addSituationFilter(filters, situation,quoteRequest);
+        verify(filters, times(1)).setSituationFilter(Boolean.FALSE);
+    }
+
+    @Test
+    public void testSituationFilterGeneralHealthAccidentOnlyN() throws Exception {
+        final Filters filters = mock(Filters.class);
+        final Situation situation = mock(Situation.class);
+        final HealthQuoteRequest quoteRequest = mock(HealthQuoteRequest.class);
+        when(quoteRequest.getProductType()).thenReturn(ProductType.GENERALHEALTH);
+        when(situation.getAccidentOnlyCover()).thenReturn("N");
+        RequestAdapterV2.addSituationFilter(filters, situation,quoteRequest);
+        verify(filters, times(1)).setSituationFilter(Boolean.FALSE);
+    }
+
+    @Test
+    public void testSituationFilterGeneralHealthAccidentOnlyY() throws Exception {
+        final Filters filters = mock(Filters.class);
+        final Situation situation = mock(Situation.class);
+        final HealthQuoteRequest quoteRequest = mock(HealthQuoteRequest.class);
+        when(quoteRequest.getProductType()).thenReturn(ProductType.GENERALHEALTH);
+        when(situation.getAccidentOnlyCover()).thenReturn("Y");
+        RequestAdapterV2.addSituationFilter(filters, situation,quoteRequest);
+        verify(filters, times(1)).setSituationFilter(Boolean.FALSE);
+    }
 }

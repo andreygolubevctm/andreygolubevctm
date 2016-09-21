@@ -54,13 +54,12 @@ public class RequestAdapterV2 {
 
         Situation situation = quote.getSituation();
         addMembership(quoteRequest, situation);
-        addSituationFilter(filters, situation);
-
         Map<String, String> benefitsExtras = Optional.ofNullable(quote)
                                                 .map(HealthQuote::getBenefits)
                                                 .map(Benefits::getBenefitsExtras)
                                                 .orElse(emptyMap());
         addProductType(quoteRequest, benefitsExtras);
+        addSituationFilter(filters, situation, quoteRequest);
         addHospitalSelection(quoteRequest, filters, benefitsExtras, situation);
         filters.setPreferencesFilter(getPreferences(benefitsExtras));
 
@@ -302,9 +301,10 @@ public class RequestAdapterV2 {
         return situation;
     }
 
-    protected static void addSituationFilter(Filters filters, Situation situation) {
+    protected static void addSituationFilter(Filters filters, Situation situation, HealthQuoteRequest quoteRequest) {
         if(situation != null && StringUtils.isNotBlank(situation.getAccidentOnlyCover())) {
-            filters.setSituationFilter(toBoolean(situation.getAccidentOnlyCover()));
+            filters.setSituationFilter(toBoolean(situation.getAccidentOnlyCover()) &&
+                    !(quoteRequest.getProductType() == ProductType.GENERALHEALTH));
         }
     }
 
