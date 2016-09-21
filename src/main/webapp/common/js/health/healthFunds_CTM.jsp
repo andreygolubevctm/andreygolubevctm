@@ -105,8 +105,6 @@ set: function () {
 		$('#health_application_primary_dob').addRule('oldestDOB', dob_health_application_primary_dob.ageMax, "primary applicant's age cannot be over 99");
 		$('#health_application_partner_dob').addRule('oldestDOB', dob_health_application_partner_dob.ageMax, "applicant's partner's age cannot be over 99");
 
-		healthFunds._medicareCoveredText = $('#medicareCoveredRow .control-label').text();
-		$('#medicareCoveredRow .control-label').text('Are all people to be included on this policy covered by a green Medicare card?');
 		healthFunds._medicareCoveredHelpId = $('#medicareCoveredRow .help_icon').attr("id");
 		$('#medicareCoveredRow .help_icon').attr("id","help_520");
 
@@ -166,7 +164,6 @@ set: function () {
 		<%--credit card options--%>
 		meerkat.modules.healthCreditCard.resetConfig();
 		meerkat.modules.healthCreditCard.render();
-		$('#medicareCoveredRow .control-label').text(healthFunds._medicareCoveredText);
 		$('#medicareCoveredRow .help_icon').attr("id",healthFunds._medicareCoveredHelpId);
 		meerkat.modules.paymentGateway.reset();
 	}

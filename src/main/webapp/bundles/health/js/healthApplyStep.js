@@ -4,11 +4,17 @@
 
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
-        $paymentDetailsStart;
+        $paymentDetailsStart,
+        $paymentMedicareColour,
+        $paymentMedicareCover,
+        $medicareYellowMessage;
 
     function init(){
         $(document).ready(function () {
             $paymentDetailsStart = $("#health_payment_details_start");
+            $paymentMedicareColour = $("#health_payment_medicare_colour");
+            $paymentMedicareCover = $("#health_payment_medicare_cover");
+            $medicareYellowMessage = $("#health_medicareDetails_yellowCardMessage");
         });
     }
 
@@ -34,6 +40,18 @@
     }
 
     function onInitialise() {
+        $paymentMedicareColour
+            .addRule('medicareCardColour')
+            .on('change', function() {
+                var value = $(this).val();
+                // set hidden Medicare cover value
+                $paymentMedicareCover.val(value === 'none' ? 'N' : 'Y');
+
+                // toggle message for Yellow card holders
+                $medicareYellowMessage.toggleClass('hidden', value !== 'yellow');
+            })
+            .trigger('change');
+
         // initialise start date datepicker from payment step as it will be used by selected fund
         $paymentDetailsStart
             .datepicker({ clearBtn:false, format:"dd/mm/yyyy" })
