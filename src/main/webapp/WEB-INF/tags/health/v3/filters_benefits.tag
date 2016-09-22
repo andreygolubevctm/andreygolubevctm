@@ -23,16 +23,15 @@
             <div class="sidebar-intro-text need-no-hospital {{=hiddenExtras }} {{=hiddenOnCombined }}">
                 <p>Hospital cover enables you to choose your own doctor at the fund's partner hospitals, allowing you to avoid public hospital waiting lists</p>
             </div>
-            <div class="benefits-list benefitsHospital need-hospital {{=hiddenHospital }}">
+            <div class="benefits-list benefitsHospital need-hospital expanded {{=hiddenHospital }}">
                 {{ _.each(model.benefitsHospital.values, function(object) { }}
                 {{ var checked = object.selected ? ' checked="checked"' : ''; }}
-                {{ var hidden = !object.selected ? ' hidden' : ''; }}
-                <div class="checkbox {{=object.class }} {{=hidden }}">
+                <div class="checkbox {{=object.class }}">
                     <input type="checkbox" name="health_filterBar_benefitsHospital" id="health_filterBar_benefits_{{= object.value }}" value="{{= object.value }}" {{=checked }} title="{{= object.label }}" /> <label for="health_filterBar_benefits_{{= object.value }}" <field_v1:analytics_attr analVal="filter hospital" quoteChar="\"" />>{{= object.label }}</label>
                     <a href="javascript:void(0);" class="help-icon icon-info" data-content="helpid:{{= object.helpId }}" data-toggle="popover" tabindex="-1" <field_v1:analytics_attr analVal="filter qtip {{= object.value }}" quoteChar="\"" />><span class="text-hide">Need Help?</span></a>
                 </div>
                 {{ }) }}
-                <a href="javascript:void(0);" class="filter-toggle-all"><span class="text"<field_v1:analytics_attr analVal="filter hospital" quoteChar="\"" />>add more selections</span> <span class="icon icon-angle-down"></span></a>
+                <a href="javascript:void(0);" class="filter-toggle-all"><span class="text"<field_v1:analytics_attr analVal="filter hospital" quoteChar="\"" />>show less</span> <span class="icon icon-angle-up"></span></a>
             </div>
 
         </div>
@@ -50,16 +49,15 @@
             <div class="sidebar-intro-text need-no-extras {{=hiddenHospital }} {{=hiddenOnCombined }} ">
                 <p>Extras cover gives you money back for day to day services like dental, optical and physiotherapy.</p>
             </div>
-            <div class="benefits-list benefitsExtras need-extras {{=hiddenExtras }}">
+            <div class="benefits-list benefitsExtras need-extras expanded {{=hiddenExtras }}">
                 {{ _.each(model.benefitsExtras.values, function(object) { }}
                 {{ var checked = object.selected ? ' checked="checked"' : ''; }}
-                {{ var hidden = !object.selected ? ' hidden' : ''; }}
-                <div class="checkbox {{=object.class }} {{=hidden }}">
+                <div class="checkbox {{=object.class }}">
                     <input type="checkbox" name="health_filterBar_benefitsExtras" id="health_filterBar_benefits_{{= object.value }}" value="{{= object.value }}" {{=checked }} title="{{= object.label }}" /> <label for="health_filterBar_benefits_{{= object.value }}" <field_v1:analytics_attr analVal="filter extras" quoteChar="\"" />>{{= object.label }}</label>
                     <a href="javascript:void(0);" class="help-icon icon-info" data-content="helpid:{{= object.helpId }}" data-toggle="popover" tabindex="-1" <field_v1:analytics_attr analVal="filter qtip {{= object.value }}" quoteChar="\"" />><span class="text-hide">Need Help?</span></a>
                 </div>
                 {{ }) }}
-                <a href="javascript:void(0);" class="filter-toggle-all"><span class="text" <field_v1:analytics_attr analVal="filter extras" quoteChar="\"" />>add more selections</span> <span class="icon icon-angle-down"></span></a>
+                <a href="javascript:void(0);" class="filter-toggle-all"><span class="text" <field_v1:analytics_attr analVal="filter extras" quoteChar="\"" />>show less</span> <span class="icon icon-angle-up"></span></a>
             </div>
         </div>
     </div>
