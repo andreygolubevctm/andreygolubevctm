@@ -304,9 +304,12 @@
 
     function activateBenefitPreSelections() {
         if(preselectedBenefitsActivated === true) {
-            /**
-             * IGNORE as preselections are only actioned once.
-             */
+            currentCover = $('#health_benefits_covertype').val();
+            if(currentCover !== 'limited') {
+                $('.health-situation-healthCvrType').find('input').prop('disabled', false);
+                $('.health-situation-healthCvrType').find('label').removeClass('disabled').attr('title', null);
+            }
+            toggleCoverType();
         } else {
             preselectedBenefitsActivated = true;
             // For loaded transactions we simply want to preselect the
@@ -398,14 +401,14 @@
                 } else {
                     if (_.indexOf(['n', 'lc'], healthSitu) >= 0) {
                         $elements.hospital.privateHosp.prop('checked', true).change();
+                        $elements.hospital.heartSurgery.prop('checked', true).change();
                         $elements.extras.generalDental.prop('checked', true).change();
-                        $elements.extras.heartSurgery.prop('checked', true).change();
                         $elements.extras.optical.prop('checked', true).change();
                         $elements.extras.physiotherapy.prop('checked', true).change();
                     } else if (healthSitu === 'csf' && healthCvr === 'sm') {
                         $elements.hospital.privateHosp.prop('checked', true).change();
+                        $elements.hospital.heartSurgery.prop('checked', true).change();
                         $elements.extras.generalDental.prop('checked', true).change();
-                        $elements.extras.heartSurgery.prop('checked', true).change();
                         $elements.extras.optical.prop('checked', true).change();
                         $elements.extras.physiotherapy.prop('checked', true).change();
                     } else if (healthSitu === 'csf' && _.indexOf(['sf', 'c', 'f', 'spf'], healthCvr) >= 0) {
