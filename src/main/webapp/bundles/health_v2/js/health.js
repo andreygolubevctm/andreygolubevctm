@@ -289,9 +289,9 @@
 
 			},
 			onBeforeEnter:function enterBenefitsStep(event) {
-				meerkat.modules.healthBenefitsStep.setDefaultCover();
 				meerkat.modules.healthBenefitsStep.disableFields();
-				meerkat.modules.healthBenefitsStep.resetBenefitsForProductTitleSearch();
+				meerkat.modules.healthBenefitsStep.applySituationBasedCopy();
+				meerkat.modules.healthBenefitsStep.activateBenefitPreSelections();
 				incrementTranIdBeforeEnteringSlide();
 			},
 			onAfterEnter: function(event) {
