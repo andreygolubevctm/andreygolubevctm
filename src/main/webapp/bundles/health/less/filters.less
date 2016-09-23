@@ -135,4 +135,19 @@
     }
   }
 
+  .filter-by-brand-container {
+    display: none;
+    &.expanded {
+      display: block;
+      & + .filter-by-brand-toggle {
+        margin-top: 10px;
+      }
+    }
+  }
+
+  .filter-by-brand-toggle {
+    display: inline-block;
+    margin-top: 20px;
+  }
+
 }

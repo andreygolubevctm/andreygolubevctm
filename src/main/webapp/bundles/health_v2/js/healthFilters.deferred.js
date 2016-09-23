@@ -237,6 +237,26 @@
 
 
     function applyEventListeners() {
+        $(document).on('click', '.filter-by-brand-toggle', function filterByBrand() {
+            var $this = $(this),
+                $brandsContainer = $('.filter-by-brand-container');
+
+            if ($brandsContainer.hasClass('expanded')) {
+                $brandsContainer.slideUp('fast', function() {
+                    $(this).removeClass('expanded');
+                });
+
+                $this.find('.text').text('Filter by brand');
+            } else {
+                $brandsContainer.slideDown('fast', function() {
+                    $(this).addClass('expanded');
+                });
+
+                $this.find('.text').text('close filter');
+            }
+
+            $this.find('.icon').toggleClass('icon-angle-up icon-angle-down');
+        });
 
         $(document).on('click', '.filter-brands-toggle', function selectAllNoneFilterBrands(e) {
             e.preventDefault();
