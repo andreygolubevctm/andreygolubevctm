@@ -290,7 +290,7 @@
 			},
 			onBeforeEnter:function enterBenefitsStep(event) {
 				meerkat.modules.healthBenefitsStep.disableFields();
-				meerkat.modules.healthBenefitsStep.applySituationBasedCopy(event.isForward66666);
+				meerkat.modules.healthBenefitsStep.applySituationBasedCopy(event.isForward);
 				meerkat.modules.healthBenefitsStep.activateBenefitPreSelections(event.isForward);
 				incrementTranIdBeforeEnteringSlide();
 			},
