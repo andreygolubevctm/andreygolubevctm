@@ -193,7 +193,8 @@
             primary_age = meerkat.modules.age.returnAge(primary_dob, true),
             partner_dob = $('#health_healthCover_partner_dob').val(),
             partner_age = meerkat.modules.age.returnAge(partner_dob, true),
-            age = partner_age > primary_age ? partner_age : primary_age;
+            age = partner_age > primary_age ? partner_age : primary_age,
+            situation = meerkat.modules.healthAboutYou.getSituation();
 
         $('.situation-wrapper').attr('class','situation-wrapper '+healthSitu);
 
@@ -207,6 +208,10 @@
                 } else {
                     hospitalContent = meerkat.site.content.hospitalFamilyYoung;
                     extrasContent = meerkat.site.content.extrasFamilyYoung;
+                }
+
+                if(_.indexOf(['SM','SF','C'],situation) >= 0) {
+                    hospitalContent = hospitalContent.replace('growing', 'starting');
                 }
 
                 switch (coverType) {
