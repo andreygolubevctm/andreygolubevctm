@@ -281,6 +281,8 @@
 				if(event.isBackward === true) {
 					meerkat.modules.transactionId.getNew(3);
 				}
+
+				$('.esl-message').toggleClass('hidden', true);
 			},
 			onAfterLeave: function onAfterLeaveResults(event) {
 				meerkat.modules.journeyProgressBar.show();
