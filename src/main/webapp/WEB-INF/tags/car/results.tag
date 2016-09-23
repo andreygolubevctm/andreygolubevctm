@@ -48,7 +48,10 @@
 
 <agg_v2_results:results vertical="${pageSettings.getVerticalCode()}">
 
-	<car:more_info />
+	<c:choose>
+		<c:when test="${not empty moreInfoSplitTest and moreInfoSplitTest eq true}"><car:more_info_v2 /></c:when>
+		<c:otherwise><car:more_info /></c:otherwise>
+	</c:choose>
 
 	<%-- RESULTS TABLE --%>
 	<div class="bridgingContainer"></div>
