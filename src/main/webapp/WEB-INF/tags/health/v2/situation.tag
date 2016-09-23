@@ -128,7 +128,8 @@
 										  style="group-tile"
 										  id="${go:nameFromXpath(fieldXPath)}"
 										  title="reason you are looking to quote"
-										  additionalLabelAttributes="${analyticsAttr}" />
+										  additionalLabelAttributes="${analyticsAttr}"
+										  wrapCopyInSpan="${true}" />
 				</form_v3:row>
 
 				<c:set var="fieldXpath" value="${xpath}/addExtrasCover" />
