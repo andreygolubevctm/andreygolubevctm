@@ -2,6 +2,8 @@ package com.ctm.web.core.leadService.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.time.ZonedDateTime;
+
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class LeadRequest {
     private String source;
@@ -13,6 +15,8 @@ public class LeadRequest {
     private Person person = new Person();
     private LeadStatus status;
     private LeadMetadata metadata;
+    private ZonedDateTime scheduledDateTime;
+    private String leadType;
 
     public String getSource() {
         return source;
@@ -74,6 +78,22 @@ public class LeadRequest {
         return person;
     }
 
+    public ZonedDateTime getScheduledDateTime() {
+        return scheduledDateTime;
+    }
+
+    public void setScheduledDateTime(ZonedDateTime scheduledDateTime) {
+        this.scheduledDateTime = scheduledDateTime;
+    }
+
+    public String getLeadType() {
+        return leadType;
+    }
+
+    public void setLeadType(String leadType) {
+        this.leadType = leadType;
+    }
+
     public String getValues() {
         StringBuilder builder = new StringBuilder();
         builder.append(source);
@@ -93,7 +113,10 @@ public class LeadRequest {
         builder.append(status);
         builder.append(",");
         builder.append(metadata.getValues());
-
+        builder.append(",");
+        builder.append(scheduledDateTime);
+        builder.append(",");
+        builder.append(leadType);
         return builder.toString();
     }
 
@@ -109,6 +132,8 @@ public class LeadRequest {
                 ", person=" + person +
                 ", status=" + status +
                 ", metadata=" + metadata +
+                ", scheduledDateTime=" + scheduledDateTime +
+                ", leadType=" + leadType +
                 '}';
     }
 
