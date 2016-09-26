@@ -21,7 +21,7 @@
                 </ui:bubble>
                 <car:rego_with_details/>
 
-        <form_v2:fieldset legend="Accessories and Modifications" id="${name}FieldSet">
+        <form_v2:fieldset legend="Accessories and Modifications" id="${name}AccessoriesFieldSet">
 
                 <car:options_factory xpath="${xpath}/vehicle/factoryOptions"/>
 
