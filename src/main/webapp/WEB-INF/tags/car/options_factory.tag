@@ -9,7 +9,6 @@
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
 
 <%-- HTML --%>
-<form_v2:fieldset legend="Factory / Dealer Options" id="${name}FieldSet">
 
 	<form_v2:row label="Does the car have any factory/dealer options fitted?" id="${name}FieldRow" className="initial" helpId="13">
 		<field_v2:array_radio xpath="${xpath}RadioBtns" required="true"
@@ -26,7 +25,5 @@
 	</div>
 
 	<field_v1:hidden xpath="${xpath}" defaultValue="${data[xpath]}" />
-
-</form_v2:fieldset>
 
 <car:options_factory_dialog xpath="${xpath}"/>

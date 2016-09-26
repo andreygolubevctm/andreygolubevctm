@@ -10,7 +10,6 @@
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
 
 <%-- HTML --%>
-<form_v2:fieldset legend="Non-Standard Accessories" id="${name}FieldSet">
 
 	<form_v2:row label="Does the car have any non-standard accessories fitted?" id="${name}FieldRow" className="initial" helpId="4">
 		<field_v2:array_radio xpath="${xpath}RadioBtns" required="true"
@@ -27,7 +26,5 @@
 	</div>
 
 	<field_v1:hidden xpath="${xpath}" defaultValue="${data[xpath]}" />
-
-</form_v2:fieldset>
 
 <car:options_accessories_dialog_listed xpath="${xpath}"/>

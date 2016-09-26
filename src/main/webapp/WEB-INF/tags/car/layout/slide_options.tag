@@ -3,6 +3,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <c:set var="xpath" value="quote"/>
+<c:set var="name"  value="${go:nameFromXpath(xpath)}" />
 
 <layout_v1:slide formId="optionsForm" nextLabel="Next Step">
 
@@ -20,11 +21,15 @@
                 </ui:bubble>
                 <car:rego_with_details/>
 
+        <form_v2:fieldset legend="Accessories and Modifications" id="${name}FieldSet">
+
                 <car:options_factory xpath="${xpath}/vehicle/factoryOptions"/>
 
                 <car:options_accessories xpath="${xpath}/vehicle/accessories"/>
 
                 <car:options_modifications xpath="${xpath}/vehicle/modifications"/>
+
+        </form_v2:fieldset>
 
                 <car:options_usage xpath="${xpath}/vehicle"/>
 

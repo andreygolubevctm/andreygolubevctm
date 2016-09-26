@@ -9,12 +9,9 @@
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
 
 <%-- HTML --%>
-<form_v2:fieldset legend="Modifications" id="${name}FieldSet">
 
 	<form_v2:row label="Has the car been modified?" id="${name}FieldRow" className="initial" helpId="6">
 		<field_v2:array_radio xpath="${xpath}" required="true"
 			className="" items="Y=Yes,N=No"
 			id="${name}" title="if the car has been modified" />
 	</form_v2:row>
-
-</form_v2:fieldset>
