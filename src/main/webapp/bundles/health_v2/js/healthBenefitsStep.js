@@ -19,6 +19,7 @@
         $hasIconsDiv,
         $benefitCheckbox,
         $benefitsCoverType,
+        age,
         customiseDialogId = null,
         hospitalBenefits = [],
         extrasBenefits = [],
@@ -55,6 +56,13 @@
                 // done this way since it's an a/b test and
                 $hasIconsDiv = $('.healthBenefits').find('.hasIcons');
             $benefitsCoverType = $('#health_benefits_covertype');
+
+            var primary_dob = $('#health_healthCover_primary_dob').val();
+            var partner_dob = $('#health_healthCover_partner_dob').val();
+
+            var primary_age = meerkat.modules.age.returnAge(primary_dob, true),
+            partner_age = meerkat.modules.age.returnAge(partner_dob, true),
+            age = partner_age > primary_age ? partner_age : primary_age;
 
             // setup groupings
             // extras middle row
@@ -189,11 +197,6 @@
             helpContent = '';
 
         var healthSitu = $healthSitu.find('input:checked').val(),
-            primary_dob = $('#health_healthCover_primary_dob').val(),
-            primary_age = meerkat.modules.age.returnAge(primary_dob, true),
-            partner_dob = $('#health_healthCover_partner_dob').val(),
-            partner_age = meerkat.modules.age.returnAge(partner_dob, true),
-            age = partner_age > primary_age ? partner_age : primary_age,
             situation = meerkat.modules.healthAboutYou.getSituation();
 
         $('.situation-wrapper').attr('class','situation-wrapper '+healthSitu);
@@ -384,11 +387,6 @@
 
                 var healthCvr = $('.health-situation-healthCvr').val().toLowerCase();
                 var healthSitu = $healthSitu.find('input:checked').val().toLowerCase();
-                var primary_dob = $('#health_healthCover_primary_dob').val();
-                var primary_age = meerkat.modules.age.returnAge(primary_dob, true);
-                var partner_dob = $('#health_healthCover_partner_dob').val();
-                var partner_age = meerkat.modules.age.returnAge(partner_dob, true);
-                var age = partner_age > primary_age ? partner_age : primary_age;
 
                 if (age < 40) {
                     if (_.indexOf(['n', 'lc'], healthSitu) >= 0) {
