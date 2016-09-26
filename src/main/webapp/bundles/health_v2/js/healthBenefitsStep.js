@@ -19,6 +19,8 @@
         $hasIconsDiv,
         $benefitCheckbox,
         $benefitsCoverType,
+        $primary_dob,
+        $partner_dob,
         age,
         customiseDialogId = null,
         hospitalBenefits = [],
@@ -56,13 +58,8 @@
                 // done this way since it's an a/b test and
                 $hasIconsDiv = $('.healthBenefits').find('.hasIcons');
             $benefitsCoverType = $('#health_benefits_covertype');
-
-            var primary_dob = $('#health_healthCover_primary_dob').val();
-            var partner_dob = $('#health_healthCover_partner_dob').val();
-
-            var primary_age = meerkat.modules.age.returnAge(primary_dob, true),
-            partner_age = meerkat.modules.age.returnAge(partner_dob, true),
-            age = partner_age > primary_age ? partner_age : primary_age;
+            $primary_dob = $('#health_healthCover_primary_dob');
+            $partner_dob = $('#health_healthCover_partner_dob');
 
             // setup groupings
             // extras middle row
@@ -202,6 +199,10 @@
         $('.situation-wrapper').attr('class','situation-wrapper '+healthSitu);
 
         var coverType = $coverType.find('input:checked').val().toLowerCase();
+
+        var primary_age = meerkat.modules.age.returnAge($primary_dob.val(), true),
+        partner_age = meerkat.modules.age.returnAge($partner_dob.val(), true),
+        age = partner_age > primary_age ? partner_age : primary_age;
 
         switch(healthSitu) {
             case 'CSF':
@@ -387,6 +388,11 @@
 
                 var healthCvr = $('.health-situation-healthCvr').val().toLowerCase();
                 var healthSitu = $healthSitu.find('input:checked').val().toLowerCase();
+
+                var primary_age = meerkat.modules.age.returnAge($primary_dob.val(), true),
+                partner_age = meerkat.modules.age.returnAge($partner_dob.val(), true),
+                age = partner_age > primary_age ? partner_age : primary_age;
+
 
                 if (age < 40) {
                     if (_.indexOf(['n', 'lc'], healthSitu) >= 0) {
