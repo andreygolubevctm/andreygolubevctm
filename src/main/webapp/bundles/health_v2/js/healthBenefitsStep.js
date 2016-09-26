@@ -21,7 +21,6 @@
         $benefitsCoverType,
         $primary_dob,
         $partner_dob,
-        age,
         customiseDialogId = null,
         hospitalBenefits = [],
         extrasBenefits = [],
