@@ -73,20 +73,23 @@
 
     <div class="row filter" data-filter-serverside="true">
         <div class="col-xs-12">
-            <div class="sidebar-subtitle-container">
-                <span class="helper-text">select <a href="javascript:;" class="filter-brands-toggle" data-toggle="true">all</a>/<a class="filter-brands-toggle" data-toggle="false">none</a></span>
-                <span class="heading-text">Brands</span>
-            </div>
-            <div class="provider-list">
-                {{ _.each(model.brands.values, function(object) { }}
-                {{ var checked = !object.selected ? ' checked="checked"' : ''; }}
-                {{ var active = !object.selected ? ' active' : ''; }}
-                <div class="checkbox">
-                    <input type="checkbox" name="{{= model.brands.name }}" id="{{= model.brands.name }}_{{= object.value }}" value="{{= object.value }}" {{=checked }}
-                           title="{{= object.label }}"/> <label for="{{= model.brands.name }}_{{= object.value }}" <field_v1:analytics_attr analVal="filter brands" quoteChar="\"" />>{{= object.label }}</label>
+            <div class="filter-by-brand-container">
+                <div class="sidebar-subtitle-container">
+                    <span class="helper-text">select <a href="javascript:;" class="filter-brands-toggle" data-toggle="true">all</a>/<a class="filter-brands-toggle" data-toggle="false">none</a></span>
+                    <span class="heading-text">Brands</span>
                 </div>
-                {{ }) }}
+                <div class="provider-list">
+                    {{ _.each(model.brands.values, function(object) { }}
+                    {{ var checked = !object.selected ? ' checked="checked"' : ''; }}
+                    {{ var active = !object.selected ? ' active' : ''; }}
+                    <div class="checkbox">
+                        <input type="checkbox" name="{{= model.brands.name }}" id="{{= model.brands.name }}_{{= object.value }}" value="{{= object.value }}" {{=checked }}
+                               title="{{= object.label }}"/> <label for="{{= model.brands.name }}_{{= object.value }}" <field_v1:analytics_attr analVal="filter brands" quoteChar="\"" />>{{= object.label }}</label>
+                    </div>
+                    {{ }) }}
+                </div>
             </div>
+            <a href="javascript:void(0);" class="filter-by-brand-toggle"><span class="text">Filter by brand</span> <span class="icon icon-angle-down"></span></a>
         </div>
     </div>
 </core_v1:js_template>

@@ -151,11 +151,11 @@
 				var $emailQuoteBtn = $(".slide-feature-emailquote");
 
 				// Initial value from preload/load quote
-				if ($("#home_privacyoptin").is(':checked')) {
+				if ($("#home_termsAccepted").is(':checked')) {
 					$emailQuoteBtn.addClass("privacyOptinChecked");
 				}
 
-				$("#home_privacyoptin").on('change', function(event){
+				$("#home_termsAccepted").on('change', function(event){
 					if ($(this).is(':checked')) {
 						$emailQuoteBtn.addClass("privacyOptinChecked");
 					} else {
@@ -281,6 +281,8 @@
 				if(event.isBackward === true) {
 					meerkat.modules.transactionId.getNew(3);
 				}
+
+				$('.esl-message').toggleClass('hidden', true);
 			},
 			onAfterLeave: function onAfterLeaveResults(event) {
 				meerkat.modules.journeyProgressBar.show();

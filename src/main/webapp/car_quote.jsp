@@ -41,6 +41,9 @@
 
 	<jsp:attribute name="header">
 		<car:snapshot label="Vehicle Quoted" isHeader="true" />
+		<div class="esl-message hidden hidden-xs">
+			<agg_v1:esl_message />
+		</div>
 	</jsp:attribute>
 
 
@@ -61,7 +64,14 @@
 				<a href="javascript:;" data-slide-control="previous" class="btn-back"><span class="icon icon-arrow-left"></span> <span>Back</span></a>
 			</li>
 			<li class="slide-feature-closeMoreInfo">
-				<a href="javascript:;" class="btn-back"><span class="icon icon-arrow-left"></span> <span>Back</span></a>
+				<c:choose>
+					<c:when test="${not empty moreInfoSplitTest and moreInfoSplitTest eq true}">
+						<a href="javascript:;" class="btn btn-back">Back to results</a>
+					</c:when>
+					<c:otherwise>
+						<a href="javascript:;" class="btn-back"><span class="icon icon-arrow-left"></span> <span>Back</span></a>
+					</c:otherwise>
+				</c:choose>
 			</li>
 			<c:if test="${saveQuoteEnabled == 'Y'}">
 			<li class="slide-feature-emailquote hidden-lg hidden-md hidden-sm" data-openSaveQuote="true">
