@@ -222,7 +222,6 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 
 				emailParameters.put(EmailUrlService.EMAIL_TOKEN_ACTION, "load");
 				emailModel.setApplyUrl(urlService.getApplyUrl(emailDetails, emailParameters, otherEmailParameters));
-				System.out.println("TEST: "+urlService.getApplyUrl(emailDetails, emailParameters, otherEmailParameters));
 			} else {
 				emailModel.setUnsubscribeURL(urlServiceOld.getUnsubscribeUrl(emailDetails));
 				emailModel.setApplyUrl(urlServiceOld.getApplyUrl(emailDetails, transactionId, "bestprice"));
@@ -369,7 +368,6 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 				emailParameters.put(EmailUrlService.EMAIL_TOKEN_ACTION, "unsubscribe");
 				emailParameters.remove(EmailUrlService.PRODUCT_ID);
 				emailModel.setUnsubscribeURL(urlService.getUnsubscribeUrl(emailParameters));
-				System.out.println("TEST: "+urlService.getApplyUrl(emailDetails, emailParameters, otherEmailParameters));
 			} else {
 				emailModel.setApplyUrl(urlServiceOld.getApplyUrl(emailDetails, emailBrochureRequest.transactionId, "bestprice", productId, emailBrochureRequest.productName));
 				emailModel.setUnsubscribeURL(urlServiceOld.getUnsubscribeUrl(emailDetails));
