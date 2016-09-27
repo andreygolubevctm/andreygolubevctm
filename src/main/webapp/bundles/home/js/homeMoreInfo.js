@@ -44,7 +44,7 @@
 			onBeforeShowBridgingPage: onBeforeShowBridgingPage,
 			onBeforeShowTemplate: renderScrapes,
 			onBeforeShowModal: renderScrapes,
-			onAfterShowModal: requestTracking,
+			onAfterShowModal: onAfterShowModal,
 			onAfterShowTemplate: onAfterShowTemplate,
 			onBeforeHideTemplate: null,
 			onAfterHideTemplate: onAfterHideTemplate,
@@ -424,6 +424,15 @@
 		if (meerkat.modules.deviceMediaState.get() != 'xs') {
 			$('.resultsContainer, #navbar-compare, #navbar-filter').hide();
 		}
+	}
+
+	/**
+	 * Things to do once the modal is displayed.
+	 */
+	function onAfterShowModal() {
+		requestTracking();
+
+		$('.esl-message').toggleClass('hidden', $('#home_property_address_state').val() !== 'NSW');
 	}
 
 	/**
