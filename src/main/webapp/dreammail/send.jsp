@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <%@ taglib prefix="json" uri="http://www.atg.com/taglibs/json" %>
+<jsp:useBean id="now" class="java.util.Date"/>
 
 <c:set var="logger" value="${log:getLogger('jsp.dreammail.send')}" />
 
@@ -171,6 +172,9 @@
 				<c:set var="server">${param.server}</c:set>
 				<c:set var="SessionId">${param.SessionId}</c:set>
 				<c:set var="baseURL">${pageSettings.getBaseUrl()}</c:set>
+
+				<fmt:formatDate var="nowYear" value="${now}" pattern="yyyy"/>
+				<c:set var="year">${nowYear}</c:set>
 					
 				<c:set var="myResult">
 					<x:transform doc="${rowXML}" xslt="${myXSL}">
@@ -187,6 +191,7 @@
 						<x:param name="tranId">${param.transactionId}</x:param>
 						<x:param name="InsuranceType">${param.tmpl}</x:param>
 						<x:param name="baseURL">${baseURL}</x:param>
+						<x:param name="year">${year}</x:param>
 						<x:param name="sendToEmail">${param.emailAddress}</x:param>
 						<x:param name="hashedEmail">${param.hashedEmail}</x:param>
 						<x:param name="emailSubscribed">${param.emailSubscribed}</x:param>

@@ -37,6 +37,11 @@ public class EmailUrlService {
 	public static final String HASHED_EMAIL = "hashedEmail";
 	public static final String STYLE_CODE_ID = "styleCodeId";
 	public static final String EMAIL_ADDRESS = "emailAddress";
+	public static final String CID = "cid";
+	public static final String ET_RID = "et_rid";
+	public static final String UTM_SOURCE = "utm_source";
+	public static final String UTM_MEDIUM = "utm_medium";
+	public static final String UTM_CAMPAIGN = "utm_campaign";
 
 	public EmailUrlService(VerticalType vertical, String baseUrl, EmailTokenService emailTokenService) {
 		this.vertical = vertical;
@@ -59,12 +64,23 @@ public class EmailUrlService {
 	 *
 	 * @param params
 	 */
-	public String getApplyUrl(EmailMaster emailDetails, Map<String, String> params) throws ConfigSettingException {
+	public String getApplyUrl(EmailMaster emailDetails, Map<String, String> params, Map<String, String> otherParams) throws ConfigSettingException {
 		params.put(EmailUrlService.EMAIL_ADDRESS, createEmailParam(emailDetails));
 
 		String token = emailTokenService.generateToken(params);
+		String otherParamsAsString = "";
+		if (otherParams != null) {
+			StringBuilder content = new StringBuilder();
 
-		return baseUrl + "load_from_email.jsp?token=" + token;
+			for(String key : otherParams.keySet()) {
+				content.append(key);
+				content.append("=");
+				content.append(otherParams.get(key));
+				content.append("&");
+			}
+			otherParamsAsString = content.toString();
+		}
+		return baseUrl + "load_from_email.jsp?" + otherParamsAsString + "token=" + token;
 	}
 
 	private String createVerticalParam()  {

@@ -40,6 +40,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
 import java.util.*;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
@@ -204,6 +205,12 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 
 			if(Boolean.valueOf(getPageSetting("emailTokenEnabled"))) {
 				Map<String, String> emailParameters = new HashMap<>();
+				Map<String, String> otherEmailParameters = new HashMap<>();
+				otherEmailParameters.put(EmailUrlService.CID, "em:cm:health:300994");
+				otherEmailParameters.put(EmailUrlService.ET_RID, "172883275");
+				otherEmailParameters.put(EmailUrlService.UTM_SOURCE, "health_quote_" + LocalDate.now().getYear());
+				otherEmailParameters.put(EmailUrlService.UTM_MEDIUM, "email");
+				otherEmailParameters.put(EmailUrlService.UTM_CAMPAIGN, "health_quote");
 				emailParameters.put(EmailUrlService.TRANSACTION_ID, Long.toString(transactionId));
 				emailParameters.put(EmailUrlService.HASHED_EMAIL, emailDetails.getHashedEmail());
 				emailParameters.put(EmailUrlService.STYLE_CODE_ID, Integer.toString(pageSettings.getBrandId()));
@@ -214,7 +221,8 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 				emailModel.setUnsubscribeURL(urlService.getUnsubscribeUrl(emailParameters));
 
 				emailParameters.put(EmailUrlService.EMAIL_TOKEN_ACTION, "load");
-				emailModel.setApplyUrl(urlService.getApplyUrl(emailDetails, emailParameters));
+				emailModel.setApplyUrl(urlService.getApplyUrl(emailDetails, emailParameters, otherEmailParameters));
+				System.out.println("TEST: "+urlService.getApplyUrl(emailDetails, emailParameters, otherEmailParameters));
 			} else {
 				emailModel.setUnsubscribeURL(urlServiceOld.getUnsubscribeUrl(emailDetails));
 				emailModel.setApplyUrl(urlServiceOld.getApplyUrl(emailDetails, transactionId, "bestprice"));
@@ -342,6 +350,12 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 
 			if(Boolean.valueOf(getPageSetting("emailTokenEnabled"))) {
 				Map<String, String> emailParameters = new HashMap<>();
+				Map<String, String> otherEmailParameters = new HashMap<>();
+				otherEmailParameters.put(EmailUrlService.CID, "em:cm:health:301005");
+				otherEmailParameters.put(EmailUrlService.ET_RID, "172883275");
+				otherEmailParameters.put(EmailUrlService.UTM_SOURCE, "health_pds_" + LocalDate.now().getYear());
+				otherEmailParameters.put(EmailUrlService.UTM_MEDIUM, "email");
+				otherEmailParameters.put(EmailUrlService.UTM_CAMPAIGN, "health_pds");
 				emailParameters.put(EmailUrlService.TRANSACTION_ID, Long.toString(emailBrochureRequest.transactionId));
 				emailParameters.put(EmailUrlService.HASHED_EMAIL, emailDetails.getHashedEmail());
 				emailParameters.put(EmailUrlService.STYLE_CODE_ID, Integer.toString(pageSettings.getBrandId()));
@@ -350,11 +364,12 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 				emailParameters.put(EmailUrlService.VERTICAL, "health");
 				emailParameters.put(EmailUrlService.PRODUCT_ID, productId);
 				EmailTokenService.setProductName(emailBrochureRequest.productName, emailParameters);
-				emailModel.setApplyUrl(urlService.getApplyUrl(emailDetails, emailParameters));
+				emailModel.setApplyUrl(urlService.getApplyUrl(emailDetails, emailParameters, otherEmailParameters));
 
 				emailParameters.put(EmailUrlService.EMAIL_TOKEN_ACTION, "unsubscribe");
 				emailParameters.remove(EmailUrlService.PRODUCT_ID);
 				emailModel.setUnsubscribeURL(urlService.getUnsubscribeUrl(emailParameters));
+				System.out.println("TEST: "+urlService.getApplyUrl(emailDetails, emailParameters, otherEmailParameters));
 			} else {
 				emailModel.setApplyUrl(urlServiceOld.getApplyUrl(emailDetails, emailBrochureRequest.transactionId, "bestprice", productId, emailBrochureRequest.productName));
 				emailModel.setUnsubscribeURL(urlServiceOld.getUnsubscribeUrl(emailDetails));
