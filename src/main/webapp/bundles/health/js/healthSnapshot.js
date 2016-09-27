@@ -199,9 +199,13 @@
     }
     
     function renderPreResultsRowSnapshot() {
+        var primary_dob = $('#health_healthCover_primary_dob').val();
+        var age = meerkat.modules.age.returnAge(primary_dob, true);
 
         var obj = {
             name: $('#health_contactDetails_name').val(),
+            state: $('#health_situation_state').val(),
+            age: age,
             coverType: getLabelForCoverType(),
             situation: getLabelForSituation()
         };
