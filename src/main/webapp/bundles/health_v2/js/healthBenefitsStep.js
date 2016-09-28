@@ -24,9 +24,9 @@
         customiseDialogId = null,
         hospitalBenefits = [],
         extrasBenefits = [],
-        preselectedBenefitsActivated = false,
         currentCover = false,
-        previousCover = false;
+        previousCover = false,
+        currentSituation = false;
 
     var events = {
             healthBenefitsStep: {
@@ -349,26 +349,17 @@
 
     function activateBenefitPreSelections(isFromStart) {
         isFromStart = isFromStart || false;
-        if(preselectedBenefitsActivated === true) {
-            if(isFromStart) {
-                var situ = $healthSitu.find('input:checked').val().toLowerCase();
-                if(situ === 'atp') {
-                    // Check if limited is a new selection before forcing the
-                    // benefits page to be re-rendered (otherwise don't)
-                    $benefitsCoverType.val("limited");
-                    if (currentCover !== 'limited') {
-                        unsetAllBenefitSelections();
-                    } else {
-                        isFromStart = false;
-                    }
-                }
-            }
-            currentCover = $benefitsCoverType.val();
+        var situ = $healthSitu.find('input:checked').val().toLowerCase();
+        var isNewSituation = situ !== currentSituation;
+        if(isNewSituation) {
+            currentSituation = situ;
+        }
+
+        if(!isFromStart || !isNewSituation) {
             updateCoverLevel();
             setLimitedCover(isFromStart);
             toggleCoverType();
         } else {
-            preselectedBenefitsActivated = true;
             if(meerkat.modules.isNewQuote === false) {
                 // For loaded transactions we simply want to
                 // preselect the the users original choices
@@ -384,50 +375,49 @@
                 unsetAllBenefitSelections();
 
                 var healthCvr = $('.health-situation-healthCvr').val().toLowerCase();
-                var healthSitu = $healthSitu.find('input:checked').val().toLowerCase();
 
                 var age = getAge();
 
 
                 if (age < 40) {
-                    if (_.indexOf(['n', 'lc'], healthSitu) >= 0) {
+                    if (_.indexOf(['n', 'lc'], currentSituation) >= 0) {
                         $benefitCheckbox.hospital.privateHosp.prop('checked', true).change();
                         $benefitCheckbox.extras.generalDental.prop('checked', true).change();
-                    } else if (healthSitu === 'csf' && healthCvr === 'sm') {
+                    } else if (currentSituation === 'csf' && healthCvr === 'sm') {
                         $benefitCheckbox.hospital.privateHosp.prop('checked', true).change();
                         $benefitCheckbox.extras.generalDental.prop('checked', true).change();
-                    } else if (healthSitu === 'csf' && _.indexOf(['sf', 'c', 'f', 'spf'], healthCvr) >= 0) {
+                    } else if (currentSituation === 'csf' && _.indexOf(['sf', 'c', 'f', 'spf'], healthCvr) >= 0) {
                         $benefitCheckbox.hospital.privateHosp.prop('checked', true).change();
                         $benefitCheckbox.hospital.birthServices.prop('checked', true).change();
                         $benefitCheckbox.hospital.assistedReproduction.prop('checked', true).change();
                         $benefitCheckbox.extras.generalDental.prop('checked', true).change();
-                    } else if (healthSitu === 'sf' && _.indexOf(['f', 'spf', 'c'], healthCvr) >= 0) {
+                    } else if (currentSituation === 'sf' && _.indexOf(['f', 'spf', 'c'], healthCvr) >= 0) {
                         $benefitCheckbox.hospital.privateHosp.prop('checked', true).change();
                         $benefitCheckbox.extras.generalDental.prop('checked', true).change();
-                    } else if (healthSitu === 'atp') {
+                    } else if (currentSituation === 'atp') {
                         currentCover = 'limited';
                         updateCoverLevel();
                         setLimitedCover(true);
-                    } else if (healthSitu === 'shn') {
+                    } else if (currentSituation === 'shn') {
                         $benefitCheckbox.hospital.privateHosp.prop('checked', true).change();
                         $benefitCheckbox.extras.generalDental.prop('checked', true).change();
                     } else {
                         // Ignore - not defaults defined;
                     }
                 } else {
-                    if (_.indexOf(['n', 'lc'], healthSitu) >= 0) {
+                    if (_.indexOf(['n', 'lc'], currentSituation) >= 0) {
                         $benefitCheckbox.hospital.privateHosp.prop('checked', true).change();
                         $benefitCheckbox.hospital.heartSurgery.prop('checked', true).change();
                         $benefitCheckbox.extras.generalDental.prop('checked', true).change();
                         $benefitCheckbox.extras.optical.prop('checked', true).change();
                         $benefitCheckbox.extras.physiotherapy.prop('checked', true).change();
-                    } else if (healthSitu === 'csf' && healthCvr === 'sm') {
+                    } else if (currentSituation === 'csf' && healthCvr === 'sm') {
                         $benefitCheckbox.hospital.privateHosp.prop('checked', true).change();
                         $benefitCheckbox.hospital.heartSurgery.prop('checked', true).change();
                         $benefitCheckbox.extras.generalDental.prop('checked', true).change();
                         $benefitCheckbox.extras.optical.prop('checked', true).change();
                         $benefitCheckbox.extras.physiotherapy.prop('checked', true).change();
-                    } else if (healthSitu === 'csf' && _.indexOf(['sf', 'c', 'f', 'spf'], healthCvr) >= 0) {
+                    } else if (currentSituation === 'csf' && _.indexOf(['sf', 'c', 'f', 'spf'], healthCvr) >= 0) {
                         $benefitCheckbox.hospital.privateHosp.prop('checked', true).change();
                         $benefitCheckbox.hospital.heartSurgery.prop('checked', true).change();
                         $benefitCheckbox.hospital.birthServices.prop('checked', true).change();
@@ -435,17 +425,17 @@
                         $benefitCheckbox.extras.generalDental.prop('checked', true).change();
                         $benefitCheckbox.extras.optical.prop('checked', true).change();
                         $benefitCheckbox.extras.physiotherapy.prop('checked', true).change();
-                    } else if (healthSitu === 'sf' && _.indexOf(['f', 'spf', 'c'], healthCvr) >= 0) {
+                    } else if (currentSituation === 'sf' && _.indexOf(['f', 'spf', 'c'], healthCvr) >= 0) {
                         $benefitCheckbox.hospital.privateHosp.prop('checked', true).change();
                         $benefitCheckbox.hospital.heartSurgery.prop('checked', true).change();
                         $benefitCheckbox.extras.generalDental.prop('checked', true).change();
                         $benefitCheckbox.extras.optical.prop('checked', true).change();
                         $benefitCheckbox.extras.physiotherapy.prop('checked', true).change();
-                    } else if (healthSitu === 'atp') {
+                    } else if (currentSituation === 'atp') {
                         currentCover = 'limited';
                         updateCoverLevel();
                         setLimitedCover(true);
-                    } else if (healthSitu === 'shn') {
+                    } else if (currentSituation === 'shn') {
                         $benefitCheckbox.hospital.privateHosp.prop('checked', true).change();
                         $benefitCheckbox.hospital.heartSurgery.prop('checked', true).change();
                         $benefitCheckbox.extras.generalDental.prop('checked', true).change();
