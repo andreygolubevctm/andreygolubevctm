@@ -2,6 +2,7 @@ package com.ctm.web.health.services;
 
 import com.ctm.web.core.leadService.model.LeadRequest;
 import com.ctm.web.core.leadService.model.LeadStatus;
+import com.ctm.web.core.leadService.model.LeadType;
 import com.ctm.web.core.leadService.services.LeadServiceUtil;
 import com.ctm.web.core.model.settings.ServiceConfiguration;
 import com.ctm.web.core.model.settings.ServiceConfigurationProperty;
@@ -37,7 +38,7 @@ public class HealthCallBackService {
         this.ipAddressHandler = ipAddressHandler;
     }
 
-    public void sendLead(HealthCallBackData data, Data dataBucket, HttpServletRequest request, String callbackType) {
+    public void sendLead(HealthCallBackData data, Data dataBucket, HttpServletRequest request, LeadType leadType) {
         try {
             ServiceConfiguration serviceConfig = ServiceConfigurationService.getServiceConfiguration("leadService", HEALTH_VERTICAL_ID);
 
@@ -46,12 +47,12 @@ public class HealthCallBackService {
 //            String url = "http://localhost:9040/lead/";
 
             if (enabled) {
-                final LeadRequest leadData = createLeadRequest(data, dataBucket, request, callbackType);
+                final LeadRequest leadData = createLeadRequest(data, dataBucket, request, leadType);
 
-                leadData.setRootId(data.getTransactionId());
-                leadData.setTransactionId(data.getTransactionId());
-                leadData.setBrandCode("ctm");
-                leadData.setClientIP("192.168.72.22");
+//                leadData.setRootId(data.getTransactionId());
+//                leadData.setTransactionId(data.getTransactionId());
+//                leadData.setBrandCode("ctm");
+//                leadData.setClientIP("192.168.72.22");
 
                 String previousValues = (String) request.getSession().getAttribute(LAST_LEAD_SERVICE_VALUES);
                 String currentValues = leadData.getValues();
@@ -69,7 +70,7 @@ public class HealthCallBackService {
 
     }
 
-    private LeadRequest createLeadRequest(HealthCallBackData data, Data dataBucket, HttpServletRequest request, String callbackType) {
+    private LeadRequest createLeadRequest(HealthCallBackData data, Data dataBucket, HttpServletRequest request, LeadType leadType) {
         final LeadRequest leadData = new LeadRequest();
 
         leadData.getPerson().setFirstName(StringUtils.left(data.getName(), 50));
@@ -92,7 +93,7 @@ public class HealthCallBackService {
         leadData.setBrandCode(dataBucket.getString("current/brandCode"));
 
         leadData.setStatus(LeadStatus.OPEN);
-        leadData.setLeadType(callbackType);
+        leadData.setLeadType(leadType);
 
         leadData.setClientIP(ipAddressHandler.getIPAddress(request));
 

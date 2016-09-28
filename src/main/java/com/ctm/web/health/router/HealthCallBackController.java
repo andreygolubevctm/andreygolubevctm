@@ -19,13 +19,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import static com.ctm.web.core.leadService.model.LeadType.CALL_ME_BACK;
+import static com.ctm.web.core.leadService.model.LeadType.CALL_ME_NOW;
+
 @Api(basePath = "/rest/health", value = "Health CallBack")
 @RestController
 @RequestMapping("/rest/health")
 public class HealthCallBackController extends CommonQuoteRouter {
-
-    public static final String CALL_ME_NOW = "callMeNow";
-    public static final String CALL_ME_BACK = "callMeBack";
 
     @Autowired
     private HealthCallBackService healthCallBackService;

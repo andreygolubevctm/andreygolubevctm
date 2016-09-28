@@ -16,7 +16,7 @@ public class LeadRequest {
     private LeadStatus status;
     private LeadMetadata metadata;
     private ZonedDateTime scheduledDateTime;
-    private String leadType;
+    private LeadType leadType;
 
     public String getSource() {
         return source;
@@ -86,11 +86,11 @@ public class LeadRequest {
         this.scheduledDateTime = scheduledDateTime;
     }
 
-    public String getLeadType() {
+    public LeadType getLeadType() {
         return leadType;
     }
 
-    public void setLeadType(String leadType) {
+    public void setLeadType(LeadType leadType) {
         this.leadType = leadType;
     }
 
