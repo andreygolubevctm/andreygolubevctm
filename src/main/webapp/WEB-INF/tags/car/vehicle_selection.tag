@@ -16,12 +16,10 @@
 </ui:bubble>
 <form_v2:fieldset legend="Your Car" id="${name}_selection">
 
-    <c:if test="${regoLookupSplitTest eq true and not empty param.quote_vehicle_searchRego and not empty param.quote_vehicle_searchState}">
+    <c:if test="${not empty param.quote_vehicle_searchRego and not empty param.quote_vehicle_searchState}">
         <div id="unableToFindRego" class="hidden">
-            <p class="text-warning h4">
-                <strong id="regoErrorMessage">Sorry, we were unable to find a car with registration number '<c:out value="${param.quote_vehicle_searchRego}" escapeXml="true"/>'.</strong>
-            </p>
-            <p>Please continue by selecting your car from the fields below.</p>
+            <p>Sorry, your car cannot be matched using the registration provided</p>
+            <p><em>Please select you car below</em></p>
             <br /><br />
         </div>
         <field_v1:hidden xpath="${xpath}/nvicCode" />

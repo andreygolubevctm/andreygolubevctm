@@ -19,9 +19,11 @@
 	</jsp:attribute>
 
     <jsp:body>
-        <car:options_factory xpath="${xpath}/vehicle/factoryOptions" />
-        <car:options_accessories xpath="${xpath}/vehicle/accessories" />
-        <car:options_modifications xpath="${xpath}/vehicle/modifications" />
+        <form_v2:fieldset legend="Accessories and Modifications" id="${name}AccessoriesFieldSet">
+            <car:options_factory xpath="${xpath}/vehicle/factoryOptions" />
+            <car:options_accessories xpath="${xpath}/vehicle/accessories" />
+            <car:options_modifications xpath="${xpath}/vehicle/modifications" />
+        </form_v2:fieldset>
         <car:options_usage xpath="${xpath}/vehicle" />
         <car:options_dialog_inputs xpath="${xpath}/vehicle/options/inputs/container" />
     </jsp:body>

@@ -83,11 +83,15 @@
                                     <a href="javascript:;" class="btn btn-save benefit-category col-sm-2" data-category="limited" <field_v1:analytics_attr analVal="benefit category" quoteChar="\"" />>limited</a>
                                 </div>
 
+									
                                     <div class="coverExplanationContainer">
                                     <c:set var="tieredBenefits" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "coverOptions")}' />
                                     <c:forEach items="${tieredBenefits.getSupplementary()}" var="tieredBenefitsContent" >
+
 										<c:if test="${!fn:endsWith(tieredBenefitsContent.getSupplementaryKey(), 'XS')}">
 											<div class="<c:if test="${tieredBenefitsContent.getSupplementaryKey() != 'midCover'}">hidden</c:if> coverExplanation ${tieredBenefitsContent.getSupplementaryKey()}">
+
+											<c:if test="${!callCentre}">
 												<div class="hidden-xs">${tieredBenefitsContent.getSupplementaryValue()}</div>
 												<c:set var="xsLabel" value="${tieredBenefitsContent.getSupplementaryKey()}XS" />
 												<c:forEach items="${tieredBenefits.getSupplementary()}" var="tieredBenefitsContentXS" >
@@ -95,11 +99,18 @@
 														<div class="visible-xs">${tieredBenefitsContentXS.getSupplementaryValue()}</div>
 													</c:if>
 												</c:forEach>
+											</c:if>
+
+											<c:if test="${tieredBenefitsContent.getSupplementaryKey() == 'limitedCover'}">
+									            <simples:dialogue id="67" className="simples-dialogue-limited-cover" vertical="health" />
+									        </c:if>
+
 											</div>
-										</c:if>
+		                                </c:if>
+
                                     </c:forEach>
                                     </div>
-                                    </c:if>
+                                </c:if>
                                 </c:when>
                                 <c:otherwise>
 									<c:set var="resultPath" value="${item.getResultPath()}" />

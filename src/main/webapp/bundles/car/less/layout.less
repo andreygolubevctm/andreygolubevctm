@@ -56,4 +56,21 @@
   #quote_vehicle_selection .spinner {
     margin-right: 40px;
   }
+
+  .esl-message {
+    background-color: #f1f1f1;
+    line-height: 40px;
+    margin-right: 0;
+    text-align: center;
+
+    a:focus {
+      color: @theme-tertiary;
+      text-decoration: none;
+    }
+
+    @media (@sm) {
+      background-color: inherit;
+      text-align: left;
+    }
+  }
 }

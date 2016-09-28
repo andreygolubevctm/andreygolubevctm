@@ -74,6 +74,10 @@
 			<div class="featuresList featuresTemplateComponent"></div>
 		</div>
 
+		<div class="esl-message hidden hidden-sm hidden-md hidden-lg">
+			<agg_v1:esl_message />
+		</div>
+
 		<div class="resultsOverflow">
 			<div class="results-table"></div>
 		</div>
