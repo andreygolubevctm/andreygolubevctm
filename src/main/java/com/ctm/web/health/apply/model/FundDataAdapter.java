@@ -2,7 +2,6 @@ package com.ctm.web.health.apply.model;
 
 import com.ctm.web.core.utils.common.utils.LocalDateUtils;
 import com.ctm.web.health.apply.model.request.application.common.Relationship;
-import com.ctm.web.health.apply.model.request.application.situation.HealthSituation;
 import com.ctm.web.health.apply.model.request.fundData.Declaration;
 import com.ctm.web.health.apply.model.request.fundData.FundData;
 import com.ctm.web.health.apply.model.request.fundData.ProductId;
@@ -49,17 +48,13 @@ public class FundDataAdapter {
     }
 
     protected static Benefits createBenefits(Optional<HealthQuote> quote) {
-        HealthSituation healthSitu = quote.map(HealthQuote::getSituation)
-                .map(com.ctm.web.health.model.form.Situation::getHealthSitu)
-                .map(HealthSituation::valueOf)
-                .orElse(null);
         List<String> benefits = quote.map(HealthQuote::getApplication)
                 .map(Application::getHbf)
                 .map(Hbf::getFlexiextras)
                 .map(f -> Arrays.asList(StringUtils.split(f, ",")))
                 .orElse(emptyList());
-        if (healthSitu != null || !benefits.isEmpty()) {
-            return new Benefits(healthSitu, benefits);
+        if (!benefits.isEmpty()) {
+            return new Benefits(benefits);
         } else {
             return null;
         }
