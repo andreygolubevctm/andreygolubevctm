@@ -15,7 +15,7 @@
 		I understand and accept the
 		<a href="${pageSettings.getSetting('websiteTermsUrl')}" target="_blank" data-title="Website Terms of Use" class="termsLink showDoc">Website Terms of Use</a>,
 		<a href="${pageSettings.getSetting('fsgUrl')}" target="_blank" data-title="Financial Services Guide" class="termsLink showDoc">Financial Services Guide</a> and
-		<form_v1:link_privacy_statement overrideLabel="Privacy Policy" />. I agree that comparethemarket.com.au may contact me about the services it provides, and that one of comparethemarket.com.au’s trusted car insurance partners may call or email me to discuss my car insurance needs.
+		<form_v1:link_privacy_statement overrideLabel="Privacy Policy" />. I agree that comparethemarket.com.au may contact me about the services it provides, and that one of comparethemarket.com.au’s trusted car insurance partners may call, email or SMS me to discuss my insurance needs.
 	</p></c:set>
 
 	<%-- Optional question for users - mandatory if Contact Number is selected (Required = true as it won't be shown if no number is added) --%>
