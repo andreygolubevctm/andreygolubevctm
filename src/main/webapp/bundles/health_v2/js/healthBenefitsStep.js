@@ -199,9 +199,7 @@
 
         var coverType = $coverType.find('input:checked').val().toLowerCase();
 
-        var primary_age = meerkat.modules.age.returnAge($primary_dob.val(), true),
-        partner_age = meerkat.modules.age.returnAge($partner_dob.val(), true),
-        age = partner_age > primary_age ? partner_age : primary_age;
+        var age = getAge();
 
         switch(healthSitu) {
             case 'CSF':
@@ -388,9 +386,7 @@
                 var healthCvr = $('.health-situation-healthCvr').val().toLowerCase();
                 var healthSitu = $healthSitu.find('input:checked').val().toLowerCase();
 
-                var primary_age = meerkat.modules.age.returnAge($primary_dob.val(), true),
-                partner_age = meerkat.modules.age.returnAge($partner_dob.val(), true),
-                age = partner_age > primary_age ? partner_age : primary_age;
+                var age = getAge();
 
 
                 if (age < 40) {
@@ -757,6 +753,12 @@
         meerkat.modules.dialogs.close(obj.modalId);
         $benefitsForm.find("a[data-category=customise]:visible").first().trigger('click');
         obj.btn.trigger('click');
+    }
+
+    function getAge() {
+        var primary_age = meerkat.modules.age.returnAge($primary_dob.val(), true),
+            partner_age = meerkat.modules.age.returnAge($partner_dob.val(), true);
+        return partner_age > primary_age ? partner_age : primary_age;
     }
 
     meerkat.modules.register('healthBenefitsStep', {
