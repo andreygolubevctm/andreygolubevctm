@@ -21,7 +21,7 @@
 	</form_v2:row>
 
 	<c:set var="fieldXpath" value="${xpath}/securityFeatures" />
-	<form_v2:row fieldXpath="${fieldXpath}" label="Which security features does the home have?" className="securityFeatures hidden" helpId="527">
+	<form_v2:row fieldXpath="${fieldXpath}" label="Which security features does the home have?" className="securityFeatures" helpId="527">
 		<field_v2:validatedHiddenField xpath="${xpath}/securityFeaturesCount" className="dontSend" additionalAttributes=" data-rule-securityFeatures='true' " />
 		<div class="row">
 			<div class="col-lg-6 col-xs-12">
