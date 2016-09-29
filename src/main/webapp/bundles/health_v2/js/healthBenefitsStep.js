@@ -213,6 +213,7 @@
 
                 if(_.indexOf(['SM','SF','C'],situation) >= 0) {
                     hospitalContent = hospitalContent.replace('growing', 'starting');
+                    extrasContent = extrasContent.replace('growing', 'starting');
                 }
 
                 switch (coverType) {
