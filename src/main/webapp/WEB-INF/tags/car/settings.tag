@@ -70,9 +70,9 @@
 		colours:			'${data.quote.vehicle.colour}',
 		marketValue:		'${data.quote.vehicle.marketValue}',
 		variant:			'${data.quote.vehicle.variant}',
-		securityOption:		'${data.quote.vehicle.securityOption}',<c:if test="${regoLookupSplitTest eq true}">
+		securityOption:		'${data.quote.vehicle.securityOption}',
         searchRego:         '${quote_vehicle_searchRego}',
-		searchState:		'${quote_vehicle_searchState}',</c:if>
+		searchState:		'${quote_vehicle_searchState}',
 		data:				${json}
 	},
 	userOptionPreselections: {

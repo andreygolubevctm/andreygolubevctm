@@ -84,6 +84,7 @@ public class HealthQuoteController extends CommonQuoteRouter {
         // Initialise request
         Brand brand = initRouter(request);
         updateTransactionIdAndClientIP(request, data);
+        updateApplicationDate(request, data);
         HealthQuoteEndpointService healthQuoteTokenService = new HealthQuoteEndpointService(ipAddressHandler);
         boolean isCallCentre = SessionUtils.isCallCentre(request.getSession());
         try{

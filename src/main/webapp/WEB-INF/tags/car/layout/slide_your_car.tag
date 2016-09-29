@@ -3,11 +3,9 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <c:set var="xpath" value="quote" />
-
 <c:set var="nextStepLabel" value="Next Step" />
-<c:if test="${regoLookupSplitTest eq true}">
-	<c:set var="nextStepLabel" value="Continue" />
-</c:if>
+<c:set var="nextStepLabel" value="Continue" />
+
 <layout_v1:slide formId="startForm" firstSlide="true" nextLabel="${nextStepLabel}">
 
 	<layout_v1:slide_columns sideHidden="false">
