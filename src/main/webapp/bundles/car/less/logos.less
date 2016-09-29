@@ -1,4 +1,4 @@
-@provider-list: ~"BUDD", ~"AI", ~"EXPO", ~"VIRG", ~"REIN", ~"1FOW", ~"EXDD", ~"WOOL", ~"IECO", ~"OZIC", ~"CBCK", ~"RETI";
+@provider-list: ~"BUDD", ~"AI", ~"EXPO", ~"VIRG", ~"REIN", ~"1FOW", ~"EXDD", ~"WOOL", ~"IECO", ~"OZIC", ~"RETI";
 
 .priceMode .compare-basket .carCompanyLogo {
   background: #fff;
@@ -10,7 +10,24 @@
 }
 
 .companyLogo {
-	.providersHighResSpriteImages(~"car"; ~"logo_"; @provider-list);
+	.providersHighResSpriteImages(~"car"; ~"logo_"; @provider-list; 0.53333); // 80px
+}
+
+.moreInfoVisibleV2 {
+	.more-info-content {
+		.companyLogo {
+			.providersHighResSpriteImages(~"car"; ~"logo_"; @provider-list; 0.6); // 90px
+			@media (@sm) {
+				.providersHighResSpriteImages(~"car"; ~"logo_"; @provider-list; 0.8); // 120px
+			}
+			@media (@md) {
+				.providersHighResSpriteImages(~"car"; ~"logo_"; @provider-list; 0.9333); // 140px
+			}
+			@media (@lg) {
+				.providersHighResSpriteImages(~"car"; ~"logo_"; @provider-list); // 150px
+			}
+		}
+	}
 }
 
 :not(.ie8) & {
@@ -23,6 +40,18 @@
 
 @media (max-width: 480px) {
 	.companyLogo {
-	  .providersHighResSpriteImages(~"car"; ~"logo_"; @provider-list; @logo-xs-scale; ~"");
+		.providersHighResSpriteImages(~"car"; ~"logo_"; @provider-list; 0.6); // 90px
+	}
+	.resultInsert {
+		.companyLogo {
+			.providersHighResSpriteImages(~"car"; ~"logo_"; @provider-list; 0.4); // 60px
+		}
+	}
+	.moreInfoVisibleV2 {
+		.more-info-content {
+			.companyLogo {
+				.providersHighResSpriteImages(~"car"; ~"logo_"; @provider-list; 0.37333); // 56px
+			}
+		}
 	}
 }

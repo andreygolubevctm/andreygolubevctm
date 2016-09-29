@@ -8,16 +8,18 @@
 <%-- VARIABLES --%>
 <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
 
-
 <%-- HTML --%>
 <div id="${name}-selection" class="health-medicare_details">
 
 	<simples:dialogue id="30" vertical="health" mandatory="true" />
 
 		<c:set var="fieldXpath" value="${xpath}/cover" />
-		<form_v2:row fieldXpath="${fieldXpath}" label="Are all people to be included on this policy covered by a green, blue or yellow Medicare card?" id="medicareCoveredRow" helpId="291" smRowOverride="5">
+		<field_v1:hidden xpath="${fieldXpath}" defaultValue="Y" />
+
+		<c:set var="fieldXpath" value="${xpath}/colour" />
+		<form_v2:row fieldXpath="${fieldXpath}" label="What colour is your Medicare card?" id="medicareCoveredRow" helpId="291" smRowOverride="5">
 			<p id="health_medicareDetails_coverMessage"></p>
-			<field_v2:array_radio items="Y=Yes,N=No" xpath="${fieldXpath}" title="your Medicare card cover. To proceed with this policy, you must have a green, blue or yellow medicare card" required="true" className="health-medicare_details-card" id="${name}_cover" additionalAttributes=" data-rule-isCheckedYes='true' data-msg-isCheckedYes='To proceed with this policy, you must have a green, blue or yellow medicare card' "/>
+			<field_v2:medicare_colour xpath="${fieldXpath}" />
 		</form_v2:row>
 
 		<form_v2:row label="Medicare card number and expiry" hideHelpIconCol="true" className="row" isNestedStyleGroup="${true}">

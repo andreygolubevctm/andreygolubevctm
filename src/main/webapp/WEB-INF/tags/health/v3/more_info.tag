@@ -385,7 +385,7 @@
 				</div>
 			</div>
 
-			<div class="col-md-8 switching">
+			<div class="col-xs-12 switching">
 				<h2>Switching is simple</h2>
 				<ol>
 					<li>You can change your fund whenever you like</li>
@@ -396,18 +396,6 @@
 						premiums paid in advance.</li>
 				</ol>
 			</div>
-
-			{{ if(meerkat.site.tracking.brandCode === 'ctm') { }}
-			<div class="col-md-4 hidden-xs hidden-sm pricePromise">
-				<div class="row">
-					<div class="col-md-5">
-						<div class="pricePromiseLogo"></div>
-					</div>
-					<div class="col-md-7"><h4>Price match guarantee</h4></div>
-				</div>
-				<p class="pricePromiseContent">Buy health insurance through us and if you find a better price on the same policy with the same health fund within 30 days, <span>we'll give you $50*</span></p>
-			</div>
-			{{ } }}
 			<div class="col-xs-12 testimonials">
 				<h2>Join the thousands of Australians who already have compared and saved</h2>
 				<blockquote>

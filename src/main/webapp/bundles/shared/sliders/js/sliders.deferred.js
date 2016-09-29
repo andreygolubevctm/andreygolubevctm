@@ -236,7 +236,7 @@
                 $e = $('<div />');
                 $e.addClass('slider-marker');
                 if(!_.isEmpty(attr_key) && !_.isEmpty(attr_val)) {
-                    $e.attr(attr_key,attr_val)
+                    $e.attr(attr_key,attr_val);
                 }
                 $e.css('width', (100 / markerCount) + '%');
                 $htmls.append($e);
