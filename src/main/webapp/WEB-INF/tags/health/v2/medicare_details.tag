@@ -35,7 +35,7 @@
 
 		<c:set var="fieldXpath" value="${xpath}/firstName" />
 		<form_v3:row fieldXpath="${fieldXpath}" label="First Name on Medicare card">
-			<field_v2:input xpath="${fieldXpath}" title="first name on the Medicare card" required="true" className="health-medicare_details-first_name sessioncamexclude" additionalAttributes=" data-rule-personName='true' " />
+			<field_v2:input xpath="${fieldXpath}" title="first name on the Medicare card" required="true" className="health-medicare_details-first_name sessioncamexclude" maxlength="24" additionalAttributes=" data-rule-personName='true' " />
 		</form_v3:row>
 
 		<c:set var="fieldXpath" value="${xpath}/middleInitial" />
@@ -45,7 +45,7 @@
 
 		<c:set var="fieldXpath" value="${xpath}/surname" />
 		<form_v3:row fieldXpath="${fieldXpath}" label="Last Name on Medicare card">
-			<field_v2:input xpath="${fieldXpath}" title="last name on the Medicare card" required="true" className="health-medicare_details-surname sessioncamexclude" additionalAttributes=" data-rule-personName='true' " />
+			<field_v2:input xpath="${fieldXpath}" title="last name on the Medicare card" required="true" className="health-medicare_details-surname sessioncamexclude" additionalAttributes=" data-rule-personName='true' data-rule-medicareLastName='true' " />
 		</form_v3:row>
 
 		<c:set var="fieldXpath" value="${xpath}/cardPosition" />
