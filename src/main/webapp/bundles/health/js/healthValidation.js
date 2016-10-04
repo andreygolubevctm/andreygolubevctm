@@ -66,7 +66,7 @@
 
         maxLength = 50 - initialLength - (firstName).length;
 
-        return (value.length <= maxlength);
+        return (value.length <= maxLength);
     }, 'Your full name can not be longer than 50 characters in total');
 
     function getMonth() {

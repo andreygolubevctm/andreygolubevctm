@@ -25,6 +25,6 @@
 	</c:if>
 	<c:set var="fieldXpath" value="${xpath}/surname" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="Last Name" hideHelpIconCol="true" smRowOverride="4" isNestedField="${true}">
-		<field_v1:person_name xpath="${fieldXpath}" required="true" title="${title} last name" className="contactField" placeholder="Last name" additionalAttributes="data-rule-medicareLastName='true' " disableErrorContainer="${false}" />
+		<field_v1:person_name xpath="${fieldXpath}" required="true" title="${title} last name" className="contactField" placeholder="Last name" additionalAttributes="data-rule-medicareLastName='true' data-validation-position='append' " disableErrorContainer="${false}" />
 	</form_v2:row>
 </form_v2:row>
