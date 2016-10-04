@@ -67,7 +67,7 @@
         maxLength = 50 - initialLength - (firstName).length;
 
         return (value.length <= maxlength);
-    }, 'Please enter no more 50 characters in total');
+    }, 'Your full name can not be longer than 50 characters in total');
 
     function getMonth() {
         var realMonth = meerkat.site.serverDate.getMonth()+1 ;
