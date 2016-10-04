@@ -356,16 +356,18 @@
             currentSituation = situ;
         }
 
-        if(!isFromStart || !isNewSituation) {
+        if(!isFromStart || (isFromStart && !isNewSituation)) {
             updateCoverLevel();
-            setLimitedCover(isFromStart);
             toggleCoverType();
+            setLimitedCover(false);
         } else {
             if(meerkat.modules.isNewQuote === false) {
                 // For loaded transactions we simply want to
                 // preselect the the users original choices
                 currentCover = $benefitsCoverType.val();
                 updateCoverLevel();
+                toggleCoverType();
+                setLimitedCover(false);
                 $allHospitalButtons.filter(':checked').change();
                 $('.GeneralHealth_container .children').find('input[type="checkbox"]:checked').change();
             } else {
@@ -374,11 +376,11 @@
                 currentCover = 'customise';
                 updateCoverLevel();
                 unsetAllBenefitSelections();
+                $coverType.find('#health_situation_coverType_C').prop('checked',true).change();
 
                 var healthCvr = $('.health-situation-healthCvr').val().toLowerCase();
 
                 var age = getAge();
-
 
                 if (age < 40) {
                     if (_.indexOf(['n', 'lc'], currentSituation) >= 0) {
@@ -398,7 +400,6 @@
                     } else if (currentSituation === 'atp') {
                         currentCover = 'limited';
                         updateCoverLevel();
-                        setLimitedCover(true);
                     } else if (currentSituation === 'shn') {
                         $benefitCheckbox.hospital.privateHosp.prop('checked', true).change();
                         $benefitCheckbox.extras.generalDental.prop('checked', true).change();
@@ -435,7 +436,6 @@
                     } else if (currentSituation === 'atp') {
                         currentCover = 'limited';
                         updateCoverLevel();
-                        setLimitedCover(true);
                     } else if (currentSituation === 'shn') {
                         $benefitCheckbox.hospital.privateHosp.prop('checked', true).change();
                         $benefitCheckbox.hospital.heartSurgery.prop('checked', true).change();
@@ -447,6 +447,8 @@
                     }
                 }
             }
+
+            setLimitedCover(true);
 
             $hospitalCover.find('.coverExplanation.' + previousCover + 'Cover').addClass('hidden').end().find('.coverExplanation.' + currentCover + 'Cover').removeClass('hidden');
             previousCover = currentCover;
@@ -585,7 +587,7 @@
             // set the active  (not using $this here to addClass due to we have another sets of link for mobile...)
             updateCoverLevel();
 
-            setLimitedCover();
+            setLimitedCover(true);
 
             applyHospitalCoverTypeSelections();
         });
