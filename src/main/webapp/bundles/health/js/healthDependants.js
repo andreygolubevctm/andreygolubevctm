@@ -52,7 +52,9 @@
             showRelationship:false,
             defactoMinAge: 21,
             defactoMaxAge: 24,
-            showApprenticeField: false
+            showApprenticeField: false,
+            firstNameMaxLength: 24,
+            lastNameMaxLength: 20
         },
         providerConfig,
         maxDependantAge = 25;

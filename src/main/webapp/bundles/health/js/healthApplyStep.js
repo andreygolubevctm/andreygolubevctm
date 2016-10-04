@@ -66,6 +66,9 @@
                 meerkat.messaging.publish(meerkatEvents.health.CHANGE_MAY_AFFECT_PREMIUM);
             });
 
+        $('#health_application_primary_firstname, #health_application_partner_firstname').attr('maxlength', 24);
+        $('#health_application_primary_surname, #health_application_partner_surname').attr('maxlength', 20);
+        $('#health_application_postal_nonStdStreet').attr('maxlength', 29);
     }
 
     meerkat.modules.register('healthApplyStep', {
