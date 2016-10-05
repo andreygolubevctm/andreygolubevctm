@@ -51,7 +51,7 @@ public abstract class AGISLeadFeedService extends WebServiceGatewaySupport imple
 		LeadResponseStatus feedResponse = FAILURE;
 		try {
 
-			if(leadType == CALL_DIRECT) {
+			if(leadType == CALL_DIRECT && !"BUDD".equals(leadData.getPartnerBrand())) {
 				// Return OK as we still want to record touches etc
 				feedResponse = SUCCESS;
 				LOGGER.warn("[Lead feed] Skipped sending lead to service as flagged to be ignored");
@@ -91,6 +91,8 @@ public abstract class AGISLeadFeedService extends WebServiceGatewaySupport imple
 			serviceCode = LeadType.BEST_PRICE.getServiceUrlFlag();
 		} else if(leadType == LeadType.NOSALE_CALL){
 			serviceCode = LeadType.NOSALE_CALL.getServiceUrlFlag();
+		} else if (leadType == LeadType.CALL_DIRECT) {
+			serviceCode = LeadType.CALL_DIRECT.getServiceUrlFlag();
 		}
 
 		try {

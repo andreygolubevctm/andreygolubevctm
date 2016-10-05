@@ -65,8 +65,7 @@ public abstract class LeadFeedService {
 
 	public LeadResponseStatus callDirect(LeadFeedData leadData) throws LeadFeedException {
 		if(!leadFeed.isTestOnlyLead(leadData)) {
-			// Only AI has a call direct lead feed
-			if ("AI".equals(leadData.getPartnerBrand())) {
+			if ("AI".equals(leadData.getPartnerBrand()) || "BUDD".equals(leadData.getPartnerBrand())) {
 				return processGateway(LeadType.CALL_DIRECT, leadData, TouchType.CALL_DIRECT);
 			} else {
 				leadFeedTouchService.recordTouch(Touch.TouchType.CALL_DIRECT, leadData);
