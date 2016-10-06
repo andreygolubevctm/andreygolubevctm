@@ -1,23 +1,27 @@
 package com.ctm.web.core.leadfeed.services;
 
 import com.ctm.aglead.ws.*;
-import com.ctm.web.core.exceptions.*;
+import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.exceptions.EnvironmentException;
+import com.ctm.web.core.exceptions.ServiceConfigurationException;
+import com.ctm.web.core.exceptions.VerticalException;
 import com.ctm.web.core.leadfeed.exceptions.LeadFeedException;
-import com.ctm.web.core.logging.SpringWSLoggingInterceptor;
-import com.ctm.web.core.logging.XMLOutputWriter;
-import com.ctm.web.core.provider.model.Provider;
 import com.ctm.web.core.leadfeed.model.AGISLeadFeedRequest;
 import com.ctm.web.core.leadfeed.model.LeadFeedData;
+import com.ctm.web.core.leadfeed.services.LeadFeedService.LeadResponseStatus;
+import com.ctm.web.core.leadfeed.services.LeadFeedService.LeadType;
+import com.ctm.web.core.leadfeed.utils.LeadFeedUtil;
+import com.ctm.web.core.logging.SpringWSLoggingInterceptor;
+import com.ctm.web.core.logging.XMLOutputWriter;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.ServiceConfiguration;
 import com.ctm.web.core.model.settings.ServiceConfigurationProperty.Scope;
 import com.ctm.web.core.model.settings.Vertical;
+import com.ctm.web.core.provider.model.Provider;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.ProviderService;
 import com.ctm.web.core.services.ServiceConfigurationService;
 import com.ctm.web.core.services.SettingsService;
-import com.ctm.web.core.leadfeed.services.LeadFeedService.LeadResponseStatus;
-import com.ctm.web.core.leadfeed.services.LeadFeedService.LeadType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
@@ -29,7 +33,6 @@ import java.util.List;
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static com.ctm.web.core.leadfeed.services.LeadFeedService.LeadResponseStatus.FAILURE;
 import static com.ctm.web.core.leadfeed.services.LeadFeedService.LeadResponseStatus.SUCCESS;
-import static com.ctm.web.core.leadfeed.services.LeadFeedService.LeadType.CALL_DIRECT;
 
 public abstract class AGISLeadFeedService extends WebServiceGatewaySupport implements IProviderLeadFeedService {
 
@@ -49,13 +52,9 @@ public abstract class AGISLeadFeedService extends WebServiceGatewaySupport imple
 	public LeadResponseStatus process(LeadType leadType, LeadFeedData leadData) throws LeadFeedException {
 
 		LeadResponseStatus feedResponse = FAILURE;
-		try {
 
-			if(leadType == CALL_DIRECT && !"BUDD".equals(leadData.getPartnerBrand())) {
-				// Return OK as we still want to record touches etc
-				feedResponse = SUCCESS;
-				LOGGER.warn("[Lead feed] Skipped sending lead to service as flagged to be ignored");
-			} else {
+		try {
+			if(LeadFeedUtil.isServiceEnabled(leadType, leadData)) {
 				// Generate the lead feed model
 				AGISLeadFeedRequest leadModel = getModel(leadType, leadData);
 				// Get the relevant brand+vertical settings
@@ -69,6 +68,10 @@ public abstract class AGISLeadFeedService extends WebServiceGatewaySupport imple
 				}
 
 				LOGGER.debug("[Lead feed] Response Status from AGIS {}", kv("status", responseDetails.getStatus()));
+			} else {
+				// Return OK as we still want to record touches etc
+				feedResponse = SUCCESS;
+				LOGGER.warn("[Lead feed] Skipped sending lead to service as flagged to be ignored");
 			}
 
 		} catch (EnvironmentException | VerticalException | IOException e) {
