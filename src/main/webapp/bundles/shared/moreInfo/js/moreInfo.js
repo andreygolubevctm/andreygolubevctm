@@ -320,7 +320,8 @@
 
             meerkat.messaging.publish(meerkatEvents.tracking.TOUCH, {
                 touchType: 'H',
-                touchComment: 'MoreInfo'
+                touchComment: 'MoreInfo',
+                productId: product.productId
             });
         });
     }
