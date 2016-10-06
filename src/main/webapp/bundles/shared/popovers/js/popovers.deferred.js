@@ -94,10 +94,10 @@
 			// doesn't seem to support mouseenter and click events simultaneously.
 			case 'mouseenter click':
 			case 'click mouseenter':
-				hideEvent = 'mouseleave unfocus click';
+				hideEvent = 'mouseleave unfocus click scroll';
 				break;
 			default:
-				hideEvent = 'unfocus click';
+				hideEvent = 'unfocus click scroll';
 				break;
 		}
 
@@ -145,6 +145,9 @@
 			if( !event.element.attr('data-hasqtip') ){
 				create(event);
 				event.element.qtip('toggle', true);
+				$(document).on("scroll", function(){
+					event.element.qtip('hide');
+				});
 			}
 		});
 
