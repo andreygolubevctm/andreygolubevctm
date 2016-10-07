@@ -92,7 +92,7 @@ public class BestPriceLeadsDao {
 							if(tran.getHasLeadFeed() == false) {
 								stmt = dbSource.getConnection().prepareStatement(
 									"SELECT r.TransactionId AS transactionId, p1.Value AS leadNo, " +
-									"p2.Value AS leadInfo, p3.Value AS brandCode, p1.productId, t.productCode AS moreInfoProductCode" +
+									"p2.Value AS leadInfo, p3.Value AS brandCode, p1.productId, t.productCode AS moreInfoProductCode, " +
 									// This sub-select will count all leads for the rootID which will eliminate
 									// sending duplicates for transactions that span more than one reporting
 									// period - ie greater than the delay to source leads (in previous select)

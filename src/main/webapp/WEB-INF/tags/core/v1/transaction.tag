@@ -139,9 +139,19 @@
 <c:choose>
 	<c:when test="${empty touch}"></c:when>
  	<c:when test="${touch_with_productId and not empty productId}">
+
+		<c:choose>
+			<c:when test="${touch == 'H' and not empty comment}">
+				<c:set var="type" value="${fn:substring(comment, 0, 10)}" />
+			</c:when>
+			<c:otherwise>
+				<c:set var="type" value="${touch}" />
+			</c:otherwise>
+		</c:choose>
+
 		<jsp:useBean id="touchService" class="com.ctm.web.core.services.AccessTouchService" scope="page" />
 		<c:catch var="error">
-			<c:set var="ignore" value="${touchService.recordTouchWithProductCodeDeprecated(transactionId, touch , operator, productId)}" />
+			<c:set var="ignore" value="${touchService.recordTouchWithProductCodeDeprecated(transactionId, type , operator, productId)}" />
 		</c:catch>
 		<c:if test="${not empty error}">
 			${logger.error('Failed to record touch. {},{}', log:kv('touch',touch ) , log:kv('productId',productId ), error)}
