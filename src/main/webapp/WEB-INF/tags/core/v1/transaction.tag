@@ -80,7 +80,7 @@
 	<core_v1:validate_touch_type valid_touches="A,BP,C,CB,CD,CDC,E,F,H,L,LF,N,P,Q,R,S,T,X" touch="${touch}" />
 </c:set>
 <c:set var="touch_with_productId">
-	<core_v1:validate_touch_type valid_touches="A,BP,CB,CD,C,F" touch="${touch}" />
+	<core_v1:validate_touch_type valid_touches="A,BP,CB,CD,C,F,H" touch="${touch}" />
 </c:set>
 <c:choose>
 	<c:when test="${is_valid_touch == false}">
