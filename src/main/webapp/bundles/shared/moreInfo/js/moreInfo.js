@@ -251,7 +251,7 @@
             meerkat.messaging.publish(meerkatEvents.tracking.TOUCH, {
                 touchType: 'H',
                 touchComment: 'MoreInfo',
-                productId: trackData.hasOwnProperty('productId') ? trackData.productId : ""
+                productId: trackData.hasOwnProperty('productID') ? trackData.productId : ""
             });
 
             // Instigate a session poke
@@ -322,7 +322,7 @@
             meerkat.messaging.publish(meerkatEvents.tracking.TOUCH, {
                 touchType: 'H',
                 touchComment: 'MoreInfo',
-                productId: trackData.hasOwnProperty('productId') ? trackData.productId : ""
+                productId: trackData.hasOwnProperty('productID') ? trackData.productId : ""
             });
         });
     }
