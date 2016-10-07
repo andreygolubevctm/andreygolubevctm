@@ -18,6 +18,7 @@ import com.ctm.web.core.services.ServiceConfigurationService;
 import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.core.leadfeed.services.LeadFeedService.LeadResponseStatus;
 import com.ctm.web.core.leadfeed.services.LeadFeedService.LeadType;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
@@ -101,13 +102,25 @@ public abstract class AGISLeadFeedService extends WebServiceGatewaySupport imple
 		}
 
 		String serviceUrl = serviceConfig.getPropertyValueByKey("serviceUrl", leadData.getBrandId(), provider.getId(), Scope.SERVICE);
-		String messageSource = serviceConfig.getPropertyValueByKey("messageSource", leadData.getBrandId(), provider.getId(), Scope.SERVICE);
+
+
+		String[] messageSources = StringUtils.split(
+				serviceConfig.getPropertyValueByKey("messageSource", leadData.getBrandId(), provider.getId(), Scope.SERVICE),
+				",");
+
+
 		String messageText = serviceConfig.getPropertyValueByKey("messageText", leadData.getBrandId(), provider.getId(), Scope.SERVICE);
 		String sourceId = serviceConfig.getPropertyValueByKey("sourceId", leadData.getBrandId(), provider.getId(), Scope.SERVICE);
 		String partnerId = serviceConfig.getPropertyValueByKey("partnerId", leadData.getBrandId(), provider.getId(), Scope.SERVICE);
 
 		model.setServiceUrl(serviceUrl);
-		model.setMessageSource(messageSource);
+
+		if (leadData.getMoreInfoProductCode() != null && messageSources.length > 1){
+			model.setMessageSource(messageSources[messageSources.length - 1]);
+		} else {
+			model.setMessageSource(messageSources[0]);
+		}
+
 		model.setMessageText(messageText);
 		model.setSourceId(sourceId);
 		model.setPartnerId(partnerId);
