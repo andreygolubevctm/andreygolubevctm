@@ -13,7 +13,8 @@
 	</c:choose>
 </c:set>
 
-<c:if test="${couponService.canShowCouponField(pageContext.getRequest(), couponChannelCode)}">
+<c:choose>
+<c:when test="${couponService.canShowCouponField(pageContext.getRequest(), couponChannelCode)}">
 
     <c:choose>
         <c:when test="${callCentre}">
@@ -36,4 +37,10 @@
 
     <%-- Mando mandatory dialogue --%>
     <simples:dialogue id="64" vertical="health" mandatory="true" />
-</c:if>
+</c:when>
+<c:otherwise>
+    <form_v3:row label=" ">
+        <p>No Mando coupons available</p>
+    </form_v3:row>
+</c:otherwise>
+</c:choose>
