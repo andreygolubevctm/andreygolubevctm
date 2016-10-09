@@ -90,6 +90,11 @@
 		<div class="modal-closebar">
 			<a href="javascript:;" class="btn btn-close-dialog btn-close-more-info"><span class="icon icon-cross"></span></a>
 		</div>
+
+		<div class="esl-message hidden hidden-sm hidden-md hidden-lg">
+			<agg_v1:esl_message />
+		</div>
+
 		<div class="row">
 			<div class="col-xs-12 col-md-8 paragraphedContent">
 
@@ -166,7 +171,7 @@
 						{{ }  else { }}
 							{{ window.meerkat.modules.carMoreInfo.setSpecialConditionDetail(false, ''); }}
 						{{ } }}
-						{{ if (serviceName != 'REIN' && serviceName != 'WOOL') { }}
+						{{ if (serviceName != 'REIN') { }}
 							{{ if(additionalExcesses != null && typeof additionalExcesses != 'undefined' && typeof additionalExcesses.list != 'undefined' && additionalExcesses.list.length > 0) { }}
 							<div id="car-additional-excess-conditions">
 								<h5>Additional Excess</h5>

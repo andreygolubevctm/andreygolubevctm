@@ -116,6 +116,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
         // Initialise request
         Brand brand = initRouter(request, vertical);
         updateTransactionIdAndClientIP(request, data);
+        updateApplicationDate(request, data);
 
         // get the response
         final HealthApplyResponse applyResponse = healthApplyService.apply(request, brand, data);

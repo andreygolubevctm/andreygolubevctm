@@ -500,6 +500,8 @@
                 .val(selectedFrequency)
                 .trigger('change');
 		}
+
+		$('.esl-message').toggleClass('hidden', $('#quote_riskAddress_state').val() !== 'NSW');
 	}
 
 	/**

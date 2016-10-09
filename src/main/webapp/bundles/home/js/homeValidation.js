@@ -64,4 +64,13 @@
         },
         "Please confirm that the oldest person living at the home is older than the policy holder."
     );
+
+    $.validator.addMethod("securityFeatures", function (value, elem, param) {
+        if ($('input[name=home_property_hasSecurity]:checked').val() === 'N') {
+            return true;
+        }
+
+        return $('.securityFeatures').find(':input').is(':checked');
+
+    }, "Please select at least one");
 })(jQuery);

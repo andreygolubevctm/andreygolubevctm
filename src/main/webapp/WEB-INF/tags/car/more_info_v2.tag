@@ -242,7 +242,7 @@
                     {{ }  else { }}
                     {{ window.meerkat.modules.carMoreInfo.setSpecialConditionDetail(false, ''); }}
                     {{ } }}
-                    {{ if (serviceName != 'REIN' && serviceName != 'WOOL') { }}
+                    {{ if (serviceName != 'REIN') { }}
                     {{ if(additionalExcesses != null && typeof additionalExcesses != 'undefined' && typeof additionalExcesses.list != 'undefined' && additionalExcesses.list.length > 0) { }}
                     <div id="car-additional-excess-conditions">
                         <h5>Additional Excess</h5>

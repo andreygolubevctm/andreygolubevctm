@@ -37,26 +37,33 @@ public class CarTypeDao {
 		String[] transmissions = null;
 		CarTransmission.TransmissionType trans = CarTransmission.TransmissionType.findByCode(transmissionCode);
 
-		switch (trans) {
-		case MANUAL:
+		if(trans != null){
+			switch (trans) {
+				case MANUAL:
+					transmissions = new String[]{
+							CarTransmission.TransmissionType.MANUAL.getCode(),
+							CarTransmission.TransmissionType.SEMI_AUTOMATIC.getCode(),
+							CarTransmission.TransmissionType.DUAL_CLUTCH.getCode()
+					};
+					break;
+				case AUTOMATIC:
+					transmissions = new String[]{
+							CarTransmission.TransmissionType.AUTOMATIC.getCode(),
+							CarTransmission.TransmissionType.SEMI_AUTOMATIC.getCode()
+					};
+					break;
+				default:
+					transmissions = new String[]{
+							transmissionCode
+					};
+					break;
+			}
+		} else {
 			transmissions = new String[]{
-				CarTransmission.TransmissionType.MANUAL.getCode(),
-				CarTransmission.TransmissionType.SEMI_AUTOMATIC.getCode(),
-				CarTransmission.TransmissionType.DUAL_CLUTCH.getCode()
+					transmissionCode
 			};
-			break;
-		case AUTOMATIC:
-			transmissions = new String[]{
-					CarTransmission.TransmissionType.AUTOMATIC.getCode(),
-					CarTransmission.TransmissionType.SEMI_AUTOMATIC.getCode()
-			};
-			break;
-		default:
-			transmissions = new String[]{
-				transmissionCode
-			};
-			break;
 		}
+
 
 		//
 		// Run the query

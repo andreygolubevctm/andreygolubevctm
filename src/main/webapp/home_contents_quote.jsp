@@ -18,9 +18,7 @@
 <home:splittest_helper />
 
 <%-- Load in form values from brochure site --%>
-<c:if test="${brochurewarePassedParams}">
-	<home:passed_params />
-</c:if>
+<home:passed_params />
 
 <%-- HTML --%>
 <layout_v1:journey_engine_page title="Home & Contents Quote">
@@ -32,6 +30,9 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="header">
+		<div class="esl-message hidden hidden-xs">
+			<agg_v1:esl_message />
+		</div>
 	</jsp:attribute>
 
 
