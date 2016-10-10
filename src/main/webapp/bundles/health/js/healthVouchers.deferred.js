@@ -148,7 +148,7 @@
         $elements.inputs.referrerref.val(data.isOther && !_.isEmpty(data.other.referrerref) ? data.other.referrerref : '');
         $elements.inputs.approvedby.val(data.isOther && !_.isEmpty(data.other.approvedby) ? data.other.approvedby : '');
         $elements.inputs.approvedbydisplay.empty().append(data.isOther && !_.isEmpty(data.other.approvedby) ? data.other.approvedby : '');
-        $elements.inputs.code.val(data.isOther && _.isEmpty(data.other.approvedby) && !_.isEmpty(data.other.code) ? data.other.code : '');
+        $elements.inputs.code.val(data.isOther && !_.isEmpty(data.other.code) ? data.other.code : '');
         // Disable fields once authorised
         if(data.isOther && !_.isEmpty(data.other.approvedby)) {
             $elements.wrappers.disableables.addClass('disabled');
@@ -280,6 +280,7 @@
 
     function deAuthorise() {
         flushMessage();
+        $elements.inputs.code.val('');
         $elements.inputs.approvedby.val('');
         updateData();
         updateView();
