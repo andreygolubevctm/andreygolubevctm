@@ -22,6 +22,7 @@ import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.ProviderService;
 import com.ctm.web.core.services.ServiceConfigurationService;
 import com.ctm.web.core.services.SettingsService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
