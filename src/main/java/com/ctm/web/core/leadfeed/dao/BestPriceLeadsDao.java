@@ -92,7 +92,7 @@ public class BestPriceLeadsDao {
 							if(tran.getHasLeadFeed() == false) {
 								stmt = dbSource.getConnection().prepareStatement(
 									"SELECT r.TransactionId AS transactionId, p1.Value AS leadNo, " +
-									"p2.Value AS leadInfo, p3.Value AS brandCode, p1.productId, " +
+									"p2.Value AS leadInfo, p3.Value AS brandCode, p1.productId, t.productCode AS moreInfoProductCode, " +
 									// This sub-select will count all leads for the rootID which will eliminate
 									// sending duplicates for transactions that span more than one reporting
 									// period - ie greater than the delay to source leads (in previous select)
@@ -109,6 +109,13 @@ public class BestPriceLeadsDao {
 									"	ON p2.transactionId = r.TransactionId AND p2.productId = r.Value AND p2.property = 'leadfeedinfo' " +
 									"LEFT JOIN aggregator.results_properties AS p3  " +
 									"	ON p3.transactionId = r.TransactionId AND p3.productId = r.Value AND p3.property = 'brandCode' " +
+
+
+//											"select t.productCode from aggregator.ranking_details rd " +
+											" left join (select tp.productCode, t.transaction_id as transactionId from ctm.touches t join ctm.touches_products tp on t.id = tp.touchesId where t.type = 'MoreInfo') as t " +
+											" on t.transactionId = r.transactionId and t.productCode = r.value and r.property = 'productId' " +
+
+
 									"WHERE r.TransactionId >= " + tran.getMinTransactionId() + " AND r.TransactionId <= " + tran.getMaxTransactionId() + " " +
 									"	AND r.TransactionId IN (" + tran.toString() + ") " +
 									"	AND r.RankPosition = 0 " +
@@ -156,6 +163,7 @@ public class BestPriceLeadsDao {
 												leadData.setState(state);
 												leadData.setClientIpAddress(tran.getIpAddress());
 												leadData.setProductId(resultSet.getString("productId"));
+												leadData.setMoreInfoProductCode(resultSet.getString("moreInfoProductCode"));
 
 												Brand brand = ApplicationService.getBrandByCode(tran.getStyleCode());
 												leadData.setBrandId(brand.getId());
