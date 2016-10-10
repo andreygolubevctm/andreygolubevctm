@@ -394,7 +394,7 @@
                         $benefitCheckbox.hospital.birthServices.prop('checked', true).change();
                         $benefitCheckbox.hospital.assistedReproduction.prop('checked', true).change();
                         $benefitCheckbox.extras.generalDental.prop('checked', true).change();
-                    } else if (currentSituation === 'sf' && _.indexOf(['f', 'spf', 'c'], healthCvr) >= 0) {
+                    } else if (currentSituation === 'sf') {
                         $benefitCheckbox.hospital.privateHosp.prop('checked', true).change();
                         $benefitCheckbox.extras.generalDental.prop('checked', true).change();
                     } else if (currentSituation === 'atp') {
@@ -404,7 +404,8 @@
                         $benefitCheckbox.hospital.privateHosp.prop('checked', true).change();
                         $benefitCheckbox.extras.generalDental.prop('checked', true).change();
                     } else {
-                        // Ignore - not defaults defined;
+                        $benefitCheckbox.hospital.privateHosp.prop('checked', true).change();
+                        $benefitCheckbox.extras.generalDental.prop('checked', true).change();
                     }
                 } else {
                     if (_.indexOf(['n', 'lc'], currentSituation) >= 0) {
@@ -427,7 +428,7 @@
                         $benefitCheckbox.extras.generalDental.prop('checked', true).change();
                         $benefitCheckbox.extras.optical.prop('checked', true).change();
                         $benefitCheckbox.extras.physiotherapy.prop('checked', true).change();
-                    } else if (currentSituation === 'sf' && _.indexOf(['f', 'spf', 'c'], healthCvr) >= 0) {
+                    } else if (currentSituation === 'sf') {
                         $benefitCheckbox.hospital.privateHosp.prop('checked', true).change();
                         $benefitCheckbox.hospital.heartSurgery.prop('checked', true).change();
                         $benefitCheckbox.extras.generalDental.prop('checked', true).change();
@@ -443,7 +444,8 @@
                         $benefitCheckbox.extras.optical.prop('checked', true).change();
                         $benefitCheckbox.extras.physiotherapy.prop('checked', true).change();
                     } else {
-                        // Ignore - not defaults defined;
+                        $benefitCheckbox.hospital.privateHosp.prop('checked', true).change();
+                        $benefitCheckbox.extras.generalDental.prop('checked', true).change();
                     }
                 }
             }
