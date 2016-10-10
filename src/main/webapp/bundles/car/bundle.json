@@ -5,6 +5,7 @@
     "plugins/scrollTo",
     "shared/results/v2",
     "shared/results/v3",
+    "shared/results/v5",
     "shared/features",
     "shared/validation",
     "core",

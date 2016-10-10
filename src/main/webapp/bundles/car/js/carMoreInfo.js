@@ -312,7 +312,7 @@
 		if(obj.available !== "Y")
 			return;
 
-		if (meerkat.modules.splitTest.isActive(8)) {
+		if (meerkat.modules.splitTest.isActive(8) && meerkat.modules.moreInfo.isBridgingPageOpen()) {
 			callActionsToggle(event, $el, obj);
 			return;
 		}

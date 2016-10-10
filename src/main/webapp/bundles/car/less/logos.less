@@ -33,7 +33,10 @@
 :not(.ie8) & {
 	.featuresMode {
 		.companyLogo {
-			.providersHighResSpriteImages(~"car"; ~"logo_"; @provider-list; @logo-xs-scale);
+			.providersHighResSpriteImages(~"car"; ~"logo_"; @provider-list);
+			@media (@sm-md-only) {
+				.providersHighResSpriteImages(~"car"; ~"logo_"; @provider-list; 0.6);
+			}
 		}
 	}
 }
