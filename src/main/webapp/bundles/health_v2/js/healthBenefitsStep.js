@@ -26,7 +26,9 @@
         extrasBenefits = [],
         currentCover = false,
         previousCover = false,
-        currentSituation = false;
+        currentSituation = false,
+        currentAge = false, // Is the max age if partner exists
+        currentFamilyType = false;
 
     var events = {
             healthBenefitsStep: {
@@ -350,10 +352,14 @@
 
     function activateBenefitPreSelections(isFromStart) {
         isFromStart = isFromStart || false;
+        var familyType = $('.health-situation-healthCvr').val().toLowerCase();
         var situ = $healthSitu.find('input:checked').val().toLowerCase();
-        var isNewSituation = situ !== currentSituation;
+        var age = getAge();
+        var isNewSituation = situ !== currentSituation || familyType !== currentFamilyType || age !== currentAge;
         if(isNewSituation) {
+            currentFamilyType = familyType;
             currentSituation = situ;
+            currentAge = age;
         }
 
         if(!isFromStart || (isFromStart && !isNewSituation)) {
@@ -378,18 +384,14 @@
                 unsetAllBenefitSelections();
                 $coverType.find('#health_situation_coverType_C').prop('checked',true).change();
 
-                var healthCvr = $('.health-situation-healthCvr').val().toLowerCase();
-
-                var age = getAge();
-
-                if (age < 40) {
+                if (currentAge < 40) {
                     if (_.indexOf(['n', 'lc'], currentSituation) >= 0) {
                         $benefitCheckbox.hospital.privateHosp.prop('checked', true).change();
                         $benefitCheckbox.extras.generalDental.prop('checked', true).change();
-                    } else if (currentSituation === 'csf' && healthCvr === 'sm') {
+                    } else if (currentSituation === 'csf' && currentFamilyType === 'sm') {
                         $benefitCheckbox.hospital.privateHosp.prop('checked', true).change();
                         $benefitCheckbox.extras.generalDental.prop('checked', true).change();
-                    } else if (currentSituation === 'csf' && _.indexOf(['sf', 'c', 'f', 'spf'], healthCvr) >= 0) {
+                    } else if (currentSituation === 'csf' && _.indexOf(['sf', 'c', 'f', 'spf'], currentFamilyType) >= 0) {
                         $benefitCheckbox.hospital.privateHosp.prop('checked', true).change();
                         $benefitCheckbox.hospital.birthServices.prop('checked', true).change();
                         $benefitCheckbox.hospital.assistedReproduction.prop('checked', true).change();
@@ -414,13 +416,13 @@
                         $benefitCheckbox.extras.generalDental.prop('checked', true).change();
                         $benefitCheckbox.extras.optical.prop('checked', true).change();
                         $benefitCheckbox.extras.physiotherapy.prop('checked', true).change();
-                    } else if (currentSituation === 'csf' && healthCvr === 'sm') {
+                    } else if (currentSituation === 'csf' && currentFamilyType === 'sm') {
                         $benefitCheckbox.hospital.privateHosp.prop('checked', true).change();
                         $benefitCheckbox.hospital.heartSurgery.prop('checked', true).change();
                         $benefitCheckbox.extras.generalDental.prop('checked', true).change();
                         $benefitCheckbox.extras.optical.prop('checked', true).change();
                         $benefitCheckbox.extras.physiotherapy.prop('checked', true).change();
-                    } else if (currentSituation === 'csf' && _.indexOf(['sf', 'c', 'f', 'spf'], healthCvr) >= 0) {
+                    } else if (currentSituation === 'csf' && _.indexOf(['sf', 'c', 'f', 'spf'], currentFamilyType) >= 0) {
                         $benefitCheckbox.hospital.privateHosp.prop('checked', true).change();
                         $benefitCheckbox.hospital.heartSurgery.prop('checked', true).change();
                         $benefitCheckbox.hospital.birthServices.prop('checked', true).change();
