@@ -6,7 +6,7 @@
 <%@ attribute name="xpath" required="true" rtexprvalue="true" description="variable's xpath" %>
 
 <div id="health_medicareDetails_yellowCardMessage" class="hidden">
-	,Yellow card holders (reciprocal) have limited Medicare access and no benefit if you elect to be treated as a private patient in either a private or public hospital. You may choose private hospital cover for tax-purposes as the Medicare levy surcharge may still otherwise apply.
+	Yellow card holders (reciprocal) have limited Medicare access and no benefit if you elect to be treated as a private patient in either a private or public hospital. You may choose private hospital cover for tax-purposes as the Medicare levy surcharge may still otherwise apply.
 </div>
 
 <div class="select">
