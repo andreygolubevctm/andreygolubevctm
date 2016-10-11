@@ -1,5 +1,6 @@
 /**
- * Description: External documentation:
+ * Description: Provides all the functionality to interact with the
+ * voucher form.
  */
 (function ($, undefined) {
 
@@ -17,10 +18,15 @@
             otherMax : 50
     };
 
+    /**
+     * init: reset private data object, cache all required DOM elements and
+     * call all setup methods.
+     */
     function init() {
-        resetData();
+        resetData(); // reset the private data object
         $(document).ready(function () {
             if(meerkat.site.isCallCentreUser) {
+                // Cache all required jquery element objects
                 $elements.root = $('#healthVouchers');
                 $elements.wrappers = {
                     available:      $elements.root.find('.voucherIsAvailable').first(),
@@ -67,6 +73,9 @@
         });
     }
 
+    /**
+     * applyEventListeners: apply listeners to required elements
+     */
     function applyEventListeners() {
         $elements.triggers.available.on('change', function(){
             resetData();
@@ -93,10 +102,15 @@
         });
     }
 
+    /**
+     * updateData: updates the private data object with values from the form
+     */
     function updateData() {
         var $available = $elements.triggers.available.filter(':checked');
         data.available = _.isEmpty($available) ? false : $available.val() === 'Y';
+
         if(data.available) {
+            // If voucher available then reset the data object to suit
             var type = $elements.triggers.type.val();
             switch (type) {
                 case 'other':
@@ -110,32 +124,38 @@
                     data.available = true;
                     break;
             }
-        } else {
-            resetData();
-        }
-        if(data.isOther) {
-            var reason = $elements.triggers.reason.val();
-            var referrerref = $elements.inputs.referrerref.val();
-            var value = $elements.inputs.value.val();
-            var email = $elements.inputs.email.val();
-            if(_.isEmpty(email)) {
-                email = $elements.inputs.appemail.val();
+
+            // If is Other voucher type then pull in values from form
+            if(data.isOther) {
+                var reason = $elements.triggers.reason.val();
+                var referrerref = $elements.inputs.referrerref.val();
+                var value = $elements.inputs.value.val();
+                var email = $elements.inputs.email.val();
+                if(_.isEmpty(email)) {
+                    email = $elements.inputs.appemail.val();
+                }
+                var code = $elements.inputs.code.val();
+                var approvedby = $elements.inputs.approvedby.val();
+                data.other = {
+                    reason: _.isEmpty(reason) ? null : reason,
+                    referrerref: _.isEmpty(referrerref) ? null : referrerref,
+                    value: _.isEmpty(value) ? null : value,
+                    email: _.isEmpty(email) ? null : email,
+                    code: _.isEmpty(code) ? null : code,
+                    approvedby: _.isEmpty(approvedby) ? null : approvedby
+                };
             }
-            var code = $elements.inputs.code.val();
-            var approvedby = $elements.inputs.approvedby.val();
-            data.other = {
-                reason: _.isEmpty(reason) ? null : reason,
-                referrerref: _.isEmpty(referrerref) ? null : referrerref,
-                value: _.isEmpty(value) ? null : value,
-                email: _.isEmpty(email) ? null : email,
-                code: _.isEmpty(code) ? null : code,
-                approvedby: _.isEmpty(approvedby) ? null : approvedby
-            };
+        } else {
+            resetData(); // if not available then flush data object
         }
     }
 
+    /**
+     * updateView: update the form based on values in the private data object
+     * Also, toggles the visibility of form elements based on the state.
+     */
     function updateView() {
-        // Update inputs
+        // Update inputs based on sanitised data
         if (!data.available) {
             $elements.triggers.type.find('option:selected').prop('selected', null);
         }
@@ -149,7 +169,8 @@
         $elements.inputs.approvedby.val(data.isOther && !_.isEmpty(data.other.approvedby) ? data.other.approvedby : '');
         $elements.inputs.approvedbydisplay.empty().append(data.isOther && !_.isEmpty(data.other.approvedby) ? data.other.approvedby : '');
         $elements.inputs.code.val(data.isOther && !_.isEmpty(data.other.code) ? data.other.code : '');
-        // Disable fields once authorised
+
+        // Enable/disable fields based on whether authorised
         if(data.isOther && !_.isEmpty(data.other.approvedby)) {
             $elements.wrappers.disableables.addClass('disabled');
             $elements.inputs.disableables.prop('readonly',true);
@@ -165,7 +186,8 @@
                 $elements.triggers.submit.slideDown('fast');
             });
         }
-        // Update wrapper visibility
+
+        // Update visibility of form element wrappers
         if(data.available) {
             $elements.wrappers.available.slideDown('fast', function(){
                 $elements.wrappers.type.slideDown('fast', function(){
@@ -199,6 +221,9 @@
         }
     }
 
+    /**
+     * resetData: resets the private data object to the default state
+     */
     function resetData() {
         data = {
             available : false,
@@ -208,12 +233,18 @@
         };
     }
 
+    /**
+     * resetMando: sets the private data object to the default state for a mando voucher
+     */
     function setMando() {
         data.isMando = true;
         data.isOther = false;
         data.other = false;
     }
 
+    /**
+     * resetMando: sets the private data object to the default state for an 'other' voucher
+     */
     function setOther() {
         data.isMando = false;
         data.isOther = true;
@@ -227,14 +258,26 @@
         };
     }
 
+    /**
+     * onUpdateReason: action when reason selector is updated. Form
+     * is changed depending on the value.
+     */
     function onUpdateReason() {
         var reason = $elements.triggers.reason.val();
         if(reason !== 'referral-offer') {
+            // Flush the referralref field if not a referral offer
             $elements.inputs.referrerref.val('');
         }
+        // Update value selector with applicable options
         updateValueOptions(data.other.reason === 'price-promise');
     }
 
+    /**
+     * isValid: validate each of the form elements before making
+     * ajax call to authorise the voucher.
+     *
+     * @returns {boolean}
+     */
     function isValid() {
         $elements.inputs.reason.valid();
         $elements.inputs.referrerref.valid();
@@ -244,12 +287,22 @@
         return !_.isEmpty($elements.wrappers.available.find('.has-error'));
     }
 
+    /**
+     * isValidAuthoriseResponse: validates the response from the authorise ajax call
+     *
+     * @param response
+     * @returns {boolean}
+     */
     function isValidAuthoriseResponse(response) {
         if(!_.isEmpty(response) && _.isObject(response)) {
             return _.has(response,'isAuthorised') && response.isAuthorised === true && _.has(response,'username') && !_.isEmpty(response.username);
         }
     }
 
+    /**
+     * authorise: check the authorisation code is valid by making an
+     * ajax call to the authorise end point
+     */
     function authorise() {
         if(isValid()) {
             updateData();
@@ -280,6 +333,10 @@
         }
     }
 
+    /**
+     * deAuthorise: unsets the current authorisation by resetting the
+     * approvedby and code fields.
+     */
     function deAuthorise() {
         flushMessage();
         $elements.inputs.code.val('');
@@ -288,14 +345,30 @@
         updateView();
     }
 
+    /**
+     * renderSuccess: render an error message
+     *
+     * @param copy
+     */
     function renderError(copy) {
         renderMessage('error', copy);
     }
 
+    /**
+     * renderSuccess: render a success message
+     *
+     * @param copy
+     */
     function renderSuccess(copy) {
         renderMessage('success', copy);
     }
 
+    /**
+     * renderMessage: common message render method
+     *
+     * @param type
+     * @param copy
+     */
     function renderMessage(type,copy) {
         flushMessage().append(
             '<p class="' + type + '">' + copy + '</p>'
@@ -306,6 +379,11 @@
         return $elements.wrappers.messages.empty();
     }
 
+    /**
+     * updateValueOptions: renders the value options to the value selector.
+     * Filtered indicates only a subset of the options are to be included.
+     * @param filtered
+     */
     function updateValueOptions(filtered) {
         filtered = filtered  || false;
         var $option = $('<option/>',{
