@@ -271,7 +271,9 @@
                         renderError("Invalid voucher code entered");
                     }
                 },
-                onError: renderError
+                onError: function(xhr, status, error) {
+                    renderError("There is a problem with this service: " + error);
+                }
             });
         } else {
             renderMessage("error","All fields are mandatory");
