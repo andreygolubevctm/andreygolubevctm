@@ -2,6 +2,16 @@
 
 {{ var parsedValue = '' }}
 
+<%-- Special Conditions --%>
+{{ if (ft.resultPath == 'specialConditions.description') { }}
+{{ pathValue = true }}
+{{ if (obj.specialConditions.description != undefined) { }}
+{{ displayValue = obj.specialConditions.description; }}
+{{ } else { }}
+{{ displayValue = 'Refer to the PDS'; }}
+{{ } }}
+{{ } }}
+
 <%-- Call insurer direct button --%>
 {{ if (ft.resultPath == 'action.callInsurer') { }}
 <%-- Default pathValue to N so we get the crosses as default. --%>

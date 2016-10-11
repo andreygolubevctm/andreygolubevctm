@@ -354,7 +354,7 @@
 		};
 
 		if(meerkat.modules.deviceMediaState.get() == 'xs') {
-			modalOptions.title = "Reference no. " + obj.leadNo;
+			modalOptions.title = "Reference no. " + obj.quoteNumber;
 		}
 
 		callbackModalId = meerkat.modules.dialogs.show(modalOptions);
