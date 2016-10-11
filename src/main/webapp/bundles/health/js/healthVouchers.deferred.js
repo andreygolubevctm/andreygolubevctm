@@ -254,7 +254,7 @@
         if(isValid()) {
             updateData();
             meerkat.modules.comms.get({
-                url: '/ctm/spring/voucher/authorise',
+                url: 'spring/voucher/authorise',
                 data: {code : data.other.code},
                 cache: false,
                 dataType: 'json',
