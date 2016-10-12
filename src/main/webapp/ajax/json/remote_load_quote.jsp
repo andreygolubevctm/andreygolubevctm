@@ -121,6 +121,11 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 						&amp;j=${data[vQuotetype]['currentJourney']}
 					</c:if>
 				</c:set>
+				<c:set var="trackingParams">
+					<c:if test="${not empty param.cid and not empty param.etRid and not empty param.utmSource and not empty param.utmMedium and not empty param.utmCampaign}">
+						&amp;cid=${param.cid}&amp;et_rid=${param.etRid}&amp;utm_source=${param.utmSource}&amp;utm_medium=${param.utmMedium}&amp;utm_campaign=${param.utmCampaign}
+					</c:if>
+				</c:set>
 
 				<c:set var="result">
 					<result>
@@ -135,10 +140,10 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 										<destUrl>${quoteType}_quote.jsp?action=load&amp;transactionId=${data.current.transactionId}&amp;productId=${param.productId}&amp;productTitle=${param.productTitle}${jParam}#results</destUrl>
 									</c:when>
 									<c:otherwise>
-										<destUrl>${quoteType}_quote.jsp?action=load&amp;transactionId=${data.current.transactionId}${jParam}#results</destUrl>
+										<destUrl>${quoteType}_quote.jsp?action=load&amp;transactionId=${data.current.transactionId}${jParam}${trackingParams}#results</destUrl>
 									</c:otherwise>
 								</c:choose>
-								</c:when>
+							</c:when>
 
 						<%-- AMEND QUOTE --%>
 						<c:when test="${loadAction eq 'amend' || loadAction eq 'start-again'}">
