@@ -9,6 +9,9 @@ import java.util.List;
 @JsonTypeName("health")
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class HealthMetadata extends LeadMetadata {
+
+    public static final HealthMetadata EMPTY_HEALTH_METADATA = new HealthMetadata();
+
     private String situation;
     private String lookingTo;
     private Boolean hasPrivateHealthInsurance;
@@ -20,6 +23,9 @@ public class HealthMetadata extends LeadMetadata {
     private String rebateTier;
     private String gender;
     private String partnerGender;
+
+    private HealthMetadata() {
+    }
 
     public HealthMetadata(final String situation,
                           final String lookingTo,

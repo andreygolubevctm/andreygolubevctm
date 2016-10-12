@@ -464,10 +464,10 @@
 </go:style>
 
 <%-- JAVASCRIPT --%>
-<go:script marker="js-head">
+<go:script marker="onready">
 
-var Results = new Object(); 
-Results = {
+window.Results = new Object();
+window.Results = {
 	_currentPrices : new Object(), 
 	_priceCount : 0,
 	_initialSort : true, 
@@ -891,15 +891,15 @@ Results = {
 							var refNo = LifeQuote.isOzicare(product.company) ? product.lead_number : referenceNo.getTransactionID();
 
 							var callMeBackHTML = [
-								"<p>",
-									"Call " + product.service_provider + " now <span class='phone'>" + product.insurer_contact + "</span>",
-									"<br> Reference No. " + refNo,
-									"<br> or <a href='javascript:void(0)' class='new-btn btn-white callback-button'>Request a call back</a>",
-								"</p>"
-							].join("");
+								'<p>',
+									'Call ' + product.service_provider + ' now <span class="phone">' + product.insurer_contact + '</span>',
+									'<br> Reference No. ' + refNo,
+									'<br> or <a href="javascript:void(0)" class="new-btn btn-white callback-button">Request a call back</a>',
+								'</p>'
+							].join('');
 
 							$moreInfo
-								.append("<div class='call-me-back'>" + callMeBackHTML + "</div>")
+								.append('<div class="call-me-back">' + callMeBackHTML + '</div>')
 								.on("click", ".callback-button", function(e) {
 									var submitObj = {};
 									submitObj[type] = product;

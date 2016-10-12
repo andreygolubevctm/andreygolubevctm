@@ -5,7 +5,7 @@ import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.services.EnvironmentService;
 import com.ctm.web.core.services.ServiceConfigurationService;
-import com.ctm.web.core.utils.ObjectMapperUtil;
+import com.ctm.web.core.services.ServiceConfigurationServiceBean;
 import com.ctm.web.travel.model.form.TravelQuote;
 import com.ctm.web.travel.model.form.TravelRequest;
 import com.ctm.web.travel.model.form.Travellers;
@@ -37,7 +37,7 @@ public class TravelServiceTest {
 	public void setup() throws Exception {
 		initMocks(this);
 		EnvironmentService.setEnvironment("localhost");
-		travelService = new TravelService(new ProviderFilterDao(), ObjectMapperUtil.getObjectMapper());
+		travelService = new TravelService(new ProviderFilterDao(), new ServiceConfigurationServiceBean());
 		travelRequest = new TravelRequest();
 		travelQuote = new TravelQuote();
 

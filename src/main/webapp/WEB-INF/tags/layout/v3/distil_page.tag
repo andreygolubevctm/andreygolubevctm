@@ -27,6 +27,8 @@ ${newPage.init(pageContext.request, pageSettings)}
 
 <core_v2:no_cache_header/>
 
+<%-- Variables --%>
+<c:set var="GTMEnabled" value="${pageSettings.getSetting('GTMEnabled') eq 'Y'}" />
 <c:set var="assetUrl" value="/${pageSettings.getContextFolder()}assets/" />
 
 <!DOCTYPE html>
@@ -56,9 +58,6 @@ ${newPage.init(pageContext.request, pageSettings)}
 			<link rel="apple-touch-icon" sizes="180x180" href="${assetUrl}brand/${pageSettings.getBrandCode()}/graphics/touch-icons/phone@3x.png">
 		</c:if>
 
-		<%-- DISTIL - Comment for script injection --%>
-		<!-- <body><head><form><a></a><input /></form></head></body> -->
-
 		<c:set var="browserName" value="${userAgentSniffer.getBrowserName(pageContext.getRequest().getHeader('user-agent'))}" />
 		<c:set var="browserVersion" value="${userAgentSniffer.getBrowserVersion(pageContext.getRequest().getHeader('user-agent'))}" />
 
@@ -75,7 +74,15 @@ ${newPage.init(pageContext.request, pageSettings)}
 
 	<body class="jeinit">
 
-		<snippets:benchmarketing />
+		<c:if test="${GTMEnabled eq true and not empty pageSettings and pageSettings.hasSetting('GTMPropertyId')}">
+			<c:if test="${not empty pageSettings.getSetting('GTMPropertyId')}">
+				<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+						new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+						j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+						'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+				})(window,document,'script','CtMDataLayer','${pageSettings.getSetting('GTMPropertyId')}');</script>
+			</c:if>
+		</c:if>
 
 		<!--  content -->
 		<jsp:doBody />

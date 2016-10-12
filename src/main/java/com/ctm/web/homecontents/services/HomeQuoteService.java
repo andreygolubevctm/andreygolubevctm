@@ -107,8 +107,7 @@ public class HomeQuoteService extends CommonRequestServiceV2 {
                 .responseType(MediaType.APPLICATION_JSON)
                 .response(HomeResponse.class)
                 .build())
-//                TODO: what to do on error
-//                .doOnError(t -> t.printStackTrace())
+                .doOnError(this::logHttpClientError)
                 .single().toBlocking().single();
 
         final List<HomeResult> homeResults = ResponseAdapter.adapt(homeQuoteRequest, homeResponse);

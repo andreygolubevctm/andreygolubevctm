@@ -157,9 +157,7 @@
                         $emailQuoteBtn.removeClass("privacyOptinChecked");
                     }
                 });
-                if(meerkat.modules.splitTest.isActive(4)) {
-                    meerkat.modules.carRegoLookup.lookup();
-                }
+                meerkat.modules.carRegoLookup.lookup();
             },
             validation: {
                 validate: true,
@@ -265,6 +263,8 @@
                     meerkat.modules.transactionId.getNew(3);
                     $('.header-wrap .quoteSnapshot').addClass("hidden");
                 }
+
+                $('.esl-message').toggleClass('hidden', true);
             },
             onAfterLeave: function (event) {
                 meerkat.modules.journeyProgressBar.show();
@@ -309,14 +309,11 @@
                 navigationId: steps.resultsStep.navigationId
             }
         ];
-        // Split Test for Rego Lookup Combines the first two steps in the progress bar.
-        if(meerkat.modules.splitTest.isActive(4)
-        || meerkat.modules.splitTest.isActive(41)) {
-            // Make car details match your car.
-            progressBarConfig[0].matchAdditionalSteps = [steps.optionsStep.navigationId];
-            //Remove the car details step.
-            progressBarConfig.splice(1,1);
-        }
+        // Combines the first two steps in the progress bar.
+        // Make car details match your car.
+        progressBarConfig[0].matchAdditionalSteps = [steps.optionsStep.navigationId];
+        //Remove the car details step.
+        progressBarConfig.splice(1,1);
         meerkat.modules.journeyProgressBar.configure(progressBarConfig);
     }
 

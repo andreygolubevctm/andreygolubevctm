@@ -66,6 +66,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
 
 	<c:if test="${pageSettings.getSetting('appleTouchIconsEnabled') eq 'Y'}">
 		<link rel="apple-touch-icon" href="${assetUrl}brand/${pageSettings.getBrandCode()}/graphics/touch-icons/phone.png">
@@ -74,9 +75,6 @@ ${newPage.init(pageContext.request, pageSettings)}
 		<link rel="apple-touch-icon" sizes="152x152" href="${assetUrl}brand/${pageSettings.getBrandCode()}/graphics/touch-icons/tablet@2x.png">
 		<link rel="apple-touch-icon" sizes="180x180" href="${assetUrl}brand/${pageSettings.getBrandCode()}/graphics/touch-icons/phone@3x.png">
 	</c:if>
-
-	<%-- DISTIL - Comment for script injection --%>
-	<!-- <body><head><form><a></a><input /></form></head></body> -->
 
 	<c:if test="${empty skipJSCSS}">
 		<c:set var="browserName" value="${userAgentSniffer.getBrowserName(pageContext.getRequest().getHeader('user-agent'))}" />
@@ -124,8 +122,6 @@ ${newPage.init(pageContext.request, pageSettings)}
             })(window,document,'script','CtMDataLayer','${pageSettings.getSetting('GTMPropertyId')}');</script>
         </c:if>
     </c:if>
-
-	<snippets:benchmarketing />
 
 	<div class="navMenu-row">
 
@@ -251,7 +247,6 @@ ${newPage.init(pageContext.request, pageSettings)}
 			<script src="${assetUrl}js/libraries/bootstrap${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
 
 			<go:insertmarker format="HTML" name="js-href" />
-            <%-- Currently only used for Health DOB --%>
             <go:script>
                 <go:insertmarker format="SCRIPT" name="js-head" />
             </go:script>
@@ -259,7 +254,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 		<c:if test="${isDev eq false}">
 			<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 		</c:if>
-		<script>window._ || document.write('<script src="${assetUrl}/libraries/underscore-1.8.3.min.js">\x3C/script>')</script>
+		<script>window._ || document.write('<script src="${assetUrl}libraries/underscore-1.8.3.min.js">\x3C/script>')</script>
 
 		<!--  Meerkat -->
 		<c:if test="${pageSettings.getVerticalCode() ne 'generic'}">
@@ -294,7 +289,9 @@ ${newPage.init(pageContext.request, pageSettings)}
             <c:set var="serverMonth" value="${serverMonth-1}" />
 
 			<script>
-                (function (meerkat) {
+
+				;(function (meerkat) {
+
 					var siteConfig = {
 						title: '${title} - ${pageSettings.getSetting("windowTitle")}',
 						name: '${pageSettings.getSetting("brandName")}',

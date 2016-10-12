@@ -84,6 +84,7 @@
 		</bank>
 		<medicare>
 			<cover>Y</cover>
+			<colour>green</colour>
 			<number>2249944514</number>
 			<firstName>Test</firstName>
 			<surname>User</surname>

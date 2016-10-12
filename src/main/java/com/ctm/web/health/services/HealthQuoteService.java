@@ -90,6 +90,7 @@ public class HealthQuoteService extends CommonRequestServiceV2 {
                     .responseType(MediaType.APPLICATION_JSON)
                     .response(HealthResponseV2.class)
                     .build())
+                    .doOnError(this::logHttpClientError)
                     .single().toBlocking().single();
 
             return ResponseAdapterV2.adapt(data, healthResponse, alternatePricingContent);
@@ -121,6 +122,7 @@ public class HealthQuoteService extends CommonRequestServiceV2 {
                     .responseType(MediaType.APPLICATION_JSON)
                     .response(HealthResponse.class)
                     .build())
+                    .doOnError(this::logHttpClientError)
                     .single().toBlocking().single();
 
 

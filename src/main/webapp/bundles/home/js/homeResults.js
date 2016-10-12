@@ -375,6 +375,10 @@
 					$hoverRow.removeClass( Results.settings.elements.features.expandableHover.replace(/[#\.]/g, '') );
 				});
 		});
+
+		meerkat.messaging.subscribe(meerkatEvents.RESULTS_RANKING_READY, function() {
+			$('.esl-message').toggleClass('hidden', $('#home_property_address_state').val() !== 'NSW');
+		});
 	}
 
 	// After the results have been fetched, force data onto it to support our Results engine.

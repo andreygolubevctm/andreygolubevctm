@@ -43,7 +43,9 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 	</c:choose>
 </c:set>
 
-<c:set var="quoteType" value="${param.vertical}" />
+<c:set var="quoteType" value="${fn:toLowerCase(param.vertical)}" />
+<c:set var="loadAction" value="${fn:toLowerCase(param.action)}" />
+<c:set var="loadType" value="${fn:toLowerCase(param.type)}" />
 
 <c:set var="xpathQuoteType">
 	<c:choose>
@@ -63,7 +65,7 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 
 				<%-- 30/1/13: Increment TranID when 'ANYONE' opens a quote --%>
 				<c:set var="id_handler" value="increment_tranId" />
-				<c:if test="${param.action eq 'confirmation'}">
+				<c:if test="${loadAction eq 'confirmation'}">
 					<c:set var="id_handler" value="preserve_tranId" />
 				</c:if>
 
@@ -77,12 +79,12 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 		<jsp:useBean id="remoteLoadQuoteService" class="com.ctm.web.core.services.RemoteLoadQuoteService" scope="page" />
 
 				<c:catch var="error">
-			<c:set var="details" value="${remoteLoadQuoteService.getTransactionDetails(emailHash, quoteType, param.type, param.email, requestedTransaction, styleCodeId)}" />
+			<c:set var="details" value="${remoteLoadQuoteService.getTransactionDetails(emailHash, quoteType, loadType, param.email, requestedTransaction, styleCodeId)}" />
 				</c:catch>
 
 				<c:choose>
 					<c:when test="${not empty error}">
-						${logger.error("Failed to get transaction details. {},{},{},{}", log:kv('quoteType',quoteType ), log:kv('param.type',param.type ),  log:kv('param.email',param.email ), log:kv('styleCodeId',styleCodeId ), error)}
+						${logger.error("Failed to get transaction details. {},{},{},{}", log:kv('quoteType',param.vertical), log:kv('param.type',param.type), log:kv('param.email',param.email), log:kv('styleCodeId',styleCodeId ), error)}
 						<c:set var="result"><result><error>Error loading quote data: ${error.rootCause}</error></result></c:set>
 					</c:when>
 			<c:when test="${empty details}">
@@ -119,13 +121,18 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 						&amp;j=${data[vQuotetype]['currentJourney']}
 					</c:if>
 				</c:set>
+				<c:set var="trackingParams">
+					<c:if test="${not empty param.cid and not empty param.etRid and not empty param.utmSource and not empty param.utmMedium and not empty param.utmCampaign}">
+						&amp;cid=${param.cid}&amp;et_rid=${param.etRid}&amp;utm_source=${param.utmSource}&amp;utm_medium=${param.utmMedium}&amp;utm_campaign=${param.utmCampaign}
+					</c:if>
+				</c:set>
 
 				<c:set var="result">
 					<result>
 						<c:choose>
 
 							<%-- GET HEALTH RESULTS --%>
-							<c:when test="${param.action=='load' and quoteType eq 'health'}">
+							<c:when test="${loadAction eq 'load' and quoteType eq 'health'}">
 								<go:setData dataVar="data" xpath="userData/emailSent" value="true" />
 								<core_v1:transaction touch="L" noResponse="true" />
 								<c:choose>
@@ -133,23 +140,23 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 										<destUrl>${quoteType}_quote.jsp?action=load&amp;transactionId=${data.current.transactionId}&amp;productId=${param.productId}&amp;productTitle=${param.productTitle}${jParam}#results</destUrl>
 									</c:when>
 									<c:otherwise>
-										<destUrl>${quoteType}_quote.jsp?action=load&amp;transactionId=${data.current.transactionId}${jParam}#results</destUrl>
+										<destUrl>${quoteType}_quote.jsp?action=load&amp;transactionId=${data.current.transactionId}${jParam}${trackingParams}#results</destUrl>
 									</c:otherwise>
 								</c:choose>
-								</c:when>
+							</c:when>
 
 						<%-- AMEND QUOTE --%>
-						<c:when test="${param.action=='amend' || param.action=='start-again'}">
-								<destUrl>${remoteLoadQuoteService.getActionQuoteUrl(quoteType,param.action,data.current.transactionId,jParam)}</destUrl>
+						<c:when test="${loadAction eq 'amend' || loadAction eq 'start-again'}">
+								<destUrl>${remoteLoadQuoteService.getActionQuoteUrl(quoteType, loadAction, data.current.transactionId, jParam)}</destUrl>
 						</c:when>
 
 						<%-- BACK TO START IF PRIVACYOPTIN HASN'T BEEN TICKED FOR OLD QUOTES --%>
-						<c:when test="${param.type != 'promotion' && param.type != 'bestprice' && (param.action=='latest' || param.action=='load') && data[xpathQuoteType].privacyoptin!='Y'}">
+						<c:when test="${loadType ne 'promotion' && loadType ne 'bestprice' && (loadAction eq 'latest' || loadAction eq 'load') && data[xpathQuoteType].privacyoptin!='Y'}">
 							<destUrl>${remoteLoadQuoteService.getStartAgainQuoteUrl(quoteType,data.current.transactionId,jParam)}</destUrl>
 						</c:when>
 
 							<%-- GET TRAVEL MULTI-TRIP --%>
-							<c:when test="${(param.action=='latest' || param.action=='load') && quoteType=='travel' && param.type=='A'}">
+							<c:when test="${(loadAction eq 'latest' || loadAction eq 'load') && quoteType eq 'travel' && loadType eq 'a'}">
 								<c:if test="${not empty param.newDate and param.newDate != ''}">
 									<go:setData dataVar="data" xpath="quote/options/commencementDate" value="${param.newDate}" />
 								</c:if>
@@ -160,7 +167,7 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 						</c:when>
 
 							<%-- EXPIRED COMMENCEMENT DATE --%>
-							<c:when test="${param.action=='load' && not empty param.expired}">
+							<c:when test="${loadAction eq 'load' && not empty param.expired}">
 								<c:set var="fieldXPath" value="" />
 								<c:choose>
 									<c:when test="${xpathQuoteType eq 'quote'}">
@@ -182,7 +189,7 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 								</c:set>
 								<c:set var="action">
 								<c:choose>
-										<c:when test="${param.type eq 'promotion'}">${param.type}</c:when>
+										<c:when test="${loadType eq 'promotion'}">${loadType}</c:when>
 										<c:otherwise>expired</c:otherwise>
 								</c:choose>
 								</c:set>
@@ -190,7 +197,7 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 							</c:when>
 
 							<%-- GET LATEST --%>
-							<c:when test="${param.action=='latest' || param.action=='load'}">
+							<c:when test="${loadAction eq 'latest' || loadAction eq 'load'}">
 								<c:if test="${not empty param.newDate and param.newDate != ''}">
 									<go:setData dataVar="data" xpath="quote/options/commencementDate" value="${param.newDate}" />
 								</c:if>
@@ -204,7 +211,7 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 						</c:when>
 
 						<%-- GET CONFIRMATION --%>
-						<c:when test="${param.action=='confirmation'}">
+						<c:when test="${loadAction eq 'confirmation'}">
 							<destUrl>no url required for confirmation loading</destUrl>
 						</c:when>
 

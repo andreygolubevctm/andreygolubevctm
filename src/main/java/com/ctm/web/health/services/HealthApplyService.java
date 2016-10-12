@@ -93,6 +93,7 @@ public class HealthApplyService extends CommonRequestServiceV2 {
                     .responseType(MediaType.APPLICATION_JSON)
                     .response(HealthApplyResponse.class)
                     .build())
+                    .doOnError(this::logHttpClientError)
                     .single().toBlocking().single();
 
         } else {
@@ -108,6 +109,7 @@ public class HealthApplyService extends CommonRequestServiceV2 {
                     .responseType(MediaType.APPLICATION_JSON)
                     .response(HealthApplyResponsePrev.class)
                     .build())
+                    .doOnError(this::logHttpClientError)
                     .single().toBlocking().single();
             HealthApplyResponse healthApplyResponse = new HealthApplyResponse();
             healthApplyResponse.setTransactionId(response.getTransactionId());

@@ -4,11 +4,17 @@
 
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
-        $paymentDetailsStart;
+        $paymentDetailsStart,
+        $paymentMedicareColour,
+        $paymentMedicareCover,
+        $medicareYellowMessage;
 
     function init(){
         $(document).ready(function () {
             $paymentDetailsStart = $("#health_payment_details_start");
+            $paymentMedicareColour = $("#health_payment_medicare_colour");
+            $paymentMedicareCover = $("#health_payment_medicare_cover");
+            $medicareYellowMessage = $("#health_medicareDetails_yellowCardMessage");
         });
     }
 
@@ -26,6 +32,11 @@
             .datepicker('setStartDate', min)
             .datepicker('setEndDate', max);
 
+        // validate at least 1 contact number is entered (simples)
+        if(meerkat.site.isCallCentreUser === true) {
+            $('#health_application_mobileinput').addRule('requireOneContactNumber', true, 'Please include at least one phone number');
+        }
+
         meerkat.messaging.publish(meerkatEvents.healthPreviousFund.POPULATE_PARTNER,
             meerkat.modules.healthAboutYou.getPartnerCurrentCover());
 
@@ -34,6 +45,18 @@
     }
 
     function onInitialise() {
+        $paymentMedicareColour
+            .addRule('medicareCardColour')
+            .on('change', function() {
+                var value = $(this).val();
+                // set hidden Medicare cover value
+                $paymentMedicareCover.val(value === 'none' ? 'N' : 'Y');
+
+                // toggle message for Yellow card holders
+                $medicareYellowMessage.toggleClass('hidden', value !== 'yellow');
+            })
+            .trigger('change');
+
         // initialise start date datepicker from payment step as it will be used by selected fund
         $paymentDetailsStart
             .datepicker({ clearBtn:false, format:"dd/mm/yyyy" })
@@ -42,7 +65,6 @@
                 $("#health_payment_details_start").val( e.format() );
                 meerkat.messaging.publish(meerkatEvents.health.CHANGE_MAY_AFFECT_PREMIUM);
             });
-
     }
 
     meerkat.modules.register('healthApplyStep', {

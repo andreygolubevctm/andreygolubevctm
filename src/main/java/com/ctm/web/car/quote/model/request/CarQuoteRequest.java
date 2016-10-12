@@ -9,6 +9,8 @@ import java.util.List;
 
 public class CarQuoteRequest {
 
+    private String clientIp;
+
     @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate commencementDate;
 
@@ -25,6 +27,14 @@ public class CarQuoteRequest {
     private Vehicle vehicle;
 
     private List<String> providerFilter = new ArrayList<String>();
+
+    public String getClientIp() {
+        return clientIp;
+    }
+
+    public void setClientIp(String clientIp) {
+        this.clientIp = clientIp;
+    }
 
     public LocalDate getCommencementDate() {
         return commencementDate;

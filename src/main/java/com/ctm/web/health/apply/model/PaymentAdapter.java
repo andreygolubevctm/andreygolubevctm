@@ -55,7 +55,7 @@ public class PaymentAdapter {
                         .orElse(null),
                 payment.map(com.ctm.web.health.model.form.Payment::getDetails)
                         .map(PaymentDetails::getFrequency)
-                        .map(Frequency::fromCode)
+                        .map(Frequency::findByDescription)
                         .orElse(null),
                 quote.map(HealthQuote::getHealthCover)
                         .map(com.ctm.web.health.model.form.HealthCover::getRebate)

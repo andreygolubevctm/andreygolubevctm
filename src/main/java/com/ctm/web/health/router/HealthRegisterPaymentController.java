@@ -50,7 +50,7 @@ public class HealthRegisterPaymentController extends CommonQuoteRouter {
         updateTransactionIdAndClientIP(request, data);
 
         HealthResultWrapper wrapper = new HealthResultWrapper();
-        wrapper.setResult(healthRegisterPaymentService.register(brand, data));
+        wrapper.setResult(healthRegisterPaymentService.register(request, brand, data));
 
         return wrapper;
     }

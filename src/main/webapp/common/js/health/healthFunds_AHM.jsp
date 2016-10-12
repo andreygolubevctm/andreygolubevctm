@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/javascript; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <session:get settings="true" />
+<jsp:useBean id="now" class="java.util.Date" />
+<fmt:formatDate var="todayDateEuro" value="${now}" pattern="dd/MM/yyyy" />
 <c:set var="whiteSpaceRegex" value="[\\r\\n\\t]+"/>
 <c:set var="content">
 <%--Important use JSP comments as whitespace is being removed--%>
@@ -189,11 +191,11 @@ var healthFunds_AHM = {
   },
   populateFuturePaymentDays: function() {
     if(meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'cc'){
-      meerkat.modules.healthPaymentDate.populateFuturePaymentDays($('#health_payment_details_start').val(), 3, false, false);
-      healthFunds_AHM.$paymentTypeContainer.text('*AHM will apply a 1.5% surcharge for all credit card transactions').slideDown();
+      meerkat.modules.healthPaymentDate.populateFuturePaymentDays('${todayDateEuro}', 0, false, false);
+      healthFunds_AHM.$paymentTypeContainer.text('*AHM will apply a 0.25% surcharge for all credit card transactions').slideDown();
     }
     else {
-      meerkat.modules.healthPaymentDate.populateFuturePaymentDays($('#health_payment_details_start').val(), 3, false, true);
+      meerkat.modules.healthPaymentDate.populateFuturePaymentDays('${todayDateEuro}', 0, false, true);
       healthFunds_AHM.$paymentTypeContainer.slideUp();
     }
   },

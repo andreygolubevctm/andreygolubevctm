@@ -52,7 +52,7 @@ public class HealthAuthorisePaymentController extends CommonQuoteRouter {
         data.setReturnUrl(getPageSettingsByCode(brand, vertical).getBaseUrl());
 
         HealthResultWrapper wrapper = new HealthResultWrapper();
-        wrapper.setResult(healthPaymentService.authorise(brand, data));
+        wrapper.setResult(healthPaymentService.authorise(request, brand, data));
 
         return wrapper;
     }
