@@ -5,7 +5,7 @@
 <%-- Special Conditions --%>
 {{ if (ft.resultPath == 'specialConditions.description') { }}
 {{ pathValue = true }}
-{{ if (!obj.specialConditions.hasOwnProperty('description') || obj.specialConditions == null) { }}
+{{ if (_.isEmpty(obj.specialConditions) || obj.specialConditions == null) { }}
 {{ displayValue = 'Refer to the PDS'; }}
 {{ } else { }}
 {{ displayValue = obj.specialConditions.description; }}
