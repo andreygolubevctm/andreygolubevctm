@@ -58,7 +58,7 @@
 					/>
 				</c:when>
 				<c:otherwise>
-					<group_v2:address xpath="${xpath}/postal" type="P" stateValidationField="#health_application-selection .content" disableErrorContainer="${true}"/>
+					<group_v2:address xpath="${xpath}/postal" type="P" stateValidationField="#health_application-selection .content" disableErrorContainer="${true}" nonStdStreetAdditionalAttributes=" maxlength='29'"/>
 				</c:otherwise>
 			</c:choose>
 		</div>
