@@ -36,7 +36,7 @@
                 <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/firstName"/>
                 <form_v2:row fieldXpath="${fieldXpath}" label="First Name" smRowOverride="3" isNestedField="${true}" hideHelpIconCol="${true}">
                     <field_v2:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s first name" required="true" className="sessioncamexclude"
-                                     additionalAttributes=" data-rule-personName='true' " defaultValue="{{= obj.firstName }}" placeHolder="First name" disableErrorContainer="${true}" maxlength="{{= providerConfig.firstNameMaxLength}}" />
+                                     additionalAttributes=" data-rule-personName='true' " defaultValue="{{= obj.firstName }}" placeHolder="First name" disableErrorContainer="${true}" maxlength="24" />
                 </form_v2:row>
 
                 {{ if(providerConfig.showMiddleName === true) { }}
@@ -51,7 +51,7 @@
                 <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/lastname"/>
                 <form_v2:row fieldXpath="${fieldXpath}" label="Last Name" smRowOverride="3" isNestedField="${true}" hideHelpIconCol="${true}">
                     <field_v2:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s last name" required="true" className="sessioncamexclude"
-                                     additionalAttributes=" data-rule-personName='true'" defaultValue="{{= obj.lastname }}" placeHolder="Last name" disableErrorContainer="${true}" maxlength="{{= providerConfig.lastNameMaxLength}}" />
+                                     additionalAttributes=" data-rule-personName='true'" defaultValue="{{= obj.lastname }}" placeHolder="Last name" disableErrorContainer="${true}" maxlength="20" />
                 </form_v2:row>
 
             </form_v2:row>

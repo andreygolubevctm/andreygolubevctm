@@ -8,6 +8,7 @@
 <%@ attribute name="showTitle"	required="false" rtexprvalue="true"	 description="true/false to show the main title" %>
 <%@ attribute name="stateValidationField"		required="false" rtexprvalue="true"	 description="true/false to show the main title" %>
 <%@ attribute name="disableErrorContainer" 	required="false" 	rtexprvalue="true"    	 description="Show or hide the error message container" %>
+<%@ attribute name="nonStdStreetAdditionalAttributes" required="false" rtexprvalue="true" description="Used for passing in additional attributes" %>
 
 
 <%-- VARIABLES --%>
@@ -170,7 +171,7 @@
 </c:choose>
 <c:set var="fieldXpath" value="${xpath}/nonStdStreet" />
 <form_v2:row fieldXpath="${fieldXpath}" label="Street" className="${name}_nonStd_street">
-	<field_v2:input xpath="${fieldXpath}" title="the street" required="false" className="sessioncamexclude" additionalAttributes="data-rule-validAddress='${name}' data-msg-validAddress='${nonStdStreetMessage}' " disableErrorContainer="${disableErrorContainer}" />
+	<field_v2:input xpath="${fieldXpath}" title="the street" required="false" className="sessioncamexclude" additionalAttributes="data-rule-validAddress='${name}' data-msg-validAddress='${nonStdStreetMessage}'${nonStdStreetAdditionalAttributes} " disableErrorContainer="${disableErrorContainer}" />
 </form_v2:row>
 
 <c:choose>
