@@ -15,7 +15,6 @@ import com.ctm.web.health.apply.model.request.application.dependant.FullTimeStud
 import com.ctm.web.health.apply.model.request.application.dependant.School;
 import com.ctm.web.health.apply.model.request.application.dependant.SchoolId;
 import com.ctm.web.health.apply.model.request.application.situation.HealthCoverCategory;
-import com.ctm.web.health.apply.model.request.application.situation.HealthSituation;
 import com.ctm.web.health.apply.model.request.fundData.HealthFund;
 import com.ctm.web.health.model.form.*;
 
@@ -64,9 +63,6 @@ public class ApplicationGroupAdapter {
     protected static com.ctm.web.health.apply.model.request.application.situation.Situation createSituation(Optional<com.ctm.web.health.model.form.Situation> situation) {
         if (situation.isPresent()) {
             return new com.ctm.web.health.apply.model.request.application.situation.Situation(
-                    situation.map(com.ctm.web.health.model.form.Situation::getHealthSitu)
-                            .map(HealthSituation::valueOf)
-                            .orElse(null),
                     situation.map(com.ctm.web.health.model.form.Situation::getHealthCvr)
                             .map(HealthCoverCategory::valueOf)
                             .orElse(null));

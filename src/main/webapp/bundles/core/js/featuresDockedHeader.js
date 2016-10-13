@@ -10,6 +10,8 @@
 	var headerAffixed = false;
 	// Track whether the vertical implements V3 of the results styling
 	var isV3 = null;
+	// Track whether the vertical implements V5 of the results styling
+	var isV5 = null;
 
 	function init() {
 		deviceType = $('#deviceType').attr('data-deviceType');
@@ -68,11 +70,15 @@
 			isV3 = $('#results_v3').length > 0;
 		}
 
+		if(_.isNull(isV5)) {
+			isV5 = $('#results_v5').length > 0;
+		}
+
 		var $featuresDockedHeader = $('.featuresDockedHeader'),
 			$originalHeader = $('.headers');
 
 		// There are copious issues with tablets and position:fixed. This just doesn't do the docked header, until we can fix it.
-		if (isV3 === true && deviceType != 'TABLET' && meerkat.modules.deviceMediaState.get() != 'xs') {
+		if ((isV3 === true || isV5 === true) && deviceType != 'TABLET' && meerkat.modules.deviceMediaState.get() != 'xs') {
 			var featuresView = Results.getDisplayMode() == 'features' ? true : false,
 				redrawFixedHeader = true,
 				pagePaginationActive = event == 'startPaginationScroll' || event == 'endPaginationScroll' || event == 'filterAnimationEnded';
