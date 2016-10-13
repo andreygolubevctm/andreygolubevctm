@@ -276,3 +276,5 @@
         </div>
 	</div>
 </core_v1:js_template>
+
+<car:call_modal />
