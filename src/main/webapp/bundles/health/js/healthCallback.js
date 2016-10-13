@@ -247,7 +247,9 @@ Handling of the callback popup
 	}
 
 	function getDailyHours(dayName) {
-		var startTime, endTime, currentTime, startOffset = '00';
+		var startTime, endTime, currentTime,
+		    currentHours = '00:00',
+		    startOffset = '00';
 		var now = new Date();
 		var options = [];
 		var isAmPm;
@@ -269,7 +271,7 @@ Handling of the callback popup
 					startTime = ('00' + (now.getHours() + 1)).slice(-2) + ':' + startOffset;
 				}
 				currentTime = startTime;
-				currentHours = parseInt(currentTime.substring(0, 2));
+
 				while(currentHours != endTime) {
 					isAmPm = ' am';
 					currentHours = parseInt(currentTime.substring(0, 2));
