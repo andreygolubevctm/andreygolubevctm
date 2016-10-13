@@ -234,6 +234,12 @@
 		extrasLimitedDisabled			: "${extrasLimitedDisabled}",
 		hospitalLimitedHelp				: "${hospitalLimitedHelp}"
 	},
+	callbackPopup: {
+		enabled: '<c:out value="${pageSettings.getSetting('callbackPopupEnabled')}"/>',
+		timeout: <c:out value="${pageSettings.getSetting('callbackPopupTimeout')}"/>,
+		steps: '<c:out value="${pageSettings.getSetting('callbackPopupValidSteps')}"/>',
+		position: '<c:out value="${pageSettings.getSetting('callbackPopupPosition')}"/>'
+	},
 	emailBrochures: {
 		enabled: <c:out value="${pageSettings.getSetting('emailBrochuresEnabled') eq 'Y'}"/>
 	},
