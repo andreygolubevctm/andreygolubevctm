@@ -209,7 +209,7 @@ Handling of the callback popup
 
         firstDay = getShortDayOfWeekName(day.getDay());
 
-        while(i < 4) {
+        while(count < 4) {
 
 			dayName = getShortDayOfWeekName((day.getDay() + i) % 7);
 
@@ -227,7 +227,7 @@ Handling of the callback popup
 					dayName = 'Today';
 				}
 		       	$('.callbackDay .btn:nth-child('+(count+1)+'n) span').text(dayName);
-				count++; // counting to max 4
+				count++; // counting to 4
 			}
 
 			i++;
