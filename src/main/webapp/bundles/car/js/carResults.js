@@ -410,14 +410,14 @@
 			Results.pagination.resync();
 		});
 
-		meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_SM, function resultsXsBreakpointEnter(){
+		meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_SM, function resultsSmBreakpointEnter(){
 			if (meerkat.modules.journeyEngine.getCurrentStep().navigationId === 'results') {
 				Results.pagination.setCurrentPageNumber(1);
 				Results.pagination.resync();
 			}
 		});
 
-		meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_SM, function resultsXsBreakpointLeave(){
+		meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_SM, function resultsSmBreakpointLeave(){
 			Results.pagination.setCurrentPageNumber(1);
 			Results.pagination.resync();
 		});

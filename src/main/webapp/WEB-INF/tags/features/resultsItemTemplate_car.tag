@@ -2,6 +2,8 @@
 
 {{ var parsedValue = '' }}
 
+<%-- pathValue is defined in features/resultsItemTemplate.tag --%>
+
 <%-- Special Conditions --%>
 {{ if (ft.resultPath == 'specialConditions.description') { }}
 {{ pathValue = true }}
