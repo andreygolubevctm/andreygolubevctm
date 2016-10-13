@@ -46,7 +46,6 @@ public class FundDataAdapterTest {
         verify(application, times(1)).getProvider();
         verify(application, times(1)).getProductId();
         verify(paymentDetails, times(1)).getStart();
-        verify(situation, times(1)).getHealthSitu();
     }
 
     @Test
