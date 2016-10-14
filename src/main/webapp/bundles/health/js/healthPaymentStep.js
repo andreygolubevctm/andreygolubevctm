@@ -80,6 +80,7 @@
 				validateCoupon();
 				_.defer(function delayPaymentUpdate(){
 					updatePaymentPremium();
+					updatePaymentDayOptions();
 				});
 			});
 
