@@ -10,7 +10,8 @@
 				STEP_CHANGED: 'STEP_CHANGED',
 				STEP_INIT: 'STEP_INIT',
 				READY: 'JOURNEY_READY',
-				STEP_VALIDATION_ERROR: 'STEP_VALIDATION_ERROR'
+				STEP_VALIDATION_ERROR: 'STEP_VALIDATION_ERROR',
+				EXTERNAL: 'TRACKING_EXTERNAL'
 			}
 		},
 		moduleEvents = events.journeyEngine;
@@ -552,7 +553,6 @@
 					if(typeof failureCallback === 'function') {
 						failureCallback();
 					}
-					meerkat.messaging.publish(moduleEvents.STEP_VALIDATION_ERROR, step, errorList);
 					throw "Validation failed on "+step.navigationId;
 				}
 			}
@@ -566,7 +566,6 @@
 						if(typeof failureCallback === 'function') {
 							failureCallback();
 						}
-						meerkat.messaging.publish(moduleEvents.STEP_VALIDATION_ERROR, step, errorList);
 						throw "Custom validation failed on "+step.navigationId;
 					}
 				});
@@ -708,7 +707,7 @@
 	 */
 	function logValidationErrors() {
 
-		var data = [], i = 0;
+		var data = [], i = 0, errorList = [];
 
 		data.push({
 			name: 'stepId',
@@ -720,18 +719,45 @@
 			value: meerkat.modules.optIn.isPrivacyOptedIn()
 		});
 
-		$('.error-field:visible', '.journeyEngineSlide.active').each(function() {
-			var $label = $(this).find('label'),
-				xpath = $label.attr('for');
-			if(typeof xpath === 'undefined') {
-				return;
-			}
-			data.push({
-				name: xpath,
-				value: getValue($(':input[name='+xpath+']')) + "::" + $label.text()
-			});
-			i++;
+		$(".journeyEngineSlide.active form" ).each(function( index, element ) {
+			var $element = $(element);
+			errorList = $.merge(errorList, $element.validate().errorList);
 		});
+
+
+		if (errorList.length > 0) {
+			var filteredErrorList = errorList.filter(function(errorObj) {
+				var $element = $(errorObj.element);
+
+				return !$element.hasClass('dontSubmit') ? true : false;
+			});
+
+			if (filteredErrorList.length > 0) {
+				filteredErrorList.forEach(function (errorObj, index) {
+					var xpath = errorObj.element.id,
+						validationMessage = errorObj.message;
+
+					if (index < 5) {
+						meerkat.messaging.publish(moduleEvents.EXTERNAL, {
+							method: 'errorTracking',
+							object: {
+								error: {
+									name: xpath,
+									validationMessage: validationMessage
+								}
+							}
+						});
+					}
+
+					data.push({
+						name: xpath,
+						value: errorObj.element.value + "::" + validationMessage
+					});
+
+					i++;
+				});
+			}
+		}
 
 		if(i === 0) {
 			return false;

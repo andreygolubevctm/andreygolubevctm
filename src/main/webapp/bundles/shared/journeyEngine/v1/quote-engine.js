@@ -304,7 +304,7 @@ QuoteEngine = {
         return $el.val() || "";
     },
     logValidationErrors: function () {
-        var data = [], i = 0, errorList = [];
+        var data = [], i = 0;
 
         data.push({
             name: 'stepId',
@@ -333,11 +333,13 @@ QuoteEngine = {
             });
 
             if (i < 5) {
-                errorList.push({
+                Track.runTrackingCall('errorTracking', {
                     method: 'errorTracking',
                     object: {
-                        validationMessage: message,
-                        inputValue: value
+                        error: {
+                            name: xpath,
+                            validationMessage: message
+                        }
                     }
                 });
             }
@@ -348,9 +350,6 @@ QuoteEngine = {
         if (i === 0) {
             return false;
         }
-
-        // TODO: track validation error
-        console.log('track validation error', errorList);
 
         return $.ajax({
             type: 'POST',

@@ -143,7 +143,7 @@
 			if (!firstPoke) {
 				if(isModalOpen) {
 					showModal(false);
-					meerkat.messaging.publish(moduleEvents.EXTERNAL, { method: 'quoteTimeout' });
+					meerkat.messaging.publish(moduleEvents.EXTERNAL, { method: 'quoteTimeout', object: {} });
 				} else {
 					showModal(true);
 				}

@@ -28,7 +28,7 @@
 <go:script marker="onready">
 	$('#session_btn, #next-step, #slide-next').click(function(){
 		sessionExpiry.poke().done(function(data) {
-			if(data.timeout == -1) 
+			if(data.timeout == -1)
 				sessionExpiry.canRecover(false);
 	});
 	});
@@ -263,6 +263,7 @@
 		canRecover: function(mode){
 			if(mode === false){
 				$('#session_pop').addClass('noRecover');
+				Track.runTrackingCall('quoteTimeout', {});
 			} else {
 				$('#session_pop').removeClass('noRecover');
 			};
