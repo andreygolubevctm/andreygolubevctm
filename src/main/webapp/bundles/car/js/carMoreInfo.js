@@ -312,7 +312,7 @@
 		if(obj.available !== "Y")
 			return;
 
-		if (meerkat.modules.splitTest.isActive(8)) {
+		if (meerkat.modules.splitTest.isActive(8) && meerkat.modules.moreInfo.isBridgingPageOpen()) {
 			callActionsToggle(event, $el, obj);
 			return;
 		}
@@ -354,7 +354,7 @@
 		};
 
 		if(meerkat.modules.deviceMediaState.get() == 'xs') {
-			modalOptions.title = "Reference no. " + obj.leadNo;
+			modalOptions.title = "Reference no. " + obj.quoteNumber;
 		}
 
 		callbackModalId = meerkat.modules.dialogs.show(modalOptions);

@@ -16,6 +16,7 @@
 <%@ attribute name="additionalAttributes"  	required="false" rtexprvalue="true"  description="Additional attributes" %>
 <%@ attribute name="disableErrorContainer" required="false" rtexprvalue="true"    	 description="Show or hide the error message container" %>
 <%@ attribute name="additionalLabelAttributes"  	required="false" rtexprvalue="true"  description="Additional attributes specifically for the label element" %>
+<%@ attribute name="wrapCopyInSpan" required="false" rtexprvalue="true" description="Flag to wrap text inside label with span tags" %>
 
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
@@ -58,6 +59,15 @@
 	<c:set var="additionalAttributes" value="${additionalAttributes}  data-disable-error-container='true' "/>
 </c:if>
 
+<c:choose>
+	<c:when test="${empty wrapCopyInSpan or not wrapCopyInSpan}">
+		<c:set var="wrapCopyInSpan" value="${false}" />
+	</c:when>
+	<c:otherwise>
+		<c:set var="wrapCopyInSpan" value="${true}" />
+	</c:otherwise>
+</c:choose>
+
 <%-- HTML --%>
 <div class="${className}" ${id}>
 	<c:forTokens items="${items}" delims="," var="radio" varStatus="status">
@@ -78,7 +88,9 @@
 			<c:when test="${style == 'group' or style == 'group-tile' or style == 'inline'}">
 				<label class="${classVar} ${active}" ${additionalLabelAttributes}>
 					<input type="radio" name="${name}" id="${id}" value="${val}" ${checked} data-msg-required="Please choose ${title}" ${requiredAttribute} ${additionalAttributes}>
+					<c:if test="${wrapCopyInSpan}"><c:out value="<span>" escapeXml="false" /></c:if>
 					<c:out value="${des}" escapeXml="false" />
+					<c:if test="${wrapCopyInSpan}"><c:out value="</span>" escapeXml="false" /></c:if>
 				</label>
 			</c:when>
 			<%-- FOR NORMAL OR INLINE --%>
@@ -86,7 +98,9 @@
 				<div class="${classVar} ${active}">
 					<label ${additionalLabelAttributes}>
 						<input type="radio" name="${name}" id="${id}" value="${val}" ${checked} data-msg-required="Please choose ${title}" ${requiredAttribute} ${additionalAttributes}>
+						<c:if test="${wrapCopyInSpan}"><c:out value="<span>" escapeXml="false" /></c:if>
 						<c:out value="${des}" escapeXml="false" />
+						<c:if test="${wrapCopyInSpan}"><c:out value="</span>" escapeXml="false" /></c:if>
 					</label>
 				</div>
 			</c:otherwise>

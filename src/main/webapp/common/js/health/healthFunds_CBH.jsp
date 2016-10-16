@@ -258,25 +258,6 @@ var healthFunds_CBH = {
 			<%-- Claims account --%>
 			meerkat.modules.healthPaymentStep.overrideSettings('creditBankSupply',true);
 			meerkat.modules.healthPaymentStep.overrideSettings('creditBankQuestions',true);
-
-			<%-- Load join dec into label --%>
-			healthFunds_CBH.joinDecLabelHtml = $('#health_declaration + label').html();
-			healthFunds_CBH.ajaxJoinDec = $.ajax({
-				url: '/' + meerkat.site.urls.context + 'health/provider/content/get.json?providerId=10&providerContentTypeCode=JDO',
-				type: 'GET',
-				async: true,
-				dataType: 'html',
-				timeout: 20000,
-				cache: true,
-				success: function(htmlResult) {
-					if(typeof htmlResult === 'string')
-						htmlResult = JSON.parse(htmlResult);
-
-					$('#health_declaration + label').html(htmlResult.providerContentText);
-				},
-				error: function(obj,txt) {
-				}
-			});
 		}<%-- /not loading quote --%>
 	},
 	unset: function() {
