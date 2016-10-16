@@ -134,13 +134,13 @@
 <div id="health-callback-popup">
 	<div class="row">
 		<div class="col-sm-6">
-			<h3>Need Assistance</h3>
+			<h3>Need Assistance?</h3>
 		</div>
 		<div class="col-sm-6">
-			<a href="javascript:;" data-toggle="dialog"
+			<h3 class="request-callback"><a href="javascript:;" data-toggle="dialog"
 			data-content="#view_all_hours"
 			data-dialog-hash-id="view_all_hours"
-			data-title="Request a Call" data-cache="true">Request a Call</a>
+			data-title="Request a Call" data-cache="true"><i class="icon-callback"></i> Request a Call</a></h3>
 		</div>
 		<div class="col-sm-12">
 			<p>Or call us before ${hoursOfDay.endTime} today (${hoursOfDay.description}) to speak to one of our experts.</p>
@@ -149,6 +149,9 @@
 			<h1>
 				<span class="callCentreNumber">${callCentreNumber}</span><span class="callCentreAppNumber" style="display:none">${callCentreAppNumber}</span>
 			</h1>
+		</div>
+		<div class="col-sm-12">
+			<a href=";:" class="close-popup">continue online, close this</a>
 		</div>
 	</div>
 </div>

@@ -3,27 +3,56 @@
 	var meerkat = window.meerkat;
 
 	var timeout = 0,
-		callbackSubmited = false;
-		isModalOpen = false;
+		dontShow = false;
+		isModalOpen = false,
+		isMobile = false;
 			
 	function init() {
-
+		var isMobile = meerkat.modules.performanceProfiling.isMobile();
+		
 		if(meerkat.site.callbackPopup.enabled === 'Y') {
-			idle = setInterval(count, 100);
+			idle = setInterval(count, 1000);
 		}
 
-        $(document).on('mousemove', function (e) {
-	        reset();
-	    });
-
-        $(document).on('keypress', function (e) {
-	        reset();
-	    });
+		subscription();
 	}
+
+    function subscription() {
+
+        $(document).on('click', '#health-callback-popup .close-popup', function(e) {
+        	e.preventDefault();
+            hideModal();
+        });
+
+    	if(meerkat.site.callbackPopup.timeoutMouseEnabled === 'Y') {
+	        $(document).on('mousemove', function (e) {
+		        reset();
+		    });
+    	}
+
+    	if(meerkat.site.callbackPopup.timeoutKeyboardEnabled === 'Y') {
+	        $(document).on('keypress', function (e) {
+		        reset();
+		    });
+	    }
+
+    	if(meerkat.site.callbackPopup.timeoutStepEnabled === 'Y') {
+	        meerkat.messaging.subscribe(meerkat.modules.events.journeyEngine.BEFORE_STEP_CHANGED, function showPopupOnJourneyReadySubscription() {
+	            _.defer(function() {
+	                reset();
+	            });
+	        });
+	    }
+
+        meerkat.messaging.subscribe(meerkat.modules.events.callbackModal.CALLBACK_MODAL_OPEN, function showPopupOnModalOpenSubscription() {
+            dontShow = true;
+        });
+
+    }
 
 	function count() {
 		timeout += 1;
-		if(!callbackSubmited && timeout === meerkat.site.callbackPopup.timeout) {
+		if(!dontShow && timeout === meerkat.site.callbackPopup.timeout) {
 			showModal();
 		}
 	}
@@ -33,40 +62,25 @@
 	}
 
 	function showModal() {
-		if(!isModalOpen) {
+		if(!isModalOpen  && !isMobile) {
 			isModalOpen = true;
 			
-			var modalConfig = {
-				className: "callbackPopupModal " + meerkat.site.callbackPopup.position,
-				backdrop: false,
-				onOpen: function onSessionModalOpen(dialogId) {
-					$("#" + dialogId).find(".modal-closebar").remove();
-				}
-			};
-		
-
-			var htmlTemplate = _.template($('#callback-popup').html());
-	        modalConfig.htmlContent = htmlTemplate();
-
-			modalConfig.buttons = [
-				{
-					label: "Continue online, close this",
-					closeWindow: true,
-					action: function sessionModalClose() { hideModal(); }
-				}
-			];
 			
-			callbackPopupModal = meerkat.modules.dialogs.show(modalConfig);
+			var htmlTemplate = _.template($('#callback-popup').html());
+	        $('body').append(htmlTemplate());
+			$('#health-callback-popup').addClass(meerkat.site.callbackPopup.position);
 		}
 	}
 
 	function hideModal() {
 		isModalOpen = false;
+		setDontShow();
+		$('#health-callback-popup').remove();
 		reset();
 	}
 
-	function setCallbackSubmited() {
-		callbackSubmited = true;
+	function setDontShow() {
+		dontShow = true;
 	}
 
 	meerkat.modules.register("healthCallbackPopup", {

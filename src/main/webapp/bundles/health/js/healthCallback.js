@@ -15,6 +15,13 @@ Handling of the callback popup
 		times = [],
 		firstDay = '';
 
+	var events = {
+        callbackModal: {
+            CALLBACK_MODAL_OPEN : "CALLBACK_MODAL_OPEN"
+        }
+    },
+    moduleEvents = events.callbackModal;
+	
 	initHealthCallback =  function(){
 		applyEventListeners();
 
@@ -49,10 +56,11 @@ Handling of the callback popup
             $('.all-times').toggleClass('hidden');
         });
 
-        $(document).on('click', '.callbackDay .btn', function(e) {
-        	var $this = $(this).find('input');
+        $(document).on('click', '.callbackDay .btn', function() {
+	       	var $this = $(this).find('input');
 	        var date = $this.attr('data-date');
 	        var options = getDailyHours($this.attr('data-dayname'));
+
 	        if(options.length > 0) {
 	        	$('.callbackTime > option').remove();
 	        	$(options).each(function() {
@@ -248,12 +256,13 @@ Handling of the callback popup
 
 	function getDailyHours(dayName) {
 		var startTime, endTime, currentTime,
-		    currentHours = '00:00',
+		    currentHours = '0',
 		    startOffset = '00';
 		var now = new Date();
 		var options = [];
 		var isAmPm;
-
+		var timezoneOffset = -3; //(timezone/60) - 10;
+		
 		$.each(hours, function() {
 			if(this.description.substring(0, 3) === dayName) {
 				startTime = convertTo24Hour(this.startTime),
@@ -303,13 +312,14 @@ Handling of the callback popup
 	}
 
 	function convertTo24Hour(time) {
+
 		if(time !== null) {
-		    var hours = time.substr(0, 2);
-		    if(time.indexOf('am') != -1 && hours == 12) {
+		    var hour = time.substr(0, 2);
+		    if(time.indexOf('am') != -1 && hour == 12) {
 		        time = time.replace('12', '00');
 		    }
-		    if(time.indexOf('pm')  != -1 && hours < 12) {
-		        time = time.replace(hours, parseInt(hours) + 12);
+		    if(time.indexOf('pm')  != -1 && hour < 12) {
+		        time = time.replace(hour, parseInt(hour) + 12);
 		    }
 		    return time.replace(/( am| pm)/, '');
 		}
@@ -327,6 +337,7 @@ Handling of the callback popup
 
 	meerkat.modules.register("healthCallback", {
 		init: initHealthCallback,
+		events: events,
 		getDailyHours: getDailyHours
 	});
 
