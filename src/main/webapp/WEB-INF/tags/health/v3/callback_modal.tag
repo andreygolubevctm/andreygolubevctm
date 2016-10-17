@@ -143,7 +143,7 @@
 			data-title="Request a Call" data-cache="true"><i class="icon-callback"></i> Request a Call</a></h3>
 		</div>
 		<div class="col-sm-12">
-			<p>Or call us before ${hoursOfDay.endTime} today (${hoursOfDay.description}) to speak to one of our experts.</p>
+			<p>Or call us ${todayOpeningHours} today to speak to one of our experts.</p>
 		</div>
 		<div class="col-sm-12">
 			<h1>

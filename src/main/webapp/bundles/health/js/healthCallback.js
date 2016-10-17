@@ -126,8 +126,8 @@ Handling of the callback popup
 		var url = "/spring/rest/health/callMeNow.json";
 		var data = 'name=' + $('#health_callback_name').val();
 
-		var mobileNumber = $('#health_callback_mobile').val(),
-			otherNumber = $('#health_callback_otherPhone').val();
+		var mobileNumber = $('#health_callback_mobileinput').val(),
+			otherNumber = $('#health_callback_otherNumberinput').val();
 		
 		if(mobileNumber) {
 			data += '&mobileNumber=' + mobileNumber;
@@ -170,8 +170,8 @@ Handling of the callback popup
 
 		var data = 'name=' + $('#health_callback_name').val();
 
-		var mobileNumber = $('#health_callback_mobile').val(),
-			otherNumber = $('#health_callback_otherPhone').val();
+		var mobileNumber = $('#health_callback_mobileinput').val(),
+			otherNumber = $('#health_callback_otherNumberinput').val();
 		
 		if(mobileNumber) {
 			data += '&mobileNumber=' + mobileNumber;
