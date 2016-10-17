@@ -65,7 +65,6 @@
                 $("#health_payment_details_start").val( e.format() );
                 meerkat.messaging.publish(meerkatEvents.health.CHANGE_MAY_AFFECT_PREMIUM);
             });
-
     }
 
     meerkat.modules.register('healthApplyStep', {

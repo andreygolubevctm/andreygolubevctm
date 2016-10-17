@@ -11,6 +11,7 @@
 <%@ attribute name="size" 		 required="false" rtexprvalue="true"	 description="the size attribute of this input"%>
 <%@ attribute name="placeholder" required="false" rtexprvalue="true"  	 description="HTML5 placeholder" %>
 <%@ attribute name="maxlength" required="false" rtexprvalue="true"    	 description="The maximum length for the input field" %>
+<%@ attribute name="additionalAttributes"   required="false" rtexprvalue="true"   description="When you want to send in additional attributes" %>
 <%@ attribute name="disableErrorContainer" required="false" rtexprvalue="true"    	 description="Show or hide the error message container" %>
 
 <%-- VARIABLES --%>
@@ -44,4 +45,4 @@
 
 
 <input type="text" name="${name}" id="${name}" class="form-control person_name sessioncamexclude ${className}"
-	   value="${value}" ${validationAttributes} ${sizeAttribute}${placeHolderAttribute}${maxlengthAttribute}>
+	   value="${value}" ${validationAttributes} ${additionalAttributes} ${sizeAttribute}${placeHolderAttribute}${maxlengthAttribute}>

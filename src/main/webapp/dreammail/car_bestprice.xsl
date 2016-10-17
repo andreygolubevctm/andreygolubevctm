@@ -32,6 +32,7 @@
 	<xsl:param name="callCentrePhone"></xsl:param>
 	<xsl:param name="ClientId"></xsl:param>
 	<xsl:param name="baseURL"></xsl:param>
+	<xsl:param name="year"></xsl:param>
 
 	<xsl:param name="ImageUrlPrefix"></xsl:param>
 	<xsl:param name="ImageUrlSuffix"></xsl:param>
@@ -314,10 +315,10 @@
 			<Value>
 				<xsl:choose>
 					<xsl:when test="$emailTokenEnabled = 'true'">
-						<xsl:value-of disable-output-escaping="yes" select="concat('&lt;![CDATA[',$baseURL,'email/incoming/gateway.json?token=',$currentProduct/loadQuoteToken,']]&gt;')" />
+						<xsl:value-of disable-output-escaping="yes" select="concat('&lt;![CDATA[',$baseURL,'email/incoming/gateway.json?cid=em:cm:car:200518&amp;et_rid=172883275&amp;utm_source=car_quote_',$year,'&amp;utm_medium=email&amp;utm_campaign=car_quote&amp;token=',$currentProduct/loadQuoteToken,']]&gt;')" />
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:value-of disable-output-escaping="yes" select="concat('&lt;![CDATA[',$baseURL,'email/incoming/gateway.json?vertical=car&amp;type=bestprice','&amp;pid=',$productId,'&amp;id=',$tranId,'&amp;email=',$sendToEmail,'&amp;hash=',$hashedEmail,']]&gt;')" />
+						<xsl:value-of disable-output-escaping="yes" select="concat('&lt;![CDATA[',$baseURL,'email/incoming/gateway.json?cid=em:cm:car:200518&amp;et_rid=172883275&amp;utm_source=car_quote_',$year,'&amp;utm_medium=email&amp;utm_campaign=car_quote&amp;vertical=car&amp;type=bestprice','&amp;pid=',$productId,'&amp;id=',$tranId,'&amp;email=',$sendToEmail,'&amp;hash=',$hashedEmail,']]&gt;')" />
 					</xsl:otherwise>
 				</xsl:choose>
 			</Value>
