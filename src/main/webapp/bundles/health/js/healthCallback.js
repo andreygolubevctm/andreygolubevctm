@@ -123,7 +123,7 @@ Handling of the callback popup
 	}
 
 	function executeCallBackNow() {
-		var url = "/spring/rest/health/callMeNow.json";
+		var url = "spring/rest/health/callMeNow.json";
 		var data = 'name=' + $('#health_callback_name').val();
 
 		var mobileNumber = $('#health_callback_mobileinput').val(),
