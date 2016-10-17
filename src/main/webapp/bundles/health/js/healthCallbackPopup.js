@@ -3,16 +3,25 @@
 	var meerkat = window.meerkat;
 
 	var timeout = 0,
-		dontShow = false;
+		isActive = false;
 		isModalOpen = false,
-		isMobile = false;
+		isMobile = false,
+		steps = [];
 			
 	function init() {
 		var isMobile = meerkat.modules.performanceProfiling.isMobile();
+		var navigationId = meerkat.modules.address.getWindowHash().split("/")[0];
 		
-		if(meerkat.site.callbackPopup.enabled === 'Y') {
-			idle = setInterval(count, 1000);
+		if(meerkat.site.callbackPopup.enabled) {
+			idle = setInterval(count, 100);
 		}
+
+        if (meerkat.site.callbackPopup.timeoutStepEnabled) {
+			steps = meerkat.site.callbackPopup.steps.split(',');
+	       	if(_.indexOf(steps, navigationId) >= 0) {
+           		setActive(true);
+           	}
+        }
 
 		subscription();
 	}
@@ -24,35 +33,42 @@
             hideModal();
         });
 
-    	if(meerkat.site.callbackPopup.timeoutMouseEnabled === 'Y') {
+    	if(meerkat.site.callbackPopup.timeoutMouseEnabled) {
 	        $(document).on('mousemove', function (e) {
 		        reset();
 		    });
     	}
 
-    	if(meerkat.site.callbackPopup.timeoutKeyboardEnabled === 'Y') {
+    	if(meerkat.site.callbackPopup.timeoutKeyboardEnabled) {
 	        $(document).on('keypress', function (e) {
 		        reset();
 		    });
 	    }
 
-    	if(meerkat.site.callbackPopup.timeoutStepEnabled === 'Y') {
+    	if(meerkat.site.callbackPopup.timeoutStepEnabled) {
 	        meerkat.messaging.subscribe(meerkat.modules.events.journeyEngine.BEFORE_STEP_CHANGED, function showPopupOnJourneyReadySubscription() {
 	            _.defer(function() {
-	                reset();
+					var navigationId = meerkat.modules.address.getWindowHash().split("/")[0];
+
+	            	if(_.indexOf(steps, navigationId) >= 0) {
+	                	setActive(true);
+	                	reset();
+	                } else {
+	                	setActive(false);
+	                }
 	            });
 	        });
 	    }
 
-        meerkat.messaging.subscribe(meerkat.modules.events.callbackModal.CALLBACK_MODAL_OPEN, function showPopupOnModalOpenSubscription() {
-            dontShow = true;
+        meerkat.messaging.subscribe(meerkat.modules.events.callbackModal.CALLBACK_MODAL_OPEN, function dontShowPopupOnModalOpenSubscription() {
+			setActive(false);
         });
 
     }
 
 	function count() {
 		timeout += 1;
-		if(!dontShow && timeout === meerkat.site.callbackPopup.timeout) {
+		if(isActive && timeout === meerkat.site.callbackPopup.timeout) {
 			showModal();
 		}
 	}
@@ -62,9 +78,8 @@
 	}
 
 	function showModal() {
-		if(!isModalOpen  && !isMobile) {
-			isModalOpen = true;
-			
+		if(isActive && !isModalOpen && !isMobile) {
+			setModalState(true);
 			
 			var htmlTemplate = _.template($('#callback-popup').html());
 	        $('body').append(htmlTemplate());
@@ -73,14 +88,18 @@
 	}
 
 	function hideModal() {
-		isModalOpen = false;
-		setDontShow();
+		setModalState(false);
+		setActive(false);
 		$('#health-callback-popup').remove();
 		reset();
 	}
 
-	function setDontShow() {
-		dontShow = true;
+	function setActive(value) {
+		isActive = value;
+	}
+
+	function setModalState(value) {
+		isModalOpen = value;
 	}
 
 	meerkat.modules.register("healthCallbackPopup", {

@@ -19,8 +19,8 @@ Handling of the callback popup
         callbackModal: {
             CALLBACK_MODAL_OPEN : "CALLBACK_MODAL_OPEN"
         }
-    },
-    moduleEvents = events.callbackModal;
+    };
+
 	
 	initHealthCallback =  function(){
 		applyEventListeners();
@@ -30,6 +30,7 @@ Handling of the callback popup
 		timezone = -day.getTimezoneOffset();
 		direction = timezone >= 0 ? '+' : '-';
 		offset = direction + ('00'+(timezone / 60)).slice(-2) + ':' + ('00'+(timezone % 60)).slice(-2);
+
 	};
 
     function applyEventListeners() {
@@ -81,6 +82,10 @@ Handling of the callback popup
         	e.preventDefault();
             executeCallBackLater();
         });
+
+		$(document).on('show.bs.modal', '#mkDialog_0', function (e) {
+			meerkat.messaging.publish(events.callbackModal.CALLBACK_MODAL_OPEN);
+		});
 
     }
 
@@ -314,7 +319,7 @@ Handling of the callback popup
 	function convertTo24Hour(time) {
 
 		if(time !== null) {
-		    var hour = time.substr(0, 2);
+		    var hour = parseInt(time.substr(0, 2));
 		    if(time.indexOf('am') != -1 && hour == 12) {
 		        time = time.replace('12', '00');
 		    }
