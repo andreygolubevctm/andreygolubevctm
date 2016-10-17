@@ -41,10 +41,11 @@ public class ResultsDisplayService {
             stmt = conn.prepareStatement(
                     "SELECT * " +
                             "FROM aggregator.features_details " +
-                            "WHERE vertical = ? " +
+                            "WHERE vertical = ? AND status = ? " +
                             "ORDER BY parentId;"
             );
             stmt.setString(1, vertical);
+            stmt.setString(2, "1");
             ResultSet result = stmt.executeQuery();
 
             while (result.next()) {

@@ -134,7 +134,7 @@ public class TravelEmailService extends EmailServiceHandler implements BestPrice
 
 			String pricePresentationUrl;
 			if(Boolean.valueOf(pageSettings.getSetting("emailTokenEnabled"))) {
-				pricePresentationUrl = urlService.getApplyUrl(emailDetails, emailParameters);
+				pricePresentationUrl = urlService.getApplyUrl(emailDetails, emailParameters, null);
 			} else {
 				pricePresentationUrl = pageSettings.getBaseUrl() + "travel_quote.jsp?action=load&type=bestprice&id=" + transactionId + "&hash=" + emailDetails.getHashedEmail() + "&vertical=travel&type="+(String) data.get("travel/policyType");
 			}

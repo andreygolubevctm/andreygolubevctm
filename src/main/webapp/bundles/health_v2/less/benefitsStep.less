@@ -26,6 +26,12 @@
         }
     }
 
+    .health-situation-healthCvrType {
+        label.disabled {
+            background:transparent;
+        }
+    }
+
     .help-icon {
         margin-top:2px;
     }
@@ -129,4 +135,50 @@
             }
         }
     }
+}
+.title {
+    position: relative;
+    z-index: 2;
+}
+.situation-wrapper {
+    z-index: 1;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+
+    &:before {
+        display: block;
+        font-family: 'ctm-health';
+        content: " ";
+        font-size: 120px;
+        color: #f0f0f0;
+        line-height: 100px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+
+    &.N:before {
+      content: "\e934";
+    }
+
+    &.LC:before {
+      content: "\e935";
+    }
+
+    &.CSF:before {
+      content: "\e93c";
+    }
+
+    &.SHN:before {
+      content: "\e937";
+    }
+
+    &.ATP:before {
+      content: "\e936";
+    }
+
+    &.SF:before {
+      content: "\e93b";
+    }
+
 }
