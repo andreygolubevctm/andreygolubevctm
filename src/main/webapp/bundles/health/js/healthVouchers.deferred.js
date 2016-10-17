@@ -62,7 +62,7 @@
                     approvedby: $elements.root.find('#health_voucher_approvedby'),
                     approvedbydisplay: $elements.root.find('#healthVoucherApprovedBy'),
                     code: $elements.root.find('#health_voucher_authorisationcode'),
-                    appemail: $elements.root.find('#health_application_email')
+                    appemail: $('#health_application_email')
                 };
                 applyEventListeners();
                 updateData();
