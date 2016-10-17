@@ -272,7 +272,7 @@ var healthFunds_CBH = {
 		}<%-- /not loading quote --%>
 		<c:if test="${invoiceOff eq true}">
 			$('#health_payment_details_type_cc').addClass('disabled-by-fund').prop('disabled', true);
-			$('#health_payment_details_type_cc').closest('label').addClass('disabled-by-fund').addClass('disabled');
+			$('#health_payment_details_type_cc').closest('label').addClass('disabled-by-fund').addClass('disabled').hide();
 		</c:if>
 	},
 	unset: function() {
@@ -305,7 +305,7 @@ var healthFunds_CBH = {
 		}
 		<c:if test="${invoiceOff eq true}">
 			$('#health_payment_details_type_cc').removeClass('disabled-by-fund').prop('disabled',false);
-			$('#health_payment_details_type_cc').closest('label').removeClass('disabled-by-fund').removeClass('disabled');
+			$('#health_payment_details_type_cc').closest('label').removeClass('disabled-by-fund').removeClass('disabled').show();
 		</c:if>
 	},
 
