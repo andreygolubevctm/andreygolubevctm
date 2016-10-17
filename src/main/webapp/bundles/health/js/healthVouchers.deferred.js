@@ -36,7 +36,6 @@
                     reason:         $elements.root.find('.healthVoucherReasonRow').first(),
                     referrerref:    $elements.root.find('.healthVoucherReferrerRefRow').first(),
                     value:          $elements.root.find('.healthVoucherValueRow').first(),
-                    email:          $elements.root.find('.healthVoucherEmailRow').first(),
                     approvedby:     $elements.root.find('.healthVoucherApprovedByRow').first(),
                     authorisation:  $elements.root.find('.healthVoucherAuthorisationRow').first(),
                     simples :   {
@@ -59,7 +58,7 @@
                     reason: $elements.root.find('#health_voucher_reason'),
                     referrerref: $elements.root.find('#health_voucher_referrerref'),
                     value: $elements.root.find('#health_voucher_value'),
-                    email: $elements.root.find('#health_voucher_email'),
+                    emailDisplay: $elements.root.find('#healthVoucherEmail'),
                     approvedby: $elements.root.find('#health_voucher_approvedby'),
                     approvedbydisplay: $elements.root.find('#healthVoucherApprovedBy'),
                     code: $elements.root.find('#health_voucher_authorisationcode'),
@@ -130,17 +129,12 @@
                 var reason = $elements.triggers.reason.val();
                 var referrerref = $elements.inputs.referrerref.val();
                 var value = $elements.inputs.value.val();
-                var email = $elements.inputs.email.val();
-                if(_.isEmpty(email)) {
-                    email = $elements.inputs.appemail.val();
-                }
                 var code = $elements.inputs.code.val();
                 var approvedby = $elements.inputs.approvedby.val();
                 data.other = {
                     reason: _.isEmpty(reason) ? null : reason,
                     referrerref: _.isEmpty(referrerref) ? null : referrerref,
                     value: _.isEmpty(value) ? null : value,
-                    email: _.isEmpty(email) ? null : email,
                     code: _.isEmpty(code) ? null : code,
                     approvedby: _.isEmpty(approvedby) ? null : approvedby
                 };
@@ -166,6 +160,7 @@
             $elements.inputs.value.find('option:selected').prop('selected', null);
         }
         $elements.inputs.referrerref.val(data.isOther && !_.isEmpty(data.other.referrerref) ? data.other.referrerref : '');
+        $elements.inputs.emailDisplay.empty().append($elements.inputs.appemail.val());
         $elements.inputs.approvedby.val(data.isOther && !_.isEmpty(data.other.approvedby) ? data.other.approvedby : '');
         $elements.inputs.approvedbydisplay.empty().append(data.isOther && !_.isEmpty(data.other.approvedby) ? data.other.approvedby : '');
         $elements.inputs.code.val(data.isOther && !_.isEmpty(data.other.code) ? data.other.code : '');
@@ -252,7 +247,6 @@
             reason :        null,
             referrerref :   null,
             value :         null,
-            email :         null,
             code :          null,
             approvedby :    null
         };
@@ -282,7 +276,6 @@
         $elements.inputs.reason.valid();
         $elements.inputs.referrerref.valid();
         $elements.inputs.value.valid();
-        $elements.inputs.email.valid();
         $elements.inputs.code.valid();
         return !_.isEmpty($elements.wrappers.available.find('.has-error'));
     }

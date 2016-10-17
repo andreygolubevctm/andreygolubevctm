@@ -24,7 +24,7 @@
 
 	<c:set var="fieldXpath" value="${xpath}/email" />
 	<form_v3:row label="Can I confirm your email is?" fieldXpath="${fieldXpath}" className="healthVoucherEmailRow">
-		<field_v2:email xpath="${fieldXpath}" required="true" title="email confirmation" placeHolder="email address" />
+		<p id="healthVoucherEmail"></p>
 	</form_v3:row>
 
 	<c:set var="fieldXpath" value="${xpath}/approvedby" />
