@@ -13,7 +13,7 @@
 		var navigationId = meerkat.modules.address.getWindowHash().split("/")[0];
 		
 		if(meerkat.site.callbackPopup.enabled) {
-			idle = setInterval(count, 100);
+			idle = setInterval(count, 1000);
 		}
 
         if (meerkat.site.callbackPopup.timeoutStepEnabled) {

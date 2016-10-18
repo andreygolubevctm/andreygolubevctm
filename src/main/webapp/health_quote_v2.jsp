@@ -81,8 +81,11 @@
                     <h1><span class="noWrap callCentreNumber">${callCentreNumber}</span><span class="noWrap callCentreAppNumber" style="display:none">${callCentreAppNumber}</span></h1>
                                 ${openingHoursHeader }
                         </div>
+                        <div class="navbar-text hidden-xs" data-poweredby="header"></div>
+                    </li>
+                    <li>
+                        <health_v3:callback_link />
                         ${callCentreHoursModal}
-                        <div class="navbar-text hidden-xs" data-poweredby="header">&nbsp;</div>
                     </li>
                 </c:if>
             </ul>

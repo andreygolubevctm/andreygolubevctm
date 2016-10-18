@@ -39,16 +39,32 @@
 			color: @theme-secondary;
 		}
 	}
+}
+.icon-callback {
+	font-size: 18px;
+	color: #ffffff;
+	background-color: @theme-secondary;
+	border-radius: 50%;
+	text-align: center;
+	width: 36px;
+	height: 36px;
+	margin: -5px 5px 0;
+	padding: 8px;
+	float: right;
+}
+a.callback-link {
+	position: absolute;
+	top: 0;
+	right: 0;
+
+	&:hover,
+	&:focus {
+		background-color: #ffffff;
+	}
+
 	.icon-callback {
-		font-size: 18px;
-		color: #ffffff;
-		background-color: @theme-secondary;
-		border-radius: 50%;
-		text-align: center;
-		width: 36px;
-		height: 36px;
-		margin: -5px 5px 0;
-		padding: 8px;
-		float: right;
+		display: block;
+		margin: 12px auto 0;
+		float: none;
 	}
 }
