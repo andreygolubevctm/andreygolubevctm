@@ -15,10 +15,12 @@
         }
       }
     }
-    .healthVoucherApprovedByRow {
-      p {
+    p.display-only {
+        display:none;
         padding-top:11px;
-      }
+    }
+    #healthVoucherEmail {
+      display:block;
     }
   }
   .voucherDialogue {
@@ -27,10 +29,13 @@
     }
   }
   .disabled {
-    input.form-control {
-      color: #B3B3B3;
-      border-color: #B3B3B3;
-      background-color: #e7e7e7;
+    input.form-control,
+    .select {
+      display:none;
+    }
+    p.display-only {
+      display:block;
+      color:#888888;
     }
   }
   .voucher-validation-messages p {

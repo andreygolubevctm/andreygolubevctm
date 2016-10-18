@@ -56,8 +56,11 @@
                     all: $elements.root.find('input,select'),
                     disableables: $elements.wrappers.disableables.find('input,select'),
                     reason: $elements.root.find('#health_voucher_reason'),
+                    reasonDisplay: $elements.root.find('#healthVoucherReason'),
                     referrerref: $elements.root.find('#health_voucher_referrerref'),
+                    referrerrefDisplay: $elements.root.find('#healthVoucherReferrerRef'),
                     value: $elements.root.find('#health_voucher_value'),
+                    valueDisplay: $elements.root.find('#healthVoucherValue'),
                     emailDisplay: $elements.root.find('#healthVoucherEmail'),
                     approvedby: $elements.root.find('#health_voucher_approvedby'),
                     approvedbydisplay: $elements.root.find('#healthVoucherApprovedBy'),
@@ -168,14 +171,21 @@
         // Enable/disable fields based on whether authorised
         if(data.isOther && !_.isEmpty(data.other.approvedby)) {
             $elements.wrappers.disableables.addClass('disabled');
-            $elements.inputs.disableables.prop('readonly',true);
+            $elements.inputs.disableables.each(function() {
+                var value = $(this).val();
+                $(this).closest('.fieldrow').find('.display-only').empty().append(value);
+            });
+            $elements.inputs.code.closest('.authorisation-column').hide();
             $elements.wrappers.approvedby.slideDown('fast');
             $elements.triggers.submit.slideUp('fast', function(){
                 $elements.triggers.reset.slideDown('fast');
             });
         } else {
             $elements.wrappers.disableables.removeClass('disabled');
-            $elements.inputs.disableables.prop('readonly',false);
+            $elements.inputs.disableables.each(function() {
+                $(this).closest('.fieldrow').find('.display-only').empty();
+            });
+            $elements.inputs.code.closest('.authorisation-column').show();
             $elements.wrappers.approvedby.slideUp('fast');
             $elements.triggers.reset.slideUp('fast', function(){
                 $elements.triggers.submit.slideDown('fast');
@@ -273,11 +283,11 @@
      * @returns {boolean}
      */
     function isValid() {
-        $elements.inputs.reason.valid();
-        $elements.inputs.referrerref.valid();
-        $elements.inputs.value.valid();
-        $elements.inputs.code.valid();
-        return !_.isEmpty($elements.wrappers.available.find('.has-error'));
+        var vReason = $elements.inputs.reason.valid();
+        var vRef = $elements.inputs.referrerref.valid();
+        var vValue = $elements.inputs.value.valid();
+        var vCode = $elements.inputs.code.valid();
+        return vReason && vRef && vValue && vCode;
     }
 
     /**
@@ -322,7 +332,7 @@
                 }
             });
         } else {
-            renderMessage("error","All fields are mandatory");
+            // Ignore - validation errors are sufficient
         }
     }
 
@@ -380,13 +390,14 @@
     function updateValueOptions(filtered) {
         filtered = filtered  || false;
         var $option = $('<option/>',{
-            text: 'Please choose...'
+            value: null,
+            label: 'Please choose...'
         });
         $elements.inputs.value.empty().append($option);
         for(var i=valueRange.min; i <= valueRange[filtered ? 'otherMax':'max']; i = i + valueRange.inc) {
             $option = $('<option/>',{
                 value: i,
-                text: '$' + i
+                label: '$' + i
             });
             if(i === data.other.value) {
                 $option.prop("selected", true);
