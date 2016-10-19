@@ -14,6 +14,10 @@
 	label {
 		text-align: right;
 
+		@media (@xs-only) {
+			text-align: left;
+		}
+
 		&.btn {
 		    border: 2px solid @theme-secondary;
 		    border-radius: 8px;
@@ -40,6 +44,16 @@
 		.switch {
 			display: inline-block;
 			float: right;
+		}
+	}
+}
+.modal {
+	.xs-results-pagination {
+	 	.navbar-nav {
+	 		background-color: #555;
+		}
+		.btn-back {
+
 		}
 	}
 }

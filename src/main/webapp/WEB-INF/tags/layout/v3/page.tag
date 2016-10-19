@@ -170,6 +170,16 @@ ${newPage.init(pageContext.request, pageSettings)}
 								<span class="icon icon-reorder"></span>
 							</button>
 							<c:if test="${pageSettings.getVerticalCode() eq 'health'}">
+								<a class="navbar-toggle wide phone collapsed" data-toggle="dialog"
+									data-content="#view_all_hours"
+									data-dialog-hash-id="view_all_hours"
+									data-title="Request a Call" data-cache="true">
+									<span class="icon icon-phone"></span>
+									<span>Talk to our experts</span>
+								</a>
+							</c:if>
+
+							<c:if test="${pageSettings.getVerticalCode() eq 'health'}">
 								<button type="button" class="navbar-toggle phone collapsed disabled" data-toggle="navMenuOpen" data-target=".navbar-collapse-menu">
 									<span class="sr-only">Contact Us</span>
 									<span class="icon icon-phone"></span>

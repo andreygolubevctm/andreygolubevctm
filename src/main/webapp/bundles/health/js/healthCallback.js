@@ -266,7 +266,9 @@ Handling of the callback popup
 		var now = new Date();
 		var options = [];
 		var isAmPm;
-		var timezoneOffset = (timezone/60) - 10;
+		var timezoneOffset = 0 ; //(timezone/60) - 10;
+		// Current defaulting to Aus Eastern Standard until timezones can handled backend along with a rolling date range
+
 		
 		$.each(hours, function() {
 			if(this.description.substring(0, 3) === dayName) {
@@ -319,7 +321,7 @@ Handling of the callback popup
 	function convertTo24Hour(time) {
 
 		if(time !== null) {
-		    var hour = parseInt(time.substr(0, 2));
+		    var hour = time.substr(0, 2);
 		    if(time.indexOf('am') != -1 && hour == 12) {
 		        time = time.replace('12', '00');
 		    }
