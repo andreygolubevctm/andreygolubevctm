@@ -9,7 +9,7 @@
 <c:set var="vouchersFlag"><content:get key="callCentreVouchersOn" /></c:set>
 <c:set var="vouchersJourneyOn">
 	<c:choose>
-		<c:when test="${callCentre and not empty vouchersFlag and vouchersFlag eq 'Y'}"></c:when>
+		<c:when test="${callCentre and not empty vouchersFlag and vouchersFlag eq 'Y'}">${true}</c:when>
 		<c:otherwise>${false}</c:otherwise>
 	</c:choose>
 </c:set>
