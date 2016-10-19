@@ -37,7 +37,7 @@ public class LeadServiceUtil {
         restTemplate.setMessageConverters(messageConverters);
     }
 
-    public static void sendRequest(final LeadRequest leadData, final String url) {
+    public static ListenableFuture<ResponseEntity<LeadResponse>> sendRequestListenable(final LeadRequest leadData, final String url) {
         LOGGER.info("Sending request to LeadService {}", leadData);
 
         HttpHeaders headers = new HttpHeaders();
@@ -45,7 +45,11 @@ public class LeadServiceUtil {
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         HttpEntity<LeadRequest> entity = new HttpEntity<>(leadData, headers);
 
-        ListenableFuture<ResponseEntity<LeadResponse>> listenable = restTemplate.postForEntity(URI.create(url), entity, LeadResponse.class);
+        return restTemplate.postForEntity(URI.create(url), entity, LeadResponse.class);
+    }
+
+    public static void sendRequest(final LeadRequest leadData, final String url) {
+        ListenableFuture<ResponseEntity<LeadResponse>> listenable = sendRequestListenable(leadData, url);
         listenable.addCallback(new ListenableFutureCallback<ResponseEntity<LeadResponse>>() {
             @Override
             public void onFailure(Throwable throwable) {
@@ -57,6 +61,5 @@ public class LeadServiceUtil {
                 LOGGER.info("Response from LeadService {}", kv("salesForceId", leadResponseResponseEntity.getBody().getSalesforceId()));
             }
         });
-
     }
 }
