@@ -273,7 +273,7 @@
             $elements.inputs.referrerref.val('');
         }
         // Update value selector with applicable options
-        updateValueOptions(data.other.reason === 'price-promise');
+        updateValueOptions(reason === 'price-promise');
     }
 
     /**

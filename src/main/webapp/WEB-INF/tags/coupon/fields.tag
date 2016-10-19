@@ -3,6 +3,12 @@
 
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath" 	required="true"	 rtexprvalue="true"	 description="field group's xpath" %>
+<%@ attribute name="showDefaultMessage" 	required="false"	 rtexprvalue="true"	 description="Whether to show the default no coupons available message" %>
+
+<%-- VARIABLES --%>
+<c:if test="${empty showDefaultMessage or showDefaultMessage ne true}">
+    <c:set var="showDefaultMessage" value="${false}"></c:set>
+</c:if>
 
 <jsp:useBean id="couponService" class="com.ctm.web.core.coupon.services.CouponService" />
 
@@ -39,8 +45,10 @@
     <simples:dialogue id="64" vertical="health" mandatory="true" />
 </c:when>
 <c:otherwise>
-    <form_v3:row label=" ">
-        <p>No Mando coupons available</p>
-    </form_v3:row>
+    <c:if test="${showDefaultMessage eq true}">
+        <form_v3:row label=" ">
+            <p>No Mando coupons available</p>
+        </form_v3:row>
+    </c:if>
 </c:otherwise>
 </c:choose>
