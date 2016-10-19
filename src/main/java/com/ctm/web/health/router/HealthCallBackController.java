@@ -1,7 +1,8 @@
 package com.ctm.web.health.router;
 
 import com.ctm.web.core.exceptions.RouterException;
-import com.ctm.web.core.resultsData.model.ErrorInfo;
+import com.ctm.web.core.model.resultsData.Error;
+import com.ctm.web.core.model.resultsData.ErrorDetails;
 import com.ctm.web.core.router.CommonQuoteRouter;
 import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.SessionDataServiceBean;
@@ -22,6 +23,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.Collections;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
 
 import static com.ctm.web.core.leadService.model.LeadType.CALL_ME_BACK;
 import static com.ctm.web.core.leadService.model.LeadType.CALL_ME_NOW;
@@ -62,13 +65,16 @@ public class HealthCallBackController extends CommonQuoteRouter {
         healthCallBackService.sendLead(data, dataBucket, request, CALL_ME_NOW);
     }
 
-    @ExceptionHandler
+    @Override
+    public Error handleException(RouterException ex) {
+        return handleExceptionRest(ex);
+    }
+
+    @ExceptionHandler({TimeoutException.class, ExecutionException.class, InterruptedException.class})
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorInfo handleException(final Exception e) {
-        LOGGER.error("Failed to handle request", e);
-        ErrorInfo errorInfo = new ErrorInfo();
-        errorInfo.getErrors().putIfAbsent("error", e.getMessage());
-        return errorInfo;
+    public Error handleExceptionRest(final Exception ex) {
+        LOGGER.error("Failed to handle request", ex);
+        return new Error("error", ex.getMessage(), null, new ErrorDetails(ex.getClass().getCanonicalName()));
     }
 
 }
