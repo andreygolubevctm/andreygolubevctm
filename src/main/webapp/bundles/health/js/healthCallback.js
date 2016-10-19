@@ -28,7 +28,7 @@ Handling of the callback popup
 		day = new Date();
         
 		timezone = -day.getTimezoneOffset();
-		direction = timezone >= 0 ? '+' : '-';
+		direction = timezone >= 0 ? '%2B' : '%2D';
 		offset = direction + ('00'+(timezone / 60)).slice(-2) + ':' + ('00'+(timezone % 60)).slice(-2);
 
 	};
@@ -266,7 +266,7 @@ Handling of the callback popup
 		var now = new Date();
 		var options = [];
 		var isAmPm;
-		var timezoneOffset = -3; //(timezone/60) - 10;
+		var timezoneOffset = (timezone/60) - 10;
 		
 		$.each(hours, function() {
 			if(this.description.substring(0, 3) === dayName) {
