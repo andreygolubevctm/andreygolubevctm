@@ -28,7 +28,7 @@
 			            </form_v3:row>
 
 						 <c:set var="fieldXPath" value="${xpath}/mobile" />
-					    <form_v3:row label="Your mobile number <a class='switch' href='#'>other number</a>" fieldXpath="${fieldXPath}" className="clear">
+					    <form_v3:row label="Your mobile number <a class='switch' href='#'>other number?</a>" fieldXpath="${fieldXPath}" className="clear" hideHelpIconCol="true">
 					        <field_v1:flexi_contact_number xpath="${fieldXPath}"
 					                                    maxLength="20"
 					                                    required="true"
@@ -39,7 +39,7 @@
 					    </form_v3:row>
 
 					    <c:set var="fieldXPath" value="${xpath}/otherNumber" />
-					    <form_v3:row label="Your other number <a class='switch' href='#'>mobile number</a>" fieldXpath="${fieldXPath}" className="clear hidden">
+					    <form_v3:row label="Your other number <a class='switch' href='#'>mobile number?</a>" fieldXpath="${fieldXPath}" className="clear hidden" hideHelpIconCol="true">
 					        <field_v1:flexi_contact_number xpath="${fieldXPath}"
 					                                    maxLength="20"
 					                                    required="true"
@@ -52,7 +52,7 @@
 			</div>
 			<div class="row">
 				<div class="col-sm-5">
-					<a href="#" class="switch">Choose another time for a call?</a>
+					<a href="#" class="switch call-type">Choose another time for a call?</a>
 				</div>
 				<div class="col-sm-6">
 				    <button id="callBackNow" class="btn btn-secondary btn-lg btn-block">Call me now</button>
@@ -60,21 +60,21 @@
 			</div>
 			<div class="row hidden">
 				<div class="col-sm-12">
-					<form_v2:row label="">
+					<form_v3:row label="" hideHelpIconCol="true">
 						<field_v2:array_radio xpath="${xpath}/day" required="true" className="callbackDay"
 							items="Today=Today,Tomorrow=Tomorrow,NextDay=NextDay,LastDay=LastDay"
 							title="" wrapCopyInSpan="true" />
-					</form_v2:row>
+					</form_v3:row>
 			    </div>
 				<div class="col-sm-12">
-					<form_v2:row label="Pick a time for call">
+					<form_v3:row label="Pick a time for call" hideHelpIconCol="true">
 						<field_v2:array_select xpath="${xpath}/time" required="true" className="callbackTime"
 							items="="
 							title="" />
-					</form_v2:row>
+					</form_v3:row>
 			    </div>
 				<div class="col-sm-5">
-					<a href="#" class="switch">Cancel, I prefer a call right now?</a>
+					<a href="#" class="switch call-type">Cancel, I prefer a call right now?</a>
 				</div>
 				<div class="col-sm-6">
 				    <button id="callBackLater" class="btn btn-secondary btn-lg btn-block">Call me later</button>
@@ -108,8 +108,8 @@
 						items="${openingHoursService.getAllOpeningHoursForDisplay(pageContext.getRequest(),false)}">
 
 						<div class="row day_row">
-							<div class="day-description col-md-6 col-xs-6"> ${hoursOfDay.description}</div>
-							<div class="col-md-6 col-xs-6">
+							<div class="day-description col-md-5 col-xs-5"> ${hoursOfDay.description}</div>
+							<div class="col-md-7 col-xs-7">
 								<c:choose>
 									<c:when test="${empty hoursOfDay.startTime}">
 										<c:out value="Closed"/>

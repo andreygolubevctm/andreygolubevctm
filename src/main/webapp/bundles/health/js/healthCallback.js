@@ -85,6 +85,17 @@ Handling of the callback popup
 
 		$(document).on('show.bs.modal', '#mkDialog_0', function (e) {
 			meerkat.messaging.publish(events.callbackModal.CALLBACK_MODAL_OPEN);
+
+			if(meerkat.modules.performanceProfiling.isMobile()) {
+				$('button').each(function() {
+					var $link = $(this).parent();
+					var $linkParent = $(this).parent().parent();
+
+					$linkParent.prepend($link);
+				});
+
+			}
+
 		});
 
     }
