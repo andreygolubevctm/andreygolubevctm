@@ -51,16 +51,16 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-sm-5">
+				<div class="col-sm-6">
 					<a href="#" class="switch call-type">Choose another time for a call?</a>
 				</div>
-				<div class="col-sm-6">
-				    <button id="callBackNow" class="btn btn-secondary btn-lg btn-block">Call me now</button>
+				<div class="col-sm-5">
+				    <button id="callBackNow" class="btn btn-secondary btn-lg btn-block">Call me now</button><small>within 30 mins</small>
 			    </div>
 			</div>
 			<div class="row hidden">
 				<div class="col-sm-12">
-					<form_v3:row label="" hideHelpIconCol="true">
+					<form_v3:row label=" " hideHelpIconCol="true">
 						<field_v2:array_radio xpath="${xpath}/day" required="true" className="callbackDay"
 							items="Today=Today,Tomorrow=Tomorrow,NextDay=NextDay,LastDay=LastDay"
 							title="" wrapCopyInSpan="true" />
@@ -73,10 +73,10 @@
 							title="" />
 					</form_v3:row>
 			    </div>
-				<div class="col-sm-5">
+				<div class="col-sm-6">
 					<a href="#" class="switch call-type">Cancel, I prefer a call right now?</a>
 				</div>
-				<div class="col-sm-6">
+				<div class="col-sm-5">
 				    <button id="callBackLater" class="btn btn-secondary btn-lg btn-block">Call me later</button>
 			    </div>
 			</div>
@@ -108,8 +108,8 @@
 						items="${openingHoursService.getAllOpeningHoursForDisplay(pageContext.getRequest(),false)}">
 
 						<div class="row day_row">
-							<div class="day-description col-md-5 col-xs-5"> ${hoursOfDay.description}</div>
-							<div class="col-md-7 col-xs-7">
+							<div class="day-description col-md-4 col-xs-4 text-left"> ${hoursOfDay.description}</div>
+							<div class="col-md-8 col-xs-8">
 								<c:choose>
 									<c:when test="${empty hoursOfDay.startTime}">
 										<c:out value="Closed"/>
@@ -142,8 +142,8 @@
 			data-dialog-hash-id="view_all_hours"
 			data-title="Request a Call" data-cache="true"><i class="icon-callback"></i> Request a Call</a></h3>
 		</div>
-		<div class="col-sm-12">
-			<p>Or call us ${todayOpeningHours} today to speak to one of our experts.</p>
+		<div class="col-sm-8">
+			<p>Or call us ${todayOpeningHours} AEST today to speak to one of our experts.</p>
 		</div>
 		<div class="col-sm-12">
 			<h1>

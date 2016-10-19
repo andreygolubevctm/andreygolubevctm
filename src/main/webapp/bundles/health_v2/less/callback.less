@@ -10,11 +10,11 @@
 			color: contrast(@header-bg, @contact-headings-color, #fff);
 			font-size: 28px;
 		}
-
+	}
+	h1 {
 		@media (@xs-only) {
 			color: @theme-secondary;
 		}
-
 	}
 	label {
 		text-align: right;
@@ -44,29 +44,42 @@
 	}
 	.switch {
 		display: block;
+		font-size: 12px;
 
 		&.call-type {
+			line-height: 3em;
+			font-size: 14px;
 			text-align: center;
 			width: 100%;
 		}
+	}
+	small {
+		font-size: 11px;
+		color: @theme-dark;
+		display: none;
+		text-align: center;
 	}
     @media (@xs-only) {
 		.switch {
 			display: inline-block;
 			float: right;
 		}
-	}
-	.call-details {
-		&::before {
-			border-top: 2px solid #ccc;
-		    content: " ";
-		    display: block;
-		    margin: 40px auto 20px;
-		    width: 100%;
+
+		.call-details {
+			&::before {
+				border-top: 2px solid #ccc;
+			    content: " ";
+			    display: block;
+			    margin: 40px auto 20px;
+			    width: 100%;
+			}
 		}
 	}
 }
 .modal {
+	transform: translate(100%, 0%);
+	transition: all 0.5s;
+
 	.xs-results-pagination {
 	 	.navbar-nav {
 	 		background-color: #555;
@@ -75,4 +88,8 @@
 
 		}
 	}
+}
+.modal-open .modal {
+	transform: translate(0%, 0%);
+	transition: all 0.5s;
 }
