@@ -14,7 +14,7 @@
         valueRange = {
             inc : 25,
             min : 25,
-            max : 200,
+            max : 100,
             otherMax : 50
     };
 

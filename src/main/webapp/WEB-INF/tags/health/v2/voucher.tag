@@ -15,7 +15,7 @@
 
 	<c:set var="fieldXpath" value="${xpath}/referrerref" />
 	<form_v3:row label="Referring policy?" fieldXpath="${fieldXpath}" className="healthVoucherReferrerRefRow">
-		<field_v2:input xpath="${fieldXpath}" required="true" placeHolder="Referrer Reference"  title="referrer reference" additionalAttributes="data-attach='true'" />
+		<field_v2:input xpath="${fieldXpath}" required="true" placeHolder="Referrer Reference"  title="referrer reference" pattern="[0-9]*" integerKeyPressLimit="true" additionalAttributes="data-attach='true' data-rule-digits='true' data-msg-digits='Please enter the referring policy (numeric)'" />
 		<p id="healthVoucherReferrerRef" class="display-only"></p>
 	</form_v3:row>
 
