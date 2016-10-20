@@ -85,6 +85,7 @@ Handling of the callback popup
 
 		$(document).on('show.bs.modal', '#mkDialog_0', function (e) {
 			meerkat.messaging.publish(events.callbackModal.CALLBACK_MODAL_OPEN);
+            meerkat.modules.jqueryValidate.setupDefaultValidationOnForm($('#health-callback-form'));
 
 			if(meerkat.modules.performanceProfiling.isMobile()) {
 				$('button').each(function() {
