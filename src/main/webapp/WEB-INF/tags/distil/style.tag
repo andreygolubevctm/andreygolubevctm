@@ -40,7 +40,7 @@
     .content { padding: 25px 50px 50px 50px; }
     .content h1 { color: #1C3F94; }
 
-    .dCF_captcha_text {
+    #dCF_captcha_text {
         padding: 10px;
         margin: 10px 0px;
         font-size: 10pt;
