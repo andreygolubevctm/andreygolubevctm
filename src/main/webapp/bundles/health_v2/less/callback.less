@@ -33,7 +33,6 @@
 		@media (@xs-only) {
 			text-align: left;
 		}
-
 		&.btn {
 		    border: 2px solid @theme-secondary;
 		    border-radius: 8px;
@@ -42,13 +41,18 @@
 		    padding-left: 0;
 		    padding-right: 0;
 		    text-align: center;
-		    outline: 0 0;
 		    width: 24%;
 		}
 		&.btn:active,
-		&.btn:focus {
+		&.btn:focus,
+		&.btn.focus,
+		&.btn.active {
 		    border-color: @theme-secondary;
 		    background-color: @theme-secondary;
+		    outline: 0;
+		}
+		input[type="radio"]:focus {
+		    outline: 0;
 		}
 	}
 	.main {
