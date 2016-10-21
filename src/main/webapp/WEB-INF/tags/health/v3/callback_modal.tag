@@ -14,6 +14,7 @@
 	<div class="row">
 		<div class="col-sm-12">
 			<h3>Talk to our experts</h3>
+			<div class="quote-ref hidden-xs">Quote Ref: <c:out value="${data['current/transactionId']}"/></div>
 		</div>
 		<div class="col-sm-8 main" data-padding-pos="all" data-hover-bg="" data-delay="0">
 			<div class="row">
@@ -59,6 +60,12 @@
 			    </div>
 			</div>
 			<div class="row hidden">
+				<div class="col-sm-6">
+					<a href="#" class="switch call-type">Cancel, I prefer a call right now?</a>
+				</div>
+				<div class="col-sm-5">
+				    <button id="callBackLater" class="btn btn-secondary btn-lg btn-block">Call me later</button>
+			    </div>
 				<div class="col-sm-12">
 					<form_v3:row label=" " hideHelpIconCol="true">
 						<field_v2:array_radio xpath="${xpath}/day" required="true" className="callbackDay"
@@ -72,12 +79,6 @@
 							items="="
 							title="" />
 					</form_v3:row>
-			    </div>
-				<div class="col-sm-6">
-					<a href="#" class="switch call-type">Cancel, I prefer a call right now?</a>
-				</div>
-				<div class="col-sm-5">
-				    <button id="callBackLater" class="btn btn-secondary btn-lg btn-block">Call me later</button>
 			    </div>
 			</div>
 			<div class="row">
