@@ -31,6 +31,7 @@
 		    padding-left: 0;
 		    padding-right: 0;
 		    text-align: center;
+		    outline: 0 0;
 		    width: 24%;
 		}
 		&.btn:active,
@@ -41,6 +42,9 @@
 	}
 	.main {
 		border-right: 2px solid @theme-light;
+	}
+	.all-times {
+		margin-top: 20px;
 	}
 	.switch {
 		display: block;
@@ -56,7 +60,7 @@
 	small {
 		font-size: 11px;
 		color: @theme-dark;
-		display: none;
+		display: block;
 		text-align: center;
 	}
     @media (@xs-only) {
@@ -76,10 +80,7 @@
 		}
 	}
 }
-.modal {
-	transform: translate(100%, 0%);
-	transition: all 0.5s;
-
+.health-callback.modal {
 	.xs-results-pagination {
 	 	.navbar-nav {
 	 		background-color: #555;
@@ -88,8 +89,4 @@
 
 		}
 	}
-}
-.modal-open .modal {
-	transform: translate(0%, 0%);
-	transition: all 0.5s;
 }

@@ -50,6 +50,7 @@
 	            _.defer(function() {
 					var navigationId = meerkat.modules.address.getWindowHash().split("/")[0];
 
+					hideModal();
 	            	if(_.indexOf(steps, navigationId) >= 0) {
 	                	setActive(true);
 	                	reset();

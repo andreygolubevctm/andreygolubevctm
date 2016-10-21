@@ -83,20 +83,24 @@ Handling of the callback popup
             executeCallBackLater();
         });
 
-		$(document).on('show.bs.modal', '#mkDialog_0', function (e) {
-			meerkat.messaging.publish(events.callbackModal.CALLBACK_MODAL_OPEN);
-            meerkat.modules.jqueryValidate.setupDefaultValidationOnForm($('#health-callback-form'));
+		$(document).on('show.bs.modal', '.modal', function (e) {
+			if($(this).find('#health-callback')) {
+				$(this).addClass('health-callback');
 
-			if(meerkat.modules.performanceProfiling.isMobile()) {
-				$('button').each(function() {
-					var $link = $(this).parent();
-					var $linkParent = $(this).parent().parent();
+				meerkat.messaging.publish(events.callbackModal.CALLBACK_MODAL_OPEN);
+	            meerkat.modules.jqueryValidate.setupDefaultValidationOnForm($('#health-callback-form'));
+				meerkat.modules.health.configureContactDetails();
 
-					$linkParent.prepend($link);
-				});
+				if(meerkat.modules.performanceProfiling.isMobile()) {
+					$('button').each(function() {
+						var $link = $(this).parent();
+						var $linkParent = $(this).parent().parent();
 
+						$linkParent.prepend($link);
+					});
+
+				}
 			}
-
 		});
 
     }
@@ -141,16 +145,21 @@ Handling of the callback popup
 
 	function executeCallBackNow() {
 		var url = "spring/rest/health/callMeNow.json";
-		var data = 'name=' + $('#health_callback_name').val();
+		var name = $('#health_callback_name').val();
+		$('.thanks-name').html(name);
+
+		var data = 'name=' + name;
 
 		var mobileNumber = $('#health_callback_mobileinput').val(),
 			otherNumber = $('#health_callback_otherNumberinput').val();
 		
 		if(mobileNumber) {
 			data += '&mobileNumber=' + mobileNumber;
+			$('.thanks-contact-number').html(mobileNumber);
 		}
 		if(otherNumber) {
 			data += '&otherNumber=' + otherNumber;
+			$('.thanks-contact-number').html(otherNumber);
 		}
 
 		return meerkat.modules.comms.post({
@@ -184,17 +193,21 @@ Handling of the callback popup
 
 	function executeCallBackLater() {
 		var url = "spring/rest/health/callMeBack.json";
+		var name = $('#health_callback_name').val();
+		$('.thanks-name').html(name);
 
-		var data = 'name=' + $('#health_callback_name').val();
+		var data = 'name=' + name;
 
 		var mobileNumber = $('#health_callback_mobileinput').val(),
 			otherNumber = $('#health_callback_otherNumberinput').val();
 		
 		if(mobileNumber) {
 			data += '&mobileNumber=' + mobileNumber;
+			$('.thanks-contact-number').html(mobileNumber);
 		}
 		if(otherNumber) {
 			data += '&otherNumber=' + otherNumber;
+			$('.thanks-contact-number').html(otherNumber);
 		}
 
 		data += '&scheduledDateTime=' + $('#health_callback_time').val();
@@ -359,6 +372,5 @@ Handling of the callback popup
 		events: events,
 		getDailyHours: getDailyHours
 	});
-
 
 })(jQuery);

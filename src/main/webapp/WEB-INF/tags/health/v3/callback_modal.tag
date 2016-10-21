@@ -82,9 +82,9 @@
 			</div>
 			<div class="row">
 			    <div class="alert alert-success text-center hidden">Thanks <span class="thanks-name"></span>
-					</form>
 					<p>One of our experts will call you on your number<br><span class="thanks-contact-number"></span></p>
 				</div>
+				</form>
 			</div>
 		</div>
 		<div class="call-details col-sm-4 text-center" data-padding-pos="all" >

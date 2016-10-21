@@ -1441,7 +1441,8 @@
 		fetchRates: fetchRates,
 		loadRates: loadRates,
 		loadRatesBeforeResultsPage: loadRatesBeforeResultsPage,
-        hasPartner: hasPartner
+        hasPartner: hasPartner,
+		configureContactDetails: configureContactDetails
 	});
 
 })(jQuery);
