@@ -15,18 +15,16 @@
             inc : 25,
             min : 25,
             max : 200,
-            custom : [
-                {
-                    type: 'price-promise',
+            custom : {
+                'price-promise': {
                     min: 50,
                     max: 50
                 },
-                {
-                    type: 'referral-offer',
+                'referral-offer': {
                     min: 25,
                     max: 100
                 }
-            ]
+            }
     };
 
     /**
@@ -428,16 +426,11 @@
             min : valueRange.min,
             max : valueRange.max
         };
-        if(valueRange.custom.length) {
-            for (var i = 0; i < valueRange.custom.length; i++) {
-                var row = valueRange.custom[i];
-                if (row.type === type) {
-                    range.inc = _.has(row,'inc') ? row.inc : range.inc;
-                    range.min = row.min;
-                    range.max = row.max;
-                    return range;
-                }
-            }
+        if(_.has(valueRange.custom, type)) {
+            var row = valueRange.custom[type];
+            range.inc = _.has(row,'inc') ? row.inc : range.inc;
+            range.min = row.min;
+            range.max = row.max;
         }
         return range;
     }
