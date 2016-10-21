@@ -91,7 +91,7 @@ Handling of the callback popup
 	            meerkat.modules.jqueryValidate.setupDefaultValidationOnForm($('#health-callback-form'));
 				meerkat.modules.health.configureContactDetails();
 
-				if(meerkat.modules.performanceProfiling.isMobile()) {
+				if (meerkat.modules.deviceMediaState.get() == 'xs') {
 					$('button').each(function() {
 						var $link = $(this).parent();
 						var $linkParent = $(this).parent().parent();
