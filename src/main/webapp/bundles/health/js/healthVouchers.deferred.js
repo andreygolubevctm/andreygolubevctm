@@ -14,8 +14,19 @@
         valueRange = {
             inc : 25,
             min : 25,
-            max : 100,
-            otherMax : 50
+            max : 200,
+            custom : [
+                {
+                    type: 'price-promise',
+                    min: 50,
+                    max: 50
+                },
+                {
+                    type: 'referral-offer',
+                    min: 25,
+                    max: 100
+                }
+            ]
     };
 
     /**
@@ -69,7 +80,7 @@
                 };
                 applyEventListeners();
                 updateData();
-                updateValueOptions(data.isOther && data.other.reason === 'price-promise');
+                updateValueOptions(data.isOther ? data.other.reason : false);
                 updateView();
             }
         });
@@ -273,7 +284,7 @@
             $elements.inputs.referrerref.val('');
         }
         // Update value selector with applicable options
-        updateValueOptions(reason === 'price-promise');
+        updateValueOptions(reason);
     }
 
     /**
@@ -384,17 +395,18 @@
 
     /**
      * updateValueOptions: renders the value options to the value selector.
-     * Filtered indicates only a subset of the options are to be included.
-     * @param filtered
+     * Custom will apply a custom set of values as defined in valueRange.custom
+     * @param custom
      */
-    function updateValueOptions(filtered) {
-        filtered = filtered  || false;
+    function updateValueOptions(custom) {
+        custom = custom  || false;
         var $option = $('<option/>',{
             value: null,
             label: 'Please choose...'
         });
+        var range = getRange(custom);
         $elements.inputs.value.empty().append($option);
-        for(var i=valueRange.min; i <= valueRange[filtered ? 'otherMax':'max']; i = i + valueRange.inc) {
+        for(var i=range.min; i <= range.max; i = i + range.inc) {
             $option = $('<option/>',{
                 value: i,
                 label: '$' + i
@@ -404,6 +416,30 @@
             }
             $elements.inputs.value.append($option);
         }
+    }
+
+    /**
+     * getRange: returns a range object applicable to the voucher reason
+     * @param type
+     */
+    function getRange(type) {
+        var range = {
+            inc : valueRange.inc,
+            min : valueRange.min,
+            max : valueRange.max
+        };
+        if(valueRange.custom.length) {
+            for (var i = 0; i < valueRange.custom.length; i++) {
+                var row = valueRange.custom[i];
+                if (row.type === type) {
+                    range.inc = _.has(row,'inc') ? row.inc : range.inc;
+                    range.min = row.min;
+                    range.max = row.max;
+                    return range;
+                }
+            }
+        }
+        return range;
     }
 
     meerkat.modules.register("healthVouchers", {
