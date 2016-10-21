@@ -1,0 +1,49 @@
+#navbar-filter-labels {
+  .navbar-right {
+    margin-right: 0;
+  }
+
+  .navbar-text {
+    border-top: 4px solid #fff;
+    color: #b2b2b2;
+    font-size: 10px;
+    font-weight: bold;
+    margin: 0;
+    padding: 5px 0;
+    text-align: center;
+    text-transform: uppercase;
+
+    &.filter-type-of-cover-label {
+      width: 168px;
+    }
+
+    &.filter-excess-label {
+      width: 80px;
+    }
+
+    &.filter-cancel-label {
+      width: 88px;
+      a {
+        line-height: inherit;
+        margin: 0;
+        padding: 0;
+        text-decoration: underline;
+        &:hover,
+        &:focus {
+          background: transparent;
+          outline: none;
+          text-decoration: none;
+        }
+      }
+    }
+
+    &.filter-frequency-label {
+      width: 120px;
+    }
+
+    &.filter-view-label {
+      border-color: #b2b2b2;
+      width: 216px;
+    }
+  }
+}

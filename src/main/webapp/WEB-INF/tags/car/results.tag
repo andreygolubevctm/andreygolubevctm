@@ -11,16 +11,25 @@
 		required=""
 		className="hidden" />
 
-<field_v1:hidden xpath="quote/excess" />
+<field_v1:hidden xpath="quote/excess" constantValue="800" />
 <field_v1:hidden xpath="quote/baseExcess" constantValue="${contentService.getContentValue(pageContext.getRequest(), 'defaultExcess')}" />
 <field_v1:additional_excess
+		defaultVal="800"
 		increment="100"
 		minVal="400"
 		xpath="filter/excessOptions"
 		maxCount="17"
 		title=""
 		required=""
-		omitPleaseChoose="N"
+		omitPleaseChoose="Y"
+		className="hidden" />
+
+<field_v1:hidden xpath="quote/coverType" constantValue="comprehensive" />
+<field_v1:array_select
+		items="comprehensive=Comprehensive,tppd=3rd Party Property Damage"
+		xpath="filter/coverTypeOptions"
+		title=""
+		required=""
 		className="hidden" />
 
 <car:results_filterbar_xs />
