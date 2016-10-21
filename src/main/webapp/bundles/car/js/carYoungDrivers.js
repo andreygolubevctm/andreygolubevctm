@@ -29,9 +29,9 @@
 	function updateRestrictAgeSelector() {
 
 		var ageRegular = meerkat.modules.age.returnAge($(elements.reg_dob).val(), true);
-		var ageYoungest = meerkat.modules.age.returnAge($(elements.yng_dob).val(), true);
+		var ageYoungest = $(elements.yng_dob).val() ? meerkat.modules.age.returnAge($(elements.yng_dob).val(), true) : null;
 
-		var age = Math.min(ageRegular,ageYoungest);
+		var age = ageYoungest ? Math.min(ageRegular,ageYoungest) : ageRegular;
 
 		if (age <= 20) {
 			$(elements.age_row).slideUp();

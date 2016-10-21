@@ -97,7 +97,7 @@
 				hideEvent = 'mouseleave unfocus click';
 				break;
 			default:
-				hideEvent = 'unfocus click';
+				hideEvent = 'unfocus click scroll';
 				break;
 		}
 
@@ -145,6 +145,9 @@
 			if( !event.element.attr('data-hasqtip') ){
 				create(event);
 				event.element.qtip('toggle', true);
+				$(document).on("scroll", function(){
+					event.element.qtip('destroy');
+				});
 			}
 		});
 

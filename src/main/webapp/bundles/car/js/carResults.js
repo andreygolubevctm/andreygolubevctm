@@ -48,6 +48,10 @@
 
 		try {
 			var displayMode = 'price';
+			if(typeof meerkat.site != 'undefined' && typeof meerkat.site.resultOptions != 'undefined') {
+				// confirming its either features or price.
+				displayMode = meerkat.site.resultOptions.displayMode == 'features' ? 'features' : 'price';
+			}
 
 			var price = {
 				annually: "price.annualPremium",
