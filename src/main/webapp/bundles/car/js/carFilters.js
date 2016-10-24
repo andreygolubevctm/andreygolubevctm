@@ -36,10 +36,6 @@
 		excess: false
 	};
 
-	var defaultValues = {
-		excess: '800'
-	};
-
 	//
 	// Refresh filters from form/page
 	//
@@ -70,7 +66,7 @@
 		}
 
 		// Refresh excess
-		var excess = $('#quote_excess').val() ? $('#quote_excess').val() : defaultValues.excess;
+		var excess = $('#quote_excess').val() ? $('#quote_excess').val() : $('#quote_baseExcess').val();
 		$filterExcess.find('.dropdown-toggle span').text( $filterExcess.find('.dropdown-menu a[data-value="' + excess + '"]').text() );
 	}
 
@@ -121,7 +117,7 @@
 		currentValues = {
 			display:	Results.getDisplayMode(),
 			frequency:	$('#quote_paymentType').val(),
-			excess:		$('#quote_excess').val() ? $('#quote_excess').val() : defaultValues.excess
+			excess:		$('#quote_excess').val() ? $('#quote_excess').val() : $('#quote_baseExcess').val()
 		};
 	}
 
@@ -244,6 +240,8 @@
 			$filterExcess.find('li.active').removeClass("active");
 			if(!_.isEmpty(previousValues.excess)) {
 				var $dropdown = $('.dropdown.filter-excess');
+
+				currentValues.excess = previousValues.excess;
 
 				$filterExcess.find('a[data-value="' + previousValues.excess + '"]').each(function(){
 					$dropdown.find('.dropdown-toggle span').text($(this).text());
