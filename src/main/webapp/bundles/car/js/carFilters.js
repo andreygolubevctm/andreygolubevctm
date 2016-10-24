@@ -36,6 +36,10 @@
 		excess: false
 	};
 
+	var defaultValues = {
+		excess: '800'
+	};
+
 	//
 	// Refresh filters from form/page
 	//
@@ -66,13 +70,8 @@
 		}
 
 		// Refresh excess
-		var excess = $('#quote_excess').val();
-		if (typeof excess === 'undefined') {
-			$filterExcess.find('.dropdown-toggle span').text( $filterExcess.find('.dropdown-menu a:first').text() );
-		}
-		else {
-			$filterExcess.find('.dropdown-toggle span').text( $filterExcess.find('.dropdown-menu a[data-value="' + excess + '"]').text() );
-		}
+		var excess = $('#quote_excess').val() ? $('#quote_excess').val() : defaultValues.excess;
+		$filterExcess.find('.dropdown-toggle span').text( $filterExcess.find('.dropdown-menu a[data-value="' + excess + '"]').text() );
 	}
 
 	//
@@ -122,7 +121,7 @@
 		currentValues = {
 			display:	Results.getDisplayMode(),
 			frequency:	$('#quote_paymentType').val(),
-			excess:		$('#quote_excess').val()
+			excess:		$('#quote_excess').val() ? $('#quote_excess').val() : defaultValues.excess
 		};
 	}
 
@@ -134,11 +133,9 @@
 		});
 
 		$filterExcess.find('li.active').removeClass("active");
-		if(!_.isEmpty(currentValues.excess)) {
-			$filterExcess.find('a[data-value="' + currentValues.excess + '"]').each(function(){
-				$(this).parent().addClass("active");
-			});
-		}
+        $filterExcess.find('a[data-value="' + currentValues.excess + '"]').each(function(){
+            $(this).parent().addClass("active");
+        });
 	}
 
 	function hide() {
