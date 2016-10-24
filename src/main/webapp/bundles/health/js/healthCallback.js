@@ -146,7 +146,12 @@ Handling of the callback popup
 	function executeCallBackNow() {
 		var url = "spring/rest/health/callMeNow.json";
 		var name = $('#health_callback_name').val();
+
 		$('.thanks-name').html(name);
+		$success = $('#health-callback .alert-success');
+		$error = $('#health-callback .alert-danger');
+		$success.addClass('hidden');
+		$error.addClass('hidden');
 
 		var data = 'name=' + name;
 
@@ -166,27 +171,19 @@ Handling of the callback popup
 			url: url,
 			data: data,
 			dataType: 'json',
-			errorLevel: "warning",
-			onErrorDefaultHandling: function(jqXHR, textStatus, errorThrown, settings, data) {
-				if(typeof jqXHR.responseText === "string")
-					jqXHR.responseText = JSON.parse(jqXHR.responseText);
-
-				var errorMessage = (jqXHR.responseText.error[0] && jqXHR.responseText.error[0].message) ? jqXHR.responseText.error[0].message : false;
-
-				var errorObject = {
-					errorLevel:		settings.errorLevel,
-					message:		errorMessage,
-					page:			'healthCallback.js',
-					description:	"Error loading url: " + settings.url + ' : ' + textStatus + ' ' + errorThrown,
-					data:			data
-				};
-
-				if(!meerkat.modules.dialogs.isDialogOpen("openingHoursErrorDialog") && errorMessage) {
-					meerkat.modules.errorHandling.error(errorObject);
+			errorLevel: "silent",
+			useDefaultErrorHandling: false,
+			onComplete: function(result) {
+				if(result.status == 200) {
+					$success.removeClass('hidden');
+				} else {
+					if(result.status == 500) {
+						$error.html($error.attr('data-message'));
+					} else {
+						$error.html(result.responseJSON.message);
+					}
+					$error.removeClass('hidden');
 				}
-			},
-			onSuccess: function(result) {
-				$('.alert-success').toggleClass('hidden');
 			}
 		});
 	}
@@ -195,6 +192,10 @@ Handling of the callback popup
 		var url = "spring/rest/health/callMeBack.json";
 		var name = $('#health_callback_name').val();
 		$('.thanks-name').html(name);
+		$success = $('#health-callback .alert-success');
+		$error = $('#health-callback .alert-danger');
+		$success.addClass('hidden');
+		$error.addClass('hidden');
 
 		var data = 'name=' + name;
 
@@ -216,27 +217,19 @@ Handling of the callback popup
 			url: url,
 			data: data,
 			dataType: 'json',
-			errorLevel: "warning",
-			onErrorDefaultHandling: function(jqXHR, textStatus, errorThrown, settings, data) {
-				if(typeof jqXHR.responseText === "string")
-					jqXHR.responseText = JSON.parse(jqXHR.responseText);
-
-				var errorMessage = (jqXHR.responseText.error[0] && jqXHR.responseText.error[0].message) ? jqXHR.responseText.error[0].message : false;
-
-				var errorObject = {
-					errorLevel:		settings.errorLevel,
-					message:		errorMessage,
-					page:			'healthCallback.js',
-					description:	"Error loading url: " + settings.url + ' : ' + textStatus + ' ' + errorThrown,
-					data:			data
-				};
-
-				if(!meerkat.modules.dialogs.isDialogOpen("openingHoursErrorDialog") && errorMessage) {
-					meerkat.modules.errorHandling.error(errorObject);
+			errorLevel: "silent",
+			useDefaultErrorHandling: false,
+			onComplete: function(result) {
+				if(result.status == 200) {
+					$success.removeClass('hidden');
+				} else {
+					if(result.status == 500) {
+						$error.html($error.attr('data-message'));
+					} else {
+						$error.html(result.responseJSON.message);
+					}
+					$error.removeClass('hidden');
 				}
-			},
-			onSuccess: function(result) {
-				$('.alert-success').toggleClass('hidden');
 			}
 		});	
 	}

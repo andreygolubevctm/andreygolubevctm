@@ -83,8 +83,9 @@
 			</div>
 			<div class="row">
 			    <div class="alert alert-success text-center hidden">Thanks <span class="thanks-name"></span>
-					<p>One of our experts will call you on your number<br><span class="thanks-contact-number"></span></p>
+					<p>One of our experts will call you on your number <span class="thanks-contact-number"></span></p>
 				</div>
+			    <div class="alert alert-danger text-center hidden" data-message="There has been an error saving your request.<br>Please try again later or call us on ${callCentreNumber}"></div>
 				</form>
 			</div>
 		</div>
