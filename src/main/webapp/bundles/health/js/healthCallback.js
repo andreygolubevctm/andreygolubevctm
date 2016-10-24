@@ -358,6 +358,15 @@ Handling of the callback popup
 		return '00:00';
 	}
 
+	function offsetDatetime(time, offset) {
+		// Time needs to be 24hour in format  12:00
+
+	    var hour = time.substr(0, 2);
+		
+		hour = parseInt(hour) + offset;
+	    time = time.replace(hour, ('00'+hour).slice(-2));
+	}
+
 	function getShortDayOfWeekName(dayNum) {
 		var shortDayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
