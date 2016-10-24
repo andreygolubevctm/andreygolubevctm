@@ -18,7 +18,8 @@
 	var $filterFrequency,
 		$filterExcess;
 
-	var $filterCoverType,
+	var $labels,
+		$filterCoverType,
 		$updateBtn,
 		$cancelUpdateBtn;
 
@@ -138,12 +139,16 @@
 		$component.slideUp(200, function hideDone() {
 			$component.addClass('hidden');
 		});
+
+		$labels.slideUp(200, function hideLabelDone() {
+			$labels.addClass('hidden');
+		});
 	}
 
 	function show() {
 		$component.removeClass('hidden').hide().slideDown(200);
 
-		$('#navbar-filter-labels').removeClass('hidden').hide().slideDown(200);
+		$labels.removeClass('hidden').hide().slideDown(200);
 
 		storeCurrentValues();
 		preselectDropdowns();
@@ -363,6 +368,8 @@
 			initialised = true;
 
 			$component = $('#navbar-filter');
+			$labels = $('#navbar-filter-labels');
+
 			if ($component.length === 0) return;
 
 			$priceMode = $component.find('.filter-pricemode');
