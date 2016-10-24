@@ -7,5 +7,4 @@
 <%-- HTML --%>
 <a href="javascript:;" class="callback-link" data-toggle="dialog"
 			data-content="#view_all_hours"
-			data-dialog-hash-id="view_all_hours"
 			data-title="Request a Call" data-cache="true"><i class="icon-callback"></i>Request a Call</a>
