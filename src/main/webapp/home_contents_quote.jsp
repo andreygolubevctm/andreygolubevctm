@@ -120,11 +120,10 @@
 						<ul class="dropdown-menu">
 						</ul>
 					</li>
-					<li class="excess-update"><a href="javascript:void(0);" class="btn btn-hollow updateExcess" data-toggle="updateButton">update</a>
+					<li class="excess-update"><a href="javascript:void(0);" class="btn btn-hollow updateExcess hidden" data-toggle="updateButton">update</a>
 					</li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li class="navbar-text filter-label">Payment Frequency</li>
 					<li class="dropdown filter-frequency">
 						<a href="javascript:void(0);" class="dropdown-toggle active" data-toggle="dropdown"><span>Freq</span> <b class="icon icon-angle-down"></b></a>
 						<ul class="dropdown-menu">
@@ -140,8 +139,8 @@
 		<nav id="navbar-filter-labels" class="navbar hidden hidden-xs">
 			<div class="container">
 				<ul class="nav navbar-nav">
-					<li class="navbar-text filter-type-of-cover-label">Home Excess</li>
-					<li class="navbar-text filter-excess-label">Contents Excess</li>
+					<li class="navbar-text filter-home-excess-label">Home Excess</li>
+					<li class="navbar-text filter-contents-excess-label">Contents Excess</li>
 					<li class="navbar-text filter-cancel-label"><a href="javascript:void(0);" class="hidden">Cancel</a></li>
 				</ul>
 

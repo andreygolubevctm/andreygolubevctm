@@ -11,7 +11,8 @@
 		},
 		moduleEvents = events.homeFilters;
 
-	var $component;
+	var $component,
+		$labels;
 	var $priceMode;
 	var $featuresMode;
 	var $filterFrequency,
@@ -19,6 +20,9 @@
 		$filterContentsExcess,
 		$filterHomeExcessLabel,
 		$filterContentsExcessLabel;
+
+	var $updateBtn,
+		$cancelUpdateBtn;
 
 	var deviceStateXS = false;
 	var modalID = false;
@@ -31,6 +35,10 @@
 			contentsExcess:	false
 	};
 
+	var previousValues = {
+			homeExcess:		false,
+			contentsExcess:	false
+	};
 	//
 	// Refresh filters from form/page
 	//
@@ -141,8 +149,38 @@
 					meerkat.messaging.publish(moduleEvents.CHANGED);
 				}
 			}
+
+			if ($dropdown.hasClass('filter-excess')) {
+				if ($dropdown.hasClass('homeExcess')) {
+					if(value !== currentValues.homeExcess) {
+						previousValues.homeExcess = currentValues.homeExcess;
+
+						currentValues.homeExcess = value;
+						$('#home_home_excess').val(value);
+
+						meerkat.messaging.publish(moduleEvents.CHANGED);
+						toggleUpdate(false);
+					}
+					if(value !== currentValues.contentsExcess) {
+						previousValues.contentsExcess = currentValues.contentsExcess;
+
+						currentValues.contentsExcess = value;
+						$('#home_contents_excess').val(value);
+
+						meerkat.messaging.publish(moduleEvents.CHANGED);
+						toggleUpdate(false);
+					}
+
+				}
+			}
 		}
 	}
+
+	function toggleUpdate(hide) {
+		$updateBtn.toggleClass('hidden', hide);
+		$cancelUpdateBtn.toggleClass('hidden', hide);
+	}
+
 	function updateExcessValue(event) {
 		var coverType = meerkat.modules.home.getCoverType();
 		event.preventDefault();
@@ -203,6 +241,7 @@
 				$(this).parent().addClass("active");
 			});
 		}
+
 		if(!_.isEmpty(currentValues.contentsExcess)) {
 			$filterContentsExcess.find('a[data-value="' + currentValues.contentsExcess + '"]').each(function(){
 				$(this).parent().addClass("active");
@@ -214,10 +253,17 @@
 		$component.slideUp(200, function hideDone() {
 			$component.addClass('hidden');
 		});
+
+		$labels.slideUp(200, function hideLabelDone() {
+			$labels.addClass('hidden');
+		});
 	}
 
 	function show() {
 		$component.removeClass('hidden').hide().slideDown(200);
+
+		$labels.removeClass('hidden').hide().slideDown(200);
+
 		storeCurrentValues();
 		preselectDropdowns();
 	}
@@ -231,10 +277,13 @@
 	}
 
 	function enable() {
-		if (meerkat.modules.compare.isCompareOpen() === false){
-			$component.find('li.dropdown.filter-excess, .filter-excess .dropdown-toggle').removeClass('disabled');
-			$priceMode.removeClass('disabled').find('a').removeClass('disabled');
-			$featuresMode.removeClass('disabled').find('a').removeClass('disabled');
+		if (meerkat.modules.compare.isCompareOpen() === false) {
+			$component.find('li.dropdown.filter-excess, .filter-excess .dropdown-toggle, ' +
+				'li.dropdown.filter-cover-type, .filter-cover-type .dropdown-toggle').removeClass('disabled');
+			$priceMode.removeClass('disabled');
+			$priceMode.find('a').removeClass('disabled');
+			$featuresMode.removeClass('disabled');
+			$featuresMode.find('a').removeClass('disabled');
 			$('.slide-feature-filters').find('a').removeClass('inactive').removeClass('disabled');
 			$('.excess-update').find('a').removeClass('inactive').removeClass('disabled');
 		}
@@ -288,6 +337,39 @@
 		// Dropdown options
 
 		$component.on('click', '.dropdown-menu a, .excess-update a', handleDropdownOption);
+
+
+		$updateBtn.on('click', function updateResults() {
+			meerkat.messaging.publish(moduleEvents.CHANGED, {excess:currentValues.excess});
+			toggleUpdate(true);
+		});
+
+		$cancelUpdateBtn.on('click', function cancelUpdate() {
+			$filterHomeExcess.find('li.active').removeClass("active");
+			if(!_.isEmpty(previousValues.homeExcess)) {
+				var $dropdownHome = $('.dropdown.filter-home-excess');
+
+				currentValues.homeExcess = previousValues.homeExcess;
+
+				$filterHomeExcess.find('a[data-value="' + previousValues.homeExcess + '"]').each(function(){
+					$dropdownHome.find('.dropdown-toggle span').text($(this).text());
+					$(this).parent().addClass("active");
+				});
+			}
+
+			$filterContentsExcess.find('li.active').removeClass("active");
+			if(!_.isEmpty(previousValues.contentsExcess)) {
+				var $dropdownContents = $('.dropdown.filter-contents-excess');
+
+				currentValues.contentsExcess = previousValues.contentsExcess;
+
+				$filterContentsExcess.find('a[data-value="' + previousValues.contentsExcess + '"]').each(function(){
+					$dropdownContents.find('.dropdown-toggle span').text($(this).text());
+					$(this).parent().addClass("active");
+				});
+			}
+			toggleUpdate(true);
+		});
 	}
 
 	function renderModal() {
@@ -414,6 +496,7 @@
 
 			// Collect options from the page
 			$component = $('#navbar-filter');
+			$labels = $('#navbar-filter-labels');
 			if (!$component.length) return;
 
 			$priceMode = $component.find('.filter-pricemode');
@@ -423,6 +506,9 @@
 			$filterContentsExcess = $component.find('.filter-excess.contentsExcess');
 			$filterHomeExcessLabel = $component.find('.filter-label.homeExcessLabel');
 			$filterContentsExcessLabel = $component.find('.filter-label.contentsExcessLabel');
+			$updateBtn = $component.find('.updateFilters');
+			$cancelUpdateBtn = $('.filter-cancel-label a');
+
 			setDefaultExcess();
 
 			eventSubscriptions();
@@ -453,6 +539,7 @@
 
 			meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, _.bind(setCurrentDeviceState, this, {isXS:true}));
 			meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, _.bind(setCurrentDeviceState, this, {isXS:false}));
+			toggleUpdate(true);
 
 			setCurrentDeviceState();
 		});
