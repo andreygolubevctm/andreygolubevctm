@@ -659,11 +659,6 @@
 					$field: $("#health_contactDetails_name"),
 					$fieldInput: $("#health_contactDetails_name") // pointing at the same field as a trick to force change event on itself when forward populated
 				},
-				// name from callback popup
-				{
-					$field: $("#health_callback_name"),
-					$fieldInput: $("#health_callback_name")
-				},
 				{
 					$field: $("#health_application_primary_firstname"),
 					$otherField: $("#health_application_primary_surname")
@@ -707,11 +702,6 @@
 					$field: $("#health_contactDetails_contactNumber_mobile"),
 					$optInField: contactDetailsOptinField
 				},
-				// mobile from callback popup
-				{
-					$field: $("#health_callback_mobile"),
-					$fieldInput: $("#health_callback_mobileinput")
-				},
 				// mobile from application step
 				{
 					$field: $("#health_application_mobile"),
@@ -723,11 +713,6 @@
 				{
 					$field: $("#health_contactDetails_contactNumber_other"),
 					$optInField: contactDetailsOptinField
-				},
-				// otherPhone from callback popup
-				{
-					$field: $("#health_callback_otherNumber"),
-					$fieldInput: $("#health_callback_otherNumberinput")
 				},
 				// otherPhone from application step
 				{
