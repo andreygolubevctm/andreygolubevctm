@@ -28,11 +28,6 @@
 	    top: -20px;
   	}
 	label {
-		text-align: right;
-
-		@media (@xs-only) {
-			text-align: left;
-		}
 		&.btn {
 		    border: 2px solid @theme-secondary;
 		    border-radius: 8px;
@@ -42,6 +37,8 @@
 		    padding-right: 0;
 		    text-align: center;
 		    width: 24%;
+		    margin-left: 1%;
+		    float: left;
 		}
 		&.btn:active,
 		&.btn:focus,
@@ -55,19 +52,35 @@
 		    outline: 0;
 		}
 	}
+	.fieldrow {
+		> label {
+			text-align: right;
+			line-height: 2.4;
+
+			@media (@xs-only) {
+				text-align: left;
+			}
+		}
+	}
 	.main {
 		border-right: 2px solid @theme-light;
 	}
 	.all-times {
 		margin-top: 20px;
 	}
+	.day-description {
+    	padding-left: 0;
+	    padding-right: 0;
+	}
 	.switch {
 		display: block;
 		font-size: 12px;
+		line-height: 0;
 
 		&.call-type {
 			line-height: 3em;
 			font-size: 14px;
+			font-weight: 600;
 			text-align: center;
 			width: 100%;
 		}
@@ -80,6 +93,12 @@
 	}
 	.alert {
 		margin-top: 18px;
+	}
+	.outline {
+	    margin-top: 18px;
+		background-color: #fbfbfb;
+		border: 1px solid #f7f7f7;
+		border-radius: 5px;
 	}
     @media (@xs-only) {
 		.switch {

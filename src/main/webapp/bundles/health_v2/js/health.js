@@ -660,6 +660,10 @@
 					$fieldInput: $("#health_contactDetails_name") // pointing at the same field as a trick to force change event on itself when forward populated
 				},
 				{
+					$field: $("#health_callback_name"),
+					$fieldInput: $("#health_callback_name")
+				},
+				{
 					$field: $("#health_application_primary_firstname"),
 					$otherField: $("#health_application_primary_surname")
 				}

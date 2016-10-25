@@ -64,21 +64,21 @@
 					<a href="#" class="switch call-type">Cancel, I prefer a call right now?</a>
 				</div>
 				<div class="col-sm-5">
-				    <button id="callBackLater" class="btn btn-secondary btn-lg btn-block">Call me later</button>
+				    <button id="callBackLater" class="btn btn-secondary btn-lg btn-block">Call me later...</button>
 			    </div>
 				<div class="col-sm-12">
+					<div class="outline">
 					<form_v3:row label=" " hideHelpIconCol="true">
 						<field_v2:array_radio xpath="${xpath}/day" required="true" className="callbackDay"
 							items="Today=Today,Tomorrow=Tomorrow,NextDay=NextDay,LastDay=LastDay"
 							title="" wrapCopyInSpan="true" />
 					</form_v3:row>
-			    </div>
-				<div class="col-sm-12">
 					<form_v3:row label="Pick a time for call" hideHelpIconCol="true">
 						<field_v2:array_select xpath="${xpath}/time" required="true" className="callbackTime"
 							items="="
 							title="" />
 					</form_v3:row>
+					</div>
 			    </div>
 			</div>
 			<div class="row">
@@ -110,7 +110,7 @@
 						items="${openingHoursService.getAllOpeningHoursForDisplay(pageContext.getRequest(),false)}">
 
 						<div class="row day_row">
-							<div class="day-description col-md-4 col-xs-4 text-left"> ${hoursOfDay.description}</div>
+							<div class="day-description col-md-4 col-xs-4 text-right"> ${hoursOfDay.description}</div>
 							<div class="col-md-8 col-xs-8">
 								<c:choose>
 									<c:when test="${empty hoursOfDay.startTime}">
