@@ -231,7 +231,7 @@
 			htmlContent : htmlContent,
 			hashId : 'xsFilterBar',
 			rightBtn: {
-				label: 'Save Changes',
+				label: 'UPDATE RESULTS',
 				className: 'btn-sm btn-save',
 				callback: saveModalChanges
 			},
@@ -252,6 +252,9 @@
 		$('#xsFilterBarFreqRow input:checked').prop('checked', false);
 		$('#xsFilterBarFreqRow #xsFilterBar_freq_' + $('#quote_paymentType').val()).prop('checked', true).change();
 
+		$('#xsFilterBarCoverType input:checked').prop('checked', false);
+		$('#xsFilterBarCoverType #xsFilterBar_coverType_comprehensive').prop('checked', true).change();
+
 		try{
 			meerkat.modules.sliders.init();
 		}catch(e){}
@@ -265,7 +268,7 @@
 		var revised = {
 				display: $('#xsFilterBarSortRow input:checked').val(),
 				freq : $('#xsFilterBarFreqRow input:checked').val(),
-				excess : $('#xsFilterBarExcessRow input[name=xsFilterBar_excess]').val()
+				excess : $('#xsFilterBarExcessRow select[name=xsFilterBar_excess]').val()
 		};
 
 		if(Number(revised.excess) === 0) {
@@ -350,7 +353,7 @@
 				$filterMenu.append('<li><a href="javascript:;" data-value="' + this.value + '">' + this.text + '</a></li>');
 			});
 
-			$('#navbar-main .slide-feature-filters a').on('click', function (e) {
+			$('#navbar-main .slide-feature-filters a, .mobile-nav-buttons .refine-results a').on('click', function (e) {
 				e.preventDefault();
 				if (!$(this).hasClass('disabled')) {
 					onRequestModal();

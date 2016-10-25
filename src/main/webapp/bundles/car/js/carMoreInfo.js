@@ -40,6 +40,11 @@
 					callback: function (eventObject) {
 						$(eventObject.currentTarget).closest('.modal').modal('hide');
 					}
+				},
+				rightBtn: {
+					label: 'SAVE QUOTE',
+					className: 'btn-sm btn-save',
+					callback: meerkat.modules.saveQuote.openAsModal
 				}
 			},
 			runDisplayMethod: runDisplayMethod,
