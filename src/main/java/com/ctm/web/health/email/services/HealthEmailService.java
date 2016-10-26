@@ -65,20 +65,24 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 
 	EmailDetailsService emailDetailsService;
 	protected TransactionDao transactionDao = new TransactionDao();
-	private GeneralDao generalDao = new GeneralDao();
-	private ProviderContentService providerContentService = new ProviderContentService();
+	private GeneralDao generalDao;
+	private ProviderContentService providerContentService;
 	private ContentDao contentDao;
 	private String optInMailingName;
 	private final EmailUrlService urlService;
 	private final EmailUrlServiceOld urlServiceOld;
 
-	public HealthEmailService(PageSettings pageSettings, EmailMode emailMode,
+	public HealthEmailService(PageSettings pageSettings,
+							  EmailMode emailMode,
 							  EmailDetailsService emailDetailsService,
-														ContentDao contentDao,
-														EmailUrlService urlService,
-														AccessTouchService accessTouchService,
-							  							EmailUrlServiceOld urlServiceOld,
-							  							SessionDataServiceBean sessionDataService, IPAddressHandler ipAddressHandler) {
+							  ContentDao contentDao,
+							  EmailUrlService urlService,
+							  AccessTouchService accessTouchService,
+							  EmailUrlServiceOld urlServiceOld,
+							  SessionDataServiceBean sessionDataService,
+							  IPAddressHandler ipAddressHandler,
+							  GeneralDao generalDao,
+							  ProviderContentService providerContentService) {
 		super(pageSettings, emailMode,ipAddressHandler);
 		this.emailDetailsService = emailDetailsService;
 		this.contentDao = contentDao;
@@ -86,6 +90,8 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 		this.urlServiceOld = urlServiceOld;
 		this.accessTouchService = accessTouchService;
 		this.sessionDataService = sessionDataService;
+		this.generalDao = generalDao;
+		this.providerContentService = providerContentService;
 	}
 
 	@Override
