@@ -56,7 +56,8 @@
 		msg.subscribe( meerkat.modules.events.contactDetails.email.FIELD_CHANGED, function(fieldDetails){
 			var journeyEmail = fieldDetails.$field.val();
 			if (_.isEmpty(email) && !_.isEmpty(journeyEmail)) {
-				email.val($.trim(journeyEmail));
+				email = $.trim(journeyEmail);
+				$formElements.email.val(email);
 			}
 		});
 		// Update modal listener event when more info opened
@@ -114,6 +115,7 @@
 				toggleMarketingCheckbox(false);
 				// Prepop (to handle re-saving)
 				lastEmailChecked = false;
+
 				$formElements.email.val(_.isEmpty(email) ? "" : email).change();
 			},
 			onClose: function(dialogId) {
