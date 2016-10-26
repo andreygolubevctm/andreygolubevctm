@@ -103,20 +103,21 @@
 				$formElements.optinRow = $formElements.form.find('.optin-row');
 				// Events
 				$formElements.email.on("keyup change", emailKeyChange);
-				$formElements.email.on('blur', function() { $(this).val( $.trim( $(this).val() ) ); }) ;
+				$formElements.email.on("blur", function() { $(this).val( $.trim( $(this).val() ) ); }) ;
 				$formElements.passwordConfirm.on("keyup change", passwordConfirmKeyChange);
 				$formElements.password.on("keyup change", passwordConfirmKeyChange);
-				$formElements.submitButton.on('click', save);
-				$formElements.form.find('.btn-retrieve,.btn-reset').each(function(){
-					$(this).attr('href',meerkat.site.urls.base + 'retrieve_quotes.jsp');
+				$formElements.submitButton.on("click", save);
+				$formElements.form.find(".btn-retrieve,.btn-reset").each(function(){
+					$(this).attr("href",meerkat.site.urls.base + 'retrieve_quotes.jsp');
 				});
 				// Setup
 				setValidation();
 				toggleMarketingCheckbox(false);
 				// Prepop (to handle re-saving)
 				lastEmailChecked = false;
-
 				$formElements.email.val(_.isEmpty(email) ? "" : email).change();
+				// Only make visible after updates
+				$formElements.form.removeClass("hidden");
 			},
 			onClose: function(dialogId) {
 				// Relax, nothing to do here
@@ -263,7 +264,7 @@
 					value: sendConfirm
 				});
 
-				meerkat.modules.loadingAnimation.showAfter($formElements.submitButton.find(":visible"));
+				meerkat.modules.loadingAnimation.showInside($formElements.submitButton.filter(":visible"));
 
 				if (isConfirmed) {
 					meerkat.messaging.publish(meerkatEvents.tracking.TOUCH, {
@@ -291,7 +292,7 @@
 							}
 						},
 						onComplete: function () {
-							meerkat.modules.loadingAnimation.hide($formElements.submitButton.find(":visible"));
+							meerkat.modules.loadingAnimation.hide($formElements.submitButton.filter(":visible"));
 						}
 					});
 				}
@@ -305,7 +306,7 @@
 	 * @param transactionId
      */
 	function saveSuccess(success, transactionId){
-		meerkat.modules.loadingAnimation.hide( $formElements.submitButton.find(":visible") );
+		meerkat.modules.loadingAnimation.hide( $formElements.submitButton.filter(":visible") );
 
 		if(success){
 			updateStatus('saved');

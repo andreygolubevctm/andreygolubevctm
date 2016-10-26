@@ -70,16 +70,16 @@
 
 <%-- SAVE QUOTE FORM --%>
 <script type="text/html" id="save-quote-component-template">
-	<form id="save-quote-component" class="form-horizontal start">
+	<form id="save-quote-component" class="form-horizontal hidden start">
 
 		<div class="scrollable">
 
 			<%-- HEADINGS --%>
 			<div class="saveQuoteHeadings col-xs-12">
-				<h4 class="start"><c:out value="${copyStart}" /></h4>
-				<h4 class="return"><c:out value="${copyReturn}" /></h4>
-				<h4 class="new"><c:out value="${copyNew}" /></h4>
-				<h4 class="saved"><c:out value="${copySaved}" /></h4>
+				<h4 class="start"><c:out value="${copyStart}" escapeXml="false" /></h4>
+				<h4 class="return"><c:out value="${copyReturn}" escapeXml="false" /></h4>
+				<h4 class="new"><c:out value="${copyNew}" escapeXml="false" /></h4>
+				<h4 class="saved"><c:out value="${copySaved}" escapeXml="false" /></h4>
 			</div>
 
 			<%-- LEFT COLUMN --%>
@@ -100,7 +100,7 @@
 
 					<%-- PASSWORDS --%>
 					<div class="saveQuotePasswords">
-						<h5><c:out value="${copyPwdHeading}" /></h5>
+						<h5><c:out value="${copyPwdHeading}" escapeXml="false" /></h5>
 						<p>Create a new password...</p>
 						<div class="form-group row">
 							<c:set var="fieldXpath" value="save/password" />
@@ -132,8 +132,8 @@
 					<div class="form-group row">
 						<div class="hidden-xs ${labelClasses}"><!-- empty --></div>
 						<div class="${contentClasses}">
-							<a href="javascript:;" class="btn save btn-save-quote-trigger inverted disabled"><c:out value="${copyBtnSave}" /></a>
-							<a href="javascript:;" class="btn signup btn-save-quote-trigger inverted disabled"><c:out value="${copyBtnSignup}" /></a>
+							<a href="javascript:;" class="btn save btn-save-quote-trigger inverted disabled"><c:out value="${copyBtnSave}" escapeXml="false" /></a>
+							<a href="javascript:;" class="btn signup btn-save-quote-trigger inverted disabled"><c:out value="${copyBtnSignup}" escapeXml="false" /></a>
 						</div>
 					</div>
 
@@ -142,8 +142,8 @@
 				<%-- SAVE QUOTE SUCCESS --%>
 				<div class="saveQuoteSuccess">
 					<h5><a href="javascript:;" class="btn-retrieve">Retrieve Quote(s)</a></h5>
-					<p><c:out value="${copySavedNote}" /></p>
-					<p><c:out value="${copyPwdReset}" /></p>
+					<p><c:out value="${copySavedNote}" escapeXml="false" /></p>
+					<p><c:out value="${copyPwdReset}" escapeXml="false" /></p>
 				</div>
 			</div>
 
