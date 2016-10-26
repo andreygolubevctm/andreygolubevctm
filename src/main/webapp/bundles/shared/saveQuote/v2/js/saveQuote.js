@@ -161,6 +161,7 @@
 	 * then trigger call to get user details
 	 */
 	function emailChanged() {
+		clearInterval(emailTypingTimer);
 		var valid = $formElements.email.valid();
 		if(valid) {
 			checkUserExists();
