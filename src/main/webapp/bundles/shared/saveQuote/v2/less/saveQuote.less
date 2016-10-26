@@ -1,0 +1,180 @@
+.btn-save-quote-trigger {
+	.btn-styles(
+		#fff,
+		@theme-tertiary,
+		@theme-tertiary,
+		#fff,
+		@theme-tertiary,
+		#fff,
+		@theme-tertiary,
+		@theme-tertiary,
+		@theme-tertiary,
+		true
+	);
+	font-family: SourceSansProSemiBold;
+	font-size:18px;
+	border-width:2px;
+	text-transform:uppercase;
+	padding:8px 13px;
+	display:inline-block;
+
+	&.inverted {
+		.btn-styles(
+			@theme-tertiary,
+			#fff
+		);
+	}
+}
+
+.moreInfoDropdown {
+	.btn-save-quote-trigger {
+		margin-left: 1em;
+	}
+}
+
+#results-sidebar {
+	.btn-save-quote-trigger {
+		font-size: 14px;
+		padding: 8px 13px;
+		margin-bottom: 20px;
+		display: block;
+	}
+}
+
+#save-quote-component {
+	h4,h5 {
+		font-size:19px;
+		color: @theme-tertiary;
+		margin-bottom: 2em;
+	}
+	h5 {
+		font-size:18px;
+		color:#333333;
+		margin-top:2em;
+		margin-bottom:1em;
+	}
+	p {
+		font-family: SourceSansProSemiBold;
+		font-size: 14px;
+		margin: 0 0 1em 0;
+	}
+	&.return,
+	&.new,
+	&.saved {
+		h4 {
+			color: @theme-secondary;
+		}
+	}
+
+	.pic-box {
+		margin-top:-1.6em;
+		.icon-save-quote {
+			font-size:160px;
+			color:#D5D5D5;
+			.path4 {
+				color:#C1C1C1;
+			}
+		}
+	}
+
+	.optin-box {
+		&.form-group {
+			margin:0px;
+		}
+		color:@theme-tertiary;
+		label {
+			font-size: 11px;
+			padding-top:0px;
+			margin-top:-0.75em;
+			&:before {
+				font-size:14px;
+			}
+			@media(@xs-only) {
+				margin-top:0px;
+				font-size:13px;
+			}
+		}
+	}
+
+	.saveQuoteFields {
+		span {
+			font-size:13px;
+			color: #7C7C7C;
+			&.sub {
+				text-transform: uppercase;
+				font-size: 9px;
+				color:#333333;
+			}
+		}
+		@media(@sm) {
+			span {
+				text-align:right;
+				display:block;
+			}
+		}
+	}
+
+	.btn-save-quote-trigger {
+		display: block;
+	}
+
+	.saveQuoteSuccess {
+		h5 {
+			margin-top:0;
+		}
+		a {
+			background-color:transparent;
+			color:@theme-tertiary;
+		}
+	}
+
+	&:not(.saved) {
+		.saveQuoteSuccess {display:none;}
+		.saveQuoteFields {
+			display:block;
+			.btn.save {display:block;}
+			.btn.signup {display:none;}
+		}
+	}
+
+	&.start {
+		.saveQuoteHeadings {
+			.saved,.return,.new {display:none;}
+			.start {display:block;}
+		}
+		.saveQuotePasswords {display:none;}
+		.saveQuoteFields {display:block;}
+	}
+
+	&.return {
+		.saveQuoteHeadings {
+			.saved,.start,.new {display:none;}
+			.return {display:block;}
+		}
+		.saveQuotePasswords {display:none;}
+		.saveQuoteFields {display:block;}
+		.optin-box {display:none;}
+	}
+
+	&.new {
+		.saveQuoteHeadings {
+			.saved,.start,.return {display:none;}
+			.new {display:block;}
+		}
+		.saveQuotePasswords {display:block;}
+		.saveQuoteFields {
+			display:block;
+			.btn.save {display:none;}
+			.btn.signup {display:block;}
+		}
+	}
+
+	&.saved {
+		.saveQuoteHeadings {
+			.start,.return,.new {display:none;}
+			.saved {display:block;}
+		}
+		.saveQuoteFields,
+		.optin-box {display:none;}
+	}
+}
