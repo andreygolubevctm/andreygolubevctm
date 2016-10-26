@@ -89,4 +89,11 @@ public class ProviderContentService {
         return providerInfoDao.getProviderInfo(provider, brand, currDate);
     }
 
+    public String getProviderEmail(HttpServletRequest request, String providerName) throws DaoException {
+        Date currDate = ApplicationService.getApplicationDate(request);
+        Brand brand = ApplicationService.getBrandFromRequest(request);
+        Provider provider = providerDao.getByName(providerName, currDate);
+        return providerInfoDao.getProviderEmail(provider, brand, currDate);
+    }
+
 }
