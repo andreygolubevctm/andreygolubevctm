@@ -14,7 +14,7 @@
 		var navigationId = meerkat.modules.address.getWindowHash().split("/")[0];
 
 		setActive(meerkat.site.callbackPopup.enabled === 'true');
-		if(isActive) {
+		if(isActive && typeof meerkat.site.callbackPopup.timeout !== 'undefined') {
 			intervalId = setInterval(count, 1000);
 		}
 
@@ -71,7 +71,7 @@
 
 	function count() {
 		timeout += 1;
-		if(isActive && timeout === 5) {
+		if(isActive && timeout ===  meerkat.site.callbackPopup.timeout) {
 			showModal();
 			clearInterval(intervalId);
 		}

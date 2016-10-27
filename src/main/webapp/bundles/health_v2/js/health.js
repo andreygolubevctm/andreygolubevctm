@@ -710,6 +710,11 @@
 				{
 					$field: $("#health_application_mobile"),
 					$fieldInput: $("#health_application_mobileinput")
+				},
+				// callback popup
+				{
+					$field: $("#health_callback_mobileinput"),
+					$fieldInput: $("#health_callback_mobileinput")
 				}
 			],
 			otherPhone: [
@@ -722,6 +727,11 @@
 				{
 					$field: $("#health_application_other"),
 					$fieldInput: $("#health_application_otherinput")
+				},
+				// call back popup
+				{
+					$field: $("#health_callback_otherNumberinput"),
+					$fieldInput: $("#health_callback_otherNumberinput")
 				}
 			],
 			flexiPhone: [
