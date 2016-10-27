@@ -54,6 +54,10 @@
 
 				<home:contact_details xpath="${xpath}/policyHolder" />
 
+				<c:if test="${journeySplitTestActive eq true}">
+					<home:contact_optins xpath="${xpath}" />
+				</c:if>
+
 			</layout_v1:slide_content>
 
 		</jsp:body>
