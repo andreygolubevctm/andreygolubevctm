@@ -12,15 +12,17 @@
 <form_v2:fieldset legend="Policy Holder Details">
 
 	<%-- MAIN POLICY HOLDER --%>
-	<%-- Policy Holder Title --%>
-	<c:set var="fieldXpath" value="${xpath}/title" />
-	<form_v2:row fieldXpath="${fieldXpath}" label="Title">
-		<field_v2:import_select xpath="${fieldXpath}"
-			title="the policy holder's title"
-			required="false"
-			url="/WEB-INF/option_data/titles_simple.html"
-			className="person-title" />
-	</form_v2:row>
+	<c:if test="${journeySplitTestActive eq false}">
+		<%-- Policy Holder Title --%>
+		<c:set var="fieldXpath" value="${xpath}/title" />
+		<form_v2:row fieldXpath="${fieldXpath}" label="Title">
+			<field_v2:import_select xpath="${fieldXpath}"
+				title="the policy holder's title"
+				required="false"
+				url="/WEB-INF/option_data/titles_simple.html"
+				className="person-title" />
+		</form_v2:row>
+	</c:if>
 
 	<%-- Policy Holder First Name --%>
 	<c:set var="fieldXpath" value="${xpath}/firstName" />
