@@ -52,7 +52,9 @@
 					</form_v2:fieldset>
 				</c:if>
 
-				<home:contact_details xpath="${xpath}/policyHolder" />
+				<c:if test="${journeySplitTestActive eq false}">
+					<home:contact_details xpath="${xpath}/policyHolder" />
+				</c:if>
 
 				<c:if test="${journeySplitTestActive eq true}">
 					<home:contact_optins xpath="${xpath}" />

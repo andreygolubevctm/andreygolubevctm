@@ -52,6 +52,10 @@
 			ageMax="99"/>
 	</form_v2:row>
 
+	<c:if test="${journeySplitTestActive eq true}">
+		<home:contact_details_v2 xpath="${xpath}" />
+	</c:if>
+
 </form_v2:fieldset>
 
 <%-- Class name to force join policy holder fields to be hidden --%>
