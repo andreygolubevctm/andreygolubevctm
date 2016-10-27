@@ -8,6 +8,7 @@
 <%-- get transactionId from confirmation data--%>
 <x:parse var="confirmationDataXML" xml="${confirmationData}" />
 <c:set var="transactionId"><x:out select="$confirmationDataXML/data/transID" /></c:set>
+<c:set var="status"><x:out select="$confirmationDataXML/data/status" /></c:set>
 
 <%-- HTML PLACEHOLDER --%>
 <layout_v1:slide formId="confirmationForm" className="displayBlock">
@@ -132,5 +133,17 @@
 		<c:if test="${not empty data.confirmation.health}">
 			<c:set var="sessionProduct" value="${fn:replace( fn:replace( data.confirmation.health, '<![CDATA[', ''), ']]>', '' ) }" />
 			var sessionProduct = ${sessionProduct};
+		</c:if>
+
+		<c:if test="${not empty transactionId && status eq 'OK'}">
+			<jsp:useBean id="touchService" class="com.ctm.web.core.services.AccessTouchService" scope="request" />
+			<c:set var="hasTouch" value="${touchService.touchCheck(transactionId, 'CONF')}" scope="request"  />
+			try {
+				if(result instanceof Object && result.hasOwnProperty('data') && result.data instanceof Object) {
+					result.data.viewed = <c:choose><c:when test="${hasTouch eq true}">true</c:when><c:otherwise>false</c:otherwise></c:choose>;
+				}
+			} catch(e) {
+				// ignore
+			}
 		</c:if>
 	</script>
