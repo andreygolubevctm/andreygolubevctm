@@ -475,11 +475,19 @@
 	function configureProgressBar() {
 		var keys = _.keys(steps);
 		var progressBarSteps = new Array(keys.length - 1);
+		var stepOmitList = [];
+		if(meerkat.modules.splitTest.isActive(2)) {
+			stepOmitList.push('historyStep');
+			progressBarSteps.pop();
+		}
 		for(var i=0; i<keys.length - 1; i++) {
-			progressBarSteps[steps[keys[i]].slideIndex] = {
-				label :			steps[keys[i]].title,
-				navigationId :	steps[keys[i]].navigationId
-			};
+			var step = keys[i];
+			if(_.indexOf(stepOmitList,step) === -1) {
+				progressBarSteps[steps[step].slideIndex] = {
+					label: steps[step].title,
+					navigationId: steps[step].navigationId
+				};
+			}
 		}
 		meerkat.modules.journeyProgressBar.configure(progressBarSteps);
 	}
