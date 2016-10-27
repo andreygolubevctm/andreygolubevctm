@@ -46,12 +46,6 @@
       margin-bottom: 0;
     }
   }
-  // Filter bar on 2 lines otherwise.
-  @media (@sm-only) {
-    #navbar-filter li.dropdown > a {
-      margin-right: 0;
-    }
-  }
 
   #quote_vehicle_selection .spinner {
     margin-right: 40px;
@@ -71,6 +65,67 @@
     @media (@sm) {
       background-color: inherit;
       text-align: left;
+    }
+  }
+
+  // New filter styles to fit CAR-1304
+  #navbar-filter {
+    .navbar-right {
+      position: relative;
+      &::before {
+        content: '';
+        border-left: 1px solid;
+        height: 26px;
+        margin-top: -13px;
+        position: absolute;
+        top: 50%;
+        left: 0;
+      }
+    }
+
+    li {
+      text-align: center;
+      text-transform: capitalize;
+
+      &.filter-cover-type {
+        width: 168px;
+
+        a {
+          cursor: default;
+          span {
+            color: #fff;
+          }
+
+          .icon {
+            display: none;
+          }
+        }
+      }
+
+      &.filter-excess {
+        width: 80px;
+      }
+
+      &.filter-frequency {
+        width: 120px;
+      }
+
+      > a {
+        margin-right: 0;
+        &:not(.btn) {
+          border: none;
+          padding: 10px;
+        }
+
+        &.updateFilters {
+          border-color: #fff;
+          font-size: 10px;
+          margin-top: 6px;
+          margin-left: 10px;
+          padding: 4px 16px;
+          text-transform: uppercase;
+        }
+      }
     }
   }
 
