@@ -1,6 +1,6 @@
 @media (@xs-only) {
   body.results-mobile-display-mode-toggle-shown {
-    padding-bottom: 64px;
+    padding-bottom: 67px;
   }
 
   .results-mobile-display-mode-toggle {
@@ -16,6 +16,11 @@
       font-size: 10px;
       padding: 0.5em;
       text-transform: uppercase;
+    }
+
+    .results-mobile-display-mode-count {
+      font-size: 12px;
+      font-weight: bold;
     }
 
     .results-mobile-display-mode-button {
@@ -36,16 +41,12 @@
     }
 
     &[data-display-mode=price] {
-      //.results-mobile-display-mode-text {
-      //  display: block;
-      //}
       .results-mobile-display-mode-price {
         display: none;
       }
     }
 
     &[data-display-mode=features] {
-      //.results-mobile-display-mode-text,
       .results-mobile-display-mode-feature {
         display: none;
       }
