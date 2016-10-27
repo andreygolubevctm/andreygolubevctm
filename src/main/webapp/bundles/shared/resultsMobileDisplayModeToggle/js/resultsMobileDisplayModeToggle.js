@@ -1,8 +1,5 @@
-/*
- This module supports the Sorting for travel results page.
- */
-
 ;(function ($, undefined) {
+
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
         $body,
@@ -33,8 +30,8 @@
             hide();
         });
 
-        // set component properties once results are fetched
-        $(document).on("resultsFetchFinish", function() {
+        // set component properties once results are loaded
+        $(document).on("resultsLoaded", function() {
             if (Results.model.availableCounts > 0) {
                 setCount(Results.model.availableCounts);
                 setDisplayMode(Results.getDisplayMode());

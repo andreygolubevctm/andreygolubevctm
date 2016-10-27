@@ -1,4 +1,4 @@
-;(function($, undefined) {
+;(function ($, undefined) {
 
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
@@ -27,8 +27,8 @@
         });
 
 
-        // show component once results are fetched and results are available
-        $(document).on("resultsFetchFinish", function() {
+        // show component once results are loaded and results are available
+        $(document).on("resultsLoaded", function() {
             if (Results.model.availableCounts > 0) {
                 $buttonGroup.removeClass('hidden');
             }
