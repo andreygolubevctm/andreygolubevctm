@@ -300,14 +300,22 @@ var ResultsModel = {
 					Results.model.returnedProducts.push( Results.model.currentProduct.product );
 				}
 
-				// Store the provider code if the partner returns at least 1 product
-				if (Results.settings.paths.results.providerCode !== false) {
-					_.each(Results.model.returnedProducts, function getProvidercodes(obj){
+				var availableCounts = 0;
+				_.each(Results.model.returnedProducts, function updateResultsModelProperties(obj){
+					// Store the provider code if the partner returns at least 1 product
+					if (Results.settings.paths.results.providerCode !== false) {
+						// Update available partners
 						if (obj.available == 'Y' && !_.contains(Results.model.availablePartners, obj[Results.settings.paths.results.providerCode])) {
 							Results.model.availablePartners.push(obj[Results.settings.paths.results.providerCode]);
 						}
-					});
-				}
+					}
+					// Update available count
+					if (obj.available === 'Y' && obj.productId !== 'CURR') {
+						availableCounts++;
+					}
+				});
+
+				Results.model.availableCounts = availableCounts;
 
 				// Publish event
 				meerkat.messaging.publish(Results.model.moduleEvents.RESULTS_MODEL_UPDATE_BEFORE_FILTERSHOW);

@@ -243,6 +243,7 @@
                 meerkat.modules.carMoreInfo.initMoreInfo();
                 meerkat.modules.carFilters.initCarFilters();
                 meerkat.modules.carEditDetails.initEditDetails();
+                meerkat.modules.resultsMobileDisplayModeToggle.initToggle();
             },
             onBeforeEnter: function enterResultsStep(event) {
                 meerkat.modules.journeyProgressBar.hide();

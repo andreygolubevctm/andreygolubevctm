@@ -80,6 +80,8 @@
 
 		<agg_v1:results_pagination_floated_arrows />
 
+		<agg_v1:payment_frequency_buttons xpath="filter/paymentFrequency" />
+
 		<div class="resultsOverflow">
 			<div class="results-table"></div>
 		</div>
@@ -87,6 +89,8 @@
 		<core_v1:clear />
 
 		<div class="featuresFooterPusher"></div>
+
+		<agg_v1:results_mobile_display_mode_toggle />
 	</div>
 
 	<%-- DEFAULT RESULT ROW --%>
