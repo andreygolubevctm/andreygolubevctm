@@ -143,7 +143,7 @@
             onInitialise: function onStartInit(event) {
                 meerkat.modules.jqueryValidate.initJourneyValidator();
                 // Hook up privacy optin to Email Quote button
-                var $emailQuoteBtn = $(".slide-feature-emailquote");
+                var $emailQuoteBtn = $(".slide-feature-emailquote, .save-quote");
 
                 // Initial value from preload/load quote
                 if ($("#quote_privacyoptin").is(':checked')) {
