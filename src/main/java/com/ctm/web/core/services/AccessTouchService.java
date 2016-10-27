@@ -169,6 +169,10 @@ public class AccessTouchService {
 		return dao.hasTouch(transactionId, touchType.getCode());
 	}
 
+	public boolean touchCheck(final long transactionId, String type) throws DaoException {
+		return dao.hasTouch(transactionId, type);
+	}
+
 	public void setRequest(HttpServletRequest request) {
 		this.request = request;
 }

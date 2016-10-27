@@ -223,7 +223,7 @@ public class TouchDao {
 			statement.setString(2, type);
 			final ResultSet resultSet = statement.executeQuery();
 			resultSet.first();
-			return resultSet.getInt(1) == 1;
+			return resultSet.getInt(1) >= 1;
 		} catch (SQLException | NamingException e) {
 			throw new DaoException(e);
 		} finally {
