@@ -264,6 +264,8 @@
 
 					meerkat.modules.homeHistory.initHomeHistory();
 					meerkat.modules.resultsFeatures.fetchStructure('hncamsws_');
+				} else {
+					$('#coverHistoryForm').parent().find('.btn-next').addClass('hidden');
 				}
 			},
 			onAfterEnter: function onAfterEnterHistory(event) {

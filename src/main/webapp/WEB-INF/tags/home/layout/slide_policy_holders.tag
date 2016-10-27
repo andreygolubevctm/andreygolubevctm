@@ -6,7 +6,14 @@
 
 <c:set var="xpath" value="${pageSettings.getVerticalCode()}" />
 
-<c:set var="buttonLabel" value="Next Step" />
+<c:choose>
+	<c:when test="${journeySplitTestActive eq false}">
+		<c:set var="buttonLabel" value="Next Step" />
+	</c:when>
+	<c:otherwise>
+		<c:set var="buttonLabel" value="Get Quotes" />
+	</c:otherwise>
+</c:choose>
 
 <layout_v1:slide formId="policyHolderForm" nextLabel="${buttonLabel}">
 
