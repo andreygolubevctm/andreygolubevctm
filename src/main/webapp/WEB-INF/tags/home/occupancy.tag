@@ -24,8 +24,10 @@
 
 <form_v2:fieldset legend="Occupancy Details">
 	<%-- Commencement Date --%>
-	<c:set var="fieldXpath" value="${baseXpath}/startDate" />
-	<home:commencementDate xpath="${fieldXpath}" />
+	<c:if test="${journeySplitTestActive eq false}">
+		<c:set var="fieldXpath" value="${baseXpath}/startDate" />
+		<home:commencementDate xpath="${fieldXpath}" />
+	</c:if>
 
 	<%-- Address --%>
 	<c:set var="fieldXpath" value="${baseXpath}/property/address" />
