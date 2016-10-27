@@ -173,8 +173,8 @@ ${newPage.init(pageContext.request, pageSettings)}
 							</c:if>
 							<c:if test="${pageSettings.getVerticalCode() eq 'health'}">
 								<a class="navbar-toggle wide phone collapsed" data-toggle="dialog"
-									data-content="#view_all_hours"
-									data-dialog-hash-id="view_all_hours"
+									data-content="#view_all_hours_cb"
+									data-dialog-hash-id="view_all_hours_cb"
 									data-title="Request a Call" data-cache="true">
 									<span class="icon icon-phone"></span>
 									<span>Talk to our experts</span>
