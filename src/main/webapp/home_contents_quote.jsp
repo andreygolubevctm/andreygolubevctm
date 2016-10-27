@@ -120,7 +120,7 @@
 						<ul class="dropdown-menu">
 						</ul>
 					</li>
-					<li class="excess-update"><a href="javascript:void(0);" class="btn btn-hollow updateExcess hidden" data-toggle="updateButton">update</a>
+					<li class="excess-update"><a href="javascript:void(0);" class="btn btn-hollow updateFilters hidden" data-toggle="updateButton">update</a>
 					</li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
@@ -129,8 +129,8 @@
 						<ul class="dropdown-menu">
 						</ul>
 					</li>
-					<li class="filter-pricemode"><a href="javascript:void(0);"><span class="icon icon-th-list"></span> Quick price<span class="hidden-md hidden-sm"> view</span></a></li>
-					<li class="filter-featuresmode"><a href="javascript:void(0);"><span class="icon icon-th-vert"></span> Product features<span class="hidden-md hidden-sm"> view</span></a></li>
+					<li class="filter-pricemode"><a href="javascript:void(0);"><span class="icon icon-th-list"></span> Quick price</a></li>
+					<li class="filter-featuresmode"><a href="javascript:void(0);"><span class="icon icon-th-vert"></span> Product features</a></li>
 					<li class="back-to-price-mode hidden"><a href="javascript:void(0);"><span class="icon icon-arrow-left"></span> Back</a></li>
 				</ul>
 			</div>

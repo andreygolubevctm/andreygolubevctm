@@ -71,20 +71,12 @@
 
 		// Refresh excess
 		if (coverType == 'H' || coverType == 'HC'){
-			if (typeof currentValues.homeExcess === 'undefined') {
-				$filterHomeExcess.find('.dropdown-toggle span').text( $filterHomeExcess.find('.dropdown-menu a:first').text() );
-			}
-			else {
-				$filterHomeExcess.find('.dropdown-toggle span').text( $filterHomeExcess.find('.dropdown-menu a[data-value="' + currentValues.homeExcess + '"]').text() );
-			}
+			var homeExcess = $('#home_homeExcess').val() ? $('#home_homeExcess').val() : $('#home_baseHomeExcess').val();
+			$filterHomeExcess.find('.dropdown-toggle span').text( $filterHomeExcess.find('.dropdown-menu a[data-value="' + homeExcess + '"]').text() );
 		}
 		if (coverType == 'C' || coverType == 'HC'){
-			if (typeof currentValues.contentsExcess === 'undefined') {
-				$filterContentsExcess.find('.dropdown-toggle span').text( $filterContentsExcess.find('.dropdown-menu a:first').text() );
-			}
-			else {
-				$filterContentsExcess.find('.dropdown-toggle span').text( $filterContentsExcess.find('.dropdown-menu a[data-value="' + currentValues.contentsExcess + '"]').text() );
-			}
+			var contentsExcess = $('#home_contentsExcess').val() ? $('#home_contentsExcesss').val() : $('#home_baseContentsExcess').val();
+			$filterContentsExcess.find('.dropdown-toggle span').text( $filterContentsExcess.find('.dropdown-menu a[data-value="' + contentsExcess + '"]').text() );
 		}
 	}
 	function hideExcessLists () {
@@ -156,21 +148,20 @@
 						previousValues.homeExcess = currentValues.homeExcess;
 
 						currentValues.homeExcess = value;
-						$('#home_home_excess').val(value);
+						$('#home_homeExcess').val(value);
 
-						meerkat.messaging.publish(moduleEvents.CHANGED);
 						toggleUpdate(false);
 					}
-					if(value !== currentValues.contentsExcess) {
+				}
+				if ($dropdown.hasClass('contentsExcess')) {
+					if (value !== currentValues.contentsExcess) {
 						previousValues.contentsExcess = currentValues.contentsExcess;
 
 						currentValues.contentsExcess = value;
-						$('#home_contents_excess').val(value);
+						$('#home_contentsExcess').val(value);
 
-						meerkat.messaging.publish(moduleEvents.CHANGED);
 						toggleUpdate(false);
 					}
-
 				}
 			}
 		}
@@ -336,18 +327,18 @@
 
 		// Dropdown options
 
-		$component.on('click', '.dropdown-menu a, .excess-update a', handleDropdownOption);
+		$component.on('click', '.dropdown-menu a', handleDropdownOption);
 
 
 		$updateBtn.on('click', function updateResults() {
-			meerkat.messaging.publish(moduleEvents.CHANGED, {excess:currentValues.excess});
+			meerkat.messaging.publish(moduleEvents.CHANGED, {contentsExcess:currentValues.contentsExcess, homeExcess:currentValues.homeExcess});
 			toggleUpdate(true);
 		});
 
 		$cancelUpdateBtn.on('click', function cancelUpdate() {
 			$filterHomeExcess.find('li.active').removeClass("active");
 			if(!_.isEmpty(previousValues.homeExcess)) {
-				var $dropdownHome = $('.dropdown.filter-home-excess');
+				var $dropdownHome = $('.dropdown.filter-excess.homeExcess');
 
 				currentValues.homeExcess = previousValues.homeExcess;
 
@@ -359,7 +350,7 @@
 
 			$filterContentsExcess.find('li.active').removeClass("active");
 			if(!_.isEmpty(previousValues.contentsExcess)) {
-				var $dropdownContents = $('.dropdown.filter-contents-excess');
+				var $dropdownContents = $('.dropdown.filter-excess.contentsExcess');
 
 				currentValues.contentsExcess = previousValues.contentsExcess;
 
