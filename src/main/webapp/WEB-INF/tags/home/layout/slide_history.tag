@@ -11,7 +11,9 @@
 	<layout_v1:slide_columns sideHidden="false">
 
 		<jsp:attribute name="rightColumn">
-			<home:snapshot />
+			<c:if test="${journeySplitTestActive eq false}">
+				<home:snapshot />
+			</c:if>
 		</jsp:attribute>
 
 		<jsp:body>

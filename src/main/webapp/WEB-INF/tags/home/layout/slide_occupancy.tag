@@ -17,7 +17,9 @@
 
 				<home:occupancy xpath="${xpath}/occupancy" baseXpath="${xpath}" />
 
-				<home:business_activity xpath="${xpath}/businessActivity" />
+				<c:if test="${journeySplitTestActive eq false}">
+					<home:business_activity xpath="${xpath}/businessActivity" />
+				</c:if>
 
 				<c:if test="${journeySplitTestActive eq true}">
 					<home:cover_history xpath="${xpath}/disclosures"  />
