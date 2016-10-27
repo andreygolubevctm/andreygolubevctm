@@ -49,7 +49,8 @@
         <c:set var="callCentreHelpNumber" scope="request"><content:get key="callCentreHelpNumber"/></c:set>
 
         <c:set var="openingHoursHeader" scope="request" ><content:getOpeningHours displayTodayOnly="true"/></c:set>
-        <c:set var="callCentreHoursModal" scope="request"><health_v3:callback_modal /></c:set>
+        <c:set var="callCentreHoursModal" scope="request"><content:getOpeningHoursModal /></c:set>
+        <c:set var="callCentreCBModal" scope="request"><health_v3:callback_modal /></c:set>
 
         <c:set var="isHealthV2" value="${true}" scope="request" />
 
@@ -85,7 +86,8 @@
                     </li>
                     <li>
                         <health_v3:callback_link />
-                        ${callCentreHoursModal}
+                        ${callCentreCBModal}
+                        <div id="view_all_hours" class="hidden">${callCentreHoursModal}</div>
                     </li>
                 </c:if>
             </ul>

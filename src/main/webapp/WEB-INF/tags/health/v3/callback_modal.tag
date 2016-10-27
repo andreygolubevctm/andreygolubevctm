@@ -12,7 +12,7 @@
 <fmt:formatDate var="todays_day" pattern="EEEE" value="${now}" />
 
 <%-- HTML --%>
-<core_v1:js_template id="view_all_hours">
+<core_v1:js_template id="view_all_hours_cb">
 <div id="health-callback">
 	<div class="row">
 		<div class="col-sm-12">
