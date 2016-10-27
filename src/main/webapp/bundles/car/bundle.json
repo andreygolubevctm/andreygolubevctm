@@ -29,6 +29,7 @@
     "shared/resultsRankings",
     "shared/leadFeed",
     "shared/formNumberFormatInputs",
-    "shared/ie8SelectMenuAutoExpand"
+    "shared/ie8SelectMenuAutoExpand",
+    "shared/resultsFilterLabels"
   ]
 }
