@@ -3,17 +3,19 @@
 	var meerkat = window.meerkat;
 
 	var timeout = 0,
-		isActive = false;
+		isActive = false,
 		isModalOpen = false,
 		isMobile = false,
-		steps = [];
+		steps = [],
+		intervalId;
 			
 	function init() {
-		var isMobile = meerkat.modules.performanceProfiling.isMobile();
+		isMobile = meerkat.modules.performanceProfiling.isMobile();
 		var navigationId = meerkat.modules.address.getWindowHash().split("/")[0];
-		
-		if(meerkat.site.callbackPopup.enabled) {
-			idle = setInterval(count, 1000);
+
+		setActive(meerkat.site.callbackPopup.enabled === 'true');
+		if(isActive) {
+			intervalId = setInterval(count, 1000);
 		}
 
         if (meerkat.site.callbackPopup.timeoutStepEnabled) {
@@ -69,8 +71,9 @@
 
 	function count() {
 		timeout += 1;
-		if(isActive && timeout === meerkat.site.callbackPopup.timeout) {
+		if(isActive && timeout === 5) {
 			showModal();
+			clearInterval(intervalId);
 		}
 	}
 	

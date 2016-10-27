@@ -376,7 +376,7 @@
 
 					// name field gets split into first and last name
 					if( fieldDetails.type == "name" && typeof laterFieldDetails.$otherField !== "undefined" ){
-						if(updatedElementValue !== "undefined") {
+						if(typeof updatedElementValue !== "undefined") {
 							var splitName = updatedElementValue.split(" ");
 							$fieldElement.val(splitName[0]);
 							laterFieldDetails.$otherField.val( splitName.slice(1).join(" ") );

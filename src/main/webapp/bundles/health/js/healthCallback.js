@@ -1,4 +1,3 @@
-
 /*
 
 Handling of the callback popup
@@ -10,10 +9,17 @@ Handling of the callback popup
 		meerkatEvents = meerkat.modules.events,
 		log = meerkat.logging.info,
 		day,
-		timezone = '';
+		timezone = '',
 		hours = [],
 		times = [],
-		firstDay = '';
+		firstDay = '',
+		$pickATimeLabel,
+		origLabel = '',
+		selectedDateObj,
+		initComplete = false,
+		$callbackTime,
+		$callbackName,
+		$callDetailsPanel;
 
 	var events = {
         callbackModal: {
@@ -30,7 +36,6 @@ Handling of the callback popup
 		timezone = -day.getTimezoneOffset();
 		direction = timezone >= 0 ? '%2B' : '%2D';
 		offset = direction + ('00'+(timezone / 60)).slice(-2) + ':' + ('00'+(timezone % 60)).slice(-2);
-
 	};
 
     function applyEventListeners() {
@@ -41,52 +46,73 @@ Handling of the callback popup
         });
 
         $(document).on('click', '.switch', function(e) {
+
         	e.preventDefault();
             var $this = $(this).parent().parent();
 
             var $other = $this.siblings().filter('.hidden');
 
-       		getCallCentreTimes();
+			// only need to do this once
+			if (!initComplete) {
+				getCallCentreTimes();
+				initComplete = true;
+			}
 
             $other.toggleClass('hidden');
             $this.toggleClass('hidden');
-        });
+
+			if (meerkat.modules.deviceMediaState.get() == 'xs') {
+				$callDetailsPanel.toggleClass('hidden');
+			}
+		});
 
         $(document).on('click', '.view-all-times', function(e) {
         	e.preventDefault();
-            $('.all-times').toggleClass('hidden');
+			var anchorText = $(this).text() === 'view all times' ? 'show today only' : 'view all times';
+			$(this).text(anchorText);
+            $('.all-times-callback-modal, .today-hours-callback-modal').toggleClass('hidden');
         });
 
-        $(document).on('click', '.callbackDay .btn', function() {
-	       	var $this = $(this).find('input');
-	        var date = $this.attr('data-date');
-	        var options = getDailyHours($this.attr('data-dayname'));
+		$(document).on('click', '.callbackDay .btn', function() {
+			var $this = $(this).find('input');
+			var date = $this.attr('data-date');
+			var options = getDailyHours($this.attr('data-dayname'));
 
-	        if(options.length > 0) {
-	        	$('.callbackTime > option').remove();
-	        	$(options).each(function() {
-	        		var option = document.createElement('option');
-	        		option.value = date + 'T' + convertTo24Hour(this) + ':00' + offset;
-	        		option.text = this;
-	        		$('.callbackTime').append(option);
-	        	});
-	        }
-        });
+			if(options.length > 0) {
+				$callbackTime.children('option').remove();
+				$(options).each(function() {
+					var option = document.createElement('option');
+					option.value = date + 'T' + convertTo24Hour(this) + ':00' + offset;
+					option.text = this;
+					$callbackTime.append(option);
+				});
+			}
+
+			setPickATimeLabel($this);
+		});
+
 
         $(document).on('click', '#callBackNow', function(e) {
         	e.preventDefault();
-            executeCallBackNow();
+			var settings = { url : "spring/rest/health/callMeNow.json" };
+			callMeBack(settings);
         });
 
         $(document).on('click', '#callBackLater', function(e) {
         	e.preventDefault();
-            executeCallBackLater();
+			var settings = {
+				url : "spring/rest/health/callMeBack.json",
+				scheduledTime : $('#health_callback_time').val()
+			};
+
+			callMeBack(settings);
         });
 
 		$(document).on('show.bs.modal', '.modal', function (e) {
 			if($(this).find('#health-callback')) {
 				$(this).addClass('health-callback');
 
+				initComplete = false;
 				meerkat.messaging.publish(events.callbackModal.CALLBACK_MODAL_OPEN);
 	            meerkat.modules.jqueryValidate.setupDefaultValidationOnForm($('#health-callback-form'));
 				//meerkat.modules.health.configureContactDetails();
@@ -101,12 +127,39 @@ Handling of the callback popup
 
 				}
 			}
-		});
 
+			// init fields
+			$pickATimeLabel = $('#pickATimeLabel').find('label');
+			origLabel = $.trim($pickATimeLabel.text());
+			$pickATimeLabel.text(origLabel + " today:");
+
+			$callbackTime = $('.callbackTime'); // call me back later select box
+			$callbackName = $('#health_callback_name'); // name field
+			$callDetailsPanel = $('.call-details'); // call details panel on confirmation page
+		});
     }
 
+	function setPickATimeLabel($target) {
+		selectedDateObj = getSelectedCallbackDate($target);
+		if (selectedDateObj.setHours(0, 0, 0, 0) == new Date().setHours(0, 0, 0, 0)) {
+			$pickATimeLabel.html(origLabel+" today:");
+		} else {
+			var formattedDate = getLabelFormattedDate(selectedDateObj);
+			$pickATimeLabel.html(origLabel+"<span class='selectedOpeningHoursLabel'>"+formattedDate+"</span>");
+		}
+	}
+
+	function getSelectedCallbackDate($target) {
+		var selectedDate = $target.data('date');
+		return new Date(selectedDate);
+	}
+
+	function getLabelFormattedDate(selectedDateObj) {
+		return meerkat.modules.dateUtils.format(selectedDateObj, "dddd, Do MMM");
+	}
+
 	function getCallCentreTimes() {
-		url = "spring/openinghours/data.json?vertical=health";
+		var url = "spring/openinghours/data.json?vertical=health",
 		data = {};
 
 		return meerkat.modules.comms.get({
@@ -137,112 +190,83 @@ Handling of the callback popup
 				});
 
 		        setDaySelection();
-   	        	$('.callbackTime > option').remove();
+				$callbackTime.children('option').remove();
 
+				// preselect today
+				$('.callbackDay .btn').first().trigger('click');
 			}
 		});
 	}
 
-	function executeCallBackNow() {
-		var url = "spring/rest/health/callMeNow.json";
-		var name = $('#health_callback_name').val();
+	function callMeBack(settings) {
 
-		$('.thanks-name').html(name);
-		$success = $('#health-callback .alert-success');
-		$error = $('#health-callback .alert-danger');
-		$success.addClass('hidden');
-		$error.addClass('hidden');
+		if ($("#health-callback-form").valid()) {
 
-		var data = 'name=' + name;
+			var name = $callbackName.val();
 
-		var mobileNumber = $('#health_callback_mobileinput').val(),
-			otherNumber = $('#health_callback_otherNumberinput').val();
-		
-		if(mobileNumber) {
-			data += '&mobileNumber=' + mobileNumber;
-			$('.thanks-contact-number').html(mobileNumber);
-		}
-		if(otherNumber) {
-			data += '&otherNumber=' + otherNumber;
-			$('.thanks-contact-number').html(otherNumber);
-		}
+			$('.thanks-name').html(name);
+			$success = $('#health-callback .alert-success');
+			$error = $('#health-callback .alert-danger');
+			$success.addClass('hidden');
+			$error.addClass('hidden');
 
-		return meerkat.modules.comms.post({
-			url: url,
-			data: data,
-			dataType: 'json',
-			errorLevel: "silent",
-			useDefaultErrorHandling: false,
-			onComplete: function(result) {
-				if(result.status == 200) {
-					$success.removeClass('hidden');
-				} else {
-					if(result.status == 500) {
-						$error.html($error.attr('data-message'));
-					} else {
-						$error.html(result.responseJSON.message);
-					}
-					$error.removeClass('hidden');
-				}
+			var data = 'name=' + name;
+
+			var mobileNumber = $('#health_callback_mobileinput').val(),
+				otherNumber = $('#health_callback_otherNumberinput').val();
+
+			if (mobileNumber) {
+				data += '&mobileNumber=' + mobileNumber;
 			}
-		});
-	}
-
-	function executeCallBackLater() {
-		var url = "spring/rest/health/callMeBack.json";
-		var name = $('#health_callback_name').val();
-		$('.thanks-name').html(name);
-		$success = $('#health-callback .alert-success');
-		$error = $('#health-callback .alert-danger');
-		$success.addClass('hidden');
-		$error.addClass('hidden');
-
-		var data = 'name=' + name;
-
-		var mobileNumber = $('#health_callback_mobileinput').val(),
-			otherNumber = $('#health_callback_otherNumberinput').val();
-		
-		if(mobileNumber) {
-			data += '&mobileNumber=' + mobileNumber;
-			$('.thanks-contact-number').html(mobileNumber);
-		}
-		if(otherNumber) {
-			data += '&otherNumber=' + otherNumber;
-			$('.thanks-contact-number').html(otherNumber);
-		}
-
-		data += '&scheduledDateTime=' + $('#health_callback_time').val();
-
-		return meerkat.modules.comms.post({
-			url: url,
-			data: data,
-			dataType: 'json',
-			errorLevel: "silent",
-			useDefaultErrorHandling: false,
-			onComplete: function(result) {
-				if(result.status == 200) {
-					$success.removeClass('hidden');
-				} else {
-					if(result.status == 500) {
-						$error.html($error.attr('data-message'));
-					} else {
-						$error.html(result.responseJSON.message);
-					}
-					$error.removeClass('hidden');
-				}
+			if (otherNumber) {
+				data += '&otherNumber=' + otherNumber;
 			}
-		});	
+
+			if (settings.scheduledTime) {
+				data += '&scheduledDateTime=' + settings.scheduledTime;
+			}
+
+			return meerkat.modules.comms.post({
+				url: settings.url,
+				data: data,
+				dataType: 'json',
+				errorLevel: "silent",
+				useDefaultErrorHandling: false,
+				onComplete: function (result) {
+					$('.main').addClass('hidden');
+					var obj = {},
+						htmlTemplate;
+					if (result.status == 200) {
+						htmlTemplate = _.template($('#thankyou-template').html());
+
+						var selectedDate = settings.scheduledTime ? getLabelFormattedDate(selectedDateObj) : "now 1",
+							selectedTime = settings.scheduledTime ? $callbackTime.children('option:selected').text() : "now";
+
+						obj = {
+							name: $callbackName.val(),
+							contact_number: $('.cbContactNumber').not('.hidden').find('input[type=text]').val(),
+							selectedDate: selectedDate,
+							selectedTime: selectedTime
+						};
+					} else {
+						htmlTemplate = _.template($('#error-template').html());
+					}
+
+					$('.confirmation-content-panel').append(htmlTemplate(obj)).removeClass('hidden');
+					$callDetailsPanel.removeClass('hidden');
+				}
+			});
+		}
 	}
 
 	function setDaySelection() {
-        var i = 0;
-        var count = 0;
-
-        firstDay = getShortDayOfWeekName(day.getDay());
+        var i = 0,
+        	count = 0,
+        	firstDay = getShortDayOfWeekName(day.getDay());
 
         while(count < 4) {
 
-			dayName = getShortDayOfWeekName((day.getDay() + i) % 7);
+			var dayName = getShortDayOfWeekName((day.getDay() + i) % 7);
 
 			if(checkOpen(dayName)) {
 				var dayDate = new Date();
@@ -349,15 +373,6 @@ Handling of the callback popup
 		    return time.replace(/( am| pm)/, '');
 		}
 		return '00:00';
-	}
-
-	function offsetDatetime(time, offset) {
-		// Time needs to be 24hour in format  12:00
-
-	    var hour = time.substr(0, 2);
-		
-		hour = parseInt(hour) + offset;
-	    time = time.replace(hour, ('00'+hour).slice(-2));
 	}
 
 	function getShortDayOfWeekName(dayNum) {

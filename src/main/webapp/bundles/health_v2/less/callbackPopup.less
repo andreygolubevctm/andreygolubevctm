@@ -1,4 +1,3 @@
-
 #health-callback-popup {
     width: 420px;
     position: absolute;
@@ -9,8 +8,8 @@
     padding: 10px 0 10px 10px;
 
 	&.top-right {
-		top: 10px;
-		right: 10px;
+		top: 0;
+		right: 0;
 	}
 
 	&.top-left {
@@ -33,7 +32,7 @@
 		font-size: 28px;
 	}
 	h3 {
-		color: #555;
+		color: @callback-dark-grey;
 		margin-top: 0;
 	}
 	h3.request-callback {
@@ -47,6 +46,8 @@
 	.close-popup {
 		font-size: 12px;
 	}
+
+
 }
 .icon-callback {
 	font-size: 18px;
@@ -60,9 +61,11 @@
 	padding: 8px;
 	float: right;
 }
+
 .nav {
 	li {
 		a.callback-link {
+			font-family: @font-family-theme-bold;
 			&:hover,
 			&:focus {
 				background-color: #ffffff;
