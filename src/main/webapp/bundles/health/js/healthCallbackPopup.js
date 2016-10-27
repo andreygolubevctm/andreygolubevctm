@@ -2,21 +2,18 @@
 
 	var meerkat = window.meerkat;
 
-	var timeout = 0,
-		isActive = false,
+	var isActive = false,
 		isModalOpen = false,
 		isMobile = false,
 		steps = [],
-		intervalId;
+		intervalId,
+		hasDisplayedTimedCallBack = false;
 			
 	function init() {
 		isMobile = meerkat.modules.performanceProfiling.isMobile();
 		var navigationId = meerkat.modules.address.getWindowHash().split("/")[0];
 
 		setActive(meerkat.site.callbackPopup.enabled === 'true');
-		if(isActive && typeof meerkat.site.callbackPopup.timeout !== 'undefined') {
-			intervalId = setInterval(count, 1000);
-		}
 
         if (meerkat.site.callbackPopup.timeoutStepEnabled) {
 			steps = meerkat.site.callbackPopup.steps.split(',');
@@ -53,7 +50,7 @@
 					var navigationId = meerkat.modules.address.getWindowHash().split("/")[0];
 
 					hideModal();
-	            	if(_.indexOf(steps, navigationId) >= 0) {
+	            	if(_.indexOf(steps, navigationId) >= 0 && !hasDisplayedTimedCallBack) {
 	                	setActive(true);
 	                	reset();
 	                } else {
@@ -61,7 +58,9 @@
 	                }
 	            });
 	        });
-	    }
+	    } else {
+			startTimer();
+		}
 
         meerkat.messaging.subscribe(meerkat.modules.events.callbackModal.CALLBACK_MODAL_OPEN, function dontShowPopupOnModalOpenSubscription() {
 			setActive(false);
@@ -69,16 +68,22 @@
 
     }
 
-	function count() {
-		timeout += 1;
-		if(isActive && timeout ===  meerkat.site.callbackPopup.timeout) {
-			showModal();
-			clearInterval(intervalId);
+	function displayCallBackModal() {
+		showModal();
+		clearInterval(intervalId);
+		hasDisplayedTimedCallBack = true;
+	}
+
+	function startTimer(){
+		if(isActive && typeof meerkat.site.callbackPopup.timeout !== 'undefined' && !hasDisplayedTimedCallBack) {
+			var interval = meerkat.site.callbackPopup.timeout * 1000;
+			intervalId = setInterval(displayCallBackModal, interval);
 		}
 	}
-	
+
 	function reset() {
-		timeout = 0;
+		clearInterval(intervalId);
+		startTimer();
 	}
 
 	function showModal() {
@@ -95,7 +100,7 @@
 		setModalState(false);
 		setActive(false);
 		$('#health-callback-popup').remove();
-		reset();
+		clearInterval(intervalId);
 	}
 
 	function setActive(value) {
@@ -107,8 +112,7 @@
 	}
 
 	meerkat.modules.register("healthCallbackPopup", {
-		init: init,
-		reset: reset
+		init: init
 	});
 
 })(jQuery);
