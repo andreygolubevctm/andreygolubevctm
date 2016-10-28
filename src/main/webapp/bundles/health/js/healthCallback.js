@@ -90,8 +90,7 @@ Handling of the callback popup
 			var $this = $(this).find('input');
 			var date = $this.attr('data-date');
 			var options = getDailyHours($this.attr('data-dayname'));
-			console.log("hours", hours);
-console.log("options", options);
+
 			if(options.length > 0) {
 				$callbackTime.children('option').remove();
 				$(options).each(function() {
@@ -351,7 +350,7 @@ console.log("options", options);
 				if(dayName == firstDay && count === 0) {
 					dayName = 'Today';
 				}
-
+		       	$('.callbackDay .btn:nth-child('+(count+1)+'n) span').text(dayName);
 				count++; // counting to 4
 			}
 
@@ -360,15 +359,14 @@ console.log("options", options);
 	}
 
 	function checkOpen(dayName) {
-		var open = false;
 		$.each(hours, function() {
 			if(this.description.substring(0, 3) === dayName) {
 				if(this.startTime) {
-					open = true;
+					return true;
 				}
 			}
 		});
-		return open;
+		return false
 	}
 
 	function getDailyHours_x(dayName) {
