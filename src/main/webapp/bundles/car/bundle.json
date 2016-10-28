@@ -31,6 +31,9 @@
     "shared/formNumberFormatInputs",
     "shared/ie8SelectMenuAutoExpand",
     "shared/paymentFrequencyButtons",
-    "shared/resultsMobileDisplayModeToggle"
+    "shared/resultsMobileDisplayModeToggle",
+    "shared/mobileNavButtons",
+    "shared/buttonGroupVertical",
+    "shared/resultsFilterLabels"
   ]
 }

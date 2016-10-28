@@ -484,6 +484,10 @@
 		if (meerkat.modules.hasOwnProperty('carFilters')) {
 			meerkat.modules.carFilters.disable();
 		}
+
+		if (meerkat.modules.hasOwnProperty('mobileNavButtons')) {
+			meerkat.modules.mobileNavButtons.disable();
+		}
 	}
 
 	/**
