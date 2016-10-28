@@ -1,0 +1,54 @@
+#healthVouchers {
+  .voucherIsAvailable {
+    .healthVoucherTypeRow,
+    .healthVoucherReferrerRefRow,
+    .healthVoucherApprovedByRow,
+    .healthVoucherAuthorisationRow .btn-reset,
+    .voucher {
+      display:none;
+    }
+    .voucher {
+      .authorisation-column {
+        padding-left:0px;
+        &.buttons {
+          padding-right:0px;
+        }
+      }
+    }
+    p.display-only {
+        display:none;
+        padding-top:11px;
+    }
+    #healthVoucherEmail {
+      display:block;
+    }
+  }
+  .voucherDialogue {
+    .dialogue {
+      display:none;
+    }
+  }
+  .disabled {
+    input.form-control,
+    .select {
+      display:none;
+    }
+    p.display-only {
+      display:block;
+      color:#888888;
+    }
+  }
+  .voucher-validation-messages p {
+    font-family: 'SourceSansProRegular';
+    font-size: 0.9em;
+    line-height:1em;
+    padding:0;
+    margin: 0 0 5px 0;
+    &.error {
+      color: #ff5f5f;
+    }
+    &.success {
+      color: #0db14b;
+    }
+  }
+}

@@ -165,10 +165,29 @@ ${newPage.init(pageContext.request, pageSettings)}
 
 							<jsp:invoke fragment="header_button_left" />
 
-							<button type="button" class="navbar-toggle hamburger collapsed disabled" data-toggle="navMenuOpen" data-target=".navbar-collapse-menu">
-								<span class="sr-only">Toggle Navigation</span>
-								<span class="icon icon-reorder"></span>
-							</button>
+							<c:choose>
+								<c:when test="${pageSettings.getVerticalCode() eq 'car'}">
+									<ul class="mobile-nav-buttons nav navbar-nav pull-right">
+										<li class="refine-results"><a href="javascript:;">REFINE</a></li>
+										<c:if test="${saveQuoteEnabled == 'Y'}">
+											<li class="save-quote"><a href="javascript:;" class="save-quote-openAsModal">SAVE</a></li>
+										</c:if>
+										<li class="edit-details">
+											<a href="javascript:;" class="navbar-ellipses">
+												<span class="sr-only">Toggle Navigation</span>
+												...
+											</a>
+										</li>
+									</ul>
+								</c:when>
+								<c:otherwise>
+									<button type="button" class="navbar-toggle hamburger collapsed disabled" data-toggle="navMenuOpen" data-target=".navbar-collapse-menu">
+										<span class="sr-only">Toggle Navigation</span>
+										<span class="icon icon-reorder"></span>
+									</button>
+								</c:otherwise>
+							</c:choose>
+
 							<c:if test="${pageSettings.getVerticalCode() eq 'health'}">
 								<button type="button" class="navbar-toggle phone collapsed disabled" data-toggle="navMenuOpen" data-target=".navbar-collapse-menu">
 									<span class="sr-only">Contact Us</span>
