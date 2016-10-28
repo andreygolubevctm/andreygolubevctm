@@ -1,0 +1,61 @@
+@media (@xs-only) {
+  body.results-mobile-display-mode-toggle-shown {
+    padding-bottom: 67px;
+  }
+
+  .results-mobile-display-mode-toggle {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+
+    .results-mobile-display-mode-text {
+      background-color: #ccc;
+      color: #666;
+      font-size: 10px;
+      padding: 0.5em;
+      text-transform: uppercase;
+    }
+
+    .results-mobile-display-mode-count {
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .results-mobile-display-mode-button {
+      background-color: #1c3e93;
+      color: #fff;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: bold;
+      padding: 0.5em;
+
+      span {
+        &::after {
+          content: "\e910";
+          font-family: 'framework_font';
+          margin-left: 8px;
+        }
+      }
+    }
+
+    &[data-display-mode=price] {
+      .results-mobile-display-mode-price {
+        display: none;
+      }
+    }
+
+    &[data-display-mode=features] {
+      .results-mobile-display-mode-feature {
+        display: none;
+      }
+    }
+  }
+}
+
+@media (@sm) {
+  .results-mobile-display-mode-toggle {
+    display: none;
+  }
+}

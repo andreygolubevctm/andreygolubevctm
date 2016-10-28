@@ -14,13 +14,22 @@
 <field_v1:hidden xpath="quote/excess" />
 <field_v1:hidden xpath="quote/baseExcess" constantValue="${contentService.getContentValue(pageContext.getRequest(), 'defaultExcess')}" />
 <field_v1:additional_excess
+		defaultVal="800"
 		increment="100"
 		minVal="400"
 		xpath="filter/excessOptions"
 		maxCount="17"
 		title=""
 		required=""
-		omitPleaseChoose="N"
+		omitPleaseChoose="Y"
+		className="hidden" />
+
+<field_v1:hidden xpath="quote/coverType" constantValue="comprehensive" />
+<field_v1:array_select
+		items="comprehensive=Comprehensive,tppd=3rd Party Property Damage"
+		xpath="filter/coverTypeOptions"
+		title=""
+		required=""
 		className="hidden" />
 
 <car:results_filterbar_xs />
@@ -80,6 +89,8 @@
 
 		<agg_v1:results_pagination_floated_arrows />
 
+		<agg_v1:payment_frequency_buttons xpath="filter/paymentFrequency" />
+
 		<div class="resultsOverflow">
 			<div class="results-table"></div>
 		</div>
@@ -87,6 +98,8 @@
 		<core_v1:clear />
 
 		<div class="featuresFooterPusher"></div>
+
+		<agg_v1:results_mobile_display_mode_toggle />
 	</div>
 
 	<%-- DEFAULT RESULT ROW --%>
