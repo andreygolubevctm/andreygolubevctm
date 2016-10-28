@@ -19,7 +19,20 @@ Handling of the callback popup
 		initComplete = false,
 		$callbackTime,
 		$callbackName,
-		$callDetailsPanel;
+		$callDetailsPanel,
+		$contactDetailsName,
+		$callbackMobileHiddenInput,
+		$callbackMobileInput,
+		$callbackOtherNumHiddenInput,
+		$callbackOtherNumInput,
+		$contactDetailsNumberInput,
+		$contactDetailsNumberHiddenInput,
+		$applicationFirstname,
+		$applicationSurname,
+		$applicationOtherNumHiddenInput,
+		$applicationOtherNumInput,
+		$applicationMobileHiddenInput,
+		$applicationMobileInput;
 
 	var events = {
         callbackModal: {
@@ -108,6 +121,10 @@ Handling of the callback popup
 			callMeBack(settings);
         });
 
+		$(document).on('hide.bs.modal', '.health-callback', function(e){
+			updateJourneyFormNameNumber();
+		});
+
 		$(document).on('show.bs.modal', '.modal', function (e) {
 			if($(this).find('#health-callback')) {
 				$(this).addClass('health-callback');
@@ -115,7 +132,6 @@ Handling of the callback popup
 				initComplete = false;
 				meerkat.messaging.publish(events.callbackModal.CALLBACK_MODAL_OPEN);
 	            meerkat.modules.jqueryValidate.setupDefaultValidationOnForm($('#health-callback-form'));
-				//meerkat.modules.health.configureContactDetails();
 
 				if (meerkat.modules.deviceMediaState.get() == 'xs') {
 					$('button').each(function() {
@@ -136,8 +152,66 @@ Handling of the callback popup
 			$callbackTime = $('.callbackTime'); // call me back later select box
 			$callbackName = $('#health_callback_name'); // name field
 			$callDetailsPanel = $('.call-details'); // call details panel on confirmation page
+
+			$callbackMobileHiddenInput = $('#health_callback_mobileinput');
+			$callbackMobileInput = $('#health_callback_mobile');
+			$callbackOtherNumHiddenInput = $('#health_callback_otherNumber');
+			$callbackOtherNumInput = $('#health_callback_otherNumberinput');
+
+			// contact details page details
+			$contactDetailsName = $('#health_contactDetails_name');
+			$contactDetailsNumberInput = $('#health_contactDetails_flexiContactNumberinput');
+			$contactDetailsNumberHiddenInput = $('#health_contactDetails_flexiContactNumber');
+
+			// application details page fields
+			$applicationFirstname = $('#health_application_primary_firstname');
+			$applicationSurname = $('#health_application_primary_surname');
+			$applicationOtherNumHiddenInput = $('#health_application_other');
+			$applicationOtherNumInput = $('#health_application_otherinput');
+			$applicationMobileHiddenInput = $('#health_application_mobile');
+			$applicationMobileInput = $('#health_application_mobileinput');
+
+			updateCBModalFields();
 		});
     }
+
+	function updateCBModalFields() {
+		if ($.trim($contactDetailsName.val()).length > 0) {
+			$callbackName.val($contactDetailsName.val());
+		}
+
+		if ($.trim($contactDetailsNumberInput.val()).length > 0) {
+			$callbackMobileHiddenInput.val($contactDetailsNumberHiddenInput.val());
+			$callbackMobileInput.val($contactDetailsNumberInput.val());
+		}
+	}
+
+	function updateJourneyFormNameNumber() {
+		if ($.trim($callbackName.val()).length > 0) {
+			var name = $callbackName.val();
+			$contactDetailsName.val(name);
+
+			var splitName = name.split(" ");
+			$applicationFirstname.val(splitName[0]);
+			$applicationSurname.val( splitName.slice(1).join(" ") );
+		}
+
+		if ($.trim($callbackMobileInput.val()).length > 0) {
+			$contactDetailsNumberHiddenInput.val($callbackMobileHiddenInput.val());
+			$contactDetailsNumberInput.val($callbackMobileInput.val());
+
+			$applicationMobileHiddenInput.val($callbackMobileHiddenInput.val());
+			$applicationMobileInput.val($callbackMobileInput.val());
+		}
+
+		if ($.trim($callbackOtherNumInput.val()).length > 0) {
+			$contactDetailsNumberHiddenInput.val($callbackOtherNumHiddenInput.val());
+			$contactDetailsNumberInput.val($callbackOtherNumInput.val());
+
+			$applicationOtherNumHiddenInput.val($callbackOtherNumHiddenInput.val());
+			$applicationOtherNumInput.val($callbackOtherNumInput.val());
+		}
+	}
 
 	function setPickATimeLabel($target) {
 		selectedDateObj = getSelectedCallbackDate($target);
