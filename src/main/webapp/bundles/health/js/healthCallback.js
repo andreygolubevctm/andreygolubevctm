@@ -205,14 +205,9 @@ Handling of the callback popup
 			var name = $callbackName.val();
 
 			$('.thanks-name').html(name);
-			$success = $('#health-callback .alert-success');
-			$error = $('#health-callback .alert-danger');
-			$success.addClass('hidden');
-			$error.addClass('hidden');
 
-			var data = 'name=' + name;
-
-			var mobileNumber = $('#health_callback_mobileinput').val(),
+			var data = 'name=' + name,
+				mobileNumber = $('#health_callback_mobileinput').val(),
 				otherNumber = $('#health_callback_otherNumberinput').val();
 
 			if (mobileNumber) {
@@ -239,8 +234,8 @@ Handling of the callback popup
 					if (result.status == 200) {
 						htmlTemplate = _.template($('#thankyou-template').html());
 
-						var selectedDate = settings.scheduledTime ? getLabelFormattedDate(selectedDateObj) : "now 1",
-							selectedTime = settings.scheduledTime ? $callbackTime.children('option:selected').text() : "now";
+						var selectedDate = settings.scheduledTime ? getLabelFormattedDate(selectedDateObj) : "Today, " + getLabelFormattedDate(new Date()),
+							selectedTime = settings.scheduledTime ? $callbackTime.children('option:selected').text() : "within 30 mins";
 
 						obj = {
 							name: $callbackName.val(),
