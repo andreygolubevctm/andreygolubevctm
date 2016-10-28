@@ -10,18 +10,25 @@
 
 	<form_v2:fieldset legend="" id="${name}FieldSet">
 
-		<form_v2:row label="Compare by" id="${name}SortRow" className="initial">
-			<field_v2:array_radio xpath="${xpath}/sort" required="true"
-				className="" items="price=Price,features=Features" title="List results by price or by features" />
-		</form_v2:row>
-
-		<form_v2:row label="Repayments" id="${name}FreqRow">
-			<field_v2:array_radio xpath="${xpath}/freq" required="true"
-				items="monthly=Monthly,annual=Annual" title="" />
+		<form_v2:row label="Cover Type" id="${name}CoverType" className="initial">
+			<field_v2:array_radio xpath="${xpath}/coverType" style="vertical" required="true"
+				className="" items="comprehensive=Comprehensive,tpft=3rd Party Fire &amp; Theft,tppd=3rd Party Property Damage" title="" />
 		</form_v2:row>
 
 		<form_v2:row label="Excess" id="${name}ExcessRow">
-			<field_v2:slider useDefaultOutputField="true" type="price" value="{{= startingValue}}" range="400,2000" markers="4" step="100" legend="$400,$1000,$1500,$2000" xpath="${xpath}/excess" />
+			<div class="select">
+				<span class="input-group-addon"><i class="icon-sort"></i></span>
+				<field_v1:additional_excess
+						defaultVal="800"
+						increment="100"
+						minVal="400"
+						xpath="${xpath}/excess"
+						maxCount="17"
+						title=""
+						required=""
+						omitPleaseChoose="Y"
+						className="form-control" />
+			</div>
 		</form_v2:row>
 
 	</form_v2:fieldset>
