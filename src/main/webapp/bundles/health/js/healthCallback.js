@@ -90,7 +90,8 @@ Handling of the callback popup
 			var $this = $(this).find('input');
 			var date = $this.attr('data-date');
 			var options = getDailyHours($this.attr('data-dayname'));
-
+			console.log("hours", hours);
+console.log("options", options);
 			if(options.length > 0) {
 				$callbackTime.children('option').remove();
 				$(options).each(function() {
@@ -350,7 +351,7 @@ Handling of the callback popup
 				if(dayName == firstDay && count === 0) {
 					dayName = 'Today';
 				}
-		       	$('.callbackDay .btn:nth-child('+(count+1)+'n) span').text(dayName);
+
 				count++; // counting to 4
 			}
 
@@ -370,14 +371,21 @@ Handling of the callback popup
 		return open;
 	}
 
+	function getDailyHours_x(dayName) {
+		$.each(hours, function() {
+
+		});
+	}
+
 	function getDailyHours(dayName) {
 		var startTime, endTime, currentTime,
 		    currentHours = '0',
-		    startOffset = '00';
-		var now = new Date();
-		var options = [];
-		var isAmPm;
-		var timezoneOffset = 0 ; //(timezone/60) - 10;
+			currentMins,
+		    startOffset = '00',
+			now = new Date(),
+			options = [],
+			isAmPm,
+			timezoneOffset = 0 ; //(timezone/60) - 10;
 		// Current defaulting to Aus Eastern Standard until timezones can handled backend along with a rolling date range
 
 		
@@ -455,8 +463,7 @@ Handling of the callback popup
 
 	meerkat.modules.register("healthCallback", {
 		init: initHealthCallback,
-		events: events,
-		getDailyHours: getDailyHours
+		events: events
 	});
 
 })(jQuery);

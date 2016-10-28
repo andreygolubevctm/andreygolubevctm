@@ -72,9 +72,19 @@
 				    <button id="callBackLater" class="btn btn-secondary btn-lg btn-block">Call me later...</button>
 			    </div>
 				<div class="col-sm-12 outline">
+					<c:set var="sep" value="" />
+					<c:set var="dayInSeconds" value="86400000" />
+					<c:set var="btnItems">
+						Today=Today,<c:forEach begin="0" end="2" varStatus="loop">
+							<jsp:setProperty name="now" property="time" value="${now.time + dayInSeconds}"/>
+							<fmt:formatDate var="currentDay" pattern="E" value="${now}" />
+							${sep}${currentDay}=${currentDay}
+							<c:set var="sep" value="," />
+						</c:forEach>
+					</c:set>
 					<form_v3:row label=" " hideHelpIconCol="true">
 						<field_v2:array_radio xpath="${xpath}/day" required="true" className="callbackDay"
-							items="Today=,Tomorrow=,NextDay=,LastDay="
+							items="${btnItems}"
 							title="" wrapCopyInSpan="true" />
 					</form_v3:row>
 					<form_v3:row label="Pick a time for " hideHelpIconCol="true" id="pickATimeLabel">
