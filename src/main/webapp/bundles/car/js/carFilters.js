@@ -37,6 +37,8 @@
 		excess: false
 	};
 
+	var updateBtnShown = false;
+
 	//
 	// Refresh filters from form/page
 	//
@@ -115,6 +117,7 @@
 	function toggleUpdate(hide) {
 		$updateBtn.toggleClass('hidden', hide);
 		$cancelUpdateBtn.toggleClass('hidden', hide);
+		updateBtnShown = !hide;
 	}
 
 	function storeCurrentValues() {
@@ -222,8 +225,11 @@
 			event.preventDefault();
 			if ($(this).hasClass('disabled')) return;
 
+			$featuresMode.removeClass('active');
+			$priceMode.addClass('active');
+
 			meerkat.modules.carResults.switchToPriceMode(true);
-			updateFilters();
+			if (updateBtnShown) $cancelUpdateBtn.trigger('click');
 
 			meerkat.modules.session.poke();
 		});
@@ -232,8 +238,11 @@
 			event.preventDefault();
 			if ($(this).hasClass('disabled')) return;
 
+			$priceMode.removeClass('active');
+			$featuresMode.addClass('active');
+
 			meerkat.modules.carResults.switchToFeaturesMode(true);
-			updateFilters();
+			if (updateBtnShown) $cancelUpdateBtn.trigger('click');
 
 			meerkat.modules.session.poke();
 		});
@@ -248,8 +257,8 @@
 		});
 
 		$cancelUpdateBtn.on('click', function cancelUpdate() {
-			$filterExcess.find('li.active').removeClass("active");
 			if(!_.isEmpty(previousValues.excess)) {
+				$filterExcess.find('li.active').removeClass("active");
 				var $dropdown = $('.dropdown.filter-excess');
 
 				currentValues.excess = previousValues.excess;
