@@ -39,6 +39,7 @@
 			homeExcess:		false,
 			contentsExcess:	false
 	};
+
 	//
 	// Refresh filters from form/page
 	//
@@ -309,8 +310,10 @@
 			event.preventDefault();
 			if ($(this).hasClass('disabled')) return;
 
+			$featuresMode.removeClass('active');
+			$priceMode.addClass('active');
+
 			meerkat.modules.homeResults.switchToPriceMode(true);
-			updateFilters();
 
 			meerkat.modules.session.poke();
 		});
@@ -319,8 +322,10 @@
 			event.preventDefault();
 			if ($(this).hasClass('disabled')) return;
 
+			$priceMode.removeClass('active');
+			$featuresMode.addClass('active');
+
 			meerkat.modules.homeResults.switchToFeaturesMode(true);
-			updateFilters();
 
 			meerkat.modules.session.poke();
 		});
