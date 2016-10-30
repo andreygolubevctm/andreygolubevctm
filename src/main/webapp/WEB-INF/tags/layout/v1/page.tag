@@ -181,20 +181,18 @@ ${newPage.init(pageContext.request, pageSettings)}
 									</ul>
 								</c:when>
 								<c:otherwise>
-									<button type="button" class="navbar-toggle hamburger collapsed disabled" data-toggle="navMenuOpen" data-target=".navbar-collapse-menu">
-										<span class="sr-only">Toggle Navigation</span>
-										<span class="icon icon-reorder"></span>
-									</button>
+									<%-- Show only if it's not health OR it's health and the call back functionality is disabled --%>
+									<c:if test="${ pageSettings.getVerticalCode() ne 'health' or (pageSettings.hasSetting('callbackPopupEnabled') and pageSettings.getSetting('callbackPopupEnabled') eq 'N' and pageSettings.getVerticalCode() eq 'health')}">
+										<button type="button" class="navbar-toggle hamburger collapsed disabled" data-toggle="navMenuOpen" data-target=".navbar-collapse-menu">
+											<span class="sr-only">Toggle Navigation</span>
+											<span class="icon icon-reorder"></span>
+										</button>
+									</c:if>
 								</c:otherwise>
 							</c:choose>
 
-							<c:if test="${not pageSettings.getVerticalCode() eq 'health'}">
-							<button type="button" class="navbar-toggle hamburger collapsed disabled" data-toggle="navMenuOpen" data-target=".navbar-collapse-menu">
-								<span class="sr-only">Toggle Navigation</span>
-								<span class="icon icon-reorder"></span>
-							</button>
-							</c:if>
-							<c:if test="${pageSettings.getVerticalCode() eq 'health'}">
+
+							<c:if test="${pageSettings.getVerticalCode() eq 'health' and pageSettings.getSetting('callbackPopupEnabled') eq 'Y'}">
 								<a class="navbar-toggle wide phone collapsed" data-toggle="dialog"
 									data-content="#view_all_hours_cb"
 									data-dialog-hash-id="view_all_hours_cb"

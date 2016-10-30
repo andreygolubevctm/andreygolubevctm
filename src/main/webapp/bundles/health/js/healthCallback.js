@@ -366,7 +366,7 @@ Handling of the callback popup
 				}
 			}
 		});
-		return false
+		return false;
 	}
 
 	function getDailyHours_x(dayName) {

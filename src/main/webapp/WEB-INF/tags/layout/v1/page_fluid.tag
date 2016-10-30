@@ -167,21 +167,10 @@ ${newPage.init(pageContext.request, pageSettings)}
 
                             <jsp:invoke fragment="header_button_left"/>
 
-                            <c:if test="${not pageSettings.getVerticalCode() eq 'health'}">
                             <button type="button" class="navbar-toggle hamburger collapsed disabled" data-toggle="navMenuOpen" data-target=".navbar-collapse-menu">
                                 <span class="sr-only">Toggle Navigation</span>
                                 <span class="icon icon-reorder"></span>
                             </button>
-                            </c:if>
-                            <c:if test="${pageSettings.getVerticalCode() eq 'health'}">
-                                <a class="navbar-toggle wide phone collapsed" data-toggle="dialog"
-                                    data-content="#view_all_hours_cb"
-                                    data-dialog-hash-id="view_all_hours_cb"
-                                    data-title="Request a Call" data-cache="true">
-                                    <span class="icon icon-phone"></span>
-                                    <span>Talk to our experts</span>
-                                </a>
-                            </c:if>
 
                             <c:set var="exitUrl" value=""/>
                             <c:if test="${pageSettings.hasSetting('exitUrl')}">

@@ -10,19 +10,23 @@
 		hasDisplayedTimedCallBack = false;
 			
 	function init() {
-		isMobile = meerkat.modules.performanceProfiling.isMobile();
-		var navigationId = meerkat.modules.address.getWindowHash().split("/")[0];
+		if (meerkat.site.callbackPopup.enabled === true) {
 
-		setActive(meerkat.site.callbackPopup.enabled === 'true');
+			isMobile = meerkat.modules.performanceProfiling.isMobile();
+			var navigationId = meerkat.modules.address.getWindowHash().split("/")[0];
 
-        if (meerkat.site.callbackPopup.timeoutStepEnabled) {
-			steps = meerkat.site.callbackPopup.steps.split(',');
-	       	if(_.indexOf(steps, navigationId) >= 0) {
-           		setActive(true);
-           	}
-        }
+			setActive(true);
 
-		subscription();
+			if (meerkat.site.callbackPopup.timeoutStepEnabled) {
+				steps = meerkat.site.callbackPopup.steps.split(',');
+				if(_.indexOf(steps, navigationId) >= 0) {
+					setActive(true);
+				}
+			}
+			startTimer();
+			subscription();
+
+		}
 	}
 
     function subscription() {
@@ -58,9 +62,7 @@
 	                }
 	            });
 	        });
-	    } else {
-			startTimer();
-		}
+	    }
 
         meerkat.messaging.subscribe(meerkat.modules.events.callbackModal.CALLBACK_MODAL_OPEN, function dontShowPopupOnModalOpenSubscription() {
 			setActive(false);
