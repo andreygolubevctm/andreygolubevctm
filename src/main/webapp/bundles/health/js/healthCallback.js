@@ -89,7 +89,7 @@ Handling of the callback popup
 		$(document).on('click', '.callbackDay .btn', function() {
 			var $this = $(this).find('input');
 			var date = $this.attr('data-date');
-			var options = getDailyHours(date, $this.attr('data-dayname'));
+			var options = getDailyHours($this.attr('data-dayname'));
 
 			if(options.length > 0) {
 				$callbackTime.children('option').remove();
@@ -372,7 +372,7 @@ Handling of the callback popup
 		return open;
 	}
 
-	function getDailyHours(selectedDate, dayName) {
+	function getDailyHours(dayName) {
 		var startTime, endTime, currentTime,
 		    startOffset = '00',
 			now = new Date(),
