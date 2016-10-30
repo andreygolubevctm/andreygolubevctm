@@ -25,15 +25,7 @@
 	function applyEventListeners() {
 
 		$editDetailsDropDown.on('show.bs.dropdown', function() {
-			var $e = $('#edit-details-template');
-			if ($e.length > 0) {
-				templateCallback = _.template($e.html());
-			}
-			var data = {
-				youngDriver : $('input[name=quote_drivers_young_exists]:checked').val()
-			};
-
-			show(templateCallback(data));
+			show();
 		}).on('click', '.closeDetailsDropdown', function(e) {
 			hide();
 			e.stopPropagation();
@@ -61,11 +53,20 @@
 		});
 	}
 
-	function show(htmlContent) {
+	function show() {
+		var $e = $('#edit-details-template');
+
+		if ($e.length > 0) {
+			templateCallback = _.template($e.html());
+		}
+		var data = {
+			youngDriver : $('input[name=quote_drivers_young_exists]:checked').val()
+		};
+
 		if (meerkat.modules.deviceMediaState.get() == 'xs') {
-			modalId = showModal(htmlContent);
+			modalId = showModal(templateCallback(data));
 		} else {
-			showDropDown(htmlContent);
+			showDropDown(templateCallback(data));
 		}
 	}
 
@@ -189,6 +190,7 @@
 		driverOptin : driverOptin,
 		formatNcd : formatNcd,
 		formatDamage : formatDamage,
+		show: show,
 		hide: hide
 	});
 
