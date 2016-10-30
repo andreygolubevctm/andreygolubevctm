@@ -329,50 +329,46 @@ Handling of the callback popup
 	}
 
 	function setDaySelection() {
-        var i = 0,
-        	count = 0,
-        	firstDay = getShortDayOfWeekName(day.getDay());
+		var i = 0,
+			count = 0,
+			dayName,
+			firstDay = getShortDayOfWeekName(day.getDay());
 
-        while(count < 4) {
+		while(count < 4) {
 
-			var dayName = getShortDayOfWeekName((day.getDay() + i) % 7);
+			dayName = getShortDayOfWeekName((day.getDay() + i) % 7);
 
 			if(checkOpen(dayName)) {
 				var dayDate = new Date();
-				dayDate.setDate(dayDate.getDate() + i); 
+				dayDate.setDate(dayDate.getDate() + i);
 
 				var dd = dayDate.getDate();
 				var mm = dayDate.getMonth() + 1;
 				var yyyy = dayDate.getFullYear();
 
-		       	$('.callbackDay .btn:nth-child('+(count+1)+'n) input').attr('data-dayname',dayName).attr('data-date', yyyy + '-'+ mm + '-'+ dd);
+				$('.callbackDay .btn:nth-child('+(count+1)+'n) input').attr('data-dayname',dayName).attr('data-date', yyyy + '-'+ mm + '-'+ dd);
 
 				if(dayName == firstDay && count === 0) {
 					dayName = 'Today';
 				}
-		       	$('.callbackDay .btn:nth-child('+(count+1)+'n) span').text(dayName);
+				$('.callbackDay .btn:nth-child('+(count+1)+'n) span').text(dayName);
 				count++; // counting to 4
 			}
 
 			i++;
-        }
+		}
 	}
 
 	function checkOpen(dayName) {
+		var open = false;
 		$.each(hours, function() {
 			if(this.description.substring(0, 3) === dayName) {
 				if(this.startTime) {
-					return true;
+					open = true;
 				}
 			}
 		});
-		return false;
-	}
-
-	function getDailyHours_x(dayName) {
-		$.each(hours, function() {
-
-		});
+		return open;
 	}
 
 	function getDailyHours(dayName) {
