@@ -88,19 +88,29 @@ Handling of the callback popup
 
 		$(document).on('click', '.callbackDay .btn', function() {
 			var $this = $(this).find('input');
-			var date = $this.attr('data-date');
-			var options = getDailyHours($this.attr('data-dayname'));
+			var date = $this.data('date');
+			var options = getDailyHours($this.data('dayname'));
 
-			if(options.length > 0) {
-				$callbackTime.children('option').remove();
+			$callbackTime.children('option').remove();
+
+			if(options.length > 2) {
 				$(options).each(function(index, val) {
 					var option = document.createElement('option');
 					option.value = date + 'T' + convertTo24Hour(val) + ':00' + offset;
 					option.text = val;
 					$callbackTime.append(option);
 				});
-			}
+			} else {
+				/** TODO: Original architecture is too inflexible and needs to be re-written from the ground up */
+				// get tomorrow
+				var $tomorrow = $(this).next().find('input');
+				options = getDailyHours($tomorrow.data('dayname'));
 
+				var option = document.createElement('option');
+				option.value = $tomorrow.data('date') + 'T' + convertTo24Hour(options[0]) + ':00' + offset;
+				option.text = 'Call me at next available time';
+				$callbackTime.append(option);
+			}
 			setPickATimeLabel($this);
 		});
 
@@ -144,36 +154,39 @@ Handling of the callback popup
 				}
 			}
 
-			// init fields
-			$pickATimeLabel = $('#pickATimeLabel').find('label');
-			origLabel = $.trim($pickATimeLabel.text());
-			$pickATimeLabel.text(origLabel + " today:");
-
-			$callbackTime = $('.callbackTime'); // call me back later select box
-			$callbackName = $('#health_callback_name'); // name field
-			$callDetailsPanel = $('.call-details'); // call details panel on confirmation page
-
-			$callbackMobileHiddenInput = $('#health_callback_mobileinput');
-			$callbackMobileInput = $('#health_callback_mobile');
-			$callbackOtherNumHiddenInput = $('#health_callback_otherNumber');
-			$callbackOtherNumInput = $('#health_callback_otherNumberinput');
-
-			// contact details page details
-			$contactDetailsName = $('#health_contactDetails_name');
-			$contactDetailsNumberInput = $('#health_contactDetails_flexiContactNumberinput');
-			$contactDetailsNumberHiddenInput = $('#health_contactDetails_flexiContactNumber');
-
-			// application details page fields
-			$applicationFirstname = $('#health_application_primary_firstname');
-			$applicationSurname = $('#health_application_primary_surname');
-			$applicationOtherNumHiddenInput = $('#health_application_other');
-			$applicationOtherNumInput = $('#health_application_otherinput');
-			$applicationMobileHiddenInput = $('#health_application_mobile');
-			$applicationMobileInput = $('#health_application_mobileinput');
-
+			_initFields();
 			updateCBModalFields();
 		});
     }
+
+	function _initFields() {
+		// init fields
+		$pickATimeLabel = $('#pickATimeLabel').find('label');
+		origLabel = $.trim($pickATimeLabel.text());
+		$pickATimeLabel.text(origLabel + " today:");
+
+		$callbackTime = $('.callbackTime'); // call me back later select box
+		$callbackName = $('#health_callback_name'); // name field
+		$callDetailsPanel = $('.call-details'); // call details panel on confirmation page
+
+		$callbackMobileHiddenInput = $('#health_callback_mobileinput');
+		$callbackMobileInput = $('#health_callback_mobile');
+		$callbackOtherNumHiddenInput = $('#health_callback_otherNumber');
+		$callbackOtherNumInput = $('#health_callback_otherNumberinput');
+
+		// contact details page details
+		$contactDetailsName = $('#health_contactDetails_name');
+		$contactDetailsNumberInput = $('#health_contactDetails_flexiContactNumberinput');
+		$contactDetailsNumberHiddenInput = $('#health_contactDetails_flexiContactNumber');
+
+		// application details page fields
+		$applicationFirstname = $('#health_application_primary_firstname');
+		$applicationSurname = $('#health_application_primary_surname');
+		$applicationOtherNumHiddenInput = $('#health_application_other');
+		$applicationOtherNumInput = $('#health_application_otherinput');
+		$applicationMobileHiddenInput = $('#health_application_mobile');
+		$applicationMobileInput = $('#health_application_mobileinput');
+	}
 
 	function updateCBModalFields() {
 		if ($.trim($contactDetailsName.val()).length > 0) {
@@ -343,11 +356,7 @@ Handling of the callback popup
 				var dayDate = new Date();
 				dayDate.setDate(dayDate.getDate() + i);
 
-				var dd = dayDate.getDate();
-				var mm = dayDate.getMonth() + 1;
-				var yyyy = dayDate.getFullYear();
-
-				$('.callbackDay .btn:nth-child('+(count+1)+'n) input').attr('data-dayname',dayName).attr('data-date', yyyy + '-'+ mm + '-'+ dd);
+				$('.callbackDay .btn:nth-child('+(count+1)+'n) input').attr('data-dayname',dayName).attr('data-date', meerkat.modules.dateUtils.dateValueServerFormat(dayDate));
 
 				if(dayName == firstDay && count === 0) {
 					dayName = 'Today';
@@ -407,8 +416,6 @@ Handling of the callback popup
 						options.push(formatTime(currentTime));
 						currentTime.setMinutes(currentTime.getMinutes() + 30); // advance 30 minutes
 					}
-				} else {
-					options.push("Closed");
 				}
 			}
 		});
