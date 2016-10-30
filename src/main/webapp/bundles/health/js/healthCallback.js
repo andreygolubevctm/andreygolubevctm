@@ -89,14 +89,14 @@ Handling of the callback popup
 		$(document).on('click', '.callbackDay .btn', function() {
 			var $this = $(this).find('input');
 			var date = $this.attr('data-date');
-			var options = getDailyHours($this.attr('data-dayname'));
+			var options = getDailyHours(date, $this.attr('data-dayname'));
 
 			if(options.length > 0) {
 				$callbackTime.children('option').remove();
-				$(options).each(function() {
+				$(options).each(function(index, val) {
 					var option = document.createElement('option');
-					option.value = date + 'T' + convertTo24Hour(this) + ':00' + offset;
-					option.text = this;
+					option.value = date + 'T' + convertTo24Hour(val) + ':00' + offset;
+					option.text = val;
 					$callbackTime.append(option);
 				});
 			}
@@ -372,22 +372,18 @@ Handling of the callback popup
 		return open;
 	}
 
-	function getDailyHours(dayName) {
+	function getDailyHours(selectedDate, dayName) {
 		var startTime, endTime, currentTime,
-		    currentHours = '0',
-			currentMins,
 		    startOffset = '00',
 			now = new Date(),
 			options = [],
-			isAmPm,
 			timezoneOffset = 0 ; //(timezone/60) - 10;
 		// Current defaulting to Aus Eastern Standard until timezones can handled backend along with a rolling date range
 
 		
 		$.each(hours, function() {
 			if(this.description.substring(0, 3) === dayName) {
-				startTime = convertTo24Hour(this.startTime),
-				endTime = convertTo24Hour(this.endTime).substring(0, 2);
+				startTime = convertTo24Hour(this.startTime);
 
 				if(startTime === '00:00') {
 					return options;	
@@ -400,31 +396,19 @@ Handling of the callback popup
 
 					startTime = ('00' + (now.getHours() + 1)).slice(-2) + ':' + startOffset;
 				}
-				currentTime = startTime;
 
-				while(currentHours != endTime) {
-					isAmPm = ' am';
-					currentHours = parseInt(currentTime.substring(0, 2));
-					currentMins = currentTime.substring(3, 5);
+				currentTime = Date.parse(meerkat.modules.dateUtils.dateValueServerFormat(now) + " " + startTime);
+				endTime = Date.parse(meerkat.modules.dateUtils.dateValueServerFormat(now) + " " + this.endTime);
 
-					if(currentHours >= 12) {
-						isAmPm = ' pm';
+				// check if call centre is closed
+				if (currentTime  < endTime) {
+					currentTime = new Date(currentTime); // convert to a date object
+					while (Date.parse(currentTime) < endTime) {
+						options.push(formatTime(currentTime));
+						currentTime.setMinutes(currentTime.getMinutes() + 30); // advance 30 minutes
 					}
-
-					if(currentHours >= 13) {
-						currentTime = ('00' + (currentHours - 12)).slice(-2) + ':' + ('00'+currentMins).slice(-2);
-					}
-
-					options.push(currentTime + isAmPm);
-
-					if (currentMins === '00') {
-						currentMins = '30';
-					} else {
-						currentMins = '00';
-						currentHours += 1;
-					}
-
-					currentTime = ('00'+currentHours).slice(-2) + ':' + ('00'+currentMins).slice(-2);
+				} else {
+					options.push("Closed");
 				}
 			}
 		});
@@ -432,17 +416,23 @@ Handling of the callback popup
 		return options;
 	}
 
-	function convertTo24Hour(time) {
+	function formatTime(dateObj) {
+		var hours = dateObj.getHours(),
+			min = dateObj.getMinutes() < 10 ? "0"+dateObj.getMinutes() : dateObj.getMinutes(),
+			ampm = dateObj.getHours() >= 12 ? 'pm' : 'am';
 
+			hours = hours % 12;
+			hours = hours ? hours : 12; // the hour '0' should be '12'
+
+		return hours+":"+min+" "+ampm;
+	}
+
+	function convertTo24Hour(time) {
 		if(time !== null) {
-		    var hour = time.substr(0, 2);
-		    if(time.indexOf('am') != -1 && hour == 12) {
-		        time = time.replace('12', '00');
-		    }
-		    if(time.indexOf('pm')  != -1 && hour < 12) {
-		        time = time.replace(hour, parseInt(hour) + 12);
-		    }
-		    return time.replace(/( am| pm)/, '');
+			var newTime = new Date(Date.parse(meerkat.modules.dateUtils.dateValueServerFormat(new Date()) + " " + time.replace(/\s(am|pm)/g, ''))),
+				min = newTime.getMinutes() < 10 ? "0" + newTime.getMinutes() : newTime.getMinutes();
+
+			return newTime.getHours()+":"+min;
 		}
 		return '00:00';
 	}
