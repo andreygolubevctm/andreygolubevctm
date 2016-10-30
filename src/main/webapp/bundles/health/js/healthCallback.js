@@ -331,8 +331,9 @@ Handling of the callback popup
 	function setDaySelection() {
 		var i = 0,
 			count = 0,
-			dayName,
-			firstDay = getShortDayOfWeekName(day.getDay());
+			dayName;
+
+		firstDay = getShortDayOfWeekName(day.getDay());
 
 		while(count < 4) {
 
