@@ -409,7 +409,7 @@ Handling of the callback popup
 				currentTime = Date.parse(meerkat.modules.dateUtils.dateValueServerFormat(now) + " " + startTime);
 				endTime = Date.parse(meerkat.modules.dateUtils.dateValueServerFormat(now) + " " + this.endTime);
 
-				// check if call centre is closed
+				// check if call centre is closed past the end time
 				if (currentTime  < endTime) {
 					currentTime = new Date(currentTime); // convert to a date object
 					while (Date.parse(currentTime) < endTime) {
