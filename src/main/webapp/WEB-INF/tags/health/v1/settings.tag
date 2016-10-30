@@ -235,7 +235,7 @@
 		hospitalLimitedHelp				: "${hospitalLimitedHelp}"
 	},
 	callbackPopup: {
-		enabled: '<c:out value="${pageSettings.getSetting('callbackPopupEnabled') eq 'Y'}"/>',
+		enabled: <c:out value="${pageSettings.getSetting('callbackPopupEnabled') eq 'Y'}"/>,
 		timeout: <c:out value="${pageSettings.getSetting('callbackPopupTimeout')}"/>,
 		timeoutMouseEnabled: <c:out value="${pageSettings.getSetting('callbackPopupTimeoutMouseEnabled') eq 'Y'}"/>,
 		timeoutKeyboardEnabled: <c:out value="${pageSettings.getSetting('callbackPopupTimeoutKeyEnabled') eq 'Y'}"/>,
