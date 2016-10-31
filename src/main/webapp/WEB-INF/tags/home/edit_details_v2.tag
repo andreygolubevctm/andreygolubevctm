@@ -270,15 +270,6 @@
 			</div>
 		</div>
 		<!-- /SessionCam:Hide -->
-		<div class="panel accordion-panel col-xs-12 col-sm-6 col-lg-4">
-			<div class="accordion-heading visible-xs">
-				<a href="#history" class="btn btn-sm btn-edit btn-accordion-control btn-hollow-inverse needsclick">Edit</a>
-				<span class="icon icon-arrow-down" data-toggle="collapse" data-parent="#edit-details-panel-group" href="#step5"></span>
-				<p class="accordion-title">
-					<a class="needsclick" data-toggle="collapse" data-parent="#edit-details-panel-group" href="#step5"> 5. Previous Cover </a>
-				</p>
-			</div>
-		</div>
 		<div class="clearfix"></div>
 	</div>
 
