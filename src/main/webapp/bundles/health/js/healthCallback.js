@@ -385,17 +385,16 @@ Handling of the callback popup
 		var startTime, endTime, currentTime,
 		    startOffset = '00',
 			now = new Date(),
-			options = [],
-			timezoneOffset = 0 ; //(timezone/60) - 10;
+			options = []; //(timezone/60) - 10;
 		// Current defaulting to Aus Eastern Standard until timezones can handled backend along with a rolling date range
 
-		
 		$.each(hours, function() {
+
 			if(this.description.substring(0, 3) === dayName) {
 				startTime = convertTo24Hour(this.startTime);
 
 				if(startTime === '00:00') {
-					return options;	
+					return options;
 				}
 
 				if(dayName == firstDay) {
@@ -406,8 +405,9 @@ Handling of the callback popup
 					startTime = ('00' + (now.getHours() + 1)).slice(-2) + ':' + startOffset;
 				}
 
-				currentTime = Date.parse(meerkat.modules.dateUtils.dateValueServerFormat(now) + " " + startTime);
-				endTime = Date.parse(meerkat.modules.dateUtils.dateValueServerFormat(now) + " " + this.endTime);
+				// NOTE: format must use the YYYY/MM/DD pattern otherwise it breaks mobile. Desktop is too lenient
+				currentTime = Date.parse(meerkat.modules.dateUtils.format(now, "YYYY/MM/DD") + " " + startTime);
+				endTime = Date.parse(meerkat.modules.dateUtils.format(now, "YYYY/MM/DD") + " " + this.endTime);
 
 				// check if call centre is closed past the end time
 				if (currentTime  < endTime) {
@@ -436,7 +436,7 @@ Handling of the callback popup
 
 	function convertTo24Hour(time) {
 		if(time !== null) {
-			var newTime = new Date(Date.parse(meerkat.modules.dateUtils.dateValueServerFormat(new Date()) + " " + time.replace(/\s(am|pm)/g, ''))),
+			var newTime = new Date(Date.parse(meerkat.modules.dateUtils.format(new Date(), "YYYY/MM/DD") + " " + time.replace(/\s(am|pm)/g, ''))),
 				min = newTime.getMinutes() < 10 ? "0" + newTime.getMinutes() : newTime.getMinutes();
 
 			return newTime.getHours()+":"+min;
