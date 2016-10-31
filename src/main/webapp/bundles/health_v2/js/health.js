@@ -1411,6 +1411,9 @@
 
 			adjustLayout();
 
+			if(meerkat.site.isCallCentreUser === false) {
+				meerkat.modules.saveQuote.initSaveQuote();
+			}
 		});
 
 
