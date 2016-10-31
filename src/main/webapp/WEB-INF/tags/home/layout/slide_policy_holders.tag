@@ -54,7 +54,7 @@
 				<%-- Commencement Date --%>
 				<c:if test="${journeySplitTestActive eq true}">
 					<form_v2:fieldset legend="Your preferred date to start the insurance">
-						<c:set var="fieldXpath" value="${baseXpath}/startDate" />
+						<c:set var="fieldXpath" value="${xpath}/startDate" />
 						<home:commencementDate xpath="${fieldXpath}" />
 					</form_v2:fieldset>
 				</c:if>

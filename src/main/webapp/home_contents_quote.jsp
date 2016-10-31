@@ -68,7 +68,14 @@
 				<span>Edit Details</span> <b class="caret"></b></a>
 				<div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
 					<div class="dropdown-container">
-						<home:edit_details />
+						<c:choose>
+							<c:when test="${journeySplitTestActive eq true}">
+								<home:edit_details_v2 />
+							</c:when>
+							<c:otherwise>
+								<home:edit_details />
+							</c:otherwise>
+						</c:choose>
 					</div>
 				</div>
 			</li>
