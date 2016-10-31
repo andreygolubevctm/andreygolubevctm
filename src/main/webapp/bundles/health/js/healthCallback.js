@@ -164,8 +164,8 @@ Handling of the callback popup
 		$callbackName = $('#health_callback_name'); // name field
 		$callDetailsPanel = $('.call-details'); // call details panel on confirmation page
 
-		$callbackMobileHiddenInput = $('#health_callback_mobileinput');
-		$callbackMobileInput = $('#health_callback_mobile');
+		$callbackMobileInput = $('#health_callback_mobileinput');
+		$callbackMobileHiddenInput = $('#health_callback_mobile');
 		$callbackOtherNumHiddenInput = $('#health_callback_otherNumber');
 		$callbackOtherNumInput = $('#health_callback_otherNumberinput');
 		$cbContactNumber = $('.cbContactNumber');
@@ -183,9 +183,18 @@ Handling of the callback popup
 			$callbackName.val($contactDetailsName.val());
 		}
 
-		if ($.trim($contactDetailsNumberInput.val()).length > 0) {
-			$callbackMobileHiddenInput.val($contactDetailsNumberHiddenInput.val());
-			$callbackMobileInput.val($contactDetailsNumberInput.val());
+		var contact_number = $.trim($contactDetailsNumberInput.val());
+		if (contact_number.length > 0) {
+
+			if (contact_number.match(/^(04|614|6104)/g)) { // Mobile
+				$callbackMobileHiddenInput.val($contactDetailsNumberHiddenInput.val());
+				$callbackMobileInput.val($contactDetailsNumberInput.val()).valid();
+			} else {
+				// switch to the landline fields
+				$cbContactNumber.not('.hidden').find('a.switch').trigger('click');
+				$callbackOtherNumHiddenInput.val($contactDetailsNumberHiddenInput.val());
+				$callbackOtherNumInput.val($contactDetailsNumberInput.val()).valid();
+			}
 		}
 	}
 
@@ -268,8 +277,8 @@ Handling of the callback popup
 			$('.thanks-name').html(name);
 
 			var data = 'name=' + name,
-				mobileNumber = $('#health_callback_mobileinput').val(),
-				otherNumber = $('#health_callback_otherNumberinput').val();
+				mobileNumber = $callbackMobileInput.val(),
+				otherNumber = $callbackOtherNumInput.val();
 
 			if (mobileNumber) {
 				data += '&mobileNumber=' + mobileNumber;
