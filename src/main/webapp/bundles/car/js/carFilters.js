@@ -316,9 +316,7 @@
 		$('#xsFilterBarCoverType input:checked').prop('checked', false);
 		$('#xsFilterBarCoverType #xsFilterBar_coverType_comprehensive').prop('checked', true).change();
 
-		try{
-			meerkat.modules.sliders.init();
-		}catch(e){}
+        $('#xsFilterBar_excess').val(currentValues.excess);
 	}
 
 	function saveModalChanges() {
@@ -328,7 +326,7 @@
 
 		var revised = {
 				display: $('#xsFilterBarSortRow input:checked').val(),
-				freq : $('#xsFilterBarFreqRow input:checked').val(),
+				freq : $('.payment-frequency-buttons input:checked').val(),
 				excess : $('#xsFilterBarExcessRow select[name=xsFilterBar_excess]').val()
 		};
 
