@@ -2,43 +2,46 @@
 
 	var meerkat = window.meerkat,
 		meerkatEvents = meerkat.modules.events,
-		log = meerkat.logging.info;
+		log = meerkat.logging.info,
 
-	var events = {
+		events = {
 			homeFilters: {
 				CHANGED: 'HOME_FILTERS_CHANGED'
 			}
 		},
-		moduleEvents = events.homeFilters;
+		moduleEvents = events.homeFilters,
 
-	var $component,
-		$labels;
-	var $priceMode;
-	var $featuresMode;
-	var $filterFrequency,
+		$component,
+		$allDropDownToggles,
+		$excessDropDownToggles,
+		$freqDropDownToggles,
+		$labels,
+		$priceMode,
+		$priceModeLink,
+		$featuresMode,
+		$featuresModeLink,
+		$filterFrequency,
 		$filterHomeExcess,
 		$filterContentsExcess,
 		$filterHomeExcessLabel,
-		$filterContentsExcessLabel;
+		$filterContentsExcessLabel,
+		$updateBtn,
+		$cancelUpdateBtn,
+		$slideFeaturesFiltersLink,
 
-	var $updateBtn,
-		$cancelUpdateBtn;
-
-	var deviceStateXS = false;
-	var modalID = false;
-	var pageScrollingLockYScroll = false;
-
-	var currentValues = {
+		deviceStateXS = false,
+		modalID = false,
+		pageScrollingLockYScroll = false,
+		currentValues = {
 			display:		false,
 			frequency:		false,
 			homeExcess:		false,
 			contentsExcess:	false
-	};
-
-	var previousValues = {
+		},
+		previousValues = {
 			homeExcess:		false,
 			contentsExcess:	false
-	};
+		};
 
 	//
 	// Refresh filters from form/page
@@ -72,11 +75,17 @@
 
 		// Refresh excess
 		if (coverType == 'H' || coverType == 'HC'){
-			var homeExcess = $('#home_homeExcess').val() ? $('#home_homeExcess').val() : $('#home_baseHomeExcess').val();
+			var homeHomeExcess = $('#home_homeExcess').val(),
+				homeBaseHomeExcess = $('#home_baseHomeExcess').val(),
+				homeExcess = !_.isEmpty(homeHomeExcess) ? homeHomeExcess : homeBaseHomeExcess;
+
 			$filterHomeExcess.find('.dropdown-toggle span').text( $filterHomeExcess.find('.dropdown-menu a[data-value="' + homeExcess + '"]').text() );
 		}
 		if (coverType == 'C' || coverType == 'HC'){
-			var contentsExcess = $('#home_contentsExcess').val() ? $('#home_contentsExcesss').val() : $('#home_baseContentsExcess').val();
+			var homeContentsExcess = $('#home_contentsExcess').val(),
+				homeBaseContentsExcess = $('#home_baseContentsExcess').val(),
+				contentsExcess = !_.isEmpty(homeContentsExcess) ? homeContentsExcess : homeBaseContentsExcess;
+
 			$filterContentsExcess.find('.dropdown-toggle span').text( $filterContentsExcess.find('.dropdown-menu a[data-value="' + contentsExcess + '"]').text() );
 		}
 	}
@@ -261,25 +270,32 @@
 	}
 
 	function disable() {
-		$component.find('li.dropdown, .dropdown-toggle').addClass('disabled');
-		$priceMode.addClass('disabled').find('a').addClass('disabled');
-		$featuresMode.addClass('disabled').find('a').addClass('disabled');
-		$('.slide-feature-filters').find('a').addClass('disabled').addClass('inactive');
-		$('.excess-update').find('a').addClass('disabled').addClass('inactive');
+		$allDropDownToggles
+			.add([
+				$priceMode[0],
+				$priceModeLink[0],
+				$featuresMode[0],
+				$featuresModeLink[0],
+				$slideFeaturesFiltersLink[0]
+			]).addClass('disabled');
+
+		$slideFeaturesFiltersLink.addClass('inactive');
 	}
 
 	function enable() {
 		if (meerkat.modules.compare.isCompareOpen() === false) {
-			$component.find('li.dropdown.filter-excess, .filter-excess .dropdown-toggle, ' +
-				'li.dropdown.filter-cover-type, .filter-cover-type .dropdown-toggle').removeClass('disabled');
-			$priceMode.removeClass('disabled');
-			$priceMode.find('a').removeClass('disabled');
-			$featuresMode.removeClass('disabled');
-			$featuresMode.find('a').removeClass('disabled');
-			$('.slide-feature-filters').find('a').removeClass('inactive').removeClass('disabled');
-			$('.excess-update').find('a').removeClass('inactive').removeClass('disabled');
+			$excessDropDownToggles
+				.add([
+					$priceMode[0],
+					$priceModeLink[0],
+					$featuresMode[0],
+					$featuresModeLink[0],
+					$slideFeaturesFiltersLink[0]
+				]).removeClass('disabled');
+
+			$slideFeaturesFiltersLink.removeClass('inactive');
 		}
-		$component.find('li.dropdown.filter-frequency, .filter-frequency .dropdown-toggle').removeClass('disabled');
+		$freqDropDownToggles.removeClass('disabled');
 	}
 
 	function eventSubscriptions() {
@@ -365,6 +381,13 @@
 				});
 			}
 			toggleUpdate(true);
+		});
+
+		$slideFeaturesFiltersLink.on('click', function(e) {
+			e.preventDefault();
+			if(!$(this).hasClass('disabled')) {
+				onRequestModal();
+			}
 		});
 	}
 
@@ -492,11 +515,17 @@
 
 			// Collect options from the page
 			$component = $('#navbar-filter');
-			$labels = $('#navbar-filter-labels');
+
 			if (!$component.length) return;
 
+			$allDropDownToggles = $component.find('li.dropdown, .dropdown-toggle');
+			$excessDropDownToggles = $component.find('li.dropdown.filter-excess, .filter-excess .dropdown-toggle');
+			$freqDropDownToggles = $component.find('li.dropdown.filter-frequency, .filter-frequency .dropdown-toggle');
+			$labels = $('#navbar-filter-labels');
 			$priceMode = $component.find('.filter-pricemode');
+			$priceModeLink = $priceMode.find('a');
 			$featuresMode = $component.find('.filter-featuresmode');
+			$featuresModeLink = $featuresMode.find('a');
 			$filterFrequency = $component.find('.filter-frequency');
 			$filterHomeExcess = $component.find('.filter-excess.homeExcess');
 			$filterContentsExcess = $component.find('.filter-excess.contentsExcess');
@@ -504,6 +533,7 @@
 			$filterContentsExcessLabel = $component.find('.filter-label.contentsExcessLabel');
 			$updateBtn = $component.find('.updateFilters');
 			$cancelUpdateBtn = $('.filter-cancel-label a');
+			$slideFeaturesFiltersLink = $('#navbar-main .slide-feature-filters a');
 
 			setDefaultExcess();
 
@@ -524,13 +554,6 @@
 			$filterMenu = $filterFrequency.find('.dropdown-menu');
 			$('#filter_paymentType option').each(function() {
 				$filterMenu.append('<li><a href="javascript:;" data-value="' + this.value + '">' + this.text + '</a></li>');
-			});
-
-			$('#navbar-main .slide-feature-filters a').on('click', function(e) {
-				e.preventDefault();
-				if(!$(this).hasClass('disabled')) {
-					onRequestModal();
-				}
 			});
 
 			meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, _.bind(setCurrentDeviceState, this, {isXS:true}));
