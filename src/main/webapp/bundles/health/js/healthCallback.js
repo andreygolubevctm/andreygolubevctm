@@ -25,14 +25,9 @@ Handling of the callback popup
 		$callbackMobileInput,
 		$callbackOtherNumHiddenInput,
 		$callbackOtherNumInput,
+		$cbContactNumber,
 		$contactDetailsNumberInput,
-		$contactDetailsNumberHiddenInput,
-		$applicationFirstname,
-		$applicationSurname,
-		$applicationOtherNumHiddenInput,
-		$applicationOtherNumInput,
-		$applicationMobileHiddenInput,
-		$applicationMobileInput;
+		$contactDetailsNumberHiddenInput;
 
 	var events = {
         callbackModal: {
@@ -173,19 +168,14 @@ Handling of the callback popup
 		$callbackMobileInput = $('#health_callback_mobile');
 		$callbackOtherNumHiddenInput = $('#health_callback_otherNumber');
 		$callbackOtherNumInput = $('#health_callback_otherNumberinput');
+		$cbContactNumber = $('.cbContactNumber');
 
 		// contact details page details
 		$contactDetailsName = $('#health_contactDetails_name');
 		$contactDetailsNumberInput = $('#health_contactDetails_flexiContactNumberinput');
 		$contactDetailsNumberHiddenInput = $('#health_contactDetails_flexiContactNumber');
 
-		// application details page fields
-		$applicationFirstname = $('#health_application_primary_firstname');
-		$applicationSurname = $('#health_application_primary_surname');
-		$applicationOtherNumHiddenInput = $('#health_application_other');
-		$applicationOtherNumInput = $('#health_application_otherinput');
-		$applicationMobileHiddenInput = $('#health_application_mobile');
-		$applicationMobileInput = $('#health_application_mobileinput');
+
 	}
 
 	function updateCBModalFields() {
@@ -204,25 +194,9 @@ Handling of the callback popup
 			var name = $callbackName.val();
 			$contactDetailsName.val(name);
 
-			var splitName = name.split(" ");
-			$applicationFirstname.val(splitName[0]);
-			$applicationSurname.val( splitName.slice(1).join(" ") );
-		}
-
-		if ($.trim($callbackMobileInput.val()).length > 0) {
-			$contactDetailsNumberHiddenInput.val($callbackMobileHiddenInput.val());
-			$contactDetailsNumberInput.val($callbackMobileInput.val());
-
-			$applicationMobileHiddenInput.val($callbackMobileHiddenInput.val());
-			$applicationMobileInput.val($callbackMobileInput.val());
-		}
-
-		if ($.trim($callbackOtherNumInput.val()).length > 0) {
-			$contactDetailsNumberHiddenInput.val($callbackOtherNumHiddenInput.val());
-			$contactDetailsNumberInput.val($callbackOtherNumInput.val());
-
-			$applicationOtherNumHiddenInput.val($callbackOtherNumHiddenInput.val());
-			$applicationOtherNumInput.val($callbackOtherNumInput.val());
+			var contact_number = $cbContactNumber.not('.hidden').find('input[type=text]').val();
+			$contactDetailsNumberInput.val(contact_number);
+			$contactDetailsNumberHiddenInput.val(contact_number);
 		}
 	}
 
@@ -326,7 +300,7 @@ Handling of the callback popup
 
 						obj = {
 							name: $callbackName.val(),
-							contact_number: $('.cbContactNumber').not('.hidden').find('input[type=text]').val(),
+							contact_number: $cbContactNumber.not('.hidden').find('input[type=text]').val(),
 							selectedDate: selectedDate,
 							selectedTime: selectedTime
 						};
