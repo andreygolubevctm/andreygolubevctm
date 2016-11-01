@@ -31,6 +31,7 @@
 <%@ taglib tagdir="/WEB-INF/tags/agg/v1"				prefix="agg_v1" %>
 <%@ taglib tagdir="/WEB-INF/tags/agg/v2"				prefix="agg_v2" %>
 <%@ taglib tagdir="/WEB-INF/tags/agg/v2/results"		prefix="agg_v2_results" %>
+<%@ taglib tagdir="/WEB-INF/tags/agg/v3"				prefix="agg_v3" %>
 <%@ taglib tagdir="/WEB-INF/tags/health/v1"				prefix="health_v1" %>
 <%@ taglib tagdir="/WEB-INF/tags/health/v1/content"		prefix="health_v1_content" %>
 <%@ taglib tagdir="/WEB-INF/tags/health/v1/layout"		prefix="health_v1_layout" %>

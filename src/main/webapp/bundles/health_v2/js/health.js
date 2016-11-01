@@ -42,11 +42,15 @@
 				}
 			}
 
-			meerkat.modules.journeyEngine.configure({
-				startStepId: startStepId,
-				steps: _.toArray(steps)
+			// This is needed as when retrieving quotes the page
+			// hasn't finished rendering values by this point and
+			// validation fails
+			_.defer(function(){
+				meerkat.modules.journeyEngine.configure({
+					startStepId: startStepId,
+					steps: _.toArray(steps)
+				});
 			});
-
 
 			// Call initial supertag call
 			var transaction_id = meerkat.modules.transactionId.get();
@@ -1407,6 +1411,9 @@
 
 			adjustLayout();
 
+			if(meerkat.site.isCallCentreUser === false) {
+				meerkat.modules.saveQuote.initSaveQuote();
+			}
 		});
 
 
