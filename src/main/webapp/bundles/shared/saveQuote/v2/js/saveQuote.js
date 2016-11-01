@@ -34,7 +34,7 @@
 			optinRow : null
 	};
 
-	function init(){
+	function initSaveQuote(){
 		addEventListeners();
 		jQuery(document).ready(function($) {
 			$template = _.template($('#save-quote-component-template').html());
@@ -384,7 +384,7 @@
 	}
 
 	meerkat.modules.register("saveQuote", {
-		init: init,
+		initSaveQuote: initSaveQuote,
 		events: events
 	});
 

@@ -42,14 +42,9 @@
 				}
 			}
 
-			// This is needed as when retrieving quotes the page
-			// hasn't finished rendering values by this point and
-			// validation fails
-			_.defer(function(){
-				meerkat.modules.journeyEngine.configure({
-					startStepId: startStepId,
-					steps: _.toArray(steps)
-				});
+			meerkat.modules.journeyEngine.configure({
+				startStepId: startStepId,
+				steps: _.toArray(steps)
 			});
 
 			// Call initial supertag call
@@ -1411,6 +1406,9 @@
 
 			adjustLayout();
 
+			if(meerkat.site.isCallCentreUser === false) {
+				meerkat.modules.saveQuote.initSaveQuote();
+			}
 		});
 
 
