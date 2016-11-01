@@ -106,13 +106,8 @@
             <li class="slide-feature-back">
                 <a href="javascript:;" data-slide-control="previous" class="btn-back" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />><span class="icon icon-angle-left"></span> <span>Go Back</span></a>
             </li>
-            <li class="hidden-sm hidden-md hidden-lg dropdown dropdown-interactive slide-feature-emailquote" id="email-quote-dropdown">
-                <a class="activator needsclick btn-email dropdown-toggle" data-toggle="dropdown" href="javascript:;"><span class="icon icon-envelope"></span> <span><c:choose><c:when test="${not empty authenticatedData.login.user.uid}">Save Quote</c:when><c:otherwise>Email Quote</c:otherwise></c:choose></span> &nbsp;&nbsp;<span class="icon icon-angle-down"></span></a>
-                <div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
-                    <div class="dropdown-container">
-                        <agg_v2:save_quote includeCallMeback="true" />
-                    </div>
-                </div>
+            <li class="slide-feature-savequote">
+                <a href="javascript:;"  data-opensavequote="true" class="" <field_v1:analytics_attr analVal="save button" quoteChar="\"" />><span class="icon icon-save-quote"><span class="path1"></span><span class="path2"></span><span class="path3"></span><span class="path4"></span></span><span>Save Results</span></a>
             </li>
             <li class="dropdown dropdown-interactive slide-feature-filters">
                 <a class="activator btn-dropdown dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);"><span class="icon icon-filter"></span> <span>Filter Your Results</span> &nbsp;&nbsp;<span class="icon icon-angle-down"></span></a>
@@ -123,6 +118,7 @@
                     <div class="sidebar-widget sidebar-widget-attached filters-update-container" style="display: none">
 
                     </div>
+                </div>
             </li>
             <li class="dropdown dropdown-interactive slide-feature-benefits">
                 <a class="activator btn-dropdown dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);"><span class="icon icon-filter"></span> <span>Customise Cover</span> &nbsp;&nbsp;<span class="icon icon-angle-down"></span></a>
@@ -230,6 +226,7 @@
                 <field_v1:hidden xpath="staticOverride" />
                 <field_v1:hidden xpath="environmentValidatorOverride" />
                 <input type="hidden" name="transcheck" id="transcheck" value="1" />
+                <agg_v3:save_quote />
             </jsp:body>
         </layout_v1:journey_engine_page>
 

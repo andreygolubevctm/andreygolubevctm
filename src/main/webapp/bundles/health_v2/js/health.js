@@ -47,7 +47,6 @@
 				steps: _.toArray(steps)
 			});
 
-
 			// Call initial supertag call
 			var transaction_id = meerkat.modules.transactionId.get();
 
@@ -1407,6 +1406,9 @@
 
 			adjustLayout();
 
+			if(meerkat.site.isCallCentreUser === false) {
+				meerkat.modules.saveQuote.initSaveQuote();
+			}
 		});
 
 
