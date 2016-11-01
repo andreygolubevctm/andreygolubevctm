@@ -22,12 +22,13 @@ public class TravelQuote {
     private String methodType;
     private Map<String, String> quoteData;
     private boolean encodeQuoteUrl;
+    private Offer offer;
     private Product product;
     private List<Benefit> benefits;
     private Boolean isDomestic;
 
     public TravelQuote(){
-
+        offer = new Offer();
     }
 
     public String getService() {
@@ -108,6 +109,14 @@ public class TravelQuote {
 
     public void setEncodeQuoteUrl(boolean encodeQuoteUrl) {
         this.encodeQuoteUrl = encodeQuoteUrl;
+    }
+
+    public Offer getOffer() {
+        return offer;
+    }
+
+    public void setOffer(Offer offer) {
+        this.offer = offer;
     }
 
     public Product getProduct() {
