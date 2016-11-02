@@ -29,7 +29,7 @@ Handling of the callback popup
 		$contactDetailsNumberInput,
 		$contactDetailsNumberHiddenInput,
 		_isClosed = false,
-		aestOffset = 600;
+		aedtOffset = 600;
 
 	var events = {
         callbackModal: {
@@ -95,7 +95,7 @@ Handling of the callback popup
 				$(options).each(function(index, val) {
 					var option = document.createElement('option');
 					option.value = date + 'T' + convertTo24Hour(val) + ':00' + offset;
-					option.text = val + " AEST";
+					option.text = val + " AEDT";
 					$callbackTime.append(option);
 				});
 			} else {
@@ -397,8 +397,8 @@ Handling of the callback popup
 			now = new Date(),
 			options = []; //(timezone/60) - 10;
 
-		// set to brisbane AEST
-		now.setMinutes(now.getMinutes()+now.getTimezoneOffset()+aestOffset);
+		// set to brisbane AEDT
+		now.setMinutes(now.getMinutes()+now.getTimezoneOffset()+aedtOffset);
 
 		$.each(hours, function() {
 
