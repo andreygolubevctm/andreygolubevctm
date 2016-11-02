@@ -23,6 +23,8 @@
     "shared/resultsRankings",
     "shared/dropdownInteractive",
     "shared/leadFeed",
-    "shared/serverSideValidationOutput"
+    "shared/serverSideValidationOutput",
+    "shared/paymentFrequencyButtons",
+    "shared/resultsMobileDisplayModeToggle"
   ]
 }

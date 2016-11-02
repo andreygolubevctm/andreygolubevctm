@@ -262,6 +262,7 @@
 				meerkat.modules.homeMoreInfo.initMoreInfo();
 				meerkat.modules.homeEditDetails.initEditDetails();
 				meerkat.modules.homeFilters.initHomeFilters();
+				meerkat.modules.resultsMobileDisplayModeToggle.initToggle();
 			},
 			onBeforeEnter: function onBeforeEnterResults(event) {
 				meerkat.modules.journeyProgressBar.hide();
@@ -433,6 +434,7 @@
 				meerkat.modules.homeMoreInfo.initMoreInfo();
 				meerkat.modules.homeEditDetails.initEditDetails();
 				meerkat.modules.homeFilters.initHomeFilters();
+				meerkat.modules.resultsMobileDisplayModeToggle.initToggle();
 			},
 			onBeforeEnter: function onBeforeEnterResults(event) {
 				meerkat.modules.journeyProgressBar.hide();
