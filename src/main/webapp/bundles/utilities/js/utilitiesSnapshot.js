@@ -142,7 +142,7 @@
 
         data.whatToCompare = typeof $selectedEnergyType.val() != 'undefined' ? jQuery.trim($energyComparisonLabel.find('label.active').text()) : '';
         data.showWhatToCompare = typeof $selectedEnergyType.val() != 'undefined';
-        data.livingIn = $suburb.val();
+        data.livingIn = $.trim($suburb.val()).replace(/(<([^>]+)>)/ig, '');
         data.showLivingIn = $.trim($suburb.val()) !== '';
         data.electricityUsage = getElectricityUsage();
         data.showElectricityUsage = (($selectedEnergyType.val() === 'E' || $selectedEnergyType.val() === 'EG') && $.trim(data.electricityUsage) !== '');

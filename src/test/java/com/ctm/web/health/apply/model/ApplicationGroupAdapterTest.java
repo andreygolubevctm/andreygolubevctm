@@ -62,7 +62,6 @@ public class ApplicationGroupAdapterTest {
         final com.ctm.web.health.model.form.Situation situation = mock(com.ctm.web.health.model.form.Situation.class);
         final Situation result = ApplicationGroupAdapter.createSituation(Optional.ofNullable(situation));
         assertNotNull(result);
-        verify(situation, times(1)).getHealthSitu();
         verify(situation, times(1)).getHealthCvr();
     }
 

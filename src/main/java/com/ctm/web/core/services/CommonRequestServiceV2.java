@@ -6,8 +6,11 @@ import com.ctm.web.core.exceptions.RouterException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
 import com.ctm.web.core.model.ProviderFilter;
 import com.ctm.web.core.model.QuoteServiceProperties;
+import com.ctm.web.core.model.formData.RequestWithQuote;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.ServiceConfiguration;
+import com.ctm.web.core.validation.FormValidation;
+import com.ctm.web.core.validation.SchemaValidationError;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -118,6 +121,23 @@ public class CommonRequestServiceV2 {
                     kv("message", exception.getResponseBodyAsString()));
         } else {
             LOGGER.error("Backend Exception thrown", t);
+        }
+    }
+
+    public <QUOTE> void validateRequest(RequestWithQuote<QUOTE> data, String verticalCode) {
+        // Validate request
+        if (data == null) {
+            LOGGER.error("Invalid request: data null");
+            throw new RouterException("Data quote is missing");
+        }
+        if(data.getQuote() == null){
+            LOGGER.error("Invalid request: data.quote null");
+            throw new RouterException("Data quote is missing");
+        }
+        List<SchemaValidationError> errors = FormValidation.validate(data.getQuote(), verticalCode);
+        if(errors.size() > 0){
+            LOGGER.error("Invalid request: {}",errors);
+            throw new RouterException("Invalid request"); // TODO pass validation errors to client
         }
     }
 

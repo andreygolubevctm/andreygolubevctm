@@ -20,6 +20,7 @@
         feedback: null
     };
 
+    var showCustomErrors = false;
 
     function init() {
         $(document).ready(function () {
@@ -118,7 +119,9 @@
 
     function renderError(copy) {
         $elements.container.removeClass('hidden');
-        $elements.feedback.empty().html(copy);
+        if(showCustomErrors === true) {
+            $elements.feedback.empty().html(copy);
+        }
     }
 
     meerkat.modules.register("carRegoLookup", {

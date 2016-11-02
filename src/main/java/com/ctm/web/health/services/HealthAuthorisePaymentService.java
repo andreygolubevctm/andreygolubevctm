@@ -7,11 +7,13 @@ import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
 import com.ctm.web.core.model.QuoteServiceProperties;
+import com.ctm.web.core.model.session.AuthenticatedData;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.providers.model.GenericOutgoingRequest;
 import com.ctm.web.core.providers.model.Request;
 import com.ctm.web.core.services.CommonRequestServiceV2;
 import com.ctm.web.core.services.ServiceConfigurationServiceBean;
+import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.health.model.form.HealthAuthorisePaymentRequest;
 import com.ctm.web.health.model.results.HealthPaymentAuthoriseResult;
@@ -26,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -47,12 +50,15 @@ public class HealthAuthorisePaymentService extends CommonRequestServiceV2 {
     private Client<GenericOutgoingRequest<AuthorisePaymentRequest>, AuthorisePaymentResponseV2> clientV2;
 
     @Autowired
+    private SessionDataServiceBean sessionDataServiceBean;
+
+    @Autowired
     public HealthAuthorisePaymentService(ProviderFilterDao providerFilterDao,
                                          ServiceConfigurationServiceBean serviceConfigurationServiceBean) {
         super(providerFilterDao, serviceConfigurationServiceBean);
     }
 
-    public HealthPaymentAuthoriseResult authorise(Brand brand, HealthAuthorisePaymentRequest data) throws DaoException, IOException, ServiceConfigurationException {
+    public HealthPaymentAuthoriseResult authorise(HttpServletRequest httpServletRequest, Brand brand, HealthAuthorisePaymentRequest data) throws DaoException, IOException, ServiceConfigurationException {
 
         final QuoteServiceProperties properties = getQuoteServiceProperties("healthApplyService", brand, HEALTH.getCode(), Optional.ofNullable(data.getEnvironmentOverride()));
 
@@ -61,11 +67,18 @@ public class HealthAuthorisePaymentService extends CommonRequestServiceV2 {
         if (properties.getServiceUrl().matches(".*://.*/health-apply-v2.*") || properties.getServiceUrl().startsWith("http://localhost")) {
             LOGGER.info("Calling health ipp authorise v2");
 
+            String operator = null;
+            AuthenticatedData authenticatedSessionData = sessionDataServiceBean.getAuthenticatedSessionData(httpServletRequest);
+            if (authenticatedSessionData != null) {
+                operator = authenticatedSessionData.getUid();
+            }
+
             final GenericOutgoingRequest<AuthorisePaymentRequest> request = GenericOutgoingRequest.<AuthorisePaymentRequest>newBuilder()
                     .transactionId(data.getTransactionId())
                     .brandCode(brand.getCode())
                     .requestAt(data.getRequestAt())
                     .payload(payload)
+                    .providerFilter(data.getProviderId())
                     .build();
 
             // Getting RootId from the transactionId
@@ -75,6 +88,7 @@ public class HealthAuthorisePaymentService extends CommonRequestServiceV2 {
             final AuthorisePaymentResponseV2 response = clientV2.post(RestSettings.<GenericOutgoingRequest<AuthorisePaymentRequest>>builder()
                     .request(request)
                     .header("rootId", Long.toString(rootId))
+                    .header("operator", operator)
                     .jsonHeaders()
                     .url(properties.getServiceUrl() + "/payment/authorise")
                     .timeout(properties.getTimeout())

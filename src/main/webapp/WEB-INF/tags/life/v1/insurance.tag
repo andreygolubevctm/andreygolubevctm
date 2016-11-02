@@ -59,9 +59,7 @@
 
 		<field_v1:hidden xpath="${xpath}${primary_xpath}/type" defaultValue="S" constantValue="S" />
 
-		<c:if test="${lif406SplitTest eq true}">
-			<life_v1:contact_optin vertical="life" />
-		</c:if>
+		<life_v1:contact_optin vertical="life" />
 
 	</form_v1:fieldset>
 </div>

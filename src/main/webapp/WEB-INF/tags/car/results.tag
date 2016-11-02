@@ -48,7 +48,10 @@
 
 <agg_v2_results:results vertical="${pageSettings.getVerticalCode()}">
 
-	<car:more_info />
+	<c:choose>
+		<c:when test="${not empty moreInfoSplitTest and moreInfoSplitTest eq true}"><car:more_info_v2 /></c:when>
+		<c:otherwise><car:more_info /></c:otherwise>
+	</c:choose>
 
 	<%-- RESULTS TABLE --%>
 	<div class="bridgingContainer"></div>
@@ -69,6 +72,10 @@
 				<%-- Feature headers --%>
 			<features:resultsItemTemplate_labels />
 			<div class="featuresList featuresTemplateComponent"></div>
+		</div>
+
+		<div class="esl-message hidden hidden-sm hidden-md hidden-lg">
+			<agg_v1:esl_message />
 		</div>
 
 		<div class="resultsOverflow">

@@ -32,6 +32,9 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="header">
+		<div class="esl-message hidden hidden-xs">
+			<agg_v1:esl_message />
+		</div>
 	</jsp:attribute>
 
 

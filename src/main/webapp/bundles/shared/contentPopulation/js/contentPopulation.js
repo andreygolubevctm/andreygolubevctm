@@ -165,6 +165,10 @@
 				}
 			}
 
+			// Santise the output
+			var regex = /(<([^>]+)>)/ig;
+			output = output.replace(regex, "");
+
 			// currently we only want to replace the elements html, potential to replace value, select options...? extend this with further data options.
 			$el.html(output);
 

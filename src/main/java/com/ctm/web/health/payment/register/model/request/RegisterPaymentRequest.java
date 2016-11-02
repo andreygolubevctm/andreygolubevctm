@@ -1,7 +1,5 @@
 package com.ctm.web.health.payment.register.model.request;
 
-import java.util.List;
-
 public class RegisterPaymentRequest {
 
     private String sst;
@@ -17,8 +15,6 @@ public class RegisterPaymentRequest {
     private String responseCode;
 
     private String responseResult;
-
-    private List<String> providerFilter;
 
     public String getSst() {
         return sst;
@@ -76,11 +72,4 @@ public class RegisterPaymentRequest {
         this.responseResult = responseResult;
     }
 
-    public List<String> getProviderFilter() {
-        return providerFilter;
-    }
-
-    public void setProviderFilter(List<String> providerFilter) {
-        this.providerFilter = providerFilter;
-    }
 }

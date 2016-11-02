@@ -937,6 +937,7 @@
 
     function hideNavigationLink() {
         $('.floated-next-arrow').addClass('hidden');
+        $('.floated-previous-arrow').addClass('hidden');
     }
 
     meerkat.modules.register('healthResults', {

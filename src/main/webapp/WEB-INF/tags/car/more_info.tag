@@ -90,6 +90,11 @@
 		<div class="modal-closebar">
 			<a href="javascript:;" class="btn btn-close-dialog btn-close-more-info"><span class="icon icon-cross"></span></a>
 		</div>
+
+		<div class="esl-message hidden hidden-sm hidden-md hidden-lg">
+			<agg_v1:esl_message />
+		</div>
+
 		<div class="row">
 			<div class="col-xs-12 col-md-8 paragraphedContent">
 
