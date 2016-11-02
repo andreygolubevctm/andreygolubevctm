@@ -453,7 +453,7 @@
 	 * Called within meerkat.modules.moreInfo.hideTemplate
 	 */
 	function onAfterHideTemplate() {
-		$('.resultsContainer, #navbar-filter, #navbar-compare, #results-filter-labels').show();
+		$('.resultsContainer, #navbar-filter, #navbar-compare, #navbar-filter-labels').show();
 		$(window).scrollTop(scrollPosition);
 	}
 
