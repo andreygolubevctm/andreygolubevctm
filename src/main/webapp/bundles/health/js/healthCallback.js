@@ -92,7 +92,7 @@ Handling of the callback popup
 				$(options).each(function(index, val) {
 					var option = document.createElement('option');
 					option.value = date + 'T' + convertTo24Hour(val) + ':00' + offset;
-					option.text = val;
+					option.text = val + " AEST";
 					$callbackTime.append(option);
 				});
 			} else {
@@ -419,10 +419,11 @@ Handling of the callback popup
 
 	function convertTo24Hour(time) {
 		if(time !== null) {
-			var newTime = new Date(Date.parse(meerkat.modules.dateUtils.format(new Date(), "YYYY/MM/DD") + " " + time.replace(/\s(am|pm)/g, ''))),
-				min = newTime.getMinutes() < 10 ? "0" + newTime.getMinutes() : newTime.getMinutes();
+			var newTime = new Date(Date.parse(meerkat.modules.dateUtils.format(new Date(), "YYYY/MM/DD") + " " + time, '')),
+				min = newTime.getMinutes() < 10 ? "0" + newTime.getMinutes() : newTime.getMinutes(),
+				hours = newTime.getHours() < 10 ? "0" + newTime.getHours() : newTime.getHours();
 
-			return newTime.getHours()+":"+min;
+			return hours+":"+min;
 		}
 		return '00:00';
 	}
