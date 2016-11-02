@@ -256,6 +256,7 @@ Handling of the callback popup
 				}
 			},
 			onSuccess: function(result) {
+				hours = [];
 				$.each(result.openingHours, function() {
 					hours.push(this);
 				});
@@ -371,9 +372,8 @@ Handling of the callback popup
 			now = new Date(),
 			options = []; //(timezone/60) - 10;
 
-			// set to brisbane AEST
-			now.setMinutes(now.getMinutes()+now.getTimezoneOffset()+aestOffset);
-		// Current defaulting to Aus Eastern Standard until timezones can handled backend along with a rolling date range
+		// set to brisbane AEST
+		now.setMinutes(now.getMinutes()+now.getTimezoneOffset()+aestOffset);
 
 		$.each(hours, function() {
 
