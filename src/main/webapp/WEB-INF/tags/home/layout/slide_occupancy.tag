@@ -15,14 +15,15 @@
 
 			<layout_v1:slide_content>
 
-<%-- 				<ui:bubble variant="chatty"> --%>
-<!-- 					<h4>Your Home, Your Contents</h4> -->
-<!-- 					<p>Tell us about your home and/or contents to compare quotes from our participating providers.</p> -->
-<%-- 				</ui:bubble> --%>
-
 				<home:occupancy xpath="${xpath}/occupancy" baseXpath="${xpath}" />
 
-				<home:business_activity xpath="${xpath}/businessActivity" />
+				<c:if test="${journeySplitTestActive eq false}">
+					<home:business_activity xpath="${xpath}/businessActivity" />
+				</c:if>
+
+				<c:if test="${journeySplitTestActive eq true}">
+					<home:cover_history xpath="${xpath}/disclosures"  />
+				</c:if>
 
 			</layout_v1:slide_content>
 

@@ -422,7 +422,7 @@
 	function onBeforeShowBridgingPage() {
 		setScrollPosition();
 		if (meerkat.modules.deviceMediaState.get() != 'xs') {
-			$('.resultsContainer, #navbar-compare, #navbar-filter').hide();
+			$('.resultsContainer, #navbar-compare, #navbar-filter, #navbar-filter-labels').hide();
 		}
 	}
 
@@ -453,7 +453,7 @@
 	 * Called within meerkat.modules.moreInfo.hideTemplate
 	 */
 	function onAfterHideTemplate() {
-		$('.resultsContainer, #navbar-filter, #navbar-compare').show();
+		$('.resultsContainer, #navbar-filter, #navbar-compare, #navbar-filter-labels').show();
 		$(window).scrollTop(scrollPosition);
 	}
 

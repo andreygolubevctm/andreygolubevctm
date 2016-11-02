@@ -599,8 +599,7 @@
 
     function updateCoverLevel() {
         $hospitalCoverToggles.removeClass('active').filter('[data-category="' + currentCover + '"]').addClass('active');
-        $('#health_filterBar_coverLevel').find('option').removeAttr('selected');
-        $('#health_filterBar_coverLevel_' + currentCover).attr('selected','selected');
+        $('#health_filterBar_coverLevel').val(currentCover); // select the new cover level
         $benefitsCoverType.val(currentCover);
     }
 
