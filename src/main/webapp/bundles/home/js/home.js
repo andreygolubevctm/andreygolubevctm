@@ -270,15 +270,11 @@
 			},
 			onAfterEnter: function onAfterEnterHistory(event) {
 				if(meerkat.modules.splitTest.isActive(2) === true) {
-					if (event.isForward) {
-						_.defer(function(){
-							meerkat.modules.journeyEngine.gotoPath("results");
-						});
-					} else {
-						_.defer(function() {
-							meerkat.modules.journeyEngine.gotoPath("policyHolder");
-						});
-					}
+					var path = event.isForward ? "results" : "policyHolder";
+
+					_.defer(function() {
+						meerkat.modules.journeyEngine.gotoPath(path);
+					});
 				}
 			}
 		};
