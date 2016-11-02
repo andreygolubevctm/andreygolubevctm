@@ -27,7 +27,8 @@ Handling of the callback popup
 		$callbackOtherNumInput,
 		$cbContactNumber,
 		$contactDetailsNumberInput,
-		$contactDetailsNumberHiddenInput;
+		$contactDetailsNumberHiddenInput,
+		aestOffset = 600;
 
 	var events = {
         callbackModal: {
@@ -369,6 +370,9 @@ Handling of the callback popup
 		    startOffset = '00',
 			now = new Date(),
 			options = []; //(timezone/60) - 10;
+
+			// set to brisbane AEST
+			now.setMinutes(now.getMinutes()+now.getTimezoneOffset()+aestOffset);
 		// Current defaulting to Aus Eastern Standard until timezones can handled backend along with a rolling date range
 
 		$.each(hours, function() {
