@@ -28,6 +28,7 @@ Handling of the callback popup
 		$cbContactNumber,
 		$contactDetailsNumberInput,
 		$contactDetailsNumberHiddenInput,
+		_isClosed = false,
 		aestOffset = 600;
 
 	var events = {
@@ -90,6 +91,7 @@ Handling of the callback popup
 			$callbackTime.children('option').remove();
 
 			if(options.length > 2) {
+				_isClosed = false;
 				$(options).each(function(index, val) {
 					var option = document.createElement('option');
 					option.value = date + 'T' + convertTo24Hour(val) + ':00' + offset;
@@ -106,6 +108,8 @@ Handling of the callback popup
 				option.value = $tomorrow.data('date') + 'T' + convertTo24Hour(options[0]) + ':00' + offset;
 				option.text = 'Call me at next available time';
 				$callbackTime.append(option);
+
+				_isClosed = true;
 			}
 			setPickATimeLabel($this);
 		});
@@ -113,16 +117,28 @@ Handling of the callback popup
 
         $(document).on('click', '#callBackNow', function(e) {
         	e.preventDefault();
-			var settings = { url : "spring/rest/health/callMeNow.json" };
+
+			var settings = { url : "spring/rest/health/callMeNow.json"},
+				$this = $(this);
+
+			$this.addClass('inactive').addClass('disabled');
+			meerkat.modules.loadingAnimation.showInside($this, true);
+
+
 			callMeBack(settings);
         });
 
         $(document).on('click', '#callBackLater', function(e) {
         	e.preventDefault();
+
 			var settings = {
-				url : "spring/rest/health/callMeBack.json",
-				scheduledTime : $('#health_callback_time').val()
-			};
+					url : "spring/rest/health/callMeBack.json",
+					scheduledTime : $('#health_callback_time').val()
+				},
+				$this = $(this);
+
+			$this.addClass('inactive').addClass('disabled');
+			meerkat.modules.loadingAnimation.showInside($this, true);
 
 			callMeBack(settings);
         });
@@ -302,12 +318,21 @@ Handling of the callback popup
 				onComplete: function (result) {
 					$('.main').addClass('hidden');
 					var obj = {},
-						htmlTemplate;
+						htmlTemplate,
+						today = new Date();
 					if (result.status == 200) {
 						htmlTemplate = _.template($('#thankyou-template').html());
 
-						var selectedDate = settings.scheduledTime ? getLabelFormattedDate(selectedDateObj) : "Today, " + getLabelFormattedDate(new Date()),
+						var selectedDate = settings.scheduledTime ? getLabelFormattedDate(selectedDateObj) : "Today, " + getLabelFormattedDate(today),
 							selectedTime = settings.scheduledTime ? $callbackTime.children('option:selected').text() : "within 30 mins";
+
+
+						if (_isClosed) {
+							var tomorrow = new Date();
+							tomorrow.setDate(today.getDate()+1);
+							selectedDate = "Tomorrow, " + getLabelFormattedDate(tomorrow);
+							selectedTime = "within 30 mins of opening";
+						}
 
 						obj = {
 							name: $callbackName.val(),
