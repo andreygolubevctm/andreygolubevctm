@@ -71,7 +71,10 @@
 		<c:if test="${moreinfo_splittest_default eq false}">more-info-content-variant</c:if>
 	</c:set>
 	<a data-slide-control="prev" href="javascript:;" class="hidden-xs btn btn-tertiary btn-close-more-info" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />><span class="icon icon-arrow-left"></span> Back to all results</a>
-	<form_v3:save_results_button />
+
+	<c:if test="${empty callCentre}">
+		<form_v3:save_results_button />
+	</c:if>
 
 	<div data-product-type="{{= info.ProductType }}" class="displayNone more-info-content col-xs-12 ${variantClassName}">
 

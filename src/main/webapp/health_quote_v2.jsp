@@ -123,6 +123,7 @@
                     <div class="sidebar-widget sidebar-widget-attached filters-update-container" style="display: none">
 
                     </div>
+                </div>
             </li>
             <li class="dropdown dropdown-interactive slide-feature-benefits">
                 <a class="activator btn-dropdown dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);"><span class="icon icon-filter"></span> <span>Customise Cover</span> &nbsp;&nbsp;<span class="icon icon-angle-down"></span></a>
