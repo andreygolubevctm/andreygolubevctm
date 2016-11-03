@@ -25,11 +25,12 @@ var healthFunds_QTU = {
     $medicareFirstName: $('#health_payment_medicare_firstName'),
     $medicareSurname: $('#health_payment_medicare_surname'),
     $paymentTypeContainer: $('div.health-payment_details-type').siblings('div.fieldrow_legend'),
+    $eligibility: null,
     set: function() {
         <%-- Custom questions: Eligibility --%>
-        if ($('#qtu_eligibility').length > 0) {
+        if (healthFunds_QTU.$eligibility !== null) {
             <%-- HTML was already injected so unhide it --%>
-            $('#qtu_eligibility').show();
+            healthFunds_QTU.$eligibility.show();
         }
         else {
             <c:set var="html">
@@ -47,13 +48,14 @@ var healthFunds_QTU = {
 
             $('#health_application').prepend('<c:out value="${html}" escapeXml="false" />');
 
+            healthFunds_QTU.$eligibility = $('#qtu_eligibility');
+            healthFunds_QTU.$union = $('#health_application_qtu_union');
             healthFunds_QTU.$unionId = $('#unionId');
             healthFunds_QTU.$unionId.hide();
 
             $('#health_application_qtu_eligibility').on('change',function() {
                 if ($(this).val() === 'CURR') {
-                    var $dropDown = $('#health_application_qtu_union');
-                    if ($dropDown.find('option').length === 1) populateDropdownOnKey('healthQTUQuestion_subCURR', $dropDown);
+                    if (healthFunds_QTU.$union.find('option').length === 1) populateDropdownOnKey('healthQTUQuestion_subCURR', healthFunds_QTU.$union);
                     healthFunds_QTU.$unionId.slideDown(200);
                 } else {
                     healthFunds_QTU.$unionId.slideUp(200);
@@ -84,7 +86,7 @@ var healthFunds_QTU = {
                             <c:set var="unionxpath" value="${fieldXpath}/union"/>
                             <c:set var="unionval"><c:out value="${data[unionxpath]}" escapeXml="true"/></c:set>
                             <c:if test="${fn:length(unionval) > 0}">
-                            $("#health_application_qtu_union").val('<c:out value="${unionval}" escapeXml="true"/>');
+                            healthFunds_QTU.$union.val('<c:out value="${unionval}" escapeXml="true"/>');
                             </c:if>
                             return true;
                         }
@@ -170,7 +172,7 @@ var healthFunds_QTU = {
     },
     unset: function() {
         <%-- Custom questions - hide in case user comes back --%>
-        $('#qtu_eligibility').hide();
+        healthFunds_QTU.$eligibility.hide();
 
         <%-- Age requirements for applicants (back to default) --%>
         healthFunds_QTU.$_dobPrimary.addRule('youngestDOB', dob_health_application_primary_dob.ageMin, "primary person's age cannot be under " + dob_health_application_primary_dob.ageMin);

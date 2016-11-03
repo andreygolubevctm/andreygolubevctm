@@ -17,7 +17,7 @@
     <div class="frequency {{= result.frequency }} {{= obj._selectedFrequency === result.frequency ? '' : 'displayNone' }}">
 
         {{ if (!result.hasValidPrice) { }}
-        <div class="frequencyAmount comingSoon">Coming Soon^</div>
+        <div class="frequencyAmount comingSoon">{{= frequency }} payments not available</div>
     </div>
     <%-- Close the opened tags and return, to reduce complexity of nesting --%>
     {{ return; } }}
