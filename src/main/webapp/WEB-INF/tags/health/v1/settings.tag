@@ -90,11 +90,9 @@
 	<c:set var="hospitalSpecificHelp" value="${benefitsContent.getSupplementaryValueByKey('hospitalSpecificHelp')}" />
 	<c:set var="hospitalSpecificDisabled" value="${benefitsContent.getSupplementaryValueByKey('hospitalSpecificDisabled')}" />
 
-	<c:set var="hospitalLimitedYoung" value="${benefitsContent.getSupplementaryValueByKey('hospitalLimitedYoung')}" />
-	<c:set var="hospitalLimitedcOlder" value="${benefitsContent.getSupplementaryValueByKey('hospitalLimitedOlder')}" />
+	<c:set var="hospitalLimitedAll" value="${benefitsContent.getSupplementaryValueByKey('hospitalLimitedAll')}" />
 	<c:set var="hospitalLimitedHelp" value="${benefitsContent.getSupplementaryValueByKey('hospitalLimitedHelp')}" />
-	<c:set var="hospitalLimitedDisabled" value="${benefitsContent.getSupplementaryValueByKey('hospitalLimitedDisabled')}" />
-	
+
 	<c:set var="extrasFamilyYoung" value="${benefitsContent.getSupplementaryValueByKey('extrasFamilyYoung')}" />
 	<c:set var="extrasFamilyOlder" value="${benefitsContent.getSupplementaryValueByKey('extrasFamilyOlder')}" />
 	<c:set var="extrasFamilyHelp" value="${benefitsContent.getSupplementaryValueByKey('extrasFamilyHelp')}" />
@@ -102,6 +100,8 @@
 
 	<c:set var="extrasSettledFamilyYoung" value="${benefitsContent.getSupplementaryValueByKey('extrasSettledFamilyYoung')}" />
 	<c:set var="extrasSettledFamilyOlder" value="${benefitsContent.getSupplementaryValueByKey('extrasSettledFamilyOlder')}" />
+	<c:set var="extrasSettledFamilyYoungSingleCouple" value="${benefitsContent.getSupplementaryValueByKey('extrasSettledFamilyYoungSingleCouple')}" />
+	<c:set var="extrasSettledFamilyOlderSingleCouple" value="${benefitsContent.getSupplementaryValueByKey('extrasSettledFamilyOlderSingleCouple')}" />
 	<c:set var="extrasSettledFamilyHelp" value="${benefitsContent.getSupplementaryValueByKey('extrasSettledFamilyHelp')}" />
 	<c:set var="extrasSettledFamilyDisabled" value="${benefitsContent.getSupplementaryValueByKey('extrasSettledFamilyDisabled')}" />
 
@@ -120,10 +120,7 @@
 	<c:set var="extrasSpecificHelp" value="${benefitsContent.getSupplementaryValueByKey('extrasSpecificHelp')}" />
 	<c:set var="extrasSpecificDisabled" value="${benefitsContent.getSupplementaryValueByKey('extrasSpecificDisabled')}" />
 
-	<c:set var="extrasLimitedYoung" value="${benefitsContent.getSupplementaryValueByKey('extrasLimitedYoung')}" />
-	<c:set var="extrasLimitedOlder" value="${benefitsContent.getSupplementaryValueByKey('extrasLimitedOlder')}" />
-	<c:set var="extrasLimitedHelp" value="${benefitsContent.getSupplementaryValueByKey('extrasLimitedHelp')}" />
-	<c:set var="extrasLimitedDisabled" value="${benefitsContent.getSupplementaryValueByKey('extrasLimitedDisabled')}" />
+	<c:set var="extrasLimitedAll" value="${benefitsContent.getSupplementaryValueByKey('extrasLimitedAll')}" />
 	
 	<c:set var="combinedNewHelp" value="${benefitsContent.getSupplementaryValueByKey('combinedNewHelp')}" />
 	<c:set var="combinedCompareHelp" value="${benefitsContent.getSupplementaryValueByKey('combinedCompareHelp')}" />
@@ -214,6 +211,8 @@
 		hospitalSettledFamilyDisabled	: "${hospitalSettledFamilyDisabled}",
 		extrasSettledFamilyYoung		: "${extrasSettledFamilyYoung}",
 		extrasSettledFamilyOlder		: "${extrasSettledFamilyOlder}",
+		extrasSettledFamilyYoungSingleCouple		: "${extrasSettledFamilyYoungSingleCouple}",
+		extrasSettledFamilyOlderSingleCouple		: "${extrasSettledFamilyOlderSingleCouple}",
 		extrasSettledFamilyDisabled		: "${extrasSettledFamilyDisabled}",
 		hospitalSettledFamilyHelp		: "${hospitalSettledFamilyHelp}",
 		extrasSettledFamilyHelp			: "${extrasSettledFamilyHelp}",
@@ -229,10 +228,9 @@
 		extrasSpecificHelp				: "${extrasSpecificHelp}",
 		combinedSpecificHelp			: "${combinedSpecificHelp}",
 
-		hospitalLimitedYoung			: "${hospitalLimitedYoung}",
-		hospitalLimitedOlder			: "${hospitalLimitedOlder}",
-		extrasLimitedDisabled			: "${extrasLimitedDisabled}",
-		hospitalLimitedHelp				: "${hospitalLimitedHelp}"
+		hospitalLimitedAll				: "${hospitalLimitedAll}",
+		hospitalLimitedHelp				: "${hospitalLimitedHelp}",
+		extrasLimitedAll 				: "${extrasLimitedAll}"
 	},
 	callbackPopup: {
 		enabled: <c:out value="${pageSettings.getSetting('callbackPopupEnabled') eq 'Y'}"/>,
