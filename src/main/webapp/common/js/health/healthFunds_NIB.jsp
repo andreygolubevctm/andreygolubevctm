@@ -19,6 +19,9 @@ var healthFunds_NIB = {
         <%--Contact Point question--%>
         healthApplicationDetails.showHowToSendInfo('NIB', true);
 
+        <%-- Previous funds --%>
+        $('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').attr('maxlength', '10');
+            
         <%-- Partner authority--%>
         healthFunds._partner_authority(true);
 

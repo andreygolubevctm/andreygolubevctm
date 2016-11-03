@@ -23,33 +23,15 @@
 	<c:set var="items" value="${items},${currentYear - 6}=More than 5 years,NotAtThisAddress=Not yet living at this address" />
 
 <form_v2:fieldset legend="Occupancy Details">
+	<%-- Commencement Date --%>
+	<c:if test="${journeySplitTestActive eq false}">
+		<c:set var="fieldXpath" value="${baseXpath}/startDate" />
+		<home:commencementDate xpath="${fieldXpath}" />
+	</c:if>
 
-	<c:choose>
-		<c:when test="${brochurewarePassedParams}">
-
-			<%-- Commencement Date --%>
-			<c:set var="fieldXpath" value="${baseXpath}/startDate" />
-			<home:commencementDate xpath="${fieldXpath}" />
-
-			<%-- Address --%>
-			<c:set var="fieldXpath" value="${baseXpath}/property/address" />
-			<group_v2:elastic_address xpath="${fieldXpath}" type="R" />
-
-		</c:when>
-		<c:otherwise>
-
-			<%-- Own the home --%>
-			<c:set var="fieldXpath" value="${xpath}/ownProperty" />
-			<form_v2:row fieldXpath="${fieldXpath}" label="Do you own the home?">
-				<field_v2:array_radio xpath="${fieldXpath}"
-					className="ownProperty pretty_buttons"
-					required="true"
-					items="Y=Yes,N=No"
-					title="if you own the home" />
-			</form_v2:row>
-
-		</c:otherwise>
-	</c:choose>
+	<%-- Address --%>
+	<c:set var="fieldXpath" value="${baseXpath}/property/address" />
+	<group_v2:elastic_address xpath="${fieldXpath}" type="R" />
 
 	<%-- PPoR --%>
 	<c:set var="fieldXpath" value="${xpath}/principalResidence" />
@@ -93,5 +75,9 @@
 	</core_v1:js_template>
 
 	<field_v1:hidden xpath="${xpath}/coverTypeWarning/chosenOption"/>
+
+	<c:if test="${journeySplitTestActive eq true}">
+		<home:business_activity_v2 xpath="home/businessActivity" />
+	</c:if>
 
 </form_v2:fieldset>

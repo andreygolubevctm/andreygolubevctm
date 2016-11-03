@@ -12,7 +12,7 @@
     "shared/dropdownInteractive",
     "shared/addressLookup",
     "shared/leadFeed",
-    "shared/saveQuote",
+    "shared/saveQuote/v1",
     "shared/moreInfo",
     "shared/popovers",
     "shared/resultsRankings",

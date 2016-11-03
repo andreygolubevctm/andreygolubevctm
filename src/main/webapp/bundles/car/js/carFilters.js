@@ -18,6 +18,11 @@
 	var $filterFrequency,
 		$filterExcess;
 
+	var $labels,
+		$filterCoverType,
+		$updateBtn,
+		$cancelUpdateBtn;
+
 	var deviceStateXS = false;
 	var modalID = false;
 	var pageScrollingLockYScroll = false;
@@ -27,6 +32,12 @@
 			frequency:	false,
 			excess:		false
 	};
+
+	var previousValues = {
+		excess: false
+	};
+
+	var updateBtnShown = false;
 
 	//
 	// Refresh filters from form/page
@@ -46,6 +57,8 @@
 					$featuresMode.addClass('active');
 					break;
 			}
+
+			meerkat.messaging.publish(meerkatEvents.resultsMobileDisplayModeToggle.DISPLAY_MODE_UPDATED);
 		}
 
 		// Refresh frequency
@@ -58,13 +71,8 @@
 		}
 
 		// Refresh excess
-		var excess = $('#quote_excess').val();
-		if (typeof excess === 'undefined') {
-			$filterExcess.find('.dropdown-toggle span').text( $filterExcess.find('.dropdown-menu a:first').text() );
-		}
-		else {
-			$filterExcess.find('.dropdown-toggle span').text( $filterExcess.find('.dropdown-menu a[data-value="' + excess + '"]').text() );
-		}
+		var excess = $('#quote_excess').val() ? $('#quote_excess').val() : $('#quote_baseExcess').val();
+		$filterExcess.find('.dropdown-toggle span').text( $filterExcess.find('.dropdown-menu a[data-value="' + excess + '"]').text() );
 	}
 
 	//
@@ -90,16 +98,26 @@
 				Results.setFrequency(value);
 
 				meerkat.messaging.publish(moduleEvents.CHANGED);
+
+				meerkat.modules.paymentFrequencyButtons.set(value);
 			}
 		}
 		else if ($dropdown.hasClass('filter-excess')) {
+			previousValues.excess = currentValues.excess;
+
 			if(value !== currentValues.excess) {
 				currentValues.excess = value;
 				$('#quote_excess').val(value);
 
-				meerkat.messaging.publish(moduleEvents.CHANGED, {excess:value});
+				toggleUpdate(false);
 			}
 		}
+	}
+
+	function toggleUpdate(hide) {
+		$updateBtn.toggleClass('hidden', hide);
+		$cancelUpdateBtn.toggleClass('hidden', hide);
+		updateBtnShown = !hide;
 	}
 
 	function storeCurrentValues() {
@@ -107,7 +125,7 @@
 		currentValues = {
 			display:	Results.getDisplayMode(),
 			frequency:	$('#quote_paymentType').val(),
-			excess:		$('#quote_excess').val()
+			excess:		$('#quote_excess').val() ? $('#quote_excess').val() : $('#quote_baseExcess').val()
 		};
 	}
 
@@ -119,23 +137,30 @@
 		});
 
 		$filterExcess.find('li.active').removeClass("active");
-		if(!_.isEmpty(currentValues.excess)) {
-			$filterExcess.find('a[data-value="' + currentValues.excess + '"]').each(function(){
-				$(this).parent().addClass("active");
-			});
-		}
+        $filterExcess.find('a[data-value="' + currentValues.excess + '"]').each(function(){
+            $(this).parent().addClass("active");
+        });
 	}
 
 	function hide() {
 		$component.slideUp(200, function hideDone() {
 			$component.addClass('hidden');
 		});
+
+		$labels.slideUp(200, function hideLabelDone() {
+			$labels.addClass('hidden');
+		});
 	}
 
 	function show() {
 		$component.removeClass('hidden').hide().slideDown(200);
+
+		$labels.removeClass('hidden').hide().slideDown(200);
+
 		storeCurrentValues();
 		preselectDropdowns();
+
+		meerkat.modules.paymentFrequencyButtons.set(currentValues.frequency);
 	}
 
 	function disable() {
@@ -148,14 +173,19 @@
 	}
 
 	function enable() {
-		if (meerkat.modules.compare.isCompareOpen() === false){
-			$component.find('li.dropdown.filter-excess, .filter-excess .dropdown-toggle').removeClass('disabled');
-		$priceMode.removeClass('disabled');
-		$priceMode.find('a').removeClass('disabled');
-		$featuresMode.removeClass('disabled');
-		$featuresMode.find('a').removeClass('disabled');
-		$('.slide-feature-filters').find('a').removeClass('inactive').removeClass('disabled');
-	}
+		if (meerkat.modules.compare.isCompareOpen() === false) {
+			$component.find('li.dropdown.filter-excess, .filter-excess .dropdown-toggle, ' +
+				'li.dropdown.filter-cover-type, .filter-cover-type .dropdown-toggle').removeClass('disabled');
+			$priceMode.removeClass('disabled');
+			$priceMode.find('a').removeClass('disabled');
+			$featuresMode.removeClass('disabled');
+			$featuresMode.find('a').removeClass('disabled');
+			$('.slide-feature-filters').find('a').removeClass('inactive').removeClass('disabled');
+
+			// Temporarily make Type of Cover disabled
+			// Remove line below only once other options are introduced, also update the styles in layout.less
+			$('.dropdown.filter-cover-type, .filter-cover-type .dropdown-toggle').addClass('disabled');
+		}
 		$component.find('li.dropdown.filter-frequency, .filter-frequency .dropdown-toggle').removeClass('disabled');
 	}
 
@@ -195,8 +225,11 @@
 			event.preventDefault();
 			if ($(this).hasClass('disabled')) return;
 
+			$featuresMode.removeClass('active');
+			$priceMode.addClass('active');
+
 			meerkat.modules.carResults.switchToPriceMode(true);
-			updateFilters();
+			if (updateBtnShown) $cancelUpdateBtn.trigger('click');
 
 			meerkat.modules.session.poke();
 		});
@@ -205,8 +238,11 @@
 			event.preventDefault();
 			if ($(this).hasClass('disabled')) return;
 
+			$priceMode.removeClass('active');
+			$featuresMode.addClass('active');
+
 			meerkat.modules.carResults.switchToFeaturesMode(true);
-			updateFilters();
+			if (updateBtnShown) $cancelUpdateBtn.trigger('click');
 
 			meerkat.modules.session.poke();
 		});
@@ -214,6 +250,31 @@
 		// Dropdown options
 
 		$component.on('click', '.dropdown-menu a', handleDropdownOption);
+
+		$updateBtn.on('click', function updateResults() {
+			meerkat.messaging.publish(moduleEvents.CHANGED, {excess:currentValues.excess});
+			toggleUpdate(true);
+		});
+
+		$cancelUpdateBtn.on('click', function cancelUpdate() {
+			if(!_.isEmpty(previousValues.excess)) {
+				$filterExcess.find('li.active').removeClass("active");
+				var $dropdown = $('.dropdown.filter-excess');
+
+				currentValues.excess = previousValues.excess;
+
+				$filterExcess.find('a[data-value="' + previousValues.excess + '"]').each(function(){
+					$dropdown.find('.dropdown-toggle span').text($(this).text());
+					$(this).parent().addClass("active");
+				});
+			}
+			toggleUpdate(true);
+		});
+
+		meerkat.messaging.subscribe(meerkatEvents.paymentFrequencyButtons.CHANGED, function() {
+			$('#quote_paymentType').val(Results.getFrequency());
+			updateFilters();
+		});
 	}
 
 	function renderModal() {
@@ -231,7 +292,7 @@
 			htmlContent : htmlContent,
 			hashId : 'xsFilterBar',
 			rightBtn: {
-				label: 'Save Changes',
+				label: 'UPDATE RESULTS',
 				className: 'btn-sm btn-save',
 				callback: saveModalChanges
 			},
@@ -252,9 +313,10 @@
 		$('#xsFilterBarFreqRow input:checked').prop('checked', false);
 		$('#xsFilterBarFreqRow #xsFilterBar_freq_' + $('#quote_paymentType').val()).prop('checked', true).change();
 
-		try{
-			meerkat.modules.sliders.init();
-		}catch(e){}
+		$('#xsFilterBarCoverType input:checked').prop('checked', false);
+		$('#xsFilterBarCoverType #xsFilterBar_coverType_comprehensive').prop('checked', true).change();
+
+        $('#xsFilterBar_excess').val(currentValues.excess);
 	}
 
 	function saveModalChanges() {
@@ -264,8 +326,8 @@
 
 		var revised = {
 				display: $('#xsFilterBarSortRow input:checked').val(),
-				freq : $('#xsFilterBarFreqRow input:checked').val(),
-				excess : $('#xsFilterBarExcessRow input[name=xsFilterBar_excess]').val()
+				freq : $('.payment-frequency-buttons input:checked').val(),
+				excess : $('#xsFilterBarExcessRow select[name=xsFilterBar_excess]').val()
 		};
 
 		if(Number(revised.excess) === 0) {
@@ -327,18 +389,28 @@
 			initialised = true;
 
 			$component = $('#navbar-filter');
+			$labels = $('#navbar-filter-labels');
+
 			if ($component.length === 0) return;
 
 			$priceMode = $component.find('.filter-pricemode');
 			$featuresMode = $component.find('.filter-featuresmode');
 			$filterFrequency = $component.find('.filter-frequency');
 			$filterExcess = $component.find('.filter-excess');
+			$filterCoverType = $component.find('.filter-cover-type');
+			$updateBtn = $component.find('.updateFilters');
+			$cancelUpdateBtn = $('.filter-cancel-label a');
 
 			eventSubscriptions();
 
 			// Collect options from the page
 
 			var $filterMenu;
+
+			$filterMenu = $filterCoverType.find('.dropdown-menu');
+			$('#filter_coverTypeOptions option').each(function () {
+				$filterMenu.append('<li><a href="javascript:;" data-value="' + this.value + '">' + this.text + '</a></li>');
+			});
 
 			$filterMenu = $filterExcess.find('.dropdown-menu');
 			$('#filter_excessOptions option').each(function () {
@@ -350,7 +422,7 @@
 				$filterMenu.append('<li><a href="javascript:;" data-value="' + this.value + '">' + this.text + '</a></li>');
 			});
 
-			$('#navbar-main .slide-feature-filters a').on('click', function (e) {
+			$('#navbar-main .slide-feature-filters a, .mobile-nav-buttons .refine-results a').on('click', function (e) {
 				e.preventDefault();
 				if (!$(this).hasClass('disabled')) {
 					onRequestModal();

@@ -153,8 +153,19 @@ var validation = false;
 
                     var errorContainer = parent.children('.error-field');
 
+					var position = 'prepend';
                     if (errorContainer.length === 0) {
-                        parent.prepend('<div class="error-field"></div>');
+
+						if (typeof $element.attr('data-validation-position') !== 'undefined' &&
+                        	$element.attr('data-validation-position') !== null && $element.attr('data-validation-position') !== '') {
+                        	position = $element.attr('data-validation-position');
+                    	}
+
+                    	if (position === 'append') {
+	                        parent.append('<div class="error-field"></div>');
+                    	} else {
+	                        parent.prepend('<div class="error-field"></div>');
+                    	}
                         errorContainer = parent.children('.error-field');
                         errorContainer.hide().slideDown(100);
                     }

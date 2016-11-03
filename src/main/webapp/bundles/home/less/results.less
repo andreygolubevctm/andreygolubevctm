@@ -18,8 +18,13 @@
 //-------------------------------------------------------------------------------------
 
 @media(@sm) {
-	.priceMode .result-row {
-		margin-bottom: (@results-price-row-padding * 2);
+	.priceMode {
+		.resultsContainer& {
+			padding-top: 0
+		}
+		.result-row {
+			margin-bottom: (@results-price-row-padding * 2);
+		}
 	}
 }
 

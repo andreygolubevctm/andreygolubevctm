@@ -58,6 +58,17 @@
         return sumTotal % 10 == cardNumber.substring(8, 9);
     }, 'Please enter a valid Medicare card number');
 
+    $.validator.addMethod("medicareLastName", function (value, elem, parm) {
+
+        var firstName = $('.health-medicare_details-first_name').val(),
+            initialLength = 3, // Always one character plus space each side
+            maxLength = 0;
+
+        maxLength = 50 - initialLength - (firstName).length;
+
+        return (value.length <= maxLength);
+    }, 'Your full name can not be longer than 50 characters in total');
+
     function getMonth() {
         var realMonth = meerkat.site.serverDate.getMonth()+1 ;
         return realMonth < 10 ? "0"+realMonth:realMonth;

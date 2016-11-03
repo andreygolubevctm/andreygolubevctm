@@ -17,9 +17,12 @@
 	<form_v3:fieldset legend="Medicare Details" id="medicare_details" className="medicare_details">
 
 		<c:set var="fieldXpath" value="${xpath}/cover" />
-		<form_v3:row fieldXpath="${fieldXpath}" label="Are all people to be included on this policy covered by a green, blue or yellow Medicare card?" id="medicareCoveredRow" helpId="291">
+		<field_v1:hidden xpath="${fieldXpath}" defaultValue="Y" />
+
+		<c:set var="fieldXpath" value="${xpath}/colour" />
+		<form_v3:row fieldXpath="${fieldXpath}" label="What colour is your Medicare card?" id="medicareCoveredRow" helpId="291" smRowOverride="5">
 			<p id="health_medicareDetails_coverMessage"></p>
-			<field_v2:array_radio items="Y=Yes,N=No" xpath="${fieldXpath}" title="your Medicare card cover. To proceed with this policy, you must have a green, blue or yellow medicare card." required="true" className="health-medicare_details-card" id="${name}_cover" additionalAttributes=" data-rule-isCheckedYes='true' data-msg-isCheckedYes='To proceed with this policy, you must have a green, blue or yellow medicare card' "/>
+			<field_v2:medicare_colour xpath="${fieldXpath}" />
 		</form_v3:row>
 
 		<c:set var="fieldXpath" value="${xpath}/number" />
@@ -35,7 +38,7 @@
 
 		<c:set var="fieldXpath" value="${xpath}/firstName" />
 		<form_v3:row fieldXpath="${fieldXpath}" label="First Name on Medicare card">
-			<field_v2:input xpath="${fieldXpath}" title="first name on the Medicare card" required="true" className="health-medicare_details-first_name sessioncamexclude" additionalAttributes=" data-rule-personName='true' " />
+			<field_v2:input xpath="${fieldXpath}" title="first name on the Medicare card" required="true" className="health-medicare_details-first_name sessioncamexclude" maxlength="24" additionalAttributes=" data-rule-personName='true' " />
 		</form_v3:row>
 
 		<c:set var="fieldXpath" value="${xpath}/middleInitial" />
@@ -45,7 +48,7 @@
 
 		<c:set var="fieldXpath" value="${xpath}/surname" />
 		<form_v3:row fieldXpath="${fieldXpath}" label="Last Name on Medicare card">
-			<field_v2:input xpath="${fieldXpath}" title="last name on the Medicare card" required="true" className="health-medicare_details-surname sessioncamexclude" additionalAttributes=" data-rule-personName='true' " />
+			<field_v2:input xpath="${fieldXpath}" title="last name on the Medicare card" required="true" className="health-medicare_details-surname sessioncamexclude" additionalAttributes=" data-rule-personName='true' data-rule-medicareLastName='true' " />
 		</form_v3:row>
 
 		<c:set var="fieldXpath" value="${xpath}/cardPosition" />

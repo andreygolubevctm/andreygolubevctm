@@ -71,6 +71,11 @@
 		<c:if test="${moreinfo_splittest_default eq false}">more-info-content-variant</c:if>
 	</c:set>
 	<a data-slide-control="prev" href="javascript:;" class="hidden-xs btn btn-tertiary btn-close-more-info" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />><span class="icon icon-arrow-left"></span> Back to all results</a>
+
+	<c:if test="${empty callCentre}">
+		<form_v3:save_results_button />
+	</c:if>
+
 	<div data-product-type="{{= info.ProductType }}" class="displayNone more-info-content col-xs-12 ${variantClassName}">
 
 		<div class="fieldset-card row price-card <c:if test="${healthAlternatePricingActive eq true}">hasDualPricing</c:if> {{= dropDatePassed ? 'dropDatePassedContainer' : ''}}">
@@ -385,7 +390,7 @@
 				</div>
 			</div>
 
-			<div class="col-md-8 switching">
+			<div class="col-xs-12 switching">
 				<h2>Switching is simple</h2>
 				<ol>
 					<li>You can change your fund whenever you like</li>
@@ -396,18 +401,6 @@
 						premiums paid in advance.</li>
 				</ol>
 			</div>
-
-			{{ if(meerkat.site.tracking.brandCode === 'ctm') { }}
-			<div class="col-md-4 hidden-xs hidden-sm pricePromise">
-				<div class="row">
-					<div class="col-md-5">
-						<div class="pricePromiseLogo"></div>
-					</div>
-					<div class="col-md-7"><h4>Price match guarantee</h4></div>
-				</div>
-				<p class="pricePromiseContent">Buy health insurance through us and if you find a better price on the same policy with the same health fund within 30 days, <span>we'll give you $50*</span></p>
-			</div>
-			{{ } }}
 			<div class="col-xs-12 testimonials">
 				<h2>Join the thousands of Australians who already have compared and saved</h2>
 				<blockquote>
