@@ -17,7 +17,7 @@
         "shared/occupationSelector",
         "shared/placeholder",
         "shared/popovers",
-        "shared/saveQuote",
+        "shared/saveQuote/v1",
         "shared/contentPopulation",
         "shared/leavePageWarning"
     ]

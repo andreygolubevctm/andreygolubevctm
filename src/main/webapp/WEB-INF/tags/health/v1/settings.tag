@@ -234,6 +234,15 @@
 		extrasLimitedDisabled			: "${extrasLimitedDisabled}",
 		hospitalLimitedHelp				: "${hospitalLimitedHelp}"
 	},
+	callbackPopup: {
+		enabled: <c:out value="${pageSettings.getSetting('callbackPopupEnabled') eq 'Y'}"/>,
+		timeout: <c:out value="${pageSettings.getSetting('callbackPopupTimeout')}"/>,
+		timeoutMouseEnabled: <c:out value="${pageSettings.getSetting('callbackPopupTimeoutMouseEnabled') eq 'Y'}"/>,
+		timeoutKeyboardEnabled: <c:out value="${pageSettings.getSetting('callbackPopupTimeoutKeyEnabled') eq 'Y'}"/>,
+		timeoutStepEnabled: <c:out value="${pageSettings.getSetting('callbackPopupTimeoutStepEnabled') eq 'Y'}"/>,
+		steps: '<c:out value="${pageSettings.getSetting('callbackPopupValidSteps')}"/>',
+		position: '<c:out value="${pageSettings.getSetting('callbackPopupPosition')}"/>'
+	},
 	emailBrochures: {
 		enabled: <c:out value="${pageSettings.getSetting('emailBrochuresEnabled') eq 'Y'}"/>
 	},

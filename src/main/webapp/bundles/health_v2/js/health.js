@@ -47,7 +47,6 @@
 				steps: _.toArray(steps)
 			});
 
-
 			// Call initial supertag call
 			var transaction_id = meerkat.modules.transactionId.get();
 
@@ -180,18 +179,6 @@
 					var coverTypeVal = $(this).find('input:checked').val();
 					meerkat.modules.healthBenefitsStep.updateHiddenFields(coverTypeVal);
 				});
-
-				if(meerkat.modules.performanceProfiling.isMobile()) {
-					var $callCentreNumber = $('.mobile-hours h1 .callCentreNumber');
-					var $callCentreAppNumber = $('.mobile-hours h1 .callCentreAppNumber');
-
-					$callCentreNumber.wrapInner('<a href="tel:' + $callCentreNumber.text().replace(/ /g, "") + '"></a>');
-					$callCentreAppNumber.wrapInner('<a href="tel:' + $callCentreAppNumber.text().replace(/ /g, "") + '"></a>');
-
-					var $callDetails = $('.mobile-hours .call-details');
-					var $callDetailsParent = $callDetails.parent();
-					$callDetailsParent.prepend($callDetails);
-				}
 
 				if($("#health_privacyoptin").val() === 'Y'){
 					$(".slide-feature-emailquote").addClass("privacyOptinChecked");
@@ -498,7 +485,7 @@
 					meerkat.modules.healthMedicare.updateMedicareLabel();
 
 					var product = meerkat.modules.healthResults.getSelectedProduct();
-					var mustShowList = ["GMHBA","Frank","Budget Direct","Bupa","HIF","QCHF","Navy Health","HBF"];
+					var mustShowList = ["GMHBA","Frank","Budget Direct","Bupa","HIF","QCHF","Navy Health","HBF","TUH"];
 
 					if( !meerkat.modules.healthCoverDetails.isRebateApplied() && $.inArray(product.info.providerName, mustShowList) == -1) {
 						$("#health_payment_medicare-selection > .nestedGroup").hide().attr("style", "display:none !important");
@@ -668,7 +655,12 @@
 		var contactDetailsFields = {
 			name:[
 				{
-					$field: $("#health_contactDetails_name")
+					$field: $("#health_contactDetails_name"),
+					$fieldInput: $("#health_contactDetails_name") // pointing at the same field as a trick to force change event on itself when forward populated
+				},
+				{
+					$field: $("#health_callback_name"),
+					$fieldInput: $("#health_callback_name")
 				},
 				{
 					$field: $("#health_application_primary_firstname"),
@@ -717,6 +709,11 @@
 				{
 					$field: $("#health_application_mobile"),
 					$fieldInput: $("#health_application_mobileinput")
+				},
+				// callback popup
+				{
+					$field: $("#health_callback_mobileinput"),
+					$fieldInput: $("#health_callback_mobileinput")
 				}
 			],
 			otherPhone: [
@@ -729,6 +726,11 @@
 				{
 					$field: $("#health_application_other"),
 					$fieldInput: $("#health_application_otherinput")
+				},
+				// call back popup
+				{
+					$field: $("#health_callback_otherNumberinput"),
+					$fieldInput: $("#health_callback_otherNumberinput")
 				}
 			],
 			flexiPhone: [
@@ -1407,6 +1409,9 @@
 
 			adjustLayout();
 
+			if(meerkat.site.isCallCentreUser === false) {
+				meerkat.modules.saveQuote.initSaveQuote();
+			}
 		});
 
 
@@ -1437,7 +1442,8 @@
 		fetchRates: fetchRates,
 		loadRates: loadRates,
 		loadRatesBeforeResultsPage: loadRatesBeforeResultsPage,
-        hasPartner: hasPartner
+        hasPartner: hasPartner,
+		configureContactDetails: configureContactDetails
 	});
 
 })(jQuery);
