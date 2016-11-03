@@ -4,7 +4,7 @@
             xmlns="http://com.disc_au.soap.aggregator">
 
     <nabGateway>
-        <gatewayURL>https://members.tuh.com.au/NAB/TUH_CTM_IFrame.aspx</gatewayURL>
+        <gatewayURL>https://members.tuh.com.au/nab/TUH_CTM_Prod_IFrame.aspx</gatewayURL>
         <domain>https://members.tuh.com.au</domain>
     </nabGateway>
 
