@@ -121,7 +121,7 @@ Handling of the callback popup
 			var settings = { url : "spring/rest/health/callMeNow.json"},
 				$this = $(this);
 
-			$this.addClass('inactive').addClass('disabled');
+			$this.addClass('inactive disabled');
 			meerkat.modules.loadingAnimation.showInside($this, true);
 
 
@@ -137,7 +137,7 @@ Handling of the callback popup
 				},
 				$this = $(this);
 
-			$this.addClass('inactive').addClass('disabled');
+			$this.addClass('inactive disabled');
 			meerkat.modules.loadingAnimation.showInside($this, true);
 
 			callMeBack(settings);
