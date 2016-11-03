@@ -30,6 +30,7 @@
 <%@ attribute fragment="true" required="false" name="zeroResultsFoundMessage" %>
 <%@ attribute fragment="true" required="false" name="resultsErrorMessage" %>
 <%@ attribute fragment="true" required="false" name="hiddenInputs" description="Any hidden " %>
+<%@ attribute fragment="true" required="true" name="quoterefTemplate" description="A template customisable to display the quote reference number" %>
 <%@ attribute fragment="true" required="true" name="logoTemplate"
               description="A template just for the logo. Logos tend to be displayed in different places independent of price, so should be a different template." %>
 <%@ attribute fragment="true" required="true" name="priceTemplate" description="A template customisable to display price based on frequency etc, must exclude logo" %>
@@ -121,6 +122,7 @@
 <%-- Temp div to hold the snapshot and complance text until new desgin can figure our where to put this --%>
 <div id="temp-health-snapshot" class="visible-xs"><p>Please download the policy brochures for the full policy limits, inclusions and exclusions.</p></div>
 <%-- Dump out the templates --%>
+<core_v1:js_template id="quoteref-template"><jsp:invoke fragment="quoterefTemplate"/></core_v1:js_template>
 <core_v1:js_template id="logo-template"><jsp:invoke fragment="logoTemplate"/></core_v1:js_template>
 <core_v1:js_template id="price-template"><jsp:invoke fragment="priceTemplate"/></core_v1:js_template>
 <core_v1:js_template id="result-template"><jsp:invoke fragment="resultsContainerTemplate"/></core_v1:js_template>
