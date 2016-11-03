@@ -168,8 +168,8 @@
 			</div>
 			<div class="col-sm-6">
 				<h3 class="request-callback"><a href="javascript:;" data-toggle="dialog"
-				data-content="#view_all_hours"
-				data-dialog-hash-id="view_all_hours"
+				data-content="#view_all_hours_cb"
+				data-dialog-hash-id="view_all_hours_cb"
 				data-title="Request a Call" data-cache="true"><i class="icon-callback"></i> Request a Call</a></h3>
 			</div>
 			<div class="col-sm-8">
