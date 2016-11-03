@@ -17,7 +17,13 @@
     <div class="frequency {{= result.frequency }} {{= obj._selectedFrequency === result.frequency ? '' : 'displayNone' }}">
 
         {{ if (!result.hasValidPrice) { }}
-        <div class="frequencyAmount comingSoon">Coming Soon^</div>
+        {{ var frequencyLabel = frequency; }}
+        {{ if (frequencyLabel == 'annually') { }}
+            {{ frequencyLabel = 'Annual'; }}
+        {{ } }}
+        <%-- Convert to title case --%>
+        {{ frequencyLabel = frequencyLabel.replace(/(\b[a-z](?!\s))/g, function(x){ return x.toUpperCase();}); }}
+        <div class="frequencyAmount comingSoon">{{= frequencyLabel }} payments not available</div>
     </div>
     <%-- Close the opened tags and return, to reduce complexity of nesting --%>
     {{ return; } }}
