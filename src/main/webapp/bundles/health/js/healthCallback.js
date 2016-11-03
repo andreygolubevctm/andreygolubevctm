@@ -148,7 +148,7 @@ Handling of the callback popup
 		});
 
 		$(document).on('show.bs.modal', '.modal', function (e) {
-			if($(this).find('#health-callback')) {
+			if(typeof $(this).find('#health-callback').attr('callbackModal') !== 'undefined') {
 				$(this).addClass('health-callback');
 
 				initComplete = false;
@@ -164,10 +164,11 @@ Handling of the callback popup
 					});
 
 				}
+
+				_initFields();
+				updateCBModalFields();
 			}
 
-			_initFields();
-			updateCBModalFields();
 		});
     }
 

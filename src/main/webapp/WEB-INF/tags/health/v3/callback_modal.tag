@@ -13,7 +13,7 @@
 
 <%-- HTML --%>
 <core_v1:js_template id="view_all_hours_cb">
-<div id="health-callback">
+<div id="health-callback" callbackModal="true">
 	<div class="row">
 		<div class="col-sm-12">
 			<h3 class="hidden-xs">Talk to our experts</h3>
