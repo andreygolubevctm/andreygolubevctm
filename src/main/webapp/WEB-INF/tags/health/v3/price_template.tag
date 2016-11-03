@@ -21,6 +21,7 @@
         {{ if (frequencyLabel == 'annually') { }}
             {{ frequencyLabel = 'Annual'; }}
         {{ } }}
+        <%-- Convert to title case --%>
         {{ frequencyLabel = frequencyLabel.replace(/(\b[a-z](?!\s))/g, function(x){ return x.toUpperCase();}); }}
         <div class="frequencyAmount comingSoon">{{= frequencyLabel }} payments not available</div>
     </div>
