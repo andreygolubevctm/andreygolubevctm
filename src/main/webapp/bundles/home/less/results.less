@@ -290,40 +290,40 @@
 // Feature mode styling
 //
 .featuresMode {
-	&.resultsContainer {
-		margin-bottom: 30px;
-	}
-
-	.controlContainer {
-		position: relative;
-		height: 100%;
-	}
-
-	.productSummary {
-		position: relative;
-
-		p {
-			clear: both;
-		}
-
-		.btn-more-info {
-			@media(@sm) {
-				position: absolute;
-				bottom: 8px;
-				left: 8%;
-				width: 84%;
-			}
-		}
-
-		.frequency {
-			&.annual {
-				padding-top: 12px;
-			}
-
-			// Make room for the logo
-			margin-left: 90px;
-		}
-	}
+	//&.resultsContainer {
+	//	margin-bottom: 30px;
+	//}
+    //
+	//.controlContainer {
+	//	position: relative;
+	//	height: 100%;
+	//}
+    //
+	//.productSummary {
+	//	position: relative;
+    //
+	//	p {
+	//		clear: both;
+	//	}
+    //
+	//	.btn-more-info {
+	//		@media(@sm) {
+	//			position: absolute;
+	//			bottom: 8px;
+	//			left: 8%;
+	//			width: 84%;
+	//		}
+	//	}
+    //
+	//	.frequency {
+	//		&.annual {
+	//			padding-top: 12px;
+	//		}
+    //
+	//		// Make room for the logo
+	//		margin-left: 90px;
+	//	}
+	//}
 
 	.icon-tick {
 		color: @tick-color;
@@ -332,40 +332,40 @@
 		color: @cross-color;
 	}
 
-	.frequencyAmount,
-	.excessAmount,
-	.frequencyTitle,
-	.excessTitle {
-		width: auto;
-		margin-top: 0;
-	}
-
-	.result,
-	.productSummary {
-		height: 182px;
-	}
+	//.frequencyAmount,
+	//.excessAmount,
+	//.frequencyTitle,
+	//.excessTitle {
+	//	width: auto;
+	//	margin-top: 0;
+	//}
+    //
+	//.result,
+	//.productSummary {
+	//	height: 182px;
+	//}
 
 	@media(@xs-only) {
-		.result,
-		.productSummary {
-			height: 150px;
-		}
-
-		.productSummary {
-			padding: (@results-feature-cell-padding * 2) @results-feature-cell-padding;
-
-			h2 {
-				margin-left: 90px;
-				line-height: 0.9;
-			}
-
-			// Using .content to pick up normal feature row styling
-			// Needs -margin to combat the padding on .productSummary
-			.content {
-				margin: 0 -@results-feature-cell-padding;
-			}
-
-		}
+		//.result,
+		//.productSummary {
+		//	height: 150px;
+		//}
+        //
+		//.productSummary {
+		//	padding: (@results-feature-cell-padding * 2) @results-feature-cell-padding;
+        //
+		//	h2 {
+		//		margin-left: 90px;
+		//		line-height: 0.9;
+		//	}
+        //
+		//	// Using .content to pick up normal feature row styling
+		//	// Needs -margin to combat the padding on .productSummary
+		//	.content {
+		//		margin: 0 -@results-feature-cell-padding;
+		//	}
+        //
+		//}
 
 		// Normal heading
 		.labelInColumn {
@@ -375,12 +375,12 @@
 		}
 
 		// Not a real feature, but shares the styling.
-		.fakeFeatures {
-			.labelInColumn .content {
-				color: #fff;
-				background: @theme-secondary;
-			}
-		}
+		//.fakeFeatures {
+		//	.labelInColumn .content {
+		//		color: #fff;
+		//		background: @theme-secondary;
+		//	}
+		//}
 
 		// Special feature row with "inverse" colouring. Note this should be same specificity or less as expanded row.
 		.inverseRow.labelInColumn {
@@ -399,27 +399,27 @@
 		}
 	}
 
-	@media(@sm-only) {
-		.productSummary {
-			.frequency {
-				padding-top: 10px;
-
-				// Make room for the logo
-				margin-left: 65px;
-
-				&.annual {
-					// This makes room for monthly price content
-					margin-bottom: 28px;
-				}
-			}
-		}
-	}
-
-	@media(@md) {
-		.monthlyBreakdown .totalPayment {
-			display: block;
-		}
-	}
+	//@media(@sm-only) {
+	//	.productSummary {
+	//		.frequency {
+	//			padding-top: 10px;
+    //
+	//			// Make room for the logo
+	//			margin-left: 65px;
+    //
+	//			&.annual {
+	//				// This makes room for monthly price content
+	//				margin-bottom: 28px;
+	//			}
+	//		}
+	//	}
+	//}
+    //
+	//@media(@md) {
+	//	.monthlyBreakdown .totalPayment {
+	//		display: block;
+	//	}
+	//}
 
 	@media(@lg) {
 		.productSummary {

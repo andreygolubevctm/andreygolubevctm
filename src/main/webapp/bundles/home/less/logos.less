@@ -5,13 +5,14 @@
 }
 
 .companyLogo {
-	.providersHighResSpriteImages(~"home"; ~"logo_"; @providers-list;);
+	.providersHighResSpriteImages(~"home"; ~"logo_"; @providers-list; 0.53333);
 }
 
-@media (@sm-only) {
-	.featuresMode {
-		.companyLogo {
-			.providersHighResSpriteImages(~"home"; ~"logo_"; @providers-list; @logo-xs-scale; ~"");
+.featuresMode {
+	.companyLogo {
+		.providersHighResSpriteImages(~"home"; ~"logo_"; @providers-list);
+		@media (@sm-md-only) {
+			.providersHighResSpriteImages(~"home"; ~"logo_"; @providers-list; 0.6);
 		}
 	}
 }
