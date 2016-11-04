@@ -59,7 +59,9 @@
 
 		$(document).ready(function() {
 			// record provided fields in module
-			$.extend(fields, contactDetailsFields);
+			if(!Object.is(fields, contactDetailsFields)) {
+				$.extend(fields, contactDetailsFields);
+			}
 
 			// run through all field type (name, phone, email, etc.)
 			_.each(fields, function(fieldTypeEntities, fieldType){
@@ -374,9 +376,11 @@
 
 					// name field gets split into first and last name
 					if( fieldDetails.type == "name" && typeof laterFieldDetails.$otherField !== "undefined" ){
-						var splitName = updatedElementValue.split(" ");
-						$fieldElement.val(splitName[0]);
-						laterFieldDetails.$otherField.val( splitName.slice(1).join(" ") );
+						if(typeof updatedElementValue !== "undefined") {
+							var splitName = updatedElementValue.split(" ");
+							$fieldElement.val(splitName[0]);
+							laterFieldDetails.$otherField.val( splitName.slice(1).join(" ") );
+						}
 					} else if(fieldDetails.type === "alternatePhone"  && typeof laterFieldDetails.$otherField !== "undefined") {
 						var testableNumber = updatedElementValue.replace(/\D/g, "");
 						if(testableNumber.match(/^(04|614|6104)/g)) {

@@ -15,6 +15,7 @@
 
     var dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 	var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    var shortMonthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
     var token = /d{1,4}|M{1,4}|YY(?:YY)?|S{1,3}|Do|ZZ|([HhMsDm])\1?|[aA]|"[^"]*"|'[^']*'/g;
     var twoDigits = /\d\d?/;
     var fourDigits = /\d{4}/;
@@ -32,6 +33,9 @@
 		MMMM: function(dateObj) {
 			return monthNames[dateObj.getMonth()];
 		},
+        MMM: function(dateObj) {
+            return shortMonthNames[dateObj.getMonth()];
+        },
 		YYYY: function(dateObj) {
 			return dateObj.getFullYear();
 		},

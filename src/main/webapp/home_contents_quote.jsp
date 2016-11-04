@@ -68,7 +68,14 @@
 				<span>Edit Details</span> <b class="caret"></b></a>
 				<div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
 					<div class="dropdown-container">
-						<home:edit_details />
+						<c:choose>
+							<c:when test="${journeySplitTestActive eq true}">
+								<home:edit_details_v2 />
+							</c:when>
+							<c:otherwise>
+								<home:edit_details />
+							</c:otherwise>
+						</c:choose>
 					</div>
 				</div>
 			</li>
@@ -110,34 +117,46 @@
 		<nav id="navbar-filter" class="navbar navbar-default navbar-affix navbar-inverse hidden hidden-xs" data-affix-after="#navbar-main">
 			<div class="container">
 				<ul class="nav navbar-nav">
-					<li class="navbar-text filter-label">Payment Frequency</li>
-					<li class="dropdown filter-frequency">
-						<a href="javascript:void(0);" class="dropdown-toggle active" data-toggle="dropdown"><span>Freq</span> <b class="icon icon-angle-down"></b></a>
-						<ul class="dropdown-menu">
-						</ul>
-					</li>
-					<li class="navbar-text filter-label homeExcessLabel">Home Excess</li>
 					<li class="dropdown filter-excess homeExcess">
 						<a href="javascript:void(0);" class="dropdown-toggle active" data-toggle="dropdown"><span>Home Excess</span> <b class="icon icon-angle-down"></b></a>
 						<ul class="dropdown-menu">
 						</ul>
 					</li>
-					<li class="navbar-text filter-label contentsExcessLabel">Contents Excess</li>
 					<li class="dropdown filter-excess contentsExcess">
 						<a href="javascript:void(0);" class="dropdown-toggle active" data-toggle="dropdown"><span>Contents Excess</span> <b class="icon icon-angle-down"></b></a>
 						<ul class="dropdown-menu">
 						</ul>
 					</li>
-					<li class="excess-update"><a href="javascript:void(0);" class="btn btn-hollow updateExcess" data-toggle="updateButton">update</a>
+					<li class="excess-update"><a href="javascript:void(0);" class="btn btn-hollow updateFilters hidden" data-toggle="updateButton">update</a>
 					</li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
-					<li class="filter-pricemode"><a href="javascript:void(0);"><span class="icon icon-th-list"></span> Quick price<span class="hidden-md hidden-sm"> view</span></a></li>
-					<li class="filter-featuresmode"><a href="javascript:void(0);"><span class="icon icon-th-vert"></span> Product features<span class="hidden-md hidden-sm"> view</span></a></li>
+					<li class="dropdown filter-frequency">
+						<a href="javascript:void(0);" class="dropdown-toggle active" data-toggle="dropdown"><span>Freq</span> <b class="icon icon-angle-down"></b></a>
+						<ul class="dropdown-menu">
+						</ul>
+					</li>
+					<li class="filter-pricemode"><a href="javascript:void(0);"><span class="icon icon-th-list"></span> Quick price</a></li>
+					<li class="filter-featuresmode"><a href="javascript:void(0);"><span class="icon icon-th-vert"></span> Product features</a></li>
 					<li class="back-to-price-mode hidden"><a href="javascript:void(0);"><span class="icon icon-arrow-left"></span> Back</a></li>
 				</ul>
 			</div>
 		</nav>
+
+		<nav id="navbar-filter-labels" class="navbar hidden hidden-xs">
+			<div class="container">
+				<ul class="nav navbar-nav">
+					<li class="navbar-text filter-home-excess-label">Home Excess</li>
+					<li class="navbar-text filter-contents-excess-label">Contents Excess</li>
+					<li class="navbar-text filter-cancel-label"><a href="javascript:void(0);" class="hidden">Cancel</a></li>
+				</ul>
+
+				<ul class="nav navbar-nav navbar-right">
+					<li class="navbar-text filter-frequency-label">Payment Frequency</li>
+					<li class="navbar-text filter-view-label">View</li>
+				</ul>
+			</div>
+		</nav>		
 		<%-- The content of the container is appended only when a comparison is made. --%>
 		<nav id="navbar-compare" class="navbar navbar-default navbar-affix navbar-additional hidden-xs hidden" data-affix-after="#navbar-main">
 			<div class="container compare-basket">
