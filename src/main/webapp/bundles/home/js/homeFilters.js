@@ -94,17 +94,14 @@
 		switch (coverType){
 			case 'H':
 				$filterHomeExcess.add($filterHomeExcessLabel).show();
-				$filterContentsExcess.add($filterContentsExcessLabel).add('.excess-update').hide();
-				$filterHomeExcess.find('li a').addClass('updateExcess');
+				$filterContentsExcess.add($filterContentsExcessLabel).hide();
 				return;
 			case 'C':
-				$filterHomeExcess.add($filterHomeExcessLabel).add('.excess-update').hide();
+				$filterHomeExcess.add($filterHomeExcessLabel).hide();
 				$filterContentsExcess.add($filterContentsExcessLabel).show();
-				$filterContentsExcess.find('li a').addClass('updateExcess');
 				return;
 			case 'HC':
 				$filterHomeExcess.add($filterHomeExcessLabel).add($filterContentsExcess).add($filterContentsExcessLabel).add('.excess-update').show();
-				$filterContentsExcess.find('li a').removeClass('updateExcess');
 				return;
 		}
 	}
@@ -132,46 +129,40 @@
 	function handleDropdownOption(event) {
 		event.preventDefault();
 		var $menuOption = $(event.target);
-		if ($menuOption.hasClass('updateExcess')){
-			updateExcessValue(event);
-			updateFilters();
-		}
-		else {
-			var $dropdown = $menuOption.parents('.dropdown');
-			var value = $menuOption.attr('data-value');
-			$dropdown.find('.dropdown-toggle span').text( $menuOption.text() );
-			$menuOption.parent().siblings().removeClass('active');
-			$menuOption.parent().addClass('active');
-			if ($dropdown.hasClass('filter-frequency')) {
-				if(value !== currentValues.frequency) {
-					currentValues.frequency = value;
-					$('#home_paymentType').val(currentValues.frequency);
-					Results.setFrequency(value);
+		var $dropdown = $menuOption.parents('.dropdown');
+		var value = $menuOption.attr('data-value');
+		$dropdown.find('.dropdown-toggle span').text( $menuOption.text() );
+		$menuOption.parent().siblings().removeClass('active');
+		$menuOption.parent().addClass('active');
+		if ($dropdown.hasClass('filter-frequency')) {
+			if(value !== currentValues.frequency) {
+				currentValues.frequency = value;
+				$('#home_paymentType').val(currentValues.frequency);
+				Results.setFrequency(value);
 
-					meerkat.messaging.publish(moduleEvents.CHANGED);
+				meerkat.messaging.publish(moduleEvents.CHANGED);
+			}
+		}
+
+		if ($dropdown.hasClass('filter-excess')) {
+			if ($dropdown.hasClass('homeExcess')) {
+				if(value !== currentValues.homeExcess) {
+					previousValues.homeExcess = currentValues.homeExcess;
+
+					currentValues.homeExcess = value;
+					$('#home_homeExcess').val(value);
+
+					toggleUpdate(false);
 				}
 			}
+			if ($dropdown.hasClass('contentsExcess')) {
+				if (value !== currentValues.contentsExcess) {
+					previousValues.contentsExcess = currentValues.contentsExcess;
 
-			if ($dropdown.hasClass('filter-excess')) {
-				if ($dropdown.hasClass('homeExcess')) {
-					if(value !== currentValues.homeExcess) {
-						previousValues.homeExcess = currentValues.homeExcess;
+					currentValues.contentsExcess = value;
+					$('#home_contentsExcess').val(value);
 
-						currentValues.homeExcess = value;
-						$('#home_homeExcess').val(value);
-
-						toggleUpdate(false);
-					}
-				}
-				if ($dropdown.hasClass('contentsExcess')) {
-					if (value !== currentValues.contentsExcess) {
-						previousValues.contentsExcess = currentValues.contentsExcess;
-
-						currentValues.contentsExcess = value;
-						$('#home_contentsExcess').val(value);
-
-						toggleUpdate(false);
-					}
+					toggleUpdate(false);
 				}
 			}
 		}
@@ -180,38 +171,6 @@
 	function toggleUpdate(hide) {
 		$updateBtn.toggleClass('hidden', hide);
 		$cancelUpdateBtn.toggleClass('hidden', hide);
-	}
-
-	function updateExcessValue(event) {
-		var coverType = meerkat.modules.home.getCoverType();
-		event.preventDefault();
-		var $menuOption = $(event.target);
-		var homeValue, contentsValue;
-		if($menuOption.text() === 'update') { // home and contents
-			homeValue = $('.homeExcess .dropdown-toggle span').text().replace('$', '');
-			contentsValue = $('.contentsExcess .dropdown-toggle span').text().replace('$', '');
-		} else { // home only or contents only
-			homeValue = $menuOption.text().replace('$', '');
-			contentsValue = $menuOption.text().replace('$', '');
-		}
-		if (homeValue !== currentValues.homeExcess && (coverType == 'H' || coverType == 'HC')) {
-			currentValues.homeExcess = homeValue;
-			$('#home_homeExcess').val(homeValue);
-		}
-		if (contentsValue !== currentValues.contentsExcess && (coverType == 'C' || coverType == 'HC')) {
-			currentValues.contentsExcess = contentsValue;
-			$('#home_contentsExcess').val(contentsValue);
-		}
-		if(coverType == 'H') {
-			meerkat.messaging.publish(moduleEvents.CHANGED, {homeExcess:homeValue});
-		}
-		else if(coverType == 'C') {
-			meerkat.messaging.publish(moduleEvents.CHANGED, {contentsExcess:contentsValue});
-		}
-		else {
-			meerkat.messaging.publish(moduleEvents.CHANGED, {contentsExcess:contentsValue, homeExcess:homeValue});
-		}
-
 	}
 
 	function storeCurrentValues() {
@@ -312,6 +271,7 @@
 		$(document).on('resultsFetchStart pagination.scrolling.start', function onResultsFetchStart() {
 			pageScrollingLockYScroll = true;
 			disable();
+			toggleUpdate(true);
 		});
 
 		$(document).on('resultsFetchFinish pagination.scrolling.end', function onResultsFetchStart() {
@@ -529,10 +489,10 @@
 			$filterFrequency = $component.find('.filter-frequency');
 			$filterHomeExcess = $component.find('.filter-excess.homeExcess');
 			$filterContentsExcess = $component.find('.filter-excess.contentsExcess');
-			$filterHomeExcessLabel = $component.find('.filter-label.homeExcessLabel');
-			$filterContentsExcessLabel = $component.find('.filter-label.contentsExcessLabel');
+			$filterHomeExcessLabel = $labels.find('.filter-home-excess-label');
+			$filterContentsExcessLabel = $labels.find('.filter-contents-excess-label');
 			$updateBtn = $component.find('.updateFilters');
-			$cancelUpdateBtn = $('.filter-cancel-label a');
+			$cancelUpdateBtn = $labels.find('.filter-cancel-label a');
 			$slideFeaturesFiltersLink = $('#navbar-main .slide-feature-filters a');
 
 			setDefaultExcess();
