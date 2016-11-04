@@ -14,7 +14,7 @@ public class HealthApplicationExactTargetFormatter extends ExactTargetFormatter<
     protected ExactTargetEmailModel formatXml(HealthApplicationEmailModel model) {
         emailModel = new ExactTargetEmailModel();
         emailModel.setAttribute("SubscriberKey", model.getEmailAddress());
-        emailModel.setAttribute("EmailAddr", model.getEmailAddress());
+        emailModel.setAttribute("EmailAddress", model.getEmailAddress());
         emailModel.setAttribute("FirstName", model.getFirstName());
         if (StringUtils.isNotBlank(model.getBccEmail())) {
             emailModel.setAttribute("BCC_email", model.getBccEmail());
@@ -32,16 +32,22 @@ public class HealthApplicationExactTargetFormatter extends ExactTargetFormatter<
         emailModel.setAttribute("ExtrasPDSUrl", model.getExtrasPdsUrl());
 
         model.getPremiumFrequency().ifPresent(v -> emailModel.setAttribute("PremiumFrequency", v));
-        model.getProviderLogo().ifPresent(v -> emailModel.setAttribute("ProviderLog", v));
-        model.getPremium().ifPresent(v -> emailModel.setAttribute("Premium", v));
-        model.getPremiumLabel().ifPresent(v -> emailModel.setAttribute("PremiumLabel", v));
+        model.getProviderLogo().ifPresent(v -> emailModel.setAttribute("P1ProviderLogo", v));
+        model.getPremium().ifPresent(v -> emailModel.setAttribute("P1Premium", v));
+        model.getPremiumLabel().ifPresent(v -> emailModel.setAttribute("P1PremiumLhcRebate", v));
         model.getHealthMembership().ifPresent(v -> emailModel.setAttribute("HealthMembership", v));
-        model.getExcess().ifPresent(v -> emailModel.setAttribute("Excess", v));
         model.getHealthSituation().ifPresent(v -> emailModel.setAttribute("HealthSituation", v));
         model.getCoverType().ifPresent(v -> emailModel.setAttribute("CoverType", v));
-        model.getPremiumTotal().ifPresent(v -> emailModel.setAttribute("PremiumTotal", v));
+        model.getPremiumTotal().ifPresent(v -> emailModel.setAttribute("P1PremiumTotal", v));
         model.getPolicyStartDate().ifPresent(v -> emailModel.setAttribute("PolicyStartDate", v));
-        model.getProviderEmail().ifPresent(v -> emailModel.setAttribute("FundEmail", v));
+        model.getProviderEmail().ifPresent(v -> emailModel.setAttribute("P1ProviderEmail", v));
+
+        emailModel.setAttribute("P1ProductName",model.getProductName());
+        emailModel.setAttribute("P1ProviderName",model.getHealthFund());
+        emailModel.setAttribute("P1ProviderPhone", model.getProviderPhoneNumber());
+        emailModel.setAttribute("P1HospitalPdsUrl", model.getHospitalPdsUrl());
+        emailModel.setAttribute("P1ExtrasPdsUrl",model.getExtrasPdsUrl());
+
 
         model.getPrimary().ifPresent(p -> {
             getFromPolicyHolder(emailModel, p, 1);
@@ -61,8 +67,8 @@ public class HealthApplicationExactTargetFormatter extends ExactTargetFormatter<
     }
 
     private void getFromPolicyHolder(ExactTargetEmailModel emailModel, PolicyHolderModel p, int index) {
-        emailModel.setAttribute("P" +  index + "FirstName", p.getFirstName());
-        emailModel.setAttribute("P" +  index + "Surname", p.getLastName());
-        emailModel.setAttribute("P" +  index + "DOB", p.getDateOfBirth());
+        emailModel.setAttribute("Applicant" +  index + "FirstName", p.getFirstName());
+        emailModel.setAttribute("Applicant" +  index + "LastName", p.getLastName());
+        emailModel.setAttribute("Applicant" +  index + "DOB", p.getDateOfBirth());
     }
 }
