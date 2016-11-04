@@ -233,12 +233,13 @@
                 extrasDisabledContent = meerkat.site.content.extrasFamilyDisabled;
                 break;
             case 'SF':
+                var isSingleCouple = _.indexOf(['SM','SF','C'],situation) >= 0;
                 if(age >= 40) {
                     hospitalContent = meerkat.site.content.hospitalSettledFamilyOlder;
-                    extrasContent = meerkat.site.content.extrasSettledFamilyOlder;
+                    extrasContent = meerkat.site.content[isSingleCouple ? 'extrasSettledFamilyOlderSingleCouple' : 'extrasSettledFamilyOlder'];
                 } else {
                     hospitalContent = meerkat.site.content.hospitalSettledFamilyYoung;
-                    extrasContent = meerkat.site.content.extrasSettledFamilyYoung;
+                    extrasContent = meerkat.site.content[isSingleCouple ? 'extrasSettledFamilyYoungSingleCouple' : 'extrasSettledFamilyYoung'];
                 }
 
                 switch (coverType) {
@@ -326,9 +327,9 @@
                 break;
 
             case 'ATP':
-                hospitalContent = meerkat.site.content.hospitalLimitedYoung;
-                extrasContent = meerkat.site.content.extrasLimitedDisabled;
-                extrasDisabledContent = meerkat.site.content.extrasLimitedDisabled;
+                hospitalContent = meerkat.site.content.hospitalLimitedAll;
+                extrasContent = meerkat.site.content.extrasLimitedAll;
+                extrasDisabledContent = meerkat.site.content.extrasLimitedAll;
                 helpContent = meerkat.site.content.hospitalLimitedHelp;
 
         }
@@ -599,8 +600,7 @@
 
     function updateCoverLevel() {
         $hospitalCoverToggles.removeClass('active').filter('[data-category="' + currentCover + '"]').addClass('active');
-        $('#health_filterBar_coverLevel').find('option').removeAttr('selected');
-        $('#health_filterBar_coverLevel_' + currentCover).attr('selected','selected');
+        $('#health_filterBar_coverLevel').val(currentCover); // select the new cover level
         $benefitsCoverType.val(currentCover);
     }
 

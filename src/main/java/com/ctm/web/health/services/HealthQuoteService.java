@@ -272,6 +272,9 @@ public class HealthQuoteService extends CommonRequestServiceV2 {
                 case "hbf_89564575":
                     providerFilter.setSingleProvider("18");
                     break;
+                case "qtu_24642736":
+                    providerFilter.setSingleProvider("19");
+                    break;
                 default:
                     throw new RouterException("Invalid providerKey");
             }

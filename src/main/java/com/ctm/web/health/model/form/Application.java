@@ -46,6 +46,8 @@ public class Application {
 
     private Hbf hbf;
 
+    private Qtu qtu;
+
     public Address getAddress() {
         return address;
     }
@@ -221,5 +223,13 @@ public class Application {
     public Application setHbf(Hbf hbf) {
         this.hbf = hbf;
         return this;
+    }
+
+    public Qtu getQtu() {
+        return qtu;
+    }
+
+    public void setQtu(Qtu qtu) {
+        this.qtu = qtu;
     }
 }

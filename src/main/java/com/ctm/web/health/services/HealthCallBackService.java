@@ -1,6 +1,7 @@
 package com.ctm.web.health.services;
 
 import com.ctm.web.core.leadService.model.LeadRequest;
+import com.ctm.web.core.leadService.model.LeadResponse;
 import com.ctm.web.core.leadService.model.LeadStatus;
 import com.ctm.web.core.leadService.model.LeadType;
 import com.ctm.web.core.leadService.services.LeadServiceUtil;
@@ -14,14 +15,16 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.util.concurrent.ListenableFuture;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
-import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static com.ctm.web.health.model.leadservice.HealthMetadata.EMPTY_HEALTH_METADATA;
 
 @Component
@@ -30,6 +33,7 @@ public class HealthCallBackService {
     private static final Logger LOGGER = LoggerFactory.getLogger(HealthCallBackService.class);
     public static final String LAST_LEAD_SERVICE_VALUES = "LAST_LEAD_SERVICE_VALUES";
     public static final int HEALTH_VERTICAL_ID = 4;
+    public static final int LEAD_SERVICE_TIMEOUT = 10;
 
     private IPAddressHandler ipAddressHandler;
 
@@ -38,36 +42,28 @@ public class HealthCallBackService {
         this.ipAddressHandler = ipAddressHandler;
     }
 
-    public void sendLead(HealthCallBackData data, Data dataBucket, HttpServletRequest request, LeadType leadType) {
-        try {
-            ServiceConfiguration serviceConfig = ServiceConfigurationService.getServiceConfiguration("leadService", HEALTH_VERTICAL_ID);
+    public void sendLead(HealthCallBackData data, Data dataBucket, HttpServletRequest request, LeadType leadType) throws Exception {
+        ServiceConfiguration serviceConfig = ServiceConfigurationService.getServiceConfiguration("leadService", HEALTH_VERTICAL_ID);
 
-            Boolean enabled = Boolean.valueOf(serviceConfig.getPropertyValueByKey("enabled", 0, 0, ServiceConfigurationProperty.Scope.SERVICE));
-            String url = serviceConfig.getPropertyValueByKey("url", 0, 0, ServiceConfigurationProperty.Scope.SERVICE);
-//            String url = "http://localhost:9040/lead/";
+        Boolean enabled = Boolean.valueOf(serviceConfig.getPropertyValueByKey("enabled", 0, 0, ServiceConfigurationProperty.Scope.SERVICE));
+        String url = serviceConfig.getPropertyValueByKey("url", 0, 0, ServiceConfigurationProperty.Scope.SERVICE);
 
-            if (enabled) {
-                final LeadRequest leadData = createLeadRequest(data, dataBucket, request, leadType);
+        if (enabled) {
+            final LeadRequest leadData = createLeadRequest(data, dataBucket, request, leadType);
 
-//                leadData.setRootId(data.getTransactionId());
-//                leadData.setTransactionId(data.getTransactionId());
-//                leadData.setBrandCode("ctm");
-//                leadData.setClientIP("192.168.72.22");
+            String previousValues = (String) request.getSession().getAttribute(LAST_LEAD_SERVICE_VALUES);
+            String currentValues = leadData.getValues();
 
-                String previousValues = (String) request.getSession().getAttribute(LAST_LEAD_SERVICE_VALUES);
-                String currentValues = leadData.getValues();
+            if (!currentValues.equals(previousValues)) {
+                ListenableFuture<ResponseEntity<LeadResponse>> sendRequestListenable = LeadServiceUtil.sendRequestListenable(leadData, url);
 
-                if (!currentValues.equals(previousValues)) {
-                    request.getSession().setAttribute(LAST_LEAD_SERVICE_VALUES, currentValues);
+                sendRequestListenable.get(LEAD_SERVICE_TIMEOUT, TimeUnit.SECONDS);
 
-                    LeadServiceUtil.sendRequest(leadData, url);
-                }
-
+                LOGGER.info("Successfully added health callback");
+                request.getSession().setAttribute(LAST_LEAD_SERVICE_VALUES, currentValues);
             }
-        } catch (Throwable e) {
-            LOGGER.error("Error sending lead request {}", kv("data", data), e);
-        }
 
+        }
     }
 
     private LeadRequest createLeadRequest(HealthCallBackData data, Data dataBucket, HttpServletRequest request, LeadType leadType) {
@@ -75,10 +71,10 @@ public class HealthCallBackService {
 
         leadData.getPerson().setFirstName(StringUtils.left(data.getName(), 50));
         Optional.ofNullable(data.getMobileNumber())
-                .map(mobile -> mobile.replace("[^0-9]", ""))
+                .map(mobile -> mobile.replaceAll("[^0-9]", ""))
                 .ifPresent(mobile -> leadData.getPerson().setMobile(StringUtils.left(mobile, 10)));
         Optional.ofNullable(data.getOtherNumber())
-                .map(phone -> phone.replace("[^0-9]", ""))
+                .map(phone -> phone.replaceAll("[^0-9]", ""))
                 .ifPresent(phone -> leadData.getPerson().setPhone(StringUtils.left(phone, 10)));
         Optional.ofNullable(data.getScheduledDateTime())
                 .map(dateTime -> ZonedDateTime.parse(dateTime, DateTimeFormatter.ISO_DATE_TIME))
