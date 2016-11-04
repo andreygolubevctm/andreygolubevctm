@@ -326,7 +326,7 @@
 		var $termsContent = $element.next('.offerTerms-content');
 
 		var $logo =				$element.closest('.resultInsert, .more-info-content').find('.travelCompanyLogo');
-		var $productName =		$element.closest('.resultInsert, .more-info-content').find('.productTitle span:first');
+		var $productName =		$element.closest('.resultInsert, .more-info-content').find('.productTitle span:first, h2.productTitle:first');
 
 		meerkat.modules.dialogs.show({
 			title: $logo.clone().wrap('<p>').addClass('hidden-xs').parent().html() + "<div class='hidden-xs heading'>" + $productName.html() + "</div>" + "<div class='heading'>Offer terms</div>",
@@ -334,7 +334,7 @@
 			className: 'offer-terms-modal',
 			openOnHashChange: false,
 			closeOnHashChange: true,
-			htmlContent: $logo.clone().wrap('<p>').removeClass('hidden-xs').addClass('hidden-sm hidden-md hidden-lg').parent().html() + "<h2 class='visible-xs heading'>" + $productName.html() + "</h2>" +  $termsContent.html()
+			htmlContent: $logo.clone().wrap('<p>').removeClass('hidden-xs').addClass('hidden-sm hidden-md hidden-lg').parent().html() + "<h2 class='visible-xs heading'>" + $productName.html() + "</h2><div class='termsWrapper'>" +  $termsContent.html() + "</div>"
 		});
 	}
 

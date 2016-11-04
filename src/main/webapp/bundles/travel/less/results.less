@@ -503,6 +503,13 @@ body[data-step="results"] #dynamic_dom {
 				}
 			}
 		}
+		@media(max-width: 480px) {
+			&.more-info-content {
+				.promotion {
+					width: auto;
+				}
+			}
+		}
 		@media(@sm){
 			&.productTitle {
 				div:not(.promotion) {
@@ -524,11 +531,16 @@ body[data-step="results"] #dynamic_dom {
 			}
 		}
 		@media(@lg) {
+			&.productTitle {
+				div:not(.promotion) {
+					width:auto;
+				}
+			}
 			.innertube {
 				height:100%;
 				vertical-align: middle;
 				&:before {
-					height:auto;
+					display:none;
 				}
 				& > div {
 					height: auto;
@@ -552,6 +564,14 @@ body[data-step="results"] #dynamic_dom {
 		}
 		.travelCompanyLogo {
 			float:left;
+		}
+		.termsWrapper {
+			display:block;
+			float:none;
+			clear:left;
+			@media(@xs-only) {
+				margin-top:2em;
+			}
 		}
 	}
 }
