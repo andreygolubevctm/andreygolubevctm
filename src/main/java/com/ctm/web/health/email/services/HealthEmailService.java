@@ -392,6 +392,17 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 				| ConfigSettingException e) {
 			throw new SendEmailException("failed to get base url", e);
 		}
+
+		emailModel.setHealthSituation(request.getParameter("healthSituation"));
+		emailModel.setPrimaryCurrentPHI(request.getParameter("primaryCurrentPHI"));
+		emailModel.setCoverType(request.getParameter("coverType"));
+		emailModel.setBenefitCodes(request.getParameter("benefitCodes"));
+		emailModel.setSpecialOffer(request.getParameter("specialOffer"));
+		emailModel.setSpecialOfferTerms(request.getParameter("specialOfferTerms"));
+		emailModel.setExcessPerAdmission(request.getParameter("excessPerAdmission"));
+		emailModel.setExcessPerPerson(request.getParameter("excessPerPerson"));
+		emailModel.setExcessPerPolicy(request.getParameter("excessPerPolicy"));
+		emailModel.setCoPayment(request.getParameter("coPayment"));
 		return emailModel;
 	}
 
