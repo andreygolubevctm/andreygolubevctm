@@ -636,10 +636,6 @@
 			{
 				label:'Purchase',
 				navigationId: steps.applyStep.navigationId
-			},
-			{
-				label:'',
-				navigationId: steps.paymentStep.navigationId
 			}
 		]);
 
