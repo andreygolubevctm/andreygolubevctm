@@ -7,27 +7,20 @@ package com.ctm.web.travel.model.results;
  */
 public class Offer {
 
-    private String copy;
-    private String terms;
+    private final String copy;
+    private final String terms;
 
-    public Offer(){
-        this.copy = "";
-        this.terms = "";
+    public Offer(final String copy, final String terms){
+        this.copy = copy;
+        this.terms = terms;
     }
 
     public String getCopy() {
         return copy;
     }
 
-    public void setCopy(String copy) {
-        this.copy = copy;
-    }
-
     public String getTerms() {
         return terms;
     }
 
-    public void setTerms(String terms) {
-        this.terms = terms;
-    }
 }
