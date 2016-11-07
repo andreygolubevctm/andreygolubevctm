@@ -46,6 +46,7 @@
 				templateCallDirect = _.template($e.html());
 			}
 
+			configureContactDetails();
 		});
 
 	}
@@ -687,7 +688,17 @@
         $owner.find('label:nth-child(2)').addClass('icon-vert-hnc');
 	}
 
-
+	function configureContactDetails(){
+		var contactDetailsFields = {
+			email: [
+				{
+					$field: $("#home_policyHolder_email"),
+					$optInField: $("#home_policyHolder_marketing")
+				}
+			]
+		};
+		meerkat.modules.contactDetails.configure(contactDetailsFields);
+	}
         
 	meerkat.modules.register("home", {
 		init: initHome,
