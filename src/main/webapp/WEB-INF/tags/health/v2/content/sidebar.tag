@@ -3,6 +3,7 @@
 
 <%-- <health_content:xxx /> --%>
 <simples:snapshot />
+<health_v2_content:snapshot/>
 <coupon:promo_tile />
 <%-- TODO Temporarily disabled until part 2 --%>
 <%--<health_v2_content:benefits_help />--%>
