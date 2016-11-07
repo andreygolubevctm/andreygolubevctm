@@ -17,7 +17,6 @@ public class HealthBestPriceExactTargetFormatter extends ExactTargetFormatter<He
 		emailModel.setAttribute("QuoteReference", String.valueOf(model.getQuoteReference()));
 		emailModel.setAttribute("PhoneNumber", model.getPhoneNumber());
 		model.getHealthMembership().ifPresent(v -> emailModel.setAttribute("HealthMembership", v));
-		model.getCoverLevel().ifPresent(v -> emailModel.setAttribute("CoverLevel", v));
 		model.getHealthSituation().ifPresent(v -> emailModel.setAttribute("HealthSituation", v));
 		model.getBenefitCodes().ifPresent(v -> emailModel.setAttribute("BenefitCodes", v));
 		model.getCoverType().ifPresent(v -> emailModel.setAttribute("CoverType", v));

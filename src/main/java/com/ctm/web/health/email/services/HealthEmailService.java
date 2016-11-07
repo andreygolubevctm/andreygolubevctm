@@ -402,7 +402,6 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 			emailModel.setPremiumFrequency(ranking.get(0).getProperty("frequency"));
 			emailModel.setCoverType1(ranking.get(0).getProperty("productName"));
 			emailModel.setHealthMembership(ranking.get(0).getProperty("healthMembership"));
-			emailModel.setCoverLevel(ranking.get(0).getProperty("coverLevel"));
 			emailModel.setHealthSituation(ranking.get(0).getProperty("healthSituation"));
 			emailModel.setBenefitCodes(ranking.get(0).getProperty("benefitCodes"));
 			emailModel.setCoverType(ranking.get(0).getProperty("coverType"));
@@ -426,7 +425,7 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 			bestPriceRanking.setExtrasPdsUrl(Optional.ofNullable(rankingDetail.getProperty("extrasPdsUrl")).map(v -> baseUrl + v).orElse(null));
 			bestPriceRanking.setSpecialOffer(rankingDetail.getProperty("specialOffer"));
 			bestPriceRanking.setSpecialOfferTerms(rankingDetail.getProperty("specialOfferTerms"));
-			bestPriceRanking.setPremiumTotal(rankingDetail.getProperty("premiumTotal"));
+			bestPriceRanking.setPremiumTotal(rankingDetail.getProperty("price_actual"));
 			bestPriceRanking.setExcessPerAdmission(rankingDetail.getProperty("excessPerAdmission"));
 			bestPriceRanking.setExcessPerPerson(rankingDetail.getProperty("excessPerPerson"));
 			bestPriceRanking.setExcessPerPolicy(rankingDetail.getProperty("excessPerPolicy"));

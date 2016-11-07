@@ -914,7 +914,6 @@
             var healthMembership = $.trim($('#health_situation_healthCvr option:selected').text());
 
             data["rank_healthMembership" +  position] = healthMembership;
-            data["rank_coverLevel" +  position] = null; // TODO: where to get?
             data["rank_healthSituation" + position] = situation;
             data["rank_benefitCodes" + position] = benefitCodes.join(',');
             data["rank_coverType" + position] = product.info.ProductType;
@@ -927,7 +926,6 @@
             }
             data["rank_specialOffer" + position] = specialOffer;
             data["rank_specialOfferTerms" + position] = specialOfferTerms;
-            data["rank_premiumTotal" + position] = toDollarValue(product.premium[frequency].value.toFixed(2));
             if (product.hospital && product.hospital.inclusions) {
                 if (product.hospital.inclusions.excesses) {
                     data["rank_excessPerAdmission" + position] = (product.hospital.inclusions.excesses.perAdmission && toDollarValue(product.hospital.inclusions.excesses.perAdmission)) || null;

@@ -18,7 +18,6 @@ public class HealthBestPriceEmailModel extends BestPriceEmailModel {
 	private String CoverType1;
 	private String applyUrl;
 	private String healthMembership;
-	private String coverLevel;
 	private String healthSituation;
 	private String benefitCodes;
 	private String coverType;
@@ -58,14 +57,6 @@ public class HealthBestPriceEmailModel extends BestPriceEmailModel {
 
 	public void setHealthMembership(String healthMembership) {
 		this.healthMembership = healthMembership;
-	}
-
-	public Optional<String> getCoverLevel() {
-		return Optional.ofNullable(coverLevel);
-	}
-
-	public void setCoverLevel(String coverLevel) {
-		this.coverLevel = coverLevel;
 	}
 
 	public Optional<String> getHealthSituation() {
@@ -108,7 +99,6 @@ public class HealthBestPriceEmailModel extends BestPriceEmailModel {
 				", CoverType1='" + CoverType1 + '\'' +
 				", applyUrl='" + applyUrl + '\'' +
 				", policySituation='" + healthMembership + '\'' +
-				", policyCoverType='" + coverLevel + '\'' +
 				", healthSituation='" + healthSituation + '\'' +
 				", benefitCodes='" + benefitCodes + '\'' +
 				", primaryCurrentPHI='" + primaryCurrentPHI + '\'' +

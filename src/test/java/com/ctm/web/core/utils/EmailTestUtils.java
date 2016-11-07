@@ -23,7 +23,6 @@ public class EmailTestUtils {
 	public static final String excessPerPerson1 = "$30.00";
 	public static final String coPayment1 = "No Copayment";
 	public static final String healthMembership = "Family";
-	public static final String coverLevel = "Basic";
 	public static final String healthSituation = "Specific health need";
 	public static final String benefitCodes = "PrHospital,Cardiac,DentalGeneral,Optical,Podiatry,Physiotherapy,Chiropractic,Massage";
 	public static final String coverType = "Combined";
@@ -205,7 +204,6 @@ public class EmailTestUtils {
 		model.setApplyUrl(applyURL);
 
 		model.setHealthMembership(healthMembership);
-		model.setCoverLevel(coverLevel);
 		model.setHealthSituation(healthSituation);
 		model.setBenefitCodes(benefitCodes);
 		model.setCoverType(coverType);

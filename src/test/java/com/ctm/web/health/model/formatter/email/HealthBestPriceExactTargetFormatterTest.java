@@ -165,7 +165,6 @@ public class HealthBestPriceExactTargetFormatterTest {
 		assertEquals(resultAttributes.get("P1Copayment"), EmailTestUtils.coPayment1);
 
 		assertEquals(resultAttributes.get("HealthMembership"), EmailTestUtils.healthMembership);
-		assertEquals(resultAttributes.get("CoverLevel"), EmailTestUtils.coverLevel);
 		assertEquals(resultAttributes.get("HealthSituation"), EmailTestUtils.healthSituation);
 		assertEquals(resultAttributes.get("BenefitCodes"), EmailTestUtils.benefitCodes);
 		assertEquals(resultAttributes.get("CoverType"), EmailTestUtils.coverType);
