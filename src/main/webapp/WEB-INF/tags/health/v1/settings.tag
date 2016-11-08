@@ -128,6 +128,11 @@
 	<c:set var="combinedSettledFamilyHelp" value="${benefitsContent.getSupplementaryValueByKey('combinedSettledFamilyHelp')}" />
 	<c:set var="combinedSpecificHelp" value="${benefitsContent.getSupplementaryValueByKey('combinedSpecificHelp')}" />
 
+	<c:set var="extrasCompareSpecialA" value="${benefitsContent.getSupplementaryValueByKey('extrasCompareSpecialA')}" />
+	<c:set var="hospitalCompareSpecialA" value="${benefitsContent.getSupplementaryValueByKey('hospitalCompareSpecialA')}" />
+	<c:set var="extrasCompareSpecialB" value="${benefitsContent.getSupplementaryValueByKey('extrasCompareSpecialB')}" />
+	<c:set var="hospitalCompareSpecialB" value="${benefitsContent.getSupplementaryValueByKey('hospitalCompareSpecialB')}" />
+
 <jsp:useBean id="healthPriceDetailService" class="com.ctm.web.health.services.HealthPriceDetailService" scope="page" />
 <c:set var="healthAlternatePricingActive" value="${healthPriceDetailService.isAlternatePriceActive(pageContext.getRequest())}" />
 {
@@ -230,7 +235,12 @@
 
 		hospitalLimitedAll				: "${hospitalLimitedAll}",
 		hospitalLimitedHelp				: "${hospitalLimitedHelp}",
-		extrasLimitedAll 				: "${extrasLimitedAll}"
+		extrasLimitedAll 				: "${extrasLimitedAll}",
+
+		hospitalCompareSpecialA			: "${hospitalCompareSpecialA}",
+		extrasCompareSpecialA 			: "${extrasCompareSpecialA}",
+		hospitalCompareSpecialB			: "${hospitalCompareSpecialB}",
+		extrasCompareSpecialB 			: "${extrasCompareSpecialB}"
 	},
 	callbackPopup: {
 		enabled: <c:out value="${pageSettings.getSetting('callbackPopupEnabled') eq 'Y'}"/>,
