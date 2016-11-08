@@ -11,14 +11,28 @@
   background-color: @main-bg-colour;
 }
 
-.progress-bar-row {
-  .journeyProgressBar_v2 {
-    li {
-      span {
-        position: relative;
-        left: -50px;
-        top: -25px;
-        font-size:14px;
+@media(@sm) {
+  .progress-bar-row {
+    .journeyProgressBar_v2 {
+      li.end {
+        span {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+@media(@md) {
+  .progress-bar-row {
+    .journeyProgressBar_v2 {
+      li {
+        span {
+          position: relative;
+          left: -50px;
+          top: -25px;
+          font-size: 14px;
+        }
       }
     }
   }
