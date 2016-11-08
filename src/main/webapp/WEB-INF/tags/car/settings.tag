@@ -13,9 +13,9 @@
 <c:if test="${not empty quote_vehicle_make || not empty quote_vehicle_model || not empty quote_vehicle_year || not empty quote_vehicle_searchRego || not empty quote_vehicle_searchState}">
 	<c:set var="fromBrochure" scope="request" value="${true}"/>
 </c:if>
-<c:set var="priceDisplayMode" value="price"/>
-<c:if test="${param.display eq 'features'}">
-	<c:set var="priceDisplayMode" value="features"/>
+<c:set var="priceDisplayMode"><content:get key="resultsDisplayMode" /></c:set>
+<c:if test="${not empty param.display and (param.display eq 'price' or param.display eq 'features')}">
+	<c:set var="priceDisplayMode" value="${param.display}"/>
 </c:if>
 
 <%-- Retrieve values passed from website --%>
