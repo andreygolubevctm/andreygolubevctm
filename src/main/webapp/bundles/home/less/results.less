@@ -289,147 +289,154 @@
 //
 // Feature mode styling
 //
-.featuresMode {
-	//&.resultsContainer {
-	//	margin-bottom: 30px;
-	//}
-    //
-	//.controlContainer {
-	//	position: relative;
-	//	height: 100%;
-	//}
-    //
-	//.productSummary {
-	//	position: relative;
-    //
-	//	p {
-	//		clear: both;
-	//	}
-    //
-	//	.btn-more-info {
-	//		@media(@sm) {
-	//			position: absolute;
-	//			bottom: 8px;
-	//			left: 8%;
-	//			width: 84%;
-	//		}
-	//	}
-    //
-	//	.frequency {
-	//		&.annual {
-	//			padding-top: 12px;
-	//		}
-    //
-	//		// Make room for the logo
-	//		margin-left: 90px;
-	//	}
-	//}
-
-	.icon-tick {
-		color: @tick-color;
-	}
-	.icon-cross {
-		color: @cross-color;
-	}
-
-	//.frequencyAmount,
-	//.excessAmount,
-	//.frequencyTitle,
-	//.excessTitle {
-	//	width: auto;
-	//	margin-top: 0;
-	//}
-    //
-	//.result,
-	//.productSummary {
-	//	height: 182px;
-	//}
-
-	@media(@xs-only) {
-		//.result,
-		//.productSummary {
-		//	height: 150px;
-		//}
-        //
-		//.productSummary {
-		//	padding: (@results-feature-cell-padding * 2) @results-feature-cell-padding;
-        //
-		//	h2 {
-		//		margin-left: 90px;
-		//		line-height: 0.9;
-		//	}
-        //
-		//	// Using .content to pick up normal feature row styling
-		//	// Needs -margin to combat the padding on .productSummary
-		//	.content {
-		//		margin: 0 -@results-feature-cell-padding;
-		//	}
-        //
-		//}
-
-		// Normal heading
-		.labelInColumn {
-			.content {
-				background: @feature-odd-bg-color;
-			}
+#results_v5 {
+	&.featuresMode {
+		&.resultsContainer {
+			margin-bottom: 30px;
 		}
 
-		// Not a real feature, but shares the styling.
-		//.fakeFeatures {
-		//	.labelInColumn .content {
-		//		color: #fff;
-		//		background: @theme-secondary;
-		//	}
-		//}
-
-		// Special feature row with "inverse" colouring. Note this should be same specificity or less as expanded row.
-		.inverseRow.labelInColumn {
-			.content {
-				color: @feature-inverse-color;
-				background: @feature-inverse-bg-color;
-			}
-		}
-
-		// Special case as per design
-		.excessFeature.labelInColumn {
-			.content {
-				color: #fff;
-				background: @btn-pagination-bg-color; //Match xs-results-pagination
-			}
-		}
-	}
-
-	//@media(@sm-only) {
-	//	.productSummary {
-	//		.frequency {
-	//			padding-top: 10px;
-    //
-	//			// Make room for the logo
-	//			margin-left: 65px;
-    //
-	//			&.annual {
-	//				// This makes room for monthly price content
-	//				margin-bottom: 28px;
-	//			}
-	//		}
-	//	}
-	//}
-    //
-	//@media(@md) {
-	//	.monthlyBreakdown .totalPayment {
-	//		display: block;
-	//	}
-	//}
-
-	@media(@lg) {
+		.result,
 		.productSummary {
-			.frequency {
-				// Make room for the logo
-				margin-left: 70px;
+			height: auto;
+			@media (@sm) {
+				height: 427px;
+			}
+			@media (@lg) {
+				height: 485px;
 			}
 		}
-	}
 
+		.headers.featuresNormalHeader {
+			.compare-basket {
+				@media (@sm) {
+					height: 427px;
+				}
+				@media (@lg) {
+					height: 485px;
+				}
+			}
+		}
+
+		.excess {
+			text-align: center;
+			margin-bottom: 5px;
+			.excessAmount {
+				margin-bottom: 0;
+			}
+		}
+
+		.result-special-offer {
+			@media (@sm) {
+				height: 84px;
+			}
+			@media (@lg) {
+				height: 97px;
+			}
+		}
+
+		.icon-tick {
+			color: @tick-color;
+		}
+		.icon-cross {
+			color: @cross-color;
+		}
+
+		.featuresList {
+			.feature {
+				&.insuredAmountLabel {
+					.content {
+						background-color: #E7E7E7;
+					}
+
+					@media (@xs-only) {
+						.c.content {
+							display: none;
+						}
+					}
+				}
+				&.insuredAmount {
+					.content {
+						background-color: @feature-odd-bg-color;
+						.insuredAmountMinimum {
+							color: #999;
+							font-size: 11px;
+							font-weight: normal;
+						}
+					}
+				}
+			}
+			&.featuresTemplateComponent {
+				.insuredAmount {
+					.content {
+						font-size: 12px;
+					}
+				}
+			}
+			&.featuresElements {
+				.insuredAmount {
+					background-color: @feature-odd-bg-color;
+					.content {
+						font-size: 16px;
+						font-weight: bold;
+						text-align: right;
+					}
+
+					@media (@xs-only) {
+						.clearfix();
+						.labelInColumn {
+							float: left;
+							width: 30%;
+							.content {
+								font-size: 12px;
+								font-weight: normal;
+							}
+						}
+						.c.content {
+							float: left;
+							width: 70%;
+						}
+					}
+				}
+			}
+		}
+
+		@media (@xs-only) {
+			// Normal heading
+			.labelInColumn {
+				.content {
+					background: @feature-odd-bg-color;
+				}
+			}
+
+			// Special feature row with "inverse" colouring. Note this should be same specificity or less as expanded row.
+			.inverseRow.labelInColumn {
+				.content {
+					color: @feature-inverse-color;
+					background: @feature-inverse-bg-color;
+				}
+			}
+
+			// Special case as per design
+			.excessFeature.labelInColumn {
+				.content {
+					color: #fff;
+					background: @btn-pagination-bg-color; //Match xs-results-pagination
+				}
+			}
+
+
+		}
+
+		@media (@lg) {
+			.productSummary {
+				.frequency {
+					// Make room for the logo
+					margin-left: 70px;
+				}
+			}
+		}
+
+	}
 }// features mode
 #navbar-filter .excess-update .updateExcess {
 	padding: 4px;

@@ -130,11 +130,13 @@
 	{{ var htmlTemplate = _.template(template); }}
 	{{ var callActionButtonsTemplate = htmlTemplate(obj); }}
 
+	{{ var template = $("#excess-features-template").html(); }}
+	{{ var htmlTemplate = _.template(template); }}
+	{{ var excessFeaturesTemplate = htmlTemplate(obj); }}
+
 	{{ var template = $("#home-offline-discount-template").html(); }}
 	{{ var htmlTemplate = _.template(template); }}
 	{{ obj.offlineDiscountTemplate = htmlTemplate(obj); }}
-
-	{{ console.log('obj', obj) }}
 
 	<div class="result-row result_{{= obj.productId }}" data-productId="{{= obj.productId }}" data-available="Y">
 
@@ -144,16 +146,9 @@
 				{{= annualPriceFeaturesTemplate }}
 				{{= monthlyPriceFeaturesTemplate }}
 				<div class="headerButtonWrapper">
-					<%--<a class="btn btn-primary btn-cta btn-block btn-more-info" href="javascript:;" data-productId="{{= obj.productId }}">More Info & Apply <span class="icon icon-arrow-right" /></a>--%>
 					{{= mainCallToActionButton }}
 				</div>
 			</div>
-			<%--<div class="productSummary results visible-xs">--%>
-				<%--{{= logo }}--%>
-				<%--<div class="headerButtonWrapper">--%>
-					<%--<a class="btn btn-primary btn-cta btn-block btn-more-info" href="javascript:;" data-productId="{{= obj.productId }}">More Info <span class="icon icon-arrow-right" /></a>--%>
-				<%--</div>--%>
-			<%--</div>--%>
 		</div>
 
 		<div class="result featuresNormalHeader headers">
@@ -169,11 +164,12 @@
 						{{= monthlyPriceFeaturesTemplate }}
 					</div>
 
+					{{= excessFeaturesTemplate }}
+
 					<h2 class="productTitle">{{= productTitle }}</h2>
 
 					<div class="headerButtonWrapper">
 						{{= mainCallToActionButton }}
-						<%--<a class="btn btn-primary btn-cta btn-block btn-more-info" href="javascript:;" data-productId="{{= obj.productId }}">More Info & Apply <span class="icon icon-arrow-right" /></a>--%>
 					</div>
 
 					{{= callActionButtonsTemplate }}
@@ -181,7 +177,7 @@
 					{{ if (promotionText.length > 0) { }}
 					<fieldset class="result-special-offer">
 						<legend>Special Offer</legend>
-						{{= promotionText }}
+						{{= promotionText.replace('<b>SPECIAL OFFER:</b>', '') }}
 						{{ if (offerTermsContent.length > 0) { }}
 						<a class="small offerTerms" href="javascript:;">Conditions</a>
 						<div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
@@ -189,12 +185,6 @@
 					</fieldset>
 					{{ } }}
 				</div>
-				<%--<div class="productSummary results visible-xs">--%>
-					<%--{{= logo }}--%>
-					<%--<div class="headerButtonWrapper">--%>
-						<%--<a class="btn btn-primary btn-cta btn-block btn-more-info" href="javascript:;" data-productId="{{= obj.productId }}">More Info & Apply <span class="icon icon-arrow-right" /></a>--%>
-					<%--</div>--%>
-				<%--</div>--%>
 			</div>
 
 			<div class="resultInsert priceMode">
@@ -276,50 +266,6 @@
 			</div><%-- /resultInsert --%>
 
 		</div>
-
-		<%-- The following block is some hacks for XS --%>
-		<%--<div class="fakeFeatures featuresMode featuresElements hidden-sm hidden-md hidden-lg">--%>
-			<%--<div class="cell feature collapsed">--%>
-				<%--<div class="labelInColumn feature">--%>
-					<%--<div class="content">Pricing</div>--%>
-				<%--</div>--%>
-				<%--<div class="c content">--%>
-					<%--{{= annualPriceTemplate }}--%>
-					<%--{{= monthlyPriceTemplate }}--%>
-				<%--</div>--%>
-			<%--</div>--%>
-
-			<%--<div class="cell category expandable inverseRow collapsed">--%>
-				<%--<div class="labelInColumn category expandable collapsed inverseRow">--%>
-					<%--<div class="content" data-featureid="10001">--%>
-						<%--<div class="contentInner">Special Feature / Offer<span class="icon expander"></span></div>--%>
-					<%--</div>--%>
-				<%--</div>--%>
-				<%--<div class="c content isMultiRow" data-featureid="10001">--%>
-					<%--{{= (obj.features.hasOwnProperty('speFea') && obj.features.speFea.hasOwnProperty('value')) ? obj.features.speFea.value : '' }}--%>
-				<%--</div>--%>
-				<%--<div class="children" data-fid="10001">--%>
-					<%--<div class="cell feature collapsed">--%>
-						<%--<div class="labelInColumn feature collapsed noLabel">--%>
-							<%--<div class="content" data-featureid="10002">--%>
-								<%--<div class="contentInner"></div>--%>
-							<%--</div>--%>
-						<%--</div>--%>
-						<%--<div class="c content isMultiRow" data-featureid="10002">--%>
-							<%--{{= (obj.features.hasOwnProperty('speFea') && obj.features.speFea.hasOwnProperty('extra')) ? obj.features.speFea.extra : '' }}--%>
-						<%--</div>--%>
-					<%--</div>--%>
-				<%--</div>--%>
-			<%--</div>--%>
-
-			<%--<div class="cell feature collapsed">--%>
-				<%--<div class="labelInColumn feature collapsed excessFeature">--%>
-					<%--<div class="content">--%>
-						<%--<div class="contentInner">Features</div>--%>
-					<%--</div>--%>
-				<%--</div>--%>
-			<%--</div>--%>
-		<%--</div>--%>
 
 		<%-- Feature list, defaults to a spinner --%>
 		<div class="featuresList featuresElements">
@@ -478,7 +424,7 @@
 	<div class="frequency monthly" data-availability="{{= obj.available }}">
 		<div class="frequencyAmount">
 			<span class="dollarSign">{{= '$' }}</span><span class="dollars">{{= dollars }}</span><span class="cents">{{= cents }}</span></div>
-		<div class="frequencyTitle">Month</div>
+		<div class="frequencyTitle">Monthly</div>
 		<div class="monthlyBreakdown">
 			<span class="nowrap"><span class="firstPayment">1st Month: {{= '$' }}{{= obj.price.monthlyFirstMonth.toFixed(2) }}</span></span>
 			<span class="nowrap"><span class="totalPayment">Total: {{= '$' }}{{= obj.price.annualisedMonthlyPremium.toFixed(2) }}</span></span>
@@ -555,7 +501,8 @@
 		<br>
 		Click the <input type="checkbox" class="compare-tick"><label></label> to compare up to <span class="compare-max-count-label">{{= maxAllowable }} products</span>.
 		<br>
-		All prices are inclusive of GST &amp; Gov Charges
+        <br>
+		<small>All prices are inclusive of GST &amp; Gov Charges</small>
 	</p>
 {{ }  else { }}
 
@@ -639,6 +586,41 @@
 		</div>
 		{{ } }}
 	</div>
+</core_v1:js_template>
+
+<!-- Excess template featuresMode -->
+<core_v1:js_template id="excess-features-template">
+<div class="excess row">
+	{{ var contentsExcessAmount = (obj.contentsExcess !== null && obj.contentsExcess.amount != '') ? obj.contentsExcess.amount : null; }}
+	{{ var homeExcessAmount = (obj.homeExcess !== null && obj.homeExcess.amount != '') ? obj.homeExcess.amount : null; }}
+
+	{{ if (contentsExcessAmount !== null && homeExcessAmount !== null && contentsExcessAmount === homeExcessAmount) { }}
+	<div class="col-xs-12">
+		<div class="excessAmount">{{= obj.homeExcess.amountFormatted }}</div>
+		<div class="excessTitle">Excess</div>
+	</div>
+	{{ } else { }}
+	{{ if (homeExcessAmount !== null) { }}
+	{{ var homeExcessCol = (contentsExcessAmount !== null && homeExcessAmount !== null) ? '6' : '12'; }}
+	<div class="col-xs-{{= homeExcessCol }}">
+		<div class="excessAmount">{{= obj.homeExcess.amountFormatted }}</div>
+		<div class="excessTitle">Home excess</div>
+	</div>
+	{{ } else { }}
+	<div class="col-xs-12">
+		<div class="excessAmount excessContents">{{= obj.contentsExcess.amountFormatted }}</div>
+		<div class="excessTitle">Contents excess</div>
+	</div>
+	{{ } }}
+
+	{{ if (contentsExcessAmount !== null && homeExcessAmount !== null) { }}
+	<div class="col-xs-6">
+		<div class="excessAmount excessContents">{{= obj.contentsExcess.amountFormatted }}</div>
+		<div class="excessTitle">Contents excess</div>
+	</div>
+	{{ } }}
+	{{ } }}
+</div>
 </core_v1:js_template>
 
 

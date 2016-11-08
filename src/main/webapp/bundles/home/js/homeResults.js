@@ -143,7 +143,7 @@
 				},
 				templates:{
 					pagination:{
-						pageText: 'Product {{=currentPage}} of {{=totalPages}}'
+						pageText: '{{ if(currentPage !== totalPages) { }} Product {{=currentPage}} of {{=(totalPages - 1)}} {{ } }}'
 					}
 				},
 				dictionary: {
@@ -345,25 +345,6 @@
 			}
 
 			Results.setPerformanceMode(score);
-
-			var coverType = meerkat.modules.home.getCoverType();
-			if (coverType === 'H') { // Home Only Cover
-				$.each($('.featuresList'), function moveHome() {
-					$(this).children('.homeFeature').appendTo($(this));
-				});
-				$.each($('.featuresList'), function moveContents() {
-					$(this).children('.contentsFeature').appendTo($(this));
-				});
-			}
-			else { //Either Contents Only Cover or Home & Contents Cover
-				$.each($('.featuresList'), function moveContents() {
-					$(this).children('.contentsFeature').appendTo($(this));
-				});
-				$.each($('.featuresList'), function moveHome() {
-					$(this).children('.homeFeature').appendTo($(this));
-				});
-			}
-
 		});
 
 		// Hovering a row cell adds a class to the whole row to make it highlightable

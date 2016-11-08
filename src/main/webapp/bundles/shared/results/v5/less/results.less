@@ -106,6 +106,7 @@
     .frequencyAmount {
       float: none;
       margin-top: 0;
+      padding-right: 0;
       text-align: right;
       width: auto;
       .dollarSign,
@@ -136,20 +137,24 @@
 
     .excess {
       color: @gray-light;
-      text-align: right;
       .excessAmount {
         float: none;
+        font-size: 24px;
+        line-height: 24px;
         margin-top: 0;
+        padding-right: 0;
         width: auto;
       }
       .excessTitle {
         display: block;
+        font-size: 12px;
+        line-height: 12px;
         margin-top: 0;
-        text-align: right;
       }
     }
 
     .result-special-offer {
+      margin-bottom: 12px;
       height: 60px;
       @media (@sm) {
         height: 72px;
@@ -317,6 +322,9 @@
 
   // Custom themeing for the elements in the cols/rows.
   .featuresList {
+    .content {
+      border-color: #ddd;
+    }
     .icon-tick, .icon-cross {
       margin-top: 3px;
     }
@@ -340,6 +348,10 @@
         margin-right: 5px;
         margin-left: 5px;
       }
+    }
+
+    h5 {
+      display: none;
     }
 
     ul {
