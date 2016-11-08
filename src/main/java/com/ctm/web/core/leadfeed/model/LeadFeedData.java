@@ -54,6 +54,7 @@ public class LeadFeedData {
 	private String clientIpAddress;
 
 	private String productId = null;
+	private String moreInfoProductCode;
 
 	public LeadFeedData(){
 
@@ -179,6 +180,14 @@ public class LeadFeedData {
 		this.productId = productId;
 	}
 
+	public String getMoreInfoProductCode() {
+		return moreInfoProductCode;
+	}
+
+	public void setMoreInfoProductCode(String moreInfoProductCode) {
+		this.moreInfoProductCode = moreInfoProductCode;
+	}
+
 	@Override
 	public String toString() {
 		return "LeadFeedData{" +
@@ -197,6 +206,7 @@ public class LeadFeedData {
 				", vdn='" + vdn + '\'' +
 				", clientIpAddress='" + clientIpAddress + '\'' +
 				", productId='" + productId + '\'' +
+				", moreInfoProductCode='" + moreInfoProductCode + '\'' +
 				'}';
 	}
 }
