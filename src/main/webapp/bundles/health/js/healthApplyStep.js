@@ -32,10 +32,8 @@
             .datepicker('setStartDate', min)
             .datepicker('setEndDate', max);
 
-        // validate at least 1 contact number is entered (simples)
-        if(meerkat.site.isCallCentreUser === true) {
-            $('#health_application_mobileinput').addRule('requireOneContactNumber', true, 'Please include at least one phone number');
-        }
+        // validate at least 1 contact number is entered
+        $('#health_application_mobileinput').addRule('requireOneContactNumber', true, 'Please include at least one phone number');
 
         meerkat.messaging.publish(meerkatEvents.healthPreviousFund.POPULATE_PARTNER,
             meerkat.modules.healthAboutYou.getPartnerCurrentCover());
@@ -65,7 +63,6 @@
                 $("#health_payment_details_start").val( e.format() );
                 meerkat.messaging.publish(meerkatEvents.health.CHANGE_MAY_AFFECT_PREMIUM);
             });
-
     }
 
     meerkat.modules.register('healthApplyStep', {

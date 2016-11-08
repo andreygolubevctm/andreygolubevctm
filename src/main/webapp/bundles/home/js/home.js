@@ -189,6 +189,9 @@
 			onInitialise: function() {
 				meerkat.modules.homeOccupancy.initHomeOccupancy();
 				meerkat.modules.homeBusiness.initHomeBusiness();
+				if(meerkat.modules.splitTest.isActive(2) === true) {
+					meerkat.modules.homeHistory.initHomeHistory();
+				}
 			}
 		};
 
@@ -228,28 +231,51 @@
 			onInitialise: function onInitialisePolicyHolder() {
 				// Init the results objects required for next step
 				meerkat.modules.homePolicyHolder.initHomePolicyHolder();
+				if(meerkat.modules.splitTest.isActive(2) === true) {
+					// Init the results objects required for next step
+					meerkat.modules.homeResults.initPage();
+					meerkat.modules.resultsFeatures.fetchStructure('hncamsws_');
+				}
 			},
 			onBeforeEnter: function onBeforeEnterPolicyHolder(event) {
 				meerkat.modules.homePolicyHolder.togglePolicyHolderFields();
 			}
 		};
 
+		var historyTracking = {
+			touchType: 'H',
+			touchComment: 'History',
+			includeFormData: true
+		};
+		if(meerkat.modules.splitTest.isActive(2)) {
+			historyTracking = null;
+		}
+
 		var historyStep = {
 			title: 'Cover',
 			navigationId: 'history',
 			slideIndex: 4,
-			tracking: {
-				touchType: 'H',
-				touchComment: 'History',
-				includeFormData: true
-			},
+			tracking: historyTracking,
 			externalTracking: externalTrackingSettings,
 			onInitialise: function onInitialiseHistory(event){
-				// Init the results objects required for next step
-				meerkat.modules.homeResults.initPage();
+				if(meerkat.modules.splitTest.isActive(2) === false) {
+					// Init the results objects required for next step
+					meerkat.modules.homeResults.initPage();
 
-				meerkat.modules.homeHistory.initHomeHistory();
-				meerkat.modules.resultsFeatures.fetchStructure('hncamsws_');
+					meerkat.modules.homeHistory.initHomeHistory();
+					meerkat.modules.resultsFeatures.fetchStructure('hncamsws_');
+				} else {
+					$('#coverHistoryForm').parent().find('.btn-next').addClass('hidden');
+				}
+			},
+			onAfterEnter: function onAfterEnterHistory(event) {
+				if(meerkat.modules.splitTest.isActive(2) === true) {
+					var path = event.isForward ? "results" : "policyHolder";
+
+					_.defer(function() {
+						meerkat.modules.journeyEngine.gotoPath(path);
+					});
+				}
 			}
 		};
 
@@ -475,11 +501,19 @@
 	function configureProgressBar() {
 		var keys = _.keys(steps);
 		var progressBarSteps = new Array(keys.length - 1);
+		var stepOmitList = [];
+		if(meerkat.modules.splitTest.isActive(2)) {
+			stepOmitList.push('historyStep');
+			progressBarSteps.pop();
+		}
 		for(var i=0; i<keys.length - 1; i++) {
-			progressBarSteps[steps[keys[i]].slideIndex] = {
-				label :			steps[keys[i]].title,
-				navigationId :	steps[keys[i]].navigationId
-			};
+			var step = keys[i];
+			if(_.indexOf(stepOmitList,step) === -1) {
+				progressBarSteps[steps[step].slideIndex] = {
+					label: steps[step].title,
+					navigationId: steps[step].navigationId
+				};
+			}
 		}
 		meerkat.modules.journeyProgressBar.configure(progressBarSteps);
 	}

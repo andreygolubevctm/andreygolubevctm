@@ -48,6 +48,10 @@
 
 		try {
 			var displayMode = 'price';
+			if(typeof meerkat.site != 'undefined' && typeof meerkat.site.resultOptions != 'undefined') {
+				// confirming its either features or price.
+				displayMode = meerkat.site.resultOptions.displayMode == 'features' ? 'features' : 'price';
+			}
 
 			var price = {
 				annually: "price.annualPremium",
@@ -218,10 +222,12 @@
 		// When the navar docks/undocks
 		meerkat.messaging.subscribe(meerkatEvents.affix.AFFIXED, function navbarFixed() {
 			$('#resultsPage').css('margin-top', '35px');
+			$(Results.settings.elements.resultsContainer).addClass('affixed-settings');
 		});
 
 		meerkat.messaging.subscribe(meerkatEvents.affix.UNAFFIXED, function navbarUnfixed() {
 			$('#resultsPage').css('margin-top', '0');
+			$(Results.settings.elements.resultsContainer).removeClass('affixed-settings');
 		});
 
 		// When the excess filter changes, fetch new results
@@ -305,20 +311,12 @@
 				$(document.body).removeClass('priceMode').addClass('priceMode');
 			}
 
-			// If no providers opted to show results, display the no results modal.
-			var availableCounts = 0;
-			$.each(Results.model.returnedProducts, function(){
-				if (this.available === 'Y' && this.productId !== 'CURR') {
-					availableCounts++;
-				}
-			});
 			// Check products length in case the reason for no results is an error e.g. 500
-			if (availableCounts === 0 && _.isArray(Results.model.returnedProducts) && Results.model.returnedProducts.length > 0) {
+			if (Results.model.availableCounts === 0 && _.isArray(Results.model.returnedProducts) && Results.model.returnedProducts.length > 0) {
 				showNoResults();
 			}
 
 			meerkat.messaging.publish(meerkatEvents.commencementDate.RESULTS_RENDER_COMPLETED);
-
 		});
 
 		$(document).on("populateFeaturesStart", function onPopulateFeaturesStart() {
@@ -369,17 +367,17 @@
 			});
 		});
 
-		$(document.body).on('click', '#results_v3 .btnContainer .btn-call-actions', function triggerMoreInfoCallActions(event) {
+		$(document.body).on('click', '#results_v5 .btnContainer .btn-call-actions', function triggerMoreInfoCallActions(event) {
 			var element = $(this);
 			meerkat.messaging.publish(meerkatEvents.carResults.FEATURES_CALL_ACTION, {event: event, element: element});
 		});
 
-		$(document.body).on('click', '#results_v3 .call-modal .btn-call-actions', function triggerMoreInfoCallActionsFromModal(event) {
+		$(document.body).on('click', '#results_v5 .call-modal .btn-call-actions', function triggerMoreInfoCallActionsFromModal(event) {
 			var element = $(this);
 			meerkat.messaging.publish(meerkatEvents.carResults.FEATURES_CALL_ACTION_MODAL, {event: event, element: element});
 		});
 
-		$(document.body).on('click', '#results_v3 .btn-submit-callback', function triggerMoreInfoSubmitCallback(event) {
+		$(document.body).on('click', '#results_v5 .btn-submit-callback', function triggerMoreInfoSubmitCallback(event) {
 			var element = $(this);
 			meerkat.messaging.publish(meerkatEvents.carResults.FEATURES_SUBMIT_CALLBACK, {event: event, element: element});
 		});
@@ -389,6 +387,14 @@
 
 		meerkat.messaging.subscribe(meerkatEvents.RESULTS_RANKING_READY, function() {
 			$('.esl-message').toggleClass('hidden', $('#quote_riskAddress_state').val() !== 'NSW');
+		});
+
+		meerkat.messaging.subscribe(meerkatEvents.resultsMobileDisplayModeToggle.DISPLAY_MODE_CHANGED, function(obj) {
+			if (obj.displayMode === 'price') {
+				switchToPriceMode(true);
+			} else {
+				switchToFeaturesMode(true);
+			}
 		});
 	}
 
@@ -404,6 +410,18 @@
 
 		meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function resultsXsBreakpointLeave(){
 			stopColumnWidthTracking();
+			Results.pagination.setCurrentPageNumber(1);
+			Results.pagination.resync();
+		});
+
+		meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_SM, function resultsSmBreakpointEnter(){
+			if (meerkat.modules.journeyEngine.getCurrentStep().navigationId === 'results') {
+				Results.pagination.setCurrentPageNumber(1);
+				Results.pagination.resync();
+			}
+		});
+
+		meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_SM, function resultsSmBreakpointLeave(){
 			Results.pagination.setCurrentPageNumber(1);
 			Results.pagination.resync();
 		});
@@ -465,6 +483,10 @@
 	function showNoResults() {
 		if (meerkat.modules.hasOwnProperty('carFilters')) {
 			meerkat.modules.carFilters.disable();
+		}
+
+		if (meerkat.modules.hasOwnProperty('mobileNavButtons')) {
+			meerkat.modules.mobileNavButtons.disable();
 		}
 	}
 
@@ -570,6 +592,9 @@
 				Results.pagination.gotoPage(1);
 				if (meerkat.modules.deviceMediaState.get() === 'xs') {
 					Results.view.setColumnWidth($(window), Results.settings.render.features.numberOfXSColumns, false);
+				}
+				if (meerkat.modules.deviceMediaState.get() === 'sm') {
+					stopColumnWidthTracking();
 				}
 				Results.pagination.setupNativeScroll();
 			});

@@ -12,6 +12,16 @@
 CBHS (Commbank)
 =======================
 --%>
+
+<%-- Variables --%>
+<c:set var="invoiceOffContent"><content:get key="cbhsHideInvoiceOption"/></c:set>
+<c:set var="invoiceOff">
+	<c:choose>
+		<c:when test="${not empty invoiceOffContent and invoiceOffContent eq 'Y'}">${true}</c:when>
+		<c:otherwise>${false}</c:otherwise>
+	</c:choose>
+</c:set>
+
 var healthFunds_CBH = {
 	processOnAmendQuote: true,
 	ajaxJoinDec: false,
@@ -228,7 +238,8 @@ var healthFunds_CBH = {
 			healthFunds_CBH.paymentLabelOriginal = $('#health_payment_details_type label:first').text();
 			meerkat.modules.radioGroup.changeLabelText( $('#health_payment_details_type'), 0, 'Invoice' );
 
-			meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':false, 'fortnightly':false, 'monthly':false, 'quarterly':true, 'halfyearly':true, 'annually':true });
+			<%--meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':false, 'fortnightly':false, 'monthly':false, 'quarterly':true, 'halfyearly':true, 'annually':true });--%>
+			meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':false, 'fortnightly':false, 'monthly':false, 'quarterly':false, 'halfyearly':false, 'annually':false });
 			meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':false, 'fortnightly':true, 'monthly':true, 'quarterly':false, 'halfyearly':false, 'annually':false });
 
 			$('#health_payment_details_type').after('<p class="CBH" style="display:none; margin-top:1em">You will shortly receive a Payment Notice from CBHS.  Your Payment Notice will include the biller code and reference number needed to BPAY your contribution or make your payment by credit card via BPOINT.  If CBHS does not receive your payment within 14 days, you will receive a reminder notice.</p>');
@@ -258,26 +269,12 @@ var healthFunds_CBH = {
 			<%-- Claims account --%>
 			meerkat.modules.healthPaymentStep.overrideSettings('creditBankSupply',true);
 			meerkat.modules.healthPaymentStep.overrideSettings('creditBankQuestions',true);
-
-			<%-- Load join dec into label --%>
-			healthFunds_CBH.joinDecLabelHtml = $('#health_declaration + label').html();
-			healthFunds_CBH.ajaxJoinDec = $.ajax({
-				url: '/' + meerkat.site.urls.context + 'health/provider/content/get.json?providerId=10&providerContentTypeCode=JDO',
-				type: 'GET',
-				async: true,
-				dataType: 'html',
-				timeout: 20000,
-				cache: true,
-				success: function(htmlResult) {
-					if(typeof htmlResult === 'string')
-						htmlResult = JSON.parse(htmlResult);
-
-					$('#health_declaration + label').html(htmlResult.providerContentText);
-				},
-				error: function(obj,txt) {
-				}
-			});
 		}<%-- /not loading quote --%>
+		<c:if test="${invoiceOff eq true}">
+			$('#health_payment_details_type_cc').addClass('disabled-by-fund').prop('disabled', true);
+			$('#health_payment_details_type_cc').closest('label').addClass('disabled-by-fund').addClass('disabled').hide();
+			$('#health_payment_details_type_ba').closest('label').css('border-top-left-radius','5px').css('border-bottom-left-radius','5px');
+		</c:if>
 	},
 	unset: function() {
 		<%-- Custom questions - hide in case user comes back --%>
@@ -307,6 +304,11 @@ var healthFunds_CBH = {
 			}
 			$('#health_declaration + label').html(healthFunds_CBH.joinDecLabelHtml);
 		}
+		<c:if test="${invoiceOff eq true}">
+			$('#health_payment_details_type_cc').removeClass('disabled-by-fund').prop('disabled',false);
+			$('#health_payment_details_type_cc').closest('label').removeClass('disabled-by-fund').removeClass('disabled').show();
+			$('#health_payment_details_type_ba').closest('label').css('border-top-left-radius','0px').css('border-bottom-left-radius','0px');
+		</c:if>
 	},
 
 	changeRelation: function() {

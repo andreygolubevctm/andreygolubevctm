@@ -325,10 +325,25 @@ QuoteEngine = {
             if (typeof xpath === 'undefined') {
                 return;
             }
+            var value = QuoteEngine.getValueFromElement($(':input[name=' + xpath + ']')),
+                message = $(this).text();
             data.push({
                 name: xpath,
-                value: QuoteEngine.getValueFromElement($(':input[name=' + xpath + ']')) + "::" + $(this).text()
+                value: value + "::" + message
             });
+
+            if (i < 5) {
+                Track.runTrackingCall('errorTracking', {
+                    method: 'errorTracking',
+                    object: {
+                        error: {
+                            name: xpath,
+                            validationMessage: message
+                        }
+                    }
+                });
+            }
+
             i++;
         });
 

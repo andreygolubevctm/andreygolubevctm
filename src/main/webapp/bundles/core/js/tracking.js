@@ -5,7 +5,8 @@
     var events = {
             tracking: {
                 TOUCH: 'TRACKING_TOUCH',
-                EXTERNAL: 'TRACKING_EXTERNAL'
+                EXTERNAL: 'TRACKING_EXTERNAL',
+                STEP_VALIDATION_ERROR: 'STEP_VALIDATION_ERROR'
             }
         },
         moduleEvents = events.tracking;

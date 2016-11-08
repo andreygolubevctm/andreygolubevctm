@@ -165,16 +165,43 @@ ${newPage.init(pageContext.request, pageSettings)}
 
 							<jsp:invoke fragment="header_button_left" />
 
-							<button type="button" class="navbar-toggle hamburger collapsed disabled" data-toggle="navMenuOpen" data-target=".navbar-collapse-menu">
-								<span class="sr-only">Toggle Navigation</span>
-								<span class="icon icon-reorder"></span>
-							</button>
-							<c:if test="${pageSettings.getVerticalCode() eq 'health'}">
-								<button type="button" class="navbar-toggle phone collapsed disabled" data-toggle="navMenuOpen" data-target=".navbar-collapse-menu">
-									<span class="sr-only">Contact Us</span>
+							<c:choose>
+								<c:when test="${pageSettings.getVerticalCode() eq 'car'}">
+									<ul class="mobile-nav-buttons nav navbar-nav pull-right">
+										<li class="refine-results"><a href="javascript:;">REFINE</a></li>
+										<c:if test="${saveQuoteEnabled == 'Y'}">
+											<li class="save-quote"><a href="javascript:;" class="save-quote-openAsModal">SAVE</a></li>
+										</c:if>
+										<li class="edit-details">
+											<a href="javascript:;" class="navbar-ellipses">
+												<span class="sr-only">Toggle Navigation</span>
+												...
+											</a>
+										</li>
+									</ul>
+								</c:when>
+								<c:otherwise>
+									<%-- Show only if it's not health OR it's health and the call back functionality is disabled --%>
+									<c:if test="${ pageSettings.getVerticalCode() ne 'health' or (pageSettings.hasSetting('callbackPopupEnabled') and pageSettings.getSetting('callbackPopupEnabled') eq 'N' and pageSettings.getVerticalCode() eq 'health')}">
+										<button type="button" class="navbar-toggle hamburger collapsed disabled" data-toggle="navMenuOpen" data-target=".navbar-collapse-menu">
+											<span class="sr-only">Toggle Navigation</span>
+											<span class="icon icon-reorder"></span>
+										</button>
+									</c:if>
+								</c:otherwise>
+							</c:choose>
+
+
+							<c:if test="${pageSettings.getVerticalCode() eq 'health' and pageSettings.getSetting('callbackPopupEnabled') eq 'Y'}">
+								<a class="navbar-toggle wide phone collapsed" data-toggle="dialog"
+									data-content="#view_all_hours_cb"
+									data-dialog-hash-id="view_all_hours_cb"
+									data-title="Request a Call" data-cache="true">
 									<span class="icon icon-phone"></span>
-								</button>
+									<span>Talk to our experts</span>
+								</a>
 							</c:if>
+
 							<c:set var="exitUrl" value="" />
 							<c:if test="${pageSettings.hasSetting('exitUrl')}">
 							<c:set var="exitUrl" value="${fn:toLowerCase(pageSettings.getSetting('exitUrl'))}" />

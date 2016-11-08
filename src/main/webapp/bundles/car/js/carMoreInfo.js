@@ -40,6 +40,11 @@
 					callback: function (eventObject) {
 						$(eventObject.currentTarget).closest('.modal').modal('hide');
 					}
+				},
+				rightBtn: {
+					label: 'SAVE QUOTE',
+					className: 'btn-sm btn-save',
+					callback: meerkat.modules.saveQuote.openAsModal
 				}
 			},
 			runDisplayMethod: runDisplayMethod,
@@ -312,7 +317,7 @@
 		if(obj.available !== "Y")
 			return;
 
-		if (meerkat.modules.splitTest.isActive(8)) {
+		if (meerkat.modules.splitTest.isActive(8) && meerkat.modules.moreInfo.isBridgingPageOpen()) {
 			callActionsToggle(event, $el, obj);
 			return;
 		}
@@ -354,7 +359,7 @@
 		};
 
 		if(meerkat.modules.deviceMediaState.get() == 'xs') {
-			modalOptions.title = "Reference no. " + obj.leadNo;
+			modalOptions.title = "Reference no. " + obj.quoteNumber;
 		}
 
 		callbackModalId = meerkat.modules.dialogs.show(modalOptions);
@@ -477,7 +482,7 @@
 	function onBeforeShowBridgingPage() {
 		setScrollPosition();
 		if (meerkat.modules.deviceMediaState.get() != 'xs') {
-			$('.resultsContainer, #navbar-filter, #navbar-compare').hide();
+			$('.resultsContainer, #navbar-filter, #navbar-compare, #navbar-filter-labels').hide();
 		}
 	}
 
@@ -510,7 +515,7 @@
 	 * Called within meerkat.modules.moreInfo.hideTemplate
 	 */
 	function onAfterHideTemplate() {
-		$('.resultsContainer, #navbar-filter, #navbar-compare').show();
+		$('.resultsContainer, #navbar-filter, #navbar-compare, #navbar-filter-labels').show();
 		$(window).scrollTop(scrollPosition);
 
 		if (meerkat.modules.splitTest.isActive(8)) {

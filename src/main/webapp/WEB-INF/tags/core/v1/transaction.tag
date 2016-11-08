@@ -30,6 +30,7 @@
 	CB = Call me back lead feed
 	CD = Call direct lead feed
 	CDC = Contact details collected (currently only used in Life, for when we have collected a user's contact details but have not yet sent out a lead feed)
+	CONF = First time confirmation page is viewed
 	E = Error (general error e.g. ajax timeout)
 	F = Application failed (in Health this is considering Pending and will lock out ONLINE user)
 	H = General hit (e.g. tracking user between slides)
@@ -77,7 +78,7 @@
 	TODO Might be good to query transaction_header and validate TransactionId and ProductType
 --%>
 <c:set var="is_valid_touch">
-	<core_v1:validate_touch_type valid_touches="A,BP,C,CB,CD,CDC,E,F,H,L,LF,N,P,Q,R,S,T,X" touch="${touch}" />
+	<core_v1:validate_touch_type valid_touches="A,BP,C,CB,CD,CDC,CONF,E,F,H,L,LF,N,P,Q,R,S,T,X" touch="${touch}" />
 </c:set>
 <c:set var="touch_with_productId">
 	<core_v1:validate_touch_type valid_touches="A,BP,CB,CD,C,F,H" touch="${touch}" />

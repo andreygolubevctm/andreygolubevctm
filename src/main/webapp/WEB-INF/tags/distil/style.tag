@@ -40,6 +40,17 @@
     .content { padding: 25px 50px 50px 50px; }
     .content h1 { color: #1C3F94; }
 
+    #dCF_captcha_text {
+        padding: 10px;
+        margin: 10px 0px;
+        font-size: 10pt;
+        width: 298px;
+        -webkit-border-radius:5px;
+        -moz-border-radius:5px;
+        border-radius:5px;
+        background-color: rgba(255,255,255,0.6);
+    }
+
     @media(max-width:399px) {
         .header {
             padding: 20px;
