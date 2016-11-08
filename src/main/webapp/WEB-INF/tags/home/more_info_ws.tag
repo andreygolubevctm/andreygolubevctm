@@ -1,39 +1,6 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<%--&lt;%&ndash; Smaller Templates to reduce duplicate code &ndash;%&gt;--%>
-<%--<core_v1:js_template id="home-offline-discount-template">--%>
-<%--&lt;%&ndash; If there's a discount.offline e.g. of "10", display the static text of x% Discount included in price shown, otherwise use headline feature. &ndash;%&gt;--%>
-<%--{{ obj.offlinePromotionText = ''; }}--%>
-<%--{{ if(typeof discount !== 'undefined' && typeof discount.offline !== 'undefined' && discount.offline > 0 && discount.offline !== discount.online) { }}--%>
-	<%--{{ 	obj.offlinePromotionText = discount.offline + "% discount offered when you call direct. "; }}--%>
-<%--{{ } else if(typeof obj.discountOffer !== 'undefined' && obj.discountOffer > 0)  { }}--%>
-	<%--{{ 	obj.offlinePromotionText = obj.discountOffer; }}--%>
-<%--{{ } }}--%>
-
-<%--{{ obj.offerTermsContent = (typeof obj.discountOfferTerms !== 'undefined' && obj.discountOfferTerms.length > 0) ? obj.discountOfferTerms : ''; }}--%>
-
-<%--&lt;%&ndash; If the headlineOffer is "OFFLINE" (meaning you can't continue online), it should show "Call Centre" offer &ndash;%&gt;--%>
-<%--{{ if (offlinePromotionText.length > 0) { }}--%>
-	<%--<h2>--%>
-	<%--{{ if(discount.offline > 0) { }}--%>
-		<%--Call Centre Offer--%>
-	<%--{{ } else { }}--%>
-		<%--Special Offer--%>
-	<%--{{ } }}--%>
-	<%--</h2>--%>
-
-	<%--<div class="promotion">--%>
-		<%--<span class="icon icon-phone-hollow"></span> {{= offlinePromotionText }}--%>
-		<%--{{ if (offerTermsContent.length > 0) { }}--%>
-			<%--<a class="small offerTerms" href="javascript:;">Offer terms</a>--%>
-			<%--<div class="offerTerms-content hidden">{{= offerTermsContent }}</div>--%>
-		<%--{{ } }}--%>
-	<%--</div>--%>
-<%--{{ } }}--%>
-<%--</core_v1:js_template>--%>
-
-
 <core_v1:js_template id="promotion-offer-template">
 {{ obj.promotionText = (typeof obj.discountOffer !== 'undefined' && obj.discountOffer.length > 0) ? obj.discountOffer : ''; }}
 {{ obj.offerTermsContent = (typeof obj.discountOfferTerms !== 'undefined' && obj.discountOfferTerms.length > 0) ? obj.discountOfferTerms : ''; }}
@@ -158,10 +125,6 @@
 	{{ var template = $("#quote-summary-template").html(); }}
 	{{ var htmlTemplate = _.template(template); }}
 	{{ var quoteSummaryHTML = htmlTemplate(obj); }}
-
-	<%--{{ var template = $("#home-offline-discount-template").html(); }}--%>
-	<%--{{ var htmlTemplate = _.template(template); }}--%>
-	<%--{{ obj.offlineDiscountTemplate = htmlTemplate(obj); }}--%>
 
 	{{ var homeExcessState = homeExcess != null && homeExcess.amount ? '' : 'hidden'; }}
 	{{ var contentsExcessState = contentsExcess != null && contentsExcess.amount ? '' : 'hidden'; }}

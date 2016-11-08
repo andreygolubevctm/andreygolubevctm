@@ -76,22 +76,6 @@
 		}).on('click', '.btn-submit-callback', function (event) {
 			var $el = $(this);
 			submitCallback(event, $el);
-			// event.preventDefault();
-			// var $el = $(this);
-			// if($el.closest('form').valid()) {
-			// 	var currentBrandCode = meerkat.site.tracking.brandCode.toUpperCase();
-			// 	callLeadFeedSave(event, {
-			// 		message: currentBrandCode+' - Home Vertical - Call me now',
-			// 		phonecallme: 'GetaCall'
-			// 	});
-            //
-			// 	trackCallBackSubmit();// Add CallBack Submit request event to supertag
-			// } else {
-			// 	_.delay(function() {
-			// 		fixSidebarHeight('.paragraphedContent:visible', '.sidebar-right', $el.closest('.modal.in'));
-			// 	}, 200);
-			// }
-			// return false;
 		});
 	}
 
@@ -152,7 +136,6 @@
 		// Call supertag to register event - only once per transaction
 		trackCallDirect(product);// Add CallDirect request event to supertag
 
-		// var currProduct = meerkat.modules.moreInfo.getOpenProduct();
 		var currProduct = product;
 		if (typeof callDirectLeadFeedSent[currProduct.productId] != 'undefined')
 			return;
@@ -366,11 +349,6 @@
 		event.stopPropagation();
 		var $el = element;
 		var obj = Results.getResultByProductId($el.attr('data-productId'));
-		// var $e = $('#home-call-modal-template');
-		// if ($e.length) {
-		// 	templateCallback = _.template($e.html());
-		// }
-		// var obj = meerkat.modules.moreInfo.getOpenProduct();
 
 		// If its unavailable, don't do anything
 		// This is if someone tries to fake a bridging page for a "non quote" product.
