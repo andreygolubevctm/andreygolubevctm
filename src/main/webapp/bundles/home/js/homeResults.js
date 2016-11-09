@@ -374,7 +374,7 @@
 			$('.esl-message').toggleClass('hidden', $('#home_property_address_state').val() !== 'NSW');
 		});
 
-		meerkat.messaging.subscribe(meerkatEvents.resultsMobileDisplayModeToggle.DISPLAY_MODE_CHANGED, function(obj) {
+		meerkat.messaging.subscribe(meerkatEvents.resultsMobileDisplayModeToggle.DISPLAY_MODE_CHANGED, function onDisplayModeChanged(obj) {
 			if (obj.displayMode === 'price') {
 				switchToPriceMode(true);
 			} else {
