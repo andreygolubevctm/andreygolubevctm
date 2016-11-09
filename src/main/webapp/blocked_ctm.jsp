@@ -4,4 +4,4 @@
 
 <settings:setVertical verticalCode="DISTIL" />
 
-<distil:layout pageTitle="Captcha Required" pageType="captcha" />
+<distil:layout brandCode="ctm" pageTitle="Request Blocked" pageType="blocked" />
