@@ -112,9 +112,9 @@
 	<%-- Main call to action button. --%>
 	{{ var mainCallToActionButton = '' }}
 	{{ if (obj.availableOnline == true) { }}
-	{{ mainCallToActionButton = '<a target="_blank" href="javascript:;" class="btn btn-lg btn-primary btn-cta btn-block btn-more-info-apply" data-productId="'+obj.productId+'">Go to Insurer<span class="icon-arrow-right"></span></a>' }}
+		{{ mainCallToActionButton = '<a target="_blank" href="javascript:;" class="btn btn-lg btn-primary btn-cta btn-block btn-more-info-apply" data-productId="'+obj.productId+'">Go to Insurer<span class="icon-arrow-right"></span></a>' }}
 	{{ } else { }}
-	{{ mainCallToActionButton = '<div class="btnContainer"><a class="btn btn-lg btn-cta btn-block btn-call-actions btn-calldirect" data-callback-toggle="calldirect" href="javascript:;" data-productId="'+obj.productId+'">Call Insurer Direct</a></div>' }}
+		{{ mainCallToActionButton = '<div class="btnContainer"><a class="btn btn-lg btn-cta btn-block btn-call-actions btn-calldirect" data-callback-toggle="calldirect" href="javascript:;" data-productId="'+obj.productId+'">Call Insurer Direct</a></div>' }}
 	{{ } }}
 
 	<%-- FEATURES MODE Templates --%>
@@ -179,8 +179,8 @@
 						<legend>Special Offer</legend>
 						{{= promotionText.replace('<b>SPECIAL OFFER:</b>', '') }}
 						{{ if (offerTermsContent.length > 0) { }}
-						<a class="small offerTerms" href="javascript:;">Conditions</a>
-						<div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
+							<a class="small offerTerms" href="javascript:;">Conditions</a>
+							<div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
 						{{ } }}
 					</fieldset>
 					{{ } }}
@@ -571,19 +571,20 @@
 	{{ var colClass = 'col-xs-12'; }}
 
 	{{ if(obj.contact.allowCallMeBack === true) { }}
-	{{ colClass = 'col-xs-6'; }}
+		{{ colClass = 'col-xs-6'; }}
 	{{ } }}
 
 	<div class="call-actions-buttons row">
 		{{ if(obj.contact.allowCallDirect === true) { }}
-		<div class="{{= colClass }}">
-			{{= callInsurerDirectActionButton }}
-		</div>
+			<div class="{{= colClass }}">
+				{{= callInsurerDirectActionButton }}
+			</div>
 		{{ } }}
+
 		{{ if(obj.contact.allowCallMeBack === true) { }}
-		<div class="{{= colClass }}">
-			{{= callMeBackActionButton }}
-		</div>
+			<div class="{{= colClass }}">
+				{{= callMeBackActionButton }}
+			</div>
 		{{ } }}
 	</div>
 </core_v1:js_template>
@@ -595,30 +596,30 @@
 	{{ var homeExcessAmount = (obj.homeExcess !== null && obj.homeExcess.amount != '') ? obj.homeExcess.amount : null; }}
 
 	{{ if (contentsExcessAmount !== null && homeExcessAmount !== null && contentsExcessAmount === homeExcessAmount) { }}
-	<div class="col-xs-12">
-		<div class="excessAmount">{{= obj.homeExcess.amountFormatted }}</div>
-		<div class="excessTitle">Excess</div>
-	</div>
+		<div class="col-xs-12">
+			<div class="excessAmount">{{= obj.homeExcess.amountFormatted }}</div>
+			<div class="excessTitle">Excess</div>
+		</div>
 	{{ } else { }}
-	{{ if (homeExcessAmount !== null) { }}
-	{{ var homeExcessCol = (contentsExcessAmount !== null && homeExcessAmount !== null) ? '6' : '12'; }}
-	<div class="col-xs-{{= homeExcessCol }}">
-		<div class="excessAmount">{{= obj.homeExcess.amountFormatted }}</div>
-		<div class="excessTitle">Home excess</div>
-	</div>
-	{{ } else { }}
-	<div class="col-xs-12">
-		<div class="excessAmount excessContents">{{= obj.contentsExcess.amountFormatted }}</div>
-		<div class="excessTitle">Contents excess</div>
-	</div>
-	{{ } }}
+		{{ if (homeExcessAmount !== null) { }}
+			{{ var homeExcessCol = (contentsExcessAmount !== null && homeExcessAmount !== null) ? '6' : '12'; }}
+			<div class="col-xs-{{= homeExcessCol }}">
+				<div class="excessAmount">{{= obj.homeExcess.amountFormatted }}</div>
+				<div class="excessTitle">Home excess</div>
+			</div>
+		{{ } else { }}
+			<div class="col-xs-12">
+				<div class="excessAmount excessContents">{{= obj.contentsExcess.amountFormatted }}</div>
+				<div class="excessTitle">Contents excess</div>
+			</div>
+		{{ } }}
 
-	{{ if (contentsExcessAmount !== null && homeExcessAmount !== null) { }}
-	<div class="col-xs-6">
-		<div class="excessAmount excessContents">{{= obj.contentsExcess.amountFormatted }}</div>
-		<div class="excessTitle">Contents excess</div>
-	</div>
-	{{ } }}
+		{{ if (contentsExcessAmount !== null && homeExcessAmount !== null) { }}
+			<div class="col-xs-6">
+				<div class="excessAmount excessContents">{{= obj.contentsExcess.amountFormatted }}</div>
+				<div class="excessTitle">Contents excess</div>
+			</div>
+		{{ } }}
 	{{ } }}
 </div>
 </core_v1:js_template>
@@ -628,30 +629,31 @@
 <core_v1:js_template id="home-offline-discount-template">
 	<%-- If there's a discount.offline e.g. of "10", display the static text of x% Discount included in price shown, otherwise use headline feature. --%>
 	{{ obj.offlinePromotionText = ''; }}
+
 	{{ if(typeof discount !== 'undefined' && typeof discount.offline !== 'undefined' && discount.offline > 0 && discount.offline !== discount.online) { }}
-	{{ 	obj.offlinePromotionText = discount.offline + "% discount offered when you call direct. "; }}
+		{{ obj.offlinePromotionText = discount.offline + "% discount offered when you call direct. "; }}
 	{{ } else if(typeof obj.discountOffer !== 'undefined' && obj.discountOffer > 0)  { }}
-	{{ 	obj.offlinePromotionText = obj.discountOffer; }}
+		{{ obj.offlinePromotionText = obj.discountOffer; }}
 	{{ } }}
 
 	{{ obj.offerTermsContent = (typeof obj.discountOfferTerms !== 'undefined' && obj.discountOfferTerms.length > 0) ? obj.discountOfferTerms : ''; }}
 
 	<%-- If the headlineOffer is "OFFLINE" (meaning you can't continue online), it should show "Call Centre" offer --%>
 	{{ if (offlinePromotionText.length > 0) { }}
-	<h2>
-		{{ if(discount.offline > 0) { }}
-		Call Centre Offer
-		{{ } else { }}
-		Special Offer
-		{{ } }}
-	</h2>
+		<h2>
+			{{ if (discount.offline > 0) { }}
+				Call Centre Offer
+			{{ } else { }}
+				Special Offer
+			{{ } }}
+		</h2>
 
-	<div class="promotion">
-		<span class="icon icon-phone-hollow"></span> {{= offlinePromotionText }}
-		{{ if (offerTermsContent.length > 0) { }}
-		<a class="small offerTerms" href="javascript:;">Offer terms</a>
-		<div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
-		{{ } }}
-	</div>
+		<div class="promotion">
+			<span class="icon icon-phone-hollow"></span> {{= offlinePromotionText }}
+			{{ if (offerTermsContent.length > 0) { }}
+				<a class="small offerTerms" href="javascript:;">Offer terms</a>
+				<div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
+			{{ } }}
+		</div>
 	{{ } }}
 </core_v1:js_template>
