@@ -149,7 +149,7 @@
 			onInitialise: function onStartInit(event) {
 				meerkat.modules.jqueryValidate.initJourneyValidator();
 				// Hook up privacy optin to Email Quote button
-				var $emailQuoteBtn = $(".slide-feature-emailquote");
+				var $emailQuoteBtn = $(".slide-feature-emailquote, .save-quote");
 
 				// Initial value from preload/load quote
 				if ($("#home_termsAccepted").is(':checked')) {
@@ -371,7 +371,7 @@
 			externalTracking: externalTrackingSettings,
 			onInitialise: function() {
 				// Hook up privacy optin to Email Quote button
-				var $emailQuoteBtn = $(".slide-feature-emailquote");
+				var $emailQuoteBtn = $(".slide-feature-emailquote, .save-quote");
 
 				// Initial value from preload/load quote
 				if ($("#home_privacyoptin").is(':checked')) {
