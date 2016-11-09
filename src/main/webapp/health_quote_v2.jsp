@@ -50,6 +50,7 @@
 
         <c:set var="openingHoursHeader" scope="request" ><content:getOpeningHours displayTodayOnly="true"/></c:set>
         <c:set var="callCentreHoursModal" scope="request"><content:getOpeningHoursModal /></c:set>
+        <c:set var="callCentreCBModal" scope="request"><health_v3:callback_modal /></c:set>
 
         <c:set var="isHealthV2" value="${true}" scope="request" />
 
@@ -81,8 +82,12 @@
                     <h1><span class="noWrap callCentreNumber">${callCentreNumber}</span><span class="noWrap callCentreAppNumber" style="display:none">${callCentreAppNumber}</span></h1>
                                 ${openingHoursHeader }
                         </div>
+                        <div class="navbar-text hidden-xs" data-poweredby="header"></div>
+                    </li>
+                    <li>
+                        <health_v3:callback_link />
+                        ${callCentreCBModal}
                         <div id="view_all_hours" class="hidden">${callCentreHoursModal}</div>
-                        <div class="navbar-text hidden-xs" data-poweredby="header">&nbsp;</div>
                     </li>
                 </c:if>
             </ul>

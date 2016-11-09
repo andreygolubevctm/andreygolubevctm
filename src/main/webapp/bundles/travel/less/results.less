@@ -449,3 +449,129 @@
 		}
 	}
 }
+
+/**
+ ** SPECIAL OFFERS STYLING
+ */
+#resultsPage,
+body[data-step="results"] #dynamic_dom {
+	.productTitle.specialOffer,
+	.more-info-content.specialOffer{
+		.promotion {
+			position:relative;
+			float:right;
+			height:auto;
+			width:40%;
+			padding-left:30px;
+			margin-top: -2.7em;
+			color: @theme-tertiary;
+			font-size: 13px;
+			line-height:16px;
+			a {
+				text-decoration: underline;
+			};
+			.icon {
+				display: block;
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 32px;
+				height: 32px;
+				font-size: 22px;
+				line-height: 24px;
+			}
+		}
+		&.more-info-content {
+			.promotion {
+				float: none;
+				width: auto;
+				text-align: left;
+				font-size:14px;
+			}
+		}
+		@media(@xs) {
+			&.productTitle {
+				div:not(.promotion) {
+					width: auto;
+				}
+			}
+			&.more-info-content {
+				.promotion {
+					float: none;
+					width: 70%;
+					margin:1em auto;
+				}
+			}
+		}
+		@media(max-width: 480px) {
+			&.more-info-content {
+				.promotion {
+					width: auto;
+				}
+			}
+		}
+		@media(@sm){
+			&.productTitle {
+				div:not(.promotion) {
+					width:60%;
+				}
+			}
+			&.more-info-content {
+				.promotion {
+					float: none;
+					width: 70%;
+					margin: 0 auto;
+					padding: 1em 0 1em 30px;
+					text-align: left;
+					font-size:14px;
+					.icon {
+						top:0.4em;
+					}
+				}
+			}
+		}
+		@media(@lg) {
+			&.productTitle {
+				div:not(.promotion) {
+					width:auto;
+				}
+			}
+			.innertube {
+				height:100%;
+				vertical-align: middle;
+				&:before {
+					display:none;
+				}
+				& > div {
+					height: auto;
+				}
+			}
+			.promotion {
+				float:none;
+				width:auto;
+				margin-top: 0.5em;
+			}
+		}
+	}
+}
+
+.offer-terms-modal {
+	.modal-header, .modal-body {
+		.heading {
+			margin-left: 105px;
+			margin-top: 5px;
+			margin-bottom: 5px;
+		}
+		.travelCompanyLogo {
+			float:left;
+		}
+		.termsWrapper {
+			display:block;
+			float:none;
+			clear:left;
+			@media(@xs-only) {
+				margin-top:2em;
+			}
+		}
+	}
+}

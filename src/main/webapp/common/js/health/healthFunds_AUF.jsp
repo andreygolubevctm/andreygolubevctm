@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/javascript; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
+<jsp:useBean id="now" class="java.util.Date"/>
+<fmt:formatDate var="today" value="${now}" pattern="dd/MM/yyyy"/>
 <session:get settings="true" />
 <c:set var="whiteSpaceRegex" value="[\\r\\n\\t]+"/>
 <c:set var="content">
@@ -62,7 +64,7 @@ var healthFunds_AUF = {
     });
   },
   renderPaymentDay: function(){
-    var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
+    var _html = meerkat.modules.healthPaymentDay.paymentDays( "${today}" );
     meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), _html);
     meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), _html);
   },

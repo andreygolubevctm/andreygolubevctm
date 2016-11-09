@@ -6,6 +6,8 @@
 <jsp:useBean id="newPage" class="com.ctm.web.core.web.NewPage" />
 ${newPage.init(pageContext.request, pageSettings)}
 
+<%@ attribute name="brandCode"  required="true"	 rtexprvalue="true"	 description="The brand code applicable to the page" %>
+
 <%@ attribute name="title"		required="false"  rtexprvalue="true"	 description="The title of the page" %>
 
 <%@ attribute fragment="true" required="true" name="head" %>
@@ -72,7 +74,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 		</c:set>
 	</head>
 
-	<body class="jeinit">
+	<body class="jeinit ${brandCode}">
 
 		<c:if test="${GTMEnabled eq true and not empty pageSettings and pageSettings.hasSetting('GTMPropertyId')}">
 			<c:if test="${not empty pageSettings.getSetting('GTMPropertyId')}">
