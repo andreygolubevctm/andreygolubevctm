@@ -140,7 +140,7 @@
 				},
 				templates:{
 					pagination:{
-						pageText: 'Product {{=currentPage}} of {{=totalPages}}'
+						pageText: '{{ if(currentPage !== totalPages) { }} Product {{=currentPage}} of {{=(totalPages - 1)}} {{ } }}'
 					}
 				},
 				dictionary: {
