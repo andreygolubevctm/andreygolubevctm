@@ -25,7 +25,6 @@
     "shared/leadFeed",
     "shared/serverSideValidationOutput",
     "shared/resultsFilterLabels",
-    "shared/mobileNavButtons",
-    "shared/buttonGroupVertical"
+    "shared/mobileNavButtons"
   ]
 }

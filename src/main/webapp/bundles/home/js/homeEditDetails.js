@@ -8,10 +8,13 @@
 
 	/* Variables */
 	var $editDetailsDropDown = $('#edit-details-dropdown'),
-	modalId = null;
+		$editDetailsTemplate,
+		modalId = null;
 
 	/* main entrypoint for the module to run first */
 	function initEditDetails() {
+		$editDetailsTemplate = $('#edit-details-template');
+
 		applyEventListeners();
 		eventSubscriptions();
 	}
@@ -86,8 +89,7 @@
 	}
 
 	function show() {
-		var $e = $('#edit-details-template'),
-			templateCallback = _.template($e.html()),
+		var templateCallback = _.template($editDetailsTemplate.html()),
 			data = getData();
 
 		if (meerkat.modules.deviceMediaState.get() == 'xs') {
