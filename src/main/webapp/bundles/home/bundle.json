@@ -24,6 +24,8 @@
     "shared/dropdownInteractive",
     "shared/leadFeed",
     "shared/serverSideValidationOutput",
-    "shared/resultsFilterLabels"
+    "shared/resultsFilterLabels",
+    "shared/paymentFrequencyButtons",
+    "shared/resultsMobileDisplayModeToggle"
   ]
 }
