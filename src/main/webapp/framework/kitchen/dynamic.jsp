@@ -138,6 +138,7 @@
 			<span class="icon-vert-life" title="icon-vert-life"></span>
 			<span class="icon-vert-money" title="icon-vert-money"></span>
 			<span class="icon-vert-travel" title="icon-vert-travel"></span>
+			<span class="icon-callback" title="icon-callback"></span>
 		</div>
 		<div class="col-xs-12" style="font-size:200%">
 			<h3>Bigger!</h3>
@@ -233,6 +234,7 @@
 			<span class="icon-vert-life" title="icon-vert-life"></span>
 			<span class="icon-vert-money" title="icon-vert-money"></span>
 			<span class="icon-vert-travel" title="icon-vert-travel"></span>
+			<span class="icon-callback" title="icon-callback"></span>
 		</div>
 	</div>
 </form_v2:fieldset>

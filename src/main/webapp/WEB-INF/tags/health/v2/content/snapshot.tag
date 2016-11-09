@@ -2,13 +2,25 @@
 <%@ tag description="Home & Contents Snapshot"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<jsp:useBean id="sessionDataUtils" class="com.ctm.web.core.utils.SessionDataUtils" scope="page" />
+
 <fieldset class="quoteSnapshot sidebar-box hidden-sm tieredHospitalCover">
-    <h4>Quote Summary</h4>
-    <div class="default">
-        <div>
-            <p>We compare policies from seven of the top ten funds in Australia (as well as some smaller ones),
-                saving you time and effort when searching for the right policy.
-            </p>
+    <div class="row header">
+        <div class="col-sm-9">
+            <h4>Quote Summary</h4>
+        </div>
+        <div class="col-sm-3">
+            <form_v3:save_results_button label="Save" />
+        </div>
+    </div>
+    <div class="row snapshot quote-ref">
+        <div class="col-md-5">
+            <span class="snapshot-title">Quote Reference:</span>
+        </div>
+        <div class="col-md-7">
+            <span class="snapshot-items hidden-xs hidden-sm">
+                ${sessionDataUtils.getTransactionId(data)}
+            </span>
         </div>
     </div>
     <div class="row snapshot cover-for">

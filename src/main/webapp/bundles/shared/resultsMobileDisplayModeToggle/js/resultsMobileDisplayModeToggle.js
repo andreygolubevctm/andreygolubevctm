@@ -63,13 +63,13 @@
 
     // hide component
     function hide() {
-        $component.hide();
+        $component.addClass('hidden');
         $body.removeClass('results-mobile-display-mode-toggle-shown');
     }
 
     // show component
     function show() {
-        $component.show();
+        $component.removeClass('hidden');
         $body.addClass('results-mobile-display-mode-toggle-shown');
     }
 

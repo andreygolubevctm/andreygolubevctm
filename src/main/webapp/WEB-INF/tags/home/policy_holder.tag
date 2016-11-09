@@ -12,15 +12,17 @@
 <form_v2:fieldset legend="Policy Holder Details">
 
 	<%-- MAIN POLICY HOLDER --%>
-	<%-- Policy Holder Title --%>
-	<c:set var="fieldXpath" value="${xpath}/title" />
-	<form_v2:row fieldXpath="${fieldXpath}" label="Title">
-		<field_v2:import_select xpath="${fieldXpath}"
-			title="the policy holder's title"
-			required="false"
-			url="/WEB-INF/option_data/titles_simple.html"
-			className="person-title" />
-	</form_v2:row>
+	<c:if test="${journeySplitTestActive eq false}">
+		<%-- Policy Holder Title --%>
+		<c:set var="fieldXpath" value="${xpath}/title" />
+		<form_v2:row fieldXpath="${fieldXpath}" label="Title">
+			<field_v2:import_select xpath="${fieldXpath}"
+				title="the policy holder's title"
+				required="false"
+				url="/WEB-INF/option_data/titles_simple.html"
+				className="person-title" />
+		</form_v2:row>
+	</c:if>
 
 	<%-- Policy Holder First Name --%>
 	<c:set var="fieldXpath" value="${xpath}/firstName" />
@@ -50,8 +52,21 @@
 			ageMax="99"/>
 	</form_v2:row>
 
+	<c:if test="${journeySplitTestActive eq true}">
+		<home:contact_details_v2 xpath="${xpath}" />
+	</c:if>
+
 </form_v2:fieldset>
-<form_v2:fieldset legend="Joint Policy Holder <a class='btn btn-hollow-red btn-sm btn-right btn-wide toggleJointPolicyHolder' href='javascript:;'>Remove</a>" id="jointPolicyHolder">
+
+<%-- Class name to force join policy holder fields to be hidden --%>
+<c:set var="joinPolicyHolderClassname">
+	<c:choose>
+		<c:when test="${journeySplitTestActive eq true}">hidden</c:when>
+		<c:otherwise><%-- empty --%></c:otherwise>
+	</c:choose>
+</c:set>
+
+<form_v2:fieldset className="${joinPolicyHolderClassname}" legend="Joint Policy Holder <a class='btn btn-hollow-red btn-sm btn-right btn-wide toggleJointPolicyHolder' href='javascript:;'>Remove</a>" id="jointPolicyHolder">
 	<%-- 	JOINT POLICY HOLDER --%>
 	<%-- Joint Policy Holder Title --%>
 	<c:set var="fieldXpath" value="${xpath}/jointTitle" />
@@ -96,7 +111,7 @@
 
 </form_v2:fieldset>
 
-<form_v2:fieldset legend="">
+<form_v2:fieldset legend="" className="${joinPolicyHolderClassname}">
 <%-- Joint Policy Holder Button --%>
 	<c:set var="fieldXpath" value="${xpath}/addJointPolicyHolder" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="">

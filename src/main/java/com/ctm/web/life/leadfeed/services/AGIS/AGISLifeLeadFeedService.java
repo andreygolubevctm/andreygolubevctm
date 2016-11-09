@@ -14,7 +14,7 @@ public class AGISLifeLeadFeedService extends AGISLeadFeedService {
 	}
 
 	public AGISLeadFeedRequest getModel(LeadType leadType, LeadFeedData leadData) throws LeadFeedException {
-		AGISLeadFeedRequest model = new AGISLifeLeadFeedRequest(leadData);
+		AGISLeadFeedRequest model = new AGISLifeLeadFeedRequest(leadData, leadType);
 		model = addRequestsServiceProperties(model, leadType, leadData);
 		return model;
 	}

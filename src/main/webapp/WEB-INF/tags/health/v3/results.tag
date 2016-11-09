@@ -17,6 +17,9 @@
     <jsp:attribute name="preResultsRow"><health_v3:pre_results_row_content_template/></jsp:attribute>
 
     <jsp:attribute name="sidebarColumn">
+        <c:if test="${empty callCentre}">
+            <form_v3:save_results_button />
+        </c:if>
         <coupon:promo_tile />
         <div class="col-sm-12 sidebar-widget sidebar-widget-contained sidebar-widget-padded results-filters">
         </div>
@@ -38,6 +41,10 @@
     </jsp:attribute>
     <jsp:attribute name="zeroResultsFoundMessage">
             No results match your filters. Please try resetting your results by <a href="javascript;" class="reset-filters">clicking here</a>.
+    </jsp:attribute>
+
+    <jsp:attribute name="quoterefTemplate">
+        <health_v3:quoteref_template/>
     </jsp:attribute>
 
     <jsp:attribute name="logoTemplate">

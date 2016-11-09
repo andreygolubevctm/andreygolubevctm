@@ -20,11 +20,11 @@
 				<h1 class="hidden-xs hidden-sm">Your premium<a href="javascript:;" class="btn-show-how-calculated">how is this calculated?</a></h1>
 				<div class="priceItemisationTemplateHolder priceItemisation hidden-xs hidden-sm"></div>
 
-				<h1 class="visible-sm">Your policy details</h1>
+				<h1 class="visible-sm">Your quote details</h1>
 				<div class="policySummaryTemplateHolder productSummary horizontal hidden-md hidden-lg"></div>
 			</c:when>
 			<c:otherwise>
-				<h1 class="hidden-xs">Your policy details</h1>
+				<h1 class="hidden-xs">Your quote details</h1>
 				<div class="policySummaryTemplateHolder productSummary horizontal"></div>
 			</c:otherwise>
 		</c:choose>
@@ -68,7 +68,7 @@
 	<c:if test="${showProductDetails == true}">
 		<div class="productSummaryDetails">
 			<c:if test="${isAltView}">
-				<h1 class="hidden-sm">Your policy details</h1>
+				<h1 class="hidden-sm">Your quote details</h1>
 				<div class="companyLogo hidden-sm"></div>
 			</c:if>
 			<h5 class="name">NAME</h5>

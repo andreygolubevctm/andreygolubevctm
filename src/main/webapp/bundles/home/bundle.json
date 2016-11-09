@@ -19,11 +19,12 @@
     "shared/commencementDate",
     "shared/currency",
     "shared/moreInfo",
-    "shared/saveQuote",
+    "shared/saveQuote/v1",
     "shared/resultsRankings",
     "shared/dropdownInteractive",
     "shared/leadFeed",
     "shared/serverSideValidationOutput",
+    "shared/resultsFilterLabels",
     "shared/paymentFrequencyButtons",
     "shared/resultsMobileDisplayModeToggle"
   ]

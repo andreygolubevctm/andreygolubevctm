@@ -9,6 +9,7 @@ import com.ctm.web.core.leadfeed.exceptions.LeadFeedException;
 import com.ctm.web.core.leadfeed.model.LeadFeedData;
 import com.ctm.web.core.leadfeed.services.LeadFeedService.LeadResponseStatus;
 import com.ctm.web.core.leadfeed.services.LeadFeedService.LeadType;
+import com.ctm.web.core.leadfeed.utils.LeadFeedUtil;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.ServiceConfiguration;
 import com.ctm.web.core.model.settings.ServiceConfigurationProperty;
@@ -51,28 +52,34 @@ public abstract class AILeadFeedService implements IProviderLeadFeedService {
 		LeadResponseStatus feedResponse = FAILURE;
 		try {
 
-			final Provider provider = ProviderService.getProvider(leadData.getPartnerBrand(), ApplicationService.getServerDate());
-			final ServiceConfiguration serviceConfig = ServiceConfigurationService.getServiceConfiguration(leadType.getServiceUrlFlag(), leadData.getVerticalId());
+			if(LeadFeedUtil.isServiceEnabled(leadType, leadData)) {
+				final Provider provider = ProviderService.getProvider(leadData.getPartnerBrand(), ApplicationService.getServerDate());
+				final ServiceConfiguration serviceConfig = ServiceConfigurationService.getServiceConfiguration(leadType.getServiceUrlFlag(), leadData.getVerticalId());
 
 
-			// Generate the lead feed model
-			UploadQuickLead leadModel = buildRequest(provider, serviceConfig, leadType, leadData);
-			// Get the relevant brand+vertical settings
-			PageSettings pageSettings = SettingsService.getPageSettings(leadData.getBrandId(), leadData.getVerticalCode());
-			final String serviceUrl = serviceConfig.getPropertyValueByKey("serviceUrl", leadData.getBrandId(), provider.getId(), ServiceConfigurationProperty.Scope.SERVICE);
-			UploadQuickLeadResponse response = sendRequest(pageSettings, leadModel, serviceUrl, leadData.getTransactionId());
+				// Generate the lead feed model
+				UploadQuickLead leadModel = buildRequest(provider, serviceConfig, leadType, leadData);
+				// Get the relevant brand+vertical settings
+				PageSettings pageSettings = SettingsService.getPageSettings(leadData.getBrandId(), leadData.getVerticalCode());
+				final String serviceUrl = serviceConfig.getPropertyValueByKey("serviceUrl", leadData.getBrandId(), provider.getId(), ServiceConfigurationProperty.Scope.SERVICE);
+				UploadQuickLeadResponse response = sendRequest(pageSettings, leadModel, serviceUrl, leadData.getTransactionId());
 
-			final Optional<SSStatus> status = Optional.ofNullable(response)
-					.map(UploadQuickLeadResponse::getUploadQuickLeadResult)
-					.map(SSResults::getStatusCode);
+				final Optional<SSStatus> status = Optional.ofNullable(response)
+						.map(UploadQuickLeadResponse::getUploadQuickLeadResult)
+						.map(SSResults::getStatusCode);
 
 
-			if(status.filter(code -> code == SSStatus.STATUS_SUCCESS)
-					.isPresent()){
+				if (status.filter(code -> code == SSStatus.STATUS_SUCCESS)
+						.isPresent()) {
+					feedResponse = SUCCESS;
+				}
+
+				LOGGER.debug("[Lead feed] Response Status from AI {}", kv("status", status.orElse(null)));
+			} else {
+				// Return OK as we still want to record touches etc
 				feedResponse = SUCCESS;
+				LOGGER.warn("[Lead feed] Skipped sending lead to service as flagged to be ignored");
 			}
-
-			LOGGER.debug("[Lead feed] Response Status from AI {}", kv("status", status.orElse(null)));
 
 		} catch (EnvironmentException | VerticalException | IOException | DaoException | ServiceConfigurationException e) {
 			LOGGER.error("[Lead feed] Failed adding lead feed message {}", kv("leadData", leadData), e);
