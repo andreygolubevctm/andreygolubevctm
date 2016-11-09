@@ -640,13 +640,15 @@
 		// Elements to lock when entering compare mode
 		meerkat.messaging.subscribe(meerkatEvents.compare.AFTER_ENTER_COMPARE_MODE, function() {
 			$('.filter-excess, .filter-excess a').addClass('disabled');
-			$('.filter-featuresmode, .filter-pricemode').addClass('hidden');
+			$('.filter-featuresmode, .filter-pricemode, .filter-view-label').addClass('hidden');
+			$('.filter-frequency-label').css('margin-right', $('.back-to-price-mode').width());
 		});
 
 		// Elements to lock when exiting compare mode
 		meerkat.messaging.subscribe(meerkatEvents.compare.EXIT_COMPARE, function() {
 			$('.filter-excess, .filter-excess a').removeClass('disabled');
-			$('.filter-featuresmode, .filter-pricemode').removeClass('hidden');
+			$('.filter-featuresmode, .filter-pricemode, .filter-view-label').removeClass('hidden');
+			$('.filter-frequency-label').removeAttr('style');
 		});
 
 
