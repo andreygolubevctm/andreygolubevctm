@@ -9,6 +9,11 @@
 		RESULTS_ERROR: 'RESULTS_ERROR'
 	};
 
+	meerkatEvents.homeResults = {
+		FEATURES_CALL_ACTION: 'FEATURES_CALL_ACTION',
+		FEATURES_CALL_ACTION_MODAL: 'FEATURES_CALL_ACTION_MODAL',
+		FEATURES_SUBMIT_CALLBACK: 'FEATURES_SUBMIT_CALLBACK'
+	};
 
 	var $component; //Stores the jQuery object for the component group
 	var previousBreakpoint;
@@ -138,7 +143,7 @@
 				},
 				templates:{
 					pagination:{
-						pageText: 'Product {{=currentPage}} of {{=totalPages}}'
+						pageText: '{{ if(currentPage !== totalPages) { }} Product {{=currentPage}} of {{=(totalPages - 1)}} {{ } }}'
 					}
 				},
 				dictionary: {
@@ -221,9 +226,11 @@
 		// When the navar docks/undocks
 		meerkat.messaging.subscribe(meerkatEvents.affix.AFFIXED, function navbarFixed() {
 			$('#resultsPage').css('margin-top', '35px');
+			$(Results.settings.elements.resultsContainer).addClass('affixed-settings');
 		});
 		meerkat.messaging.subscribe(meerkatEvents.affix.UNAFFIXED, function navbarUnfixed() {
 			$('#resultsPage').css('margin-top', '0');
+			$(Results.settings.elements.resultsContainer).removeClass('affixed-settings');
 		});
 
 		// When the excess filter changes, fetch new results
@@ -332,25 +339,6 @@
 			}
 
 			Results.setPerformanceMode(score);
-
-			var coverType = meerkat.modules.home.getCoverType();
-			if (coverType === 'H') { // Home Only Cover
-				$.each($('.featuresList'), function moveHome() {
-					$(this).children('.homeFeature').appendTo($(this));
-				});
-				$.each($('.featuresList'), function moveContents() {
-					$(this).children('.contentsFeature').appendTo($(this));
-				});
-			}
-			else { //Either Contents Only Cover or Home & Contents Cover
-				$.each($('.featuresList'), function moveContents() {
-					$(this).children('.contentsFeature').appendTo($(this));
-				});
-				$.each($('.featuresList'), function moveHome() {
-					$(this).children('.homeFeature').appendTo($(this));
-				});
-			}
-
 		});
 
 		// Hovering a row cell adds a class to the whole row to make it highlightable
@@ -368,6 +356,21 @@
 
 					$hoverRow.removeClass( Results.settings.elements.features.expandableHover.replace(/[#\.]/g, '') );
 				});
+		});
+
+		$(document.body).on('click', '#results_v5 .btnContainer .btn-call-actions', function triggerMoreInfoCallActions(event) {
+			var element = $(this);
+			meerkat.messaging.publish(meerkatEvents.homeResults.FEATURES_CALL_ACTION, {event: event, element: element});
+		});
+
+		$(document.body).on('click', '#results_v5 .call-modal .btn-call-actions', function triggerMoreInfoCallActionsFromModal(event) {
+			var element = $(this);
+			meerkat.messaging.publish(meerkatEvents.homeResults.FEATURES_CALL_ACTION_MODAL, {event: event, element: element});
+		});
+
+		$(document.body).on('click', '#results_v5 .btn-submit-callback', function triggerMoreInfoSubmitCallback(event) {
+			var element = $(this);
+			meerkat.messaging.publish(meerkatEvents.homeResults.FEATURES_SUBMIT_CALLBACK, {event: event, element: element});
 		});
 
 		meerkat.messaging.subscribe(meerkatEvents.RESULTS_RANKING_READY, function() {
@@ -440,6 +443,17 @@
 			Results.pagination.resync();
 		});
 
+		meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_SM, function resultsSmBreakpointEnter(){
+			if (meerkat.modules.journeyEngine.getCurrentStep().navigationId === 'results') {
+				Results.pagination.setCurrentPageNumber(1);
+				Results.pagination.resync();
+			}
+		});
+
+		meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_SM, function resultsSmBreakpointLeave(){
+			Results.pagination.setCurrentPageNumber(1);
+			Results.pagination.resync();
+		});
 	}
 
 	function startColumnWidthTracking() {
@@ -629,6 +643,9 @@
 				Results.pagination.gotoPage(1);
 				if (meerkat.modules.deviceMediaState.get() === 'xs') {
 					Results.view.setColumnWidth($(window), Results.settings.render.features.numberOfXSColumns, false);
+				}
+				if (meerkat.modules.deviceMediaState.get() === 'sm') {
+					stopColumnWidthTracking();
 				}
 				Results.pagination.setupNativeScroll();
 			});

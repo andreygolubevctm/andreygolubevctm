@@ -36,6 +36,9 @@
                 {{ var displayValue = Features.parseFeatureValue( pathValue, true ); }}
                 <c:if test="${vertical eq 'car'}">
                     <features:resultsItemTemplate_car />
+                </c:if>
+                <c:if test="${vertical eq 'home'}">
+                    <features:resultsItemTemplate_home />
                 </c:if> <%-- Below compressed to reduce number of whitespace nodes in DOM --%>
                 {{ if( pathValue ) { }}<div>{{= displayValue }}</div>{{ } else { }}{{= "&nbsp;" }}{{ } }}{{ } else { }}{{= "&nbsp;" }}
             {{ } }}
