@@ -472,23 +472,29 @@
         if (model !== false) $(elements.modelDes).val(model.label);
         var year = getDataForCode('years', $(elements.years).val());
         if (year !== false) $(elements.registrationYear).val(year.code);
-        // Attempt to populate the next field
-        if (invalid === false && next !== false) {
-            disableFutureSelectors(next);
-            getVehicleData(next);
-        }
 
-        if (data.field === 'types') {
-            var $element = $(elements.types);
-            if (
-                ($element.find('input:checked')) ||
-                (!_.isEmpty($element.val()))
-            ) {
-                addValidationStyles($element);
-                checkAndNotifyOfVehicleChange();
+        // check if the car is a normal car question set or if the user came from the exotic car landing page
+        // and they haven't hit the year question yet
+        if (!meerkat.modules.carExotic.isExotic() || (meerkat.modules.carExotic.isExotic() && year === false)) {
+            // Attempt to populate the next field
+            if (invalid === false && next !== false) {
+                disableFutureSelectors(next);
+                getVehicleData(next);
             }
+
+            if (data.field === 'types') {
+                var $element = $(elements.types);
+                if (
+                    ($element.find('input:checked')) ||
+                    (!_.isEmpty($element.val()))
+                ) {
+                    addValidationStyles($element);
+                    checkAndNotifyOfVehicleChange();
+                }
+            }
+
+            meerkat.messaging.publish(moduleEvents.car.DROPDOWN_CHANGED);
         }
-        meerkat.messaging.publish(moduleEvents.car.DROPDOWN_CHANGED);
     }
 
     function addChangeListeners() {

@@ -39,6 +39,12 @@
     <form_v2:row label="Year" id="${name}_yearRow">
         <field_v2:general_select xpath="${xpath}/year" title="vehicle year" required="true" initialText="&nbsp;"/>
         <field_v1:hidden xpath="${xpath}/registrationYear"></field_v1:hidden>
+        <c:if test="${isFromExoticPage eq true}">
+        <div class="cannotFindCar">
+            <span>Can't find your car?</span>
+            <span>Click <a href="javascript:;" class="exoticManualEntry">here</a> to manually capture the car details</span>
+        </div>
+        </c:if>
     </form_v2:row>
 
     <form_v2:row label="Body" id="${name}_bodyRow" className="hidden">
