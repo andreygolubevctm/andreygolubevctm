@@ -47,6 +47,8 @@
             if ($e.length > 0) {
                 templateCallDirect = _.template($e.html());
             }
+
+            configureContactDetails();
         });
 
     }
@@ -467,6 +469,18 @@
         } catch (e) {
             return false;
         }
+    }
+
+    function configureContactDetails(){
+        var contactDetailsFields = {
+            email: [
+                {
+                    $field: $("#quote_contact_email"),
+                    $optInField: $("#quote_contact_marketing")
+                }
+            ]
+        };
+        meerkat.modules.contactDetails.configure(contactDetailsFields);
     }
 
     meerkat.modules.register("car", {

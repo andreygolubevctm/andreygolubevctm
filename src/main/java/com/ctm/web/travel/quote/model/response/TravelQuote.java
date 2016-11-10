@@ -28,7 +28,6 @@ public class TravelQuote {
     private Boolean isDomestic;
 
     public TravelQuote(){
-        offer = new Offer();
     }
 
     public String getService() {

@@ -2,16 +2,45 @@
 
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
-        log = meerkat.logging.info;
+        log = meerkat.logging.info,
 
-    var $buttons,
+        events = {
+            mobileNavButtons: {
+                REFINE_RESULTS_TOGGLED: 'REFINE_RESULTS_TOGGLED',
+                EDIT_DETAILS_TOGGLED: 'EDIT_DETAILS_TOGGLED'
+            }
+        },
+        moduleEvents = events.mobileNavButtons,
+
+        $buttons,
+        $refineResults,
         $editDetailsBtn;
 
     function init() {
         $buttons = $('.mobile-nav-buttons');
+        $refineResults = $buttons.find('.refine-results a');
         $editDetailsBtn = $buttons.find('.edit-details a');
 
+        applyEventListeners();
         eventSubscriptions();
+    }
+
+    function applyEventListeners() {
+        $refineResults.on('click', function(e) {
+            e.preventDefault();
+
+            if (!$(this).hasClass('disabled')) {
+                meerkat.messaging.publish(moduleEvents.REFINE_RESULTS_TOGGLED);
+            }
+        });
+
+        $editDetailsBtn.on('click', function(e) {
+            e.preventDefault();
+
+            if (!$(this).hasClass('disabled')) {
+                meerkat.messaging.publish(moduleEvents.EDIT_DETAILS_TOGGLED);
+            }
+        });
     }
 
     function eventSubscriptions() {
@@ -22,14 +51,6 @@
 
         $(document).on('resultsFetchFinish', function onResultsFetchFinish() {
             enable();
-        });
-
-        $editDetailsBtn.on('click', function(e) {
-            e.preventDefault();
-
-            if (!$(this).hasClass('disabled')) {
-                meerkat.modules.carEditDetails.show();
-            }
         });
     }
 
@@ -45,6 +66,7 @@
 
     meerkat.modules.register('mobileNavButtons', {
         init: init,
+        events: events,
         disable: disable
     });
 })(jQuery);

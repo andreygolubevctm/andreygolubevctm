@@ -166,7 +166,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 							<jsp:invoke fragment="header_button_left" />
 
 							<c:choose>
-								<c:when test="${pageSettings.getVerticalCode() eq 'car'}">
+								<c:when test="${pageSettings.getVerticalCode() eq 'car' or pageSettings.getVerticalCode() eq 'home'}">
 									<ul class="mobile-nav-buttons nav navbar-nav pull-right">
 										<li class="refine-results"><a href="javascript:;">REFINE</a></li>
 										<c:if test="${saveQuoteEnabled == 'Y'}">

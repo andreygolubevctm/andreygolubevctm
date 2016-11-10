@@ -122,7 +122,7 @@
 				</div>
 				<div class="row">
 					<div class="col-xs-12 col-sm-6 col-sm-offset-6">
-						<a href="javascript:;" class="btn btn-form btn-block btn-submit-callback">Submit</a><br />
+						<a href="javascript:;" class="btn btn-form btn-block btn-submit-callback" data-productId="{{= obj.productId }}">Submit</a><br />
 					</div>
 				</div>
 			</form>
@@ -133,7 +133,7 @@
 			Would you prefer to call direct?
 		</div>
 		<div class="col-xs-12 col-sm-6">
-			<a class="btn btn-call-inverse btn-block btn-call-actions btn-calldirect" data-callback-toggle="calldirect" href="javascript:;">Call Insurer Direct</a>
+			<a class="btn btn-call-inverse btn-block btn-call-actions btn-calldirect" data-callback-toggle="calldirect" data-productId="{{= obj.productId }}" href="javascript:;">Call Insurer Direct</a>
 		</div>
 	</div>
 </core_v1:js_template>

@@ -190,13 +190,10 @@ public class ResponseAdapterV2 {
                 result.setInfo(info);
 
                 // Create offer object for results grid
-                Offer offer = new Offer();
-                com.ctm.web.travel.quote.model.response.Offer tmp = travelQuote.getOffer();
-                if(tmp instanceof com.ctm.web.travel.quote.model.response.Offer) {
-                    offer.setCopy(tmp.getDescription());
-                    offer.setTerms(tmp.getTerms());
+                com.ctm.web.travel.quote.model.response.Offer travelQuoteOffer = travelQuote.getOffer();
+                if (travelQuoteOffer != null) {
+                    result.setOffer(new Offer(travelQuoteOffer.getDescription(), travelQuoteOffer.getTerms()));
                 }
-                result.setOffer(offer);
 
                 // Handle handover url quirks
 
