@@ -9,6 +9,11 @@
 <c:set var="quote_vehicle_searchRego"><c:out value="${param.quote_vehicle_searchRego}" escapeXml="true" /></c:set>
 <c:set var="quote_vehicle_searchState"><c:out value="${param.quote_vehicle_searchState}" escapeXml="true" /></c:set>
 
+<c:set var="isFromExoticPage" scope="request" value="${false}" />
+<c:if test="${not empty param.quote_vehicle_exoticCar}">
+	<c:set var="isFromExoticPage" scope="request" value="${true}" />
+</c:if>
+
 <c:set var="fromBrochure" scope="request" value="${false}"/>
 <c:if test="${not empty quote_vehicle_make || not empty quote_vehicle_model || not empty quote_vehicle_year || not empty quote_vehicle_searchRego || not empty quote_vehicle_searchState}">
 	<c:set var="fromBrochure" scope="request" value="${true}"/>
@@ -83,5 +88,6 @@
 	resultOptions: {
 		displayMode: "<c:out value="${priceDisplayMode}" />"
 	},
-	commencementDate : '${data.quote.options.commencementDate}'
+	commencementDate : '${data.quote.options.commencementDate}',
+	isFromExoticPage : ${isFromExoticPage}
 }
