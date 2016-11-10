@@ -33,7 +33,7 @@
 				startStepId = steps.startStep.navigationId;
 			}
 			// Use the stage user was on when saving their quote
-			else if (meerkat.site.journeyStage.length > 0 && meerkat.site.pageAction === 'amend') {
+			else if (meerkat.site.journeyStage.length > 0 && meerkat.site.pageAction === 'latest') {
 				// Do not allow the user to go past the results page on amend.
 				if(meerkat.site.journeyStage === 'apply' || meerkat.site.journeyStage === 'payment'){
 					startStepId = 'results';
