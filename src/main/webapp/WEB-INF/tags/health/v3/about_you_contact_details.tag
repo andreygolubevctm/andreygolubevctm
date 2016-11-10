@@ -46,7 +46,7 @@
 
 			<c:set var="fieldXpath" value="${xpath}/name" />
 			<form_v3:row label="Your first name" fieldXpath="${fieldXpath}" className="clear required_input">
-				<field_v1:person_name xpath="${fieldXpath}" title="name" required="true"  />
+				<field_v1:person_name xpath="${fieldXpath}" title="name" required="true" maxlength="24"  />
 			</form_v3:row>
 
 			<c:set var="fieldXpath" value="${xpath}/flexiContactNumber" />
