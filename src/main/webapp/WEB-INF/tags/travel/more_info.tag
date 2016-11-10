@@ -6,7 +6,7 @@
 	{{ var template = $("#provider-logo-template").html(); }}
 	{{ var companyLogo = _.template(template); }}
 	{{ companyLogo = companyLogo(obj); }}
-	{{ var hasSpecialOffer = !_.isEmpty(obj.offer.copy) && !_.isEmpty(obj.offer.terms) }}
+	{{ var hasSpecialOffer = !_.isEmpty(obj.offer) && _.isObject(obj.offer) && !_.isEmpty(obj.offer.copy) && !_.isEmpty(obj.offer.terms) }}
 
 	<div class="displayNone more-info-content {{= hasSpecialOffer ? 'specialOffer' : ''}}">
 		<%-- Header --%>
