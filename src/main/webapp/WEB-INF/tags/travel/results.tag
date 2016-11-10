@@ -51,7 +51,7 @@
 	{{ var template = $("#provider-logo-template").html(); }}
 	{{ var logo = _.template(template); }}
 	{{ logo = logo(obj); }}
-
+	{{ var hasSpecialOffer = !_.isEmpty(obj.offer.copy) && !_.isEmpty(obj.offer.terms) }}
 
 	<div class="result-row available result_{{= obj.productId }}" data-productId="{{= obj.productId }}" data-available="Y">
 		<div class="result">
@@ -61,8 +61,22 @@
 					<div class="col-sm-2 col-lg-1">
 						<div>{{= logo }}</div>
 					</div>
-					<div class="col-lg-3 visible-lg productTitle">
-						<div><span>{{= productTitle }}</span></div>
+
+					<div class="col-lg-3 visible-lg productTitle {{= hasSpecialOffer ? 'specialOffer' : ''}}">
+						{{ if(hasSpecialOffer) { }}
+						<div class="innertube">
+						{{ } }}
+							<div><span>{{= productTitle }}</span></div>
+							{{ if (hasSpecialOffer) { }}
+							<div class="promotion hidden-sm">
+								<span class="icon icon-tag"></span> {{= obj.offer.copy }}
+								<a class="small hidden-xs offerTerms" href="javascript:;">Offer terms</a>
+								<div class="offerTerms-content hidden">{{= obj.offer.terms }}</div>
+							</div>
+							{{ } }}
+						{{ if(hasSpecialOffer) { }}
+						</div>
+						{{ } }}
 					</div>
 
                    	<div class="col-sm-2 col-lg-1 excessAmount">
@@ -81,8 +95,15 @@
 					<div class="col-sm-2 col-lg-2 priceAmount">
 						<div><span>{{= obj.priceText }}</span></div>
 					</div>
-					<div class="col-sm-12 hidden-lg productTitle">
+					<div class="col-sm-12 hidden-lg productTitle {{= hasSpecialOffer ? 'specialOffer' : ''}}">
 						<div><span>{{= productTitle }}</span></div>
+						{{ if (hasSpecialOffer) { }}
+						<div class="promotion">
+							<span class="icon icon-tag"></span> {{= obj.offer.copy }}
+							<a class="small hidden-xs offerTerms" href="javascript:;">Offer terms</a>
+							<div class="offerTerms-content hidden">{{= obj.offer.terms }}</div>
+						</div>
+						{{ } }}
 					</div>
 
 					<div class="col-sm-12 col-lg-2 cta">
