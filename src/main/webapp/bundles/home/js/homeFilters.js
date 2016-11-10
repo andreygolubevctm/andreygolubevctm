@@ -61,6 +61,8 @@
 					$featuresMode.addClass('active');
 					break;
 			}
+
+			meerkat.messaging.publish(meerkatEvents.resultsMobileDisplayModeToggle.DISPLAY_MODE_UPDATED);
 		}
 
 		// Refresh frequency
@@ -140,6 +142,7 @@
 				Results.setFrequency(value);
 
 				meerkat.messaging.publish(moduleEvents.CHANGED);
+				meerkat.modules.paymentFrequencyButtons.set(value);
 			}
 		}
 
@@ -220,11 +223,12 @@
 
 	function show() {
 		$component.removeClass('hidden').hide().slideDown(200);
-
 		$labels.removeClass('hidden').hide().slideDown(200);
 
 		storeCurrentValues();
 		preselectDropdowns();
+
+		meerkat.modules.paymentFrequencyButtons.set(currentValues.frequency);
 	}
 
 	function disable() {
@@ -336,6 +340,11 @@
 
 		meerkat.messaging.subscribe(meerkatEvents.mobileNavButtons.REFINE_RESULTS_TOGGLED, function onRefineResultsToggled() {
 			onRequestModal();
+		});
+
+		meerkat.messaging.subscribe(meerkatEvents.paymentFrequencyButtons.CHANGED, function() {
+			$('#home_paymentType').val(Results.getFrequency());
+			updateFilters();
 		});
 	}
 

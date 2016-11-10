@@ -304,14 +304,8 @@
 			}
 
 			// If no providers opted to show results, display the no results modal.
-			var availableCounts = 0;
-			$.each(Results.model.returnedProducts, function(){
-				if (this.available === 'Y' && this.productId !== 'CURR') {
-					availableCounts++;
-				}
-			});
 			// Check products length in case the reason for no results is an error e.g. 500
-			if (availableCounts === 0 && _.isArray(Results.model.returnedProducts) && Results.model.returnedProducts.length > 0) {
+			if (Results.model.availableCounts === 0 && _.isArray(Results.model.returnedProducts) && Results.model.returnedProducts.length > 0) {
 				showNoResults();
 			}
 
@@ -378,6 +372,14 @@
 
 		meerkat.messaging.subscribe(meerkatEvents.RESULTS_RANKING_READY, function() {
 			$('.esl-message').toggleClass('hidden', $('#home_property_address_state').val() !== 'NSW');
+		});
+
+		meerkat.messaging.subscribe(meerkatEvents.resultsMobileDisplayModeToggle.DISPLAY_MODE_CHANGED, function onDisplayModeChanged(obj) {
+			if (obj.displayMode === 'price') {
+				switchToPriceMode(true);
+			} else {
+				switchToFeaturesMode(true);
+			}
 		});
 	}
 

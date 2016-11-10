@@ -25,6 +25,8 @@
     "shared/leadFeed",
     "shared/serverSideValidationOutput",
     "shared/resultsFilterLabels",
+    "shared/paymentFrequencyButtons",
+    "shared/resultsMobileDisplayModeToggle",
     "shared/mobileNavButtons"
   ]
 }
