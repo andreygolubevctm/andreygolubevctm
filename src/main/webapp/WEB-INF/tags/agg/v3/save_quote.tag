@@ -98,6 +98,8 @@
 						</div>
 					</div>
 
+						<p class="saveQuoteDescription">We will save all of the information that you have entered, and will send you an email with instruction on how you can retrieve your quote when you're ready</p>
+
 					<%-- PASSWORDS --%>
 					<div class="saveQuotePasswords">
 						<h5><c:out value="${copyPwdHeading}" escapeXml="false" /></h5>
