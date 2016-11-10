@@ -26,6 +26,7 @@
     "shared/serverSideValidationOutput",
     "shared/resultsFilterLabels",
     "shared/paymentFrequencyButtons",
-    "shared/resultsMobileDisplayModeToggle"
+    "shared/resultsMobileDisplayModeToggle",
+    "shared/mobileNavButtons"
   ]
 }

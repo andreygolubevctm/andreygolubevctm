@@ -51,6 +51,10 @@
 		meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function editDetailsLeaveXsState() {
 			hide();
 		});
+
+		meerkat.messaging.subscribe(meerkatEvents.mobileNavButtons.EDIT_DETAILS_TOGGLED, function onEditDetailsToggled() {
+			show();
+		});
 	}
 
 	function show() {
