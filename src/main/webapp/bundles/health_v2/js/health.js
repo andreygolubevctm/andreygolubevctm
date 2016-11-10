@@ -41,7 +41,7 @@
 					startStepId = meerkat.site.journeyStage;
 				}
 			}
-			
+
 			_.defer(function(){
 				meerkat.modules.journeyEngine.configure({
 					startStepId: startStepId,
