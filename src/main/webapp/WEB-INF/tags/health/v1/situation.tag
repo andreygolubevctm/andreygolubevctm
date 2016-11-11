@@ -22,7 +22,7 @@
             <simples:dialogue id="0" vertical="health" className="red">
                 <div class="row">
                     <div class="col-sm-12">
-                        <field_v2:array_radio xpath="health/simples/contactType" items="outbound=Outbound quote,inbound=Inbound quoteclioutbound=CLI Outbound" required="true" title="contact type (outbound/inbound)" />
+                        <field_v2:array_radio xpath="health/simples/contactType" items="outbound=Outbound quote,inbound=Inbound,quoteclioutbound=CLI Outbound" required="true" title="contact type (outbound/inbound)" />
                     </div>
                 </div>
             </simples:dialogue>
