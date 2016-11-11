@@ -47,8 +47,6 @@
             if ($e.length > 0) {
                 templateCallDirect = _.template($e.html());
             }
-
-            configureContactDetails();
         });
 
     }
@@ -160,19 +158,21 @@
                     }
                 });
                 meerkat.modules.carRegoLookup.lookup();
-            },
+            }/*,
             validation: {
-                validate: true,
+                validate: false,
                 customValidation: function (callback) {
-                    $('#quote_vehicle_selection').find('select').each(function () {
-                        if ($(this).is('[disabled]')) {
-                            callback(false);
-                            return;
-                        }
-                    });
-                    callback(true);
+                    if (!meerkat.modules.carExotic.isExotic()) {
+                        $('#quote_vehicle_selection').find('select').each(function () {
+                            if ($(this).is('[disabled]')) {
+                                callback(false);
+                                return;
+                            }
+                        });
+                        callback(true);
+                    }
                 }
-            }
+            }*/
         };
 
         var optionsStep = {
@@ -192,7 +192,14 @@
                 meerkat.modules.carCommencementDate.initCarCommencementDate();
                 meerkat.modules.carYoungDrivers.initCarYoungDrivers();
                 meerkat.modules.carUsingYourCar.initUsingYourCar();
-            }
+            },
+            onBeforeEnter: function (event) {
+                if (meerkat.modules.carExotic.isExotic()) {
+                    meerkat.modules.carExotic.hideNormalQuestions();
+                } else {
+                    meerkat.modules.carExotic.showNormalQuestions();
+                }
+            },
         };
 
         var detailsStep = {
@@ -207,7 +214,12 @@
                 touchType: 'H',
                 touchComment: 'DriverDtls',
                 includeFormData: true
-            }
+            },
+            onBeforeEnter: function enterOptionsStep(event) {
+                if (meerkat.modules.carExotic.isExotic()) {
+                    meerkat.modules.carExotic.hideOptionsQuestions();
+                }
+            },
         };
 
         var addressStep = {

@@ -9,9 +9,9 @@
 <c:set var="quote_vehicle_searchRego"><c:out value="${param.quote_vehicle_searchRego}" escapeXml="true" /></c:set>
 <c:set var="quote_vehicle_searchState"><c:out value="${param.quote_vehicle_searchState}" escapeXml="true" /></c:set>
 
-<c:set var="isFromExoticPage" scope="request" value="${false}" />
+<c:set var="isFromExoticPage" scope="session" value="${false}" />
 <c:if test="${not empty param.quote_vehicle_exoticCar}">
-	<c:set var="isFromExoticPage" scope="request" value="${true}" />
+	<c:set var="isFromExoticPage" scope="session" value="${true}" />
 </c:if>
 
 <c:set var="fromBrochure" scope="request" value="${false}"/>
