@@ -42,12 +42,16 @@
 				}
 			}
 
-			_.defer(function(){
-				meerkat.modules.journeyEngine.configure({
-					startStepId: startStepId,
-					steps: _.toArray(steps)
-				});
+			var journeyEngineConfigure = _.bind(meerkat.modules.journeyEngine.configure, this, {
+				startStepId: startStepId,
+				steps: _.toArray(steps)
 			});
+
+			if(meerkat.site.isNewQuote === false) {
+				_.delay(journeyEngineConfigure, 500);
+			} else {
+				journeyEngineConfigure();
+			}
 
 			// Call initial supertag call
 			var transaction_id = meerkat.modules.transactionId.get();
