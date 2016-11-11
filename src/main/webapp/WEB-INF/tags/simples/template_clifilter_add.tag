@@ -22,12 +22,6 @@
 					<input type="text" name="phone" class="form-control phone" placeholder="0x xxxx xxxx" size="10">
 				</div>
 			</div>
-			<div class="form-group row">
-				<label for="comment" class="col-xs-3 control-label">Comment</label>
-				<div class="row-content col-xs-6">
-					<textarea name="comment" class="form-control" rows="7" placeholder="Enter the reason for the action..."></textarea>
-				</div>
-			</div>
 			<div class="row text-right">
 				<div class="col-xs-9  text-right">
 					<span class="form-error text-danger"></span>

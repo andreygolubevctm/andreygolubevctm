@@ -65,7 +65,6 @@
 						<simples:template_blacklist_delete />
 						<simples:template_blacklist_unsubscribe />
 						<simples:template_clifilter_add />
-						<simples:template_clifilter_delete />
 			</jsp:body>
 
 		</layout_v1:simples_page>

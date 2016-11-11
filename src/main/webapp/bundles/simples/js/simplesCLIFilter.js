@@ -5,7 +5,6 @@
 
 	var modalId = false,
 		templateCLIFilter = false,
-		action = false,// add, delete
 		$targetForm = false;
 
 	function init() {
@@ -14,10 +13,8 @@
 			$('[data-provide="simples-clifilter-action"]').on('click', 'a', function(event) {
 				event.preventDefault();
 
-				action = $(this).data('action');
-
 				// Set up templates
-				var $e = $('#simples-template-clifilter-' + action);
+				var $e = $('#simples-template-clifilter-add');
 				if ($e.length > 0) {
 					templateCLIFilter = _.template($e.html());
 				}
@@ -73,18 +70,16 @@
 
 	function performSubmit() {
 
-		//Setup target form based on the action
-		$targetForm = $('#simples-' + action + '-clifilter');
+		//Setup target form
+		$targetForm = $('#simples-add-clifilter');
 		
 		if (validateForm()) {
 			var formData = {
-				value: $targetForm.find('input[name="phone"]').val().trim().replace(/\s+/g, ''),
-				comment: $targetForm.find('textarea[name="comment"]').val().trim()
+				value: $targetForm.find('input[name="phone"]').val().trim().replace(/\s+/g, '')
 			};
 
-			var url = 'spring/rest/simples/clifilter/' + action + '.json',
-				actionText = action === 'add' ? 'added to' : 'deleted from',
-				successMessage = 'Success : ' + formData.value + ' is ' + actionText  + ' CLI Filter';
+			var url = 'spring/rest/simples/clifilter/add.json',
+				successMessage = 'Success : ' + formData.value + ' is added to CLI Filter';
 			makeAjaxCall(url, formData, successMessage);
 		}
 
@@ -116,15 +111,10 @@
 		if ($targetForm === false) return false;
 
 		var phoneNumber = $targetForm.find('input[name="phone"]').val().trim().replace(/\s+/g, '');
-		var comment = $targetForm.find('textarea[name="comment"]').val().trim();
 		var $error = $targetForm.find('.form-error');
 
 		if (phoneNumber === '' || !isValidPhoneNumber(phoneNumber)) {
 			$error.text('Please enter a valid phone number.');
-			return false;
-		}
-		if (comment === '') {
-			$error.text('Comment length can not be zero.');
 			return false;
 		}
 
