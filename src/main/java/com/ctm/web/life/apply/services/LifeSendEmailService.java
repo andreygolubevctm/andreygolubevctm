@@ -1,5 +1,6 @@
 package com.ctm.web.life.apply.services;
 
+import com.ctm.commonlogging.common.LoggingArguments;
 import com.ctm.web.core.email.exceptions.SendEmailException;
 import com.ctm.web.core.email.model.EmailMode;
 import com.ctm.web.core.email.services.EmailService;
@@ -48,7 +49,7 @@ public class LifeSendEmailService {
         try {
             this.sendEmail(transactionId, emailAddress, request);
         } catch (SendEmailException e) {
-            LOGGER.error("Exception generated attempting to send email", e);
+            LOGGER.error("Exception generated attempting to send email. {}", LoggingArguments.kv("transactionId", transactionId), e);
         }
     }
 
