@@ -8,11 +8,19 @@
 <c:set var="quote_vehicle_year"><c:out value="${param.quote_vehicle_year}" escapeXml="true" /></c:set>
 <c:set var="quote_vehicle_searchRego"><c:out value="${param.quote_vehicle_searchRego}" escapeXml="true" /></c:set>
 <c:set var="quote_vehicle_searchState"><c:out value="${param.quote_vehicle_searchState}" escapeXml="true" /></c:set>
+<c:set var="quote_vehicle_exoticCar"><c:out value="${param.quote_vehicle_exoticCar}" escapeXml="true" /></c:set>
+
 
 <c:set var="isFromExoticPage" scope="session" value="${false}" />
-<c:if test="${not empty param.quote_vehicle_exoticCar}">
+<c:if test="${not empty quote_vehicle_exoticCar}">
 	<c:set var="isFromExoticPage" scope="session" value="${true}" />
 </c:if>
+
+<c:set var="exoticCarContent" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "exoticCarContent")}' />
+<c:set var="originalHeading" value="${exoticCarContent.getSupplementaryValueByKey('normalHeading')}" scope="request" />
+<c:set var="origintalCopy" value="${exoticCarContent.getSupplementaryValueByKey('normalCopy')}" scope="request" />
+<c:set var="exoticHeading" value="${exoticCarContent.getSupplementaryValueByKey('exoticHeading')}" scope="session" />
+<c:set var="exoticCopy" value="${exoticCarContent.getSupplementaryValueByKey('exoticCopy')}" scope="session" />
 
 <c:set var="fromBrochure" scope="request" value="${false}"/>
 <c:if test="${not empty quote_vehicle_make || not empty quote_vehicle_model || not empty quote_vehicle_year || not empty quote_vehicle_searchRego || not empty quote_vehicle_searchState}">
@@ -89,5 +97,11 @@
 		displayMode: "<c:out value="${priceDisplayMode}" />"
 	},
 	commencementDate : '${data.quote.options.commencementDate}',
-	isFromExoticPage : ${isFromExoticPage}
+	isFromExoticPage : ${isFromExoticPage},
+	exoticCarContent: {
+		originalHeading : "${originalHeading}",
+		origintalCopy : "${origintalCopy}",
+		exoticHeading : "${exoticHeading}",
+		exoticCopy : "${exoticCopy}"
+	}
 }

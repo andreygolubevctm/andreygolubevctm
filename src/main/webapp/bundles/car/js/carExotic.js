@@ -6,6 +6,7 @@
 		$originalQuestionSet,
 		$exoticQuestionSet,
 		$questionsToHide,
+		$speechBubble,
 		_threshold = 150000;
 
 	function init(){
@@ -13,9 +14,10 @@
 		$exoticManualEntry = $('.exoticManualEntry').length > 0 ? $('.exoticManualEntry') : null;
 		$originalQuestionSet = $('#quote_vehicle_selection');
 		$exoticQuestionSet = $('#quote_exotic_vehicle_selection');
+		$speechBubble = $('.bubbleContent');
 
 		// existing questions
-		$questionsToHide = $('#quote_vehicle_modificationsFieldRow, .noOfKms, #securityOptionRow, #accidentDamageRow, .rego-not-my-car');
+		$questionsToHide = $('#quoteAccessoriesFieldSet, .noOfKms, #securityOptionRow, #accidentDamageRow, .rego-not-my-car');
 
 		eventSubscriptions();
 	}
@@ -33,14 +35,6 @@
 		$questionsToHide.show();
 	}
 
-	function updateSpeechBubble() {
-		if (isExotic()) {
-
-		} else {
-			// else is used in case they go back and do a different car
-		}
-	}
-
 	function eventSubscriptions() {
 		if ($exoticManualEntry !== null) {
 			$exoticManualEntry.on('click', function manualExoticQEntry() {
@@ -50,11 +44,21 @@
 		}
 	}
 
+	function updateSpeechBubble() {
+		var exoticContent = meerkat.site.exoticCarContent,
+			h4Text = isExotic() ? exoticContent.exoticHeading : exoticContent.normalHeading,
+			pText = isExotic() ? exoticContent.exoticCopy : exoticContent.normalCopy;
+
+		$speechBubble.find('h4').text(h4Text);
+		$speechBubble.find('p').text(pText);
+	}
+
 	meerkat.modules.register("carExotic", {
 		init: init,
 		isExotic: isExotic,
 		hideNormalQuestions: hideNormalQuestions,
-		showNormalQuestions: showNormalQuestions
+		showNormalQuestions: showNormalQuestions,
+		updateSpeechBubble: updateSpeechBubble
 	});
 
 })(jQuery);

@@ -12,6 +12,10 @@
 <%-- HTML --%>
 <form_v2:fieldset legend="Using Your Car" id="${name}FieldSet">
 
+	<c:if test="${isFromExoticPage eq true or data.quote.vehicle.marketValue > 150000}">
+		<car:exotic_your_usage_questions xpath="${xpath}/vehicle/exoticCar" />
+	</c:if>
+
 	<div id="securityOptionHiddenRow"></div>
 	<form_v2:row id="securityOptionRow" label="Does the car have an alarm or an immobiliser fitted?" helpId="5">
 		<field_v2:import_select xpath="${xpath}/securityOption"

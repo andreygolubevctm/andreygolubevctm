@@ -475,7 +475,7 @@
 
         // check if the car is a normal car question set or if the user came from the exotic car landing page
         // and they haven't hit the year question yet
-        if (!meerkat.modules.carExotic.isExotic() || (meerkat.modules.carExotic.isExotic() && year === false)) {
+        if (!meerkat.site.isFromExoticPage || (meerkat.site.isFromExoticPage && year === false)) {
             // Attempt to populate the next field
             if (invalid === false && next !== false) {
                 disableFutureSelectors(next);

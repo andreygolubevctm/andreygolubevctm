@@ -199,6 +199,8 @@
                 } else {
                     meerkat.modules.carExotic.showNormalQuestions();
                 }
+
+                meerkat.modules.carExotic.updateSpeechBubble();
             },
         };
 

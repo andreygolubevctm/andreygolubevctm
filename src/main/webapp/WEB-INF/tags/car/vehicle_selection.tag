@@ -10,10 +10,7 @@
 <c:set var="name" value="${go:nameFromXpath(xpath)}"/>
 
 <%-- HTML --%>
-<ui:bubble variant="chatty">
-    <h4>Tell us about your car</h4>
-    <p>Answering these questions will help us supply you with car insurance quotes from our participating suppliers.</p>
-</ui:bubble>
+<car:speechBubble />
 <form_v2:fieldset legend="Your Car" id="${name}_selection">
 
     <c:if test="${not empty param.quote_vehicle_searchRego and not empty param.quote_vehicle_searchState}">
