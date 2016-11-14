@@ -7,6 +7,10 @@
 		$exoticQuestionSet,
 		$questionsToHide,
 		$speechBubble,
+		$carSnapshot,
+		$quoteVehicleMake,
+		$quoteVehicleModel,
+		$quoteVehicleYear,
 		_threshold = 150000;
 
 	function init(){
@@ -18,6 +22,12 @@
 
 		// existing questions
 		$questionsToHide = $('#quoteAccessoriesFieldSet, .noOfKms, #securityOptionRow, #accidentDamageRow, .rego-not-my-car');
+
+		// snapshot fields
+		$carSnapshot = $(".car-snapshot");
+		$quoteVehicleMake = $carSnapshot.find("span[data-source='#quote_vehicle_make']");
+		$quoteVehicleModel = $carSnapshot.find("span[data-source='#quote_vehicle_model']");
+		$quoteVehicleYear = $carSnapshot.find("span[data-source='#quote_vehicle_year']");
 
 		eventSubscriptions();
 	}
@@ -40,6 +50,11 @@
 			$exoticManualEntry.on('click', function manualExoticQEntry() {
 				$originalQuestionSet.addClass('hidden');
 				$exoticQuestionSet.removeClass('hidden');
+
+				// update the fields to listen for within the snapshot
+				$quoteVehicleMake.attr('data-source', "#quote_exotic_vehicle_make");
+				$quoteVehicleModel.attr('data-source', "#quote_exotic_vehicle_model");
+				$quoteVehicleYear.attr('data-source', "#quote_exotic_vehicle_year");
 			});
 		}
 	}

@@ -9,7 +9,6 @@
 <form_v2:row label="What was the purchase price of the car?" >
 		<field_v2:currency xpath="${xpath}_value"
 						   required="true"
-						   minValue="150000"
 						   pattern="[0-9]*"
 						   decimal="${false}"
 						   title="The purchase price of the car"/>

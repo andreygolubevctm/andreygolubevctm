@@ -219,7 +219,7 @@
             },
             onBeforeEnter: function enterOptionsStep(event) {
                 if (meerkat.modules.carExotic.isExotic()) {
-                    meerkat.modules.carExotic.hideOptionsQuestions();
+                    meerkat.modules.carExotic.hideNormalQuestions();
                 }
             },
         };

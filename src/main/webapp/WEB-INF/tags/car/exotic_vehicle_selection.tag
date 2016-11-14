@@ -38,7 +38,6 @@
     <form_v2:row label="Value of the Car" id="${name}_value">
         <field_v2:currency xpath="${xpath}_value"
                            required="true"
-                           minValue="150000"
                            pattern="[0-9]*"
                            decimal="${false}"
                            title="The value of the car"/>
