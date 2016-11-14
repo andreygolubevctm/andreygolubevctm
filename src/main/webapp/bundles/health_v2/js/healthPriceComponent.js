@@ -108,10 +108,10 @@
 			meerkat.modules.healthDualPricing.renderTemplate('.policySummary.dualPricing', product, false, true);
 		} else {
 			product.displayLogo = true;
-			var quoteRefHtmlTemplate = _.template(quoteRefTemplate);
+			var quoteRefHtmlTemplate = typeof quoteRefTemplate !== 'undefined' ? _.template(quoteRefTemplate) : null;
 			var priceHtmlTemplate = _.template(priceTemplate);
 			var logoHtmlTemplate = _.template(logoTemplate);
-			var htmlString = quoteRefHtmlTemplate({}) + logoHtmlTemplate(product) + priceHtmlTemplate(product);
+			var htmlString = (typeof quoteRefHtmlTemplate === 'function' ? quoteRefHtmlTemplate({}) : "") + logoHtmlTemplate(product) + priceHtmlTemplate(product);
 
 			$policySummaryTemplateHolder.html(htmlString);
 
