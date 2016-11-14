@@ -21,7 +21,7 @@
 		$speechBubble = $('.bubbleContent');
 
 		// existing questions
-		$questionsToHide = $('#quoteAccessoriesFieldSet, .noOfKms, #securityOptionRow, #accidentDamageRow, .rego-not-my-car');
+		$questionsToHide = $('#quoteAccessoriesFieldSet, .noOfKms, #securityOptionRow, #accidentDamageRow, .rego-not-my-car, #quote_drivers_regular_employmentStatus, #ownsAnotherCar');
 
 		// snapshot fields
 		$carSnapshot = $(".car-snapshot");
