@@ -19,7 +19,7 @@
         <field_v2:person_dob xpath="${xpath}/dob" title="primary person's" required="true" ageMin="16" ageMax="120" />
     </form_v2:row>
 
-    <form_v2:row label="Employment status" helpId="27">
+    <form_v2:row label="Employment status" helpId="27" id="employment_status_row">
         <field_v2:import_select xpath="${xpath}/employmentStatus"
             required="true" className="employment_status"
             url="/WEB-INF/option_data/employment_status.html"

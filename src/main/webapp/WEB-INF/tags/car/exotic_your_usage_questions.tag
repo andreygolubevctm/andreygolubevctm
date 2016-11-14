@@ -7,7 +7,7 @@
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
 
 <form_v2:row label="What was the purchase price of the car?" >
-		<field_v2:currency xpath="${xpath}_value"
+		<field_v2:currency xpath="${xpath}_purchase_price"
 						   required="true"
 						   pattern="[0-9]*"
 						   decimal="${false}"

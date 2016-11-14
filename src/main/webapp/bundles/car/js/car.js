@@ -160,9 +160,9 @@
                 meerkat.modules.carRegoLookup.lookup();
 
                 configureContactDetails();
-            },
+            }/*,
             validation: {
-                validate: true,
+                validate: false,
                 customValidation: function (callback) {
                     $('#quote_vehicle_selection').find('select').each(function () {
                         if ($(this).is('[disabled]')) {
@@ -172,7 +172,7 @@
                     });
                     callback(true);
                 }
-            }
+            }*/
         };
 
         var optionsStep = {
@@ -194,12 +194,7 @@
                 meerkat.modules.carUsingYourCar.initUsingYourCar();
             },
             onBeforeEnter: function (event) {
-                if (meerkat.modules.carExotic.isExotic()) {
-                    meerkat.modules.carExotic.hideNormalQuestions();
-                } else {
-                    meerkat.modules.carExotic.showNormalQuestions();
-                }
-
+                meerkat.modules.carExotic.toggleQuestions();
                 meerkat.modules.carExotic.updateSpeechBubble();
             },
         };
@@ -218,9 +213,7 @@
                 includeFormData: true
             },
             onBeforeEnter: function enterOptionsStep(event) {
-                if (meerkat.modules.carExotic.isExotic()) {
-                    meerkat.modules.carExotic.hideNormalQuestions();
-                }
+                meerkat.modules.carExotic.toggleQuestions();
             },
         };
 

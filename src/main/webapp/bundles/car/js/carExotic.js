@@ -6,11 +6,16 @@
 		$originalQuestionSet,
 		$exoticQuestionSet,
 		$questionsToHide,
+		$exoticQuestionsToShow,
 		$speechBubble,
 		$carSnapshot,
 		$quoteVehicleMake,
 		$quoteVehicleModel,
 		$quoteVehicleYear,
+		$regularDriverClaims,
+		$regularDriverConvictions,
+		$claimsReasonRow,
+		$convictionRow,
 		_threshold = 150000;
 
 	function init(){
@@ -19,9 +24,14 @@
 		$originalQuestionSet = $('#quote_vehicle_selection');
 		$exoticQuestionSet = $('#quote_exotic_vehicle_selection');
 		$speechBubble = $('.bubbleContent');
+		$regularDriverClaims = $('input[name=quote_drivers_regular_claims]');
+		$regularDriverConvictions = $('input[name=quote_drivers_regular_convictions]');
+		$claimsReasonRow = $('#quote_drivers_regular_claims_reasonRow');
+		$convictionRow = $('#quote_drivers_regular_conviction_reasonRow');
 
-		// existing questions
-		$questionsToHide = $('#quoteAccessoriesFieldSet, .noOfKms, #securityOptionRow, #accidentDamageRow, .rego-not-my-car, #quote_drivers_regular_employmentStatus, #ownsAnotherCar');
+		// existing and new questions
+		$questionsToHide = $('#quoteAccessoriesFieldSet, .noOfKms, #securityOptionRow, #accidentDamageRow, .rego-not-my-car, #employment_status_row, #ownsAnotherCar');
+		$exoticQuestionsToShow = $('#quote_drivers_regular_convictionsRow');
 
 		// snapshot fields
 		$carSnapshot = $(".car-snapshot");
@@ -37,12 +47,14 @@
 		return (meerkat.site.tracking.brandCode === 'ctm' && (parseInt($marketValue.val()) >= _threshold  || meerkat.site.isFromExoticPage === true));
 	}
 
-	function hideNormalQuestions() {
-		$questionsToHide.hide();
-	}
-
-	function showNormalQuestions() {
-		$questionsToHide.show();
+	function toggleQuestions() {
+		if (isExotic()) {
+			$questionsToHide.hide();
+			$exoticQuestionsToShow.removeClass('hidden');
+		} else {
+			$questionsToHide.show();
+			$exoticQuestionsToShow.addClass('hidden');
+		}
 	}
 
 	function eventSubscriptions() {
@@ -57,6 +69,24 @@
 				$quoteVehicleYear.attr('data-source', "#quote_exotic_vehicle_year");
 			});
 		}
+
+		if (isExotic()) {
+			toggleReasonFields($regularDriverClaims, $claimsReasonRow);
+			toggleReasonFields($regularDriverConvictions, $convictionRow);
+		}
+	}
+
+	function toggleReasonFields($targetEl, $toggleEl) {
+		$targetEl.on('click', function toggleReasonField() {
+			if ($targetEl.filter(":checked").val() === 'Y') {
+				if ($toggleEl.hasClass('hidden')) {
+					$toggleEl.removeClass('hidden');
+				}
+				$toggleEl.slideDown();
+			} else {
+				$toggleEl.slideUp();
+			}
+		});
 	}
 
 	function updateSpeechBubble() {
@@ -71,8 +101,7 @@
 	meerkat.modules.register("carExotic", {
 		init: init,
 		isExotic: isExotic,
-		hideNormalQuestions: hideNormalQuestions,
-		showNormalQuestions: showNormalQuestions,
+		toggleQuestions: toggleQuestions,
 		updateSpeechBubble: updateSpeechBubble
 	});
 

@@ -31,7 +31,7 @@
 	}
 
 	function renderSnapshot() {
-		var carMake = meerkat.modules.carExotic.isExotic() ? $('#quote_exotic_vehicle_make') : $('#quote_vehicle_make');
+		var carMake = $('#quote_exotic_vehicle_make').is(":visible") ? $('#quote_exotic_vehicle_make') : $('#quote_vehicle_make');
 		var $snapshotBox = $(".quoteSnapshot");
 		if (carMake.val() !== '') {
 			$snapshotBox.removeClass('hidden');
