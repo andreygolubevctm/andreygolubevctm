@@ -158,21 +158,21 @@
                     }
                 });
                 meerkat.modules.carRegoLookup.lookup();
-            }/*,
+
+                configureContactDetails();
+            },
             validation: {
-                validate: false,
+                validate: true,
                 customValidation: function (callback) {
-                    if (!meerkat.modules.carExotic.isExotic()) {
-                        $('#quote_vehicle_selection').find('select').each(function () {
-                            if ($(this).is('[disabled]')) {
-                                callback(false);
-                                return;
-                            }
-                        });
-                        callback(true);
-                    }
+                    $('#quote_vehicle_selection').find('select').each(function () {
+                        if ($(this).is('[disabled]')) {
+                            callback(false);
+                            return;
+                        }
+                    });
+                    callback(true);
                 }
-            }*/
+            }
         };
 
         var optionsStep = {
