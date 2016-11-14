@@ -30,7 +30,7 @@
 	</form_v2:row>
 
 	<form_v2:row label="Email Address" id="contactEmailRow">
-		<field_v2:email xpath="${xpath}/email" required="false" title="the policy holder's email address" additionalAttributes=" data-rule-validateOkToEmail='true' " />
+		<field_v2:email xpath="${xpath}/email" required="true" title="the policy holder's email address" additionalAttributes=" data-rule-validateOkToEmail='true' " />
 	</form_v2:row>
 
 	<c:set var="fieldXPath" value="${xpath}/phone" />
@@ -38,7 +38,7 @@
 		<field_v1:flexi_contact_number xpath="${fieldXPath}"
 			maxLength="20"
 			id="bestNumber"
-			required="false"
+			required="true"
 			className="bestNumber"
 			labelName="best number"
 			validationAttribute=" data-rule-validateOkToCall='true' "/>
@@ -46,6 +46,11 @@
 
 	<field_v1:hidden xpath="quote/contact/marketing" defaultValue="N" />
 	<field_v1:hidden xpath="quote/contact/oktocall" defaultValue="N" />
+
+	<form_v2:row label="Preferred method of contact" id="preferredContactMethodRow">
+		<field_v2:array_radio xpath="${xpath}/preferred" required="true" items="Y=Yes,N=No"
+							  title="the preferred method of contact" />
+	</form_v2:row>
 
 	<%-- COMPETITION START --%>
 	<c:if test="${competitionEnabled == true}">
