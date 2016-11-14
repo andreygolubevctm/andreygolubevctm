@@ -21,7 +21,7 @@
 
 				<car:vehicle_selection xpath="${xpath}/vehicle" />
 				<c:if test="${isFromExoticPage eq true}">
-					<car:exotic_vehicle_selection xpath="${xpath}/exotic/vehicle" />
+					<car:exotic_vehicle_selection xpath="${xpath}/vehicle/exotic" />
 				</c:if>
 			</layout_v1:slide_content>
 		</jsp:body>

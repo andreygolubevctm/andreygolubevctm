@@ -22,7 +22,7 @@
 		$marketValue = $('input[name=quote_vehicle_marketValue]');
 		$exoticManualEntry = $('.exoticManualEntry').length > 0 ? $('.exoticManualEntry') : null;
 		$originalQuestionSet = $('#quote_vehicle_selection');
-		$exoticQuestionSet = $('#quote_exotic_vehicle_selection');
+		$exoticQuestionSet = $('#quote_vehicle_exotic_selection');
 		$speechBubble = $('.bubbleContent');
 		$regularDriverClaims = $('input[name=quote_drivers_regular_claims]');
 		$regularDriverConvictions = $('input[name=quote_drivers_regular_convictions]');
@@ -64,9 +64,9 @@
 				$exoticQuestionSet.removeClass('hidden');
 
 				// update the fields to listen for within the snapshot
-				$quoteVehicleMake.attr('data-source', "#quote_exotic_vehicle_make");
-				$quoteVehicleModel.attr('data-source', "#quote_exotic_vehicle_model");
-				$quoteVehicleYear.attr('data-source', "#quote_exotic_vehicle_year");
+				$quoteVehicleMake.attr('data-source', "#quote_vehicle_exotic_make");
+				$quoteVehicleModel.attr('data-source', "#quote_vehicle_exotic_model");
+				$quoteVehicleYear.attr('data-source', "#quote_vehicle_exotic_year");
 			});
 		}
 

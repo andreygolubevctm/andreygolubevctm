@@ -13,7 +13,7 @@
 <form_v2:fieldset legend="Using Your Car" id="${name}FieldSet">
 
 	<c:if test="${isFromExoticPage eq true or data.quote.vehicle.marketValue > 150000}">
-		<car:exotic_your_usage_questions xpath="${xpath}/vehicle/exoticcar" />
+		<car:exotic_your_usage_questions xpath="${xpath}/exotic" />
 	</c:if>
 
 	<div id="securityOptionHiddenRow"></div>
