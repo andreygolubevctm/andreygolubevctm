@@ -165,7 +165,8 @@ var ResultsPagination = {
 				var pageTextTemplate = _.template(Results.settings.templates.pagination.pageText);
 				htmlString = pageTextTemplate({
 					currentPage: Results.pagination.getCurrentPageNumber(),
-					totalPages: pageMeasurements.numberOfPages
+					totalPages: pageMeasurements.numberOfPages,
+					availableCounts: Results.model.availableCounts
 				});
 				Results.pagination.$pageText.html(htmlString);
 			}
