@@ -388,7 +388,7 @@
             toggleCoverType();
             setLimitedCover(false);
         } else {
-            if(meerkat.modules.isNewQuote === false) {
+            if(meerkat.site.isNewQuote === false) {
                 // For loaded transactions we simply want to
                 // preselect the the users original choices
                 currentCover = $benefitsCoverType.val();
