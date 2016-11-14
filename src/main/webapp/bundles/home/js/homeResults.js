@@ -143,7 +143,7 @@
 				},
 				templates:{
 					pagination:{
-						pageText: '{{ if(currentPage !== totalPages) { }} Product {{=currentPage}} of {{=(totalPages - 1)}} {{ } }}'
+						pageText: '{{ if(currentPage <= availableCounts) { }} Product {{=currentPage}} of {{=(totalPages - 1)}} {{ } }}'
 					}
 				},
 				dictionary: {
