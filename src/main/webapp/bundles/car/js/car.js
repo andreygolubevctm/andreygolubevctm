@@ -47,8 +47,6 @@
             if ($e.length > 0) {
                 templateCallDirect = _.template($e.html());
             }
-
-            configureContactDetails();
         });
 
     }
@@ -160,6 +158,8 @@
                     }
                 });
                 meerkat.modules.carRegoLookup.lookup();
+
+                configureContactDetails();
             },
             validation: {
                 validate: true,
