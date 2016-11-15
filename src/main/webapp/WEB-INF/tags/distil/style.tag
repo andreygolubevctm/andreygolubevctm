@@ -5,6 +5,14 @@
 <%-- Attributes --%>
 <%@ attribute name="brandCode"  required="true"	 rtexprvalue="true"	 description="The brand code applicable to the page" %>
 
+<%-- Variables --%>
+<c:set var="contextBrandCode">
+    <c:choose>
+        <c:when test="${brandCode eq 'choo'}">app</c:when>
+        <c:otherwise>ctm</c:otherwise>
+    </c:choose>
+</c:set>
+
 <%-- CSS --%>
 <style type="text/css">
     html, body {
@@ -24,7 +32,7 @@
         height: 100%;
         width: 100%;
         min-height: 100%;
-        background: #b8b28b url('assets/brand/${brandCode}/graphics/blocked.png') bottom right no-repeat;
+        background: #b8b28b url('/${contextBrandCode}/assets/brand/${brandCode}/graphics/blocked.png') bottom right no-repeat;
         background-size:contain;
         left: 0;
     }
@@ -39,7 +47,7 @@
     .header .logo {
         width:400px;
         height:55px;
-        background: #ffffff url('assets/brand/${brandCode}/graphics/logo.png') center left no-repeat;
+        background: #ffffff url('/${contextBrandCode}/assets/brand/${brandCode}/graphics/logo.png') center left no-repeat;
     }
     .content { padding: 25px 50px 50px 50px; }
     .content h1 { color: #1C3F94; }
@@ -61,7 +69,7 @@
         }
         .ctm .header .logo {
             width:300px;
-            background-image: url('assets/brand/${brandCode}/graphics/logo-xs.png')
+            background-image: url('/${contextBrandCode}/assets/brand/${brandCode}/graphics/logo-xs.png')
         }
         .content {
             padding:20px;
