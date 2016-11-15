@@ -182,7 +182,8 @@
         }
     }
 
-    function applySituationBasedCopy() {
+    function applySituationBasedCopy(customLimitedCopy) {
+        customLimitedCopy = customLimitedCopy || false;
 
         var $hospitalText = $('.tieredHospitalCover .hospitalCover .title'),
             $extrasText = $('.tieredHospitalCover .extrasCover .title'),
@@ -205,12 +206,17 @@
 
         switch(healthSitu) {
             case 'CSF':
-                if(age >= 40) {
-                    hospitalContent = meerkat.site.content.hospitalFamilyOlder;
-                    extrasContent = meerkat.site.content.extrasFamilyOlder;
+                if(situation === 'SM') {
+                    hospitalContent = meerkat.site.content.hospitalCompareSpecialA;
+                    extrasContent = meerkat.site.content.extrasCompareSpecialA;
                 } else {
-                    hospitalContent = meerkat.site.content.hospitalFamilyYoung;
-                    extrasContent = meerkat.site.content.extrasFamilyYoung;
+                    if (age >= 40) {
+                        hospitalContent = meerkat.site.content.hospitalFamilyOlder;
+                        extrasContent = meerkat.site.content.extrasFamilyOlder;
+                    } else {
+                        hospitalContent = meerkat.site.content.hospitalFamilyYoung;
+                        extrasContent = meerkat.site.content.extrasFamilyYoung;
+                    }
                 }
 
                 if(_.indexOf(['SM','SF','C'],situation) >= 0) {
@@ -233,12 +239,21 @@
                 extrasDisabledContent = meerkat.site.content.extrasFamilyDisabled;
                 break;
             case 'SF':
-                if(age >= 40) {
+                var isSingleMale = situation === 'SM';
+                var isSingleCouple = _.indexOf(['SM', 'SF', 'C'], situation) >= 0;
+                var isFamOrSPF = _.indexOf(['F','SPF'], situation) >= 0;
+                if (age >= 40) {
                     hospitalContent = meerkat.site.content.hospitalSettledFamilyOlder;
-                    extrasContent = meerkat.site.content.extrasSettledFamilyOlder;
+                    extrasContent = meerkat.site.content[isSingleCouple ? 'extrasSettledFamilyOlderSingleCouple' : 'extrasSettledFamilyOlder'];
                 } else {
                     hospitalContent = meerkat.site.content.hospitalSettledFamilyYoung;
-                    extrasContent = meerkat.site.content.extrasSettledFamilyYoung;
+                    extrasContent = meerkat.site.content[isSingleCouple ? 'extrasSettledFamilyYoungSingleCouple' : 'extrasSettledFamilyYoung'];
+                }
+                if(isSingleMale) {
+                    hospitalContent = hospitalContent.replace(/<p>(.)+<\/p>/, meerkat.site.content.hospitalCompareSpecialB);
+                }
+                if(isFamOrSPF) {
+                    extrasContent = extrasContent.replace(/<p>(.)+<\/p>/, meerkat.site.content.extrasCompareSpecialB);
                 }
 
                 switch (coverType) {
@@ -326,9 +341,15 @@
                 break;
 
             case 'ATP':
-                hospitalContent = meerkat.site.content.hospitalLimitedYoung;
-                extrasContent = meerkat.site.content.extrasLimitedDisabled;
-                extrasDisabledContent = meerkat.site.content.extrasLimitedDisabled;
+                if(customLimitedCopy === true) {
+                    hospitalContent = meerkat.site.content.hospitalCompareSpecialA;
+                    extrasContent = meerkat.site.content.extrasCompareSpecialA;
+                    extrasDisabledContent = meerkat.site.content.extrasCompareSpecialA;
+                } else {
+                    hospitalContent = meerkat.site.content.hospitalLimitedAll;
+                    extrasContent = meerkat.site.content.extrasLimitedAll;
+                    extrasDisabledContent = meerkat.site.content.extrasLimitedAll;
+                }
                 helpContent = meerkat.site.content.hospitalLimitedHelp;
 
         }
@@ -367,7 +388,7 @@
             toggleCoverType();
             setLimitedCover(false);
         } else {
-            if(meerkat.modules.isNewQuote === false) {
+            if(meerkat.site.isNewQuote === false) {
                 // For loaded transactions we simply want to
                 // preselect the the users original choices
                 currentCover = $benefitsCoverType.val();
@@ -497,6 +518,10 @@
                     $(this).prop('checked', true);
                 });
                 break;
+        }
+
+        if(previousCover === "limited" && currentCover !== "limited") {
+            applySituationBasedCopy(true);
         }
 
         $hospitalCover.find('.coverExplanation.' + previousCover + 'Cover').addClass('hidden').end().find('.coverExplanation.' + currentCover + 'Cover').removeClass('hidden');

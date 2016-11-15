@@ -68,7 +68,7 @@ public class BestPriceLeadsDao {
 					stmt = dbSource.getConnection().prepareStatement(
 						"SELECT h.rootId AS rootId, h.TransactionId AS transactionId, t.type AS type, h.styleCode, h.ipAddress " +
 						"FROM aggregator.transaction_header AS h " +
-						"LEFT JOIN ctm.touches AS t ON t.transaction_id = h.TransactionId AND t.type IN  ('R','BP','CB','A') " +
+						"LEFT JOIN ctm.touches AS t ON t.transaction_id = h.TransactionId AND t.type IN  ('R','BP','CB','A', 'CD') " +
 						"WHERE h.ProductType = ? AND h.styleCodeId = ? " +
 						// Next line is important as it greatly reduces the size of the recordset and query speed overall
 						"AND t.date >= DATE(CURRENT_DATE - INTERVAL " + minutes_max.toString() + " MINUTE) " +
@@ -92,7 +92,7 @@ public class BestPriceLeadsDao {
 							if(tran.getHasLeadFeed() == false) {
 								stmt = dbSource.getConnection().prepareStatement(
 									"SELECT r.TransactionId AS transactionId, p1.Value AS leadNo, " +
-									"p2.Value AS leadInfo, p3.Value AS brandCode, p1.productId, " +
+									"p2.Value AS leadInfo, p3.Value AS brandCode, p1.productId, t.productCode AS moreInfoProductCode, " +
 									// This sub-select will count all leads for the rootID which will eliminate
 									// sending duplicates for transactions that span more than one reporting
 									// period - ie greater than the delay to source leads (in previous select)
@@ -100,7 +100,7 @@ public class BestPriceLeadsDao {
 									"		SELECT TransactionId FROM aggregator.transaction_header " +
 									"		WHERE rootId = '" + tran.getId() + "'" +
 									"	) " +
-									"	AND type IN ('BP','CB','A')" +
+									"	AND type IN ('BP','CB','A', 'CD')" +
 									") AS existingLeadCount " +
 									"FROM aggregator.ranking_details AS r " +
 									"LEFT JOIN aggregator.results_properties AS p1 " +
@@ -109,6 +109,8 @@ public class BestPriceLeadsDao {
 									"	ON p2.transactionId = r.TransactionId AND p2.productId = r.Value AND p2.property = 'leadfeedinfo' " +
 									"LEFT JOIN aggregator.results_properties AS p3  " +
 									"	ON p3.transactionId = r.TransactionId AND p3.productId = r.Value AND p3.property = 'brandCode' " +
+									" left join (select tp.productCode, t.transaction_id as transactionId from ctm.touches t join ctm.touches_products tp on t.id = tp.touchesId where t.type = 'MoreInfo') as t " +
+									" on t.transactionId = r.transactionId and t.productCode = r.value and r.property = 'productId' " +
 									"WHERE r.TransactionId >= " + tran.getMinTransactionId() + " AND r.TransactionId <= " + tran.getMaxTransactionId() + " " +
 									"	AND r.TransactionId IN (" + tran.toString() + ") " +
 									"	AND r.RankPosition = 0 " +
@@ -156,6 +158,7 @@ public class BestPriceLeadsDao {
 												leadData.setState(state);
 												leadData.setClientIpAddress(tran.getIpAddress());
 												leadData.setProductId(resultSet.getString("productId"));
+												leadData.setMoreInfoProductCode(resultSet.getString("moreInfoProductCode"));
 
 												Brand brand = ApplicationService.getBrandByCode(tran.getStyleCode());
 												leadData.setBrandId(brand.getId());

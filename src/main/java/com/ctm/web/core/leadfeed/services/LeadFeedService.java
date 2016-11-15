@@ -7,6 +7,7 @@ import com.ctm.web.core.leadfeed.dao.BestPriceLeadsDao;
 import com.ctm.web.core.leadfeed.exceptions.LeadFeedException;
 import com.ctm.web.core.leadfeed.model.LeadFeedData;
 import com.ctm.web.core.leadfeed.utils.LeadFeed;
+import com.ctm.web.core.leadfeed.utils.LeadFeedUtil;
 import com.ctm.web.core.model.Touch;
 import com.ctm.web.core.model.Touch.TouchType;
 import com.ctm.web.core.services.AccessTouchService;
@@ -65,8 +66,7 @@ public abstract class LeadFeedService {
 
 	public LeadResponseStatus callDirect(LeadFeedData leadData) throws LeadFeedException {
 		if(!leadFeed.isTestOnlyLead(leadData)) {
-			// Only AI has a call direct lead feed
-			if ("AI".equals(leadData.getPartnerBrand())) {
+			if (LeadFeedUtil.isServiceEnabled(LeadType.CALL_DIRECT, leadData)) {
 				return processGateway(LeadType.CALL_DIRECT, leadData, TouchType.CALL_DIRECT);
 			} else {
 				leadFeedTouchService.recordTouch(Touch.TouchType.CALL_DIRECT, leadData);

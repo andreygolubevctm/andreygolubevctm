@@ -158,6 +158,8 @@
                     }
                 });
                 meerkat.modules.carRegoLookup.lookup();
+
+                configureContactDetails();
             },
             validation: {
                 validate: true,
@@ -467,6 +469,18 @@
         } catch (e) {
             return false;
         }
+    }
+
+    function configureContactDetails(){
+        var contactDetailsFields = {
+            email: [
+                {
+                    $field: $("#quote_contact_email"),
+                    $optInField: $("#quote_contact_marketing")
+                }
+            ]
+        };
+        meerkat.modules.contactDetails.configure(contactDetailsFields);
     }
 
     meerkat.modules.register("car", {

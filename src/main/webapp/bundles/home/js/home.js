@@ -46,6 +46,7 @@
 				templateCallDirect = _.template($e.html());
 			}
 
+			configureContactDetails();
 		});
 
 	}
@@ -148,7 +149,7 @@
 			onInitialise: function onStartInit(event) {
 				meerkat.modules.jqueryValidate.initJourneyValidator();
 				// Hook up privacy optin to Email Quote button
-				var $emailQuoteBtn = $(".slide-feature-emailquote");
+				var $emailQuoteBtn = $(".slide-feature-emailquote, .save-quote");
 
 				// Initial value from preload/load quote
 				if ($("#home_termsAccepted").is(':checked')) {
@@ -288,6 +289,7 @@
 				meerkat.modules.homeMoreInfo.initMoreInfo();
 				meerkat.modules.homeEditDetails.initEditDetails();
 				meerkat.modules.homeFilters.initHomeFilters();
+				meerkat.modules.resultsMobileDisplayModeToggle.initToggle();
 			},
 			onBeforeEnter: function onBeforeEnterResults(event) {
 				meerkat.modules.journeyProgressBar.hide();
@@ -370,7 +372,7 @@
 			externalTracking: externalTrackingSettings,
 			onInitialise: function() {
 				// Hook up privacy optin to Email Quote button
-				var $emailQuoteBtn = $(".slide-feature-emailquote");
+				var $emailQuoteBtn = $(".slide-feature-emailquote, .save-quote");
 
 				// Initial value from preload/load quote
 				if ($("#home_privacyoptin").is(':checked')) {
@@ -459,6 +461,7 @@
 				meerkat.modules.homeMoreInfo.initMoreInfo();
 				meerkat.modules.homeEditDetails.initEditDetails();
 				meerkat.modules.homeFilters.initHomeFilters();
+				meerkat.modules.resultsMobileDisplayModeToggle.initToggle();
 			},
 			onBeforeEnter: function onBeforeEnterResults(event) {
 				meerkat.modules.journeyProgressBar.hide();
@@ -687,7 +690,17 @@
         $owner.find('label:nth-child(2)').addClass('icon-vert-hnc');
 	}
 
-
+	function configureContactDetails(){
+		var contactDetailsFields = {
+			email: [
+				{
+					$field: $("#home_policyHolder_email"),
+					$optInField: $("#home_policyHolder_marketing")
+				}
+			]
+		};
+		meerkat.modules.contactDetails.configure(contactDetailsFields);
+	}
         
 	meerkat.modules.register("home", {
 		init: initHome,

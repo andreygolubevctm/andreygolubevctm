@@ -33,7 +33,7 @@
 				startStepId = steps.startStep.navigationId;
 			}
 			// Use the stage user was on when saving their quote
-			else if (meerkat.site.journeyStage.length > 0 && meerkat.site.pageAction === 'amend') {
+			else if (meerkat.site.journeyStage.length > 0 && _.indexOf(['amend','latest'],meerkat.site.pageAction) >= 0) {
 				// Do not allow the user to go past the results page on amend.
 				if(meerkat.site.journeyStage === 'apply' || meerkat.site.journeyStage === 'payment'){
 					startStepId = 'results';
@@ -42,10 +42,16 @@
 				}
 			}
 
-			meerkat.modules.journeyEngine.configure({
+			var journeyEngineConfigure = _.bind(meerkat.modules.journeyEngine.configure, this, {
 				startStepId: startStepId,
 				steps: _.toArray(steps)
 			});
+
+			if(meerkat.site.isNewQuote === false) {
+				_.delay(journeyEngineConfigure, 500);
+			} else {
+				journeyEngineConfigure();
+			}
 
 			// Call initial supertag call
 			var transaction_id = meerkat.modules.transactionId.get();
@@ -185,7 +191,7 @@
 				}
 
 				// Don't fire the change event by default if amend mode and the user has selected items.
-				if (meerkat.site.pageAction !== 'amend' && meerkat.site.pageAction !== 'start-again' && meerkat.modules.healthBenefitsStep.getSelectedBenefits().length === 0) {
+				if (_.indexOf(['amend','latest'],meerkat.site.pageAction) === -1  && meerkat.site.pageAction !== 'start-again' && meerkat.modules.healthBenefitsStep.getSelectedBenefits().length === 0) {
 					if($healthSitHealthSitu.filter(":checked").val() !== ''){
 						$healthSitHealthSitu.change();
 					}
@@ -277,7 +283,7 @@
 			},
 			onBeforeEnter:function enterBenefitsStep(event) {
 				meerkat.modules.healthBenefitsStep.disableFields();
-				meerkat.modules.healthBenefitsStep.applySituationBasedCopy(event.isForward);
+				meerkat.modules.healthBenefitsStep.applySituationBasedCopy();
 				meerkat.modules.healthBenefitsStep.activateBenefitPreSelections(event.isForward);
 				incrementTranIdBeforeEnteringSlide();
 			},
@@ -636,10 +642,6 @@
 			{
 				label:'Purchase',
 				navigationId: steps.applyStep.navigationId
-			},
-			{
-				label:'',
-				navigationId: steps.paymentStep.navigationId
 			}
 		]);
 
@@ -1377,7 +1379,7 @@
 			eventSubscriptions();
 			configureContactDetails();
 
-			if (meerkat.site.pageAction === 'amend' || meerkat.site.pageAction === 'load' || meerkat.site.pageAction === 'start-again') {
+			if (_.indexOf(['amend','latest','load','start-again'],meerkat.site.pageAction) >= 0) {
 
 				// If retrieving a quote and a product had been selected, inject the fund's application set.
 				if (typeof healthFunds !== 'undefined' && healthFunds.checkIfNeedToInjectOnAmend) {
