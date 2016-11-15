@@ -21,7 +21,7 @@
     </form_v2:row>
 
     <form_v2:row label="Year" id="${name}_yearRow">
-        <field_v2:input type="text" xpath="${xpath}_year" required="true" title="year" pattern="[0-9]*" size="4" additionalAttributes=" data-rule-minlength='4'" />
+        <field_v2:input className="numeric" type="text" xpath="${xpath}_year" required="true" title="year" pattern="[0-9]*" size="4" additionalAttributes=" data-rule-minlength='4' data-rule-number='true' data-msg-number='Year must contain numbers only.'" />
     </form_v2:row>
 
     <form_v2:row label="Engine Capacity" id="${name}_capacity">
@@ -38,7 +38,7 @@
                            required="true"
                            pattern="[0-9]*"
                            decimal="${false}"
-                           title="The value of the car"/>
+                           title="The value of the car"
+                            />
     </form_v2:row>
-
 </form_v2:fieldset>

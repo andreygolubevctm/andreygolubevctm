@@ -9,13 +9,11 @@
 		$exoticQuestionsToShow,
 		$speechBubble,
 		$carSnapshot,
-		$quoteVehicleMake,
-		$quoteVehicleModel,
-		$quoteVehicleYear,
 		$regularDriverClaims,
 		$regularDriverConvictions,
 		$claimsReasonRow,
 		$convictionRow,
+		$carSnapshotRegoFieldset,
 		_threshold = 150000;
 
 	function init(){
@@ -35,11 +33,9 @@
 
 		// snapshot fields
 		$carSnapshot = $(".car-snapshot");
-		$quoteVehicleMake = $carSnapshot.find("span[data-source='#quote_vehicle_make']");
-		$quoteVehicleModel = $carSnapshot.find("span[data-source='#quote_vehicle_model']");
-		$quoteVehicleYear = $carSnapshot.find("span[data-source='#quote_vehicle_year']");
+		$carSnapshotRegoFieldset = $('#RegoFieldSet');
 
-		eventSubscriptions();
+		_eventSubscriptions();
 	}
 
 	// check if the user has used our normal journey or have come from the classic car landing page
@@ -57,26 +53,31 @@
 		}
 	}
 
-	function eventSubscriptions() {
+	function _eventSubscriptions() {
 		if ($exoticManualEntry !== null) {
 			$exoticManualEntry.on('click', function manualExoticQEntry() {
 				$originalQuestionSet.addClass('hidden');
 				$exoticQuestionSet.removeClass('hidden');
 
 				// update the fields to listen for within the snapshot
-				$quoteVehicleMake.attr('data-source', "#quote_vehicle_exotic_make");
-				$quoteVehicleModel.attr('data-source', "#quote_vehicle_exotic_model");
-				$quoteVehicleYear.attr('data-source', "#quote_vehicle_exotic_year");
+				_updateSnapshotDataSource($carSnapshot);
+				_updateSnapshotDataSource($carSnapshotRegoFieldset);
 			});
 		}
 
 		if (isExotic()) {
-			toggleReasonFields($regularDriverClaims, $claimsReasonRow);
-			toggleReasonFields($regularDriverConvictions, $convictionRow);
+			_toggleReasonFields($regularDriverClaims, $claimsReasonRow);
+			_toggleReasonFields($regularDriverConvictions, $convictionRow);
 		}
 	}
 
-	function toggleReasonFields($targetEl, $toggleEl) {
+	function _updateSnapshotDataSource($el) {
+		$el.find("span[data-source='#quote_vehicle_make']").attr('data-source', "#quote_vehicle_exotic_make");
+		$el.find("span[data-source='#quote_vehicle_model']").attr('data-source', "#quote_vehicle_exotic_model");
+		$el.find("span[data-source='#quote_vehicle_year']").attr('data-source', "#quote_vehicle_exotic_year");
+	}
+
+	function _toggleReasonFields($targetEl, $toggleEl) {
 		$targetEl.on('click', function toggleReasonField() {
 			if ($targetEl.filter(":checked").val() === 'Y') {
 				if ($toggleEl.hasClass('hidden')) {

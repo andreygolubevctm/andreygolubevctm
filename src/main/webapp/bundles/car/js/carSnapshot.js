@@ -31,7 +31,7 @@
 	}
 
 	function renderSnapshot() {
-		var carMake = $('#quote_exotic_vehicle_make').is(":visible") ? $('#quote_exotic_vehicle_make') : $('#quote_vehicle_make');
+		var carMake = $('#quote_vehicle_exotic_make').is(":visible") ? $('#quote_vehicle_exotic_make') : $('#quote_vehicle_make');
 		var $snapshotBox = $(".quoteSnapshot");
 		if (carMake.val() !== '') {
 			$snapshotBox.removeClass('hidden');
@@ -50,9 +50,9 @@
     function registerSnapShotFields() {
 
         var fieldsArray = [
-			$("#quote_exotic_vehicle_make"),
-			$("#quote_exotic_vehicle_model"),
-			$("#quote_exotic_vehicle_year"),
+			$("#quote_vehicle_exotic_make"),
+			$("#quote_vehicle_exotic_model"),
+			$("#quote_vehicle_exotic_year"),
             $('#quote_vehicle_use'),
             $('input[name=quote_drivers_regular_gender]'),
             $('#quote_drivers_regular_dob'),
