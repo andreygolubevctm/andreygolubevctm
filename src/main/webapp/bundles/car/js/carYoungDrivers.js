@@ -199,7 +199,7 @@
 			});
 
 			$(elements.reg_dob + "," + elements.yng_dob).on("change", updateRestrictAgeSelector);
-
+			captureOptions();
 			toggleVisibleContent();
 		} else {
 			// otherwise toggle the new question set
@@ -207,11 +207,8 @@
 				// Allow for input value to be updated
 				_.defer(_.bind(toggleVisibleExoticContent, this, true));
 			});
-
 			toggleVisibleExoticContent();
 		}
-
-		captureOptions();
 
 		// Need to allow time for the currentStep to be populated
 		setTimeout(function(){
