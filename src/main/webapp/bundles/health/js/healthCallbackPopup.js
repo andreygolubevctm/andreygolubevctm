@@ -89,7 +89,6 @@
 	}
 
 	function showModal() {
-		console.info("@@@", isActive, isModalOpen, isMobile);
 		if(isActive && !isModalOpen && !isMobile) {
 			setModalState(true);
 			
