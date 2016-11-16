@@ -475,7 +475,7 @@
 
         // check if the car is a normal car question set or if the user came from the exotic car landing page
         // and they haven't hit the year question yet
-        if (!meerkat.site.isFromExoticPage || (meerkat.site.isFromExoticPage && year === false)) {
+        if (!meerkat.site.isFromExoticPage || (meerkat.site.isFromExoticPage && data.field !== 'years')) {
             // Attempt to populate the next field
             if (invalid === false && next !== false) {
                 disableFutureSelectors(next);
@@ -492,9 +492,9 @@
                     checkAndNotifyOfVehicleChange();
                 }
             }
-
-            meerkat.messaging.publish(moduleEvents.car.DROPDOWN_CHANGED);
         }
+
+        meerkat.messaging.publish(moduleEvents.car.DROPDOWN_CHANGED);
     }
 
     function addChangeListeners() {
