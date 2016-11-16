@@ -8,6 +8,7 @@
 		$speechBubble,
 		$carSnapshot,
 		$carSnapshotRegoFieldset,
+		$requiredFieldsToToggle,
 		_threshold = 150000;
 
 	function init(){
@@ -15,15 +16,25 @@
 		$exoticManualEntry = $('.exoticManualEntry').length > 0 ? $('.exoticManualEntry') : null;
 		$speechBubble = $('.carHeadingBubbleContent');
 
+		$requiredFieldsToToggle = $('input[name=quote_contact_email], input[name=quote_contact_phoneinput]');
+
 		// existing and new questions
 		$defaultQuestionsToHide = $('#quoteAccessoriesFieldSet, .noOfKms, #securityOptionRow, #accidentDamageRow, .rego-not-my-car, #employment_status_row, #ownsAnotherCar, #quote_restricted_ageRow, #quote_drivers_youngFieldSet, .ydGreenBubble');
-		$exoticQuestionsToShow = $('#quote_drivers_regular_convictionsRow, #quote_drivers_youngExoticFieldSet, #quote_drivers_youngExoticContFieldSet, .ydSpeechBubbleDriverDetails');
+		$exoticQuestionsToShow = $('#quote_drivers_regular_convictionsRow, #quote_drivers_youngExoticFieldSet, #quote_drivers_youngExoticContFieldSet, .ydSpeechBubbleDriverDetails, #preferredContactMethodRow');
 
 		// snapshot fields
 		$carSnapshot = $(".car-snapshot");
 		$carSnapshotRegoFieldset = $('#RegoFieldSet');
 
 		_eventSubscriptions();
+	}
+
+	function toggleRequiredFields() {
+		if (isExotic()) {
+			$requiredFieldsToToggle.attr('required', 'required');
+		} else {
+			$requiredFieldsToToggle.removeAttr('required');
+		}
 	}
 
 	// check if the user has used our normal journey or have come from the classic car landing page
@@ -95,7 +106,8 @@
 		init: init,
 		isExotic: isExotic,
 		toggleQuestions: toggleQuestions,
-		updateSpeechBubble: updateSpeechBubble
+		updateSpeechBubble: updateSpeechBubble,
+		toggleRequiredFields: toggleRequiredFields
 	});
 
 })(jQuery);

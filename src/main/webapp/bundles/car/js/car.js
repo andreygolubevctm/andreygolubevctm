@@ -237,6 +237,9 @@
             onInitialise: function (event) {
                 meerkat.modules.resultsFeatures.fetchStructure('carws_');
             },
+            onBeforeEnter: function (event) {
+                meerkat.modules.carExotic.toggleRequiredFields();
+            },
             onAfterEnter: function (event) {
             },
             onBeforeLeave: function (event) {
