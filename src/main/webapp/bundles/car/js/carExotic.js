@@ -16,7 +16,7 @@
 		$speechBubble = $('.carHeadingBubbleContent');
 
 		// existing and new questions
-		$defaultQuestionsToHide = $('#quoteAccessoriesFieldSet, .noOfKms, #securityOptionRow, #accidentDamageRow, .rego-not-my-car, #employment_status_row, #ownsAnotherCar, #quote_restricted_ageRow, #quote_drivers_youngFieldSet, .ydGreenBubble');
+		$defaultQuestionsToHide = $('#quoteAccessoriesFieldSet, .noOfKms, #accidentDamageRow, .rego-not-my-car, #employment_status_row, #ownsAnotherCar, #quote_restricted_ageRow, #quote_drivers_youngFieldSet, .ydGreenBubble');
 		$exoticQuestionsToShow = $('#quote_drivers_regular_convictionsRow, #quote_drivers_youngExoticFieldSet, #quote_drivers_youngExoticContFieldSet, .ydSpeechBubbleDriverDetails');
 
 		// snapshot fields
