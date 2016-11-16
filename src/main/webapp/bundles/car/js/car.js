@@ -160,20 +160,27 @@
                 meerkat.modules.carRegoLookup.lookup();
 
                 configureContactDetails();
-            }/*,
-            validation: {
-                validate: false,
-                customValidation: function (callback) {
-                    $('#quote_vehicle_selection').find('select').each(function () {
-                        if ($(this).is('[disabled]')) {
-                            callback(false);
-                            return;
-                        }
-                    });
-                    callback(true);
-                }
-            }*/
+            }
         };
+
+        if (!meerkat.modules.carExotic.isExotic()) {
+            var validationObj = {
+                validation: {
+                    validate: false,
+                    customValidation: function (callback) {
+                        $('#quote_vehicle_selection').find('select').each(function () {
+                            if ($(this).is('[disabled]')) {
+                                callback(false);
+                                return;
+                            }
+                        });
+                        callback(true);
+                    }
+                }
+            }
+
+            _.extend(startStep, validationObj);
+        }
 
         var optionsStep = {
             title: 'Car Details',
