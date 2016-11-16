@@ -8,13 +8,6 @@
 <c:set var="quote_vehicle_year"><c:out value="${param.quote_vehicle_year}" escapeXml="true" /></c:set>
 <c:set var="quote_vehicle_searchRego"><c:out value="${param.quote_vehicle_searchRego}" escapeXml="true" /></c:set>
 <c:set var="quote_vehicle_searchState"><c:out value="${param.quote_vehicle_searchState}" escapeXml="true" /></c:set>
-<c:set var="quote_vehicle_exoticCar"><c:out value="${param.quote_vehicle_exoticCar}" escapeXml="true" /></c:set>
-
-
-<c:set var="isFromExoticPage" scope="session" value="${false}" />
-<c:if test="${not empty quote_vehicle_exoticCar}">
-	<c:set var="isFromExoticPage" scope="session" value="${true}" />
-</c:if>
 
 <c:set var="exoticCarContent" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "exoticCarContent")}' />
 <c:set var="originalHeading" value="${exoticCarContent.getSupplementaryValueByKey('normalHeading')}" />
