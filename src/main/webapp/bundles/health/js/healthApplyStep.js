@@ -7,7 +7,15 @@
         $paymentDetailsStart,
         $paymentMedicareColour,
         $paymentMedicareCover,
-        $medicareYellowMessage;
+        $medicareYellowMessage,
+
+        genderElems = {
+            primary: {},
+            partner: {}
+        },
+
+        $titleSelect,
+        $genderToggle;
 
     function init(){
         $(document).ready(function () {
@@ -15,6 +23,16 @@
             $paymentMedicareColour = $("#health_payment_medicare_colour");
             $paymentMedicareCover = $("#health_payment_medicare_cover");
             $medicareYellowMessage = $("#health_medicareDetails_yellowCardMessage");
+
+            genderElems.primary = {
+                $title: $('#health_application_primary_title'),
+                $gender: $('#health_application_primary_gender'),
+                $genderRow: $('#health_application_primary_genderRow'),
+                $genderToggle: $('[name=health_application_primary_genderToggle]')
+            };
+
+            $titleSelect = $('.selectContainerTitle select');
+            $genderToggle = $('.person-gender-toggle input[type=radio]');
         });
     }
 
@@ -63,6 +81,75 @@
                 $("#health_payment_details_start").val( e.format() );
                 meerkat.messaging.publish(meerkatEvents.health.CHANGE_MAY_AFFECT_PREMIUM);
             });
+
+
+        $titleSelect.on('change', function onTitleChange() {
+            var personDetailType = $(this).closest('.qe-window').find('.health-person-details')
+                                       .hasClass('primary') ? 'primary' : 'partner';
+
+            toggleSelectGender(personDetailType);
+        });
+
+        $genderToggle.on('change', function onGenderToggle() {
+            var personDetailType = $(this).closest('.qe-window').find('.health-person-details')
+                                       .hasClass('primary') ? 'primary' : 'partner',
+                gender = $(this).val();
+
+            genderElems[personDetailType].$gender.val(gender);
+        });
+
+        toggleSelectGender('primary');
+
+        if (meerkat.modules.health.hasPartner()) {
+            genderElems.partner = {
+                $title: $('#health_application_partner_title'),
+                $gender: $('#health_application_partner_gender'),
+                $genderRow: $('#health_application_partner_genderRow'),
+                $genderToggle: $('[name=health_application_partner_genderToggle]')
+            };
+
+            toggleSelectGender('partner');
+        }
+    }
+
+    function toggleSelectGender(personDetailType) {
+        var title = genderElems[personDetailType].$title.val(),
+            gender;
+
+        switch (title) {
+            case 'DR':
+                var genderToggleVal = genderElems[personDetailType].$genderToggle.filter(':checked').val();
+
+                if (genderToggleVal) {
+                    // if gender toggle has been 'toggled' before then
+                    // set hidden gender field to the checked gender
+                    genderElems[personDetailType].$gender.val(genderToggleVal);
+                } else {
+                    // otherwise, if hidden gender field has been set, then
+                    // toggle the gender
+                    if (genderElems[personDetailType].$gender.val()) {
+                        genderElems[personDetailType].$genderToggle
+                            .filter('[value=' + genderElems[personDetailType].$gender.val() + ']')
+                            .prop('checked', true)
+                            .attr('checked', 'checked')
+                            .change();
+                    }
+                }
+                genderElems[personDetailType].$genderRow.slideDown();
+                break;
+
+            case 'MR':
+            case 'MRS':
+            case 'MISS':
+            case 'MS':
+                gender = title === 'MR' ? 'M' : 'F';
+                genderElems[personDetailType].$gender.val(gender);
+                genderElems[personDetailType].$genderRow.slideUp();
+                break;
+
+            default:
+                genderElems[personDetailType].$genderRow.slideUp();
+        }
     }
 
     meerkat.modules.register('healthApplyStep', {
