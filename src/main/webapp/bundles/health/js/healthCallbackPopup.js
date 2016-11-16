@@ -89,6 +89,7 @@
 	}
 
 	function showModal() {
+		console.info("@@@", isActive, isModalOpen, isMobile);
 		if(isActive && !isModalOpen && !isMobile) {
 			setModalState(true);
 			
@@ -113,8 +114,16 @@
 		isModalOpen = value;
 	}
 
+	function trigger(){
+		if(_.indexOf(['localhost','nxi','nxq'], meerkat.site.environment.toLowerCase()) !== -1) {
+			isActive = true;
+			displayCallBackModal();
+		}
+	}
+
 	meerkat.modules.register("healthCallbackPopup", {
-		init: init
+		init: init,
+		trigger:trigger
 	});
 
 })(jQuery);
