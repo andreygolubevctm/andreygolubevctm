@@ -177,7 +177,7 @@
                         callback(true);
                     }
                 }
-            }
+            };
 
             _.extend(startStep, validationObj);
         }

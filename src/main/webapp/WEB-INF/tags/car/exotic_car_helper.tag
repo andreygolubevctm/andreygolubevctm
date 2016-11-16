@@ -7,3 +7,11 @@
 <c:if test="${not empty quote_vehicle_exoticCar}">
     <c:set var="isFromExoticPage" scope="request" value="${true}" />
 </c:if>
+
+
+<c:set var="exoticCarContent" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "exoticCarContent")}' />
+
+<c:set var="originalHeading" value="${exoticCarContent.getSupplementaryValueByKey('normalHeading')}" scope="request" />
+<c:set var="origintalCopy" value="${exoticCarContent.getSupplementaryValueByKey('normalCopy')}" scope="request" />
+<c:set var="exoticHeading" value="${exoticCarContent.getSupplementaryValueByKey('exoticHeading')}" scope="request" />
+<c:set var="exoticCopy" value="${exoticCarContent.getSupplementaryValueByKey('exoticCopy')}" scope="request" />
