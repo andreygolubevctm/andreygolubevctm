@@ -10,15 +10,14 @@
 	function init() {
 		$(document).ready(function() {
 
+			// Set up templates
+			var $e = $('#simples-template-clifilter-add');
+			if ($e.length > 0) {
+				templateCLIFilter = _.template($e.html());
+			}
+
 			$('[data-provide="simples-clifilter-action"]').on('click', 'a', function(event) {
 				event.preventDefault();
-
-				// Set up templates
-				var $e = $('#simples-template-clifilter-add');
-				if ($e.length > 0) {
-					templateCLIFilter = _.template($e.html());
-				}
-
 				openModal();
 			});
 
@@ -26,11 +25,6 @@
 			$('#dynamic_dom').on('click', '[data-provide="simples-clifilter-submit"]', function(event) {
 				event.preventDefault();
 				performSubmit();
-			});
-
-			$('#dynamic_dom').on('click', '[data-provide="simples-unsubscribe-submit"]', function(event) {
-				event.preventDefault();
-				performUnsubscribe();
 			});
 
 		});
