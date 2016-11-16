@@ -6,12 +6,12 @@
 <%@ attribute name="brandCode"  required="true"	 rtexprvalue="true"	 description="The brand code applicable to the page" %>
 
 <%-- Variables --%>
-<c:if test="contextBrandCode">
+<c:set var="contextBrandCode">
     <c:choose>
         <c:when test="${brandCode eq 'choo'}">app</c:when>
         <c:otherwise>ctm</c:otherwise>
     </c:choose>
-</c:if>
+</c:set>
 
 <%-- CSS --%>
 <style type="text/css">
