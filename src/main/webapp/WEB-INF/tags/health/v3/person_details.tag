@@ -37,7 +37,7 @@
 
 		<c:set var="fieldXpath" value="${xpath}/genderToggle" />
 		<form_v2:row fieldXpath="${fieldXpath}" label="Gender" id="${name}_genderRow" smRowOverride="5">
-			<field_v2:array_radio id="${name}_genderToggle" xpath="${fieldXpath}" required="true" items="M=Male,F=Female" title="${title} gender" className="health-person-details person-gender-toggle" disableErrorContainer="${true}" additionalAttributes=" class='dontSubmit'" />
+			<field_v2:array_radio id="${name}_genderToggle" xpath="${fieldXpath}" required="true" items="M=Male,F=Female" title="${title} gender" className="health-person-details person-gender-toggle" disableErrorContainer="${true}" additionalAttributes=" data-ignore='true'" />
 		</form_v2:row>
 
 		<c:if test="${id == 'partner'}">
