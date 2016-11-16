@@ -61,7 +61,8 @@
 					<a href="javascript:;" class="switch call-type">Choose another time for a call?</a>
 				</div>
 				<div class="col-sm-5">
-				    <button id="callBackNow" class="btn btn-secondary btn-lg btn-block">Call me now</button><small>within 30 mins</small>
+					<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Call Request" quoteChar="\"" /></c:set>
+				    <button id="callBackNow" class="btn btn-secondary btn-lg btn-block" ${analyticsAttr}>Call me now</button><small>within 30 mins</small>
 			    </div>
 			</div>
 			<div class="row hidden">
@@ -69,7 +70,8 @@
 					<a href="javascript:;" class="switch call-type">Cancel, I prefer a call right now</a>
 				</div>
 				<div class="col-sm-5">
-				    <button id="callBackLater" class="btn btn-secondary btn-lg btn-block">Call me later...</button>
+					<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Call Request" quoteChar="\"" /></c:set>
+					<button id="callBackLater" class="btn btn-secondary btn-lg btn-block" ${analyticsAttr}>Call me later...</button>
 			    </div>
 				<div class="col-sm-12 outline">
 					<form_v3:row label=" " hideHelpIconCol="true">
