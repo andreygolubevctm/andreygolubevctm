@@ -28,13 +28,13 @@ public class HealthSimplesLeadService {
 
 
     public CliReturnResponse sendCliReturnNote(CliReturn data) throws Exception {
-        ServiceConfiguration serviceConfig = ServiceConfigurationService.getServiceConfiguration("leadService", HEALTH_VERTICAL_ID);
+        final ServiceConfiguration serviceConfig = ServiceConfigurationService.getServiceConfiguration("leadService", HEALTH_VERTICAL_ID);
 
-        Boolean enabled = Boolean.valueOf(serviceConfig.getPropertyValueByKey("enabled", 0, 0, ServiceConfigurationProperty.Scope.SERVICE));
-        String url = serviceConfig.getPropertyValueByKey("url", 0, 0, ServiceConfigurationProperty.Scope.SERVICE) + "cliReturn";
+        final Boolean enabled = Boolean.valueOf(serviceConfig.getPropertyValueByKey("enabled", 0, 0, ServiceConfigurationProperty.Scope.SERVICE));
+        final String url = serviceConfig.getPropertyValueByKey("url", 0, 0, ServiceConfigurationProperty.Scope.SERVICE) + "cliReturn";
 
         if (enabled) {
-            ListenableFuture<ResponseEntity<LeadOutcome>> sendRequestListenable = LeadServiceUtil.sendCliReturnRequest(createRequest(data), url);
+            final ListenableFuture<ResponseEntity<LeadOutcome>> sendRequestListenable = LeadServiceUtil.sendCliReturnRequest(new CliReturnRequest(data.getValue()), url);
 
             final ResponseEntity<LeadOutcome> responseEntity = sendRequestListenable.get(LEAD_SERVICE_TIMEOUT, TimeUnit.SECONDS);
             final CliReturnResponse response = createResponse(responseEntity);
@@ -50,14 +50,5 @@ public class HealthSimplesLeadService {
         final LeadOutcome outcome = Optional.ofNullable(responseEntity.getBody()).orElse(LeadOutcome.FAIL);
         return new CliReturnResponse(StringUtils.lowerCase(outcome.name()));
     }
-
-    private CliReturnRequest createRequest(CliReturn data) {
-        CliReturnRequest request = new CliReturnRequest();
-        request.setPhone(data.getValue());
-        return request;
-    }
-
-
-
 
 }

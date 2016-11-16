@@ -2,11 +2,11 @@ package com.ctm.web.health.simples.model;
 
 public class CliReturnResponse {
 
-    public CliReturnResponse(String outcome) {
+    public CliReturnResponse(final String outcome) {
         this.outcome = outcome;
     }
 
-    private String outcome;
+    private final String outcome;
 
     public String getOutcome() {
         return outcome;
