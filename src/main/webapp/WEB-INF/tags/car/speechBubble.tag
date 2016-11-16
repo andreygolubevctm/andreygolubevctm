@@ -9,7 +9,7 @@
 	<c:set var="pText" value="${exoticCopy}"/>
 </c:if>
 
-<ui:bubble variant="chatty" className="bubbleContent">
+<ui:bubble variant="chatty" className="carHeadingBubbleContent">
 	<h4>${h4Text}</h4>
 	<p>${pText}</p>
 </ui:bubble>

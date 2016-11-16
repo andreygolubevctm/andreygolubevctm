@@ -3,33 +3,21 @@
 	var meerkat = window.meerkat,
 		$marketValue,
 		$exoticManualEntry,
-		$originalQuestionSet,
-		$exoticQuestionSet,
-		$questionsToHide,
+		$defaultQuestionsToHide,
 		$exoticQuestionsToShow,
 		$speechBubble,
 		$carSnapshot,
-		$regularDriverClaims,
-		$regularDriverConvictions,
-		$claimsReasonRow,
-		$convictionRow,
 		$carSnapshotRegoFieldset,
 		_threshold = 150000;
 
 	function init(){
 		$marketValue = $('input[name=quote_vehicle_marketValue]');
 		$exoticManualEntry = $('.exoticManualEntry').length > 0 ? $('.exoticManualEntry') : null;
-		$originalQuestionSet = $('#quote_vehicle_selection');
-		$exoticQuestionSet = $('#quote_vehicle_exotic_selection');
-		$speechBubble = $('.bubbleContent');
-		$regularDriverClaims = $('input[name=quote_drivers_regular_claims]');
-		$regularDriverConvictions = $('input[name=quote_drivers_regular_convictions]');
-		$claimsReasonRow = $('#quote_drivers_regular_claims_reasonRow');
-		$convictionRow = $('#quote_drivers_regular_conviction_reasonRow');
+		$speechBubble = $('.carHeadingBubbleContent');
 
 		// existing and new questions
-		$questionsToHide = $('#quoteAccessoriesFieldSet, .noOfKms, #securityOptionRow, #accidentDamageRow, .rego-not-my-car, #employment_status_row, #ownsAnotherCar');
-		$exoticQuestionsToShow = $('#quote_drivers_regular_convictionsRow');
+		$defaultQuestionsToHide = $('#quoteAccessoriesFieldSet, .noOfKms, #securityOptionRow, #accidentDamageRow, .rego-not-my-car, #employment_status_row, #ownsAnotherCar, #quote_restricted_ageRow, #quote_drivers_youngFieldSet, .ydGreenBubble');
+		$exoticQuestionsToShow = $('#quote_drivers_regular_convictionsRow, #quote_drivers_youngExoticFieldSet');
 
 		// snapshot fields
 		$carSnapshot = $(".car-snapshot");
@@ -45,10 +33,10 @@
 
 	function toggleQuestions() {
 		if (isExotic()) {
-			$questionsToHide.hide();
+			$defaultQuestionsToHide.hide();
 			$exoticQuestionsToShow.removeClass('hidden');
 		} else {
-			$questionsToHide.show();
+			$defaultQuestionsToHide.show();
 			$exoticQuestionsToShow.addClass('hidden');
 		}
 	}
@@ -56,8 +44,8 @@
 	function _eventSubscriptions() {
 		if ($exoticManualEntry !== null) {
 			$exoticManualEntry.on('click', function manualExoticQEntry() {
-				$originalQuestionSet.addClass('hidden');
-				$exoticQuestionSet.removeClass('hidden');
+				$('#quote_vehicle_selection').addClass('hidden');
+				$('#quote_vehicle_exotic_selection').removeClass('hidden');
 
 				// update the fields to listen for within the snapshot
 				_updateSnapshotDataSource($carSnapshot);
@@ -66,8 +54,11 @@
 		}
 
 		if (isExotic()) {
-			_toggleReasonFields($regularDriverClaims, $claimsReasonRow);
-			_toggleReasonFields($regularDriverConvictions, $convictionRow);
+			_toggleReasonFields($('input[name=quote_drivers_regular_claims]'), $('#quote_drivers_regular_claims_reasonRow'));
+			_toggleReasonFields($('input[name=quote_drivers_regular_convictions]'), $('#quote_drivers_regular_conviction_reasonRow'));
+
+			_toggleReasonFields($('input[name=quote_drivers_young_claims]'), $('#quote_drivers_young_claims_reasonRow'));
+			_toggleReasonFields($('input[name=quote_drivers_young_convictions]'), $('#quote_drivers_young_conviction_reasonRow'));
 		}
 	}
 
@@ -90,13 +81,14 @@
 		});
 	}
 
+	// catering for the scenario where someone enters the normal journey and selects an exotic car but then goes back
+	// and changes the car details to a non-exotic car.
 	function updateSpeechBubble() {
 		var exoticContent = meerkat.site.exoticCarContent,
 			h4Text = isExotic() ? exoticContent.exoticHeading : exoticContent.normalHeading,
 			pText = isExotic() ? exoticContent.exoticCopy : exoticContent.normalCopy;
 
-		$speechBubble.find('h4').text(h4Text);
-		$speechBubble.find('p').text(pText);
+		$speechBubble.find('h4').text(h4Text).stop().parent().find('p').text(pText);
 	}
 
 	meerkat.modules.register("carExotic", {

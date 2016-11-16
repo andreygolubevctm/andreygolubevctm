@@ -12,7 +12,9 @@
 
 	var elements = {
 			toggle:		"#quote_drivers_youngToggleArea",
+			extoggle:	"#quote_drivers_youngToggleExoticArea",
 			labels:		"#quote_drivers_youngDriverRow .row-content",
+			exLabels:	"#quote_drivers_youngDriverExoticRow .row-content",
 			restrict:	"#quote_options_driverOption",
 			reg_dob:	"#quote_drivers_regular_dob",
 			yng_dob:	"#quote_drivers_young_dob",
@@ -88,8 +90,8 @@
 	}
 
 	function isYoungDriverSelected() {
-
-		var $e = $(elements.labels).find("input:checked");
+		var labelEl = meerkat.modules.carExotic.isExotic() ? elements.exLabels : elements.labels,
+			 $e = $(labelEl).find("input:checked");
 
 		if(!_.isEmpty($e)) {
 			return $e.val() === 'Y';
@@ -131,6 +133,42 @@
 		}
 	}
 
+	function toggleVisibleExoticContent(updateVirtualPage) {
+
+		updateVirtualPage = updateVirtualPage || false;
+
+		var $e = $(elements.exLabels).find("input:checked");
+
+		if(!_.isEmpty($e)) {
+			if(isYoungDriverSelected()) {
+				$(elements.extoggle).slideDown('fast', function() {
+					if(updateVirtualPage) {
+						var sessionCamStep = getSessionCamStep();
+						sessionCamStep.navigationId += "-youngdriver";
+						meerkat.modules.sessionCamHelper.updateVirtualPage(sessionCamStep);
+
+					}
+				});
+				$('#quote_drivers_youngExoticContFieldSet').slideDown('fast');
+			} else {
+				$(elements.extoggle).slideUp('fast', function(){
+					var $that = $(this);
+					$that.find(':text').val('');
+					$that.find(':radio').prop('checked',false).change();
+					// $(elements.yng_dob).val('').change();
+					$that.find('.has-success').removeClass('has-success');
+					$that.find('.has-error').removeClass('has-error');
+					$that.find('.error-field').remove();
+
+					if(updateVirtualPage) {
+						meerkat.modules.sessionCamHelper.updateVirtualPage(getSessionCamStep());
+					}
+				});
+				$('#quote_drivers_youngExoticContFieldSet').slideUp('fast');
+			}
+		}
+	}
+
 	function initCarYoungDrivers() {
 
 		var self = this;
@@ -142,7 +180,11 @@
 		meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_CHANGED, function youngDriverStepOnStepChange(event) {
 			if(event.navigationId == "details") {
 				// Allow for standard step change stuff to finish
-				_.defer(_.bind(toggleVisibleContent, this, true));
+				if (!meerkat.modules.carExotic.isExotic()) {
+					_.defer(_.bind(toggleVisibleContent, this, true));
+				} else {
+					_.defer(_.bind(toggleVisibleExoticContent, this, true));
+				}
 			}
 		});
 
@@ -150,16 +192,27 @@
 		if (meerkat.site.vertical !== "car")
 			return false;
 
-		$(elements.labels + " label input").on("click", function(e){
-			// Allow for input value to be updated
-			_.defer(_.bind(toggleVisibleContent, this, true));
-		});
+		if (!meerkat.modules.carExotic.isExotic()) {
+			$(elements.labels + " label input").on("click", function(e){
+				// Allow for input value to be updated
+				_.defer(_.bind(toggleVisibleContent, this, true));
+			});
 
-		$(elements.reg_dob + "," + elements.yng_dob).on("change", updateRestrictAgeSelector);
+			$(elements.reg_dob + "," + elements.yng_dob).on("change", updateRestrictAgeSelector);
+
+			toggleVisibleContent();
+		} else {
+			// otherwise toggle the new question set
+			$(elements.exLabels + " label input").on("click", function(e){
+				// Allow for input value to be updated
+				_.defer(_.bind(toggleVisibleExoticContent, this, true));
+			});
+
+			toggleVisibleExoticContent();
+		}
 
 		captureOptions();
 
-		toggleVisibleContent();
 		// Need to allow time for the currentStep to be populated
 		setTimeout(function(){
 			if(meerkat.modules.journeyEngine.getCurrentStep().navigationId == "details") {

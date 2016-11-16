@@ -196,7 +196,7 @@
             onBeforeEnter: function (event) {
                 meerkat.modules.carExotic.toggleQuestions();
                 meerkat.modules.carExotic.updateSpeechBubble();
-            },
+            }
         };
 
         var detailsStep = {
@@ -211,10 +211,7 @@
                 touchType: 'H',
                 touchComment: 'DriverDtls',
                 includeFormData: true
-            },
-            onBeforeEnter: function enterOptionsStep(event) {
-                meerkat.modules.carExotic.toggleQuestions();
-            },
+            }
         };
 
         var addressStep = {
