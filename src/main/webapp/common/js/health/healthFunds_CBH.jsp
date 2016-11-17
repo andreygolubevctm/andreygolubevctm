@@ -26,6 +26,7 @@ var healthFunds_CBH = {
 	processOnAmendQuote: true,
 	ajaxJoinDec: false,
 	$paymentStartDate: $("#health_payment_details_start"),
+	$policyDayGroup : $("#health_payment_bank-details_policyDay-group"),
 
 	set: function() {
 		<%-- Custom questions: Eligibility --%>
@@ -275,6 +276,7 @@ var healthFunds_CBH = {
 			$('#health_payment_details_type_cc').closest('label').addClass('disabled-by-fund').addClass('disabled').hide();
 			$('#health_payment_details_type_ba').closest('label').css('border-top-left-radius','5px').css('border-bottom-left-radius','5px');
 		</c:if>
+		$policyDayGroup.toggleClass("hidden",true);
 	},
 	unset: function() {
 		<%-- Custom questions - hide in case user comes back --%>
@@ -309,6 +311,7 @@ var healthFunds_CBH = {
 			$('#health_payment_details_type_cc').closest('label').removeClass('disabled-by-fund').removeClass('disabled').show();
 			$('#health_payment_details_type_ba').closest('label').css('border-top-left-radius','0px').css('border-bottom-left-radius','0px');
 		</c:if>
+		$policyDayGroup.toggleClass("hidden",false);
 	},
 
 	changeRelation: function() {
