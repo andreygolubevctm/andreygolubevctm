@@ -26,7 +26,7 @@ var healthFunds_CBH = {
 	processOnAmendQuote: true,
 	ajaxJoinDec: false,
 	$paymentStartDate: $("#health_payment_details_start"),
-	$policyDayGroup : $("#health_payment_bank-details_policyDay-group"),
+	$policyDayGroup : $("#paymentForm .health_payment_bank-details_policyDay-group"),
 
 	set: function() {
 		<%-- Custom questions: Eligibility --%>
