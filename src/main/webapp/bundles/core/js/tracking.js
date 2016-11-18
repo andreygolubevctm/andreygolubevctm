@@ -398,7 +398,7 @@
 
         // Derive element name and if exists then assign value or create a new one
         var elementName = (meerkat.site.vertical === 'car' ? 'quote' : meerkat.site.vertical) + '_gaclientid';
-        if($('#' + elementName)) {
+        if($('#' + elementName).length) {
             $('#' + elementName).val(gaClientId);
         } else {
             $('#mainform').prepend($('<input/>', {
