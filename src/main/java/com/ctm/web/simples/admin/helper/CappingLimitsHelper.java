@@ -54,11 +54,11 @@ public class CappingLimitsHelper {
 
     public void validateCappingLimitCategory(CappingLimit cappingLimit, List<SchemaValidationError> validationErrors) {
 
-        if (cappingLimit.getLimitType().equals(CappingLimit.CappingLimitType.Monthly) &&
-                cappingLimit.getCappingLimitCategory().equals(CappingLimit.CappingLimitCategory.Soft.text)) {
-            SchemaValidationError error = new SchemaValidationError();
-            error.setMessage("Limit Category must be Hard for Monthly Capping Limit");
-            validationErrors.add(error);
-        }
+//        if (cappingLimit.getLimitType().equals(CappingLimit.CappingLimitType.Monthly) &&
+//                cappingLimit.getCappingLimitCategory().equals(CappingLimit.CappingLimitCategory.Soft.text)) {
+//            SchemaValidationError error = new SchemaValidationError();
+//            error.setMessage("Limit Category must be Hard for Monthly Capping Limit");
+//            validationErrors.add(error);
+//        }
     }
 }
