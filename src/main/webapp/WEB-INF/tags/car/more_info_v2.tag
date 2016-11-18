@@ -51,7 +51,10 @@
     <div class="row call-apply-xs-only">
         {{ if(obj.availableOnline === true) { }}
         <div class="col-xs-12">
-            <a target="_blank" href="javascript:;" class="btn btn-cta btn-lg btn-block btn-more-info-apply" data-productId="{{= obj.productId }}">Go to Insurer</a>
+            <a target="_blank" href="javascript:;" class="btn btn-cta btn-lg btn-block btn-more-info-apply" data-productId="{{= obj.productId }}">
+                Go to Insurer
+                <span class="icon icon-arrow-right"></span>
+            </a>
         </div>
         {{ } }}
 
@@ -181,7 +184,10 @@
                     <div class="row hidden-xs">
                         {{ if(obj.availableOnline === true) { }}
                         <div class="col-sm-4 col-sm-push-8 col-lg-3 col-lg-push-9">
-                            <a target="_blank" href="javascript:;" class="btn btn-cta btn-lg btn-block btn-more-info-apply" data-productId="{{= obj.productId }}">Go to Insurer</a>
+                            <a target="_blank" href="javascript:;" class="btn btn-cta btn-lg btn-block btn-more-info-apply" data-productId="{{= obj.productId }}">
+                                Go to Insurer
+                                <span class="icon icon-arrow-right"></span>
+                            </a>
                         </div>
                         {{ } }}
 
