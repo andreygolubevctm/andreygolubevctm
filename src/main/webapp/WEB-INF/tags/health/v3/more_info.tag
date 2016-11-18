@@ -242,7 +242,6 @@
 				<p><strong>Co-payment / % Hospital Contribution:</strong> {{= hospital.inclusions.copayment }}</p>
 				<p><strong>Hospital waiting period for pre-existing conditions:</strong> 12 months. For all other conditions: 2 months. See policy brochure for more details</p>
 				{{ } }}
-                <c:if test="${!callCentre}">
 				{{ if(hospitalCover.inclusions.length > 0) { }}
 				<h5>You will be covered for the following services</h5>
 
@@ -276,7 +275,6 @@
 				</ul>
 				<content:get key="hospitalExclusionsDisclaimer"/>
 				{{ } }}
-                </c:if>
 			</div>
 			{{ } }}
 			</c:if>
