@@ -266,13 +266,22 @@
                 $('#resultsPage').addClass('hidden');
                 // show disclaimer here.
                 // Sync the filters to the results engine
-                meerkat.modules.carFilters.updateFilters();
+                if (!meerkat.modules.carExotic.isExotic()) {
+                    meerkat.modules.carFilters.updateFilters();
+                }
             },
             onAfterEnter: function afterEnterResults(event) {
                 meerkat.modules.carResults.get();
+
                 // Show the filters bar
                 meerkat.modules.carFilters.show();
-                $('.header-wrap .quoteSnapshot').removeClass("hidden");
+                if (!meerkat.modules.carExotic.isExotic()) {
+                    meerkat.modules.carFilters.enable();
+
+                    $('.header-wrap .quoteSnapshot').removeClass("hidden");
+                } else {
+                    meerkat.modules.carFilters.disable();
+                }
             },
             onBeforeLeave: function (event) {
                 // Increment the transactionId

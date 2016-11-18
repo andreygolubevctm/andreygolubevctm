@@ -11,11 +11,13 @@
 						   required="true"
 						   pattern="[0-9]*"
 						   decimal="${false}"
+						   defaultValue="1"
 						   title="The purchase price of the car"/>
 </form_v2:row>
 
 <form_v2:row label="Is the car registered?" >
 	<field_v2:array_radio xpath="${xpath}_registered" required="true"
 						  className="" items="Y=Yes,N=No"
-						  id="${name}_registered" title="if the car is registered" />
+						  defaultValue="Y"
+						  id="${name}_registeredx" title="if the car is registered" />
 </form_v2:row>

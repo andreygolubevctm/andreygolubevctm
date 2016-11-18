@@ -413,3 +413,99 @@
 		}
 	}
 }// chose not to quote combined
+
+
+//-------------------------------------------------------------------------------------
+// Famous underwriter styling
+//-------------------------------------------------------------------------------------
+
+.famous-container {
+	margin-top: 30px;
+
+	@media(@xs-only) {
+		img {
+			margin-left: auto;
+			margin-right: auto;
+			display: block;
+		}
+	}
+
+	.content-block {
+		@media(@sm-only) {
+			padding-left: 16%;
+		}
+
+		@media(@md-only) {
+			padding-left: 8%;
+		}
+	}
+
+	span {
+		font-family: SourceSansProSemiBold;
+	}
+
+	.famous-content {
+		padding-bottom: 30px;
+		border-bottom: 1px solid @gray-darker;
+		@media(@xs-only) {
+			padding-bottom: 20px;
+		}
+	}
+
+	.famous-thank-you {
+		@media(@xs-only) {
+			margin-top: 20px;
+		}
+		font-size: 22px;
+		margin-bottom: 24px;
+	}
+
+	.famous-contact {
+		font-size: 16px;
+	}
+
+	#famous-alt-verticals {
+		margin-top: 30px;
+
+		h3 {
+			@media(@xs-only) {
+				font-size: 18px;
+			}
+
+			text-align: center;
+			color: @gray-darker;
+			margin-bottom: 40px;
+		}
+
+		.verticalButtons {
+			a {
+				@media(@sm) {
+					text-align: center;
+				}
+
+				@media(@xs-only) {
+					margin-bottom: 10px;
+				}
+
+				text-decoration: none;
+				font-size: 20px;
+				width: 100%;
+				display: block;
+
+				.icon {
+					@media(@sm) {
+						clear: both;
+						display: block;
+					}
+					width: 30px;
+					margin-left: auto;
+					margin-right: auto;
+
+					:before {
+						font-size: 40px;
+					}
+				}
+			}
+		}
+	}
+}

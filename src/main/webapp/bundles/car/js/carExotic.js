@@ -9,12 +9,14 @@
 		$carSnapshot,
 		$carSnapshotRegoFieldset,
 		$requiredFieldsToToggle,
+		$resultsPage,
 		_threshold = 150000;
 
 	function init(){
 		$marketValue = $('input[name=quote_vehicle_marketValue]');
 		$exoticManualEntry = $('.exoticManualEntry').length > 0 ? $('.exoticManualEntry') : null;
 		$speechBubble = $('.carHeadingBubbleContent');
+		$resultsPage = $('.famous-results-page');
 
 		$requiredFieldsToToggle = $('input[name=quote_contact_email], input[name=quote_contact_phoneinput]');
 
@@ -102,12 +104,25 @@
 		$speechBubble.find('h4').text(h4Text).stop().parent().find('p').text(pText);
 	}
 
+	function toggleFamousResultsPage() {
+		if (isExotic()) {
+			var templateHTML = $resultsPage.html();
+			var _template = _.template(templateHTML);
+			$(Results.settings.elements.page).html(_template({})).removeClass('hidden').show();
+
+			$('#famous-alt-verticals .verticalButtons > div').removeClass().addClass('col-xs-12 col-sm-3');
+		} else {
+			$resultsPage.fadeOut();
+		}
+	}
+
 	meerkat.modules.register("carExotic", {
 		init: init,
 		isExotic: isExotic,
 		toggleQuestions: toggleQuestions,
 		updateSpeechBubble: updateSpeechBubble,
-		toggleRequiredFields: toggleRequiredFields
+		toggleRequiredFields: toggleRequiredFields,
+		toggleFamousResultsPage: toggleFamousResultsPage
 	});
 
 })(jQuery);
