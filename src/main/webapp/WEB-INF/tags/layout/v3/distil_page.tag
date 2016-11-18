@@ -32,6 +32,8 @@ ${newPage.init(pageContext.request, pageSettings)}
 <%-- Variables --%>
 <c:choose>
 	<c:when test="${brandCode eq 'choo'}">
+		<%-- No brandCode available in production implementation of this page
+			 for Choosi so hardcode values - otherwise causes fatal error --%>
 		<c:set var="GTMEnabled" value="${false}" />
 		<c:set var="GTMPropertyId" value="" />
 		<c:set var="assetUrl" value="/app/assets/" />
