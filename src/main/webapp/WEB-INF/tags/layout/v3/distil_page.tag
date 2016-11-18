@@ -44,10 +44,8 @@ ${newPage.init(pageContext.request, pageSettings)}
 	<c:otherwise>
 		<c:set var="GTMEnabled" value="${pageSettings.getSetting('GTMEnabled') eq 'Y'}" />
 		<c:set var="GTMPropertyId">
-			<c:if test="${GTMEnabled eq true}">
-				<c:if test="${not empty pageSettings and pageSettings.hasSetting('GTMPropertyId')}">
-					${pageSettings.getSetting('GTMPropertyId')}
-				</c:if>
+			<c:if test="${GTMEnabled eq true and not empty pageSettings and pageSettings.hasSetting('GTMPropertyId')}">
+				${pageSettings.getSetting('GTMPropertyId')}
 			</c:if>
 		</c:set>
 		<c:set var="assetUrl" value="/${pageSettings.getContextFolder()}assets/" />
