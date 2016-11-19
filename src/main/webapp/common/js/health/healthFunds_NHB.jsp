@@ -218,9 +218,9 @@
             if (!$('body').hasClass('injectingFund')) {
 
               <%-- Dependants --%>
-              healthFunds._dependants('This policy provides cover for your children up to their 21st birthday and dependants aged between 21 and 25 who are studying full time. Adult dependants outside these criteria can still be covered by applying for a separate policy.');
+              healthFunds._dependants('This policy provides cover for your children up to their 22nd birthday and dependants aged between 22 and 25 who are studying full time. Adult dependants outside these criteria can still be covered by applying for a separate policy.');
 
-              meerkat.modules.healthDependants.updateConfig({showFullTimeField :true, showSchoolFields:true, 'schoolMinAge':21, 'schoolMaxAge':25, showSchoolIdField:false,showRelationship:true,showPreferredMethodOfContact:true });
+              meerkat.modules.healthDependants.updateConfig({showFullTimeField :true, showSchoolFields:true, 'schoolMinAge':22, 'schoolMaxAge':25, showSchoolIdField:false,showRelationship:true,showPreferredMethodOfContact:true });
 
               <%-- Partner authority --%>
               healthFunds._partner_authority(false);
