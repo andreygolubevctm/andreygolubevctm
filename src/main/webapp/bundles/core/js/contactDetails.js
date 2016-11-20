@@ -59,7 +59,7 @@
 
 		$(document).ready(function() {
 			// record provided fields in module
-			if(!Object.is(fields, contactDetailsFields)) {
+			if(!_.isMatch(fields,contactDetailsFields)) {
 				$.extend(fields, contactDetailsFields);
 			}
 
