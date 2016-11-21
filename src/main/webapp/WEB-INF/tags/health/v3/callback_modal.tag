@@ -163,6 +163,7 @@
 
 <core_v1:js_template id="callback-popup">
 	<c:set var="hoursArray" value="${fn:split(todayOpeningHours, '-')}" />
+	<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Call Request - Pop-Up" quoteChar="\"" /></c:set>
 	<div id="health-callback-popup">
 		<div class="row">
 			<div class="col-sm-6">
@@ -172,7 +173,8 @@
 				<h3 class="request-callback"><a href="javascript:;" data-toggle="dialog"
 				data-content="#view_all_hours_cb"
 				data-dialog-hash-id="view_all_hours_cb"
-				data-title="Request a Call" data-cache="true"><i class="icon-callback"></i> Request a Call</a></h3>
+				data-title="Request a Call" data-cache="true"
+				${analyticsAttr}><i class="icon-callback" ${analyticsAttr}></i> Request a Call</a></h3>
 			</div>
 			<div class="col-sm-8">
 				<p>Or call us before ${hoursArray[1]} AEST today (${todays_day}) to speak to one of our experts.</p>
