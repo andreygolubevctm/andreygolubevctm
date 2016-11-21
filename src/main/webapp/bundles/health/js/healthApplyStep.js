@@ -9,10 +9,7 @@
         $paymentMedicareCover,
         $medicareYellowMessage,
 
-        genderElems = {
-            primary: {},
-            partner: {}
-        },
+        genderElems = {},
 
         $titleSelect,
         $genderToggle;
@@ -24,16 +21,20 @@
             $paymentMedicareCover = $("#health_payment_medicare_cover");
             $medicareYellowMessage = $("#health_medicareDetails_yellowCardMessage");
 
-            genderElems.primary = {
-                $title: $('#health_application_primary_title'),
-                $gender: $('#health_application_primary_gender'),
-                $genderRow: $('#health_application_primary_genderRow'),
-                $genderToggle: $('[name=health_application_primary_genderToggle]')
-            };
+            getGenderElementsObj('primary');
 
             $titleSelect = $('.selectContainerTitle select');
             $genderToggle = $('.person-gender-toggle input[type=radio]');
         });
+    }
+
+    function getGenderElementsObj(personDetailType) {
+        genderElems[personDetailType] = {
+            $title: $('#health_application_' + personDetailType + '_title'),
+            $gender: $('#health_application_' + personDetailType + '_gender'),
+            $genderRow: $('#health_application_' + personDetailType + '_genderRow'),
+            $genderToggle: $('[name=health_application_' + personDetailType + '_genderToggle]')
+        };
     }
 
     // Get the selected benefits from the forms hidden fields (the source of truth! - not the checkboxes)
@@ -101,13 +102,7 @@
         toggleSelectGender('primary');
 
         if (meerkat.modules.health.hasPartner()) {
-            genderElems.partner = {
-                $title: $('#health_application_partner_title'),
-                $gender: $('#health_application_partner_gender'),
-                $genderRow: $('#health_application_partner_genderRow'),
-                $genderToggle: $('[name=health_application_partner_genderToggle]')
-            };
-
+            getGenderElementsObj('partner');
             toggleSelectGender('partner');
         }
     }
