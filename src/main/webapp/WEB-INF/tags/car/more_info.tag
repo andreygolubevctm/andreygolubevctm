@@ -40,7 +40,10 @@
 <core_v1:js_template id="call-apply-template">
 	<div class="col-xs-12 col-sm-6 col-md-12 push-top-15">
 		{{ if(obj.availableOnline === true) { }}
-			<a target="_blank" href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply" data-productId="{{= obj.productId }}">Go to Insurer</a>
+			<a target="_blank" href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply" data-productId="{{= obj.productId }}">
+				Go to Insurer
+				<span class="icon icon-arrow-right"></span>
+			</a>
 		{{ } }}
 	</div>
 	{{ if(obj.contact.allowCallDirect === true) { }}
