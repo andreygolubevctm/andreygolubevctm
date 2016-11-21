@@ -133,12 +133,8 @@
 		}
 
 	& when not (@prop-scale = 1) {
-		image-rendering: optimizeSpeed;
-		image-rendering: -moz-crisp-edges;
-		image-rendering: -o-crisp-edges;
-		image-rendering: -webkit-optimize-contrast;
+		image-rendering: auto;
 		image-rendering: optimize-contrast;
-		-ms-interpolation-mode: nearest-neighbor;
 	}
 }
 
@@ -146,12 +142,8 @@
 	.providersLogoImages(@providers);
 
 	& when not (@prop-scale = 1) {
-		image-rendering: optimizeSpeed;
-		image-rendering: -moz-crisp-edges;
-		image-rendering: -o-crisp-edges;
-		image-rendering: -webkit-optimize-contrast;
+		image-rendering: auto;
 		image-rendering: optimize-contrast;
-		-ms-interpolation-mode: nearest-neighbor;
 	}
 }
 
@@ -159,12 +151,8 @@
 	.providersLogoImagesVerticallyCentered(@providers);
 
 	& when not (@prop-scale = 1) {
-		image-rendering: optimizeSpeed;
-		image-rendering: -moz-crisp-edges;
-		image-rendering: -o-crisp-edges;
-		image-rendering: -webkit-optimize-contrast;
+		image-rendering: auto;
 		image-rendering: optimize-contrast;
-		-ms-interpolation-mode: nearest-neighbor;
 	}
 }
 
@@ -187,12 +175,8 @@
 	}
 
 	& when not (@prop-scale = 1) {
-		image-rendering: optimizeSpeed;             /* STOP SMOOTHING, GIVE ME SPEED  */
-		image-rendering: -moz-crisp-edges;          /* Firefox                        */
-		image-rendering: -o-crisp-edges;            /* Opera                          */
-		image-rendering: -webkit-optimize-contrast; /* Chrome (and eventually Safari) */
-		image-rendering: optimize-contrast;         /* CSS3 Proposed                  */
-		-ms-interpolation-mode: nearest-neighbor;   /* IE8+                           */
+		image-rendering: auto;
+		image-rendering: optimize-contrast;                         */
 	}
 }
 
@@ -204,12 +188,8 @@
 	background-position: (@posx * @prop-scale) (@posy * @prop-scale);
 
 	& when not (@prop-scale = 1) {
-		image-rendering: optimizeSpeed;             /* STOP SMOOTHING, GIVE ME SPEED  */
-		image-rendering: -moz-crisp-edges;          /* Firefox                        */
-		image-rendering: -o-crisp-edges;            /* Opera                          */
-		image-rendering: -webkit-optimize-contrast; /* Chrome (and eventually Safari) */
-		image-rendering: optimize-contrast;         /* CSS3 Proposed                  */
-		-ms-interpolation-mode: nearest-neighbor;   /* IE8+                           */
+		image-rendering: auto;
+		image-rendering: optimize-contrast;                         */
 	}
 }
 
