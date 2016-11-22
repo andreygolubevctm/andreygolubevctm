@@ -106,7 +106,7 @@ public class ResponseAdapterV2 {
         }
     }
 
-    private static String getPaymentType(PaymentType paymentType) {
+    public static String getPaymentType(PaymentType paymentType) {
         switch (paymentType) {
             case BANK: return "BankAccount";
             case CREDIT: return "CreditCard";

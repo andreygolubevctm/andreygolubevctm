@@ -2,16 +2,14 @@ package com.ctm.web.health.email.services;
 
 import com.ctm.web.core.content.dao.ContentDao;
 import com.ctm.web.core.content.model.Content;
+import com.ctm.web.core.dao.GeneralDao;
 import com.ctm.web.core.dao.RankingDetailsDao;
 import com.ctm.web.core.email.exceptions.EmailDetailsException;
 import com.ctm.web.core.email.exceptions.SendEmailException;
 import com.ctm.web.core.email.model.EmailMode;
 import com.ctm.web.core.email.services.*;
 import com.ctm.web.core.email.services.token.EmailTokenService;
-import com.ctm.web.core.exceptions.ConfigSettingException;
-import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.web.core.exceptions.EnvironmentException;
-import com.ctm.web.core.exceptions.VerticalException;
+import com.ctm.web.core.exceptions.*;
 import com.ctm.web.core.model.EmailMaster;
 import com.ctm.web.core.model.RankingDetail;
 import com.ctm.web.core.model.Touch;
@@ -25,6 +23,7 @@ import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.EnvironmentService;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.transaction.dao.TransactionDao;
+import com.ctm.web.core.web.go.Data;
 import com.ctm.web.health.apply.model.response.HealthApplicationResponse;
 import com.ctm.web.health.apply.model.response.HealthApplyResponse;
 import com.ctm.web.health.email.formatter.HealthApplicationExactTargetFormatter;
@@ -34,8 +33,16 @@ import com.ctm.web.health.email.model.HealthApplicationEmailModel;
 import com.ctm.web.health.email.model.HealthBestPriceEmailModel;
 import com.ctm.web.health.email.model.HealthBestPriceRanking;
 import com.ctm.web.health.email.model.HealthProductBrochuresEmailModel;
+import com.ctm.web.health.email.model.PolicyHolderModel;
+import com.ctm.web.health.model.PaymentType;
 import com.ctm.web.health.model.form.*;
 import com.ctm.web.health.model.request.HealthEmailBrochureRequest;
+import com.ctm.web.health.quote.model.ResponseAdapterV2;
+import com.ctm.web.health.services.ProviderContentService;
+import org.apache.commons.lang3.StringUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,6 +51,8 @@ import java.time.LocalDate;
 import java.util.*;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
+import static java.util.Collections.emptyList;
+import static java.util.stream.Collectors.toList;
 
 public class HealthEmailService extends EmailServiceHandler implements BestPriceEmailHandler, ProductBrochuresEmailHandler, ApplicationEmailHandler {
 
@@ -56,18 +65,24 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 
 	EmailDetailsService emailDetailsService;
 	protected TransactionDao transactionDao = new TransactionDao();
+	private GeneralDao generalDao;
+	private ProviderContentService providerContentService;
 	private ContentDao contentDao;
 	private String optInMailingName;
 	private final EmailUrlService urlService;
 	private final EmailUrlServiceOld urlServiceOld;
 
-	public HealthEmailService(PageSettings pageSettings, EmailMode emailMode,
+	public HealthEmailService(PageSettings pageSettings,
+							  EmailMode emailMode,
 							  EmailDetailsService emailDetailsService,
-														ContentDao contentDao,
-														EmailUrlService urlService,
-														AccessTouchService accessTouchService,
-							  							EmailUrlServiceOld urlServiceOld,
-							  							SessionDataServiceBean sessionDataService, IPAddressHandler ipAddressHandler) {
+							  ContentDao contentDao,
+							  EmailUrlService urlService,
+							  AccessTouchService accessTouchService,
+							  EmailUrlServiceOld urlServiceOld,
+							  SessionDataServiceBean sessionDataService,
+							  IPAddressHandler ipAddressHandler,
+							  GeneralDao generalDao,
+							  ProviderContentService providerContentService) {
 		super(pageSettings, emailMode,ipAddressHandler);
 		this.emailDetailsService = emailDetailsService;
 		this.contentDao = contentDao;
@@ -75,6 +90,8 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 		this.urlServiceOld = urlServiceOld;
 		this.accessTouchService = accessTouchService;
 		this.sessionDataService = sessionDataService;
+		this.generalDao = generalDao;
+		this.providerContentService = providerContentService;
 	}
 
 	@Override
@@ -247,6 +264,20 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 
 		Optional<HealthRequest> data = Optional.ofNullable((HealthRequest) request.getAttribute("requestData"));
 
+
+		final JSONObject productJSON;
+		try {
+			final Data dataBucket = sessionDataService.getDataForTransactionId(request, Long.toString(transactionId), true);
+			final String productSelected = StringUtils.removeEnd(
+					StringUtils.removeStart(dataBucket.getString("confirmation/health"), "<![CDATA["),
+					"]]>");
+
+			productJSON = new JSONObject(productSelected);
+		} catch (DaoException | SessionException |JSONException e) {
+			throw new SendEmailException("Failed to buildApplicationEmailModel", e);
+		}
+
+
 		final String confirmationId = (String)request.getAttribute("confirmationId");
 
 		HealthApplicationEmailModel emailModel = new HealthApplicationEmailModel();
@@ -295,10 +326,11 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 				.map(HealthQuote::getApplication)
 				.map(Application::getProductTitle)
 				.orElse(""));
-		emailModel.setHealthFund(data.map(HealthRequest::getQuote)
+		final String providerName = data.map(HealthRequest::getQuote)
 				.map(HealthQuote::getApplication)
 				.map(Application::getProviderName)
-				.orElse(""));
+				.orElse("");
+		emailModel.setHealthFund(providerName);
 		emailModel.setProviderPhoneNumber(data.map(HealthRequest::getQuote)
 				.map(HealthQuote::getFundData)
 				.map(FundData::getProviderPhoneNumber)
@@ -311,8 +343,158 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 				.map(HealthQuote::getFundData)
 				.map(FundData::getExtrasPDF)
 				.orElse(""));
+
+		// HLT-3676
+		final String premiumFrequency = data.map(HealthRequest::getQuote)
+				.map(HealthQuote::getPayment)
+				.map(Payment::getDetails)
+				.map(PaymentDetails::getFrequency)
+				.orElse("");
+		emailModel.setPremiumFrequency(premiumFrequency);
+
+		emailModel.setProviderLogo(data.map(HealthRequest::getQuote)
+				.map(HealthQuote::getApplication)
+				.map(Application::getProvider)
+				.map(p -> p.toLowerCase() + ".png")
+				.orElse(""));
+
+		try {
+
+			final PaymentType paymentType = data.map(HealthRequest::getQuote)
+					.map(HealthQuote::getPayment)
+					.map(Payment::getDetails)
+					.map(PaymentDetails::getType)
+					.map(PaymentType::findByCode)
+					.orElseThrow(() -> new SendEmailException("Failed to buildApplicationEmailModel: PaymentType not set"));
+
+			JSONObject pricing = getJsonObject(productJSON, "price", 0)
+					.flatMap(j -> getJsonObject(j, "paymentTypePremiums"))
+					.flatMap(j -> getJsonObject(j, ResponseAdapterV2.getPaymentType(paymentType)))
+					.flatMap(j -> getJsonObject(j, premiumFrequency))
+					.orElseThrow(() -> new SendEmailException("Unable to find premium"));
+
+			String productType = getJsonObject(productJSON, "price", 0)
+					.flatMap(j -> getJsonObject(j,"info")).map(x -> {
+						try {
+							return x.getString("ProductType");
+						} catch (JSONException ex) {
+							return "";
+						}
+					}).orElse("");
+
+			emailModel.setCoverType(productType);
+			emailModel.setPremium(pricing.getString("text"));
+			emailModel.setPremiumLabel(pricing.getString("pricing"));
+			emailModel.setPremiumTotal(pricing.getString("text"));
+		} catch (JSONException e) {
+			throw new SendEmailException("Failed to buildApplicationEmailModel", e);
+		}
+
+		emailModel.setHealthMembership(data.map(HealthRequest::getQuote)
+				.map(HealthQuote::getSituation)
+				.map(Situation::getHealthCvr)
+				.map(c -> generalDao.getValuesOrdered("healthCvr").getOrDefault(c, ""))
+				.orElse(""));
+
+
+		emailModel.setHealthSituation(data.map(HealthRequest::getQuote)
+				.map(HealthQuote::getSituation)
+				.map(Situation::getHealthSitu)
+				.map(c -> generalDao.getValuesOrdered("healthSitu").getOrDefault(c, ""))
+				.orElse(""));
+
+		emailModel.setPolicyStartDate(data.map(HealthRequest::getQuote)
+				.map(HealthQuote::getPayment)
+				.map(com.ctm.web.health.model.form.Payment::getDetails)
+				.map(PaymentDetails::getStart)
+				.orElse(""));
+
+		emailModel.setPrimary(data.map(HealthRequest::getQuote)
+				.map(HealthQuote::getApplication)
+				.map(Application::getPrimary)
+				.map(this::createPolicyHolderModel)
+				.orElseThrow(() -> new SendEmailException("failed to buildBestPriceEmailModel emailAddress:" + emailDetails.getEmailAddress() +
+						" transactionId:" +  transactionId + " missing Primary applicant")));
+
+		emailModel.setPartner(data.map(HealthRequest::getQuote)
+				.map(HealthQuote::getApplication)
+				.map(Application::getPartner)
+				.map(this::createPolicyHolderModel)
+				.orElse(null));
+
+		emailModel.setDependants(data.map(HealthRequest::getQuote)
+				.map(HealthQuote::getApplication)
+				.map(Application::getDependants)
+				.map(Dependants::getDependant)
+				.orElse(emptyList())
+				.stream()
+				.filter(d -> d != null && d.getLastname() != null)
+				.map(this::createPolicyHolderModel)
+				.collect(toList()));
+
+		try {
+			emailModel.setProviderEmail(providerContentService.getProviderEmail(request, providerName));
+		} catch (DaoException e) {
+			LOGGER.error("Exception for " + emailDetails.getEmailAddress() +
+					" transactionId:" +  transactionId  ,  e);
+		}
+
 		setCustomerKey(emailModel, mailingName);
 		return emailModel;
+	}
+
+	private Optional<JSONObject> getJsonObject(JSONObject jsonObject, String key) {
+		if (jsonObject.has(key)) {
+			try {
+				return Optional.of(jsonObject.getJSONObject(key));
+			} catch (JSONException e) {
+				throw new RuntimeException("Not able to get JSONObject", e);
+			}
+		} else {
+			return Optional.empty();
+		}
+	}
+
+	private Optional<String> getString(JSONObject jsonObject, String key) {
+		if (jsonObject.has(key)) {
+			try {
+				return Optional.of(jsonObject.getString(key));
+			} catch (JSONException e) {
+				throw new RuntimeException("Not able to get JSONObject", e);
+			}
+		} else {
+			return Optional.empty();
+		}
+	}
+
+	private Optional<JSONObject> getJsonObject(JSONObject jsonObject, String key, int index) throws SendEmailException {
+		if (jsonObject.has(key)) {
+			try {
+				final JSONArray jsonArray = jsonObject.getJSONArray(key);
+				if (index < jsonArray.length()) {
+					return Optional.of(jsonArray.getJSONObject(index));
+				}
+			} catch (JSONException e) {
+				throw new SendEmailException("Not able to get JSONObject", e);
+			}
+		}
+		return Optional.empty();
+	}
+
+	private PolicyHolderModel createPolicyHolderModel(Person person) {
+		final PolicyHolderModel holder = new PolicyHolderModel();
+		holder.setFirstName(person.getFirstname());
+		holder.setLastName(person.getSurname());
+		holder.setDateOfBirth(person.getDob());
+		return holder;
+	}
+
+	private PolicyHolderModel createPolicyHolderModel(Dependant dependant) {
+		final PolicyHolderModel holder = new PolicyHolderModel();
+		holder.setFirstName(dependant.getFirstName());
+		holder.setLastName(dependant.getLastname());
+		holder.setDateOfBirth(dependant.getDob());
+		return holder;
 	}
 
 	private String createActionUrl(final String confirmationId) throws ConfigSettingException {
