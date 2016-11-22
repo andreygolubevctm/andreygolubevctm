@@ -885,31 +885,14 @@
         // Do this only for the best price product
         if (position === 0) {
 
-            var benefitCodes=[];
-            if (product.info.ProductType == 'Hospital' || product.info.ProductType == 'Combined') {
-                $('[name="health_filterBar_benefitsHospital"]:checked').each(
-                    function () {
-                        benefitCodes.push($(this).val());
-                    }
-                );
-            }
-            if (product.info.ProductType == 'GeneralHealth' || product.info.ProductType == 'Combined') {
-                $('[name="health_filterBar_benefitsExtras"]:checked').each(
-                    function(){
-                        benefitCodes.push($(this).val());
-                    }
-                );
-            }
-
-            // Get the description
-            var situation = $('[name="health_situation_healthSitu"]:checked').siblings('span').html();
-
-            var currentPHI = $('[name="health_healthCover_primary_cover"]:checked').val();
-
-            var promoText = /^(.+)<p><a class="dialogPop" data-content="(.+)" title="Conditions".+$/g.exec(product.promo.promoText);
-            var specialOffer = promoText && promoText[1];
-            // Convert this back to html
-            var specialOfferTerms = promoText && promoText[2] && $('<div/>').html(promoText[2]).text();
+            var benefitCodes= $.map(meerkat.modules.healthUtils.getSelectedBenefits(product.info.ProductType),
+                function(b) {
+                    return b.code;
+                });
+            var situation = meerkat.modules.healthUtils.getSelectedHealthSituation().name;
+            var currentPHI = meerkat.modules.healthUtils.getPrimaryCurrentPHI();
+            var specialOffer = meerkat.modules.healthUtils.getSpecialOffer(product);
+            var excessesAndCoPayment = meerkat.modules.healthUtils.getExcessesAndCoPayment(product);
 
             var healthMembership = $.trim($('#health_situation_healthCvr option:selected').text());
 
@@ -924,26 +907,15 @@
             if (product.promo.extrasPDF != 'health_brochure.jsp?pdf=') {
                 data["rank_extrasPdsUrl" +  position] = product.promo.extrasPDF;
             }
-            data["rank_specialOffer" + position] = specialOffer;
-            data["rank_specialOfferTerms" + position] = specialOfferTerms;
-            if (product.hospital && product.hospital.inclusions) {
-                if (product.hospital.inclusions.excesses) {
-                    data["rank_excessPerAdmission" + position] = (product.hospital.inclusions.excesses.perAdmission && toDollarValue(product.hospital.inclusions.excesses.perAdmission)) || null;
-                    data["rank_excessPerPerson" + position] = (product.hospital.inclusions.excesses.perPerson && toDollarValue(product.hospital.inclusions.excesses.perPerson)) || null;
-                    data["rank_excessPerPolicy" + position] = (product.hospital.inclusions.excesses.perPolicy && toDollarValue(product.hospital.inclusions.excesses.perPolicy)) || null;
-                }
-                data["rank_coPayment" + position] = (product.hospital.inclusions.copayment && toDollarValue(product.hospital.inclusions.copayment)) || null;
-            }
+            data["rank_specialOffer" + position] = specialOffer.specialOffer;
+            data["rank_specialOfferTerms" + position] = specialOffer.specialOfferTerms;
+            data["rank_excessPerAdmission" + position] = excessesAndCoPayment.excessPerAdmission;
+            data["rank_excessPerPerson" + position] = excessesAndCoPayment.excessPerPerson;
+            data["rank_excessPerPolicy" + position] = excessesAndCoPayment.excessPerPolicy;
+            data["rank_coPayment" + position] = excessesAndCoPayment.coPayment;
         }
 
         return data;
-    }
-
-    function toDollarValue(val) {
-        if (!isNaN(val)) {
-            return '$' + val.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        }
-        return val;
     }
 
     /**
