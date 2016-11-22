@@ -373,11 +373,16 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 					.flatMap(j -> getJsonObject(j, premiumFrequency))
 					.orElseThrow(() -> new SendEmailException("Unable to find premium"));
 
-			JSONObject info = getJsonObject(productJSON, "price", 0)
-					.flatMap(j -> getJsonObject(j,"info"))
-					.orElseThrow(() -> new SendEmailException("Unable to find product type"));
+			String productType = getJsonObject(productJSON, "price", 0)
+					.flatMap(j -> getJsonObject(j,"info")).map(x -> {
+						try {
+							return x.getString("ProductType");
+						} catch (JSONException ex) {
+							return "";
+						}
+					}).orElse("");
 
-			emailModel.setCoverType(info.getString("ProductType"));
+			emailModel.setCoverType(productType);
 			emailModel.setPremium(pricing.getString("text"));
 			emailModel.setPremiumLabel(pricing.getString("pricing"));
 			emailModel.setPremiumTotal(pricing.getString("text"));
