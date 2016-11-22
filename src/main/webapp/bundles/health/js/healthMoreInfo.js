@@ -252,49 +252,10 @@
             function(b) {
                 return b.code;
             });
-        // if (product.info.ProductType == 'Hospital' || product.info.ProductType == 'Combined') {
-        //     $('[name="health_filterBar_benefitsHospital"]:checked').each(
-        //         function () {
-        //             benefitCodes.push($(this).val());
-        //         }
-        //     );
-        // }
-        // if (product.info.ProductType == 'GeneralHealth' || product.info.ProductType == 'Combined') {
-        //     $('[name="health_filterBar_benefitsExtras"]:checked').each(
-        //         function(){
-        //             benefitCodes.push($(this).val());
-        //         }
-        //     );
-        // }
-        //
-        // // Get the description
-        // var situation = $('[name="health_situation_healthSitu"]:checked').siblings('span').html();
         var situation = meerkat.modules.healthUtils.getSelectedHealthSituation().name;
-        //
-        // var currentPHI = $('[name="health_healthCover_primary_cover"]:checked').val();
         var currentPHI = meerkat.modules.healthUtils.getPrimaryCurrentPHI();
-
         var specialOffer = meerkat.modules.healthUtils.getSpecialOffer(product);
-
         var excessesAndCoPayment = meerkat.modules.healthUtils.getExcessesAndCoPayment(product);
-        //
-        // var promoText = /^(.+)<p><a class="dialogPop" data-content="(.+)" title="Conditions".+$/g.exec(product.promo.promoText);
-        // var specialOffer = promoText && promoText[1];
-        // // Convert this back to html
-        // var specialOfferTerms = promoText && promoText[2] && $('<div/>').html(promoText[2]).text();
-        //
-        // var excessPerAdmission = null;
-        // var excessPerPerson = null;
-        // var excessPerPolicy = null;
-        // var coPayment = null;
-        // if (product.hospital && product.hospital.inclusions) {
-        //     if (product.hospital.inclusions.excesses) {
-        //         excessPerAdmission = (product.hospital.inclusions.excesses.perAdmission && toDollarValue(product.hospital.inclusions.excesses.perAdmission)) || null;
-        //         excessPerPerson = (product.hospital.inclusions.excesses.perPerson && toDollarValue(product.hospital.inclusions.excesses.perPerson)) || null;
-        //         excessPerPolicy = (product.hospital.inclusions.excesses.perPolicy && toDollarValue(product.hospital.inclusions.excesses.perPolicy)) || null;
-        //     }
-        //     coPayment = (product.hospital.inclusions.copayment && toDollarValue(product.hospital.inclusions.copayment)) || null;
-        // }
 
         meerkat.modules.emailBrochures.setup({
             emailInput: emailBrochuresElement.find('.sendBrochureEmailAddress'),
