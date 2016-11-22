@@ -160,14 +160,11 @@
                 meerkat.modules.carRegoLookup.lookup();
 
                 configureContactDetails();
-            }
-        };
-
-        if (!meerkat.modules.carExotic.isExotic()) {
-            var validationObj = {
-                validation: {
-                    validate: false,
-                    customValidation: function (callback) {
+            },
+            validation: {
+                validate: false,
+                customValidation: function (callback) {
+                    if (!meerkat.modules.carExotic.isExotic()) {
                         $('#quote_vehicle_selection').find('select').each(function () {
                             if ($(this).is('[disabled]')) {
                                 callback(false);
@@ -177,10 +174,8 @@
                         callback(true);
                     }
                 }
-            };
-
-            _.extend(startStep, validationObj);
-        }
+            }
+        };
 
         var optionsStep = {
             title: 'Car Details',
