@@ -4,6 +4,8 @@
 
 <c:set var="logger" value="${log:getLogger('jsp.ajax.json.life_quote_result')}" />
 
+${logger.info('Call to Results', log:kv('transactionId',data.current.transactionId))}
+
 <session:get settings="true" authenticated="true" verticalCode="${fn:trim(fn:toUpperCase(param.vertical))}" />
 
 <%-- Load the params into data --%>
@@ -72,78 +74,78 @@
 							<c:set var="successStatus" value="false" />
 						</x:otherwise>
 					</x:choose>
-				<c:choose>
-					<%-- Check the server side for validation --%>
-					<c:when test="${isValid || continueOnValidationError}">
-						<%-- Check response status returned by the service --%>
-						<x:parse xml="${resultXml}" var="successStatus" />
-						<x:choose>
-							<x:when select="$successStatus//results//success">
-								<c:set var="successStatus"><x:out select="$successStatus/results/success" /></c:set>
-								<c:if test="${!isValid}">
-									<c:forEach var="validationError"  items="${validationErrors}">
-										<error:non_fatal_error origin="life_quote_results.jsp"
-															   errorMessage="message:${validationError.message} elementXpath:${validationError.elementXpath} elements:${validationError.elements}" errorCode="VALIDATION" />
-									</c:forEach>
-								</c:if>
+					<c:choose>
+						<%-- Check the server side for validation --%>
+						<c:when test="${isValid || continueOnValidationError}">
+							<%-- Check response status returned by the service --%>
+							<x:parse xml="${resultXml}" var="successStatus" />
+							<x:choose>
+								<x:when select="$successStatus//results//success">
+									<c:set var="successStatus"><x:out select="$successStatus/results/success" /></c:set>
+									<c:if test="${!isValid}">
+										<c:forEach var="validationError"  items="${validationErrors}">
+											<error:non_fatal_error origin="life_quote_results.jsp"
+																   errorMessage="message:${validationError.message} elementXpath:${validationError.elementXpath} elements:${validationError.elements}" errorCode="VALIDATION" />
+										</c:forEach>
+									</c:if>
 
-								<%-- Write to the stats database --%>
-								<c:set var="ignore">
-									<life_v1:get_soap_response_stats debugXml="${debugXml}" />
-									<agg_v1:write_stats rootPath="${vertical}" tranId="${tranId}" />
-								</c:set>
+									<%-- Write to the stats database --%>
+									<c:set var="ignore">
+										<life_v1:get_soap_response_stats debugXml="${debugXml}" />
+										<agg_v1:write_stats rootPath="${vertical}" tranId="${tranId}" />
+									</c:set>
 
-								<%-- Add the results to the current session data --%>
-								<go:setData dataVar="data" xpath="soap-response" value="*DELETE" />
-								<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
-								<go:setData dataVar="data" xpath="soap-response/results/transactionId" value="${tranId}" />
-								${go:XMLtoJSON(go:getEscapedXml(data['soap-response/results']))}
-							</x:when>
-							<x:otherwise>
-								<%-- LifeBroker returned failed SOAP response --%>
-								<go:setData dataVar="data" xpath="current/transactionId" value="${tranId}" />
-								<error:fatal_error page="ajax/json/life_quote_results.jsp" failedData="${data}" fatal="1" transactionId="${tranId}" description="LifeBroker SOAP call returned status 'false'" message="LifeBroker SOAP call returned status 'false'" />
-								${go:XMLtoJSON("<results><success>false</success></results>")}
-							</x:otherwise>
-						</x:choose>
-					</c:when>
-					<c:otherwise>
-						<agg_v1:outputValidationFailureJSON validationErrors="${validationErrors}"  origin="life_quote_results.jsp"/>
-					</c:otherwise>
-				</c:choose>
+									<%-- Add the results to the current session data --%>
+									<go:setData dataVar="data" xpath="soap-response" value="*DELETE" />
+									<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
+									<go:setData dataVar="data" xpath="soap-response/results/transactionId" value="${tranId}" />
+									${go:XMLtoJSON(go:getEscapedXml(data['soap-response/results']))}
+								</x:when>
+								<x:otherwise>
+									<%-- LifeBroker returned failed SOAP response --%>
+									<go:setData dataVar="data" xpath="current/transactionId" value="${tranId}" />
+									<error:fatal_error page="ajax/json/life_quote_results.jsp" failedData="${data}" fatal="1" transactionId="${tranId}" description="LifeBroker SOAP call returned status 'false'" message="LifeBroker SOAP call returned status 'false'" />
+									${go:XMLtoJSON("<results><success>false</success></results>")}
+								</x:otherwise>
+							</x:choose>
+						</c:when>
+						<c:otherwise>
+							<agg_v1:outputValidationFailureJSON validationErrors="${validationErrors}"  origin="life_quote_results.jsp"/>
+						</c:otherwise>
+					</c:choose>
 
-				<%-- COMPETITION APPLICATION START --%>
-				<c:set var="competitionEnabledSetting"><content:get key="competitionEnabled"/></c:set>
-				<c:set var="optedInForCompKey">${vertical}/contactDetails/competition/optin</c:set>
-				<c:set var="optedInForComp" value="${data[optedInForCompKey] == 'Y' }" />
+					<%-- COMPETITION APPLICATION START --%>
+					<c:set var="competitionEnabledSetting"><content:get key="competitionEnabled"/></c:set>
+					<c:set var="optedInForCompKey">${vertical}/contactDetails/competition/optin</c:set>
+					<c:set var="optedInForComp" value="${data[optedInForCompKey] == 'Y' }" />
 
-				<c:if test="${competitionEnabledSetting eq 'Y' and not callCentre and optedInForComp}">
-					<c:set var="competitionId"><content:get key="competitionId"/></c:set>
-					<c:set var="competition_emailKey">${vertical}/contactDetails/email</c:set>
-					<c:set var="competition_firstnameKey">${vertical}/primary/firstName</c:set>
-					<c:set var="competition_lastnameKey">${vertical}/primary/lastname</c:set>
-					<c:set var="competition_phoneKey">${vertical}/contactDetails/contactNumber</c:set>
-					<c:import var="response" url="/ajax/write/competition_entry.jsp">
-						<c:param name="secret">F982336B6A298CDBFCECBE719645C</c:param>
-						<c:param name="competitionId" value="${competitionId}" />
-						<c:param name="competition_email" value="${fn:trim(data[competition_emailKey])}" />
-						<c:param name="competition_firstname" value="${fn:trim(data[competition_firstnameKey])}" />
-						<c:param name="competition_lastname" value="${fn:trim(data[competition_lastnameKey])}" />
-						<c:param name="competition_phone" value="${data[competition_phoneKey]}" />
-						<c:param name="transactionId" value="${tranId}" />
-					</c:import>
-				</c:if>
-				<%-- COMPETITION APPLICATION END --%>
-	</c:when>
-	<c:otherwise>
-				<c:set var="resultXml">
-					<error><core_v1:access_get_reserved_msg isSimplesUser="${not empty authenticatedData.login.user.uid}" /></error>
-				</c:set>
-				<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
-				${go:XMLtoJSON(go:getEscapedXml(data['soap-response/results']))}
-			</c:otherwise>
-		</c:choose>
-	</c:when>
+					<c:if test="${competitionEnabledSetting eq 'Y' and not callCentre and optedInForComp}">
+						<c:set var="competitionId"><content:get key="competitionId"/></c:set>
+						<c:set var="competition_emailKey">${vertical}/contactDetails/email</c:set>
+						<c:set var="competition_firstnameKey">${vertical}/primary/firstName</c:set>
+						<c:set var="competition_lastnameKey">${vertical}/primary/lastname</c:set>
+						<c:set var="competition_phoneKey">${vertical}/contactDetails/contactNumber</c:set>
+						<c:import var="response" url="/ajax/write/competition_entry.jsp">
+							<c:param name="secret">F982336B6A298CDBFCECBE719645C</c:param>
+							<c:param name="competitionId" value="${competitionId}" />
+							<c:param name="competition_email" value="${fn:trim(data[competition_emailKey])}" />
+							<c:param name="competition_firstname" value="${fn:trim(data[competition_firstnameKey])}" />
+							<c:param name="competition_lastname" value="${fn:trim(data[competition_lastnameKey])}" />
+							<c:param name="competition_phone" value="${data[competition_phoneKey]}" />
+							<c:param name="transactionId" value="${tranId}" />
+						</c:import>
+					</c:if>
+					<%-- COMPETITION APPLICATION END --%>
+				</c:when>
+				<c:otherwise>
+					<c:set var="resultXml">
+						<error><core_v1:access_get_reserved_msg isSimplesUser="${not empty authenticatedData.login.user.uid}" /></error>
+					</c:set>
+					<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
+					${go:XMLtoJSON(go:getEscapedXml(data['soap-response/results']))}
+				</c:otherwise>
+			</c:choose>
+		</c:when>
 	<c:otherwise>
 		${serviceRespone}
 	</c:otherwise>
