@@ -6,4 +6,4 @@
 
 <c:set var="heading"><content:get key="noQuoteTitle"/></c:set>
 <c:set var="body"><content:get key="noQuoteBody"/></c:set>
-<confirmation:other_products heading="${heading}" copy="${body}" id="${id}"/>
+<confirmation:other_products heading="${heading}" copy="${body}" id="${id}" orderby="seq"/>

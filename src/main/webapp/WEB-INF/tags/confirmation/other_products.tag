@@ -6,6 +6,7 @@
 <%@ attribute name="heading" required="false" rtexprvalue="true" description="Heading for the popup" %>
 <%@ attribute name="copy" required="false" rtexprvalue="true" description="Extra copy if required" %>
 <%@ attribute name="ignore" required="false" rtexprvalue="true" description="Verticals to ignore" %>
+<%@ attribute name="orderby" required="false" rtexprvalue="true" description="Define what sort order to execute" %>
 
 <c:set var="fieldSetID">
 	<c:choose>
@@ -25,6 +26,10 @@
 
 	<%-- Ideally this would come from a database or config/settings to identify all verticals enabled for current brand. --%>
 	<c:set var="brand" value="${applicationService.getBrandFromRequest(pageContext.getRequest())}" />
+	<c:set var="itemsToIterate" value="${brand.getVerticals()}" />
+	<c:if test="${not empty orderby and orderby eq 'seq'}">
+		<c:set var="itemsToIterate" value="${brand.sortVerticalsBySeq()}" />
+	</c:if>
 	<c:if test="${not empty heading}">
 	<h3>${heading}</h3>
 	</c:if>
@@ -32,7 +37,7 @@
 		${copy}
 	</c:if>
 	<div class="options-list clearfix verticalButtons">
-	<c:forEach items="${brand.getVerticals()}" var="vertical" varStatus="loop">
+	<c:forEach items="${itemsToIterate}" var="vertical" varStatus="loop">
 		<c:set var="displayVertical">
 			<c:choose>
 				<c:when test="${not empty ignore and fn:contains(ignore, fn:toLowerCase(vertical.getCode()))}">${false}</c:when>
