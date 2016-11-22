@@ -169,6 +169,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 								<span class="sr-only">Toggle Navigation</span>
 								<span class="icon icon-reorder"></span>
 							</button>
+
 							<c:if test="${pageSettings.getVerticalCode() eq 'health'}">
 								<button type="button" class="navbar-toggle phone collapsed disabled" data-toggle="navMenuOpen" data-target=".navbar-collapse-menu">
 									<span class="sr-only">Contact Us</span>

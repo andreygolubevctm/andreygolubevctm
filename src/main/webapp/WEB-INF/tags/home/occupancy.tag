@@ -24,8 +24,10 @@
 
 <form_v2:fieldset legend="Occupancy Details">
 	<%-- Commencement Date --%>
-	<c:set var="fieldXpath" value="${baseXpath}/startDate" />
-	<home:commencementDate xpath="${fieldXpath}" />
+	<c:if test="${journeySplitTestActive eq false}">
+		<c:set var="fieldXpath" value="${baseXpath}/startDate" />
+		<home:commencementDate xpath="${fieldXpath}" />
+	</c:if>
 
 	<%-- Address --%>
 	<c:set var="fieldXpath" value="${baseXpath}/property/address" />
@@ -73,5 +75,9 @@
 	</core_v1:js_template>
 
 	<field_v1:hidden xpath="${xpath}/coverTypeWarning/chosenOption"/>
+
+	<c:if test="${journeySplitTestActive eq true}">
+		<home:business_activity_v2 xpath="home/businessActivity" />
+	</c:if>
 
 </form_v2:fieldset>

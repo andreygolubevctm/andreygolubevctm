@@ -14,9 +14,15 @@
   }
 
   &.priceMode {
+    padding-top: 0;
+
     .results-pagination {
       display: none;
     }
+  }
+
+  &.featuresMode {
+    border-top: 1px solid #E7E7E7;
   }
 
   @media (@sm-only) {
@@ -66,12 +72,12 @@
   .featuresMode {
     .result,
     .productSummary {
-      height: 374px;
+      height: @product-summary-xs-height;
       @media (@sm) {
-        height: 413px;
+        height: @product-summary-sm-height;
       }
       @media (@lg) {
-        height: 439px;
+        height: @product-summary-lg-height;
       }
     }
 
@@ -100,6 +106,7 @@
     .frequencyAmount {
       float: none;
       margin-top: 0;
+      padding-right: 0;
       text-align: right;
       width: auto;
       .dollarSign,
@@ -110,7 +117,7 @@
         vertical-align: super;
       }
       .dollars {
-        font-size: 48px;
+        font-size: 45px;
       }
     }
 
@@ -129,21 +136,29 @@
     }
 
     .excess {
-      color: @car-results-minor-text;
-      text-align: right;
+      color: @gray-light;
       .excessAmount {
         float: none;
+        font-size: 24px;
+        line-height: 24px;
         margin-top: 0;
+        padding-right: 0;
         width: auto;
       }
       .excessTitle {
         display: block;
+        font-size: 12px;
+        line-height: 12px;
         margin-top: 0;
-        text-align: right;
       }
     }
 
+    .btn-more-info-apply {
+      padding: 12px 16px;
+    }
+
     .result-special-offer {
+      margin-bottom: 12px;
       height: 60px;
       @media (@sm) {
         height: 72px;
@@ -192,6 +207,7 @@
       margin-top: 10px;
       padding-top: 10px;
       width: auto;
+      height: 105px;
       text-align: right;
     }
 
@@ -201,10 +217,6 @@
       .btn-more-info-apply, .btn-more-info, .btn-call-actions {
         position: inherit;
         display: inline-block;
-        width: 70%;
-        padding-top: 5px;
-        padding-bottom: 5px;
-        margin-top: 0px;
       }
 
       .btn-more-info-apply.ctaBtnExpanded {
@@ -223,10 +235,10 @@
       padding: 15px;
       text-align: justify;
       @media (@sm) {
-        height: 413px;
+        height: @product-summary-sm-height;
       }
       @media (@lg) {
-        height: 439px;
+        height: @product-summary-lg-height;
       }
 
       .compare-max-count-label {
@@ -244,9 +256,6 @@
 
     .headerButtonWrapper {
       margin: 15px 0;
-      .btn-more-info-apply {
-        padding: 12px 16px;
-      }
     }
 
     .call-actions-buttons {
@@ -311,6 +320,9 @@
 
   // Custom themeing for the elements in the cols/rows.
   .featuresList {
+    .content {
+      border-color: #ddd;
+    }
     .icon-tick, .icon-cross {
       margin-top: 3px;
     }
@@ -334,6 +346,10 @@
         margin-right: 5px;
         margin-left: 5px;
       }
+    }
+
+    h5 {
+      display: none;
     }
 
     ul {

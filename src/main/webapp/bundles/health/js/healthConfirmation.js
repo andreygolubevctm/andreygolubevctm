@@ -142,10 +142,14 @@
 
 				meerkat.modules.tracking.updateObjectData(tracking);
 
-				meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-					method:'completedApplication',
-					object:tracking
-				});
+				// Only track on first view of page
+				if(confirmationProduct.hasOwnProperty("viewed") && confirmationProduct.viewed === false) {
+					meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+						method: 'completedApplication',
+						object: tracking
+					});
+					meerkat.modules.tracking.recordTouch('CONF','Confirmation Viewed');
+				}
 			}
 
 		});

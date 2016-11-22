@@ -61,7 +61,9 @@ public class Touch extends AbstractJsonModel {
 		CONTACT_DETAILS_COLLECTED("Contact details collected", "CDC"),
 		CALL_FEED ("Call Feed" , "CF"), // Added to a call feed list.
 		EMAIL_GATEWAY ("Email gateway", "EmlGateway"),
-		CRON_ACTIONED("CRON Actioned", "CRON");
+		CRON_ACTIONED("CRON Actioned", "CRON"),
+		CONFIRMATION_VIEWED("Confirmation Page Viewed", "CONF"),
+        MORE_INFO("More Info", "MoreInfo");
 
 		private final String description, code;
 

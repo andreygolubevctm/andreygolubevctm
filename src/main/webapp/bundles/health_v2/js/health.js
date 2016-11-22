@@ -33,7 +33,7 @@
 				startStepId = steps.startStep.navigationId;
 			}
 			// Use the stage user was on when saving their quote
-			else if (meerkat.site.journeyStage.length > 0 && meerkat.site.pageAction === 'amend') {
+			else if (meerkat.site.journeyStage.length > 0 && _.indexOf(['amend','latest'],meerkat.site.pageAction) >= 0) {
 				// Do not allow the user to go past the results page on amend.
 				if(meerkat.site.journeyStage === 'apply' || meerkat.site.journeyStage === 'payment'){
 					startStepId = 'results';
@@ -42,11 +42,16 @@
 				}
 			}
 
-			meerkat.modules.journeyEngine.configure({
+			var journeyEngineConfigure = _.bind(meerkat.modules.journeyEngine.configure, this, {
 				startStepId: startStepId,
 				steps: _.toArray(steps)
 			});
 
+			if(meerkat.site.isNewQuote === false) {
+				_.delay(journeyEngineConfigure, 500);
+			} else {
+				journeyEngineConfigure();
+			}
 
 			// Call initial supertag call
 			var transaction_id = meerkat.modules.transactionId.get();
@@ -181,24 +186,12 @@
 					meerkat.modules.healthBenefitsStep.updateHiddenFields(coverTypeVal);
 				});
 
-				if(meerkat.modules.performanceProfiling.isMobile()) {
-					var $callCentreNumber = $('.mobile-hours h1 .callCentreNumber');
-					var $callCentreAppNumber = $('.mobile-hours h1 .callCentreAppNumber');
-
-					$callCentreNumber.wrapInner('<a href="tel:' + $callCentreNumber.text().replace(/ /g, "") + '"></a>');
-					$callCentreAppNumber.wrapInner('<a href="tel:' + $callCentreAppNumber.text().replace(/ /g, "") + '"></a>');
-
-					var $callDetails = $('.mobile-hours .call-details');
-					var $callDetailsParent = $callDetails.parent();
-					$callDetailsParent.prepend($callDetails);
-				}
-
 				if($("#health_privacyoptin").val() === 'Y'){
 					$(".slide-feature-emailquote").addClass("privacyOptinChecked");
 				}
 
 				// Don't fire the change event by default if amend mode and the user has selected items.
-				if (meerkat.site.pageAction !== 'amend' && meerkat.site.pageAction !== 'start-again' && meerkat.modules.healthBenefitsStep.getSelectedBenefits().length === 0) {
+				if (_.indexOf(['amend','latest'],meerkat.site.pageAction) === -1  && meerkat.site.pageAction !== 'start-again' && meerkat.modules.healthBenefitsStep.getSelectedBenefits().length === 0) {
 					if($healthSitHealthSitu.filter(":checked").val() !== ''){
 						$healthSitHealthSitu.change();
 					}
@@ -290,7 +283,7 @@
 			},
 			onBeforeEnter:function enterBenefitsStep(event) {
 				meerkat.modules.healthBenefitsStep.disableFields();
-				meerkat.modules.healthBenefitsStep.applySituationBasedCopy(event.isForward);
+				meerkat.modules.healthBenefitsStep.applySituationBasedCopy();
 				meerkat.modules.healthBenefitsStep.activateBenefitPreSelections(event.isForward);
 				incrementTranIdBeforeEnteringSlide();
 			},
@@ -498,7 +491,7 @@
 					meerkat.modules.healthMedicare.updateMedicareLabel();
 
 					var product = meerkat.modules.healthResults.getSelectedProduct();
-					var mustShowList = ["GMHBA","Frank","Budget Direct","Bupa","HIF","QCHF","Navy Health","HBF"];
+					var mustShowList = ["GMHBA","Frank","Budget Direct","Bupa","HIF","QCHF","Navy Health","HBF","TUH"];
 
 					if( !meerkat.modules.healthCoverDetails.isRebateApplied() && $.inArray(product.info.providerName, mustShowList) == -1) {
 						$("#health_payment_medicare-selection > .nestedGroup").hide().attr("style", "display:none !important");
@@ -649,10 +642,6 @@
 			{
 				label:'Purchase',
 				navigationId: steps.applyStep.navigationId
-			},
-			{
-				label:'',
-				navigationId: steps.paymentStep.navigationId
 			}
 		]);
 
@@ -668,7 +657,12 @@
 		var contactDetailsFields = {
 			name:[
 				{
-					$field: $("#health_contactDetails_name")
+					$field: $("#health_contactDetails_name"),
+					$fieldInput: $("#health_contactDetails_name") // pointing at the same field as a trick to force change event on itself when forward populated
+				},
+				{
+					$field: $("#health_callback_name"),
+					$fieldInput: $("#health_callback_name")
 				},
 				{
 					$field: $("#health_application_primary_firstname"),
@@ -717,6 +711,11 @@
 				{
 					$field: $("#health_application_mobile"),
 					$fieldInput: $("#health_application_mobileinput")
+				},
+				// callback popup
+				{
+					$field: $("#health_callback_mobileinput"),
+					$fieldInput: $("#health_callback_mobileinput")
 				}
 			],
 			otherPhone: [
@@ -729,6 +728,11 @@
 				{
 					$field: $("#health_application_other"),
 					$fieldInput: $("#health_application_otherinput")
+				},
+				// call back popup
+				{
+					$field: $("#health_callback_otherNumberinput"),
+					$fieldInput: $("#health_callback_otherNumberinput")
 				}
 			],
 			flexiPhone: [
@@ -1028,6 +1032,8 @@
 					contactType = 'inbound';
 				} else if ($('#health_simples_contactType_outbound').is(':checked')) {
 					contactType = 'outbound';
+				} else if ($('#health_simples_contactType_clioutbound').is(':checked')) {
+					contactType = 'clioutbound';
 				}
 
 				$.extend(response, {
@@ -1375,7 +1381,7 @@
 			eventSubscriptions();
 			configureContactDetails();
 
-			if (meerkat.site.pageAction === 'amend' || meerkat.site.pageAction === 'load' || meerkat.site.pageAction === 'start-again') {
+			if (_.indexOf(['amend','latest','load','start-again'],meerkat.site.pageAction) >= 0) {
 
 				// If retrieving a quote and a product had been selected, inject the fund's application set.
 				if (typeof healthFunds !== 'undefined' && healthFunds.checkIfNeedToInjectOnAmend) {
@@ -1407,6 +1413,9 @@
 
 			adjustLayout();
 
+			if(meerkat.site.isCallCentreUser === false) {
+				meerkat.modules.saveQuote.initSaveQuote();
+			}
 		});
 
 
@@ -1437,7 +1446,8 @@
 		fetchRates: fetchRates,
 		loadRates: loadRates,
 		loadRatesBeforeResultsPage: loadRatesBeforeResultsPage,
-        hasPartner: hasPartner
+        hasPartner: hasPartner,
+		configureContactDetails: configureContactDetails
 	});
 
 })(jQuery);

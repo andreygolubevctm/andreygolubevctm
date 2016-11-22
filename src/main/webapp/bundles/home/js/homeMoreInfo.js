@@ -38,6 +38,11 @@
 					callback: function (eventObject) {
 						$(eventObject.currentTarget).closest('.modal').modal('hide');
 					}
+				},
+				rightBtn: {
+					label: 'SAVE QUOTE',
+					className: 'btn-sm btn-save',
+					callback: meerkat.modules.saveQuote.openAsModal
 				}
 			},
 			runDisplayMethod: runDisplayMethod,
@@ -67,95 +72,15 @@
 	function applyEventListeners() {
 
 		$(document).on('click', '.bridgingContainer .btn-call-actions', function (event) {
-			/**
-			 * Render the call modal template, set up default name values, fix height
-			 */
-			event.preventDefault();
-			event.stopPropagation();
 			var $el = $(this);
-			var $e = $('#home-call-modal-template');
-			if ($e.length) {
-				templateCallback = _.template($e.html());
-			}
-			var obj = meerkat.modules.moreInfo.getOpenProduct();
-
-			// If its unavailable, don't do anything
-			// This is if someone tries to fake a bridging page for a "non quote" product.
-			if (obj.available != 'Y')
-				return;
-
-
-			var htmlContent = templateCallback(obj);
-			var modalOptions = {
-				htmlContent: htmlContent,
-				hashId: 'call',
-				className: 'call-modal ' + obj.brandCode,
-				closeOnHashChange: true,
-				openOnHashChange: false,
-				onOpen: function (modalId) {
-
-					$('.' + $el.attr('data-callback-toggle')).show();
-					fixSidebarHeight('.paragraphedContent:visible', '.sidebar-right', $('#'+modalId));
-
-					setupCallbackForm();
-
-					if ($el.hasClass('btn-calldirect')) {
-						recordCallDirect(event);
-					} else {
-						trackCallBack();// Add CallBack request event to supertag
-					}
-
-				}
-			};
-
-			if(meerkat.modules.deviceMediaState.get() == 'xs') {
-				modalOptions.title = "Reference no. " + obj.leadNo;
-			}
-
-			callbackModalId = meerkat.modules.dialogs.show(modalOptions);
+			callActions(event, $el);
 		}).on('click', '.call-modal .btn-call-actions', function (event) {
-			/**
-			 * Just toggle between the modes here in the modal.
-			 */
-			if(meerkat.modules.deviceMediaState.get() != 'xs') {
-				event.preventDefault();
-			}
-			event.stopPropagation();
 			var $el = $(this);
-
-			switch ($el.attr('data-callback-toggle')) {
-				case 'calldirect':
-					$('.callback').hide();
-					$('.calldirect').show();
-					recordCallDirect(event);
-					break;
-				case 'callback':
-					$('.calldirect').hide();
-					$('.callback').show();
-					trackCallBack();// Add CallBack request event to supertag
-					break;
-			}
-
-			// Fix the height of the sidebar
-			fixSidebarHeight('.paragraphedContent:visible', '.sidebar-right', $el.closest('.modal.in'));
+			modalCallActions(event, $el);
 
 		}).on('click', '.btn-submit-callback', function (event) {
-			event.preventDefault();
 			var $el = $(this);
-			if($el.closest('form').valid()) {
-				var currentBrandCode = meerkat.site.tracking.brandCode.toUpperCase();
-				callLeadFeedSave(event, {
-					message: currentBrandCode+' - Home Vertical - Call me now',
-					phonecallme: 'GetaCall'
-				});
-
-				trackCallBackSubmit();// Add CallBack Submit request event to supertag
-			} else {
-				_.delay(function() {
-					fixSidebarHeight('.paragraphedContent:visible', '.sidebar-right', $el.closest('.modal.in'));
-				}, 200);
-			}
-			return false;
+			submitCallback(event, $el);
 		});
 	}
 
@@ -211,12 +136,12 @@
 	 * Only do this once per product, but once per session for supertag.
 	 * @param {event} event The event object.
 	 */
-	function recordCallDirect(event) {
+	function recordCallDirect(event, product) {
 
 		// Call supertag to register event - only once per transaction
-		trackCallDirect();// Add CallDirect request event to supertag
+		trackCallDirect(product);// Add CallDirect request event to supertag
 
-		var currProduct = meerkat.modules.moreInfo.getOpenProduct();
+		var currProduct = product;
 		if (typeof callDirectLeadFeedSent[currProduct.productId] != 'undefined')
 			return;
 
@@ -225,17 +150,16 @@
 		return callLeadFeedSave(event, {
 			message: currentBrandCode+' - Home Vertical - Call direct',
 			phonecallme: 'CallDirect'
-		});
+		}, product);
 	}
 	/**
 	 * Perform the lead feed save request for both call direct and call back functions.
 	 * @param {event} event The event object from the button click
 	 * @param {POJO} data The data to extend into the AJAX request
 	 */
-	function callLeadFeedSave(event, data) {
-		var currProduct = meerkat.modules.moreInfo.getOpenProduct();
-		if (typeof currProduct !== 'undefined' && currProduct !== null && typeof currProduct.vdn !== 'undefined' && !_.isEmpty(currProduct.vdn) && currProduct.vdn > 0) { // VDN is a number
-			data.vdn = currProduct.vdn;
+	function callLeadFeedSave(event, data, product) {
+		if (typeof product !== 'undefined' && product !== null && typeof product.vdn !== 'undefined' && !_.isEmpty(product.vdn) && product.vdn > 0) { // VDN is a number
+			data.vdn = product.vdn;
 		}
 
 		var state = $("#home_property_address_state").val();
@@ -262,13 +186,13 @@
 			clientTel = policyHolderPhone;
 		}
 
-		var quoteNumber = currProduct.quoteNumber;
+		var quoteNumber = product.quoteNumber;
 
 
 		var defaultData = {
 			state:				state,
-			brand:				currProduct.productId.split('-')[0],
-			productId:			currProduct.productId,
+			brand:				product.productId.split('-')[0],
+			productId:			product.productId,
 			clientNumber:		quoteNumber,
 			clientName:			clientName,
 			phoneNumber:		clientTel,
@@ -304,7 +228,7 @@
 			},
 			onComplete: function onSubmitComplete() {
 				if (data.phonecallme == 'CallDirect') {
-					callDirectLeadFeedSent[currProduct.productId] = true;
+					callDirectLeadFeedSent[product.productId] = true;
 				}
 				meerkat.modules.loadingAnimation.hide($element);
 			}
@@ -408,7 +332,121 @@
 		meerkat.messaging.subscribe(meerkatEvents.transactionId.CHANGED, function updateCallDirectTrackingFlag() {
 			callDirectTrackingFlag = true;
 		});
+
+		meerkat.messaging.subscribe(meerkatEvents.homeResults.FEATURES_CALL_ACTION, function triggerCallActions(obj) {
+			callActions(obj.event, obj.element);
+		});
+
+		meerkat.messaging.subscribe(meerkatEvents.homeResults.FEATURES_CALL_ACTION_MODAL, function triggerCallActionsFromModal(obj) {
+			modalCallActions(obj.event, obj.element);
+		});
+
+		meerkat.messaging.subscribe(meerkatEvents.homeResults.FEATURES_SUBMIT_CALLBACK, function triggerSubmitCallback(obj) {
+			submitCallback(obj.event, obj.element);
+		});
 	}
+
+	function callActions(event, element) {
+		/**
+		 * Render the call modal template, set up default name values, fix height
+		 */
+		event.preventDefault();
+		event.stopPropagation();
+		var $el = element;
+		var obj = Results.getResultByProductId($el.attr('data-productId'));
+
+		// If its unavailable, don't do anything
+		// This is if someone tries to fake a bridging page for a "non quote" product.
+		if (obj.available != 'Y')
+			return;
+
+		var $e = $('#home-call-modal-template');
+		if ($e.length) {
+			templateCallback = _.template($e.html());
+		}
+
+		var htmlContent = templateCallback(obj);
+		var modalOptions = {
+			htmlContent: htmlContent,
+			hashId: 'call',
+			className: 'call-modal ' + obj.brandCode,
+			closeOnHashChange: true,
+			openOnHashChange: false,
+			onOpen: function (modalId) {
+
+				$('.' + $el.attr('data-callback-toggle')).show();
+				fixSidebarHeight('.paragraphedContent:visible', '.sidebar-right', $('#'+modalId));
+
+				setupCallbackForm();
+
+				if ($el.hasClass('btn-calldirect')) {
+					recordCallDirect(event, obj);
+				} else {
+					trackCallBack(obj);// Add CallBack request event to supertag
+				}
+
+			}
+		};
+
+		if(meerkat.modules.deviceMediaState.get() == 'xs') {
+			modalOptions.title = "Reference no. " + obj.leadNo;
+		}
+
+		callbackModalId = meerkat.modules.dialogs.show(modalOptions);
+	}
+
+	function modalCallActions(event, element) {
+		/**
+		 * Just toggle between the modes here in the modal.
+		 */
+		if(meerkat.modules.deviceMediaState.get() != 'xs') {
+			event.preventDefault();
+		}
+		event.stopPropagation();
+		var $el = element;
+		var obj = Results.getResultByProductId($el.attr('data-productId'));
+
+		switch ($el.attr('data-callback-toggle')) {
+			case 'calldirect':
+				$('.callback').hide();
+				$('.calldirect').show();
+				recordCallDirect(event, obj);
+				break;
+			case 'callback':
+				$('.calldirect').hide();
+				$('.callback').show();
+				trackCallBack(obj);// Add CallBack request event to supertag
+				break;
+		}
+
+		// Fix the height of the sidebar
+		fixSidebarHeight('.paragraphedContent:visible', '.sidebar-right', $el.closest('.modal.in'));
+	}
+
+	function submitCallback(event, element) {
+		event.preventDefault();
+		var $el = element;
+		var obj = Results.getResultByProductId($el.attr('data-productId'));
+		if($el.closest('form').valid()) {
+			var currentBrandCode = meerkat.site.tracking.brandCode.toUpperCase();
+			callLeadFeedSave(
+				event,
+				{
+					message: currentBrandCode+' - Home Vertical - Call me now',
+					phonecallme: 'GetaCall'
+				},
+				obj
+			);
+
+			trackCallBackSubmit(obj);// Add CallBack Submit request event to supertag
+		} else {
+			_.delay(function() {
+				fixSidebarHeight('.paragraphedContent:visible', '.sidebar-right', $el.closest('.modal.in'));
+			}, 200);
+		}
+		return false;
+	}
+
 	/**
 	 * Set the current scroll position so that it can be used when modals are closed
 	 */
@@ -422,7 +460,7 @@
 	function onBeforeShowBridgingPage() {
 		setScrollPosition();
 		if (meerkat.modules.deviceMediaState.get() != 'xs') {
-			$('.resultsContainer, #navbar-compare, #navbar-filter').hide();
+			$('.resultsContainer, #navbar-compare, #navbar-filter, #navbar-filter-labels').hide();
 		}
 	}
 
@@ -453,7 +491,7 @@
 	 * Called within meerkat.modules.moreInfo.hideTemplate
 	 */
 	function onAfterHideTemplate() {
-		$('.resultsContainer, #navbar-filter, #navbar-compare').show();
+		$('.resultsContainer, #navbar-filter, #navbar-compare, #navbar-filter-labels').show();
 		$(window).scrollTop(scrollPosition);
 	}
 
@@ -617,10 +655,10 @@
 	 * As discussed with Elvin & Tim, we won't change supertag stats, but its ok
 	 * to send multiple transaction detail saves.
 	 */
-	function trackCallDirect(){
+	function trackCallDirect(product){
 		if(callDirectTrackingFlag === true) {
 			callDirectTrackingFlag = false;
-			trackCallEvent('CrCallDir');
+			trackCallEvent('CrCallDir', product);
 		} else {
 			return;
 		}
@@ -629,22 +667,20 @@
 	/**
 	 * Wrapper for trackCallEvent
 	 */
-	function trackCallBack(){
-		trackCallEvent('CrCallBac');
+	function trackCallBack(product){
+		trackCallEvent('CrCallBac', product);
 	}
 
 	/**
 	 * Wrapper for trackCallEvent
 	 */
-	function trackCallBackSubmit(){
-		trackCallEvent('CrCallBacSub');
+	function trackCallBackSubmit(product){
+		trackCallEvent('CrCallBacSub', product);
 	}
 	/**
 	 * Tracks a click on call direct or call back.
 	 */
-	function trackCallEvent(type) {
-		var product = meerkat.modules.moreInfo.getOpenProduct();
-
+	function trackCallEvent(type, product) {
 		meerkat.modules.partnerTransfer.trackHandoverEvent({
 			product: product,
 			type: type,

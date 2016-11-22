@@ -14,7 +14,7 @@
 	These are the touch types that are allowed via ajax.
 	All other touches need to be done using <core_v1:transaction touch="?" />
 --%>
-<c:set var="valid_touches" value="A.E.F.H.S.X.CB.R." />
+<c:set var="valid_touches" value="A.E.F.H.S.X.CB.R.CONF." />
 <c:set var="validate_touch" value="${param.touchtype}." />
 <c:if test="${empty param.touchtype or !fn:contains(valid_touches, validate_touch)}">
 	<c:set var="proceedinator">99</c:set>

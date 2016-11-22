@@ -4,6 +4,7 @@ import com.ctm.web.core.providers.model.IncomingQuotesResponse;
 import com.ctm.web.core.resultsData.model.AvailableType;
 import com.ctm.web.travel.model.results.ExemptedBenefit;
 import com.ctm.web.travel.model.results.Info;
+import com.ctm.web.travel.model.results.Offer;
 import com.ctm.web.travel.model.results.TravelResult;
 import com.ctm.web.travel.quote.model.request.PolicyType;
 import com.ctm.web.travel.quote.model.request.TravelQuoteRequest;
@@ -188,6 +189,11 @@ public class ResponseAdapterV2 {
 
                 result.setInfo(info);
 
+                // Create offer object for results grid
+                com.ctm.web.travel.quote.model.response.Offer travelQuoteOffer = travelQuote.getOffer();
+                if (travelQuoteOffer != null) {
+                    result.setOffer(new Offer(travelQuoteOffer.getDescription(), travelQuoteOffer.getTerms()));
+                }
 
                 // Handle handover url quirks
 
