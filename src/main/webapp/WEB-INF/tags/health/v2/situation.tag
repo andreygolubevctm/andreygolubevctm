@@ -81,8 +81,6 @@
 
 			</form_v3:fieldset>
 
-			<simples:dialogue id="22" vertical="health" />
-
 			<%-- Health benefits has simples messages --%>
 			<simples:dialogue id="23" vertical="health" className="green" >
 				<div style="margin-top:20px;">
