@@ -276,7 +276,7 @@
                 {name: "healthSituation", value: situation},
                 {name: "primaryCurrentPHI", value: currentPHI},
                 {name: "coverType", value: product.info.ProductType},
-                {name: "benefitCodes", value: benefitCodes},
+                {name: "benefitCodes", value: benefitCodes.join(',')},
                 {name: "specialOffer", value: specialOffer.specialOffer},
                 {name: "specialOfferTerms", value: specialOffer.specialOfferTerms},
                 {name: "excessPerAdmission", value: excessesAndCoPayment.excessPerAdmission},
