@@ -367,8 +367,6 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 					.map(PaymentType::findByCode)
 					.orElseThrow(() -> new SendEmailException("Failed to buildApplicationEmailModel: PaymentType not set"));
 
-			ResponseAdapterV2.getPaymentType(paymentType);
-
 			JSONObject pricing = getJsonObject(productJSON, "price", 0)
 					.flatMap(j -> getJsonObject(j, "paymentTypePremiums"))
 					.flatMap(j -> getJsonObject(j, ResponseAdapterV2.getPaymentType(paymentType)))
@@ -377,15 +375,7 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 
 			emailModel.setPremium(pricing.getString("text"));
 			emailModel.setPremiumLabel(pricing.getString("pricing"));
-
-			//		emailModel.setPremiumTotal(); // TODO: ask Leto
-
-			emailModel.setExcess(getJsonObject(productJSON, "price", 0)
-					.flatMap(j -> getJsonObject(j, "hospital"))
-					.flatMap(j -> getJsonObject(j, "inclusions"))
-					.flatMap(j -> getString(j, "excess"))
-					.orElse(null));
-
+			emailModel.setPremiumTotal(pricing.getString("text"));
 		} catch (JSONException e) {
 			throw new SendEmailException("Failed to buildApplicationEmailModel", e);
 		}
@@ -403,7 +393,7 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 				.map(c -> generalDao.getValuesOrdered("healthSitu").getOrDefault(c, ""))
 				.orElse(""));
 
-//		emailModel.setCoverType();
+		//emailModel.setCoverType();
 
 		emailModel.setPolicyStartDate(data.map(HealthRequest::getQuote)
 				.map(HealthQuote::getPayment)
@@ -437,7 +427,7 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 		try {
 			emailModel.setProviderEmail(providerContentService.getProviderEmail(request, providerName));
 		} catch (DaoException e) {
-			throw new SendEmailException("failed to buildBestPriceEmailModel emailAddress:" + emailDetails.getEmailAddress() +
+			LOGGER.error("Exception for " + emailDetails.getEmailAddress() +
 					" transactionId:" +  transactionId  ,  e);
 		}
 
