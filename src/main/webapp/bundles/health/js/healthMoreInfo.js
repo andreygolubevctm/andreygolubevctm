@@ -306,13 +306,6 @@
         });
     }
 
-    function toDollarValue(val) {
-        if (!isNaN(val)) {
-            return '$' + val.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        }
-        return val;
-    }
-
     /**
      * Set the current scroll position so that it can be used when modals are closed
      */
