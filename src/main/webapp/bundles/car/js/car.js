@@ -171,8 +171,8 @@
                                 return;
                             }
                         });
-                        callback(true);
                     }
+                    callback(true);
                 }
             }
         };
