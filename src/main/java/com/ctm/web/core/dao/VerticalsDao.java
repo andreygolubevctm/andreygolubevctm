@@ -44,8 +44,9 @@ public class VerticalsDao {
 
 			stmt = dbSource.getConnection().prepareStatement(
 				"SELECT verticalId, verticalName, verticalCode, seq " +
-				"FROM ctm.vertical_master v " +
-				"ORDER BY v.verticalCode;"
+				"FROM ctm.vertical_master " +
+				"WHERE seq > 0 " +
+				"ORDER BY seq;"
 			);
 
 			ResultSet verticalResult = stmt.executeQuery();

@@ -31,43 +31,33 @@
 		<c:set var="itemsToIterate" value="${brand.sortVerticalsBySeq()}" />
 	</c:if>
 	<c:if test="${not empty heading}">
-	<h3>${heading}</h3>
+		<h3>${heading}</h3>
 	</c:if>
 	<c:if test="${not empty copy}">
 		${copy}
 	</c:if>
-	<div class="options-list clearfix verticalButtons">
-	<c:forEach items="${itemsToIterate}" var="vertical" varStatus="loop">
-		<c:set var="displayVertical">
-			<c:choose>
-				<c:when test="${not empty ignore and fn:contains(ignore, fn:toLowerCase(vertical.getCode()))}">${false}</c:when>
-				<c:otherwise>${true}</c:otherwise>
-			</c:choose>
-		</c:set>
+	<div class="options-list clearfix verticalButtons col-sm-offset-1">
+		<c:forEach items="${itemsToIterate}" var="vertical" varStatus="loop">
+			<c:set var="displayVertical">
+				<c:choose>
+					<c:when test="${not empty ignore and fn:contains(ignore, fn:toLowerCase(vertical.getCode()))}">${false}</c:when>
+					<c:otherwise>${true}</c:otherwise>
+				</c:choose>
+			</c:set>
 
-		<c:if test="${displayVertical eq true}">
-			<c:set var="verticalSettings" value="${settingsService.getPageSettings(pageSettings.getBrandId(), fn:toUpperCase(vertical.getCode()))}" scope="page"  />
+			<c:if test="${displayVertical eq true}">
+				<c:set var="verticalSettings" value="${settingsService.getPageSettings(pageSettings.getBrandId(), fn:toUpperCase(vertical.getCode()))}" scope="page"  />
 
-			<c:if test="${verticalSettings.getSetting('displayOption') eq 'Y' and currentVertical ne fn:toLowerCase(vertical.getCode())}">
-
-				<c:set var="titleParts" value="${fn:split(vertical.getName(), ' ')}" />
-				<c:set var="title2" value="${titleParts[1]}" />
-				<c:set var="title3" value="${titleParts[2]}" />
-				<c:if test="${empty title2 }">
-					<c:set var="title2" value="&nbsp;" />
+				<c:if test="${verticalSettings.getSetting('displayOption') eq 'Y' and currentVertical ne fn:toLowerCase(vertical.getCode())}">
+					<div class="${spacerClass} col-sm-2 col-xs-6">
+						<a href="${verticalSettings.getSetting('exitUrl')}"
+						   title="${vertical.getName()}">
+							<div class="icon icon-${fn:toLowerCase(vertical.getCode())}"></div>${vertical.getName()}
+						</a>
+					</div>
 				</c:if>
-				<c:if test="${not empty title2 and not empty title3 }">
-					<c:set var="title2" value="${title2} ${title3}" />
-				</c:if>
-				<div class="col-lg-3 col-sm-4 col-xs-6">
-					<a href="${verticalSettings.getSetting('exitUrl')}"
-						title="${vertical.getName()}">
-						<div class="icon icon-${fn:toLowerCase(vertical.getCode())}"></div>${titleParts[0]}<span>&nbsp;${title2}</span>
-					</a>
-				</div>
 			</c:if>
-		</c:if>
-	</c:forEach>
+		</c:forEach>
 	</div>
 
 </fieldset>
