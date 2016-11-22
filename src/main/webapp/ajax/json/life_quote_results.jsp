@@ -86,7 +86,7 @@ ${logger.info('Call to Results - Start', log:kv('transactionId',data.current.tra
 							<x:when select="$successStatus//results//success">
 								<c:set var="successStatus"><x:out select="$successStatus/results/success" /></c:set>
 								<c:if test="${!isValid}">
-									${logger.warn('Call to Results - Invalid Soap Response', log:kv('transactionId',data.current.transactionId),log:kv('outboundXml',dataXml),log:kv('inboundXml',resultXml),log:kv('validationErrors',validationErrors))}
+									${logger.error('Call to Results - Invalid Soap Response', log:kv('transactionId',data.current.transactionId),log:kv('outboundXml',dataXml),log:kv('inboundXml',resultXml),log:kv('validationErrors',validationErrors))}
 									<c:forEach var="validationError"  items="${validationErrors}">
 										<error:non_fatal_error origin="life_quote_results.jsp"
 															   errorMessage="message:${validationError.message} elementXpath:${validationError.elementXpath} elements:${validationError.elements}" errorCode="VALIDATION" />
@@ -110,7 +110,7 @@ ${logger.info('Call to Results - Start', log:kv('transactionId',data.current.tra
 								${go:XMLtoJSON(go:getEscapedXml(data['soap-response/results']))}
 							</x:when>
 							<x:otherwise>
-								${logger.info('Call to Results - Failed Soap Response', log:kv('transactionId',data.current.transactionId),log:kv('outboundXml',dataXml),log:kv('inboundXml',resultXml))}
+								${logger.error('Call to Results - Failed Soap Response', log:kv('transactionId',data.current.transactionId),log:kv('outboundXml',dataXml),log:kv('inboundXml',resultXml))}
 								<%-- LifeBroker returned failed SOAP response --%>
 								<go:setData dataVar="data" xpath="current/transactionId" value="${tranId}" />
 								<error:fatal_error page="ajax/json/life_quote_results.jsp" failedData="${data}" fatal="1" transactionId="${tranId}" description="LifeBroker SOAP call returned status 'false'" message="LifeBroker SOAP call returned status 'false'" />
@@ -119,7 +119,7 @@ ${logger.info('Call to Results - Start', log:kv('transactionId',data.current.tra
 						</x:choose>
 					</c:when>
 					<c:otherwise>
-						${logger.warn('Call to Results - Response Failed Initial Test', log:kv('transactionId',data.current.transactionId),log:kv('outboundXml',dataXml),log:kv('inboundXml',resultXml),log:kv('validationErrors',validationErrors))}
+						${logger.error('Call to Results - Response Failed Initial Test', log:kv('transactionId',data.current.transactionId),log:kv('outboundXml',dataXml),log:kv('inboundXml',resultXml),log:kv('validationErrors',validationErrors))}
 						<agg_v1:outputValidationFailureJSON validationErrors="${validationErrors}"  origin="life_quote_results.jsp"/>
 					</c:otherwise>
 				</c:choose>
@@ -144,7 +144,7 @@ ${logger.info('Call to Results - Start', log:kv('transactionId',data.current.tra
 						<c:param name="competition_phone" value="${data[competition_phoneKey]}" />
 						<c:param name="transactionId" value="${tranId}" />
 					</c:import>
-					${logger.warn('Call to Results - Competition Entry', log:kv('transactionId',data.current.transactionId),log:kv('competitionResponse',response))}
+					${logger.info('Call to Results - Competition Entry', log:kv('transactionId',data.current.transactionId),log:kv('competitionResponse',response))}
 				</c:if>
 				<%-- COMPETITION APPLICATION END --%>
 			</c:when>
@@ -152,14 +152,14 @@ ${logger.info('Call to Results - Start', log:kv('transactionId',data.current.tra
 				<c:set var="resultXml">
 					<error><core_v1:access_get_reserved_msg isSimplesUser="${not empty authenticatedData.login.user.uid}" /></error>
 				</c:set>
-				${logger.warn('Call to Results - Proceedinator Failed', log:kv('transactionId',data.current.transactionId), log:kv('resultXml',resultXml))}
+				${logger.error('Call to Results - Proceedinator Failed', log:kv('transactionId',data.current.transactionId), log:kv('resultXml',resultXml))}
 				<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
 				${go:XMLtoJSON(go:getEscapedXml(data['soap-response/results']))}
 			</c:otherwise>
 		</c:choose>
 	</c:when>
 	<c:otherwise>
-		${logger.info('Call to Results - Life Service is NOT Valid', log:kv('transactionId',data.current.transactionId), log:kv('serviceResponse',serviceResponse))}
+		${logger.error('Call to Results - Life Service is NOT Valid', log:kv('transactionId',data.current.transactionId), log:kv('serviceResponse',serviceResponse))}
 		${serviceResponse}
 	</c:otherwise>
 </c:choose>
