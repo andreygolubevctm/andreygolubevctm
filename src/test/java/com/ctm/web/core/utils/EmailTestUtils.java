@@ -1,13 +1,32 @@
 package com.ctm.web.core.utils;
 
-import com.ctm.web.core.email.model.BestPriceRanking;
 import com.ctm.web.health.email.model.HealthBestPriceEmailModel;
+import com.ctm.web.health.email.model.HealthBestPriceRanking;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class EmailTestUtils {
 
+	public static final String productName1 = "Auf Hospital And Mid Range Extras";
+	public static final String productName2 = "HCF Better Hospital & Lots Of Extras 50%";
+	public static final String productName3 = "NIB Hospital And Mid Range Extras";
+	public static final String productName4 = "GMH Hospital And Mid Range Extras";
+	public static final String productName5 = "GMF Hospital And Mid Range Extras";
+	public static final String hospitalPdsUrl1 = "health_brochure.jsp?pdf=/AUF/active_hospital.pdf";
+	public static final String extrasPdsUrl1 = "health_brochure.jsp?pdf=/AUF/active_extras.pdf";
+	public static final String specialOffer1 = "This is a special offer";
+	public static final String specialOfferTerms1 = "This is the terms";
+	public static final String premiumTotal1 = "$300.00";
+	public static final String excessPerAdmission1 = "$100.00";
+	public static final String excessPerPolicy1 = "$300.00";
+	public static final String excessPerPerson1 = "$30.00";
+	public static final String coPayment1 = "No Copayment";
+	public static final String healthMembership = "Family";
+	public static final String healthSituation = "Specific health need";
+	public static final String benefitCodes = "PrHospital,Cardiac,DentalGeneral,Optical,Podiatry,Physiotherapy,Chiropractic,Massage";
+	public static final String coverType = "Combined";
+	public static final String primaryCurrentPHI = "N";
 	public static String brand = "ctm";
 	public static String applyURL ="url1";
 	public static String phoneNumber = "1800 77 77 12";
@@ -52,13 +71,13 @@ public class EmailTestUtils {
 	public static HealthBestPriceEmailModel newBestPriceEmailModel(){
 		HealthBestPriceEmailModel model = new HealthBestPriceEmailModel();
 
-		List<BestPriceRanking> productInformation = new ArrayList<BestPriceRanking>() ;
+		List<HealthBestPriceRanking> productInformation = new ArrayList<>() ;
 
-		BestPriceRanking p1 = new BestPriceRanking();
-		BestPriceRanking p2 = new BestPriceRanking();
-		BestPriceRanking p3 = new BestPriceRanking();
-		BestPriceRanking p4 = new BestPriceRanking();
-		BestPriceRanking p5 = new BestPriceRanking();
+		HealthBestPriceRanking p1 = new HealthBestPriceRanking();
+		HealthBestPriceRanking p2 = new HealthBestPriceRanking();
+		HealthBestPriceRanking p3 = new HealthBestPriceRanking();
+		HealthBestPriceRanking p4 = new HealthBestPriceRanking();
+		HealthBestPriceRanking p5 = new HealthBestPriceRanking();
 
 		p1.setSmallLogo(provider1 + ".png");
 		p2.setSmallLogo(provider2 + ".png");
@@ -105,6 +124,90 @@ public class EmailTestUtils {
 		model.setTransactionId(quoteReference);
 		model.setUnsubscribeURL(unsubscribeURL);
 		model.setApplyUrl(applyURL);
+
+		model.setCustomerKey("QA_CTM_Health_Quote_Trans_TS_key");
+		return model;
+
+	}
+
+	public static HealthBestPriceEmailModel newBestPriceEmailModelV2(){
+		HealthBestPriceEmailModel model = new HealthBestPriceEmailModel();
+
+		List<HealthBestPriceRanking> productInformation = new ArrayList<>() ;
+
+		HealthBestPriceRanking p1 = new HealthBestPriceRanking();
+		HealthBestPriceRanking p2 = new HealthBestPriceRanking();
+		HealthBestPriceRanking p3 = new HealthBestPriceRanking();
+		HealthBestPriceRanking p4 = new HealthBestPriceRanking();
+		HealthBestPriceRanking p5 = new HealthBestPriceRanking();
+
+		p1.setSmallLogo(provider1 + ".png");
+		p2.setSmallLogo(provider2 + ".png");
+		p3.setSmallLogo(provider3 + ".png");
+		p4.setSmallLogo(provider4 + ".png");
+		p5.setSmallLogo(provider5 + ".png");
+
+		p1.setPremium(premium1);
+		p2.setPremium(premium2);
+		p3.setPremium(premium3);
+		p4.setPremium(premium4);
+		p5.setPremium(premium5);
+
+
+		p1.setPremiumText(premiumLabel1);
+		p2.setPremiumText(premiumLabel2);
+		p3.setPremiumText(premiumLabel3);
+		p4.setPremiumText(premiumLabel4);
+		p5.setPremiumText( premiumLabel5);
+
+
+		p1.setProviderName(provider1);
+		p2.setProviderName(provider2);
+		p3.setProviderName(provider3);
+		p4.setProviderName(provider4);
+		p5.setProviderName(provider5);
+
+		p1.setProductName(productName1);
+		p2.setProductName(productName2);
+		p3.setProductName(productName3);
+		p4.setProductName(productName4);
+		p5.setProductName(productName5);
+
+		p1.setHospitalPdsUrl(hospitalPdsUrl1);
+		p1.setExtrasPdsUrl(extrasPdsUrl1);
+		p1.setSpecialOffer(specialOffer1);
+		p1.setSpecialOfferTerms(specialOfferTerms1);
+		p1.setPremiumTotal(premiumTotal1);
+		p1.setExcessPerAdmission(excessPerAdmission1);
+		p1.setExcessPerPolicy(excessPerPolicy1);
+		p1.setExcessPerPerson(excessPerPerson1);
+		p1.setCoPayment(coPayment1);
+
+		productInformation.add(p1);
+		productInformation.add(p2);
+		productInformation.add(p3);
+		productInformation.add(p4);
+		productInformation.add(p5);
+
+
+		model.setBrand(brand);
+		model.setCallcentreHours(callcentreHours);
+		model.setCoverType1(coverType1);
+		model.setEmailAddress(emailAddress);
+		model.setFirstName(firstName);
+		model.setOptIn(optIn);
+		model.setPhoneNumber(phoneNumber);
+		model.setPremiumFrequency(premiumFrequency);
+		model.setRankings(productInformation);
+		model.setTransactionId(quoteReference);
+		model.setUnsubscribeURL(unsubscribeURL);
+		model.setApplyUrl(applyURL);
+
+		model.setHealthMembership(healthMembership);
+		model.setHealthSituation(healthSituation);
+		model.setBenefitCodes(benefitCodes);
+		model.setCoverType(coverType);
+		model.setPrimaryCurrentPHI(primaryCurrentPHI);
 
 		model.setCustomerKey("QA_CTM_Health_Quote_Trans_TS_key");
 		return model;

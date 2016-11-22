@@ -1,5 +1,7 @@
 package com.ctm.web.core.leadService.services;
 
+import com.ctm.web.core.leadService.model.CliReturnRequest;
+import com.ctm.web.core.leadService.model.LeadOutcome;
 import com.ctm.web.core.leadService.model.LeadRequest;
 import com.ctm.web.core.leadService.model.LeadResponse;
 import com.ctm.web.core.utils.ObjectMapperUtil;
@@ -61,5 +63,16 @@ public class LeadServiceUtil {
                 LOGGER.info("Response from LeadService {}", kv("salesForceId", leadResponseResponseEntity.getBody().getSalesforceId()));
             }
         });
+    }
+
+    public static ListenableFuture<ResponseEntity<LeadOutcome>> sendCliReturnRequest(final CliReturnRequest request, final String url) {
+        LOGGER.info("Sending request to LeadService {}", request);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        HttpEntity<CliReturnRequest> entity = new HttpEntity<>(request, headers);
+
+        return restTemplate.postForEntity(URI.create(url), entity, LeadOutcome.class);
     }
 }

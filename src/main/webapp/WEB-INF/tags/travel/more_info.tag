@@ -6,13 +6,14 @@
 	{{ var template = $("#provider-logo-template").html(); }}
 	{{ var companyLogo = _.template(template); }}
 	{{ companyLogo = companyLogo(obj); }}
+	{{ var hasSpecialOffer = !_.isEmpty(obj.offer) && _.isObject(obj.offer) && !_.isEmpty(obj.offer.copy) && !_.isEmpty(obj.offer.terms) }}
 
-	<div class="displayNone more-info-content">
+	<div class="displayNone more-info-content {{= hasSpecialOffer ? 'specialOffer' : ''}}">
 		<%-- Header --%>
 		<div class="row headerBar">
 			<div class="col-xs-12 col-sm-9">
 				<div class="col-xs-3 col-sm-2 logoContainer">{{= companyLogo}}</div>
-				<div class="col-xs-9 col-sm-10 verticalCenterContainer"><h2>{{= obj.des }}</h2></div>
+				<div class="col-xs-9 col-sm-10 verticalCenterContainer"><h2 class="productTitle">{{= obj.des }}</h2></div>
 			</div>
 			<div class="col-xs-12 col-sm-3 verticalCenterContainer">
 				<a href="javascript:;" class="btn btn-cta btn-block btn-apply" data-productid="{{= obj.productId }}">
@@ -23,6 +24,15 @@
 		<div class="row">
 			<div class="col-xs-12">
 				<table class="benefitsContainer">
+					{{ if(hasSpecialOffer) { }}
+						<tr><td colspan="2">
+							<div class="promotion">
+								<span class="icon icon-tag"></span> {{= obj.offer.copy }}
+								<a class="small offerTerms" href="javascript:;">Offer terms</a>
+								<div class="offerTerms-content hidden">{{= obj.offer.terms }}</div>
+							</div>
+						</td></tr>
+					{{ } }}
 				<%-- loop through newly sorted alphabetical order. tag[1] returns medical, luggage etc... --%>
 					{{ $.each(obj.sorting, function(index, tag){ }}
 					{{ if((typeof obj.sorting[index] === 'object')) { }}

@@ -5,7 +5,6 @@ import com.ctm.web.core.content.model.Content;
 import com.ctm.web.core.dao.RankingDetailsDao;
 import com.ctm.web.core.email.exceptions.EmailDetailsException;
 import com.ctm.web.core.email.exceptions.SendEmailException;
-import com.ctm.web.core.email.model.BestPriceRanking;
 import com.ctm.web.core.email.model.EmailMode;
 import com.ctm.web.core.email.services.*;
 import com.ctm.web.core.email.services.token.EmailTokenService;
@@ -33,6 +32,7 @@ import com.ctm.web.health.email.formatter.HealthBestPriceExactTargetFormatter;
 import com.ctm.web.health.email.formatter.HealthProductBrochuresExactTargetFormatter;
 import com.ctm.web.health.email.model.HealthApplicationEmailModel;
 import com.ctm.web.health.email.model.HealthBestPriceEmailModel;
+import com.ctm.web.health.email.model.HealthBestPriceRanking;
 import com.ctm.web.health.email.model.HealthProductBrochuresEmailModel;
 import com.ctm.web.health.model.form.*;
 import com.ctm.web.health.model.request.HealthEmailBrochureRequest;
@@ -406,23 +406,42 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 		return emailModel;
 	}
 
-	private void setupRankingDetails(HealthBestPriceEmailModel emailModel, Long transactionId) throws DaoException, SendEmailException {
+	private void setupRankingDetails(HealthBestPriceEmailModel emailModel, Long transactionId) throws DaoException, SendEmailException, ConfigSettingException {
 		RankingDetailsDao rankingDetailsDao = new RankingDetailsDao();
 		List<RankingDetail> ranking = rankingDetailsDao.getLastestTopFiveRankings(transactionId);
 		if(ranking.size() > 0){
 			emailModel.setPremiumFrequency(ranking.get(0).getProperty("frequency"));
 			emailModel.setCoverType1(ranking.get(0).getProperty("productName"));
+			emailModel.setHealthMembership(ranking.get(0).getProperty("healthMembership"));
+			emailModel.setHealthSituation(ranking.get(0).getProperty("healthSituation"));
+			emailModel.setBenefitCodes(ranking.get(0).getProperty("benefitCodes"));
+			emailModel.setCoverType(ranking.get(0).getProperty("coverType"));
+			emailModel.setPrimaryCurrentPHI(ranking.get(0).getProperty("primaryCurrentPHI"));
 		} else {
 			throw new SendEmailException("no rankings found transactionId:" + transactionId);
 		}
 
-		ArrayList<BestPriceRanking> bestPriceRankings = new ArrayList<BestPriceRanking>();
+		final String baseUrl = pageSettings.getBaseUrl();
+
+		List<HealthBestPriceRanking> bestPriceRankings = new ArrayList<>();
 		for(RankingDetail rankingDetail : ranking) {
-			BestPriceRanking bestPriceRanking = new BestPriceRanking();
+			HealthBestPriceRanking bestPriceRanking = new HealthBestPriceRanking();
 			bestPriceRanking.setPremium(rankingDetail.getProperty("premium"));
 			bestPriceRanking.setPremiumText(rankingDetail.getProperty("premiumText"));
 			bestPriceRanking.setProviderName(rankingDetail.getProperty("providerName"));
 			bestPriceRanking.setSmallLogo(rankingDetail.getProperty("provider").toLowerCase() + ".png");
+
+			bestPriceRanking.setProductName(rankingDetail.getProperty("productName"));
+			bestPriceRanking.setHospitalPdsUrl(Optional.ofNullable(rankingDetail.getProperty("hospitalPdsUrl")).map(v -> baseUrl + v).orElse(null));
+			bestPriceRanking.setExtrasPdsUrl(Optional.ofNullable(rankingDetail.getProperty("extrasPdsUrl")).map(v -> baseUrl + v).orElse(null));
+			bestPriceRanking.setSpecialOffer(rankingDetail.getProperty("specialOffer"));
+			bestPriceRanking.setSpecialOfferTerms(rankingDetail.getProperty("specialOfferTerms"));
+			bestPriceRanking.setPremiumTotal(rankingDetail.getProperty("price_actual"));
+			bestPriceRanking.setExcessPerAdmission(rankingDetail.getProperty("excessPerAdmission"));
+			bestPriceRanking.setExcessPerPerson(rankingDetail.getProperty("excessPerPerson"));
+			bestPriceRanking.setExcessPerPolicy(rankingDetail.getProperty("excessPerPolicy"));
+			bestPriceRanking.setCoPayment(rankingDetail.getProperty("coPayment"));
+
 			bestPriceRankings.add(bestPriceRanking);
 		}
 		emailModel.setRankings(bestPriceRankings);

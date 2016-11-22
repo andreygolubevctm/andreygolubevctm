@@ -11,7 +11,7 @@
 		},
 		moduleEvents = events.healthPriceComponent;
 
-	var priceTemplate, logoTemplate;
+	var quoteRefTemplate, priceTemplate, logoTemplate;
 
 	var $policySummaryContainer;
 	var $policySummaryTemplateHolder;
@@ -31,6 +31,7 @@
 
 			if(meerkat.site.vertical !== "health") return false;
 
+			quoteRefTemplate = $("#quoteref-template").html();
 			priceTemplate = $("#price-template").html();
 			logoTemplate = $('#logo-template').html();
 
@@ -107,9 +108,10 @@
 			meerkat.modules.healthDualPricing.renderTemplate('.policySummary.dualPricing', product, false, true);
 		} else {
 			product.displayLogo = true;
+			var quoteRefHtmlTemplate = typeof quoteRefTemplate !== 'undefined' ? _.template(quoteRefTemplate) : null;
 			var priceHtmlTemplate = _.template(priceTemplate);
 			var logoHtmlTemplate = _.template(logoTemplate);
-			var htmlString = logoHtmlTemplate(product) + priceHtmlTemplate(product);
+			var htmlString = (typeof quoteRefHtmlTemplate === 'function' ? quoteRefHtmlTemplate({}) : "") + logoHtmlTemplate(product) + priceHtmlTemplate(product);
 
 			$policySummaryTemplateHolder.html(htmlString);
 

@@ -35,7 +35,7 @@
 
 		<c:set var="fieldXpath" value="${xpath}/firstname" />
 		<form_v3:row fieldXpath="${fieldXpath}" label="First Name">
-			<field_v1:person_name xpath="${fieldXpath}" required="true" title="${title} first name" className="contactField" />
+			<field_v1:person_name xpath="${fieldXpath}" required="true" title="${title} first name" className="contactField" maxlength="24" />
 		</form_v3:row>
 
 		<c:set var="fieldXpath" value="${xpath}/middleName" />

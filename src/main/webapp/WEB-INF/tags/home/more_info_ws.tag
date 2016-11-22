@@ -1,39 +1,6 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<%-- Smaller Templates to reduce duplicate code --%>
-<core_v1:js_template id="home-offline-discount-template">
-<%-- If there's a discount.offline e.g. of "10", display the static text of x% Discount included in price shown, otherwise use headline feature. --%>
-{{ obj.offlinePromotionText = ''; }}
-{{ if(typeof discount !== 'undefined' && typeof discount.offline !== 'undefined' && discount.offline > 0 && discount.offline !== discount.online) { }}
-	{{ 	obj.offlinePromotionText = discount.offline + "% discount offered when you call direct. "; }}
-{{ } else if(typeof obj.discountOffer !== 'undefined' && obj.discountOffer > 0)  { }}
-	{{ 	obj.offlinePromotionText = obj.discountOffer; }}
-{{ } }}
-
-{{ obj.offerTermsContent = (typeof obj.discountOfferTerms !== 'undefined' && obj.discountOfferTerms.length > 0) ? obj.discountOfferTerms : ''; }}
-
-<%-- If the headlineOffer is "OFFLINE" (meaning you can't continue online), it should show "Call Centre" offer --%>
-{{ if (offlinePromotionText.length > 0) { }}
-	<h2>
-	{{ if(discount.offline > 0) { }}
-		Call Centre Offer
-	{{ } else { }}
-		Special Offer
-	{{ } }}
-	</h2>
-
-	<div class="promotion">
-		<span class="icon icon-phone-hollow"></span> {{= offlinePromotionText }}
-		{{ if (offerTermsContent.length > 0) { }}
-			<a class="small offerTerms" href="javascript:;">Offer terms</a>
-			<div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
-		{{ } }}
-	</div>
-{{ } }}
-</core_v1:js_template>
-
-
 <core_v1:js_template id="promotion-offer-template">
 {{ obj.promotionText = (typeof obj.discountOffer !== 'undefined' && obj.discountOffer.length > 0) ? obj.discountOffer : ''; }}
 {{ obj.offerTermsContent = (typeof obj.discountOfferTerms !== 'undefined' && obj.discountOfferTerms.length > 0) ? obj.discountOfferTerms : ''; }}
@@ -105,20 +72,23 @@
 <core_v1:js_template id="call-apply-template">
 	<div class="col-xs-12 col-sm-6 col-md-12 push-top-15">
 		{{ if(obj.availableOnline === true) { }}
-			<a target="_blank" href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply" data-productId="{{= obj.productId }}">Go to Insurer</a>
+			<a target="_blank" href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply" data-productId="{{= obj.productId }}">
+				Go to Insurer
+				<span class="icon icon-arrow-right"></span>
+			</a>
 		{{ } }}
 	</div>
 	{{ if(obj.contact.allowCallDirect === true) { }}
     	{{ if(obj.contact.allowCallMeBack === true) { }}
 			<div class="col-xs-12 col-sm-3 col-md-6 push-top-15">
-				<a class="btn btn-call btn-block btn-call-actions btn-calldirect" data-callback-toggle="calldirect" href="javascript:;">Call Insurer Direct</a>
+				<a class="btn btn-call btn-block btn-call-actions btn-calldirect" data-callback-toggle="calldirect" data-productId="{{= obj.productId }}" href="javascript:;">Call Insurer Direct</a>
 			</div>
 			<div class="col-xs-12 col-sm-3 col-md-6 push-top-15">
-				<a class="btn btn-call btn-block btn-call-actions btn-callback" data-callback-toggle="callback" href="javascript:;">Get a Call Back</a>
+				<a class="btn btn-call btn-block btn-call-actions btn-callback" data-callback-toggle="callback" data-productId="{{= obj.productId }}" href="javascript:;">Get a Call Back</a>
 			</div>
 		{{ } else { }}
 			<div class="col-xs-12 col-sm-6 col-md-12 push-top-15">
-				<a class="btn btn-call btn-block btn-call-actions btn-calldirect" data-callback-toggle="calldirect" href="javascript:;">Call Insurer Direct</a>
+				<a class="btn btn-call btn-block btn-call-actions btn-calldirect" data-callback-toggle="calldirect" data-productId="{{= obj.productId }}" href="javascript:;">Call Insurer Direct</a>
 			</div>
 		{{ } }}
 	{{ } }}
@@ -158,10 +128,6 @@
 	{{ var template = $("#quote-summary-template").html(); }}
 	{{ var htmlTemplate = _.template(template); }}
 	{{ var quoteSummaryHTML = htmlTemplate(obj); }}
-
-	{{ var template = $("#home-offline-discount-template").html(); }}
-	{{ var htmlTemplate = _.template(template); }}
-	{{ obj.offlineDiscountTemplate = htmlTemplate(obj); }}
 
 	{{ var homeExcessState = homeExcess != null && homeExcess.amount ? '' : 'hidden'; }}
 	{{ var contentsExcessState = contentsExcess != null && contentsExcess.amount ? '' : 'hidden'; }}

@@ -166,7 +166,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 							<jsp:invoke fragment="header_button_left" />
 
 							<c:choose>
-								<c:when test="${pageSettings.getVerticalCode() eq 'car'}">
+								<c:when test="${pageSettings.getVerticalCode() eq 'car' or pageSettings.getVerticalCode() eq 'home'}">
 									<ul class="mobile-nav-buttons nav navbar-nav pull-right">
 										<li class="refine-results"><a href="javascript:;">REFINE</a></li>
 										<c:if test="${saveQuoteEnabled == 'Y'}">
@@ -193,12 +193,14 @@ ${newPage.init(pageContext.request, pageSettings)}
 
 
 							<c:if test="${pageSettings.getVerticalCode() eq 'health' and pageSettings.getSetting('callbackPopupEnabled') eq 'Y'}">
+								<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Call Request" quoteChar="\"" /></c:set>
 								<a class="navbar-toggle wide phone collapsed" data-toggle="dialog"
 									data-content="#view_all_hours_cb"
 									data-dialog-hash-id="view_all_hours_cb"
-									data-title="Request a Call" data-cache="true">
-									<span class="icon icon-phone"></span>
-									<span>Talk to our experts</span>
+									data-title="Request a Call" data-cache="true"
+									${analyticsAttr}>
+									<span class="icon icon-phone" ${analyticsAttr}></span>
+									<span ${analyticsAttr}>Talk to our experts</span>
 								</a>
 							</c:if>
 
