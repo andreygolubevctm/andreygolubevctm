@@ -42,13 +42,16 @@
 
     function getSelectedHealthSituation() {
         var selectedHealthSitu = $('[name="health_situation_healthSitu"]:checked');
+        var healthSituationName = null;
+        var healthSituationCode = null;
         if (selectedHealthSitu.length !== 0) {
-            return {
-                "name" : $.trim(selectedHealthSitu.parent().text()),
-                "code" : selectedHealthSitu.val()
-            };
+            healthSituationName = $.trim(selectedHealthSitu.parent().text());
+            healthSituationCode = selectedHealthSitu.val();
         }
-        return null;
+        return {
+            "name" : healthSituationName,
+            "code" : healthSituationCode
+        };
     }
 
     function getPrimaryCurrentPHI() {
