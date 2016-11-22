@@ -4,8 +4,6 @@
 
 <c:set var="logger" value="${log:getLogger('jsp.ajax.json.life_quote_result')}" />
 
-${logger.info('Call to Results', log:kv('transactionId',data.current.transactionId))}
-
 <session:get settings="true" authenticated="true" verticalCode="${fn:trim(fn:toUpperCase(param.vertical))}" />
 
 <%-- Load the params into data --%>
@@ -17,11 +15,14 @@ ${logger.info('Call to Results', log:kv('transactionId',data.current.transaction
 	<error:recover origin="ajax/json/life_quote_results.jsp" quoteType="${vertical}" />
 </c:if>
 
+${logger.info('Call to Results - Start', log:kv('transactionId',data.current.transactionId))}
+
 <jsp:useBean id="lifeService" class="com.ctm.web.life.services.LifeService" scope="page" />
-<c:set var="serviceRespone" value="${lifeService.contactLeadViaJSP(pageContext.request, data)}" />
+<c:set var="serviceResponse" value="${lifeService.contactLeadViaJSP(pageContext.request, data)}" />
 
 <c:choose>
 	<c:when test="${lifeService.isValid()}">
+		${logger.info('Call to Results - Life Service is Valid', log:kv('transactionId',data.current.transactionId), log:kv('serviceResponse',serviceResponse))}
 		<c:set var="clientUserAgent"><%=request.getHeader("user-agent")%></c:set>
 		<c:set var="continueOnValidationError" value="${false}" />
 
@@ -147,6 +148,7 @@ ${logger.info('Call to Results', log:kv('transactionId',data.current.transaction
 			</c:choose>
 		</c:when>
 	<c:otherwise>
-		${serviceRespone}
+		${logger.info('Call to Results - Life Service is NOT Valid', log:kv('transactionId',data.current.transactionId), log:kv('serviceResponse',serviceResponse))}
+		${serviceResponse}
 	</c:otherwise>
 </c:choose>
