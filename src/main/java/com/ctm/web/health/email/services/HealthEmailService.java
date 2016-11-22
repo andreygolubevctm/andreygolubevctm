@@ -373,6 +373,11 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 					.flatMap(j -> getJsonObject(j, premiumFrequency))
 					.orElseThrow(() -> new SendEmailException("Unable to find premium"));
 
+			JSONObject info = getJsonObject(productJSON, "price", 0)
+					.flatMap(j -> getJsonObject(j,"info"))
+					.orElseThrow(() -> new SendEmailException("Unable to find product type"));
+
+			emailModel.setCoverType(info.getString("ProductType"));
 			emailModel.setPremium(pricing.getString("text"));
 			emailModel.setPremiumLabel(pricing.getString("pricing"));
 			emailModel.setPremiumTotal(pricing.getString("text"));
@@ -392,8 +397,6 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 				.map(Situation::getHealthSitu)
 				.map(c -> generalDao.getValuesOrdered("healthSitu").getOrDefault(c, ""))
 				.orElse(""));
-
-		//emailModel.setCoverType();
 
 		emailModel.setPolicyStartDate(data.map(HealthRequest::getQuote)
 				.map(HealthQuote::getPayment)
