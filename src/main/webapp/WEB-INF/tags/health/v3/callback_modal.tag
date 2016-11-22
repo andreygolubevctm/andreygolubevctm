@@ -61,7 +61,8 @@
 					<a href="javascript:;" class="switch call-type">Choose another time for a call?</a>
 				</div>
 				<div class="col-sm-5">
-				    <button id="callBackNow" class="btn btn-secondary btn-lg btn-block">Call me now</button><small>within 30 mins</small>
+					<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Call Request" quoteChar="\"" /></c:set>
+				    <button id="callBackNow" class="btn btn-secondary btn-lg btn-block" ${analyticsAttr}>Call me now</button><small>within 30 mins</small>
 			    </div>
 			</div>
 			<div class="row hidden">
@@ -69,7 +70,8 @@
 					<a href="javascript:;" class="switch call-type">Cancel, I prefer a call right now</a>
 				</div>
 				<div class="col-sm-5">
-				    <button id="callBackLater" class="btn btn-secondary btn-lg btn-block">Call me later...</button>
+					<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Call Request" quoteChar="\"" /></c:set>
+					<button id="callBackLater" class="btn btn-secondary btn-lg btn-block" ${analyticsAttr}>Call me later...</button>
 			    </div>
 				<div class="col-sm-12 outline">
 					<form_v3:row label=" " hideHelpIconCol="true">
@@ -161,6 +163,7 @@
 
 <core_v1:js_template id="callback-popup">
 	<c:set var="hoursArray" value="${fn:split(todayOpeningHours, '-')}" />
+	<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Call Request - Pop-Up" quoteChar="\"" /></c:set>
 	<div id="health-callback-popup">
 		<div class="row">
 			<div class="col-sm-6">
@@ -170,7 +173,8 @@
 				<h3 class="request-callback"><a href="javascript:;" data-toggle="dialog"
 				data-content="#view_all_hours_cb"
 				data-dialog-hash-id="view_all_hours_cb"
-				data-title="Request a Call" data-cache="true"><i class="icon-callback"></i> Request a Call</a></h3>
+				data-title="Request a Call" data-cache="true"
+				${analyticsAttr}><i class="icon-callback" ${analyticsAttr}></i> Request a Call</a></h3>
 			</div>
 			<div class="col-sm-8">
 				<p>Or call us before ${hoursArray[1]} AEST today (${todays_day}) to speak to one of our experts.</p>
