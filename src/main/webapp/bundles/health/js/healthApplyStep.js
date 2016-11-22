@@ -8,10 +8,6 @@
         $paymentMedicareColour,
         $paymentMedicareCover,
         $medicareYellowMessage,
-
-        genderElems = {},
-
-        $titleSelect,
         $genderToggle;
 
     function init(){
@@ -20,21 +16,8 @@
             $paymentMedicareColour = $("#health_payment_medicare_colour");
             $paymentMedicareCover = $("#health_payment_medicare_cover");
             $medicareYellowMessage = $("#health_medicareDetails_yellowCardMessage");
-
-            getGenderElementsObj('primary');
-
-            $titleSelect = $('.selectContainerTitle select');
             $genderToggle = $('.person-gender-toggle input[type=radio]');
         });
-    }
-
-    function getGenderElementsObj(personDetailType) {
-        genderElems[personDetailType] = {
-            $title: $('#health_application_' + personDetailType + '_title'),
-            $gender: $('#health_application_' + personDetailType + '_gender'),
-            $genderRow: $('#health_application_' + personDetailType + '_genderRow'),
-            $genderToggle: $('[name=health_application_' + personDetailType + '_genderToggle]')
-        };
     }
 
     // Get the selected benefits from the forms hidden fields (the source of truth! - not the checkboxes)
@@ -59,6 +42,12 @@
 
         meerkat.messaging.publish(meerkatEvents.healthPreviousFund.POPULATE_PRIMARY,
             meerkat.modules.healthAboutYou.getPrimaryCurrentCover());
+
+        toggleSelectGender('primary');
+
+        if (meerkat.modules.health.hasPartner()) {
+            toggleSelectGender('partner');
+        }
     }
 
     function onInitialise() {
@@ -83,8 +72,7 @@
                 meerkat.messaging.publish(meerkatEvents.health.CHANGE_MAY_AFFECT_PREMIUM);
             });
 
-
-        $titleSelect.on('change', function onTitleChange() {
+        $(document.body).on('change', '.selectContainerTitle select', function onTitleChange() {
             var personDetailType = $(this).closest('.qe-window').find('.health-person-details')
                                        .hasClass('primary') ? 'primary' : 'partner';
 
@@ -96,54 +84,50 @@
                                        .hasClass('primary') ? 'primary' : 'partner',
                 gender = $(this).val();
 
-            genderElems[personDetailType].$gender.val(gender);
+            $('#health_application_' + personDetailType + '_gender').val(gender);
         });
-
-        toggleSelectGender('primary');
-
-        if (meerkat.modules.health.hasPartner()) {
-            getGenderElementsObj('partner');
-            toggleSelectGender('partner');
-        }
     }
 
     function toggleSelectGender(personDetailType) {
-        var title = genderElems[personDetailType].$title.val(),
-            gender;
+        var title =  $('#health_application_' + personDetailType + '_title').val(),
+            gender,
+            $gender = $('#health_application_' + personDetailType + '_gender'),
+            $genderRow = $('#health_application_' + personDetailType + '_genderRow'),
+            $genderToggle = $('[name=health_application_' + personDetailType + '_genderToggle]');
 
-        switch (title) {
-            case 'DR':
-                var genderToggleVal = genderElems[personDetailType].$genderToggle.filter(':checked').val();
+        if (title) {
+            switch (title) {
+                case 'MR':
+                case 'MRS':
+                case 'MISS':
+                case 'MS':
+                    gender = title === 'MR' ? 'M' : 'F';
+                    $gender.val(gender);
+                    $genderRow.slideUp();
+                    break;
 
-                if (genderToggleVal) {
-                    // if gender toggle has been 'toggled' before then
-                    // set hidden gender field to the checked gender
-                    genderElems[personDetailType].$gender.val(genderToggleVal);
-                } else {
-                    // otherwise, if hidden gender field has been set, then
-                    // toggle the gender
-                    if (genderElems[personDetailType].$gender.val()) {
-                        genderElems[personDetailType].$genderToggle
-                            .filter('[value=' + genderElems[personDetailType].$gender.val() + ']')
-                            .prop('checked', true)
-                            .attr('checked', 'checked')
-                            .change();
+                default:
+                    var genderToggleVal = $genderToggle.filter(':checked').val();
+
+                    if (genderToggleVal) {
+                        // if gender toggle has been 'toggled' before then
+                        // set hidden gender field to the checked gender
+                        $gender.val(genderToggleVal);
+                    } else {
+                        // otherwise, if hidden gender field has been set, then
+                        // toggle the gender
+                        if ($gender.val()) {
+                            $genderToggle
+                                .filter('[value=' + $gender.val() + ']')
+                                .prop('checked', true)
+                                .attr('checked', 'checked')
+                                .change();
+                        }
                     }
-                }
-                genderElems[personDetailType].$genderRow.slideDown();
-                break;
-
-            case 'MR':
-            case 'MRS':
-            case 'MISS':
-            case 'MS':
-                gender = title === 'MR' ? 'M' : 'F';
-                genderElems[personDetailType].$gender.val(gender);
-                genderElems[personDetailType].$genderRow.slideUp();
-                break;
-
-            default:
-                genderElems[personDetailType].$genderRow.slideUp();
+                    $genderRow.slideDown();
+            }
+        } else {
+            $genderRow.slideUp();
         }
     }
 
