@@ -9,6 +9,7 @@
     "core",
     "shared/forms/v2",
     "shared/currency",
+    "shared/currencyUtils",
     "shared/dateUtils",
     "shared/age",
     "shared/datepicker",
