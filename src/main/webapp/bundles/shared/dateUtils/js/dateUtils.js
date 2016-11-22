@@ -111,15 +111,17 @@
         format.replace(token, function ($0) {
             if (parseFlags[$0]) {
                 var info = parseFlags[$0];
-                var index = dateStr.search(info[0]);
-                if (!~index) {
-                    isValid = false;
-                } else {
-                    dateStr.replace(info[0], function (result) {
-                        info[1](dateInfo, result);
-                        dateStr = dateStr.substr(index + result.length);
-                        return result;
-                    });
+                if (typeof dateStr !== 'undefined') {
+                    var index = dateStr.search(info[0]);
+                    if (!~index) {
+                        isValid = false;
+                    } else {
+                        dateStr.replace(info[0], function (result) {
+                            info[1](dateInfo, result);
+                            dateStr = dateStr.substr(index + result.length);
+                            return result;
+                        });
+                    }
                 }
             }
 

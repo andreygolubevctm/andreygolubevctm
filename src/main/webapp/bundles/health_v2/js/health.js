@@ -33,7 +33,7 @@
 				startStepId = steps.startStep.navigationId;
 			}
 			// Use the stage user was on when saving their quote
-			else if (meerkat.site.journeyStage.length > 0 && _.indexOf(['amend','latest'],meerkat.site.pageAction) >= 0) {
+			else if (meerkat.site.journeyStage.length > 0 && meerkat.site.pageAction === 'amend') {
 				// Do not allow the user to go past the results page on amend.
 				if(meerkat.site.journeyStage === 'apply' || meerkat.site.journeyStage === 'payment'){
 					startStepId = 'results';
@@ -42,16 +42,10 @@
 				}
 			}
 
-			var journeyEngineConfigure = _.bind(meerkat.modules.journeyEngine.configure, this, {
+			meerkat.modules.journeyEngine.configure({
 				startStepId: startStepId,
 				steps: _.toArray(steps)
 			});
-
-			if(meerkat.site.isNewQuote === false) {
-				_.delay(journeyEngineConfigure, 500);
-			} else {
-				journeyEngineConfigure();
-			}
 
 			// Call initial supertag call
 			var transaction_id = meerkat.modules.transactionId.get();
@@ -191,7 +185,7 @@
 				}
 
 				// Don't fire the change event by default if amend mode and the user has selected items.
-				if (_.indexOf(['amend','latest'],meerkat.site.pageAction) === -1  && meerkat.site.pageAction !== 'start-again' && meerkat.modules.healthBenefitsStep.getSelectedBenefits().length === 0) {
+				if (meerkat.site.pageAction !== 'amend' && meerkat.site.pageAction !== 'start-again' && meerkat.modules.healthBenefitsStep.getSelectedBenefits().length === 0) {
 					if($healthSitHealthSitu.filter(":checked").val() !== ''){
 						$healthSitHealthSitu.change();
 					}
@@ -324,18 +318,18 @@
 			onInitialise: function onContactInit(event){
 				meerkat.modules.resultsFeatures.fetchStructure('health2016');
 			},
-            onBeforeEnter:function enterBenefitsStep(event) {
-                if (event.isForward) {
-                    // Delay 1 sec to make sure we have the data bucket saved in to DB, then filter coupon
-                    _.delay(function() {
-                        // coupon logic, filter for user, then render banner
-                        meerkat.modules.coupon.loadCoupon('filter', null, function successCallBack() {
-                            meerkat.modules.coupon.renderCouponBanner();
-                        });
-                    }, 1000);
-                }
-                incrementTranIdBeforeEnteringSlide();
-            },
+			onBeforeEnter:function enterBenefitsStep(event) {
+				if (event.isForward) {
+					// Delay 1 sec to make sure we have the data bucket saved in to DB, then filter coupon
+					_.delay(function() {
+						// coupon logic, filter for user, then render banner
+						meerkat.modules.coupon.loadCoupon('filter', null, function successCallBack() {
+							meerkat.modules.coupon.renderCouponBanner();
+						});
+					}, 1000);
+				}
+				incrementTranIdBeforeEnteringSlide();
+			},
 			onAfterEnter: function enteredContactStep(event) {
 			},
 			onAfterLeave:function leaveContactStep(event){
@@ -450,7 +444,7 @@
 					healthApplicationDetails.testStatesParity();
 				});
 
-                meerkat.modules.healthApplyStep.onInitialise();
+				meerkat.modules.healthApplyStep.onInitialise();
 
 			},
 			onBeforeEnter: function enterApplyStep(event){
@@ -1032,8 +1026,6 @@
 					contactType = 'inbound';
 				} else if ($('#health_simples_contactType_outbound').is(':checked')) {
 					contactType = 'outbound';
-				} else if ($('#health_simples_contactType_clioutbound').is(':checked')) {
-					contactType = 'clioutbound';
 				}
 
 				$.extend(response, {
@@ -1098,10 +1090,10 @@
 
 			Results.updateApplicationEnvironment();
 
-        var postData = meerkat.modules.journeyEngine.getFormData();
+			var postData = meerkat.modules.journeyEngine.getFormData();
 
-		// Disable fields must happen after the post data has been collected.
-		meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'submitApplication', disableFields:true });
+			// Disable fields must happen after the post data has been collected.
+			meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'submitApplication', disableFields:true });
 
 
 			var healthApplicationUrl = "ajax/json/health_application.jsp";
@@ -1381,7 +1373,7 @@
 			eventSubscriptions();
 			configureContactDetails();
 
-			if (_.indexOf(['amend','latest','load','start-again'],meerkat.site.pageAction) >= 0) {
+			if (meerkat.site.pageAction === 'amend' || meerkat.site.pageAction === 'load' || meerkat.site.pageAction === 'start-again') {
 
 				// If retrieving a quote and a product had been selected, inject the fund's application set.
 				if (typeof healthFunds !== 'undefined' && healthFunds.checkIfNeedToInjectOnAmend) {
@@ -1421,9 +1413,9 @@
 
 	}
 
-    function getCoverType() {
-        return $('#health_situation_coverType input').filter(":checked").val();
-    }
+	function getCoverType() {
+		return $('#health_situation_coverType input').filter(":checked").val();
+	}
 	function getSituation() {
 		return $('#health_situation_healthCvr').val();
 	}
@@ -1437,7 +1429,7 @@
 		events: moduleEvents,
 		initProgressBar: initProgressBar,
 		getTrackingFieldsObject: getTrackingFieldsObject,
-        getCoverType: getCoverType,
+		getCoverType: getCoverType,
 		getSituation: getSituation,
 		getHospitalCoverLevel: getHospitalCoverLevel,
 		getRates: getRates,
@@ -1446,7 +1438,7 @@
 		fetchRates: fetchRates,
 		loadRates: loadRates,
 		loadRatesBeforeResultsPage: loadRatesBeforeResultsPage,
-        hasPartner: hasPartner,
+		hasPartner: hasPartner,
 		configureContactDetails: configureContactDetails
 	});
 

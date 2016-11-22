@@ -911,7 +911,7 @@
 		var dateRegex = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/;
 
 		if(!postData.primary_dob.match(dateRegex)) return false;
-		if(coverTypeHasPartner && !postData.partner_dob.match(dateRegex))  return false;
+		if(coverTypeHasPartner && (typeof postData.partner_dob === 'undefined' || !postData.partner_dob.match(dateRegex)))  return false;
 
 		return meerkat.modules.comms.post({
 			url:"ajax/json/health_rebate.jsp",

@@ -52,7 +52,7 @@
         </c:if>
 
         <form_v3:fieldset id="health-contact-fieldset" legend="Your details" postLegend="${subText}" >
-asdadasdzczxczxc
+
             <c:set var="firstNamePlaceHolder">
                 <content:get key="firstNamePlaceHolder"/>
             </c:set>
@@ -139,14 +139,6 @@ asdadasdzczxczxc
                 <form_v2:row label="Applicant's LHC" fieldXpath="${fieldXpath}" helpId="287">
                     <field_v1:input_numeric xpath="${fieldXpath}" minValue="0" maxValue="70" title="Applicant's LHC" required="false" id="${name}_primary_lhc" maxLength="2" className="primary-lhc"/>
                 </form_v2:row>
-
-                <c:if test="${data['health/simples/contactType'] eq 'outbound'}">
-                    <c:set var="xpath" value="${pageSettings.getVerticalCode()}/payment" />
-                    <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
-                    <div class="health-payment ${className}" id="${id}">
-                        <health_v1:medicare_details xpath="${xpath}/medicare" />
-                    </div>
-                </c:if>
             </c:if>
 
         </form_v3:fieldset>
