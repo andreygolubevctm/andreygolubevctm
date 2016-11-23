@@ -24,9 +24,9 @@
 		omitPleaseChoose="Y"
 		className="hidden" />
 
-<field_v1:hidden xpath="quote/coverType" constantValue="comprehensive" />
+<field_v1:hidden xpath="quote/typeOfCover" constantValue="COMPREHENSIVE" />
 <field_v1:array_select
-		items="comprehensive=Comprehensive,tppd=3rd Party Property Damage"
+		items="COMPREHENSIVE=Comprehensive,TPPD=3rd Party Property Damage,TPFT=3rd Party Fire and Theft"
 		xpath="filter/coverTypeOptions"
 		title=""
 		required=""
