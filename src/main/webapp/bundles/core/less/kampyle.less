@@ -8,9 +8,10 @@
     position: fixed;
     z-index: 1001; // It used to be 20001 to be over everything...
     a {
+      background-color: transparent;
       width: 89px;
       height: 89px;
-      background: transparent url(../../../graphics/kampyle/feedback2.png) no-repeat;
+      .highResImg('../../../graphics/kampyle/feedback2.png'; '../../../graphics/kampyle/feedback2@2x.png'; 90px; 90px);
       display: block;
       padding: 0;
       margin: 0;
@@ -47,8 +48,8 @@
 
     a {
       display: inline-block;
-      background: #E64400;
-      border-color: #E64400;
+      background: #289396;
+      border-color: #289396;
       &:active, &:hover {
         background: #A52E00;
       }

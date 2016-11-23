@@ -3,6 +3,8 @@ package com.ctm.web.health.email.model;
 
 import com.ctm.web.core.email.model.EmailModel;
 
+import java.util.Optional;
+
 public class HealthProductBrochuresEmailModel extends EmailModel {
 
 	private String brand;
@@ -21,6 +23,17 @@ public class HealthProductBrochuresEmailModel extends EmailModel {
 	private String hospitalPDSUrl;
 	private String extrasPDSUrl;
 	private String applyUrl;
+
+	private String healthSituation;
+	private String primaryCurrentPHI;
+	private String coverType;
+	private String benefitCodes;
+	private String specialOffer;
+	private String specialOfferTerms;
+	private String excessPerAdmission;
+	private String excessPerPerson;
+	private String excessPerPolicy;
+	private String coPayment;
 
 	public String getFirstName() {
 		return firstName;
@@ -150,6 +163,94 @@ public class HealthProductBrochuresEmailModel extends EmailModel {
 		return applyUrl;
 	}
 
+	public boolean isOptIn() {
+		return optIn;
+	}
+
+	public String getApplyUrl() {
+		return applyUrl;
+	}
+
+	public Optional<String> getHealthSituation() {
+		return Optional.ofNullable(healthSituation);
+	}
+
+	public void setHealthSituation(String healthSituation) {
+		this.healthSituation = healthSituation;
+	}
+
+	public Optional<String> getPrimaryCurrentPHI() {
+		return Optional.ofNullable(primaryCurrentPHI);
+	}
+
+	public void setPrimaryCurrentPHI(String primaryCurrentPHI) {
+		this.primaryCurrentPHI = primaryCurrentPHI;
+	}
+
+	public Optional<String> getCoverType() {
+		return Optional.ofNullable(coverType);
+	}
+
+	public void setCoverType(String coverType) {
+		this.coverType = coverType;
+	}
+
+	public Optional<String> getBenefitCodes() {
+		return Optional.ofNullable(benefitCodes);
+	}
+
+	public void setBenefitCodes(String benefitCodes) {
+		this.benefitCodes = benefitCodes;
+	}
+
+	public Optional<String> getSpecialOffer() {
+		return Optional.ofNullable(specialOffer);
+	}
+
+	public void setSpecialOffer(String specialOffer) {
+		this.specialOffer = specialOffer;
+	}
+
+	public Optional<String> getSpecialOfferTerms() {
+		return Optional.ofNullable(specialOfferTerms);
+	}
+
+	public void setSpecialOfferTerms(String specialOfferTerms) {
+		this.specialOfferTerms = specialOfferTerms;
+	}
+
+	public Optional<String> getExcessPerAdmission() {
+		return Optional.ofNullable(excessPerAdmission);
+	}
+
+	public void setExcessPerAdmission(String excessPerAdmission) {
+		this.excessPerAdmission = excessPerAdmission;
+	}
+
+	public Optional<String> getExcessPerPerson() {
+		return Optional.ofNullable(excessPerPerson);
+	}
+
+	public void setExcessPerPerson(String excessPerPerson) {
+		this.excessPerPerson = excessPerPerson;
+	}
+
+	public Optional<String> getExcessPerPolicy() {
+		return Optional.ofNullable(excessPerPolicy);
+	}
+
+	public void setExcessPerPolicy(String excessPerPolicy) {
+		this.excessPerPolicy = excessPerPolicy;
+	}
+
+	public Optional<String> getCoPayment() {
+		return Optional.ofNullable(coPayment);
+	}
+
+	public void setCoPayment(String coPayment) {
+		this.coPayment = coPayment;
+	}
+
 	@Override
 	public void setEmailAddress(String emailAddress) {
 		super.setEmailAddress(emailAddress);
@@ -175,6 +276,16 @@ public class HealthProductBrochuresEmailModel extends EmailModel {
 				", hospitalPDSUrl='" + hospitalPDSUrl + '\'' +
 				", extrasPDSUrl='" + extrasPDSUrl + '\'' +
 				", applyUrl='" + applyUrl + '\'' +
+				", healthSituation='" + healthSituation + '\'' +
+				", primaryCurrentPHI='" + primaryCurrentPHI + '\'' +
+				", coverType='" + coverType + '\'' +
+				", benefitCodes='" + benefitCodes + '\'' +
+				", specialOffer='" + specialOffer + '\'' +
+				", specialOfferTerms='" + specialOfferTerms + '\'' +
+				", excessPerAdmission='" + excessPerAdmission + '\'' +
+				", excessPerPerson='" + excessPerPerson + '\'' +
+				", excessPerPolicy='" + excessPerPolicy + '\'' +
+				", coPayment='" + coPayment + '\'' +
 				'}';
 	}
 }
