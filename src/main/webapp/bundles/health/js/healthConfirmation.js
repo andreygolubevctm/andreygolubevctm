@@ -191,8 +191,20 @@
 		$('.hasDualPricing .sidebarFrequency').hide();
 	}
 
+	/**
+	 * Public access point to get the product's premium - needed for external tracking
+	 * @param freq
+	 * @returns {*}
+     */
+	function getPremium(freq) {
+		freq = freq || 'annually';
+		if(!_.has(confirmationProduct.premium,freq)) freq = 'annually';
+		return confirmationProduct.premium[freq].grossPremium;
+	}
+
 	meerkat.modules.register('healthConfirmation', {
-		init: init
+		init: init,
+		getPremium: getPremium
 	});
 
 })(jQuery);
