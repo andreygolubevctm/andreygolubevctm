@@ -40,6 +40,8 @@ public class CarQuote {
 
     private Filter filter;
 
+    private String typeOfCover;
+
     public CarQuote() {
         filter = new Filter();
     }
@@ -162,6 +164,14 @@ public class CarQuote {
 
     public void setRenderingMode(String renderingMode) {
         this.renderingMode = renderingMode;
+    }
+
+    public String getTypeOfCover() {
+        return typeOfCover;
+    }
+
+    public void setTypeOfCover(String typeOfCover) {
+        this.typeOfCover = typeOfCover;
     }
 
     public String createLeadFeedInfo() {

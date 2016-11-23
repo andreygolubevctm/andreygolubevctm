@@ -232,7 +232,7 @@
 
 		// When the excess filter changes, fetch new results
 		meerkat.messaging.subscribe(meerkatEvents.carFilters.CHANGED, function onFilterChange(obj){
-			if (obj && obj.hasOwnProperty('excess')) {
+			if (obj && obj.hasOwnProperty('excess') || obj.hasOwnProperty('coverType')) {
 				// This is a little dirty however we need to temporarily override the
 				// setting which prevents the tranId from being incremented.
 				Results.settings.incrementTransactionId = true;
