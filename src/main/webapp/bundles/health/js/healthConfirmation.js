@@ -198,8 +198,11 @@
      */
 	function getPremium(freq) {
 		freq = freq || 'annually';
-		if(!_.has(confirmationProduct.premium,freq)) freq = 'annually';
-		return confirmationProduct.premium[freq].grossPremium;
+		if(!_.has(confirmationProduct.premium,freq)) {
+			return confirmationProduct.premium[freq].grossPremium;
+		} else {
+			return null;
+		}
 	}
 
 	meerkat.modules.register('healthConfirmation', {
