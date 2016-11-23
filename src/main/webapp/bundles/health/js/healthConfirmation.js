@@ -198,7 +198,7 @@
      */
 	function getPremium(freq) {
 		freq = freq || 'annually';
-		if(!_.has(confirmationProduct.premium,freq)) {
+		if(_.has(confirmationProduct.premium,freq)) {
 			return confirmationProduct.premium[freq].grossPremium;
 		} else {
 			return null;
