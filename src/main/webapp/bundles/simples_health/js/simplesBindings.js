@@ -10,7 +10,10 @@
         $healthPartnerCover,
         $dialoguePrimaryCover,
         $dialoguePartnerCover,
-        $dialogue56;
+        $dialogue56,
+        $healthSituationMedicare,
+        $aboutYouFieldset,
+        $yourDetailsFieldset;
 
     function init() {
         $(document).ready(function () {
@@ -24,6 +27,9 @@
             $dialoguePrimaryCover = $('.simples-dialogue-primary-current-cover');
             $dialoguePartnerCover = $('.simples-dialogue-partner-current-cover');
             $dialogue56 = $('.simples-dialogue-56');
+            $healthSituationMedicare = $('.health_situation_medicare');
+            $aboutYouFieldset = $('#healthAboutYou > .content');
+            $yourDetailsFieldset = $('#health-contact-fieldset .content');
 
             // Handle pre-filled
             toggleInboundOutbound();
@@ -35,6 +41,20 @@
 
             meerkat.modules.provider_testing.setApplicationDateCalendar();
         });
+    }
+
+    function _moveSituationMedicareField() {
+        // check if the field is still on the About you fieldset on  step 1
+        if ($aboutYouFieldset.find($healthSituationMedicare).length === 1) {
+            $healthSituationMedicare.appendTo($yourDetailsFieldset);
+        }
+    }
+
+    function _resetSituationMedicareField() {
+        // check if the field is still on the About you fieldset on  step 1
+        if ($aboutYouFieldset.find($healthSituationMedicare).length === 0) {
+            $healthSituationMedicare.appendTo($aboutYouFieldset);
+        }
     }
 
     // Check dynamic checkboxes on preload=true
@@ -118,12 +138,18 @@
             $body
                 .removeClass('outbound')
                 .addClass('inbound');
+
+            _resetSituationMedicareField();
         }
         // Outbound
         else {
             $body
                 .removeClass('inbound')
                 .addClass('outbound');
+
+            if ($('#health_simples_contactType_outbound').is(':checked')) {
+                _moveSituationMedicareField();
+            }
         }
     }
 
