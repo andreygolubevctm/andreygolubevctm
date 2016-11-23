@@ -11,6 +11,7 @@
         premiumIncreaseContent = $('.healthPremiumIncreaseContent'),
         maxMilliSecondsForMessage = $("#maxMilliSecToWait").val(),
         resultsStepIndex = 3,
+        $openingHours = null,
 
         templates = {
             premiumsPopOver: '{{ if(product.premium.hasOwnProperty(frequency)) { }}' +
@@ -973,6 +974,20 @@
         $('.floated-previous-arrow').addClass('hidden');
     }
 
+    function setCallCentreText() {
+        $openingHours = _.isNull($openingHours) ? $('[data-step="results"] [data-livechat="target"] .today-hours') : $openingHours;
+        // add talk to experts blurb just for results page
+        if ($openingHours.text().length > 0) {
+            $openingHours.text(meerkat.site.ccOpeningHoursText + $openingHours.text());
+        }
+    }
+
+    function resetCallCentreText() {
+        if (!_.isNull($openingHours)) {
+            $openingHours.text($openingHours.text().replace(meerkat.site.ccOpeningHoursText, ''));
+        }
+    }
+
     meerkat.modules.register('healthResults', {
         init: init,
         events: moduleEvents,
@@ -996,7 +1011,9 @@
         setLhcApplicable: setLhcApplicable,
         resultsStepIndex: resultsStepIndex,
         setSelectedBenefitsList: setSelectedBenefitsList,
-        hideNavigationLink: hideNavigationLink
+        hideNavigationLink: hideNavigationLink,
+        setCallCentreText: setCallCentreText,
+        resetCallCentreText: resetCallCentreText
     });
 
 })(jQuery);
