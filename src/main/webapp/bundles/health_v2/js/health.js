@@ -393,6 +393,7 @@
 					// Reset selected product. (should not be inside a forward or backward condition because users can skip steps backwards)
 					meerkat.modules.healthResults.resetSelectedProduct();
 				}
+
 			},
 			onAfterEnter: function(event){
 
@@ -403,12 +404,15 @@
 				if (meerkat.modules.healthTaxTime.isFastTrack()) {
 					meerkat.modules.healthTaxTime.disableFastTrack();
 				}
+				meerkat.modules.healthResults.setCallCentreText();
 			},
 			onBeforeLeave: function(event) {
 				// Increment the transactionId
 				if (event.isBackward === true) {
 					meerkat.modules.transactionId.getNew(3);
 				}
+
+				meerkat.modules.healthResults.resetCallCentreText();
 			},
 			onAfterLeave: function(event){
 				meerkat.modules.healthResults.recordPreviousBreakpoint();
