@@ -29,7 +29,7 @@
 
 	function filterData( $element ){
 		return $element.find(":input:visible, input[type=hidden], :input[data-visible=true], :input[data-initValue=true], :input[data-attach=true]").filter(function(){
-			return $(this).val() !== "" && $(this).val() !== "Please choose...";
+			return $(this).val() !== "" && $(this).val() !== "Please choose..." && !$(this).attr('data-ignore');
 		});
 	}
 

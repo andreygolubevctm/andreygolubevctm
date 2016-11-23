@@ -210,6 +210,7 @@
                     initUserTracking();
                 });
             }
+            addGAClientID();
         });
 
     }
@@ -371,6 +372,42 @@
             value: getCurrentJourney()
         };
         window.sessioncamConfiguration.customDataObjects.push(item);
+    }
+
+    /**
+     * addGAClientID() adds a new or updates an existing xpath to store the GA Client ID
+     * which is used for trackng purposes.
+     */
+    function addGAClientID() {
+        var gaClientId = null;
+
+        // Retrieve the _ga cookie and assign its value to gaClientId
+        var cookieStr = document.cookie;
+        if(!_.isEmpty(cookieStr)) {
+            var rawCookies = cookieStr.split(";");
+            for(var i=0; i<rawCookies.length; i++){
+                var cookie = $.trim(rawCookies[i]).split("=");
+                if(cookie.length === 2) {
+                    if(cookie[0] === "_ga") {
+                        gaClientId = cookie[1];
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Derive element name and if exists then assign value or create a new one
+        var elementName = (meerkat.site.vertical === 'car' ? 'quote' : meerkat.site.vertical) + '_gaclientid';
+        if($('#' + elementName).length) {
+            $('#' + elementName).val(gaClientId);
+        } else {
+            $('#mainform').prepend($('<input/>', {
+                type: 'hidden',
+                id: elementName,
+                name: elementName,
+                value: gaClientId
+            }));
+        }
     }
 
     meerkat.modules.register("tracking", {

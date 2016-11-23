@@ -24,9 +24,9 @@
 		omitPleaseChoose="Y"
 		className="hidden" />
 
-<field_v1:hidden xpath="quote/coverType" constantValue="comprehensive" />
+<field_v1:hidden xpath="quote/typeOfCover" constantValue="COMPREHENSIVE" />
 <field_v1:array_select
-		items="comprehensive=Comprehensive,tppd=3rd Party Property Damage"
+		items="COMPREHENSIVE=Comprehensive,TPPD=3rd Party Property Damage,TPFT=3rd Party Fire and Theft"
 		xpath="filter/coverTypeOptions"
 		title=""
 		required=""
@@ -81,10 +81,6 @@
 				<%-- Feature headers --%>
 			<features:resultsItemTemplate_labels />
 			<div class="featuresList featuresTemplateComponent"></div>
-		</div>
-
-		<div class="esl-message hidden hidden-sm hidden-md hidden-lg">
-			<agg_v1:esl_message />
 		</div>
 
 		<agg_v1:results_pagination_floated_arrows />

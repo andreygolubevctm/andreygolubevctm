@@ -6,5 +6,6 @@
 
 <%-- HTML --%>
 <p>
+    <content:get key="eslMessage"/>
     <content:get key="footerText"/>
 </p>

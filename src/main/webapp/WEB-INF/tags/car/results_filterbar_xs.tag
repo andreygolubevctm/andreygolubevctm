@@ -12,7 +12,7 @@
 
 		<form_v2:row label="Cover Type" id="${name}CoverType" className="initial">
 			<field_v2:array_radio xpath="${xpath}/coverType" style="vertical" required="true"
-				className="" items="comprehensive=Comprehensive,tpft=3rd Party Fire &amp; Theft,tppd=3rd Party Property Damage" title="" />
+				className="" items="COMPREHENSIVE=Comprehensive,TPPD=3rd Party Property Damage,TPFT=3rd Party Fire &amp; Theft" title="" />
 		</form_v2:row>
 
 		<form_v2:row label="Excess" id="${name}ExcessRow">

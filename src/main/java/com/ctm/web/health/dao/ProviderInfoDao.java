@@ -47,7 +47,7 @@ public class ProviderInfoDao {
     }
 
 
-    private String getProviderEmail(final Provider providerId,
+    public String getProviderEmail(final Provider providerId,
                                     final Brand brand,
                                     final java.util.Date searchDate) {
         return getProviderContent(providerId, brand, searchDate, "providerEmail")
