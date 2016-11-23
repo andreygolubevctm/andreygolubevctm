@@ -4,12 +4,12 @@ import com.ctm.web.core.email.model.EmailMode;
 import com.ctm.web.core.email.model.IncomingEmail;
 import com.ctm.web.core.email.services.EmailUrlService;
 import com.ctm.web.core.email.services.IncomingEmailService;
+import com.ctm.web.core.email.services.token.EmailTokenService;
+import com.ctm.web.core.email.services.token.EmailTokenServiceFactory;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.services.AccessTouchService;
 import com.ctm.web.core.services.SettingsService;
-import com.ctm.web.core.email.services.token.EmailTokenService;
-import com.ctm.web.core.email.services.token.EmailTokenServiceFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,6 +72,22 @@ public class IncomingEmailRouter extends HttpServlet {
 
 		if (request.getParameter("cid") != null && emailData != null) {
 			emailData.setCampaignId(request.getParameter("cid"));
+		}
+
+		if (request.getParameter("et_rid") != null && emailData != null) {
+			emailData.setETRid(request.getParameter("et_rid"));
+		}
+
+		if (request.getParameter("utm_source") != null && emailData != null) {
+			emailData.setUTMSource(request.getParameter("utm_source"));
+		}
+
+		if (request.getParameter("utm_medium") != null && emailData != null) {
+			emailData.setUTMMedium(request.getParameter("utm_medium"));
+		}
+
+		if (request.getParameter("utm_campaign") != null && emailData != null) {
+			emailData.setUTMCampaign(request.getParameter("utm_campaign"));
 		}
 
 		if(emailData != null) {
