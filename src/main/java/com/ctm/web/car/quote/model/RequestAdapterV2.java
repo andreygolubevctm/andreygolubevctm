@@ -43,6 +43,8 @@ public class RequestAdapterV2 {
             }
         }
 
+        quoteRequest.setTypeOfCover(TypeOfCover.valueOf(carRequest.getQuote().getTypeOfCover()));
+
         quoteRequest.setClientIp(carRequest.getClientIpAddress());
 
         return quoteRequest;

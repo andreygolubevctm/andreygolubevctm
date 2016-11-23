@@ -324,18 +324,18 @@
 			onInitialise: function onContactInit(event){
 				meerkat.modules.resultsFeatures.fetchStructure('health2016');
 			},
-            onBeforeEnter:function enterBenefitsStep(event) {
-                if (event.isForward) {
-                    // Delay 1 sec to make sure we have the data bucket saved in to DB, then filter coupon
-                    _.delay(function() {
-                        // coupon logic, filter for user, then render banner
-                        meerkat.modules.coupon.loadCoupon('filter', null, function successCallBack() {
-                            meerkat.modules.coupon.renderCouponBanner();
-                        });
-                    }, 1000);
-                }
-                incrementTranIdBeforeEnteringSlide();
-            },
+			onBeforeEnter:function enterBenefitsStep(event) {
+				if (event.isForward) {
+					// Delay 1 sec to make sure we have the data bucket saved in to DB, then filter coupon
+					_.delay(function() {
+						// coupon logic, filter for user, then render banner
+						meerkat.modules.coupon.loadCoupon('filter', null, function successCallBack() {
+							meerkat.modules.coupon.renderCouponBanner();
+						});
+					}, 1000);
+				}
+				incrementTranIdBeforeEnteringSlide();
+			},
 			onAfterEnter: function enteredContactStep(event) {
 			},
 			onAfterLeave:function leaveContactStep(event){
@@ -450,7 +450,7 @@
 					healthApplicationDetails.testStatesParity();
 				});
 
-                meerkat.modules.healthApplyStep.onInitialise();
+				meerkat.modules.healthApplyStep.onInitialise();
 
 			},
 			onBeforeEnter: function enterApplyStep(event){
@@ -1098,10 +1098,10 @@
 
 			Results.updateApplicationEnvironment();
 
-        var postData = meerkat.modules.journeyEngine.getFormData();
+			var postData = meerkat.modules.journeyEngine.getFormData();
 
-		// Disable fields must happen after the post data has been collected.
-		meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'submitApplication', disableFields:true });
+			// Disable fields must happen after the post data has been collected.
+			meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'submitApplication', disableFields:true });
 
 
 			var healthApplicationUrl = "ajax/json/health_application.jsp";
@@ -1421,9 +1421,9 @@
 
 	}
 
-    function getCoverType() {
-        return $('#health_situation_coverType input').filter(":checked").val();
-    }
+	function getCoverType() {
+		return $('#health_situation_coverType input').filter(":checked").val();
+	}
 	function getSituation() {
 		return $('#health_situation_healthCvr').val();
 	}
@@ -1437,7 +1437,7 @@
 		events: moduleEvents,
 		initProgressBar: initProgressBar,
 		getTrackingFieldsObject: getTrackingFieldsObject,
-        getCoverType: getCoverType,
+		getCoverType: getCoverType,
 		getSituation: getSituation,
 		getHospitalCoverLevel: getHospitalCoverLevel,
 		getRates: getRates,
@@ -1446,7 +1446,7 @@
 		fetchRates: fetchRates,
 		loadRates: loadRates,
 		loadRatesBeforeResultsPage: loadRatesBeforeResultsPage,
-        hasPartner: hasPartner,
+		hasPartner: hasPartner,
 		configureContactDetails: configureContactDetails
 	});
 
