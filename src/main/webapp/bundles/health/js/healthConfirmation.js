@@ -199,7 +199,7 @@
 	function getPremium(freq) {
 		freq = freq || 'annually';
 		if(_.has(confirmationProduct.premium,freq)) {
-			return confirmationProduct.premium[freq].lhcfreevalue.toFixed(0);
+			return confirmationProduct.premium[freq].lhcfreevalue;
 		} else {
 			return null;
 		}
