@@ -54,9 +54,6 @@
 
 <%-- RESULTS TABLE --%>
 	<div class="bridgingContainer"></div>
-	<div class="esl-message hidden hidden-sm hidden-md hidden-lg">
-		<agg_v1:esl_message />
-	</div>
 	<div id="results_v5" class="resultsContainer v2 results-columns-sm-2 results-columns-md-3 results-columns-lg-3">
 		<div class="featuresHeaders featuresElements">
 

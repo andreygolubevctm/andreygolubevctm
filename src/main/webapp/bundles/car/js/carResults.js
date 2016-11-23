@@ -385,10 +385,6 @@
 		//meerkat.messaging.subscribe(meerkatEvents.RESULTS_DATA_READY, publishExtraSuperTagEvents);
 		//meerkat.messaging.subscribe(meerkatEvents.RESULTS_SORTED, publishExtraSuperTagEvents);
 
-		meerkat.messaging.subscribe(meerkatEvents.RESULTS_RANKING_READY, function() {
-			$('.esl-message').toggleClass('hidden', $('#quote_riskAddress_state').val() !== 'NSW');
-		});
-
 		meerkat.messaging.subscribe(meerkatEvents.resultsMobileDisplayModeToggle.DISPLAY_MODE_CHANGED, function(obj) {
 			if (obj.displayMode === 'price') {
 				switchToPriceMode(true);
