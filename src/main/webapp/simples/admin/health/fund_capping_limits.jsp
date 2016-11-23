@@ -147,10 +147,10 @@
 	<div class="row">
 		<div class="form-group col-sm-4">
 			<label>Category</label>
-			<select name="cappingLimitCategory" class="form-control" id="modal-category" {{= data.limitType === "Monthly" ? "disabled" : "" }}>
+			<select name="cappingLimitCategory" class="form-control" id="modal-category">
 				<option>Select a Category</option>
 				<option value="S" {{= data.cappingLimitCategory === "S" ? "selected" : "" }}>Soft</option>
-				<option value="H" {{= data.cappingLimitCategory === "H" || data.limitType === "Monthly" ? "selected" : "" }}>Hard</option>
+				<option value="H" {{= data.cappingLimitCategory === "H" ? "selected" : "" }}>Hard</option>
 			</select>
 		</div>
 		<div class="form-group col-sm-4">
