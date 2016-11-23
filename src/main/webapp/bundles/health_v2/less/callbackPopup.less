@@ -8,9 +8,14 @@
     padding: 10px 0 10px 10px;
 
 	&.top-right {
-		top: 1.15em;
-		left: 50%;
-		margin-left:117px;
+		top: 1.5em;
+		@media(@xs-only) {right:1.5em;}
+		@media(@sm-only) {right:1.5em;}
+		@media(@md-only) {right:1.5em;}
+		@media(@lg-only) {
+			left: 50%;
+			margin-left: 117px;
+		}
 	}
 
 	&.top-left {
