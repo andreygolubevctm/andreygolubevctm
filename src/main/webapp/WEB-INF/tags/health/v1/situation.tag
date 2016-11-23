@@ -28,9 +28,7 @@
             </simples:dialogue>
             <simples:dialogue id="19" vertical="health" className="simples-dialog-inbound"/>
             <simples:dialogue id="20" vertical="health" className="simples-dialog-outbound"/>
-            <simples:dialogue id="47" vertical="health" />
             <simples:dialogue id="48" vertical="health" />
-            <simples:dialogue id="22" vertical="health" />
             <simples:dialogue id="63" vertical="health" />
             <simples:dialogue id="21" vertical="health" mandatory="true" /> <%-- 3 Point Security Check --%>
             <simples:dialogue id="36" vertical="health" mandatory="true" className="simples-dialog-inbound" />
