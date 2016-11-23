@@ -305,18 +305,18 @@
 						meerkat.modules.healthLHC.displayLHC();
 					});
 			},
-            onBeforeEnter:function enterBenefitsStep(event) {
-                if (event.isForward) {
-                    // Delay 1 sec to make sure we have the data bucket saved in to DB, then filter coupon
-                    _.delay(function() {
-                        // coupon logic, filter for user, then render banner
-                        meerkat.modules.coupon.loadCoupon('filter', null, function successCallBack() {
-                            meerkat.modules.coupon.renderCouponBanner();
-                        });
-                    }, 1000);
-                }
-                incrementTranIdBeforeEnteringSlide();
-            },
+			onBeforeEnter:function enterBenefitsStep(event) {
+				if (event.isForward) {
+					// Delay 1 sec to make sure we have the data bucket saved in to DB, then filter coupon
+					_.delay(function() {
+						// coupon logic, filter for user, then render banner
+						meerkat.modules.coupon.loadCoupon('filter', null, function successCallBack() {
+							meerkat.modules.coupon.renderCouponBanner();
+						});
+					}, 1000);
+				}
+				incrementTranIdBeforeEnteringSlide();
+			},
 			onAfterEnter: function enteredContactStep(event) {
 			},
 			onAfterLeave:function leaveContactStep(event){
@@ -380,47 +380,47 @@
 				if(event.isForward === true){
 					meerkat.modules.healthResults.getBeforeResultsPage();
 
-                    // show the bulky text script to call centre
-                    var htmlTemplate = _.template($('#simples-dialogue-62-template').html());
-                    meerkat.modules.dialogs.show({
-                        htmlContent : htmlTemplate(),
-                        closeOnHashChange : true,
-                        showCloseBtn: false,
-                        buttons: [{
-                            label: "Ok",
-                            className: 'btn-next btn-simples-dialogue-62',
-                            closeWindow:false
-                        }],
-                        onOpen : function(modalId) {
-                            var $modal = $('#' + modalId);
-                            $modal.find('.simples-dialogue').removeClass('hidden');
-                            meerkat.modules.jqueryValidate.setupDefaultValidationOnForm( $modal.find('#complianceForm') );
-                            $modal.find('.btn-simples-dialogue-62').off().on('click', function() {
-                                var $form = $('#' + modalId).find('#complianceForm');
-                                $form.data().validator.resetForm();
-                                if ($form.valid()){
-                                    meerkat.modules.dialogs.close(modalId);
-                                }
-                            });
+					// show the bulky text script to call centre
+					var htmlTemplate = _.template($('#simples-dialogue-62-template').html());
+					meerkat.modules.dialogs.show({
+						htmlContent : htmlTemplate(),
+						closeOnHashChange : true,
+						showCloseBtn: false,
+						buttons: [{
+							label: "Ok",
+							className: 'btn-next btn-simples-dialogue-62',
+							closeWindow:false
+						}],
+						onOpen : function(modalId) {
+							var $modal = $('#' + modalId);
+							$modal.find('.simples-dialogue').removeClass('hidden');
+							meerkat.modules.jqueryValidate.setupDefaultValidationOnForm( $modal.find('#complianceForm') );
+							$modal.find('.btn-simples-dialogue-62').off().on('click', function() {
+								var $form = $('#' + modalId).find('#complianceForm');
+								$form.data().validator.resetForm();
+								if ($form.valid()){
+									meerkat.modules.dialogs.close(modalId);
+								}
+							});
 
-                            // Check dynamic checkboxes depending on hidden values
-                            $('#health_simples_dialogue-checkbox-62a-modal')
-                                .prop('checked', $('#health_simples_dialogue-checkbox-62a').val() === 'Y');
-                            $('#health_simples_dialogue-checkbox-62b-modal')
-                                .prop('checked', $('#health_simples_dialogue-checkbox-62b').val() === 'Y');
-                            $('#health_simples_dialogue-checkbox-62c-modal')
-                                .prop('checked', $('#health_simples_dialogue-checkbox-62c').val() === 'Y');
-                        },
-                        onClose: function(modalId) {
-                            // Save the checkbox values to hidden inputs as Y/N
-                            $('#health_simples_dialogue-checkbox-62a')
-                                .val($('#health_simples_dialogue-checkbox-62a-modal').prop('checked') ? 'Y' : 'N');
-                            $('#health_simples_dialogue-checkbox-62b')
-                                .val($('#health_simples_dialogue-checkbox-62b-modal').prop('checked') ? 'Y' : 'N');
-                            $('#health_simples_dialogue-checkbox-62c')
-                                .val($('#health_simples_dialogue-checkbox-62c-modal').prop('checked') ? 'Y' : 'N');
-                        }
-                    });
+							// Check dynamic checkboxes depending on hidden values
+							$('#health_simples_dialogue-checkbox-62a-modal')
+								.prop('checked', $('#health_simples_dialogue-checkbox-62a').val() === 'Y');
+							$('#health_simples_dialogue-checkbox-62b-modal')
+								.prop('checked', $('#health_simples_dialogue-checkbox-62b').val() === 'Y');
+							$('#health_simples_dialogue-checkbox-62c-modal')
+								.prop('checked', $('#health_simples_dialogue-checkbox-62c').val() === 'Y');
+						},
+						onClose: function(modalId) {
+							// Save the checkbox values to hidden inputs as Y/N
+							$('#health_simples_dialogue-checkbox-62a')
+								.val($('#health_simples_dialogue-checkbox-62a-modal').prop('checked') ? 'Y' : 'N');
+							$('#health_simples_dialogue-checkbox-62b')
+								.val($('#health_simples_dialogue-checkbox-62b-modal').prop('checked') ? 'Y' : 'N');
+							$('#health_simples_dialogue-checkbox-62c')
+								.val($('#health_simples_dialogue-checkbox-62c-modal').prop('checked') ? 'Y' : 'N');
+						}
+					});
 				}
 
 				if (meerkat.modules.healthTaxTime.isFastTrack()) {
@@ -473,7 +473,7 @@
 					healthApplicationDetails.testStatesParity();
 				});
 
-                meerkat.modules.healthApplyStep.onInitialise();
+				meerkat.modules.healthApplyStep.onInitialise();
 
 			},
 			onBeforeEnter: function enterApplyStep(event){
@@ -911,7 +911,7 @@
 		var dateRegex = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/;
 
 		if(!postData.primary_dob.match(dateRegex)) return false;
-		if(coverTypeHasPartner && (typeof postData.partner_dob === 'undefined' || !postData.partner_dob.match(dateRegex)))  return false;
+		if(coverTypeHasPartner && !postData.partner_dob.match(dateRegex))  return false;
 
 		return meerkat.modules.comms.post({
 			url:"ajax/json/health_rebate.jsp",
@@ -1108,10 +1108,10 @@
 
 			Results.updateApplicationEnvironment();
 
-        var postData = meerkat.modules.journeyEngine.getFormData();
+			var postData = meerkat.modules.journeyEngine.getFormData();
 
-		// Disable fields must happen after the post data has been collected.
-		meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'submitApplication', disableFields:true });
+			// Disable fields must happen after the post data has been collected.
+			meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'submitApplication', disableFields:true });
 
 
 			var healthApplicationUrl = "ajax/json/health_application.jsp";
@@ -1307,15 +1307,15 @@
 
 	function toggleRebate() {
 		if(meerkat.modules.healthCoverDetails.isRebateApplied()){
-            $('#health_healthCover_tier').show();
-            if(getSituation() === 'F' || getSituation() === 'SPF'){
-                $('.health_cover_details_dependants').show();
-            }
+			$('#health_healthCover_tier').show();
+			if(getSituation() === 'F' || getSituation() === 'SPF'){
+				$('.health_cover_details_dependants').show();
+			}
 		} else {
-            $('#health_healthCover_tier').hide();
-            $('.health_cover_details_dependants').hide();
+			$('#health_healthCover_tier').hide();
+			$('.health_cover_details_dependants').hide();
 		}
-        meerkat.modules.healthCoverDetails.setIncomeBase();
+		meerkat.modules.healthCoverDetails.setIncomeBase();
 	}
 
 	function initHealth() {
@@ -1385,9 +1385,9 @@
 
 	}
 
-    function getCoverType() {
-        return $('#health_situation_coverType input').filter(":checked").val();
-    }
+	function getCoverType() {
+		return $('#health_situation_coverType input').filter(":checked").val();
+	}
 	function getSituation() {
 		return $('#health_situation_healthCvr').val();
 	}
@@ -1401,7 +1401,7 @@
 		events: moduleEvents,
 		initProgressBar: initProgressBar,
 		getTrackingFieldsObject: getTrackingFieldsObject,
-        getCoverType: getCoverType,
+		getCoverType: getCoverType,
 		getSituation: getSituation,
 		getHospitalCoverLevel: getHospitalCoverLevel,
 		getRates: getRates,
@@ -1410,7 +1410,7 @@
 		fetchRates: fetchRates,
 		loadRates: loadRates,
 		loadRatesBeforeResultsPage: loadRatesBeforeResultsPage,
-        hasPartner: hasPartner
+		hasPartner: hasPartner
 	});
 
 })(jQuery);
