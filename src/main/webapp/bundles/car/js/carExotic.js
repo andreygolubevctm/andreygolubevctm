@@ -10,6 +10,7 @@
 		$carSnapshotRegoFieldset,
 		$requiredFieldsToToggle,
 		$resultsPage,
+		$securityRow,
 		_threshold = 150000;
 
 	function init(){
@@ -21,8 +22,9 @@
 		$requiredFieldsToToggle = $('input[name=quote_contact_email], input[name=quote_contact_phoneinput]');
 
 		// existing and new questions
-		$defaultQuestionsToHide = $('#quoteAccessoriesFieldSet, .noOfKms, #securityOptionRow, #accidentDamageRow, .rego-not-my-car, #employment_status_row, #ownsAnotherCar, #quote_restricted_ageRow, #quote_drivers_youngFieldSet, .ydGreenBubble');
+		$defaultQuestionsToHide = $('#quoteAccessoriesFieldSet, .noOfKms,  #accidentDamageRow, .rego-not-my-car, #employment_status_row, #ownsAnotherCar, #quote_restricted_ageRow, #quote_drivers_youngFieldSet, .ydGreenBubble');
 		$exoticQuestionsToShow = $('#quote_drivers_regular_convictionsRow, .exoticUsageQuestions, #quote_drivers_youngExoticFieldSet, #quote_drivers_youngExoticContFieldSet, .ydSpeechBubbleDriverDetails, #preferredContactMethodRow');
+		$securityRow = $('#securityOptionRow');
 
 		// snapshot fields
 		$carSnapshot = $(".car-snapshot");
@@ -51,6 +53,12 @@
 		} else {
 			$defaultQuestionsToHide.show();
 			$exoticQuestionsToShow.addClass('hidden');
+
+			// carSecurityOptions has some additional show/hide logic for the security question hence this piece of code
+			// if the $securityRow was added to the $defaultQuestionsToHide list of elements, it will show a row without the actual select box
+			if ($securityRow.find('.select:first').length > 0) {
+				$securityRow.show();
+			}
 		}
 	}
 

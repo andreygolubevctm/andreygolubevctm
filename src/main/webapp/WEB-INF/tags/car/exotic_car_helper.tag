@@ -15,3 +15,5 @@
 <c:set var="origintalCopy" value="${exoticCarContent.getSupplementaryValueByKey('normalCopy')}" scope="request" />
 <c:set var="exoticHeading" value="${exoticCarContent.getSupplementaryValueByKey('exoticHeading')}" scope="request" />
 <c:set var="exoticCopy" value="${exoticCarContent.getSupplementaryValueByKey('exoticCopy')}" scope="request" />
+<c:set var="resultsHeading" value="${exoticCarContent.getSupplementaryValueByKey('resultsHeading')}" scope="request" />
+<c:set var="resultsContact" value="${exoticCarContent.getSupplementaryValueByKey('resultsContact')}" scope="request" />
