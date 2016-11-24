@@ -294,3 +294,10 @@ address {
   font-style: normal;
   line-height: @line-height-base;
 }
+
+@media(@sm) {
+  /* This seems to be the only place that globally affects the .error_title class. Did try error.css but no luck */
+  .journeyEngineSlide .error_title {
+    font-size: 1.875em;
+  }
+}
