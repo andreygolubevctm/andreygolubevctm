@@ -45,6 +45,7 @@
 					<field_v2:label value="Email address" xpath="${fieldXpath}" className="col-lg-2 col-md-3 col-sm-4" />
 					<div class="row-content col-lg-10 col-md-9 col-sm-8">
 						<field_v2:email xpath="${fieldXpath}" required="true" placeHolder="${emailPlaceHolder}" />
+						<span class="createLoginInfo small"></span>
 					</div>
 				</div>
 

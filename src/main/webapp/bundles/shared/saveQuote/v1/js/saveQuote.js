@@ -26,6 +26,7 @@
 	var $saveQuoteSuccess = null;
 	var $saveQuoteFields = null;
 	var $callMeBackForm = null;
+	var $createLoginInfo = null;
 
 	var submitButtonClass = ".btn-save-quote";
 
@@ -65,6 +66,7 @@
 			$passwords = $(".saveQuotePasswords");
 			$saveQuoteSuccess = $("#saveQuoteSuccess");
 			$saveQuoteFields = $(".saveQuoteFields");
+			$createLoginInfo = $('.createLoginInfo');
 
 			// Update vertical specific copy if necessary
 			if(hasVerticalSpecificCopy()) {
@@ -276,9 +278,11 @@
 				if(!meerkat.site.isCallCentreUser) {
 					if(result.exists) {
 						updateInstructions('clickSubmit');
+						$createLoginInfo.text("");
 						hidePasswords();
 					} else {
 						updateInstructions('createLogin');
+						$createLoginInfo.text("We will save all of the information that you have entered, and will send you an email with instruction on how you can retrieve your quote when you're ready");
 						showPasswords();
 					}
 				}
@@ -289,6 +293,7 @@
 
 				if(!meerkat.site.isCallCentreUser) {
 					updateInstructions('createLogin');
+					$createLoginInfo.text("");
 					showPasswords();
 				}
 
