@@ -25,8 +25,16 @@
 		className="hidden" />
 
 <field_v1:hidden xpath="quote/typeOfCover" constantValue="COMPREHENSIVE" />
+
+<c:set var="coverTypeOptions">
+	<c:choose>
+		<c:when test="${skipNewCoverTypeCarJourney eq true}">COMPREHENSIVE=Comprehensive</c:when>
+		<c:otherwise>COMPREHENSIVE=Comprehensive,TPPD=3rd Party Property Damage,TPFT=3rd Party Fire and Theft</c:otherwise>
+	</c:choose>
+</c:set>
+
 <field_v1:array_select
-		items="COMPREHENSIVE=Comprehensive,TPPD=3rd Party Property Damage,TPFT=3rd Party Fire and Theft"
+		items="${coverTypeOptions}"
 		xpath="filter/coverTypeOptions"
 		title=""
 		required=""
