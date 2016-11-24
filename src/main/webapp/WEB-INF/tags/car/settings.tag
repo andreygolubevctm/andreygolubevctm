@@ -83,5 +83,6 @@
 	resultOptions: {
 		displayMode: "<c:out value="${priceDisplayMode}" />"
 	},
-	commencementDate : '${data.quote.options.commencementDate}'
+	commencementDate : '${data.quote.options.commencementDate}',
+	skipNewCoverTypeCarJourney: ${skipNewCoverTypeCarJourney}
 }
