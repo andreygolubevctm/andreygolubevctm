@@ -192,6 +192,10 @@
 		$featuresMode.addClass('disabled');
 		$featuresMode.find('a').addClass('disabled');
 		$('.slide-feature-filters').find('a').addClass('disabled').addClass('inactive');
+
+		if (meerkat.site.skipNewCoverTypeCarJourney) {
+			$('.dropdown.filter-cover-type, .filter-cover-type .dropdown-toggle').addClass('skipNewCoverTypes');
+		}
 	}
 
 	function enable() {
@@ -203,6 +207,10 @@
 			$featuresMode.removeClass('disabled');
 			$featuresMode.find('a').removeClass('disabled');
 			$('.slide-feature-filters').find('a').removeClass('inactive').removeClass('disabled');
+
+			if (meerkat.site.skipNewCoverTypeCarJourney) {
+				$('.dropdown.filter-cover-type, .filter-cover-type .dropdown-toggle').addClass('disabled');
+			}
 		}
 		$component.find('li.dropdown.filter-frequency, .filter-frequency .dropdown-toggle').removeClass('disabled');
 	}
