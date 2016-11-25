@@ -9,9 +9,6 @@
 <%@ attribute name="orderby" required="false" rtexprvalue="true" description="Define what sort order to execute" %>
 <%@ attribute name="lineLimit" required="false" rtexprvalue="true" description="Define the maximum number of verticals per line" %>
 
-<%-- Currently set by the number of verticals that have a seq number greater than zero --%>
-<c:set var="maxIcons" value="10" />
-
 <c:if test="${empty lineLimit}">
 	<c:set var="lineLimit" value="5" />
 </c:if>
