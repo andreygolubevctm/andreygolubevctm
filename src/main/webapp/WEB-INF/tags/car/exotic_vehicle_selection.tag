@@ -33,12 +33,15 @@
                            title="The engine capacity of the car"/>
     </form_v2:row>
 
-    <form_v2:row label="Value of the Car" id="${name}_value">
+    <form_v2:row label="Market value of car" id="${name}_value">
         <field_v2:currency xpath="${xpath}_value"
                            required="true"
-                           pattern="[0-9]*"
                            decimal="${false}"
+                           minValue="120000"
                            title="The value of the car"
                             />
+    </form_v2:row>
+    <form_v2:row label="How much do you have owing on your existing home loan(s)?">
+        <field_v2:currency xpath="${xpath}/amountOwing" decimal="${false}" defaultValue="" title="Existing home loan" required="true" maxValue="1000000000" pattern="[0-9]*" />
     </form_v2:row>
 </form_v2:fieldset>

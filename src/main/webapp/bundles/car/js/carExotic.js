@@ -11,6 +11,7 @@
 		$requiredFieldsToToggle,
 		$resultsPage,
 		$securityRow,
+		$navBarContents,
 		_threshold = 150000;
 
 	function init(){
@@ -20,6 +21,9 @@
 		$resultsPage = $('.famous-results-page');
 
 		$requiredFieldsToToggle = $('input[name=quote_contact_email], input[name=quote_contact_phoneinput]');
+
+		// navbar contents
+		$navBarContents = $('#navbar-filter .nav, #navbar-filter-labels');
 
 		// existing and new questions
 		$defaultQuestionsToHide = $('#quoteAccessoriesFieldSet, .noOfKms,  #accidentDamageRow, .rego-not-my-car, #employment_status_row, #ownsAnotherCar, #quote_restricted_ageRow, #quote_drivers_youngFieldSet, .ydGreenBubble');
@@ -50,6 +54,9 @@
 		if (isExotic()) {
 			$defaultQuestionsToHide.hide();
 			$exoticQuestionsToShow.removeClass('hidden');
+			if ($securityRow.find('.select:first').length > 0) {
+				$securityRow.hide();
+			}
 		} else {
 			$defaultQuestionsToHide.show();
 			$exoticQuestionsToShow.addClass('hidden');
@@ -74,13 +81,11 @@
 			});
 		}
 
-		if (isExotic()) {
-			_toggleReasonFields($('input[name=quote_drivers_regular_claims]'), $('#quote_drivers_regular_claims_reasonRow'));
-			_toggleReasonFields($('input[name=quote_drivers_regular_convictions]'), $('#quote_drivers_regular_conviction_reasonRow'));
+		_toggleReasonFields($('input[name=quote_drivers_regular_claims]'), $('#quote_drivers_regular_claims_reasonRow'));
+		_toggleReasonFields($('input[name=quote_drivers_regular_convictions]'), $('#quote_drivers_regular_conviction_reasonRow'));
 
-			_toggleReasonFields($('input[name=quote_drivers_young_claims]'), $('#quote_drivers_young_claims_reasonRow'));
-			_toggleReasonFields($('input[name=quote_drivers_young_convictions]'), $('#quote_drivers_young_conviction_reasonRow'));
-		}
+		_toggleReasonFields($('input[name=quote_drivers_young_claims]'), $('#quote_drivers_young_claims_reasonRow'));
+		_toggleReasonFields($('input[name=quote_drivers_young_convictions]'), $('#quote_drivers_young_conviction_reasonRow'));
 	}
 
 	function _updateSnapshotDataSource($el) {
@@ -91,15 +96,25 @@
 
 	function _toggleReasonFields($targetEl, $toggleEl) {
 		$targetEl.on('click', function toggleReasonField() {
-			if ($targetEl.filter(":checked").val() === 'Y') {
-				if ($toggleEl.hasClass('hidden')) {
-					$toggleEl.removeClass('hidden');
+			if (isExotic()) {
+				if ($targetEl.filter(":checked").val() === 'Y') {
+					if ($toggleEl.hasClass('hidden')) {
+						$toggleEl.removeClass('hidden');
+					}
+					$toggleEl.slideDown();
+				} else {
+					$toggleEl.slideUp();
 				}
-				$toggleEl.slideDown();
-			} else {
-				$toggleEl.slideUp();
 			}
 		});
+	}
+
+	function toggleNavBarContents() {
+		if (isExotic()) {
+			$navBarContents.addClass('hidden');
+		} else {
+			$navBarContents.removeClass('hidden');
+		}
 	}
 
 	// catering for the scenario where someone enters the normal journey and selects an exotic car but then goes back
@@ -130,7 +145,8 @@
 		toggleQuestions: toggleQuestions,
 		updateSpeechBubble: updateSpeechBubble,
 		toggleRequiredFields: toggleRequiredFields,
-		toggleFamousResultsPage: toggleFamousResultsPage
+		toggleFamousResultsPage: toggleFamousResultsPage,
+		toggleNavBarContents: toggleNavBarContents
 	});
 
 })(jQuery);

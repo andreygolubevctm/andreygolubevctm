@@ -9,15 +9,13 @@
 <form_v2:row label="What was the purchase price of the car?" >
 		<field_v2:currency xpath="${xpath}_purchase_price"
 						   required="true"
-						   pattern="[0-9]*"
 						   decimal="${false}"
-						   defaultValue="1"
+						   minValue="1"
 						   title="The purchase price of the car"/>
 </form_v2:row>
 
 <form_v2:row label="Is the car registered?" >
 	<field_v2:array_radio xpath="${xpath}_registered" required="true"
 						  className="" items="Y=Yes,N=No"
-						  defaultValue="Y"
 						  id="${name}_registeredx" title="if the car is registered" />
 </form_v2:row>

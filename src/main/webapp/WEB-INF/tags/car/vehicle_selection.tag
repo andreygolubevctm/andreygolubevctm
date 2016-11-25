@@ -38,8 +38,10 @@
         <field_v1:hidden xpath="${xpath}/registrationYear"></field_v1:hidden>
         <c:if test="${isFromExoticPage eq true}">
         <div class="cannotFindCar">
-            <span>Can't find your car?</span>
-            <span>Click <a href="javascript:;" class="exoticManualEntry">here</a> to manually capture the car details</span>
+            <a href="javascript:;" class="exoticManualEntry">
+                <span>Can't find your car?</span>
+                <span>Click here to manually capture the car details</span>
+            </a>
         </div>
         </c:if>
     </form_v2:row>

@@ -259,6 +259,7 @@
             onBeforeEnter: function enterResultsStep(event) {
                 meerkat.modules.journeyProgressBar.hide();
                 $('#resultsPage').addClass('hidden');
+                meerkat.modules.carExotic.toggleNavBarContents();
                 // show disclaimer here.
                 // Sync the filters to the results engine
                 if (!meerkat.modules.carExotic.isExotic()) {
