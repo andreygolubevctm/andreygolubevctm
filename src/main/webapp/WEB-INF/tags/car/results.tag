@@ -33,7 +33,8 @@
     </c:choose>
 </c:set>
 
-<field_v1:array_selectitems="${coverTypeOptions}"
+<field_v1:array_select
+		items="${coverTypeOptions}"
 		xpath="filter/coverTypeOptions"
 		title=""
 		required=""
@@ -88,6 +89,10 @@
 				<%-- Feature headers --%>
 			<features:resultsItemTemplate_labels />
 			<div class="featuresList featuresTemplateComponent"></div>
+		</div>
+
+		<div class="esl-message hidden hidden-sm hidden-md hidden-lg">
+			<agg_v1:esl_message />
 		</div>
 
 		<agg_v1:results_pagination_floated_arrows />
