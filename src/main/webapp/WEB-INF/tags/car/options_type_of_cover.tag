@@ -17,6 +17,3 @@
                             required="true" />
 </form_v2:row>
 
-<core_v1:js_template id="ctp-message-template">
-    <content:get key="ctpMessageCopy"/>
-</core_v1:js_template>

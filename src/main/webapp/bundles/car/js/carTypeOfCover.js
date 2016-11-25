@@ -91,7 +91,7 @@
             ctpMessageDialogId = meerkat.modules.dialogs.show({
                 title: "Compulsory Third Party (CTP) Insurance",
                 onOpen: function (modalId) {
-                    var htmlContent = $('#ctp-message-template').html(),
+                    var htmlContent = meerkat.site.ctpMessage,
                         $modal = $('#' + modalId);
 
                     meerkat.modules.dialogs.changeContent(modalId, htmlContent); // update the content
