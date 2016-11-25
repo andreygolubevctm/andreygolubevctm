@@ -9,6 +9,9 @@
 <%@ attribute name="orderby" required="false" rtexprvalue="true" description="Define what sort order to execute" %>
 <%@ attribute name="lineLimit" required="false" rtexprvalue="true" description="Define the maximum number of verticals per line" %>
 
+<%-- Currently set by the number of verticals that have a seq number greater than zero --%>
+<c:set var="maxIcons" value="10" />
+
 <c:if test="${empty lineLimit}">
 	<c:set var="lineLimit" value="5" />
 </c:if>
@@ -39,6 +42,20 @@
 		${copy}
 	</c:if>
 	<c:set var="displayedVerticalCount" value="1" />
+
+	<%-- Check if this file will be used as a no quotes for one of our journeys. --%>
+	<%-- If so, we'll add a push class to the bottom row of verticals to allow for centering --%>
+	<%-- Did it this way instead of js to reduce js processing --%>
+	<c:set var="smPushLength" value="1" />
+	<c:set var="addPushClass" value="${false}" />
+	<c:set var="items" value="${brand.sortVerticalsBySeq()}" />
+	<c:forEach items="${items}" var="vertical" varStatus="loop">
+		<c:if test="${currentVertical eq fn:toLowerCase(vertical.getCode())}">
+			<c:set var="addPushClass" value="${true}" />
+			<c:set var="smPushLength">${smPushLength + 1}</c:set>
+		</c:if>
+	</c:forEach>
+
 	<div class="options-list clearfix verticalButtons">
 		<c:forEach items="${brand.sortVerticalsBySeq()}" var="vertical" varStatus="loop">
 
@@ -56,7 +73,7 @@
 					<c:if test="${displayedVerticalCount eq 1}">
 						<div class="col-sm-1 hidden-xs"></div>
 					</c:if>
-					<div class="${spacerClass} col-sm-2 col-xs-6">
+					<div class="${spacerClass} col-sm-2 ${pushClass} col-xs-6">
 						<a href="${verticalSettings.getSetting('exitUrl')}"
 						   title="${vertical.getName()}">
 							<div class="icon icon-${fn:toLowerCase(vertical.getCode())}"></div>${vertical.getName()}
@@ -65,6 +82,9 @@
 					<c:if test="${displayedVerticalCount eq lineLimit}">
 						<c:set var="displayedVerticalCount" value="0" />
 						<div class="col-sm-1 hidden-xs"></div>
+						<c:if test="${addPushClass eq true}">
+							<c:set var="pushClass" value="col-sm-push-${smPushLength}" />
+						</c:if>
 					</c:if>
 					<c:set var="displayedVerticalCount">${displayedVerticalCount + 1}</c:set>
 				</c:if>
