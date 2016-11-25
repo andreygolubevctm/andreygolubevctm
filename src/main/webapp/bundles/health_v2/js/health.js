@@ -294,10 +294,9 @@
 				//}, 1000);
 
 				if(event.isForward) {
-					if(meerkat.site.isCallCentreUser) {
-						// ignore and accept the current value as true and correct
-					} else {
+					if(!meerkat.site.isCallCentreUser) {
 						$('input[name="health_situation_accidentOnlyCover"]').prop('checked', ($("input[name=health_situation_healthSitu]").filter(":checked").val() === 'ATP'));
+						// For CC we simply ignore and accept the current value as true and correct
 					}
 				}
 			},
