@@ -373,10 +373,6 @@
 			meerkat.messaging.publish(meerkatEvents.homeResults.FEATURES_SUBMIT_CALLBACK, {event: event, element: element});
 		});
 
-		meerkat.messaging.subscribe(meerkatEvents.RESULTS_RANKING_READY, function() {
-			$('.esl-message').toggleClass('hidden', $('#home_property_address_state').val() !== 'NSW');
-		});
-
 		meerkat.messaging.subscribe(meerkatEvents.resultsMobileDisplayModeToggle.DISPLAY_MODE_CHANGED, function onDisplayModeChanged(obj) {
 			if (obj.displayMode === 'price') {
 				switchToPriceMode(true);

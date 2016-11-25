@@ -267,5 +267,6 @@
 	<c:if test="${not empty data.health.simples}">simplesCheckboxes: <c:out value="${go:XMLtoJSON(data.health.simples)}" escapeXml="false" />,</c:if>
 	<c:if test="${not empty data.health.application.dependants}">dependants:  <c:out value="${go:XMLtoJSON(data.health.application.dependants)}" escapeXml="false" />,</c:if>
 	alternatePricing: <health_v1:alternate_pricing_json />,
-	bsbServiceURL : "<content:get key="bsbValidationServiceUrl" />"
+	bsbServiceURL : "<content:get key="bsbValidationServiceUrl" />",
+	ccOpeningHoursText : "<content:get key="ccHoursText" />"
 }
