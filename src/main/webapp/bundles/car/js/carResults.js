@@ -134,6 +134,7 @@
 				},
 				elements: {
 					features:{
+						container: "#results_v5.featuresMode",
 						values: ".content",
 						extras: ".children"
 					}
@@ -314,6 +315,7 @@
 			// Check products length in case the reason for no results is an error e.g. 500
 			if (Results.model.availableCounts === 0 && _.isArray(Results.model.returnedProducts) && Results.model.returnedProducts.length > 0) {
 				showNoResults();
+				toggleNoResultsFeaturesMode();
 			}
 
 			meerkat.messaging.publish(meerkatEvents.commencementDate.RESULTS_RENDER_COMPLETED);
@@ -605,6 +607,22 @@
 			if(doTracking) {
 				meerkat.modules.resultsTracking.setResultsEventMode('Refresh');
 				publishExtraSuperTagEvents();
+			}
+
+			toggleNoResultsFeaturesMode();
+		}
+	}
+
+	function toggleNoResultsFeaturesMode() {
+		if (Results.model.availableCounts === 0) {
+			$(Results.settings.elements.features.container + " " + Results.settings.elements.features.allElements).hide();
+			$(Results.settings.elements.features.container).removeClass('featuresMode').find('.results-table').removeAttr('style');
+
+		} else {
+			// revert everything
+			$(Results.settings.elements.features.container + " " + Results.settings.elements.features.allElements).show();
+			if (!$(Results.settings.elements.features.container).hasClass('featuresMode')) {
+				$(Results.settings.elements.features.container).addClass('featuresMode');
 			}
 		}
 	}

@@ -293,14 +293,14 @@
 		{{ var brandsKnockedOut = 0; }}
 		{{ var $featuresMode = $('.featuresMode'); }}
 		{{ _.each(obj, function(result) { }}
-		{{ if (result.available !== 'Y') { }}
-		{{ brandsKnockedOut++; }}
-		{{ logos += logo(result); }}
-		{{ } }}
+			{{ if (result.available !== 'Y') { }}
+				{{ brandsKnockedOut++; }}
+				{{ logos += logo(result); }}
+			{{ } }}
 		{{ }) }}
 		<div class="result-row result_unavailable_combined notfiltered" data-available="N" style="display:block" data-position="{{= obj.length }}" data-sort="{{= obj.length }}">
 			<div class="result">
-				{{ if (brandsKnockedOut == obj.length && $featuresMode.length == 0) { }}
+				{{ if (Results.model.availableCounts == 0) { }}
 				<c:choose>
 					<c:when test="${brandCode eq 'ctm' && not(environmentCode eq 'NXS')}">
 						<agg_v2:no_quotes id="no-results-content"/>
@@ -318,12 +318,14 @@
 					<div class="logos">{{= logos }}</div>
 				</div>
 				{{ } }}
+				{{ if (Results.model.availableCounts > 0) { }}
 				<div class="resultInsert featuresMode">
 					<div class="productSummary results clearfix">
 						<h2>We're sorry but these providers chose not to quote:</h2>
 						<div class="logos">{{= logos }}</div>
 					</div>
 				</div>
+				{{ } }}
 			</div>
 		</div>
 		</div>
