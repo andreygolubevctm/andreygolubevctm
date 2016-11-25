@@ -26,11 +26,11 @@
 
 <field_v1:hidden xpath="quote/typeOfCover" defaultValue="COMPREHENSIVE"/>
 <field_v1:array_select
-		items="COMPREHENSIVE=Comprehensive,TPPD=3rd Party Property Damage,TPFT=3rd Party Fire and Theft"
+		items="COMPREHENSIVE=Comprehensive,TPFT=3rd party property&#44; fire and theft,TPPD=3rd party property"
 		xpath="filter/coverTypeOptions"
 		title=""
 		required=""
-		className="hidden" />
+		className="hidden type_of_cover" />
 
 <car:results_filterbar_xs />
 

@@ -353,6 +353,8 @@
 		$('#xsFilterBarCoverType #xsFilterBar_coverType_' + currentValues.coverType).prop('checked', true).attr('checked', 'checked').change();
 
         $('#xsFilterBar_excess').val(currentValues.excess);
+
+		meerkat.modules.carTypeOfCover.toggleTPFTOption($('#xsFilterBar_coverType_TPFT').parent());
 	}
 
 	function saveModalChanges() {
@@ -434,6 +436,16 @@
 		}
 	}
 
+	function buildCoverTypeMenu($filterCoverType) {
+		var $filterMenu = $filterCoverType.find('.dropdown-menu');
+
+		$filterMenu.empty();
+
+		$('#filter_coverTypeOptions option:not(.hidden)').each(function () {
+			$filterMenu.append('<li><a href="javascript:;" data-value="' + this.value + '">' + this.text + '</a></li>');
+		});
+	}
+
 	function initCarFilters() {
 		if(!initialised) {
 			initialised = true;
@@ -454,13 +466,9 @@
 			eventSubscriptions();
 
 			// Collect options from the page
-
 			var $filterMenu;
 
-			$filterMenu = $filterCoverType.find('.dropdown-menu');
-			$('#filter_coverTypeOptions option').each(function () {
-				$filterMenu.append('<li><a href="javascript:;" data-value="' + this.value + '">' + this.text + '</a></li>');
-			});
+			buildCoverTypeMenu($filterCoverType);
 
 			$filterMenu = $filterExcess.find('.dropdown-menu');
 			$('#filter_excessOptions option').each(function () {
@@ -489,7 +497,8 @@
 		show: show,
 		disable: disable,
 		enable: enable,
-		onRequestModal: onRequestModal
+		onRequestModal: onRequestModal,
+		buildCoverTypeMenu: buildCoverTypeMenu
 	});
 
 })(jQuery);

@@ -10,7 +10,7 @@
 
 <%-- HTML --%>
 
-<form_v2:row label="What level of car insurance cover are you looking for?" id="${name}FieldRow">
+<form_v2:row label="What level of car insurance cover are you looking for?" id="${name}FieldRow" helpId="565">
     <field_v2:import_select xpath="${xpath}"
                             url="/WEB-INF/option_data/car_type_of_cover.html"
                             title="what level of car insurance cover are you looking for" className="type_of_cover"

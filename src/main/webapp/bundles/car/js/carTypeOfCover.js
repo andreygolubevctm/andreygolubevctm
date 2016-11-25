@@ -15,6 +15,9 @@
     /* Variables */
     var $typeOfCoverDropdown = $('#quote_optionsTypeOfCover'),
         $typeOfCover = $('#quote_typeOfCover'),
+        $filterCoverType = $('#navbar-filter').find('.filter-cover-type'),
+        $tpftOption = $(':input.type_of_cover option').filter('[value=TPFT]'),
+        $marketValue = $('#quote_vehicle_marketValue'),
         ctpMessageDialogId = null;
 
     /* main entrypoint for the module to run first */
@@ -22,6 +25,8 @@
         if ($typeOfCover.val()) {
             $typeOfCoverDropdown.val($typeOfCover.val());
         }
+
+        toggleTPFTOption($tpftOption);
 
         eventSubscriptions();
     }
@@ -45,6 +50,24 @@
                 $typeOfCoverDropdown.val(obj.coverType);
             }
         });
+
+        meerkat.messaging.subscribe(meerkatEvents.car.VEHICLE_CHANGED, function onVehicleChanged() {
+            toggleTPFTOption($tpftOption);
+            meerkat.modules.carFilters.buildCoverTypeMenu($filterCoverType);
+        });
+    }
+
+    function toggleTPFTOption($tpftOption) {
+        if ($marketValue.val() < 20000) {
+            // hide TPFT option
+            $tpftOption.addClass('hidden');
+            // if previous selection was TPFT unselect
+            if ($typeOfCover.val() === 'TPFT') {
+                $typeOfCoverDropdown.val('');
+            }
+        } else {
+            $tpftOption.removeClass('hidden');
+        }
     }
 
     function showCTPMessage() {
@@ -88,7 +111,8 @@
     }
 
     meerkat.modules.register('carTypeOfCover', {
-        initCarTypeOfCover : initCarTypeOfCover // main entrypoint to be called.
+        initCarTypeOfCover : initCarTypeOfCover, // main entrypoint to be called.
+        toggleTPFTOption: toggleTPFTOption
     });
 
 })(jQuery);
