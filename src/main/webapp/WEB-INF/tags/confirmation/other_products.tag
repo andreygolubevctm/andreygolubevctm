@@ -53,7 +53,7 @@
 		</c:if>
 	</c:forEach>
 
-	<div class="options-list clearfix verticalButtons">
+	<div class="row options-list clearfix verticalButtons">
 		<c:forEach items="${brand.sortVerticalsBySeq()}" var="vertical" varStatus="loop">
 
 			<c:set var="displayVertical">
