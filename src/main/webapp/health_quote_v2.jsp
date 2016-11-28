@@ -26,7 +26,7 @@
 <%-- END JOURNEY OVERRIDE - Part 1 of 2) --%>
 
         <%-- Set global variable to flags for active split tests --%>
-        <health_v2:splittest_helper />
+        <health_v4:splittest_helper />
 
         <core_v2:quote_check quoteType="health" />
         <core_v2:load_preload />

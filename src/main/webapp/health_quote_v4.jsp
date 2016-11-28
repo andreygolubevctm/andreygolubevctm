@@ -1,0 +1,134 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ include file="/WEB-INF/tags/taglib.tagf" %>
+
+<%-- Setup New Health Session --%>
+<jsp:useBean id="sessionUtils" class="com.ctm.web.core.utils.SessionUtils" />
+<session:new verticalCode="HEALTH" authenticated="true" />
+
+<%-- Redirect if Confirmation Page --%>
+<health_v1:redirect_rules />
+
+<c:choose>
+    <c:when test="${not callCentre}">
+
+        <%-- ####### PRE JOURNEY SETUP ####### --%>
+
+        <%-- Set global variable to flags for active split tests --%>
+
+        <jsp:useBean id="splitTestService" class="com.ctm.web.core.services.tracking.SplitTestService" scope="request" />
+        <health_v4:splittest_helper />
+
+        <core_v2:quote_check quoteType="health" />
+        <core_v2:load_preload />
+
+
+
+        <%-- Call centre numbers --%>
+        <jsp:useBean id="callCenterHours" class="com.ctm.web.core.web.openinghours.go.CallCenterHours" scope="page" />
+        <c:set var="callCentreNumber" scope="request"><content:get key="callCentreNumber" /></c:set>
+        <c:set var="callCentreAppNumber" scope="request"><content:get key="callCentreAppNumber" /></c:set>
+        <c:set var="callCentreHelpNumber" scope="request"><content:get key="callCentreHelpNumber" /></c:set>
+
+        <c:set var="openingHoursHeader" scope="request"><content:getOpeningHours displayTodayOnly="true" /></c:set>
+        <c:set var="callCentreHoursModal" scope="request"><content:getOpeningHoursModal /></c:set>
+        <c:set var="callCentreCBModal" scope="request"><health_v3:callback_modal /></c:set>
+
+        <%-- ####### PRE JOURNEY SETUP --%>
+
+        <layout_v1:journey_engine_page title="Health Quote" bundleFileName="health_v4" displayNavigationBar="${false}">
+
+            <jsp:attribute name="head">
+            </jsp:attribute>
+
+            <jsp:attribute name="head_meta">
+			</jsp:attribute>
+
+            <jsp:attribute name="header">
+                <c:if test="${not empty callCentreNumber}">
+                    <div class="navbar-collapse header-collapse-contact collapse">
+                        <ul class="nav navbar-nav navbar-right callCentreNumberSection">
+
+                            <li>
+                                <div class="navbar-text visible-xs">
+                                    <h4>Do you need a hand?</h4>
+                                    <h1>
+                                        <a class="needsclick callCentreNumberClick" href="tel:${callCentreNumber}">
+                                            Call <span class="noWrap callCentreNumber">${callCentreNumber}</span>
+                                            <span class="noWrap callCentreAppNumber" style="display:none">${callCentreAppNumber}</span>
+                                        </a>
+                                    </h1>
+                                    <br /> ${openingHoursHeader}
+                                </div>
+                                <div class="navbar-text hidden-xs" data-livechat="target">
+                                    <span class="icon-phone"></span>
+                                    <h1><span class="noWrap callCentreNumber">${callCentreNumber}</span>
+                                        <span class="noWrap callCentreAppNumber" style="display:none">${callCentreAppNumber}</span>
+                                    </h1>
+                                        ${openingHoursHeader}
+                                </div>
+                                <div class="navbar-text hidden-xs" data-poweredby="header"></div>
+                            </li>
+                            <li>
+                                <health_v3:callback_link />
+                                ${callCentreCBModal}
+                                <div id="view_all_hours" class="hidden">${callCentreHoursModal}</div>
+                            </li>
+
+                        </ul>
+                    </div>
+                </c:if>
+            </jsp:attribute>
+
+            <jsp:attribute name="progress_bar">
+                <div class="progress-bar-row collapse navbar-collapse">
+                    <div class="container">
+                        <ul class="journeyProgressBar_v2"></ul>
+                    </div>
+                </div>
+            </jsp:attribute>
+
+            <jsp:attribute name="body_end">
+			</jsp:attribute>
+
+            <jsp:attribute name="vertical_settings">
+                <health_v4:settings />
+			</jsp:attribute>
+
+            <jsp:attribute name="footer">
+                <health_v1:footer />
+			</jsp:attribute>
+
+            <jsp:attribute name="form_bottom">
+			</jsp:attribute>
+
+            <jsp:body>
+                <health_v1:product_title_search />
+                <core_v1:application_date />
+
+                <health_v1:choices xpathBenefits="${pageSettings.getVerticalCode()}/benefits" xpathSituation="${pageSettings.getVerticalCode()}/situation" />
+
+
+                <%-- generate the benefit fields (hidden) for form selection. --%>
+                <div class="hiddenFields">
+                    <health_v4:hidden_fields />
+                </div>
+
+                <%-- Slides --%>
+                <health_v4_layout:slide_about_you />
+
+                <field_v1:hidden xpath="environmentOverride" />
+                <field_v1:hidden xpath="staticOverride" />
+                <field_v1:hidden xpath="environmentValidatorOverride" />
+                <input type="hidden" name="transcheck" id="transcheck" value="1" />
+                <agg_v3:save_quote />
+            </jsp:body>
+        </layout_v1:journey_engine_page>
+    </c:when>
+    <c:otherwise>
+        <c:set var="redirectURL" value="${pageSettings.getBaseUrl()}health_quote.jsp?" />
+        <c:forEach items="${param}" var="currentParam">
+            <c:set var="redirectURL">${redirectURL}${currentParam.key}=${currentParam.value}&</c:set>
+        </c:forEach>
+        <c:redirect url="${fn:substring(redirectURL,0,fn:length(redirectURL) - 1)}" />
+    </c:otherwise>
+</c:choose>

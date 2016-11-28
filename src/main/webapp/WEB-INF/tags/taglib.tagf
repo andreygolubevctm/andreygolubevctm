@@ -40,6 +40,8 @@
 <%@ taglib tagdir="/WEB-INF/tags/health/v2/layout"		prefix="health_v2_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/health/v3"			    prefix="health_v3" %>
 <%@ taglib tagdir="/WEB-INF/tags/health/v3/layout"	    prefix="health_v3_layout" %>
+<%@ taglib tagdir="/WEB-INF/tags/health/v4"			    prefix="health_v4" %>
+<%@ taglib tagdir="/WEB-INF/tags/health/v4/layout"	    prefix="health_v4_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/simples"				prefix="simples" %>
 <%@ taglib tagdir="/WEB-INF/tags/travel"				prefix="travel" %>
 <%@ taglib tagdir="/WEB-INF/tags/travel/layout"			prefix="travel_layout" %>
@@ -87,5 +89,4 @@
 <%@ taglib tagdir="/WEB-INF/tags/resetpassword/layout"	prefix="resetpassword_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/lmi" 	                prefix="lmi" %>
 <%@ taglib tagdir="/WEB-INF/tags/lmi/layout" 	        prefix="lmi_layout" %>
-<%@ taglib tagdir="/WEB-INF/tags/snippets"              prefix="snippets" %>
 <%@ taglib tagdir="/WEB-INF/tags/distil"                prefix="distil" %>
