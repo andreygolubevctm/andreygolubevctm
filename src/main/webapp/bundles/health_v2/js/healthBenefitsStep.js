@@ -701,14 +701,6 @@
         }
     }
 
-    function syncAccidentOnly() {
-        if ($('#accidentCover').is(":checked")) {
-            $limitedCoverHidden.val("");
-        } else {
-            $limitedCoverHidden.val("N");
-        }
-    }
-
     // Get the selected benefits from the forms hidden fields (the source of truth! - not the checkboxes)
     function getSelectedBenefits() {
 
@@ -790,7 +782,6 @@
         disableFields: disableFields,
         updateHiddenFields: updateHiddenFields,
         getSelectedBenefits: getSelectedBenefits,
-        syncAccidentOnly: syncAccidentOnly,
         populateBenefitsSelection: populateBenefitsSelection,
         getHospitalBenefitsModel: getHospitalBenefitsModel,
         getExtraBenefitsModel: getExtraBenefitsModel,
