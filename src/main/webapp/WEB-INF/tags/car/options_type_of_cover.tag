@@ -7,13 +7,24 @@
 
 <%-- VARIABLES --%>
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
+<c:set var="typeOfCoverOptions">
+    <c:choose>
+        <c:when test="${pageSettings.getBrandCode() eq 'ctm'}">
+            COMPREHENSIVE=Comprehensive,TPFT=Third party property&#44; fire and theft,TPPD=Third party property,CTP=Compulsory third party (Greenslip)
+        </c:when>
+        <c:otherwise>
+            COMPREHENSIVE=Comprehensive,CTP=Compulsory third party (Greenslip)
+        </c:otherwise>
+    </c:choose>
+</c:set>
 
 <%-- HTML --%>
 
 <form_v2:row label="What level of car insurance cover are you looking for?" id="${name}FieldRow" helpId="565">
-    <field_v2:import_select xpath="${xpath}"
-                            url="/WEB-INF/option_data/car_type_of_cover.html"
-                            title="what level of car insurance cover are you looking for" className="type_of_cover"
-                            required="true" />
+    <field_v2:array_select xpath="${xpath}"
+                           items="${typeOfCoverOptions}"
+                           required="true"
+                           title="what level of car insurance cover are you looking for"
+                           className="type_of_cover" />
 </form_v2:row>
 
