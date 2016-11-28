@@ -189,6 +189,7 @@
                 includeFormData: true
             },
             onInitialise: function () {
+                meerkat.modules.carTypeOfCover.initCarTypeOfCover();
                 meerkat.modules.carCommencementDate.initCarCommencementDate();
                 meerkat.modules.carYoungDrivers.initCarYoungDrivers();
                 meerkat.modules.carUsingYourCar.initUsingYourCar();
