@@ -10,10 +10,10 @@
 <c:set var="typeOfCoverOptions">
     <c:choose>
         <c:when test="${pageSettings.getBrandCode() eq 'ctm'}">
-            COMPREHENSIVE=Comprehensive,TPFT=Third party property&#44; fire and theft,TPPD=Third party property,CTP=Compulsory third party (Greenslip)
+            =Please choose...,COMPREHENSIVE=Comprehensive,TPFT=Third party property&#44; fire and theft,TPPD=Third party property,CTP=Compulsory third party (Greenslip)
         </c:when>
         <c:otherwise>
-            COMPREHENSIVE=Comprehensive,CTP=Compulsory third party (Greenslip)
+            =Please choose...,COMPREHENSIVE=Comprehensive,CTP=Compulsory third party (Greenslip)
         </c:otherwise>
     </c:choose>
 </c:set>
