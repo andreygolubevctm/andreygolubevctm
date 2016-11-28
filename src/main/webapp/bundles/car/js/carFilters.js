@@ -449,10 +449,8 @@
 
 		$filterMenu.empty();
 
-		_.defer(function() {
-			$('#filter_coverTypeOptions option:not(.hidden)').each(function () {
-				$filterMenu.append('<li><a href="javascript:;" data-value="' + this.value + '">' + this.text + '</a></li>');
-			});
+		$('#filter_coverTypeOptions option:not(.hidden)').each(function () {
+			$filterMenu.append('<li><a href="javascript:;" data-value="' + this.value + '">' + this.text + '</a></li>');
 		});
 	}
 
