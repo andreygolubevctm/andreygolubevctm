@@ -264,6 +264,8 @@
                 // Sync the filters to the results engine
                 if (!meerkat.modules.carExotic.isExotic()) {
                     meerkat.modules.carFilters.updateFilters();
+                } else {
+                    meerkat.modules.tracking.recordTouch('EC','Famous Results');
                 }
             },
             onAfterEnter: function afterEnterResults(event) {
