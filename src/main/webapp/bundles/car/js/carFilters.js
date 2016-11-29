@@ -221,6 +221,10 @@
 			}
 		}
 		$component.find('li.dropdown.filter-frequency, .filter-frequency .dropdown-toggle').removeClass('disabled');
+
+		if (currentValues.coverType !== 'COMPREHENSIVE') {
+			$component.find('li.dropdown.filter-excess, .filter-excess .dropdown-toggle').addClass('disabled');
+		}
 	}
 
 	function eventSubscriptions() {
@@ -310,6 +314,8 @@
 
 				currentValues.coverType = previousValues.coverType;
 
+				$('#quote_typeOfCover').val(previousValues.coverType);
+
 				$filterCoverType.find('a[data-value="' + previousValues.coverType + '"]').each(function(){
 					$dropdown.find('.dropdown-toggle span').text($(this).text());
 					$(this).parent().addClass("active");
@@ -381,7 +387,11 @@
 		function xsDefaultExcess(coverType) {
 			$('#xsFilterBar_excess')
 				.val(coverType !== 'COMPREHENSIVE' ? 600 : currentValues.excess)
-				.toggleClass('default-600', coverType !== 'COMPREHENSIVE');
+				.toggleClass('default-600', coverType !== 'COMPREHENSIVE')
+				.prop('disabled', coverType !== 'COMPREHENSIVE')
+				.attr('disabled', coverType !== 'COMPREHENSIVE');
+
+			$('#xsFilterBar_excess').closest('.select').toggleClass('disabled', coverType !== 'COMPREHENSIVE');
 		}
 
 		meerkat.modules.carTypeOfCover.toggleTPFTOption($('#xsFilterBar_coverType_TPFT').parent());
@@ -481,9 +491,14 @@
 
 		if (typeOfCover !== 'COMPREHENSIVE') {
 			$('#quote_excess').val(600);
+			$filterExcess.add($('.filter-excess .dropdown-toggle')).addClass('disabled');
 		} else {
 			if (currentValues.excess) {
 				$('#quote_excess').val(currentValues.excess);
+			}
+
+			if (!_.isEmpty(previousValues.coverType) && currentValues.coverType === 'COMPREHENSIVE') {
+				$filterExcess.add($('.filter-excess .dropdown-toggle')).removeClass('disabled');
 			}
 		}
 

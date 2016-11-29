@@ -6,10 +6,14 @@
   .modal-footer {
     text-align: center;
 
-    @media (@xs-only) {
-      .btn {
-        margin-top:10px;
-      }
+    .btn {
+        @media (@xs-only) {
+          margin-top: 10px;
+        }
+
+        @media (@sm) {
+          margin: 0 10px;
+        }
     }
   }
 

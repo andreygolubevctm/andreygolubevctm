@@ -82,7 +82,7 @@
             className: "btn-next",
             closeWindow: true,
             action: function() {
-                window.location = meerkat.site.urls.exit.replace('car', 'ctp');
+                window.open(meerkat.site.urls.exit.replace('car', 'ctp'), '_blank');
             }
         },{
             label : "I would like to change my selection",

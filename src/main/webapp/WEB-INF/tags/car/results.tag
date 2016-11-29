@@ -24,7 +24,7 @@
 		omitPleaseChoose="Y"
 		className="hidden" />
 
-<field_v1:hidden xpath="quote/typeOfCover" defaultValue="COMPREHENSIVE"/>
+<field_v1:hidden xpath="quote/typeOfCover" />
 
 <c:set var="coverTypeOptions">
     <c:choose>
