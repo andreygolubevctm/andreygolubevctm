@@ -11,6 +11,7 @@
         premiumIncreaseContent = $('.healthPremiumIncreaseContent'),
         maxMilliSecondsForMessage = $("#maxMilliSecToWait").val(),
         resultsStepIndex = 3,
+        $openingHours = null,
 
         templates = {
             premiumsPopOver: '{{ if(product.premium.hasOwnProperty(frequency)) { }}' +
@@ -879,6 +880,40 @@
             data["rank_productCode" + position] = product.info.productCode;
             data["rank_premium" + position] = product.premium[Results.settings.frequency].lhcfreetext;
             data["rank_premiumText" + position] = product.premium[Results.settings.frequency].lhcfreepricing;
+
+        }
+
+        // Do this only for the best price product
+        if (position === 0) {
+
+            var benefitCodes= $.map(meerkat.modules.healthUtils.getSelectedBenefits(product.info.ProductType),
+                function(b) {
+                    return b.code;
+                });
+            var situation = meerkat.modules.healthUtils.getSelectedHealthSituation().name;
+            var currentPHI = meerkat.modules.healthUtils.getPrimaryCurrentPHI();
+            var specialOffer = meerkat.modules.healthUtils.getSpecialOffer(product);
+            var excessesAndCoPayment = meerkat.modules.healthUtils.getExcessesAndCoPayment(product);
+
+            var healthMembership = $.trim($('#health_situation_healthCvr option:selected').text());
+
+            data["rank_healthMembership" +  position] = healthMembership;
+            data["rank_healthSituation" + position] = situation;
+            data["rank_benefitCodes" + position] = benefitCodes.join(',');
+            data["rank_coverType" + position] = product.info.ProductType;
+            data["rank_primaryCurrentPHI" + position] = currentPHI;
+            if (product.promo.hospitalPDF != 'health_brochure.jsp?pdf=') {
+                data["rank_hospitalPdsUrl" +  position] = product.promo.hospitalPDF;
+            }
+            if (product.promo.extrasPDF != 'health_brochure.jsp?pdf=') {
+                data["rank_extrasPdsUrl" +  position] = product.promo.extrasPDF;
+            }
+            data["rank_specialOffer" + position] = specialOffer.specialOffer;
+            data["rank_specialOfferTerms" + position] = specialOffer.specialOfferTerms;
+            data["rank_excessPerAdmission" + position] = excessesAndCoPayment.excessPerAdmission;
+            data["rank_excessPerPerson" + position] = excessesAndCoPayment.excessPerPerson;
+            data["rank_excessPerPolicy" + position] = excessesAndCoPayment.excessPerPolicy;
+            data["rank_coPayment" + position] = excessesAndCoPayment.coPayment;
         }
 
         return data;
@@ -939,6 +974,20 @@
         $('.floated-previous-arrow').addClass('hidden');
     }
 
+    function setCallCentreText() {
+        $openingHours = _.isNull($openingHours) ? $('[data-step="results"] [data-livechat="target"] .today-hours') : $openingHours;
+        // add talk to experts blurb just for results page
+        if ($openingHours.text().length > 0) {
+            $openingHours.text(meerkat.site.ccOpeningHoursText + $openingHours.text());
+        }
+    }
+
+    function resetCallCentreText() {
+        if (!_.isNull($openingHours)) {
+            $openingHours.text($openingHours.text().replace(meerkat.site.ccOpeningHoursText, ''));
+        }
+    }
+
     meerkat.modules.register('healthResults', {
         init: init,
         events: moduleEvents,
@@ -962,7 +1011,9 @@
         setLhcApplicable: setLhcApplicable,
         resultsStepIndex: resultsStepIndex,
         setSelectedBenefitsList: setSelectedBenefitsList,
-        hideNavigationLink: hideNavigationLink
+        hideNavigationLink: hideNavigationLink,
+        setCallCentreText: setCallCentreText,
+        resetCallCentreText: resetCallCentreText
     });
 
 })(jQuery);

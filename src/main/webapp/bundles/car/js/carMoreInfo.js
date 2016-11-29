@@ -317,7 +317,7 @@
 		if(obj.available !== "Y")
 			return;
 
-		if (meerkat.modules.splitTest.isActive(8) && meerkat.modules.moreInfo.isBridgingPageOpen()) {
+		if (meerkat.modules.splitTest.isActive(8) && Results.getDisplayMode() === 'price') {
 			callActionsToggle(event, $el, obj);
 			return;
 		}
@@ -505,8 +505,6 @@
                 .val(selectedFrequency)
                 .trigger('change');
 		}
-
-		$('.esl-message').toggleClass('hidden', $('#quote_riskAddress_state').val() !== 'NSW');
 	}
 
 	/**

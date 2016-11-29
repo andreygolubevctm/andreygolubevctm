@@ -33,6 +33,17 @@ public class HealthProductBrochuresExactTargetFormatter extends ExactTargetForma
 		emailModel.setAttribute("HospitalPDSUrl", model.getHospitalPDSUrl());
 		emailModel.setAttribute("ExtrasPDSUrl", model.getExtrasPDSUrl());
 
+		model.getHealthSituation().ifPresent(v -> emailModel.setAttribute("HealthSituation", v));
+		model.getPrimaryCurrentPHI().ifPresent(v -> emailModel.setAttribute("PrimaryCurrentPHI", v));
+		model.getCoverType().ifPresent(v -> emailModel.setAttribute("CoverType", v));
+		model.getBenefitCodes().ifPresent(v -> emailModel.setAttribute("BenefitCodes", v));
+		model.getSpecialOffer().ifPresent(v -> emailModel.setAttribute("P1SpecialOffer", v));
+		model.getSpecialOfferTerms().ifPresent(v -> emailModel.setAttribute("P1SpecialOfferTerms", v));
+		model.getExcessPerAdmission().ifPresent(v -> emailModel.setAttribute("P1ExcessPerAdmission", v));
+		model.getExcessPerPerson().ifPresent(v -> emailModel.setAttribute("P1ExcessPerPerson", v));
+		model.getExcessPerPolicy().ifPresent(v -> emailModel.setAttribute("P1ExcessPerPolicy", v));
+		model.getCoPayment().ifPresent(v -> emailModel.setAttribute("P1Copayment", v));
+
 		return emailModel;
 	}
 

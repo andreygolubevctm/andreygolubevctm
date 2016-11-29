@@ -193,7 +193,8 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 										<c:otherwise>expired</c:otherwise>
 								</c:choose>
 								</c:set>
-								<destUrl>${remoteLoadQuoteService.getActionQuoteUrl(quotePagePrefix,action,data.current.transactionId,jParam)}</destUrl>
+								<c:set var="allParams">${jParam}${trackingParams}</c:set>
+								<destUrl>${remoteLoadQuoteService.getActionQuoteUrl(quotePagePrefix,action,data.current.transactionId,allParams)}</destUrl>
 							</c:when>
 
 							<%-- GET LATEST --%>

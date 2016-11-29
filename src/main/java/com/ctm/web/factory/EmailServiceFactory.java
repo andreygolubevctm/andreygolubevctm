@@ -1,10 +1,7 @@
 package com.ctm.web.factory;
 
 import com.ctm.web.core.content.dao.ContentDao;
-import com.ctm.web.core.dao.EmailMasterDao;
-import com.ctm.web.core.dao.RankingDetailsDao;
-import com.ctm.web.core.dao.StampingDao;
-import com.ctm.web.core.dao.TouchDao;
+import com.ctm.web.core.dao.*;
 import com.ctm.web.core.email.exceptions.SendEmailException;
 import com.ctm.web.core.email.mapping.EmailDetailsMappings;
 import com.ctm.web.core.email.mapping.LifeEmailDetailMappings;
@@ -21,12 +18,16 @@ import com.ctm.web.core.exceptions.VerticalException;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical.VerticalType;
 import com.ctm.web.core.security.IPAddressHandler;
-import com.ctm.web.core.services.*;
+import com.ctm.web.core.services.AccessTouchService;
+import com.ctm.web.core.services.ApplicationService;
+import com.ctm.web.core.services.ServiceConfigurationServiceBean;
+import com.ctm.web.core.services.SessionDataService;
 import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.core.transaction.dao.TransactionDetailsDao;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.health.email.mapping.HealthEmailDetailMappings;
 import com.ctm.web.health.email.services.HealthEmailService;
+import com.ctm.web.health.services.ProviderContentService;
 import com.ctm.web.life.dao.OccupationsDao;
 import com.ctm.web.life.email.services.LifeEmailDataService;
 import com.ctm.web.life.email.services.LifeEmailService;
@@ -42,16 +43,22 @@ public class EmailServiceFactory {
     private final IPAddressHandler ipAddressHandler;
     private final TransactionDetailsDao transactionDetailsDao;
     private final ApplicationService applicationService;
+	private final GeneralDao generalDao;
+	private final ProviderContentService providerContentService;
 
     @Autowired
 	EmailServiceFactory(OccupationsDao occupationsDao,
                         IPAddressHandler ipAddressHandler,
                         TransactionDetailsDao transactionDetailsDao,
-                        ApplicationService applicationService) {
+                        ApplicationService applicationService,
+						GeneralDao generalDao,
+						ProviderContentService providerContentService) {
 		this.occupationsDao = occupationsDao;
         this.ipAddressHandler = ipAddressHandler;
         this.transactionDetailsDao = transactionDetailsDao;
         this.applicationService = applicationService;
+		this.generalDao = generalDao;
+		this.providerContentService = providerContentService;
 	}
 
 
@@ -85,7 +92,7 @@ public class EmailServiceFactory {
 		return emailService;
 	}
 
-	private static EmailServiceHandler getHealthEmailService(
+	private EmailServiceHandler getHealthEmailService(
 			PageSettings pageSettings, EmailMode mode, Data data, VerticalType vertical) throws SendEmailException {
 		ContentDao contentDao = new ContentDao(pageSettings.getBrandId(), pageSettings.getVertical().getId());
 		EmailDetailsService emailDetailsService = createEmailDetailsService(pageSettings, data, vertical, new HealthEmailDetailMappings());
@@ -94,7 +101,9 @@ public class EmailServiceFactory {
 		SessionDataService sessionDataService = new SessionDataService();
 		TouchDao dao = new TouchDao();
 		AccessTouchService accessTouchService = new AccessTouchService(dao , sessionDataService);
-		return new HealthEmailService(pageSettings, mode , emailDetailsService, contentDao, urlService , accessTouchService, urlServiceOld, sessionDataService, IPAddressHandler.getInstance());
+		return new HealthEmailService(pageSettings, mode , emailDetailsService, contentDao, urlService ,
+				accessTouchService, urlServiceOld, sessionDataService, IPAddressHandler.getInstance(),
+				generalDao, providerContentService);
 	}
 
 	private static EmailServiceHandler getTravelEmailService(

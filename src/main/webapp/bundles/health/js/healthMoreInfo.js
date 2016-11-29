@@ -247,6 +247,16 @@
     function initialiseBrochureEmailForm(product, parent, form) {
         var emailBrochuresElement = parent.find('.moreInfoEmailBrochures');
         emailBrochuresElement.show();
+
+        var benefitCodes= $.map(meerkat.modules.healthUtils.getSelectedBenefits(product.info.ProductType),
+            function(b) {
+                return b.code;
+            });
+        var situation = meerkat.modules.healthUtils.getSelectedHealthSituation().name;
+        var currentPHI = meerkat.modules.healthUtils.getPrimaryCurrentPHI();
+        var specialOffer = meerkat.modules.healthUtils.getSpecialOffer(product);
+        var excessesAndCoPayment = meerkat.modules.healthUtils.getExcessesAndCoPayment(product);
+
         meerkat.modules.emailBrochures.setup({
             emailInput: emailBrochuresElement.find('.sendBrochureEmailAddress'),
             submitButton: emailBrochuresElement.find('.btn-email-brochure'),
@@ -261,7 +271,18 @@
                 {name: "productId", value: product.productId},
                 {name: "productCode", value: product.info.productCode},
                 {name: "premium", value: product.premium[Results.settings.frequency].lhcfreetext},
-                {name: "premiumText", value: product.premium[Results.settings.frequency].lhcfreepricing}
+                {name: "premiumText", value: product.premium[Results.settings.frequency].lhcfreepricing},
+                // Additional information
+                {name: "healthSituation", value: situation},
+                {name: "primaryCurrentPHI", value: currentPHI},
+                {name: "coverType", value: product.info.ProductType},
+                {name: "benefitCodes", value: benefitCodes.join(',')},
+                {name: "specialOffer", value: specialOffer.specialOffer},
+                {name: "specialOfferTerms", value: specialOffer.specialOfferTerms},
+                {name: "excessPerAdmission", value: excessesAndCoPayment.excessPerAdmission},
+                {name: "excessPerPerson", value: excessesAndCoPayment.excessPerPerson},
+                {name: "excessPerPolicy", value: excessesAndCoPayment.excessPerPolicy},
+                {name: "coPayment", value: excessesAndCoPayment.coPayment}
             ],
             product: product,
             identifier: "SEND_BROCHURES" + product.productId,

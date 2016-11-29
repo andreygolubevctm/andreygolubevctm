@@ -140,7 +140,7 @@
 				},
 				templates:{
 					pagination:{
-						pageText: '{{ if(currentPage !== totalPages) { }} Product {{=currentPage}} of {{=(totalPages - 1)}} {{ } }}'
+						pageText: '{{ if(currentPage <= availableCounts) { }} Product {{=currentPage}} of {{=(availableCounts)}} {{ } }}'
 					}
 				},
 				dictionary: {
@@ -232,7 +232,7 @@
 
 		// When the excess filter changes, fetch new results
 		meerkat.messaging.subscribe(meerkatEvents.carFilters.CHANGED, function onFilterChange(obj){
-			if (obj && obj.hasOwnProperty('excess')) {
+			if (obj && obj.hasOwnProperty('excess') || obj.hasOwnProperty('coverType')) {
 				// This is a little dirty however we need to temporarily override the
 				// setting which prevents the tranId from being incremented.
 				Results.settings.incrementTransactionId = true;
@@ -384,10 +384,6 @@
 
 		//meerkat.messaging.subscribe(meerkatEvents.RESULTS_DATA_READY, publishExtraSuperTagEvents);
 		//meerkat.messaging.subscribe(meerkatEvents.RESULTS_SORTED, publishExtraSuperTagEvents);
-
-		meerkat.messaging.subscribe(meerkatEvents.RESULTS_RANKING_READY, function() {
-			$('.esl-message').toggleClass('hidden', $('#quote_riskAddress_state').val() !== 'NSW');
-		});
 
 		meerkat.messaging.subscribe(meerkatEvents.resultsMobileDisplayModeToggle.DISPLAY_MODE_CHANGED, function(obj) {
 			if (obj.displayMode === 'price') {
@@ -639,7 +635,7 @@
 
 		// Elements to lock when entering compare mode
 		meerkat.messaging.subscribe(meerkatEvents.compare.AFTER_ENTER_COMPARE_MODE, function() {
-			$('.filter-excess, .filter-excess a').addClass('disabled');
+			$('.filter-cover-type, .filter-cover-type a, .filter-excess, .filter-excess a').addClass('disabled');
 			$('.filter-featuresmode, .filter-pricemode, .filter-view-label').addClass('hidden');
 			$('.filter-frequency-label').css('margin-right', $('.back-to-price-mode').width());
 		});

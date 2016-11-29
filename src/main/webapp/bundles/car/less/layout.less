@@ -51,21 +51,8 @@
     margin-right: 40px;
   }
 
-  .esl-message {
-    background-color: #f1f1f1;
-    line-height: 40px;
-    margin-right: 0;
-    text-align: center;
-
-    a:focus {
-      color: @theme-tertiary;
-      text-decoration: none;
-    }
-
-    @media (@sm) {
-      background-color: inherit;
-      text-align: left;
-    }
+  #footer p.eslMessage {
+    font-size: 14px;
   }
 
   // New filter styles to fit CAR-1304
@@ -90,14 +77,16 @@
       &.filter-cover-type {
         width: 168px;
 
-        a {
-          cursor: default;
-          span {
-            color: #fff;
-          }
+        &.skipNewCoverTypes {
+          a {
+            cursor: default;
+            span {
+              color: #fff;
+            }
 
-          .icon {
-            display: none;
+            .icon {
+              display: none;
+            }
           }
         }
       }
@@ -126,12 +115,6 @@
           text-transform: uppercase;
         }
       }
-    }
-  }
-
-  #xsFilterBarCoverType {
-    .btn-group-vertical .btn:not(:first-child) {
-      display: none;
     }
   }
 }
