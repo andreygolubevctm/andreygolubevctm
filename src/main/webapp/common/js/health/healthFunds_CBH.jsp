@@ -252,7 +252,7 @@ var healthFunds_CBH = {
 				}
 			});
 
-			var $policyDayMessage = $('.health_payment_bank-details_policyDay-message')
+			var $policyDayMessage = $('.health_payment_bank-details_policyDay-message');
 			$('#health_payment_details_frequency').on('change.CBH', function() {
 				$policyDayMessage.html('');
 				if (meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'ba') {
@@ -266,8 +266,8 @@ var healthFunds_CBH = {
 					}
 				}
 			});
-			$('#health_payment_details_frequency').trigger('change.CBH');
-
+			$('#health_payment_details_frequency').trigger("change.CBH");
+			
 			<%-- Claims account --%>
 			meerkat.modules.healthPaymentStep.overrideSettings('creditBankSupply',true);
 			meerkat.modules.healthPaymentStep.overrideSettings('creditBankQuestions',true);
