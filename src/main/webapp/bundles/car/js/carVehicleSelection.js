@@ -473,24 +473,20 @@
         var year = getDataForCode('years', $(elements.years).val());
         if (year !== false) $(elements.registrationYear).val(year.code);
 
-        // check if the car is a normal car question set or if the user came from the exotic car landing page
-        // and they haven't hit the year question yet
-        if (!meerkat.site.isFromExoticPage || (meerkat.site.isFromExoticPage && data.field !== 'years')) {
-            // Attempt to populate the next field
-            if (invalid === false && next !== false) {
-                disableFutureSelectors(next);
-                getVehicleData(next);
-            }
+        // Attempt to populate the next field
+        if (invalid === false && next !== false) {
+            disableFutureSelectors(next);
+            getVehicleData(next);
+        }
 
-            if (data.field === 'types') {
-                var $element = $(elements.types);
-                if (
-                    ($element.find('input:checked')) ||
-                    (!_.isEmpty($element.val()))
-                ) {
-                    addValidationStyles($element);
-                    checkAndNotifyOfVehicleChange();
-                }
+        if (data.field === 'types') {
+            var $element = $(elements.types);
+            if (
+                ($element.find('input:checked')) ||
+                (!_.isEmpty($element.val()))
+            ) {
+                addValidationStyles($element);
+                checkAndNotifyOfVehicleChange();
             }
         }
 
