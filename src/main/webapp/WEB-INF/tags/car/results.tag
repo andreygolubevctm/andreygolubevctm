@@ -29,7 +29,7 @@
 <c:set var="coverTypeOptions">
     <c:choose>
         <c:when test="${skipNewCoverTypeCarJourney eq true or pageSettings.getBrandCode() ne 'ctm'}">COMPREHENSIVE=Comprehensive</c:when>
-        <c:otherwise>COMPREHENSIVE=Comprehensive,TPFT=3rd party property&#44; fire and theft,TPPD=3rd party property</c:otherwise>
+        <c:otherwise>COMPREHENSIVE=Comprehensive,TPFT=Third party property&#44; fire and theft,TPPD=Third party property</c:otherwise>
     </c:choose>
 </c:set>
 

@@ -72,6 +72,9 @@
 			$filterFrequency.find('.dropdown-toggle span').text( $filterFrequency.find('.dropdown-menu a[data-value="' + freq + '"]').text() );
 		}
 
+		// make excess unselectable with value of $600 if cover type not comprehensive
+		defaultExcess();
+
 		// Refresh excess
 		var excess = $('#quote_excess').val() ? $('#quote_excess').val() : $('#quote_baseExcess').val();
 		$filterExcess.find('.dropdown-toggle span').text( $filterExcess.find('.dropdown-menu a[data-value="' + excess + '"]').text() );
@@ -109,7 +112,9 @@
 			}
 		}
 		else if ($dropdown.hasClass('filter-excess')) {
-			previousValues.excess = currentValues.excess;
+			if (!updateBtnShown) {
+				previousValues.excess = currentValues.excess;
+			}
 
 			if(value !== currentValues.excess) {
 				currentValues.excess = value;
@@ -119,13 +124,16 @@
 			}
 		}
 		else if ($dropdown.hasClass('filter-cover-type')) {
-			previousValues.coverType = currentValues.coverType;
+			if (!updateBtnShown) {
+				previousValues.coverType = currentValues.coverType;
+			}
 
 			if (value !== currentValues.coverType) {
 				currentValues.coverType = value;
 				$('#quote_typeOfCover').val(value);
 
 				toggleUpdate(false);
+				updateFilters();
 			}
 		}
 	}
@@ -306,6 +314,8 @@
 					$dropdown.find('.dropdown-toggle span').text($(this).text());
 					$(this).parent().addClass("active");
 				});
+
+				updateFilters();
 			}
 
 			toggleUpdate(true);
@@ -360,7 +370,19 @@
 		$('#xsFilterBarCoverType input:checked').prop('checked', false);
 		$('#xsFilterBarCoverType #xsFilterBar_coverType_' + currentValues.coverType).prop('checked', true).attr('checked', 'checked').change();
 
-        $('#xsFilterBar_excess').val(currentValues.excess);
+		$('[name=xsFilterBar_coverType]').on('change', function() {
+			var coverType = $(this).val();
+
+			xsDefaultExcess(coverType);
+		});
+
+		xsDefaultExcess(currentValues.coverType);
+
+		function xsDefaultExcess(coverType) {
+			$('#xsFilterBar_excess')
+				.val(coverType !== 'COMPREHENSIVE' ? 600 : currentValues.excess)
+				.toggleClass('default-600', coverType !== 'COMPREHENSIVE');
+		}
 
 		meerkat.modules.carTypeOfCover.toggleTPFTOption($('#xsFilterBar_coverType_TPFT').parent());
 	}
@@ -452,6 +474,20 @@
 		$('#filter_coverTypeOptions option:not(.hidden)').each(function () {
 			$filterMenu.append('<li><a href="javascript:;" data-value="' + this.value + '">' + this.text + '</a></li>');
 		});
+	}
+
+	function defaultExcess() {
+		var typeOfCover = $('#quote_typeOfCover').val();
+
+		if (typeOfCover !== 'COMPREHENSIVE') {
+			$('#quote_excess').val(600);
+		} else {
+			if (currentValues.excess) {
+				$('#quote_excess').val(currentValues.excess);
+			}
+		}
+
+		$filterExcess.toggleClass('default-600', typeOfCover !== 'COMPREHENSIVE');
 	}
 
 	function initCarFilters() {

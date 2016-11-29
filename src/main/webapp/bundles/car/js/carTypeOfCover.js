@@ -18,7 +18,8 @@
         $filterCoverType = $('#navbar-filter').find('.filter-cover-type'),
         $tpftOption = $(':input.type_of_cover option').filter('[value=TPFT]'),
         $marketValue = $('#quote_vehicle_marketValue'),
-        ctpMessageDialogId = null;
+        ctpMessageDialogId = null,
+        $body = $('body');
 
     /* main entrypoint for the module to run first */
     function initCarTypeOfCover() {
@@ -55,10 +56,15 @@
             toggleTPFTOption($tpftOption);
             meerkat.modules.carFilters.buildCoverTypeMenu($filterCoverType);
         });
+
+        $(document).on('resultsFetchFinish', function onResultsFetchFinish() {
+            // add class to body for toggling special features and some features rows when cover level not comprehensive
+            $body.toggleClass('non-comprehensive-cover', $typeOfCover.val() !== 'COMPREHENSIVE');
+        });
     }
 
     function toggleTPFTOption($tpftOption) {
-        if ($marketValue.val() < 20000) {
+        if ($marketValue.val() > 20000) {
             // hide TPFT option
             $tpftOption.addClass('hidden');
             // if previous selection was TPFT unselect
