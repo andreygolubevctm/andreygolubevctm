@@ -245,7 +245,9 @@
 		try{
 			eventObject.isStartMode = false;
 
-			if(eventObject.navigationId === "") eventObject.navigationId = settings.startStepId; // assume it is the start step if blank
+			if(eventObject.navigationId === "") {
+				eventObject.navigationId = settings.startStepId;
+			} // assume it is the start step if blank
 			var step = getStep(eventObject.navigationId);
 			if(step === null) {
 				step = getStep(0);
@@ -307,7 +309,9 @@
 
 		}catch(e){
 			unlock();
+			if(_.isObject(currentStep)) {
 			meerkat.modules.address.setHash(currentStep.navigationId);
+			}
 			meerkat.logging.info('[journeyEngine]',e);
 			return false;
 		}

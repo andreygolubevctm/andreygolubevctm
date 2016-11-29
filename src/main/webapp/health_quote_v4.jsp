@@ -22,7 +22,6 @@
         <core_v2:load_preload />
 
 
-
         <%-- Call centre numbers --%>
         <jsp:useBean id="callCenterHours" class="com.ctm.web.core.web.openinghours.go.CallCenterHours" scope="page" />
         <c:set var="callCentreNumber" scope="request"><content:get key="callCentreNumber" /></c:set>
@@ -70,7 +69,7 @@
                             </li>
                             <li>
                                 <health_v3:callback_link />
-                                ${callCentreCBModal}
+                                    ${callCentreCBModal}
                                 <div id="view_all_hours" class="hidden">${callCentreHoursModal}</div>
                             </li>
 
@@ -80,9 +79,16 @@
             </jsp:attribute>
 
             <jsp:attribute name="progress_bar">
-                <div class="progress-bar-row collapse navbar-collapse">
+                <div class="progress-bar-row collapse navbar-collapse navbar-affix">
                     <div class="container">
-                        <ul class="journeyProgressBar_v2"></ul>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-9">
+                                <ul class="journeyProgressBar_v2"></ul>
+                            </div>
+                            <div class="hidden-xs col-sm-3">
+                                <a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton" data-slide-control="contact" href="javascript:;" <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />>Next step <span class="icon icon-arrow-right"></span></a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </jsp:attribute>
@@ -115,6 +121,11 @@
 
                 <%-- Slides --%>
                 <health_v4_layout:slide_about_you />
+                <health_v4_layout:slide_benefits />
+                <health_v4_layout:slide_contact />
+                <health_v4_layout:slide_results />
+                <health_v4_layout:slide_application />
+                <health_v4_layout:slide_payment />
 
                 <field_v1:hidden xpath="environmentOverride" />
                 <field_v1:hidden xpath="staticOverride" />

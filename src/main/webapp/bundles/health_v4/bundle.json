@@ -7,8 +7,8 @@
     "shared/features",
     "shared/validation",
     "core",
-    "shared/journeyProgressBar/v2",
-    "shared/forms/v2",
+    "shared/journeyProgressBar/v3",
+    "shared/forms/v3",
     "shared/currency",
     "shared/currencyUtils",
     "shared/dateUtils",
@@ -22,7 +22,6 @@
     "shared/saveQuote/v2",
     "shared/contentPopulation",
     "shared/resultsRankings",
-    "shared/dropdownInteractive",
     "shared/paymentGateway",
     "shared/numberUtils",
     "shared/leavePageWarning",
@@ -34,7 +33,6 @@
     "shared/sendEmail",
     "shared/emailBrochures",
     "shared/serverSideValidationOutput",
-    "shared/sidebarWidgets",
     "shared/filters",
     "shared/radioGroupTile"
   ]
