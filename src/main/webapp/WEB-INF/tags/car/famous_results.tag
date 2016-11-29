@@ -4,7 +4,7 @@
 <div class="famous-container">
 	<div class="row famous-content">
 		<div class="col-xs-12 col-sm-3">
-			<div class="companyLogo logo_FAMO"></div>
+			<div class="famousResults logo_FAMO"></div>
 		</div>
 		<div class="col-xs-12 col-sm-9 content-block">
 			${resultsHeading}
