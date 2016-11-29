@@ -162,16 +162,14 @@
                 configureContactDetails();
             },
             validation: {
-                validate: false,
+                validate: true,
                 customValidation: function (callback) {
-                    if (!meerkat.modules.carExotic.isExotic()) {
-                        $('#quote_vehicle_selection').find('select').each(function () {
-                            if ($(this).is('[disabled]')) {
-                                callback(false);
-                                return;
-                            }
-                        });
-                    }
+                    $('#quote_vehicle_selection').find('select').each(function () {
+                        if ($(this).is('[disabled]')) {
+                            callback(false);
+                            return;
+                        }
+                    });
                     callback(true);
                 }
             }
@@ -265,7 +263,8 @@
                 if (!meerkat.modules.carExotic.isExotic()) {
                     meerkat.modules.carFilters.updateFilters();
                 } else {
-                    meerkat.modules.tracking.recordTouch('EC','Famous Results');
+                    meerkat.modules.tracking.recordTouch('R','Results Page');
+                    meerkat.modules.tracking.recordTouch('EC','Famous Transaction');
                 }
             },
             onAfterEnter: function afterEnterResults(event) {

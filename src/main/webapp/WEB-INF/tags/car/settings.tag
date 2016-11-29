@@ -84,8 +84,7 @@
 		displayMode: "<c:out value="${priceDisplayMode}" />"
 	},
 	commencementDate : '${data.quote.options.commencementDate}',
-	skipNewCoverTypeCarJourney: ${skipNewCoverTypeCarJourney}
-	commencementDate : '${data.quote.options.commencementDate}',
+	skipNewCoverTypeCarJourney: ${skipNewCoverTypeCarJourney},
 	isFromExoticPage : ${isFromExoticPage},
 	exoticCarContent: {
 		originalHeading : "${originalHeading}",
