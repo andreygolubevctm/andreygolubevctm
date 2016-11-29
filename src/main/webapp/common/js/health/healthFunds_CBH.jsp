@@ -252,20 +252,22 @@ var healthFunds_CBH = {
 				}
 			});
 
+			var $policyDayMessage = $('.health_payment_bank-details_policyDay-message');
 			$('#health_payment_details_frequency').on('change.CBH', function() {
-				$('.health_payment_bank-details_policyDay-message').html('');
+				$policyDayMessage.html('');
 				if (meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'ba') {
 					switch (meerkat.modules.healthPaymentStep.getSelectedFrequency()) {
 						case 'fortnightly':
-							$('.health_payment_bank-details_policyDay-message').html('Fortnightly payments will be deducted on a Thursday.');
+							$policyDayMessage.html('Fortnightly payments will be deducted on a Thursday.');
 							break;
 						case 'monthly':
-							$('.health_payment_bank-details_policyDay-message').html('Monthly payments will be deducted on the 15th of each month.');
+							$policyDayMessage.html('Monthly payments will be deducted on the 15th of each month.');
 							break;
 					}
 				}
 			});
-
+			$('#health_payment_details_frequency').trigger("change.CBH");
+			
 			<%-- Claims account --%>
 			meerkat.modules.healthPaymentStep.overrideSettings('creditBankSupply',true);
 			meerkat.modules.healthPaymentStep.overrideSettings('creditBankQuestions',true);
