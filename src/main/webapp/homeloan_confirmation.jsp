@@ -5,7 +5,7 @@
 
 <core_v2:quote_check quoteType="homeloan" />
 
-<layout_v1:journey_engine_page title="Homeloan Confirmation">
+<layout_v1:journey_engine_page title="Home Loan Confirmation">
 
 	<jsp:attribute name="head">
 	</jsp:attribute>
