@@ -65,7 +65,7 @@ ${logger.debug('Checking environment. {},{}', log:kv('ENVIRONMENT', environmentS
 					For testing future product searches
 				</form_v4:row>
 				<c:set var="fieldXpath" value="${xpath}/searchResults" />
-				<form_v4:row label="Number of results" fieldXpath="${fieldXpath}" helpId="22">
+				<form_v4:row label="Number of results" subLabel="Test sublabel styles" fieldXpath="${fieldXpath}" helpId="22">
 					<field_v2:count_select max="36" xpath="${fieldXpath}" min="12" title="Number of Results" required="false" step="12"/>
 				</form_v4:row>
 			</form_v2:fieldset>

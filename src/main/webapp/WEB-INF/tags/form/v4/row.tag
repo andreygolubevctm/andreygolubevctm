@@ -3,6 +3,7 @@
 
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <%@ attribute name="label" required="false" rtexprvalue="true" description="label for the field" %>
+<%@ attribute name="subLabel" required="false" rtexprvalue="true" description="sublabel for the field" %>
 <%@ attribute name="id" required="false" rtexprvalue="true" description="optional id for this row" %>
 <%@ attribute name="className" required="false" rtexprvalue="true" description="additional css class attribute" %>
 <%@ attribute name="smRowOverride" required="false" rtexprvalue="true" description="Override the SM value" %>
@@ -41,6 +42,7 @@
     <c:if test="${showLabel}">
         <div class="col-xs-<c:out value="${labelWidthXs} " /> col-sm-4">
             <field_v2:label value="${label}" xpath="${fieldXpath}" addForAttr="${addForAttr}" />
+            <c:if test="${not empty subLabel}"><div class="control-sub-label">${subLabel}</div></c:if>
             <c:if test="${showHelpIcon eq true}"><div class="hidden-xs"><field_v2:help_icon helpId="${helpId}" showText="${showHelpText}" /></div></c:if>
         </div>
         <%-- XS Help Tip: Only show if there's a label too. --%>
