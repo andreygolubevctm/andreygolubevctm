@@ -175,7 +175,7 @@
                 meerkat.modules.jqueryValidate.initJourneyValidator();
             },
             onBeforeEnter: _incrementTranIdBeforeEnteringSlide,
-            onAfterEnter: function healthV2AfterEnter() {
+            onAfterEnter: function healthAfterEnter() {
                 /** @todo implement from health.js when get to this step */
             },
             onBeforeLeave: function (event) {
@@ -334,9 +334,7 @@
 
     // @todo review this during progress bar refactor
     function configureProgressBar() {
-        // Changing the location of the progressBar for v2 only as it needs to be moved from its default location
-        meerkat.modules.journeyProgressBar.changeTargetElement(".journeyProgressBar_v2");
-        //Better progressBar just works...
+        // Better progressBar just works...
         meerkat.modules.journeyProgressBar.setWidth(100);
         meerkat.modules.journeyProgressBar.setNodeWidth(37);
         meerkat.modules.journeyProgressBar.setEndPadding(false);
@@ -353,18 +351,6 @@
             {
                 label: 'Your details',
                 navigationId: steps.contactStep.navigationId
-            },
-            {
-                label: 'Compare',
-                navigationId: steps.resultsStep.navigationId
-            },
-            {
-                label: 'Purchase',
-                navigationId: steps.applyStep.navigationId
-            },
-            {
-                label: '',
-                navigationId: steps.paymentStep.navigationId
             }
         ]);
 
