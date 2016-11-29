@@ -8,9 +8,15 @@
 <%@ attribute name="ignore" required="false" rtexprvalue="true" description="Verticals to ignore" %>
 <%@ attribute name="orderby" required="false" rtexprvalue="true" description="Define what sort order to execute" %>
 <%@ attribute name="lineLimit" required="false" rtexprvalue="true" description="Define the maximum number of verticals per line" %>
+<%@ attribute name="maxVerticals" required="false" rtexprvalue="true" description="Define the maximum number of verticals to display" %>
 
+<%-- if lineLimit and maxVerticals are exactly the same, it will try and print all the verticals on the one line --%>
 <c:if test="${empty lineLimit}">
 	<c:set var="lineLimit" value="5" />
+</c:if>
+
+<c:if test="${empty maxVerticals}">
+	<c:set var="maxVerticals" value="10" />
 </c:if>
 
 <c:set var="fieldSetID">
@@ -45,7 +51,7 @@
 	<%-- Did it this way instead of js to reduce js processing --%>
 	<c:set var="smPushLength" value="1" />
 	<c:set var="addPushClass" value="${false}" />
-	<c:set var="items" value="${brand.sortVerticalsBySeq()}" />
+	<c:set var="items" value="${brand.sortVerticalsBySeq(maxVerticals)}" />
 	<c:forEach items="${items}" var="vertical" varStatus="loop">
 		<c:if test="${currentVertical eq fn:toLowerCase(vertical.getCode())}">
 			<c:set var="addPushClass" value="${true}" />
@@ -54,7 +60,7 @@
 	</c:forEach>
 
 	<div class="row options-list clearfix verticalButtons">
-		<c:forEach items="${brand.sortVerticalsBySeq()}" var="vertical" varStatus="loop">
+		<c:forEach items="${brand.sortVerticalsBySeq(maxVerticals)}" var="vertical" varStatus="loop">
 
 			<c:set var="displayVertical">
 				<c:choose>
@@ -67,7 +73,7 @@
 				<c:set var="verticalSettings" value="${settingsService.getPageSettings(pageSettings.getBrandId(), fn:toUpperCase(vertical.getCode()))}" scope="page"  />
 
 				<c:if test="${verticalSettings.getSetting('displayOption') eq 'Y' and currentVertical ne fn:toLowerCase(vertical.getCode())}">
-					<c:if test="${displayedVerticalCount eq 1}">
+					<c:if test="${displayedVerticalCount eq 1 && lineLimit < maxVerticals}">
 						<div class="col-sm-1 hidden-xs"></div>
 					</c:if>
 					<div class="${spacerClass} col-sm-2 ${pushClass} col-xs-6">
@@ -76,7 +82,7 @@
 							<div class="icon icon-${fn:toLowerCase(vertical.getCode())}"></div>${vertical.getName()}
 						</a>
 					</div>
-					<c:if test="${displayedVerticalCount eq lineLimit}">
+					<c:if test="${displayedVerticalCount eq lineLimit && lineLimit < maxVerticals}">
 						<c:set var="displayedVerticalCount" value="0" />
 						<div class="col-sm-1 hidden-xs"></div>
 						<c:if test="${addPushClass eq true}">

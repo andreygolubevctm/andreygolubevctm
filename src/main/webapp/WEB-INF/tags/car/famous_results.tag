@@ -15,5 +15,5 @@
 		Find great deals across our range of products
 	</c:set>
 	<%-- Had to use JS to remove homeloan as it also removed HNC. Also get free styling by using this id --%>
-	<confirmation:other_products heading="${heading}"  id="confirmation-compare-options" />
+	<confirmation:other_products heading="${heading}"  id="confirmation-compare-options" lineLimit="7" maxVerticals="7" />
 </div>
