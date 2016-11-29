@@ -142,6 +142,7 @@
             },
             onInitialise: function onStartInit(event) {
                 meerkat.modules.jqueryValidate.initJourneyValidator();
+                meerkat.modules.currencyField.initCurrency();
                 // Hook up privacy optin to Email Quote button
                 var $emailQuoteBtn = $(".slide-feature-emailquote, .save-quote");
 
