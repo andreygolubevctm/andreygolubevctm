@@ -266,6 +266,7 @@ var healthFunds_CBH = {
 					}
 				}
 			});
+			$('#health_payment_details_frequency').trigger('change.CBH');
 
 			<%-- Claims account --%>
 			meerkat.modules.healthPaymentStep.overrideSettings('creditBankSupply',true);
