@@ -1,6 +1,7 @@
 package com.ctm.web.core.model.settings;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 
 public class Brand {
@@ -40,6 +41,16 @@ public class Brand {
 
 	public ArrayList<Vertical> getVerticals() {
 		return verticals;
+	}
+
+	public ArrayList<Vertical> sortVerticalsBySeq() {
+		ArrayList<Vertical> sortedVerticalList = verticals
+				.stream()
+				.filter(v -> v.getSequence() > 0)
+				.sorted((v1, v2) -> Integer.compare(v1.getSequence(), v2.getSequence()))
+				.collect(Collectors.toCollection(ArrayList::new));
+
+		return sortedVerticalList;
 	}
 
 	public void setVerticals(ArrayList<Vertical> verticals) {
