@@ -287,8 +287,6 @@
                     meerkat.modules.transactionId.getNew(3);
                     $('.header-wrap .quoteSnapshot').addClass("hidden");
                 }
-
-                $('.esl-message').toggleClass('hidden', true);
             },
             onAfterLeave: function (event) {
                 meerkat.modules.journeyProgressBar.show();

@@ -42,9 +42,6 @@
 
 	<jsp:attribute name="header">
 		<car:snapshot label="Vehicle Quoted" isHeader="true" />
-		<div class="esl-message hidden hidden-xs">
-			<agg_v1:esl_message />
-		</div>
 	</jsp:attribute>
 
 

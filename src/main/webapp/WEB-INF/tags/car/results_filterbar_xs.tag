@@ -10,9 +10,16 @@
 
 	<form_v2:fieldset legend="" id="${name}FieldSet">
 
+		<c:set var="coverTypeOptions">
+			<c:choose>
+				<c:when test="${skipNewCoverTypeCarJourney eq true}">COMPREHENSIVE=Comprehensive</c:when>
+				<c:otherwise>COMPREHENSIVE=Comprehensive,TPPD=3rd Party Property Damage,TPFT=3rd Party Fire and Theft</c:otherwise>
+			</c:choose>
+		</c:set>
+
 		<form_v2:row label="Cover Type" id="${name}CoverType" className="initial">
 			<field_v2:array_radio xpath="${xpath}/coverType" style="vertical" required="true"
-				className="" items="comprehensive=Comprehensive,tpft=3rd Party Fire &amp; Theft,tppd=3rd Party Property Damage" title="" />
+				className="" items="${coverTypeOptions}" title="" />
 		</form_v2:row>
 
 		<form_v2:row label="Excess" id="${name}ExcessRow">

@@ -37,12 +37,10 @@
 		</div>
 	</div>
 
-
-
-	<c:set var="xpath" value="${pageSettings.getVerticalCode()}/payment" />
-	<c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
-	<div class="health-payment ${className}" id="${id}">
-		<health_v1:medicare_details xpath="${xpath}/medicare" />
-	</div>
+		<c:set var="xpath" value="${pageSettings.getVerticalCode()}/payment" />
+		<c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
+		<div class="health-payment ${className}" id="${id}">
+			<health_v1:medicare_details xpath="${xpath}/medicare" />
+		</div>
 </form_v2:fieldset>
 </div>

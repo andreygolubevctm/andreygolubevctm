@@ -6,6 +6,12 @@
 <%@ attribute name="heading" required="false" rtexprvalue="true" description="Heading for the popup" %>
 <%@ attribute name="copy" required="false" rtexprvalue="true" description="Extra copy if required" %>
 <%@ attribute name="ignore" required="false" rtexprvalue="true" description="Verticals to ignore" %>
+<%@ attribute name="orderby" required="false" rtexprvalue="true" description="Define what sort order to execute" %>
+<%@ attribute name="lineLimit" required="false" rtexprvalue="true" description="Define the maximum number of verticals per line" %>
+
+<c:if test="${empty lineLimit}">
+	<c:set var="lineLimit" value="5" />
+</c:if>
 
 <c:set var="fieldSetID">
 	<c:choose>
@@ -25,44 +31,62 @@
 
 	<%-- Ideally this would come from a database or config/settings to identify all verticals enabled for current brand. --%>
 	<c:set var="brand" value="${applicationService.getBrandFromRequest(pageContext.getRequest())}" />
+
 	<c:if test="${not empty heading}">
-	<h3>${heading}</h3>
+		<h3>${heading}</h3>
 	</c:if>
 	<c:if test="${not empty copy}">
 		${copy}
 	</c:if>
-	<div class="options-list clearfix verticalButtons">
-	<c:forEach items="${brand.getVerticals()}" var="vertical" varStatus="loop">
-		<c:set var="displayVertical">
-			<c:choose>
-				<c:when test="${not empty ignore and fn:contains(ignore, fn:toLowerCase(vertical.getCode()))}">${false}</c:when>
-				<c:otherwise>${true}</c:otherwise>
-			</c:choose>
-		</c:set>
+	<c:set var="displayedVerticalCount" value="1" />
 
-		<c:if test="${displayVertical eq true}">
-			<c:set var="verticalSettings" value="${settingsService.getPageSettings(pageSettings.getBrandId(), fn:toUpperCase(vertical.getCode()))}" scope="page"  />
-
-			<c:if test="${verticalSettings.getSetting('displayOption') eq 'Y' and currentVertical ne fn:toLowerCase(vertical.getCode())}">
-
-				<c:set var="titleParts" value="${fn:split(vertical.getName(), ' ')}" />
-				<c:set var="title2" value="${titleParts[1]}" />
-				<c:set var="title3" value="${titleParts[2]}" />
-				<c:if test="${empty title2 }">
-					<c:set var="title2" value="&nbsp;" />
-				</c:if>
-				<c:if test="${not empty title2 and not empty title3 }">
-					<c:set var="title2" value="${title2} ${title3}" />
-				</c:if>
-				<div class="col-lg-3 col-sm-4 col-xs-6">
-					<a href="${verticalSettings.getSetting('exitUrl')}"
-						title="${vertical.getName()}" target="_new">
-						<div class="icon icon-${fn:toLowerCase(vertical.getCode())}"></div>${titleParts[0]}<span>&nbsp;${title2}</span>
-					</a>
-				</div>
-			</c:if>
+	<%-- Check if this file will be used as a no quotes for one of our journeys. --%>
+	<%-- If so, we'll add a push class to the bottom row of verticals to allow for centering --%>
+	<%-- Did it this way instead of js to reduce js processing --%>
+	<c:set var="smPushLength" value="1" />
+	<c:set var="addPushClass" value="${false}" />
+	<c:set var="items" value="${brand.sortVerticalsBySeq()}" />
+	<c:forEach items="${items}" var="vertical" varStatus="loop">
+		<c:if test="${currentVertical eq fn:toLowerCase(vertical.getCode())}">
+			<c:set var="addPushClass" value="${true}" />
+			<c:set var="smPushLength">${smPushLength + 1}</c:set>
 		</c:if>
 	</c:forEach>
+
+	<div class="row options-list clearfix verticalButtons">
+		<c:forEach items="${brand.sortVerticalsBySeq()}" var="vertical" varStatus="loop">
+
+			<c:set var="displayVertical">
+				<c:choose>
+					<c:when test="${not empty ignore and fn:contains(ignore, fn:toLowerCase(vertical.getCode()))}">${false}</c:when>
+					<c:otherwise>${true}</c:otherwise>
+				</c:choose>
+			</c:set>
+
+			<c:if test="${displayVertical eq true}">
+				<c:set var="verticalSettings" value="${settingsService.getPageSettings(pageSettings.getBrandId(), fn:toUpperCase(vertical.getCode()))}" scope="page"  />
+
+				<c:if test="${verticalSettings.getSetting('displayOption') eq 'Y' and currentVertical ne fn:toLowerCase(vertical.getCode())}">
+					<c:if test="${displayedVerticalCount eq 1}">
+						<div class="col-sm-1 hidden-xs"></div>
+					</c:if>
+					<div class="${spacerClass} col-sm-2 ${pushClass} col-xs-6">
+						<a href="${verticalSettings.getSetting('exitUrl')}"
+						   title="${vertical.getName()}">
+							<div class="icon icon-${fn:toLowerCase(vertical.getCode())}"></div>${vertical.getName()}
+						</a>
+					</div>
+					<c:if test="${displayedVerticalCount eq lineLimit}">
+						<c:set var="displayedVerticalCount" value="0" />
+						<div class="col-sm-1 hidden-xs"></div>
+						<c:if test="${addPushClass eq true}">
+							<c:set var="pushClass" value="col-sm-push-${smPushLength}" />
+						</c:if>
+					</c:if>
+					<c:set var="displayedVerticalCount">${displayedVerticalCount + 1}</c:set>
+				</c:if>
+			</c:if>
+		</c:forEach>
 	</div>
 
 </fieldset>

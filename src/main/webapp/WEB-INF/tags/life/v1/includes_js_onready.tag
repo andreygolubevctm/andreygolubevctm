@@ -94,7 +94,40 @@
 
 		SaveQuote.show();
 
-	})
+	});
+
+	(function(){
+		var gaClientId = null;
+
+		// Retrieve the _ga cookie and assign its value to gaClientId
+		var cookieStr = document.cookie;
+		if(cookieStr !== "") {
+			var rawCookies = cookieStr.split(";");
+			for(var i=0; i<rawCookies.length; i++){
+				var cookie = $.trim(rawCookies[i]).split("=");
+				if(cookie.length === 2) {
+					if(cookie[0] === "_ga") {
+						gaClientId = cookie[1];
+						break;
+					}
+				}
+			}
+		}
+
+		// Derive element name and if exists then assign value or create a new one
+		var elementName = LifeQuote._vertical + '_gaclientid';
+		if($('#' + elementName).length) {
+			$('#' + elementName).val(gaClientId);
+		} else {
+			$('#mainform').prepend($('<input/>', {
+				type: 'hidden',
+				id: elementName,
+				name: elementName,
+				value: gaClientId
+			}));
+		}
+	})();
+
 </go:script>
 
 <form_v1:radio_button_group_validate />

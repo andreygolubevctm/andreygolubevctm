@@ -15,11 +15,14 @@
 	<error:recover origin="ajax/json/life_quote_results.jsp" quoteType="${vertical}" />
 </c:if>
 
+${logger.info('Call to Results - Start', log:kv('transactionId',data.current.transactionId))}
+
 <jsp:useBean id="lifeService" class="com.ctm.web.life.services.LifeService" scope="page" />
-<c:set var="serviceRespone" value="${lifeService.contactLeadViaJSP(pageContext.request, data)}" />
+<c:set var="serviceResponse" value="${lifeService.contactLeadViaJSP(pageContext.request, data)}" />
 
 <c:choose>
 	<c:when test="${lifeService.isValid()}">
+		${logger.info('Call to Results - Life Service IS Valid', log:kv('transactionId',data.current.transactionId), log:kv('serviceResponse',serviceResponse))}
 		<c:set var="clientUserAgent"><%=request.getHeader("user-agent")%></c:set>
 		<c:set var="continueOnValidationError" value="${false}" />
 
@@ -27,6 +30,7 @@
 		<c:set var="proceedinator"><core_v1:access_check quoteType="${vertical}" /></c:set>
 		<c:choose>
 			<c:when test="${not empty proceedinator and proceedinator > 0}">
+				${logger.info('Call to Results - Proceedinator Passed', log:kv('transactionId',data.current.transactionId))}
 				${logger.debug('PROCEEDINATOR PASSED')}
 
 				<%-- add external testing ip address checking and loading correct config and send quotes --%>
@@ -51,36 +55,38 @@
 
 				<c:set var="dataXml" value="${go:getEscapedXml(data[vertical])}" />
 				<go:soapAggregator	config = "${config}"
-										  transactionId = "${tranId}"
-										  xml = "${dataXml}"
-										  var = "resultXml"
-										  debugVar="debugXml"
-										  validationErrorsVar="validationErrors"
-										  continueOnValidationError="${continueOnValidationError}"
-										  isValidVar="isValid"
-										  verticalCode="${fn:toUpperCase(vertical)}"
-										  configDbKey="quoteService"
-										  styleCodeId="${pageSettings.getBrandId()}"  />
+									  transactionId = "${tranId}"
+									  xml = "${dataXml}"
+									  var = "resultXml"
+									  debugVar="debugXml"
+									  validationErrorsVar="validationErrors"
+									  continueOnValidationError="${continueOnValidationError}"
+									  isValidVar="isValid"
+									  verticalCode="${fn:toUpperCase(vertical)}"
+									  configDbKey="quoteService"
+									  styleCodeId="${pageSettings.getBrandId()}"  />
 
-					<%-- Check response status returned by the service --%>
-					<x:parse xml="${resultXml}" var="successStatus" />
-					<x:choose>
-						<x:when select="$successStatus//results//success">
-							<c:set var="successStatus"><x:out select="$successStatus/results/success" /></c:set>
-						</x:when>
-						<x:otherwise>
-							<c:set var="successStatus" value="false" />
-						</x:otherwise>
-					</x:choose>
+				<%-- Check response status returned by the service --%>
+				<x:parse xml="${resultXml}" var="successStatus" />
+				<x:choose>
+					<x:when select="$successStatus//results//success">
+						<c:set var="successStatus"><x:out select="$successStatus/results/success" /></c:set>
+					</x:when>
+					<x:otherwise>
+						<c:set var="successStatus" value="false" />
+					</x:otherwise>
+				</x:choose>
 				<c:choose>
 					<%-- Check the server side for validation --%>
 					<c:when test="${isValid || continueOnValidationError}">
+						${logger.info('Call to Results - Response Passed Initial Test', log:kv('transactionId',data.current.transactionId),log:kv('outboundXml',dataXml),log:kv('inboundXml',resultXml))}
 						<%-- Check response status returned by the service --%>
 						<x:parse xml="${resultXml}" var="successStatus" />
 						<x:choose>
 							<x:when select="$successStatus//results//success">
 								<c:set var="successStatus"><x:out select="$successStatus/results/success" /></c:set>
 								<c:if test="${!isValid}">
+									${logger.error('Call to Results - Invalid Soap Response', log:kv('transactionId',data.current.transactionId),log:kv('outboundXml',dataXml),log:kv('inboundXml',resultXml),log:kv('validationErrors',validationErrors))}
 									<c:forEach var="validationError"  items="${validationErrors}">
 										<error:non_fatal_error origin="life_quote_results.jsp"
 															   errorMessage="message:${validationError.message} elementXpath:${validationError.elementXpath} elements:${validationError.elements}" errorCode="VALIDATION" />
@@ -93,6 +99,10 @@
 									<agg_v1:write_stats rootPath="${vertical}" tranId="${tranId}" />
 								</c:set>
 
+								<c:if test="${isValid}">
+									${logger.info('Call to Results - Successful Soap Response', log:kv('transactionId',data.current.transactionId),log:kv('outboundXml',dataXml),log:kv('inboundXml',resultXml))}
+								</c:if>
+
 								<%-- Add the results to the current session data --%>
 								<go:setData dataVar="data" xpath="soap-response" value="*DELETE" />
 								<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
@@ -100,6 +110,7 @@
 								${go:XMLtoJSON(go:getEscapedXml(data['soap-response/results']))}
 							</x:when>
 							<x:otherwise>
+								${logger.error('Call to Results - Failed Soap Response', log:kv('transactionId',data.current.transactionId),log:kv('outboundXml',dataXml),log:kv('inboundXml',resultXml))}
 								<%-- LifeBroker returned failed SOAP response --%>
 								<go:setData dataVar="data" xpath="current/transactionId" value="${tranId}" />
 								<error:fatal_error page="ajax/json/life_quote_results.jsp" failedData="${data}" fatal="1" transactionId="${tranId}" description="LifeBroker SOAP call returned status 'false'" message="LifeBroker SOAP call returned status 'false'" />
@@ -108,6 +119,7 @@
 						</x:choose>
 					</c:when>
 					<c:otherwise>
+						${logger.error('Call to Results - Response Failed Initial Test', log:kv('transactionId',data.current.transactionId),log:kv('outboundXml',dataXml),log:kv('inboundXml',resultXml),log:kv('validationErrors',validationErrors))}
 						<agg_v1:outputValidationFailureJSON validationErrors="${validationErrors}"  origin="life_quote_results.jsp"/>
 					</c:otherwise>
 				</c:choose>
@@ -132,19 +144,22 @@
 						<c:param name="competition_phone" value="${data[competition_phoneKey]}" />
 						<c:param name="transactionId" value="${tranId}" />
 					</c:import>
+					${logger.info('Call to Results - Competition Entry', log:kv('transactionId',data.current.transactionId),log:kv('competitionResponse',response))}
 				</c:if>
 				<%-- COMPETITION APPLICATION END --%>
-	</c:when>
-	<c:otherwise>
+			</c:when>
+			<c:otherwise>
 				<c:set var="resultXml">
 					<error><core_v1:access_get_reserved_msg isSimplesUser="${not empty authenticatedData.login.user.uid}" /></error>
 				</c:set>
+				${logger.error('Call to Results - Proceedinator Failed', log:kv('transactionId',data.current.transactionId), log:kv('resultXml',resultXml))}
 				<go:setData dataVar="data" xpath="soap-response" xml="${resultXml}" />
 				${go:XMLtoJSON(go:getEscapedXml(data['soap-response/results']))}
 			</c:otherwise>
 		</c:choose>
 	</c:when>
 	<c:otherwise>
-		${serviceRespone}
+		${logger.error('Call to Results - Life Service is NOT Valid', log:kv('transactionId',data.current.transactionId), log:kv('serviceResponse',serviceResponse))}
+		${serviceResponse}
 	</c:otherwise>
 </c:choose>

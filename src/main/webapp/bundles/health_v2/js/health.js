@@ -293,8 +293,12 @@
 				//	meerkat.modules.healthSegment.filterSegments();
 				//}, 1000);
 
-				if(event.isForward)
-					$('input[name="health_situation_accidentOnlyCover"]').prop('checked', ($("input[name=health_situation_healthSitu]").filter(":checked").val() === 'ATP'));
+				if(event.isForward) {
+					if(!meerkat.site.isCallCentreUser) {
+						$('input[name="health_situation_accidentOnlyCover"]').prop('checked', ($("input[name=health_situation_healthSitu]").filter(":checked").val() === 'ATP'));
+						// For CC we simply ignore and accept the current value as true and correct
+					}
+				}
 			},
 			onAfterLeave:function(event){
 				var selectedBenefits = meerkat.modules.healthBenefitsStep.getSelectedBenefits();
@@ -324,18 +328,18 @@
 			onInitialise: function onContactInit(event){
 				meerkat.modules.resultsFeatures.fetchStructure('health2016');
 			},
-            onBeforeEnter:function enterBenefitsStep(event) {
-                if (event.isForward) {
-                    // Delay 1 sec to make sure we have the data bucket saved in to DB, then filter coupon
-                    _.delay(function() {
-                        // coupon logic, filter for user, then render banner
-                        meerkat.modules.coupon.loadCoupon('filter', null, function successCallBack() {
-                            meerkat.modules.coupon.renderCouponBanner();
-                        });
-                    }, 1000);
-                }
-                incrementTranIdBeforeEnteringSlide();
-            },
+			onBeforeEnter:function enterBenefitsStep(event) {
+				if (event.isForward) {
+					// Delay 1 sec to make sure we have the data bucket saved in to DB, then filter coupon
+					_.delay(function() {
+						// coupon logic, filter for user, then render banner
+						meerkat.modules.coupon.loadCoupon('filter', null, function successCallBack() {
+							meerkat.modules.coupon.renderCouponBanner();
+						});
+					}, 1000);
+				}
+				incrementTranIdBeforeEnteringSlide();
+			},
 			onAfterEnter: function enteredContactStep(event) {
 			},
 			onAfterLeave:function leaveContactStep(event){
@@ -393,6 +397,7 @@
 					// Reset selected product. (should not be inside a forward or backward condition because users can skip steps backwards)
 					meerkat.modules.healthResults.resetSelectedProduct();
 				}
+
 			},
 			onAfterEnter: function(event){
 
@@ -403,12 +408,15 @@
 				if (meerkat.modules.healthTaxTime.isFastTrack()) {
 					meerkat.modules.healthTaxTime.disableFastTrack();
 				}
+				meerkat.modules.healthResults.setCallCentreText();
 			},
 			onBeforeLeave: function(event) {
 				// Increment the transactionId
 				if (event.isBackward === true) {
 					meerkat.modules.transactionId.getNew(3);
 				}
+
+				meerkat.modules.healthResults.resetCallCentreText();
 			},
 			onAfterLeave: function(event){
 				meerkat.modules.healthResults.recordPreviousBreakpoint();
@@ -450,7 +458,7 @@
 					healthApplicationDetails.testStatesParity();
 				});
 
-                meerkat.modules.healthApplyStep.onInitialise();
+				meerkat.modules.healthApplyStep.onInitialise();
 
 			},
 			onBeforeEnter: function enterApplyStep(event){
@@ -1098,10 +1106,10 @@
 
 			Results.updateApplicationEnvironment();
 
-        var postData = meerkat.modules.journeyEngine.getFormData();
+			var postData = meerkat.modules.journeyEngine.getFormData();
 
-		// Disable fields must happen after the post data has been collected.
-		meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'submitApplication', disableFields:true });
+			// Disable fields must happen after the post data has been collected.
+			meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'submitApplication', disableFields:true });
 
 
 			var healthApplicationUrl = "ajax/json/health_application.jsp";
@@ -1421,9 +1429,9 @@
 
 	}
 
-    function getCoverType() {
-        return $('#health_situation_coverType input').filter(":checked").val();
-    }
+	function getCoverType() {
+		return $('#health_situation_coverType input').filter(":checked").val();
+	}
 	function getSituation() {
 		return $('#health_situation_healthCvr').val();
 	}
@@ -1437,7 +1445,7 @@
 		events: moduleEvents,
 		initProgressBar: initProgressBar,
 		getTrackingFieldsObject: getTrackingFieldsObject,
-        getCoverType: getCoverType,
+		getCoverType: getCoverType,
 		getSituation: getSituation,
 		getHospitalCoverLevel: getHospitalCoverLevel,
 		getRates: getRates,
@@ -1446,7 +1454,7 @@
 		fetchRates: fetchRates,
 		loadRates: loadRates,
 		loadRatesBeforeResultsPage: loadRatesBeforeResultsPage,
-        hasPartner: hasPartner,
+		hasPartner: hasPartner,
 		configureContactDetails: configureContactDetails
 	});
 

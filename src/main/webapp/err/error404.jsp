@@ -51,10 +51,9 @@
 
                     <div role="form" class="journeyEngineSlide active unsubscribeForm">
                         <layout_v1:slide_center xsWidth="12" mdWidth="10">
-                            <h1 class="error_title">Whoops, sorry... </h1>
+                            <h1 class="error_title">Whoops, sorry... looks like you're looking for something that isn't there!</h1>
 
                             <div class="error_message">
-                                <h2>looks like you're looking for something that isn't there!</h2>
 
                                 <p>Sorry about that, but the page you're looking for can't be found. Either you've typed the web address incorrectly, or the page you were looking for has been moved or
                                     deleted.</p>
