@@ -52,10 +52,8 @@
         <c:set var="callCentreHoursModal" scope="request"><content:getOpeningHoursModal /></c:set>
         <c:set var="callCentreCBModal" scope="request"><health_v3:callback_modal /></c:set>
 
-        <c:set var="isHealthV2" value="${true}" scope="request" />
-
         <%-- HTML --%>
-        <layout_v1:journey_engine_page title="Health Quote">
+        <layout_v1:journey_engine_page title="Health Quote" bundleFileName="health_v2">
 
         <jsp:attribute name="head">
         </jsp:attribute>
