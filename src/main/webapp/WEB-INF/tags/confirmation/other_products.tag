@@ -19,6 +19,9 @@
 	<c:set var="maxVerticals" value="10" />
 </c:if>
 
+<fmt:parseNumber var="maxVerticals" value="${maxVerticals}" />
+<fmt:parseNumber var="lineLimit" value="${lineLimit}" />
+
 <c:set var="fieldSetID">
 	<c:choose>
 		<c:when test="${not empty id}">${id}</c:when>
