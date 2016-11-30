@@ -7,6 +7,8 @@
 
 <%-- VARIABLES --%>
 <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
+<%-- Calculate the year for continuous cover - changes on 1st July each year --%>
+<c:set var="continuousCoverYear" value="${financialYearUtils.getContinuousCoverYear()}" />
 
 <%-- HTML --%>
 <div id="${name}-selection" class="health-situation">
