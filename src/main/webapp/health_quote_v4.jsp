@@ -73,11 +73,11 @@
                                 <ul class="journeyProgressBar"></ul>
                             </div>
                             <div class="hidden-xs col-sm-3">
-                                <a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton slide-control-about-you disabled" data-slide-control="next" href="javascript:;"
+                                <a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton slide-control-about-you" data-slide-control="next" href="javascript:;"
                                         <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />>Insurance preferences <span class="icon icon-arrow-right"></span></a>
-                                <a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton slide-control-insurance-preferences disabled-validation disabled" data-slide-control="next"
+                                <a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton slide-control-insurance-preferences" data-slide-control="next"
                                    href="javascript:;"  <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />>Contact details <span class="icon icon-arrow-right"></span></a>
-                                <a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton slide-control-get-prices disabled-validation disabled" data-slide-control="next"
+                                <a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton slide-control-get-prices" data-slide-control="next"
                                    href="javascript:;"  <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />>Get prices <span class="icon icon-arrow-right"></span></a>
                             </div>
                         </div>
