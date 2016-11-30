@@ -28,12 +28,6 @@
 		<redbookCode>MAZD12EP</redbookCode>
 		<modifications>N</modifications>
 		<marketValue>15650</marketValue>
-		<exotic>
-			<purchase>
-				<priceentry>1</priceentry>
-			</purchase>
-			<registered>Y</registered>
-		</exotic>
 		<use>02</use>
 		<make>MAZD</make>
 		<parking>1</parking>

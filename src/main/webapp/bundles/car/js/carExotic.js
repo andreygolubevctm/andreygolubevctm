@@ -110,11 +110,7 @@
 	}
 
 	function toggleNavBarContents() {
-		if (isExotic()) {
-			$navBarContents.addClass('hidden');
-		} else {
-			$navBarContents.removeClass('hidden');
-		}
+		$navBarContents.toggleClass('hidden', isExotic());
 	}
 
 	// catering for the scenario where someone enters the normal journey and selects an exotic car but then goes back
