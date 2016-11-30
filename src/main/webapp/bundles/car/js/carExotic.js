@@ -119,7 +119,7 @@
 					updateSpeechBubble();
 					toggleRequiredFields();
 					toggleNavBarContents();
-				})
+				});
 			}
 		}
 	}
