@@ -5,6 +5,9 @@
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath" required="true" rtexprvalue="true" description="field group's xpath"%>
 <c:set var="displaySuffix"><c:out value="${data[xpath].exists}" escapeXml="true"/></c:set>
+<c:if test="${empty displaySuffic}">
+    <c:set var="displaySuffix">N</c:set>
+</c:if>
 
 <%-- VARIABLES --%>
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />

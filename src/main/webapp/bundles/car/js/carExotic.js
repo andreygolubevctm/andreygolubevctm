@@ -12,6 +12,8 @@
 		$resultsPage,
 		$securityRow,
 		$navBarContents,
+		$youngDriver,
+		$youngDriverQs,
 		_threshold = 150000;
 
 	function init(){
@@ -19,6 +21,8 @@
 		$exoticManualEntry = $('.exoticManualEntry').length > 0 ? $('.exoticManualEntry') : null;
 		$speechBubble = $('.carHeadingBubbleContent');
 		$resultsPage = $('.famous-results-page');
+		$youngDriver = $('input[name=quote_drivers_youngExotic_exists]');
+		$youngDriverQs = $('#quote_drivers_youngExoticToggleExoticArea, #quote_drivers_youngExoticExoticContFieldSet');
 
 		$requiredFieldsToToggle = $('input[name=quote_contact_email], input[name=quote_contact_phoneinput]');
 
@@ -27,7 +31,7 @@
 
 		// existing and new questions
 		$defaultQuestionsToHide = $('#quoteAccessoriesFieldSet, .noOfKms,  #accidentDamageRow, .rego-not-my-car, #employment_status_row, #ownsAnotherCar, #quote_restricted_ageRow, #quote_drivers_youngFieldSet, .ydGreenBubble');
-		$exoticQuestionsToShow = $('#quote_drivers_regular_convictionsRow, .exoticUsageQuestions, #quote_drivers_youngExoticFieldSet, #quote_drivers_youngExoticContFieldSet, .ydSpeechBubbleDriverDetails, #preferredContactMethodRow');
+		$exoticQuestionsToShow = $('#quote_drivers_regular_convictionsRow, .exoticUsageQuestions, #quote_drivers_youngExoticExoticFieldSet, #quote_drivers_youngExoticFieldSet, #quote_drivers_youngExoticContFieldSet, .ydSpeechBubbleDriverDetails, #preferredContactMethodRow');
 		$securityRow = $('#securityOptionRow');
 
 		// snapshot fields
@@ -84,8 +88,16 @@
 		_toggleReasonFields($('input[name=quote_drivers_regular_claims]'), $('#quote_drivers_regular_claims_reasonRow'));
 		_toggleReasonFields($('input[name=quote_drivers_regular_convictions]'), $('#quote_drivers_regular_conviction_reasonRow'));
 
-		_toggleReasonFields($('input[name=quote_drivers_young_claims]'), $('#quote_drivers_young_claims_reasonRow'));
-		_toggleReasonFields($('input[name=quote_drivers_young_convictions]'), $('#quote_drivers_young_conviction_reasonRow'));
+		_toggleReasonFields($('input[name=quote_drivers_youngExotic_claims]'), $('#quote_drivers_youngExotic_claims_reasonRow'));
+		_toggleReasonFields($('input[name=quote_drivers_youngExotic_convictions]'), $('#quote_drivers_youngExotic_conviction_reasonRow'));
+
+		$youngDriver.on('click', function toggleYoungDriverExotic(){
+			if ($(this).val() === 'Y') {
+				$youngDriverQs.slideDown();
+			} else {
+				$youngDriverQs.slideUp();
+			}
+		});
 	}
 
 	function _updateSnapshotDataSource($el) {

@@ -8,6 +8,9 @@
 <%-- VARIABLES --%>
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
 <c:set var="displaySuffix"><c:out value="${data[xpath].exists}" escapeXml="true"/></c:set>
+<c:if test="${empty displaySuffic}">
+	<c:set var="displaySuffix">N</c:set>
+</c:if>
 
 <%-- HTML --%>
 <form_v2:fieldset_columns sideHidden="false">
@@ -27,7 +30,7 @@
 					title="if the regular driver has had any motor insurance claims in the last 5 years" />
 			</form_v2:row>
 
-			<form_v2:row label="Details of all claims and whether an excess was paid" id="quote_drivers_young_claims_reasonRow" className="hidden">
+			<form_v2:row label="Details of all claims and whether an excess was paid" id="quote_drivers_youngExotic_claims_reasonRow" className="hidden">
 				<field_v1:textarea xpath="${xpath}/claims/reason" required="true" title="additional claims information" />
 			</form_v2:row>
 
@@ -37,7 +40,7 @@
 									  title="if the regular driver has had any driving convictions, suspensions, disqualifications in the last 5 years" />
 			</form_v2:row>
 
-			<form_v2:row label="Details of all driving convitions, suspensions, disqualifications - include year and length of suspension" id="quote_drivers_young_conviction_reasonRow" className="hidden">
+			<form_v2:row label="Details of all driving convitions, suspensions, disqualifications - include year and length of suspension" id="quote_drivers_youngExotic_conviction_reasonRow" className="hidden">
 				<field_v1:textarea xpath="${xpath}/claims/conviction_reason" required="true" title="additional conviction information" />
 			</form_v2:row>
 

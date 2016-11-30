@@ -31,8 +31,8 @@
 		<car:drivers_regular_cont xpath="${xpath}/drivers/regular" />
 
 		<car:drivers_young xpath="${xpath}/drivers/young" />
-		<car:drivers_young_exotic xpath="${xpath}/drivers/young" />
-		<car:drivers_young_cont_exotic xpath="${xpath}/drivers/young" />
+		<car:drivers_young_exotic xpath="${xpath}/drivers/youngExotic" />
+		<car:drivers_young_cont_exotic xpath="${xpath}/drivers/youngExotic" />
 
 
 	</layout_v1:slide_content>
