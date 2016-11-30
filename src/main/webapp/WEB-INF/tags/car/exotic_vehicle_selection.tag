@@ -25,12 +25,7 @@
     </form_v2:row>
 
     <form_v2:row label="Engine Capacity" id="${name}_capacity">
-        <field_v2:currency xpath="${xpath}_capacity"
-                           required="true"
-                           pattern="[0-9]*"
-                           decimal="${true}"
-                           nbDecimals="1"
-                           title="The engine capacity of the car"/>
+        <field_v2:input className="numeric" type="text" xpath="${xpath}_capacity" required="true" title="capacity" pattern="[0-9]*" additionalAttributes=" data-rule-number='true' data-msg-number='Capacity must contain numbers only.'" />
     </form_v2:row>
 
     <form_v2:row label="Market value of car" id="${name}_value">
