@@ -45,9 +45,21 @@
 		}
 	}
 
+	function confirmPartnerTesting(){
+		if(_.indexOf(['localhost','nxi','nxs'], meerkat.site.environment) > -1) {
+			var $providerList = $('#quote_filter_providerList');
+			var $authToken = $('#quote_filter_authToken');
+			return ($authToken.length && $authToken.val() === '0u812iiL7blk182') ||	($providerList.length && $providerList.val() === 'FAME');
+		}
+		return false;
+	}
+
 	// check if the user has used our normal journey or have come from the classic car landing page
 	function isExotic() {
-		return (meerkat.site.tracking.brandCode === 'ctm' && (parseInt($marketValue.val()) >= _threshold  || meerkat.site.isFromExoticPage === true));
+		if(meerkat.site.tracking.brandCode === 'ctm') {
+			return parseInt($marketValue.val()) >= _threshold  || meerkat.site.isFromExoticPage === true || confirmPartnerTesting();
+		}
+		return false;
 	}
 
 	function toggleQuestions() {
@@ -71,7 +83,7 @@
 
 	function _eventSubscriptions() {
 		if ($exoticManualEntry !== null) {
-			$exoticManualEntry.on('click', function manualExoticQEntry() {
+			$exoticManualEntry.off('click').on('click', function manualExoticQEntry() {
 				$('#quote_vehicle_selection').addClass('hidden');
 				$('#quote_vehicle_exotic_selection').removeClass('hidden');
 
@@ -86,6 +98,18 @@
 
 		_toggleReasonFields($('input[name=quote_drivers_young_claims]'), $('#quote_drivers_young_claims_reasonRow'));
 		_toggleReasonFields($('input[name=quote_drivers_young_convictions]'), $('#quote_drivers_young_conviction_reasonRow'));
+
+		if(_.indexOf(['localhost','nxi','nxs'], meerkat.site.environment) > -1) {
+			var $providerList = $('#quote_filter_providerList');
+			if($providerList.length) {
+				$providerList.on('change.famousPartnerTesting', function providerListToggle(){
+					toggleQuestions();
+					updateSpeechBubble();
+					toggleRequiredFields();
+					toggleNavBarContents();
+				})
+			}
+		}
 	}
 
 	function _updateSnapshotDataSource($el) {
