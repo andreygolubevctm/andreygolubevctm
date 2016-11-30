@@ -46,32 +46,19 @@
                 <c:if test="${not empty callCentreNumber}">
                     <div class="navbar-collapse header-collapse-contact collapse">
                         <ul class="nav navbar-nav navbar-right callCentreNumberSection">
-
+                            <li class="navbar-text">Confused? Talk to our experts... Simples!</li>
                             <li>
-                                <div class="navbar-text visible-xs">
-                                    <h4>Do you need a hand?</h4>
-                                    <h1>
-                                        <a class="needsclick callCentreNumberClick" href="tel:${callCentreNumber}">
-                                            Call <span class="noWrap callCentreNumber">${callCentreNumber}</span>
-                                            <span class="noWrap callCentreAppNumber" style="display:none">${callCentreAppNumber}</span>
-                                        </a>
-                                    </h1>
-                                    <br /> ${openingHoursHeader}
-                                </div>
                                 <div class="navbar-text hidden-xs" data-livechat="target">
-                                    <span class="icon-phone"></span>
-                                    <h1><span class="noWrap callCentreNumber">${callCentreNumber}</span>
+                                    Call us <a class="needsclick callCentreNumberClick" href="tel:${callCentreNumber}">
+                                        <span class="noWrap callCentreNumber">${callCentreNumber}</span>
                                         <span class="noWrap callCentreAppNumber" style="display:none">${callCentreAppNumber}</span>
-                                    </h1>
+                                    </a> or <health_v4:callback_link /> ${callCentreCBModal}
                                         ${openingHoursHeader}
                                 </div>
-                                <div class="navbar-text hidden-xs" data-poweredby="header"></div>
-                            </li>
-                            <li>
-                                <health_v3:callback_link />
-                                    ${callCentreCBModal}
+
                                 <div id="view_all_hours" class="hidden">${callCentreHoursModal}</div>
                             </li>
+
 
                         </ul>
                     </div>
@@ -79,14 +66,19 @@
             </jsp:attribute>
 
             <jsp:attribute name="progress_bar">
-                <div class="progress-bar-row collapse navbar-collapse navbar-affix">
+                <div class="progress-bar-row navbar-affix">
                     <div class="container">
                         <div class="row">
                             <div class="col-xs-12 col-sm-9">
-                                <ul class="journeyProgressBar_v2"></ul>
+                                <ul class="journeyProgressBar"></ul>
                             </div>
                             <div class="hidden-xs col-sm-3">
-                                <a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton" data-slide-control="contact" href="javascript:;" <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />>Next step <span class="icon icon-arrow-right"></span></a>
+                                <a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton slide-control-about-you disabled" data-slide-control="next" href="javascript:;"
+                                        <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />>Insurance preferences <span class="icon icon-arrow-right"></span></a>
+                                <a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton slide-control-insurance-preferences disabled-validation disabled" data-slide-control="next"
+                                   href="javascript:;"  <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />>Contact details <span class="icon icon-arrow-right"></span></a>
+                                <a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton slide-control-get-prices disabled-validation disabled" data-slide-control="next"
+                                   href="javascript:;"  <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />>Get prices <span class="icon icon-arrow-right"></span></a>
                             </div>
                         </div>
                     </div>
