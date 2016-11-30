@@ -264,8 +264,15 @@
                 // show disclaimer here.
                 // Sync the filters to the results engine
                 if (!meerkat.modules.carExotic.isExotic()) {
+                    if (meerkat.modules.deviceMediaState.get() === 'xs') {
+                        meerkat.modules.mobileNavButtons.enable();
+                    }
                     meerkat.modules.carFilters.updateFilters();
                 } else {
+                    if (meerkat.modules.deviceMediaState.get() === 'xs') {
+                        meerkat.modules.mobileNavButtons.disableSpecificButtons('refine,save');
+                        meerkat.modules.saveQuote.disable();
+                    }
                     meerkat.modules.tracking.recordTouch('R','Results Page');
                     meerkat.modules.tracking.recordTouch('EC','Famous Transaction');
                 }
