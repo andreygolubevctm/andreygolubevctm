@@ -8,9 +8,15 @@
 <%@ attribute name="ignore" required="false" rtexprvalue="true" description="Verticals to ignore" %>
 <%@ attribute name="orderby" required="false" rtexprvalue="true" description="Define what sort order to execute" %>
 <%@ attribute name="lineLimit" required="false" rtexprvalue="true" description="Define the maximum number of verticals per line" %>
+<%@ attribute name="maxVerticals" required="false" rtexprvalue="true" description="Define the maximum number of verticals to display" %>
 
+<%-- if lineLimit and maxVerticals are exactly the same, it will try and print all the verticals on the one line --%>
 <c:if test="${empty lineLimit}">
 	<c:set var="lineLimit" value="5" />
+</c:if>
+
+<c:if test="${empty maxVerticals}">
+	<c:set var="maxVerticals" value="10" />
 </c:if>
 
 <c:set var="fieldSetID">
