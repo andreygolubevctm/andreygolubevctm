@@ -192,23 +192,15 @@
 		if (meerkat.site.vertical !== "car")
 			return false;
 
-		if (!meerkat.modules.carExotic.isExotic()) {
-			$(elements.labels + " label input").on("click", function(e){
-				// Allow for input value to be updated
-				_.defer(_.bind(toggleVisibleContent, this, true));
-			});
+		// keeping the if then statement broke the youngest driver if a user decides to do an exotic car first
+		// then modify the car details to a non-exotic vehicle
+		bindYoungestDriverClick(elements.labels, toggleVisibleContent);
 
-			$(elements.reg_dob + "," + elements.yng_dob).on("change", updateRestrictAgeSelector);
-			captureOptions();
-			toggleVisibleContent();
-		} else {
-			// otherwise toggle the new question set
-			$(elements.exLabels + " label input").on("click", function(e){
-				// Allow for input value to be updated
-				_.defer(_.bind(toggleVisibleExoticContent, this, true));
-			});
-			toggleVisibleExoticContent();
-		}
+		$(elements.reg_dob + "," + elements.yng_dob).on("change", updateRestrictAgeSelector);
+		captureOptions();
+
+		// otherwise toggle the new question set
+		bindYoungestDriverClick(elements.exLabels, toggleVisibleExoticContent);
 
 		// Need to allow time for the currentStep to be populated
 		setTimeout(function(){
@@ -221,8 +213,18 @@
 			}
 		},250);
 
-		updateRestrictAgeSelector();
+		if (!meerkat.modules.carExotic.isExotic()) {
+			updateRestrictAgeSelector();
+		}
 
+	}
+
+	function bindYoungestDriverClick(elementLabel, callback) {
+		$(elementLabel + " label input").on("click", function(e){
+			// Allow for input value to be updated
+			_.defer(_.bind(callback, this, true));
+		});
+		callback();
 	}
 
 	function getSessionCamStep() {
