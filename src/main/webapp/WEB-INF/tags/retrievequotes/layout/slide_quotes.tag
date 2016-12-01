@@ -12,6 +12,7 @@
                 <form_v2:fieldset legend="Your Recent Quotes" className="recentQuotesFieldset">
                     <retrievequotes_template:parent />
                 </form_v2:fieldset>
+                <confirmation:other_products heading="${otherProductsTitle}" lineLimit="7" maxVerticals="7" />
             </layout_v1:slide_content>
         </jsp:body>
     </layout_v1:slide_columns>

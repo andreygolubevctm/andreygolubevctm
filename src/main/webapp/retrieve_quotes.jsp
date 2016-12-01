@@ -21,6 +21,7 @@
 </c:if>
 
 <%-- VARS --%>
+<c:set var="otherProductsTitle" scope="request"><content:get key="retrieveQuotesOtherProductsTitle" /></c:set>
 <c:choose>
     <c:when test="${not empty param.token}">
         <jsp:useBean id="tokenServiceFactory" class="com.ctm.web.core.email.services.token.EmailTokenServiceFactory"/>
@@ -123,8 +124,6 @@
                 <retrievequotes_layout:slide_login />
                 <retrievequotes_layout:slide_quotes />
 
-                <c:set var="otherProductsTitle"><content:get key="retrieveQuotesOtherProductsTitle" /></c:set>
-                <confirmation:other_products heading="${otherProductsTitle}"  id="confirmation-compare-options" lineLimit="7" maxVerticals="7" />
 
                 <div class="hiddenFields">
                     <form_v1:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid"/>
@@ -136,7 +135,7 @@
                 <core_v1:js_template id="new-quote-template">
                     <h2>Start a New Quote</h2>
                     <br>
-                    <confirmation:other_products heading="${otherProductsTitle}"  id="confirmation-compare-options" lineLimit="7" maxVerticals="7" />
+                    <confirmation:other_products heading="${otherProductsTitle}" lineLimit="7" maxVerticals="7" />
                 </core_v1:js_template>
             </jsp:body>
 
