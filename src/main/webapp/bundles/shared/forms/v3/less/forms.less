@@ -10,6 +10,10 @@ fieldset {
 
 fieldset {
   h2 {
+    font-size: @font-size-large;
+    color: @gray-slight-dark;
+    font-family: @font-family-sans-serif;
+    border-bottom: none;
     .icon-text {
       float: right;
       position: relative;
@@ -42,7 +46,10 @@ fieldset {
     color: @gray-slight-dark;
     font-style: italic;
     font-size: 12px;
-    text-align: right;
+    padding-bottom: 5px;
+    @media (@sm) {
+      text-align: right;
+    }
   }
 }
 
@@ -52,17 +59,12 @@ fieldset {
     .control-label {
       padding-top: 0;
       padding-bottom: (@padding-base-vertical/2);
-
     }
 
     .help-icon {
       padding-top: 0; //(@padding-base-vertical + 1);
       line-height: 1em;
     }
-  }
-
-  .helpIconXSColumn {
-    text-align: right;
   }
 
   fieldset {
@@ -115,7 +117,6 @@ fieldset {
     padding-right: 40px;
     display: block;
     text-align: left;
-
     -webkit-appearance: none;
     -moz-appearance: none;
     -ms-appearance: none;
