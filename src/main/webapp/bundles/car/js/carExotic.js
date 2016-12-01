@@ -111,6 +111,9 @@
 			}
 		});
 
+		// default to hidden
+		$youngDriverQs.slideUp();
+
 		if(_.indexOf(['localhost','nxi','nxs'], meerkat.site.environment) > -1) {
 			var $providerList = $('#quote_filter_providerList');
 			if($providerList.length) {

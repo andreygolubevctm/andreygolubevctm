@@ -45,16 +45,16 @@
                     <field_v2:import_select xpath="${xpath}/employmentStatus"
                         required="true" className="employment_status"
                         url="/WEB-INF/option_data/employment_status.html"
-                        title="regular driver's employment status" />
+                        title="youngest driver's employment status" />
                 </form_v2:row>
 
                 <form_v2:row label="Age drivers licence obtained" helpId="25">
-                    <field_v2:age_licence xpath="${xpath}/licenceAge" required="true"	title="regular" />
+                    <field_v2:age_licence xpath="${xpath}/licenceAge" required="true"	title="youngest" />
                 </form_v2:row>
 
                 <form_v2:row label="Owns another car" id="ownsAnotherCar" helpId="26">
                     <field_v2:array_radio xpath="${xpath}/ownsAnotherCar" required="true" items="Y=Yes,N=No"
-                        title="if the regular driver owns another car" />
+                        title="if the youngest driver owns another car" />
                 </form_v2:row>
             </div>
         </form_v2:fieldset>

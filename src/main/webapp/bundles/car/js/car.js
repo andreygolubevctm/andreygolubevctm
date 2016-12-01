@@ -163,16 +163,14 @@
                 configureContactDetails();
             },
             validation: {
-                validate: !meerkat.modules.carExotic.isExotic(),
+                validate: true,
                 customValidation: function (callback) {
-                    if (!meerkat.modules.carExotic.isExotic()) {
-                        $('#quote_vehicle_selection').find('select').each(function () {
-                            if ($(this).is('[disabled]')) {
-                                callback(false);
-                                return;
-                            }
-                        });
-                    }
+                    $('#quote_vehicle_selection').find('select').each(function () {
+                        if ($(this).is('[disabled]')) {
+                            callback(false);
+                            return;
+                        }
+                    });
                     callback(true);
                 }
             }
