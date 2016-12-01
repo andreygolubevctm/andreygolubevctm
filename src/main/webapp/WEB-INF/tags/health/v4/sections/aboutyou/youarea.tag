@@ -1,5 +1,5 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
-<%@ tag description="Comparing private health insurance options row"%>
+<%@ tag description="Select element for what sort of relationship status a user eg Family, single, couple etc..."%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- ATTRIBUTES --%>
