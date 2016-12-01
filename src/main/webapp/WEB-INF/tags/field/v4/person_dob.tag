@@ -93,8 +93,7 @@ ${logger.trace('DOB Restricted to max: {},{}' , log:kv('nowLessAgeMinYears', now
 
 					<c:set var="sep"></c:set>
 					<c:set var="years">
-						${currentYear}=${currentYear},
-						<c:forEach  var="newYear" begin="1" end="${ageMax}" >
+						<c:forEach  var="newYear" begin="${ageMin}" end="${ageMax}" >
 							${sep}${currentYear - newYear}=${currentYear - newYear}
 							<c:set var="sep">,</c:set>
 						</c:forEach>
