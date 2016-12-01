@@ -7,11 +7,11 @@
     <layout_v3:slide_content>
 
         <%-- PROVIDER TESTING --%>
-        <health_v4:provider_testing xpath="${pageSettings.getVerticalCode()}" />
+        <health_v4_aboutyou:provider_testing xpath="${pageSettings.getVerticalCode()}" />
 
         <%-- COVER TYPE / SITUATION --%>
         <div id="${pageSettings.getVerticalCode()}_situation">
-            NEW SITUATION CODE....
+            <health_v4_aboutyou:situation xpath="${pageSettings.getVerticalCode()}/situation" />
         </div>
 
     </layout_v3:slide_content>
