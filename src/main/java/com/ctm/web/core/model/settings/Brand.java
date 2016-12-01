@@ -43,11 +43,12 @@ public class Brand {
 		return verticals;
 	}
 
-	public ArrayList<Vertical> sortVerticalsBySeq() {
+	public ArrayList<Vertical> sortVerticalsBySeq(int maxVerticals) {
 		ArrayList<Vertical> sortedVerticalList = verticals
 				.stream()
 				.filter(v -> v.getSequence() > 0)
 				.sorted((v1, v2) -> Integer.compare(v1.getSequence(), v2.getSequence()))
+				.limit(maxVerticals)
 				.collect(Collectors.toCollection(ArrayList::new));
 
 		return sortedVerticalList;
