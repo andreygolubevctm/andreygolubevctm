@@ -11,7 +11,37 @@
 
         <%-- COVER TYPE / SITUATION --%>
         <div id="${pageSettings.getVerticalCode()}_situation">
-            <health_v4_aboutyou:situation xpath="${pageSettings.getVerticalCode()}/situation" />
+
+                <%-- VARIABLES --%>
+            <c:set var="xpath" 			value="${pageSettings.getVerticalCode()}/situation" />
+            <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
+
+                <%-- HTML --%>
+            <div id="${name}-selection" class="health-situation">
+                <form_v3:fieldset_columns sideHidden="true">
+
+                <jsp:attribute name="rightColumn">
+                    <health_v2_content:sidebar />
+                </jsp:attribute>
+                    <jsp:body>
+
+                        <health_v4_aboutyou:simples />
+
+                        <form_v3:fieldset id="healthAboutYou" legend="Tell us about yourself, so we can find the right cover for you" className="health-about-you">
+
+                            <health_v4_aboutyou:livingin xpath="${xpath}" />
+                            <health_v4_aboutyou:youarea xpath="${xpath}" />
+
+                            <c:set var="xpath" value="${pageSettings.getVerticalCode()}/healthCover" />
+                            <health_v4_aboutyou:dob xpath="${xpath}" />
+                            <health_v4_aboutyou:currentlyowninsurance xpath="${xpath}" />
+                            <health_v4_aboutyou:applyrebate xpath="${xpath}" />
+                            <health_v4_aboutyou:optin xpath="${xpath}" />
+                        </form_v3:fieldset>
+
+                    </jsp:body>
+                </form_v3:fieldset_columns>
+            </div>
         </div>
 
     </layout_v3:slide_content>
