@@ -11,7 +11,7 @@
 <%-- HTML --%>
 <div id="${name}-selection" class="health-situation">
 
-	<form_v4:fieldset_columns sideHidden="true">
+	<form_v3:fieldset_columns sideHidden="true">
 
 		<jsp:attribute name="rightColumn">
 			<health_v2_content:sidebar />
@@ -35,5 +35,5 @@
 			</form_v3:fieldset>
 
 		</jsp:body>
-	</form_v4:fieldset_columns>
+	</form_v3:fieldset_columns>
 </div>
