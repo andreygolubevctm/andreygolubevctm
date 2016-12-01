@@ -13,7 +13,9 @@
                     <retrievequotes:login_form />
                     <retrievequotes:failed_login />
                 </c:if>
-                <confirmation:other_products heading="${otherProductsTitle}" lineLimit="4" maxVerticals="7" />
+            </layout_v1:slide_center>
+            <layout_v1:slide_center xsWidth="12" mdWidth="10">
+                <confirmation:other_products heading="${otherProductsTitle}" lineLimit="6" maxVerticals="6" />
             </layout_v1:slide_center>
         </jsp:body>
     </layout_v1:slide_columns>

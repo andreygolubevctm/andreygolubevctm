@@ -135,7 +135,7 @@
                 <core_v1:js_template id="new-quote-template">
                     <h2>Start a New Quote</h2>
                     <br>
-                    <confirmation:other_products heading="${otherProductsTitle}" lineLimit="4" maxVerticals="7" />
+                    <confirmation:other_products heading="${otherProductsTitle}" lineLimit="6" maxVerticals="6" />
                 </core_v1:js_template>
             </jsp:body>
 
