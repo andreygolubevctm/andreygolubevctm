@@ -71,7 +71,7 @@ ${logger.trace('DOB Restricted to max: {},{}' , log:kv('nowLessAgeMinYears', now
 	<c:choose>
 		<c:when test="${type eq 'select'}">
 			<div class="row dateinput-tripleField">
-				<div class="col-sm-3 col-xs-4 dayContainer">
+				<div class="col-md-3 col-xs-4 dayContainer">
 					<field_v2:import_select xpath="${xpath}InputD"
 											title="the day"
 											required="true"
@@ -79,7 +79,7 @@ ${logger.trace('DOB Restricted to max: {},{}' , log:kv('nowLessAgeMinYears', now
 											url="/WEB-INF/option_data/day.html"
 											className="sessioncamexclude dateinput-day dontSubmit ${className}" />
 				</div>
-				<div class="col-sm-3 col-xs-4 monthContainer">
+				<div class="col-md-3 col-xs-4 monthContainer">
 					<field_v2:import_select xpath="${xpath}InputM"
 											title="the month"
 											required="true"
@@ -87,7 +87,7 @@ ${logger.trace('DOB Restricted to max: {},{}' , log:kv('nowLessAgeMinYears', now
 											url="/WEB-INF/option_data/month_full_v2.html"
 											className="sessioncamexclude dateinput-month dontSubmit ${className}" />
 				</div>
-				<div class="col-sm-3 col-xs-4">
+				<div class="col-md-3 col-xs-4">
 					<jsp:useBean id="date" class="java.util.Date" />
 					<fmt:formatDate value="${date}" pattern="yyyy" var="currentYear" />
 
