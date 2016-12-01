@@ -24,14 +24,12 @@
 
 		initResults();
 
-		if (!meerkat.modules.carExotic.isExotic()) {
-			initCompare();
-			Features.init();
-			meerkat.modules.compare.initCompare();
+		initCompare();
+		Features.init();
+		meerkat.modules.compare.initCompare();
 
-			breakpointTracking();
-			eventSubscriptions();
-		}
+		breakpointTracking();
+		eventSubscriptions();
 	}
 
 	function onReturnToPage(){

@@ -13,6 +13,7 @@
 		$securityRow,
 		$navBarContents,
 		$youngDriver,
+		originalResultsTemplate = "",
 		$youngDriverQs,
 		_threshold = 150000;
 
@@ -166,11 +167,21 @@
 		if (isExotic()) {
 			var templateHTML = $resultsPage.html();
 			var _template = _.template(templateHTML);
+
+			// backup the template
+			if (originalResultsTemplate === "") {
+				originalResultsTemplate = $(Results.settings.elements.page).html();
+			}
+
 			$(Results.settings.elements.page).html(_template({})).removeClass('hidden').show();
 
 			$('#famous-alt-verticals .verticalButtons > div').removeClass().addClass('col-xs-12 col-sm-3');
 		} else {
-			$resultsPage.fadeOut();
+
+			if (originalResultsTemplate !== "") {
+				$(Results.settings.elements.page).html(originalResultsTemplate);
+			}
+			$resultsPage.fadeIn();
 		}
 	}
 
