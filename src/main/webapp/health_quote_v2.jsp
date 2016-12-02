@@ -7,8 +7,6 @@
 <jsp:useBean id="sessionUtils" class="com.ctm.web.core.utils.SessionUtils"/>
 <session:new verticalCode="HEALTH" authenticated="true" />
 
-<session:new verticalCode="HEALTH" authenticated="true" />
-
 <health_v1:redirect_rules />
 
 <%-- START JOURNEY OVERRIDE - Part 1 of 2) --%>
