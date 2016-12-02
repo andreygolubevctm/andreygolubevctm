@@ -1,5 +1,8 @@
 package com.ctm.web.health.router;
 
+import com.ctm.httpclient.Client;
+import com.ctm.redemption.model.Redemption;
+import com.ctm.redemption.model.RedemptionForm;
 import com.ctm.web.core.confirmation.services.JoinService;
 import com.ctm.web.core.email.exceptions.SendEmailException;
 import com.ctm.web.core.email.model.EmailMode;
@@ -9,6 +12,7 @@ import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.ServiceConfigurationException;
 import com.ctm.web.core.leadService.services.LeadService;
 import com.ctm.web.core.model.Touch;
+import com.ctm.web.core.model.session.AuthenticatedData;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.router.CommonQuoteRouter;
@@ -16,6 +20,8 @@ import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.services.TouchService;
 import com.ctm.web.core.services.TransactionAccessService;
+import com.ctm.web.core.transaction.dao.TransactionDetailsDao;
+import com.ctm.web.core.transaction.model.TransactionDetail;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.factory.EmailServiceFactory;
 import com.ctm.web.health.apply.model.response.HealthApplicationResponse;
@@ -38,6 +44,7 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
@@ -52,6 +59,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.NotFoundException;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
@@ -69,10 +77,12 @@ public class HealthApplicationController extends CommonQuoteRouter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HealthApplicationController.class);
 
-    private static final DateTimeFormatter AUS_FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
     private static final DateTimeFormatter LONG_FORMAT = DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss zzz yyyy");
     public static final String PROVIDER_FAILED_MESSAGE = "The provider failed to process the application, Please contact support team.";
+    public static final String REDEMPTION_SAVE = "/redemption/save";
+    public static final String XPATH_REDEMPTION_ID = "redemptionId";
+    public static final int XPATH_SEQUENCE_NO_REDEMPTION_ID = -666;
+    public static final String CURRENT_REDEMPTION_ID = "current/redemptionId";
 
     @Autowired
     private HealthApplyService healthApplyService;
@@ -83,10 +93,19 @@ public class HealthApplicationController extends CommonQuoteRouter {
     @Autowired
     private TransactionAccessService transactionAccessService;
 
+    @Autowired
+    private TransactionDetailsDao transactionDetailsDao;
+
     private LeadService leadService;
 
     @Autowired
     private HealthConfirmationService healthConfirmationService;
+
+    @Autowired
+    private Client<RedemptionForm, RedemptionForm> redemptionService;
+
+    @Value("${ctm.redemption.url}")
+    private String redemptionServiceUrl;
 
     @Autowired
     public HealthApplicationController(SessionDataServiceBean sessionDataServiceBean ,
@@ -118,6 +137,13 @@ public class HealthApplicationController extends CommonQuoteRouter {
         updateTransactionIdAndClientIP(request, data);
         updateApplicationDate(request, data);
 
+        // Create placeholder Redemption: Create the placeholder only if ONLINE
+        final Optional<AuthenticatedData> authenticatedSessionData = Optional.ofNullable(sessionDataServiceBean.getAuthenticatedSessionData(request));
+        Optional<RedemptionForm> redemptionForm = Optional.empty();
+        if(!isOperatorLoggedIn(authenticatedSessionData)) {
+            redemptionForm = Optional.ofNullable(createRedemptionPlaceholder(request, data));
+        }
+
         // get the response
         final HealthApplyResponse applyResponse = healthApplyService.apply(request, brand, data);
         // Should only be one payload response
@@ -135,6 +161,11 @@ public class HealthApplicationController extends CommonQuoteRouter {
 
 
         if (Status.Success.equals(response.getSuccess())) {
+            if(redemptionForm.isPresent()) { // It means ONLINE
+                setRedemptionToSuccess(redemptionForm.get());
+            } else {
+
+            }
 
             result.setSuccess(true);
             result.setConfirmationID(confirmationId);
@@ -168,6 +199,9 @@ public class HealthApplicationController extends CommonQuoteRouter {
             LOGGER.info("Transaction has been set to confirmed. {},{}", kv("transactionId", data.getTransactionId()), kv("confirmationID", confirmationId));
 
         } else {
+            if(!isOperatorLoggedIn(authenticatedSessionData)) {
+                setRedemptionToFailed(redemptionForm.get());
+            }
 
             // Set callCentre property only when it's not a success
             final String callCentre = (String)request.getSession().getAttribute("callCentre");
@@ -217,6 +251,68 @@ public class HealthApplicationController extends CommonQuoteRouter {
         final HealthResultWrapper resultWrapper = new HealthResultWrapper();
         resultWrapper.setResult(result);
         return resultWrapper;
+    }
+
+    private boolean isOperatorLoggedIn(final Optional<AuthenticatedData> authenticatedSessionData) {
+        return authenticatedSessionData.map(AuthenticatedData::isLoggedIn).orElse(false);
+    }
+
+    private void setRedemptionToFailed(final RedemptionForm redemptionForm) {
+        final RedemptionForm redemptionToSuccess = RedemptionForm.newBuilder(redemptionForm)
+                .redemption(Redemption.newBuilder(redemptionForm.getRedemption())
+                        .updatedTimestamp(LocalDateTime.now())
+                        .touchType("F")
+                        .build())
+                .build();
+        redemptionService.post(redemptionToSuccess, RedemptionForm.class, redemptionServiceUrl + REDEMPTION_SAVE)
+                .toBlocking().first();
+    }
+
+    private void setRedemptionToSuccess(final RedemptionForm redemptionForm) {
+        final RedemptionForm redemptionFormToSuccess = RedemptionForm.newBuilder(redemptionForm)
+                .redemption(Redemption.newBuilder(redemptionForm.getRedemption())
+                        .updatedTimestamp(LocalDateTime.now())
+                        .touchType("C")
+                        .build())
+                .build();
+
+        redemptionService.post(redemptionFormToSuccess, RedemptionForm.class, redemptionServiceUrl + REDEMPTION_SAVE).toBlocking().first();
+    }
+
+    private RedemptionForm createRedemptionPlaceholder(final HttpServletRequest request, final HealthRequest healthRequest) throws DaoException {
+        final Data dataBucket = getDataBucket(request, healthRequest.getTransactionId());
+        final Long rootId = Long.parseLong(dataBucket.getString("current/rootId"));
+
+        final RedemptionForm redemptionFormRequest = RedemptionForm.newBuilder()
+                .redemption(Redemption.newBuilder()
+                    //.campaignId(Long.valueOf(request.getParameter("campaignId")))
+                    .campaignId(1L) // HARD CODING campaignId for the time being!!!
+                    .contactEmail(healthRequest.getHealth().getApplication().getEmail())
+                    .createdTimestamp(LocalDateTime.now())
+                    .firstName(healthRequest.getHealth().getApplication().getPrimary().getFirstname())
+                    .lastName(healthRequest.getHealth().getApplication().getPrimary().getSurname())
+                    .phoneNumber(Optional.ofNullable(healthRequest.getHealth().getApplication().getMobile())
+                            .orElse(healthRequest.getHealth().getApplication().getOther()))
+                    .rootId(rootId)
+                    .touchType("P")
+                    .shippingAddress(healthRequest.getHealth().getApplication().getAddress().getFullAddressLineOne())
+                    //.signOnReceiptFlag(Boolean.valueOf(request.getParameter("signOnReceiptFlag")))
+                    .signOnReceiptFlag(Boolean.FALSE) // HARD CODING signOnReceiptFlag for the time being!!!
+                    .build())
+                .build();
+
+        final RedemptionForm redemptionFormResponse = redemptionService.post(redemptionFormRequest, RedemptionForm.class, redemptionServiceUrl + REDEMPTION_SAVE)
+                .toBlocking().first();
+
+        dataBucket.put(CURRENT_REDEMPTION_ID, redemptionFormResponse.getEncryptedRedemptionId().get());
+
+        final TransactionDetail transactionDetail = new TransactionDetail();
+        transactionDetail.setSequenceNo(XPATH_SEQUENCE_NO_REDEMPTION_ID);
+        transactionDetail.setTextValue(redemptionFormResponse.getEncryptedRedemptionId().get());
+        transactionDetail.setXPath(XPATH_REDEMPTION_ID);
+        transactionDetailsDao.addTransactionDetails(healthRequest.getTransactionId(), transactionDetail);
+
+        return redemptionFormResponse;
     }
 
     private String getErrors(List<PartnerError> errors, boolean nonFatalErrors) {

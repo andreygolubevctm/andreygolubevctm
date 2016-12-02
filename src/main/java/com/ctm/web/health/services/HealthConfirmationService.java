@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
+import java.util.Optional;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static com.ctm.web.core.utils.common.utils.LocalDateUtils.AUS_FORMAT;
@@ -64,6 +65,7 @@ public class HealthConfirmationService {
                     .whatsNext(next).product(productSelected)
                     .policyNo(response.getProductId())
                     .paymentType(paymentType)
+                    .redemptionId(Optional.ofNullable((String) dataBucket.get("current/redemptionId")).orElse(""))
                     .build();
 
             Confirmation confirmation = new Confirmation();
