@@ -34,12 +34,9 @@
 			coverType:  false
 	};
 
-	var previousValues = {
-		excess: false,
-		coverType: false
-	};
-
 	var updateBtnShown = false;
+
+	var hasComprehensiveExcessUpdated = false;
 
 	//
 	// Refresh filters from form/page
@@ -73,15 +70,26 @@
 		}
 
 		// make excess unselectable with value of $600 if cover type not comprehensive
-		defaultExcess();
-
-		// Refresh excess
-		var excess = $('#quote_excess').val() ? $('#quote_excess').val() : $('#quote_baseExcess').val();
-		$filterExcess.find('.dropdown-toggle span').text( $filterExcess.find('.dropdown-menu a[data-value="' + excess + '"]').text() );
+		// defaultExcess();
 
 		// Refresh cover type
 		var coverType = $('#quote_typeOfCover').val();
         $filterCoverType.find('.dropdown-toggle span').text( $filterCoverType.find('.dropdown-menu a[data-value="' + coverType + '"]').text() );
+
+		// Refresh excess
+		var excess = currentValues.excess ? currentValues.excess : ($('#quote_excess').val() ? $('#quote_excess').val() : $('#quote_baseExcess').val());
+
+		if (currentValues.excess) {
+			$('#quote_excess').val(currentValues.excess);
+		}
+
+		if (coverType !== 'COMPREHENSIVE') {
+			excess = 600;
+			$('#quote_excess').val(600);
+		}
+
+		$filterExcess.find('.dropdown-toggle span').text( $filterExcess.find('.dropdown-menu a[data-value="' + excess + '"]').text() );
+		$filterExcess.toggleClass('default-600', coverType !== 'COMPREHENSIVE');
 	}
 
 	//
@@ -108,32 +116,45 @@
 
 				meerkat.messaging.publish(moduleEvents.CHANGED);
 
-				meerkat.modules.paymentFrequencyButtons.set(value);
+				if (deviceStateXS === true) {
+					meerkat.modules.paymentFrequencyButtons.set(value);
+				}
 			}
-		}
-		else if ($dropdown.hasClass('filter-excess')) {
-			if (!updateBtnShown) {
-				previousValues.excess = currentValues.excess;
-			}
+		} else {
+			var valueUpdated = false;
 
-			if(value !== currentValues.excess) {
-				currentValues.excess = value;
-				$('#quote_excess').val(value);
+			if ($dropdown.hasClass('filter-cover-type')) {
+				if (currentValues.coverType !== value) {
+					valueUpdated = true;
+				}
 
-				toggleUpdate(false);
-			}
-		}
-		else if ($dropdown.hasClass('filter-cover-type')) {
-			if (!updateBtnShown) {
-				previousValues.coverType = currentValues.coverType;
-			}
-
-			if (value !== currentValues.coverType) {
 				currentValues.coverType = value;
-				$('#quote_typeOfCover').val(value);
+				if (value !== 'COMPREHENSIVE') {
+					// set excess to $600
+					$filterExcess.find('.dropdown-menu a[data-value=600]').trigger('click');
+					$filterExcess.add($('.filter-excess .dropdown-toggle')).addClass('disabled');
+				} else {
+					$filterExcess.find('.dropdown-menu a[data-value=' + currentValues.excess + ']').trigger('click');
+					$filterExcess.add($('.filter-excess .dropdown-toggle')).removeClass('disabled');
 
+					if (!hasComprehensiveExcessUpdated) {
+						currentValues.excess = $('#quote_baseExcess').val();
+						$filterExcess.find('.dropdown-menu a[data-value=' + currentValues.excess + ']').trigger('click');
+					}
+				}
+				$filterExcess.toggleClass('default-600', value !== 'COMPREHENSIVE');
+			} else {
+				if (currentValues.coverType === 'COMPREHENSIVE') {
+					if (currentValues.excess !== value) {
+						valueUpdated = true;
+					}
+					currentValues.excess = value;
+				}
+			}
+
+			// if values have changed, show update button
+			if (valueUpdated) {
 				toggleUpdate(false);
-				updateFilters();
 			}
 		}
 	}
@@ -145,11 +166,13 @@
 	}
 
 	function storeCurrentValues() {
+		var excess = currentValues.excess ? currentValues.excess : ($('#quote_excess').val() ? $('#quote_excess').val() : $('#quote_baseExcess').val());
 
 		currentValues = {
 			display:	Results.getDisplayMode(),
 			frequency:	$('#quote_paymentType').val(),
-			excess:		$('#quote_excess').val() ? $('#quote_excess').val() : $('#quote_baseExcess').val(),
+			// excess:		$('#quote_excess').val() ? $('#quote_excess').val() : $('#quote_baseExcess').val(),
+			excess: excess,
 			coverType:  $('#quote_typeOfCover').val()
 		};
 	}
@@ -289,40 +312,22 @@
 		$component.on('click', '.dropdown-menu a', handleDropdownOption);
 
 		$updateBtn.on('click', function updateResults() {
+			$('#quote_typeOfCover').val(currentValues.coverType);
+			$('#quote_excess').val(currentValues.coverType === 'COMPREHENSIVE' ? currentValues.excess : 600);
+
+			if (currentValues.coverType === 'COMPREHENSIVE' && currentValues.excess !== $('#quote_baseExcess').val()) {
+				hasComprehensiveExcessUpdated = true;
+			}
+
 			meerkat.messaging.publish(moduleEvents.CHANGED, {excess:currentValues.excess, coverType:currentValues.coverType});
 			toggleUpdate(true);
 		});
 
 		$cancelUpdateBtn.on('click', function cancelUpdate() {
-			var $dropdown;
-
-			if(!_.isEmpty(previousValues.excess)) {
-				$filterExcess.find('li.active').removeClass("active");
-				$dropdown = $('.dropdown.filter-excess');
-
-				currentValues.excess = previousValues.excess;
-
-				$filterExcess.find('a[data-value="' + previousValues.excess + '"]').each(function(){
-					$dropdown.find('.dropdown-toggle span').text($(this).text());
-					$(this).parent().addClass("active");
-				});
-			}
-
-			if(!_.isEmpty(previousValues.coverType)) {
-				$filterCoverType.find('li.active').removeClass("active");
-				$dropdown = $('.dropdown.filter-cover-type');
-
-				currentValues.coverType = previousValues.coverType;
-
-				$('#quote_typeOfCover').val(previousValues.coverType);
-
-				$filterCoverType.find('a[data-value="' + previousValues.coverType + '"]').each(function(){
-					$dropdown.find('.dropdown-toggle span').text($(this).text());
-					$(this).parent().addClass("active");
-				});
-
-				updateFilters();
-			}
+			// trigger clicks on previous selected values
+			var excess = $('#quote_excess').val() ? $('#quote_excess').val() : $('#quote_baseExcess').val();
+			$filterCoverType.find('.dropdown-menu a[data-value=' + $('#quote_typeOfCover').val() + ']').trigger('click');
+			$filterExcess.find('.dropdown-menu a[data-value=' + excess + ']').trigger('click');
 
 			toggleUpdate(true);
 		});
@@ -385,8 +390,19 @@
 		xsDefaultExcess(currentValues.coverType);
 
 		function xsDefaultExcess(coverType) {
+			var excess = 600;
+
+			if (coverType === 'COMPREHENSIVE') {
+				if (!hasComprehensiveExcessUpdated) {
+					excess = $('#quote_baseExcess').val();
+				} else {
+					excess = currentValues.excess;
+				}
+			}
+
 			$('#xsFilterBar_excess')
-				.val(coverType !== 'COMPREHENSIVE' ? 600 : currentValues.excess)
+				.val(excess)
+				// .val(coverType !== 'COMPREHENSIVE' ? 600 : currentValues.excess)
 				.toggleClass('default-600', coverType !== 'COMPREHENSIVE')
 				.prop('disabled', coverType !== 'COMPREHENSIVE')
 				.attr('disabled', coverType !== 'COMPREHENSIVE');
@@ -417,7 +433,7 @@
 		}
 
 		$freq.val( revised.freq );
-		$excess.val( revised.excess );
+		// $excess.val( revised.excess );
         $coverType.val( revised.coverType );
 
 		if (revised.display !== currentValues.display) {
@@ -431,16 +447,17 @@
 		meerkat.modules.dialogs.close(modalID);
 		meerkat.modules.navMenu.close();
 
-		updateFilters();
-
 		if ( currentValues.frequency !== revised.freq ) {
 			currentValues.frequency = revised.freq;
 			Results.setFrequency(currentValues.frequency);
 			meerkat.messaging.publish(moduleEvents.CHANGED);
 		}
 
-		if ( currentValues.excess !== revised.excess ) {
-			currentValues.excess = revised.excess;
+		if ( currentValues.excess !== revised.excess) {
+			// only update currentValues.excess if comprehensive cover
+			if (revised.coverType === 'COMPREHENSIVE') {
+				currentValues.excess = revised.excess;
+			}
             revisedValues.excess = revised.excess;
 		}
 
@@ -448,6 +465,12 @@
 		    currentValues.coverType = revised.coverType;
             revisedValues.coverType = revised.coverType;
         }
+
+        if (revised.coverType === 'COMPREHENSIVE' && revised.excess !== $('#quote_baseExcess').val()) {
+			hasComprehensiveExcessUpdated = true;
+		}
+
+		updateFilters();
 
         if (!_.isEmpty(revisedValues)) {
             meerkat.messaging.publish(moduleEvents.CHANGED, revisedValues);
@@ -484,25 +507,6 @@
 		$('#filter_coverTypeOptions option:not(.hidden)').each(function () {
 			$filterMenu.append('<li><a href="javascript:;" data-value="' + this.value + '">' + this.text + '</a></li>');
 		});
-	}
-
-	function defaultExcess() {
-		var typeOfCover = $('#quote_typeOfCover').val();
-
-		if (typeOfCover !== 'COMPREHENSIVE') {
-			$('#quote_excess').val(600);
-			$filterExcess.add($('.filter-excess .dropdown-toggle')).addClass('disabled');
-		} else {
-			if (currentValues.excess) {
-				$('#quote_excess').val(currentValues.excess);
-			}
-
-			if (!_.isEmpty(previousValues.coverType) && currentValues.coverType === 'COMPREHENSIVE') {
-				$filterExcess.add($('.filter-excess .dropdown-toggle')).removeClass('disabled');
-			}
-		}
-
-		$filterExcess.toggleClass('default-600', typeOfCover !== 'COMPREHENSIVE');
 	}
 
 	function initCarFilters() {

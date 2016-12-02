@@ -16,6 +16,11 @@
     var $typeOfCoverDropdown = $('#quote_optionsTypeOfCover'),
         $typeOfCover = $('#quote_typeOfCover'),
         $filterCoverType = $('#navbar-filter').find('.filter-cover-type'),
+        $typeOfCoverOptions = {
+            full: $typeOfCoverDropdown.find('option'),
+            excTPFT: $typeOfCoverDropdown.find('option:not([value=TPFT])')
+
+        },
         $tpftOption = $(':input.type_of_cover option').filter('[value=TPFT]'),
         $marketValue = $('#quote_vehicle_marketValue'),
         ctpMessageDialogId = null,
@@ -23,13 +28,12 @@
 
     /* main entrypoint for the module to run first */
     function initCarTypeOfCover() {
-        if ($typeOfCover.val()) {
-            $typeOfCoverDropdown.val($typeOfCover.val());
-        }
-
         toggleTPFTOption($tpftOption);
-
         eventSubscriptions();
+
+        // if ($typeOfCover.val()) {
+        //     $typeOfCoverDropdown.val($typeOfCover.val());
+        // }
     }
 
     function eventSubscriptions() {
@@ -64,16 +68,33 @@
     }
 
     function toggleTPFTOption($tpftOption) {
-        if ($marketValue.val() > 20000) {
-            // hide TPFT option
-            $tpftOption.addClass('hidden');
+        $typeOfCoverDropdown.empty();
+
+        // if ($marketValue.val() > 20000) {
+        //     // hide TPFT option
+        //     $tpftOption.addClass('hidden');
+        //     $typeOfCoverDropdown.append($typeOfCoverOptions.excludingTPFT);
+        //
+        // } else {
+        //     $tpftOption.removeClass('hidden');
+        //     $typeOfCoverDropdown.append($typeOfCoverOptions.full);
+        // }
+
+        $tpftOption.toggleClass('hidden', $marketValue.val() > 20000);
+        $typeOfCoverDropdown.append($typeOfCoverOptions[($marketValue.val() > 20000) ? 'excTPFT' : 'full']);
+
+        _.defer(function() {
             // if previous selection was TPFT unselect
             if ($typeOfCover.val() === 'TPFT') {
                 $typeOfCoverDropdown.val('');
+            } else {
+                if ($typeOfCover.val()) {
+                    $typeOfCoverDropdown.val($typeOfCover.val());
+                } else {
+                    $typeOfCoverDropdown.val('');
+                }
             }
-        } else {
-            $tpftOption.removeClass('hidden');
-        }
+        });
     }
 
     function showCTPMessage() {

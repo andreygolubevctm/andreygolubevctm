@@ -48,15 +48,17 @@
 	<%-- Copy bypassed if not online or there's no copy above and only show if it's an
         A&G special case or the online/offline discount is different. --%>
 	{{ if (obj.availableOnline == true && obj.onlinePromotionText.length > 0 && (obj.isAutoAndGeneralSpecialCase || obj.onlinePromotionText != obj.offlinePromotionText)) { }}
-	<h5>
-		Special Online Offer
-	</h5>
-	<div class="promotion">
-		<span class="icon icon-tag"></span> {{= onlinePromotionText }}
-		{{ if (offerTermsContent.length > 0) { }}
-		<a class="small offerTerms" href="javascript:;">Offer terms</a>
-		<div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
-		{{ } }}
+	<div class="offlineDiscount">
+		<h5>
+			Special Online Offer
+		</h5>
+		<div class="promotion">
+			<span class="icon icon-tag"></span> {{= onlinePromotionText }}
+			{{ if (offerTermsContent.length > 0) { }}
+			<a class="small offerTerms" href="javascript:;">Offer terms</a>
+			<div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
+			{{ } }}
+		</div>
 	</div>
 {{ } }}
 </core_v1:js_template>
