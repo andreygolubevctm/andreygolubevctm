@@ -80,7 +80,7 @@
 			}
 		}
 
-		inputType = $component.find('input.dateinput-day') ? 'input' : 'select';
+		inputType = $component.find('input.dateinput-day').length > 0 ? 'input' : 'select';
 
 		$component.find(inputType+'.dateinput-day').val(parts[0]);
 		$component.find(inputType+'.dateinput-month').val(parts[1]);
@@ -108,8 +108,8 @@
 		if ($this.hasClass('year') || $this.hasClass('dateinput-year')) {return;}
 
 		if ($this.val().length == $this.attr('maxlength')) {
-			var input = $this.is('select') ? 'select' : 'input',
-				next = ($this.hasClass('dateinput-day')) ? input+'.dateinput-month' : input+'.dateinput-year';
+			var inputType = $this.is('select') ? 'select' : 'input',
+				next = ($this.hasClass('dateinput-day')) ? inputType+'.dateinput-month' : inputType+'.dateinput-year';
 
 			$this.closest('[data-provide="dateinput"]').find(next).focus().select();
 		}
