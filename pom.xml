@@ -625,6 +625,7 @@
             <groupId>com.ctm.redemption</groupId>
             <artifactId>redemption-model</artifactId>
             <version>${redemption-model.version}</version>
+            <classifier>HLT-3865</classifier>
         </dependency>
 
         <dependency>

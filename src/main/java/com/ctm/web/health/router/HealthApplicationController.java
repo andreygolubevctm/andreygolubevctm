@@ -141,7 +141,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
         final Optional<AuthenticatedData> authenticatedSessionData = Optional.ofNullable(sessionDataServiceBean.getAuthenticatedSessionData(request));
         Optional<RedemptionForm> redemptionForm = Optional.empty();
         if(!isOperatorLoggedIn(authenticatedSessionData)) {
-            redemptionForm = Optional.ofNullable(createRedemptionPlaceholder(request, data));
+            //redemptionForm = Optional.ofNullable(createRedemptionPlaceholder(request, data));
         }
 
         // get the response
@@ -162,7 +162,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
 
         if (Status.Success.equals(response.getSuccess())) {
             if(redemptionForm.isPresent()) { // It means ONLINE
-                setRedemptionToSuccess(redemptionForm.get());
+                //setRedemptionToSuccess(redemptionForm.get());
             } else {
 
             }
@@ -200,7 +200,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
 
         } else {
             if(!isOperatorLoggedIn(authenticatedSessionData)) {
-                setRedemptionToFailed(redemptionForm.get());
+                //setRedemptionToFailed(redemptionForm.get());
             }
 
             // Set callCentre property only when it's not a success
