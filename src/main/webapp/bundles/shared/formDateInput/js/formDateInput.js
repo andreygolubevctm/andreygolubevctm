@@ -40,12 +40,8 @@
 				.on('change', serialise);
 		}
 		else {
-			$component.find('input.dateinput-day, input.dateinput-month, input.dateinput-year')
+			$component.find(':input.dateinput-day, :input.dateinput-month, :input.dateinput-year')
 				.on('input', moveToNextInput)
-				.on('change', serialise);
-
-			$component.find('select.dateinput-day, select.dateinput-month, select.dateinput-year')
-				.on('select', moveToNextInput)
 				.on('change', serialise);
 		}
 
@@ -60,10 +56,7 @@
 
 	function populate($component, value) {
 		var parts = value.split('/'),
-			nativeValue = '',
-			inputType;
-
-		//alert('populate');
+			nativeValue = '';
 
 		if ($component.attr('data-locked') == 1) return;
 		$component.attr('data-locked', 1);
@@ -80,19 +73,16 @@
 			}
 		}
 
-		inputType = $component.find('input.dateinput-day').length > 0 ? 'input' : 'select';
-
-		$component.find(inputType+'.dateinput-day').val(parts[0]);
-		$component.find(inputType+'.dateinput-month').val(parts[1]);
-		$component.find(inputType+'.dateinput-year').val(parts[2]);
+		$component.find(':input.dateinput-day').val(parts[0]);
+		$component.find(':input.dateinput-month').val(parts[1]);
+		$component.find(':input.dateinput-year').val(parts[2]);
 
 		$component.find('.dateinput-nativePicker input').val(nativeValue);
-		//alert('populate2: ' + nativeValue);
 
 		if(meerkat.modules.performanceProfiling.isIE8() || meerkat.modules.performanceProfiling.isIE9()){
-			meerkat.modules.placeholder.invalidatePlaceholder($component.find(inputType+'.dateinput-day'));
-			meerkat.modules.placeholder.invalidatePlaceholder($component.find(inputType+'.dateinput-month'));
-			meerkat.modules.placeholder.invalidatePlaceholder($component.find(inputType+'.dateinput-year'));
+			meerkat.modules.placeholder.invalidatePlaceholder($component.find(':input.dateinput-day'));
+			meerkat.modules.placeholder.invalidatePlaceholder($component.find(':input.dateinput-month'));
+			meerkat.modules.placeholder.invalidatePlaceholder($component.find(':input.dateinput-year'));
 		}
 
 		$component.removeAttr('data-locked');
@@ -108,9 +98,7 @@
 		if ($this.hasClass('year') || $this.hasClass('dateinput-year')) {return;}
 
 		if ($this.val().length == $this.attr('maxlength')) {
-			var inputType = $this.is('select') ? 'select' : 'input',
-				next = ($this.hasClass('dateinput-day')) ? inputType+'.dateinput-month' : inputType+'.dateinput-year';
-
+			var next = ($this.hasClass('dateinput-day')) ? ':input.dateinput-month' : ':input.dateinput-year';
 			$this.closest('[data-provide="dateinput"]').find(next).focus().select();
 		}
 	}
@@ -121,8 +109,7 @@
 			$destination = $component.find('.serialise'),
 			day = '',
 			month = '',
-			year = '',
-			inputType;
+			year = '';
 
 		if ($component.attr('data-locked') == 1) return;
 		$component.attr('data-locked', 1);
@@ -135,20 +122,17 @@
 			day = parts[2];
 		}
 		else {
-
-			inputType = $component.find('input.dateinput-day').length > 0 ? 'input' : 'select';
-
-			day = $component.find(inputType+'.dateinput-day').val();
-			month = $component.find(inputType+'.dateinput-month').val();
-			year = $component.find(inputType+'.dateinput-year').val();
+			day = $component.find(':input.dateinput-day').val();
+			month = $component.find(':input.dateinput-month').val();
+			year = $component.find(':input.dateinput-year').val();
 		}
 
 		if (day.length === 1) day = '0' + day;
 		if (month.length === 1) month = '0' + month;
 
-		if ($component.attr('data-dateinput-type') != 'native' && inputType === 'input') {
-			$component.find('input.dateinput-day').val(day);
-			$component.find('input.dateinput-month').val(month);
+		if ($component.attr('data-dateinput-type') != 'native' && $component.find('input.dateinput-day').length > 0) {
+			$component.find(':input.dateinput-day').val(day);
+			$component.find(':input.dateinput-month').val(month);
 		}
 
 		// Run 'simple' validation - only checks for non zero and is a valid number!!

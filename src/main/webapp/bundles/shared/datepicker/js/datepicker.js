@@ -56,12 +56,12 @@
 				// Make sure there's a target on hide.
 				if (!e.target) { return; }
 				// If it's the input, then we can blur it and get out.
-				if ($target.is('input, select')) { $target.blur(); return; }
+				if ($target.is(':input')) { $target.blur(); return; }
 				// If it was bound to a parent, go find the element
 				// Don't blur if field has focus e.g. user is typing in the date
-				if ($target.find("input, select").is(':focus')) { return; }
+				if ($target.find(":input").is(':focus')) { return; }
 				// Otherwise just go for it
-				$target.find("input, select").blur();
+				$target.find(":input").blur();
 				if(meerkat.modules.performanceProfiling.isIE8() || meerkat.modules.performanceProfiling.isIE9()){
 					meerkat.modules.placeholder.invalidatePlaceholder($('input.dateinput-date'));
 				}
