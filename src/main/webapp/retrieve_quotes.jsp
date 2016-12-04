@@ -21,6 +21,7 @@
 </c:if>
 
 <%-- VARS --%>
+<c:set var="otherProductsTitle" scope="request"><content:get key="retrieveQuotesOtherProductsTitle" /></c:set>
 <c:choose>
     <c:when test="${not empty param.token}">
         <jsp:useBean id="tokenServiceFactory" class="com.ctm.web.core.email.services.token.EmailTokenServiceFactory"/>
@@ -66,51 +67,51 @@
 
         <layout_v1:journey_engine_page title="Retrieve Your Quotes">
 
-        <jsp:attribute name="head">
-            <link rel="stylesheet" href="${assetUrl}assets/brand/${pageSettings.getBrandCode()}/css/retrievequotes${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
-        </jsp:attribute>
+            <jsp:attribute name="head">
+                <link rel="stylesheet" href="${assetUrl}assets/brand/${pageSettings.getBrandCode()}/css/retrievequotes${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
+            </jsp:attribute>
 
-        <jsp:attribute name="head_meta">
-        </jsp:attribute>
+            <jsp:attribute name="head_meta">
+            </jsp:attribute>
 
-        <jsp:attribute name="header">
-            <div class="navbar-collapse header-collapse-contact collapse">
-                <ul class="nav navbar-nav navbar-right">
+            <jsp:attribute name="header">
+                <div class="navbar-collapse header-collapse-contact collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                    </ul>
+                </div>
+            </jsp:attribute>
+
+            <jsp:attribute name="navbar">
+
+                <ul class="nav navbar-nav" role="menu">
+                    <core_v2:offcanvas_header />
+                    <li class="slide-feature-my-quotes">
+                        <a href="javascript:;" class="btn-email"><span>My Quotes</span></a>
+                    </li>
+                    <li class="slide-feature-start-new-quote">
+                        <a href="javascript:;" class="btn-cta" id="new-quote"><span>Start a New Quote</span></a>
+                    </li>
                 </ul>
-            </div>
-        </jsp:attribute>
 
-        <jsp:attribute name="navbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="slide-feature-logout ">
+                        <a href="javascript:;" class="btn-back" id="logout-user"><span>Logout</span></a>
+                    </li>
+                </ul>
 
-            <ul class="nav navbar-nav" role="menu">
-                <core_v2:offcanvas_header />
-                <li class="slide-feature-my-quotes">
-                    <a href="javascript:;" class="btn-email"><span>My Quotes</span></a>
-                </li>
-                <li class="slide-feature-start-new-quote">
-                    <a href="javascript:;" class="btn-cta" id="new-quote"><span>Start a New Quote</span></a>
-                </li>
-            </ul>
-
-            <ul class="nav navbar-nav navbar-right">
-                <li class="slide-feature-logout ">
-                    <a href="javascript:;" class="btn-back" id="logout-user"><span>Logout</span></a>
-                </li>
-            </ul>
-
-        </jsp:attribute>
+            </jsp:attribute>
 
 
-        <jsp:attribute name="form_bottom">
-        </jsp:attribute>
+            <jsp:attribute name="form_bottom">
+            </jsp:attribute>
 
-        <jsp:attribute name="footer">
-            <core_v1:whitelabeled_footer />
-        </jsp:attribute>
+            <jsp:attribute name="footer">
+                <core_v1:whitelabeled_footer />
+            </jsp:attribute>
 
-        <jsp:attribute name="vertical_settings">
-            <retrievequotes:settings />
-        </jsp:attribute>
+            <jsp:attribute name="vertical_settings">
+                <retrievequotes:settings />
+            </jsp:attribute>
 
             <jsp:attribute name="body_end"></jsp:attribute>
 
@@ -123,6 +124,7 @@
                 <retrievequotes_layout:slide_login />
                 <retrievequotes_layout:slide_quotes />
 
+
                 <div class="hiddenFields">
                     <form_v1:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid"/>
                     <core_v1:referral_tracking vertical="retrieve_quotes"/>
@@ -133,7 +135,7 @@
                 <core_v1:js_template id="new-quote-template">
                     <h2>Start a New Quote</h2>
                     <br>
-                    <confirmation:other_products />
+                    <confirmation:other_products heading="${otherProductsTitle}" lineLimit="6" maxVerticals="6" />
                 </core_v1:js_template>
             </jsp:body>
 
