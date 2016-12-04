@@ -58,24 +58,36 @@ public class CarRegoLookupDao {
      * @param status
      * @throws DaoException
      */
-    public static void logLookup(Long transactionId, String plateNumber, String state, String status) throws DaoException {
-
+    public static void logLookup(Long transactionId, String plateNumber, String state, String status, String motorwebNvic, String motorwebRedbook) throws DaoException {
         SimpleDatabaseConnection dbSource = null;
-
         try {
-            PreparedStatement stmt;
             dbSource = new SimpleDatabaseConnection();
 
+            String resultCount = null;
+            if (motorwebNvic != null) {
+                PreparedStatement count = dbSource.getConnection().prepareStatement(
+                        "SELECT COUNT(*) FROM aggregator.glasses_extract ge WHERE ge.nvicde = ? AND (ge.redbookCode IS NOT NULL OR ge.redbookCode != '')");
+                count.setString(1, motorwebNvic);
+                ResultSet rs = count.executeQuery();
+                while (rs.next()) {
+                    resultCount = rs.getString(1);
+                }
+            }
+
+            PreparedStatement stmt;
             stmt = dbSource.getConnection().prepareStatement(
                     "INSERT INTO " + LOG_TABLE + " " +
-                    "(regoLookupPlate,regoLookupState,regoLookupTransactionId,regoLookupStatus) " +
-                    "VALUES(?,?,?,?)"
+                    "(regoLookupPlate,regoLookupState,regoLookupTransactionId,regoLookupStatus,motorweb_nvic,motorweb_redbook,motorweb_nvic_ctm_matches) " +
+                    "VALUES(?,?,?,?,?,?,?)"
             );
 
             stmt.setString(1, plateNumber);
             stmt.setString(2, state);
             stmt.setLong(3, transactionId);
             stmt.setString(4, status);
+            stmt.setString(5, motorwebNvic);
+            stmt.setString(6, motorwebRedbook);
+            stmt.setString(7, resultCount);
 
             stmt.executeUpdate();
         }
