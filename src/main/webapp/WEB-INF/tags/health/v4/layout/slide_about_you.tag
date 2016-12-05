@@ -1,35 +1,49 @@
+<%@ tag description="The Health Journey's 'All About You' Slide" %>
 <%@ tag language="java" pageEncoding="UTF-8" %>
-<%@ tag description="Medicare details group"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<%-- HTML --%>
-<div id="${name}-selection" class="health-situation">
-    <%-- VARIABLES --%>
-    <c:set var="xpath" 			value="${pageSettings.getVerticalCode()}/situation" />
-    <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
-    <form_v3:fieldset_columns sideHidden="true">
+<layout_v3:slide formId="startForm" firstSlide="true" nextLabel="Next Step">
 
-		<jsp:attribute name="rightColumn">
-			<health_v2_content:sidebar />
-		</jsp:attribute>
+    <layout_v3:slide_content>
 
-        <jsp:body>
+        <%-- PROVIDER TESTING --%>
+        <health_v4_aboutyou:provider_testing xpath="${pageSettings.getVerticalCode()}" />
 
-            <health_v4_aboutyou:simples />
+        <%-- COVER TYPE / SITUATION --%>
+        <div id="${pageSettings.getVerticalCode()}_situation">
 
-            <form_v3:fieldset id="healthAboutYou" legend="Tell us about yourself, so we can find the right cover for you" className="health-about-you">
+                <%-- VARIABLES --%>
+            <c:set var="xpath" 			value="${pageSettings.getVerticalCode()}/situation" />
+            <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
 
-                <health_v4_aboutyou:provider_testing xpath="${xpath}" />
-                <health_v4_aboutyou:livingin xpath="${xpath}" />
-                <health_v4_aboutyou:youarea xpath="${xpath}" />
+                <%-- HTML --%>
+            <div id="${name}-selection" class="health-situation">
+                <form_v3:fieldset_columns sideHidden="true">
 
-                <c:set var="xpath" value="${pageSettings.getVerticalCode()}/healthCover" />
-                <health_v4_aboutyou:dob xpath="${xpath}" />
-                <health_v4_aboutyou:currentlyowninsurance xpath="${xpath}" />
-                <health_v4_aboutyou:applyrebate xpath="${xpath}" />
-                <health_v4_aboutyou:optin xpath="${xpath}" />
-            </form_v3:fieldset>
+                <jsp:attribute name="rightColumn">
+                    <health_v2_content:sidebar />
+                </jsp:attribute>
+                    <jsp:body>
 
-        </jsp:body>
-    </form_v3:fieldset_columns>
-</div>
+                        <health_v4_aboutyou:simples />
+
+                        <form_v3:fieldset id="healthAboutYou" legend="Tell us about yourself, so we can find the right cover for you" className="health-about-you">
+
+                            <health_v4_aboutyou:livingin xpath="${xpath}" />
+                            <health_v4_aboutyou:youarea xpath="${xpath}" />
+
+                            <c:set var="xpath" value="${pageSettings.getVerticalCode()}/healthCover" />
+                            <health_v4_aboutyou:dob xpath="${xpath}" />
+                            <health_v4_aboutyou:currentlyowninsurance xpath="${xpath}" />
+                            <health_v4_aboutyou:applyrebate xpath="${xpath}" />
+                            <health_v4_aboutyou:optin xpath="${xpath}" />
+                        </form_v3:fieldset>
+
+                    </jsp:body>
+                </form_v3:fieldset_columns>
+            </div>
+        </div>
+
+    </layout_v3:slide_content>
+
+</layout_v3:slide>
