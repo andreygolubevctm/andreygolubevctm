@@ -1,0 +1,52 @@
+//
+// Button rounded tile
+// --------------------------------------------------
+
+// Make the div behave like a button
+.btn-rounded-tile {
+  position: relative;
+  display: block;
+  vertical-align: middle; // match .btn alignment given font-size hack above
+
+  label {
+    border: none;
+    color: @theme-tertiary;
+    display: inline-block;
+    float: left;
+    margin-right: 15px;
+    border-radius: 100%;
+    margin-bottom: 15px;
+    padding: 0;
+    line-height: 50px;
+    width: 50px;
+    height: 50px;
+
+    input {
+      opacity: 0;
+    }
+
+    &:hover:not(.active) {
+      background-color: fade(@theme-tertiary, 20%);
+    }
+  }
+
+  > .btn {
+    &:hover,
+    &:focus,
+    &:active,
+    &.active {
+      z-index: 2;
+      outline: 0;
+    }
+  }
+}
+
+
+// Prevent double borders when buttons are next to each other
+.btn-rounded-tile {
+  .btn + .btn-rounded-tile,
+  .btn-rounded-tile + .btn,
+  .btn-rounded-tile + .btn-rounded-tile {
+    margin-left: -1px;
+  }
+}

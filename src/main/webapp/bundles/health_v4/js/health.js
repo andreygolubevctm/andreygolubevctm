@@ -173,6 +173,8 @@
             },
             onInitialise: function onStartInit(event) {
                 meerkat.modules.jqueryValidate.initJourneyValidator();
+
+                meerkat.modules.healthLocation.setLocation();
             },
             onBeforeEnter: _incrementTranIdBeforeEnteringSlide,
             onAfterEnter: function healthAfterEnter() {
