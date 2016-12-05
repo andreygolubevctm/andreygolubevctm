@@ -254,6 +254,7 @@
 		// Disable filters while results are in progress
 		$(document).on('resultsFetchStart', function onResultsFetchStart() {
 			disable();
+			toggleUpdate(true);
 		});
 
 		$(document).on('pagination.scrolling.start', function onPaginationStart() {
