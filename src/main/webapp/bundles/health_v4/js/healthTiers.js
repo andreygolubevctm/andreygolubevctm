@@ -39,15 +39,15 @@ Handling of the rebate tiers based off situation
 		$income,
 		defaultDependants = 2;
 
-	initHealthTiers =  function(){
+	 function initHealthTiers(){
 		$dependants = $('#health_healthCover_dependants');
 		$incomeMessage = $('#health_healthCover_incomeMessage');
 		$incomeBase = $('#health_healthCover_incomeBase');
 		$income = $('#health_healthCover_income');
-	};
+	}
 
 	// Manages the descriptive titles of the tier drop-down
-	setTiers =  function(initMode){
+	function setTiers(initMode){
 		// Set the dependants allowance and income message
 		// default to 2 kids
 		var _allowance = _.isUndefined($dependants) ? defaultDependants : ($dependants.val() - 1);
@@ -65,7 +65,7 @@ Handling of the rebate tiers based off situation
 		if( $incomeBase.is(':visible') && $('#health_healthCover_incomeBase').find(':checked').length > 0 ) {
 			_cover = $incomeBase.find(':checked').val();
 		} else {
-			_cover = healthChoices.returnCoverCode();
+			_cover = meerkat.modules.healthChoices.returnCoverCode();
 		}
 
 		// Reset and then loop through all of the options
@@ -86,16 +86,16 @@ Handling of the rebate tiers based off situation
 				// Single tiers
 				switch(_value) {
 					case '0':
-						_text = '$'+ formatMoney(rebateTiers.single.incomeBaseTier) +' or less';
+						_text = '$'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.single.incomeBaseTier) +' or less';
 						break;
 					case '1':
-						_text = '$'+ formatMoney(rebateTiers.single.incomeTier1.from) +' - $'+ formatMoney(rebateTiers.single.incomeTier1.to);
+						_text = '$'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.single.incomeTier1.from) +' - $'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.single.incomeTier1.to);
 						break;
 					case '2':
-						_text = '$'+ formatMoney(rebateTiers.single.incomeTier2.from) +' - $'+ formatMoney(rebateTiers.single.incomeTier2.to);
+						_text = '$'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.single.incomeTier2.from) +' - $'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.single.incomeTier2.to);
 						break;
 					case '3':
-						_text = '$'+ formatMoney(rebateTiers.single.incomeTier3) + '+ (no rebate)';
+						_text = '$'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.single.incomeTier3) + '+ (no rebate)';
 						break;
 				}
 			} else {
@@ -104,16 +104,16 @@ Handling of the rebate tiers based off situation
 
 				switch(_value) {
 					case '0':
-						_text = '$'+ formatMoney(rebateTiers.familyOrCouple.incomeBaseTier + _allowance) +' or less';
+						_text = '$'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.familyOrCouple.incomeBaseTier + _allowance) +' or less';
 						break;
 					case '1':
-						_text = '$'+ formatMoney(rebateTiers.familyOrCouple.incomeTier1.from + _allowance) +' - $'+ formatMoney(rebateTiers.familyOrCouple.incomeTier1.to + _allowance);
+						_text = '$'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.familyOrCouple.incomeTier1.from + _allowance) +' - $'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.familyOrCouple.incomeTier1.to + _allowance);
 						break;
 					case '2':
-						_text = '$'+ formatMoney(rebateTiers.familyOrCouple.incomeTier2.from + _allowance) +' - $'+ formatMoney(rebateTiers.familyOrCouple.incomeTier2.to + _allowance);
+						_text = '$'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.familyOrCouple.incomeTier2.from + _allowance) +' - $'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.familyOrCouple.incomeTier2.to + _allowance);
 						break;
 					case '3':
-						_text = '$'+ formatMoney(rebateTiers.familyOrCouple.incomeTier3 + _allowance) + '+ (no rebate)';
+						_text = '$'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.familyOrCouple.incomeTier3 + _allowance) + '+ (no rebate)';
 						break;
 					}
 			}
@@ -123,9 +123,7 @@ Handling of the rebate tiers based off situation
 				$this.text(_text);
 			}
 		});
-
-	
-	};
+	}
 
 	meerkat.modules.register("healthTiers", {
 		initHealthTiers: initHealthTiers,

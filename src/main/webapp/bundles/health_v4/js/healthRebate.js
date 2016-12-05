@@ -22,18 +22,18 @@
 
         _setupFields();
         _eventSubscriptions();
-        // _toggleMlsMessage();
-    }
-
-    function _toggleMlsMessage() {
-        $('#health_healthCover_tier_row_legend_mls').toggleClass('hidden', $healthCoverIncome.val() !== '0');
     }
 
     function _setupFields() {
         $elements = {
             situationSelect: $('#health_situation_healthCvr'),
             applyRebate: $('#health_healthCover_rebate'),
-            incomeSelectContainer: $('#income_container')
+            incomeSelectContainer: $('#income_container'),
+            lhcContainers: $('#primary-health-cover, #partner-health-cover, #australian-government-rebate'),
+            incomeSelect: $('#health_healthCover_income'),
+            selectedRebateText: $('#selectedRebateText'),
+            rebateLabel: $('#rebateLabel'),
+            editTier: $('.editTier')
         };
     }
 
@@ -45,11 +45,19 @@
         });
 
         $elements.applyRebate.on('change', function toggleRebateDropdown(){
+
+            setDefaultSelectedRebateLabel();
             $elements.incomeSelectContainer.toggleClass('hidden', !$(this).is(':checked'));
         });
 
+        $elements.editTier.off().on('click', function showTierDropdown(){
+            $elements.selectedRebateText.hide();
+            $elements.rebateLabel.hide();
+            $elements.incomeSelect.parent('.select').removeClass('hidden');
+        });
+
         // update the lhc message
-        $lhcContainers.find(':input').on('change', function updateRebateContinuousCover(event) {
+        $elements.lhcContainers.find(':input').on('change', function updateRebateContinuousCover(event) {
 
             var $this = $(this);
 
@@ -63,7 +71,14 @@
                 _setRebate();
             }
         });
+    }
 
+    function setDefaultSelectedRebateLabel() {
+        // on first load, select the dropdown value and set it as a text label
+        if ($elements.incomeSelect.prop('selectedIndex') === 0) {
+            $elements.selectedRebateText.text($elements.incomeSelect.find('option:eq(1)').text());
+            $elements.incomeSelect.prop('selectedIndex', 1);
+        }
     }
 
     function _setRebate(){
@@ -151,7 +166,7 @@
 
         var postData = {
             dependants: $healthCoverDetails.find(':input[name="health_healthCover_dependants"]').val(),
-            income:$healthCoverDetails.find(':input[name="health_healthCover_income"]').val() || 0,
+            income:$elements.incomeSelect.val() || 0,
             rebate_choice: forceRebate === true ? 'Y' : $healthCoverDetails.find('input[name="health_healthCover_rebate"]:checked').val(),
             primary_dob: $healthCoverDetails.find('#health_healthCover_primary_dob').val(),
             primary_loading:$healthCoverDetails.find('input[name="health_healthCover_primary_healthCoverLoading"]:checked').val(),
@@ -225,7 +240,8 @@
         fetchRates: fetchRates,
         loadRates: loadRates,
         loadRatesBeforeResultsPage: loadRatesBeforeResultsPage,
-        hasPartner: hasPartner
+        hasPartner: hasPartner,
+        setDefaultSelectedRebateLabel: setDefaultSelectedRebateLabel
     });
 
 

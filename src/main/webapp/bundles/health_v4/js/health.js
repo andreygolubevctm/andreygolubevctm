@@ -173,6 +173,18 @@
             },
             onInitialise: function onStartInit(event) {
                 meerkat.modules.jqueryValidate.initJourneyValidator();
+
+                if(meerkat.site.choices) {
+                    meerkat.modules.healthChoices.initialise(meerkat.site.choices.cover, meerkat.site.choices.situation, meerkat.site.choices.benefits);
+                    meerkat.modules.healthChoices.setState(meerkat.site.choices.state);
+                    meerkat.modules.healthChoices.shouldPerformUpdate(meerkat.site.choices.performHealthChoicesUpdate);
+                }
+
+                // change benefits page layout when change the coverType
+                $('#health_situation_coverType').on('change', function() {
+                    var coverTypeVal = $(this).find('input:checked').val();
+                    meerkat.modules.healthBenefitsStep.updateHiddenFields(coverTypeVal);
+                });
             },
             onBeforeEnter: _incrementTranIdBeforeEnteringSlide,
             onAfterEnter: function healthAfterEnter() {
