@@ -17,7 +17,7 @@
 			className="validate"
 			required="false"
 			label="${true}"
-			title="Apply the Australian Government Rebate to lower my upfront premium "
+			title="Apply the Australian Government Rebate to lower my upfront premium <a href='javscript:;' data-content='helpid:240' data-toggle='popover'>more info</a>"
 			additionalLabelAttributes="${analyticsAttr}"
 	/>
 
