@@ -15,6 +15,12 @@
 		}
 	};
 
+	var moduleEvents = {
+		healthSituation: {
+			CHANGED: 'HEALTH_SITUATION_CHANGED'
+		}
+	};
+
 	function init() {
 		$(document).on('ready',function(){
 			$callCentreFields = $(callCentreNumber);
