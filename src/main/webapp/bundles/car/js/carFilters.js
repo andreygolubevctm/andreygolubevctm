@@ -2,41 +2,44 @@
 
 	var meerkat = window.meerkat,
 		meerkatEvents = meerkat.modules.events,
-		log = meerkat.logging.info;
+		log = meerkat.logging.info,
 
-	var events = {
+		events = {
 			carFilters: {
 				CHANGED: 'CAR_FILTERS_CHANGED'
 			}
 		},
-		moduleEvents = events.carFilters;
+		moduleEvents = events.carFilters,
 
-	var initialised = false;
-	var $component;
-	var $priceMode;
-	var $featuresMode;
-	var $filterFrequency,
-		$filterExcess;
-
-	var $labels,
-		$filterCoverType,
-		$updateBtn,
-		$cancelUpdateBtn;
-
-	var deviceStateXS = false;
-	var modalID = false;
-	var pageScrollingLockYScroll = false;
-
-	var currentValues = {
+		initialised = false,
+		deviceStateXS = false,
+		modalID = false,
+		pageScrollingLockYScroll = false,
+		updateBtnShown = false,
+		hasComprehensiveExcessUpdated = false,
+		currentValues = {
 			display:	false,
 			frequency:	false,
 			excess:		false,
 			coverType:  false
-	};
+		},
+		defaultThirdPartyExcess = 600,
 
-	var updateBtnShown = false;
+		$component,
+		$priceMode,
+		$featuresMode,
+		$filterFrequency,
+		$filterExcess,
+		$labels,
+		$filterCoverType,
+		$updateBtn,
+		$cancelUpdateBtn,
 
-	var hasComprehensiveExcessUpdated = false;
+		// hidden xpaths
+		$typeOfCover,
+		$excess,
+		$baseExcess
+	;
 
 	//
 	// Refresh filters from form/page
@@ -69,23 +72,20 @@
 			$filterFrequency.find('.dropdown-toggle span').text( $filterFrequency.find('.dropdown-menu a[data-value="' + freq + '"]').text() );
 		}
 
-		// make excess unselectable with value of $600 if cover type not comprehensive
-		// defaultExcess();
-
 		// Refresh cover type
-		var coverType = $('#quote_typeOfCover').val();
+		var coverType = $typeOfCover.val();
         $filterCoverType.find('.dropdown-toggle span').text( $filterCoverType.find('.dropdown-menu a[data-value="' + coverType + '"]').text() );
 
 		// Refresh excess
-		var excess = currentValues.excess ? currentValues.excess : ($('#quote_excess').val() ? $('#quote_excess').val() : $('#quote_baseExcess').val());
+		var excess = currentValues.excess ? currentValues.excess : ($excess.val() ? $excess.val() : $baseExcess.val());
 
 		if (currentValues.excess) {
-			$('#quote_excess').val(currentValues.excess);
+			$excess.val(currentValues.excess);
 		}
 
 		if (coverType !== 'COMPREHENSIVE') {
-			excess = 600;
-			$('#quote_excess').val(600);
+			excess = defaultThirdPartyExcess;
+			$excess.val(excess);
 		}
 
 		$filterExcess.find('.dropdown-toggle span').text( $filterExcess.find('.dropdown-menu a[data-value="' + excess + '"]').text() );
@@ -96,7 +96,6 @@
 	// Handle when any of the filter bar dropdown menu options are clicked
 	//
 	function handleDropdownOption(event) {
-
 		event.preventDefault();
 
 		var $menuOption = $(event.target);
@@ -129,16 +128,17 @@
 				}
 
 				currentValues.coverType = value;
+
 				if (value !== 'COMPREHENSIVE') {
-					// set excess to $600
-					$filterExcess.find('.dropdown-menu a[data-value=600]').trigger('click');
+					// set third party default excess
+					$filterExcess.find('.dropdown-menu a[data-value=' + defaultThirdPartyExcess + ']').trigger('click');
 					$filterExcess.add($('.filter-excess .dropdown-toggle')).addClass('disabled');
 				} else {
 					$filterExcess.find('.dropdown-menu a[data-value=' + currentValues.excess + ']').trigger('click');
 					$filterExcess.add($('.filter-excess .dropdown-toggle')).removeClass('disabled');
 
 					if (!hasComprehensiveExcessUpdated) {
-						currentValues.excess = $('#quote_baseExcess').val();
+						currentValues.excess = $baseExcess.val();
 						$filterExcess.find('.dropdown-menu a[data-value=' + currentValues.excess + ']').trigger('click');
 					}
 				}
@@ -166,14 +166,13 @@
 	}
 
 	function storeCurrentValues() {
-		var excess = currentValues.excess ? currentValues.excess : ($('#quote_excess').val() ? $('#quote_excess').val() : $('#quote_baseExcess').val());
+		var excess = currentValues.excess ? currentValues.excess : ($excess.val() ? $excess.val() : $baseExcess.val());
 
 		currentValues = {
 			display:	Results.getDisplayMode(),
 			frequency:	$('#quote_paymentType').val(),
-			// excess:		$('#quote_excess').val() ? $('#quote_excess').val() : $('#quote_baseExcess').val(),
 			excess: excess,
-			coverType:  $('#quote_typeOfCover').val()
+			coverType: $typeOfCover.val()
 		};
 	}
 
@@ -312,10 +311,11 @@
 		$component.on('click', '.dropdown-menu a', handleDropdownOption);
 
 		$updateBtn.on('click', function updateResults() {
-			$('#quote_typeOfCover').val(currentValues.coverType);
-			$('#quote_excess').val(currentValues.coverType === 'COMPREHENSIVE' ? currentValues.excess : 600);
+			$typeOfCover.val(currentValues.coverType);
+			$excess.val(currentValues.coverType === 'COMPREHENSIVE' ? currentValues.excess : defaultThirdPartyExcess);
 
-			if (currentValues.coverType === 'COMPREHENSIVE' && currentValues.excess !== $('#quote_baseExcess').val()) {
+			// if the comprehensive excess is different to baseExcess, set hasComprehensiveExcessUpdated to true
+			if (currentValues.coverType === 'COMPREHENSIVE' && currentValues.excess !== $baseExcess.val()) {
 				hasComprehensiveExcessUpdated = true;
 			}
 
@@ -325,8 +325,8 @@
 
 		$cancelUpdateBtn.on('click', function cancelUpdate() {
 			// trigger clicks on previous selected values
-			var excess = $('#quote_excess').val() ? $('#quote_excess').val() : $('#quote_baseExcess').val();
-			$filterCoverType.find('.dropdown-menu a[data-value=' + $('#quote_typeOfCover').val() + ']').trigger('click');
+			var excess = $excess.val() ? $excess.val() : $baseExcess.val();
+			$filterCoverType.find('.dropdown-menu a[data-value=' + $typeOfCover.val() + ']').trigger('click');
 			$filterExcess.find('.dropdown-menu a[data-value=' + excess + ']').trigger('click');
 
 			toggleUpdate(true);
@@ -343,14 +343,11 @@
 	}
 
 	function renderModal() {
-
-		var templateAccessories = _.template($('#car-xsFilterBar-template').html());
-
-		var excess = $('#quote_excess').val();
-
-		var htmlContent = templateAccessories({
+		var templateAccessories = _.template($('#car-xsFilterBar-template').html()),
+			excess = $excess.val(),
+			htmlContent = templateAccessories({
 				startingValue: _.isEmpty(excess) ? 0 : excess
-		});
+			});
 
 		modalID = meerkat.modules.dialogs.show({
 			title : $(this).attr('title'),
@@ -389,34 +386,33 @@
 
 		xsDefaultExcess(currentValues.coverType);
 
-		function xsDefaultExcess(coverType) {
-			var excess = 600;
+		meerkat.modules.carTypeOfCover.toggleTPFTOption($('#xsFilterBar_coverType_TPFT').parent());
+	}
 
-			if (coverType === 'COMPREHENSIVE') {
-				if (!hasComprehensiveExcessUpdated) {
-					excess = $('#quote_baseExcess').val();
-				} else {
-					excess = currentValues.excess;
-				}
+	function xsDefaultExcess(coverType) {
+		var excess = defaultThirdPartyExcess,
+			xsFilterBarExcess = $('#xsFilterBar_excess');
+
+		if (coverType === 'COMPREHENSIVE') {
+			if (!hasComprehensiveExcessUpdated) {
+				excess = $baseExcess.val();
+			} else {
+				excess = currentValues.excess;
 			}
-
-			$('#xsFilterBar_excess')
-				.val(excess)
-				// .val(coverType !== 'COMPREHENSIVE' ? 600 : currentValues.excess)
-				.toggleClass('default-600', coverType !== 'COMPREHENSIVE')
-				.prop('disabled', coverType !== 'COMPREHENSIVE')
-				.attr('disabled', coverType !== 'COMPREHENSIVE');
-
-			$('#xsFilterBar_excess').closest('.select').toggleClass('disabled', coverType !== 'COMPREHENSIVE');
 		}
 
-		meerkat.modules.carTypeOfCover.toggleTPFTOption($('#xsFilterBar_coverType_TPFT').parent());
+		xsFilterBarExcess
+			.val(excess)
+			.toggleClass('default-600', coverType !== 'COMPREHENSIVE')
+			.prop('disabled', coverType !== 'COMPREHENSIVE')
+			.attr('disabled', coverType !== 'COMPREHENSIVE');
+
+		xsFilterBarExcess.closest('.select').toggleClass('disabled', coverType !== 'COMPREHENSIVE');
 	}
 
 	function saveModalChanges() {
 
 		var $freq = $('#quote_paymentType'),
-            $excess = $('#quote_excess'),
             $coverType = $('#quote_typeOfCover'),
 
             revised = {
@@ -433,7 +429,6 @@
 		}
 
 		$freq.val( revised.freq );
-		// $excess.val( revised.excess );
         $coverType.val( revised.coverType );
 
 		if (revised.display !== currentValues.display) {
@@ -466,7 +461,7 @@
             revisedValues.coverType = revised.coverType;
         }
 
-        if (revised.coverType === 'COMPREHENSIVE' && revised.excess !== $('#quote_baseExcess').val()) {
+		if (revised.coverType === 'COMPREHENSIVE' && revised.excess !== $baseExcess.val()) {
 			hasComprehensiveExcessUpdated = true;
 		}
 
@@ -526,6 +521,10 @@
 			$updateBtn = $component.find('.updateFilters');
 			$cancelUpdateBtn = $('.filter-cancel-label a');
 
+			$typeOfCover = $('#quote_typeOfCover');
+			$excess = $('#quote_excess');
+			$baseExcess = $('#quote_baseExcess');
+
 			eventSubscriptions();
 
 			// Collect options from the page
@@ -549,8 +548,6 @@
 			setCurrentDeviceState();
 		}
 	}
-
-
 
 	meerkat.modules.register('carFilters', {
 		initCarFilters: initCarFilters,

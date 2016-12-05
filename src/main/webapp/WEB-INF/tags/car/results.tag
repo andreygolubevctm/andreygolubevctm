@@ -565,7 +565,7 @@
 
 	{{ var colClass = 'col-xs-12'; }}
 
-	{{ if(obj.contact.allowCallMeBack === true) { }}
+	{{ if(obj.contact.allowCallDirect === true && obj.contact.allowCallMeBack === true) { }}
 	{{ colClass = 'col-xs-6'; }}
 	{{ } }}
 
