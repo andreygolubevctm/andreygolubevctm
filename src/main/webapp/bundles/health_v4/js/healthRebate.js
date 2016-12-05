@@ -30,6 +30,7 @@
             applyRebate: $('#health_healthCover_rebate'),
             incomeSelectContainer: $('#income_container'),
             lhcContainers: $('#primary-health-cover, #partner-health-cover, #australian-government-rebate'),
+            lhcElements: $('#health_healthCover_health_cover').add($elements.situationSelect),
             incomeSelect: $('#health_healthCover_income'),
             selectedRebateText: $('#selectedRebateText'),
             rebateLabel: $('#rebateLabel'),
@@ -45,7 +46,6 @@
         });
 
         $elements.applyRebate.on('change', function toggleRebateDropdown(){
-
             setDefaultSelectedRebateLabel();
             $elements.incomeSelectContainer.toggleClass('hidden', !$(this).is(':checked'));
         });
@@ -56,15 +56,10 @@
             $elements.incomeSelect.parent('.select').removeClass('hidden');
         });
 
-        // update the lhc message
-        $elements.lhcContainers.find(':input').on('change', function updateRebateContinuousCover(event) {
+        // update the lhc message. used lhcElements for now as the questions have changed dramatically
+        $elements.lhcElements.on('change', function updateRebateContinuousCover(event) {
 
             var $this = $(this);
-
-            // Don't action on the DOB input fields; wait until it's serialised to the hidden field.
-            if ($this.hasClass('dateinput-day') || $this.hasClass('dateinput-month') || $this.hasClass('dateinput-year') || ($this.attr('name').indexOf('primary_dob') >= 0 && $this.val() === "") || ($this.attr('name').indexOf('partner_dob') >= 0 && $this.val() === "")) return;
-
-            togglePrimaryContinuousCover();
 
             // update rebate
             if ($this.valid()) {
@@ -76,7 +71,29 @@
     function setDefaultSelectedRebateLabel() {
         // on first load, select the dropdown value and set it as a text label
         if ($elements.incomeSelect.prop('selectedIndex') === 0) {
-            $elements.selectedRebateText.text($elements.incomeSelect.find('option:eq(1)').text());
+            var completeText = $elements.incomeSelect.find('option:eq(1)').text(),
+                dependantsText = 'including any adjustments for your dependants';
+
+            if ($elements.situationSelect.is(':checked') === true) {
+                var statusText = '';
+
+                switch($elements.situationSelect.val()) {
+                    case 'SM':
+                    case 'SF':
+                        statusText = 'Singles '; break;
+                    case 'C':
+                        statusText = 'Couples '; break;
+                    default:
+                        statusText = 'Families '; break;
+                }
+                completeText = statusText + $elements.incomeSelect.find('option:eq(1)').text();
+            }
+
+            if (meerkat.modules.healthTiers.shouldShowDependants()) {
+                completeText += ', ' + dependantsText;
+            }
+
+            $elements.selectedRebateText.text(completeText);
             $elements.incomeSelect.prop('selectedIndex', 1);
         }
     }
