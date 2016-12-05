@@ -3,6 +3,8 @@
 	// TODO: write unit test once DEVOPS-31 goes live
 
 	var meerkat = window.meerkat,
+		meerkatEvents = meerkat.modules.events,
+		currentSituation = null,
 		$aboutYouContainer,
 		$primaryCurrentCover,
 		$primaryContinuousCoverContainer,
@@ -27,6 +29,12 @@
 		$medicare,
 		$healthSituation;
 
+	var moduleEvents = {
+			healthSituation: {
+				CHANGED: 'HEALTH_SITUATION_CHANGED'
+			}
+	};
+
 	function init(){
 		$(document).ready(function () {
 			initFields();
@@ -36,6 +44,10 @@
 
 			eventSubscriptions();
 			toggleMlsMessage();
+
+			if(meerkat.site.isNewQuote === false) {
+				checkSituation();
+			}
 		});
 	}
 
@@ -89,6 +101,7 @@
 
 		$healthSituationHealthCvr.on('change', function toggleAboutYouFields() {
 			setupForm();
+			checkSituation();
 		});
 
 		$lhcContainers.find(':input').on('change', function updateRebateContinuousCover(event) {
@@ -108,6 +121,37 @@
 		});
 
 		$healthSituation.add($healthCoverIncome).on('change', toggleMlsMessage);
+
+		if(meerkat.site.isCallCentreUser === false) {
+			$('[name=health_situation_healthSitu][type=radio]').on('change',checkSituation);
+		}
+	}
+
+	/**
+	 * Triggered whenever the family type or looking to values are changed. If the
+	 * situation is different and event is fired.
+	 */
+	function checkSituation() {
+		var familyType = $healthSituationHealthCvr.val();
+		var lookingTo = '';
+		if(meerkat.site.isCallCentreUser) {
+			lookingTo = $('#health_situation_healthSitu').val();
+		} else {
+			var $e = $('[name=health_situation_healthSitu][type=radio]');
+			if($e.is(':checked')) {
+				lookingTo = $('[name=health_situation_healthSitu][type=radio]:checked').val();
+			}
+		}
+		if(!_.isEmpty(familyType) && !_.isEmpty(lookingTo)) {
+			var situation = {
+				familyType : familyType,
+				lookingTo : lookingTo
+			};
+			if(!_.isMatch(currentSituation,situation)) {
+				currentSituation = _.extend({},situation);
+				meerkat.messaging.publish(moduleEvents.healthSituation.CHANGED, currentSituation);
+			}
+		}
 	}
 
 	function togglePrimaryContinuousCover(isInitMode) {
@@ -213,6 +257,7 @@
 
 	meerkat.modules.register('healthAboutYou', {
 		init: init,
+		events: moduleEvents,
 		getPartnerCurrentCover : getPartnerCurrentCover,
 		getPrimaryCurrentCover : getPrimaryCurrentCover,
 		getSituation : getSituation
