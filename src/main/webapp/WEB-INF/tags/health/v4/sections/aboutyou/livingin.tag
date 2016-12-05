@@ -14,17 +14,28 @@
 <c:set var="state" value="${data['health/situation/state']}" />
 <c:set var="location" value="${data['health/situation/location']}" />
 
-<form_v4:row label="Living in" fieldXpath="${fieldXpath}" className="health-location">
+<field_v1:hidden xpath="${xpath}/location" defaultValue="${location}" />
 
-	<c:choose>
-		<c:when test="${not empty param.state || (not empty state && empty location && (param.action == 'amend' || param.action == 'load'))}">
-			<field_v1:state_select xpath="${xpath}/state" useFullNames="true" title="State" required="true" />
-		</c:when>
-		<c:otherwise>
-			<field_v2:lookup_suburb_postcode xpath="${fieldXpath}" required="true" placeholder="Suburb / Postcode" extraDataAttributes=" data-rule-validateLocation='true' " />
-			<field_v1:hidden xpath="${xpath}/state" />
-		</c:otherwise>
-	</c:choose>
+<form_v4:row label="You're living in" fieldXpath="${xpath}StateRow" className="health-state" subLabel="We've made an educated guess, correct us if we're wrong">
+
+	<field_v2:array_radio xpath="${xpath}/state"
+						  defaultValue="NSW"
+						  required="true"
+						  items="NSW=NSW,VIC=VIC,QLD=QLD,ACT=ACT,WA=WA,SA=SA,TAS=TAS,NT=NT"
+						  title="you're living in"
+						  style="rounded-tile" />
+
+	<%--<field_v1:hidden xpath="${xpath}/state" />--%>
+
+	<%--<c:choose>--%>
+		<%--<c:when test="${not empty param.state || (not empty state && empty location && (param.action == 'amend' || param.action == 'load'))}">--%>
+			<%--<field_v1:state_select xpath="${xpath}/state" useFullNames="true" title="State" required="true" />--%>
+		<%--</c:when>--%>
+		<%--<c:otherwise>--%>
+			<%--<field_v2:lookup_suburb_postcode xpath="${fieldXpath}" required="true" placeholder="Suburb / Postcode" extraDataAttributes=" data-rule-validateLocation='true' " />--%>
+			<%--<field_v1:hidden xpath="${xpath}/state" />--%>
+		<%--</c:otherwise>--%>
+	<%--</c:choose>--%>
 
 	<field_v1:hidden xpath="${xpath}/suburb" />
 	<field_v1:hidden xpath="${xpath}/postcode" />
