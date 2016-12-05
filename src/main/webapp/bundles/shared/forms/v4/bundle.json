@@ -1,0 +1,7 @@
+{
+  "brandCodes": "all",
+  "dependencies": [
+    "meerkat",
+    "shared/forms_js"
+  ]
+}
