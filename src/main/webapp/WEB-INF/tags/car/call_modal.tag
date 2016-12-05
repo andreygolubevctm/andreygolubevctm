@@ -12,11 +12,11 @@
 	{{ obj.isAutoAndGeneralSpecialCase = obj.isAutoAndGeneral && _.indexOf(['BUDD','VIRG','EXPO','EXDD'], obj.brandCode) >= 0 }}
 
 	{{ obj.offlinePromotionText = ''; }}
-	{{ if(typeof obj.discountOffer !== 'undefined' && obj.discountOffer.length > 0)  { }}
+	{{ if(!_.isUndefined(obj.discountOffer) && !_.isNull(obj.discountOffer) && obj.discountOffer.length > 0)  { }}
 	{{ 	obj.offlinePromotionText = obj.discountOffer; }}
 	{{ } }}
 
-	{{ obj.offerTermsContent = (typeof obj.discountOfferTerms !== 'undefined' && obj.discountOfferTerms !== null && obj.discountOfferTerms.length > 0) ? obj.discountOfferTerms : ''; }}
+	{{ obj.offerTermsContent = (!_.isUndefined(obj.discountOfferTerms) && !_.isNull(obj.discountOfferTerms) && obj.discountOfferTerms.length > 0) ? obj.discountOfferTerms : ''; }}
 
 	<%-- If not availableOnline (meaning you can't continue online), it should show "Call Centre" offer --%>
 	<%-- This copy if bypassed if there's no copy above or it's a flagged A&G product --%>
@@ -41,7 +41,7 @@
 
 <core_v1:js_template id="car-online-discount-template">
 	{{ obj.onlinePromotionText = ''; }}
-	{{ if(typeof obj.discountOffer !== 'undefined' && obj.discountOffer.length > 0)  { }}
+	{{ if(!_.isUndefined(obj.discountOffer) && !_.isNull(obj.discountOffer) && obj.discountOffer.length > 0)  { }}
 	{{ obj.onlinePromotionText = obj.discountOffer; }}
 	{{ } }}
 

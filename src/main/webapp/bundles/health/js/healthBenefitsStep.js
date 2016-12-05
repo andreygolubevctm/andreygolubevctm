@@ -11,6 +11,7 @@
         $allHospitalButtons,
         $defaultCover,
         $hasIconsDiv,
+        $limitedCoverHidden,
         hospitalBenefits = [],
         extrasBenefits = [];
 
@@ -30,6 +31,7 @@
             $defaultCover = $('#health_benefits_covertype_customise');
             $benefitsForm = $('#benefitsForm');
             $hiddenFields = $('#mainform').find('.hiddenFields');
+            $limitedCoverHidden = $hiddenFields.find("input[name='health_situation_accidentOnlyCover']");
 
             $hospitalCover = $('.Hospital_container');
             $hospitalCoverToggles = $('.hospitalCoverToggles a'),
@@ -56,6 +58,11 @@
 
             setupPage();
             eventSubscriptions();
+
+            if($limitedCoverHidden.val() === 'Y') {
+                var filter = meerkat.modules.deviceMediaState.get() === 'xs' ? '.limited' : '.btn-save';
+                $hospitalCoverToggles.filter('[data-category=limited]' + filter).trigger('click');
+            }
         });
     }
 
@@ -78,6 +85,7 @@
         meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function editDetailsEnterXsState() {
             $hasIconsDiv.addClass('hasIcons');
         });
+
     }
 
     function setDefaultCover() {
@@ -193,8 +201,7 @@
         var currentCover = 'customise',
             previousCover = 'customise',
             $hospitalBenefitsSection = $('.Hospital_container .children'),
-            $coverType = $('#health_benefits_covertype'),
-            $limitedCoverHidden = $hiddenFields.find("input[name='health_situation_accidentOnlyCover']");
+            $coverType = $('#health_benefits_covertype');
 
         $hospitalCoverToggles.on('click', function toggleHospitalCover() {
             var $item = $(this);
@@ -220,7 +227,7 @@
                         $(this).prop('checked', false);
                     });
 
-                    $limitedCoverHidden.val('');
+                    $limitedCoverHidden.val('Y');
                     break;
                 default:
                     $hospitalBenefitsSection.slideDown();
@@ -303,16 +310,6 @@
         }
     }
 
-    function syncAccidentOnly() {
-        var $limitedCoverHidden = $hiddenFields.find("input[name='health_situation_accidentOnlyCover']");
-
-        if ($('#accidentCover').is(":checked")) {
-            $limitedCoverHidden.val("");
-        } else {
-            $limitedCoverHidden.val("N");
-        }
-    }
-
     // Get the selected benefits from the forms hidden fields (the source of truth! - not the checkboxes)
     function getSelectedBenefits() {
 
@@ -348,7 +345,6 @@
         resetBenefitsSelection: resetBenefitsSelection,
         resetBenefitsForProductTitleSearch: resetBenefitsForProductTitleSearch,
         getSelectedBenefits: getSelectedBenefits,
-        syncAccidentOnly: syncAccidentOnly,
         populateBenefitsSelection: populateBenefitsSelection,
         getHospitalBenefitsModel: getHospitalBenefitsModel,
         getExtraBenefitsModel: getExtraBenefitsModel
