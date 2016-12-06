@@ -6,11 +6,9 @@
 
 ;(function($, undefined) {
 
-    var meerkat = window.meerkat, meerkatEvents = meerkat.modules.events, log = meerkat.logging.info;
-
-    var events = {
-        carEditDetails : {}
-    }, moduleEvents = events.carTypeOfCover;
+    var meerkat = window.meerkat,
+        meerkatEvents = meerkat.modules.events,
+        log = meerkat.logging.info;
 
     /* Variables */
     var $typeOfCoverDropdown = $('#quote_optionsTypeOfCover'),
@@ -30,10 +28,6 @@
     function initCarTypeOfCover() {
         toggleTPFTOption($tpftOption);
         eventSubscriptions();
-
-        // if ($typeOfCover.val()) {
-        //     $typeOfCoverDropdown.val($typeOfCover.val());
-        // }
     }
 
     function eventSubscriptions() {
@@ -70,16 +64,6 @@
     function toggleTPFTOption($tpftOption) {
         $typeOfCoverDropdown.empty();
 
-        // if ($marketValue.val() > 20000) {
-        //     // hide TPFT option
-        //     $tpftOption.addClass('hidden');
-        //     $typeOfCoverDropdown.append($typeOfCoverOptions.excludingTPFT);
-        //
-        // } else {
-        //     $tpftOption.removeClass('hidden');
-        //     $typeOfCoverDropdown.append($typeOfCoverOptions.full);
-        // }
-
         $tpftOption.toggleClass('hidden', $marketValue.val() > 20000);
         $typeOfCoverDropdown.append($typeOfCoverOptions[($marketValue.val() > 20000) ? 'excTPFT' : 'full']);
 
@@ -102,22 +86,22 @@
             label : "I would like to compare CTP insurance",
             className: "btn-next",
             closeWindow: true,
-            action: function() {
+            action: function ctpModalButtonOneClicked() {
                 window.open(meerkat.site.urls.exit.replace('car', 'ctp'), '_blank');
             }
         },{
             label : "I would like to change my selection",
             className: "btn-next",
             closeWindow: true,
-            action: function() {
+            action: function ctpModalButtonTwoClicked() {
                 meerkat.modules.dialogs.close(ctpMessageDialogId);
             }
         }];
 
-        if(meerkat.modules.dialogs.isDialogOpen(ctpMessageDialogId) === false) {
+        if (meerkat.modules.dialogs.isDialogOpen(ctpMessageDialogId) === false) {
             ctpMessageDialogId = meerkat.modules.dialogs.show({
                 title: "Compulsory Third Party (CTP) Insurance",
-                onOpen: function (modalId) {
+                onOpen: function ctpModalOnOpen(modalId) {
                     var htmlContent = meerkat.site.ctpMessage,
                         $modal = $('#' + modalId);
 
@@ -129,7 +113,7 @@
                     $modal.find('.modal-body').outerHeight($('#' + modalId).find('.modal-body').outerHeight() - 20);
                     $modal.find('.modal-footer').outerHeight($('#' + modalId).find('.modal-footer').outerHeight() + 20);
                 },
-                onClose: function (modalId) {
+                onClose: function ctpModalOnClose(modalId) {
                     $typeOfCoverDropdown.val('');
                 },
                 buttons: buttons
