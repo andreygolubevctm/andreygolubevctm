@@ -124,7 +124,8 @@
         $(document.body).on("click", ".dialogPop", function promoConditionsLinksClick() {
             meerkat.modules.dialogs.show({
                 title: $(this).attr("title"),
-                htmlContent: $(this).attr("data-content")
+                htmlContent: $(this).attr("data-content"),
+                className: $(this).attr("data-class")
             });
         });
 
