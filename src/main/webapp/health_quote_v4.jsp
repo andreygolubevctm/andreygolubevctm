@@ -21,6 +21,9 @@
         <core_v2:quote_check quoteType="health" />
         <core_v2:load_preload />
 
+        <%-- Get data to build sections/categories/features on benefits and result pages. Used in results and benefits tags --%>
+        <jsp:useBean id="resultsDisplayService" class="com.ctm.web.core.results.services.ResultsDisplayService" scope="request" />
+        <c:set var="resultTemplateItems" value="${resultsDisplayService.getResultsPageStructure('health')}" scope="request"  />
 
         <%-- Call centre numbers --%>
         <jsp:useBean id="callCenterHours" class="com.ctm.web.core.web.openinghours.go.CallCenterHours" scope="page" />

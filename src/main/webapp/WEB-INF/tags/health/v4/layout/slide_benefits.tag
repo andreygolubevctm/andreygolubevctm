@@ -27,6 +27,10 @@
                     <health_v4_insuranceprefs:partner_dob xpath="${xpath}" />
                     <health_v4_insuranceprefs:partner_cover xpath="${xpath}" />
                     <health_v4_insuranceprefs:partner_cover_loading xpath="${xpath}" />
+                    <health_v4_insuranceprefs:simples xpath="${xpath}" />
+
+                    <c:set var="xpath" value="${pageSettings.getVerticalCode()}/situation" />
+                    <health_v4_insuranceprefs:benefits xpath="${xpath}" />
 
                 </form_v2:fieldset>
 
