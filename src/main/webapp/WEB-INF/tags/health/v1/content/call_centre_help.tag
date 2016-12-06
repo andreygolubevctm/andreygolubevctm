@@ -13,11 +13,4 @@
 		<div class="dynamic"></div>
 		<p>Call us on <span class="noWrap callCentreNumber">${callCentreNumber}</span><span class="noWrap callCentreAppNumber">${callCentreAppNumber}</span></p>
 	</div>
-		<h4>We can help you</h4>
-		<p>Not sure? Call <span class="noWrap callCentreNumber">${callCentreNumber}</span><span class="noWrap callCentreAppNumber">${callCentreAppNumber}</span> and one of our health insurance experts can help you make sense of it all.</p>
-	</div>
-	<div class="custom-content">
-		<div class="dynamic"></div>
-		<p>Call us on <span class="noWrap callCentreNumber">${callCentreNumber}</span><span class="noWrap callCentreAppNumber">${callCentreAppNumber}</span></p>
-	</div>
 </div>
