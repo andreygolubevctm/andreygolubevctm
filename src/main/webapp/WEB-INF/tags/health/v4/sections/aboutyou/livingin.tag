@@ -25,18 +25,6 @@
 						  title="you're living in"
 						  style="rounded-tile" />
 
-	<%--<field_v1:hidden xpath="${xpath}/state" />--%>
-
-	<%--<c:choose>--%>
-		<%--<c:when test="${not empty param.state || (not empty state && empty location && (param.action == 'amend' || param.action == 'load'))}">--%>
-			<%--<field_v1:state_select xpath="${xpath}/state" useFullNames="true" title="State" required="true" />--%>
-		<%--</c:when>--%>
-		<%--<c:otherwise>--%>
-			<%--<field_v2:lookup_suburb_postcode xpath="${fieldXpath}" required="true" placeholder="Suburb / Postcode" extraDataAttributes=" data-rule-validateLocation='true' " />--%>
-			<%--<field_v1:hidden xpath="${xpath}/state" />--%>
-		<%--</c:otherwise>--%>
-	<%--</c:choose>--%>
-
 	<field_v1:hidden xpath="${xpath}/suburb" />
 	<field_v1:hidden xpath="${xpath}/postcode" />
 
