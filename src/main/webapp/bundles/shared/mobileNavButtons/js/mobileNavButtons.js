@@ -85,6 +85,7 @@
         init: init,
         events: events,
         disable: disable,
+        enable: enable,
         disableSpecificButtons: disableSpecificButtons
     });
 })(jQuery);
