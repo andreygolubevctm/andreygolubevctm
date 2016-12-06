@@ -79,10 +79,6 @@
         });
         // @todo this belongs in health Apply Step logic.
         //$('#health_application-selection').delegate('.changeStateAndQuote', 'click', changeStateAndQuote);
-
-        meerkat.messaging.subscribe(meerkatEvents.healthLocation.STATE_CHANGED, function onStateChanged(obj) {
-            meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
-        });
     }
 
     function applyEventListeners() {
