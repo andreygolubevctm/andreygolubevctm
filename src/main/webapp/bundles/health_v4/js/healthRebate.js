@@ -6,6 +6,7 @@
 
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
+        exception = meerkat.logging.exception,
         log = meerkat.logging.info;
 
     var moduleEvents = {
@@ -29,12 +30,12 @@
             situationSelect: $('#health_situation_healthCvr'),
             applyRebate: $('#health_healthCover_rebate'),
             incomeSelectContainer: $('#income_container'),
-            lhcContainers: $('#primary-health-cover, #partner-health-cover, #australian-government-rebate'),
-            lhcElements: $('#health_healthCover_health_cover').add($elements.situationSelect),
+            lhcContainers: $('.health-cover, #health_healthCover_primaryCover'),
             incomeSelect: $('#health_healthCover_income'),
             selectedRebateText: $('#selectedRebateText'),
             rebateLabel: $('#rebateLabel'),
-            editTier: $('.editTier')
+            editTier: $('.editTier'),
+            rebateLegend: $('#health_healthCover_tier_row_legend')
         };
     }
 
@@ -57,7 +58,7 @@
         });
 
         // update the lhc message. used lhcElements for now as the questions have changed dramatically
-        $elements.lhcElements.on('change', function updateRebateContinuousCover(event) {
+        $elements.lhcContainers.find(':input').on('change', function updateRebateContinuousCover(event) {
 
             var $this = $(this);
 
@@ -99,12 +100,12 @@
     }
 
     function _setRebate(){
-        meerkat.modules.health.loadRatesBeforeResultsPage(true, function (rates) {
+        loadRatesBeforeResultsPage(true, function (rates) {
             if (!isNaN(rates.rebate) && parseFloat(rates.rebate) > 0) {
-                $rebateLegend.html('You are eligible for a ' + rates.rebate + '% rebate.');
+                $elements.rebateLegend.html('You are eligible for a ' + rates.rebate + '% rebate.');
                 $healthCoverRebate.slideDown();
             } else {
-                $rebateLegend.html('');
+                $elements.rebateLegend.html('');
             }
         });
     }
@@ -182,12 +183,12 @@
         var $healthCoverDetails = $('#startForm');
 
         var postData = {
-            dependants: $healthCoverDetails.find(':input[name="health_healthCover_dependants"]').val(),
-            income:$elements.incomeSelect.val() || 0,
+            dependants: $healthCoverDetails.find(':input[name="health_healthCover_dependants"]').length === 0 ? 2 : $healthCoverDetails.find(':input[name="health_healthCover_dependants"]').val(),
+            income: $elements.incomeSelect.val() || 0,
             rebate_choice: forceRebate === true ? 'Y' : $healthCoverDetails.find('input[name="health_healthCover_rebate"]:checked').val(),
             primary_dob: $healthCoverDetails.find('#health_healthCover_primary_dob').val(),
             primary_loading:$healthCoverDetails.find('input[name="health_healthCover_primary_healthCoverLoading"]:checked').val(),
-            primary_current: meerkat.modules.healthAboutYou.getPrimaryCurrentCover(),
+            primary_current: $healthCoverDetails.find('input[name="health_healthCover_primary_cover"]:checked').val(),
             primary_loading_manual: $healthCoverDetails.find('.primary-lhc').val(),
             cover: $healthCoverDetails.find(':input[name="health_situation_healthCvr"]').val()
         };
@@ -220,7 +221,7 @@
             rebate_choice: $healthCoverDetails.find('input[name="health_healthCover_rebate"]:checked').val() || 'Y',
             primary_dob: $healthCoverDetails.find('#health_healthCover_primary_dob').val(),
             primary_loading:$healthCoverDetails.find('input[name="health_healthCover_primary_healthCoverLoading"]:checked').val(),
-            primary_current: meerkat.modules.healthAboutYou.getPrimaryCurrentCover(),
+            primary_current: $healthCoverDetails.find('input[name="health_healthCover_primary_cover"]:checked').val(),
             primary_loading_manual: $healthCoverDetails.find('.primary-lhc').val(),
             partner_dob: $healthCoverDetails.find('#health_healthCover_partner_dob').val(),
             partner_loading:$healthCoverDetails.find('input[name="health_healthCover_partner_healthCoverLoading"]:checked').val(),
