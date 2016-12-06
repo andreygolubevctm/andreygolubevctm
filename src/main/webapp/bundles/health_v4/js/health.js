@@ -9,7 +9,9 @@
         log = meerkat.logging.info;
 
     var moduleEvents = {
-        health: {},
+        health: {
+            SNAPSHOT_FIELDS_CHANGE:'SNAPSHOT_FIELDS_CHANGE'
+        },
         WEBAPP_LOCK: 'WEBAPP_LOCK',
         WEBAPP_UNLOCK: 'WEBAPP_UNLOCK'
     }, steps = null;
@@ -78,6 +80,9 @@
         // @todo this belongs in health Apply Step logic.
         //$('#health_application-selection').delegate('.changeStateAndQuote', 'click', changeStateAndQuote);
 
+        meerkat.messaging.subscribe(meerkatEvents.healthLocation.STATE_CHANGED, function onStateChanged(obj) {
+            meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
+        });
     }
 
     function applyEventListeners() {
@@ -174,7 +179,7 @@
             onInitialise: function onStartInit(event) {
                 meerkat.modules.jqueryValidate.initJourneyValidator();
 
-                meerkat.modules.healthLocation.setLocation();
+                meerkat.modules.healthLocation.initHealthLocation();
             },
             onBeforeEnter: _incrementTranIdBeforeEnteringSlide,
             onAfterEnter: function healthAfterEnter() {

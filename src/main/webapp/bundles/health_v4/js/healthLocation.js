@@ -2,24 +2,33 @@
 
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
+        moduleEvents = {
+            healthLocation: {
+                STATE_CHANGED: 'STATE_CHANGED'
+            }
+        },
         $healthSitLocation,
         $healthSituationState,
         $healthSituationPostcode,
         $healthSituationSuburb,
         location = '';
 
-    function init() {
+    function initHealthLocation() {
         $healthSitLocation = $('#health_situation_location');
         $healthSituationState = $('input[name=health_situation_state]');
         $healthSituationPostcode = $('#health_situation_postcode');
         $healthSituationSuburb = $('#health_situation_suburb');
 
-        location = $healthSitLocation.val();
-
         eventSubscriptions();
+
+        location = $healthSitLocation.val();
+        setLocation();
     }
 
     function eventSubscriptions() {
+        $healthSituationState.on('change', function onStateChanged() {
+            meerkat.messaging.publish(moduleEvents.healthLocation.STATE_CHANGED, { state: $(this).val() });
+        });
     }
 
     function setLocation() {
@@ -44,7 +53,7 @@
         var search_match = new RegExp(/^((\s)*([^~,])+\s+)+\d{4}((\s)+(ACT|NSW|QLD|TAS|SA|NT|VIC|WA)(\s)*)$/),
             value = $.trim(String(location));
 
-        if (value != '') {
+        if (value !== '') {
             if (value.match(search_match)) {
                 return true;
             }
@@ -54,8 +63,8 @@
     }
 
     meerkat.modules.register('healthLocation', {
-        init: init,
-        setLocation: setLocation
+        initHealthLocation: initHealthLocation,
+        events: moduleEvents
     });
 
 })(jQuery);
