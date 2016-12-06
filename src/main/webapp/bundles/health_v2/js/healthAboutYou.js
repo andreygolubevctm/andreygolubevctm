@@ -27,7 +27,8 @@
 		$partnersDetails,
 		$lhcContainers,
 		$medicare,
-		$healthSituation;
+		$healthSituation,
+		$lookingTo;
 
 	var moduleEvents = {
 			healthSituation: {
@@ -76,6 +77,11 @@
 			$medicare = $('.health-medicare_details'),
 			$healthSituation = $aboutYouContainer.find('input[name="health_situation_healthSitu"]');
 
+			if(meerkat.site.isCallCentreUser) {
+				$lookingTo = $('#health_situation_healthSitu');
+			} else {
+				$lookingTo = $('[name=health_situation_healthSitu][type=radio]');
+			}
 
 		if (!healthChoices.hasSpouse()) {
 			$partnerContainer.hide();
@@ -123,36 +129,7 @@
 		$healthSituation.add($healthCoverIncome).on('change', toggleMlsMessage);
 
 		if(meerkat.site.isCallCentreUser === false) {
-			$('[name=health_situation_healthSitu][type=radio]').on('change',checkSituation);
-		}
-	}
-		}
-	}
-
-	/**
-	 * Triggered whenever the family type or looking to values are changed. If the
-	 * situation is different and event is fired.
-	 */
-	function checkSituation() {
-		var familyType = $healthSituationHealthCvr.val();
-		var lookingTo = '';
-		if(meerkat.site.isCallCentreUser) {
-			lookingTo = $('#health_situation_healthSitu').val();
-		} else {
-			var $e = $('[name=health_situation_healthSitu][type=radio]');
-			if($e.is(':checked')) {
-				lookingTo = $('[name=health_situation_healthSitu][type=radio]:checked').val();
-			}
-		}
-		if(!_.isEmpty(familyType) && !_.isEmpty(lookingTo)) {
-			var situation = {
-				familyType : familyType,
-				lookingTo : lookingTo
-			};
-			if(!_.isMatch(currentSituation,situation)) {
-				currentSituation = _.extend({},situation);
-				meerkat.messaging.publish(moduleEvents.healthSituation.CHANGED, currentSituation);
-			}
+			$lookingTo.on('change',checkSituation);
 		}
 	}
 
@@ -164,11 +141,10 @@
 		var familyType = $healthSituationHealthCvr.val();
 		var lookingTo = '';
 		if(meerkat.site.isCallCentreUser) {
-			lookingTo = $('#health_situation_healthSitu').val();
+			lookingTo = $lookingTo.val();
 		} else {
-			var $e = $('[name=health_situation_healthSitu][type=radio]');
-			if($e.is(':checked')) {
-				lookingTo = $('[name=health_situation_healthSitu][type=radio]:checked').val();
+			if($lookingTo.is(':checked')) {
+				lookingTo = $lookingTo.filter(':checked').val();
 			}
 		}
 		if(!_.isEmpty(familyType) && !_.isEmpty(lookingTo)) {

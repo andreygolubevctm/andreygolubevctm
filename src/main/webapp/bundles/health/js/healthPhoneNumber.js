@@ -15,12 +15,6 @@
 		}
 	};
 
-	var moduleEvents = {
-		healthSituation: {
-			CHANGED: 'HEALTH_SITUATION_CHANGED'
-		}
-	};
-
 	function init() {
 		$(document).on('ready',function(){
 			$callCentreFields = $(callCentreNumber);
@@ -66,9 +60,7 @@
 				sanitisedSitu = situ.lookingTo;
 			} else {
 				var isFamily = _.indexOf(['SPF','F'], situ.familyType) > -1;
-				if(situ.lookingTo === 'CSF') {
-					sanitisedSitu = situ.lookingTo + "_" + (!isFamily ? 'S' : 'F');
-				} else if(situ.lookingTo === 'SF') {
+				if(_.indexOf(['CSF','SF'],situ.lookingTo) > -1) {
 					sanitisedSitu = situ.lookingTo + "_" + (!isFamily ? 'S' : 'F');
 				}
 			}
