@@ -119,20 +119,21 @@
 			var customGAClientId = gaClientId;
 			var temp = gaClientId.split('.');
 			if(temp.length >= 2) {
-			var partB = temp.pop();
-			var partA = temp.pop();
-			customGAClientId = partA + '.' + partB;
+				var partB = temp.pop();
+				var partA = temp.pop();
+				customGAClientId = partA + '.' + partB;
 
-			var elementName = LifeQuote._vertical + '_gaclientid';
-			if($('#' + elementName).length) {
-				$('#' + elementName).val(customGAClientId);
-			} else {
-				$('#mainform').prepend($('<input/>', {
-					type: 'hidden',
-					id: elementName,
-					name: elementName,
-					value: customGAClientId
-				}));
+				var elementName = LifeQuote._vertical + '_gaclientid';
+				if($('#' + elementName).length) {
+					$('#' + elementName).val(customGAClientId);
+				} else {
+					$('#mainform').prepend($('<input/>', {
+						type: 'hidden',
+						id: elementName,
+						name: elementName,
+						value: customGAClientId
+					}));
+				}
 			}
 		}
 	})();
