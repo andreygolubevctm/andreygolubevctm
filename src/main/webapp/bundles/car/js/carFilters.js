@@ -86,6 +86,11 @@
 		if (coverType !== 'COMPREHENSIVE') {
 			excess = defaultThirdPartyExcess;
 			$excess.val(excess);
+		} else {
+			if (!hasComprehensiveExcessUpdated) {
+				excess = $baseExcess.val();
+				$excess.val(excess);
+			}
 		}
 
 		$filterExcess.find('.dropdown-toggle span').text( $filterExcess.find('.dropdown-menu a[data-value="' + excess + '"]').text() );
