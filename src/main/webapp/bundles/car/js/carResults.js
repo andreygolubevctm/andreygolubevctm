@@ -653,6 +653,7 @@
 
 		// Elements to lock when entering compare mode
 		meerkat.messaging.subscribe(meerkatEvents.compare.AFTER_ENTER_COMPARE_MODE, function() {
+			$('.filter-cancel-label a').trigger('click');
 			$('.filter-cover-type, .filter-cover-type a, .filter-excess, .filter-excess a').addClass('disabled');
 			$('.filter-featuresmode, .filter-pricemode, .filter-view-label').addClass('hidden');
 			$('.filter-frequency-label').css('margin-right', $('.back-to-price-mode').width());

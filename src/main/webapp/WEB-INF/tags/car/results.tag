@@ -24,13 +24,13 @@
 		omitPleaseChoose="Y"
 		className="hidden" />
 
-<field_v1:hidden xpath="quote/typeOfCover" constantValue="COMPREHENSIVE" />
+<field_v1:hidden xpath="quote/typeOfCover" />
 
 <c:set var="coverTypeOptions">
-	<c:choose>
-		<c:when test="${skipNewCoverTypeCarJourney eq true}">COMPREHENSIVE=Comprehensive</c:when>
-		<c:otherwise>COMPREHENSIVE=Comprehensive,TPPD=3rd Party Property Damage,TPFT=3rd Party Fire and Theft</c:otherwise>
-	</c:choose>
+    <c:choose>
+        <c:when test="${skipNewCoverTypeCarJourney eq true or pageSettings.getBrandCode() ne 'ctm'}">COMPREHENSIVE=Comprehensive</c:when>
+        <c:otherwise>COMPREHENSIVE=Comprehensive,TPFT=Third party property&#44; fire and theft,TPPD=Third party property</c:otherwise>
+    </c:choose>
 </c:set>
 
 <field_v1:array_select
@@ -38,7 +38,7 @@
 		xpath="filter/coverTypeOptions"
 		title=""
 		required=""
-		className="hidden" />
+		className="hidden type_of_cover" />
 
 <car:results_filterbar_xs />
 
@@ -567,7 +567,7 @@
 
 	{{ var colClass = 'col-xs-12'; }}
 
-	{{ if(obj.contact.allowCallMeBack === true) { }}
+	{{ if(obj.contact.allowCallDirect === true && obj.contact.allowCallMeBack === true) { }}
 	{{ colClass = 'col-xs-6'; }}
 	{{ } }}
 
