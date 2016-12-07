@@ -14,16 +14,8 @@
 
 <simples:dialogue id="46" className="simples-dialogue-hospital-cover" vertical="health" />
 
-<%-- TEMPLATES --%>
-<core_v1:js_template id="benefits-explanation">
-	<content:get key="coverPopup" />
-</core_v1:js_template>
-
+<div class="benefitsOverflow">
 <c:forEach items="${resultTemplateItems}" var="selectedValue">
 	<health_v4_insuranceprefs:benefitsItem item="${selectedValue}" />
 </c:forEach>
-
-<core_v1:js_template id="customise-cover-template">
-	<content:get key="customiseCoverTemplate"/>
-</core_v1:js_template>
-
+</div>

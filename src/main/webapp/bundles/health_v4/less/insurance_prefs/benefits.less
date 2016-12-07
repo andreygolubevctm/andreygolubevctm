@@ -11,6 +11,24 @@
 	}
 }
 
+@media(@xs-only) {
+	.benefitsOverflow {
+		width: 200%;
+		overflow: hidden;
+		position: relative;
+	}
+
+	.hospitalOverlay,
+	.extrasOverlay {
+		background: #1C3E93;
+		opacity: 0.3;
+		width:100%;
+		height: 100%;
+		position: absolute;
+		z-index: 50;
+	}
+}
+
 .tieredHospitalCover {
 	width: 45%;
 	display:inline-block;

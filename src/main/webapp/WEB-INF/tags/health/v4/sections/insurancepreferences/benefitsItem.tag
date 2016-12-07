@@ -41,6 +41,9 @@
 		<div class="scrollable row">
 			<div class="benefits-list col-sm-12">
 				<div class="row">
+					<c:set var="overlayName">hospital</c:set>
+					<c:if test="${category != 'Hospital'}"><c:set var="overlayName">extras</c:set></c:if>
+					<div class="${overlayName}Overlay"></div>
 					<div class="${colWidthValue} short-list-item ${item.getClassString()} ${item.getShortlistKey()}_container">
 						<%-- ======================= --%>
 						<%-- HEADING SECTION START --%>
