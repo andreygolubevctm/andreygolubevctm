@@ -112,6 +112,10 @@ public class HealthLeadService extends LeadService {
             leadData.getPerson().getAddress().setPostcode(data.getString("health/situation/postcode"));
         }
 
+        if (StringUtils.isNotBlank(data.getString("health/gaclientid"))) {
+            leadData.setAnalyticsId(data.getString("health/gaclientid"));
+        }
+
         leadData.setVerticalType(VerticalType.HEALTH.name());
 
         List<String> benefitList = new ArrayList<>();
