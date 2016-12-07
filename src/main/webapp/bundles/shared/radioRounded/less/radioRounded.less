@@ -28,7 +28,7 @@
   height: @size;
 }
 
-div.radioRounded {
+div.radio-rounded {
   text-align: center;
 
   @media (@sm) {
@@ -45,6 +45,12 @@ div.radioRounded {
     cursor: pointer;
     text-align: center;
     width: @round-label-width-xs;
+    word-wrap: break-word;
+    white-space: normal;
+
+    input[type=radio] {
+      .opacity(0);
+    }
 
     @media (@sm) {
       width: @round-label-width-sm;

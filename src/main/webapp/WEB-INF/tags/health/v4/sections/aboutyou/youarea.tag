@@ -14,10 +14,10 @@
 <form_v4:row label="Comparing private health insurance for a" fieldXpath="${fieldXpath}" className="health-cover">
 	<field_v2:array_radio xpath="${fieldXpath}"
 		required="true"
-		className="health-situation-healthCvr radioRounded has-icons"
+		className="health-situation-healthCvr has-icons"
 		items="SM=Single Male,SF=Single Female,C=Couple,SPF=Single Parent Family,F=Family"
 		id="${go:nameFromXpath(fieldXPath)}"
-		style="not-justified"
+		style="radio-rounded"
 		title="situation you are in"
 		additionalLabelAttributes="${analyticsAttr}" />
 </form_v4:row>
