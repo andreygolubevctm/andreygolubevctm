@@ -6,6 +6,8 @@
 
 <c:if test="${item.isShortlistable()}">
 
+	<c:set var="benefitsContent" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "healthbenefits2017")}' />
+
 	<%-- Get the correct cell width for sections v. categories --%>
 	<c:choose>
 		<c:when test="${item.getType() == 'section'}">
@@ -124,7 +126,7 @@
 									</div>
 								</div>
 								<div class="tab-pane limited-pane">
-									A limited hospital product is one that covers only 10 or less of the items for which Medicare pays a benefit. These policies provide lower than average cover and, in some instances, will only cover treatment as a result of an accident.
+										${benefitsContent.getSupplementaryValueByKey('limitedText')}
 								</div>
 							</div>
 							</c:if>
