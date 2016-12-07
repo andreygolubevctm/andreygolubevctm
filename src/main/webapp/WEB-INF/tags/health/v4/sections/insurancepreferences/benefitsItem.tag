@@ -107,13 +107,16 @@
 												<c:set var="analyticsHelpAttr"><field_v1:analytics_attr analVal="qtip ${selectedValue.getShortlistKey()}" quoteChar="\"" /></c:set>
 
 												<%-- This is a duplicate of the row above and needs to be cleaned up in the .less--%>
-												<field_v2:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${selectedValue.getShortlistKey()}" value="Y" required="false" label="true" title="${selectedValue.getName()}" helpId="${selectedValue.getHelpId()}" errorMsg="Please tick" customAttribute="data-attach=true"  additionalLabelAttributes="${analyticsLabelAttr}" additionalHelpAttributes="${analyticsHelpAttr}" />
+												<c:set var="benefitLabel">
+													<span class="benefitContent">
+														<div class="benefitTitle">${selectedValue.getName()}</div>
+														<span class="benefitSummary">hasf jkldfhas kljd hasklj fhasjkld  <a href="javascript:;" class="help_icon floatLeft" id="help_${selectedValue.getHelpId()}">more</a></span>
+													</span>
+												</c:set>
+												<field_v2:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${selectedValue.getShortlistKey()}" value="Y" required="false" label="true" title="${benefitLabel}" errorMsg="Please tick" customAttribute="data-attach=true"  additionalLabelAttributes="${analyticsLabelAttr}" additionalHelpAttributes="${analyticsHelpAttr}" />
 												</div>
 											</c:if>
 										</c:forEach>
-
-
-
 										</div>
 									</div>
 
