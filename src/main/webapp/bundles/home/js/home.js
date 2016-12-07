@@ -140,8 +140,7 @@
 				customValidation: function (callback) {
 					// prevent from jumping to the next step if the selections are incorrect
 					var doContinue = meerkat.modules.homeCoverTypeWarning.validateSelections();
-					var boundCallback = _.bind(callback, this, doContinue);
-					_.delay(boundCallback,doContinue ? 500 : 0);
+					callback(doContinue);
 				}
 			},
 			onInitialise: function onStartInit(event) {

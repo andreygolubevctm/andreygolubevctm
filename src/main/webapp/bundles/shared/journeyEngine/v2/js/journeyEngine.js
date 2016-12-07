@@ -292,9 +292,16 @@
 
 					}else{
 						// Most likely this event was triggered directly by a hash change, validation must be performed now.
-						validateStep(currentStep, function afterValidation(){
+						var callback = _.bind(validateStep, this, currentStep, function afterValidation(){
 							_goToStep(step, eventObject);
 						});
+						// When moving forward from the first slide - delay by 500ms to allow all tracking calls to complete
+						// Is VERY IMPORTANT for ensuring quote starts tracked correctly
+						if(!_.isEmpty(currentStep) && !_.isEmpty(step) && currentStep.slideIndex === 0 && step.slideIndex > 0) {
+							_.delay(callback,500);
+						} else {
+							callback();
+						}
 					}
 
 
