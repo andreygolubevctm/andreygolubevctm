@@ -8,7 +8,7 @@
     "shared/validation",
     "core",
     "shared/journeyProgressBar/v3",
-    "shared/forms/v3",
+    "shared/forms/v4",
     "shared/currency",
     "shared/currencyUtils",
     "shared/dateUtils",
@@ -35,6 +35,6 @@
     "shared/serverSideValidationOutput",
     "shared/filters",
     "shared/radioGroupTile",
-    "shared/radioRoundedTile"
+    "shared/radioRounded"
   ]
 }

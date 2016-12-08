@@ -89,10 +89,6 @@ fieldset {
       bottom: -1.25em;
       right: 1em;
     }
-    .control-sub-label {
-      text-align: left;
-      padding-bottom: (@padding-base-vertical/2);
-    }
   }
 }
 
@@ -109,7 +105,7 @@ fieldset {
   position: relative;
   //Round and background the parent of this fake input-group use for selects.
   background-color: @input-bg;
-  border-radius: @input-border-radius;
+  border-radius: 0;
 
   select, input[type="date"] {
     z-index: 1; //ie doesn't put the select above the input-group-addon span
@@ -140,7 +136,7 @@ fieldset {
     top: 0;
     padding: 12px 25px 8px 11px;
     line-height: 19px;
-    border-radius: 0 @border-radius-base @border-radius-base 0;
+    border-radius: 0;
   }
 
   select.form-control {
@@ -229,6 +225,10 @@ fieldset {
   }
 }
 
+.form-control {
+  border-radius: 0;
+}
+
 @media (@xs-only) {
   .nestedGroup {
     margin-bottom: 0px;
@@ -251,20 +251,6 @@ fieldset {
 
   @media (@md-only) {
     > .col-sm-2 {
-      width: 20%;
-    }
-  }
-}
-
-.dateinput_container {
-  @media (@sm) {
-    div[class*="col-sm-"] {
-      padding-right: 0px;
-    }
-  }
-  @media (@sm-only) {
-    .dayContainer,
-    .monthContainer {
       width: 20%;
     }
   }

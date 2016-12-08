@@ -1,34 +1,32 @@
-// @todo refactor these styles in HLT-3767
+@journeyProgressBar-color-hover: lighten(@theme-tertiary,  40%);
 
 //
 // journeyProgressBar
 // --------------------------------------------------
 .progress-bar-row {
-  border-top: 1px solid @body-bg;
+  border-bottom: 1px solid @border-color;
   background-color: @body-bg;
-  margin-top: 30px;
+  padding: 5px 0 0 0;
+  @media @sm {
+    padding: 5px 0 20px 0;
+  }
   min-height: 26px;
+
   //
   // journeyProgressBar
   // --------------------------------------------------
-
-  .journeyProgressBar_v2 {
+  .journeyProgressBar {
     list-style: none;
     padding: 0 0 10px 0;
-    margin-bottom: @journeyProgressBar-margin-bottom;
-    margin-top: @journeyProgressBar-margin-top;
-
-    ul {
-      counter-reset: section;
-    }
+    margin-bottom: 0;
 
     li {
       white-space: nowrap;
-      counter-increment: section;
+      text-align: center;
       line-height: @journeyProgressBar-lineheight;
       display: inline-block;
       font-size: @journeyProgressBar-size;
-      font-family: @font-family-theme-bold;
+      //font-family: @font-family-theme-bold;
       position: relative;
       height: 28px;
       &.end{
@@ -51,8 +49,6 @@
       right: @journeyProgressBar-horizontal-push;
       height: 21px;
       &:before {
-        content: counters(section, ".") "\A";
-        border-radius: 50%;
         border: @journeyProgressBar-border-size @journeyProgressBar-border-style;
         font-size: 20px;
         display: block;
@@ -83,12 +79,7 @@
         border-color: @journeyProgressBar-border-color-complete;
         border-bottom: @journeyProgressBar-border-size @journeyProgressBar-border-style;
         &:before {
-          content: "\e600";
-          font-family: 'framework_font';
-          padding: 7px;
-          padding-left: 16px;
           color: @journeyProgressBar-separator-color-complete;
-          border-color: @journeyProgressBar-border-color-complete;
         }
       }
       &.end{

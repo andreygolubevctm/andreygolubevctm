@@ -336,21 +336,18 @@
     // @todo review this during progress bar refactor
     function configureProgressBar() {
         // Better progressBar just works...
-        meerkat.modules.journeyProgressBar.setWidth(100);
-        meerkat.modules.journeyProgressBar.setNodeWidth(37);
-        meerkat.modules.journeyProgressBar.setEndPadding(false);
-        meerkat.modules.journeyProgressBar.setEndCollapsed(true);
+        meerkat.modules.journeyProgressBar.changeTargetElement('.journeyProgressBar');
         meerkat.modules.journeyProgressBar.configure([
             {
                 label: 'About you',
                 navigationId: steps.startStep.navigationId
             },
             {
-                label: 'Your cover',
+                label: 'Insurance preferences',
                 navigationId: steps.benefitsStep.navigationId
             },
             {
-                label: 'Your details',
+                label: 'Contact details',
                 navigationId: steps.contactStep.navigationId
             }
         ]);
