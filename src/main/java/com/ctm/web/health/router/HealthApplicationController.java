@@ -79,10 +79,11 @@ public class HealthApplicationController extends CommonQuoteRouter {
 
     private static final DateTimeFormatter LONG_FORMAT = DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss zzz yyyy");
     public static final String PROVIDER_FAILED_MESSAGE = "The provider failed to process the application, Please contact support team.";
-    public static final String REDEMPTION_SAVE = "/redemption/save";
-    public static final String XPATH_REDEMPTION_ID = "redemptionId";
-    public static final int XPATH_SEQUENCE_NO_REDEMPTION_ID = -666;
-    public static final String CURRENT_REDEMPTION_ID = "current/redemptionId";
+    public static final int XPATH_SEQUENCE_NO_REDEMPTION_ID = -99;
+    public static final String XPATH_CURRENT_REDEMPTION_ID = "current/redemptionId";
+    public static final String SAVE_ONLINE_REDEMPTION = "/redemption/saveOnline";
+    public static final String SAVE_CALL_CENTER_REDEMPTION = "/redemption/saveCallCenter";
+    public static final String CURRENT_ROOT_ID = "current/rootId";
 
     @Autowired
     private HealthApplyService healthApplyService;
@@ -102,7 +103,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
     private HealthConfirmationService healthConfirmationService;
 
     @Autowired
-    private Client<RedemptionForm, RedemptionForm> redemptionService;
+    private Client<RedemptionForm, RedemptionForm> saveRedemptionClient;
 
     @Value("${ctm.redemption.url}")
     private String redemptionServiceUrl;
@@ -141,7 +142,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
         final Optional<AuthenticatedData> authenticatedSessionData = Optional.ofNullable(sessionDataServiceBean.getAuthenticatedSessionData(request));
         Optional<RedemptionForm> redemptionForm = Optional.empty();
         if(!isOperatorLoggedIn(authenticatedSessionData)) {
-            //redemptionForm = Optional.ofNullable(createRedemptionPlaceholder(request, data));
+            redemptionForm = Optional.ofNullable(saveRedemption(request, data, authenticatedSessionData, SAVE_ONLINE_REDEMPTION, "P"));
         }
 
         // get the response
@@ -162,9 +163,9 @@ public class HealthApplicationController extends CommonQuoteRouter {
 
         if (Status.Success.equals(response.getSuccess())) {
             if(redemptionForm.isPresent()) { // It means ONLINE
-                //setRedemptionToSuccess(redemptionForm.get());
-            } else {
-
+                setRedemptionToSuccess(redemptionForm.get());
+            } else { // Call center
+                saveRedemption(request, data, authenticatedSessionData, SAVE_CALL_CENTER_REDEMPTION, "C");
             }
 
             result.setSuccess(true);
@@ -200,7 +201,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
 
         } else {
             if(!isOperatorLoggedIn(authenticatedSessionData)) {
-                //setRedemptionToFailed(redemptionForm.get());
+                setRedemptionToFailed(redemptionForm.get());
             }
 
             // Set callCentre property only when it's not a success
@@ -254,7 +255,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
     }
 
     private boolean isOperatorLoggedIn(final Optional<AuthenticatedData> authenticatedSessionData) {
-        return authenticatedSessionData.map(AuthenticatedData::isLoggedIn).orElse(false);
+        return authenticatedSessionData.map(AuthenticatedData::getUid).map(s -> !s.isEmpty()).orElse(false);
     }
 
     private void setRedemptionToFailed(final RedemptionForm redemptionForm) {
@@ -264,8 +265,8 @@ public class HealthApplicationController extends CommonQuoteRouter {
                         .touchType("F")
                         .build())
                 .build();
-        redemptionService.post(redemptionToSuccess, RedemptionForm.class, redemptionServiceUrl + REDEMPTION_SAVE)
-                .toBlocking().first();
+
+        saveRedemptionClient.post(redemptionToSuccess, RedemptionForm.class, redemptionServiceUrl + SAVE_ONLINE_REDEMPTION).toBlocking().first();
     }
 
     private void setRedemptionToSuccess(final RedemptionForm redemptionForm) {
@@ -276,43 +277,68 @@ public class HealthApplicationController extends CommonQuoteRouter {
                         .build())
                 .build();
 
-        redemptionService.post(redemptionFormToSuccess, RedemptionForm.class, redemptionServiceUrl + REDEMPTION_SAVE).toBlocking().first();
+        saveRedemptionClient.post(redemptionFormToSuccess, RedemptionForm.class, redemptionServiceUrl + SAVE_ONLINE_REDEMPTION).toBlocking().first();
     }
 
-    private RedemptionForm createRedemptionPlaceholder(final HttpServletRequest request, final HealthRequest healthRequest) throws DaoException {
+    private RedemptionForm saveRedemption(final HttpServletRequest request,
+                                          final HealthRequest healthRequest,
+                                          final Optional<AuthenticatedData> authenticatedSessionData,
+                                          final String uri,
+                                          final String touchType) throws DaoException {
         final Data dataBucket = getDataBucket(request, healthRequest.getTransactionId());
-        final Long rootId = Long.parseLong(dataBucket.getString("current/rootId"));
+        final Optional<String> encryptedRedemptionId = Optional.ofNullable(dataBucket.getString(XPATH_CURRENT_REDEMPTION_ID));
 
         final RedemptionForm redemptionFormRequest = RedemptionForm.newBuilder()
-                .redemption(Redemption.newBuilder()
-                    //.campaignId(Long.valueOf(request.getParameter("campaignId")))
-                    .campaignId(1L) // HARD CODING campaignId for the time being!!!
-                    .contactEmail(healthRequest.getHealth().getApplication().getEmail())
-                    .createdTimestamp(LocalDateTime.now())
-                    .firstName(healthRequest.getHealth().getApplication().getPrimary().getFirstname())
-                    .lastName(healthRequest.getHealth().getApplication().getPrimary().getSurname())
-                    .phoneNumber(Optional.ofNullable(healthRequest.getHealth().getApplication().getMobile())
-                            .orElse(healthRequest.getHealth().getApplication().getOther()))
-                    .rootId(rootId)
-                    .touchType("P")
-                    .shippingAddress(healthRequest.getHealth().getApplication().getAddress().getFullAddressLineOne())
-                    //.signOnReceiptFlag(Boolean.valueOf(request.getParameter("signOnReceiptFlag")))
-                    .signOnReceiptFlag(Boolean.FALSE) // HARD CODING signOnReceiptFlag for the time being!!!
-                    .build())
+                .redemption(createRedemption(healthRequest, authenticatedSessionData, touchType, dataBucket))
+                .encryptedRedemptionId(encryptedRedemptionId.orElse(null))
                 .build();
 
-        final RedemptionForm redemptionFormResponse = redemptionService.post(redemptionFormRequest, RedemptionForm.class, redemptionServiceUrl + REDEMPTION_SAVE)
+        final RedemptionForm redemptionFormResponse = saveRedemptionClient.post(redemptionFormRequest, RedemptionForm.class, redemptionServiceUrl + uri)
                 .toBlocking().first();
 
-        dataBucket.put(CURRENT_REDEMPTION_ID, redemptionFormResponse.getEncryptedRedemptionId().get());
+        dataBucket.put(XPATH_CURRENT_REDEMPTION_ID, redemptionFormResponse.getEncryptedRedemptionId().get());
 
+        addRedemptionIdTransactionDetail(healthRequest, redemptionFormResponse);
+
+        return redemptionFormResponse;
+    }
+
+    private Redemption createRedemption(final HealthRequest healthRequest, final Optional<AuthenticatedData> authenticatedSessionData, final String touchType, final Data dataBucket) {
+        final Long rootId = Long.parseLong(dataBucket.getString(CURRENT_ROOT_ID));
+        final Optional<String> encryptedRedemptionId = Optional.ofNullable(dataBucket.getString(XPATH_CURRENT_REDEMPTION_ID));
+
+        final Redemption.Builder redemptionBuilder = Redemption.newBuilder()
+            //.campaignId(Long.valueOf(request.getParameter("campaignId")))
+            .campaignId(1L) // HARD CODING campaignId for the time being!!!
+            .contactEmail(healthRequest.getHealth().getApplication().getEmail())
+            .createdTimestamp(LocalDateTime.now())
+            .firstName(healthRequest.getHealth().getApplication().getPrimary().getFirstname())
+            .lastName(healthRequest.getHealth().getApplication().getPrimary().getSurname())
+            .phoneNumber(Optional.ofNullable(healthRequest.getHealth().getApplication().getMobile())
+                    .orElse(healthRequest.getHealth().getApplication().getOther()))
+            .rootId(rootId)
+            .touchType(touchType)
+            .shippingAddress(healthRequest.getHealth().getApplication().getAddress().getFullAddressLineOne())
+            //.signOnReceiptFlag(Boolean.valueOf(request.getParameter("signOnReceiptFlag")))
+            .signOnReceiptFlag(Boolean.FALSE); // HARD CODING signOnReceiptFlag for the time being!!!
+
+        if(encryptedRedemptionId.isPresent()) {
+            redemptionBuilder.updatedByOperator(authenticatedSessionData.map(AuthenticatedData::getUid).orElse(null));
+            redemptionBuilder.updatedTimestamp(LocalDateTime.now());
+        } else {
+            redemptionBuilder.createdByOperator(authenticatedSessionData.map(AuthenticatedData::getUid).orElse(null));
+            redemptionBuilder.createdTimestamp(LocalDateTime.now());
+        }
+
+        return redemptionBuilder.build();
+    }
+
+    private void addRedemptionIdTransactionDetail(final HealthRequest healthRequest, final RedemptionForm redemptionFormResponse) throws DaoException {
         final TransactionDetail transactionDetail = new TransactionDetail();
         transactionDetail.setSequenceNo(XPATH_SEQUENCE_NO_REDEMPTION_ID);
         transactionDetail.setTextValue(redemptionFormResponse.getEncryptedRedemptionId().get());
-        transactionDetail.setXPath(XPATH_REDEMPTION_ID);
-        transactionDetailsDao.addTransactionDetails(healthRequest.getTransactionId(), transactionDetail);
-
-        return redemptionFormResponse;
+        transactionDetail.setXPath(XPATH_CURRENT_REDEMPTION_ID);
+        transactionDetailsDao.addTransactionDetailsWithDuplicateKeyUpdate(healthRequest.getTransactionId(), transactionDetail);
     }
 
     private String getErrors(List<PartnerError> errors, boolean nonFatalErrors) {
