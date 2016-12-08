@@ -30,7 +30,7 @@
             benefitsOverlow: $('.benefitsOverflow'),
             extrasOverlay: $('.extrasOverlay'),
             hospitalOverlay: $('.hospitalOverlay')
-        }
+        };
 
         _eventSubscription();
     }
