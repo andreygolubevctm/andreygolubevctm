@@ -18,11 +18,10 @@
   }
   h3 {
     font-weight: normal;
-    font-family: @font-family-theme-bold;
+    font-family: @font-family-theme-regular;
   }
   .day-description {
     text-align: right;
-    font-family: @font-family-theme-bold;
   }
   .call-details div .call-us {
     text-align: left;
@@ -60,26 +59,6 @@
   }
 }
 
-.header-collapse-contact {
-  > ul li {
-    .opening-hours {
-      margin: 0 0 0 30px;
-      font-family: @font-family-theme-regular;
-      .tomorrow-hours {
-        color: lighten(@gray-dark, 40%);
-        @media (max-width: 767px) {
-          color: #ffffff;
-        }
-      }
-
-      @media (max-width: 767px) {
-        a {
-          color: @theme-tertiary !important;
-        }
-      }
-    }
-  }
-}
 .callCentreNumberSection {
   padding-top: 10px;
   @media (@md) {
@@ -99,6 +78,22 @@
           color: #ffffff;
         }
       }
+    }
+  }
+}
+
+body {
+  .callCentreAppNumber {
+    display: none;
+  }
+
+  &[data-step="apply"],
+  &[data-step="payment"] {
+    .callCentreNumber {
+      display: none !important;
+    }
+    .callCentreAppNumber {
+      display: inline-block !important;
     }
   }
 }
