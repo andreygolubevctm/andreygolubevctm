@@ -23,7 +23,7 @@
 						  required="true"
 						  items="NSW=NSW,VIC=VIC,QLD=QLD,ACT=ACT,WA=WA,SA=SA,TAS=TAS,NT=NT"
 						  title="you're living in"
-						  style="rounded-tile" />
+						  style="radio-rounded" />
 
 	<field_v1:hidden xpath="${xpath}/suburb" />
 	<field_v1:hidden xpath="${xpath}/postcode" />
