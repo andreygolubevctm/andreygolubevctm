@@ -1,5 +1,5 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
-<%@ tag description="Select element for what sort of relationship status a user eg Family, single, couple etc..."%>
+<%@ tag description="Widget to take  users to the brochureware site if they don't have a green medicare card"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <c:set var="medicareCheck" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "medicareCheck")}' />
