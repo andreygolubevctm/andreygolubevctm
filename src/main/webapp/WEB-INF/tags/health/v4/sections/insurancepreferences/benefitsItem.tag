@@ -57,6 +57,7 @@
 							<div class="title <c:if test="${category eq 'Hospital'}">hidden-xs</c:if>">
 								<h2 class="ignore">${category}</h2>
 								<p class="hidden-xs">${colContent}</p>
+								<health_v4_insuranceprefs:quick_select />
 							</div>
 						</c:if>
 						<c:if test="${category eq 'Hospital'}">
@@ -68,6 +69,7 @@
 								<li><a href="javascript:;" data-target=".comprehensive-pane"><h2 class="ignore">Comprehensive</h2></a></li>
 								<li><a href="javascript:;" data-target=".limited-pane"><h2 class="ignore">Limited Cover</h2></a></li>
 							</ul>
+							<health_v4_insuranceprefs:quick_select />
 							<div class="tab-content">
 								<div class="tab-pane comprehensive-pane">
 						</c:if>
