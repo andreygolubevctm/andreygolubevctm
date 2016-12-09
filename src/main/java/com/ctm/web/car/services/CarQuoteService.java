@@ -163,6 +163,8 @@ public class CarQuoteService extends CommonRequestServiceV2 {
         return results.stream()
                 .filter(result -> AvailableType.Y.equals(result.getAvailable()))
                 .map(result -> {
+                            final String followupIntended = Optional.ofNullable(result.getFollowupIntended())
+                                    .orElse("");
                             result.setLeadfeedinfo(leadFeedInfo);
                             return new ResultPropertiesBuilder(request.getTransactionId(),
                                     result.getProductId())
@@ -178,6 +180,7 @@ public class CarQuoteService extends CommonRequestServiceV2 {
                                     .addResult("openingHours", result.getContact().getCallCentreHours())
                                     .addResult("leadNo", result.getQuoteNumber())
                                     .addResult("brandCode", result.getBrandCode())
+                                    .addResult("followupIntended", followupIntended)
                                     .getResultProperties();
                         }
                 ).flatMap(Collection::stream)

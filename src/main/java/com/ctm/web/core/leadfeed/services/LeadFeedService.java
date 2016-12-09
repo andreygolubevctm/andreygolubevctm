@@ -98,7 +98,13 @@ public abstract class LeadFeedService {
 	}
 
 	public LeadResponseStatus bestPrice(LeadFeedData leadData) throws LeadFeedException {
-		return processGateway(LeadType.BEST_PRICE, leadData, Touch.TouchType.LEAD_BEST_PRICE);
+		final TouchType touchType;
+		if (leadData.isPartnerReferenceChange()) {
+			touchType = TouchType.LEAD_BEST_PRICE_DD;
+		} else {
+			touchType = TouchType.LEAD_BEST_PRICE;
+		}
+		return processGateway(LeadType.BEST_PRICE, leadData, touchType);
 	}
 
 	/**
@@ -194,6 +200,9 @@ public abstract class LeadFeedService {
 		if(providerLeadFeedService != null) {
 			responseStatus = providerLeadFeedService.process(leadType, leadData);
 			if (responseStatus == LeadResponseStatus.SUCCESS) {
+				LOGGER.info("[Lead feed] Successfully sent {} of {} for {} {}",
+						kv("leadType", leadType), kv("touchType", touchType),
+						kv("productId", leadData.getProductId()), kv("transactionId", leadData.getTransactionId()));
 				leadFeedTouchService.recordTouch(touchType, leadData);
 			}
 			LOGGER.debug("[Lead feed] Provider lead process response {}", kv("responseStatus", responseStatus));
