@@ -64,13 +64,7 @@
 		}
 
 		// Refresh frequency
-		var freq = $('#quote_paymentType').val();
-		if (typeof freq === 'undefined') {
-			$filterFrequency.find('.dropdown-toggle span').text( $filterFrequency.find('.dropdown-menu a:first').text() );
-		}
-		else {
-			$filterFrequency.find('.dropdown-toggle span').text( $filterFrequency.find('.dropdown-menu a[data-value="' + freq + '"]').text() );
-		}
+		refreshFrequency();
 
 		// Refresh cover type
 		var coverType = $typeOfCover.val();
@@ -79,22 +73,36 @@
 		// Refresh excess
 		var excess = currentValues.excess ? currentValues.excess : ($excess.val() ? $excess.val() : $baseExcess.val());
 
-		if (currentValues.excess) {
-			$excess.val(currentValues.excess);
+		if (hasComprehensiveExcessUpdated) {
+			if (currentValues.excess) {
+				$excess.val(currentValues.excess);
+			}
 		}
 
 		if (coverType !== 'COMPREHENSIVE') {
 			excess = defaultThirdPartyExcess;
 			$excess.val(excess);
-		} else {
-			if (!hasComprehensiveExcessUpdated) {
+		}
+		else {
+			if (!hasComprehensiveExcessUpdated && $excess.val() !== '') {
 				excess = $baseExcess.val();
-				$excess.val(excess);
+				$excess.val('');
 			}
 		}
 
 		$filterExcess.find('.dropdown-toggle span').text( $filterExcess.find('.dropdown-menu a[data-value="' + excess + '"]').text() );
 		$filterExcess.toggleClass('default-600', coverType !== 'COMPREHENSIVE');
+	}
+
+	// Refresh frequency
+	function refreshFrequency() {
+		var freq = $('#quote_paymentType').val();
+		if (typeof freq === 'undefined') {
+			$filterFrequency.find('.dropdown-toggle span').text( $filterFrequency.find('.dropdown-menu a:first').text() );
+		}
+		else {
+			$filterFrequency.find('.dropdown-toggle span').text( $filterFrequency.find('.dropdown-menu a[data-value="' + freq + '"]').text() );
+		}
 	}
 
 	//
@@ -340,7 +348,8 @@
 
 		meerkat.messaging.subscribe(meerkatEvents.paymentFrequencyButtons.CHANGED, function() {
 			$('#quote_paymentType').val(Results.getFrequency());
-			updateFilters();
+
+			refreshFrequency();
 		});
 
 		meerkat.messaging.subscribe(meerkatEvents.mobileNavButtons.REFINE_RESULTS_TOGGLED, function onRefineResultsToggled() {
