@@ -43,7 +43,7 @@
 				<div class="row">
 					<c:set var="overlayName">hospital</c:set>
 					<c:if test="${category != 'Hospital'}"><c:set var="overlayName">extras</c:set></c:if>
-					<div class="${overlayName}Overlay visible-xs">
+					<div class="${overlayName}Overlay">
 						<div class="selectionStatus ${overlayName}">
 							Your ${overlayName} benefits selection
 						<span>0</span></div>
