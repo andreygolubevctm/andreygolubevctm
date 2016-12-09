@@ -55,7 +55,7 @@
 </core_v1:js_template>
 
 <c:forEach items="${resultTemplateItems}" var="selectedValue">
-	<health_v4_insuranceprefs:benefitsItem item="${selectedValue}" />
+	<health_v4_insuranceprefs:benefitsItem item="${selectedValue}" xpath="${xpath}" />
 </c:forEach>
 
 <core_v1:js_template id="customise-cover-template">

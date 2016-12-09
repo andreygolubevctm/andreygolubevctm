@@ -116,7 +116,7 @@
 
                 <%-- Slides --%>
                 <health_v4_layout:slide_about_you />
-                <health_v4_layout:slide_benefits />
+                <health_v4_layout:slide_insurance_preferences />
                 <health_v4_layout:slide_contact />
                 <health_v4_layout:slide_results />
                 <health_v4_layout:slide_application />
