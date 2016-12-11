@@ -9,7 +9,9 @@
         log = meerkat.logging.info;
 
     var moduleEvents = {
-        health: {},
+        health: {
+            SNAPSHOT_FIELDS_CHANGE:'SNAPSHOT_FIELDS_CHANGE'
+        },
         WEBAPP_LOCK: 'WEBAPP_LOCK',
         WEBAPP_UNLOCK: 'WEBAPP_UNLOCK'
     }, steps = null;
@@ -173,6 +175,14 @@
             },
             onInitialise: function onStartInit(event) {
                 meerkat.modules.jqueryValidate.initJourneyValidator();
+
+                $('#health_situation_healthCvr').on('change', function() {
+                    meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
+                });
+
+                $('#health_healthCover_primary_dob').on('change', function() {
+                    meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
+                });
             },
             onBeforeEnter: _incrementTranIdBeforeEnteringSlide,
             onAfterEnter: function healthAfterEnter() {
