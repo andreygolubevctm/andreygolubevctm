@@ -38,6 +38,7 @@
     "shared/emailBrochures",
     "shared/serverSideValidationOutput",
     "shared/filters",
-    "shared/radioGroupTile"
+    "shared/radioGroupTile",
+    "shared/radioRounded"
   ]
 }
