@@ -176,7 +176,7 @@
                 meerkat.modules.healthLocation.initHealthLocation();
 
                 if(meerkat.site.choices) {
-                    meerkat.modules.healthChoices.initialise(meerkat.site.choices.cover, meerkat.site.choices.situation, meerkat.site.choices.benefits);
+                    meerkat.modules.healthChoices.initialise('SM'); // default to single male
                     meerkat.modules.healthChoices.setState(meerkat.site.choices.state);
                     meerkat.modules.healthChoices.shouldPerformUpdate(meerkat.site.choices.performHealthChoicesUpdate);
                 }
@@ -464,8 +464,7 @@
                 $.extend(response, {
                     postCode: $("#health_application_address_postCode").val(),
                     state: state,
-                    healthCoverType: $("#health_situation_healthCvr").val(),
-                    healthSituation: $("input[name=health_situation_healthSitu]").val(),
+                    healthCoverType: $("input[name=health_situation_healthCvr]").filter(':checked').val(),
                     contactType: contactType
                 });
             }

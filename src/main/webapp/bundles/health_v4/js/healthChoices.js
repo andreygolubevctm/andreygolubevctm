@@ -10,7 +10,6 @@
 		};
 
 	var _cover = '',
-		_situation = '',
 		_state = '',
 		_performUpdate=false,
 		$elements = {};
@@ -20,9 +19,8 @@
 		_eventListeners();
 	}
 
-	function initialise(cover, situation) {
-		setCover(cover, true, true);
-		_setSituation(situation, _performUpdate);
+	function initialise(cover) {
+		setCover(cover);
 	}
 
 	function _setupFields () {
@@ -30,7 +28,7 @@
 			healthSit: $('#health_benefits_healthSitu'),
 			healthSitGroup: $("input[name=health_situation_healthSitu]"),
 			healthSitCSF : $('#health_situation_healthSitu_CSF'),
-			healthCover: $('#health_situation_healthCvr'),
+			healthCover: $('input[name=health_situation_healthCvr]'),
 			state: $('#health_situation_state'),
 			postcode: $('#health_situation_postcode'),
 			suburb: $('#health_situation_suburb'),
@@ -40,7 +38,6 @@
 
 	function _eventListeners() {
 		$elements.healthCover.on('change',function() {
-			setCover($(this).val());
 			meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
 		});
 
@@ -75,39 +72,7 @@
 	}
 
 	function setCover(cover) {
-		_cover = cover;
-		_updateSituation();
-	}
-
-	function _updateSituation() {
-		var $familyTile = $elements.healthSitCSF.siblings("span").first();
-		var copy = $familyTile.text();
-
-		switch(_cover) {
-			case 'F':
-			case 'SPF':
-				copy = copy.replace('Start a family','Grow my family');
-				break;
-			default:
-				copy = copy.replace('Grow my family','Start a family');
-		}
-		$familyTile.text(copy);
-	}
-
-	function _setSituation(situation, performUpdate) {
-		if (performUpdate !== false)
-			_performUpdate = true;
-
-		//// Change the message
-		if (situation != _situation) {
-			_situation = situation;
-		}
-
-		$elements.healthSit.val( situation );
-
-		if (!_.isEmpty(situation)) {
-			$elements.healthSitGroup.filter('[value='+situation+']').prop('checked', true).trigger('change');
-		}
+		_cover = cover || 'SM'; // default to a single
 	}
 
 	function _isValidLocation( location ) {
@@ -147,11 +112,6 @@
 		_state = state;
 	}
 
-	//return readable values
-	function returnCover() {
-		return $('#health_situation_healthCvr option:selected').text();
-	}
-
 	function returnCoverCode() {
 		return _cover;
 	}
@@ -165,7 +125,6 @@
 		init: init,
 		initialise: initialise,
 		hasSpouse: hasSpouse,
-		returnCover: returnCover,
 		returnCoverCode: returnCoverCode,
 		setCover: setCover,
 		setLocation: setLocation,
