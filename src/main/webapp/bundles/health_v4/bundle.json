@@ -1,11 +1,15 @@
 {
-  "brandCodes": ["ctm"],
+  "version": 2,
+  "brandCodes": [
+    "ctm"
+  ],
   "dependencies": [
     "shared/journeyEngine/v2",
     "plugins/scrollTo",
     "shared/results/v4",
     "shared/features",
     "shared/validation",
+    "shared/fonts/v2",
     "core",
     "shared/journeyProgressBar/v3",
     "shared/forms/v4",

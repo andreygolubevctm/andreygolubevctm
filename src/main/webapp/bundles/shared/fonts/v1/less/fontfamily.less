@@ -1,0 +1,20 @@
+// Used to generate fonts.
+.include-custom-font(@family: arial, @file: @file, @weight: normal, @style: normal){
+  @font-face {
+    font-family: @family;
+    src:url('../../../../assets/fonts/@{file}.eot');
+    src:url('../../../../assets/fonts/@{file}.eot?#iefix') format('embedded-opentype'),
+    url('../../../../assets/fonts/@{file}.woff') format('woff'),
+    url('../../../../assets/fonts/@{file}.ttf') format('truetype'),
+    url('../../../../assets/fonts/@{file}.svg#@{family}') format('svg');
+    font-weight: @weight;
+    font-style: @style;
+  }
+}
+
+//
+// Calls the above mixins to add fonts to each brands css.
+// ---------------------------------------------------------------------------
+.include-custom-font(SourceSansProLight, SourceSansPro-Light, normal, normal);
+.include-custom-font(SourceSansProRegular, SourceSansPro-Regular, normal, normal);
+.include-custom-font(SourceSansProSemiBold, SourceSansPro-Semibold, normal, normal);

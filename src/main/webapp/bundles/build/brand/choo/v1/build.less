@@ -10,19 +10,20 @@
 @import "variables.less";
 
 // Mixins from bootstrap
-// Params in grunt to the compiler understand to find this file under ../../../build/
-@import "../../framework/mixins.less";
+// Params in gulp to the compiler understand to find this file under ../../../build/
+@import "../../../framework/mixins.less";
 
 // Mixins for this theme
 @import "mixins.less";
 
 // All less files from bootstrap defined by the framework
-// Params in grunt to the compiler understand to find this file under ../../../build/
-@import "../../framework/core.less";
+// Params in gulp to the compiler understand to find this file under ../../../build/
+@import "../../../../shared/iconFonts/v1/less/icon-fonts.less";
+@import "../../../framework/core.less";
 
 // All less files from bootstrap defined by the framework
-// Params in grunt to the compiler understand to find this file under ../../../build/
-@import "../../framework/inhouse.less"; //In general, would capture things from /framework/modules/less
+// Params in gulp to the compiler understand to find this file under ../../../build/
+@import "../../../framework/inhouse.less"; //In general, would capture things from /framework/modules/less
 
 // Specific branding and style which constitutes this theme
 @import "theme.less";

@@ -118,6 +118,17 @@ Bundles.prototype.getBundleBrandCodes = function (bundleName) {
     }
 };
 
+
+/**
+ * Get Bundle Version
+ * @param bundleName
+ * @returns {*}
+ */
+Bundles.prototype.getBundleVersion = function (bundleName) {
+    var bundle = this.collection[bundleName];
+    return bundle.version || '';
+};
+
 /**
  * Returns all brand codes used across all bundles
  * @returns {Array}
