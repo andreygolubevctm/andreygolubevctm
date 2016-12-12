@@ -57,7 +57,7 @@
 							<div class="title <c:if test="${category eq 'Hospital'}">hidden-xs</c:if>">
 								<h2 class="ignore">${category}</h2>
 								<p class="hidden-xs">${colContent}</p>
-								<health_v4_insuranceprefs:quick_select />
+								<health_v4_insuranceprefs:quick_select options="Dental:dental|Sports:sports|Prace of Mind:peace" />
 							</div>
 						</c:if>
 						<c:if test="${category eq 'Hospital'}">
@@ -69,7 +69,7 @@
 								<li><a href="javascript:;" data-target=".comprehensive-pane"><h2 class="ignore">Comprehensive</h2></a></li>
 								<li><a href="javascript:;" data-target=".limited-pane"><h2 class="ignore">Limited Cover</h2></a></li>
 							</ul>
-							<health_v4_insuranceprefs:quick_select />
+							<health_v4_insuranceprefs:quick_select options="Start a Family:family|Ageing Gracefully:aging" />
 							<div class="tab-content">
 								<div class="tab-pane comprehensive-pane">
 						</c:if>
@@ -116,7 +116,6 @@
 												</c:set>
 												<c:set var="analyticsLabelAttr"><field_v1:analytics_attr analVal="benefit ${benefitGroup}" quoteChar="\"" /></c:set>
 												<c:set var="analyticsHelpAttr"><field_v1:analytics_attr analVal="qtip ${selectedValue.getShortlistKey()}" quoteChar="\"" /></c:set>
-
 												<%-- This is a duplicate of the row above and needs to be cleaned up in the .less--%>
 												<c:set var="benefitLabel">
 													<span class="benefitContent">
@@ -124,7 +123,7 @@
 														<span class="benefitSummary">hasf jkldfhas kljd hasklj fhasjkld  <a href="javascript:;" class="help_icon floatLeft" id="help_${selectedValue.getHelpId()}">more</a></span>
 													</span>
 												</c:set>
-												<field_v2:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${selectedValue.getShortlistKey()}" value="Y" required="false" label="true" title="${benefitLabel}" errorMsg="Please tick" customAttribute="data-attach=true"  additionalLabelAttributes="${analyticsLabelAttr}" additionalHelpAttributes="${analyticsHelpAttr}" />
+												<field_v2:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${selectedValue.getShortlistKey()}" value="Y" required="false" label="true" title="${benefitLabel}" errorMsg="Please tick" customAttribute="data-attach=true data-benefit-id='${selectedValue.getId()}'"  additionalLabelAttributes="${analyticsLabelAttr}" additionalHelpAttributes="${analyticsHelpAttr}" />
 												</div>
 											</c:if>
 										</c:forEach>

@@ -7,11 +7,7 @@
     var meerkat =window.meerkat,
         meerkatEvents = meerkat.modules.events,
         log = meerkat.logging.info,
-        $elements = {},
-        $defaultSelections = {
-            all: 'all',
-            family: ''
-        };
+        $elements = {};
 
     function initBenefits() {
         $(document).ready(function() {
@@ -47,6 +43,14 @@
     function _registerXSBenefitsSlider() {
         $elements.hospitalOverlay.hide();
 
+        meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, function extrasOverlayEnterXsState() {
+            $elements.extrasOverlay.show();
+        });
+
+        meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function extrasOverlayLeaveXsState() {
+            $elements.extrasOverlay.hide();
+        });
+
         $elements.extrasOverlay.off().on('click', function displayExtrasBenefits() {
             $elements.benefitsOverlow.animate({'left': ($elements.extrasOverlay.width() * -1)}, 500, function onExtrasAnimateComplete(){
                 _setOverlayLabelCount($elements.hospitalOverlay, meerkat.modules.benefitsModel.getHospitalCount());
@@ -62,16 +66,17 @@
                 $elements.extrasOverlay.show();
             });
         });
-
     }
 
     function _registerBenefitsCounter() {
         $('.GeneralHealth_container, .Hospital_container').on('click', 'label:not(.help_icon)', function(){
-            var benefitType = ($(this).closest('.Hospital_container').length === 1 ? 'hospital' : 'extras');
-            if ($(this).prev('input').is(':checked') === false) {
-                meerkat.modules.benefitsModel.increaseBenefitCount(benefitType);
+            var $this = $(this);
+            meerkat.modules.benefitsModel.setIsHospital($this.closest('.Hospital_container').length === 1);
+
+            if ($this.prev('input').is(':checked') === false) {
+                meerkat.modules.benefitsModel.addBenefit($this.prev('input').attr('id'));
             } else {
-                meerkat.modules.benefitsModel.decreaseBenefitCount(benefitType);
+                meerkat.modules.benefitsModel.removeBenefit($this.prev('input').attr('id'));
             }
         });
     }
