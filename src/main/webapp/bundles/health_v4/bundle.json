@@ -1,11 +1,15 @@
 {
-  "brandCodes": ["ctm"],
+  "themeVersion": 2,
+  "brandCodes": [
+    "ctm"
+  ],
   "dependencies": [
     "shared/journeyEngine/v2",
     "plugins/scrollTo",
     "shared/results/v4",
     "shared/features",
     "shared/validation",
+    "shared/fonts/v2",
     "core",
     "shared/journeyProgressBar/v3",
     "shared/forms/v4",
@@ -34,6 +38,7 @@
     "shared/emailBrochures",
     "shared/serverSideValidationOutput",
     "shared/filters",
-    "shared/radioGroupTile"
+    "shared/radioGroupTile",
+    "shared/radioRounded"
   ]
 }
