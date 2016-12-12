@@ -82,7 +82,7 @@
             !_.isEmpty(copy) ? copy : '',
             '<h3>Sub-limits</h3>',
             Features.parseFeatureValue(_getPathValue(obj, {resultPath:subLimitResultPath}), true),
-            '<h3>Service Limits</h3>',
+            '<h3>Service limits</h3>',
             Features.parseFeatureValue(_getPathValue(obj, {resultPath:serviceLimitResultPath}), true),
             '<br><br>'
         ];
