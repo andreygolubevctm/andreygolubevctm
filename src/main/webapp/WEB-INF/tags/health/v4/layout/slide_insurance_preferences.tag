@@ -8,7 +8,8 @@
         <form_v3:fieldset_columns>
 
         <jsp:attribute name="rightColumn">
-            <health_v2_content:sidebar />
+            <simples:snapshot />
+            <health_v4_content:snapshot/>
         </jsp:attribute>
             <jsp:body>
 

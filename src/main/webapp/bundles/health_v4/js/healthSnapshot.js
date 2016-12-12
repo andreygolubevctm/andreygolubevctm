@@ -48,24 +48,30 @@
     }
 
     function render() {
-        var data = getData();
-        var noData = !hasData(data),
+        var data = getData(),
+            noData = !hasData(data),
             $box, i;
-        // Toggle the panel title
-        $('.quoteSnapshot > h4').first().text(noData ? "Who we compare" : "Quote Summary");
-        // Toggle the default summary text
-        $('.quoteSnapshot .default').each(function(){
-            $(this)[noData ? "show" : "hide"]();
-        });
 
         // Toggle normal content rows
-        showHide(data,'.quoteSnapshot .cover-for','coverFor', noData);
         showHide(data,'.quoteSnapshot .living-in','livingIn', noData);
-        showHide(data,'.quoteSnapshot .looking-to','lookingTo', noData);
-        showHide(data,'.quoteSnapshot .primary-born','primaryBorn', noData);
+        showHide(data,'.quoteSnapshot .cover-for','coverFor', noData);
+        showHide(data,'.quoteSnapshot .born','primaryBorn', noData);
+        showHide(data,'.quoteSnapshot .born-labels, .quoteSnapshot .partner-born','partnerBorn', noData);
 
-        if(!noData && !_.isEmpty(data.coverType)) {
-            $('.cover-type .snapshot-items').text(data.coverType);
+        // Format primary dob
+        if (!noData && !_.isEmpty(data.primaryBorn)) {
+            var primaryDob = meerkat.modules.dateUtils.returnDate($('#health_healthCover_primary_dob').val()),
+                formattedPrimaryDob = meerkat.modules.dateUtils.format(primaryDob, "DD MMM YYYY");
+
+            $('.quoteSnapshot .snapshot-items.primary-dob span').text(formattedPrimaryDob);
+        }
+
+        // Format partner dob
+        if (!noData && !_.isEmpty(data.partnerBorn)) {
+            var partnerDob = meerkat.modules.dateUtils.returnDate($('#health_healthCover_partner_dob').val()),
+                formattedPartnerDob = meerkat.modules.dateUtils.format(partnerDob, "DD MMM YYYY");
+
+            $('.quoteSnapshot .snapshot-items.partner-dob span').text(formattedPartnerDob);
         }
 
         // Populate hospital/extras
@@ -95,23 +101,35 @@
     }
 
     function getData() {
-        var coverFor = $("#health_situation_healthCvr").val();
-        var livingIn = $("#health_situation_location").val();
-        var lookingTo = $.trim($("input[name=health_situation_healthSitu]").filter(":checked").closest('label').text());
-        var primaryBorn = $("#health_healthCover_primary_dob").val();
-        var coverType = $("#health_situation_coverType input:checked").parent().text();
-        var tieredCoverType = $('#health_situation_coverType input').filter(":checked").val();
-        var hospital = fetchAllHospitalCheckedValues(tieredCoverType);
-        var extras = fetchAllExtrasCheckedValues(tieredCoverType);
+        // var coverFor = $("#health_situation_healthCvr").val();
+        // var livingIn = $("#health_situation_location").val();
+        // var lookingTo = $.trim($("input[name=health_situation_healthSitu]").filter(":checked").closest('label').text());
+        // var primaryBorn = $("#health_healthCover_primary_dob").val();
+        // var coverType = $("#health_situation_coverType input:checked").parent().text();
+        // var tieredCoverType = $('#health_situation_coverType input').filter(":checked").val();
+        // var hospital = fetchAllHospitalCheckedValues(tieredCoverType);
+        // var extras = fetchAllExtrasCheckedValues(tieredCoverType);
+        //
+        // return {
+        //     coverFor : _.isEmpty(coverFor) ? false : coverFor,
+        //     livingIn : _.isEmpty(livingIn) ? false : livingIn,
+        //     lookingTo : _.isEmpty(lookingTo) ? false : lookingTo,
+        //     primaryBorn : _.isEmpty(primaryBorn) ? false : primaryBorn,
+        //     coverType : _.isEmpty(coverType) ? false : coverType,
+        //     hospital : _.isEmpty(hospital) ? false : hospital,
+        //     extras : _.isEmpty(extras) ? false : extras
+        // };
+
+        var livingIn = $.trim($("input[name=health_situation_state]").filter(":checked").parent().text()),
+            coverFor = $.trim($("input[name=health_situation_healthCvr]").filter(":checked").parent().text()),
+            primaryBorn = $('#health_healthCover_primary_dob').val(),
+            partnerBorn = $('#health_healthCover_partner_dob').val();
 
         return {
-            coverFor : _.isEmpty(coverFor) ? false : coverFor,
-            livingIn : _.isEmpty(livingIn) ? false : livingIn,
-            lookingTo : _.isEmpty(lookingTo) ? false : lookingTo,
-            primaryBorn : _.isEmpty(primaryBorn) ? false : primaryBorn,
-            coverType : _.isEmpty(coverType) ? false : coverType,
-            hospital : _.isEmpty(hospital) ? false : hospital,
-            extras : _.isEmpty(extras) ? false : extras
+            livingIn: _.isEmpty(livingIn) ? false : livingIn,
+            coverFor: _.isEmpty(coverFor) ? false : coverFor,
+            primaryBorn: _.isEmpty(primaryBorn) ? false : primaryBorn,
+            partnerBorn: _.isEmpty(partnerBorn) ? false : partnerBorn
         };
     }
 

@@ -177,7 +177,11 @@
 
                 meerkat.modules.healthLocation.initHealthLocation();
 
-                $('#health_situation_healthCvr').on('change', function() {
+                meerkat.messaging.subscribe(meerkatEvents.healthLocation.STATE_CHANGED, function onStateChanged() {
+                    meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
+                });
+
+                meerkat.messaging.subscribe(meerkatEvents.healthSituation.SITUATION_CHANGED, function onSituationChanged() {
                     meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
                 });
 
@@ -213,6 +217,10 @@
             },
             onInitialise: function onResultsInit(event) {
                 /** @todo implement from health.js when get to this step */
+
+                $('#health_healthCover_partner_dob').on('change', function() {
+                    meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
+                });
             },
             onBeforeEnter: function enterBenefitsStep(event) {
                 /** @todo implement from health.js when get to this step */
