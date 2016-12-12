@@ -63,7 +63,7 @@
 
         _.each($benefitContainers[getBenefitType()].find('input').filter(':checked'), function updateBenefitCount(checkbox) {
             tempBenefitsCounter.push($(checkbox).data('benefit-id'));
-        })
+        });
 
         selectedElements[getBenefitType()] = tempBenefitsCounter;
     }

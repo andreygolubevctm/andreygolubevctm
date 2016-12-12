@@ -68,7 +68,7 @@
     }
 
     function _registerBenefitsCounter() {
-        $('.GeneralHealth_container, .Hospital_container').on('click', 'label:not(a)', function(){
+        $('.GeneralHealth_container, .Hospital_container').on('change', 'input', function(){
             meerkat.modules.benefitsModel.setIsHospital($(this).closest('.Hospital_container').length === 1);
             meerkat.modules.benefitsModel.updateBenefits();
         });
@@ -78,8 +78,24 @@
         $overlay.find('span').text(count);
     }
 
-    meerkat.modules.register("benefitsTab", {
-        init : initBenefits
+    function setDefaultTabs() {
+
+        // set extras
+        meerkat.modules.benefitsModel.updateBenefits();
+
+        // set hospital
+        meerkat.modules.benefitsModel.setIsHospital(true);
+        meerkat.modules.benefitsModel.updateBenefits();
+
+        if (meerkat.modules.deviceMediaState.get() == 'xs') {
+            // update label
+            _setOverlayLabelCount($elements.extrasOverlay, meerkat.modules.benefitsModel.getExtrasCount());
+        }
+    }
+
+    meerkat.modules.register("benefits", {
+        init : initBenefits,
+        setDefaultTabs: setDefaultTabs
     });
 
 })(jQuery);
