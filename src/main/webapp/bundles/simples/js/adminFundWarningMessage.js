@@ -9,7 +9,7 @@
     function init() {
         $(document).ready(function () {
             if ($("#admin-fund-warning-message-container").length) {
-                CRUD = new meerkat.modules.adminDataCRUD.newCRUD({
+                CRUD = new meerkat.modules.crud.newCRUD({
                     baseURL: "../../admin/fundwarning",
                     primaryKey: "messageId",
                     models: {

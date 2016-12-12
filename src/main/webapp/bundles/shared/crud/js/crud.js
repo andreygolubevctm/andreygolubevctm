@@ -1,8 +1,6 @@
 /**
- * CRUD interface handler for creating administration pages in Simples 
- * 
- * For implementation notes:
- * http://confluence:8090/display/CM/Creating+Simples+Admin+Interfaces
+ * CRUD interface handler for creating CRUD pages
+ *
  */
 ;(function($, undefined){
 	
@@ -21,10 +19,10 @@
 		],
 		$loadingOverlay,
 		blurElements = "#page, #dynamic_dom";
-	var dataSetModule;
+	var crudModel;
 	
 	function init() {
-		dataSetModule = meerkat.modules.adminDataSet;
+        crudModel = meerkat.modules.crudModel;
 
 		$loadingOverlay = $(loadingOverlayHTML.join(""))
 			.appendTo("body");
@@ -47,7 +45,7 @@
 	
 	function dataCRUD(settings) {
 		var that = this;
-		this.dataSet = new dataSetModule.dataSet();
+		this.dataSet = new crudModel.dataSet();
 		this.modalId = "";
 		this.models = {};
 		
@@ -134,7 +132,7 @@
 			var searchId = $targetRow.data("id");
 			m = this.dataSet.get(searchId).data;
 		} else {
-			m = new dataSetModule.dbModel(this.models.db);
+			m = new crudModel.dbModel(this.models.db);
 		}
 
 		if(isClone)
@@ -197,7 +195,7 @@
 	
 	/**
 	 * 
-	 * @returns {dataSetModule.newDataSet}
+	 * @returns {crudModel.newDataSet}
 	 */
 	dataCRUD.prototype.dataSet = function() {
 		return this.dataSet;
@@ -220,7 +218,7 @@
 				if(response.length) {
 					for (var i = 0; i < response.length; i++) {
 						var datum = response[i],
-							obj = new dataSetModule.datumModel(that.primaryKey, that.models.datum, datum, that.views.row);
+							obj = new crudModel.datumModel(that.primaryKey, that.models.datum, datum, that.views.row);
 						that.dataSet.push(obj);
 					}
 				}
@@ -242,7 +240,7 @@
 				if(typeof response === "string")
 					response = JSON.parse(response);
 				
-				var responseObject = new dataSetModule.datumModel(that.primaryKey, that.models.datum, response, that.views.row);
+				var responseObject = new crudModel.datumModel(that.primaryKey, that.models.datum, response, that.views.row);
 		
 				if($targetRow) {
 					var index = that.dataSet.getIndex(responseObject.id);
@@ -405,7 +403,7 @@
 			var errorObject = {
 				errorLevel:		settings.errorLevel,
 				message:		jqXHR.responseText,
-				page:			'adminDataCRUD.js',
+				page:			'crud.js',
 				description:	"Error loading url: " + settings.url + ' : ' + textStatus + ' ' + errorThrown,
 				data:			data
 			};
@@ -416,7 +414,7 @@
 		}
 	}
 	
-	meerkat.modules.register('adminDataCRUD', {
+	meerkat.modules.register('crud', {
 		init: init,
 		newCRUD: dataCRUD
 	});

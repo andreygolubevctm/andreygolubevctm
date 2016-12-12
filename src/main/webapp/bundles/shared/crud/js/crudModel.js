@@ -242,7 +242,7 @@
 		return object;
 	};
 	
-	meerkat.modules.register('adminDataSet', {
+	meerkat.modules.register('crudModel', {
 		dataSet: dataSet,
 		dbModel: dbModel,
 		datumModel: datumModel

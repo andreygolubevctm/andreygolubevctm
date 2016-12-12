@@ -7,6 +7,7 @@
         "shared/sliders",
         "core",
         "shared/forms/v2",
-        "shared/datepicker"
+        "shared/datepicker",
+        "shared/crud"
     ]
 }
