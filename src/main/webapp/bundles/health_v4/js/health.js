@@ -77,7 +77,6 @@
         });
         // @todo this belongs in health Apply Step logic.
         //$('#health_application-selection').delegate('.changeStateAndQuote', 'click', changeStateAndQuote);
-
     }
 
     function applyEventListeners() {
@@ -173,6 +172,8 @@
             },
             onInitialise: function onStartInit(event) {
                 meerkat.modules.jqueryValidate.initJourneyValidator();
+
+                meerkat.modules.healthLocation.initHealthLocation();
             },
             onBeforeEnter: _incrementTranIdBeforeEnteringSlide,
             onAfterEnter: function healthAfterEnter() {
