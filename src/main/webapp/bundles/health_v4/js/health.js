@@ -69,11 +69,11 @@
         // @todo this belongs in health Apply Step logic.
         meerkat.messaging.subscribe(meerkatEvents.WEBAPP_LOCK, function lockHealth(obj) {
             var isSameSource = (typeof obj !== 'undefined' && obj.source && obj.source === 'submitApplication');
-            disableSubmitApplication(isSameSource);
+            meerkat.modules.healthSubmitApplication.disableSubmitApplication(isSameSource);
         });
         // @todo this belongs in health Apply Step logic.
         meerkat.messaging.subscribe(meerkatEvents.WEBAPP_UNLOCK, function unlockHealth(obj) {
-            enableSubmitApplication();
+            meerkat.modules.healthSubmitApplication.enableSubmitApplication();
         });
         // @todo this belongs in health Apply Step logic.
         //$('#health_application-selection').delegate('.changeStateAndQuote', 'click', changeStateAndQuote);
@@ -266,16 +266,38 @@
                 }
             },
             onInitialise: function onResultsInit(event) {
-                /** @todo implement from health.js when get to this step */
+                meerkat.modules.healthResults.initPage();
             },
             onBeforeEnter: function enterResultsStep(event) {
-                /** @todo implement from health.js when get to this step */
+                meerkat.modules.healthDependants.resetConfig();
+                if(event.isForward && meerkat.site.isCallCentreUser) {
+                    $('#journeyEngineSlidesContainer .journeyEngineSlide')
+                        .eq(meerkat.modules.journeyEngine.getCurrentStepIndex()).find('.simples-dialogue').show();
+                } else {
+                    // Reset selected product. (should not be inside a forward or backward condition because users can skip steps backwards)
+                    meerkat.modules.healthResults.resetSelectedProduct();
+                }
+            },
+            onAfterEnter: function onAfterEnterResultsStep(event) {
+                if(event.isForward === true){
+                    meerkat.modules.healthResults.getBeforeResultsPage();
+                }
+
+                if (meerkat.modules.healthTaxTime.isFastTrack()) {
+                    meerkat.modules.healthTaxTime.disableFastTrack();
+                }
+                meerkat.modules.healthResults.setCallCentreText();
             },
             onBeforeLeave: function beforeLeaveResultsStep(event) {
-                /** @todo implement from health.js when get to this step */
+                // Increment the transactionId
+                if (event.isBackward === true) {
+                    meerkat.modules.transactionId.getNew(3);
+                }
+
+                meerkat.modules.healthResults.resetCallCentreText();
             },
             onAfterLeave: function afterLeaveResultsStep(event) {
-                /** @todo implement from health.js when get to this step */
+                meerkat.modules.healthResults.recordPreviousBreakpoint();
             }
         };
 
@@ -316,6 +338,7 @@
             },
             onInitialise: function onPaymentInit(event) {
                 /** @todo implement from health.js when get to this step */
+                meerkat.modules.healthSubmitApplication.initHealthSubmitApplication();
             },
             onBeforeEnter: function beforeEnterPaymentStep(event) {
                 /** @todo implement from health.js when get to this step */
@@ -492,11 +515,22 @@
         }
     }
 
+    // Use the situation value to determine if a partner is visible on the journey.
+    function hasPartner(){
+        var cover = $(':input[name="health_situation_healthCvr"]').val();
+        if(cover == 'F' || cover == 'C'){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     meerkat.modules.register("health", {
         init: initHealth,
         events: moduleEvents,
         initProgressBar: initProgressBar,
-        getTrackingFieldsObject: getTrackingFieldsObject
+        getTrackingFieldsObject: getTrackingFieldsObject,
+        hasPartner: hasPartner
     });
 
 
