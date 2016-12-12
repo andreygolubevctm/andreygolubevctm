@@ -6,7 +6,8 @@
     "shared/validation",
     "shared/dateUtils",
     "shared/age",
-    "core",
+	"shared/fonts/v1",
+	"core",
     "shared/forms/v1",
     "shared/datepicker"
   ]

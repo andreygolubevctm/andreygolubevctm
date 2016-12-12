@@ -7,7 +7,7 @@
     <layout_v3:slide_content>
 
         <%-- PROVIDER TESTING --%>
-        <health_v4_aboutyou:provider_testing xpath="${pageSettings.getVerticalCode()}" />
+        <%--<health_v4_aboutyou:provider_testing xpath="${pageSettings.getVerticalCode()}" />--%>
 
         <%-- COVER TYPE / SITUATION --%>
         <div id="${pageSettings.getVerticalCode()}_situation">
@@ -21,13 +21,13 @@
                 <form_v3:fieldset_columns sideHidden="true">
 
                 <jsp:attribute name="rightColumn">
-                    <health_v2_content:sidebar />
+                    <health_v4_content:sidebar />
                 </jsp:attribute>
                     <jsp:body>
 
                         <health_v4_aboutyou:simples />
 
-                        <form_v3:fieldset id="healthAboutYou" legend="Tell us about yourself, so we can find the right cover for you" className="health-about-you">
+                        <form_v4:fieldset id="healthAboutYou" legend="Tell us about yourself, so we can find the right cover for you" className="health-about-you">
 
                             <health_v4_aboutyou:livingin xpath="${xpath}" />
                             <health_v4_aboutyou:youarea xpath="${xpath}" />
@@ -37,7 +37,7 @@
                             <health_v4_aboutyou:currentlyowninsurance xpath="${xpath}" />
                             <health_v4_aboutyou:applyrebate xpath="${xpath}" />
                             <health_v4_aboutyou:optin xpath="${xpath}" />
-                        </form_v3:fieldset>
+                        </form_v4:fieldset>
 
                     </jsp:body>
                 </form_v3:fieldset_columns>

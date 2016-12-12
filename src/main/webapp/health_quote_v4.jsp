@@ -21,6 +21,9 @@
         <core_v2:quote_check quoteType="health" />
         <core_v2:load_preload />
 
+        <%-- Get data to build sections/categories/features on benefits and result pages. Used in results and benefits tags --%>
+        <jsp:useBean id="resultsDisplayService" class="com.ctm.web.core.results.services.ResultsDisplayService" scope="request" />
+        <c:set var="resultTemplateItems" value="${resultsDisplayService.getResultsPageStructure('health')}" scope="request"  />
 
         <%-- Call centre numbers --%>
         <jsp:useBean id="callCenterHours" class="com.ctm.web.core.web.openinghours.go.CallCenterHours" scope="page" />
@@ -28,7 +31,6 @@
         <c:set var="callCentreAppNumber" scope="request"><content:get key="callCentreAppNumber" /></c:set>
         <c:set var="callCentreHelpNumber" scope="request"><content:get key="callCentreHelpNumber" /></c:set>
 
-        <c:set var="openingHoursHeader" scope="request"><content:getOpeningHours displayTodayOnly="true" /></c:set>
         <c:set var="callCentreHoursModal" scope="request"><content:getOpeningHoursModal /></c:set>
         <c:set var="callCentreCBModal" scope="request"><health_v3:callback_modal /></c:set>
 
@@ -49,11 +51,13 @@
                             <li class="navbar-text">Confused? Talk to our experts... Simples!</li>
                             <li>
                                 <div class="navbar-text hidden-xs" data-livechat="target">
-                                    Call us <a class="needsclick callCentreNumberClick" href="tel:${callCentreNumber}">
+                                    Call us <a href="javascript:;" data-toggle="dialog"
+                                               data-content="#view_all_hours"
+                                               data-dialog-hash-id="view_all_hours"
+                                               data-title="Call Centre Hours" data-cache="true">
                                         <span class="noWrap callCentreNumber">${callCentreNumber}</span>
-                                        <span class="noWrap callCentreAppNumber" style="display:none">${callCentreAppNumber}</span>
+                                        <span class="noWrap callCentreAppNumber">${callCentreAppNumber}</span>
                                     </a> or <health_v4:callback_link /> ${callCentreCBModal}
-                                        ${openingHoursHeader}
                                 </div>
 
                                 <div id="view_all_hours" class="hidden">${callCentreHoursModal}</div>
@@ -113,7 +117,7 @@
 
                 <%-- Slides --%>
                 <health_v4_layout:slide_about_you />
-                <health_v4_layout:slide_benefits />
+                <health_v4_layout:slide_insurance_preferences />
                 <health_v4_layout:slide_contact />
                 <health_v4_layout:slide_results />
                 <health_v4_layout:slide_application />
