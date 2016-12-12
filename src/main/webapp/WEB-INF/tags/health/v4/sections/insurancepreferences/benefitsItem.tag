@@ -120,7 +120,7 @@
 												<c:set var="benefitLabel">
 													<span class="benefitContent">
 														<div class="benefitTitle">${selectedValue.getName()}</div>
-														<span class="benefitSummary">hasf jkldfhas kljd hasklj fhasjkld  <a href="javascript:;" class="help_icon floatLeft" id="help_${selectedValue.getHelpId()}">more</a></span>
+														<span class="benefitSummary">hasf jkldfhas kljd hasklj fhasjkld  <a href="javascript:;" class="help_icon floatLeft" data-content="helpid:${selectedValue.getHelpId()}" data-toggle="popover">more</a></span>
 													</span>
 												</c:set>
 												<field_v2:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${selectedValue.getShortlistKey()}" value="Y" required="false" label="true" title="${benefitLabel}" errorMsg="Please tick" customAttribute="data-attach=true data-benefit-id='${selectedValue.getId()}'"  additionalLabelAttributes="${analyticsLabelAttr}" additionalHelpAttributes="${analyticsHelpAttr}" />

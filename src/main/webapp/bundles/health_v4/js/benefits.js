@@ -28,7 +28,9 @@
         $elements = {
             benefitsOverlow: $('.benefitsOverflow'),
             extrasOverlay: $('.extrasOverlay'),
-            hospitalOverlay: $('.hospitalOverlay')
+            hospitalOverlay: $('.hospitalOverlay'),
+            hospitalContainer: $('.Hospital_container'),
+            quickSelectContainer: $('.quickSelectContainer')
         };
 
         _eventSubscription();
@@ -50,6 +52,7 @@
             $elements.extrasOverlay.hide();
         });
 
+        // toggle the overlays
         $elements.extrasOverlay.off().on('click', function displayExtrasBenefits() {
             $elements.benefitsOverlow.animate({'left': ($elements.extrasOverlay.width() * -1)}, 500, function onExtrasAnimateComplete(){
                 _setOverlayLabelCount($elements.hospitalOverlay, meerkat.modules.benefitsModel.getHospitalCount());
@@ -64,6 +67,11 @@
                 $elements.hospitalOverlay.hide();
                 $elements.extrasOverlay.show();
             });
+        });
+
+        // toggle the quick select data in the hospital container
+        $elements.hospitalContainer.find('.nav-tabs a').on('click', function toggleQuickSelect(){
+            $elements.quickSelectContainer.toggleClass('hidden', $(this).data('target') === '.limited-pane');
         });
     }
 
