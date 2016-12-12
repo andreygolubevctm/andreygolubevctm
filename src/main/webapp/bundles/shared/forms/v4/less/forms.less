@@ -101,7 +101,7 @@ fieldset {
   position: relative;
   //Round and background the parent of this fake input-group use for selects.
   background-color: @input-bg;
-  border-radius: 0;
+  border-radius: @input-border-radius;
 
   select, input[type="date"] {
     z-index: 1; //ie doesn't put the select above the input-group-addon span
@@ -132,7 +132,7 @@ fieldset {
     top: 0;
     padding: 12px 25px 8px 11px;
     line-height: 19px;
-    border-radius: 0;
+    border-radius: 0 @border-radius-base @border-radius-base 0;
   }
 
   select.form-control {
@@ -215,10 +215,6 @@ fieldset {
   .tt-query {
     padding: 10px 8px;
   }
-}
-
-.form-control {
-  border-radius: 0;
 }
 
 @media (@xs-only) {
