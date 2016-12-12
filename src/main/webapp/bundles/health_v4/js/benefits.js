@@ -10,20 +10,19 @@
         $elements = {};
 
     function initBenefits() {
-        $(document).ready(function() {
 
-            // Only init if HEALTH... obviously...
-            if (meerkat.site.vertical !== "health")
-                return false;
+        // Only init if HEALTH... obviously...
+        if (meerkat.site.vertical !== "health")
+            return false;
 
-            $('#tabs').on('click', '.nav-tabs a', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
+        $('#tabs').on('click', '.nav-tabs a', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
 
-                $(this).tab('show');
-            });
-            $('.nav-tabs a:first').click();
+            $(this).tab('show');
         });
+
+        $('.nav-tabs a:first').click();
 
 
         $elements = {
@@ -69,24 +68,14 @@
     }
 
     function _registerBenefitsCounter() {
-        $('.GeneralHealth_container, .Hospital_container').on('click', 'label:not(.help_icon)', function(){
-            var $this = $(this);
-            meerkat.modules.benefitsModel.setIsHospital($this.closest('.Hospital_container').length === 1);
-
-            if ($this.prev('input').is(':checked') === false) {
-                meerkat.modules.benefitsModel.addBenefit($this.prev('input').attr('id'));
-            } else {
-                meerkat.modules.benefitsModel.removeBenefit($this.prev('input').attr('id'));
-            }
+        $('.GeneralHealth_container, .Hospital_container').on('click', 'label:not(a)', function(){
+            meerkat.modules.benefitsModel.setIsHospital($(this).closest('.Hospital_container').length === 1);
+            meerkat.modules.benefitsModel.updateBenefits();
         });
     }
 
     function _setOverlayLabelCount($overlay, count) {
         $overlay.find('span').text(count);
-    }
-
-    function setDefaults(list) {
-
     }
 
     meerkat.modules.register("benefitsTab", {

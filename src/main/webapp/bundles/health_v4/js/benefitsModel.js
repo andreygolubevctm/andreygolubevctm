@@ -25,13 +25,13 @@
             hospital: [],
             extras: []
         },
+        $benefitContainers = { };
+
+    function init() {
         $benefitContainers = {
             hospital: $('.Hospital_container'),
             extras: $('.GeneralHealth_container')
         };
-
-    function init() {
-
     }
 
     function getDefaultSelections(selectType){
@@ -46,20 +46,6 @@
         return selectedElements.hospital.length;
     }
 
-    function _getBenefitValue(id) {
-        var parts = id.split('_');
-        return parts[parts.length-1];
-    }
-
-    function addBenefit(val) {
-        selectedElements[getBenefitType()].push(_getBenefitValue(val));
-    }
-
-    function removeBenefit(val) {
-        var index = selectedElements[getBenefitType()].indexOf(_getBenefitValue(val));
-        selectedElements[getBenefitType()].splice(index, 1);
-    }
-
     function setIsHospital(isHospital) {
         _isHospital = isHospital;
     }
@@ -68,29 +54,28 @@
         return _isHospital ? 'hospital' : 'extras';
     }
 
-    function updateBenefits() {
-        var benefitCounter = selectedElements[getBenefitType()];
-
-          // iterate over the dom to get the latest selected benefits
-        _.each($benefitContainers[getBenefitType()].find('input'), function updateBenefitModel(){
-            benefitCounter.push($(this).data('benefit-id'));
-        });
-    }
-
     function clearModel() {
         selectedElements[getBenefitType()] = [];
+    }
+
+    function updateBenefits() {
+        var tempBenefitsCounter = [];
+
+        _.each($benefitContainers[getBenefitType()].find('input').filter(':checked'), function updateBenefitCount(checkbox) {
+            tempBenefitsCounter.push($(checkbox).data('benefit-id'));
+        })
+
+        selectedElements[getBenefitType()] = tempBenefitsCounter;
     }
 
     meerkat.modules.register("benefitsModel", {
         init : init,
         getExtrasCount: getExtrasCount,
         getHospitalCount: getHospitalCount,
-        addBenefit: addBenefit,
-        removeBenefit: removeBenefit,
+        updateBenefits: updateBenefits,
         getDefaultSelections: getDefaultSelections,
         getBenefitType: getBenefitType,
         setIsHospital: setIsHospital,
-        updateBenefits: updateBenefits,
         clearModel: clearModel
     });
 
