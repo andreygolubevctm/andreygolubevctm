@@ -39,7 +39,7 @@
 	<c:if test="${coverType == 'Hospital'}">
 	<form_v2:fieldset legend="" postLegend="" className="tieredHospitalCover hidden-sm hidden-md hidden-lg" >
 		<div class="title">
-			<h2 class="ignore">Choose Your Hospital Cover</h2>
+			<h3 class="ignore">Choose Your Hospital Cover</h3>
 			<p>${colContent}</p>
 		</div>
 		<div class="Hospital-wrapper">
@@ -70,7 +70,7 @@
 					<div class="${colWidthValue} short-list-item ${item.getClassString()} ${item.getShortlistKey()}_container">
 						<c:set var="category">${item.getShortlistKey()}</c:set>
 						<div class="title <c:if test="${category eq 'Hospital'}">hidden-xs</c:if>">
-							<h2 class="ignore">Choose Your ${item.getName()}</h2>
+							<h3 class="ignore">Choose Your ${item.getName()}</h3>
 							<p class="hidden-xs">${colContent}</p>
 							<c:if test="${item.getName() eq 'Extras Cover'}">
 								<p><strong>Select the benefits below to add extras specific to your needs</strong></p>

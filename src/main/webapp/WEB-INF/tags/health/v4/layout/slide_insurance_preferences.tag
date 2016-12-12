@@ -15,7 +15,7 @@
 
                 <simples:dialogue id="49" vertical="health" />
 
-                <form_v2:fieldset legend="We have a few additional questions about you and your partner" postLegend="">
+                <form_v4:fieldset legend="We have a few additional questions about you and your partner" postLegend="">
                     <!-- TODO: update the fields with the newer fields -->
                     <c:set var="xpath" value="${pageSettings.getVerticalCode()}/healthCover" />
                     <health_v4_insuranceprefs:continuous_cover xpath="${xpath}" />
@@ -29,7 +29,7 @@
                     <c:set var="xpath" value="${pageSettings.getVerticalCode()}/benefits" />
                     <health_v4_insuranceprefs:benefits xpath="${xpath}" />
 
-                </form_v2:fieldset>
+                </form_v4:fieldset>
 
             </jsp:body>
         </form_v3:fieldset_columns>

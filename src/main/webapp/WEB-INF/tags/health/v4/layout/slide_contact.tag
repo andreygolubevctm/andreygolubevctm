@@ -20,7 +20,7 @@
                     <c:set var="subText" value="Enter your details below and we'll show you products that match your needs on the next page" />
                 </c:if>
 
-                <form_v3:fieldset id="health-contact-fieldset" legend="Your details" postLegend="${subText}" >
+                <form_v4:fieldset id="health-contact-fieldset" legend="Your details" postLegend="${subText}" >
 
                     <c:set var="firstNamePlaceHolder">
                         <content:get key="firstNamePlaceHolder"/>
@@ -40,7 +40,7 @@
 
                     <health_v4_contact:simples_referral_tracking />
                     <health_v4_contact:javascript xpath="${xpath}" />
-                </form_v3:fieldset>
+                </form_v4:fieldset>
 
             </jsp:body>
 
