@@ -26,10 +26,10 @@ var healthFunds_GMH = {
     set: function() {
 
         <%--Authority--%>
-        healthFunds._previousfund_authority(true);
+        meerkat.modules.healthFunds._previousfund_authority(true);
 
         <%--dependant definition--%>
-        healthFunds._dependants('This policy provides cover for children until their 21st birthday. Student dependants aged between 21-24 years who are engaged in full time study, apprenticeships or traineeships can also be added to this policy. Adult dependants outside these criteria can still be covered by applying for a separate singles policy.');
+        meerkat.modules.healthFunds._dependants('This policy provides cover for children until their 21st birthday. Student dependants aged between 21-24 years who are engaged in full time study, apprenticeships or traineeships can also be added to this policy. Adult dependants outside these criteria can still be covered by applying for a separate singles policy.');
 
         <%--schoolgroups and defacto
         TODO: TEST THIS --%>
@@ -114,13 +114,13 @@ var healthFunds_GMH = {
 
         healthFunds_GMH.$paymentTypeContainer.text('').slideUp();
 
-        healthFunds._reset();
+        meerkat.modules.healthFunds._reset();
 
         <%--Authority off--%>
-        healthFunds._previousfund_authority(false);
+        meerkat.modules.healthFunds._previousfund_authority(false);
 
         <%--dependant definition off--%>
-        healthFunds._dependants(false);
+        meerkat.modules.healthFunds._dependants(false);
 
         <%--credit card options--%>
         meerkat.modules.healthCreditCard.resetConfig();

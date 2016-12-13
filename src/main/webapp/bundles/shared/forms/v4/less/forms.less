@@ -39,7 +39,7 @@ fieldset {
     font-size: @font-size-large;
   }
   .control-sub-label {
-    color: @gray-slight-dark;
+    color: @gray;
     font-style: italic;
     font-size: 12px;
     padding-bottom: 5px;
@@ -47,6 +47,17 @@ fieldset {
       text-align: right;
     }
   }
+}
+
+.fieldrow,
+.fieldrow:last-child{
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #F0F0F0;
+}
+
+.fieldrow:last-child {
+  border-bottom: 2px solid #DDD;
 }
 
 @media (@xs-only) {
@@ -101,7 +112,7 @@ fieldset {
   position: relative;
   //Round and background the parent of this fake input-group use for selects.
   background-color: @input-bg;
-  border-radius: 0;
+  border-radius: @input-border-radius;
 
   select, input[type="date"] {
     z-index: 1; //ie doesn't put the select above the input-group-addon span
@@ -132,7 +143,7 @@ fieldset {
     top: 0;
     padding: 12px 25px 8px 11px;
     line-height: 19px;
-    border-radius: 0;
+    border-radius: 0 @border-radius-base @border-radius-base 0;
   }
 
   select.form-control {
@@ -215,10 +226,6 @@ fieldset {
   .tt-query {
     padding: 10px 8px;
   }
-}
-
-.form-control {
-  border-radius: 0;
 }
 
 @media (@xs-only) {

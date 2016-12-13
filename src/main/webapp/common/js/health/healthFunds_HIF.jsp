@@ -64,7 +64,7 @@
             if (!$('body').hasClass('injectingFund')) {
 
 			<%-- Dependant definition --%>
-			healthFunds._dependants('This policy provides cover for children until their 21st birthday. Student dependants aged between 21-24 years who are engaged in full time study, apprenticeships or traineeships can also be added to this policy. Adult dependants outside these criteria can still be covered by applying for a separate singles policy.');
+                meerkat.modules.healthFunds._dependants('This policy provides cover for children until their 21st birthday. Student dependants aged between 21-24 years who are engaged in full time study, apprenticeships or traineeships can also be added to this policy. Adult dependants outside these criteria can still be covered by applying for a separate singles policy.');
 			meerkat.modules.healthDependants.updateConfig({ showFullTimeField:true, showSchoolFields:true, 'schoolMinAge':21, 'schoolMaxAge':24, showSchoolIdField:false });
 			healthFunds_HIF.tmpSchoolLabel = $('.health_dependant_details_schoolGroup .control-label').html();
 			$('.health_dependant_details_schoolGroup .control-label').html('Educational Institutional');
@@ -85,10 +85,10 @@
               <%-- Previous funds --%>
               $('#health_previousfund_primary_memberID').attr('maxlength', '10');
               $('#health_previousfund_partner_memberID').attr('maxlength', '10');
-              healthFunds._previousfund_authority(true);
+                meerkat.modules.healthFunds._previousfund_authority(true);
 
               <%-- Partner authority --%>
-              healthFunds._partner_authority(true);
+                meerkat.modules.healthFunds._partner_authority(true);
 
               <%-- Calendar for start cover --%>
               meerkat.modules.healthPaymentStep.setCoverStartRange(0, 29);
@@ -129,7 +129,7 @@
           },
 		  renderPaymentDays: function() {
 			  var freq = meerkat.modules.healthPaymentStep.getSelectedFrequency();
-                healthFunds._payments = { 'min':3, 'max':17, 'weekends':true };
+                meerkat.modules.healthFunds.setPayments({ 'min':3, 'max':17, 'weekends':true });
 				healthFunds_HIF.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
 
                 var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
@@ -142,7 +142,7 @@
             <%-- Run these if not loading a quote --%>
             if (!$('body').hasClass('injectingFund')) {
               <%-- Dependants --%>
-              healthFunds._dependants(false);
+                meerkat.modules.healthFunds._dependants(false);
               $('.health_dependant_details_schoolGroup .control-label').html(healthFunds_HIF.tmpSchoolLabel);
               delete healthFunds_HIF.tmpSchoolLabel;
               $('.health_dependant_details_schoolGroup .help-icon').show();
@@ -158,9 +158,9 @@
               healthApplicationDetails.hideHowToSendInfo();
 
               <%-- Authority off --%>
-              healthFunds._previousfund_authority(false);
+                meerkat.modules.healthFunds._previousfund_authority(false);
 
-              healthFunds._reset();
+                meerkat.modules.healthFunds._reset();
 
               <%-- Remove message --%>
               $('#health_payment_details-selection p.HIF').remove();

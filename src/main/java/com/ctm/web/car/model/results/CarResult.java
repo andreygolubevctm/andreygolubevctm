@@ -55,6 +55,8 @@ public class CarResult extends Result {
 
     private String vdn;
 
+    private String followupIntended;
+
     private String leadfeedinfo;
 
     public CarResult() {
@@ -234,6 +236,14 @@ public class CarResult extends Result {
 
     public void setVdn(String vdn) {
         this.vdn = vdn;
+    }
+
+    public String getFollowupIntended() {
+        return followupIntended;
+    }
+
+    public void setFollowupIntended(final String followupIntended) {
+        this.followupIntended = followupIntended;
     }
 
     public String getLeadfeedinfo() {

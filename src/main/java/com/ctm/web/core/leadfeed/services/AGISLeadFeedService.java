@@ -120,8 +120,14 @@ public abstract class AGISLeadFeedService extends WebServiceGatewaySupport imple
 
 		model.setServiceUrl(serviceUrl);
 
-		if (leadData.getMoreInfoProductCode() != null && messageSources.length > 1){
-			model.setMessageSource(messageSources[messageSources.length - 1]);
+		if (messageSources.length > 1) {
+			if (leadData.isPartnerReferenceChange()) {
+				model.setMessageSource(findMessageSource(messageSources, "partnerReferenceChange"));
+			} else if (leadData.getMoreInfoProductCode() != null){
+				model.setMessageSource(findMessageSource(messageSources, "moreInfoProduct"));
+			} else {
+				model.setMessageSource(messageSources[0]);
+			}
 		} else {
 			model.setMessageSource(messageSources[0]);
 		}
@@ -131,6 +137,16 @@ public abstract class AGISLeadFeedService extends WebServiceGatewaySupport imple
 		model.setPartnerId(partnerId);
 
 		return model;
+	}
+
+	private String findMessageSource(String[] messageSources, String key) throws LeadFeedException {
+		for (String messageSource : messageSources) {
+			final String[] keyMessageSourceValue = StringUtils.split(messageSource, "=");
+			if (StringUtils.equals(keyMessageSourceValue[0], key)) {
+				return keyMessageSourceValue[1];
+			}
+		}
+		throw new LeadFeedException("MessageSource not found for key " + key);
 	}
 
 	/**

@@ -212,8 +212,9 @@ public class ResponseAdapterV2 {
             if (StringUtils.isNotBlank(specialOffer.getTerms())) {
                 sb.append("<p>").append("<a class=\"dialogPop\" data-content=\"")
                         .append(StringEscapeUtils.escapeHtml4(specialOffer.getTerms()))
-                        .append("\" title=\"Conditions\">")
-                        .append("^ Conditions")
+                        .append("\" title=\"Find out more\"")
+                        .append(" data-class=\"results-promo-modal\">")
+                        .append("^ Find out more")
                         .append("</a>")
                         .append("</p>");
             }

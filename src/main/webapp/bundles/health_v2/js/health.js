@@ -142,9 +142,9 @@
 				meerkat.modules.jqueryValidate.initJourneyValidator();
 
 				if(meerkat.site.choices) {
-					healthChoices.initialise(meerkat.site.choices.cover, meerkat.site.choices.situation, meerkat.site.choices.benefits);
-					healthChoices._state = meerkat.site.choices.state;
-					healthChoices._performUpdate = meerkat.site.choices.performHealthChoicesUpdate;
+					meerkat.modules.healthChoices.initialise(meerkat.site.choices.cover, meerkat.site.choices.situation, meerkat.site.choices.benefits);
+					meerkat.modules.healthChoices.setState(meerkat.site.choices.state);
+					meerkat.modules.healthChoices.shouldPerformUpdate(meerkat.site.choices.performHealthChoicesUpdate);
 				}
 
 				var $healthSitLocation = $('#health_situation_location'),
@@ -155,7 +155,7 @@
 
 				// Add event listeners.
 				$healthSitHealthCvr.on('change',function() {
-					healthChoices.setCover($(this).val());
+					meerkat.modules.healthChoices.setCover($(this).val());
 					meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
 				});
 
@@ -172,12 +172,12 @@
 				});
 
 				$healthSitLocation.on('blur',function() {
-					healthChoices.setLocation($(this).val());
+					meerkat.modules.healthChoices.setLocation($(this).val());
 				});
 
 				// For loading in.
 				if($healthSitLocation.val() !== '') {
-					healthChoices.setLocation($healthSitLocation.val());
+					meerkat.modules.healthChoices.setLocation($healthSitLocation.val());
 				}
 
 				// change benefits page layout when change the coverType
@@ -293,8 +293,12 @@
 				//	meerkat.modules.healthSegment.filterSegments();
 				//}, 1000);
 
-				if(event.isForward)
-					$('input[name="health_situation_accidentOnlyCover"]').prop('checked', ($("input[name=health_situation_healthSitu]").filter(":checked").val() === 'ATP'));
+				if(event.isForward) {
+					if(!meerkat.site.isCallCentreUser) {
+						$('input[name="health_situation_accidentOnlyCover"]').prop('checked', ($("input[name=health_situation_healthSitu]").filter(":checked").val() === 'ATP'));
+						// For CC we simply ignore and accept the current value as true and correct
+					}
+				}
 			},
 			onAfterLeave:function(event){
 				var selectedBenefits = meerkat.modules.healthBenefitsStep.getSelectedBenefits();
@@ -472,7 +476,7 @@
 					this.tracking.productId = selectedProduct.productId.replace("PHIO-HEALTH-", "");
 
 					// Load the selected product details.
-					healthFunds.load(selectedProduct.info.provider);
+                    meerkat.modules.healthFunds.load(selectedProduct.info.provider);
 
 					// Clear any previous validation errors on Apply or Payment
 					var $slide = $('#journeyEngineSlidesContainer .journeyEngineSlide').slice(meerkat.modules.journeyEngine.getCurrentStepIndex() - 1);
@@ -930,7 +934,7 @@
 		$('#health_situation_suburb').val(suburb);
 		$('#health_situation_postcode').val(postcode);
 		$('#health_situation_state').val(state);
-		healthChoices.setState(state);
+		meerkat.modules.healthChoices.setState(state);
 
 		window.location = this.href;
 
@@ -1252,8 +1256,8 @@
 			});
 
 			//call the custom fail handler for each fund
-			if (healthFunds.applicationFailed) {
-				healthFunds.applicationFailed();
+			if (meerkat.modules.healthFunds.applicationFailed) {
+                meerkat.modules.healthFunds.applicationFailed();
 			}
 		}
 
@@ -1388,8 +1392,8 @@
 			if (_.indexOf(['amend','latest','load','start-again'],meerkat.site.pageAction) >= 0) {
 
 				// If retrieving a quote and a product had been selected, inject the fund's application set.
-				if (typeof healthFunds !== 'undefined' && healthFunds.checkIfNeedToInjectOnAmend) {
-					healthFunds.checkIfNeedToInjectOnAmend(function onLoadedAmeded(){
+				if (meerkat.modules.healthFunds.checkIfNeedToInjectOnAmend) {
+                    meerkat.modules.healthFunds.checkIfNeedToInjectOnAmend(function onLoadedAmeded(){
 						// Need to mark any populated field with a data attribute so it is picked up with by the journeyEngine.getFormData()
 						// This is because values from forward steps will not be selected and will be lost when the quote is re-saved.
 						meerkat.modules.form.markInitialFieldsWithValue($("#mainform"));

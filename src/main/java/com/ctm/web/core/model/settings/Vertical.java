@@ -54,6 +54,7 @@ public class Vertical {
 	public static final int GENERIC_ID = 0;
 	private int id;
 	private String name;
+	private int seq;
 	private VerticalType type;
 	private ArrayList<ConfigSetting> configSettings;
 
@@ -64,7 +65,6 @@ public class Vertical {
 	public void setType(VerticalType type) {
 		this.type = type;
 	}
-
 
 	public Vertical(){
 		configSettings = new ArrayList<ConfigSetting>();
@@ -162,6 +162,13 @@ public class Vertical {
 		this.name = name;
 	}
 
+	public int getSequence() {
+		return seq;
+	}
+
+	public void setSequence(int seq) {
+		this.seq = seq;
+	}
 
 	public String getCode() {
 		return getType().getCode();
@@ -173,6 +180,7 @@ public class Vertical {
 		cloned.setType(getType());
 		cloned.setId(getId());
 		cloned.setName(getName());
+		cloned.setSequence(getSequence());
 		return cloned;
 	}
 
