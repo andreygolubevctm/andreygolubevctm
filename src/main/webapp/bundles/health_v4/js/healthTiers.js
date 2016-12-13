@@ -72,7 +72,7 @@ Handling of the rebate tiers based off situation
 			var _text = '';
 
 			// Calculate the Age Bonus
-			if( meerkat.modules.healthRebate.getRates() === null){
+			if( meerkat.modules.healthRates.getRates() === null){
 				_ageBonus = 0;
 			} else {
 				_ageBonus = parseInt(meerkat.modules.healthRebate.getRates().ageBonus);
