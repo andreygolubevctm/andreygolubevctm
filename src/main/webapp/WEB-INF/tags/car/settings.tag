@@ -84,5 +84,6 @@
 		displayMode: "<c:out value="${priceDisplayMode}" />"
 	},
 	commencementDate : '${data.quote.options.commencementDate}',
-	skipNewCoverTypeCarJourney: ${skipNewCoverTypeCarJourney}
+	skipNewCoverTypeCarJourney: ${skipNewCoverTypeCarJourney},
+	ctpMessage: "<content:get key="ctpMessageCopy"/>"
 }
