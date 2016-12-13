@@ -115,16 +115,26 @@
 		}
 
 		// Derive element name and if exists then assign value or create a new one
-		var elementName = LifeQuote._vertical + '_gaclientid';
-		if($('#' + elementName).length) {
-			$('#' + elementName).val(gaClientId);
-		} else {
-			$('#mainform').prepend($('<input/>', {
-				type: 'hidden',
-				id: elementName,
-				name: elementName,
-				value: gaClientId
-			}));
+		if(!_.isEmpty(gaClientId)) {
+			var customGAClientId = gaClientId;
+			var temp = gaClientId.split('.');
+			if(temp.length >= 2) {
+				var partB = temp.pop();
+				var partA = temp.pop();
+				customGAClientId = partA + '.' + partB;
+			}
+
+			var elementName = LifeQuote._vertical + '_gaclientid';
+			if($('#' + elementName).length) {
+				$('#' + elementName).val(customGAClientId);
+			} else {
+				$('#mainform').prepend($('<input/>', {
+					type: 'hidden',
+					id: elementName,
+					name: elementName,
+					value: customGAClientId
+				}));
+			}
 		}
 	})();
 

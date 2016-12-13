@@ -21,15 +21,17 @@
                 </ui:bubble>
                 <car:rego_with_details/>
 
-        <form_v2:fieldset legend="Accessories and Modifications" id="${name}AccessoriesFieldSet">
+                <car:options_type_of_cover xpath="${xpath}/optionsTypeOfCover"/>
 
-                <car:options_factory xpath="${xpath}/vehicle/factoryOptions"/>
+                <form_v2:fieldset legend="Accessories and Modifications" id="${name}AccessoriesFieldSet">
 
-                <car:options_accessories xpath="${xpath}/vehicle/accessories"/>
+                        <car:options_factory xpath="${xpath}/vehicle/factoryOptions"/>
 
-                <car:options_modifications xpath="${xpath}/vehicle/modifications"/>
+                        <car:options_accessories xpath="${xpath}/vehicle/accessories"/>
 
-        </form_v2:fieldset>
+                        <car:options_modifications xpath="${xpath}/vehicle/modifications"/>
+
+                </form_v2:fieldset>
 
                 <car:options_usage xpath="${xpath}/vehicle"/>
 
