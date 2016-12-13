@@ -6,8 +6,6 @@
 
 
     var meerkat =window.meerkat,
-        meerkatEvents = meerkat.modules.events,
-        log = meerkat.logging.info,
         _isHospital = false,
         defaultSelections = {
             // Private Hospital, Birth Related Services, Assisted Reproduction, In-Hospital Rehabilitation
@@ -24,14 +22,10 @@
         selectedElements = {
             hospital: [],
             extras: []
-        },
-        $benefitContainers = { };
-
-    function init() {
-        $benefitContainers = {
-            hospital: $('.Hospital_container'),
-            extras: $('.GeneralHealth_container')
         };
+
+    function getBenefitType() {
+        return _isHospital ? 'hospital' : 'extras';
     }
 
     function getDefaultSelections(selectType){
@@ -46,37 +40,21 @@
         return selectedElements.hospital.length;
     }
 
+    function setBenefits(tempBenefitsCounter) {
+        selectedElements[getBenefitType()] = tempBenefitsCounter;
+    }
+
     function setIsHospital(isHospital) {
         _isHospital = isHospital;
     }
 
-    function getBenefitType() {
-        return _isHospital ? 'hospital' : 'extras';
-    }
-
-    function clearModel() {
-        selectedElements[getBenefitType()] = [];
-    }
-
-    function updateBenefits() {
-        var tempBenefitsCounter = [];
-
-        _.each($benefitContainers[getBenefitType()].find('input').filter(':checked'), function updateBenefitCount(checkbox) {
-            tempBenefitsCounter.push($(checkbox).data('benefit-id'));
-        });
-
-        selectedElements[getBenefitType()] = tempBenefitsCounter;
-    }
-
     meerkat.modules.register("benefitsModel", {
-        init : init,
+        getBenefitType: getBenefitType,
+        getDefaultSelections: getDefaultSelections,
         getExtrasCount: getExtrasCount,
         getHospitalCount: getHospitalCount,
-        updateBenefits: updateBenefits,
-        getDefaultSelections: getDefaultSelections,
-        getBenefitType: getBenefitType,
-        setIsHospital: setIsHospital,
-        clearModel: clearModel
+        setBenefits: setBenefits,
+        setIsHospital: setIsHospital
     });
 
 })(jQuery);

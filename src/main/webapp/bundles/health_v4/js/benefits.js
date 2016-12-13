@@ -7,14 +7,15 @@
     var meerkat =window.meerkat,
         meerkatEvents = meerkat.modules.events,
         log = meerkat.logging.info,
-        $elements = {};
+        $elements = {},
+        moduleEvents = {
+            quickSelect: {
+                CLEAR_BENEFITS: 'CLEAR_BENEFITS',
+                PRESELECT_BENEFITS: 'PRESELECT_BENEFITS'
+            }
+        };
 
     function initBenefits() {
-
-        // Only init if HEALTH... obviously...
-        if (meerkat.site.vertical !== "health")
-            return false;
-
         $('#tabs').on('click', '.nav-tabs a', function(e) {
             e.preventDefault();
             e.stopPropagation();
@@ -24,12 +25,12 @@
 
         $('.nav-tabs a:first').click();
 
-
         $elements = {
             benefitsOverlow: $('.benefitsOverflow'),
             extrasOverlay: $('.extrasOverlay'),
             hospitalOverlay: $('.hospitalOverlay'),
-            hospitalContainer: $('.Hospital_container'),
+            hospital: $('.Hospital_container'),
+            extras: $('.GeneralHealth_container'),
             quickSelectContainer: $('.quickSelectContainer')
         };
 
@@ -70,15 +71,48 @@
         });
 
         // toggle the quick select data in the hospital container
-        $elements.hospitalContainer.find('.nav-tabs a').on('click', function toggleQuickSelect(){
+        $elements.hospital.find('.nav-tabs a').on('click', function toggleQuickSelect(){
             $elements.quickSelectContainer.toggleClass('hidden', $(this).data('target') === '.limited-pane');
         });
+
+        // clear benefits
+        meerkat.messaging.subscribe(moduleEvents.CLEAR_BENEFITS, _coverChangePartner);
+
+        // preselect benefits
+        meerkat.messaging.subscribe(moduleEvents.PRESELECT_BENEFITS, _preselectBenefits);
+    }
+
+    function _preselectBenefits(settings) {
+        // set the flag if we're updating the hospital or extras benefits
+        meerkat.modules.benefitsModel.setIsHospital(settings.isHospital);
+
+        var defaultSelections = meerkat.modules.benefitsModel.getDefaultSelections(settings.selectType),
+            benefitType = meerkat.modules.benefitsModel.getBenefitType();
+
+        // update the dom with the selected benefits
+        _.each(defaultSelections, function addDefaultBenefits(id) {
+            $elements[benefitType].find('[data-benefit-id='+id+']').prop('checked', 'checked');
+        });
+
+        // update the model with all the selected benefits
+        _updateBenefits();
+
+    }
+
+    function _coverChangePartner(isHospital) {
+        // deselect the benefits
+        var $container = isHospital ? $elements.hospital : $elements.extras;
+        $container.find('input:checkbox').removeAttr('checked');
+
+        // update the model
+        meerkat.modules.benefitsModel.setIsHospital(isHospital);
+        _updateBenefits();
     }
 
     function _registerBenefitsCounter() {
         $('.GeneralHealth_container, .Hospital_container').on('change', 'input', function(){
             meerkat.modules.benefitsModel.setIsHospital($(this).closest('.Hospital_container').length === 1);
-            meerkat.modules.benefitsModel.updateBenefits();
+            _updateBenefits();
         });
     }
 
@@ -89,16 +123,26 @@
     function setDefaultTabs() {
 
         // set extras
-        meerkat.modules.benefitsModel.updateBenefits();
+        _updateBenefits();
 
         // set hospital
         meerkat.modules.benefitsModel.setIsHospital(true);
-        meerkat.modules.benefitsModel.updateBenefits();
+        _updateBenefits();
 
         if (meerkat.modules.deviceMediaState.get() == 'xs') {
             // update label
             _setOverlayLabelCount($elements.extrasOverlay, meerkat.modules.benefitsModel.getExtrasCount());
         }
+    }
+
+    function _updateBenefits(){
+        var tempBenefitsCounter = [];
+
+        _.each($elements[meerkat.modules.benefitsModel.getBenefitType()].find('input').filter(':checked'), function updateBenefitCount(checkbox) {
+            tempBenefitsCounter.push($(checkbox).data('benefit-id'));
+        });
+
+        meerkat.modules.benefitsModel.setBenefits(tempBenefitsCounter);
     }
 
     meerkat.modules.register("benefits", {

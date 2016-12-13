@@ -18,4 +18,5 @@
 			<div class="col-xs-${colWidth}"><a href="javascript:;" data-select-type="${parts[1]}">${parts[0]}</a></div>
 		</c:forTokens>
 	</div>
+	<div class="col-xs-12 clearSelection"><a href="javascript:;">Clear selection<a/></div>
 </div>
