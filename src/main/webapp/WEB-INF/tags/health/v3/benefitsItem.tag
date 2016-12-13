@@ -3,6 +3,23 @@
 
 <%@ attribute name="item" required="true" type="com.ctm.web.core.results.model.ResultsTemplateItem" %>
 <c:set var="logger" value="${log:getLogger('jsp.ajax.json.benefits')}" />
+<c:set var="altJourneyCustomiseBtn">
+	<div class="row altBenefitsJourney customise">
+		<div class="hidden-xs col-sm-2 col-lg-3"></div>
+		<div class="col-xs-12 col-sm-8 col-lg-6 no-column-medling"><a href="javascript:;" class="btn btn-form-inverse benefit-category" data-category="limited">Switch to Limited Hospital Cover</a></div>
+		<div class="hidden-xs col-sm-2 col-lg-3"></div>
+	</div>
+</c:set>
+<c:set var="altJourneyLimitedBtn">
+	<div class="altBenefitsJourney limited">
+		<h5>Happy to pay more for better Private Hospital Comprehensive benefits?</h5>
+		<div class="row">
+			<div class="hidden-xs col-sm-2 col-lg-3"></div>
+			<div class="col-xs-12 col-sm-8 col-lg-6 no-column-medling"><a href="javascript:;" class="btn btn-form-inverse benefit-category" data-category="customise">Select Benefits for a Comprehensive Hospital Cover</a></div>
+			<div class="hidden-xs col-sm-2 col-lg-3"></div>
+		</div>
+	</div>
+</c:set>
 
 <c:if test="${item.isShortlistable()}">
 
@@ -36,6 +53,7 @@
 	<form_v2:fieldset legend="" postLegend="" className="tieredHospitalCover hidden-sm hidden-md hidden-lg" >
 		<div class="title">
 			<h2 class="ignore">Choose Your Hospital Cover</h2>
+			<div class="hospitalCoverToggles visible-xs">${altJourneyCustomiseBtn}</div>
 			<p>${colContent}</p>
 		</div>
 		<div class="Hospital-wrapper">
@@ -51,6 +69,7 @@
 						<a href="javascript:;" class="btn btn-form-inverse benefit-category" data-category="customise">Customise your cover</a>
 						<a href="javascript:;" class="benefit-category limited" data-category="limited">No thanks, I only want limited hospital cover</a>
 					</div>
+					${altJourneyLimitedBtn}
 				</div>
 			</div>
 		</div>
@@ -67,6 +86,9 @@
 						<c:set var="category">${item.getShortlistKey()}</c:set>
 						<div class="title <c:if test="${category eq 'Hospital'}">hidden-xs</c:if>">
 							<h2 class="ignore">Choose Your ${item.getName()}</h2>
+							<c:if test="${category eq 'Hospital'}">
+								<div class="hospitalCoverToggles hidden-xs">${altJourneyCustomiseBtn}</div>
+							</c:if>
 							<p class="hidden-xs">${colContent}</p>
 							<c:if test="${item.getName() eq 'Extras Cover'}">
 								<p><strong>Select the benefits below to add extras specific to your needs</strong></p>
@@ -88,6 +110,7 @@
 	                                    </c:if>
 	                                    <a href="javascript:;" class="btn btn-save benefit-category col-sm-2" data-category="customise" <field_v1:analytics_attr analVal="custom cover" quoteChar="\"" />>customise</a>
 	                                    <a href="javascript:;" class="btn btn-save benefit-category col-sm-2" data-category="limited" <field_v1:analytics_attr analVal="benefit category" quoteChar="\"" />>limited</a>
+										${altJourneyLimitedBtn}
 	                                </div>
 
 
