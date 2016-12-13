@@ -5,6 +5,11 @@
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath" required="true" rtexprvalue="true" description="field group's xpath"%>
 
+<%-- PREPOP --%>
+<c:if test="${isNewQuote eq false and empty data[xpath]}">
+	<go:setData dataVar="data" xpath="${xpath}" value="COMPREHENSIVE" />
+</c:if>
+
 <%-- VARIABLES --%>
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
 <c:set var="typeOfCoverOptions">
@@ -19,7 +24,6 @@
 </c:set>
 
 <%-- HTML --%>
-
 <form_v2:row label="What level of car insurance cover are you looking for?" id="${name}FieldRow" helpId="565">
     <field_v2:array_select xpath="${xpath}"
                            items="${typeOfCoverOptions}"
