@@ -21,7 +21,7 @@ var healthFunds_WFD = {
         meerkat.modules.healthPaymentStep.setCoverStartRange(0, 30);
 
         <%--dependant definition--%>
-        healthFunds._dependants('As a member of Westfund all children aged up to 21 are covered on a family policy. Children aged between 21-24 are entitled to stay on your cover at no extra charge if they are a full time or part-time student at School, college or University TAFE institution or serving an Apprenticeship or Traineeship.');
+        meerkat.modules.healthFunds._dependants('As a member of Westfund all children aged up to 21 are covered on a family policy. Children aged between 21-24 are entitled to stay on your cover at no extra charge if they are a full time or part-time student at School, college or University TAFE institution or serving an Apprenticeship or Traineeship.');
 
         <%--schoolgroups and defacto--%>
         meerkat.modules.healthDependants.updateConfig({showSchoolFields:true, 'schoolMinAge':18, 'schoolMaxAge':24, showSchoolIdField:true });
@@ -37,7 +37,7 @@ var healthFunds_WFD = {
         $('#clientMemberID input[type=text], #partnerMemberID input[type=text]').setRequired(false);
 
         <%--Authority--%>
-        healthFunds._previousfund_authority(true);
+        meerkat.modules.healthFunds._previousfund_authority(true);
 
         <%--credit card & bank account frequency & day frequency--%>
         meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':false, 'fortnightly': false, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true });
@@ -134,10 +134,10 @@ var healthFunds_WFD = {
         meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), false);
         meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), false);
 
-        healthFunds._reset();
+        meerkat.modules.healthFunds._reset();
 
         <%--dependant definition off--%>
-        healthFunds._dependants(false);
+        meerkat.modules.healthFunds._dependants(false);
 
         <%--reset the join dec to original general label and abort AJAX request--%>
         if (healthFunds_WFD.ajaxJoinDec) {
@@ -152,7 +152,7 @@ var healthFunds_WFD = {
         $('#health_previousfund_partner_fundName').attr('required', 'required');
 
         <%--Authority Off--%>
-        healthFunds._previousfund_authority(false);
+        meerkat.modules.healthFunds._previousfund_authority(false);
 
         <%--Age requirements for applicants (back to default)--%>
         healthFunds_WFD.$_dobPrimary.addRule('youngestDOB', dob_health_application_primary_dob.ageMin, "primary person's age cannot be under " + dob_health_application_primary_dob.ageMin);

@@ -26,8 +26,10 @@
 
 <%-- Fragments --%>
 <%@ attribute fragment="true" required="false" name="preResultsRow" %>
-<%@ attribute fragment="true" required="false" name="sidebarColumn" %>
+<%@ attribute fragment="true" required="false" name="sidebarColumnLeft" %>
+<%@ attribute fragment="true" required="false" name="sidebarColumnRight" %>
 <%@ attribute fragment="true" required="false" name="zeroResultsFoundMessage" %>
+<%@ attribute fragment="true" required="false" name="additionalPagination" %>
 <%@ attribute fragment="true" required="false" name="resultsErrorMessage" %>
 <%@ attribute fragment="true" required="false" name="hiddenInputs" description="Any hidden " %>
 <%@ attribute fragment="true" required="true" name="quoterefTemplate" description="A template customisable to display the quote reference number" %>
@@ -42,8 +44,11 @@
 <c:set var="preResultsRow">
     <jsp:invoke fragment="preResultsRow"/>
 </c:set>
-<c:set var="sidebarColumn">
-    <jsp:invoke fragment="sidebarColumn"/>
+<c:set var="sidebarColumnLeft">
+    <jsp:invoke fragment="sidebarColumnLeft"/>
+</c:set>
+<c:set var="sidebarColumnRight">
+    <jsp:invoke fragment="sidebarColumnRight"/>
 </c:set>
 <c:set var="resultsErrorMessage">
     <jsp:invoke fragment="resultsErrorMessage"/>
@@ -53,7 +58,7 @@
 </c:set>
 <c:set var="resultsColsSm" value="8"/>
 <c:set var="resultsColsMd" value="9" />
-<c:if test="${empty sidebarColumn}">
+<c:if test="${empty sidebarColumnLeft and empty sidebarColumnRight}">
     <c:set var="resultsColsSm" value="12"/>
     <c:set var="resultsColsMd" value="12" />
 </c:if>
@@ -74,15 +79,15 @@
         <div class="clearfix"></div>
     </c:if>
 
-    <c:if test="${not empty sidebarColumn}">
+    <c:if test="${not empty sidebarColumnLeft}">
         <div class="hidden-xs col-sm-4 col-md-3" id="results-sidebar">
-                ${sidebarColumn}
+                ${sidebarColumnLeft}
         </div>
     </c:if>
 
     <div class="col-sm-${resultsColsSm} col-md-${resultsColsMd} results-column-container">
         <div class="${resultsContainerClassName} resultsContainer featuresMode results-columns-xs-${xsResultsColumns} results-columns-sm-${smResultsColumns} results-columns-md-${mdResultsColumns} results-columns-lg-${lgResultsColumns}">
-            <agg_v1:results_pagination_floated_arrows />
+            <jsp:invoke fragment="additionalPagination"/>
             <div class="resultsOverflow notScrolling">
 
                 <div class="results-table"></div>
@@ -112,6 +117,13 @@
             </div>
         </div>
     </div>
+
+    <c:if test="${not empty sidebarColumnRight}">
+        <div class="hidden-xs col-sm-4 col-md-3" id="results-sidebar">
+                ${sidebarColumnRight}
+        </div>
+    </c:if>
+
     <div class="clearfix"></div>
 
     <jsp:doBody/>
