@@ -29,10 +29,11 @@
         }
 
         if (meerkat.modules.healthRebate.hasPartner()) {
-            postData.partner_dob = $healthCoverDetails.find('input[name="health_healthCover_partner_dob"]').val();
-            postData.partner_current = $healthCoverDetails.find('input[name="health_healthCover_partner_health_cover"]:checked').val() || 'N';
-            postData.partner_loading = $healthCoverDetails.find('input[name="health_healthCover_partner_healthCoverLoading"]:checked').val() || 'N';
-            postData.partner_loading_manual = $healthCoverDetails.find('input[name="health_healthCover_partner_lhc"]').val();
+            var $partnerCoverDetails = $('#benefitsForm');
+            postData.partner_dob = $partnerCoverDetails.find('input[name="health_healthCover_partner_dob"]').val();
+            postData.partner_current = $partnerCoverDetails.find('input[name="health_healthCover_partner_health_cover"]:checked').val() || 'N';
+            postData.partner_loading = $partnerCoverDetails.find('input[name="health_healthCover_partner_healthCoverLoading"]:checked').val() || 'N';
+            postData.partner_loading_manual = $partnerCoverDetails.find('input[name="health_healthCover_partner_lhc"]').val();
         }
 
         if (!fetchRates(postData, true, callback)) {
