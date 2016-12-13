@@ -67,7 +67,7 @@
 			if(!_.isNull(sanitisedSitu)) {
 				// Ajax call to retrieve
 				meerkat.modules.comms.get({
-					url: 'spring/content/getsupplementaryvalue',
+					url: 'spring/content/getsupplementaryvalue.json',
 					data: {
 						vertical: 'HEALTH',
 						key: 'healthSidebarCallCentreHelp',
