@@ -62,18 +62,25 @@
     }
 
     function toggleTPFTOption($tpftOption) {
+        var existingJourneySelection = $typeOfCoverDropdown.val();
+        var existingFilterSelection = $typeOfCover.val();
+        var excTPFT = $marketValue.val() > 20000;
         $typeOfCoverDropdown.empty();
 
-        $tpftOption.toggleClass('hidden', $marketValue.val() > 20000);
-        $typeOfCoverDropdown.append($typeOfCoverOptions[($marketValue.val() > 20000) ? 'excTPFT' : 'full']);
+        $tpftOption.toggleClass('hidden', excTPFT);
+        $typeOfCoverDropdown.append($typeOfCoverOptions[excTPFT ? 'excTPFT' : 'full']);
 
         _.defer(function() {
-            // if previous selection was TPFT unselect
-            if ($typeOfCover.val() === 'TPFT') {
+            // if previous selection was TPFT and TPFT no longer applicable then unselect
+            if (excTPFT && _.indexOf([existingJourneySelection,existingFilterSelection],'TPFT') > -1) {
                 $typeOfCoverDropdown.val('');
             } else {
-                if ($typeOfCover.val()) {
-                    $typeOfCoverDropdown.val($typeOfCover.val());
+                if (!_.isEmpty(existingJourneySelection)) {
+                    $typeOfCoverDropdown.val(existingJourneySelection);
+                    $typeOfCover.val(existingJourneySelection);
+                } else if (!_.isEmpty(existingFilterSelection)) {
+                    $typeOfCoverDropdown.val(existingFilterSelection);
+                    $typeOfCover.val(existingFilterSelection);
                 } else {
                     $typeOfCoverDropdown.val('');
                 }
