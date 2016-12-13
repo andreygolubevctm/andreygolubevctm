@@ -102,6 +102,15 @@ public class Content implements java.io.Serializable {
 		return null;
 	}
 
+	public ContentSupplement getSupplementaryByKey(String key){
+		for(ContentSupplement supplement : getSupplementary()){
+			if(supplement.getSupplementaryKey().equals(key)){
+				return supplement;
+			}
+		}
+		return null;
+	}
+
 	@Override
 	public String toString() {
 		return "Content{" +

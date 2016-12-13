@@ -82,8 +82,7 @@
 
             // Defered to allow time for the slide modules to init e.g. vehicle selection
             $(document).ready(function () {
-
-                _.defer(function () {
+                var callback = function delayedJourneyEngineInit() {
                     meerkat.modules.journeyEngine.configure({
                         startStepId: startStepId,
                         steps: _.toArray(steps)
@@ -111,7 +110,16 @@
                             }
                         });
                     }
-                });
+                };
+
+                /* create delay when quote is not new so that journey
+                   can finish setting up before directing to results.
+                   And yes!, a defer will not cut the mustard */
+                if(meerkat.site.isNewQuote === false) {
+                    _.delay(callback, 500);
+                } else {
+                    callback();
+                }
             });
         }
     }
@@ -189,6 +197,7 @@
                 includeFormData: true
             },
             onInitialise: function () {
+                meerkat.modules.carTypeOfCover.initCarTypeOfCover();
                 meerkat.modules.carCommencementDate.initCarCommencementDate();
                 meerkat.modules.carYoungDrivers.initCarYoungDrivers();
                 meerkat.modules.carUsingYourCar.initUsingYourCar();
