@@ -7,7 +7,7 @@
         previousBreakpoint,
         best_price_count = 5,
         isLhcApplicable = 'N',
-        selectedBenefitsList,
+        selectedBenefitsList = [],
         premiumIncreaseContent = $('.healthPremiumIncreaseContent'),
         maxMilliSecondsForMessage = $("#maxMilliSecToWait").val(),
         resultsStepIndex = 3,
@@ -437,14 +437,15 @@
                     $hoverRow.removeClass(Results.settings.elements.features.expandableHover.replace(/[#\.]/g, ''));
                 });
 
-            var coverType = meerkat.modules.health.getCoverType();
+            // @todo commented out as we don't have a cover type.
+            /*var coverType = meerkat.modules.health.getCoverType();
 
             if (coverType === 'E') {
                 $('.featuresList .hospitalCover, .featuresList .selection_Hospital').addClass('hidden');
             }
             if (coverType === 'H') {
                 $('.featuresList .extrasCover, .featuresList .selection_extra').addClass('hidden');
-            }
+            }*/
 
         });
     }
@@ -505,6 +506,9 @@
         // this is where we are going to pull the children benefits from.
         var featuresStructureCover = _findByKey(structure, injectFromParent, 'name');
 
+        if(!selectedBenefitsList) {
+            return;
+        }
         // For each of the selected benefits
         for (var i = 0; i < selectedBenefitsList.length; i++) {
             var putInShortList = _findByKey(featuresStructureCover.children, selectedBenefitsList[i], 'shortlistKey');
@@ -689,7 +693,7 @@
 
     function resetSelectedProduct() {
         // Need to reset the health fund setting.
-        healthFunds.unload();
+        meerkat.modules.healthFunds.unload();
 
         // Reset selected product.
         setSelectedProduct(null);

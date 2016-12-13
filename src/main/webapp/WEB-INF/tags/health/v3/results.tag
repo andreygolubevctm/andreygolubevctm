@@ -16,7 +16,7 @@
 
     <jsp:attribute name="preResultsRow"><health_v3:pre_results_row_content_template/></jsp:attribute>
 
-    <jsp:attribute name="sidebarColumn">
+    <jsp:attribute name="sidebarColumnLeft">
         <c:if test="${empty callCentre}">
             <form_v3:save_results_button />
         </c:if>
@@ -45,6 +45,10 @@
 
     <jsp:attribute name="quoterefTemplate">
         <health_v3:quoteref_template/>
+    </jsp:attribute>
+
+    <jsp:attribute name="additionalPagination">
+        <agg_v1:results_pagination_floated_arrows />
     </jsp:attribute>
 
     <jsp:attribute name="logoTemplate">

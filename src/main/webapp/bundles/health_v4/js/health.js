@@ -36,8 +36,8 @@
             if (meerkat.site.pageAction === 'amend' || meerkat.site.pageAction === 'load' || meerkat.site.pageAction === 'start-again') {
 
                 // If retrieving a quote and a product had been selected, inject the fund's application set.
-                if (typeof healthFunds !== 'undefined' && healthFunds.checkIfNeedToInjectOnAmend) {
-                    healthFunds.checkIfNeedToInjectOnAmend(function onLoadedAmeded() {
+                if (meerkat.modules.healthFunds.checkIfNeedToInjectOnAmend) {
+                    meerkat.modules.healthFunds.checkIfNeedToInjectOnAmend(function onLoadedAmeded() {
                         // Need to mark any populated field with a data attribute so it is picked up with by the journeyEngine.getFormData()
                         // This is because values from forward steps will not be selected and will be lost when the quote is re-saved.
                         meerkat.modules.form.markInitialFieldsWithValue($("#mainform"));

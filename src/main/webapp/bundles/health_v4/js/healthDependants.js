@@ -394,7 +394,8 @@
      * @returns {boolean}
      */
     function situationEnablesDependants() {
-        return healthChoices._cover == 'SPF' || healthChoices._cover == 'F';
+        var coverCode = meerkat.modules.healthChoices.returnCoverCode();
+        return coverCode == 'SPF' || coverCode == 'F';
     }
 
     function animateToDependant($el) {

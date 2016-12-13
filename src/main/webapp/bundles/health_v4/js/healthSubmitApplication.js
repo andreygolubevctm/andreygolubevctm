@@ -215,8 +215,8 @@
             });
 
             //call the custom fail handler for each fund
-            if (healthFunds.applicationFailed) {
-                healthFunds.applicationFailed();
+            if (meerkat.modules.healthFunds.applicationFailed) {
+                meerkat.modules.healthFunds.applicationFailed();
             }
         }
 

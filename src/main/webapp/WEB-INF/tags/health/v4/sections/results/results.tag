@@ -14,9 +14,9 @@
 
 <layout_v1:results_template xsResultsColumns="2" resultsContainerClassName=" affixOnScroll sessioncamignorechanges ">
 
-    <jsp:attribute name="preResultsRow"><health_v3:pre_results_row_content_template/></jsp:attribute>
+    <jsp:attribute name="preResultsRow"><health_v4_results:pre_results_row_content_template/></jsp:attribute>
 
-    <jsp:attribute name="sidebarColumn">
+    <jsp:attribute name="sidebarColumnRight">
         <c:if test="${empty callCentre}">
             <form_v3:save_results_button />
         </c:if>
@@ -31,9 +31,9 @@
         <div class="col-xs-12 sidebar-widget sidebar-widget-attached sidebar-widget-padded filters-update-container" style="display: none">
             <!-- update button placeholder-->
         </div>
-        <health_v3:filters_benefits/>
-        <health_v3:filters_template/>
-        <health_v3:filters_update_widget_template/>
+        <health_v4_results:filters_benefits/>
+        <health_v4_results:filters_template/>
+        <health_v4_results:filters_update_widget_template/>
     </jsp:attribute>
 
     <jsp:attribute name="resultsErrorMessage">
@@ -44,7 +44,7 @@
     </jsp:attribute>
 
     <jsp:attribute name="quoterefTemplate">
-        <health_v3:quoteref_template/>
+        <health_v4_results:quoteref_template/>
     </jsp:attribute>
 
     <jsp:attribute name="logoTemplate">
@@ -52,16 +52,16 @@
     </jsp:attribute>
 
     <jsp:attribute name="priceTemplate">
-        <health_v3:price_template/>
+        <health_v4_results:price_template/>
     </jsp:attribute>
 
     <jsp:attribute name="resultsHeaderTemplate">
-            <health_v3:product_header_template/>
+        <health_v4_results:product_header_template/>
     </jsp:attribute>
 
     <jsp:attribute name="resultsContainerTemplate">
         {{ var headerTemplate = meerkat.modules.templateCache.getTemplate($('#result-header-template')); }}
-        {{ var coverType = meerkat.modules.health.getCoverType(); headerHtml = headerTemplate(obj); }}
+        {{ var coverType = 'C';<%--meerkat.modules.health.getCoverType();--%> headerHtml = headerTemplate(obj); }}
         <div class="result-row result_{{= productId }}" data-productId="{{= productId }}">
             {{= headerHtml }}
             <div class="featuresList featuresElements">{{ if(coverType == 'H' || coverType == 'C') { }}
@@ -146,11 +146,11 @@
         </div>
 
         <%-- FEATURE TEMPLATE --%>
-        <health_v3:resultsItemTemplate/>
-        <health_v3:brochure_template/>
-        <health_v3:excess_template/>
-        <health_v3:extras_list_template/>
-        <health_v3:credit_card_template />
+        <health_v4_results:resultsItemTemplate/>
+        <health_v4_results:brochure_template/>
+        <health_v4_results:excess_template/>
+        <health_v4_results:extras_list_template/>
+        <health_v4_results:credit_card_template />
 
     </jsp:body>
 
