@@ -62,6 +62,9 @@
     }
 
     function toggleTPFTOption($tpftOption) {
+        var existingJourneySelection = $typeOfCoverDropdown.val();
+        var existingFilterSelection = $typeOfCover.val();
+
         $typeOfCoverDropdown.empty();
 
         $tpftOption.toggleClass('hidden', $marketValue.val() > 20000);
@@ -72,8 +75,12 @@
             if ($typeOfCover.val() === 'TPFT') {
                 $typeOfCoverDropdown.val('');
             } else {
-                if ($typeOfCover.val()) {
-                    $typeOfCoverDropdown.val($typeOfCover.val());
+                if (!_.isEmpty(existingJourneySelection)) {
+                    $typeOfCoverDropdown.val(existingJourneySelection);
+                    $typeOfCover.val(existingJourneySelection);
+                } else if (!_.isEmpty(existingFilterSelection)) {
+                    $typeOfCoverDropdown.val(existingFilterSelection);
+                    $typeOfCover.val(existingFilterSelection);
                 } else {
                     $typeOfCoverDropdown.val('');
                 }
