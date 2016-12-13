@@ -114,7 +114,7 @@
 
         meerkat.modules.healthResults.setSelectedProduct(product);
         // this variable declared in __health_legacy.js
-        healthFunds.load(product.info.provider, applyCallback);
+        meerkat.modules.healthFunds.load(product.info.provider, applyCallback);
 
         meerkat.modules.partnerTransfer.trackHandoverEvent({
             product: product,

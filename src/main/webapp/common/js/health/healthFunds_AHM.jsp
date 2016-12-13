@@ -28,7 +28,7 @@ var healthFunds_AHM = {
       dependantsString += '.';
     }
 
-    healthFunds._dependants(dependantsString);
+    meerkat.modules.healthFunds._dependants(dependantsString);
     <%--change age of dependants and school--%>
     meerkat.modules.healthDependants.setMaxAge(25);
     <%--schoolgroups and defacto--%>
@@ -135,7 +135,7 @@ var healthFunds_AHM = {
     $('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').attr('maxlength', '10');
 
     <%--Authority--%>
-    healthFunds._previousfund_authority(true);
+      meerkat.modules.healthFunds._previousfund_authority(true);
 
     <%--credit card & bank account frequency & day frequency--%>
     meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':true, 'fortnightly': true, 'monthly': true, 'quarterly':true, 'halfyearly':true, 'annually':true });
@@ -150,12 +150,12 @@ var healthFunds_AHM = {
     meerkat.modules.healthCreditCard.render();
 
     <%--selections for payment date--%>
-      healthFunds._payments = {
+      meerkat.modules.healthFunds.setPayments({
           'min':0,
           'max':28,
           'weekends':true,
           'maxDay' : 28
-      };
+      });
     healthFunds_AHM.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
 
     healthFunds_AHM.$paymentType.on('change.AHM', function populateFuturePaymentDaysPaymentType(){
@@ -198,9 +198,9 @@ var healthFunds_AHM = {
     }
   },
   unset: function(){
-    healthFunds._reset();
+      meerkat.modules.healthFunds._reset();
     <%--Dependants--%>
-    healthFunds._dependants(false);
+      meerkat.modules.healthFunds._dependants(false);
 
     <%--School list--%>
     $('.health_dependant_details_schoolGroup select').remove();
@@ -214,7 +214,7 @@ var healthFunds_AHM = {
     $('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').removeAttr('maxlength');
 
     <%--Authority off--%>
-    healthFunds._previousfund_authority(false);
+      meerkat.modules.healthFunds._previousfund_authority(false);
 
     <%--credit card options--%>
     meerkat.modules.healthCreditCard.resetConfig();

@@ -28,10 +28,10 @@ set: function () {
 		$('#health_previousfund_primary_authority').setRequired(true, 'CUA requires authorisation to contact your previous fund');
 		$('#health_previousfund_partner_authority').setRequired(true, 'CUA requires authorisation to contact your partner\'s previous fund');
 		$('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').attr('maxlength', '10');
-		healthFunds._previousfund_authority(true);
+    	meerkat.modules.healthFunds._previousfund_authority(true);
 
 		<%--dependant definition--%>
-		healthFunds._dependants('This policy provides cover for your children up to their 21st birthday and dependants aged between 21 and 24 who are studying full time. Adult dependants outside these criteria can still be covered by applying for a separate policy.');
+        meerkat.modules.healthFunds._dependants('This policy provides cover for your children up to their 21st birthday and dependants aged between 21 and 24 who are studying full time. Adult dependants outside these criteria can still be covered by applying for a separate policy.');
 
 		<%--credit card & bank account frequency & day frequency--%>
 		meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly': true, 'fortnightly': true, 'monthly': true, 'quarterly': true, 'halfyearly': true, 'annually': true });
@@ -92,7 +92,7 @@ set: function () {
 
 		<c:if test="${data.health.situation.healthCvr == 'F' || data.health.situation.healthCvr == 'SPF' }">
 			<%--Dependants --%>
-			healthFunds._dependants('Family policies provide cover for the policy holder, their spouse and any dependant children/young adults until their 23rd birthday. Full-time student dependants are covered up until they turn 25. Student dependants must be registered each year from when they turn 23 years of age.');
+            meerkat.modules.healthFunds._dependants('Family policies provide cover for the policy holder, their spouse and any dependant children/young adults until their 23rd birthday. Full-time student dependants are covered up until they turn 25. Student dependants must be registered each year from when they turn 23 years of age.');
 			<%--change age of dependants and school --%>
 			meerkat.modules.healthDependants.setMaxAge(25);
 			<%--schoolgroups and defacto --%>
@@ -129,7 +129,7 @@ set: function () {
 		});
 	},
 	renderPaymentDays: function (){
-		healthFunds._payments = { 'min':0, 'max':14, 'weekends':true, 'countFrom' : meerkat.modules.healthPaymentDay.EFFECTIVE_DATE, 'maxDay' : 28};
+		meerkat.modules.healthFunds.setPayments({ 'min':0, 'max':14, 'weekends':true, 'countFrom' : meerkat.modules.healthPaymentDay.EFFECTIVE_DATE, 'maxDay' : 28});
 		healthFunds_CUA.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
 		var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
 		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), _html);
@@ -146,9 +146,9 @@ set: function () {
 		healthFunds_CUA.$paymentFrequency.off('change.CUA');
 		healthFunds_CUA.$paymentStartDate.off("changeDate.CUA");
 
-		healthFunds._reset();
+        meerkat.modules.healthFunds._reset();
 
-		healthFunds._previousfund_authority(false);
+        meerkat.modules.healthFunds._previousfund_authority(false);
 		$('#health_previousfund_primary_authority, #health_previousfund_partner_authority').setRequired(false);
 
 		dob_health_application_primary_dob.ageMax = 120;
