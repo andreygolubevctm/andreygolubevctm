@@ -142,9 +142,9 @@
 				meerkat.modules.jqueryValidate.initJourneyValidator();
 
 				if(meerkat.site.choices) {
-					healthChoices.initialise(meerkat.site.choices.cover, meerkat.site.choices.situation, meerkat.site.choices.benefits);
-					healthChoices._state = meerkat.site.choices.state;
-					healthChoices._performUpdate = meerkat.site.choices.performHealthChoicesUpdate;
+					meerkat.modules.healthChoices.initialise(meerkat.site.choices.cover, meerkat.site.choices.situation, meerkat.site.choices.benefits);
+					meerkat.modules.healthChoices.setState(meerkat.site.choices.state);
+					meerkat.modules.healthChoices.shouldPerformUpdate(meerkat.site.choices.performHealthChoicesUpdate);
 				}
 
 				var $healthSitLocation = $('#health_situation_location'),
@@ -155,7 +155,7 @@
 
 				// Add event listeners.
 				$healthSitHealthCvr.on('change',function() {
-					healthChoices.setCover($(this).val());
+					meerkat.modules.healthChoices.setCover($(this).val());
 					meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
 				});
 
@@ -172,12 +172,12 @@
 				});
 
 				$healthSitLocation.on('blur',function() {
-					healthChoices.setLocation($(this).val());
+					meerkat.modules.healthChoices.setLocation($(this).val());
 				});
 
 				// For loading in.
 				if($healthSitLocation.val() !== '') {
-					healthChoices.setLocation($healthSitLocation.val());
+					meerkat.modules.healthChoices.setLocation($healthSitLocation.val());
 				}
 
 				// change benefits page layout when change the coverType
@@ -293,8 +293,12 @@
 				//	meerkat.modules.healthSegment.filterSegments();
 				//}, 1000);
 
-				if(event.isForward)
-					$('input[name="health_situation_accidentOnlyCover"]').prop('checked', ($("input[name=health_situation_healthSitu]").filter(":checked").val() === 'ATP'));
+				if(event.isForward) {
+					if(!meerkat.site.isCallCentreUser) {
+						$('input[name="health_situation_accidentOnlyCover"]').prop('checked', ($("input[name=health_situation_healthSitu]").filter(":checked").val() === 'ATP'));
+						// For CC we simply ignore and accept the current value as true and correct
+					}
+				}
 			},
 			onAfterLeave:function(event){
 				var selectedBenefits = meerkat.modules.healthBenefitsStep.getSelectedBenefits();
@@ -930,7 +934,7 @@
 		$('#health_situation_suburb').val(suburb);
 		$('#health_situation_postcode').val(postcode);
 		$('#health_situation_state').val(state);
-		healthChoices.setState(state);
+		meerkat.modules.healthChoices.setState(state);
 
 		window.location = this.href;
 

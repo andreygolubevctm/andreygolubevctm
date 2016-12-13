@@ -62,7 +62,7 @@
 		$healthSituation = $('input[name="health_situation_healthSitu"]');
 
 
-		if (!healthChoices.hasSpouse()) {
+		if (!meerkat.modules.healthChoices.hasSpouse()) {
 			$partnerContainer.hide();
 		}
 

@@ -57,6 +57,8 @@ public class CarQuote {
 
     private String vdn;
 
+    private String followupIntended;
+
     public boolean isAvailable() {
         return available;
     }
@@ -257,4 +259,11 @@ public class CarQuote {
         this.vdn = vdn;
     }
 
+    public String getFollowupIntended() {
+        return followupIntended;
+    }
+
+    public void setFollowupIntended(final String followupIntended) {
+        this.followupIntended = followupIntended;
+    }
 }

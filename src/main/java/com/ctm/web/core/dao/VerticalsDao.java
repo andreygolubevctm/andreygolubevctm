@@ -43,7 +43,7 @@ public class VerticalsDao {
 			PreparedStatement stmt;
 
 			stmt = dbSource.getConnection().prepareStatement(
-				"SELECT verticalId, verticalName, verticalCode " +
+				"SELECT verticalId, verticalName, verticalCode, seq " +
 				"FROM ctm.vertical_master v " +
 				"ORDER BY v.verticalCode;"
 			);
@@ -55,6 +55,7 @@ public class VerticalsDao {
 				vertical.setId(verticalResult.getInt("verticalId"));
 				vertical.setType(VerticalType.findByCode(verticalResult.getString("verticalCode") ));
 				vertical.setName(verticalResult.getString("verticalName") );
+				vertical.setSequence(verticalResult.getInt("seq"));
 				verticals.add(vertical);
 
 			}
