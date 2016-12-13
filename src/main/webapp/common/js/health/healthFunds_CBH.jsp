@@ -252,20 +252,22 @@ var healthFunds_CBH = {
 				}
 			});
 
+			var $policyDayMessage = $('.health_payment_bank-details_policyDay-message');
 			$('#health_payment_details_frequency').on('change.CBH', function() {
-				$('.health_payment_bank-details_policyDay-message').html('');
+				$policyDayMessage.html('');
 				if (meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'ba') {
 					switch (meerkat.modules.healthPaymentStep.getSelectedFrequency()) {
 						case 'fortnightly':
-							$('.health_payment_bank-details_policyDay-message').html('Fortnightly payments will be deducted on a Thursday.');
+							$policyDayMessage.html('Fortnightly payments will be deducted on a Thursday.');
 							break;
 						case 'monthly':
-							$('.health_payment_bank-details_policyDay-message').html('Monthly payments will be deducted on the 15th of each month.');
+							$policyDayMessage.html('Monthly payments will be deducted on the 15th of each month.');
 							break;
 					}
 				}
 			});
-
+			$('#health_payment_details_frequency').trigger("change.CBH");
+			
 			<%-- Claims account --%>
 			meerkat.modules.healthPaymentStep.overrideSettings('creditBankSupply',true);
 			meerkat.modules.healthPaymentStep.overrideSettings('creditBankQuestions',true);
@@ -316,7 +318,8 @@ var healthFunds_CBH = {
 		if ($('#health_application_cbh_currentemployee').val() != 'N' || $('#health_application_cbh_formeremployee').val() != 'N' || $('#health_application_cbh_familymember').val() != 'Y')
 			return;
 
-		if (healthChoices._cover == 'S' || healthChoices._cover == 'SM' || healthChoices._cover == 'SF') {
+		var cover = meerkat.modules.healthChoices.returnCoverCode();
+		if (cover == 'S' || cover == 'SM' || cover == 'SF') {
 		$('#cbh_ineligible').slideUp(200, function(){ $(this).hide(); });
 			return true;
 		}

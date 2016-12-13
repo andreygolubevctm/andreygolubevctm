@@ -36,10 +36,9 @@ Handling of the rebate tiers based off situation
 		$dependants,
 		$incomeBase,
 		$income,
-		defaultDependants = 2,
 		allowance = 0;
 
-	 function initHealthTiers(){
+	function initHealthTiers(){
 		$dependants = $('#health_healthCover_dependants');
 		$incomeBase = $('#health_healthCover_incomeBase');
 		$income = $('#health_healthCover_income');
@@ -52,9 +51,10 @@ Handling of the rebate tiers based off situation
 	// Manages the descriptive titles of the tier drop-down
 	function setTiers(initMode){
 		// Set the dependants allowance and income message
-		// default to 2 kids
-		allowance = $dependants.length === 0 ? defaultDependants : ($dependants.val() - 1);
-		allowance = (allowance > 0 ? allowance * 1500 : 0);
+		if (!initMode) {
+			allowance = meerkat.modules.healthRebate.getDependents();
+			allowance = (allowance > 0 ? allowance * 1500 : 0);
+		}
 
 		//Set the tier type based on hierarchy of selection
 		var _cover;
@@ -72,7 +72,7 @@ Handling of the rebate tiers based off situation
 			var _text = '';
 
 			// Calculate the Age Bonus
-			if( meerkat.modules.healthRebate.getRates() === null){
+			if( meerkat.modules.healthRates.getRates() === null){
 				_ageBonus = 0;
 			} else {
 				_ageBonus = parseInt(meerkat.modules.healthRebate.getRates().ageBonus);
@@ -119,6 +119,11 @@ Handling of the rebate tiers based off situation
 				$this.text(_text);
 			}
 		});
+
+		if (!initMode) {
+			// after updating the dropdown, update the income label
+			meerkat.modules.healthRebate.updateSelectedRebateLabel();
+		}
 	}
 
 	meerkat.modules.register("healthTiers", {

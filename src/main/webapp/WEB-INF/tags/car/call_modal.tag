@@ -12,11 +12,11 @@
 	{{ obj.isAutoAndGeneralSpecialCase = obj.isAutoAndGeneral && _.indexOf(['BUDD','VIRG','EXPO','EXDD'], obj.brandCode) >= 0 }}
 
 	{{ obj.offlinePromotionText = ''; }}
-	{{ if(typeof obj.discountOffer !== 'undefined' && obj.discountOffer.length > 0)  { }}
+	{{ if(!_.isUndefined(obj.discountOffer) && !_.isNull(obj.discountOffer) && obj.discountOffer.length > 0)  { }}
 	{{ 	obj.offlinePromotionText = obj.discountOffer; }}
 	{{ } }}
 
-	{{ obj.offerTermsContent = (typeof obj.discountOfferTerms !== 'undefined' && obj.discountOfferTerms !== null && obj.discountOfferTerms.length > 0) ? obj.discountOfferTerms : ''; }}
+	{{ obj.offerTermsContent = (!_.isUndefined(obj.discountOfferTerms) && !_.isNull(obj.discountOfferTerms) && obj.discountOfferTerms.length > 0) ? obj.discountOfferTerms : ''; }}
 
 	<%-- If not availableOnline (meaning you can't continue online), it should show "Call Centre" offer --%>
 	<%-- This copy if bypassed if there's no copy above or it's a flagged A&G product --%>
@@ -41,22 +41,24 @@
 
 <core_v1:js_template id="car-online-discount-template">
 	{{ obj.onlinePromotionText = ''; }}
-	{{ if(typeof obj.discountOffer !== 'undefined' && obj.discountOffer.length > 0)  { }}
+	{{ if(!_.isUndefined(obj.discountOffer) && !_.isNull(obj.discountOffer) && obj.discountOffer.length > 0)  { }}
 	{{ obj.onlinePromotionText = obj.discountOffer; }}
 	{{ } }}
 
 	<%-- Copy bypassed if not online or there's no copy above and only show if it's an
         A&G special case or the online/offline discount is different. --%>
 	{{ if (obj.availableOnline == true && obj.onlinePromotionText.length > 0 && (obj.isAutoAndGeneralSpecialCase || obj.onlinePromotionText != obj.offlinePromotionText)) { }}
-	<h5>
-		Special Online Offer
-	</h5>
-	<div class="promotion">
-		<span class="icon icon-tag"></span> {{= onlinePromotionText }}
-		{{ if (offerTermsContent.length > 0) { }}
-		<a class="small offerTerms" href="javascript:;">Offer terms</a>
-		<div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
-		{{ } }}
+	<div class="offlineDiscount">
+		<h5>
+			Special Online Offer
+		</h5>
+		<div class="promotion">
+			<span class="icon icon-tag"></span> {{= onlinePromotionText }}
+			{{ if (offerTermsContent.length > 0) { }}
+			<a class="small offerTerms" href="javascript:;">Offer terms</a>
+			<div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
+			{{ } }}
+		</div>
 	</div>
 {{ } }}
 </core_v1:js_template>

@@ -419,6 +419,9 @@
 			// had to revert this back to a trigger as fund messaging wasn't being set otherwise
 			$paymentRadioGroup.find('input').filter('[value=ba]').trigger('click');
 		}
+
+		// Essential to ensure default copy if shown when loading a quote
+		$("#health_payment_details_frequency").trigger("change." + (meerkat.modules.healthResults.getSelectedProduct().info.FundCode));
 	}
 
 	// Check if details for the claims bank account needs to be shown

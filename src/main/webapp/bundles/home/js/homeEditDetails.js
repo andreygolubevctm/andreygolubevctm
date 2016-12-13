@@ -102,6 +102,8 @@
 	function hide() {
 		if ($editDetailsDropDown.hasClass('open')) {
 			$editDetailsDropDown.find('.activator').dropdown('toggle').end().find('.edit-details-wrapper').empty();
+		} else {
+			$editDetailsDropDown.find('.edit-details-wrapper').empty();
 		}
 		if(modalId !== null) {
 			$('#'+modalId).modal('hide');
