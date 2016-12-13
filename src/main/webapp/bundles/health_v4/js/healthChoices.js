@@ -71,6 +71,10 @@
 		_performUpdate = performUpdate;
 	}
 
+    function getSituation() {
+        return $('input[name=health_situation_healthCvr]:checked').val();
+    }
+
 	meerkat.modules.register("healthChoices", {
 		events: moduleEvents,
 		init: init,
@@ -79,6 +83,7 @@
 		returnCoverCode: returnCoverCode,
 		setCover: setCover,
 		setState: setState,
+        getSituation: getSituation,
 		shouldPerformUpdate: shouldPerformUpdate
 	});
 

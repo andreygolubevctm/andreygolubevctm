@@ -689,7 +689,7 @@
 
     function resetSelectedProduct() {
         // Need to reset the health fund setting.
-        healthFunds.unload();
+        meerkat.modules.healthFunds.unload();
 
         // Reset selected product.
         setSelectedProduct(null);
