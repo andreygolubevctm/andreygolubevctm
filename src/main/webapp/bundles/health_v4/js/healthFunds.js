@@ -12,7 +12,8 @@
         _payments = {},
         $_dependantDefinition,
         HTML_dependantDefinition,
-        $_optionDR;
+        $_optionDR,
+        medicareHelpId;
 
     // If retrieving a quote and a product had been selected, inject the fund's application set.
     // This is in case any custom form fields need access to the data bucket, because write_quote will erase the data when it's not present in the form.
@@ -271,6 +272,14 @@
         return $_optionDR;
     }
 
+    function setMedicareCoverHelpId(id) {
+        medicareHelpId = id;
+    }
+
+    function getMedicareCoverHelpId() {
+        return medicareHelpId;
+    }
+
     meerkat.modules.register("healthFunds", {
         applicationFailed: applicationFailed,
         checkIfNeedToInjectOnAmend: checkIfNeedToInjectOnAmend,
@@ -286,7 +295,9 @@
         _dependants: _dependants,
         _setPolicyDate: _setPolicyDate,
         getDoctorOption: getDoctorOption,
-        setDoctorOption: setDoctorOption
+        setDoctorOption: setDoctorOption,
+        setMedicareCoverHelpId: setMedicareCoverHelpId,
+        getMedicareCoverHelpId: getMedicareCoverHelpId
     });
 
 })(jQuery);
