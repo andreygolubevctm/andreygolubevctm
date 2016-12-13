@@ -488,7 +488,7 @@
                 $.extend(response, {
                     postCode: $("#health_application_address_postCode").val(),
                     state: state,
-                    healthCoverType: $("input[name=health_situation_healthCvr]").filter(':checked').val(),
+                    healthCoverType: meerkat.modules.healthChoices.getSituation(),
                     contactType: contactType
                 });
             }
@@ -529,7 +529,7 @@
 
     // Use the situation value to determine if a partner is visible on the journey.
     function hasPartner(){
-        var cover = $(':input[name="health_situation_healthCvr"]').val();
+        var cover = meerkat.modules.healthChoices.getSituation();
         if(cover == 'F' || cover == 'C'){
             return true;
         }else{

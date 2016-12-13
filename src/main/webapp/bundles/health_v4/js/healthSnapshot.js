@@ -94,7 +94,7 @@
     }
 
     function getData() {
-        var coverFor = $("#health_situation_healthCvr").val();
+        var coverFor = meerkat.modules.healthChoices.getSituation();
         var livingIn = $("#health_situation_location").val();
         var lookingTo = $.trim($("input[name=health_situation_healthSitu]").filter(":checked").closest('label').text());
         var coverType = $("#health_situation_coverType input:checked").parent().text();
@@ -184,7 +184,7 @@
      */
     function getLabelForSituation() {
 
-        switch(meerkat.modules.healthAboutYou.getSituation()) {
+        switch(meerkat.modules.healthChoices.getSituation()) {
             case 'SM':
             case 'SF':
                 return "you";

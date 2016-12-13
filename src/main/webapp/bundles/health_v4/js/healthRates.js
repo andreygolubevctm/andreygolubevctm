@@ -20,7 +20,7 @@
             primary_loading: $healthCoverDetails.find('input[name="health_healthCover_primary_healthCoverLoading"]:checked').val(),
             primary_current: $healthCoverDetails.find('input[name="health_healthCover_health_cover"]:checked').val(),
             primary_loading_manual: $healthCoverDetails.find('.primary-lhc').val(),
-            cover: $healthCoverDetails.find(':input[name="health_situation_healthCvr"]').val()
+            cover: meerkat.modules.healthChoices.getSituation()
         };
 
         // If the customer answers Yes for current health insurance, assume 0% LHC
@@ -57,7 +57,7 @@
             partner_loading: $healthCoverDetails.find('input[name="health_healthCover_partner_healthCoverLoading"]:checked').val(),
             partner_current: $healthCoverDetails.find('input[name="health_healthCover_partner_health_cover"]:checked').val(),
             partner_loading_manual: $healthCoverDetails.find('.partner-lhc').val(),
-            cover: $healthCoverDetails.find(':input[name="health_situation_healthCvr"]').val()
+            cover: meerkat.modules.healthChoices.getSituation()
         };
 
         if ($('#health_application_provider, #health_application_productId').val() === '') {

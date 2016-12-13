@@ -105,7 +105,7 @@ set: function () {
 		$('#health_application_primary_dob').addRule('oldestDOB', dob_health_application_primary_dob.ageMax, "primary applicant's age cannot be over 99");
 		$('#health_application_partner_dob').addRule('oldestDOB', dob_health_application_partner_dob.ageMax, "applicant's partner's age cannot be over 99");
 
-		healthFunds._medicareCoveredHelpId = $('#medicareCoveredRow .help_icon').attr("id");
+		meerkat.modules.healthFunds.setMedicareCoverHelpId($('#medicareCoveredRow .help_icon').attr("id"));
 		$('#medicareCoveredRow .help_icon').attr("id","help_520");
 
 		meerkat.modules.paymentGateway.setup({
@@ -164,7 +164,7 @@ set: function () {
 		<%--credit card options--%>
 		meerkat.modules.healthCreditCard.resetConfig();
 		meerkat.modules.healthCreditCard.render();
-		$('#medicareCoveredRow .help_icon').attr("id",healthFunds._medicareCoveredHelpId);
+		$('#medicareCoveredRow .help_icon').attr("id", meerkat.modules.healthFunds.getMedicareCoverHelpId());
 		meerkat.modules.paymentGateway.reset();
 	}
 };
