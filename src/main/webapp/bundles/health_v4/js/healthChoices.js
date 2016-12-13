@@ -55,10 +55,6 @@
 		}
 	}
 
-	function getCover() {
-		return _cover;
-	}
-
 	function setCover(cover) {
 		_cover = cover || 'SM'; // default to a single
 	}
@@ -82,7 +78,6 @@
 		hasSpouse: hasSpouse,
 		returnCoverCode: returnCoverCode,
 		setCover: setCover,
-		getCover: getCover,
 		setState: setState,
 		shouldPerformUpdate: shouldPerformUpdate
 	});
