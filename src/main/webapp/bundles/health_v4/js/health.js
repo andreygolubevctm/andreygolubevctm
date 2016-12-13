@@ -174,6 +174,18 @@
                 meerkat.modules.jqueryValidate.initJourneyValidator();
 
                 meerkat.modules.healthLocation.initHealthLocation();
+
+                if(meerkat.site.choices) {
+                    meerkat.modules.healthChoices.initialise('SM'); // default to single male
+                    meerkat.modules.healthChoices.setState(meerkat.site.choices.state);
+                    meerkat.modules.healthChoices.shouldPerformUpdate(meerkat.site.choices.performHealthChoicesUpdate);
+                }
+
+                // change benefits page layout when change the coverType
+                $('#health_situation_coverType').on('change', function() {
+                    var coverTypeVal = $(this).find('input:checked').val();
+                    meerkat.modules.healthBenefitsStep.updateHiddenFields(coverTypeVal);
+                });
             },
             onBeforeEnter: _incrementTranIdBeforeEnteringSlide,
             onAfterEnter: function healthAfterEnter() {
@@ -452,8 +464,7 @@
                 $.extend(response, {
                     postCode: $("#health_application_address_postCode").val(),
                     state: state,
-                    healthCoverType: $("#health_situation_healthCvr").val(),
-                    healthSituation: $("input[name=health_situation_healthSitu]").val(),
+                    healthCoverType: $("input[name=health_situation_healthCvr]").filter(':checked').val(),
                     contactType: contactType
                 });
             }

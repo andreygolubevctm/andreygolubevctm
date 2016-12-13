@@ -318,7 +318,8 @@ var healthFunds_CBH = {
 		if ($('#health_application_cbh_currentemployee').val() != 'N' || $('#health_application_cbh_formeremployee').val() != 'N' || $('#health_application_cbh_familymember').val() != 'Y')
 			return;
 
-		if (healthChoices._cover == 'S' || healthChoices._cover == 'SM' || healthChoices._cover == 'SF') {
+		var cover = meerkat.modules.healthChoices.returnCoverCode();
+		if (cover == 'S' || cover == 'SM' || cover == 'SF') {
 		$('#cbh_ineligible').slideUp(200, function(){ $(this).hide(); });
 			return true;
 		}
