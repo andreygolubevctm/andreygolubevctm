@@ -122,8 +122,7 @@
 
     meerkat.modules.register("benefits", {
         init: initBenefits,
-        events: events,
-        setDefaultTabs: setDefaultTabs
+        events: events
     });
 
 })(jQuery);
