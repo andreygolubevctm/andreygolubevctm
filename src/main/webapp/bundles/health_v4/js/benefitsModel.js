@@ -37,7 +37,7 @@
 
     function _eventsSubscription() {
         // benefit selected
-        meerkat.messaging.subscribe(meerkatEvents.benefits.BENEFIT_SELECTED, _updateBenefitToModel);
+        meerkat.messaging.subscribe(meerkatEvents.benefits.BENEFIT_SELECTED, _updateBenefitModel);
 
         // clear benefits
         meerkat.messaging.subscribe(meerkatEvents.quickSelect.CLEAR_BENEFITS, _resetModel);
@@ -48,17 +48,20 @@
         setBenefits([]);
     }
 
-    function _updateBenefitToModel(options) {
+    function _updateBenefitModel(options) {
         setIsHospital(options.isHospital);
 
         if (typeof options.removeBenefit !== 'undefined' && options.removeBenefit) {
+            // removing a singular item from a user click so don't need to fire the BENEFITS_UPDATED event
             selectedElements[getBenefitType()] =  $.grep(selectedElements[getBenefitType()], function(value) {
                 return value != options.benefitId;
             });
         } else {
             if (typeof options.benefitId === 'number') {
+                // adding a singular item from a user click so don't need to fire the BENEFITS_UPDATED event
                 selectedElements[getBenefitType()].push(options.benefitId);
             } else {
+                // pre-select fired
                 setBenefits(_.union(selectedElements[getBenefitType()], options.benefitIds));
             }
         }
@@ -90,7 +93,6 @@
 
     function setBenefits(updatedBenefits) {
         selectedElements[getBenefitType()] = updatedBenefits;
-
         meerkat.messaging.publish(moduleEvents.BENEFITS_UPDATED, selectedElements[getBenefitType()]);
     }
 
