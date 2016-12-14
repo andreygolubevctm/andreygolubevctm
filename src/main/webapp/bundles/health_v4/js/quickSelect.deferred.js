@@ -5,13 +5,16 @@
 (function($, undefined) {
 
     var meerkat = window.meerkat,
-        meerkatEvents = meerkat.modules.events,
         events = {
-            quickSelect: {
-                CLEAR_BENEFITS: 'CLEAR_BENEFITS',
-                PRESELECT_BENEFITS: 'PRESELECT_BENEFITS'
+            qSelect: {
+                CLEAR_BENEFITS: 'CLEAR_BENEFITS'
+            },
+            benefits: {
+                BENEFIT_SELECTED: 'BENEFIT_SELECTED'
             }
         },
+        qsEvents = events.qSelect,
+        benefitEvents = events.benefits,
         $elements = {};
 
     function init() {
@@ -28,18 +31,16 @@
         // quick selection options
         $elements.quickSelect.on('click', 'a', function preSelectBenefits(){
 
-
             var $this = $(this),
                 isHospital = $this.closest($elements.hospital).length === 1,
                 selectedItems = isHospital ? meerkat.modules.benefitsModel.getHospital() : meerkat.modules.benefitsModel.getExtras(),
-                 settings = {
+                options = {
                     isHospital: isHospital,
-                    selectedItems: _.union(selectedItems, meerkat.modules.benefitsModel.getDefaultSelections($this.data('select-type')))
+                    benefitIds: _.union(selectedItems, meerkat.modules.benefitsModel.getDefaultSelections($this.data('select-type')))
                 };
 
                 $this.closest($elements.quickSelect).next($elements.clear).removeClass('hidden');
-
-                meerkat.messaging.publish(meerkatEvents.PRESELECT_BENEFITS, settings);
+                meerkat.messaging.publish(benefitEvents.BENEFIT_SELECTED, options);
         });
 
         // clear selection
@@ -47,7 +48,7 @@
             var $this = $(this);
 
             $this.parent().addClass('hidden');
-            meerkat.messaging.publish(meerkatEvents.CLEAR_BENEFITS, $this.closest($elements.hospital).length === 1);
+            meerkat.messaging.publish(qsEvents.CLEAR_BENEFITS, $this.closest($elements.hospital).length === 1);
         });
     }
 

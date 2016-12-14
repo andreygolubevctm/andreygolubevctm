@@ -22,7 +22,47 @@
         selectedElements = {
             hospital: [],
             extras: []
-        };
+        },
+        meerkatEvents = meerkat.modules.events,
+        events = {
+            benefitsModel: {
+                BENEFITS_UPDATED: 'BENEFITS_UPDATED'
+            }
+        },
+        moduleEvents = events.benefitsModel;
+
+    function init() {
+        _eventsSubscription();
+    }
+
+    function _eventsSubscription() {
+        // benefit selected
+        meerkat.messaging.subscribe(meerkatEvents.benefits.BENEFIT_SELECTED, _updateBenefitToModel);
+
+        // clear benefits
+        meerkat.messaging.subscribe(meerkatEvents.qSelect.CLEAR_BENEFITS, _resetModel);
+    }
+
+    function _resetModel(isHospital) {
+        setIsHospital(isHospital);
+        setBenefits([]);
+    }
+
+    function _updateBenefitToModel(options) {
+        setIsHospital(options.isHospital);
+
+        if (typeof options.removeBenefit !== 'undefined' && options.removeBenefit) {
+            selectedElements[getBenefitType()] =  $.grep(selectedElements[getBenefitType()], function(value) {
+                return value != options.benefitId;
+            });
+        } else {
+            if (typeof options.benefitId === 'number') {
+                selectedElements[getBenefitType()].push(options.benefitId);
+            } else {
+                setBenefits(_.union(selectedElements[getBenefitType()], options.benefitIds));
+            }
+        }
+    }
 
     function getBenefitType() {
         return _isHospital ? 'hospital' : 'extras';
@@ -48,8 +88,10 @@
         return selectedElements.hospital.length;
     }
 
-    function setBenefits(tempBenefitsCounter) {
-        selectedElements[getBenefitType()] = tempBenefitsCounter;
+    function setBenefits(updatedBenefits) {
+        selectedElements[getBenefitType()] = updatedBenefits;
+
+        meerkat.messaging.publish(moduleEvents.BENEFITS_UPDATED, selectedElements[getBenefitType()]);
     }
 
     function setIsHospital(isHospital) {
@@ -57,6 +99,8 @@
     }
 
     meerkat.modules.register("benefitsModel", {
+        init: init,
+        events: events,
         getBenefitType: getBenefitType,
         getDefaultSelections: getDefaultSelections,
         getExtras: getExtras,
