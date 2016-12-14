@@ -125,6 +125,13 @@
 
             setupPage();
             eventSubscriptions();
+
+            _.defer(function(){
+                // Helper to turn on alt view if param in querystring
+                if(/[?&]showAltBenefitsJourney=/.test(window.location.href)) {
+                    toggleJourney(true);
+                }
+            });
         });
     }
 
