@@ -15,7 +15,10 @@
 		<h5>Prefer to have extra piece of mind?</h5>
 		<div class="row">
 			<div class="hidden-xs col-sm-2 col-lg-3"></div>
-			<div class="col-xs-12 col-sm-8 col-lg-6 no-column-medling"><a href="javascript:;" class="btn btn-form-inverse benefit-category" data-category="customise">Select Benefits for a Comprehensive Hospital Cover</a></div>
+			<div class="col-xs-12 col-sm-8 col-lg-6 no-column-medling">
+				<a href="javascript:;" class="btn btn-form-inverse benefit-category hidden-xs" data-category="customise">Select Benefits for a Comprehensive Hospital Cover</a>
+				<a href="javascript:;" class="btn btn-form-inverse benefit-category visible-xs" data-category="customise">Switch to Comprehensive Hospital Cover</a>
+			</div>
 			<div class="hidden-xs col-sm-2 col-lg-3"></div>
 		</div>
 	</div>
