@@ -22,7 +22,7 @@
 
                 <jsp:attribute name="rightColumn">
                     <health_v4_aboutyou:medicarecheck />
-                    <health_v4_content:snapshot />
+                    <%--<health_v4_content:snapshot />--%>
                 </jsp:attribute>
                     <jsp:body>
 

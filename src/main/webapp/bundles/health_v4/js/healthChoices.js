@@ -36,13 +36,6 @@
 	}
 
 	function _eventListeners() {
-		$elements.healthCover.on('change',function() {
-			meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
-		});
-
-		$elements.healthSitGroup.on('change',function() {
-			meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
-		});
 	}
 
 	function hasSpouse() {

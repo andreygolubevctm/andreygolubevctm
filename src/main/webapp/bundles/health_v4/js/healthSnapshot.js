@@ -2,21 +2,35 @@
 
     var meerkat = window.meerkat,
         log = meerkat.logging.info,
-        meerkatEvents = meerkat.modules.events;
+        meerkatEvents = meerkat.modules.events,
 
-    var events = {
+        events = {
             healthSnapshot: {
                 RENDER_HEALTH_SNAPSHOT : "RENDER_HEALTH_SNAPSHOT"
             }
         },
-        moduleEvents = events.healthSnapshot;
+        moduleEvents = events.healthSnapshot,
 
+        $addPartnerDob,
+        $partnerDobInputD,
+
+        rebateText = [
+            'Full rebate applies',
+            'Tier 1 applied',
+            'Tier 2 applied',
+            'Tier 3 applied',
+            'No rebate applied'
+        ];
 
     function initHealthSnapshot() {
-        subscription();
+        $addPartnerDob = $('.add-partner-dob');
+        $partnerDobInputD = $('#health_healthCover_partner_dobInputD');
+
+        eventSubscriptions();
+        applyEventListeners();
     }
 
-    function subscription() {
+    function eventSubscriptions() {
 
         // Initial render
         meerkat.messaging.subscribe(meerkat.modules.events.journeyEngine.BEFORE_STEP_CHANGED, function renderSnapshotOnJourneyReadySubscription() {
@@ -36,6 +50,12 @@
         });
     }
 
+    function applyEventListeners() {
+        $addPartnerDob.on('click', function addPartnerDobClicked() {
+            $partnerDobInputD.focus();
+        });
+    }
+
     function renderSnapshot() {
         meerkat.modules.contentPopulation.render('.quoteSnapshot');
         _.defer(render);
@@ -43,7 +63,7 @@
 
     function showHide(data, selector, property, forceHide) {
         $(selector).each(function(){
-            $(this)[_.isEmpty(data[property]) ? "hide" : "show"]();
+            $(this).toggleClass('hidden', _.isEmpty(data[property]));
         });
     }
 
@@ -56,12 +76,20 @@
         showHide(data,'.quoteSnapshot .living-in','livingIn', noData);
         showHide(data,'.quoteSnapshot .cover-for','coverFor', noData);
         showHide(data,'.quoteSnapshot .born','primaryBorn', noData);
-        showHide(data,'.quoteSnapshot .born-labels, .quoteSnapshot .partner-born','partnerBorn', noData);
+        showHide(data,'.quoteSnapshot .partner-born','partnerBorn', noData);
+
+        if (!noData && !_.isEmpty(data.coverFor)) {
+            var notSingle = _.indexOf(["Couple","Family"], data.coverFor) >= 0;
+
+            $('.quoteSnapshot').toggleClass('has-partner', notSingle);
+            $('.quoteSnapshot .born-labels').toggleClass('hidden', !notSingle);
+            $('.add-partner-dob').toggleClass('hidden', !notSingle || (notSingle && !_.isEmpty(data.partnerBorn)));
+        }
 
         // Format primary dob
         if (!noData && !_.isEmpty(data.primaryBorn)) {
             var primaryDob = meerkat.modules.dateUtils.returnDate($('#health_healthCover_primary_dob').val()),
-                formattedPrimaryDob = meerkat.modules.dateUtils.format(primaryDob, "DD MMM YYYY");
+                formattedPrimaryDob = meerkat.modules.dateUtils.format(primaryDob, "D MMM YYYY");
 
             $('.quoteSnapshot .snapshot-items.primary-dob span').text(formattedPrimaryDob);
         }
@@ -69,13 +97,19 @@
         // Format partner dob
         if (!noData && !_.isEmpty(data.partnerBorn)) {
             var partnerDob = meerkat.modules.dateUtils.returnDate($('#health_healthCover_partner_dob').val()),
-                formattedPartnerDob = meerkat.modules.dateUtils.format(partnerDob, "DD MMM YYYY");
+                formattedPartnerDob = meerkat.modules.dateUtils.format(partnerDob, "D MMM YYYY");
 
             $('.quoteSnapshot .snapshot-items.partner-dob span').text(formattedPartnerDob);
         }
 
+        // set rebate text
+        $('.quoteSnapshot .snapshot-items.rebate-text').text(data.rebateText);
+
+        // set rebate lhc %
+        $('.quoteSnapshot .rebate .snapshot-items.sub-text').text(data.rebateSubText);
+
         // Populate hospital/extras
-        if(!noData && !_.isEmpty(data.hospital)) {
+        if (!noData && !_.isEmpty(data.hospital)) {
             $box = $('.quoteSnapshot .hospital .snapshot-list');
             $box.empty();
             for(i = 0; i < data.hospital.length; i++) {
@@ -122,14 +156,20 @@
 
         var livingIn = $.trim($("input[name=health_situation_state]").filter(":checked").parent().text()),
             coverFor = $.trim($("input[name=health_situation_healthCvr]").filter(":checked").parent().text()),
-            primaryBorn = $('#health_healthCover_primary_dob').val(),
-            partnerBorn = $('#health_healthCover_partner_dob').val();
+            primaryBorn = $("#health_healthCover_primary_dob").val(),
+            partnerBorn = $("#health_healthCover_partner_dob").val(),
+            rebateText = fetchRebateText($("#health_healthCover_income").val()),
+            rebateSubText = fetchRebateSubText($("#health_healthCover_income").val()),
+            hospital = fetchAllHospitalCheckedValues();
 
         return {
             livingIn: _.isEmpty(livingIn) ? false : livingIn,
             coverFor: _.isEmpty(coverFor) ? false : coverFor,
             primaryBorn: _.isEmpty(primaryBorn) ? false : primaryBorn,
-            partnerBorn: _.isEmpty(partnerBorn) ? false : partnerBorn
+            partnerBorn: _.isEmpty(partnerBorn) ? false : partnerBorn,
+            rebateText: rebateText,
+            rebateSubText: rebateSubText,
+            hospital: _.isEmpty(hospital) ? false : hospital
         };
     }
 
@@ -143,11 +183,31 @@
         return false;
     }
 
+    function fetchRebateText(income) {
+        if ($('#health_healthCover_rebate').is(":checked")) {
+            return rebateText[income];
+        } else {
+            return rebateText[4];
+        }
+    }
+
+    function fetchRebateSubText(income) {
+        if ($('#health_healthCover_rebate').is(":checked")) {
+            if (income < 3) {
+                return meerkat.modules.healthRebate.getRebate();
+            } else {
+                return "You're not eligible to receive a rebate";
+            }
+        } else {
+            return '';
+        }
+    }
+
     function fetchAllHospitalCheckedValues(coverType) {
         var list = [];
-        if(_.indexOf(["C","H"], coverType) >= 0) {
+        // if(_.indexOf(["C","H"], coverType) >= 0) {
             $(".Hospital_container").find(':checked').each(function (item) {
-                var label = $.trim($(this).next('label').find('span.iconLabel').text());
+                var label = $.trim($(this).next('label').find('.benefitTitle').text());
                 if (!_.isEmpty(label)) {
                     list.push(label);
                 }
@@ -159,7 +219,7 @@
                     list.push(label);
                 }
             });
-        }
+        // }
         return list;
     }
 

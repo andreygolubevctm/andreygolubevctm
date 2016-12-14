@@ -7,11 +7,11 @@
 // Also check the blurry rendering fix below this
 @font-face {
   font-family: 'framework_font';
-  src:url('../../../../assets/fonts/CTM.eot?20161207');
-  src:url('../../../../assets/fonts/CTM.eot?#iefix20161207') format('embedded-opentype'),
-  url('../../../../assets/fonts/CTM.woff?20161207') format('woff'),
-  url('../../../../assets/fonts/CTM.ttf?20161207') format('truetype'),
-  url('../../../../assets/fonts/CTM.svg?20161207#CTM') format('svg');
+  src:url('../../../../assets/fonts/CTM.eot?20161213');
+  src:url('../../../../assets/fonts/CTM.eot?#iefix20161213') format('embedded-opentype'),
+  url('../../../../assets/fonts/CTM.woff?20161213') format('woff'),
+  url('../../../../assets/fonts/CTM.ttf?20161213') format('truetype'),
+  url('../../../../assets/fonts/CTM.svg?20161213#CTM') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -20,7 +20,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'framework_font';
-    src: url('../../../../assets/fonts/CTM.svg?20161207#CTM') format('svg');
+    src: url('../../../../assets/fonts/CTM.svg?20161213#CTM') format('svg');
   }
 }
 
@@ -77,9 +77,11 @@
 .icon-phone-hollow {
   &:before { content: "\e628"; }
 }
-.icon-car-solid,
-.icon-car {
+.icon-car-solid {
   &:before { content: "\e609"; }
+}
+.icon-car {
+  &:before { content: "\e60a"; }
 }
 .icon-plane-solid {
   &:before { content: "\e60b"; }
@@ -87,11 +89,11 @@
 .icon-plane {
   &:before { content: "\e60c"; }
 }
-
-.icon-creditcard,
-.icon-money-solid,
+.icon-money-solid {
+  &:before { content: "\e60d"; }
+}
 .icon-money {
-  &:before { content: "\e630"; }
+  &:before { content: "\e60e"; }
 }
 .icon-heart-solid {
   &:before { content: "\e60f"; }
@@ -109,36 +111,33 @@
   &:before { content: "\e613"; }
 }
 .icon-health {
-  &:before { content: "\e924"; }
+  &:before { content: "\e614"; }
 }
 .icon-travel {
-  &:before { content: "\e928"; }
+  &:before { content: "\e615"; }
 }
 .icon-roadside {
-  &:before { content: "\e922"; }
+  &:before { content: "\e616"; }
 }
 .icon-life {
-  &:before { content: "\e926"; }
+  &:before { content: "\e617"; }
 }
 .icon-ip {
-  &:before { content: "\e921"; }
+  &:before { content: "\e618"; }
 }
 .icon-homeloan,
-.icon-home-loans,
-.icon-home,
-.icon-home-contents {
-  &:before { content: "\e925"; }
+.icon-home-loans {
+  &:before { content: "\e619"; }
 }
-
 .icon-contents {
   &:before { content: "\e61a"; }
 }
 .icon-fuel {
-  &:before { content: "\e920"; }
+  &:before { content: "\e61b"; }
 }
 .icon-utilities,
 .icon-energy {
-  &:before { content: "\e630"; }
+  &:before { content: "\e61c"; }
 }
 .icon-ctp {
   &:before { content: "\e61d"; }
@@ -169,6 +168,10 @@
 }
 .icon-tick-hollow {
   &:before { content: "\e626"; }
+}
+.icon-home,
+.icon-home-contents {
+  &:before { content: "\e627"; }
 }
 
 .icon-undo {
@@ -327,7 +330,6 @@
 .icon-vert-travel {
   &:before { content: "\e928"; }
 }
-
 .icon-save-quote .path1:before {
   content: "\e92b";
 }
@@ -345,4 +347,7 @@
 }
 .icon-callback {
   &:before { content: "\e92f"; }
+}
+.icon-pencil {
+  &:before { content: "\e930"; }
 }

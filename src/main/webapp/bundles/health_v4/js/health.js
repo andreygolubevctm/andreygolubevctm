@@ -64,6 +64,10 @@
         if (meerkat.site.isCallCentreUser === true) {
             meerkat.modules.simplesSnapshot.initSimplesSnapshot();
         }
+
+        if(meerkat.site.isCallCentreUser === false) {
+            meerkat.modules.saveQuote.initSaveQuote();
+        }
     }
 
     function eventSubscriptions() {
@@ -189,17 +193,29 @@
                     meerkat.modules.healthBenefitsStep.updateHiddenFields(coverTypeVal);
                 });
 
-                meerkat.messaging.subscribe(meerkatEvents.healthLocation.STATE_CHANGED, function onStateChanged() {
-                    meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
-                });
-
-                meerkat.messaging.subscribe(meerkatEvents.healthSituation.SITUATION_CHANGED, function onSituationChanged() {
-                    meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
-                });
-
-                $('#health_healthCover_primary_dob').on('change', function() {
-                    meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
-                });
+                // meerkat.messaging.subscribe(meerkatEvents.healthLocation.STATE_CHANGED, function onStateChanged() {
+                //     meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
+                // });
+                //
+                // meerkat.messaging.subscribe(meerkatEvents.healthSituation.SITUATION_CHANGED, function onSituationChanged() {
+                //     meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
+                // });
+                //
+                // $('#health_healthCover_primary_dob').on('change', function() {
+                //     meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
+                // });
+                //
+                // meerkat.messaging.subscribe(meerkatEvents.healthRebate.REBATE_TOGGLED, function onRebateToggled() {
+                //    meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
+                // });
+                //
+                // meerkat.messaging.subscribe(meerkatEvents.healthRebate.INCOME_CHANGED, function onIncomeChanged() {
+                //     meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
+                // });
+                //
+                // meerkat.messaging.subscribe(meerkatEvents.healthRebate.RATES_LOADED, function onRatesLoaded() {
+                //     meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
+                // });
             },
             onBeforeEnter: _incrementTranIdBeforeEnteringSlide,
             onAfterEnter: function healthAfterEnter() {
@@ -231,6 +247,10 @@
                 /** @todo implement from health.js when get to this step */
 
                 $('#health_healthCover_partner_dob').on('change', function() {
+                    meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
+                });
+
+                $('.Hospital_container input:checkbox').on('click', function() {
                     meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
                 });
             },

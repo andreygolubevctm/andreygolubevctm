@@ -27,7 +27,7 @@
     </div>
     <div class="row snapshot born">
         <div class="col-md-12">
-            <div class="row born-labels">
+            <div class="row born-labels hidden">
                 <div class="col-md-4 col-md-offset-4">You</div>
                 <div class="col-md-4">Partner</div>
             </div>
@@ -45,6 +45,7 @@
                         <div class="col-md-6">
                             <span class="snapshot-items hidden-xs hidden-sm partner-dob">
                                 <span data-source="#health_healthCover_partner_dob"></span>
+                                <a href="javascript:;" class="add-partner-dob hidden">+ Add</a>
                             </span>
                         </div>
                     </div>
@@ -52,25 +53,36 @@
             </div>
         </div>
     </div>
+    <div class="row snapshot rebate">
+        <div class="col-md-4">
+            <span class="snapshot-title">Gov. Rebate</span>
+        </div>
+        <div class="col-md-8">
+            <span class="snapshot-items hidden-xs hidden-sm rebate-text"></span>
+            <span class="snapshot-items sub-text"></span>
+        </div>
+    </div>
     <div class="row snapshot hospital">
-        <div class="col-md-5">
+        <div class="col-md-4">
             <span class="snapshot-title">Hospital</span>
         </div>
-        <div class="col-md-7">
+        <div class="col-md-8">
             <span class="snapshot-items hidden-xs hidden-sm">
                 <ul class="snapshot-list"></ul>
             </span>
         </div>
     </div>
     <div class="row snapshot extras">
-        <div class="col-md-5">
+        <div class="col-md-4">
             <span class="snapshot-title">Extras</span>
         </div>
-        <div class="col-md-7">
+        <div class="col-md-8">
         <span class="snapshot-items hidden-xs hidden-sm">
             <ul class="snapshot-list"></ul>
         </span>
         </div>
     </div>
+    <a href="javascript:;" class="icon-pencil btn-edit" data-slide-control="start"></a>
+    <a href="javascript:;" data-opensavequote="true" class="pull-right" <field_v1:analytics_attr analVal="save button" quoteChar="\"" />>Save for later</a>
 </fieldset>
 
