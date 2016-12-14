@@ -8,7 +8,7 @@
 
 <simples:dialogue id="49" vertical="health" />
 
-<form_v2:fieldset legend="What would you like covered in your new health insurance policy?" postLegend="Select all the hospital and extras benefits that you would like covered in your new insurance policy.">
+<form_v2:fieldset legend="What would you like covered in your new health insurance policy?" postLegend="Select all the hospital and extras benefits that you would like covered in your new insurance policy." className="mainBenefitHeading">
 	<field_v1:hidden xpath="${pageSettings.getVerticalCode()}/benefits/covertype" defaultValue="medium" />
 </form_v2:fieldset>
 

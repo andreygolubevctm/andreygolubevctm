@@ -1,0 +1,37 @@
+.benefitsTab {
+
+	.nav-tabs {
+		> li {
+
+			@media (@xs-only) {
+				display: inline-block;
+				float: none;
+			}
+
+			h2 {
+				font-size: 14px;
+				color: #1C3E93;
+			}
+
+			&.active {
+				h2 {
+					color: #1c3e93;
+				}
+
+				a {
+					border: none;
+					border-bottom: 5px solid @theme-accent-4;
+				}
+			}
+
+			a {
+				border: none;
+				padding: 5px 7px;
+
+				&:hover {
+					background-color: transparent;
+				}
+			}
+		}
+	}
+}

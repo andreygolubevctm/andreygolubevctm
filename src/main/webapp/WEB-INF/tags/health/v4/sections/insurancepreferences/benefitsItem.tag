@@ -56,15 +56,15 @@
 						<c:if test="${category != 'Hospital'}">
 							<div class="title <c:if test="${category eq 'Hospital'}">hidden-xs</c:if>">
 								<h2 class="ignore">${category}</h2>
-								<p class="hidden-xs">${colContent}</p>
+								<p>${colContent}</p>
 								<health_v4_insuranceprefs:quick_select options="Dental:dental|Sports:sports|Prace of Mind:peace" />
 							</div>
 						</c:if>
 						<c:if test="${category eq 'Hospital'}">
-							<div class="title hidden-xs">
+							<div class="title">
 								<h2 class="ignore">Hospital</h2>
 							</div>
-						<div id="tabs">
+						<div id="tabs" class="benefitsTab">
 							<ul class="nav nav-tabs tab-count-2">
 								<li><a href="javascript:;" data-target=".comprehensive-pane"><h2 class="ignore">Comprehensive</h2></a></li>
 								<li><a href="javascript:;" data-target=".limited-pane"><h2 class="ignore">Limited Cover</h2></a></li>
