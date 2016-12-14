@@ -48,7 +48,7 @@ body.health {
 		}
 
 		.tieredHospitalCover {
-			width: 45%;
+			width: 50%;
 			display: inline-block;
 			vertical-align: top;
 
@@ -68,17 +68,13 @@ body.health {
 			}
 
 			.categoriesCell {
-				height: 50px;
+				min-height: 50px;
 			}
 
-			.benefits-list {
-				margin-left: 15px;
 
 				// custom column width because of the design
 				.section {
 					min-height: 1px;
-					padding-left: 15px;
-					padding-right: 15px;
 
 					&.hasShortlistableChildren {
 						padding-bottom: 15px;
@@ -151,8 +147,12 @@ body.health {
 							}
 
 							.benefitSummary {
+								-ms-word-wrap: break-word;
+								word-wrap: break-word;
+
 								color: #999;
 								a {
+									margin-left: 5px;
 									color: #1C3E93;
 								}
 							}
@@ -160,6 +160,7 @@ body.health {
 							.benefitContent {
 								display: inline-block;
 								padding-left: 10px;
+								width: 90%;
 							}
 						}
 
@@ -174,7 +175,7 @@ body.health {
 						}
 					}
 				}
-			}
+
 
 			.limited-pane,
 			.Hospital-wrapper {

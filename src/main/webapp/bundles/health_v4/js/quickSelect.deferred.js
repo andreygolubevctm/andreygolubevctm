@@ -27,18 +27,27 @@
     function _eventSubscription() {
         // quick selection options
         $elements.quickSelect.on('click', 'a', function preSelectBenefits(){
+
+
             var $this = $(this),
-                settings = {
-                    isHospital: $this.closest($elements.hospital).length === 1,
-                    selectType: $this.data('select-type')
+                isHospital = $this.closest($elements.hospital).length === 1,
+                selectedItems = isHospital ? meerkat.modules.benefitsModel.getHospital() : meerkat.modules.benefitsModel.getExtras(),
+                 settings = {
+                    isHospital: isHospital,
+                    selectedItems: _.union(selectedItems, meerkat.modules.benefitsModel.getDefaultSelections($this.data('select-type')))
                 };
+
+                $this.closest($elements.quickSelect).next($elements.clear).removeClass('hidden');
 
                 meerkat.messaging.publish(meerkatEvents.PRESELECT_BENEFITS, settings);
         });
 
         // clear selection
         $elements.clear.on('click', 'a', function clearSelectedBenefits() {
-            meerkat.messaging.publish(meerkatEvents.CLEAR_BENEFITS, $(this).closest($elements.hospital).length === 1);
+            var $this = $(this);
+
+            $this.parent().addClass('hidden');
+            meerkat.messaging.publish(meerkatEvents.CLEAR_BENEFITS, $this.closest($elements.hospital).length === 1);
         });
     }
 

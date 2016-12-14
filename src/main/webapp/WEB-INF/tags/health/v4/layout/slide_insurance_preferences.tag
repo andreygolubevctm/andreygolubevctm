@@ -9,6 +9,7 @@
 
         <jsp:attribute name="rightColumn">
             <health_v2_content:sidebar />
+             <health_v4_insuranceprefs:benefitsSelectionScroller isSidebar="${true}" />
         </jsp:attribute>
             <jsp:body>
 
@@ -25,6 +26,7 @@
                     <health_v4_insuranceprefs:partner_cover_loading xpath="${xpath}" />
                     <health_v4_insuranceprefs:simples xpath="${xpath}" />
 
+                    <health_v4_insuranceprefs:benefitsSelectionScroller />
                     <c:set var="xpath" value="${pageSettings.getVerticalCode()}/benefits" />
                     <health_v4_insuranceprefs:benefits xpath="${xpath}" />
 

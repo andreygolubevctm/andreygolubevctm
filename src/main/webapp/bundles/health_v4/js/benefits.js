@@ -31,7 +31,8 @@
             hospitalOverlay: $('.hospitalOverlay'),
             hospital: $('.Hospital_container'),
             extras: $('.GeneralHealth_container'),
-            quickSelectContainer: $('.quickSelectContainer')
+            quickSelectContainer: $('.quickSelectContainer'),
+            coverType: $('input[name=health_situation_covertype]')
         };
 
         _eventSubscription();
@@ -56,11 +57,10 @@
         // set the flag if we're updating the hospital or extras benefits
         meerkat.modules.benefitsModel.setIsHospital(settings.isHospital);
 
-        var defaultSelections = meerkat.modules.benefitsModel.getDefaultSelections(settings.selectType),
-            benefitType = meerkat.modules.benefitsModel.getBenefitType();
+        var benefitType = meerkat.modules.benefitsModel.getBenefitType();
 
         // update the dom with the selected benefits
-        _.each(defaultSelections, function addDefaultBenefits(id) {
+        _.each(settings.selectedItems, function addDefaultBenefits(id) {
             $elements[benefitType].find('[data-benefit-id='+id+']').prop('checked', 'checked');
         });
 
@@ -81,6 +81,15 @@
 
         meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, function extrasOverlayEnterXsState() {
             $elements.extrasOverlay.show();
+
+            // set extras
+            _updateBenefits();
+
+            // set hospital
+            meerkat.modules.benefitsModel.setIsHospital(true);
+            _updateBenefits();
+            _setOverlayLabelCount($elements.hospitalOverlay, meerkat.modules.benefitsModel.getHospitalCount());
+            _setOverlayLabelCount($elements.extrasOverlay, meerkat.modules.benefitsModel.getExtrasCount());
         });
 
         meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function extrasOverlayLeaveXsState() {
@@ -106,7 +115,7 @@
 
         // toggle the quick select data in the hospital container
         $elements.hospital.find('.nav-tabs a').on('click', function toggleQuickSelect(){
-            $elements.quickSelectContainer.toggleClass('hidden', $(this).data('target') === '.limited-pane');
+            $elements.hospital.find($elements.quickSelectContainer).toggleClass('hidden', $(this).data('target') === '.limited-pane');
         });
 
         // clear benefits
@@ -120,14 +129,17 @@
         $overlay.find('span').text(count);
     }
 
-    function _updateBenefits(){
-        var tempBenefitsCounter = [];
+    function _setCoverTypeField() {
+        // set the hidden field
+        var coverType = 'C';
 
-        _.each($elements[meerkat.modules.benefitsModel.getBenefitType()].find('input').filter(':checked'), function updateBenefitCount(checkbox) {
-            tempBenefitsCounter.push($(checkbox).data('benefit-id'));
-        });
+        if (meerkat.modules.benefitsModel.getExtrasCount() > 0 && meerkat.modules.benefitsModel.getHospitalCount() === 0) {
+            coverType = 'E';
+        } else if (meerkat.modules.benefitsModel.getExtrasCount() === 0 && meerkat.modules.benefitsModel.getHospitalCount() > 0) {
+            coverType = 'H';
+        }
 
-        meerkat.modules.benefitsModel.setBenefits(tempBenefitsCounter);
+        $elements.coverType.val(coverType);
     }
 
     function setDefaultTabs() {
@@ -142,6 +154,20 @@
             // update label
             _setOverlayLabelCount($elements.extrasOverlay, meerkat.modules.benefitsModel.getExtrasCount());
         }
+    }
+
+    function _updateBenefits(){
+        var tempBenefitsCounter = [],
+            benefitType = meerkat.modules.benefitsModel.getBenefitType();
+
+        // update the dom
+        _.each($elements[benefitType].find('input').filter(':checked'), function updateBenefitCount(checkbox) {
+            tempBenefitsCounter.push($(checkbox).data('benefit-id'));
+        });
+
+        meerkat.modules.benefitsModel.setBenefits(tempBenefitsCounter);
+
+        _setCoverTypeField();
     }
 
     meerkat.modules.register("benefits", {

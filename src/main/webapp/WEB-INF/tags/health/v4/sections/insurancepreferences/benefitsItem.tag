@@ -6,22 +6,19 @@
 
 <c:if test="${item.isShortlistable()}">
 
+	<c:set var="benefitsContentBlurbs" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "benefitsCopy2017")}' />
 	<c:set var="benefitsContent" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "healthbenefits2017")}' />
-
 	<%-- Get the correct cell width for sections v. categories --%>
 	<c:choose>
 		<c:when test="${item.getType() == 'section'}">
 			<c:choose>
 				<c:when test="${item.getClassName() == 'hospitalCover'}">
-					<c:set var="colContent">Hospital cover gives you the power to choose your own doctor at any one of the fund's partner hospitals allowing you avoid public hospital waiting lists.</c:set>
+					<c:set var="colContent">${benefitsContent.getSupplementaryValueByKey('hospitalText')}</c:set>
 					<c:set var="coverType">Hospital</c:set>
-					<%-- Hospital needs to loop one more time because the first child of hospital is not shortListAable --%>
-					<c:set var="loopCount" value="5" />
 				</c:when>
 				<c:otherwise>
-					<c:set var="colContent">Extras cover gives you money back for day to day services like dental, optical and physiotherapy.</c:set>
+					<c:set var="colContent">${benefitsContent.getSupplementaryValueByKey('extrasText')}</c:set>
 					<c:set var="coverType">Extras</c:set>
-					<c:set var="loopCount" value="4" />
 				</c:otherwise>
 			</c:choose>
 		</c:when>
@@ -39,8 +36,6 @@
 	<c:if test="${item.getShortlistKey() eq 'Hospital'}"><c:set var="category">Hospital</c:set></c:if>
 	<form_v2:fieldset legend="" postLegend="" className="${fieldsetClass}" >
 		<div class="scrollable row">
-			<div class="benefits-list col-sm-12">
-				<div class="row">
 					<c:set var="overlayName">hospital</c:set>
 					<c:if test="${category != 'Hospital'}"><c:set var="overlayName">extras</c:set></c:if>
 					<div class="${overlayName}Overlay">
@@ -55,7 +50,7 @@
 
 						<c:if test="${category != 'Hospital'}">
 							<div class="title <c:if test="${category eq 'Hospital'}">hidden-xs</c:if>">
-								<h2 class="ignore">${category}</h2>
+								<h2 class="ignore">Extras</h2>
 								<p>${colContent}</p>
 								<health_v4_insuranceprefs:quick_select options="Dental:dental|Sports:sports|Prace of Mind:peace" />
 							</div>
@@ -63,6 +58,7 @@
 						<c:if test="${category eq 'Hospital'}">
 							<div class="title">
 								<h2 class="ignore">Hospital</h2>
+								<p>${colContent}</p>
 							</div>
 						<div id="tabs" class="benefitsTab">
 							<ul class="nav nav-tabs tab-count-2">
@@ -120,7 +116,7 @@
 												<c:set var="benefitLabel">
 													<span class="benefitContent">
 														<div class="benefitTitle">${selectedValue.getName()}</div>
-														<span class="benefitSummary">hasf jkldfhas kljd hasklj fhasjkld  <a href="javascript:;" class="help_icon floatLeft" data-content="helpid:${selectedValue.getHelpId()}" data-toggle="popover">more</a></span>
+														<span class="benefitSummary">${benefitsContentBlurbs.getSupplementaryValueByKey(selectedValue.getId())} <a href="javascript:;" class="help_icon floatLeft" data-content="helpid:${selectedValue.getHelpId()}" data-toggle="popover">more</a></span>
 													</span>
 												</c:set>
 												<field_v2:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${selectedValue.getShortlistKey()}" value="Y" required="false" label="true" title="${benefitLabel}" errorMsg="Please tick" customAttribute="data-attach=true data-benefit-id='${selectedValue.getId()}'"  additionalLabelAttributes="${analyticsLabelAttr}" additionalHelpAttributes="${analyticsHelpAttr}" />
@@ -144,8 +140,6 @@
 						<%-- ======================= --%>
 						</div>
 					</div>
-				</div>
-			</div>
 		</div>
 	</form_v2:fieldset>
 
