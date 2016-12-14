@@ -352,7 +352,7 @@
                     extrasContent = meerkat.site.content.extrasCompareSpecialA;
                     extrasDisabledContent = meerkat.site.content.extrasCompareSpecialA;
                 } else {
-                    hospitalContent = meerkat.site.content.hospitalLimitedAll;
+                    hospitalContent = meerkat.site.content[isAltJourney() ? 'hospitalLimitedAllALT' : 'hospitalLimitedAll'];
                     extrasContent = meerkat.site.content.extrasLimitedAll;
                     extrasDisabledContent = meerkat.site.content.extrasLimitedAll;
                 }
