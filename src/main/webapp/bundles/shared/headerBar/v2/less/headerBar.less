@@ -7,24 +7,12 @@ body > div > header {
   > .header-top { background-color: @header-bg; }
 
   //The header needs to take up space, lest the content be hidden underneath by accident once the header is position fixed or docking.
-  min-height: @navbar-height; //XS
+  /*min-height: @navbar-height; //XS*/
   @media (@sm) {
     min-height: @header-min-height-sm; //SM
   }
   @media (@md) {
     min-height: @header-min-height-md; //MD and LG
-  }
-
-  //This alters a default for things in the header.
-  a {
-    color: @header-link-color;
-    &:hover { color: @header-link-hover-color }
-  }
-  .well-chatty {
-    a {
-      color: white;
-      &:hover { color: white }
-    }
   }
 
   //but the buttons are getting overriden by accident due to their lower specificity.
