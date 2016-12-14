@@ -201,7 +201,7 @@
             events: {
                 update: function() {
                     // Update benefits step coverType
-                    coverType = coverType || 'C'/*meerkat.modules.health.getCoverType();*/
+                    coverType = coverType || 'C';/*meerkat.modules.health.getCoverType();*/
                     $('#health_situation_coverType').find('input[value="' + coverType + '"]').prop("checked", true).change().end().change();
                     /*meerkat.modules.healthBenefitsStep.flushHiddenBenefits();*/
                     meerkat.modules.journeyEngine.loadingShow('...updating your quotes...', true);
@@ -385,7 +385,7 @@
 
         meerkat.messaging.subscribe(meerkatEvents.filters.FILTERS_RENDERED, function (){
             // reset coverType to use the journey value
-            coverType = 'C'/*meerkat.modules.health.getCoverType();*/
+            coverType = 'C';/*meerkat.modules.health.getCoverType();*/
 
             // hack for the css3 multi columns, it is buggy when two columns doesn't have the same amount of children
             var $providerListCheckboxes = $('.provider-list .checkbox'),
