@@ -79,7 +79,7 @@ body.health {
 					&.hasShortlistableChildren {
 						padding-bottom: 15px;
 						h4 {
-							color: #000;
+							color: @gray-darker;
 						}
 					}
 				}
@@ -102,13 +102,13 @@ body.health {
 								&:checked,
 								&.checked {
 									& + label {
-										color: #22B24C;
+										color: @theme-secondary;
 										&:before {
 											font-family: 'framework_font';
-											font-size: 24px;
+											font-size: 21px;
 											background-color: @health-benefits-icon-bg-checked-color;
 											border-color: @health-benefits-icon-bg-checked-color;
-											color: #fff;
+											color: @white;
 											content: "\e600";
 											vertical-align: top;
 										}
@@ -150,10 +150,10 @@ body.health {
 								-ms-word-wrap: break-word;
 								word-wrap: break-word;
 
-								color: #999;
+								color: @gray;
 								a {
 									margin-left: 5px;
-									color: #1C3E93;
+									color: @theme-tertiary;
 								}
 							}
 
@@ -186,7 +186,7 @@ body.health {
 				h2 {
 					color: @theme-accent-4;
 					margin-bottom: 0;
-					font-size: 18px;
+					font-size: 21px;
 				}
 			}
 
@@ -208,7 +208,7 @@ body.health {
 							label.checked:before {
 								background-color: @health-benefits-icon-bg-checked-color !important;
 								border-color: @health-benefits-icon-border-checked-color !important;
-								color: #fff;
+								color: @white;
 							}
 						}
 
@@ -220,8 +220,8 @@ body.health {
 
 		.selectionStatus {
 			cursor: pointer;
-			background: #1C3E93;
-			color: #FFF;
+			background: @theme-tertiary;
+			color: @white;
 			top: 50%;
 			position: absolute;
 			text-transform: uppercase;
@@ -262,13 +262,13 @@ body.health {
 		margin-bottom: 0px;
 
 		h2 {
-			font-size: 18px;
-			color: #666666;
+			font-size: 21px;
+			color: @gray-dark;
 		}
 
 		h4 {
 			font-size: 14px;
-			color: #999999;
+			color: @gray;
 		}
 	}
 }
