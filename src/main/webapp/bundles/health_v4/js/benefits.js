@@ -113,6 +113,10 @@
     function _reSelectBenefitCheckboxes(updatedBenefitsModel) {
         var benefitType = meerkat.modules.benefitsModel.getBenefitType();
 
+        // reset the checkboxes
+        $elements[benefitType].find(':checkbox').removeAttr('checked');
+
+        // reselect the checkboxes
         _.each(updatedBenefitsModel, function updateCheckboxes(id) {
             $elements[benefitType].find('input[data-benefit-id='+id+']').prop('checked', 'checked');
         });

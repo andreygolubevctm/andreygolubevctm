@@ -40,7 +40,7 @@
         meerkat.messaging.subscribe(meerkatEvents.benefits.BENEFIT_SELECTED, _updateBenefitToModel);
 
         // clear benefits
-        meerkat.messaging.subscribe(meerkatEvents.qSelect.CLEAR_BENEFITS, _resetModel);
+        meerkat.messaging.subscribe(meerkatEvents.quickSelect.CLEAR_BENEFITS, _resetModel);
     }
 
     function _resetModel(isHospital) {

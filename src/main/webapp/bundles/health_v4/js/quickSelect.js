@@ -1,19 +1,19 @@
 /**
- * Description: External documentation:
+ * Description: Preselects benefits for benefits step. Can't defer this file otherwise it throws an error for those modules that subscribe to the CLEAR_BENEFITS events
  */
 
 (function($, undefined) {
 
     var meerkat = window.meerkat,
         events = {
-            qSelect: {
+            quickSelect: {
                 CLEAR_BENEFITS: 'CLEAR_BENEFITS'
             },
             benefits: {
                 BENEFIT_SELECTED: 'BENEFIT_SELECTED'
             }
         },
-        qsEvents = events.qSelect,
+        quickSelect = events.quickSelect,
         benefitEvents = events.benefits,
         $elements = {};
 
@@ -48,7 +48,7 @@
             var $this = $(this);
 
             $this.parent().addClass('hidden');
-            meerkat.messaging.publish(qsEvents.CLEAR_BENEFITS, $this.closest($elements.hospital).length === 1);
+            meerkat.messaging.publish(quickSelect.CLEAR_BENEFITS, $this.closest($elements.hospital).length === 1);
         });
     }
 
