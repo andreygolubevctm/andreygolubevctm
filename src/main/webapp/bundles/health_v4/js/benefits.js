@@ -42,16 +42,6 @@
         _registerBenefitsCounter();
     }
 
-    function _coverChangePartner(isHospital) {
-        // deselect the benefits
-        var $container = isHospital ? $elements.hospital : $elements.extras;
-        $container.find('input:checkbox').removeAttr('checked');
-
-        // update the model
-        meerkat.modules.benefitsModel.setIsHospital(isHospital);
-        _updateBenefits();
-    }
-
     function _registerBenefitsCounter() {
         $('.GeneralHealth_container, .Hospital_container').on('change', 'input', function(){
             var $this = $(this),
@@ -69,13 +59,6 @@
 
         meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, function extrasOverlayEnterXsState() {
             $elements.extrasOverlay.show();
-
-            // set extras
-            _updateBenefits();
-
-            // set hospital
-            meerkat.modules.benefitsModel.setIsHospital(true);
-            _updateBenefits();
             _setOverlayLabelCount($elements.hospitalOverlay, meerkat.modules.benefitsModel.getHospitalCount());
             _setOverlayLabelCount($elements.extrasOverlay, meerkat.modules.benefitsModel.getExtrasCount());
         });
@@ -127,39 +110,13 @@
         $elements.coverType.val(coverType);
     }
 
-    function setDefaultTabs() {
-        // set extras
-        _updateBenefits();
-
-        // set hospital
-        meerkat.modules.benefitsModel.setIsHospital(true);
-        _updateBenefits();
-
-        if (meerkat.modules.deviceMediaState.get() == 'xs') {
-            // update label
-            _setOverlayLabelCount($elements.extrasOverlay, meerkat.modules.benefitsModel.getExtrasCount());
-        }
-    }
-
     function _reSelectBenefitCheckboxes(updatedBenefitsModel) {
         var benefitType = meerkat.modules.benefitsModel.getBenefitType();
 
         _.each(updatedBenefitsModel, function updateCheckboxes(id) {
             $elements[benefitType].find('input[data-benefit-id='+id+']').prop('checked', 'checked');
         });
-    }
 
-    function _updateBenefits(){
-        /*var tempBenefitsCounter = [],
-            benefitType = meerkat.modules.benefitsModel.getBenefitType();
-
-        // update the dom
-        _.each($elements[benefitType].find('input').filter(':checked'), function updateBenefitCount(checkbox) {
-            tempBenefitsCounter.push($(checkbox).data('benefit-id'));
-        });
-
-        meerkat.modules.benefitsModel.setBenefits(tempBenefitsCounter);
-*/
         _setCoverTypeField();
     }
 

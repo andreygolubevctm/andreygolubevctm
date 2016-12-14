@@ -223,7 +223,6 @@
             },
             onAfterEnter: function enterBenefitsStep(event) {
                 /** @todo implement from health.js when get to this step */
-                meerkat.modules.benefits.setDefaultTabs();
             },
             onAfterLeave: function leaveBenefitsStep(event) {
                 /** @todo implement from health.js when get to this step */
