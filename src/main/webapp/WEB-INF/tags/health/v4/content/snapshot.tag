@@ -4,13 +4,13 @@
 
 <jsp:useBean id="sessionDataUtils" class="com.ctm.web.core.utils.SessionDataUtils" scope="page" />
 
-<fieldset class="quoteSnapshot sidebar-box hidden-sm tieredHospitalCover">
+<fieldset class="quoteSnapshot sidebar-box hidden-sm">
     <div class="row snapshot living-in">
         <div class="col-md-4">
             <span class="snapshot-title">Living In</span>
         </div>
         <div class="col-md-8">
-            <span class="snapshot-items hidden-xs hidden-sm">
+            <span class="snapshot-items">
                 <span data-source=".health-situation-state" data-type="radiogroup"></span>
             </span>
         </div>
@@ -20,7 +20,7 @@
             <span class="snapshot-title">Cover For</span>
         </div>
         <div class="col-md-8">
-            <span class="snapshot-items hidden-xs hidden-sm">
+            <span class="snapshot-items">
                 <span data-source=".health-situation-healthCvr" data-type="radiogroup"></span>
             </span>
         </div>
@@ -37,13 +37,13 @@
                 </div>
                 <div class="col-md-8">
                     <div class="row">
-                        <div class="col-md-6">
-                            <span class="snapshot-items hidden-xs hidden-sm primary-dob">
+                        <div class="primary-dob">
+                            <span class="snapshot-items">
                                 <span data-source="#health_healthCover_primary_dob"></span>
                             </span>
                         </div>
-                        <div class="col-md-6">
-                            <span class="snapshot-items hidden-xs hidden-sm partner-dob">
+                        <div class="partner-dob">
+                            <span class="snapshot-items">
                                 <span data-source="#health_healthCover_partner_dob"></span>
                                 <a href="javascript:;" class="add-partner-dob hidden">+ Add</a>
                             </span>
@@ -58,7 +58,7 @@
             <span class="snapshot-title">Gov. Rebate</span>
         </div>
         <div class="col-md-8">
-            <span class="snapshot-items hidden-xs hidden-sm rebate-text"></span>
+            <span class="snapshot-items rebate-text"></span>
             <span class="snapshot-items sub-text"></span>
         </div>
     </div>
@@ -67,8 +67,12 @@
             <span class="snapshot-title">Hospital</span>
         </div>
         <div class="col-md-8">
-            <span class="snapshot-items hidden-xs hidden-sm">
+            <span class="snapshot-items">
+                <span class="snapshot-item-first"></span>
                 <ul class="snapshot-list"></ul>
+                <a href="javascript:;" class="toggle-snapshot-list hidden">
+                    and <span class="snapshot-list-count"></span> more
+                </a>
             </span>
         </div>
     </div>
@@ -77,12 +81,15 @@
             <span class="snapshot-title">Extras</span>
         </div>
         <div class="col-md-8">
-        <span class="snapshot-items hidden-xs hidden-sm">
-            <ul class="snapshot-list"></ul>
+        <span class="snapshot-items">
+                <span class="snapshot-item-first"></span>
+                <ul class="snapshot-list"></ul>
+                <a href="javascript:;" class="toggle-snapshot-list hidden">
+                    and <span class="snapshot-list-count"></span> more
+                </a>
         </span>
         </div>
     </div>
     <a href="javascript:;" class="icon-pencil btn-edit" data-slide-control="start"></a>
     <a href="javascript:;" data-opensavequote="true" class="pull-right" <field_v1:analytics_attr analVal="save button" quoteChar="\"" />>Save for later</a>
 </fieldset>
-

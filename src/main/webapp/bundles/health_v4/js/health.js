@@ -221,12 +221,7 @@
             },
             onInitialise: function onResultsInit(event) {
                 /** @todo implement from health.js when get to this step */
-
                 $('#health_healthCover_partner_dob').on('change', function() {
-                    meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
-                });
-
-                $('.Hospital_container input:checkbox').on('click', function() {
                     meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
                 });
             },

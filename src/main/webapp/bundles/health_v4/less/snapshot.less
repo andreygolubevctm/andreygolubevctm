@@ -53,6 +53,19 @@
             display: block;
           }
         }
+
+        .snapshot-list {
+          display: none;
+          margin: 0;
+          padding: 0;
+          li {
+            list-style: none;
+          }
+        }
+
+        .toggle-snapshot-list {
+          display: block;
+        }
       }
 
       a {
@@ -78,8 +91,44 @@
         &.cover-for {
           margin-bottom: 0;
         }
+
+        > div {
+          .primary-dob,
+          .partner-dob {
+            .make-md-column(6);
+          }
+
+          .partner-dob {
+            display: block;
+          }
+        }
+      }
+    }
+
+    &:not(.has-partner) {
+      .row {
+        > div {
+          .primary-dob {
+            .make-md-column(12);
+          }
+
+          .partner-dob {
+            display: none;
+          }
+        }
       }
     }
   }
+}
 
+body {
+  &[data-step=start],
+  &[data-step=benefits] {
+    .quoteSnapshot {
+      .hospital,
+      .extras {
+        display: none;
+      }
+    }
+  }
 }

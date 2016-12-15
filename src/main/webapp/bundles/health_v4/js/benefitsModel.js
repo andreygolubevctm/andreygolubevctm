@@ -32,6 +32,14 @@
         return defaultSelections[selectType];
     }
 
+    function getExtras() {
+        return selectedElements.extras;
+    }
+
+    function getHospital() {
+        return selectedElements.hospital;
+    }
+
     function getExtrasCount() {
         return selectedElements.extras.length;
     }
@@ -51,6 +59,8 @@
     meerkat.modules.register("benefitsModel", {
         getBenefitType: getBenefitType,
         getDefaultSelections: getDefaultSelections,
+        getExtras: getExtras,
+        getHospital: getHospital,
         getExtrasCount: getExtrasCount,
         getHospitalCount: getHospitalCount,
         setBenefits: setBenefits,
