@@ -5,7 +5,7 @@
 <%-- ATTRIBUTES --%>
 <%@ attribute name="isSidebar" 		required="false"	 rtexprvalue="true"	 description="field group's xpath" %>
 
-<c:set var="benefitsContent" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "healthbenefits2017")}' />
+<c:set var="benefitsContent" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "healthbenefits_v4")}' />
 
 <c:set var="dbKey">benefitsScroller</c:set>
 

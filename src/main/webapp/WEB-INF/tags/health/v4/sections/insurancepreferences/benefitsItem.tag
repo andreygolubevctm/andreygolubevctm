@@ -6,8 +6,8 @@
 
 <c:if test="${item.isShortlistable()}">
 
-	<c:set var="benefitsContentBlurbs" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "benefitsCopy2017")}' />
-	<c:set var="benefitsContent" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "healthbenefits2017")}' />
+	<c:set var="benefitsContentBlurbs" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "benefitsCopy_v4")}' />
+	<c:set var="benefitsContent" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "healthbenefits_v4")}' />
 	<%-- Get the correct cell width for sections v. categories --%>
 	<c:choose>
 		<c:when test="${item.getType() == 'section'}">
