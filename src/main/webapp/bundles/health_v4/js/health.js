@@ -243,6 +243,8 @@
             },
             onInitialise: function onContactInit(event) {
                 /** @todo implement from health.js when get to this step */
+
+                meerkat.modules.healthPostcode.initPostcode();
             },
             onBeforeEnter: function enterContactStep(event) {
                 /** @todo implement from health.js when get to this step */
