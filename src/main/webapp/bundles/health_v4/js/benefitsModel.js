@@ -7,18 +7,7 @@
 
     var meerkat =window.meerkat,
         _isHospital = false,
-        defaultSelections = {
-            // Private Hospital, Birth Related Services, Assisted Reproduction, In-Hospital Rehabilitation
-            family: [6953, 6957, 6960, 6987],
-            // Private Hospital, Heart Surgery, Joint Replacement, Major Eye Surgery, In-Hospital Rehabilitation
-            aging: [6953, 6954, 6966, 6963, 6987],
-            // General Dental, Major Dental, Endodontics, Orthodontics
-            dental: [6991, 7002, 7011, 7019],
-            // General Dental, Major Dental, Physiotherapy, Chiropratic, Remedial Massage, Podiatry, Orthotics, Lifestyle
-            sports: [6991, 7002, 7036, 7045, 7078, 7054, 7119, 7158],
-            // General Dental, Optical, Physiotherapy
-            peace: [6991, 7028, 7036]
-        },
+        defaultSelections = {},
         selectedElements = {
             hospital: [],
             extras: []
@@ -32,7 +21,28 @@
         moduleEvents = events.benefitsModel;
 
     function init() {
+        _setupPreselectData();
         _eventsSubscription();
+    }
+
+    function _setupPreselectData() {
+        meerkat.modules.comms.get({
+            url: 'spring/content/getsupplementary',
+            data: {
+                vertical: 'HEALTH',
+                key: 'benefitsPreselectData_v4'
+            },
+            cache: true,
+            dataType: 'json',
+            useDefaultErrorHandling: false,
+            errorLevel: 'silent',
+            timeout: 5000,
+            onSuccess: function onSubmitSuccess(resultData) {
+                _.each(resultData.supplementary, function setupDefaultSelections(obj) {
+                    defaultSelections[obj.supplementaryKey] = obj.supplementaryValue.split(',');
+                });
+            }
+        });
     }
 
     function _eventsSubscription() {

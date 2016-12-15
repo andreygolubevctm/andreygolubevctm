@@ -38,7 +38,7 @@
 		<div class="scrollable row">
 					<c:set var="overlayName">hospital</c:set>
 					<c:if test="${category != 'Hospital'}"><c:set var="overlayName">extras</c:set></c:if>
-					<div class="${overlayName}Overlay visible-xs">
+					<div class="${overlayName}Overlay">
 						<div class="selectionStatus ${overlayName}">
 							Your ${overlayName} benefits selection
 						<span>0</span></div>
@@ -65,7 +65,7 @@
 								<li><a href="javascript:;" data-target=".comprehensive-pane"><h2 class="ignore">Comprehensive</h2></a></li>
 								<li><a href="javascript:;" data-target=".limited-pane"><h2 class="ignore">Limited Cover</h2></a></li>
 							</ul>
-							<health_v4_insuranceprefs:quick_select options="Start a Family:family|Ageing Gracefully:aging" />
+							<health_v4_insuranceprefs:quick_select options="Start a Family:family|Ageing Gracefully:ageing" />
 							<div class="tab-content">
 								<div class="tab-pane comprehensive-pane">
 						</c:if>
