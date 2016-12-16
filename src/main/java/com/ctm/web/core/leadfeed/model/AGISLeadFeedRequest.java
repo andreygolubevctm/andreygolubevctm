@@ -52,13 +52,18 @@ public abstract class AGISLeadFeedRequest {
 	 * @param leadData
 	 */
 	public void importLeadData(LeadFeedData leadData){
+		if (leadData.isPartnerReferenceChange()) {
+			setClientNumber(leadData.getNewPartnerReference());
+			setBrand(leadData.getNewPartnerBrand());
+		} else {
+			setClientNumber(leadData.getPartnerReference());
+			setBrand(leadData.getPartnerBrand());
+		}
 		setPartnerReference(leadData.getTransactionId().toString());
 		setIPAddress(leadData.getClientIpAddress());
 		setClientName(leadData.getClientName());
 		setPhoneNumber(leadData.getPhoneNumber());
-		setClientNumber(leadData.getPartnerReference());
 		setState(leadData.getState());
-		setBrand(leadData.getPartnerBrand());
 		setVDN(leadData.getVdn());
 	}
 

@@ -7,8 +7,6 @@
 <jsp:useBean id="sessionUtils" class="com.ctm.web.core.utils.SessionUtils"/>
 <session:new verticalCode="HEALTH" authenticated="true" />
 
-<session:new verticalCode="HEALTH" authenticated="true" />
-
 <health_v1:redirect_rules />
 
 <%-- START JOURNEY OVERRIDE - Part 1 of 2) --%>
@@ -52,10 +50,8 @@
         <c:set var="callCentreHoursModal" scope="request"><content:getOpeningHoursModal /></c:set>
         <c:set var="callCentreCBModal" scope="request"><health_v3:callback_modal /></c:set>
 
-        <c:set var="isHealthV2" value="${true}" scope="request" />
-
         <%-- HTML --%>
-        <layout_v1:journey_engine_page title="Health Quote">
+        <layout_v1:journey_engine_page title="Health Quote" bundleFileName="health_v2">
 
         <jsp:attribute name="head">
         </jsp:attribute>

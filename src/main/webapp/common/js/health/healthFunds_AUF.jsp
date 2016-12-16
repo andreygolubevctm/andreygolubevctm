@@ -19,9 +19,9 @@ var healthFunds_AUF = {
   $claimsAccountOptin: $('#health_payment_bank_claims'),
   set: function(){
     <%--dependant definition--%>
-    healthFunds._dependants('This policy provides cover for children under the age of 23 or who are aged between 23-25 years and engaged in full time study. Student dependants do not need to be living at home to be added to the policy. Adult dependants outside these criteria can still be covered by applying for a separate singles policy.');
+      meerkat.modules.healthFunds._dependants('This policy provides cover for children under the age of 23 or who are aged between 23-25 years and engaged in full time study. Student dependants do not need to be living at home to be added to the policy. Adult dependants outside these criteria can still be covered by applying for a separate singles policy.');
 
-    healthFunds._previousfund_authority(true);
+      meerkat.modules.healthFunds._previousfund_authority(true);
 
     <%--school Age--%>
     meerkat.modules.healthDependants.updateConfig({schoolMinAge: 23});
@@ -34,7 +34,7 @@ var healthFunds_AUF = {
     meerkat.modules.healthPaymentStep.setCoverStartRange(0, 30);
 
     <%--selections for payment date--%>
-    healthFunds._payments = { 'min':0, 'max':5, 'weekends':false };
+    meerkat.modules.healthFunds.setPayments({ 'min':0, 'max':5, 'weekends':false });
     healthFunds_AUF.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '0,6');
 
     healthFunds_AUF.$paymentType.on('change.AUF', function renderPaymentDayPaymentType(){
@@ -54,7 +54,7 @@ var healthFunds_AUF = {
     meerkat.modules.healthCreditCard.render();
 
     <%--failed application--%>
-    healthFunds.applicationFailed = function(){
+      meerkat.modules.healthFunds.applicationFailed = function(){
       meerkat.modules.transactionId.getNew();
     };
 
@@ -69,11 +69,11 @@ var healthFunds_AUF = {
     meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), _html);
   },
   unset: function(){
-    healthFunds._reset();
+      meerkat.modules.healthFunds._reset();
     <%--dependant definition off--%>
-    healthFunds._dependants(false);
+      meerkat.modules.healthFunds._dependants(false);
 
-    healthFunds._previousfund_authority(false);
+      meerkat.modules.healthFunds._previousfund_authority(false);
 
     <%--credit card options--%>
     meerkat.modules.healthCreditCard.resetConfig();
@@ -90,7 +90,7 @@ var healthFunds_AUF = {
     healthFunds_AUF.$paymentStartDate.off("changeDate.AUF");
 
     <%--failed application--%>
-    healthFunds.applicationFailed = function(){ return false; };
+      meerkat.modules.healthFunds.applicationFailed = function(){ return false; };
   }
 };
 </c:set>

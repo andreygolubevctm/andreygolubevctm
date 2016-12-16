@@ -42,7 +42,7 @@
         var today = new Date();
 
         var _baseDate = null;
-        if(healthFunds._payments.countFrom == countFrom.TODAY ) {
+        if(meerkat.modules.healthFunds.getPayments().countFrom == countFrom.TODAY ) {
             _baseDate = today;
         } else {
             _baseDate = effectiveDate;
@@ -50,15 +50,15 @@
         var _count = 0;
 
         var _days = 0;
-        var _limit = healthFunds._payments.max;
-        if(healthFunds._payments.minType == minType.FROM_TODAY ) {
+        var _limit = meerkat.modules.healthFunds.getPayments().max;
+        if(meerkat.modules.healthFunds.getPayments().minType == minType.FROM_TODAY ) {
             var difference = Math.round((effectiveDate-today)/(1000*60*60*24));
-            if(difference < healthFunds._payments.min) {
-                _days = healthFunds._payments.min - difference;
+            if(difference < meerkat.modules.healthFunds.getPayments().min) {
+                _days = meerkat.modules.healthFunds.getPayments().min - difference;
             }
         } else {
-            _days = healthFunds._payments.min;
-            _limit -= healthFunds._payments.min;
+            _days = meerkat.modules.healthFunds.getPayments().min;
+            _limit -= meerkat.modules.healthFunds.getPayments().min;
         }
 
 
@@ -70,10 +70,10 @@
             var _date = new Date( _baseDate.getTime() + (_days * 24 * 60 * 60 * 1000));
             var _day = _date.getDay();
             // up to certain payment day
-            if( typeof(healthFunds._payments.maxDay) != 'undefined' && healthFunds._payments.maxDay < _date.getDate() ){
+            if( typeof(meerkat.modules.healthFunds.getPayments().maxDay) != 'undefined' && meerkat.modules.healthFunds.getPayments().maxDay < _date.getDate() ){
                 _days++;
                 // Parse out the weekends
-            } else if( !healthFunds._payments.weekends && ( _day === 0 || _day === 6 ) ){
+            } else if( !meerkat.modules.healthFunds.getPayments().weekends && ( _day === 0 || _day === 6 ) ){
                 _days++;
             } else {
                 _html += '<option value="'+ meerkat.modules.dateUtils.dateValueServerFormat(_date) +'">'+
@@ -90,7 +90,7 @@
     // Renders the payment days text
     function paymentDaysRender($_object,_html){
         if(_html === false){
-            healthFunds._payments = { 'min':0, 'max':5, 'weekends':false };
+            meerkat.modules.healthFunds.setPayments({ 'min':0, 'max':5, 'weekends':false });
             _html = '<option value="">Please choose...</option>';
         }
         $_object.html(_html);

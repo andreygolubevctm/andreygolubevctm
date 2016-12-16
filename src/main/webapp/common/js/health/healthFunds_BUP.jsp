@@ -18,7 +18,7 @@ set: function () {
 	"use strict";
 
 		<%-- Authority Fund Name --%>
-		healthFunds._previousfund_authority(true);
+        meerkat.modules.healthFunds._previousfund_authority(true);
 		$('#health_previousfund_primary_authority').setRequired(true, 'Bupa requires authorisation to contact your previous fund');
 		$('#health_previousfund_partner_authority').setRequired(true, 'Bupa requires authorisation to contact your partner\'s previous fund');
 
@@ -54,7 +54,7 @@ set: function () {
 		meerkat.modules.healthPaymentIPP.show();
 
 		<%-- Dependant's Age and message --%>
-		healthFunds._dependants('Dependent child means a person who does not have a partner and is \(i\) aged under 21 or \(ii\) is receiving a full time education at a school, college or university recognised by the company and who is not aged 25 or over.');
+    meerkat.modules.healthFunds._dependants('Dependent child means a person who does not have a partner and is \(i\) aged under 21 or \(ii\) is receiving a full time education at a school, college or university recognised by the company and who is not aged 25 or over.');
 	meerkat.modules.healthDependants.setMaxAge(25);
 	meerkat.modules.healthDependants.updateConfig({showMiddleName: true});
 
@@ -72,7 +72,7 @@ set: function () {
 			var deductionText = 'Your account will be debited within the next 24 hours.';
 		};
 
-		healthFunds._payments = { 'min':6, 'max':7, 'weekends':false };
+		meerkat.modules.healthFunds.setPayments({ 'min':6, 'max':7, 'weekends':false });
 		healthFunds_BUP.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '0,6');
 
 		var date = new Date();
@@ -90,14 +90,14 @@ set: function () {
 	},
 	unset: function () {
 		"use strict";
-		healthFunds._reset();
+        meerkat.modules.healthFunds._reset();
 
 		<%-- Authority Fund Name --%>
-		healthFunds._previousfund_authority(false);
+        meerkat.modules.healthFunds._previousfund_authority(false);
 		$('#health_previousfund_primary_authority, #health_previousfund_partner_authority').setRequired(false);
 
 		<%-- Dependants --%>
-		healthFunds._dependants(false);
+        meerkat.modules.healthFunds._dependants(false);
 
 		<%-- Age requirements for applicants (back to default) --%>
 

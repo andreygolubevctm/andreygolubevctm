@@ -80,34 +80,31 @@
 				startStepId = meerkat.modules.emailLoadQuote.getStartStepOverride(startStepId);
 			}
 
-			$(document).ready(function(){
-
-				meerkat.modules.journeyEngine.configure({
-					startStepId : startStepId,
-					steps : _.toArray(steps)
-				});
-
-				// Call initial supertag call
-				var transaction_id = meerkat.modules.transactionId.get();
-
-				if(meerkat.site.isNewQuote === false){
-					meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-						method:'trackQuoteEvent',
-						object: {
-							action: 'Retrieve',
-							transactionID: parseInt(transaction_id, 10)
-						}
-					});
-				} else {
-					meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-						method: 'trackQuoteEvent',
-						object: {
-							action: 'Start',
-							transactionID: parseInt(transaction_id, 10)
-						}
-					});
-				}
+			meerkat.modules.journeyEngine.configure({
+				startStepId: startStepId,
+				steps: _.toArray(steps)
 			});
+
+			// Call initial supertag call
+			var transaction_id = meerkat.modules.transactionId.get();
+
+			if (meerkat.site.isNewQuote === false) {
+				meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+					method: 'trackQuoteEvent',
+					object: {
+						action: 'Retrieve',
+						transactionID: parseInt(transaction_id, 10)
+					}
+				});
+			} else {
+				meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+					method: 'trackQuoteEvent',
+					object: {
+						action: 'Start',
+						transactionID: parseInt(transaction_id, 10)
+					}
+				});
+			}
 
 		}
 	}

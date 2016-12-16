@@ -6,6 +6,8 @@
 <%@ attribute name="title"			required="false"  rtexprvalue="true"	 description="Page title" %>
 <%@ attribute required="false" name="body_class_name" description="Allow extra styles to be added to the rendered body tag" %>
 <%@ attribute name="ignore_journey_tracking" required="false"  rtexprvalue="true" description="Ignore Journey Tracking" %>
+<%@ attribute name="bundleFileName" required="false"  rtexprvalue="true" description="Pass in an alternate file name" %>
+<%@ attribute name="displayNavigationBar" required="false"  rtexprvalue="true" description="Pass false to remove the navigation bar" %>
 
 <%@ attribute fragment="true" required="true" name="head" %>
 <%@ attribute fragment="true" required="true" name="head_meta" %>
@@ -35,7 +37,7 @@
 
 <c:if test="${empty sessionPop}"><c:set var="sessionPop" value="true" /></c:if>
 
-<layout_v1:page title="${title}" body_class_name="${body_class_name}">
+<layout_v1:page title="${title}" body_class_name="${body_class_name}" bundleFileName="${bundleFileName}" displayNavigationBar="${displayNavigationBar}">
 
 	<jsp:attribute name="head">
 		<jsp:invoke fragment="head" />

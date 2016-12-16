@@ -1,0 +1,27 @@
+.health {
+
+  // Add your slide feature here to be hidden by default
+  .slide-control-about-you,
+  .slide-control-insurance-preferences,
+  .slide-control-get-prices {
+    .slide-feature-hidden();
+  }
+
+  &[data-step="start"] {
+    .slide-control-about-you {
+      .slide-feature-is-visible();
+    }
+  }
+
+  &[data-step="benefits"] {
+    .slide-control-insurance-preferences {
+      .slide-feature-is-visible();
+    }
+  }
+
+  &[data-step="contact"] {
+    .slide-control-get-prices {
+      .slide-feature-is-visible();
+    }
+  }
+}

@@ -158,13 +158,13 @@ var healthFunds_HBF = {
         healthFunds_HBF.$_dobPartner.addRule('youngestDOB', 18, "partner's age cannot be under 18");
 
         <%--dependant definition--%>
-        healthFunds._dependants('A dependent must be under 25, not married or living in a de facto relationship, and studying full time or earning less than $21,250 taxable income per calendar year.');
+        meerkat.modules.healthFunds._dependants('A dependent must be under 25, not married or living in a de facto relationship, and studying full time or earning less than $21,250 taxable income per calendar year.');
 
         <%--schoolgroups and defacto--%>
         meerkat.modules.healthDependants.updateConfig({ showSchoolFields:false, 'schoolMinAge':18, 'schoolMaxAge':24, showSchoolIdField:false });
 
         <%-- Authority Fund Name --%>
-        healthFunds._previousfund_authority(true);
+        meerkat.modules.healthFunds._previousfund_authority(true);
         healthFunds_HBF.$primaryAuthority = $('#health_previousfund_primary_authority').parents('.health_previous_fund_authority');
         healthFunds_HBF.$partnerAuthority = $('#health_previousfund_partner_authority').parents('.health_previous_fund_authority');
         healthFunds_HBF.originalPartnerAuthorityLabelHtml = healthFunds_HBF.$partnerAuthority.find('label').html();
@@ -216,11 +216,11 @@ var healthFunds_HBF = {
         var isBank = meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() !== 'cc';
 
         if (meerkat.modules.healthPaymentStep.getSelectedFrequency() === 'fortnightly') {
-            healthFunds._payments = {
+            meerkat.modules.healthFunds.setPayments({
                 'min':0,
                 'max':14,
                 'weekends':false
-            };
+            });
             meerkat.modules.healthPaymentDate.populateFuturePaymentDays($('#health_payment_details_start').val(), 0, false, isBank);
         } else {
             meerkat.modules.healthPaymentDate.populateFuturePaymentDays($('#health_payment_details_start').val(), 0, false, isBank, 28);
@@ -243,14 +243,14 @@ var healthFunds_HBF = {
         delete healthFunds_HBF.$_dobPartner;
 
         <%--dependant definition off--%>
-        healthFunds._dependants(false);
+        meerkat.modules.healthFunds._dependants(false);
 
         <%-- Reset dependants config --%>
         meerkat.modules.healthDependants.resetConfig();
 
         <%--Authority off--%>
         healthFunds_HBF.$partnerAuthority.find('label').html(healthFunds_HBF.originalPartnerAuthorityLabelHtml);
-        healthFunds._previousfund_authority(false);
+        meerkat.modules.healthFunds._previousfund_authority(false);
 
         <%-- let set this back to its original state --%>
         $('input[name="health_application_contactPoint"]').off('change.HBF');
