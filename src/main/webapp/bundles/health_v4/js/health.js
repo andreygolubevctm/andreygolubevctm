@@ -248,9 +248,13 @@
             },
             onBeforeEnter: function enterContactStep(event) {
                 /** @todo implement from health.js when get to this step */
+
+                meerkat.modules.healthPostcode.editMode();
             },
             onAfterLeave: function leaveContactStep(event) {
                 /** @todo implement from health.js when get to this step */
+
+                meerkat.modules.healthPostcode.editMode();
             }
         };
 

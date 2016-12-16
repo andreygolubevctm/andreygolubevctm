@@ -8,76 +8,147 @@
             }
         },
 
-        $elements = {};
+        $elements = {},
+        _hasSelection = false;
 
     function initPostcode() {
+        _hasSelection = meerkat.modules.healthLocation.getLocation() ? true : false;
         _setupFields();
+        _applyEventListeners();
         _eventSubscriptions();
 
-        if ($elements.postcode.val()) {
-            _doSearch($elements.postcode.val());
+        if ($elements.input.val()) {
+            _getResults($elements.input.val());
         }
     }
 
     function _setupFields() {
         $elements = {
-            postcode: $('#health_contactDetails_postcode')
+            input: $('input.health_contact_details_postcode'),
+            resultsWrapper: $('.health_contact_details_postcode_results_wrapper'),
+            results: $('.health_contact_details_postcode_results'),
+            editBtn: $('.postcode-items-btn-edit')
         };
     }
 
+    function _applyEventListeners() {
+        $elements.input
+            .on('keyup', function() {
+                console.log('postcodeValue: ',$(this).val());
+                _hasSelection = false;
+                editMode();
+
+                if ($(this).isValid()) {
+                    // do search
+                    _getResults($(this).val());
+                } else {
+                    // clear search
+                    _clearResults();
+                }
+            });
+
+        $elements.results
+            .on('click', 'button', function() {
+                var $postItem = $(this).parent();
+
+                $('.postcode-item, .postcode-item button').removeClass('selected');
+                $postItem.addClass('selected').find('button').addClass('selected');
+
+                _setLocation($postItem.attr('data-location'));
+            });
+
+        $elements.editBtn.on('click', function() {
+           editMode(true);
+        });
+    }
+
     function _eventSubscriptions() {
-        $elements.postcode.on('keyup', function() {
-            if ($(this).isValid()) {
-                // do search
-                _doSearch($(this).val());
-            } else {
-                // clear search
-                _clearSearch();
+        meerkat.messaging.subscribe(meerkatEvents.healthLocation.STATE_CHANGED, function onStateChanged() {
+            _hasSelection = false;
+            if (meerkat.modules.journeyEngine.getCurrentStep().navigationId !== 'contact') {
+                $elements.input.val('');
+                _clearResults();
             }
         });
     }
 
-    function _doSearch(postcode) {
+    function _getResults(postcode) {
         console.log('searching...');
+
+        meerkat.modules.loadingAnimation.showInside($elements.input.parent(), true);
 
         var data = { term: postcode },
             request_obj = {
-            url: 'ajax/json/get_suburbs.jsp',
-            data: data,
-            dataType: 'json',
-            cache: true,
-            errorLevel: "silent"
-        };
+                url: 'ajax/json/get_suburbs.jsp',
+                data: data,
+                dataType: 'json',
+                cache: true,
+                errorLevel: "silent",
+                onSuccess: function(res) {
+                    if (res.length > 0) {
+                        // show suburbs
+                        _showResults(res);
+                    } else {
+                        // clear
+                        _clearResults();
+                    }
+                },
+                onComplete: function() {
+                    // preselect location
+                    _preselectLocation();
 
-        meerkat.modules.comms
-            .get(request_obj)
-            .done(function onSuccess(res) {
-                console.log('res', res);
-                if (res.length > 0) {
-                    // show suburbs
-                    _showSuburbs(res);
-                } else {
-                    // clear
-                    _clearSearch();
+                    meerkat.modules.loadingAnimation.hide($elements.input.parent());
                 }
-            });
+            };
+
+        meerkat.modules.comms.get(request_obj);
     }
 
-    function _clearSearch() {
+    function _clearResults() {
         console.log('clear...');
-        $('.postcode-item').remove();
+        $elements.results.find('.postcode-item').remove();
     }
 
-    function _showSuburbs(results) {
-        console.log('show results');
-        results.forEach(function(item) {
-           $elements.postcode.parent().append('<span class="postcode-item btn btn-save-quote-trigger" style="font-size: 12px;">'+item+'</span>');
+    function _showResults(locations) {
+        console.log('show locations');
+        locations.forEach(function(location) {
+            var locationText = location.replace(' ' + $elements.input.val(), ', ');
+
+            $elements.results
+                .append('' +
+                    '<div class="postcode-item" data-location="'+location+'">' +
+                        '<button type="button" class="btn btn-secondary">' + locationText + '</button>' +
+                        '<span>' + locationText + '</span>' +
+                    '</div>'
+                );
         });
+    }
+
+    function _setLocation(location) {
+        meerkat.modules.healthLocation.setLocation(location);
+        _hasSelection = true;
+    }
+
+    function _preselectLocation() {
+        _.defer(function() {
+            var location = meerkat.modules.healthLocation.getLocation(),
+                $postcodeItemLocation = $elements.results.find('.postcode-item[data-location="' + location + '"]');
+
+            if (location && $postcodeItemLocation.length === 1 && _hasSelection) {
+                $postcodeItemLocation.find('button').trigger('click');
+                editMode();
+            }
+        });
+    }
+
+    function editMode(forceHide) {
+        $elements.resultsWrapper.toggleClass('edit-mode', forceHide ? false : _hasSelection);
     }
 
     meerkat.modules.register('healthPostcode', {
         initPostcode: initPostcode,
-        events: moduleEvents
+        events: moduleEvents,
+        editMode: editMode
     });
 
 })(jQuery);

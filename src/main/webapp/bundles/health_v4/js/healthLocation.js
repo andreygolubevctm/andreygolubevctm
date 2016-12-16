@@ -10,8 +10,8 @@
         $healthSitLocation,
         $healthSituationState,
         $healthSituationPostcode,
-        $healthSituationSuburb,
-        location = '';
+        $healthSituationSuburb;
+        // location = '';
 
     function initHealthLocation() {
         $healthSitLocation = $('#health_situation_location');
@@ -21,35 +21,40 @@
 
         eventSubscriptions();
 
-        location = $healthSitLocation.val();
-        setLocation();
+        // location = $healthSitLocation.val();
+        setLocation(getLocation());
     }
 
     function eventSubscriptions() {
+        // $healthSitLocation.on('change', function onLocationChanged() {
+        //     setLocation($(this).val());
+        // });
+
         $healthSituationState.on('change', function onStateChanged() {
             meerkat.messaging.publish(moduleEvents.healthLocation.STATE_CHANGED, { state: $(this).val() });
         });
     }
 
-    function setLocation() {
+    function setLocation(location) {
         if (location === '') {
             return;
         }
 
-        if (_isValidLocation()) {
+        if (_isValidLocation(location)) {
             var value = $.trim(String(location)),
                 pieces = value.split(' '),
                 state = pieces.pop(),
                 postcode = pieces.pop(),
                 suburb = pieces.join(' ');
 
+            $healthSitLocation.val(location);
             $healthSituationState.filter('[value='+state+']').trigger('click');
             $healthSituationPostcode.val(postcode);
             $healthSituationSuburb.val(suburb);
         }
     }
 
-    function _isValidLocation() {
+    function _isValidLocation(location) {
         var search_match = new RegExp(/^((\s)*([^~,])+\s+)+\d{4}((\s)+(ACT|NSW|QLD|TAS|SA|NT|VIC|WA)(\s)*)$/),
             value = $.trim(String(location));
 
@@ -62,9 +67,15 @@
         return false;
     }
 
+    function getLocation() {
+        return $healthSitLocation.val();
+    }
+
     meerkat.modules.register('healthLocation', {
         initHealthLocation: initHealthLocation,
-        events: moduleEvents
+        events: moduleEvents,
+        setLocation: setLocation,
+        getLocation: getLocation
     });
 
 })(jQuery);

@@ -1,0 +1,51 @@
+.health_contact_details_postcode_wrapper {
+  width: 100px;
+  float: left;
+  margin-right: 10px;
+}
+
+.health_contact_details_postcode_results_wrapper {
+
+  .postcode-item {
+    display: inline-block;
+    height: 41px;
+    line-height: 41px;
+    margin: 0 10px 10px 0;
+    text-transform: uppercase;
+
+    span {
+      color: @theme-secondary;
+      display: none;
+    }
+  }
+
+  .postcode-items-btn-edit {
+    display: none;
+  }
+
+  &.edit-mode {
+    .health_contact_details_postcode_results {
+      float: left;
+    }
+
+    .postcode-item {
+      display: none;
+      height: 41px;
+
+      &.selected {
+        display: inline-block;
+        button {
+          display: none;
+        }
+        span {
+          display: block;
+          padding: 0 15px;
+        }
+      }
+    }
+
+    .postcode-items-btn-edit {
+      display: inline-block;
+    }
+  }
+}

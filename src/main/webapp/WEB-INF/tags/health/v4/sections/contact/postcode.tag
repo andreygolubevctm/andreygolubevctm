@@ -7,7 +7,11 @@
 
 <c:set var="fieldXpath" value="${xpath}/postcode" />
 <form_v4:row label="Postcode" fieldXpath="${fieldXpath}" className="clear required_input">
-	<field_v1:post_code xpath="${fieldXpath}" title="postcode" required="true"  />
-
-	<div class="postcode-results-wrapper"></div>
+	<div class="health_contact_details_postcode_wrapper">
+		<field_v1:post_code xpath="${fieldXpath}" title="postcode" required="true" className="health_contact_details_postcode" />
+	</div>
+	<div class="health_contact_details_postcode_results_wrapper">
+		<div class="health_contact_details_postcode_results"></div>
+		<button type="button" class="btn btn-secondary postcode-items-btn-edit">Edit</button>
+	</div>
 </form_v4:row>
