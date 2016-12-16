@@ -14,8 +14,6 @@
 
 <layout_v1:results_template xsResultsColumns="2" resultsContainerClassName=" affixOnScroll sessioncamignorechanges ">
 
-    <jsp:attribute name="preResultsRow"><health_v4_results:pre_results_row_content_template/></jsp:attribute>
-
     <jsp:attribute name="sidebarColumnRight">
         <c:if test="${empty callCentre}">
             <form_v3:save_results_button />
@@ -66,7 +64,7 @@
             {{= headerHtml }}
             <div class="featuresList featuresElements">{{ if(coverType == 'H' || coverType == 'C') { }}
                 <div class="hospitalCoverSection">
-                    <h3><span class="health-icon HLTicon-hospital"></span> Hospital Cover</h3>
+                    <h3>Hospital</h3>
                     <div class="hospitalSelectionsExcessContainer">
                         <div class="hospitalExcessSectionBorder">
                             <h5>Excess</h5>
@@ -80,19 +78,18 @@
                         <div class="featuresListHospitalSelections"><health_v3:limited_cover_label /></div>
                         {{ } else { }}<div class="featuresListHospitalSelections" data-feature-index="2"></div>{{ } }}
                     </div>
-                    <h5>Other options</h5>
-                    <div class="featuresListHospitalOther" data-feature-index="4"></div>
+                    <div class="featuresListHospitalOtherList" data-feature-template="#results-features-extras-template" data-feature-index="4"></div>
+                    <div class="featuresListHospitalFullList" data-feature-index="4"></div>
                 </div>
                 {{ } if(coverType == 'E' || coverType == 'C') { }}
                 <div class="extrasCoverSection">
-                    <h3><span class="health-icon HLTicon-extras"></span> Extras Cover</h3>
+                    <h3>Extras</h3>
                     <div class="featuresListExtrasSelections" data-feature-index="3"></div>
-                    <h5>Other options</h5>
                     <div class="featuresListExtrasOtherList" data-feature-template="#results-features-extras-template" data-feature-index="5"></div>
                     <div class="featuresListExtrasFullList" data-feature-index="5"></div>
                 </div>{{ } }}
                 <div class="ambulanceCoverSection">
-                    <h3><span class="health-icon HLTicon-ambulance"></span> Ambulance Cover</h3>
+                    <h3>Ambulance</h3>
                     <div class="featuresListAmbulance" data-feature-index="6"></div>
                 </div>
             </div>
