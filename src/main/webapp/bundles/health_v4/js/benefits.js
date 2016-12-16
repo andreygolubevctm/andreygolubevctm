@@ -42,6 +42,26 @@
         _registerBenefitsCounter();
     }
 
+    function updateModelOnPreload(){
+        // extras first
+        meerkat.modules.benefitsModel.setIsHospital(false);
+        meerkat.modules.benefitsModel.setBenefits(_getSelectedBenefits($('.GeneralHealth_container')));
+
+        // hospital second since this is our default benefits screen
+        meerkat.modules.benefitsModel.setIsHospital(true);
+        meerkat.modules.benefitsModel.setBenefits(_getSelectedBenefits($('.Hospital_container')));
+    }
+
+    function _getSelectedBenefits($container) {
+        var selectedIds = [];
+
+        _.each($container.find(':input[data-benefit-id]:checked'), function getInputIds(el){
+            selectedIds.push($(el).data('benefit-id'));
+        });
+
+        return selectedIds;
+    }
+
     function _registerBenefitsCounter() {
         $('.GeneralHealth_container, .Hospital_container').on('change', 'input', function(){
             var $this = $(this),
@@ -126,7 +146,8 @@
 
     meerkat.modules.register("benefits", {
         init: initBenefits,
-        events: events
+        events: events,
+        updateModelOnPreload: updateModelOnPreload
     });
 
 })(jQuery);
