@@ -13,16 +13,12 @@
 body.health {
 	&[data-step="benefits"] {
 		.tieredHospitalCover {
-			width: 50%;
+			width: 48%;
 			display: inline-block;
 			vertical-align: top;
 
 			.scrollable {
 				margin-left: 15px;
-			}
-
-			.Hospital_container {
-				padding-right: 15px;
 			}
 
 			.GeneralHealth_container {
@@ -32,127 +28,101 @@ body.health {
 				padding-left: 20px;
 			}
 
-			.categoriesCell {
-				min-height: 60px;
-			}
+			.hasIcons {
+				.categoriesCell {
+					height: 60px;
+					.checkbox {
+						padding: 0;
 
-
-				// custom column width because of the design
-				.section {
-					min-height: 1px;
-
-					&.hasShortlistableChildren {
-						padding-bottom: 15px;
-						h4 {
-							color: @gray-darker;
-						}
-					}
-				}
-
-				.situation-wrapper {
-
-					&:before {
-						display: block;
-						font-family: 'ctm-health';
-					}
-				}
-
-				.hasIcons {
-					.categoriesCell {
-
-						.checkbox {
-							padding: 0;
-
-							input {
-								&:checked,
-								&.checked {
-									& + label {
-										color: @theme-secondary;
-										&:before {
-											font-family: 'framework_font';
-											font-size: 26px;
-											background-color: @health-benefits-icon-bg-checked-color;
-											border-color: @health-benefits-icon-bg-checked-color;
-											color: @white;
-											content: "\e931";
-											vertical-align: top;
-											margin: 0.15em;
-											margin-bottom: 10px;
-										}
+						input {
+							&:checked,
+							&.checked {
+								& + label {
+									color: @theme-secondary;
+									&:before {
+										font-family: 'framework_font';
+										background-color: @health-benefits-icon-bg-checked-color;
+										border-color: @health-benefits-icon-bg-checked-color;
+										color: @white;
+										content: "\e931";
+										font-size:16px;
+										float: none;
+										border-radius: 50%;
+										margin-left: 5px;
+										margin-right: 5px;
+										vertical-align: middle;
+										padding: 0.48em;
 									}
 								}
 							}
+						}
 
-							label {
-								display: block;
+						label {
+							display: block;
 
-								padding: 0;
+							padding: 0;
+							margin: 0;
+
+							&:before {
+								font-family: 'ctm-health';
+								display: table;
+								float: none;
 								margin: 0;
-
-								.iconLabel {
-									display: block;
-									height: 2.4em;
-									margin-top: 0.25em;
-								}
-
-								&:before {
-									font-family: 'ctm-health';
-									display: table;
-									float: none;
-									margin: 0;
-									margin-bottom: 10px;
-									padding: 0.15em;
-									border-radius: 50%;
-									border-color: transparent;
-									color: @theme-tertiary;
-								}
-							}
-
-							.benefitTitle {
-								font-size: 14px;
-							}
-
-							.benefitSummary {
-								-ms-word-wrap: break-word;
-								word-wrap: break-word;
-
-								color: @gray;
-								a {
-									margin-left: 5px;
-									color: @theme-tertiary;
-								}
-							}
-
-							.benefitContent {
-								display: inline-block;
-								padding-left: 10px;
-								width: 88%;
-
-								@media(@md-only){
-									width: 85%;
-								}
-
-								@media(@sm-only){
-									width: 80%;
-								}
-
-								@media(@xs-only){
-									width: 86%;
-								}
+								margin-bottom: 10px;
+								padding: 0.15em;
+								padding-top: 0px;
+								border-radius: 50%;
+								border-color: transparent;
+								color: @theme-tertiary;
 							}
 						}
 
-						@media (@xs) {
-							.benefitsIconSize(32px, @font-size-base, 0);
+						.benefitTitle {
+							font-size: 14px;
 						}
-						@media (@sm-only) {
-							.benefitsIconSize(32px, @font-size-small, 1);
+
+						.benefitSummary {
+							-ms-word-wrap: break-word;
+							word-wrap: break-word;
+
+							color: @gray;
+							a {
+								margin-left: 5px;
+								color: @theme-tertiary;
+							}
 						}
-						@media (@md-only) {
-							.benefitsIconSize(32px, @font-size-small, -1);
+
+						.benefitContent {
+							display: inline-block;
+							padding-left: 10px;
+							width: 88%;
+							vertical-align: top;
+
+							@media(@md-only){
+								width: 85%;
+							}
+
+							@media(@sm-only){
+								width: 80%;
+							}
+
+							@media(@xs-only){
+								width: 86%;
+							}
 						}
 					}
+
+					@media (@xs) {
+						.benefitsIconSize(32px, @font-size-base, 0);
+					}
+					@media (@sm-only) {
+						.benefitsIconSize(32px, @font-size-small, 1);
+					}
+					@media (@md-only) {
+						.benefitsIconSize(32px, @font-size-small, -1);
+					}
 				}
+			}
 
 
 			.limited-pane,
