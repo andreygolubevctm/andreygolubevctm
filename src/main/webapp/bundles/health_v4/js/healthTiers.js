@@ -75,7 +75,7 @@ Handling of the rebate tiers based off situation
 			if( meerkat.modules.healthRates.getRates() === null){
 				_ageBonus = 0;
 			} else {
-				_ageBonus = parseInt(meerkat.modules.healthRebate.getRates().ageBonus);
+				_ageBonus = parseInt(meerkat.modules.healthRates.getRates().ageBonus);
 			}
 
 			if(_cover === 'S' || _cover === 'SM' || _cover === 'SF' || _cover === ''){

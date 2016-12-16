@@ -23,9 +23,6 @@
 @theme-light: #f0f0f0;
 @theme-dark: #333333;
 
-@theme-primary: #fe8814; //Orange
-@theme-secondary: #0db14b; //Green
-@theme-tertiary: #1c3e93; //Blue
 
 // Additional Accent Variables -- still to be decided upon by brand.
 @theme-accent-1: #f49e1e;
@@ -33,27 +30,35 @@
 @theme-accent-3: #ef425e;
 @theme-accent-4: #008284;
 
+
+@theme-primary: @theme-accent-1;
+@theme-secondary: #0DB14B; //Green
+@theme-tertiary: #1C3F94; //Blue
+@gray-darker: #333333;
+@white: #FFFFFF;
+
+@gray-dark: #666666;
+@gray: #999999;
+@gray-light: #DDDDDD;
+@gray-lighter: #F0F0F0;
+
+
 @theme-active: @theme-secondary;
 
 //== Brand Colours
 //
 //## overrriden from Bootstrap variables
-@brand-primary: #fe8814; //@theme-primary;
-@brand-success: #0db14b; //@theme-secondary;
-@brand-info: #485f94; //@theme-tertiary;
-@brand-warning: #a90000;
-@brand-danger: #a90000;
+@brand-primary: @theme-primary; //@theme-primary;
+@brand-success: @theme-secondary; //@theme-secondary;
+@brand-info: @theme-accent-4; //@theme-tertiary;
+@brand-warning: @theme-accent-2;
+@brand-danger: @theme-accent-2;
 
 //== Grey colours
 //
 //## Gray and brand colors for use across Bootstrap.
 @gray-base: #000000;
-@gray-slight-dark: red; // replace instances of gray slight dark.
-@gray-darker: lighten(@gray-base, 20%); // #333
-@gray-dark: lighten(@gray-base, 40%); // #666
-@gray: lighten(@gray-base, 60%); // #999
-@gray-light: lighten(@gray-base, 87%); // #ddd
-@gray-lighter: lighten(@gray-base, 94%); // #f0f0f0
+@gray-slight-dark: @theme-accent-2; // replace instances of gray slight dark.
 
 //== Powered By Logos
 //
