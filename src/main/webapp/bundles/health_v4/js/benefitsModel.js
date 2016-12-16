@@ -15,7 +15,8 @@
         meerkatEvents = meerkat.modules.events,
         events = {
             benefitsModel: {
-                BENEFITS_UPDATED: 'BENEFITS_UPDATED'
+                UPDATE_SELECTED_BENEFITS_CHECKBOX: 'UPDATE_SELECTED_BENEFITS_CHECKBOX',
+                BENEFITS_MODEL_UPDATE_COMPLETED: 'BENEFITS_MODEL_UPDATE_COMPLETED'
             }
         },
         moduleEvents = events.benefitsModel;
@@ -75,6 +76,8 @@
                 setBenefits(_.union(selectedElements[getBenefitType()], options.benefitIds));
             }
         }
+
+        meerkat.messaging.publish(moduleEvents.BENEFITS_MODEL_UPDATE_COMPLETED);
     }
 
     function getBenefitType() {
@@ -103,7 +106,7 @@
 
     function setBenefits(updatedBenefits) {
         selectedElements[getBenefitType()] = updatedBenefits;
-        meerkat.messaging.publish(moduleEvents.BENEFITS_UPDATED, selectedElements[getBenefitType()]);
+        meerkat.messaging.publish(moduleEvents.UPDATE_SELECTED_BENEFITS_CHECKBOX, selectedElements[getBenefitType()]);
     }
 
     function setIsHospital(isHospital) {
