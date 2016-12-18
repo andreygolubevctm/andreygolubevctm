@@ -26,6 +26,7 @@
         _eventsSubscription();
     }
 
+    // do an ajax request to retrieve the supplementary data for the health pre-select data
     function _setupPreselectData() {
         meerkat.modules.comms.get({
             url: 'spring/content/getsupplementary',
@@ -54,17 +55,22 @@
         meerkat.messaging.subscribe(meerkatEvents.quickSelect.CLEAR_BENEFITS, _resetModel);
     }
 
+    // clear the model for hospital or extras
     function _resetModel(isHospital) {
         setIsHospital(isHospital);
         setBenefits([]);
     }
 
+    // update the benefit model depending on the type of click scenario
+    // 1. remove an item from the selectedElements array
+    // 2. add an item from the selectedElements array
+    // 3. pre-select some benefits
     function _updateBenefitModel(options) {
         setIsHospital(options.isHospital);
 
         if (typeof options.removeBenefit !== 'undefined' && options.removeBenefit) {
             // removing a singular item from a user click so don't need to fire the BENEFITS_UPDATED event
-            selectedElements[getBenefitType()] =  $.grep(selectedElements[getBenefitType()], function(value) {
+            selectedElements[getBenefitType()] =  selectedElements[getBenefitType()].filter(function removeItemFromModel(value) {
                 return value != options.benefitId;
             });
         } else {
@@ -80,30 +86,37 @@
         meerkat.messaging.publish(moduleEvents.BENEFITS_MODEL_UPDATE_COMPLETED);
     }
 
+    // return a string of hospital or events depending on value of _isHospital
     function getBenefitType() {
         return _isHospital ? 'hospital' : 'extras';
     }
 
+    // return an array of the default selected ids
     function getDefaultSelections(selectType){
         return defaultSelections[selectType];
     }
 
+    // return an array of the hospital selected extras ids
     function getExtras() {
         return selectedElements.extras;
     }
 
+    // return the number of selected extras benefits
     function getExtrasCount() {
         return selectedElements.extras.length;
     }
 
+    // return an array of the hospital selected hospital ids
     function getHospital() {
         return selectedElements.hospital;
     }
 
+    // return the number of selected hospital benefits
     function getHospitalCount() {
         return selectedElements.hospital.length;
     }
 
+    // set the selected benefits for hospital/extras AND fire off the UPDATE_SELECTED_BENEFITS_CHECKBOX event
     function setBenefits(updatedBenefits) {
         selectedElements[getBenefitType()] = updatedBenefits;
         meerkat.messaging.publish(moduleEvents.UPDATE_SELECTED_BENEFITS_CHECKBOX, selectedElements[getBenefitType()]);
