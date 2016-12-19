@@ -14,7 +14,7 @@
 
 <simples:dialogue id="46" className="simples-dialogue-hospital-cover" vertical="health" />
 
-<field_v1:hidden xpath="${pageSettings.getVerticalCode()}/situation/covertype" defaultValue="C" />
+<field_v1:hidden xpath="${pageSettings.getVerticalCode()}/situation/coverType" defaultValue="C" />
 
 <div class="benefitsOverflow">
 <c:forEach items="${resultTemplateItems}" var="selectedValue">

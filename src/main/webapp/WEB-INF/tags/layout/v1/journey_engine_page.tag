@@ -1,13 +1,13 @@
-<%@ tag description="Journey Engine Page"%>
+<%@ tag description="Journey Engine Page" %>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <jsp:useBean id="webUtils" class="com.ctm.web.core.web.Utils" scope="request" />
 
-<%@ attribute name="title"			required="false"  rtexprvalue="true"	 description="Page title" %>
+<%@ attribute name="title" required="false" rtexprvalue="true" description="Page title" %>
 <%@ attribute required="false" name="body_class_name" description="Allow extra styles to be added to the rendered body tag" %>
-<%@ attribute name="ignore_journey_tracking" required="false"  rtexprvalue="true" description="Ignore Journey Tracking" %>
-<%@ attribute name="bundleFileName" required="false"  rtexprvalue="true" description="Pass in an alternate file name" %>
-<%@ attribute name="displayNavigationBar" required="false"  rtexprvalue="true" description="Pass false to remove the navigation bar" %>
+<%@ attribute name="ignore_journey_tracking" required="false" rtexprvalue="true" description="Ignore Journey Tracking" %>
+<%@ attribute name="bundleFileName" required="false" rtexprvalue="true" description="Pass in an alternate file name" %>
+<%@ attribute name="displayNavigationBar" required="false" rtexprvalue="true" description="Pass false to remove the navigation bar" %>
 
 <%@ attribute fragment="true" required="true" name="head" %>
 <%@ attribute fragment="true" required="true" name="head_meta" %>
@@ -32,7 +32,7 @@
 <c:set var="revision" value="${webUtils.buildRevisionAsQuerystringParam()}" />
 <c:set var="verticalCode" value="${pageSettings.getVerticalCode()}" />
 <c:if test="${verticalCode eq 'car'}">
-	<c:set var="verticalCode" value="quote" />
+    <c:set var="verticalCode" value="quote" />
 </c:if>
 
 <c:if test="${empty sessionPop}"><c:set var="sessionPop" value="true" /></c:if>
@@ -43,118 +43,106 @@
 		<jsp:invoke fragment="head" />
 	</jsp:attribute>
 
-	<jsp:attribute name="head_meta">
+    <jsp:attribute name="head_meta">
 		<jsp:invoke fragment="head_meta" />
 	</jsp:attribute>
 
-	<jsp:attribute name="header">
+    <jsp:attribute name="header">
 		<jsp:invoke fragment="header" />
 	</jsp:attribute>
 
-	<jsp:attribute name="header_button_left"><jsp:invoke fragment="header_button_left" /></jsp:attribute>
+    <jsp:attribute name="header_button_left"><jsp:invoke fragment="header_button_left" /></jsp:attribute>
 
-	<jsp:attribute name="navbar">
+    <jsp:attribute name="navbar">
 		<jsp:invoke fragment="navbar" />
 	</jsp:attribute>
 
-	<jsp:attribute name="navbar_additional">
+    <jsp:attribute name="navbar_additional">
 		<jsp:invoke fragment="navbar_additional" />
 	</jsp:attribute>
 
-	<jsp:attribute name="navbar_outer">
+    <jsp:attribute name="navbar_outer">
 		<jsp:invoke fragment="navbar_outer" />
 	</jsp:attribute>
 
-	<jsp:attribute name="progress_bar">
+    <jsp:attribute name="progress_bar">
 		<jsp:invoke fragment="progress_bar" />
 	</jsp:attribute>
 
-	<jsp:attribute name="xs_results_pagination">
-		<div class="container">
-			<ul class="nav navbar-nav ">
-				<li class="navbar-text center hidden" data-results-pagination-pagetext="true"></li>
-
-				<li>
-					<a data-results-pagination-control="previous" href="javascript:;" class="btn-pagination" data-analytics="pagination previous"><span class="icon icon-arrow-left"></span> Prev</a>
-				</li>
-
-				<li class="right">
-					<a data-results-pagination-control="next" href="javascript:;" class="btn-pagination " data-analytics="pagination next">Next <span class="icon icon-arrow-right"></span></a>
-				</li>
-			</ul>
-		</div>
+    <jsp:attribute name="xs_results_pagination">
+        <jsp:invoke fragment="xs_results_pagination" />
 	</jsp:attribute>
 
-	<jsp:attribute name="vertical_settings">
+    <jsp:attribute name="vertical_settings">
 		<jsp:invoke fragment="vertical_settings" />
 	</jsp:attribute>
 
-	<jsp:attribute name="body_end">
+    <jsp:attribute name="body_end">
 		<jsp:invoke fragment="body_end" />
 	</jsp:attribute>
 
-	<jsp:attribute name="additional_meerkat_scripts">
+    <jsp:attribute name="additional_meerkat_scripts">
 		<jsp:invoke fragment="additional_meerkat_scripts" />
 	</jsp:attribute>
 
-	<jsp:attribute name="before_close_body">
+    <jsp:attribute name="before_close_body">
 		<content:get key="beforeCloseBody" suppKey="journey" />
 		<jsp:invoke fragment="before_close_body" />
 	</jsp:attribute>
 
-	<jsp:body>
+    <jsp:body>
 
-		<div id="pageContent">
+        <div id="pageContent">
 
-			<%-- <div id="pageContentTop"></div> --%>
+                <%-- <div id="pageContentTop"></div> --%>
 
-			<article class="container">
+            <article class="container">
 
-				<div id="journeyEngineContainer">
-					<div id="journeyEngineLoading" class="journeyEngineLoader opacityTransitionQuick">
-						<div class="loading-logo"></div>
-						<p class="message">Please wait...</p>
-						<jsp:invoke fragment="results_loading_message" />
-					</div>
+                <div id="journeyEngineContainer">
+                    <div id="journeyEngineLoading" class="journeyEngineLoader opacityTransitionQuick">
+                        <div class="loading-logo"></div>
+                        <p class="message">Please wait...</p>
+                        <jsp:invoke fragment="results_loading_message" />
+                    </div>
 
-					<div id="mainform" class="form-horizontal" >
+                    <div id="mainform" class="form-horizontal">
 
                         <c:if test="${ignore_journey_tracking != 'true'}">
-						    <core_v2:journey_tracking />
+                            <core_v2:journey_tracking />
                         </c:if>
 
-						<core_v2:tracking_key />
+                        <core_v2:tracking_key />
 
-						<div id="journeyEngineSlidesContainer">
-							<jsp:doBody />
-						</div>
+                        <div id="journeyEngineSlidesContainer">
+                            <jsp:doBody />
+                        </div>
 
-						<input
-							type="hidden"
-							id="${verticalCode}_journey_stage"
-							name="${verticalCode}_journey_stage"
-							value="${data[verticalCode]['journey/stage']}"
-							class="journey_stage"
-						/>
+                        <input
+                                type="hidden"
+                                id="${verticalCode}_journey_stage"
+                                name="${verticalCode}_journey_stage"
+                                value="${data[verticalCode]['journey/stage']}"
+                                class="journey_stage"
+                        />
 
-						<jsp:invoke fragment="form_bottom" />
+                        <jsp:invoke fragment="form_bottom" />
 
-						<c:if test="${pageSettings.hasSetting('sendBestPriceSplitTestingEnabled')}">
-							<c:if test="${pageSettings.getSetting('sendBestPriceSplitTestingEnabled') eq 'Y' && not empty param.splitEmail }">
-								<field_v1:hidden xpath="${verticalCode}/bestPriceSplitTest" defaultValue="${param.splitEmail eq 2 ? 2 : 1 }" />
-							</c:if>
-						</c:if>
-					</div>
-				</div>
+                        <c:if test="${pageSettings.hasSetting('sendBestPriceSplitTestingEnabled')}">
+                            <c:if test="${pageSettings.getSetting('sendBestPriceSplitTestingEnabled') eq 'Y' && not empty param.splitEmail }">
+                                <field_v1:hidden xpath="${verticalCode}/bestPriceSplitTest" defaultValue="${param.splitEmail eq 2 ? 2 : 1 }" />
+                            </c:if>
+                        </c:if>
+                    </div>
+                </div>
 
-			</article>
+            </article>
 
-		</div>
+        </div>
 
-		<agg_v1:footer_outer>
-			<jsp:invoke fragment="footer" />
-		</agg_v1:footer_outer>
+        <agg_v1:footer_outer>
+            <jsp:invoke fragment="footer" />
+        </agg_v1:footer_outer>
 
-	</jsp:body>
+    </jsp:body>
 
 </layout_v1:page>

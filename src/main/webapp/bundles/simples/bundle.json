@@ -6,7 +6,8 @@
         "plugins/inspectorJson",
         "shared/sliders",
         "shared/fonts/v1",
-        "core",
+        "shared/headerBar/v1",
+	"core",
         "shared/forms/v2",
         "shared/datepicker",
         "shared/crud"
