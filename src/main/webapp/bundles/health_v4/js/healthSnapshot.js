@@ -10,6 +10,7 @@
             }
         },
         moduleEvents = events.healthSnapshot,
+        $preResultsRowTemplate,
 
         $elements = {},
 
@@ -25,6 +26,7 @@
         _setupFields();
         _eventSubscriptions();
         _applyEventListeners();
+        $preResultsRowTemplate = $("#pre-results-row-content-template");
     }
 
     function _setupFields() {
@@ -249,15 +251,16 @@
      * Utility function to map cover type to a label.
      * @returns {*}
      */
-    function _getLabelForCoverType() {
-        switch(meerkat.modules.health.getCoverType()) {
+    function getLabelForCoverType() {
+        // @todo commented out as we don't have a cover type.
+        /*switch(meerkat.modules.health.getCoverType()) {
             case 'C':
                 return "Hospital and Extras";
             case 'H':
                 return "Hospital";
             case 'E':
                 return "Extras";
-        }
+        }*/
         return "";
     }
 
@@ -284,12 +287,15 @@
 
     function renderPreResultsRowSnapshot() {
 
+        if(!$preResultsRowTemplate.length) {
+            return;
+        }
         var obj = {
             name: $('#health_contactDetails_name').val(),
-            coverType: _getLabelForCoverType(),
-            situation: _getLabelForSituation()
+            coverType: getLabelForCoverType(),
+            situation: getLabelForSituation()
         };
-        var template = meerkat.modules.templateCache.getTemplate($("#pre-results-row-content-template"));
+        var template = meerkat.modules.templateCache.getTemplate($preResultsRowTemplate);
         $('.preResultsContainer').html(template(obj));
     }
 

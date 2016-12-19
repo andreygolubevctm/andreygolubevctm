@@ -4,6 +4,6 @@
 <core_v1:js_template id="results-features-extras-template">
     <div class="cell category">
         <div class="content isMultiRow" data-featureId="99999">
-        <strong>Product also covers:</strong> {{= meerkat.modules.healthResultsTemplate.getAvailableExtrasAsList(obj) }}</div>
+        {{= meerkat.modules.healthResultsTemplate.getAvailableExtrasAsList(obj) }}</div>
     </div>
 </core_v1:js_template>

@@ -4,7 +4,7 @@
 
 <core_v1:js_template id="filter-benefits-template">
 
-    {{ var coverType = 'C' <%--meerkat.modules.health.getCoverType();--%> }}
+    {{ var coverType = meerkat.modules.healthChoices.getCoverType(); }}
     {{ var hiddenHospital = coverType === 'E' ? ' hidden' : ''; }}
     {{ var hiddenExtras = coverType === 'H' ? ' hidden' : ''; }}
     {{ var hiddenOnCombined = coverType === 'C' ? ' hidden' : ''; }}

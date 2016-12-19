@@ -31,7 +31,7 @@
             situationSelect: $('input[name=health_situation_healthCvr]'),
             applyRebate: $('#health_healthCover_rebate'),
             incomeSelectContainer: $('#income_container'),
-            lhcContainers: $('.health-cover, #health_healthCover_primaryCover'),
+            lhcContainers: $('.health-cover,  .dateinput_container, #health_healthCover_primaryCover'),
             incomeSelect: $('#health_healthCover_income'),
             selectedRebateText: $('#selectedRebateText'),
             rebateLabel: $('#rebateLabel'),
@@ -61,6 +61,8 @@
         $elements.lhcContainers.find(':input').on('change', function updateRebateContinuousCover(event) {
 
             var $this = $(this);
+
+            if ($this.hasClass('dateinput-day') || $this.hasClass('dateinput-month') || $this.hasClass('dateinput-year') || ($this.attr('name').indexOf('primary_dob') >= 0 && $this.val() === "") || ($this.attr('name').indexOf('partner_dob') >= 0 && $this.val() === "")) return;
 
             // update rebate
             if ($this.valid()) {

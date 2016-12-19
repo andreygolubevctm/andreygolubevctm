@@ -59,6 +59,10 @@
         return $('input[name=health_situation_healthCvr]:checked').val();
     }
 
+    function getCoverType() {
+        return $('#health_situation_coverType').val();
+    }
+
 	meerkat.modules.register("healthChoices", {
 		events: moduleEvents,
 		init: init,
@@ -68,7 +72,8 @@
 		setCover: setCover,
 		setState: setState,
         getSituation: getSituation,
-		shouldPerformUpdate: shouldPerformUpdate
+		shouldPerformUpdate: shouldPerformUpdate,
+        getCoverType: getCoverType
 	});
 
 })(jQuery);

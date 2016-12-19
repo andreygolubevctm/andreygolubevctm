@@ -1,4 +1,4 @@
-<%@ tag description="The Health More Info template"%>
+<%@ tag description="The quick select tag to allow the preselection of items. Eg health benefits"%>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
@@ -18,5 +18,5 @@
 			<div class="col-xs-${colWidth}"><a href="javascript:;" data-select-type="${parts[1]}">${parts[0]}</a></div>
 		</c:forTokens>
 	</div>
-	<div class="col-xs-12 clearSelection"><a href="javascript:;">Clear selection<a/></div>
+	<div class="col-xs-12 clearSelection hidden"><a href="javascript:;">Clear selection</a></div>
 </div>

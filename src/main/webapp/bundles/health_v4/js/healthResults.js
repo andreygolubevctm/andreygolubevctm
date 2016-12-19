@@ -437,15 +437,14 @@
                     $hoverRow.removeClass(Results.settings.elements.features.expandableHover.replace(/[#\.]/g, ''));
                 });
 
-            // @todo commented out as we don't have a cover type.
-            /*var coverType = meerkat.modules.health.getCoverType();
+            var coverType = meerkat.modules.healthChoices.getCoverType();
 
             if (coverType === 'E') {
                 $('.featuresList .hospitalCover, .featuresList .selection_Hospital').addClass('hidden');
             }
             if (coverType === 'H') {
                 $('.featuresList .extrasCover, .featuresList .selection_extra').addClass('hidden');
-            }*/
+            }
 
         });
     }
@@ -506,12 +505,9 @@
         // this is where we are going to pull the children benefits from.
         var featuresStructureCover = _findByKey(structure, injectFromParent, 'name');
 
-        if(!selectedBenefitsList) {
-            return;
-        }
         // For each of the selected benefits
         for (var i = 0; i < selectedBenefitsList.length; i++) {
-            var putInShortList = _findByKey(featuresStructureCover.children, selectedBenefitsList[i], 'shortlistKey');
+            var putInShortList = _findByKey(featuresStructureCover.children, selectedBenefitsList[i], 'id');
             if (putInShortList) {
                 selectedBenefitsStructureObject.children.push($.extend({}, putInShortList));
                 putInShortList.doNotRender = true;
@@ -555,7 +551,7 @@
         meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'healthLoadRates' });
         meerkat.modules.healthRates.loadRates(function afterFetchRates() {
             meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, { source: 'healthLoadRates' });
-            meerkat.modules.resultsFeatures.fetchStructure('health2016').done(function () {
+            meerkat.modules.resultsFeatures.fetchStructure('health_v4').done(function () {
                 Results.updateAggregatorEnvironment();
                 Results.updateStaticBranch();
                 Results.get();
@@ -569,7 +565,7 @@
         meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'healthLoadRates' });
         meerkat.modules.healthRates.loadRatesBeforeResultsPage(false, function afterFetchRates() {
             meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, { source: 'healthLoadRates' });
-            meerkat.modules.resultsFeatures.fetchStructure('health2016').done(function () {
+            meerkat.modules.resultsFeatures.fetchStructure('health_v4').done(function () {
                 Results.updateAggregatorEnvironment();
                 Results.updateStaticBranch();
                 Results.get();

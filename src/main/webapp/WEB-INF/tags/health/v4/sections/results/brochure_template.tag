@@ -5,7 +5,7 @@
 <c:set var="btnAttribute"><field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" /></c:set>
 
 <core_v1:js_template id="brochure-download-template">
-    {{ var coverType = !_.isEmpty(promo.coverType) ? promo.coverType : 'C'<%--meerkat.modules.health.getCoverType()--%>; }}
+    {{ var coverType = !_.isEmpty(promo.coverType) ? promo.coverType : meerkat.modules.healthChoices.getCoverType(); }}
     {{ if(coverType == 'C' && promo.hospitalPDF == promo.extrasPDF) { }}
     <a class="hide-on-affix btn btn-block btn-download" href="{{= promo.hospitalPDF }}" target="_blank" ${btnAttribute}>Download Brochure</a>
     {{ } else if(coverType == 'C' && promo.hospitalPDF != promo.extrasPDF) { }}
