@@ -107,7 +107,7 @@
                 <label class="btn btn-form-inverse">
                     <input type="radio" name="redemption_signature" id="redemption_signature_Y" value="Y" data-msg-required="Please tell us if want signature on delivery" required="required">Yes</label>
                 <label class="btn btn-form-inverse">
-                    <input type="radio" name="redemption_signature" id="redemption_signature_N" value="N" data-msg-required="PPlease tell us if want signature on delivery" required="required">No</label>
+                    <input type="radio" name="redemption_signature" id="redemption_signature_N" value="N" data-msg-required="Please tell us if want signature on delivery" required="required">No</label>
             </div>
         </div>
     </div>
