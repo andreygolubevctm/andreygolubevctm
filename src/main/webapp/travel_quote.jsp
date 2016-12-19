@@ -96,6 +96,8 @@
 					</div>
 	</jsp:attribute>
 
+	<jsp:attribute name="form_bottom"></jsp:attribute>
+
 	<jsp:attribute name="footer">
 		<core_v1:whitelabeled_footer />
 	</jsp:attribute>
