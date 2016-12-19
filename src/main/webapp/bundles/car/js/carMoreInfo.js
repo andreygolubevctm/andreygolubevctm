@@ -447,15 +447,14 @@
 			prodId = $el.attr('data-productId'),
 			obj = Results.getResultByProductId(prodId),
 			monthlyPremiumSplit = obj.price.monthlyPremium.toString().split('.'),
-			annualPremiumSplit = obj.price.annualPremium.toString().split('.'),
 			priceObj = {
 				monthly: {
 					dollars: monthlyPremiumSplit[0],
 					cents: monthlyPremiumSplit[1] ? '.' + monthlyPremiumSplit[1] : ''
 				},
 				annual: {
-					dollars: annualPremiumSplit[0],
-					cents: annualPremiumSplit[1] ? '.' + annualPremiumSplit[1] : ''
+					dollars: obj.price.annualPremiumFormatted,
+					cents: ''
 				}
 			},
 			$frequencyAmount = $('.frequencyAmount[data-productId=' + prodId + ']');

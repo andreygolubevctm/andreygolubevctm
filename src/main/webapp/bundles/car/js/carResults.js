@@ -54,8 +54,8 @@
 			}
 
 			var price = {
-				annually: "price.annualPremium",
-				annual: "price.annualPremium",
+				annually: "price.annualPremiumFormatted",
+				annual: "price.annualPremiumFormatted",
 				monthly: "price.annualisedMonthlyPremium"
 			};
 			var rank_premium = "price.annualPremium";
@@ -472,6 +472,12 @@
 		products = products || Results.model.returnedProducts;
 
 		_.each(products, function massageJson(result, index) {
+
+			// Add formatted annual premium (ie without decimals)
+			if (!_.isUndefined(result.price.annualPremium)) {
+				result.price.annualPremiumFormatted = meerkat.modules.currencyField.formatCurrency(result.price.annualPremium, {roundToDecimalPlace: 0});
+			}
+
 			if (result.excess !== null && !_.isUndefined(result.excess)) {
 				result.excessFormatted = meerkat.modules.currencyField.formatCurrency(result.excess, {roundToDecimalPlace: 0});
 			}
