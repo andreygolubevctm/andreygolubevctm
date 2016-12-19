@@ -165,8 +165,10 @@ var healthFunds_HBF = {
 
         <%-- Authority Fund Name --%>
         healthFunds._previousfund_authority(true);
-        healthFunds_HBF.$primaryAuthority = $('#health_previousfund_primary_authority').parents('.health_previous_fund_authority');
-        healthFunds_HBF.$partnerAuthority = $('#health_previousfund_partner_authority').parents('.health_previous_fund_authority');
+        healthFunds_HBF.$primaryAuthorityInput = $('#health_previousfund_primary_authority');
+        healthFunds_HBF.$partnerAuthorityInput = $('#health_previousfund_partner_authority');
+        healthFunds_HBF.$primaryAuthority = healthFunds_HBF.$primaryAuthorityInput.parents('.health_previous_fund_authority');
+        healthFunds_HBF.$partnerAuthority = healthFunds_HBF.$partnerAuthorityInput.parents('.health_previous_fund_authority');
         healthFunds_HBF.originalPartnerAuthorityLabelHtml = healthFunds_HBF.$partnerAuthority.find('label').html();
         if (meerkat.modules.health.hasPartner() === true) {
             healthFunds_HBF.$primaryAuthority.addClass('hidden');
@@ -175,11 +177,9 @@ var healthFunds_HBF = {
             healthFunds_HBF.$primaryAuthority.removeClass('hidden');
             healthFunds_HBF.$partnerAuthority.find('label').text(healthFunds_HBF.originalPartnerAuthorityLabelHtml);
         }
-        $('#health_previousfund_primary_authority').prop('required',true);
-        $('#health_previousfund_primary_authority').attr('data-msg-required','Your authorisation is required');
+        healthFunds_HBF.$primaryAuthorityInput.prop('required',true).attr('data-msg-required','Your authorisation is required');
         if (meerkat.modules.health.hasPartner() === true) {
-            $('#health_previousfund_partner_authority').prop('required',true);
-            $('#health_previousfund_partner_authority').attr('data-msg-required','Your authorisation is required');
+            healthFunds_HBF.$partnerAuthorityInput.prop('required',true).attr('data-msg-required','Your authorisation is required');
         }
 
         <%-- Calendar for start cover --%>
@@ -273,11 +273,9 @@ var healthFunds_HBF = {
         meerkat.modules.healthPaymentDay.paymentDaysRender( $('#health_payment_bank_paymentDay'), false);
         meerkat.modules.healthPaymentDay.paymentDaysRender( $('#health_payment_credit_paymentDay'), false);
 
-        $('#health_previousfund_primary_authority').prop('required',null);
-        $('#health_previousfund_primary_authority').attr('data-msg-required',null);
+        healthFunds_HBF.$primaryAuthorityInput.prop('required',null).attr('data-msg-required',null);
         if (meerkat.modules.health.hasPartner() === true) {
-            $('#health_previousfund_partner_authority').prop('required',null);
-            $('#health_previousfund_partner_authority').attr('data-msg-required',null);
+            healthFunds_HBF.$partnerAuthorityInput.prop('required',null).attr('data-msg-required',null);
         }
 
     }
