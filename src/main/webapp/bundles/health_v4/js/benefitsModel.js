@@ -8,7 +8,7 @@
     var meerkat =window.meerkat,
         _isHospital = false,
         defaultSelections = {},
-        selectedElements = {
+        selectedBenefits = {
             hospital: [],
             extras: []
         },
@@ -62,24 +62,24 @@
     }
 
     // update the benefit model depending on the type of click scenario
-    // 1. remove an item from the selectedElements array
-    // 2. add an item from the selectedElements array
+    // 1. remove an item from the selectedBenefits array
+    // 2. add an item from the selectedBenefits array
     // 3. pre-select some benefits
     function _updateBenefitModel(options) {
         setIsHospital(options.isHospital);
 
         if (typeof options.removeBenefit !== 'undefined' && options.removeBenefit) {
             // removing a singular item from a user click so don't need to fire the BENEFITS_UPDATED event
-            selectedElements[getBenefitType()] =  selectedElements[getBenefitType()].filter(function removeItemFromModel(value) {
+            selectedBenefits[getBenefitType()] =  selectedBenefits[getBenefitType()].filter(function removeItemFromModel(value) {
                 return value != options.benefitId;
             });
         } else {
             if (typeof options.benefitId === 'number') {
                 // adding a singular item from a user click so don't need to fire the BENEFITS_UPDATED event
-                selectedElements[getBenefitType()].push(options.benefitId);
+                selectedBenefits[getBenefitType()].push(options.benefitId);
             } else {
                 // pre-select fired
-                setBenefits(_.union(selectedElements[getBenefitType()], options.benefitIds));
+                setBenefits(_.union(selectedBenefits[getBenefitType()], options.benefitIds));
             }
         }
 
@@ -98,28 +98,28 @@
 
     // return an array of the hospital selected extras ids
     function getExtras() {
-        return selectedElements.extras;
+        return selectedBenefits.extras;
     }
 
     // return the number of selected extras benefits
     function getExtrasCount() {
-        return selectedElements.extras.length;
+        return selectedBenefits.extras.length;
     }
 
     // return an array of the hospital selected hospital ids
     function getHospital() {
-        return selectedElements.hospital;
+        return selectedBenefits.hospital;
     }
 
     // return the number of selected hospital benefits
     function getHospitalCount() {
-        return selectedElements.hospital.length;
+        return selectedBenefits.hospital.length;
     }
 
     // set the selected benefits for hospital/extras AND fire off the UPDATE_SELECTED_BENEFITS_CHECKBOX event
     function setBenefits(updatedBenefits) {
-        selectedElements[getBenefitType()] = updatedBenefits;
-        meerkat.messaging.publish(moduleEvents.UPDATE_SELECTED_BENEFITS_CHECKBOX, selectedElements[getBenefitType()]);
+        selectedBenefits[getBenefitType()] = updatedBenefits;
+        meerkat.messaging.publish(moduleEvents.UPDATE_SELECTED_BENEFITS_CHECKBOX, selectedBenefits[getBenefitType()]);
     }
 
     function setIsHospital(isHospital) {
