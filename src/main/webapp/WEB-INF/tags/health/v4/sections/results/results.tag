@@ -59,7 +59,7 @@
 
     <jsp:attribute name="resultsContainerTemplate">
         {{ var headerTemplate = meerkat.modules.templateCache.getTemplate($('#result-header-template')); }}
-        {{ var coverType = 'C';<%--meerkat.modules.health.getCoverType();--%> headerHtml = headerTemplate(obj); }}
+        {{ var coverType = meerkat.modules.healthChoices.getCoverType(); headerHtml = headerTemplate(obj); }}
         <div class="result-row result_{{= productId }}" data-productId="{{= productId }}">
             {{= headerHtml }}
             <div class="featuresList featuresElements">{{ if(coverType == 'H' || coverType == 'C') { }}
@@ -131,7 +131,7 @@
     <jsp:body>
         <div class="col-xs-12 moreInfoDropdown"></div>
         <jsp:useBean id="resultsDisplayService" class="com.ctm.web.core.results.services.ResultsDisplayService" scope="request"/>
-        <c:set var="jsonString" value="${resultsDisplayService.getResultItemsAsJsonString('health', 'category')}" scope="request"/>
+        <c:set var="jsonString" value="${resultsDisplayService.getResultItemsAsJsonString('health_v4', 'category')}" scope="request"/>
         <script>
             var resultLabels = ${jsonString};
         </script>

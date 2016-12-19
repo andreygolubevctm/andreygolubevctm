@@ -4,7 +4,7 @@
 
 <core_v1:js_template id="filter-results-template">
 
-    {{ var hiddenHospital = 'C' <%--meerkat.modules.health.getCoverType()--%> === 'E' ? ' hidden' : ''; }}
+    {{ var hiddenHospital = meerkat.modules.healthChoices.getCoverType() === 'E' ? ' hidden' : ''; }}
 
     <div class="sidebar-title hidden-xs">Filter Results</div>
 

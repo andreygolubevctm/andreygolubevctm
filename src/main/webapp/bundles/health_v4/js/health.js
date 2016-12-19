@@ -226,7 +226,8 @@
                 /** @todo implement from health.js when get to this step */
             },
             onAfterLeave: function leaveBenefitsStep(event) {
-                /** @todo implement from health.js when get to this step */
+                var selectedBenefits = meerkat.modules.benefitsModel.getSelectedBenefits();
+                meerkat.modules.healthResultsChange.onBenefitsSelectionChange(selectedBenefits);
             }
         };
 
@@ -247,7 +248,7 @@
                 validate: true
             },
             onInitialise: function onContactInit(event) {
-                /** @todo implement from health.js when get to this step */
+                meerkat.modules.resultsFeatures.fetchStructure('health_v4');
             },
             onBeforeEnter: function enterContactStep(event) {
                 /** @todo implement from health.js when get to this step */
