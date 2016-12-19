@@ -17,8 +17,9 @@
 <utilities_v3:splittest_helper />
 
 <c:set var="brandedName"><content:get key="boldedBrandDisplayName"/></c:set>
-<c:set var="energyPrivacyOptinText" scope="session">I understand ${brandedName} compares energy plans based on peak tariffs from a range of participating retailers. By providing my contact details I agree that ${brandedName} and its partner Thought World may contact me about the services they provide.
-    I confirm that I have read the <form_v1:link_privacy_statement/>.</c:set>
+<c:set var="energyPrivacyOptinText" scope="session">
+    I understand and accept the <a href="${pageSettings.getSetting('websiteTermsUrl')}" target="_blank" data-title="Website Terms of Use" class="termsLink showDoc">Website Terms of Use</a> and <form_v1:link_privacy_statement/>. I agree that comparethemarket.com.au may contact me about the services it provides, and that Thought World, Compare the Market's trusted energy partner, may call or email me to discuss my energy needs.
+</c:set>
 
 <c:set var="body_class_name">
     <c:if test="${not empty splitTestEnabled and splitTestEnabled eq 'Y'}">utilities_design_55</c:if>
