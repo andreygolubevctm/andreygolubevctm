@@ -6,7 +6,7 @@
 
 .health_contact_details_postcode_results_wrapper {
 
-  .postcode-item {
+  .suburb-item {
     display: inline-block;
     height: 41px;
     line-height: 41px;
@@ -19,7 +19,7 @@
     }
   }
 
-  .postcode-items-btn-edit {
+  .suburb-items-btn-edit {
     display: none;
   }
 
@@ -28,7 +28,7 @@
       float: left;
     }
 
-    .postcode-item {
+    .suburb-item {
       display: none;
       height: 41px;
 
@@ -44,8 +44,25 @@
       }
     }
 
-    .postcode-items-btn-edit {
+    .suburb-items-btn-edit {
       display: inline-block;
+    }
+  }
+
+  &.scroll-view {
+    float: left;
+    height: 150px;
+    margin-top: 10px;
+    overflow-x: hidden;
+  }
+}
+
+.has-error {
+  .has-location-error {
+    .form-control {
+      color: @input-color;
+      background-color: @input-bg;
+      border-color: @input-border;
     }
   }
 }

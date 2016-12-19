@@ -9,7 +9,10 @@
         },
 
         $elements = {},
-        _hasSelection = false;
+        _postcode = '',
+        _hasSelection = false,
+        _minResultsForScrollView = 10,
+        _resultsCount = 0;
 
     function initPostcode() {
         _hasSelection = meerkat.modules.healthLocation.getLocation() ? true : false;
@@ -19,42 +22,52 @@
 
         if ($elements.input.val()) {
             _getResults($elements.input.val());
+            _postcode = $elements.input.val();
         }
     }
 
     function _setupFields() {
         $elements = {
             input: $('input.health_contact_details_postcode'),
+            location: $('#health_situation_location'),
             resultsWrapper: $('.health_contact_details_postcode_results_wrapper'),
             results: $('.health_contact_details_postcode_results'),
-            editBtn: $('.postcode-items-btn-edit')
+            editBtn: $('.suburb-items-btn-edit')
         };
     }
 
     function _applyEventListeners() {
         $elements.input
-            .on('keyup', function() {
-                console.log('postcodeValue: ',$(this).val());
-                _hasSelection = false;
-                editMode();
+            .on('keyup', function(event) {
+                var value = $(this).val();
 
-                if ($(this).isValid()) {
-                    // do search
-                    _getResults($(this).val());
-                } else {
-                    // clear search
+                editMode(true);
+                _hasSelection = false;
+
+                // if value valid and its not previously searched
+                if ($(this).isValid() && value !== _postcode) {
+                    // clear the results
                     _clearResults();
+
+                    // do search
+                    _getResults(value);
+                    _postcode = value;
+                } else {
+                    if (value !== _postcode) {
+                        $elements.location.val('');
+                        $('.suburb-item, .suburb-item button').removeClass('selected');
+                    }
                 }
             });
 
         $elements.results
             .on('click', 'button', function() {
-                var $postItem = $(this).parent();
+                var $suburbItem = $(this).parent();
 
-                $('.postcode-item, .postcode-item button').removeClass('selected');
-                $postItem.addClass('selected').find('button').addClass('selected');
+                $('.suburb-item, .suburb-item button').removeClass('selected');
+                $suburbItem.addClass('selected').find('button').addClass('selected');
 
-                _setLocation($postItem.attr('data-location'));
+                _setSuburb($suburbItem.attr('data-location'));
             });
 
         $elements.editBtn.on('click', function() {
@@ -73,8 +86,6 @@
     }
 
     function _getResults(postcode) {
-        console.log('searching...');
-
         meerkat.modules.loadingAnimation.showInside($elements.input.parent(), true);
 
         var data = { term: postcode },
@@ -92,10 +103,14 @@
                         // clear
                         _clearResults();
                     }
+
+                    _scrollView(res.length > _minResultsForScrollView);
+
+                    _resultsCount = res.length;
                 },
                 onComplete: function() {
-                    // preselect location
-                    _preselectLocation();
+                    // preselect suburb
+                    _preselectSuburb();
 
                     meerkat.modules.loadingAnimation.hide($elements.input.parent());
                 }
@@ -104,45 +119,51 @@
         meerkat.modules.comms.get(request_obj);
     }
 
-    function _clearResults() {
-        console.log('clear...');
-        $elements.results.find('.postcode-item').remove();
+    function _scrollView(isScrollView) {
+        $elements.resultsWrapper.toggleClass('scroll-view', isScrollView);
     }
 
-    function _showResults(locations) {
-        console.log('show locations');
-        locations.forEach(function(location) {
-            var locationText = location.replace(' ' + $elements.input.val(), ', ');
+    function _clearResults() {
+        $elements.results.find('.suburb-item').remove();
+    }
+
+    function _showResults(suburbs) {
+        suburbs.forEach(function(suburb) {
+            var suburbText = suburb.replace(' ' + $elements.input.val(), ', ');
 
             $elements.results
                 .append('' +
-                    '<div class="postcode-item" data-location="'+location+'">' +
-                        '<button type="button" class="btn btn-secondary">' + locationText + '</button>' +
-                        '<span>' + locationText + '</span>' +
+                    '<div class="suburb-item" data-location="' + suburb + '">' +
+                        '<button type="button" class="btn btn-secondary">' + suburbText + '</button>' +
+                        '<span>' + suburbText + '</span>' +
                     '</div>'
                 );
         });
     }
 
-    function _setLocation(location) {
-        meerkat.modules.healthLocation.setLocation(location);
+    function _setSuburb(suburb) {
+        meerkat.modules.healthLocation.setLocation(suburb);
         _hasSelection = true;
+        $elements.location.valid();
     }
 
-    function _preselectLocation() {
+    function _preselectSuburb() {
         _.defer(function() {
-            var location = meerkat.modules.healthLocation.getLocation(),
-                $postcodeItemLocation = $elements.results.find('.postcode-item[data-location="' + location + '"]');
+            var suburb = meerkat.modules.healthLocation.getLocation(),
+                $suburbItem = $elements.results.find('.suburb-item[data-location="' + suburb + '"]');
 
-            if (location && $postcodeItemLocation.length === 1 && _hasSelection) {
-                $postcodeItemLocation.find('button').trigger('click');
+            if (suburb && $suburbItem.length === 1 && _hasSelection) {
+                $suburbItem.find('button').trigger('click');
                 editMode();
             }
         });
     }
 
     function editMode(forceHide) {
-        $elements.resultsWrapper.toggleClass('edit-mode', forceHide ? false : _hasSelection);
+        var isEditMode = forceHide ? false : _hasSelection;
+        $elements.resultsWrapper.toggleClass('edit-mode', isEditMode);
+
+        _scrollView(!isEditMode && _resultsCount > _minResultsForScrollView);
     }
 
     meerkat.modules.register('healthPostcode', {
