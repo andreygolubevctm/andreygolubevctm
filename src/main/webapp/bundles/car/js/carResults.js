@@ -474,7 +474,7 @@
 		_.each(products, function massageJson(result, index) {
 
 			// Add formatted annual premium (ie without decimals)
-			if (!_.isUndefined(result.price.annualPremium)) {
+			if (!_.isEmpty(result.price) && !_.isUndefined(result.price.annualPremium)) {
 				result.price.annualPremiumFormatted = meerkat.modules.currencyField.formatCurrency(result.price.annualPremium, {roundToDecimalPlace: 0});
 			}
 
