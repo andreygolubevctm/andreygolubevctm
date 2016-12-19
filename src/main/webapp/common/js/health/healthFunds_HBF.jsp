@@ -175,6 +175,12 @@ var healthFunds_HBF = {
             healthFunds_HBF.$primaryAuthority.removeClass('hidden');
             healthFunds_HBF.$partnerAuthority.find('label').text(healthFunds_HBF.originalPartnerAuthorityLabelHtml);
         }
+        $('#health_previousfund_primary_authority').prop('required',true);
+        $('#health_previousfund_primary_authority').attr('data-msg-required','Your authorisation is required');
+        if (meerkat.modules.health.hasPartner() === true) {
+            $('#health_previousfund_partner_authority').prop('required',true);
+            $('#health_previousfund_partner_authority').attr('data-msg-required','Your authorisation is required');
+        }
 
         <%-- Calendar for start cover --%>
         meerkat.modules.healthPaymentStep.setCoverStartRange(0, 30);
@@ -266,6 +272,13 @@ var healthFunds_HBF = {
         healthFunds_HBF.$paymentStartDate.off("changeDate.HBF");
         meerkat.modules.healthPaymentDay.paymentDaysRender( $('#health_payment_bank_paymentDay'), false);
         meerkat.modules.healthPaymentDay.paymentDaysRender( $('#health_payment_credit_paymentDay'), false);
+
+        $('#health_previousfund_primary_authority').prop('required',null);
+        $('#health_previousfund_primary_authority').attr('data-msg-required',null);
+        if (meerkat.modules.health.hasPartner() === true) {
+            $('#health_previousfund_partner_authority').prop('required',null);
+            $('#health_previousfund_partner_authority').attr('data-msg-required',null);
+        }
 
     }
 };
