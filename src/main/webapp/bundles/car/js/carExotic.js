@@ -15,6 +15,8 @@
 		$youngDriver,
 		originalResultsTemplate = "",
 		$youngDriverQs,
+		$vehicleUse,
+		$vehicleUseOption,
 		_threshold = 150000;
 
 	function init(){
@@ -34,6 +36,8 @@
 		$defaultQuestionsToHide = $('#quoteAccessoriesFieldSet, .noOfKms,  #accidentDamageRow, .rego-not-my-car, #employment_status_row, #ownsAnotherCar, #quote_restricted_ageRow, #quote_drivers_youngFieldSet, .ydGreenBubble');
 		$exoticQuestionsToShow = $('#quote_drivers_regular_convictionsRow, .exoticUsageQuestions, #quote_drivers_youngExoticExoticFieldSet, #quote_drivers_youngExoticFieldSet, #quote_drivers_youngExoticContFieldSet, .ydSpeechBubbleDriverDetails, #preferredContactMethodRow');
 		$securityRow = $('#securityOptionRow');
+		$vehicleUse = $('#quote_vehicle_use');
+		$vehicleUseOption = $vehicleUse.find('option[value=02]');
 
 		// snapshot fields
 		$carSnapshot = $(".car-snapshot");
@@ -68,7 +72,9 @@
 	}
 
 	function toggleQuestions() {
-		if (isExotic()) {
+		var is_exotic = isExotic();
+		toggleVehicleUseOptions(is_exotic);
+		if (is_exotic) {
 			$defaultQuestionsToHide.hide();
 			$exoticQuestionsToShow.removeClass('hidden');
 			if ($securityRow.find('.select:first').length > 0) {
@@ -83,6 +89,33 @@
 			if ($securityRow.find('.select:first').length > 0) {
 				$securityRow.show();
 			}
+		}
+	}
+
+	/**
+	 * toggleVehicleUseOptions updates the options in the vehicle use question
+	 * to match required for journey type
+	 * @param exotic
+     */
+	function toggleVehicleUseOptions(exotic) {
+		var is_exotic = exotic || false;
+		var option02 = {
+			normal : 'Private and/or commuting to work only',
+			exotic : 'Private use only'
+		};
+		var option03 = 'Private use - twice monthly';
+		var $option03 = $vehicleUse.find('option[value=03]');
+		if(is_exotic) {
+			$vehicleUseOption.empty().append(option02.exotic);
+			if(!$option03.length) {
+				$('<option/>',{
+					value:'03',
+					text:option03
+				}).insertAfter($vehicleUseOption);
+			}
+		} else {
+			$vehicleUseOption.empty().append(option02.normal);
+			if($option03.length) $option03.remove();
 		}
 	}
 
