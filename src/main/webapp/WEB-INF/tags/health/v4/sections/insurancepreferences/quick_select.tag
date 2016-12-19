@@ -1,4 +1,4 @@
-<%@ tag description="The Health More Info template"%>
+<%@ tag description="The quick select tag to allow the preselection of items. Eg health benefits"%>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 

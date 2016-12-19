@@ -15,26 +15,28 @@
         moduleEvents = events.benefits;
 
     function initBenefits() {
-        $('#tabs').on('click', '.nav-tabs a', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
+        jQuery(document).ready(function($) {
+            $('#tabs').on('click', '.nav-tabs a', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
 
-            $(this).tab('show');
+                $(this).tab('show');
+            });
+
+            $('.nav-tabs a:first').click();
+
+            $elements = {
+                benefitsOverlow: $('.benefitsOverflow'),
+                extrasOverlay: $('.extrasOverlay'),
+                hospitalOverlay: $('.hospitalOverlay'),
+                hospital: $('.Hospital_container'),
+                extras: $('.GeneralHealth_container'),
+                quickSelectContainer: $('.quickSelectContainer'),
+                coverType: $('input[name=health_situation_covertype]')
+            };
+
+            _eventSubscription();
         });
-
-        $('.nav-tabs a:first').click();
-
-        $elements = {
-            benefitsOverlow: $('.benefitsOverflow'),
-            extrasOverlay: $('.extrasOverlay'),
-            hospitalOverlay: $('.hospitalOverlay'),
-            hospital: $('.Hospital_container'),
-            extras: $('.GeneralHealth_container'),
-            quickSelectContainer: $('.quickSelectContainer'),
-            coverType: $('input[name=health_situation_covertype]')
-        };
-
-        _eventSubscription();
     }
 
     function _eventSubscription() {
@@ -84,6 +86,7 @@
     function _registerXSBenefitsSlider() {
         $elements.hospitalOverlay.hide();
 
+        // handle the rare event where someone has a device that can go from xs to something larger eg surface pro v1
         meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, function extrasOverlayEnterXsState() {
             $elements.extrasOverlay.show();
             _setOverlayLabelCount($elements.hospitalOverlay, meerkat.modules.benefitsModel.getHospitalCount());
@@ -94,7 +97,7 @@
             $elements.extrasOverlay.hide();
         });
 
-        // toggle the overlays
+        // slide in/out the overlays
         $elements.extrasOverlay.off().on('click', function displayExtrasBenefits() {
             $elements.benefitsOverlow.animate({'left': ($elements.extrasOverlay.width() * -1)}, 500, function onExtrasAnimateComplete(){
                 _setOverlayLabelCount($elements.hospitalOverlay, meerkat.modules.benefitsModel.getHospitalCount());
