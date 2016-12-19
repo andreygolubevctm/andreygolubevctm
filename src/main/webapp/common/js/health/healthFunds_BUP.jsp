@@ -62,6 +62,12 @@ set: function () {
 		healthFunds_BUP.$claimsAccountOptin.find("input:checked").each(function(){
 		  $(this).prop("checked",null).trigger("change");
 		});
+		
+		<%-- Fix name field widths to account for the middleName field --%>
+		$('#health_application_primary_firstname').closest('.row-content').removeClass('col-sm-4').addClass('col-lg-4 col-sm-3');
+		$('#health_application_primary_surname').closest('.row-content').removeClass('col-sm-4').addClass('col-lg-4 col-sm-3');
+		$('#health_application_partner_firstname').closest('.row-content').removeClass('col-sm-4').addClass('col-lg-4 col-sm-3');
+		$('#health_application_partner_surname').closest('.row-content').removeClass('col-sm-4').addClass('col-lg-4 col-sm-3');
 
 	},
 	updateMessage: function() {
@@ -125,6 +131,12 @@ set: function () {
 		healthFunds_BUP.$paymentStartDate.off("changeDate.BUP");
 
 		$('.bup-payment-legend').remove();
+		
+		<%-- Fix name field widths to account for removal of middleName field --%>
+		$('#health_application_primary_firstname').closest('.row-content').removeClass('col-lg-4 col-sm-3').addClass('col-sm-4');
+		$('#health_application_primary_surname').closest('.row-content').removeClass('col-lg-4 col-sm-3').addClass('col-sm-4');
+		$('#health_application_partner_firstname').closest('.row-content').removeClass('col-lg-4 col-sm-3').addClass('col-sm-4');
+		$('#health_application_partner_surname').closest('.row-content').removeClass('col-lg-4 col-sm-3').addClass('col-sm-4');
 	}
 };
 </c:set>
