@@ -123,7 +123,7 @@
     }
     // get all the selected benefits
     function getSelectedBenefits() {
-        return selectedElements.hospital.concat(selectedElements.extras);
+        return selectedBenefits.hospital.concat(selectedBenefits.extras);
     }
 
     function setIsHospital(isHospital) {
