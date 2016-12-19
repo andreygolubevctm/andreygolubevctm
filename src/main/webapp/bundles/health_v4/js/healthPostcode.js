@@ -22,7 +22,6 @@
 
         if ($elements.input.val()) {
             _getResults($elements.input.val());
-            _postcode = $elements.input.val();
         }
     }
 
@@ -51,7 +50,6 @@
 
                     // do search
                     _getResults(value);
-                    _postcode = value;
                 } else {
                     if (value !== _postcode) {
                         $elements.location.val('');
@@ -86,6 +84,7 @@
     }
 
     function _getResults(postcode) {
+        _postcode = postcode;
         meerkat.modules.loadingAnimation.showInside($elements.input.parent(), true);
 
         var data = { term: postcode },

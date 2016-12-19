@@ -174,6 +174,7 @@
                 meerkat.modules.jqueryValidate.initJourneyValidator();
 
                 meerkat.modules.healthLocation.initHealthLocation();
+                meerkat.modules.healthPostcode.initPostcode();
 
                 if(meerkat.site.choices) {
                     meerkat.modules.healthChoices.initialise('SM'); // default to single male
@@ -243,8 +244,6 @@
             },
             onInitialise: function onContactInit(event) {
                 /** @todo implement from health.js when get to this step */
-
-                meerkat.modules.healthPostcode.initPostcode();
             },
             onBeforeEnter: function enterContactStep(event) {
                 /** @todo implement from health.js when get to this step */
