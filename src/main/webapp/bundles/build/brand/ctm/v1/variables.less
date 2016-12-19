@@ -41,8 +41,8 @@
 //== Grey colours
 //
 //## Gray and brand colors for use across Bootstrap.
-@gray: #E6E6E6;
-@gray-base: #000;
+@gray: #e6e6e6;
+@gray-base: #000000;
 @gray-darker: lighten(@gray-base, 13.5%); // #222
 @gray-dark: lighten(@gray-base, 20%); // #333
 @gray-slight-dark: lighten(@gray-base, 40%); // #666
@@ -70,7 +70,7 @@
 // ## Settings for some of the most global styles.
 
 //** Background color for `<body>
-@body-bg: #fff;
+@body-bg: #ffffff;
 //** Background color for .pageContent
 @page-content-bg: @body-bg;
 //** Global text color on `<body>`.
@@ -180,7 +180,7 @@
 @table-bg-active: @table-bg-hover;
 
 //** Border color for table and cell borders.
-@table-border-color: #ddd;
+@table-border-color: #dddddd;
 
 //== Application Header
 //
@@ -190,7 +190,7 @@
 //** Header text color.
 @header-text-color: @theme-tertiary;
 //** Header text link color.
-@header-link-color: contrast(@header-bg, @theme-tertiary, #fff);
+@header-link-color: contrast(@header-bg, @theme-tertiary, #ffffff);
 //** Header link hover color set via `lighten()` function.
 @header-link-hover-color: lighten(@header-link-color, 15%);
 //** Header Min Height
@@ -207,8 +207,8 @@
 
 //Copyright / Disclaimer
 @footer-disclaimer-bg-color: @theme-dark;
-@footer-disclaimer-text-color: #fff;
-@footer-disclaimer-link-text-color: #fff;
+@footer-disclaimer-text-color: #ffffff;
+@footer-disclaimer-link-text-color: #ffffff;
 
 //== Default Bootstrap Buttons
 //
@@ -221,35 +221,35 @@
 @btn-padding-standard: 10px 15px;
 @btn-padding-bordered: 8px 13px;
 
-@btn-foreground-color: #fff;
+@btn-foreground-color: #ffffff;
 
 //** default
-@btn-default-color: #fff;
+@btn-default-color: #ffffff;
 @btn-default-bg: @theme-dark;
 @btn-default-border: @btn-default-bg;
 
 //** primary
-@btn-primary-color: #fff;
+@btn-primary-color: #ffffff;
 @btn-primary-bg: @theme-primary;
 @btn-primary-border: @btn-primary-bg;
 
 //** success
-@btn-success-color: #fff;
+@btn-success-color: #ffffff;
 @btn-success-bg: @theme-secondary;
 @btn-success-border: @btn-success-bg;
 
 //** info
-@btn-info-color: #fff;
+@btn-info-color: #ffffff;
 @btn-info-bg: @theme-tertiary;
 @btn-info-border: @btn-info-bg;
 
 //** warning
-@btn-warning-color: #fff;
+@btn-warning-color: #ffffff;
 @btn-warning-bg: @brand-warning;
 @btn-warning-border: @btn-warning-bg;
 
 //** danger
-@btn-danger-color: #fff;
+@btn-danger-color: #ffffff;
 @btn-danger-bg: lighten(@brand-danger, 60%);
 @btn-danger-border: @brand-danger;
 
@@ -261,9 +261,8 @@
 @btn-border-radius-large: @border-radius-large;
 @btn-border-radius-small: @border-radius-small;
 
-@btn-padding-base-vertical:     10px; //6px
-@btn-padding-base-horizontal:   15px; //12px
-
+@btn-padding-base-vertical: 10px; //6px
+@btn-padding-base-horizontal: 15px; //12px
 
 //== Journey CTM BUTTONS:
 //
@@ -503,7 +502,7 @@
 
 // More info
 @more-info-header-bg-color: @theme-tertiary;
-@more-info-header-text-color: #fff;
+@more-info-header-text-color: #ffffff;
 
 // Edit button (edit details)
 @btn-edit-color: @theme-tertiary;
@@ -519,7 +518,7 @@
 @btn-edit-active-border-color: @btn-edit-active-color;
 
 // Grey Inverse Button
-@btn-inverse-color: #fff;
+@btn-inverse-color: #ffffff;
 @btn-inverse-bg-color: transparent;
 @btn-inverse-border-color: @btn-inverse-color;
 
@@ -532,7 +531,7 @@
 @btn-inverse-active-border-color: @btn-inverse-active-color;
 
 //
-@btn-hollow-color: #fff;
+@btn-hollow-color: #ffffff;
 @btn-hollow-bg-color: transparent;
 @btn-hollow-border-color: @btn-hollow-color;
 
@@ -545,8 +544,8 @@
 @btn-hollow-active-border-color: @btn-hollow-active-color;
 
 //
-@btn-hollow-red-color: #FF5F5F;
-@btn-hollow-red-bg-color: #FFEFEF;
+@btn-hollow-red-color: #ff5f5f;
+@btn-hollow-red-bg-color: #ffefef;
 @btn-hollow-red-border-color: @btn-hollow-red-color;
 
 @btn-hollow-red-hover-color: darken(@btn-hollow-red-color, 12%);
@@ -558,7 +557,7 @@
 @btn-hollow-red-active-border-color: @btn-hollow-red-active-color;
 
 // Call button on the sidebar.
-@btn-call-color: #FFF;
+@btn-call-color: #ffffff;
 @btn-call-bg-color: @theme-secondary;
 @btn-call-border-color: @btn-call-bg-color;
 
@@ -600,7 +599,7 @@
 
 //== Form Inputs Variables - Used on Radio/CheckBox/Toggle/Slider and above on a btn mixin called .btn-form for use in the radio (button group) and checkbox.
 @form-input-common-selected-border-colour: @theme-tertiary;
-@form-input-common-selected-text-colour: #fff;
+@form-input-common-selected-text-colour: #ffffff;
 @form-input-common-selected-bg-colour: @theme-secondary; //switch on, toggle active, checkbox.
 @form-input-common-deselected-bg-colour: @theme-dark; //switches in off position
 @form-input-common-slidehandle-bg-colour: @theme-tertiary; //range slider grabber handle
@@ -636,7 +635,7 @@
 @input-border-disabled: @input-color-placeholder;
 
 //** Placeholder text color
-@input-color-placeholder: #B3B3B3;
+@input-color-placeholder: #b3b3b3;
 
 //Added this to remove magic numbers in the input height calcs below.
 @input-border-thickness: 1px;
@@ -673,10 +672,10 @@
 //** Help icon colour next to fields.
 @icon-help-colour: #8a8a8a;
 
-@icon-inactive-color: #B3B3B3;
-@icon-active-color: #FFF;
+@icon-inactive-color: #b3b3b3;
+@icon-active-color: #ffffff;
 
-@opening-hours-grey-colour: #7C7C7C;
+@opening-hours-grey-colour: #7c7c7c;
 
 //== Price and frequency
 //
@@ -693,7 +692,7 @@
 //## Dropdown menu container and contents.
 
 //** Background for the dropdown menu.
-@dropdown-bg: #fff;
+@dropdown-bg: #ffffff;
 //** Dropdown menu `border-color`.
 @dropdown-border: @theme-default;
 //** Dropdown menu `border-color` **for IE8**.
@@ -720,7 +719,7 @@
 @dropdown-header-color: @theme-light;
 
 //** Deprecated `@dropdown-caret-color` as of v3.1.0
-@dropdown-caret-color: #000;
+@dropdown-caret-color: #000000;
 
 //== Dropdown Interactive
 //
@@ -741,18 +740,18 @@
 @datepicker-switch-font-size: @font-size-base;
 @datepicker-switch-font-family: @font-family-theme-light;
 @datepicker-switch-font-weight: bold;
-@datepicker-switch-bg-color: #1C3F94;
+@datepicker-switch-bg-color: #1c3f94;
 
-@datepicker-switch-prev-color: #fff;
+@datepicker-switch-prev-color: #ffffff;
 @datepicker-switch-prev-font-size: 18px;
 @datepicker-switch-prev-font-family: @font-family-theme-light;
 @datepicker-switch-prev-font-weight: normal;
 
-@datepicker-switch-next-color: #fff;
+@datepicker-switch-next-color: #ffffff;
 @datepicker-switch-next-font-size: 18px;
 @datepicker-switch-next-font-family: @font-family-theme-light;
 @datepicker-switch-next-font-weight: normal;
-@datepicker-switch-nextprev-bg-color: #142C67;
+@datepicker-switch-nextprev-bg-color: #142c67;
 
 //All cells in the two top rows (th)
 @datepicker-header-font-family: @font-family-theme-bold;
@@ -765,7 +764,7 @@
 @datepicker-cells-font-family: @font-family-theme-light;
 @datepicker-cells-font-weight: normal;
 @datepicker-cells-disabled-color: @theme-light;
-@datepicker-disabled-background-color: #999;
+@datepicker-disabled-background-color: #999999;
 @datepicker-cells-oldnew-color: @theme-dark;
 
 @datepicker-days-hover-bg: @theme-light;
@@ -774,9 +773,9 @@
 @datepicker-today-bg: lighten(@datepicker-today-mixedcolor, 35%);
 @datepicker-today-disabled-bg: @theme-light;
 @datepicker-today-range-bg: mix(@datepicker-today-mixedcolor, @gray-lighter, 50%);
-@datepicker-today-active-color: #fff;
+@datepicker-today-active-color: #ffffff;
 
-@datepicker-dow-text-color: #EBEBEB;
+@datepicker-dow-text-color: #ebebeb;
 
 //Months and years after using the switcher
 @datepicker-monthyear-hover-bg: @theme-light;
@@ -890,18 +889,18 @@
 
 @navbar-default-color: @theme-dark;
 @navbar-default-bg: @theme-light;
-@navbar-default-border: #fff;
+@navbar-default-border: #ffffff;
 
 // Navbar links
-@navbar-default-link-color: #777;
+@navbar-default-link-color: #777777;
 
-@navbar-default-link-hover-color: #333;
+@navbar-default-link-hover-color: #333333;
 @navbar-default-link-hover-bg: @theme-light;
 
-@navbar-default-link-active-color: #555;
+@navbar-default-link-active-color: #555555;
 @navbar-default-link-active-bg: @navbar-default-bg; //darken(@navbar-default-bg, 6.5%);
 
-@navbar-default-link-disabled-color: #ccc;
+@navbar-default-link-disabled-color: #cccccc;
 @navbar-default-link-disabled-bg: transparent;
 
 // Navbar brand label
@@ -913,19 +912,19 @@
 @navbar-default-toggle-bg: @theme-tertiary;
 @navbar-secondary-toggle-bg: @theme-secondary;
 @navbar-default-toggle-hover-bg: #656661;
-@navbar-default-toggle-icon-bar-bg: #fff;
+@navbar-default-toggle-icon-bar-bg: #ffffff;
 @navbar-default-toggle-border-color: @theme-light;
 
 //=== Inverted navbar TODO - might be a green bar for results
 // Reset inverted navbar basics
-@navbar-inverse-color: #fff;
+@navbar-inverse-color: #ffffff;
 @navbar-inverse-bg: @theme-secondary;
 @navbar-inverse-border: @theme-secondary;
 
 // Inverted navbar links
-@navbar-inverse-link-color: #fff;
+@navbar-inverse-link-color: #ffffff;
 
-@navbar-inverse-link-hover-color: #fff;
+@navbar-inverse-link-hover-color: #ffffff;
 @navbar-inverse-link-hover-bg: darken(@theme-secondary, 12%);
 
 @navbar-inverse-link-active-color: @navbar-inverse-link-hover-color;
@@ -943,9 +942,9 @@
 @navbar-inverse-sortbar-border-color: #097d35;
 
 // Inverted navbar toggle
-@navbar-inverse-toggle-hover-bg: #333;
-@navbar-inverse-toggle-icon-bar-bg: #fff;
-@navbar-inverse-toggle-border-color: #333;
+@navbar-inverse-toggle-hover-bg: #333333;
+@navbar-inverse-toggle-icon-bar-bg: #ffffff;
+@navbar-inverse-toggle-border-color: #333333;
 
 // Seperate values to give the navbar customizable dropdowns.
 @navbar-inverse-dropdown-color: @navbar-inverse-link-color;
@@ -958,12 +957,12 @@
 
 // Reset navbar basic colors
 // note: the name *additional* was literally decided on a coin toss.
-@navbar-additional-color: #fff;
+@navbar-additional-color: #ffffff;
 @navbar-additional-bg: @theme-tertiary;
 @navbar-additional-border: @theme-secondary;
 
 // Inverted navbar links
-@navbar-additional-link-color: #fff;
+@navbar-additional-link-color: #ffffff;
 
 @navbar-additional-link-hover-color: @navbar-additional-link-color;
 @navbar-additional-link-hover-bg: darken(@navbar-additional-bg, 12%);
@@ -980,9 +979,9 @@
 @navbar-additional-brand-hover-bg: transparent;
 
 // Inverted navbar toggle
-@navbar-additional-toggle-hover-bg: #333;
-@navbar-additional-toggle-icon-bar-bg: #fff;
-@navbar-additional-toggle-border-color: #333;
+@navbar-additional-toggle-hover-bg: #333333;
+@navbar-additional-toggle-icon-bar-bg: #ffffff;
+@navbar-additional-toggle-border-color: #333333;
 
 // Seperate values to give the navbar customizable dropdowns.
 @navbar-additional-dropdown-color: @navbar-additional-link-color;
@@ -1004,18 +1003,18 @@
 @nav-disabled-link-color: @gray-light;
 @nav-disabled-link-hover-color: @gray-light;
 
-@nav-open-link-hover-color: #fff;
+@nav-open-link-hover-color: #ffffff;
 
 //== Tabs
-@nav-tabs-border-color: #ddd;
+@nav-tabs-border-color: #dddddd;
 
 @nav-tabs-link-hover-border-color: @gray-lighter;
 
 @nav-tabs-active-link-hover-bg: @body-bg;
 @nav-tabs-active-link-hover-color: @gray;
-@nav-tabs-active-link-hover-border-color: #ddd;
+@nav-tabs-active-link-hover-border-color: #dddddd;
 
-@nav-tabs-justified-link-border-color: #ddd;
+@nav-tabs-justified-link-border-color: #dddddd;
 @nav-tabs-justified-active-link-border-color: @body-bg;
 /* todo: ensure this meets styleguide */
 @nav-tabs-inactive-background-color: @gray;
@@ -1029,13 +1028,13 @@
 //== NavMenu - the platform wide menu handler
 //
 //##
-@navMenu-bg-color: #EDEDED; //from psd
-@navMenu-level1-link-color: #000; //from psd
-@navMenu-level1-link-open-color: #fff;
-@navMenu-level1-border-color: #DCDCDB; //from psd
+@navMenu-bg-color: #ededed; //from psd
+@navMenu-level1-link-color: #000000; //from psd
+@navMenu-level1-link-open-color: #ffffff;
+@navMenu-level1-border-color: #dcdcdb; //from psd
 @navMenu-level1-open-bg-color: @theme-tertiary;
-@navMenu-header-color: #fff;
-@navMenu-header-bg-color: #555;
+@navMenu-header-color: #ffffff;
+@navMenu-header-bg-color: #555555;
 @navMenu-padding-horizontal: @navbar-padding-horizontal;
 @navMenu-backdrop-bg: @modal-backdrop-bg;
 
@@ -1188,9 +1187,9 @@
 @label-danger-bg: @brand-danger;
 
 //** Default label text color
-@label-color: #fff;
+@label-color: #ffffff;
 //** Default text color of a linked label
-@label-link-hover-color: #fff;
+@label-link-hover-color: #ffffff;
 
 //== Modals
 //
@@ -1205,7 +1204,7 @@
 @modal-title-line-height: @line-height-base;
 
 //** Background color of modal content area
-@modal-content-bg: #fff;
+@modal-content-bg: #ffffff;
 
 //** Modal content border
 @modal-content-border-color: @theme-default;
@@ -1213,11 +1212,11 @@
 @modal-content-border-radius: 5px;
 
 //** Modal content border color **for IE8**
-@modal-content-fallback-border-color: #999;
+@modal-content-fallback-border-color: #999999;
 //not used by ctm our design - was for transparent borders
 
 //** Modal backdrop background color
-@modal-backdrop-bg: #fff;
+@modal-backdrop-bg: #ffffff;
 
 //** Modal backdrop opacity
 @modal-backdrop-opacity: .5;
@@ -1230,7 +1229,7 @@
 //** Modal footer border color
 @modal-footer-border-color: @modal-header-border-color;
 /* todo: ensure this meets styleguide */
-@modal-title-label-color: #fff;
+@modal-title-label-color: #ffffff;
 
 //** Modal close styling
 @modal-close-button-bg-color: @theme-tertiary;
@@ -1246,8 +1245,8 @@
 
 //** XS Modals - Background color of modal content area
 @modal-xs-content-bg-color: transparent;
-@modal-xs-body-bg-color: #fff;
-@modal-xs-header-content-bg-color: #fff;
+@modal-xs-body-bg-color: #ffffff;
+@modal-xs-header-content-bg-color: #ffffff;
 @modal-xs-header-border-top-width-style: 1px solid @modal-header-border-color;
 
 //** Modal size variants
@@ -1368,7 +1367,7 @@
 //** Thumbnail background color
 @thumbnail-bg: @body-bg;
 //** Thumbnail border color
-@thumbnail-border: #ddd;
+@thumbnail-border: #dddddd;
 //** Thumbnail border radius
 @thumbnail-border-radius: @border-radius-base;
 
@@ -1435,10 +1434,10 @@
 //== journeyProgressBar
 //
 //##
-@main-bg-colour: #F3F3F5;
-@border-color: #E7E7E7;
-@header-color: #162F8A;
-@required-color: #A90000;
+@main-bg-colour: #f3f3f5;
+@border-color: #e7e7e7;
+@header-color: #162f8a;
+@required-color: #a90000;
 
 //** Default & Disabled State
 @journeyProgressBar-color: @theme-default;
@@ -1499,8 +1498,8 @@
 //##
 
 @close-font-weight: normal;
-@close-color: #000;
-@close-text-shadow: 0 1px 0 #fff;
+@close-color: #000000;
+@close-text-shadow: 0 1px 0 #ffffff;
 
 //== Code
 //
@@ -1509,12 +1508,12 @@
 @code-color: #c7254e;
 @code-bg: #f9f2f4;
 
-@kbd-color: #fff;
-@kbd-bg: #333;
+@kbd-color: #ffffff;
+@kbd-bg: #333333;
 
 @pre-bg: #f5f5f5;
 @pre-color: @gray-dark;
-@pre-border-color: #ccc;
+@pre-border-color: #cccccc;
 @pre-scrollable-max-height: 340px;
 
 //== Type
@@ -1554,7 +1553,7 @@
 //
 //## Sets up the arrow styling. Other styling is all from navbar inverse styling.
 @sortbar-arrow-width: 8px;
-@sortbar-arrow-asc-color: #fff;
+@sortbar-arrow-asc-color: #ffffff;
 @sortbar-arrow-desc-color: @navbar-inverse-link-active-bg;
 
 //== Breakpoint shortcut names
@@ -1617,10 +1616,10 @@
 //TODO: Prefix all these with 'results' where they aren't already ie: "@results-<whattheywerecalledbefore>"
 
 @feature-text-color: @theme-dark;
-@feature-bg-color: #fff;
+@feature-bg-color: #ffffff;
 
-@feature-color: #F6F7E9; //the specific override is here
-@feature-odd-color: #E4E6D8; //the specific override is here
+@feature-color: #f6f7e9; //the specific override is here
+@feature-odd-color: #e4e6d8; //the specific override is here
 
 @feature-odd-bg-color: @theme-light; //used in v2 features
 
@@ -1633,21 +1632,21 @@
 @results-price-product-title-color: @theme-tertiary;
 @results-price-product-price-color: @price-color;
 
-@feature-inverse-color: #fff;
+@feature-inverse-color: #ffffff;
 @feature-inverse-bg-color: @theme-tertiary;
 
-@expanding-bg-color: #F7F7F7;
+@expanding-bg-color: #f7f7f7;
 
 @category-color: darken(@feature-color, 20%);
 @category-odd-color: darken(@feature-odd-color, 25%);
-@category-expanded-color: #fff;
+@category-expanded-color: #ffffff;
 @category-expanded-bg-color: @theme-secondary;
 
 //Section colours are found in health specific variables
 
-@compare-color: #EBECE0;
+@compare-color: #ebece0;
 @compare-odd-color: #f1f1f1;
-@compare-section-bg-color: #F1F1E9;
+@compare-section-bg-color: #f1f1e9;
 @compare-text-color: #656661;
 
 @results-font-size: @font-size-base;
@@ -1674,7 +1673,7 @@
 //== Moreinfo - sidebar component
 //
 //## Used currently in Car's moreInfo template.
-@sidebar-left-bg-color: #fff;
+@sidebar-left-bg-color: #ffffff;
 @sidebar-right-bg-color: @theme-tertiary;
 @sidebar-font-size: @font-size-base;
 
@@ -1696,12 +1695,12 @@
 @accordion-xs-heading-color: @text-color;
 
 @accordion-xs-heading-active-bg: @theme-primary;
-@accordion-xs-heading-active-color: #fff;
+@accordion-xs-heading-active-color: #ffffff;
 
 //== RelatedProducts - Confirmation component
 //
 //## Used currently in Car's moreInfo template.
-@related-icon-color: #fff;
+@related-icon-color: #ffffff;
 @related-icon-bg-color: @theme-default;
 @related-icon-active-bg-color: @theme-tertiary;
 
@@ -1714,12 +1713,12 @@
 //== Browser Warning/ Promo bar
 //
 @dynamicheadercontent-bg: @gray-darker;
-@dynamicheadercontent-color: contrast(@dynamicheadercontent-bg, @text-color, #fff);
+@dynamicheadercontent-color: contrast(@dynamicheadercontent-bg, @text-color, #ffffff);
 @dynamicheadercontent-font-size: 16px;
 
 // Snapshot specific
 @snapshot-icon: @headings-color;
-@snapshot-icon-inverted: #fff;
+@snapshot-icon-inverted: #ffffff;
 
 // ctm has no iframe up top
 @page-offset-xs: 0px;
@@ -1752,12 +1751,12 @@
 @contact-headings-color: @theme-secondary;
 
 // Cover level tabs
-@clt-active-color: #fff;
+@clt-active-color: #ffffff;
 @clt-active-bg: @theme-secondary;
 @clt-border-color: #e0e0e0;
 @clt-border-bottom: @clt-active-bg;
 @clt-inactive-bg-color: @theme-tertiary;
-@clt-inactive-color: #fff;
+@clt-inactive-color: #ffffff;
 
 // Call Modal
 @call-modal-phone-number-color: @theme-secondary;
@@ -1768,16 +1767,16 @@
 @logo-compare-scale: 0.37;
 
 // New field border colors
-@field-border-color: #7B8386;
+@field-border-color: #7b8386;
 
 //== Dual Pricing
 //
 
 @dual-pricing-heading-color: #525252;
-@dual-pricing-border-colour: #D3D3D3;
+@dual-pricing-border-colour: #d3d3d3;
 @dual-pricing-dark-font-colour: @theme-dark;
 @dual-pricing-light-note-colour: @opening-hours-grey-colour;
-@dual-pricing-light-gray: #C4C4C4;
+@dual-pricing-light-gray: #c4c4c4;
 
 //shadow color
 @dark-blue-stroke: darken(@theme-tertiary, 20%);

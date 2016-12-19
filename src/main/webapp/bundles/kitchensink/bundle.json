@@ -4,6 +4,7 @@
     "meerkat",
     "shared/journeyEngine/v2",
 	"shared/fonts/v1",
+	"shared/headerBar/v1",
 	"core",
     "shared/forms/v1",
     "plugins/bootstrapSwitch",

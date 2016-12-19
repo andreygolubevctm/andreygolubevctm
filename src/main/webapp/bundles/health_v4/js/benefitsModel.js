@@ -121,6 +121,10 @@
         selectedBenefits[getBenefitType()] = updatedBenefits;
         meerkat.messaging.publish(moduleEvents.UPDATE_SELECTED_BENEFITS_CHECKBOX, selectedBenefits[getBenefitType()]);
     }
+    // get all the selected benefits
+    function getSelectedBenefits() {
+        return selectedBenefits.hospital.concat(selectedBenefits.extras);
+    }
 
     function setIsHospital(isHospital) {
         _isHospital = isHospital;
@@ -136,7 +140,8 @@
         getHospital: getHospital,
         getHospitalCount: getHospitalCount,
         setBenefits: setBenefits,
-        setIsHospital: setIsHospital
+        setIsHospital: setIsHospital,
+        getSelectedBenefits: getSelectedBenefits
     });
 
 })(jQuery);

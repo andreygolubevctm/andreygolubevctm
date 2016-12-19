@@ -4,7 +4,8 @@
     "shared/results/v2",
     "shared/journeyEngine/v2",
     "shared/fonts/v1",
-    "core",
+    "shared/headerBar/v1",
+	"core",
     "shared/forms/v1"
   ]
 }

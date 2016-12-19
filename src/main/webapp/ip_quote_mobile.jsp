@@ -51,10 +51,6 @@
 		</div>
 	</jsp:attribute>
 
-	<jsp:attribute name="xs_results_pagination"></jsp:attribute>
-
-	<jsp:attribute name="form_bottom"></jsp:attribute>
-
 	<jsp:attribute name="footer">
 			<content:get key="footerText" />
 	</jsp:attribute>
