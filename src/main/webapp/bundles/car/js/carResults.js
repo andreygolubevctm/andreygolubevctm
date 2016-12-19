@@ -475,7 +475,7 @@
 
 			// Add formatted annual premium (ie without decimals)
 			if (!_.isEmpty(result.price) && !_.isUndefined(result.price.annualPremium)) {
-				result.price.annualPremiumFormatted = meerkat.modules.currencyField.formatCurrency(result.price.annualPremium, {roundToDecimalPlace: 0});
+				result.price.annualPremiumFormatted = meerkat.modules.currencyField.formatCurrency(result.price.annualPremium, {roundToDecimalPlace: 0, symbol: ''});
 			}
 
 			if (result.excess !== null && !_.isUndefined(result.excess)) {
