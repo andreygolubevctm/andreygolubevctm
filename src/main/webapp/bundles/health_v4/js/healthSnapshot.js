@@ -10,7 +10,6 @@
             }
         },
         moduleEvents = events.healthSnapshot,
-        $preResultsRowTemplate,
 
         $elements = {},
 
@@ -247,61 +246,8 @@
         return list;
     }
 
-    /**
-     * Utility function to map cover type to a label.
-     * @returns {*}
-     */
-    function getLabelForCoverType() {
-        // @todo commented out as we don't have a cover type.
-        /*switch(meerkat.modules.health.getCoverType()) {
-            case 'C':
-                return "Hospital and Extras";
-            case 'H':
-                return "Hospital";
-            case 'E':
-                return "Extras";
-        }*/
-        return "";
-    }
-
-    /**
-     * Utility function to map situation to a label.
-     * @returns {*}
-     */
-    function _getLabelForSituation() {
-
-        switch(meerkat.modules.health.getSituation()) {
-            case 'SM':
-            case 'SF':
-                return "you";
-            case 'C':
-                return "you and your partner";
-            case 'F':
-                return "you and your family";
-            case 'SPF':
-                var $dependants = $('#health_healthCover_dependants');
-                var childrenLabel = parseInt($dependants.val(),10) > 1 ? 'children' : 'child';
-                return "you and your " + childrenLabel;
-        }
-    }
-
-    function renderPreResultsRowSnapshot() {
-
-        if(!$preResultsRowTemplate.length) {
-            return;
-        }
-        var obj = {
-            name: $('#health_contactDetails_name').val(),
-            coverType: getLabelForCoverType(),
-            situation: getLabelForSituation()
-        };
-        var template = meerkat.modules.templateCache.getTemplate($preResultsRowTemplate);
-        $('.preResultsContainer').html(template(obj));
-    }
-
     meerkat.modules.register('healthSnapshot', {
-        init: initHealthSnapshot,
-        renderPreResultsRowSnapshot: renderPreResultsRowSnapshot
+        init: initHealthSnapshot
     });
 
 })(jQuery);
