@@ -27,7 +27,7 @@ Handling of the callback popup
 		$callbackOtherNumInput,
 		$cbContactNumber,
 		$contactDetailsNumberInput,
-		$contactDetailsNumberHiddenInput,
+		// $contactDetailsNumberHiddenInput,
 		_isClosed = false,
 		aedtOffset = 600;
 
@@ -190,10 +190,9 @@ Handling of the callback popup
 
 		// contact details page details
 		$contactDetailsName = $('#health_contactDetails_name');
-		$contactDetailsNumberInput = $('#health_contactDetails_flexiContactNumberinput');
-		$contactDetailsNumberHiddenInput = $('#health_contactDetails_flexiContactNumber');
-
-
+		// $contactDetailsNumberInput = $('#health_contactDetails_flexiContactNumberinput');
+		// $contactDetailsNumberHiddenInput = $('#health_contactDetails_flexiContactNumber');
+		$contactDetailsNumberInput = $('#health_contactDetails_flexiContactNumber');
 	}
 
 	function updateCBModalFields() {
@@ -204,13 +203,15 @@ Handling of the callback popup
 		var contact_number = $.trim($contactDetailsNumberInput.val());
 		if (contact_number.length > 0) {
 
-			if (contact_number.match(/^(04|614|6104)/g)) { // Mobile
-				$callbackMobileHiddenInput.val($contactDetailsNumberHiddenInput.val());
+			// if (contact_number.match(/^(04|614|6104)/g)) { // Mobile
+			if (meerkat.modules.healthContactNumber.getContactBy() === 'mobile') { // Mobile
+				// $callbackMobileHiddenInput.val($contactDetailsNumberHiddenInput.val());
+				$callbackMobileHiddenInput.val($contactDetailsNumberInput.val());
 				$callbackMobileInput.val($contactDetailsNumberInput.val()).valid();
 			} else {
 				// switch to the landline fields
 				$cbContactNumber.not('.hidden').find('a.switch').trigger('click');
-				$callbackOtherNumHiddenInput.val($contactDetailsNumberHiddenInput.val());
+				$callbackOtherNumHiddenInput.val($contactDetailsNumberInput.val());
 				$callbackOtherNumInput.val($contactDetailsNumberInput.val()).valid();
 			}
 		}
@@ -221,9 +222,11 @@ Handling of the callback popup
 			var name = $callbackName.val();
 			$contactDetailsName.val(name);
 
-			var contact_number = $cbContactNumber.not('.hidden').find('input[type=text]').val();
+			var contact_number = $cbContactNumber.not('.hidden').find('input[type=text]').val(),
+				contact_by = $cbContactNumber.not('.hidden').find('input[type=text').hasClass('mobile') ? 'mobile' : 'landline';
+
 			$contactDetailsNumberInput.val(contact_number);
-			$contactDetailsNumberHiddenInput.val(contact_number);
+			// $contactDetailsNumberHiddenInput.val(contact_number);
 		}
 	}
 
