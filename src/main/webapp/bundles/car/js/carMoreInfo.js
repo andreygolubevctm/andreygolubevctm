@@ -657,7 +657,8 @@
 			productName: product.productName,
 			productBrandCode: product.brandCode,
 			brand: product.providerProductName,
-			noSaleLead: leadFeed
+			noSaleLead: leadFeed,
+			verticalFilter: meerkat.modules.car.getVerticalFilter()
 		});
 
 		return true;
@@ -700,7 +701,8 @@
 			quoteReferenceNumber: product.quoteNumber,
 			productID: product.productId,
 			productName: product.productName,
-			productBrandCode: product.brandCode
+			productBrandCode: product.brandCode,
+			verticalFilter: meerkat.modules.car.getVerticalFilter()
 		}, false, false);
 	}
 
@@ -718,6 +720,7 @@
 
 		var settings = {
 			additionalTrackingData: {
+				verticalFilter: meerkat.modules.car.getVerticalFilter(),
 				productName: meerkat.modules.moreInfo.getOpenProduct().productName
 			}
 		};
