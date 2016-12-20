@@ -22,6 +22,9 @@
 
 		<jsp:body>
 
+			<simples:dialogue id="68" vertical="health" />
+			<simples:dialogue id="69" vertical="health" />
+			<simples:dialogue id="70" vertical="health" />
 			<simples:dialogue id="19" vertical="health" />
 			<simples:dialogue id="20" vertical="health" />
 			<simples:dialogue id="0" vertical="health" className="red">
