@@ -78,14 +78,14 @@
         </div>
         <div class="clearfix"></div>
     </c:if>
-
+    <%-- Currently applied on Health V2 --%>
     <c:if test="${not empty sidebarColumnLeft}">
         <div class="hidden-xs col-sm-4 col-md-3" id="results-sidebar">
                 ${sidebarColumnLeft}
         </div>
     </c:if>
 
-    <div class="col-sm-${resultsColsSm} col-md-${resultsColsMd} results-column-container">
+    <div class="col-md-${resultsColsMd} results-column-container">
         <div class="${resultsContainerClassName} resultsContainer featuresMode results-columns-xs-${xsResultsColumns} results-columns-sm-${smResultsColumns} results-columns-md-${mdResultsColumns} results-columns-lg-${lgResultsColumns}">
             <jsp:invoke fragment="additionalPagination"/>
             <div class="resultsOverflow notScrolling">
@@ -117,9 +117,9 @@
             </div>
         </div>
     </div>
-
+    <%-- Currently applied on Health V4 --%>
     <c:if test="${not empty sidebarColumnRight}">
-        <div class="hidden-xs col-sm-4 col-md-3" id="results-sidebar">
+        <div class="hidden-xs hidden-sm col-md-3" id="results-sidebar">
                 ${sidebarColumnRight}
         </div>
     </c:if>

@@ -94,20 +94,6 @@
   }
 }
 
-//outside as the tooltip is appended to the DOM
-.brochuresTooltip {
-  @media (@xs-sm-only) {
-    .brochureRow {
-      text-align: center;
-      margin: 5px 0;
-    }
-  }
-  .btn-sm {
-    display: inline-block;
-    padding: 7px 12px;
-  }
-}
-
 @subfeature-border-color: #C0C9DE;
 @dulled-color: #8A8A8A;
 .featuresMode {
@@ -142,49 +128,17 @@
 
   // Each product column is a result-row, floated left so they fit beside each other.
   .result-row {
+    border: 1px solid @results-border-color;
+    background: @feature-bg-color;
 
     // .result is just the top section.
     .result {
-      border: 1px solid @results-border-color;
-      background: @feature-bg-color;
       // box shadow descoped due to issues with the box shadow displaying behind the filters and also on the 3rd result.
       //box-shadow: 2px 3px 3px #cfcfcf;
-    }
-    h3 {
-      @media (@xs-sm-only) {
-        font-size: 14px;
-      }
-      @media (@md-only) {
-        font-size: 20px;
-      }
-    }
-    h5 {
-      padding: 15px 0 10px 5px;
-      margin: 0;
-      @media (@xs-only) {
-        font-size: 14px;
-      }
-      @media (@sm-only) {
-        font-size: 16px;
-      }
     }
 
     // .cell is used as parent wrapper as .category is re-used on non-cell divs.
     .cell {
-
-      // No feature icons in XS as there isn't enough space!
-      .health-icon {
-        line-height: 30px; // maintain same height of rows.
-        @media (@xs-only) {
-          display: none;
-        }
-        @media (@sm-only) {
-          font-size: 14px;
-        }
-        @media (@md-only) {
-          font-size: 24px;
-        }
-      }
 
       // A top level category e.g. the Non Cosmetic Plastic Surgery cell
       &.category { //.cell.category
@@ -223,7 +177,7 @@
           }
         }
         .content {
-          border-right: 1px solid @results-border-color;
+          /*border-right: 1px solid @results-border-color;*/
           // When a benefit is not covered
           &.noCover {
             background-color: #EDEDED;
@@ -243,20 +197,12 @@
         &.category {
           // Style the feature label cell when its expanded.
           &.expanded {
-            border-bottom: 1px solid @theme-tertiary;
+            /*border-bottom: 1px solid @theme-tertiary;*/
 
             .category { //.cell.category.expanded
 
               > .content {
-                background-color: @theme-tertiary;
-                color: #fff;
-                sup {
-                  color: #fff;
-                }
-                border-left-color: @theme-tertiary;
-                border-top: none;
-                border-bottom: 2px solid @dark-blue-stroke;
-                border-right: 1px solid @theme-tertiary;
+                // styles on an expanded cell.
               }
             }
           }
@@ -264,13 +210,13 @@
             margin-left: 10px;
             position: relative;
 
-            .content {
+            /*.content {
               border-left-color: @subfeature-border-color;
               border-right: 1px solid @subfeature-border-color;
               border-bottom: 1px solid @subfeature-border-color;
               border-top: none; // disable inherited border.
               background-color: #DDE1EB;
-            }
+            }*/
             // remove border bottom on last cell in children
             // or when not covered container is shown
             .noCoverContainer.content,
@@ -295,29 +241,16 @@
                 color: @dulled-color;
               }
             }
-
-            // The corner wedge when expanded.
-            &:before {
-              content: '';
-              position: absolute;
-              top: 0;
-              left: -10px;
-              width: 0;
-              height: 0;
-              border-style: solid;
-              border-width: 0 10px 10px 0;
-              border-color: transparent @dark-blue-stroke transparent transparent;
-            }
           }
 
           // the last category in a list, remove its blue border bottom and
           // for its last children .cell.feature, set the border bottom to normal.
-          &:last-child.expanded {
+          /*&:last-child.expanded {
             border-bottom: none;
             .children .cell.feature:last-child, .noCoverContainer {
               border-bottom: 1px solid @subfeature-border-color;
             }
-          }
+          }*/
 
         }
 
@@ -330,7 +263,7 @@
     @media (@lg) {
       font-size: @results-font-size;
     }
-    border-top: 1px solid @results-border-color;
+    /*border-top: 1px solid @results-border-color;*/
     padding: @results-column-side-padding-width;
     text-align: left;
     // Content of certain feature cells. This needs to be relative so the expander icon inside can be absolutely positioned.
@@ -348,21 +281,21 @@
   // Content is internals of .feature/.category/.section
   .content {
     background: @feature-bg-color;
-    .transition(background-color 0.5s);
-    border-left: 1px solid @results-border-color;
+    /*.transition(background-color 0.5s);*/
+    /*border-left: 1px solid @results-border-color;*/
   }
 
   // Override styles for the excess and hospital cover sections.
   .hospitalSelectionsExcessContainer {
     .hospitalExcessSectionBorder {
       background-color: #fff;
-      border: 1px solid @results-border-color;
-      border-bottom: none;
+      /*border: 1px solid @results-border-color;
+      border-bottom: none;*/
     }
     .featuresListExcess {
       .content {
-        border-left: none;
-        border-top: none;
+        /*border-left: none;
+        border-top: none;*/
         padding: 0 10px;
       }
       // Overrides for the excess section:
@@ -412,7 +345,6 @@
         @media (@lg) {
           position: absolute;
           right: 10px;
-          top: 0px;
           top: 14px;
         }
       }

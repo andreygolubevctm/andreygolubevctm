@@ -9,11 +9,13 @@
                 RENDER_HEALTH_SNAPSHOT : "RENDER_HEALTH_SNAPSHOT"
             }
         },
-        moduleEvents = events.healthSnapshot;
+        moduleEvents = events.healthSnapshot,
+        $preResultsRowTemplate;
 
 
     function initHealthSnapshot() {
         subscription();
+        $preResultsRowTemplate = $("#pre-results-row-content-template");
     }
 
     function subscription() {
@@ -201,12 +203,15 @@
     
     function renderPreResultsRowSnapshot() {
 
+        if(!$preResultsRowTemplate.length) {
+            return;
+        }
         var obj = {
             name: $('#health_contactDetails_name').val(),
             coverType: getLabelForCoverType(),
             situation: getLabelForSituation()
         };
-        var template = meerkat.modules.templateCache.getTemplate($("#pre-results-row-content-template"));
+        var template = meerkat.modules.templateCache.getTemplate($preResultsRowTemplate);
         $('.preResultsContainer').html(template(obj));
     }
 

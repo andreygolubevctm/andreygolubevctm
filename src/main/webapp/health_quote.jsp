@@ -144,6 +144,25 @@
             <health_v1:footer />
         </jsp:attribute>
 
+            <jsp:attribute name="xs_results_pagination">
+                <div class="navbar navbar-default xs-results-pagination navMenu-row-fixed visible-xs">
+                    <div class="container">
+                        <ul class="nav navbar-nav ">
+                            <li class="navbar-text center hidden" data-results-pagination-pagetext="true"></li>
+
+                            <li>
+                                <a data-results-pagination-control="previous" href="javascript:;" class="btn-pagination" data-analytics="pagination previous"><span class="icon icon-arrow-left"></span>
+                                    Prev</a>
+                            </li>
+
+                            <li class="right">
+                                <a data-results-pagination-control="next" href="javascript:;" class="btn-pagination " data-analytics="pagination next">Next <span class="icon icon-arrow-right"></span></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </jsp:attribute>
+
         <jsp:attribute name="vertical_settings">
             <health_v1:settings />
         </jsp:attribute>

@@ -25,17 +25,18 @@
             }
         });
         if (!availableExtras.length) {
-            $('.featuresListExtrasOtherList, .featuresListExtrasFullList').addClass('hidden');
+            if(numberOfSelectedExtras() === 0) {
+                $('.featuresListExtrasOtherList, .featuresListExtrasFullList').addClass('hidden');
+            } else if(numberOfSelectedHospitals() === 0) {
+                $('.featuresListHospitalOtherList, .featuresListHospitalFullList').addClass('hidden');
+            }
         } else {
-            _.each(availableExtras, function (ft, i) {
-                var separator = '';
-                if (i == (availableExtras.length - 2)) {
-                    separator = ' and ';
-                } else if (i !== availableExtras.length - 1) {
-                    separator = ', ';
-                }
-                output += ft.safeName + separator;
-            });
+            output += availableExtras[0].safeName;
+            if (availableExtras.length > 1) {
+                output += ' and ' + (availableExtras.length - 1) + ' more';
+            } else {
+                output = 'Also includes ' + output;
+            }
         }
 
         return output;
@@ -64,17 +65,6 @@
     }
 
     /**
-     * Remap the class string to just get the HLTicon- part of it.
-     * @param ft
-     * @returns {string}
-     * @private
-     */
-    function _getIconClass(ft) {
-        var iconClassSet = ft.classString.match(/(HLTicon-[^\s]+)/);
-        return iconClassSet && iconClassSet.length && iconClassSet[0].indexOf('HLTicon') != -1 ? iconClassSet[0] : "";
-    }
-
-    /**
      *
      * @param ft
      * @returns {string}
@@ -83,11 +73,11 @@
     function _getHelpTooltip(ft) {
         var attribute = '';
         var analytics = {
-            "300" : "no COP",
-            "301" : "waiting period",
-            "303" : "excess waivers"
+            "300": "no COP",
+            "301": "waiting period",
+            "303": "excess waivers"
         };
-        if(_.has(analytics, ft.helpId)) {
+        if (_.has(analytics, ft.helpId)) {
             attribute = ' data-analytics="' + analytics[ft.helpId] + '"';
         }
         return ft.helpId !== '' && ft.helpId != '0' ? '<a href="javascript:void(0);" class="help-icon" data-content="helpid:' + ft.helpId + '" data-toggle="popover" data-my="right center" data-at="left center" ' + attribute + '>(?)</a>' : '';
@@ -175,7 +165,6 @@
                 ft.labelInColumnTitle = '';
                 ft.labelInColumnContentClass = '';
             }
-            ft.iconClass = _getIconClass(ft);
         } else if (ft.type == 'feature') {
             ft.displayValue = buildDisplayValue(ft.pathValue, ft);
         }
@@ -221,10 +210,10 @@
         result.priceText = prem.text ? prem.text : formatCurrency(prem.payableAmount);
         result.priceLhcfreetext = prem.lhcfreetext ? prem.lhcfreetext : formatCurrency(prem.lhcFreeAmount);
         result.textLhcFreePricing = prem.lhcfreepricing ? prem.lhcfreepricing : '+ ' + formatCurrency(prem.lhcAmount) +
-        ' LHC inc ' +
-        formatCurrency(prem.rebateAmount) + 'Government Rebate';
+            ' LHC inc ' +
+            formatCurrency(prem.rebateAmount) + 'Government Rebate';
         result.textPricing = prem.pricing ? prem.pricing : 'Includes rebate of ' + formatCurrency(prem.rebateAmount) +
-        ' & LHC loading of ' + formatCurrency(prem.lhcAmount);
+            ' & LHC loading of ' + formatCurrency(prem.lhcAmount);
         result.hasValidPrice = (prem.value && prem.value > 0) || (prem.text && prem.text.indexOf('$0.') < 0) ||
             (prem.payableAmount && prem.payableAmount > 0);
         result.lhcFreePriceMode = typeof mode === "undefined" || mode !== "lhcInc";
@@ -244,7 +233,7 @@
     }
 
     function _formatExcess(price) {
-        return _.isNull(price) ? "$0" : meerkat.modules.currencyField.formatCurrency(price, {roundToDecimalPlace: 0});
+        return _.isNull(price) ? "$0" : meerkat.modules.currencyField.formatCurrency(price, { roundToDecimalPlace: 0 });
     }
 
     function getPrice(result) {
@@ -292,8 +281,8 @@
             $('.featuresListExtrasSelections .children').html('<div class="cell category collapsed"><div class="labelInColumn no-selections"><div class="content" data-featureid="9997"><div class="contentInner">No extras benefits selected</div></div></div></div>');
         }
 
-        if(numberOfSelectedHospitals() === 0) {
-            $('.featuresListHospitalSelections .children').each(function(){
+        if (numberOfSelectedHospitals() === 0) {
+            $('.featuresListHospitalSelections .children').each(function () {
                 if ($.trim($(this).html()) === '') {
                     $(this).html('<div class="cell category collapsed"><div class="labelInColumn no-selections"><div class="content" data-featureid="9996"><div class="contentInner">No hospital benefits selected</div></div></div></div>');
                 }
@@ -306,6 +295,7 @@
         var pageStructure = Features.getPageStructure(3);
         return pageStructure && pageStructure.length ? pageStructure[0].children.length : 0;
     }
+
     function numberOfSelectedHospitals() {
         var pageStructure = Features.getPageStructure(2);
         return pageStructure && pageStructure.length ? pageStructure[0].children.length : 0;
@@ -319,7 +309,7 @@
                 // prevent multi clicking
                 $el.addClass('disabled');
                 filteredOutResults.push($el.attr('data-productId'));
-                Results.filterBy("productId", "value", {"notInArray": filteredOutResults}, true, true);
+                Results.filterBy("productId", "value", { "notInArray": filteredOutResults }, true, true);
                 toggleRemoveResultPagination();
             }
             // reset the disable so they can click again when reset
@@ -331,7 +321,7 @@
             e.preventDefault();
             filteredOutResults = [];
             Results.unfilterBy('productId', "value", true);
-            _.defer(function(){
+            _.defer(function () {
                 toggleRemoveResultPagination();
             });
         }).off('click', '.featuresListExtrasOtherList').on('click', '.featuresListExtrasOtherList', function () {

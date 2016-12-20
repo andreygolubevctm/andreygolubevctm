@@ -13,12 +13,12 @@
         var $healthCoverDetails = $('#startForm');
 
         var postData = {
-            dependants: $healthCoverDetails.find(':input[name="health_healthCover_dependants"]').val(),
+            dependants: meerkat.modules.healthRebate.getDependents(),
             income: $healthCoverDetails.find(':input[name="health_healthCover_income"]').val() || 0,
             rebate_choice: forceRebate === true ? 'Y' : $healthCoverDetails.find('input[name="health_healthCover_rebate"]:checked').val(),
             primary_dob: $healthCoverDetails.find('#health_healthCover_primary_dob').val(),
             primary_loading: $healthCoverDetails.find('input[name="health_healthCover_primary_healthCoverLoading"]:checked').val(),
-            primary_current: $healthCoverDetails.find('input[name="health_healthCover_health_cover"]:checked').val(),
+            primary_current: $healthCoverDetails.find('input[name="health_healthCover_primary_cover"]:checked').val(),
             primary_loading_manual: $healthCoverDetails.find('.primary-lhc').val(),
             cover: meerkat.modules.healthChoices.getSituation()
         };
@@ -29,10 +29,11 @@
         }
 
         if (meerkat.modules.healthRebate.hasPartner()) {
-            postData.partner_dob = $healthCoverDetails.find('input[name="health_healthCover_partner_dob"]').val();
-            postData.partner_current = $healthCoverDetails.find('input[name="health_healthCover_partner_health_cover"]:checked').val() || 'N';
-            postData.partner_loading = $healthCoverDetails.find('input[name="health_healthCover_partner_healthCoverLoading"]:checked').val() || 'N';
-            postData.partner_loading_manual = $healthCoverDetails.find('input[name="health_healthCover_partner_lhc"]').val();
+            var $partnerCoverDetails = $('#benefitsForm');
+            postData.partner_dob = $partnerCoverDetails.find('input[name="health_healthCover_partner_dob"]').val();
+            postData.partner_current = $partnerCoverDetails.find('input[name="health_healthCover_partner_health_cover"]:checked').val() || 'N';
+            postData.partner_loading = $partnerCoverDetails.find('input[name="health_healthCover_partner_healthCoverLoading"]:checked').val() || 'N';
+            postData.partner_loading_manual = $partnerCoverDetails.find('input[name="health_healthCover_partner_lhc"]').val();
         }
 
         if (!fetchRates(postData, true, callback)) {
@@ -46,7 +47,7 @@
         var $healthCoverDetails = $('#startForm');
 
         var postData = {
-            dependants: $healthCoverDetails.find(':input[name="health_healthCover_dependants"]').val(),
+            dependants: meerkat.modules.healthRebate.getDependents(),
             income: $healthCoverDetails.find(':input[name="health_healthCover_income"]').val() || 0,
             rebate_choice: $healthCoverDetails.find('input[name="health_healthCover_rebate"]:checked').val() || 'Y',
             primary_dob: $healthCoverDetails.find('#health_healthCover_primary_dob').val(),

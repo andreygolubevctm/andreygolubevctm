@@ -176,14 +176,14 @@
                 meerkat.modules.healthLocation.initHealthLocation();
                 meerkat.modules.healthPostcode.initPostcode();
 
-                if(meerkat.site.choices) {
+                if (meerkat.site.choices) {
                     meerkat.modules.healthChoices.initialise('SM'); // default to single male
                     meerkat.modules.healthChoices.setState(meerkat.site.choices.state);
                     meerkat.modules.healthChoices.shouldPerformUpdate(meerkat.site.choices.performHealthChoicesUpdate);
                 }
 
                 // change benefits page layout when change the coverType
-                $('#health_situation_coverType').on('change', function() {
+                $('#health_situation_coverType').on('change', function () {
                     var coverTypeVal = $(this).find('input:checked').val();
                     meerkat.modules.healthBenefitsStep.updateHiddenFields(coverTypeVal);
                 });
@@ -217,12 +217,18 @@
             },
             onInitialise: function onResultsInit(event) {
                 /** @todo implement from health.js when get to this step */
+                meerkat.modules.benefits.updateModelOnPreload();
+
             },
             onBeforeEnter: function enterBenefitsStep(event) {
                 /** @todo implement from health.js when get to this step */
             },
-            onAfterLeave: function leaveBenefitsStep(event) {
+            onAfterEnter: function enterBenefitsStep(event) {
                 /** @todo implement from health.js when get to this step */
+            },
+            onAfterLeave: function leaveBenefitsStep(event) {
+                var selectedBenefits = meerkat.modules.benefitsModel.getSelectedBenefits();
+                meerkat.modules.healthResultsChange.onBenefitsSelectionChange(selectedBenefits);
             }
         };
 
@@ -243,7 +249,7 @@
                 validate: true
             },
             onInitialise: function onContactInit(event) {
-                /** @todo implement from health.js when get to this step */
+                meerkat.modules.resultsFeatures.fetchStructure('health_v4');
             },
             onBeforeEnter: function enterContactStep(event) {
                 /** @todo implement from health.js when get to this step */
@@ -288,7 +294,7 @@
             },
             onBeforeEnter: function enterResultsStep(event) {
                 meerkat.modules.healthDependants.resetConfig();
-                if(event.isForward && meerkat.site.isCallCentreUser) {
+                if (event.isForward && meerkat.site.isCallCentreUser) {
                     $('#journeyEngineSlidesContainer .journeyEngineSlide')
                         .eq(meerkat.modules.journeyEngine.getCurrentStepIndex()).find('.simples-dialogue').show();
                 } else {
@@ -297,7 +303,7 @@
                 }
             },
             onAfterEnter: function onAfterEnterResultsStep(event) {
-                if(event.isForward === true){
+                if (event.isForward === true) {
                     meerkat.modules.healthResults.getBeforeResultsPage();
                 }
 
@@ -533,13 +539,9 @@
     }
 
     // Use the situation value to determine if a partner is visible on the journey.
-    function hasPartner(){
+    function hasPartner() {
         var cover = meerkat.modules.healthChoices.getSituation();
-        if(cover == 'F' || cover == 'C'){
-            return true;
-        }else{
-            return false;
-        }
+        return cover == 'F' || cover == 'C';
     }
 
     meerkat.modules.register("health", {
