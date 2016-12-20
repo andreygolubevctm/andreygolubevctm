@@ -23,6 +23,5 @@
 						  style="radio-rounded" />
 
 	<field_v1:hidden xpath="${xpath}/suburb" />
-	<%--<field_v1:hidden xpath="${xpath}/postcode" />--%>
 
 </form_v4:row>

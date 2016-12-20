@@ -7,30 +7,25 @@
                 STATE_CHANGED: 'STATE_CHANGED'
             }
         },
-        $healthSitLocation,
-        $healthSituationState,
-        $healthSituationPostcode,
-        $healthSituationSuburb;
-        // location = '';
+        $elements;
 
     function initHealthLocation() {
-        $healthSitLocation = $('#health_situation_location');
-        $healthSituationState = $('input[name=health_situation_state]');
-        $healthSituationPostcode = $('#health_situation_postcode');
-        $healthSituationSuburb = $('#health_situation_suburb');
-
-        eventSubscriptions();
-
-        // location = $healthSitLocation.val();
+        _setupFields();
+        _eventSubscriptions();
         setLocation(getLocation());
     }
 
-    function eventSubscriptions() {
-        // $healthSitLocation.on('change', function onLocationChanged() {
-        //     setLocation($(this).val());
-        // });
+    function _setupFields() {
+        $elements = {
+            location: $('#health_situation_location'),
+            state: $('input[name=health_situation_state]'),
+            postcode: $('#health_situation_postcode'),
+            suburb: $('#health_situation_suburb')
+        };
+    }
 
-        $healthSituationState.on('change', function onStateChanged() {
+    function _eventSubscriptions() {
+        $elements.state.on('change', function onStateChanged() {
             meerkat.messaging.publish(moduleEvents.healthLocation.STATE_CHANGED, { state: $(this).val() });
         });
     }
@@ -47,10 +42,10 @@
                 postcode = pieces.pop(),
                 suburb = pieces.join(' ');
 
-            $healthSitLocation.val(location);
-            $healthSituationState.filter('[value='+state+']').trigger('click');
-            $healthSituationPostcode.val(postcode);
-            $healthSituationSuburb.val(suburb);
+            $elements.location.val(location);
+            $elements.state.filter('[value='+state+']').trigger('click');
+            $elements.postcode.val(postcode);
+            $elements.suburb.val(suburb);
         }
     }
 
@@ -68,7 +63,7 @@
     }
 
     function getLocation() {
-        return $healthSitLocation.val();
+        return $elements.location.val();
     }
 
     meerkat.modules.register('healthLocation', {
