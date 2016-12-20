@@ -85,7 +85,7 @@
 
     function _getResults(postcode) {
         _postcode = postcode;
-        meerkat.modules.loadingAnimation.showInside($elements.input.parent(), true);
+        meerkat.modules.loadingAnimation.showAfter($elements.input);
 
         var data = { term: postcode },
             request_obj = {
@@ -111,7 +111,7 @@
                     // preselect suburb
                     _preselectSuburb();
 
-                    meerkat.modules.loadingAnimation.hide($elements.input.parent());
+                    meerkat.modules.loadingAnimation.hide($elements.input);
                 }
             };
 
