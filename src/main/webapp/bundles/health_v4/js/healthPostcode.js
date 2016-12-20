@@ -53,7 +53,7 @@
                 } else {
                     if (value !== _postcode) {
                         $elements.location.val('');
-                        $('.suburb-item, .suburb-item button').removeClass('selected');
+                        $elements.results.find('.suburb-item, .suburb-item button').removeClass('selected');
                     }
                 }
             });
@@ -62,7 +62,7 @@
             .on('click', 'button', function() {
                 var $suburbItem = $(this).parent();
 
-                $('.suburb-item, .suburb-item button').removeClass('selected');
+                $elements.results.find('.suburb-item, .suburb-item button').removeClass('selected');
                 $suburbItem.addClass('selected').find('button').addClass('selected');
 
                 _setSuburb($suburbItem.attr('data-location'));
