@@ -48,14 +48,14 @@
             var contactBy = contactNumber.match(/^(04|614|6104)/g) ? 'mobile' : 'other';
 
             $contactNumberContainer.attr('data-contact-by', contactBy);
-            $contactNumberContainer.find('.contact-number-' + contactBy + ' input[type=text]').val(contactNumber).trigger('change');
+            $contactNumberContainer.find('.contact-number-' + contactBy + ' input.contact-number-field').val(contactNumber).trigger('change');
         }
     }
 
     function getContactNumberFromField($contactNumberContainer) {
         var contactBy = $contactNumberContainer.attr('data-contact-by');
 
-        return $contactNumberContainer.find('.contact-number-' + contactBy + ' input[type=text]').val();
+        return $contactNumberContainer.find('.contact-number-' + contactBy + ' input.contact-number-field').val();
     }
 
     meerkat.modules.register('healthContactNumber', {

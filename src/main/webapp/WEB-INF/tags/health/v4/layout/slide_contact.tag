@@ -39,7 +39,6 @@
                     <health_v4_contact:competition xpath="${xpath}" />
 
                     <health_v4_contact:simples_referral_tracking />
-                    <health_v4_contact:javascript xpath="${xpath}" />
                 </form_v4:fieldset>
 
             </jsp:body>
