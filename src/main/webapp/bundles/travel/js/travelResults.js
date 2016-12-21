@@ -149,6 +149,10 @@
 					return;
 				}
 				var obj = result.info;
+				// Add provider property (for tracking purposes)
+				if(_.isUndefined(obj.provider) || _.isEmpty(obj.provider)) {
+					obj.provider = obj.service;
+				}
 				// TRV-667: replace any non digit words with $0 e.g. Optional Extra
 				if (typeof obj.luggage !== 'undefined' && obj.luggageValue <= 0) {
 					obj.luggage = "$0";
