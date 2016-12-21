@@ -180,6 +180,7 @@
                 meerkat.modules.jqueryValidate.initJourneyValidator();
 
                 meerkat.modules.healthLocation.initHealthLocation();
+                meerkat.modules.healthPostcode.initPostcode();
 
                 if (meerkat.site.choices) {
                     meerkat.modules.healthChoices.initialise('SM'); // default to single male
@@ -260,9 +261,13 @@
             },
             onBeforeEnter: function enterContactStep(event) {
                 /** @todo implement from health.js when get to this step */
+
+                meerkat.modules.healthPostcode.editMode();
             },
             onAfterLeave: function leaveContactStep(event) {
                 /** @todo implement from health.js when get to this step */
+
+                meerkat.modules.healthPostcode.editMode();
             }
         };
 

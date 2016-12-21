@@ -34,7 +34,8 @@
                     <health_v4_contact:firstname xpath="${xpath}" />
                     <health_v4_contact:contact_number xpath="${xpath}" />
                     <health_v4_contact:email_address xpath="${xpath}" />
-                    <health_v4_contact:postcode xpath="${xpath}" />
+                    <c:set var="postcodeXpath">${pageSettings.getVerticalCode()}/situation</c:set>
+                    <health_v4_contact:postcode xpath="${postcodeXpath}" />
                     <health_v4_contact:hidden_fields xpath="${xpath}" />
                     <health_v4_contact:competition xpath="${xpath}" />
 

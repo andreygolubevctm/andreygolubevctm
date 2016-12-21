@@ -305,6 +305,18 @@ ul.themed {
           @btn-add-hover-bg-color, @btn-add-hover-color,
           @btn-add-border-color, @btn-add-active-border-color, @btn-add-hover-border-color, true); }
 
+.btn-secondary {
+  .btn-styles(@btn-secondary-bg-color, @btn-secondary-color,
+          @btn-secondary-active-bg-color, @btn-secondary-active-color,
+          @btn-secondary-hover-bg-color, @btn-secondary-hover-color,
+          @btn-secondary-border-color, @btn-secondary-active-border-color, @btn-secondary-hover-border-color, true); }
+
+.btn-secondary.selected {
+  color: @white;
+  background-color: @btn-secondary-active-color;
+  border-color: @btn-secondary-active-color;
+}
+
 //** Between pages, the journey nav button should have custom padding on XS.
 @media (@xs-only) {
   .journeyNavButton {

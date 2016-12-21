@@ -12,9 +12,6 @@
 
 <c:set var="fieldXpath" value="${xpath}/location" />
 <c:set var="state" value="${data['health/situation/state']}" />
-<c:set var="location" value="${data['health/situation/location']}" />
-
-<field_v1:hidden xpath="${xpath}/location" defaultValue="${location}" />
 
 <form_v4:row label="You're living in" fieldXpath="${xpath}StateRow" className="health-state" subLabel="We've made an educated guess, correct us if we're wrong">
 
@@ -28,6 +25,5 @@
 						  wrapCopyInSpan="${true}" />
 
 	<field_v1:hidden xpath="${xpath}/suburb" />
-	<field_v1:hidden xpath="${xpath}/postcode" />
 
 </form_v4:row>
