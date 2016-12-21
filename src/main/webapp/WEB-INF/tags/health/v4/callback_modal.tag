@@ -32,7 +32,7 @@
                                 <field_v3:person_name xpath="${fieldXpath}" title="name" required="true" />
                             </form_v3:row>
 
-                            <field_v4:contact_number xpath="${xpath}" className="callback-contact-number" />
+                            <field_v4:contact_number mobileXpath="${xpath}/mobile" otherXpath="${xpath}/otherNumber" className="callback-contact-number" />
                         </form>
                     </div>
                 </div>
