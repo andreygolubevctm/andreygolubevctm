@@ -30,9 +30,9 @@
         {{ } if(ft.displayChildren) { }}
         <div class="children {{= ft.hideChildrenClass }}" data-fid="{{= ft.id }}">
             {{ obj.childFeatureDetails = ft.children; }}
-            {{ if(ft.type == 'category') { }} <div class="limits-label">Limits</div> {{ } }}
+            {{ if(ft.type == 'category' && obj.featureType == 'extras') { }} <div class="limits-label">Limits</div> {{ } }}
             {{= Results.cachedProcessedTemplates[obj.featuresTemplate](obj) }}{{ delete obj.childFeatureDetails; }}<%-- needs deleting between iterations or when all hospital selected, it  --%>
-            {{ if(ft.type == 'category') { }} <div class="cell featureGroupLimit text-center"><div class="content">group limits may apply<br /><a href="javascript:;" class="open-more-info">View Product <span class="icon icon-angle-right"></span></a></div></div> {{ } }}
+            {{ if(ft.type == 'category' && obj.featureType == 'extras') { }} <div class="cell featureGroupLimit text-center"><div class="content">group limits may apply<br /><a href="javascript:;" class="open-more-info">View Product <span class="icon icon-angle-right"></span></a></div></div> {{ } }}
         </div>
         {{ } else { }}{{ delete obj.childFeatureDetails; }}{{ } }}
     </div>

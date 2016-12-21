@@ -1,9 +1,5 @@
 {
-    "dependencies": [
-        "meerkat",
-        "shared/fonts/v1",
-        "shared/headerBar/v1",
-	"core",
-        "shared/selectTags"
-    ]
+  "dependencies": [
+    "shared/selectTags"
+  ]
 }

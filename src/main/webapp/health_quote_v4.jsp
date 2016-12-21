@@ -23,7 +23,7 @@
 
         <%-- Get data to build sections/categories/features on benefits and result pages. Used in results and benefits tags --%>
         <jsp:useBean id="resultsDisplayService" class="com.ctm.web.core.results.services.ResultsDisplayService" scope="request" />
-        <c:set var="resultTemplateItems" value="${resultsDisplayService.getResultsPageStructure('health_v4')}" scope="request"  />
+        <c:set var="resultTemplateItems" value="${resultsDisplayService.getResultsPageStructure('health_v4')}" scope="request" />
 
         <%-- Call centre numbers --%>
         <jsp:useBean id="callCenterHours" class="com.ctm.web.core.web.openinghours.go.CallCenterHours" scope="page" />
@@ -55,9 +55,9 @@
                                                data-content="#view_all_hours"
                                                data-dialog-hash-id="view_all_hours"
                                                data-title="Call Centre Hours" data-cache="true">
-                                        <span class="noWrap callCentreNumber">${callCentreNumber}</span>
-                                        <span class="noWrap callCentreAppNumber">${callCentreAppNumber}</span>
-                                    </a> or <health_v4:callback_link /> ${callCentreCBModal}
+                                    <span class="noWrap callCentreNumber">${callCentreNumber}</span>
+                                    <span class="noWrap callCentreAppNumber">${callCentreAppNumber}</span>
+                                </a> or <health_v4:callback_link /> ${callCentreCBModal}
                                 </div>
 
                                 <div id="view_all_hours" class="hidden">${callCentreHoursModal}</div>
@@ -91,6 +91,12 @@
 
             <jsp:attribute name="body_end">
 			</jsp:attribute>
+
+            <jsp:attribute name="additional_meerkat_scripts">
+                <c:if test="${callCentre}">
+                    <script src="${assetUrl}assets/js/bundles/simples_health${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
+                </c:if>
+            </jsp:attribute>
 
             <jsp:attribute name="vertical_settings">
                 <health_v4:settings />

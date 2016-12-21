@@ -204,10 +204,8 @@ ${newPage.init(pageContext.request, pageSettings)}
 
             </div>
 
-
-                <%-- XS Results Pagination --%>
-            <div class="navbar navbar-default xs-results-pagination navMenu-row-fixed visible-xs">
-                <jsp:invoke fragment="xs_results_pagination"/>
+            <%-- XS Results Pagination --%>
+            <jsp:invoke fragment="xs_results_pagination"/>
             </div>
 
         </header>

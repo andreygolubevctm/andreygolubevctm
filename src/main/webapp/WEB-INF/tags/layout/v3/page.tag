@@ -45,7 +45,6 @@ ${newPage.init(pageContext.request, pageSettings)}
 <c:set var="assetUrl" value="/${pageSettings.getContextFolder()}assets/" />
 <c:set var="revision" value="${webUtils.buildRevisionAsQuerystringParam()}" />
 
-<%-- for Health V2 A/B testing --%>
 <c:set var="fileName" value="${pageSettings.getVerticalCode()}" />
 <c:if test="${not empty bundleFileName}"><c:set var="fileName" value="${bundleFileName}" /></c:if>
 
@@ -171,12 +170,6 @@ ${newPage.init(pageContext.request, pageSettings)}
 								<span class="icon icon-reorder"></span>
 							</button>
 
-							<c:if test="${pageSettings.getVerticalCode() eq 'health'}">
-								<button type="button" class="navbar-toggle phone collapsed disabled" data-toggle="navMenuOpen" data-target=".navbar-collapse-menu">
-									<span class="sr-only">Contact Us</span>
-									<span class="icon icon-phone"></span>
-								</button>
-							</c:if>
 							<c:set var="exitUrl" value="" />
 							<c:if test="${pageSettings.hasSetting('exitUrl')}">
 							<c:set var="exitUrl" value="${fn:toLowerCase(pageSettings.getSetting('exitUrl'))}" />
@@ -296,6 +289,9 @@ ${newPage.init(pageContext.request, pageSettings)}
 						vertical: '${pageSettings.getVerticalCode()}',
 						isDev: ${isDev}, <%-- boolean determined from conditions above in this tag --%>
                         isCallCentreUser: <c:out value="${not empty callCentre}"/>,
+						<c:if test="${pageSettings.hasSetting('inInEnabled')}">
+						inInEnabled: ${pageSettings.getSetting('inInEnabled')},
+						</c:if>
 						showLogging: <c:out value="${showLogging}" />,
 						environment: '${fn:toLowerCase(environmentService.getEnvironmentAsString())}',
 						serverDate: new Date(<fmt:formatDate value="${now}" type="DATE" pattern="yyyy"/>, <c:out value="${serverMonth}" />, <fmt:formatDate value="${now}" type="DATE" pattern="d"/>),
@@ -309,6 +305,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 							exit: '${exitUrl}',
 							context: '${pageSettings.getContextFolder()}'
 						},
+						isTaxTime: '<content:get key="taxTime"/>',
 						watchedFields: '<content:get key="watchedFields"/>',
 						content:{
 							brandDisplayName: '<content:get key="brandDisplayName"/>'
