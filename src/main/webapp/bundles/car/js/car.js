@@ -14,12 +14,17 @@
 
     var templateAccessories;
 
+    // Elements
+    var $typeOfCover;
+
     function initCar() {
         $(document).ready(function () {
 
             // Only init if car
             if (meerkat.site.vertical !== "car")
                 return false;
+
+            $typeOfCover = $('#quote_typeOfCover');
 
             // Init common stuff
             initJourneyEngine();
@@ -328,7 +333,7 @@
     }
 
     function getVerticalFilter() {
-        return $('#quote_typeOfCover').val() || null;
+        return $typeOfCover.val() || null;
     }
 
     // Build an object to be sent by SuperTag tracking.
