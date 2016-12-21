@@ -8,12 +8,11 @@
     /**
      * Get the list of available extras.
      * @param obj The Result object for that product.
-     * @returns {string}
+     * @returns {Array}
      */
-    function getAvailableExtrasAsList(obj) {
+    function getAvailableBenefits(obj) {
         var feature = Features.getPageStructure(obj.featuresStructureIndexToUse)[0];
-        var availableExtras = [],
-            output = "";
+        var availableBenefits = [];
         _.each(feature.children, function (ft) {
             if (ft.doNotRender === true) {
                 return;
@@ -21,24 +20,26 @@
             var hasResult = ft.resultPath !== null && ft.resultPath !== '';
             var pathValue = hasResult ? Object.byString(obj, ft.resultPath) : false;
             if (pathValue == "Y") {
-                availableExtras.push(ft);
+                availableBenefits.push(ft);
             }
         });
-        if (!availableExtras.length) {
-            if(numberOfSelectedExtras() === 0) {
+
+        if (!availableBenefits.length) {
+            if (numberOfSelectedExtras() === 0) {
                 $('.featuresListExtrasOtherList, .featuresListExtrasFullList').addClass('hidden');
-            } else if(numberOfSelectedHospitals() === 0) {
+            } else if (numberOfSelectedHospitals() === 0) {
                 $('.featuresListHospitalOtherList, .featuresListHospitalFullList').addClass('hidden');
             }
-        } else {
-            output += availableExtras[0].safeName;
-            if (availableExtras.length > 1) {
-                output += ' and ' + (availableExtras.length - 1) + ' more';
-            } else {
-                output = 'Also includes ' + output;
-            }
         }
+        return availableBenefits;
+    }
 
+    function getPopOverContent(obj, availableBenefits) {
+        var output = '';
+        _.each(availableBenefits, function (ft) {
+            output += '<div>' + ft.safeName + '</div>';
+        });
+        output += "<div class='text-center'><a href='javascript:;' class='open-more-info'>View Product</a> for more details</div>";
         return output;
     }
 
@@ -147,7 +148,6 @@
 
         ft.displayItem = ft.type != 'section';
         // section headers are not displayed anymore but we need the section container
-        //if (ft.displayItem) {
         ft.pathValue = _getPathValue(obj, ft);
         ft.isRestricted = ft.pathValue == "R";
         ft.isNotCovered = ft.pathValue == "N";
@@ -159,14 +159,12 @@
                 ft.classStringForInlineLabel += " noLabel";
             }
             if (ft.isNotCovered) {
-                ft.labelInColumnTitle = ' title="Not Covered"';
                 ft.labelInColumnContentClass = ' noCover';
             } else {
-                ft.labelInColumnTitle = '';
                 ft.labelInColumnContentClass = '';
             }
         } else if (ft.type == 'feature') {
-            ft.displayValue = buildDisplayValue(ft.pathValue, ft);
+            ft.displayValue = Features.parseFeatureValue(ft.pathValue, true) || 'None';
         }
 
         // For sub-category feature detail
@@ -176,23 +174,13 @@
             ft.hideChildrenClass = ft.isNotCovered ? ' hideChildren' : '';
         }
 
-        //}
         return ft;
     }
 
-    /**
-     * Used for excess_template.tag
-     * @param obj
-     * @param ft
-     * @returns {*}
-     */
-    function getExcessChildDisplayValue(obj, ft) {
-        var pathValue = _getPathValue(obj, ft);
-        var displayValue = buildDisplayValue(pathValue, ft);
-        if (displayValue == "-") {
-            return getTitleBefore(ft) + " None";
-        }
-        return displayValue;
+    function getExcessItem(obj, ft) {
+        ft.pathValue = _getPathValue(obj, ft);
+        ft.displayValue = Features.parseFeatureValue(ft.pathValue, true) || 'None';
+        return ft;
     }
 
     /**
@@ -341,13 +329,14 @@
 
     meerkat.modules.register('healthResultsTemplate', {
         init: init,
-        getAvailableExtrasAsList: getAvailableExtrasAsList,
-        getExcessChildDisplayValue: getExcessChildDisplayValue,
+        getAvailableBenefits: getAvailableBenefits,
+        getPopOverContent: getPopOverContent,
         getPricePremium: getPricePremium,
         getExcessPrices: getExcessPrices,
         getPrice: getPrice,
         getSpecialOffer: getSpecialOffer,
         getItem: getItem,
+        getExcessItem: getExcessItem,
         postRenderFeatures: postRenderFeatures,
         numberOfSelectedExtras: numberOfSelectedExtras,
         toggleRemoveResultPagination: toggleRemoveResultPagination

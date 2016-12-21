@@ -19,19 +19,20 @@
         {{          benefitGroup = 'extras'; }}
         {{      } }}
         {{ } }}
-        <div class="labelInColumn {{= ft.classStringForInlineLabel }} " {{=ft.labelInColumnTitle }}>
-            <div class="content {{= ft.labelInColumnContentClass }}" data-featureId="{{= ft.id }}">
+        <div class="labelInColumn {{= ft.classStringForInlineLabel }}">
+            <div class="content" data-featureId="{{= ft.id }}">
                 <div class="contentInner" data-analytics="compare BL {{= benefitGroup }}">
-                    {{= ft.safeName }} {{ if(ft.isRestricted) { }}<sup title="Restricted">#</sup>{{ } }} {{ if(ft.hasChildFeatures) { }}<span class="icon expander"></span>{{ } }}
+                    {{= ft.safeName }} {{ if(ft.hasChildFeatures) { }}<span class="icon expander"></span>{{ } }}
                 </div>
             </div>
         </div>{{ } }}
-        {{ if(ft.type == 'feature') { }}<div class="c content {{= ft.contentClassString }}" data-featureId="{{= ft.id }}">{{= ft.displayValue }}</div>{{ } }}
+        {{ if(ft.type == 'feature') { }}<div class="content {{= ft.contentClassString }}" data-featureId="{{= ft.id }}"><div class="featureLabel">{{= ft.safeName }}</div><div class="featureValue">{{= ft.displayValue }}</div></div>{{ } }}
         {{ } if(ft.displayChildren) { }}
         <div class="children {{= ft.hideChildrenClass }}" data-fid="{{= ft.id }}">
-            {{ if(ft.isNotCovered) { }}<div class="content noCoverContainer"><p class="noCoverLabel">NOT COVERED IN THIS PRODUCT</p></div>{{ } }}
             {{ obj.childFeatureDetails = ft.children; }}
+            {{ if(ft.type == 'category') { }} <div class="limits-label">Limits</div> {{ } }}
             {{= Results.cachedProcessedTemplates[obj.featuresTemplate](obj) }}{{ delete obj.childFeatureDetails; }}<%-- needs deleting between iterations or when all hospital selected, it  --%>
+            {{ if(ft.type == 'category') { }} <div class="cell featureGroupLimit text-center"><div class="content">group limits may apply<br /><a href="javascript:;" class="open-more-info">View Product <span class="icon icon-angle-right"></span></a></div></div> {{ } }}
         </div>
         {{ } else { }}{{ delete obj.childFeatureDetails; }}{{ } }}
     </div>

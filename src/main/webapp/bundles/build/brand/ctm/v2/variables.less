@@ -1445,8 +1445,8 @@
 //== journeyProgressBar
 //
 //##
-@main-bg-colour: #f3f3f5;
-@border-color: #e7e7e7;
+@main-bg-colour: #ffffff;
+@border-color: @gray-lighter;
 @header-color: #162f8a;
 @required-color: #a90000;
 
@@ -1606,7 +1606,7 @@
 @md-results-column-gutter-width: 0px; //7px
 @lg-results-column-gutter-width: 0px; //6px
 
-@results-column-side-padding-width: 10px;
+@results-column-side-padding-width: 7.5px;
 @results-overflow-width-xs: @container-xs;
 @results-overflow-width-sm: @container-sm;
 @results-overflow-width-md: @container-md;
@@ -1616,10 +1616,14 @@
 @results-page-border-width: 1px;
 @results-column-border-width: 1px;
 @results-border-color: @border-color;
+@results-border-color-pinned: @theme-tertiary;
 
 @results-price-row-padding: 15px;
 @results-feature-cell-padding: 12px;
 @results-section-fake-row-padding: 5px;
+
+@results-price-font-family: @headings-font-family;
+@results-price-cents-font-family: @headings-font-family;
 
 //## Feature Rows colors
 // Features mode of results (used by core, but also by HEALTH results :-S)
