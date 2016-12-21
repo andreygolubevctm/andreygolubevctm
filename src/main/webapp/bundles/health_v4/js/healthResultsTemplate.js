@@ -1,7 +1,5 @@
 ;(function ($) {
     var meerkat = window.meerkat,
-        LABEL_ON_LEFT = 2,
-        HIDE_LABEL = 1,
         $resultsPagination,
         filteredOutResults = []; // this is used for removing the results when clicking the "x";
 
@@ -44,47 +42,6 @@
     }
 
     /**
-     * Flag column in aggregator.features_details
-     * Flag of 2 indicates label to display on the left with a colon
-     * Currently does not hide label if its also set on the left
-     * Default is label on the right.
-     * @param ft
-     * @returns {string}
-     */
-    function getTitleBefore(ft) {
-        return ft.flag & LABEL_ON_LEFT ? ft.safeName + ": " : "";
-    }
-
-    /**
-     * If the flag is hidden or on the left, don't show anything.
-     * Otherwise display the label in lowercase.
-     * @param ft
-     * @returns {string}
-     */
-    function getTitleAfter(ft) {
-        return ft.flag & (HIDE_LABEL | LABEL_ON_LEFT) ? "" : " " + ft.safeName.toLowerCase();
-    }
-
-    /**
-     *
-     * @param ft
-     * @returns {string}
-     * @private
-     */
-    function _getHelpTooltip(ft) {
-        var attribute = '';
-        var analytics = {
-            "300": "no COP",
-            "301": "waiting period",
-            "303": "excess waivers"
-        };
-        if (_.has(analytics, ft.helpId)) {
-            attribute = ' data-analytics="' + analytics[ft.helpId] + '"';
-        }
-        return ft.helpId !== '' && ft.helpId != '0' ? '<a href="javascript:void(0);" class="help-icon" data-content="helpid:' + ft.helpId + '" data-toggle="popover" data-my="right center" data-at="left center" ' + attribute + '>(?)</a>' : '';
-    }
-
-    /**
      * Helper function
      * @param ft
      * @returns {boolean}
@@ -103,35 +60,6 @@
      */
     function _getPathValue(obj, ft) {
         return _hasResult(ft) ? Object.byString(obj, ft.resultPath) : false;
-    }
-
-    /**
-     *
-     * @param ft
-     * @returns {*}
-     * @private
-     */
-    function _getExtraText(ft) {
-        var text = '';
-        if (ft.extraText != null && ft.extraText !== '') {
-            return ft.extraText;
-        }
-        return text;
-    }
-
-    /**
-     * Generate the display value with title before or after, extra text, etc.
-     * Logic may not work as expected compared to the old way
-     * @param pathValue
-     * @param ft
-     * @returns {*}
-     */
-    function buildDisplayValue(pathValue, ft) {
-        var displayValue = Features.parseFeatureValue(pathValue, true);
-        if (displayValue) {
-            return getTitleBefore(ft) + '<strong>' + displayValue + '</strong> ' + _getExtraText(ft) + getTitleAfter(ft) + _getHelpTooltip(ft);
-        }
-        return ft.safeName + ": <strong>None</strong>";
     }
 
     /**

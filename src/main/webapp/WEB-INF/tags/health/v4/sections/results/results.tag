@@ -64,12 +64,12 @@
             {{= headerHtml }}
             <div class="featuresList featuresElements">{{ if(coverType == 'H' || coverType == 'C') { }}
                 <div class="hospitalCoverSection">
-                    <h3>Hospital</h3>
+                    <h2>Hospital</h2>
                     <div class="hospitalSelectionsExcessContainer">
                         <div class="hospitalExcessSectionBorder">
                             <div class="featuresListExcess" data-feature-template="#results-features-excess-template" data-feature-index="1" data-feature-type="excess"></div>
                             <div class="yourSelectionsHospital">
-                                <h5>Selected Benefits</h5>
+                                <h3>Selected Benefits</h3>
                             </div>
                         </div>
                         {{ if(info.situationFilter == 'Y') { }}
@@ -80,12 +80,12 @@
                 </div>
                 {{ } if(coverType == 'E' || coverType == 'C') { }}
                 <div class="extrasCoverSection">
-                    <h3>Extras</h3>
+                    <h2>Extras</h2>
                     <div class="featuresListExtrasSelections" data-feature-index="3" data-feature-type="extras"></div>
                     <div class="featuresListExtrasOtherList text-center small" data-feature-template="#results-features-extras-template" data-feature-index="5" data-feature-type="extras"></div>
                 </div>{{ } }}
                 <div class="ambulanceCoverSection">
-                    <h3>Ambulance</h3>
+                    <h2>Ambulance</h2>
                     <div class="featuresListAmbulance" data-feature-index="6" data-feature-type="ambulance"></div>
                 </div>
             </div>

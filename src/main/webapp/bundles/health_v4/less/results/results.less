@@ -104,11 +104,14 @@
   .resultsOverflow {
     // Fix margins for rows on XS @todo may be unnecessary in v4
     .result-row {
+      h2, h3 {
+        color: @theme-accent-4;
+      }
       @media (@xs-only) {
-        margin-right: 15px;
+        margin-right: 10px;
       }
       @media (@sm) {
-        margin-left: 15px;
+        margin-left: 10px;
       }
     }
   }
@@ -202,7 +205,7 @@
     padding: @results-column-side-padding-width 0;
     // Content of certain feature cells. This needs to be relative so the expander icon inside can be absolutely positioned.
     position: relative;
-    overflow: auto;
+    overflow: hidden;
   }
 
   .extraText {
