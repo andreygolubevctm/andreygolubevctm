@@ -65,4 +65,22 @@ public class OpeningHoursDaoTest {
 		when(mockResultSet.next()).thenReturn(false);
 		assertFalse(openingHoursDao.isCallCentreOpen(4, LocalDateTime.of(2016, 1, 1, 10, 0, 0)));
 	}
+
+	@Test
+	public void testIsCallCentreNulls() throws Exception {
+		when(mockResultSet.next()).thenReturn(true);
+
+		when(mockResultSet.getTime("startTime")).thenReturn(null);
+		when(mockResultSet.getTime("endTime")).thenReturn(null);
+		assertFalse("No start or end times", openingHoursDao.isCallCentreOpen(4, LocalDateTime.of(2016, 12, 25, 10, 0, 0)));
+
+		when(mockResultSet.getTime("startTime")).thenReturn(Time.valueOf("09:00:00"));
+		when(mockResultSet.getTime("endTime")).thenReturn(null);
+		assertTrue("No end time, now after start", openingHoursDao.isCallCentreOpen(4, LocalDateTime.of(2016, 12, 25, 10, 0, 0)));
+		assertFalse("No end time, now before start", openingHoursDao.isCallCentreOpen(4, LocalDateTime.of(2016, 12, 25, 8, 50, 0)));
+
+		when(mockResultSet.getTime("startTime")).thenReturn(null);
+		when(mockResultSet.getTime("endTime")).thenReturn(Time.valueOf("23:55:55"));
+		assertFalse("No start time", openingHoursDao.isCallCentreOpen(4, LocalDateTime.of(2016, 12, 25, 10, 0, 0)));
+	}
 }
