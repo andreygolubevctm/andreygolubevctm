@@ -2,63 +2,66 @@
 
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
-        moduleEvents = {
-            healthContactNumber: {
-                CONTACT_NUMBER_CHANGED: 'CONTACT_NUMBER_CHANGED'
-            }
-        },
-        $elements = {},
-        _contactBy = 'mobile';
+        $elements = {};
 
     function initHealthContactNumber() {
         _setupFields();
         _applyEventListeners();
-        _eventSubscriptions();
     }
 
     function _setupFields() {
         $elements = {
-            contactRow: $('.contact-number.row'),
-            switch: $('.contact-number-switch'),
-            inputs: $('input.contact-number-field'),
+            inputs: $('.contact-details-contact-number .contact-number-field'),
             flexiNumber: $('#health_contactDetails_flexiContactNumber')
         };
     }
 
     function _applyEventListeners() {
-        $elements.switch.on('click', function() {
-            $elements.inputs.val('');
-            $elements.flexiNumber.val('');
-            $elements.contactRow.toggleClass('hidden');
+        $(document).on('click', '.contact-number-switch', function() {
+            var $contactNumber = $(this).closest('.contact-number'),
+                contactBy = $contactNumber.attr('data-contact-by') === 'mobile' ? 'other' : 'mobile';
 
-            _contactBy = $elements.contactRow.filter(':not(.hidden)').find('input').hasClass('mobile') ? 'mobile' : 'other';
+            $contactNumber.attr('data-contact-by', contactBy);
+
+            // update flexiNumber only on journey questionset
+            if ($contactNumber.hasClass('contact-details-contact-number')) {
+                var $input = $('#health_contactDetails_contactNumber_' + contactBy + 'input');
+
+                $elements.flexiNumber.val('');
+                if (!_.isEmpty($input.val())) {
+                    $input.trigger('change');
+                }
+            }
         });
 
         $elements.inputs.on('change', function() {
             if ($(this).valid()) {
                 $elements.flexiNumber.val($(this).val());
-                // $elements.attr('data')
+            } else {
+                $elements.flexiNumber.val('');
             }
         });
     }
 
-    function _eventSubscriptions() {
+    function insertContactNumber($contactNumberContainer, contactNumber) {
+        if (contactNumber.length > 0) {
+            var contactBy = contactNumber.match(/^(04|614|6104)/g) ? 'mobile' : 'other';
 
+            $contactNumberContainer.attr('data-contact-by', contactBy);
+            $contactNumberContainer.find('.contact-number-' + contactBy + ' input[type=text]').val(contactNumber).trigger('change');
+        }
     }
 
-    function getContactBy() {
-        return _contactBy;
-    }
+    function getContactNumberFromField($contactNumberContainer) {
+        var contactBy = $contactNumberContainer.attr('data-contact-by');
 
-    function switchField(contactBy) {
-
+        return $contactNumberContainer.find('.contact-number-' + contactBy + ' input[type=text]').val();
     }
 
     meerkat.modules.register('healthContactNumber', {
         init: initHealthContactNumber,
-        events: moduleEvents,
-        getContactBy: getContactBy,
-        switchField: switchField
+        insertContactNumber: insertContactNumber,
+        getContactNumberFromField: getContactNumberFromField
     });
 
 })(jQuery);
