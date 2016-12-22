@@ -17,7 +17,7 @@
     }
 
     function _applyEventListeners() {
-        $(document).on('click', '.contact-number-switch', function() {
+        $(document).on('click', '.contact-number-switch', function onSwitchClicked() {
             var $contactNumber = $(this).closest('.contact-number'),
                 contactBy = $contactNumber.attr('data-contact-by') === 'mobile' ? 'other' : 'mobile';
 
@@ -29,17 +29,13 @@
 
                 $elements.flexiNumber.val('');
                 if (!_.isEmpty($input.val())) {
-                    $input.trigger('change');
+                    $input.trigger('blur');
                 }
             }
         });
 
-        $elements.inputs.on('change', function() {
-            if ($(this).valid()) {
-                $elements.flexiNumber.val($(this).val());
-            } else {
-                $elements.flexiNumber.val('');
-            }
+        $elements.inputs.on('blur', function onInputsBlur() {
+            $elements.flexiNumber.val($(this).valid() ? $(this).val() : '');
         });
     }
 
@@ -48,7 +44,7 @@
             var contactBy = contactNumber.match(/^(04|614|6104)/g) ? 'mobile' : 'other';
 
             $contactNumberContainer.attr('data-contact-by', contactBy);
-            $contactNumberContainer.find('.contact-number-' + contactBy + ' input.contact-number-field').val(contactNumber).trigger('change');
+            $contactNumberContainer.find('.contact-number-' + contactBy + ' input.contact-number-field').val(contactNumber).trigger('blur');
         }
     }
 
