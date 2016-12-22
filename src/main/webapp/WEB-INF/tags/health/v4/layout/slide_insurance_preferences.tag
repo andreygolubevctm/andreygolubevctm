@@ -5,7 +5,7 @@
 <layout_v3:slide formId="benefitsForm" nextLabel="Next Step">
 
     <layout_v3:slide_content>
-        <form_v3:fieldset_columns>
+        <form_v3:fieldset_columns sideHidden="true">
 
         <jsp:attribute name="rightColumn">
             <simples:snapshot />
