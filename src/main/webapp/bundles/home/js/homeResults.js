@@ -392,19 +392,19 @@
 
 				// Annually
 				if (!_.isUndefined(result.price.annualPremium)) {
-					result.price.annualPremiumFormatted = meerkat.modules.currencyField.formatCurrency(Math.ceil(result.price.annualPremium), {roundToDecimalPlace: 0, digitGroupSymbol:''});
+					result.price.annualPremiumFormatted = meerkat.modules.currencyField.formatCurrency(Math.ceil(result.price.annualPremium), {roundToDecimalPlace: 0, symbol: '', digitGroupSymbol:''});
 				}
 
 				//Monthly
 				if (!_.isUndefined(result.price.monthlyPremium)) {
 					if (!_.isUndefined(result.price.monthlyPremium)) {
-						result.price.monthlyPremiumFormatted = meerkat.modules.currencyField.formatCurrency(result.price.monthlyPremium, {roundToDecimalPlace: 2});
+						result.price.monthlyPremiumFormatted = meerkat.modules.currencyField.formatCurrency(result.price.monthlyPremium, {roundToDecimalPlace: 2, symbol: ''});
 					}
 					if (!_.isUndefined(result.price.monthlyFirstMonth)) {
-						result.price.monthlyFirstMonthFormatted = meerkat.modules.currencyField.formatCurrency(result.price.monthlyFirstMonth, {roundToDecimalPlace: 2});
+						result.price.monthlyFirstMonthFormatted = meerkat.modules.currencyField.formatCurrency(result.price.monthlyFirstMonth, {roundToDecimalPlace: 2, symbol: ''});
 					}
 					if (!_.isUndefined(result.price.annualisedMonthlyPremium)) {
-						result.price.annualisedMonthlyPremiumFormatted = meerkat.modules.currencyField.formatCurrency(result.price.annualisedMonthlyPremium, {roundToDecimalPlace: 2});
+						result.price.annualisedMonthlyPremiumFormatted = meerkat.modules.currencyField.formatCurrency(result.price.annualisedMonthlyPremium, {roundToDecimalPlace: 2, symbol: ''});
 					}
 				}
 			}
