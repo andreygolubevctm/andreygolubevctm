@@ -207,13 +207,13 @@
                 });
 				totalDuration = animDuration;
             } else {
-                meerkat.modules.utils.scrollPageTo('.resultsSlide', scrollToTopDuration, -$("#navbar-main").height(), function () {
+                //meerkat.modules.utils.scrollPageTo('.resultsSlide', scrollToTopDuration, -$("#navbar-main").height(), function () {
                     moreInfoContainer.find(".more-info-content")[settings.showAction](animDuration, showTemplateCallback);
                     isBridgingPageOpen = true;
                     if (typeof settings.onAfterShowTemplate == 'function') {
                         settings.onAfterShowTemplate();
                     }
-				});
+				//});
 				totalDuration = animDuration + scrollToTopDuration;
 			}
 
