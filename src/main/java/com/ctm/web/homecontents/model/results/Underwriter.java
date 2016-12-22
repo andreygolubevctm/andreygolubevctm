@@ -10,6 +10,8 @@ public class Underwriter {
 
     private String afsLicenceNo;
 
+    private String afsLicenceNoStr;
+
     public String getName() {
         return name;
     }
@@ -40,5 +42,14 @@ public class Underwriter {
 
     public void setAfsLicenceNo(String afsLicenceNo) {
         this.afsLicenceNo = afsLicenceNo;
+        setAfsLicenceNoStr(afsLicenceNo);
+    }
+
+    public String getAfsLicenceNoStr() {
+        return afsLicenceNoStr;
+    }
+
+    public void setAfsLicenceNoStr(String afsLicenceNo) {
+        this.afsLicenceNoStr = "AFS Licence No: " + afsLicenceNo;
     }
 }

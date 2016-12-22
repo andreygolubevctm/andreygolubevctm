@@ -43,13 +43,16 @@
 <form_v2:row className="travel-contact-details-optin-sgroup">
 	<%-- Mandatory agreement to privacy policy --%>
 	<c:set var="brandedName"><content:optin key="brandDisplayName" useSpan="true"/></c:set>
+	<c:set var="optinCopy">
+		I understand and accept the <a href="${pageSettings.getSetting('websiteTermsUrl')}" target="_blank" data-title="Website Terms of Use" class="termsLink showDoc">Website Terms of Use</a>, <a href="${pageSettings.getSetting('fsgUrl')}" target="_blank">Financial Services Guide</a> and <form_v1:link_privacy_statement />. I agree that ${brandedName} may contact me about the services it provides.
+	</c:set>
 	<field_v2:checkbox
 			xpath="travel/marketing"
 			value="Y"
 			required="false"
 			label="true"
-			title="Yes, keep me updated about news and special offers from ${brandedName}" />
+			title="${optinCopy}" />
+	<field_v1:hidden
+		xpath="travel/privacyoptin"
+		required="true" />
 </form_v2:row>
-
-<%-- Mandatory agreement to privacy policy --%>
-<form_v2:privacy_optin vertical="travel" />

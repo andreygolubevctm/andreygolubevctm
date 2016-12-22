@@ -30,6 +30,8 @@
         currentAge = false, // Is the max age if partner exists
         currentFamilyType = false;
 
+    var ALT_JOURNEY_ACTIVE = false;
+
     var events = {
             healthBenefitsStep: {
                 CHANGED: 'HEALTH_BENEFITS_CHANGED',
@@ -54,10 +56,12 @@
             $hospitalCover = $('.Hospital_container');
             $hospitalCoverWrapper = $hospitalCover.closest('fieldset');
             $hospitalCoverBenefits = $hospitalCoverWrapper.find('.children');
-            $hospitalCoverToggles = $('.hospitalCoverToggles a'),
+            $hospitalCoverTogglesWrapper = $('.hospitalCoverToggles');
+            $hospitalCoverToggles = $hospitalCoverTogglesWrapper.find('a'),
                 $allHospitalButtons = $hospitalCover.find('.children input[type="checkbox"]'),
                 // done this way since it's an a/b test and
                 $hasIconsDiv = $('.healthBenefits').find('.hasIcons');
+            $hospitalCoverIconsWrapper = $('#benefitsForm fieldset.tieredHospitalCover .hospitalCover').closest('fieldset');
             $benefitsCoverType = $('#health_benefits_covertype');
             $primary_dob = $('#health_healthCover_primary_dob');
             $partner_dob = $('#health_healthCover_partner_dob');
@@ -121,6 +125,13 @@
 
             setupPage();
             eventSubscriptions();
+
+            _.defer(function(){
+                // Helper to turn on alt view if param in querystring
+                if(/[?&]showAltBenefitsJourney=/.test(window.location.href)) {
+                    toggleJourney(true);
+                }
+            });
         });
     }
 
@@ -188,6 +199,8 @@
         var $hospitalText = $('.tieredHospitalCover .hospitalCover .title'),
             $extrasText = $('.tieredHospitalCover .extrasCover .title'),
             $helpText = $('.benefits-help');
+
+        var $limitedBtn = $hospitalText.find('.hospitalCoverToggles').detach();
 
         var hospitalContent = '',
             hospitalDisabledContent = '',
@@ -346,7 +359,7 @@
                     extrasContent = meerkat.site.content.extrasCompareSpecialA;
                     extrasDisabledContent = meerkat.site.content.extrasCompareSpecialA;
                 } else {
-                    hospitalContent = meerkat.site.content.hospitalLimitedAll;
+                    hospitalContent = meerkat.site.content[isAltJourney() ? 'hospitalLimitedAllALT' : 'hospitalLimitedAll'];
                     extrasContent = meerkat.site.content.extrasLimitedAll;
                     extrasDisabledContent = meerkat.site.content.extrasLimitedAll;
                 }
@@ -369,6 +382,8 @@
         $hospitalText.html(hospitalContent);
         $extrasText.html(extrasContent);
         $helpText.html(helpContent);
+
+        $limitedBtn.insertAfter($hospitalText.find('h2'));
     }
 
     function activateBenefitPreSelections(isFromStart) {
@@ -637,18 +652,29 @@
         hideExtras = hideExtras || false;
         if(currentCover === 'limited') {
             $hospitalCoverBenefits.slideUp();
-            if(hideExtras === true) {
-                $('#health_situation_coverType_H').prop('checked',true).change();
-                $extrasCoverWrapper.slideUp();
+            if(!isAltJourney()) {
+                if (hideExtras === true) {
+                    $('#health_situation_coverType_H').prop('checked', true).change();
+                    $extrasCoverWrapper.slideUp();
+                } else {
+                    $extrasCoverBenefits.slideDown();
+                }
             } else {
-                $extrasCoverBenefits.slideDown();
+                $hospitalCoverTogglesWrapper.addClass('limited');
+                $hospitalCoverTogglesWrapper.removeClass('customise');
             }
             $limitedCoverHidden.val('Y');
+            $hospitalCoverIconsWrapper.toggleClass('hidden-xs',meerkat.modules.deviceMediaState.get() === 'xs');
         } else {
             $limitedCoverHidden.val('N');
             $hospitalCoverBenefits.slideDown();
             $extrasCoverBenefits.slideDown();
+            if(isAltJourney()) {
+                $hospitalCoverTogglesWrapper.addClass('customise');
+                $hospitalCoverTogglesWrapper.removeClass('limited');
+            }
             toggleCoverType();
+            $hospitalCoverIconsWrapper.removeClass('hidden-xs');
         }
     }
 
@@ -774,6 +800,17 @@
         return partner_age > primary_age ? partner_age : primary_age;
     }
 
+    function isAltJourney() {
+        return ALT_JOURNEY_ACTIVE;
+    }
+
+    function toggleJourney(altActive) {
+        altActive = altActive || false;
+        ALT_JOURNEY_ACTIVE = altActive === true;
+        $benefitsForm.toggleClass('altBenefitsJourney',ALT_JOURNEY_ACTIVE);
+        setLimitedCover();
+    }
+
     meerkat.modules.register('healthBenefitsStep', {
         init: init,
         events: events,
@@ -787,7 +824,8 @@
         getExtraBenefitsModel: getExtraBenefitsModel,
         flushHiddenBenefits : flushHiddenBenefits,
         applySituationBasedCopy : applySituationBasedCopy,
-        activateBenefitPreSelections : activateBenefitPreSelections
+        activateBenefitPreSelections : activateBenefitPreSelections,
+        toggleJourney : toggleJourney
     });
 
 })(jQuery);
