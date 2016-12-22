@@ -64,6 +64,8 @@
 
         meerkat.modules.moreInfo.initMoreInfo(options);
 
+        moreInfoHospitalTab
+
         eventSubscriptions();
         applyEventListeners();
     }

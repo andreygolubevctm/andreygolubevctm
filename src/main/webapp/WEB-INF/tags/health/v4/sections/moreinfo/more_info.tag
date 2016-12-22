@@ -131,21 +131,33 @@
 							{{ } }}
 						</div>
 
+						<div class="row">
+							<div class="col-xs-12 moreInfoHospitalTab">
+								<ul class="nav nav-tabs">
+									<li>
+										<a href="javascript" data-target=".hospitalCoveredPane">Covered <span>{{= hospitalCover.inclusions.length }}</span></a>
+									</li>
+									<li>
+										<a href="javascript" data-target=".hospitalNotCoveredPane">Not Covered <span>{{= hospitalCover.exclusions.length }}</span></a>
+									</li>
+								</ul>
+							</div>
+						</div>
 
 						{{ var benefitTemplate = meerkat.modules.templateCache.getTemplate($("#healthBenefitsIconRowTemplate")); }}
 						<!-- Inclusions / Exclusions -->
-						<div class="row">
+						<div class="row hospitalCoveredPane">
 							<div class="col-xs-6">
-								<h3>Covered <span>{{= hospitalCover.inclusions.length }}</span></h3>
 								{{ benefitData = {}; }}
 								{{ benefitData.isSelected = true; }}
 								{{ benefitData.items = hospitalCover.inclusions; }}
 								{{ benefitData.keys = [{"WaitingPeriod": "Waiting Period"}, {"benefitLimitationPeriod": "Benefit Limitation Period"}]; }}
 								{{= benefitTemplate(benefitData) }}
 							</div>
+						</div>
 
+						<div class="row hospitalNotCoveredPane">
 							<div class="col-xs-6">
-								<h3>Not Covered <span>{{= hospitalCover.exclusions.length }}</span></h3>
 								{{ benefitData.items = hospitalCover.exclusions; }}
 								{{= benefitTemplate(benefitData) }}
 							</div>
