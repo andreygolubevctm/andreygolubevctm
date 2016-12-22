@@ -32,7 +32,7 @@
         <c:set var="callCentreHelpNumber" scope="request"><content:get key="callCentreHelpNumber" /></c:set>
 
         <c:set var="callCentreHoursModal" scope="request"><content:getOpeningHoursModal /></c:set>
-        <c:set var="callCentreCBModal" scope="request"><health_v3:callback_modal /></c:set>
+        <c:set var="callCentreCBModal" scope="request"><health_v4:callback_modal /></c:set>
 
         <%-- ####### PRE JOURNEY SETUP --%>
 
