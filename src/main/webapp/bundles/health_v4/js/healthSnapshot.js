@@ -95,8 +95,10 @@
         });
 
         $elements.toggleList.on('click', function() {
-            $(this).parent().find('.snapshot-list').slideDown('fast');
-            $(this).addClass('hidden');
+            var $this = $(this);
+
+            $this.parent().find('.snapshot-list').slideDown('fast');
+            $this.addClass('hidden');
         });
     }
 
