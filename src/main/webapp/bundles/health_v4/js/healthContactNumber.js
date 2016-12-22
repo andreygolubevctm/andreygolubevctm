@@ -25,7 +25,7 @@
 
             // update flexiNumber only on journey questionset
             if ($contactNumber.hasClass('contact-details-contact-number')) {
-                var $input = $('#health_contactDetails_contactNumber_' + contactBy + 'input');
+                var $input = $contactNumber.find('#health_contactDetails_contactNumber_' + contactBy + 'input');
 
                 $elements.flexiNumber.val('');
                 if (!_.isEmpty($input.val())) {
