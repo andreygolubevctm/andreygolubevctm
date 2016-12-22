@@ -79,7 +79,6 @@ Your personal information (but not your sensitive information) may be held by so
 	<li>AMP</li>
 	<li>Asteron Life</li>
 	<li>CommInsure</li>
-	<li>Macquarie</li>
 	<li>OnePath</li>
 	<c:if test="${vertical eq 'life'}">
 		<li>Ozicare</li>
