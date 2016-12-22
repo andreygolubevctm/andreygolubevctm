@@ -69,6 +69,8 @@
                 _setRebate();
             }
         });
+
+        _setRebate();
     }
 
     function updateSelectedRebateLabel() {
@@ -114,6 +116,7 @@
                 rebate = rates.rebate;
             } else {
                 $elements.rebateLegend.html('');
+                rebate = '';
             }
         });
     }

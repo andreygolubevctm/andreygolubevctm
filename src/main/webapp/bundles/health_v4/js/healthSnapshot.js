@@ -25,7 +25,6 @@
         _setupFields();
         _eventSubscriptions();
         _applyEventListeners();
-        $preResultsRowTemplate = $("#pre-results-row-content-template");
     }
 
     function _setupFields() {
@@ -79,6 +78,11 @@
             });
         });
         meerkat.messaging.subscribe(meerkat.modules.events.RESULTS_SORTED, function renderSnapshotOnJourneyReadySubscription() {
+            _.defer(function() {
+                _renderSnapshot();
+            });
+        });
+        meerkat.messaging.subscribe(meerkat.modules.events.healthLocation.STATE_CHANGED, function renderSnapshotOnStateFieldChange() {
             _.defer(function() {
                 _renderSnapshot();
             });
