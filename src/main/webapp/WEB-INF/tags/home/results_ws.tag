@@ -436,7 +436,7 @@
 <core_v1:js_template id="annual-price-features-template">
 	<div class="frequency annual" data-availability="{{= obj.available }}">
 		<div class="frequencyAmount">
-			<span class="dollarSign">{{= '$' }}</span><span class="dollars">{{= obj.price.annualPremium }}</span>
+			<span class="dollarSign">{{= '$' }}</span><span class="dollars">{{= obj.price.annualPremiumFormatted }}</span>
 		</div>
 		<div class="frequencyTitle">Annual</div>
 	</div>

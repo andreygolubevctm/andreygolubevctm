@@ -392,7 +392,7 @@
 
 				// Annually
 				if (!_.isUndefined(result.price.annualPremium)) {
-					result.price.annualPremiumFormatted = meerkat.modules.currencyField.formatCurrency(Math.ceil(result.price.annualPremium), {roundToDecimalPlace: 0});
+					result.price.annualPremiumFormatted = meerkat.modules.currencyField.formatCurrency(Math.ceil(result.price.annualPremium), {roundToDecimalPlace: 0, digitGroupSymbol:''});
 				}
 
 				//Monthly
