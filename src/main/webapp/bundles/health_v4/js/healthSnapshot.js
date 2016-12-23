@@ -142,8 +142,12 @@
         $elements.rebateSubText.text(data.rebateSubText);
 
         // render hospital
-        if (!noData && !_.isEmpty(data.hospital)) {
+        var hospitalType = meerkat.modules.benefits.getHospitalType();
+        if (!noData && !_.isEmpty(data.hospital) && hospitalType === 'comprehensive') {
             _renderBenefits('hospital', data.hospital);
+        } else if (hospitalType === 'limited') {
+            $elements.hospital.itemFirst.text('Limited Cover');
+            $elements.hospital.toggleList.addClass('hidden');
         }
 
         // render extras
