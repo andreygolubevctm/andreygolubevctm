@@ -2,12 +2,7 @@
 
 	var meerkat = window.meerkat,
 		meerkatEvents = meerkat.modules.events,
-		log = meerkat.logging.info,
-		moduleEvents = {
-			health: {
-				SNAPSHOT_FIELDS_CHANGE: 'SNAPSHOT_FIELDS_CHANGE'
-			}
-		};
+		log = meerkat.logging.info;
 
 	var _cover = '',
 		_state = '',
@@ -16,7 +11,6 @@
 
 	function init() {
 		_setupFields();
-		_eventListeners();
 	}
 
 	function initialise(cover) {
@@ -33,16 +27,6 @@
 			postcode: $('#health_situation_postcode'),
 			suburb: $('#health_situation_suburb')
 		};
-	}
-
-	function _eventListeners() {
-		$elements.healthCover.on('change',function() {
-			meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
-		});
-
-		$elements.healthSitGroup.on('change',function() {
-			meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
-		});
 	}
 
 	function hasSpouse() {

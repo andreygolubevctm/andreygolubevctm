@@ -9,7 +9,9 @@
         log = meerkat.logging.info;
 
     var moduleEvents = {
-        health: {},
+        health: {
+            SNAPSHOT_FIELDS_CHANGE:'SNAPSHOT_FIELDS_CHANGE'
+        },
         WEBAPP_LOCK: 'WEBAPP_LOCK',
         WEBAPP_UNLOCK: 'WEBAPP_UNLOCK'
     }, steps = null;
@@ -61,6 +63,10 @@
 
         if (meerkat.site.isCallCentreUser === true) {
             meerkat.modules.simplesSnapshot.initSimplesSnapshot();
+        }
+
+        if(meerkat.site.isCallCentreUser === false) {
+            meerkat.modules.saveQuote.initSaveQuote();
         }
     }
 
@@ -187,7 +193,6 @@
                     var coverTypeVal = $(this).find('input:checked').val();
                     meerkat.modules.healthBenefitsStep.updateHiddenFields(coverTypeVal);
                 });
-                meerkat.modules.healthLocation.initHealthLocation();
             },
             onBeforeEnter: _incrementTranIdBeforeEnteringSlide,
             onAfterEnter: function healthAfterEnter() {
@@ -217,6 +222,11 @@
             },
             onInitialise: function onResultsInit(event) {
                 /** @todo implement from health.js when get to this step */
+                var partnerDob = $('#health_healthCover_partner_dob');
+
+                partnerDob.on('change', function() {
+                    meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
+                });
                 meerkat.modules.benefits.updateModelOnPreload();
 
             },
