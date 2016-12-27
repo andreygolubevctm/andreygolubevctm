@@ -400,7 +400,7 @@
 
 <core_v1:js_template id="annual-price-template">
 	<div class="frequency annual clearfix" data-availability="{{= obj.available }}">
-		<div class="frequencyAmount">{{= '$' }}{{= obj.price.annualPremium }}</div>
+		<div class="frequencyAmount">{{= '$' }}{{= obj.price.annualPremiumFormatted }}</div>
 		<div class="frequencyTitle">Annual Price</div>
 	</div>
 </core_v1:js_template>
@@ -426,7 +426,7 @@
 <core_v1:js_template id="annual-price-features-template">
 	<div class="frequency annual" data-availability="{{= obj.available }}">
 		<div class="frequencyAmount">
-			<span class="dollarSign">{{= '$' }}</span><span class="dollars">{{= obj.price.annualPremium }}</span>
+			<span class="dollarSign">{{= '$' }}</span><span class="dollars">{{= obj.price.annualPremiumFormatted }}</span>
 		</div>
 		<div class="frequencyTitle">Annual</div>
 	</div>
@@ -453,7 +453,7 @@
 			</span>
 			<span class="price">
 				<span class="frequency annual annually {{= annualHidden }}">
-					{{= '$' }}{{= products[i].price.annualPremium }}
+					{{= '$' }}{{= products[i].price.annualPremiumFormatted }}
 				</span>
 				<span class="frequency monthly {{= monthlyHidden }}">
 					{{= '$' }}{{= products[i].price.monthlyPremium.toFixed(2) }}
@@ -477,7 +477,7 @@
 		<span class="carCompanyLogo logo_{{= img }}" title="{{= products[i].name }}"></span>
 				<span class="price">
 					<span class="frequency annual annually {{= annualHidden }}">
-						{{= '$' }}{{= products[i].price.annualPremium }} <span class="small hidden-sm">annually</span>
+						{{= '$' }}{{= products[i].price.annualPremiumFormatted }} <span class="small hidden-sm">annually</span>
 					</span>
 					<span class="frequency monthly {{= monthlyHidden }}">
 						{{= '$' }}{{= products[i].price.monthlyPremium.toFixed(2) }} <span class="small hidden-sm">monthly</span>
