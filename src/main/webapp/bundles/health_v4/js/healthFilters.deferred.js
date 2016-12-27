@@ -53,6 +53,7 @@
                     }
                 }
             },
+            /* @todo may need some of this logic for comprehensive/limited
             "coverLevel": {
                 name: 'health_filterBar_coverLevel',
                 defaultValueSourceSelector: '#health_benefits_covertype',
@@ -87,7 +88,7 @@
                         $('.hospitalCoverToggles a[data-category="' + value + '"]').trigger('click');
                     }
                 }
-            },
+            },*/
             "hospitalExcess": {
                 name: "health_filterBar_excess",
                 title: "Hospital excess",
@@ -196,13 +197,18 @@
                     template: '#filter-benefits-template',
                     container: '.results-filters-benefits',
                     context: '#results-sidebar'
+                },
+                {
+                    template: '#filter-results-frequency-template',
+                    container: '.results-filters-frequency',
+                    context: '.header-top'
                 }
             ],
             events: {
                 update: function() {
                     // Update benefits step coverType
-                    coverType = coverType || 'C';/*meerkat.modules.health.getCoverType();*/
-                    $('#health_situation_coverType').find('input[value="' + coverType + '"]').prop("checked", true).change().end().change();
+                    coverType = coverType || meerkat.modules.healthChoices.getCoverType();
+                    $('#health_situation_coverType').val(coverType);
                     /*meerkat.modules.healthBenefitsStep.flushHiddenBenefits();*/
                     meerkat.modules.journeyEngine.loadingShow('...updating your quotes...', true);
                     // Had to use a 100ms delay instead of a defer in order to get the loader to appear on low performance devices.
@@ -214,7 +220,8 @@
                 }
             }
         },
-        coverType;
+        coverType,
+        quoteRefTemplate;
 
     function populateSelectedBenefits() {
         var selectedBenefits = $('.results-filters-benefits input[type="checkbox"]:checked').map(function() {
@@ -230,6 +237,7 @@
 
     function init() {
         if(meerkat.site.pageAction === "confirmation") { return false; }
+        quoteRefTemplate = $('.quote-reference-number');
         meerkat.modules.filters.initFilters(settings, model);
         applyEventListeners();
         eventSubscriptions();
@@ -345,6 +353,9 @@
         $benefitsList.find('.filter-toggle-all').toggle($benefitsList.find('input[type="checkbox"]:checked').length !== $benefitsList.find('input[type="checkbox"]').length);
     }
 
+    function toggleQuoteRefTemplate(toggle) {
+        quoteRefTemplate[toggle]();
+    }
     function eventSubscriptions() {
         // health specific logic attached to filter change
         meerkat.messaging.subscribe(meerkatEvents.filters.FILTER_CHANGED, function (event) {
@@ -353,7 +364,7 @@
             // coverLevel change event subscription
             switch (event.target.name) {
                 case 'health_filterBar_coverLevel':
-                    var currentCover = $(event.target).val(),
+                    /*var currentCover = $(event.target).val(),
                         $allHospitalButtons = $sidebar.find('.benefitsHospital').find('input[type="checkbox"]');
 
                     switch (currentCover) {
@@ -370,7 +381,7 @@
                             }
                             $sidebar.find('.benefitsHospital').find('.' + currentCover + ' input[type="checkbox"]').prop('checked', true).parent().removeClass('hidden').slideDown('fast');
                             break;
-                    }
+                    }*/
                     break;
                 case 'health_filterBar_benefitsHospital':
                     $('#health_filterBar_coverLevel').val('customise');
@@ -380,12 +391,16 @@
                     toggleBenefitsLink($sidebar.find('.benefitsExtras'));
                     break;
             }
+            toggleQuoteRefTemplate('slideUp');
+        });
 
+        meerkat.messaging.subscribe(meerkatEvents.filters.FILTERS_CANCELLED, function (event) {
+            toggleQuoteRefTemplate('slideDown');
         });
 
         meerkat.messaging.subscribe(meerkatEvents.filters.FILTERS_RENDERED, function (){
             // reset coverType to use the journey value
-            coverType = 'C';/*meerkat.modules.health.getCoverType();*/
+            coverType = meerkat.modules.healthChoices.getCoverType();
 
             // hack for the css3 multi columns, it is buggy when two columns doesn't have the same amount of children
             var $providerListCheckboxes = $('.provider-list .checkbox'),

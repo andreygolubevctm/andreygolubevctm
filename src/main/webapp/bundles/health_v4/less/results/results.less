@@ -12,7 +12,9 @@
 
 #results-sidebar {
   // need to remove this columns padding so we can apply left margin to all result-rows.
-  padding-right: 0;
+  padding: 0;
+  border: 1px solid @results-border-color;
+  border-left-color: @gray;
 }
 
 .noResults {
@@ -119,7 +121,6 @@
   // Each product column is a result-row, floated left so they fit beside each other.
   .result-row {
     border: 1px solid @results-border-color;
-    .transition(~"border-color ease-in-out .25s");
     &:hover {
       border-color: @results-border-color-pinned;
     }
@@ -222,6 +223,9 @@
   }
   .hospitalSelectionsExcessContainer {
     .featuresListExcess {
+      .content {
+        padding-bottom: 0;
+      }
       // Overrides for the excess section:
       .excessDetailContainer {
         .excess-label {
@@ -237,18 +241,36 @@
 
   // Overrides for the extras "other" list template:
   .featuresListExtrasOtherList {
-    cursor: pointer;
     .cell {
       border-bottom: 1px solid @results-border-color;
     }
   }
 
 }
+
 // Outside the structure.
 .resultsOtherBenefitsTooltip {
   color: @gray;
   .qtip-content > div {
     margin: 5px 0;
     .small;
+  }
+}
+
+.results-control-container {
+  border-bottom: 1px solid @gray-light;
+  background-color: #fff;
+  z-index: 18;
+  &.affix {
+    padding-top: 10px;
+  }
+  .quote-reference-number, .filter-results-hidden-products, .slide-feature-pagination {
+    line-height: 40px; // height of the frequency control.
+  }
+  .quote-reference-number {
+    font-size: 16px;
+  }
+  .filter-results-hidden-products {
+    color: @gray;
   }
 }

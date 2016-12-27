@@ -24,9 +24,9 @@
 
         if (!availableBenefits.length) {
             if (numberOfSelectedExtras() === 0) {
-                $('.featuresListExtrasOtherList, .featuresListExtrasFullList').addClass('hidden');
+                $('.featuresListExtrasOtherList').addClass('hidden');
             } else if (numberOfSelectedHospitals() === 0) {
-                $('.featuresListHospitalOtherList, .featuresListHospitalFullList').addClass('hidden');
+                $('.featuresListHospitalOtherList').addClass('hidden');
             }
         }
         return availableBenefits;
@@ -227,6 +227,7 @@
                 filteredOutResults.push($el.attr('data-productId'));
                 Results.filterBy("productId", "value", { "notInArray": filteredOutResults }, true, true);
                 toggleRemoveResultPagination();
+                updateHiddenProductsTemplate();
             }
             // reset the disable so they can click again when reset
             _.delay(function () {
@@ -237,12 +238,10 @@
             e.preventDefault();
             filteredOutResults = [];
             Results.unfilterBy('productId', "value", true);
+            updateHiddenProductsTemplate();
             _.defer(function () {
                 toggleRemoveResultPagination();
             });
-        }).off('click', '.featuresListExtrasOtherList').on('click', '.featuresListExtrasOtherList', function () {
-            $('.featuresListExtrasOtherList').addClass('hidden');
-            $('.featuresListExtrasFullList > .collapsed').removeClass('collapsed');
         });
     }
 
@@ -253,6 +252,17 @@
         } else {
             $resultsPagination.removeClass('hidden');
         }
+    }
+
+    function updateHiddenProductsTemplate() {
+        var message = "";
+        if (filteredOutResults.length > 0) {
+            var template = meerkat.modules.templateCache.getTemplate($("#filter-results-hidden-products"));
+            message = template({
+                count: filteredOutResults.length
+            });
+        }
+        $('.filter-results-hidden-products').html(message);
     }
 
     meerkat.modules.register('healthResultsTemplate', {
