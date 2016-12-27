@@ -1,23 +1,17 @@
 ;(function ($, undefined) {
 
-    var meerkat = window.meerkat,
-        meerkatEvents = meerkat.modules.events,
-        log = meerkat.logging.info,
-        moduleEvents = {
-            health: {
-                SNAPSHOT_FIELDS_CHANGE: 'SNAPSHOT_FIELDS_CHANGE'
-            }
-        };
+	var meerkat = window.meerkat,
+		meerkatEvents = meerkat.modules.events,
+		log = meerkat.logging.info;
 
     var _cover = '',
         _state = '',
         _performUpdate = false,
         $elements = {};
 
-    function init() {
-        _setupFields();
-        _eventListeners();
-    }
+	function init() {
+		_setupFields();
+	}
 
     function initialise(cover) {
         setCover(cover);
@@ -35,25 +29,15 @@
         };
     }
 
-    function _eventListeners() {
-        $elements.healthCover.on('change', function () {
-            meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
-        });
-
-        $elements.healthSitGroup.on('change', function () {
-            meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
-        });
-    }
-
-    function hasSpouse() {
-        switch (_cover) {
-            case 'C':
-            case 'F':
-                return true;
-            default:
-                return false;
-        }
-    }
+	function hasSpouse() {
+		switch(_cover) {
+			case 'C':
+			case 'F':
+				return true;
+			default:
+				return false;
+		}
+	}
 
     function setCover(cover) {
         _cover = cover || 'SM'; // default to a single

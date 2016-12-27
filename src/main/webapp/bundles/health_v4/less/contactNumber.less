@@ -1,0 +1,18 @@
+.contact-number {
+  &[data-contact-by=mobile] {
+    .contact-number-other {
+      display: none;
+    }
+  }
+  &[data-contact-by=other] {
+    .contact-number-mobile {
+      display: none;
+    }
+  }
+
+  .fieldrow {
+    &:last-child {
+      border-width: 1px;
+    }
+  }
+}

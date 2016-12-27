@@ -10,7 +10,7 @@
         <form_v3:fieldset_columns sideHidden="true">
 
              <jsp:attribute name="rightColumn">
-                    <health_v4_contact:competition_sidebar />
+                <health_v4_content:snapshot />
              </jsp:attribute>
 
             <jsp:body>
@@ -34,12 +34,12 @@
                     <health_v4_contact:firstname xpath="${xpath}" />
                     <health_v4_contact:contact_number xpath="${xpath}" />
                     <health_v4_contact:email_address xpath="${xpath}" />
-                    <health_v4_contact:postcode xpath="${xpath}" />
+                    <c:set var="postcodeXpath">${pageSettings.getVerticalCode()}/situation</c:set>
+                    <health_v4_contact:postcode xpath="${postcodeXpath}" />
                     <health_v4_contact:hidden_fields xpath="${xpath}" />
                     <health_v4_contact:competition xpath="${xpath}" />
 
                     <health_v4_contact:simples_referral_tracking />
-                    <health_v4_contact:javascript xpath="${xpath}" />
                 </form_v4:fieldset>
 
             </jsp:body>

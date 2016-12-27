@@ -20,7 +20,7 @@
     }
 
     function eventSubscriptions() {
-        $healthSituation.on('change', function onStateChanged() {
+        $healthSituation.on('change', function onSituationChanged() {
             meerkat.messaging.publish(moduleEvents.healthSituation.SITUATION_CHANGED, { situation: $(this).val() });
             meerkat.modules.healthChoices.setCover($(this).filter(':checked').val());
         });

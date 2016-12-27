@@ -12,7 +12,8 @@
                 BENEFIT_SELECTED: 'BENEFIT_SELECTED'
             }
         },
-        moduleEvents = events.benefits;
+        moduleEvents = events.benefits,
+        _hospitalType = 'comprehensive'; // default to Comprehensive
 
     function initBenefits() {
         jQuery(document).ready(function ($) {
@@ -142,8 +143,11 @@
         });
 
         // toggle the quick select data in the hospital container
-        $elements.hospital.find('.nav-tabs a').on('click', function toggleQuickSelect() {
-            $elements.hospital.find($elements.quickSelectContainer).toggleClass('hidden', $(this).data('target') === '.limited-pane');
+        $elements.hospital.find('.nav-tabs a').on('click', function toggleQuickSelect(){
+            var target = $(this).data('target');
+
+            $elements.hospital.find($elements.quickSelectContainer).toggleClass('hidden', target === '.limited-pane');
+            _hospitalType = target === '.limited-pane' ? 'limited' : 'comprehensive';
         });
     }
 
@@ -176,10 +180,15 @@
         });
     }
 
+    function getHospitalType() {
+        return _hospitalType;
+    }
+
     meerkat.modules.register("benefits", {
         init: initBenefits,
         events: events,
-        updateModelOnPreload: updateModelOnPreload
+        updateModelOnPreload: updateModelOnPreload,
+        getHospitalType: getHospitalType
     });
 
 })(jQuery);
