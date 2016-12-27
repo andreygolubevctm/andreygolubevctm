@@ -1,0 +1,69 @@
+.health_contact_details_postcode_wrapper {
+  width: 100px;
+  float: left;
+  margin-right: 10px;
+}
+
+.health_contact_details_postcode_results_wrapper {
+
+  .suburb-item {
+    display: inline-block;
+    height: 41px;
+    line-height: 41px;
+    margin: 0 10px 10px 0;
+    text-transform: uppercase;
+
+    span {
+      color: @theme-secondary;
+      display: none;
+    }
+  }
+
+  .suburb-items-btn-edit {
+    display: none;
+  }
+
+  &.edit-mode {
+    .health_contact_details_postcode_results {
+      float: left;
+    }
+
+    .suburb-item {
+      display: none;
+      height: 41px;
+
+      &.selected {
+        display: inline-block;
+        button {
+          display: none;
+        }
+        span {
+          display: block;
+          padding: 0 15px;
+        }
+      }
+    }
+
+    .suburb-items-btn-edit {
+      display: inline-block;
+      line-height: 41px;
+    }
+  }
+
+  &.scroll-view {
+    float: left;
+    height: 150px;
+    margin-top: 10px;
+    overflow-x: hidden;
+  }
+}
+
+.has-error {
+  .has-location-error {
+    .form-control {
+      color: @input-color;
+      background-color: @input-bg;
+      border-color: @input-border;
+    }
+  }
+}

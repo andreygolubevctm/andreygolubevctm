@@ -10,12 +10,13 @@
         log = meerkat.logging.info;
 
     var moduleEvents = {
-            health: {},
-            WEBAPP_LOCK: 'WEBAPP_LOCK',
-            WEBAPP_UNLOCK: 'WEBAPP_UNLOCK'
-        },
-        rates = null,
-        $elements = {};
+        health: {},
+        WEBAPP_LOCK: 'WEBAPP_LOCK',
+        WEBAPP_UNLOCK: 'WEBAPP_UNLOCK'
+    },
+    rates = null,
+    rebate = '',
+    $elements = {};
 
     function init() {
         _setupFields();
@@ -68,6 +69,8 @@
                 _setRebate();
             }
         });
+
+        _setRebate();
     }
 
     function updateSelectedRebateLabel() {
@@ -112,10 +115,17 @@
         meerkat.modules.healthRates.loadRatesBeforeResultsPage(true, function (rates) {
             if (!isNaN(rates.rebate) && parseFloat(rates.rebate) > 0) {
                 $elements.rebateLegend.html('You are eligible for a ' + rates.rebate + '% rebate.');
+
+                rebate = rates.rebate;
             } else {
                 $elements.rebateLegend.html('');
+                rebate = '';
             }
         });
+    }
+
+    function getRebate() {
+        return rebate ? rebate + '%' : '';
     }
 
     // Use the situation value to determine if a partner is visible on the journey.
@@ -134,9 +144,11 @@
 
     meerkat.modules.register("healthRebate", {
         init: init,
+        events: moduleEvents,
         hasPartner: hasPartner,
         updateSelectedRebateLabel: updateSelectedRebateLabel,
         getDependents: getDependents,
+        getRebate: getRebate,
         isRebateApplied: isRebateApplied
     });
 

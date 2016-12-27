@@ -2,119 +2,215 @@
 
     var meerkat = window.meerkat,
         log = meerkat.logging.info,
-        meerkatEvents = meerkat.modules.events;
+        meerkatEvents = meerkat.modules.events,
 
-    var events = {
+        events = {
             healthSnapshot: {
                 RENDER_HEALTH_SNAPSHOT : "RENDER_HEALTH_SNAPSHOT"
             }
         },
         moduleEvents = events.healthSnapshot,
-        $preResultsRowTemplate;
 
+        $elements = {},
+
+        rebateText = [
+            'Full rebate applies',
+            'Tier 1 applied',
+            'Tier 2 applied',
+            'Tier 3 applied',
+            'No rebate applied'
+        ];
 
     function initHealthSnapshot() {
-        subscription();
-        $preResultsRowTemplate = $("#pre-results-row-content-template");
+        _setupFields();
+        _eventSubscriptions();
+        _applyEventListeners();
     }
 
-    function subscription() {
+    function _setupFields() {
+        $elements = {
+            quoteSnapshot: $('.quoteSnapshot'),
+            cover: $('input[name=health_situation_healthCvr]'),
+            income: $('#health_healthCover_income'),
+            toggleList: $('.toggle-snapshot-list'),
+            bornLabels: $('.quoteSnapshot .born-labels'),
+            addPartnerDob: $('.add-partner-dob'),
+            partnerDobInputD: $('#health_healthCover_partner_dobInputD'),
+            primary: {
+                dob: $('#health_healthCover_primary_dob'),
+                dobSpan: $('.quoteSnapshot .primary-dob .snapshot-items span')
+            },
+            partner: {
+                dob: $('#health_healthCover_partner_dob'),
+                dobSpan: $('.quoteSnapshot .partner-dob .snapshot-items span')
+            },
+            rebate: $('#health_healthCover_rebate'),
+            rebateText: $('.quoteSnapshot .snapshot-items.rebate-text'),
+            rebateSubText: $('.quoteSnapshot .rebate .snapshot-items.sub-text'),
+            hospital: {
+                container: $('.Hospital_container'),
+                itemFirst: $('.quoteSnapshot .hospital .snapshot-item-first'),
+                listCount: $('.quoteSnapshot .hospital .snapshot-list-count'),
+                list: $('.quoteSnapshot .hospital .snapshot-list'),
+                toggleList: $('.quoteSnapshot .hospital .toggle-snapshot-list')
+            },
+            extras: {
+                container: $('.GeneralHealth_container'),
+                itemFirst: $('.quoteSnapshot .extras .snapshot-item-first'),
+                listCount: $('.quoteSnapshot .extras .snapshot-list-count'),
+                list: $('.quoteSnapshot .extras .snapshot-list'),
+                toggleList: $('.quoteSnapshot .extras .toggle-snapshot-list')
+            }
+        };
+    }
+
+    function _eventSubscriptions() {
 
         // Initial render
         meerkat.messaging.subscribe(meerkat.modules.events.journeyEngine.BEFORE_STEP_CHANGED, function renderSnapshotOnJourneyReadySubscription() {
             _.defer(function() {
-                renderSnapshot();
+                _renderSnapshot();
             });
         });
-         meerkat.messaging.subscribe(meerkat.modules.events.health.SNAPSHOT_FIELDS_CHANGE, function renderSnapshotOnJourneyReadySubscription() {
+        meerkat.messaging.subscribe(meerkat.modules.events.health.SNAPSHOT_FIELDS_CHANGE, function renderSnapshotOnJourneyReadySubscription() {
             _.defer(function() {
-                renderSnapshot();
+                _renderSnapshot();
             });
         });
         meerkat.messaging.subscribe(meerkat.modules.events.RESULTS_SORTED, function renderSnapshotOnJourneyReadySubscription() {
             _.defer(function() {
-                renderSnapshot();
+                _renderSnapshot();
+            });
+        });
+        meerkat.messaging.subscribe(meerkat.modules.events.healthLocation.STATE_CHANGED, function renderSnapshotOnStateFieldChange() {
+            _.defer(function() {
+                _renderSnapshot();
             });
         });
     }
 
-    function renderSnapshot() {
+    function _applyEventListeners() {
+        $elements.addPartnerDob.on('click', function addPartnerDobClicked() {
+            $elements.partnerDobInputD.focus();
+        });
+
+        $elements.toggleList.on('click', function() {
+            var $this = $(this);
+
+            $this.parent().find('.snapshot-list').slideDown('fast');
+            $this.addClass('hidden');
+        });
+    }
+
+    function _renderSnapshot() {
         meerkat.modules.contentPopulation.render('.quoteSnapshot');
-        _.defer(render);
+        _.defer(_render);
     }
 
-    function showHide(data, selector, property, forceHide) {
+    function _showHide(data, selector, property) {
         $(selector).each(function(){
-            $(this)[_.isEmpty(data[property]) ? "hide" : "show"]();
+            $(this).toggleClass('hidden', _.isEmpty(data[property]));
         });
     }
 
-    function render() {
-        var data = getData();
-        var noData = !hasData(data),
-            $box, i;
-        // Toggle the panel title
-        $('.quoteSnapshot > h4').first().text(noData ? "Who we compare" : "Quote Summary");
-        // Toggle the default summary text
-        $('.quoteSnapshot .default').each(function(){
-            $(this)[noData ? "show" : "hide"]();
-        });
+    function _render() {
+        var data = _getData(),
+            noData = !_hasData(data);
 
-        // Toggle normal content rows
-        showHide(data,'.quoteSnapshot .cover-for','coverFor', noData);
-        showHide(data,'.quoteSnapshot .living-in','livingIn', noData);
-        showHide(data,'.quoteSnapshot .looking-to','lookingTo', noData);
+        if (!noData && !_.isEmpty(data.coverFor)) {
+            var notSingle = _.indexOf(["Couple","Family"], data.coverFor) >= 0;
 
-        if(!noData && !_.isEmpty(data.coverType)) {
-            $('.cover-type .snapshot-items').text(data.coverType);
+            $elements.quoteSnapshot.toggleClass('has-partner', notSingle);
+            $elements.bornLabels.toggleClass('hidden', !notSingle);
+            $elements.addPartnerDob.toggleClass('hidden', !notSingle || (notSingle && !_.isEmpty(data.partnerBorn)));
         }
 
-        // Populate hospital/extras
-        if(!noData && !_.isEmpty(data.hospital)) {
-            $box = $('.quoteSnapshot .hospital .snapshot-list');
-            $box.empty();
-            for(i = 0; i < data.hospital.length; i++) {
-                $box.append(
-                    $("<li/>").append(data.hospital[i])
-                );
-            }
+        // render primary dob
+        if (!noData && !_.isEmpty(data.primaryBorn)) {
+            _renderDob('primary', data.primaryBorn);
         }
-        if(!noData && !_.isEmpty(data.extras)) {
-            $box = $('.quoteSnapshot .extras .snapshot-list');
-            $box.empty();
-            for(i = 0; i < data.extras.length; i++) {
-                $box.append(
-                    $("<li/>").append(data.extras[i])
-                );
-            }
+
+        // render partner dob
+        if (!noData && !_.isEmpty(data.partnerBorn)) {
+            _renderDob('partner', data.partnerBorn);
         }
+
+        // set rebate text
+        $elements.rebateText.text(data.rebateText);
+
+        // set rebate lhc %
+        $elements.rebateSubText.text(data.rebateSubText);
+
+        // render hospital
+        var hospitalType = meerkat.modules.benefits.getHospitalType();
+        if (!noData && !_.isEmpty(data.hospital) && hospitalType === 'comprehensive') {
+            _renderBenefits('hospital', data.hospital);
+        } else if (hospitalType === 'limited') {
+            $elements.hospital.itemFirst.text('Limited Cover');
+            $elements.hospital.toggleList.addClass('hidden');
+        }
+
+        // render extras
+        if (!noData && !_.isEmpty(data.extras)) {
+            _renderBenefits('extras', data.extras);
+        }
+
         // Toggle benefits rows.
-        showHide(data,'.quoteSnapshot .hospital','hospital', noData);
-        showHide(data,'.quoteSnapshot .extras','extras', noData);
-
-        $('.quoteSnapshot').toggle(!noData && meerkat.modules.journeyEngine.getCurrentStepIndex() < 3);
+        _showHide(data,'.quoteSnapshot .hospital','hospital', noData);
+        _showHide(data,'.quoteSnapshot .extras','extras', noData);
     }
 
-    function getData() {
-        var coverFor = meerkat.modules.healthChoices.getSituation();
-        var livingIn = $("#health_situation_location").val();
-        var lookingTo = $.trim($("input[name=health_situation_healthSitu]").filter(":checked").closest('label').text());
-        var coverType = $("#health_situation_coverType input:checked").parent().text();
-        var tieredCoverType = $('#health_situation_coverType input').filter(":checked").val();
-        var hospital = fetchAllHospitalCheckedValues(tieredCoverType);
-        var extras = fetchAllExtrasCheckedValues(tieredCoverType);
+    function _renderDob(type, data) {
+        var dob = meerkat.modules.dateUtils.returnDate(data),
+            formattedDob = meerkat.modules.dateUtils.format(dob, "D MMM YYYY");
+
+        $elements[type].dobSpan.text(formattedDob);
+    }
+
+    function _renderBenefits(type, data) {
+        var count = type === 'hospital' ? meerkat.modules.benefitsModel.getHospitalCount() :
+                                          meerkat.modules.benefitsModel.getExtrasCount(),
+            moreThanOne = count > 1,
+            i;
+
+        $elements[type].itemFirst.text(data[0]);
+
+        if (moreThanOne) {
+            $elements[type].listCount.text(count - 1);
+
+            $elements[type].list.empty();
+            for (i = 1; i < data.length; i++) {
+                $elements[type].list.append(
+                    $("<li/>").append(data[i])
+                );
+            }
+            $elements[type].list.hide();
+        }
+
+        $elements[type].toggleList.toggleClass('hidden', !moreThanOne);
+    }
+
+    function _getData() {
+        var coverFor = $.trim($elements.cover.filter(":checked").parent().text()),
+            primaryBorn = $elements.primary.dob.val(),
+            partnerBorn = $elements.partner.dob.val(),
+            rebateText = _fetchRebateText($elements.income.val()),
+            rebateSubText = _fetchRebateSubText($elements.income.val()),
+            hospital = _fetchBenefits(true),
+            extras = _fetchBenefits();
 
         return {
-            coverFor : _.isEmpty(coverFor) ? false : coverFor,
-            livingIn : _.isEmpty(livingIn) ? false : livingIn,
-            lookingTo : _.isEmpty(lookingTo) ? false : lookingTo,
-            coverType : _.isEmpty(coverType) ? false : coverType,
-            hospital : _.isEmpty(hospital) ? false : hospital,
-            extras : _.isEmpty(extras) ? false : extras
+            coverFor: _.isEmpty(coverFor) ? false : coverFor,
+            primaryBorn: _.isEmpty(primaryBorn) ? false : primaryBorn,
+            partnerBorn: _.isEmpty(partnerBorn) ? false : partnerBorn,
+            rebateText: rebateText,
+            rebateSubText: rebateSubText,
+            hospital: _.isEmpty(hospital) ? false : hospital,
+            extras: _.isEmpty(extras) ? false : extras
         };
     }
 
-    function hasData(data) {
+    function _hasData(data) {
         var props = _.keys(data);
         for(var i=0; i < props.length; i++) {
             if(!_.isEmpty(data[props[i]])) {
@@ -124,100 +220,44 @@
         return false;
     }
 
-    function fetchAllHospitalCheckedValues(coverType) {
-        var list = [];
-        if(_.indexOf(["C","H"], coverType) >= 0) {
-            $(".Hospital_container").find(':checked').each(function (item) {
-                var label = $.trim($(this).next('label').find('span.iconLabel').text());
-                if (!_.isEmpty(label)) {
-                    list.push(label);
-                }
-
-            });
-            $(".Hospital_container .noIcons").find(':checked').each(function (item) {
-                var label = $.trim($($(this).next('label').contents()[0]).text());
-                if (!_.isEmpty(label)) {
-                    list.push(label);
-                }
-            });
+    function _fetchRebateText(income) {
+        if ($elements.rebate.is(":checked")) {
+            return rebateText[income];
+        } else {
+            return rebateText[4];
         }
+    }
+
+    function _fetchRebateSubText(income) {
+        if ($elements.rebate.is(":checked")) {
+            if (income < 3) {
+                return meerkat.modules.healthRebate.getRebate();
+            } else {
+                return "You're not eligible to receive a rebate";
+            }
+        } else {
+            return '';
+        }
+    }
+
+    function _fetchBenefits(isHospital) {
+        var list = [],
+            benefits = isHospital ? meerkat.modules.benefitsModel.getHospital() : meerkat.modules.benefitsModel.getExtras();
+
+        benefits.forEach(function(benefitId) {
+            var label = $elements[isHospital ? 'hospital' : 'extras'].container
+                    .find('input[data-benefit-id=' + benefitId + ']').next('label').find('.benefitTitle').text();
+
+            if (!_.isEmpty(label)) {
+                list.push(label);
+            }
+        });
+
         return list;
-    }
-
-    function fetchAllExtrasCheckedValues(coverType) {
-        var list = [];
-        if(_.indexOf(["C","E"], coverType) >= 0) {
-            $(".GeneralHealth_container").find(':checked').each(function (item) {
-                var label = $.trim($(this).next('label').find('span.iconLabel').text());
-                if (!_.isEmpty(label)) {
-                    list.push(label);
-                }
-            });
-            $(".GeneralHealth_container .noIcons").find(':checked').each(function (item) {
-                var label = $.trim($($(this).next('label').contents()[0]).text());
-                if (!_.isEmpty(label)) {
-                    list.push(label);
-                }
-            });
-        }
-        return list;
-    }
-
-    /**
-     * Utility function to map cover type to a label.
-     * @returns {*}
-     */
-    function getLabelForCoverType() {
-        // @todo commented out as we don't have a cover type.
-        /*switch(meerkat.modules.health.getCoverType()) {
-            case 'C':
-                return "Hospital and Extras";
-            case 'H':
-                return "Hospital";
-            case 'E':
-                return "Extras";
-        }*/
-        return "";
-    }
-
-    /**
-     * Utility function to map situation to a label.
-     * @returns {*}
-     */
-    function getLabelForSituation() {
-
-        switch(meerkat.modules.healthChoices.getSituation()) {
-            case 'SM':
-            case 'SF':
-                return "you";
-            case 'C':
-                return "you and your partner";
-            case 'F':
-                return "you and your family";
-            case 'SPF':
-                var $dependants = $('#health_healthCover_dependants');
-                var childrenLabel = parseInt($dependants.val(),10) > 1 ? 'children' : 'child';
-                return "you and your " + childrenLabel;
-        }
-    }
-    
-    function renderPreResultsRowSnapshot() {
-
-        if(!$preResultsRowTemplate.length) {
-            return;
-        }
-        var obj = {
-            name: $('#health_contactDetails_name').val(),
-            coverType: getLabelForCoverType(),
-            situation: getLabelForSituation()
-        };
-        var template = meerkat.modules.templateCache.getTemplate($preResultsRowTemplate);
-        $('.preResultsContainer').html(template(obj));
     }
 
     meerkat.modules.register('healthSnapshot', {
-        init:initHealthSnapshot,
-        renderPreResultsRowSnapshot: renderPreResultsRowSnapshot
+        init: initHealthSnapshot
     });
 
 })(jQuery);
