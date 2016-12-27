@@ -204,7 +204,7 @@ public class CarQuoteService extends CommonRequestServiceV2 {
                     .filter(row -> row.getAvailable().equals(AvailableType.Y))
                     .forEach(row -> {
                                 String productId = row.getProductId();
-                                BigDecimal premium = row.getPrice().getAnnualPremium();
+                                BigDecimal premium = row.getPrice().getAnnualPremium().setScale(0, BigDecimal.ROUND_CEILING);
                                 XmlNode product = new XmlNode(productId);
                                 XmlNode headline = new XmlNode("headline");
                                 XmlNode lumpSumTotal = new XmlNode("lumpSumTotal", premium.toString());

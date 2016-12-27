@@ -10,10 +10,6 @@
 
 		<jsp:attribute name="rightColumn">
 			<home:snapshot />
-			<ui:bubble variant="info">
-				<h4>Looking for Landlords Insurance?</h4>
-				<p>You'll be given a chance to add this during the application stage, so for now please select "Home Cover Only".</p>
-			</ui:bubble>
 		</jsp:attribute>
 
 		<jsp:body>

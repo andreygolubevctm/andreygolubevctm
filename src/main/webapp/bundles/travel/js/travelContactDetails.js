@@ -21,12 +21,8 @@
 
 	function applyEventListeners(){
 		$marketing.on('change', function () {
-
 			if ($(this).is(':checked')) {
-				$email.attr('required', 'required').valid();
 				showHidePostcodeField();
-			} else {
-				$email.removeAttr('required').valid();
 			}
 		});
 		$email.on('blur', function() {
