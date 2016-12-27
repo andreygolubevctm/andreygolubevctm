@@ -147,12 +147,7 @@
 
     function isSelected(id) {
         var benefits = getSelectedBenefits();
-        for (var i = 0; i < benefits.length; i++) {
-            if (id === benefits[i]) {
-                return true;
-            }
-        }
-        return false;
+        return _.contains(benefits, id);
     }
 
     meerkat.modules.register("benefitsModel", {

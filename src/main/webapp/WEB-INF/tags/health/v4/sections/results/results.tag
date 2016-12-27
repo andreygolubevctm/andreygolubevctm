@@ -15,9 +15,6 @@
 <layout_v1:results_template xsResultsColumns="2" resultsContainerClassName=" affixOnScroll sessioncamignorechanges ">
 
     <jsp:attribute name="sidebarColumnRight">
-        <%--<c:if test="${empty callCentre}">
-            <form_v3:save_results_button />
-        </c:if>--%>
         <coupon:promo_tile />
         <div class="col-sm-12 sidebar-widget sidebar-widget-contained sidebar-widget-padded results-filters">
         </div>
