@@ -135,10 +135,10 @@
 							<div class="col-xs-12 moreInfoHospitalTab">
 								<ul class="nav nav-tabs">
 									<li>
-										<a href="javascript" data-target=".hospitalCoveredPane">Covered <span>{{= hospitalCover.inclusions.length }}</span></a>
+										<a href="javascript" data-target=".hospitalCoveredPane"><h2>Covered <span>{{= hospitalCover.inclusions.length }}</span></h2></a>
 									</li>
 									<li>
-										<a href="javascript" data-target=".hospitalNotCoveredPane">Not Covered <span>{{= hospitalCover.exclusions.length }}</span></a>
+										<a href="javascript" data-target=".hospitalNotCoveredPane"><h2>Not Covered <span>{{= hospitalCover.exclusions.length }}</span></h2></a>
 									</li>
 								</ul>
 							</div>
@@ -146,18 +146,15 @@
 
 						{{ var benefitTemplate = meerkat.modules.templateCache.getTemplate($("#healthBenefitsIconRowTemplate")); }}
 						<!-- Inclusions / Exclusions -->
-						<div class="row hospitalCoveredPane">
-							<div class="col-xs-6">
+						<div class="row tab-content">
+							<div class="col-xs-12 tab-pane hospitalCoveredPane">
 								{{ benefitData = {}; }}
 								{{ benefitData.isSelected = true; }}
 								{{ benefitData.items = hospitalCover.inclusions; }}
 								{{ benefitData.keys = [{"WaitingPeriod": "Waiting Period"}, {"benefitLimitationPeriod": "Benefit Limitation Period"}]; }}
 								{{= benefitTemplate(benefitData) }}
 							</div>
-						</div>
-
-						<div class="row hospitalNotCoveredPane">
-							<div class="col-xs-6">
+							<div class="col-xs-12 tab-pane hospitalNotCoveredPane">
 								{{ benefitData.items = hospitalCover.exclusions; }}
 								{{= benefitTemplate(benefitData) }}
 							</div>
@@ -189,20 +186,29 @@
 							{{ } }}
 						</div>
 
+						<div class="col-xs-12 moreInfoExtrasTab">
+							<ul class="nav nav-tabs">
+								<li>
+									<a href="javascript" data-target=".extrasCoveredPane"><h2>Covered <span>{{= extrasCover.inclusions.length }}</span></h2></a>
+								</li>
+								<li>
+									<a href="javascript" data-target=".extrasNotCoveredPane"><h2>Not Covered <span>{{= extrasCover.exclusions.length }}</span></h2></a>
+								</li>
+							</ul>
+						</div>
+
 
 						<!-- Inclusions / Exclusions -->
 						{{ var benefitTemplate = meerkat.modules.templateCache.getTemplate($("#extrasBenefitsIconRowTemplate")); }}
-						<div class="row">
-							<div class="col-xs-6">
-								<h3>Covered <span>{{= extrasCover.inclusions.length }}</span></h3>
+						<div class="row tab-content">
+							<div class="col-xs-12 tab-pane extrasCoveredPane">
 								<span>Limits</span>
 								{{ benefitData.isSelected = true; }}
 								{{ benefitData.keys = [{"annualLimit": "Annual Limit"}, {"combinedLimit": "Combined Limit"}, {"lifetime": "Lifetime Limit"}, {"perPerson": "Per Person"}, {"perPolicy": "Per Policy"}, {"serviceLimit": "Service Limit"}]; }}
 								{{ benefitData.items = extrasCover.inclusions; }}
 								{{= benefitTemplate(benefitData) }}
 							</div>
-							<div class="col-xs-6">
-								<h3>Not Covered <span>{{= extrasCover.exclusions.length }}</span></h3>
+							<div class="col-xs-12 tab-pane extrasNotCoveredPane">
 								<span>Limits</span>
 								{{ benefitData.items = extrasCover.exclusions; }}
 								{{= benefitTemplate(benefitData) }}

@@ -64,8 +64,6 @@
 
         meerkat.modules.moreInfo.initMoreInfo(options);
 
-        moreInfoHospitalTab
-
         eventSubscriptions();
         applyEventListeners();
     }
@@ -97,7 +95,20 @@
             });
         });
 
+        _setTabs();
     }
+
+    function _setTabs() {
+        $(document).on('click', '.nav-tabs a', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            $(this).tab('show');
+        });
+
+        $('.moreInfoHospitalTab .nav-tabs a:first, .moreInfoExtrasTab .nav-tabs a:first').click();
+    }
+
 
     function onApplySuccess() {
         meerkat.modules.address.setHash('apply');
