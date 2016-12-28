@@ -78,7 +78,7 @@
 
 		value = $.trim(String(location));
 
-		if( value != '' ) {
+		if( value !== '' ) {
 			if( value.match(search_match) ) {
 				return true;
 			}
@@ -131,7 +131,7 @@
 		//// Change the message
 		if (situation != _situation) {
 			_situation = situation;
-		};
+		}
 
 		$('#health_benefits_healthSitu').val( situation );
 

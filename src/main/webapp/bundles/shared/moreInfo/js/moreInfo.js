@@ -81,7 +81,7 @@
         /* Show/Hide Bridging Page */
         if (typeof Results.settings !== "undefined") {
             // open bridging page
-            $(Results.settings.elements.page).on("click", ".btn-more-info", openBridgingPage);
+            $(Results.settings.elements.page).on("click", ".btn-more-info, .open-more-info", openBridgingPage);
             // close bridging page
             $(Results.settings.elements.page + ", .navMenu-row header").on("click", ".btn-close-more-info", closeBridgingPage);
         }

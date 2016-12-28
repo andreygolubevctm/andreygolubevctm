@@ -54,20 +54,15 @@
             primary_loading: $healthCoverDetails.find('input[name="health_healthCover_primary_healthCoverLoading"]:checked').val(),
             primary_current: $healthCoverDetails.find('input[name="health_healthCover_health_cover"]:checked').val(),
             primary_loading_manual: $healthCoverDetails.find('.primary-lhc').val(),
-            partner_dob: $healthCoverDetails.find('#health_healthCover_partner_dob').val(),
-            partner_loading: $healthCoverDetails.find('input[name="health_healthCover_partner_healthCoverLoading"]:checked').val(),
-            partner_current: $healthCoverDetails.find('input[name="health_healthCover_partner_health_cover"]:checked').val(),
-            partner_loading_manual: $healthCoverDetails.find('.partner-lhc').val(),
+            partner_dob: $('#health_healthCover_partner_dob').val(),
+            partner_loading: $('#benefitsForm').find('input[name="health_healthCover_partner_healthCoverLoading"]:checked').val(),
+            partner_current: $('#benefitsForm').find('input[name="health_healthCover_partner_health_cover"]:checked').val(),
+            partner_loading_manual: $('#benefitsForm').find('.partner-lhc').val(),
             cover: meerkat.modules.healthChoices.getSituation()
         };
 
-        if ($('#health_application_provider, #health_application_productId').val() === '') {
-
-            // before application stage
-            postData.primary_dob = $('#health_healthCover_primary_dob').val();
-
-        } else {
-
+        var applicationFields = $('#health_application_provider, #health_application_productId').val();
+        if (typeof applicationFields !== 'undefined' && applicationFields !== '') {
             // in application stage
             postData.primary_dob = $('#health_application_primary_dob').val();
             postData.partner_dob = $('#health_application_partner_dob').val() || postData.primary_dob;  // must default, otherwise fetchRates fails.

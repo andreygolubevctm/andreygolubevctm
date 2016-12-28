@@ -2,6 +2,7 @@
 
 	var meerkat = window.meerkat,
 	meerkatEvents = meerkat.modules.events,
+	moduleInitialised = false,
 	callCentreNumber = '.callCentreNumber',
 	applicationSteps = ['apply','payment'], // Confirmation page is its own page and just uses the Application Number
 	$callCentreFields = null,
@@ -21,6 +22,7 @@
 			$callCentreHelpFields = $('.callCentreHelpNumber');
 			$callCentreHelpDefaultContainers = $('.callCentreHelp').find('.default-content'),
 			$callCentreHelpCustomContainers = $('.callCentreHelp').find('.custom-content');
+			moduleInitialised = true;
 		});
 		eventSubscriptions();
 	}
@@ -67,7 +69,7 @@
 			if(!_.isNull(sanitisedSitu)) {
 				// Ajax call to retrieve
 				meerkat.modules.comms.get({
-					url: 'spring/content/getsupplementaryvalue',
+					url: 'spring/content/getsupplementaryvalue.json',
 					data: {
 						vertical: 'HEALTH',
 						key: 'healthSidebarCallCentreHelp',
@@ -101,12 +103,15 @@
 	 * @param copy
      */
 	function updateCallCentreHelpCopy(copy) {
-		var showCustom = !_.isEmpty(copy);
-		if(showCustom) {
-			$callCentreHelpCustomContainers.find('.dynamic').empty().append(copy);
-		}
-		$callCentreHelpDefaultContainers.toggle(!showCustom);
-		$callCentreHelpCustomContainers.toggle(showCustom);
+		var updateCallCentreHelpCopyCallback = function(){
+			var showCustom = !_.isEmpty(copy);
+			if(showCustom) {
+				$callCentreHelpCustomContainers.find('.dynamic').empty().append(copy);
+			}
+			$callCentreHelpDefaultContainers.toggle(!showCustom);
+			$callCentreHelpCustomContainers.toggle(showCustom);
+		};
+		_.delay(updateCallCentreHelpCopyCallback,(!moduleInitialised ? 500 : 0));
 	}
 
 	meerkat.modules.register("healthPhoneNumber", {

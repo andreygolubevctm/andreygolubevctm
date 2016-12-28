@@ -275,10 +275,6 @@ var LifeQuote = {
 				prod.priceHTML = LifeQuote.getPriceHTML( prod.price );
 				prod.priceFrequency = LifeQuote.getPremiumFrequencyTerm();
 				prod.thumb = prod.company.toLowerCase().replace(" ", "_") + ".png";
-				
-				if(!LifeQuote.isOzicare(prod.company)) {
-					prod.pds = "/static/pds/life/" + decodeURI(prod.pds.split("/").pop()).replace(/ /g, "_");
-				}
 
 				return prod;
 			}

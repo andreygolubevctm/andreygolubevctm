@@ -1,14 +1,14 @@
 {
-    "brandCodes": "all",
-    "dependencies": [
-        "shared/journeyEngine/v2",
-        "shared/results/v2",
-        "plugins/inspectorJson",
-        "shared/sliders",
-        "shared/fonts/v1",
-        "shared/headerBar/v1",
-	"core",
-        "shared/forms/v2",
-        "shared/datepicker"
-    ]
+  "brandCodes": "all",
+  "dependencies": [
+    "shared/journeyEngine/v2",
+    "shared/results/v2",
+    "plugins/inspectorJson",
+    "shared/sliders",
+    "shared/fonts/v1",
+    "shared/headerBar/v1",
+    "core",
+    "shared/forms/v2",
+    "shared/datepicker"
+  ]
 }

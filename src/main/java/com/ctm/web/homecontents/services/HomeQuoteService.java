@@ -191,7 +191,7 @@ public class HomeQuoteService extends CommonRequestServiceV2 {
                     .filter(row -> AvailableType.Y.equals(row.getAvailable()))
                     .forEach(row -> {
                                 String productId = row.getProductId();
-                                BigDecimal premium = row.getPrice().getAnnualPremium();
+                                BigDecimal premium = row.getPrice().getAnnualPremium().setScale(0, BigDecimal.ROUND_CEILING);
                                 XmlNode product = new XmlNode(productId);
                                 XmlNode price = new XmlNode("price");
                                 XmlNode annual = new XmlNode("annual");

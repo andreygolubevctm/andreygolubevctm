@@ -13,6 +13,7 @@
 
 		<jsp:body>
 
+			<simples:dialogue id="71" vertical="health" />
 			<simples:dialogue id="61" vertical="health" />
 
 			<layout_v1:slide_content>

@@ -12,20 +12,18 @@
 
 <c:set var="fieldXpath" value="${xpath}/location" />
 <c:set var="state" value="${data['health/situation/state']}" />
-<c:set var="location" value="${data['health/situation/location']}" />
-
-<field_v1:hidden xpath="${xpath}/location" defaultValue="${location}" />
 
 <form_v4:row label="You're living in" fieldXpath="${xpath}StateRow" className="health-state" subLabel="We've made an educated guess, correct us if we're wrong">
 
 	<field_v2:array_radio xpath="${xpath}/state"
+						  className="health-situation-state"
 						  defaultValue="NSW"
 						  required="true"
 						  items="NSW=NSW,VIC=VIC,QLD=QLD,ACT=ACT,WA=WA,SA=SA,TAS=TAS,NT=NT"
 						  title="you're living in"
-						  style="radio-rounded" />
+						  style="radio-rounded"
+						  wrapCopyInSpan="${true}" />
 
 	<field_v1:hidden xpath="${xpath}/suburb" />
-	<field_v1:hidden xpath="${xpath}/postcode" />
 
 </form_v4:row>

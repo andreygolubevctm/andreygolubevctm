@@ -49,7 +49,7 @@
 	function initResults(){
 
 		try {
-			var displayMode = 'price';
+			var displayMode = 'features';
 			if(typeof meerkat.site != 'undefined' && typeof meerkat.site.resultOptions != 'undefined') {
 				// confirming its either features or price.
 				displayMode = meerkat.site.resultOptions.displayMode == 'features' ? 'features' : 'price';
@@ -392,19 +392,19 @@
 
 				// Annually
 				if (!_.isUndefined(result.price.annualPremium)) {
-					result.price.annualPremiumFormatted = meerkat.modules.currencyField.formatCurrency(result.price.annualPremium, {roundToDecimalPlace: 0});
+					result.price.annualPremiumFormatted = meerkat.modules.currencyField.formatCurrency(Math.ceil(result.price.annualPremium), {roundToDecimalPlace: 0, symbol: '', digitGroupSymbol:''});
 				}
 
 				//Monthly
 				if (!_.isUndefined(result.price.monthlyPremium)) {
 					if (!_.isUndefined(result.price.monthlyPremium)) {
-						result.price.monthlyPremiumFormatted = meerkat.modules.currencyField.formatCurrency(result.price.monthlyPremium, {roundToDecimalPlace: 2});
+						result.price.monthlyPremiumFormatted = meerkat.modules.currencyField.formatCurrency(result.price.monthlyPremium, {roundToDecimalPlace: 2, symbol: ''});
 					}
 					if (!_.isUndefined(result.price.monthlyFirstMonth)) {
-						result.price.monthlyFirstMonthFormatted = meerkat.modules.currencyField.formatCurrency(result.price.monthlyFirstMonth, {roundToDecimalPlace: 2});
+						result.price.monthlyFirstMonthFormatted = meerkat.modules.currencyField.formatCurrency(result.price.monthlyFirstMonth, {roundToDecimalPlace: 2, symbol: ''});
 					}
 					if (!_.isUndefined(result.price.annualisedMonthlyPremium)) {
-						result.price.annualisedMonthlyPremiumFormatted = meerkat.modules.currencyField.formatCurrency(result.price.annualisedMonthlyPremium, {roundToDecimalPlace: 2});
+						result.price.annualisedMonthlyPremiumFormatted = meerkat.modules.currencyField.formatCurrency(result.price.annualisedMonthlyPremium, {roundToDecimalPlace: 2, symbol: ''});
 					}
 				}
 			}

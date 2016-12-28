@@ -109,6 +109,7 @@
 			.not('.short-list-item')
 			.not('.nestedGroup .col-sm-8')
 			.not('.results-column-container')
+			.not('.no-column-medling')
 			.removeClass('col-sm-8').addClass('col-sm-9');
 		$mainform.find('.col-sm-offset-4')
 			.not('#applicationForm_1 .col-sm-offset-4')

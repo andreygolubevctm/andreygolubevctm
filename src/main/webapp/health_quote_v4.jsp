@@ -23,7 +23,7 @@
 
         <%-- Get data to build sections/categories/features on benefits and result pages. Used in results and benefits tags --%>
         <jsp:useBean id="resultsDisplayService" class="com.ctm.web.core.results.services.ResultsDisplayService" scope="request" />
-        <c:set var="resultTemplateItems" value="${resultsDisplayService.getResultsPageStructure('health_v4')}" scope="request"  />
+        <c:set var="resultTemplateItems" value="${resultsDisplayService.getResultsPageStructure('health_v4')}" scope="request" />
 
         <%-- Call centre numbers --%>
         <jsp:useBean id="callCenterHours" class="com.ctm.web.core.web.openinghours.go.CallCenterHours" scope="page" />
@@ -32,7 +32,7 @@
         <c:set var="callCentreHelpNumber" scope="request"><content:get key="callCentreHelpNumber" /></c:set>
 
         <c:set var="callCentreHoursModal" scope="request"><content:getOpeningHoursModal /></c:set>
-        <c:set var="callCentreCBModal" scope="request"><health_v3:callback_modal /></c:set>
+        <c:set var="callCentreCBModal" scope="request"><health_v4:callback_modal /></c:set>
 
         <%-- ####### PRE JOURNEY SETUP --%>
 
@@ -55,9 +55,9 @@
                                                data-content="#view_all_hours"
                                                data-dialog-hash-id="view_all_hours"
                                                data-title="Call Centre Hours" data-cache="true">
-                                        <span class="noWrap callCentreNumber">${callCentreNumber}</span>
-                                        <span class="noWrap callCentreAppNumber">${callCentreAppNumber}</span>
-                                    </a> or <health_v4:callback_link /> ${callCentreCBModal}
+                                    <span class="noWrap callCentreNumber">${callCentreNumber}</span>
+                                    <span class="noWrap callCentreAppNumber">${callCentreAppNumber}</span>
+                                </a> or <health_v4:callback_link /> ${callCentreCBModal}
                                 </div>
 
                                 <div id="view_all_hours" class="hidden">${callCentreHoursModal}</div>
@@ -87,10 +87,36 @@
                         </div>
                     </div>
                 </div>
+                <div class="navbar-affix results-control-container">
+                    <div class="container">
+                        <div class="row">
+                            <div class="hidden-xs col-sm-6 col-md-4 results-filters-frequency"></div>
+                            <div class="hidden-xs hidden-sm col-md-2 text-center small filter-results-hidden-products"></div>
+                            <div class="col-xs-12 col-sm-6 col-md-3 results-pagination">
+                                <div class="collapse navbar-collapse">
+                                    <ul class="nav navbar-nav slide-feature-pagination" data-results-pagination-pages-cell="true"></ul>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 hidden-sm hidden-md hidden-lg hide-on-affix results-filters-frequency"></div>
+                            <div class="hidden-xs hidden-sm col-md-3 text-center">
+                                <div class="quote-reference-number"><p>Quote Ref: <span class="transactionId"></span></p></div>
+                                <div class="sidebar-widget sidebar-widget-attached sidebar-widget-padded filters-update-container" style="display: none">
+                                    <!-- update button placeholder-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </jsp:attribute>
 
             <jsp:attribute name="body_end">
 			</jsp:attribute>
+
+            <jsp:attribute name="additional_meerkat_scripts">
+                <c:if test="${callCentre}">
+                    <script src="${assetUrl}assets/js/bundles/simples_health${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
+                </c:if>
+            </jsp:attribute>
 
             <jsp:attribute name="vertical_settings">
                 <health_v4:settings />
