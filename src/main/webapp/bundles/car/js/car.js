@@ -14,12 +14,17 @@
 
     var templateAccessories;
 
+    // Elements
+    var $typeOfCover;
+
     function initCar() {
         $(document).ready(function () {
 
             // Only init if car
             if (meerkat.site.vertical !== "car")
                 return false;
+
+            $typeOfCover = $('#quote_typeOfCover');
 
             // Init common stuff
             initJourneyEngine();
@@ -327,6 +332,10 @@
         meerkat.modules.journeyProgressBar.configure(progressBarConfig);
     }
 
+    function getVerticalFilter() {
+        return $typeOfCover.val() || null;
+    }
+
     // Build an object to be sent by SuperTag tracking.
     function getTrackingFieldsObject(special_case) {
         try {
@@ -369,6 +378,7 @@
             var vehMake = $('#quote_vehicle_make option:selected').text();
             var $vehicleUsage = $('#quote_vehicle_use');
             var $vehicleFieldSet = $('#quote_vehicleFieldSet');
+            var coverType = $('#quote_typeOfCover').val();
 
             var vehUsage = $vehicleUsage.text();
 
@@ -439,7 +449,8 @@
                 emailID: null,
                 marketOptIn: null,
                 okToCall: null,
-                commencementDate: null
+                commencementDate: null,
+                verticalFilter: null
             };
 
             // Push in values from 1st slide only when have been beyond it
@@ -451,11 +462,18 @@
             }
 
             // Push in values from 2nd slide only when have been beyond it
+            if (furtherest_step > meerkat.modules.journeyEngine.getStepIndex('options')) {
+                _.extend(response, {
+                    vehicleUsage: vehUsage,
+                    verticalFilter: coverType
+                });
+            }
+
+            // Push in values from 2nd slide only when have been beyond it
             if (furtherest_step > meerkat.modules.journeyEngine.getStepIndex('details')) {
                 _.extend(response, {
                     yearOfBirth: yob,
-                    gender: gender,
-                    vehicleUsage: vehUsage
+                    gender: gender
                 });
             }
 
@@ -494,7 +512,8 @@
         init: initCar,
         events: moduleEvents,
         initProgressBar: initProgressBar,
-        getTrackingFieldsObject: getTrackingFieldsObject
+        getTrackingFieldsObject: getTrackingFieldsObject,
+        getVerticalFilter: getVerticalFilter
     });
 
 })(jQuery);

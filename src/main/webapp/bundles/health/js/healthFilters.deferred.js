@@ -88,6 +88,36 @@
                     }
                 }
             },
+            "extrasCoverLevel": {
+                name: 'health_filterBar_extrasCoverLevel',
+                defaultValueSourceSelector: '#health_filter_tierExtras',
+                defaultValue: '',
+                values: [
+                    {
+                        value: '',
+                        label: 'Default'
+                    },
+                    {
+                        value: '1',
+                        label: 'Budget'
+                    },
+                    {
+                        value: '2',
+                        label: 'Medium'
+                    },
+                    {
+                        value: '3',
+                        label: 'Comprehensive'
+                    }
+
+                ],
+                events: {
+                    update: function (filterObject) {
+                        var value = $('select[name=' + filterObject.name + ']').val();
+                        $(filterObject.defaultValueSourceSelector).val(value);
+                    }
+                }
+            },
             "hospitalExcess": {
                 name: "health_filterBar_excess",
                 title: "Hospital excess",
