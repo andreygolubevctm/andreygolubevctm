@@ -6,6 +6,7 @@
     "shared/journeyEngine/v2",
     "plugins/scrollTo",
     "shared/results/v4",
+    "shared/resultsFeaturesPagination/v1",
     "shared/features",
     "shared/validation",
     "shared/fonts/v1",

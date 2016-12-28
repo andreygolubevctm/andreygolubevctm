@@ -19,13 +19,13 @@
             {{ } else { }}
             <div class="utility-bar-blank">&nbsp;</div>
             {{ } }}
-            <div class="filter-component display-on-hover small remove-result hidden-xs {{= hasCustomHeaderContent ? 'hasCustomHeaderContent' : ''}}" data-productId="{{= obj.productId }}">
+            <div class="hide-on-affix filter-component display-on-hover small remove-result hidden-xs hidden-sm {{= hasCustomHeaderContent ? 'hasCustomHeaderContent' : ''}}" data-productId="{{= obj.productId }}">
                 <a href="javascript:;" title="Hide this product" <field_v1:analytics_attr analVal="remove {{= obj.info.provider }}" quoteChar="\"" />>Hide product</a>
             </div>
-            <div class="filter-component display-on-hover small pin-result pin-result-label hidden-xs" data-productId="{{= obj.productId }}">
+            <div class="hide-on-affix filter-component display-on-hover small pin-result pin-result-label hidden-xs hidden-sm" data-productId="{{= obj.productId }}">
                 <a href="javascript:;" title="Pin this result" <field_v1:analytics_attr analVal="pin {{= obj.info.provider }}" quoteChar="\"" />>Pin as favourite</a>
             </div>
-            <div class="filter-component display-on-hover small pin-result pin-result-icon hidden-xs" data-productId="{{= obj.productId }}">
+            <div class="hide-on-affix filter-component display-on-hover small pin-result pin-result-icon hidden-xs hidden-sm" data-productId="{{= obj.productId }}">
                 <span class="icon icon-pin" title="Pin this result" <field_v1:analytics_attr analVal="pin {{= obj.info.provider }}" quoteChar="\"" />></span>
             </div>
         </div>
@@ -44,7 +44,7 @@
                 <div class="more-info-text">View Product <span class="icon icon-angle-right"></span></div>
             </a>
             {{ var brochureTemplate = meerkat.modules.templateCache.getTemplate($("#brochure-download-template")); }}
-            <div class="brochure-container text-center">
+            <div class="hide-on-affix brochure-container text-center">
                 {{= brochureTemplate(obj) }}
             </div>
 
