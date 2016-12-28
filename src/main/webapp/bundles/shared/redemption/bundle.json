@@ -1,0 +1,8 @@
+{
+  "brandCodes": "all",
+  "dependencies": [
+    "shared/crud",
+    "shared/validation",
+    "shared/addressLookup"
+  ]
+}

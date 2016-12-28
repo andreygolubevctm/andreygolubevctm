@@ -55,22 +55,22 @@
 		
 		// Check if we already have a method for handing results rendering
 		// otherwise default to throwing it into the appropriate container
-		if(!this.renderResults) {
-			this.renderResults = function() {
-				var results = that.dataSet.get(),
-					resultsHTML = "";
-			
-				for(var i = 0; i < results.length; i++) {
-					resultsHTML += results[i].html;
-				}
-				
-				$(".sortable-results-table")
-					.html(resultsHTML)
-					.closest(".row")
-					.find("h1 small")
-					.text("(" + results.length + ")");
-			};
-		}
+		// if(!this.renderResults) {
+		// 	this.renderResults = function() {
+		// 		var results = that.dataSet.get(),
+		// 			resultsHTML = "";
+		//
+		// 		for(var i = 0; i < results.length; i++) {
+		// 			resultsHTML += results[i].html;
+		// 		}
+		//
+		// 		$(".sortable-results-table")
+		// 			.html(resultsHTML)
+		// 			.closest(".row")
+		// 			.find("h1 small")
+		// 			.text("(" + results.length + ")");
+		// 	};
+		// }
 		
 		// Check if we have manually defined the required views
 		if(!this.views) {
