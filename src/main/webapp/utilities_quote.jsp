@@ -17,8 +17,9 @@
 <utilities_v3:splittest_helper />
 
 <c:set var="brandedName"><content:get key="boldedBrandDisplayName"/></c:set>
-<c:set var="energyPrivacyOptinText" scope="session">I understand ${brandedName} compares energy plans based on peak tariffs from a range of participating retailers. By providing my contact details I agree that ${brandedName} and its partner Thought World may contact me about the services they provide.
-    I confirm that I have read the <form_v1:link_privacy_statement/>.</c:set>
+<c:set var="energyPrivacyOptinText" scope="session">
+    I understand and accept the <a href="${pageSettings.getSetting('websiteTermsUrl')}" target="_blank" data-title="Website Terms of Use" class="termsLink showDoc">Website Terms of Use</a> and <form_v1:link_privacy_statement/>. I agree that comparethemarket.com.au may contact me about the services it provides, and that Thought World, Compare the Market's trusted energy partner, may call or email me to discuss my energy needs.
+</c:set>
 
 <c:set var="body_class_name">
     <c:if test="${not empty splitTestEnabled and splitTestEnabled eq 'Y'}">utilities_design_55</c:if>
@@ -129,6 +130,25 @@
 
 	<jsp:attribute name="footer">
 		<core_v1:whitelabeled_footer/>
+	</jsp:attribute>
+
+    <jsp:attribute name="xs_results_pagination">
+		<div class="navbar navbar-default xs-results-pagination navMenu-row-fixed visible-xs">
+            <div class="container">
+                <ul class="nav navbar-nav ">
+                    <li class="navbar-text center hidden" data-results-pagination-pagetext="true"></li>
+
+                    <li>
+                        <a data-results-pagination-control="previous" href="javascript:;" class="btn-pagination" data-analytics="pagination previous"><span class="icon icon-arrow-left"></span>
+                            Prev</a>
+                    </li>
+
+                    <li class="right">
+                        <a data-results-pagination-control="next" href="javascript:;" class="btn-pagination " data-analytics="pagination next">Next <span class="icon icon-arrow-right"></span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
 	</jsp:attribute>
 
 	<jsp:attribute name="vertical_settings">

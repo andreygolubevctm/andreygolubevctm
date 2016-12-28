@@ -10,6 +10,7 @@
   &.affixed-settings {
 
     .result-row {
+      border: 0;
       // To make up for the space no longer consumed by the .result element.
       padding-top: 360px;
       @media (@sm) {
@@ -18,13 +19,21 @@
       @media (@lg) {
         padding-top: 430px;
       }
+
+      .featuresList {
+        border: 1px solid @results-border-color;
+        margin: 0;
+        padding: 0 15px;
+      }
     }
 
     .result {
-      top: 0px;
+      top: 45px;
       width: inherit;
-      box-shadow: 0 4px 2px -2px #ccc;
+      border: 1px solid @results-border-color;
+      border-bottom: 1px solid @gray-dark;
     }
+
     .hide-on-affix {
       display: none;
     }
@@ -32,24 +41,23 @@
 
   // .affixed is not in effect while going between pages.
   &.affixed {
+    /*    @media (@xs-only) {
+          .result {
+            top: 80px; // to make up for pagination and header bar.
+          }
 
-    @media (@xs-only) {
-      .result {
-        top: 80px; // to make up for pagination and header bar.
-      }
+          .lhcText {
+            display: none;
+          }
 
-      .lhcText {
-        display: none;
-      }
+          .productSummary {
+            height: 100px;
+          }
 
-      .productSummary {
-        height: 100px;
-      }
-
-      .btn-more-info {
-        .btn-sm;
-      }
-    }
+          .btn-more-info {
+            .btn-sm;
+          }
+        }*/
 
     .result {
       display: none; // when in fixed mode, only display the items on the 'current page' - thanks to the pagination component for settings this.
@@ -67,9 +75,6 @@
   &.affixed-compact {
     h3 {
       display: block; // for some reason it's hidden in the core.
-    }
-    .remove-result {
-      display: none;
     }
     @media (@xs-only) {
       .result {

@@ -2,16 +2,17 @@
  * Description: External documentation:
  */
 
-(function($, undefined) {
+(function ($, undefined) {
 
 
-    var meerkat =window.meerkat,
+    var meerkat = window.meerkat,
         _isHospital = false,
         defaultSelections = {},
         selectedBenefits = {
             hospital: [],
             extras: []
         },
+        benefitsLabels = {},
         meerkatEvents = meerkat.modules.events,
         events = {
             benefitsModel: {
@@ -70,7 +71,7 @@
 
         if (typeof options.removeBenefit !== 'undefined' && options.removeBenefit) {
             // removing a singular item from a user click so don't need to fire the BENEFITS_UPDATED event
-            selectedBenefits[getBenefitType()] =  selectedBenefits[getBenefitType()].filter(function removeItemFromModel(value) {
+            selectedBenefits[getBenefitType()] = selectedBenefits[getBenefitType()].filter(function removeItemFromModel(value) {
                 return value != options.benefitId;
             });
         } else {
@@ -92,7 +93,7 @@
     }
 
     // return an array of the default selected ids
-    function getDefaultSelections(selectType){
+    function getDefaultSelections(selectType) {
         return defaultSelections[selectType];
     }
 
@@ -121,13 +122,32 @@
         selectedBenefits[getBenefitType()] = updatedBenefits;
         meerkat.messaging.publish(moduleEvents.UPDATE_SELECTED_BENEFITS_CHECKBOX, selectedBenefits[getBenefitType()]);
     }
+
+    // run once to initialise labels store.
+    function initBenefitLabelStore(benefits) {
+        benefitsLabels = benefits;
+    }
+
     // get all the selected benefits
     function getSelectedBenefits() {
         return selectedBenefits.hospital.concat(selectedBenefits.extras);
     }
 
+    function getHospitalBenefitsForFilters() {
+        return benefitsLabels.hospital;
+    }
+
+    function getExtrasBenefitsForFilters() {
+        return benefitsLabels.extras;
+    }
+
     function setIsHospital(isHospital) {
         _isHospital = isHospital;
+    }
+
+    function isSelected(id) {
+        var benefits = getSelectedBenefits();
+        return _.contains(benefits, id);
     }
 
     meerkat.modules.register("benefitsModel", {
@@ -141,7 +161,11 @@
         getHospitalCount: getHospitalCount,
         setBenefits: setBenefits,
         setIsHospital: setIsHospital,
-        getSelectedBenefits: getSelectedBenefits
+        getSelectedBenefits: getSelectedBenefits,
+        initBenefitLabelStore: initBenefitLabelStore,
+        getExtrasBenefitsForFilters: getExtrasBenefitsForFilters,
+        getHospitalBenefitsForFilters: getHospitalBenefitsForFilters,
+        isSelected: isSelected
     });
 
 })(jQuery);

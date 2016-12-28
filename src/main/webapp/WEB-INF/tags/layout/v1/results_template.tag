@@ -32,7 +32,7 @@
 <%@ attribute fragment="true" required="false" name="additionalPagination" %>
 <%@ attribute fragment="true" required="false" name="resultsErrorMessage" %>
 <%@ attribute fragment="true" required="false" name="hiddenInputs" description="Any hidden " %>
-<%@ attribute fragment="true" required="true" name="quoterefTemplate" description="A template customisable to display the quote reference number" %>
+<%@ attribute fragment="true" required="false" name="quoterefTemplate" description="A template customisable to display the quote reference number" %>
 <%@ attribute fragment="true" required="true" name="logoTemplate"
               description="A template just for the logo. Logos tend to be displayed in different places independent of price, so should be a different template." %>
 <%@ attribute fragment="true" required="true" name="priceTemplate" description="A template customisable to display price based on frequency etc, must exclude logo" %>
@@ -56,6 +56,9 @@
 <c:set var="zeroResultsFoundMessage">
     <jsp:invoke fragment="zeroResultsFoundMessage"/>
 </c:set>
+<c:set var="quoterefTemplate">
+    <jsp:invoke fragment="quoterefTemplate"/>
+</c:set>
 <c:set var="resultsColsSm" value="8"/>
 <c:set var="resultsColsMd" value="9" />
 <c:if test="${empty sidebarColumnLeft and empty sidebarColumnRight}">
@@ -66,18 +69,9 @@
 <div class="row" id="resultsPage">
 
     <c:if test="${not empty preResultsRow}">
-        <div class="col-xs-12 col-sm-7 col-lg-8 results-prologue-row">
-            <div class="preResultsContainer hidden-xs"></div>
-                ${preResultsRow}
-        </div>
-        <div class="hidden-xs col-sm-5 col-lg-4 results-prologue-row results-pagination">
-            <div class="collapse navbar-collapse">
-                <span class="pagination-text-label">See more results</span>
-                <ul class="nav navbar-nav navbar-right slide-feature-pagination" data-results-pagination-pages-cell="true"></ul>
-            </div>
-        </div>
-        <div class="clearfix"></div>
+        ${preResultsRow}
     </c:if>
+
     <%-- Currently applied on Health V2 --%>
     <c:if test="${not empty sidebarColumnLeft}">
         <div class="hidden-xs col-sm-4 col-md-3" id="results-sidebar">
@@ -134,7 +128,7 @@
 <%-- Temp div to hold the snapshot and complance text until new desgin can figure our where to put this --%>
 <div id="temp-health-snapshot" class="visible-xs"><p>Please download the policy brochures for the full policy limits, inclusions and exclusions.</p></div>
 <%-- Dump out the templates --%>
-<core_v1:js_template id="quoteref-template"><jsp:invoke fragment="quoterefTemplate"/></core_v1:js_template>
+<c:if test="${not empty quoterefTemplate}"><core_v1:js_template id="quoteref-template"><jsp:invoke fragment="quoterefTemplate"/></core_v1:js_template></c:if>
 <core_v1:js_template id="logo-template"><jsp:invoke fragment="logoTemplate"/></core_v1:js_template>
 <core_v1:js_template id="price-template"><jsp:invoke fragment="priceTemplate"/></core_v1:js_template>
 <core_v1:js_template id="result-template"><jsp:invoke fragment="resultsContainerTemplate"/></core_v1:js_template>

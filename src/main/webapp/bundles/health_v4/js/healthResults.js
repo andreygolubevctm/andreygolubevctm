@@ -314,8 +314,6 @@
                 meerkat.modules.healthResultsTemplate.toggleRemoveResultPagination();
                 // Setup scroll
                 Results.pagination.setupNativeScroll();
-                // render snapshot
-                meerkat.modules.healthSnapshot.renderPreResultsRowSnapshot();
                 // turn off increment tranId
                 Results.settings.incrementTransactionId = false;
             });

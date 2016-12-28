@@ -9,10 +9,6 @@
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
-<c:set var="field_firstname" value="${xpath}/firstname" />
-<c:set var="field_firstname" value="${go:nameFromXpath(field_firstname)}" />
-<c:set var="field_surname" value="${xpath}/surname" />
-<c:set var="field_surname" value="${go:nameFromXpath(field_surname)}" />
 <c:set var="field_dob" value="${xpath}/dob" />
 <c:set var="field_dob" value="${go:nameFromXpath(field_dob)}" />
 
@@ -25,7 +21,7 @@
 
 <%-- HTML --%>
 <div class="health-person-details-${id} health-person-details ${id}">
-		<field_v3:name_group xpath="${xpath}" firstNameMaxlength="24" lastNameMaxlength="20" />
+		<field_v3:name_group xpath="${xpath}" showInitial="true" firstNameMaxlength="24" lastNameMaxlength="20" />
 
 		<c:set var="fieldXpath" value="${xpath}/dob" />
 		<form_v2:row fieldXpath="${fieldXpath}" label="Date of Birth" className="changes-premium">

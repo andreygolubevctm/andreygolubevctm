@@ -1,7 +1,6 @@
 {
   "dependencies": [
     "shared/results_js",
-    "shared/resultsFeaturesPagination",
     "shared/resultsFeaturesSpecialOffer"
   ]
 }

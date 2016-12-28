@@ -91,6 +91,7 @@
 	<c:set var="hospitalSpecificDisabled" value="${benefitsContent.getSupplementaryValueByKey('hospitalSpecificDisabled')}" />
 
 	<c:set var="hospitalLimitedAll" value="${benefitsContent.getSupplementaryValueByKey('hospitalLimitedAll')}" />
+	<c:set var="hospitalLimitedAllALT" value="${benefitsContent.getSupplementaryValueByKey('hospitalLimitedAllALT')}" />
 	<c:set var="hospitalLimitedHelp" value="${benefitsContent.getSupplementaryValueByKey('hospitalLimitedHelp')}" />
 
 	<c:set var="extrasFamilyYoung" value="${benefitsContent.getSupplementaryValueByKey('extrasFamilyYoung')}" />
@@ -234,6 +235,7 @@
 		combinedSpecificHelp			: "${combinedSpecificHelp}",
 
 		hospitalLimitedAll				: "${hospitalLimitedAll}",
+		hospitalLimitedAllALT			: "${hospitalLimitedAllALT}",
 		hospitalLimitedHelp				: "${hospitalLimitedHelp}",
 		extrasLimitedAll 				: "${extrasLimitedAll}",
 

@@ -5,11 +5,12 @@
 <layout_v3:slide formId="benefitsForm" nextLabel="Next Step">
 
     <layout_v3:slide_content>
-        <form_v3:fieldset_columns>
+        <form_v3:fieldset_columns sideHidden="true">
 
         <jsp:attribute name="rightColumn">
-            <health_v2_content:sidebar />
-             <health_v4_insuranceprefs:benefitsSelectionScroller isSidebar="${true}" />
+            <simples:snapshot />
+            <health_v4_content:snapshot/>
+            <health_v4_insuranceprefs:benefitsSelectionScroller isSidebar="${true}" />
         </jsp:attribute>
             <jsp:body>
 

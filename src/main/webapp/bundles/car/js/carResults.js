@@ -47,15 +47,15 @@
 	function initResults(){
 
 		try {
-			var displayMode = 'price';
+			var displayMode = 'features';
 			if(typeof meerkat.site != 'undefined' && typeof meerkat.site.resultOptions != 'undefined') {
 				// confirming its either features or price.
 				displayMode = meerkat.site.resultOptions.displayMode == 'features' ? 'features' : 'price';
 			}
 
 			var price = {
-				annually: "price.annualPremium",
-				annual: "price.annualPremium",
+				annually: "price.annualPremiumFormatted",
+				annual: "price.annualPremiumFormatted",
 				monthly: "price.annualisedMonthlyPremium"
 			};
 			var rank_premium = "price.annualPremium";
@@ -472,6 +472,12 @@
 		products = products || Results.model.returnedProducts;
 
 		_.each(products, function massageJson(result, index) {
+
+			// Add formatted annual premium (ie without decimals)
+			if (!_.isEmpty(result.price) && !_.isUndefined(result.price.annualPremium)) {
+				result.price.annualPremiumFormatted = meerkat.modules.currencyField.formatCurrency(Math.ceil(result.price.annualPremium), {roundToDecimalPlace: 0, symbol: '', digitGroupSymbol:''});
+			}
+
 			if (result.excess !== null && !_.isUndefined(result.excess)) {
 				result.excessFormatted = meerkat.modules.currencyField.formatCurrency(result.excess, {roundToDecimalPlace: 0});
 			}

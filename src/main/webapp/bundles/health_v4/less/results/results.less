@@ -5,22 +5,16 @@
   margin-bottom: 20px;
   a.dialogPop {
     text-decoration: underline;
-    color: #000;
+    color: #000000;
     font-family: @font-family-base;
-  }
-
-  .preResultsContainer {
-    margin-bottom: 20px;
-    h3 {
-      margin-top: 10px;
-      margin-bottom: 6px;
-    }
   }
 }
 
 #results-sidebar {
   // need to remove this columns padding so we can apply left margin to all result-rows.
-  padding-right: 0;
+  padding: 0;
+  border: 1px solid @results-border-color;
+  border-left-color: @gray;
 }
 
 .noResults {
@@ -30,98 +24,96 @@
 // The product header
 .resultInsert {
 
-  // top bar in header where restricted fund and compare are.
-  .utility-bar-blank {
-    padding: 5px;
-    .user-select(none);
+  /* Display Utilities only on hover of result insert */
+  .display-on-hover {
+    .opacity(0);
+    .transition(~"opacity ease-in-out .25s");
   }
-  .restrictedFund,
-  .customHeaderContent {
-    @media (@sm-only) {
-      font-size: 12px;
-    }
-    .user-select(none);
-    cursor: help;
-    background-color: #EDEDED;
-    padding: 5px;
-    color: #8A8A8A;
-    text-align: center;
-  }
-  .customHeaderContent {
-    background-color: #9EACD1;
-    color: @theme-tertiary;
-  }
-  .remove-result {
+
+  .filter-component {
     position: absolute;
-    top: 2px;
-    right: 0;
+    top: 5px;
     padding: 5px;
-    color: #ccc;
     cursor: pointer;
-    &.hasCustomHeaderContent {
-      color: #fff;
-    }
-    & .icon:hover {
-      color: #555;
+    .user-select(none);
+  }
+  &:hover .display-on-hover {
+    .opacity(1);
+  }
+
+  .remove-result {
+    left: 0;
+  }
+
+  @pin-height: 25px;
+  @pin-width: 20px;
+  .pin-result-label {
+    right: @pin-width + 10px;
+  }
+
+  .pin-result-icon {
+    top: 0;
+    color: #ffffff;
+    right: 10px;
+    width: @pin-width;
+    height: @pin-height;
+    background: @theme-tertiary;
+    &:after {
+      left: 0;
+      top: @pin-height;
+      position: absolute;
+      content: "";
+      border-style: solid;
+      border-width: 5px @pin-width 0 0;
+      border-color: @theme-tertiary transparent transparent transparent;
     }
   }
 
-  // only apply a height in results so the rows stay all the same height.
+  .results-header-inner-container {
+    border-bottom: 1px solid @results-border-color;
+  }
   .productSummary {
-    height: 140px;
-    @media (@sm-only) {
-      height: 150px;
+    margin-bottom: 20px;
+    .frequencyAmount {
+      color: @link-color;
+      cursor: pointer;
+      font-size: 48px;
     }
-    @media (@md-only) {
-      height: 165px;
+    .frequencyAmount, .lhcText {
+      float: left;
+      width: 50%;
     }
-    @media (@lg-only) {
-      height: 175px;
+    .lhcText {
+      text-align: right;
+      .small;
+      display: flex;
+      height: 50px;
+      align-items: flex-end;
     }
-    overflow: hidden;
   }
 
-  // override core to give greater gap.
-  .btn-block + .btn-block {
-    margin-top: 10px;
+  .brochure-container {
+    .small;
+    margin: 20px 0;
+    color: @theme-accent-4;
   }
-  // pretend to make the download brochures btn-block a btn-small.
-  @media (@xs-sm-only) {
-    .btn-download.btn-block {
-      padding: 5px 4px;
-      font-size: 12px;
-    }
-  }
+
 }
 
-@subfeature-border-color: #C0C9DE;
-@dulled-color: #8A8A8A;
 .featuresMode {
-
-  .health-icon {
-    vertical-align: top;
-    font-size: 30px;
-    margin-right: 5px;
-    @media (@xs-sm-only) {
-      font-size: 20px;
-      margin-right: 2px;
-      line-height: 14px;
-    }
-    @media (@md-only) {
-      line-height: 20px;
-    }
-  }
 
   // The actual results container, to the right of the feature labels.
   .resultsOverflow {
-
-    // Fix margins for rows on XS
+    // Fix margins for rows on XS @todo may be unnecessary in v4
     .result-row {
+      h2, h3 {
+        color: @theme-accent-4;
+      }
       @media (@xs-only) {
-        margin-right: 15px;
+        margin-right: 10px;
       }
       @media (@sm) {
-        margin-left: 15px;
+        margin-left: 10px;
       }
     }
   }
@@ -129,65 +121,58 @@
   // Each product column is a result-row, floated left so they fit beside each other.
   .result-row {
     border: 1px solid @results-border-color;
-    background: @feature-bg-color;
-
-    // .result is just the top section.
-    .result {
-      // box shadow descoped due to issues with the box shadow displaying behind the filters and also on the 3rd result.
-      //box-shadow: 2px 3px 3px #cfcfcf;
+    &:hover {
+      border-color: @results-border-color-pinned;
     }
 
+    .featuresList {
+      margin: auto 15px;
+    }
     // .cell is used as parent wrapper as .category is re-used on non-cell divs.
     .cell {
 
       // A top level category e.g. the Non Cosmetic Plastic Surgery cell
       &.category { //.cell.category
 
-        // An override for last border-bottom of a category
-        // .cell.category's children's last feature: set border-bottom on its .content
-        &.collapsed:last-child .labelInColumn .content {
-          border-bottom: 1px solid @results-border-color;
-        }
+        .transition(~"color ease-in-out .25s");
 
-        // The label cell "Non Cosmetic Plastic Surgery"
-        > .labelInColumn {
-          .contentInner {
-            margin-right: 10px;
-            @media (@sm) {
-              margin-right: 16px;
-            }
-          }
+        // The label cell e.g. "Non Cosmetic Plastic Surgery"
+        // The "Limits" label displayed inside a category's children list.
+        > .labelInColumn,
+        .limits-label {
+          // default color is accent 1
+          color: @theme-accent-4;
           .user-select(none);
           display: block;
-          .content {
-            line-height: 30px;
-            padding: 5px;
-            @media (@md) {
-              padding: 5px 10px;
-            }
-            sup {
-              @media (@sm-only) {
-                position: absolute;
-                top: 14px;
-                right: 21px;
-              }
-              color: #A90000;
-              font-family: @font-family-theme-bold;
-            }
+        }
+        .limits-label {
+          margin-top: 5px;
+        }
+        &.expandable {
+          .contentInner {
+            color: @link-color;
           }
         }
-        .content {
-          /*border-right: 1px solid @results-border-color;*/
-          // When a benefit is not covered
-          &.noCover {
-            background-color: #EDEDED;
-            color: @dulled-color;
-            cursor: not-allowed;
-            .expander {
-              // this makes the expander invisible until its opened.
-              color: #EDEDED;
-            }
+        &.expanded {
+          .contentInner {
+            color: @theme-secondary;
           }
+          .labelInColumn {
+            border-bottom: 1px solid @results-border-color;
+          }
+
+        }
+
+        .featureValue, .featureLabel {
+          float: left;
+        }
+        .featureLabel {
+          color: @theme-accent-4;
+          width: 60%;
+        }
+        .featureValue {
+          text-align: right;
+          width: 40%;
         }
 
       }
@@ -195,63 +180,23 @@
       &.expandable {
 
         &.category {
-          // Style the feature label cell when its expanded.
-          &.expanded {
-            /*border-bottom: 1px solid @theme-tertiary;*/
 
-            .category { //.cell.category.expanded
-
-              > .content {
-                // styles on an expanded cell.
-              }
-            }
-          }
           .children { // sub-features
-            margin-left: 10px;
-            position: relative;
-
-            /*.content {
-              border-left-color: @subfeature-border-color;
-              border-right: 1px solid @subfeature-border-color;
-              border-bottom: 1px solid @subfeature-border-color;
-              border-top: none; // disable inherited border.
-              background-color: #DDE1EB;
-            }*/
-            // remove border bottom on last cell in children
-            // or when not covered container is shown
-            .noCoverContainer.content,
-            .cell:last-child .content {
-              border-bottom: none;
-            }
-
-            &.hideChildren {
-              .cell.feature {
-                .invisible;
+            margin-bottom: 20px;
+            .cell {
+              font-size: 12px;
+              margin-left: 10px;
+              &.featureGroupLimit {
+                color: @gray;
               }
             }
-            .noCoverContainer {
-              position: absolute;
-              height: 100%;
-              width: 100%;
-              .noCoverLabel {
-                font-size: 12px;
-                position: relative;
-                text-align: center;
-                top: 40%;
-                color: @dulled-color;
-              }
-            }
+            /*
+                        &.hideChildren {
+                          .cell.feature {
+                            .invisible;
+                          }
+                        }*/
           }
-
-          // the last category in a list, remove its blue border bottom and
-          // for its last children .cell.feature, set the border bottom to normal.
-          /*&:last-child.expanded {
-            border-bottom: none;
-            .children .cell.feature:last-child, .noCoverContainer {
-              border-bottom: 1px solid @subfeature-border-color;
-            }
-          }*/
-
         }
 
       }
@@ -259,110 +204,73 @@
   }
 
   .content {
-    font-size: 12px;
-    @media (@lg) {
-      font-size: @results-font-size;
-    }
-    /*border-top: 1px solid @results-border-color;*/
-    padding: @results-column-side-padding-width;
-    text-align: left;
+    padding: @results-column-side-padding-width 0;
     // Content of certain feature cells. This needs to be relative so the expander icon inside can be absolutely positioned.
     position: relative;
-  }
-
-  .children .content {
-    color: #000;
+    overflow: hidden;
   }
 
   .extraText {
     display: none;
   }
 
-  // Content is internals of .feature/.category/.section
-  .content {
-    background: @feature-bg-color;
-    /*.transition(background-color 0.5s);*/
-    /*border-left: 1px solid @results-border-color;*/
-  }
-
   // Override styles for the excess and hospital cover sections.
+
+  .featuresListHospitalOtherList {
+    margin-top: 7.5px;
+    padding: 10px 0;
+    border-top: 1px solid @results-border-color;
+    border-bottom: 1px solid @results-border-color;
+  }
   .hospitalSelectionsExcessContainer {
-    .hospitalExcessSectionBorder {
-      background-color: #fff;
-      /*border: 1px solid @results-border-color;
-      border-bottom: none;*/
-    }
     .featuresListExcess {
       .content {
-        /*border-left: none;
-        border-top: none;*/
-        padding: 0 10px;
+        padding-bottom: 0;
       }
       // Overrides for the excess section:
       .excessDetailContainer {
-        padding: 0 10px 10px 10px;
-        div {
-          @media (@xs) {
-            padding-top: 5px;
-          }
-          @media (@md) {
-            padding-top: 10px;
-          }
-          padding-right: 0;
-        }
         .excess-label {
           font-size: 10px;
-          color: @dulled-color;
+          color: @gray-dark;
           text-transform: lowercase;
           margin-bottom: 0;
         }
-        .excess-value {
-          font-family: @font-family-theme-bold;
-        }
       }
 
-    }
-
-    h5 {
-      padding: 10px 0 0 10px;
-      @media (@lg) {
-        padding: 10px;
-      }
-    }
-    .yourSelectionsHospital {
-      position: relative;
-      .restrictedBenefit {
-        .small;
-        color: #A90000;
-        @media (@xs) {
-          padding: 0 0 10px 10px;
-          display: inline-block;
-          &.hidden{
-            visibility: hidden;
-            display: inline-block !important;
-          }
-        }
-        @media (@lg) {
-          position: absolute;
-          right: 10px;
-          top: 14px;
-        }
-      }
     }
   }
 
-  .featuresListHospitalSelections {
-    .limited-cover-warning .content {
-      color: #A90000;
-      line-height: 1 !important;
-    }
-  }
   // Overrides for the extras "other" list template:
   .featuresListExtrasOtherList {
-    cursor: pointer;
     .cell {
       border-bottom: 1px solid @results-border-color;
     }
   }
 
+}
+
+// Outside the structure.
+.resultsOtherBenefitsTooltip {
+  color: @gray;
+  .qtip-content > div {
+    margin: 5px 0;
+    .small;
+  }
+}
+
+.results-control-container {
+  border-bottom: 1px solid @gray-light;
+  background-color: #fff;
+  &.affix {
+    padding-top: 10px;
+  }
+  .quote-reference-number, .filter-results-hidden-products, .slide-feature-pagination {
+    line-height: 40px; // height of the frequency control.
+  }
+  .quote-reference-number {
+    font-size: 16px;
+  }
+  .filter-results-hidden-products {
+    color: @gray;
+  }
 }

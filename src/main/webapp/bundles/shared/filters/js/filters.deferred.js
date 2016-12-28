@@ -32,7 +32,7 @@
                 }
             ],
 
-            events:{}
+            events: {}
         },
         model = {},
         _htmlTemplate = {},
@@ -54,8 +54,8 @@
             $document = $(this);
             model = filterModel;
 
-            for(var optionName in options) {
-                if (_.isArray(settings[optionName])){
+            for (var optionName in options) {
+                if (_.isArray(settings[optionName])) {
                     $.merge(settings[optionName], options[optionName]);
                 } else {
                     $.extend(true, settings[optionName], options[optionName]);
@@ -159,7 +159,7 @@
     }
 
     function buildHtml(component) {
-        _.each(settings[component], function(setting) {
+        _.each(settings[component], function (setting) {
             $(setting.container).empty(); // empty all so if we switch breakpoint it still works
             $(setting.container, setting.context).html(getTemplateHtml(setting.template));
         });
@@ -176,7 +176,7 @@
             exception("This template does not exist: " + template);
         }
 
-        _htmlTemplate[template] = _.template($(template).html(), {variable: "model"});
+        _htmlTemplate[template] = _.template($(template).html(), { variable: "model" });
         return _htmlTemplate[template](model);
     }
 
@@ -209,10 +209,10 @@
                 meerkat.modules.navMenu.close();
             }
 
-            _.defer(function() {
+            _.defer(function () {
                 if (needToFetchFromServer) {
                     settings.events.update.apply(window, [event]);
-                }else{
+                } else {
                     meerkat.modules.resultsTracking.setResultsEventMode('Refresh');
                     Results.applyFiltersAndSorts();
                 }

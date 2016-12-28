@@ -17,13 +17,13 @@
 		contentType: null,
 		contentValue: null,
 		showEvent: 'click',
-		onOpen:function(){ // @todo
+		onOpen:function(){
 
 		},
-		onClose:function(){ // @todo
+		onClose:function(){
 
 		},
-		onLoad:function(){ // @todo
+		onLoad:function(){
 
 		}
 	};

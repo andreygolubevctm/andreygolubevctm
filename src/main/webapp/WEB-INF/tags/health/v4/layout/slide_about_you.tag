@@ -21,7 +21,7 @@
                 <form_v3:fieldset_columns sideHidden="true">
 
                 <jsp:attribute name="rightColumn">
-                    <health_v4_content:sidebar />
+                    <health_v4_aboutyou:medicarecheck />
                 </jsp:attribute>
                     <jsp:body>
 

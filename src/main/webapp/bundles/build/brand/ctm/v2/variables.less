@@ -119,7 +119,7 @@
 @font-size-extra-small: ceil((@font-size-base * 0.7)); // ~10px 9.8
 
 @font-size-h1: @font-size-xlarge;
-@font-size-h2: 28px;
+@font-size-h2: 24px;
 @font-size-h3: 21px; // ~22px 22.4
 @font-size-h4: floor((@font-size-base * 1.5)); // ~20px 21
 @font-size-h5: ceil((@font-size-base * 1.25)); // ~18px 17.5
@@ -605,6 +605,19 @@
 @btn-add-active-color: @btn-add-color;
 @btn-add-active-bg-color: @btn-add-bg-color;
 @btn-add-active-border-color: @btn-add-active-color;
+
+// secondary button
+@btn-secondary-color: @theme-tertiary;
+@btn-secondary-bg-color: transparent;
+@btn-secondary-border-color: @btn-secondary-color;
+
+@btn-secondary-hover-color: @theme-tertiary;
+@btn-secondary-hover-bg-color: fade(@btn-secondary-hover-color, 20%);
+@btn-secondary-hover-border-color: @btn-secondary-hover-color;
+
+@btn-secondary-active-color: @theme-secondary;
+@btn-secondary-active-bg-color: fade(@btn-secondary-active-color, 20%);
+@btn-secondary-active-border-color: @btn-secondary-active-color;
 
 //TODO: make a generic hollow override, and set up the sidebar contrast check once car is ready.
 
@@ -1445,8 +1458,8 @@
 //== journeyProgressBar
 //
 //##
-@main-bg-colour: #f3f3f5;
-@border-color: #e7e7e7;
+@main-bg-colour: #ffffff;
+@border-color: @gray-lighter;
 @header-color: #162f8a;
 @required-color: #a90000;
 
@@ -1606,7 +1619,7 @@
 @md-results-column-gutter-width: 0px; //7px
 @lg-results-column-gutter-width: 0px; //6px
 
-@results-column-side-padding-width: 10px;
+@results-column-side-padding-width: 7.5px;
 @results-overflow-width-xs: @container-xs;
 @results-overflow-width-sm: @container-sm;
 @results-overflow-width-md: @container-md;
@@ -1616,10 +1629,14 @@
 @results-page-border-width: 1px;
 @results-column-border-width: 1px;
 @results-border-color: @border-color;
+@results-border-color-pinned: @theme-tertiary;
 
 @results-price-row-padding: 15px;
 @results-feature-cell-padding: 12px;
 @results-section-fake-row-padding: 5px;
+
+@results-price-font-family: @headings-font-family;
+@results-price-cents-font-family: @headings-font-family;
 
 //## Feature Rows colors
 // Features mode of results (used by core, but also by HEALTH results :-S)

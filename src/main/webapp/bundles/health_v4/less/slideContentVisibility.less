@@ -3,7 +3,8 @@
   // Add your slide feature here to be hidden by default
   .slide-control-about-you,
   .slide-control-insurance-preferences,
-  .slide-control-get-prices {
+  .slide-control-get-prices,
+  .results-control-container {
     .slide-feature-hidden();
   }
 
@@ -28,6 +29,9 @@
   &[data-step="results"] {
     .progress-bar-row {
       .slide-feature-hidden();
+    }
+    .results-control-container {
+      .slide-feature-is-visible();
     }
   }
 }
