@@ -28,7 +28,6 @@
                 {{ var checked = object.selected ? ' checked="checked"' : ''; }}
                 <div class="checkbox {{=object.class }}">
                     <input type="checkbox" name="health_filterBar_benefitsHospital" id="health_filterBar_benefits_{{= object.value }}" value="{{= object.value }}" {{=checked }} title="{{= object.label }}" /> <label for="health_filterBar_benefits_{{= object.value }}" <field_v1:analytics_attr analVal="filter hospital" quoteChar="\"" />>{{= object.label }}</label>
-                    <a href="javascript:void(0);" class="help-icon icon-info" data-content="helpid:{{= object.helpId }}" data-toggle="popover" tabindex="-1" <field_v1:analytics_attr analVal="filter qtip {{= object.value }}" quoteChar="\"" />><span class="text-hide">Need Help?</span></a>
                 </div>
                 {{ }) }}
                 <a href="javascript:void(0);" class="filter-toggle-all"><span class="text"<field_v1:analytics_attr analVal="filter hospital" quoteChar="\"" />>show less</span> <span class="icon icon-angle-up"></span></a>
@@ -53,8 +52,7 @@
                 {{ _.each(model.benefitsExtras.values, function(object) { }}
                 {{ var checked = object.selected ? ' checked="checked"' : ''; }}
                 <div class="checkbox {{=object.class }}">
-                    <input type="checkbox" name="health_filterBar_benefitsExtras" id="health_filterBar_benefits_{{= object.value }}" value="{{= object.value }}" {{=checked }} title="{{= object.label }}" /> <label for="health_filterBar_benefits_{{= object.value }}" <field_v1:analytics_attr analVal="filter extras" quoteChar="\"" />>{{= object.label }}</label>
-                    <a href="javascript:void(0);" class="help-icon icon-info" data-content="helpid:{{= object.helpId }}" data-toggle="popover" tabindex="-1" <field_v1:analytics_attr analVal="filter qtip {{= object.value }}" quoteChar="\"" />><span class="text-hide">Need Help?</span></a>
+                    <input type="checkbox" name="health_filterBar_benefitsExtras" id="health_filterBar_benefits_{{= object.id }}" value="{{= object.value }}" {{=checked }} title="{{= object.label }}" /> <label for="health_filterBar_benefits_{{= object.value }}" <field_v1:analytics_attr analVal="filter extras" quoteChar="\"" />>{{= object.label }}</label>
                 </div>
                 {{ }) }}
                 <a href="javascript:void(0);" class="filter-toggle-all"><span class="text" <field_v1:analytics_attr analVal="filter extras" quoteChar="\"" />>show less</span> <span class="icon icon-angle-up"></span></a>

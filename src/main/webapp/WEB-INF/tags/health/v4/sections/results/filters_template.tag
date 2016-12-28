@@ -59,7 +59,7 @@
         </div>
     </div>
 
-    {{ if (true<%--meerkat.modules.healthCoverDetails.isRebateApplied()--%>) { }}
+    {{ if (meerkat.modules.healthRebate.isRebateApplied()) { }}
     <div class="row filter need-hospital {{=hiddenHospital }}" data-filter-serverside="true">
         <div class="col-xs-12">
             <div class="sidebar-subtitle-container">

@@ -1,33 +1,33 @@
-;(function($, undefined){
+;(function ($, undefined) {
 
 	var meerkat = window.meerkat,
 		meerkatEvents = meerkat.modules.events,
 		log = meerkat.logging.info;
 
-	var _cover = '',
-		_state = '',
-		_performUpdate=false,
-		$elements = {};
+    var _cover = '',
+        _state = '',
+        _performUpdate = false,
+        $elements = {};
 
 	function init() {
 		_setupFields();
 	}
 
-	function initialise(cover) {
-		setCover(cover);
-	}
+    function initialise(cover) {
+        setCover(cover);
+    }
 
-	function _setupFields () {
-		$elements = {
-			healthSit: $('#health_benefits_healthSitu'),
-			healthSitGroup: $("input[name=health_situation_healthSitu]"),
-			healthSitCSF : $('#health_situation_healthSitu_CSF'),
-			healthCover: $('input[name=health_situation_healthCvr]'),
-			state: $('#health_situation_state'),
-			postcode: $('#health_situation_postcode'),
-			suburb: $('#health_situation_suburb')
-		};
-	}
+    function _setupFields() {
+        $elements = {
+            healthSit: $('#health_benefits_healthSitu'),
+            healthSitGroup: $("input[name=health_situation_healthSitu]"),
+            healthSitCSF: $('#health_situation_healthSitu_CSF'),
+            healthCover: $('input[name=health_situation_healthCvr]'),
+            state: $('#health_situation_state'),
+            postcode: $('#health_situation_postcode'),
+            suburb: $('#health_situation_suburb')
+        };
+    }
 
 	function hasSpouse() {
 		switch(_cover) {
@@ -39,21 +39,21 @@
 		}
 	}
 
-	function setCover(cover) {
-		_cover = cover || 'SM'; // default to a single
-	}
+    function setCover(cover) {
+        _cover = cover || 'SM'; // default to a single
+    }
 
-	function setState (state) {
-		_state = state;
-	}
+    function setState(state) {
+        _state = state;
+    }
 
-	function returnCoverCode() {
-		return _cover;
-	}
+    function returnCoverCode() {
+        return _cover;
+    }
 
-	function shouldPerformUpdate(performUpdate) {
-		_performUpdate = performUpdate;
-	}
+    function shouldPerformUpdate(performUpdate) {
+        _performUpdate = performUpdate;
+    }
 
     function getSituation() {
         return $('input[name=health_situation_healthCvr]:checked').val();
@@ -63,17 +63,17 @@
         return $('#health_situation_coverType').val();
     }
 
-	meerkat.modules.register("healthChoices", {
-		events: moduleEvents,
-		init: init,
-		initialise: initialise,
-		hasSpouse: hasSpouse,
-		returnCoverCode: returnCoverCode,
-		setCover: setCover,
-		setState: setState,
+    meerkat.modules.register("healthChoices", {
+        events: moduleEvents,
+        init: init,
+        initialise: initialise,
+        hasSpouse: hasSpouse,
+        returnCoverCode: returnCoverCode,
+        setCover: setCover,
+        setState: setState,
         getSituation: getSituation,
-		shouldPerformUpdate: shouldPerformUpdate,
+        shouldPerformUpdate: shouldPerformUpdate,
         getCoverType: getCoverType
-	});
+    });
 
 })(jQuery);

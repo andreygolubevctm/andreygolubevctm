@@ -159,11 +159,11 @@
             },
             "benefitsHospital": {
                 name: 'health_filterBar_benefitsHospital',
-                values: [] /*meerkat.modules.healthBenefitsStep.getHospitalBenefitsModel()*/,
+                values: meerkat.modules.benefitsModel.getHospitalBenefitsForFilters(),
                 defaultValueSourceSelector: '.Hospital_container',
                 defaultValue: {
                     getDefaultValue: function () {
-                        return [];/*meerkat.modules.healthBenefitsStep.getSelectedBenefits();*/
+                        return meerkat.modules.benefitsModel.getSelectedBenefits();
                     }
                 },
                 events: {
@@ -174,11 +174,11 @@
             },
             "benefitsExtras": {
                 name: 'health_filterBar_benefitsExtras',
-                values: []/*meerkat.modules.healthBenefitsStep.getExtraBenefitsModel()*/,
+                values: meerkat.modules.benefitsModel.getExtrasBenefitsForFilters(),
                 defaultValueSourceSelector: '.GeneralHealth_container',
                 defaultValue: {
                     getDefaultValue: function () {
-                        return [];/*meerkat.modules.healthBenefitsStep.getSelectedBenefits();*/
+                        return meerkat.modules.benefitsModel.getSelectedBenefits();
                     }
                 },
                 events: {

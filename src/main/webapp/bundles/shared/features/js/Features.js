@@ -123,9 +123,13 @@ Features = {
 					$targetContainer.find('[data-feature-index]').each(function() {
 						var $el = $(this),
 							dataIndex = $el.attr('data-feature-index'),
-							differentTemplateSelector = $el.attr('data-feature-template');
+							differentTemplateSelector = $el.attr('data-feature-template'),
+							featureType = $el.attr('data-feature-type');
 						if(!_.isUndefined(structure) && _.isObject(structure[dataIndex])) {
 							product.featuresStructureIndexToUse = dataIndex;
+							if(featureType) {
+                                product.featureType = featureType;
+                            }
 							product.featuresTemplate = differentTemplateSelector && $(differentTemplateSelector).length ? differentTemplateSelector : defaultTemplate;
 							$el.html( Features.populateTemplate(product.featuresTemplate, product) );
 						}

@@ -119,7 +119,7 @@
 														<span class="benefitSummary">${benefitsContentBlurbs.getSupplementaryValueByKey(selectedValue.getId())} <a href="javascript:;" class="help_icon floatLeft" data-content="helpid:${selectedValue.getHelpId()}" data-toggle="popover">more</a></span>
 													</span>
 												</c:set>
-												<field_v2:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${selectedValue.getShortlistKey()}" value="Y" required="false" label="true" title="${benefitLabel}" errorMsg="Please tick" customAttribute="data-attach=true data-benefit-id='${selectedValue.getId()}'"  additionalLabelAttributes="${analyticsLabelAttr}" additionalHelpAttributes="${analyticsHelpAttr}" />
+												<field_v2:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${selectedValue.getShortlistKey()}" value="Y" required="false" label="true" title="${benefitLabel}" errorMsg="Please tick" customAttribute=" data-attach=true data-benefit-id='${selectedValue.getId()}' "  additionalLabelAttributes="${analyticsLabelAttr}" additionalHelpAttributes="${analyticsHelpAttr}" />
 												</div>
 											</c:if>
 										</c:forEach>
