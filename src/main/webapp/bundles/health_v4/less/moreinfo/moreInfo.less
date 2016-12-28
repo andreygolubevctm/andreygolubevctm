@@ -1,0 +1,46 @@
+// Bridging page
+.moreInfoDropdown {
+
+  @media (@xs-only) {
+    background-color: @theme-light;
+  }
+  @media (@sm-only) {
+    h2 {
+      font-size: 20px;
+    }
+  }
+
+  .companyLogo {
+    margin: 10px 20px 0 2px;
+    max-height: none;
+    max-width: none;
+
+    .providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames);
+    @media (@xs-only) {
+      .providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames; 0.4);
+    }
+    @media (@sm-only) {
+      .providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames; 0.9);
+    }
+    @media (@md-only) {
+      .providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames; 0.8);
+    }
+
+    @media (@sm) {
+      margin-bottom: 30px;
+    }
+    float: none;
+  }
+
+  .productName {
+    h2 {
+      color: @theme-accent-4;
+    }
+  }
+
+  .productExtraInfo {
+    padding: 10px;
+    border-bottom: 1px solid red;
+  }
+
+}

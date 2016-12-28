@@ -301,6 +301,7 @@
             },
             onInitialise: function onResultsInit(event) {
                 meerkat.modules.healthResults.initPage();
+                meerkat.modules.healthMoreInfo.initMoreInfo();
             },
             onBeforeEnter: function enterResultsStep(event) {
                 meerkat.modules.healthDependants.resetConfig();
