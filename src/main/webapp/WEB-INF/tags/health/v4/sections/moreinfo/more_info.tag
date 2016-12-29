@@ -62,27 +62,22 @@
 	<c:set var="variantClassName">
 		<c:if test="${moreinfo_splittest_default eq false}">more-info-content-variant</c:if>
 	</c:set>
-	<a data-slide-control="prev" href="javascript:;" class="hidden-xs btn btn-tertiary btn-close-more-info" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />><span class="icon icon-arrow-left"></span> Back to all results</a>
-
-	<c:if test="${empty callCentre}">
-		<form_v3:save_results_button />
-	</c:if>
 	<div data-product-type="{{= info.ProductType }}" class="displayNone more-info-content col-xs-12 ${variantClassName}">
 
 		<div class="fieldset-card row price-card <c:if test="${healthAlternatePricingActive eq true}">hasDualPricing</c:if>">
 			<div class="col-xs-9 moreInfoTopLeftColumn">
 				<!-- Product Summary. Logo, price, LHC etc... -->
-				<div class="row priceRow productSummary hidden-xs affixOnScroll">
+				<div class="row priceRow productSummary hidden-xs">
 					<div class="col-xs-12">
 						<div class="row">
 							<div class="col-xs-8">
-								<div class="companyLogo {{= info.provider }}-mi"></div>
+								<div class="companyLogo {{= info.provider }}"></div>
 								<h3 class="noTopMargin productName hidden-xs">{{= info.productTitle }}</h3>
 							</div>
 							<div class="col-xs-4">
 								{{= renderedPriceTemplate }}
+								<a href="javascript:;">Get printable brochures in your email inbox</a>
 							</div>
-							<h3 class="noTopMargin productName visible-xs">{{= info.productTitle }}</h3>
 						</div>
 					</div>
 				</div>
@@ -283,4 +278,5 @@
 	{{ }); }}
 </script>
 
+<health_v4_moreinfo:more_info_affixed_header />
 <health_v4_moreinfo:more_info_extras_limits />

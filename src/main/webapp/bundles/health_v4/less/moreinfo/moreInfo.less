@@ -1,5 +1,71 @@
+.health[data-step="results"] .results-control-container {
+  .more-info-return-to-results,
+  .more-info-save-quote,
+  .more-info-affixed-header {
+    display: none;
+  }
+
+  .results-filters-frequency,
+  .filter-results-hidden-products,
+  .results-pagination,
+  .results-ref-sidebar {
+    display:block;
+  }
+}
+
+.moreInfoVisible[data-step="results"] .results-control-container {
+  .results-filters-frequency,
+  .filter-results-hidden-products,
+  .results-pagination,
+  .more-info-affixed-header {
+    display:none;
+  }
+
+  .more-info-return-to-results,
+  .more-info-save-quote {
+    display: block;
+  }
+
+  &.affix {
+    .more-info-affixed-header {
+      display:block;
+    }
+
+    .more-info-return-to-results,
+    .more-info-save-quote,
+    .results-ref-sidebar,
+    .more-info-affixed-header .lhcText {
+      display: none;
+    }
+  }
+}
+
+.more-info-affixed-header {
+  padding-bottom: 20px;
+
+  div[class*="col-xs-"] {
+    vertical-align: middle;
+  }
+
+  .vertical-align {
+    line-height: 60px;
+  }
+}
+
+
+.more-info-return-to-results,
+.more-info-save-quote {
+  line-height: 40px;
+}
+
+.more-info-save-quote {
+  border-left: 2px solid @gray;
+}
+
 // Bridging page
 .moreInfoDropdown {
+
+  padding-top: 20px;
 
   @media (@xs-only) {
     background-color: @theme-light;
@@ -10,26 +76,8 @@
     }
   }
 
-  .companyLogo {
-    margin: 10px 20px 0 2px;
-    max-height: none;
-    max-width: none;
-
-    .providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames);
-    @media (@xs-only) {
-      .providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames; 0.4);
-    }
-    @media (@sm-only) {
-      .providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames; 0.9);
-    }
-    @media (@md-only) {
-      .providersHighResSpriteImages(~"health"; ~""; @providerMoreInfoLogoNames; 0.8);
-    }
-
-    @media (@sm) {
-      margin-bottom: 30px;
-    }
-    float: none;
+  .productSummary .companyLogo {
+    margin: inherit;
   }
 
   .productName {
@@ -40,7 +88,7 @@
 
   .productExtraInfo {
     padding: 10px;
-    border-bottom: 1px solid red;
+    border-bottom: 1px solid @gray-lighter;
   }
 
 
