@@ -218,26 +218,22 @@
 						</div>
 
 						<!-- Inclusions / Exclusions -->
-						{{ var benefitTemplate = meerkat.modules.templateCache.getTemplate($("#extrasBenefitsIconRowTemplate")); }}
 						<div class="row tab-content">
 							<div class="col-xs-12 tab-pane extrasCoveredPane">
-								{{ benefitData.isSelected = true; }}
-								{{ benefitData.keys = [{"annualLimit": "Annual Limit"}, {"combinedLimit": "Combined Limit"}, {"lifetime": "Lifetime Limit"}, {"perPerson": "Per Person"}, {"perPolicy": "Per Policy"}, {"serviceLimit": "Service Limit"}]; }}
-								{{ benefitData.items = extrasCover.inclusions; }}
-								{{ benefitData.notCovered = false; }}
-								{{= benefitTemplate(benefitData) }}
+								{{ var benefitTemplate = meerkat.modules.templateCache.getTemplate($("#extrasLimitsTemplate")); }}
+								{{ var product = Results.getSelectedProduct(); }}
+								{{ product.showNotCoveredBenefits = false; }}
+								{{ product.ignoreLimits = false; }}
+								{{= benefitTemplate(product) }}
 							</div>
 							<div class="col-xs-12 tab-pane extrasNotCoveredPane">
-								{{ benefitData.items = extrasCover.exclusions; }}
-								{{ benefitData.notCovered = true; }}
-								{{= benefitTemplate(benefitData) }}
+								{{ product.showNotCoveredBenefits = true; }}
+								{{ product.ignoreLimits = true; }}
+								{{= benefitTemplate(product) }}
 							</div>
 						</div>
 
-						{{ var benefitTemplate = meerkat.modules.templateCache.getTemplate($("#extrasLimitsTemplate")); }}
-						{{ var product = Results.getSelectedProduct(); }}
-						{{ product.showNotCoveredBenefits = false; }}
-						{{= benefitTemplate(product) }}
+
 					</div>
 				</div>
 			</div>
@@ -281,39 +277,6 @@
 			<div class="col-xs-4">
 				{{= el[key[0]] === '-' ? 'None' : el[key[0]] }}
 			</div>
-			{{ }); }}
-		{{ } }}
-	</div>
-	{{ }); }}
-</script>
-<script id="extrasBenefitsIconRowTemplate" type="text/html">
-	{{ var selectedClass = obj.isSelected ? 'selected' : ''; }}
-	{{ _.each(obj.items, function(el, i) { }}
-	<div class="row {{= selectedClass}} {{=el.className}}">
-		<div class="col-xs-12">
-			<p>{{= el.name }}</p>
-		</div>
-		{{ if (obj.notCovered === false) { }}
-			{{ _.each(obj.keys, function(item, i) { }}
-				{{ var key = Object.keys(item); }}
-				{{ if (!_.isNull(el.benefitLimits[key[0]]) && !_.isUndefined(el.benefitLimits[key[0]])) { }}
-					{{ var benefitValue = el.benefitLimits[key[0]]; }}
-					{{ var isGroupLimit = benefitValue.indexOf("Group") >= 0; }}
-					<div class="col-xs-8">
-						{{ if (key[0] === 'combinedLimit' && isGroupLimit) { }}
-							Group Limit
-						{{ } else { }}
-							{{= item[key[0]] }}
-						{{ } }}
-					</div>
-					<div class="col-xs-4">
-						{{ if (key[0] === 'combinedLimit' && isGroupLimit) { }}
-							{{= benefitValue.replace('Group Limit: ' ,'') }}
-						{{ } else { }}
-							{{= benefitValue === '-' ? 'None' : benefitValue }}
-						{{ } }}
-					</div>
-				{{ } }}
 			{{ }); }}
 		{{ } }}
 	</div>
