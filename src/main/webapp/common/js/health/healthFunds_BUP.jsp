@@ -14,6 +14,9 @@ var healthFunds_BUP = {
 	$paymentFrequency : $('#health_payment_details_frequency'),
 	$paymentStartDate: $("#health_payment_details_start"),
 	$claimsAccountOptin: $('#health_payment_bank_claims'),
+	$claimsAccountOptin: $('#health_payment_bank_claims'),
+	$primaryMiddleName: $('#health_application_primary_middleName'),
+	$partnerMiddleName: $('#health_application_partner_middleName'),
 set: function () {
 	"use strict";
 
@@ -21,6 +24,8 @@ set: function () {
 		healthFunds._previousfund_authority(true);
 		$('#health_previousfund_primary_authority').setRequired(true, 'Bupa requires authorisation to contact your previous fund');
 		$('#health_previousfund_partner_authority').setRequired(true, 'Bupa requires authorisation to contact your partner\'s previous fund');
+		healthFunds_BUP.$primaryMiddleName.setRequired(false);
+		healthFunds_BUP.$partnerMiddleName.setRequired(false);
 
 		<%-- calendar for start cover --%>
 		meerkat.modules.healthPaymentStep.setCoverStartRange(0, 60);
@@ -141,6 +146,9 @@ set: function () {
 		healthFunds_BUP.$primarySurname.removeClass('col-lg-4 col-sm-3').addClass('col-sm-4');
 		healthFunds_BUP.$partnerFirstname.removeClass('col-lg-4 col-sm-3').addClass('col-sm-4');
 		healthFunds_BUP.$partnerSurname.removeClass('col-lg-4 col-sm-3').addClass('col-sm-4');
+
+		healthFunds_BUP.$primaryMiddleName.setRequired(true);
+		healthFunds_BUP.$partnerMiddleName.setRequired(true);
 	}
 };
 </c:set>
