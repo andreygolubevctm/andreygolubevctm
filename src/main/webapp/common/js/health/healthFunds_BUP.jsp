@@ -14,7 +14,6 @@ var healthFunds_BUP = {
 	$paymentFrequency : $('#health_payment_details_frequency'),
 	$paymentStartDate: $("#health_payment_details_start"),
 	$claimsAccountOptin: $('#health_payment_bank_claims'),
-	$claimsAccountOptin: $('#health_payment_bank_claims'),
 	$primaryMiddleName: $('#health_application_primary_middleName'),
 	$partnerMiddleName: $('#health_application_partner_middleName'),
 set: function () {
