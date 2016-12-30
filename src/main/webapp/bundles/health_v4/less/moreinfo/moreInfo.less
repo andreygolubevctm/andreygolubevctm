@@ -76,8 +76,18 @@
     }
   }
 
-  .productSummary .companyLogo {
-    margin: inherit;
+  .modal-header {
+    margin-top: 18px;
+  }
+
+  .productSummary {
+    .companyLogo {
+      margin: inherit;
+    }
+
+    &.mobile {
+      margin-bottom: 20px;
+    }
   }
 
   .productName {
@@ -104,14 +114,17 @@
   .leftAlignedLink {
     text-align: left;
     padding-left: 0;
-
-    &:hover {
-      color: @theme-tertiary;
-    }
   }
 
 
   .heading {
     color: @theme-accent-4;
+  }
+
+  .download-hospital-brochure,
+  .download-extras-brochure {
+    &:hover {
+      color: @theme-tertiary;
+    }
   }
 }

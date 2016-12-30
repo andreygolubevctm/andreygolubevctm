@@ -65,34 +65,9 @@
 	<div data-product-type="{{= info.ProductType }}" class="displayNone more-info-content col-xs-12 ${variantClassName}">
 
 		<div class="fieldset-card row price-card <c:if test="${healthAlternatePricingActive eq true}">hasDualPricing</c:if>">
-			<div class="col-xs-9 moreInfoTopLeftColumn">
-				<!-- Product Summary. Logo, price, LHC etc... -->
-				<div class="row priceRow productSummary hidden-xs">
-					<div class="col-xs-12">
-						<div class="row">
-							<div class="col-xs-8">
-								<div class="companyLogo {{= info.provider }}"></div>
-								<h3 class="noTopMargin productName hidden-xs">{{= info.productTitle }}</h3>
-							</div>
-							<div class="col-xs-4">
-								{{= renderedPriceTemplate }}
-								<a href="javascript:;">Get printable brochures in your email inbox</a>
-							</div>
-						</div>
-					</div>
-				</div>
-				<!-- Product extra info -->
-				<div class="row hidden-xs productExtraInfo">
-					{{ if (promo.promoText !== ''){ }}
-					<div class="col-sm-3 promoText">{{= promo.promoText }}</div>
-					{{ } }}
-					<div class="col-sm-3">Buy online to get a to text</div>
-					{{ if (promo.discountText !== ''){ }}
-					<div class="col-sm-3 discountText">{{= promo.discountText }}</div>
-					{{ } }}
-					<div class="col-sm-3">Restricted fund product text</div>
-				</div>
-
+			<div class="col-xs-12 col-sm-9 moreInfoTopLeftColumn">
+				<health_v4_moreinfo:more_info_product_summary />
+				<health_v4_moreinfo:more_info_product_extra_info />
 				<!-- Hospital and Extras -->
 				<div class="row">
 					<div class="col-sm-6 col-xs-12 HospitalBenefits">
@@ -279,4 +254,5 @@
 </script>
 
 <health_v4_moreinfo:more_info_affixed_header />
+<health_v4_moreinfo:more_info_affixed_header_mobile />
 <health_v4_moreinfo:more_info_extras_limits />

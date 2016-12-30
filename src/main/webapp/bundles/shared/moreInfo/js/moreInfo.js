@@ -274,6 +274,7 @@
         });
 
     }
+
     /**
      * If there's a modal to show.
      */
@@ -287,6 +288,10 @@
                 hashId: 'moreinfo',
                 closeOnHashChange: true
             };
+
+            if (!_.isEmpty(settings.modalOptions.htmlHeaderContent)) {
+                options.htmlHeaderContent = settings.modalOptions.htmlHeaderContent;
+            }
 
             if (typeof settings.onBeforeShowModal == 'function') {
                 options.onOpen = function (dialogId) {

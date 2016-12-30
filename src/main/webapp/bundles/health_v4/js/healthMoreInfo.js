@@ -37,6 +37,7 @@
                         $(eventObject.currentTarget).closest('.modal').modal('hide');
                     }
                 },
+                showCloseBtn: false,
                 onClose: function() {
                     onBeforeHideTemplate();
                     meerkat.modules.moreInfo.close();
@@ -171,10 +172,28 @@
         if (meerkat.modules.deviceMediaState.get() != 'xs' &&  currStep != 'apply' && currStep != 'payment') {
             meerkat.modules.moreInfo.showTemplate($bridgingContainer);
         } else {
+
+            // grab the affixed template
+            var updatedSettings = {
+                modalOptions: {
+                    htmlHeaderContent: _getAffixedMobileHeaderData()
+                }};
+            meerkat.modules.moreInfo.updateSettings(updatedSettings);
             meerkat.modules.moreInfo.showModal();
 
         }
         meerkat.modules.address.appendToHash('moreinfo');
+    }
+
+    function _getAffixedMobileHeaderData() {
+        var priceTemplate = meerkat.modules.templateCache.getTemplate($("#price-template")),
+            headerTemplate = meerkat.modules.templateCache.getTemplate($('#moreInfoAffixedHeaderMobileTemplate')),
+            obj = Results.getSelectedProduct();
+
+        obj.showAltPremium = false;
+        obj.renderedPriceTemplate = priceTemplate(obj);
+
+        return headerTemplate(obj);
     }
 
     function onBeforeShowTemplate(jsonResult, moreInfoContainer) {
