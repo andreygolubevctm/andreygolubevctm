@@ -16,6 +16,14 @@
     },
     rates = null,
     rebate = '',
+    rebateText = [
+        'Full rebate applies',
+        'Tier 1 applied',
+        'Tier 2 applied',
+        'Tier 3 applied',
+        'No rebate applied'
+    ],
+    _selectetedRebateLabelText = '',
     $elements = {};
 
     function init() {
@@ -24,17 +32,20 @@
 
         meerkat.modules.healthTiers.initHealthTiers();
         meerkat.modules.healthTiers.setTiers(true);
+        _updateRebateLabelText();
     }
 
     function _setupFields() {
         $elements = {
             situationSelect: $('input[name=health_situation_healthCvr]'),
             applyRebate: $('#health_healthCover_rebate'),
-            incomeSelectContainer: $('#income_container'),
-            lhcContainers: $('.health-cover,  .dateinput_container, #health_healthCover_primaryCover'),
+            rebateCheckbox: $('#health_healthCover_rebate_checkbox'),
+            incomeSelectContainer: $('.income_container'),
+            lhcContainers: $('.health-cover,  .dateinput_container, #health_healthCover_primaryCover, .income_container .select'),
             incomeSelect: $('#health_healthCover_income'),
             selectedRebateText: $('#selectedRebateText'),
             rebateLabel: $('#rebateLabel'),
+            rebateLabelText: $('#rebateLabel span'),
             editTier: $('.editTier'),
             rebateLegend: $('#health_healthCover_tier_row_legend'),
             healthCoverDetails: $('#startForm')
@@ -42,19 +53,20 @@
     }
 
     function _eventSubscriptions() {
-        $(':input[name="health_situation_healthCvr"], #health_healthCover_rebate').on('change', function updateRebateTiers() {
+        $(':input[name="health_situation_healthCvr"], #health_healthCover_rebate_checkbox').on('change', function updateRebateTiers() {
             meerkat.modules.healthChoices.setCover($elements.situationSelect.filter(':checked').val());
             meerkat.modules.healthTiers.setTiers();
         });
 
-        $elements.applyRebate.on('change', function toggleRebateDropdown() {
-            $elements.incomeSelectContainer.toggleClass('hidden', !$(this).is(':checked'));
+        $elements.rebateCheckbox.on('change', function toggleRebateDropdown() {
+            var isChecked = $(this).is(':checked');
+
+            $elements.incomeSelectContainer.toggleClass('hidden', !isChecked);
+            $elements.applyRebate.val(isChecked ? 'Y' : 'N');
         });
 
-        $elements.editTier.off().on('click', function showTierDropdown() {
-            $elements.selectedRebateText.hide();
-            $elements.rebateLabel.hide();
-            $elements.incomeSelect.parent('.select').removeClass('hidden');
+        $elements.editTier.off().on('click', function() {
+            toggleEdit(true);
         });
 
         // update the lhc message. used lhcElements for now as the questions have changed dramatically
@@ -70,7 +82,9 @@
             }
         });
 
-        _setRebate();
+        $elements.incomeSelect.on('change', function() {
+            updateSelectedRebateLabel();
+        });
     }
 
     function updateSelectedRebateLabel() {
@@ -104,6 +118,8 @@
             completeText += ', ' + dependantsText;
         }
 
+        _selectetedRebateLabelText = completeText;
+
         $elements.selectedRebateText.text(completeText);
 
         if ($elements.incomeSelect.prop('selectedIndex') === 0) {
@@ -111,11 +127,14 @@
         }
     }
 
+    function getSelectedRebateLabelText() {
+        return _selectetedRebateLabelText;
+    }
+
     function _setRebate() {
         meerkat.modules.healthRates.loadRatesBeforeResultsPage(true, function (rates) {
             if (!isNaN(rates.rebate) && parseFloat(rates.rebate) > 0) {
                 $elements.rebateLegend.html('You are eligible for a ' + rates.rebate + '% rebate.');
-
                 rebate = rates.rebate;
             } else {
                 $elements.rebateLegend.html('');
@@ -139,7 +158,27 @@
     }
 
     function isRebateApplied() {
-        return $('#health_healthCover_rebate').prop('checked');
+        return $elements.applyRebate.val() === 'Y';
+    }
+
+    function _updateRebateLabelText() {
+        $elements.rebateLabelText.text(getRebateLabelText());
+    }
+
+    function getRebateLabelText(tier) {
+        return rebateText[tier || ($elements.incomeSelect.val() || 0)];
+    }
+
+    function toggleEdit(isEdit) {
+        $elements.selectedRebateText.toggle(!isEdit);
+        $elements.rebateLabel.toggle(!isEdit);
+        $elements.incomeSelect.parent('.select').toggleClass('hidden', !isEdit);
+
+        if (!isEdit) {
+            _updateRebateLabelText();
+            updateSelectedRebateLabel();
+            _setRebate();
+        }
     }
 
     meerkat.modules.register("healthRebate", {
@@ -149,7 +188,10 @@
         updateSelectedRebateLabel: updateSelectedRebateLabel,
         getDependents: getDependents,
         getRebate: getRebate,
-        isRebateApplied: isRebateApplied
+        isRebateApplied: isRebateApplied,
+        toggleEdit: toggleEdit,
+        getRebateLabelText: getRebateLabelText,
+        getSelectedRebateLabelText: getSelectedRebateLabelText
     });
 
 

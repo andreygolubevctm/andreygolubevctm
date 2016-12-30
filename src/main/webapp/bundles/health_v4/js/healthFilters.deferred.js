@@ -109,6 +109,27 @@
             },
             "rebate": {
                 name: 'health_filterBar_rebate',
+                defaultValueSourceSelector: '#health_healthCover_rebate_checkbox',
+                defaultValue: '',
+                events: {
+                    init: function (filterObject) {
+                        var isChecked = $(filterObject.defaultValueSourceSelector).is(':checked');
+                        $('input[name=' + filterObject.name + ']').prop('checked', isChecked);
+                        toggleIncome(!isChecked);
+                        updateRebateLabels();
+                    },
+                    update: function (filterObject) {
+                        $(filterObject.defaultValueSourceSelector).prop('checked', $('input[name=' + filterObject.name + ']').is(':checked')).trigger('change');
+
+                        _.defer(function() {
+                            toggleRebateEdit(true);
+                            updateRebateLabels();
+                        });
+                    }
+                }
+            },
+            "income": {
+                name: 'health_filterBar_income',
                 defaultValueSourceSelector: '#health_healthCover_income',
                 defaultValue: '',
                 events: {
@@ -116,13 +137,20 @@
                         /**
                          * Copy the element and place it in the filters with a new id etc. (jQuery Clone doesn't copy the value...)
                          */
-                        var $rebateElement = $(filterObject.defaultValueSourceSelector).parent('.select').clone().find('select')
-                            .attr('id', model.rebate.name).attr('name', model.rebate.name).val($(filterObject.defaultValueSourceSelector).val());
+                        var $defaultValueSourceSelector =  $(filterObject.defaultValueSourceSelector),
+                            $incomeElement = $defaultValueSourceSelector.parent().clone();
 
-                        // remove the empty value option
-                        $rebateElement.find('option[value=""]').remove();
-                        $rebateElement.attr('data-analytics','filter rebate');
-                        $('.filter-rebate-holder').html($rebateElement);
+                        $incomeElement
+                            .addClass('hidden')
+                            .find('select').attr({
+                                'id': filterObject.name,
+                                'name': filterObject.name,
+                                'data-analytics': 'filter rebate'
+                            }).val($defaultValueSourceSelector.val())
+                            .stop()
+                            .find('option[value=""]').remove();
+
+                        $('.filter-income-holder').html($incomeElement);
                     },
                     update: function (filterObject) {
                         $(filterObject.defaultValueSourceSelector).val($('select[name=' + filterObject.name + ']').val()).trigger('change');
@@ -190,6 +218,11 @@
         },
         settings = {
             filters: [
+                {
+                    template: '#filter-rebate-template',
+                    container: '.results-filters-rebate',
+                    context: '#results-sidebar'
+                },
                 {
                     template: '#filter-benefits-template',
                     container: '.results-filters-benefits',
@@ -344,6 +377,27 @@
             toggleBenefitsLink($benefitsList);
         });
 
+        $(document).on('change', '#health_filterBar_rebate', function toggleRebateDropdown() {
+            toggleIncome(!$(this).is(':checked'));
+        });
+
+        $(document).on('click', '.filtersEditTier', function() {
+            toggleRebateEdit(false);
+        });
+    }
+
+    function toggleIncome(toggle) {
+        $('.results-filters-rebate .income_container').toggleClass('hidden', toggle);
+    }
+
+    function toggleRebateEdit(toggle) {
+        $('#filtersRebateLabel, #filtersSelectedRebateText').toggle(toggle);
+        $('.filter-income-holder .select').toggleClass('hidden', toggle);
+    }
+
+    function updateRebateLabels() {
+        $('#filtersRebateLabel span').text(meerkat.modules.healthRebate.getRebateLabelText());
+        $('#filtersSelectedRebateText').text(meerkat.modules.healthRebate.getSelectedRebateLabelText());
     }
 
     function toggleBenefitsLink($benefitsList) {
