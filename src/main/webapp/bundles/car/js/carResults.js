@@ -54,7 +54,7 @@
 			}
 
 			var price = {
-				annually: "price.annualPremiumFormatted",
+				annually: "price.annualPremium",
 				annual: "price.annualPremiumFormatted",
 				monthly: "price.annualisedMonthlyPremium"
 			};
