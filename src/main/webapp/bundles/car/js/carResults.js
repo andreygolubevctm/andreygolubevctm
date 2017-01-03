@@ -55,7 +55,7 @@
 
 			var price = {
 				annually: "price.annualPremium",
-				annual: "price.annualPremiumFormatted",
+				annual: "price.annualPremium",
 				monthly: "price.annualisedMonthlyPremium"
 			};
 			var rank_premium = "price.annualPremium";
