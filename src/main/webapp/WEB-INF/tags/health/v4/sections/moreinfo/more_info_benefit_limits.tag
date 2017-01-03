@@ -17,7 +17,7 @@
         {{ var ft = module.getItem(obj, featureIterator[i]); }}
         {{ var renderRow = ft.displayItem && ft.type == 'category' && ft.isNotCovered == obj.showNotCoveredBenefits; }}
 
-        {{ if (renderRow) { }} <div class="row {{= ft.className }}">{{ } }}
+        {{ if (renderRow) { }} <div class="row {{= ft.className }}"><div class="benefitContent">{{ } }}
         {{ if(ft.displayItem && ft.isNotCovered == obj.showNotCoveredBenefits ) { }}
             {{ if (ft.type == 'category') { }}
             <div class="col-xs-12 benefitTitle">
@@ -33,6 +33,6 @@
             {{ if(ft.type == 'category' && obj.featureType == 'extras') { }} <div class="cell featureGroupLimit text-center"><div class="content">group limits may apply<br /><a href="javascript:;" class="open-more-info">View Product <span class="icon icon-angle-right"></span></a></div></div> {{ } }}
 
         {{ } else {  delete obj.childFeatureDetails;  } }}
-        {{ if (renderRow) { }}</div>{{ } }}
+        {{ if (renderRow) { }}</div></div>{{ } }}
     {{ } }}
 </script>

@@ -155,19 +155,15 @@
   }
 
   .benefitsColumn .hospitalCoveredPane > div.row,
-  .benefitsColumn .hospitalNotCoveredPane > div.row {
+  .benefitsColumn .hospitalNotCoveredPane > div.row,
+  .benefitsColumn .extrasCoveredPane > div.row,
+  .benefitsColumn .extrasNotCoveredPane > div.row {
     color: @theme-secondary;
     &:before {
       font-family: 'ctm-health';
       font-size: 36px;
-      /*display: table;
-      float: none;
-      margin: 0;
-      margin-bottom: 10px;
-      padding: 0.15em;
-      padding-top: 0px;
-      border-radius: 50%;
-      border-color: transparent;*/
+      vertical-align: top;
+      display: inline-block;
       color: @theme-secondary;
     }
   }
@@ -175,6 +171,11 @@
   .limitTitle {
     color: @theme-accent-4;
     font-size: 12px;
+  }
+
+  .benefitContent {
+    width: 90%;
+    display: inline-block;
   }
 
   @media(@xs) {
