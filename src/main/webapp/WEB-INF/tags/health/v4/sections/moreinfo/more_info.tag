@@ -69,141 +69,148 @@
 				<health_v4_moreinfo:more_info_product_summary />
 				<health_v4_moreinfo:more_info_product_extra_info />
 				<!-- Hospital and Extras -->
-				<div class="row">
-					<div class="col-sm-6 col-xs-12 HospitalBenefits">
-						<!-- Hospital Benefits Heading + Brochure -->
-						<div class="row">
-							<div class="col-xs-12">
-								{{ if(typeof hospitalCover !== 'undefined') { }}
+				<div class="benefitsOverflow">
+					<div class="row">
+						<div class="benefitsColumn">
+							<div class="col-sm-6 col-xs-12 HospitalBenefits">
+								<div class="hospitalOverlay">
+									<div class="selectionStatus hospital">
+										Your hospital benefits selection
+										<span>0</span></div>
+								</div>
+
+								<!-- Hospital Benefits Heading + Brochure -->
+								<div class="row">
+									<div class="col-xs-12">
+										{{ if(typeof hospitalCover !== 'undefined') { }}
+										<div class="row row-eq-height">
+											<div class="col-sm-6">
+											{{ } }}
+										<h3>Hospital</h3>
+										{{ if(typeof hospitalCover !== 'undefined') { }}
+											</div>
+											<div class="{{ if(typeof extrasCover !== 'undefined'){ }}col-sm-6{{ } }} col-xs-12">
+												<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="download-hospital-brochure col-xs-12" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>Download Brochure</a>
+											</div>
+										</div>
+										{{ } }}
+									</div>
+								</div>
+
+								<!-- Hospital Benefits -->
+								<div class="row">
+									<div class="col-xs-12">
+										<h3>Excess</h3>
+										{{= hospital.inclusions.excess }}
+									</div>
+
+									<div class="col-xs-12">
+										<h3>Waiting Periods</h3>
+									</div>
+
+									{{ if(typeof hospitalCover !== 'undefined') { }}
+										<div class="col-xs-12" class="secondaryBrochureLink">
+											<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="download-hospital-brochure col-xs-12 leftAlignedLink" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>Please download and refer to the Policy Brochure for details</a>
+										</div>
+									{{ } }}
+								</div>
+
+								<div class="row hospitalTabContainer">
+									<div class="col-xs-12 moreInfoHospitalTab">
+										<ul class="nav nav-tabs">
+											<li>
+												<a href="javascript:;" data-target=".hospitalCoveredPane"><h3>Covered <span class="benefitCount">{{= hospitalCover.inclusions.length }}</span></h3></a>
+											</li>
+											<li>
+												<a href="javascript:;" data-target=".hospitalNotCoveredPane"><h3>Not Covered <span class="benefitCount pink">{{= hospitalCover.exclusions.length }}</span></h3></a>
+											</li>
+										</ul>
+									</div>
+								</div>
+
+								<!-- Inclusions / Exclusions -->
+								<div class="row tab-content">
+									<div class="col-xs-12 tab-pane hospitalCoveredPane">
+										{{ var benefitTemplate = meerkat.modules.templateCache.getTemplate($("#benefitLimitsTemplate")); }}
+										{{ var product = Results.getSelectedProduct(); }}
+										{{ product.structureIndex = 4; }}
+										{{ product.showNotCoveredBenefits = false; }}
+										{{ product.ignoreLimits = false; }}
+										{{= benefitTemplate(product) }}
+									</div>
+									<div class="col-xs-12 tab-pane hospitalNotCoveredPane">
+										{{ product.showNotCoveredBenefits = true; }}
+										{{ product.ignoreLimits = true; }}
+										{{= benefitTemplate(product) }}
+									</div>
+								</div>
+
+								<!-- Restricted Benefits -->
+								{{ if (hospitalCover.restrictions.length > 0) { }}
+								<div class="row restrictedContainer">
+									<div class="col-xs-12">
+										<h3 class="heading">Restricted Benefits <span class="benefitCount gray">{{= hospitalCover.restrictions.length }}</span></h3>
+										<p>These treatements are limited to the same amount you would receive in a public hoslita for those treatements.</p>
+										{{ if(typeof hospitalCover !== 'undefined') { }}
+											<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="download-hospital-brochure col-xs-12 leftAlignedLink" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>Please download and refer to the Policy Brochure</a>
+										{{ } }}
+										<p>Unsure? <span>Have a quick chat with our Experts</span></p>
+									</div>
+								</div>
+								{{ } }}
+							</div>
+						</div>
+						<div class="benefitsColumn">
+							<div class="col-sm-6 col-xs-12 ExtrasBenefits">
+								<div class="extrasOverlay">
+									<div class="selectionStatus extras">
+										Your extras benefits selection
+										<span>0</span></div>
+								</div>
+
+								<!-- Extras Benefits Heading + Brochure -->
 								<div class="row row-eq-height">
+									{{ if(typeof extrasCover !== 'undefined') { }}
 									<div class="col-sm-6">
 									{{ } }}
-								<h3>Hospital</h3>
-								{{ if(typeof hospitalCover !== 'undefined') { }}
+									<h3>Extras</h3>
+									{{ if(typeof extrasCover !== 'undefined') { }}
 									</div>
-									<div class="{{ if(typeof extrasCover !== 'undefined'){ }}col-sm-6{{ } }} col-xs-12">
-										<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn download-hospital-brochure col-xs-12" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>Download Brochure</a>
+									<div class="{{ if(typeof hospitalCover !== 'undefined'){ }}col-sm-6{{ } }} col-xs-12 ">
+										<a href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" class="download-extras-brochure col-xs-12">Download brochure</a>
+									</div>
+									{{ } }}
+								</div>
+
+								<div class="row">
+									<div class="col-xs-12 moreInfoExtrasTab">
+										<ul class="nav nav-tabs">
+											<li>
+												<a href="javascript:;" data-target=".extrasCoveredPane"><h3>Covered <span class="benefitCount">{{= extrasCover.inclusions.length }}</span></h3></a>
+											</li>
+											<li>
+												<a href="javascript:;" data-target=".extrasNotCoveredPane"><h3>Not Covered <span class="benefitCount pink">{{= extrasCover.exclusions.length }}</span></h3></a>
+											</li>
+										</ul>
 									</div>
 								</div>
-								{{ } }}
-							</div>
-						</div>
 
-						<!-- Hospital Benefits -->
-						<div class="row">
-							<div class="col-xs-12">
-								<h3>Excess</h3>
-								{{= hospital.inclusions.excess }}
-							</div>
-							{{ var benefitTemplate = meerkat.modules.templateCache.getTemplate($("#benefitRowTemplate")); }}
-							{{ var benefitData = [{"Co-Payment/ % Hospital Contribution": hospital.inclusions.copayment},  {"Excess Waivers": hospital.inclusions.waivers }]; }}
-
-							{{= benefitTemplate(benefitData) }}
-							<h3>Waiting Periods</h3>
-							{{  benefitData = [{"Pre-existing Conditions": hospital.inclusions.waitingPeriods.PreExisting},  {"All other conditions": hospital.inclusions.waitingPeriods.Other }]; }}
-							{{= benefitTemplate(benefitData) }}
-
-
-							{{ if(typeof hospitalCover !== 'undefined') { }}
-								<div class="col-xs-12" class="secondaryBrochureLink">
-									<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn download-hospital-brochure col-xs-12 leftAlignedLink" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>Please download and refer to the Policy Brochure for details</a>
+								<!-- Inclusions / Exclusions -->
+								<div class="row tab-content">
+									<div class="col-xs-12 tab-pane extrasCoveredPane">
+										{{ product.structureIndex = 5; }}
+										{{ product.showNotCoveredBenefits = false; }}
+										{{ product.ignoreLimits = false; }}
+										{{= benefitTemplate(product) }}
+									</div>
+									<div class="col-xs-12 tab-pane extrasNotCoveredPane">
+										{{ product.showNotCoveredBenefits = true; }}
+										{{ product.ignoreLimits = true; }}
+										{{= benefitTemplate(product) }}
+									</div>
 								</div>
-							{{ } }}
-						</div>
-
-						<div class="row">
-							<div class="col-xs-12 moreInfoHospitalTab">
-								<ul class="nav nav-tabs">
-									<li>
-										<a href="javascript" data-target=".hospitalCoveredPane"><h3>Covered <span class="benefitCount">{{= hospitalCover.inclusions.length }}</span></h3></a>
-									</li>
-									<li>
-										<a href="javascript" data-target=".hospitalNotCoveredPane"><h3>Not Covered <span class="benefitCount pink">{{= hospitalCover.exclusions.length }}</span></h3></a>
-									</li>
-								</ul>
 							</div>
 						</div>
-
-						{{ var benefitTemplate = meerkat.modules.templateCache.getTemplate($("#healthBenefitsIconRowTemplate")); }}
-						<!-- Inclusions / Exclusions -->
-						<div class="row tab-content">
-							<div class="col-xs-12 tab-pane hospitalCoveredPane">
-								{{ benefitData = {}; }}
-								{{ benefitData.isSelected = true; }}
-								{{ benefitData.items = hospitalCover.inclusions; }}
-								{{ benefitData.keys = [{"WaitingPeriod": "Waiting Period"}, {"benefitLimitationPeriod": "Benefit Limitation Period"}]; }}
-								{{ benefitData.notCovered = false; }}
-								{{= benefitTemplate(benefitData) }}
-							</div>
-							<div class="col-xs-12 tab-pane hospitalNotCoveredPane">
-								{{ benefitData.items = hospitalCover.exclusions; }}
-								{{ benefitData.notCovered = true; }}
-								{{= benefitTemplate(benefitData) }}
-							</div>
-						</div>
-
-						<!-- Restricted Benefits -->
-						{{ if (hospitalCover.restrictions.length > 0) { }}
-						<div class="row">
-							<div class="col-xs-12">
-								<h3 class="heading">Restricted Benefits <span class="benefitCount gray">{{= hospitalCover.restrictions.length }}</span></h3>
-								<p>These treatements are limited to the same amount you would receive in a public hoslita for those treatements.</p>
-								{{ if(typeof hospitalCover !== 'undefined') { }}
-									<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn download-hospital-brochure col-xs-12 leftAlignedLink" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>Please download and refer to the Policy Brochure</a>
-								{{ } }}
-								<p>Unsure? <span>Have a quick chat with our Experts</span></p>
-							</div>
-							{{ benefitData.isSelected = false; }}
-							{{ benefitData.items = hospitalCover.restrictions; }}
-							{{= benefitTemplate(benefitData) }}
-						</div>
-						{{ } }}
-					</div>
-					<div class="col-sm-6 col-xs-12 ExtrasBenefits">
-						<!-- Extras Benefits Heading + Brochure -->
-						<div class="row row-eq-height">
-							{{ if(typeof extrasCover !== 'undefined') { }}
-							<div class="col-sm-6">
-							{{ } }}
-							<h3>Extras</h3>
-							{{ if(typeof extrasCover !== 'undefined') { }}
-							</div>
-							<div class="{{ if(typeof hospitalCover !== 'undefined'){ }}col-sm-6{{ } }} col-xs-12 ">
-								<a href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" class="btn download-extras-brochure col-xs-12">Download brochure</a>
-							</div>
-							{{ } }}
-						</div>
-
-						<div class="row">
-							<div class="col-xs-12 moreInfoExtrasTab">
-								<ul class="nav nav-tabs">
-									<li>
-										<a href="javascript" data-target=".extrasCoveredPane"><h3>Covered <span class="benefitCount">{{= extrasCover.inclusions.length }}</span></h3></a>
-									</li>
-									<li>
-										<a href="javascript" data-target=".extrasNotCoveredPane"><h3>Not Covered <span class="benefitCount pink">{{= extrasCover.exclusions.length }}</span></h3></a>
-									</li>
-								</ul>
-							</div>
-						</div>
-
-						<!-- Inclusions / Exclusions -->
-						<div class="row tab-content">
-							<div class="col-xs-12 tab-pane extrasCoveredPane">
-								{{ var benefitTemplate = meerkat.modules.templateCache.getTemplate($("#extrasLimitsTemplate")); }}
-								{{ var product = Results.getSelectedProduct(); }}
-								{{ product.showNotCoveredBenefits = false; }}
-								{{ product.ignoreLimits = false; }}
-								{{= benefitTemplate(product) }}
-							</div>
-							<div class="col-xs-12 tab-pane extrasNotCoveredPane">
-								{{ product.showNotCoveredBenefits = true; }}
-								{{ product.ignoreLimits = true; }}
-								{{= benefitTemplate(product) }}
-							</div>
-						</div>
-
-
 					</div>
 				</div>
 			</div>
@@ -230,29 +237,7 @@
 	</div>
 	{{ }); }}
 </script>
-<script id="healthBenefitsIconRowTemplate" type="text/html">
-	{{ var selectedClass = obj.isSelected ? 'selected' : ''; }}
-	{{ _.each(obj.items, function(el, i) { }}
-	<div class="row {{= selectedClass}} {{=el.className}}">
-		<div class="col-xs-12">
-			<p>{{= el.name }}</p>
-		</div>
-
-		{{ if (obj.notCovered === false) { }}
-			{{ _.each(obj.keys, function(item, i) { }}
-				{{ var key = Object.keys(item); }}
-			<div class="col-xs-8">
-				{{= item[key[0]] }}
-			</div>
-			<div class="col-xs-4">
-				{{= el[key[0]] === '-' ? 'None' : el[key[0]] }}
-			</div>
-			{{ }); }}
-		{{ } }}
-	</div>
-	{{ }); }}
-</script>
 
 <health_v4_moreinfo:more_info_affixed_header />
 <health_v4_moreinfo:more_info_affixed_header_mobile />
-<health_v4_moreinfo:more_info_extras_limits />
+<health_v4_moreinfo:more_info_benefit_limits />

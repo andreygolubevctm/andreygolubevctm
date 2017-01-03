@@ -12,9 +12,9 @@
 				{{= renderedPriceTemplate }}
 			</div>
 			<div class="col-xs-12">
-				<h3 class="noTopMargin productNames vertical-align">{{= info.productTitle }}</h3>
+				<h5 class="noTopMargin productName vertical-align text-center">{{= info.productTitle }}</h5>
 			</div>
-			<div class="col-xs-12 text-center">
+			<div class="col-xs-12 text-center printableBrochuresLink">
 				<a href="javascript:;">Get printable brochures in your email inbox</a>
 			</div>
 			<div class="col-xs-12 text-center">

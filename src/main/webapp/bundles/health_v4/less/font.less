@@ -42,7 +42,7 @@
 
 .benefitClass(@class, @labelClass, @content) {
 	.@{class} label,
-	li.@{class} {
+	.@{class} {
 		& when not (@labelClass = '') {
 			.@{labelClass}:before {
 				content: @content;
@@ -111,9 +111,8 @@
     .benefitClass(HLTicon-appliances, @labelClass, "\e931");
 }
 
-.benefitsIcons,
-.healthBenefits,
-.flexi-extras-icons{
+.moreInfoDropdown .benefitsOverflow,
+.healthBenefits {
 	.styleBenefits('');
 }
 

@@ -78,6 +78,9 @@
 
   .modal-header {
     margin-top: 18px;
+    padding-top:20px;
+    padding-bottom:20px;
+    border-bottom: 2px solid @gray;
   }
 
   .productSummary {
@@ -90,9 +93,15 @@
     }
   }
 
+  h3,
   .productName {
-    h2 {
       color: @theme-accent-4;
+  }
+
+  .printableBrochuresLink {
+    @media(@xs) {
+      padding-top:10px;
+      padding-bottom: 30px;
     }
   }
 
@@ -125,6 +134,150 @@
   .download-extras-brochure {
     &:hover {
       color: @theme-tertiary;
+    }
+  }
+
+  .lhcText {
+    font-size: 10px;
+    line-height: 12px;
+    color: @gray;
+  }
+
+  .frequencyAmount {
+    color: @theme-tertiary;
+    cursor: pointer;
+    font-size: 48px;
+
+    .cents {
+      font-size: 15px;
+      vertical-align: super;
+    }
+  }
+
+  .benefitsColumn .hospitalCoveredPane > div.row,
+  .benefitsColumn .hospitalNotCoveredPane > div.row {
+    color: @theme-secondary;
+    &:before {
+      font-family: 'ctm-health';
+      font-size: 36px;
+      /*display: table;
+      float: none;
+      margin: 0;
+      margin-bottom: 10px;
+      padding: 0.15em;
+      padding-top: 0px;
+      border-radius: 50%;
+      border-color: transparent;*/
+      color: @theme-secondary;
+    }
+  }
+
+  .limitTitle {
+    color: @theme-accent-4;
+    font-size: 12px;
+  }
+
+  @media(@xs) {
+    .nav-tabs {
+      background: transparent;
+      li.active {
+        display: inline-block;
+      }
+    }
+
+    .hospitalTabContainer,
+    .restrictedContainer {
+      margin-top: 20px;
+    }
+
+    .shrinkHospital {
+      width: 43%;
+    }
+
+    .expandExtras {
+      padding-left: 4%;
+    }
+
+    h3 {
+      margin-top: 18px; /* initially overriden by dialog.less */
+    }
+  }
+}
+
+
+@media (@xs-only) {
+  .benefitsColumn {
+    width: 48%;
+    display: inline-block;
+    vertical-align: top;
+  }
+
+  .rotateEl(@degrees) {
+    -webkit-transform: rotate(@degrees);
+    -moz-transform: rotate(@degrees);
+    -o-transform: rotate(@degrees);
+    -ms-transform: rotate(@degrees);
+    transform: rotate(@degrees);
+  }
+
+  .benefitsOverflow {
+    width: 200%;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  .hospitalOverlay,
+  .extrasOverlay {
+    border-left: 12px solid @theme-tertiary;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 50;
+  }
+
+  .hospitalOverlay {
+    border-left: 0px;
+    border-right: 12px solid @theme-tertiary;
+  }
+
+  .selectionStatus {
+    cursor: pointer;
+    background: @theme-tertiary;
+    color: @white;
+    top: 50%;
+    position: absolute;
+    text-transform: uppercase;
+    height: 24px;
+    padding: 20px;
+
+    &.hospital {
+      right: -154px;
+      padding: 0px;
+      padding-left: 10px;
+      border-bottom-left-radius: 10px;
+      border-bottom-right-radius: 10px;
+      .rotateEl(-90deg);
+    }
+
+    &.extras {
+      left: -147px;
+      padding: 0px;
+      padding-left: 10px;
+      border-bottom-left-radius: 10px;
+      border-bottom-right-radius: 10px;
+      .rotateEl(90deg);
+    }
+
+    span {
+      margin-left: 2px;
+      border-radius: 50%;
+      background: @theme-secondary;
+      padding: 0px;
+      width: 18px;
+      display: inline-block;
+      text-align: center;
+      margin-top: 2px;
+      margin-right: 5px;
     }
   }
 }

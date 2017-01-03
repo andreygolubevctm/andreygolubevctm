@@ -16,57 +16,59 @@
             {quote:"With Compare the Market I was able to find the same level of cover but now save $60 a month off my premium", author:"Geoff, QLD"},
             {quote:"Health insurance is important to us as it gives us the peace of mind that if something went wrong we'd be covered", author:"Julie Barrett, NSW"},
             {quote:"The whole process was really simple and really easy. I’d definitely use comparethemarket.com.au again", author:"Wendy, WA"}
-        ];
+        ],
+        $elements = {};
 
 
     function initMoreInfo() {
-
-        var options = {
-            container: $bridgingContainer,
-            updateTopPositionVariable: updateTopPositionVariable,
-            hideAction: 'fadeOut',
-            showAction: 'fadeIn',
-            showActionWhenOpen: 'fadeIn',
-            modalOptions: {
-                className: 'modal-breakpoint-wide modal-tight moreInfoDropdown',
-                openOnHashChange: false,
-                leftBtn: {
-                    label: 'Back to results',
-                    icon: '<span class="icon icon-arrow-left"></span>',
-                    callback: function (eventObject) {
-                        $(eventObject.currentTarget).closest('.modal').modal('hide');
+        $(document).ready(function($) {
+            var options = {
+                container: $bridgingContainer,
+                updateTopPositionVariable: updateTopPositionVariable,
+                hideAction: 'fadeOut',
+                showAction: 'fadeIn',
+                showActionWhenOpen: 'fadeIn',
+                modalOptions: {
+                    className: 'modal-breakpoint-wide modal-tight moreInfoDropdown',
+                    openOnHashChange: false,
+                    leftBtn: {
+                        label: 'Back to results',
+                        icon: '<span class="icon icon-arrow-left"></span>',
+                        callback: function (eventObject) {
+                            $(eventObject.currentTarget).closest('.modal').modal('hide');
+                        }
+                    },
+                    showCloseBtn: false,
+                    onClose: function () {
+                        onBeforeHideTemplate();
+                        meerkat.modules.moreInfo.close();
                     }
                 },
-                showCloseBtn: false,
-                onClose: function() {
-                    onBeforeHideTemplate();
-                    meerkat.modules.moreInfo.close();
-                }
-            },
-            runDisplayMethod: runDisplayMethod,
-            onBeforeShowBridgingPage: onBeforeShowBridgingPage,
-            onBeforeShowTemplate: onBeforeShowTemplate,
-            onBeforeShowModal: onBeforeShowModal,
-            onAfterShowModal: onAfterShowModal,
-            onAfterShowTemplate: onAfterShowTemplate,
-            onBeforeHideTemplate: onBeforeHideTemplate,
-            onAfterHideTemplate: onAfterHideTemplate,
-            onClickApplyNow: onClickApplyNow,
-            onBeforeApply: onBeforeApply,
-            onApplySuccess: onApplySuccess,
-            prepareCover: prepareCover,
-            retrieveExternalCopy: retrieveExternalCopy,
-            additionalTrackingData: {
-                productName: null,
-                productBrandCode: null
-            },
-            onBreakpointChangeCallback: updateTopPositionVariable
-        };
+                runDisplayMethod: runDisplayMethod,
+                onBeforeShowBridgingPage: onBeforeShowBridgingPage,
+                onBeforeShowTemplate: onBeforeShowTemplate,
+                onBeforeShowModal: onBeforeShowModal,
+                onAfterShowModal: onAfterShowModal,
+                onAfterShowTemplate: onAfterShowTemplate,
+                onBeforeHideTemplate: onBeforeHideTemplate,
+                onAfterHideTemplate: onAfterHideTemplate,
+                onClickApplyNow: onClickApplyNow,
+                onBeforeApply: onBeforeApply,
+                onApplySuccess: onApplySuccess,
+                prepareCover: prepareCover,
+                retrieveExternalCopy: retrieveExternalCopy,
+                additionalTrackingData: {
+                    productName: null,
+                    productBrandCode: null
+                },
+                onBreakpointChangeCallback: updateTopPositionVariable
+            };
 
-        meerkat.modules.moreInfo.initMoreInfo(options);
+            meerkat.modules.moreInfo.initMoreInfo(options);
 
-        eventSubscriptions();
-        applyEventListeners();
+            eventSubscriptions();
+            applyEventListeners();
+        });
     }
 
     /**
@@ -95,8 +97,6 @@
                 htmlContent: product.whatHappensNext
             });
         });
-
-        _setTabs();
     }
 
     function _setTabs() {
@@ -106,8 +106,7 @@
 
             $(this).tab('show');
         });
-
-        $('.moreInfoHospitalTab .nav-tabs a:first, .moreInfoExtrasTab .nav-tabs a:first').click();
+        $('.moreInfoHospitalTab .nav-tabs a:first, .moreInfoExtrasTab .nav-tabs a:first').trigger('click');
     }
 
 
@@ -221,6 +220,8 @@
         $('.whatsNext li').each(function () {
             $(this).prepend('<span class="icon icon-angle-right"></span>');
         });
+
+        _setTabs();
     }
 
     function onBeforeShowModal(jsonResult, dialogId) {
@@ -251,8 +252,76 @@
         $('.whatsNext li').each(function () {
             $(this).prepend('<span class="icon icon-angle-right"></span>');
         });
+
+        $elements = {
+            benefitsOverlow: $('.benefitsOverflow'),
+            extrasOverlay: $('.extrasOverlay'),
+            hospitalOverlay: $('.hospitalOverlay'),
+            hospital: $('.Hospital_container'),
+            extras: $('.GeneralHealth_container'),
+            quickSelectContainer: $('.quickSelectContainer')
+        };
+
+        _setTabs();
+        _registerXSBenefitsSlider();
     }
 
+
+    function _registerXSBenefitsSlider() {
+        $elements.hospitalOverlay.hide();
+
+        if (meerkat.modules.deviceMediaState.get() == 'xs') {
+            _setupBenefitsXS();
+        }
+
+        // handle the rare event where someone has a device that can go from xs to something larger eg surface pro v1
+        meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, function extrasOverlayEnterXsState() {
+            _setupBenefitsXS();
+        });
+
+        meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function extrasOverlayLeaveXsState() {
+            $elements.extrasOverlay.hide();
+        });
+
+        // slide in/out the overlays
+        $elements.extrasOverlay.off().on('click', function displayExtrasBenefits() {
+            $elements.benefitsOverlow.animate({ 'left': ($('.HospitalBenefits').width() * -1) }, 500, function onExtrasAnimateComplete() {
+                $elements.extrasOverlay.closest('.benefitsColumn').addClass('expandExtras');
+                $elements.hospitalOverlay.closest('.benefitsColumn').addClass('shrinkHospital');
+                _setOverlayLabelCount($elements.hospitalOverlay, meerkat.modules.benefitsModel.getHospitalCount());
+                $elements.extrasOverlay.hide();
+                $elements.hospitalOverlay.show();
+            });
+        });
+
+        $elements.hospitalOverlay.off().on('click', function displayHospitalBenefits() {
+            $elements.benefitsOverlow.animate({ 'left': 0 }, 500, function onHospitalAnimateComplete() {
+                $elements.hospitalOverlay.closest('.benefitsColumn').removeClass('shrinkHospital');
+                $elements.extrasOverlay.closest('.benefitsColumn').removeClass('expandExtras');
+                _setOverlayLabelCount($elements.extrasOverlay, meerkat.modules.benefitsModel.getExtrasCount());
+                $elements.hospitalOverlay.hide();
+                $elements.extrasOverlay.show();
+            });
+        });
+
+        // toggle the quick select data in the hospital container
+        $elements.hospital.find('.nav-tabs a').on('click', function toggleQuickSelect(){
+            var target = $(this).data('target');
+
+            $elements.hospital.find($elements.quickSelectContainer).toggleClass('hidden', target === '.limited-pane');
+            _hospitalType = target === '.limited-pane' ? 'limited' : 'comprehensive';
+        });
+    }
+
+    function _setupBenefitsXS() {
+        $elements.extrasOverlay.show();
+        _setOverlayLabelCount($elements.hospitalOverlay, meerkat.modules.benefitsModel.getHospitalCount());
+        _setOverlayLabelCount($elements.extrasOverlay, meerkat.modules.benefitsModel.getExtrasCount());
+    }
+
+    function _setOverlayLabelCount($overlay, count) {
+        $overlay.find('span').text(count);
+    }
 
     /**
      * HLT has different format of product json, so need to send different properties.

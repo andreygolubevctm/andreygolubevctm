@@ -3,28 +3,29 @@
 
 <c:set var="vertical" value="${pageSettings.getVerticalCode()}"/>
 <%-- NOTE: We don't use new lines in a few places here to save on extra empty text nodes needing to be created when the template renders --%>
-<script id="extrasLimitsTemplate" type="text/html">
-    {{ obj.featuresTemplate = '#extrasLimitsTemplate'; }}
-    {{ if (_.isUndefined(Results.cachedProcessedTemplates[obj.featuresTemplate])) { }}
+<script id="benefitLimitsTemplate" type="text/html">
+    {{ obj.featuresTemplate = '#benefitLimitsTemplate'; }}
+
+    {{ if ( _.isUndefined(Results.cachedProcessedTemplates[obj.featuresTemplate])) { }}
         {{ Results.cachedProcessedTemplates[obj.featuresTemplate] = _.template($(obj.featuresTemplate).html()); }}
     {{ } }}
 
-    {{ var featureIterator = obj.childFeatureDetails || Features.getPageStructure(5); }}
+    {{ var featureIterator = obj.childFeatureDetails || Features.getPageStructure(obj.structureIndex); }}
     {{ var module = meerkat.modules.healthResultsTemplate; }}
 
     {{ for(var i = 0; i < featureIterator.length; i++) { }}
         {{ var ft = module.getItem(obj, featureIterator[i]); }}
-        {{ var renderRow = ft.displayItem && ft.type == 'category' && ft.isNotCovered == showNotCoveredBenefits; }}
+        {{ var renderRow = ft.displayItem && ft.type == 'category' && ft.isNotCovered == obj.showNotCoveredBenefits; }}
 
-        {{ if (renderRow) { }} <div class="row">{{ } }}
-        {{ if(ft.displayItem && ft.isNotCovered == showNotCoveredBenefits ) { }}
+        {{ if (renderRow) { }} <div class="row {{= ft.className }}">{{ } }}
+        {{ if(ft.displayItem && ft.isNotCovered == obj.showNotCoveredBenefits ) { }}
             {{ if (ft.type == 'category') { }}
-            <div class="col-xs-12">
+            <div class="col-xs-12 benefitTitle">
                 <p>{{= ft.safeName }}</p>
             </div>
             {{ } }}
-        {{ if(ft.type == 'feature') { }}<div class="col-xs-8">{{= ft.safeName }}</div><div class="col-xs-4">{{= ft.displayValue }}</div>{{ } }}
-        {{ } if(ft.displayChildren && (ft.isNotCovered == showNotCoveredBenefits || obj.ignoreLimits)) { }}
+        {{ if(ft.type == 'feature') { }}<div class="col-xs-8 limitTitle">{{= ft.safeName }}</div><div class="col-xs-4">{{= ft.displayValue }}</div>{{ } }}
+        {{ } if(ft.displayChildren && (ft.isNotCovered == obj.showNotCoveredBenefits || obj.ignoreLimits)) { }}
             {{ obj.childFeatureDetails = ft.children; }}
             {{ if(ft.type == 'category' && obj.featureType == 'extras') { }} <div class="limits-label">Limits</div> {{ } }}
             {{= Results.cachedProcessedTemplates[obj.featuresTemplate](obj) }}
