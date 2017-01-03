@@ -10,7 +10,18 @@
         $healthPartnerCover,
         $dialoguePrimaryCover,
         $dialoguePartnerCover,
-        $dialogue56;
+        $dialogue56,
+        $healthSituationMedicare,
+        $aboutYouFieldset,
+        $yourDetailsFieldset,
+        $followupCallCheckboxDialogue,
+        $followupCallCheckbox,
+        $outboundFollowupDialogue,
+        $inboundQuestionsetFollowupDialogue,
+        $inboundQuestionsetFollowupToggles,
+        $inboundApplicationFollowupDialogue,
+        $inboundApplicationFollowupToggles,
+        $followupDialogueContentContainers;
 
     function init() {
         $(document).ready(function () {
@@ -24,17 +35,44 @@
             $dialoguePrimaryCover = $('.simples-dialogue-primary-current-cover');
             $dialoguePartnerCover = $('.simples-dialogue-partner-current-cover');
             $dialogue56 = $('.simples-dialogue-56');
+            $healthSituationMedicare = $('.health_situation_medicare');
+            $aboutYouFieldset = $('#healthAboutYou > .content');
+            $yourDetailsFieldset = $('#health-contact-fieldset .content');
+            $followupCallCheckboxDialogue = $('.simples-dialogue-68');
+            $followupCallCheckbox = $('#health_simples_dialogue-checkbox-68');
+            $outboundFollowupDialogue = $('.simples-dialogue-69');
+            $inboundQuestionsetFollowupDialogue = $('.simples-dialogue-70');
+            $inboundQuestionsetFollowupToggles = $inboundQuestionsetFollowupDialogue.find('a');
+            $inboundApplicationFollowupDialogue = $('.simples-dialogue-71');
+            $inboundApplicationFollowupToggles = $inboundApplicationFollowupDialogue.find('a');
+            $followupDialogueContentContainers = $inboundQuestionsetFollowupDialogue
+                .add($inboundApplicationFollowupDialogue).find('div[class]');
 
             // Handle pre-filled
             toggleInboundOutbound();
             toggleBenefitsDialogue();
             initDBDrivenCheckboxes();
+            toggleFollowupCallDialog();
 
             applyEventListeners();
             eventSubscriptions();
 
             meerkat.modules.provider_testing.setApplicationDateCalendar();
         });
+    }
+
+    function _moveSituationMedicareField() {
+        // check if the field is still on the About you fieldset on  step 1
+        if ($aboutYouFieldset.find($healthSituationMedicare).length === 1) {
+            $healthSituationMedicare.appendTo($yourDetailsFieldset);
+        }
+    }
+
+    function _resetSituationMedicareField() {
+        // check if the field is still on the About you fieldset on  step 1
+        if ($aboutYouFieldset.find($healthSituationMedicare).length === 0) {
+            $healthSituationMedicare.appendTo($aboutYouFieldset);
+        }
     }
 
     // Check dynamic checkboxes on preload=true
@@ -60,7 +98,12 @@
         });
 
         // Handle toggle inbound/outbound
-        $healthContactType.on('change', toggleInboundOutbound);
+        $healthContactType.on('change', function(){
+            toggleInboundOutbound();
+            toggleFollowupCallDialog();
+        });
+        // Handle callback checkbox 68
+        $followupCallCheckbox.on('change', toggleFollowupCallDialog);
         // Handle toggle rebateDialogue
         $healthCoverRebate.add($healthSituationCvr).on('change', toggleRebateDialogue);
         // Handle toggle benefitsDialogue
@@ -118,12 +161,66 @@
             $body
                 .removeClass('outbound')
                 .addClass('inbound');
+
+            _resetSituationMedicareField();
         }
         // Outbound
         else {
             $body
                 .removeClass('inbound')
                 .addClass('outbound');
+
+            if ($('#health_simples_contactType_outbound').is(':checked')) {
+                _moveSituationMedicareField();
+            }
+        }
+    }
+
+    // Toggle visibility on follow call dialogs based on call type and whether is a followup call
+    function toggleFollowupCallDialog() {
+        var callType = false;
+        var isValidCallType = false;
+        var isFollowupCall = $followupCallCheckbox.is(':checked');
+        // Set the calltype variables
+        if($healthContactType.is(':checked')) {
+            callType = $healthContactType.filter(':checked').val();
+            isValidCallType = _.indexOf(['outbound','inbound'],callType) >= 0;
+        }
+        // Toggle visibility of followup call checkbox
+        $followupCallCheckboxDialogue.toggleClass('hidden',!isValidCallType);
+        if(isFollowupCall && isValidCallType) {
+            if(callType === 'outbound'){
+                // Hide inbound dialogs and show outbound
+                $inboundQuestionsetFollowupDialogue
+                    .add($inboundApplicationFollowupDialogue)
+                    .addClass('hidden');
+                $outboundFollowupDialogue.removeClass('hidden');
+            } else {
+                // Hide outbound dialogs and show inbound
+                $outboundFollowupDialogue
+                    .add($followupDialogueContentContainers)
+                    .addClass('hidden');
+                $inboundQuestionsetFollowupDialogue
+                    .add($inboundApplicationFollowupDialogue)
+                    .removeClass('hidden');
+                // Add listeners to the content toggles
+                $inboundQuestionsetFollowupToggles
+                    .add($inboundApplicationFollowupToggles)
+                    .each(function(){
+                        $(this).off('click.inboundFollowupClick').on('click.inboundFollowupClick',function(){
+                            var label = $(this).attr('data-copy-container');
+                            $followupDialogueContentContainers
+                                .not('.' + label).addClass('hidden').end()
+                                .filter('.' + label).removeClass('hidden');
+                        });
+                    });
+            }
+        } else {
+            // Hide all inbound/outbound followup dialogs if not applicable
+            $outboundFollowupDialogue
+                .add($inboundQuestionsetFollowupDialogue)
+                .add($inboundApplicationFollowupDialogue)
+                .addClass('hidden');
         }
     }
 

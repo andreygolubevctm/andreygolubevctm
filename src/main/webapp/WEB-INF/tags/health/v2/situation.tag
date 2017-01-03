@@ -1,12 +1,15 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Medicare details group"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
+<jsp:useBean id="financialYearUtils" class="com.ctm.web.health.utils.FinancialYearUtils" />
 
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath" 		required="true"	 rtexprvalue="true"	 description="field group's xpath" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
+<%-- Calculate the year for continuous cover - changes on 1st July each year --%>
+<c:set var="continuousCoverYear" value="${financialYearUtils.getContinuousCoverYear()}" />
 
 <%-- HTML --%>
 <div id="${name}-selection" class="health-situation">
@@ -19,6 +22,9 @@
 
 		<jsp:body>
 
+			<simples:dialogue id="68" vertical="health" />
+			<simples:dialogue id="69" vertical="health" />
+			<simples:dialogue id="70" vertical="health" />
 			<simples:dialogue id="19" vertical="health" />
 			<simples:dialogue id="20" vertical="health" />
 			<simples:dialogue id="0" vertical="health" className="red">
@@ -43,6 +49,16 @@
 				<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="about you" quoteChar="\"" /></c:set>
 				<form_v3:row label="You are a" fieldXpath="${fieldXpath}" className="health-cover">
 					<field_v2:general_select xpath="${fieldXpath}" type="healthCvr" className="health-situation-healthCvr" required="true" title="situation you are in" additionalAttributes="${analyticsAttr}" />
+<%-- TODO Temporarily descoped
+					<field_v2:array_radio xpath="${fieldXpath}"
+					  required="true"
+					  className="health-situation-healthCvr"
+					  items="SM=Single male,SF=Single Female,C=Couple,F=Family,SPF=Single Parent Family"
+					  style="group-tile"
+					  id="${go:nameFromXpath(fieldXPath)}"
+					  title="situation you are in"
+					  additionalLabelAttributes="${analyticsAttr}" />
+--%>
 				</form_v3:row>
 
 				<%-- If the user is coming via a broucherware site where by a state is passed in instead of a postcode, then only show state selection --%>
@@ -70,8 +86,6 @@
 				</form_v3:row>
 
 			</form_v3:fieldset>
-
-			<simples:dialogue id="22" vertical="health" />
 
 			<%-- Health benefits has simples messages --%>
 			<simples:dialogue id="23" vertical="health" className="green" >
@@ -110,7 +124,7 @@
 				</c:set>
 				<c:set var="fieldXpath" value="${xpath}/healthSitu" />
 				<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="looking for" quoteChar="\"" /></c:set>
-				<form_v3:row label="You're looking to" fieldXpath="${fieldXpath}">
+				<form_v3:row label="Which situation describes you best?" fieldXpath="${fieldXpath}">
 					<field_v2:array_radio xpath="${fieldXpath}"
 										  required="true"
 										  className="health-situation-healthSitu"
@@ -118,7 +132,8 @@
 										  style="group-tile"
 										  id="${go:nameFromXpath(fieldXPath)}"
 										  title="reason you are looking to quote"
-										  additionalLabelAttributes="${analyticsAttr}" />
+										  additionalLabelAttributes="${analyticsAttr}"
+										  wrapCopyInSpan="${true}" />
 				</form_v3:row>
 
 				<c:set var="fieldXpath" value="${xpath}/addExtrasCover" />
@@ -219,10 +234,7 @@
 			<c:if test="${showOptInOnSlide3 eq false}">
 				<c:set var="termsAndConditions">
 					<%-- PLEASE NOTE THAT THE MENTION OF COMPARE THE MARKET IN THE TEXT BELOW IS ON PURPOSE --%>
-					I understand <content:optin key="brandDisplayName" useSpan="true"/> compares health insurance policies from a range of
-					<a href='<content:get key="participatingSuppliersLink"/>' target='_blank'>participating suppliers</a>.
-					By providing my contact details I agree that <content:optin useSpan="true" content="comparethemarket.com.au"/> may contact me, during the Call Centre <a href="javascript:;" data-toggle="dialog" data-content="#view_all_hours" data-dialog-hash-id="view_all_hours" data-title="Call Centre Hours" data-cache="true">opening hours</a>, about the services they provide.
-					I confirm that I have read the <form_v1:link_privacy_statement />.
+					I understand and accept the <a href="${pageSettings.getSetting('websiteTermsUrl')}" target="_blank" data-title="Website Terms of Use" class="termsLink showDoc">Website Terms of Use</a> and <form_v1:link_privacy_statement />. I agree that <content:optin useSpan="true" content="comparethemarket.com.au"/> may call me during the <a href="javascript:;" data-toggle="dialog" data-content="#view_all_hours" data-dialog-hash-id="view_all_hours" data-title="Call Centre Hours" data-cache="true">Call Centre opening hours</a>, and email or SMS me, about the services it provides.
 				</c:set>
 
 				<%-- Optional question for users - mandatory if Contact Number is selected (Required = true as it won't be shown if no number is added) --%>

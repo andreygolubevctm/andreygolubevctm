@@ -206,7 +206,6 @@
 		width: 38%;
 		margin-top: @frequencyAmountSize - @titleSize - 3px;
 		margin-bottom: 3px;
-		text-align: left;
 		color: @car-results-minor-text;
 	}
 
@@ -271,6 +270,14 @@
 			}
 		}
 	}
+
+	#xsFilterBar_excess {
+		&.default-600 {
+			option:not([value="600"]) {
+				display: none;
+			}
+		}
+	}
 }
 
 @media(max-width: 480px) {
@@ -288,50 +295,9 @@
 // Feature mode styling
 //
 .featuresMode {
-
-	.compare-toggle-wrapper {
-		margin-bottom: 0;
+	.excess {
+		text-align: right;
 	}
-	.controlContainer {
-		position: relative;
-		height: 100%;
-		.expand-collapse-toggle {
-			text-transform: uppercase;
-			position: absolute;
-			right: 10px;
-			bottom: 10px;
-		}
-	}
-	.productSummary {
-		p {
-			clear: both;
-		}
-
-		.btn-more-info {
-			clear: both;
-			width: 85%;
-			margin: 12px auto 5px;
-			@media(@sm) {
-				position: absolute;
-				bottom: 3px;
-				left: 8%;
-				width: 84%;
-			}
-		}
-
-		.frequency {
-			padding-top: 15px;
-
-			// Make room for the logo
-			margin-left: 80px;
-
-			&.annual {
-				// This makes room for monthly price content
-				margin-bottom: 13px;
-			}
-		}
-	}
-
 	.icon-tick {
 		color: @theme-secondary;
 	}
@@ -339,55 +305,15 @@
 		color: @cross-color;
 	}
 
-	.frequencyAmount,
-	.excessAmount,
-	.frequencyTitle,
-	.excessTitle {
-		float: none;
-		width: auto;
-		margin-top: 0;
-		text-align: right;
-	}
-
-	.result,
-	.productSummary {
-		height: 182px;
-	}
-
 	@media(@xs-only) {
-		.result,
-		.productSummary {
-			height: 150px;
-		}
-
-		.productSummary {
-			padding: (@results-feature-cell-padding * 2) @results-feature-cell-padding;
-
-			h2 {
-				margin-left: 90px;
-				line-height: 0.9;
-			}
-
-			// Using .content to pick up normal feature row styling
-			// Needs -margin to combat the padding on .productSummary
-			.content {
-				margin: 0 -@results-feature-cell-padding;
-			}
-
+		.excessTitle {
+			text-align: right;
 		}
 
 		// Normal heading
 		.labelInColumn {
 			.content {
 				background: @feature-odd-bg-color;
-			}
-		}
-
-		// Not a real feature, but shares the styling.
-		.fakeFeatures {
-			.labelInColumn .content {
-				color: #fff;
-				background: @theme-secondary;
 			}
 		}
 
@@ -405,29 +331,6 @@
 				color: #fff;
 				background: @btn-pagination-bg-color; //Match xs-results-pagination
 			}
-		}
-	}
-
-	@media(@sm-only) {
-		.productSummary {
-			.frequency {
-				padding-top: 10px;
-
-				// Make room for the logo
-				margin-left: 65px;
-
-				&.annual {
-					// This makes room for monthly price content
-					margin-bottom: 28px;
-				}
-			}
-
-		}
-	}
-
-	@media(@md) {
-		.monthlyBreakdown .totalPayment {
-			display: block;
 		}
 	}
 }

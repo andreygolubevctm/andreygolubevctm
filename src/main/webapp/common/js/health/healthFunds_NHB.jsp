@@ -168,7 +168,7 @@
                 var originalTitle = $("#health_application_primary_title").val();
                 <c:set var="html">
                   <c:set var="fieldXpath" value="health/application/primary/title" />
-                    <form_v2:row fieldXpath="${fieldXpath}" label="Title" id="health_application_primary_titleRow"  hideHelpIconCol="true" smRowOverride="4" isNestedField="${true}">
+                    <form_v2:row fieldXpath="${fieldXpath}" label="Title" id="health_application_primary_titleRow" className="selectContainerTitle" hideHelpIconCol="true" smRowOverride="4" isNestedField="${true}">
                       <field_v2:general_select xpath="${fieldXpath}" title="Title" type="healthNavQuestion_title" required="true"  className="person-title" additionalAttributes=" data-rule-genderTitle='true' " disableErrorContainer="${true}" />
                     </form_v2:row>
                   </c:set>
@@ -185,7 +185,7 @@
                 var originalTitle = $("#health_application_partner_title").val();
                 <c:set var="html">
                     <c:set var="fieldXpath" value="health/application/partner/title" />
-                    <form_v2:row fieldXpath="${fieldXpath}" label="Title" id="health_application_partner_titleRow" hideHelpIconCol="true" smRowOverride="4" isNestedField="${true}">
+                    <form_v2:row fieldXpath="${fieldXpath}" label="Title" id="health_application_partner_titleRow" className="selectContainerTitle" hideHelpIconCol="true" smRowOverride="4" isNestedField="${true}">
                         <field_v2:general_select xpath="${fieldXpath}" title="Title" type="healthNavQuestion_title" required="true"  className="person-title" additionalAttributes=" data-rule-genderTitle='true' "  disableErrorContainer="${true}"/>
                     </form_v2:row>
                 </c:set>
@@ -218,9 +218,9 @@
             if (!$('body').hasClass('injectingFund')) {
 
               <%-- Dependants --%>
-              healthFunds._dependants('This policy provides cover for your children up to their 21st birthday and dependants aged between 21 and 25 who are studying full time. Adult dependants outside these criteria can still be covered by applying for a separate policy.');
+              healthFunds._dependants('This policy provides cover for your children up to their 22nd birthday and dependants aged between 22 and 25 who are studying full time. Adult dependants outside these criteria can still be covered by applying for a separate policy.');
 
-              meerkat.modules.healthDependants.updateConfig({showFullTimeField :true, showSchoolFields:true, 'schoolMinAge':21, 'schoolMaxAge':25, showSchoolIdField:false,showRelationship:true,showPreferredMethodOfContact:true });
+              meerkat.modules.healthDependants.updateConfig({showFullTimeField :true, showSchoolFields:true, 'schoolMinAge':22, 'schoolMaxAge':25, showSchoolIdField:false,showRelationship:true,showPreferredMethodOfContact:true });
 
               <%-- Partner authority --%>
               healthFunds._partner_authority(false);
@@ -333,7 +333,7 @@
               <%-- lets undo the title massive values from nav --%>
               <c:set var="html">
                 <c:set var="fieldXpath" value="health/application/primary/title" />
-                <form_v2:row fieldXpath="${fieldXpath}" label="Title" id="health_application_primary_titleRow"  hideHelpIconCol="true" smRowOverride="4" isNestedField="${true}">
+                <form_v2:row fieldXpath="${fieldXpath}" label="Title" id="health_application_primary_titleRow" className="selectContainerTitle"  hideHelpIconCol="true" smRowOverride="4" isNestedField="${true}">
                   <field_v2:import_select xpath="${fieldXpath}" title="${title} title"  required="true" url="/WEB-INF/option_data/titles_quick.html" className="person-title" additionalAttributes=" data-rule-genderTitle='true' " disableErrorContainer="${true}"/>
                 </form_v2:row>
               </c:set>

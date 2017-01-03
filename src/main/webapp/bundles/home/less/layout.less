@@ -3,30 +3,6 @@
 	.no-bottom-margin {
 		margin-bottom: 0;
 	}
-	// Filter bar on 2 lines otherwise.
-	@media(@sm-only) {
-		#navbar-filter li.dropdown>a {
-			margin-right: 0;
-			margin-left: 0;
-		}
-		#navbar-filter .filter-label {
-			width: 50px;
-		}
-		.navbar-text {
-			margin-top: 5px;
-			margin-bottom: 3px;
-		}
-		.nav>li.dropdown>a {
-			padding: 11px 8px;
-		}
-		#navbar-filter li {
-			line-height: 13px;
-			font-size: 11px;
-		}
-		.nav li.excess-update {
-			padding-left: 20px;
-		}
-	}
 
 	@media(@sm) {
 		// Fix spacing between the security feature checkbox rows on sm+
@@ -38,4 +14,53 @@
 		height: 0px;
 		padding: 0px;
 	}
+
+	.securityFeatures {
+		display: none;
+	}
+
+  #navbar-filter {
+    .navbar-right {
+      position: relative;
+      &::before {
+        content: '';
+        border-left: 1px solid;
+        height: 26px;
+        margin-top: -13px;
+        position: absolute;
+        top: 50%;
+        left: 0;
+      }
+    }
+
+    li {
+      text-align: center;
+      text-transform: capitalize;
+
+      &.filter-excess {
+        width: 120px;
+      }
+
+      &.filter-frequency {
+        width: 120px;
+      }
+
+      > a {
+        margin-right: 0;
+        &:not(.btn) {
+          border: none;
+          padding: 10px;
+        }
+
+        &.updateFilters {
+          border-color: #fff;
+          font-size: 10px;
+          margin-top: 6px;
+          margin-left: 10px;
+          padding: 4px 16px;
+          text-transform: uppercase;
+        }
+      }
+    }
+  }
 }

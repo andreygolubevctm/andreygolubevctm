@@ -47,7 +47,11 @@
 	function initResults(){
 
 		try {
-			var displayMode = 'price';
+			var displayMode = 'features';
+			if(typeof meerkat.site != 'undefined' && typeof meerkat.site.resultOptions != 'undefined') {
+				// confirming its either features or price.
+				displayMode = meerkat.site.resultOptions.displayMode == 'features' ? 'features' : 'price';
+			}
 
 			var price = {
 				annually: "price.annualPremium",
@@ -130,13 +134,14 @@
 				},
 				elements: {
 					features:{
+						container: "#results_v5.featuresMode",
 						values: ".content",
 						extras: ".children"
 					}
 				},
 				templates:{
 					pagination:{
-						pageText: 'Product {{=currentPage}} of {{=totalPages}}'
+						pageText: '{{ if(currentPage <= availableCounts) { }} Product {{=currentPage}} of {{=(availableCounts)}} {{ } }}'
 					}
 				},
 				dictionary: {
@@ -218,15 +223,17 @@
 		// When the navar docks/undocks
 		meerkat.messaging.subscribe(meerkatEvents.affix.AFFIXED, function navbarFixed() {
 			$('#resultsPage').css('margin-top', '35px');
+			$(Results.settings.elements.resultsContainer).addClass('affixed-settings');
 		});
 
 		meerkat.messaging.subscribe(meerkatEvents.affix.UNAFFIXED, function navbarUnfixed() {
 			$('#resultsPage').css('margin-top', '0');
+			$(Results.settings.elements.resultsContainer).removeClass('affixed-settings');
 		});
 
 		// When the excess filter changes, fetch new results
 		meerkat.messaging.subscribe(meerkatEvents.carFilters.CHANGED, function onFilterChange(obj){
-			if (obj && obj.hasOwnProperty('excess')) {
+			if (obj && obj.hasOwnProperty('excess') || obj.hasOwnProperty('coverType')) {
 				// This is a little dirty however we need to temporarily override the
 				// setting which prevents the tranId from being incremented.
 				Results.settings.incrementTransactionId = true;
@@ -305,20 +312,13 @@
 				$(document.body).removeClass('priceMode').addClass('priceMode');
 			}
 
-			// If no providers opted to show results, display the no results modal.
-			var availableCounts = 0;
-			$.each(Results.model.returnedProducts, function(){
-				if (this.available === 'Y' && this.productId !== 'CURR') {
-					availableCounts++;
-				}
-			});
 			// Check products length in case the reason for no results is an error e.g. 500
-			if (availableCounts === 0 && _.isArray(Results.model.returnedProducts) && Results.model.returnedProducts.length > 0) {
+			if (Results.model.availableCounts === 0 && _.isArray(Results.model.returnedProducts) && Results.model.returnedProducts.length > 0) {
 				showNoResults();
+				toggleNoResultsFeaturesMode();
 			}
 
 			meerkat.messaging.publish(meerkatEvents.commencementDate.RESULTS_RENDER_COMPLETED);
-
 		});
 
 		$(document).on("populateFeaturesStart", function onPopulateFeaturesStart() {
@@ -369,23 +369,31 @@
 			});
 		});
 
-		$(document.body).on('click', '#results_v3 .btnContainer .btn-call-actions', function triggerMoreInfoCallActions(event) {
+		$(document.body).on('click', '#results_v5 .btnContainer .btn-call-actions', function triggerMoreInfoCallActions(event) {
 			var element = $(this);
 			meerkat.messaging.publish(meerkatEvents.carResults.FEATURES_CALL_ACTION, {event: event, element: element});
 		});
 
-		$(document.body).on('click', '#results_v3 .call-modal .btn-call-actions', function triggerMoreInfoCallActionsFromModal(event) {
+		$(document.body).on('click', '#results_v5 .call-modal .btn-call-actions', function triggerMoreInfoCallActionsFromModal(event) {
 			var element = $(this);
 			meerkat.messaging.publish(meerkatEvents.carResults.FEATURES_CALL_ACTION_MODAL, {event: event, element: element});
 		});
 
-		$(document.body).on('click', '#results_v3 .btn-submit-callback', function triggerMoreInfoSubmitCallback(event) {
+		$(document.body).on('click', '#results_v5 .btn-submit-callback', function triggerMoreInfoSubmitCallback(event) {
 			var element = $(this);
 			meerkat.messaging.publish(meerkatEvents.carResults.FEATURES_SUBMIT_CALLBACK, {event: event, element: element});
 		});
 
 		//meerkat.messaging.subscribe(meerkatEvents.RESULTS_DATA_READY, publishExtraSuperTagEvents);
 		//meerkat.messaging.subscribe(meerkatEvents.RESULTS_SORTED, publishExtraSuperTagEvents);
+
+		meerkat.messaging.subscribe(meerkatEvents.resultsMobileDisplayModeToggle.DISPLAY_MODE_CHANGED, function(obj) {
+			if (obj.displayMode === 'price') {
+				switchToPriceMode(true);
+			} else {
+				switchToFeaturesMode(true);
+			}
+		});
 	}
 
 	function breakpointTracking(){
@@ -400,6 +408,18 @@
 
 		meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function resultsXsBreakpointLeave(){
 			stopColumnWidthTracking();
+			Results.pagination.setCurrentPageNumber(1);
+			Results.pagination.resync();
+		});
+
+		meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_SM, function resultsSmBreakpointEnter(){
+			if (meerkat.modules.journeyEngine.getCurrentStep().navigationId === 'results') {
+				Results.pagination.setCurrentPageNumber(1);
+				Results.pagination.resync();
+			}
+		});
+
+		meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_SM, function resultsSmBreakpointLeave(){
 			Results.pagination.setCurrentPageNumber(1);
 			Results.pagination.resync();
 		});
@@ -452,6 +472,12 @@
 		products = products || Results.model.returnedProducts;
 
 		_.each(products, function massageJson(result, index) {
+
+			// Add formatted annual premium (ie without decimals)
+			if (!_.isEmpty(result.price) && !_.isUndefined(result.price.annualPremium)) {
+				result.price.annualPremiumFormatted = meerkat.modules.currencyField.formatCurrency(Math.ceil(result.price.annualPremium), {roundToDecimalPlace: 0, symbol: '', digitGroupSymbol:''});
+			}
+
 			if (result.excess !== null && !_.isUndefined(result.excess)) {
 				result.excessFormatted = meerkat.modules.currencyField.formatCurrency(result.excess, {roundToDecimalPlace: 0});
 			}
@@ -461,6 +487,10 @@
 	function showNoResults() {
 		if (meerkat.modules.hasOwnProperty('carFilters')) {
 			meerkat.modules.carFilters.disable();
+		}
+
+		if (meerkat.modules.hasOwnProperty('mobileNavButtons')) {
+			meerkat.modules.mobileNavButtons.disable();
 		}
 	}
 
@@ -567,6 +597,9 @@
 				if (meerkat.modules.deviceMediaState.get() === 'xs') {
 					Results.view.setColumnWidth($(window), Results.settings.render.features.numberOfXSColumns, false);
 				}
+				if (meerkat.modules.deviceMediaState.get() === 'sm') {
+					stopColumnWidthTracking();
+				}
 				Results.pagination.setupNativeScroll();
 			});
 
@@ -580,6 +613,22 @@
 			if(doTracking) {
 				meerkat.modules.resultsTracking.setResultsEventMode('Refresh');
 				publishExtraSuperTagEvents();
+			}
+
+			toggleNoResultsFeaturesMode();
+		}
+	}
+
+	function toggleNoResultsFeaturesMode() {
+		if (Results.model.availableCounts === 0) {
+			$(Results.settings.elements.features.container + " " + Results.settings.elements.features.allElements).hide();
+			$(Results.settings.elements.features.container).removeClass('featuresMode').find('.results-table').removeAttr('style');
+
+		} else {
+			// revert everything
+			$(Results.settings.elements.features.container + " " + Results.settings.elements.features.allElements).show();
+			if (!$(Results.settings.elements.features.container).hasClass('featuresMode')) {
+				$(Results.settings.elements.features.container).addClass('featuresMode');
 			}
 		}
 	}
@@ -610,14 +659,17 @@
 
 		// Elements to lock when entering compare mode
 		meerkat.messaging.subscribe(meerkatEvents.compare.AFTER_ENTER_COMPARE_MODE, function() {
-			$('.filter-excess, .filter-excess a').addClass('disabled');
-			$('.filter-featuresmode, .filter-pricemode').addClass('hidden');
+			$('.filter-cancel-label a').trigger('click');
+			$('.filter-cover-type, .filter-cover-type a, .filter-excess, .filter-excess a').addClass('disabled');
+			$('.filter-featuresmode, .filter-pricemode, .filter-view-label').addClass('hidden');
+			$('.filter-frequency-label').css('margin-right', $('.back-to-price-mode').width());
 		});
 
 		// Elements to lock when exiting compare mode
 		meerkat.messaging.subscribe(meerkatEvents.compare.EXIT_COMPARE, function() {
 			$('.filter-excess, .filter-excess a').removeClass('disabled');
-			$('.filter-featuresmode, .filter-pricemode').removeClass('hidden');
+			$('.filter-featuresmode, .filter-pricemode, .filter-view-label').removeClass('hidden');
+			$('.filter-frequency-label').removeAttr('style');
 		});
 
 

@@ -7,6 +7,7 @@ import com.ctm.web.core.leadfeed.dao.BestPriceLeadsDao;
 import com.ctm.web.core.leadfeed.exceptions.LeadFeedException;
 import com.ctm.web.core.leadfeed.model.LeadFeedData;
 import com.ctm.web.core.leadfeed.utils.LeadFeed;
+import com.ctm.web.core.leadfeed.utils.LeadFeedUtil;
 import com.ctm.web.core.model.Touch;
 import com.ctm.web.core.model.Touch.TouchType;
 import com.ctm.web.core.services.AccessTouchService;
@@ -65,8 +66,7 @@ public abstract class LeadFeedService {
 
 	public LeadResponseStatus callDirect(LeadFeedData leadData) throws LeadFeedException {
 		if(!leadFeed.isTestOnlyLead(leadData)) {
-			// Only AI has a call direct lead feed
-			if ("AI".equals(leadData.getPartnerBrand())) {
+			if (LeadFeedUtil.isServiceEnabled(LeadType.CALL_DIRECT, leadData)) {
 				return processGateway(LeadType.CALL_DIRECT, leadData, TouchType.CALL_DIRECT);
 			} else {
 				leadFeedTouchService.recordTouch(Touch.TouchType.CALL_DIRECT, leadData);
@@ -98,7 +98,13 @@ public abstract class LeadFeedService {
 	}
 
 	public LeadResponseStatus bestPrice(LeadFeedData leadData) throws LeadFeedException {
-		return processGateway(LeadType.BEST_PRICE, leadData, Touch.TouchType.LEAD_BEST_PRICE);
+		final TouchType touchType;
+		if (leadData.isPartnerReferenceChange()) {
+			touchType = TouchType.LEAD_BEST_PRICE_DD;
+		} else {
+			touchType = TouchType.LEAD_BEST_PRICE;
+		}
+		return processGateway(LeadType.BEST_PRICE, leadData, touchType);
 	}
 
 	/**
@@ -194,6 +200,9 @@ public abstract class LeadFeedService {
 		if(providerLeadFeedService != null) {
 			responseStatus = providerLeadFeedService.process(leadType, leadData);
 			if (responseStatus == LeadResponseStatus.SUCCESS) {
+				LOGGER.info("[Lead feed] Successfully sent {} of {} for {} {}",
+						kv("leadType", leadType), kv("touchType", touchType),
+						kv("productId", leadData.getProductId()), kv("transactionId", leadData.getTransactionId()));
 				leadFeedTouchService.recordTouch(touchType, leadData);
 			}
 			LOGGER.debug("[Lead feed] Provider lead process response {}", kv("responseStatus", responseStatus));

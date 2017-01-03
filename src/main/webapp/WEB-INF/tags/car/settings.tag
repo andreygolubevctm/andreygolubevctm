@@ -13,9 +13,9 @@
 <c:if test="${not empty quote_vehicle_make || not empty quote_vehicle_model || not empty quote_vehicle_year || not empty quote_vehicle_searchRego || not empty quote_vehicle_searchState}">
 	<c:set var="fromBrochure" scope="request" value="${true}"/>
 </c:if>
-<c:set var="priceDisplayMode" value="price"/>
-<c:if test="${param.display eq 'features'}">
-	<c:set var="priceDisplayMode" value="features"/>
+<c:set var="priceDisplayMode"><content:get key="resultsDisplayMode" /></c:set>
+<c:if test="${not empty param.display and (param.display eq 'price' or param.display eq 'features')}">
+	<c:set var="priceDisplayMode" value="${param.display}"/>
 </c:if>
 
 <%-- Retrieve values passed from website --%>
@@ -70,9 +70,9 @@
 		colours:			'${data.quote.vehicle.colour}',
 		marketValue:		'${data.quote.vehicle.marketValue}',
 		variant:			'${data.quote.vehicle.variant}',
-		securityOption:		'${data.quote.vehicle.securityOption}',<c:if test="${regoLookupSplitTest eq true}">
+		securityOption:		'${data.quote.vehicle.securityOption}',
         searchRego:         '${quote_vehicle_searchRego}',
-		searchState:		'${quote_vehicle_searchState}',</c:if>
+		searchState:		'${quote_vehicle_searchState}',
 		data:				${json}
 	},
 	userOptionPreselections: {
@@ -83,5 +83,7 @@
 	resultOptions: {
 		displayMode: "<c:out value="${priceDisplayMode}" />"
 	},
-	commencementDate : '${data.quote.options.commencementDate}'
+	commencementDate : '${data.quote.options.commencementDate}',
+	skipNewCoverTypeCarJourney: ${skipNewCoverTypeCarJourney},
+	ctpMessage: "<content:get key="ctpMessageCopy"/>"
 }

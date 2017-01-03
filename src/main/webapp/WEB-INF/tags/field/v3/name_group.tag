@@ -4,6 +4,8 @@
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath" required="true" rtexprvalue="true" description="Set xpath base"%>
 <%@ attribute name="showInitial" required="false" rtexprvalue="true" description="Toggle to display initial field"%>
+<%@ attribute name="firstNameMaxlength" required="false" rtexprvalue="true" description="The maximum length for Person's First Name input field" %>
+<%@ attribute name="lastNameMaxlength" required="false" rtexprvalue="true" description="The maximum length for Person's Last Name input field" %>
 
 <c:set var="titleOverride">3</c:set>
 
@@ -20,16 +22,16 @@
 
 	<c:set var="fieldXpath" value="${xpath}/firstname" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="First Name" hideHelpIconCol="true" smRowOverride="4" isNestedField="${true}">
-		<field_v1:person_name xpath="${fieldXpath}" required="true" title="${title} first name" className="contactField" placeholder="First name" disableErrorContainer="${true}" />
+		<field_v1:person_name xpath="${fieldXpath}" required="true" title="${title} first name" className="contactField" placeholder="First name" disableErrorContainer="${true}" maxlength="${firstNameMaxlength}" />
 	</form_v2:row>
 	<c:if test="${showInitial eq true}">
 		<c:set var="fieldXpath" value="${xpath}/middleName" />
-		<form_v2:row fieldXpath="${fieldXpath}" label="Middle Name" hideHelpIconCol="true" smRowOverride="2" isNestedField="${true}">
+		<form_v2:row fieldXpath="${fieldXpath}" label="Middle Name" hideHelpIconCol="true" smRowOverride="2" isNestedField="${true}" className="nameGroupMiddleNameRow">
 			<field_v1:person_name xpath="${fieldXpath}" required="true" title="${title} middle name" className="contactField" placeholder="M" disableErrorContainer="${true}" />
 		</form_v2:row>
 	</c:if>
 	<c:set var="fieldXpath" value="${xpath}/surname" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="Last Name" hideHelpIconCol="true" smRowOverride="4" isNestedField="${true}">
-		<field_v1:person_name xpath="${fieldXpath}" required="true" title="${title} last name" className="contactField" placeholder="Last name" disableErrorContainer="${true}" />
+		<field_v1:person_name xpath="${fieldXpath}" required="true" title="${title} last name" className="contactField" placeholder="Last name" disableErrorContainer="${true}" maxlength="${lastNameMaxlength}" />
 	</form_v2:row>
 </form_v2:row>

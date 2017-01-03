@@ -14,12 +14,17 @@
 
     var templateAccessories;
 
+    // Elements
+    var $typeOfCover;
+
     function initCar() {
         $(document).ready(function () {
 
             // Only init if car
             if (meerkat.site.vertical !== "car")
                 return false;
+
+            $typeOfCover = $('#quote_typeOfCover');
 
             // Init common stuff
             initJourneyEngine();
@@ -82,8 +87,7 @@
 
             // Defered to allow time for the slide modules to init e.g. vehicle selection
             $(document).ready(function () {
-
-                _.defer(function () {
+                var callback = function delayedJourneyEngineInit() {
                     meerkat.modules.journeyEngine.configure({
                         startStepId: startStepId,
                         steps: _.toArray(steps)
@@ -111,7 +115,16 @@
                             }
                         });
                     }
-                });
+                };
+
+                /* create delay when quote is not new so that journey
+                   can finish setting up before directing to results.
+                   And yes!, a defer will not cut the mustard */
+                if(meerkat.site.isNewQuote === false) {
+                    _.delay(callback, 500);
+                } else {
+                    callback();
+                }
             });
         }
     }
@@ -143,7 +156,7 @@
             onInitialise: function onStartInit(event) {
                 meerkat.modules.jqueryValidate.initJourneyValidator();
                 // Hook up privacy optin to Email Quote button
-                var $emailQuoteBtn = $(".slide-feature-emailquote");
+                var $emailQuoteBtn = $(".slide-feature-emailquote, .save-quote");
 
                 // Initial value from preload/load quote
                 if ($("#quote_privacyoptin").is(':checked')) {
@@ -157,9 +170,9 @@
                         $emailQuoteBtn.removeClass("privacyOptinChecked");
                     }
                 });
-                if(meerkat.modules.splitTest.isActive(4)) {
-                    meerkat.modules.carRegoLookup.lookup();
-                }
+                meerkat.modules.carRegoLookup.lookup();
+
+                configureContactDetails();
             },
             validation: {
                 validate: true,
@@ -189,6 +202,7 @@
                 includeFormData: true
             },
             onInitialise: function () {
+                meerkat.modules.carTypeOfCover.initCarTypeOfCover();
                 meerkat.modules.carCommencementDate.initCarCommencementDate();
                 meerkat.modules.carYoungDrivers.initCarYoungDrivers();
                 meerkat.modules.carUsingYourCar.initUsingYourCar();
@@ -245,6 +259,7 @@
                 meerkat.modules.carMoreInfo.initMoreInfo();
                 meerkat.modules.carFilters.initCarFilters();
                 meerkat.modules.carEditDetails.initEditDetails();
+                meerkat.modules.resultsMobileDisplayModeToggle.initToggle();
             },
             onBeforeEnter: function enterResultsStep(event) {
                 meerkat.modules.journeyProgressBar.hide();
@@ -309,15 +324,16 @@
                 navigationId: steps.resultsStep.navigationId
             }
         ];
-        // Split Test for Rego Lookup Combines the first two steps in the progress bar.
-        if(meerkat.modules.splitTest.isActive(4)
-        || meerkat.modules.splitTest.isActive(41)) {
-            // Make car details match your car.
-            progressBarConfig[0].matchAdditionalSteps = [steps.optionsStep.navigationId];
-            //Remove the car details step.
-            progressBarConfig.splice(1,1);
-        }
+        // Combines the first two steps in the progress bar.
+        // Make car details match your car.
+        progressBarConfig[0].matchAdditionalSteps = [steps.optionsStep.navigationId];
+        //Remove the car details step.
+        progressBarConfig.splice(1,1);
         meerkat.modules.journeyProgressBar.configure(progressBarConfig);
+    }
+
+    function getVerticalFilter() {
+        return $typeOfCover.val() || null;
     }
 
     // Build an object to be sent by SuperTag tracking.
@@ -362,6 +378,7 @@
             var vehMake = $('#quote_vehicle_make option:selected').text();
             var $vehicleUsage = $('#quote_vehicle_use');
             var $vehicleFieldSet = $('#quote_vehicleFieldSet');
+            var coverType = $('#quote_typeOfCover').val();
 
             var vehUsage = $vehicleUsage.text();
 
@@ -432,7 +449,8 @@
                 emailID: null,
                 marketOptIn: null,
                 okToCall: null,
-                commencementDate: null
+                commencementDate: null,
+                verticalFilter: null
             };
 
             // Push in values from 1st slide only when have been beyond it
@@ -444,11 +462,18 @@
             }
 
             // Push in values from 2nd slide only when have been beyond it
+            if (furtherest_step > meerkat.modules.journeyEngine.getStepIndex('options')) {
+                _.extend(response, {
+                    vehicleUsage: vehUsage,
+                    verticalFilter: coverType
+                });
+            }
+
+            // Push in values from 2nd slide only when have been beyond it
             if (furtherest_step > meerkat.modules.journeyEngine.getStepIndex('details')) {
                 _.extend(response, {
                     yearOfBirth: yob,
-                    gender: gender,
-                    vehicleUsage: vehUsage
+                    gender: gender
                 });
             }
 
@@ -471,11 +496,24 @@
         }
     }
 
+    function configureContactDetails(){
+        var contactDetailsFields = {
+            email: [
+                {
+                    $field: $("#quote_contact_email"),
+                    $optInField: $("#quote_contact_marketing")
+                }
+            ]
+        };
+        meerkat.modules.contactDetails.configure(contactDetailsFields);
+    }
+
     meerkat.modules.register("car", {
         init: initCar,
         events: moduleEvents,
         initProgressBar: initProgressBar,
-        getTrackingFieldsObject: getTrackingFieldsObject
+        getTrackingFieldsObject: getTrackingFieldsObject,
+        getVerticalFilter: getVerticalFilter
     });
 
 })(jQuery);

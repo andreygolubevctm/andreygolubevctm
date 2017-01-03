@@ -1,5 +1,6 @@
 package com.ctm.web.core.leadfeed.model;
 
+import com.ctm.web.core.leadfeed.services.LeadFeedService;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
@@ -34,11 +35,15 @@ public abstract class AGISLeadFeedRequest {
 	private String brand = "";				// optional
 	private String vdn = "";				// optional
 
-	public AGISLeadFeedRequest() {}
-
-	public AGISLeadFeedRequest(LeadFeedData leadData) {
+	public AGISLeadFeedRequest(LeadFeedData leadData, LeadFeedService.LeadType leadType) {
 		importLeadData(leadData);
-		setCallbackDate(new LocalDate());
+		final LocalDate callbackDate;
+		if (leadType == LeadFeedService.LeadType.CALL_DIRECT) {
+			callbackDate = new LocalDate().plusDays(1);
+		} else {
+			callbackDate = new LocalDate();
+		}
+		setCallbackDate(callbackDate);
 		setCallbackTime(new LocalTime());
 	}
 
@@ -47,13 +52,18 @@ public abstract class AGISLeadFeedRequest {
 	 * @param leadData
 	 */
 	public void importLeadData(LeadFeedData leadData){
+		if (leadData.isPartnerReferenceChange()) {
+			setClientNumber(leadData.getNewPartnerReference());
+			setBrand(leadData.getNewPartnerBrand());
+		} else {
+			setClientNumber(leadData.getPartnerReference());
+			setBrand(leadData.getPartnerBrand());
+		}
 		setPartnerReference(leadData.getTransactionId().toString());
 		setIPAddress(leadData.getClientIpAddress());
 		setClientName(leadData.getClientName());
 		setPhoneNumber(leadData.getPhoneNumber());
-		setClientNumber(leadData.getPartnerReference());
 		setState(leadData.getState());
-		setBrand(leadData.getPartnerBrand());
 		setVDN(leadData.getVdn());
 	}
 

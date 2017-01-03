@@ -11,3 +11,13 @@
 	</c:set>
 	<go:setData dataVar="data" xpath="life/primary/insurance/partner" value="${output}" />
 </c:if>
+
+<c:if test="${not empty param.gender}">
+	<c:set var="output">
+		<c:choose>
+			<c:when test="${fn:toUpperCase(param.gender) eq 'M'}">M</c:when>
+			<c:when test="${fn:toUpperCase(param.gender) eq 'F'}">F</c:when>
+		</c:choose>
+	</c:set>
+	<go:setData dataVar="data" xpath="life/primary/gender" value="${output}" />
+</c:if>

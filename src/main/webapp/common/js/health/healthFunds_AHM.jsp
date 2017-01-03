@@ -189,11 +189,11 @@ var healthFunds_AHM = {
   },
   populateFuturePaymentDays: function() {
     if(meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() == 'cc'){
-      meerkat.modules.healthPaymentDate.populateFuturePaymentDays($('#health_payment_details_start').val(), 3, false, false);
-      healthFunds_AHM.$paymentTypeContainer.text('*AHM will apply a 1.5% surcharge for all credit card transactions').slideDown();
+      meerkat.modules.healthPaymentDate.populateFuturePaymentDays($('#health_payment_details_start').val(), 0, false, false);
+      healthFunds_AHM.$paymentTypeContainer.text('*AHM will apply a 0.25% surcharge for all credit card transactions').slideDown();
     }
     else {
-      meerkat.modules.healthPaymentDate.populateFuturePaymentDays($('#health_payment_details_start').val(), 3, false, true);
+      meerkat.modules.healthPaymentDate.populateFuturePaymentDays($('#health_payment_details_start').val(), 0, false, true);
       healthFunds_AHM.$paymentTypeContainer.slideUp();
     }
   },

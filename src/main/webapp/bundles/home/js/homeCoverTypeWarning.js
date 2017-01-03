@@ -19,26 +19,26 @@
 			initialised = true;
 			$coverType = $('#home_coverType');
 			$chosenCoverTypeOption = $('#home_occupancy_coverTypeWarning_chosenOption');
+
 			$ownsProperty.on("change.ownHome", function checkOwnership() {
 				_.defer(validateSelections);
 			});
-			if(meerkat.modules.splitTest.isActive(11)) {
-				$coverType.on("change.cover", function checkOwnership() {
-					_.defer(validateSelections);
-				});
 
+			$coverType.on("change.cover", function checkOwnership() {
 				_.defer(validateSelections);
+			});
+
+			// Validate only if both fields have values
+			if ($coverType.val() && $("input[name=home_occupancy_ownProperty]:checked").val()) {
+				_.defer(_.bind(validateSelections, this, true));
 			}
 		}
 	}
 
-	function validateSelections() {
+	function validateSelections(proceedToOccupancy) {
 		var isValid = true;
-		var navigation = "occupancy";
-		var isSplitTest = meerkat.modules.splitTest.isActive(11);
-		if(isSplitTest) {
-			navigation = 'start';
-		}
+		var navigation = 'start';
+
 		if (meerkat.modules.journeyEngine.getCurrentStep().navigationId === navigation && $("input[name=home_occupancy_ownProperty]:checked").val() === 'N'
 			&& ($coverType.val() === 'Home & Contents Cover' || $coverType.val() === 'Home Cover Only')) {
 
@@ -95,7 +95,8 @@
 			isValid = false;
 		}
 
-		if(isValid && isSplitTest) {
+		// Go to occupancy only if its valid and first time into journey
+		if(isValid && proceedToOccupancy) {
 			_.defer(_.bind(meerkat.modules.journeyEngine.gotoPath, this, "occupancy"));
 		}
 

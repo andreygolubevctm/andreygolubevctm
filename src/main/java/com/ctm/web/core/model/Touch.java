@@ -1,6 +1,5 @@
 package com.ctm.web.core.model;
 
-import com.ctm.web.core.model.TouchCommentProperty;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.json.JSONException;
@@ -57,11 +56,14 @@ public class Touch extends AbstractJsonModel {
 		CALL_DIRECT("Call direct", "CD"),
 		NOSALE_CALL("No Sale Call", "NS"),
 		LEAD_BEST_PRICE("Best price", "BP"),
+		LEAD_BEST_PRICE_DD("Best price DD", "BPDD"),
 		LEAD_FEED("Lead feed", "LF"),
 		CONTACT_DETAILS_COLLECTED("Contact details collected", "CDC"),
 		CALL_FEED ("Call Feed" , "CF"), // Added to a call feed list.
 		EMAIL_GATEWAY ("Email gateway", "EmlGateway"),
-		CRON_ACTIONED("CRON Actioned", "CRON");
+		CRON_ACTIONED("CRON Actioned", "CRON"),
+		CONFIRMATION_VIEWED("Confirmation Page Viewed", "CONF"),
+        MORE_INFO("More Info", "MoreInfo");
 
 		private final String description, code;
 

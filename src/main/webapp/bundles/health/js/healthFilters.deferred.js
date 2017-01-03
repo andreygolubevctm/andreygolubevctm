@@ -88,6 +88,36 @@
                     }
                 }
             },
+            "extrasCoverLevel": {
+                name: 'health_filterBar_extrasCoverLevel',
+                defaultValueSourceSelector: '#health_filter_tierExtras',
+                defaultValue: '',
+                values: [
+                    {
+                        value: '',
+                        label: 'Default'
+                    },
+                    {
+                        value: '1',
+                        label: 'Budget'
+                    },
+                    {
+                        value: '2',
+                        label: 'Medium'
+                    },
+                    {
+                        value: '3',
+                        label: 'Comprehensive'
+                    }
+
+                ],
+                events: {
+                    update: function (filterObject) {
+                        var value = $('select[name=' + filterObject.name + ']').val();
+                        $(filterObject.defaultValueSourceSelector).val(value);
+                    }
+                }
+            },
             "hospitalExcess": {
                 name: "health_filterBar_excess",
                 title: "Hospital excess",
@@ -236,6 +266,26 @@
 
 
     function applyEventListeners() {
+        $(document).on('click', '.filter-by-brand-toggle', function filterByBrand() {
+            var $this = $(this),
+                $brandsContainer = $('.filter-by-brand-container');
+
+            if ($brandsContainer.hasClass('expanded')) {
+                $brandsContainer.slideUp('fast', function() {
+                    $(this).removeClass('expanded');
+                });
+
+                $this.find('.text').text('Filter by brand');
+            } else {
+                $brandsContainer.slideDown('fast', function() {
+                    $(this).addClass('expanded');
+                });
+
+                $this.find('.text').text('close filter');
+            }
+
+            $this.find('.icon').toggleClass('icon-angle-up icon-angle-down');
+        });
 
         $(document).on('click', '.filter-brands-toggle', function selectAllNoneFilterBrands(e) {
             e.preventDefault();

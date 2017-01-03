@@ -2,7 +2,7 @@ package com.ctm.web.car.quote.model.response;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-@JsonPropertyOrder(value = "name, abn, acn, afslicenceNo")
+@JsonPropertyOrder(value = "name, abn, acn, afslicenceNo, afslicencenoStr")
 public class Underwriter {
 
     private String name;
@@ -12,6 +12,8 @@ public class Underwriter {
     private String acn;
 
     private String afsLicenceNo;
+
+    private String afsLicenceNoStr;
 
     public String getName() {
         return name;
@@ -43,5 +45,13 @@ public class Underwriter {
 
     public void setAFSLicenceNo(String AFSLicenceNo) {
         this.afsLicenceNo = AFSLicenceNo;
+    }
+
+    public String getAFSLicenceNoStr() {
+        return afsLicenceNoStr;
+    }
+
+    public void setAFSLicenceNoStr(String AFSLicenceNoStr) {
+        this.afsLicenceNo = AFSLicenceNoStr;
     }
 }

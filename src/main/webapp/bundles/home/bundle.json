@@ -4,7 +4,7 @@
     "shared/journeyEngine/v2",
     "plugins/scrollTo",
     "shared/results/v2",
-    "shared/results/v3",
+    "shared/results/v5",
     "shared/features",
     "shared/validation",
     "core",
@@ -19,10 +19,14 @@
     "shared/commencementDate",
     "shared/currency",
     "shared/moreInfo",
-    "shared/saveQuote",
+    "shared/saveQuote/v1",
     "shared/resultsRankings",
     "shared/dropdownInteractive",
     "shared/leadFeed",
-    "shared/serverSideValidationOutput"
+    "shared/serverSideValidationOutput",
+    "shared/resultsFilterLabels",
+    "shared/paymentFrequencyButtons",
+    "shared/resultsMobileDisplayModeToggle",
+    "shared/mobileNavButtons"
   ]
 }

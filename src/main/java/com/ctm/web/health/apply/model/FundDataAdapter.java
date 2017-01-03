@@ -2,7 +2,6 @@ package com.ctm.web.health.apply.model;
 
 import com.ctm.web.core.utils.common.utils.LocalDateUtils;
 import com.ctm.web.health.apply.model.request.application.common.Relationship;
-import com.ctm.web.health.apply.model.request.application.situation.HealthSituation;
 import com.ctm.web.health.apply.model.request.fundData.Declaration;
 import com.ctm.web.health.apply.model.request.fundData.FundData;
 import com.ctm.web.health.apply.model.request.fundData.ProductId;
@@ -45,21 +44,20 @@ public class FundDataAdapter {
                     .orElseGet(() -> quote.map(HealthQuote::getApplication)
                         .map(Application::getNhb)
                         .map(FundDataAdapter::createMembership)
-                        .orElse(null)));
+                        .orElseGet(() -> quote.map(HealthQuote::getApplication)
+                                .map(Application::getQtu)
+                                .map(FundDataAdapter::createMembership)
+                                .orElse(null))));
     }
 
     protected static Benefits createBenefits(Optional<HealthQuote> quote) {
-        HealthSituation healthSitu = quote.map(HealthQuote::getSituation)
-                .map(com.ctm.web.health.model.form.Situation::getHealthSitu)
-                .map(HealthSituation::valueOf)
-                .orElse(null);
         List<String> benefits = quote.map(HealthQuote::getApplication)
                 .map(Application::getHbf)
                 .map(Hbf::getFlexiextras)
                 .map(f -> Arrays.asList(StringUtils.split(f, ",")))
                 .orElse(emptyList());
-        if (healthSitu != null || !benefits.isEmpty()) {
-            return new Benefits(healthSitu, benefits);
+        if (!benefits.isEmpty()) {
+            return new Benefits(benefits);
         } else {
             return null;
         }
@@ -138,6 +136,39 @@ public class FundDataAdapter {
                     createPartnerDetailsNHB(nhb),
                     null,
                     createEligibility(nhb));
+        } else {
+            return null;
+        }
+    }
+
+    protected static Membership createMembership(Qtu theQtu) {
+        Optional<Qtu> qtu = Optional.ofNullable(theQtu);
+        if (qtu.isPresent()) {
+            return new Membership(
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    createEligibilityQtu(qtu));
+        } else {
+            return null;
+        }
+    }
+
+    protected static Eligibility createEligibilityQtu(Optional<Qtu> qtu) {
+        if (qtu.isPresent()) {
+            return Eligibility.newBuilder()
+                    .eligibilityReasonID(
+                            qtu.map(Qtu::getEligibility)
+                            .map(EligibilityReasonID::new)
+                            .orElse(null))
+                    .eligibilitySubReasonID(
+                        qtu.map(Qtu::getUnion)
+                                .map(EligibilitySubReasonID::new)
+                                .orElse(null))
+                    .build();
         } else {
             return null;
         }

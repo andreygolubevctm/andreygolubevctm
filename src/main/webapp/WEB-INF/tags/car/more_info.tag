@@ -2,8 +2,8 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <core_v1:js_template id="promotion-offer-template">
-{{ obj.promotionText = (typeof obj.discountOffer !== 'undefined' && obj.discountOffer.length > 0) ? obj.discountOffer : ''; }}
-{{ obj.offerTermsContent = (typeof obj.discountOfferTerms !== 'undefined' && obj.discountOfferTerms != null && obj.discountOfferTerms.length > 0) ? obj.discountOfferTerms : ''; }}
+{{ obj.promotionText = (!_.isUndefined(obj.discountOffer) && !_.isNull(obj.discountOffer) && obj.discountOffer.length > 0) ? obj.discountOffer : ''; }}
+{{ obj.offerTermsContent = (!_.isUndefined(obj.discountOfferTerms) && !_.isNull(obj.discountOfferTerms) && obj.discountOfferTerms != null && obj.discountOfferTerms.length > 0) ? obj.discountOfferTerms : ''; }}
 
 {{ if (promotionText.length > 0) { }}
 	<h2>Special Online Offer</h2>
@@ -40,7 +40,10 @@
 <core_v1:js_template id="call-apply-template">
 	<div class="col-xs-12 col-sm-6 col-md-12 push-top-15">
 		{{ if(obj.availableOnline === true) { }}
-			<a target="_blank" href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply" data-productId="{{= obj.productId }}">Go to Insurer</a>
+			<a target="_blank" href="javascript:;" class="btn btn-cta btn-block btn-more-info-apply" data-productId="{{= obj.productId }}">
+				Go to Insurer
+				<span class="icon icon-arrow-right"></span>
+			</a>
 		{{ } }}
 	</div>
 	{{ if(obj.contact.allowCallDirect === true) { }}
@@ -90,6 +93,7 @@
 		<div class="modal-closebar">
 			<a href="javascript:;" class="btn btn-close-dialog btn-close-more-info"><span class="icon icon-cross"></span></a>
 		</div>
+
 		<div class="row">
 			<div class="col-xs-12 col-md-8 paragraphedContent">
 
@@ -133,7 +137,7 @@
 				<div class="row hidden-md hidden-lg">{{= callApplyHtml }}</div>
 
 				<div class="row contentRow">
-					<div class="visible-xs col-xs-12">
+					<div class="promotionOffer visible-xs col-xs-12">
 						{{= promotionOfferHtml }}
 					</div>
 					<div class="col-xs-12 col-sm-6">
@@ -166,16 +170,14 @@
 						{{ }  else { }}
 							{{ window.meerkat.modules.carMoreInfo.setSpecialConditionDetail(false, ''); }}
 						{{ } }}
-						{{ if (serviceName != 'REIN' && serviceName != 'WOOL') { }}
-							{{ if(additionalExcesses != null && typeof additionalExcesses != 'undefined' && typeof additionalExcesses.list != 'undefined' && additionalExcesses.list.length > 0) { }}
-							<div id="car-additional-excess-conditions">
-								<h5>Additional Excess</h5>
-								<ul>
-									{{ for(var i = 0; i < additionalExcesses.list.length; i++) { }}
-									<li>{{= additionalExcesses.list[i].description }} {{= additionalExcesses.list[i].amount }}</li> {{ } }}
-								</ul>
-							</div>
-							{{ } }}
+						{{ if(additionalExcesses != null && typeof additionalExcesses != 'undefined' && typeof additionalExcesses.list != 'undefined' && additionalExcesses.list.length > 0) { }}
+						<div id="car-additional-excess-conditions">
+							<h5>Additional Excess</h5>
+							<ul>
+								{{ for(var i = 0; i < additionalExcesses.list.length; i++) { }}
+								<li>{{= additionalExcesses.list[i].description }} {{= additionalExcesses.list[i].amount }}</li> {{ } }}
+							</ul>
+						</div>
 						{{ } }}
 						<h5>Optional Extras</h5>
 						<div id="extras"></div>

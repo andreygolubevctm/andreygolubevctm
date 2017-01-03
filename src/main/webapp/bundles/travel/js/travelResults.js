@@ -149,6 +149,10 @@
 					return;
 				}
 				var obj = result.info;
+				// Add provider property (for tracking purposes)
+				if(_.isUndefined(result.provider) || _.isEmpty(result.provider)) {
+					result.provider = result.service;
+				}
 				// TRV-667: replace any non digit words with $0 e.g. Optional Extra
 				if (typeof obj.luggage !== 'undefined' && obj.luggageValue <= 0) {
 					obj.luggage = "$0";
@@ -207,6 +211,8 @@
 	}
 
 	function eventSubscriptions() { // might not need all/any
+
+		$(document.body).on('click', 'a.offerTerms', launchOfferTerms);
 
 		// Model updated, make changes before rendering
 		meerkat.messaging.subscribe(Results.model.moduleEvents.RESULTS_MODEL_UPDATE_BEFORE_FILTERSHOW, function modelUpdated() {
@@ -316,7 +322,25 @@
 		$(Results.settings.elements.resultsContainer).on('click', '.result-row', resultRowClick);
 	}
 
+	function launchOfferTerms(event) {
+		//meerkat.modules.carMoreInfo.setScrollPosition();
+		event.preventDefault();
 
+		var $element = $(event.target);
+		var $termsContent = $element.next('.offerTerms-content');
+
+		var $logo =				$element.closest('.resultInsert, .more-info-content').find('.travelCompanyLogo');
+		var $productName =		$element.closest('.resultInsert, .more-info-content').find('.productTitle span:first, h2.productTitle:first');
+
+		meerkat.modules.dialogs.show({
+			title: $logo.clone().wrap('<p>').addClass('hidden-xs').parent().html() + "<div class='hidden-xs heading'>" + $productName.html() + "</div>" + "<div class='heading'>Offer terms</div>",
+			hashId: 'offer-terms',
+			className: 'offer-terms-modal',
+			openOnHashChange: false,
+			closeOnHashChange: true,
+			htmlContent: $logo.clone().wrap('<p>').removeClass('hidden-xs').addClass('hidden-sm hidden-md hidden-lg').parent().html() + "<h2 class='visible-xs heading'>" + $productName.html() + "</h2><div class='termsWrapper'>" +  $termsContent.html() + "</div>"
+		});
+	}
 
 	function rankingCallback(product, position) {
 		var data = {};

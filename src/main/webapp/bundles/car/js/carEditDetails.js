@@ -25,15 +25,7 @@
 	function applyEventListeners() {
 
 		$editDetailsDropDown.on('show.bs.dropdown', function() {
-			var $e = $('#edit-details-template');
-			if ($e.length > 0) {
-				templateCallback = _.template($e.html());
-			}
-			var data = {
-				youngDriver : $('input[name=quote_drivers_young_exists]:checked').val()
-			};
-
-			show(templateCallback(data));
+			show();
 		}).on('click', '.closeDetailsDropdown', function(e) {
 			hide();
 			e.stopPropagation();
@@ -59,19 +51,34 @@
 		meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function editDetailsLeaveXsState() {
 			hide();
 		});
+
+		meerkat.messaging.subscribe(meerkatEvents.mobileNavButtons.EDIT_DETAILS_TOGGLED, function onEditDetailsToggled() {
+			show();
+		});
 	}
 
-	function show(htmlContent) {
+	function show() {
+		var $e = $('#edit-details-template');
+
+		if ($e.length > 0) {
+			templateCallback = _.template($e.html());
+		}
+		var data = {
+			youngDriver : $('input[name=quote_drivers_young_exists]:checked').val()
+		};
+
 		if (meerkat.modules.deviceMediaState.get() == 'xs') {
-			modalId = showModal(htmlContent);
+			modalId = showModal(templateCallback(data));
 		} else {
-			showDropDown(htmlContent);
+			showDropDown(templateCallback(data));
 		}
 	}
 
 	function hide() {
 		if ($editDetailsDropDown.hasClass('open')) {
 			$editDetailsDropDown.find('.activator').dropdown('toggle').end().find('.edit-details-wrapper').empty();
+		} else {
+			$editDetailsDropDown.find('.edit-details-wrapper').empty();
 		}
 		if(modalId !== null) {
 			$('#'+modalId).modal('hide');
@@ -189,6 +196,7 @@
 		driverOptin : driverOptin,
 		formatNcd : formatNcd,
 		formatDamage : formatDamage,
+		show: show,
 		hide: hide
 	});
 

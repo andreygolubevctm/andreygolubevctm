@@ -2,8 +2,8 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <core_v1:js_template id="promotion-offer-template">
-{{ obj.promotionText = (typeof obj.discountOffer !== 'undefined' && obj.discountOffer.length > 0) ? obj.discountOffer : ''; }}
-{{ obj.offerTermsContent = (typeof obj.discountOfferTerms !== 'undefined' && obj.discountOfferTerms != null && obj.discountOfferTerms.length > 0) ? obj.discountOfferTerms : ''; }}
+{{ obj.promotionText = (!_.isUndefined(obj.discountOffer) && !_.isNull(obj.discountOffer) && obj.discountOffer.length > 0) ? obj.discountOffer : ''; }}
+{{ obj.offerTermsContent = (!_.isUndefined(obj.discountOfferTerms) && !_.isNull(obj.discountOfferTerms) && obj.discountOfferTerms.length > 0) ? obj.discountOfferTerms : ''; }}
 
 {{ if (promotionText.length > 0) { }}
     <div class="promoHeading">Special offer</div>
@@ -48,12 +48,13 @@
     {{ var htmlTemplate = _.template(template); }}
     {{ obj.callMeBackHTML = htmlTemplate(obj); }}
 
-    {{ console.info(obj); }}
-
     <div class="row call-apply-xs-only">
         {{ if(obj.availableOnline === true) { }}
         <div class="col-xs-12">
-            <a target="_blank" href="javascript:;" class="btn btn-cta btn-lg btn-block btn-more-info-apply" data-productId="{{= obj.productId }}">Go to Insurer</a>
+            <a target="_blank" href="javascript:;" class="btn btn-cta btn-lg btn-block btn-more-info-apply" data-productId="{{= obj.productId }}">
+                Go to Insurer
+                <span class="icon icon-arrow-right"></span>
+            </a>
         </div>
         {{ } }}
 
@@ -183,7 +184,10 @@
                     <div class="row hidden-xs">
                         {{ if(obj.availableOnline === true) { }}
                         <div class="col-sm-4 col-sm-push-8 col-lg-3 col-lg-push-9">
-                            <a target="_blank" href="javascript:;" class="btn btn-cta btn-lg btn-block btn-more-info-apply" data-productId="{{= obj.productId }}">Go to Insurer</a>
+                            <a target="_blank" href="javascript:;" class="btn btn-cta btn-lg btn-block btn-more-info-apply" data-productId="{{= obj.productId }}">
+                                Go to Insurer
+                                <span class="icon icon-arrow-right"></span>
+                            </a>
                         </div>
                         {{ } }}
 
@@ -244,7 +248,6 @@
                     {{ }  else { }}
                     {{ window.meerkat.modules.carMoreInfo.setSpecialConditionDetail(false, ''); }}
                     {{ } }}
-                    {{ if (serviceName != 'REIN' && serviceName != 'WOOL') { }}
                     {{ if(additionalExcesses != null && typeof additionalExcesses != 'undefined' && typeof additionalExcesses.list != 'undefined' && additionalExcesses.list.length > 0) { }}
                     <div id="car-additional-excess-conditions">
                         <h5>Additional Excess</h5>
@@ -253,7 +256,6 @@
                             <li>{{= additionalExcesses.list[i].description }} {{= additionalExcesses.list[i].amount }}</li> {{ } }}
                         </ul>
                     </div>
-                    {{ } }}
                     {{ } }}
                     <h5>Optional Extras</h5>
                     <div id="extras"></div>
@@ -280,3 +282,5 @@
         </div>
 	</div>
 </core_v1:js_template>
+
+<car:call_modal />

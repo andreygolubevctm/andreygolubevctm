@@ -14,14 +14,31 @@
 <field_v1:hidden xpath="quote/excess" />
 <field_v1:hidden xpath="quote/baseExcess" constantValue="${contentService.getContentValue(pageContext.getRequest(), 'defaultExcess')}" />
 <field_v1:additional_excess
+		defaultVal="800"
 		increment="100"
 		minVal="400"
 		xpath="filter/excessOptions"
 		maxCount="17"
 		title=""
 		required=""
-		omitPleaseChoose="N"
+		omitPleaseChoose="Y"
 		className="hidden" />
+
+<field_v1:hidden xpath="quote/typeOfCover" />
+
+<c:set var="coverTypeOptions">
+    <c:choose>
+        <c:when test="${skipNewCoverTypeCarJourney eq true or pageSettings.getBrandCode() ne 'ctm'}">COMPREHENSIVE=Comprehensive</c:when>
+        <c:otherwise>COMPREHENSIVE=Comprehensive,TPFT=Third party property&#44; fire and theft,TPPD=Third party property</c:otherwise>
+    </c:choose>
+</c:set>
+
+<field_v1:array_select
+		items="${coverTypeOptions}"
+		xpath="filter/coverTypeOptions"
+		title=""
+		required=""
+		className="hidden type_of_cover" />
 
 <car:results_filterbar_xs />
 
@@ -55,7 +72,7 @@
 
 	<%-- RESULTS TABLE --%>
 	<div class="bridgingContainer"></div>
-	<div id="results_v3" class="resultsContainer v2 results-columns-sm-3 results-columns-md-3 results-columns-lg-3">
+	<div id="results_v5" class="resultsContainer v2 results-columns-sm-2 results-columns-md-3 results-columns-lg-3">
 		<div class="featuresHeaders featuresElements">
 
 			<div class="result fixedDockedHeader">
@@ -74,6 +91,10 @@
 			<div class="featuresList featuresTemplateComponent"></div>
 		</div>
 
+		<agg_v1:results_pagination_floated_arrows />
+
+		<agg_v1:payment_frequency_buttons xpath="filter/paymentFrequency" />
+
 		<div class="resultsOverflow">
 			<div class="results-table"></div>
 		</div>
@@ -81,14 +102,16 @@
 		<core_v1:clear />
 
 		<div class="featuresFooterPusher"></div>
+
+		<agg_v1:results_mobile_display_mode_toggle />
 	</div>
 
 	<%-- DEFAULT RESULT ROW --%>
 	<core_v1:js_template id="result-template">
-		{{ var productTitle = (typeof obj.productName !== 'undefined') ? obj.productName : 'Unknown product name'; }}
-		{{ var productDescription = (typeof obj.productDescription !== 'undefined') ? obj.productDescription : 'Unknown product name'; }}
-		{{ var promotionText = (typeof obj.discountOffer !== 'undefined' && obj.discountOffer.length > 0) ? obj.discountOffer : ''; }}
-		{{ var offerTermsContent = (typeof obj.discountOfferTerms !== 'undefined' && obj.discountOfferTerms != null && obj.discountOfferTerms.length > 0) ? obj.discountOfferTerms : ''; }}
+		{{ var productTitle = !_.isUndefined(obj.productName) ? obj.productName : 'Unknown product name'; }}
+		{{ var productDescription = !_.isUndefined(obj.productDescription) ? obj.productDescription : 'Unknown product name'; }}
+		{{ var promotionText = (!_.isUndefined(obj.discountOffer) && !_.isNull(obj.discountOffer) && obj.discountOffer.length > 0) ? obj.discountOffer : ''; }}
+		{{ var offerTermsContent = (!_.isUndefined(obj.discountOfferTerms) && !_.isNull(obj.discountOfferTerms) && obj.discountOfferTerms.length > 0) ? obj.discountOfferTerms : ''; }}
 
 		{{ var template = $("#provider-logo-template").html(); }}
 		{{ var logo = _.template(template); }}
@@ -101,7 +124,8 @@
 		{{ var template = $("#annual-price-template").html(); }}
 		{{ var htmlTemplate = _.template(template); }}
 		{{ var annualPriceTemplate = htmlTemplate(obj); }}
-		{{ var ctaBtnText = 'Apply Now'; }}
+
+		{{ var ctaBtnText = 'Go to Insurer'; }}
 		{{ var ctaBtnClass = ''; }}
 
 		{{ if(meerkat.modules.splitTest.isActive(64)) { }}
@@ -112,21 +136,32 @@
 		<%-- Main call to action button. --%>
 		{{ var mainCallToActionButton = '' }}
 		{{ if (obj.availableOnline == true) { }}
-		{{ mainCallToActionButton = '<a target="_blank" href="javascript:;" class="btn btn-primary btn-cta btn-block btn-more-info-apply '+ctaBtnClass+'" data-productId="'+obj.productId+'">'+ctaBtnText+'<span class="icon-arrow-right"></span></a>' }}
+		{{ mainCallToActionButton = '<a target="_blank" href="javascript:;" class="btn btn-lg btn-primary btn-cta btn-block btn-more-info-apply '+ctaBtnClass+'" data-productId="'+obj.productId+'">'+ctaBtnText+'<span class="icon-arrow-right"></span></a>' }}
 		{{ } else { }}
-		{{ mainCallToActionButton = '<div class="btnContainer"><a class="btn btn-cta btn-block btn-call-actions btn-calldirect" data-callback-toggle="calldirect" href="javascript:;" data-productId="'+obj.productId+'">Call Insurer Direct</a></div>' }}
+		{{ mainCallToActionButton = '<div class="btnContainer"><a class="btn btn-lg btn-cta btn-block btn-call-actions btn-calldirect" data-callback-toggle="calldirect" href="javascript:;" data-productId="'+obj.productId+'">Call Insurer Direct</a></div>' }}
 		{{ } }}
+
+		<%-- FEATURES MODE Templates --%>
+		{{ var template = $("#monthly-price-features-template").html(); }}
+		{{ var htmlTemplate = _.template(template); }}
+		{{ var monthlyPriceFeaturesTemplate = htmlTemplate(obj); }}
+
+		{{ var template = $("#annual-price-features-template").html(); }}
+		{{ var htmlTemplate = _.template(template); }}
+		{{ var annualPriceFeaturesTemplate = htmlTemplate(obj); }}
+
+		{{ var template = $("#call-action-buttons-template").html(); }}
+		{{ var htmlTemplate = _.template(template); }}
+		{{ var callActionButtonsTemplate = htmlTemplate(obj); }}
 
 		<div class="result-row result_{{= obj.productId }}" data-productId="{{= obj.productId }}" data-available="Y">
 
 			<div class="result featuresDockedHeader">
 				<div class="resultInsert featuresMode">
 					{{= logo }}
-					<div class="hidden-xs">
-						{{= annualPriceTemplate }}
-						{{= monthlyPriceTemplate }}
-					</div>
-					<div class="headerButtonWrapper carSpecific">
+					{{= annualPriceFeaturesTemplate }}
+					{{= monthlyPriceFeaturesTemplate }}
+					<div class="headerButtonWrapper">
 						{{= mainCallToActionButton }}
 					</div>
 				</div>
@@ -134,23 +169,41 @@
 
 			<div class="result featuresNormalHeader headers">
 				<div class="resultInsert featuresMode">
-					<div class="productSummary results hidden-xs carSpecific">
+					<div class="productSummary results">
 						<div class="compare-toggle-wrapper">
 							<input type="checkbox" class="compare-tick" data-productId="{{= obj.productId }}" id="features_compareTick_{{= obj.productId }}" />
 							<label for="features_compareTick_{{= obj.productId }}"></label>
 						</div>
-						{{= logo }}
-						{{= annualPriceTemplate }}
-						{{= monthlyPriceTemplate }}
+
+						<div class="clearfix">
+							{{= logo }}
+							{{= annualPriceFeaturesTemplate }}
+							{{= monthlyPriceFeaturesTemplate }}
+
+							<div class="excess">
+								<div class="excessAmount">{{= '$' }}{{= obj.excess }}</div>
+								<div class="excessTitle">Excess</div>
+							</div>
+						</div>
+
+						<h2 class="productTitle">{{= productTitle }}</h2>
+
 						<div class="headerButtonWrapper">
 							{{= mainCallToActionButton }}
 						</div>
-					</div>
-					<div class="productSummary results visible-xs">
-						{{= logo }}
-						<div class="headerButtonWrapper">
-							{{= mainCallToActionButton }}
-						</div>
+
+						{{= callActionButtonsTemplate }}
+
+						{{ if (promotionText.length > 0) { }}
+						<fieldset class="result-special-offer">
+							<legend>Special Offer</legend>
+							{{= promotionText }}
+							{{ if (offerTermsContent.length > 0) { }}
+							<a class="small offerTerms" href="javascript:;">Conditions</a>
+							<div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
+							{{ } }}
+						</fieldset>
+						{{ } }}
 					</div>
 				</div>
 
@@ -221,59 +274,6 @@
 
 			</div>
 
-				<%-- The following block is some hacks for XS --%>
-			<div class="fakeFeatures featuresMode featuresElements hidden-sm hidden-md hidden-lg">
-				<div class="cell feature collapsed">
-					<div class="labelInColumn feature">
-						<div class="content">Pricing</div>
-					</div>
-					<div class="c content">
-						{{= annualPriceTemplate }}
-						{{= monthlyPriceTemplate }}
-					</div>
-				</div>
-
-				<div class="cell category expandable inverseRow collapsed">
-					<div class="labelInColumn category expandable collapsed inverseRow">
-						<div class="content" data-featureid="10001">
-							<div class="contentInner">Special Feature / Offer<span class="icon expander"></span></div>
-						</div>
-					</div>
-					<div class="c content isMultiRow" data-featureid="10001">
-						{{= (obj.features.hasOwnProperty('speFea') && obj.features.speFea.hasOwnProperty('value')) ? obj.features.speFea.value : '' }}
-					</div>
-					<div class="children" data-fid="10001">
-						<div class="cell feature collapsed">
-							<div class="labelInColumn feature collapsed noLabel">
-								<div class="content" data-featureid="10002">
-									<div class="contentInner"></div>
-								</div>
-							</div>
-							<div class="c content isMultiRow" data-featureid="10002">
-								{{= (obj.features.hasOwnProperty('speFea') && obj.features.speFea.hasOwnProperty('extra')) ? obj.features.speFea.extra : '' }}
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<div class="cell feature collapsed">
-					<div class="labelInColumn feature collapsed excessFeature">
-						<div class="content">
-							<div class="contentInner">Excess</div>
-						</div>
-					</div>
-					<div class="c content height0" data-featureid="10003">{{= '$' }}{{= obj.excess }}</div>
-				</div>
-
-				<div class="cell feature collapsed">
-					<div class="labelInColumn feature collapsed excessFeature">
-						<div class="content">
-							<div class="contentInner">Features</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
 				<%-- Feature list, defaults to a spinner --%>
 			<div class="featuresList featuresElements">
 				<img src="brand/ctm/images/icons/spinning_orange_arrows.gif" class="featuresLoading"/><%-- #WHITELABEL CX --%>
@@ -293,14 +293,14 @@
 		{{ var brandsKnockedOut = 0; }}
 		{{ var $featuresMode = $('.featuresMode'); }}
 		{{ _.each(obj, function(result) { }}
-		{{ if (result.available !== 'Y') { }}
-		{{ brandsKnockedOut++; }}
-		{{ logos += logo(result); }}
-		{{ } }}
+			{{ if (result.available !== 'Y') { }}
+				{{ brandsKnockedOut++; }}
+				{{ logos += logo(result); }}
+			{{ } }}
 		{{ }) }}
 		<div class="result-row result_unavailable_combined notfiltered" data-available="N" style="display:block" data-position="{{= obj.length }}" data-sort="{{= obj.length }}">
 			<div class="result">
-				{{ if (brandsKnockedOut == obj.length && $featuresMode.length == 0) { }}
+				{{ if (Results.model.availableCounts == 0) { }}
 				<c:choose>
 					<c:when test="${brandCode eq 'ctm' && not(environmentCode eq 'NXS')}">
 						<agg_v2:no_quotes id="no-results-content"/>
@@ -318,12 +318,14 @@
 					<div class="logos">{{= logos }}</div>
 				</div>
 				{{ } }}
+				{{ if (Results.model.availableCounts > 0) { }}
 				<div class="resultInsert featuresMode">
 					<div class="productSummary results clearfix">
 						<h2>We're sorry but these providers chose not to quote:</h2>
 						<div class="logos">{{= logos }}</div>
 					</div>
 				</div>
+				{{ } }}
 			</div>
 		</div>
 		</div>
@@ -384,7 +386,7 @@
 
 </agg_v2_results:results>
 
-<%-- Price template --%>
+<%-- Price template priceMode --%>
 <core_v1:js_template id="monthly-price-template">
 	<div class="frequency monthly clearfix" data-availability="{{= obj.available }}">
 		<div class="frequencyAmount">{{= '$' }}{{= obj.price.monthlyPremium.toFixed(2) }}</div>
@@ -396,11 +398,37 @@
 	</div>
 </core_v1:js_template>
 
-<%-- Price template --%>
 <core_v1:js_template id="annual-price-template">
 	<div class="frequency annual clearfix" data-availability="{{= obj.available }}">
-		<div class="frequencyAmount">{{= '$' }}{{= obj.price.annualPremium }}</div>
+		<div class="frequencyAmount">{{= '$' }}{{= obj.price.annualPremiumFormatted }}</div>
 		<div class="frequencyTitle">Annual Price</div>
+	</div>
+</core_v1:js_template>
+
+<%-- Price template featuresMode --%>
+<core_v1:js_template id="monthly-price-features-template">
+	{{ var monthlyPremiumSplit = obj.price.monthlyPremium.toString().split('.'); }}
+	{{ var dollars = monthlyPremiumSplit[0]; }}
+	{{ var cents = monthlyPremiumSplit[1] ? '.' + monthlyPremiumSplit[1] : ''; }}
+	{{ if (cents.length === 2) cents += '0'; }}
+
+	<div class="frequency monthly" data-availability="{{= obj.available }}">
+		<div class="frequencyAmount">
+			<span class="dollarSign">{{= '$' }}</span><span class="dollars">{{= dollars }}</span><span class="cents">{{= cents }}</span></div>
+		<div class="frequencyTitle">Month</div>
+		<div class="monthlyBreakdown">
+			<span class="nowrap"><span class="firstPayment">1st Month: {{= '$' }}{{= obj.price.monthlyFirstMonth.toFixed(2) }}</span></span>
+			<span class="nowrap"><span class="totalPayment">Total: {{= '$' }}{{= obj.price.annualisedMonthlyPremium.toFixed(2) }}</span></span>
+		</div>
+	</div>
+</core_v1:js_template>
+
+<core_v1:js_template id="annual-price-features-template">
+	<div class="frequency annual" data-availability="{{= obj.available }}">
+		<div class="frequencyAmount">
+			<span class="dollarSign">{{= '$' }}</span><span class="dollars">{{= obj.price.annualPremiumFormatted }}</span>
+		</div>
+		<div class="frequencyTitle">Annual</div>
 	</div>
 </core_v1:js_template>
 
@@ -425,7 +453,7 @@
 			</span>
 			<span class="price">
 				<span class="frequency annual annually {{= annualHidden }}">
-					{{= '$' }}{{= products[i].price.annualPremium }}
+					{{= '$' }}{{= products[i].price.annualPremiumFormatted }}
 				</span>
 				<span class="frequency monthly {{= monthlyHidden }}">
 					{{= '$' }}{{= products[i].price.monthlyPremium.toFixed(2) }}
@@ -449,7 +477,7 @@
 		<span class="carCompanyLogo logo_{{= img }}" title="{{= products[i].name }}"></span>
 				<span class="price">
 					<span class="frequency annual annually {{= annualHidden }}">
-						{{= '$' }}{{= products[i].price.annualPremium }} <span class="small hidden-sm">annually</span>
+						{{= '$' }}{{= products[i].price.annualPremiumFormatted }} <span class="small hidden-sm">annually</span>
 					</span>
 					<span class="frequency monthly {{= monthlyHidden }}">
 						{{= '$' }}{{= products[i].price.monthlyPremium.toFixed(2) }} <span class="small hidden-sm">monthly</span>
@@ -465,8 +493,10 @@
 	<div class="compare-basket">
 		{{ if(comparedResultsCount === 0) { }}
 		<p>
-			Click the <input type="checkbox" class="compare-tick"><label></label> to add up to <span class="compare-max-count-label">{{= maxAllowable }} products</span> to your shortlist.
 			We've found <span class="products-returned-count">{{= resultsCount }} products</span> matching your needs.
+			<br>
+			Click the <input type="checkbox" class="compare-tick"><label></label> to compare up to <span class="compare-max-count-label">{{= maxAllowable }} products</span>.
+
 		</p>
 		{{ }  else { }}
 
@@ -524,4 +554,33 @@
 	</ul>
 	{{ } }}
 	{{ } }}
+</core_v1:js_template>
+
+
+<!-- Call action buttons. -->
+<core_v1:js_template id="call-action-buttons-template">
+	<%-- Call Insurer Direct action button. --%>
+	{{ var callInsurerDirectActionButton = '<div class="btnContainer"><a class="btn btn-sm btn-call btn-block btn-call-actions btn-calldirect" data-callback-toggle="calldirect" href="javascript:;" data-productId="'+obj.productId+'">Call Direct</a></div>' }}
+
+	<%-- Call Me Back action button. --%>
+	{{ var callMeBackActionButton = '<div class="btnContainer"><a class="btn btn-sm btn-back btn-block btn-call-actions btn-callback" data-callback-toggle="callback" href="javascript:;" data-productId="'+obj.productId+'">Get a Call Back</a></div>' }}
+
+	{{ var colClass = 'col-xs-12'; }}
+
+	{{ if(obj.contact.allowCallDirect === true && obj.contact.allowCallMeBack === true) { }}
+	{{ colClass = 'col-xs-6'; }}
+	{{ } }}
+
+	<div class="call-actions-buttons row">
+		{{ if(obj.contact.allowCallDirect === true) { }}
+		<div class="{{= colClass }}">
+			{{= callInsurerDirectActionButton }}
+		</div>
+		{{ } }}
+		{{ if(obj.contact.allowCallMeBack === true) { }}
+		<div class="{{= colClass }}">
+			{{= callMeBackActionButton }}
+		</div>
+		{{ } }}
+	</div>
 </core_v1:js_template>

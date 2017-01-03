@@ -1,6 +1,7 @@
 package com.ctm.web.factory;
 
 import com.ctm.test.TestUtils;
+import com.ctm.web.core.dao.GeneralDao;
 import com.ctm.web.core.email.model.EmailMode;
 import com.ctm.web.core.email.services.EmailServiceHandler;
 import com.ctm.web.core.model.settings.PageSettings;
@@ -9,6 +10,7 @@ import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.transaction.dao.TransactionDetailsDao;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.health.email.services.HealthEmailService;
+import com.ctm.web.health.services.ProviderContentService;
 import com.ctm.web.life.dao.OccupationsDao;
 import org.junit.Assert;
 import org.junit.Before;
@@ -27,13 +29,17 @@ public class EmailServiceFactoryTest {
     private TransactionDetailsDao transactionDetailsDao;
     @Mock
     private ApplicationService applicationService;
+    @Mock
+    private GeneralDao generalDao;
+    @Mock
+    private ProviderContentService providerContentService;
 
     private EmailServiceFactory emailServiceFactory;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-		 emailServiceFactory = new EmailServiceFactory(occupationsDao, ipHandler,transactionDetailsDao,applicationService);
+		 emailServiceFactory = new EmailServiceFactory(occupationsDao, ipHandler,transactionDetailsDao,applicationService, generalDao, providerContentService);
     }
 
     @Test

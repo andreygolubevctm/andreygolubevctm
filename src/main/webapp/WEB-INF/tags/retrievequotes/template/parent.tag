@@ -63,15 +63,14 @@
         <a href="javascript:;" data-vertical="{{= obj.verticalCode }}" data-transactionId="{{= obj.transactionId }}" data-pendingid="{{= verticalData.pendingID }}" class="btn btn-block btn-tertiary btn-pending"><span>In Processing</span></a>
     {{ } else { }}
         {{ if(obj.verticalCode !== "utilities") { }}
-            {{ if(verticalData.inPast) { }}
+            {{ if(verticalData.inPast && obj.verticalCode !== "health") { }}
                 <a href="javascript:;" data-vertical="{{= obj.verticalCode }}" data-transactionId="{{= obj.transactionId }}" data-inpast="{{= verticalData.inPast }}" class="btn btn-block btn-secondary btn-latest"><span>Get Latest Results</span></a>
+            {{ } else if(_.isEmpty(verticalData.inPast) && obj.verticalCode === "health") { }}
+                <a href="javascript:;" data-vertical="{{= obj.verticalCode }}" data-transactionId="{{= obj.transactionId }}" class="btn btn-block btn-secondary btn-latest"><span>Get Latest Results</span></a>
             {{ } }}
-
-            <a href="javascript:;" data-vertical="{{= obj.verticalCode }}" data-transactionId="{{= obj.transactionId }}" class="btn btn-block btn-tertiary btn-amend"><span>Amend Quote</span></a>
-        {{ } }}
-
-        {{ if(obj.verticalCode === "health") { }}
-            <a href="javascript:;" data-vertical="{{= obj.verticalCode }}" data-transactionId="{{= obj.transactionId }}" class="btn btn-block btn-tertiary btn-start-again"><span>Start Again</span></a>
+            {{ if(obj.verticalCode !== "health") { }}
+                <a href="javascript:;" data-vertical="{{= obj.verticalCode }}" data-transactionId="{{= obj.transactionId }}" class="btn btn-block btn-tertiary btn-amend"><span>Amend Quote</span></a>
+            {{ } }}
         {{ } }}
 
         <%-- NOTE: IF UTILITIES EVER ADDS RETRIEVE QUOTES AGAIN, WE NEED TO UPDATE THIS TO USE THE PROPER BUTTONS --%>

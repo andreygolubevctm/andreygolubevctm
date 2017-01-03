@@ -46,6 +46,7 @@
 				templateCallDirect = _.template($e.html());
 			}
 
+			configureContactDetails();
 		});
 
 	}
@@ -79,34 +80,31 @@
 				startStepId = meerkat.modules.emailLoadQuote.getStartStepOverride(startStepId);
 			}
 
-			$(document).ready(function(){
-
-				meerkat.modules.journeyEngine.configure({
-					startStepId : startStepId,
-					steps : _.toArray(steps)
-				});
-
-				// Call initial supertag call
-				var transaction_id = meerkat.modules.transactionId.get();
-
-				if(meerkat.site.isNewQuote === false){
-					meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-						method:'trackQuoteEvent',
-						object: {
-							action: 'Retrieve',
-							transactionID: parseInt(transaction_id, 10)
-						}
-					});
-				} else {
-					meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-						method: 'trackQuoteEvent',
-						object: {
-							action: 'Start',
-							transactionID: parseInt(transaction_id, 10)
-						}
-					});
-				}
+			meerkat.modules.journeyEngine.configure({
+				startStepId: startStepId,
+				steps: _.toArray(steps)
 			});
+
+			// Call initial supertag call
+			var transaction_id = meerkat.modules.transactionId.get();
+
+			if (meerkat.site.isNewQuote === false) {
+				meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+					method: 'trackQuoteEvent',
+					object: {
+						action: 'Retrieve',
+						transactionID: parseInt(transaction_id, 10)
+					}
+				});
+			} else {
+				meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+					method: 'trackQuoteEvent',
+					object: {
+						action: 'Start',
+						transactionID: parseInt(transaction_id, 10)
+					}
+				});
+			}
 
 		}
 	}
@@ -148,14 +146,14 @@
 			onInitialise: function onStartInit(event) {
 				meerkat.modules.jqueryValidate.initJourneyValidator();
 				// Hook up privacy optin to Email Quote button
-				var $emailQuoteBtn = $(".slide-feature-emailquote");
+				var $emailQuoteBtn = $(".slide-feature-emailquote, .save-quote");
 
 				// Initial value from preload/load quote
-				if ($("#home_privacyoptin").is(':checked')) {
+				if ($("#home_termsAccepted").is(':checked')) {
 					$emailQuoteBtn.addClass("privacyOptinChecked");
 				}
 
-				$("#home_privacyoptin").on('change', function(event){
+				$("#home_termsAccepted").on('change', function(event){
 					if ($(this).is(':checked')) {
 						$emailQuoteBtn.addClass("privacyOptinChecked");
 					} else {
@@ -189,6 +187,9 @@
 			onInitialise: function() {
 				meerkat.modules.homeOccupancy.initHomeOccupancy();
 				meerkat.modules.homeBusiness.initHomeBusiness();
+				if(meerkat.modules.splitTest.isActive(2) === true) {
+					meerkat.modules.homeHistory.initHomeHistory();
+				}
 			}
 		};
 
@@ -228,28 +229,51 @@
 			onInitialise: function onInitialisePolicyHolder() {
 				// Init the results objects required for next step
 				meerkat.modules.homePolicyHolder.initHomePolicyHolder();
+				if(meerkat.modules.splitTest.isActive(2) === true) {
+					// Init the results objects required for next step
+					meerkat.modules.homeResults.initPage();
+					meerkat.modules.resultsFeatures.fetchStructure('hncamsws_');
+				}
 			},
 			onBeforeEnter: function onBeforeEnterPolicyHolder(event) {
 				meerkat.modules.homePolicyHolder.togglePolicyHolderFields();
 			}
 		};
 
+		var historyTracking = {
+			touchType: 'H',
+			touchComment: 'History',
+			includeFormData: true
+		};
+		if(meerkat.modules.splitTest.isActive(2)) {
+			historyTracking = null;
+		}
+
 		var historyStep = {
 			title: 'Cover',
 			navigationId: 'history',
 			slideIndex: 4,
-			tracking: {
-				touchType: 'H',
-				touchComment: 'History',
-				includeFormData: true
-			},
+			tracking: historyTracking,
 			externalTracking: externalTrackingSettings,
 			onInitialise: function onInitialiseHistory(event){
-				// Init the results objects required for next step
-				meerkat.modules.homeResults.initPage();
+				if(meerkat.modules.splitTest.isActive(2) === false) {
+					// Init the results objects required for next step
+					meerkat.modules.homeResults.initPage();
 
-				meerkat.modules.homeHistory.initHomeHistory();
-				meerkat.modules.resultsFeatures.fetchStructure('hncamsws_');
+					meerkat.modules.homeHistory.initHomeHistory();
+					meerkat.modules.resultsFeatures.fetchStructure('hncamsws_');
+				} else {
+					$('#coverHistoryForm').parent().find('.btn-next').addClass('hidden');
+				}
+			},
+			onAfterEnter: function onAfterEnterHistory(event) {
+				if(meerkat.modules.splitTest.isActive(2) === true) {
+					var path = event.isForward ? "results" : "policyHolder";
+
+					_.defer(function() {
+						meerkat.modules.journeyEngine.gotoPath(path);
+					});
+				}
 			}
 		};
 
@@ -262,6 +286,7 @@
 				meerkat.modules.homeMoreInfo.initMoreInfo();
 				meerkat.modules.homeEditDetails.initEditDetails();
 				meerkat.modules.homeFilters.initHomeFilters();
+				meerkat.modules.resultsMobileDisplayModeToggle.initToggle();
 			},
 			onBeforeEnter: function onBeforeEnterResults(event) {
 				meerkat.modules.journeyProgressBar.hide();
@@ -342,7 +367,7 @@
 			externalTracking: externalTrackingSettings,
 			onInitialise: function() {
 				// Hook up privacy optin to Email Quote button
-				var $emailQuoteBtn = $(".slide-feature-emailquote");
+				var $emailQuoteBtn = $(".slide-feature-emailquote, .save-quote");
 
 				// Initial value from preload/load quote
 				if ($("#home_privacyoptin").is(':checked')) {
@@ -431,6 +456,7 @@
 				meerkat.modules.homeMoreInfo.initMoreInfo();
 				meerkat.modules.homeEditDetails.initEditDetails();
 				meerkat.modules.homeFilters.initHomeFilters();
+				meerkat.modules.resultsMobileDisplayModeToggle.initToggle();
 			},
 			onBeforeEnter: function onBeforeEnterResults(event) {
 				meerkat.modules.journeyProgressBar.hide();
@@ -473,11 +499,19 @@
 	function configureProgressBar() {
 		var keys = _.keys(steps);
 		var progressBarSteps = new Array(keys.length - 1);
+		var stepOmitList = [];
+		if(meerkat.modules.splitTest.isActive(2)) {
+			stepOmitList.push('historyStep');
+			progressBarSteps.pop();
+		}
 		for(var i=0; i<keys.length - 1; i++) {
-			progressBarSteps[steps[keys[i]].slideIndex] = {
-				label :			steps[keys[i]].title,
-				navigationId :	steps[keys[i]].navigationId
-			};
+			var step = keys[i];
+			if(_.indexOf(stepOmitList,step) === -1) {
+				progressBarSteps[steps[step].slideIndex] = {
+					label: steps[step].title,
+					navigationId: steps[step].navigationId
+				};
+			}
 		}
 		meerkat.modules.journeyProgressBar.configure(progressBarSteps);
 	}
@@ -651,7 +685,17 @@
         $owner.find('label:nth-child(2)').addClass('icon-vert-hnc');
 	}
 
-
+	function configureContactDetails(){
+		var contactDetailsFields = {
+			email: [
+				{
+					$field: $("#home_policyHolder_email"),
+					$optInField: $("#home_policyHolder_marketing")
+				}
+			]
+		};
+		meerkat.modules.contactDetails.configure(contactDetailsFields);
+	}
         
 	meerkat.modules.register("home", {
 		init: initHome,

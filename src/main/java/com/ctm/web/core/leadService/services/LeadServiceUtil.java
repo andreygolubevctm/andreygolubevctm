@@ -1,5 +1,7 @@
 package com.ctm.web.core.leadService.services;
 
+import com.ctm.web.core.leadService.model.CliReturnRequest;
+import com.ctm.web.core.leadService.model.LeadOutcome;
 import com.ctm.web.core.leadService.model.LeadRequest;
 import com.ctm.web.core.leadService.model.LeadResponse;
 import com.ctm.web.core.utils.ObjectMapperUtil;
@@ -37,7 +39,7 @@ public class LeadServiceUtil {
         restTemplate.setMessageConverters(messageConverters);
     }
 
-    public static void sendRequest(final LeadRequest leadData, final String url) {
+    public static ListenableFuture<ResponseEntity<LeadResponse>> sendRequestListenable(final LeadRequest leadData, final String url) {
         LOGGER.info("Sending request to LeadService {}", leadData);
 
         HttpHeaders headers = new HttpHeaders();
@@ -45,7 +47,11 @@ public class LeadServiceUtil {
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         HttpEntity<LeadRequest> entity = new HttpEntity<>(leadData, headers);
 
-        ListenableFuture<ResponseEntity<LeadResponse>> listenable = restTemplate.postForEntity(URI.create(url), entity, LeadResponse.class);
+        return restTemplate.postForEntity(URI.create(url), entity, LeadResponse.class);
+    }
+
+    public static void sendRequest(final LeadRequest leadData, final String url) {
+        ListenableFuture<ResponseEntity<LeadResponse>> listenable = sendRequestListenable(leadData, url);
         listenable.addCallback(new ListenableFutureCallback<ResponseEntity<LeadResponse>>() {
             @Override
             public void onFailure(Throwable throwable) {
@@ -57,6 +63,16 @@ public class LeadServiceUtil {
                 LOGGER.info("Response from LeadService {}", kv("salesForceId", leadResponseResponseEntity.getBody().getSalesforceId()));
             }
         });
+    }
 
+    public static ListenableFuture<ResponseEntity<LeadOutcome>> sendCliReturnRequest(final CliReturnRequest request, final String url) {
+        LOGGER.info("Sending request to LeadService {}", request);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        HttpEntity<CliReturnRequest> entity = new HttpEntity<>(request, headers);
+
+        return restTemplate.postForEntity(URI.create(url), entity, LeadOutcome.class);
     }
 }

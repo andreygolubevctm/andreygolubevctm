@@ -124,7 +124,8 @@
         $(document.body).on("click", ".dialogPop", function promoConditionsLinksClick() {
             meerkat.modules.dialogs.show({
                 title: $(this).attr("title"),
-                htmlContent: $(this).attr("data-content")
+                htmlContent: $(this).attr("data-content"),
+                className: $(this).attr("data-class")
             });
         });
 
@@ -250,7 +251,8 @@
 
             meerkat.messaging.publish(meerkatEvents.tracking.TOUCH, {
                 touchType: 'H',
-                touchComment: 'MoreInfo'
+                touchComment: 'MoreInfo',
+                productId: product.hasOwnProperty('productId') ? product.productId : ""
             });
 
             // Instigate a session poke
@@ -320,7 +322,8 @@
 
             meerkat.messaging.publish(meerkatEvents.tracking.TOUCH, {
                 touchType: 'H',
-                touchComment: 'MoreInfo'
+                touchComment: 'MoreInfo',
+                productId: product.hasOwnProperty('productId') ? product.productId : ""
             });
         });
     }

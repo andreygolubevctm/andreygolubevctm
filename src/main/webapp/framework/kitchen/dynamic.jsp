@@ -126,18 +126,7 @@
 			<span class="icon-dollar" title="icon-dollar"></span>
 			<span class="icon-plus" title="icon-plus"></span>
 			<span class="icon-minus" title="icon-minus"></span>
-			<span class="icon-vert-hnc" title="icon-vert-hnc"></span>
-			<span class="icon-vert-ctp" title="icon-vert-ctp"></span>
-			<span class="icon-vert-energy" title="icon-vert-energy"></span>
-			<span class="icon-vert-fuel" title="icon-vert-fuel"></span>
-			<span class="icon-vert-ip" title="icon-vert-ip"></span>
-			<span class="icon-vert-roadside" title="icon-vert-roadside"></span>
-			<span class="icon-vert-car" title="icon-vert-car"></span>
-			<span class="icon-vert-health" title="icon-vert-health"></span>
-			<span class="icon-vert-home" title="icon-vert-home"></span>
-			<span class="icon-vert-life" title="icon-vert-life"></span>
-			<span class="icon-vert-money" title="icon-vert-money"></span>
-			<span class="icon-vert-travel" title="icon-vert-travel"></span>
+			<span class="icon-callback" title="icon-callback"></span>
 		</div>
 		<div class="col-xs-12" style="font-size:200%">
 			<h3>Bigger!</h3>
@@ -233,6 +222,7 @@
 			<span class="icon-vert-life" title="icon-vert-life"></span>
 			<span class="icon-vert-money" title="icon-vert-money"></span>
 			<span class="icon-vert-travel" title="icon-vert-travel"></span>
+			<span class="icon-callback" title="icon-callback"></span>
 		</div>
 	</div>
 </form_v2:fieldset>

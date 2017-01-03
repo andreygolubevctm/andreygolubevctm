@@ -652,7 +652,7 @@ window.Results = {
 
 								var completeLogoMove = function() {
 									var size = "83x53";//"44x25";
-									elements.finish.css({backgroundImage:"url(assets/graphics/logos/life/" + size + "/" + product.thumb + ")"});
+									elements.finish.css({backgroundImage:"url(assets/graphics/logos/life/" + size + "/" + product.thumb + "?v=2)"});
 									$("#results-mast-wrapper ." + type).find('.client').first().removeClass("adding");
 									$("#results-rows-" + type).find(".results-row.selected").removeClass('selected');
 									$('#result_' + type + '_' + product_id).addClass('selected');
@@ -2454,7 +2454,6 @@ var highlightMeTextObj = new HighlightMeText();
 				<div class="provider asteron"></div>
 				<div class="provider bt-australia"></div>
 				<div class="provider comm-insure"></div>
-				<div class="provider macquarie"></div>
 				<div class="provider mlc"></div>
 				<div class="provider onepath"></div>
 				<c:if test="${vertical eq 'life'}">

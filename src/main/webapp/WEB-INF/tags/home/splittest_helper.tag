@@ -4,5 +4,10 @@
 
 <jsp:useBean id="splitTestService" class="com.ctm.web.core.services.tracking.SplitTestService" />
 
-<%-- HNC-405 Split Test J=11 --%>
-<c:set var="brochurewarePassedParams" scope="request" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 11)}" />
+<%-- HNC-446 --%>
+<c:set var="journeySplitTestActive" scope="request">
+    <c:choose>
+        <c:when test="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 2)}">${true}</c:when>
+        <c:otherwise>${false}</c:otherwise>
+    </c:choose>
+</c:set>

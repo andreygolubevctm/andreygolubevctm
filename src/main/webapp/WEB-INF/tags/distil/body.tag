@@ -2,8 +2,10 @@
 <%@ tag description="Builds the CSS to create a cross browser compatible box shadow" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<%@ attribute name="pageType"   required="true"	 rtexprvalue="true"	 description="Where we are saving the email from (ie. QUOTE, SIGNUP, SAVE_QUOTE, etc.)" %>
+<%-- Attributes --%>
+<%@ attribute name="pageType"   required="true"	 rtexprvalue="true"	 description="The type of page to determine the content rendered" %>
 
+<%-- HTML --%>
 <div class="bkg-image"><!-- empty --></div>
 <div class="distil">
     <div class="header">

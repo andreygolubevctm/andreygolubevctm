@@ -9,6 +9,7 @@
     "core",
     "shared/forms/v2",
     "shared/currency",
+    "shared/currencyUtils",
     "shared/dateUtils",
     "shared/age",
     "shared/datepicker",
@@ -17,7 +18,7 @@
     "shared/addressLookup",
     "shared/placeholder",
     "shared/sliders",
-    "shared/saveQuote",
+    "shared/saveQuote/v2",
     "shared/contentPopulation",
     "shared/resultsRankings",
     "shared/dropdownInteractive",
@@ -34,6 +35,7 @@
     "shared/serverSideValidationOutput",
     "shared/sidebarWidgets",
     "shared/filters",
-    "shared/radioGroupTile"
-  ]
+    "shared/radioGroupTile",
+    "shared/bootstrapSwitch"
+   ]
 }

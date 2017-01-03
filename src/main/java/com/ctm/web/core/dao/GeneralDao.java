@@ -3,6 +3,7 @@ package com.ctm.web.core.dao;
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import javax.naming.NamingException;
 import java.sql.Connection;
@@ -15,6 +16,7 @@ import java.util.Map;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
+@Repository
 public class GeneralDao {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(GeneralDao.class);

@@ -47,6 +47,25 @@
         </div>
     </div>
 
+    <c:if test="${not empty callCentre}">
+        <div class="row filter need-extras" data-filter-serverside="true">
+            <div class="col-xs-12">
+                <div class="sidebar-subtitle-container">
+                    <span class="heading-text">Extras cover level</span>
+                </div>
+                <div class="filter-extrascoverlevel select">
+                    <span class="input-group-addon"><i class="icon-sort"></i></span>
+                    <select id="health_filterBar_extrasCoverLevel" name="health_filterBar_extrasCoverLevel" class="form-control array-select">
+                        {{ _.each(model.extrasCoverLevel.values, function(object) { }}
+                        {{ var selected = object.selected ? ' selected="selected"' : ''; }}
+                        <option id="health_filterBar_extrasCoverLevel_{{= object.value }}" value="{{= object.value }}" {{=selected }}>{{= object.label }}</option>
+                        {{ }) }}
+                    </select>
+                </div>
+            </div>
+        </div>
+    </c:if>
+
     <div class="row filter need-hospital {{=hiddenHospital }}" data-filter-serverside="true">
         <div class="col-xs-12">
             <div class="sidebar-subtitle-container">
@@ -73,20 +92,23 @@
 
     <div class="row filter" data-filter-serverside="true">
         <div class="col-xs-12">
-            <div class="sidebar-subtitle-container">
-                <span class="helper-text">select <a href="javascript:;" class="filter-brands-toggle" data-toggle="true">all</a>/<a class="filter-brands-toggle" data-toggle="false">none</a></span>
-                <span class="heading-text">Brands</span>
-            </div>
-            <div class="provider-list">
-                {{ _.each(model.brands.values, function(object) { }}
-                {{ var checked = !object.selected ? ' checked="checked"' : ''; }}
-                {{ var active = !object.selected ? ' active' : ''; }}
-                <div class="checkbox">
-                    <input type="checkbox" name="{{= model.brands.name }}" id="{{= model.brands.name }}_{{= object.value }}" value="{{= object.value }}" {{=checked }}
-                           title="{{= object.label }}"/> <label for="{{= model.brands.name }}_{{= object.value }}" <field_v1:analytics_attr analVal="filter brands" quoteChar="\"" />>{{= object.label }}</label>
+            <div class="filter-by-brand-container">
+                <div class="sidebar-subtitle-container">
+                    <span class="helper-text">select <a href="javascript:;" class="filter-brands-toggle" data-toggle="true">all</a>/<a class="filter-brands-toggle" data-toggle="false">none</a></span>
+                    <span class="heading-text">Brands</span>
                 </div>
-                {{ }) }}
+                <div class="provider-list">
+                    {{ _.each(model.brands.values, function(object) { }}
+                    {{ var checked = !object.selected ? ' checked="checked"' : ''; }}
+                    {{ var active = !object.selected ? ' active' : ''; }}
+                    <div class="checkbox">
+                        <input type="checkbox" name="{{= model.brands.name }}" id="{{= model.brands.name }}_{{= object.value }}" value="{{= object.value }}" {{=checked }}
+                               title="{{= object.label }}"/> <label for="{{= model.brands.name }}_{{= object.value }}" <field_v1:analytics_attr analVal="filter brands" quoteChar="\"" />>{{= object.label }}</label>
+                    </div>
+                    {{ }) }}
+                </div>
             </div>
+            <a href="javascript:void(0);" class="filter-by-brand-toggle"><span class="text">Filter by brand</span> <span class="icon icon-angle-down"></span></a>
         </div>
     </div>
 </core_v1:js_template>

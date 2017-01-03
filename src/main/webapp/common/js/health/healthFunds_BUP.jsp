@@ -14,6 +14,8 @@ var healthFunds_BUP = {
 	$paymentFrequency : $('#health_payment_details_frequency'),
 	$paymentStartDate: $("#health_payment_details_start"),
 	$claimsAccountOptin: $('#health_payment_bank_claims'),
+	$primaryMiddleName: $('#health_application_primary_middleName'),
+	$partnerMiddleName: $('#health_application_partner_middleName'),
 set: function () {
 	"use strict";
 
@@ -21,6 +23,8 @@ set: function () {
 		healthFunds._previousfund_authority(true);
 		$('#health_previousfund_primary_authority').setRequired(true, 'Bupa requires authorisation to contact your previous fund');
 		$('#health_previousfund_partner_authority').setRequired(true, 'Bupa requires authorisation to contact your partner\'s previous fund');
+		healthFunds_BUP.$primaryMiddleName.setRequired(false);
+		healthFunds_BUP.$partnerMiddleName.setRequired(false);
 
 		<%-- calendar for start cover --%>
 		meerkat.modules.healthPaymentStep.setCoverStartRange(0, 60);
@@ -33,7 +37,7 @@ set: function () {
 
 		<%-- Payment Options --%>
 		meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':false, 'fortnightly':true, 'monthly':true, 'quarterly':true, 'halfyearly':true, 'annually':true });
-		meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':false, 'fortnightly':false, 'monthly':true, 'quarterly':true, 'halfyearly':true, 'annually':true });
+		meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':false, 'fortnightly':true, 'monthly':true, 'quarterly':true, 'halfyearly':true, 'annually':true });
 
 		healthFunds_BUP.$paymentType.on('change.BUP', function updatePaymentMsgPaymentType(){
 			healthFunds_BUP.updateMessage();
@@ -62,6 +66,16 @@ set: function () {
 		healthFunds_BUP.$claimsAccountOptin.find("input:checked").each(function(){
 		  $(this).prop("checked",null).trigger("change");
 		});
+		
+		<%-- Fix name field widths to account for the middleName field --%>
+		healthFunds_BUP.$primaryFirstname = $('#health_application_primary_firstname').closest('.row-content');
+		healthFunds_BUP.$primarySurname = $('#health_application_primary_surname').closest('.row-content');
+		healthFunds_BUP.$partnerFirstname = $('#health_application_partner_firstname').closest('.row-content');
+		healthFunds_BUP.$partnerSurname = $('#health_application_partner_surname').closest('.row-content');
+		healthFunds_BUP.$primaryFirstname.removeClass('col-sm-4').addClass('col-lg-4 col-sm-3');
+		healthFunds_BUP.$primarySurname.removeClass('col-sm-4').addClass('col-lg-4 col-sm-3');
+		healthFunds_BUP.$partnerFirstname.removeClass('col-sm-4').addClass('col-lg-4 col-sm-3');
+		healthFunds_BUP.$partnerSurname.removeClass('col-sm-4').addClass('col-lg-4 col-sm-3');
 
 	},
 	updateMessage: function() {
@@ -125,6 +139,15 @@ set: function () {
 		healthFunds_BUP.$paymentStartDate.off("changeDate.BUP");
 
 		$('.bup-payment-legend').remove();
+		
+		<%-- Fix name field widths to account for removal of middleName field --%>
+		healthFunds_BUP.$primaryFirstname.removeClass('col-lg-4 col-sm-3').addClass('col-sm-4');
+		healthFunds_BUP.$primarySurname.removeClass('col-lg-4 col-sm-3').addClass('col-sm-4');
+		healthFunds_BUP.$partnerFirstname.removeClass('col-lg-4 col-sm-3').addClass('col-sm-4');
+		healthFunds_BUP.$partnerSurname.removeClass('col-lg-4 col-sm-3').addClass('col-sm-4');
+
+		healthFunds_BUP.$primaryMiddleName.setRequired(true);
+		healthFunds_BUP.$partnerMiddleName.setRequired(true);
 	}
 };
 </c:set>

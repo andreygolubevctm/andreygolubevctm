@@ -31,3 +31,21 @@
     }
   }
 }
+
+#confirmation-compare-options {
+  a {
+    .icon {
+      width:60px;
+      border-radius:60px;
+    }
+  }
+}
+@media(@xs-only) {
+  #confirmation-compare-options {
+    .options-list {
+      & > div {
+        min-height:unset;
+      }
+    }
+  }
+}

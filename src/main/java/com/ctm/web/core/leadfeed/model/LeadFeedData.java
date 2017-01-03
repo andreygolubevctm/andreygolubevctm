@@ -54,6 +54,14 @@ public class LeadFeedData {
 	private String clientIpAddress;
 
 	private String productId = null;
+	private String moreInfoProductCode;
+
+	private String followupIntended;
+
+	private boolean partnerReferenceChange;
+	private String newPartnerReference;
+	private String newPartnerBrand;
+	private String newProductId = null;
 
 	public LeadFeedData(){
 
@@ -179,6 +187,54 @@ public class LeadFeedData {
 		this.productId = productId;
 	}
 
+	public String getMoreInfoProductCode() {
+		return moreInfoProductCode;
+	}
+
+	public void setMoreInfoProductCode(String moreInfoProductCode) {
+		this.moreInfoProductCode = moreInfoProductCode;
+	}
+
+	public String getFollowupIntended() {
+		return followupIntended;
+	}
+
+	public void setFollowupIntended(final String followupIntended) {
+		this.followupIntended = followupIntended;
+	}
+
+	public boolean isPartnerReferenceChange() {
+		return partnerReferenceChange;
+	}
+
+	public void setPartnerReferenceChange(final boolean partnerReferenceChange) {
+		this.partnerReferenceChange = partnerReferenceChange;
+	}
+
+	public String getNewPartnerReference() {
+		return newPartnerReference;
+	}
+
+	public void setNewPartnerReference(final String newPartnerReference) {
+		this.newPartnerReference = newPartnerReference;
+	}
+
+	public String getNewPartnerBrand() {
+		return newPartnerBrand;
+	}
+
+	public void setNewPartnerBrand(final String newPartnerBrand) {
+		this.newPartnerBrand = newPartnerBrand;
+	}
+
+	public String getNewProductId() {
+		return newProductId;
+	}
+
+	public void setNewProductId(final String newProductId) {
+		this.newProductId = newProductId;
+	}
+
 	@Override
 	public String toString() {
 		return "LeadFeedData{" +
@@ -197,6 +253,12 @@ public class LeadFeedData {
 				", vdn='" + vdn + '\'' +
 				", clientIpAddress='" + clientIpAddress + '\'' +
 				", productId='" + productId + '\'' +
+				", moreInfoProductCode='" + moreInfoProductCode + '\'' +
+				", followupIntended='" + followupIntended + '\'' +
+				", partnerReferenceChange=" + partnerReferenceChange +
+				", newPartnerReference='" + newPartnerReference + '\'' +
+				", newPartnerBrand='" + newPartnerBrand + '\'' +
+				", newProductId='" + newProductId + '\'' +
 				'}';
 	}
 }

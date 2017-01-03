@@ -26,6 +26,8 @@ public class CarQuoteRequest {
 
     private Vehicle vehicle;
 
+    private TypeOfCover typeOfCover;
+
     private List<String> providerFilter = new ArrayList<String>();
 
     public String getClientIp() {
@@ -98,5 +100,13 @@ public class CarQuoteRequest {
 
     public void setProviderFilter(List<String> providerFilter) {
         this.providerFilter = providerFilter;
+    }
+
+    public TypeOfCover getTypeOfCover() {
+        return typeOfCover;
+    }
+
+    public void setTypeOfCover(TypeOfCover typeOfCover) {
+        this.typeOfCover = typeOfCover;
     }
 }

@@ -46,14 +46,127 @@
       margin-bottom: 0;
     }
   }
-  // Filter bar on 2 lines otherwise.
-  @media (@sm-only) {
-    #navbar-filter li.dropdown > a {
-      margin-right: 0;
-    }
-  }
 
   #quote_vehicle_selection .spinner {
     margin-right: 40px;
+  }
+
+  #footer p.eslMessage {
+    font-size: 14px;
+  }
+
+  // New filter styles to fit CAR-1304
+  #navbar-filter {
+    .navbar-right {
+      position: relative;
+      &::before {
+        content: '';
+        border-left: 1px solid;
+        height: 26px;
+        margin-top: -13px;
+        position: absolute;
+        top: 50%;
+        left: 0;
+      }
+    }
+
+    li {
+      text-align: center;
+      text-transform: capitalize;
+
+      &.filter-cover-type {
+        width: 209px;
+
+        li {
+          text-align: left;
+        }
+
+        &.skipNewCoverTypes {
+          a {
+            cursor: default;
+            span {
+              color: #fff;
+            }
+
+            .icon {
+              display: none;
+            }
+          }
+        }
+      }
+
+      &.filter-excess {
+        width: 80px;
+
+        &.default-600 {
+          a {
+            cursor: default;
+            span {
+              color: #fff;
+            }
+
+            .icon {
+              display: none;
+            }
+
+            &:hover {
+              background-color: transparent;
+            }
+          }
+        }
+      }
+
+      &.filter-frequency {
+        width: 120px;
+      }
+
+      > a {
+        margin-right: 0;
+        &:not(.btn) {
+          border: none;
+          padding: 10px;
+        }
+
+        &.updateFilters {
+          border-color: #fff;
+          font-size: 10px;
+          margin-top: 6px;
+          margin-left: 10px;
+          padding: 4px 16px;
+          text-transform: uppercase;
+        }
+      }
+
+      &.filter-cover-type {
+        > a {
+          &:not(.btn) {
+            padding: 10px 5px;
+          }
+        }
+      }
+    }
+  }
+
+  &.non-comprehensive-cover {
+    .priceMode .promotion,
+    .bridgingContainer .promotionOffer,
+    .featuresNormalHeader .result-special-offer,
+    .featuresList .comprehensiveOnly,
+    .call-modal .offlineDiscount {
+      display: none !important;
+    }
+
+    #results_v5 {
+      .headers.featuresNormalHeader {
+        .compare-basket,
+        .productSummary {
+          height: 297px;
+
+          @media (@sm) {
+            height: 321px;
+          }
+        }
+      }
+    }
   }
 }

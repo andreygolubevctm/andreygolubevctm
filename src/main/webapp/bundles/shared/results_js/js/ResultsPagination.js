@@ -8,6 +8,9 @@ var ResultsPagination = {
 	$previousButton:null,
 	$pageText: null, //elements to contain text like 'Page 3 of 12'
 
+    $floatedNextButton: null,
+    $floatedPreviousButton: null,
+
 	invalidated:true,
 	currentPageNumber:null,
 	currentPageMeasurements:null,
@@ -33,6 +36,8 @@ var ResultsPagination = {
 		Results.pagination.$nextButton = $('[data-results-pagination-control="next"]');
 		Results.pagination.$previousButton = $('[data-results-pagination-control="previous"]');
 		Results.pagination.$pageText = $('[data-results-pagination-pagetext="true"]').removeClass('hidden');
+        Results.pagination.$floatedNextButton = $('.results-pagination.floated-next-arrow');
+        Results.pagination.$floatedPreviousButton = $('.results-pagination.floated-previous-arrow');
 
 		Results.pagination.setScrollMode();
 
@@ -118,7 +123,13 @@ var ResultsPagination = {
 
 				Results.pagination.empty(Results.pagination.$pagesContainer);
 
+                Results.pagination.$floatedNextButton.addClass('hidden');
+                Results.pagination.$floatedPreviousButton.addClass('hidden');
+
 				if (pageMeasurements.numberOfPages > 1 && pageMeasurements.numberOfPages != Number.POSITIVE_INFINITY) {
+                    Results.pagination.$floatedNextButton.removeClass('hidden');
+                    Results.pagination.$floatedPreviousButton.removeClass('hidden');
+
 					for (var i=0; i<pageMeasurements.numberOfPages; i++) {
 						// Previous Button
 						if(i === 0) {
@@ -154,7 +165,8 @@ var ResultsPagination = {
 				var pageTextTemplate = _.template(Results.settings.templates.pagination.pageText);
 				htmlString = pageTextTemplate({
 					currentPage: Results.pagination.getCurrentPageNumber(),
-					totalPages: pageMeasurements.numberOfPages
+					totalPages: pageMeasurements.numberOfPages,
+					availableCounts: Results.model.availableCounts
 				});
 				Results.pagination.$pageText.html(htmlString);
 			}

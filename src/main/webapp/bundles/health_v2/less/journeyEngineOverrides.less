@@ -41,6 +41,12 @@
 		padding-left: 35px;
 		letter-spacing:.5px;
 	}
+
+	[data-step="results"] {
+		.opening-hours {
+			padding-left: 0px;
+		}
+	}
 }
 .featuresTemplateComponent .content {
 	border-top: 1px solid #fff;
@@ -136,7 +142,8 @@ fieldset > .content,
 	padding: 20px;
 	margin-bottom: 1em;
 
-	.callCentreNumber {
+	.callCentreNumber,
+	.callCentreAppNumber{
 	  color: @theme-secondary;
 	  font-weight: 700;
 	  // Make this slightly bigger than its parent
@@ -176,8 +183,6 @@ body[data-step="start"]{
 			.btn-edit {display:none;}
 		}
 		&.callCentreHelp {display:block;}
-		&.testimonials {display:block;}
-		&.pricePromiseBox {display:block;}
 	}
 	.callCentreAppNumber {
 		display:none !important;
@@ -187,8 +192,6 @@ body[data-step="contact"] {
 	.sidebar-box {
 		&.quoteSnapshot {display:block;}
 		&.callCentreHelp {display:none;}
-		&.testimonials {display:none;}
-		&.pricePromiseBox {display:none;}
 	}
 	.callCentreAppNumber {
 		display:none !important;
@@ -199,7 +202,6 @@ body[data-step="benefits"] {
 		&.quoteSnapshot {display: block;}
 		&.callCentreHelp {display: block;}
 		&.testimonials {display: block;}
-		&.pricePromiseBox {display: block;}
 	}
 	.callCentreAppNumber {
 		display:none !important;
@@ -209,8 +211,6 @@ body[data-step="apply"], body[data-step="payment"] {
 	.sidebar-box {
 		&.quoteSnapshot {display:none;}
 		&.callCentreHelp {display:block;}
-		&.testimonials {display:block;}
-		&.pricePromiseBox {display:block;}
 	}
 	.callCentreNumber {
 		display:none !important;
@@ -225,8 +225,7 @@ body.callCentre {
 	.fieldset-column-side {
 		.sidebar-box.quoteSnapshot,
 		.sidebar-box.callCentreHelp,
-		.sidebar-box.testimonials,
-		.sidebar-box.pricePromiseBox {
+		.sidebar-box.testimonials {
 			display: none !important;
 		}
 	}
@@ -261,5 +260,24 @@ fieldset.health-about-you-title {
 		background: transparent;
 		border:none;
 		box-shadow:none;
+	}
+}
+
+
+body[data-step=start] {
+	a[data-opensavequote] {
+		display:none;
+	}
+}
+
+
+.fieldset-column-side {
+	.sidebar-box.callCentreHelp {
+		.default-content {
+			display: block;
+		}
+		.custom-content {
+			display: none;
+		}
 	}
 }

@@ -11,6 +11,7 @@ import com.ctm.web.core.model.leadfeed.LeadFeedRootTransaction;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.services.ApplicationService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -68,7 +69,7 @@ public class BestPriceLeadsDao {
 					stmt = dbSource.getConnection().prepareStatement(
 						"SELECT h.rootId AS rootId, h.TransactionId AS transactionId, t.type AS type, h.styleCode, h.ipAddress " +
 						"FROM aggregator.transaction_header AS h " +
-						"LEFT JOIN ctm.touches AS t ON t.transaction_id = h.TransactionId AND t.type IN  ('R','BP','CB','A') " +
+						"LEFT JOIN ctm.touches AS t ON t.transaction_id = h.TransactionId AND t.type IN  ('R','BP','CB','A', 'CD', 'BPDD') " +
 						"WHERE h.ProductType = ? AND h.styleCodeId = ? " +
 						// Next line is important as it greatly reduces the size of the recordset and query speed overall
 						"AND t.date >= DATE(CURRENT_DATE - INTERVAL " + minutes_max.toString() + " MINUTE) " +
@@ -92,7 +93,8 @@ public class BestPriceLeadsDao {
 							if(tran.getHasLeadFeed() == false) {
 								stmt = dbSource.getConnection().prepareStatement(
 									"SELECT r.TransactionId AS transactionId, p1.Value AS leadNo, " +
-									"p2.Value AS leadInfo, p3.Value AS brandCode, p1.productId, " +
+									"p2.Value AS leadInfo, p3.Value AS brandCode, p4.Value AS followupIntended, " +
+									"p1.productId, t.productCode AS moreInfoProductCode, " +
 									// This sub-select will count all leads for the rootID which will eliminate
 									// sending duplicates for transactions that span more than one reporting
 									// period - ie greater than the delay to source leads (in previous select)
@@ -100,7 +102,7 @@ public class BestPriceLeadsDao {
 									"		SELECT TransactionId FROM aggregator.transaction_header " +
 									"		WHERE rootId = '" + tran.getId() + "'" +
 									"	) " +
-									"	AND type IN ('BP','CB','A')" +
+									"	AND type IN ('BP','CB','A', 'CD', 'BPDD')" +
 									") AS existingLeadCount " +
 									"FROM aggregator.ranking_details AS r " +
 									"LEFT JOIN aggregator.results_properties AS p1 " +
@@ -109,6 +111,10 @@ public class BestPriceLeadsDao {
 									"	ON p2.transactionId = r.TransactionId AND p2.productId = r.Value AND p2.property = 'leadfeedinfo' " +
 									"LEFT JOIN aggregator.results_properties AS p3  " +
 									"	ON p3.transactionId = r.TransactionId AND p3.productId = r.Value AND p3.property = 'brandCode' " +
+									"LEFT JOIN aggregator.results_properties AS p4  " +
+									"	ON p4.transactionId = r.TransactionId AND p4.productId = r.Value AND p4.property = 'followupIntended' " +
+									" left join (select tp.productCode, t.transaction_id as transactionId from ctm.touches t join ctm.touches_products tp on t.id = tp.touchesId where t.type = 'MoreInfo') as t " +
+									" on t.transactionId = r.transactionId and t.productCode = r.value and r.property = 'productId' " +
 									"WHERE r.TransactionId >= " + tran.getMinTransactionId() + " AND r.TransactionId <= " + tran.getMaxTransactionId() + " " +
 									"	AND r.TransactionId IN (" + tran.toString() + ") " +
 									"	AND r.RankPosition = 0 " +
@@ -125,6 +131,7 @@ public class BestPriceLeadsDao {
 								Boolean searching = true;
 								LeadFeedData leadData = null;
 								while(resultSet.next() && searching == true) {
+
 									Long transactionId = resultSet.getLong("transactionId");
 									String[] leadConcat = resultSet.getString("leadInfo").split("\\|\\|", -1);
 									if(leadConcat.length == 4) {
@@ -156,6 +163,8 @@ public class BestPriceLeadsDao {
 												leadData.setState(state);
 												leadData.setClientIpAddress(tran.getIpAddress());
 												leadData.setProductId(resultSet.getString("productId"));
+												leadData.setMoreInfoProductCode(resultSet.getString("moreInfoProductCode"));
+												leadData.setFollowupIntended(resultSet.getString("followupIntended"));
 
 												Brand brand = ApplicationService.getBrandByCode(tran.getStyleCode());
 												leadData.setBrandId(brand.getId());
@@ -177,6 +186,38 @@ public class BestPriceLeadsDao {
 
 								// Add lead object to the list
 								if(leadData != null) {
+
+									// CAR-1357 - When BUDD is best price AND product is "Budget Direct Gold Comprehensive" AND followupIntended=N AND NOT More Info Best Price
+									if (Vertical.VerticalType.CAR.getCode().equals(vertical.getCode())
+											&& StringUtils.equals("BUDD", leadData.getPartnerBrand())
+											&& StringUtils.equals("BUDD-05-04", leadData.getProductId()) //  Budget Direct Gold Comprehensive
+											&& StringUtils.equals("N", leadData.getFollowupIntended())
+											&& StringUtils.isBlank(leadData.getMoreInfoProductCode())) {
+										// Alter brandCode, productId and partnerReference to EXDD
+
+										stmt = dbSource.getConnection().prepareStatement(
+												"SELECT p1.Value AS brandCode, p2.Value AS leadNumber, p3.Value AS productId " +
+												"FROM aggregator.results_properties p1 " +
+												"	LEFT JOIN aggregator.results_properties p2 " +
+												"		ON p2.transactionId = p1.transactionId AND p2.productId = p1.productId AND p2.property = 'leadNo' " +
+												"	LEFT JOIN aggregator.results_properties p3 " +
+												"		ON p3.transactionId = p1.transactionId AND p3.productId = p1.productId AND p3.property = 'productId' " +
+												"WHERE p1.transactionId = ? AND p1.productId = ? AND p1.property = 'brandCode'");
+
+										stmt.setLong(1, leadData.getTransactionId());
+										stmt.setString(2, "EXDD-05-04");
+
+										resultSet = stmt.executeQuery();
+										while(resultSet.next()) {
+											// NOTE: leadData brandId should not change as we are sending the lead using BUDD credentials.
+											leadData.setNewPartnerBrand(resultSet.getString("brandCode"));
+											leadData.setNewPartnerReference(resultSet.getString("leadNumber"));
+											leadData.setNewProductId(resultSet.getString("productId"));
+											leadData.setPartnerReferenceChange(true);
+										}
+
+									}
+
 									leads.add(leadData);
 								}
 							}

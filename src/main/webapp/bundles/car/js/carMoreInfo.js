@@ -40,6 +40,11 @@
 					callback: function (eventObject) {
 						$(eventObject.currentTarget).closest('.modal').modal('hide');
 					}
+				},
+				rightBtn: {
+					label: 'SAVE QUOTE',
+					className: 'btn-sm btn-save',
+					callback: meerkat.modules.saveQuote.openAsModal
 				}
 			},
 			runDisplayMethod: runDisplayMethod,
@@ -312,7 +317,7 @@
 		if(obj.available !== "Y")
 			return;
 
-		if (meerkat.modules.splitTest.isActive(8)) {
+		if (meerkat.modules.splitTest.isActive(8) && Results.getDisplayMode() === 'price') {
 			callActionsToggle(event, $el, obj);
 			return;
 		}
@@ -354,7 +359,7 @@
 		};
 
 		if(meerkat.modules.deviceMediaState.get() == 'xs') {
-			modalOptions.title = "Reference no. " + obj.leadNo;
+			modalOptions.title = "Reference no. " + obj.quoteNumber;
 		}
 
 		callbackModalId = meerkat.modules.dialogs.show(modalOptions);
@@ -442,15 +447,14 @@
 			prodId = $el.attr('data-productId'),
 			obj = Results.getResultByProductId(prodId),
 			monthlyPremiumSplit = obj.price.monthlyPremium.toString().split('.'),
-			annualPremiumSplit = obj.price.annualPremium.toString().split('.'),
 			priceObj = {
 				monthly: {
 					dollars: monthlyPremiumSplit[0],
 					cents: monthlyPremiumSplit[1] ? '.' + monthlyPremiumSplit[1] : ''
 				},
 				annual: {
-					dollars: annualPremiumSplit[0],
-					cents: annualPremiumSplit[1] ? '.' + annualPremiumSplit[1] : ''
+					dollars: obj.price.annualPremiumFormatted,
+					cents: ''
 				}
 			},
 			$frequencyAmount = $('.frequencyAmount[data-productId=' + prodId + ']');
@@ -477,7 +481,7 @@
 	function onBeforeShowBridgingPage() {
 		setScrollPosition();
 		if (meerkat.modules.deviceMediaState.get() != 'xs') {
-			$('.resultsContainer, #navbar-filter, #navbar-compare').hide();
+			$('.resultsContainer, #navbar-filter, #navbar-compare, #navbar-filter-labels').hide();
 		}
 	}
 
@@ -508,7 +512,7 @@
 	 * Called within meerkat.modules.moreInfo.hideTemplate
 	 */
 	function onAfterHideTemplate() {
-		$('.resultsContainer, #navbar-filter, #navbar-compare').show();
+		$('.resultsContainer, #navbar-filter, #navbar-compare, #navbar-filter-labels').show();
 		$(window).scrollTop(scrollPosition);
 
 		if (meerkat.modules.splitTest.isActive(8)) {
@@ -652,7 +656,8 @@
 			productName: product.productName,
 			productBrandCode: product.brandCode,
 			brand: product.providerProductName,
-			noSaleLead: leadFeed
+			noSaleLead: leadFeed,
+			verticalFilter: meerkat.modules.car.getVerticalFilter()
 		});
 
 		return true;
@@ -695,7 +700,8 @@
 			quoteReferenceNumber: product.quoteNumber,
 			productID: product.productId,
 			productName: product.productName,
-			productBrandCode: product.brandCode
+			productBrandCode: product.brandCode,
+			verticalFilter: meerkat.modules.car.getVerticalFilter()
 		}, false, false);
 	}
 
@@ -713,6 +719,7 @@
 
 		var settings = {
 			additionalTrackingData: {
+				verticalFilter: meerkat.modules.car.getVerticalFilter(),
 				productName: meerkat.modules.moreInfo.getOpenProduct().productName
 			}
 		};

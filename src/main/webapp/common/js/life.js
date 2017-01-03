@@ -275,10 +275,6 @@ var LifeQuote = {
 				prod.priceHTML = LifeQuote.getPriceHTML( prod.price );
 				prod.priceFrequency = LifeQuote.getPremiumFrequencyTerm();
 				prod.thumb = prod.company.toLowerCase().replace(" ", "_") + ".png";
-				
-				if(!LifeQuote.isOzicare(prod.company)) {
-					prod.pds = "/static/pds/life/" + decodeURI(prod.pds.split("/").pop()).replace(/ /g, "_");
-				}
 
 				return prod;
 			}
@@ -874,7 +870,7 @@ var LifeQuote = {
 				transactionId: 			referenceNo.getTransactionID(),
 				lead_number:			products.hasOwnProperty('primary') ? products.primary.lead_number : products.partner.lead_number,
 				company:				products.hasOwnProperty('primary') ? products.primary.company : products.partner.company,
-				partnerBrand:			products.primary.company
+				partnerBrand:			products.hasOwnProperty('primary') ? products.primary.company : ""
 			};
 
 			if(LifeQuote.isOzicare(data.company.toLowerCase())) {

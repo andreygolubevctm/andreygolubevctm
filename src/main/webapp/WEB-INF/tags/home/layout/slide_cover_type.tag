@@ -10,10 +10,6 @@
 
 		<jsp:attribute name="rightColumn">
 			<home:snapshot />
-			<ui:bubble variant="info">
-				<h4>Looking for Landlords Insurance?</h4>
-				<p>You'll be given a chance to add this during the application stage, so for now please select "Home Cover Only".</p>
-			</ui:bubble>
 		</jsp:attribute>
 
 		<jsp:body>
@@ -22,8 +18,6 @@
 				<%-- PROVIDER TESTING --%>
 				<agg_v1:provider_testing xpath="${xpath}" displayFullWidth="true" keyLabel="authToken" filterProperty="providerList" hideSelector="${false}" />
 
-			<c:choose>
-			<c:when test="${brochurewarePassedParams}">
 				<form_v2:fieldset legend="Cover for your home">
 
 					<%-- Own the home --%>
@@ -46,18 +40,6 @@
 					</form_v2:row>
 
 				</form_v2:fieldset>
-			</c:when>
-			<c:otherwise>
-
-				<ui:bubble variant="chatty">
-					<h4>Your Home, Your Contents</h4>
-					<p>Tell us about your home and/or contents to compare quotes from our participating providers.</p>
-				</ui:bubble>
-
-				<home:cover_type />
-
-			</c:otherwise>
-			</c:choose>
 
 			</layout_v1:slide_content>
 

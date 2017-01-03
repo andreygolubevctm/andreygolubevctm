@@ -11,53 +11,57 @@
 
 ;(function($, undefined){
 
-	var meerkat = window.meerkat;
+    var meerkat = window.meerkat;
 
     var dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-	var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    var shortMonthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
     var token = /d{1,4}|M{1,4}|YY(?:YY)?|S{1,3}|Do|ZZ|([HhMsDm])\1?|[aA]|"[^"]*"|'[^']*'/g;
     var twoDigits = /\d\d?/;
     var fourDigits = /\d{4}/;
 
-	var formatFlags = {
-        D: function(dateObj) {
-            return dateObj.getDate();
+    var formatFlags = {
+            D: function(dateObj) {
+                return dateObj.getDate();
+            },
+            DD: function(dateObj) {
+                return pad(dateObj.getDate());
+            },
+            Do: function(dateObj) {
+                return doFn(dateObj.getDate());
+            },
+            MMMM: function(dateObj) {
+                return monthNames[dateObj.getMonth()];
+            },
+            MMM: function(dateObj) {
+                return shortMonthNames[dateObj.getMonth()];
+            },
+            YYYY: function(dateObj) {
+                return dateObj.getFullYear();
+            },
+            MM: function(dateObj) {
+                return pad(dateObj.getMonth() + 1);
+            },
+            dddd: function(dateObj) {
+                return dayNames[dateObj.getDay()];
+            }
         },
-        DD: function(dateObj) {
-            return pad(dateObj.getDate());
-        },
-        Do: function(dateObj) {
-            return doFn(dateObj.getDate());
-        },
-		MMMM: function(dateObj) {
-			return monthNames[dateObj.getMonth()];
-		},
-		YYYY: function(dateObj) {
-			return dateObj.getFullYear();
-		},
-		MM: function(dateObj) {
-			return pad(dateObj.getMonth() + 1);
-		},
-        dddd: function(dateObj) {
-            return dayNames[dateObj.getDay()];
-        }
-	},
         masks = {
-        formDate: "DD/MM/YYYY",
-        serverDate : "YYYY-MM-DD",
-        longDate : "dddd, D MMMM YYYY"
-    },
+            formDate: "DD/MM/YYYY",
+            serverDate : "YYYY-MM-DD",
+            longDate : "dddd, D MMMM YYYY"
+        },
         parseFlags = {
-        D: [twoDigits, function (d, v) {
-            d.day = v;
-        }],
-        M: [twoDigits, function (d, v) {
-            d.month = v - 1;
-        }],
-        YYYY: [fourDigits, function (d, v) {
-            d.year = v;
-        }]
-    };
+            D: [twoDigits, function (d, v) {
+                d.day = v;
+            }],
+            M: [twoDigits, function (d, v) {
+                d.month = v - 1;
+            }],
+            YYYY: [fourDigits, function (d, v) {
+                d.year = v;
+            }]
+        };
     parseFlags.DD = parseFlags.D;
     parseFlags.MM = parseFlags.M;
 
@@ -67,28 +71,28 @@
     }
 
     function pad(val, len) {
-		val = String(val);
-		len = len || 2;
-		while (val.length < len) {
-			val = '0' + val;
-		}
-		return val;
-	}
+        val = String(val);
+        len = len || 2;
+        while (val.length < len) {
+            val = '0' + val;
+        }
+        return val;
+    }
 
-	function format(dateObj, mask){
+    function format(dateObj, mask){
 
-		if (typeof dateObj === 'number') {
-			dateObj = new Date(dateObj);
-		}
+        if (typeof dateObj === 'number') {
+            dateObj = new Date(dateObj);
+        }
 
-		if (Object.prototype.toString.call(dateObj) !== '[object Date]' || isNaN(dateObj.getTime())) {
-			throw new Error('Invalid Date in format');
-		}
+        if (Object.prototype.toString.call(dateObj) !== '[object Date]' || isNaN(dateObj.getTime())) {
+            throw new Error('Invalid Date in format');
+        }
 
-		return mask.replace(token, function ($0) {
-			return $0 in formatFlags ? formatFlags[$0](dateObj) : $0.slice(1, $0.length - 1);
-		});
-	}
+        return mask.replace(token, function ($0) {
+            return $0 in formatFlags ? formatFlags[$0](dateObj) : $0.slice(1, $0.length - 1);
+        });
+    }
 
     /**
      * Parse a date string into an object, changes - into /
@@ -163,13 +167,13 @@
         }
     }
 
-	meerkat.modules.register('dateUtils', {
-		format  : format,
+    meerkat.modules.register('dateUtils', {
+        format  : format,
         parse : parse,
         returnDate: returnDate,
         dateValueLongFormat : dateValueLongFormat,
         dateValueServerFormat : dateValueServerFormat,
         dateValueFormFormat : dateValueFormFormat
-	});
+    });
 
 })(jQuery);

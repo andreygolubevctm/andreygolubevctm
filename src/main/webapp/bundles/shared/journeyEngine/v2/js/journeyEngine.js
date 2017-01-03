@@ -10,7 +10,8 @@
 				STEP_CHANGED: 'STEP_CHANGED',
 				STEP_INIT: 'STEP_INIT',
 				READY: 'JOURNEY_READY',
-				STEP_VALIDATION_ERROR: 'STEP_VALIDATION_ERROR'
+				STEP_VALIDATION_ERROR: 'STEP_VALIDATION_ERROR',
+				EXTERNAL: 'TRACKING_EXTERNAL'
 			}
 		},
 		moduleEvents = events.journeyEngine;
@@ -215,10 +216,10 @@
 						if(currentStep.onBeforeLeave !== null) currentStep.onBeforeLeave(eventObject);
 						if(currentStep.onAfterLeave !== null) currentStep.onAfterLeave(eventObject);
 
-							// continue to next step...
-							_.defer(function () {
-								processStep(index + 1, callback);
-							});
+						// continue to next step but allow sufficient time to complete render...
+						_.delay(function () {
+							processStep(index + 1, callback);
+						},200);
 
 					});
 				}catch(e){
@@ -291,9 +292,16 @@
 
 					}else{
 						// Most likely this event was triggered directly by a hash change, validation must be performed now.
-						validateStep(currentStep, function afterValidation(){
+						var callback = _.bind(validateStep, this, currentStep, function afterValidation(){
 							_goToStep(step, eventObject);
 						});
+						// When moving forward from the first slide - delay by 500ms to allow all tracking calls to complete
+						// Is VERY IMPORTANT for ensuring quote starts tracked correctly
+						if(!_.isEmpty(currentStep) && !_.isEmpty(step) && currentStep.slideIndex === 0 && step.slideIndex > 0) {
+							_.delay(callback,500);
+						} else {
+							callback();
+						}
 					}
 
 
@@ -542,11 +550,13 @@
 				// Mark fields as visible
 				meerkat.modules.form.markFieldsAsVisible($slide);
 
-				var isValid = true;
+				var isValid = true,
+					errorList = [];
 				$slide.find( "form" ).each(function( index, element ) {
 					var $element = $(element);
 					var formValid = $element.valid();
 					if(formValid === false) isValid = false;
+					errorList = $.merge(errorList, $element.validate().errorList);
 				});
 
 				if(isAlreadyVisible === false) $slide.removeClass("active").addClass('hiddenSlide');
@@ -554,7 +564,6 @@
 					if(typeof failureCallback === 'function') {
 						failureCallback();
 					}
-					meerkat.messaging.publish(moduleEvents.STEP_VALIDATION_ERROR, step);
 					throw "Validation failed on "+step.navigationId;
 				}
 			}
@@ -568,7 +577,6 @@
 						if(typeof failureCallback === 'function') {
 							failureCallback();
 						}
-						meerkat.messaging.publish(moduleEvents.STEP_VALIDATION_ERROR, step);
 						throw "Custom validation failed on "+step.navigationId;
 					}
 				});
@@ -601,7 +609,6 @@
 	}
 
 	function onSlideControlClick(eventObject) {
-
 		var $target = $(eventObject.currentTarget);
 
 		// If button is disabled do not action it
@@ -710,7 +717,7 @@
 	 */
 	function logValidationErrors() {
 
-		var data = [], i = 0;
+		var data = [], i = 0, errorList = [];
 
 		data.push({
 			name: 'stepId',
@@ -722,18 +729,45 @@
 			value: meerkat.modules.optIn.isPrivacyOptedIn()
 		});
 
-		$('.error-field:visible', '.journeyEngineSlide.active').each(function() {
-			var $label = $(this).find('label'),
-				xpath = $label.attr('for');
-			if(typeof xpath === 'undefined') {
-				return;
-			}
-			data.push({
-				name: xpath,
-				value: getValue($(':input[name='+xpath+']')) + "::" + $label.text()
-			});
-			i++;
+		$(".journeyEngineSlide.active form" ).each(function( index, element ) {
+			var $element = $(element);
+			errorList = $.merge(errorList, $element.validate().errorList);
 		});
+
+
+		if (errorList.length > 0) {
+			var filteredErrorList = errorList.filter(function(errorObj) {
+				var $element = $(errorObj.element);
+
+				return !$element.hasClass('dontSubmit') ? true : false;
+			});
+
+			if (filteredErrorList.length > 0) {
+				filteredErrorList.forEach(function (errorObj, index) {
+					var xpath = errorObj.element.id,
+						validationMessage = errorObj.message;
+
+					if (index < 5) {
+						meerkat.messaging.publish(moduleEvents.EXTERNAL, {
+							method: 'errorTracking',
+							object: {
+								error: {
+									name: xpath,
+									validationMessage: validationMessage
+								}
+							}
+						});
+					}
+
+					data.push({
+						name: xpath,
+						value: errorObj.element.value + "::" + validationMessage
+					});
+
+					i++;
+				});
+			}
+		}
 
 		if(i === 0) {
 			return false;
