@@ -2,7 +2,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<div id="redemptionForm" class="form-horizontal">
+<form id="redemptionForm" class="form-horizontal">
     <fieldset class="qe-window fieldset">
         <div class="row">
             <c:choose>
@@ -32,7 +32,7 @@
             </div>
         </div>
         <div class="form-group row fieldrow clear required_input">
-            <label for="redemption_gift" class="col-sm-5 col-xs-10 control-label">Please select your reward</label>
+            <label for="redemption_gift" class="col-sm-4 col-xs-10 control-label">Please select your reward</label>
             <div class="col-sm-6 col-xs-12 row-content">
                 <div class="btn-tile btn-group btn-group-justified" data-toggle="radio">
                     <%--{{ for(var i in providers) { }}--%>
@@ -50,28 +50,28 @@
         </div>
 
         <div class="form-group row fieldrow clear required_input">
-            <label for="redemption_firstname" class="col-sm-5 col-xs-10 control-label">First name</label>
+            <label for="redemption_firstname" class="col-sm-4 col-xs-10 control-label">First name</label>
             <div class="col-sm-6 col-xs-12 row-content">
                 <input type="text" name="redemption_firstname" id="redemption_firstname" class="form-control" data-rule-personname="true" required="required" data-msg-required="Please enter First Name" />
             </div>
         </div>
 
         <div class="form-group row fieldrow clear required_input">
-            <label for="redemption_lastname" class="col-sm-5 col-xs-10 control-label">Last name</label>
+            <label for="redemption_lastname" class="col-sm-4 col-xs-10 control-label">Last name</label>
             <div class="col-sm-6 col-xs-12 row-content">
                 <input type="text" name="redemption_lastname" id="redemption_lastname" class="form-control" data-rule-personname="true" required="required" data-msg-required="Please enter Last Name" />
             </div>
         </div>
 
         <div class="form-group row fieldrow clear">
-            <label for="redemption_businessname" class="col-sm-5 col-xs-10 control-label">Business name</label>
+            <label for="redemption_businessname" class="col-sm-4 col-xs-10 control-label">Business name</label>
             <div class="col-sm-6 col-xs-12 row-content">
                 <input type="text" name="redemption_businessname" id="redemption_businessname" class="form-control" />
             </div>
         </div>
 
         <group_v2:elastic_address
-                xpath="redemption/businessname"
+                xpath="redemption/address"
                 type="P"
                 suburbNameAdditionalAttributes=" autocomplete='false'"
                 suburbAdditionalAttributes=" autocomplete='false'"
@@ -80,14 +80,14 @@
         />
 
         <div class="form-group row fieldrow clear required_input">
-            <label for="redemption_phonenumber" class="col-sm-5 col-xs-10 control-label">Phone number</label>
+            <label for="redemption_phonenumber" class="col-sm-4 col-xs-10 control-label">Phone number</label>
             <div class="col-sm-6 col-xs-12 row-content">
                 <input type="text" name="redemption_phonenumber" id="redemption_phonenumber" title="" class="form-control contact_telno phone  placeholder flexiphone" pattern="[0-9]*" placeholder="(0x) xxxx xxxx or 04xx xxx xxx" required="required" data-msg-required="Please enter the phone number" data-rule-validateflexitelno="true" data-msg-validateflexitelno="Please enter the phone number in the format (0x)xxxx xxxx for landline or 04xx xxx xxx for mobile" maxlength="20" />
             </div>
         </div>
 
         <div class="form-group row fieldrow clear required_input">
-            <label for="redemption_email" class="col-sm-5 col-xs-10 control-label">Email address</label>
+            <label for="redemption_email" class="col-sm-4 col-xs-10 control-label">Email address</label>
             <div class="col-sm-6 col-xs-12 row-content">
                 <span>
                     <input name="redemption_email" id="redemption_email" class="form-control email" size="50" required="required" type="email" data-msg-required="Please enter your email address" data-loadinganimation="after">
@@ -101,7 +101,7 @@
         </div>
 
         <div class="form-group row fieldrow clear required_input">
-            <label for="redemption_signature" class="col-sm-5 col-xs-10 control-label">Signature on delivery?</label>
+            <label for="redemption_signature" class="col-sm-4 col-xs-10 control-label">Signature on delivery?</label>
             <div class="col-sm-6 col-xs-12 row-content">
                 <div class="btn-group btn-group-justified btn-group-wrap" data-toggle="radio">
                     <label class="btn btn-form-inverse">
@@ -116,4 +116,4 @@
             <button type="button" class="crud-save-entry btn btn-secondary">Save</button>
         </div>
     </fieldset>
-</div>
+</form>

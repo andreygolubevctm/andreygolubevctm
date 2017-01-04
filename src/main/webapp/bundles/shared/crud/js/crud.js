@@ -6,6 +6,13 @@
 	
 	var meerkat = window.meerkat,
 		log = meerkat.logging.info;
+
+    var events = {
+            crud: {
+                CRUD_MODAL_OPENED: 'CRUD_MODAL_OPENED'
+            }
+        },
+        moduleEvents = events.crud;
 	
 	var loadingOverlayHTML = [
 			"<div id='crud-loading-overlay'>",
@@ -176,6 +183,8 @@
 			else
 				that.save(data, $targetRow);
 		});
+
+        meerkat.messaging.publish(moduleEvents.CRUD_MODAL_OPENED, { modalId: this.modalId });
 	};
 	
 	/**
@@ -416,7 +425,8 @@
 	
 	meerkat.modules.register('crud', {
 		init: init,
-		newCRUD: dataCRUD
+		newCRUD: dataCRUD,
+        events: events
 	});
 	
 })(jQuery);

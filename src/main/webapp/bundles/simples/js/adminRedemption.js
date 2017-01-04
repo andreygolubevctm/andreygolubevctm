@@ -4,6 +4,7 @@
 ;(function($, undefined){
 
     var meerkat = window.meerkat;
+    var meerkatEvents = meerkat.modules.events;
     var CRUD;
 
     function init() {
@@ -11,7 +12,7 @@
             if($("#simples-redemption-details-container").length) {
                 CRUD = new meerkat.modules.crud.newCRUD({
                     baseURL: "../../admin/redemption",
-                    primaryKey: "orderId",
+                    primaryKey: "encryptedOrderId",
                     models: {
                         datum: function(data) {
                             return {
@@ -28,6 +29,9 @@
 
                 // CRUD.get();
 
+                meerkat.messaging.subscribe(meerkatEvents.crud.CRUD_MODAL_OPENED, function initRedemptionForm(modalId) {
+                    meerkat.modules.redemptionForm.initRedemptionForm(modalId, '/ctm/');
+                });
             }
         });
     }

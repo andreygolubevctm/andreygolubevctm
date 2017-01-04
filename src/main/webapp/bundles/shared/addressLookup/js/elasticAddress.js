@@ -8,6 +8,9 @@
             elasticAddress: {}
         },
         moduleEvents = events.elasticAddress;
+
+    var baseURL = '';
+
     /**
      * List of elements that are referenced by this plugin
      * @type {{autofilllessSearchInput: string, autofilllessSearchFieldRow: string, nonStdCheckbox: string, lastSearchHidden: string, fullAddressLineOneHidden: string, fullAddressHidden: string, allNonStdFieldRows: string, lookupStreetNameHidden: string, lookupStreetIdHidden: string, lookupUnitTypeHidden: string, lookupPostCodeHidden: string, lookupUnitSelHidden: string, lookupHouseNoSelHidden: string, lookupSuburbNameHidden: string, lookupStateHidden: string, lookupDpIdHidden: string, nonStdPostCodeInput: string, nonStdSuburbInput: string, nonStdStreetNameInput: string, nonStdStreetNumInput: string, nonStdUnitShopInput: string, nonStdUnitTypeInput: string}}
@@ -40,28 +43,32 @@
     function initElasticAddress() {
 
         $(document).ready(function ($) {
-
-            $('.elasticSearchTypeaheadComponent').each(function () {
-                var $el = $(this);
-                var options = {
-                    name: $el.attr('data-address-id'),
-                    addressType: $el.attr('data-search-type'),
-                    streetNum: $el.attr('data-address-streetNum'),
-                    unitShop: $el.attr('data-address-unitShop')
-                };
-                if($el.attr('data-suburbSeqNo') !== "" && typeof $el.attr('data-suburbSeqNo') != "undefined") {
-                    options.suburbSeqNo = $el.attr('data-suburbSeqNo');
-                }
-                $el.elasticAddress(options);
-            });
-
+            setupElasticAddressPlugin();
         });
 
     }
 
+    function setupElasticAddressPlugin(baseURL) {
+        $('.elasticSearchTypeaheadComponent').each(function () {
+            var $el = $(this);
+            var options = {
+                name: $el.attr('data-address-id'),
+                addressType: $el.attr('data-search-type'),
+                streetNum: $el.attr('data-address-streetNum'),
+                unitShop: $el.attr('data-address-unitShop'),
+                baseURL: baseURL || ''
+            };
+            if($el.attr('data-suburbSeqNo') !== "" && typeof $el.attr('data-suburbSeqNo') != "undefined") {
+                options.suburbSeqNo = $el.attr('data-suburbSeqNo');
+            }
+            $el.elasticAddress(options);
+        });
+    }
+
     meerkat.modules.register("elasticAddress", {
         init: initElasticAddress,
-        events: events
+        setupElasticAddressPlugin: setupElasticAddressPlugin,
+        events: events,
     });
 
     /**
@@ -247,7 +254,7 @@
                 context.options.userStartedTyping = false;
 
                 // STREET
-                var url = "address/search.json?query=" + elements.autofilllessSearchInput.val();
+                var url = this.options.baseURL + "address/search.json?query=" + elements.autofilllessSearchInput.val();
 
                 elements.lastSearchHidden.val(elements.autofilllessSearchInput.val());
 
@@ -336,7 +343,7 @@
             address.postCode = typeof postcode == 'undefined' ? "" : postcode.toUpperCase();
             if (address.suburbSequence !== "" && address.streetName !== "") {
                 meerkat.modules.comms.post({
-                    url: "ajax/json/address/get_address.jsp",
+                    url: this.options.baseURL + "ajax/json/address/get_address.jsp",
                     data: {
                         postCode: address.postCode,
                         suburbSequence: address.suburbSequence,
@@ -470,7 +477,7 @@
 
             var self = this;
             meerkat.modules.comms.get({
-                url: "ajax/json/address/get_suburbs.jsp",
+                url: this.options.baseURL + "ajax/json/address/get_suburbs.jsp",
                 cache: true,
                 dataType: 'json',
                 errorLevel: "silent",
