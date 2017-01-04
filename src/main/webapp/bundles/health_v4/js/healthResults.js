@@ -12,7 +12,7 @@
         maxMilliSecondsForMessage = $("#maxMilliSecToWait").val(),
         resultsStepIndex = 3,
         $openingHours = null,
-
+        pinnedProductId,
         templates = {
             premiumsPopOver: '{{ if(product.premium.hasOwnProperty(frequency)) { }}' +
             '<strong>Total Price including rebate and LHC: </strong><span class="highlighted">{{= product.premium[frequency].text }}</span><br/> ' +
@@ -84,6 +84,23 @@
 
         breakpointTracking();
 
+        applyEventListeners();
+    }
+
+    function applyEventListeners() {
+        $(document).off('click.pin-result').on('click.pin-result', '.pin-result', function (e) {
+            Results.unpinProduct(pinnedProductId);
+            if ((pinnedProductId = $(this).data('productid'))) {
+                Results.pinProduct(pinnedProductId, function (productId, $pinnedResultRow) {
+                    $pinnedResultRow.addClass('pinned').removeClass('not-pinned').css({ left: 'auto', top: 'auto' });
+                    $pinnedResultRow.removeAttr('data-position').removeAttr('id').removeAttr('data-sort');
+                    $pinnedResultRow.find('.pin-result').addClass('unpin-result').removeClass('pin-result');
+                    $pinnedResultRow.find('.unpin-result:first a').html('Unpin').attr('title', 'Unpin this result');
+                });
+            }
+        }).off('click.unpin-result').on('click.unpin-result', '.unpin-result', function (e) {
+            Results.unpinProduct(pinnedProductId);
+        });
     }
 
     function onReturnToPage() {
@@ -100,7 +117,6 @@
 
         var frequencyValue = $('#health_filter_frequency').val();
         frequencyValue = meerkat.modules.healthResults.getFrequencyInWords(frequencyValue) || 'monthly';
-
 
         try {
 
@@ -121,6 +137,7 @@
                     brand: "info.Name",
                     productBrandCode: "info.providerName", // for tracking
                     productId: "productId",
+                    isPinned: "isPinned",
                     productTitle: "info.productTitle",
                     productName: "info.productTitle", // for tracking
                     price: { // result object path to the price property
@@ -239,8 +256,24 @@
         }
     }
 
+    // After the results have been fetched, force data onto it to support our Results engine.
+    function _massageResultsObject(products) {
+        _.each(products, function massageJson(result, index) {
+            // Add properties
+            result.isPinned = 'N';
+        });
+        return products;
+    }
 
     function eventSubscriptions() {
+
+        // Model updated, make changes before rendering
+        meerkat.messaging.subscribe(Results.model.moduleEvents.RESULTS_MODEL_UPDATE_BEFORE_FILTERSHOW, function modelUpdated() {
+            Results.model.returnedProducts = _massageResultsObject(Results.model.returnedProducts);
+
+            // Populating sorted products is a trick for HML due to setting sortBy:false
+            Results.model.sortedProducts = Results.model.returnedProducts;
+        });
 
         var tStart = 0;
 

@@ -338,9 +338,9 @@ var ResultsPagination = {
 		}
 
 		var pageWidth = columnWidth * columnsPerPage;
-
 		var obj = {
 			pageWidth: pageWidth,
+			columnWidth: columnWidth,
 			columnsPerPage:columnsPerPage,
 			numberOfColumns:numberOfColumns,
 			numberOfPages: Math.ceil(numberOfColumns/columnsPerPage)
@@ -583,7 +583,7 @@ var ResultsPagination = {
 		Results.pagination.lock();
 
 		var fullWidth = Results.view.$containerElement.parent().width();
-		var $row = $(Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows).first();
+		var $row = $(Results.settings.elements.resultsOverflow + " " + Results.settings.elements.rows).first();
 		var widthAllColumns = (Results.settings.pagination.useSubPixelWidths ? Results.pagination.getSubPixelWidth($row) : $row.outerWidth(true)) * $(Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + ".notfiltered").length;
 		var scrollWidth = fullWidth * Results.settings.animation.features.scroll.percentage;
 		var currentScroll = ResultsUtilities.getScroll('x', Results.view.$containerElement);
