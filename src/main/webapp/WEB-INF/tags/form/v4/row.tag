@@ -22,16 +22,21 @@
 <c:if test="${empty helpId}"><c:set var="showHelpIcon" value="${false}" /></c:if>
 <c:set var="showLabel" value="${true}" />
 <c:if test="${empty label or label eq '' or label eq 'empty'}"><c:set var="showLabel" value="${false}" /></c:if>
-<c:set var="inputWidthSm" value="8" />
-<c:if test="${not empty smRowOverride}"><c:set var="inputWidthSm" value="${smRowOverride}" /></c:if>
+<c:set var="inputWidthSm" value="8 " />
+<c:if test="${not empty smRowOverride}"><c:set var="inputWidthSm" value="${smRowOverride} " /></c:if>
 <c:set var="labelWidthXs" value="10" />
 <c:if test="${showHelpIcon eq false}"><c:set var="labelWidthXs" value="12" /></c:if>
 <c:set var="formGroupClasses" value="" />
-<c:if test="${not isNestedField eq true}"><c:set var="formGroupClasses" value="form-group row " /></c:if>
+<c:set var="labelClass" value="hidden-sm hidden-md hidden-lg" />
+<c:if test="${not isNestedField eq true}">
+    <c:set var="formGroupClasses" value="form-group row " />
+    <c:set var="labelClass" value="" />
+</c:if>
 <c:set var="inputClass" value=" " />
 <c:if test="${isNestedStyleGroup eq true}">
     <c:set var="formGroupClasses" value="nestedGroup form-group " />
     <c:set var="inputClass" value="row " />
+    <c:set var="labelClass" value="hidden-xs" />
 </c:if>
 <c:set var="inputOffsetSm" value="" />
 <c:if test="${showLabel eq false}"><c:set var="inputOffsetSm" value="col-sm-offset-4 " /></c:if>
@@ -40,7 +45,7 @@
 <div class="${formGroupClasses} fieldrow ${className}"<c:if test="${not empty id}"> id="${id}"</c:if>>
     <%-- Row Label --%>
     <c:if test="${showLabel}">
-        <div class="col-xs-<c:out value="${labelWidthXs} " /> col-sm-4">
+        <div class="col-xs-<c:out value="${labelWidthXs} " /> col-sm-4 <c:out value="${labelClass}" />">
             <field_v2:label value="${label}" xpath="${fieldXpath}" addForAttr="${addForAttr}" />
             <c:if test="${not empty subLabel}"><div class="control-sub-label">${subLabel}</div></c:if>
             <c:if test="${showHelpIcon eq true}"><div class="hidden-xs text-right">

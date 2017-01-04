@@ -5,8 +5,16 @@
 <layout_v3:slide formId="applicationDetailsForm" nextLabel="Next Step">
 
     <layout_v3:slide_content>
+        <form_v3:fieldset_columns sideHidden="true">
 
-        NEW APPLICATION CODE....
+            <jsp:attribute name="rightColumn">
+			    <health_v1:policySummary showProductDetails="true" />
+            </jsp:attribute>
+
+            <jsp:body>
+                <health_v4_application:your_details />
+            </jsp:body>
+        </form_v3:fieldset_columns>
 
     </layout_v3:slide_content>
 

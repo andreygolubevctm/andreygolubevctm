@@ -349,6 +349,7 @@
             },
             onInitialise: function onApplyInit(event) {
                 /** @todo implement from health.js when get to this step */
+                meerkat.modules.healthApplyStep.onInitialise();
             },
             onBeforeEnter: function beforeEnterApplyStep(event) {
                 /** @todo implement from health.js when get to this step */
