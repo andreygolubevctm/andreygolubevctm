@@ -77,6 +77,7 @@
                 suburbAdditionalAttributes=" autocomplete='false'"
                 postCodeNameAdditionalAttributes=" autocomplete='false'"
                 postCodeAdditionalAttributes=" autocomplete='false'"
+                addRequiredAsterisk="true"
         />
 
         <div class="form-group row fieldrow clear required_input">
@@ -91,11 +92,6 @@
             <div class="col-sm-6 col-xs-12 row-content">
                 <span>
                     <input name="redemption_email" id="redemption_email" class="form-control email" size="50" required="required" type="email" data-msg-required="Please enter your email address" data-loadinganimation="after">
-                    <div class="spinner">
-                        <div class="bounce1"></div>
-                        <div class="bounce2"></div>
-                        <div class="bounce3"></div>
-                    </div>
                 </span>
             </div>
         </div>
@@ -112,8 +108,10 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <button type="button" class="crud-save-entry btn btn-secondary">Save</button>
+        <div class="row text-right">
+            <div class="col-sm-10">
+                <button type="button" class="crud-save-entry btn btn-secondary">Save</button>
+            </div>
         </div>
     </fieldset>
 </form>
