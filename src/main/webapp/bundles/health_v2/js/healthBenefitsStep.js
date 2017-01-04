@@ -49,7 +49,6 @@
             $healthSitu = $('.health-situation-healthSitu');
             $defaultCover = $('#health_benefits_covertype_customise');
             $benefitsForm = $('#benefitsForm');
-            $benefitsFormChkBoxes = $benefitsForm.find("input[type='checkbox'][name^='health_benefits']");
             $hiddenFields = $('#mainform').find('.hiddenFields');
             $limitedCoverHidden = $hiddenFields.find("input[name='health_situation_accidentOnlyCover']");
             $extrasCoverWrapper = $('.GeneralHealth_container').closest('fieldset');
@@ -743,7 +742,7 @@
         });
 
         // other benefits
-        $benefitsFormChkBoxes.each(function (index, element) {
+        $benefitsForm.find("input[type='checkbox'][name^='health_benefits']").each(function (index, element) {
             var $element = $(element);
             if ($element.is(':checked')) {
                 var key = $element.attr('name').replace('health_benefits_benefitsExtras_', '');
