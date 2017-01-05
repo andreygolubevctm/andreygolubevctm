@@ -713,7 +713,7 @@
      * */
 
     function resetBenefitsSelection(includeHidden) {
-        $benefitsForm.find("input[type='checkbox']").prop('checked', false);
+        $benefitsForm.find("input[type='checkbox'][name^='health_benefits']").prop('checked', false);
         if(includeHidden === true){
             $hiddenFields.find(".benefit-item").val('');
         }
@@ -742,7 +742,7 @@
         });
 
         // other benefits
-        $('#benefitsForm').find("input[type='checkbox']").each(function (index, element) {
+        $benefitsForm.find("input[type='checkbox'][name^='health_benefits']").each(function (index, element) {
             var $element = $(element);
             if ($element.is(':checked')) {
                 var key = $element.attr('name').replace('health_benefits_benefitsExtras_', '');
