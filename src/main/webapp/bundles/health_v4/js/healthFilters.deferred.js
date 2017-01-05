@@ -93,17 +93,28 @@
                 defaultValue: '4',
                 events: {
                     init: function (filterObject) {
-                        var $slider = $('.health-filter-excess .slider-control');
+                        var $filterExcess = $('.health-filter-excess'),
+                            $slider = $filterExcess.find('.slider-control');
+
                         meerkat.modules.sliders.initSlider($slider);
                         $slider.find('.slider')
                             .val($(filterObject.defaultValueSourceSelector).val())
                             .on('change', function(event){
                                 meerkat.messaging.publish(meerkatEvents.filters.FILTER_CHANGED, event);
                             });
+
+                        toggleFilter($filterExcess);
+                        setFilterByExcess();
                     },
                     update: function (filterObject) {
-                        var $slider = $('.health-filter-excess .slider-control .slider');
+                        var $filterExcess = $('.health-filter-excess'),
+                            $slider = $filterExcess.find('.slider-control .slider');
+
                         $(filterObject.defaultValueSourceSelector).val($slider.val().replace('.00', ''));
+
+                        toggleFilterByContainer($('.filter-excess'), false);
+                        toggleFilter($filterExcess, false);
+                        setFilterByExcess();
                     }
                 }
             },
@@ -147,6 +158,10 @@
                         });
                         filterObject.values = arr;
                     },
+                    init: function (filterObject) {
+                        toggleFilter($('.health-filter-brands'));
+                        setFilterByBrands();
+                    },
                     update: function (filterObject) {
                         var excluded = [];
                         $('input[name=' + filterObject.name + ']').each(function () {
@@ -155,6 +170,10 @@
                             }
                         });
                         $(filterObject.defaultValueSourceSelector).val(excluded.join(',')).trigger('change');
+
+                        toggleFilterByContainer($('.filter-brands'), false);
+                        toggleFilter($('.health-filter-brands'), false);
+                        setFilterByBrands();
                     }
                 }
             },
@@ -242,27 +261,6 @@
 
 
     function applyEventListeners() {
-        $(document).on('click', '.filter-by-brand-toggle', function filterByBrand() {
-            var $this = $(this),
-                $brandsContainer = $('.filter-by-brand-container');
-
-            if ($brandsContainer.hasClass('expanded')) {
-                $brandsContainer.slideUp('fast', function() {
-                    $(this).removeClass('expanded');
-                });
-
-                $this.find('.text').text('Filter by brand');
-            } else {
-                $brandsContainer.slideDown('fast', function() {
-                    $(this).addClass('expanded');
-                });
-
-                $this.find('.text').text('close filter');
-            }
-
-            $this.find('.icon').toggleClass('icon-angle-up icon-angle-down');
-        });
-
         $(document).on('click', '.filter-brands-toggle', function selectAllNoneFilterBrands(e) {
             e.preventDefault();
             $('input[name=health_filterBar_brands]').prop('checked', $(this).attr('data-toggle') == "true");
@@ -344,6 +342,36 @@
             toggleBenefitsLink($benefitsList);
         });
 
+        $(document).on('click', '.filter-toggle', function() {
+            var filter = $(this).attr('data-filter');
+
+            toggleFilterByContainer($('.filter-' + filter));
+            toggleFilter($('.health-filter-' + filter), true);
+        });
+    }
+
+    function toggleFilterByContainer($filter, toggle) {
+        $filter.find('.filter-by-container').toggleClass('hidden', toggle);
+    }
+
+    function toggleFilter($filter, toggle) {
+        if (toggle) {
+            $filter.slideDown('fast');
+        } else {
+            $filter.slideUp('fast');
+        }
+    }
+
+    function setFilterByExcess() {
+        $('.filter-by-excess').text($('.health-filter-excess .selection').text());
+    }
+
+    function setFilterByBrands() {
+        var numBrands = $(':input[name=health_filterBar_brands]').length,
+            numBrandsChecked = $(':input[name=health_filterBar_brands]:checked').length,
+            filterByText = numBrands === numBrandsChecked ? 'All Brands' : numBrandsChecked + ' Brands selected';
+
+        $('.filter-by-brands').text(filterByText);
     }
 
     function toggleBenefitsLink($benefitsList) {
