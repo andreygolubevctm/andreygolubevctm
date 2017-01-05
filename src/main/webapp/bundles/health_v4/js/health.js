@@ -183,7 +183,7 @@
                 meerkat.modules.healthPostcode.initPostcode();
 
                 if (meerkat.site.choices) {
-                    meerkat.modules.healthChoices.initialise('SM'); // default to single male
+                    meerkat.modules.healthChoices.initialise($('input[name=health_situation_healthCvr]:checked').val() || 'SM'); // default to single male
                     meerkat.modules.healthChoices.setState(meerkat.site.choices.state);
                     meerkat.modules.healthChoices.shouldPerformUpdate(meerkat.site.choices.performHealthChoicesUpdate);
                 }
@@ -349,6 +349,8 @@
             },
             onInitialise: function onApplyInit(event) {
                 /** @todo implement from health.js when get to this step */
+                meerkat.modules.healthDependants.initHealthDependants();
+
                 meerkat.modules.healthApplyStep.onInitialise();
             },
             onBeforeEnter: function beforeEnterApplyStep(event) {
