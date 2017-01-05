@@ -87,20 +87,31 @@
         applyEventListeners();
     }
 
-    function applyEventListeners() {
-        $(document).off('click.pin-result').on('click.pin-result', '.pin-result', function (e) {
-            Results.unpinProduct(pinnedProductId);
-            if ((pinnedProductId = $(this).data('productid'))) {
-                Results.pinProduct(pinnedProductId, function (productId, $pinnedResultRow) {
-                    $pinnedResultRow.addClass('pinned currentPage').removeClass('not-pinned').css({ left: 'auto', top: 'auto' });
-                    $pinnedResultRow.removeAttr('data-position').removeAttr('id').removeAttr('data-sort');
-                    $pinnedResultRow.find('.pin-result').addClass('unpin-result').removeClass('pin-result');
-                    $pinnedResultRow.find('.unpin-result:first a').html('Unpin').attr('title', 'Unpin this result');
+    function _pinProductHelper(passedProductId) {
+        Results.unpinProduct(pinnedProductId);
+        if ((pinnedProductId = passedProductId)) {
+            Results.pinProduct(pinnedProductId, function (productId, $pinnedResultRow) {
+                $pinnedResultRow.addClass('pinned currentPage').removeClass('not-pinned').css({
+                    left: 'auto',
+                    top: 'auto'
                 });
-            }
-        }).off('click.unpin-result').on('click.unpin-result', '.unpin-result', function (e) {
-            Results.unpinProduct(pinnedProductId);
-        });
+                $pinnedResultRow.removeAttr('data-position').removeAttr('id').removeAttr('data-sort');
+                $pinnedResultRow.find('.pin-result').addClass('unpin-result').removeClass('pin-result');
+                $pinnedResultRow.find('.unpin-result:first a').html('Unpin').attr('title', 'Unpin this result');
+            });
+        }
+    }
+
+    function _unpinProductHelper() {
+        Results.unpinProduct(pinnedProductId);
+    }
+
+    function applyEventListeners() {
+
+        $(document).off('click.pin-result').on('click.pin-result', '.pin-result', function (e) {
+            _pinProductHelper($(this).data('productid'));
+        })
+            .off('click.unpin-result').on('click.unpin-result', '.unpin-result', _unpinProductHelper);
     }
 
     function onReturnToPage() {
@@ -213,6 +224,11 @@
                         values: ".content",
                         extras: ".children",
                         renderTemplatesBasedOnFeatureIndex: true
+                    }
+                },
+                templates: {
+                    pagination: {
+                        pageItem: '<li class="hidden"><a class="btn-pagination" data-results-pagination-control="{{= pageNumber}}" data-analytics="pagination {{= pageNumber}}">{{= label}}</a></li>'
                     }
                 },
                 dictionary: {
@@ -556,6 +572,22 @@
 
         meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function resultsXsBreakpointLeave() {
             stopColumnWidthTracking();
+        });
+
+        /**
+         * Handles pinning transitions back to the previously pinned product if you resize to a different breakpoint
+         * Disabling animation to reduce lag.
+         */
+        meerkat.messaging.subscribe(meerkatEvents.device.STATE_CHANGE, function resultsChangeBreakpoint(eventObject) {
+            var state = eventObject.state;
+            var allowsPins = state == 'lg' || state == 'md';
+            Results.settings.animation.filter.active = false;
+            if (!allowsPins) {
+                _unpinProductHelper(pinnedProductId);
+            } else {
+                _pinProductHelper(pinnedProductId);
+            }
+            Results.settings.animation.filter.active = true;
         });
 
     }
