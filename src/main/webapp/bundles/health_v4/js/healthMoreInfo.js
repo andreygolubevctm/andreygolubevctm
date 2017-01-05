@@ -99,12 +99,6 @@
         });
     }
 
-    function trackScroll(){
-        meerkat.messaging.subscribe(meerkatEvents.device.RESIZE_DEBOUNCED, function resizeDropdowns(state) {
-            $('.moreInfoTopLeftColumn').offset().top
-        });
-    }
-
     function _setTabs() {
         $(document).on('click', '.nav-tabs a', function (e) {
             e.preventDefault();
@@ -228,7 +222,19 @@
         });
 
         _setTabs();
+
+
+        _trackScroll();
     }
+
+
+    function _trackScroll(){
+        $('.moreInfoTopLeftColumn').on("scroll.moreinfoXS", function () {
+            console.log("Scroll");
+            // $('.moreInfoTopLeftColumn').offset().top
+        });
+    }
+
 
     function onBeforeShowModal(jsonResult, dialogId) {
         $('#'+dialogId).find('.modal-body').children().wrap("<form class='healthMoreInfoModel'></form>");
