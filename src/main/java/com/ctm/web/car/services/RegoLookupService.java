@@ -235,8 +235,8 @@ public class RegoLookupService {
             try {
                 // Step 1 - get the redbook code from MotorWeb
                 motorwebResponse = getMotorwebResponse(pageSettings, transactionId, plateNumber, state);
-                motorwebNvic = motorwebResponse.get().getNvicode();
-                motorwebRedbook = motorwebResponse.get().getRedbookCode();
+                motorwebNvic = motorwebResponse.map(MotorwebResponse::getNvicode).orElse(null);
+                motorwebRedbook = motorwebResponse.map(MotorwebResponse::getRedbookCode).orElse(null);
             } catch (Exception e) {
                 LOGGER.debug("[rego lookup] Error getting MotorWeb response {},{}", kv("plateNumber", plateNumber), kv("stateIn", stateIn), e);
                 logLookup(transactionId, plateNumber, stateIn, RegoLookupStatus.SERVICE_ERROR, motorwebNvic, motorwebRedbook);
