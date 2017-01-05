@@ -9,6 +9,7 @@ var path = require("path"),
 
 var spritesmith = require("gulp.spritesmith"),
     imagemin = require('gulp-imagemin'),
+    buffer = require('vinyl-buffer');
     merge = require("merge-stream");
 
 function SpriteTasks(gulp) {
@@ -50,6 +51,7 @@ function SpriteTasks(gulp) {
                     var spriteData = gulp.src(path.join(srcPath, "*.png"))
                         .pipe(spritesmith(spriteSmithConfig));
                     var imgStream = spriteData.img
+                        .pipe(buffer())
                         .pipe(imagemin([imagemin.optipng()], {verbose: true} ))
                         .pipe(gulp.dest(path.join(spriteConfig.source.dir, bundle)))
                         .pipe(gulp.globalPlugins.debug({
