@@ -2,6 +2,9 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<%-- ATTRIBUTES --%>
+<%@ attribute name="isSimplesAdmin" required="false" rtexprvalue="true" description="Boolean to indicate if to use the form in simples admin area" %>
+
 <form id="redemptionForm" class="form-horizontal">
     <fieldset class="qe-window fieldset">
         <div class="row">
@@ -50,23 +53,23 @@
         </div>
 
         <div class="form-group row fieldrow clear required_input">
-            <label for="redemption_firstname" class="col-sm-4 col-xs-10 control-label">First name</label>
+            <label for="redemption_firstName" class="col-sm-4 col-xs-10 control-label">First name</label>
             <div class="col-sm-6 col-xs-12 row-content">
-                <input type="text" name="redemption_firstname" id="redemption_firstname" class="form-control" data-rule-personname="true" required="required" data-msg-required="Please enter First Name" />
+                <input type="text" name="redemption_firstName" id="redemption_firstName" class="form-control" data-rule-personname="true" required="required" data-msg-required="Please enter First Name" />
             </div>
         </div>
 
         <div class="form-group row fieldrow clear required_input">
-            <label for="redemption_lastname" class="col-sm-4 col-xs-10 control-label">Last name</label>
+            <label for="redemption_lastName" class="col-sm-4 col-xs-10 control-label">Last name</label>
             <div class="col-sm-6 col-xs-12 row-content">
-                <input type="text" name="redemption_lastname" id="redemption_lastname" class="form-control" data-rule-personname="true" required="required" data-msg-required="Please enter Last Name" />
+                <input type="text" name="redemption_lastName" id="redemption_lastName" class="form-control" data-rule-personname="true" required="required" data-msg-required="Please enter Last Name" />
             </div>
         </div>
 
         <div class="form-group row fieldrow clear">
-            <label for="redemption_businessname" class="col-sm-4 col-xs-10 control-label">Business name</label>
+            <label for="redemption_businessName" class="col-sm-4 col-xs-10 control-label">Business name</label>
             <div class="col-sm-6 col-xs-12 row-content">
-                <input type="text" name="redemption_businessname" id="redemption_businessname" class="form-control" />
+                <input type="text" name="redemption_businessName" id="redemption_businessName" class="form-control" />
             </div>
         </div>
 
@@ -81,20 +84,28 @@
         />
 
         <div class="form-group row fieldrow clear required_input">
-            <label for="redemption_phonenumber" class="col-sm-4 col-xs-10 control-label">Phone number</label>
+            <label for="redemption_phoneNumber" class="col-sm-4 col-xs-10 control-label">Phone number</label>
             <div class="col-sm-6 col-xs-12 row-content">
-                <input type="text" name="redemption_phonenumber" id="redemption_phonenumber" title="" class="form-control contact_telno phone  placeholder flexiphone" pattern="[0-9]*" placeholder="(0x) xxxx xxxx or 04xx xxx xxx" required="required" data-msg-required="Please enter the phone number" data-rule-validateflexitelno="true" data-msg-validateflexitelno="Please enter the phone number in the format (0x)xxxx xxxx for landline or 04xx xxx xxx for mobile" maxlength="20" />
+                <input type="text" name="redemption_phoneNumber" id="redemption_phoneNumber" title="" class="form-control contact_telno phone  placeholder flexiphone" pattern="[0-9]*" placeholder="(0x) xxxx xxxx or 04xx xxx xxx" required="required" data-msg-required="Please enter the phone number" data-rule-validateflexitelno="true" data-msg-validateflexitelno="Please enter the phone number in the format (0x)xxxx xxxx for landline or 04xx xxx xxx for mobile" maxlength="20" />
             </div>
         </div>
 
-        <div class="form-group row fieldrow clear required_input">
-            <label for="redemption_email" class="col-sm-4 col-xs-10 control-label">Email address</label>
-            <div class="col-sm-6 col-xs-12 row-content">
+        <c:choose>
+            <c:when test="${isSimplesAdmin eq true}">
+                <div class="form-group row fieldrow clear required_input">
+                    <label for="redemption_email" class="col-sm-4 col-xs-10 control-label">Email address</label>
+                    <div class="col-sm-6 col-xs-12 row-content">
                 <span>
-                    <input name="redemption_email" id="redemption_email" class="form-control email" size="50" required="required" type="email" data-msg-required="Please enter your email address" data-loadinganimation="after">
+                    <input name="redemption_email" id="redemption_email" class="form-control email" size="50" required="required" type="email" data-msg-required="Please enter your email address">
                 </span>
-            </div>
-        </div>
+                    </div>
+                </div>
+            </c:when>
+            <c:otherwise>
+                <input type="hidden" name="redemption_email" value="{{= data.email }}">
+            </c:otherwise>
+        </c:choose>
+
 
         <div class="form-group row fieldrow clear required_input">
             <label for="redemption_signature" class="col-sm-4 col-xs-10 control-label">Signature on delivery?</label>
@@ -108,9 +119,38 @@
             </div>
         </div>
 
+        <div class="form-group row fieldrow clear">
+            <div class="col-sm-6 col-xs-10 col-sm-offset-4 row-content">
+                <div class="checkbox">
+                    <input type="checkbox" name="redemption_trackerOptin" id="redemption_trackerOptin" class="checkbox-custom checkbox" value="Y">
+                    <label for="redemption_trackerOptin">Please tick if you would like to receive update on the toy's delivery progress</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group row fieldrow clear required_input">
+            <div class="col-sm-6 col-xs-10 col-sm-offset-4 row-content">
+                <div class="checkbox">
+                    <input type="checkbox" name="redemption_termsAndConditions" id="redemption_termsAndConditions" class="checkbox-custom checkbox" value="Y" required="required" data-msg-required="Please agree to the Terms & Conditions">
+                    <label for="redemption_termsAndConditions">Please tick to confirm you have read and agree to <a href="https://www.comparethemarket.com.au/terms-and-conditions/" target="_blank">Terms &amp; Conditions and Privacy Policy</a></label>
+                </div>
+            </div>
+        </div>
+
+        <c:if test="${isSimplesAdmin eq true}">
+            <div class="form-group row fieldrow clear">
+                <div class="col-sm-6 col-xs-10 col-sm-offset-4 row-content">
+                    <div class="checkbox">
+                        <input type="checkbox" name="redemption_noClaim" id="redemption_noClaim" class="checkbox-custom checkbox" value="Y">
+                        <label for="redemption_noClaim">I don't want to claim a toy</label>
+                    </div>
+                </div>
+            </div>
+        </c:if>
+
         <div class="row text-right">
             <div class="col-sm-10">
-                <button type="button" class="crud-save-entry btn btn-secondary">Save</button>
+                <button type="button" class="crud-save-entry btn btn-secondary">Submit</button>
             </div>
         </div>
     </fieldset>
