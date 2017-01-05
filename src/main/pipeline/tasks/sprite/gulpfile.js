@@ -8,7 +8,8 @@ var path = require("path"),
     fs = require("graceful-fs-extra");
 
 var spritesmith = require("gulp.spritesmith"),
-    imageop = require("gulp-image-optimization"),
+    imagemin = require('gulp-imagemin'),
+    buffer = require('vinyl-buffer');
     merge = require("merge-stream");
 
 function SpriteTasks(gulp) {
@@ -49,11 +50,9 @@ function SpriteTasks(gulp) {
 
                     var spriteData = gulp.src(path.join(srcPath, "*.png"))
                         .pipe(spritesmith(spriteSmithConfig));
-
                     var imgStream = spriteData.img
-                        .pipe(imageop({
-                            optimizationLevel: 7
-                        }))
+                        .pipe(buffer())
+                        .pipe(imagemin([imagemin.optipng()], {verbose: true} ))
                         .pipe(gulp.dest(path.join(spriteConfig.source.dir, bundle)))
                         .pipe(gulp.globalPlugins.debug({
                             title: "Finished Spritesheet Image"
