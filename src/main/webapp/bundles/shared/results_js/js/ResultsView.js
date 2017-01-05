@@ -580,14 +580,14 @@ var ResultsView = {
 				if($items.length > 0){
 					$items.show();
 					Features.balanceVisibleRowsHeight();
-					$( Results.settings.elements.rows +'.filtered').hide();
+					$( Results.settings.elements.resultsOverflow + " " + Results.settings.elements.rows +'.filtered').hide();
 				}
 			}
 		}
 		$.each(Results.model.sortedProducts, function iterateSortedProducts(sortedIndex, product){
-
+			// @todo this may break unfiltering by pinned product.
 			var productId = Object.byString( product, Results.settings.paths.productId );
-			var currentResult = $( Results.settings.elements.rows + "[data-productId='" + productId + "']" );
+			var currentResult = $( Results.settings.elements.resultsOverflow + " " +  Results.settings.elements.rows + "[data-productId='" + productId + "']" );
 			// result has been filtered, so fades out
 			if( $.inArray( product, Results.model.filteredProducts ) == -1 ){
 

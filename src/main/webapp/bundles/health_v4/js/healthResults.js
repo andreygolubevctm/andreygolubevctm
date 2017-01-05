@@ -92,7 +92,7 @@
             Results.unpinProduct(pinnedProductId);
             if ((pinnedProductId = $(this).data('productid'))) {
                 Results.pinProduct(pinnedProductId, function (productId, $pinnedResultRow) {
-                    $pinnedResultRow.addClass('pinned').removeClass('not-pinned').css({ left: 'auto', top: 'auto' });
+                    $pinnedResultRow.addClass('pinned currentPage').removeClass('not-pinned').css({ left: 'auto', top: 'auto' });
                     $pinnedResultRow.removeAttr('data-position').removeAttr('id').removeAttr('data-sort');
                     $pinnedResultRow.find('.pin-result').addClass('unpin-result').removeClass('pin-result');
                     $pinnedResultRow.find('.unpin-result:first a').html('Unpin').attr('title', 'Unpin this result');

@@ -607,9 +607,11 @@ var Results = {
         $(Results.settings.elements.resultsOverflow).addClass('product-pinned');
         var pageMeasurements = ResultsPagination.getPageMeasurements();
         if (pageMeasurements) {
+        	// Reduce the container width by one column
             $(Results.settings.elements.resultsOverflow)
                 .width($(Results.settings.elements.resultsOverflow).width() - pageMeasurements.columnWidth);
         }
+        Results.pagination.hasPinnedProduct = true;
         return Results.$pinnedResultRow;
 	},
 
@@ -628,6 +630,7 @@ var Results = {
         Results.unfilterBy('isPinned', "value", true);
         product.isPinned = 'N';
         $(Results.settings.elements.resultsOverflow).removeClass('product-pinned');
+        Results.pagination.hasPinnedProduct = false;
 	}
 
 };

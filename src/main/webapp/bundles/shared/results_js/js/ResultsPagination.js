@@ -2,7 +2,7 @@ var ResultsPagination = {
 
 	NEXT:"next",
 	PREVIOUS:"previous",
-
+    hasPinnedProduct: false,
 	$pagesContainer:null,
 	$nextButton:null,
 	$previousButton:null,
@@ -332,12 +332,18 @@ var ResultsPagination = {
 			columnsPerPage = Results.pagination.getColumnCountFromContainer(mediaState);
 			columnWidth = Math.round((viewableArea / columnsPerPage) * 100) / 100;
 		} else {
+			// not used by any vertical atm
 			columnWidth = Results.settings.pagination.useSubPixelWidths ? Results.pagination.getSubPixelWidth($rows) : $rows.outerWidth(true);
 			viewableArea += Results.settings.pagination.margin;
 			columnsPerPage = Math.round(viewableArea/columnWidth);
 		}
 
 		var pageWidth = columnWidth * columnsPerPage;
+
+		// we reduce the number of columns per page JUST here, after other calculations
+        if(Results.pagination.hasPinnedProduct) {
+            columnsPerPage -= 1;
+		}
 		var obj = {
 			pageWidth: pageWidth,
 			columnWidth: columnWidth,
@@ -737,7 +743,7 @@ var ResultsPagination = {
 	},
 
 	removeCurrentPageClasses:function(){
-		$(Results.settings.elements.rows+".currentPage").removeClass("currentPage");
+		$(Results.settings.elements.resultsOverflow + ' ' + Results.settings.elements.rows+".currentPage").removeClass("currentPage");
 	},
 
 	setupNativeScroll: function() {
