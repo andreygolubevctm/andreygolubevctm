@@ -12,6 +12,13 @@
             </jsp:attribute>
 
             <jsp:body>
+
+                <div id="health_application-warning">
+                    <div class="fundWarning alert alert-danger">
+                            <%-- insert fund warning data --%>
+                    </div>
+                </div>
+
                 <health_v4_application:your_details />
                 <health_v4_application:partner_details />
                 <health_v4_application:dependants xpath="${pageSettings.getVerticalCode()}/application/dependants" />

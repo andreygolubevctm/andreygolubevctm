@@ -131,10 +131,28 @@
         }
     }
 
+    function testStatesParity() {
+        var $applicationState = $('#health_application_address_state');
+
+        if ($applicationState.val() !== $('#health_situation_state').val()) {
+            var suburb = $('#health_application_address_suburbName').val(),
+                $applicationPostcode = $('#health_application_address_postCode'),
+                state = $applicationState.val();
+
+            if (suburb.length && suburb.indexOf('Please select') < 0 && $applicationPostcode.val().length == 4 && state.length) {
+                $applicationPostcode.addClass('error');
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     meerkat.modules.register('healthApplyStep', {
         init: init,
         onBeforeEnter: onBeforeEnter,
-        onInitialise: onInitialise
+        onInitialise: onInitialise,
+        testStatesParity: testStatesParity
     });
 
 })(jQuery);
