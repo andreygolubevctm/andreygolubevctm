@@ -66,7 +66,7 @@ public class CarRegoLookupDao {
             String resultCount = null;
             if (motorwebNvic != null) {
                 PreparedStatement count = dbSource.getConnection().prepareStatement(
-                        "SELECT COUNT(*) FROM aggregator.glasses_extract ge WHERE ge.nvicde = ? AND (ge.redbookCode IS NOT NULL OR ge.redbookCode != '')");
+                        "SELECT COUNT(*) FROM aggregator.glasses_extract ge WHERE ge.nvicde = ? AND ge.redbookCode IS NOT NULL AND ge.redbookCode != ''");
                 count.setString(1, motorwebNvic);
                 ResultSet rs = count.executeQuery();
                 while (rs.next()) {
