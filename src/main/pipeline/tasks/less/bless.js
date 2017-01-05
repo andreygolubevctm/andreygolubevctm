@@ -1,4 +1,4 @@
-var minifyCSS = require("gulp-minify-css"),
+var minifyCSS = require("gulp-clean-css"),
     cached = require("gulp-cached"),
     sakugawa = require("gulp-sakugawa"),
     path = require("path"),

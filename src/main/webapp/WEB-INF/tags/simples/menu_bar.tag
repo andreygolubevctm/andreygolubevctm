@@ -46,8 +46,6 @@
 						<a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<li class="dropdown-header">Reports</li>
-							<li><a target="simplesiframe" href="simples/report_callstatus.jsp">Consultant call status</a></li>
-							<li><a target="simplesiframe" href="simples/report_messageoverview.jsp">Message queue overview</a></li>
 							<li><a target="simplesiframe" href="simples/edit_callcenter_hours.jsp">Opening Hours</a></li>
 							<li><a target="simplesiframe" href="simples/edit_special_offers.jsp">Special Offers</a></li>
 							<li><a target="simplesiframe" href="simples/admin/health/fund_capping_limits.jsp">Fund Capping Limits</a></li>
