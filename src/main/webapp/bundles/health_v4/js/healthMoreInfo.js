@@ -99,6 +99,12 @@
         });
     }
 
+    function trackScroll(){
+        meerkat.messaging.subscribe(meerkatEvents.device.RESIZE_DEBOUNCED, function resizeDropdowns(state) {
+            $('.moreInfoTopLeftColumn').offset().top
+        });
+    }
+
     function _setTabs() {
         $(document).on('click', '.nav-tabs a', function (e) {
             e.preventDefault();

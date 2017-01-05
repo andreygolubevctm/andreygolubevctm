@@ -174,7 +174,8 @@
   }
 
   .benefitContent {
-    width: 90%;
+    width: 85%;
+    padding-left:10px;
     display: inline-block;
   }
 
@@ -191,6 +192,10 @@
       margin-top: 20px;
     }
 
+    .printableBrochuresLink {
+      padding-bottom: 10px;
+    }
+
     .shrinkHospital {
       width: 43%;
     }
@@ -201,6 +206,10 @@
 
     h3 {
       margin-top: 18px; /* initially overriden by dialog.less */
+    }
+
+    h5 {
+      font-size: 14px;
     }
   }
 }
@@ -252,21 +261,21 @@
     padding: 20px;
 
     &.hospital {
-      right: -154px;
+      right: -128px;
       padding: 0px;
       padding-left: 10px;
-      border-bottom-left-radius: 10px;
-      border-bottom-right-radius: 10px;
-      .rotateEl(-90deg);
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      .rotateEl(90deg);
     }
 
     &.extras {
-      left: -147px;
+      left: -82px;
       padding: 0px;
       padding-left: 10px;
-      border-bottom-left-radius: 10px;
-      border-bottom-right-radius: 10px;
-      .rotateEl(90deg);
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      .rotateEl(-90deg);
     }
 
     span {

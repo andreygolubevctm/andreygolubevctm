@@ -75,7 +75,7 @@
 							<div class="col-sm-6 col-xs-12 HospitalBenefits">
 								<div class="hospitalOverlay">
 									<div class="selectionStatus hospital">
-										Your hospital benefits selection
+										Your hospital selections
 										<span>0</span></div>
 								</div>
 
@@ -164,7 +164,7 @@
 							<div class="col-sm-6 col-xs-12 ExtrasBenefits">
 								<div class="extrasOverlay">
 									<div class="selectionStatus extras">
-										Your extras benefits selection
+										Your extras
 										<span>0</span></div>
 								</div>
 
