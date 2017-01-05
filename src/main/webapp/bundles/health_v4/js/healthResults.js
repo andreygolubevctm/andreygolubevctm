@@ -579,8 +579,10 @@
          * Disabling animation to reduce lag.
          */
         meerkat.messaging.subscribe(meerkatEvents.device.STATE_CHANGE, function resultsChangeBreakpoint(eventObject) {
-            var state = eventObject.state;
-            var allowsPins = state == 'lg' || state == 'md';
+            var state = eventObject.state,
+                previousState = eventObject.previousState;
+            // Going between XS and other breakpoints causes issues because of Results.view.stopColumnWidthTracking
+            var allowsPins = (state == 'lg' || state == 'md') && previousState != 'xs';
             Results.settings.animation.filter.active = false;
             if (!allowsPins) {
                 _unpinProductHelper(pinnedProductId);

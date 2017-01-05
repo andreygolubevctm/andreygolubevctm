@@ -625,7 +625,11 @@ var Results = {
             return;
         }
 
-        Results.$pinnedResultRow.remove();
+        if(Results.$pinnedResultRow) {
+            Results.$pinnedResultRow.remove();
+            Results.$pinnedResultRow = null;
+        }
+
         $(Results.settings.elements.resultsOverflow).removeAttr('style');
         Results.unfilterBy('isPinned', "value", true);
         product.isPinned = 'N';
