@@ -594,7 +594,7 @@ var Results = {
 
 		// Now prepend it to the results container, outside of results overflow.
         Results.$pinnedResultRow.prependTo($(Results.settings.elements.resultsContainer));
-		var $resultsOverflow = $(Results.settings.elements.resultsOverflow)
+		var $resultsOverflow = $(Results.settings.elements.resultsOverflow);
         $resultsOverflow.addClass('product-pinned');
         var pageMeasurements = ResultsPagination.getPageMeasurements();
         if (pageMeasurements) {
