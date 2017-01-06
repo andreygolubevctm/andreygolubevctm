@@ -19,9 +19,10 @@
 
     <jsp:attribute name="sidebarColumnRight">
         <coupon:promo_tile />
+        <div class="col-xs-12 sidebar-widget sidebar-widget-contained sidebar-widget-padded results-filters-rebate"></div>
         <div class="col-xs-12 sidebar-widget sidebar-widget-contained sidebar-widget-padded results-filters-benefits"></div>
-        <div class="col-sm-12 sidebar-widget sidebar-widget-contained sidebar-widget-padded results-filters">
-        </div>
+        <div class="col-sm-12 sidebar-widget sidebar-widget-contained sidebar-widget-padded results-filters"></div>
+        <health_v4_results:filters_rebate />
         <health_v4_results:filters_benefits />
         <health_v4_results:filters_template />
         <health_v4_results:filters_update_widget_template />
