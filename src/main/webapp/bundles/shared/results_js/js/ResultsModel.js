@@ -43,14 +43,10 @@ var ResultsModel = {
 
 		try{
 			Results.model.flush();
-			if(typeof Loading !== "undefined") {Loading.show(Results.settings.dictionary.loadingMessage);}
-			if(typeof Compare !== 'undefined') {Compare.reset();}
 
 			if (Results.settings.runShowResultsPage === true) {
 				Results.view.showResultsPage();
 			}
-
-			// @todo manage the ajax calls concurrency
 
 			// @todo = 2 different locations change the URL, which one is correct?
 			try{
@@ -719,10 +715,6 @@ var ResultsModel = {
 			return true;
 		}
 
-	},
-
-	filterByDateRange: function( value, options ){
-		// @todo
 	},
 
 	addCurrentProduct: function( product ){

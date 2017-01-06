@@ -37,7 +37,7 @@
             </div>
 
             <a class="btn btn-cta btn-block btn-more-info more-info-showapply" href="javascript:;" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>
-                <div class="more-info-text">More Info</div>
+                <div class="more-info-text">View Product<span class="icon icon-arrow-right"></span></div>
             </a>
             {{ var brochureTemplate = meerkat.modules.templateCache.getTemplate($("#brochure-download-template")); }}
             {{= brochureTemplate(obj) }}

@@ -2,7 +2,7 @@ var ResultsPagination = {
 
 	NEXT:"next",
 	PREVIOUS:"previous",
-
+    hasPinnedProduct: false,
 	$pagesContainer:null,
 	$nextButton:null,
 	$previousButton:null,
@@ -332,6 +332,7 @@ var ResultsPagination = {
 			columnsPerPage = Results.pagination.getColumnCountFromContainer(mediaState);
 			columnWidth = Math.round((viewableArea / columnsPerPage) * 100) / 100;
 		} else {
+			// not used by any vertical atm
 			columnWidth = Results.settings.pagination.useSubPixelWidths ? Results.pagination.getSubPixelWidth($rows) : $rows.outerWidth(true);
 			viewableArea += Results.settings.pagination.margin;
 			columnsPerPage = Math.round(viewableArea/columnWidth);
@@ -339,8 +340,13 @@ var ResultsPagination = {
 
 		var pageWidth = columnWidth * columnsPerPage;
 
+		// we reduce the number of columns per page JUST here, after other calculations
+        if(Results.pagination.hasPinnedProduct) {
+            columnsPerPage -= 1;
+		}
 		var obj = {
 			pageWidth: pageWidth,
+			columnWidth: columnWidth,
 			columnsPerPage:columnsPerPage,
 			numberOfColumns:numberOfColumns,
 			numberOfPages: Math.ceil(numberOfColumns/columnsPerPage)
@@ -583,7 +589,7 @@ var ResultsPagination = {
 		Results.pagination.lock();
 
 		var fullWidth = Results.view.$containerElement.parent().width();
-		var $row = $(Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows).first();
+		var $row = $(Results.settings.elements.resultsOverflow + " " + Results.settings.elements.rows).first();
 		var widthAllColumns = (Results.settings.pagination.useSubPixelWidths ? Results.pagination.getSubPixelWidth($row) : $row.outerWidth(true)) * $(Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + ".notfiltered").length;
 		var scrollWidth = fullWidth * Results.settings.animation.features.scroll.percentage;
 		var currentScroll = ResultsUtilities.getScroll('x', Results.view.$containerElement);
@@ -737,7 +743,7 @@ var ResultsPagination = {
 	},
 
 	removeCurrentPageClasses:function(){
-		$(Results.settings.elements.rows+".currentPage").removeClass("currentPage");
+		$(Results.settings.elements.resultsOverflow + ' ' + Results.settings.elements.rows+".currentPage").removeClass("currentPage");
 	},
 
 	setupNativeScroll: function() {
