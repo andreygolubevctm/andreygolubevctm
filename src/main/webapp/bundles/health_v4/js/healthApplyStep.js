@@ -38,10 +38,10 @@
         $('#health_application_mobileinput').addRule('requireOneContactNumber', true, 'Please include at least one phone number');
 
         meerkat.messaging.publish(meerkatEvents.healthPreviousFund.POPULATE_PARTNER,
-            meerkat.modules.healthAboutYou.getPartnerCurrentCover());
+            meerkat.modules.healthPartner.getCurrentCover());
 
         meerkat.messaging.publish(meerkatEvents.healthPreviousFund.POPULATE_PRIMARY,
-            meerkat.modules.healthAboutYou.getPrimaryCurrentCover());
+            meerkat.modules.healthPrimary.getCurrentCover());
 
         toggleSelectGender('primary');
 
