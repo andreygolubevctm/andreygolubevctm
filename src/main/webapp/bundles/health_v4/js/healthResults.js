@@ -89,6 +89,7 @@
 
     function _pinProductHelper(passedProductId) {
         Results.unpinProduct(pinnedProductId);
+        // note: this is assignment within an if condition. succeeds if a product id is passed/assigned
         if ((pinnedProductId = passedProductId)) {
             Results.pinProduct(pinnedProductId, function (productId, $pinnedResultRow) {
                 $pinnedResultRow.addClass('pinned currentPage').removeClass('not-pinned').css({
@@ -582,7 +583,7 @@
             var state = eventObject.state,
                 previousState = eventObject.previousState;
             // Going between XS and other breakpoints causes issues because of Results.view.stopColumnWidthTracking
-            var allowsPins = (state == 'lg' || state == 'md') && previousState != 'xs';
+            var allowsPins = (state === 'lg' || state === 'md') && previousState !== 'xs';
             Results.settings.animation.filter.active = false;
             if (!allowsPins) {
                 _unpinProductHelper(pinnedProductId);

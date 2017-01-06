@@ -487,15 +487,6 @@ var Results = {
 		Results.view.setDisplayMode(mode, forceRefresh);
 	},
 
-	isResultDisplayed: function (resultModel){
-
-		if( $.inArray( resultModel, Results.model.filteredProducts ) != -1 ){
-			return false;
-		}
-
-		return true;
-	},
-
 	setPerformanceMode:function(level){
 		var profile = meerkat.modules.performanceProfiling.PERFORMANCE;
 
@@ -582,7 +573,7 @@ var Results = {
      * @returns {null}
      */
 	pinProduct: function(pinnedProductId, beforePin) {
-		if(Results.getDisplayMode() == 'price') {
+		if(Results.getDisplayMode() === 'price') {
 			return;
 		}
         var product = Results.model.getResult("productId", pinnedProductId);
@@ -603,13 +594,13 @@ var Results = {
 
 		// Now prepend it to the results container, outside of results overflow.
         Results.$pinnedResultRow.prependTo($(Results.settings.elements.resultsContainer));
-
-        $(Results.settings.elements.resultsOverflow).addClass('product-pinned');
+		var $resultsOverflow = $(Results.settings.elements.resultsOverflow)
+        $resultsOverflow.addClass('product-pinned');
         var pageMeasurements = ResultsPagination.getPageMeasurements();
         if (pageMeasurements) {
         	// Reduce the container width by one column
-            $(Results.settings.elements.resultsOverflow)
-                .width($(Results.settings.elements.resultsOverflow).width() - pageMeasurements.columnWidth);
+            $resultsOverflow
+                .width($resultsOverflow.width() - pageMeasurements.columnWidth);
         }
         Results.pagination.hasPinnedProduct = true;
         return Results.$pinnedResultRow;
