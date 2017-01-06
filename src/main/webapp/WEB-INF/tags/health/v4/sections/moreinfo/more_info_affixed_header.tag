@@ -10,10 +10,10 @@
 			<div class="companyLogo {{= info.provider }}"></div>
 		</div>
 		<div class="col-xs-4 text-center">
-			<h3 class="noTopMargin productNames vertical-align">{{= info.productTitle }}</h3>
+			<h3 class="noTopMargin productNames">{{= info.productTitle }}</h3>
 		</div>
 		<div class="col-xs-3 text-center">
-			<div class="vertical-align">
+			<div>
 			{{= renderedPriceTemplate }}
 			{{= obj._selectedFrequency }}
 			</div>

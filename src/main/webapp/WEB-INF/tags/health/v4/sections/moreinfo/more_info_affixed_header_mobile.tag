@@ -12,7 +12,7 @@
 				{{= renderedPriceTemplate }}
 			</div>
 			<div class="col-xs-12">
-				<h5 class="noTopMargin productName vertical-align text-center">{{= info.productTitle }}</h5>
+				<h5 class="noTopMargin productName text-right">{{= info.productTitle }}</h5>
 			</div>
 			<div class="col-xs-12 text-center printableBrochuresLink">
 				<a href="javascript:;">Get printable brochures in your email inbox</a>
@@ -22,5 +22,10 @@
 				<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now<span class="icon-arrow-right" /></a>
 			</div>
 		</div>
+	</div>
+	<%-- Toggle for benefits --%>
+	<div class="hidden-sm hidden-md hidden-lg toggleBar">
+		<div class="selectionStatus extras">Your extras <span>0</span></div>
+		<div class="selectionStatus hospital">Your hospital <span>0</span></div>
 	</div>
 </script>

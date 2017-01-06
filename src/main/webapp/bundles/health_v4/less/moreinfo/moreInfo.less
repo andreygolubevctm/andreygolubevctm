@@ -1,6 +1,5 @@
 .health[data-step="results"] .results-control-container {
   .more-info-return-to-results,
-  .more-info-save-quote,
   .more-info-affixed-header {
     display: none;
   }
@@ -21,8 +20,7 @@
     display:none;
   }
 
-  .more-info-return-to-results,
-  .more-info-save-quote {
+  .more-info-return-to-results {
     display: block;
   }
 
@@ -32,7 +30,6 @@
     }
 
     .more-info-return-to-results,
-    .more-info-save-quote,
     .results-ref-sidebar,
     .more-info-affixed-header .lhcText {
       display: none;
@@ -41,7 +38,7 @@
 }
 
 .more-info-affixed-header {
-  padding-bottom: 20px;
+  padding-bottom: 10px;
 
   div[class*="col-xs-"] {
     vertical-align: middle;
@@ -52,14 +49,36 @@
   }
 }
 
-
-.more-info-return-to-results,
-.more-info-save-quote {
+.more-info-return-to-results{
   line-height: 40px;
+
+  span.icon-angle-left {
+    line-height: 20px;
+  }
+
+  .btn-close-more-info {
+    margin-right: 20px;
+  }
+
+  .btn-save-quote-trigge {
+    margin-left: 20px;
+  }
 }
 
-.more-info-save-quote {
-  border-left: 2px solid @gray;
+
+.more-info-affixed-header {
+  .frequencyAmount {
+    font-size: 36px;
+  }
+
+  .cents {
+    font-size: 14px;
+    vertical-align: super;
+  }
+
+  .quote-reference-number {
+    line-height: inherit;
+  }
 }
 
 // Bridging page
@@ -78,8 +97,8 @@
 
   .modal-header {
     margin-top: 18px;
-    padding-top:20px;
-    padding-bottom:20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
     border-bottom: 2px solid @gray;
   }
 
@@ -93,14 +112,15 @@
     }
   }
 
+  h2,
   h3,
   .productName {
-      color: @theme-accent-4;
+    color: @theme-accent-4;
   }
 
   .printableBrochuresLink {
-    @media(@xs) {
-      padding-top:10px;
+    @media (@xs) {
+      padding-top: 10px;
       padding-bottom: 30px;
     }
   }
@@ -108,14 +128,15 @@
   .productExtraInfo {
     padding: 10px;
     border-bottom: 1px solid @gray-lighter;
+    margin-bottom: 20px;
+    color: @gray;
   }
-
 
   .row-eq-height {
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
-    display:         flex;
+    display: flex;
     align-items: center;
     justify-content: center;
   }
@@ -124,7 +145,6 @@
     text-align: left;
     padding-left: 0;
   }
-
 
   .heading {
     color: @theme-accent-4;
@@ -154,10 +174,7 @@
     }
   }
 
-  .benefitsColumn .hospitalCoveredPane > div.row,
-  .benefitsColumn .hospitalNotCoveredPane > div.row,
-  .benefitsColumn .extrasCoveredPane > div.row,
-  .benefitsColumn .extrasNotCoveredPane > div.row {
+  .benefitRow {
     color: @theme-secondary;
     &:before {
       font-family: 'ctm-health';
@@ -166,20 +183,56 @@
       display: inline-block;
       color: @theme-secondary;
     }
+
+    &.restricted {
+      &:before {
+        color: @gray;
+      }
+    }
   }
 
-  .limitTitle {
+  .restricted {
+    .benefitTitle {
+      color: @gray;
+    }
+  }
+
+  .limitValue,
+  .limitTitle,
+  .limitTitleLG {
     color: @theme-accent-4;
     font-size: 12px;
+    line-height: 18px;
+  }
+
+  .addBottomMargin {
+    margin-bottom: 20px;
+  }
+
+  .addTopMargin {
+    margin-top: 20px;
+  }
+
+  .limitTitleLG {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .limitValue {
+    color: @gray-darker;
   }
 
   .benefitContent {
     width: 85%;
-    padding-left:10px;
+    padding-left: 10px;
     display: inline-block;
+
+    @media (@sm-only) {
+      width: 83%;
+    }
   }
 
-  @media(@xs) {
+  @media (@xs) {
     .nav-tabs {
       background: transparent;
       li.active {
@@ -204,90 +257,77 @@
       padding-left: 4%;
     }
 
-    h3 {
-      margin-top: 18px; /* initially overriden by dialog.less */
-    }
-
     h5 {
       font-size: 14px;
     }
   }
-}
 
-
-@media (@xs-only) {
-  .benefitsColumn {
-    width: 48%;
-    display: inline-block;
-    vertical-align: top;
-  }
-
-  .rotateEl(@degrees) {
-    -webkit-transform: rotate(@degrees);
-    -moz-transform: rotate(@degrees);
-    -o-transform: rotate(@degrees);
-    -ms-transform: rotate(@degrees);
-    transform: rotate(@degrees);
-  }
-
-  .benefitsOverflow {
-    width: 200%;
-    overflow-x: hidden;
-    position: relative;
-  }
-
-  .hospitalOverlay,
-  .extrasOverlay {
-    border-left: 12px solid @theme-tertiary;
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    z-index: 50;
-  }
-
-  .hospitalOverlay {
-    border-left: 0px;
-    border-right: 12px solid @theme-tertiary;
-  }
-
-  .selectionStatus {
-    cursor: pointer;
-    background: @theme-tertiary;
-    color: @white;
-    top: 50%;
-    position: absolute;
-    text-transform: uppercase;
-    height: 24px;
-    padding: 20px;
-
-    &.hospital {
-      right: -128px;
-      padding: 0px;
-      padding-left: 10px;
-      border-top-left-radius: 10px;
-      border-top-right-radius: 10px;
-      .rotateEl(90deg);
-    }
-
-    &.extras {
-      left: -82px;
-      padding: 0px;
-      padding-left: 10px;
-      border-top-left-radius: 10px;
-      border-top-right-radius: 10px;
-      .rotateEl(-90deg);
-    }
-
-    span {
-      margin-left: 2px;
-      border-radius: 50%;
-      background: @theme-secondary;
-      padding: 0px;
-      width: 18px;
+  @media (@xs-only) {
+    .benefitsColumn {
+      width: 49%;
       display: inline-block;
-      text-align: center;
-      margin-top: 2px;
-      margin-right: 5px;
+      vertical-align: top;
+    }
+
+    .rotateEl(@degrees) {
+      -webkit-transform: rotate(@degrees);
+      -moz-transform: rotate(@degrees);
+      -o-transform: rotate(@degrees);
+      -ms-transform: rotate(@degrees);
+      transform: rotate(@degrees);
+    }
+
+    .benefitsOverflow {
+      width: 200%;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    .toggleBar {
+      background: @theme-tertiary;
+      width: 20px;
+      height: 100%;
+      position: fixed;
+      z-index: 100;
+      margin-top: 20px;
+      right: 0;
+
+      .selectionStatus {
+        background: @theme-tertiary;
+        color: @white;
+        position: absolute;
+        width: 108px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        margin-top: 160px;
+        padding: 4px;
+        padding-left: 10px;
+        right: -20px;
+        cursor: pointer;
+
+        &.hospital {
+          .rotateEl(90deg);
+          left: -26px;
+          width: 120px;
+        }
+
+        &.extras {
+          .rotateEl(-90deg);
+
+        }
+
+        span {
+          margin-left: 2px;
+          border-radius: 50%;
+          background: @theme-secondary;
+          padding: 0px;
+          width: 18px;
+          display: inline-block;
+          text-align: center;
+          margin-top: 2px;
+          margin-right: 5px;
+        }
+      }
     }
   }
 }

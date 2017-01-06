@@ -1,13 +1,17 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-{{ var noOfCols= 4; }}
+{{ var noOfCols= 3; }}
 
 {{ if (promo.promoText == '') { }}
     {{ noOfCols--; }}
 {{ } }}
 
 {{ if (promo.discountText == '') { }}
+    {{ noOfCols--; }}
+{{ } }}
+
+{{ if (info.restrictedFund == 'Y'){ }}
     {{ noOfCols--; }}
 {{ } }}
 
@@ -18,9 +22,10 @@
     {{ if (promo.promoText !== ''){ }}
     <div class="col-xs-{{= colWidth }} promoText">{{= promo.promoText }}</div>
     {{ } }}
-    <div class="col-xs-{{= colWidth }}">Buy online to get a to text</div>
     {{ if (promo.discountText !== ''){ }}
     <div class="col-xs-{{= colWidth }} discountText">{{= promo.discountText }}</div>
     {{ } }}
-    <div class="col-xs-{{= colWidth }}">Restricted fund product text</div>
+    {{ if (info.restrictedFund == 'Y'){ }}
+    <div class="col-xs-{{= colWidth }}">Restricted fund</div>
+    {{ } }}
 </div>

@@ -15,17 +15,17 @@
 
     {{ for(var i = 0; i < featureIterator.length; i++) { }}
         {{ var ft = module.getItem(obj, featureIterator[i]); }}
-        {{ var renderRow = ft.displayItem && ft.type == 'category' && ft.isNotCovered == obj.showNotCoveredBenefits; }}
+        {{ var renderRow = ft.displayItem && ft.type == 'category' && ft.isNotCovered == obj.showNotCoveredBenefits && ft.isRestricted == false; }}
 
-        {{ if (renderRow) { }} <div class="row {{= ft.className }}"><div class="benefitContent">{{ } }}
-        {{ if(ft.displayItem && ft.isNotCovered == obj.showNotCoveredBenefits ) { }}
+        {{ if (renderRow) { }} <div class="row {{= ft.className }} benefitRow"><div class="benefitContent">{{ } }}
+        {{ if(ft.displayItem && ft.isNotCovered == obj.showNotCoveredBenefits && ft.isRestricted == false) { }}
             {{ if (ft.type == 'category') { }}
             <div class="col-xs-12 benefitTitle">
                 <p>{{= ft.safeName }}</p>
             </div>
             {{ } }}
-        {{ if(ft.type == 'feature') { }}<div class="col-xs-8 limitTitle">{{= ft.safeName }}</div><div class="col-xs-4">{{= ft.displayValue }}</div>{{ } }}
-        {{ } if(ft.displayChildren && (ft.isNotCovered == obj.showNotCoveredBenefits || obj.ignoreLimits)) { }}
+        {{ if(ft.type == 'feature') { }}<div class="col-xs-8 limitTitle">{{= ft.safeName }}</div><div class="col-xs-4 limitValue">{{= ft.displayValue }}</div>{{ } }}
+        {{ } if(ft.displayChildren && (ft.isNotCovered == obj.showNotCoveredBenefits || obj.ignoreLimits) && ft.isRestricted == false) { }}
             {{ obj.childFeatureDetails = ft.children; }}
             {{ if(ft.type == 'category' && obj.featureType == 'extras') { }} <div class="limits-label">Limits</div> {{ } }}
             {{= Results.cachedProcessedTemplates[obj.featuresTemplate](obj) }}

@@ -32,8 +32,8 @@
                     className: 'modal-breakpoint-wide modal-tight moreInfoDropdown',
                     openOnHashChange: false,
                     leftBtn: {
-                        label: 'Back to results',
-                        icon: '<span class="icon icon-arrow-left"></span>',
+                        label: 'Back',
+                        icon: '<span class="icon icon-angle-left"></span>',
                         callback: function (eventObject) {
                             $(eventObject.currentTarget).closest('.modal').modal('hide');
                         }
@@ -204,11 +204,6 @@
     }
 
     function onAfterShowTemplate() {
-        // Set the correct phone number
-        //meerkat.modules.healthPhoneNumber.changePhoneNumber();
-
-        // hide elements based on marketing segments
-        //meerkat.modules.healthSegment.hideBySegment();
         additionalTrackingData();
 
         var product = Results.getSelectedProduct();
@@ -222,19 +217,7 @@
         });
 
         _setTabs();
-
-
-        _trackScroll();
     }
-
-
-    function _trackScroll(){
-        $('.moreInfoTopLeftColumn').on("scroll.moreinfoXS", function () {
-            console.log("Scroll");
-            // $('.moreInfoTopLeftColumn').offset().top
-        });
-    }
-
 
     function onBeforeShowModal(jsonResult, dialogId) {
         $('#'+dialogId).find('.modal-body').children().wrap("<form class='healthMoreInfoModel'></form>");
@@ -269,15 +252,34 @@
             benefitsOverlow: $('.benefitsOverflow'),
             extrasOverlay: $('.extrasOverlay'),
             hospitalOverlay: $('.hospitalOverlay'),
+            toggleBar: $('.toggleBar'),
             hospital: $('.Hospital_container'),
             extras: $('.GeneralHealth_container'),
-            quickSelectContainer: $('.quickSelectContainer')
+            quickSelectContainer: $('.quickSelectContainer'),
+            moreInfoContainer: $('.moreInfoTopLeftColumn'),
+            modalHeader: $('.modal-header')
         };
 
         _setTabs();
         _registerXSBenefitsSlider();
+        _trackScroll();
     }
 
+    function _trackScroll(){
+        var startTopOffset = $elements.moreInfoContainer.offset().top,
+            startHeaderHeight = $elements.modalHeader.height(),
+            calculatedHeight = startTopOffset;
+
+        $('.modal-body').off("scroll.moreInfoXS").on("scroll.moreInfoXS", function(){
+            if (calculatedHeight === startTopOffset) {
+                // need to get the newly calculated height since we hide some data
+                calculatedHeight = startTopOffset - (startHeaderHeight - $elements.modalHeader.height());
+            }
+
+            $elements.modalHeader.find('.lhcText').toggleClass('hidden', $elements.moreInfoContainer.offset().top < calculatedHeight);
+            $elements.modalHeader.find('.printableBrochuresLink').toggleClass('hidden', $elements.moreInfoContainer.offset().top < calculatedHeight);
+        });
+    }
 
     function _registerXSBenefitsSlider() {
         $elements.hospitalOverlay.hide();
@@ -296,23 +298,18 @@
         });
 
         // slide in/out the overlays
-        $elements.extrasOverlay.off().on('click', function displayExtrasBenefits() {
-            $elements.benefitsOverlow.animate({ 'left': ($('.HospitalBenefits').width() * -1) }, 500, function onExtrasAnimateComplete() {
-                $elements.extrasOverlay.closest('.benefitsColumn').addClass('expandExtras');
-                $elements.hospitalOverlay.closest('.benefitsColumn').addClass('shrinkHospital');
-                _setOverlayLabelCount($elements.hospitalOverlay, meerkat.modules.benefitsModel.getHospitalCount());
-                $elements.extrasOverlay.hide();
-                $elements.hospitalOverlay.show();
+        $elements.toggleBar.find('.extras').on('click', function displayExtrasBenefits() {
+            $elements.toggleBar.hide();
+            $elements.benefitsOverlow.animate({ 'left': ($('.HospitalBenefits').width() * -1) }, 500).promise().then(function onExtrasAnimateComplete() {
+                // reset to left position
+                $elements.toggleBar.css('left', 0).fadeIn();
             });
         });
 
-        $elements.hospitalOverlay.off().on('click', function displayHospitalBenefits() {
-            $elements.benefitsOverlow.animate({ 'left': 0 }, 500, function onHospitalAnimateComplete() {
-                $elements.hospitalOverlay.closest('.benefitsColumn').removeClass('shrinkHospital');
-                $elements.extrasOverlay.closest('.benefitsColumn').removeClass('expandExtras');
-                _setOverlayLabelCount($elements.extrasOverlay, meerkat.modules.benefitsModel.getExtrasCount());
-                $elements.hospitalOverlay.hide();
-                $elements.extrasOverlay.show();
+        $elements.toggleBar.find('.hospital').on('click', function displayHospitalBenefits() {
+            $elements.toggleBar.hide();
+            $elements.benefitsOverlow.animate({ 'left': 0 }, 500).promise().then(function onHospitalAnimateComplete() {
+                $elements.toggleBar.removeAttr('style').fadeIn();
             });
         });
 
@@ -327,8 +324,8 @@
 
     function _setupBenefitsXS() {
         $elements.extrasOverlay.show();
-        _setOverlayLabelCount($elements.hospitalOverlay, meerkat.modules.benefitsModel.getHospitalCount());
-        _setOverlayLabelCount($elements.extrasOverlay, meerkat.modules.benefitsModel.getExtrasCount());
+        _setOverlayLabelCount($elements.toggleBar.find('.hospital'), meerkat.modules.benefitsModel.getHospitalCount());
+        _setOverlayLabelCount($elements.toggleBar.find('.extras'), meerkat.modules.benefitsModel.getExtrasCount());
     }
 
     function _setOverlayLabelCount($overlay, count) {

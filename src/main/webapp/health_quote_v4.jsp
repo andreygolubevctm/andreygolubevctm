@@ -92,15 +92,14 @@
                         <div class="row">
                             <div class="hidden-xs col-sm-6 col-md-4 results-filters-frequency"></div>
                             <div class="hidden-xs hidden-sm col-md-2 text-center small filter-results-hidden-products"></div>
-                            <div class="col-sm-6 col-md-4 more-info-return-to-results text-left"><a data-slide-control="prev" href="javascript:;" class="btn-close-more-info" data-analytics="nav button"><span class="icon icon-arrow-left"></span> Refine preferences & compare more products</a></div>
-                            <div class="col-xs-12 col-sm-6 col-md-5 more-info-save-quote text-left"><c:if test="${empty callCentre}"><a href="javascript:;" data-opensavequote="true" class="btn-save-quote-trigge" data-analytics="save button">Save for later</a></c:if></div>
+                            <div class="col-sm-6 col-md-6 more-info-return-to-results text-left"><a data-slide-control="prev" href="javascript:;" class="btn-close-more-info" data-analytics="nav button"><span class="icon icon-angle-left"></span> Refine preferences & compare more products</a> | <c:if test="${empty callCentre}"><a href="javascript:;" data-opensavequote="true" class="btn-save-quote-trigge" data-analytics="save button">Save for later</a></c:if></div>
                             <div class="col-xs-12 col-sm-6 col-md-3 results-pagination">
                                 <div class="collapse navbar-collapse">
                                     <ul class="nav navbar-nav slide-feature-pagination" data-results-pagination-pages-cell="true"></ul>
                                 </div>
                             </div>
                             <div class="col-xs-12 hidden-sm hidden-md hidden-lg hide-on-affix results-filters-frequency"></div>
-                            <div class="hidden-xs hidden-sm col-md-3 text-center results-ref-sidebar">
+                            <div class="hidden-xs hidden-sm col-md-6 text-center results-ref-sidebar">
                                 <div class="quote-reference-number"><p>Quote Ref: <span class="transactionId"></span></p></div>
                                 <div class="sidebar-widget sidebar-widget-attached sidebar-widget-padded filters-update-container" style="display: none">
                                     <!-- update button placeholder-->

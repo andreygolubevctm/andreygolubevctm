@@ -73,23 +73,17 @@
 					<div class="row">
 						<div class="benefitsColumn">
 							<div class="col-sm-6 col-xs-12 HospitalBenefits">
-								<div class="hospitalOverlay">
-									<div class="selectionStatus hospital">
-										Your hospital selections
-										<span>0</span></div>
-								</div>
-
 								<!-- Hospital Benefits Heading + Brochure -->
 								<div class="row">
 									<div class="col-xs-12">
 										{{ if(typeof hospitalCover !== 'undefined') { }}
 										<div class="row row-eq-height">
-											<div class="col-sm-6">
+											<div class="col-xs-6">
 											{{ } }}
-										<h3>Hospital</h3>
+										<h2>Hospital</h2>
 										{{ if(typeof hospitalCover !== 'undefined') { }}
 											</div>
-											<div class="{{ if(typeof extrasCover !== 'undefined'){ }}col-sm-6{{ } }} col-xs-12">
+											<div class="{{ if(typeof extrasCover !== 'undefined'){ }}col-xs-6{{ } }}">
 												<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="download-hospital-brochure col-xs-12" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>Download Brochure</a>
 											</div>
 										</div>
@@ -99,17 +93,47 @@
 
 								<!-- Hospital Benefits -->
 								<div class="row">
-									<div class="col-xs-12">
+									<div class="col-xs-12 addBottomMargin">
 										<h3>Excess</h3>
 										{{= hospital.inclusions.excess }}
 									</div>
+
+									{{ if(typeof hospital.inclusions !== 'undefined') { }}
+										<div class="col-xs-8 limitTitleLG">
+											Co-Payment/ % Hospital Contribution
+										</div>
+										<div class="col-xs-4">
+											{{= hospital.inclusions.copayment == '-' ? 'None' : hospital.inclusions.copayment }}
+										</div>
+										<div class="col-xs-8 limitTitleLG addTopMargin">
+											Excess Waivers
+										</div>
+										<div class="col-xs-4 addTopMargin">
+											{{= hospital.inclusions.waivers == '-' ? 'None' : hospital.inclusions.waivers }}
+										</div>
+									{{ } }}
 
 									<div class="col-xs-12">
 										<h3>Waiting Periods</h3>
 									</div>
 
+									{{ if(typeof hospital.inclusions !== 'undefined') { }}
+										<div class="col-xs-8 limitTitleLG">
+											Pre-existing conditions
+										</div>
+										<div class="col-xs-4">
+											{{= hospital.inclusions.waitingPeriods.PreExisting }}
+										</div>
+										<div class="col-xs-8 limitTitleLG addTopMargin">
+											All other conditions
+										</div>
+										<div class="col-xs-4 addTopMargin">
+											{{= hospital.inclusions.waitingPeriods.Other }}
+										</div>
+									{{ } }}
+
 									{{ if(typeof hospitalCover !== 'undefined') { }}
-										<div class="col-xs-12" class="secondaryBrochureLink">
+										<div class="col-xs-12 secondaryBrochureLink addTopMargin">
 											<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="download-hospital-brochure col-xs-12 leftAlignedLink" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>Please download and refer to the Policy Brochure for details</a>
 										</div>
 									{{ } }}
@@ -155,6 +179,18 @@
 											<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="download-hospital-brochure col-xs-12 leftAlignedLink" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>Please download and refer to the Policy Brochure</a>
 										{{ } }}
 										<p>Unsure? <span>Have a quick chat with our Experts</span></p>
+
+										{{ _.each(hospitalCover.restrictions, function(restriction){ }}
+										<div class="row {{= restriction.className }} benefitRow restricted">
+											<div class="benefitContent">
+												<div class="col-xs-12 benefitTitle">
+													<p>{{= restriction.name }}</p>
+												</div>
+												<div class="col-xs-8 limitTitle">Waiting period</div><div class="col-xs-4 limitValue">{{= restriction.WaitingPeriod }}</div>
+												<div class="col-xs-8 limitTitle">Benefit Limitation Period</div><div class="col-xs-4 limitValue">{{= restriction.benefitLimitationPeriod }}</div>
+											</div>
+										</div>
+										{{ }) }}
 									</div>
 								</div>
 								{{ } }}
@@ -162,21 +198,15 @@
 						</div>
 						<div class="benefitsColumn">
 							<div class="col-sm-6 col-xs-12 ExtrasBenefits">
-								<div class="extrasOverlay">
-									<div class="selectionStatus extras">
-										Your extras
-										<span>0</span></div>
-								</div>
-
 								<!-- Extras Benefits Heading + Brochure -->
 								<div class="row row-eq-height">
 									{{ if(typeof extrasCover !== 'undefined') { }}
-									<div class="col-sm-6">
+									<div class="col-xs-6">
 									{{ } }}
-									<h3>Extras</h3>
+									<h2>Extras</h2>
 									{{ if(typeof extrasCover !== 'undefined') { }}
 									</div>
-									<div class="{{ if(typeof hospitalCover !== 'undefined'){ }}col-sm-6{{ } }} col-xs-12 ">
+									<div class="{{ if(typeof hospitalCover !== 'undefined'){ }}col-xs-6 {{ } }} ">
 										<a href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" class="download-extras-brochure col-xs-12">Download brochure</a>
 									</div>
 									{{ } }}
@@ -224,18 +254,6 @@
 			</div>
 		</div>
 	</div>
-</script>
-
-<script id="benefitRowTemplate" type="text/html">
-	{{ _.each(obj, function(el, i) { }}
-		{{ var keys = Object.keys(el); }}
-	<div class="col-xs-8">
-		{{= keys[0] }}
-	</div>
-	<div class="col-xs-4">
-		{{= el[keys[0]] }}
-	</div>
-	{{ }); }}
 </script>
 
 <health_v4_moreinfo:more_info_affixed_header />

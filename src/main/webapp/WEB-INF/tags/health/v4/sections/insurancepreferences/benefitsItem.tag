@@ -52,7 +52,7 @@
 							<div class="title <c:if test="${category eq 'Hospital'}">hidden-xs</c:if>">
 								<h2 class="ignore">Extras</h2>
 								<p>${colContent}</p>
-								<health_v4_insuranceprefs:quick_select options="Dental:dental|Sports:sports|Prace of Mind:peace" />
+								<health_v4_insuranceprefs:quick_select options="Dental:dental|Sports:sports|Peace of Mind:peace" />
 							</div>
 						</c:if>
 						<c:if test="${category eq 'Hospital'}">
