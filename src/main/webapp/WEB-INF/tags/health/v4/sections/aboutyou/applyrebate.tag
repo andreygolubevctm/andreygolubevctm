@@ -21,6 +21,9 @@
 			additionalLabelAttributes="${analyticsAttr}"
 	/>
 
+	<c:set var="fieldXpath" value="${xpath}/dependants" />
+	<field_v1:hidden xpath="${fieldXpath}" defaultValue="2" />
+
 	<c:set var="fieldXpath" value="${xpath}/income" />
 	<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="rebate income level" quoteChar="\"" /></c:set>
 	<div id="income_container" class="hidden">

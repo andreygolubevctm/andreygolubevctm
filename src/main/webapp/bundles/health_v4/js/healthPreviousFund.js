@@ -10,47 +10,61 @@
             }
         },
         moduleEvents = events.healthPreviousFund,
-        $primaryFund,
-        $partnerFund,
-        $primaryFundContainer,
-        $partnerFundContainer,
+        $elements = {},
         noCurrentFund = 'NONE';
 
 
     function init() {
-
-        $(document).ready(function(){
-            $primaryFund = $('#clientFund').find('select');
-            $partnerFund = $('#partnerFund').find('select');
-
-            $primaryFundContainer = $('#health_previousfund');
-            $partnerFundContainer = $('#partnerpreviousfund');
-
-            meerkat.messaging.subscribe(moduleEvents.POPULATE_PRIMARY, coverChangePrimary);
-            meerkat.messaging.subscribe(moduleEvents.POPULATE_PARTNER, coverChangePartner);
+        $(document).ready(function() {
+            _setupFields();
+            _applyEventListeners();
+            _eventSubscriptions();
         });
     }
 
-    function coverChangePrimary(hasCover){
-        coverChange( $primaryFund , hasCover, 'primary');
+    function _setupFields() {
+        $elements = {
+            primary: {
+                fund: $('#clientFund').find('select'),
+                fundContainer: $('#health_previousfund'),
+            },
+            partner: {
+                fund: $('#partnerFund').find('select'),
+                fundContainer: $('#partnerpreviousfund')
+            }
+        };
     }
 
-    function coverChangePartner(hasCover){
-        coverChange($partnerFund , hasCover, 'partner');
+    function _applyEventListeners() {
+        // Show/hide membership number and authorisation checkbox questions for previous funds.
+        $('#health_previousfund_primary_fundName, #health_previousfund_partner_fundName').on('change', function(){
+            meerkat.modules.healthCoverDetails.displayHealthFunds();
+        });
     }
 
-    function coverChange(element , hasCover, person){
-        var noneOption = element.find('option[value="' + noCurrentFund + '"]');
-        // did this so i don't rely on the id's
-        var $fundFields = person === 'primary' ? $primaryFundContainer : $partnerFundContainer;
+    function _eventSubscriptions() {
+        meerkat.messaging.subscribe(moduleEvents.POPULATE_PRIMARY, function primaryCoverChange(hasCover) {
+            _coverChange(hasCover, 'primary');
+        });
+
+        meerkat.messaging.subscribe(moduleEvents.POPULATE_PARTNER, function partnerCoverChange(hasCover) {
+            _coverChange(hasCover, 'partner');
+        });
+    }
+
+    function _coverChange(hasCover, person) {
+        var element = $elements[person].fund,
+            noneOption = element.find('option[value="' + noCurrentFund + '"]'),
+            // did this so i don't rely on the id's
+            $fundFields = $elements[person].fundContainer;
 
         $fundFields.show();
-        if( hasCover == 'Y') {
-            if( element.val() == noCurrentFund) {
+        if (hasCover === 'Y') {
+            if (element.val() === noCurrentFund) {
                 element.val('');
             }
             noneOption.remove();
-        } else if(hasCover == 'N'){
+        } else if (hasCover == 'N') {
             if (noneOption.length === 0) {
                  element.append(
                     $("<option/>",{
@@ -66,11 +80,11 @@
     }
 
     function getPrimaryFund(){
-        return typeof $primaryFund !== 'undefined' ? $primaryFund.val() : '';
+        return typeof $elements.primary.fund !== 'undefined' ? $elements.primary.fund.val() : '';
     }
 
     function getPartnerFund(){
-        return typeof $partnerFund !== 'undefined' ? $partnerFund.val() : '';
+        return typeof $elements.partner.fund !== 'undefined' ? $elements.partner.fund.val() : '';
     }
 
     meerkat.modules.register('healthPreviousFund', {

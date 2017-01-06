@@ -350,27 +350,11 @@
             onInitialise: function onApplyInit(event) {
                 /** @todo implement from health.js when get to this step */
                 meerkat.modules.healthDependants.initHealthDependants();
-
-                // Listen to any input field which could change the premium. (on step 4 and 5)
-                $(".changes-premium :input").on('change', function(event){
-                    meerkat.messaging.publish(moduleEvents.health.CHANGE_MAY_AFFECT_PREMIUM);
-                });
-
-                // Show/hide membership number and authorisation checkbox questions for previous funds.
-                $('#health_previousfund_primary_fundName, #health_previousfund_partner_fundName').on('change', function(){
-                    meerkat.modules.healthCoverDetails.displayHealthFunds();
-                });
-
-                // Check state selection
-                $('#health_application_address_postCode, #health_application_address_streetSearch, #health_application_address_suburb').on('change', function(){
-                    meerkat.modules.healthApplyStep.testStatesParity();
-                });
-
+                meerkat.modules.healthMedicare.initHealthMedicare();
                 meerkat.modules.healthApplyStep.onInitialise();
             },
             onBeforeEnter: function beforeEnterApplyStep(event) {
                 /** @todo implement from health.js when get to this step */
-
                 if (event.isForward === true) {
                     var selectedProduct = meerkat.modules.healthResults.getSelectedProduct(),
                         $fundWarning = $('#health_application-warning .fundWarning');
@@ -393,29 +377,12 @@
                     $slide.find('.error-field').remove();
                     $slide.find('.has-error').removeClass('has-error');
 
-                    // Pre-populate medicare fields from previous step (TODO we need some sort of name sync module)
-                    var $firstnameField = $("#health_payment_medicare_firstName");
-                    var $surnameField = $("#health_payment_medicare_surname");
-                    if($firstnameField.val() === '') $firstnameField.val($("#health_application_primary_firstname").val());
-                    if($surnameField.val() === '') $surnameField.val($("#health_application_primary_surname").val());
-
                     // Unset the Health Declaration checkbox (could be refactored to only uncheck if the fund changes)
                     $('#health_declaration input:checked').prop('checked', false).change();
 
-                    // Update the state of the dependants object.
-                    meerkat.modules.healthDependants.updateDependantConfiguration();
-
                     meerkat.modules.healthApplyStep.onBeforeEnter();
-                    // meerkat.modules.healthMedicare.updateMedicareLabel();
-                    //
-                    // var product = meerkat.modules.healthResults.getSelectedProduct();
-                    // var mustShowList = ["GMHBA","Frank","Budget Direct","Bupa","HIF","QCHF","Navy Health","HBF","TUH"];
-                    //
-                    // if( !meerkat.modules.healthCoverDetails.isRebateApplied() && $.inArray(product.info.providerName, mustShowList) == -1) {
-                    //     $("#health_payment_medicare-selection > .nestedGroup").hide().attr("style", "display:none !important");
-                    // } else {
-                    //     $("#health_payment_medicare-selection > .nestedGroup").removeAttr("style");
-                    // }
+                    meerkat.modules.healthDependants.updateDependantConfiguration();
+                    meerkat.modules.healthMedicare.onBeforeEnterApply();
                 }
             },
             onAfterEnter: function afterEnterApplyStep(event) {
