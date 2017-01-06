@@ -121,10 +121,8 @@
                     update: function (filterObject) {
                         $(filterObject.defaultValueSourceSelector).prop('checked', $('input[name=' + filterObject.name + ']').is(':checked')).trigger('change');
 
-                        _.defer(function() {
-                            toggleRebateEdit(true);
-                            updateRebateLabels();
-                        });
+                        toggleRebateEdit(true);
+                        updateRebateLabels();
                     }
                 }
             },
@@ -147,7 +145,6 @@
                                 'name': filterObject.name,
                                 'data-analytics': 'filter rebate'
                             }).val($defaultValueSourceSelector.val())
-                            .stop()
                             .find('option[value=""]').remove();
 
                         $('.filter-income-holder').html($incomeElement);
