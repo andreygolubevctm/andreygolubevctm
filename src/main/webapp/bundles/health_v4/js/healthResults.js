@@ -12,7 +12,7 @@
         maxMilliSecondsForMessage = $("#maxMilliSecToWait").val(),
         resultsStepIndex = 3,
         $openingHours = null,
-
+        pinnedProductId,
         templates = {
             premiumsPopOver: '{{ if(product.premium.hasOwnProperty(frequency)) { }}' +
             '<strong>Total Price including rebate and LHC: </strong><span class="highlighted">{{= product.premium[frequency].text }}</span><br/> ' +
@@ -84,6 +84,35 @@
 
         breakpointTracking();
 
+        applyEventListeners();
+    }
+
+    function _pinProductHelper(passedProductId) {
+        Results.unpinProduct(pinnedProductId);
+        // note: this is assignment within an if condition. succeeds if a product id is passed/assigned
+        if ((pinnedProductId = passedProductId)) {
+            Results.pinProduct(pinnedProductId, function (productId, $pinnedResultRow) {
+                $pinnedResultRow.addClass('pinned currentPage').removeClass('not-pinned').css({
+                    left: 'auto',
+                    top: 'auto'
+                });
+                $pinnedResultRow.removeAttr('data-position').removeAttr('id').removeAttr('data-sort');
+                $pinnedResultRow.find('.pin-result').addClass('unpin-result').removeClass('pin-result');
+                $pinnedResultRow.find('.unpin-result:first a').html('Unpin').attr('title', 'Unpin this result');
+            });
+        }
+    }
+
+    function _unpinProductHelper() {
+        Results.unpinProduct(pinnedProductId);
+    }
+
+    function applyEventListeners() {
+
+        $(document).off('click.pin-result').on('click.pin-result', '.pin-result', function (e) {
+            _pinProductHelper($(this).data('productid'));
+        })
+            .off('click.unpin-result').on('click.unpin-result', '.unpin-result', _unpinProductHelper);
     }
 
     function onReturnToPage() {
@@ -100,7 +129,6 @@
 
         var frequencyValue = $('#health_filter_frequency').val();
         frequencyValue = meerkat.modules.healthResults.getFrequencyInWords(frequencyValue) || 'monthly';
-
 
         try {
 
@@ -121,6 +149,7 @@
                     brand: "info.Name",
                     productBrandCode: "info.providerName", // for tracking
                     productId: "productId",
+                    isPinned: "isPinned",
                     productTitle: "info.productTitle",
                     productName: "info.productTitle", // for tracking
                     price: { // result object path to the price property
@@ -198,6 +227,11 @@
                         renderTemplatesBasedOnFeatureIndex: true
                     }
                 },
+                templates: {
+                    pagination: {
+                        pageItem: '<li class="hidden"><a class="btn-pagination" data-results-pagination-control="{{= pageNumber}}" data-analytics="pagination {{= pageNumber}}">{{= label}}</a></li>'
+                    }
+                },
                 dictionary: {
                     valueMap: [
                         {
@@ -239,8 +273,24 @@
         }
     }
 
+    // After the results have been fetched, force data onto it to support our Results engine.
+    function _massageResultsObject(products) {
+        _.each(products, function massageJson(result, index) {
+            // Add properties
+            result.isPinned = 'N';
+        });
+        return products;
+    }
 
     function eventSubscriptions() {
+
+        // Model updated, make changes before rendering
+        meerkat.messaging.subscribe(Results.model.moduleEvents.RESULTS_MODEL_UPDATE_BEFORE_FILTERSHOW, function modelUpdated() {
+            Results.model.returnedProducts = _massageResultsObject(Results.model.returnedProducts);
+
+            // Populating sorted products is a trick for HML due to setting sortBy:false
+            Results.model.sortedProducts = Results.model.returnedProducts;
+        });
 
         var tStart = 0;
 
@@ -523,6 +573,24 @@
 
         meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function resultsXsBreakpointLeave() {
             stopColumnWidthTracking();
+        });
+
+        /**
+         * Handles pinning transitions back to the previously pinned product if you resize to a different breakpoint
+         * Disabling animation to reduce lag.
+         */
+        meerkat.messaging.subscribe(meerkatEvents.device.STATE_CHANGE, function resultsChangeBreakpoint(eventObject) {
+            var state = eventObject.state,
+                previousState = eventObject.previousState;
+            // Going between XS and other breakpoints causes issues because of Results.view.stopColumnWidthTracking
+            var allowsPins = (state === 'lg' || state === 'md') && previousState !== 'xs';
+            Results.settings.animation.filter.active = false;
+            if (!allowsPins) {
+                _unpinProductHelper(pinnedProductId);
+            } else {
+                _pinProductHelper(pinnedProductId);
+            }
+            Results.settings.animation.filter.active = true;
         });
 
     }

@@ -27,17 +27,6 @@ var ResultsView = {
 			Results.view.toggleFilters('show');
 		}
 
-		// show compare bar if exists
-		if( typeof(Compare) != "undefined" ){
-			if( $(Compare.settings.elements.bar).length > 0 ){
-				Results.view.toggleCompare('show');
-				if(Results.settings.render.dockCompareBar === true){
-					ResultsUtilities.makeElementSticky( "top", $(Compare.settings.elements.bar), "fixed-top",	$(Compare.settings.elements.bar).offset().top );
-					ResultsUtilities.makeElementSticky( "top", $(Results.settings.elements.page), 	"fixedThree", 	$(Compare.settings.elements.bar).offset().top );
-				}
-			}
-		}
-
 		Results.view.showResults(); // reshow elements in case the previous result had no items
 
 		// flush potential previous results
@@ -145,8 +134,8 @@ var ResultsView = {
 	// set width of the results container to width of all the visible results
 	calculateResultsContainerWidth: function(){
 		ResultsUtilities.setContainerWidth(
-			Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + ".notfiltered",
-			Results.settings.elements.resultsContainer + " " + Results.settings.elements.container
+			Results.settings.elements.resultsOverflow + " " + Results.settings.elements.rows + ".notfiltered",
+			Results.settings.elements.resultsOverflow + " " + Results.settings.elements.container
 		);
 	},
 	/**
@@ -363,7 +352,7 @@ var ResultsView = {
 	getRowHeight: function(){
 
 		if( Results.view.orientation == "horizontal" && !Results.view.rowHeight ) {
-			Results.view.rowHeight = $( Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + ".notfiltered").first().outerHeight(true);
+			Results.view.rowHeight = $( Results.settings.elements.resultsOverflow + " " + Results.settings.elements.rows + ".notfiltered").first().outerHeight(true);
 		}
 
 		return Results.view.rowHeight;
@@ -372,7 +361,7 @@ var ResultsView = {
 	getRowWidth: function(){
 
 		if( Results.view.orientation == "vertical" &&  !Results.view.rowWidth ) {
-			Results.view.rowWidth = $( Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + ".notfiltered").first().outerWidth(true);
+			Results.view.rowWidth = $( Results.settings.elements.resultsOverflow + " " + Results.settings.elements.rows + ".notfiltered").first().outerWidth(true);
 		}
 
 		return Results.view.rowWidth;
@@ -408,7 +397,7 @@ var ResultsView = {
 	animateAllResults: function(){
 
 		// show all result rows
-		$(Results.settings.elements.rows+'.notFiltered').show();
+		$(Results.settings.elements.rows+'.notfiltered').show(); // NOTE. changed this from notFiltered to notfiltered, as its all lowercase. Unsure what it will effect.
 
 		$(Results.settings.elements.resultsContainer).css("opacity", 0);
 
@@ -586,18 +575,19 @@ var ResultsView = {
 				items.push(Results.settings.elements.rows +"[data-productId='" + productId + "'].filtered");
 			}
 			if(items.length > 0){
-				$items = $( items.join(','));
+				var $items = $( items.join(','));
+				$items = $(Results.settings.elements.resultsOverflow).find($items);
 				if($items.length > 0){
 					$items.show();
 					Features.balanceVisibleRowsHeight();
-					$( Results.settings.elements.rows +'.filtered').hide();
+					$( Results.settings.elements.resultsOverflow + " " + Results.settings.elements.rows +'.filtered').hide();
 				}
 			}
 		}
 		$.each(Results.model.sortedProducts, function iterateSortedProducts(sortedIndex, product){
-
+			// @todo this may break unfiltering by pinned product.
 			var productId = Object.byString( product, Results.settings.paths.productId );
-			var currentResult = $( Results.settings.elements.rows + "[data-productId='" + productId + "']" );
+			var currentResult = $( Results.settings.elements.resultsOverflow + " " +  Results.settings.elements.rows + "[data-productId='" + productId + "']" );
 			// result has been filtered, so fades out
 			if( $.inArray( product, Results.model.filteredProducts ) == -1 ){
 
@@ -692,7 +682,7 @@ var ResultsView = {
 			// trigger the end of animated custom event
 			$(Results.settings.elements.resultsContainer).trigger("resultsFiltered");
 
-			$( Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + ".filtered").css("display", "none");
+			$( Results.settings.elements.resultsOverflow + " " + Results.settings.elements.rows + ".filtered").css("display", "none");
 
 			Results.view.setDisplayMode( Results.settings.displayMode, "partial" );
 
@@ -708,7 +698,7 @@ var ResultsView = {
 
 	beforeAnimation: function(){
 
-		var allRows = $( Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows );
+		var allRows = $( Results.settings.elements.resultsOverflow + " " + Results.settings.elements.rows );
 		ResultsUtilities.position("absolute", allRows, Results.view.orientation);
 		$(Results.settings.elements.resultsContainer).trigger("results.view.animation.start");
 
@@ -718,7 +708,7 @@ var ResultsView = {
 
 	afterAnimation: function( animationDuration, callback ){
 
-		var allRows = $( Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows );
+		var allRows = $( Results.settings.elements.resultsOverflow + " " + Results.settings.elements.rows );
 
 		// once animations are finished
 		setTimeout(function(){
@@ -1072,7 +1062,7 @@ var ResultsView = {
 
 	//Remove all results
 	flush: function(){
-		$(Results.settings.elements.rows).empty().remove();
+        $(Results.settings.elements.resultsOverflow + " " + Results.settings.elements.rows).empty().remove();
 	}
 
 };

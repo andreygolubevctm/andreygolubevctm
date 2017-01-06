@@ -14,7 +14,7 @@
       // To make up for the space no longer consumed by the .result element.
       padding-top: 360px;
       @media (@sm) {
-        padding-top: 400px;
+        padding-top: 294px;
       }
       @media (@lg) {
         padding-top: 430px;
@@ -25,6 +25,9 @@
         margin: 0;
         padding: 0 15px;
       }
+      &.pinned .featuresList {
+        border-color: @theme-accent-4;
+      }
     }
 
     .result {
@@ -32,6 +35,12 @@
       width: inherit;
       border: 1px solid @results-border-color;
       border-bottom: 1px solid @gray-dark;
+    }
+    .pinned {
+      .result {
+        border-color: @theme-accent-4;
+        border-bottom-color: @gray-dark;
+      }
     }
 
     .hide-on-affix {
