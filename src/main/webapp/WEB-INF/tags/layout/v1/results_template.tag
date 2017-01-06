@@ -33,6 +33,7 @@
 <%@ attribute fragment="true" required="true" name="quoterefTemplate" description="A template customisable to display the quote reference number" %>
 <%@ attribute fragment="true" required="true" name="logoTemplate"
               description="A template just for the logo. Logos tend to be displayed in different places independent of price, so should be a different template." %>
+<%@ attribute fragment="true" required="true" name="productTitleTemplate" description="A template customisable to display the product title" %>
 <%@ attribute fragment="true" required="true" name="priceTemplate" description="A template customisable to display price based on frequency etc, must exclude logo" %>
 <%@ attribute fragment="true" required="false" name="compareTemplate" description="A template for compare mode" %>
 <%@ attribute fragment="true" required="true" name="resultsContainerTemplate" description="A template from the result-row wrapper" %>
@@ -124,6 +125,7 @@
 <%-- Dump out the templates --%>
 <core_v1:js_template id="quoteref-template"><jsp:invoke fragment="quoterefTemplate"/></core_v1:js_template>
 <core_v1:js_template id="logo-template"><jsp:invoke fragment="logoTemplate"/></core_v1:js_template>
+<core_v1:js_template id="product-title-template"><jsp:invoke fragment="productTitleTemplate"/></core_v1:js_template>
 <core_v1:js_template id="price-template"><jsp:invoke fragment="priceTemplate"/></core_v1:js_template>
 <core_v1:js_template id="result-template"><jsp:invoke fragment="resultsContainerTemplate"/></core_v1:js_template>
 <core_v1:js_template id="result-header-template"><jsp:invoke fragment="resultsHeaderTemplate"/></core_v1:js_template>
