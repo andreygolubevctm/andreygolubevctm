@@ -194,7 +194,11 @@
                     meerkat.modules.healthBenefitsStep.updateHiddenFields(coverTypeVal);
                 });
             },
-            onBeforeEnter: _incrementTranIdBeforeEnteringSlide,
+            onBeforeEnter: function() {
+                _incrementTranIdBeforeEnteringSlide();
+
+                meerkat.modules.healthRebate.toggleEdit(false);
+            },
             onAfterEnter: function healthAfterEnter() {
                 /** @todo implement from health.js when get to this step */
             },
