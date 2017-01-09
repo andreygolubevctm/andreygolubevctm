@@ -26,6 +26,13 @@
       border-bottom: 1px solid @gray-dark;
     }
 
+    .pinned {
+      .result {
+        border-color: @theme-accent-4;
+        border-bottom-color: @gray-dark;
+      }
+    }
+
     .resultInsert {
       .result-header-utility-bar {
         padding-bottom: 0;
@@ -59,8 +66,10 @@
         margin: 0;
         padding: 15px 15px 0 15px;
       }
+      &.pinned .featuresList {
+        border-color: @theme-accent-4;
+      }
     }
-
   }
 
   // .affixed is not in effect while going between pages.

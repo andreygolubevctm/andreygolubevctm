@@ -32,7 +32,14 @@
     .opacity(0);
     .transition(~"opacity ease-in-out .25s");
   }
-
+  &:hover .display-on-hover {
+    .opacity(1);
+  }
+  .product-pinned & {
+    .pin-result {
+      display: none;
+    }
+  }
   .filter-component {
     position: absolute;
     top: 5px;
@@ -40,9 +47,7 @@
     cursor: pointer;
     .user-select(none);
   }
-  &:hover .display-on-hover {
-    .opacity(1);
-  }
+
 
   .remove-result {
     left: 0;
@@ -61,6 +66,9 @@
     width: @pin-width;
     height: @pin-height;
     background: @theme-tertiary;
+    .pinned & {
+      background: @theme-accent-4;
+    }
     &:after {
       left: 0;
       top: @pin-height;
@@ -69,6 +77,9 @@
       border-style: solid;
       border-width: 5px @pin-width 0 0;
       border-color: @theme-tertiary transparent transparent transparent;
+      .pinned & {
+        border-top-color: @theme-accent-4;
+      }
     }
   }
 
@@ -82,7 +93,6 @@
     margin-bottom: 20px;
     .frequencyAmount {
       color: @link-color;
-      cursor: pointer;
       font-size: 48px;
     }
     .frequencyAmount, .lhcText {
@@ -109,26 +119,38 @@
 .featuresMode {
 
   // The actual results container, to the right of the feature labels.
-  .resultsOverflow {
-    // Fix margins for rows on XS @todo may be unnecessary in v4
-    .result-row {
-      h2, h3 {
-        color: @theme-accent-4;
-      }
-      @media (@xs-only) {
-        margin-right: 10px;
-      }
-      @media (@sm) {
-        margin-left: 10px;
-      }
+  // Fix margins for rows on XS @todo may be unnecessary in v4
+  .result-row {
+    h2, h3 {
+      color: @theme-accent-4;
+    }
+    /*@media (@xs-only) {
+      margin-right: 10px;
+    }*/
+    @media (@sm) {
+      margin-left: 9px;
     }
   }
 
   // Each product column is a result-row, floated left so they fit beside each other.
   .result-row {
     border: 1px solid @results-border-color;
-    &:hover {
+    &.pinned {
+      border-color: @theme-accent-4;
+    }
+    &.not-pinned:hover {
       border-color: @results-border-color-pinned;
+    }
+
+    &.pinned {
+      float: left;
+      .display-on-hover {
+        .opacity(1);
+      }
+      // force hide this when pinned
+      .remove-result {
+        display: none;
+      }
     }
 
     .featuresList {
