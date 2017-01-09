@@ -35,6 +35,8 @@
             eventSubscriptions();
             applyEventListeners();
 
+            configureContactDetails();
+
             if (meerkat.site.pageAction === 'amend' || meerkat.site.pageAction === 'load' || meerkat.site.pageAction === 'start-again') {
 
                 // If retrieving a quote and a product had been selected, inject the fund's application set.
@@ -302,6 +304,7 @@
             onInitialise: function onResultsInit(event) {
                 meerkat.modules.healthResults.initPage();
                 meerkat.modules.healthMoreInfo.initMoreInfo();
+                meerkat.modules.healthPriceComponent.initHealthPriceComponent();
             },
             onBeforeEnter: function enterResultsStep(event) {
                 meerkat.modules.healthDependants.resetConfig();
@@ -441,9 +444,94 @@
                 navigationId: steps.contactStep.navigationId
             }
         ]);
-
     }
 
+
+    function configureContactDetails() {
+        var contactDetailsOptinField = $("#health_contactDetails_optin");
+
+        // define fields here that are multiple (i.e. email field on contact details and on application step) so that they get prefilled
+        // or fields that need to publish an event when their value gets changed so that another module can pick it up
+        // the category names are generally arbitrary but some are used specifically and should use those types (email, name, potentially phone in the future)
+        var contactDetailsFields = {
+            name:[
+                {
+                    $field: $("#health_contactDetails_name")
+                },
+                {
+                    $field: $("#health_application_primary_firstname"),
+                    $otherField: $("#health_application_primary_surname")
+                }
+            ],
+            dob_primary:[
+                {
+                    $field: $("#health_healthCover_primary_dob"), // this is a hidden field
+                    $fieldInput: $("#health_healthCover_primary_dob") // pointing at the same field as a trick to force change event on itself when forward populated
+                },
+                {
+                    $field: $("#health_application_primary_dob"), // this is a hidden field
+                    $fieldInput: $("#health_application_primary_dob") // pointing at the same field as a trick to force change event on itself when forward populated
+                }
+            ],
+            dob_secondary:[
+                {
+                    $field: $('#partner-health-cover').find("input[name='health_healthCover_partner_dob']"), // this is a hidden field
+                    $fieldInput: $('#partner-health-cover').find("input[name='health_healthCover_partner_dob']") // pointing at the same field as a trick to force change event on itself when forward populated
+                },
+                {
+                    $field: $("#health_application_partner_dob"), // this is a hidden field
+                    $fieldInput: $("#health_application_partner_dob") // pointing at the same field as a trick to force change event on itself when forward populated
+                }
+            ],
+            email: [
+                // email from details step
+                {
+                    $field: $("#health_contactDetails_email"),
+                    $optInField: contactDetailsOptinField
+                },
+                // email from application step
+                {
+                    $field: $("#health_application_email"),
+                    $optInField: $("#health_application_optInEmail")
+                }
+            ],
+            mobile: [
+                // mobile from details step
+                {
+                    $field: $("#health_contactDetails_contactNumber_mobile"),
+                    $optInField: contactDetailsOptinField
+                },
+                // mobile from application step
+                {
+                    $field: $("#health_application_mobile"),
+                    $fieldInput: $("#health_application_mobileinput")
+                }
+            ],
+            otherPhone: [
+                // otherPhone from details step
+                {
+                    $field: $("#health_contactDetails_contactNumber_other"),
+                    $optInField: contactDetailsOptinField
+                },
+                // otherPhone from application step
+                {
+                    $field: $("#health_application_other"),
+                    $fieldInput: $("#health_application_otherinput")
+                }
+            ],
+            postcode: [
+                // postcode from details step
+                { $field: $("#health_situation_postcode") },
+                //postcode from application step
+                {
+                    $field: $("#health_application_address_postCode"),
+                    $fieldInput: $("#health_application_address_postCode")
+                }
+            ]
+        };
+
+        meerkat.modules.contactDetails.configure(contactDetailsFields);
+    }
 
     // @todo: review this during form revamp.
     function getTrackingFieldsObject() {

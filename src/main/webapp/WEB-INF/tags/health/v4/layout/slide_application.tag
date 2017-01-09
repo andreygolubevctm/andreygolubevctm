@@ -2,7 +2,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<layout_v3:slide formId="applicationDetailsForm" nextLabel="Next Step">
+<layout_v3:slide formId="applicationDetailsForm" nextLabel="Proceed to Payment">
 
     <layout_v3:slide_content>
         <form_v3:fieldset_columns sideHidden="true">
