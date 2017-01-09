@@ -49,6 +49,7 @@ gulp.task("clean:noexit", function() {
     fs.removeSync(path.join(gulp.pipelineConfig.target.dir, "js", "bundles", "*.*"));
     fs.removeSync(path.join(gulp.pipelineConfig.target.dir, "js", "bundles", "maps", "*.*"));
     fs.removeSync(path.join(gulp.pipelineConfig.target.dir, "js", "bundles", "plugins", "*.*"));
+    fs.removeSync(path.join(gulp.pipelineConfig.target.dir, "js", "bundles", "shared", "*.*"));
     fs.removeSync(path.join(gulp.pipelineConfig.target.dir, "js", "libraries", "*.*"));
     fs.removeSync(path.join(gulp.pipelineConfig.target.dir, "brand", "*", "css", "*.*"));
     fs.removeSync(path.join(gulp.pipelineConfig.target.dir, "brand", "*", "css", "maps", "*.*"));

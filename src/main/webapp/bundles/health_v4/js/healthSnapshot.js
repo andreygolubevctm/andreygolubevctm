@@ -11,15 +11,7 @@
         },
         moduleEvents = events.healthSnapshot,
 
-        $elements = {},
-
-        rebateText = [
-            'Full rebate applies',
-            'Tier 1 applied',
-            'Tier 2 applied',
-            'Tier 3 applied',
-            'No rebate applied'
-        ];
+        $elements = {};
 
     function initHealthSnapshot() {
         _setupFields();
@@ -194,7 +186,7 @@
         var coverFor = $.trim($elements.cover.filter(":checked").parent().text()),
             primaryBorn = $elements.primary.dob.val(),
             partnerBorn = $elements.partner.dob.val(),
-            rebateText = _fetchRebateText($elements.income.val()),
+            rebateText = _fetchRebateText(),
             rebateSubText = _fetchRebateSubText($elements.income.val()),
             hospital = _fetchBenefits(true),
             extras = _fetchBenefits();
@@ -220,16 +212,12 @@
         return false;
     }
 
-    function _fetchRebateText(income) {
-        if ($elements.rebate.is(":checked")) {
-            return rebateText[income];
-        } else {
-            return rebateText[4];
-        }
+    function _fetchRebateText() {
+        return meerkat.modules.healthRebate.getRebateLabelText($elements.rebate.val() === 'Y' ? undefined : 4);
     }
 
     function _fetchRebateSubText(income) {
-        if ($elements.rebate.is(":checked")) {
+        if ($elements.rebate.val() === 'Y') {
             if (income < 3) {
                 return meerkat.modules.healthRebate.getRebate();
             } else {

@@ -96,7 +96,7 @@
                         <div class="row">
                             <div class="hidden-xs col-sm-6 col-md-4 results-filters-frequency"></div>
                             <div class="hidden-xs hidden-sm col-md-2 text-center small filter-results-hidden-products"></div>
-                            <div class="col-xs-12 col-sm-6 col-md-3 results-pagination">
+                            <div class="col-xs-12 col-sm-6 col-md-3 results-pagination text-right">
                                 <div class="collapse navbar-collapse">
                                     <ul class="nav navbar-nav slide-feature-pagination" data-results-pagination-pages-cell="true"></ul>
                                 </div>
