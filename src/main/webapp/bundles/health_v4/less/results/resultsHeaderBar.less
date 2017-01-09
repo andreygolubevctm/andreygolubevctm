@@ -6,25 +6,17 @@
   position: relative;
   z-index: @results-zindex-resultItems;
 
+  .show-on-affix {
+    display: none;
+  }
   // always in effect
   &.affixed-settings {
 
-    .result-row {
-      border: 0;
-      // To make up for the space no longer consumed by the .result element.
-      padding-top: 360px;
-      @media (@sm) {
-        padding-top: 400px;
-      }
-      @media (@lg) {
-        padding-top: 430px;
-      }
-
-      .featuresList {
-        border: 1px solid @results-border-color;
-        margin: 0;
-        padding: 0 15px;
-      }
+    .hide-on-affix {
+      display: none !important;
+    }
+    .show-on-affix {
+      display: block;
     }
 
     .result {
@@ -34,30 +26,45 @@
       border-bottom: 1px solid @gray-dark;
     }
 
-    .hide-on-affix {
-      display: none;
+    .resultInsert {
+      .result-header-utility-bar {
+        padding-bottom: 0;
+      }
+      .results-header-inner-container {
+        border-bottom: 0;
+      }
+
+      .companyLogo {
+        margin-top: 10px;
+      }
     }
+    .affixed-logo {
+      float: left;
+      width: 45%;
+    }
+
+    .result-row {
+      border: 0;
+      // To make up for the space no longer consumed by the .result element.
+      padding-top: 360px;
+      @media (@sm) {
+        padding-top: 230px;
+      }
+      @media (@lg) {
+        padding-top: 180px;
+      }
+
+      .featuresList {
+        border: 1px solid @results-border-color;
+        margin: 0;
+        padding: 15px 15px 0 15px;
+      }
+    }
+
   }
 
   // .affixed is not in effect while going between pages.
   &.affixed {
-    /*    @media (@xs-only) {
-          .result {
-            top: 80px; // to make up for pagination and header bar.
-          }
-
-          .lhcText {
-            display: none;
-          }
-
-          .productSummary {
-            height: 100px;
-          }
-
-          .btn-more-info {
-            .btn-sm;
-          }
-        }*/
 
     .result {
       display: none; // when in fixed mode, only display the items on the 'current page' - thanks to the pagination component for settings this.
@@ -69,7 +76,6 @@
         display: block;
       }
     }
-
   }
 
   &.affixed-compact {
@@ -92,6 +98,7 @@
       }
 
     }
+
   }
 
   // only in effect during the pagination animation

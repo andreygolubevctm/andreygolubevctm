@@ -24,6 +24,9 @@
 // The product header
 .resultInsert {
 
+  .result-header-utility-bar {
+    padding-bottom: 10px;
+  }
   /* Display Utilities only on hover of result insert */
   .display-on-hover {
     .opacity(0);
@@ -71,6 +74,9 @@
 
   .results-header-inner-container {
     border-bottom: 1px solid @results-border-color;
+    @media (@sm) {
+      margin-bottom: 15px;
+    }
   }
   .productSummary {
     margin-bottom: 20px;
@@ -190,12 +196,6 @@
                 color: @gray;
               }
             }
-            /*
-                        &.hideChildren {
-                          .cell.feature {
-                            .invisible;
-                          }
-                        }*/
           }
         }
 
@@ -249,6 +249,59 @@
 
 }
 
+.product-special-features {
+  font-size: @font-size-small;
+  color: @gray-dark;
+  display: flex;
+  flex-direction: row;
+  height: 60px;
+  overflow: hidden;
+
+  &.features-3,
+  &.features-4 {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  &.features-1 .feature-item {
+    flex-basis: 100%;
+  }
+  &.features-2 .feature-item {
+    flex-basis: 50%;
+  }
+  &.features-3 .feature-item {
+    flex-basis: 33.333%;
+  }
+  &.features-4 .feature-item {
+    flex-basis: 25%;
+  }
+  .feature-item {
+    display: flex;
+    &.item-popover {
+      &:hover {
+        color: @theme-accent-4;
+        cursor: help;
+      }
+    }
+    .icon {
+      flex-grow: 1;
+      font-size: @font-size-large;
+      padding-right: 5px;
+    }
+
+    padding-left: 5px;
+    &:first-child {
+      padding-left: 0;
+    }
+  }
+
+  .feature-item-text {
+    flex-grow: 1;
+    word-break: break-word;
+  }
+}
+
 // Outside the structure.
 .resultsOtherBenefitsTooltip {
   color: @gray;
@@ -258,19 +311,3 @@
   }
 }
 
-.results-control-container {
-  border-bottom: 1px solid @gray-light;
-  background-color: #fff;
-  &.affix {
-    padding-top: 10px;
-  }
-  .quote-reference-number, .filter-results-hidden-products, .slide-feature-pagination {
-    line-height: 40px; // height of the frequency control.
-  }
-  .quote-reference-number {
-    font-size: 16px;
-  }
-  .filter-results-hidden-products {
-    color: @gray;
-  }
-}

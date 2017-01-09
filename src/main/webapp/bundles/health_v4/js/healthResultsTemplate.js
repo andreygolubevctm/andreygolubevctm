@@ -158,7 +158,7 @@
         premiumSplit = premiumSplit.split(".");
         priceResult.dollarPrice = premiumSplit[0]
             .replace('$', '')
-            .replace(',', '<span class="comma">,</span>');
+            .replace(',', '');
         priceResult.cents = premiumSplit[1];
         return priceResult;
     }
@@ -171,7 +171,90 @@
         return result;
     }
 
+    /**
+     * Note: this must be run AFTER a parseSpecialFeatures call.
+     * @returns {number}
+     */
+    function getAvailableFeatureCount(specialFeatureStructure) {
+        for (var i = 0, featureCount = 0; i < specialFeatureStructure.length; i++) {
+            if (specialFeatureStructure[i].active === true) {
+                featureCount++;
+            }
+        }
+        return featureCount || 0;
+    }
 
+    function parseSpecialFeatures(product) {
+        var specialOffer = getSpecialOffer(product);
+        return [
+            {
+                id: 'discount',
+                title: "Discount",
+                className: "icon-percentage-tag",
+                text: product.promo.discountText,
+                active: !_.isEmpty(product.promo) && !_.isEmpty(product.promo.discountText)
+            },
+            {
+                id: 'restrictedFund',
+                title: "This is a Restricted Fund",
+                className: "icon-no-symbol",
+                text: "<p>Restricted funds provide private health insurance cover to members of a specific industry or group.</p> <p>In some cases, family members and extended family are also eligible.</p>",
+                active: product.info.restrictedFund === 'Y'
+            },
+            {
+                id: 'customisedCover',
+                title: Object.byString(product, 'custom.info.content.results.header.label'),
+                className: 'icon-customise',
+                text: Object.byString(product, 'custom.info.content.results.header.text'),
+                active: !!Object.byString(product, 'custom.info.content.results.header')
+            },
+            {
+                id: 'specialOffer',
+                title: "Special Offer",
+                className: "icon-ribbon",
+                text: specialOffer.displayValue,
+                active: specialOffer.displayValue !== false
+            },
+            {
+                id: 'marketingOffer',
+                title: "Marketing",
+                className: "icon-life",
+                text: "Get insured online to redeem meerkat toy",
+                active: true
+            }
+        ];
+    }
+
+    /**
+     * The health results requires a more dynamic display of the content in this features bar.
+     * Scenario 1: 4 features, so 4 icons with popovers
+     * Scenario 2: 3 features, so 3 icons with popovers
+     * Scenario 3: 2 features, so 2 icons with inline text
+     * Scenario 4: 1 feature, so 1 icon with inline text.
+     * @param {Object} product
+     */
+    function getSpecialFeaturesContent(product, specialFeatureStructure) {
+
+        var featureCount = getAvailableFeatureCount(specialFeatureStructure);
+
+        var output = '';
+        if (featureCount >= 3) {
+            var popoverTemplate = meerkat.modules.templateCache.getTemplate($('#results-product-special-features-popover-template'));
+            for (var j = 0; j < specialFeatureStructure.length; j++) {
+                if (specialFeatureStructure[j].active === true) {
+                    output += popoverTemplate(specialFeatureStructure[j]);
+                }
+            }
+        } else {
+            var inlineTemplate = meerkat.modules.templateCache.getTemplate($('#results-product-special-features-inline-template'));
+            for (var k = 0; k < specialFeatureStructure.length; k++) {
+                if (specialFeatureStructure[k].active === true) {
+                    output += inlineTemplate(specialFeatureStructure[k]);
+                }
+            }
+        }
+        return output;
+    }
     function init() {
         $(document).ready(function () {
             $resultsPagination = $('.results-pagination');
@@ -277,7 +360,10 @@
         getExcessItem: getExcessItem,
         postRenderFeatures: postRenderFeatures,
         numberOfSelectedExtras: numberOfSelectedExtras,
-        toggleRemoveResultPagination: toggleRemoveResultPagination
+        toggleRemoveResultPagination: toggleRemoveResultPagination,
+        getSpecialFeaturesContent: getSpecialFeaturesContent,
+        getAvailableFeatureCount: getAvailableFeatureCount,
+        parseSpecialFeatures: parseSpecialFeatures
     });
 
 })(jQuery);
