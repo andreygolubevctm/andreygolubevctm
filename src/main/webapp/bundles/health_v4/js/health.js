@@ -239,6 +239,9 @@
             },
             onAfterEnter: function enterBenefitsStep(event) {
                 /** @todo implement from health.js when get to this step */
+                meerkat.modules.benefitsToggleBar.initLabelCount();
+                meerkat.modules.benefitsToggleBar.attachToggleBar();
+                meerkat.modules.benefitsToggleBar.setupToggleBarSettings();
             },
             onAfterLeave: function leaveBenefitsStep(event) {
                 var selectedBenefits = meerkat.modules.benefitsModel.getSelectedBenefits();

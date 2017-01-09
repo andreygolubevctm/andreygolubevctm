@@ -7,12 +7,12 @@ body.health {
 			-ms-transform: rotate(@degrees);
 			transform: rotate(@degrees);
 		}
-
+/*
 		@media (@sm) {
 			.extrasOverlay {
 				display: none;
 			}
-		}
+		}*/
 
 		@media (@xs-only) {
 			.benefitsContainer > .content {
@@ -24,7 +24,7 @@ body.health {
 				overflow-x: hidden;
 				position: relative;
 			}
-
+/*
 			.hospitalOverlay,
 			.extrasOverlay {
 				border: 2px solid @theme-tertiary;
@@ -36,47 +36,56 @@ body.health {
 
 			.extrasOverlay {
 				display: block;
-			}
+			}*/
 		}
-
-		.selectionStatus {
-			cursor: pointer;
+		.toggleBar {
 			background: @theme-tertiary;
-			color: @white;
-			top: 50%;
+			width: 20px;
+			height: 100%;
+			/*position: fixed;*/
 			position: absolute;
-			text-transform: uppercase;
-			height: 24px;
-			padding: 20px;
-
-			&.hospital {
-				right: -144px;
-				padding: 0px;
+			z-index: 100;
+			/*margin-top: -800px;*/
+			right: 380px;
+			.selectionStatus {
+				background: @theme-tertiary;
+				color: @white;
+				position: fixed;
+				/*width: 108px;*/
+				width: 220px;
+				border-top-left-radius: 10px;
+				border-top-right-radius: 10px;
+				margin-top: 110px;
+				padding: 1px;
 				padding-left: 10px;
-				border-bottom-left-radius: 10px;
-				border-bottom-right-radius: 10px;
-				.rotateEl(-90deg);
-			}
-
-			&.extras {
-				left: -137px;
-				padding: 0px;
-				padding-left: 10px;
-				border-bottom-left-radius: 10px;
-				border-bottom-right-radius: 10px;
-				.rotateEl(90deg);
-			}
-
-			span {
-				margin-left: 2px;
-				border-radius: 50%;
-				background: @theme-secondary;
-				padding: 0px;
-				width: 18px;
-				display: inline-block;
+				/*right: -20px;*/
+				cursor: pointer;
 				text-align: center;
-				margin-top: 2px;
-				margin-right: 5px;
+
+				&.hospital {
+					.rotateEl(90deg);
+					/*left: -26px;
+					width: 120px;*/
+					width: 230px;
+					left: -86px;
+				}
+
+				&.extras {
+					.rotateEl(-90deg);
+					right: -80px;
+				}
+
+				span {
+					margin-left: 2px;
+					border-radius: 50%;
+					background: @theme-secondary;
+					padding: 0px;
+					width: 18px;
+					display: inline-block;
+					text-align: center;
+					margin-top: 2px;
+					margin-right: 5px;
+				}
 			}
 		}
 	}

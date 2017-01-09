@@ -15,7 +15,11 @@
 <simples:dialogue id="46" className="simples-dialogue-hospital-cover" vertical="health" />
 
 <field_v1:hidden xpath="${pageSettings.getVerticalCode()}/situation/coverType" defaultValue="C" />
-
+<%-- Toggle for benefits --%>
+<div class="hidden-sm hidden-md hidden-lg toggleBar" data-targetContainer=".ExtrasBenefitsContainer .content">
+	<div class="selectionStatus extras">Your extras benefits selection <span>0</span></div>
+	<div class="selectionStatus hospital">Your hospital benefits selectio <span>0</span></div>
+</div>
 <div class="benefitsOverflow">
 <c:forEach items="${resultTemplateItems}" var="selectedValue">
 	<health_v4_insuranceprefs:benefitsItem item="${selectedValue}"  />

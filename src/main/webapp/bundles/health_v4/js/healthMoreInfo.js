@@ -297,21 +297,7 @@
             $elements.extrasOverlay.hide();
         });
 
-        // slide in/out the overlays
-        $elements.toggleBar.find('.extras').on('click', function displayExtrasBenefits() {
-            $elements.toggleBar.hide();
-            $elements.benefitsOverlow.animate({ 'left': ($('.HospitalBenefits').width() * -1) }, 500).promise().then(function onExtrasAnimateComplete() {
-                // reset to left position
-                $elements.toggleBar.css('left', 0).fadeIn();
-            });
-        });
 
-        $elements.toggleBar.find('.hospital').on('click', function displayHospitalBenefits() {
-            $elements.toggleBar.hide();
-            $elements.benefitsOverlow.animate({ 'left': 0 }, 500).promise().then(function onHospitalAnimateComplete() {
-                $elements.toggleBar.removeAttr('style').fadeIn();
-            });
-        });
 
         // toggle the quick select data in the hospital container
         $elements.hospital.find('.nav-tabs a').on('click', function toggleQuickSelect(){
@@ -324,13 +310,9 @@
 
     function _setupBenefitsXS() {
         $elements.extrasOverlay.show();
-        _setOverlayLabelCount($elements.toggleBar.find('.hospital'), meerkat.modules.benefitsModel.getHospitalCount());
-        _setOverlayLabelCount($elements.toggleBar.find('.extras'), meerkat.modules.benefitsModel.getExtrasCount());
+
     }
 
-    function _setOverlayLabelCount($overlay, count) {
-        $overlay.find('span').text(count);
-    }
 
     /**
      * HLT has different format of product json, so need to send different properties.
