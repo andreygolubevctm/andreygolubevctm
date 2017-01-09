@@ -249,10 +249,6 @@
         });
 
         $elements = {
-            benefitsOverlow: $('.benefitsOverflow'),
-            extrasOverlay: $('.extrasOverlay'),
-            hospitalOverlay: $('.hospitalOverlay'),
-            toggleBar: $('.toggleBar'),
             hospital: $('.Hospital_container'),
             extras: $('.GeneralHealth_container'),
             quickSelectContainer: $('.quickSelectContainer'),
@@ -261,7 +257,13 @@
         };
 
         _setTabs();
-        _registerXSBenefitsSlider();
+
+        var toggleBarInitSettings = {
+            container: '.moreInfoVisible .modal-dialog',
+            isModal: true
+        };
+        meerkat.modules.benefitsToggleBar.initToggleBar(toggleBarInitSettings);
+
         _trackScroll();
     }
 
@@ -280,39 +282,6 @@
             $elements.modalHeader.find('.printableBrochuresLink').toggleClass('hidden', $elements.moreInfoContainer.offset().top < calculatedHeight);
         });
     }
-
-    function _registerXSBenefitsSlider() {
-        $elements.hospitalOverlay.hide();
-
-        if (meerkat.modules.deviceMediaState.get() == 'xs') {
-            _setupBenefitsXS();
-        }
-
-        // handle the rare event where someone has a device that can go from xs to something larger eg surface pro v1
-        meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, function extrasOverlayEnterXsState() {
-            _setupBenefitsXS();
-        });
-
-        meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function extrasOverlayLeaveXsState() {
-            $elements.extrasOverlay.hide();
-        });
-
-
-
-        // toggle the quick select data in the hospital container
-        $elements.hospital.find('.nav-tabs a').on('click', function toggleQuickSelect(){
-            var target = $(this).data('target');
-
-            $elements.hospital.find($elements.quickSelectContainer).toggleClass('hidden', target === '.limited-pane');
-            _hospitalType = target === '.limited-pane' ? 'limited' : 'comprehensive';
-        });
-    }
-
-    function _setupBenefitsXS() {
-        $elements.extrasOverlay.show();
-
-    }
-
 
     /**
      * HLT has different format of product json, so need to send different properties.

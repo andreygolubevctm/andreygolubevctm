@@ -65,7 +65,7 @@
 	<div data-product-type="{{= info.ProductType }}" class="displayNone more-info-content col-xs-12 ${variantClassName}">
 
 		<div class="fieldset-card row price-card <c:if test="${healthAlternatePricingActive eq true}">hasDualPricing</c:if>">
-			<div class="col-xs-12 col-sm-9 moreInfoTopLeftColumn">
+			<div class="col-xs-12 col-sm-9 moreInfoTopLeftColumn Hospital_container">
 				<health_v4_moreinfo:more_info_product_summary />
 				<health_v4_moreinfo:more_info_product_extra_info />
 				<!-- Hospital and Extras -->

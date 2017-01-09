@@ -9,91 +9,143 @@
         meerkatEvents = meerkat.modules.events,
         $elements = {},
         settings = {},
-        currentScrollPos = 0;
+        currentStep;
 
-    function init() {
+    function initToggleBar(initSettings) {
         $(document).ready(function () {
+            var $container = $(initSettings.container);
+
             $elements = {
-                toggleBar: $('.toggleBar'),
-                benefitsOverflow: $('.benefitsOverflow'),
-                hospitalContainer: $('.Hospital_container'),
-                progressBar: $('.journeyProgressBar')
+                toggleBar: $container.find('.toggleBar'),
+                benefitsOverflow: $container.find('.benefitsOverflow'),
+                hospitalContainer: $container.find('.Hospital_container'),
+                progressBar: $container.find('.journeyProgressBar')
             };
 
             $elements.targetContainer = $elements.toggleBar.data('targetcontainer');
 
-            _eventsSubscription();
+            // position the benefit slider tabs
+            $elements.toggleBar.find('.hospital').css('position', 'absolute');
+            $elements.toggleBar.find('.extras').css('position', 'absolute');
+
+            _setupToggleBarSettings();
+
+            _setIsModal(initSettings.isModal || false);
+
+
+            if (settings.isModal === false) {
+                _attachToggleBar();
+            }
+
+            _setupToggleBarSettings();
+            _eventSubscriptions();
+
+            _setTabLabelCount($elements.hospitalOverlay, meerkat.modules.benefitsModel.getHospitalCount());
+            _setTabLabelCount($elements.extrasOverlay, meerkat.modules.benefitsModel.getExtrasCount());
         });
     }
 
-    function setupToggleBarSettings() {
-        var tbTop = $elements.toggleBar.offset().top,
-            offset = 20,
-            currentStep = meerkat.modules.journeyEngine.getCurrentStep().navigationId;
-
-        settings[currentStep] = {
-            toggleBarTop: tbTop,
-            toggleBarBottom: $elements.toggleBar.height() + tbTop,
-            toggleBarHeight:  $elements.toggleBar.height(),
-            hospitalTabWidth: $elements.toggleBar.find('.hospital').width(),
-            extrasTabWidth: $elements.toggleBar.find('.extras').width(),
-            bottomFixed: false,
-            topFixed: false,
-            currentBenefit: 'extras'
-        };
-
-        settings.currentStep = currentStep;
-        console.log("DDD START5",settings, $elements.toggleBar.height());
-        // position the benefit slider tabs
-        $elements.toggleBar.find('.hospital').css('position', 'absolute');
-        $elements.toggleBar.find('.extras').css('position', 'absolute');
-    }
-
-    function attachToggleBar() {
+    // allows the togglebar to be placed in a certain position (eg benefits screen)
+    function _attachToggleBar() {
         if (!_.isUndefined($elements.targetContainer)) {
             $elements.toggleBar.insertBefore($elements.targetContainer);
         }
     }
 
-    function _eventsSubscription() {
-        meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, function extrasOverlayEnterXsState() {
-            _setOverlayLabelCount($elements.hospitalOverlay, meerkat.modules.benefitsModel.getHospitalCount());
-            _setOverlayLabelCount($elements.extrasOverlay, meerkat.modules.benefitsModel.getExtrasCount());
-            setupToggleBarSettings();
-        });
+    function _beforePanelAnimationStart(type) {
+        $elements.toggleBar.hide();
+        if (settings[currentStep].isModal === false) {
+            $elements.toggleBar.find('.'+type).removeAttr('style').css('position', 'absolute');
+        }
+    }
 
+    // this is for the more info page that is regenerated everytime due to it being a modal
+    function _eventSubscriptions() {
         // slide in/out the overlays
         $elements.toggleBar.find('.extras').on('click', function displayExtrasBenefits() {
-            $elements.toggleBar.hide().find('.extras').removeAttr('style').css('position', 'absolute');
+            _beforePanelAnimationStart('hospital');
             $elements.benefitsOverflow.animate({ 'left': ($elements.hospitalContainer.width() * -1) }, 500).promise().then(function onExtrasAnimateComplete() {
                 // reset to left position
-                $elements.toggleBar.fadeIn().find('.hospital').fadeIn();
-                settings[meerkat.modules.journeyEngine.getCurrentStep().navigationId].currentBenefit = 'hospital';
-                _resetTopBottomFlags();
-                _updateToggleBarTabPosition();
+                if (settings[currentStep].isModal === true) {
+                    $elements.toggleBar.css('left', 0).fadeIn();
+                } else {
+                    _onPanelAnimationComplete('hospital');
+                }
             });
         });
 
         $elements.toggleBar.find('.hospital').on('click', function displayHospitalBenefits() {
-            $elements.toggleBar.hide().find('.hospital').removeAttr('style').css('position', 'absolute');
+            _beforePanelAnimationStart('extras');
             $elements.benefitsOverflow.animate({ 'left': 0 }, 500).promise().then(function onHospitalAnimateComplete() {
-                $elements.toggleBar.fadeIn().find('.extras').fadeIn();
-                settings[meerkat.modules.journeyEngine.getCurrentStep().navigationId].currentBenefit = 'extras';
-                _resetTopBottomFlags();
-                _updateToggleBarTabPosition();
+                if (settings[currentStep].isModal === true) {
+                    $elements.toggleBar.removeAttr('style').fadeIn();
+                } else {
+                    _onPanelAnimationComplete('extras');
+                }
             });
         });
 
-        $(window).off("scroll.benefitScroll").on("scroll.benefitScroll", _.debounce(function() {
-            _updateToggleBarTabPosition();
-        }));
+        if (settings[currentStep].isModal === false) {
+            // updates toggle bar tab position during scroll for non-modal instances
+            $(window).off("scroll." + settings.currentStep + "Scroll").on("scroll." + settings.currentStep + "Scroll", _.debounce(function () {
+                _updateToggleBarTabPosition();
+            }));
+        }
     }
 
-    function _resetTopBottomFlags() {
+    function _onPanelAnimationComplete(type) {
+        $elements.toggleBar.fadeIn().find('.'+type).fadeIn();
+        settings[settings.currentStep].currentBenefit = type;
+        _resetTBTabTopBottomFlags();
+        _updateToggleBarTabPosition();
+    }
+
+    // resets the toggle bar tab flags when the benefit panels are animated in
+    function _resetTBTabTopBottomFlags() {
         settings.bottomFixed = true;
         settings.topFixed = true;
     }
 
+    function _setIsModal(isModal) {
+        settings[currentStep].isModal = isModal;
+    }
+
+    // sets the number of selected benefits within the respective tab
+    function _setTabLabelCount($tab, count) {
+        $tab.find('span').text(count);
+    }
+
+    // sets up all the required variables to calculate the position of the togglebar tabs
+    function _setupToggleBarSettings() {
+        $(document).ready(function () {
+            _.defer(function(){
+                var tbTop = $elements.toggleBar.offset().top;
+
+                currentStep = meerkat.modules.journeyEngine.getCurrentStep().navigationId;
+
+                settings[currentStep] = {
+                    toggleBarTop: tbTop,
+                    toggleBarBottom: $elements.toggleBar.height() + tbTop,
+                    toggleBarHeight: $elements.toggleBar.height(),
+                    hospitalTabWidth: $elements.toggleBar.find('.hospital').width(),
+                    extrasTabWidth: $elements.toggleBar.find('.extras').width(),
+                    bottomFixed: false,
+                    topFixed: false,
+                    isModal: false,
+                    currentBenefit: 'extras'
+                };
+
+                settings.currentStep = currentStep;
+            });
+        });
+    }
+
+    // Code takes care of the positioning of the toggle bar tabs.
+    // 1. prevents the tabs going higher than the togglebar offset().top position
+    // 2. prevents the tabs going lower than the togglebar height
+    // 3. ensures the tabs are always displaying in the correct position when the other benefits screen is animated in
+    // ---
+    // Note this code only affects togglebar instances that are not used within a modal
     function _updateToggleBarTabPosition() {
         var currentBenefit = settings[settings.currentStep].currentBenefit,
             currentTabBenefitWidth = settings[settings.currentStep][currentBenefit + 'TabWidth'],
@@ -121,20 +173,8 @@
         }
     }
 
-    function initLabelCount() {
-        _setOverlayLabelCount($elements.toggleBar.find('.hospital'), meerkat.modules.benefitsModel.getHospitalCount());
-        _setOverlayLabelCount($elements.toggleBar.find('.extras'), meerkat.modules.benefitsModel.getExtrasCount());
-    }
-
-    function _setOverlayLabelCount($overlay, count) {
-        $overlay.find('span').text(count);
-    }
-
     meerkat.modules.register("benefitsToggleBar", {
-        init: init,
-        attachToggleBar: attachToggleBar,
-        initLabelCount: initLabelCount,
-        setupToggleBarSettings: setupToggleBarSettings
+        initToggleBar: initToggleBar
     });
 
 })(jQuery);

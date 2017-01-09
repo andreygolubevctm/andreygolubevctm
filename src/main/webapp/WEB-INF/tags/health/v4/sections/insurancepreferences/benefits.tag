@@ -18,7 +18,7 @@
 <%-- Toggle for benefits --%>
 <div class="hidden-sm hidden-md hidden-lg toggleBar" data-targetContainer=".ExtrasBenefitsContainer .content">
 	<div class="selectionStatus extras">Your extras benefits selection <span>0</span></div>
-	<div class="selectionStatus hospital">Your hospital benefits selectio <span>0</span></div>
+	<div class="selectionStatus hospital">Your hospital benefits selection <span>0</span></div>
 </div>
 <div class="benefitsOverflow">
 <c:forEach items="${resultTemplateItems}" var="selectedValue">
