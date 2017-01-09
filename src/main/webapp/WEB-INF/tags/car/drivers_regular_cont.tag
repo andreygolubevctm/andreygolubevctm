@@ -40,7 +40,7 @@
 									  title="if the regular driver has had any driving convictions, suspensions, disqualifications in the last 5 years" />
 			</form_v2:row>
 
-			<form_v2:row label="Details of all driving convitions, suspensions, disqualifications - include year and length of suspension" id="quote_drivers_regular_conviction_reasonRow" className="hidden">
+			<form_v2:row label="Details of all driving convictions, suspensions, disqualifications - include year and length of suspension" id="quote_drivers_regular_conviction_reasonRow" className="hidden">
 				<field_v1:textarea xpath="${xpath}/claims/conviction_reason" required="true" title="additional conviction information" />
 			</form_v2:row>
 
