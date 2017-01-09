@@ -12,15 +12,13 @@ import javax.naming.NamingException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
@@ -237,9 +235,12 @@ public class OpeningHoursDao {
 
             if (resultSet.next()) {
                 LocalTime effectiveTime = effectiveDate.toLocalTime();
-                LocalTime startTime = resultSet.getTime("startTime").toLocalTime();
-                LocalTime endTime = resultSet.getTime("endTime").toLocalTime();
-                if ((effectiveTime.equals(startTime) || effectiveTime.isAfter(startTime)) && effectiveTime.isBefore(endTime)) {
+                Optional<LocalTime> startTime = Optional.ofNullable(resultSet.getTime("startTime")).map(Time::toLocalTime);
+                Optional<LocalTime> endTime = Optional.ofNullable(resultSet.getTime("endTime")).map(Time::toLocalTime);
+                if (
+                        (startTime.isPresent() && (effectiveTime.equals(startTime.get()) || effectiveTime.isAfter(startTime.get())))
+                        && (!endTime.isPresent() || (endTime.isPresent() && effectiveTime.isBefore(endTime.get())))
+                        ) {
                     return true;
                 }
             }

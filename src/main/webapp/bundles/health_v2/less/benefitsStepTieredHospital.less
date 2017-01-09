@@ -263,3 +263,63 @@ fieldset {
     max-width:375px;
   }
 }
+
+#benefitsForm:not(.altBenefitsJourney) {
+  .altBenefitsJourney.customise,
+  .altBenefitsJourney.limited {
+    display: none;
+  }
+}
+
+#benefitsForm.altBenefitsJourney {
+  .benefits-list {
+    .section.hasShortlistableChildren {
+      padding-bottom:0px;
+    }
+  }
+  .Hospital-wrapper {
+    .coverExplanationContainer {
+      .coverExplanation.limitedCover {
+        display:none;
+      }
+    }
+  }
+  .hospitalCoverToggles {
+    &.visible-xs {
+      .btn-group,
+      .nonComprehensiveCover {
+        display:none;
+      }
+    }
+    &.hidden-xs {
+      .grouping-header,
+      .grouping-border,
+      .btn.benefit-category {
+        display:none;
+      }
+    }
+    .altBenefitsJourney {
+      display:none;
+      h5 {
+        text-align: center;
+      }
+      .btn.benefit-category {
+        display:block;
+        width:auto;
+      }
+    }
+    &.customise {
+      .altBenefitsJourney.customise {
+        display: block;
+        a {
+          margin-bottom:1em;
+        }
+      }
+    }
+    &.limited {
+      .altBenefitsJourney.limited {
+        display: block;
+      }
+    }
+  }
+}

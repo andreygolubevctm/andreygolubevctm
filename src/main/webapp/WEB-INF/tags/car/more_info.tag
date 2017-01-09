@@ -137,7 +137,7 @@
 				<div class="row hidden-md hidden-lg">{{= callApplyHtml }}</div>
 
 				<div class="row contentRow">
-					<div class="visible-xs col-xs-12">
+					<div class="promotionOffer visible-xs col-xs-12">
 						{{= promotionOfferHtml }}
 					</div>
 					<div class="col-xs-12 col-sm-6">

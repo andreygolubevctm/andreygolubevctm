@@ -47,6 +47,25 @@
         </div>
     </div>
 
+    <c:if test="${not empty callCentre}">
+        <div class="row filter need-extras" data-filter-serverside="true">
+            <div class="col-xs-12">
+                <div class="sidebar-subtitle-container">
+                    <span class="heading-text">Extras cover level</span>
+                </div>
+                <div class="filter-extrascoverlevel select">
+                    <span class="input-group-addon"><i class="icon-sort"></i></span>
+                    <select id="health_filterBar_extrasCoverLevel" name="health_filterBar_extrasCoverLevel" class="form-control array-select">
+                        {{ _.each(model.extrasCoverLevel.values, function(object) { }}
+                        {{ var selected = object.selected ? ' selected="selected"' : ''; }}
+                        <option id="health_filterBar_extrasCoverLevel_{{= object.value }}" value="{{= object.value }}" {{=selected }}>{{= object.label }}</option>
+                        {{ }) }}
+                    </select>
+                </div>
+            </div>
+        </div>
+    </c:if>
+
     <div class="row filter need-hospital {{=hiddenHospital }}" data-filter-serverside="true">
         <div class="col-xs-12">
             <div class="sidebar-subtitle-container">
