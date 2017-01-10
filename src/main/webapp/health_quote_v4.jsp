@@ -153,6 +153,8 @@
                 <health_v4_layout:slide_application />
                 <health_v4_layout:slide_payment />
 
+                <health_v4_payment:payment_frequency_template />
+
                 <field_v1:hidden xpath="environmentOverride" />
                 <field_v1:hidden xpath="staticOverride" />
                 <field_v1:hidden xpath="environmentValidatorOverride" />
