@@ -34,7 +34,7 @@
                 _attachToggleBar();
                 _setLabelCounts();
                 _eventSubscriptions();
-            }, 500);
+            }, 400);
         });
     }
     // allows the togglebar to be placed in a certain position (eg benefits screen)
