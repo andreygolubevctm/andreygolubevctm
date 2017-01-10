@@ -12,29 +12,27 @@
 
     function initToggleBar(initSettings) {
         $(document).ready(function () {
-            _.delay(function(){
-                var $container = $(initSettings.container);
+            var $container = $(initSettings.container);
 
-                if (!_.isUndefined(initSettings.currentStep)) {
-                    currentStep = initSettings.currentStep;
-                }
+            if (!_.isUndefined(initSettings.currentStep)) {
+                currentStep = initSettings.currentStep;
+            }
 
-                $elements = {
-                    toggleBar: $container.find('.toggleBar'),
-                    benefitsOverflow: $container.find('.benefitsOverflow'),
-                    hospitalContainer: $container.find('.Hospital_container'),
-                    extrasTab: $container.find('.toggleBar').find('.extras'),
-                    hospitalTab: $container.find('.toggleBar').find('.hospital'),
-                    progressBar: $container.find('.journeyProgressBar')
-                };
+            $elements = {
+                toggleBar: $container.find('.toggleBar'),
+                benefitsOverflow: $container.find('.benefitsOverflow'),
+                hospitalContainer: $container.find('.Hospital_container'),
+                extrasTab: $container.find('.toggleBar').find('.extras'),
+                hospitalTab: $container.find('.toggleBar').find('.hospital'),
+                progressBar: $container.find('.journeyProgressBar')
+            };
 
-                $elements.targetContainer = $elements.toggleBar.data('targetcontainer');
+            $elements.targetContainer = $elements.toggleBar.data('targetcontainer');
 
-                _setupToggleBarSettings(initSettings);
-                _attachToggleBar();
-                _setLabelCounts();
-                _eventSubscriptions();
-            }, 400);
+            _setupToggleBarSettings(initSettings);
+            _attachToggleBar();
+            _setLabelCounts();
+            _eventSubscriptions();
         });
     }
     // allows the togglebar to be placed in a certain position (eg benefits screen)
