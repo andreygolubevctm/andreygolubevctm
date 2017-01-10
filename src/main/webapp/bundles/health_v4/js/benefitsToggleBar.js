@@ -70,9 +70,8 @@
             $elements.benefitsOverflow.animate({ 'left': ($elements.hospitalContainer.width() * -1) }, 500).promise().then(function onExtrasAnimateComplete() {
                 // reset to left position
                 $elements.toggleBar.css('left', -10).fadeIn();
-                if (settings[currentStep].isModal === true) {
-
-                } else {
+                if (settings[currentStep].isModal === false) {
+                    _setTabLabelCount($elements.hospitalTab, meerkat.modules.benefitsModel.getHospitalCount());
                     _onPanelAnimationComplete('hospital');
                 }
             });
@@ -82,9 +81,8 @@
             _beforePanelAnimationStart('hospital');
             $elements.benefitsOverflow.animate({ 'left': 0 }, 500).promise().then(function onHospitalAnimateComplete() {
                 $elements.toggleBar.removeAttr('style').fadeIn();
-                if (settings[currentStep].isModal === true) {
-
-                } else {
+                if (settings[currentStep].isModal === false) {
+                    _setTabLabelCount($elements.extrasTab, meerkat.modules.benefitsModel.getExtrasCount());
                     _onPanelAnimationComplete('extras');
                 }
             });
@@ -122,21 +120,19 @@
 
     // sets up all the required variables to calculate the position of the togglebar tabs
     function _setupToggleBarSettings(initSettings) {
-        if (!_.isUndefined($elements.toggleBar)) {
-            var tbTop = $elements.toggleBar.offset().top;
+        var tbTop = $elements.toggleBar.offset().top;
 
-            settings[currentStep] = {
-                toggleBarTop: tbTop,
-                toggleBarBottom: $elements.toggleBar.height() + tbTop,
-                toggleBarHeight: $elements.toggleBar.height(),
-                hospitalTabWidth: $elements.toggleBar.find('.hospital').width(),
-                extrasTabWidth: $elements.toggleBar.find('.extras').width(),
-                bottomFixed: false,
-                topFixed: false,
-                isModal: initSettings.isModal || false,
-                currentBenefit: 'extras'
-            };
-        }
+        settings[currentStep] = {
+            toggleBarTop: tbTop,
+            toggleBarBottom: $elements.toggleBar.height() + tbTop,
+            toggleBarHeight: $elements.toggleBar.height(),
+            hospitalTabWidth: $elements.toggleBar.find('.hospital').width(),
+            extrasTabWidth: $elements.toggleBar.find('.extras').width(),
+            bottomFixed: false,
+            topFixed: false,
+            isModal: initSettings.isModal || false,
+            currentBenefit: 'extras'
+        };
     }
 
     // Code takes care of the positioning of the toggle bar tabs.
