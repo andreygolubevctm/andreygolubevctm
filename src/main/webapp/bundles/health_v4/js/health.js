@@ -363,15 +363,10 @@
             onBeforeEnter: function beforeEnterApplyStep(event) {
                 /** @todo implement from health.js when get to this step */
                 if (event.isForward === true) {
-                    var selectedProduct = meerkat.modules.healthResults.getSelectedProduct(),
-                        $fundWarning = $('#health_application-warning .fundWarning');
+                    var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
 
                     // Show warning if applicable
-                    if (typeof selectedProduct.warningAlert !== 'undefined' && selectedProduct.warningAlert !== '') {
-                        $fundWarning.show().html(selectedProduct.warningAlert);
-                    } else {
-                        $fundWarning.hide().empty();
-                    }
+                    meerkat.modules.healthFunds.toggleWarning($('#health_application-warning'));
 
                     this.tracking.touchComment =  selectedProduct.info.provider + ' ' + selectedProduct.info.des;
                     this.tracking.productId = selectedProduct.productId.replace("PHIO-HEALTH-", "");
@@ -412,10 +407,28 @@
             },
             onInitialise: function onPaymentInit(event) {
                 /** @todo implement from health.js when get to this step */
+                meerkat.modules.healthPaymentDate.initPaymentDate();
+                meerkat.modules.healthPaymentIPP.initHealthPaymentIPP();
                 meerkat.modules.healthSubmitApplication.initHealthSubmitApplication();
             },
             onBeforeEnter: function beforeEnterPaymentStep(event) {
                 /** @todo implement from health.js when get to this step */
+
+                if (event.isForward === true) {
+                    var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
+
+                    meerkat.modules.healthPaymentStep.rebindCreditCardRules();
+
+                    // Show warning if applicable
+                    meerkat.modules.healthFunds.toggleWarning($('#health_payment_details-selection'));
+
+                    // Insert fund into checkbox label
+                    $('#mainform').find('.health_declaration span').text( selectedProduct.info.providerName  );
+                    // Insert fund into Contact Authority
+                    $('#mainform').find('.health_contact_authority span').text( selectedProduct.info.providerName  );
+
+                    meerkat.modules.healthPaymentStep.updatePremium();
+                }
             }
         };
 

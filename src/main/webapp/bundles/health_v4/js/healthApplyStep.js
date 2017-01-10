@@ -47,10 +47,10 @@
         meerkat.messaging.publish(meerkatEvents.healthPreviousFund.POPULATE_PARTNER,
             meerkat.modules.healthPartner.getCurrentCover());
 
-        toggleSelectGender('primary');
+        _toggleSelectGender('primary');
 
         if (meerkat.modules.health.hasPartner()) {
-            toggleSelectGender('partner');
+            _toggleSelectGender('partner');
         }
     }
 
@@ -90,7 +90,7 @@
             var personDetailType = $(this).closest('.qe-window').find('.health-person-details')
                                        .hasClass('primary') ? 'primary' : 'partner';
 
-            toggleSelectGender(personDetailType);
+            _toggleSelectGender(personDetailType);
         });
 
         $elements.genderToggle.on('change', function onGenderToggle() {
@@ -102,7 +102,7 @@
         });
     }
 
-    function toggleSelectGender(personDetailType) {
+    function _toggleSelectGender(personDetailType) {
         var title =  $('#health_application_' + personDetailType + '_title').val(),
             gender,
             $gender = $('#health_application_' + personDetailType + '_gender'),

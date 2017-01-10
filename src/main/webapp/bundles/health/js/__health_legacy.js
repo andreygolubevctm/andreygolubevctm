@@ -108,19 +108,6 @@ var healthApplicationDetails = {
 	init: function(){
 		postalMatchHandler.init('health_application');
 	},
-
-	showHowToSendInfo: function(providerName, required) {
-		var contactPointGroup = $('#health_application_contactPoint-group');
-		var contactPoint = contactPointGroup.find('.control-label span');
-		contactPoint.text( providerName);
-		contactPointGroup.find('input').setRequired(required, 'Please choose how you would like ' + providerName + ' to contact you');
-
-		contactPointGroup.removeClass('hidden');
-	},
-	hideHowToSendInfo: function() {
-		var contactPointGroup = $('#health_application_contactPoint-group');
-		contactPointGroup.addClass('hidden');
-	},
 	addOption: function(labelText, formValue) {
 		var el = $('#health_application_contactPoint');
 

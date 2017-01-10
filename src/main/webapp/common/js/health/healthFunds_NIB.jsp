@@ -17,7 +17,7 @@ var healthFunds_NIB = {
     $paymentTypeContainer: $('div.health-payment_details-type').siblings('div.fieldrow_legend'),
     set: function(){
         <%--Contact Point question--%>
-        healthApplicationDetails.showHowToSendInfo('NIB', true);
+        meerkat.modules.healthFunds.showHowToSendInfo('NIB', true);
 
         <%-- Previous funds --%>
         $('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').attr('maxlength', '10');
@@ -127,7 +127,7 @@ var healthFunds_NIB = {
         healthFunds_NIB.$paymentTypeContainer.text('').slideUp();
 
         <%--Contact Point question--%>
-        healthApplicationDetails.hideHowToSendInfo();
+        meerkat.modules.healthFunds.hideHowToSendInfo();
 
         meerkat.modules.healthFunds._reset();
 

@@ -30,9 +30,14 @@
     <div class="frequencyAmount">
         {{ var dollarPriceResult = healthResultsTemplate.getPrice(result); }}
         <span class="dollarSign">$</span>{{= dollarPriceResult.dollarPrice }}<span class="cents">.{{= dollarPriceResult.cents }}</span>
+        <span class="frequencyTitle">{{= freqObj.label }}</span>
     </div>
 
     <div class="lhcText">{{= result.lhcFreePriceMode ? result.textLhcFreePricing : result.textPricing }}</div>
+
+    {{ if (typeof showRoundingText !== 'undefined' && showRoundingText === true) { }}
+    <div class="rounding">Premium may vary slightly due to rounding</div>
+    {{ } }}
 </div>
 
 {{ }); }}

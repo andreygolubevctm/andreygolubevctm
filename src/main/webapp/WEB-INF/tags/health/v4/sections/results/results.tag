@@ -35,6 +35,10 @@
             No results match your filters. Please try resetting your results by <a href="javascript;" class="reset-filters">clicking here</a>.
     </jsp:attribute>
 
+    <jsp:attribute name="quoterefTemplate">
+        <health_v4_results:quoteref_template />
+    </jsp:attribute>
+
     <jsp:attribute name="logoTemplate">
         <health_v4_results:logo_template />
     </jsp:attribute>

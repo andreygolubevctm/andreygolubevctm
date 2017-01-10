@@ -7,31 +7,30 @@
             WEBAPP_LOCK: 'WEBAPP_LOCK',
             WEBAPP_UNLOCK: 'WEBAPP_UNLOCK'
         },
-        stateSubmitInProgress = false;
+        stateSubmitInProgress = false,
+        $submitBtns = $('.slide-control-submit-application, #paymentDetailsForm + .row .journeyNavButton');
 
     function initHealthSubmitApplication() {
-        applyEventListeners();
+        _applyEventListeners();
     }
 
     function enableSubmitApplication() {
         // Enable button, hide spinner
-        var $button = $('#submit_btn');
-        $button.removeClass('disabled');
-        meerkat.modules.loadingAnimation.hide($button);
+        $submitBtns.removeClass('disabled');
+        meerkat.modules.loadingAnimation.hide($submitBtns);
     }
 
     function disableSubmitApplication(isSameSource) {
         // Disable button, show spinner
-        var $button = $('#submit_btn');
-        $button.addClass('disabled');
+        $submitBtns.addClass('disabled');
         if (isSameSource === true) {
-            meerkat.modules.loadingAnimation.showAfter($button);
+            meerkat.modules.loadingAnimation.showAfter($submitBtns);
         }
     }
 
-    function applyEventListeners() {
+    function _applyEventListeners() {
         // Submit application button
-        $("#submit_btn").on('click', function (event) {
+        $submitBtns.on('click', function (event) {
             var valid = meerkat.modules.journeyEngine.isCurrentStepValid();
 
             // Because validation is inline we can't see them inside privacy/compliance panels.
@@ -46,12 +45,12 @@
 
             // Validation passed, submit the application.
             if (valid) {
-                submitApplication();
+                _submitApplication();
             }
         });
     }
 
-    function submitApplication() {
+    function _submitApplication() {
 
         if (stateSubmitInProgress === true) {
             alert('Your application is still being submitted. Please wait.');
@@ -106,10 +105,10 @@
                     } else {
                         // Normally this shouldn't be reached because it should go via the onError handler thanks to the comms module detecting the error.
                         meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, { source: 'submitApplication' });
-                        handleSubmittedApplicationErrors(resultData);
+                        _handleSubmittedApplicationErrors(resultData);
                     }
                 },
-                onError: onSubmitApplicationError,
+                onError: _onSubmitApplicationError,
                 onComplete: function onSubmitComplete() {
                     stateSubmitInProgress = false;
                 }
@@ -118,24 +117,24 @@
         }
         catch (e) {
             stateSubmitInProgress = false;
-            onSubmitApplicationError();
+            _onSubmitApplicationError();
         }
 
     }
 
-    function onSubmitApplicationError(jqXHR, textStatus, errorThrown, settings, data) {
+    function _onSubmitApplicationError(jqXHR, textStatus, errorThrown, settings, data) {
         meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, { source: 'submitApplication' });
         stateSubmitInProgress = false;
         if (errorThrown == meerkat.modules.comms.getCheckAuthenticatedLabel()) {
             // Handling of this error is defined in comms module
         } else if (textStatus == 'Server generated error') {
-            handleSubmittedApplicationErrors(errorThrown);
+            _handleSubmittedApplicationErrors(errorThrown);
         } else {
-            handleSubmittedApplicationErrors(data);
+            _handleSubmittedApplicationErrors(data);
         }
     }
 
-    function handleSubmittedApplicationErrors(resultData) {
+    function _handleSubmittedApplicationErrors(resultData) {
         var error = resultData;
         if (resultData.hasOwnProperty("error") && typeof resultData.error == "object") {
             error = resultData.error;
