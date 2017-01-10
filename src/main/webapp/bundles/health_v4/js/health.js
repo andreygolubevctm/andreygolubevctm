@@ -232,16 +232,14 @@
                     meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
                 });
                 meerkat.modules.benefits.updateModelOnPreload();
-
             },
             onBeforeEnter: function enterBenefitsStep(event) {
                 /** @todo implement from health.js when get to this step */
             },
             onAfterEnter: function enterBenefitsStep(event) {
                 /** @todo implement from health.js when get to this step */
-
                 var toggleBarInitSettings = {
-                    container: '[data-step="benefits"]',
+                    container: 'body[data-step="benefits"]',
                     currentStep: steps.benefitsStep.navigationId
                 };
 

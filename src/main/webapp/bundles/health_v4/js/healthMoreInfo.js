@@ -265,7 +265,6 @@
         };
 
         meerkat.modules.benefitsToggleBar.initToggleBar(toggleBarInitSettings);
-
         _trackScroll();
     }
 
