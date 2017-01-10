@@ -20,7 +20,12 @@
     }
 
     .result {
-      top: 45px;
+      // if the top bar changes size, this will need to change...
+      top: 146px;
+
+      @media(@md) {
+        top: 45px;
+      }
       width: inherit;
       border: 1px solid @results-border-color;
       border-bottom: 1px solid @gray-dark;
@@ -54,7 +59,7 @@
     .result-row {
       border: 0;
       // To make up for the space no longer consumed by the .result element.
-      padding-top: 360px;
+      padding-top: 220px;
       @media (@sm) {
         padding-top: 230px;
       }
@@ -88,7 +93,7 @@
     }
   }
 
-  &.affixed-compact {
+/*  &.affixed-compact {
     h3 {
       display: block; // for some reason it's hidden in the core.
     }
@@ -109,7 +114,7 @@
 
     }
 
-  }
+  }*/
 
   // only in effect during the pagination animation
   &.affixed-absoluted {

@@ -172,7 +172,6 @@
     }
 
     /**
-     * Note: this must be run AFTER a parseSpecialFeatures call.
      * @returns {number}
      */
     function getAvailableFeatureCount(specialFeatureStructure) {
