@@ -239,8 +239,10 @@
             },
             onAfterEnter: function enterBenefitsStep(event) {
                 /** @todo implement from health.js when get to this step */
+
                 var toggleBarInitSettings = {
-                  container: '[data-step="benefits"]'
+                    container: '[data-step="benefits"]',
+                    currentStep: steps.benefitsStep.navigationId
                 };
 
                 meerkat.modules.benefitsToggleBar.initToggleBar(toggleBarInitSettings);

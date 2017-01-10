@@ -260,8 +260,10 @@
 
         var toggleBarInitSettings = {
             container: '.moreInfoVisible .modal-dialog',
+            currentStep: 'moreinfo',
             isModal: true
         };
+
         meerkat.modules.benefitsToggleBar.initToggleBar(toggleBarInitSettings);
 
         _trackScroll();
