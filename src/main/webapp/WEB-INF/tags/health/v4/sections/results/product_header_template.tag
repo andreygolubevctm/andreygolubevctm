@@ -30,7 +30,7 @@
             <a class="btn btn-cta btn-block btn-more-info more-info-showapply hide-on-affix" href="javascript:;" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>
                 <div class="more-info-text">View Product <span class="icon icon-angle-right"></span></div>
             </a>
-            <a class="affixed-view-product show-on-affix more-info-showapply text-center" href="javascript:;" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>
+            <a class="affixed-view-product show-on-affix more-info-showapply open-more-info text-center" href="javascript:;" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>
                 <div class="more-info-text">View Product <span class="icon icon-angle-right"></span></div>
             </a>
         </div>

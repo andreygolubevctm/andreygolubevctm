@@ -7,22 +7,16 @@
             var settings = {
                 disableOnXs: false,
                 getStartOffset: function () {
-                    var topOffset = 0;/*
+                    var topOffset;
                     switch (meerkat.modules.deviceMediaState.get()) {
-                        case 'lg':
-                            topOffset = 160;
-                            break;
-                        case 'md':
-                            topOffset = 150;
-                            break;
-                        case 'sm':
-                            topOffset = 150;
-                            break;
                         case 'xs':
-                            topOffset = 120;
+                            topOffset = 40;
                             break;
-                    }*/
-                    return $('.resultsOverflow').offset().top;
+                        default:
+                            topOffset = $('.resultsOverflow').offset().top;
+                            break;
+                    }
+                    return topOffset;
                 }
             };
             meerkat.modules.resultsHeaderBar.initResultsHeaderBar(settings);

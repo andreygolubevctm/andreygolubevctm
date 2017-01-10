@@ -1,5 +1,9 @@
 .results-control-container {
-  border-bottom: 1px solid @gray-light;
+  padding-bottom: 10px;
+  @media(@md) {
+    padding-bottom: 0;
+    border-bottom: 1px solid @gray-light;
+  }
   background-color: #fff;
   &.affix {
     padding-top: 10px;

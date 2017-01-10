@@ -1,6 +1,13 @@
 // NOTE: This file provides the design for the structure outlined in shared/results/v4.
 //       For a list of what a .section or .category is, see ../../../shared/results/v4/less/results_structure.less
 
+//On XS we should dock the headerbars.
+@media (@xs-only) {
+  //Push the page down to make some space
+  body[data-step="results"] {
+    padding-top: @navbar-height + 110;
+  }
+}
 #resultsPage {
   margin-bottom: 20px;
   a.dialogPop {
@@ -96,16 +103,26 @@
       color: @link-color;
       font-size: 48px;
     }
-    .frequencyAmount, .lhcText {
-      float: left;
-      width: 50%;
-    }
+
     .lhcText {
-      text-align: right;
+      text-align: center;
       .small;
-      display: flex;
-      height: 50px;
-      align-items: flex-end;
+      padding-bottom: 5px;
+    }
+    @media(@md) {
+      .frequencyAmount, .lhcText {
+        float: left;
+        width: 50%;
+      }
+
+      .lhcText {
+        padding-bottom: 0;
+        text-align: right;
+        .small;
+        display: flex;
+        height: 50px;
+        align-items: flex-end;
+      }
     }
   }
 
@@ -119,9 +136,9 @@
     h2, h3 {
       color: @theme-accent-4;
     }
-    /*@media (@xs-only) {
+    @media (@xs-only) {
       margin-right: 10px;
-    }*/
+    }
     @media (@sm) {
       margin-left: 9px;
     }
@@ -264,6 +281,13 @@
     }
   }
 
+  .hospitalSelectionsExcessContainer {
+    .featuresListExcess {
+      .content {
+        padding-bottom: 5px;
+      }
+    }
+  }
 }
 
 .product-special-features {
