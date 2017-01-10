@@ -199,11 +199,7 @@
     }
 
     function getCallType() {
-        var callType = null;
-        if($healthContactType.is(':checked')) {
-            callType = $healthContactType.filter(':checked').val();
-        }
-        return callType;
+        return $healthContactType.is(':checked') ? $healthContactType.filter(':checked').val() : null;
     }
 
     // Toggle visibility on follow call dialogs based on call type and whether is a followup call
