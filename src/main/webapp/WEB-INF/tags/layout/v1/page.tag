@@ -94,7 +94,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 		</c:if>
 
 		<%--  Modernizr --%>
-		<script src='${assetUrl}js/bundles/plugins/modernizr.min.js'></script>
+		<script src='${assetUrl}js/bundles/plugins/modernizr${pageSettings.getSetting('minifiedFileString')}.js'></script>
 	</c:if>
 
 <jsp:invoke fragment="head" />
@@ -265,7 +265,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 		<%-- JS Libraries --%>
 
 		<!--[if lt IE 9]>
-		<script src="${assetUrl}js/bundles/plugins/respond.min.js"></script>
+		<script src="${assetUrl}js/bundles/plugins/respond${pageSettings.getSetting('minifiedFileString')}.js"></script>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 		<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}libraries/jquery/js/jquery-1.11.3${pageSettings.getSetting('minifiedFileString')}.js">\x3C/script>');</script>
 		<![endif]-->
@@ -328,6 +328,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 						name: '${pageSettings.getSetting("brandName")}',
 						vertical: '${pageSettings.getVerticalCode()}',
 						isDev: ${isDev}, <%-- boolean determined from conditions above in this tag --%>
+                        minifiedFileString: '${pageSettings.getSetting('minifiedFileString')}',
                         isCallCentreUser: <c:out value="${not empty callCentre}"/>,
 						<c:if test="${pageSettings.hasSetting('inInEnabled')}">
 						inInEnabled: ${pageSettings.getSetting('inInEnabled')},
@@ -406,7 +407,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 	</c:when>
 	<c:otherwise>
 			<!--[if lt IE 9]>
-			<script src="${assetUrl}js/bundles/plugins/respond.min.js"></script>
+			<script src="${assetUrl}js/bundles/plugins/respond${pageSettings.getSetting('minifiedFileString')}.js"></script>
 			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 			<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}libraries/jquery/js/jquery-1.11.3${pageSettings.getSetting('minifiedFileString')}.js">\x3C/script>');</script>
 			<![endif]-->
@@ -436,7 +437,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 			<go:insertmarker format="SCRIPT" name="onready" />
 
 			<c:if test="${pageSettings.getVerticalCode() ne 'generic'}">
-				yepnope.injectJs({
+                yepnope.injectJs({
 					src: '${assetUrl}js/bundles/${fileName}.deferred${pageSettings.getSetting('minifiedFileString')}.js?${revision}',
 					attrs: {
 						async: true

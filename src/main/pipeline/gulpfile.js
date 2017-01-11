@@ -6,10 +6,11 @@
 
 var argv = require("yargs").argv;
 
-if(!!argv.disableNotify) {
+if (!!argv.disableNotify) {
     process.env["DISABLE_NOTIFIER"] = true;
 }
 
+process.env["DISABLE_MINIFICATION"] = !!argv.fast;
 var fs = require("graceful-fs-extra");
 
 // Important!
@@ -44,7 +45,7 @@ console.log("Meerkat Pipeline\r\n");
 console.log("   ____                                       _____ _            __  __            _        _   \r\n  / ___|___  _ __ ___  _ __   __ _ _ __ ___  |_   _| |__   ___  |  \\/  | __ _ _ __| | _____| |_ \r\n | |   / _ \\| '_ ` _ \\| '_ \\ / _` | '__/ _ \\   | | | '_ \\ / _ \\ | |\\/| |/ _` | '__| |/ / _ \\ __|\r\n | |__| (_) | | | | | | |_) | (_| | | |  __/   | | | | | |  __/ | |  | | (_| | |  |   <  __/ |_ \r\n  \\____\\___/|_| |_| |_| .__/ \\__,_|_|  \\___|   |_| |_| |_|\\___| |_|  |_|\\__,_|_|  |_|\\_\\___|\\__|\r\n                      |_|                                                                       \r\n");
 console.log("Initialising gulp tasks... Give it a moment, yo!\r\n");
 
-gulp.task("clean:noexit", function() {
+gulp.task("clean:noexit", function () {
     // We delete file contents instead of folders in case gulp tries writing to a folder and permissions haven't been set yet by the OS
     fs.removeSync(path.join(gulp.pipelineConfig.target.dir, "js", "bundles", "*.*"));
     fs.removeSync(path.join(gulp.pipelineConfig.target.dir, "js", "bundles", "maps", "*.*"));
@@ -56,7 +57,7 @@ gulp.task("clean:noexit", function() {
     fs.removeSync(path.join(gulp.pipelineConfig.target.dir, "includes", "styles", "*", "*.*"));
 });
 
-gulp.task("clean", ["clean:noexit"], function() {
+gulp.task("clean", ["clean:noexit"], function () {
     process.exit();
 });
 
