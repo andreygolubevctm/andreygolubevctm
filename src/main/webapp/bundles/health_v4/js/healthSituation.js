@@ -26,9 +26,14 @@
         });
     }
 
+    function getSituation() {
+        return $healthSituation.filter(':checked').val();
+    }
+
     meerkat.modules.register('healthSituation', {
         init: init,
-        events: moduleEvents
+        events: moduleEvents,
+        getSituation: getSituation
     });
 
 })(jQuery);

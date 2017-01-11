@@ -2,7 +2,6 @@
 
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
-
         $elements = {};
 
     function initHealthPartner() {
@@ -19,7 +18,9 @@
             partnerCoverLoading: $(':input[name=health_healthCover_partner_healthCoverLoading]'),
             dob: $('#health_healthCover_partner_dob'),
             currentCover: $('input[name=health_healthCover_partner_cover]'),
-            appFields: $('#partnerFund, #partnerMemberID, #partnerContainer')
+            appFields: $('#partnerFund, #partnerMemberID, #partnerContainer'),
+            benefitsScrollerLinks: $('.benefitsScroller'),
+            coverLoadingHeading: $('.benefitsContainer').find('h3:first-child')
         };
 
         $elements.partnerQuestionSet = $elements.partnerDOBD.add($elements.currentCover);
@@ -39,10 +40,29 @@
     }
 
     function _eventSubscriptions() {
+        meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_INIT, function updateForBrochureware() {
+            positionFieldsForBrochureware();
+        });
+
         meerkat.messaging.subscribe(meerkatEvents.healthSituation.SITUATION_CHANGED, function togglePartnerFields(selected) {
             _setupAppFields();
             _togglePartnerQuestionset(selected);
+
+            positionFieldsForBrochureware();
         });
+    }
+
+    function positionFieldsForBrochureware() {
+        if (meerkat.site.isFromBrochureSite) {
+            if (!hasPartner()) {
+                $elements.partnerQuestionSet.add($elements.partnerCoverLoading).closest('.fieldrow').hide();
+                $elements.benefitsScrollerLinks.add($elements.coverLoadingHeading).hide();
+            } else {
+                $elements.partnerQuestionSet.add($elements.partnerCoverLoading).closest('.fieldrow').show();
+                $elements.benefitsScrollerLinks.add($elements.coverLoadingHeading).show();
+                meerkat.modules.fieldUtilities.disable($elements.partnerCoverLoading);
+            }
+        }
     }
 
     function _togglePartnerQuestionset(selected) {
@@ -57,13 +77,19 @@
         // $elements.appFields.toggleClass('hidden', !meerkat.modules.healthChoices.hasPartner());
     }
 
+    function hasPartner() {
+        return _.indexOf(['F', 'C'], meerkat.modules.healthSituation.getSituation()) > -1;
+    }
+
     function getCurrentCover() {
         return $elements.currentCover.filter(':checked').val();
     }
 
     meerkat.modules.register('healthPartner', {
         init: initHealthPartner,
-        getCurrentCover: getCurrentCover
+        getCurrentCover: getCurrentCover,
+        hasPartner: hasPartner,
+        positionFieldsForBrochureware: positionFieldsForBrochureware
     });
 
 })(jQuery);

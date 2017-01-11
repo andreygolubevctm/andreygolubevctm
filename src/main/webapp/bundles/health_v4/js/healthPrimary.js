@@ -2,7 +2,6 @@
 
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
-
         $elements = {};
 
     function initHealthPrimary() {
@@ -14,10 +13,12 @@
     function _setupFields() {
         $elements = {
             primaryCoverLoading: $(':input[name=health_healthCover_primary_healthCoverLoading]'),
-            currentCover: $('input[name=health_healthCover_primary_cover]')
+            primaryCoverRow: $('#health_healthCover_primaryCover'),
+            currentCover: $('input[name=health_healthCover_primary_cover]'),
+            partnerDOB: $('#benefits_partner_dob')
         };
 
-        meerkat.modules.fieldUtilities.toggleFields($elements.primaryCoverLoading, $elements.currentCover.filter(':checked').val() === 'N');
+        meerkat.modules.fieldUtilities.toggleFields($elements.primaryCoverLoading, getCurrentCover() === 'N');
     }
 
     function _applyEventListeners() {
@@ -28,6 +29,25 @@
     }
 
     function _eventSubscriptions() {
+        meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_INIT, function updateForBrochureware() {
+            positionFieldsForBrochureware();
+        });
+
+        meerkat.messaging.subscribe(meerkatEvents.healthSituation.SITUATION_CHANGED, function togglePartnerFields() {
+            positionFieldsForBrochureware();
+        });
+    }
+
+    function positionFieldsForBrochureware() {
+        if (meerkat.site.isFromBrochureSite) {
+            if (meerkat.modules.healthPartner.hasPartner()) {
+                $elements.primaryCoverLoading.closest('.fieldrow').insertBefore($elements.partnerDOB);
+            } else {
+                $elements.primaryCoverLoading.closest('.fieldrow').insertAfter($elements.primaryCoverRow);
+            }
+
+            meerkat.modules.fieldUtilities.disable($elements.primaryCoverLoading);
+        }
     }
 
     function getCurrentCover() {
@@ -36,7 +56,8 @@
 
     meerkat.modules.register('healthPrimary', {
         init: initHealthPrimary,
-        getCurrentCover: getCurrentCover
+        getCurrentCover: getCurrentCover,
+        positionFieldsForBrochureware: positionFieldsForBrochureware
     });
 
 })(jQuery);

@@ -195,6 +195,7 @@
                     var coverTypeVal = $(this).find('input:checked').val();
                     meerkat.modules.healthBenefitsStep.updateHiddenFields(coverTypeVal);
                 });
+
             },
             onBeforeEnter: function() {
                 _incrementTranIdBeforeEnteringSlide();
