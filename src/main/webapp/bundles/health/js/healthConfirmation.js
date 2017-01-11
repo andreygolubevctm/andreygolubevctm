@@ -149,11 +149,30 @@
 						object: tracking
 					});
 					meerkat.modules.tracking.recordTouch('CONF','Confirmation Viewed');
+
+					// Call center joins to be posted to Google
+					if(meerkat.site.isCallCentreUser) registerSaleWithGA();
 				}
 			}
 
 		});
 
+	}
+
+	function registerSaleWithGA() {
+		var data = {
+			v :		1,
+			t :		'event',
+			ec :	'health journey conversions',
+			ea :	'health completed application',
+			el :	'health cc sale',
+			ds :	'call center',
+			dp :	'/ctm/health_confirmation_v2.jsp',
+			cd104 :	'',
+			cd105 :	'',
+			cd28 :	meerkat.modules.transactionId.get(),
+		};
+		meerkat.modules.tracking.sendSaleDataToGoogleMeasurementProtocol(data);
 	}
 
 	function adjustLayout() {
