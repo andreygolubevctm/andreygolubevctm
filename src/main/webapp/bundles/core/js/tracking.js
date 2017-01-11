@@ -427,7 +427,7 @@
         try {
             var data = !_.isEmpty(dataIn) && _.isObject(dataIn) ? dataIn : {};
             if(!_.isEmpty(data)) {
-                appendDefaultsToSaleData(data);
+                data = appendDefaultsToSaleData(data);
                 if(isValidSaleObject(data)) {
                     meerkat.modules.comms.post({
                         url: 'https://www.google-analytics.com/collect',
@@ -495,6 +495,7 @@
         if(!_.isNull(gaCode) && !_.isEmpty(tranId) && !_.isEmpty(clientId)) {
             _.extend(saleData,{tid:gaCode,ti:tranId,cid:clientId});
         }
+        return saleData;
     }
 
     meerkat.modules.register("tracking", {
