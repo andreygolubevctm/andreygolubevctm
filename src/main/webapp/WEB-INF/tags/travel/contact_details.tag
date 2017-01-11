@@ -49,9 +49,10 @@
 	<field_v2:checkbox
 			xpath="travel/marketing"
 			value="Y"
-			required="false"
+			required="true"
 			label="true"
-			title="${optinCopy}" />
+			title="${optinCopy}"
+			errorMsg="Please tick that you understand and accept the terms and conditions" />
 	<field_v1:hidden
 		xpath="travel/privacyoptin"
 		required="true" />
