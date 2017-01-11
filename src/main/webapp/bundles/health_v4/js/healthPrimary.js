@@ -40,7 +40,7 @@
 
     function positionFieldsForBrochureware() {
         if (meerkat.site.isFromBrochureSite) {
-            if (meerkat.modules.healthPartner.hasPartner()) {
+            if (meerkat.modules.healthChoices.hasPartner()) {
                 $elements.primaryCoverLoading.closest('.fieldrow').insertBefore($elements.partnerDOB);
             } else {
                 $elements.primaryCoverLoading.closest('.fieldrow').insertAfter($elements.primaryCoverRow);

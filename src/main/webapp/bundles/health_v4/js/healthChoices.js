@@ -29,7 +29,7 @@
         };
     }
 
-	function hasSpouse() {
+	function hasPartner() {
 		switch(_cover) {
 			case 'C':
 			case 'F':
@@ -67,7 +67,7 @@
         events: moduleEvents,
         init: init,
         initialise: initialise,
-        hasSpouse: hasSpouse,
+        hasPartner: hasPartner,
         returnCoverCode: returnCoverCode,
         setCover: setCover,
         setState: setState,
