@@ -463,6 +463,25 @@
     }
 
     /**
+     * Append common properties to the sale data
+     * @param saleData
+     */
+    function appendDefaultsToSaleData(saleData) {
+        var gaCode = getGACode();
+        var tranId = meerkat.modules.transactionId.get();
+        var clientId = gaClientId;
+        if(!_.isNull(gaCode)) {
+            saleData = _.extend(saleData,{tid:gaCode});
+        }
+        if(!_.isEmpty(tranId)) {
+            saleData = _.extend(saleData,{ti:tranId});
+        }
+        if(!_.isEmpty(clientId)) {
+            saleData = _.extend(saleData,{cid:clientId});
+        }
+    }
+
+    /**
      * Return the environment specific GA code via window.gaData
      * @returns {null}
      */
@@ -482,25 +501,6 @@
             meerkat.logging.info("sendToSaleDataToGoogleMeasurementProtocol catch", dataIn, e);
         }
         return null;
-    }
-
-    /**
-     * Append common properties to the sale data
-     * @param saleData
-     */
-    function appendDefaultsToSaleData(saleData) {
-        var gaCode = getGACode();
-        var tranId = meerkat.modules.transactionId.get();
-        var clientId = gaClientId;
-        if(!_.isNull(gaCode)) {
-            _.extend(saleData,{tid:gaCode});
-        }
-        if(!_.isEmpty(tranId)) {
-            _.extend(saleData,{ti:tranId});
-        }
-        if(!_.isEmpty(clientId)) {
-            _.extend(saleData,{cid:clientId});
-        }
     }
 
     meerkat.modules.register("tracking", {
