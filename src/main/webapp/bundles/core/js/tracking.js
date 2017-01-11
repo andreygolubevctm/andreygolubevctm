@@ -471,7 +471,7 @@
             var gaData = window.gaData;
             if(!_.isEmpty(gaData) && _.isObject(gaData)) {
                 var props = _.keys(gaData);
-                var test = /UT-/;
+                var test = /^UA-/;
                 for(var i=0; i<props.length; i++) {
                     if(props[i].search(test) === 0) {
                         return props[i];
