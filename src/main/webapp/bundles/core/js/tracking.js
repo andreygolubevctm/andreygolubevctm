@@ -427,7 +427,7 @@
         try {
             var data = !_.isEmpty(dataIn) && _.isObject(dataIn) ? dataIn : {};
             if(!_.isEmpty(data)) {
-                data = appendDefaultsToSaleData(data);
+                appendDefaultsToSaleData(data);
                 if(isValidSaleObject(data)) {
                     meerkat.modules.comms.post({
                         url: 'https://www.google-analytics.com/collect',
@@ -468,7 +468,7 @@
      */
     function getGACode() {
         try {
-            var gaData = window.gaData;
+            var gaData = window.gaData || gaData || null;
             if(!_.isEmpty(gaData) && _.isObject(gaData)) {
                 var props = _.keys(gaData);
                 var test = /^UA-/;
@@ -492,11 +492,15 @@
         var gaCode = getGACode();
         var tranId = meerkat.modules.transactionId.get();
         var clientId = gaClientId;
-        meerkat.logging.info("appendDefaultsToSaleData data", {gaCode:gaCode,tranId:tranId,clientId:gaClientId})
-        if(!_.isNull(gaCode) && !_.isEmpty(tranId) && !_.isEmpty(clientId)) {
-            _.extend(saleData,{tid:gaCode,ti:tranId,cid:clientId});
+        if(!_.isNull(gaCode)) {
+            _.extend(saleData,{tid:gaCode});
         }
-        return saleData;
+        if(!_.isEmpty(tranId)) {
+            _.extend(saleData,{ti:tranId});
+        }
+        if(!_.isEmpty(clientId)) {
+            _.extend(saleData,{cid:clientId});
+        }
     }
 
     meerkat.modules.register("tracking", {
