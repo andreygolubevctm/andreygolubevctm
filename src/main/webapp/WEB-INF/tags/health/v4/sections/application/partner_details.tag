@@ -26,8 +26,8 @@
                 </form_v4:row>
 
                 <c:set var="fieldXpath" value="${xpath}/partner/authority" />
-                <form_v4:row fieldXpath="${fieldXpath}" className="health_previous_fund_authority hidden" helpId="522">
-                    <field_v2:checkbox xpath="${fieldXpath}" value="Y" title="My partner authorises <span>the fund</span> to contact their previous fund to obtain a clearance certificate" label="My partner authorises <span>the fund</span> to contact my previous fund to obtain a transfer certificate" required="false" customAttribute=" data-attach='true' " />
+                <form_v4:row fieldXpath="${fieldXpath}" className="health_previous_fund_authority hidden">
+                    <field_v2:checkbox xpath="${fieldXpath}" value="Y" title="My partner authorises <span>the fund</span> to contact their previous fund to obtain a clearance certificate" label="My partner authorises <span>the fund</span> to contact my previous fund to obtain a transfer certificate" required="false" customAttribute=" data-attach='true' " helpId="522" />
                 </form_v4:row>
             </div>
         </div>
