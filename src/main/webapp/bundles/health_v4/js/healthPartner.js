@@ -8,7 +8,6 @@
         _setupFields();
         _applyEventListeners();
         _eventSubscriptions();
-        _setupAppFields();
     }
 
     function _setupFields() {
@@ -73,9 +72,6 @@
         }
     }
 
-    function _setupAppFields() {
-        // $elements.appFields.toggleClass('hidden', !meerkat.modules.healthChoices.hasPartner());
-    }
 
     function hasPartner() {
         return _.indexOf(['F', 'C'], meerkat.modules.healthSituation.getSituation()) > -1;
