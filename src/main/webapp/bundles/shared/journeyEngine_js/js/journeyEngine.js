@@ -307,8 +307,10 @@
 
         }catch(e){
             unlock();
-            meerkat.modules.address.setHash(currentStep.navigationId);
             meerkat.logging.info('[journeyEngine]',e);
+            if(currentStep) {
+                meerkat.modules.address.setHash(currentStep.navigationId);
+            }
             return false;
         }
 
@@ -348,7 +350,7 @@
         }else{
 
             // The slide has changed, therefore call the step after/before call backs after the transitions have completed.
-            $slide = $(settings.slideContainer+' .'+settings.slideClassName+':eq('+currentStep.slideIndex+')');
+            var $slide = $(settings.slideContainer+' .'+settings.slideClassName+':eq('+currentStep.slideIndex+')');
 
 
             $slide.fadeOut(250,function afterHide(){
@@ -428,8 +430,9 @@
     }
 
     function showSlide(step, animate, callback){
-
-        var $slide = $(settings.slideContainer+' .'+settings.slideClassName+':eq('+step.slideIndex+')');
+        // make this a bit more fault tolerant
+        var stepToAnimate = (step && step.slideIndex) || 0;
+        var $slide = $(settings.slideContainer+' .'+settings.slideClassName+':eq('+stepToAnimate+')');
 
         if(animate === true){
 

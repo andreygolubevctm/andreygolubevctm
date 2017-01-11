@@ -44,6 +44,7 @@ var ResultsPagination = {
 		if (typeof meerkat !== 'undefined') {
 			meerkat.messaging.subscribe(meerkat.modules.events.device.STATE_CHANGE, function paginationBreakPointChange(event){
 				// Don't bother doing pagination if we're on XS breakpoint
+				// @todo this could work if we fixed the css top calculations
 				if (event.state === 'xs') return;
 
 				Results.pagination.resync();

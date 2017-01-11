@@ -17,6 +17,7 @@
             }
         },
         settings = {
+            xsContext: '#navbar-main',
             filters: [
                 {
                     template: '#filter-results-template',
@@ -57,13 +58,14 @@
             for (var optionName in options) {
                 if (_.isArray(settings[optionName])) {
                     $.merge(settings[optionName], options[optionName]);
+                } else if(_.isString(settings[optionName]) && !_.isEmpty(settings[optionName])) {
+                    settings[optionName] = options[optionName];
                 } else {
                     $.extend(true, settings[optionName], options[optionName]);
                 }
             }
-
             if (meerkat.modules.deviceMediaState.get() === 'xs') {
-                changeFilterContext('#navbar-main');
+                changeFilterContext(settings.xsContext);
             }
 
             eventSubscriptions();
@@ -227,7 +229,7 @@
         });
 
         meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, function resultsXsBreakpointEnter() {
-            changeFilterContext('#navbar-main');
+            changeFilterContext(settings.xsContext);
             resetFilters();
         });
 

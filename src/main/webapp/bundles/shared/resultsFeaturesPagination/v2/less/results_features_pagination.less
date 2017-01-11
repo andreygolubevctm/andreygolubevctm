@@ -6,7 +6,7 @@
   .navbar-collapse {
     padding: 0;
   }
-  @media(@xs-sm-only) {
+  @media (@xs-sm-only) {
     margin-bottom: 15px;
     text-align: center;
   }
@@ -21,7 +21,12 @@
     .user-select(none);
     font-family: @font-family-theme-bold;
     margin-left: 10px;
-    @media(@md-only) {
+    @media (@xs-sm-only) {
+      &:first-child {
+        margin-left: 0;
+      }
+    }
+    @media (@md-only) {
       margin-left: 5px;
     }
 
@@ -38,7 +43,10 @@
     }
 
     a {
-      padding: 6px 12px;
+      padding: 4px 8px;
+      @media (@md) {
+        padding: 6px 12px;
+      }
     }
 
     .btn-pagination {
