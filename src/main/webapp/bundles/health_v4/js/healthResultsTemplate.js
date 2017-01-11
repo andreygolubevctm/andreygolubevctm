@@ -238,22 +238,30 @@
 
         var output = '';
         if (featureCount >= 3) {
-            var popoverTemplate = meerkat.modules.templateCache.getTemplate($('#results-product-special-features-popover-template'));
-            for (var j = 0; j < specialFeatureStructure.length; j++) {
-                if (specialFeatureStructure[j].active === true) {
-                    output += popoverTemplate(specialFeatureStructure[j]);
-                }
-            }
+            output += _templateIterator(specialFeatureStructure, '#results-product-special-features-popover-template');
         } else {
-            var inlineTemplate = meerkat.modules.templateCache.getTemplate($('#results-product-special-features-inline-template'));
-            for (var k = 0; k < specialFeatureStructure.length; k++) {
-                if (specialFeatureStructure[k].active === true) {
-                    output += inlineTemplate(specialFeatureStructure[k]);
-                }
+            output += _templateIterator(specialFeatureStructure, '#results-product-special-features-inline-template');
+        }
+        return output;
+    }
+
+    /**
+     * Helper function
+     * @param specialFeatureStructure
+     * @param template
+     * @returns {string}
+     * @private
+     */
+    function _templateIterator(specialFeatureStructure, template) {
+        var htmlTemplate = meerkat.modules.templateCache.getTemplate($(template));
+        for (var i = 0, output = ''; i < specialFeatureStructure.length; i++) {
+            if (specialFeatureStructure[i].active === true) {
+                output += htmlTemplate(specialFeatureStructure[i]);
             }
         }
         return output;
     }
+
     function init() {
         $(document).ready(function () {
             $resultsPagination = $('.results-pagination');

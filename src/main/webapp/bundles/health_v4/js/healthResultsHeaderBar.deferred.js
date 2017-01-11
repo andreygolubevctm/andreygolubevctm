@@ -6,6 +6,7 @@
         $(document).ready(function () {
             var settings = {
                 disableOnXs: false,
+                navbarSelector: '.results-control-container',
                 getStartOffset: function () {
                     var topOffset;
                     switch (meerkat.modules.deviceMediaState.get()) {

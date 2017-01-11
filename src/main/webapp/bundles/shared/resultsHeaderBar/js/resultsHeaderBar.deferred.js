@@ -11,6 +11,7 @@
 
     var settings = {
             disableOnXs: false,
+            navbarSelector: '#navbar-main',
             getStartOffset: function () {
                 return $(".header-top .container").height();
             }
@@ -36,7 +37,7 @@
         $resultsHeaderBg = $('.resultsHeadersBg');
         $affixOnScroll = $('.affixOnScroll');
         $resultsContainer = $('.resultsContainer');
-        navBarHeight = $("#navbar-main").height();
+        navBarHeight = $(settings.navbarSelector).outerHeight();
 
         // Self-initialise
         $(document).on('resultsLoaded', registerEventListeners);

@@ -22,9 +22,11 @@
     .result {
       // if the top bar changes size, this will need to change...
       top: 146px;
-
+      @media(@sm-only) {
+        top: 75px;
+      }
       @media(@md) {
-        top: 45px;
+        top: 59px;
       }
       width: inherit;
       border: 1px solid @results-border-color;
