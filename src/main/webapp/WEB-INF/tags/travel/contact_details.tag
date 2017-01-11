@@ -52,7 +52,7 @@
 			required="true"
 			label="true"
 			title="${optinCopy}"
-			errorMsg="Please tick that you understand and accept the terms and conditions" />
+			errorMsg="Please agree to the Terms &amp; Conditions" />
 	<field_v1:hidden
 		xpath="travel/privacyoptin"
 		required="true" />
