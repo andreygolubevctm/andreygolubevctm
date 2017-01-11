@@ -492,6 +492,7 @@
         var gaCode = getGACode();
         var tranId = meerkat.modules.transactionId.get();
         var clientId = gaClientId;
+        meerkat.logging.info("appendDefaultsToSaleData data", {gaCode:gaCode,tranId:tranId,clientId:gaClientId})
         if(!_.isNull(gaCode) && !_.isEmpty(tranId) && !_.isEmpty(clientId)) {
             _.extend(saleData,{tid:gaCode,ti:tranId,cid:clientId});
         }
