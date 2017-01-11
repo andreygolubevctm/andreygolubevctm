@@ -182,6 +182,8 @@
                 meerkat.modules.healthLocation.initHealthLocation();
                 meerkat.modules.healthPostcode.initPostcode();
 
+                meerkat.modules.fieldUtilities.initDisabledFields();
+
                 if (meerkat.site.choices) {
                     meerkat.modules.healthChoices.initialise('SM'); // default to single male
                     meerkat.modules.healthChoices.setState(meerkat.site.choices.state);
