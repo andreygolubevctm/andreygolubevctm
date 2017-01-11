@@ -168,8 +168,8 @@
 			el :	'health cc sale',
 			ds :	'call center',
 			dp :	'/ctm/health_confirmation_v2.jsp',
-			cd104 :	'',
-			cd105 :	'',
+			cd104 :	meerkat.site.contactType,
+			cd105 :	meerkat.site.userId,
 			cd28 :	meerkat.modules.transactionId.get(),
 		};
 		meerkat.modules.tracking.sendSaleDataToGoogleMeasurementProtocol(data);

@@ -138,6 +138,9 @@
 <c:set var="healthAlternatePricingActive" value="${healthPriceDetailService.isAlternatePriceActive(pageContext.getRequest())}" />
 {
 	isCallCentreUser: <c:out value="${not empty callCentre}"/>,
+	<c:if test="${not empty callCentre}">
+		contactType: "<c:out value="${data['health/simples/contactType']}"/>",
+	</c:if>
 	isFromBrochureSite: <c:out value="${fromBrochure}"/>,
 	journeyStage: "<c:out value="${data['health/journey/stage']}"/>",
 	pageAction: '<c:out value="${pageAction}"/>',
