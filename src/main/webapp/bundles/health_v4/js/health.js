@@ -228,11 +228,6 @@
             },
             onInitialise: function onResultsInit(event) {
                 /** @todo implement from health.js when get to this step */
-                var partnerDob = $('#health_healthCover_partner_dob');
-
-                partnerDob.on('change', function() {
-                    meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
-                });
                 meerkat.modules.benefits.updateModelOnPreload();
 
             },
@@ -647,7 +642,7 @@
                 $.extend(response, {
                     postCode: $("#health_application_address_postCode").val(),
                     state: state,
-                    healthCoverType: meerkat.modules.healthChoices.getSituation(),
+                    healthCoverType: meerkat.modules.healthSituation.getSituation(),
                     contactType: contactType
                 });
             }
@@ -686,18 +681,11 @@
         }
     }
 
-    // Use the situation value to determine if a partner is visible on the journey.
-    function hasPartner() {
-        var cover = meerkat.modules.healthChoices.getSituation();
-        return cover == 'F' || cover == 'C';
-    }
-
     meerkat.modules.register("health", {
         init: initHealth,
         events: moduleEvents,
         initProgressBar: initProgressBar,
-        getTrackingFieldsObject: getTrackingFieldsObject,
-        hasPartner: hasPartner
+        getTrackingFieldsObject: getTrackingFieldsObject
     });
 
 

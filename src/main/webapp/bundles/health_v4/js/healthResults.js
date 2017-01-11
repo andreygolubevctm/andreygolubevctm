@@ -940,7 +940,7 @@
             var specialOffer = meerkat.modules.healthUtils.getSpecialOffer(product);
             var excessesAndCoPayment = meerkat.modules.healthUtils.getExcessesAndCoPayment(product);
 
-            data["rank_healthMembership" + position] = meerkat.modules.healthChoices.getSituation();
+            data["rank_healthMembership" + position] = meerkat.modules.healthSituation.getSituation();
             data["rank_healthSituation" + position] = situation;
             data["rank_benefitCodes" + position] = benefitCodes.join(',');
             data["rank_coverType" + position] = product.info.ProductType;

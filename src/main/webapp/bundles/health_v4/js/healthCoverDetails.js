@@ -29,7 +29,7 @@
             $_previousFund.find('.membership').removeClass('onA');
         }
 
-        if (meerkat.modules.healthChoices.hasSpouse() && partnerFund !== 'NONE' && partnerFund !== '') {
+        if (meerkat.modules.healthChoices.hasPartner() && partnerFund !== 'NONE' && partnerFund !== '') {
             $_previousFund.find('#partnerMemberID').slideDown();
             $_previousFund.find('.membership').addClass('onB');
         } else {

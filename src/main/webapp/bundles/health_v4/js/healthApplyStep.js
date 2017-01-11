@@ -49,7 +49,7 @@
 
         _toggleSelectGender('primary');
 
-        if (meerkat.modules.health.hasPartner()) {
+        if (meerkat.modules.healthChoices.hasPartner()) {
             _toggleSelectGender('partner');
         }
     }
