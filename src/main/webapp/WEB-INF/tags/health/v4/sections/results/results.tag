@@ -62,7 +62,7 @@
                         <div class="hospitalExcessSectionBorder">
                             <div class="featuresListExcess" data-feature-template="#results-features-excess-template" data-feature-index="1" data-feature-type="excess"></div>
                             <div class="yourSelectionsHospital">
-                                <h3>Selected Benefits</h3>
+                                <div class="selected-benefits-title">Selected Benefits</div>
                             </div>
                         </div>
                         {{ if(info.situationFilter == 'Y') { }}

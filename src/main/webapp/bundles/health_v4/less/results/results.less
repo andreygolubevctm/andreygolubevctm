@@ -8,6 +8,7 @@
     padding-top: @navbar-height + 110;
   }
 }
+
 #resultsPage {
   padding-top: 20px;
   margin-bottom: 20px;
@@ -55,7 +56,6 @@
     cursor: pointer;
     .user-select(none);
   }
-
 
   .remove-result {
     left: 0;
@@ -110,7 +110,7 @@
       .small;
       padding-bottom: 5px;
     }
-    @media(@md) {
+    @media (@md) {
       .frequencyAmount, .lhcText {
         float: left;
         width: 50%;
@@ -137,9 +137,7 @@
     h2, h3 {
       color: @theme-accent-4;
     }
-    @media (@xs-only) {
-      margin-right: 10px;
-    }
+    margin-left: 5px;
     @media (@sm) {
       margin-left: 9px;
     }
@@ -258,6 +256,10 @@
     border-bottom: 1px solid @results-border-color;
   }
   .hospitalSelectionsExcessContainer {
+    .selected-benefits-title {
+      color: @theme-accent-4;
+      font-size: 16px;
+    }
     .featuresListExcess {
       .content {
         padding-bottom: 0;
