@@ -34,10 +34,6 @@
     </div>
 
     <div class="lhcText hide-on-affix">{{= result.lhcFreePriceMode ? result.textLhcFreePricing : result.textPricing }}</div>
-
-    {{ if (typeof showRoundingText !== 'undefined' && showRoundingText === true) { }}
-    <div class="rounding">Premium may vary slightly due to rounding</div>
-    {{ } }}
 </div>
 
 {{ }); }}

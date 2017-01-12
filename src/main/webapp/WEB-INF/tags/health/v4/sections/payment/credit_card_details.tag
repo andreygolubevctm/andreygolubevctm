@@ -17,7 +17,7 @@
 
     <field_v2:creditcard_assurance_message showCreditCards="true" />
 
-    <health_v1:payment_external xpath="${gatewayXpath}" />
+    <health_v4_payment:payment_external xpath="${gatewayXpath}" />
 
     <c:set var="fieldXpath" value="${xpath}/type" />
     <form_v4:row fieldXpath="${fieldXpath}" label="Credit Card Type" className="health_credit-card_details_type_group">
