@@ -74,7 +74,8 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-xs-12 col-sm-9">
-                                <ul class="journeyProgressBar"></ul>
+                                <ul class="journeyProgressBar" data-phase="journey"></ul>
+                                <ul class="journeyProgressBar" data-phase="application"></ul>
                             </div>
                             <div class="hidden-xs col-sm-3">
                                 <a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton slide-control-about-you" data-slide-control="next" href="javascript:;"
