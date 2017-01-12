@@ -26,6 +26,9 @@
                 </jsp:attribute>
                     <jsp:body>
 
+                        <%-- PROVIDER TESTING --%>
+                        <health_v1:provider_testing xpath="${pageSettings.getVerticalCode()}" />
+
                         <health_v4_aboutyou:simples />
 
                         <form_v4:fieldset id="healthAboutYou" legend="Tell us about yourself, so we can find the right cover for you" className="health-about-you">

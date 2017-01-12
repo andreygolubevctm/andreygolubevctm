@@ -9,24 +9,25 @@
     {{ for(var i = 0; i < featureIterator.length; i++) { var ft = module.getItem(obj, featureIterator[i]); if(ft.doNotRender === true) { continue; } }}
     <div class="cell {{= ft.classString }}">
         {{ if(ft.displayItem) { }}
-        {{ if(ft.type == 'category') { }}
-        {{ var resultPath = ft.resultPath; }}
-        {{ var benefitGroup = ''; }}
-        {{ if(!_.isEmpty(resultPath)) { }}
-        {{      if(resultPath.indexOf('hospital') === 0) { }}
-        {{          benefitGroup = 'hospital'; }}
-        {{      } else if (resultPath.indexOf('extras') === 0) { }}
-        {{          benefitGroup = 'extras'; }}
-        {{      } }}
-        {{ } }}
-        <div class="labelInColumn {{= ft.classStringForInlineLabel }}">
-            <div class="content" data-featureId="{{= ft.id }}">
-                <div class="contentInner" data-analytics="compare BL {{= benefitGroup }}">
-                    {{= ft.safeName }} {{ if(ft.isRestricted) { }}<span title="Restricted" class="icon icon-exclamation"></span>{{ } }}{{ if(ft.hasChildFeatures) { }}<span class="icon expander"></span>{{ } }}
+            {{ if(ft.type == 'category') { }}
+                {{ var resultPath = ft.resultPath; }}
+                {{ var benefitGroup = ''; }}
+                {{ if(!_.isEmpty(resultPath)) { }}
+                    {{      if(resultPath.indexOf('hospital') === 0) { }}
+                    {{          benefitGroup = 'hospital'; }}
+                    {{      } else if (resultPath.indexOf('extras') === 0) { }}
+                    {{          benefitGroup = 'extras'; }}
+                    {{      } }}
+                {{ } }}
+                <div class="labelInColumn {{= ft.classStringForInlineLabel }}">
+                    <div class="content" data-featureId="{{= ft.id }}">
+                        <div class="contentInner" data-analytics="compare BL {{= benefitGroup }}">
+                            {{= ft.safeName }} {{ if(ft.hasChildFeatures) { }}<span class="icon expander"></span>{{ } }}
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>{{ } }}
-        {{ if(ft.type == 'feature') { }}<div class="content {{= ft.contentClassString }}" data-featureId="{{= ft.id }}"><div class="featureLabel">{{= ft.safeName }}</div><div class="featureValue">{{= ft.displayValue }}</div></div>{{ } }}
+            {{ } }}
+            {{ if(ft.type == 'feature') { }}<div class="content {{= ft.contentClassString }}" data-featureId="{{= ft.id }}"><div class="featureLabel">{{= ft.safeName }}</div><div class="featureValue">{{= ft.displayValue }}</div></div>{{ } }}
         {{ } if(ft.displayChildren) { }}
         <div class="children {{= ft.hideChildrenClass }}" data-fid="{{= ft.id }}">
             {{ obj.childFeatureDetails = ft.children; }}
