@@ -162,7 +162,7 @@
      */
     function initProgressBar(render) {
         setJourneyEngineSteps();
-        configureProgressBar();
+        configureProgressBar(true);
         if (render) {
             meerkat.modules.journeyProgressBar.render(true);
         }
@@ -199,6 +199,9 @@
             onBeforeEnter: function() {
                 _incrementTranIdBeforeEnteringSlide();
 
+                // configure progress bar
+                configureProgressBar(true);
+
                 meerkat.modules.healthRebate.toggleEdit(false);
             },
             onAfterEnter: function healthAfterEnter() {
@@ -232,6 +235,8 @@
             },
             onBeforeEnter: function enterBenefitsStep(event) {
                 /** @todo implement from health.js when get to this step */
+                // configure progress bar
+                configureProgressBar(true);
             },
             onAfterEnter: function enterBenefitsStep(event) {
                 /** @todo implement from health.js when get to this step */
@@ -269,6 +274,8 @@
             },
             onBeforeEnter: function enterContactStep(event) {
                 /** @todo implement from health.js when get to this step */
+                // configure progress bar
+                configureProgressBar(true);
 
                 meerkat.modules.healthPostcode.editMode();
             },
@@ -365,6 +372,9 @@
                 if (event.isForward === true) {
                     var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
 
+                    // configure progress bar
+                    configureProgressBar(false);
+
                     // Show warning if applicable
                     meerkat.modules.healthFunds.toggleWarning($('#health_application-warning'));
 
@@ -444,23 +454,41 @@
     }
 
     // @todo review this during progress bar refactor
-    function configureProgressBar() {
+    function configureProgressBar(isJourney) {
+        var phase = isJourney ? 'journey' : 'application',
+            progressBarSteps = {
+                journey: [
+                    {
+                        label: 'About you',
+                        navigationId: steps.startStep.navigationId
+                    },
+                    {
+                        label: '<span class="hidden-sm hidden-md hidden-lg">Preferences</span><span class="hidden-xs">Insurance preferences</span>',
+                        navigationId: steps.benefitsStep.navigationId
+                    },
+                    {
+                        label: 'Contact details',
+                        navigationId: steps.contactStep.navigationId
+                    }
+                ],
+                application: [
+                    {
+                        label: 'Application',
+                        navigationId: steps.applyStep.navigationId
+                    },
+                    {
+                        label: 'Payment',
+                        navigationId: steps.paymentStep.navigationId
+                    },
+                    {
+                        label: 'Thank You'
+                    }
+                ]
+            };
+
         // Better progressBar just works...
-        meerkat.modules.journeyProgressBar.changeTargetElement('.journeyProgressBar');
-        meerkat.modules.journeyProgressBar.configure([
-            {
-                label: 'About you',
-                navigationId: steps.startStep.navigationId
-            },
-            {
-                label: '<span class="hidden-sm hidden-md hidden-lg">Preferences</span><span class="hidden-xs">Insurance preferences</span>',
-                navigationId: steps.benefitsStep.navigationId
-            },
-            {
-                label: 'Contact details',
-                navigationId: steps.contactStep.navigationId
-            }
-        ]);
+        meerkat.modules.journeyProgressBar.changeTargetElement('.journeyProgressBar[data-phase='+phase+']');
+        meerkat.modules.journeyProgressBar.configure(progressBarSteps[phase]);
     }
 
 
