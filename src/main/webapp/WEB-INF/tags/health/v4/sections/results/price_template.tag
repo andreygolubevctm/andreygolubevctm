@@ -30,6 +30,7 @@
     <div class="frequencyAmount">
         {{ var dollarPriceResult = healthResultsTemplate.getPrice(result); }}
         <span class="dollarSign">$</span>{{= dollarPriceResult.dollarPrice }}<span class="cents">.{{= dollarPriceResult.cents }}</span>
+        <span class="frequencyTitle">{{= freqObj.label }}</span>
     </div>
 
     <div class="lhcText hide-on-affix">{{= result.lhcFreePriceMode ? result.textLhcFreePricing : result.textPricing }}</div>

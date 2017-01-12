@@ -191,7 +191,7 @@
     }
 
     function _reset() {
-        healthApplicationDetails.hideHowToSendInfo();
+        meerkat.modules.healthFunds.hideHowToSendInfo();
         meerkat.modules.healthFunds._partner_authority(false);
         _memberIdRequired(true);
         meerkat.modules.healthDependants.resetConfig();
@@ -271,6 +271,20 @@
         return $_optionDR;
     }
 
+    function showHowToSendInfo(providerName, required) {
+        var contactPointGroup = $('#health_application_contactPoint-group'),
+            contactPoint = contactPointGroup.find('.control-label span');
+
+        contactPoint.text( providerName);
+        contactPointGroup.find('input').setRequired(required, 'Please choose how you would like ' + providerName + ' to contact you');
+        contactPointGroup.removeClass('hidden');
+    }
+
+    function hideHowToSendInfo() {
+        var contactPointGroup = $('#health_application_contactPoint-group');
+        contactPointGroup.addClass('hidden');
+    }
+
     meerkat.modules.register("healthFunds", {
         applicationFailed: applicationFailed,
         checkIfNeedToInjectOnAmend: checkIfNeedToInjectOnAmend,
@@ -286,7 +300,9 @@
         _dependants: _dependants,
         _setPolicyDate: _setPolicyDate,
         getDoctorOption: getDoctorOption,
-        setDoctorOption: setDoctorOption
+        setDoctorOption: setDoctorOption,
+        showHowToSendInfo: showHowToSendInfo,
+        hideHowToSendInfo: hideHowToSendInfo
     });
 
 })(jQuery);

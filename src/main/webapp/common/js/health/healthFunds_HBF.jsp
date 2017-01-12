@@ -149,7 +149,7 @@ var healthFunds_HBF = {
         }
 
         <%--Contact Point question--%>
-        healthApplicationDetails.showHowToSendInfo('HBF', true);
+        meerkat.modules.healthFunds.showHowToSendInfo('HBF', true);
 
         <%-- Increase minimum age requirement for applicants from 16 to 18 --%>
         healthFunds_HBF.$_dobPrimary = $('#health_application_primary_dob');
@@ -240,7 +240,7 @@ var healthFunds_HBF = {
         $hbf_flexi_extras.hide();
 
         <%-- How to send information --%>
-        healthApplicationDetails.hideHowToSendInfo();
+        meerkat.modules.healthFunds.hideHowToSendInfo();
 
         <%-- Age requirements for applicants (back to default) --%>
         healthFunds_HBF.$_dobPrimary.addRule('youngestDOB', dob_health_application_primary_dob.ageMin, "primary person's age cannot be under " + dob_health_application_primary_dob.ageMin);

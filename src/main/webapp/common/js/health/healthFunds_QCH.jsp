@@ -54,7 +54,7 @@ var healthFunds_QCH = {
 			healthFunds_QCH.$_dobPartner.addRule('youngestDOB', 18, "partner's age cannot be under 18");
 
 			<%-- How to send information. Second argument = validation required --%>
-			healthApplicationDetails.showHowToSendInfo('QCHF', true);
+			meerkat.modules.healthFunds.showHowToSendInfo('QCHF', true);
 
 
 			<%-- Previous funds --%>
@@ -159,7 +159,7 @@ var healthFunds_QCH = {
 			delete healthFunds_QCH.$_dobPartner;
 
 			<%-- How to send information --%>
-			healthApplicationDetails.hideHowToSendInfo();
+			meerkat.modules.healthFunds.hideHowToSendInfo();
 
 			<%-- Authority off --%>
             meerkat.modules.healthFunds._previousfund_authority(false);

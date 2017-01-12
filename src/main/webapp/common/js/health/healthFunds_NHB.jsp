@@ -225,8 +225,8 @@
               <%-- Partner authority --%>
                 meerkat.modules.healthFunds._partner_authority(false);
 
-                <%-- How to send information. Second argument = validation required --%>
-                healthApplicationDetails.showHowToSendInfo('Navy Health', true);
+              <%-- How to send information. Second argument = validation required --%>
+              meerkat.modules.healthFunds.showHowToSendInfo('Navy Health', true);
 
               <%-- Calendar for start cover --%>
               meerkat.modules.healthPaymentStep.setCoverStartRange(0, 28);
@@ -323,12 +323,12 @@
               $('#health_payment_details_frequency').off('change.NHB');
               $('.health_payment_bank_details-policyDay-message').html('');
 
-                <%-- How to send information --%>
-                healthApplicationDetails.hideHowToSendInfo();
+              <%-- How to send information --%>
+              meerkat.modules.healthFunds.hideHowToSendInfo();
 
-                <%-- Remember the selections--%>
-                healthFunds_NHB.primaryTitleValue = $('#health_application_primary_title').val();
-                healthFunds_NHB.partnerTitleValue = $('#health_application_partner_title').val();
+              <%-- Remember the selections--%>
+              healthFunds_NHB.primaryTitleValue = $('#health_application_primary_title').val();
+              healthFunds_NHB.partnerTitleValue = $('#health_application_partner_title').val();
 
               <%-- lets undo the title massive values from nav --%>
               <c:set var="html">

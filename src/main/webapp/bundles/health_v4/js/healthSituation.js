@@ -16,19 +16,30 @@
         $healthSituation.filter('[value=F]').parent().addClass('icon icon-family');
         $healthSituation.filter('[value=SPF]').parent().addClass('icon icon-single-family');
 
-        eventSubscriptions();
+        _eventSubscriptions();
+
+        if (getSituation()) {
+            $healthSituation.filter(':checked').trigger('change');
+        }
     }
 
-    function eventSubscriptions() {
+    function _eventSubscriptions() {
         $healthSituation.on('change', function onSituationChanged() {
-            meerkat.messaging.publish(moduleEvents.healthSituation.SITUATION_CHANGED, { situation: $(this).val() });
-            meerkat.modules.healthChoices.setCover($(this).filter(':checked').val());
+            var situation = $(this).filter(':checked').val();
+
+            meerkat.messaging.publish(moduleEvents.healthSituation.SITUATION_CHANGED, { situation: situation });
+            meerkat.modules.healthChoices.setCover(situation);
         });
+    }
+
+    function getSituation() {
+        return $healthSituation.filter(':checked').val();
     }
 
     meerkat.modules.register('healthSituation', {
         init: init,
-        events: moduleEvents
+        events: moduleEvents,
+        getSituation: getSituation
     });
 
 })(jQuery);
