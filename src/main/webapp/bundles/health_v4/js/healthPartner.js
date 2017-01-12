@@ -44,7 +44,6 @@
         });
 
         meerkat.messaging.subscribe(meerkatEvents.healthSituation.SITUATION_CHANGED, function togglePartnerFields(selected) {
-            _setupAppFields();
             _togglePartnerQuestionset(selected);
 
             positionFieldsForBrochureware();
