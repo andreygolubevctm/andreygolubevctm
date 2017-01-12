@@ -152,6 +152,7 @@
 
 					// Call center joins to be posted to Google
 					if(meerkat.site.isCallCentreUser) {
+						// Allow small delay to allow page objects to load in
 						_.delay(registerSaleWithGA,500);
 					}
 				}

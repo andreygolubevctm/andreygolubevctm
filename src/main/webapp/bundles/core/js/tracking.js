@@ -428,7 +428,6 @@
             var data = !_.isEmpty(dataIn) && _.isObject(dataIn) ? dataIn : {};
             if(!_.isEmpty(data)) {
                 appendDefaultsToSaleData(data);
-                meerkat.logging.info("appendDefaultsToSaleData finalResponse", data);
                 if(isValidSaleObject(data)) {
                     meerkat.modules.comms.post({
                         url: 'https://www.google-analytics.com/collect',
@@ -472,21 +471,14 @@
         var tranId = meerkat.modules.transactionId.get();
         var clientId = gaClientId;
         if(!_.isNull(gaCode)) {
-            saleData = _.extend(saleData,{tid:gaCode});
-        } else {
-            meerkat.logging.info("appendDefaultsToSaleData gaCode", gaCode);
+            _.extend(saleData,{tid:gaCode});
         }
-        if(!_.isNumber(tranId)) {
-            saleData = _.extend(saleData,{ti:tranId});
-        } else {
-            meerkat.logging.info("appendDefaultsToSaleData tranId", tranId);
+        if(_.isNumber(tranId)) {
+            _.extend(saleData,{ti:tranId});
         }
         if(!_.isEmpty(clientId)) {
-            saleData = _.extend(saleData,{cid:clientId});
-        } else {
-            meerkat.logging.info("appendDefaultsToSaleData clientId", clientId);
+            _.extend(saleData,{cid:clientId});
         }
-        meerkat.logging.info("appendDefaultsToSaleData finalOutput", saleData);
     }
 
     /**
