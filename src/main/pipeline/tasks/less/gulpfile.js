@@ -16,7 +16,8 @@ var less = require("gulp-less"),
     sourcemaps = require("gulp-sourcemaps"),
     fs = require("graceful-fs-extra"),
     runSequence = require('run-sequence'),
-    path = require("path");
+    path = require("path"),
+    minificationEnabled = process.env.DISABLE_MINIFICATION === 'false';
 
 var EventEmitter = require("events").EventEmitter,
     eventEmitter = new EventEmitter();
@@ -137,7 +138,7 @@ function LessTasks(gulp) {
                 })
             )
             // Parse the LESS
-            .pipe(sourcemaps.init())
+            .pipe(gulpIf(minificationEnabled, sourcemaps.init()))
             .pipe(less(glob, {
                 name: taskName,
                 paths: [
@@ -146,7 +147,7 @@ function LessTasks(gulp) {
                 ]
             }))
             .pipe(gulp.globalPlugins.rename(bundle + ".css"))
-            .pipe(sourcemaps.write("./maps"))
+            .pipe(gulpIf(minificationEnabled, sourcemaps.write("./maps")))
             .pipe(gulp.dest(targetDir))
             .pipe(gulp.globalPlugins.notify({
                 title: taskName + " compiled",
@@ -157,12 +158,13 @@ function LessTasks(gulp) {
             }))
             .on("end", function () {
                 var filePath = path.join(targetDir, bundle + ".css"),
-                    eventName = "less:" + (+ new Date()),
-                    taskList = [
-                        require("./minify")(gulp, filePath, brandCode, bundle),
-                        require("./bless")(gulp, filePath, brandCode, bundle)
-                    ],
-                    counter = 0;
+                    eventName = "less:" + (+ new Date());
+                var taskList = [];
+                if(minificationEnabled) {
+                    taskList.push(require("./minify")(gulp, filePath, brandCode, bundle))
+                }
+                taskList.push(require("./bless")(gulp, filePath, brandCode, bundle));
+                var counter = 0;
 
                 eventEmitter.on(eventName, function(){
                     counter++;
