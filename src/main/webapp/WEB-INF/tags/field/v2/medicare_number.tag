@@ -12,6 +12,15 @@
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
+<c:set var="inputType"><field_v2:get_numeric_input_type /></c:set>
+<c:set var="additionalAttributes">
+    data-rule-medicareNumber='${required}' data-rule-digitsIgnoreComma='true'
+</c:set>
+
+<%-- SANITISE EXISTING DATA --%>
+<c:if test="${not empty data[xpath]}">
+    <go:setData  dataVar="data" xpath="${xpath}" value="${fn:replace(data[xpath],' ', '')}" />
+</c:if>
 
 <%-- HTML --%>
-<field_v2:input xpath="${xpath}" className="medicare_number ${className}" title="${title}" required="false" maxlength="15" additionalAttributes=" data-rule-medicareNumber='${required}' " placeHolder="Card Number" disableErrorContainer="${disableErrorContainer}" />
+<field_v2:input type="${inputType}" xpath="${xpath}" className="medicare_number ${className}" title="${title}" required="false" maxlength="10" pattern="[0-9]*" integerKeyPressLimit="true" additionalAttributes="${additonalAttributes}" placeHolder="Card Number" disableErrorContainer="${disableErrorContainer}" />
