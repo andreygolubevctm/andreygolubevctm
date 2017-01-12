@@ -16,15 +16,15 @@
             </div>
         </div>
         <div class="children row excessDetailContainer text-center" data-fid="{{= feature.id }}">
-            <div class="col-xs-12 col-md-4">
+            <div class="col-xs-4">
                 <span class="excess-value">{{= excessData.perAdmission }}</span>
                 <p class="excess-label">/admission</p>
             </div>
-            <div class="col-xs-12 col-md-4">
+            <div class="col-xs-4">
                 <span class="excess-value">{{= excessData.perPerson }}</span>
                 <p class="excess-label">/person</p>
             </div>
-            <div class="col-xs-12 col-md-4">
+            <div class="col-xs-4">
                 <span class="excess-value">{{= excessData.perPolicy }}</span>
                 <p class="excess-label">/policy</p>
             </div>

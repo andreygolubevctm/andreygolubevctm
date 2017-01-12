@@ -233,6 +233,7 @@
 
         },
         settings = {
+            xsContext: '.header-top',
             filters: [
                 {
                     template: '#filter-rebate-template',
@@ -247,7 +248,7 @@
                 {
                     template: '#filter-results-frequency-template',
                     container: '.results-filters-frequency',
-                    context: '.header-top'
+                    context: '.results-control-container'
                 }
             ],
             events: {

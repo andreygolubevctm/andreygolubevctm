@@ -6,36 +6,33 @@
   position: relative;
   z-index: @results-zindex-resultItems;
 
+  .show-on-affix {
+    display: none;
+  }
   // always in effect
   &.affixed-settings {
 
-    .result-row {
-      border: 0;
-      // To make up for the space no longer consumed by the .result element.
-      padding-top: 360px;
-      @media (@sm) {
-        padding-top: 294px;
-      }
-      @media (@lg) {
-        padding-top: 430px;
-      }
-
-      .featuresList {
-        border: 1px solid @results-border-color;
-        margin: 0;
-        padding: 0 15px;
-      }
-      &.pinned .featuresList {
-        border-color: @theme-accent-4;
-      }
+    .hide-on-affix {
+      display: none !important;
+    }
+    .show-on-affix {
+      display: block;
     }
 
     .result {
-      top: 45px;
+      // if the top bar changes size, this will need to change...
+      top: 146px;
+      @media(@sm-only) {
+        top: 75px;
+      }
+      @media(@md) {
+        top: 59px;
+      }
       width: inherit;
       border: 1px solid @results-border-color;
       border-bottom: 1px solid @gray-dark;
     }
+
     .pinned {
       .result {
         border-color: @theme-accent-4;
@@ -43,30 +40,48 @@
       }
     }
 
-    .hide-on-affix {
-      display: none;
+    .resultInsert {
+      .result-header-utility-bar {
+        padding-bottom: 0;
+      }
+      .results-header-inner-container {
+        border-bottom: 0;
+        padding-bottom: 0;
+      }
+
+      .companyLogo {
+        margin-top: 10px;
+      }
+    }
+    .affixed-logo {
+      float: left;
+      width: 45%;
+    }
+
+    .result-row {
+      border: 0;
+      // To make up for the space no longer consumed by the .result element.
+      padding-top: 220px;
+      @media (@sm) {
+        padding-top: 230px;
+      }
+      @media (@lg) {
+        padding-top: 180px;
+      }
+
+      .featuresList {
+        border: 1px solid @results-border-color;
+        margin: 0;
+        padding: 15px 15px 0 15px;
+      }
+      &.pinned .featuresList {
+        border-color: @theme-accent-4;
+      }
     }
   }
 
   // .affixed is not in effect while going between pages.
   &.affixed {
-    /*    @media (@xs-only) {
-          .result {
-            top: 80px; // to make up for pagination and header bar.
-          }
-
-          .lhcText {
-            display: none;
-          }
-
-          .productSummary {
-            height: 100px;
-          }
-
-          .btn-more-info {
-            .btn-sm;
-          }
-        }*/
 
     .result {
       display: none; // when in fixed mode, only display the items on the 'current page' - thanks to the pagination component for settings this.
@@ -78,13 +93,9 @@
         display: block;
       }
     }
-
   }
 
   &.affixed-compact {
-    h3 {
-      display: block; // for some reason it's hidden in the core.
-    }
     @media (@xs-only) {
       .result {
         .opacity(0);
@@ -101,6 +112,7 @@
       }
 
     }
+
   }
 
   // only in effect during the pagination animation

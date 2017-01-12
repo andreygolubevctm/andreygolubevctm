@@ -410,7 +410,7 @@
                 navigationId: steps.startStep.navigationId
             },
             {
-                label: 'Insurance preferences',
+                label: '<span class="hidden-sm hidden-md hidden-lg">Preferences</span><span class="hidden-xs">Insurance preferences</span>',
                 navigationId: steps.benefitsStep.navigationId
             },
             {

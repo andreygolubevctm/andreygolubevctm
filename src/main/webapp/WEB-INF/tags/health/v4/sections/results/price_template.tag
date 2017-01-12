@@ -32,7 +32,7 @@
         <span class="dollarSign">$</span>{{= dollarPriceResult.dollarPrice }}<span class="cents">.{{= dollarPriceResult.cents }}</span>
     </div>
 
-    <div class="lhcText">{{= result.lhcFreePriceMode ? result.textLhcFreePricing : result.textPricing }}</div>
+    <div class="lhcText hide-on-affix">{{= result.lhcFreePriceMode ? result.textLhcFreePricing : result.textPricing }}</div>
 </div>
 
 {{ }); }}
