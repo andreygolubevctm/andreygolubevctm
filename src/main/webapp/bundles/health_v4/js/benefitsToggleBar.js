@@ -37,7 +37,7 @@
     }
     // allows the togglebar to be placed in a certain position (eg benefits screen)
     function _attachToggleBar() {
-        if (!_.isUndefined($elements.targetContainer) && (settings.isModal === false)) {
+        if (!_.isUndefined($elements.targetContainer) && (!settings.isModal)) {
             $elements.toggleBar.insertBefore($elements.targetContainer);
         }
     }
@@ -94,7 +94,7 @@
         settings.topFixed = true;
     }
 
-    function _setLabelCounts(){
+    function _setLabelCounts() {
         _setTabLabelCount($elements.hospitalTab, meerkat.modules.benefitsModel.getHospitalCount());
         _setTabLabelCount($elements.extrasTab, meerkat.modules.benefitsModel.getExtrasCount());
     }
@@ -107,12 +107,13 @@
     // sets up all the required variables to calculate the position of the togglebar tabs
     function _setupToggleBarSettings(initSettings) {
 
-        var tbTop = $elements.toggleBar.offset().top;
+        var tbTop = $elements.toggleBar.offset().top,
+            tbHeight = $elements.toggleBar.height();
 
         settings[currentStep] = {
             toggleBarTop: tbTop,
-            toggleBarBottom: $elements.toggleBar.height() + tbTop,
-            toggleBarHeight: $elements.toggleBar.height(),
+            toggleBarBottom: tbHeight + tbTop,
+            toggleBarHeight: tbHeight,
             hospitalTabWidth: $elements.toggleBar.find('.hospital').width(),
             extrasTabWidth: $elements.toggleBar.find('.extras').width(),
             bottomFixed: false,

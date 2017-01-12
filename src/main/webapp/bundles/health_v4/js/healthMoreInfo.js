@@ -242,7 +242,6 @@
 
     function onAfterShowModal() {
         additionalTrackingData();
-        //meerkat.modules.healthPhoneNumber.changePhoneNumber(true);
         
         $('.whatsNext li').each(function () {
             $(this).prepend('<span class="icon icon-angle-right"></span>');
