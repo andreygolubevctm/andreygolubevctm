@@ -8,8 +8,15 @@
   }
 }*/
 
-.header-wrap {
-  @media (@xs-only) {
-    min-height: 87px;
+@media (@xs-only) {
+  body:not([data-step=results]) {
+    .header-wrap {
+      min-height: 87px;
+    }
+    &.couponShown {
+      .header-wrap {
+        min-height: 127px;
+      }
+    }
   }
 }
