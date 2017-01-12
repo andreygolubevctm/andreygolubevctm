@@ -12,27 +12,31 @@
 
     function initToggleBar(initSettings) {
         $(document).ready(function () {
-            var $container = $(initSettings.container);
+            // added delay as this seems to sort out the issues with  $elements.toggleBar.offset().top  within the function _setupToggleBarSettings()
+            // thinking it is a race condition so added an extra 500ms
+            _.delay(function delayInit(){
+                var $container = $(initSettings.container);
 
-            if (!_.isUndefined(initSettings.currentStep)) {
-                currentStep = initSettings.currentStep;
-            }
+                if (!_.isUndefined(initSettings.currentStep)) {
+                    currentStep = initSettings.currentStep;
+                }
 
-            $elements = {
-                toggleBar: $container.find('.toggleBar'),
-                benefitsOverflow: $container.find('.benefitsOverflow'),
-                hospitalContainer: $container.find('.Hospital_container'),
-                extrasTab: $container.find('.toggleBar').find('.extras'),
-                hospitalTab: $container.find('.toggleBar').find('.hospital'),
-                progressBar: $container.find('.journeyProgressBar')
-            };
+                $elements = {
+                    toggleBar: $container.find('.toggleBar'),
+                    benefitsOverflow: $container.find('.benefitsOverflow'),
+                    hospitalContainer: $container.find('.Hospital_container'),
+                    extrasTab: $container.find('.toggleBar').find('.extras'),
+                    hospitalTab: $container.find('.toggleBar').find('.hospital'),
+                    progressBar: $container.find('.journeyProgressBar')
+                };
 
-            $elements.targetContainer = $elements.toggleBar.data('targetcontainer');
+                $elements.targetContainer = $elements.toggleBar.data('targetcontainer');
 
-            _setupToggleBarSettings(initSettings);
-            _attachToggleBar();
-            _setLabelCounts();
-            _eventSubscriptions();
+                _setupToggleBarSettings(initSettings);
+                _attachToggleBar();
+                _setLabelCounts();
+                _eventSubscriptions();
+            }, 500);
         });
     }
     // allows the togglebar to be placed in a certain position (eg benefits screen)
