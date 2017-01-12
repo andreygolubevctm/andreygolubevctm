@@ -186,7 +186,8 @@
                 },
                 displayMode: "features",
                 pagination: {
-                    margin: 15,
+                    //@IMPORTANT: Make sure this is set to whatever is specified in the stylesheet!
+                    margin: 5,
                     mode: 'page',
                     touchEnabled: false,
                     useSubPixelWidths: true
