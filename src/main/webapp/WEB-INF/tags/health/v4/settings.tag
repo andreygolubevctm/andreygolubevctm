@@ -40,7 +40,7 @@
 
 <%-- Only ajax-fetch and update benefits if situation is defined in a param (e.g. from brochureware). No need to update if new quote or load quote etc. --%>
 <c:set var="performHealthChoicesUpdate" value="false" />
-<c:if test="${not empty param_situation or (not empty param.preload and empty data[xpathBenefitsExtras])}">
+<c:if test="${not empty situation or (not empty param.preload and empty data[xpathBenefitsExtras])}">
 	<c:set var="performHealthChoicesUpdate" value="true" />
 </c:if>
 
