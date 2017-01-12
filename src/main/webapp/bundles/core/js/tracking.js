@@ -476,7 +476,7 @@
         } else {
             meerkat.logging.info("appendDefaultsToSaleData gaCode", gaCode);
         }
-        if(!_.isEmpty(tranId)) {
+        if(!_.isNumber(tranId)) {
             saleData = _.extend(saleData,{ti:tranId});
         } else {
             meerkat.logging.info("appendDefaultsToSaleData tranId", tranId);
@@ -495,7 +495,7 @@
      */
     function getGACode() {
         try {
-            var gaData = window.gaData || gaData || null;
+            var gaData = window.gaData || null;
             if(!_.isEmpty(gaData) && _.isObject(gaData)) {
                 var props = _.keys(gaData);
                 var test = /^UA-/;

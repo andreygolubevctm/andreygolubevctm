@@ -151,7 +151,9 @@
 					meerkat.modules.tracking.recordTouch('CONF','Confirmation Viewed');
 
 					// Call center joins to be posted to Google
-					if(meerkat.site.isCallCentreUser) registerSaleWithGA();
+					if(meerkat.site.isCallCentreUser) {
+						_.delay(registerSaleWithGA,500);
+					}
 				}
 			}
 
