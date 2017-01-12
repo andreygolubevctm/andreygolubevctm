@@ -229,13 +229,18 @@
             onInitialise: function onResultsInit(event) {
                 /** @todo implement from health.js when get to this step */
                 meerkat.modules.benefits.updateModelOnPreload();
-
             },
             onBeforeEnter: function enterBenefitsStep(event) {
                 /** @todo implement from health.js when get to this step */
             },
             onAfterEnter: function enterBenefitsStep(event) {
                 /** @todo implement from health.js when get to this step */
+                var toggleBarInitSettings = {
+                    container: 'body[data-step="benefits"]',
+                    currentStep: steps.benefitsStep.navigationId
+                };
+
+                meerkat.modules.benefitsToggleBar.initToggleBar(toggleBarInitSettings);
             },
             onAfterLeave: function leaveBenefitsStep(event) {
                 var selectedBenefits = meerkat.modules.benefitsModel.getSelectedBenefits();

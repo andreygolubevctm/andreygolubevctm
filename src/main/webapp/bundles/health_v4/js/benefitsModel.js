@@ -30,7 +30,7 @@
     // do an ajax request to retrieve the supplementary data for the health pre-select data
     function _setupPreselectData() {
         meerkat.modules.comms.get({
-            url: 'spring/content/getsupplementary',
+            url: 'spring/content/getsupplementary.json',
             data: {
                 vertical: 'HEALTH',
                 key: 'benefitsPreselectData_v4'
