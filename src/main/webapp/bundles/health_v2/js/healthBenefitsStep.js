@@ -744,7 +744,7 @@
         });
 
         // other benefits
-        $benefitsForm.find("input[type='checkbox'][name^='health_benefits']").each(function (index, element) {
+        $('#benefitsForm').find("input[type='checkbox'][name^='health_benefits']").each(function (index, element) {
             var $element = $(element);
             if ($element.is(':checked')) {
                 var key = $element.attr('name').replace('health_benefits_benefitsExtras_', '');

@@ -12,7 +12,8 @@ var path = require("path");
 var concat = require("gulp-concat"),
     beautify = require("gulp-beautify"),
     uglify = require("gulp-uglify"),
-    sourcemaps = require("gulp-sourcemaps");
+    gulpIf = require("gulp-if"),
+    minificationEnabled = process.env.DISABLE_MINIFICATION === 'false';
 
 var fileHelper = require("./../../helpers/fileHelper");
 
@@ -46,12 +47,12 @@ function JSTasks(gulp) {
                 title: taskName + " compiled",
                 message: fileName + " successfully compiled"
             }))
-            .pipe(uglify())
-            .pipe(gulp.globalPlugins.rename(fileName + ".min.js"))
-            .pipe(gulp.dest(targetDirectory))
-            .pipe(gulp.globalPlugins.debug({
+            .pipe(gulpIf(minificationEnabled, uglify()))
+            .pipe(gulpIf(minificationEnabled, gulp.globalPlugins.rename(fileName + ".min.js")))
+            .pipe(gulpIf(minificationEnabled, gulp.dest(targetDirectory)))
+            .pipe(gulpIf(minificationEnabled, gulp.globalPlugins.debug({
                 title: "Finished Minify JS"
-            }))
+            })))
             .pipe(gulp.globalPlugins.intercept(function(file){
                 return file;
             }))

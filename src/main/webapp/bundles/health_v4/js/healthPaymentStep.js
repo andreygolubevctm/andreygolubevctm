@@ -34,87 +34,19 @@
 
 	function initHealthPaymentStep() {
 
-		$(document).ready(function(){
+		$(document).ready(function() {
 			initialised = true;
 
 			if(meerkat.site.vertical !== "health" || meerkat.site.pageAction === "confirmation") return false;
 
 			// Fields
 			initFields();
-
-			// Add event listeners
-			meerkat.messaging.subscribe(meerkatEvents.WEBAPP_LOCK, function lockPaymentStep(obj) {
-				var isSameSource = (typeof obj !== 'undefined' && obj.source && obj.source === 'healthPaymentStep');
-				var disableFields = (typeof obj !== 'undefined' && obj.disableFields && obj.disableFields === true);
-				disableUpdatePremium(isSameSource, disableFields);
-			});
-
-			meerkat.messaging.subscribe(meerkatEvents.WEBAPP_UNLOCK, function unlockPaymentStep(obj) {
-				enableUpdatePremium();
-			});
-
-			meerkat.messaging.subscribe(meerkatEvents.healthResults.SELECTED_PRODUCT_RESET, function jeStepChange(step){
-				resetSettings();
-			});
-
-			$paymentCalendar.on('changeDate', function updateThePremiumOnCalendar(){
-				updatePremium();
-			});
-
-			$('#health_payment_details-selection .dateinput-tripleField input').on('change', function updateThePremiumOnInput(){
-				updatePremium();
-			});
-
-			var validateCoupon = function() {
-				var couponInput = $('.coupon-code-field').val();
-				if(currentCoupon === false || currentCoupon !== couponInput) {
-					currentCoupon = couponInput;
-					meerkat.modules.coupon.validateCouponCode(currentCoupon);
-				}
-			};
-
-			$paymentRadioGroup.find('input').on('click', function() {
-				togglePaymentGroups();
-				toggleClaimsBankAccountQuestion();
-				// validate coupon
-				validateCoupon();
-				_.defer(function delayPaymentUpdate(){
-					updatePaymentPremium();
-					updatePaymentDayOptions();
-				});
-			});
+			_eventSubscriptions();
+			_applyEventListeners();
 
 			$('#health_coupon_code').blur(validateCoupon);
 
-			$frequencySelect.on('change', function updateSidebarQuote(){
-				updateProductFrequency();
-				updatePaymentDayOptions();
-			});
-
 			meerkat.modules.healthCreditCard.setCreditCardRules();
-
-			// show pay claims into bank account question (and supporting section).
-			$bankAccountDetailsRadioGroup.find("input").on('click', toggleClaimsBankAccountQuestion);
-
-			// show pay claims into bank account question (and supporting section).
-			$sameBankAccountRadioGroup.find("input").on('click', toggleClaimsBankAccountQuestion);
-
-			// Moved from fields:card_expiry.tag as part of CTMIT-555
-			$("select[id$='_cardExpiryMonth']").on('change', function () {
-				var $year = $("select[id$='_cardExpiryYear']");
-				if ($year.hasClass('has-error') || $year.hasClass('has-success')) {
-					$year.valid();
-				}
-			});
-			// Moved from field_new:bsb_number
-			$(".bsb_number").on("focus blur", function(){
-				var $self = $(this), id = $self.attr('id'),
-					hiddenInput = id.substring(0,id.length - 5);
-				$("#"+hiddenInput).val( String($self.val()).replace(/[^0-9]/g, '') );
-			}).each(function() {
-				// blur both on load.
-				$(this).blur();
-			});
 
 			resetSettings();
 
@@ -136,6 +68,109 @@
 
 		// Containers
 		$paymentContainer = $(".update-content");
+	}
+
+	function _eventSubscriptions() {
+		meerkat.messaging.subscribe(meerkatEvents.WEBAPP_LOCK, function lockPaymentStep(obj) {
+			var isSameSource = (typeof obj !== 'undefined' && obj.source && obj.source === 'healthPaymentStep');
+			var disableFields = (typeof obj !== 'undefined' && obj.disableFields && obj.disableFields === true);
+			disableUpdatePremium(isSameSource, disableFields);
+		});
+
+		meerkat.messaging.subscribe(meerkatEvents.WEBAPP_UNLOCK, function unlockPaymentStep(obj) {
+			enableUpdatePremium();
+		});
+
+		meerkat.messaging.subscribe(meerkatEvents.healthResults.SELECTED_PRODUCT_RESET, function jeStepChange(step){
+			resetSettings();
+		});
+	}
+
+	function _applyEventListeners() {
+		$paymentCalendar.on('changeDate', function updateThePremiumOnCalendar(){
+			updatePremium();
+		});
+
+		$('#health_payment_details-selection .dateinput-tripleField input').on('change', function updateThePremiumOnInput(){
+			updatePremium();
+		});
+
+		$paymentRadioGroup.find('input').on('click', function() {
+			togglePaymentGroups();
+			toggleClaimsBankAccountQuestion();
+			// validate coupon
+			validateCoupon();
+			_.defer(function delayPaymentUpdate(){
+				updatePaymentPremium();
+				updatePaymentDayOptions();
+			});
+		});
+
+		$frequencySelect.on('change', function updateSidebarQuote(){
+			updateProductFrequency();
+			updatePaymentDayOptions();
+		});
+
+		// show pay claims into bank account question (and supporting section).
+		$bankAccountDetailsRadioGroup.find("input").on('click', toggleClaimsBankAccountQuestion);
+
+		// show pay claims into bank account question (and supporting section).
+		$sameBankAccountRadioGroup.find("input").on('click', toggleClaimsBankAccountQuestion);
+
+		// Moved from fields:card_expiry.tag as part of CTMIT-555
+		$("select[id$='_cardExpiryMonth']").on('change', function() {
+			var $year = $("select[id$='_cardExpiryYear']");
+			if ($year.hasClass('has-error') || $year.hasClass('has-success')) {
+				$year.valid();
+			}
+		});
+		// Moved from field_new:bsb_number
+		$(".bsb_number").on("focus blur", function() {
+			var $self = $(this), id = $self.attr('id'),
+				hiddenInput = id.substring(0,id.length - 5);
+			$("#"+hiddenInput).val( String($self.val()).replace(/[^0-9]/g, '') );
+		}).each(function() {
+			// blur both on load.
+			$(this).blur();
+		});
+
+		$("#joinDeclarationDialog_link").on('click',function(){
+			var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
+			var data = {};
+			data.providerId = selectedProduct.info.providerId;
+			data.providerContentTypeCode = meerkat.site.isCallCentreUser === true ? 'JDC' : 'JDO';
+
+			meerkat.modules.comms.get({
+				url: "health/provider/content/get.json",
+				data: data,
+				cache: true,
+				errorLevel: "silent",
+				onSuccess: function getProviderContentSuccess(result) {
+					if (result.hasOwnProperty('providerContentText')) {
+						meerkat.modules.dialogs.show({
+							title: 'Declaration',
+							htmlContent : result.providerContentText
+						});
+					}
+				}
+			});
+
+			meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+				method:'trackOfferTerms',
+				object:{
+					productID:selectedProduct.productId
+				}
+			});
+
+		});
+	}
+
+	function validateCoupon() {
+		var couponInput = $('.coupon-code-field').val();
+		if(currentCoupon === false || currentCoupon !== couponInput) {
+			currentCoupon = couponInput;
+			meerkat.modules.coupon.validateCouponCode(currentCoupon);
+		}
 	}
 
 	// Need this function because healthGeneralFunctions destroys the event bindings via renderFields() whereas the old version only updates the dropdown

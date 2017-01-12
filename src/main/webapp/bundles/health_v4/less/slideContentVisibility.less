@@ -4,7 +4,9 @@
   .slide-control-about-you,
   .slide-control-insurance-preferences,
   .slide-control-get-prices,
-  .results-control-container {
+  .results-control-container,
+  .slide-control-proceed-to-payment,
+  .slide-control-submit-application {
     .slide-feature-hidden();
   }
 
@@ -31,6 +33,18 @@
       .slide-feature-hidden();
     }
     .results-control-container {
+      .slide-feature-is-visible();
+    }
+  }
+
+  &[data-step="apply"] {
+    .slide-control-proceed-to-payment {
+      .slide-feature-is-visible();
+    }
+  }
+
+  &[data-step="payment"] {
+    .slide-control-submit-application {
       .slide-feature-is-visible();
     }
   }

@@ -22,7 +22,6 @@
             healthSit: $('#health_benefits_healthSitu'),
             healthSitGroup: $("input[name=health_situation_healthSitu]"),
             healthSitCSF: $('#health_situation_healthSitu_CSF'),
-            healthCover: $('input[name=health_situation_healthCvr]'),
             state: $('#health_situation_state'),
             postcode: $('#health_situation_postcode'),
             suburb: $('#health_situation_suburb')
@@ -55,10 +54,6 @@
         _performUpdate = performUpdate;
     }
 
-    function getSituation() {
-        return $('input[name=health_situation_healthCvr]:checked').val();
-    }
-
     function getCoverType() {
         return $('#health_situation_coverType').val();
     }
@@ -71,7 +66,6 @@
         returnCoverCode: returnCoverCode,
         setCover: setCover,
         setState: setState,
-        getSituation: getSituation,
         shouldPerformUpdate: shouldPerformUpdate,
         getCoverType: getCoverType
     });

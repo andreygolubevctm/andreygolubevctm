@@ -83,6 +83,10 @@
                                    href="javascript:;"  <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />>Contact details <span class="icon icon-arrow-right"></span></a>
                                 <a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton slide-control-get-prices" data-slide-control="next"
                                    href="javascript:;"  <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />>Get prices <span class="icon icon-arrow-right"></span></a>
+                                <a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton slide-control-proceed-to-payment" data-slide-control="next"
+                                   href="javascript:;"  <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />>Proceed to Payment <span class="icon icon-arrow-right"></span></a>
+                                <a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton slide-control-submit-application" data-slide-control="next"
+                                   href="javascript:;"  <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />>Submit Application <span class="icon icon-arrow-right"></span></a>
                             </div>
                         </div>
                     </div>
@@ -148,6 +152,8 @@
                 <health_v4_layout:slide_results />
                 <health_v4_layout:slide_application />
                 <health_v4_layout:slide_payment />
+
+                <health_v4_payment:payment_frequency_template />
 
                 <field_v1:hidden xpath="environmentOverride" />
                 <field_v1:hidden xpath="staticOverride" />

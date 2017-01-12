@@ -8,6 +8,7 @@
         _setupFields();
         _applyEventListeners();
         _eventSubscriptions();
+        _setupAppFields();
     }
 
     function _setupFields() {
@@ -44,6 +45,7 @@
         });
 
         meerkat.messaging.subscribe(meerkatEvents.healthSituation.SITUATION_CHANGED, function togglePartnerFields(selected) {
+            _setupAppFields();
             _togglePartnerQuestionset(selected);
 
             positionFieldsForBrochureware();
@@ -69,6 +71,10 @@
         } else {
             meerkat.modules.fieldUtilities.disable($elements.partnerQuestionSet);
         }
+    }
+
+    function _setupAppFields() {
+        $elements.appFields.toggleClass('hidden', meerkat.modules.healthChoices.hasPartner() === false);
     }
 
     function getCurrentCover() {
