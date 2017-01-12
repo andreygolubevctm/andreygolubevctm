@@ -3,7 +3,9 @@ var minifyCSS = require("gulp-clean-css"),
     sakugawa = require("gulp-sakugawa"),
     path = require("path"),
     fs = require("fs"),
-    mkdirp = require("mkdirp");
+    mkdirp = require("mkdirp"),
+    gulpIf = require("gulp-if"),
+    minificationEnabled = process.env.DISABLE_MINIFICATION === 'false';
 
 var fileHelper = require("./../../helpers/fileHelper");
 
@@ -59,13 +61,13 @@ module.exports = function(gulp, filePath, brandCode, bundle, done) {
         }))
         // Sakugawa beautifies the CSS for some reason so we do this to keep file sizes down
         // Options are listed at https://github.com/jakubpawlowicz/clean-css
-        .pipe(minifyCSS({
+        .pipe(gulpIf(minificationEnabled, minifyCSS({
             keepSpecialComments: 0,
             mediaMerging: true, //(default is true, just for clarity)
             advanced: true,
             aggressiveMerging: true,
             compatibility: "ie8"
-        }))
+        })))
         .pipe(gulp.dest(function(file){
             return file.targetDir;
         }))
