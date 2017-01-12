@@ -229,7 +229,7 @@
                 },
                 templates: {
                     pagination: {
-                        pageItem: '<li class="hidden"><a class="btn-pagination" data-results-pagination-control="{{= pageNumber}}" data-analytics="pagination {{= pageNumber}}">{{= label}}</a></li>'
+                        pageItem: '<li class="hidden-md hidden-lg"><a class="btn-pagination" data-results-pagination-control="{{= pageNumber}}" data-analytics="pagination {{= pageNumber}}">{{= label}}</a></li>'
                     }
                 },
                 dictionary: {

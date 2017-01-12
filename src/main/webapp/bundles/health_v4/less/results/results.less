@@ -1,7 +1,15 @@
 // NOTE: This file provides the design for the structure outlined in shared/results/v4.
 //       For a list of what a .section or .category is, see ../../../shared/results/v4/less/results_structure.less
 
+//On XS we should dock the headerbars.
+@media (@xs-only) {
+  //Push the page down to make some space
+  body[data-step="results"] {
+    padding-top: @navbar-height + 110;
+  }
+}
 #resultsPage {
+  padding-top: 20px;
   margin-bottom: 20px;
   a.dialogPop {
     text-decoration: underline;
@@ -24,6 +32,9 @@
 // The product header
 .resultInsert {
 
+  .result-header-utility-bar {
+    padding-bottom: 10px;
+  }
   /* Display Utilities only on hover of result insert */
   .display-on-hover {
     .opacity(0);
@@ -82,6 +93,10 @@
 
   .results-header-inner-container {
     border-bottom: 1px solid @results-border-color;
+    @media (@sm) {
+      margin-bottom: 15px;
+      padding-bottom: 15px;
+    }
   }
   .productSummary {
     margin-bottom: 20px;
@@ -89,23 +104,27 @@
       color: @link-color;
       font-size: 48px;
     }
-    .frequencyAmount, .lhcText {
-      float: left;
-      width: 50%;
-    }
-    .lhcText {
-      text-align: right;
-      .small;
-      display: flex;
-      height: 50px;
-      align-items: flex-end;
-    }
-  }
 
-  .brochure-container {
-    .small;
-    margin: 20px 0;
-    color: @theme-accent-4;
+    .lhcText {
+      text-align: center;
+      .small;
+      padding-bottom: 5px;
+    }
+    @media(@md) {
+      .frequencyAmount, .lhcText {
+        float: left;
+        width: 50%;
+      }
+
+      .lhcText {
+        padding-bottom: 0;
+        text-align: right;
+        .small;
+        display: flex;
+        height: 50px;
+        align-items: flex-end;
+      }
+    }
   }
 
 }
@@ -118,9 +137,9 @@
     h2, h3 {
       color: @theme-accent-4;
     }
-    /*@media (@xs-only) {
+    @media (@xs-only) {
       margin-right: 10px;
-    }*/
+    }
     @media (@sm) {
       margin-left: 9px;
     }
@@ -212,12 +231,6 @@
                 color: @gray;
               }
             }
-            /*
-                        &.hideChildren {
-                          .cell.feature {
-                            .invisible;
-                          }
-                        }*/
           }
         }
 
@@ -269,6 +282,66 @@
     }
   }
 
+  .hospitalSelectionsExcessContainer {
+    .featuresListExcess {
+      .content {
+        padding-bottom: 5px;
+      }
+    }
+  }
+}
+
+.product-special-features {
+  font-size: @font-size-small;
+  color: @gray-dark;
+  display: flex;
+  flex-direction: row;
+  height: 60px;
+  overflow: hidden;
+
+  &.features-3,
+  &.features-4 {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  &.features-1 .feature-item {
+    flex-basis: 100%;
+  }
+  &.features-2 .feature-item {
+    flex-basis: 50%;
+  }
+  &.features-3 .feature-item {
+    flex-basis: 33.333%;
+  }
+  &.features-4 .feature-item {
+    flex-basis: 25%;
+  }
+  .feature-item {
+    display: flex;
+    &.item-popover {
+      &:hover {
+        color: @theme-accent-4;
+        cursor: help;
+      }
+    }
+    .icon {
+      flex-grow: 1;
+      font-size: @font-size-large;
+      padding-right: 5px;
+    }
+
+    padding-left: 5px;
+    &:first-child {
+      padding-left: 0;
+    }
+  }
+
+  .feature-item-text {
+    flex-grow: 1;
+    word-break: break-word;
+  }
 }
 
 // Outside the structure.
@@ -280,19 +353,3 @@
   }
 }
 
-.results-control-container {
-  border-bottom: 1px solid @gray-light;
-  background-color: #fff;
-  &.affix {
-    padding-top: 10px;
-  }
-  .quote-reference-number, .filter-results-hidden-products, .slide-feature-pagination {
-    line-height: 40px; // height of the frequency control.
-  }
-  .quote-reference-number {
-    font-size: 16px;
-  }
-  .filter-results-hidden-products {
-    color: @gray;
-  }
-}

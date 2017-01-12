@@ -22,7 +22,7 @@
         <div class="labelInColumn {{= ft.classStringForInlineLabel }}">
             <div class="content" data-featureId="{{= ft.id }}">
                 <div class="contentInner" data-analytics="compare BL {{= benefitGroup }}">
-                    {{= ft.safeName }} {{ if(ft.hasChildFeatures) { }}<span class="icon expander"></span>{{ } }}
+                    {{= ft.safeName }} {{ if(ft.isRestricted) { }}<span title="Restricted" class="icon icon-exclamation"></span>{{ } }}{{ if(ft.hasChildFeatures) { }}<span class="icon expander"></span>{{ } }}
                 </div>
             </div>
         </div>{{ } }}
