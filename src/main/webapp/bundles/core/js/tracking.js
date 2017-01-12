@@ -428,6 +428,7 @@
             var data = !_.isEmpty(dataIn) && _.isObject(dataIn) ? dataIn : {};
             if(!_.isEmpty(data)) {
                 appendDefaultsToSaleData(data);
+                meerkat.logging.info("appendDefaultsToSaleData finalResponse", data);
                 if(isValidSaleObject(data)) {
                     meerkat.modules.comms.post({
                         url: 'https://www.google-analytics.com/collect',
@@ -453,7 +454,7 @@
      */
     function isValidSaleObject(obj) {
         var keys = _.keys(obj);
-        var trustList = ['v','t','tid','ec','ea','el','ds','dp','cid','ti'];
+        var trustList = ['v','t','ec','ea','el','ds','dp','cid','ti','tid'];
         for(var i=0; i<trustList.length; i++) {
             if(_.indexOf(keys, trustList[i]) === -1) {
                 return false;
@@ -472,13 +473,20 @@
         var clientId = gaClientId;
         if(!_.isNull(gaCode)) {
             saleData = _.extend(saleData,{tid:gaCode});
+        } else {
+            meerkat.logging.info("appendDefaultsToSaleData gaCode", gaCode);
         }
         if(!_.isEmpty(tranId)) {
             saleData = _.extend(saleData,{ti:tranId});
+        } else {
+            meerkat.logging.info("appendDefaultsToSaleData tranId", tranId);
         }
         if(!_.isEmpty(clientId)) {
             saleData = _.extend(saleData,{cid:clientId});
+        } else {
+            meerkat.logging.info("appendDefaultsToSaleData clientId", clientId);
         }
+        meerkat.logging.info("appendDefaultsToSaleData finalOutput", saleData);
     }
 
     /**
@@ -498,7 +506,7 @@
                 }
             }
         } catch(e) {
-            meerkat.logging.info("sendToSaleDataToGoogleMeasurementProtocol catch", dataIn, e);
+            meerkat.logging.info("getGACode catch", e);
         }
         return null;
     }
