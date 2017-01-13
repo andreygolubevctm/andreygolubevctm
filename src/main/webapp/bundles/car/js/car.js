@@ -173,12 +173,14 @@
             validation: {
                 validate: true,
                 customValidation: function (callback) {
-                    $('#quote_vehicle_selection').find('select').each(function () {
-                        if ($(this).is('[disabled]')) {
-                            callback(false);
-                            return;
-                        }
-                    });
+                    if(!meerkat.modules.carExotic.isExotic()) {
+                        $('#quote_vehicle_selection').find('select').each(function () {
+                            if ($(this).is('[disabled]')) {
+                                callback(false);
+                                return;
+                            }
+                        });
+                    }
                     callback(true);
                 }
             }
