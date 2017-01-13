@@ -126,7 +126,7 @@
 	/**
 	 * Opens a modal for creating or editing a record
 	 * @param $targetRow
-	 * @param isNew bool Forces new record to be written if true
+	 * @param isClone bool Forces new record to be written if true
 	 */
 	dataCRUD.prototype.openModal = function($targetRow, isClone) {
 		isClone = isClone || false;
@@ -165,27 +165,37 @@
 				btns: ["strong", "em", "underline", "|", "unorderedList", "orderedList", "|", "link"]
 			});
 		}
-		
-		$(document).on("click", "#" + that.modalId + " .crud-save-entry", function() {
-			var $modal = $("#" + that.modalId),
-				$inputs = $modal.find("input, textarea, select"),
-				data = {};
-			
-			for(var i = 0; i < $inputs.length; i++) {
-				var $input = $($inputs[i]);
-				data[$input.attr("name")] = $input.val();
-			}
-			
-			// If we are cloning, don't pass the target row so that we can force a new
-			// record instead of an update
-			if(isClone)
-				that.save(data);
-			else
-				that.save(data, $targetRow);
-		});
+
+        $(document).on("click", "#" + that.modalId + " .crud-save-entry", function() {
+            var $modal = $("#" + that.modalId),
+                data = that.getSaveRequestData($modal);
+
+            // If we are cloning, don't pass the target row so that we can force a new
+            // record instead of an update
+            if(isClone)
+                that.save(data);
+            else
+                that.save(data, $targetRow);
+        });
 
         meerkat.messaging.publish(moduleEvents.CRUD_MODAL_OPENED, { modalId: this.modalId });
 	};
+
+    /**
+     * Default request data structure when saving a record,
+     * override the method if you have different request model
+     */
+    dataCRUD.prototype.getSaveRequestData = function ($modal) {
+        var $inputs = $modal.find("input, textarea, select"),
+            data = {};
+
+        for(var i = 0; i < $inputs.length; i++) {
+            var $input = $($inputs[i]);
+            data[$input.attr("name")] = $input.val();
+        }
+
+        return data;
+    };
 	
 	/**
 	 * Forces the results to render

@@ -8,6 +8,15 @@
 <%@ attribute name="resultJson" required="false" rtexprvalue="true" description="json to output to page"%>
 <%@ attribute name="productId" required="true" rtexprvalue="true" description="Additional css class attribute"%>
 
+
+<%-- Check campaign then create placeholder
+
+<c:if test="${campaign.eligibleForRedemption == true && campaign.active == true}}" >
+    ${rewardsController.createFromJourney(data, "Failed", "Pending")}
+</c:if>
+
+--%>
+
 <c:set var="ignore">
 	<jsp:useBean id="joinService" class="com.ctm.web.core.confirmation.services.JoinService" scope="page" />
 	<c:set var="errorMessage" value="Application failed: ${errorMessage}" />

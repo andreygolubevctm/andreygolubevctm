@@ -3,6 +3,10 @@ package com.ctm.web.health.router;
 import com.ctm.httpclient.Client;
 import com.ctm.redemption.model.Redemption;
 import com.ctm.redemption.model.RedemptionForm;
+import com.ctm.reward.model.OrderForm;
+import com.ctm.reward.model.OrderFormResponse;
+import com.ctm.reward.model.OrderHeader;
+import com.ctm.reward.model.OrderLine;
 import com.ctm.web.core.confirmation.services.JoinService;
 import com.ctm.web.core.email.exceptions.SendEmailException;
 import com.ctm.web.core.email.model.EmailMode;
@@ -79,10 +83,10 @@ public class HealthApplicationController extends CommonQuoteRouter {
 
     private static final DateTimeFormatter LONG_FORMAT = DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss zzz yyyy");
     public static final String PROVIDER_FAILED_MESSAGE = "The provider failed to process the application, Please contact support team.";
-    public static final int XPATH_SEQUENCE_NO_REDEMPTION_ID = -99;
-    public static final String XPATH_CURRENT_REDEMPTION_ID = "current/redemptionId";
-    public static final String SAVE_ONLINE_REDEMPTION = "/redemption/saveOnline";
-    public static final String SAVE_CALL_CENTER_REDEMPTION = "/redemption/saveCallCenter";
+    public static final int XPATH_SEQUENCE_NO_ENCRYPTED_ORDER_LINE_ID = -99;
+    public static final String XPATH_CURRENT_ENCRYPTED_ORDER_LINE_ID = "current/encryptedOrderLineId";
+    public static final String CREATE_REWARD_ORDER_LINE = "/reward/order/create";
+    public static final String UPDATE_REWARD_ORDER_LINE = "/reward/order/update";
     public static final String CURRENT_ROOT_ID = "current/rootId";
 
     @Autowired
@@ -103,10 +107,13 @@ public class HealthApplicationController extends CommonQuoteRouter {
     private HealthConfirmationService healthConfirmationService;
 
     @Autowired
+    private Client<OrderForm, OrderFormResponse> saveRewardClient;
+
+    @Autowired
     private Client<RedemptionForm, RedemptionForm> saveRedemptionClient;
 
-    @Value("${ctm.redemption.url}")
-    private String redemptionServiceUrl;
+    @Value("${ctm.reward.url}")
+    private String rewardServiceUrl;
 
     @Autowired
     public HealthApplicationController(SessionDataServiceBean sessionDataServiceBean ,
@@ -138,11 +145,11 @@ public class HealthApplicationController extends CommonQuoteRouter {
         updateTransactionIdAndClientIP(request, data);
         updateApplicationDate(request, data);
 
-        // Create placeholder Redemption: Create the placeholder only if ONLINE
+        // Create placeholder Order: Create the placeholder only if ONLINE
         final Optional<AuthenticatedData> authenticatedSessionData = Optional.ofNullable(sessionDataServiceBean.getAuthenticatedSessionData(request));
         Optional<RedemptionForm> redemptionForm = Optional.empty();
         if(!isOperatorLoggedIn(authenticatedSessionData)) {
-            //redemptionForm = Optional.ofNullable(saveRedemption(request, data, authenticatedSessionData, SAVE_ONLINE_REDEMPTION, "P"));
+            //redemptionForm = Optional.ofNullable(saveRedemption(request, data, authenticatedSessionData, CREATE_REWARD_ORDER_LINE, "P"));
         }
 
         // get the response
@@ -165,7 +172,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
             if(redemptionForm.isPresent()) { // It means ONLINE
                 //setRedemptionToSuccess(redemptionForm.get());
             } else { // Call center
-                //saveRedemption(request, data, authenticatedSessionData, SAVE_CALL_CENTER_REDEMPTION, "C");
+                //saveRedemption(request, data, authenticatedSessionData, UPDATE_REWARD_ORDER_LINE, "C");
             }
 
             result.setSuccess(true);
@@ -254,6 +261,8 @@ public class HealthApplicationController extends CommonQuoteRouter {
         return resultWrapper;
     }
 
+
+
     private boolean isOperatorLoggedIn(final Optional<AuthenticatedData> authenticatedSessionData) {
         return authenticatedSessionData.map(AuthenticatedData::getUid).map(s -> !s.isEmpty()).orElse(false);
     }
@@ -266,7 +275,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
                         .build())
                 .build();
 
-        saveRedemptionClient.post(redemptionToSuccess, RedemptionForm.class, redemptionServiceUrl + SAVE_ONLINE_REDEMPTION).toBlocking().first();
+        saveRedemptionClient.post(redemptionToSuccess, RedemptionForm.class, rewardServiceUrl + CREATE_REWARD_ORDER_LINE).toBlocking().first();
     }
 
     private void setRedemptionToSuccess(final RedemptionForm redemptionForm) {
@@ -277,7 +286,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
                         .build())
                 .build();
 
-        saveRedemptionClient.post(redemptionFormToSuccess, RedemptionForm.class, redemptionServiceUrl + SAVE_ONLINE_REDEMPTION).toBlocking().first();
+        saveRedemptionClient.post(redemptionFormToSuccess, RedemptionForm.class, rewardServiceUrl + CREATE_REWARD_ORDER_LINE).toBlocking().first();
     }
 
     private RedemptionForm saveRedemption(final HttpServletRequest request,
@@ -286,17 +295,17 @@ public class HealthApplicationController extends CommonQuoteRouter {
                                           final String uri,
                                           final String touchType) throws DaoException {
         final Data dataBucket = getDataBucket(request, healthRequest.getTransactionId());
-        final Optional<String> encryptedRedemptionId = Optional.ofNullable(dataBucket.getString(XPATH_CURRENT_REDEMPTION_ID));
+        final Optional<String> encryptedRedemptionId = Optional.ofNullable(dataBucket.getString(XPATH_CURRENT_ENCRYPTED_ORDER_LINE_ID));
 
         final RedemptionForm redemptionFormRequest = RedemptionForm.newBuilder()
                 .redemption(createRedemption(healthRequest, authenticatedSessionData, touchType, dataBucket))
                 .encryptedRedemptionId(encryptedRedemptionId.orElse(null))
                 .build();
 
-        final RedemptionForm redemptionFormResponse = saveRedemptionClient.post(redemptionFormRequest, RedemptionForm.class, redemptionServiceUrl + uri)
+        final RedemptionForm redemptionFormResponse = saveRedemptionClient.post(redemptionFormRequest, RedemptionForm.class, rewardServiceUrl + uri)
                 .toBlocking().first();
 
-        dataBucket.put(XPATH_CURRENT_REDEMPTION_ID, redemptionFormResponse.getEncryptedRedemptionId().get());
+        dataBucket.put(XPATH_CURRENT_ENCRYPTED_ORDER_LINE_ID, redemptionFormResponse.getEncryptedRedemptionId().get());
 
         addRedemptionIdTransactionDetail(healthRequest, redemptionFormResponse);
 
@@ -305,7 +314,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
 
     private Redemption createRedemption(final HealthRequest healthRequest, final Optional<AuthenticatedData> authenticatedSessionData, final String touchType, final Data dataBucket) {
         final Long rootId = Long.parseLong(dataBucket.getString(CURRENT_ROOT_ID));
-        final Optional<String> encryptedRedemptionId = Optional.ofNullable(dataBucket.getString(XPATH_CURRENT_REDEMPTION_ID));
+        final Optional<String> encryptedRedemptionId = Optional.ofNullable(dataBucket.getString(XPATH_CURRENT_ENCRYPTED_ORDER_LINE_ID));
 
         final Redemption.Builder redemptionBuilder = Redemption.newBuilder()
             //.campaignId(Long.valueOf(request.getParameter("campaignId")))
@@ -335,9 +344,9 @@ public class HealthApplicationController extends CommonQuoteRouter {
 
     private void addRedemptionIdTransactionDetail(final HealthRequest healthRequest, final RedemptionForm redemptionFormResponse) throws DaoException {
         final TransactionDetail transactionDetail = new TransactionDetail();
-        transactionDetail.setSequenceNo(XPATH_SEQUENCE_NO_REDEMPTION_ID);
+        transactionDetail.setSequenceNo(XPATH_SEQUENCE_NO_ENCRYPTED_ORDER_LINE_ID);
         transactionDetail.setTextValue(redemptionFormResponse.getEncryptedRedemptionId().get());
-        transactionDetail.setXPath(XPATH_CURRENT_REDEMPTION_ID);
+        transactionDetail.setXPath(XPATH_CURRENT_ENCRYPTED_ORDER_LINE_ID);
         transactionDetailsDao.addTransactionDetailsWithDuplicateKeyUpdate(healthRequest.getTransactionId(), transactionDetail);
     }
 

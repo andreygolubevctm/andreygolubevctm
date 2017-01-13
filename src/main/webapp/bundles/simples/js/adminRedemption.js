@@ -29,6 +29,49 @@
 
                 // CRUD.get();
 
+                CRUD.getSaveRequestData = function($modal) {
+                    var $inputs = $modal.find("input, textarea, select"),
+                        data = {
+                            "orderHeader": {
+                                "orderLine":
+                                    {
+                                        "campaignCode": "code1",
+                                        "contactEmail": "stuff",
+                                        "firstName": "Steve",
+                                        "lastName": "Jiang",
+                                        "signOnReceipt": true,
+                                        "orderNotes": "test notes",
+                                        "phoneNumber": "0412345678",
+                                        "touchType": "string",
+                                        "trackerOptIn" : true,
+                                        "updatedByOperator": "sjiang",
+                                        "orderAddresses": [
+                                            {
+                                                "addressType": "P",
+                                                "businessName": "Compare The Market",
+                                                "dpid": "36957671",
+                                                "postcode": "4066",
+                                                "state": "QLD",
+                                                "streetName": "Jephson St.",
+                                                "suburb": "Toowong",
+                                                "unitNumber": "2",
+                                                "unitType": "L"
+                                            }
+                                        ]
+                                    },
+                                "saleStatus": "Sale",
+                                "reasonCode": "somthing"
+                            }
+                        };
+
+                    // for(var i = 0; i < $inputs.length; i++) {
+                    //     var $input = $($inputs[i]);
+                    //     data[$input.attr("name")] = $input.val();
+                    // }
+
+                    return data;
+                };
+
                 meerkat.messaging.subscribe(meerkatEvents.crud.CRUD_MODAL_OPENED, function initRedemptionForm(modalId) {
                     meerkat.modules.redemptionForm.initRedemptionForm(modalId, '/ctm/');
                 });

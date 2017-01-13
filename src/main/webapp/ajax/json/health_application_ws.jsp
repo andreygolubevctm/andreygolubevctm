@@ -33,6 +33,17 @@
 
 <jsp:useBean id="healthLeadService" class="com.ctm.web.health.services.HealthLeadService" scope="request" />
 
+
+<%-- Call Zeus controller/service here to get active campaigns
+
+ save campaign in to session variables
+
+<c:set var="campaign" value="${zeusController.getCampaigns()[0]}" scope="request" />
+
+
+ --%>
+
+
 <c:choose>
     <%--
 	token can only be invalid for ONLINE.
@@ -79,11 +90,13 @@
         ${healthApplicationService.createErrorResponse(data.current.transactionId, errorMessage,  "submission")}
     </c:when>
     <c:otherwise>
+
         <%-- Save client data; use outcome to know if this transaction is already confirmed --%>
         <c:set var="ct_outcome">
             <core_v1:transaction touch="P"/>
         </c:set>
         ${logger.info('Application has been set to pending. {}',  log:kv('productId', productId))}
+
 
         <c:choose>
             <c:when test="${ct_outcome == 'C'}">

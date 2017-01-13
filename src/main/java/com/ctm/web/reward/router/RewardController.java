@@ -1,4 +1,4 @@
-package com.ctm.web.redemption.controller;
+package com.ctm.web.reward.router;
 
 import com.ctm.httpclient.Client;
 import com.ctm.redemption.model.GetRedemption;
@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/rest/redemption")
-public class RedemptionController {
+@RequestMapping("/rest/reward")
+public class RewardController {
     private static final String GET_REDEMPTION = "/get";
     private static final String ADHOC = "/adhoc";
     private static final String UPDATE = "/update";
@@ -24,7 +24,7 @@ public class RedemptionController {
     @Autowired
     private Client<RedemptionForm, RedemptionForm> redemptionClient;
 
-    @Value("${ctm.redemption.url}")
+    @Value("${ctm.reward.url}")
     private String redemptionUrl;
 
     @RequestMapping(value = GET_REDEMPTION,
