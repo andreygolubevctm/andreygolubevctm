@@ -23,7 +23,7 @@
             coverLoadingHeading: $('.benefitsContainer').find('h3:first-child')
         };
 
-        $elements.partnerQuestionSet = $elements.partnerDOBD.add($elements.currentCover);
+        $elements.partnerQuestionSet = $elements.partnerDOBD.add($elements.currentCover).add($elements.partnerCoverLoading);
 
         meerkat.modules.fieldUtilities.toggleFields($elements.partnerCoverLoading, $elements.currentCover.filter(':checked').val() === 'N');
     }
