@@ -21,7 +21,10 @@
         $inboundQuestionsetFollowupToggles,
         $inboundApplicationFollowupDialogue,
         $inboundApplicationFollowupToggles,
-        $followupDialogueContentContainers;
+        $followupDialogueContentContainers,
+        $simplesMedicareCoverForm = null,
+        $applicantWrappers = {},
+        currentFamilyType = null;
 
     function init() {
         $(document).ready(function () {
@@ -47,6 +50,9 @@
             $inboundApplicationFollowupToggles = $inboundApplicationFollowupDialogue.find('a');
             $followupDialogueContentContainers = $inboundQuestionsetFollowupDialogue
                 .add($inboundApplicationFollowupDialogue).find('div[class]');
+            $simplesMedicareCoverForm = $('#health_situation_cover_wrapper');
+            $applicantWrappers.primary = $('#health-contact-fieldset .content:first');
+            $applicantWrappers.partner = $('#partner-health-cover .content:first');
 
             // Handle pre-filled
             toggleInboundOutbound();
@@ -72,6 +78,22 @@
         // check if the field is still on the About you fieldset on  step 1
         if ($aboutYouFieldset.find($healthSituationMedicare).length === 0) {
             $healthSituationMedicare.appendTo($aboutYouFieldset);
+        }
+    }
+
+    /**
+     * Move the medicare fields to sit under partner fieldset if family/couple otherwise
+     * the default is under primary fieldset
+     */
+    function updateSimplesMedicareCoverQuestionPosition() {
+        if(getCallType() === 'outbound') {
+            var familyType = meerkat.modules.health.getSituation();
+            if (!_.isEmpty(familyType) && (_.isNull(currentFamilyType) || familyType !== currentFamilyType)) {
+                var $tempMedicareForm = $simplesMedicareCoverForm.detach();
+                var $wrapperToUse = $applicantWrappers[_.indexOf(['F', 'C'], familyType) > -1 ? 'partner' : 'primary'];
+                $wrapperToUse.append($tempMedicareForm);
+                currentFamilyType = familyType;
+            }
         }
     }
 
@@ -176,14 +198,18 @@
         }
     }
 
+    function getCallType() {
+        return $healthContactType.is(':checked') ? $healthContactType.filter(':checked').val() : null;
+    }
+
     // Toggle visibility on follow call dialogs based on call type and whether is a followup call
     function toggleFollowupCallDialog() {
         var callType = false;
         var isValidCallType = false;
         var isFollowupCall = $followupCallCheckbox.is(':checked');
         // Set the calltype variables
-        if($healthContactType.is(':checked')) {
-            callType = $healthContactType.filter(':checked').val();
+        callType = getCallType();
+        if(!_.isEmpty(callType)) {
             isValidCallType = _.indexOf(['outbound','inbound'],callType) >= 0;
         }
         // Toggle visibility of followup call checkbox
@@ -261,7 +287,8 @@
     }
 
     meerkat.modules.register("simplesBindings", {
-        init: init
+        init: init,
+        updateSimplesMedicareCoverQuestionPosition: updateSimplesMedicareCoverQuestionPosition
     });
 
 })(jQuery);
