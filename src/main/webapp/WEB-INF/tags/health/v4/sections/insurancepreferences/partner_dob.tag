@@ -6,6 +6,6 @@
 <%@ attribute name="xpath" 		required="true"	 rtexprvalue="true"	 description="partner's dob xpath" %>
 
 <c:set var="fieldXpath" value="${xpath}/partner/dob" />
-<form_v4:row label="Your partner's date of birth" fieldXpath="${fieldXpath}">
+<form_v4:row label="Your partner's date of birth" fieldXpath="${fieldXpath}" id="benefits_partner_dob">
 	<field_v4:person_dob xpath="${fieldXpath}" title="partner's" required="true" ageMin="16" ageMax="120" type="select" />
 </form_v4:row>

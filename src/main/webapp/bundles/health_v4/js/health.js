@@ -184,6 +184,8 @@
                 meerkat.modules.healthLocation.initHealthLocation();
                 meerkat.modules.healthPostcode.initPostcode();
 
+                meerkat.modules.fieldUtilities.initDisabledFields();
+
                 if (meerkat.site.choices) {
                     meerkat.modules.healthChoices.initialise($('input[name=health_situation_healthCvr]:checked').val());
                     meerkat.modules.healthChoices.setState(meerkat.site.choices.state);
@@ -195,6 +197,7 @@
                     var coverTypeVal = $(this).find('input:checked').val();
                     meerkat.modules.healthBenefitsStep.updateHiddenFields(coverTypeVal);
                 });
+
             },
             onBeforeEnter: function() {
                 _incrementTranIdBeforeEnteringSlide();
