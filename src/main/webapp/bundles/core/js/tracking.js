@@ -383,7 +383,7 @@
 
         if(meerkat.site.isCallCentreUser) {
             // Maintain gaClientId from online journey if available
-            gaClientId = !_.has(meerkat.site,'gaClientId') && !_.isEmpty(meerkat.site.gaClientId) ? meerkat.site.gaClientId : null;
+            gaClientId = _.has(meerkat.site,'gaClientId') && !_.isEmpty(meerkat.site.gaClientId) ? meerkat.site.gaClientId : null;
         } else {
             // Otherwise, retrieve the _ga cookie and assign its value to gaClientId
             var cookieStr = document.cookie;
