@@ -140,8 +140,8 @@
 	isCallCentreUser: <c:out value="${not empty callCentre}"/>,
 	<c:if test="${not empty callCentre}">
 		contactType: "<c:out value="${data['health/simples/contactType']}"/>",
-		gaClientId: "<c:out value="${data['health/gaclientid']}"/>",
 	</c:if>
+	gaClientId: "<c:out value="${data['health/gaclientid']}"/>",
 	isFromBrochureSite: <c:out value="${fromBrochure}"/>,
 	journeyStage: "<c:out value="${data['health/journey/stage']}"/>",
 	pageAction: '<c:out value="${pageAction}"/>',

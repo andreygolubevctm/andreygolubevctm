@@ -381,40 +381,46 @@
     function addGAClientID() {
         var gaClientId = null;
 
-        // Retrieve the _ga cookie and assign its value to gaClientId
-        var cookieStr = document.cookie;
-        if(!_.isEmpty(cookieStr)) {
-            var rawCookies = cookieStr.split(";");
-            for(var i=0; i<rawCookies.length; i++){
-                var cookie = $.trim(rawCookies[i]).split("=");
-                if(cookie.length === 2) {
-                    if(cookie[0] === "_ga") {
-                        gaClientId = cookie[1];
-                        break;
+        if(meerkat.site.isCallCentreUser) {
+            // Maintain gaClientId from online journey if available
+            gaClientId = !_.has(meerkat.site,'gaClientId') && !_.isEmpty(meerkat.site.gaClientId) ? meerkat.site.gaClientId : null;
+        } else {
+            // Otherwise, retrieve the _ga cookie and assign its value to gaClientId
+            var cookieStr = document.cookie;
+            if (!_.isEmpty(cookieStr)) {
+                var rawCookies = cookieStr.split(";");
+                for (var i = 0; i < rawCookies.length; i++) {
+                    var cookie = $.trim(rawCookies[i]).split("=");
+                    if (cookie.length === 2) {
+                        if (cookie[0] === "_ga") {
+                            gaClientId = cookie[1];
+                            break;
+                        }
                     }
+                }
+            }
+
+            // Derive element name and if exists then assign value or create a new one
+            if (!_.isEmpty(gaClientId)) {
+                var temp = gaClientId.split('.');
+                if (temp.length >= 2) {
+                    var partB = temp.pop();
+                    var partA = temp.pop();
+                    gaClientId = partA + '.' + partB;
                 }
             }
         }
 
-        // Derive element name and if exists then assign value or create a new one
         if(!_.isEmpty(gaClientId)) {
-            var customGAClientId = gaClientId;
-            var temp = gaClientId.split('.');
-            if(temp.length >= 2) {
-                var partB = temp.pop();
-                var partA = temp.pop();
-                customGAClientId = partA + '.' + partB;
-            }
-
             var elementName = (meerkat.site.vertical === 'car' ? 'quote' : meerkat.site.vertical) + '_gaclientid';
             if ($('#' + elementName).length) {
-                $('#' + elementName).val(customGAClientId);
+                $('#' + elementName).val(gaClientId);
             } else {
                 $('#mainform').prepend($('<input/>', {
                     type: 'hidden',
                     id: elementName,
                     name: elementName,
-                    value: customGAClientId
+                    value: gaClientId
                 }));
             }
         }
