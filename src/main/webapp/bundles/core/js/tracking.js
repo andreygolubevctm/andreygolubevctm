@@ -476,7 +476,7 @@
     function appendDefaultsToSaleData(saleData) {
         var gaCode = getGACode();
         var tranId = meerkat.modules.transactionId.get();
-        var clientId = !_.has(meerkat.site,'gaClientId') && !_.isEmpty(meerkat.site.gaClientId) ? meerkat.site.gaClientId : null;
+        var clientId = _.has(meerkat.site,'gaClientId') && !_.isEmpty(meerkat.site.gaClientId) ? meerkat.site.gaClientId : null;
         if(!_.isNull(gaCode)) {
             _.extend(saleData,{tid:gaCode});
         }
