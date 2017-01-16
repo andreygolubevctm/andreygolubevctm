@@ -1,7 +1,11 @@
 package com.ctm.web.reward.router;
 
 import com.ctm.reward.model.GetCampaignsResponse;
+import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
+import com.ctm.web.core.router.CommonQuoteRouter;
+import com.ctm.web.core.security.IPAddressHandler;
+import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.reward.services.RewardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,12 +15,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Optional;
 
+import static com.ctm.web.core.model.settings.Vertical.VerticalType.HEALTH;
+
 @RestController
 @RequestMapping("/rest/reward")
-public class RewardController {
+public class RewardController extends CommonQuoteRouter {
     private static final String GET_REDEMPTION = "/get";
     private static final String ADHOC = "/adhoc";
     private static final String UPDATE = "/update";
@@ -35,21 +44,39 @@ public class RewardController {
     private RewardService rewardService;
 
     @Autowired
-    public RewardController(RewardService rewardService) {
+    public RewardController(SessionDataServiceBean sessionDataServiceBean,
+							IPAddressHandler ipAddressHandler,
+							RewardService rewardService) {
+		super(sessionDataServiceBean, ipAddressHandler);
         this.rewardService = rewardService;
     }
 
     @RequestMapping(value = CAMPAIGNS_GET,
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public GetCampaignsResponse get(@RequestParam(value = "brandCode", required = false, defaultValue = "ctm") String brandCode,
-                                    @RequestParam(value = "vertical", required = false, defaultValue = "health") String vertical,
-                                    @RequestParam(value = "effective", required = false) ZonedDateTime effective) {
-        if (effective == null) {
-            effective = ZonedDateTime.now();
-        }
-        return rewardService.getAllActiveCampaigns(Vertical.VerticalType.findByCode(vertical), brandCode, effective);
+    public GetCampaignsResponse get(HttpServletRequest request) {
+    	//TODO Health should not be hardcoded
+		final Vertical.VerticalType vertical = HEALTH;
+		final Brand brand = initRouter(request, vertical);
+
+		ZonedDateTime effective = ZonedDateTime.now();
+		Optional<LocalDateTime> applicationDate = getApplicationDate(request);
+		if (applicationDate.isPresent()) {
+			effective = ZonedDateTime.of(applicationDate.get(), ZoneId.systemDefault());
+		//} else if {
+			//TODO get the "journey start time" from session
+		}
+
+		effective = roundupMinutes(effective);
+		return rewardService.getAllActiveCampaigns(vertical, brand.getCode(), effective);
     }
+
+    /*
+    Round the datetime to nearest future 2 minute block
+     */
+	protected ZonedDateTime roundupMinutes(ZonedDateTime effective) {
+		return effective.withSecond(0).withNano(0).plusMinutes((62 - effective.getMinute()) % 2);
+	}
 
 //    @RequestMapping(value = GET_REDEMPTION,
 //            method = RequestMethod.GET,

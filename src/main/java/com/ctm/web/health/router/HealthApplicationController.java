@@ -91,7 +91,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
     private RewardService rewardService;
 
     @Autowired
-    public HealthApplicationController(SessionDataServiceBean sessionDataServiceBean ,
+    public HealthApplicationController(SessionDataServiceBean sessionDataServiceBean,
                                        IPAddressHandler ipAddressHandler,
                                        HealthLeadService leadService,
 									   RewardService rewardService) {
