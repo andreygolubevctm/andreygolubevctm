@@ -2,11 +2,10 @@ package com.ctm.web.reward.services;
 
 import com.ctm.httpclient.Client;
 import com.ctm.httpclient.RestSettings;
-import com.ctm.reward.model.SaleStatus;
-import com.ctm.reward.model.UpdateSaleStatus;
-import com.ctm.reward.model.UpdateSaleStatusResponse;
+import com.ctm.reward.model.*;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.session.AuthenticatedData;
+import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.transaction.dao.TransactionDetailsDao;
 import com.ctm.web.core.transaction.model.TransactionDetail;
 import com.ctm.web.core.web.go.Data;
@@ -21,6 +20,7 @@ import rx.schedulers.Schedulers;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Optional;
 
 @Service
@@ -34,20 +34,42 @@ public class RewardService {
 	public static final String REWARD_ENDPOINT_CREATE_ORDER = "/orders/create";
 	public static final String REWARD_ENDPOINT_UPDATE_SALE_STATUS = "/orderlines/updateSaleStatus";
 	public static final String REWARD_ENDPOINT_UPDATE_ORDER_LINE = "/orderlines/update";
+	public static final String REWARD_ENDPOINT_CAMPAIGNS_GET = "/campaigns/get";
 
-	private static final int SERVICE_TIMEOUT = 20000;
+	private static final int SERVICE_TIMEOUT = 10000;
 
 	@Value("${ctm.reward.url}")
 	private String rewardServiceUrl;
 
 	private TransactionDetailsDao transactionDetailsDao;
 	private Client<UpdateSaleStatus, UpdateSaleStatusResponse> rewardUpdateSalesStatusClient;
+	private Client<GetCampaigns, GetCampaignsResponse> rewardCampaignsGetClient;
 
 	@Autowired
 	public RewardService(TransactionDetailsDao transactionDetailsDao,
-						 Client<UpdateSaleStatus, UpdateSaleStatusResponse> rewardUpdateSalesStatusClient) {
+						 Client<UpdateSaleStatus, UpdateSaleStatusResponse> rewardUpdateSalesStatusClient,
+						 Client<GetCampaigns, GetCampaignsResponse> rewardCampaignsGetClient) {
 		this.transactionDetailsDao = transactionDetailsDao;
 		this.rewardUpdateSalesStatusClient = rewardUpdateSalesStatusClient;
+		this.rewardCampaignsGetClient = rewardCampaignsGetClient;
+	}
+
+	public GetCampaignsResponse getAllActiveCampaigns(final Vertical.VerticalType vertical, final String brandCode,
+													  final ZonedDateTime effectiveDateTime) {
+		GetCampaigns request = new GetCampaigns();
+		request.setBrandCode(brandCode);
+		request.setVerticalCode(vertical.getCode());
+		request.setEffectiveDateTime(effectiveDateTime);
+
+		return rewardCampaignsGetClient.post(RestSettings.<GetCampaigns>builder()
+				.request(request)
+				.response(GetCampaignsResponse.class)
+				.jsonHeaders()
+				.url(rewardServiceUrl + REWARD_ENDPOINT_CAMPAIGNS_GET)
+				.timeout(SERVICE_TIMEOUT)
+				.build())
+				.observeOn(Schedulers.io())
+				.toBlocking().single();
 	}
 
 	public void setOrderSaleStatusToFailed(final String encryptedOrderLineId) {
