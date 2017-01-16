@@ -83,7 +83,7 @@ public class HealthConfirmationServiceTest {
                 "<phoneNumber>" + expectedPhoneNumber + "</phoneNumber>" +
                 "<email>" + expectedEmail + "</email>" +
                 "<website>" + expectedWebsite + "</website>" +
-                "</providerInfo><whatsNext/><product/><policyNo>"+policyNo+"</policyNo><paymentType/><encryptedOrderLineId></encryptedOrderLineId></data>";
+                "</providerInfo><whatsNext/><product/><policyNo>"+policyNo+"</policyNo><paymentType/><redemptionId></redemptionId></data>";
 
         ArgumentCaptor<Confirmation> argument = ArgumentCaptor.forClass(Confirmation.class);
         verify(confirmationService).addConfirmation(argument.capture());
