@@ -19,3 +19,28 @@
     }
   }
 }
+
+@media (@xs-only) {
+  .productSummary-parent.visible-xs {
+    margin-bottom: 20px;
+    margin-top: -20px;
+    min-height: 121px;
+    .policySummaryContainer {
+      padding-top: 5px;
+      .productSummary.horizontal {
+        .companyLogo {
+          float: left;
+        }
+        .frequency {
+          .frequencyAmount {
+            .frequencyTitle {
+              display: inline;
+              top: 11px;
+              left: -22px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
