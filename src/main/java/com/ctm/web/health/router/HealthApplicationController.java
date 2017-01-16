@@ -1,6 +1,6 @@
 package com.ctm.web.health.router;
 
-import com.ctm.reward.model.OrderForm;
+import com.ctm.reward.model.OrderFormResponse;
 import com.ctm.web.core.confirmation.services.JoinService;
 import com.ctm.web.core.email.exceptions.SendEmailException;
 import com.ctm.web.core.email.model.EmailMode;
@@ -34,6 +34,7 @@ import com.ctm.web.health.model.results.ResponseError;
 import com.ctm.web.health.services.HealthApplyService;
 import com.ctm.web.health.services.HealthConfirmationService;
 import com.ctm.web.health.services.HealthLeadService;
+import com.ctm.web.reward.services.RewardService;
 import com.ctm.web.simples.services.TransactionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -87,13 +88,16 @@ public class HealthApplicationController extends CommonQuoteRouter {
     private HealthConfirmationService healthConfirmationService;
 
     private LeadService leadService;
+    private RewardService rewardService;
 
     @Autowired
     public HealthApplicationController(SessionDataServiceBean sessionDataServiceBean ,
                                        IPAddressHandler ipAddressHandler,
-                                       HealthLeadService leadService) {
+                                       HealthLeadService leadService,
+									   RewardService rewardService) {
         super(sessionDataServiceBean, ipAddressHandler);
         this.leadService = leadService;
+        this.rewardService = rewardService;
     }
 
     @ApiOperation(value = "apply/get.json", notes = "Submit an health application", produces = "application/json")
@@ -120,10 +124,15 @@ public class HealthApplicationController extends CommonQuoteRouter {
 
         // Create placeholder Order: Create the placeholder only if ONLINE
         final Optional<AuthenticatedData> authenticatedSessionData = Optional.ofNullable(sessionDataServiceBean.getAuthenticatedSessionData(request));
-        Optional<OrderForm> redemptionForm = Optional.empty();
-        if(!isOperatorLoggedIn(authenticatedSessionData)) {
-            //redemptionForm = Optional.ofNullable(saveRedemption(request, data, authenticatedSessionData, REWARD_ENDPOINT_CREATE_ORDER, "P"));
+        final Optional<OrderFormResponse> createPlaceholder = Optional.empty();
+        if (!isOperatorLoggedIn(authenticatedSessionData)) {
+            //TODO createPlaceholder = Optional.ofNullable(saveRedemption(request, data, authenticatedSessionData, REWARD_ENDPOINT_CREATE_ORDER, "P"));
         }
+
+		//TODO What to do when create order was not successful?
+		if (createPlaceholder.map(OrderFormResponse::getStatus).map(Optional::get).filter(status -> !status).isPresent()) {
+            LOGGER.error("Create reward/order placeholder failed");
+		}
 
         // get the response
         final HealthApplyResponse applyResponse = healthApplyService.apply(request, brand, data);
@@ -142,10 +151,10 @@ public class HealthApplicationController extends CommonQuoteRouter {
 
 
         if (Status.Success.equals(response.getSuccess())) {
-            if (redemptionForm.isPresent()) { // It means ONLINE
-                //setRedemptionToSuccess(redemptionForm.get());
+            if (createPlaceholder.isPresent()) { // It means ONLINE
+				rewardService.setOrderSaleStatusToSuccess(createPlaceholder.map(OrderFormResponse::getEncryptedOrderLineId).map(Optional::get).orElse(""));
             } else { // Call center
-                //saveRedemption(request, data, authenticatedSessionData, REWARD_ENDPOINT_UPDATE_ORDER_LINE, "C");
+                //TODO saveRedemption(request, data, authenticatedSessionData, REWARD_ENDPOINT_UPDATE_ORDER_LINE, "C");
             }
 
             result.setSuccess(true);
@@ -181,7 +190,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
 
         } else {
             if(!isOperatorLoggedIn(authenticatedSessionData)) {
-                //setRedemptionToFailed(redemptionForm.get());
+                //setRedemptionToFailed(createPlaceholder.get());
             }
 
             // Set callCentre property only when it's not a success
