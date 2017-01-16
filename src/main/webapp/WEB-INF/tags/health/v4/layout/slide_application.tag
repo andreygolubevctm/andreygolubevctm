@@ -12,6 +12,12 @@
             </jsp:attribute>
 
             <jsp:body>
+                <%-- Product summary header for mobile --%>
+                <div class="row productSummary-parent visible-xs">
+                    <div class="productSummary-affix affix-top visible-xs">
+                        <health_v4_payment:policySummary />
+                    </div>
+                </div>
 
                 <div id="health_application-warning">
                     <div class="fundWarning alert alert-danger">
