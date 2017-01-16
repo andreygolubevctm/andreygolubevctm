@@ -25,6 +25,7 @@ import java.util.Optional;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static com.ctm.web.core.utils.common.utils.LocalDateUtils.AUS_FORMAT;
+import static com.ctm.web.reward.services.RewardService.XPATH_CURRENT_ENCRYPTED_ORDER_LINE_ID;
 
 @Component
 public class HealthConfirmationService {
@@ -65,7 +66,7 @@ public class HealthConfirmationService {
                     .whatsNext(next).product(productSelected)
                     .policyNo(response.getProductId())
                     .paymentType(paymentType)
-                    .redemptionId(Optional.ofNullable((String) dataBucket.get("current/redemptionId")).orElse(""))
+                    .redemptionId(Optional.ofNullable((String) dataBucket.get(XPATH_CURRENT_ENCRYPTED_ORDER_LINE_ID)).orElse(""))
                     .build();
 
             Confirmation confirmation = new Confirmation();

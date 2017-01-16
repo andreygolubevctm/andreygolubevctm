@@ -9,20 +9,19 @@ import com.ctm.web.core.web.go.Data;
 import com.ctm.web.health.model.form.Address;
 import com.ctm.web.health.model.form.Application;
 import com.ctm.web.health.model.form.HealthRequest;
+import com.ctm.web.reward.services.RewardService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
-import java.util.Set;
 
 public class RewardRequestParser {
 
     private static final String CURRENT_ROOT_ID = "current/rootId";
-    private static final String XPATH_CURRENT_ENCRYPTED_ORDER_LINE_ID = "current/encryptedOrderLineId";
     private static final String PREFIX = "health/application/";
 
     private static OrderForm parseOrderFormRequest(final HttpServletRequest request, final Data dataBucket, final String saleStatus, final String campaignCode) {
         final Long rootId = Long.parseLong(dataBucket.getString(CURRENT_ROOT_ID));
-        final Optional<String> encryptedOrderLineId = Optional.ofNullable(dataBucket.getString(XPATH_CURRENT_ENCRYPTED_ORDER_LINE_ID));
+        final Optional<String> encryptedOrderLineId = Optional.ofNullable(dataBucket.getString(RewardService.XPATH_CURRENT_ENCRYPTED_ORDER_LINE_ID));
 
         final OrderLine orderLine = new OrderLine();
         orderLine.setCampaignCode(campaignCode);
@@ -42,13 +41,11 @@ public class RewardRequestParser {
         orderForm.setOrderHeader(orderHeader);
 
         return orderForm;
-
     }
-
 
     private static OrderForm parseOrderFormRequest(final HealthRequest healthRequest, final Optional<AuthenticatedData> authenticatedSessionData, final Data dataBucket, final String saleStatus, final String campaignCode) {
         final Long rootId = Long.parseLong(dataBucket.getString(CURRENT_ROOT_ID));
-        final Optional<String> encryptedOrderLineId = Optional.ofNullable(dataBucket.getString(XPATH_CURRENT_ENCRYPTED_ORDER_LINE_ID));
+        final Optional<String> encryptedOrderLineId = Optional.ofNullable(dataBucket.getString(RewardService.XPATH_CURRENT_ENCRYPTED_ORDER_LINE_ID));
 
         final Application healthApplication = healthRequest.getHealth().getApplication();
         final Address healthPostalAddress =  healthApplication.getPostal();

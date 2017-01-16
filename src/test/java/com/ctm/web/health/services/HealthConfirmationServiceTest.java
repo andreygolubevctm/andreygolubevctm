@@ -22,7 +22,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 
 public class HealthConfirmationServiceTest {
 
-    HealthConfirmationService healthConfirmationService;
+    private HealthConfirmationService healthConfirmationService;
     @Mock
     private ProviderContentService providerContentService;
     @Mock
@@ -73,8 +73,7 @@ public class HealthConfirmationServiceTest {
                 .website(expectedWebsite)
                 .phoneNumber(expectedPhoneNumber).email(expectedEmail).build();
         when(providerContentService.getProviderInfo( request,  providerName)).thenReturn(providerInfo);
-        healthConfirmationService.createAndSaveConfirmation( request,  data,  response,
-                 confirmationId,  dataBucket);
+        healthConfirmationService.createAndSaveConfirmation( request, data, response, confirmationId, dataBucket);
         String expectedData = "<data><transID>10000</transID><status>OK</status>" +
                 "<vertical>CTMH</vertical><startDate>06/01/2016</startDate>" +
                 "<frequency>M</frequency><about/>" +
@@ -84,7 +83,7 @@ public class HealthConfirmationServiceTest {
                 "<phoneNumber>" + expectedPhoneNumber + "</phoneNumber>" +
                 "<email>" + expectedEmail + "</email>" +
                 "<website>" + expectedWebsite + "</website>" +
-                "</providerInfo><whatsNext/><product/><policyNo>"+policyNo+"</policyNo><paymentType/><redemptionId></redemptionId></data>";
+                "</providerInfo><whatsNext/><product/><policyNo>"+policyNo+"</policyNo><paymentType/><encryptedOrderLineId></encryptedOrderLineId></data>";
 
         ArgumentCaptor<Confirmation> argument = ArgumentCaptor.forClass(Confirmation.class);
         verify(confirmationService).addConfirmation(argument.capture());
