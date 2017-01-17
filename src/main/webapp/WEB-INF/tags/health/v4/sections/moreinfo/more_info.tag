@@ -62,7 +62,7 @@
 	<c:set var="variantClassName">
 		<c:if test="${moreinfo_splittest_default eq false}">more-info-content-variant</c:if>
 	</c:set>
-	<div data-product-type="{{= info.ProductType }}" class="displayNone more-info-content col-xs-12 ${variantClassName}">
+	<div data-product-type="{{= info.ProductType }}" class="displayNone more-info-content ${variantClassName}">
 
 		<div class="fieldset-card row price-card <c:if test="${healthAlternatePricingActive eq true}">hasDualPricing</c:if>">
 			<div class="col-xs-12 col-sm-9 moreInfoTopLeftColumn Hospital_container">
