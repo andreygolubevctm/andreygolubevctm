@@ -523,8 +523,8 @@
             ],
             dob_secondary:[
                 {
-                    $field: $('#partner-health-cover').find("input[name='health_healthCover_partner_dob']"), // this is a hidden field
-                    $fieldInput: $('#partner-health-cover').find("input[name='health_healthCover_partner_dob']") // pointing at the same field as a trick to force change event on itself when forward populated
+                    $field: $("#health_healthCover_partner_dob"), // this is a hidden field
+                    $fieldInput: $("#health_healthCover_partner_dob") // pointing at the same field as a trick to force change event on itself when forward populated
                 },
                 {
                     $field: $("#health_application_partner_dob"), // this is a hidden field
@@ -546,7 +546,7 @@
             mobile: [
                 // mobile from details step
                 {
-                    $field: $("#health_contactDetails_contactNumber_mobile"),
+                    $field: $("#health_contactDetails_contactNumber_mobileinput"),
                     $optInField: contactDetailsOptinField
                 },
                 // mobile from application step
@@ -558,7 +558,7 @@
             otherPhone: [
                 // otherPhone from details step
                 {
-                    $field: $("#health_contactDetails_contactNumber_other"),
+                    $field: $("#health_contactDetails_contactNumber_otherinput"),
                     $optInField: contactDetailsOptinField
                 },
                 // otherPhone from application step
