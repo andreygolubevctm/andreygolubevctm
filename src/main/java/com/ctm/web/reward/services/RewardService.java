@@ -35,6 +35,7 @@ public class RewardService {
 	public static final String REWARD_ENDPOINT_CREATE_ORDER = "/orders/create";
 	public static final String REWARD_ENDPOINT_UPDATE_SALE_STATUS = "/orderlines/updateSaleStatus";
 	public static final String REWARD_ENDPOINT_UPDATE_ORDER_LINE = "/orderlines/update";
+	public static final String REWARD_ENDPOINT_TRACKING_STATUS = "/orderlines/getTrackingStatus";
 	public static final String REWARD_ENDPOINT_CAMPAIGNS_GET = "/campaigns/get";
 
 	private static final int SERVICE_TIMEOUT = 10000;
@@ -98,6 +99,16 @@ public class RewardService {
 				.observeOn(Schedulers.io())
 				.subscribe(response -> LOGGER.info(loggerPattern, response.getStatus(), encryptedOrderLineId, saleStatus),
 						error -> LOGGER.error(loggerPattern, false, encryptedOrderLineId, saleStatus, error));
+	}
+
+	public TrackingStatus getTrackingStatus(final String trackingToken) {
+		//TODO Call reward service
+		TrackingStatus trackingStatus = new TrackingStatus();
+		trackingStatus.setFirstName("Jeffrey");
+		trackingStatus.setOrderStatus("Scheduled");
+		trackingStatus.setRewardType("Sergei");
+		trackingStatus.setStage("1");
+		return trackingStatus;
 	}
 
 //	private RedemptionForm saveRedemption(final HttpServletRequest request,
