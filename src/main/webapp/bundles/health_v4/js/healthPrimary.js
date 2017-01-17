@@ -15,16 +15,32 @@
             primaryCoverLoading: $(':input[name=health_healthCover_primary_healthCoverLoading]'),
             primaryCoverRow: $('#health_healthCover_primaryCover'),
             currentCover: $('input[name=health_healthCover_primary_cover]'),
+            dob: $('#health_healthCover_primary_dob'),
             partnerDOB: $('#benefits_partner_dob')
         };
 
-        meerkat.modules.fieldUtilities.toggleFields($elements.primaryCoverLoading, getCurrentCover() === 'N');
+        var $checked = $elements.currentCover.filter(':checked');
+        if($checked.length) {
+            $checked.change();
+        }
     }
 
     function _applyEventListeners() {
         $elements.currentCover.on('change', function toggleContinuousCover() {
             var $this = $(this);
-            meerkat.modules.fieldUtilities.toggleFields($elements.primaryCoverLoading, $this.filter(':checked').val() === 'N');
+            var $checked = $this.filter(':checked');
+            meerkat.modules.fieldUtilities.toggleFields(
+                $elements.primaryCoverLoading,
+                !$checked.length || $checked.val() === 'N' || meerkat.modules.age.isLessThan31Or31AndBeforeJuly1($elements.dob.val())
+            );
+        });
+
+        $elements.dob.on('change', function updateSnapshot() {
+            meerkat.messaging.publish(meerkatEvents.health.SNAPSHOT_FIELDS_CHANGE);
+            _.defer(function(){
+                var $checked = $elements.currentCover.filter(':checked');
+                if($checked.length) $checked.change();
+            });
         });
     }
 
