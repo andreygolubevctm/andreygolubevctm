@@ -22,7 +22,7 @@
 					required="true"
 					decimal="${false}"
 					minValue="120000"
-					maxValue="1100000"
+					maxValue="1099999"
 					title="The total cost to rebuild the home"/>
 			</form_v2:row>
 		</form_v2:fieldset>
@@ -47,7 +47,7 @@
 				required="true"
 				decimal="${false}"
 				minValue="20000"
-			    maxValue="350000"
+			    maxValue="349999"
 				title="The total contents replacement cost"/>
 		</form_v2:row>
 
