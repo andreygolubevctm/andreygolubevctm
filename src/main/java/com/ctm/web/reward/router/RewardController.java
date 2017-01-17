@@ -66,16 +66,8 @@ public class RewardController extends CommonQuoteRouter {
 			//TODO get the "journey start time" from session
 		}
 
-		effective = roundupMinutes(effective);
 		return rewardService.getAllActiveCampaigns(vertical, brand.getCode(), effective);
     }
-
-    /*
-    Round the datetime to nearest future 2 minute block
-     */
-	protected ZonedDateTime roundupMinutes(ZonedDateTime effective) {
-		return effective.withSecond(0).withNano(0).plusMinutes((62 - effective.getMinute()) % 2);
-	}
 
 //    @RequestMapping(value = GET_REDEMPTION,
 //            method = RequestMethod.GET,
