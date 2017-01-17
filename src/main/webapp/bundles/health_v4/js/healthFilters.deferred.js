@@ -222,9 +222,9 @@
                     },
                     update: function () {
                         populateSelectedBenefits();
-                        toggleFilterByContainer($('.filter-hospital-benefits'), false);
-                        toggleFilter($('.health-filter-hospital-benefits'), false);
-                        setFilterByHospitalBenefits();
+                            toggleFilterByContainer($('.filter-hospital-benefits'), false);
+                            toggleFilter($('.health-filter-hospital-benefits'), false);
+                            setFilterByHospitalBenefits();
                     }
                 }
             },
@@ -244,10 +244,10 @@
                         toggleFilter($filterBenefits);
                         setFilterByExtrasBenefits();
                     },
-                    update: function() {
-                        toggleFilterByContainer($('.filter-extras-benefits'), false);
-                        toggleFilter($('.health-filter-extras-benefits'), false);
-                        setFilterByExtrasBenefits();
+                    update: function () {
+                            toggleFilterByContainer($('.filter-extras-benefits'), false);
+                            toggleFilter($('.health-filter-extras-benefits'), false);
+                            setFilterByExtrasBenefits();
                     }
                 }
             }
@@ -303,16 +303,17 @@
         // this needs to convert the shortlistkey names e.g. PrHospital to its id for it to work...
         // go back up to init filters and try and make it just run off ids.
         var selectedBenefits = {
-            'hospital': _getCheckedBenefitsFromFilters($('.results-filters-hospital-benefits')),
-            'extras': _getCheckedBenefitsFromFilters($('.results-filters-extras-benefits'))
+            'hospital': _getCheckedBenefitsFromFilters($('.filter-hospital-benefits')),
+            'extras': _getCheckedBenefitsFromFilters($('.filter-extras-benefits'))
         };
+
         meerkat.modules.healthResults.setSelectedBenefitsList(selectedBenefits.hospital.concat(selectedBenefits.extras));
 
         meerkat.modules.benefitsModel.setIsHospital(false);
-        meerkat.messaging.publish(meerkatEvents.benefitsModel.UPDATE_SELECTED_BENEFITS_CHECKBOX, selectedBenefits.extras);
+        meerkat.modules.benefitsModel.setBenefits(selectedBenefits.extras);
 
         meerkat.modules.benefitsModel.setIsHospital(true);
-        meerkat.messaging.publish(meerkatEvents.benefitsModel.UPDATE_SELECTED_BENEFITS_CHECKBOX, selectedBenefits.hospital);
+        meerkat.modules.benefitsModel.setBenefits(selectedBenefits.hospital);
 
     }
 
@@ -376,14 +377,16 @@
             $filter.slideUp('fast');
         }
     }
+
     function setFilterByExtrasBenefits() {
         var coverType = meerkat.modules.healthChoices.getCoverType(),
             extrasCount = meerkat.modules.benefitsModel.getExtrasCount(),
             benefitString = '';
-        if(coverType === 'H' || extrasCount === 0) {
+        if (coverType === 'H' || extrasCount === 0) {
             benefitString = 'No Extras';
         } else {
-            benefitString = extrasCount + ' Extras selected';
+            var plural = extrasCount > 1 ? 's' : '';
+            benefitString = extrasCount + ' Extra' + plural + ' selected';
         }
         $('.filter-by-extras-benefits').html(benefitString);
     }
@@ -393,7 +396,7 @@
             hospitalType = meerkat.modules.benefits.getHospitalType(),
             hospitalCount = meerkat.modules.benefitsModel.getHospitalCount(),
             benefitString = '';
-        if(coverType === 'E' || hospitalCount === 0) {
+        if (coverType === 'E' || hospitalCount === 0) {
             benefitString = 'No Hospital';
         } else {
             benefitString = hospitalCount + ' Extras selected';

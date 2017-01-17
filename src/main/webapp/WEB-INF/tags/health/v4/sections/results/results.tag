@@ -70,7 +70,7 @@
                             </div>
                         </div>
                         {{ if(info.situationFilter == 'Y') { }}
-                        <div class="featuresListHospitalSelections"><health_v3:limited_cover_label /></div>
+                        <div class="featuresListHospitalSelections"><health_v4_sections_results:limited_cover_label /></div>
                         {{ } else { }}
                         <div class="featuresListHospitalSelections" data-feature-index="2" data-feature-type="hospital"></div>
                         {{ } }}
