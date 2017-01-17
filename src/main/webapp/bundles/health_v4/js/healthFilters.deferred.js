@@ -41,14 +41,7 @@
                 ],
 
                 defaultValueSourceSelector: '#health_filter_frequency',
-                defaultValue: 'M',
-                events: {
-                    update: function (filterObject) {
-                        var valueNew = $('input[name=' + filterObject.name + ']:checked').val();
-                        $(filterObject.defaultValueSourceSelector).val(valueNew);
-                        Results.setFrequency(meerkat.modules.healthResults.getFrequencyInWords(valueNew), false);
-                    }
-                }
+                defaultValue: 'M'
             },
             /* @todo may need some of this logic for comprehensive/limited
             "coverLevel": {
@@ -292,6 +285,16 @@
 
 
     function applyEventListeners() {
+        $(document).on('change', 'input[name=health_filterBar_frequency]', function(e) {
+            var frequency = $(this).val();
+
+            $('#health_filter_frequency').val(frequency);
+
+            Results.setFrequency(meerkat.modules.healthResults.getFrequencyInWords(frequency), false);
+            meerkat.modules.resultsTracking.setResultsEventMode('Refresh');
+            Results.applyFiltersAndSorts();
+        });
+
         $(document).on('click', '.filter-brands-toggle', function selectAllNoneFilterBrands(e) {
             e.preventDefault();
             $('input[name=health_filterBar_brands]').prop('checked', $(this).attr('data-toggle') == "true");
@@ -469,7 +472,10 @@
                     toggleBenefitsLink($sidebar.find('.benefitsExtras'));
                     break;
             }
-            toggleQuoteRefTemplate('slideUp');
+
+            if (!$(event.target).parents('.filter').data('dontToggleUpdate')) {
+                toggleQuoteRefTemplate('slideUp');
+            }
         });
 
         meerkat.messaging.subscribe(meerkatEvents.filters.FILTERS_CANCELLED, function (event) {
@@ -493,7 +499,6 @@
                 });
             });
         });
-
     }
 
     meerkat.modules.register("healthFilters", {
