@@ -111,20 +111,22 @@
     // sets up all the required variables to calculate the position of the togglebar tabs
     function _setupToggleBarSettings(initSettings) {
 
-        var tbTop = $elements.toggleBar.offset().top,
-            tbHeight = $elements.toggleBar.height();
+        if($elements.toggleBar.length) {
+            var tbTop = $elements.toggleBar.offset().top,
+                tbHeight = $elements.toggleBar.height();
 
-        settings[currentStep] = {
-            toggleBarTop: tbTop,
-            toggleBarBottom: tbHeight + tbTop,
-            toggleBarHeight: tbHeight,
-            hospitalTabWidth: $elements.toggleBar.find('.hospital').width(),
-            extrasTabWidth: $elements.toggleBar.find('.extras').width(),
-            bottomFixed: false,
-            topFixed: false,
-            isModal: initSettings.isModal || false,
-            currentBenefit: 'extras'
-        };
+            settings[currentStep] = {
+                toggleBarTop: tbTop,
+                toggleBarBottom: tbHeight + tbTop,
+                toggleBarHeight: tbHeight,
+                hospitalTabWidth: $elements.toggleBar.find('.hospital').width(),
+                extrasTabWidth: $elements.toggleBar.find('.extras').width(),
+                bottomFixed: false,
+                topFixed: false,
+                isModal: initSettings.isModal || false,
+                currentBenefit: 'extras'
+            };
+        }
     }
 
     // Code takes care of the positioning of the toggle bar tabs.
