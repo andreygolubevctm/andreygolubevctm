@@ -185,10 +185,24 @@
                         setFilterByHospitalBenefits();
                     },
                     update: function () {
+                        // Forced to medium as we don't have top/mid/basic in v4
+                        var benefitCoverType = $('#limitedHospital').hasClass('active') ? 'limited' : 'medium';
+                        $('#health_benefits_covertype').val(benefitCoverType);
+                        // reset hospital benefits to empty.
+                        if(benefitCoverType == 'limited') {
+                            $('.filter-hospital-benefits').find(':checked').prop('checked',false);
+                            meerkat.modules.benefits.setHospitalType('limited');
+                        } else {
+                            meerkat.modules.benefits.setHospitalType('comprehensive');
+                        }
+
+                        meerkat.modules.benefits.toggleHospitalTypeTabs();
+
                         populateSelectedBenefits();
-                            toggleFilterByContainer($('.filter-hospital-benefits'), false);
-                            toggleFilter($('.health-filter-hospital-benefits'), false);
-                            setFilterByHospitalBenefits();
+                        toggleFilterByContainer($('.filter-hospital-benefits'), false);
+                        toggleFilter($('.health-filter-hospital-benefits'), false);
+                        setFilterByHospitalBenefits();
+
                     }
                 }
             },
@@ -209,15 +223,16 @@
                         setFilterByExtrasBenefits();
                     },
                     update: function () {
-                            toggleFilterByContainer($('.filter-extras-benefits'), false);
-                            toggleFilter($('.health-filter-extras-benefits'), false);
-                            setFilterByExtrasBenefits();
+                        toggleFilterByContainer($('.filter-extras-benefits'), false);
+                        toggleFilter($('.health-filter-extras-benefits'), false);
+                        setFilterByExtrasBenefits();
                     }
                 }
             }
 
         },
         settings = {
+            verticalContextChange: ['xs','sm'],
             xsContext: '.header-top',
             filters: [
                 {
@@ -314,6 +329,11 @@
             toggleFilterByContainer($('.filter-' + filter));
             toggleFilter($('.health-filter-' + filter), true);
         });
+
+        $(document).on('shown.bs.tab', '.health-filter-hospital-benefits a[data-toggle="tab"]', function(e) {
+            meerkat.messaging.publish(meerkatEvents.filters.FILTER_CHANGED, e);
+        });
+
     }
 
     function toggleIncome(toggle) {
@@ -393,6 +413,9 @@
         });
 
         meerkat.messaging.subscribe(meerkatEvents.filters.FILTERS_CANCELLED, function (event) {
+            toggleQuoteRefTemplate('slideDown');
+        });
+        meerkat.messaging.subscribe(meerkatEvents.filters.FILTERS_UPDATED, function (event) {
             toggleQuoteRefTemplate('slideDown');
         });
 
