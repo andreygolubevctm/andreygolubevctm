@@ -65,7 +65,7 @@
 	<div data-product-type="{{= info.ProductType }}" class="displayNone more-info-content col-xs-12 ${variantClassName}">
 
 		<div class="fieldset-card row price-card <c:if test="${healthAlternatePricingActive eq true}">hasDualPricing</c:if>">
-			<div class="col-xs-12 col-sm-9 moreInfoTopLeftColumn Hospital_container">
+			<div class="moreInfoTopLeftColumn Hospital_container">
 				<health_v4_moreinfo:more_info_product_summary />
 				<health_v4_moreinfo:more_info_product_extra_info />
 				<!-- Hospital and Extras -->
@@ -245,7 +245,7 @@
 				</div>
 			</div>
 			<!-- CTA BUTTON -->
-			<div class="col-sm-3 hidden-xs moreInfoTopRightColumn">
+			<div class="hidden-xs moreInfoTopRightColumn">
 				<div class="row">
 					<div class="col-xs-12">
 						<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now<span class="icon-arrow-right" /></a>

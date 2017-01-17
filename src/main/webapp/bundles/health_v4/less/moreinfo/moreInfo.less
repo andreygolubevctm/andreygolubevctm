@@ -126,6 +126,14 @@
       }
     }
 
+    .moreInfoTopLeftColumn {
+      .make-sm-column(9);
+    }
+
+    .moreInfoTopRightColumn {
+      .make-sm-column(3);
+    }
+
     .modal-header {
       margin-top: 18px;
       padding-top: 20px;
@@ -364,3 +372,19 @@
       }
     }
   }
+
+.moreInfoVisible[data-step="apply"] {
+  .moreInfoDropdown {
+    .modal-header {
+      display: none;
+    }
+
+    .moreInfoTopLeftColumn {
+      .make-sm-column(12);
+    }
+
+    .moreInfoTopRightColumn {
+      display: none;
+    }
+  }
+}
