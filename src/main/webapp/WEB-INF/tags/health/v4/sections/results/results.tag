@@ -19,9 +19,9 @@
 
     <jsp:attribute name="sidebarColumnRight">
         <coupon:promo_tile />
-        <div class="col-xs-12 sidebar-widget sidebar-widget-contained sidebar-widget-padded results-filters-rebate"></div>
-        <div class="col-xs-12 sidebar-widget sidebar-widget-contained sidebar-widget-padded results-filters-benefits"></div>
-        <div class="col-sm-12 sidebar-widget sidebar-widget-contained sidebar-widget-padded results-filters"></div>
+        <div class="sidebar-widget sidebar-widget-padded results-filters-rebate"></div>
+        <div class="sidebar-widget sidebar-widget-padded results-filters-benefits"></div>
+        <div class="sidebar-widget sidebar-widget-padded results-filters"></div>
         <health_v4_results:filters_rebate />
         <health_v4_results:filters_benefits />
         <health_v4_results:filters_template />
@@ -70,7 +70,7 @@
                             </div>
                         </div>
                         {{ if(info.situationFilter == 'Y') { }}
-                        <div class="featuresListHospitalSelections"><health_v3:limited_cover_label /></div>
+                        <div class="featuresListHospitalSelections"><health_v4_sections_results:limited_cover_label /></div>
                         {{ } else { }}
                         <div class="featuresListHospitalSelections" data-feature-index="2" data-feature-type="hospital"></div>
                         {{ } }}
