@@ -6,23 +6,23 @@
 
     {{ var hiddenHospital = meerkat.modules.healthChoices.getCoverType() === 'E' ? ' hidden' : ''; }}
 
-    <h3>Refine Results by</h3>
+    <div class="filter-heading">Refine Results by</div>
 
     <div class="filter-excess filter need-hospital {{=hiddenHospital }}" data-filter-serverside="true">
-        <h4>Hospital Excess</h4>
+        <div class="filter-sub-heading">Hospital Excess</div>
         <div class="filter-by-container">
-            <span class="filter-by-excess"></span>
-            <a href="javascript:;" class="filter-toggle" data-filter="excess">Change</a>
+            <span class="filter-by-excess small"></span>
+            <a href="javascript:;" class="filter-toggle small" data-filter="excess">Change</a>
         </div>
 
         <health_v1:filter_excess useDefaultOutputField="true" />
     </div>
 
     <div class="filter-brands filter" data-filter-serverside="true">
-        <h4>Brands</h4>
+        <div class="filter-sub-heading">Brands</div>
         <div class="filter-by-container">
-            <span class="filter-by-brands"></span>
-            <a href="javascript:;" class="filter-toggle" data-filter="brands">Change</a>
+            <span class="filter-by-brands small"></span>
+            <a href="javascript:;" class="filter-toggle small" data-filter="brands">Change</a>
         </div>
 
         <div class="health-filter-brands provider-list">

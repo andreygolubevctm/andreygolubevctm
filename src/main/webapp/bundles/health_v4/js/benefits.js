@@ -13,10 +13,13 @@
             }
         },
         moduleEvents = events.benefits,
-        _hospitalType = 'comprehensive'; // default to Comprehensive
+        _hospitalType = 'customise'; // default to customise
 
     function initBenefits() {
         jQuery(document).ready(function ($) {
+            // was in step onInitialise, didnt work there for results.
+            meerkat.modules.benefits.updateModelOnPreload();
+
             $('#tabs').on('click', '.nav-tabs a', function (e) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -33,7 +36,7 @@
                 hospital: $('.Hospital_container'),
                 extras: $('.GeneralHealth_container'),
                 quickSelectContainer: $('.quickSelectContainer'),
-                coverType: $('input[name=health_situation_covertype]')
+                coverType: $('input[name=health_situation_coverType]')
             };
 
             _eventSubscription();
@@ -61,7 +64,8 @@
             // If health filters needs any other properties in filters_benefits.tag, add them here.
             benefits[benefitType].push({
                 id: $this.data('benefit-id'),
-                label: $this.next('label').find('.benefitTitle').text()
+                label: $this.next('label').find('.benefitTitle').text(),
+                value: $this.data('benefit-id') // this is needed for filters.
             });
         });
         meerkat.modules.benefitsModel.initBenefitLabelStore(benefits);
@@ -117,7 +121,7 @@
             var target = $(this).data('target');
 
             $elements.hospital.find($elements.quickSelectContainer).toggleClass('hidden', target === '.limited-pane');
-            _hospitalType = target === '.limited-pane' ? 'limited' : 'comprehensive';
+            _hospitalType = target === '.limited-pane' ? 'limited' : 'customise';
         });
     }
 
