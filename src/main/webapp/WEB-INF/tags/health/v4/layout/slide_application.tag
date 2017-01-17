@@ -8,7 +8,7 @@
         <form_v3:fieldset_columns sideHidden="true">
 
             <jsp:attribute name="rightColumn">
-			    <health_v1:policySummary showProductDetails="true" />
+			    <health_v4_payment:policySummary showProductDetails="true" />
             </jsp:attribute>
 
             <jsp:body>
