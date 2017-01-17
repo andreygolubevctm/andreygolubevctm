@@ -1,0 +1,36 @@
+// Global page overwrites (out of scope)
+.zeusPage {
+	text-align: center;
+
+	h1 {
+		font-size: 50px;
+		margin: 0px;
+	}
+
+	// Override normal page styles
+	header {
+		min-height: auto;
+	}
+
+	#navbar-main {
+		display: none !important;
+	}
+
+	.navbar-header {
+		width: 100%;
+		text-align: center;
+	}
+
+	article {
+		&.container {
+			width: 100%;
+			padding: 0px;
+		}
+	}
+
+	#footer_mcafee {
+		display: none;
+	}
+	// End normal page styles
+}
+

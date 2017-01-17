@@ -1,0 +1,8 @@
+{
+    "brandCodes": "all",
+    "dependencies": [
+        "core",
+        "shared/journeyEngine/v2",
+        "shared/results/v2"
+    ]
+}
