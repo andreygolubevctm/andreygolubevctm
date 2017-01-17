@@ -50,42 +50,6 @@
                     }
                 }
             },
-            /* @todo may need some of this logic for comprehensive/limited
-             "coverLevel": {
-             name: 'health_filterBar_coverLevel',
-             defaultValueSourceSelector: '#health_benefits_covertype',
-             defaultValue: '',
-             values: [
-             {
-             value: 'top',
-             label: 'Top'
-             },
-             {
-             value: 'medium',
-             label: 'Medium'
-             },
-             {
-             value: 'basic',
-             label: 'Basic'
-             },
-             {
-             value: 'customise',
-             label: 'Customise'
-             },
-             {
-             value: 'limited',
-             label: 'Limited'
-             }
-
-             ],
-             events: {
-             update: function (filterObject) {
-             var value = $('select[name=' + filterObject.name + ']').val();
-             $(filterObject.defaultValueSourceSelector).val(value);
-             $('.hospitalCoverToggles a[data-category="' + value + '"]').trigger('click');
-             }
-             }
-             },*/
             "hospitalExcess": {
                 name: "health_filterBar_excess",
                 title: "Hospital excess",
