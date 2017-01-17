@@ -133,6 +133,14 @@
         return selectedBenefits.hospital.concat(selectedBenefits.extras);
     }
 
+    /**
+     * Returns an array of objects in the form:
+     * { id: 31265
+     * label: "Private Hospital"
+     * selected:true
+     * value:31265 }
+     * @returns {Array}
+     */
     function getHospitalBenefitsForFilters() {
         return benefitsLabels.hospital;
     }

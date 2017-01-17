@@ -232,10 +232,6 @@
                 method: 'trackQuoteForms',
                 object: meerkat.modules.health.getTrackingFieldsObject
             },
-            onInitialise: function onResultsInit(event) {
-                /** @todo implement from health.js when get to this step */
-                meerkat.modules.benefits.updateModelOnPreload();
-            },
             onBeforeEnter: function enterBenefitsStep(event) {
                 /** @todo implement from health.js when get to this step */
                 // configure progress bar
