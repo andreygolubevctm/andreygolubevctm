@@ -36,7 +36,7 @@
                 hospital: $('.Hospital_container'),
                 extras: $('.GeneralHealth_container'),
                 quickSelectContainer: $('.quickSelectContainer'),
-                coverType: $('input[name=health_situation_covertype]')
+                coverType: $('input[name=health_situation_coverType]')
             };
 
             _eventSubscription();
