@@ -264,8 +264,9 @@ var ResultsPagination = {
 		}else{
 			Results.pagination.animateScroll(scrollPosition);
 		}
-
-		if(meerkat.modules.journeyEngine.getCurrentStep().navigationId === 'results') {
+		// sometimes it inits too soon and doesn't have this.
+        var currentStep = meerkat.modules.journeyEngine.getCurrentStep();
+		if(currentStep && currentStep.navigationId === 'results') {
 			var event = jQuery.Event("resultPageChange");
 			event.pageData = {
 				pageNumber: pageNumber,
@@ -333,7 +334,13 @@ var ResultsPagination = {
 			columnsPerPage = Results.pagination.getColumnCountFromContainer(mediaState);
 			columnWidth = Math.round((viewableArea / columnsPerPage) * 100) / 100;
 		} else {
-			// not used by any vertical atm
+            /**
+			 * Only used on XS.
+			 * Pagination deteremines how wide a column is, separately to its actual width in ResultsView on XS.
+			 * Why is this?
+			 * Because it needs to account for the margin and padding, whereas the .result-row css width property
+			 * sets the innerWidth and thus excludes those properties from its width.
+             */
 			columnWidth = Results.settings.pagination.useSubPixelWidths ? Results.pagination.getSubPixelWidth($rows) : $rows.outerWidth(true);
 			viewableArea += Results.settings.pagination.margin;
 			columnsPerPage = Math.round(viewableArea/columnWidth);
@@ -365,6 +372,7 @@ var ResultsPagination = {
 		if($el[0] && _.isFunction($el[0].getBoundingClientRect)) {
 			var rects = $el[0].getBoundingClientRect();
 			if(rects.width) {
+				// @IMPORTANT: Make sure this is set in verticalResults.js files to whatever is specified in the stylesheet!
 				return rects.width + Results.settings.pagination.margin;
 			}
 		}
