@@ -149,7 +149,7 @@
 
     // Use the situation value to determine if a partner is visible on the journey.
     function hasPartner() {
-        var cover = meerkat.modules.healthChoices.getSituation();
+        var cover = meerkat.modules.healthSituation.getSituation();
         return cover == 'F' || cover == 'C';
     }
 

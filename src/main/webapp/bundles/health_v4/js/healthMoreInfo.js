@@ -16,56 +16,59 @@
             {quote:"With Compare the Market I was able to find the same level of cover but now save $60 a month off my premium", author:"Geoff, QLD"},
             {quote:"Health insurance is important to us as it gives us the peace of mind that if something went wrong we'd be covered", author:"Julie Barrett, NSW"},
             {quote:"The whole process was really simple and really easy. I’d definitely use comparethemarket.com.au again", author:"Wendy, WA"}
-        ];
+        ],
+        $elements = {};
 
 
     function initMoreInfo() {
-
-        var options = {
-            container: $bridgingContainer,
-            updateTopPositionVariable: updateTopPositionVariable,
-            hideAction: 'fadeOut',
-            showAction: 'fadeIn',
-            showActionWhenOpen: 'fadeIn',
-            modalOptions: {
-                className: 'modal-breakpoint-wide modal-tight moreInfoDropdown',
-                openOnHashChange: false,
-                leftBtn: {
-                    label: 'Back to results',
-                    icon: '<span class="icon icon-arrow-left"></span>',
-                    callback: function (eventObject) {
-                        $(eventObject.currentTarget).closest('.modal').modal('hide');
+        $(document).ready(function($) {
+            var options = {
+                container: $bridgingContainer,
+                updateTopPositionVariable: updateTopPositionVariable,
+                hideAction: 'fadeOut',
+                showAction: 'fadeIn',
+                showActionWhenOpen: 'fadeIn',
+                modalOptions: {
+                    className: 'modal-breakpoint-wide modal-tight moreInfoDropdown',
+                    openOnHashChange: false,
+                    leftBtn: {
+                        label: 'Back',
+                        icon: '<span class="icon icon-angle-left"></span>',
+                        callback: function (eventObject) {
+                            $(eventObject.currentTarget).closest('.modal').modal('hide');
+                        }
+                    },
+                    showCloseBtn: false,
+                    onClose: function () {
+                        onBeforeHideTemplate();
+                        meerkat.modules.moreInfo.close();
                     }
                 },
-                onClose: function() {
-                    onBeforeHideTemplate();
-                    meerkat.modules.moreInfo.close();
-                }
-            },
-            runDisplayMethod: runDisplayMethod,
-            onBeforeShowBridgingPage: onBeforeShowBridgingPage,
-            onBeforeShowTemplate: onBeforeShowTemplate,
-            onBeforeShowModal: onBeforeShowModal,
-            onAfterShowModal: onAfterShowModal,
-            onAfterShowTemplate: onAfterShowTemplate,
-            onBeforeHideTemplate: onBeforeHideTemplate,
-            onAfterHideTemplate: onAfterHideTemplate,
-            onClickApplyNow: onClickApplyNow,
-            onBeforeApply: onBeforeApply,
-            onApplySuccess: onApplySuccess,
-            prepareCover: prepareCover,
-            retrieveExternalCopy: retrieveExternalCopy,
-            additionalTrackingData: {
-                productName: null,
-                productBrandCode: null
-            },
-            onBreakpointChangeCallback: updateTopPositionVariable
-        };
+                runDisplayMethod: runDisplayMethod,
+                onBeforeShowBridgingPage: onBeforeShowBridgingPage,
+                onBeforeShowTemplate: onBeforeShowTemplate,
+                onBeforeShowModal: onBeforeShowModal,
+                onAfterShowModal: onAfterShowModal,
+                onAfterShowTemplate: onAfterShowTemplate,
+                onBeforeHideTemplate: onBeforeHideTemplate,
+                onAfterHideTemplate: onAfterHideTemplate,
+                onClickApplyNow: onClickApplyNow,
+                onBeforeApply: onBeforeApply,
+                onApplySuccess: onApplySuccess,
+                prepareCover: prepareCover,
+                retrieveExternalCopy: retrieveExternalCopy,
+                additionalTrackingData: {
+                    productName: null,
+                    productBrandCode: null
+                },
+                onBreakpointChangeCallback: updateTopPositionVariable
+            };
 
-        meerkat.modules.moreInfo.initMoreInfo(options);
+            meerkat.modules.moreInfo.initMoreInfo(options);
 
-        eventSubscriptions();
-        applyEventListeners();
+            eventSubscriptions();
+            applyEventListeners();
+        });
     }
 
     /**
@@ -94,8 +97,6 @@
                 htmlContent: product.whatHappensNext
             });
         });
-
-        _setTabs();
     }
 
     function _setTabs() {
@@ -105,8 +106,7 @@
 
             $(this).tab('show');
         });
-
-        $('.moreInfoHospitalTab .nav-tabs a:first, .moreInfoExtrasTab .nav-tabs a:first').click();
+        $('.moreInfoHospitalTab .nav-tabs a:first, .moreInfoExtrasTab .nav-tabs a:first').trigger('click');
     }
 
 
@@ -171,10 +171,28 @@
         if (meerkat.modules.deviceMediaState.get() != 'xs' &&  currStep != 'apply' && currStep != 'payment') {
             meerkat.modules.moreInfo.showTemplate($bridgingContainer);
         } else {
+
+            // grab the affixed template
+            var updatedSettings = {
+                modalOptions: {
+                    htmlHeaderContent: _getAffixedMobileHeaderData()
+                }};
+            meerkat.modules.moreInfo.updateSettings(updatedSettings);
             meerkat.modules.moreInfo.showModal();
 
         }
         meerkat.modules.address.appendToHash('moreinfo');
+    }
+
+    function _getAffixedMobileHeaderData() {
+        var priceTemplate = meerkat.modules.templateCache.getTemplate($("#price-template")),
+            headerTemplate = meerkat.modules.templateCache.getTemplate($('#moreInfoAffixedHeaderMobileTemplate')),
+            obj = Results.getSelectedProduct();
+
+        obj.showAltPremium = false;
+        obj.renderedPriceTemplate = priceTemplate(obj);
+
+        return headerTemplate(obj);
     }
 
     function onBeforeShowTemplate(jsonResult, moreInfoContainer) {
@@ -186,11 +204,6 @@
     }
 
     function onAfterShowTemplate() {
-        // Set the correct phone number
-        //meerkat.modules.healthPhoneNumber.changePhoneNumber();
-
-        // hide elements based on marketing segments
-        //meerkat.modules.healthSegment.hideBySegment();
         additionalTrackingData();
 
         var product = Results.getSelectedProduct();
@@ -202,6 +215,8 @@
         $('.whatsNext li').each(function () {
             $(this).prepend('<span class="icon icon-angle-right"></span>');
         });
+
+        _setTabs();
     }
 
     function onBeforeShowModal(jsonResult, dialogId) {
@@ -227,13 +242,46 @@
 
     function onAfterShowModal() {
         additionalTrackingData();
-        //meerkat.modules.healthPhoneNumber.changePhoneNumber(true);
         
         $('.whatsNext li').each(function () {
             $(this).prepend('<span class="icon icon-angle-right"></span>');
         });
+
+        $elements = {
+            hospital: $('.Hospital_container'),
+            extras: $('.GeneralHealth_container'),
+            quickSelectContainer: $('.quickSelectContainer'),
+            moreInfoContainer: $('.moreInfoTopLeftColumn'),
+            modalHeader: $('.modal-header')
+        };
+
+        _setTabs();
+
+        var toggleBarInitSettings = {
+            container: '.moreInfoVisible .modal-dialog',
+            currentStep: 'moreinfo',
+            isModal: true
+        };
+
+        meerkat.modules.benefitsToggleBar.initToggleBar(toggleBarInitSettings);
+        _trackScroll();
     }
 
+    function _trackScroll(){
+        var startTopOffset = $elements.moreInfoContainer.offset().top,
+            startHeaderHeight = $elements.modalHeader.height(),
+            calculatedHeight = startTopOffset;
+
+        $('.modal-body').off("scroll.moreInfoXS").on("scroll.moreInfoXS", function(){
+            if (calculatedHeight === startTopOffset) {
+                // need to get the newly calculated height since we hide some data
+                calculatedHeight = startTopOffset - (startHeaderHeight - $elements.modalHeader.height());
+            }
+
+            $elements.modalHeader.find('.lhcText').toggleClass('hidden', $elements.moreInfoContainer.offset().top < calculatedHeight);
+            $elements.modalHeader.find('.printableBrochuresLink').toggleClass('hidden', $elements.moreInfoContainer.offset().top < calculatedHeight);
+        });
+    }
 
     /**
      * HLT has different format of product json, so need to send different properties.

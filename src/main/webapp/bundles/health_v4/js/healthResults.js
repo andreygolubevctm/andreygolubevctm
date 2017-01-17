@@ -186,7 +186,8 @@
                 },
                 displayMode: "features",
                 pagination: {
-                    margin: 15,
+                    //@IMPORTANT: Make sure this is set to whatever is specified in the stylesheet!
+                    margin: 5,
                     mode: 'page',
                     touchEnabled: false,
                     useSubPixelWidths: true
@@ -229,7 +230,7 @@
                 },
                 templates: {
                     pagination: {
-                        pageItem: '<li class="hidden"><a class="btn-pagination" data-results-pagination-control="{{= pageNumber}}" data-analytics="pagination {{= pageNumber}}">{{= label}}</a></li>'
+                        pageItem: '<li class="hidden-md hidden-lg"><a class="btn-pagination" data-results-pagination-control="{{= pageNumber}}" data-analytics="pagination {{= pageNumber}}">{{= label}}</a></li>'
                     }
                 },
                 dictionary: {
@@ -940,7 +941,7 @@
             var specialOffer = meerkat.modules.healthUtils.getSpecialOffer(product);
             var excessesAndCoPayment = meerkat.modules.healthUtils.getExcessesAndCoPayment(product);
 
-            data["rank_healthMembership" + position] = meerkat.modules.healthChoices.getSituation();
+            data["rank_healthMembership" + position] = meerkat.modules.healthSituation.getSituation();
             data["rank_healthSituation" + position] = situation;
             data["rank_benefitCodes" + position] = benefitCodes.join(',');
             data["rank_coverType" + position] = product.info.ProductType;

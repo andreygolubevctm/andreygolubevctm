@@ -6,19 +6,24 @@
       float: none;
     }
 
-    h2 {
-      font-size: 14px;
+    h2, h3 {
       color: @theme-tertiary;
     }
 
+    h2 {
+      font-size: 14px;
+    }
+
     &.active {
-      h2 {
+      h2, h3 {
         color: @theme-accent-4;
       }
 
-      a {
-        border: none;
-        border-bottom: 5px solid @theme-accent-4;
+      a,
+      a:focus,
+      a:hover {
+          border: none;
+          border-bottom: 5px solid @theme-accent-4;
       }
     }
 
@@ -30,5 +35,63 @@
         background-color: transparent;
       }
     }
+
+    @media(@sm-only) {
+      h3 {
+        font-size: @font-size-base;
+      }
+    }
   }
+}
+
+
+.benefitRow {
+    padding-top:5px;
+    padding-bottom:5px;
+    border-bottom: 1px solid @gray-lighter;
+    margin-left: 0px;
+    margin-right: 0px;
+
+    .benefitTitle,
+    .limitTitle {
+      padding-left: 0px;
+    }
+}
+
+
+.benefitCount {
+  color: white;
+  background: @theme-accent-4;
+  radius: 50%;
+  border-radius: 50%;
+  padding: 5px;
+  height: 35px;
+  width: 35px;
+
+  @media(@sm-only) {
+    padding: 8px;
+    height: 32px;
+    width: 32px;
+
+    &.gray {
+      padding: 5px;
+    }
+  }
+
+  @media(@xs-only) {
+    padding: 2px;
+    height: 30px;
+    width: 30px;
+  }
+
+  display: inline-block;
+  text-align: center;
+}
+
+.pink {
+  background: @theme-accent-3;
+}
+
+.gray {
+  background: @gray;
 }

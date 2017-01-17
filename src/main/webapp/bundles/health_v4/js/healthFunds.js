@@ -192,7 +192,7 @@
     }
 
     function _reset() {
-        healthApplicationDetails.hideHowToSendInfo();
+        meerkat.modules.healthFunds.hideHowToSendInfo();
         meerkat.modules.healthFunds._partner_authority(false);
         _memberIdRequired(true);
         meerkat.modules.healthDependants.resetConfig();
@@ -280,6 +280,32 @@
         return medicareHelpId;
     }
 
+    function toggleWarning($container) {
+        var selectedProduct = meerkat.modules.healthResults.getSelectedProduct(),
+            $fundWarning = $container.find('.fundWarning');
+
+        // Show warning if applicable
+        if (typeof selectedProduct.warningAlert !== 'undefined' && selectedProduct.warningAlert !== '') {
+            $fundWarning.show().html(selectedProduct.warningAlert);
+        } else {
+            $fundWarning.hide().empty();
+        }
+    }
+
+    function showHowToSendInfo(providerName, required) {
+        var contactPointGroup = $('#health_application_contactPoint-group'),
+            contactPoint = contactPointGroup.find('.control-label span');
+
+        contactPoint.text( providerName);
+        contactPointGroup.find('input').setRequired(required, 'Please choose how you would like ' + providerName + ' to contact you');
+        contactPointGroup.removeClass('hidden');
+    }
+
+    function hideHowToSendInfo() {
+        var contactPointGroup = $('#health_application_contactPoint-group');
+        contactPointGroup.addClass('hidden');
+    }
+
     meerkat.modules.register("healthFunds", {
         applicationFailed: applicationFailed,
         checkIfNeedToInjectOnAmend: checkIfNeedToInjectOnAmend,
@@ -297,7 +323,10 @@
         getDoctorOption: getDoctorOption,
         setDoctorOption: setDoctorOption,
         setMedicareCoverHelpId: setMedicareCoverHelpId,
-        getMedicareCoverHelpId: getMedicareCoverHelpId
+        getMedicareCoverHelpId: getMedicareCoverHelpId,
+        toggleWarning: toggleWarning,
+        showHowToSendInfo: showHowToSendInfo,
+        hideHowToSendInfo: hideHowToSendInfo
     });
 
 })(jQuery);

@@ -4,7 +4,9 @@
   .slide-control-about-you,
   .slide-control-insurance-preferences,
   .slide-control-get-prices,
-  .results-control-container {
+  .results-control-container,
+  .slide-control-proceed-to-payment,
+  .slide-control-submit-application {
     .slide-feature-hidden();
   }
 
@@ -12,17 +14,26 @@
     .slide-control-about-you {
       .slide-feature-is-visible();
     }
+    .journeyProgressBar[data-phase="application"] {
+      .slide-feature-hidden();
+    }
   }
 
   &[data-step="benefits"] {
     .slide-control-insurance-preferences {
       .slide-feature-is-visible();
     }
+    .journeyProgressBar[data-phase="application"] {
+      .slide-feature-hidden();
+    }
   }
 
   &[data-step="contact"] {
     .slide-control-get-prices {
       .slide-feature-is-visible();
+    }
+    .journeyProgressBar[data-phase="application"] {
+      .slide-feature-hidden();
     }
   }
 
@@ -32,6 +43,24 @@
     }
     .results-control-container {
       .slide-feature-is-visible();
+    }
+  }
+
+  &[data-step="apply"] {
+    .slide-control-proceed-to-payment {
+      .slide-feature-is-visible();
+    }
+    .journeyProgressBar[data-phase="journey"] {
+      .slide-feature-hidden();
+    }
+  }
+
+  &[data-step="payment"] {
+    .slide-control-submit-application {
+      .slide-feature-is-visible();
+    }
+    .journeyProgressBar[data-phase="journey"] {
+      .slide-feature-hidden();
     }
   }
 }

@@ -7,9 +7,10 @@
     <layout_v3:slide_content>
         <health_v4_results:simples_top />
         <health_v4_results:results />
+
         <health_v4_moreinfo:more_info />
-        <%--
-        <health_v1:prices_have_changed_notification />--%>
+
+        <health_v4_results:prices_have_changed_notification />
         <health_v4_results:simples_bottom />
 
     </layout_v3:slide_content>
