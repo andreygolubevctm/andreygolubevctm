@@ -50,7 +50,7 @@
 							<li><a target="simplesiframe" href="simples/edit_special_offers.jsp">Special Offers</a></li>
 							<li><a target="simplesiframe" href="simples/admin/health/fund_capping_limits.jsp">Fund Capping Limits</a></li>
 							<li><a target="simplesiframe" href="simples/admin/health/provider_content.jsp?contentType=ABT">Provider Content</a></li>
-                            <li><a target="simplesiframe" href="simples/admin/redemption.jsp">Redemption</a></li>
+                            <li><a target="simplesiframe" href="simples/admin/reward.jsp">Reward</a></li>
 							<%-- DISABLED UNTIL CAN BE WORKED ON
 							<li><a target="simplesiframe" href="simples/report_managerOpEnq.jsp">Manager - Operator enquires</a></li>
 							--%>

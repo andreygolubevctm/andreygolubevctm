@@ -106,7 +106,7 @@
 </layout_v1:simples_page>
 
 <script class="crud-modal-template" type="text/html">
-    <redemption:redemption_form isSimplesAdmin="true" />
+    <reward:redemption_form isSimplesAdmin="true" />
 </script>
 
 <script class="crud-row-template" type="text/html">

@@ -1,5 +1,5 @@
 /**
- * Redemption implementation of crud.js
+ * Reward implementation of crud.js
  */
 ;(function($, undefined){
 
@@ -109,7 +109,7 @@
         CRUD.renderResults();
     }
 
-    meerkat.modules.register('adminRedemption', {
+    meerkat.modules.register('adminReward', {
         init: init,
         refresh: refresh
     });
