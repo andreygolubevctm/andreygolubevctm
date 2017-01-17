@@ -41,6 +41,7 @@
     "shared/serverSideValidationOutput",
     "shared/filters",
     "shared/radioGroupTile",
-    "shared/radioRounded"
+    "shared/radioRounded",
+    "shared/fields"
   ]
 }

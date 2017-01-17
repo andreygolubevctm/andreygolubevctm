@@ -21,7 +21,7 @@
 	</c:set>
 
 	<%-- Optional question for users - mandatory if Contact Number is selected (Required = true as it won't be shown if no number is added) --%>
-	<div class="health-contact-details-optin-group">
+	<div class="health-contact-details-optin-group form-group">
 		<div class="col-xs-12 fieldrow">
 			<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="combined optin" quoteChar="\"" /></c:set>
 			<field_v2:checkbox

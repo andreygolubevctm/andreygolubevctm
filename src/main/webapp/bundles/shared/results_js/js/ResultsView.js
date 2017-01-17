@@ -142,29 +142,39 @@ var ResultsView = {
 	 *
 	 * @param $container
 	 * @param nbColumns number of columns to display on XS
-	 * @param hasOutsideGutters Whether it has an outside margin-right (XS should be margin-right if it starts right from the left side)
+	 * @param hasOutsideGutters Whether there are gutters on the left and right side of the screen.
      */
 	setColumnWidth: function( $container, nbColumns, hasOutsideGutters ){
 
-		if( typeof( hasOutsideGutters ) === "undefined" ){
-			hasOutsideGutters = true;
-		}
+        /**
+         * Within the viewport, we have a scrollbar. Therefore, with a scroll bar active, the window width reported by chrome is not the viewport width.
+         * Example: 540px $(window).width() is with a Chrome window width of 557px.
+         * In order to fit in 2 products, we want a method that adds borders AND margins, despite our use of box-sizing: border-box (which includes borders).
+         * Substracting the border width and margings from the container width and then dividing by the number of columns is a more accurate way
+         * of calculating how wide a result-row should be, and allows for margin on the left of the 3rd product to appear.
+         * The widths defined here are just one part of the equation. For pagination, look at ResultsPagination calculatePageMeasurements
+         * @type {jQuery}
+         */
 
-		// We divide the margin by nbColumns so that it only appears in the middle
-		// e.g. if displaying 2 products, we don't have 2 columns with 2 gutters, we have 1 col with 1 gutter and 1 without
-		// and we evenly split it out by the number of columns.
-		var columnMargin = parseInt( $(Results.settings.elements.rows).first().css("margin-right") );
-
+		var $rowElement = $(Results.settings.elements.rows).first();
+		var columnMarginLeft = parseInt($rowElement.css("margin-left"));
+		var columnMarginRight = parseInt($rowElement.css("margin-right"));
+        var columnBorderLeft = parseInt($rowElement.css('border-left-width'));
+        var columnBorderRight = parseInt($rowElement.css('border-right-width'));
+		var rowMargins = columnMarginLeft + columnMarginRight;
+		var rowBorders = columnBorderLeft + columnBorderRight;
 		var nbMargins = nbColumns;
+
+		// We need to add 1 more column, as we want the margin of the one off the screen
 		if(hasOutsideGutters) {
-			columnMargin /= nbColumns;
-		}
-		if( !hasOutsideGutters ) {
-			nbMargins *= 2;
-			nbMargins -= 2;
+            nbMargins += 1;
+		} else {
+			// we have to take one margin off, as we don't have margins on the edges.
+			nbMargins -= 1;
 		}
 
-		var width = ( $container.width() - (nbMargins * columnMargin) ) / nbColumns ;
+		var spaceToExcludeFromRowWidth = (rowMargins * nbMargins) + rowBorders;
+		var width = ( $container.width() - spaceToExcludeFromRowWidth ) / nbColumns;
 
 		$(Results.settings.elements.rows).width( width );
 
@@ -247,7 +257,7 @@ var ResultsView = {
 				console.log("The unavailable template could not be found: templateSelector=",Results.settings.elements.templates.unavailable,"If you don't want to use this template, pass 'false' to the Results.settings.elements.templates.unavailable user setting when calling Results.init()");
 			}
 		}
-		
+
 		// unavailable combined template
 		if (Results.settings.elements.templates.unavailableCombined) {
 			unavailableCombinedTemplate = $(Results.settings.elements.templates.unavailableCombined).html();
