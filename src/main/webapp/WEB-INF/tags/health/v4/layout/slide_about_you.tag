@@ -21,9 +21,13 @@
                 <form_v3:fieldset_columns sideHidden="true">
 
                 <jsp:attribute name="rightColumn">
+                    <health_v4_aboutyou:retrievequotes />
                     <health_v4_aboutyou:medicarecheck />
                 </jsp:attribute>
                     <jsp:body>
+
+                        <%-- PROVIDER TESTING --%>
+                        <health_v1:provider_testing xpath="${pageSettings.getVerticalCode()}" />
 
                         <health_v4_aboutyou:simples />
 

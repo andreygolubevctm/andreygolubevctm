@@ -35,6 +35,8 @@
             eventSubscriptions();
             applyEventListeners();
 
+            configureContactDetails();
+
             if (meerkat.site.pageAction === 'amend' || meerkat.site.pageAction === 'load' || meerkat.site.pageAction === 'start-again') {
 
                 // If retrieving a quote and a product had been selected, inject the fund's application set.
@@ -160,7 +162,7 @@
      */
     function initProgressBar(render) {
         setJourneyEngineSteps();
-        configureProgressBar();
+        configureProgressBar(true);
         if (render) {
             meerkat.modules.journeyProgressBar.render(true);
         }
@@ -182,8 +184,10 @@
                 meerkat.modules.healthLocation.initHealthLocation();
                 meerkat.modules.healthPostcode.initPostcode();
 
+                meerkat.modules.fieldUtilities.initDisabledFields();
+
                 if (meerkat.site.choices) {
-                    meerkat.modules.healthChoices.initialise('SM'); // default to single male
+                    meerkat.modules.healthChoices.initialise($('input[name=health_situation_healthCvr]:checked').val());
                     meerkat.modules.healthChoices.setState(meerkat.site.choices.state);
                     meerkat.modules.healthChoices.shouldPerformUpdate(meerkat.site.choices.performHealthChoicesUpdate);
                 }
@@ -193,9 +197,13 @@
                     var coverTypeVal = $(this).find('input:checked').val();
                     meerkat.modules.healthBenefitsStep.updateHiddenFields(coverTypeVal);
                 });
+
             },
             onBeforeEnter: function() {
                 _incrementTranIdBeforeEnteringSlide();
+
+                // configure progress bar
+                configureProgressBar(true);
 
                 meerkat.modules.healthRebate.toggleEdit(false);
             },
@@ -226,19 +234,21 @@
             },
             onInitialise: function onResultsInit(event) {
                 /** @todo implement from health.js when get to this step */
-                var partnerDob = $('#health_healthCover_partner_dob');
-
-                partnerDob.on('change', function() {
-                    meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
-                });
                 meerkat.modules.benefits.updateModelOnPreload();
-
             },
             onBeforeEnter: function enterBenefitsStep(event) {
                 /** @todo implement from health.js when get to this step */
+                // configure progress bar
+                configureProgressBar(true);
             },
             onAfterEnter: function enterBenefitsStep(event) {
                 /** @todo implement from health.js when get to this step */
+                var toggleBarInitSettings = {
+                    container: 'body[data-step="benefits"]',
+                    currentStep: steps.benefitsStep.navigationId
+                };
+
+                meerkat.modules.benefitsToggleBar.initToggleBar(toggleBarInitSettings);
             },
             onAfterLeave: function leaveBenefitsStep(event) {
                 var selectedBenefits = meerkat.modules.benefitsModel.getSelectedBenefits();
@@ -267,6 +277,8 @@
             },
             onBeforeEnter: function enterContactStep(event) {
                 /** @todo implement from health.js when get to this step */
+                // configure progress bar
+                configureProgressBar(true);
 
                 meerkat.modules.healthPostcode.editMode();
             },
@@ -306,6 +318,7 @@
             onInitialise: function onResultsInit(event) {
                 meerkat.modules.healthResults.initPage();
                 meerkat.modules.healthMoreInfo.initMoreInfo();
+                meerkat.modules.healthPriceComponent.initHealthPriceComponent();
             },
             onBeforeEnter: function enterResultsStep(event) {
                 meerkat.modules.healthDependants.resetConfig();
@@ -353,9 +366,39 @@
             },
             onInitialise: function onApplyInit(event) {
                 /** @todo implement from health.js when get to this step */
+                meerkat.modules.healthDependants.initHealthDependants();
+                meerkat.modules.healthMedicare.initHealthMedicare();
+                meerkat.modules.healthApplyStep.onInitialise();
             },
             onBeforeEnter: function beforeEnterApplyStep(event) {
                 /** @todo implement from health.js when get to this step */
+                if (event.isForward === true) {
+                    var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
+
+                    // configure progress bar
+                    configureProgressBar(false);
+
+                    // Show warning if applicable
+                    meerkat.modules.healthFunds.toggleWarning($('#health_application-warning'));
+
+                    this.tracking.touchComment =  selectedProduct.info.provider + ' ' + selectedProduct.info.des;
+                    this.tracking.productId = selectedProduct.productId.replace("PHIO-HEALTH-", "");
+
+                    // Load the selected product details.
+                    meerkat.modules.healthFunds.load(selectedProduct.info.provider);
+
+                    // Clear any previous validation errors on Apply or Payment
+                    var $slide = $('#journeyEngineSlidesContainer .journeyEngineSlide').slice(meerkat.modules.journeyEngine.getCurrentStepIndex() - 1);
+                    $slide.find('.error-field').remove();
+                    $slide.find('.has-error').removeClass('has-error');
+
+                    // Unset the Health Declaration checkbox (could be refactored to only uncheck if the fund changes)
+                    $('#health_declaration input:checked').prop('checked', false).change();
+
+                    meerkat.modules.healthApplyStep.onBeforeEnter();
+                    meerkat.modules.healthDependants.updateDependantConfiguration();
+                    meerkat.modules.healthMedicare.onBeforeEnterApply();
+                }
             },
             onAfterEnter: function afterEnterApplyStep(event) {
                 /** @todo implement from health.js when get to this step */
@@ -377,10 +420,28 @@
             },
             onInitialise: function onPaymentInit(event) {
                 /** @todo implement from health.js when get to this step */
+                meerkat.modules.healthPaymentDate.initPaymentDate();
+                meerkat.modules.healthPaymentIPP.initHealthPaymentIPP();
                 meerkat.modules.healthSubmitApplication.initHealthSubmitApplication();
             },
             onBeforeEnter: function beforeEnterPaymentStep(event) {
                 /** @todo implement from health.js when get to this step */
+
+                if (event.isForward === true) {
+                    var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
+
+                    meerkat.modules.healthPaymentStep.rebindCreditCardRules();
+
+                    // Show warning if applicable
+                    meerkat.modules.healthFunds.toggleWarning($('#health_payment_details-selection'));
+
+                    // Insert fund into checkbox label
+                    $('#mainform').find('.health_declaration span').text( selectedProduct.info.providerName  );
+                    // Insert fund into Contact Authority
+                    $('#mainform').find('.health_contact_authority span').text( selectedProduct.info.providerName  );
+
+                    meerkat.modules.healthPaymentStep.updatePremium();
+                }
             }
         };
 
@@ -396,26 +457,129 @@
     }
 
     // @todo review this during progress bar refactor
-    function configureProgressBar() {
-        // Better progressBar just works...
-        meerkat.modules.journeyProgressBar.changeTargetElement('.journeyProgressBar');
-        meerkat.modules.journeyProgressBar.configure([
-            {
-                label: 'About you',
-                navigationId: steps.startStep.navigationId
-            },
-            {
-                label: 'Insurance preferences',
-                navigationId: steps.benefitsStep.navigationId
-            },
-            {
-                label: 'Contact details',
-                navigationId: steps.contactStep.navigationId
-            }
-        ]);
+    function configureProgressBar(isJourney) {
+        var phase = isJourney ? 'journey' : 'application',
+            progressBarSteps = {
+                journey: [
+                    {
+                        label: 'About you',
+                        navigationId: steps.startStep.navigationId
+                    },
+                    {
+                        label: '<span class="hidden-sm hidden-md hidden-lg">Preferences</span><span class="hidden-xs">Insurance preferences</span>',
+                        navigationId: steps.benefitsStep.navigationId
+                    },
+                    {
+                        label: 'Contact details',
+                        navigationId: steps.contactStep.navigationId
+                    }
+                ],
+                application: [
+                    {
+                        label: 'Application',
+                        navigationId: steps.applyStep.navigationId
+                    },
+                    {
+                        label: 'Payment',
+                        navigationId: steps.paymentStep.navigationId
+                    },
+                    {
+                        label: 'Thank You'
+                    }
+                ]
+            };
 
+        // Better progressBar just works...
+        meerkat.modules.journeyProgressBar.changeTargetElement('.journeyProgressBar[data-phase='+phase+']');
+        meerkat.modules.journeyProgressBar.configure(progressBarSteps[phase]);
     }
 
+
+    function configureContactDetails() {
+        var contactDetailsOptinField = $("#health_contactDetails_optin");
+
+        // define fields here that are multiple (i.e. email field on contact details and on application step) so that they get prefilled
+        // or fields that need to publish an event when their value gets changed so that another module can pick it up
+        // the category names are generally arbitrary but some are used specifically and should use those types (email, name, potentially phone in the future)
+        var contactDetailsFields = {
+            name:[
+                {
+                    $field: $("#health_contactDetails_name")
+                },
+                {
+                    $field: $("#health_application_primary_firstname"),
+                    $otherField: $("#health_application_primary_surname")
+                }
+            ],
+            dob_primary:[
+                {
+                    $field: $("#health_healthCover_primary_dob"), // this is a hidden field
+                    $fieldInput: $("#health_healthCover_primary_dob") // pointing at the same field as a trick to force change event on itself when forward populated
+                },
+                {
+                    $field: $("#health_application_primary_dob"), // this is a hidden field
+                    $fieldInput: $("#health_application_primary_dob") // pointing at the same field as a trick to force change event on itself when forward populated
+                }
+            ],
+            dob_secondary:[
+                {
+                    $field: $('#partner-health-cover').find("input[name='health_healthCover_partner_dob']"), // this is a hidden field
+                    $fieldInput: $('#partner-health-cover').find("input[name='health_healthCover_partner_dob']") // pointing at the same field as a trick to force change event on itself when forward populated
+                },
+                {
+                    $field: $("#health_application_partner_dob"), // this is a hidden field
+                    $fieldInput: $("#health_application_partner_dob") // pointing at the same field as a trick to force change event on itself when forward populated
+                }
+            ],
+            email: [
+                // email from details step
+                {
+                    $field: $("#health_contactDetails_email"),
+                    $optInField: contactDetailsOptinField
+                },
+                // email from application step
+                {
+                    $field: $("#health_application_email"),
+                    $optInField: $("#health_application_optInEmail")
+                }
+            ],
+            mobile: [
+                // mobile from details step
+                {
+                    $field: $("#health_contactDetails_contactNumber_mobile"),
+                    $optInField: contactDetailsOptinField
+                },
+                // mobile from application step
+                {
+                    $field: $("#health_application_mobile"),
+                    $fieldInput: $("#health_application_mobileinput")
+                }
+            ],
+            otherPhone: [
+                // otherPhone from details step
+                {
+                    $field: $("#health_contactDetails_contactNumber_other"),
+                    $optInField: contactDetailsOptinField
+                },
+                // otherPhone from application step
+                {
+                    $field: $("#health_application_other"),
+                    $fieldInput: $("#health_application_otherinput")
+                }
+            ],
+            postcode: [
+                // postcode from details step
+                { $field: $("#health_situation_postcode") },
+                //postcode from application step
+                {
+                    $field: $("#health_application_address_postCode"),
+                    $fieldInput: $("#health_application_address_postCode")
+                }
+            ]
+        };
+
+        meerkat.modules.contactDetails.configure(contactDetailsFields);
+    }
 
     // @todo: review this during form revamp.
     function getTrackingFieldsObject() {
@@ -514,7 +678,7 @@
                 $.extend(response, {
                     postCode: $("#health_application_address_postCode").val(),
                     state: state,
-                    healthCoverType: meerkat.modules.healthChoices.getSituation(),
+                    healthCoverType: meerkat.modules.healthSituation.getSituation(),
                     contactType: contactType
                 });
             }
@@ -553,18 +717,11 @@
         }
     }
 
-    // Use the situation value to determine if a partner is visible on the journey.
-    function hasPartner() {
-        var cover = meerkat.modules.healthChoices.getSituation();
-        return cover == 'F' || cover == 'C';
-    }
-
     meerkat.modules.register("health", {
         init: initHealth,
         events: moduleEvents,
         initProgressBar: initProgressBar,
-        getTrackingFieldsObject: getTrackingFieldsObject,
-        hasPartner: hasPartner
+        getTrackingFieldsObject: getTrackingFieldsObject
     });
 
 

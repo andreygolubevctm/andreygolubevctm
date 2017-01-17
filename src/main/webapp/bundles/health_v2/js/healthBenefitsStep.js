@@ -17,7 +17,9 @@
         $extrasCoverBenefits,
         $defaultCover,
         $hasIconsDiv,
+        $hospitalCoverTogglesWrapper,
         $benefitCheckbox,
+        $hospitalCoverIconsWrapper,
         $benefitsCoverType,
         $primary_dob,
         $partner_dob,
@@ -57,11 +59,11 @@
             $hospitalCoverWrapper = $hospitalCover.closest('fieldset');
             $hospitalCoverBenefits = $hospitalCoverWrapper.find('.children');
             $hospitalCoverTogglesWrapper = $('.hospitalCoverToggles');
-            $hospitalCoverToggles = $hospitalCoverTogglesWrapper.find('a'),
-                $allHospitalButtons = $hospitalCover.find('.children input[type="checkbox"]'),
-                // done this way since it's an a/b test and
-                $hasIconsDiv = $('.healthBenefits').find('.hasIcons');
-            $hospitalCoverIconsWrapper = $('#benefitsForm fieldset.tieredHospitalCover .hospitalCover').closest('fieldset');
+            $hospitalCoverToggles = $hospitalCoverTogglesWrapper.find('a');
+            $allHospitalButtons = $hospitalCover.find('.children input[type="checkbox"]');
+            // done this way since it's an a/b test and
+            $hasIconsDiv = $('.healthBenefits').find('.hasIcons');
+            $hospitalCoverIconsWrapper = $benefitsForm.find('fieldset.tieredHospitalCover .hospitalCover').closest('fieldset');
             $benefitsCoverType = $('#health_benefits_covertype');
             $primary_dob = $('#health_healthCover_primary_dob');
             $partner_dob = $('#health_healthCover_partner_dob');
@@ -742,7 +744,7 @@
         });
 
         // other benefits
-        $benefitsForm.find("input[type='checkbox'][name^='health_benefits']").each(function (index, element) {
+        $('#benefitsForm').find("input[type='checkbox'][name^='health_benefits']").each(function (index, element) {
             var $element = $(element);
             if ($element.is(':checked')) {
                 var key = $element.attr('name').replace('health_benefits_benefitsExtras_', '');

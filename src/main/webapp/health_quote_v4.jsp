@@ -74,7 +74,8 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-xs-12 col-sm-9">
-                                <ul class="journeyProgressBar"></ul>
+                                <ul class="journeyProgressBar" data-phase="journey"></ul>
+                                <ul class="journeyProgressBar" data-phase="application"></ul>
                             </div>
                             <div class="hidden-xs col-sm-3">
                                 <a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton slide-control-about-you" data-slide-control="next" href="javascript:;"
@@ -83,6 +84,10 @@
                                    href="javascript:;"  <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />>Contact details <span class="icon icon-arrow-right"></span></a>
                                 <a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton slide-control-get-prices" data-slide-control="next"
                                    href="javascript:;"  <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />>Get prices <span class="icon icon-arrow-right"></span></a>
+                                <a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton slide-control-proceed-to-payment" data-slide-control="next"
+                                   href="javascript:;"  <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />>Proceed to Payment <span class="icon icon-arrow-right"></span></a>
+                                <a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton slide-control-submit-application" data-slide-control="next"
+                                   href="javascript:;"  <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />>Submit Application <span class="icon icon-arrow-right"></span></a>
                             </div>
                         </div>
                     </div>
@@ -92,18 +97,20 @@
                         <div class="row">
                             <div class="hidden-xs col-sm-6 col-md-4 results-filters-frequency"></div>
                             <div class="hidden-xs hidden-sm col-md-2 text-center small filter-results-hidden-products"></div>
-                            <div class="col-xs-12 col-sm-6 col-md-3 results-pagination text-right">
+                            <div class="col-sm-9 more-info-return-to-results text-left"><a data-slide-control="prev" href="javascript:;" class="btn-close-more-info" data-analytics="nav button"><span class="icon icon-angle-left"></span> Refine preferences & compare more products</a> | <c:if test="${empty callCentre}"><a href="javascript:;" data-opensavequote="true" class="btn-save-quote-trigge" data-analytics="save button">Save for later</a></c:if></div>
+                            <div class="col-xs-12 col-sm-6 col-md-3 results-pagination">
                                 <div class="collapse navbar-collapse">
                                     <ul class="nav navbar-nav slide-feature-pagination" data-results-pagination-pages-cell="true"></ul>
                                 </div>
                             </div>
                             <div class="col-xs-12 hidden-sm hidden-md hidden-lg hide-on-affix results-filters-frequency"></div>
-                            <div class="hidden-xs hidden-sm col-md-3 text-center">
+                            <div class="hidden-xs hidden-sm col-md-3 text-center results-ref-sidebar">
                                 <div class="quote-reference-number"><p>Quote Ref: <span class="transactionId"></span></p></div>
                                 <div class="sidebar-widget sidebar-widget-attached sidebar-widget-padded filters-update-container" style="display: none">
                                     <!-- update button placeholder-->
                                 </div>
                             </div>
+                            <div class="row more-info-affixed-header"></div>
                         </div>
                     </div>
                 </div>
@@ -148,6 +155,8 @@
                 <health_v4_layout:slide_results />
                 <health_v4_layout:slide_application />
                 <health_v4_layout:slide_payment />
+
+                <health_v4_payment:payment_frequency_template />
 
                 <field_v1:hidden xpath="environmentOverride" />
                 <field_v1:hidden xpath="staticOverride" />

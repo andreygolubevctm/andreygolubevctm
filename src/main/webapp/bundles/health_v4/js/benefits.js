@@ -112,36 +112,6 @@
     }
 
     function _registerXSBenefitsSlider() {
-        $elements.hospitalOverlay.hide();
-
-        // handle the rare event where someone has a device that can go from xs to something larger eg surface pro v1
-        meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, function extrasOverlayEnterXsState() {
-            $elements.extrasOverlay.show();
-            _setOverlayLabelCount($elements.hospitalOverlay, meerkat.modules.benefitsModel.getHospitalCount());
-            _setOverlayLabelCount($elements.extrasOverlay, meerkat.modules.benefitsModel.getExtrasCount());
-        });
-
-        meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function extrasOverlayLeaveXsState() {
-            $elements.extrasOverlay.hide();
-        });
-
-        // slide in/out the overlays
-        $elements.extrasOverlay.off().on('click', function displayExtrasBenefits() {
-            $elements.benefitsOverlow.animate({ 'left': ($elements.extrasOverlay.width() * -1) }, 500, function onExtrasAnimateComplete() {
-                _setOverlayLabelCount($elements.hospitalOverlay, meerkat.modules.benefitsModel.getHospitalCount());
-                $elements.extrasOverlay.hide();
-                $elements.hospitalOverlay.show();
-            });
-        });
-
-        $elements.hospitalOverlay.off().on('click', function displayHospitalBenefits() {
-            $elements.benefitsOverlow.animate({ 'left': 0 }, 500, function onHospitalAnimateComplete() {
-                _setOverlayLabelCount($elements.extrasOverlay, meerkat.modules.benefitsModel.getExtrasCount());
-                $elements.hospitalOverlay.hide();
-                $elements.extrasOverlay.show();
-            });
-        });
-
         // toggle the quick select data in the hospital container
         $elements.hospital.find('.nav-tabs a').on('click', function toggleQuickSelect(){
             var target = $(this).data('target');
@@ -149,10 +119,6 @@
             $elements.hospital.find($elements.quickSelectContainer).toggleClass('hidden', target === '.limited-pane');
             _hospitalType = target === '.limited-pane' ? 'limited' : 'comprehensive';
         });
-    }
-
-    function _setOverlayLabelCount($overlay, count) {
-        $overlay.find('span').text(count);
     }
 
     function _setCoverTypeField() {

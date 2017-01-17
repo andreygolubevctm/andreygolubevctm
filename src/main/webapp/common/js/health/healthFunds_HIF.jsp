@@ -79,7 +79,7 @@
               healthFunds_HIF.$_dobPartner.addRule('youngestDOB', 18, "partner's age cannot be under " + dob_health_application_partner_dob.ageMin);
 
               <%-- How to send information. Second argument = validation required --%>
-              healthApplicationDetails.showHowToSendInfo('HIF', true);
+              meerkat.modules.healthFunds.showHowToSendInfo('HIF', true);
 
 
               <%-- Previous funds --%>
@@ -155,7 +155,7 @@
               delete healthFunds_HIF.$_dobPartner;
 
               <%-- How to send information --%>
-              healthApplicationDetails.hideHowToSendInfo();
+              meerkat.modules.healthFunds.hideHowToSendInfo();
 
               <%-- Authority off --%>
                 meerkat.modules.healthFunds._previousfund_authority(false);

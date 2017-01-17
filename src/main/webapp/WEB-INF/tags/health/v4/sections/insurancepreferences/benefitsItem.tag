@@ -31,18 +31,12 @@
     	<c:set var="colContent" value="" />
     </c:if>
 
-	<c:set var="fieldsetClass">tieredHospitalCover</c:set>
 	<c:set var="category">Extras</c:set>
 	<c:if test="${item.getShortlistKey() eq 'Hospital'}"><c:set var="category">Hospital</c:set></c:if>
-	<form_v2:fieldset legend="" postLegend="" className="${fieldsetClass}" >
+	<form_v2:fieldset legend="" postLegend="" className="tieredHospitalCover ${category}BenefitsContainer" >
 		<div class="scrollable row">
 					<c:set var="overlayName">hospital</c:set>
 					<c:if test="${category != 'Hospital'}"><c:set var="overlayName">extras</c:set></c:if>
-					<div class="${overlayName}Overlay">
-						<div class="selectionStatus ${overlayName}">
-							Your ${overlayName} benefits selection
-						<span>0</span></div>
-					</div>
 					<div class="${colWidthValue} short-list-item ${item.getClassString()} ${item.getShortlistKey()}_container">
 						<%-- ======================= --%>
 						<%-- HEADING SECTION START --%>
@@ -52,7 +46,7 @@
 							<div class="title <c:if test="${category eq 'Hospital'}">hidden-xs</c:if>">
 								<h2 class="ignore">Extras</h2>
 								<p>${colContent}</p>
-								<health_v4_insuranceprefs:quick_select options="Dental:dental|Sports:sports|Prace of Mind:peace" />
+								<health_v4_insuranceprefs:quick_select options="Dental:dental|Sports:sports|Peace of Mind:peace" />
 							</div>
 						</c:if>
 						<c:if test="${category eq 'Hospital'}">
