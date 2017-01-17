@@ -105,7 +105,7 @@ var ResultsModel = {
 					}
 				}
 
-				/*try{*/
+				try{
 					if(jsonResult && jsonResult.messages && jsonResult.messages.length > 0){
 						// if there are error messages returned by the web services, register them
 						// @todo = these errors used to be done this way through Ajax on Utilities. They really should be checked through the fetched URL jsp on the back end side
@@ -146,10 +146,10 @@ var ResultsModel = {
 					}
 
 					Results.model.triggerEventsFromResult(jsonResult);
-				/*}
+				}
 				catch(e){
 					Results.model.handleFetchError( data, "Try/Catch fail on success: "+e.message );
-				}*/
+				}
 
 
 			},
