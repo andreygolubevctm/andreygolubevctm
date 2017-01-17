@@ -6,7 +6,9 @@ import com.ctm.reward.model.GetCampaignsResponse;
 import com.ctm.reward.model.SaleStatus;
 import com.ctm.reward.model.UpdateSaleStatus;
 import com.ctm.reward.model.UpdateSaleStatusResponse;
+import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
+import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.transaction.dao.TransactionDetailsDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +17,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import rx.schedulers.Schedulers;
 
+import javax.servlet.http.HttpServletRequest;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Date;
+
+import static com.ctm.web.core.model.settings.Vertical.VerticalType.HEALTH;
 
 @Service
 public class RewardService {
@@ -37,15 +44,34 @@ public class RewardService {
 
 	private TransactionDetailsDao transactionDetailsDao;
 	private RewardCampaignService rewardCampaignService;
+	private ApplicationService applicationService;
 	private Client<UpdateSaleStatus, UpdateSaleStatusResponse> rewardUpdateSalesStatusClient;
 
 	@Autowired
 	public RewardService(TransactionDetailsDao transactionDetailsDao,
 						 Client<UpdateSaleStatus, UpdateSaleStatusResponse> rewardUpdateSalesStatusClient,
-						 RewardCampaignService rewardCampaignService) {
+						 RewardCampaignService rewardCampaignService,
+						 ApplicationService applicationService) {
 		this.transactionDetailsDao = transactionDetailsDao;
 		this.rewardUpdateSalesStatusClient = rewardUpdateSalesStatusClient;
 		this.rewardCampaignService = rewardCampaignService;
+		this.applicationService = applicationService;
+	}
+
+	public GetCampaignsResponse getAllActiveCampaigns(HttpServletRequest request) {
+		//TODO Health should not be hardcoded
+		final Vertical.VerticalType vertical = HEALTH;
+		Brand brand = applicationService.getBrand(request, vertical);
+
+		ZonedDateTime effective = ZonedDateTime.now();
+		final Date appDate = ApplicationService.getApplicationDateIfSet(request);
+		if (appDate != null) {
+			effective = ZonedDateTime.ofInstant(appDate.toInstant(), ZoneId.systemDefault());
+			//} else if {
+			//TODO get the "journey start time" from session
+		}
+
+		return getAllActiveCampaigns(vertical, brand.getCode(), effective);
 	}
 
 	public GetCampaignsResponse getAllActiveCampaigns(final Vertical.VerticalType vertical, final String brandCode,
