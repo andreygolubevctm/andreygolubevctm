@@ -138,6 +138,8 @@
     // Note this code only affects togglebar instances that are not used within a modal
     function _updateToggleBarTabPosition() {
 
+        if(!$elements.progressBar.length) return;
+
         var currentBenefit = settings[currentStep].currentBenefit,
             currentTabBenefitWidth = settings[currentStep][currentBenefit + 'TabWidth'],
             fixedBottomPos = settings[currentStep].toggleBarHeight - currentTabBenefitWidth;
