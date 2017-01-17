@@ -483,9 +483,8 @@
         if(_.isNumber(tranId)) {
             _.extend(saleData,{ti:tranId});
         }
-        if(!_.isEmpty(clientId)) {
-            _.extend(saleData,{cid:clientId});
-        }
+        // Always send clientId even if empty (only empty when pure simples quote)
+        _.extend(saleData,{cid:clientId});
     }
 
     /**
