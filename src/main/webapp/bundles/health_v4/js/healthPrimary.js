@@ -35,8 +35,7 @@
             );
         });
 
-        $elements.dob.on('change', function updateSnapshot() {
-            meerkat.messaging.publish(meerkatEvents.health.SNAPSHOT_FIELDS_CHANGE);
+        $elements.dob.on('change', function updateContinuousCover() {
             _.defer(function(){
                 var $checked = $elements.currentCover.filter(':checked');
                 if($checked.length) $checked.change();
