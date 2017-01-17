@@ -24,7 +24,7 @@
                 {{ _.each(model.benefitsHospital.values, function(object) { }}
                 {{ var checked = object.selected ? ' checked="checked"' : ''; }}
                 <div class="checkbox {{=object.class }}">
-                    <input type="checkbox" name="health_filterBar_benefitsHospital" id="health_filterBar_benefits_{{= object.id }}" value="{{= object.id }}" {{=checked }} title="{{= object.label }}" /> <label for="health_filterBar_benefits_{{= object.id }}" <field_v1:analytics_attr analVal="filter hospital" quoteChar="\"" />>{{= object.label }}</label>
+                    <input type="checkbox" data-attach="true" name="health_filterBar_benefitsHospital" id="health_filterBar_benefits_{{= object.id }}" value="{{= object.id }}" {{=checked }} title="{{= object.label }}" /> <label for="health_filterBar_benefits_{{= object.id }}" <field_v1:analytics_attr analVal="filter hospital" quoteChar="\"" />>{{= object.label }}</label>
                 </div>
                 {{ }) }}
             </div>
@@ -51,7 +51,7 @@
         {{ _.each(model.benefitsExtras.values, function(object) { }}
         {{ var checked = object.selected ? ' checked="checked"' : ''; }}
         <div class="checkbox {{=object.class }}">
-            <input type="checkbox" name="health_filterBar_benefitsExtras" id="health_filterBar_benefits_{{= object.id }}" value="{{= object.id }}" {{=checked }} title="{{= object.label }}" /> <label for="health_filterBar_benefits_{{= object.id }}" <field_v1:analytics_attr analVal="filter extras" quoteChar="\"" />>{{= object.label }}</label>
+            <input type="checkbox" data-attach="true" name="health_filterBar_benefitsExtras" id="health_filterBar_benefits_{{= object.id }}" value="{{= object.id }}" {{=checked }} title="{{= object.label }}" /> <label for="health_filterBar_benefits_{{= object.id }}" <field_v1:analytics_attr analVal="filter extras" quoteChar="\"" />>{{= object.label }}</label>
         </div>
         {{ }) }}
     </div>

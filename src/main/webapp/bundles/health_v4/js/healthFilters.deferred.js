@@ -399,7 +399,7 @@
         if (coverType === 'E' || hospitalCount === 0) {
             benefitString = 'No Hospital';
         } else {
-            benefitString = hospitalCount + ' Extras selected';
+            benefitString = hospitalCount + ' Benefits selected';
         }
         var coverTypeLabel = '<div>' + hospitalType.charAt(0).toUpperCase() + hospitalType.slice(1) + " Cover</div>";
         var benefitCount = '<div>' + benefitString + '</div>';
