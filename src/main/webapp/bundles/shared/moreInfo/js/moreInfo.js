@@ -70,7 +70,7 @@
             if (typeof (settings.template) != "undefined") {
                 htmlTemplate = _.template(settings.template);
 
-                if (typeof settings.affixedHeaderTemplate.length !== 'undefined') {
+                if (settings.affixedHeaderTemplate && typeof settings.affixedHeaderTemplate.length !== 'undefined') {
                     affixedHeaderTemplate = _.template(settings.affixedHeaderTemplate);
                 }
 
@@ -198,7 +198,7 @@
             // append content
             moreInfoContainer.html(htmlString);
 
-            if (settings.affixedHeaderContainer.length === 1) {
+            if (settings.affixedHeaderContainer && settings.affixedHeaderContainer.length === 1) {
                 var affixedHtmlString = affixedHeaderTemplate(product);
                 settings.affixedHeaderContainer.html(affixedHtmlString);
             }
