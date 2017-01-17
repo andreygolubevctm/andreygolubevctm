@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import rx.Observable;
+import rx.schedulers.Schedulers;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -37,7 +38,7 @@ public class FuelQuoteController {
     @RequestMapping(value = "/quote/get.json",
                     method = RequestMethod.POST,
                     produces = MediaType.APPLICATION_JSON_VALUE)
-    public ListenableFuture<QuoteResponse> getQuote(final HttpServletRequest request) {
+    public QuoteResponse getQuote(final HttpServletRequest request) {
         final String northWest = request.getParameter("fuel_map_northWest");
         final String southEast = request.getParameter("fuel_map_southEast");
         final Long fuelId = Long.valueOf(request.getParameter("fuel_type_id"));
@@ -66,9 +67,9 @@ public class FuelQuoteController {
                     .header("Content-Type", MediaType.APPLICATION_JSON_UTF8_VALUE)
                     .build();
 
-                    return FutureConverter.toListenableFuture(fuelQuoteClient.post(restSettings).first());
+            return fuelQuoteClient.post(restSettings).observeOn(Schedulers.io()).toBlocking().first();
         } else {
-            return FutureConverter.toListenableFuture(Observable.just(QuoteResponse.newBuilder().build()));
+            return QuoteResponse.newBuilder().build();
         }
     }
 }
