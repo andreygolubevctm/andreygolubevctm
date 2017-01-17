@@ -39,6 +39,7 @@
     "shared/sendEmail",
     "shared/emailBrochures",
     "shared/serverSideValidationOutput",
+    "shared/sidebarWidgets",
     "shared/filters",
     "shared/radioGroupTile",
     "shared/radioRounded",

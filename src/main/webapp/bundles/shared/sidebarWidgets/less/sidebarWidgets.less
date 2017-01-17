@@ -54,6 +54,9 @@ NOTE: The purpose is ONLY to style generic containers, not to get stuck into spe
 /** Optional Classes **/
 .sidebar-widget-padded {
   padding: 20px 15px;
+  &:not(.sidebar-widget-contained) {
+    margin-bottom: 0;
+  }
 }
 
 .sidebar-widget-small-pad {
