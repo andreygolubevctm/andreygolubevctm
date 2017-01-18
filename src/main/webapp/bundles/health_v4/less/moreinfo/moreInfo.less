@@ -115,7 +115,9 @@
   // Bridging page
   .moreInfoDropdown {
 
-    padding-top: 20px;
+    @media(@md) {
+      padding-top: 20px;
+    }
 
     @media (@xs-only) {
       background-color: @theme-light;
@@ -124,6 +126,14 @@
       h2 {
         font-size: 20px;
       }
+    }
+
+    .moreInfoTopLeftColumn {
+      .make-sm-column(9);
+    }
+
+    .moreInfoTopRightColumn {
+      .make-sm-column(3);
     }
 
     .modal-header {
@@ -364,3 +374,19 @@
       }
     }
   }
+
+.moreInfoVisible[data-step="apply"] {
+  .moreInfoDropdown {
+    .modal-header {
+      display: none;
+    }
+
+    .moreInfoTopLeftColumn {
+      .make-sm-column(12);
+    }
+
+    .moreInfoTopRightColumn {
+      display: none;
+    }
+  }
+}

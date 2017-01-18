@@ -208,10 +208,8 @@
                 meerkat.modules.healthRebate.toggleEdit(false);
             },
             onAfterEnter: function healthAfterEnter() {
-                /** @todo implement from health.js when get to this step */
             },
             onBeforeLeave: function (event) {
-                /** @todo implement from health.js when get to this step */
             }
 
         };
@@ -233,12 +231,10 @@
                 object: meerkat.modules.health.getTrackingFieldsObject
             },
             onBeforeEnter: function enterBenefitsStep(event) {
-                /** @todo implement from health.js when get to this step */
                 // configure progress bar
                 configureProgressBar(true);
             },
             onAfterEnter: function enterBenefitsStep(event) {
-                /** @todo implement from health.js when get to this step */
                 var toggleBarInitSettings = {
                     container: 'body[data-step="benefits"]',
                     currentStep: steps.benefitsStep.navigationId
@@ -249,6 +245,7 @@
             onAfterLeave: function leaveBenefitsStep(event) {
                 var selectedBenefits = meerkat.modules.benefitsModel.getSelectedBenefits();
                 meerkat.modules.healthResultsChange.onBenefitsSelectionChange(selectedBenefits);
+                meerkat.modules.benefitsToggleBar.deRegisterScroll();
             }
         };
 
@@ -272,14 +269,12 @@
                 meerkat.modules.resultsFeatures.fetchStructure('health_v4');
             },
             onBeforeEnter: function enterContactStep(event) {
-                /** @todo implement from health.js when get to this step */
                 // configure progress bar
                 configureProgressBar(true);
 
                 meerkat.modules.healthPostcode.editMode();
             },
             onAfterLeave: function leaveContactStep(event) {
-                /** @todo implement from health.js when get to this step */
 
                 meerkat.modules.healthPostcode.editMode();
             }
@@ -361,13 +356,12 @@
                 object: meerkat.modules.health.getTrackingFieldsObject
             },
             onInitialise: function onApplyInit(event) {
-                /** @todo implement from health.js when get to this step */
                 meerkat.modules.healthDependants.initHealthDependants();
                 meerkat.modules.healthMedicare.initHealthMedicare();
                 meerkat.modules.healthApplyStep.onInitialise();
             },
             onBeforeEnter: function beforeEnterApplyStep(event) {
-                /** @todo implement from health.js when get to this step */
+                meerkat.modules.benefitsToggleBar.deRegisterScroll();
                 if (event.isForward === true) {
                     var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
 
@@ -397,7 +391,6 @@
                 }
             },
             onAfterEnter: function afterEnterApplyStep(event) {
-                /** @todo implement from health.js when get to this step */
             }
         };
 
@@ -415,13 +408,11 @@
                 object: meerkat.modules.health.getTrackingFieldsObject
             },
             onInitialise: function onPaymentInit(event) {
-                /** @todo implement from health.js when get to this step */
                 meerkat.modules.healthPaymentDate.initPaymentDate();
                 meerkat.modules.healthPaymentIPP.initHealthPaymentIPP();
                 meerkat.modules.healthSubmitApplication.initHealthSubmitApplication();
             },
             onBeforeEnter: function beforeEnterPaymentStep(event) {
-                /** @todo implement from health.js when get to this step */
 
                 if (event.isForward === true) {
                     var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
@@ -519,8 +510,8 @@
             ],
             dob_secondary:[
                 {
-                    $field: $('#partner-health-cover').find("input[name='health_healthCover_partner_dob']"), // this is a hidden field
-                    $fieldInput: $('#partner-health-cover').find("input[name='health_healthCover_partner_dob']") // pointing at the same field as a trick to force change event on itself when forward populated
+                    $field: $("#health_healthCover_partner_dob"), // this is a hidden field
+                    $fieldInput: $("#health_healthCover_partner_dob") // pointing at the same field as a trick to force change event on itself when forward populated
                 },
                 {
                     $field: $("#health_application_partner_dob"), // this is a hidden field
@@ -542,7 +533,7 @@
             mobile: [
                 // mobile from details step
                 {
-                    $field: $("#health_contactDetails_contactNumber_mobile"),
+                    $field: $("#health_contactDetails_contactNumber_mobileinput"),
                     $optInField: contactDetailsOptinField
                 },
                 // mobile from application step
@@ -554,7 +545,7 @@
             otherPhone: [
                 // otherPhone from details step
                 {
-                    $field: $("#health_contactDetails_contactNumber_other"),
+                    $field: $("#health_contactDetails_contactNumber_otherinput"),
                     $optInField: contactDetailsOptinField
                 },
                 // otherPhone from application step

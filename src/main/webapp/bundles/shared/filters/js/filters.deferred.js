@@ -17,13 +17,10 @@
             }
         },
         settings = {
-            verticalContextChange: ['xs'],
-            xsContext: '#navbar-main',
             filters: [
                 {
                     template: '#filter-results-template',
-                    container: '.results-filters',
-                    context: '#results-sidebar'
+                    container: '.results-filters'
                 }
             ],
 
@@ -64,9 +61,6 @@
                 } else {
                     $.extend(true, settings[optionName], options[optionName]);
                 }
-            }
-            if (_.contains(settings.verticalContextChange, meerkat.modules.deviceMediaState.get())) {
-                changeFilterContext(settings.xsContext);
             }
 
             eventSubscriptions();
@@ -196,7 +190,10 @@
             if ($(event.target).parents('.filter').data('filterServerside') === true) {
                 needToFetchFromServer = true;
             }
-            $(settings.updates[0].container).slideDown();
+
+            if (!$(event.target).parents('.filter').data('dontToggleUpdate')) {
+                $(settings.updates[0].container).slideDown();
+            }
         });
 
         meerkat.messaging.subscribe(moduleEvents.filters.FILTERS_UPDATED, function (event) {

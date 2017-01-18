@@ -13,7 +13,7 @@
             }
         },
         moduleEvents = events.benefits,
-        _hospitalType = 'comprehensive'; // default to comprehensive
+        _hospitalType = 'customise'; // default to customise
 
     function initBenefits() {
         jQuery(document).ready(function ($) {
@@ -30,7 +30,7 @@
                 hospital: $('.Hospital_container'),
                 extras: $('.GeneralHealth_container'),
                 quickSelectContainer: $('.quickSelectContainer'),
-                coverType: $('input[name=health_situation_covertype]')
+                coverType: $('input[name=health_situation_coverType]')
             };
 
             _eventSubscription();
@@ -115,7 +115,7 @@
             var target = $(this).data('target');
 
             $elements.hospital.find($elements.quickSelectContainer).toggleClass('hidden', target === '.limited-pane');
-            _hospitalType = target === '.limited-pane' ? 'limited' : 'comprehensive';
+            _hospitalType = target === '.limited-pane' ? 'limited' : 'customise';
         });
     }
 
