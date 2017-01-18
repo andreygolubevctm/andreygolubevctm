@@ -17,6 +17,7 @@
             }
         },
         settings = {
+            verticalContextChange: ['xs'],
             xsContext: '#navbar-main',
             filters: [
                 {
@@ -64,7 +65,7 @@
                     $.extend(true, settings[optionName], options[optionName]);
                 }
             }
-            if (meerkat.modules.deviceMediaState.get() === 'xs') {
+            if (_.contains(settings.verticalContextChange, meerkat.modules.deviceMediaState.get())) {
                 changeFilterContext(settings.xsContext);
             }
 
@@ -163,7 +164,7 @@
     function buildHtml(component) {
         _.each(settings[component], function (setting) {
             $(setting.container).empty(); // empty all so if we switch breakpoint it still works
-            $(setting.container, setting.context).html(getTemplateHtml(setting.template));
+            $(setting.container).html(getTemplateHtml(setting.template));
         });
     }
 
@@ -180,12 +181,6 @@
 
         _htmlTemplate[template] = _.template($(template).html(), { variable: "model" });
         return _htmlTemplate[template](model);
-    }
-
-    function changeFilterContext(context) {
-        _.each(settings.filters, function (filter) {
-            filter.context = context;
-        });
     }
 
     function eventSubscriptions() {
@@ -226,16 +221,6 @@
             resetFilters();
             $(settings.updates[0].container).slideUp();
             resettingFilters = false;
-        });
-
-        meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, function resultsXsBreakpointEnter() {
-            changeFilterContext(settings.xsContext);
-            resetFilters();
-        });
-
-        meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function editDetailsEnterXsState() {
-            changeFilterContext('#results-sidebar');
-            resetFilters();
         });
     }
 

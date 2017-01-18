@@ -516,7 +516,6 @@ var Results = {
 
 	onError:function(message, page, description, data){
 
-		if (typeof meerkat !== 'undefined') {
 			meerkat.messaging.publish(Results.moduleEvents.RESULTS_ERROR);
 
 			meerkat.modules.errorHandling.error({
@@ -526,15 +525,7 @@ var Results = {
 				description:	description,
 				data:			data
 			});
-		}
-		else if (typeof FatalErrorDialog !== 'undefined') {
-			FatalErrorDialog.exec({
-				message:		message,
-				page:			page,
-				description:	description,
-				data:			data
-			});
-		}
+            meerkat.logging.exception(data);
 	},
 
 	startResultsFetch:function() {
