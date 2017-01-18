@@ -1,27 +1,145 @@
 .zeusPage {
 	#location_details {
+		padding: 20px 0;
+
+
 		.meerkatCrest {
 			width: 80%;
+			@media(max-width: @screen-md-max) {
+				width: 100%;
+			}
+
+			@media(max-width: @screen-sm) {
+				height: 150px;
+				width: auto;
+				padding-top: 15px;
+			}
 		}
 	}
 
 	#location_container {
-		background-color: @background;
-		padding: 15px 0;
+		background-color: @theme-tertiary;
+		padding: 20px 0 40px 0;
+
+		.mobilePostcardName {
+			display: none;
+			@media(max-width: @screen-sm) {
+				display: block;
+				position: absolute;
+				z-index: 1;
+				font-size: 30px;
+				top: 9%;
+				left: 7%;
+			}
+
+			@media(max-width: 630px) {
+				font-size: 20px;
+			}
+
+			@media(max-width: 580px) {
+				font-size: 18px;
+			}
+
+			@media(max-width: 520px) {
+				font-size: 16px;
+				left: 8%;
+			}
+
+			@media(max-width: 490px) {
+				font-size: 14px;
+				left: 8%;
+			}
+
+			@media(max-width: 460px) {
+				font-size: 12px;
+				left: 8%;
+			}
+
+			@media(max-width: 430px) {
+				font-size: 10px;
+				left: 9%;
+			}
+		}
 
 		.globalMap {
 			width: 100%;
+			background-repeat: no-repeat;
+			background-size: contain;
+			// Using map_china.png as an example the dimensions of the image is 1297x761. Therefore, to maintain aspect radio while making the empty div containing the background image responsive we do 761/1297, which equals ~0.5867 (which we turn into a percentage)
+			padding-bottom: 58.67%;
+			@media(max-width: @screen-sm) {
+				padding-bottom: 128.75%;
+			}
+
+			&.map_meerkovo {
+				background-image: url("/ctm/assets/brand/ctm/images/zeus/map_meerkovo.png");
+				&.toy_aleks {
+					@media(max-width: @screen-sm) {
+						background-image: url("/ctm/assets/brand/ctm/images/zeus/mobile_meerkovo_aleks.png");
+					}
+				}
+
+				&.toy_sergei {
+					@media(max-width: @screen-sm) {
+						background-image: url("/ctm/assets/brand/ctm/images/zeus/mobile_meerkovo_sergei.png");
+					}
+				}
+			}
+
+			&.map_china {
+				background-image: url("/ctm/assets/brand/ctm/images/zeus/map_china.png");
+				@media(max-width: @screen-sm) {
+					background-image: url("/ctm/assets/brand/ctm/images/zeus/mobile_china.png");
+				}
+			}
+
+			&.map_madagascar {
+				background-image: url("/ctm/assets/brand/ctm/images/zeus/map_madagascar.png");
+				@media(max-width: @screen-sm) {
+					background-image: url("/ctm/assets/brand/ctm/images/zeus/mobile_madagascar.png");
+				}
+			}
+
+			&.map_new_zealand {
+				background-image: url("/ctm/assets/brand/ctm/images/zeus/map_new_zealand.png");
+				@media(max-width: @screen-sm) {
+					background-image: url("/ctm/assets/brand/ctm/images/zeus/mobile_new_zealand.png");
+				}
+			}
+
+			&.map_australia {
+				background-image: url("/ctm/assets/brand/ctm/images/zeus/map_australia.png");
+				@media(max-width: @screen-sm) {
+					background-image: url("/ctm/assets/brand/ctm/images/zeus/mobile_australia.png");
+				}
+			}
+
 		}
 
-		.postcardName {
-			position: absolute;
-			font-style: 100px;
-			z-index: 9999;
-		}
-
-		.postcard {
-			width: 80%;
+		.postcardContainer {
+			position: relative;
 			margin-top: -70px;
+			position: relative;
+			width: 100%;
+
+			.postcard {
+				width: 80%;
+			}
+
+			.postcardName {
+				position: absolute;
+				z-index: 1;
+				font-size: 30px;
+				left: 12.5%;
+				top: 13.5%;
+				@media(max-width: @screen-sm-max) {
+					font-size: 20px;
+				}
+			}
+
+			@media(max-width: @screen-sm) {
+				display: none;
+			}
 		}
 	}
 }

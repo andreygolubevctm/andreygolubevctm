@@ -25,9 +25,9 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-12">
-				<h1>Sorry, we are unable to locate your toy.</h1>
-				<h2>Silly Postkat might have taken a wrong turn.</h2>
-				<span>Please check you have the correct url or try again later.</span>
+				<h1>Sorry, we are unable to locate your Aleksandr or Sergei</h1>
+				<h2>Silly Postkat might have taken wrong turn</h2>
+				<h3>Please check your url or try again later</h3>
 			</div>
 		</div>
 	</div>

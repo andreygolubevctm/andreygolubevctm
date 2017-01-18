@@ -68,7 +68,7 @@
 				<c:when test="${trackingStatus.stage eq 1}">
 					<c:set var="locationName" value="Meerkovo" />
 					<c:set var="locationDistance" value="23,252" />
-					<c:set var="toyType" value="${trackingStatus.rewardType}" />
+					<c:set var="toyType" value="_${trackingStatus.rewardType}" />
 					<c:set var="imageName" value="meerkovo" />
 				</c:when>
 				<c:when test="${trackingStatus.stage eq 2}">

@@ -1,14 +1,25 @@
 .zeusPage {
 	#zeus_footer {
+		padding: 20px 0;
+
 		.headingRow {
 			padding-top: 40px;
 			padding-bottom: 40px;
+
+			h1 {
+				@media(max-width: @screen-sm) {
+					font-size: 25px;
+				}
+			}
 
 			.floralLeft {
 				text-align: right;
 
 				img {
 					width: 50%;
+					@media(max-width: @screen-sm) {
+						width: 40%;
+					}
 				}
 			}
 
@@ -17,13 +28,15 @@
 
 				img {
 					width: 50%;
+					@media(max-width: @screen-sm) {
+						width: 40%;
+					}
 				}
 			}
 		}
 
-
 		.inner-footer-box {
-			background-color: @background;
+			background-color: @theme-tertiary;
 			color: white;
 			display: block;
 			font-size: 25px;
@@ -38,6 +51,11 @@
 				display: block;
 				width: 100%;
 				padding-bottom: 15px;
+			}
+
+			@media(max-width: @screen-sm) {
+				width: 70%;
+				margin: 0 auto 40px auto;
 			}
 		}
 	}

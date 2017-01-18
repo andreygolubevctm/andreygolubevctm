@@ -8,7 +8,7 @@
 			<div class="col-sm-3 hidden-xs">
 				<img src="" data-defer-src="assets/brand/ctm/images/zeus/topbanner_aleksLeft.png" alt="Aleksandr">
 			</div>
-			<div class="col-sm-6 col-sm-12">
+			<div class="col-sm-6 col-xs-12">
 				<h1 class="trackingHeader">Track your toy</h1>
 			</div>
 			<div class="col-sm-3 hidden-xs">

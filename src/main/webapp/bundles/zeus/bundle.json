@@ -1,8 +1,11 @@
 {
-    "brandCodes": "all",
+	"themeVersion": 2,
+	"brandCodes": [
+		"ctm"
+	],
     "dependencies": [
-        "core",
+        "shared/fonts/v2",
         "shared/journeyEngine/v2",
-        "shared/results/v2"
+        "core"
     ]
 }
