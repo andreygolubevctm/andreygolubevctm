@@ -125,9 +125,9 @@
         result.frequency = frequency.toLowerCase();
         result.priceText = prem.text ? prem.text : formatCurrency(prem.payableAmount);
         result.priceLhcfreetext = prem.lhcfreetext ? prem.lhcfreetext : formatCurrency(prem.lhcFreeAmount);
-        result.textLhcFreePricing = prem.lhcfreepricing ? prem.lhcfreepricing : '+ ' + formatCurrency(prem.lhcAmount) +
-            ' LHC inc ' +
-            formatCurrency(prem.rebateAmount) + 'Government Rebate';
+        result.textLhcFreePricing = prem.lhcfreepricing ? prem.lhcfreepricing.replace('<span/>','<br>') : 'excl ' + formatCurrency(prem.lhcAmount) +
+            'LHC<br>inc ' +
+            formatCurrency(prem.rebateAmount) + ' Government Rebate';
         result.textPricing = prem.pricing ? prem.pricing : 'Includes rebate of ' + formatCurrency(prem.rebateAmount) +
             ' & LHC loading of ' + formatCurrency(prem.lhcAmount);
         result.hasValidPrice = (prem.value && prem.value > 0) || (prem.text && prem.text.indexOf('$0.') < 0) ||
