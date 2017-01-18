@@ -396,6 +396,7 @@
         if (meerkat.modules.deviceMediaState.get() != 'xs') {
             $('.resultsContainer, .resultsHeadersBg, .resultsMarketingMessages, .resultsMarketingMessage, #results-sidebar, .results-column-container, .results-prologue-row').addClass("hidden");
         }
+        meerkat.messaging.publish(meerkatEvents.filters.FILTERS_CANCELLED);
     }
 
     function onAfterHideTemplate() {

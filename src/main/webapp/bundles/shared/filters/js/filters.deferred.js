@@ -215,6 +215,7 @@
         });
 
         meerkat.messaging.subscribe(moduleEvents.filters.FILTERS_CANCELLED, function (event) {
+            resettingFilters = true;
             resetFilters();
             $(settings.updates[0].container).slideUp();
             resettingFilters = false;
@@ -238,7 +239,6 @@
             meerkat.modules.utils.scrollPageTo($("header"));
         }).on('click', '.filter-cancel-changes', function (e) {
             e.preventDefault();
-            resettingFilters = true;
             meerkat.messaging.publish(moduleEvents.filters.FILTERS_CANCELLED, e);
         });
     }
