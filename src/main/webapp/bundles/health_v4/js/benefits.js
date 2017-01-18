@@ -17,13 +17,6 @@
 
     function initBenefits() {
         jQuery(document).ready(function ($) {
-            // was in step onInitialise, didnt work there for results.
-            meerkat.modules.benefits.updateModelOnPreload();
-
-            $('#tabs').find('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-                setHospitalType($(this).data('benefit-cover-type'));
-                $('.hospital-content-toggle').toggle(getHospitalType() != 'limited');
-            });
 
             $elements = {
                 benefitsOverlow: $('.benefitsOverflow'),
@@ -32,11 +25,18 @@
                 hospital: $('.Hospital_container'),
                 extras: $('.GeneralHealth_container'),
                 quickSelectContainer: $('.quickSelectContainer'),
-                coverType: $('input[name=health_situation_coverType]')
+                coverType: $('input[name=health_situation_coverType]'),
+                accidentOnlyCover: $('input[name=health_situation_accidentOnlyCover]')
             };
 
-            _eventSubscription();
+            $('#tabs').find('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                setHospitalType($(this).data('benefit-cover-type'));
+                $('.hospital-content-toggle').toggle(getHospitalType() != 'limited');
+            });
 
+            // was in step onInitialise, didnt work there for results.
+            meerkat.modules.benefits.updateModelOnPreload();
+            _eventSubscription();
             _populateBenefitsLabelsStore();
         });
     }
@@ -73,6 +73,13 @@
     }
 
     function updateModelOnPreload() {
+
+        if($elements.accidentOnlyCover.val() == 'Y') {
+            $('#tabs').find('[data-benefit-cover-type="limited"]').click().trigger('shown.bs.tab');
+        } else {
+            $('#tabs').find('[data-benefit-cover-type="customise"]').click().trigger('shown.bs.tab');
+        }
+
         // extras first
         meerkat.modules.benefitsModel.setIsHospital(false);
         meerkat.modules.benefitsModel.setBenefits(_getSelectedBenefits($('.GeneralHealth_container')));
@@ -156,7 +163,7 @@
     }
 
     function _setAccidentOnly() {
-        $('input[name=health_situation_accidentOnlyCover]').val(_hospitalType == 'limited' ? 'Y' : 'N');
+        $elements.accidentOnlyCover.val(_hospitalType == 'limited' ? 'Y' : 'N');
     }
 
     function toggleHospitalTypeTabs() {
