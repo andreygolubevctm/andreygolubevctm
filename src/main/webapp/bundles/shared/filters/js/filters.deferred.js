@@ -196,7 +196,10 @@
             if ($(event.target).parents('.filter').data('filterServerside') === true) {
                 needToFetchFromServer = true;
             }
-            $(settings.updates[0].container).slideDown();
+
+            if (!$(event.target).parents('.filter').data('dontToggleUpdate')) {
+                $(settings.updates[0].container).slideDown();
+            }
         });
 
         meerkat.messaging.subscribe(moduleEvents.filters.FILTERS_UPDATED, function (event) {

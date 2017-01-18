@@ -2,7 +2,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <core_v1:js_template id="filter-results-frequency-template">
-    <div class="filter-frequency">
+    <div class="filter filter-frequency" data-dont-toggle-update="true">
         <div class="btn-group btn-group-justified " data-toggle="radio">
             {{ _.each(model.frequency.values, function(object) { }}
             {{ var checked = object.selected ? ' checked="checked"' : ''; }}
