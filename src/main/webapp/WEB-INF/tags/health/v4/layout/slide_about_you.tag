@@ -2,7 +2,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<layout_v3:slide formId="startForm" firstSlide="true" nextLabel="Next Step">
+<layout_v3:slide formId="startForm" firstSlide="true" nextLabel="Insurance preferences">
 
     <layout_v3:slide_content>
 

@@ -134,7 +134,7 @@
 
 									{{ if(typeof hospitalCover !== 'undefined') { }}
 										<div class="col-xs-12 secondaryBrochureLink addTopMargin">
-											<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="download-hospital-brochure col-xs-12 leftAlignedLink" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>Please download and refer to the Policy Brochure for details</a>
+											<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="download-hospital-brochure col-xs-12 leftAlignedLink" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>Download the policy brochure for more information.</a>
 										</div>
 									{{ } }}
 								</div>
@@ -176,9 +176,8 @@
 										<h3 class="heading">Restricted Benefits <span class="benefitCount gray">{{= hospitalCover.restrictions.length }}</span></h3>
 										<p>These treatements are limited to the same amount you would receive in a public hoslita for those treatements.</p>
 										{{ if(typeof hospitalCover !== 'undefined') { }}
-											<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="download-hospital-brochure col-xs-12 leftAlignedLink" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>Please download and refer to the Policy Brochure</a>
+											<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="download-hospital-brochure col-xs-12 leftAlignedLink" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>Download the policy brochure for more information.</a>
 										{{ } }}
-										<p>Unsure? <span>Have a quick chat with our Experts</span></p>
 
 										{{ _.each(hospitalCover.restrictions, function(restriction){ }}
 										<div class="row {{= restriction.className }} benefitRow restricted">
@@ -246,11 +245,26 @@
 			</div>
 			<!-- CTA BUTTON -->
 			<div class="hidden-xs moreInfoTopRightColumn">
-				<div class="row">
-					<div class="col-xs-12">
+                <div class="sidebar-widget sidebar-widget-padded">
 						<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now<span class="icon-arrow-right" /></a>
 					</div>
-				</div>
+                <div class="sidebar-widget sidebar-widget-padded sidebar-widget-background-contained">
+                    <h3>Switching is simple!</h3>
+                    <ul>
+                        <li>You can change funds whenever you like.</li>
+                        <li>We'll pass your current insurance details to your new fund, to transfer any hospital waiting periods you've already served.</li>
+                        <li>Every fund will give you immediate cover for the same extras benefits you were able to claim previously.</li>
+                        <li>Your old fund will reimburse any premiums you've already paid in advance.</li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-widget sidebar-widget-padded">
+                    <h3>What is the Benefits Limitation Period?</h3>
+                    <p>If your policy has benefit limitation periods, you will only be entitled to restricted benefits (as described above) for a set time. For example, you may decide to take out a policy that only pays restricted benefits for Heart surgery for the first two years membership of the policy. After two years membership, you would then normally be entitled to full benefits for Heart surgery.</p>
+                    <p>
+                        Where a waiting period already applies for a particular condition or treatment, funds may begin the benefit limitation period from the end of the normal waiting period.</p>
+                </div>
+
 			</div>
 		</div>
 	</div>
