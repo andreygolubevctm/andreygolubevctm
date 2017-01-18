@@ -45,7 +45,7 @@
 
         toggleSelectGender('primary');
 
-        if (meerkat.modules.health.hasPartner()) {
+        if (meerkat.modules.healthChoices.hasPartner()) {
             toggleSelectGender('partner');
         }
     }

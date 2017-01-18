@@ -27,11 +27,13 @@
 
     function _applyEventListeners() {
         $elements.currentCover.on('change', function toggleContinuousCover() {
-            var $this = $(this);
-            var $checked = $this.filter(':checked');
+            var $this = $(this),
+                $checked = $this.filter(':checked'),
+                disableField = ($checked.val() === 'N') || ($checked.val() === 'Y' && meerkat.modules.age.isLessThan31Or31AndBeforeJuly1($elements.dob.val()));
+
             meerkat.modules.fieldUtilities.toggleFields(
                 $elements.primaryCoverLoading,
-                !$checked.length || $checked.val() === 'N' || meerkat.modules.age.isLessThan31Or31AndBeforeJuly1($elements.dob.val())
+                disableField
             );
         });
 

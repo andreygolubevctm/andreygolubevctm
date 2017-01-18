@@ -154,7 +154,7 @@
     }
 
     function getDependents() {
-        return ($elements.healthCoverDetails && $.inArray($elements.healthCoverDetails.find(':input[name="health_situation_healthCvr"]').filter(':checked').val(), ['SPF', 'F']) >= 0 ? 1 : 0);
+        return ($elements.healthCoverDetails && $.inArray($elements.healthCoverDetails.find(':input[name="health_situation_healthCvr"]').filter(':checked').val(), ['SPF', 'F']) >= 0 ? 2 : 0);
     }
 
     function isRebateApplied() {
