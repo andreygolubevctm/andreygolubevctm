@@ -21,7 +21,7 @@ import java.util.Collections;
 public class RewardCampaignService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(RewardCampaignService.class);
 
-	private static final String REWARD_ENDPOINT_CAMPAIGNS_GET = "/campaigns/getZZZ";
+	private static final String REWARD_ENDPOINT_CAMPAIGNS_GET = "/campaigns/get";
 	private static final int SERVICE_TIMEOUT = 6000;
 
 	@Value("${ctm.reward.url}")
