@@ -42,6 +42,7 @@
                     onClose: function () {
                         onBeforeHideTemplate();
                         meerkat.modules.moreInfo.close();
+                        meerkat.modules.benefitsToggleBar.deRegisterScroll();
                     }
                 },
                 runDisplayMethod: runDisplayMethod,
@@ -220,10 +221,11 @@
     }
 
     function onBeforeShowModal(jsonResult, dialogId) {
-        $('#'+dialogId).find('.modal-body').children().wrap("<form class='healthMoreInfoModel'></form>");
+        var $dialog = $('#'+dialogId);
+        $dialog.find('.modal-body').children().wrap("<form class='healthMoreInfoModel'></form>");
 
         if (meerkat.site.emailBrochures.enabled) {
-            initialiseBrochureEmailForm(Results.getSelectedProduct(), $('#' + dialogId), $('#' + dialogId).find('.healthMoreInfoModel'));
+            initialiseBrochureEmailForm(Results.getSelectedProduct(), $dialog, $dialog.find('.healthMoreInfoModel'));
         }
 
         // Move dual-pricing panel
@@ -394,6 +396,7 @@
         if (meerkat.modules.deviceMediaState.get() != 'xs') {
             $('.resultsContainer, .resultsHeadersBg, .resultsMarketingMessages, .resultsMarketingMessage, #results-sidebar, .results-column-container, .results-prologue-row').addClass("hidden");
         }
+        meerkat.messaging.publish(meerkatEvents.filters.FILTERS_CANCELLED);
     }
 
     function onAfterHideTemplate() {

@@ -135,7 +135,7 @@
 
         // render hospital
         var hospitalType = meerkat.modules.benefits.getHospitalType();
-        if (!noData && !_.isEmpty(data.hospital) && hospitalType === 'comprehensive') {
+        if (!noData && !_.isEmpty(data.hospital) && hospitalType === 'customise') {
             _renderBenefits('hospital', data.hospital);
         } else if (hospitalType === 'limited') {
             $elements.hospital.itemFirst.text('Limited Cover');

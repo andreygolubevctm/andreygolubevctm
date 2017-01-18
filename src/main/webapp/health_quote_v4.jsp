@@ -106,7 +106,7 @@
                             <div class="col-xs-12 hidden-sm hidden-md hidden-lg hide-on-affix results-filters-frequency"></div>
                             <div class="hidden-xs hidden-sm col-md-3 text-center results-ref-sidebar">
                                 <div class="quote-reference-number"><p>Quote Ref: <span class="transactionId"></span></p></div>
-                                <div class="sidebar-widget sidebar-widget-attached sidebar-widget-padded filters-update-container" style="display: none">
+                                <div class="sidebar-widget sidebar-widget-attached filters-update-container" style="display: none">
                                     <!-- update button placeholder-->
                                 </div>
                             </div>

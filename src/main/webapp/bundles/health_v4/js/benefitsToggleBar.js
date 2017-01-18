@@ -14,28 +14,28 @@
         $(document).ready(function () {
             // added delay as this seems to sort out the issues with  $elements.toggleBar.offset().top  within the function _setupToggleBarSettings()
             // thinking it is a race condition so added an extra 500ms
-            _.delay(function delayInit(){
-            var $container = $(initSettings.container);
+            _.delay(function delayInit() {
+                var $container = $(initSettings.container);
 
-            if (!_.isUndefined(initSettings.currentStep)) {
-                currentStep = initSettings.currentStep;
-            }
+                if (!_.isUndefined(initSettings.currentStep)) {
+                    currentStep = initSettings.currentStep;
+                }
 
-            $elements = {
-                toggleBar: $container.find('.toggleBar'),
-                benefitsOverflow: $container.find('.benefitsOverflow'),
-                hospitalContainer: $container.find('.Hospital_container'),
-                extrasTab: $container.find('.toggleBar').find('.extras'),
-                hospitalTab: $container.find('.toggleBar').find('.hospital'),
-                progressBar: $container.find('.journeyProgressBar')
-            };
+                $elements = {
+                    toggleBar: $container.find('.toggleBar'),
+                    benefitsOverflow: $container.find('.benefitsOverflow'),
+                    hospitalContainer: $container.find('.Hospital_container'),
+                    extrasTab: $container.find('.toggleBar').find('.extras'),
+                    hospitalTab: $container.find('.toggleBar').find('.hospital'),
+                    progressBar: $container.find('.journeyProgressBar')
+                };
 
-            $elements.targetContainer = $elements.toggleBar.data('targetcontainer');
+                $elements.targetContainer = $elements.toggleBar.data('targetcontainer');
 
-            _setupToggleBarSettings(initSettings);
-            _attachToggleBar();
-            _setLabelCounts();
-            _eventSubscriptions();
+                _setupToggleBarSettings(initSettings);
+                _attachToggleBar();
+                _setLabelCounts();
+                _eventSubscriptions();
             }, 500);
         });
     }
@@ -56,8 +56,9 @@
 
     // this is for the more info page that is regenerated everytime due to it being a modal
     function _eventSubscriptions() {
+
         // slide in/out the overlays
-        $elements.toggleBar.find('.extras').on('click', function displayExtrasBenefits() {
+        $elements.toggleBar.find('.extras').off('click.extrasBar').on('click.extrasBar', function displayExtrasBenefits() {
             _beforePanelAnimationStart('extras');
             $elements.benefitsOverflow.animate({ 'left': ($elements.hospitalContainer.width() * -1) }, 500).promise().then(function onExtrasAnimateComplete() {
                 // reset to left position
@@ -69,7 +70,7 @@
             });
         });
 
-        $elements.toggleBar.find('.hospital').on('click', function displayHospitalBenefits() {
+        $elements.toggleBar.find('.hospital').off('click.hospitalBar').on('click.hospitalBar', function displayHospitalBenefits() {
             _beforePanelAnimationStart('hospital');
             $elements.benefitsOverflow.animate({ 'left': 0 }, 500).promise().then(function onHospitalAnimateComplete() {
                 $elements.toggleBar.removeAttr('style').fadeIn();
@@ -80,11 +81,18 @@
             });
         });
 
-
         // updates toggle bar tab position during scroll for non-modal instances
-        $(window).off("scroll.benefitsScroll").on("scroll.benefitsScroll", function () {
-            _updateToggleBarTabPosition();
-        });
+        registerScroll();
+
+    }
+
+    function registerScroll() {
+        deRegisterScroll();
+        $(window).on("scroll.benefitsScroll", _updateToggleBarTabPosition());
+    }
+
+    function deRegisterScroll() {
+        $(window).off("scroll.benefitsScroll");
     }
 
     function _onPanelAnimationComplete(type) {
@@ -138,6 +146,8 @@
     // Note this code only affects togglebar instances that are not used within a modal
     function _updateToggleBarTabPosition() {
 
+        if (!$elements.progressBar.length) return;
+
         var currentBenefit = settings[currentStep].currentBenefit,
             currentTabBenefitWidth = settings[currentStep][currentBenefit + 'TabWidth'],
             fixedBottomPos = settings[currentStep].toggleBarHeight - currentTabBenefitWidth;
@@ -168,7 +178,9 @@
     }
 
     meerkat.modules.register("benefitsToggleBar", {
-        initToggleBar: initToggleBar
+        initToggleBar: initToggleBar,
+        deRegisterScroll: deRegisterScroll,
+        registerScroll: registerScroll
     });
 
 })(jQuery);

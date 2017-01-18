@@ -37,7 +37,7 @@
         _.each(availableBenefits, function (ft) {
             output += '<div>' + ft.safeName + '</div>';
         });
-        output += "<div class='text-center'><a href='javascript:;' class='open-more-info' data-productId='" + obj.productId + "'>View Product</a> for more details</div>";
+        output += "<div class='text-center'><a href='javascript:;' class='open-more-info' data-productId='" + obj.productId + "' data-available='" + obj.available + "'>View Product</a> for more details</div>";
         return output;
     }
 
@@ -191,35 +191,40 @@
                 title: "Discount",
                 className: "icon-percentage-tag",
                 text: product.promo.discountText,
-                active: !_.isEmpty(product.promo) && !_.isEmpty(product.promo.discountText)
+                active: !_.isEmpty(product.promo) && !_.isEmpty(product.promo.discountText),
+                productId: product.productId
             },
             {
                 id: 'restrictedFund',
                 title: "This is a Restricted Fund",
                 className: "icon-no-symbol",
                 text: "<p>Restricted funds provide private health insurance cover to members of a specific industry or group.</p> <p>In some cases, family members and extended family are also eligible.</p>",
-                active: product.info.restrictedFund === 'Y'
+                active: product.info.restrictedFund === 'Y',
+                productId: product.productId
             },
             {
                 id: 'customisedCover',
                 title: Object.byString(product, 'custom.info.content.results.header.label'),
                 className: 'icon-customise',
                 text: Object.byString(product, 'custom.info.content.results.header.text'),
-                active: !!Object.byString(product, 'custom.info.content.results.header')
+                active: !!Object.byString(product, 'custom.info.content.results.header'),
+                productId: product.productId
             },
             {
                 id: 'specialOffer',
                 title: "Special Offer",
                 className: "icon-ribbon",
                 text: specialOffer.displayValue,
-                active: specialOffer.displayValue !== false
+                active: specialOffer.displayValue !== false,
+                productId: product.productId
             },
             {
                 id: 'marketingOffer',
                 title: "Marketing",
                 className: "icon-life",
-                text: "Get insured online to redeem meerkat toy",
-                active: true
+                text: "Get insured online to redeem ....",
+                active: false,
+                productId: product.productId
             }
         ];
     }
@@ -338,9 +343,9 @@
     function toggleRemoveResultPagination() {
         var pageMeasurements = Results.pagination.calculatePageMeasurements();
         if (!pageMeasurements || pageMeasurements && pageMeasurements.numberOfPages <= 1) {
-            $resultsPagination.addClass('hidden');
+            $resultsPagination.find('.navbar-collapse').addClass('hidden');
         } else {
-            $resultsPagination.removeClass('hidden');
+            $resultsPagination.find('.navbar-collapse').removeClass('hidden');
         }
     }
 

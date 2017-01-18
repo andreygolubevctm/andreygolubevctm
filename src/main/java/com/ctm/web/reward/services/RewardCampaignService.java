@@ -5,17 +5,24 @@ import com.ctm.httpclient.RestSettings;
 import com.ctm.reward.model.GetCampaigns;
 import com.ctm.reward.model.GetCampaignsResponse;
 import com.ctm.web.core.model.settings.Vertical;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import rx.Observable;
 import rx.schedulers.Schedulers;
 
 import java.time.ZonedDateTime;
+import java.util.Collections;
 
 @Service
 public class RewardCampaignService {
-	public static final String REWARD_ENDPOINT_CAMPAIGNS_GET = "/campaigns/get";
+	private static final Logger LOGGER = LoggerFactory.getLogger(RewardCampaignService.class);
+
+	private static final String REWARD_ENDPOINT_CAMPAIGNS_GET = "/campaigns/getZZZ";
+	private static final int SERVICE_TIMEOUT = 6000;
 
 	@Value("${ctm.reward.url}")
 	private String rewardServiceUrl;
@@ -35,14 +42,21 @@ public class RewardCampaignService {
 		request.setVerticalCode(vertical.getCode());
 		request.setEffectiveDateTime(effectiveDateTime);
 
+		final String url = rewardServiceUrl + REWARD_ENDPOINT_CAMPAIGNS_GET;
 		return rewardCampaignsGetClient.post(RestSettings.<GetCampaigns>builder()
 				.request(request)
 				.response(GetCampaignsResponse.class)
 				.jsonHeaders()
-				.url(rewardServiceUrl + REWARD_ENDPOINT_CAMPAIGNS_GET)
-				.timeout(RewardService.SERVICE_TIMEOUT)
+				.url(url)
+				.timeout(SERVICE_TIMEOUT)
 				.build())
 				.observeOn(Schedulers.io())
+				.onErrorResumeNext(throwable -> {
+					LOGGER.error("Failed to get reward campaigns. url={}", url, throwable);
+					GetCampaignsResponse response = new GetCampaignsResponse();
+					response.setCampaigns(Collections.emptySet());
+					return Observable.just(response);
+				})
 				.toBlocking()
 				.single();
 	}

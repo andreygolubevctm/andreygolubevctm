@@ -17,12 +17,10 @@
             }
         },
         settings = {
-            xsContext: '#navbar-main',
             filters: [
                 {
                     template: '#filter-results-template',
-                    container: '.results-filters',
-                    context: '#results-sidebar'
+                    container: '.results-filters'
                 }
             ],
 
@@ -63,9 +61,6 @@
                 } else {
                     $.extend(true, settings[optionName], options[optionName]);
                 }
-            }
-            if (meerkat.modules.deviceMediaState.get() === 'xs') {
-                changeFilterContext(settings.xsContext);
             }
 
             eventSubscriptions();
@@ -163,7 +158,7 @@
     function buildHtml(component) {
         _.each(settings[component], function (setting) {
             $(setting.container).empty(); // empty all so if we switch breakpoint it still works
-            $(setting.container, setting.context).html(getTemplateHtml(setting.template));
+            $(setting.container).html(getTemplateHtml(setting.template));
         });
     }
 
@@ -182,12 +177,6 @@
         return _htmlTemplate[template](model);
     }
 
-    function changeFilterContext(context) {
-        _.each(settings.filters, function (filter) {
-            filter.context = context;
-        });
-    }
-
     function eventSubscriptions() {
 
         // Every time we get to results, reset the filter model and re-render.
@@ -201,7 +190,10 @@
             if ($(event.target).parents('.filter').data('filterServerside') === true) {
                 needToFetchFromServer = true;
             }
-            $(settings.updates[0].container).slideDown();
+
+            if (!$(event.target).parents('.filter').data('dontToggleUpdate')) {
+                $(settings.updates[0].container).slideDown();
+            }
         });
 
         meerkat.messaging.subscribe(moduleEvents.filters.FILTERS_UPDATED, function (event) {
@@ -223,19 +215,10 @@
         });
 
         meerkat.messaging.subscribe(moduleEvents.filters.FILTERS_CANCELLED, function (event) {
+            resettingFilters = true;
             resetFilters();
             $(settings.updates[0].container).slideUp();
             resettingFilters = false;
-        });
-
-        meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, function resultsXsBreakpointEnter() {
-            changeFilterContext(settings.xsContext);
-            resetFilters();
-        });
-
-        meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function editDetailsEnterXsState() {
-            changeFilterContext('#results-sidebar');
-            resetFilters();
         });
     }
 
@@ -256,7 +239,6 @@
             meerkat.modules.utils.scrollPageTo($("header"));
         }).on('click', '.filter-cancel-changes', function (e) {
             e.preventDefault();
-            resettingFilters = true;
             meerkat.messaging.publish(moduleEvents.filters.FILTERS_CANCELLED, e);
         });
     }

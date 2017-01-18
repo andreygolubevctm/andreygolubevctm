@@ -10,11 +10,6 @@
         });
     }
 
-    function isRebateApplied() {
-        var $el = $('#health_healthCover_health_cover_rebate').find('input[name="health_healthCover_rebate"]:checked');
-        return !_.isEmpty($el) && $el.val() === 'Y';
-    }
-
     //Previous funds, settings
     function displayHealthFunds() {
         var $_previousFund = $('#mainform').find('.health-previous_fund');
@@ -83,7 +78,7 @@
     function setIncomeBase (initMode){
         var $incomeBase = $('#health_healthCover_incomeBase'),
             cover = meerkat.modules.healthChoices.returnCoverCode();
-        if((cover === 'S' || cover === 'SM' || cover === 'SF') && isRebateApplied()){
+        if((cover === 'S' || cover === 'SM' || cover === 'SF') && meerkat.modules.healthRebate.isRebateApplied()){
             show(initMode , $incomeBase);
         } else {
             hide(initMode , $incomeBase);
@@ -110,7 +105,6 @@
 
     meerkat.modules.register("healthCoverDetails", {
         init: initHealthCoverDetails,
-        isRebateApplied: isRebateApplied,
         displayHealthFunds: displayHealthFunds,
         setHealthFunds: setHealthFunds,
         setIncomeBase: setIncomeBase

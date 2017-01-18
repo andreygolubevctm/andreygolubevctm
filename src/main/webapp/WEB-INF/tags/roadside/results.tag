@@ -67,9 +67,12 @@
                                 <h2 class="productTitle">{{= productBrand }}</h2>
 
                                 <div class="productSubTitle">{{= productTitle }}</div>
-                                <div class="additionalBenefits"><span class="benefitsTitle">Additional Benefits (*See <a href="javascript:;" class="btn-more-info"
+                                <div class="additionalBenefits">
+                                    {{ if(obj.providerCode !== '365R') { }}
+                                    <span class="benefitsTitle">Additional Benefits (*See <a href="javascript:;" class="btn-more-info"
                                                                                                                          data-available="{{= obj.available }}"
                                                                                                                          data-productId="{{= obj.productId }}">More Info</a>):</span>
+                                    {{ } }}
                                     {{= obj.additionalBenefits }}
                                 </div>
                             </div>
@@ -96,9 +99,13 @@
                                 <h2 class="productTitle">{{= productBrand }}</h2>
 
                                 <div class="productSubTitle">{{= productTitle }}</div>
-                                <div class="additionalBenefits"><span class="benefitsTitle">Additional Benefits (*See <a href="javascript:;" class="btn-more-info"
-                                                                                                                         data-available="{{= obj.available }}"
-                                                                                                                         data-productId="{{= obj.productId }}">More Info</a>): </span>
+                                <div class="additionalBenefits">
+                                    {{ if(obj.providerCode !== '365R') { }}
+                                        <span class="benefitsTitle">Additional Benefits (*See <a href="javascript:;" class="btn-more-info"
+                                                                                                 data-available="{{= obj.available }}"
+                                                                                                 data-productId="{{= obj.productId }}">More Info</a>):
+                                        </span>
+                                    {{ } }}
                                     {{= additionalBenefits }}</div>
                             </div>
                         </div>

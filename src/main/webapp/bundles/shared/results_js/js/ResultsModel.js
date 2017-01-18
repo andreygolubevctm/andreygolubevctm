@@ -283,7 +283,7 @@ var ResultsModel = {
 				if( !Object.byString( jsonResult, Results.settings.paths.results.list ).length ) {
 					// This is stupid... if there are no results it pushes 'no results' into an empty array. It actually puts an empty array inside an array.
 					Results.model.returnedProducts = [Object.byString( jsonResult, Results.settings.paths.results.list )];
-					//is because of this that a flag gets place here so that we can explicidly not display results otherwise we get exception message.
+					//is because of this that a flag gets place here so that we can explicitly not display results otherwise we get exception message.
 				} else {
 					Results.model.returnedProducts = Object.byString( jsonResult, Results.settings.paths.results.list );
 				}

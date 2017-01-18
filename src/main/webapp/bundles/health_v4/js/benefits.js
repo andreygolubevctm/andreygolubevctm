@@ -13,22 +13,16 @@
             }
         },
         moduleEvents = events.benefits,
-        _hospitalType = 'comprehensive'; // default to comprehensive
+        _hospitalType = 'customise'; // default to customise
 
     function initBenefits() {
         jQuery(document).ready(function ($) {
             // was in step onInitialise, didnt work there for results.
             meerkat.modules.benefits.updateModelOnPreload();
 
-            $('#tabs').on('click', '.nav-tabs a', function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-
-                $(this).tab('show');
+            $('#tabs').find('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                setHospitalType($(this).data('benefit-cover-type'));
             });
-
-            $('.nav-tabs a:first').click();
-
             $elements = {
                 benefitsOverlow: $('.benefitsOverflow'),
                 extrasOverlay: $('.extrasOverlay'),
@@ -36,7 +30,7 @@
                 hospital: $('.Hospital_container'),
                 extras: $('.GeneralHealth_container'),
                 quickSelectContainer: $('.quickSelectContainer'),
-                coverType: $('input[name=health_situation_covertype]')
+                coverType: $('input[name=health_situation_coverType]')
             };
 
             _eventSubscription();
@@ -63,7 +57,7 @@
                 benefitType = _isBenefitElementHospital($this) ? 'hospital' : 'extras';
             // If health filters needs any other properties in filters_benefits.tag, add them here.
             benefits[benefitType].push({
-                id: $this.data('benefit-id'),
+                id: parseInt($this.data('benefit-id')),
                 label: $this.next('label').find('.benefitTitle').text(),
                 value: $this.data('benefit-id') // this is needed for filters.
             });
@@ -90,7 +84,7 @@
         var selectedIds = [];
 
         _.each($container.find(':input[data-benefit-id]:checked'), function getInputIds(el) {
-            selectedIds.push($(el).data('benefit-id'));
+            selectedIds.push(parseInt($(el).data('benefit-id')));
         });
 
         return selectedIds;
@@ -100,7 +94,7 @@
         $('.GeneralHealth_container, .Hospital_container').on('change', 'input', function () {
             var $this = $(this),
                 options = {
-                    benefitId: $this.data('benefit-id'),
+                    benefitId: parseInt($this.data('benefit-id')),
                     isHospital: _isBenefitElementHospital($this),
                     removeBenefit: !$this.is(':checked')
                 };
@@ -117,11 +111,11 @@
 
     function _registerXSBenefitsSlider() {
         // toggle the quick select data in the hospital container
-        $elements.hospital.find('.nav-tabs a').on('click', function toggleQuickSelect(){
+        $elements.hospital.find('.nav-tabs a').on('click', function toggleQuickSelect() {
             var target = $(this).data('target');
 
             $elements.hospital.find($elements.quickSelectContainer).toggleClass('hidden', target === '.limited-pane');
-            _hospitalType = target === '.limited-pane' ? 'limited' : 'comprehensive';
+            _hospitalType = target === '.limited-pane' ? 'limited' : 'customise';
         });
     }
 
@@ -154,11 +148,26 @@
         return _hospitalType;
     }
 
+    function setHospitalType(type) {
+        _hospitalType = type;
+        _setAccidentOnly();
+    }
+
+    function _setAccidentOnly() {
+        $('input[name=health_situation_accidentOnlyCover]').val(_hospitalType == 'limited' ? 'Y' : 'N');
+    }
+
+    function toggleHospitalTypeTabs() {
+        $('#tabs').find('a[data-benefit-cover-type="' + getHospitalType() + '"]').trigger('click');
+    }
+
     meerkat.modules.register("benefits", {
         init: initBenefits,
         events: events,
         updateModelOnPreload: updateModelOnPreload,
-        getHospitalType: getHospitalType
+        getHospitalType: getHospitalType,
+        setHospitalType: setHospitalType,
+        toggleHospitalTypeTabs: toggleHospitalTypeTabs
     });
 
 })(jQuery);
