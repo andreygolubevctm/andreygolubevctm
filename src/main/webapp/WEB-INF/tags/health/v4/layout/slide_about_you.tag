@@ -21,6 +21,7 @@
                 <form_v3:fieldset_columns sideHidden="true">
 
                 <jsp:attribute name="rightColumn">
+                    <reward:campaign_tile_container />
                     <health_v4_aboutyou:retrievequotes />
                     <health_v4_aboutyou:medicarecheck />
                 </jsp:attribute>
