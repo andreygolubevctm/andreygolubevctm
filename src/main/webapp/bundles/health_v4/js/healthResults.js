@@ -76,8 +76,6 @@
 
         initResults();
 
-        meerkat.modules.compare.initCompare();
-
         Features.init();
 
         eventSubscriptions();

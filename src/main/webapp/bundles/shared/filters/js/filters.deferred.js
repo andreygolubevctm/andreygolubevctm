@@ -17,13 +17,10 @@
             }
         },
         settings = {
-            verticalContextChange: ['xs'],
-            xsContext: '#navbar-main',
             filters: [
                 {
                     template: '#filter-results-template',
-                    container: '.results-filters',
-                    context: '#results-sidebar'
+                    container: '.results-filters'
                 }
             ],
 
@@ -64,9 +61,6 @@
                 } else {
                     $.extend(true, settings[optionName], options[optionName]);
                 }
-            }
-            if (_.contains(settings.verticalContextChange, meerkat.modules.deviceMediaState.get())) {
-                changeFilterContext(settings.xsContext);
             }
 
             eventSubscriptions();
