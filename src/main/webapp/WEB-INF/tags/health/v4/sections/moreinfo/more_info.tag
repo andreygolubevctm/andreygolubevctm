@@ -134,7 +134,7 @@
 
 									{{ if(typeof hospitalCover !== 'undefined') { }}
 										<div class="col-xs-12 secondaryBrochureLink addTopMargin">
-											<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="download-hospital-brochure col-xs-12 leftAlignedLink" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>Please download and refer to the Policy Brochure for details</a>
+											<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="download-hospital-brochure col-xs-12 leftAlignedLink" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>Download the policy brochure for more information.</a>
 										</div>
 									{{ } }}
 								</div>
@@ -176,9 +176,8 @@
 										<h3 class="heading">Restricted Benefits <span class="benefitCount gray">{{= hospitalCover.restrictions.length }}</span></h3>
 										<p>These treatements are limited to the same amount you would receive in a public hoslita for those treatements.</p>
 										{{ if(typeof hospitalCover !== 'undefined') { }}
-											<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="download-hospital-brochure col-xs-12 leftAlignedLink" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>Please download and refer to the Policy Brochure</a>
+											<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="download-hospital-brochure col-xs-12 leftAlignedLink" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>Download the policy brochure for more information.</a>
 										{{ } }}
-										<p>Unsure? <span>Have a quick chat with our Experts</span></p>
 
 										{{ _.each(hospitalCover.restrictions, function(restriction){ }}
 										<div class="row {{= restriction.className }} benefitRow restricted">
