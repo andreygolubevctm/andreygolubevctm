@@ -35,7 +35,7 @@
 <%@ attribute fragment="true" required="false" name="quoterefTemplate" description="A template customisable to display the quote reference number" %>
 <%@ attribute fragment="true" required="true" name="logoTemplate"
               description="A template just for the logo. Logos tend to be displayed in different places independent of price, so should be a different template." %>
-<%@ attribute fragment="true" required="true" name="productTitleTemplate" description="A template customisable to display the product title" %>
+<%@ attribute fragment="true" required="false" name="productTitleTemplate" description="A template customisable to display the product title" %>
 <%@ attribute fragment="true" required="true" name="priceTemplate" description="A template customisable to display price based on frequency etc, must exclude logo" %>
 <%@ attribute fragment="true" required="false" name="compareTemplate" description="A template for compare mode" %>
 <%@ attribute fragment="true" required="true" name="resultsContainerTemplate" description="A template from the result-row wrapper" %>
