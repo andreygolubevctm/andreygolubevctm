@@ -30,9 +30,11 @@
         <div class="results-header-inner-container">
             <div class="productSummary vertical results">
                 {{ var logoTemplate = meerkat.modules.templateCache.getTemplate($("#logo-template")); }}
+                {{ var productTitleTemplate = meerkat.modules.templateCache.getTemplate($("#product-title-template")); }}
                 {{ var priceTemplate = meerkat.modules.templateCache.getTemplate($("#price-template")); }}
                 {{ obj._selectedFrequency = Results.getFrequency(); obj.showAltPremium = false; }}
                 {{= logoTemplate(obj) }}
+                {{= productTitleTemplate(obj) }}
                 {{= priceTemplate(obj) }}
             </div>
 
