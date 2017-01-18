@@ -114,7 +114,7 @@
     function _registerXSBenefitsSlider() {
         // toggle the quick select data in the hospital container
         $elements.hospital.find('.nav-tabs a').on('click', function toggleQuickSelect() {
-            var target = $(this).data('target');
+            var target = $(this).attr('href');
 
             $elements.hospital.find($elements.quickSelectContainer).toggleClass('hidden', target === '.limited-pane');
             _hospitalType = target === '.limited-pane' ? 'limited' : 'customise';

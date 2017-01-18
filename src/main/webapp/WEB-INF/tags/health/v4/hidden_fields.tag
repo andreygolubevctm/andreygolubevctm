@@ -6,7 +6,7 @@
     <health_v2:benefitsHiddenItem item="${selectedValue}" />
 </c:forEach>
 
-
+<c:set var="fieldValue" value="N" />
 <c:if test="${data['health/situation/accidentOnlyCover'] != '' && not empty data['health/situation/accidentOnlyCover']}">
     <c:set var="fieldValue"><c:out value="${data['health/situation/accidentOnlyCover']}" escapeXml="true"/></c:set>
 </c:if>

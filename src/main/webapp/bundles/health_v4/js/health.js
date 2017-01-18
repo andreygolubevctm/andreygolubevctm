@@ -246,6 +246,10 @@
                 var selectedBenefits = meerkat.modules.benefitsModel.getSelectedBenefits();
                 meerkat.modules.healthResultsChange.onBenefitsSelectionChange(selectedBenefits);
                 meerkat.modules.benefitsToggleBar.deRegisterScroll();
+                if(meerkat.modules.benefits.getHospitalType() == 'limited') {
+                    meerkat.modules.benefitsModel.setIsHospital(true);
+                    meerkat.modules.benefitsModel.setBenefits([]);
+                }
             }
         };
 

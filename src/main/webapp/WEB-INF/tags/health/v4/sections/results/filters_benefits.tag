@@ -3,7 +3,6 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <core_v1:js_template id="filter-benefits-template">
-
 <div class="filter-heading">My Insurance Preferences</div>
 
 <div class="filter filter-hospital-benefits" data-filter-serverside="true">
@@ -30,9 +29,7 @@
             </div>
         </div>
         <div id="limitedHospital" class="tab-pane fade">
-            <p class="small">Limited Hospital Cover provides the most basic level of hospital cover and is generally the cheapest. It is also sufficient for you to avoid paying the Medicare Levy
-                Surcharge. However, it excludes a large number of benefits that other hospital policies cover as standard, and in some instances, provides cover only where you need treatment as a
-                result of an accident. To compare policies that provide a better level of cover, select comprehensive cover.</p>
+            <p class="small">Limited Hospital Cover provides the most basic level of hospital cover and is generally the cheapest. It is also sufficient for you to avoid paying the Medicare Levy Surcharge. However, it excludes a large number of benefits that other hospital policies cover as standard, and in some instances, provides cover only where you need treatment as a result of an accident. To compare policies that provide a better level of cover, select comprehensive cover.</p>
         </div>
 
     </div>

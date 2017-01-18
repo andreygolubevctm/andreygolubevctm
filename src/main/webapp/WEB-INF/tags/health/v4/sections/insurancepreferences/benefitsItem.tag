@@ -56,8 +56,8 @@
                 </div>
                 <div id="tabs" class="benefitsTab">
                     <ul class="nav nav-tabs tab-count-2">
-                        <li class="active"><a data-toggle="tab" href=".comprehensive-pane" data-target=".comprehensive-pane" data-benefit-cover-type="comprehensive"><h2 class="ignore">Comprehensive</h2></a></li>
-                        <li><a data-toggle="tab" href=".limited-pane" data-target=".limited-pane" data-benefit-cover-type="limited"><h2 class="ignore">Limited Cover</h2></a></li>
+                        <li class="active"><a data-toggle="tab" href=".comprehensive-pane" data-benefit-cover-type="customise"><h2 class="ignore">Comprehensive</h2></a></li>
+                        <li><a data-toggle="tab" href=".limited-pane" data-benefit-cover-type="limited"><h2 class="ignore">Limited Cover</h2></a></li>
                     </ul>
                     <health_v4_insuranceprefs:quick_select options="Start a Family:family|Ageing Gracefully:ageing" />
                     <div class="tab-content">
