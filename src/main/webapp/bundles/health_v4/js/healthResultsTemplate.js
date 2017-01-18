@@ -222,7 +222,7 @@
                 id: 'marketingOffer',
                 title: "Marketing",
                 className: "icon-life",
-                text: "Get insured online to redeem ....",
+                text: "Get health cover and redeem claim your meerkat toy",
                 active: false,
                 productId: product.productId
             }

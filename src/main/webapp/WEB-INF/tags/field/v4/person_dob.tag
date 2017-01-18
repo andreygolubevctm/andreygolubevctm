@@ -79,7 +79,7 @@ ${logger.trace('DOB Restricted to max: {},{}' , log:kv('nowLessAgeMinYears', now
 											url="/WEB-INF/option_data/day.html"
 											className="sessioncamexclude dateinput-day dontSubmit ${className}" />
 				</div>
-				<div class="col-md-3 col-xs-4 monthContainer">
+				<div class="col-md-4 col-xs-4 monthContainer">
 					<field_v2:import_select xpath="${xpath}InputM"
 											title="the month"
 											required="true"

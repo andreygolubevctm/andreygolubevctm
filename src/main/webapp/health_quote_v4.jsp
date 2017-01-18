@@ -48,10 +48,10 @@
                 <c:if test="${not empty callCentreNumber}">
                     <div class="navbar-collapse header-collapse-contact collapse">
                         <ul class="nav navbar-nav navbar-right callCentreNumberSection">
-                            <li class="navbar-text">Confused? Talk to our experts... Simples!</li>
+                            <li class="navbar-text">Confused? Talk to our experts now.</li>
                             <li>
                                 <div class="navbar-text hidden-xs" data-livechat="target">
-                                    Call us <a href="javascript:;" data-toggle="dialog"
+                                    Call <a href="javascript:;" data-toggle="dialog"
                                                data-content="#view_all_hours"
                                                data-dialog-hash-id="view_all_hours"
                                                data-title="Call Centre Hours" data-cache="true">
