@@ -15,30 +15,31 @@
             // added delay as this seems to sort out the issues with  $elements.toggleBar.offset().top  within the function _setupToggleBarSettings()
             // thinking it is a race condition so added an extra 500ms
             _.delay(function delayInit(){
-                var $container = $(initSettings.container);
+            var $container = $(initSettings.container);
 
-                if (!_.isUndefined(initSettings.currentStep)) {
-                    currentStep = initSettings.currentStep;
-                }
+            if (!_.isUndefined(initSettings.currentStep)) {
+                currentStep = initSettings.currentStep;
+            }
 
-                $elements = {
-                    toggleBar: $container.find('.toggleBar'),
-                    benefitsOverflow: $container.find('.benefitsOverflow'),
-                    hospitalContainer: $container.find('.Hospital_container'),
-                    extrasTab: $container.find('.toggleBar').find('.extras'),
-                    hospitalTab: $container.find('.toggleBar').find('.hospital'),
-                    progressBar: $container.find('.journeyProgressBar')
-                };
+            $elements = {
+                toggleBar: $container.find('.toggleBar'),
+                benefitsOverflow: $container.find('.benefitsOverflow'),
+                hospitalContainer: $container.find('.Hospital_container'),
+                extrasTab: $container.find('.toggleBar').find('.extras'),
+                hospitalTab: $container.find('.toggleBar').find('.hospital'),
+                progressBar: $container.find('.journeyProgressBar')
+            };
 
-                $elements.targetContainer = $elements.toggleBar.data('targetcontainer');
+            $elements.targetContainer = $elements.toggleBar.data('targetcontainer');
 
-                _setupToggleBarSettings(initSettings);
-                _attachToggleBar();
-                _setLabelCounts();
-                _eventSubscriptions();
+            _setupToggleBarSettings(initSettings);
+            _attachToggleBar();
+            _setLabelCounts();
+            _eventSubscriptions();
             }, 500);
         });
     }
+
     // allows the togglebar to be placed in a certain position (eg benefits screen)
     function _attachToggleBar() {
         if (!_.isUndefined($elements.targetContainer) && (!settings.isModal)) {
@@ -49,7 +50,7 @@
     function _beforePanelAnimationStart(type) {
         $elements.toggleBar.hide();
         if (settings[currentStep].isModal === false) {
-            $elements.toggleBar.find('.'+type).removeAttr('style').css('position', 'absolute');
+            $elements.toggleBar.find('.' + type).removeAttr('style').css('position', 'absolute');
         }
     }
 
@@ -81,7 +82,7 @@
 
 
         // updates toggle bar tab position during scroll for non-modal instances
-        $(window).off("scroll.benefitsScroll").on("scroll.benefitsScroll", function() {
+        $(window).off("scroll.benefitsScroll").on("scroll.benefitsScroll", function () {
             _updateToggleBarTabPosition();
         });
     }
@@ -110,23 +111,23 @@
 
     // sets up all the required variables to calculate the position of the togglebar tabs
     function _setupToggleBarSettings(initSettings) {
-
-        if($elements.toggleBar.length) {
-            var tbTop = $elements.toggleBar.offset().top,
-                tbHeight = $elements.toggleBar.height();
-
-            settings[currentStep] = {
-                toggleBarTop: tbTop,
-                toggleBarBottom: tbHeight + tbTop,
-                toggleBarHeight: tbHeight,
-                hospitalTabWidth: $elements.toggleBar.find('.hospital').width(),
-                extrasTabWidth: $elements.toggleBar.find('.extras').width(),
-                bottomFixed: false,
-                topFixed: false,
-                isModal: initSettings.isModal || false,
-                currentBenefit: 'extras'
-            };
+        if (!$elements.toggleBar.length) {
+            return;
         }
+        var tbTop = $elements.toggleBar.offset().top,
+            tbHeight = $elements.toggleBar.height();
+
+        settings[currentStep] = {
+            toggleBarTop: tbTop,
+            toggleBarBottom: tbHeight + tbTop,
+            toggleBarHeight: tbHeight,
+            hospitalTabWidth: $elements.toggleBar.find('.hospital').width(),
+            extrasTabWidth: $elements.toggleBar.find('.extras').width(),
+            bottomFixed: false,
+            topFixed: false,
+            isModal: initSettings.isModal || false,
+            currentBenefit: 'extras'
+        };
     }
 
     // Code takes care of the positioning of the toggle bar tabs.
@@ -143,29 +144,29 @@
             currentTabBenefitWidth = settings[currentStep][currentBenefit + 'TabWidth'],
             fixedBottomPos = settings[currentStep].toggleBarHeight - currentTabBenefitWidth;
 
-            // check if the selection tab has moved past the top of the toggleBar. If so, stop it from moving up the page
-            if (!settings.topFixed && $elements.progressBar.offset().top + $elements.progressBar.height() <= settings[currentStep].toggleBarTop) {
-                // if so attach it to the top of the toggle bar
-                var $currentBenefitTab = $elements.toggleBar.find('.' + currentBenefit),
-                    posNode = currentBenefit === 'hospital' ? 'left' : 'right';
+        // check if the selection tab has moved past the top of the toggleBar. If so, stop it from moving up the page
+        if (!settings.topFixed && $elements.progressBar.offset().top + $elements.progressBar.height() <= settings[currentStep].toggleBarTop) {
+            // if so attach it to the top of the toggle bar
+            var $currentBenefitTab = $elements.toggleBar.find('.' + currentBenefit),
+                posNode = currentBenefit === 'hospital' ? 'left' : 'right';
 
-                $currentBenefitTab.removeAttr('style').css('position', 'absolute').css(posNode, parseInt($currentBenefitTab.css(posNode)) - 4);
-                settings.topFixed = true;
-            }
+            $currentBenefitTab.removeAttr('style').css('position', 'absolute').css(posNode, parseInt($currentBenefitTab.css(posNode)) - 4);
+            settings.topFixed = true;
+        }
 
-            // check if we're scrolling somewhere between the top and bottom of the toggleBar
-            if ((settings.bottomFixed || settings.topFixed) && ($elements.progressBar.offset().top + $elements.progressBar.height() > settings[currentStep].toggleBarTop) && ($elements.toggleBar.find('.' + currentBenefit).offset().top + currentTabBenefitWidth < settings[currentStep].toggleBarBottom)) {
-                var fixedPos = (settings[currentStep].toggleBarTop - currentTabBenefitWidth) * -1;
-                $elements.toggleBar.find('.' + currentBenefit).removeAttr('style').css('position', 'fixed').css('marginTop', fixedPos);
-                settings.bottomFixed = false;
-                settings.topFixed = false;
-            }
+        // check if we're scrolling somewhere between the top and bottom of the toggleBar
+        if ((settings.bottomFixed || settings.topFixed) && ($elements.progressBar.offset().top + $elements.progressBar.height() > settings[currentStep].toggleBarTop) && ($elements.toggleBar.find('.' + currentBenefit).offset().top + currentTabBenefitWidth < settings[currentStep].toggleBarBottom)) {
+            var fixedPos = (settings[currentStep].toggleBarTop - currentTabBenefitWidth) * -1;
+            $elements.toggleBar.find('.' + currentBenefit).removeAttr('style').css('position', 'fixed').css('marginTop', fixedPos);
+            settings.bottomFixed = false;
+            settings.topFixed = false;
+        }
 
-            // check if we've scrolled past the bottom of the toggleBar. If so, stop it from moving down the page
-            if (!settings.bottomFixed && $elements.toggleBar.find('.' + currentBenefit).offset().top + currentTabBenefitWidth >= (settings[currentStep].toggleBarBottom - currentTabBenefitWidth)) {
-                $elements.toggleBar.find('.' + currentBenefit).removeAttr('style').css('position', 'absolute').css('marginTop', fixedBottomPos);
-                settings.bottomFixed = true;
-            }
+        // check if we've scrolled past the bottom of the toggleBar. If so, stop it from moving down the page
+        if (!settings.bottomFixed && $elements.toggleBar.find('.' + currentBenefit).offset().top + currentTabBenefitWidth >= (settings[currentStep].toggleBarBottom - currentTabBenefitWidth)) {
+            $elements.toggleBar.find('.' + currentBenefit).removeAttr('style').css('position', 'absolute').css('marginTop', fixedBottomPos);
+            settings.bottomFixed = true;
+        }
     }
 
     meerkat.modules.register("benefitsToggleBar", {

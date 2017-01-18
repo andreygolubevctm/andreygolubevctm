@@ -4,7 +4,6 @@
 <core_v1:js_template id="results-features-extras-template">
     {{ var availableBenefits = meerkat.modules.healthResultsTemplate.getAvailableBenefits(obj); }}
     {{ var hasMoreThanOneBenefit = availableBenefits.length > 1; }}
-    {{ console.log(obj, availableBenefits, hasMoreThanOneBenefit); }}
     {{ var popoverContent = hasMoreThanOneBenefit ? meerkat.modules.healthResultsTemplate.getPopOverContent(obj, availableBenefits) : ""; }}
     <div class="cell category">
         <div class="content isMultiRow" data-featureId="99999">

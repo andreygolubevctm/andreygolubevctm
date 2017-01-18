@@ -43,42 +43,6 @@
                 defaultValueSourceSelector: '#health_filter_frequency',
                 defaultValue: 'M'
             },
-            /* @todo may need some of this logic for comprehensive/limited
-            "coverLevel": {
-                name: 'health_filterBar_coverLevel',
-                defaultValueSourceSelector: '#health_benefits_covertype',
-                defaultValue: '',
-                values: [
-                    {
-                        value: 'top',
-                        label: 'Top'
-                    },
-                    {
-                        value: 'medium',
-                        label: 'Medium'
-                    },
-                    {
-                        value: 'basic',
-                        label: 'Basic'
-                    },
-                    {
-                        value: 'customise',
-                        label: 'Customise'
-                    },
-                    {
-                        value: 'limited',
-                        label: 'Limited'
-                    }
-
-                ],
-                events: {
-                    update: function (filterObject) {
-                        var value = $('select[name=' + filterObject.name + ']').val();
-                        $(filterObject.defaultValueSourceSelector).val(value);
-                        $('.hospitalCoverToggles a[data-category="' + value + '"]').trigger('click');
-                    }
-                }
-            },*/
             "hospitalExcess": {
                 name: "health_filterBar_excess",
                 title: "Hospital excess",
@@ -92,7 +56,7 @@
                         meerkat.modules.sliders.initSlider($slider);
                         $slider.find('.slider')
                             .val($(filterObject.defaultValueSourceSelector).val())
-                            .on('change', function(event){
+                            .on('change', function (event) {
                                 meerkat.messaging.publish(meerkatEvents.filters.FILTER_CHANGED, event);
                             });
 
@@ -139,16 +103,16 @@
                         /**
                          * Copy the element and place it in the filters with a new id etc. (jQuery Clone doesn't copy the value...)
                          */
-                        var $defaultValueSourceSelector =  $(filterObject.defaultValueSourceSelector),
+                        var $defaultValueSourceSelector = $(filterObject.defaultValueSourceSelector),
                             $incomeElement = $defaultValueSourceSelector.parent().clone();
 
                         $incomeElement
                             .addClass('hidden')
                             .find('select').attr({
-                                'id': filterObject.name,
-                                'name': filterObject.name,
-                                'data-analytics': 'filter rebate'
-                            }).val($defaultValueSourceSelector.val())
+                            'id': filterObject.name,
+                            'name': filterObject.name,
+                            'data-analytics': 'filter rebate'
+                        }).val($defaultValueSourceSelector.val())
                             .find('option[value=""]').remove();
 
                         $('.filter-income-holder').html($incomeElement);
@@ -172,7 +136,7 @@
                     beforeInit: function (filterObject) {
                         var arr = [];
                         _.each(filterObject.values, function (object) {
-                            arr.push({value: object.value || object.code, label: object.label || object.name});
+                            arr.push({ value: object.value || object.code, label: object.label || object.name });
                         });
                         filterObject.values = arr;
                     },
@@ -197,16 +161,27 @@
             },
             "benefitsHospital": {
                 name: 'health_filterBar_benefitsHospital',
+                // This is all of the benefits
                 values: meerkat.modules.benefitsModel.getHospitalBenefitsForFilters(),
                 defaultValueSourceSelector: '.Hospital_container',
                 defaultValue: {
                     getDefaultValue: function () {
-                        return meerkat.modules.benefitsModel.getSelectedBenefits();
+                        // This is what is already selected.
+                        return meerkat.modules.benefitsModel.getHospital();
                     }
                 },
                 events: {
+                    init: function (filterObject) {
+                        var $filterBenefits = $('.health-filter-hospital-benefits');
+
+                        toggleFilter($filterBenefits);
+                        setFilterByHospitalBenefits();
+                    },
                     update: function () {
                         populateSelectedBenefits();
+                            toggleFilterByContainer($('.filter-hospital-benefits'), false);
+                            toggleFilter($('.health-filter-hospital-benefits'), false);
+                            setFilterByHospitalBenefits();
                     }
                 }
             },
@@ -216,11 +191,21 @@
                 defaultValueSourceSelector: '.GeneralHealth_container',
                 defaultValue: {
                     getDefaultValue: function () {
-                        return meerkat.modules.benefitsModel.getSelectedBenefits();
+                        return meerkat.modules.benefitsModel.getExtras();
                     }
                 },
                 events: {
-                    // already run in hospital events
+                    init: function (filterObject) {
+                        var $filterBenefits = $('.health-filter-extras-benefits');
+
+                        toggleFilter($filterBenefits);
+                        setFilterByExtrasBenefits();
+                    },
+                    update: function () {
+                            toggleFilterByContainer($('.filter-extras-benefits'), false);
+                            toggleFilter($('.health-filter-extras-benefits'), false);
+                            setFilterByExtrasBenefits();
+                    }
                 }
             }
 
@@ -245,38 +230,54 @@
                 }
             ],
             events: {
-                update: function() {
+                update: function () {
                     // Update benefits step coverType
-                    coverType = coverType || meerkat.modules.healthChoices.getCoverType();
-                    $('#health_situation_coverType').val(coverType);
-                    /*meerkat.modules.healthBenefitsStep.flushHiddenBenefits();*/
                     meerkat.modules.journeyEngine.loadingShow('...updating your quotes...', true);
                     // Had to use a 100ms delay instead of a defer in order to get the loader to appear on low performance devices.
-                    _.delay(function(){
+                    _.delay(function () {
                         Results.unfilterBy('productId', "value", false);
                         Results.settings.incrementTransactionId = true;
                         meerkat.modules.healthResults.get();
-                    },100);
+                    }, 100);
                 }
             }
         },
-        coverType,
         quoteRefTemplate;
 
-    function populateSelectedBenefits() {
-        var selectedBenefits = $('.results-filters-benefits input[type="checkbox"]:checked').map(function() {
-            return this.value;
+    function _getCheckedBenefitsFromFilters($container) {
+        var array = [];
+        $container.find('input[type="checkbox"]:checked').map(function () {
+            array.push(this.value);
         });
-        meerkat.modules.healthResults.setSelectedBenefitsList(selectedBenefits);
-        /*meerkat.modules.healthBenefitsStep.populateBenefitsSelection(selectedBenefits);*/
+        return array;
+    }
 
-        // when hospital is set to off in [Customise Cover] hide the excess section
-        var $excessSection = $("#resultsPage").find('.cell.excessSection');
-        _.contains(selectedBenefits, 'Hospital') ? $excessSection.show() : $excessSection.hide();
+    /**
+     * This is called just by hospital, as it does both hospital and extras due to the results functionality
+     * needing both to set the extras on Features.pageStructure
+     */
+    function populateSelectedBenefits() {
+        // this needs to convert the shortlistkey names e.g. PrHospital to its id for it to work...
+        // go back up to init filters and try and make it just run off ids.
+        var selectedBenefits = {
+            'hospital': _getCheckedBenefitsFromFilters($('.filter-hospital-benefits')),
+            'extras': _getCheckedBenefitsFromFilters($('.filter-extras-benefits'))
+        };
+
+        meerkat.modules.healthResults.setSelectedBenefitsList(selectedBenefits.hospital.concat(selectedBenefits.extras));
+
+        meerkat.modules.benefitsModel.setIsHospital(false);
+        meerkat.modules.benefitsModel.setBenefits(selectedBenefits.extras);
+
+        meerkat.modules.benefitsModel.setIsHospital(true);
+        meerkat.modules.benefitsModel.setBenefits(selectedBenefits.hospital);
+
     }
 
     function init() {
-        if(meerkat.site.pageAction === "confirmation") { return false; }
+        if (meerkat.site.pageAction === "confirmation") {
+            return false;
+        }
         quoteRefTemplate = $('.quote-reference-number');
         meerkat.modules.filters.initFilters(settings, model);
         applyEventListeners();
@@ -301,90 +302,16 @@
             meerkat.messaging.publish(meerkatEvents.filters.FILTER_CHANGED, e);
         });
 
-        $(document).on('click', '.filter-remove', function removeBenefitsSection(e) {
-            var $this = $(this),
-                $sidebar = $('.sidebar-widget');
-
-            if ($this.hasClass('hospital')) {
-                $sidebar.find('.need-hospital').slideUp('fast', function () {
-                    $this.addClass('hidden');
-                    $sidebar.find('.filter-remove.extras').addClass('hidden');
-                    $sidebar.find('.need-no-hospital').removeClass('hidden').slideDown('fast');
-                });
-                coverType = 'E';
-            }
-            else if ($this.hasClass('extras')) {
-                $sidebar.find('.need-extras').slideUp('fast', function () {
-                    $this.addClass('hidden');
-                    $sidebar.find('.filter-remove.hospital').addClass('hidden');
-                    $sidebar.find('.need-no-extras').removeClass('hidden').slideDown();
-                });
-                coverType = 'H';
-            }
-            meerkat.messaging.publish(meerkatEvents.filters.FILTER_CHANGED, e);
-        });
-
-        $(document).on('click', '.filter-add', function addBenefitsSection(e) {
-            var $this = $(this),
-                $sidebar = $('.sidebar-widget');
-
-            if ($this.hasClass('hospital')) {
-                $sidebar.find('.need-no-hospital').slideUp('fast', function () {
-                    $this.addClass('hidden');
-                    $sidebar.find('.filter-remove.extras').removeClass('hidden');
-                    $sidebar.find('.need-hospital').removeClass('hidden').slideDown('fast');
-                });
-            }
-            else if ($this.hasClass('extras')) {
-                $sidebar.find('.need-no-extras').slideUp('fast', function () {
-                    $this.addClass('hidden');
-                    $sidebar.find('.filter-remove.hospital').removeClass('hidden');
-                    $sidebar.find('.need-extras').removeClass('hidden').slideDown('fast');
-                });
-            }
-            coverType = 'C';
-            meerkat.messaging.publish(meerkatEvents.filters.FILTER_CHANGED, e);
-        });
-
-        $(document).on('click', '.filter-toggle-all', function toggleAllBenefits(e) {
-            var $this = $(e.currentTarget),
-                $benefitsList = $this.parents('.benefits-list');
-
-            if ($benefitsList.hasClass('expanded')) {
-                $this.find('.text').text('add more selections');
-                $benefitsList.find('.checkbox').filter(function () {
-                    return !$(this).find('input').is(':checked');
-                }).slideUp('fast', function () {
-                    $(this).addClass('hidden');
-                });
-            } else {
-                $this.find('.text').text('show less');
-                $benefitsList.find('.checkbox').removeClass('hidden').slideDown('fast');
-            }
-
-            var $wrapper = $this.closest('.benefits-list');
-            var groupLabel = '';
-            if($wrapper.hasClass('need-hospital')) {
-                groupLabel = 'hospital';
-            } else if($wrapper.hasClass('need-extras')) {
-                groupLabel = 'extras';
-            }
-            $this.find('.text').attr('data-analytics','filter ' + groupLabel);
-
-            $benefitsList.toggleClass('expanded');
-            $this.find('.icon').toggleClass('icon-angle-up icon-angle-down');
-            toggleBenefitsLink($benefitsList);
-        });
 
         $(document).on('change', '#health_filterBar_rebate', function toggleRebateDropdown() {
             toggleIncome(!$(this).is(':checked'));
         });
 
-        $(document).on('click', '.filtersEditTier', function() {
+        $(document).on('click', '.filtersEditTier', function () {
             toggleRebateEdit(false);
         });
 
-        $(document).on('click', '.filter-toggle', function() {
+        $(document).on('click', '.filter-toggle', function () {
             var filter = $(this).attr('data-filter');
 
             toggleFilterByContainer($('.filter-' + filter));
@@ -418,6 +345,34 @@
         }
     }
 
+    function setFilterByExtrasBenefits() {
+        var coverType = meerkat.modules.healthChoices.getCoverType(),
+            extrasCount = meerkat.modules.benefitsModel.getExtrasCount(),
+            benefitString = '';
+        if (coverType === 'H' || extrasCount === 0) {
+            benefitString = 'No Extras';
+        } else {
+            var plural = extrasCount > 1 ? 's' : '';
+            benefitString = extrasCount + ' Extra' + plural + ' selected';
+        }
+        $('.filter-by-extras-benefits').html(benefitString);
+    }
+
+    function setFilterByHospitalBenefits() {
+        var coverType = meerkat.modules.healthChoices.getCoverType(),
+            hospitalType = meerkat.modules.benefits.getHospitalType(),
+            hospitalCount = meerkat.modules.benefitsModel.getHospitalCount(),
+            benefitString = '';
+        if (coverType === 'E' || hospitalCount === 0) {
+            benefitString = 'No Hospital';
+        } else {
+            benefitString = hospitalCount + ' Benefits selected';
+        }
+        var coverTypeLabel = '<div>' + hospitalType.charAt(0).toUpperCase() + hospitalType.slice(1) + " Cover</div>";
+        var benefitCount = '<div>' + benefitString + '</div>';
+        $('.filter-by-hospital-benefits').html(coverTypeLabel + benefitCount);
+    }
+
     function setFilterByExcess() {
         $('.filter-by-excess').text($('.health-filter-excess .selection').text());
     }
@@ -430,49 +385,13 @@
         $('.filter-by-brands').text(filterByText);
     }
 
-    function toggleBenefitsLink($benefitsList) {
-        $benefitsList.find('.filter-toggle-all').toggle($benefitsList.find('input[type="checkbox"]:checked').length !== $benefitsList.find('input[type="checkbox"]').length);
-    }
-
     function toggleQuoteRefTemplate(toggle) {
         quoteRefTemplate[toggle]();
     }
+
     function eventSubscriptions() {
         // health specific logic attached to filter change
         meerkat.messaging.subscribe(meerkatEvents.filters.FILTER_CHANGED, function (event) {
-            var $sidebar = $('.sidebar-widget');
-
-            // coverLevel change event subscription
-            switch (event.target.name) {
-                case 'health_filterBar_coverLevel':
-                    /*var currentCover = $(event.target).val(),
-                        $allHospitalButtons = $sidebar.find('.benefitsHospital').find('input[type="checkbox"]');
-
-                    switch (currentCover) {
-                        case 'top':
-                            $allHospitalButtons.prop('checked', true).parents('.benefits-list').find('.filter-toggle-all').trigger('click');
-                            break;
-                        case 'limited':
-                            $allHospitalButtons.prop('checked', false);
-                            break;
-                        default:
-                            // if is customise, leave as it is, but make sure prHospital is ticked
-                            if (currentCover !== 'customise') {
-                                $allHospitalButtons.prop('checked', false);
-                            }
-                            $sidebar.find('.benefitsHospital').find('.' + currentCover + ' input[type="checkbox"]').prop('checked', true).parent().removeClass('hidden').slideDown('fast');
-                            break;
-                    }*/
-                    break;
-                case 'health_filterBar_benefitsHospital':
-                    $('#health_filterBar_coverLevel').val('customise');
-                    toggleBenefitsLink($sidebar.find('.benefitsHospital'));
-                    break;
-                case 'health_filterBar_benefitsExtras':
-                    toggleBenefitsLink($sidebar.find('.benefitsExtras'));
-                    break;
-            }
-
             if (!$(event.target).parents('.filter').data('dontToggleUpdate')) {
                 toggleQuoteRefTemplate('slideUp');
             }
@@ -482,23 +401,14 @@
             toggleQuoteRefTemplate('slideDown');
         });
 
-        meerkat.messaging.subscribe(meerkatEvents.filters.FILTERS_RENDERED, function (){
-            // reset coverType to use the journey value
-            coverType = meerkat.modules.healthChoices.getCoverType();
-
-            // hack for the css3 multi columns, it is buggy when two columns doesn't have the same amount of children
-            var $providerListCheckboxes = $('.provider-list .checkbox'),
-                nthChild = Math.ceil($providerListCheckboxes.length / 2);
-            $providerListCheckboxes.filter(':nth-child(' + nthChild + ')').css('display', 'inline-block');
-        });
-
         meerkat.messaging.subscribe(meerkatEvents.transactionId.CHANGED, function updateCoupon() {
-            _.defer(function(){
+            _.defer(function () {
                 meerkat.modules.coupon.loadCoupon('filter', null, function successCallBack() {
                     meerkat.modules.coupon.renderCouponBanner();
                 });
             });
         });
+
     }
 
     meerkat.modules.register("healthFilters", {
