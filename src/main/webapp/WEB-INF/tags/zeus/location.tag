@@ -29,11 +29,19 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-xs-12">
-			<div class="globalMap map_${imageName} toy${toyType}"></div>
-			<span class="mobilePostcardName">${firstName}</span>
+				<div class="globalMap map_${imageName} toy${toyType}"></div>
+				<span class="mobilePostcardName">${firstName}</span>
+				<div class="mobileShareLinks">
+					<a href="#"><img src="" data-defer-src="assets/brand/ctm/images/zeus/share_facebook.png" alt="Share on Facebook"></a>
+					<a href="#"><img src="" data-defer-src="assets/brand/ctm/images/zeus/share_twitter.png" alt="Share on Twitter"></a>
+				</div>
 				<div class="postcardContainer">
 					<img class="postcard" src="" data-defer-src="assets/brand/ctm/images/zeus/postcard_${imageName}${toyType}.png" alt="Aleksandr Russian postcard">
 					<span class="postcardName">${firstName}</span>
+					<div class="shareLinks">
+						<a href="#"><img src="" data-defer-src="assets/brand/ctm/images/zeus/share_facebook.png" alt="Share on Facebook"></a>
+						<a href="#"><img src="" data-defer-src="assets/brand/ctm/images/zeus/share_twitter.png" alt="Share on Twitter"></a>
+					</div>
 				</div>
 			</div>
 		</div>
