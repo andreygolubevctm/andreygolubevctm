@@ -37,7 +37,7 @@
         _.each(availableBenefits, function (ft) {
             output += '<div>' + ft.safeName + '</div>';
         });
-        output += "<div class='text-center'><a href='javascript:;' class='open-more-info' data-productId='" + obj.productId + "'>View Product</a> for more details</div>";
+        output += "<div class='text-center'><a href='javascript:;' class='open-more-info' data-productId='" + obj.productId + "' data-available='" + obj.available + "'>View Product</a> for more details</div>";
         return output;
     }
 
@@ -338,9 +338,9 @@
     function toggleRemoveResultPagination() {
         var pageMeasurements = Results.pagination.calculatePageMeasurements();
         if (!pageMeasurements || pageMeasurements && pageMeasurements.numberOfPages <= 1) {
-            $resultsPagination.addClass('hidden');
+            $resultsPagination.find('.navbar-collapse').addClass('hidden');
         } else {
-            $resultsPagination.removeClass('hidden');
+            $resultsPagination.find('.navbar-collapse').removeClass('hidden');
         }
     }
 

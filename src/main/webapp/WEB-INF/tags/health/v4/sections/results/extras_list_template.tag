@@ -8,7 +8,8 @@
     <div class="cell category">
         <div class="content isMultiRow" data-featureId="99999">
             {{ if (hasMoreThanOneBenefit) { }}<a data-toggle="popover" data-adjust-y="0" data-trigger="click" data-my="bottom center" data-at="top center" data-content="{{= popoverContent }}" data-class="resultsOtherBenefitsTooltip">{{= availableBenefits[0].safeName }} and {{= (availableBenefits.length - 1) }} more</a>
-            {{ } else if(availableBenefits.length) { }}Also includes {{= availableBenefits[0].safeName }}{{ } }}
+            {{ } else if(availableBenefits.length) { }}Also includes {{= availableBenefits[0].safeName }}
+            {{ } else { }}Does not include Private Hospital{{ } }}
         </div>
     </div>
 </core_v1:js_template>
