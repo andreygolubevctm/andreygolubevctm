@@ -130,7 +130,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
         }
 
 		//TODO What to do when create order was not successful?
-		if (createPlaceholder.map(OrderFormResponse::getStatus).map(Optional::get).filter(status -> !status).isPresent()) {
+		if (createPlaceholder.map(OrderFormResponse::getStatus).filter(status -> !status).isPresent()) {
             LOGGER.error("Create reward/order placeholder failed");
 		}
 

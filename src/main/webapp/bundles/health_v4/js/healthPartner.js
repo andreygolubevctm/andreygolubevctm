@@ -23,7 +23,9 @@
             coverLoadingHeading: $('.benefitsContainer').find('h3:first-child')
         };
 
-        $elements.partnerQuestionSet = $elements.partnerDOBD.add($elements.currentCover).add($elements.partnerCoverLoading);
+        $elements.partnerQuestionSet = $elements.partnerDOBD.add($elements.currentCover);
+
+        meerkat.modules.fieldUtilities.disable($elements.partnerCoverLoading);
 
         var $checked = $elements.currentCover.filter(':checked');
         if($checked.length) {
@@ -33,11 +35,13 @@
 
     function _applyEventListeners() {
         $elements.currentCover.on('change', function toggleContinuousCover() {
-            var $this = $(this);
-            var $checked = $this.filter(':checked');
+            var $this = $(this),
+                $checked = $this.filter(':checked'),
+                disableField = ($checked.val() === 'N') || ($checked.val() === 'Y' && meerkat.modules.age.isLessThan31Or31AndBeforeJuly1($elements.dob.val()));
+
             meerkat.modules.fieldUtilities.toggleFields(
                 $elements.partnerCoverLoading,
-                !$checked.length || $checked.val() === 'N' || meerkat.modules.age.isLessThan31Or31AndBeforeJuly1($elements.dob.val())
+                disableField
             );
         });
 

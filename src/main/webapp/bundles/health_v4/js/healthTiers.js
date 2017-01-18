@@ -36,23 +36,31 @@ Handling of the rebate tiers based off situation
 		$dependants,
 		$incomeBase,
 		$income,
-		allowance = 0;
+		allowance = 0,
+		$healthCoverIncomeLabel;
 
 	function initHealthTiers(){
 		$dependants = $('#health_healthCover_dependants');
 		$incomeBase = $('#health_healthCover_incomeBase');
 		$income = $('#health_healthCover_income');
+		$healthCoverIncomeLabel = $('#health_healthCover_incomelabel');
 	}
 
 	function shouldShowDependants() {
 		return allowance > 0;
 	}
 
+	function setIncomeLabel() {
+		var $selectedIncome = $income.find(':selected');
+		var incomeLabel = ($selectedIncome.val().length > 0) ? $selectedIncome.text() : '';
+		$healthCoverIncomeLabel.val( incomeLabel );
+	}
+
 	// Manages the descriptive titles of the tier drop-down
 	function setTiers(initMode){
 		// Set the dependants allowance and income message
 		if (!initMode) {
-			allowance = meerkat.modules.healthRebate.getDependents();
+			allowance = meerkat.modules.healthRebate.getDependents() - 1;
 			allowance = (allowance > 0 ? allowance * 1500 : 0);
 		}
 
@@ -129,7 +137,8 @@ Handling of the rebate tiers based off situation
 	meerkat.modules.register("healthTiers", {
 		initHealthTiers: initHealthTiers,
 		setTiers: setTiers,
-		shouldShowDependants: shouldShowDependants
+		shouldShowDependants: shouldShowDependants,
+		setIncomeLabel: setIncomeLabel
 	});
 
 })(jQuery);

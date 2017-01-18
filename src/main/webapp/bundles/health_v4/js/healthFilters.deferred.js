@@ -89,8 +89,10 @@
                     update: function (filterObject) {
                         $(filterObject.defaultValueSourceSelector).prop('checked', $('input[name=' + filterObject.name + ']').is(':checked')).trigger('change');
 
-                        toggleRebateEdit(true);
-                        updateRebateLabels();
+                        _.defer(function() {
+                            toggleRebateEdit(true);
+                            updateRebateLabels();
+                        });
                     }
                 }
             },

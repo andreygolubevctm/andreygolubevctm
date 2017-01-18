@@ -37,7 +37,7 @@
 
             configureContactDetails();
 
-            if (meerkat.site.pageAction === 'amend' || meerkat.site.pageAction === 'load' || meerkat.site.pageAction === 'start-again') {
+            if (_.indexOf(['amend', 'latest', 'load', 'start-again'], meerkat.site.pageAction) >= 0) {
 
                 // If retrieving a quote and a product had been selected, inject the fund's application set.
                 if (meerkat.modules.healthFunds.checkIfNeedToInjectOnAmend) {
@@ -83,8 +83,7 @@
         meerkat.messaging.subscribe(meerkatEvents.WEBAPP_UNLOCK, function unlockHealth(obj) {
             meerkat.modules.healthSubmitApplication.enableSubmitApplication();
         });
-        // @todo this belongs in health Apply Step logic.
-        //$('#health_application-selection').delegate('.changeStateAndQuote', 'click', changeStateAndQuote);
+
     }
 
     function applyEventListeners() {
@@ -191,13 +190,6 @@
                     meerkat.modules.healthChoices.setState(meerkat.site.choices.state);
                     meerkat.modules.healthChoices.shouldPerformUpdate(meerkat.site.choices.performHealthChoicesUpdate);
                 }
-
-                // change benefits page layout when change the coverType
-                $('#health_situation_coverType').on('change', function () {
-                    var coverTypeVal = $(this).find('input:checked').val();
-                    meerkat.modules.healthBenefitsStep.updateHiddenFields(coverTypeVal);
-                });
-
             },
             onBeforeEnter: function() {
                 _incrementTranIdBeforeEnteringSlide();
@@ -210,6 +202,7 @@
             onAfterEnter: function healthAfterEnter() {
             },
             onBeforeLeave: function (event) {
+                meerkat.modules.healthTiers.setIncomeLabel();
             }
 
         };
@@ -233,6 +226,7 @@
             onBeforeEnter: function enterBenefitsStep(event) {
                 // configure progress bar
                 configureProgressBar(true);
+                _incrementTranIdBeforeEnteringSlide();
             },
             onAfterEnter: function enterBenefitsStep(event) {
                 var toggleBarInitSettings = {
@@ -273,6 +267,17 @@
                 configureProgressBar(true);
 
                 meerkat.modules.healthPostcode.editMode();
+
+                if (event.isForward) {
+                    // Delay 1 sec to make sure we have the data bucket saved in to DB, then filter coupon
+                    _.delay(function () {
+                        // coupon logic, filter for user, then render banner
+                        meerkat.modules.coupon.loadCoupon('filter', null, function successCallBack() {
+                            meerkat.modules.coupon.renderCouponBanner();
+                        });
+                    }, 1000);
+                }
+                _incrementTranIdBeforeEnteringSlide();
             },
             onAfterLeave: function leaveContactStep(event) {
 
@@ -411,6 +416,37 @@
             onInitialise: function onPaymentInit(event) {
                 meerkat.modules.healthPaymentDate.initPaymentDate();
                 meerkat.modules.healthPaymentIPP.initHealthPaymentIPP();
+
+                $("#joinDeclarationDialog_link").on('click', function () {
+                    var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
+                    var data = {};
+                    data.providerId = selectedProduct.info.providerId;
+                    data.providerContentTypeCode = meerkat.site.isCallCentreUser === true ? 'JDC' : 'JDO';
+
+                    meerkat.modules.comms.get({
+                        url: "health/provider/content/get.json",
+                        data: data,
+                        cache: true,
+                        errorLevel: "silent",
+                        onSuccess: function getProviderContentSuccess(result) {
+                            if (result.hasOwnProperty('providerContentText')) {
+                                meerkat.modules.dialogs.show({
+                                    title: 'Declaration',
+                                    htmlContent: result.providerContentText
+                                });
+                            }
+                        }
+                    });
+
+                    meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+                        method: 'trackOfferTerms',
+                        object: {
+                            productID: selectedProduct.productId
+                        }
+                    });
+
+                });
+
                 meerkat.modules.healthSubmitApplication.initHealthSubmitApplication();
             },
             onBeforeEnter: function beforeEnterPaymentStep(event) {
