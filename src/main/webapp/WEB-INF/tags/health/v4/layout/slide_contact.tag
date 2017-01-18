@@ -15,12 +15,8 @@
 
             <jsp:body>
 
-                <c:set var="subText" value="" />
-                <c:if test="${not callCentre}">
-                    <c:set var="subText" value="Enter your details below and we'll show you products that match your needs on the next page" />
-                </c:if>
 
-                <form_v4:fieldset id="health-contact-fieldset" legend="Your details" postLegend="${subText}" >
+                <form_v4:fieldset id="health-contact-fieldset" legend="Fill in your details below to compare products">
 
                     <c:set var="firstNamePlaceHolder">
                         <content:get key="firstNamePlaceHolder"/>

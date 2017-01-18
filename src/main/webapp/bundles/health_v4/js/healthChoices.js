@@ -58,6 +58,14 @@
         return $('#health_situation_coverType').val();
     }
 
+    /**
+     * Set to C, E, or H
+     * @param value
+     */
+    function setCoverType(value) {
+        $('#health_situation_coverType').val(value);
+    }
+
     meerkat.modules.register("healthChoices", {
         events: moduleEvents,
         init: init,
@@ -67,7 +75,8 @@
         setCover: setCover,
         setState: setState,
         shouldPerformUpdate: shouldPerformUpdate,
-        getCoverType: getCoverType
+        getCoverType: getCoverType,
+        setCoverType: setCoverType
     });
 
 })(jQuery);
