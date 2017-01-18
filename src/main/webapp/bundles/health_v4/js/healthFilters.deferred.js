@@ -186,14 +186,14 @@
                     },
                     update: function () {
                         // Forced to medium as we don't have top/mid/basic in v4
-                        var benefitCoverType = $('#limitedHospital').hasClass('active') ? 'limited' : 'medium';
+                        var benefitCoverType = $('#limitedHospital').hasClass('active') ? 'limited' : 'customise';
                         $('#health_benefits_covertype').val(benefitCoverType);
                         // reset hospital benefits to empty.
                         if(benefitCoverType == 'limited') {
                             $('.filter-hospital-benefits').find(':checked').prop('checked',false);
                             meerkat.modules.benefits.setHospitalType('limited');
                         } else {
-                            meerkat.modules.benefits.setHospitalType('comprehensive');
+                            meerkat.modules.benefits.setHospitalType('customise');
                         }
 
                         meerkat.modules.benefits.toggleHospitalTypeTabs();
