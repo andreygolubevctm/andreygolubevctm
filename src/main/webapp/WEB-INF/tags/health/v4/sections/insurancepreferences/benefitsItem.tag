@@ -52,7 +52,7 @@
                 <c:if test="${category eq 'Hospital'}">
                 <div class="title">
                     <h2 class="ignore">Hospital</h2>
-                    <p>${colContent}</p>
+                    <p class="hospital-content-toggle">${colContent}</p>
                 </div>
                 <div id="tabs" class="benefitsTab">
                     <ul class="nav nav-tabs tab-count-2">

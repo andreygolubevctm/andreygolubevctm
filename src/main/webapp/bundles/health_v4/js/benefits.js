@@ -22,7 +22,9 @@
 
             $('#tabs').find('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
                 setHospitalType($(this).data('benefit-cover-type'));
+                $('.hospital-content-toggle').toggle(getHospitalType() != 'limited');
             });
+
             $elements = {
                 benefitsOverlow: $('.benefitsOverflow'),
                 extrasOverlay: $('.extrasOverlay'),
