@@ -1,16 +1,11 @@
 {
-  "brandCodes": [
-    "ctm"
-  ],
-  "dependencies": [
-    "shared/journeyEngine/v2",
-    "shared/results/v2",
-    "shared/validation",
-    "shared/fonts/v1",
-    "shared/headerBar/v1",
-	"core",
-    "shared/forms/v1",
-    "shared/addressLookup",
-    "shared/optIn"
-  ]
+    "brandCodes": [
+        "ctm"
+    ],
+    "dependencies": [
+        "shared/journeyEngine/v2",
+        "shared/fonts/v1",
+        "shared/headerBar/v1",
+        "core"
+    ]
 }

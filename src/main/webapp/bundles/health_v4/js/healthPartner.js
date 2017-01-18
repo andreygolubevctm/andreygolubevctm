@@ -25,18 +25,30 @@
 
         $elements.partnerQuestionSet = $elements.partnerDOBD.add($elements.currentCover).add($elements.partnerCoverLoading);
 
-        meerkat.modules.fieldUtilities.toggleFields($elements.partnerCoverLoading, $elements.currentCover.filter(':checked').val() === 'N');
+        var $checked = $elements.currentCover.filter(':checked');
+        if($checked.length) {
+            $checked.change();
+        }
     }
 
     function _applyEventListeners() {
-        $elements.dob.on('change', function updateSnapshot() {
-            meerkat.messaging.publish(meerkatEvents.health.SNAPSHOT_FIELDS_CHANGE);
-        });
-
         $elements.currentCover.on('change', function toggleContinuousCover() {
             var $this = $(this);
-            meerkat.modules.fieldUtilities.toggleFields($elements.partnerCoverLoading, $this.filter(':checked').val() === 'N');
+            var $checked = $this.filter(':checked');
+            meerkat.modules.fieldUtilities.toggleFields(
+                $elements.partnerCoverLoading,
+                !$checked.length || $checked.val() === 'N' || meerkat.modules.age.isLessThan31Or31AndBeforeJuly1($elements.dob.val())
+            );
         });
+
+        $elements.dob.on('change', function updateSnapshot() {
+            meerkat.messaging.publish(meerkatEvents.health.SNAPSHOT_FIELDS_CHANGE);
+            _.defer(function(){
+                var $checked = $elements.currentCover.filter(':checked');
+                if($checked.length) $checked.change();
+            });
+        });
+
     }
 
     function _eventSubscriptions() {

@@ -76,8 +76,6 @@
 
         initResults();
 
-        meerkat.modules.compare.initCompare();
-
         Features.init();
 
         eventSubscriptions();
@@ -345,7 +343,7 @@
             meerkat.modules.journeyEngine.loadingShow(waitMessageVal);
 
             // Hide pagination
-            $('.results-pagination').add('header a[data-results-pagination-control]').addClass('hidden');
+            $('.results-pagination').find('.navbar-collapse').addClass('hidden');
             meerkat.modules.coupon.triggerPopup();
         });
 
@@ -360,7 +358,7 @@
         $(document).on("resultsFetchFinish", function onResultsFetchFinish() {
             _.defer(function () {
                 // Show pagination header for mobile
-                $('header a[data-results-pagination-control]').removeClass('hidden');
+                $('.results-pagination').find('.navbar-collapse').removeClass('hidden');
                 // Setup pagination for non-mobile journey
                 meerkat.modules.healthResultsTemplate.toggleRemoveResultPagination();
                 // Setup scroll
@@ -1013,11 +1011,6 @@
         selectedBenefitsList = selectedBenefits;
     }
 
-    function hideNavigationLink() {
-        $('.floated-next-arrow').addClass('hidden');
-        $('.floated-previous-arrow').addClass('hidden');
-    }
-
     function setCallCentreText() {
         $openingHours = _.isNull($openingHours) ? $('[data-step="results"] [data-livechat="target"] .today-hours') : $openingHours;
         // add talk to experts blurb just for results page
@@ -1055,7 +1048,6 @@
         setLhcApplicable: setLhcApplicable,
         resultsStepIndex: resultsStepIndex,
         setSelectedBenefitsList: setSelectedBenefitsList,
-        hideNavigationLink: hideNavigationLink,
         setCallCentreText: setCallCentreText,
         resetCallCentreText: resetCallCentreText
     });

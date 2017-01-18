@@ -69,7 +69,7 @@
 
     function _toggleSelectionNestedGroups() {
         var product = meerkat.modules.healthResults.getSelectedProduct(),
-            toggle = !meerkat.modules.healthCoverDetails.isRebateApplied() && $.inArray(product.info.providerName, _mustShowList) === -1;
+            toggle = !meerkat.modules.healthRebate.isRebateApplied() && $.inArray(product.info.providerName, _mustShowList) === -1;
 
         $elements.selectionNestedGroups.toggleClass('hidden', toggle);
     }

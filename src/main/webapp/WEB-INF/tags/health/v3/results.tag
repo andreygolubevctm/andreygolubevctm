@@ -68,6 +68,10 @@
         <health_v3:logo_template />
     </jsp:attribute>
 
+    <jsp:attribute name="productTitleTemplate">
+        <health_v3:product_title_template/>
+    </jsp:attribute>
+
     <jsp:attribute name="priceTemplate">
         <health_v3:price_template />
     </jsp:attribute>
