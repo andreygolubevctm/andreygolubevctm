@@ -51,7 +51,7 @@
 @brand-primary: @theme-primary; //@theme-primary;
 @brand-success: @theme-secondary; //@theme-secondary;
 @brand-info: @theme-accent-4; //@theme-tertiary;
-@brand-warning: @theme-accent-2;
+@brand-warning: @theme-accent-3;
 @brand-danger: @theme-accent-2;
 
 //== Grey colours
@@ -114,8 +114,8 @@
 
 @font-size-base: 14px;
 @font-size-xlarge: 32px;
-@font-size-large: ceil((@font-size-base * 1.25)); // ~18px 17.5
-@font-size-small: ceil((@font-size-base * 0.85)); // ~12px 11.9
+@font-size-large: 16px; // ~18px 17.5
+@font-size-small: 12px; // ~12px 11.9
 @font-size-extra-small: ceil((@font-size-base * 0.7)); // ~10px 9.8
 
 @font-size-h1: @font-size-xlarge;
@@ -268,7 +268,7 @@
 @btn-link-disabled-color: @gray-darker;
 
 // Allows for customizing button radius independently from global border radius
-@btn-border-radius-base: @border-radius-base;
+@btn-border-radius-base: @border-radius-large;
 @btn-border-radius-large: @border-radius-large;
 @btn-border-radius-small: @border-radius-small;
 
@@ -358,7 +358,7 @@
 @btn-cancel-active-border-color: @btn-cancel-active-bg-color;
 
 //** Form (nextstep, toggles, default-switches, radio buttons)
-@btn-next-bg-color: @theme-secondary;
+@btn-next-bg-color: @theme-accent-1;
 @btn-next-color: @btn-foreground-color;
 @btn-next-border-color: @btn-next-bg-color;
 
@@ -1116,20 +1116,20 @@
 //## Define colors for form feedback states and, by default, alerts.
 
 @state-success-text: @brand-success;
-@state-success-bg: #dff0d8;
+@state-success-bg: fade(@brand-success, 20%);
 @state-success-border: @brand-success;
 
 @state-info-text: @brand-info;
-@state-info-bg: #d9edf7;
+@state-info-bg: fade(@brand-info, 20%);
 @state-info-border: @brand-info;
 
 @state-warning-text: @brand-warning;
-@state-warning-bg: #fcf8e3;
+@state-warning-bg: fade(@brand-warning, 20%);
 @state-warning-border: @brand-warning;
 
-@state-danger-text: #ff5f5f;
+@state-danger-text: @theme-accent-3;
 @state-danger-bg: #ffefef;
-@state-danger-border: #ff5f5f;
+@state-danger-border: @theme-accent-3;
 
 //== Tooltips
 // NOT USED in framework.build.core.less

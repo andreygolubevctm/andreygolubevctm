@@ -26,6 +26,8 @@
                 extras: $('.GeneralHealth_container'),
                 quickSelectContainer: $('.quickSelectContainer'),
                 coverType: $('input[name=health_situation_coverType]'),
+                hiddenHospitalCover: $('input[name="health_benefits_benefitsExtras_Hospital"]'),
+                hiddenExtraCover: $('input[name="health_benefits_benefitsExtras_GeneralHealth"]'),
                 accidentOnlyCover: $('input[name=health_situation_accidentOnlyCover]')
             };
 
@@ -59,9 +61,9 @@
                 benefitType = _isBenefitElementHospital($this) ? 'hospital' : 'extras';
             // If health filters needs any other properties in filters_benefits.tag, add them here.
             benefits[benefitType].push({
-                id: parseInt($this.data('benefit-id')),
+                id: $this.attr('data-benefit-id'),
                 label: $this.next('label').find('.benefitTitle').text(),
-                value: $this.data('benefit-id') // this is needed for filters.
+                value: $this.attr('data-benefit-id') // this is needed for filters.
             });
         });
         meerkat.modules.benefitsModel.initBenefitLabelStore(benefits);
@@ -93,7 +95,7 @@
         var selectedIds = [];
 
         _.each($container.find(':input[data-benefit-id]:checked'), function getInputIds(el) {
-            selectedIds.push(parseInt($(el).data('benefit-id')));
+            selectedIds.push($(el).attr('data-benefit-id'));
         });
 
         return selectedIds;
@@ -103,7 +105,7 @@
         $('.GeneralHealth_container, .Hospital_container').on('change', 'input', function () {
             var $this = $(this),
                 options = {
-                    benefitId: parseInt($this.data('benefit-id')),
+                    benefitId: $this.attr('data-benefit-id'),
                     isHospital: _isBenefitElementHospital($this),
                     removeBenefit: !$this.is(':checked')
                 };
@@ -112,7 +114,10 @@
         });
 
         // set cover type field
-        meerkat.messaging.subscribe(meerkatEvents.benefitsModel.BENEFITS_MODEL_UPDATE_COMPLETED, _setCoverTypeField);
+        meerkat.messaging.subscribe(meerkatEvents.benefitsModel.BENEFITS_MODEL_UPDATE_COMPLETED, function updateHiddenFields() {
+            _setCoverTypeField();
+            _updateHiddenFields();
+        });
 
         // updated the selected checkboxes
         meerkat.messaging.subscribe(meerkatEvents.benefitsModel.UPDATE_SELECTED_BENEFITS_CHECKBOX, _reSelectBenefitCheckboxes);
@@ -168,6 +173,23 @@
 
     function toggleHospitalTypeTabs() {
         $('#tabs').find('a[data-benefit-cover-type="' + getHospitalType() + '"]').trigger('click');
+    }
+
+    function _updateHiddenFields() {
+        switch (meerkat.modules.healthChoices.getCoverType()) {
+            case 'C':
+                $elements.hiddenHospitalCover.val('Y');
+                $elements.hiddenExtraCover.val('Y');
+                break;
+            case 'H':
+                $elements.hiddenHospitalCover.val('Y');
+                $elements.hiddenExtraCover.val('');
+                break;
+            case 'E':
+                $elements.hiddenHospitalCover.val('');
+                $elements.hiddenExtraCover.val('Y');
+                break;
+        }
     }
 
     meerkat.modules.register("benefits", {

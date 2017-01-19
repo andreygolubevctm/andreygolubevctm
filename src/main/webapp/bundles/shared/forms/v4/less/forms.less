@@ -42,15 +42,14 @@ fieldset {
   .control-label {
     color: @theme-accent-4;
     font-size: @font-size-large;
+    @media(@lg) {
+      line-height: 1.4;
+    }
   }
   .control-sub-label {
     color: @gray;
-    font-style: italic;
     font-size: 12px;
     padding-bottom: 5px;
-    @media (@sm) {
-      text-align: right;
-    }
   }
 }
 
@@ -106,6 +105,11 @@ fieldset {
 
 @media (@sm) {
   .form-horizontal {
+    @media(@sm) {
+      .control-label {
+        text-align: left;
+      }
+    }
     .radio, .checkbox {
       .user-select(none);
       min-height: 21px;

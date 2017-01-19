@@ -71,6 +71,7 @@
 				<!-- Hospital and Extras -->
 				<div class="benefitsOverflow">
 					<div class="row">
+						{{ if(typeof hospitalCover !== 'undefined') { }}
 						<div class="benefitsColumn">
 							<div class="col-sm-6 col-xs-12 HospitalBenefits">
 								<!-- Hospital Benefits Heading + Brochure -->
@@ -195,6 +196,8 @@
 								{{ } }}
 							</div>
 						</div>
+						{{ } }}
+						{{ if(typeof extrasCover !== 'undefined') { }}
 						<div class="benefitsColumn">
 							<div class="col-sm-6 col-xs-12 ExtrasBenefits">
 								<!-- Extras Benefits Heading + Brochure -->
@@ -240,6 +243,7 @@
 								</div>
 							</div>
 						</div>
+						{{ } }}
 					</div>
 				</div>
 			</div>

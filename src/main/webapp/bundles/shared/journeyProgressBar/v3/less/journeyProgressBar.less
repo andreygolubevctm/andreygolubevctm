@@ -6,7 +6,7 @@
 .progress-bar-row {
   background-color: @body-bg;
   padding: 5px 0 0 0;
-  @media @sm {
+  @media (@sm) {
     padding: 5px 0 20px 0;
   }
   min-height: 26px;
@@ -25,7 +25,10 @@
       line-height: @journeyProgressBar-lineheight;
       display: inline-block;
       font-size: @journeyProgressBar-size;
-      //font-family: @font-family-theme-bold;
+      @media(@sm) {
+        font-size: @journeyProgressBar-size + 1;
+        line-height: @journeyProgressBar-lineheight - 2;
+      }
       position: relative;
       height: 28px;
       &.end{

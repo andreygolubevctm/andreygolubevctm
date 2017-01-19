@@ -265,7 +265,7 @@
     function _getCheckedBenefitsFromFilters($container) {
         var array = [];
         $container.find('input[type="checkbox"]:checked').map(function () {
-            array.push(parseInt(this.value));
+            array.push(this.value);
         });
         return array;
     }
@@ -281,15 +281,7 @@
             'hospital': _getCheckedBenefitsFromFilters($('.filter-hospital-benefits')),
             'extras': _getCheckedBenefitsFromFilters($('.filter-extras-benefits'))
         };
-        var coverType = 'C';
-        if (selectedBenefits.hospital.length > 0 && selectedBenefits.extras.length > 0) {
-            coverType = 'C';
-        } else if (selectedBenefits.hospital.length > 0) {
-            coverType = 'H';
-        } else if (selectedBenefits.extras.length > 0) {
-            coverType = 'E';
-        }
-        meerkat.modules.healthChoices.setCoverType(coverType);
+
         meerkat.modules.healthResults.setSelectedBenefitsList(selectedBenefits.hospital.concat(selectedBenefits.extras));
 
         meerkat.modules.benefitsModel.setIsHospital(false);
@@ -297,6 +289,8 @@
 
         meerkat.modules.benefitsModel.setIsHospital(true);
         meerkat.modules.benefitsModel.setBenefits(selectedBenefits.hospital);
+
+        meerkat.messaging.publish(meerkatEvents.benefitsModel.BENEFITS_MODEL_UPDATE_COMPLETED);
 
     }
 
