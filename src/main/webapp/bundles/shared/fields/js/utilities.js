@@ -7,32 +7,59 @@ New way of disabling a field
 */
 ;(function($, undefined) {
 
-	var meerkat = window.meerkat;
+	var meerkat = window.meerkat,
+		toggleType = {
+			DISABLED : 'disabled',
+			VISIBLE : 'hidden-toggle'
+		},
+		toggleClasses = {};
 
 	function disable(fields) {
-		toggleFields(fields, true);
+		toggleFields(fields, true, toggleType.DISABLED);
 	}
 
 	function enable(fields) {
-		toggleFields(fields, false);
+		toggleFields(fields, false, toggleType.DISABLED);
 	}
 
-	function toggleFields(fields, isDisabled) {
+	function hide(fields) {
+		toggleFields(fields, true, toggleType.VISIBLE);
+	}
+
+	function show(fields) {
+		toggleFields(fields, false, toggleType.VISIBLE);
+	}
+
+	function toggleDisabled(fields, state) {
+		toggleFields(fields, state, toggleType.DISABLED);
+	}
+
+	function toggleVisible(fields, state) {
+		toggleFields(fields, state, toggleType.VISIBLE);
+	}
+
+	function toggleFields(fields, state, type) {
 		var $fields = _.isString(fields) ? $(fields) : fields;
+		var applyType = type || toggleType.DISABLED;
 		// .find(':input') is for those instances where there's multiple fields within a fieldrow eg dob, checkboxes etc...
-		$fields.closest('.fieldrow').toggleClass('disabled', isDisabled).find(':input').prop('disabled', isDisabled);
+		$fields.closest('.fieldrow').toggleClass(applyType, state).find(':input').prop('disabled', state);
 	}
 
 	// find all disabled classes initially and disable the fields
-	function initDisabledFields() {
-		$('.fieldrow.disabled').find(':input').prop('disabled', true);
+	function initFields() {
+		$('.fieldrow.disabled, .fieldrow.hidden-toggle').find(':input').prop('disabled', true);
 	}
 
 	meerkat.modules.register("fieldUtilities", {
-		initDisabledFields: initDisabledFields,
+		initFields: initFields,
 		disable: disable,
 		enable: enable,
-		toggleFields: toggleFields
+		show: show,
+		hide: hide,
+		toggleFields: toggleFields,
+		toggleDisabled: toggleDisabled,
+		toggleVisible: toggleVisible,
+		toggleType: toggleType
 	});
 
 })(jQuery);
