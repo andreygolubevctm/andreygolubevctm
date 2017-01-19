@@ -4,6 +4,8 @@
     ],
     "dependencies": [
         "shared/journeyEngine/v2",
+        "shared/fonts/v1",
+        "shared/headerBar/v1",
         "core"
     ]
 }

@@ -118,6 +118,17 @@ Bundles.prototype.getBundleBrandCodes = function (bundleName) {
     }
 };
 
+
+/**
+ * Get Bundle Theme Version. This value just chooses which build/brand/{brandCode}/v{themeVersion} to use
+ * @param bundleName
+ * @returns {*}
+ */
+Bundles.prototype.getBundleVersion = function (bundleName) {
+    var bundle = this.collection[bundleName];
+    return bundle.themeVersion || '';
+};
+
 /**
  * Returns all brand codes used across all bundles
  * @returns {Array}

@@ -12,11 +12,9 @@
 <c:set var="openingHoursHeader" scope="request" ><content:getOpeningHours/></c:set>
 <c:set var="callCentreAllHoursContent" scope="request"><content:getOpeningHoursModal /></c:set>
 
-<c:set var="isHealthV2" value="${true}" scope="request" />
-
 <core_v1:quote_check quoteType="health" />
 
-<layout_v1:journey_engine_page title="Health Confirmation" ignore_journey_tracking="true">
+<layout_v1:journey_engine_page title="Health Confirmation" bundleFileName="health_v2" ignore_journey_tracking="true">
 
 	<jsp:attribute name="head">
 	</jsp:attribute>

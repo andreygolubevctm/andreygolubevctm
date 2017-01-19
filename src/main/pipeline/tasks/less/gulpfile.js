@@ -31,7 +31,19 @@ function LessTasks(gulp) {
     var watchesStarted = [],
         dependenciesCache = {};
 
-    var gulpAction = function (glob, targetDir, taskName, fileList, brandCode, brandFileNames, bundle, done) {
+    /**
+     *
+     * @param glob
+     * @param targetDir
+     * @param taskName
+     * @param fileList
+     * @param brandCode
+     * @param bundleVersion The version of the bundle -- i.e. which version of the build theme to use.
+     * @param brandFileNames
+     * @param bundle
+     * @param done
+     */
+    var gulpAction = function (glob, targetDir, taskName, fileList, brandCode, bundleVersion, brandFileNames, bundle, done) {
         if (typeof dependenciesCache[taskName] === "undefined") {
             dependenciesCache[taskName] = "\r\n" + bundles.getDependencyFiles(bundle, "less")
                     .filter(function (dep) {
@@ -57,7 +69,7 @@ function LessTasks(gulp) {
         }
 
         var hasVariablesLess = (fileList.indexOf("variables.less") !== -1);
-
+        var buildFolderBundleVersion = bundleVersion || 1;
         var stream = gulp.src(glob)
             .pipe(gulp.globalPlugins.plumber({
                 errorHandler: gulp.globalPlugins.notify.onError("Error: <%= error.message %>")
@@ -79,7 +91,7 @@ function LessTasks(gulp) {
             // Prepend variables if file exists
             .pipe(gulpIf(hasVariablesLess, insert.prepend("@import \"variables.less\";\r\n")))
             // Prepend generic brand build file
-            .pipe(insert.prepend("@import \"../../build/brand/" + brandCode + "/build.less\";\r\n"))
+            .pipe(insert.prepend("@import \"../../build/brand/" + brandCode + "/v" + buildFolderBundleVersion + "/build.less\";\r\n"))
             // Append brand specific theme less if file exists
             .pipe(
             gulpIf(
@@ -95,7 +107,7 @@ function LessTasks(gulp) {
         if (notInWatchesStarted) {
             stream = stream.pipe(
                 watchLess(glob, {name: taskName}, function () {
-                    gulpAction(glob, targetDir, taskName, fileList, brandCode, brandFileNames, bundle);
+                    gulpAction(glob, targetDir, taskName, fileList, brandCode, bundleVersion, brandFileNames, bundle);
                 })
             );
 
@@ -185,6 +197,7 @@ function LessTasks(gulp) {
         (function (bundle) {
             var sourceFolder = (typeof bundles.collection[bundle].originalBundle !== "undefined") ? bundles.collection[bundle].originalBundle : bundle,
                 brandCodes = bundles.getBundleBrandCodes(bundle),
+                bundleVersion = bundles.getBundleVersion(bundle),
                 bundleLessTasks = [],
                 fileList = bundles.getBundleFiles(bundle, "less", false);
 
@@ -202,7 +215,7 @@ function LessTasks(gulp) {
                             theme: "theme." + brandCode + ".less"
                         };
 
-                        gulpAction(brandCodeBundleSrcPath, targetDir, brandCodeTask, fileList, brandCode, brandFileNames, bundle, done);
+                        gulpAction(brandCodeBundleSrcPath, targetDir, brandCodeTask, fileList, brandCode, bundleVersion, brandFileNames, bundle, done);
                     });
 
                     bundleLessTasks.push(brandCodeTask);
