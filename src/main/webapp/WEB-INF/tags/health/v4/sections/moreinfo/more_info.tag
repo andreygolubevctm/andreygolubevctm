@@ -246,8 +246,11 @@
 			<!-- CTA BUTTON -->
 			<div class="hidden-xs moreInfoTopRightColumn">
                 <div class="sidebar-widget sidebar-widget-padded">
-						<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now<span class="icon-arrow-right" /></a>
-					</div>
+                    <a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now<span class="icon-arrow-right" /></a>
+                </div>
+
+                <reward:campaign_tile_container />
+
                 <div class="sidebar-widget sidebar-widget-padded sidebar-widget-background-contained">
                     <h3>Switching is simple!</h3>
                     <ul>
@@ -265,7 +268,7 @@
                         Where a waiting period already applies for a particular condition or treatment, funds may begin the benefit limitation period from the end of the normal waiting period.</p>
                 </div>
 
-			</div>
+            </div>
 		</div>
 	</div>
 </script>

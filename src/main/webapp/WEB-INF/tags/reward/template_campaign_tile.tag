@@ -6,6 +6,6 @@
     <div class="campaign-tile image-tile visible-sm {{= obj.rewardType}}-sm"></div>
 </script>
 
-<script id="template-campaign-tile-mobile" type="text/html">
+<script id="template-campaign-tile-xs" type="text/html">
     <div class="campaign-tile image-tile visible-xs {{= obj.rewardType}}-xs"></div>
 </script>

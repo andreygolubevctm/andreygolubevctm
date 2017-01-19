@@ -6,14 +6,21 @@
         debug = meerkat.logging.debug,
         exception = meerkat.logging.exception;
 
-    var campaignTileTemplate, campaignTileMobileTemplate,
+    var campaignTileTemplate, campaignTileTemplateXs,
         currentCampaign = false;
 
     function initRewardCampaign(){
         $(document).ready(function() {
             campaignTileTemplate = _.template($('#template-campaign-tile').html());
-            campaignTileMobileTemplate = _.template($('#template-campaign-tile-mobile').html());
+            campaignTileTemplateXs = _.template($('#template-campaign-tile-xs').html());
+            eventSubscriptions();
             fetchCampaigns();
+        });
+    }
+
+    function eventSubscriptions() {
+        meerkat.messaging.subscribe(meerkatEvents.moreInfo.bridgingPage.SHOW, function () {
+            renderCampaignTile();
         });
     }
     
@@ -41,6 +48,7 @@
         });
     }
 
+
     function renderCampaignTile() {
         if (isCurrentCampaignValid() !== true) return;
 
@@ -51,8 +59,13 @@
         if (availableRewards.length < 1) return;
 
         var $campaignTileContainers = $('.campaign-tile-container');
+        var $campaignTileContainersXs = $('.campaign-tile-container-xs');
 
-        var counter = 0;
+        $campaignTileContainersXs.each(function renderXs() {
+            $(this).html(campaignTileTemplateXs(availableRewards[0]));
+        });
+
+        var currentBackupAssetOrder = 2;
         $campaignTileContainers.each(function render(index) {
             var data = null;
             if (availableRewards.length === 1) {
@@ -65,11 +78,11 @@
                 var currentIndex = index % availableRewards.length;
                 for (var i = 0; i < availableRewards.length; i++) {
                     if (i === availableRewards.length - 1) {
-                        counter++;
+                        currentBackupAssetOrder++;
                     }
                     if (i === currentIndex) {
                         data = availableRewards[i];
-                        data.assetOrder = counter + 1;
+                        data.assetOrder = currentBackupAssetOrder;
                         break;
                     }
                 }
