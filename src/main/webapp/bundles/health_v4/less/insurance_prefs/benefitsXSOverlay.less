@@ -25,7 +25,12 @@ body.health {
 			height: 1600px;
 			position: absolute;
 			z-index: 100;
-			right: -10px;
+			left: 5px;
+
+			&.extrasToggled {
+				left: -20px;
+			}
+
 			.selectionStatus {
 				background: @theme-tertiary;
 				color: @white;
