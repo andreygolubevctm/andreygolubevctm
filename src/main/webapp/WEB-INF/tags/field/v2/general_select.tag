@@ -47,7 +47,7 @@
 
 <sql:query var="result">
     SELECT code, description FROM aggregator.general WHERE type = ? AND (status IS NULL OR status != 0) ORDER BY orderSeq
-    <sql:param>${type}</sql:param>
+<sql:param>${type}</sql:param>
 </sql:query>
 
 

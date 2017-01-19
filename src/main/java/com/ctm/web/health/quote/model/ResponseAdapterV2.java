@@ -175,7 +175,7 @@ public class ResponseAdapterV2 {
                 formatCurrency(quotePrice.getLhcAmount(), true, true));
         price.setLhcfreetext(formatCurrency(quotePrice.getLhcFreeAmount(), true, true) + (hasDiscount ? "*" : ""));
         price.setLhcfreevalue(quotePrice.getLhcFreeAmount());
-        price.setLhcfreepricing("+ " + formatCurrency(quotePrice.getLhcAmount(), true, true) + " LHC inc " +
+        price.setLhcfreepricing("excl " + formatCurrency(quotePrice.getLhcAmount(), true, true) + " LHC<span/>inc " +
                 formatCurrency(quotePrice.getRebateAmount(), true, true) + " Government Rebate");
         price.setRebateValue(formatCurrency(quotePrice.getRebateAmount(), true, true));
         price.setBase(formatCurrency(quotePrice.getBasePremium(), true, true));

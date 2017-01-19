@@ -218,15 +218,15 @@
             if (!$('body').hasClass('injectingFund')) {
 
               <%-- Dependants --%>
-              healthFunds._dependants('This policy provides cover for your children up to their 22nd birthday and dependants aged between 22 and 25 who are studying full time. Adult dependants outside these criteria can still be covered by applying for a separate policy.');
+                meerkat.modules.healthFunds._dependants('This policy provides cover for your children up to their 22nd birthday and dependants aged between 22 and 25 who are studying full time. Adult dependants outside these criteria can still be covered by applying for a separate policy.');
 
               meerkat.modules.healthDependants.updateConfig({showFullTimeField :true, showSchoolFields:true, 'schoolMinAge':22, 'schoolMaxAge':25, showSchoolIdField:false,showRelationship:true,showPreferredMethodOfContact:true });
 
               <%-- Partner authority --%>
-              healthFunds._partner_authority(false);
+                meerkat.modules.healthFunds._partner_authority(false);
 
-                <%-- How to send information. Second argument = validation required --%>
-                healthApplicationDetails.showHowToSendInfo('Navy Health', true);
+              <%-- How to send information. Second argument = validation required --%>
+              meerkat.modules.healthFunds.showHowToSendInfo('Navy Health', true);
 
               <%-- Calendar for start cover --%>
               meerkat.modules.healthPaymentStep.setCoverStartRange(0, 28);
@@ -280,7 +280,7 @@
           },
 		  renderPaymentDays: function() {
 			healthFunds_NHB.$paymentTypeContainer.text('*Navy Health offers a 2% discount on Half Yearly or a 4% discount on Annual payments').slideDown();
-			healthFunds._payments = { 'min':0, 'max':14, 'weekends':false, 'countFrom' : meerkat.modules.healthPaymentDay.EFFECTIVE_DATE, 'maxDay' : 28};
+			meerkat.modules.healthFunds.setPayments({ 'min':0, 'max':14, 'weekends':false, 'countFrom' : meerkat.modules.healthPaymentDay.EFFECTIVE_DATE, 'maxDay' : 28});
 			healthFunds_NHB.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '0,6');
 			
             var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
@@ -308,9 +308,9 @@
             <%-- Run these if not loading a quote --%>
             if (!$('body').hasClass('injectingFund')) {
               <%-- Dependants --%>
-              healthFunds._dependants(false);
+                meerkat.modules.healthFunds._dependants(false);
               meerkat.modules.healthDependants.resetConfig();
-              healthFunds._reset();
+                meerkat.modules.healthFunds._reset();
 			  healthFunds_NHB.$paymentType.off('change.NHB');
 				healthFunds_NHB.$paymentFrequency.off('change.NHB');
 				healthFunds_NHB.$paymentStartDate.off("changeDate.NHB");
@@ -323,12 +323,12 @@
               $('#health_payment_details_frequency').off('change.NHB');
               $('.health_payment_bank_details-policyDay-message').html('');
 
-                <%-- How to send information --%>
-                healthApplicationDetails.hideHowToSendInfo();
+              <%-- How to send information --%>
+              meerkat.modules.healthFunds.hideHowToSendInfo();
 
-                <%-- Remember the selections--%>
-                healthFunds_NHB.primaryTitleValue = $('#health_application_primary_title').val();
-                healthFunds_NHB.partnerTitleValue = $('#health_application_partner_title').val();
+              <%-- Remember the selections--%>
+              healthFunds_NHB.primaryTitleValue = $('#health_application_primary_title').val();
+              healthFunds_NHB.partnerTitleValue = $('#health_application_partner_title').val();
 
               <%-- lets undo the title massive values from nav --%>
               <c:set var="html">

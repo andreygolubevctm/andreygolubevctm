@@ -2,7 +2,8 @@
 
     var meerkat = window.meerkat,
         log = meerkat.logging.info,
-        meerkatEvents = meerkat.modules.events;
+        meerkatEvents = meerkat.modules.events,
+        $elements = {};
 
     var events = {
             healthSnapshot: {
@@ -13,6 +14,17 @@
 
 
     function initHealthSnapshot() {
+        $(document).ready(function(){
+            elements = {
+                preResultsTemplate : $("#pre-results-row-content-template"),
+                primaryDob : $('#health_healthCover_primary_dob'),
+                contactName : $('#health_contactDetails_name'),
+                state : $('#health_situation_state'),
+                suburb : $('#health_situation_suburb'),
+                situation : $('#health_situation_healthCvr'),
+                dependants : $('#health_healthCover_dependants')
+            };
+        });
         subscription();
     }
 
@@ -182,34 +194,35 @@
      * @returns {*}
      */
     function getLabelForSituation() {
-
-        switch(meerkat.modules.health.getSituation()) {
-            case 'SM':
-            case 'SF':
-                return "you";
-            case 'C':
-                return "you and your partner";
-            case 'F':
-                return "you and your family";
-            case 'SPF':
-                var $dependants = $('#health_healthCover_dependants');
-                var childrenLabel = parseInt($dependants.val(),10) > 1 ? 'children' : 'child';
-                return "you and your " + childrenLabel;
+        var situationCopy = '';
+        var situationCopySuffix = '';
+        var situation = meerkat.modules.health.getSituation();
+        if(!_.isEmpty(situation)) {
+            situationCopy = elements.situation.find("option[value='" + situation + "']").text();
+            situationCopySuffix = '';
+            if (situation === 'SPF') {
+                var dependants = elements.dependants.val();
+                if(!_.isEmpty(dependants)) {
+                    var childrenLabel = dependants + ' ' + (parseInt(dependants, 10) > 1 ? 'children' : 'child');
+                    situationCopySuffix = " (" + childrenLabel + ")";
+                }
+            }
         }
+        return situationCopy + situationCopySuffix;
     }
     
     function renderPreResultsRowSnapshot() {
-        var primary_dob = $('#health_healthCover_primary_dob').val();
+        var primary_dob = elements.primaryDob.val();
         var age = meerkat.modules.age.returnAge(primary_dob, true);
 
         var obj = {
-            name: $('#health_contactDetails_name').val(),
-            state: $('#health_situation_state').val(),
+            name: elements.contactName.val(),
+            state: elements.state.val(),
             age: age,
-            coverType: getLabelForCoverType(),
+            suburb: elements.suburb.val(),
             situation: getLabelForSituation()
         };
-        var template = meerkat.modules.templateCache.getTemplate($("#pre-results-row-content-template"));
+        var template = meerkat.modules.templateCache.getTemplate(elements.preResultsTemplate);
         $('.preResultsContainer').html(template(obj));
     }
 

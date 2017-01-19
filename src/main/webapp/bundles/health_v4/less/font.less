@@ -1,0 +1,133 @@
+@font-face {
+	font-family: 'ctm-health';
+	src:url('../../../../assets/fonts/ctm-health.eot?20160906');
+	src:url('../../../../assets/fonts/ctm-health.eot?20160906#iefix') format('embedded-opentype'),
+	url('../../../../assets/fonts/ctm-health.ttf?20160906') format('truetype'),
+	url('../../../../assets/fonts/ctm-health.woff?20160906') format('woff'),
+	url('../../../../assets/fonts/ctm-health.svg?20160906#ctm-health') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+[class^="hltIcons-"], [class*="hltIcon-"] {
+	font-family: 'ctm-health';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.healthBenefits input + label:before ,
+.health-situation-healthCvrType label:before {
+	font-family: 'ctm-health';
+}
+
+.icon-hospital-extras:before {
+	content: "\e920";
+}
+
+.icon-hospital-only:before {
+	content: "\e905";
+}
+
+.icon-extras-only:before {
+	content: "\e904";
+}
+
+.benefitClass(@class, @labelClass, @content, @isLiElement) {
+
+	& when (@isLiElement = 'N') {
+		.@{class} label,
+		.@{class} {
+			.setContent(@labelClass, @content);
+		}
+	}
+	& when (@isLiElement = 'Y') {
+		.@{class} label,
+		li.@{class} {
+			.setContent(@labelClass, @content);
+		}
+	}
+}
+
+.setContent(@labelClass, @content) {
+	& when not (@labelClass = '') {
+		.@{labelClass}:before {
+			content: @content;
+		}
+	}
+	& when (@labelClass = '') {
+		&:before {
+			content: @content;
+		}
+	}
+}
+
+/* TODO Temporarily descoped
+.setTileContent(".health-situation-healthCvr", 1, "\e939");
+.setTileContent(".health-situation-healthCvr", 2, "\e938");
+.setTileContent(".health-situation-healthCvr", 3, "\e93a");
+.setTileContent(".health-situation-healthCvr", 4, "\e93b");
+.setTileContent(".health-situation-healthCvr", 5, "\e93d");
+*/
+.setTileContent(".health-situation-healthSitu", 1, "\e934");
+.setTileContent(".health-situation-healthSitu", 2, "\e935");
+.setTileContent(".health-situation-healthSitu", 3, "\e93c");
+.setTileContent(".health-situation-healthSitu", 4, "\e937");
+.setTileContent(".health-situation-healthSitu", 5, "\e936");
+.setTileContent(".health-situation-healthSitu", 6, "\e93b");
+
+.styleBenefits(@labelClass, @isLiElement) {
+	.benefitClass(HLTicon-hospital, @labelClass, "\e906", @isLiElement);
+	.benefitClass(HLTicon-heart-surgery, @labelClass, "\e910", @isLiElement);
+	.benefitClass(HLTicon-birth-related, @labelClass, "\e91b", @isLiElement);
+	.benefitClass(HLTicon-assisted-reproduction, @labelClass, "\e90e", @isLiElement);
+	.benefitClass(HLTicon-major-eye-surgery, @labelClass, "\e913", @isLiElement);
+	.benefitClass(HLTicon-joint-replacement, @labelClass, "\e911", @isLiElement);
+	.benefitClass(HLTicon-cosmetic-surgery, @labelClass, "\e919", @isLiElement);
+	.benefitClass(HLTicon-sterilisation, @labelClass, "\e91d", @isLiElement);
+	.benefitClass(HLTicon-gastric-banding, @labelClass, "\e91e", @isLiElement);
+	.benefitClass(HLTicon-dialysis, @labelClass, "\e90d", @isLiElement);
+	.benefitClass(HLTicon-palliative-care, @labelClass, "\e917", @isLiElement);
+	.benefitClass(HLTicon-in-hospital-rehabilitation, @labelClass, "\e91f", @isLiElement);
+	.benefitClass(HLTicon-general-dental, @labelClass, "\e90f", @isLiElement);
+	.benefitClass(HLTicon-major-dental, @labelClass, "\e912", @isLiElement);
+	.benefitClass(HLTicon-optical, @labelClass, "\e916", @isLiElement);
+	.benefitClass(HLTicon-physiotherapy, @labelClass, "\e918", @isLiElement);
+	.benefitClass(HLTicon-chiropractor, @labelClass, "\e91c", @isLiElement);
+	.benefitClass(HLTicon-podiatry, @labelClass, "\e91a", @isLiElement);
+	.benefitClass(HLTicon-acupuncture, @labelClass, "\e90b", @isLiElement);
+	.benefitClass(HLTicon-naturopathy, @labelClass, "\e915", @isLiElement);
+	.benefitClass(HLTicon-remedial-massage, @labelClass, "\e914", @isLiElement);
+	.benefitClass(HLTicon-in-hospital-psychiatry, @labelClass, "\e90c", @isLiElement);
+	.benefitClass(HLTicon-endodontic, @labelClass, "\e929", @isLiElement);
+	.benefitClass(HLTicon-orthodontic, @labelClass, "\e923", @isLiElement);
+	.benefitClass(HLTicon-psychology, @labelClass, "\e92c", @isLiElement);
+	.benefitClass(HLTicon-glucose-monitor, @labelClass, "\e927", @isLiElement);
+	.benefitClass(HLTicon-hearing-aids, @labelClass, "\e926", @isLiElement);
+	.benefitClass(HLTicon-non-pbs-pharm, @labelClass, "\e924", @isLiElement);
+	.benefitClass(HLTicon-orthotics, @labelClass, "\e922", @isLiElement);
+	.benefitClass(HLTicon-speech-therapy, @labelClass, "\e921", @isLiElement);
+	.benefitClass(HLTicon-occupational-therapy, @labelClass, "\e92b", @isLiElement);
+	.benefitClass(HLTicon-dietetics, @labelClass, "\e92a", @isLiElement);
+	.benefitClass(HLTicon-eye-therapy, @labelClass, "\e928", @isLiElement);
+	.benefitClass(HLTicon-lifestyle-products, @labelClass, "\e925", @isLiElement);
+	.benefitClass(HLTicon-osteopathy, @labelClass, "\e92d", @isLiElement);
+	.benefitClass(HLTicon-ambulance, @labelClass, "\e933", @isLiElement);
+	.benefitClass(HLTicon-exercise-physiology, @labelClass, "\e930", @isLiElement);
+	.benefitClass(HLTicon-appliances, @labelClass, "\e931", @isLiElement);
+}
+
+.healthBenefits {
+	.styleBenefits('', 'Y');
+}
+
+.moreInfoDropdown .benefitsOverflow {
+	.styleBenefits('', 'N');
+}

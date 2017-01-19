@@ -1,0 +1,29 @@
+/** Hiding the Next button at the bottom of journey as its in top right bar.
+    XS is the only one that displays it at the bottom
+ */
+/*
+.slideAction .journeyNavButton {
+  @media (@sm) {
+    display: none;
+  }
+}*/
+
+@media (@xs-only) {
+  body:not([data-step=results]) {
+    .header-wrap {
+      min-height: 87px;
+    }
+    &.couponShown {
+      .header-wrap {
+        min-height: 127px;
+      }
+    }
+  }
+}
+.slideAction,
+.confirm-step {
+  div:first-child {
+    float: right;
+    text-align: right;
+  }
+}

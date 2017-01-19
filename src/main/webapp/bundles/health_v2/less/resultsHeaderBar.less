@@ -96,3 +96,53 @@
     }
   }
 }
+
+.callCentre {
+  .resultInsert {
+
+    .btn.btn-block {
+      &.btn-more-info,
+      &.btn-download {
+        padding: 5px 15px;
+      }
+    }
+    // only apply a height in results so the rows stay all the same height.
+    .productSummary {
+      height: 160px;
+      @media (@sm-only) {
+        height: 170px;
+      }
+      @media (@md-only) {
+        height: 185px;
+      }
+      @media (@lg-only) {
+        height: 195px;
+      }
+      overflow: hidden;
+
+      .productTitle {
+        height:2.5em;
+        overflow:hidden;
+        margin-top:5px;
+      }
+      .price.premium {
+        .frequencyAmount {
+          font-size:38px;
+          line-height:1;
+          @media(@xs-only) {
+            .frequencyTitle {
+              top:-8px;
+            }
+          }
+        }
+        @media(@xs-only) {
+          .frequency {
+            .lhcText {
+              line-height: 10px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
