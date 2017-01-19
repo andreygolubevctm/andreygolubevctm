@@ -102,9 +102,14 @@
         return true;
     }
 
+    function getCurrentCampaign() {
+        return currentCampaign;
+    }
+
 
     meerkat.modules.register("rewardCampaign", {
-        init: initRewardCampaign
+        init: initRewardCampaign,
+        getCurrentCampaign: getCurrentCampaign
     });
 
 })(jQuery);
