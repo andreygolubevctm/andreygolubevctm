@@ -253,8 +253,7 @@
 
   // Override styles for the excess and hospital cover sections.
 
-  .featuresListHospitalOtherList,
-  .featuresListExtrasOtherList {
+  .featuresListHospitalOtherList {
     margin-top: 7.5px;
     padding: 10px 0;
     border-top: 1px solid @results-border-color;
@@ -301,9 +300,14 @@
 .product-special-features {
   font-size: @font-size-small;
   color: @gray-dark;
+  display: -webkit-flex;
   display: flex;
   flex-direction: row;
-  height: 60px;
+  -webkit-flex-direction: row;
+  height: 80px;
+  @media(@lg) {
+    height: 60px;
+  }
   overflow: hidden;
 
   &.features-3,
@@ -314,18 +318,23 @@
   }
 
   &.features-1 .feature-item {
+    -webkit-flex-basis: 100%;
     flex-basis: 100%;
   }
   &.features-2 .feature-item {
+    -webkit-flex-basis: 50%;
     flex-basis: 50%;
   }
   &.features-3 .feature-item {
+    -webkit-flex-basis: 33.333%;
     flex-basis: 33.333%;
   }
   &.features-4 .feature-item {
+    -webkit-flex-basis: 25%;
     flex-basis: 25%;
   }
   .feature-item {
+    display: -webkit-flex;
     display: flex;
     &.item-popover {
       &:hover {
@@ -334,6 +343,7 @@
       }
     }
     .icon {
+      -webkit-flex: 1 0 auto;
       flex-grow: 1;
       font-size: @font-size-large;
       padding-right: 5px;
@@ -346,6 +356,7 @@
   }
 
   .feature-item-text {
+    -webkit-flex: 1 0 auto;
     flex-grow: 1;
     word-break: break-word;
   }
