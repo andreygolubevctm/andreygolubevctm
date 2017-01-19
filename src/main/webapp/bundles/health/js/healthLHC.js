@@ -12,7 +12,7 @@
 
                 $('.simples_dialogue-checkbox-26 span[data-loading=true]').html(rates.loading);
 
-                if(meerkat.modules.healthChoices.hasPartner()){
+                if(meerkat.modules.health.hasPartner()){
                     $('#health_healthCover_primaryCover .fieldrow_legend')
                         .html(getLoadingText(rates.primaryLoading ,  rates.loading));
 
