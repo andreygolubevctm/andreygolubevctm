@@ -1,0 +1,21 @@
+.companyLogo {
+  max-height: @standard-logo-height;
+  max-width: 150px;
+  margin-left: auto;
+  margin-right: auto;
+  overflow: hidden;
+  min-height: (@standard-logo-height * 0.55);
+  .providersHighResSpriteImages(~"health"; ~""; @providerLogoNames; 0.54);
+  @media (@lg-only) {
+    min-height: @standard-logo-height;
+    .providersHighResSpriteImages(~"health"; ~""; @providerLogoNames; 0.75);
+  }
+}
+
+.affixed-settings {
+  .companyLogo {
+    min-height: (@standard-logo-height * 0.45);
+    .providersHighResSpriteImages(~"health"; ~""; @providerLogoNames; 0.45);
+  }
+
+}

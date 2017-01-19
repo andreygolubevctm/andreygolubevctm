@@ -54,6 +54,9 @@ NOTE: The purpose is ONLY to style generic containers, not to get stuck into spe
 /** Optional Classes **/
 .sidebar-widget-padded {
   padding: 20px 15px;
+  &:not(.sidebar-widget-contained) {
+    margin-bottom: 0;
+  }
 }
 
 .sidebar-widget-small-pad {
@@ -69,6 +72,10 @@ Contained sidebar box, with padding, border, box-shadow.
 .sidebar-widget-contained {
   background-color: #fff;
   border: 1px solid @border-color;
+}
+.sidebar-widget-background-contained {
+  background-color: fade(@theme-accent-4, 10%);
+  border-radius: @border-radius-large;
 }
 
 /**

@@ -5,52 +5,6 @@ var ResultsUtilities = {
 		$( container ).css('width', width + "px");
 	},
 
-	makeElementSticky : function( stickySide, element, extraClass, startPosition ) {
-
-		// check if already been fixed
-		if( element.attr("data-fixed") != "true" ){
-
-			var msie6 = $.browser == 'msie' && $.browser.version < 7;
-			if (!msie6) {
-
-				var $window = $(window);
-				var elementHeight = element.height();
-				var scrollTop = $window.scrollTop();
-				var windowHeight = $window.height();
-
-				// We could perhaps throttle instead of debounce, to get faster updating of the fixed positions.
-				$window.smartscroll(function(e){
-					// do stuff as soon as the user stops scrolling for longer than 100ms
-					scrollTop = $window.scrollTop();
-					windowHeight = $window.height();
-
-					if( stickySide == "top" ){
-						if (scrollTop >= startPosition) {
-							element.addClass( extraClass );
-						} else {
-							element.removeClass( extraClass );
-							// refresh the element as removeClass alone doesn't seem to update the display in IE8
-							if ( $.browser.version == 8 && element.is(':visible') && scrollTop === 0) {
-								element.delay(5).hide(0).show(0);
-						}
-
-						}
-					} else if ( stickySide == "bottom" ) {
-						if( elementHeight + startPosition > scrollTop + windowHeight ){
-							element.addClass( extraClass );
-						} else {
-							element.removeClass( extraClass );
-						}
-					}
-				});
-
-			}
-			// set element as already been fixed
-			element.attr( "data-fixed", "true" );
-		}
-
-	},
-
 	position: function( position, elements, orientation){
 		switch(position){
 			case "absolute":

@@ -1,0 +1,124 @@
+/**********************************************
+	LESS PORTED FROM core/resultsHeaderBar.less
+**********************************************/
+
+.resultsContainer {
+  position: relative;
+  z-index: @results-zindex-resultItems;
+
+  .show-on-affix {
+    display: none;
+  }
+  // always in effect
+  &.affixed-settings {
+
+    .hide-on-affix {
+      display: none !important;
+    }
+    .show-on-affix {
+      display: block;
+    }
+
+    .result {
+      // if the top bar changes size, this will need to change...
+      top: 146px;
+      @media(@sm-only) {
+        top: 75px;
+      }
+      @media(@md) {
+        top: 59px;
+      }
+      width: inherit;
+      border: 1px solid @results-border-color;
+      border-bottom: 1px solid @gray-dark;
+    }
+
+    .pinned {
+      .result {
+        border-color: @theme-accent-4;
+        border-bottom-color: @gray-dark;
+      }
+    }
+
+    .resultInsert {
+      .result-header-utility-bar {
+        padding-bottom: 0;
+      }
+      .results-header-inner-container {
+        border-bottom: 0;
+        padding-bottom: 0;
+      }
+
+      .companyLogo {
+        margin-top: 10px;
+      }
+    }
+    .affixed-logo {
+      float: left;
+      width: 45%;
+    }
+
+    .result-row {
+      border: 0;
+      // To make up for the space no longer consumed by the .result element.
+      padding-top: 220px;
+      @media (@sm) {
+        padding-top: 230px;
+      }
+      @media (@lg) {
+        padding-top: 180px;
+      }
+
+      .featuresList {
+        border: 1px solid @results-border-color;
+        margin: 0;
+        padding: 15px 15px 0 15px;
+      }
+      &.pinned .featuresList {
+        border-color: @theme-accent-4;
+      }
+    }
+  }
+
+  // .affixed is not in effect while going between pages.
+  &.affixed {
+
+    .result {
+      display: none; // when in fixed mode, only display the items on the 'current page' - thanks to the pagination component for settings this.
+      position: fixed;
+    }
+
+    .currentPage {
+      .result {
+        display: block;
+      }
+    }
+  }
+
+  &.affixed-compact {
+    @media (@xs-only) {
+      .result {
+        .opacity(0);
+      }
+
+      .isScrolling .result {
+        .opacity(0);
+      }
+
+      .currentPage {
+        .result {
+          .opacity(1);
+        }
+      }
+
+    }
+
+  }
+
+  // only in effect during the pagination animation
+  &.affixed-absoluted {
+    .result {
+      position: absolute;
+    }
+  }
+}
