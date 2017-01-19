@@ -20,8 +20,11 @@
 --%>
 <%
 	RewardService rewardService = (RewardService) RequestContextUtils.findWebApplicationContext(request).getBean("rewardService");
-	rewardService.setOrderSaleStatusToFailed("");
+    pageContext.setAttribute("rewardService", rewardService);
+//	rewardService.setOrderSaleStatusToFailed("");
 %>
+<%-- TODO: SHOULD SaleStatus = 'Failed' or 'Prosessing' --%>
+<c:set var="ignore" value="${rewardService.createPlaceholderOrderForOnline(pageContext.request, data.current.transactionId)}" />
 
 <c:set var="ignore">
 	<jsp:useBean id="joinService" class="com.ctm.web.core.confirmation.services.JoinService" scope="page" />

@@ -1,15 +1,5 @@
-<%@ page import="com.ctm.reward.model.SaleStatus"%>
-<%@ page import="com.ctm.web.reward.services.RewardCampaignService"%>
-<%@ page import="com.ctm.reward.model.Campaign"%>
-<%@ page import="com.ctm.reward.model.GetCampaignsResponse"%>
-<%@ page import="org.springframework.web.servlet.support.RequestContextUtils"%>
-<%@ page import="com.ctm.web.reward.services.RewardService"%>
 <%@ page language="java" contentType="application/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-<%
-	RewardService rewardSvc = (RewardService) RequestContextUtils.findWebApplicationContext(request).getBean("rewardService");
-	pageContext.setAttribute("rewardService", rewardSvc);
-%>
 
 <c:set var="logger" value="${log:getLogger('jsp.ajax.json.health_application_ws')}" />
 
@@ -41,16 +31,6 @@
 </c:set>
 
 <jsp:useBean id="healthLeadService" class="com.ctm.web.health.services.HealthLeadService" scope="request" />
-
-
-<%-- Call Zeus controller/service here to get active campaigns
-
- save campaign in to session variables
-
-<c:set var="campaign" value="${zeusController.getCampaigns()[0]}" scope="request" />
-
- --%>
-<c:set var="ignore" value="${rewardService.createPlaceholderOrderForOnline(pageContext.request, tranId)}" />
 
 <c:choose>
     <%--
