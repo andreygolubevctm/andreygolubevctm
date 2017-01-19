@@ -109,8 +109,7 @@
 
         $(document).off('click.pin-result').on('click.pin-result', '.pin-result', function (e) {
             _pinProductHelper($(this).data('productid'));
-        })
-            .off('click.unpin-result').on('click.unpin-result', '.unpin-result', _unpinProductHelper);
+        }).off('click.unpin-result').on('click.unpin-result', '.unpin-result', _unpinProductHelper);
     }
 
     function onReturnToPage() {
@@ -344,6 +343,7 @@
 
             // Hide pagination
             $('.results-pagination').find('.navbar-collapse').addClass('hidden');
+            $('.results-filters-frequency').addClass('hidden');
             meerkat.modules.coupon.triggerPopup();
         });
 
@@ -359,6 +359,7 @@
             _.defer(function () {
                 // Show pagination header for mobile
                 $('.results-pagination').find('.navbar-collapse').removeClass('hidden');
+                $('.results-filters-frequency').removeClass('hidden');
                 // Setup pagination for non-mobile journey
                 meerkat.modules.healthResultsTemplate.toggleRemoveResultPagination();
                 // Setup scroll
@@ -583,13 +584,21 @@
                 previousState = eventObject.previousState;
             // Going between XS and other breakpoints causes issues because of Results.view.stopColumnWidthTracking
             var allowsPins = (state === 'lg' || state === 'md') && previousState !== 'xs';
+            var prevAnimationState = Results.settings.animation.filter.active;
             Results.settings.animation.filter.active = false;
             if (!allowsPins) {
                 _unpinProductHelper(pinnedProductId);
             } else {
                 _pinProductHelper(pinnedProductId);
             }
-            Results.settings.animation.filter.active = true;
+            Results.settings.animation.filter.active = prevAnimationState;
+        });
+
+        meerkat.messaging.subscribe(meerkatEvents.filters.FILTERS_UPDATED, function unPinOnFilterChange() {
+            var prevAnimationState = Results.settings.animation.filter.active;
+            Results.settings.animation.filter.active = false;
+            _unpinProductHelper(pinnedProductId);
+            Results.settings.animation.filter.active = prevAnimationState;
         });
 
     }
