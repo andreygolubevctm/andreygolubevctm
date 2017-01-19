@@ -136,12 +136,17 @@
         var coverType = 'C';
         var hospitalCount = meerkat.modules.benefitsModel.getHospitalCount();
         var extrasCount = meerkat.modules.benefitsModel.getExtrasCount();
-        if (extrasCount === 0 && (isLimited || hospitalCount > 0)) {
+
+        // C = extras AND (hospital OR limited)
+        if(extrasCount > 0 && (hospitalCount > 0 || isLimited)) {
+            coverType = 'C';
+            // H = No extras, and Hospital benefits OR limited
+        } else if(extrasCount === 0 && (hospitalCount > 0 || isLimited)) {
             coverType = 'H';
-        } else if (extrasCount > 0) {
+            // E = extras only
+        } else if(extrasCount > 0) {
             coverType = 'E';
         }
-        meerkat.modules.healthChoices.setCoverType(coverType);
         $elements.coverType.val(coverType);
     }
 
