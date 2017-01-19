@@ -2,25 +2,31 @@ package com.ctm.web.reward.services;
 
 import com.ctm.httpclient.Client;
 import com.ctm.httpclient.RestSettings;
-import com.ctm.reward.model.GetCampaignsResponse;
-import com.ctm.reward.model.SaleStatus;
-import com.ctm.reward.model.UpdateSaleStatus;
-import com.ctm.reward.model.UpdateSaleStatusResponse;
+import com.ctm.reward.model.*;
+import com.ctm.web.core.exceptions.SessionException;
+import com.ctm.web.core.model.session.AuthenticatedData;
+import com.ctm.web.core.model.session.SessionData;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.services.ApplicationService;
+import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.transaction.dao.TransactionDetailsDao;
+import com.ctm.web.core.web.go.Data;
+import com.ctm.web.reward.utils.RewardRequestParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import rx.Observable;
 import rx.schedulers.Schedulers;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Collections;
 import java.util.Date;
+import java.util.Optional;
 
 import static com.ctm.web.core.model.settings.Vertical.VerticalType.HEALTH;
 
@@ -45,17 +51,26 @@ public class RewardService {
 	private TransactionDetailsDao transactionDetailsDao;
 	private RewardCampaignService rewardCampaignService;
 	private ApplicationService applicationService;
+	private SessionDataServiceBean sessionDataServiceBean;
+	//private RewardRequestParser rewardRequestParser;
 	private Client<UpdateSaleStatus, UpdateSaleStatusResponse> rewardUpdateSalesStatusClient;
+	private Client<OrderForm, OrderFormResponse> rewardCreateOrderClient;
 
 	@Autowired
 	public RewardService(TransactionDetailsDao transactionDetailsDao,
 						 Client<UpdateSaleStatus, UpdateSaleStatusResponse> rewardUpdateSalesStatusClient,
+						 Client<OrderForm, OrderFormResponse> rewardCreateOrderClient,
 						 RewardCampaignService rewardCampaignService,
-						 ApplicationService applicationService) {
+						 ApplicationService applicationService,
+						 SessionDataServiceBean sessionDataServiceBean/*,
+						 RewardRequestParser rewardRequestParser*/) {
 		this.transactionDetailsDao = transactionDetailsDao;
 		this.rewardUpdateSalesStatusClient = rewardUpdateSalesStatusClient;
+		this.rewardCreateOrderClient = rewardCreateOrderClient;
 		this.rewardCampaignService = rewardCampaignService;
 		this.applicationService = applicationService;
+		this.sessionDataServiceBean = sessionDataServiceBean;
+		//this.rewardRequestParser = rewardRequestParser;
 	}
 
 	public GetCampaignsResponse getAllActiveCampaigns(HttpServletRequest request) {
@@ -122,6 +137,79 @@ public class RewardService {
 		trackingStatus.setRewardType("sergei");
 		trackingStatus.setStage("1");
 		return trackingStatus;
+	}
+
+	/**
+	 * Add a placeholder order into the Reward service.
+	 * @param campaign Active campaign to record against the placeholder
+	 * @return null if unsuccessful, otherwise: string is the encryptedOrderLineId of the placeholder record - also known as redemptionId.
+	 */
+	public String createPlaceholderOrder(final HttpServletRequest request, final String rootId,
+										 final Campaign campaign) {
+		if (campaign == null) {
+			LOGGER.info("Reward: Unable to createPlaceholderOrder because campaign is null. rootId={}", rootId);
+			return null;
+		}
+		OrderFormResponse response = createOrder(request, rootId, SaleStatus.Processing, campaign.getCampaignCode());
+		if (response != null && response.getEncryptedOrderLineId().isPresent()) {
+			return response.getEncryptedOrderLineId().get();
+		} else {
+			return null;
+		}
+	}
+
+	public OrderFormResponse createOrder(final HttpServletRequest request, final String rootId,
+										 final SaleStatus saleStatus, final String campaignCode) {
+		try {
+			final SessionData sessionData = sessionDataServiceBean.getSessionDataForTransactionId(request, rootId);
+			if (sessionData == null) {
+				throw new SessionException("Session not found for rootId=" + rootId);
+			}
+
+			final Data data = sessionData.getSessionDataForTransactionId(rootId);
+			if (data == null) {
+				throw new SessionException("Databucket not found for rootId=" + rootId);
+			}
+
+			final Optional<AuthenticatedData> authenticatedSessionData = Optional.ofNullable(sessionData.getAuthenticatedSessionData());
+
+			RewardRequestParser rewardRequestParser = new RewardRequestParser();
+			OrderForm orderForm = rewardRequestParser.adaptFromDatabucket(authenticatedSessionData, data, saleStatus, campaignCode);
+			OrderFormResponse orderFormResponse = createOrder(orderForm);
+
+			if (orderFormResponse != null && orderFormResponse.getStatus() && orderFormResponse.getEncryptedOrderLineId().isPresent()) {
+				data.put(XPATH_CURRENT_ENCRYPTED_ORDER_LINE_ID, orderFormResponse.getEncryptedOrderLineId().get());
+				return orderFormResponse;
+			} else {
+				throw new Exception("Create order failed. status=" + ((orderFormResponse != null) ? orderFormResponse.getStatus() : "")
+						+ ", message={}" + ((orderFormResponse != null) ? orderFormResponse.getMessage() : ""));
+			}
+		}
+		catch (Exception e) {
+			LOGGER.error("Reward: Failed to create order. rootId={}, saleStatus={}, campaignCode={}", rootId, saleStatus.name(), campaignCode, e);
+			OrderFormResponse form = new OrderFormResponse();
+			form.setStatus(false);
+			return form;
+		}
+	}
+
+	public OrderFormResponse createOrder(final OrderForm form) {
+		final String url = rewardServiceUrl + REWARD_ENDPOINT_CREATE_ORDER;
+		return rewardCreateOrderClient.post(RestSettings.<OrderForm>builder()
+				.request(form)
+				.jsonHeaders()
+				.url(url)
+				.timeout(SERVICE_TIMEOUT)
+				.build())
+				.observeOn(Schedulers.io())
+				.onErrorResumeNext(throwable -> {
+					LOGGER.error("Reward: Failed to create order. url={}", url, throwable);
+					OrderFormResponse response = new OrderFormResponse();
+					response.setStatus(false);
+					return Observable.just(response);
+				})
+				.toBlocking()
+				.first();
 	}
 
 //	private RedemptionForm saveRedemption(final HttpServletRequest request,

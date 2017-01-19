@@ -2,6 +2,7 @@ package com.ctm.web.reward.services;
 
 import com.ctm.httpclient.Client;
 import com.ctm.httpclient.RestSettings;
+import com.ctm.reward.model.Campaign;
 import com.ctm.reward.model.GetCampaigns;
 import com.ctm.reward.model.GetCampaignsResponse;
 import com.ctm.web.core.model.settings.Vertical;
@@ -16,6 +17,7 @@ import rx.schedulers.Schedulers;
 
 import java.time.ZonedDateTime;
 import java.util.Collections;
+import java.util.function.Predicate;
 
 @Service
 public class RewardCampaignService {
@@ -32,6 +34,10 @@ public class RewardCampaignService {
 	@Autowired
 	public RewardCampaignService(Client<GetCampaigns, GetCampaignsResponse> rewardCampaignsGetClient) {
 		this.rewardCampaignsGetClient = rewardCampaignsGetClient;
+	}
+
+	public static Predicate<Campaign> isValidForPlaceholder() {
+		return campaign -> campaign.getActive() && campaign.getEligibleForRedemption();
 	}
 
 	@Cacheable(cacheNames = {"rewardGetActiveCampaigns"})
@@ -52,7 +58,7 @@ public class RewardCampaignService {
 				.build())
 				.observeOn(Schedulers.io())
 				.onErrorResumeNext(throwable -> {
-					LOGGER.error("Failed to get reward campaigns. url={}", url, throwable);
+					LOGGER.error("Reward: Failed to get reward campaigns. url={}", url, throwable);
 					GetCampaignsResponse response = new GetCampaignsResponse();
 					response.setCampaigns(Collections.emptySet());
 					return Observable.just(response);

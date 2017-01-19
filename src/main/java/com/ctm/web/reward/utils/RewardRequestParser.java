@@ -1,9 +1,6 @@
 package com.ctm.web.reward.utils;
 
-import com.ctm.reward.model.OrderAddress;
-import com.ctm.reward.model.OrderForm;
-import com.ctm.reward.model.OrderHeader;
-import com.ctm.reward.model.OrderLine;
+import com.ctm.reward.model.*;
 import com.ctm.web.core.model.session.AuthenticatedData;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.health.model.form.Address;
@@ -11,7 +8,6 @@ import com.ctm.web.health.model.form.Application;
 import com.ctm.web.health.model.form.HealthRequest;
 import com.ctm.web.reward.services.RewardService;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 public class RewardRequestParser {
@@ -19,7 +15,8 @@ public class RewardRequestParser {
     private static final String CURRENT_ROOT_ID = "current/rootId";
     private static final String PREFIX = "health/application/";
 
-    private static OrderForm parseOrderFormRequest(final HttpServletRequest request, final Data dataBucket, final String saleStatus, final String campaignCode) {
+    public OrderForm adaptFromDatabucket(final Optional<AuthenticatedData> authenticatedSessionData,
+                                         final Data dataBucket, final SaleStatus saleStatus, final String campaignCode) {
         final Long rootId = Long.parseLong(dataBucket.getString(CURRENT_ROOT_ID));
         final Optional<String> encryptedOrderLineId = Optional.ofNullable(dataBucket.getString(RewardService.XPATH_CURRENT_ENCRYPTED_ORDER_LINE_ID));
 
@@ -35,7 +32,7 @@ public class RewardRequestParser {
         final OrderHeader orderHeader = new OrderHeader();
         orderHeader.setOrderLine(orderLine);
         orderHeader.setRootId((int)(long)rootId); // TODO: fix this
-        orderHeader.setSaleStatus(saleStatus);
+        orderHeader.setSaleStatus(saleStatus.name());
 
         final OrderForm orderForm = new OrderForm();
         orderForm.setOrderHeader(orderHeader);
