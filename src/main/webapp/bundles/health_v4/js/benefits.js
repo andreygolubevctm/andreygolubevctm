@@ -76,11 +76,8 @@
 
     function updateModelOnPreload() {
 
-        if($elements.accidentOnlyCover.val() == 'Y') {
-            $('#tabs').find('[data-benefit-cover-type="limited"]').click().trigger('shown.bs.tab');
-        } else {
-            $('#tabs').find('[data-benefit-cover-type="customise"]').click().trigger('shown.bs.tab');
-        }
+        var type = $elements.accidentOnlyCover.val() == 'Y' ? "limited" : "customise";
+        $('#tabs').find('[data-benefit-cover-type=' + type + ']').click().trigger('shown.bs.tab');
 
         // extras first
         meerkat.modules.benefitsModel.setIsHospital(false);
@@ -135,14 +132,16 @@
 
     function _setCoverTypeField() {
         // set the hidden field
+        var isLimited = meerkat.modules.benefits.getHospitalType() === 'limited';
         var coverType = 'C';
-
-        if (meerkat.modules.benefitsModel.getExtrasCount() > 0 && meerkat.modules.benefitsModel.getHospitalCount() === 0) {
-            coverType = 'E';
-        } else if (meerkat.modules.benefitsModel.getExtrasCount() === 0 && meerkat.modules.benefitsModel.getHospitalCount() > 0) {
+        var hospitalCount = meerkat.modules.benefitsModel.getHospitalCount();
+        var extrasCount = meerkat.modules.benefitsModel.getExtrasCount();
+        if (extrasCount === 0 && (isLimited || hospitalCount > 0)) {
             coverType = 'H';
+        } else if (extrasCount > 0) {
+            coverType = 'E';
         }
-
+        meerkat.modules.healthChoices.setCoverType(coverType);
         $elements.coverType.val(coverType);
     }
 

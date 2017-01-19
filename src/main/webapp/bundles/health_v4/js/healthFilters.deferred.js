@@ -180,17 +180,17 @@
                         setFilterByHospitalBenefits();
                     },
                     update: function () {
-                        // Forced to customise as we don't have top/mid/basic in v4
-                        var benefitCoverType = $('#limitedHospital').hasClass('active') ? 'limited' : 'customise';
+                        // Forced to customise (or limited) as we don't have top/mid/basic in v4
+                        var $hospitalType = $('.results-filters-benefits .health-filter-hospital-benefits li.active').find('a');
+                        benefitCoverType = $hospitalType.length && $hospitalType.attr('href').search(/limited/) !== -1 ? 'limited' : 'customise';
                         $('#health_benefits_covertype').val(benefitCoverType);
 
                         // reset hospital benefits to empty.
                         if (benefitCoverType == 'limited') {
                             $('.filter-hospital-benefits').find(':checked').prop('checked', false);
-                            meerkat.modules.benefits.setHospitalType('limited');
-                        } else {
-                            meerkat.modules.benefits.setHospitalType('customise');
                         }
+
+                        meerkat.modules.benefits.setHospitalType(benefitCoverType);
 
                         meerkat.modules.benefits.toggleHospitalTypeTabs();
 
@@ -402,7 +402,18 @@
         var hospitalLabel = hospitalType == 'customise' ? 'Comprehensive' : 'Limited';
         var coverTypeLabel = '';
         if(coverType !== 'E') { // Only when its H/C
-            coverTypeLabel = '<div>' + hospitalLabel + " Cover</div>";
+            coverTypeLabel = '<div>' + hospitalLabel + ' Cover</div>';
+
+            // Update the active tab for hospital filter to limited if applicable
+            if(hospitalType === 'limited') {
+                $('.results-filters-benefits .health-filter-hospital-benefits li').find('a').each(function () {
+                    var $that = $(this);
+                    var isLimited = $that.attr('href').search(/limited/) !== -1;
+                    $that.closest('li').toggleClass('active',isLimited);
+                    $('#hospitalBenefits').toggleClass('active in',!isLimited);
+                    $('#limitedHospital').toggleClass('active in',isLimited);
+                });
+            }
         }
         var benefitCount = '<div>' + benefitString + '</div>';
         $('.filter-by-hospital-benefits').html(coverTypeLabel + benefitCount)
