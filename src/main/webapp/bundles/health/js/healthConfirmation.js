@@ -21,11 +21,16 @@
 			meerkat.modules.journeyProgressBar.setComplete();
 			meerkat.modules.journeyProgressBar.disable();
 
+			if(_.isObject(result) && _.has(result,'ConfirmationData')) {
+				result.data = result.ConfirmationData;
+				result = _.pick(result,'data');
+			}
+
 			// Handle error display
 			// 'results' is a global object added by slide_confirmation.tag
 			if (result.hasOwnProperty('data') === false || result.data.status != 'OK' || result.data.product === '') {
 				meerkat.modules.errorHandling.error({
-					message: result.data.message,
+					message: result.hasOwnProperty('data') ? result.data.message : 'Failed to load confirmation data',
 					page: "healthConfirmation.js module",
 					description: "Trying to load the confirmation page failed",
 					data: null,
