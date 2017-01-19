@@ -1,3 +1,5 @@
+<%@ tag import="com.ctm.web.reward.services.RewardService" %>
+<%@ tag import="org.springframework.web.servlet.support.RequestContextUtils" %>
 <%@ tag description="The Health Set To Pending"%>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
@@ -16,6 +18,10 @@
 </c:if>
 
 --%>
+<%
+	RewardService rewardService = (RewardService) RequestContextUtils.findWebApplicationContext(request).getBean("rewardService");
+	rewardService.setOrderSaleStatusToFailed("");
+%>
 
 <c:set var="ignore">
 	<jsp:useBean id="joinService" class="com.ctm.web.core.confirmation.services.JoinService" scope="page" />
