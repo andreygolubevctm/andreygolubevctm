@@ -5,6 +5,7 @@
 
 		.meerkatCrest {
 			width: 80%;
+
 			@media(max-width: @screen-md-max) {
 				width: 100%;
 			}
@@ -21,44 +22,8 @@
 		background-color: @theme-tertiary;
 		padding: 20px 0 40px 0;
 
-		.mobilePostcardName {
-			display: none;
-			@media(max-width: @screen-sm) {
-				display: block;
-				position: absolute;
-				z-index: 1;
-				font-size: 30px;
-				top: 9%;
-				left: 7%;
-			}
-
-			@media(max-width: 630px) {
-				font-size: 20px;
-			}
-
-			@media(max-width: 580px) {
-				font-size: 18px;
-			}
-
-			@media(max-width: 520px) {
-				font-size: 16px;
-				left: 8%;
-			}
-
-			@media(max-width: 490px) {
-				font-size: 14px;
-				left: 8%;
-			}
-
-			@media(max-width: 460px) {
-				font-size: 12px;
-				left: 8%;
-			}
-
-			@media(max-width: 430px) {
-				font-size: 10px;
-				left: 9%;
-			}
+		@media(max-width: @screen-sm) {
+			padding: 20px 0 0 0;
 		}
 
 		.globalMap {
@@ -67,6 +32,7 @@
 			background-size: contain;
 			// Using map_china.png as an example the dimensions of the image is 1297x761. Therefore, to maintain aspect radio while making the empty div containing the background image responsive we do 761/1297, which equals ~0.5867 (which we turn into a percentage)
 			padding-bottom: 58.67%;
+
 			@media(max-width: @screen-sm) {
 				padding-bottom: 128.75%;
 			}
@@ -113,7 +79,75 @@
 					background-image: url("/ctm/assets/brand/ctm/images/zeus/mobile_australia.png");
 				}
 			}
+		}
 
+		.mobilePostcardName {
+			display: none;
+
+			@media(max-width: @screen-sm) {
+				display: block;
+				position: absolute;
+				z-index: 1;
+				font-size: 30px;
+				top: 8%;
+				left: 7%;
+			}
+
+			@media(max-width: 630px) {
+				font-size: 20px;
+			}
+
+			@media(max-width: 580px) {
+				font-size: 18px;
+			}
+
+			@media(max-width: 520px) {
+				font-size: 16px;
+				left: 8%;
+			}
+
+			@media(max-width: 490px) {
+				font-size: 14px;
+				left: 8%;
+			}
+
+			@media(max-width: 460px) {
+				font-size: 12px;
+				left: 8%;
+			}
+
+			@media(max-width: 430px) {
+				font-size: 10px;
+				left: 9%;
+			}
+		}
+
+		.mobileShareLinks {
+			display: none;
+			background-color: @theme-secondary;
+
+			@media(max-width: @screen-sm) {
+				display: inline-block;
+			}
+
+			a {
+				padding: 15px;
+				display: inline-block;
+				background-color: @theme-secondary;
+
+				@media(max-width: @screen-xs) {
+					padding: 10px;
+				}
+
+				img {
+					width: auto;
+					height: 35px;
+
+					@media(max-width: @screen-xs) {
+						height: 25px;
+					}
+				}
+			}
 		}
 
 		.postcardContainer {
@@ -121,6 +155,10 @@
 			margin-top: -70px;
 			position: relative;
 			width: 100%;
+
+			@media(max-width: @screen-sm) {
+				display: none;
+			}
 
 			.postcard {
 				width: 80%;
@@ -137,8 +175,37 @@
 				}
 			}
 
-			@media(max-width: @screen-sm) {
-				display: none;
+			.shareLinks {
+				position: absolute;
+				right: 30px;
+				top: 35%;
+
+				@media(max-width: @screen-md-max) {
+					right: 9px;
+				}
+
+				@media(max-width: @screen-sm-max) {
+					right: 7px;
+				}
+
+				a {
+					padding: 20px;
+					display: block;
+					background-color: @theme-secondary;
+					width: 100%;
+
+					@media(max-width: @screen-sm-max) {
+						padding: 15px;
+					}
+
+					img {
+						width: 45px;
+						height: auto;
+						@media(max-width: @screen-sm-max) {
+							width: 35px;
+						}
+					}
+				}
 			}
 		}
 	}
