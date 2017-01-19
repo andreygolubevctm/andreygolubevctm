@@ -15,7 +15,7 @@ public class RewardRequestParser {
     private static final String CURRENT_ROOT_ID = "current/rootId";
     private static final String PREFIX = "health/application/";
 
-    public OrderForm adaptFromDatabucket(final Optional<AuthenticatedData> authenticatedSessionData,
+    public OrderForm adaptFromDatabucket(final Optional<AuthenticatedData> authenticatedData,
                                          final Data dataBucket, final SaleStatus saleStatus, final String campaignCode) {
         final Long rootId = Long.parseLong(dataBucket.getString(CURRENT_ROOT_ID));
         final Optional<String> encryptedOrderLineId = Optional.ofNullable(dataBucket.getString(RewardService.XPATH_CURRENT_ENCRYPTED_ORDER_LINE_ID));
@@ -28,6 +28,8 @@ public class RewardRequestParser {
         orderLine.setLastName(dataBucket.getString(PREFIX + "primary/surname"));
         orderLine.setPhoneNumber(Optional.ofNullable(dataBucket.getString(PREFIX + "mobile"))
                 .orElse(dataBucket.getString(PREFIX + "other")));
+
+		authenticatedData.ifPresent(user -> orderLine.setCreatedByOperator(user.getUid()));
 
         final OrderHeader orderHeader = new OrderHeader();
         orderHeader.setOrderLine(orderLine);

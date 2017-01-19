@@ -24,7 +24,6 @@ import rx.schedulers.Schedulers;
 import javax.servlet.http.HttpServletRequest;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.Collections;
 import java.util.Date;
 import java.util.Optional;
 
@@ -52,7 +51,6 @@ public class RewardService {
 	private RewardCampaignService rewardCampaignService;
 	private ApplicationService applicationService;
 	private SessionDataServiceBean sessionDataServiceBean;
-	//private RewardRequestParser rewardRequestParser;
 	private Client<UpdateSaleStatus, UpdateSaleStatusResponse> rewardUpdateSalesStatusClient;
 	private Client<OrderForm, OrderFormResponse> rewardCreateOrderClient;
 
@@ -62,15 +60,13 @@ public class RewardService {
 						 Client<OrderForm, OrderFormResponse> rewardCreateOrderClient,
 						 RewardCampaignService rewardCampaignService,
 						 ApplicationService applicationService,
-						 SessionDataServiceBean sessionDataServiceBean/*,
-						 RewardRequestParser rewardRequestParser*/) {
+						 SessionDataServiceBean sessionDataServiceBean) {
 		this.transactionDetailsDao = transactionDetailsDao;
 		this.rewardUpdateSalesStatusClient = rewardUpdateSalesStatusClient;
 		this.rewardCreateOrderClient = rewardCreateOrderClient;
 		this.rewardCampaignService = rewardCampaignService;
 		this.applicationService = applicationService;
 		this.sessionDataServiceBean = sessionDataServiceBean;
-		//this.rewardRequestParser = rewardRequestParser;
 	}
 
 	public GetCampaignsResponse getAllActiveCampaigns(HttpServletRequest request) {
@@ -140,42 +136,56 @@ public class RewardService {
 	}
 
 	/**
-	 * Add a placeholder order into the Reward service.
-	 * @param campaign Active campaign to record against the placeholder
+	 * Add a placeholder order into the Reward service when Online and eligible campaign exists.
 	 * @return null if unsuccessful, otherwise: string is the encryptedOrderLineId of the placeholder record - also known as redemptionId.
 	 */
-	public String createPlaceholderOrder(final HttpServletRequest request, final String rootId,
-										 final Campaign campaign) {
-		if (campaign == null) {
-			LOGGER.info("Reward: Unable to createPlaceholderOrder because campaign is null. rootId={}", rootId);
-			return null;
+	public String createPlaceholderOrderForOnline(final HttpServletRequest request, final String transactionId) {
+		try {
+			final SessionData sessionData = sessionDataServiceBean.getSessionDataForTransactionId(request, transactionId);
+			if (sessionData == null) {
+				throw new SessionException("Session not found for transactionId=" + transactionId);
+			}
+
+			final Data data = sessionData.getSessionDataForTransactionId(transactionId);
+			if (data == null) {
+				throw new SessionException("Databucket not found for transactionId=" + transactionId);
+			}
+
+			final Optional<AuthenticatedData> authenticatedData = Optional.ofNullable(sessionData.getAuthenticatedSessionData());
+			if (authenticatedData.isPresent()) {
+				LOGGER.info("Reward: Abort createPlaceholderOrderForOnline because not Online user.");
+				return null;
+			}
+
+			final GetCampaignsResponse campaigns = getAllActiveCampaigns(request);
+			final Campaign campaign = campaigns.getCampaigns().stream()
+					.filter(RewardCampaignService.isValidForPlaceholder())
+					.findFirst().orElse(null);
+
+			if (campaign == null) {
+				LOGGER.info("Reward: Unable to createPlaceholderOrderForOnline because no valid campaign. transactionId={}", transactionId);
+				return null;
+			}
+
+			OrderFormResponse response = createOrder(data, authenticatedData, SaleStatus.Processing, campaign.getCampaignCode());
+			if (response != null && response.getEncryptedOrderLineId().isPresent()) {
+				return response.getEncryptedOrderLineId().get();
+			} else {
+				return null;
+			}
 		}
-		OrderFormResponse response = createOrder(request, rootId, SaleStatus.Processing, campaign.getCampaignCode());
-		if (response != null && response.getEncryptedOrderLineId().isPresent()) {
-			return response.getEncryptedOrderLineId().get();
-		} else {
+		catch (Exception e) {
+			LOGGER.error("Reward: Failed to createPlaceholderOrderForOnline. transactionId={}", transactionId, e);
 			return null;
 		}
 	}
 
-	public OrderFormResponse createOrder(final HttpServletRequest request, final String rootId,
+	public OrderFormResponse createOrder(final Data data, Optional<AuthenticatedData> authenticatedSessionData,
 										 final SaleStatus saleStatus, final String campaignCode) {
 		try {
-			final SessionData sessionData = sessionDataServiceBean.getSessionDataForTransactionId(request, rootId);
-			if (sessionData == null) {
-				throw new SessionException("Session not found for rootId=" + rootId);
-			}
-
-			final Data data = sessionData.getSessionDataForTransactionId(rootId);
-			if (data == null) {
-				throw new SessionException("Databucket not found for rootId=" + rootId);
-			}
-
-			final Optional<AuthenticatedData> authenticatedSessionData = Optional.ofNullable(sessionData.getAuthenticatedSessionData());
-
 			RewardRequestParser rewardRequestParser = new RewardRequestParser();
 			OrderForm orderForm = rewardRequestParser.adaptFromDatabucket(authenticatedSessionData, data, saleStatus, campaignCode);
-			OrderFormResponse orderFormResponse = createOrder(orderForm);
+			OrderFormResponse orderFormResponse = remoteCreateOrder(orderForm);
 
 			if (orderFormResponse != null && orderFormResponse.getStatus() && orderFormResponse.getEncryptedOrderLineId().isPresent()) {
 				data.put(XPATH_CURRENT_ENCRYPTED_ORDER_LINE_ID, orderFormResponse.getEncryptedOrderLineId().get());
@@ -186,14 +196,14 @@ public class RewardService {
 			}
 		}
 		catch (Exception e) {
-			LOGGER.error("Reward: Failed to create order. rootId={}, saleStatus={}, campaignCode={}", rootId, saleStatus.name(), campaignCode, e);
+			LOGGER.error("Reward: Failed to create order. saleStatus={}, campaignCode={}", saleStatus.name(), campaignCode, e);
 			OrderFormResponse form = new OrderFormResponse();
 			form.setStatus(false);
 			return form;
 		}
 	}
 
-	public OrderFormResponse createOrder(final OrderForm form) {
+	private OrderFormResponse remoteCreateOrder(final OrderForm form) {
 		final String url = rewardServiceUrl + REWARD_ENDPOINT_CREATE_ORDER;
 		return rewardCreateOrderClient.post(RestSettings.<OrderForm>builder()
 				.request(form)

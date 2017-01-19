@@ -8,11 +8,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <%
 	RewardService rewardSvc = (RewardService) RequestContextUtils.findWebApplicationContext(request).getBean("rewardService");
-	GetCampaignsResponse campaigns = rewardSvc.getAllActiveCampaigns(request);
-	Campaign campaign = campaigns.getCampaigns().stream().filter(RewardCampaignService.isValidForPlaceholder()).findFirst().orElse(null);
-	//Campaign campaign = campaigns.getCampaigns().stream().findFirst().orElse(null);
 	pageContext.setAttribute("rewardService", rewardSvc);
-	pageContext.setAttribute("rewardCampaign", campaign);
 %>
 
 <c:set var="logger" value="${log:getLogger('jsp.ajax.json.health_application_ws')}" />
@@ -54,8 +50,7 @@
 <c:set var="campaign" value="${zeusController.getCampaigns()[0]}" scope="request" />
 
  --%>
-<c:set var="redemptionId" value="${rewardService.createPlaceholderOrder(pageContext.request, tranId, rewardCampaign)}" />
-<%-- TODO Put redemptionId into databucket --%>
+<c:set var="ignore" value="${rewardService.createPlaceholderOrderForOnline(pageContext.request, tranId)}" />
 
 <c:choose>
     <%--
