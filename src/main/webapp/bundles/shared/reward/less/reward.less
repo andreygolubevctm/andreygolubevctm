@@ -69,7 +69,7 @@ body {
   }
 }
 // SVG icons for rewards
-.icon-zeus0317{
+[class*="icon-zeus"] {
   width:18px;
   background-image: url("../graphics/reward/toy/crest.svg");
   background-repeat: no-repeat;
@@ -80,4 +80,16 @@ body {
   background-size: 18px;
 
   &:before { content: "\00a0 \00a0"; }
+}
+
+.reward-more-info {
+  display: flex;
+  .icon-zeus{
+    width: 60px;
+    -webkit-background-size: contain;
+    -moz-background-size: contain;
+    -o-background-size: contain;
+    background-size: contain;
+    margin-right: 15px;
+  }
 }

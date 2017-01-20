@@ -42,6 +42,7 @@
     "shared/sidebarWidgets",
     "shared/filters",
     "shared/radioGroupTile",
-    "shared/bootstrapSwitch"
+    "shared/bootstrapSwitch",
+    "shared/reward"
   ]
 }

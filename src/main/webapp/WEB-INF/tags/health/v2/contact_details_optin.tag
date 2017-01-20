@@ -34,6 +34,7 @@
 	<form_v2:fieldset_columns sideHidden="true">
 
 		<jsp:attribute name="rightColumn">
+            <reward:campaign_tile_container />
 			<%-- Please check the database for this content --%>
 			<c:if test="${competitionEnabled == true}">
 				<content:get key="healthCompetitionRightColumnPromo"/>

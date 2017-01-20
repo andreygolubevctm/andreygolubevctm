@@ -17,6 +17,7 @@
 	<form_v2:fieldset_columns sideHidden="true">
 
 		<jsp:attribute name="rightColumn">
+            <reward:campaign_tile_container />
 			<health_v2_content:sidebar />
 		</jsp:attribute>
 

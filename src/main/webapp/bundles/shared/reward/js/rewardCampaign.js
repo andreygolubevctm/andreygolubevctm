@@ -7,7 +7,8 @@
         exception = meerkat.logging.exception;
 
     var campaignTileTemplate, campaignTileTemplateXs,
-        currentCampaign = false;
+        currentCampaign = false,
+        $campaignContentHtml;
 
     function initRewardCampaign(){
         $(document).ready(function() {
@@ -37,6 +38,7 @@
                 currentCampaign = json.campaigns.filter(function(campaign) {
                     return campaign.active === true && campaign.visible === true;
                 })[0];
+                setContentHtml();
                 renderCampaignTile();
             } else {
                 debug('No active campaigns.');
@@ -47,7 +49,11 @@
             exception(txt + ': ' + errorThrown);
         });
     }
-
+    
+    function setContentHtml() {
+        if (isCurrentCampaignValid() !== true) return;
+        $campaignContentHtml = $(currentCampaign.contentHtml);
+    }
 
     function renderCampaignTile() {
         if (isCurrentCampaignValid() !== true) return;
@@ -105,11 +111,16 @@
     function getCurrentCampaign() {
         return currentCampaign;
     }
+    
+    function getCampaignContentHtml() {
+        return $campaignContentHtml;
+    }
 
 
     meerkat.modules.register("rewardCampaign", {
         init: initRewardCampaign,
-        getCurrentCampaign: getCurrentCampaign
+        getCurrentCampaign: getCurrentCampaign,
+        getCampaignContentHtml: getCampaignContentHtml
     });
 
 })(jQuery);
