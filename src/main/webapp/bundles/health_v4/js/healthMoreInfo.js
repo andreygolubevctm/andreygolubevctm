@@ -103,7 +103,8 @@
             var product = Results.getSelectedProduct(),
                 brochureTemplate = meerkat.modules.templateCache.getTemplate($('#emailBrochuresTemplate'));
 
-            product.emailAddress = $('input[name=health_contactDetails_email]').val();
+            // init the validation
+            $('#emailBrochuresForm').validate();
 
             var htmlContent = brochureTemplate(product),
                 modalOptions = {
