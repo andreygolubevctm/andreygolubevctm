@@ -5,6 +5,11 @@
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath" 		required="true"	 rtexprvalue="true"	 description="field group's xpath" %>
 
+<c:set var="required" value="${true}" />
+<c:if test="${callCentre}">
+	<c:set var="required" value="${false}" />
+</c:if>
+
 <c:set var="fieldXpath" value="${xpath}/email" />
 <form_v4:row label="Your email address" fieldXpath="${fieldXpath}" className="clear required_input">
 	<field_v2:email xpath="${fieldXpath}" title="your email address" required="${required}"  />
