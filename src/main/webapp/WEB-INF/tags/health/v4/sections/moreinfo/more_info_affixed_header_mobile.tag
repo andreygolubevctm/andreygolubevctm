@@ -15,7 +15,7 @@
 				<h5 class="noTopMargin productName text-center">{{= info.productTitle }}</h5>
 			</div>
 			<div class="col-xs-12 text-center printableBrochuresLink">
-				<a href="javascript:;">Get printable brochures in your email inbox</a>
+				<a href="javascript:;" class="getPrintableBrochures">Get printable brochures in your email inbox</a>
 			</div>
 			<div class="col-xs-12 text-center">
 				<div class="quote-reference-number"><p>Quote Ref: <span class="transactionId">{{= obj.transactionId }}</span></p></div>
