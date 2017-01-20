@@ -38,7 +38,7 @@
 .resultInsert {
 
   .result-header-utility-bar {
-    @media(@md) {
+    @media(@lg) {
       padding-bottom: 10px;
     }
   }
@@ -112,12 +112,11 @@
       height: 140px;
     }
     @media (@md-only) {
-      height: 105px;
+      height: 145px;
     }
     @media (@lg-only) {
-      height: 125px;
+      height: 135px;
     }
-
 
     .frequencyAmount {
       color: @link-color;
@@ -134,11 +133,12 @@
     }
 
     .lhcText {
+      color: @gray;
       text-align: center;
       .small;
       padding-bottom: 5px;
     }
-    @media (@md) {
+    @media (@lg) {
       .frequencyAmount, .lhcText {
         float: left;
         width: 50%;
@@ -152,6 +152,10 @@
         height: 50px;
         align-items: flex-end;
       }
+    }
+
+    .companyLogo {
+      margin-top: 10px;
     }
   }
 
