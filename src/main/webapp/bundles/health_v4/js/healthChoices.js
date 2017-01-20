@@ -1,17 +1,19 @@
 ;(function ($, undefined) {
 
-	var meerkat = window.meerkat,
-		meerkatEvents = meerkat.modules.events,
-		log = meerkat.logging.info;
+    var meerkat = window.meerkat,
+        meerkatEvents = meerkat.modules.events,
+        log = meerkat.logging.info;
 
     var _cover = '',
         _state = '',
         _performUpdate = false,
         $elements = {};
 
-	function init() {
-		_setupFields();
-	}
+    function init() {
+        $(document).ready(function () {
+            _setupFields();
+        });
+    }
 
     function initialise(cover) {
         setCover(cover);
@@ -28,15 +30,15 @@
         };
     }
 
-	function hasPartner() {
-		switch(_cover) {
-			case 'C':
-			case 'F':
-				return true;
-			default:
-				return false;
-		}
-	}
+    function hasPartner() {
+        switch (_cover) {
+            case 'C':
+            case 'F':
+                return true;
+            default:
+                return false;
+        }
+    }
 
     function setCover(cover) {
         _cover = cover || 'SM'; // default to a single
