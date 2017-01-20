@@ -89,6 +89,10 @@
 		<health_v2_layout:slide_confirmation />
 		<health_v3:brochure_template/>
 		<health_v3:confirmation_fund_details_template />
+        <script class="crud-modal-template" type="text/html">
+            <reward:redemption_form />
+        </script>
+        <a href="javascript:;" class="crud-new-entry">CLICK ME</a>
 	</jsp:body>
 
 </layout_v1:journey_engine_page>
