@@ -175,20 +175,33 @@ public class HealthApplicationController extends CommonQuoteRouter {
             if (placeholderRedemptionId.isPresent()) {
                 rewardService.setOrderSaleStatusToSale(placeholderRedemptionId.orElse(""));
             } else if (isCallCentre) {
+                final GetCampaignsResponse campaigns = rewardService.getAllActiveCampaigns(request);
+                final Campaign campaign = campaigns.getCampaigns().stream()
+                        .filter(RewardCampaignService.isValidForPlaceholder())
+                        .findFirst().orElse(null);
+
                 // Is there an existing reward order recorded against this transaction?
                 final String redemptionId = dataBucket.getString(RewardService.XPATH_CURRENT_ENCRYPTED_ORDER_LINE_ID);
                 if (redemptionId != null) {
-                    final GetCampaignsResponse campaigns = rewardService.getAllActiveCampaigns(request);
-                    final Campaign campaign = campaigns.getCampaigns().stream()
-                            .filter(RewardCampaignService.isValidForPlaceholder())
-                            .findFirst().orElse(null);
                     // Check if there is current active & eligible campaign
                     if (campaign == null) {
                         rewardService.setOrderSaleStatusToSale(redemptionId);
                     } else {
                         // TODO how to get if user is in group CTM-CC-REWARDS
                         OrderFormResponse order = rewardService.getOrder(redemptionId, authenticatedData.map(AuthenticatedData::getUid), false);
+                        if (!order.getStatus()) {
+                            LOGGER.error("Failed to get order. message={}", order.getMessage());
+                        } else if (order.getOrderHeader().getSaleStatus() != SaleStatus.Sale) {
+                            rewardService.setOrderSaleStatusToSale(redemptionId);
+                        } else {
+                            // Falls through to below
+                        }
                     }
+                }
+
+                // No order recorded against this transaction and current active campaign
+                if (redemptionId == null && campaign != null){
+                    // TODO add new placeholder order
                 }
             }
 

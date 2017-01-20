@@ -117,7 +117,7 @@ public class RewardService {
 	private void updateOrderSalesStatus(final String encryptedOrderLineId, final SaleStatus saleStatus) {
 		UpdateSaleStatus request = new UpdateSaleStatus();
 		request.setEncryptedOrderLineId(encryptedOrderLineId);
-		request.setSaleStatus(saleStatus.name());
+		request.setSaleStatus(saleStatus);
 
 		final String loggerPattern = "Reward: Set sale status: status={}, encryptedOrderLineId={}, saleStatus={}";
 

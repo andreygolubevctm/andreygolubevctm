@@ -34,7 +34,7 @@ public class RewardRequestParser {
         final OrderHeader orderHeader = new OrderHeader();
         orderHeader.setOrderLine(orderLine);
         orderHeader.setRootId(rootId);
-        orderHeader.setSaleStatus(saleStatus.name());
+        orderHeader.setSaleStatus(saleStatus);
 
         final OrderForm orderForm = new OrderForm();
         orderForm.setOrderHeader(orderHeader);
