@@ -21,7 +21,7 @@
     </form_v4:row>
 
     <c:set var="fieldXPath" value="${otherXpath}" />
-    <form_v4:row label="Other number" subLabel="<a class='contact-number-switch' href='javascript:;'>Mobile number?</a>" fieldXpath="${fieldXPath}" className="contact-number-other">
+    <form_v4:row label="Other number" subLabel="<a class='contact-number-switch' href='javascript:;' tabindex='998'>Mobile number?</a>" fieldXpath="${fieldXPath}" className="contact-number-other">
         <field_v1:flexi_contact_number xpath="${fieldXPath}"
                                        maxLength="20"
                                        required="true"
