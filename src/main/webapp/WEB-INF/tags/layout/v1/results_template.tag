@@ -98,7 +98,7 @@
                     </c:choose>
                 </div>
 
-                <div class="noResults displayNone alert alert-info">
+                <div class="noResults displayNone alert alert-warning">
                     <c:choose>
                         <c:when test="${not empty zeroResultsFoundMessage}">
                             ${zeroResultsFoundMessage}
