@@ -249,7 +249,7 @@
 			</div>
 			<!-- CTA BUTTON -->
 			<div class="hidden-xs moreInfoTopRightColumn">
-                <div class="sidebar-widget sidebar-widget-padded">
+                <div class="sidebar-widget">
 						<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now<span class="icon-arrow-right" /></a>
 					</div>
                 <div class="sidebar-widget sidebar-widget-padded sidebar-widget-background-contained">
