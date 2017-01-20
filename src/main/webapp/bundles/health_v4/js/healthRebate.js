@@ -10,21 +10,22 @@
         log = meerkat.logging.info;
 
     var moduleEvents = {
-        health: {},
-        WEBAPP_LOCK: 'WEBAPP_LOCK',
-        WEBAPP_UNLOCK: 'WEBAPP_UNLOCK'
-    },
-    rates = null,
-    rebate = '',
-    rebateText = [
-        'Full rebate applies',
-        'Tier 1 applied',
-        'Tier 2 applied',
-        'Tier 3 applied',
-        'No rebate applied'
-    ],
-    _selectetedRebateLabelText = '',
-    $elements = {};
+            health: {},
+            WEBAPP_LOCK: 'WEBAPP_LOCK',
+            WEBAPP_UNLOCK: 'WEBAPP_UNLOCK'
+        },
+        rates = null,
+        rebate = '',
+        rebateText = [
+            'Full rebate applies',
+            'Tier 1 applied',
+            'Tier 2 applied',
+            'Tier 3 applied',
+            'No rebate applied'
+        ],
+        _selectetedRebateLabelText = '',
+        $elements = {},
+        inEditMode = false;
 
     function init() {
         _setupFields();
@@ -42,6 +43,7 @@
             rebateCheckbox: $('#health_healthCover_rebate_checkbox'),
             incomeSelectContainer: $('.income_container'),
             lhcContainers: $('.health-cover,  .dateinput_container, #health_healthCover_primaryCover, .income_container .select'),
+            dependentsSelect: $('#health_healthCover_dependants'),
             incomeSelect: $('#health_healthCover_income'),
             selectedRebateText: $('#selectedRebateText'),
             rebateLabel: $('#rebateLabel'),
@@ -80,6 +82,12 @@
             if ($this.valid()) {
                 _setRebate();
             }
+
+            // toggle dependants count if inEditMode
+            if (inEditMode) {
+                $elements.dependentsSelect.parent('.select').toggleClass('hidden', !meerkat.modules.healthDependants.situationEnablesDependants());
+            }
+
         });
 
         $elements.incomeSelect.on('change', function() {
@@ -153,10 +161,6 @@
         return cover == 'F' || cover == 'C';
     }
 
-    function getDependents() {
-        return ($elements.healthCoverDetails && $.inArray($elements.healthCoverDetails.find(':input[name="health_situation_healthCvr"]').filter(':checked').val(), ['SPF', 'F']) >= 0 ? 2 : 0);
-    }
-
     function isRebateApplied() {
         return $elements.applyRebate.val() === 'Y';
     }
@@ -172,6 +176,7 @@
     function toggleEdit(isEdit) {
         $elements.selectedRebateText.toggle(!isEdit);
         $elements.rebateLabel.toggle(!isEdit);
+        $elements.dependentsSelect.parent('.select').toggleClass('hidden', !isEdit || (isEdit && !meerkat.modules.healthDependants.situationEnablesDependants()));
         $elements.incomeSelect.parent('.select').toggleClass('hidden', !isEdit);
 
         if (!isEdit) {
@@ -179,6 +184,8 @@
             updateSelectedRebateLabel();
             _setRebate();
         }
+
+        inEditMode = isEdit;
     }
 
     meerkat.modules.register("healthRebate", {
@@ -186,7 +193,6 @@
         events: moduleEvents,
         hasPartner: hasPartner,
         updateSelectedRebateLabel: updateSelectedRebateLabel,
-        getDependents: getDependents,
         getRebate: getRebate,
         isRebateApplied: isRebateApplied,
         toggleEdit: toggleEdit,

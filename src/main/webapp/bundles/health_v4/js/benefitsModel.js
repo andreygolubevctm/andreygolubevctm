@@ -75,11 +75,12 @@
                 return value != options.benefitId;
             });
         } else {
-            if (typeof options.benefitId === 'number') {
+            // has one benefit
+            if (options.benefitId) {
                 // adding a singular item from a user click so don't need to fire the BENEFITS_UPDATED event
                 selectedBenefits[getBenefitType()].push(options.benefitId);
             } else {
-                // pre-select fired
+                // pre-select fired on an array of benefitIds
                 setBenefits(_.union(selectedBenefits[getBenefitType()], options.benefitIds));
             }
         }

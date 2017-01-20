@@ -183,7 +183,7 @@
                 meerkat.modules.healthLocation.initHealthLocation();
                 meerkat.modules.healthPostcode.initPostcode();
 
-                meerkat.modules.fieldUtilities.initDisabledFields();
+                meerkat.modules.fieldUtilities.initFields();
 
                 if (meerkat.site.choices) {
                     meerkat.modules.healthChoices.initialise($('input[name=health_situation_healthCvr]:checked').val());
