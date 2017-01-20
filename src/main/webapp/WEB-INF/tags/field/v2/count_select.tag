@@ -15,6 +15,7 @@
 <%@ attribute name="placeHolder"	 	required="false"	rtexprvalue="true"		description="dropdown placeholder" %>
 <%@ attribute name="disableErrorContainer" required="false" rtexprvalue="true"    	 description="Show or hide the error message container" %>
 <%@ attribute name="hideElement" 	required="false" 	rtexprvalue="true"    	 description="If true hides the entire element" %>
+<%@ attribute name="defaultValue" 	required="false" 	rtexprvalue="true"    	 description="default the dropdown to pre-select this defaultValue" %>
 
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
@@ -38,7 +39,7 @@
 		</c:if>
 		<c:forEach begin="${min}" end="${max}" step="${step}" varStatus="status">
 			<c:choose>
-				<c:when test="${status.index == value}">
+				<c:when test="${status.index == value || status.index == defaultValue}">
 					<option id="${name}_${status.index}" value="${status.index}" selected="selected">${status.index}</option>
 				</c:when>
 				<c:otherwise>
