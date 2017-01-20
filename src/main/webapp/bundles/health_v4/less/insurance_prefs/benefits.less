@@ -27,11 +27,15 @@ body.health {
 			.scrollable {
 				margin-left: 15px;
 				@media(@xs-only) {
-					margin-left: 10px;
+					margin-left: 0;
 				}
 			}
 
 			@media(@xs-only) {
+				width: 100%;
+				display: block;
+				margin-bottom: 0;
+
 				.Hospital_container p {
 					margin-right: 20px;
 				}
@@ -40,8 +44,8 @@ body.health {
 			.GeneralHealth_container {
 				@media (@sm) {
 					border-left: 1px solid @gray-light;
+					padding-left: 20px;
 				}
-				padding-left: 20px;
 			}
 
 			.hasIcons {

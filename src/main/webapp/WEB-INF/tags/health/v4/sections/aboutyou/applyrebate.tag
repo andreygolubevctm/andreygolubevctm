@@ -12,7 +12,7 @@
 <div class="form-group fieldrow">
 	<div class="col-xs-12">
 		<field_v2:checkbox
-				xpath="${xpath}/rebate/checkbox"
+				xpath="${xpath}/rebateCheckbox"
 				value="Y"
 				className="validate"
 				required="false"
