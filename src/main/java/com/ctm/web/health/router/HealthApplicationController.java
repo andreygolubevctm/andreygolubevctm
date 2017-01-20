@@ -1,6 +1,8 @@
 package com.ctm.web.health.router;
 
-import com.ctm.reward.model.OrderFormResponse;
+import com.ctm.reward.model.Campaign;
+import com.ctm.reward.model.GetCampaignsResponse;
+import com.ctm.reward.model.SaleStatus;
 import com.ctm.web.core.confirmation.services.JoinService;
 import com.ctm.web.core.email.exceptions.SendEmailException;
 import com.ctm.web.core.email.model.EmailMode;
@@ -34,6 +36,7 @@ import com.ctm.web.health.model.results.ResponseError;
 import com.ctm.web.health.services.HealthApplyService;
 import com.ctm.web.health.services.HealthConfirmationService;
 import com.ctm.web.health.services.HealthLeadService;
+import com.ctm.web.reward.services.RewardCampaignService;
 import com.ctm.web.reward.services.RewardService;
 import com.ctm.web.simples.services.TransactionService;
 import io.swagger.annotations.Api;
@@ -115,24 +118,19 @@ public class HealthApplicationController extends CommonQuoteRouter {
             }
         }
 
-        Vertical.VerticalType vertical = HEALTH;
+        final Vertical.VerticalType vertical = HEALTH;
+        final boolean isCallCentre = "true".equals(request.getSession().getAttribute("callCentre")); //TODO should this be isOperatorLoggedIn() ??
 
         // Initialise request
-        Brand brand = initRouter(request, vertical);
+        final Brand brand = initRouter(request, vertical);
         updateTransactionIdAndClientIP(request, data);
         updateApplicationDate(request, data);
 
-        // Create placeholder Order: Create the placeholder only if ONLINE
-        final Optional<AuthenticatedData> authenticatedSessionData = Optional.ofNullable(sessionDataServiceBean.getAuthenticatedSessionData(request));
-        final Optional<OrderFormResponse> createPlaceholder = Optional.empty();
-        if (!isOperatorLoggedIn(authenticatedSessionData)) {
-            //TODO createPlaceholder = Optional.ofNullable(saveRedemption(request, data, authenticatedSessionData, REWARD_ENDPOINT_CREATE_ORDER, "P"));
-        }
-
-		//TODO What to do when create order was not successful?
-		if (createPlaceholder.map(OrderFormResponse::getStatus).filter(status -> !status).isPresent()) {
-            LOGGER.error("Create reward/order placeholder failed");
-		}
+        // Create placeholder order, only if ONLINE.
+        // There's a chance of failure but RewardService will log any errors.
+        // It will also be empty if executed by Consultant, or no active campaigns.
+        Optional<String> placeholderRedemptionId = Optional.ofNullable(rewardService.createPlaceholderOrderForOnline(request, SaleStatus.Processing, data.getTransactionId().toString()));
+        // TODO If present, must be persisted in -99
 
         // get the response
         final HealthApplyResponse applyResponse = healthApplyService.apply(request, brand, data);
@@ -151,12 +149,6 @@ public class HealthApplicationController extends CommonQuoteRouter {
 
 
         if (Status.Success.equals(response.getSuccess())) {
-            if (createPlaceholder.isPresent()) { // It means ONLINE
-				rewardService.setOrderSaleStatusToSuccess(createPlaceholder.map(OrderFormResponse::getEncryptedOrderLineId).map(Optional::get).orElse(""));
-            } else { // Call center
-                //TODO saveRedemption(request, data, authenticatedSessionData, REWARD_ENDPOINT_UPDATE_ORDER_LINE, "C");
-            }
-
             result.setSuccess(true);
             result.setConfirmationID(confirmationId);
 
@@ -177,6 +169,26 @@ public class HealthApplicationController extends CommonQuoteRouter {
 
             final Data dataBucket = getDataBucket(request, data.getTransactionId());
 
+            // Update the online placeholder with the outcome of the join
+            if (placeholderRedemptionId.isPresent()) {
+                rewardService.setOrderSaleStatusToSale(placeholderRedemptionId.orElse(""));
+            } else if (isCallCentre) {
+                // Is there an existing reward order recorded against this transaction?
+                final String redemptionId = dataBucket.getString(RewardService.XPATH_CURRENT_ENCRYPTED_ORDER_LINE_ID);
+                if (redemptionId != null) {
+                    final GetCampaignsResponse campaigns = rewardService.getAllActiveCampaigns(request);
+                    final Campaign campaign = campaigns.getCampaigns().stream()
+                            .filter(RewardCampaignService.isValidForPlaceholder())
+                            .findFirst().orElse(null);
+                    // Check if there is current active & eligible campaign
+                    if (campaign == null) {
+                        rewardService.setOrderSaleStatusToSale(redemptionId);
+                    } else {
+                        // Orders get
+                    }
+                }
+            }
+
             healthConfirmationService.createAndSaveConfirmation(request, data, response, confirmationId, dataBucket);
 
             // TODO: add competition entry
@@ -189,13 +201,13 @@ public class HealthApplicationController extends CommonQuoteRouter {
             LOGGER.info("Transaction has been set to confirmed. {},{}", kv("transactionId", data.getTransactionId()), kv("confirmationID", confirmationId));
 
         } else {
-            if(!isOperatorLoggedIn(authenticatedSessionData)) {
-                //setRedemptionToFailed(createPlaceholder.get());
+            // Update the online placeholder with the outcome of the join
+            if (!isCallCentre && placeholderRedemptionId.isPresent()) {
+                rewardService.setOrderSaleStatusToFailed(placeholderRedemptionId.get());
             }
 
             // Set callCentre property only when it's not a success
-            final String callCentre = (String)request.getSession().getAttribute("callCentre");
-            result.setCallcentre("true".equals(callCentre));
+            result.setCallcentre(isCallCentre);
             result.setSuccess(false);
             result.setPendingID(confirmationId);
 
@@ -226,7 +238,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
 
 
             // if online user record a join and add to transaction details
-            if (!"true".equals(callCentre)) {
+            if (!isCallCentre) {
                 setToPending(request, data, confirmationId, productId, getErrors(response.getErrorList(), false));
             } else {
                 // just record a failure

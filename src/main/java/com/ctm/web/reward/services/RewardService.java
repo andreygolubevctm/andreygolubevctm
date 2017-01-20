@@ -69,6 +69,10 @@ public class RewardService {
 		this.sessionDataServiceBean = sessionDataServiceBean;
 	}
 
+	/**
+	 * Get list of campaigns that are active and eligible.
+	 * EffectiveTime is gathered from applicationDate or journey start time.
+	 */
 	public GetCampaignsResponse getAllActiveCampaigns(HttpServletRequest request) {
 		//TODO Health should not be hardcoded
 		final Vertical.VerticalType vertical = HEALTH;
@@ -103,7 +107,7 @@ public class RewardService {
 		updateOrderSalesStatus(encryptedOrderLineId, SaleStatus.Failed);
 	}
 
-	public void setOrderSaleStatusToSuccess(final String encryptedOrderLineId) {
+	public void setOrderSaleStatusToSale(final String encryptedOrderLineId) {
 		updateOrderSalesStatus(encryptedOrderLineId, SaleStatus.Sale);
 	}
 
@@ -137,9 +141,11 @@ public class RewardService {
 
 	/**
 	 * Add a placeholder order into the Reward service when Online and eligible campaign exists.
+	 * @param saleStatus Sale status to assign to the placeholder order
+	 * @param transactionId Current tranId used to fetch the session data & databucket
 	 * @return null if unsuccessful, otherwise: string is the encryptedOrderLineId of the placeholder record - also known as redemptionId.
 	 */
-	public String createPlaceholderOrderForOnline(final HttpServletRequest request, final String transactionId) {
+	public String createPlaceholderOrderForOnline(final HttpServletRequest request, final SaleStatus saleStatus, final String transactionId) {
 		try {
 			final SessionData sessionData = sessionDataServiceBean.getSessionDataForTransactionId(request, transactionId);
 			if (sessionData == null) {
@@ -152,7 +158,7 @@ public class RewardService {
 			}
 
 			final Optional<AuthenticatedData> authenticatedData = Optional.ofNullable(sessionData.getAuthenticatedSessionData());
-			if (authenticatedData.isPresent()) {
+			if (authenticatedData.isPresent() /*Does this require a getUid.isNotEmpty check?*/) {
 				LOGGER.info("Reward: Abort createPlaceholderOrderForOnline because not Online user.");
 				return null;
 			}
@@ -167,7 +173,7 @@ public class RewardService {
 				return null;
 			}
 
-			OrderFormResponse response = createOrder(data, authenticatedData, SaleStatus.Processing, campaign.getCampaignCode());
+			OrderFormResponse response = createOrder(data, authenticatedData, saleStatus, campaign.getCampaignCode());
 			if (response != null && response.getEncryptedOrderLineId().isPresent()) {
 				return response.getEncryptedOrderLineId().get();
 			} else {

@@ -33,7 +33,7 @@ public class RewardRequestParser {
 
         final OrderHeader orderHeader = new OrderHeader();
         orderHeader.setOrderLine(orderLine);
-        orderHeader.setRootId((int)(long)rootId); // TODO: fix this
+        orderHeader.setRootId(rootId);
         orderHeader.setSaleStatus(saleStatus.name());
 
         final OrderForm orderForm = new OrderForm();
@@ -42,7 +42,7 @@ public class RewardRequestParser {
         return orderForm;
     }
 
-    private static OrderForm parseOrderFormRequest(final HealthRequest healthRequest, final Optional<AuthenticatedData> authenticatedSessionData, final Data dataBucket, final String saleStatus, final String campaignCode) {
+ /*   private static OrderForm parseOrderFormRequest(final HealthRequest healthRequest, final Optional<AuthenticatedData> authenticatedSessionData, final Data dataBucket, final String saleStatus, final String campaignCode) {
         final Long rootId = Long.parseLong(dataBucket.getString(CURRENT_ROOT_ID));
         final Optional<String> encryptedOrderLineId = Optional.ofNullable(dataBucket.getString(RewardService.XPATH_CURRENT_ENCRYPTED_ORDER_LINE_ID));
 
@@ -71,12 +71,12 @@ public class RewardRequestParser {
 
         final OrderHeader orderHeader = new OrderHeader();
         orderHeader.setOrderLine(orderLine);
-        orderHeader.setRootId((int)(long)rootId); // TODO: fix this
+        orderHeader.setRootId(rootId); // TODO: fix this
         orderHeader.setSaleStatus(saleStatus);
 
         final OrderForm orderForm = new OrderForm();
         orderForm.setOrderHeader(orderHeader);
 
         return orderForm;
-    }
+    }*/
 }

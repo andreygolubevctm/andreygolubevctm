@@ -1,5 +1,6 @@
 <%@ tag import="com.ctm.web.reward.services.RewardService" %>
 <%@ tag import="org.springframework.web.servlet.support.RequestContextUtils" %>
+<%@ tag import="com.ctm.reward.model.SaleStatus" %>
 <%@ tag description="The Health Set To Pending"%>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
@@ -10,21 +11,14 @@
 <%@ attribute name="resultJson" required="false" rtexprvalue="true" description="json to output to page"%>
 <%@ attribute name="productId" required="true" rtexprvalue="true" description="Additional css class attribute"%>
 
-
-<%-- Check campaign then create placeholder
-
-<c:if test="${campaign.eligibleForRedemption == true && campaign.active == true}}" >
-    ${rewardsController.createFromJourney(data, "Failed", "Pending")}
-</c:if>
-
---%>
 <%
 	RewardService rewardService = (RewardService) RequestContextUtils.findWebApplicationContext(request).getBean("rewardService");
-    pageContext.setAttribute("rewardService", rewardService);
-//	rewardService.setOrderSaleStatusToFailed("");
+    pageContext.setAttribute("rewardServicePending", rewardService);
+    pageContext.setAttribute("rewardSaleStatusFailed", SaleStatus.Failed);
 %>
-<%-- TODO: SHOULD SaleStatus = 'Failed' or 'Prosessing' --%>
-<c:set var="ignore" value="${rewardService.createPlaceholderOrderForOnline(pageContext.request, data.current.transactionId)}" />
+<%-- Attempt to add a reward order placeholder --%>
+<c:set var="ignore" value="${rewardServicePending.createPlaceholderOrderForOnline(pageContext.request, rewardSaleStatusFailed, transactionId)}" />
+
 
 <c:set var="ignore">
 	<jsp:useBean id="joinService" class="com.ctm.web.core.confirmation.services.JoinService" scope="page" />
