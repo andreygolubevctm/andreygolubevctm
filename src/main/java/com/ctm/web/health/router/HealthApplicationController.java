@@ -21,6 +21,8 @@ import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.services.TouchService;
 import com.ctm.web.core.services.TransactionAccessService;
+import com.ctm.web.core.transaction.dao.TransactionDetailsDao;
+import com.ctm.web.core.transaction.model.TransactionDetail;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.factory.EmailServiceFactory;
 import com.ctm.web.health.apply.model.response.HealthApplicationResponse;
@@ -93,13 +95,16 @@ public class HealthApplicationController extends CommonQuoteRouter {
 
     private LeadService leadService;
     private RewardService rewardService;
+    private TransactionDetailsDao transactionDetailsDao;
 
     @Autowired
     public HealthApplicationController(SessionDataServiceBean sessionDataServiceBean,
                                        IPAddressHandler ipAddressHandler,
+                                       TransactionDetailsDao transactionDetailsDao,
                                        HealthLeadService leadService,
 									   RewardService rewardService) {
         super(sessionDataServiceBean, ipAddressHandler);
+        this.transactionDetailsDao = transactionDetailsDao;
         this.leadService = leadService;
         this.rewardService = rewardService;
     }
@@ -132,7 +137,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
         // There's a chance of failure but RewardService will log any errors.
         // It will also be empty if executed by Consultant, or no active campaigns.
         Optional<String> placeholderRedemptionId = Optional.ofNullable(rewardService.createPlaceholderOrderForOnline(request, SaleStatus.Processing, data.getTransactionId().toString()));
-        // TODO If present, must be persisted in -99
+        placeholderRedemptionId.ifPresent(id -> persistRedemptionId(id, data.getTransactionId()));
 
         // get the response
         final HealthApplyResponse applyResponse = healthApplyService.apply(request, brand, data);
@@ -174,7 +179,9 @@ public class HealthApplicationController extends CommonQuoteRouter {
             // Update the online placeholder with the outcome of the join
             if (placeholderRedemptionId.isPresent()) {
                 rewardService.setOrderSaleStatusToSale(placeholderRedemptionId.orElse(""));
-            } else if (isCallCentre) {
+            }
+
+            if (isCallCentre) {
                 final GetCampaignsResponse campaigns = rewardService.getAllActiveCampaigns(request);
                 final Campaign campaign = campaigns.getCampaigns().stream()
                         .filter(RewardCampaignService.isValidForPlaceholder())
@@ -193,15 +200,18 @@ public class HealthApplicationController extends CommonQuoteRouter {
                             LOGGER.error("Failed to get order. message={}", order.getMessage());
                         } else if (order.getOrderHeader().getSaleStatus() != SaleStatus.Sale) {
                             rewardService.setOrderSaleStatusToSale(redemptionId);
-                        } else {
-                            // Falls through to below
                         }
+                        // else falls through to below logic
                     }
                 }
 
                 // No order recorded against this transaction and current active campaign
-                if (redemptionId == null && campaign != null){
-                    // TODO add new placeholder order
+                if (redemptionId == null && campaign != null) {
+                    // Create a new placeholder reward order
+                    final OrderFormResponse orderResponse = rewardService.createOrder(dataBucket, authenticatedData, SaleStatus.Sale, campaign.getCampaignCode());
+                    if (orderResponse != null && orderResponse.getEncryptedOrderLineId().isPresent()) {
+                        persistRedemptionId(orderResponse.getEncryptedOrderLineId().get(), data.getTransactionId());
+                    }
                 }
             }
 
@@ -252,7 +262,6 @@ public class HealthApplicationController extends CommonQuoteRouter {
                 result.setErrors(Collections.singletonList(e));
             }
 
-
             // if online user record a join and add to transaction details
             if (!isCallCentre) {
                 setToPending(request, data, confirmationId, productId, getErrors(response.getErrorList(), false));
@@ -275,6 +284,16 @@ public class HealthApplicationController extends CommonQuoteRouter {
 
     private boolean isOperatorLoggedIn(final Optional<AuthenticatedData> authenticatedSessionData) {
         return authenticatedSessionData.map(AuthenticatedData::getUid).map(s -> !s.isEmpty()).orElse(false);
+    }
+
+    private void persistRedemptionId(final String redemptionId, final long transactionId) {
+        TransactionDetail td = new TransactionDetail(RewardService.XPATH_CURRENT_ENCRYPTED_ORDER_LINE_ID, redemptionId);
+        td.setSequenceNo(RewardService.XPATH_SEQUENCE_NO_ENCRYPTED_ORDER_LINE_ID);
+        try {
+            transactionDetailsDao.addTransactionDetailsWithDuplicateKeyUpdate(transactionId, td);
+        } catch (DaoException e) {
+            LOGGER.error("Reward: Failed to persist redemptionId. redemptionId={}, transactionId={}", redemptionId, transactionId);
+        }
     }
 
     private String getErrors(List<PartnerError> errors, boolean nonFatalErrors) {
