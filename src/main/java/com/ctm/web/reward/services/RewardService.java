@@ -37,10 +37,10 @@ public class RewardService {
 	public static final int XPATH_SEQUENCE_NO_ENCRYPTED_ORDER_LINE_ID = -99;
 	public static final String CURRENT_ROOT_ID = "current/rootId";
 
+	public static final String REWARD_ENDPOINT_GET_ORDER = "/orders/get";
 	public static final String REWARD_ENDPOINT_CREATE_ORDER = "/orders/create";
 	public static final String REWARD_ENDPOINT_UPDATE_SALE_STATUS = "/orderlines/updateSaleStatus";
 	public static final String REWARD_ENDPOINT_UPDATE_ORDER_LINE = "/orderlines/update";
-	public static final String REWARD_ENDPOINT_TRACKING_STATUS = "/orderlines/getTrackingStatus";
 
 	public static final int SERVICE_TIMEOUT = 10000;
 
@@ -120,6 +120,7 @@ public class RewardService {
 
 		rewardUpdateSalesStatusClient.post(RestSettings.<UpdateSaleStatus>builder()
 				.request(request)
+				.response(UpdateSaleStatusResponse.class)
 				.jsonHeaders()
 				.url(rewardServiceUrl + REWARD_ENDPOINT_UPDATE_SALE_STATUS)
 				.timeout(SERVICE_TIMEOUT)
@@ -127,16 +128,6 @@ public class RewardService {
 				.observeOn(Schedulers.io())
 				.subscribe(response -> LOGGER.info(loggerPattern, response.getStatus(), encryptedOrderLineId, saleStatus),
 						error -> LOGGER.error(loggerPattern, false, encryptedOrderLineId, saleStatus, error));
-	}
-
-	public TrackingStatus getTrackingStatus(final String trackingToken) {
-		//TODO Call reward service
-		TrackingStatus trackingStatus = new TrackingStatus();
-		trackingStatus.setFirstName("Jeffrey");
-		trackingStatus.setOrderStatus("Scheduled");
-		trackingStatus.setRewardType("sergei");
-		trackingStatus.setStage("1");
-		return trackingStatus;
 	}
 
 	/**
@@ -213,6 +204,7 @@ public class RewardService {
 		final String url = rewardServiceUrl + REWARD_ENDPOINT_CREATE_ORDER;
 		return rewardCreateOrderClient.post(RestSettings.<OrderForm>builder()
 				.request(form)
+				.response(OrderFormResponse.class)
 				.jsonHeaders()
 				.url(url)
 				.timeout(SERVICE_TIMEOUT)

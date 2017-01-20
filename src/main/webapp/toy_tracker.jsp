@@ -1,3 +1,6 @@
+<%@ page import="com.ctm.web.reward.services.RewardTrackingService" %>
+<%@ page import="com.ctm.web.reward.services.TrackingStatus" %>
+<%@ page import="org.springframework.web.servlet.support.RequestContextUtils" %>
 <%--
 	Toy tracker Page
 --%>
@@ -15,15 +18,10 @@
 	</c:otherwise>
 </c:choose>
 
-<%@ page import="org.springframework.web.servlet.support.RequestContextUtils" %>
-<%@ page import="org.springframework.context.ApplicationContext" %>
-<%@ page import="com.ctm.web.reward.services.RewardService" %>
-<%@ page import="com.ctm.web.reward.services.TrackingStatus" %>
 <%
-	String token = (String)pageContext.getAttribute("token");
-    ApplicationContext ctx = RequestContextUtils.findWebApplicationContext(request);
-    RewardService rewardService = (RewardService) ctx.getBean("rewardService");
-    TrackingStatus ts = rewardService.getTrackingStatus(token);
+	String token = request.getParameter("token");
+	RewardTrackingService rewardTrackingService = (RewardTrackingService) RequestContextUtils.findWebApplicationContext(request).getBean("rewardTrackingService");
+    TrackingStatus ts = rewardTrackingService.getTrackingStatus(token);
     pageContext.setAttribute("trackingStatus", ts);
 %>
 <layout_v1:journey_engine_page title="Toy Tracker">
@@ -49,8 +47,6 @@
 
 	<jsp:attribute name="form_bottom"></jsp:attribute>
 
-	<jsp:attribute name="vertical_settings"></jsp:attribute>
-
 	<jsp:attribute name="body_end"></jsp:attribute>
 
 	<jsp:attribute name="additional_meerkat_scripts">
@@ -59,10 +55,10 @@
 
 	<jsp:body>
 		<zeus:header />
-		<c:if test="${token eq ''}">
+		<c:if test="${token eq '' or trackingStatus == null or trackingStatus.stage == null}">
 			<zeus:error />
 		</c:if>
-		<c:if test="${token ne ''}">
+		<c:if test="${trackingStatus != null}">
 			<!-- Setup the values we need for the template. -->
 			<c:choose>
 				<c:when test="${trackingStatus.stage eq 1}">
