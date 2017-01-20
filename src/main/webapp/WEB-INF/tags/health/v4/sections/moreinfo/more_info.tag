@@ -67,7 +67,8 @@
 		<div class="fieldset-card row price-card <c:if test="${healthAlternatePricingActive eq true}">hasDualPricing</c:if>">
 			<div class="moreInfoTopLeftColumn Hospital_container">
 				<health_v4_moreinfo:more_info_product_summary />
-				<health_v4_moreinfo:more_info_product_extra_info />
+                <reward:campaign_tile_container_xs />
+                <health_v4_moreinfo:more_info_product_extra_info />
 				<!-- Hospital and Extras -->
 				<div class="benefitsOverflow">
 					<div class="row">
