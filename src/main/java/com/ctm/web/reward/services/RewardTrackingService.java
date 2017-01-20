@@ -3,6 +3,7 @@ package com.ctm.web.reward.services;
 import com.ctm.httpclient.Client;
 import com.ctm.httpclient.RestSettings;
 import com.ctm.reward.model.GetTrackingStatus;
+import com.ctm.reward.model.TrackingStatusResponse;
 import com.ctm.web.core.email.services.token.EmailTokenService;
 import com.ctm.web.core.email.services.token.EmailTokenServiceFactory;
 import com.ctm.web.core.services.SettingsService;
@@ -24,17 +25,17 @@ public class RewardTrackingService {
 	public static final String REWARD_ENDPOINT_TRACKING_STATUS = "/orderlines/getTrackingStatus";
 	public static final int SERVICE_TIMEOUT = 10000;
 
-	private Client<GetTrackingStatus, TrackingStatus> rewardGetTracking;
+	private Client<GetTrackingStatus, TrackingStatusResponse> rewardGetTracking;
 
 	@Value("${ctm.reward.url}")
 	private String rewardServiceUrl;
 
 	@Autowired
-	public RewardTrackingService(Client<GetTrackingStatus, TrackingStatus> rewardGetTracking) {
+	public RewardTrackingService(Client<GetTrackingStatus, TrackingStatusResponse> rewardGetTracking) {
 		this.rewardGetTracking = rewardGetTracking;
 	}
 
-	public TrackingStatus getTrackingStatus(final String trackingToken) {
+	public TrackingStatusResponse getTrackingStatus(final String trackingToken) {
 		if (trackingToken == null || StringUtils.isBlank(trackingToken)) {
 			LOGGER.error("Reward: Invalid token. trackingToken={}", trackingToken);
 			return null;
@@ -52,7 +53,7 @@ public class RewardTrackingService {
 			final String url = rewardServiceUrl + REWARD_ENDPOINT_TRACKING_STATUS;
 			return rewardGetTracking.post(RestSettings.<GetTrackingStatus>builder()
 					.request(request)
-					.response(TrackingStatus.class)
+					.response(TrackingStatusResponse.class)
 					.jsonHeaders()
 					.url(url)
 					.timeout(SERVICE_TIMEOUT)

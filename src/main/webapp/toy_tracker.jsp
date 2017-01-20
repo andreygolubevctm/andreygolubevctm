@@ -1,5 +1,5 @@
+<%@ page import="com.ctm.reward.model.TrackingStatusResponse" %>
 <%@ page import="com.ctm.web.reward.services.RewardTrackingService" %>
-<%@ page import="com.ctm.web.reward.services.TrackingStatus" %>
 <%@ page import="org.springframework.web.servlet.support.RequestContextUtils" %>
 <%--
 	Toy tracker Page
@@ -21,7 +21,7 @@
 <%
 	String token = request.getParameter("token");
 	RewardTrackingService rewardTrackingService = (RewardTrackingService) RequestContextUtils.findWebApplicationContext(request).getBean("rewardTrackingService");
-    TrackingStatus ts = rewardTrackingService.getTrackingStatus(token);
+    TrackingStatusResponse ts = rewardTrackingService.getTrackingStatus(token);
     pageContext.setAttribute("trackingStatus", ts);
 %>
 <layout_v1:journey_engine_page title="Toy Tracker">
@@ -64,7 +64,7 @@
 				<c:when test="${trackingStatus.stage eq 1}">
 					<c:set var="locationName" value="Meerkovo" />
 					<c:set var="locationDistance" value="23,252" />
-					<c:set var="toyType" value="_${trackingStatus.rewardType}" />
+					<c:set var="toyType" value="_${trackingStatus.rewardType.rewardType}" />
 					<c:set var="imageName" value="meerkovo" />
 				</c:when>
 				<c:when test="${trackingStatus.stage eq 2}">
