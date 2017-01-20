@@ -342,8 +342,7 @@
             meerkat.modules.journeyEngine.loadingShow(waitMessageVal);
 
             // Hide pagination
-            $('.results-pagination').find('.navbar-collapse').addClass('hidden');
-            $('.results-filters-frequency').addClass('hidden');
+            $('.results-pagination, .results-filters-frequency').addClass('invisible');
             meerkat.modules.coupon.triggerPopup();
         });
 
@@ -358,8 +357,7 @@
         $(document).on("resultsFetchFinish", function onResultsFetchFinish() {
             _.defer(function () {
                 // Show pagination header for mobile
-                $('.results-pagination').find('.navbar-collapse').removeClass('hidden');
-                $('.results-filters-frequency').removeClass('hidden');
+                $('.results-pagination, .results-filters-frequency').removeClass('invisible');
                 // Setup pagination for non-mobile journey
                 meerkat.modules.healthResultsTemplate.toggleRemoveResultPagination();
                 // Setup scroll

@@ -449,6 +449,9 @@
         });
         meerkat.messaging.subscribe(meerkatEvents.filters.FILTERS_UPDATED, function (event) {
             toggleQuoteRefTemplate('slideDown');
+            // note: unpinning products happens in healthResults.js due to the internal JS variable over there.
+            meerkat.modules.healthResultsTemplate.unhideFilteredProducts();
+
         });
 
         meerkat.messaging.subscribe(meerkatEvents.transactionId.CHANGED, function updateCoupon() {
