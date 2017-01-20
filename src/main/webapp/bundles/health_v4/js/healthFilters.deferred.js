@@ -77,7 +77,7 @@
             },
             "rebate": {
                 name: 'health_filterBar_rebate',
-                defaultValueSourceSelector: '#health_healthCover_rebate_checkbox',
+                defaultValueSourceSelector: '#health_healthCover_rebateCheckbox',
                 defaultValue: '',
                 events: {
                     init: function (filterObject) {
