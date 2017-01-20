@@ -22,7 +22,7 @@
 	String token = request.getParameter("token");
 	RewardTrackingService rewardTrackingService = (RewardTrackingService) RequestContextUtils.findWebApplicationContext(request).getBean("rewardTrackingService");
     TrackingStatusResponse ts = rewardTrackingService.getTrackingStatus(token);
-    pageContext.setAttribute("trackingStatus", ts);
+	request.setAttribute("trackingStatus", ts);
 %>
 <layout_v1:journey_engine_page title="Toy Tracker">
 	<jsp:attribute name="head">

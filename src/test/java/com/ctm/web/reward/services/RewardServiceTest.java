@@ -16,7 +16,7 @@ public class RewardServiceTest {
 	@Test
 	public void roundupMinutes() throws Exception {
 		RewardService reward = new RewardService(mock(TransactionDetailsDao.class),
-				mock(Client.class), mock(Client.class),
+				mock(Client.class), mock(Client.class), mock(Client.class),
 				mock(RewardCampaignService.class), mock(ApplicationService.class), mock(SessionDataServiceBean.class));
 		ZonedDateTime expected = ZonedDateTime.of(2017, 1, 16, 16, 0, 0, 0, ZoneId.of("UTC"));
 		ZonedDateTime zdt = ZonedDateTime.of(2017, 1, 16, 16, 0, 15, 222, ZoneId.of("UTC"));

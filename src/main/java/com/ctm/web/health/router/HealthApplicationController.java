@@ -2,6 +2,7 @@ package com.ctm.web.health.router;
 
 import com.ctm.reward.model.Campaign;
 import com.ctm.reward.model.GetCampaignsResponse;
+import com.ctm.reward.model.OrderFormResponse;
 import com.ctm.reward.model.SaleStatus;
 import com.ctm.web.core.confirmation.services.JoinService;
 import com.ctm.web.core.email.exceptions.SendEmailException;
@@ -120,6 +121,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
 
         final Vertical.VerticalType vertical = HEALTH;
         final boolean isCallCentre = "true".equals(request.getSession().getAttribute("callCentre")); //TODO should this be isOperatorLoggedIn() ??
+        final Optional<AuthenticatedData> authenticatedData = Optional.ofNullable(sessionDataServiceBean.getAuthenticatedSessionData(request));
 
         // Initialise request
         final Brand brand = initRouter(request, vertical);
@@ -184,7 +186,8 @@ public class HealthApplicationController extends CommonQuoteRouter {
                     if (campaign == null) {
                         rewardService.setOrderSaleStatusToSale(redemptionId);
                     } else {
-                        // Orders get
+                        // TODO how to get if user is in group CTM-CC-REWARDS
+                        OrderFormResponse order = rewardService.getOrder(redemptionId, authenticatedData.map(AuthenticatedData::getUid), false);
                     }
                 }
             }

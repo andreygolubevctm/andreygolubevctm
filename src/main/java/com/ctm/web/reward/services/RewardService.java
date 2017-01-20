@@ -53,17 +53,20 @@ public class RewardService {
 	private SessionDataServiceBean sessionDataServiceBean;
 	private Client<UpdateSaleStatus, UpdateSaleStatusResponse> rewardUpdateSalesStatusClient;
 	private Client<OrderForm, OrderFormResponse> rewardCreateOrderClient;
+	private Client<GetOrder, OrderFormResponse> rewardGetOrderClient;
 
 	@Autowired
 	public RewardService(TransactionDetailsDao transactionDetailsDao,
 						 Client<UpdateSaleStatus, UpdateSaleStatusResponse> rewardUpdateSalesStatusClient,
 						 Client<OrderForm, OrderFormResponse> rewardCreateOrderClient,
+						 Client<GetOrder, OrderFormResponse> rewardGetOrderClient,
 						 RewardCampaignService rewardCampaignService,
 						 ApplicationService applicationService,
 						 SessionDataServiceBean sessionDataServiceBean) {
 		this.transactionDetailsDao = transactionDetailsDao;
 		this.rewardUpdateSalesStatusClient = rewardUpdateSalesStatusClient;
 		this.rewardCreateOrderClient = rewardCreateOrderClient;
+		this.rewardGetOrderClient = rewardGetOrderClient;
 		this.rewardCampaignService = rewardCampaignService;
 		this.applicationService = applicationService;
 		this.sessionDataServiceBean = sessionDataServiceBean;
@@ -198,6 +201,36 @@ public class RewardService {
 			form.setStatus(false);
 			return form;
 		}
+	}
+
+	/**
+	 * Get reward order.
+	 * @param redemptionId The encrypted orderLineId
+	 * @param operatorId Optional operator username
+	 * @param operatorElevated Whether or not the operator has elevated privileges
+	 */
+	public OrderFormResponse getOrder(final String redemptionId, final Optional<String> operatorId, final boolean operatorElevated) {
+		GetOrder request = new GetOrder(redemptionId);
+		request.setOperatorElevated(operatorElevated);
+		operatorId.ifPresent(request::setOperatorId);
+
+		final String url = rewardServiceUrl + REWARD_ENDPOINT_GET_ORDER;
+		return rewardGetOrderClient.post(RestSettings.<GetOrder>builder()
+				.request(request)
+				.response(OrderFormResponse.class)
+				.jsonHeaders()
+				.url(url)
+				.timeout(SERVICE_TIMEOUT)
+				.build())
+				.observeOn(Schedulers.io())
+				.onErrorResumeNext(throwable -> {
+					LOGGER.error("Reward: Failed to get order. url={}", url, throwable);
+					OrderFormResponse response = new OrderFormResponse();
+					response.setStatus(false);
+					return Observable.just(response);
+				})
+				.toBlocking()
+				.first();
 	}
 
 	private OrderFormResponse remoteCreateOrder(final OrderForm form) {

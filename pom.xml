@@ -50,7 +50,7 @@
 
         <!-- Compile as this version -->
         <java.version>1.8</java.version>
-        <jspc-maven-plugin.version>2.0.0</jspc-maven-plugin.version>
+        <jspc-maven-plugin.version>2.0.2</jspc-maven-plugin.version>
 
         <node.version>v6.9.2</node.version>
         <npm.version>3.10.9</npm.version>
