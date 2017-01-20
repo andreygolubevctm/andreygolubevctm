@@ -175,7 +175,7 @@
 								<div class="row restrictedContainer">
 									<div class="col-xs-12">
 										<h3 class="heading">Restricted Benefits <span class="benefitCount gray">{{= hospitalCover.restrictions.length }}</span></h3>
-										<p>These treatements are limited to the same amount you would receive in a public hoslita for those treatements.</p>
+										<p>These treatments are limited to the same amount you would receive in a public hospital for those treatments.</p>
 										{{ if(typeof hospitalCover !== 'undefined') { }}
 											<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="download-hospital-brochure col-xs-12 leftAlignedLink" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>Download the policy brochure for more information.</a>
 										{{ } }}
