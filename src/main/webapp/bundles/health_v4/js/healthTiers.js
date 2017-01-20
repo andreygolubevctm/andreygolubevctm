@@ -60,7 +60,7 @@ Handling of the rebate tiers based off situation
 	function setTiers(initMode){
 		// Set the dependants allowance and income message
 		if (!initMode) {
-			allowance = meerkat.modules.healthRebate.getDependents() - 1;
+			allowance = ($dependants.val() - 1);
 			allowance = (allowance > 0 ? allowance * 1500 : 0);
 		}
 
