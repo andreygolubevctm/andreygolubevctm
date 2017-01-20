@@ -189,7 +189,7 @@
   }
 
   .productExtraInfo {
-    padding: 10px;
+    padding: 10px 30px;
     border-bottom: 1px solid @gray-lighter;
     margin-bottom: 20px;
     color: @gray;
@@ -333,6 +333,15 @@
       width: 49%;
       display: inline-block;
       vertical-align: top;
+
+      .HospitalBenefits {
+        padding-left: @grid-gutter-width;
+        padding-right: @grid-gutter-width;
+      }
+
+      .ExtrasBenefits {
+        padding-left: 60px;
+      }
     }
 
     .rotateEl(@degrees) {
@@ -357,6 +366,10 @@
       z-index: 100;
       margin-top: 20px;
       right: 0;
+
+      &.extrasToggled {
+        left: 0px;
+      }
 
       .selectionStatus {
         background: @theme-tertiary;

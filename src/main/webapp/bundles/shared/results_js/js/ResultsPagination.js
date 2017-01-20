@@ -266,7 +266,8 @@ var ResultsPagination = {
 		}
 		// sometimes it inits too soon and doesn't have this.
         var currentStep = meerkat.modules.journeyEngine.getCurrentStep();
-		if(currentStep && currentStep.navigationId === 'results') {
+		if(currentStep && currentStep.navigationId === 'results'
+		&& pageNumber !== previousPageNumber) {
 			var event = jQuery.Event("resultPageChange");
 			event.pageData = {
 				pageNumber: pageNumber,

@@ -35,7 +35,7 @@
         });
 
         $elements.inputs.on('blur', function onInputsBlur() {
-            $elements.flexiNumber.val($(this).valid() ? $(this).val() : '');
+            $elements.flexiNumber.val($(this).valid() ? $(this).val().replace(/ /g,'') : '');
         });
     }
 

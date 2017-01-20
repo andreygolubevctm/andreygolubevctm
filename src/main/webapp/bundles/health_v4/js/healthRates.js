@@ -26,13 +26,14 @@
             partnerAppDob: $('#health_application_partner_dob'),
             partnerLoading: $('input[name="health_healthCover_partner_healthCoverLoading"]'),
             partnerCurrent: $('input[name="health_healthCover_partner_health_cover"]'),
-            partnerLoadingManual: $('input[name="health_healthCover_partner_lhc"]')
+            partnerLoadingManual: $('input[name="health_healthCover_partner_lhc"]'),
+            dependants: $('#health_healthCover_dependants')
         };
     }
 
     function loadRatesBeforeResultsPage(forceRebate, callback) {
         var postData = {
-            dependants: meerkat.modules.healthRebate.getDependents(),
+            dependants: $elements.dependants.val(),
             income: $elements.income.val() || 0,
             rebate_choice: forceRebate === true ? 'Y' : $elements.rebate.val(),
             primary_dob: $elements.primaryDob.val(),
@@ -62,7 +63,7 @@
 // Load the rates object via ajax. Also validates currently filled in fields to ensure only valid attempts are made.
     function loadRates(callback) {
         var postData = {
-            dependants: meerkat.modules.healthRebate.getDependents(),
+            dependants: $elements.dependants.val(),
             income: $elements.income.val() || 0,
             rebate_choice: $elements.rebate.val(),
             primary_dob: $elements.primaryDob.val(),
