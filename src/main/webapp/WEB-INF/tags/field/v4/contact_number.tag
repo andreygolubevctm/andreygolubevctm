@@ -10,7 +10,7 @@
 
 <div class="contact-number ${className}" data-contact-by="mobile">
     <c:set var="fieldXPath" value="${mobileXpath}" />
-    <form_v4:row label="Mobile Number" subLabel="<a class='contact-number-switch' href='javascript:;'>Other number?</a>" fieldXpath="${fieldXPath}" className="contact-number-mobile">
+    <form_v4:row label="Mobile number" subLabel="<a class='contact-number-switch' href='javascript:;' tabindex='999'>Other number?</a>" fieldXpath="${fieldXPath}" className="contact-number-mobile">
         <field_v1:flexi_contact_number xpath="${fieldXPath}"
                                        maxLength="20"
                                        required="true"
