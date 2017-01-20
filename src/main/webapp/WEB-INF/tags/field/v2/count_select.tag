@@ -14,6 +14,7 @@
 <%@ attribute name="omitPleaseChoose" 	required="false"	rtexprvalue="true"		description="should 'please choose' be omitted? Y/N (Yes omits)" %>
 <%@ attribute name="placeHolder"	 	required="false"	rtexprvalue="true"		description="dropdown placeholder" %>
 <%@ attribute name="disableErrorContainer" required="false" rtexprvalue="true"    	 description="Show or hide the error message container" %>
+<%@ attribute name="hideElement" 	required="false" 	rtexprvalue="true"    	 description="If true hides the entire element" %>
 
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
@@ -27,7 +28,7 @@
 	<c:set var="placeHolderText" value="${placeHolder}" />
 </c:if>
 <%-- HTML --%>
-<div class="select">
+<div class="select <c:if test="${hideElement eq true}">hidden</c:if>">
 	<span class=" input-group-addon" >
 		<i class="icon-sort"></i>
 	</span>
