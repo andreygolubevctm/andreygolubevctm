@@ -9,7 +9,7 @@
     <div class="filter-sub-heading">Hospital</div>
     <div class="filter-by-container">
         <div class="filter-by-hospital-benefits small"></div>
-        <a href="javascript:;" class="filter-toggle small" data-filter="hospital-benefits">Change</a>
+        <a href="javascript:;" class="filter-toggle small" data-filter="hospital-benefits" <field_v1:analytics_attr analVal="hospital benefits filter" quoteChar="\"" />>Change</a>
     </div>
 
     <ul class="nav nav-tabs health-filter-hospital-benefits">
@@ -41,7 +41,7 @@
 
     <div class="filter-by-container">
         <span class="filter-by-extras-benefits small"></span>
-        <a href="javascript:;" class="filter-toggle small" data-filter="extras-benefits">Change</a>
+        <a href="javascript:;" class="filter-toggle small" data-filter="extras-benefits" <field_v1:analytics_attr analVal="extras benefits filter" quoteChar="\"" />>Change</a>
     </div>
 
     <div class="benefits-list health-filter-extras-benefits">
