@@ -177,15 +177,15 @@
 
 			.shareLinks {
 				position: absolute;
-				right: 30px;
+				right: 10px;
 				top: 35%;
 
 				@media(max-width: @screen-md-max) {
-					right: 9px;
+					right: 6px;
 				}
 
 				@media(max-width: @screen-sm-max) {
-					right: 7px;
+					right: 5px;
 				}
 
 				.shareButton {
@@ -194,15 +194,24 @@
 					background-color: @theme-secondary;
 					width: 100%;
 
-					@media(max-width: @screen-sm-max) {
+					@media(max-width: @screen-md-max) {
 						padding: 15px;
+					}
+
+					@media(max-width: @screen-sm-max) {
+						padding: 12px;
 					}
 
 					img {
 						width: 45px;
 						height: auto;
+
+						@media(max-width: @screen-md-max) {
+							width: 42px;
+						}
+
 						@media(max-width: @screen-sm-max) {
-							width: 35px;
+							width: 30px;
 						}
 					}
 				}
