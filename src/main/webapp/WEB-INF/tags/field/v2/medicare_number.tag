@@ -23,4 +23,4 @@
 </c:if>
 
 <%-- HTML --%>
-<field_v2:input type="${inputType}" xpath="${xpath}" className="medicare_number ${className}" title="${title}" required="false" maxlength="10" pattern="[0-9]*" integerKeyPressLimit="true" additionalAttributes="${additonalAttributes}" placeHolder="Card Number" disableErrorContainer="${disableErrorContainer}" />
+<field_v2:input type="${inputType}" xpath="${xpath}" className="medicare_number ${className}" title="${title}" required="true" maxlength="10" pattern="[0-9]*" integerKeyPressLimit="true" additionalAttributes="${additonalAttributes}" placeHolder="Card Number" disableErrorContainer="${disableErrorContainer}" />
