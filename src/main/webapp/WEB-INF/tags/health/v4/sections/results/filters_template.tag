@@ -26,7 +26,7 @@
         </div>
 
         <div class="health-filter-brands provider-list">
-            <span class="filter-select-all-none">Select: <a href="javascript:;" class="filter-brands-toggle" data-toggle="true">All</a> <a class="filter-brands-toggle" data-toggle="false">None</a></span>
+            <span class="small filter-select-all-none">Select: <a href="javascript:;" class="filter-brands-toggle" data-toggle="true">All</a> <a class="filter-brands-toggle" data-toggle="false">None</a></span>
             {{ _.each(model.brands.values, function(object) { }}
             {{ var checked = !object.selected ? ' checked="checked"' : ''; }}
             {{ var active = !object.selected ? ' active' : ''; }}
