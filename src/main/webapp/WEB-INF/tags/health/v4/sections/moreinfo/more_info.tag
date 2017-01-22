@@ -84,7 +84,7 @@
 										<h2>Hospital</h2>
 										{{ if(typeof hospitalCover !== 'undefined') { }}
 											</div>
-											<div class="{{ if(typeof extrasCover !== 'undefined'){ }}col-xs-6{{ } }}">
+											<div class="{{ if(typeof extrasCover !== 'undefined'){ }}col-xs-6{{ } }} text-right">
 												<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="download-hospital-brochure col-xs-12" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>Download Brochure</a>
 											</div>
 										</div>
@@ -208,7 +208,7 @@
 									<h2>Extras</h2>
 									{{ if(typeof extrasCover !== 'undefined') { }}
 									</div>
-									<div class="{{ if(typeof hospitalCover !== 'undefined'){ }}col-xs-6 {{ } }} ">
+									<div class="{{ if(typeof hospitalCover !== 'undefined'){ }}col-xs-6 {{ } }} text-right">
 										<a href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" class="download-extras-brochure col-xs-12">Download brochure</a>
 									</div>
 									{{ } }}
@@ -249,7 +249,7 @@
 			</div>
 			<!-- CTA BUTTON -->
 			<div class="hidden-xs moreInfoTopRightColumn">
-                <div class="sidebar-widget sidebar-widget-padded">
+                <div class="sidebar-widget">
 						<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now<span class="icon-arrow-right" /></a>
 					</div>
                 <div class="sidebar-widget sidebar-widget-padded sidebar-widget-background-contained">

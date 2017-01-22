@@ -22,10 +22,10 @@
     .result {
       // if the top bar changes size, this will need to change...
       top: 146px;
-      @media(@sm-only) {
+      @media (@sm-only) {
         top: 75px;
       }
-      @media(@md) {
+      @media (@md) {
         top: 59px;
       }
       width: inherit;
@@ -49,8 +49,13 @@
         padding-bottom: 0;
       }
 
-      .companyLogo {
-        margin-top: 10px;
+      .productSummary {
+        @media (@sm-only) {
+          height: 95px;
+        }
+        @media (@md) {
+          height: 55px;
+        }
       }
     }
     .affixed-logo {

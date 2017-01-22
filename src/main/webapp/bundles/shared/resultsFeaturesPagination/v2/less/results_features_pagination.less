@@ -10,7 +10,6 @@
   margin-bottom: 15px;
   @media (@md) {
     margin-bottom: 0;
-    text-align: right;
   }
 
   .navbar-nav {
@@ -30,7 +29,7 @@
       }
     }
 
-    @media(@md) {
+    @media (@md) {
       font-size: 24px;
     }
 
@@ -56,12 +55,20 @@
     .btn-pagination {
       border: 0;
       border-radius: 5px;
-      background-color: fadeout(@theme-tertiary, 90%);
-      color: @theme-tertiary;
+      background-color: @theme-tertiary;
+      color: #ffffff;
+      line-height: 1;
+
+      &.icon {
+        @media (@xs-only) {
+          font-size: 24px;
+          line-height: 1;
+        }
+      }
+
       &.active, &:active {
         color: @theme-secondary;
-        background-color: #ffffff; /*
-        border-bottom: 0;*/
+        background-color: #ffffff;
       }
     }
   }

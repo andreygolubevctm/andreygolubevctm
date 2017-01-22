@@ -109,27 +109,6 @@
                     </div>
                 </div>
             </li>
-            <li class="dropdown dropdown-interactive slide-feature-filters">
-                <a class="activator btn-dropdown dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);"><span class="icon icon-filter"></span> <span>Filter Your Results</span> &nbsp;&nbsp;<span class="icon icon-angle-down"></span></a>
-                <div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
-                    <div class="sidebar-widget results-filters">
-
-                    </div>
-                    <div class="sidebar-widget sidebar-widget-attached filters-update-container" style="display: none">
-
-                    </div>
-            </li>
-            <li class="dropdown dropdown-interactive slide-feature-benefits">
-                <a class="activator btn-dropdown dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);"><span class="icon icon-filter"></span> <span>Customise Cover</span> &nbsp;&nbsp;<span class="icon icon-angle-down"></span></a>
-                <div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
-                    <div class="sidebar-widget results-filters-benefits">
-
-                    </div>
-                    <div class="sidebar-widget sidebar-widget-attached filters-update-container" style="display: none">
-
-                    </div>
-                </div>
-            </li>
         </ul>
 
         <div class="slide-feature-close-more-info">

@@ -5,13 +5,13 @@
 <div class="result">
     <div class="resultInsert">
         <div class="result-header-utility-bar">
-            <div class="hide-on-affix filter-component display-on-hover small remove-result hidden-xs hidden-sm" data-productId="{{= obj.productId }}">
+            <div class="hide-on-affix filter-component display-on-hover small remove-result hidden-xs hidden-sm hidden-md" data-productId="{{= obj.productId }}">
                 <a href="javascript:;" title="Hide this product" <field_v1:analytics_attr analVal="remove {{= obj.info.provider }}" quoteChar="\"" />>Hide product</a>
             </div>
-            <div class="hide-on-affix filter-component display-on-hover small pin-result pin-result-label hidden-xs hidden-sm" data-productId="{{= obj.productId }}">
+            <div class="hide-on-affix filter-component display-on-hover small pin-result pin-result-label hidden-xs hidden-sm hidden-md" data-productId="{{= obj.productId }}">
                 <a href="javascript:;" title="Pin this result" <field_v1:analytics_attr analVal="pin {{= obj.info.provider }}" quoteChar="\"" />>Pin as favourite</a>
             </div>
-            <div class="hide-on-affix filter-component display-on-hover small pin-result pin-result-icon hidden-xs hidden-sm" data-productId="{{= obj.productId }}">
+            <div class="hide-on-affix filter-component display-on-hover small pin-result pin-result-icon hidden-xs hidden-sm hidden-md" data-productId="{{= obj.productId }}">
                 <span class="icon icon-pin" title="Pin this result" <field_v1:analytics_attr analVal="pin {{= obj.info.provider }}" quoteChar="\"" />></span>
             </div>
         </div>

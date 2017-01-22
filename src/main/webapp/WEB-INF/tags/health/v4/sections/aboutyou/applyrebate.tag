@@ -30,7 +30,7 @@
 			<div class="selectedRebate" id="selectedRebateText"></div>
 
 			<c:set var="fieldXpath" value="${xpath}/dependants" />
-			<field_v2:count_select xpath="${fieldXpath}" max="12" min="1" placeHolder="Please choose the number of dependents" title="number of dependants" required="true" hideElement="${true}" className="${name}_health_cover_dependants dependants"/>
+			<field_v2:count_select xpath="${fieldXpath}" max="12" min="1" placeHolder="Please choose the number of dependents" title="number of dependants" required="true" hideElement="${true}" className="${name}_health_cover_dependants dependants" defaultValue="2" />
 
 			<c:set var="fieldXpath" value="${xpath}/income" />
 			<field_v2:array_select xpath="${fieldXpath}" title="your household income" required="true" items="=Please choose...||0=Tier 0||1=Tier 1||2=Tier 2||3=Tier 3" delims="||" hideElement="${true}" className="income health_cover_details_income" extraDataAttributes="${analyticsAttr} data-attach=true" />
