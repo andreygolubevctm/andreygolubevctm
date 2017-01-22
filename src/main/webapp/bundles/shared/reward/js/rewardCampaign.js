@@ -12,6 +12,7 @@
 
     function initRewardCampaign(){
         $(document).ready(function() {
+            if (meerkat.site.vertical === "simples" || meerkat.site.pageAction === "confirmation") return;
             campaignTileTemplate = _.template($('#template-campaign-tile').html());
             campaignTileTemplateXs = _.template($('#template-campaign-tile-xs').html());
             eventSubscriptions();

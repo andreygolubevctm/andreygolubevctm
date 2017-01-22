@@ -167,10 +167,11 @@ public class RewardService {
 				return null;
 			}
 
-			OrderFormResponse response = createOrder(data, authenticatedData, saleStatus, campaign.getCampaignCode());
+			final OrderFormResponse response = createOrder(data, authenticatedData, saleStatus, campaign.getCampaignCode());
 			if (response != null && response.getEncryptedOrderLineId().isPresent()) {
 				return response.getEncryptedOrderLineId().get();
 			} else {
+				// Error is logged in createOrder()
 				return null;
 			}
 		}
@@ -180,11 +181,11 @@ public class RewardService {
 		}
 	}
 
-	public OrderFormResponse createOrder(final Data data, Optional<AuthenticatedData> authenticatedSessionData,
+	public OrderFormResponse createOrder(final Data data, Optional<AuthenticatedData> authenticatedData,
 										 final SaleStatus saleStatus, final String campaignCode) {
 		try {
 			RewardRequestParser rewardRequestParser = new RewardRequestParser();
-			OrderForm orderForm = rewardRequestParser.adaptFromDatabucket(authenticatedSessionData, data, saleStatus, campaignCode);
+			OrderForm orderForm = rewardRequestParser.adaptFromDatabucket(authenticatedData, data, saleStatus, campaignCode);
 			OrderFormResponse orderFormResponse = remoteCreateOrder(orderForm);
 
 			if (orderFormResponse != null && orderFormResponse.getStatus() && orderFormResponse.getEncryptedOrderLineId().isPresent()) {
