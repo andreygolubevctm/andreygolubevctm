@@ -30,6 +30,10 @@
             }
         });
 
+        meerkat.messaging.subscribe(meerkatEvents.crud.CRUD_MODAL_OPENED, function initRedemptionForm(modalId) {
+            meerkat.modules.redemptionForm.initRedemptionForm(modalId);
+        });
+
         CRUD.openModal();
 
     }

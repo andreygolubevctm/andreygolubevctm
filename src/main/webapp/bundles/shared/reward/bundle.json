@@ -3,6 +3,7 @@
   "dependencies": [
     "shared/crud",
     "shared/validation",
-    "shared/addressLookup"
+    "shared/addressLookup",
+    "shared/radioGroupTile"
   ]
 }
