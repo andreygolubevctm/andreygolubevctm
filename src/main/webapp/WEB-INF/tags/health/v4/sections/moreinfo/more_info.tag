@@ -144,10 +144,10 @@
 									<div class="col-xs-12 moreInfoHospitalTab">
 										<ul class="nav nav-tabs">
 											<li>
-												<a href="javascript:;" data-target=".hospitalCoveredPane"><h3>Covered <span class="benefitCount">{{= hospitalCover.inclusions.length }}</span></h3></a>
+												<a href="javascript:;" data-target=".hospitalCoveredPane"><h3 <field_v1:analytics_attr analVal="hospital - covered pane" quoteChar="\"" />>Covered <span class="benefitCount">{{= hospitalCover.inclusions.length }}</span></h3></a>
 											</li>
 											<li>
-												<a href="javascript:;" data-target=".hospitalNotCoveredPane"><h3>Not Covered <span class="benefitCount pink">{{= hospitalCover.exclusions.length }}</span></h3></a>
+												<a href="javascript:;" data-target=".hospitalNotCoveredPane"><h3 <field_v1:analytics_attr analVal="hospital - covered pane" quoteChar="\"" />>Not Covered <span class="benefitCount pink">{{= hospitalCover.exclusions.length }}</span></h3></a>
 											</li>
 										</ul>
 									</div>
@@ -218,10 +218,10 @@
 									<div class="col-xs-12 moreInfoExtrasTab">
 										<ul class="nav nav-tabs">
 											<li>
-												<a href="javascript:;" data-target=".extrasCoveredPane"><h3>Covered <span class="benefitCount">{{= extrasCover.inclusions.length }}</span></h3></a>
+												<a href="javascript:;" data-target=".extrasCoveredPane"><h3 <field_v1:analytics_attr analVal="extras - covered pane" quoteChar="\"" />>Covered <span class="benefitCount">{{= extrasCover.inclusions.length }}</span></h3></a>
 											</li>
 											<li>
-												<a href="javascript:;" data-target=".extrasNotCoveredPane"><h3>Not Covered <span class="benefitCount pink">{{= extrasCover.exclusions.length }}</span></h3></a>
+												<a href="javascript:;" data-target=".extrasNotCoveredPane"><h3 <field_v1:analytics_attr analVal="extras - covered pane" quoteChar="\"" />>Not Covered <span class="benefitCount pink">{{= extrasCover.exclusions.length }}</span></h3></a>
 											</li>
 										</ul>
 									</div>

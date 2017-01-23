@@ -12,7 +12,7 @@
         <div class="filter-sub-heading">Hospital Excess</div>
         <div class="filter-by-container">
             <span class="filter-by-excess small"></span>
-            <a href="javascript:;" class="filter-toggle small" data-filter="excess">Change</a>
+            <a href="javascript:;" class="filter-toggle small" data-filter="excess" <field_v1:analytics_attr analVal="excess filter" quoteChar="\"" />>Change</a>
         </div>
 
         <health_v1:filter_excess useDefaultOutputField="true" />
@@ -22,7 +22,7 @@
         <div class="filter-sub-heading">Brands</div>
         <div class="filter-by-container">
             <span class="filter-by-brands small"></span>
-            <a href="javascript:;" class="filter-toggle small" data-filter="brands">Change</a>
+            <a href="javascript:;" class="filter-toggle small" data-filter="brands" <field_v1:analytics_attr analVal="brands filter" quoteChar="\"" />>Change</a>
         </div>
 
         <div class="health-filter-brands provider-list">

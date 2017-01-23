@@ -4,6 +4,8 @@
 
 <%-- ATTRIBUTES --%>
 <%@ attribute name="options"	required="true"	 rtexprvalue="true"	 description="list of options to generate the quick select headings" %>
+<%@ attribute name="trackingLabel"	required="true"	 rtexprvalue="true"
+			  description="list of options to generate the quick select headings" %>
 
 <%-- Calculate column width based on 12 columns --%>
 <c:set var="maxColumns" value="12" />
@@ -15,7 +17,7 @@
 	<div class="col-xs-8 quickSelect">
 		<c:forTokens items="${options}" delims="|" var="qs">
 			<c:set var="parts" value="${fn:split(qs, ':')}" />
-			<div class="col-xs-${colWidth} col-sm-12 col-md-${colWidth}"><a href="javascript:;" data-select-type="${parts[1]}">${parts[0]}</a></div>
+			<div class="col-xs-${colWidth} col-sm-12 col-md-${colWidth}"><a href="javascript:;"	data-select-type="${parts[1]}" <field_v1:analytics_attr analVal="${trackingLabel} type quick select" quoteChar="\"" />>${parts[0]}</a></div>
 		</c:forTokens>
 	</div>
 	<div class="col-xs-12 clearSelection hidden"><a href="javascript:;">Clear selection</a></div>
