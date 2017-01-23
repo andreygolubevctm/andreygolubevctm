@@ -8,6 +8,16 @@
   }
 }*/
 
+.btn-next {
+  min-height: 40px;
+  padding: 10px 0 0 0;
+  @media (@lg) {
+    font-size: @font-size-large;
+    min-height: 48px;
+    padding-top: 16px;
+  }
+}
+
 @media (@xs-only) {
   body:not([data-step=results]) {
     .header-wrap {
@@ -20,6 +30,7 @@
     }
   }
 }
+
 .slideAction,
 .confirm-step {
   div:first-child {

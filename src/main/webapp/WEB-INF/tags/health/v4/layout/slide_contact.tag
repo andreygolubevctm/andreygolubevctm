@@ -37,6 +37,7 @@
                     <health_v4_contact:competition xpath="${xpath}" />
 
                     <health_v4_contact:simples_referral_tracking />
+                    <field_v1:hidden xpath="health/altContactFormRendered" constantValue="Y" />
                 </form_v4:fieldset>
 
             </jsp:body>

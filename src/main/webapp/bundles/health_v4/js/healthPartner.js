@@ -39,7 +39,7 @@
                 $checked = $this.filter(':checked'),
                 disableField = ($checked.val() === 'N') || ($checked.val() === 'Y' && meerkat.modules.age.isLessThan31Or31AndBeforeJuly1($elements.dob.val()));
 
-            meerkat.modules.fieldUtilities.toggleFields(
+            meerkat.modules.fieldUtilities.toggleDisabled(
                 $elements.partnerCoverLoading,
                 disableField
             );
@@ -82,10 +82,12 @@
     }
 
     function _togglePartnerQuestionset(selected) {
-        if (_.indexOf(['F', 'C'], selected.situation) > -1 ) {
-            meerkat.modules.fieldUtilities.enable($elements.partnerQuestionSet);
-        } else {
-            meerkat.modules.fieldUtilities.disable($elements.partnerQuestionSet);
+        var hasPartner = _.indexOf(['F', 'C'], selected.situation) > -1;
+        meerkat.modules.fieldUtilities.toggleVisible($elements.partnerQuestionSet.add($elements.partnerCoverLoading), !hasPartner);
+        if(hasPartner && !_.isUndefined(getCurrentCover())) {
+            // Need to trigger continuous cover visibility if required
+            var $checked = $elements.currentCover.filter(':checked');
+            if ($checked.length) $checked.change();
         }
     }
 

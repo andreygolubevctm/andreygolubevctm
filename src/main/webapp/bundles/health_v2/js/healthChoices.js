@@ -16,8 +16,11 @@
 		$elements = {};
 
 	function init() {
-		_setupFields();
-		_eventListeners();
+        $(document).ready(function () {
+            _setupFields();
+            _eventListeners();
+        });
+
 	}
 
 	function initialise(cover, situation, benefits) {
