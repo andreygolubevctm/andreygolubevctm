@@ -308,12 +308,13 @@
     function applyEventListeners() {
         $(document).on('change', 'input[name=health_filterBar_frequency]', function (e) {
             var frequency = $(this).val();
-
-            $('#health_filter_frequency').val(frequency);
-
-            Results.setFrequency(meerkat.modules.healthResults.getFrequencyInWords(frequency), false);
-            meerkat.modules.resultsTracking.setResultsEventMode('Refresh');
-            Results.applyFiltersAndSorts();
+            meerkat.messaging.publish(meerkatEvents.filters.FILTERS_UPDATED);
+            _.defer(function () {
+                $('#health_filter_frequency').val(frequency);
+                Results.setFrequency(meerkat.modules.healthResults.getFrequencyInWords(frequency), false);
+                meerkat.modules.resultsTracking.setResultsEventMode('Refresh');
+                Results.applyFiltersAndSorts();
+            });
         });
 
         $(document).on('click', '.filter-brands-toggle', function selectAllNoneFilterBrands(e) {
@@ -401,17 +402,17 @@
         }
         var hospitalLabel = hospitalType == 'customise' ? 'Comprehensive' : 'Limited';
         var coverTypeLabel = '';
-        if(coverType !== 'E') { // Only when its H/C
+        if (coverType !== 'E') { // Only when its H/C
             coverTypeLabel = '<div>' + hospitalLabel + ' Cover</div>';
 
             // Update the active tab for hospital filter to limited if applicable
-            if(hospitalType === 'limited') {
+            if (hospitalType === 'limited') {
                 $('.results-filters-benefits .health-filter-hospital-benefits li').find('a').each(function () {
                     var $that = $(this);
                     var isLimited = $that.attr('href').search(/limited/) !== -1;
-                    $that.closest('li').toggleClass('active',isLimited);
-                    $('#hospitalBenefits').toggleClass('active in',!isLimited);
-                    $('#limitedHospital').toggleClass('active in',isLimited);
+                    $that.closest('li').toggleClass('active', isLimited);
+                    $('#hospitalBenefits').toggleClass('active in', !isLimited);
+                    $('#limitedHospital').toggleClass('active in', isLimited);
                 });
             }
         }
