@@ -17,19 +17,19 @@
 		</div>
 		<div class="row">
 			<div class="col-xs-12 col-sm-4">
-				<a href="#" class="inner-footer-box">
+				<a href="https://comparethemarket.com.au/meerkat-toys/meet-aleksandr/" class="inner-footer-box">
 					<img src="" data-defer-src="assets/brand/ctm/images/zeus/footer_aleks.png" alt="Aleksandr">
 					<span>Meet Aleksandr</span>
 				</a>
 			</div>
 			<div class="col-xs-12 col-sm-4">
-				<a href="#" class="inner-footer-box">
+				<a href="https://comparethemarket.com.au/meerkat-toys/meet-sergei/" class="inner-footer-box">
 					<img src="" data-defer-src="assets/brand/ctm/images/zeus/footer_sergei.png" alt="Sergei">
 					<span>Meet Sergei</span>
 				</a>
 			</div>
 			<div class="col-xs-12 col-sm-4">
-				<a href="#" class="inner-footer-box">
+				<a href="https://comparethemarket.com.au/meerkat-toys/faq/" class="inner-footer-box">
 					<img src="" data-defer-src="assets/brand/ctm/images/zeus/footer_faqs.png" alt="Got questions?">
 					<span>Got a question?</span>
 				</a>
