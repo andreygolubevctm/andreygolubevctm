@@ -6,5 +6,5 @@
 
 <div class="retrieveQuotes">
     <div class="question">${retrieveQuotes.getSupplementaryValueByKey('questionText')}</div>
-    <a href="${pageSettings.getBaseUrl()}retrieve_quotes.jsp" target="_blank" class="btn btn-secondary">Retrieve quote</a>
+    <a href="${pageSettings.getBaseUrl()}retrieve_quotes.jsp" target="_blank" class="btn btn-secondary" <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />>Retrieve quote</a>
 </div>

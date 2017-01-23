@@ -22,8 +22,8 @@
       a,
       a:focus,
       a:hover {
-          border: none;
-          border-bottom: 5px solid @theme-accent-4;
+        border: none;
+        border-bottom: 5px solid @theme-accent-4;
       }
     }
 
@@ -36,7 +36,7 @@
       }
     }
 
-    @media(@sm-only) {
+    @media (@sm-only) {
       h3 {
         font-size: @font-size-base;
       }
@@ -44,46 +44,28 @@
   }
 }
 
-
 .benefitRow {
-    padding-top:5px;
-    padding-bottom:5px;
-    border-bottom: 1px solid @gray-lighter;
-    margin-left: 0px;
-    margin-right: 0px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid @gray-lighter;
+  margin-left: 0px;
+  margin-right: 0px;
 
-    .benefitTitle,
-    .limitTitle {
-      padding-left: 0px;
-    }
+  .benefitTitle,
+  .limitTitle {
+    padding-left: 0px;
+  }
 }
 
-
 .benefitCount {
-  color: white;
+  color: #ffffff;
   background: @theme-accent-4;
   radius: 50%;
   border-radius: 50%;
   padding: 5px;
-  height: 35px;
-  width: 35px;
-
-  @media(@sm-only) {
-    padding: 8px;
-    height: 32px;
-    width: 32px;
-
-    &.gray {
-      padding: 5px;
-    }
-  }
-
-  @media(@xs-only) {
-    padding: 2px;
-    height: 30px;
-    width: 30px;
-  }
-
+  height: 30px;
+  width: 30px;
+  font-size: 16px;
   display: inline-block;
   text-align: center;
 }

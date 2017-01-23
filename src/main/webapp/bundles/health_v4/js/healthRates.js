@@ -25,7 +25,7 @@
             partnerDob: $('#health_healthCover_partner_dob'),
             partnerAppDob: $('#health_application_partner_dob'),
             partnerLoading: $('input[name="health_healthCover_partner_healthCoverLoading"]'),
-            partnerCurrent: $('input[name="health_healthCover_partner_health_cover"]'),
+            partnerCurrent: $('input[name="health_healthCover_partner_cover"]'),
             partnerLoadingManual: $('input[name="health_healthCover_partner_lhc"]'),
             dependants: $('#health_healthCover_dependants')
         };
