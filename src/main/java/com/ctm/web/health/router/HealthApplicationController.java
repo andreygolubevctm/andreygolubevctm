@@ -196,16 +196,21 @@ public class HealthApplicationController extends CommonQuoteRouter {
                     } else {
                         final OrderFormResponse order = rewardService.getOrder(redemptionId, request);
                         if (!order.getStatus()) {
+                            // Something went wrong...
                             LOGGER.error("Failed to get order. message={}", order.getMessage());
                         } else if (order.getOrderHeader().getSaleStatus() != SaleStatus.Sale) {
+                            // If existing order is not "sold" then mark as sold
                             rewardService.setOrderSaleStatusToSale(redemptionId);
+                        } else {
+                            // Create a new reward placeholder because this is a split transaction
+                            final OrderFormResponse orderResponse = rewardService.createOrder(dataBucket, authenticatedData, SaleStatus.Sale, campaign.getCampaignCode());
+                            if (orderResponse != null && orderResponse.getEncryptedOrderLineId().isPresent()) {
+                                persistRedemptionId(orderResponse.getEncryptedOrderLineId().get(), data.getTransactionId());
+                            }
                         }
-                        // else falls through to below logic
                     }
-                }
-
-                // No order recorded against this transaction and current active campaign
-                if (redemptionId == null && campaign != null) {
+                } else if (campaign != null) {
+                    // No order recorded against this transaction and current active campaign
                     // Create a new placeholder reward order
                     final OrderFormResponse orderResponse = rewardService.createOrder(dataBucket, authenticatedData, SaleStatus.Sale, campaign.getCampaignCode());
                     if (orderResponse != null && orderResponse.getEncryptedOrderLineId().isPresent()) {
