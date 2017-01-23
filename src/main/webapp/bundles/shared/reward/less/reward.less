@@ -1,11 +1,3 @@
-#redemptionForm{
-  .required_input label.control-label:after {
-    content: "\002A";
-    color: @required-color;
-    padding-left: 2px;
-  }
-}
-
 .campaign-tile-container {
   .image-tile{
     height:400px;
@@ -91,5 +83,46 @@ body {
     -o-background-size: contain;
     background-size: contain;
     margin-right: 15px;
+  }
+}
+
+#redemptionForm{
+  .form-heading{
+    margin: 10px 25px 15px 25px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #b3b3b3;
+  }
+  .required_input label.control-label:after {
+    content: "\002A";
+    color: @required-color;
+    padding-left: 2px;
+  }
+
+  .rewardType {
+    .btn-tile {
+      label {
+        width: 185px;
+        height: 185px;
+        border-color: @theme-tertiary;
+        border-width: 2px;
+
+        &:before {
+          display: block;
+          width: 168px;
+          height: 168px;
+        }
+
+        &.active {
+          border-color: @theme-secondary;
+        }
+
+        &.aleks:before { content: url("../graphics/reward/toy/aleks-form.jpg"); }
+        &.sergei:before { content: url("../graphics/reward/toy/sergei-form.jpg"); }
+      }
+    }
+  }
+
+  .text-right .btn {
+    display: inline-block;
   }
 }
