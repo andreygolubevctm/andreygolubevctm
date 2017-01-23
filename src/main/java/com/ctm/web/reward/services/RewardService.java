@@ -206,12 +206,18 @@ public class RewardService {
 		}
 	}
 
+	public OrderFormResponse getOrder(final String redemptionId, final HttpServletRequest request) {
+		final Optional<AuthenticatedData> authenticatedData = Optional.ofNullable(sessionDataServiceBean.getAuthenticatedSessionData(request));
+		// TODO how to get if user is in group CTM-CC-REWARDS
+		return getOrder(redemptionId, authenticatedData.map(AuthenticatedData::getUid), false);
+	}
+
 	/**
-	 * Get reward order.
-	 * @param redemptionId The encrypted orderLineId
-	 * @param operatorId Optional operator username
-	 * @param operatorElevated Whether or not the operator has elevated privileges
-	 */
+		 * Get reward order.
+		 * @param redemptionId The encrypted orderLineId
+		 * @param operatorId Optional operator username
+		 * @param operatorElevated Whether or not the operator has elevated privileges
+		 */
 	public OrderFormResponse getOrder(final String redemptionId, final Optional<String> operatorId, final boolean operatorElevated) {
 		GetOrder request = new GetOrder(redemptionId);
 		request.setOperatorElevated(operatorElevated);
@@ -224,6 +230,7 @@ public class RewardService {
 				.jsonHeaders()
 				.url(url)
 				.timeout(SERVICE_TIMEOUT)
+				.retryAttempts(1)
 				.build())
 				.observeOn(Schedulers.io())
 				.onErrorResumeNext(throwable -> {
@@ -233,8 +240,12 @@ public class RewardService {
 					response.setStatus(false);
 					return Observable.just(response);
 				})
-				.doOnNext(response -> LOGGER.info("Reward: getOrder success. redemptionId={}, operatorId={}, operatorElevated={}",
-						redemptionId, operatorId.orElse(""), operatorElevated))
+				.doOnNext(response -> {
+					if (response.getStatus()) {
+						LOGGER.info("Reward: getOrder success. redemptionId={}, operatorId={}, operatorElevated={}",
+								redemptionId, operatorId.orElse(""), operatorElevated);
+					}
+				})
 				.toBlocking()
 				.first();
 	}
