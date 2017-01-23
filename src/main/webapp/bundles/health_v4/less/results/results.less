@@ -2,11 +2,21 @@
 //       For a list of what a .section or .category is, see ../../../shared/results/v4/less/results_structure.less
 
 //On XS we should dock the headerbars.
+
 @media (@xs-only) {
-  //Push the page down to make some space
   body[data-step="results"] {
+    //Push the page down to make some space
     padding-top: @navbar-height + 110;
+    // a reset
+    .results-control-container {
+      padding-top: 0;
+    }
   }
+}
+
+.results-control-container.affix {
+  padding-bottom: 0;
+  border-bottom: 1px solid @border-color;
 }
 
 .open-more-info {
@@ -38,7 +48,7 @@
 .resultInsert {
 
   .result-header-utility-bar {
-    @media(@md) {
+    @media (@lg) {
       padding-bottom: 10px;
     }
   }
@@ -99,25 +109,30 @@
 
   .results-header-inner-container {
     border-bottom: 1px solid @results-border-color;
-    //@media (@sm) {
-      margin-bottom: 15px;
-      padding-bottom: 15px;
-    //}
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+
+    .btn-more-info {
+      @media(@lg) {
+        font-size: @font-size-large;
+        min-height: 48px;
+        padding-top: 15px;
+      }
+    }
   }
   .productSummary {
-    margin-bottom: 20px;
-    height: 140px;
+    margin-bottom: 10px;
+    height: 150px;
     overflow: hidden;
     @media (@sm-only) {
-      height: 140px;
+      height: 145px;
     }
     @media (@md-only) {
-      height: 105px;
+      height: 145px;
     }
     @media (@lg-only) {
       height: 125px;
     }
-
 
     .frequencyAmount {
       color: @link-color;
@@ -134,11 +149,12 @@
     }
 
     .lhcText {
+      color: @gray;
       text-align: center;
       .small;
       padding-bottom: 5px;
     }
-    @media (@md) {
+    @media (@lg) {
       .frequencyAmount, .lhcText {
         float: left;
         width: 50%;
@@ -152,6 +168,10 @@
         height: 50px;
         align-items: flex-end;
       }
+    }
+
+    .companyLogo {
+      margin-top: 10px;
     }
   }
 
@@ -198,6 +218,7 @@
     // .cell is used as parent wrapper as .category is re-used on non-cell divs.
     .cell {
 
+
       // A top level category e.g. the Non Cosmetic Plastic Surgery cell
       &.category { //.cell.category
 
@@ -216,6 +237,10 @@
           margin-top: 5px;
         }
         &.expandable {
+          border-bottom: 1px solid @gray;
+          &.ambulanceSection {
+            border-bottom: 0;
+          }
           .contentInner {
             color: @link-color;
           }
@@ -285,7 +310,7 @@
   }
   .hospitalSelectionsExcessContainer {
     .selected-benefits-title {
-      color: @theme-accent-4;
+      color: @gray;
       font-size: 16px;
     }
     .featuresListExcess {

@@ -25,7 +25,7 @@
 			<p>Found the right product for you?</p>
 		</div>
 		<div class="col-xs-12 col-sm-4 col-md-5 col-lg-6">
-			<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now<span class="icon-arrow-right" /></a>
+			<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Apply Online<span class="icon-arrow-right" /></a>
 		</div>
 	</div>
 
@@ -84,7 +84,7 @@
 										<h2>Hospital</h2>
 										{{ if(typeof hospitalCover !== 'undefined') { }}
 											</div>
-											<div class="{{ if(typeof extrasCover !== 'undefined'){ }}col-xs-6{{ } }}">
+											<div class="{{ if(typeof extrasCover !== 'undefined'){ }}col-xs-6{{ } }} text-right">
 												<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="download-hospital-brochure col-xs-12" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>Download Brochure</a>
 											</div>
 										</div>
@@ -144,10 +144,10 @@
 									<div class="col-xs-12 moreInfoHospitalTab">
 										<ul class="nav nav-tabs">
 											<li>
-												<a href="javascript:;" data-target=".hospitalCoveredPane"><h3>Covered <span class="benefitCount">{{= hospitalCover.inclusions.length }}</span></h3></a>
+												<a href="javascript:;" data-target=".hospitalCoveredPane"><h3 <field_v1:analytics_attr analVal="hospital - covered pane" quoteChar="\"" />>Covered <span class="benefitCount">{{= hospitalCover.inclusions.length }}</span></h3></a>
 											</li>
 											<li>
-												<a href="javascript:;" data-target=".hospitalNotCoveredPane"><h3>Not Covered <span class="benefitCount pink">{{= hospitalCover.exclusions.length }}</span></h3></a>
+												<a href="javascript:;" data-target=".hospitalNotCoveredPane"><h3 <field_v1:analytics_attr analVal="hospital - covered pane" quoteChar="\"" />>Not Covered <span class="benefitCount pink">{{= hospitalCover.exclusions.length }}</span></h3></a>
 											</li>
 										</ul>
 									</div>
@@ -208,7 +208,7 @@
 									<h2>Extras</h2>
 									{{ if(typeof extrasCover !== 'undefined') { }}
 									</div>
-									<div class="{{ if(typeof hospitalCover !== 'undefined'){ }}col-xs-6 {{ } }} ">
+									<div class="{{ if(typeof hospitalCover !== 'undefined'){ }}col-xs-6 {{ } }} text-right">
 										<a href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" class="download-extras-brochure col-xs-12">Download brochure</a>
 									</div>
 									{{ } }}
@@ -218,10 +218,10 @@
 									<div class="col-xs-12 moreInfoExtrasTab">
 										<ul class="nav nav-tabs">
 											<li>
-												<a href="javascript:;" data-target=".extrasCoveredPane"><h3>Covered <span class="benefitCount">{{= extrasCover.inclusions.length }}</span></h3></a>
+												<a href="javascript:;" data-target=".extrasCoveredPane"><h3 <field_v1:analytics_attr analVal="extras - covered pane" quoteChar="\"" />>Covered <span class="benefitCount">{{= extrasCover.inclusions.length }}</span></h3></a>
 											</li>
 											<li>
-												<a href="javascript:;" data-target=".extrasNotCoveredPane"><h3>Not Covered <span class="benefitCount pink">{{= extrasCover.exclusions.length }}</span></h3></a>
+												<a href="javascript:;" data-target=".extrasNotCoveredPane"><h3 <field_v1:analytics_attr analVal="extras - covered pane" quoteChar="\"" />>Not Covered <span class="benefitCount pink">{{= extrasCover.exclusions.length }}</span></h3></a>
 											</li>
 										</ul>
 									</div>
@@ -249,8 +249,8 @@
 			</div>
 			<!-- CTA BUTTON -->
 			<div class="hidden-xs moreInfoTopRightColumn">
-                <div class="sidebar-widget sidebar-widget-padded">
-						<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now<span class="icon-arrow-right" /></a>
+                <div class="sidebar-widget">
+						<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Apply Online<span class="icon-arrow-right" /></a>
 					</div>
                 <div class="sidebar-widget sidebar-widget-padded sidebar-widget-background-contained">
                     <h3>Switching is simple!</h3>
