@@ -385,7 +385,8 @@
 
 	meerkat.modules.register("saveQuote", {
 		initSaveQuote: initSaveQuote,
-		events: events
+		events: events,
+		isAvailable: function() {}
 	});
 
 })(jQuery);

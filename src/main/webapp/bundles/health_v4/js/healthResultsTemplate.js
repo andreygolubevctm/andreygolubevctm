@@ -341,8 +341,9 @@
                 $el.removeClass('disabled');
             }, 1000);
 
-        }).off('click', '.reset-filters').on('click', '.reset-filters', function (e) {
+        }).off('click', '.reset-show-hide-filters').on('click', '.reset-show-hide-filters', function (e) {
             e.preventDefault();
+            Results.unfilterBy('productId', "value", true);
             unhideFilteredProducts();
         });
     }
@@ -350,7 +351,7 @@
     function unhideFilteredProducts() {
         filteredOutResults = [];
         updateHiddenProductsTemplate();
-        toggleRemoveResultPagination();
+        _.defer(toggleRemoveResultPagination);
     }
 
     function toggleRemoveResultPagination() {

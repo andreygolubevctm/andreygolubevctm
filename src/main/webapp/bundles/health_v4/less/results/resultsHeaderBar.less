@@ -85,7 +85,10 @@
       .featuresList {
         border: 1px solid @results-border-color;
         margin: 0;
-        padding: 15px 15px 0 15px;
+        padding: 15px 10px 0 10px;
+        @media (@sm) {
+          padding: 15px 15px 0 15px;
+        }
       }
       &.pinned .featuresList {
         border-color: @theme-accent-4;

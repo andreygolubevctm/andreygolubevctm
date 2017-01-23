@@ -43,7 +43,7 @@
 
             _.defer(function(){
                 // Ensure that Private Hospital is selected as default cover
-                if(meerkat.site.isNewQuote) {
+                if(meerkat.site.isNewQuote && !$('#health_benefits_benefitsExtras_PrHospital').prop('checked')) {
                     $('#health_benefits_benefitsExtras_PrHospital').prop('checked',true).change();
                 }
             });
