@@ -343,6 +343,7 @@
 
         }).off('click', '.reset-filters').on('click', '.reset-filters', function (e) {
             e.preventDefault();
+            Results.unfilterBy('productId', "value", true);
             unhideFilteredProducts();
         });
     }
@@ -350,7 +351,7 @@
     function unhideFilteredProducts() {
         filteredOutResults = [];
         updateHiddenProductsTemplate();
-        toggleRemoveResultPagination();
+        _.defer(toggleRemoveResultPagination);
     }
 
     function toggleRemoveResultPagination() {
