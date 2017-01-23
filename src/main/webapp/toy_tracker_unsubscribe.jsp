@@ -51,44 +51,11 @@
 
 	<jsp:body>
 		<zeus:header />
-		<c:if test="${token eq '' or trackingStatus == null or trackingStatus.stage == null}">
-			<zeus:error />
+		<c:if test="${token eq '' or trackingStatus == null}">
+			<zeus:unsubscribe_error />
 		</c:if>
 		<c:if test="${trackingStatus != null}">
-			<!-- Setup the values we need for the template. -->
-			<c:choose>
-				<c:when test="${trackingStatus.stage eq 1}">
-					<c:set var="locationName" value="Meerkovo" />
-					<c:set var="locationDistance" value="23,252" />
-					<c:set var="toyType" value="_${trackingStatus.rewardType.rewardType}" />
-					<c:set var="imageName" value="meerkovo" />
-				</c:when>
-				<c:when test="${trackingStatus.stage eq 2}">
-					<c:set var="locationName" value="China" />
-					<c:set var="locationDistance" value="14,701" />
-					<c:set var="toyType" value="" />
-					<c:set var="imageName" value="china" />
-				</c:when>
-				<c:when test="${trackingStatus.stage eq 3}">
-					<c:set var="locationName" value="Madagascar" />
-					<c:set var="locationDistance" value="15,177" />
-					<c:set var="toyType" value="" />
-					<c:set var="imageName" value="madagascar" />
-				</c:when>
-				<c:when test="${trackingStatus.stage eq 4}">
-					<c:set var="locationName" value="New Zealand" />
-					<c:set var="locationDistance" value="4,156" />
-					<c:set var="toyType" value="" />
-					<c:set var="imageName" value="new_zealand" />
-				</c:when>
-				<c:otherwise>
-					<c:set var="locationName" value="Australia" />
-					<c:set var="locationDistance" value="0" />
-					<c:set var="toyType" value="" />
-					<c:set var="imageName" value="australia" />
-				</c:otherwise>
-			</c:choose>
-			<zeus:location firstName="${trackingStatus.firstName}" locationName="${locationName}" locationDistance="${locationDistance}" toyType="${toyType}" imageName="${imageName}" />
+			<zeus:unsubscribe_success />
 		</c:if>
 		<zeus:footer />
 

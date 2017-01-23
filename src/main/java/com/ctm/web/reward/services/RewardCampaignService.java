@@ -24,7 +24,8 @@ public class RewardCampaignService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(RewardCampaignService.class);
 
 	private static final String REWARD_ENDPOINT_CAMPAIGNS_GET = "/campaigns/get";
-	private static final int SERVICE_TIMEOUT = 6000;
+	private static final int SERVICE_TIMEOUT = 10000;
+	private static final int SERVICE_RETRIES = 1;
 
 	@Value("${ctm.reward.url}")
 	private String rewardServiceUrl;
@@ -55,6 +56,7 @@ public class RewardCampaignService {
 				.jsonHeaders()
 				.url(url)
 				.timeout(SERVICE_TIMEOUT)
+				.retryAttempts(SERVICE_RETRIES)
 				.build())
 				.observeOn(Schedulers.io())
 				.onErrorResumeNext(throwable -> {

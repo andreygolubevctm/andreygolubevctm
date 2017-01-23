@@ -176,7 +176,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
 
             final Data dataBucket = getDataBucket(request, data.getTransactionId());
 
-            // Update the online placeholder with the outcome of the join
+            // Update the online reward placeholder with the outcome of the join
             if (placeholderRedemptionId.isPresent()) {
                 rewardService.setOrderSaleStatusToSale(placeholderRedemptionId.orElse(""));
             }
@@ -194,8 +194,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
                     if (campaign == null) {
                         rewardService.setOrderSaleStatusToSale(redemptionId);
                     } else {
-                        // TODO how to get if user is in group CTM-CC-REWARDS
-                        OrderFormResponse order = rewardService.getOrder(redemptionId, authenticatedData.map(AuthenticatedData::getUid), false);
+                        final OrderFormResponse order = rewardService.getOrder(redemptionId, request);
                         if (!order.getStatus()) {
                             LOGGER.error("Failed to get order. message={}", order.getMessage());
                         } else if (order.getOrderHeader().getSaleStatus() != SaleStatus.Sale) {
@@ -291,6 +290,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
         td.setSequenceNo(RewardService.XPATH_SEQUENCE_NO_ENCRYPTED_ORDER_LINE_ID);
         try {
             transactionDetailsDao.addTransactionDetailsWithDuplicateKeyUpdate(transactionId, td);
+            LOGGER.info("Reward: Persisted redemptionId. redemptionId={}, transactionId={}", redemptionId, transactionId);
         } catch (DaoException e) {
             LOGGER.error("Reward: Failed to persist redemptionId. redemptionId={}, transactionId={}", redemptionId, transactionId);
         }
