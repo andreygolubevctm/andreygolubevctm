@@ -7,8 +7,8 @@
         <div class="companyLogo {{= info.provider }}"></div>
         <h2 class="noTopMargin productName hidden-xs">{{= info.productTitle }}</h2>
     </div>
-    <div class="col-xs-4 text-center">
+    <div class="col-xs-4 printableBrochuresLink">
         {{= renderedPriceTemplate }}
-        <a href="javascript:;">Get printable brochures in your email inbox</a>
+        <a href="javascript:;" class="getPrintableBrochures">Get printable brochures in your email inbox</a>
     </div>
 </div>

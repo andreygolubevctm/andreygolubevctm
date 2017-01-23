@@ -276,3 +276,4 @@
 <health_v4_moreinfo:more_info_affixed_header />
 <health_v4_moreinfo:more_info_affixed_header_mobile />
 <health_v4_moreinfo:more_info_benefit_limits />
+<health_v4_moreinfo:more_info_email_brochures />
