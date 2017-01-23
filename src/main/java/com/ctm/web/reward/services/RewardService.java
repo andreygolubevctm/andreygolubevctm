@@ -152,7 +152,7 @@ public class RewardService {
 			}
 
 			final Optional<AuthenticatedData> authenticatedData = Optional.ofNullable(sessionData.getAuthenticatedSessionData());
-			if (authenticatedData.isPresent() /*Does this require a getUid.isNotEmpty check?*/) {
+			if (authenticatedData.map(AuthenticatedData::getUid).map(s -> !s.isEmpty()).orElse(false)) {
 				LOGGER.info("Reward: Abort createPlaceholderOrderForOnline because not Online user.");
 				return null;
 			}
@@ -190,6 +190,8 @@ public class RewardService {
 
 			if (orderFormResponse != null && orderFormResponse.getStatus() && orderFormResponse.getEncryptedOrderLineId().isPresent()) {
 				data.put(XPATH_CURRENT_ENCRYPTED_ORDER_LINE_ID, orderFormResponse.getEncryptedOrderLineId().get());
+				LOGGER.info("Reward: Created order. rootId={}, getEncryptedOrderLineId={}",
+						orderForm.getOrderHeader().getRootId().orElse(0L), orderFormResponse.getEncryptedOrderLineId().get());
 				return orderFormResponse;
 			} else {
 				throw new Exception("Create order failed. status=" + ((orderFormResponse != null) ? orderFormResponse.getStatus() : "")
@@ -225,11 +227,14 @@ public class RewardService {
 				.build())
 				.observeOn(Schedulers.io())
 				.onErrorResumeNext(throwable -> {
-					LOGGER.error("Reward: Failed to get order. url={}", url, throwable);
+					LOGGER.error("Reward: Failed to get order. url={}, redemptionId={}, operatorId={}, operatorElevated={}",
+							url, redemptionId, operatorId.orElse(""), operatorElevated, throwable);
 					OrderFormResponse response = new OrderFormResponse();
 					response.setStatus(false);
 					return Observable.just(response);
 				})
+				.doOnNext(response -> LOGGER.info("Reward: getOrder success. redemptionId={}, operatorId={}, operatorElevated={}",
+						redemptionId, operatorId.orElse(""), operatorElevated))
 				.toBlocking()
 				.first();
 	}
