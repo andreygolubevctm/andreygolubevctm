@@ -1,4 +1,4 @@
-<%@ page import="com.ctm.reward.model.TrackingStatusResponse" %>
+<%@ page import="com.ctm.reward.model.UpdateTrackingStatusResponse" %>
 <%@ page import="com.ctm.web.reward.services.RewardTrackingService" %>
 <%@ page import="org.springframework.web.servlet.support.RequestContextUtils" %>
 <%--
@@ -21,8 +21,8 @@
 <%
 	String token = request.getParameter("token");
 	RewardTrackingService rewardTrackingService = (RewardTrackingService) RequestContextUtils.findWebApplicationContext(request).getBean("rewardTrackingService");
-    TrackingStatusResponse ts = rewardTrackingService.getTrackingStatus(token);
-	request.setAttribute("trackingStatus", ts);
+	UpdateTrackingStatusResponse ts = rewardTrackingService.optOutOfTracking(token);
+	request.setAttribute("trackingOptin", ts);
 %>
 <layout_v1:journey_engine_page title="Toy Tracker">
 	<jsp:attribute name="head">
@@ -51,12 +51,16 @@
 
 	<jsp:body>
 		<zeus:header />
-		<c:if test="${token eq '' or trackingStatus == null}">
-			<zeus:unsubscribe_error />
-		</c:if>
-		<c:if test="${trackingStatus != null}">
-			<zeus:unsubscribe_success />
-		</c:if>
+
+		<c:choose>
+			<c:when test="${trackingOptin == null or trackingOptin.status == false}">
+				<zeus:unsubscribe_error />
+			</c:when>
+			<c:otherwise>
+				<zeus:unsubscribe_success />
+			</c:otherwise>
+		</c:choose>
+
 		<zeus:footer />
 
 		<div class="hiddenFields">
