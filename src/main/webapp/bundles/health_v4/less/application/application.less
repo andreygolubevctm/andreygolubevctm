@@ -3,9 +3,9 @@
   display: none;
 }
 
-#health_application_address_autofilllessSearchRow
+#health_application_address_autofilllessSearchRow,
 .health_application_address_nonStd_row + .form-group{
-  margin-bottom: 0px;
+  margin-bottom: 0;
 }
 
 @media(@xs-only) {
@@ -22,8 +22,16 @@
   #applicationDetailsForm {
     .row-content {
       [class*="col-sm-"] {
-        padding-right: 0px;
+        padding-right: 0;
       }
+    }
+  }
+}
+
+@media(@xs-only) {
+  .productSummary-affix {
+    .lhcText {
+      display: inline-block;
     }
   }
 }

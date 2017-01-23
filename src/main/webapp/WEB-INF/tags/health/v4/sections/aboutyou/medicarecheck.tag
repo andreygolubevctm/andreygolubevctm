@@ -8,5 +8,5 @@
 
 <div class="medicareCheck">
 	<div class="question">${medicareCheck.getSupplementaryValueByKey('questionText')}</div>
-	<div class="action"><a href="${medicareCheck.getSupplementaryValueByKey('url')}" target="_new">${medicareCheck.getSupplementaryValueByKey('actionText')}</a> ></div>
+	<div class="action"><a href="${medicareCheck.getSupplementaryValueByKey('url')}" target="_new" <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />>${medicareCheck.getSupplementaryValueByKey('actionText')}</a> ></div>
 </div>

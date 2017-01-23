@@ -40,7 +40,7 @@
         $elements = {
             situationSelect: $('input[name=health_situation_healthCvr]'),
             applyRebate: $('#health_healthCover_rebate'),
-            rebateCheckbox: $('#health_healthCover_rebate_checkbox'),
+            rebateCheckbox: $('#health_healthCover_rebateCheckbox'),
             incomeSelectContainer: $('.income_container'),
             lhcContainers: $('.health-cover,  .dateinput_container, #health_healthCover_primaryCover, .income_container .select'),
             dependentsSelect: $('#health_healthCover_dependants'),
@@ -55,7 +55,7 @@
     }
 
     function _eventSubscriptions() {
-        $(':input[name="health_situation_healthCvr"], #health_healthCover_rebate_checkbox').on('change', function updateRebateTiers() {
+        $(':input[name="health_situation_healthCvr"], #health_healthCover_rebateCheckbox, #health_healthCover_dependants').on('change', function updateRebateTiers() {
             meerkat.modules.healthChoices.setCover($elements.situationSelect.filter(':checked').val());
             meerkat.modules.healthTiers.setTiers();
         });

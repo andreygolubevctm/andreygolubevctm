@@ -5,8 +5,9 @@
     function init() {
         $(document).ready(function () {
             var settings = {
-                disableOnXs: true,
+                disableOnXs: false,
                 navbarSelector: '.results-control-container',
+                whilePaginatingOffset: -1,
                 getStartOffset: function () {
                     return $('.resultsOverflow').offset().top;
                 }
