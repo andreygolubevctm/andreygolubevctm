@@ -16,9 +16,14 @@
 <c:set var="transactionId"><x:out select="$confirmationDataXML/data/transID" /></c:set>
 <c:set var="status"><x:out select="$confirmationDataXML/data/status" /></c:set>
 <c:set var="redemptionId"><x:out select="$confirmationDataXML/data/redemptionId" /></c:set>
-<c:if test="${not empty redemptionId}">
-	<c:set var="rewardOrder" value="${rewardService.getOrder(redemptionId, pageContext.request)}" />
-</c:if>
+<c:choose>
+	<c:when test="${not empty redemptionId}">
+		<c:set var="rewardOrder" value="${rewardService.getOrderAsJson(redemptionId, pageContext.request)}" />
+	</c:when>
+	<c:otherwise>
+		<c:set var="rewardOrder" value="{}" />
+	</c:otherwise>
+</c:choose>
 
 <%-- HTML PLACEHOLDER --%>
 <layout_v1:slide formId="confirmationForm" className="displayBlock">
@@ -133,6 +138,7 @@
 	<script>
 		var resultLabels = ${jsonString};
 		var result = ${go:XMLtoJSON(confirmationData)};
+		var redemptionOrder = ${rewardOrder};
 
 		<%--
 			add product info contained in session on the page if:

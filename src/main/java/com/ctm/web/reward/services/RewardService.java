@@ -2,6 +2,7 @@ package com.ctm.web.reward.services;
 
 import com.ctm.httpclient.Client;
 import com.ctm.httpclient.RestSettings;
+import com.ctm.interfaces.common.util.SerializationMappers;
 import com.ctm.reward.model.*;
 import com.ctm.web.core.exceptions.SessionException;
 import com.ctm.web.core.model.session.AuthenticatedData;
@@ -13,6 +14,7 @@ import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.transaction.dao.TransactionDetailsDao;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.reward.utils.RewardRequestParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +48,9 @@ public class RewardService {
 
 	@Value("${ctm.reward.url}")
 	private String rewardServiceUrl;
+
+	@Autowired
+	private SerializationMappers objectMapper;
 
 	private TransactionDetailsDao transactionDetailsDao;
 	private RewardCampaignService rewardCampaignService;
@@ -203,6 +208,16 @@ public class RewardService {
 			OrderFormResponse form = new OrderFormResponse();
 			form.setStatus(false);
 			return form;
+		}
+	}
+
+	public String getOrderAsJson(final String redemptionId, final HttpServletRequest request) {
+		OrderFormResponse order = getOrder(redemptionId, request);
+		try {
+			return objectMapper.getJsonMapper().writeValueAsString(order);
+		} catch (JsonProcessingException e) {
+			LOGGER.error("Reward: Failed to serialise. redemptionId={}", redemptionId);
+			return "{}";
 		}
 	}
 
