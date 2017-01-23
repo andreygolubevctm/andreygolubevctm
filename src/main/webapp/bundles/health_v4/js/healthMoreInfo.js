@@ -98,6 +98,32 @@
                 htmlContent: product.whatHappensNext
             });
         });
+
+        $(document.body).off('click.emailBrochures').on('click.emailBrochures', '.getPrintableBrochures', function(){
+            var product = Results.getSelectedProduct(),
+                brochureTemplate = meerkat.modules.templateCache.getTemplate($('#emailBrochuresTemplate'));
+
+            // init the validation
+            $('#emailBrochuresForm').validate();
+
+            var htmlContent = brochureTemplate(product),
+                modalOptions = {
+                    htmlContent: htmlContent,
+                    hashId: 'email-brochures',
+                    className: 'email-brochures-modal',
+                    closeOnHashChange: true,
+                    openOnHashChange: false,
+                    onOpen: function (modalId) {
+                        if (meerkat.site.emailBrochures.enabled) {
+                            // initialise send brochure email button functionality
+                            initialiseBrochureEmailForm(Results.getSelectedProduct(),  $('#'+modalId), $('#emailBrochuresForm'));
+                            populateBrochureEmail();
+                        }
+                    }
+                };
+
+            var callbackModalId = meerkat.modules.dialogs.show(modalOptions);
+        });
     }
 
     function _setTabs() {
@@ -197,11 +223,7 @@
     }
 
     function onBeforeShowTemplate(jsonResult, moreInfoContainer) {
-        if (meerkat.site.emailBrochures.enabled) {
-            // initialise send brochure email button functionality
-            initialiseBrochureEmailForm(Results.getSelectedProduct(), moreInfoContainer, $('#resultsForm'));
-            populateBrochureEmail();
-        }
+
     }
 
     function onAfterShowTemplate() {
@@ -224,13 +246,8 @@
         var $dialog = $('#'+dialogId);
         $dialog.find('.modal-body').children().wrap("<form class='healthMoreInfoModel'></form>");
 
-        if (meerkat.site.emailBrochures.enabled) {
-            initialiseBrochureEmailForm(Results.getSelectedProduct(), $dialog, $dialog.find('.healthMoreInfoModel'));
-        }
-
         // Move dual-pricing panel
         $('.more-info-content .moreInfoRightColumn > .dualPricing').insertAfter($('.more-info-content .moreInfoMainDetails'));
-        populateBrochureEmailForModel();
 
         fixBootstrapModalPaddingIssue(dialogId);
     }
@@ -566,17 +583,7 @@
             $('input[name=emailAddress].sendBrochureEmailAddress').val(emailAddress).trigger('blur');
         }
     }
-    function populateBrochureEmailForModel() {
-        var emailContact = $('#health_contactDetails_email').val();
-        var emailApplication = $('#health_application_email').val();
-        var emailMoreInfo = $('#emailAddress');
-        if(emailApplication === "") {
-            emailMoreInfo.val(emailContact).trigger('blur');
-        }else{
 
-            emailMoreInfo.val(emailApplication).trigger('blur');
-        }
-    }
     function updateTopPositionVariable() {
         topPosition = $('.resultsHeadersBg').height();
     }
