@@ -1,6 +1,12 @@
+<%@ tag import="com.ctm.web.reward.services.RewardService" %>
+<%@ tag import="org.springframework.web.servlet.support.RequestContextUtils" %>
 <%@ tag description="Health confirmation loading and parsing"%>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
+<%
+	RewardService rewardService = (RewardService) RequestContextUtils.findWebApplicationContext(request).getBean("rewardService");
+	request.setAttribute("rewardService", rewardService);
+%>
 
 <%-- Load confirmation information (either a full confirmation or a pending one) --%>
 <c:set var="confirmationData"><health_v1:load_confirmation /></c:set>
@@ -9,6 +15,10 @@
 <x:parse var="confirmationDataXML" xml="${confirmationData}" />
 <c:set var="transactionId"><x:out select="$confirmationDataXML/data/transID" /></c:set>
 <c:set var="status"><x:out select="$confirmationDataXML/data/status" /></c:set>
+<c:set var="redemptionId"><x:out select="$confirmationDataXML/data/redemptionId" /></c:set>
+<c:if test="${not empty redemptionId}">
+	<c:set var="rewardOrder" value="${rewardService.getOrder(redemptionId, pageContext.request)}" />
+</c:if>
 
 <%-- HTML PLACEHOLDER --%>
 <layout_v1:slide formId="confirmationForm" className="displayBlock">

@@ -194,8 +194,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
                     if (campaign == null) {
                         rewardService.setOrderSaleStatusToSale(redemptionId);
                     } else {
-                        // TODO how to get if user is in group CTM-CC-REWARDS
-                        OrderFormResponse order = rewardService.getOrder(redemptionId, authenticatedData.map(AuthenticatedData::getUid), false);
+                        final OrderFormResponse order = rewardService.getOrder(redemptionId, request);
                         if (!order.getStatus()) {
                             LOGGER.error("Failed to get order. message={}", order.getMessage());
                         } else if (order.getOrderHeader().getSaleStatus() != SaleStatus.Sale) {

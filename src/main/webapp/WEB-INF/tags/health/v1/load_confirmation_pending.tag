@@ -120,6 +120,9 @@
 	<c:otherwise>
 		<c:forEach var="row" items="${result.rows}" varStatus="status">
 			<c:choose>
+				<c:when test="${row.xpath == 'current/redemptionId'}">
+					<c:set var="redemptionId" value="${row.textValue}" />
+				</c:when>
 				<c:when test="${row.xpath == 'health/application/provider'}">
 					<c:set var="provider" value="${row.textValue}" />
 				</c:when>
@@ -234,6 +237,7 @@
 				<transID><c:out value="${PendingTranID}" /></transID>
 				<whatsNext></whatsNext>
 				<about></about>
+				<redemptionId><c:out value="${redemptionId}" /></redemptionId>
 			</data>
 		</c:set>
 
