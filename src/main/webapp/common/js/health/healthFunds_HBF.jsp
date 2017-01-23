@@ -15,6 +15,7 @@ var healthFunds_HBF = {
     $paymentFrequency : $('#health_payment_details_frequency'),
     $paymentStartDate: $("#health_payment_details_start"),
 	$claimsAccountOptin: $('#health_payment_bank_claims'),
+    hasPartner: false,
     set: function(){
         healthFunds_HBF.productType = meerkat.modules.healthResults.getSelectedProduct().info.ProductType;
         if (healthFunds_HBF.productType === 'GeneralHealth' || healthFunds_HBF.productType === 'Combined') {
@@ -170,7 +171,11 @@ var healthFunds_HBF = {
         healthFunds_HBF.$primaryAuthority = healthFunds_HBF.$primaryAuthorityInput.parents('.health_previous_fund_authority');
         healthFunds_HBF.$partnerAuthority = healthFunds_HBF.$partnerAuthorityInput.parents('.health_previous_fund_authority');
         healthFunds_HBF.originalPartnerAuthorityLabelHtml = healthFunds_HBF.$partnerAuthority.find('label').html();
-        if (meerkat.modules.health.hasPartner() === true) {
+
+        healthFunds_HBF.hasPartner = (_.isFunction(meerkat.modules.health.hasPartner) && meerkat.modules.health.hasPartner()) || (_.isFunction(meerkat.modules.healthChoices.hasPartner) && meerkat.modules.healthChoices.hasPartner());
+
+
+        if (healthFunds_HBF.hasPartner === true) {
             healthFunds_HBF.$primaryAuthority.addClass('hidden');
             healthFunds_HBF.$partnerAuthority.find('label').text('We authorise HBF to contact our previous fund(s) to obtain a clearance certificate');
         } else {
@@ -178,7 +183,7 @@ var healthFunds_HBF = {
             healthFunds_HBF.$partnerAuthority.find('label').text(healthFunds_HBF.originalPartnerAuthorityLabelHtml);
         }
         healthFunds_HBF.$primaryAuthorityInput.prop('required',true).attr('data-msg-required','Your authorisation is required');
-        if (meerkat.modules.health.hasPartner() === true) {
+        if (healthFunds_HBF.hasPartner === true) {
             healthFunds_HBF.$partnerAuthorityInput.prop('required',true).attr('data-msg-required','Your authorisation is required');
         }
 
@@ -274,7 +279,7 @@ var healthFunds_HBF = {
         meerkat.modules.healthPaymentDay.paymentDaysRender( $('#health_payment_credit_paymentDay'), false);
 
         healthFunds_HBF.$primaryAuthorityInput.prop('required',null).attr('data-msg-required',null);
-        if (meerkat.modules.health.hasPartner() === true) {
+        if (healthFunds_HBF.hasPartner === true) {
             healthFunds_HBF.$partnerAuthorityInput.prop('required',null).attr('data-msg-required',null);
         }
 

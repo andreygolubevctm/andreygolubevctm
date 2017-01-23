@@ -347,9 +347,8 @@
             // Refresh the dependants on the situation step. Only reset it to a smaller number if
             $depCount.val(depCount).trigger('change');
             // Refresh rebate tiers on apply step.
-            var $situationIncomeTierWrapper = $('#health_healthCover_tier');
-            $applyPageIncomeTierMenu.find('select').html($situationIncomeTierWrapper.find('select').html());
-            $('#health_application_dependants_incomeMessage').text($situationIncomeTierWrapper.find('span').text());
+            $applyPageIncomeTierMenu.find('select').html($('#health_healthCover_income').html());
+            $('#health_application_dependants_incomeMessage').text('this includes an adjustment for your dependants');
 
             // Hide if the dependant count is the same.
             if(depCount == originalDepCount) {
@@ -539,7 +538,8 @@
         getMaxAge: getMaxAge,
         setMaxAge: setMaxAge,
         updateDependantConfiguration: updateDependantConfiguration,
-        getEducationalInstitutionsOptions: getEducationalInstitutionsOptions
+        getEducationalInstitutionsOptions: getEducationalInstitutionsOptions,
+        situationEnablesDependants: situationEnablesDependants
     });
 
 })(jQuery);

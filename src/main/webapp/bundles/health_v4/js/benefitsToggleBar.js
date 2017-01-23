@@ -62,7 +62,7 @@
             _beforePanelAnimationStart('extras');
             $elements.benefitsOverflow.animate({ 'left': ($elements.hospitalContainer.width() * -1) }, 500).promise().then(function onExtrasAnimateComplete() {
                 // reset to left position
-                $elements.toggleBar.css('left', -10).fadeIn();
+                $elements.toggleBar.addClass('extrasToggled').fadeIn();
                 if (settings[currentStep].isModal === false) {
                     _setTabLabelCount($elements.hospitalTab, meerkat.modules.benefitsModel.getHospitalCount());
                     _onPanelAnimationComplete('hospital');
@@ -73,7 +73,7 @@
         $elements.toggleBar.find('.hospital').off('click.hospitalBar').on('click.hospitalBar', function displayHospitalBenefits() {
             _beforePanelAnimationStart('hospital');
             $elements.benefitsOverflow.animate({ 'left': 0 }, 500).promise().then(function onHospitalAnimateComplete() {
-                $elements.toggleBar.removeAttr('style').fadeIn();
+                $elements.toggleBar.removeClass('extrasToggled').fadeIn();
                 if (settings[currentStep].isModal === false) {
                     _setTabLabelCount($elements.extrasTab, meerkat.modules.benefitsModel.getExtrasCount());
                     _onPanelAnimationComplete('extras');
@@ -88,7 +88,7 @@
 
     function registerScroll() {
         deRegisterScroll();
-        $(window).on("scroll.benefitsScroll", _updateToggleBarTabPosition());
+        $(window).on("scroll.benefitsScroll", _updateToggleBarTabPosition);
     }
 
     function deRegisterScroll() {
@@ -145,7 +145,6 @@
     // ---
     // Note this code only affects togglebar instances that are not used within a modal
     function _updateToggleBarTabPosition() {
-
         if (!$elements.progressBar.length) return;
 
         var currentBenefit = settings[currentStep].currentBenefit,

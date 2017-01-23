@@ -375,7 +375,7 @@
 				}
 				if(meerkat.site.isCallCentreUser) {
 					// For Simples we need to only unload healthFund specific changes
-					healthFunds.unload();
+                    meerkat.modules.healthFunds.unload();
 				} else {
 					// Reset selected product. (should not be inside a forward or backward condition because users can skip steps backwards)
 					meerkat.modules.healthResults.resetSelectedProduct();

@@ -15,7 +15,7 @@
 	<div class="col-xs-8 quickSelect">
 		<c:forTokens items="${options}" delims="|" var="qs">
 			<c:set var="parts" value="${fn:split(qs, ':')}" />
-			<div class="col-xs-${colWidth}"><a href="javascript:;" data-select-type="${parts[1]}">${parts[0]}</a></div>
+			<div class="col-xs-${colWidth} col-sm-12 col-md-${colWidth}"><a href="javascript:;" data-select-type="${parts[1]}">${parts[0]}</a></div>
 		</c:forTokens>
 	</div>
 	<div class="col-xs-12 clearSelection hidden"><a href="javascript:;">Clear selection</a></div>

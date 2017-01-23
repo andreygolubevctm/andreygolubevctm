@@ -260,13 +260,19 @@
         _setTabs();
 
         var toggleBarInitSettings = {
-            container: '.moreInfoVisible .modal-dialog',
-            currentStep: 'moreinfo',
-            isModal: true
-        };
+                container: '.moreInfoVisible .modal-dialog',
+                currentStep: 'moreinfo',
+                isModal: true
+            },
+            product = Results.getSelectedProduct(),
+            initToggleBar = (typeof product.hospitalCover !== 'undefined' && typeof product.extrasCover !== 'undefined');
 
-        meerkat.modules.benefitsToggleBar.initToggleBar(toggleBarInitSettings);
-        _trackScroll();
+        if (initToggleBar) {
+            meerkat.modules.benefitsToggleBar.initToggleBar(toggleBarInitSettings);
+            _trackScroll();
+        }
+
+        $(toggleBarInitSettings.container).find('.toggleBar').toggleClass('hidden', initToggleBar === false);
     }
 
     function _trackScroll(){

@@ -18,67 +18,65 @@
 
     function initJourneyEngine() {
 
-        $(document).ready(function () {
-            if (meerkat.site.pageAction === "confirmation") {
+        if (meerkat.site.pageAction === "confirmation") {
 
-                meerkat.modules.journeyEngine.configure(null);
+            meerkat.modules.journeyEngine.configure(null);
 
-            } else {
+        } else {
 
-                // Initialise the journey engine steps and bar
-                initProgressBar(false);
+            // Initialise the journey engine steps and bar
+            initProgressBar(false);
 
-                // Initialise the journey engine
-                var startStepId = null;
-                if (meerkat.site.isFromBrochureSite === true) {
-                    startStepId = steps.startStep.navigationId;
-                }
-                // Use the stage user was on when saving their quote
-                else if (meerkat.site.journeyStage.length > 0 && _.indexOf(['amend', 'latest'], meerkat.site.pageAction) >= 0) {
-                    // Do not allow the user to go past the results page on amend.
-                    if (meerkat.site.journeyStage === 'apply' || meerkat.site.journeyStage === 'payment') {
-                        startStepId = 'results';
-                    } else {
-                        startStepId = meerkat.site.journeyStage;
-                    }
-                }
-
-                var journeyEngineConfigure = _.bind(meerkat.modules.journeyEngine.configure, this, {
-                    startStepId: startStepId,
-                    steps: _.toArray(steps)
-                });
-
-                if (meerkat.site.isNewQuote === false) {
-                    _.delay(journeyEngineConfigure, 500);
+            // Initialise the journey engine
+            var startStepId = null;
+            if (meerkat.site.isFromBrochureSite === true) {
+                startStepId = steps.startStep.navigationId;
+            }
+            // Use the stage user was on when saving their quote
+            else if (meerkat.site.journeyStage.length > 0 && _.indexOf(['amend', 'latest'], meerkat.site.pageAction) >= 0) {
+                // Do not allow the user to go past the results page on amend.
+                if (meerkat.site.journeyStage === 'apply' || meerkat.site.journeyStage === 'payment') {
+                    startStepId = 'results';
                 } else {
-                    journeyEngineConfigure();
+                    startStepId = meerkat.site.journeyStage;
                 }
+            }
 
-                // Call initial supertag call
-                var transaction_id = meerkat.modules.transactionId.get();
+            var journeyEngineConfigure = _.bind(meerkat.modules.journeyEngine.configure, this, {
+                startStepId: startStepId,
+                steps: _.toArray(steps)
+            });
 
+            if (meerkat.site.isNewQuote === false) {
+                _.delay(journeyEngineConfigure, 500);
+            } else {
+                journeyEngineConfigure();
+            }
+
+            // Call initial supertag call
+            var transaction_id = meerkat.modules.transactionId.get();
+
+            meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+                method: 'trackQuoteEvent',
+                object: {
+                    action: 'Start',
+                    transactionID: parseInt(transaction_id, 10),
+                    simplesUser: meerkat.site.isCallCentreUser
+                }
+            });
+
+            if (meerkat.site.isNewQuote === false) {
                 meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
                     method: 'trackQuoteEvent',
                     object: {
-                        action: 'Start',
-                        transactionID: parseInt(transaction_id, 10),
+                        action: 'Retrieve',
+                        transactionID: transaction_id,
                         simplesUser: meerkat.site.isCallCentreUser
                     }
                 });
-
-                if (meerkat.site.isNewQuote === false) {
-                    meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-                        method: 'trackQuoteEvent',
-                        object: {
-                            action: 'Retrieve',
-                            transactionID: transaction_id,
-                            simplesUser: meerkat.site.isCallCentreUser
-                        }
-                    });
-                }
-
             }
-        });
+
+        }
     }
 
     function eventSubscriptions() {
@@ -334,7 +332,7 @@
             onBeforeEnter: function enterBenefitsStep(event) {
                 if (event.isForward) {
 
-                    if(meerkat.site.isCallCentreUser) meerkat.modules.simplesBindings.updateSimplesMedicareCoverQuestionPosition();
+                    if (meerkat.site.isCallCentreUser) meerkat.modules.simplesBindings.updateSimplesMedicareCoverQuestionPosition();
 
                     // Delay 1 sec to make sure we have the data bucket saved in to DB, then filter coupon
                     _.delay(function () {
@@ -393,22 +391,22 @@
                 meerkat.modules.healthPriceComponent.initHealthPriceComponent();
                 meerkat.modules.healthDualPricing.initHealthDualPricing();
 
-			},
-			onBeforeEnter:function enterResultsStep(event){
-				meerkat.modules.sessionCamHelper.stop();
-				meerkat.modules.healthDependants.resetConfig();
-				if(event.isForward && meerkat.site.isCallCentreUser) {
-					$('#journeyEngineSlidesContainer .journeyEngineSlide').eq(meerkat.modules.journeyEngine.getCurrentStepIndex()).find('.simples-dialogue').show();
-				}
-				if(meerkat.site.isCallCentreUser) {
-					// For Simples we need to only unload healthFund specific changes
-					healthFunds.unload();
-				} else {
-					// Reset selected product. (should not be inside a forward or backward condition because users can skip steps backwards)
-					meerkat.modules.healthResults.resetSelectedProduct();
-				}
-			},
-			onAfterEnter: function(event){
+            },
+            onBeforeEnter: function enterResultsStep(event) {
+                meerkat.modules.sessionCamHelper.stop();
+                meerkat.modules.healthDependants.resetConfig();
+                if (event.isForward && meerkat.site.isCallCentreUser) {
+                    $('#journeyEngineSlidesContainer .journeyEngineSlide').eq(meerkat.modules.journeyEngine.getCurrentStepIndex()).find('.simples-dialogue').show();
+                }
+                if (meerkat.site.isCallCentreUser) {
+                    // For Simples we need to only unload healthFund specific changes
+                    meerkat.modules.healthFunds.unload();
+                } else {
+                    // Reset selected product. (should not be inside a forward or backward condition because users can skip steps backwards)
+                    meerkat.modules.healthResults.resetSelectedProduct();
+                }
+            },
+            onAfterEnter: function (event) {
 
                 if (event.isForward === true) {
                     meerkat.modules.healthResults.getBeforeResultsPage();
