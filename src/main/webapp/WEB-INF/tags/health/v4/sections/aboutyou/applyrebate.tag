@@ -30,10 +30,10 @@
 			<div class="selectedRebate" id="selectedRebateText"></div>
 
 			<c:set var="fieldXpath" value="${xpath}/dependants" />
-			<field_v2:count_select xpath="${fieldXpath}" max="12" min="1" placeHolder="Please choose the number of dependents" title="number of dependants" required="true" hideElement="${true}" className="${name}_health_cover_dependants dependants" defaultValue="2" />
+			<field_v2:count_select xpath="${fieldXpath}" max="12" min="1" placeHolder="Please choose the number of dependents" title="number of dependants" required="true" hideElement="${true}" className="${name}_health_cover_dependants dependants" />
 
 			<c:set var="fieldXpath" value="${xpath}/income" />
-			<field_v2:array_select xpath="${fieldXpath}" title="your household income" required="true" items="=Please choose...||0=Tier 0||1=Tier 1||2=Tier 2||3=Tier 3" delims="||" hideElement="${true}" className="income health_cover_details_income" extraDataAttributes="${analyticsAttr} data-attach=true" />
+			<field_v2:array_select xpath="${fieldXpath}" title="your household income" required="true" items="=Please choose your household income||0=Tier 0||1=Tier 1||2=Tier 2||3=Tier 3" delims="||" hideElement="${true}" className="income health_cover_details_income" extraDataAttributes="${analyticsAttr} data-attach=true" />
 			<c:set var="income_label_xpath" value="${xpath}/incomelabel" />
 			<div class="fieldrow_legend" id="health_healthCover_tier_row_legend"></div>
 			<input type="hidden" name="${go:nameFromXpath(xpath)}_incomelabel" id="${go:nameFromXpath(xpath)}_incomelabel" value="${data[income_label_xpath]}" />
