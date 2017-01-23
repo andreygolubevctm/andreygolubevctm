@@ -187,27 +187,19 @@
         var specialOffer = getSpecialOffer(product);
         return [
             {
-                id: 'discount',
-                title: "Discount",
-                className: "icon-percentage-tag",
-                text: product.promo.discountText,
-                active: !_.isEmpty(product.promo) && !_.isEmpty(product.promo.discountText),
-                productId: product.productId
-            },
-            {
                 id: 'restrictedFund',
                 title: "This is a Restricted Fund",
                 className: "icon-no-symbol",
-                text: "<p>Restricted funds provide private health insurance cover to members of a specific industry or group.</p> <p>In some cases, family members and extended family are also eligible.</p>",
+                text: "Restricted Fund",
                 active: product.info.restrictedFund === 'Y',
                 productId: product.productId
             },
             {
-                id: 'customisedCover',
-                title: Object.byString(product, 'custom.info.content.results.header.label'),
-                className: 'icon-customise',
-                text: Object.byString(product, 'custom.info.content.results.header.text'),
-                active: !!Object.byString(product, 'custom.info.content.results.header'),
+                id: 'marketingOffer',
+                title: "Marketing",
+                className: "icon-life",
+                text: "Get health cover and claim your meerkat toy",
+                active: false,
                 productId: product.productId
             },
             {
@@ -219,49 +211,69 @@
                 productId: product.productId
             },
             {
-                id: 'marketingOffer',
-                title: "Marketing",
-                className: "icon-life",
-                text: "Get health cover and claim your meerkat toy",
-                active: false,
+                id: 'discount',
+                title: "Discount",
+                className: "icon-percentage-tag",
+                text: product.promo.discountText,
+                active: !_.isEmpty(product.promo) && !_.isEmpty(product.promo.discountText),
+                productId: product.productId
+            },
+            {
+                id: 'customisedCover',
+                title: Object.byString(product, 'custom.info.content.results.header.label'),
+                className: 'icon-customise',
+                text: Object.byString(product, 'custom.info.content.results.header.text'),
+                active: !!Object.byString(product, 'custom.info.content.results.header'),
                 productId: product.productId
             }
         ];
     }
 
     /**
+
+     * @param {Object} product
+     * @param {Number} number of features to render.
+     */
+    /**
+     * RELEASED LOGIC:
+     * Due to the design not catering for long special offers etc, we needed to change this completely.
+     * Scenario 1: you just have 2 features
+     * Scenario 2: you just have 1 feature.
+     * ORIGINAL LOGIC:
      * The health results requires a more dynamic display of the content in this features bar.
      * Scenario 1: 4 features, so 4 icons with popovers
      * Scenario 2: 3 features, so 3 icons with popovers
      * Scenario 3: 2 features, so 2 icons with inline text
      * Scenario 4: 1 feature, so 1 icon with inline text.
-     * @param {Object} product
+     * @param product
+     * @param specialFeatureStructure
+     * @param numberToRender
+     * @returns {string}
      */
-    function getSpecialFeaturesContent(product, specialFeatureStructure) {
+    function getSpecialFeaturesContent(product, specialFeatureStructure, numberToRender) {
 
         var featureCount = getAvailableFeatureCount(specialFeatureStructure);
 
-        var output = '';
-        if (featureCount >= 3) {
-            output += _templateIterator(specialFeatureStructure, '#results-product-special-features-popover-template');
-        } else {
-            output += _templateIterator(specialFeatureStructure, '#results-product-special-features-inline-template');
+        var templateToUse = '#results-product-special-features-inline-template';
+        if (featureCount >= 3 && numberToRender >= 3) {
+            templateToUse = '#results-product-special-features-popover-template';
         }
-        return output;
+        return _templateIterator(specialFeatureStructure, templateToUse, numberToRender).slice(0,2).join('');
     }
 
     /**
-     * Helper function
+     * Helper method
      * @param specialFeatureStructure
-     * @param template
-     * @returns {string}
+     * @param {string} template
+     * @param {number} numberToRender
+     * @returns {Array}
      * @private
      */
-    function _templateIterator(specialFeatureStructure, template) {
+    function _templateIterator(specialFeatureStructure, template, numberToRender) {
         var htmlTemplate = meerkat.modules.templateCache.getTemplate($(template));
-        for (var i = 0, output = ''; i < specialFeatureStructure.length; i++) {
+        for (var i = 0, output = []; i < specialFeatureStructure.length; i++) {
             if (specialFeatureStructure[i].active === true) {
-                output += htmlTemplate(specialFeatureStructure[i]);
+                output.push(htmlTemplate(specialFeatureStructure[i]));
             }
         }
         return output;
