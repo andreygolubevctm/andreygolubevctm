@@ -6,9 +6,6 @@
 
     @media (@md-only) {
       height:360px;
-      -webkit-background-size: contain;
-      -moz-background-size: contain;
-      -o-background-size: contain;
       background-size: contain;
     }
 
@@ -66,9 +63,6 @@ body {
   background-image: url("../graphics/reward/toy/crest.svg");
   background-repeat: no-repeat;
   background-position: center top;
-  -webkit-background-size: 18px;
-  -moz-background-size: 18px;
-  -o-background-size: 18px;
   background-size: 18px;
 
   &:before { content: "\00a0 \00a0"; }
@@ -78,9 +72,6 @@ body {
   display: flex;
   .icon-zeus{
     width: 60px;
-    -webkit-background-size: contain;
-    -moz-background-size: contain;
-    -o-background-size: contain;
     background-size: contain;
     margin-right: 15px;
   }
@@ -101,28 +92,40 @@ body {
   .rewardType {
     .btn-tile {
       label {
-        width: 185px;
-        height: 185px;
+        width: 182px;
+        height: 182px;
         border-color: @theme-tertiary;
         border-width: 2px;
 
+        @media (@xs-only) {
+          width: 140px;
+          height: 140px;
+        }
+
         &:before {
+          content:"";
+          background-size: contain;
+          background-repeat: no-repeat;
+          background-position: center top;
           display: block;
-          width: 168px;
-          height: 168px;
+          height: 100%;
         }
 
         &.active {
           border-color: @theme-secondary;
         }
 
-        &.aleks:before { content: url("../graphics/reward/toy/aleks-form.jpg"); }
-        &.sergei:before { content: url("../graphics/reward/toy/sergei-form.jpg"); }
+        &.aleks:before { background-image: url("../graphics/reward/toy/aleks-form.jpg"); }
+        &.sergei:before { background-image: url("../graphics/reward/toy/sergei-form.jpg"); }
       }
     }
   }
 
   .text-right .btn {
     display: inline-block;
+  }
+
+  .divider{
+    width: 80%;
   }
 }
