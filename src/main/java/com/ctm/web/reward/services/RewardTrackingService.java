@@ -52,6 +52,12 @@ public class RewardTrackingService {
 			final EmailTokenService emailTokenService = EmailTokenServiceFactory.getEmailTokenServiceInstance(SettingsService.getPageSettings(0, "GENERIC"));
 			final Map<String, String> params = emailTokenService.decryptToken(trackingToken);
 			final String unencrypedOrderLineId = params.get("transactionId");
+			final String tokenAction = params.get("action");
+
+			if (!"TOY_TRACKER".equals(tokenAction)) {
+				LOGGER.error("Reward: Error getting tracking status. orderLineId={}, tokenAction={}", unencrypedOrderLineId, tokenAction);
+				return null;
+			}
 
 			GetTrackingStatus request = new GetTrackingStatus();
 			request.setUnEncryptedOrderLineId(Integer.parseInt(unencrypedOrderLineId));
@@ -92,6 +98,12 @@ public class RewardTrackingService {
 			final EmailTokenService emailTokenService = EmailTokenServiceFactory.getEmailTokenServiceInstance(SettingsService.getPageSettings(0, "GENERIC"));
 			final Map<String, String> params = emailTokenService.decryptToken(trackingToken);
 			final String unencrypedOrderLineId = params.get("transactionId");
+			final String tokenAction = params.get("action");
+
+			if (!"TOY_TRACKER_UNSUBSCRIBE".equals(tokenAction)) {
+				LOGGER.error("Reward: Error updating tracking optin. orderLineId={}, tokenAction={}", unencrypedOrderLineId, tokenAction);
+				return null;
+			}
 
 			UpdateTrackingStatus request = new UpdateTrackingStatus();
 			request.setUnEncryptedOrderLineId(Integer.parseInt(unencrypedOrderLineId));
