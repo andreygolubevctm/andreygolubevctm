@@ -11,10 +11,10 @@ import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SessionDataServiceBean;
-import com.ctm.web.core.transaction.dao.TransactionDetailsDao;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.reward.utils.RewardRequestParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,12 +37,12 @@ public class RewardService {
 
 	public static final String XPATH_CURRENT_ENCRYPTED_ORDER_LINE_ID = "current/encryptedOrderLineId";
 	public static final int XPATH_SEQUENCE_NO_ENCRYPTED_ORDER_LINE_ID = -99;
-	public static final String CURRENT_ROOT_ID = "current/rootId";
 
 	public static final String REWARD_ENDPOINT_GET_ORDER = "/orders/get";
 	public static final String REWARD_ENDPOINT_CREATE_ORDER = "/orders/create";
 	public static final String REWARD_ENDPOINT_UPDATE_SALE_STATUS = "/orderlines/updateSaleStatus";
 	public static final String REWARD_ENDPOINT_UPDATE_ORDER_LINE = "/orderlines/update";
+	public static final String REWARD_ENDPOINT_FIND_ORDER_LINES = "/orderlines/find";
 
 	public static final int SERVICE_TIMEOUT = 10000;
 
@@ -52,26 +52,29 @@ public class RewardService {
 	@Autowired
 	private SerializationMappers objectMapper;
 
-	private TransactionDetailsDao transactionDetailsDao;
 	private RewardCampaignService rewardCampaignService;
 	private ApplicationService applicationService;
 	private SessionDataServiceBean sessionDataServiceBean;
+	private Client<OrderForm, UpdateResponse> rewardUpdateOrderClient;
 	private Client<UpdateSaleStatus, UpdateSaleStatusResponse> rewardUpdateSalesStatusClient;
 	private Client<OrderForm, OrderFormResponse> rewardCreateOrderClient;
 	private Client<GetOrder, OrderFormResponse> rewardGetOrderClient;
+	private Client<FindRequest, FindResponse> rewardFindOrdersClient;
 
 	@Autowired
-	public RewardService(TransactionDetailsDao transactionDetailsDao,
+	public RewardService(Client<OrderForm, UpdateResponse> rewardUpdateOrderClient,
 						 Client<UpdateSaleStatus, UpdateSaleStatusResponse> rewardUpdateSalesStatusClient,
 						 Client<OrderForm, OrderFormResponse> rewardCreateOrderClient,
 						 Client<GetOrder, OrderFormResponse> rewardGetOrderClient,
+						 Client<FindRequest, FindResponse> rewardFindOrdersClient,
 						 RewardCampaignService rewardCampaignService,
 						 ApplicationService applicationService,
 						 SessionDataServiceBean sessionDataServiceBean) {
-		this.transactionDetailsDao = transactionDetailsDao;
+		this.rewardUpdateOrderClient = rewardUpdateOrderClient;
 		this.rewardUpdateSalesStatusClient = rewardUpdateSalesStatusClient;
 		this.rewardCreateOrderClient = rewardCreateOrderClient;
 		this.rewardGetOrderClient = rewardGetOrderClient;
+		this.rewardFindOrdersClient = rewardFindOrdersClient;
 		this.rewardCampaignService = rewardCampaignService;
 		this.applicationService = applicationService;
 		this.sessionDataServiceBean = sessionDataServiceBean;
@@ -214,6 +217,7 @@ public class RewardService {
 	public String getOrderAsJson(final String redemptionId, final HttpServletRequest request) {
 		OrderFormResponse order = getOrder(redemptionId, request);
 		try {
+			objectMapper.getJsonMapper().configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 			return objectMapper.getJsonMapper().writeValueAsString(order);
 		} catch (JsonProcessingException e) {
 			LOGGER.error("Reward: Failed to serialise. redemptionId={}", redemptionId);
@@ -265,6 +269,33 @@ public class RewardService {
 				.first();
 	}
 
+	public FindResponse findOrders(final FindRequest form) {
+		form.setSearchParam(form.getSearchParam().trim());
+		final String url = rewardServiceUrl + REWARD_ENDPOINT_FIND_ORDER_LINES;
+		return rewardFindOrdersClient.post(RestSettings.<FindRequest>builder()
+				.request(form)
+				.response(FindResponse.class)
+				.jsonHeaders()
+				.url(url)
+				.timeout(SERVICE_TIMEOUT)
+				.retryAttempts(1)
+				.build())
+				.observeOn(Schedulers.io())
+				.onErrorResumeNext(throwable -> {
+					LOGGER.error("Reward: Failed to find orders. url={}, searchParam={}", url, form.getSearchParam());
+					FindResponse response = new FindResponse();
+					response.setStatus(false);
+					return Observable.just(response);
+				})
+				.doOnNext(response -> {
+					if (response.getStatus()) {
+						LOGGER.info("Reward: findOrders success. searchParam={}", form.getSearchParam());
+					}
+				})
+				.toBlocking()
+				.first();
+	}
+
 	private OrderFormResponse remoteCreateOrder(final OrderForm form) {
 		final String url = rewardServiceUrl + REWARD_ENDPOINT_CREATE_ORDER;
 		return rewardCreateOrderClient.post(RestSettings.<OrderForm>builder()
@@ -285,64 +316,43 @@ public class RewardService {
 				.first();
 	}
 
-//	private RedemptionForm saveRedemption(final HttpServletRequest request,
-//										  final HealthRequest healthRequest,
-//										  final Optional<AuthenticatedData> authenticatedSessionData,
-//										  final String uri,
-//										  final String touchType) throws DaoException {
-//		final Data dataBucket = getDataBucket(request, healthRequest.getTransactionId());
-//		final Optional<String> encryptedRedemptionId = Optional.ofNullable(dataBucket.getString(XPATH_CURRENT_ENCRYPTED_ORDER_LINE_ID));
-//
-//		final RedemptionForm redemptionFormRequest = RedemptionForm.newBuilder()
-//				.redemption(createRedemption(healthRequest, authenticatedSessionData, touchType, dataBucket))
-//				.encryptedRedemptionId(encryptedRedemptionId.orElse(null))
-//				.build();
-//
-//		final RedemptionForm redemptionFormResponse = saveRedemptionClient.post(redemptionFormRequest, RedemptionForm.class, rewardServiceUrl + uri)
-//				.toBlocking().first();
-//
-//		dataBucket.put(XPATH_CURRENT_ENCRYPTED_ORDER_LINE_ID, redemptionFormResponse.getEncryptedRedemptionId().get());
-//
-//		addRedemptionIdTransactionDetail(healthRequest, redemptionFormResponse);
-//
-//		return redemptionFormResponse;
-//	}
+	public UpdateResponse updateOrder(final OrderForm form) {
+		try {
+			final UpdateResponse response = remoteUpdateOrder(form);
 
-//	private Redemption createRedemption(final HealthRequest healthRequest, final Optional<AuthenticatedData> authenticatedSessionData, final String touchType, final Data dataBucket) {
-//		final Long rootId = Long.parseLong(dataBucket.getString(CURRENT_ROOT_ID));
-//		final Optional<String> encryptedRedemptionId = Optional.ofNullable(dataBucket.getString(XPATH_CURRENT_ENCRYPTED_ORDER_LINE_ID));
-//
-//		final Redemption.Builder redemptionBuilder = Redemption.newBuilder()
-//				//.campaignId(Long.valueOf(request.getParameter("campaignId")))
-//				.campaignId(1L) // HARD CODING campaignId for the time being!!!
-//				.contactEmail(healthRequest.getHealth().getApplication().getEmail())
-//				.createdTimestamp(LocalDateTime.now())
-//				.firstName(healthRequest.getHealth().getApplication().getPrimary().getFirstname())
-//				.lastName(healthRequest.getHealth().getApplication().getPrimary().getSurname())
-//				.phoneNumber(Optional.ofNullable(healthRequest.getHealth().getApplication().getMobile())
-//						.orElse(healthRequest.getHealth().getApplication().getOther()))
-//				.rootId(rootId)
-//				.touchType(touchType)
-//				.shippingAddress(healthRequest.getHealth().getApplication().getAddress().getFullAddressLineOne())
-//				//.signOnReceiptFlag(Boolean.valueOf(request.getParameter("signOnReceiptFlag")))
-//				.signOnReceiptFlag(Boolean.FALSE); // HARD CODING signOnReceiptFlag for the time being!!!
-//
-//		if(encryptedRedemptionId.isPresent()) {
-//			redemptionBuilder.updatedByOperator(authenticatedSessionData.map(AuthenticatedData::getUid).orElse(null));
-//			redemptionBuilder.updatedTimestamp(LocalDateTime.now());
-//		} else {
-//			redemptionBuilder.createdByOperator(authenticatedSessionData.map(AuthenticatedData::getUid).orElse(null));
-//			redemptionBuilder.createdTimestamp(LocalDateTime.now());
-//		}
-//
-//		return redemptionBuilder.build();
-//	}
+			if (response != null && response.getStatus()) {
+				LOGGER.info("Reward: Updated order. orderHeaderId={}, ", form.getOrderHeader().getOrderHeaderId());
+				return response;
+			} else {
+				throw new Exception("Update order failed. status=" + ((response != null) ? response.getStatus() : "")
+						+ ", message={}" + ((response != null) ? response.getMessage() : ""));
+			}
+		}
+		catch (Exception e) {
+			LOGGER.error("Reward: Failed to update order.", e);
+			UpdateResponse response = new UpdateResponse();
+			response.setStatus(false);
+			return response;
+		}
+	}
 
-//	private void addRedemptionIdTransactionDetail(final HealthRequest healthRequest, final RedemptionForm redemptionFormResponse) throws DaoException {
-//		final TransactionDetail transactionDetail = new TransactionDetail();
-//		transactionDetail.setSequenceNo(RewardService.XPATH_SEQUENCE_NO_ENCRYPTED_ORDER_LINE_ID);
-//		transactionDetail.setTextValue(redemptionFormResponse.getEncryptedRedemptionId().get());
-//		transactionDetail.setXPath(XPATH_CURRENT_ENCRYPTED_ORDER_LINE_ID);
-//		transactionDetailsDao.addTransactionDetailsWithDuplicateKeyUpdate(healthRequest.getTransactionId(), transactionDetail);
-//	}
+	private UpdateResponse remoteUpdateOrder(final OrderForm form) {
+		final String url = rewardServiceUrl + REWARD_ENDPOINT_UPDATE_ORDER_LINE;
+		return rewardUpdateOrderClient.post(RestSettings.<OrderForm>builder()
+				.request(form)
+				.response(UpdateResponse.class)
+				.jsonHeaders()
+				.url(url)
+				.timeout(SERVICE_TIMEOUT)
+				.build())
+				.observeOn(Schedulers.io())
+				.onErrorResumeNext(throwable -> {
+					LOGGER.error("Reward: Failed to update order. url={}", url, throwable);
+					UpdateResponse response = new UpdateResponse();
+					response.setStatus(false);
+					return Observable.just(response);
+				})
+				.toBlocking()
+				.first();
+	}
 }
