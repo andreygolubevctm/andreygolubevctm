@@ -20,7 +20,7 @@
 
     function initCRUD(){
         CRUD = new meerkat.modules.crud.newCRUD({
-            baseURL: "spring/rest/reward",
+            baseURL: "spring/rest/reward/order",
             primaryKey: "encryptedOrderLineId",
             models: {
                 datum: function(data) {
@@ -42,7 +42,7 @@
                     meerkat.modules.dialogs.close(that.modalId);
             };
 
-            this.update(data, onSuccess);
+            this.promise("update", data, onSuccess);
         };
 
         meerkat.messaging.subscribe(meerkatEvents.crud.CRUD_MODAL_OPENED, function initRedemptionForm(modalId) {
@@ -63,10 +63,10 @@
         setConfirmationHtml();
 
         switch (rewardOrder.generalStatus) {
-            case 'OK_TO_REDEEM':
+            case 'ALREADY_REDEEMED':
                 renderSuccessMessage();
                 break;
-            case 'ALREADY_REDEEMED':
+            case 'OK_TO_REDEEM':
                 CRUD.openModal();
         }
 

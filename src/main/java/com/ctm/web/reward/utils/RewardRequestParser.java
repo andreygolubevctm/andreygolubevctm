@@ -3,6 +3,7 @@ package com.ctm.web.reward.utils;
 import com.ctm.reward.model.*;
 import com.ctm.web.core.model.session.AuthenticatedData;
 import com.ctm.web.core.web.go.Data;
+import com.ctm.web.health.apply.model.request.contactDetails.PostalMatch;
 import com.ctm.web.health.model.form.Address;
 import com.ctm.web.health.model.form.Application;
 import com.ctm.web.health.model.form.HealthRequest;
@@ -20,6 +21,26 @@ public class RewardRequestParser {
         final Long rootId = Long.parseLong(dataBucket.getString(CURRENT_ROOT_ID));
         final Optional<String> encryptedOrderLineId = Optional.ofNullable(dataBucket.getString(RewardService.XPATH_CURRENT_ENCRYPTED_ORDER_LINE_ID));
 
+        final OrderAddress orderAddress = new OrderAddress();
+        String ADDRESS_PREFIX = PREFIX.concat("Y".equals(dataBucket.getString(PREFIX + "postalMatch")) ? "address/" : "postal/");
+
+        orderAddress.setAddressType(AddressType.P);
+        orderAddress.setDpid(dataBucket.getInteger(ADDRESS_PREFIX + "dpId"));
+        orderAddress.setState(Optional.ofNullable(dataBucket.getString(ADDRESS_PREFIX + "state"))
+                .orElse(dataBucket.getString("health/situation/state")));
+        orderAddress.setPostcode(Optional.ofNullable(dataBucket.getString(ADDRESS_PREFIX + "postCode"))
+                .orElse(dataBucket.getString("health/situation/postCode")));
+        orderAddress.setSuburb(Optional.ofNullable(dataBucket.getString(ADDRESS_PREFIX + "suburbName"))
+                .orElse(dataBucket.getString("health/situation/suburb")));
+        orderAddress.setStreetName(dataBucket.getString(ADDRESS_PREFIX + "streetNum") + " "
+                + Optional.ofNullable(dataBucket.getString(ADDRESS_PREFIX + "streetName"))
+                .orElse(dataBucket.getString(ADDRESS_PREFIX + "nonStdStreet")));
+        orderAddress.setUnitNumber(Optional.ofNullable(dataBucket.getString(ADDRESS_PREFIX + "unitShop"))
+                .orElse(dataBucket.getString(ADDRESS_PREFIX + "unitSel")));
+        orderAddress.setUnitType(dataBucket.getString(ADDRESS_PREFIX + "unitType"));
+        orderAddress.setFullAddress(dataBucket.getString(ADDRESS_PREFIX + "fullAddress"));
+
+
         final OrderLine orderLine = new OrderLine();
         orderLine.setCampaignCode(campaignCode);
         orderLine.setContactEmail(dataBucket.getString(PREFIX + "email"));
@@ -28,6 +49,7 @@ public class RewardRequestParser {
         orderLine.setLastName(dataBucket.getString(PREFIX + "primary/surname"));
         orderLine.setPhoneNumber(Optional.ofNullable(dataBucket.getString(PREFIX + "mobile"))
                 .orElse(dataBucket.getString(PREFIX + "other")));
+        orderLine.getOrderAddresses().add(orderAddress);
 
         authenticatedData.map(AuthenticatedData::getUid).ifPresent(orderLine::setCreatedByOperator);
 
