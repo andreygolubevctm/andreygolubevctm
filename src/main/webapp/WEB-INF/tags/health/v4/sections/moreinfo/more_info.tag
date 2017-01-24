@@ -101,16 +101,16 @@
 									</div>
 
 									{{ if(typeof hospital.inclusions !== 'undefined') { }}
-										<div class="col-xs-8 limitTitleLG">
+										<div class="col-xs-6 limitTitleLG">
 											Co-Payment/ % Hospital Contribution
 										</div>
 										<div class="col-xs-4">
 											{{= hospital.inclusions.copayment == '-' ? 'None' : hospital.inclusions.copayment }}
 										</div>
-										<div class="col-xs-8 limitTitleLG addTopMargin">
+										<div class="col-xs-6 limitTitleLG addTopMargin">
 											Excess Waivers
 										</div>
-										<div class="col-xs-4 addTopMargin">
+										<div class="col-xs-6 addTopMargin">
 											{{= hospital.inclusions.waivers == '-' ? 'None' : hospital.inclusions.waivers }}
 										</div>
 									{{ } }}
@@ -120,16 +120,16 @@
 									</div>
 
 									{{ if(typeof hospital.inclusions !== 'undefined') { }}
-										<div class="col-xs-8 limitTitleLG">
+										<div class="col-xs-6 limitTitleLG">
 											Pre-existing conditions
 										</div>
-										<div class="col-xs-4">
+										<div class="col-xs-6">
 											{{= hospital.inclusions.waitingPeriods.PreExisting }}
 										</div>
-										<div class="col-xs-8 limitTitleLG addTopMargin">
+										<div class="col-xs-6 limitTitleLG addTopMargin">
 											All other conditions
 										</div>
-										<div class="col-xs-4 addTopMargin">
+										<div class="col-xs-6 addTopMargin">
 											{{= hospital.inclusions.waitingPeriods.Other }}
 										</div>
 									{{ } }}
@@ -194,8 +194,8 @@
 												<div class="col-xs-12 benefitTitle">
 													<p>{{= restriction.name }}</p>
 												</div>
-												<div class="col-xs-8 limitTitle">Waiting period</div><div class="col-xs-4 limitValue">{{= restriction.WaitingPeriod }}</div>
-												<div class="col-xs-8 limitTitle">Benefit Limitation Period</div><div class="col-xs-4 limitValue">{{= restriction.benefitLimitationPeriod }}</div>
+												<div class="col-xs-6 limitTitle">Waiting period</div><div class="col-xs-6 limitValue">{{= restriction.WaitingPeriod }}</div>
+												<div class="col-xs-6 limitTitle">Benefit Limitation Period</div><div class="col-xs-6 limitValue">{{= restriction.benefitLimitationPeriod }}</div>
 											</div>
 										</div>
 										{{ }) }}
