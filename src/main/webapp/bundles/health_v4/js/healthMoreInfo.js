@@ -21,7 +21,7 @@
 
 
     function initMoreInfo() {
-        $(document).ready(function($) {
+        $(document).ready(function ($) {
             var options = {
                 container: $bridgingContainer,
                 updateTopPositionVariable: updateTopPositionVariable,
@@ -79,7 +79,7 @@
 
         $(document.body).on("click", ".more-info", function moreInfoLinkClick(event) {
             var product = Results.getSelectedProduct();
-            if(!product) {
+            if (!product) {
                 return;
             }
 
@@ -90,7 +90,7 @@
 
         $(document.body).on("click", ".next-steps", function nextStepsClick(event) {
             var product = Results.getSelectedProduct();
-            if(!product) {
+            if (!product) {
                 return;
             }
 
@@ -99,7 +99,7 @@
             });
         });
 
-        $(document.body).off('click.emailBrochures').on('click.emailBrochures', '.getPrintableBrochures', function(){
+        $(document.body).off('click.emailBrochures').on('click.emailBrochures', '.getPrintableBrochures', function () {
             var product = Results.getSelectedProduct(),
                 brochureTemplate = meerkat.modules.templateCache.getTemplate($('#emailBrochuresTemplate'));
 
@@ -116,7 +116,7 @@
                     onOpen: function (modalId) {
                         if (meerkat.site.emailBrochures.enabled) {
                             // initialise send brochure email button functionality
-                            initialiseBrochureEmailForm(Results.getSelectedProduct(),  $('#'+modalId), $('#emailBrochuresForm'));
+                            initialiseBrochureEmailForm(Results.getSelectedProduct(), $('#' + modalId), $('#emailBrochuresForm'));
                             populateBrochureEmail();
                         }
                     }
@@ -195,7 +195,7 @@
      */
     function runDisplayMethod(productId) {
         var currStep = meerkat.modules.journeyEngine.getCurrentStep().navigationId;
-        if (meerkat.modules.deviceMediaState.get() != 'xs' &&  currStep != 'apply' && currStep != 'payment') {
+        if (meerkat.modules.deviceMediaState.get() != 'xs' && currStep != 'apply' && currStep != 'payment') {
             meerkat.modules.moreInfo.showTemplate($bridgingContainer);
         } else {
 
@@ -203,7 +203,8 @@
             var updatedSettings = {
                 modalOptions: {
                     htmlHeaderContent: _getAffixedMobileHeaderData()
-                }};
+                }
+            };
             meerkat.modules.moreInfo.updateSettings(updatedSettings);
             meerkat.modules.moreInfo.showModal();
 
@@ -243,7 +244,7 @@
     }
 
     function onBeforeShowModal(jsonResult, dialogId) {
-        var $dialog = $('#'+dialogId);
+        var $dialog = $('#' + dialogId);
         $dialog.find('.modal-body').children().wrap("<form class='healthMoreInfoModel'></form>");
 
         // Move dual-pricing panel
@@ -252,16 +253,16 @@
         fixBootstrapModalPaddingIssue(dialogId);
     }
 
-    function fixBootstrapModalPaddingIssue(dialogId){
+    function fixBootstrapModalPaddingIssue(dialogId) {
         // just fighting Bootstrap here...
         // It seems to think that because the body is overflowing, it needs to add right padding to cater for the scrollbar width
         // so taking that off once the modal is open
-        $("#"+dialogId).css('padding-right', '0px');
+        $("#" + dialogId).css('padding-right', '0px');
     }
 
     function onAfterShowModal() {
         additionalTrackingData();
-        
+
         $('.whatsNext li').each(function () {
             $(this).prepend('<span class="icon icon-angle-right"></span>');
         });
@@ -292,12 +293,12 @@
         $(toggleBarInitSettings.container).find('.toggleBar').toggleClass('hidden', initToggleBar === false);
     }
 
-    function _trackScroll(){
+    function _trackScroll() {
         var startTopOffset = $elements.moreInfoContainer.offset().top,
             startHeaderHeight = $elements.modalHeader.height(),
             calculatedHeight = startTopOffset;
 
-        $('.modal-body').off("scroll.moreInfoXS").on("scroll.moreInfoXS", function(){
+        $('.modal-body').off("scroll.moreInfoXS").on("scroll.moreInfoXS", function () {
             if (calculatedHeight === startTopOffset) {
                 // need to get the newly calculated height since we hide some data
                 calculatedHeight = startTopOffset - (startHeaderHeight - $elements.modalHeader.height());
@@ -313,12 +314,12 @@
      */
     function additionalTrackingData() {
         var product = meerkat.modules.moreInfo.getOpenProduct();
-        if(!product) {
+        if (!product) {
             return;
         }
         var settings = {
-            additionalTrackingData : {
-                productName : product.info.productTitle,
+            additionalTrackingData: {
+                productName: product.info.productTitle,
                 productBrandCode: product.info.providerName
             }
         };
@@ -334,8 +335,8 @@
         var emailBrochuresElement = parent.find('.moreInfoEmailBrochures');
         emailBrochuresElement.show();
 
-        var benefitCodes= $.map(meerkat.modules.healthUtils.getSelectedBenefits(product.info.ProductType),
-            function(b) {
+        var benefitCodes = $.map(meerkat.modules.healthUtils.getSelectedBenefits(product.info.ProductType),
+            function (b) {
                 return b.code;
             });
         var situation = meerkat.modules.healthUtils.getSelectedHealthSituation().name;
@@ -349,26 +350,26 @@
             form: form,
             marketing: emailBrochuresElement.find('.optInMarketing'),
             productData: [
-                {name: "hospitalPDSUrl", value: product.promo.hospitalPDF},
-                {name: "extrasPDSUrl", value: product.promo.extrasPDF},
-                {name: "provider", value: product.info.provider},
-                {name: "providerName", value: product.info.providerName},
-                {name: "productName", value: product.info.productTitle},
-                {name: "productId", value: product.productId},
-                {name: "productCode", value: product.info.productCode},
-                {name: "premium", value: product.premium[Results.settings.frequency].lhcfreetext},
-                {name: "premiumText", value: product.premium[Results.settings.frequency].lhcfreepricing},
+                { name: "hospitalPDSUrl", value: product.promo.hospitalPDF },
+                { name: "extrasPDSUrl", value: product.promo.extrasPDF },
+                { name: "provider", value: product.info.provider },
+                { name: "providerName", value: product.info.providerName },
+                { name: "productName", value: product.info.productTitle },
+                { name: "productId", value: product.productId },
+                { name: "productCode", value: product.info.productCode },
+                { name: "premium", value: product.premium[Results.settings.frequency].lhcfreetext },
+                { name: "premiumText", value: product.premium[Results.settings.frequency].lhcfreepricing },
                 // Additional information
-                {name: "healthSituation", value: situation},
-                {name: "primaryCurrentPHI", value: currentPHI},
-                {name: "coverType", value: product.info.ProductType},
-                {name: "benefitCodes", value: benefitCodes.join(',')},
-                {name: "specialOffer", value: specialOffer.specialOffer},
-                {name: "specialOfferTerms", value: specialOffer.specialOfferTerms},
-                {name: "excessPerAdmission", value: excessesAndCoPayment.excessPerAdmission},
-                {name: "excessPerPerson", value: excessesAndCoPayment.excessPerPerson},
-                {name: "excessPerPolicy", value: excessesAndCoPayment.excessPerPolicy},
-                {name: "coPayment", value: excessesAndCoPayment.coPayment}
+                { name: "healthSituation", value: situation },
+                { name: "primaryCurrentPHI", value: currentPHI },
+                { name: "coverType", value: product.info.ProductType },
+                { name: "benefitCodes", value: benefitCodes.join(',') },
+                { name: "specialOffer", value: specialOffer.specialOffer },
+                { name: "specialOfferTerms", value: specialOffer.specialOfferTerms },
+                { name: "excessPerAdmission", value: excessesAndCoPayment.excessPerAdmission },
+                { name: "excessPerPerson", value: excessesAndCoPayment.excessPerPerson },
+                { name: "excessPerPolicy", value: excessesAndCoPayment.excessPerPolicy },
+                { name: "coPayment", value: excessesAndCoPayment.coPayment }
             ],
             product: product,
             identifier: "SEND_BROCHURES" + product.productId,
@@ -456,10 +457,10 @@
      * Gets one of the testimonials from a set list
      * @return void
      */
-    function prepareTestimonial(){
+    function prepareTestimonial() {
         // Updates by reference
         var product = meerkat.modules.moreInfo.getProduct();
-        product.testimonial = testimonials[_.random(0,testimonials.length-1)];
+        product.testimonial = testimonials[_.random(0, testimonials.length - 1)];
     }
 
     /**
@@ -478,9 +479,9 @@
 
         // Get the "about fund", "what happens next" and warningAlert info
         return $.when(
-            getProviderContentByType( product, 'ABT'),
-            getProviderContentByType( product, 'NXT'),
-            getProviderContentByType( product, 'FWM')
+            getProviderContentByType(product, 'ABT'),
+            getProviderContentByType(product, 'NXT'),
+            getProviderContentByType(product, 'FWM')
         );
     }
 
@@ -496,12 +497,12 @@
         data.providerId = product.info.providerId;
         data.providerContentTypeCode = providerContentTypeCode;
 
-        if(typeof data.providerId === 'undefined' ||  data.providerId === '') {
+        if (typeof data.providerId === 'undefined' || data.providerId === '') {
             meerkat.modules.errorHandling.error({
                 message: "providerId is empty",
                 page: "healthMoreInfo.js:getProviderContentByType",
                 errorLevel: "silent",
-                description: "providerId is empty providerContentTypeCode: " + providerContentTypeCode ,
+                description: "providerId is empty providerContentTypeCode: " + providerContentTypeCode,
                 data: product
             });
         } else {
@@ -541,9 +542,15 @@
             exclusions: []
         };
 
-        if(target == "hospitalCover"){
-            coverSwitch(product.hospital.inclusions.publicHospital, "hospitalCover", {name:"Public Hospital", className: "HLTicon-hospital"});
-            coverSwitch(product.hospital.inclusions.privateHospital, "hospitalCover", {name:"Private Hospital", className: "HLTicon-hospital"});
+        if (target == "hospitalCover") {
+            coverSwitch(product.hospital.inclusions.publicHospital, "hospitalCover", {
+                name: "Public Hospital",
+                className: "HLTicon-hospital"
+            });
+            coverSwitch(product.hospital.inclusions.privateHospital, "hospitalCover", {
+                name: "Private Hospital",
+                className: "HLTicon-hospital"
+            });
         }
 
         var lookupKey;
@@ -551,10 +558,13 @@
         _.each(Object.byString(product, searchPath), function eachBenefit(benefit, key) {
 
             lookupKey = searchPath + "." + key + ".covered";
-            var foundObject = _.findWhere(resultLabels, {"p": lookupKey});
+            var foundObject = _.findWhere(resultLabels, { "p": lookupKey });
 
             if (typeof foundObject !== "undefined") {
-                coverSwitch(benefit.covered, target, $.extend(benefit, {name: foundObject.n, className: foundObject.c} ));
+                coverSwitch(benefit.covered, target, $.extend(benefit, {
+                    name: foundObject.n,
+                    className: foundObject.c
+                }));
             }
 
         });
@@ -588,12 +598,25 @@
         topPosition = $('.resultsHeadersBg').height();
     }
 
+    function hasPublicHospital(inclusions) {
+        if (!inclusions) {
+            return false;
+        }
+        for (var i = 0; i < inclusions.length; i++) {
+            if (inclusions[i] && inclusions[i].name.indexOf('Public Hospital') !== -1) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     meerkat.modules.register("healthMoreInfo", {
         initMoreInfo: initMoreInfo,
         events: events,
         prepareCover: prepareCover,
         retrieveExternalCopy: retrieveExternalCopy,
-        applyEventListeners: applyEventListeners
+        applyEventListeners: applyEventListeners,
+        hasPublicHospital: hasPublicHospital
     });
 
 })(jQuery);

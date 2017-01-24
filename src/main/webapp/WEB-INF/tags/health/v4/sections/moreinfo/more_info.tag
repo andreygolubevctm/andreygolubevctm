@@ -160,6 +160,15 @@
 										{{ product.structureIndex = 4; }}
 										{{ product.showNotCoveredBenefits = false; }}
 										{{ product.ignoreLimits = false; }}
+								        {{ if(meerkat.modules.healthMoreInfo.hasPublicHospital(hospitalCover.inclusions)) { }}
+										<div class="row HLTicon-hospital benefitRow">
+											<div class="benefitContent">
+											<div class="col-xs-12 benefitTitle">
+												<p>Public Hospital</p>
+											</div>
+										</div>
+										</div>
+								        {{ } }}
 										{{= benefitTemplate(product) }}
 									</div>
 									<div class="col-xs-12 tab-pane hospitalNotCoveredPane">

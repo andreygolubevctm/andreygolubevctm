@@ -407,6 +407,8 @@
 
             // Update the active tab for hospital filter to limited if applicable
             if (hospitalType === 'limited') {
+                benefitString = '';
+                filterToggleText = 'Change';
                 $('.results-filters-benefits .health-filter-hospital-benefits li').find('a').each(function () {
                     var $that = $(this);
                     var isLimited = $that.attr('href').search(/limited/) !== -1;

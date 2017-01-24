@@ -1,7 +1,7 @@
 
 .health[data-step="results"] {
 
-  @media(@lg) {
+  @media (@lg) {
     .btn-cta {
       min-height: 48px;
       padding-top: 14px;
@@ -144,7 +144,7 @@
   }
 }
 
-  // Bridging page
+// Bridging page
 .moreInfoDropdown {
 
   @media (@md) {
@@ -271,6 +271,15 @@
       color: @theme-secondary;
     }
 
+    &.HLTicon-special-features {
+      margin-left: 36px;
+      .limitTitle {
+        display: none;
+      }
+      .limitValue {
+        width: 100%;
+      }
+    }
     &.restricted {
       &:before {
         color: @gray;
@@ -290,6 +299,7 @@
     color: @theme-accent-4;
     font-size: 12px;
     line-height: 18px;
+    padding: 0;
   }
 
   .addBottomMargin {
@@ -320,34 +330,32 @@
     }
   }
 
-  @media (@xs) {
-    .nav-tabs {
-      background: transparent;
-      li.active {
-        display: inline-block;
-      }
+  .nav-tabs {
+    background: transparent;
+    li.active {
+      display: inline-block;
     }
+  }
 
-    .hospitalTabContainer,
-    .restrictedContainer {
-      margin-top: 20px;
-    }
+  .hospitalTabContainer,
+  .restrictedContainer {
+    margin-top: 20px;
+  }
 
-    .printableBrochuresLink {
-      padding-bottom: 10px;
-    }
+  .printableBrochuresLink {
+    padding-bottom: 10px;
+  }
 
-    .shrinkHospital {
-      width: 43%;
-    }
+  .shrinkHospital {
+    width: 43%;
+  }
 
-    .expandExtras {
-      padding-left: 4%;
-    }
+  .expandExtras {
+    padding-left: 4%;
+  }
 
-    h5 {
-      font-size: 14px;
-    }
+  h5 {
+    font-size: 14px;
   }
 
   @media (@xs-only) {
