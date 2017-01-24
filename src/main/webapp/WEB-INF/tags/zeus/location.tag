@@ -34,15 +34,15 @@
 				<div class="globalMap map_${imageName} toy${toyType}"></div>
 				<span class="mobilePostcardName">${firstName}</span>
 				<div class="mobileShareLinks">
-					<div class="facebookShare shareButton" location="${imageName}"><img src="" data-defer-src="assets/brand/ctm/images/zeus/share_facebook.png" alt="Share on Facebook"></div>
-					<div class="shareButton" target="_blank" href="https://twitter.com/intent/tweet?url=https://www.comparethemarket.com.au"><img src="" data-defer-src="assets/brand/ctm/images/zeus/share_twitter.png" alt="Share on Twitter"></div>
+					<div class="facebookShare shareButton" url_location="https://www.comparethemarket.com.au/meerkat_toys/?share=${imageName}"><img src="" data-defer-src="assets/brand/ctm/images/zeus/share_facebook.png" alt="Share on Facebook"></div>
+					<a class="twitterShare shareButton" href="https://twitter.com/intent/tweet?url=https://www.comparethemarket.com.au/meerkat_toys/?share=${imageName}"><img src="" data-defer-src="assets/brand/ctm/images/zeus/share_twitter.png" alt="Share on Twitter"></a>
 				</div>
 				<div class="postcardContainer">
 					<img class="postcard" src="" data-defer-src="assets/brand/ctm/images/zeus/postcard_${imageName}${toyType}.png" alt="Aleksandr Russian postcard">
 					<span class="postcardName">${firstName}</span>
 					<div class="shareLinks">
-						<div class="facebookShare shareButton" location="${imageName}"><img src="" data-defer-src="assets/brand/ctm/images/zeus/share_facebook.png" alt="Share on Facebook"></div>
-						<div class="shareButton" target="_blank" href="https://twitter.com/intent/tweet?url=https://www.comparethemarket.com.au"><img src="" data-defer-src="assets/brand/ctm/images/zeus/share_twitter.png" alt="Share on Twitter"></div>
+						<div class="facebookShare shareButton" url_location="https://www.comparethemarket.com.au/meerkat_toys/?share=${imageName}"><img src="" data-defer-src="assets/brand/ctm/images/zeus/share_facebook.png" alt="Share on Facebook"></div>
+						<a class="twitterShare shareButton" href="https://twitter.com/intent/tweet?url=https://www.comparethemarket.com.au/meerkat_toys/?share=${imageName}&text=My+very+own+Meerkat+toy+is+on+the+way,+you+can+get+one+too!&hashtags=meerkattoys"><img src="" data-defer-src="assets/brand/ctm/images/zeus/share_twitter.png" alt="Share on Twitter"></a>
 					</div>
 				</div>
 			</div>

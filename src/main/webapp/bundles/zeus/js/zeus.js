@@ -23,57 +23,16 @@
                     appId: 432806116767632,
                     version: 'v2.8'
                 });
-                console.log("Does the get script.");
-
 
                 $('.facebookShare').on('click', function() {
-                    // FB.ui({
-                    //     method: 'share_open_graph',
-                    //     action_type: 'og.likes',
-                    //     action_properties: JSON.stringify({
-                    //         object:'https://www.comparethemarket.com.au/',
-                    //     })
-                    // },
-                    // // callback
-                    // function(response) {
-                    //     if (response && !response.error_message) {
-                    //         alert('Posting completed.');
-                    //     } else {
-                    //         alert('Error while posting.');
-                    //     }
-                    // });
-
+                    var url = $(this).attr("url_location");
                     FB.ui({
-                        method: 'feed',
-                        link: "https://www.comparethemarket.com.au/",
-                        picture: 'https://www.comparethemarket.com.au/wp-content/uploads/2012/07/tom-aleks-sergei-home-min2.png',
-                        name: "The name of who?",
-                        description: "Some description"
-                    }, function(response){
-                        console.log(response);
+                        method: 'share',
+                        href: url
                     });
-
-                    // FB.ui({
-                    //     method: 'share',
-                    //     href: 'https://www.comparethemarket.com.au/',
-                    //     quote: 'You can see where my toy is with this link www.blah.com'
-                    // },
-                    // // callback
-                    // function(response) {
-                    //     if (response && !response.error_message) {
-                    //         alert('Posting completed.');
-                    //     } else {
-                    //         alert('Error while posting.');
-                    //     }
-                    // });
                 });
-                FB.getLoginStatus(updateStatusCallback());
             });
         });
-    }
-
-    function updateStatusCallback() {
-        console.log("Does this");
     }
 
     function _registerEventListeners() {

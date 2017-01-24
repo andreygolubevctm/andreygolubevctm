@@ -33,13 +33,28 @@
 
 	<jsp:attribute name="head_meta"></jsp:attribute>
 
-	<jsp:attribute name="header"></jsp:attribute>
+	<jsp:attribute name="header">
+		<script>window.twttr = (function(d, s, id) {
+			var js, fjs = d.getElementsByTagName(s)[0],
+			t = window.twttr || {};
+			if (d.getElementById(id)) return t;
+			js = d.createElement(s);
+			js.id = id;
+			js.src = "https://platform.twitter.com/widgets.js";
+			fjs.parentNode.insertBefore(js, fjs);
+
+			t._e = [];
+			t.ready = function(f) {
+			t._e.push(f);
+			};
+
+			return t;
+		}(document, "script", "twitter-wjs"));</script>
+	</jsp:attribute>
 
 	<jsp:attribute name="vertical_settings"></jsp:attribute>
 
-	<jsp:attribute name="footer">
-		Some footer text
-	</jsp:attribute>
+	<jsp:attribute name="footer"></jsp:attribute>
 
 	<jsp:attribute name="form_bottom"></jsp:attribute>
 

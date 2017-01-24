@@ -37,9 +37,7 @@
 
 	<jsp:attribute name="vertical_settings"></jsp:attribute>
 
-	<jsp:attribute name="footer">
-		Some footer text
-	</jsp:attribute>
+	<jsp:attribute name="footer"></jsp:attribute>
 
 	<jsp:attribute name="form_bottom"></jsp:attribute>
 
