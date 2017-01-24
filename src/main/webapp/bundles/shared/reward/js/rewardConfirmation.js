@@ -6,7 +6,8 @@
         debug = meerkat.logging.debug,
         exception = meerkat.logging.exception;
 
-    var CRUD = false;
+    var CRUD = false,
+        $confirmationHtml;
 
     function initRewardConfirmation() {
         $(document).ready(function() {
@@ -30,12 +31,59 @@
             }
         });
 
+        CRUD.getSaveRequestData = function($modal) {
+            return meerkat.modules.form.getData( $modal.find('#redemptionForm') );
+        };
+
+        CRUD.save = function (data) {
+            var that = this,
+                onSuccess = function (response) {
+                    renderSuccessMessage();
+                    meerkat.modules.dialogs.close(that.modalId);
+            };
+
+            this.update(data, onSuccess);
+        };
+
         meerkat.messaging.subscribe(meerkatEvents.crud.CRUD_MODAL_OPENED, function initRedemptionForm(modalId) {
             meerkat.modules.redemptionForm.initRedemptionForm(modalId);
         });
 
-        CRUD.openModal();
+        // defer rendering because confirmation page is a template
+        _.defer(function() {
+            renderRewardOrder();
+        });
 
+    }
+    
+    function renderRewardOrder() {
+        // Bad response, don't render
+        if (!rewardOrder || rewardOrder.status !== true) return;
+
+        setConfirmationHtml();
+
+        switch (rewardOrder.generalStatus) {
+            case 'OK_TO_REDEEM':
+                renderSuccessMessage();
+                break;
+            case 'ALREADY_REDEEMED':
+                CRUD.openModal();
+        }
+
+    }
+
+    function setConfirmationHtml(){
+        if (rewardOrder.orderHeader && rewardOrder.orderHeader.eligibleCampaigns && rewardOrder.orderHeader.eligibleCampaigns[0]) {
+            $confirmationHtml = $(rewardOrder.orderHeader.eligibleCampaigns[0].contentHtml);
+        }
+    }
+
+    function renderSuccessMessage() {
+        if ($confirmationHtml) {
+            $('.reward-confirmation-message-container').html(
+                $confirmationHtml.find('.reward-confirmation-message').prop('outerHTML')
+            );
+        }
     }
 
     meerkat.modules.register("rewardConfirmation", {

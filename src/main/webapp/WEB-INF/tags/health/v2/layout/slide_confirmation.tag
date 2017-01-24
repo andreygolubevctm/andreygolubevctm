@@ -82,6 +82,7 @@
 				<layout_v1:slide_content >
 
 					<form_v3:fieldset legend="" className="confirmation">
+                        <reward:reward_confirmation_message />
 						{{ var personName = typeof firstName !== 'undefined' && typeof lastName !== 'undefined' ? "Well done <span>" + firstName + " " + lastName + "</span>,<br />": '' }}
 						<div class="row confirmation-complete">
 							<div class="col-xs-12">
@@ -138,7 +139,7 @@
 	<script>
 		var resultLabels = ${jsonString};
 		var result = ${go:XMLtoJSON(confirmationData)};
-		var redemptionOrder = ${rewardOrder};
+		var rewardOrder = ${rewardOrder};
 
 		<%--
 			add product info contained in session on the page if:
