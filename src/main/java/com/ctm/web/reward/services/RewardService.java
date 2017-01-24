@@ -14,6 +14,7 @@ import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.reward.utils.RewardRequestParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -212,6 +213,7 @@ public class RewardService {
 	public String getOrderAsJson(final String redemptionId, final HttpServletRequest request) {
 		OrderFormResponse order = getOrder(redemptionId, request);
 		try {
+			objectMapper.getJsonMapper().configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 			return objectMapper.getJsonMapper().writeValueAsString(order);
 		} catch (JsonProcessingException e) {
 			LOGGER.error("Reward: Failed to serialise. redemptionId={}", redemptionId);
