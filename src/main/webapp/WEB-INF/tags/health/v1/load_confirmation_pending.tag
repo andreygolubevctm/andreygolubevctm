@@ -120,7 +120,7 @@
 	<c:otherwise>
 		<c:forEach var="row" items="${result.rows}" varStatus="status">
 			<c:choose>
-				<c:when test="${row.xpath == 'current/redemptionId'}">
+				<c:when test="${row.xpath == 'current/encryptedOrderLineId'}">
 					<c:set var="redemptionId" value="${row.textValue}" />
 				</c:when>
 				<c:when test="${row.xpath == 'health/application/provider'}">
