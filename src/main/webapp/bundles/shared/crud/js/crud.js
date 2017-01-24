@@ -154,7 +154,7 @@
 		this.modalId = meerkat.modules.dialogs.show({
 			htmlContent: modalHTML
 		});
-		
+
 		// Initialize the text editors
 		var $textAreas = $("#" + this.modalId + " textarea.form-control");
 		if($textAreas.length) {

@@ -92,7 +92,6 @@
         <script class="crud-modal-template" type="text/html">
             <reward:redemption_form />
         </script>
-        <a href="javascript:;" class="crud-new-entry">CLICK ME</a>
 	</jsp:body>
 
 </layout_v1:journey_engine_page>

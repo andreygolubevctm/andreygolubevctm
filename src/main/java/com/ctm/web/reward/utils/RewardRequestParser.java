@@ -40,7 +40,6 @@ public class RewardRequestParser {
         orderAddress.setUnitType(dataBucket.getString(ADDRESS_PREFIX + "unitType"));
         orderAddress.setFullAddress(dataBucket.getString(ADDRESS_PREFIX + "fullAddress"));
 
-
         final OrderLine orderLine = new OrderLine();
         orderLine.setCampaignCode(campaignCode);
         orderLine.setContactEmail(dataBucket.getString(PREFIX + "email"));

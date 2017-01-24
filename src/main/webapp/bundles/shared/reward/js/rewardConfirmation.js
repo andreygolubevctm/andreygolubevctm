@@ -13,6 +13,8 @@
         $(document).ready(function() {
             if (typeof meerkat.site === 'undefined') return;
             if (meerkat.site.pageAction !== "confirmation") return;
+            // Bad response, abort
+            if (!rewardOrder || rewardOrder.status !== true || !rewardOrder.orderHeader) return;
             initCRUD();
         });
 
@@ -23,6 +25,7 @@
             baseURL: "spring/rest/reward/order",
             primaryKey: "encryptedOrderLineId",
             models: {
+                db: rewardOrder.orderHeader,
                 datum: function(data) {
                     return {
                         extraData: {}
@@ -57,11 +60,7 @@
     }
     
     function renderRewardOrder() {
-        // Bad response, don't render
-        if (!rewardOrder || rewardOrder.status !== true) return;
-
         setConfirmationHtml();
-
         switch (rewardOrder.generalStatus) {
             case 'ALREADY_REDEEMED':
                 renderSuccessMessage();
@@ -73,9 +72,13 @@
     }
 
     function setConfirmationHtml(){
-        if (rewardOrder.orderHeader && rewardOrder.orderHeader.eligibleCampaigns && rewardOrder.orderHeader.eligibleCampaigns[0]) {
+        if (rewardOrder.orderHeader.eligibleCampaigns && rewardOrder.orderHeader.eligibleCampaigns[0]) {
             $confirmationHtml = $(rewardOrder.orderHeader.eligibleCampaigns[0].contentHtml);
         }
+    }
+
+    function getConfirmationHtml() {
+        return $confirmationHtml;
     }
 
     function renderSuccessMessage() {
@@ -87,7 +90,8 @@
     }
 
     meerkat.modules.register("rewardConfirmation", {
-        init: initRewardConfirmation
+        init: initRewardConfirmation,
+        getConfirmationHtml: getConfirmationHtml
     });
 
 })(jQuery);
