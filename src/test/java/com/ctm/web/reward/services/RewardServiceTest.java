@@ -14,7 +14,7 @@ import static org.mockito.Mockito.mock;
 public class RewardServiceTest {
 	@Test
 	public void roundupMinutes() throws Exception {
-		RewardService reward = new RewardService(mock(Client.class),
+		RewardService reward = new RewardService(mock(Client.class), mock(Client.class),
 				mock(Client.class), mock(Client.class), mock(Client.class),
 				mock(RewardCampaignService.class), mock(ApplicationService.class), mock(SessionDataServiceBean.class));
 		ZonedDateTime expected = ZonedDateTime.of(2017, 1, 16, 16, 0, 0, 0, ZoneId.of("UTC"));

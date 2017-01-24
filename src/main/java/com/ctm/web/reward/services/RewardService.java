@@ -42,6 +42,7 @@ public class RewardService {
 	public static final String REWARD_ENDPOINT_CREATE_ORDER = "/orders/create";
 	public static final String REWARD_ENDPOINT_UPDATE_SALE_STATUS = "/orderlines/updateSaleStatus";
 	public static final String REWARD_ENDPOINT_UPDATE_ORDER_LINE = "/orderlines/update";
+	public static final String REWARD_ENDPOINT_FIND_ORDER_LINES = "/orderlines/find";
 
 	public static final int SERVICE_TIMEOUT = 10000;
 
@@ -58,12 +59,14 @@ public class RewardService {
 	private Client<UpdateSaleStatus, UpdateSaleStatusResponse> rewardUpdateSalesStatusClient;
 	private Client<OrderForm, OrderFormResponse> rewardCreateOrderClient;
 	private Client<GetOrder, OrderFormResponse> rewardGetOrderClient;
+	private Client<FindRequest, FindResponse> rewardFindOrdersClient;
 
 	@Autowired
 	public RewardService(Client<OrderForm, UpdateResponse> rewardUpdateOrderClient,
 						 Client<UpdateSaleStatus, UpdateSaleStatusResponse> rewardUpdateSalesStatusClient,
 						 Client<OrderForm, OrderFormResponse> rewardCreateOrderClient,
 						 Client<GetOrder, OrderFormResponse> rewardGetOrderClient,
+						 Client<FindRequest, FindResponse> rewardFindOrdersClient,
 						 RewardCampaignService rewardCampaignService,
 						 ApplicationService applicationService,
 						 SessionDataServiceBean sessionDataServiceBean) {
@@ -71,6 +74,7 @@ public class RewardService {
 		this.rewardUpdateSalesStatusClient = rewardUpdateSalesStatusClient;
 		this.rewardCreateOrderClient = rewardCreateOrderClient;
 		this.rewardGetOrderClient = rewardGetOrderClient;
+		this.rewardFindOrdersClient = rewardFindOrdersClient;
 		this.rewardCampaignService = rewardCampaignService;
 		this.applicationService = applicationService;
 		this.sessionDataServiceBean = sessionDataServiceBean;
@@ -259,6 +263,33 @@ public class RewardService {
 					if (response.getStatus()) {
 						LOGGER.info("Reward: getOrder success. redemptionId={}, operatorId={}, operatorElevated={}",
 								redemptionId, operatorId.orElse(""), operatorElevated);
+					}
+				})
+				.toBlocking()
+				.first();
+	}
+
+	public FindResponse findOrders(final FindRequest form) {
+		form.setSearchParam(form.getSearchParam().trim());
+		final String url = rewardServiceUrl + REWARD_ENDPOINT_FIND_ORDER_LINES;
+		return rewardFindOrdersClient.post(RestSettings.<FindRequest>builder()
+				.request(form)
+				.response(FindResponse.class)
+				.jsonHeaders()
+				.url(url)
+				.timeout(SERVICE_TIMEOUT)
+				.retryAttempts(1)
+				.build())
+				.observeOn(Schedulers.io())
+				.onErrorResumeNext(throwable -> {
+					LOGGER.error("Reward: Failed to find orders. url={}, searchParam={}", url, form.getSearchParam());
+					FindResponse response = new FindResponse();
+					response.setStatus(false);
+					return Observable.just(response);
+				})
+				.doOnNext(response -> {
+					if (response.getStatus()) {
+						LOGGER.info("Reward: findOrders success. searchParam={}", form.getSearchParam());
 					}
 				})
 				.toBlocking()
