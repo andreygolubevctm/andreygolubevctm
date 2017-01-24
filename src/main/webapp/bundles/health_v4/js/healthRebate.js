@@ -83,11 +83,6 @@
                 _setRebate();
             }
 
-            // toggle dependants count if inEditMode
-            if (inEditMode) {
-                $elements.dependentsSelect.parent('.select').toggleClass('hidden', !meerkat.modules.healthDependants.situationEnablesDependants());
-            }
-
         });
 
         $elements.incomeSelect.on('change', function() {
@@ -99,7 +94,7 @@
         // on first load, select the dropdown value and set it as a text label
         var $elDropdownOption = $elements.incomeSelect.prop('selectedIndex') === 0 ? $elements.incomeSelect.find('option:eq(1)') : $elements.incomeSelect.find(':selected'),
             completeText = '',
-            dependantsText = 'including any adjustments for your dependants',
+            dependantsText = "including any adjustments for your dependants <br />(Based on an assumption of 2 dependents. EDIT to amend)",
             cover = meerkat.modules.healthChoices.returnCoverCode();
 
         if (cover !== '') {
@@ -128,7 +123,7 @@
 
         _selectetedRebateLabelText = completeText;
 
-        $elements.selectedRebateText.text(completeText);
+        $elements.selectedRebateText.html(completeText);
 
         if ($elements.incomeSelect.prop('selectedIndex') === 0) {
             $elements.incomeSelect.prop('selectedIndex', 1);
@@ -176,8 +171,9 @@
     function toggleEdit(isEdit) {
         $elements.selectedRebateText.toggle(!isEdit);
         $elements.rebateLabel.toggle(!isEdit);
-        $elements.dependentsSelect.parent('.select').toggleClass('hidden', !isEdit || (isEdit && !meerkat.modules.healthDependants.situationEnablesDependants()));
         $elements.incomeSelect.parent('.select').toggleClass('hidden', !isEdit);
+
+        meerkat.modules.healthDependants.toggleDependants();
 
         if (!isEdit) {
             _updateRebateLabelText();
