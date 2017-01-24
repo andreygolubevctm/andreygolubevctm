@@ -16,6 +16,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/rest/reward")
 public class RewardController extends CommonQuoteRouter {
+    private static final String ORDER_CREATE = "/order/create";
     private static final String ORDER_UPDATE = "/order/update";
     private static final String ORDER_FIND = "/order/find.json";
     private static final String CAMPAIGNS_GET = "/campaigns/get.json";
@@ -36,48 +37,31 @@ public class RewardController extends CommonQuoteRouter {
     @RequestMapping(value = CAMPAIGNS_GET,
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public GetCampaignsResponse get(HttpServletRequest request) {
+    public GetCampaignsResponse getCampaigns(final HttpServletRequest request) {
 		return rewardService.getAllActiveCampaigns(request);
     }
 
-//    @RequestMapping(value = GET_REDEMPTION,
-//            method = RequestMethod.GET,
-//            consumes = MediaType.APPLICATION_JSON_VALUE,
-//            produces = MediaType.APPLICATION_JSON_VALUE)
-//    public RedemptionForm get(@Valid @RequestParam final String encryptedRedemptionId) {
-//        final GetRedemption getRedemption = new GetRedemption(encryptedRedemptionId);
-//        return getRedemptionClient.post(getRedemption, RedemptionForm.class, rewardServiceBase + REDEMPTION + GET_REDEMPTION).toBlocking().first();
-//    }
-//
-//    @RequestMapping(value = ADHOC,
-//            method = RequestMethod.POST,
-//            consumes = MediaType.APPLICATION_JSON_VALUE,
-//            produces = MediaType.APPLICATION_JSON_VALUE)
-//    public RedemptionForm adhoc(@Valid @RequestBody final RedemptionForm form) {
-//        return redemptionClient.post(form, RedemptionForm.class, rewardServiceBase + REDEMPTION + ADHOC).toBlocking().first();
-//    }
+	@RequestMapping(value = ORDER_CREATE,
+            method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public OrderFormResponse createOrder(@Valid @RequestBody final OrderForm form, final HttpServletRequest request) {
+        return rewardService.createAdhocOrder(form, request);
+    }
 
     @RequestMapping(value = ORDER_UPDATE,
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public UpdateResponse update(@Valid @RequestBody final OrderForm form) {
-        return rewardService.updateOrder(form);
-    }
-
-    @RequestMapping(value = ORDER_UPDATE + "-form-test",
-            method = RequestMethod.POST,
-			consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE, "application/x-www-form-urlencoded;charset=UTF-8", MediaType.MULTIPART_FORM_DATA_VALUE},
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public UpdateResponse updateFormTest(@ModelAttribute final OrderForm form) {
-        return rewardService.updateOrder(form);
+    public UpdateResponse updateOrder(@Valid @RequestBody final OrderForm form, final HttpServletRequest request) {
+        return rewardService.updateOrder(form, request);
     }
 
     @RequestMapping(value = ORDER_FIND,
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public FindResponse update(@Valid @RequestBody final FindRequest form) {
-    	return rewardService.findOrders(form);
+    public FindResponse findOrders(@Valid @RequestBody final FindRequest form, final HttpServletRequest request) {
+    	return rewardService.findOrders(form, request);
     }
 }

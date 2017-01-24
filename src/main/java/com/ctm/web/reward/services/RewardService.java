@@ -35,6 +35,7 @@ import static com.ctm.web.core.model.settings.Vertical.VerticalType.HEALTH;
 public class RewardService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(RewardService.class);
 
+	private static final String ELEVATED_USER_GROUP = "CTM-CC-REWARDS";
 	public static final String XPATH_CURRENT_ENCRYPTED_ORDER_LINE_ID = "current/encryptedOrderLineId";
 	public static final int XPATH_SEQUENCE_NO_ENCRYPTED_ORDER_LINE_ID = -99;
 
@@ -175,11 +176,11 @@ public class RewardService {
 				return null;
 			}
 
-			final OrderFormResponse response = createOrder(data, authenticatedData, saleStatus, campaign.getCampaignCode());
+			final OrderFormResponse response = createOrderAndUpdateBucket(data, authenticatedData, saleStatus, campaign.getCampaignCode());
 			if (response != null && response.getEncryptedOrderLineId().isPresent()) {
 				return response.getEncryptedOrderLineId().get();
 			} else {
-				// Error is logged in createOrder()
+				// Error is logged in createOrderAndUpdateBucket()
 				return null;
 			}
 		}
@@ -189,8 +190,8 @@ public class RewardService {
 		}
 	}
 
-	public OrderFormResponse createOrder(final Data data, Optional<AuthenticatedData> authenticatedData,
-										 final SaleStatus saleStatus, final String campaignCode) {
+	public OrderFormResponse createOrderAndUpdateBucket(final Data data, final Optional<AuthenticatedData> authenticatedData,
+														final SaleStatus saleStatus, final String campaignCode) {
 		try {
 			RewardRequestParser rewardRequestParser = new RewardRequestParser();
 			OrderForm orderForm = rewardRequestParser.adaptFromDatabucket(authenticatedData, data, saleStatus, campaignCode);
@@ -214,6 +215,42 @@ public class RewardService {
 		}
 	}
 
+	public OrderFormResponse createAdhocOrder(final OrderForm form, final HttpServletRequest request) {
+		final Optional<AuthenticatedData> authenticatedData = Optional.ofNullable(sessionDataServiceBean.getAuthenticatedSessionData(request));
+
+		// Must be logged into Simples and be in elevated privilege group
+		if (authenticatedData.map(AuthenticatedData::getUid).isPresent() && hasElevatedPrivileges(request)) {
+			// Check mandatory fields
+			if (form.getOrderHeader().getReasonCode().isPresent()
+					&& form.getOrderHeader().getOrderLine().getRewardTypeId().isPresent()) {
+				// Push operatorId onto model as creator
+				form.getOrderHeader().getOrderLine().setCreatedByOperator(authenticatedData.map(AuthenticatedData::getUid).get());
+
+				OrderFormResponse orderFormResponse = remoteCreateOrder(form);
+
+				LOGGER.info("Reward: Create adhoc order. operator={}, status={}",
+						authenticatedData.map(AuthenticatedData::getUid).orElse(null),
+						orderFormResponse.getStatus());
+				return orderFormResponse;
+			}
+			else {
+				LOGGER.error("Reward: Adhoc order model must have: reasonCode, createdByOperator, rewardTypeId. operator={}",
+						authenticatedData.map(AuthenticatedData::getUid).orElse(null));
+				OrderFormResponse response = new OrderFormResponse();
+				response.setStatus(false);
+				response.setMessage("Adhoc order model must have: reasonCode, createdByOperator, rewardTypeId.");
+				return response;
+			}
+		}
+		else {
+			LOGGER.error("Reward: Not authenticated to create adhoc order.");
+			OrderFormResponse response = new OrderFormResponse();
+			response.setStatus(false);
+			response.setMessage("Not authenticated to create order.");
+			return response;
+		}
+	}
+
 	public String getOrderAsJson(final String redemptionId, final HttpServletRequest request) {
 		OrderFormResponse order = getOrder(redemptionId, request);
 		try {
@@ -227,8 +264,7 @@ public class RewardService {
 
 	public OrderFormResponse getOrder(final String redemptionId, final HttpServletRequest request) {
 		final Optional<AuthenticatedData> authenticatedData = Optional.ofNullable(sessionDataServiceBean.getAuthenticatedSessionData(request));
-		// TODO how to get if user is in group CTM-CC-REWARDS
-		return getOrder(redemptionId, authenticatedData.map(AuthenticatedData::getUid), false);
+		return getOrder(redemptionId, authenticatedData.map(AuthenticatedData::getUid), hasElevatedPrivileges(request));
 	}
 
 	/**
@@ -269,31 +305,42 @@ public class RewardService {
 				.first();
 	}
 
-	public FindResponse findOrders(final FindRequest form) {
-		form.setSearchParam(form.getSearchParam().trim());
-		final String url = rewardServiceUrl + REWARD_ENDPOINT_FIND_ORDER_LINES;
-		return rewardFindOrdersClient.post(RestSettings.<FindRequest>builder()
-				.request(form)
-				.response(FindResponse.class)
-				.jsonHeaders()
-				.url(url)
-				.timeout(SERVICE_TIMEOUT)
-				.retryAttempts(1)
-				.build())
-				.observeOn(Schedulers.io())
-				.onErrorResumeNext(throwable -> {
-					LOGGER.error("Reward: Failed to find orders. url={}, searchParam={}", url, form.getSearchParam());
-					FindResponse response = new FindResponse();
-					response.setStatus(false);
-					return Observable.just(response);
-				})
-				.doOnNext(response -> {
-					if (response.getStatus()) {
-						LOGGER.info("Reward: findOrders success. searchParam={}", form.getSearchParam());
-					}
-				})
-				.toBlocking()
-				.first();
+	public FindResponse findOrders(final FindRequest form, final HttpServletRequest request) {
+		final Optional<AuthenticatedData> authenticatedData = Optional.ofNullable(sessionDataServiceBean.getAuthenticatedSessionData(request));
+
+		// Must be logged into Simples and be in elevated privilege group
+		if (authenticatedData.map(AuthenticatedData::getUid).isPresent() && hasElevatedPrivileges(request)) {
+			form.setSearchParam(form.getSearchParam().trim());
+			final String url = rewardServiceUrl + REWARD_ENDPOINT_FIND_ORDER_LINES;
+			return rewardFindOrdersClient.post(RestSettings.<FindRequest>builder()
+					.request(form)
+					.response(FindResponse.class)
+					.jsonHeaders()
+					.url(url)
+					.timeout(SERVICE_TIMEOUT)
+					.retryAttempts(1)
+					.build())
+					.observeOn(Schedulers.io())
+					.onErrorResumeNext(throwable -> {
+						LOGGER.error("Reward: Failed to find orders. url={}, searchParam={}", url, form.getSearchParam());
+						FindResponse response = new FindResponse();
+						response.setStatus(false);
+						return Observable.just(response);
+					})
+					.doOnNext(response -> {
+						if (response.getStatus()) {
+							LOGGER.info("Reward: findOrders success. searchParam={}", form.getSearchParam());
+						}
+					})
+					.toBlocking()
+					.first();
+		} else {
+			LOGGER.error("Reward: Not authenticated to find orders.");
+			FindResponse response = new FindResponse();
+			response.setStatus(false);
+			response.setMessage("Not authenticated to find orders.");
+			return response;
+		}
 	}
 
 	private OrderFormResponse remoteCreateOrder(final OrderForm form) {
@@ -312,16 +359,25 @@ public class RewardService {
 					response.setStatus(false);
 					return Observable.just(response);
 				})
+//				.doOnNext(response -> {
+//					if (response.getStatus()) {
+//						LOGGER.info("Reward: Created order. rootId={}, getEncryptedOrderLineId={}",
+//								response.getOrderHeader().getRootId(), response.getEncryptedOrderLineId().get());
+//					}
+//				})
 				.toBlocking()
 				.first();
 	}
 
-	public UpdateResponse updateOrder(final OrderForm form) {
+	public UpdateResponse updateOrder(final OrderForm form, final HttpServletRequest request) {
 		try {
+			// Push operatorId as model updater if present
+			final Optional<AuthenticatedData> authenticatedData = Optional.ofNullable(sessionDataServiceBean.getAuthenticatedSessionData(request));
+			authenticatedData.map(AuthenticatedData::getUid).ifPresent(uid -> form.getOrderHeader().getOrderLine().setUpdatedByOperator(uid));
+
 			final UpdateResponse response = remoteUpdateOrder(form);
 
 			if (response != null && response.getStatus()) {
-				LOGGER.info("Reward: Updated order. orderHeaderId={}, ", form.getOrderHeader().getOrderHeaderId());
 				return response;
 			} else {
 				throw new Exception("Update order failed. status=" + ((response != null) ? response.getStatus() : "")
@@ -352,7 +408,12 @@ public class RewardService {
 					response.setStatus(false);
 					return Observable.just(response);
 				})
+				.doOnCompleted(() -> LOGGER.info("Reward: Updated order. orderHeaderId={}, ", form.getOrderHeader().getOrderHeaderId()))
 				.toBlocking()
 				.first();
+	}
+
+	private boolean hasElevatedPrivileges(final HttpServletRequest request) {
+		return request.isUserInRole(ELEVATED_USER_GROUP);
 	}
 }

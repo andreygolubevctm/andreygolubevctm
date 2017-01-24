@@ -203,7 +203,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
                             rewardService.setOrderSaleStatusToSale(redemptionId);
                         } else {
                             // Create a new reward placeholder because this is a split transaction
-                            final OrderFormResponse orderResponse = rewardService.createOrder(dataBucket, authenticatedData, SaleStatus.Sale, campaign.getCampaignCode());
+                            final OrderFormResponse orderResponse = rewardService.createOrderAndUpdateBucket(dataBucket, authenticatedData, SaleStatus.Sale, campaign.getCampaignCode());
                             if (orderResponse != null && orderResponse.getEncryptedOrderLineId().isPresent()) {
                                 persistRedemptionId(orderResponse.getEncryptedOrderLineId().get(), data.getTransactionId());
                             }
@@ -212,7 +212,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
                 } else if (campaign != null) {
                     // No order recorded against this transaction and current active campaign
                     // Create a new placeholder reward order
-                    final OrderFormResponse orderResponse = rewardService.createOrder(dataBucket, authenticatedData, SaleStatus.Sale, campaign.getCampaignCode());
+                    final OrderFormResponse orderResponse = rewardService.createOrderAndUpdateBucket(dataBucket, authenticatedData, SaleStatus.Sale, campaign.getCampaignCode());
                     if (orderResponse != null && orderResponse.getEncryptedOrderLineId().isPresent()) {
                         persistRedemptionId(orderResponse.getEncryptedOrderLineId().get(), data.getTransactionId());
                     }

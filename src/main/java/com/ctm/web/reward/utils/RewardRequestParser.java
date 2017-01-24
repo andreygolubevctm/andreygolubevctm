@@ -29,7 +29,7 @@ public class RewardRequestParser {
         orderLine.setPhoneNumber(Optional.ofNullable(dataBucket.getString(PREFIX + "mobile"))
                 .orElse(dataBucket.getString(PREFIX + "other")));
 
-		authenticatedData.ifPresent(user -> orderLine.setCreatedByOperator(user.getUid()));
+        authenticatedData.map(AuthenticatedData::getUid).ifPresent(orderLine::setCreatedByOperator);
 
         final OrderHeader orderHeader = new OrderHeader();
         orderHeader.setOrderLine(orderLine);
