@@ -52,7 +52,8 @@
 	{{ var template = $("#more-info-call-to-action-template").html(); }}
 	{{ var htmlTemplate = _.template(template); }}
 	{{ var callToActionBarHtml = htmlTemplate(obj); }}
-
+	{{ var product = Results.getSelectedProduct(); }}
+	{{ var benefitTemplate = meerkat.modules.templateCache.getTemplate($("#benefitLimitsTemplate")); }}
 	<c:set var="buyNowHeadingClass">
 		<c:choose>
 			<c:when test="${healthAlternatePricingActive eq true}">hidden-xs</c:when>
@@ -156,8 +157,6 @@
 								<!-- Inclusions / Exclusions -->
 								<div class="row tab-content">
 									<div class="col-xs-12 tab-pane hospitalCoveredPane">
-										{{ var benefitTemplate = meerkat.modules.templateCache.getTemplate($("#benefitLimitsTemplate")); }}
-										{{ var product = Results.getSelectedProduct(); }}
 										{{ product.structureIndex = 4; }}
 										{{ product.showNotCoveredBenefits = false; }}
 										{{ product.ignoreLimits = false; }}
