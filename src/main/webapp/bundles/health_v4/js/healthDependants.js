@@ -118,6 +118,15 @@
         });
     }
 
+    function toggleDependantsDefaultValue(rebateIsChecked) {
+        if (rebateIsChecked) {
+            // default to 2 dependants
+            $elements.dependants.prop('selectedIndex', 2).attr('data-attach', true);
+        } else {
+            $elements.dependants.prop('selectedIndex', 0).removeAttr('data-attach');
+        }
+    }
+
     function toggleDependants() {
         if (!_.isUndefined($elements) && !$elements.selectedRebateText.is(':visible') && $elements.applyRebate.is(':checked')) {
             var showDependants = situationEnablesDependants() && $elements.primaryHealthCover.filter(':checked').length === 1 && $elements.primaryHealthCover.filter(':checked').val() !== 'N';
@@ -576,7 +585,8 @@
         updateDependantConfiguration: updateDependantConfiguration,
         getEducationalInstitutionsOptions: getEducationalInstitutionsOptions,
         situationEnablesDependants: situationEnablesDependants,
-        toggleDependants: toggleDependants
+        toggleDependants: toggleDependants,
+        toggleDependantsDefaultValue: toggleDependantsDefaultValue
     });
 
 })(jQuery);

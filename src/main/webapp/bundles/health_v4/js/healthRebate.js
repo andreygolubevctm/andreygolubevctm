@@ -42,7 +42,7 @@
             applyRebate: $('#health_healthCover_rebate'),
             rebateCheckbox: $('#health_healthCover_rebateCheckbox'),
             incomeSelectContainer: $('.income_container'),
-            lhcContainers: $('.health-cover,  .dateinput_container, #health_healthCover_primaryCover, .income_container .select'),
+            lhcContainers: $('.health-cover, [data-step="start"] .health-about-you .dateinput_container, [data-step="benefits"] .benefitsContainer .dateinput_container, #health_healthCover_primaryCover, .income_container .select'),
             dependentsSelect: $('#health_healthCover_dependants'),
             incomeSelect: $('#health_healthCover_income'),
             selectedRebateText: $('#selectedRebateText'),
@@ -65,6 +65,7 @@
 
             $elements.incomeSelectContainer.toggleClass('hidden', !isChecked);
             $elements.applyRebate.val(isChecked ? 'Y' : 'N');
+            meerkat.modules.healthDependants.toggleDependantsDefaultValue(isChecked);
         });
 
         $elements.editTier.off().on('click', function() {
