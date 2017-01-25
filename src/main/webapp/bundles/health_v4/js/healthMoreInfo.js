@@ -11,6 +11,7 @@
     var $bridgingContainer = $('.moreInfoDropdown'),
         scrollPosition, //The position of the page on the modal display,
         topPosition,
+        moreInfoDialogId,
         testimonials = [
             {quote:"Compare the Market helped me choose a policy with features relevant to me. I no longer pay for benefits I don't use", author:"Andrea, WA"},
             {quote:"With Compare the Market I was able to find the same level of cover but now save $60 a month off my premium", author:"Geoff, QLD"},
@@ -245,6 +246,7 @@
 
     function onBeforeShowModal(jsonResult, dialogId) {
         var $dialog = $('#' + dialogId);
+        moreInfoDialogId = dialogId;
         $dialog.find('.modal-body').children().wrap("<form class='healthMoreInfoModel'></form>");
 
         // Move dual-pricing panel
@@ -306,6 +308,9 @@
 
             $elements.modalHeader.find('.lhcText').toggleClass('hidden', $elements.moreInfoContainer.offset().top < calculatedHeight);
             $elements.modalHeader.find('.printableBrochuresLink').toggleClass('hidden', $elements.moreInfoContainer.offset().top < calculatedHeight);
+            if(moreInfoDialogId && meerkat.modules.deviceMediaState.get() === 'xs') {
+                meerkat.modules.dialogs.resizeDialog(moreInfoDialogId);
+            }
         });
     }
 

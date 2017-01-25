@@ -422,37 +422,6 @@
             onInitialise: function onPaymentInit(event) {
                 meerkat.modules.healthPaymentDate.initPaymentDate();
                 meerkat.modules.healthPaymentIPP.initHealthPaymentIPP();
-
-                $("#joinDeclarationDialog_link").on('click', function () {
-                    var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
-                    var data = {};
-                    data.providerId = selectedProduct.info.providerId;
-                    data.providerContentTypeCode = meerkat.site.isCallCentreUser === true ? 'JDC' : 'JDO';
-
-                    meerkat.modules.comms.get({
-                        url: "health/provider/content/get.json",
-                        data: data,
-                        cache: true,
-                        errorLevel: "silent",
-                        onSuccess: function getProviderContentSuccess(result) {
-                            if (result.hasOwnProperty('providerContentText')) {
-                                meerkat.modules.dialogs.show({
-                                    title: 'Declaration',
-                                    htmlContent: result.providerContentText
-                                });
-                            }
-                        }
-                    });
-
-                    meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-                        method: 'trackOfferTerms',
-                        object: {
-                            productID: selectedProduct.productId
-                        }
-                    });
-
-                });
-
                 meerkat.modules.healthSubmitApplication.initHealthSubmitApplication();
             },
             onBeforeEnter: function beforeEnterPaymentStep(event) {
