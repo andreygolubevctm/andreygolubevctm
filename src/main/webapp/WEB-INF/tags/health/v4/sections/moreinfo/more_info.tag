@@ -104,15 +104,15 @@
 										<div class="col-xs-6 limitTitleLG">
 											Co-Payment/ % Hospital Contribution
 										</div>
-										<div class="col-xs-4">
+										<div class="col-xs-6">
 											{{= hospital.inclusions.copayment == '-' ? 'None' : hospital.inclusions.copayment }}
-										</div>
+										</div><div class="clearfix"></div>
 										<div class="col-xs-6 limitTitleLG addTopMargin">
 											Excess Waivers
 										</div>
 										<div class="col-xs-6 addTopMargin">
 											{{= hospital.inclusions.waivers == '-' ? 'None' : hospital.inclusions.waivers }}
-										</div>
+										</div><div class="clearfix"></div>
 									{{ } }}
 
 									<div class="col-xs-12">
@@ -125,13 +125,13 @@
 										</div>
 										<div class="col-xs-6">
 											{{= hospital.inclusions.waitingPeriods.PreExisting }}
-										</div>
+										</div><div class="clearfix"></div>
 										<div class="col-xs-6 limitTitleLG addTopMargin">
 											All other conditions
 										</div>
 										<div class="col-xs-6 addTopMargin">
 											{{= hospital.inclusions.waitingPeriods.Other }}
-										</div>
+										</div><div class="clearfix"></div>
 									{{ } }}
 
 									{{ if(typeof hospitalCover !== 'undefined') { }}
@@ -196,6 +196,7 @@
 												</div>
 												<div class="col-xs-6 limitTitle">Waiting period</div><div class="col-xs-6 limitValue">{{= restriction.WaitingPeriod }}</div>
 												<div class="col-xs-6 limitTitle">Benefit Limitation Period</div><div class="col-xs-6 limitValue">{{= restriction.benefitLimitationPeriod }}</div>
+												<div class="clearfix"></div>
 											</div>
 										</div>
 										{{ }) }}
@@ -271,7 +272,7 @@
                 </div>
 
                 <div class="sidebar-widget sidebar-widget-padded">
-                    <h3>What is the Benefits Limitation Period?</h3>
+                    <h3>What is the Benefit Limitation Period?</h3>
                     <p>If your policy has benefit limitation periods, you will only be entitled to restricted benefits (as described above) for a set time. For example, you may decide to take out a policy that only pays restricted benefits for Heart surgery for the first two years membership of the policy. After two years membership, you would then normally be entitled to full benefits for Heart surgery.</p>
                     <p>
                         Where a waiting period already applies for a particular condition or treatment, funds may begin the benefit limitation period from the end of the normal waiting period.</p>
