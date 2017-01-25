@@ -199,7 +199,7 @@
                 title: "Rewards",
                 className: "icon-" + meerkat.modules.rewardCampaign.getCurrentCampaign().campaignCode,
                 text: meerkat.modules.rewardCampaign.getCurrentCampaign().campaignDescription,
-                active: true,
+                active: meerkat.modules.rewardCampaign.isCurrentCampaignValid(),
                 productId: product.productId
             },
             {

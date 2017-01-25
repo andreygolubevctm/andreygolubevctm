@@ -121,7 +121,8 @@
     meerkat.modules.register("rewardCampaign", {
         init: initRewardCampaign,
         getCurrentCampaign: getCurrentCampaign,
-        getCampaignContentHtml: getCampaignContentHtml
+        getCampaignContentHtml: getCampaignContentHtml,
+        isCurrentCampaignValid: isCurrentCampaignValid
     });
 
 })(jQuery);
