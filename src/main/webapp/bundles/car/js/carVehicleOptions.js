@@ -362,6 +362,8 @@
 					});
 					$('.nav-tabs a:first').click();
 					onAccessoriesFormRendered();
+
+					$('#' + dialogId + ' .btn-save').attr('data-analytics','nav button');
 				}
 		});
 

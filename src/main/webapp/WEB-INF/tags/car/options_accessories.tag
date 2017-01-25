@@ -10,12 +10,15 @@
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
 
 <%-- HTML --%>
-
-	<form_v2:row label="Does the car have any non-standard accessories fitted?" id="${name}FieldRow" className="initial" helpId="4">
+	<c:set var="analAttribute"><field_v1:analytics_attr analVal="Non-Standard Options Fitted" quoteChar="\"" /></c:set>
+	<form_v2:row label="Does the car have any non-standard accessories fitted?" id="${name}FieldRow" className="initial" helpId="4" tooltipAttributes="${analAttribute}">
+		<c:set var="analAttribute"><field_v1:analytics_attr analVal="Non-Standard Options Fitted" quoteChar="\"" /></c:set>
 		<field_v2:array_radio xpath="${xpath}RadioBtns" required="true"
 			className="" items="Y=Yes,N=No"
-			id="${name}RadioBtns" title="if the car has any non-standard accessories" />
-		<a href="javascript:;" class="btn btn-edit" id="${name}Button" title="Edit Selections">Edit Selections</a>
+			id="${name}RadioBtns" title="if the car has any non-standard accessories"
+			additionalLabelAttributes="${analAttribute}" />
+		<c:set var="analAttribute"><field_v1:analytics_attr analVal="Non-Standard Option - Edit Selections" quoteChar="\"" /></c:set>
+		<a href="javascript:;" class="btn btn-edit" id="${name}Button" title="Edit Selections" ${analAttribute}>Edit Selections</a>
 	</form_v2:row>
 
 	<div id="${name}Selections">
