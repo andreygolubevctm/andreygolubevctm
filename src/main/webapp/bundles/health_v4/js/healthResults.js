@@ -592,13 +592,13 @@
             Results.settings.animation.filter.active = prevAnimationState;
         });
 
-        meerkat.messaging.subscribe(meerkatEvents.filters.FILTERS_UPDATED, function unPinOnFilterChange() {
-            var prevAnimationState = Results.settings.animation.filter.active;
-            Results.settings.animation.filter.active = false;
-            _unpinProductHelper(pinnedProductId);
-            Results.settings.animation.filter.active = prevAnimationState;
-        });
+    }
 
+    function unpinProductFromFilterUpdate() {
+        var prevAnimationState = Results.settings.animation.filter.active;
+        Results.settings.animation.filter.active = false;
+        _unpinProductHelper(pinnedProductId);
+        Results.settings.animation.filter.active = prevAnimationState;
     }
 
     function startColumnWidthTracking() {
@@ -1056,7 +1056,8 @@
         resultsStepIndex: resultsStepIndex,
         setSelectedBenefitsList: setSelectedBenefitsList,
         setCallCentreText: setCallCentreText,
-        resetCallCentreText: resetCallCentreText
+        resetCallCentreText: resetCallCentreText,
+        unpinProductFromFilterUpdate: unpinProductFromFilterUpdate
     });
 
 })(jQuery);

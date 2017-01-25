@@ -113,7 +113,7 @@
     padding-bottom: 15px;
 
     .btn-more-info {
-      @media(@lg) {
+      @media (@lg) {
         font-size: @font-size-large;
         min-height: 48px;
         padding-top: 15px;
@@ -218,7 +218,6 @@
     // .cell is used as parent wrapper as .category is re-used on non-cell divs.
     .cell {
 
-
       // A top level category e.g. the Non Cosmetic Plastic Surgery cell
       &.category { //.cell.category
 
@@ -265,7 +264,7 @@
         .featureValue {
           text-align: right;
           width: 40%;
-          @media(@xs-only) {
+          @media (@xs-only) {
             word-wrap: break-word;
             font-size: 12px;
           }
@@ -353,39 +352,22 @@
 .product-special-features {
   font-size: @font-size-small;
   color: @gray-dark;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-flex-direction: row;
-  flex-direction: row;
-  height: 80px;
-  overflow: hidden;
+  width: 100%;
 
-  &.features-3,
-  &.features-4 {
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+  &.content {
+    padding: 0;
+    position: initial;
+    overflow: visible;;
   }
-
-  &.features-1 .feature-item {
-    -webkit-flex-basis: 100%;
-    flex-basis: 100%;
-  }
-  &.features-2 .feature-item {
-    -webkit-flex-basis: 50%;
-    flex-basis: 50%;
-  }
-  &.features-3 .feature-item {
-    -webkit-flex-basis: 33.333%;
-    flex-basis: 33.333%;
-  }
-  &.features-4 .feature-item {
-    -webkit-flex-basis: 25%;
-    flex-basis: 25%;
+  .feature-item-text {
+    width: 86%;
+    float: left;
+    p {
+      margin-bottom: 0;
+    }
   }
   .feature-item {
-    display: -webkit-flex;
-    display: flex;
+    float: left;
     &.item-popover {
       &:hover {
         color: @theme-accent-4;
@@ -393,9 +375,12 @@
       }
     }
     .icon {
-      flex-grow: 1;
+      float: left;
+      width: 16px;
+      @media(@sm) {
+        width: 20px;
+      }
       font-size: @font-size-large;
-      padding-right: 5px;
     }
 
     padding-left: 5px;
@@ -404,9 +389,28 @@
     }
   }
 
-  .feature-item-text {
-    flex-grow: 1;
-    word-break: break-word;
+  &.features-3,
+  &.features-4 {
+    text-align: center;
+  }
+
+  &.features-1 .feature-item {
+    width: 100%;
+  }
+  &.features-2 .feature-item {
+    width: 50%;
+     .feature-item-text {
+      width: 80%;
+       @media (@sm) {
+         width: 77%;
+       }
+    }
+  }
+  &.features-3 .feature-item {
+    width: 33.333%;
+  }
+  &.features-4 .feature-item {
+    width: 25%;
   }
 }
 

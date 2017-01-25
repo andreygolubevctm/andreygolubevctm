@@ -104,15 +104,15 @@
 										<div class="col-xs-6 limitTitleLG">
 											Co-Payment/ % Hospital Contribution
 										</div>
-										<div class="col-xs-4">
+										<div class="col-xs-6">
 											{{= hospital.inclusions.copayment == '-' ? 'None' : hospital.inclusions.copayment }}
-										</div>
+										</div><div class="clearfix"></div>
 										<div class="col-xs-6 limitTitleLG addTopMargin">
 											Excess Waivers
 										</div>
 										<div class="col-xs-6 addTopMargin">
 											{{= hospital.inclusions.waivers == '-' ? 'None' : hospital.inclusions.waivers }}
-										</div>
+										</div><div class="clearfix"></div>
 									{{ } }}
 
 									<div class="col-xs-12">
@@ -125,13 +125,13 @@
 										</div>
 										<div class="col-xs-6">
 											{{= hospital.inclusions.waitingPeriods.PreExisting }}
-										</div>
+										</div><div class="clearfix"></div>
 										<div class="col-xs-6 limitTitleLG addTopMargin">
 											All other conditions
 										</div>
 										<div class="col-xs-6 addTopMargin">
 											{{= hospital.inclusions.waitingPeriods.Other }}
-										</div>
+										</div><div class="clearfix"></div>
 									{{ } }}
 
 									{{ if(typeof hospitalCover !== 'undefined') { }}
@@ -196,6 +196,7 @@
 												</div>
 												<div class="col-xs-6 limitTitle">Waiting period</div><div class="col-xs-6 limitValue">{{= restriction.WaitingPeriod }}</div>
 												<div class="col-xs-6 limitTitle">Benefit Limitation Period</div><div class="col-xs-6 limitValue">{{= restriction.benefitLimitationPeriod }}</div>
+												<div class="clearfix"></div>
 											</div>
 										</div>
 										{{ }) }}

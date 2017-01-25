@@ -454,7 +454,7 @@
             toggleQuoteRefTemplate('slideDown');
             // note: unpinning products happens in healthResults.js due to the internal JS variable over there.
             meerkat.modules.healthResultsTemplate.unhideFilteredProducts();
-
+            meerkat.modules.healthResults.unpinProductFromFilterUpdate();
         });
 
         meerkat.messaging.subscribe(meerkatEvents.transactionId.CHANGED, function updateCoupon() {
