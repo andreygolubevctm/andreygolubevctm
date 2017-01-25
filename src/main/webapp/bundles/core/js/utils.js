@@ -41,7 +41,10 @@
 		if (typeof timing !== "undefined") { tm = timing; }
 		if (typeof offsetFromTop !== "undefined") { offset = offsetFromTop; }
 
-		if ($ele.offset().top < $(window).scrollTop()) {
+		if ($ele.offset().top < $(window).scrollTop() ||
+			// condition used to check when right top journey button clicked on health_v4
+			( ($ele.offset().top + $ele.height()) > ($(window).scrollTop() + $(window).height()) )) {
+
 			$('html, body').animate({
 				scrollTop: $ele.offset().top + offset
 			}, tm, function(){

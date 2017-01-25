@@ -129,7 +129,27 @@ var validation = false;
                 /** If the element has a row parent (where the error message gets inserted to), then scroll to that instead **/
                 if ($parent.length > 0) $ele = $parent;
                 jQuery.validator.scrollingInProgress = true;
-                meerkat.modules.utils.scrollPageTo($ele, 500, -50, function () {
+
+                var offsetFromTop = -50,
+                    $headerTopFixed = $('.header-top.navMenu-row-fixed'),
+                    $productSummaryAffixed = $('.productSummary-affix'),
+                    $progressBarAffix = $('.progress-bar-row.navbar-affix');
+
+                if (meerkat.modules.deviceMediaState.get() === 'xs') {
+                    if ($headerTopFixed.length > 0) {
+                        offsetFromTop -= $headerTopFixed.find('.container').height();
+                    }
+
+                    if ($productSummaryAffixed.length > 0) {
+                        offsetFromTop -= $productSummaryAffixed.height();
+                    }
+                }
+
+                if ($progressBarAffix.length > 0) {
+                    offsetFromTop -= $progressBarAffix.height();
+                }
+
+                meerkat.modules.utils.scrollPageTo($ele, 500, offsetFromTop, function () {
                     jQuery.validator.scrollingInProgress = false;
                 });
             },
