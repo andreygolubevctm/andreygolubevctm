@@ -46,7 +46,8 @@
                     <div class="title <c:if test="${category eq 'Hospital'}">hidden-xs</c:if>">
                         <h2 class="ignore">Extras</h2>
                         <p>${colContent}</p>
-                        <health_v4_insuranceprefs:quick_select options="Dental:dental|Sports:sports|Peace of Mind:peace" />
+                        <health_v4_insuranceprefs:quick_select
+                                options="Dental:dental|Sports:sports|Peace of Mind:peace" trackingLabel="extras" />
                     </div>
                 </c:if>
                 <c:if test="${category eq 'Hospital'}">
@@ -56,12 +57,13 @@
                 </div>
                 <div id="tabs" class="benefitsTab">
                     <ul class="nav nav-tabs tab-count-2">
-                        <li class="active"><a data-toggle="tab" href=".comprehensive-pane" data-benefit-cover-type="customise"><h2 class="ignore">Comprehensive</h2></a></li>
-                        <li><a data-toggle="tab" href=".limited-pane" data-benefit-cover-type="limited"><h2 class="ignore">Limited Cover</h2></a></li>
+                        <li class="active"><a data-toggle="tab" href=".comprehensive-pane" data-benefit-cover-type="customise" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />><h2 class="ignore" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />>Comprehensive</h2></a></li>
+                        <li><a data-toggle="tab" href=".limited-pane" data-benefit-cover-type="limited" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />><h2 class="ignore" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />>Limited Cover</h2></a></li>
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane comprehensive-pane active in">
-                            <health_v4_insuranceprefs:quick_select options="Start a Family:family|Ageing Gracefully:ageing" />
+                            <health_v4_insuranceprefs:quick_select
+                                    options="Start a Family:family|Ageing Gracefully:ageing" trackingLabel="hospital" />
                  </c:if>
 
                                 <%-- ======================= --%>

@@ -1,4 +1,13 @@
+
 .health[data-step="results"] {
+
+  @media (@lg) {
+    .btn-cta {
+      min-height: 48px;
+      padding-top: 14px;
+      font-size: 16px;
+    }
+  }
   .results-control-container {
     .more-info-return-to-results,
     .more-info-affixed-header {
@@ -76,6 +85,10 @@
   .vertical-align {
     line-height: 60px;
   }
+
+  .productNames {
+    color: @theme-accent-4;
+  }
 }
 
 .more-info-return-to-results {
@@ -109,6 +122,25 @@
 
   .quote-reference-number {
     line-height: inherit;
+    h3 {
+      color: @gray-darker;
+    }
+  }
+}
+
+.emailBrochuresForm {
+  .moreInfoEmailBrochures .pbLabel {
+    color: @theme-accent-4;
+    font-size: 16px;
+    padding-top: 11px;
+  }
+
+  .optInMarketing {
+    margin-top: 15px;
+  }
+
+  .emailBrochureButtonRow {
+    margin-top: 15px;
   }
 }
 
@@ -150,6 +182,12 @@
   }
 
   .productSummary {
+
+    .frequency {
+      .lhcText {
+        color: @gray;
+      }
+    }
     .companyLogo {
       margin: inherit;
     }
@@ -212,7 +250,6 @@
 
   .frequencyAmount {
     color: @theme-tertiary;
-    cursor: pointer;
     font-size: 48px;
 
     .dollarSign,
@@ -233,6 +270,15 @@
       color: @theme-secondary;
     }
 
+    &.HLTicon-special-features {
+      margin-left: 36px;
+      .limitTitle {
+        display: none;
+      }
+      .limitValue {
+        width: 100%;
+      }
+    }
     &.restricted {
       &:before {
         color: @gray;
@@ -253,7 +299,10 @@
     font-size: 12px;
     line-height: 18px;
   }
-
+  .limitValue,
+  .limitTitle {
+    padding: 0;
+  }
   .addBottomMargin {
     margin-bottom: 20px;
   }
@@ -282,34 +331,32 @@
     }
   }
 
-  @media (@xs) {
-    .nav-tabs {
-      background: transparent;
-      li.active {
-        display: inline-block;
-      }
+  .nav-tabs {
+    background: transparent;
+    li.active {
+      display: inline-block;
     }
+  }
 
-    .hospitalTabContainer,
-    .restrictedContainer {
-      margin-top: 20px;
-    }
+  .hospitalTabContainer,
+  .restrictedContainer {
+    margin-top: 20px;
+  }
 
-    .printableBrochuresLink {
-      padding-bottom: 10px;
-    }
+  .printableBrochuresLink {
+    padding-bottom: 10px;
+  }
 
-    .shrinkHospital {
-      width: 43%;
-    }
+  .shrinkHospital {
+    width: 43%;
+  }
 
-    .expandExtras {
-      padding-left: 4%;
-    }
+  .expandExtras {
+    padding-left: 4%;
+  }
 
-    h5 {
-      font-size: 14px;
-    }
+  h5 {
+    font-size: 14px;
   }
 
   @media (@xs-only) {

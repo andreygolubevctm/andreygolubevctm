@@ -229,17 +229,19 @@
                 _incrementTranIdBeforeEnteringSlide();
             },
             onAfterEnter: function enterBenefitsStep(event) {
-                var toggleBarInitSettings = {
-                    container: 'body[data-step="benefits"]',
-                    currentStep: steps.benefitsStep.navigationId
-                };
-
-                meerkat.modules.benefitsToggleBar.initToggleBar(toggleBarInitSettings);
+                // Note: Not sure if this will be introduced back in a later date
+                // var toggleBarInitSettings = {
+                //     container: 'body[data-step="benefits"]',
+                //     currentStep: steps.benefitsStep.navigationId
+                // };
+                //
+                // meerkat.modules.benefitsToggleBar.initToggleBar(toggleBarInitSettings);
             },
             onAfterLeave: function leaveBenefitsStep(event) {
                 var selectedBenefits = meerkat.modules.benefitsModel.getSelectedBenefits();
                 meerkat.modules.healthResultsChange.onBenefitsSelectionChange(selectedBenefits);
-                meerkat.modules.benefitsToggleBar.deRegisterScroll();
+                // Note: Not sure if this will be introduced back in a later date
+                // meerkat.modules.benefitsToggleBar.deRegisterScroll();
                 if(meerkat.modules.benefits.getHospitalType() == 'limited') {
                     meerkat.modules.benefitsModel.setIsHospital(true);
                     meerkat.modules.benefitsModel.setBenefits([]);
@@ -420,37 +422,6 @@
             onInitialise: function onPaymentInit(event) {
                 meerkat.modules.healthPaymentDate.initPaymentDate();
                 meerkat.modules.healthPaymentIPP.initHealthPaymentIPP();
-
-                $("#joinDeclarationDialog_link").on('click', function () {
-                    var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
-                    var data = {};
-                    data.providerId = selectedProduct.info.providerId;
-                    data.providerContentTypeCode = meerkat.site.isCallCentreUser === true ? 'JDC' : 'JDO';
-
-                    meerkat.modules.comms.get({
-                        url: "health/provider/content/get.json",
-                        data: data,
-                        cache: true,
-                        errorLevel: "silent",
-                        onSuccess: function getProviderContentSuccess(result) {
-                            if (result.hasOwnProperty('providerContentText')) {
-                                meerkat.modules.dialogs.show({
-                                    title: 'Declaration',
-                                    htmlContent: result.providerContentText
-                                });
-                            }
-                        }
-                    });
-
-                    meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-                        method: 'trackOfferTerms',
-                        object: {
-                            productID: selectedProduct.productId
-                        }
-                    });
-
-                });
-
                 meerkat.modules.healthSubmitApplication.initHealthSubmitApplication();
             },
             onBeforeEnter: function beforeEnterPaymentStep(event) {

@@ -12,7 +12,8 @@
         _payments = {},
         $_dependantDefinition,
         HTML_dependantDefinition,
-        $_optionDR;
+        $_optionDR,
+        medicareHelpId;
 
     // If retrieving a quote and a product had been selected, inject the fund's application set.
     // This is in case any custom form fields need access to the data bucket, because write_quote will erase the data when it's not present in the form.
@@ -271,6 +272,26 @@
         return $_optionDR;
     }
 
+    function setMedicareCoverHelpId(id) {
+        medicareHelpId = id;
+    }
+
+    function getMedicareCoverHelpId() {
+        return medicareHelpId;
+    }
+
+    function toggleWarning($container) {
+        var selectedProduct = meerkat.modules.healthResults.getSelectedProduct(),
+            $fundWarning = $container.find('.fundWarning');
+
+        // Show warning if applicable
+        if (typeof selectedProduct.warningAlert !== 'undefined' && selectedProduct.warningAlert !== '') {
+            $fundWarning.show().html(selectedProduct.warningAlert);
+        } else {
+            $fundWarning.hide().empty();
+        }
+    }
+
     function showHowToSendInfo(providerName, required) {
         var contactPointGroup = $('#health_application_contactPoint-group'),
             contactPoint = contactPointGroup.find('.control-label span');
@@ -301,6 +322,9 @@
         _setPolicyDate: _setPolicyDate,
         getDoctorOption: getDoctorOption,
         setDoctorOption: setDoctorOption,
+        setMedicareCoverHelpId: setMedicareCoverHelpId,
+        getMedicareCoverHelpId: getMedicareCoverHelpId,
+        toggleWarning: toggleWarning,
         showHowToSendInfo: showHowToSendInfo,
         hideHowToSendInfo: hideHowToSendInfo
     });

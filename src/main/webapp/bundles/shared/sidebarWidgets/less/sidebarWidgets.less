@@ -37,7 +37,7 @@ NOTE: The purpose is ONLY to style generic containers, not to get stuck into spe
       font-family: @font-family-theme-bold;
       float: left;
       font-size: (@font-size-large - 2);
-      color: #000;
+      color: #000000;
     }
     .helper-text {
       float: right;
@@ -49,6 +49,12 @@ NOTE: The purpose is ONLY to style generic containers, not to get stuck into spe
     }
     .clearfix();
   }
+  @media (@sm-only) {
+    ul {
+      padding-left: 20px;
+    }
+  }
+
 }
 
 /** Optional Classes **/
@@ -62,17 +68,19 @@ NOTE: The purpose is ONLY to style generic containers, not to get stuck into spe
 .sidebar-widget-small-pad {
   padding: 5px 10px;
 }
+
 .sidebar-widget-dropshadow {
-  box-shadow: 1px 1px 0 0 #DBDBDC;
+  box-shadow: 1px 1px 0 0 #dbdbdc;
 }
 
 /**
 Contained sidebar box, with padding, border, box-shadow.
 */
 .sidebar-widget-contained {
-  background-color: #fff;
+  background-color: #ffffff;
   border: 1px solid @border-color;
 }
+
 .sidebar-widget-background-contained {
   background-color: fade(@theme-accent-4, 10%);
   border-radius: @border-radius-large;

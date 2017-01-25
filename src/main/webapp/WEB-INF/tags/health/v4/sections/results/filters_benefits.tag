@@ -9,12 +9,12 @@
     <div class="filter-sub-heading">Hospital</div>
     <div class="filter-by-container">
         <div class="filter-by-hospital-benefits small"></div>
-        <a href="javascript:;" class="filter-toggle small" data-filter="hospital-benefits">Change</a>
+        <a href="javascript:;" class="filter-toggle small" data-filter="hospital-benefits" <field_v1:analytics_attr analVal="hospital benefits filter" quoteChar="\"" />>Change</a>
     </div>
 
     <ul class="nav nav-tabs health-filter-hospital-benefits">
-        <li class="active"><a data-toggle="tab" href="#hospitalBenefits">Comprehensive</a></li>
-        <li><a data-toggle="tab" href="#limitedHospital">Limited</a></li>
+        <li class="active"><a data-toggle="tab" href="#hospitalBenefits" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />>Comprehensive</a></li>
+        <li><a data-toggle="tab" href="#limitedHospital" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />>Limited</a></li>
     </ul>
     <div class="tab-content health-filter-hospital-benefits">
         <div id="hospitalBenefits" class="tab-pane fade active in">
@@ -41,7 +41,7 @@
 
     <div class="filter-by-container">
         <span class="filter-by-extras-benefits small"></span>
-        <a href="javascript:;" class="filter-toggle small" data-filter="extras-benefits">Change</a>
+        <a href="javascript:;" class="filter-toggle small" data-filter="extras-benefits" <field_v1:analytics_attr analVal="extras benefits filter" quoteChar="\"" />>Change</a>
     </div>
 
     <div class="benefits-list health-filter-extras-benefits">
