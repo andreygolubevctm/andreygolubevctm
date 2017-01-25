@@ -98,6 +98,7 @@
 					<h4>Call us on </h4>
 					<h1>
 						<a href="tel:${callCentreNumber}" class="callCentreNumber">${callCentreNumber}</a>
+						<a href="tel:${callCentreAppNumber}" class="callCentreAppNumber">${callCentreAppNumber}</a>
 					</h1>
 				</div>
 			</div>

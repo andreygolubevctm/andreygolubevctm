@@ -1,4 +1,6 @@
 {
-    "brandCodes": "all",
-    "dependencies": []
+  "brandCodes": "all",
+  "dependencies": [
+    "shared/fonts/v1"
+  ]
 }

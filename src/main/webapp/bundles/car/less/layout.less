@@ -75,7 +75,11 @@
       text-transform: capitalize;
 
       &.filter-cover-type {
-        width: 168px;
+        width: 209px;
+
+        li {
+          text-align: left;
+        }
 
         &.skipNewCoverTypes {
           a {
@@ -93,6 +97,23 @@
 
       &.filter-excess {
         width: 80px;
+
+        &.default-600 {
+          a {
+            cursor: default;
+            span {
+              color: #fff;
+            }
+
+            .icon {
+              display: none;
+            }
+
+            &:hover {
+              background-color: transparent;
+            }
+          }
+        }
       }
 
       &.filter-frequency {
@@ -113,6 +134,37 @@
           margin-left: 10px;
           padding: 4px 16px;
           text-transform: uppercase;
+        }
+      }
+
+      &.filter-cover-type {
+        > a {
+          &:not(.btn) {
+            padding: 10px 5px;
+          }
+        }
+      }
+    }
+  }
+
+  &.non-comprehensive-cover {
+    .priceMode .promotion,
+    .bridgingContainer .promotionOffer,
+    .featuresNormalHeader .result-special-offer,
+    .featuresList .comprehensiveOnly,
+    .call-modal .offlineDiscount {
+      display: none !important;
+    }
+
+    #results_v5 {
+      .headers.featuresNormalHeader {
+        .compare-basket,
+        .productSummary {
+          height: 297px;
+
+          @media (@sm) {
+            height: 321px;
+          }
         }
       }
     }

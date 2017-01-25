@@ -51,6 +51,7 @@ public class ResponseAdapterV2 {
                 result.setFeatures(createFeatures(carQuote.getFeatures()));
                 result.setUnderwriter(createUnderWriter(carQuote.getUnderwriter()));
                 result.setProductDisclosures(createProductDisclosures(carQuote.getProductDisclosures()));
+                result.setFollowupIntended(carQuote.getFollowupIntended());
                 results.add(result);
 
             }

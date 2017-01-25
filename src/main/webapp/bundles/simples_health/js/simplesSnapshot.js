@@ -14,6 +14,8 @@
 				applicationState:		'#health_application_address_state',
 				journeyPostCode:		'#health_situation_postcode',
 				applicationPostCode:	'#health_application_address_postCode',
+				journeySuburb:			'#health_situation_suburb',
+				applicationSuburb:		'#health_application_address_suburb',
 				applicationFirstName:	'#health_application_primary_firstname',
 				applicationSurame:		'#health_application_primary_surname'
 		};
@@ -77,6 +79,15 @@
 		else {
 			$('.snapshotApplicationPostcode').show();
 			$('.snapshotJourneyPostcode').hide();
+		}
+		// Suburb
+		if ($(elements.applicationSuburb).val() === ''){
+			$('.snapshotApplicationSuburb').hide();
+			$('.snapshotJourneySuburb').show();
+		}
+		else {
+			$('.snapshotApplicationSuburb').show();
+			$('.snapshotJourneySuburb').hide();
 		}
 		meerkat.modules.contentPopulation.render('.simplesSnapshot');
 	}

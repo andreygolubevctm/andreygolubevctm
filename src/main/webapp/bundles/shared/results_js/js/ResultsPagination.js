@@ -2,7 +2,7 @@ var ResultsPagination = {
 
 	NEXT:"next",
 	PREVIOUS:"previous",
-
+    hasPinnedProduct: false,
 	$pagesContainer:null,
 	$nextButton:null,
 	$previousButton:null,
@@ -44,6 +44,7 @@ var ResultsPagination = {
 		if (typeof meerkat !== 'undefined') {
 			meerkat.messaging.subscribe(meerkat.modules.events.device.STATE_CHANGE, function paginationBreakPointChange(event){
 				// Don't bother doing pagination if we're on XS breakpoint
+				// @todo this could work if we fixed the css top calculations
 				if (event.state === 'xs') return;
 
 				Results.pagination.resync();
@@ -263,8 +264,10 @@ var ResultsPagination = {
 		}else{
 			Results.pagination.animateScroll(scrollPosition);
 		}
-
-		if(meerkat.modules.journeyEngine.getCurrentStep().navigationId === 'results') {
+		// sometimes it inits too soon and doesn't have this.
+        var currentStep = meerkat.modules.journeyEngine.getCurrentStep();
+		if(currentStep && currentStep.navigationId === 'results'
+		&& pageNumber !== previousPageNumber) {
 			var event = jQuery.Event("resultPageChange");
 			event.pageData = {
 				pageNumber: pageNumber,
@@ -332,6 +335,13 @@ var ResultsPagination = {
 			columnsPerPage = Results.pagination.getColumnCountFromContainer(mediaState);
 			columnWidth = Math.round((viewableArea / columnsPerPage) * 100) / 100;
 		} else {
+            /**
+			 * Only used on XS.
+			 * Pagination deteremines how wide a column is, separately to its actual width in ResultsView on XS.
+			 * Why is this?
+			 * Because it needs to account for the margin and padding, whereas the .result-row css width property
+			 * sets the innerWidth and thus excludes those properties from its width.
+             */
 			columnWidth = Results.settings.pagination.useSubPixelWidths ? Results.pagination.getSubPixelWidth($rows) : $rows.outerWidth(true);
 			viewableArea += Results.settings.pagination.margin;
 			columnsPerPage = Math.round(viewableArea/columnWidth);
@@ -339,8 +349,13 @@ var ResultsPagination = {
 
 		var pageWidth = columnWidth * columnsPerPage;
 
+		// we reduce the number of columns per page JUST here, after other calculations
+        if(Results.pagination.hasPinnedProduct) {
+            columnsPerPage -= 1;
+		}
 		var obj = {
 			pageWidth: pageWidth,
+			columnWidth: columnWidth,
 			columnsPerPage:columnsPerPage,
 			numberOfColumns:numberOfColumns,
 			numberOfPages: Math.ceil(numberOfColumns/columnsPerPage)
@@ -358,6 +373,7 @@ var ResultsPagination = {
 		if($el[0] && _.isFunction($el[0].getBoundingClientRect)) {
 			var rects = $el[0].getBoundingClientRect();
 			if(rects.width) {
+				// @IMPORTANT: Make sure this is set in verticalResults.js files to whatever is specified in the stylesheet!
 				return rects.width + Results.settings.pagination.margin;
 			}
 		}
@@ -583,7 +599,7 @@ var ResultsPagination = {
 		Results.pagination.lock();
 
 		var fullWidth = Results.view.$containerElement.parent().width();
-		var $row = $(Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows).first();
+		var $row = $(Results.settings.elements.resultsOverflow + " " + Results.settings.elements.rows).first();
 		var widthAllColumns = (Results.settings.pagination.useSubPixelWidths ? Results.pagination.getSubPixelWidth($row) : $row.outerWidth(true)) * $(Results.settings.elements.resultsContainer + " " + Results.settings.elements.rows + ".notfiltered").length;
 		var scrollWidth = fullWidth * Results.settings.animation.features.scroll.percentage;
 		var currentScroll = ResultsUtilities.getScroll('x', Results.view.$containerElement);
@@ -737,7 +753,7 @@ var ResultsPagination = {
 	},
 
 	removeCurrentPageClasses:function(){
-		$(Results.settings.elements.rows+".currentPage").removeClass("currentPage");
+		$(Results.settings.elements.resultsOverflow + ' ' + Results.settings.elements.rows+".currentPage").removeClass("currentPage");
 	},
 
 	setupNativeScroll: function() {

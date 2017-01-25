@@ -54,7 +54,7 @@
 		readonly
 		imgOnlyLabel
 --%>
-<div class="${readonlyClass} ${formGroupClasses} fieldrow ${className}"<c:if test="${not empty id}"> id="${id}"</c:if>>
+<div class="${formGroupClasses} fieldrow ${className}"<c:if test="${not empty id}"> id="${id}"</c:if>>
 
 	<c:choose>
 		<c:when test="${empty hideHelpIconCol}">
@@ -99,7 +99,7 @@
 
 			<field_v2:label value="${label}" xpath="${fieldXpath}" className="${labelClassName}" addForAttr="${addForAttr}" />
 
-			<div class="col-xs-1 visible-xs helpIconXSColumn ${offset}">
+			<div class="col-xs-1 visible-xs helpIconXSColumn">
 				<field_v2:help_icon helpId="${helpId}" showText="${showHelpText}" />
 			</div>
 

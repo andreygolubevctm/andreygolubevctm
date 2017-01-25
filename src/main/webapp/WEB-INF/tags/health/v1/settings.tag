@@ -91,6 +91,7 @@
 	<c:set var="hospitalSpecificDisabled" value="${benefitsContent.getSupplementaryValueByKey('hospitalSpecificDisabled')}" />
 
 	<c:set var="hospitalLimitedAll" value="${benefitsContent.getSupplementaryValueByKey('hospitalLimitedAll')}" />
+	<c:set var="hospitalLimitedAllALT" value="${benefitsContent.getSupplementaryValueByKey('hospitalLimitedAllALT')}" />
 	<c:set var="hospitalLimitedHelp" value="${benefitsContent.getSupplementaryValueByKey('hospitalLimitedHelp')}" />
 
 	<c:set var="extrasFamilyYoung" value="${benefitsContent.getSupplementaryValueByKey('extrasFamilyYoung')}" />
@@ -137,6 +138,10 @@
 <c:set var="healthAlternatePricingActive" value="${healthPriceDetailService.isAlternatePriceActive(pageContext.getRequest())}" />
 {
 	isCallCentreUser: <c:out value="${not empty callCentre}"/>,
+	<c:if test="${not empty callCentre}">
+		contactType: "<c:out value="${data['health/simples/contactType']}"/>",
+	</c:if>
+	gaClientId: "<c:out value="${data['health/gaclientid']}"/>",
 	isFromBrochureSite: <c:out value="${fromBrochure}"/>,
 	journeyStage: "<c:out value="${data['health/journey/stage']}"/>",
 	pageAction: '<c:out value="${pageAction}"/>',
@@ -234,6 +239,7 @@
 		combinedSpecificHelp			: "${combinedSpecificHelp}",
 
 		hospitalLimitedAll				: "${hospitalLimitedAll}",
+		hospitalLimitedAllALT			: "${hospitalLimitedAllALT}",
 		hospitalLimitedHelp				: "${hospitalLimitedHelp}",
 		extrasLimitedAll 				: "${extrasLimitedAll}",
 

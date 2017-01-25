@@ -1,8 +1,8 @@
 {
-    "brandCodes": [
-        "ctm"
-    ],
-    "dependencies": [
-        "health"
-    ]
+  "brandCodes": [
+    "ctm"
+  ],
+  "dependencies": [
+    "health"
+  ]
 }

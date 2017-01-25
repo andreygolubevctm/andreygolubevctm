@@ -105,10 +105,10 @@ var healthFunds_QTU = {
         healthFunds_QTU.$_dobPartner.addRule('youngestDOB', 18, "partner's age cannot be under 18");
 
         <%-- Authority Fund Name --%>
-        healthFunds._previousfund_authority(true);
+        meerkat.modules.healthFunds._previousfund_authority(true);
 
         <%-- Dependants --%>
-        healthFunds._dependants('This policy provides cover for your children up to their 21st birthday and dependants aged between 21 and 25 who are studying full time. Adult dependants outside these criteria can still be covered by applying for a separate policy.');
+        meerkat.modules.healthFunds._dependants('This policy provides cover for your children up to their 21st birthday and dependants aged between 21 and 25 who are studying full time. Adult dependants outside these criteria can still be covered by applying for a separate policy.');
         meerkat.modules.healthDependants.updateConfig({showFullTimeField:true, showSchoolFields:false, 'schoolMinAge':21, 'schoolMaxAge':25 });
 
         <%--allow weekend selection from the datepicker--%>
@@ -155,9 +155,9 @@ var healthFunds_QTU = {
     },
     renderPaymentDays: function() {
         if (meerkat.modules.healthPaymentStep.getSelectedFrequency() === 'fortnightly') {
-            healthFunds._payments = {'min': 0, 'max': 14, 'weekends': true};
+            meerkat.modules.healthFunds.setPayments({'min': 0, 'max': 14, 'weekends': true});
         } else {
-            healthFunds._payments = {'min': 2, 'max': 27, 'weekends': true};
+            meerkat.modules.healthFunds.setPayments({'min': 2, 'max': 27, 'weekends': true});
         }
 
         var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
@@ -181,9 +181,9 @@ var healthFunds_QTU = {
         delete healthFunds_QTU.$_dobPrimary;
         delete healthFunds_QTU.$_dobPartner;
 
-        healthFunds._dependants(false);
+        meerkat.modules.healthFunds._dependants(false);
         meerkat.modules.healthDependants.resetConfig();
-        healthFunds._reset();
+        meerkat.modules.healthFunds._reset();
 
         healthFunds_QTU.$paymentType.off('change.QTU');
         healthFunds_QTU.$paymentFrequency.off('change.QTU');

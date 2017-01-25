@@ -70,6 +70,8 @@
 		<opt02>MAZD12EM</opt02>
 	</opts>
 	<excess></excess>
+	<optionsTypeOfCover>COMPREHENSIVE</optionsTypeOfCover>
+	<typeOfCover>COMPREHENSIVE</typeOfCover>
 	<existingInsurer>
 		<premium>
 			<amountentry>$780.00</amountentry>

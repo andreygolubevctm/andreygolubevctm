@@ -1,0 +1,25 @@
+.ctpMessagePopup {
+  .modal-closebar {
+    display: none;
+  }
+
+  .modal-footer {
+    text-align: center;
+
+    .btn {
+        @media (@xs-only) {
+          margin-top: 10px;
+        }
+
+        @media (@sm) {
+          margin: 0 10px;
+        }
+    }
+  }
+
+  @media (@xs-only) {
+    .navbar {
+      position: relative;
+    }
+  }
+}

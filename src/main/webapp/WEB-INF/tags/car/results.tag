@@ -24,13 +24,13 @@
 		omitPleaseChoose="Y"
 		className="hidden" />
 
-<field_v1:hidden xpath="quote/typeOfCover" constantValue="COMPREHENSIVE" />
+<field_v1:hidden xpath="quote/typeOfCover" />
 
 <c:set var="coverTypeOptions">
-	<c:choose>
-		<c:when test="${skipNewCoverTypeCarJourney eq true}">COMPREHENSIVE=Comprehensive</c:when>
-		<c:otherwise>COMPREHENSIVE=Comprehensive,TPPD=3rd Party Property Damage,TPFT=3rd Party Fire and Theft</c:otherwise>
-	</c:choose>
+    <c:choose>
+        <c:when test="${skipNewCoverTypeCarJourney eq true or pageSettings.getBrandCode() ne 'ctm'}">COMPREHENSIVE=Comprehensive</c:when>
+        <c:otherwise>COMPREHENSIVE=Comprehensive,TPFT=Third party property&#44; fire and theft,TPPD=Third party property</c:otherwise>
+    </c:choose>
 </c:set>
 
 <field_v1:array_select
@@ -38,7 +38,7 @@
 		xpath="filter/coverTypeOptions"
 		title=""
 		required=""
-		className="hidden" />
+		className="hidden type_of_cover" />
 
 <car:results_filterbar_xs />
 
@@ -108,10 +108,10 @@
 
 	<%-- DEFAULT RESULT ROW --%>
 	<core_v1:js_template id="result-template">
-		{{ var productTitle = (typeof obj.productName !== 'undefined') ? obj.productName : 'Unknown product name'; }}
-		{{ var productDescription = (typeof obj.productDescription !== 'undefined') ? obj.productDescription : 'Unknown product name'; }}
-		{{ var promotionText = (typeof obj.discountOffer !== 'undefined' && obj.discountOffer.length > 0) ? obj.discountOffer : ''; }}
-		{{ var offerTermsContent = (typeof obj.discountOfferTerms !== 'undefined' && obj.discountOfferTerms != null && obj.discountOfferTerms.length > 0) ? obj.discountOfferTerms : ''; }}
+		{{ var productTitle = !_.isUndefined(obj.productName) ? obj.productName : 'Unknown product name'; }}
+		{{ var productDescription = !_.isUndefined(obj.productDescription) ? obj.productDescription : 'Unknown product name'; }}
+		{{ var promotionText = (!_.isUndefined(obj.discountOffer) && !_.isNull(obj.discountOffer) && obj.discountOffer.length > 0) ? obj.discountOffer : ''; }}
+		{{ var offerTermsContent = (!_.isUndefined(obj.discountOfferTerms) && !_.isNull(obj.discountOfferTerms) && obj.discountOfferTerms.length > 0) ? obj.discountOfferTerms : ''; }}
 
 		{{ var template = $("#provider-logo-template").html(); }}
 		{{ var logo = _.template(template); }}
@@ -293,14 +293,14 @@
 		{{ var brandsKnockedOut = 0; }}
 		{{ var $featuresMode = $('.featuresMode'); }}
 		{{ _.each(obj, function(result) { }}
-		{{ if (result.available !== 'Y') { }}
-		{{ brandsKnockedOut++; }}
-		{{ logos += logo(result); }}
-		{{ } }}
+			{{ if (result.available !== 'Y') { }}
+				{{ brandsKnockedOut++; }}
+				{{ logos += logo(result); }}
+			{{ } }}
 		{{ }) }}
 		<div class="result-row result_unavailable_combined notfiltered" data-available="N" style="display:block" data-position="{{= obj.length }}" data-sort="{{= obj.length }}">
 			<div class="result">
-				{{ if (brandsKnockedOut == obj.length && $featuresMode.length == 0) { }}
+				{{ if (Results.model.availableCounts == 0) { }}
 				<c:choose>
 					<c:when test="${brandCode eq 'ctm' && not(environmentCode eq 'NXS')}">
 						<agg_v2:no_quotes id="no-results-content"/>
@@ -318,12 +318,14 @@
 					<div class="logos">{{= logos }}</div>
 				</div>
 				{{ } }}
+				{{ if (Results.model.availableCounts > 0) { }}
 				<div class="resultInsert featuresMode">
 					<div class="productSummary results clearfix">
 						<h2>We're sorry but these providers chose not to quote:</h2>
 						<div class="logos">{{= logos }}</div>
 					</div>
 				</div>
+				{{ } }}
 			</div>
 		</div>
 		</div>
@@ -398,7 +400,7 @@
 
 <core_v1:js_template id="annual-price-template">
 	<div class="frequency annual clearfix" data-availability="{{= obj.available }}">
-		<div class="frequencyAmount">{{= '$' }}{{= obj.price.annualPremium }}</div>
+		<div class="frequencyAmount">{{= '$' }}{{= obj.price.annualPremiumFormatted }}</div>
 		<div class="frequencyTitle">Annual Price</div>
 	</div>
 </core_v1:js_template>
@@ -424,7 +426,7 @@
 <core_v1:js_template id="annual-price-features-template">
 	<div class="frequency annual" data-availability="{{= obj.available }}">
 		<div class="frequencyAmount">
-			<span class="dollarSign">{{= '$' }}</span><span class="dollars">{{= obj.price.annualPremium }}</span>
+			<span class="dollarSign">{{= '$' }}</span><span class="dollars">{{= obj.price.annualPremiumFormatted }}</span>
 		</div>
 		<div class="frequencyTitle">Annual</div>
 	</div>
@@ -451,7 +453,7 @@
 			</span>
 			<span class="price">
 				<span class="frequency annual annually {{= annualHidden }}">
-					{{= '$' }}{{= products[i].price.annualPremium }}
+					{{= '$' }}{{= products[i].price.annualPremiumFormatted }}
 				</span>
 				<span class="frequency monthly {{= monthlyHidden }}">
 					{{= '$' }}{{= products[i].price.monthlyPremium.toFixed(2) }}
@@ -475,7 +477,7 @@
 		<span class="carCompanyLogo logo_{{= img }}" title="{{= products[i].name }}"></span>
 				<span class="price">
 					<span class="frequency annual annually {{= annualHidden }}">
-						{{= '$' }}{{= products[i].price.annualPremium }} <span class="small hidden-sm">annually</span>
+						{{= '$' }}{{= products[i].price.annualPremiumFormatted }} <span class="small hidden-sm">annually</span>
 					</span>
 					<span class="frequency monthly {{= monthlyHidden }}">
 						{{= '$' }}{{= products[i].price.monthlyPremium.toFixed(2) }} <span class="small hidden-sm">monthly</span>
@@ -565,7 +567,7 @@
 
 	{{ var colClass = 'col-xs-12'; }}
 
-	{{ if(obj.contact.allowCallMeBack === true) { }}
+	{{ if(obj.contact.allowCallDirect === true && obj.contact.allowCallMeBack === true) { }}
 	{{ colClass = 'col-xs-6'; }}
 	{{ } }}
 
