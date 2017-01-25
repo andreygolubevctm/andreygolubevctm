@@ -214,6 +214,8 @@
 						});
 					});
 				}
+
+				$('#' + dialogId + ' .btn-save').attr('data-analytics','nav button');
 			}
 		});
 
