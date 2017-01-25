@@ -34,7 +34,7 @@
 										maxLength="20"
 										required="${false}"
 										labelName="your contact number"/>
-			<p class="optinText"><content:get key="okToCall"/></p>
+			<p class="optinText">By entering my telephone number I agree that an authorised broker from AFG, <content:optin key="brandDisplayName" useSpan="true"/>'s approved supplier of home loans, may contact me to further assist with my home loan needs.</p>
 		</form_v2:row>
 
 		<form_v2:row label="" className="email-optin-row clear closer">
