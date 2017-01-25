@@ -13,10 +13,11 @@
 	<%-- Email Address --%>
 	<c:set var="fieldXPath" value="${xpath}/email" />
 	<form_v2:row fieldXpath="${fieldXPath}" label="Email Address">
+		<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Email Address" quoteChar="\"" /></c:set>
 		<field_v2:email xpath="${fieldXPath}"
 			required="false"
 			title="the policy holder's email address"
-			additionalAttributes=" data-rule-validateOkToEmail='true' " />
+			additionalAttributes=" data-rule-validateOkToEmail='true' ${analyticsAttr}" />
 	</form_v2:row>
 
 	<%-- Marketing --%>
@@ -24,12 +25,15 @@
 
 	<%-- Best Contact Number --%>
 	<c:set var="fieldXPath" value="${xpath}/phone" />
-	<form_v2:row fieldXpath="${fieldXPath}" label="Best contact number" className="clear" helpId="524">
+	<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Phone Number - Tool Tip" quoteChar="\"" /></c:set>
+	<form_v2:row fieldXpath="${fieldXPath}" label="Best contact number" className="clear" helpId="524" tooltipAttributes="${analyticsAttr}">
+		<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Phone Number" quoteChar="\"" /></c:set>
 		<field_v1:flexi_contact_number xpath="${fieldXPath}"
 										maxLength="20"
 										required="false"
 										labelName="best number for the insurance provider to contact you to discuss your insurance needs"
-										validationAttribute=" data-rule-validateOkToCall='true' "/>
+										validationAttribute=" data-rule-validateOkToCall='true' "
+										additionalAttributes="${analyticsAttr}" />
 	</form_v2:row>
 
 	<%-- OK to call --%>

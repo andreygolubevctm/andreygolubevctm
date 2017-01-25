@@ -17,7 +17,8 @@
 </c:if>
 
 <c:set var="fieldXpath" value="${xpath}" />
-<form_v2:row fieldXpath="${fieldXpath}" label="Commencement date" className="${name}_startDateFieldset" helpId="500">
+<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Calendar - Tool Tip" quoteChar="\"" /></c:set>
+<form_v2:row fieldXpath="${fieldXpath}" label="Commencement date" className="${name}_startDateFieldset" helpId="500" tooltipAttributes="${analyticsAttr}">
 	<field_v2:commencement_date xpath="${fieldXpath}" mode="separated" includeMobile="false" />
 </form_v2:row>
 <home:commencement_date_expired />

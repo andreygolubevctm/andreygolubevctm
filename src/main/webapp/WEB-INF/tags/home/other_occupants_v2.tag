@@ -13,11 +13,13 @@
 	<%-- Anyone Older? --%>
 	<c:set var="fieldXpath" value="${xpath}/anyoneOlder" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="Will anyone older than the policy holder(s) live in the home?" id="anyoneOlder">
+		<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Older than Policy Holder" quoteChar="\"" /></c:set>
 		<field_v2:array_radio xpath="${fieldXpath}"
 			items="Y=Yes,N=No"
 			className="pretty_buttons"
 			title="if anyone is older than the policy holder at the home"
-			required="true" />
+			required="true"
+			additionalLabelAttributes="${analyticsAttr}" />
 	</form_v2:row>
 
 	<%-- DOB of the oldest person --%>
@@ -33,10 +35,12 @@
 	<%-- Is anyone over 55? --%>
 	<c:set var="fieldXpath" value="${xpath}/over55" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="Is any person living in the home over 55 and retired?" className="over55">
+		<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Retired Person Living" quoteChar="\"" /></c:set>
 		<field_v2:array_radio xpath="${fieldXpath}"
 			items="Y=Yes,N=No"
 			className="pretty_buttons"
 			title="whether there is anyone over 55 and retired living at the home"
-			required="true" />
+			required="true"
+			additionalLabelAttributes="${analyticsAttr}" />
 	</form_v2:row>
 </form_v2:fieldset>

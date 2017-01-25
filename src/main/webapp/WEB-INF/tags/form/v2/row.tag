@@ -15,6 +15,7 @@
 <%@ attribute name="labelAbove"			required="false" rtexprvalue="true"	 description="Have the label above the element instead of beside it" %>
 <%@ attribute name="addForAttr" 		required="false" rtexprvalue="true"	 description="Bool to add or not the for attribute" %>
 <%@ attribute name="labelTag"			required="false" rtexprvalue="true"  description="Override tag used for labels" %>
+<%@ attribute name="tooltipAttributes"	required="false" rtexprvalue="true"  description="Additional attributes to be added to the help icon" %>
 
 <%-- Added to deal with the new field sizes introduced in health --%>
 <%@ attribute name="smRowOverride" 		required="false" rtexprvalue="true"	 description="Override the SM value" %>
@@ -136,7 +137,7 @@
 
 	<c:if test="${empty hideHelpIconCol}">
 		<div class="col-sm-2 ${helpIconCol}">
-			<field_v2:help_icon helpId="${helpId}" showText="${showHelpText}"/>
+			<field_v2:help_icon helpId="${helpId}" showText="${showHelpText}" additionalAttributes="${tooltipAttributes}"/>
 		</div>
 	</c:if>
 
