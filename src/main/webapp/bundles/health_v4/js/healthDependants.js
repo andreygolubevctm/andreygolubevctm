@@ -1,8 +1,9 @@
 (function ($, undefined) {
 
-    var meerkat = window.meerkat;
+    var meerkat = window.meerkat,
+        meerkatEvents = meerkat.modules.events,
 
-    var $dependantsTemplateWrapper,
+        $dependantsTemplateWrapper,
         dependantTemplate,
         /**
          * The data that makes up a dependant.
@@ -55,7 +56,8 @@
             showApprenticeField: false
         },
         providerConfig,
-        maxDependantAge = 25;
+        maxDependantAge = 25,
+        $elements;
 
     function initHealthDependants() {
         $dependantsTemplateWrapper = $("#health-dependants-wrapper");
@@ -86,12 +88,54 @@
             }
         }
 
+
         renderDependants();
         applyEventListeners();
     }
 
+    function init() {
+        $(document).ready(function () {
+            $elements = {
+                primaryHealthCover : $('input[name=health_healthCover_primary_cover]'),
+                dependants : $('select[name=health_healthCover_dependants]'),
+                selectedRebateText: $('#selectedRebateText'),
+                applyRebate: $('input[name=health_healthCover_rebateCheckbox]')
+            };
+
+            aboutYouApplyEventListeners();
+        });
+    }
+
     function getDefaultDependant() {
         return _.extend({},defaultDependant);
+    }
+
+    function aboutYouApplyEventListeners() {
+
+        // toggle the dependants field
+        meerkat.messaging.subscribe(meerkatEvents.healthSituation.SITUATION_CHANGED, function toggleZDependants(selected) {
+            toggleDependants();
+        });
+    }
+
+    function toggleDependantsDefaultValue(rebateIsChecked) {
+        if (rebateIsChecked) {
+            // default to 2 dependants
+            $elements.dependants.prop('selectedIndex', 2).attr('data-attach', true);
+        } else {
+            $elements.dependants.prop('selectedIndex', 0).removeAttr('data-attach');
+        }
+    }
+
+    function toggleDependants() {
+        if (!_.isUndefined($elements) && !$elements.selectedRebateText.is(':visible') && $elements.applyRebate.is(':checked')) {
+            var showDependants = situationEnablesDependants() && $elements.primaryHealthCover.filter(':checked').length === 1 && $elements.primaryHealthCover.filter(':checked').val() !== 'N';
+            $elements.dependants.closest('.select').toggleClass('hidden', !showDependants);
+
+            if (showDependants && $elements.dependants.prop('selectedIndex') > 0) {
+                $elements.dependants.prop('selectedIndex', 0);
+            }
+        }
     }
 
     /**
@@ -152,7 +196,7 @@
 
         initHealthDependants();
 
-        var dependantCountSpecified = $('#health_healthCover_dependants').val() || 1;
+        var dependantCountSpecified = $elements.dependants.val() || 1;
         var hasChildren = situationEnablesDependants();
         $('#health_application_dependants-selection').toggle(hasChildren);
         $('#health_application_dependants_threshold').toggle(dependantCountSpecified <= 0);
@@ -342,7 +386,7 @@
         if (hasChosenToNotApplyRebate) {
             $applyPageIncomeTierMenu.slideUp();
         } else if (depCount > 0) {
-            var $depCount = $('#health_healthCover_dependants'),
+            var $depCount = $elements.dependants,
                 originalDepCount = $depCount.val();
             // Refresh the dependants on the situation step. Only reset it to a smaller number if
             $depCount.val(depCount).trigger('change');
@@ -531,6 +575,7 @@
     }
 
     meerkat.modules.register("healthDependants", {
+        init: init,
         initHealthDependants: initHealthDependants,
         resetConfig: resetConfig,
         getConfig: getConfig,
@@ -539,7 +584,9 @@
         setMaxAge: setMaxAge,
         updateDependantConfiguration: updateDependantConfiguration,
         getEducationalInstitutionsOptions: getEducationalInstitutionsOptions,
-        situationEnablesDependants: situationEnablesDependants
+        situationEnablesDependants: situationEnablesDependants,
+        toggleDependants: toggleDependants,
+        toggleDependantsDefaultValue: toggleDependantsDefaultValue
     });
 
 })(jQuery);

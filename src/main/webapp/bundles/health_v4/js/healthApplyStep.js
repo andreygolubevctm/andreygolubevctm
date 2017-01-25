@@ -62,7 +62,7 @@
 
         // Check state selection
         $elements.appPostcode.add($elements.appStreetSearch).add($elements.appSuburb).on('change', function() {
-            _testStatesParity();
+            testStatesParity();
         });
 
         $elements.paymentMedicareColour
@@ -145,8 +145,8 @@
         }
     }
 
-    function _testStatesParity() {
-        if ($elements.appState.val() !== $('#health_situation_state').val()) {
+    function testStatesParity() {
+        if ($elements.appState.val() !== $('input[name=health_situation_state]:checked').val()) {
             var suburb = $elements.appSuburbName.val(),
                 state = $elements.appState.val();
 
@@ -162,7 +162,8 @@
     meerkat.modules.register('healthApplyStep', {
         init: init,
         onBeforeEnter: onBeforeEnter,
-        onInitialise: onInitialise
+        onInitialise: onInitialise,
+        testStatesParity: testStatesParity
     });
 
 })(jQuery);

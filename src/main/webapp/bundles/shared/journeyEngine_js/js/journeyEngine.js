@@ -619,10 +619,12 @@
     // Goto either a navigation id or 'next' or 'previous'. Target is optional and will add loading statuses to the object.
     function gotoPath(path, $target){
         if (typeof $target !== 'undefined' && $target.hasClass('show-loading')) {
-            var spinnerPos = $target.attr("data-loadinganimation");
+            var spinnerPos = $target.attr("data-loadinganimation"),
+                spinnerShowAtEnd = !_.isUndefined($target.attr("data-loadinganimation-showAtEnd"));
+
             if(!_.isUndefined(spinnerPos) && !_.isEmpty(spinnerPos)) {
                 if(spinnerPos === "inside") {
-                    meerkat.modules.loadingAnimation.showInside($target);
+                    meerkat.modules.loadingAnimation.showInside($target, spinnerShowAtEnd);
                 } else {
                     meerkat.modules.loadingAnimation.showAfter($target);
                 }
