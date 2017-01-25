@@ -488,11 +488,8 @@
 					var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
 
 					// Show warning if applicable
-					if (typeof selectedProduct.warningAlert !== 'undefined' && selectedProduct.warningAlert !== '') {
-						$("#health_application-warning").find(".fundWarning").show().html(selectedProduct.warningAlert);
-					} else {
-						$("#health_application-warning").find(".fundWarning").hide().empty();
-					}
+					meerkat.modules.healthFunds.toggleWarning($('#health_application-warning'));
+
 					this.tracking.touchComment =  selectedProduct.info.provider + ' ' + selectedProduct.info.des;
 					this.tracking.productId = selectedProduct.productId.replace("PHIO-HEALTH-", "");
 
@@ -614,14 +611,8 @@
 					meerkat.modules.healthPaymentStep.rebindCreditCardRules();
 					var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
 
-					var paymentDetailsSection = $("#health_payment_details-selection");
-
 					// Show warning if applicable
-					if (typeof selectedProduct.warningAlert !== 'undefined' && selectedProduct.warningAlert !== '') {
-						paymentDetailsSection.find(".fundWarning").show().html(selectedProduct.warningAlert);
-					} else {
-						paymentDetailsSection.find(".fundWarning").hide().empty();
-					}
+					meerkat.modules.healthFunds.toggleWarning($('#health_payment_details-selection'));
 
 					// Insert fund into checkbox label
 					$('#mainform').find('.health_declaration span').text( selectedProduct.info.providerName  );

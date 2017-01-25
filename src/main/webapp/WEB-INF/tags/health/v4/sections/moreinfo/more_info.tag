@@ -25,7 +25,7 @@
 			<p>Found the right product for you?</p>
 		</div>
 		<div class="col-xs-12 col-sm-4 col-md-5 col-lg-6">
-			<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now<span class="icon-arrow-right" /></a>
+			<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Apply Online<span class="icon-arrow-right" /></a>
 		</div>
 	</div>
 
@@ -52,7 +52,8 @@
 	{{ var template = $("#more-info-call-to-action-template").html(); }}
 	{{ var htmlTemplate = _.template(template); }}
 	{{ var callToActionBarHtml = htmlTemplate(obj); }}
-
+	{{ var product = Results.getSelectedProduct(); }}
+	{{ var benefitTemplate = meerkat.modules.templateCache.getTemplate($("#benefitLimitsTemplate")); }}
 	<c:set var="buyNowHeadingClass">
 		<c:choose>
 			<c:when test="${healthAlternatePricingActive eq true}">hidden-xs</c:when>
@@ -85,7 +86,7 @@
 										<h2>Hospital</h2>
 										{{ if(typeof hospitalCover !== 'undefined') { }}
 											</div>
-											<div class="{{ if(typeof extrasCover !== 'undefined'){ }}col-xs-6{{ } }}">
+											<div class="{{ if(typeof extrasCover !== 'undefined'){ }}col-xs-6{{ } }} text-right">
 												<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="download-hospital-brochure col-xs-12" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>Download Brochure</a>
 											</div>
 										</div>
@@ -101,18 +102,18 @@
 									</div>
 
 									{{ if(typeof hospital.inclusions !== 'undefined') { }}
-										<div class="col-xs-8 limitTitleLG">
+										<div class="col-xs-6 limitTitleLG">
 											Co-Payment/ % Hospital Contribution
 										</div>
-										<div class="col-xs-4">
+										<div class="col-xs-6">
 											{{= hospital.inclusions.copayment == '-' ? 'None' : hospital.inclusions.copayment }}
-										</div>
-										<div class="col-xs-8 limitTitleLG addTopMargin">
+										</div><div class="clearfix"></div>
+										<div class="col-xs-6 limitTitleLG addTopMargin">
 											Excess Waivers
 										</div>
-										<div class="col-xs-4 addTopMargin">
+										<div class="col-xs-6 addTopMargin">
 											{{= hospital.inclusions.waivers == '-' ? 'None' : hospital.inclusions.waivers }}
-										</div>
+										</div><div class="clearfix"></div>
 									{{ } }}
 
 									<div class="col-xs-12">
@@ -120,18 +121,18 @@
 									</div>
 
 									{{ if(typeof hospital.inclusions !== 'undefined') { }}
-										<div class="col-xs-8 limitTitleLG">
+										<div class="col-xs-6 limitTitleLG">
 											Pre-existing conditions
 										</div>
-										<div class="col-xs-4">
+										<div class="col-xs-6">
 											{{= hospital.inclusions.waitingPeriods.PreExisting }}
-										</div>
-										<div class="col-xs-8 limitTitleLG addTopMargin">
+										</div><div class="clearfix"></div>
+										<div class="col-xs-6 limitTitleLG addTopMargin">
 											All other conditions
 										</div>
-										<div class="col-xs-4 addTopMargin">
+										<div class="col-xs-6 addTopMargin">
 											{{= hospital.inclusions.waitingPeriods.Other }}
-										</div>
+										</div><div class="clearfix"></div>
 									{{ } }}
 
 									{{ if(typeof hospitalCover !== 'undefined') { }}
@@ -145,10 +146,10 @@
 									<div class="col-xs-12 moreInfoHospitalTab">
 										<ul class="nav nav-tabs">
 											<li>
-												<a href="javascript:;" data-target=".hospitalCoveredPane"><h3>Covered <span class="benefitCount">{{= hospitalCover.inclusions.length }}</span></h3></a>
+												<a href="javascript:;" data-target=".hospitalCoveredPane"><h3 <field_v1:analytics_attr analVal="hospital - covered pane" quoteChar="\"" />>Covered <span class="benefitCount">{{= hospitalCover.inclusions.length }}</span></h3></a>
 											</li>
 											<li>
-												<a href="javascript:;" data-target=".hospitalNotCoveredPane"><h3>Not Covered <span class="benefitCount pink">{{= hospitalCover.exclusions.length }}</span></h3></a>
+												<a href="javascript:;" data-target=".hospitalNotCoveredPane"><h3 <field_v1:analytics_attr analVal="hospital - covered pane" quoteChar="\"" />>Not Covered <span class="benefitCount pink">{{= hospitalCover.exclusions.length }}</span></h3></a>
 											</li>
 										</ul>
 									</div>
@@ -157,11 +158,18 @@
 								<!-- Inclusions / Exclusions -->
 								<div class="row tab-content">
 									<div class="col-xs-12 tab-pane hospitalCoveredPane">
-										{{ var benefitTemplate = meerkat.modules.templateCache.getTemplate($("#benefitLimitsTemplate")); }}
-										{{ var product = Results.getSelectedProduct(); }}
 										{{ product.structureIndex = 4; }}
 										{{ product.showNotCoveredBenefits = false; }}
 										{{ product.ignoreLimits = false; }}
+								        {{ if(meerkat.modules.healthMoreInfo.hasPublicHospital(hospitalCover.inclusions)) { }}
+										<div class="row HLTicon-hospital benefitRow">
+											<div class="benefitContent">
+											<div class="col-xs-12 benefitTitle">
+												<p>Public Hospital</p>
+											</div>
+										</div>
+										</div>
+								        {{ } }}
 										{{= benefitTemplate(product) }}
 									</div>
 									<div class="col-xs-12 tab-pane hospitalNotCoveredPane">
@@ -187,8 +195,9 @@
 												<div class="col-xs-12 benefitTitle">
 													<p>{{= restriction.name }}</p>
 												</div>
-												<div class="col-xs-8 limitTitle">Waiting period</div><div class="col-xs-4 limitValue">{{= restriction.WaitingPeriod }}</div>
-												<div class="col-xs-8 limitTitle">Benefit Limitation Period</div><div class="col-xs-4 limitValue">{{= restriction.benefitLimitationPeriod }}</div>
+												<div class="col-xs-6 limitTitle">Waiting period</div><div class="col-xs-6 limitValue">{{= restriction.WaitingPeriod }}</div>
+												<div class="col-xs-6 limitTitle">Benefit Limitation Period</div><div class="col-xs-6 limitValue">{{= restriction.benefitLimitationPeriod }}</div>
+												<div class="clearfix"></div>
 											</div>
 										</div>
 										{{ }) }}
@@ -209,7 +218,7 @@
 									<h2>Extras</h2>
 									{{ if(typeof extrasCover !== 'undefined') { }}
 									</div>
-									<div class="{{ if(typeof hospitalCover !== 'undefined'){ }}col-xs-6 {{ } }} ">
+									<div class="{{ if(typeof hospitalCover !== 'undefined'){ }}col-xs-6 {{ } }} text-right">
 										<a href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" class="download-extras-brochure col-xs-12">Download brochure</a>
 									</div>
 									{{ } }}
@@ -219,10 +228,10 @@
 									<div class="col-xs-12 moreInfoExtrasTab">
 										<ul class="nav nav-tabs">
 											<li>
-												<a href="javascript:;" data-target=".extrasCoveredPane"><h3>Covered <span class="benefitCount">{{= extrasCover.inclusions.length }}</span></h3></a>
+												<a href="javascript:;" data-target=".extrasCoveredPane"><h3 <field_v1:analytics_attr analVal="extras - covered pane" quoteChar="\"" />>Covered <span class="benefitCount">{{= extrasCover.inclusions.length }}</span></h3></a>
 											</li>
 											<li>
-												<a href="javascript:;" data-target=".extrasNotCoveredPane"><h3>Not Covered <span class="benefitCount pink">{{= extrasCover.exclusions.length }}</span></h3></a>
+												<a href="javascript:;" data-target=".extrasNotCoveredPane"><h3 <field_v1:analytics_attr analVal="extras - covered pane" quoteChar="\"" />>Not Covered <span class="benefitCount pink">{{= extrasCover.exclusions.length }}</span></h3></a>
 											</li>
 										</ul>
 									</div>
@@ -250,9 +259,9 @@
 			</div>
 			<!-- CTA BUTTON -->
 			<div class="hidden-xs moreInfoTopRightColumn">
-                <div class="sidebar-widget sidebar-widget-padded">
-                    <a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now<span class="icon-arrow-right" /></a>
-                </div>
+                <div class="sidebar-widget">
+					<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Apply Online<span class="icon-arrow-right" /></a>
+				</div>
 
                 <reward:campaign_tile_container />
 
@@ -267,7 +276,7 @@
                 </div>
 
                 <div class="sidebar-widget sidebar-widget-padded">
-                    <h3>What is the Benefits Limitation Period?</h3>
+                    <h3>What is the Benefit Limitation Period?</h3>
                     <p>If your policy has benefit limitation periods, you will only be entitled to restricted benefits (as described above) for a set time. For example, you may decide to take out a policy that only pays restricted benefits for Heart surgery for the first two years membership of the policy. After two years membership, you would then normally be entitled to full benefits for Heart surgery.</p>
                     <p>
                         Where a waiting period already applies for a particular condition or treatment, funds may begin the benefit limitation period from the end of the normal waiting period.</p>
@@ -281,3 +290,4 @@
 <health_v4_moreinfo:more_info_affixed_header />
 <health_v4_moreinfo:more_info_affixed_header_mobile />
 <health_v4_moreinfo:more_info_benefit_limits />
+<health_v4_moreinfo:more_info_email_brochures />

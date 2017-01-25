@@ -9,9 +9,16 @@
   .show-on-affix {
     display: none;
   }
-  // always in effect
+  // always in effect when affixed
   &.affixed-settings {
 
+    &.featuresMode {
+      .results-header-inner-container {
+        @media (@md-only) {
+          margin: 10px 5px 25px 5px;
+        }
+      }
+    }
     .hide-on-affix {
       display: none !important;
     }
@@ -22,10 +29,10 @@
     .result {
       // if the top bar changes size, this will need to change...
       top: 146px;
-      @media(@sm-only) {
-        top: 75px;
+      @media (@sm-only) {
+        top: 65px;
       }
-      @media(@md) {
+      @media (@md) {
         top: 59px;
       }
       width: inherit;
@@ -49,8 +56,26 @@
         padding-bottom: 0;
       }
 
-      .companyLogo {
-        margin-top: 10px;
+      .productSummary {
+        height: 100px;
+        @media (@sm-only) {
+          height: 55px;
+        }
+        @media (@md) {
+          height: 55px;
+        }
+        @media(@sm-only) {
+          .annually .frequencyAmount {
+            font-size: 36px;
+            line-height: 48px; // to match the other frequency font sizes
+          }
+        }
+        @media(@md-only) {
+          .annually .frequencyAmount {
+            font-size: 38px;
+            line-height: 48px; // to match the other frequency font sizes
+          }
+        }
       }
     }
     .affixed-logo {
@@ -72,7 +97,10 @@
       .featuresList {
         border: 1px solid @results-border-color;
         margin: 0;
-        padding: 15px 15px 0 15px;
+        padding: 15px 10px 0 10px;
+        @media (@sm) {
+          padding: 15px 15px 0 15px;
+        }
       }
       &.pinned .featuresList {
         border-color: @theme-accent-4;

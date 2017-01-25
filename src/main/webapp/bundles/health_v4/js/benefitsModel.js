@@ -60,6 +60,8 @@
     function _resetModel(isHospital) {
         setIsHospital(isHospital);
         setBenefits([]);
+
+        meerkat.messaging.publish(moduleEvents.BENEFITS_MODEL_UPDATE_COMPLETED);
     }
 
     // update the benefit model depending on the type of click scenario

@@ -3,10 +3,11 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <core_v1:js_template id="results-product-special-features-template">
     {{ var module = meerkat.modules.healthResultsTemplate; }}
-    {{ var structure = module.parseSpecialFeatures(obj); var content = module.getSpecialFeaturesContent(obj, structure); }}
+    {{ var structure = module.parseSpecialFeatures(obj); var content = module.getSpecialFeaturesContent(obj, structure, 2); }}
     {{ var featureCount = module.getAvailableFeatureCount(structure); }}
-    <div class="product-special-features features-{{= featureCount }}">
+    <div class="product-special-features features-{{= featureCount }} content isMultiRow" data-featureId="888888">
         {{= content }}
+        <div class="clearfix"></div>
     </div>
 </core_v1:js_template>
 <core_v1:js_template id="results-product-special-features-popover-template">
