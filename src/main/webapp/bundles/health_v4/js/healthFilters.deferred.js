@@ -407,6 +407,8 @@
 
             // Update the active tab for hospital filter to limited if applicable
             if (hospitalType === 'limited') {
+                benefitString = '';
+                filterToggleText = 'Change';
                 $('.results-filters-benefits .health-filter-hospital-benefits li').find('a').each(function () {
                     var $that = $(this);
                     var isLimited = $that.attr('href').search(/limited/) !== -1;
@@ -452,7 +454,7 @@
             toggleQuoteRefTemplate('slideDown');
             // note: unpinning products happens in healthResults.js due to the internal JS variable over there.
             meerkat.modules.healthResultsTemplate.unhideFilteredProducts();
-
+            meerkat.modules.healthResults.unpinProductFromFilterUpdate();
         });
 
         meerkat.messaging.subscribe(meerkatEvents.transactionId.CHANGED, function updateCoupon() {
