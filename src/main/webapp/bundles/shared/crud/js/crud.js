@@ -343,7 +343,7 @@
 	/**
 	 * Returns an AJAX promise via the comms module and utilises a modified error handler.
 	 */
-	dataCRUD.prototype.promise = function(action, data, onSuccess, method) {
+	dataCRUD.prototype.promise = function(action, data, onSuccess, method, forceJson) {
 		method = method || "post";
 		
 		var finalURL = this.baseURL + "/" + action + ".json";
@@ -369,27 +369,34 @@
 
 		_showLoading(loadingText);
 
-		return meerkat.modules.comms[method]({
-			url: finalURL,
-			data: data,
-			errorLevel: "warning",
-			onSuccess: function(data, textStatus, jqXHR) {
-				if(typeof data === "string" && data !== "success")
-					data = JSON.parse(data);
+		var ajaxSettings = {
+            url: finalURL,
+            data: data,
+            errorLevel: "warning",
+            onSuccess: function(data, textStatus, jqXHR) {
+                if(typeof data === "string" && data !== "success")
+                    data = JSON.parse(data);
 
-				if(data && !data.hasOwnProperty("error")) {
-					if(onSuccess)
-						onSuccess(data);
-				} else {
-					var error = (typeof data !== "undefined" && data !== null && typeof data.error !== "undefined") ? data.error : [];
-					_handleErrorObject(error);
-				}
-			},
-			onComplete: function() {
-				_hideLoading();
-			},
-			onErrorDefaultHandling: _handleAJAXError
-		});
+                if(data && !data.hasOwnProperty("error")) {
+                    if(onSuccess)
+                        onSuccess(data);
+                } else {
+                    var error = (typeof data !== "undefined" && data !== null && typeof data.error !== "undefined") ? data.error : [];
+                    _handleErrorObject(error);
+                }
+            },
+            onComplete: function() {
+                _hideLoading();
+            },
+            onErrorDefaultHandling: _handleAJAXError
+        };
+
+		if(forceJson === true) {
+		    ajaxSettings.contentType = 'application/json; charset=utf-8';
+            ajaxSettings.doStringify = true;
+        }
+
+		return meerkat.modules.comms[method](ajaxSettings);
 	};
 	
 	function _handleErrorObject(error) {

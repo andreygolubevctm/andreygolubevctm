@@ -140,6 +140,7 @@
 		var resultLabels = ${jsonString};
 		var result = ${go:XMLtoJSON(confirmationData)};
 		var rewardOrder = ${rewardOrder};
+		var encryptedOrderLineId = "${redemptionId}";
 
 		<%--
 			add product info contained in session on the page if:

@@ -32,11 +32,12 @@ public class RewardRequestParser {
                 .orElse(dataBucket.getString("health/situation/postCode")));
         orderAddress.setSuburb(Optional.ofNullable(dataBucket.getString(ADDRESS_PREFIX + "suburbName"))
                 .orElse(dataBucket.getString("health/situation/suburb")));
-        orderAddress.setStreetName(dataBucket.getString(ADDRESS_PREFIX + "streetNum") + " "
-                + Optional.ofNullable(dataBucket.getString(ADDRESS_PREFIX + "streetName"))
+        orderAddress.setStreetName(Optional.ofNullable(dataBucket.getString(ADDRESS_PREFIX + "streetName"))
                 .orElse(dataBucket.getString(ADDRESS_PREFIX + "nonStdStreet")));
-        orderAddress.setUnitNumber(Optional.ofNullable(dataBucket.getString(ADDRESS_PREFIX + "unitShop"))
-                .orElse(dataBucket.getString(ADDRESS_PREFIX + "unitSel")));
+        orderAddress.setStreetNumber(Optional.ofNullable(dataBucket.getString(ADDRESS_PREFIX + "streetNum"))
+                .orElse(dataBucket.getString(ADDRESS_PREFIX + "houseNoSel")));
+        orderAddress.setUnitNumber(Optional.ofNullable(dataBucket.getString(ADDRESS_PREFIX + "unitSel"))
+                .orElse(dataBucket.getString(ADDRESS_PREFIX + "unitShop")));
         orderAddress.setUnitType(dataBucket.getString(ADDRESS_PREFIX + "unitType"));
         orderAddress.setFullAddress(dataBucket.getString(ADDRESS_PREFIX + "fullAddress"));
 
@@ -62,42 +63,4 @@ public class RewardRequestParser {
 
         return orderForm;
     }
-
- /*   private static OrderForm parseOrderFormRequest(final HealthRequest healthRequest, final Optional<AuthenticatedData> authenticatedSessionData, final Data dataBucket, final String saleStatus, final String campaignCode) {
-        final Long rootId = Long.parseLong(dataBucket.getString(CURRENT_ROOT_ID));
-        final Optional<String> encryptedOrderLineId = Optional.ofNullable(dataBucket.getString(RewardService.XPATH_CURRENT_ENCRYPTED_ORDER_LINE_ID));
-
-        final Application healthApplication = healthRequest.getHealth().getApplication();
-        final Address healthPostalAddress =  healthApplication.getPostal();
-
-        final OrderAddress orderAddress = new OrderAddress();
-        orderAddress.setAddressType("P");
-        orderAddress.setDpid(Integer.parseInt(healthPostalAddress.getDpId()));
-        orderAddress.setPostcode(healthPostalAddress.getPostCode());
-        orderAddress.setState(healthPostalAddress.getState());
-        orderAddress.setSuburb(healthPostalAddress.getSuburb());
-        orderAddress.setStreetName(healthPostalAddress.getStreetName());
-        orderAddress.setUnitNumber(healthPostalAddress.getUnitSel());
-        orderAddress.setUnitType(healthPostalAddress.getUnitType());
-
-        final OrderLine orderLine = new OrderLine();
-        orderLine.setCampaignCode(campaignCode);
-        orderLine.setContactEmail(healthApplication.getEmail());
-        orderLine.setEncryptedOrderLineId(encryptedOrderLineId.orElse(null));
-        orderLine.setFirstName(healthApplication.getPrimary().getFirstname());
-        orderLine.setLastName(healthApplication.getPrimary().getSurname());
-        orderLine.setPhoneNumber(Optional.ofNullable(healthApplication.getMobile())
-                .orElse(healthApplication.getOther()));
-        orderLine.getOrderAddresses().add(orderAddress);
-
-        final OrderHeader orderHeader = new OrderHeader();
-        orderHeader.setOrderLine(orderLine);
-        orderHeader.setRootId(rootId); // TODO: fix this
-        orderHeader.setSaleStatus(saleStatus);
-
-        final OrderForm orderForm = new OrderForm();
-        orderForm.setOrderHeader(orderHeader);
-
-        return orderForm;
-    }*/
 }

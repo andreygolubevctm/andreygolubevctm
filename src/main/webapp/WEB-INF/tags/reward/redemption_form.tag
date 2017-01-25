@@ -1,4 +1,4 @@
-<%@ tag description="Simples template" %>
+<%@ tag description="Redemption template" %>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
@@ -54,7 +54,7 @@
         <c:if test="${isSimplesAdmin ne true}">
         <div class="noDecline hidden">
         </c:if>
-            {{ var orderLine = data.orderLines[0]; }}
+            {{ var orderLine = data.orderForm.orderHeader.orderLine; }}
             <div class="form-group row fieldrow clear required_input">
                 <label for="order_firstName" class="col-sm-4 col-xs-10 control-label">First name</label>
                 <div class="col-sm-6 col-xs-12 row-content">
@@ -73,19 +73,11 @@
             <div class="form-group row fieldrow clear">
                 <label for="order_address_businessName" class="col-sm-4 col-xs-10 control-label">Business name</label>
                 <div class="col-sm-6 col-xs-12 row-content">
-                    <input type="text" name="order_address_businessName" id="order_address_businessName" class="form-control" value="{{= orderAddress.businessName}}" />
+                    <input type="text" name="order_address_businessName" id="order_address_businessName" class="form-control" value="{{= orderAddress.businessName }}" />
                 </div>
             </div>
 
-            <group_v2:elastic_address
-                    xpath="orderHeader/orderLine/orderAddresses"
-                    type="P"
-                    suburbNameAdditionalAttributes=" autocomplete='false'"
-                    suburbAdditionalAttributes=" autocomplete='false'"
-                    postCodeNameAdditionalAttributes=" autocomplete='false'"
-                    postCodeAdditionalAttributes=" autocomplete='false'"
-                    addRequiredAsterisk="true"
-            />
+            <reward:redemption_form_address />
 
             <div class="form-group row fieldrow clear required_input">
                 <label for="order_phoneNumber" class="col-sm-4 col-xs-10 control-label">Phone number</label>
