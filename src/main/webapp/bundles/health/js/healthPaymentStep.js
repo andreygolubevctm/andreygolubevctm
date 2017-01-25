@@ -348,12 +348,12 @@
 
 	function togglePaymentGroups() {
 		if(getSelectedPaymentMethod() === 'cc' ) {
-			$bankSection.slideUp('slow', function(){
-				$creditCardSection.slideDown();
+			$bankSection.slideUp('fast', function(){
+				$creditCardSection.slideDown('fast');
 			});
 		} else {
-			$creditCardSection.slideUp('slow', function(){
-				$bankSection.slideDown();
+			$creditCardSection.slideUp('fast', function(){
+				$bankSection.slideDown('fast');
 			});
 		}
 	}
