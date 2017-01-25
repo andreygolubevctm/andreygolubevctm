@@ -38,7 +38,7 @@ var healthFunds_QCH = {
 
 
 			<%-- Dependant definition --%>
-			healthFunds._dependants('Queensland Country Health Fund(QCHF) policies provide cover for all dependants up to the age of 21, including step and foster children. Adult dependants who are single, aged between 21 and 25 years and who are: studying full time at a school, college or university, or are training as an apprentice and earning no more than $30,000 p.a. may continue to be covered by QCHF policies.');
+            meerkat.modules.healthFunds._dependants('Queensland Country Health Fund(QCHF) policies provide cover for all dependants up to the age of 21, including step and foster children. Adult dependants who are single, aged between 21 and 25 years and who are: studying full time at a school, college or university, or are training as an apprentice and earning no more than $30,000 p.a. may continue to be covered by QCHF policies.');
 
 			meerkat.modules.healthDependants.updateConfig({ showFullTimeField :true, showSchoolFields:true, 'schoolMinAge':21, 'schoolMaxAge':24, showSchoolIdField:false, showApprenticeField:true});
 			healthFunds_QCH.tmpSchoolLabel = $('.health_dependant_details_schoolGroup .control-label').html();
@@ -54,15 +54,15 @@ var healthFunds_QCH = {
 			healthFunds_QCH.$_dobPartner.addRule('youngestDOB', 18, "partner's age cannot be under 18");
 
 			<%-- How to send information. Second argument = validation required --%>
-			healthApplicationDetails.showHowToSendInfo('QCHF', true);
+			meerkat.modules.healthFunds.showHowToSendInfo('QCHF', true);
 
 
 			<%-- Previous funds --%>
 			$('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').attr('maxlength', '10');
-			healthFunds._previousfund_authority(true);
+            meerkat.modules.healthFunds._previousfund_authority(true);
 
 			<%-- Partner authority --%>
-			healthFunds._partner_authority(false);
+            meerkat.modules.healthFunds._partner_authority(false);
 
 			<%-- Fund IDs become optional --%>
 			$('#clientMemberID input, #partnerMemberID input').setRequired(false);
@@ -116,7 +116,7 @@ var healthFunds_QCH = {
 	},
 	renderPaymentDays: function() {
 		var freq = meerkat.modules.healthPaymentStep.getSelectedFrequency();
-		healthFunds._payments = { 'min':0, 'max':1, 'weekends':true };
+		meerkat.modules.healthFunds.setPayments({ 'min':0, 'max':1, 'weekends':true });
 		healthFunds_QCH.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
 		var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
 		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), _html);
@@ -126,7 +126,7 @@ var healthFunds_QCH = {
 		$('.health_payment_credit-card_policyDay-message').html('');
 
 		var startDate = $('#health_payment_details_start').val();
-		var policyStart = healthFunds._setPolicyDate(startDate, 0);
+		var policyStart = meerkat.modules.healthFunds._setPolicyDate(startDate, 0);
 
 		$('#health_payment_credit_policyDay option[value='+policyStart+']').attr('selected','selected');
 		$('#health_payment_bank_policyDay option[value='+policyStart+']').attr('selected','selected');
@@ -146,7 +146,7 @@ var healthFunds_QCH = {
 		<%-- Run these if not loading a quote --%>
 		if (!$('body').hasClass('injectingFund')) {
 			<%-- Dependants --%>
-			healthFunds._dependants(false);
+            meerkat.modules.healthFunds._dependants(false);
 			$('.health_dependant_details_schoolGroup .control-label').html(healthFunds_QCH.tmpSchoolLabel);
 			delete healthFunds_QCH.tmpSchoolLabel;
 			$('.health_dependant_details_schoolGroup .help-icon').show();
@@ -159,12 +159,12 @@ var healthFunds_QCH = {
 			delete healthFunds_QCH.$_dobPartner;
 
 			<%-- How to send information --%>
-			healthApplicationDetails.hideHowToSendInfo();
+			meerkat.modules.healthFunds.hideHowToSendInfo();
 
 			<%-- Authority off --%>
-			healthFunds._previousfund_authority(false);
+            meerkat.modules.healthFunds._previousfund_authority(false);
 
-			healthFunds._reset();
+            meerkat.modules.healthFunds._reset();
 
 			<%-- Remove message --%>
 			$('#health_payment_details-selection p.QCH').remove();

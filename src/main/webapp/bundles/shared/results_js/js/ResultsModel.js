@@ -43,14 +43,10 @@ var ResultsModel = {
 
 		try{
 			Results.model.flush();
-			if(typeof Loading !== "undefined") {Loading.show(Results.settings.dictionary.loadingMessage);}
-			if(typeof Compare !== 'undefined') {Compare.reset();}
 
 			if (Results.settings.runShowResultsPage === true) {
 				Results.view.showResultsPage();
 			}
-
-			// @todo manage the ajax calls concurrency
 
 			// @todo = 2 different locations change the URL, which one is correct?
 			try{
@@ -287,7 +283,7 @@ var ResultsModel = {
 				if( !Object.byString( jsonResult, Results.settings.paths.results.list ).length ) {
 					// This is stupid... if there are no results it pushes 'no results' into an empty array. It actually puts an empty array inside an array.
 					Results.model.returnedProducts = [Object.byString( jsonResult, Results.settings.paths.results.list )];
-					//is because of this that a flag gets place here so that we can explicidly not display results otherwise we get exception message.
+					//is because of this that a flag gets place here so that we can explicitly not display results otherwise we get exception message.
 				} else {
 					Results.model.returnedProducts = Object.byString( jsonResult, Results.settings.paths.results.list );
 				}
@@ -719,10 +715,6 @@ var ResultsModel = {
 			return true;
 		}
 
-	},
-
-	filterByDateRange: function( value, options ){
-		// @todo
 	},
 
 	addCurrentProduct: function( product ){

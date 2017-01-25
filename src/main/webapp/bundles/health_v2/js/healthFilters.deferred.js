@@ -194,8 +194,7 @@
             filters: [
                 {
                     template: '#filter-benefits-template',
-                    container: '.results-filters-benefits',
-                    context: '#results-sidebar'
+                    container: '.results-filters-benefits'
                 }
             ],
             events: {

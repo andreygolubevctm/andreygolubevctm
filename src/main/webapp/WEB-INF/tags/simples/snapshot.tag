@@ -49,5 +49,14 @@
                 <span class="snapshotJourneyPostcode"  data-source="#health_situation_postcode"></span>
             </div>
         </div>
+        <div class="row snapshot">
+            <div class="col-md-5">
+                <span class="snapshot-title">Suburb:</span>
+            </div>
+            <div class="col-md-7">
+                <span class="snapshotApplicationSuburb"  data-source="#health_application_address_suburb"></span>
+                <span class="snapshotJourneySuburb"  data-source="#health_situation_suburb"></span>
+            </div>
+        </div>
     </div>
 </c:if>
