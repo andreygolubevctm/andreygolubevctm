@@ -64,6 +64,18 @@
         @media (@md) {
           height: 55px;
         }
+        @media(@sm-only) {
+          .annually .frequencyAmount {
+            font-size: 36px;
+            line-height: 48px; // to match the other frequency font sizes
+          }
+        }
+        @media(@md-only) {
+          .annually .frequencyAmount {
+            font-size: 38px;
+            line-height: 48px; // to match the other frequency font sizes
+          }
+        }
       }
     }
     .affixed-logo {
