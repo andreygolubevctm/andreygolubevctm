@@ -74,13 +74,16 @@
 			};
 
 			$paymentRadioGroup.find('input').on('click', function() {
-				togglePaymentGroups();
-				toggleClaimsBankAccountQuestion();
-				// validate coupon
-				validateCoupon();
-				_.defer(function delayPaymentUpdate(){
-					updatePaymentPremium();
-					updatePaymentDayOptions();
+				// Delay to avoid issue when fast clicking between payment options
+				_.defer(function(){
+					togglePaymentGroups();
+					toggleClaimsBankAccountQuestion();
+					// validate coupon
+					validateCoupon();
+					_.defer(function delayPaymentUpdate(){
+						updatePaymentPremium();
+						updatePaymentDayOptions();
+					});
 				});
 			});
 
