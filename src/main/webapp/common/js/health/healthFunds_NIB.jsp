@@ -17,21 +17,21 @@ var healthFunds_NIB = {
     $paymentTypeContainer: $('div.health-payment_details-type').siblings('div.fieldrow_legend'),
     set: function(){
         <%--Contact Point question--%>
-        healthApplicationDetails.showHowToSendInfo('NIB', true);
+        meerkat.modules.healthFunds.showHowToSendInfo('NIB', true);
 
         <%-- Previous funds --%>
         $('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').attr('maxlength', '10');
             
         <%-- Partner authority--%>
-        healthFunds._partner_authority(true);
+        meerkat.modules.healthFunds._partner_authority(true);
 
         <%--dependant definition--%>
-        healthFunds._dependants('This policy provides cover for your children up to their 21st birthday and dependants aged between 21 and 25 who are studying full time. Adult dependants outside these criteria can still be covered by applying for a separate policy.');
+        meerkat.modules.healthFunds._dependants('This policy provides cover for your children up to their 21st birthday and dependants aged between 21 and 25 who are studying full time. Adult dependants outside these criteria can still be covered by applying for a separate policy.');
 
         <%--schoolgroups and defacto--%>
         meerkat.modules.healthDependants.updateConfig({ showSchoolFields:true, 'schoolMinAge':21, 'schoolMaxAge':24, showSchoolIdField:true });
 
-        healthFunds._previousfund_authority(true);
+        meerkat.modules.healthFunds._previousfund_authority(true);
 
         <%--calendar for start cover--%>
         meerkat.modules.healthPaymentStep.setCoverStartRange(0, 29);
@@ -96,10 +96,10 @@ var healthFunds_NIB = {
     renderPaymentDays: function(){
         var freq = meerkat.modules.healthPaymentStep.getSelectedFrequency();
         if (freq == 'fortnightly') {
-            healthFunds._payments = { 'min':0, 'max':10, 'weekends':false, 'countFrom' : 'effectiveDate'};
+            meerkat.modules.healthFunds.setPayments({ 'min':0, 'max':10, 'weekends':false, 'countFrom' : 'effectiveDate'});
             healthFunds_NIB.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '0,6');
         } else {
-            healthFunds._payments = { 'min':0, 'max':27, 'weekends':true , 'countFrom' : 'today', 'maxDay' : 27};
+            meerkat.modules.healthFunds.setPayments({ 'min':0, 'max':27, 'weekends':true , 'countFrom' : 'today', 'maxDay' : 27});
             healthFunds_NIB.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
         }
         var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
@@ -127,15 +127,15 @@ var healthFunds_NIB = {
         healthFunds_NIB.$paymentTypeContainer.text('').slideUp();
 
         <%--Contact Point question--%>
-        healthApplicationDetails.hideHowToSendInfo();
+        meerkat.modules.healthFunds.hideHowToSendInfo();
 
-        healthFunds._reset();
+        meerkat.modules.healthFunds._reset();
 
         <%--Authority off--%>
-        healthFunds._previousfund_authority(false);
+        meerkat.modules.healthFunds._previousfund_authority(false);
 
         <%--dependant definition off--%>
-        healthFunds._dependants(false);
+        meerkat.modules.healthFunds._dependants(false);
 
         <%--credit card options--%>
         meerkat.modules.healthCreditCard.resetConfig();

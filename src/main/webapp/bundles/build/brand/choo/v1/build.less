@@ -1,0 +1,29 @@
+//
+// Load core variables and mixins, specific modules and theming.
+// build as ctm.min.css
+// --------------------------------------------------
+
+// Variables from bootstrap
+//@import "framework.build.variables.less"; //Left out as this file was used as the basis for ctm.variables.less
+
+// Variables for this theme
+@import "variables.less";
+
+// Mixins from bootstrap
+// Params in gulp to the compiler understand to find this file under ../../../build/
+@import "../../../framework/mixins.less";
+
+// Mixins for this theme
+@import "mixins.less";
+
+// All less files from bootstrap defined by the framework
+// Params in gulp to the compiler understand to find this file under ../../../build/
+@import "../../../../shared/iconFonts/v1/less/icon-fonts.less";
+@import "../../../framework/core.less";
+
+// All less files from bootstrap defined by the framework
+// Params in gulp to the compiler understand to find this file under ../../../build/
+@import "../../../framework/inhouse.less"; //In general, would capture things from /framework/modules/less
+
+// Specific branding and style which constitutes this theme
+@import "theme.less";

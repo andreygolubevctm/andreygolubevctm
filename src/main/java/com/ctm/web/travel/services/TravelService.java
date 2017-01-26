@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import rx.schedulers.Schedulers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,7 +92,7 @@ public class TravelService extends CommonRequestServiceV2 {
                     .response(TravelResponseV2.class)
                     .build())
                     .doOnError(this::logHttpClientError)
-                    .single().toBlocking().single();
+                    .observeOn(Schedulers.io()).toBlocking().single();
 
             travelResults = ResponseAdapterV2.adapt(travelQuoteRequest, travelResponse);
 
@@ -118,7 +119,7 @@ public class TravelService extends CommonRequestServiceV2 {
                     .response(TravelResponse.class)
                     .build())
                     .doOnError(this::logHttpClientError)
-                    .single().toBlocking().single();
+                    .observeOn(Schedulers.io()).toBlocking().single();
 
             // Convert travel-quote java model to front end model ready for JSON conversion to the front end.
             travelResults = ResponseAdapter.adapt(travelQuoteRequest, travelResponse);

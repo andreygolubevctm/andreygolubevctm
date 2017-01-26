@@ -35,6 +35,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import rx.schedulers.Schedulers;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -91,7 +92,7 @@ public class HealthQuoteService extends CommonRequestServiceV2 {
                     .response(HealthResponseV2.class)
                     .build())
                     .doOnError(this::logHttpClientError)
-                    .single().toBlocking().single();
+                    .observeOn(Schedulers.io()).toBlocking().single();
 
             return ResponseAdapterV2.adapt(data, healthResponse, alternatePricingContent);
         } else {
@@ -123,7 +124,7 @@ public class HealthQuoteService extends CommonRequestServiceV2 {
                     .response(HealthResponse.class)
                     .build())
                     .doOnError(this::logHttpClientError)
-                    .single().toBlocking().single();
+                    .observeOn(Schedulers.io()).toBlocking().single();
 
 
             final Pair<Boolean, List<HealthQuoteResult>> response = ResponseAdapter.adapt(data, healthResponse, alternatePricingContent);

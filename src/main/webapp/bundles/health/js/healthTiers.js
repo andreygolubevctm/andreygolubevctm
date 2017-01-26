@@ -63,7 +63,7 @@ Handling of the rebate tiers based off situation
 		if( $incomeBase.is(':visible') && $('#health_healthCover_incomeBase').find(':checked').length > 0 ) {
 			_cover = $incomeBase.find(':checked').val();
 		} else {
-			_cover = healthChoices.returnCoverCode();
+			_cover = meerkat.modules.healthChoices.returnCoverCode();
 		}
 
 		// Reset and then loop through all of the options

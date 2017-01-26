@@ -1,12 +1,18 @@
 {
-  "brandCodes": ["ctm"],
+  "brandCodes": [
+    "ctm"
+  ],
   "dependencies": [
     "shared/journeyEngine/v2",
     "plugins/scrollTo",
     "shared/results/v4",
+    "shared/resultsFeaturesPagination/v1",
     "shared/features",
     "shared/validation",
-    "core",
+    "shared/fonts/v1",
+    "shared/headerBar/v1",
+	"core",
+    "shared/journeyProgressBar/v2",
     "shared/forms/v2",
     "shared/currency",
     "shared/currencyUtils",
@@ -37,5 +43,5 @@
     "shared/filters",
     "shared/radioGroupTile",
     "shared/bootstrapSwitch"
-   ]
+  ]
 }

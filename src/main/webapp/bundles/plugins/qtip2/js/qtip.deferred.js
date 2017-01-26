@@ -869,6 +869,9 @@
 			// Viewport adjustment is disabled, set values to zero
 			else { position.adjusted = { left: 0, top: 0 }; }
 
+			if(position.left < 0) position.left = 0;
+			if(position.top < 0) position.top = 0;
+
 			// Set tooltip position class if it's changed
 			if(cache.posClass !== (newClass = this._createPosClass(this.position.my))) {
 				tooltip.removeClass(cache.posClass).addClass( (cache.posClass = newClass) );

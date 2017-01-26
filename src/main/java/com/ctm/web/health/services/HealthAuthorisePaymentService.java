@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import rx.schedulers.Schedulers;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -95,7 +96,7 @@ public class HealthAuthorisePaymentService extends CommonRequestServiceV2 {
                     .responseType(MediaType.APPLICATION_JSON)
                     .response(AuthorisePaymentResponseV2.class)
                     .build())
-                    .single().toBlocking().single();
+                    .observeOn(Schedulers.io()).toBlocking().single();
             return ResponseAdapterV2.adapt(response);
 
 
@@ -117,7 +118,7 @@ public class HealthAuthorisePaymentService extends CommonRequestServiceV2 {
                     .responseType(MediaType.APPLICATION_JSON)
                     .response(AuthorisePaymentResponse.class)
                     .build())
-                    .single().toBlocking().single();
+                    .observeOn(Schedulers.io()).toBlocking().single();
 
             return ResponseAdapter.adapt(response);
 

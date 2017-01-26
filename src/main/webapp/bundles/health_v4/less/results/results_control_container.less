@@ -1,0 +1,23 @@
+.results-control-container {
+  padding-bottom: 10px;
+  @media(@md) {
+    padding-bottom: 0;
+    border-bottom: 1px solid @gray-light;
+  }
+  background-color: #fff;
+  &.affix {
+    padding-top: 10px;
+  }
+  .quote-reference-number, .filter-results-hidden-products, .slide-feature-pagination {
+    line-height: 40px; // height of the frequency control.
+  }
+  .quote-reference-number {
+    font-size: 20px;
+    h3 {
+      color: @gray-darker;
+    }
+  }
+  .filter-results-hidden-products {
+    color: @gray;
+  }
+}

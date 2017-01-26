@@ -29,9 +29,9 @@ section: Results v4
     Inner Container wraps the content that needs to be constrained within the padding of the resultInsert.
     */
   .results-header-inner-container {
-    padding: 10px 10px 15px 10px;
+    margin: 10px 10px 15px 10px;
     @media(@sm) {
-      padding: 10px 15px 25px 15px;
+      margin: 10px 15px 25px 15px;
     }
   }
 }
@@ -76,11 +76,11 @@ section: Results v4
       }
       text-align: center;
       // set font family:
-      font-family: @font-family-theme-bold;
+      font-family: @results-price-font-family;
       .cents,
       .comma,
       .frequencyTitle {
-        font-family: @font-family-theme-regular;
+        font-family: @results-price-cents-font-family;
       }
       // set font sizes
       font-size: 32px;

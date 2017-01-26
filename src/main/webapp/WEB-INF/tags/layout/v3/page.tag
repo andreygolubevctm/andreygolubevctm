@@ -10,6 +10,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 <%@ attribute name="title"				required="false"  rtexprvalue="true"	 description="The title of the page" %>
 <%@ attribute name="skipJSCSS"	required="false"  rtexprvalue="true"	 description="Provide if wanting to exclude loading normal js/css (except jquery)" %>
 <%@ attribute required="false" name="body_class_name" description="Allow extra styles to be added to the rendered body tag" %>
+<%@ attribute required="false" name="bundleFileName" description="Pass in alternate bundle file name" %>
 
 <%@ attribute fragment="true" required="true" name="head" %>
 <%@ attribute fragment="true" required="true" name="head_meta" %>
@@ -44,9 +45,8 @@ ${newPage.init(pageContext.request, pageSettings)}
 <c:set var="assetUrl" value="/${pageSettings.getContextFolder()}assets/" />
 <c:set var="revision" value="${webUtils.buildRevisionAsQuerystringParam()}" />
 
-<%-- for Health V2 A/B testing --%>
 <c:set var="fileName" value="${pageSettings.getVerticalCode()}" />
-<c:if test="${isHealthV2 eq true}"><c:set var="fileName" value="health_v2" /></c:if>
+<c:if test="${not empty bundleFileName}"><c:set var="fileName" value="${bundleFileName}" /></c:if>
 
 <!DOCTYPE html>
 <go:html>
@@ -93,7 +93,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 		</c:if>
 
 		<%--  Modernizr --%>
-		<script src='${assetUrl}js/bundles/plugins/modernizr.min.js'></script>
+		<script src='${assetUrl}js/bundles/plugins/modernizr${pageSettings.getSetting('minifiedFileString')}.js'></script>
 
 	</c:if>
 
@@ -170,12 +170,6 @@ ${newPage.init(pageContext.request, pageSettings)}
 								<span class="icon icon-reorder"></span>
 							</button>
 
-							<c:if test="${pageSettings.getVerticalCode() eq 'health'}">
-								<button type="button" class="navbar-toggle phone collapsed disabled" data-toggle="navMenuOpen" data-target=".navbar-collapse-menu">
-									<span class="sr-only">Contact Us</span>
-									<span class="icon icon-phone"></span>
-								</button>
-							</c:if>
 							<c:set var="exitUrl" value="" />
 							<c:if test="${pageSettings.hasSetting('exitUrl')}">
 							<c:set var="exitUrl" value="${fn:toLowerCase(pageSettings.getSetting('exitUrl'))}" />
@@ -206,12 +200,8 @@ ${newPage.init(pageContext.request, pageSettings)}
 
 		</div>
 
-
-
 			<%-- XS Results Pagination --%>
-			<div class="navbar navbar-default xs-results-pagination navMenu-row-fixed visible-xs">
-				<jsp:invoke fragment="xs_results_pagination" />
-			</div>
+			<jsp:invoke fragment="xs_results_pagination" />
 
 		</header>
 
@@ -236,7 +226,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 
 		<%-- JS Libraries --%>
             <!--[if lt IE 9]>
-            <script src="${assetUrl}js/bundles/plugins/respond.min.js"></script>
+            <script src="${assetUrl}js/bundles/plugins/respond${pageSettings.getSetting('minifiedFileString')}.js"></script>
             <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
             <script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}libraries/jquery/js/jquery-1.11.3${pageSettings.getSetting('minifiedFileString')}.js">\x3C/script>');</script>
             <![endif]-->
@@ -298,7 +288,11 @@ ${newPage.init(pageContext.request, pageSettings)}
 						name: '${pageSettings.getSetting("brandName")}',
 						vertical: '${pageSettings.getVerticalCode()}',
 						isDev: ${isDev}, <%-- boolean determined from conditions above in this tag --%>
+						minifiedFileString: '${pageSettings.getSetting('minifiedFileString')}',
                         isCallCentreUser: <c:out value="${not empty callCentre}"/>,
+						<c:if test="${pageSettings.hasSetting('inInEnabled')}">
+						inInEnabled: ${pageSettings.getSetting('inInEnabled')},
+						</c:if>
 						showLogging: <c:out value="${showLogging}" />,
 						environment: '${fn:toLowerCase(environmentService.getEnvironmentAsString())}',
 						serverDate: new Date(<fmt:formatDate value="${now}" type="DATE" pattern="yyyy"/>, <c:out value="${serverMonth}" />, <fmt:formatDate value="${now}" type="DATE" pattern="d"/>),
@@ -312,6 +306,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 							exit: '${exitUrl}',
 							context: '${pageSettings.getContextFolder()}'
 						},
+						isTaxTime: '<content:get key="taxTime"/>',
 						watchedFields: '<content:get key="watchedFields"/>',
 						content:{
 							brandDisplayName: '<content:get key="brandDisplayName"/>'
@@ -371,7 +366,7 @@ ${newPage.init(pageContext.request, pageSettings)}
     </c:when>
     <c:otherwise>
 	<!--[if lt IE 9]>
-	<script src="${assetUrl}js/bundles/plugins/respond.min.js"></script>
+	<script src="${assetUrl}js/bundles/plugins/respond${pageSettings.getSetting('minifiedFileString')}.js"></script>
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}libraries/jquery/js/jquery-1.11.3${pageSettings.getSetting('minifiedFileString')}.js">\x3C/script>');</script>
 	<![endif]-->

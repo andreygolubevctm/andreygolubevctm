@@ -531,7 +531,7 @@
 
     function startColumnWidthTracking() {
         if (meerkat.modules.deviceMediaState.get() === 'xs' && Results.getDisplayMode() === 'features') {
-            Results.view.startColumnWidthTracking($(window), Results.settings.render.features.numberOfXSColumns, true);
+            Results.view.startColumnWidthTracking($(window), Results.settings.render.features.numberOfXSColumns, false);
             Results.pagination.setCurrentPageNumber(1);
             Results.pagination.resync();
         }
@@ -689,7 +689,7 @@
 
     function resetSelectedProduct() {
         // Need to reset the health fund setting.
-        healthFunds.unload();
+        meerkat.modules.healthFunds.unload();
 
         // Reset selected product.
         setSelectedProduct(null);

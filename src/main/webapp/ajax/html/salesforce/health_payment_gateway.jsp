@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="${assetUrl}brand/${pageSettings.getBrandCode()}/css/salesforce_health${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
 
     <!--[if lt IE 9]>
-    <script src="${assetUrl}js/bundles/plugins/respond.min.js"></script>
+    <script src="${assetUrl}js/bundles/plugins/respond${pageSettings.getSetting('minifiedFileString')}.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}libraries/jquery/js/jquery-1.11.3${pageSettings.getSetting('minifiedFileString')}.js">\x3C/script>');</script>
     <![endif]-->
@@ -33,7 +33,7 @@
     <script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}libraries/jquery/js/jquery-2.1.4${pageSettings.getSetting('minifiedFileString')}.js">\x3C/script>');</script>
     <!--<![endif]-->
     <script>window._ || document.write('<script src="${assetUrl}/libraries/underscore-1.8.3.min.js">\x3C/script>')</script>
-    <script src='${assetUrl}js/bundles/plugins/modernizr.min.js'></script>
+    <script src='${assetUrl}js/bundles/plugins/modernizr${pageSettings.getSetting('minifiedFileString')}.js'></script>
     <script src="${assetUrl}js/libraries/bootstrap${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
 </head>
 <body class="${provider}">
@@ -95,7 +95,7 @@
         })(window.meerkat);
     
         $(document).ready(function() {
-            yepnope.injectJs({
+            window.yepnope.injectJs({
                 src: '${assetUrl}js/bundles/salesforce_health.deferred${pageSettings.getSetting('minifiedFileString')}.js?${revision}',
                 attrs: {
                     async: true

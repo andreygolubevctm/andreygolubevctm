@@ -44,7 +44,7 @@ var healthFunds_THF = {
 		$('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').attr('maxlength', '10');
 
 		<%-- Authority --%>
-		healthFunds._previousfund_authority(true);
+        meerkat.modules.healthFunds._previousfund_authority(true);
 
 		<%--credit card & bank account frequency & day frequency--%>
 		meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':false, 'fortnightly':true, 'monthly':true, 'quarterly':true, 'halfyearly':true, 'annually':true });
@@ -140,7 +140,7 @@ var healthFunds_THF = {
 		if (healthFunds_THF.healthCvr === 'F' || healthFunds_THF.healthCvr === 'SPF' ) {
 
 			<%--dependant definition--%>
-			healthFunds._dependants('<c:out value="${dependentText}" escapeXml="true"/>');
+            meerkat.modules.healthFunds._dependants('<c:out value="${dependentText}" escapeXml="true"/>');
 			<%--change age of dependants and school --%>
 			meerkat.modules.healthDependants.setMaxAge(25);
 			<%--schoolgroups and defacto --%>
@@ -233,13 +233,13 @@ var healthFunds_THF = {
 		healthFunds_THF.employmentFld.setRequired(true);
 	},
 	renderPaymentDays: function() {
-		healthFunds._payments = {
+        meerkat.modules.healthFunds.setPayments({
 			'minType':meerkat.modules.healthPaymentDay.FROM_EFFECTIVE_DATE,
 			'min':7,
 			'max':16,
 			'weekends':false,
 			'countFrom' : meerkat.modules.healthPaymentDay.EFFECTIVE_DATE
-		};
+		});
 		healthFunds_THF.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '0,6');
 		var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
 		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), _html);
@@ -248,7 +248,7 @@ var healthFunds_THF = {
 	},
 	unset: function () {
 		"use strict";
-		healthFunds._reset();
+        meerkat.modules.healthFunds._reset();
 
 		<%-- turn back on credit card option --%>
 		$('#health_payment_details_type_cc').prop('disabled', false).parent('label').removeClass('disabled').removeClass('disabled-by-fund');
@@ -270,7 +270,7 @@ var healthFunds_THF = {
 		$('#health_previousfund_primary_authority, #health_previousfund_partner_authority').setRequired(false);
 		$('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').removeAttr('maxlength');
 
-		healthFunds._previousfund_authority(false);
+        meerkat.modules.healthFunds._previousfund_authority(false);
 
 		healthFunds_THF.$paymentType.off('change.THF');
 		healthFunds_THF.$paymentFrequency.off('change.THF');
