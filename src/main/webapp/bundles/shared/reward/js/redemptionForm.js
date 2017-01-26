@@ -24,6 +24,7 @@
             meerkat.modules.autocomplete.setTypeahead();
             meerkat.modules.address_lookup.setBaseURL(baseURL);
             applyEventListeners();
+            _toggleSignOnReceiptWarning();
         }
     }
 
@@ -41,6 +42,13 @@
                 $modal.find('.rewardType input').prop('checked', false).trigger('change');
             }
         });
+
+        $modal.find('.signature input').on('change', _toggleSignOnReceiptWarning);
+    }
+    
+    function _toggleSignOnReceiptWarning() {
+        var $signatureSection =  $modal.find('.signature');
+        $signatureSection.find('.fieldrow_legend').toggle($signatureSection.find('input:checked').val() === 'N');
     }
 
     meerkat.modules.register("redemptionForm", {

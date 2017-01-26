@@ -71,10 +71,14 @@
                     if (response.status && response.status === true) {
                         renderSuccessMessage();
                         meerkat.modules.dialogs.close(that.modalId);
+                    } else if (response.message) {
+                        $('#redemptionForm').find(".error-message").html('response.message');
                     }
                 };
 
-            this.promise("update", data, onSuccess, 'post', true);
+            if ( $('#redemptionForm').valid() ) {
+                this.promise("update", data, onSuccess, 'post', true);
+            }
         };
 
         meerkat.messaging.subscribe(meerkatEvents.crud.CRUD_MODAL_OPENED, function initRedemptionForm(modalId) {

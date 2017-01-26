@@ -29,11 +29,6 @@
                 </c:otherwise>
             </c:choose>
         </div>
-        <div class="row">
-            <div class="col-sm-12">
-                <ul class="error-list"></ul>
-            </div>
-        </div>
         <div class="form-group row fieldrow clear required_input rewardType">
             <label for="order_rewardType" class="col-sm-4 col-xs-10 control-label">Please select your reward</label>
             <div class="col-sm-8 col-xs-12 row-content">
@@ -103,7 +98,7 @@
             </c:choose>
 
 
-            <div class="form-group row fieldrow clear required_input">
+            <div class="form-group row fieldrow clear required_input signature">
                 <label for="order_signOnReceipt" class="col-sm-4 col-xs-10 control-label">Signature on delivery?</label>
                 <div class="col-sm-6 col-xs-12 row-content">
                     <div class="btn-group btn-group-justified btn-group-wrap" data-toggle="radio">
@@ -112,6 +107,7 @@
                         <label class="btn btn-form-inverse {{= orderLine.signOnReceipt === false ? 'active' : '' }}">
                             <input type="radio" name="order_signOnReceipt" id="order_signOnReceipt_N" value="N" data-msg-required="Please tell us if want signature on delivery" required="required" {{= orderLine.signOnReceipt === false ? "checked" : "" }}>No</label>
                     </div>
+                    <span class="fieldrow_legend">If you choose this option, you accept full responsibility upon the delivery of your reward and acknowledge it will not be replaced under any circumstances.</span>
                 </div>
             </div>
 
@@ -128,7 +124,7 @@
                 <div class="col-sm-6 col-xs-10 col-sm-offset-4 row-content">
                     <div class="checkbox">
                         <input type="checkbox" name="order_privacyOptin" id="order_privacyOptin" class="checkbox-custom checkbox" value="Y" required="required" data-msg-required="Please agree to the Terms & Conditions">
-                        <label for="order_privacyOptin">Please tick to confirm you have read and agree to <a href="https://www.comparethemarket.com.au/terms-and-conditions/" target="_blank">Terms &amp; Conditions</a></label>
+                        <label for="order_privacyOptin"> Please tick to confirm you have read and agree the <a href="https://www.comparethemarket.com.au/terms-and-conditions/" target="_blank">Meerkat toys Terms and Conditions</a></label>
                     </div>
                 </div>
             </div>
@@ -149,6 +145,12 @@
                 </div>
             </div>
         </c:if>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <p class="error-message text-warning"></p>
+            </div>
+        </div>
 
         <div class="row text-right">
             <div class="col-sm-10">

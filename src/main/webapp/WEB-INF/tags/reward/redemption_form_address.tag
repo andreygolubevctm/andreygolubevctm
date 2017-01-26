@@ -11,7 +11,7 @@
         <div class="col-sm-2 col-xs-2"></div>
     </div>
     <div class="form-group row fieldrow  required_input " id="order_address_autofilllessSearchRow">
-        <label  class="col-sm-4 col-xs-10  control-label">Street Address</label>
+        <label  class="col-sm-4 col-xs-10  control-label">Address for delivery</label>
         <div class="col-xs-2 visible-xs helpIconXSColumn "></div>
         <div class="col-sm-6 col-xs-12   row-content">
             <input type="text" name="order_address_autofilllessSearch" id="order_address_autofilllessSearch" class="form-control typeahead typeahead-address typeahead-autofilllessSearch show-loading sessioncamexclude placeholder"  value="{{= orderAddress.fullAddress }}"  placeholder="e.g. 5/20 Sample St" data-rule-validAutofilllessSearch='order_address' data-msg-validAutofilllessSearch='Please select a valid address' >
