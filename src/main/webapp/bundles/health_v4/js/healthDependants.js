@@ -118,8 +118,8 @@
         });
     }
 
-    function toggleDependantsDefaultValue(rebateIsChecked) {
-        if (rebateIsChecked) {
+    function toggleDependantsDefaultValue(shouldSetDefaultDependants) {
+        if (shouldSetDefaultDependants) {
             // default to 2 dependants
             $elements.dependants.prop('selectedIndex', 2).attr('data-attach', true);
         } else {
