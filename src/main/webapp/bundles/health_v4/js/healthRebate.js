@@ -118,7 +118,7 @@
 
         completeText += 'earning ' + $elDropdownOption.text();
 
-        if (meerkat.modules.healthTiers.shouldShowDependants()) {
+        if (meerkat.modules.healthDependants.situationEnablesDependants()) {
             completeText += ', ' + dependantsText;
         }
 
