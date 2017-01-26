@@ -129,7 +129,7 @@
 
     function toggleDependants() {
         if (!_.isUndefined($elements) && !$elements.selectedRebateText.is(':visible') && $elements.applyRebate.is(':checked')) {
-            var showDependants = situationEnablesDependants() && $elements.primaryHealthCover.filter(':checked').length === 1 && $elements.primaryHealthCover.filter(':checked').val() !== 'N';
+            var showDependants = situationEnablesDependants();
             $elements.dependants.closest('.select').toggleClass('hidden', !showDependants);
 
             if (showDependants && $elements.dependants.prop('selectedIndex') > 0) {
