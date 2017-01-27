@@ -113,8 +113,8 @@
                                                         <%-- This is a duplicate of the row above and needs to be cleaned up in the .less--%>
                                                     <c:set var="benefitLabel">
 													<span class="benefitContent">
-														<div class="benefitTitle">${selectedValue.getName()}</div>
-														<span class="benefitSummary">${benefitsContentBlurbs.getSupplementaryValueByKey(selectedValue.getId())} <a href="javascript:;"
+														<div class="benefitTitle needsclick">${selectedValue.getName()}</div>
+														<span class="benefitSummary needsclick">${benefitsContentBlurbs.getSupplementaryValueByKey(selectedValue.getId())} <a href="javascript:;"
                                                                                                                                                                    class="help_icon floatLeft"
                                                                                                                                                                    data-content="helpid:${selectedValue.getHelpId()}"
                                                                                                                                                                    data-toggle="popover">more</a></span>
