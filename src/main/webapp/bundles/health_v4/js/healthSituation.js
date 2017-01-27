@@ -36,10 +36,15 @@
         return $healthSituation.filter(':checked').val();
     }
 
+    function getSituationAsText() {
+        return $.trim($healthSituation.filter(':checked').parent().text());
+    }
+
     meerkat.modules.register('healthSituation', {
         init: init,
         events: moduleEvents,
-        getSituation: getSituation
+        getSituation: getSituation,
+        getSituationAsText: getSituationAsText
     });
 
 })(jQuery);
