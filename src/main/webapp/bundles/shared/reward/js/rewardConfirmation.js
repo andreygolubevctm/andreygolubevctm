@@ -8,7 +8,9 @@
 
     var CRUD = false,
         rewardData,
-        $contentHtml;
+        $contentHtml,
+        currentCampaign,
+        selectedRewardTypeId;
 
     function initRewardConfirmation() {
         $(document).ready(function() {
@@ -18,6 +20,10 @@
             if (!rewardOrder || rewardOrder.status !== true || !rewardOrder.orderHeader) return;
 
             rewardData = _transformRewardOrder();
+            if (rewardData.eligibleCampaigns && rewardData.eligibleCampaigns[0]) {
+                currentCampaign = rewardData.eligibleCampaigns[0];
+                $contentHtml = $(currentCampaign.contentHtml);
+            }
             initCRUD();
         });
 
@@ -38,8 +44,10 @@
                 orderAddress = orderLine.orderAddresses[0],
                 $form = $('#redemptionForm');
 
-            orderLine.campaignCode = rewardData.eligibleCampaigns[0].campaignCode;
-            orderLine.rewardTypeId = $form.find('input[name="order_rewardType"]').val();
+            selectedRewardTypeId = $form.find('input[name="order_rewardType"]').val();
+
+            orderLine.campaignCode = currentCampaign.campaignCode;
+            orderLine.rewardTypeId = selectedRewardTypeId;
             orderLine.firstName = $form.find('input[name="order_firstName"]').val();
             orderLine.lastName = $form.find('input[name="order_lastName"]').val();
             orderLine.contactEmail = $form.find('input[name="order_contactEmail"]').val();
@@ -71,6 +79,14 @@
                     if (response.status && response.status === true) {
                         renderSuccessMessage();
                         meerkat.modules.dialogs.close(that.modalId);
+                        meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+                            method:'trackQuoteReward',
+                            object: {
+                                action: 'Reward Redeemed',
+                                redeemedCampaignCode: currentCampaign.campaignCode,
+                                redeemedRewardTypeId: selectedRewardTypeId
+                            }
+                        });
                     } else if (response.message) {
                         $('#redemptionForm').find(".error-message").html('response.message');
                     }
@@ -93,7 +109,6 @@
     }
     
     function renderRewardOrder() {
-        setContentHtml();
         switch (rewardOrder.generalStatus) {
             case 'ALREADY_REDEEMED':
                 renderSuccessMessage();
@@ -104,11 +119,6 @@
 
     }
 
-    function setContentHtml(){
-        if (rewardData.eligibleCampaigns && rewardData.eligibleCampaigns[0]) {
-            $contentHtml = $(rewardData.eligibleCampaigns[0].contentHtml);
-        }
-    }
 
     function getContentHtml() {
         return $contentHtml;
@@ -132,7 +142,7 @@
             if(key === 'eligibleCampaigns') {
                 obj[key] = rewardOrder.orderHeader[key];
             } else if(key === 'orderLines') {
-                obj.orderForm.orderHeader['orderLine'] = rewardOrder.orderHeader[key].filter(_filterbyEncryptedOrderLineId)[0];
+                obj.orderForm.orderHeader['orderLine'] = rewardOrder.orderHeader[key].filter(_filterByEncryptedOrderLineId)[0];
             } else {
                 obj.orderForm.orderHeader[key] = rewardOrder.orderHeader[key];
             }
@@ -141,7 +151,7 @@
         return obj;
     }
 
-    function _filterbyEncryptedOrderLineId(orderLine){
+    function _filterByEncryptedOrderLineId(orderLine){
         return orderLine.encryptedOrderLineId === encryptedOrderLineId;
     }
 

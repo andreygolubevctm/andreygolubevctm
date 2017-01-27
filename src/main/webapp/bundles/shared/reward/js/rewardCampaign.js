@@ -8,6 +8,7 @@
 
     var campaignTileTemplate, campaignTileTemplateXs,
         currentCampaign = false,
+        trackRewardFired = false,
         $campaignContentHtml;
 
     function initRewardCampaign(){
@@ -99,6 +100,18 @@
                 $(this).html(campaignTileTemplate(data));
             }
         });
+
+        // Fire tracking call
+        if (trackRewardFired !== true) {
+            meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+                method:'trackQuoteReward',
+                object: {
+                    action: 'Reward Offered',
+                    offeredCampaignCode: currentCampaign.campaignCode
+                }
+            });
+            trackRewardFired = true;
+        }
     }
 
     function isCurrentCampaignValid() {
