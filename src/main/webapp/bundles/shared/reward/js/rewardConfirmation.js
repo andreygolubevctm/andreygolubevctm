@@ -8,7 +8,7 @@
 
     var CRUD = false,
         rewardData,
-        $confirmationHtml;
+        $contentHtml;
 
     function initRewardConfirmation() {
         $(document).ready(function() {
@@ -93,7 +93,7 @@
     }
     
     function renderRewardOrder() {
-        setConfirmationHtml();
+        setContentHtml();
         switch (rewardOrder.generalStatus) {
             case 'ALREADY_REDEEMED':
                 renderSuccessMessage();
@@ -104,20 +104,20 @@
 
     }
 
-    function setConfirmationHtml(){
+    function setContentHtml(){
         if (rewardData.eligibleCampaigns && rewardData.eligibleCampaigns[0]) {
-            $confirmationHtml = $(rewardData.eligibleCampaigns[0].contentHtml);
+            $contentHtml = $(rewardData.eligibleCampaigns[0].contentHtml);
         }
     }
 
-    function getConfirmationHtml() {
-        return $confirmationHtml;
+    function getContentHtml() {
+        return $contentHtml;
     }
 
     function renderSuccessMessage() {
-        if ($confirmationHtml) {
+        if ($contentHtml) {
             $('.reward-confirmation-message-container').html(
-                $confirmationHtml.find('.reward-confirmation-message').prop('outerHTML')
+                $contentHtml.find('.reward-confirmation-message').prop('outerHTML')
             );
         }
     }
@@ -147,7 +147,7 @@
 
     meerkat.modules.register("rewardConfirmation", {
         init: initRewardConfirmation,
-        getConfirmationHtml: getConfirmationHtml
+        getContentHtml: getContentHtml
     });
 
 })(jQuery);

@@ -25,7 +25,7 @@
                     </div>
                 </c:when>
                 <c:otherwise>
-                    {{= meerkat.modules.rewardConfirmation.getConfirmationHtml().find('.reward-form-heading').html() }}
+                    {{= meerkat.modules.rewardConfirmation.getContentHtml().find('.reward-form-heading').html() }}
                 </c:otherwise>
             </c:choose>
         </div>
@@ -107,7 +107,7 @@
                         <label class="btn btn-form-inverse {{= orderLine.signOnReceipt === false ? 'active' : '' }}">
                             <input type="radio" name="order_signOnReceipt" id="order_signOnReceipt_N" value="N" data-msg-required="Please tell us if want signature on delivery" required="required" {{= orderLine.signOnReceipt === false ? "checked" : "" }}>No</label>
                     </div>
-                    <span class="fieldrow_legend">If you choose this option, you accept full responsibility upon the delivery of your reward and acknowledge it will not be replaced under any circumstances.</span>
+                    <span class="fieldrow_legend">{{= meerkat.modules.rewardConfirmation.getContentHtml().find('.reward-signature-warning').html() }}</span>
                 </div>
             </div>
 
@@ -124,7 +124,7 @@
                 <div class="col-sm-6 col-xs-10 col-sm-offset-4 row-content">
                     <div class="checkbox">
                         <input type="checkbox" name="order_privacyOptin" id="order_privacyOptin" class="checkbox-custom checkbox" value="Y" required="required" data-msg-required="Please agree to the Terms & Conditions">
-                        <label for="order_privacyOptin"> Please tick to confirm you have read and agree the <a href="https://www.comparethemarket.com.au/terms-and-conditions/" target="_blank">Meerkat toys Terms and Conditions</a></label>
+                        <label for="order_privacyOptin">{{= meerkat.modules.rewardConfirmation.getContentHtml().find('.reward-optin-text').html() }}</label>
                     </div>
                 </div>
             </div>

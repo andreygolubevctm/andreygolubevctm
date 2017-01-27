@@ -358,7 +358,7 @@
 				loadingText = "Creating Record";
 				break;
 			case "update":
-				loadingText = "Updating Record";
+				loadingText = "Submitting";
 				break;
 			case "delete":
 				loadingText = "Deleting Record";

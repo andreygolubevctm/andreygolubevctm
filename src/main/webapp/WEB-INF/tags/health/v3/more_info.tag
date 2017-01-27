@@ -107,7 +107,9 @@
 								Also, because health insurance prices are regulated, you’re paying no more through us than if you went directly to {{= info.providerName }}.</p>
 							{{ }  }}
 						</div>
-                        {{= meerkat.modules.rewardCampaign.getCampaignContentHtml().find('.reward-more-info').prop('outerHTML') }}
+                        <c:if test="${empty callCentre or not callCentre}">
+                            {{= meerkat.modules.rewardCampaign.getCampaignContentHtml().find('.reward-more-info').prop('outerHTML') }}
+                        </c:if>
 					</div>
 				</div>
 				<c:choose>
@@ -155,9 +157,11 @@
 								</c:otherwise>
 							</c:choose>
 						</div>
+                        <c:if test="${empty callCentre or not callCentre}">
                         <div class="col-xs-12">
                             <reward:campaign_tile_container_xs />
                         </div>
+                        </c:if>
 					</div>
 				</c:otherwise>
 				</c:choose>

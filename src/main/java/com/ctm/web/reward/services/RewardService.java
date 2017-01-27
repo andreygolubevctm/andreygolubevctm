@@ -42,7 +42,7 @@ public class RewardService {
 	public static final String REWARD_ENDPOINT_GET_ORDER = "/orders/get";
 	public static final String REWARD_ENDPOINT_CREATE_ORDER = "/orders/create";
 	public static final String REWARD_ENDPOINT_UPDATE_SALE_STATUS = "/orderlines/updateSaleStatus";
-	public static final String REWARD_ENDPOINT_UPDATE_ORDER_LINE = "orderlines/update";
+	public static final String REWARD_ENDPOINT_UPDATE_ORDER_LINE = "/orderlines/update";
 	public static final String REWARD_ENDPOINT_FIND_ORDER_LINES = "/orderlines/find";
 
 	public static final int SERVICE_TIMEOUT = 10000;
