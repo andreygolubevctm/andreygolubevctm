@@ -28,9 +28,9 @@
                     <div class="col-sm-12">
                         <form id="health-callback-form">
                             <c:set var="fieldXpath" value="${xpath}/name" />
-                            <form_v3:row label="Your name" fieldXpath="${fieldXpath}" className="clear required_input">
+                            <form_v4:row label="Your name" fieldXpath="${fieldXpath}" className="clear required_input">
                                 <field_v3:person_name xpath="${fieldXpath}" title="name" required="true" />
-                            </form_v3:row>
+                            </form_v4:row>
 
                             <field_v4:contact_number mobileXpath="${xpath}/mobile" otherXpath="${xpath}/otherNumber" className="callback-contact-number" />
                         </form>
@@ -54,16 +54,16 @@
                         <button id="callBackLater" class="btn btn-secondary btn-lg btn-block" ${analyticsAttr}>Call me later...</button>
                     </div>
                     <div class="col-sm-12 outline">
-                        <form_v3:row label=" " hideHelpIconCol="true">
+                        <form_v4:row label=" ">
                             <field_v2:array_radio xpath="${xpath}/day" required="true" className="callbackDay"
                                                   items="Today=,Tomorrow=,NextDay=,LastDay="
                                                   title="" wrapCopyInSpan="true" />
-                        </form_v3:row>
-                        <form_v3:row label="Pick a time for " hideHelpIconCol="true" id="pickATimeLabel">
+                        </form_v4:row>
+                        <form_v4:row label="Pick a time for " id="pickATimeLabel">
                             <field_v2:array_select xpath="${xpath}/time" required="true" className="callbackTime"
                                                    items="="
                                                    title="" />
-                        </form_v3:row>
+                        </form_v4:row>
                     </div>
                     <div class="col-sm-6 visible-xs">
                         <a href="javascript:;" class="switch call-type">Cancel</a>

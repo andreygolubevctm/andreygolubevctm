@@ -31,8 +31,6 @@
                 $checked = $this.filter(':checked'),
                 disableField = ($checked.val() === 'N') || ($checked.val() === 'Y' && meerkat.modules.age.isLessThan31Or31AndBeforeJuly1($elements.dob.val()));
 
-            meerkat.modules.healthDependants.toggleDependants();
-
             meerkat.modules.fieldUtilities.toggleDisabled(
                 $elements.primaryCoverLoading,
                 disableField
