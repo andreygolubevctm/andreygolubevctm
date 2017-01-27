@@ -96,7 +96,6 @@
     function init() {
         $(document).ready(function () {
             $elements = {
-                primaryHealthCover : $('input[name=health_healthCover_primary_cover]'),
                 dependants : $('select[name=health_healthCover_dependants]'),
                 selectedRebateText: $('#selectedRebateText'),
                 applyRebate: $('input[name=health_healthCover_rebateCheckbox]')
@@ -118,8 +117,8 @@
         });
     }
 
-    function toggleDependantsDefaultValue(rebateIsChecked) {
-        if (rebateIsChecked) {
+    function toggleDependantsDefaultValue(shouldSetDefaultDependants) {
+        if (shouldSetDefaultDependants) {
             // default to 2 dependants
             $elements.dependants.prop('selectedIndex', 2).attr('data-attach', true);
         } else {
@@ -129,12 +128,18 @@
 
     function toggleDependants() {
         if (!_.isUndefined($elements) && !$elements.selectedRebateText.is(':visible') && $elements.applyRebate.is(':checked')) {
-            var showDependants = situationEnablesDependants() && $elements.primaryHealthCover.filter(':checked').length === 1 && $elements.primaryHealthCover.filter(':checked').val() !== 'N';
+            var showDependants = situationEnablesDependants();
             $elements.dependants.closest('.select').toggleClass('hidden', !showDependants);
 
             if (showDependants && $elements.dependants.prop('selectedIndex') > 0) {
                 $elements.dependants.prop('selectedIndex', 0);
             }
+        }
+    }
+
+    function hideDependants() {
+        if (!_.isUndefined($elements)) {
+            $elements.dependants.closest('.select').addClass('hidden');
         }
     }
 
@@ -582,6 +587,7 @@
         updateConfig: updateConfig,
         getMaxAge: getMaxAge,
         setMaxAge: setMaxAge,
+        hideDependants: hideDependants,
         updateDependantConfiguration: updateDependantConfiguration,
         getEducationalInstitutionsOptions: getEducationalInstitutionsOptions,
         situationEnablesDependants: situationEnablesDependants,
