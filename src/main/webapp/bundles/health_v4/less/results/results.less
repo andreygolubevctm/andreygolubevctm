@@ -378,13 +378,10 @@
       }
       font-size: @font-size-large;
     }
-    padding-top: 10px;
-    @media(@sm) {
-      padding-top: 0;
-      padding-left: 5px;
-      &:first-child {
-        padding-left: 0;
-      }
+
+    padding-left: 5px;
+    &:first-child {
+      padding-left: 0;
     }
   }
 
@@ -411,16 +408,6 @@
   &.features-4 .feature-item {
     width: 25%;
   }
-
-  &.features-2 {
-    @media(@xs-only) {
-      .feature-item {
-        width: 100%;
-        display: block;
-      }
-    }
-  }
-
 }
 
 // Outside the structure.
