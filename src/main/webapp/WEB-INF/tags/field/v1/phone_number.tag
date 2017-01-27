@@ -71,10 +71,13 @@
 	</c:otherwise>
 </c:choose>
 
+<c:set var="analAttribute"><field_v1:analytics_attr analVal="Phone" quoteChar="\"" /></c:set>
+
 <%-- HTML --%>
 <input type="hidden" name="${name}" id="${name}" class="" value="${value}" >
 <input type="${inputType}" name="${nameInput}" id="${nameInput}" title="${title}"
 		class="sessioncamexclude form-control contact_telno phone ${className} ${phoneTypeClassName} ${name}"
 		value="${valueInput}" pattern="[0-9]*" ${sizeAttribute}${placeHolderAttribute}${requiredAttribute}
 		${additionalAttributes}
-		maxlength="${maxLength}">
+		maxlength="${maxLength}"
+		${analAttribute}>
