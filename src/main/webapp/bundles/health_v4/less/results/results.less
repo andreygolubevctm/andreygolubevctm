@@ -130,8 +130,10 @@
 
     .frequencyAmount {
       color: @link-color;
-      font-size: 48px;
-
+      font-size: 42px;
+      @media(@sm) {
+        font-size: 48px;
+      }
       .frequencyTitle {
         display: none;
       }

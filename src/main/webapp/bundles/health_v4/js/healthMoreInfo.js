@@ -219,6 +219,7 @@
             obj = Results.getSelectedProduct();
 
         obj.showAltPremium = false;
+        obj._selectedFrequency = Results.getFrequency();
         obj.renderedPriceTemplate = priceTemplate(obj);
 
         return headerTemplate(obj);
