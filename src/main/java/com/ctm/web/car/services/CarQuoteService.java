@@ -37,6 +37,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import rx.schedulers.Schedulers;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
@@ -116,7 +117,7 @@ public class CarQuoteService extends CommonRequestServiceV2 {
                     .response(CarResponseV2.class)
                     .build())
                     .doOnError(this::logHttpClientError)
-                    .single().toBlocking().single();
+                    .observeOn(Schedulers.io()).toBlocking().single();
 
             carResults = ResponseAdapterV2.adapt(carResponse);
         } else {
@@ -140,7 +141,7 @@ public class CarQuoteService extends CommonRequestServiceV2 {
                     .response(CarResponse.class)
                     .build())
                     .doOnError(this::logHttpClientError)
-                    .single().toBlocking().single();
+                    .observeOn(Schedulers.io()).toBlocking().single();
 
             carResults = ResponseAdapter.adapt(carResponse);
         }

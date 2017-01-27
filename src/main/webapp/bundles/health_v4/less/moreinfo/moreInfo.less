@@ -152,6 +152,9 @@
   }
 
   @media (@xs-only) {
+    .companyLogo {
+      margin-top: 20px;
+    }
     background-color: @theme-light;
   }
   @media (@sm-only) {
@@ -443,7 +446,8 @@
   }
 }
 
-.moreInfoVisible[data-step="apply"] {
+.moreInfoVisible[data-step="apply"],
+.moreInfoVisible[data-step="payment"]{
   .moreInfoDropdown {
     .modal-header {
       display: none;

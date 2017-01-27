@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import rx.Observable;
+import rx.schedulers.Schedulers;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -77,7 +78,7 @@ public class BlacklistController {
         LOGGER.info("Simples blacklist outcome: {}", kv("simplesBlacklistOutcome", outcome));
 
         if(inInEnabled && outcome.map(s -> s.equals("success")).orElse(false) && StringUtils.equalsIgnoreCase("phone", channel)) {
-            insertIntoBlacklistCampaign(inInConfig.getWsPrimaryUrl(), inInConfig.getWsFailoverUrl(), value).toBlocking().first();
+            insertIntoBlacklistCampaign(inInConfig.getWsPrimaryUrl(), inInConfig.getWsFailoverUrl(), value).observeOn(Schedulers.io()).toBlocking().first();
         }
         return new BlacklistOutcome(outcome.orElse(""));
     }
