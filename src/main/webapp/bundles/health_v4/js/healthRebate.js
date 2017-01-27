@@ -174,7 +174,11 @@
         $elements.rebateLabel.toggle(!isEdit);
         $elements.incomeSelect.parent('.select').toggleClass('hidden', !isEdit);
 
-        meerkat.modules.healthDependants.toggleDependants();
+        if (isEdit) {
+            meerkat.modules.healthDependants.toggleDependants();
+        } else {
+            meerkat.modules.healthDependants.hideDependants();
+        }
 
         if (!isEdit) {
             _updateRebateLabelText();

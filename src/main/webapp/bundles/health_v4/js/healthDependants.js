@@ -96,7 +96,6 @@
     function init() {
         $(document).ready(function () {
             $elements = {
-                primaryHealthCover : $('input[name=health_healthCover_primary_cover]'),
                 dependants : $('select[name=health_healthCover_dependants]'),
                 selectedRebateText: $('#selectedRebateText'),
                 applyRebate: $('input[name=health_healthCover_rebateCheckbox]')
@@ -135,6 +134,12 @@
             if (showDependants && $elements.dependants.prop('selectedIndex') > 0) {
                 $elements.dependants.prop('selectedIndex', 0);
             }
+        }
+    }
+
+    function hideDependants() {
+        if (!_.isUndefined($elements)) {
+            $elements.dependants.closest('.select').addClass('hidden');
         }
     }
 
@@ -582,6 +587,7 @@
         updateConfig: updateConfig,
         getMaxAge: getMaxAge,
         setMaxAge: setMaxAge,
+        hideDependants: hideDependants,
         updateDependantConfiguration: updateDependantConfiguration,
         getEducationalInstitutionsOptions: getEducationalInstitutionsOptions,
         situationEnablesDependants: situationEnablesDependants,
