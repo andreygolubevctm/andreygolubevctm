@@ -1,0 +1,419 @@
+// NOTE: This file provides the design for the structure outlined in shared/results/v4.
+//       For a list of what a .section or .category is, see ../../../shared/results/v4/less/results_structure.less
+
+//On XS we should dock the headerbars.
+
+@media (@xs-only) {
+  body[data-step="results"] {
+    //Push the page down to make some space
+    padding-top: @navbar-height + 110;
+    // a reset
+    .results-control-container {
+      padding-top: 0;
+    }
+  }
+}
+
+.results-control-container.affix {
+  padding-bottom: 0;
+  border-bottom: 1px solid @border-color;
+}
+
+.open-more-info {
+  cursor: pointer;
+}
+
+#resultsPage {
+  padding-top: 20px;
+  margin-bottom: 20px;
+  a.dialogPop {
+    text-decoration: underline;
+    color: #000000;
+    font-family: @font-family-base;
+  }
+}
+
+#results-sidebar {
+  // need to remove this columns padding so we can apply left margin to all result-rows.
+  padding: 0;
+  border: 1px solid @results-border-color;
+  border-left-color: @gray;
+}
+
+.noResults {
+  margin-left: 20px;
+}
+
+// The product header
+.resultInsert {
+
+  .result-header-utility-bar {
+    @media (@lg) {
+      padding-bottom: 10px;
+    }
+  }
+  /* Display Utilities only on hover of result insert */
+  .display-on-hover {
+    .opacity(0);
+    .transition(~"opacity ease-in-out .25s");
+  }
+  &:hover .display-on-hover {
+    .opacity(1);
+  }
+  .product-pinned & {
+    .pin-result {
+      display: none;
+    }
+  }
+  .filter-component {
+    position: absolute;
+    top: 5px;
+    padding: 5px;
+    cursor: pointer;
+    .user-select(none);
+  }
+
+  .remove-result {
+    left: 0;
+  }
+
+  @pin-height: 25px;
+  @pin-width: 20px;
+  .pin-result-label {
+    right: @pin-width + 10px;
+  }
+
+  .pin-result-icon {
+    top: 0;
+    color: #ffffff;
+    right: 10px;
+    width: @pin-width;
+    height: @pin-height;
+    background: @theme-tertiary;
+    .pinned & {
+      background: @theme-accent-4;
+    }
+    &:after {
+      left: 0;
+      top: @pin-height;
+      position: absolute;
+      content: "";
+      border-style: solid;
+      border-width: 5px @pin-width 0 0;
+      border-color: @theme-tertiary transparent transparent transparent;
+      .pinned & {
+        border-top-color: @theme-accent-4;
+      }
+    }
+  }
+
+  .results-header-inner-container {
+    border-bottom: 1px solid @results-border-color;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+
+    .btn-more-info {
+      @media (@lg) {
+        font-size: @font-size-large;
+        min-height: 48px;
+        padding-top: 15px;
+      }
+    }
+  }
+  .productSummary {
+    margin-bottom: 10px;
+    height: 150px;
+    overflow: hidden;
+    @media (@lg-only) {
+      height: 125px;
+    }
+
+    .frequencyAmount {
+      color: @link-color;
+      font-size: 48px;
+
+      .frequencyTitle {
+        display: none;
+      }
+
+      &.comingSoon {
+        font-size: 17px;
+        width: 100%;
+      }
+    }
+
+    .lhcText {
+      color: @gray;
+      text-align: center;
+      .small;
+      padding-bottom: 5px;
+    }
+    @media (@lg) {
+      .frequencyAmount, .lhcText {
+        float: left;
+        width: 50%;
+      }
+
+      .lhcText {
+        padding-bottom: 0;
+        text-align: right;
+        .small;
+        display: flex;
+        height: 50px;
+        align-items: flex-end;
+      }
+    }
+
+    .companyLogo {
+      margin-top: 10px;
+    }
+  }
+
+}
+
+.featuresMode {
+
+  // The actual results container, to the right of the feature labels.
+  // Fix margins for rows on XS @todo may be unnecessary in v4
+  .result-row {
+    h2, h3 {
+      color: @theme-accent-4;
+    }
+    margin-left: 5px;
+    @media (@sm) {
+      margin-left: 9px;
+    }
+  }
+
+  // Each product column is a result-row, floated left so they fit beside each other.
+  .result-row {
+    border: 1px solid @results-border-color;
+    &.pinned {
+      border-color: @theme-accent-4;
+    }
+    &.not-pinned:hover {
+      border-color: @results-border-color-pinned;
+    }
+
+    &.pinned {
+      float: left;
+      .display-on-hover {
+        .opacity(1);
+      }
+      // force hide this when pinned
+      .remove-result {
+        display: none;
+      }
+    }
+
+    .featuresList {
+      margin: auto 15px;
+    }
+    // .cell is used as parent wrapper as .category is re-used on non-cell divs.
+    .cell {
+
+      // A top level category e.g. the Non Cosmetic Plastic Surgery cell
+      &.category { //.cell.category
+
+        .transition(~"color ease-in-out .25s");
+
+        // The label cell e.g. "Non Cosmetic Plastic Surgery"
+        // The "Limits" label displayed inside a category's children list.
+        > .labelInColumn,
+        .limits-label {
+          // default color is accent 1
+          color: @theme-accent-4;
+          .user-select(none);
+          display: block;
+        }
+        .limits-label {
+          margin-top: 5px;
+        }
+        &.expandable {
+          border-bottom: 1px solid @gray;
+          &.ambulanceSection {
+            border-bottom: 0;
+          }
+          .contentInner {
+            color: @link-color;
+          }
+        }
+        &.expanded {
+          .contentInner {
+            color: @theme-secondary;
+          }
+          .labelInColumn {
+            border-bottom: 1px solid @results-border-color;
+          }
+
+        }
+
+        .featureValue, .featureLabel {
+          float: left;
+        }
+        .featureLabel {
+          color: @theme-accent-4;
+          width: 60%;
+        }
+        .featureValue {
+          text-align: right;
+          width: 40%;
+          @media (@xs-only) {
+            word-wrap: break-word;
+            font-size: 12px;
+          }
+        }
+
+      }
+
+      &.expandable {
+
+        &.category {
+
+          .children { // sub-features
+            margin-bottom: 20px;
+            .cell {
+              font-size: 12px;
+              margin-left: 10px;
+              &.featureGroupLimit {
+                color: @gray;
+              }
+            }
+          }
+        }
+
+      }
+    }
+  }
+
+  .content {
+    padding: @results-column-side-padding-width 0;
+    // Content of certain feature cells. This needs to be relative so the expander icon inside can be absolutely positioned.
+    position: relative;
+    overflow: hidden;
+  }
+
+  .extraText {
+    display: none;
+  }
+
+  // Override styles for the excess and hospital cover sections.
+
+  .featuresListHospitalOtherList {
+    margin-top: 7.5px;
+    padding: 10px 0;
+    border-top: 1px solid @results-border-color;
+    border-bottom: 1px solid @results-border-color;
+  }
+  .hospitalSelectionsExcessContainer {
+    .selected-benefits-title {
+      color: @gray;
+      font-size: 16px;
+    }
+    .featuresListExcess {
+      .content {
+        padding-bottom: 0;
+      }
+      // Overrides for the excess section:
+      .excessDetailContainer {
+        .excess-label {
+          font-size: 10px;
+          color: @gray-dark;
+          text-transform: lowercase;
+          margin-bottom: 0;
+        }
+      }
+
+    }
+  }
+
+  // Overrides for the extras "other" list template:
+  .featuresListExtrasOtherList {
+    .cell {
+      border-bottom: 1px solid @results-border-color;
+    }
+  }
+
+  .hospitalSelectionsExcessContainer {
+    .featuresListExcess {
+      .content {
+        padding-bottom: 5px;
+      }
+    }
+  }
+}
+
+.product-special-features {
+  font-size: @font-size-small;
+  color: @gray-dark;
+  width: 100%;
+
+  &.content {
+    padding: 0;
+    position: initial;
+    overflow: visible;;
+  }
+  .feature-item-text {
+    width: 86%;
+    float: left;
+    p {
+      margin-bottom: 0;
+    }
+  }
+  .feature-item {
+    float: left;
+    &.item-popover {
+      &:hover {
+        color: @theme-accent-4;
+        cursor: help;
+      }
+    }
+    .icon {
+      float: left;
+      width: 16px;
+      @media(@sm) {
+        width: 20px;
+      }
+      font-size: @font-size-large;
+    }
+
+    padding-left: 5px;
+    &:first-child {
+      padding-left: 0;
+    }
+  }
+
+  &.features-3,
+  &.features-4 {
+    text-align: center;
+  }
+
+  &.features-1 .feature-item {
+    width: 100%;
+  }
+  &.features-2 .feature-item {
+    width: 50%;
+     .feature-item-text {
+      width: 80%;
+       @media (@sm) {
+         width: 77%;
+       }
+    }
+  }
+  &.features-3 .feature-item {
+    width: 33.333%;
+  }
+  &.features-4 .feature-item {
+    width: 25%;
+  }
+}
+
+// Outside the structure.
+.resultsOtherBenefitsTooltip {
+  color: @gray;
+  .qtip-content > div {
+    margin: 5px 0;
+    .small;
+  }
+}
+

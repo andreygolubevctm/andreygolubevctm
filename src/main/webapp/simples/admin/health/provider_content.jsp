@@ -17,7 +17,7 @@
   <jsp:attribute name="head">
 	</jsp:attribute>
   <jsp:attribute name="body_end">
-		<script src="${assetUrl}js/bundles/plugins/trumbowyg.min.js?${revision}"></script>
+		<script src="${assetUrl}js/bundles/plugins/trumbowyg${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
   </jsp:attribute>
   <jsp:body>
     <div class="sortable-header data-sorter container-fluid" data-refreshcallback="meerkat.modules.adminProviderContent.refresh">

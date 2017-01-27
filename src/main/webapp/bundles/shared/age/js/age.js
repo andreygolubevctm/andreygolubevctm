@@ -57,11 +57,42 @@
         }
     }
 
+    /**
+     * isLessThan31Or31AndBeforeJuly1() test whether the dob provided makes the user less than
+     * 31 or is currently 31 but the current datea is before 1st July following their birthday.
+     *
+     * @param _dobString	String representation of a birthday (eg 24/02/1986)
+     * @returns {Boolean}
+     */
+    function isLessThan31Or31AndBeforeJuly1(_dobString) {
+        if(_dobString === '') return false;
+        var age = Math.floor(meerkat.modules.age.returnAge(_dobString));
+        if( age < 31 ) {
+            return true;
+        } else if( age == 31 ){
+            var dob = meerkat.modules.dateUtils.returnDate(_dobString);
+            var birthday = meerkat.modules.dateUtils.returnDate(_dobString);
+            birthday.setFullYear(dob.getFullYear() + 31);
+            var now = new Date();
+            if ( dob.getMonth() + 1 < 7 && (now.getMonth() + 1 >= 7 || now.getFullYear() > birthday.getFullYear()) ) {
+                return false;
+            } else if (dob.getMonth() + 1 >= 7 && now.getMonth() + 1 >= 7 && now.getFullYear() > birthday.getFullYear()) {
+                return false;
+            } else {
+                return true;
+            }
+        } else if(age > 31){
+            return false;
+        } else {
+            return false;
+        }
+    }
 
     meerkat.modules.register("age", {
         init: initAge,
         events: events,
         get: getAge,
-        returnAge : returnAge
+        returnAge : returnAge,
+        isLessThan31Or31AndBeforeJuly1: isLessThan31Or31AndBeforeJuly1
     });
 })(jQuery);

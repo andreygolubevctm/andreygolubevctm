@@ -13,6 +13,7 @@
 		</contactNumber>
 		<flexiContactNumber>0404 123 123</flexiContactNumber>
 		<email>preload.testing@comparethemarket.com.au</email>
+		<postcode>4000</postcode>
 		<optInEmail>Y</optInEmail>
 		<call>Y</call>
 		<optin>Y</optin>
@@ -29,7 +30,7 @@
 		<coverType>C</coverType>
 	</situation>
 	<benefits>
-		<covertype>medium</covertype>
+		<covertype>customise</covertype>
 		<benefitsExtras>
 			<Hospital>Y</Hospital>
 			<PrHospital>Y</PrHospital>

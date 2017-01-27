@@ -33,7 +33,7 @@
 
                 if (meerkat.site.kampyleId) {
                     yepnope.injectJs({
-                        src: baseUrl + 'assets/js/bundles/plugins/kampyle.deferred.min.js',
+                        src: baseUrl + 'assets/js/bundles/plugins/kampyle.deferred' + meerkat.site.minifiedFileString + '.js',
                         attrs: {
                             async: true
                         }

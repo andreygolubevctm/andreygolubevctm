@@ -18,13 +18,13 @@ var healthFunds_BUD = {
 	$claimsAccountOptin: $('#health_payment_bank_claims'),
 	set: function(){
 		<%-- dependant definition --%>
-		healthFunds._dependants('This policy provides cover for children until their 21st birthday. Student dependants aged between 21-24 years who are engaged in full time study, apprenticeships or traineeships can also be added to this policy. Adult dependants outside these criteria can still be covered by applying for a separate singles policy.');
+        meerkat.modules.healthFunds._dependants('This policy provides cover for children until their 21st birthday. Student dependants aged between 21-24 years who are engaged in full time study, apprenticeships or traineeships can also be added to this policy. Adult dependants outside these criteria can still be covered by applying for a separate singles policy.');
 
 		<%-- Authority --%>
-		healthFunds._previousfund_authority(true);
+        meerkat.modules.healthFunds._previousfund_authority(true);
 
 		<%-- remove the DR in your details --%>
-		healthFunds.$_optionDR = $('.person-title').find('option[value=DR]').first();
+		meerkat.modules.healthFunds.setDoctorOption($('.person-title').find('option[value=DR]').first());
 		$('.person-title').find('option[value=DR]').remove();
 
 		<%-- selections for payment date --%>
@@ -96,16 +96,16 @@ var healthFunds_BUD = {
 		messageField.text(messageText);
 	},
 	unset: function(){
-		healthFunds._reset();
+        meerkat.modules.healthFunds._reset();
 
 		<%-- dependant definition off --%>
-		healthFunds._dependants(false);
+        meerkat.modules.healthFunds._dependants(false);
 
 		<%-- Authority off --%>
-		healthFunds._previousfund_authority(false);
+        meerkat.modules.healthFunds._previousfund_authority(false);
 
 		<%-- re-insert the DR in your details --%>
-		$('.person-title').append( healthFunds.$_optionDR    );
+		$('.person-title').append( meerkat.modules.healthFunds.getDoctorOption());
 
 		<%-- selections for payment date --%>
 		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), false);

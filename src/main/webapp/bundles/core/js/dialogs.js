@@ -322,7 +322,7 @@
     }
 
     function resizeDialog(dialogId) {
-        isXS = meerkat.modules.deviceMediaState.get() === "xs" ? true : false;
+        isXS = meerkat.modules.deviceMediaState.get() === "xs";
 
         var $dialog = $("#" + dialogId);
 
