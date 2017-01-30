@@ -17,7 +17,7 @@
 	</c:when>
 	<c:otherwise>
 		<c:set var="introPanel">
-			${introPanel}<p class="hidden-xs closeDetailsDropdown btn btn-sm btn-edit">Back to Results</p>
+			${introPanel}<p class="hidden-xs closeDetailsDropdown btn btn-sm btn-edit" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Back to Results</p>
 		</c:set>
 	</c:otherwise>
 </c:choose>
@@ -29,15 +29,15 @@
 	<div class="panel-group accordion accordion-xs" id="edit-details-panel-group">
 		<div class="panel accordion-panel col-xs-12 col-sm-6 col-lg-12">
 			<div class="accordion-heading visible-xs active-panel">
-				<a href="#start" class="btn btn-sm btn-edit btn-accordion-control btn-hollow-inverse needsclick">Edit</a>
+				<a href="#start" class="btn btn-sm btn-edit btn-accordion-control btn-hollow-inverse needsclick" <field_v1:analytics_attr analVal="Edit Details - Your Car" quoteChar="\"" />>Edit</a>
 				<span class="icon icon-arrow-down" data-toggle="collapse" data-parent="#edit-details-panel-group" href="#startDateAndCar"></span>
 				<p class="accordion-title">
-					<a class="needsclick" data-toggle="collapse" data-parent="#edit-details-panel-group" href="#startDateAndCar" <field_v1:analytics_attr analVal="Edit Details - Your Car" quoteChar="\"" />> 1. Your Car </a>
+					<a class="needsclick" data-toggle="collapse" data-parent="#edit-details-panel-group" href="#startDateAndCar"> 1. Your Car </a>
 				</p>
 			</div>
 			<div id="startDateAndCar" class="accordion-collapse collapse in first-panel">
 				<div class="accordion-body">
-					<a href="#start" class="btn btn-sm btn-edit hidden-xs hidden-lg needsclick">Edit</a>
+					<a href="#start" class="btn btn-sm btn-edit hidden-xs hidden-lg needsclick" <field_v1:analytics_attr analVal="Edit Details - Your Car" quoteChar="\"" />>Edit</a>
 					<h5 class="hidden-xs hidden-lg">
 						Your Car
 					</h5>
@@ -59,10 +59,10 @@
 		</div>
 		<div class="panel accordion-panel col-xs-12 col-sm-6 col-lg-4">
 			<div class="accordion-heading visible-xs">
-				<a href="#options" class="btn btn-sm btn-edit btn-accordion-control btn-hollow-inverse needsclick">Edit</a>
+				<a href="#options" class="btn btn-sm btn-edit btn-accordion-control btn-hollow-inverse needsclick" <field_v1:analytics_attr analVal="Edit Details - Car Details" quoteChar="\"" />>Edit</a>
 				<span class="icon icon-arrow-down" data-toggle="collapse" data-parent="#edit-details-panel-group" href="#carUsageAndAccessories"></span>
 				<p class="accordion-title">
-					<a class="needsclick" data-toggle="collapse" data-parent="#edit-details-panel-group" href="#carUsageAndAccessories" <field_v1:analytics_attr analVal="Edit Details - Car Details" quoteChar="\"" />> 2. Using Your Car & Car Details </a>
+					<a class="needsclick" data-toggle="collapse" data-parent="#edit-details-panel-group" href="#carUsageAndAccessories"> 2. Using Your Car & Car Details </a>
 				</p>
 			</div>
 			<div id="carUsageAndAccessories" class="accordion-collapse collapse">
@@ -110,7 +110,7 @@
 					Edit</a>
 				<span class="icon icon-arrow-down" data-toggle="collapse" data-parent="#edit-details-panel-group" href="#driverDetailsYoungDriver"></span>
 				<p class="accordion-title">
-					<a class="needsclick" data-toggle="collapse" data-parent="#edit-details-panel-group" href="#driverDetailsYoungDriver" <field_v1:analytics_attr analVal="Edit Details - Regular Driver" quoteChar="\"" />> 3. Driver Details & Youngest Driver Details </a>
+					<a class="needsclick" data-toggle="collapse" data-parent="#edit-details-panel-group" href="#driverDetailsYoungDriver"> 3. Driver Details & Youngest Driver Details </a>
 				</p>
 			</div>
 			<div id="driverDetailsYoungDriver" class="accordion-collapse collapse">
