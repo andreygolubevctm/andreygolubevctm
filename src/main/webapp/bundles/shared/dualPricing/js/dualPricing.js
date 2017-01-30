@@ -8,7 +8,7 @@
 
     function initDualPricing() {
         if (meerkat.site.healthAlternatePricingActive !== true) {
-            // return false;
+            return false;
         }
 
         _setupElements();
