@@ -39,17 +39,17 @@
 
 	<%-- If dual pricing is enabled, update the template --%>
 	{{ if (meerkat.site.healthAlternatePricingActive === true) { }}
-	{{ obj.renderedDualPricing = meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false); }}
+		{{ obj.renderedDualPricing = meerkat.modules.dualPricing.renderTemplate('', obj, true, false); }}
 	{{ } else { }}
-	{{ var logoPriceTemplate = $('#logo-price-template').html(); }}
-	{{ var htmlTemplatePrice = _.template(logoPriceTemplate); }}
+		{{ var logoPriceTemplate = $('#logo-price-template').html(); }}
+		{{ var htmlTemplatePrice = _.template(logoPriceTemplate); }}
 
-	{{ obj.showAltPremium = false; obj.renderedPriceTemplate = htmlTemplatePrice(obj); }}
-	{{ obj.showAltPremium = true;  obj.renderedAltPriceTemplate = htmlTemplatePrice(obj); }}
+		{{ obj.showAltPremium = false; obj.renderedPriceTemplate = htmlTemplatePrice(obj); }}
+		{{ obj.showAltPremium = true;  obj.renderedAltPriceTemplate = htmlTemplatePrice(obj); }}
 	{{ } }}
 
 	<%-- Check if drop dead date has passed --%>
-	{{ var dropDatePassed = meerkat.modules.healthDropDeadDate.getDropDatePassed(obj); }}
+	{{ var dropDatePassed = meerkat.modules.dropDeadDate.getDropDatePassed(obj); }}
 
 	<%-- Prepare the call to action bar template. --%>
 	{{ var template = $("#more-info-call-to-action-template").html(); }}

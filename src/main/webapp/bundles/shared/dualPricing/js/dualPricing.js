@@ -18,11 +18,14 @@
 
     function _setupElements() {
         $elements = {
-            logoPriceTemplate: $('#logo-price-template'),
+            logoPriceTemplate: meerkat.modules.templateCache.getTemplate($("#logo-price-template")),
             template: {
-                default: $('#dual-pricing-template'),
-                xs: $('#dual-pricing-template-xs'),
-                sm: $('#dual-pricing-template-sm')
+                results: {
+                    default: $('#dual-pricing-results-template')
+                },
+                moreinfo: {
+                    default: $('#dual-pricing-moreinfo-template')
+                }
             },
             displayedFrequency: $('#health_payment_details_frequency'),
             modalTemplate: $('#dual-pricing-modal-template'),
@@ -137,11 +140,11 @@
         product.displayLogo = false;
         product.showRoundingText = false;
 
-        var htmlTemplate = _.template($elements.logoPriceTemplate.html());
+        var htmlTemplate = $elements.logoPriceTemplate;
         product.renderedPriceTemplate = htmlTemplate(product);
 
         product.showAltPremium = true;
-        htmlTemplate = _.template($elements.logoPriceTemplate.html());
+        htmlTemplate = $elements.logoPriceTemplate;
         product.renderedAltPriceTemplate = htmlTemplate(product);
         product.dropDeadDate = meerkat.modules.dropDeadDate.getDropDeadDate(product);
         product.dropDatePassed = meerkat.modules.dropDeadDate.getDropDatePassed(product);
@@ -158,12 +161,13 @@
 
     function _getTemplate(isForSidebar) {
         if (isForSidebar) {
-            return $elements.default.template;
+            return $elements.template.default;
         }
 
-        var deviceMediaState = meerkat.modules.deviceMediaState.get();
+        var deviceMediaState = meerkat.modules.deviceMediaState.get(),
+            page = meerkat.modules.address.getWindowHash() === 'results/moreinfo' ? 'moreinfo' : 'results'; // more reliable than using  meerkat.modules.moreInfo.isBridgingPageOpen() which returns false
 
-        return $elements[_.indexOf(['xs', 'sm'], deviceMediaState) ? deviceMediaState : 'default'].template;
+        return $elements.template[page][_.indexOf(['xs', 'sm'], deviceMediaState) > -1 ? deviceMediaState : 'default'];
     }
 
     meerkat.modules.register('dualPricing', {
