@@ -198,7 +198,6 @@
 							<input type="checkbox" class="compare-tick" data-productId="{{= obj.productId }}" id="price_compareTick_{{= obj.productId }}" />
 							<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Short List - {{= obj.brandCode }} | {{= obj.productId }}" quoteChar="\"" /></c:set>
 							<label for="price_compareTick_{{= obj.productId }}" ${analyticsAttr}></label>
-							<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Short List - {{= obj.brandCode }} | {{= obj.productId }}" quoteChar="\"" /></c:set>
 							<label for="price_compareTick_{{= obj.productId }}" class="compare-label" ${analyticsAttr}></label>
 						</div>
 						<h2 class="hidden-xs productTitle">{{= productTitle }}</h2>
