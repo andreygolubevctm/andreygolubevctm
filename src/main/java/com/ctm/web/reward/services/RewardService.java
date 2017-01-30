@@ -45,7 +45,7 @@ public class RewardService {
 	public static final String REWARD_ENDPOINT_UPDATE_ORDER_LINE = "/orderlines/update";
 	public static final String REWARD_ENDPOINT_FIND_ORDER_LINES = "/orderlines/find";
 
-	public static final int SERVICE_TIMEOUT = 10000;
+	public static final int SERVICE_TIMEOUT = 30000;
 	public static final int SERVICE_TIMEOUT_FIND = 50000;
 
 	@Value("${ctm.reward.url}")
@@ -219,24 +219,25 @@ public class RewardService {
 	public OrderFormResponse createAdhocOrder(final OrderForm form, final HttpServletRequest request) {
 		final Optional<AuthenticatedData> authenticatedData = Optional.ofNullable(sessionDataServiceBean.getAuthenticatedSessionData(request));
 
+		final String operatorId = authenticatedData.map(AuthenticatedData::getUid).orElse(null);
+
 		// Must be logged into Simples and be in elevated privilege group
 		if (authenticatedData.map(AuthenticatedData::getUid).isPresent() && hasElevatedPrivileges(request)) {
 			// Check mandatory fields
 			if (form.getOrderHeader().getReasonCode().isPresent()
 					&& form.getOrderHeader().getOrderLine().getRewardTypeId().isPresent()) {
 				// Push operatorId onto model as creator
-				form.getOrderHeader().getOrderLine().setCreatedByOperator(authenticatedData.map(AuthenticatedData::getUid).get());
+				form.getOrderHeader().getOrderLine().setCreatedByOperator(operatorId);
 
 				OrderFormResponse orderFormResponse = remoteCreateOrder(form);
 
 				LOGGER.info("Reward: Create adhoc order. operator={}, status={}",
-						authenticatedData.map(AuthenticatedData::getUid).orElse(null),
+						operatorId,
 						orderFormResponse.getStatus());
 				return orderFormResponse;
-			}
-			else {
+			} else {
 				LOGGER.error("Reward: Adhoc order model must have: reasonCode, createdByOperator, rewardTypeId. operator={}",
-						authenticatedData.map(AuthenticatedData::getUid).orElse(null));
+						operatorId);
 				OrderFormResponse response = new OrderFormResponse();
 				response.setStatus(false);
 				response.setMessage("Adhoc order model must have: reasonCode, createdByOperator, rewardTypeId.");
@@ -360,12 +361,13 @@ public class RewardService {
 					response.setStatus(false);
 					return Observable.just(response);
 				})
-				.doOnNext(response -> {
-					if (response != null && response.getStatus() != null && response.getStatus()) {
-						LOGGER.info("Reward: Created order. rootId={}, getEncryptedOrderLineId={}",
-								response.getOrderHeader().getRootId(), response.getEncryptedOrderLineId().get());
-					}
-				})
+//				.doOnNext(response -> {
+//					if (response != null && response.getStatus() != null && response.getStatus()) {
+//						LOGGER.info("Reward: Created order. rootId={}, getEncryptedOrderLineId={}",
+//								Optional.ofNullable(form).map(OrderForm::getOrderHeader).map(OrderHeader::getRootId).map(Optional::get).orElse(null),
+//								Optional.of(response).map(OrderFormResponse::getEncryptedOrderLineId).map(Optional::get).orElse(null));
+//					}
+//				})
 				.toBlocking()
 				.first();
 	}
