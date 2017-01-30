@@ -157,11 +157,6 @@
 								</c:otherwise>
 							</c:choose>
 						</div>
-                        <c:if test="${empty callCentre or not callCentre}">
-                        <div class="col-xs-12">
-                            <reward:campaign_tile_container_xs />
-                        </div>
-                        </c:if>
 					</div>
 				</c:otherwise>
 				</c:choose>
@@ -414,6 +409,11 @@
 				</blockquote>
 				<p class="testimonialAuthor">{{= testimonial.author }}</p>
 			</div>
+            <c:if test="${empty callCentre or not callCentre}">
+                <div class="col-xs-12">
+                    <reward:campaign_tile_container_xs />
+                </div>
+            </c:if>
 		</div>
 
 		<div class="hidden-xs hiddenInMoreDetails">
