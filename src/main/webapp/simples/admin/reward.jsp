@@ -122,7 +122,7 @@
 <script class="crud-row-template" type="text/html">
     <div class="sortable-results-row row" data-id="{{= data.phoneNumber }}">
         <div class="col-lg-1">
-            <%--{{= data.rewardType.rewardType }}--%>
+            {{= data.rewardType.rewardType }}
         </div>
         <div class="col-lg-1">
             {{= data.firstName }} {{= data.lastName }}
