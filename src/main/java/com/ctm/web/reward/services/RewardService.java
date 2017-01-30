@@ -46,6 +46,7 @@ public class RewardService {
 	public static final String REWARD_ENDPOINT_FIND_ORDER_LINES = "/orderlines/find";
 
 	public static final int SERVICE_TIMEOUT = 10000;
+	public static final int SERVICE_TIMEOUT_FIND = 50000;
 
 	@Value("${ctm.reward.url}")
 	private String rewardServiceUrl;
@@ -317,7 +318,7 @@ public class RewardService {
 					.response(FindResponse.class)
 					.jsonHeaders()
 					.url(url)
-					.timeout(SERVICE_TIMEOUT)
+					.timeout(SERVICE_TIMEOUT_FIND)
 					.retryAttempts(1)
 					.build())
 					.observeOn(Schedulers.io())
@@ -328,7 +329,7 @@ public class RewardService {
 						return Observable.just(response);
 					})
 					.doOnNext(response -> {
-						if (response.getStatus()) {
+						if (response != null && response.getStatus() != null && response.getStatus()) {
 							LOGGER.info("Reward: findOrders success. searchParam={}", form.getSearchParam());
 						}
 					})
@@ -359,12 +360,12 @@ public class RewardService {
 					response.setStatus(false);
 					return Observable.just(response);
 				})
-//				.doOnNext(response -> {
-//					if (response.getStatus()) {
-//						LOGGER.info("Reward: Created order. rootId={}, getEncryptedOrderLineId={}",
-//								response.getOrderHeader().getRootId(), response.getEncryptedOrderLineId().get());
-//					}
-//				})
+				.doOnNext(response -> {
+					if (response != null && response.getStatus() != null && response.getStatus()) {
+						LOGGER.info("Reward: Created order. rootId={}, getEncryptedOrderLineId={}",
+								response.getOrderHeader().getRootId(), response.getEncryptedOrderLineId().get());
+					}
+				})
 				.toBlocking()
 				.first();
 	}
