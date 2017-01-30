@@ -25,8 +25,7 @@
 {{ displayValue = '<div class="btnContainerNoBtn">'+parsedValue+'</div>' }}
 
 {{ if(obj.contact.allowCallDirect === true) { }}
-{{ displayValue = '<div
-class="btnContainer"><a class="btn btn-call btn-block btn-call-actions btn-calldirect" data-callback-toggle="calldirect" href="javascript:;" data-productId="'+obj.productId+'" ${navBtnAnalAttribute}>Call Insurer Direct</a></div>' }}
+{{ displayValue = '<div class="btnContainer"><a class="btn btn-call btn-block btn-call-actions btn-calldirect" data-callback-toggle="calldirect" href="javascript:;" data-productId="'+obj.productId+'" ${navBtnAnalAttribute}>Call Insurer Direct</a></div>' }}
 {{ } }}
 {{ } }}
 
