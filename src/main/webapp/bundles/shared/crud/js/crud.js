@@ -352,6 +352,7 @@
 
 		switch(action) {
 			case "getAllRecords":
+            case "find":
 				loadingText = "Fetching Records";
 				break;
 			case "create":

@@ -6,7 +6,7 @@
         debug = meerkat.logging.debug,
         exception = meerkat.logging.exception;
 
-    var CRUD = false,
+    var CRUD,
         rewardData,
         $contentHtml,
         currentCampaign,

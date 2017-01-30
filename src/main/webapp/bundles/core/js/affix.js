@@ -92,6 +92,7 @@
 
 	meerkat.modules.register("affix", {
 		init: init,
+        topDockBasedOnOffset: topDockBasedOnOffset,
 		events: events
 	});
 

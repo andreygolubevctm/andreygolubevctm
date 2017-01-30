@@ -5,7 +5,7 @@
 <%-- ATTRIBUTES --%>
 <%@ attribute name="isSimplesAdmin" required="false" rtexprvalue="true" description="Boolean to indicate if to use the form in simples admin area" %>
 
-{{ var currentCampaign = data.eligibleCampaigns[0]; }}
+{{ var currentCampaign = data.eligibleCampaigns[0] || {}; }}
 
 <form id="redemptionForm" class="form-horizontal">
     <fieldset class="qe-window fieldset">
@@ -49,7 +49,7 @@
         <c:if test="${isSimplesAdmin ne true}">
         <div class="noDecline hidden">
         </c:if>
-            {{ var orderLine = data.orderForm.orderHeader.orderLine; }}
+            {{ var orderLine = data.orderForm.orderHeader.orderLine || {}; }}
             <div class="form-group row fieldrow clear required_input">
                 <label for="order_firstName" class="col-sm-4 col-xs-10 control-label">First name</label>
                 <div class="col-sm-6 col-xs-12 row-content">
@@ -64,7 +64,7 @@
                 </div>
             </div>
 
-            {{ var orderAddress = orderLine.orderAddresses[0]; }}
+            {{ var orderAddress = orderLine.orderAddresses[0] || {}; }}
             <div class="form-group row fieldrow clear">
                 <label for="order_address_businessName" class="col-sm-4 col-xs-10 control-label">Business name</label>
                 <div class="col-sm-6 col-xs-12 row-content">
@@ -107,7 +107,7 @@
                         <label class="btn btn-form-inverse {{= orderLine.signOnReceipt === false ? 'active' : '' }}">
                             <input type="radio" name="order_signOnReceipt" id="order_signOnReceipt_N" value="N" data-msg-required="Please tell us if want signature on delivery" required="required" {{= orderLine.signOnReceipt === false ? "checked" : "" }}>No</label>
                     </div>
-                    <span class="fieldrow_legend">{{= meerkat.modules.rewardConfirmation.getContentHtml().find('.reward-signature-warning').html() }}</span>
+                    <span class="fieldrow_legend"><small>{{= meerkat.modules.rewardConfirmation.getContentHtml().find('.reward-signature-warning').html() }}</small></span>
                 </div>
             </div>
 
