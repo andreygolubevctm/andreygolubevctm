@@ -73,7 +73,7 @@
         _.defer(function() {
             // if previous selection was TPFT and TPFT no longer applicable then unselect
             if (excTPFT && _.indexOf([existingJourneySelection,existingFilterSelection],'TPFT') > -1) {
-                $typeOfCoverDropdown.val('');
+                $typeOfCoverDropdown.val('COMPREHENSIVE');
             } else {
                 if (!_.isEmpty(existingJourneySelection)) {
                     $typeOfCoverDropdown.val(existingJourneySelection);
@@ -82,7 +82,7 @@
                     $typeOfCoverDropdown.val(existingFilterSelection);
                     $typeOfCover.val(existingFilterSelection);
                 } else {
-                    $typeOfCoverDropdown.val('');
+                    $typeOfCoverDropdown.val('COMPREHENSIVE');
                 }
             }
         });
