@@ -91,7 +91,7 @@
 				<div class="row priceRow productSummary hidden-xs">
 					<div class="col-xs-12">
 						<c:choose>
-							<c:when test="${healthAlternatePricingActive eq true and not empty callCentre}">
+							<c:when test="${healthAlternatePricingActive eq true}">
 								{{= renderedDualPricing }}
 							</c:when>
 							<c:otherwise>
