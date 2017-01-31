@@ -8,6 +8,7 @@
 
     var CRUD,
         rewardData,
+        $form,
         $contentHtml,
         currentCampaign,
         selectedRewardTypeId;
@@ -39,22 +40,27 @@
         });
 
         CRUD.getSaveRequestData = function($modal) {
-            var orderForm = rewardData.orderForm,
-                orderLine = orderForm.orderHeader.orderLine,
-                orderAddress = orderLine.orderAddresses[0],
-                $form = $('#redemptionForm');
 
-            selectedRewardTypeId = $form.find('input[name="order_rewardType"]').val();
+            // Abort if form is invalid
+            if ( $form.valid() !== true ) return;
+
+            var orderForm = rewardData.orderForm,
+                orderLine = orderForm.orderHeader.orderLine || {},
+                orderAddress = orderLine.orderAddresses[0] || {};
+
+            selectedRewardTypeId = $form.find('input[name="order_rewardType"]:checked').val();
 
             orderLine.campaignCode = currentCampaign.campaignCode;
-            orderLine.rewardTypeId = selectedRewardTypeId;
+            if (selectedRewardTypeId) {
+                orderLine.rewardTypeId = selectedRewardTypeId;
+            }
             orderLine.firstName = $form.find('input[name="order_firstName"]').val();
             orderLine.lastName = $form.find('input[name="order_lastName"]').val();
             orderLine.contactEmail = $form.find('input[name="order_contactEmail"]').val();
             orderLine.phoneNumber = $form.find('input[name="order_phoneNumber"]').val();
-            orderLine.signOnReceipt = $form.find('input[name="order_signOnReceipt"]').val() === 'Y';
-            orderLine.trackerOptIn = true;
-            orderLine.orderStatus = 'Scheduled';
+            orderLine.signOnReceipt = $form.find('input[name="order_signOnReceipt"]:checked').val() === 'Y';
+            orderLine.trackerOptIn = true; // defaulting to true as Product team told to remove the field
+            orderLine.orderStatus = $form.find('input[name="order_orderStatus"]:checked').val() || 'Scheduled';
 
             //addresses
             orderAddress.dpid = $form.find('input[name="order_address_dpId"]').val();
@@ -62,13 +68,19 @@
             orderAddress.state = $form.find('input[name="order_address_state"]').val();
             orderAddress.postcode = $form.find('input[name="order_address_postCode"]').val();
             orderAddress.suburb = $form.find('input[name="order_address_suburbName"]').val();
-            orderAddress.streetName = $form.find('input[name="order_address_streetName"]').val();
+            orderAddress.streetName = $form.find('input[name="order_address_streetName"]').val()
+                || $form.find('input[name="order_address_nonStdStreet"]').val();
             orderAddress.streetNumber = $form.find('input[name="order_address_streetNum"]').val()
                 || $form.find('input[name="order_address_houseNoSel"]').val();
             orderAddress.unitNumber = $form.find('input[name="order_address_unitSel"]').val()
                 || $form.find('input[name="order_address_unitShop"]').val();
-            orderAddress.unitType = $form.find('input[name="order_address_unitType"]').val();
+            orderAddress.unitType = $form.find('input[name="order_address_unitType"]').val()
+                || $form.find(':input[name="order_address_nonStdUnitType"]').val();
             orderAddress.fullAddress = $form.find('input[name="order_address_fullAddress"]').val();
+
+            // Safe guard in case the order/get gets incomplete data
+            orderForm.orderHeader.orderLine = orderLine;
+            orderForm.orderHeader.orderLine.orderAddresses[0] = orderAddress;
 
             return orderForm;
         };
@@ -99,6 +111,7 @@
 
         meerkat.messaging.subscribe(meerkatEvents.crud.CRUD_MODAL_OPENED, function initRedemptionForm(modalId) {
             meerkat.modules.redemptionForm.initRedemptionForm(modalId);
+            $form = $('#redemptionForm');
         });
 
         // defer rendering because confirmation page is a template
@@ -110,9 +123,10 @@
     
     function renderRewardOrder() {
         switch (rewardOrder.generalStatus) {
-            case 'ALREADY_REDEEMED':
-                renderSuccessMessage();
-                break;
+            // TODO: Handle other statuses once business provide designs/messages for each status
+            // case 'ALREADY_REDEEMED':
+            //     renderSuccessMessage();
+            //     break;
             case 'OK_TO_REDEEM':
                 CRUD.openModal();
         }
@@ -125,7 +139,8 @@
     }
 
     function renderSuccessMessage() {
-        if ($contentHtml) {
+        // Don't render if user never selected a reward (i.e. choose not to redeem)
+        if (selectedRewardTypeId && $contentHtml) {
             $('.reward-confirmation-message-container').html(
                 $contentHtml.find('.reward-confirmation-message').prop('outerHTML')
             );

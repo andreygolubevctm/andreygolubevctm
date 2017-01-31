@@ -41,9 +41,14 @@
                 $noDecline.addClass('hidden');
                 $modal.find('.rewardType input').prop('checked', false).trigger('change');
             }
+            _toggleRewardTypeIsRequired(!$(this).is(':checked'));
         });
 
         $modal.find('.signature input').on('change', _toggleSignOnReceiptWarning);
+    }
+    
+    function _toggleRewardTypeIsRequired(isRequired) {
+        $modal.find('.rewardType').toggleClass('required_input', isRequired).find('input').prop('required', isRequired).valid();
     }
     
     function _toggleSignOnReceiptWarning() {
