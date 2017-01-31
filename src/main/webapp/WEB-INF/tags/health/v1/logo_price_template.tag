@@ -52,7 +52,7 @@
                             {{= typeof mode === "undefined" || mode != "lhcInc" ? textLhcFreePricing : textPricing }}
                         {{ } }}
 					{{ } else { }}
-					<div class="frequencyAmount comingSoon">Coming Soon</div>
+					<div class="frequencyAmount comingSoon">New price not yet released</div>
 					{{ } }}
 					{{ if (typeof showRoundingText !== 'undefined' && showRoundingText === true) { }}
 					<div class="rounding">Premium may vary slightly due to rounding</div>

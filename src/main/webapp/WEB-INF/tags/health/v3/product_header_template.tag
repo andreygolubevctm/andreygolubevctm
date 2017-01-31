@@ -27,15 +27,22 @@
                 <span class="icon icon-cross" title="Remove this product" <field_v1:analytics_attr analVal="remove {{= obj.info.provider }}" quoteChar="\"" />></span>
             </div>
         </div>
-        <div class="results-header-inner-container">
+        {{ var comingSoonClass = ''; }}
+        {{ if (meerkat.site.healthAlternatePricingActive === true) { }}
+            {{ if (!_.isUndefined(obj.altPremium[Results.getFrequency()])) { }}
+                {{ var productPremium = obj.altPremium[Results.getFrequency()] }}
+                {{ comingSoonClass = ((productPremium.value && productPremium.value > 0) || (productPremium.text && productPremium.text.indexOf('$0.') < 0) || (productPremium.payableAmount && productPremium.payableAmount > 0))  ? '' : 'comingsoon' }}
+            {{ } }}
+        {{ } }}
+        <div class="results-header-inner-container {{= comingSoonClass }}">
             <div class="productSummary vertical results">
                 <%-- If dual pricing is enabled, update the template --%>
                 {{ var logoTemplate = meerkat.modules.templateCache.getTemplate($("#logo-template")); }}
                 {{= logoTemplate(obj) }}
+
                 {{ if (meerkat.site.healthAlternatePricingActive === true) { }}
                     {{= meerkat.modules.dualPricing.renderTemplate('', obj, true, false) }}
                 {{ } else { }}
-
                     {{ var productTitleTemplate = meerkat.modules.templateCache.getTemplate($("#product-title-template")); }}
                     {{ var priceTemplate = meerkat.modules.templateCache.getTemplate($("#price-template")); }}
                     {{ obj._selectedFrequency = Results.getFrequency(); obj.showAltPremium = false; }}
