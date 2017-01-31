@@ -506,6 +506,10 @@
                     $field: $("#health_contactDetails_name")
                 },
                 {
+                    $field: $("#health_callback_name"),
+                    $fieldInput: $("#health_callback_name")
+                },
+                {
                     $field: $("#health_application_primary_firstname"),
                     $otherField: $("#health_application_primary_surname")
                 }
@@ -552,6 +556,11 @@
                 {
                     $field: $("#health_application_mobile"),
                     $fieldInput: $("#health_application_mobileinput")
+                },
+                // callback popup
+                {
+                    $field: $("#health_callback_mobileinput"),
+                    $fieldInput: $("#health_callback_mobileinput")
                 }
             ],
             otherPhone: [

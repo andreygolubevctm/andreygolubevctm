@@ -94,6 +94,7 @@
 	function moveToNextInput() {
 
 		var $this = $(this);
+		if($this.is('select')) { return; }
 		if (!$this.attr('maxlength')) {return;}
 		if ($this.hasClass('year') || $this.hasClass('dateinput-year')) {return;}
 

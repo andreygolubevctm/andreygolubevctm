@@ -245,7 +245,7 @@
 						<field_v2:checkbox
 								xpath="${pageSettings.getVerticalCode()}/contactDetails/optin"
 								value="Y"
-								className="validate"
+								className="validate row-content"
 								required="true"
 								label="${true}"
 								title="${termsAndConditions}"

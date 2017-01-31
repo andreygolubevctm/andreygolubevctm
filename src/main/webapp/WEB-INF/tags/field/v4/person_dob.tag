@@ -74,7 +74,7 @@ ${logger.trace('DOB Restricted to max: {},{}' , log:kv('nowLessAgeMinYears', now
 				<div class="col-md-3 col-xs-4 dayContainer">
 					<field_v2:import_select xpath="${xpath}InputD"
 											title="the day"
-											required="true"
+											required=""
 											omitPleaseChoose="Y"
 											url="/WEB-INF/option_data/day.html"
 											className="sessioncamexclude dateinput-day dontSubmit ${className}" />
@@ -82,7 +82,7 @@ ${logger.trace('DOB Restricted to max: {},{}' , log:kv('nowLessAgeMinYears', now
 				<div class="col-md-4 col-xs-4 monthContainer">
 					<field_v2:import_select xpath="${xpath}InputM"
 											title="the month"
-											required="true"
+											required=""
 											omitPleaseChoose="Y"
 											url="/WEB-INF/option_data/month_full_v2.html"
 											className="sessioncamexclude dateinput-month dontSubmit ${className}" />
@@ -91,7 +91,7 @@ ${logger.trace('DOB Restricted to max: {},{}' , log:kv('nowLessAgeMinYears', now
 					<jsp:useBean id="date" class="java.util.Date" />
 					<fmt:formatDate value="${date}" pattern="yyyy" var="currentYear" />
 
-					<c:set var="sep"></c:set>
+					<c:set var="sep" value="" />
 					<c:set var="years">
 						<c:forEach  var="newYear" begin="${ageMin}" end="${ageMax}" >
 							${sep}${currentYear - newYear}=${currentYear - newYear}
@@ -99,7 +99,7 @@ ${logger.trace('DOB Restricted to max: {},{}' , log:kv('nowLessAgeMinYears', now
 						</c:forEach>
 					</c:set>
 					<field_v2:array_select xpath="${xpath}InputY"
-										   required="true"
+										   required=""
 										   title="the year"
 										   items="=Year,${years}"
 										   className="sessioncamexclude dateinput-year dontSubmit ${className}" />
