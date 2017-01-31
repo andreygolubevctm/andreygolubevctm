@@ -40,12 +40,12 @@
 
 	<%-- If dual pricing is enabled, update the template --%>
 	{{ if (meerkat.site.healthAlternatePricingActive === true) { }}
-	{{ obj.renderedDualPricing = meerkat.modules.dualPricing.renderTemplate('', obj, true, false); }}
+		{{ obj.renderedDualPricing = meerkat.modules.dualPricing.renderTemplate('', obj, true, false); }}
 	{{ } else { }}
-	{{ var logoTemplate = meerkat.modules.templateCache.getTemplate($("#logo-template")); }}
-	{{ var priceTemplate = meerkat.modules.templateCache.getTemplate($("#price-template")); }}
+		{{ var logoTemplate = meerkat.modules.templateCache.getTemplate($("#logo-template")); }}
+		{{ var priceTemplate = meerkat.modules.templateCache.getTemplate($("#price-template")); }}
 
-	{{ obj.showAltPremium = false; obj.renderedPriceTemplate = logoTemplate(obj) + priceTemplate(obj); }}
+		{{ obj.showAltPremium = false; obj.renderedPriceTemplate = logoTemplate(obj) + priceTemplate(obj); }}
 	{{ } }}
 
 	<%-- Prepare the call to action bar template. --%>
@@ -66,6 +66,7 @@
 	<div data-product-type="{{= info.ProductType }}" class="displayNone more-info-content ${variantClassName}">
 
 		<div class="fieldset-card row price-card <c:if test="${healthAlternatePricingActive eq true}">hasDualPricing</c:if>">
+			<health_v4_moreinfo:more_info_dual_pricing_header />
 			<div class="moreInfoTopLeftColumn Hospital_container">
 				<health_v4_moreinfo:more_info_product_summary />
 				<health_v4_moreinfo:more_info_product_extra_info />
@@ -258,9 +259,11 @@
 			</div>
 			<!-- CTA BUTTON -->
 			<div class="hidden-xs moreInfoTopRightColumn">
+				<c:if test="${!healthAlternatePricingActive eq true}">
                 <div class="sidebar-widget">
-						<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Apply Online<span class="icon-arrow-right" /></a>
-					</div>
+					<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Apply Online<span class="icon-arrow-right" /></a>
+				</div>
+				</c:if>
                 <div class="sidebar-widget sidebar-widget-padded sidebar-widget-background-contained">
                     <h3>Switching is simple!</h3>
                     <ul>

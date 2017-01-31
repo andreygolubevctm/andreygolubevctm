@@ -230,6 +230,12 @@
             $(this).prepend('<span class="icon icon-angle-right"></span>');
         });
 
+        // test
+        if (meerkat.site.healthAlternatePricingActive === true) {
+            $('.april-pricing').addClass('april-pricing-done');
+            $('.current-pricing').addClass('current-pricing-done');
+        }
+
         _setTabs();
     }
 
