@@ -18,7 +18,7 @@
             $modal = $('#' + modalId);
             $noDecline = $modal.find('.noDecline');
 
-            meerkat.modules.jqueryValidate.setupDefaultValidationOnForm($('#redemptionForm'));
+            meerkat.modules.jqueryValidate.setupDefaultValidationOnForm($modal.find('.redemptionForm'));
             meerkat.modules.elasticAddress.setupElasticAddressPlugin(baseURL);
             meerkat.modules.autocomplete.setBaseURL(baseURL);
             meerkat.modules.autocomplete.setTypeahead();

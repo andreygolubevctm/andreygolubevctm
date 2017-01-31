@@ -36,22 +36,22 @@
                                     <%--<span>Transaction Id</span>--%>
                                 <%--</a>--%>
                             <%--</li>--%>
-                            <%--<li class="col-lg-1">--%>
-                                <%--<a href="javascript:;">--%>
-                                    <%--<span class="icon"></span>--%>
-                                    <%--<span>Root Id</span>--%>
-                                <%--</a>--%>
-                            <%--</li>--%>
                             <li class="col-lg-1">
                                 <a href="javascript:;">
                                     <span class="icon"></span>
-                                    <span>Reward</span>
+                                    <span>Root Id</span>
                                 </a>
                             </li>
                             <li class="col-lg-1">
                                 <a href="javascript:;">
                                     <span class="icon"></span>
-                                    <span>Order Name</span>
+                                    <span>Reward Selected</span>
+                                </a>
+                            </li>
+                            <li class="col-lg-1">
+                                <a href="javascript:;">
+                                    <span class="icon"></span>
+                                    <span>Name</span>
                                 </a>
                             </li>
                             <li class="col-lg-2">
@@ -66,7 +66,7 @@
                                     <span>Email Address</span>
                                 </a>
                             </li>
-                            <li class="col-lg-2">
+                            <li class="col-lg-1">
                                 <a href="javascript:;">
                                     <span class="icon"></span>
                                     <span>Phone Number</span>
@@ -81,10 +81,16 @@
                             <li class="col-lg-1">
                                 <a href="javascript:;">
                                     <span class="icon"></span>
+                                    <span>Sale Status</span>
+                                </a>
+                            </li>
+                            <li class="col-lg-1">
+                                <a href="javascript:;">
+                                    <span class="icon"></span>
                                     <span>Date to Issue</span>
                                 </a>
                             </li>
-                            <li class="col-lg-2">
+                            <li class="col-lg-1">
                                 <button type="button" class="crud-new-entry btn btn-secondary btn-sm">Ad Hoc Order</button>
                             </li>
                         </ul>
@@ -120,33 +126,42 @@
 </script>
 
 <script class="crud-row-template" type="text/html">
-    <div class="sortable-results-row row" data-id="{{= data.phoneNumber }}">
+    {{ var orderHeader = data.orderForm.orderHeader }}
+    {{ var orderLine= orderHeader.orderLine || {} }}
+
+    <div class="sortable-results-row row" data-id="JjzQCBDkMi-97wcwCVFYrA">
         <div class="col-lg-1">
-            {{= data.rewardType.rewardType }}
+            {{= orderHeader.rootId }}
         </div>
         <div class="col-lg-1">
-            {{= data.firstName }} {{= data.lastName }}
+            {{= orderLine.rewardType.rewardType }}
+        </div>
+        <div class="col-lg-1">
+            {{= orderLine.firstName }} {{= orderLine.lastName }}
         </div>
         <div class="col-lg-2">
-            {{var shippingAddress = data.orderAddresses.filter(function(address){ }}
+            {{var shippingAddress = orderLine.orderAddresses.length > 0 ? orderLine.orderAddresses.filter(function(address){ }}
                 {{ return address.addressType === 'P' }}
-            {{ })[0].fullAddress }}
+            {{ })[0].fullAddress : '' }}
 
             {{= shippingAddress }}
         </div>
         <div class="col-lg-2">
-            {{= data.contactEmail }}
-        </div>
-        <div class="col-lg-2">
-            {{= data.phoneNumber }}
+            {{= orderLine.contactEmail }}
         </div>
         <div class="col-lg-1">
-            {{= data.orderStatus }}
+            {{= orderLine.phoneNumber }}
         </div>
         <div class="col-lg-1">
-            {{= data.dateToIssue }}
+            {{= orderLine.orderStatus }}
         </div>
-        <div class="col-lg-2">
+        <div class="col-lg-1">
+            {{= orderHeader.saleStatus }}
+        </div>
+        <div class="col-lg-1">
+            {{= orderLine.dateToIssue }}
+        </div>
+        <div class="col-lg-1">
             {{ if(data.type === "current"){ }}
             <button type="button" class="crud-edit-entry btn btn-secondary btn-sm">Edit</button>
             <button type="button" class="crud-delete-entry btn btn-primary btn-sm">Delete</button>

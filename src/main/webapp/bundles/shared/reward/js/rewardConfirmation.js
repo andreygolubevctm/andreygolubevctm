@@ -32,7 +32,7 @@
 
     function initCRUD(){
         CRUD = new meerkat.modules.crud.newCRUD({
-            baseURL: "spring/rest/reward/order",
+            baseURL: '/' + meerkat.site.urls.context + "spring/rest/reward/order",
             primaryKey: "encryptedOrderLineId",
             models: {
                 db: rewardData
@@ -100,18 +100,18 @@
                             }
                         });
                     } else if (response.message) {
-                        $('#redemptionForm').find(".error-message").html('response.message');
+                        $form.find(".error-message").html('response.message');
                     }
                 };
 
-            if ( $('#redemptionForm').valid() ) {
+            if ( $form.valid() ) {
                 this.promise("update", data, onSuccess, 'post', true);
             }
         };
 
         meerkat.messaging.subscribe(meerkatEvents.crud.CRUD_MODAL_OPENED, function initRedemptionForm(modalId) {
             meerkat.modules.redemptionForm.initRedemptionForm(modalId);
-            $form = $('#redemptionForm');
+            $form = $('#' + modalId.modalId).find('.redemptionForm');
         });
 
         // defer rendering because confirmation page is a template

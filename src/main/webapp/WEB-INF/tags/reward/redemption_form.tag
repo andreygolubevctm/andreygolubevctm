@@ -7,7 +7,7 @@
 
 {{ var currentCampaign = data.eligibleCampaigns[0] || {}; }}
 
-<form id="redemptionForm" class="form-horizontal">
+<form class="redemptionForm form-horizontal">
     <fieldset class="qe-window fieldset">
         <div class="row form-heading">
             <c:choose>

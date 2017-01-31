@@ -13,8 +13,8 @@
             meerkat.modules.affix.topDockBasedOnOffset($('.navbar-affix'));
             if($("#simples-reward-details-container").length) {
                 CRUD = new meerkat.modules.crud.newCRUD({
-                    baseURL: "/ctm/spring/rest/reward/order",
-                    primaryKey: "phoneNumber",
+                    baseURL: '/' + meerkat.site.urls.context + "spring/rest/reward/order",
+                    primaryKey: "encryptedOrderLineId",
                     models: {
                         datum: function(data) {
                             return {
@@ -24,6 +24,13 @@
                                     }
                                 }
                             };
+                        },
+                        db: function (encryptedOrderLineId) {
+                            if (encryptedOrderLineId) {
+                                return this.dataSet.filter(function(el) {
+                                    return el.orderForm.orderHeader.orderLine.encryptedOrderLineId === encryptedOrderLineId;
+                                })[0];
+                            }
                         }
                     },
                     renderResults: renderRewardHTML
@@ -83,14 +90,18 @@
 
                     var that = this,
                         onSuccess = function(response) {
-                            if(typeof response === "string")
+                            if(typeof response === "string") {
                                 response = JSON.parse(response);
-                            var orderLineResponses = response.orderLineResponses;
-                            if(orderLineResponses.length) {
-                                for (var i = 0; i < orderLineResponses.length; i++) {
-                                    var datum = orderLineResponses[i],
-                                        obj = new meerkat.modules.crudModel.datumModel(that.primaryKey, that.models.datum, datum, that.views.row);
-                                    that.dataSet.push(obj);
+                            }
+
+                            var orderHeaderResponses = response.orderHeaderResponses;
+                            if(orderHeaderResponses && orderHeaderResponses.length) {
+                                for (var i = 0; i < orderHeaderResponses.length; i++) {
+                                    if(orderHeaderResponses[i].orderLines && orderHeaderResponses[i].orderLines.length > 0) {
+                                        var datum = _transformRewardOrder(orderHeaderResponses[i]),
+                                            obj = new meerkat.modules.crudModel.datumModel(that.primaryKey, that.models.datum, datum, that.views.row);
+                                        that.dataSet.push(obj);
+                                    }
                                 }
                             }
                             $('#simples-reward-details-container').removeClass('hidden');
@@ -140,18 +151,28 @@
         }
     }
 
-    /**
-     * Actions to do on sort refresh
-     */
-    function refresh() {
-        CRUD.renderResults();
+
+    function _transformRewardOrder(orderHeader) {
+        var obj = {
+            orderForm: {
+                orderHeader: {}
+            }
+        };
+        for(var key in orderHeader) {
+            if(key === 'eligibleCampaigns') {
+                obj[key] = orderHeader[key];
+            } else if(key === 'orderLines') {
+                obj.orderForm.orderHeader['orderLine'] = orderHeader[key][0];
+            } else {
+                obj.orderForm.orderHeader[key] = orderHeader[key];
+            }
+        }
+
+        return obj;
     }
 
-
-
     meerkat.modules.register('adminReward', {
-        init: init,
-        refresh: refresh
+        init: init
     });
 
 })(jQuery);
