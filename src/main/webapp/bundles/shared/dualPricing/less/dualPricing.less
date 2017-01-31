@@ -64,6 +64,10 @@
     }
     .dual-pricing-container {
 
+      @media(@sm) {
+        margin-top: 10px;
+      }
+
       .april-pricing {
         border-bottom: 1px solid @dual-pricing-border-colour;
         padding-bottom: 10px;
@@ -176,6 +180,7 @@
     .dual-pricing-container {
       @media(@sm) {
         display: flex;
+        align-items: center;
       }
 
       .april-pricing,
@@ -244,7 +249,8 @@
             font-size: 18px;
           }
 
-          .frequencyTitle {
+          .frequencyTitle,
+          .deadline {
             display: none;
           }
         }
@@ -256,6 +262,12 @@
 
       /* coming soon styles */
       &.comingsoon {
+
+        @media(@sm) {
+          display: flex;
+          align-items: center;
+        }
+
         .april-pricing {
 
           @media(@xs-only) {
