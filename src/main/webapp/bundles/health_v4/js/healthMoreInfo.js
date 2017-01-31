@@ -518,7 +518,7 @@
                                 product.warningAlert = result.providerContentText;
                                 break;
                             case 'DDD':
-                                meerkat.modules.healthDropDeadDate.setDropDeadDate(result.providerContentText, product);
+                                meerkat.modules.dropDeadDate.setDropDeadDate(result.providerContentText, product);
                                 break;
                         }
                     }

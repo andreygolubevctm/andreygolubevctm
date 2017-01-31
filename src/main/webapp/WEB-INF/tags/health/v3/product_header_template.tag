@@ -29,13 +29,19 @@
         </div>
         <div class="results-header-inner-container">
             <div class="productSummary vertical results">
+                <%-- If dual pricing is enabled, update the template --%>
                 {{ var logoTemplate = meerkat.modules.templateCache.getTemplate($("#logo-template")); }}
-                {{ var productTitleTemplate = meerkat.modules.templateCache.getTemplate($("#product-title-template")); }}
-                {{ var priceTemplate = meerkat.modules.templateCache.getTemplate($("#price-template")); }}
-                {{ obj._selectedFrequency = Results.getFrequency(); obj.showAltPremium = false; }}
                 {{= logoTemplate(obj) }}
-                {{= productTitleTemplate(obj) }}
-                {{= priceTemplate(obj) }}
+                {{ if (meerkat.site.healthAlternatePricingActive === true) { }}
+                    {{= meerkat.modules.dualPricing.renderTemplate('', obj, true, false) }}
+                {{ } else { }}
+
+                    {{ var productTitleTemplate = meerkat.modules.templateCache.getTemplate($("#product-title-template")); }}
+                    {{ var priceTemplate = meerkat.modules.templateCache.getTemplate($("#price-template")); }}
+                    {{ obj._selectedFrequency = Results.getFrequency(); obj.showAltPremium = false; }}
+                    {{= productTitleTemplate(obj) }}
+                    {{= priceTemplate(obj) }}
+                {{ } }}
             </div>
 
             <a class="btn btn-cta btn-block btn-more-info more-info-showapply" href="javascript:;" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>

@@ -43,6 +43,7 @@
     "shared/filters",
     "shared/radioGroupTile",
     "shared/radioRounded",
-    "shared/fields"
+    "shared/fields",
+    "shared/dualPricing"
   ]
 }
