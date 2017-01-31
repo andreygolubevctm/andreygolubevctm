@@ -13,6 +13,7 @@ import com.ctm.web.homeloan.router.HomeLoanRouter;
 import com.ctm.web.core.security.StringEncryption;
 import com.ctm.web.core.services.AccessTouchService;
 import com.ctm.web.core.services.FatalErrorService;
+import org.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.json.JSONException;
@@ -264,9 +265,11 @@ public class HomeLoanService {
 		return model;
 	}
 
-	public synchronized void scheduledLeadGenerator(HttpServletRequest request) {
+	public synchronized JSONObject scheduledLeadGenerator(HttpServletRequest request) {
 
-		JSONObject json = null;
+		JSONObject response = new JSONObject();
+		JSONArray responseList = new JSONArray();
+
 		Logger LOGGER = LoggerFactory.getLogger(HomeLoanRouter.class);
 		AccessTouchService touch = new AccessTouchService();
 
@@ -284,14 +287,14 @@ public class HomeLoanService {
 						|| lead.getContactFirstName() ==  "UnknownFirstName " || lead.getContactSurname() == "UnknownLastName") {
 					continue;
 				}
+				JSONObject opportunity = opportunityService.submitOpportunity(request, lead);
 
-				json = opportunityService.submitOpportunity(request, lead);
-
-				if(json != null && json.has("responseData")) {
+				if(opportunity != null && opportunity.has("responseData")) {
 					try {
-						String out = StringEncryption.decrypt(HomeLoanOpportunityService.SECRET_KEY, json.getString("responseData"));
+						String out = StringEncryption.decrypt(HomeLoanOpportunityService.SECRET_KEY, opportunity.getString("responseData"));
 						JSONObject responseJson = new JSONObject(out);
 						if(responseJson.has("flexOpportunityId")) {
+							responseList.put(responseJson);
 							touch.recordTouchDeprecated(lead.getTransactionId(), Touch.TouchType.CALL_FEED.getCode());
 							// Add a new tran detail
 							TransactionDetail transactionDetailNew = new TransactionDetail();
@@ -301,17 +304,24 @@ public class HomeLoanService {
 						}
 					} catch (JSONException | GeneralSecurityException e) {
 						LOGGER.error("Failed to decrypt opportunity id {}, {}", kv("transactionId", lead.getTransactionId()), e);
-						FatalErrorService.logFatalError(e, 0, "/cron/hourly/homeloan/flexOutboundLead.json", "ctm", true, lead.getTransactionId());
+						FatalErrorService.logFatalError(e, 0, "/cron/homeloan/flexOutboundLead.json", "ctm", true, lead.getTransactionId());
 					}
 				}
 			}
 
 		} catch(DaoException e) {
 			LOGGER.error("HomeLoan opportunity cron failed", e);
-			FatalErrorService.logFatalError(e, 0, "/cron/hourly/homeloan/flexOutboundLead.json" , "ctm", true);
+			FatalErrorService.logFatalError(e, 0, "/cron/homeloan/flexOutboundLead.json" , "ctm", true);
 		}
 
+		try {
+			response.put("flexOutboundLeads", responseList);
+		} catch(org.json.JSONException e) {
+			LOGGER.error("HomeLoan scheduledLeadGenerator response failed", e);
+			FatalErrorService.logFatalError(e, 0, "/cron/homeloan/flexOutboundLead.json" , "ctm", true);
+		}
 
+		return response;
 	}
 
 }
