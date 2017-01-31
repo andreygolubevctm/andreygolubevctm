@@ -36,7 +36,12 @@
 
 <%-- RESULTS TEMPLATES --%>
 <core_v1:js_template id="dual-pricing-results-template">
-	<div class="dual-pricing-container {{ if (obj.dropDatePassed === true) { }}dropDatePassed{{ } }}">
+	{{ var comingSoonClass = ''; }}
+	{{ if (!_.isUndefined(obj.altPremium[obj._selectedFrequency])) { }}
+		{{ var productPremium = obj.altPremium[obj._selectedFrequency] }}
+		{{ comingSoonClass = ((productPremium.value && productPremium.value > 0) || (productPremium.text && productPremium.text.indexOf('$0.') < 0) || (productPremium.payableAmount && productPremium.payableAmount > 0))  ? '' : 'comingsoon' }}
+	{{ } }}
+	<div class="dual-pricing-container {{ if (obj.dropDatePassed === true) { }}dropDatePassed{{ } }} {{= comingSoonClass }}">
 		<div class="april-pricing">
 			<div class="altPriceContainer">
 				{{= renderedAltPriceTemplate }}
@@ -54,7 +59,12 @@
 
 <%-- MORE INFO TEMPLATES --%>
 <core_v1:js_template id="dual-pricing-moreinfo-template">
-	<div class="dual-pricing-container {{ if (obj.dropDatePassed === true) { }}dropDatePassed{{ } }}">
+	{{ var comingSoonClass = ''; }}
+	{{ if (!_.isUndefined(obj.altPremium[obj._selectedFrequency])) { }}
+		{{ var productPremium = obj.altPremium[obj._selectedFrequency] }}
+		{{ comingSoonClass = ((productPremium.value && productPremium.value > 0) || (productPremium.text && productPremium.text.indexOf('$0.') < 0) || (productPremium.payableAmount && productPremium.payableAmount > 0))  ? '' : 'comingsoon' }}
+	{{ } }}
+	<div class="dual-pricing-container {{ if (obj.dropDatePassed === true) { }}dropDatePassed{{ } }} {{= comingSoonClass }}">
 		<div class="april-pricing">
 			<h3>${april1Header}</h3>
 			{{= renderedAltPriceTemplate }}

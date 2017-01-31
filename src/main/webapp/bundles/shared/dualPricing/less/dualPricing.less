@@ -109,6 +109,25 @@
         text-transform: lowercase;
       }
     }
+
+    /* coming soon styles */
+    &.comingsoon {
+      .april-pricing {
+        padding-bottom: initial;
+        margin-bottom: initial;
+
+        .altPriceContainer {
+          width: 100%;
+          .price.premium .frequencyAmount {
+            font-size: 16px;
+          }
+        }
+
+        .altPriceDetailsContainer {
+          display: none;
+        }
+      }
+    }
   }
 }
 
@@ -181,6 +200,23 @@
 
         .cents {
           font-size: 15px;
+        }
+      }
+
+
+      /* coming soon styles */
+      &.comingsoon {
+
+        .april-pricing {
+          .frequencyAmount {
+            color: @dual-pricing-border-colour;
+          }
+
+          h3,
+          .premiumsRising,
+          .dual-pricing-learn-more {
+            display: none;
+          }
         }
       }
     }
