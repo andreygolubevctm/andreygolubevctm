@@ -64,6 +64,36 @@
     }
 
     /**
+     * Simply returns the provided copy wrapped in strong tags.
+     * @param copy
+     * @returns {string}
+     */
+    function getNormalCopy(copy) {
+        return '<strong>' + copy + '</strong> ';
+    }
+
+    function getLimitsCopy(copy,ft,obj) {
+        var resultPathTemp = ft.resultPath.split('.');
+        resultPathTemp[resultPathTemp.length - 1] = 'subLimit';
+        var subLimitResultPath = resultPathTemp.join('.');
+        resultPathTemp[resultPathTemp.length - 1] = 'serviceLimit';
+        var serviceLimitResultPath = resultPathTemp.join('.');
+        var displayValueList = [
+            !_.isEmpty(copy) ? copy : '',
+            '<h3>Sub-limits</h3>',
+            Features.parseFeatureValue(_getPathValue(obj, {resultPath:subLimitResultPath}), true),
+            '<h3>Service limits</h3>',
+            Features.parseFeatureValue(_getPathValue(obj, {resultPath:serviceLimitResultPath}), true),
+            '<br><br>'
+        ];
+        if(_.isEmpty(displayValueList[2])) displayValueList[2] = 'None';
+        if(_.isEmpty(displayValueList[4])) displayValueList[4] = 'None';
+        displayValueList[2] = getNormalCopy(displayValueList[2]);
+        displayValueList[4] = getNormalCopy(displayValueList[4]);
+        return displayValueList.join('');
+    }
+
+    /**
      * Remap the class string to just get the HLTicon- part of it.
      * @param ft
      * @returns {string}

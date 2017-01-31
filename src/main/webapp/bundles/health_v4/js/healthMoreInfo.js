@@ -78,17 +78,6 @@
      */
     function applyEventListeners() {
 
-        $(document.body).on("click", ".more-info", function moreInfoLinkClick(event) {
-            var product = Results.getSelectedProduct();
-            if (!product) {
-                return;
-            }
-
-            $(this).attr('data-productId', product.productId).attr('data-available', product.available);
-            // Need to pass the context of this click through.
-            meerkat.modules.moreInfo.open.apply(this, [event]);
-        });
-
         $(document.body).on("click", ".next-steps", function nextStepsClick(event) {
             var product = Results.getSelectedProduct();
             if (!product) {

@@ -361,8 +361,8 @@
     }
 
     function updateRebateLabels() {
-        $('#filtersRebateLabel span').text(meerkat.modules.healthRebate.getRebateLabelText());
-        $('#filtersSelectedRebateText').text(meerkat.modules.healthRebate.getSelectedRebateLabelText());
+        $('#filtersRebateLabel span').html(meerkat.modules.healthRebate.getRebateLabelText());
+        $('#filtersSelectedRebateText').html(meerkat.modules.healthRebate.getSelectedRebateLabelText());
     }
 
     function toggleFilterByContainer($filter, toggle) {
