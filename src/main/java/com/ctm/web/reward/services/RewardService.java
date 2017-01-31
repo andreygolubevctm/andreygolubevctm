@@ -384,7 +384,7 @@ public class RewardService {
 				return response;
 			} else {
 				throw new Exception("Update order failed. status=" + ((response != null) ? response.getStatus() : "")
-						+ ", message={}" + ((response != null) ? response.getMessage() : ""));
+						+ ", message=" + ((response != null) ? response.getMessage() : ""));
 			}
 		}
 		catch (Exception e) {
