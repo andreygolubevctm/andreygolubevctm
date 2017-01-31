@@ -72,8 +72,8 @@
 
         // if previous selection was TPFT and TPFT no longer applicable then unselect
         if (_.isEmpty(existingJourneySelection) || (excTPFT && _.indexOf([existingJourneySelection,existingFilterSelection],'TPFT') > -1)) {
-            $typeOfCoverDropdown.val('COMPREHENSIVE');
-            $typeOfCover.val('COMPREHENSIVE');
+            $typeOfCoverDropdown.val('').prop('selectedIndex','0');
+            $typeOfCover.val('').prop('selectedIndex','0');
         } else {
             $typeOfCoverDropdown.val(existingJourneySelection);
             $typeOfCover.val(existingJourneySelection);
