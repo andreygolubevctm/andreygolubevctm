@@ -155,6 +155,7 @@
                 <health_v4_layout:slide_results />
                 <health_v4_layout:slide_application />
                 <health_v4_layout:slide_payment />
+                <health_v4:dual_pricing_templates />
 
                 <health_v4_payment:payment_frequency_template />
 
