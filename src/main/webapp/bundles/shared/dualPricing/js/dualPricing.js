@@ -24,7 +24,8 @@
                     default: $('#dual-pricing-results-template')
                 },
                 moreinfo: {
-                    default: $('#dual-pricing-moreinfo-template')
+                    default: $('#dual-pricing-moreinfo-template'),
+                    xs : $('#dual-pricing-moreinfo-xs-template')
                 }
             },
             displayedFrequency: $('#health_payment_details_frequency'),
@@ -167,7 +168,7 @@
         var deviceMediaState = meerkat.modules.deviceMediaState.get(),
             page = meerkat.modules.address.getWindowHash() === 'results/moreinfo' ? 'moreinfo' : 'results'; // more reliable than using  meerkat.modules.moreInfo.isBridgingPageOpen() which returns false
 
-        return $elements.template[page][_.indexOf(['xs', 'sm'], deviceMediaState) > -1 ? deviceMediaState : 'default'];
+        return $elements.template[page][deviceMediaState] || $elements.template[page]['default'];
     }
 
     meerkat.modules.register('dualPricing', {

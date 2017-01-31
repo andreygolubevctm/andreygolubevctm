@@ -119,7 +119,14 @@
 
 					<div class="row priceRow productSummary hidden-sm hidden-md hidden-lg">
 						<div class="col-xs-12 col-sm-8">
-							xs price render here
+							<c:choose>
+								<c:when test="${healthAlternatePricingActive eq true}">
+									{{= renderedDualPricing }}
+								</c:when>
+								<c:otherwise>
+									{{= renderedPriceTemplate }}
+								</c:otherwise>
+							</c:choose>
 						</div>
 						<div class="col-xs-12 col-sm-4 text-right">
 							<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now<span class="icon-arrow-right" /></a>
@@ -140,22 +147,11 @@
 				<c:when test="${healthAlternatePricingActive eq true}">
 					<div class="col-md-5 hidden-xs moreInfoTopRightColumn">
 						<div class="companyLogo {{= info.provider }}-mi"></div>
-						<%-- The one below here renders. Split test is still active so will need to get feedback once job is done --%>
-						<c:choose>
-							<c:when test="${moreinfo_splittest_default eq false}">
-								<div class="col-xs-3"></div>
-								<div class="col-xs-9">
-									<h3 class="text-dark">Need help? Calla <span class="text-secondary">${callCentreNumber}</span></h3>
-								</div>
-							</c:when>
-							<c:otherwise>
-								<div class="insureNow">
-									<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now<span class="icon-arrow-right" /></a>
-								</div>
-								<h3 class="text-dark">or need help? Call <span class="text-secondary">${callCentreNumber}</span></h3>
-								<p class="referenceNo">Quote reference number <span>{{= transactionId }}</span></p>
-							</c:otherwise>
-						</c:choose>
+							<div class="insureNow">
+								<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now<span class="icon-arrow-right" /></a>
+							</div>
+							<h3 class="text-dark">or need help? Call <span class="text-secondary">${callCentreNumber}</span></h3>
+							<p class="referenceNo">Quote reference number <span>{{= transactionId }}</span></p>
 					</div>
 				</c:when>
 				<c:otherwise>
