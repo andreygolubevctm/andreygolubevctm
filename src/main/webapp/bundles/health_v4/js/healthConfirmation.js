@@ -183,7 +183,7 @@
 
 		if (typeof meerkat.site.healthAlternatePricingActive !== 'undefined' && meerkat.site.healthAlternatePricingActive === true) {
 			// render dual pricing
-			meerkat.modules.healthDualPricing.initHealthDualPricing();
+			meerkat.modules.healthDualPricing.initdualPricing();
 			meerkat.modules.healthDualPricing.renderTemplate('.policySummary.dualPricing', meerkat.modules.moreInfo.getProduct(), false, true);
 		}
 
