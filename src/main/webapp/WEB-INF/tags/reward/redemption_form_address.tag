@@ -130,7 +130,7 @@
     <input type="hidden" name="order_address_lastSearch" id="order_address_lastSearch" class="" value=""  />
     <input type="hidden" name="order_address_fullAddressLineOne" id="order_address_fullAddressLineOne" class="" value=""  />
     <input type="hidden" name="order_address_fullAddress" id="order_address_fullAddress" class="" value="{{= orderAddress.fullAddress }}"  />
-    <input type="hidden" name="order_address_dpId" id="order_address_dpId" class="" value="{{= orderAddress.dpId }}"  />
+    <input type="hidden" name="order_address_dpId" id="order_address_dpId" class="" value="{{= orderAddress.dpid }}"  />
     <input type="hidden" name="order_address_unitType" id="order_address_unitType" class="" value="{{= orderAddress.unitType }}"  />
     <input type="hidden" name="order_address_unitSel" id="order_address_unitSel" class="" value="{{= orderAddress.unitNumber }}"  />
     <input type="hidden" name="order_address_houseNoSel" id="order_address_houseNoSel" class="" value="{{= orderAddress.streetNumber }}"  />

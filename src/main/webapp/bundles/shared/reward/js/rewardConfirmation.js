@@ -67,7 +67,8 @@
             orderAddress.businessName = $form.find('input[name="order_address_businessName"]').val();
             orderAddress.state = $form.find('input[name="order_address_state"]').val();
             orderAddress.postcode = $form.find('input[name="order_address_postCode"]').val();
-            orderAddress.suburb = $form.find('input[name="order_address_suburbName"]').val();
+            orderAddress.suburb = $form.find('input[name="order_address_suburbName"]').val()
+                || $form.find('input[name="order_address_suburbName"]').attr('value');
             orderAddress.streetName = $form.find('input[name="order_address_streetName"]').val()
                 || $form.find('input[name="order_address_nonStdStreet"]').val();
             orderAddress.streetNumber = $form.find('input[name="order_address_streetNum"]').val()
