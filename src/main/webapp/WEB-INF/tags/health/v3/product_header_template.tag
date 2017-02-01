@@ -41,7 +41,7 @@
                 {{= logoTemplate(obj) }}
 
                 {{ if (meerkat.site.healthAlternatePricingActive === true) { }}
-                    {{= meerkat.modules.dualPricing.renderTemplate('', obj, true, false, 'results') }}
+                    {{= meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false, 'results') }}
                 {{ } else { }}
                     {{ var productTitleTemplate = meerkat.modules.templateCache.getTemplate($("#product-title-template")); }}
                     {{ var priceTemplate = meerkat.modules.templateCache.getTemplate($("#price-template")); }}

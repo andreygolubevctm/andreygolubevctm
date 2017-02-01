@@ -39,7 +39,7 @@
 
 	<%-- If dual pricing is enabled, update the template --%>
 	{{ if (meerkat.site.healthAlternatePricingActive === true) { }}
-		{{ obj.renderedDualPricing = meerkat.modules.dualPricing.renderTemplate('', obj, true, false); }}
+		{{ obj.renderedDualPricing = meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false); }}
 	{{ } else { }}
 		{{ var logoPriceTemplate = $('#logo-price-template').html(); }}
 		{{ var htmlTemplatePrice = _.template(logoPriceTemplate); }}
