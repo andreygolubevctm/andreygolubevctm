@@ -176,6 +176,7 @@
         <health_v3:excess_template />
         <health_v3:extras_list_template />
         <health_v3:credit_card_template />
+        <health_v1:logo_price_template />
 
     </jsp:body>
 
