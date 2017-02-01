@@ -38,7 +38,7 @@
 	{{ obj.displayLogo = false; }} <%-- Turns off the logo from the template --%>
 
 	<%-- If dual pricing is enabled, update the template --%>
-	{{ if (meerkat.site.healthAlternatePricingActive === true) { }}
+	{{ if (meerkat.site.healthAlternatePricingActive === true && meerkat.site.isCallCentreUser === true) { }}
 		{{ obj.renderedDualPricing = meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false); }}
 	{{ } else { }}
 		{{ var logoPriceTemplate = $('#logo-price-template').html(); }}
@@ -97,7 +97,7 @@
 				</div>
 
 				<c:choose>
-				<c:when test="${healthAlternatePricingActive eq true}">
+				<c:when test="${healthAlternatePricingActive eq true and not empty callCentre}">
 					<div class="row priceRow">
 						<div class="col-xs-12 hidden-md hidden-lg">
 							{{= renderedDualPricing }}
@@ -143,7 +143,7 @@
 
 			</div>
 			<c:choose>
-				<c:when test="${healthAlternatePricingActive eq true}">
+				<c:when test="${healthAlternatePricingActive eq true and not empty callCentre}">
 					<div class="col-md-5 hidden-xs hidden-sm moreInfoTopRightColumn">
 						<c:choose>
 							<c:when test="${moreinfo_splittest_variant1 eq true}">

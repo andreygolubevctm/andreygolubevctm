@@ -39,7 +39,7 @@
 	{{ obj.displayLogo = false; }} <%-- Turns off the logo from the template --%>
 
 	<%-- If dual pricing is enabled, update the template --%>
-	{{ if (meerkat.site.healthAlternatePricingActive === true) { }}
+	{{ if (meerkat.site.healthAlternatePricingActive === true && meerkat.site.isCallCentreUser === true) { }}
 	{{ obj.renderedDualPricing = meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false); }}
 	{{ } else { }}
 	{{ var logoTemplate = meerkat.modules.templateCache.getTemplate($("#logo-template")); }}
