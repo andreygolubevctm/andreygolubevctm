@@ -336,7 +336,7 @@
 				}
 
 				if (typeof meerkat.site.healthAlternatePricingActive !== 'undefined' && meerkat.site.healthAlternatePricingActive === true) {
-					meerkat.modules.healthDualPricing.renderTemplate('.policySummary.dualPricing', data, false, true);
+					meerkat.modules.dualPricing.renderTemplate('.policySummary.dualPricing', data, false, true);
 				}
 
 				meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, { source: 'healthPaymentStep' });
@@ -378,6 +378,10 @@
 		product.paymentNode = getPaymentMethodNode();
 		product.premium = product.paymentTypePremiums[product.paymentNode];
 		product._selectedFrequency = getSelectedFrequency();
+
+		if (typeof meerkat.site.healthAlternatePricingActive !== 'undefined' && meerkat.site.healthAlternatePricingActive === true) {
+			product.altPremium = product.paymentTypeAltPremiums[product.paymentNode];
+		}
 
         meerkat.modules.healthResults.setSelectedProduct(product, true);
 	}
