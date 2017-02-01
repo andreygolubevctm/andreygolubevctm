@@ -4,10 +4,7 @@
 (function ($, undefined) {
 
     var meerkat = window.meerkat,
-        meerkatEvents = meerkat.modules.events,
-        log = meerkat.logging.info,
-        debug = meerkat.logging.debug,
-        exception = meerkat.logging.exception;
+        meerkatEvents = meerkat.modules.events;
 
     var moduleEvents = {
             healthFilters: {},
@@ -19,7 +16,7 @@
          * The idea is that one model can render in many templates, as benefits needs to be in its own separate template
          * for the mobile/sm+ markup to work. Only problem is additional templates need to be defined in settings,
          * and rendered manually from this file
-         * @type POJO
+         * @type object
          */
         model = {
             "frequency": {
@@ -260,7 +257,10 @@
                 }
             }
         },
-        quoteRefTemplate;
+        quoteRefTemplate,
+        $navBarFiltersContext,
+        $hiddenProductsWrapper,
+        $paginationWrapper;
 
     function _getCheckedBenefitsFromFilters($container) {
         var array = [];
@@ -298,10 +298,16 @@
         if (meerkat.site.pageAction === "confirmation") {
             return false;
         }
-        quoteRefTemplate = $('.quote-reference-number');
-        meerkat.modules.filters.initFilters(settings, model);
-        applyEventListeners();
-        eventSubscriptions();
+        $(document).ready(function () {
+            quoteRefTemplate = $('.quote-reference-number');
+            $navBarFiltersContext = $('.results-control-container');
+            $hiddenProductsWrapper = $('.filter-results-hidden-products', $navBarFiltersContext);
+            $paginationWrapper = $('.results-pagination', $navBarFiltersContext);
+            _placeFrequencyFilters();
+            meerkat.modules.filters.initFilters(settings, model);
+            applyEventListeners();
+            eventSubscriptions();
+        });
     }
 
 
@@ -465,6 +471,31 @@
             });
         });
 
+        meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, function resultsXsBreakpointEnter() {
+            if (meerkat.modules.journeyEngine.getCurrentStep().navigationId === 'results') {
+                _placeFrequencyFilters();
+            }
+        });
+
+        meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function resultsXsBreakpointLeave() {
+            if (meerkat.modules.journeyEngine.getCurrentStep().navigationId === 'results') {
+                _placeFrequencyFilters();
+            }
+        });
+
+    }
+
+    /**
+     * To prevent issues with maintaining state of two separate frequency filters (for XS and SM+),
+     * need to just move them around in the DOM.
+     */
+    function _placeFrequencyFilters() {
+        var $frequency = $('.results-filters-frequency', $navBarFiltersContext);
+        if (meerkat.modules.deviceMediaState.get() === 'xs') {
+            $frequency.detach().insertAfter($paginationWrapper);
+        } else {
+            $frequency.detach().insertBefore($hiddenProductsWrapper);
+        }
     }
 
     meerkat.modules.register("healthFilters", {

@@ -4,55 +4,8 @@
  */
 ;(function($, undefined){
 
-    var meerkat = window.meerkat,
-        meerkatEvents = meerkat.modules.events,
-        log = meerkat.logging.info;
+    var meerkat = window.meerkat;
 
-    /**
-     * Returns the selected benefit codes
-     * @param product
-     * @returns {Array}
-     */
-    function getSelectedBenefits(productType) {
-        var benefits=[];
-        if (productType == 'Hospital' || productType == 'Combined') {
-            $('[name="health_filterBar_benefitsHospital"]:checked').each(
-                function () {
-                    benefits.push(getBenefit($(this)));
-                }
-            );
-        }
-        if (productType == 'GeneralHealth' || productType == 'Combined') {
-            $('[name="health_filterBar_benefitsExtras"]:checked').each(
-                function(){
-                    benefits.push(getBenefit($(this)));
-
-                }
-            );
-        }
-        return benefits;
-    }
-
-    function getBenefit(benefit) {
-        return {
-            "title" : benefit.attr('title'),
-            "code" : benefit.val()
-        };
-    }
-
-    function getSelectedHealthSituation() {
-        var selectedHealthSitu = $('[name="health_situation_healthSitu"]:checked');
-        var healthSituationName = null;
-        var healthSituationCode = null;
-        if (selectedHealthSitu.length !== 0) {
-            healthSituationName = $.trim(selectedHealthSitu.parent().text());
-            healthSituationCode = selectedHealthSitu.val();
-        }
-        return {
-            "name" : healthSituationName,
-            "code" : healthSituationCode
-        };
-    }
 
     function getPrimaryCurrentPHI() {
         return $('[name="health_healthCover_primary_cover"]:checked').val();
@@ -91,8 +44,6 @@
     }
 
     meerkat.modules.register('healthUtils', {
-        getSelectedBenefits: getSelectedBenefits,
-        getSelectedHealthSituation: getSelectedHealthSituation,
         getPrimaryCurrentPHI: getPrimaryCurrentPHI,
         getSpecialOffer: getSpecialOffer,
         getExcessesAndCoPayment: getExcessesAndCoPayment

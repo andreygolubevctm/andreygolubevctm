@@ -18,6 +18,6 @@
 		items="SM=Single Male,SF=Single Female,C=Couple,SPF=Single Parent Family,F=Family"
 		id="${go:nameFromXpath(fieldXPath)}"
 		style="radio-rounded"
-		title="situation you are in"
+		title="the situation you are in"
 		additionalLabelAttributes="${analyticsAttr}" />
 </form_v4:row>
