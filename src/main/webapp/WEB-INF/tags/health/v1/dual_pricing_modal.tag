@@ -4,7 +4,7 @@
 
 <c:set var="callCentreNumber" scope="request"><content:get key="callCentreNumber"/></c:set>
 
-<script id="dual-pricing-modal-template" type="text/html">
+<core_v1:js_template id="dual-pricing-modal-template">
     <div class="row">
         <div class="col-xs-12 col-sm-4"><h2>Premiums are rising</h2></div>
         <div class="col-sm-8 hidden-xs need-to-review-cover">
@@ -59,4 +59,4 @@
             <h1><a href="tel: ${callCentreNumber}">${callCentreNumber}</a></h1>
         </div>
     </div>
-</script>
+</core_v1:js_template>

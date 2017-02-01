@@ -18,7 +18,7 @@
 
     function _setupElements() {
         $elements = {
-            logoPriceTemplate: $('#logo-price-template'),
+            logoPriceTemplate: meerkat.modules.templateCache.getTemplate($('#logo-price-template')),
             template: {
                 default: $('#dual-pricing-template'),
                 xs: $('#dual-pricing-template-xs'),
@@ -137,11 +137,11 @@
         product.displayLogo = false;
         product.showRoundingText = false;
 
-        var htmlTemplate = _.template($elements.logoPriceTemplate.html());
+        var htmlTemplate = $elements.logoPriceTemplate;;
         product.renderedPriceTemplate = htmlTemplate(product);
 
         product.showAltPremium = true;
-        htmlTemplate = _.template($elements.logoPriceTemplate.html());
+        htmlTemplate = $elements.logoPriceTemplate;;
         product.renderedAltPriceTemplate = htmlTemplate(product);
         product.dropDeadDate = meerkat.modules.dropDeadDate.getDropDeadDate(product);
         product.dropDatePassed = meerkat.modules.dropDeadDate.getDropDatePassed(product);
@@ -158,15 +158,15 @@
 
     function _getTemplate(isForSidebar) {
         if (isForSidebar) {
-            return $elements.default.template;
+            return $elements.template.default;
         }
 
         var deviceMediaState = meerkat.modules.deviceMediaState.get();
 
-        return $elements[_.indexOf(['xs', 'sm'], deviceMediaState) ? deviceMediaState : 'default'].template;
+        return $elements.template[_.indexOf(['xs', 'sm'], deviceMediaState) > -1 ? deviceMediaState : 'default'];
     }
 
-    meerkat.modules.register('dualPricing', {
+    meerkat.modules.register('healthDualPricing', {
         initDualPricing: initDualPricing,
         renderTemplate: renderTemplate
     });

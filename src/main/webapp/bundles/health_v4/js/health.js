@@ -321,7 +321,7 @@
                 meerkat.modules.healthResults.initPage();
                 meerkat.modules.healthMoreInfo.initMoreInfo();
                 meerkat.modules.healthPriceComponent.initHealthPriceComponent();
-                meerkat.modules.dualPricing.initDualPricing();
+                meerkat.modules.healthDualPricing.initDualPricing();
             },
             onBeforeEnter: function enterResultsStep(event) {
                 meerkat.modules.healthDependants.resetConfig();

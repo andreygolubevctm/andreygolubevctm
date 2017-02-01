@@ -1,8 +1,5 @@
 ;(function ($, undefined) {
 
-    function init() {
-    }
-
     function getDropDatePassed(obj) {
         var dropDatePassed = true;
         if(typeof obj.dropDeadDate !== 'undefined') {
@@ -45,7 +42,6 @@
 
 
     meerkat.modules.register("dropDeadDate", {
-        init : init,
         getDropDatePassed: getDropDatePassed,
         getDropDeadDate : getDropDeadDate,
         setDropDeadDate : setDropDeadDate

@@ -210,8 +210,8 @@
 
 		if (typeof meerkat.site.healthAlternatePricingActive !== 'undefined' && meerkat.site.healthAlternatePricingActive === true) {
 			// render dual pricing
-			meerkat.modules.dualPricing.initDualPricing();
-			meerkat.modules.dualPricing.renderTemplate('.policySummary.dualPricing', meerkat.modules.moreInfo.getProduct(), false, true);
+			meerkat.modules.healthDualPricing.initDualPricing();
+			meerkat.modules.healthDualPricing.renderTemplate('.policySummary.dualPricing', meerkat.modules.moreInfo.getProduct(), false, true);
 		}
 
 		// hide the sidebar frequncy. only needed for payment page
