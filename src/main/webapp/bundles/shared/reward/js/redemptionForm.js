@@ -8,7 +8,8 @@
 
     var modalId = false,
         $modal,
-        $noDecline;
+        $noDecline,
+        selectedToy;
 
     function initRedemptionForm(modalIdParam, baseURL) {
         modalId = modalIdParam.modalId;
@@ -31,8 +32,20 @@
     function applyEventListeners() {
         $modal.find('.rewardType input').on('change', function toggleDecline() {
             if($(this).is(':checked')) {
+                selectedToy = $(this).attr('id');
                 $noDecline.removeClass('hidden');
+                $modal.find('.declineReward').hide();
                 $modal.find('.declineReward input').prop('checked', false);
+            }
+            meerkat.modules.dialogs.resizeDialog(modalId);
+        });
+
+        $modal.find('.rewardType input').on('click', function toggleDecline() {
+            if (selectedToy == $(this).attr('id')) {
+                $noDecline.addClass('hidden');
+                $modal.find('.rewardType input').prop('checked', false).trigger('change');
+                $modal.find('.declineReward').show();
+                selectedToy = null;
             }
             meerkat.modules.dialogs.resizeDialog(modalId);
         });
