@@ -137,7 +137,8 @@
     <input type="hidden" name="order_address_floorNo" id="order_address_floorNo" class="" value=""  />
     <input type="hidden" name="order_address_streetName" id="order_address_streetName" class="" value="{{= orderAddress.streetName }}"  />
     <input type="hidden" name="order_address_streetId" id="order_address_streetId" class="" value=""  />
-    <input type="text" id="order_address_suburbName" name="order_address_suburbName" class="validate " value="{{= orderAddress.suburb }}" data-validation-placement="#order_address_error_container .error-field" style="visibility:hidden;height:0;display:block;" tabindex="-1" readonly  autocomplete='false' />
-    <input type="text" id="order_address_postCode" name="order_address_postCode" class="validate " value="{{= orderAddress.postcode }}" data-validation-placement="#order_address_error_container .error-field" style="visibility:hidden;height:0;display:block;" tabindex="-1" readonly  autocomplete='false' data-rule-validAddress='order_address' data-msg-validAddress='Please enter a valid postcode' />
+    <input type="hidden" name="order_address_suburbName" id="order_address_suburbName" class=""  value=""  />
+    <input type="hidden" name="order_address_suburbNamePrefill" id="order_address_suburbNamePrefill" class=""  value="{{= orderAddress.suburb }}"  />
+    <input type="hidden" name="order_address_postCode" id="order_address_postCode" class="" value="{{= orderAddress.postcode }}"  />
     <input type="hidden" name="order_address_state" id="order_address_state" class="" value="{{= orderAddress.state }}"  />
 </div>

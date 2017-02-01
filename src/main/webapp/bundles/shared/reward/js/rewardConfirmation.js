@@ -68,7 +68,7 @@
             orderAddress.state = $form.find('input[name="order_address_state"]').val();
             orderAddress.postcode = $form.find('input[name="order_address_postCode"]').val();
             orderAddress.suburb = $form.find('input[name="order_address_suburbName"]').val()
-                || $form.find('input[name="order_address_suburbName"]').attr('value');
+                || $form.find('input[name="order_address_suburbNamePrefill"]').val();
             orderAddress.streetName = $form.find('input[name="order_address_streetName"]').val()
                 || $form.find('input[name="order_address_nonStdStreet"]').val();
             orderAddress.streetNumber = $form.find('input[name="order_address_streetNum"]').val()
@@ -81,7 +81,6 @@
 
             // Safe guard in case the order/get gets incomplete data
             orderForm.orderHeader.orderLine = orderLine;
-            orderForm.orderHeader.orderLine.orderAddresses[0] = orderAddress;
 
             return orderForm;
         };
