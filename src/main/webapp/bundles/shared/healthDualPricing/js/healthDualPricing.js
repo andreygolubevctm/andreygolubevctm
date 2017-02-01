@@ -6,6 +6,7 @@
         selectedProduct = {},
         modalId = null,
         freqTextMapping = {
+            'annually': 'per annum',
             'halfyealy': 'per half year',
             'quarterly': 'per quarter',
             'monthly': 'per month',
