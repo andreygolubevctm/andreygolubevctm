@@ -29,7 +29,8 @@
             template: {
                 default: $('#dual-pricing-template'),
                 xs: $('#dual-pricing-template-xs'),
-                sm: $('#dual-pricing-template-sm')
+                sm: $('#dual-pricing-template-sm'),
+                sidebar: $('#dual-pricing-template-sidebar')
             },
             displayedFrequency: $('#health_payment_details_frequency'),
             modalTemplate: $('#dual-pricing-modal-template'),
@@ -153,13 +154,14 @@
         product._selectedFrequency = typeof product._selectedFrequency === 'undefined' ? Results.getFrequency() : product._selectedFrequency;
         product.mode = product.mode !== '' ? product.mode : '';
         product.showAltPremium = false;
-        product.displayLogo = false;
+        product.displayLogo = isForSidebar;
         product.showRoundingText = false;
 
         var htmlTemplate = $elements.logoPriceTemplate;
         product.renderedPriceTemplate = htmlTemplate(product);
 
         product.showAltPremium = true;
+        product.displayLogo = false;
         htmlTemplate = $elements.logoPriceTemplate;
         product.renderedAltPriceTemplate = htmlTemplate(product);
         product.dropDeadDate = meerkat.modules.dropDeadDate.getDropDeadDate(product);
@@ -177,7 +179,7 @@
 
     function _getTemplate(isForSidebar) {
         if (isForSidebar) {
-            return $elements.template.default;
+            return $elements.template.sidebar;
         }
 
         var deviceMediaState = meerkat.modules.deviceMediaState.get();

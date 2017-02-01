@@ -105,6 +105,7 @@
 				product.dropDeadDateFormatted = selectedProduct.dropDeadDateFormatted;
 				product.dropDeadDatePassed = selectedProduct.dropDeadDatePassed;
 			}
+			product.mode = 'lhcInc';
 			meerkat.modules.dualPricing.renderTemplate('.policySummary.dualPricing', product, false, true);
 		} else {
 			product.displayLogo = true;

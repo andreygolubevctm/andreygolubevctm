@@ -32,7 +32,8 @@
 	</c:if>
 
 	<c:if test="${healthAlternatePricingActive eq true}">
-		<div class="policySummary dualPricing"></div>
+		<h1 class="hidden-xs">Your quote details</h1>
+		<div class="policySummary productSummary dualPricing"></div>
 	</c:if>
 
 <c:if test="${healthAlternatePricingActive eq true}">

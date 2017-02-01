@@ -156,3 +156,17 @@
 		${whyPremiumsRising}
 	</div>
 </core_v1:js_template>
+
+<core_v1:js_template id="dual-pricing-template-sidebar">
+	<div class="dual-pricing-container {{ if (obj.dropDatePassed === true) { }}dropDatePassed{{ } }}">
+		<div class="current-pricing">
+			{{= renderedPriceTemplate }}
+		</div>
+
+		<div class="april-pricing">
+			<p>Premiums are rising</p>
+			{{= renderedAltPriceTemplate }}
+			<p>from April 1st, 2017</p>
+		</div>
+	</div>
+</core_v1:js_template>
