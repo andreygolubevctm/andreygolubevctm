@@ -129,7 +129,7 @@
     {{ var orderHeader = data.orderForm.orderHeader }}
     {{ var orderLine= orderHeader.orderLine || {} }}
 
-    <div class="sortable-results-row row" data-id="JjzQCBDkMi-97wcwCVFYrA">
+    <div class="sortable-results-row row" data-id="{{= orderLine.encryptedOrderLineId }}">
         <div class="col-lg-1">
             {{= orderHeader.rootId }}
         </div>

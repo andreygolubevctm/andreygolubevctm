@@ -62,22 +62,22 @@
 		
 		// Check if we already have a method for handing results rendering
 		// otherwise default to throwing it into the appropriate container
-		// if(!this.renderResults) {
-		// 	this.renderResults = function() {
-		// 		var results = that.dataSet.get(),
-		// 			resultsHTML = "";
-		//
-		// 		for(var i = 0; i < results.length; i++) {
-		// 			resultsHTML += results[i].html;
-		// 		}
-		//
-		// 		$(".sortable-results-table")
-		// 			.html(resultsHTML)
-		// 			.closest(".row")
-		// 			.find("h1 small")
-		// 			.text("(" + results.length + ")");
-		// 	};
-		// }
+		if(!this.renderResults) {
+			this.renderResults = function() {
+				var results = that.dataSet.get(),
+					resultsHTML = "";
+
+				for(var i = 0; i < results.length; i++) {
+					resultsHTML += results[i].html;
+				}
+
+				$(".sortable-results-table")
+					.html(resultsHTML)
+					.closest(".row")
+					.find("h1 small")
+					.text("(" + results.length + ")");
+			};
+		}
 		
 		// Check if we have manually defined the required views
 		if(!this.views) {
@@ -133,10 +133,10 @@
 		
 		var that = this,
 			m,
-			modalHTML;
+			modalHTML,
+            searchId = $targetRow.data("id");
 
 		if($targetRow) {
-			var searchId = $targetRow.data("id");
 			m = this.dataSet.get(searchId).data;
 		} else {
 			m = new crudModel.dbModel(this.models.db);
@@ -156,7 +156,7 @@
 		});
 
 		// Initialize the text editors
-		var $textAreas = $("#" + this.modalId + " textarea.form-control");
+		var $textAreas = $("#" + this.modalId + " textarea.form-control.editor");
 		if($textAreas.length) {
 			$textAreas.trumbowyg({
 				fullscreenable: false,
@@ -168,7 +168,7 @@
 
         $(document).on("click", "#" + that.modalId + " .crud-save-entry", function() {
             var $modal = $("#" + that.modalId),
-                data = that.getSaveRequestData($modal);
+                data = that.getSaveRequestData($modal, searchId);
 
             // If we are cloning, don't pass the target row so that we can force a new
             // record instead of an update

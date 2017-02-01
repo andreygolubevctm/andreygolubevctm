@@ -14,7 +14,7 @@
             if($("#simples-reward-details-container").length) {
                 CRUD = new meerkat.modules.crud.newCRUD({
                     baseURL: '/' + meerkat.site.urls.context + "spring/rest/reward/order",
-                    primaryKey: "encryptedOrderLineId",
+                    primaryKey: "orderForm.orderHeader.orderLine.encryptedOrderLineId",
                     models: {
                         datum: function(data) {
                             return {
@@ -24,63 +24,66 @@
                                     }
                                 }
                             };
-                        },
-                        db: function (encryptedOrderLineId) {
-                            if (encryptedOrderLineId) {
-                                return this.dataSet.filter(function(el) {
-                                    return el.orderForm.orderHeader.orderLine.encryptedOrderLineId === encryptedOrderLineId;
-                                })[0];
-                            }
                         }
                     },
                     renderResults: renderRewardHTML
                 });
 
-                // CRUD.getDeleteRequestData = function($row) {
-                //     return CRUD.dataSet.get($row.data("id")).data;
-                // };
+                CRUD.getSaveRequestData = function($modal, encryptedOrderLineId) {
+                    var $form = $modal.find('.redemptionForm');
 
-                CRUD.getSaveRequestData = function($modal) {
-                    var $inputs = $modal.find("input, textarea, select"),
-                        data = {
-                            "orderHeader": {
-                                "orderLine":
-                                    {
-                                        "campaignCode": "code1",
-                                        "contactEmail": "stuff",
-                                        "firstName": "Steve",
-                                        "lastName": "Jiang",
-                                        "signOnReceipt": true,
-                                        "orderNotes": "test notes",
-                                        "phoneNumber": "0412345678",
-                                        "touchType": "string",
-                                        "trackerOptIn" : true,
-                                        "updatedByOperator": "sjiang",
-                                        "orderAddresses": [
-                                            {
-                                                "addressType": "P",
-                                                "businessName": "Compare The Market",
-                                                "dpid": "36957671",
-                                                "postcode": "4066",
-                                                "state": "QLD",
-                                                "streetName": "Jephson St.",
-                                                "suburb": "Toowong",
-                                                "unitNumber": "2",
-                                                "unitType": "L"
-                                            }
-                                        ]
-                                    },
-                                "saleStatus": "Sale",
-                                "reasonCode": "somthing"
-                            }
-                        };
+                    // Abort if form is invalid
+                    if ( $form.valid() !== true ) return false;
 
-                    // for(var i = 0; i < $inputs.length; i++) {
-                    //     var $input = $($inputs[i]);
-                    //     data[$input.attr("name")] = $input.val();
-                    // }
+                    var rewardData = this.dataSet.get(encryptedOrderLineId).data,
+                        orderForm = false;
 
-                    return data;
+                    // try to valid the model...
+                    if (rewardData && rewardData.orderForm &&
+                        rewardData.orderForm.orderHeader && rewardData.orderForm.orderHeader.orderLine) {
+                        orderForm = rewardData.orderForm;
+                        var orderLine = orderForm.orderHeader.orderLine,
+                            orderAddress = orderLine.orderAddresses[0] || {},
+                            currentCampaign = rewardData.eligibleCampaigns[0] || {};
+
+                        // orderHeader
+                        orderForm.orderHeader.reasonCode = $form.find('select[name="order_reasonCode"]').val() || null;
+
+                        // orderLine
+                        orderLine.campaignCode = currentCampaign.campaignCode;
+                        orderLine.orderStatus = $form.find('select[name="order_orderStatus"]').val() || orderLine.orderStatus;
+                        orderLine.rewardTypeId = $form.find('input[name="order_rewardType"]:checked').val() || null;
+                        orderLine.firstName = $form.find('input[name="order_firstName"]').val();
+                        orderLine.lastName = $form.find('input[name="order_lastName"]').val();
+                        orderLine.contactEmail = $form.find('input[name="order_contactEmail"]').val();
+                        orderLine.phoneNumber = $form.find('input[name="order_phoneNumber"]').val();
+                        orderLine.signOnReceipt = $form.find('input[name="order_signOnReceipt"]:checked').val() === 'Y';
+                        orderLine.trackerOptIn = true; // defaulting to true as Product team told to remove the field
+                        orderLine.orderNotes = $form.find('textarea[name="order_notes"]').val();
+
+                        //addresses
+                        orderAddress.dpid = $form.find('input[name="order_address_dpId"]').val();
+                        orderAddress.businessName = $form.find('input[name="order_address_businessName"]').val();
+                        orderAddress.state = $form.find('input[name="order_address_state"]').val();
+                        orderAddress.postcode = $form.find('input[name="order_address_postCode"]').val();
+                        orderAddress.suburb = $form.find('input[name="order_address_suburbName"]').val()
+                            || $form.find('input[name="order_address_suburbNamePrefill"]').val();
+                        orderAddress.streetName = $form.find('input[name="order_address_streetName"]').val()
+                            || $form.find('input[name="order_address_nonStdStreet"]').val();
+                        orderAddress.streetNumber = $form.find('input[name="order_address_streetNum"]').val()
+                            || $form.find('input[name="order_address_houseNoSel"]').val();
+                        orderAddress.unitNumber = $form.find('input[name="order_address_unitSel"]').val()
+                            || $form.find('input[name="order_address_unitShop"]').val();
+                        orderAddress.unitType = $form.find('input[name="order_address_unitType"]').val()
+                            || $form.find(':input[name="order_address_nonStdUnitType"]').val();
+                        orderAddress.fullAddress = $form.find('input[name="order_address_fullAddress"]').val();
+
+                        // Safe guard in case the order/get gets incomplete data
+                        orderForm.orderHeader.orderLine = orderLine;
+                        orderForm.orderHeader.orderLine.orderAddresses[0] = orderAddress;
+                    }
+
+                    return orderForm;
                 };
 
                 CRUD.find = function (data) {
@@ -99,7 +102,7 @@
                                 for (var i = 0; i < orderHeaderResponses.length; i++) {
                                     if(orderHeaderResponses[i].orderLines && orderHeaderResponses[i].orderLines.length > 0) {
                                         var datum = _transformRewardOrder(orderHeaderResponses[i]),
-                                            obj = new meerkat.modules.crudModel.datumModel(that.primaryKey, that.models.datum, datum, that.views.row);
+                                            obj = new meerkat.modules.crudModel.datumModel(that.primaryKey, that.models.datum, datum, that.views.row, true);
                                         that.dataSet.push(obj);
                                     }
                                 }
@@ -108,6 +111,23 @@
                             that.sortRenderResults();
                         };
                     return this.promise("find", data, onSuccess, 'post', true);
+                };
+
+                CRUD.save = function (data) {
+                    var that = this,
+                        onSuccess = function (response) {
+                            if (response.status && response.status === true) {
+                                // try search to render again (not ideal but the api doesn't return the updated model)
+                                $('#simples-reward-search-navbar').find('button').trigger('click');
+                                meerkat.modules.dialogs.close(that.modalId);
+                            } else if (response.message) {
+                                $('#' + that.modalId).find(".error-message").html('Error: ' + response.message);
+                            }
+                        };
+
+                    if (data) {
+                        this.promise("update", data, onSuccess, 'post', true);
+                    }
                 };
 
                 meerkat.messaging.subscribe(meerkatEvents.crud.CRUD_MODAL_OPENED, function initRedemptionForm(modalId) {

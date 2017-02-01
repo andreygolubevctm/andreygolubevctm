@@ -51,9 +51,7 @@
             selectedRewardTypeId = $form.find('input[name="order_rewardType"]:checked').val();
 
             orderLine.campaignCode = currentCampaign.campaignCode;
-            if (selectedRewardTypeId) {
-                orderLine.rewardTypeId = selectedRewardTypeId;
-            }
+            orderLine.rewardTypeId = selectedRewardTypeId || null;
             orderLine.firstName = $form.find('input[name="order_firstName"]').val();
             orderLine.lastName = $form.find('input[name="order_lastName"]').val();
             orderLine.contactEmail = $form.find('input[name="order_contactEmail"]').val();
@@ -81,6 +79,7 @@
 
             // Safe guard in case the order/get gets incomplete data
             orderForm.orderHeader.orderLine = orderLine;
+            orderForm.orderHeader.orderLine.orderAddresses[0] = orderAddress;
 
             return orderForm;
         };
@@ -100,7 +99,7 @@
                             }
                         });
                     } else if (response.message) {
-                        $form.find(".error-message").html('response.message');
+                        $form.find(".error-message").html('Something went wrong, please try again. If the error persists, please call 1800 Meerkat (1800 633 752) for help.');
                     }
                 };
 

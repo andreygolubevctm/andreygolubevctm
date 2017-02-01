@@ -417,7 +417,7 @@
                 fullAddressLineOne = this.getFullAddressLineOne();
             }
 
-            return fullAddressLineOne + "," + jsonAddress.suburb + " " + jsonAddress.state + " " + jsonAddress.postCode;
+            return fullAddressLineOne + ", " + jsonAddress.suburb + " " + jsonAddress.state + " " + jsonAddress.postCode;
         },
         getFullAddressLineOne: function () {
 
