@@ -105,7 +105,7 @@
 				product.dropDeadDateFormatted = selectedProduct.dropDeadDateFormatted;
 				product.dropDeadDatePassed = selectedProduct.dropDeadDatePassed;
 			}
-			meerkat.modules.dualPricing.renderTemplate('.policySummary.dualPricing', product, false, true);
+			meerkat.modules.healthDualPricing.renderTemplate('.policySummary.dualPricing', product, false, true);
 		} else {
 			product.displayLogo = true;
 			var quoteRefHtmlTemplate = _.template(quoteRefTemplate);

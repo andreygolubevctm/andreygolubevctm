@@ -389,7 +389,7 @@
                 meerkat.modules.healthAltPricing.initHealthAltPricing();
                 meerkat.modules.healthMoreInfo.initMoreInfo();
                 meerkat.modules.healthPriceComponent.initHealthPriceComponent();
-                meerkat.modules.dualPricing.initDualPricing();
+                meerkat.modules.healthDualPricing.initDualPricing();
             },
             onBeforeEnter: function enterResultsStep(event) {
                 meerkat.modules.sessionCamHelper.stop();

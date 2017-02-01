@@ -336,7 +336,7 @@
 				}
 
 				if (typeof meerkat.site.healthAlternatePricingActive !== 'undefined' && meerkat.site.healthAlternatePricingActive === true) {
-					meerkat.modules.dualPricing.renderTemplate('.policySummary.dualPricing', data, false, true);
+					meerkat.modules.healthDualPricing.renderTemplate('.policySummary.dualPricing', data, false, true);
 				}
 
 				meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, { source: 'healthPaymentStep' });
