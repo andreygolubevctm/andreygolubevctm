@@ -70,7 +70,8 @@
             benefits[benefitType].push({
                 id: $this.attr('data-benefit-id'),
                 label: $this.next('label').find('.benefitTitle').text(),
-                value: $this.attr('data-benefit-id') // this is needed for filters.
+                value: $this.attr('data-benefit-id'), // this is needed for filters - filters.deferred.js requires a .value node
+                code: $this.attr('data-benefit-code') // this is needed for quote ranking and best price email
             });
         });
         meerkat.modules.benefitsModel.initBenefitLabelStore(benefits);
