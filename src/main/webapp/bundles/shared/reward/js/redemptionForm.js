@@ -34,6 +34,7 @@
                 $noDecline.removeClass('hidden');
                 $modal.find('.declineReward input').prop('checked', false);
             }
+            meerkat.modules.dialogs.resizeDialog(modalId);
         });
 
         $modal.find('.declineReward input').on('change', function toggleDecline() {
