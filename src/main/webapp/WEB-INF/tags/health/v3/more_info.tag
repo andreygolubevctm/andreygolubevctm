@@ -150,7 +150,7 @@
 
 			</div>
 			<c:choose>
-				<c:when test="${healthAlternatePricingActive eq true}">
+				<c:when test="${healthAlternatePricingActive eq true and not empty callCentre}">
 					<div class="col-md-5 hidden-xs moreInfoTopRightColumn">
 						<div class="companyLogo {{= info.provider }}-mi"></div>
 							<div class="insureNow">
@@ -163,13 +163,11 @@
 				<c:otherwise>
 					<div class="col-sm-4 hidden-xs moreInfoTopRightColumn">
 						<div class="companyLogo {{= info.provider }}-mi"></div>
-						<c:if test="${not empty callCentre or moreinfo_splittest_default eq true}">
 						<div class="row">
 							<div class="col-xs-12">
 								<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now<span class="icon-arrow-right" /></a>
 							</div>
 						</div>
-						</c:if>
 
 						<p class="needHelp">or need help? Call<span>${callCentreNumber}</span></p>
 						<p class="referenceNo">Quote reference number <span>{{= transactionId }}</span></p>
