@@ -43,6 +43,7 @@
                                 {{ premiumSplit = premiumSplit.split(".") }}
                                 <span class="dollarSign">$</span>{{=  premiumSplit[0].replace('$', '') }}<span class="cents">.{{= premiumSplit[1] }}</span>
                             </span>
+                            <span class="frequencyTitle">
                             {{= freq === 'annually' ? 'per year' : '' }}
                             {{= freq.toLowerCase() === 'halfyearly' ? 'per half year' : '' }}
                             {{= freq === 'quarterly' ? 'per quarter' : '' }}
@@ -50,6 +51,7 @@
                             {{= freq === 'fortnightly' ? 'per f/night' : '' }}
                             {{= freq === 'weekly' ? 'per week' : '' }}
                             {{= typeof mode === "undefined" || mode != "lhcInc" ? textLhcFreePricing : textPricing }}
+                            </span>
                         {{ } }}
 					{{ } else { }}
 					<div class="frequencyAmount comingSoon">New price not yet released</div>

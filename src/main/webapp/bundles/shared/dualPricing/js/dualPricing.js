@@ -121,7 +121,8 @@
         }
     }
 
-    function renderTemplate(target, product, returnTemplate, isForSidebar) {
+    function renderTemplate(target, product, returnTemplate, isForSidebar, page) {
+
         selectedProduct = product;
 
         if(!_.isObject(product)) {
@@ -149,7 +150,7 @@
         product.renderedAltPriceTemplate = htmlTemplate(product);
         product.dropDeadDate = meerkat.modules.dropDeadDate.getDropDeadDate(product);
         product.dropDatePassed = meerkat.modules.dropDeadDate.getDropDatePassed(product);
-        $elements.mainDualPricingTemplate = _getTemplate(isForSidebar);
+        $elements.mainDualPricingTemplate = _getTemplate(isForSidebar, page);
 
         var dualPriceTemplate = _.template($elements.mainDualPricingTemplate.html());
 
@@ -160,13 +161,14 @@
         }
     }
 
-    function _getTemplate(isForSidebar) {
+    function _getTemplate(isForSidebar, page) {
         if (isForSidebar) {
             return $elements.template.default;
         }
 
-        var deviceMediaState = meerkat.modules.deviceMediaState.get(),
-            page = meerkat.modules.address.getWindowHash() === 'results/moreinfo' ? 'moreinfo' : 'results'; // more reliable than using  meerkat.modules.moreInfo.isBridgingPageOpen() which returns false
+        page  = page || 'moreinfo';
+
+        var deviceMediaState = meerkat.modules.deviceMediaState.get();
 
         return $elements.template[page][deviceMediaState] || $elements.template[page]['default'];
     }

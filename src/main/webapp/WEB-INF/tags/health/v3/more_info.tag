@@ -55,6 +55,12 @@
 	{{ var htmlTemplate = _.template(template); }}
 	{{ var callToActionBarHtml = htmlTemplate(obj); }}
 
+	{{ var comingSoonClass = ''; var priceContainerWidth = 'col-xs-6'; }}
+	{{ if (!_.isUndefined(obj.altPremium[obj._selectedFrequency])) { }}
+		{{ var productPremium = obj.altPremium[obj._selectedFrequency] }}
+		{{ comingSoonClass = ((productPremium.value && productPremium.value > 0) || (productPremium.text && productPremium.text.indexOf('$0.') < 0) || (productPremium.payableAmount && productPremium.payableAmount > 0))  ? '' : 'comingsoon' }}
+	{{ } }}
+
 	<c:set var="buyNowHeadingClass">
 		<c:choose>
 			<c:when test="${healthAlternatePricingActive eq true}">hidden-xs</c:when>
@@ -76,7 +82,7 @@
 		<form_v3:save_results_button />
 	</c:if>
 
-	<div data-product-type="{{= info.ProductType }}" class="displayNone more-info-content col-xs-12 ${variantClassName}">
+	<div data-product-type="{{= info.ProductType }}" class="displayNone more-info-content col-xs-12 ${variantClassName} {{= comingSoonClass }}">
 
 		<div class="fieldset-card row price-card <c:if test="${healthAlternatePricingActive eq true}">hasDualPricing</c:if> {{= dropDatePassed ? 'dropDatePassedContainer' : ''}}">
 			<div class="${moreInfoTopLeftColumnWidth} moreInfoTopLeftColumn">
