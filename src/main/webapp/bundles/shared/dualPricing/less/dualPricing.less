@@ -63,30 +63,27 @@
 .downArrow() {
   .down-arrow {
     position: relative;
-    background: #transparent;
+    margin-bottom: 40px;
+    margin-top: 10px;
   }
-  .down-arrow:after, .down-arrow:before {
-    top: 100%;
-    left: 50%;
-    border: solid transparent;
-    content: " ";
-    height: 0;
-    width: 0;
-    position: absolute;
-    pointer-events: none;
-  }
-
-  .down-arrow:after {
-    border-color: rgba(0, 0, 0, 0);
-    border-top-color: #transparent;
-    border-width: 20px;
+  .down-arrow:after,
+  .down-arrow:before {
+    border-top: 25px solid @white;
+    border-left: 100px solid transparent;
+    border-right: 100px solid transparent;
     margin-left: -20px;
+    position: absolute;
+    bottom: -20px;
+    content: '';
+    left: 30px;
   }
   .down-arrow:before {
-    border-color: rgba(194, 225, 245, 0);
+    border-right: 100px solid transparent;
+    border-top: 25px solid;
+    border-left: 100px solid transparent;
     border-top-color: @dual-pricing-light-gray;
-    border-width: 26px;
-    margin-left: -26px;
+    bottom: -22px;
+    margin-left: -20px;
   }
 }
 
