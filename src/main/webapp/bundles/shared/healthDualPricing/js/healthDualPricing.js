@@ -4,7 +4,14 @@
         meerkatEvents = meerkat.modules.events,
         $elements = {},
         selectedProduct = {},
-        modalId = null;
+        modalId = null,
+        freqTextMapping = {
+            'halfyealy': 'per half year',
+            'quarterly': 'per quarter',
+            'monthly': 'per month',
+            'fortnightly': 'per fortnight',
+            'weekly': 'per week'
+        };
 
     function initDualPricing() {
         if (meerkat.site.healthAlternatePricingActive !== true) {
@@ -26,9 +33,9 @@
                 moreinfo: {
                     default: $('#dual-pricing-moreinfo-template'),
                     xs : $('#dual-pricing-moreinfo-xs-template')
-                }
+                },
+                sidebar: $('#dual-pricing-template-sidebar')
             },
-            displayedFrequency: $('#health_payment_details_frequency'),
             modalTemplate: $('#dual-pricing-modal-template'),
             sideBarFrequency: $('.sidebarFrequency'),
             sideBarFrequencyTemplate: $('#sideBarFrequency'),
@@ -42,39 +49,25 @@
     }
 
     function _applyEventListeners() {
-        $elements.paymentDetailsFrequency.on('change', function updateWarningLabel(){
-            if ($(this).val().toLowerCase() == 'annually') {
+        $elements.paymentDetailsFrequency.on('change', function updateWarningLabel() {
+            var frequency = $(this).val().toLowerCase();
+
+            if (frequency === 'annually') {
                 $elements.frequencyWarning.slideUp().html("");
             } else {
-                var template = _.template($elements.priceFrequencyTemplate.html()),
-                    selectedProduct = Results.getSelectedProduct();
-                $elements.frequencyWarning.html(template(selectedProduct)).removeClass("hidden").slideDown();
-            }
-        });
+                var selectedProduct = Results.getSelectedProduct(),
+                    remainingPremium = selectedProduct.altPremium[frequency];
 
-        $elements.displayedFrequency.on('change', function updatePaymentSidebar() {
-            var $this = $(this),
-                obj = {},
-                selectedProduct = Results.getSelectedProduct(),
-                now = new Date();
+                if ((remainingPremium.value && remainingPremium.value > 0) || (remainingPremium.text && remainingPremium.text.indexOf('$0.') < 0) || (remainingPremium.payableAmount && remainingPremium.payableAmount > 0)) {
+                    var template = _.template($elements.priceFrequencyTemplate.html()),
+                        obj = {
+                            frequency: freqTextMapping[frequency],
+                            firstPremium: selectedProduct.premium[frequency].text,
+                            remainingPremium: remainingPremium.text
+                        };
 
-            if ($this.val() !== '' && now.getTime() < selectedProduct.dropDeadDate.getTime()) {
-                obj.dropDeadDateFormatted = selectedProduct.dropDeadDateFormatted;
-                obj.frequency = $this.val();
-                obj.firstPremium = (selectedProduct.mode === '' ? selectedProduct.premium[obj.frequency].lhcfreetext : selectedProduct.premium[obj.frequency].text) + " " + (selectedProduct.mode === '' ? selectedProduct.premium[obj.frequency].lhcfreepricing : selectedProduct.premium[obj.frequency].pricing);
-
-                if (obj.frequency !== 'annually') {
-                    if ((selectedProduct.premium[obj.frequency].value && selectedProduct.premium[obj.frequency].value > 0) || (selectedProduct.premium[obj.frequency].text && selectedProduct.premium[obj.frequency].text.indexOf('$0.') < 0) || (selectedProduct.premium[obj.frequency].payableAmount && selectedProduct.premium[obj.frequency].payableAmount > 0)) {
-                        obj.remainingPremium = (selectedProduct.mode === '' ? selectedProduct.altPremium[obj.frequency].lhcfreetext : selectedProduct.altPremium[obj.frequency].text) + " " + (selectedProduct.mode === '' ? selectedProduct.altPremium[obj.frequency].lhcfreepricing : selectedProduct.altPremium[obj.frequency].pricing);
-                    } else {
-                        obj.remainingPremium = 'Coming Soon';
-                    }
+                    $elements.frequencyWarning.html(template(obj)).removeClass("hidden").slideDown();
                 }
-
-                // render the template
-                var htmlTemplate = _.template($elements.sideBarFrequencyTemplate.html()),
-                    htmlString = htmlTemplate(obj);
-                $elements.sideBarFrequency.html(htmlString).show();
             }
         });
 
@@ -139,13 +132,14 @@
         product._selectedFrequency = typeof product._selectedFrequency === 'undefined' ? Results.getFrequency() : product._selectedFrequency;
         product.mode = product.mode !== '' ? product.mode : '';
         product.showAltPremium = false;
-        product.displayLogo = false;
+        product.displayLogo = isForSidebar;
         product.showRoundingText = false;
 
         var htmlTemplate = _.template($elements.logoPriceTemplate.html());
         product.renderedPriceTemplate = htmlTemplate(product);
 
         product.showAltPremium = true;
+        product.displayLogo = false;
         htmlTemplate = _.template($elements.logoPriceTemplate.html());
         product.renderedAltPriceTemplate = htmlTemplate(product);
         product.dropDeadDate = meerkat.modules.dropDeadDate.getDropDeadDate(product);
@@ -163,7 +157,7 @@
 
     function _getTemplate(isForSidebar, page) {
         if (isForSidebar) {
-            return $elements.template.default;
+            return $elements.template.sidebar;
         }
 
         page  = page || 'moreinfo';
