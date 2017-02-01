@@ -162,7 +162,7 @@
 		<div class="current-pricing">
 			{{= renderedPriceTemplate }}
 		</div>
-
+		<div class="down-arrow"></div>
 		<div class="april-pricing">
 			<p>Premiums are rising</p>
 			{{= renderedAltPriceTemplate }}

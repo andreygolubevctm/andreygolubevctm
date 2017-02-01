@@ -60,40 +60,75 @@
   }
 }
 
-.productSummary {
-  &.dualPricing {
-    .frequencyTitle {
-      text-transform: lowercase;
-    }
+.downArrow() {
+  .down-arrow {
+    position: relative;
+    background: #transparent;
+  }
+  .down-arrow:after, .down-arrow:before {
+    top: 100%;
+    left: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
   }
 
-  .april-pricing {
-    p {
-      margin-bottom: 0;
-      text-align: center;
-    }
+  .down-arrow:after {
+    border-color: rgba(0, 0, 0, 0);
+    border-top-color: #transparent;
+    border-width: 20px;
+    margin-left: -20px;
+  }
+  .down-arrow:before {
+    border-color: rgba(194, 225, 245, 0);
+    border-top-color: @dual-pricing-light-gray;
+    border-width: 26px;
+    margin-left: -26px;
+  }
+}
 
-    .frequencyAmount {
-      font-size: 30px;
-      line-height: 20px;
-      margin-bottom: 10px;
-
-      .dollarSign {
-        font-size: 15px;
-      }
-
-      .cents {
-        font-size: 12px;
-      }
-
+.policySummary-sidebar {
+  .productSummary {
+    &.dualPricing {
       .frequencyTitle {
-        font-size: 12px;
-        left: -18px;
+        text-transform: lowercase;
       }
+
+    .downArrow();
+
     }
 
-    .lhcText {
-      font-size: 11px;
+    .april-pricing {
+      p {
+        margin-bottom: 0;
+        text-align: center;
+      }
+
+      .frequencyAmount {
+        font-size: 30px;
+        line-height: 20px;
+        margin-bottom: 10px;
+
+        .dollarSign {
+          font-size: 15px;
+        }
+
+        .cents {
+          font-size: 12px;
+        }
+
+        .frequencyTitle {
+          font-size: 12px;
+          left: -18px;
+        }
+      }
+
+      .lhcText {
+        font-size: 11px;
+      }
     }
   }
 }
