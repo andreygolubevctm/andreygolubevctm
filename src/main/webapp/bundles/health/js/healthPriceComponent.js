@@ -129,7 +129,7 @@
 
 			if ($policySummaryDualPricing.length > 0) {
 				product.showAltPremium = true;
-				htmlString = htmlTemplate(product);
+				htmlString = priceHtmlTemplate(product);
 				$policySummaryDualPricing.find('.altPremium').html(htmlString);
 			}
 		}
