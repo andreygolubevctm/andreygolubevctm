@@ -18,11 +18,15 @@
 
     function _setupElements() {
         $elements = {
-            logoPriceTemplate: meerkat.modules.templateCache.getTemplate($('#logo-price-template')),
+            logoPriceTemplate: $('#logo-price-template'),
             template: {
-                default: $('#dual-pricing-template'),
-                xs: $('#dual-pricing-template-xs'),
-                sm: $('#dual-pricing-template-sm')
+                results: {
+                    default: $('#dual-pricing-results-template')
+                },
+                moreinfo: {
+                    default: $('#dual-pricing-moreinfo-template'),
+                    xs : $('#dual-pricing-moreinfo-xs-template')
+                }
             },
             displayedFrequency: $('#health_payment_details_frequency'),
             modalTemplate: $('#dual-pricing-modal-template'),
@@ -117,7 +121,8 @@
         }
     }
 
-    function renderTemplate(target, product, returnTemplate, isForSidebar) {
+    function renderTemplate(target, product, returnTemplate, isForSidebar, page) {
+
         selectedProduct = product;
 
         if(!_.isObject(product)) {
@@ -133,19 +138,25 @@
 
         product._selectedFrequency = typeof product._selectedFrequency === 'undefined' ? Results.getFrequency() : product._selectedFrequency;
         product.mode = product.mode !== '' ? product.mode : '';
+
+        // this is only for simples users and regardless of what season we're in
+        if (meerkat.site.isCallCentreUser === true) {
+            product.mode = "lhcInc";
+        }
+
         product.showAltPremium = false;
         product.displayLogo = false;
         product.showRoundingText = false;
 
-        var htmlTemplate = $elements.logoPriceTemplate;;
+        var htmlTemplate = _.template($elements.logoPriceTemplate.html());
         product.renderedPriceTemplate = htmlTemplate(product);
 
         product.showAltPremium = true;
-        htmlTemplate = $elements.logoPriceTemplate;;
+        htmlTemplate = _.template($elements.logoPriceTemplate.html());
         product.renderedAltPriceTemplate = htmlTemplate(product);
         product.dropDeadDate = meerkat.modules.dropDeadDate.getDropDeadDate(product);
         product.dropDatePassed = meerkat.modules.dropDeadDate.getDropDatePassed(product);
-        $elements.mainDualPricingTemplate = _getTemplate(isForSidebar);
+        $elements.mainDualPricingTemplate = _getTemplate(isForSidebar, page);
 
         var dualPriceTemplate = _.template($elements.mainDualPricingTemplate.html());
 
@@ -156,14 +167,16 @@
         }
     }
 
-    function _getTemplate(isForSidebar) {
+    function _getTemplate(isForSidebar, page) {
         if (isForSidebar) {
             return $elements.template.default;
         }
 
+        page  = page || 'moreinfo';
+
         var deviceMediaState = meerkat.modules.deviceMediaState.get();
 
-        return $elements.template[_.indexOf(['xs', 'sm'], deviceMediaState) > -1 ? deviceMediaState : 'default'];
+        return $elements.template[page][deviceMediaState] || $elements.template[page]['default'];
     }
 
     meerkat.modules.register('healthDualPricing', {

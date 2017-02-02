@@ -38,22 +38,28 @@
 	{{ obj.displayLogo = false; }} <%-- Turns off the logo from the template --%>
 
 	<%-- If dual pricing is enabled, update the template --%>
-	{{ if (meerkat.site.healthAlternatePricingActive === true) { }}
-	{{ obj.renderedDualPricing = meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false); }}
+	{{ if (meerkat.site.healthAlternatePricingActive === true && meerkat.site.isCallCentreUser === true) { }}
+		{{ obj.renderedDualPricing = meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false); }}
 	{{ } else { }}
-	{{ var logoTemplate = meerkat.modules.templateCache.getTemplate($("#logo-template")); }}
-	{{ var priceTemplate = meerkat.modules.templateCache.getTemplate($("#price-template")); }}
+		{{ var logoTemplate = meerkat.modules.templateCache.getTemplate($("#logo-template")); }}
+		{{ var priceTemplate = meerkat.modules.templateCache.getTemplate($("#price-template")); }}
 
-	{{ obj.showAltPremium = false; obj.renderedPriceTemplate = logoTemplate(obj) + priceTemplate(obj); }}
+		{{ obj.showAltPremium = false; obj.renderedPriceTemplate = logoTemplate(obj) + priceTemplate(obj); }}
 	{{ } }}
 
 	<%-- Check if drop dead date has passed --%>
-	{{ var dropDatePassed = meerkat.modules.healthDropDeadDate.getDropDatePassed(obj); }}
+	{{ var dropDatePassed = meerkat.modules.dropDeadDate.getDropDatePassed(obj); }}
 
 	<%-- Prepare the call to action bar template. --%>
 	{{ var template = $("#more-info-call-to-action-template").html(); }}
 	{{ var htmlTemplate = _.template(template); }}
 	{{ var callToActionBarHtml = htmlTemplate(obj); }}
+
+	{{ var comingSoonClass = ''; var priceContainerWidth = 'col-xs-6'; }}
+	{{ if (!_.isUndefined(obj.altPremium[obj._selectedFrequency])) { }}
+		{{ var productPremium = obj.altPremium[obj._selectedFrequency] }}
+		{{ comingSoonClass = ((productPremium.value && productPremium.value > 0) || (productPremium.text && productPremium.text.indexOf('$0.') < 0) || (productPremium.payableAmount && productPremium.payableAmount > 0))  ? '' : 'comingsoon' }}
+	{{ } }}
 
 	<c:set var="buyNowHeadingClass">
 		<c:choose>
@@ -76,7 +82,7 @@
 		<form_v3:save_results_button />
 	</c:if>
 
-	<div data-product-type="{{= info.ProductType }}" class="displayNone more-info-content col-xs-12 ${variantClassName}">
+	<div data-product-type="{{= info.ProductType }}" class="displayNone more-info-content col-xs-12 ${variantClassName} {{= comingSoonClass }}">
 
 		<div class="fieldset-card row price-card <c:if test="${healthAlternatePricingActive eq true}">hasDualPricing</c:if> {{= dropDatePassed ? 'dropDatePassedContainer' : ''}}">
 			<div class="${moreInfoTopLeftColumnWidth} moreInfoTopLeftColumn">
@@ -90,7 +96,14 @@
 				</div>
 				<div class="row priceRow productSummary hidden-xs">
 					<div class="col-xs-12">
-						{{= renderedPriceTemplate }}
+						<c:choose>
+							<c:when test="${healthAlternatePricingActive eq true and not empty callCentre}">
+								{{= renderedDualPricing }}
+							</c:when>
+							<c:otherwise>
+								{{= renderedPriceTemplate }}
+							</c:otherwise>
+						</c:choose>
 					</div>
 				</div>
 				<div class="row hidden-xs">
@@ -112,54 +125,22 @@
                         </c:if>
 					</div>
 				</div>
-				<c:choose>
-				<c:when test="${healthAlternatePricingActive eq true}">
-					<div class="row priceRow productSummary">
-						<div class="col-xs-12 hidden-md hidden-lg">
-							{{= renderedDualPricing }}
-						</div>
-						<div class="col-md-12 insureNowContainer hidden-xs hidden-sm">
-						<c:choose>
-							<c:when test="${moreinfo_splittest_default eq false}">
-								<div class="col-xs-3"></div>
-								<div class="col-xs-9">
-									<h3 class="text-dark">Need help? Call <span class="text-secondary">${callCentreNumber}</span></h3>
-								</div>
-							</c:when>
-							<c:otherwise>
-								<div class="insureNow">
-									<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now<span class="icon-arrow-right" /></a>
-								</div>
-								<h3 class="text-dark">Need help? Call <span class="text-secondary">${callCentreNumber}</span></h3>
-							</c:otherwise>
-						</c:choose>
-						</div>
-					</div>
-				</c:when>
-				<c:otherwise>
+
 					<div class="row priceRow productSummary hidden-sm hidden-md hidden-lg">
 						<div class="col-xs-12 col-sm-8">
-							{{= renderedPriceTemplate }}
-						</div>
-						<div class="col-xs-12 col-sm-4 text-right">
 							<c:choose>
-								<c:when test="${moreinfo_splittest_variant1 eq true}">
-									<a href="javascript:;" class="btn btn-cta old-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Buy Now</a>
-								</c:when>
-								<c:when test="${moreinfo_splittest_variant2 eq true}">
-									<a href="javascript:;" class="btn btn-cta old-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get insured now <span class="icon-arrow-right" /></a>
-								</c:when>
-								<c:when test="${moreinfo_splittest_variant3 eq true}">
-									<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Buy Now</a>
+								<c:when test="${healthAlternatePricingActive eq true and not empty callCentre}">
+									{{= renderedDualPricing }}
 								</c:when>
 								<c:otherwise>
-							<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now<span class="icon-arrow-right" /></a>
+									{{= renderedPriceTemplate }}
 								</c:otherwise>
 							</c:choose>
 						</div>
+						<div class="col-xs-12 col-sm-4 text-right">
+							<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now<span class="icon-arrow-right" /></a>
+							</div>
 					</div>
-				</c:otherwise>
-				</c:choose>
 
 				<div class="row ${buyNowHeadingClass} hidden-sm hidden-md hidden-lg">
 					<div class="col-xs-12">
@@ -172,46 +153,26 @@
 
 			</div>
 			<c:choose>
-				<c:when test="${healthAlternatePricingActive eq true}">
+				<c:when test="${healthAlternatePricingActive eq true and not empty callCentre}">
 					<div class="col-md-5 hidden-xs moreInfoTopRightColumn">
 						<div class="companyLogo {{= info.provider }}-mi"></div>
-						<c:choose>
-							<c:when test="${moreinfo_splittest_variant1 eq true}">
-								<a href="javascript:;" class="btn btn-cta old-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Buy Now</a>
-							</c:when>
-							<c:when test="${moreinfo_splittest_variant2 eq true}">
-								<a href="javascript:;" class="btn btn-cta old-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get insured now <span class="icon-arrow-right" /></a>
-							</c:when>
-						</c:choose>
-						{{= renderedDualPricing }}
-						<c:if test="${moreinfo_splittest_variant3 eq true}">
-							<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Buy Now</a>
-						</c:if>
+							<div class="insureNow">
+								<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now<span class="icon-arrow-right" /></a>
+							</div>
+							<h3 class="text-dark">or need help? Call <span class="text-secondary">${callCentreNumber}</span></h3>
+							<p class="referenceNo">Quote reference number <span>{{= transactionId }}</span></p>
 					</div>
 				</c:when>
 				<c:otherwise>
 					<div class="col-sm-4 hidden-xs moreInfoTopRightColumn">
 						<div class="companyLogo {{= info.provider }}-mi"></div>
-						<c:choose>
-							<c:when test="${moreinfo_splittest_variant1 eq true}">
-								<a href="javascript:;" class="btn btn-cta old-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Buy Now</a>
-							</c:when>
-							<c:when test="${moreinfo_splittest_variant2 eq true}">
-								<a href="javascript:;" class="btn btn-cta old-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get insured now <span class="icon-arrow-right" /></a>
-							</c:when>
-						</c:choose>
-						<c:if test="${not empty callCentre or moreinfo_splittest_default eq true}">
 						<div class="row">
 							<div class="col-xs-12">
 								<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now<span class="icon-arrow-right" /></a>
 							</div>
 						</div>
-						</c:if>
-						<c:if test="${moreinfo_splittest_variant3 eq true}">
-							<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Buy Now</a>
-						</c:if>
 
-						<p class="needHelp">or need help? Call <span>${callCentreNumber}</span></p>
+						<p class="needHelp">or need help? Call<span>${callCentreNumber}</span></p>
 						<p class="referenceNo">Quote reference number <span>{{= transactionId }}</span></p>
 					</div>
 				</c:otherwise>

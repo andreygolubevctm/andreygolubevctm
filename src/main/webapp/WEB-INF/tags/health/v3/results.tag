@@ -7,6 +7,7 @@
 
 <%-- Setup variables needed for dual pricing --%>
 <c:set var="healthAlternatePricingActive" value="${healthPriceDetailService.isAlternatePriceActive(pageContext.getRequest())}" />
+
 <c:if test="${healthAlternatePricingActive eq true}">
     <c:set var="healthAlternatePricingMonth" value="${healthPriceDetailService.getAlternatePriceMonth(pageContext.getRequest())}" />
 </c:if>
