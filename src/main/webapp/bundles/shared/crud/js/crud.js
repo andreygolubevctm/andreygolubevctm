@@ -120,7 +120,15 @@
 					var $row = $(this).closest(".sortable-results-row");
 					that.destroy($row);
 				}
-			});
+			})
+            .on("click", ".crud-cancel-entry", function() {
+                var doCancel = confirm("Do you want to cancel the record?");
+
+                if(doCancel) {
+                    var $row = $(this).closest(".sortable-results-row");
+                    that.cancel($row);
+                }
+            });
 	}
 	
 	/**
@@ -134,10 +142,13 @@
 		var that = this,
 			m,
 			modalHTML,
-            searchId = $targetRow.data("id");
+            searchId;
 
 		if($targetRow) {
-			m = this.dataSet.get(searchId).data;
+            searchId = $targetRow.data("id");
+            m = this.dataSet.get(searchId).data;
+        } else if (_.isFunction(this.models.db)) {
+		    m = new crudModel.dbModel(this.models.db());
 		} else {
 			m = new crudModel.dbModel(this.models.db);
 		}
@@ -258,7 +269,7 @@
 			onSuccess = function(response) {
 				if(typeof response === "string")
 					response = JSON.parse(response);
-				
+
 				var responseObject = new crudModel.datumModel(that.primaryKey, that.models.datum, response, that.views.row);
 		
 				if($targetRow) {
@@ -339,6 +350,13 @@
 
 		return this.promise("delete", data, onSuccess);
 	};
+    /**
+     * Placeholder for cancel a record, currently only used for reward
+     * @param $row
+     */
+	dataCRUD.prototype.cancel = function ($row) {
+
+    };
 	
 	/**
 	 * Returns an AJAX promise via the comms module and utilises a modified error handler.

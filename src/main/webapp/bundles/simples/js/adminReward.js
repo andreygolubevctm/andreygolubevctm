@@ -3,10 +3,15 @@
  */
 ;(function($, undefined){
 
-    var meerkat = window.meerkat;
-    var meerkatEvents = meerkat.modules.events;
+    var meerkat = window.meerkat,
+        meerkatEvents = meerkat.modules.events,
+        log = meerkat.logging.info,
+        debug = meerkat.logging.debug,
+        exception = meerkat.logging.exception;
 
-    var CRUD;
+    var CRUD,
+        currentCampaign,
+        adHocRewardData;
 
     function init() {
         $(document).ready(function() {
@@ -24,7 +29,8 @@
                                     }
                                 }
                             };
-                        }
+                        },
+                        db: _createAdHocRewardData
                     },
                     renderResults: renderRewardHTML
                 });
@@ -35,7 +41,7 @@
                     // Abort if form is invalid
                     if ( $form.valid() !== true ) return false;
 
-                    var rewardData = this.dataSet.get(encryptedOrderLineId).data,
+                    var rewardData = encryptedOrderLineId ? this.dataSet.get(encryptedOrderLineId).data : adHocRewardData,
                         orderForm = false;
 
                     // try to valid the model...
@@ -51,7 +57,7 @@
 
                         // orderLine
                         orderLine.campaignCode = currentCampaign.campaignCode;
-                        orderLine.orderStatus = $form.find('select[name="order_orderStatus"]').val() || orderLine.orderStatus;
+                        orderLine.orderStatus = $form.find('select[name="order_orderStatus"]').val() || orderLine.orderStatus || 'Scheduled';
                         orderLine.rewardTypeId = $form.find('input[name="order_rewardType"]:checked').val() || null;
                         orderLine.firstName = $form.find('input[name="order_firstName"]').val();
                         orderLine.lastName = $form.find('input[name="order_lastName"]').val();
@@ -62,6 +68,7 @@
                         orderLine.orderNotes = $form.find('textarea[name="order_notes"]').val();
 
                         //addresses
+                        orderAddress.addressType = orderAddress.addressType || 'P';
                         orderAddress.dpid = $form.find('input[name="order_address_dpId"]').val();
                         orderAddress.businessName = $form.find('input[name="order_address_businessName"]').val();
                         orderAddress.state = $form.find('input[name="order_address_state"]').val();
@@ -113,12 +120,20 @@
                     return this.promise("find", data, onSuccess, 'post', true);
                 };
 
-                CRUD.save = function (data) {
+                CRUD.save = function (data, $targetRow) {
                     var that = this,
                         onSuccess = function (response) {
                             if (response.status && response.status === true) {
-                                // try search to render again (not ideal but the api doesn't return the updated model)
-                                $('#simples-reward-search-navbar').find('button').trigger('click');
+                                if ($targetRow) {
+                                    // for edit, try search to render the list again
+                                    // (not ideal but the api doesn't return the updated model)
+                                    $('#simples-reward-search-navbar').find('button').trigger('click');
+                                } else {
+                                    // for adhoc add the model to dataSet (missing rewardType atm, unless we trigger anther search)
+                                    var obj = new meerkat.modules.crudModel.datumModel(that.primaryKey, that.models.datum, data, that.views.row, true);
+                                    that.dataSet.push(obj);
+                                }
+
                                 meerkat.modules.dialogs.close(that.modalId);
                             } else if (response.message) {
                                 $('#' + that.modalId).find(".error-message").html('Error: ' + response.message);
@@ -126,8 +141,18 @@
                         };
 
                     if (data) {
-                        this.promise("update", data, onSuccess, 'post', true);
+                        $targetRow ? this.promise("update", data, onSuccess, 'post', true) : this.promise("create", data, onSuccess, 'post', true);
                     }
+                };
+
+                CRUD.cancel = function ($targetRow) {
+                    var data = this.dataSet.get($targetRow.data("id")).data;
+                    if (data && data.orderForm &&
+                        data.orderForm.orderHeader && data.orderForm.orderHeader.orderLine) {
+                        data.orderForm.orderHeader.orderLine.orderStatus = 'Cancelled';
+                    }
+
+                    CRUD.save(data.orderForm, $targetRow);
                 };
 
                 meerkat.messaging.subscribe(meerkatEvents.crud.CRUD_MODAL_OPENED, function initRedemptionForm(modalId) {
@@ -169,6 +194,47 @@
                 .find("h1 small")
                 .text("(" + orders.length + ")");
         }
+    }
+
+    function _fetchCampaigns() {
+       meerkat.modules.comms.get({
+            url: '/' + meerkat.site.urls.context + 'spring/rest/reward/campaigns/get.json',
+            cache: false,
+            async: false,
+            errorLevel: 'silent',
+            dataType: 'json'
+        })
+        .done(function onSuccess(json) {
+            if (json && json.hasOwnProperty('campaigns')) {
+                currentCampaign = json.campaigns.filter(function(campaign) {
+                    return campaign.active === true;
+                })[0];
+            } else {
+                debug('No active campaigns.');
+            }
+
+        })
+        .fail(function onError(obj, txt, errorThrown) {
+            exception(txt + ': ' + errorThrown);
+        });
+    }
+    
+    function _createAdHocRewardData() {
+        adHocRewardData = {
+            eligibleCampaigns: [],
+            orderForm: {
+                orderHeader: {
+                    orderLine: {
+                        rewardType: {},
+                        orderAddresses: []
+                    }
+                }
+            }
+        };
+        _fetchCampaigns();
+        adHocRewardData.eligibleCampaigns[0] = currentCampaign;
+
+        return adHocRewardData;
     }
 
 

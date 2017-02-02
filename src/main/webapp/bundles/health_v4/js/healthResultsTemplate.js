@@ -197,8 +197,8 @@
             {
                 id: 'marketingOffer',
                 title: "Rewards",
-                className: "icon-" + meerkat.modules.rewardCampaign.getCurrentCampaign().campaignCode,
-                text: meerkat.modules.rewardCampaign.getCurrentCampaign().campaignDescription,
+                className: "icon-" + meerkat.modules.rewardCampaign.getCampaignContentHtml().find('.reward-icon-code').html(),
+                text: meerkat.modules.rewardCampaign.getCampaignContentHtml().find('.reward-result-text').html(),
                 active: meerkat.modules.rewardCampaign.isCurrentCampaignValid(),
                 productId: product.productId
             },

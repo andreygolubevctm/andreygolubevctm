@@ -36,6 +36,7 @@
                     {{ var rewards = currentCampaign.rewards.filter(function(reward) { }}
                     {{      return reward.active === true; }}
                     {{ }); }}
+                    {{ orderLine.rewardType = orderLine.rewardType || {} }}
 
                     {{ _.each(rewards, function(reward) { }}
                     <label class="btn {{= reward.rewardType}} {{= reward.stockLevel == 'NO_STOCK' ? 'disabled' : '' }} {{= reward.stockLevel == 'NO_STOCK' ? 'disabled' : '' }} {{= orderLine.rewardType.rewardTypeId == reward.rewardTypeId ? 'active' : '' }}" data-analytics="reward type {{= reward.rewardType}}">
@@ -65,7 +66,7 @@
 
             {{ var orderAddress = orderLine.orderAddresses.filter(function(address){ }}
             {{      return address.addressType === 'P'  }}
-            {{ })[0] }}
+            {{ })[0] || {} }}
             <div class="form-group row fieldrow clear">
                 <label for="order_address_businessName" class="col-sm-4 col-xs-10 control-label">Business name</label>
                 <div class="col-sm-6 col-xs-12 row-content">
