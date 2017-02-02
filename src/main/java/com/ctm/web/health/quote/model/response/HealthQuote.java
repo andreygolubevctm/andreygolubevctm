@@ -3,6 +3,7 @@ package com.ctm.web.health.quote.model.response;
 import com.ctm.web.health.model.PaymentType;
 import com.fasterxml.jackson.databind.JsonNode;
 
+import java.time.LocalDate;
 import java.util.Map;
 
 public class HealthQuote {
@@ -31,6 +32,10 @@ public class HealthQuote {
     private Promotion promotion;
 
     private boolean priceChanged;
+
+    private LocalDate dropDeadDate;
+
+    private LocalDate pricingDate;
 
     public boolean isAvailable() {
         return available;
@@ -142,5 +147,21 @@ public class HealthQuote {
 
     public void setPaymentTypeAltPremiums(Map<PaymentType, Premium> paymentTypeAltPremiums) {
         this.paymentTypeAltPremiums = paymentTypeAltPremiums;
+    }
+
+    public LocalDate getDropDeadDate() {
+        return dropDeadDate;
+    }
+
+    public void setDropDeadDate(final LocalDate dropDeadDate) {
+        this.dropDeadDate = dropDeadDate;
+    }
+
+    public LocalDate getPricingDate() {
+        return pricingDate;
+    }
+
+    public void setPricingDate(final LocalDate pricingDate) {
+        this.pricingDate = pricingDate;
     }
 }
