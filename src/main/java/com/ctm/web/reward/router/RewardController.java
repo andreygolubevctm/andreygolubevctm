@@ -6,6 +6,7 @@ import com.ctm.web.core.router.CommonQuoteRouter;
 import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.reward.services.RewardService;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
@@ -47,6 +48,7 @@ public class RewardController extends CommonQuoteRouter {
 
 		this.objectMapper.getJsonMapper()
 				.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
+				.setSerializationInclusion(JsonInclude.Include.NON_NULL)
 				.registerModule(new Jdk8Module())
 				.registerModule(new JavaTimeModule());
 	}
@@ -56,6 +58,20 @@ public class RewardController extends CommonQuoteRouter {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public String getCampaigns(final HttpServletRequest request) throws JsonProcessingException {
 		GetCampaignsResponse campaigns = rewardService.getAllActiveCampaigns(request);
+		// Remove properties that should not be made public
+		if (campaigns != null) {
+			campaigns.getCampaigns().forEach(campaign -> {
+				campaign.setCampaignSettings(null);
+				campaign.setStartDtTm(null);
+				campaign.setEndDtTm(null);
+				campaign.getRewards().forEach(reward -> {
+					reward.setCreatedTmstmp(null);
+					reward.setUpdatedTmstmp(null);
+					reward.setProviderName(null);
+					reward.setProviderRewardCode(null);
+				});
+			});
+		}
 		return objectMapper.getJsonMapper().writeValueAsString(campaigns);
 	}
 
