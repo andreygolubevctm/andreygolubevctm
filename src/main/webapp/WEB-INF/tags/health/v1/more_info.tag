@@ -41,11 +41,11 @@
 	{{ if (meerkat.site.healthAlternatePricingActive === true && meerkat.site.isCallCentreUser === true) { }}
 		{{ obj.renderedDualPricing = meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false); }}
 	{{ } else { }}
-		{{ var logoPriceTemplate = $('#logo-price-template').html(); }}
-		{{ var htmlTemplatePrice = _.template(logoPriceTemplate); }}
+		{{ var logoTemplate = meerkat.modules.templateCache.getTemplate($("#logo-template")); }}
+		{{ var priceTemplate = meerkat.modules.templateCache.getTemplate($("#price-template")); }}
 
-		{{ obj.showAltPremium = false; obj.renderedPriceTemplate = htmlTemplatePrice(obj); }}
-		{{ obj.showAltPremium = true;  obj.renderedAltPriceTemplate = htmlTemplatePrice(obj); }}
+		{{ obj.showAltPremium = false; obj.renderedPriceTemplate = logoTemplate(obj) + priceTemplate(obj); }}
+
 	{{ } }}
 
 	<%-- Check if drop dead date has passed --%>
