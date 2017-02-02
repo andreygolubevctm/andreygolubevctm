@@ -1,6 +1,12 @@
+<%@ tag import="com.ctm.web.reward.services.RewardService" %>
+<%@ tag import="org.springframework.web.servlet.support.RequestContextUtils" %>
 <%@ tag description="Health confirmation loading and parsing"%>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
+<%
+	RewardService rewardService = (RewardService) RequestContextUtils.findWebApplicationContext(request).getBean("rewardService");
+	request.setAttribute("rewardService", rewardService);
+%>
 
 <%-- Load confirmation information (either a full confirmation or a pending one) --%>
 <c:set var="confirmationData"><health_v1:load_confirmation /></c:set>
@@ -9,6 +15,15 @@
 <x:parse var="confirmationDataXML" xml="${confirmationData}" />
 <c:set var="transactionId"><x:out select="$confirmationDataXML/data/transID" /></c:set>
 <c:set var="status"><x:out select="$confirmationDataXML/data/status" /></c:set>
+<c:set var="redemptionId"><x:out select="$confirmationDataXML/data/redemptionId" /></c:set>
+<c:choose>
+	<c:when test="${not empty redemptionId}">
+		<c:set var="rewardOrder" value="${rewardService.getOrderAsJson(redemptionId, pageContext.request)}" />
+	</c:when>
+	<c:otherwise>
+		<c:set var="rewardOrder" value="{}" />
+	</c:otherwise>
+</c:choose>
 
 <%-- HTML PLACEHOLDER --%>
 <layout_v1:slide formId="confirmationForm" className="displayBlock">
@@ -67,6 +82,7 @@
 				<layout_v1:slide_content >
 
 					<form_v3:fieldset legend="" className="confirmation">
+                        <reward:reward_confirmation_message />
 						{{ var personName = typeof firstName !== 'undefined' && typeof lastName !== 'undefined' ? "Well done <span>" + firstName + " " + lastName + "</span>,<br />": '' }}
 						<div class="row confirmation-complete">
 							<div class="col-xs-12">
@@ -123,6 +139,8 @@
 	<script>
 		var resultLabels = ${jsonString};
 		var result = ${go:XMLtoJSON(confirmationData)};
+		var rewardOrder = ${rewardOrder};
+		var encryptedOrderLineId = "${redemptionId}";
 
 		<%--
 			add product info contained in session on the page if:

@@ -1,5 +1,5 @@
 /**
- * Implementation of adminDataCRUD.js for Special Offers page
+ * Implementation of crud.js for Special Offers page
  * 
  * Documentation here:
  * http://confluence:8090/display/CM/Creating+Simples+Admin+Interfaces
@@ -14,7 +14,7 @@
 	function init() {
 		$(document).ready(function() {
 			if($("#special-offers-container").length) {
-				CRUD = new meerkat.modules.adminDataCRUD.newCRUD({
+				CRUD = new meerkat.modules.crud.newCRUD({
 					baseURL: "admin/offers",
 					primaryKey: "offerId",
 					models: {
