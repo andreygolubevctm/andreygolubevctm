@@ -2,7 +2,7 @@
 
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
-
+        moduleInitialised = false,
         $dependantsTemplateWrapper,
         dependantTemplate,
         /**
@@ -102,6 +102,8 @@
             };
 
             aboutYouApplyEventListeners();
+            toggleDependantsDefaultValue(situationEnablesDependants());
+            moduleInitialised = true;
         });
     }
 
@@ -117,12 +119,22 @@
         });
     }
 
-    function toggleDependantsDefaultValue(shouldSetDefaultDependants) {
+    function toggleDependantsDefaultValueCallback(shouldSetDefaultDependants) {
         if (shouldSetDefaultDependants) {
             // default to 2 dependants
-            $elements.dependants.prop('selectedIndex', 2).attr('data-attach', true);
+            $elements.dependants.val(2).attr('data-attach', true);
         } else {
-            $elements.dependants.prop('selectedIndex', 0).removeAttr('data-attach');
+            $elements.dependants.val('').removeAttr('data-attach');
+        }
+    }
+
+    function toggleDependantsDefaultValue(shouldSetDefaultDependants) {
+        if(moduleInitialised) {
+            toggleDependantsDefaultValueCallback(shouldSetDefaultDependants);
+        } else {
+            _.defer(function(){
+                toggleDependantsDefaultValueCallback(shouldSetDefaultDependants);
+            });
         }
     }
 
@@ -130,10 +142,6 @@
         if (!_.isUndefined($elements) && !$elements.selectedRebateText.is(':visible') && $elements.applyRebate.is(':checked')) {
             var showDependants = situationEnablesDependants();
             $elements.dependants.closest('.select').toggleClass('hidden', !showDependants);
-
-            if (showDependants && $elements.dependants.prop('selectedIndex') > 0) {
-                $elements.dependants.prop('selectedIndex', 0);
-            }
         }
     }
 

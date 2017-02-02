@@ -16,4 +16,5 @@
     <product><![CDATA[test]]></product>
     <policyNo>12334</policyNo>
     <paymentType>cc</paymentType>
+    <redemptionId/>
 </data>

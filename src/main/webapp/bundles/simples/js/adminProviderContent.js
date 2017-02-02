@@ -9,7 +9,7 @@
     function init() {
         $(document).ready(function () {
             if ($("#admin-provider-content-container").length) {
-                CRUD = new meerkat.modules.adminDataCRUD.newCRUD({
+                CRUD = new meerkat.modules.crud.newCRUD({
                     baseURL: "../../admin/providerContent",
                     primaryKey: "providerContentId",
                     models: {

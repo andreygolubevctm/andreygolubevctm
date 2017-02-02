@@ -13,6 +13,7 @@
             extras: []
         },
         benefitsLabels = {},
+        flattenedBenefits = [],
         meerkatEvents = meerkat.modules.events,
         events = {
             benefitsModel: {
@@ -129,11 +130,33 @@
     // run once to initialise labels store.
     function initBenefitLabelStore(benefits) {
         benefitsLabels = benefits;
+        flattenedBenefits = benefits.hospital.concat(benefits.extras);
     }
 
     // get all the selected benefits
     function getSelectedBenefits() {
         return selectedBenefits.hospital.concat(selectedBenefits.extras);
+    }
+
+    // For each selected benefit, return its code e.g. PrHospital
+    // This is used for email brochures as well.
+    function getCodesForSelectedBenefits() {
+        var selectedBenefits = getSelectedBenefits();
+        var codes = [];
+        for (var i = 0; i < selectedBenefits.length; i++) {
+            codes.push(_getBenefitObjectById(selectedBenefits[i]).code);
+        }
+        return codes;
+    }
+
+    function _getBenefitObjectById(benefitId) {
+
+        for (var i = 0; i < flattenedBenefits.length; i++) {
+            if (flattenedBenefits[i].id == benefitId) {
+                return flattenedBenefits[i];
+            }
+        }
+        return {};
     }
 
     /**
@@ -176,7 +199,8 @@
         initBenefitLabelStore: initBenefitLabelStore,
         getExtrasBenefitsForFilters: getExtrasBenefitsForFilters,
         getHospitalBenefitsForFilters: getHospitalBenefitsForFilters,
-        isSelected: isSelected
+        isSelected: isSelected,
+        getCodesForSelectedBenefits: getCodesForSelectedBenefits
     });
 
 })(jQuery);

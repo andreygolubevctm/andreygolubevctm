@@ -39,7 +39,7 @@
 	{{ obj.displayLogo = false; }} <%-- Turns off the logo from the template --%>
 
 	<%-- If dual pricing is enabled, update the template --%>
-	{{ if (meerkat.site.healthAlternatePricingActive === true) { }}
+	{{ if (meerkat.site.healthAlternatePricingActive === true && meerkat.site.isCallCentreUser === true) { }}
 	{{ obj.renderedDualPricing = meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false); }}
 	{{ } else { }}
 	{{ var logoTemplate = meerkat.modules.templateCache.getTemplate($("#logo-template")); }}
@@ -68,7 +68,7 @@
 		<div class="fieldset-card row price-card <c:if test="${healthAlternatePricingActive eq true}">hasDualPricing</c:if>">
 			<div class="moreInfoTopLeftColumn Hospital_container">
 				<health_v4_moreinfo:more_info_product_summary />
-				<health_v4_moreinfo:more_info_product_extra_info />
+                <health_v4_moreinfo:more_info_product_extra_info />
 				<!-- Hospital and Extras -->
 				<div class="benefitsOverflow">
 					<div class="row">
@@ -255,12 +255,16 @@
 						{{ } }}
 					</div>
 				</div>
+                <reward:campaign_tile_container_xs />
 			</div>
 			<!-- CTA BUTTON -->
 			<div class="hidden-xs moreInfoTopRightColumn">
                 <div class="sidebar-widget">
-						<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Apply Online<span class="icon-arrow-right" /></a>
-					</div>
+					<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Apply Online<span class="icon-arrow-right" /></a>
+				</div>
+
+                <reward:campaign_tile_container />
+
                 <div class="sidebar-widget sidebar-widget-padded sidebar-widget-background-contained">
                     <h3>Switching is simple!</h3>
                     <ul>
@@ -278,7 +282,7 @@
                         Where a waiting period already applies for a particular condition or treatment, funds may begin the benefit limitation period from the end of the normal waiting period.</p>
                 </div>
 
-			</div>
+            </div>
 		</div>
 	</div>
 </script>

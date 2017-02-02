@@ -15,8 +15,8 @@
 	 * @param response - Data to populate the model with
 	 * @param templateHTML - Template to use for storing the HTML
 	 */
-	function datumModel(idKey, datumAdditionalFields, response, templateHTML) {
-		this.id = response[idKey];
+	function datumModel(idKey, datumAdditionalFields, response, templateHTML, isIdKeyPath) {
+        this.id = isIdKeyPath ? _deepFind(response, idKey) : response[idKey];
 		this.data = new dbModel(response);
 
 		if (datumAdditionalFields) {
@@ -241,8 +241,34 @@
 		
 		return object;
 	};
+
+    /**
+     * find value for deep nested keys
+     * @param obj
+     * @param path
+     * @private
+     */
+    var _deepFind = function(obj, path) {
+
+        if (typeof path === 'string') {
+            path = path.split('.');
+        }
+
+        if (!Array.isArray(path)) {
+            path = path.concat();
+        }
+
+        return path.reduce(function (o, part) {
+            var keys = part.match(/\[(.*?)\]/);
+            if (keys) {
+                var key = part.replace(keys[0], '');
+                return o[key][keys[1]];
+            }
+            return o[part];
+        }, obj);
+    };
 	
-	meerkat.modules.register('adminDataSet', {
+	meerkat.modules.register('crudModel', {
 		dataSet: dataSet,
 		dbModel: dbModel,
 		datumModel: datumModel

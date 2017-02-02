@@ -97,7 +97,7 @@
 			product.mode = '';
 		}
 		product.showAltPremium = false;
-		if (typeof meerkat.site.healthAlternatePricingActive !== 'undefined' && meerkat.site.healthAlternatePricingActive === true && premiumChangeEventFired === false) {
+		if (typeof meerkat.site.healthAlternatePricingActive !== 'undefined' && meerkat.site.healthAlternatePricingActive === true) {
 			product.displayLogo = false;
 			if (typeof product.dropDeadDate === 'undefined') {
 				var selectedProduct = Results.getSelectedProduct();

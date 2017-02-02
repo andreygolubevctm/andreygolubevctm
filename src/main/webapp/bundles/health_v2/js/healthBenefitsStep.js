@@ -99,7 +99,7 @@
                     sterilisation: $('#health_benefits_benefitsExtras_Sterilisation'),
                     jointReplacement: $('#health_benefits_benefitsExtras_JointReplacement'),
                     eyeSurgery: $('#health_benefits_benefitsExtras_CataractEyeLens'),
-                    dialysis: $('#health_benefits_benefitsExtras_RenalDialysis'),
+                    dialysis: $('#health_benefits_benefitsExtras_RenalDialysis')
                 }, extras: {
                     generalDental: $('#health_benefits_benefitsExtras_DentalGeneral'),
                     majorDental: $('#health_benefits_benefitsExtras_DentalMajor'),

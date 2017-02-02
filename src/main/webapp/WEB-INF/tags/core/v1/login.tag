@@ -30,6 +30,12 @@
 				<c:set var="securityDescLevel" value="User" />
 
 				<c:set var="callCentre" value="N" />
+                <c:set var="ccRewardsGroup" value="N" />
+
+                <c:if test="${ pageContext.request.isUserInRole('CTM-CC-REWARDS') }">
+                    <c:set var="callCentre" value="Y" />
+                    <c:set var="ccRewardsGroup" value="Y" />
+                </c:if>
 
 				<c:if test="${ pageContext.request.isUserInRole('CTM-Simples') or pageContext.request.isUserInRole('BD-HCC-USR') or pageContext.request.isUserInRole('BD-HCC-MGR') }">
 					<c:set var="callCentre" value="Y" />
@@ -100,6 +106,7 @@
 					<security>
 						<description>${securityDesc}</description>
 						<callCentre>${callCentre}</callCentre>
+                        <ccRewardsGroup>${ccRewardsGroup}</ccRewardsGroup>
 						<IT>${IT}</IT>
 						<supervisor>${supervisor}</supervisor>
 					</security>
