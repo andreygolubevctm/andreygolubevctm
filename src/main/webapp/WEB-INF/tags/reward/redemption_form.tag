@@ -142,7 +142,7 @@
             <div class="declineReward form-group row fieldrow clear">
                 <div class="col-sm-6 col-xs-10 col-sm-offset-4 row-content">
                     <div class="checkbox">
-                        <input type="checkbox" name="order_orderStatus" class="checkbox-custom checkbox" value="Declined">
+                        <input type="checkbox" name="order_orderStatus" id="order_orderStatus" class="checkbox-custom checkbox" value="Declined">
                         <label for="order_orderStatus">I don't want to claim a toy</label>
                     </div>
                 </div>
