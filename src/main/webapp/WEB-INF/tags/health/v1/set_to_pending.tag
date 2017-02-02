@@ -1,3 +1,6 @@
+<%@ tag import="com.ctm.reward.model.SaleStatus" %>
+<%@ tag import="com.ctm.web.reward.services.RewardService" %>
+<%@ tag import="org.springframework.web.servlet.support.RequestContextUtils" %>
 <%@ tag description="The Health Set To Pending"%>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
@@ -7,6 +10,15 @@
 <%@ attribute name="resultXml" required="false" rtexprvalue="true" description="Additional css class attribute"%>
 <%@ attribute name="resultJson" required="false" rtexprvalue="true" description="json to output to page"%>
 <%@ attribute name="productId" required="true" rtexprvalue="true" description="Additional css class attribute"%>
+
+<%
+	RewardService rewardService = (RewardService) RequestContextUtils.findWebApplicationContext(request).getBean("rewardService");
+	request.setAttribute("rewardServicePending", rewardService);
+	request.setAttribute("rewardSaleStatusFailed", SaleStatus.Failed);
+%>
+<%-- Attempt to add a reward order placeholder --%>
+<c:set var="ignore" value="${rewardServicePending.createPlaceholderOrderForOnline(pageContext.request, rewardSaleStatusFailed, transactionId)}" />
+
 
 <c:set var="ignore">
 	<jsp:useBean id="joinService" class="com.ctm.web.core.confirmation.services.JoinService" scope="page" />

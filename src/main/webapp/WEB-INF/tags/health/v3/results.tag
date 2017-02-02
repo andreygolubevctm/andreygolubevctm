@@ -7,6 +7,7 @@
 
 <%-- Setup variables needed for dual pricing --%>
 <c:set var="healthAlternatePricingActive" value="${healthPriceDetailService.isAlternatePriceActive(pageContext.getRequest())}" />
+
 <c:if test="${healthAlternatePricingActive eq true}">
     <c:set var="healthAlternatePricingMonth" value="${healthPriceDetailService.getAlternatePriceMonth(pageContext.getRequest())}" />
 </c:if>
@@ -176,6 +177,7 @@
         <health_v3:excess_template />
         <health_v3:extras_list_template />
         <health_v3:credit_card_template />
+        <health_v1:logo_price_template />
 
     </jsp:body>
 

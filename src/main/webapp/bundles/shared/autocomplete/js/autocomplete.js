@@ -5,14 +5,15 @@
 		log = meerkat.logging.info;
 
 	var events = {
-		autocomplete: {
-			CANT_FIND_ADDRESS: 'EVENT_CANT_FIND_ADDRESS',
-			ELASTIC_SEARCH_COMPLETE: 'ELASTIC_SEARCH_COMPLETE',
-			INIT: 'INIT'
-		}
-	};
+            autocomplete: {
+                CANT_FIND_ADDRESS: 'EVENT_CANT_FIND_ADDRESS',
+                ELASTIC_SEARCH_COMPLETE: 'ELASTIC_SEARCH_COMPLETE',
+                INIT: 'INIT'
+            }
+        },
+        moduleEvents = events.autocomplete;
 
-	var moduleEvents = events.autocomplete;
+	var baseURL = '';
 
 	function initAutoComplete() {
 		$(document).ready(function(){
@@ -30,6 +31,10 @@
 		return $("#" + addressFieldId + "_elasticSearch").val() === "Y";
 	}
 
+	function setBaseURL(url){
+        baseURL = url || '';
+    }
+
 	function setTypeahead() {
 		var $typeAheads = $('input.typeahead'),
 			params = null;
@@ -45,7 +50,7 @@
 			$component.data("addressfieldid", addressFieldId);
 
 			if (elasticSearch) {
-				url = 'address/search.json';
+				url = baseURL + 'address/search.json';
 				params = {
 					name: $component.attr('name'),
 					remote: {
@@ -230,7 +235,9 @@
 		init: initAutoComplete,
 		events: events,
 		autocompleteBeforeSend: autocompleteBeforeSend,
-		autocompleteComplete: autocompleteComplete
+		autocompleteComplete: autocompleteComplete,
+        setTypeahead: setTypeahead,
+        setBaseURL: setBaseURL
 	});
 
 })(jQuery);

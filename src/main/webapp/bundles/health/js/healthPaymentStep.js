@@ -379,6 +379,10 @@
 		product.premium = product.paymentTypePremiums[product.paymentNode];
 		product._selectedFrequency = getSelectedFrequency();
 
+		if (typeof meerkat.site.healthAlternatePricingActive !== 'undefined' && meerkat.site.healthAlternatePricingActive === true) {
+			product.altPremium = product.paymentTypeAltPremiums[product.paymentNode];
+		}
+
         meerkat.modules.healthResults.setSelectedProduct(product, true);
 	}
 

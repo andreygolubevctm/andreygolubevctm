@@ -113,8 +113,8 @@
                                                         <%-- This is a duplicate of the row above and needs to be cleaned up in the .less--%>
                                                     <c:set var="benefitLabel">
 													<span class="benefitContent">
-														<div class="benefitTitle">${selectedValue.getName()}</div>
-														<span class="benefitSummary">${benefitsContentBlurbs.getSupplementaryValueByKey(selectedValue.getId())} <a href="javascript:;"
+														<div class="benefitTitle needsclick">${selectedValue.getName()}</div>
+														<span class="benefitSummary needsclick">${benefitsContentBlurbs.getSupplementaryValueByKey(selectedValue.getId())} <a href="javascript:;"
                                                                                                                                                                    class="help_icon floatLeft"
                                                                                                                                                                    data-content="helpid:${selectedValue.getHelpId()}"
                                                                                                                                                                    data-toggle="popover">more</a></span>
@@ -122,7 +122,7 @@
                                                     </c:set>
                                                     <field_v2:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${selectedValue.getShortlistKey()}" value="Y" required="false"
                                                                        label="true" title="${benefitLabel}" errorMsg="Please tick"
-                                                                       customAttribute=" data-attach=true data-benefit-id='${selectedValue.getId()}' " additionalLabelAttributes="${analyticsLabelAttr}"
+                                                                       customAttribute=" data-attach=true data-benefit-id='${selectedValue.getId()}' data-benefit-code='${selectedValue.getShortlistKey()}' " additionalLabelAttributes="${analyticsLabelAttr}"
                                                                        additionalHelpAttributes="${analyticsHelpAttr}" />
                                                 </div>
                                             </c:if>

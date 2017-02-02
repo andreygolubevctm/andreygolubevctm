@@ -7,10 +7,6 @@ body.simples {
 		height: 40px;
 	}
 
-	.btn {
-		display: inline-block;
-	}
-
 	.navbar-inverse {
 		background-color: #002;
 	}
@@ -18,6 +14,10 @@ body.simples {
 	.navbar-form {
 		margin-top: (@navbar-padding-vertical / 2);
 		margin-bottom: (@navbar-padding-vertical / 2);
+
+        .btn {
+          display: inline-block;
+        }
 	}
 
 	.navbar-link {
@@ -54,10 +54,12 @@ body.simples {
 
 
 
-	.simples-home {
+	.simples-home,
+    .simples-reward {
 		padding: 20px 0;
 
-		.simples-home-buttons {
+		.simples-home-buttons,
+        .simples-reward-buttons {
 			text-align: center;
 			padding: 20px;
 		}
@@ -140,8 +142,13 @@ body.simples {
 	margin: 0;
   }
 
-  #simples-transaction-search-navbar {
+  #simples-transaction-search-navbar,
+  #simples-reward-search-navbar {
 	display: inline-block;
+  }
+
+  .text-right .btn {
+    display: inline-block;
   }
 
 }//body.simples
