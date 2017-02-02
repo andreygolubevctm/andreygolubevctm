@@ -10,7 +10,7 @@
 <c:set var="thisYear"><fmt:formatDate value="${now}" pattern="yyyy" /></c:set>
 
 <core_v1:js_template id="price-frequency-template">
-	<content:get key="frequencyWarning"/>
+	Your first payment will be {{= firstPremium }} and future payments will be {{= remainingPremium }} {{= frequency }}.
 </core_v1:js_template>
 
 <%-- Working on the assumption there's going to be text changes so put this in the db --%>
@@ -94,6 +94,20 @@
 					<span class="applyBy">Apply by {{= obj.dropDeadDateFormatted }}</span>
 				</div>
 			</div>
+		</div>
+	</div>
+</core_v1:js_template>
+
+<core_v1:js_template id="dual-pricing-template-sidebar">
+	<div class="dual-pricing-container {{ if (obj.dropDatePassed === true) { }}dropDatePassed{{ } }}">
+		<div class="current-pricing">
+			{{= renderedPriceTemplate }}
+		</div>
+		<div class="down-arrow"></div>
+		<div class="april-pricing">
+			<p>Premiums are rising</p>
+			{{= renderedAltPriceTemplate }}
+			<p>from April 1st, 2017</p>
 		</div>
 	</div>
 </core_v1:js_template>

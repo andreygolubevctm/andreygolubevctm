@@ -336,3 +336,111 @@
     }
   }
 }
+
+#health_payment_details-selection {
+  .alert-info {
+    margin-left: 0;
+    text-align: center;
+  }
+}
+.downArrow() {
+  .down-arrow {
+    position: relative;
+    margin-bottom: 40px;
+    margin-top: 10px;
+  }
+  .down-arrow:after,
+  .down-arrow:before {
+    border-top: 18px solid #fff;
+    border-left: 60px solid transparent;
+    border-right: 60px solid transparent;
+    left: 18px;
+    margin-left: -20px;
+    position: absolute;
+    bottom: -20px;
+    content: '';
+
+    @media (@md) {
+      border-top: 21px solid #fff;
+      border-left: 80px solid transparent;
+      border-right: 80px solid transparent;
+      left: 23px;
+    }
+
+    @media (@lg) {
+      border-top: 25px solid #fff;
+      border-left: 100px solid transparent;
+      border-right: 100px solid transparent;
+      left: 30px;
+    }
+  }
+  .down-arrow:before {
+    border-right: 60px solid transparent;
+    border-top: 18px solid;
+    border-left: 60px solid transparent;
+    border-top-color: @dual-pricing-light-gray;
+    bottom: -22px;
+    margin-left: -20px;
+
+    @media (@md) {
+      border-right: 80px solid transparent;
+      border-top: 21px solid;
+      border-left: 80px solid transparent;
+      border-top-color: @dual-pricing-light-gray;
+    }
+
+    @media (@lg) {
+      border-right: 100px solid transparent;
+      border-top: 25px solid;
+      border-left: 100px solid transparent;
+      border-top-color: @dual-pricing-light-gray;
+    }
+  }
+}
+
+.policySummary-sidebar {
+  .productSummary {
+    &.dualPricing {
+      .frequencyTitle {
+        text-transform: lowercase;
+      }
+
+      .downArrow();
+
+    }
+
+    .april-pricing {
+      p {
+        margin-bottom: 0;
+        text-align: center;
+      }
+
+      .frequencyAmount {
+        font-size: 30px;
+        line-height: 20px;
+        margin-bottom: 10px;
+
+        .dollarSign {
+          font-size: 15px;
+        }
+
+        .cents {
+          font-size: 12px;
+        }
+
+        .frequencyTitle {
+          font-size: 12px;
+          left: -18px;
+        }
+
+        &.comingSoon {
+          font-size: 20px;
+        }
+      }
+
+      .lhcText {
+        font-size: 11px;
+      }
+    }
+  }
+}
