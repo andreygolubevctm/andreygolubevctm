@@ -130,8 +130,11 @@
                                     $('#simples-reward-search-navbar').find('button').trigger('click');
                                 } else {
                                     // for adhoc add the model to dataSet (missing rewardType atm, unless we trigger anther search)
-                                    var obj = new meerkat.modules.crudModel.datumModel(that.primaryKey, that.models.datum, data, that.views.row, true);
+                                    var datum = {orderForm: data};
+                                    var obj = new meerkat.modules.crudModel.datumModel(that.primaryKey, that.models.datum, datum, that.views.row);
                                     that.dataSet.push(obj);
+                                    $('#simples-reward-details-container').removeClass('hidden');
+                                    that.sortRenderResults();
                                 }
 
                                 meerkat.modules.dialogs.close(that.modalId);
