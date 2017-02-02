@@ -138,6 +138,12 @@
 
         product._selectedFrequency = typeof product._selectedFrequency === 'undefined' ? Results.getFrequency() : product._selectedFrequency;
         product.mode = product.mode !== '' ? product.mode : '';
+
+        // this is only for simples users and regardless of what season we're in
+        if (meerkat.site.isCallCentreUser === true) {
+            product.mode = "lhcInc";
+        }
+
         product.showAltPremium = false;
         product.displayLogo = false;
         product.showRoundingText = false;
