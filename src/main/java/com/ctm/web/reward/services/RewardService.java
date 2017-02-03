@@ -91,22 +91,32 @@ public class RewardService {
 		final Vertical.VerticalType vertical = HEALTH;
 		Brand brand = applicationService.getBrand(request, vertical);
 
+		final Optional<AuthenticatedData> authenticatedData = Optional.ofNullable(sessionDataServiceBean.getAuthenticatedSessionData(request));
+
+		boolean getFromCache = true;
 		ZonedDateTime effective = ZonedDateTime.now();
 		final Date appDate = ApplicationService.getApplicationDateIfSet(request);
 		if (appDate != null) {
 			effective = ZonedDateTime.ofInstant(appDate.toInstant(), ZoneId.systemDefault());
-			//} else if {
-			//TODO get the "journey start time" from session
+			LOGGER.info("getAllActiveCampaigns effective date overridden by session applicationDate: {}", effective);
+			getFromCache = false;
 		}
+		else if (authenticatedData.map(AuthenticatedData::getUid).isPresent() && hasElevatedPrivileges(request)) {
+			// These people can do adhoc orders so make sure they do not get cached response
+			LOGGER.info("getAllActiveCampaigns cache busted. operatorId={}", authenticatedData.map(AuthenticatedData::getUid).orElse(null));
+			getFromCache = false;
+		}
+		//TODO else if get the "journey start time" from session
 
-		return getAllActiveCampaigns(vertical, brand.getCode(), effective);
+		return getAllActiveCampaigns(vertical, brand.getCode(), effective, getFromCache);
 	}
 
 	public GetCampaignsResponse getAllActiveCampaigns(final Vertical.VerticalType vertical, final String brandCode,
-													  final ZonedDateTime effectiveDateTime) {
+													  final ZonedDateTime effectiveDateTime,
+													  final boolean getFromCache) {
 		// Round the time so we can hit the cache
 		final ZonedDateTime roundedEffective = roundupMinutes(effectiveDateTime);
-		return rewardCampaignService.getAllActiveCampaigns(vertical, brandCode, roundedEffective);
+		return rewardCampaignService.getAllActiveCampaigns(vertical, brandCode, roundedEffective, getFromCache);
 	}
 
 	/*
