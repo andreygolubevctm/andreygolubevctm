@@ -127,7 +127,16 @@
                 <div class="col-sm-6 col-xs-10 col-sm-offset-4 row-content">
                     <div class="checkbox">
                         <input type="checkbox" name="order_privacyOptin" id="order_privacyOptin" class="checkbox-custom checkbox" value="Y" required="required" data-msg-required="Please agree to the Terms & Conditions">
-                        <label for="order_privacyOptin">{{= meerkat.modules.rewardConfirmation.getContentHtml().find('.reward-optin-text').html() }}</label>
+                        <label for="order_privacyOptin">
+                            <c:choose>
+                                <c:when test="${empty callCentre}">
+                                    {{= meerkat.modules.rewardConfirmation.getContentHtml().find('.reward-optin-text').html() }}
+                                </c:when>
+                                <c:otherwise>
+                                    Terms and conditions apply. Please go onto our website for further information.
+                                </c:otherwise>
+                            </c:choose>
+                        </label>
                     </div>
                 </div>
             </div>
@@ -180,8 +189,8 @@
                                 <option value="Scheduled" {{= orderLine.orderStatus === 'Scheduled' ? 'selected' : '' }}>Scheduled</option>
                                 <option value="Cancelled" {{= orderLine.orderStatus === 'Cancelled' ? 'selected' : '' }}>Cancelled</option>
                                 <option value="Declined" {{= orderLine.orderStatus === 'Declined' ? 'selected' : '' }}>Declined</option>
-                                <option value="Declined" {{= orderLine.orderStatus === 'ReturnedToSender' ? 'selected' : '' }}>ReturnedToSender</option>
-                                <option value="NotReceived" {{= orderLine.orderStatus === 'NotReceived' ? 'selected' : '' }}>NotReceived</option>
+                                <%--<option value="ReturnedToSender" {{= orderLine.orderStatus === 'ReturnedToSender' ? 'selected' : '' }}>ReturnedToSender</option>--%>
+                                <%--<option value="NotReceived" {{= orderLine.orderStatus === 'NotReceived' ? 'selected' : '' }}>NotReceived</option>--%>
                             </select>
                         </div>
                     </div>

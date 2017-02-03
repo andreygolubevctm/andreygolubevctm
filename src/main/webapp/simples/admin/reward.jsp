@@ -169,7 +169,7 @@
                     {{= orderLine.dateToIssue }}
                 </div>
                 <div class="col-lg-1">
-                    {{ if(data.type === "current" && ['Requisitioned', 'Dispatched'].indexOf(orderLine.orderStatus) < 0){ }}
+                    {{ if(data.type === "current" && ['Requisitioned', 'Dispatched', 'Cancelled', 'Declined'].indexOf(orderLine.orderStatus) < 0){ }}
                     <button type="button" class="crud-edit-entry btn btn-secondary btn-sm">Edit</button>
                     <button type="button" class="crud-cancel-entry btn btn-primary btn-sm">Cancel</button>
                     {{ } }}
