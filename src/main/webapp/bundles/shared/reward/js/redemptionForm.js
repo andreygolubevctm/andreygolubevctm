@@ -31,13 +31,17 @@
 
     function applyEventListeners() {
         $modal.find('.rewardType input').on('change', function toggleDecline() {
-            if($(this).is(':checked')) {
-                selectedToy = $(this).attr('id');
-                $noDecline.removeClass('hidden');
-                $modal.find('.declineReward').hide();
-                $modal.find('.declineReward input').prop('checked', false);
-            }
-            meerkat.modules.dialogs.resizeDialog(modalId);
+            var $this = $(this);
+            // defer this because we want click to run first....
+            _.defer(function () {
+                if($this.is(':checked')) {
+                    selectedToy = $this.attr('id');
+                    $noDecline.removeClass('hidden');
+                    $modal.find('.declineReward').hide();
+                    $modal.find('.declineReward input').prop('checked', false);
+                }
+                meerkat.modules.dialogs.resizeDialog(modalId);
+            });
         });
 
         $modal.find('.rewardType input').on('click', function toggleDecline() {

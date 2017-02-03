@@ -95,7 +95,7 @@
                             object: {
                                 action: 'Reward Redeemed',
                                 redeemedCampaignCode: currentCampaign.campaignCode,
-                                redeemedRewardTypeId: selectedRewardTypeId
+                                redeemedRewardTypeId: selectedRewardTypeId || $form.find('input[name="order_orderStatus"]:checked').val()
                             }
                         });
                     } else if (response.message) {
