@@ -48,7 +48,7 @@ public class RewardController extends CommonQuoteRouter {
 
 		this.objectMapper.getJsonMapper()
 				.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
-				.setSerializationInclusion(JsonInclude.Include.NON_NULL)
+				//.setSerializationInclusion(JsonInclude.Include.NON_NULL) -- Do not activate this; breaks car-quote/hnc-quote
 				.registerModule(new Jdk8Module())
 				.registerModule(new JavaTimeModule());
 	}
