@@ -129,7 +129,7 @@
     }
     
     function getCampaignContentHtml() {
-        return $campaignContentHtml;
+        return $campaignContentHtml || $();
     }
 
 

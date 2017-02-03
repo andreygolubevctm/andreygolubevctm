@@ -41,9 +41,10 @@ public class RewardCampaignService {
 		return campaign -> campaign.getActive() && campaign.getEligibleForRedemption();
 	}
 
-	@Cacheable(cacheNames = {"rewardGetActiveCampaigns"})
+	@Cacheable(cacheNames = {"rewardGetActiveCampaigns"}, condition = "#getFromCache")
 	public GetCampaignsResponse getAllActiveCampaigns(final Vertical.VerticalType vertical, final String brandCode,
-													  final ZonedDateTime effectiveDateTime) {
+													  final ZonedDateTime effectiveDateTime,
+													  final boolean getFromCache) {
 		GetCampaigns request = new GetCampaigns();
 		request.setBrandCode(brandCode);
 		request.setVerticalCode(vertical.getCode());
