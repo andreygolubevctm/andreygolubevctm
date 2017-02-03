@@ -180,8 +180,8 @@
                                 <option value="Scheduled" {{= orderLine.orderStatus === 'Scheduled' ? 'selected' : '' }}>Scheduled</option>
                                 <option value="Cancelled" {{= orderLine.orderStatus === 'Cancelled' ? 'selected' : '' }}>Cancelled</option>
                                 <option value="Declined" {{= orderLine.orderStatus === 'Declined' ? 'selected' : '' }}>Declined</option>
-                                <option value="Declined" {{= orderLine.orderStatus === 'ReturnedToSender' ? 'selected' : '' }}>ReturnedToSender</option>
-                                <option value="NotReceived" {{= orderLine.orderStatus === 'NotReceived' ? 'selected' : '' }}>NotReceived</option>
+                                <%--<option value="ReturnedToSender" {{= orderLine.orderStatus === 'ReturnedToSender' ? 'selected' : '' }}>ReturnedToSender</option>--%>
+                                <%--<option value="NotReceived" {{= orderLine.orderStatus === 'NotReceived' ? 'selected' : '' }}>NotReceived</option>--%>
                             </select>
                         </div>
                     </div>
