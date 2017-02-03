@@ -16,7 +16,6 @@
 	var $policySummaryContainer;
 	var $policySummaryTemplateHolder;
 	var $policySummaryDetailsComponents;
-	var $policySummaryDualPricing = [];
 
 	var $displayedFrequency;
 	var $startDateInput;
@@ -38,7 +37,6 @@
 			$policySummaryContainer = $(".policySummaryContainer");
 			$policySummaryTemplateHolder = $(".policySummaryTemplateHolder");
 			$policySummaryDetailsComponents = $(".productSummaryDetails");
-			$policySummaryDualPricing = $('.policySummary.dualPricing');
 
 			if(meerkat.site.pageAction != "confirmation"){
 
@@ -116,7 +114,6 @@
 
 			$policySummaryTemplateHolder.html(htmlString);
 
-			$policySummaryDualPricing.find('.Premium').html(htmlString);
 //		This is a deactivated split test as it is likely to be run again in the future
 			// A/B testing price itemisation
 //		if (meerkat.modules.splitTest.isActive(2)) {
@@ -126,12 +123,6 @@
 //		}
 
 			$policySummaryContainer.find(".policyPriceWarning").hide();
-
-			if ($policySummaryDualPricing.length > 0) {
-				product.showAltPremium = true;
-				htmlString = htmlTemplate(product);
-				$policySummaryDualPricing.find('.altPremium').html(htmlString);
-			}
 		}
 	}
 

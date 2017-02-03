@@ -12,7 +12,7 @@
 <c:set var="healthAlternatePricingActive" value="${healthPriceDetailService.isAlternatePriceActive(pageContext.getRequest())}" />
 
 <div class="sidebar-box<c:if test="${healthAlternatePricingActive eq true}"> hasDualPricing hidden-xs</c:if> policySummary-sidebar">
-	<c:if test="${healthAlternatePricingActive eq false}">
+	<c:if test="${empty callCentre or (healthAlternatePricingActive eq false and not empty callCentre)}">
 		<div class="policySummaryContainer ${className}">
 			<c:choose>
 				<c:when test="${isAltView}">
@@ -31,7 +31,7 @@
 		</div>
 	</c:if>
 
-	<c:if test="${healthAlternatePricingActive eq true}">
+	<c:if test="${healthAlternatePricingActive eq true and not empty callCentre}">
 		<h1 class="hidden-xs">Your quote details</h1>
 		<div class="policySummary productSummary dualPricing"></div>
 	</c:if>
