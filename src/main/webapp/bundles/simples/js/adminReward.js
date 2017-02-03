@@ -129,7 +129,7 @@
                                     // (not ideal but the api doesn't return the updated model)
                                     $('#simples-reward-search-navbar').find('button').trigger('click');
                                 } else {
-                                    // for adhoc add the model to dataSet (missing rewardType atm, unless we trigger anther search)
+                                    // for adhoc add the model to dataSet (missing rewardType, dateToIssue atm, unless we trigger another search)
                                     var datum = {orderForm: data};
                                     var obj = new meerkat.modules.crudModel.datumModel(that.primaryKey, that.models.datum, datum, that.views.row);
                                     that.dataSet.push(obj);

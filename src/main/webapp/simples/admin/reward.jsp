@@ -134,13 +134,14 @@
         <script class="crud-row-template" type="text/html">
             {{ var orderHeader = data.orderForm.orderHeader }}
             {{ var orderLine= orderHeader.orderLine || {} }}
+            {{ var reward = orderLine.rewardType || {} }}
 
             <div class="sortable-results-row row" data-id="{{= orderLine.encryptedOrderLineId }}">
                 <div class="col-lg-1">
                     {{= orderHeader.rootId }}
                 </div>
                 <div class="col-lg-1">
-                    {{= orderLine.rewardType.rewardType }}
+                    {{= reward.rewardType }}
                 </div>
                 <div class="col-lg-1">
                     {{= orderLine.firstName }} {{= orderLine.lastName }}
