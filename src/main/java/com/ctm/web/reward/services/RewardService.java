@@ -98,12 +98,12 @@ public class RewardService {
 		final Date appDate = ApplicationService.getApplicationDateIfSet(request);
 		if (appDate != null) {
 			effective = ZonedDateTime.ofInstant(appDate.toInstant(), ZoneId.systemDefault());
-			LOGGER.info("getAllActiveCampaigns effective date overridden by session applicationDate: {}", effective);
+			LOGGER.info("Reward: getAllActiveCampaigns effective date overridden by session applicationDate: {}", effective);
 			getFromCache = false;
 		}
 		else if (authenticatedData.map(AuthenticatedData::getUid).isPresent() && hasElevatedPrivileges(request)) {
 			// These people can do adhoc orders so make sure they do not get cached response
-			LOGGER.info("getAllActiveCampaigns cache busted. operatorId={}", authenticatedData.map(AuthenticatedData::getUid).orElse(null));
+			LOGGER.info("Reward: getAllActiveCampaigns cache busted. operatorId={}", authenticatedData.map(AuthenticatedData::getUid).orElse(null));
 			getFromCache = false;
 		}
 		//TODO else if get the "journey start time" from session
@@ -421,7 +421,12 @@ public class RewardService {
 					response.setStatus(false);
 					return Observable.just(response);
 				})
-				.doOnCompleted(() -> LOGGER.info("Reward: Updated order. orderHeaderId={}, ", form.getOrderHeader().getOrderHeaderId()))
+				.doOnCompleted(() -> {
+					Optional<OrderLine> orderLine = Optional.ofNullable(form).map(OrderForm::getOrderHeader).map(OrderHeader::getOrderLine);
+					LOGGER.info("Reward: Updated order. encryptedOrderLineId={}, updatedByOperator={}",
+							orderLine.map(OrderLine::getEncryptedOrderLineId).orElse(null),
+							orderLine.map(OrderLine::getUpdatedByOperator).orElse(null));
+				})
 				.toBlocking()
 				.first();
 	}
