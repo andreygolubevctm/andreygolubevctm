@@ -210,8 +210,10 @@ public class RewardService {
 
 			if (orderFormResponse != null && orderFormResponse.getStatus() && orderFormResponse.getEncryptedOrderLineId().isPresent()) {
 				data.put(XPATH_CURRENT_ENCRYPTED_ORDER_LINE_ID, orderFormResponse.getEncryptedOrderLineId().get());
-				LOGGER.info("Reward: Created order. rootId={}, getEncryptedOrderLineId={}",
-						orderForm.getOrderHeader().getRootId().orElse(0L), orderFormResponse.getEncryptedOrderLineId().get());
+				LOGGER.info("Reward: Created order. rootId={}, encryptedOrderLineId={}, campaignCode={}",
+						orderForm.getOrderHeader().getRootId().orElse(0L),
+						orderFormResponse.getEncryptedOrderLineId().get(),
+						campaignCode);
 				return orderFormResponse;
 			} else {
 				throw new Exception("Create order failed. status=" + ((orderFormResponse != null) ? orderFormResponse.getStatus() : "")
@@ -238,11 +240,13 @@ public class RewardService {
 					&& form.getOrderHeader().getOrderLine().getRewardTypeId().isPresent()) {
 				// Push operatorId onto model as creator
 				form.getOrderHeader().getOrderLine().setCreatedByOperator(operatorId);
+				form.getOrderHeader().getOrderLine().setUpdatedByOperator(operatorId);
 
 				OrderFormResponse orderFormResponse = remoteCreateOrder(form);
 
-				LOGGER.info("Reward: Create adhoc order. operator={}, status={}",
+				LOGGER.info("Reward: Created adhoc order. operator={}, campaignCode={}, status={}",
 						operatorId,
+						form.getOrderHeader().getOrderLine().getCampaignCode(),
 						orderFormResponse.getStatus());
 				return orderFormResponse;
 			} else {
@@ -423,9 +427,10 @@ public class RewardService {
 				})
 				.doOnCompleted(() -> {
 					Optional<OrderLine> orderLine = Optional.ofNullable(form).map(OrderForm::getOrderHeader).map(OrderHeader::getOrderLine);
-					LOGGER.info("Reward: Updated order. encryptedOrderLineId={}, updatedByOperator={}",
+					LOGGER.info("Reward: Updated order. encryptedOrderLineId={}, updatedByOperator={}, orderStatus={}",
 							orderLine.map(OrderLine::getEncryptedOrderLineId).orElse(null),
-							orderLine.map(OrderLine::getUpdatedByOperator).orElse(null));
+							orderLine.map(OrderLine::getUpdatedByOperator).orElse(null),
+							orderLine.map(OrderLine::getOrderStatus).orElse(null));
 				})
 				.toBlocking()
 				.first();
