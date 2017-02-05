@@ -26,7 +26,8 @@ import com.ctm.web.homeloan.services.HomeLoanService;
 
 @WebServlet(urlPatterns = {
 		"/homeloan/results/get.json",
-		"/homeloan/opportunity/submit.json"
+		"/homeloan/opportunity/submit.json",
+		"/cron/homeloan/flexOutboundLead.json"
 })
 public class HomeLoanRouter extends HttpServlet {
 	private static final Logger LOGGER = LoggerFactory.getLogger(HomeLoanRouter.class);
@@ -92,6 +93,45 @@ public class HomeLoanRouter extends HttpServlet {
 
 				Error error = new Error();
 				error.addError(new Error("Failed to submit opportunity"));
+				json = error.toJsonObject(true);
+
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			}
+
+			writer.print(json.toString());
+		}
+	}
+
+	@Override
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		PrintWriter writer = response.getWriter();
+
+		// Automatically set content type based on request extension ////////////////////////////////////////
+
+		String uri = request.getRequestURI();
+		if (uri.endsWith(".json")) {
+			response.setContentType("application/json");
+		}
+
+		// Route the requests ///////////////////////////////////////////////////////////////////////////////
+		if (uri.endsWith("/homeloan/flexOutboundLead.json")) {
+			JSONObject json = null;
+			HomeLoanService service = new HomeLoanService();
+
+			try {
+				SettingsService.setVerticalAndGetSettingsForPage(request, VerticalType.HOMELOAN.getCode());
+
+				json = service.scheduledLeadGenerator(request);
+
+				if (!json.has("flexOutboundLeads") || json.getJSONArray("flexOutboundLeads").length() == 0) {
+					throw new DaoException("HomeLoan scheduledLeadGenerator returned an empty JSON object");
+				}
+			}
+			catch (Exception e) {
+				LOGGER.error("HomeLoan scheduledLeadGenerator failed", e);
+
+				Error error = new Error();
+				error.addError(new Error(e.getMessage()));
 				json = error.toJsonObject(true);
 
 				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

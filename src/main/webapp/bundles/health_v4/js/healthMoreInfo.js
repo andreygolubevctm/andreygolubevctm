@@ -208,6 +208,7 @@
             obj = Results.getSelectedProduct();
 
         obj.showAltPremium = false;
+        obj._selectedFrequency = Results.getFrequency();
         obj.renderedPriceTemplate = priceTemplate(obj);
 
         return headerTemplate(obj);
@@ -328,12 +329,7 @@
     function initialiseBrochureEmailForm(product, parent, form) {
         var emailBrochuresElement = parent.find('.moreInfoEmailBrochures');
         emailBrochuresElement.show();
-
-        var benefitCodes = $.map(meerkat.modules.healthUtils.getSelectedBenefits(product.info.ProductType),
-            function (b) {
-                return b.code;
-            });
-        var situation = meerkat.modules.healthUtils.getSelectedHealthSituation().name;
+        var benefitCodes = meerkat.modules.benefitsModel.getCodesForSelectedBenefits();
         var currentPHI = meerkat.modules.healthUtils.getPrimaryCurrentPHI();
         var specialOffer = meerkat.modules.healthUtils.getSpecialOffer(product);
         var excessesAndCoPayment = meerkat.modules.healthUtils.getExcessesAndCoPayment(product);
@@ -354,7 +350,8 @@
                 { name: "premium", value: product.premium[Results.settings.frequency].lhcfreetext },
                 { name: "premiumText", value: product.premium[Results.settings.frequency].lhcfreepricing },
                 // Additional information
-                { name: "healthSituation", value: situation },
+                // NOTE: healthSituation question does not exist in V4 (e.g. 'wanting to compare'
+                { name: "healthSituation", value: "" },
                 { name: "primaryCurrentPHI", value: currentPHI },
                 { name: "coverType", value: product.info.ProductType },
                 { name: "benefitCodes", value: benefitCodes.join(',') },
@@ -518,7 +515,7 @@
                                 product.warningAlert = result.providerContentText;
                                 break;
                             case 'DDD':
-                                meerkat.modules.healthDropDeadDate.setDropDeadDate(result.providerContentText, product);
+                                meerkat.modules.dropDeadDate.setDropDeadDate(result.providerContentText, product);
                                 break;
                         }
                     }

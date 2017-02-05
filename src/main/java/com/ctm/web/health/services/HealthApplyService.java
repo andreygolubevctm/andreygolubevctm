@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import rx.schedulers.Schedulers;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -94,7 +95,7 @@ public class HealthApplyService extends CommonRequestServiceV2 {
                     .response(HealthApplyResponse.class)
                     .build())
                     .doOnError(this::logHttpClientError)
-                    .single().toBlocking().single();
+                    .observeOn(Schedulers.io()).toBlocking().single();
 
         } else {
             LOGGER.info("Calling health-apply v1");
@@ -110,7 +111,7 @@ public class HealthApplyService extends CommonRequestServiceV2 {
                     .response(HealthApplyResponsePrev.class)
                     .build())
                     .doOnError(this::logHttpClientError)
-                    .single().toBlocking().single();
+                    .observeOn(Schedulers.io()).toBlocking().single();
             HealthApplyResponse healthApplyResponse = new HealthApplyResponse();
             healthApplyResponse.setTransactionId(response.getTransactionId());
             final HealthApplicationResponse healthApplicationResponse = response.getPayload().getQuotes()

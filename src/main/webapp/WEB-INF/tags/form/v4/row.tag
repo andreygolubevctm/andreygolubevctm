@@ -48,7 +48,7 @@
         <div class="col-xs-<c:out value="${labelWidthXs} " /> col-sm-4 <c:out value="${labelClass}" />">
             <field_v2:label value="${label}" xpath="${fieldXpath}" addForAttr="${addForAttr}" />
             <c:if test="${not empty subLabel}"><div class="control-sub-label">${subLabel}</div></c:if>
-            <c:if test="${showHelpIcon eq true}"><div class="hidden-xs text-right">
+            <c:if test="${showHelpIcon eq true}"><div class="hidden-xs">
                 <field_v2:help_icon helpId="${helpId}" showText="${showHelpText}" />
             </div></c:if>
         </div>

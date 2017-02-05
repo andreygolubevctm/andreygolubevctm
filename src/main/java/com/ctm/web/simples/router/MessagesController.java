@@ -25,6 +25,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import rx.Observable;
+import rx.schedulers.Schedulers;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
@@ -66,7 +67,7 @@ public class MessagesController extends CommonQuoteRouter {
         if (inInEnabled) {
             return scheduleCall(postpone, authenticatedData, postponeTo)
                 .map(ignore -> simplesMessageService.schedulePersonalMessage(simplesUid, postpone.getRootId(), postpone.getStatusId(), postponeTo,
-                        postpone.getContactName(), postpone.getComment())).toBlocking().first();
+                        postpone.getContactName(), postpone.getComment())).observeOn(Schedulers.io()).toBlocking().first();
         } else {
             return simplesMessageService.postponeMessage(simplesUid, postpone.getMessageId(), postpone.getStatusId(), postpone.getReasonStatusId(),
                 postpone.getPostponeDate(), postpone.getPostponeTime(), postpone.getPostponeAMPM(), postpone.getComment(), postpone.getAssignToUser());
@@ -92,7 +93,7 @@ public class MessagesController extends CommonQuoteRouter {
         final MessageDetail messageDetail = TransactionService.getTransaction(postpone.getRootId());
         Message message = messageDetail.getMessage();
         return inInScheduleService.deleteScheduledCall(message, authenticatedData.getUid())
-                .map(ignore -> simplesMessageService.removePersonalMessage(simplesUid, postpone.getRootId())).toBlocking().first();
+                .map(ignore -> simplesMessageService.removePersonalMessage(simplesUid, postpone.getRootId())).observeOn(Schedulers.io()).toBlocking().first();
     }
 
     public LocalDateTime getLocalDateTimeFromPostpone(String postponeDate, String postponeTime, String postponeAMPM) {

@@ -13,6 +13,7 @@
         <health_v3:results />
         <health_v3:more_info/>
         <health_v1:prices_have_changed_notification/>
+        <health_v1:dual_pricing_modal />
 
         <simples:dialogue id="24" vertical="health" />
         <simples:dialogue id="59" vertical="health" />
