@@ -200,7 +200,7 @@
             // append content
             moreInfoContainer.html(htmlString);
 
-            if (settings.affixedHeaderContainer && settings.affixedHeaderContainer.length === 1) {
+            if (typeof affixedHeaderTemplate === 'function' && settings.affixedHeaderContainer && settings.affixedHeaderContainer.length === 1) {
                 var affixedHtmlString = affixedHeaderTemplate(product);
                 settings.affixedHeaderContainer.html(affixedHtmlString);
             }

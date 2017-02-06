@@ -174,13 +174,9 @@ public class SessionDataServiceBean {
 
 	/**
 	 * Helper for getData methods above - provides codes common to both
-	 *
-	 * @param request
-	 * @param transactionId
-	 * @return
-	 * @throws SessionException
+	 * Generally this should NOT be accessed directly, but via getDataForTransactionId()
 	 */
-	private SessionData getSessionDataForTransactionId(HttpServletRequest request, String transactionId) throws SessionException {
+	public SessionData getSessionDataForTransactionId(HttpServletRequest request, String transactionId) throws SessionException {
 		SessionData sessionData = getSessionDataFromSession(request);
 		if (sessionData == null ) {
 			throw new SessionException("session has expired");

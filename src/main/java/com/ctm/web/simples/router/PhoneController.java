@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import rx.schedulers.Schedulers;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -76,9 +77,9 @@ public class PhoneController extends CommonQuoteRouter {
                 return PauseResumeResponse.fail("Unauthorised to access this feature");
             } else {
                 if (action == PauseRecord) {
-                    pauseResumeResponse = inInIcwsService.pause(authName, Optional.empty()).toBlocking().first();
+                    pauseResumeResponse = inInIcwsService.pause(authName, Optional.empty()).observeOn(Schedulers.io()).toBlocking().first();
                 } else if (action == ResumeRecord) {
-                    pauseResumeResponse = inInIcwsService.resume(authName, Optional.empty()).toBlocking().first();
+                    pauseResumeResponse = inInIcwsService.resume(authName, Optional.empty()).observeOn(Schedulers.io()).toBlocking().first();
                 }
             }
         // Normal Verint telephony system

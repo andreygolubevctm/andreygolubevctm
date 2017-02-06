@@ -39,7 +39,7 @@
 	{{ obj.displayLogo = false; }} <%-- Turns off the logo from the template --%>
 
 	<%-- If dual pricing is enabled, update the template --%>
-	{{ if (meerkat.site.healthAlternatePricingActive === true) { }}
+	{{ if (meerkat.site.healthAlternatePricingActive === true && meerkat.site.isCallCentreUser === true) { }}
 	{{ obj.renderedDualPricing = meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false); }}
 	{{ } else { }}
 	{{ var logoTemplate = meerkat.modules.templateCache.getTemplate($("#logo-template")); }}
@@ -68,7 +68,7 @@
 		<div class="fieldset-card row price-card <c:if test="${healthAlternatePricingActive eq true}">hasDualPricing</c:if>">
 			<div class="moreInfoTopLeftColumn Hospital_container">
 				<health_v4_moreinfo:more_info_product_summary />
-				<health_v4_moreinfo:more_info_product_extra_info />
+                <health_v4_moreinfo:more_info_product_extra_info />
 				<!-- Hospital and Extras -->
 				<div class="benefitsOverflow">
 					<div class="row">
@@ -101,18 +101,18 @@
 									</div>
 
 									{{ if(typeof hospital.inclusions !== 'undefined') { }}
-										<div class="col-xs-8 limitTitleLG">
+										<div class="col-xs-6 limitTitleLG">
 											Co-Payment/ % Hospital Contribution
 										</div>
-										<div class="col-xs-4">
+										<div class="col-xs-6">
 											{{= hospital.inclusions.copayment == '-' ? 'None' : hospital.inclusions.copayment }}
-										</div>
-										<div class="col-xs-8 limitTitleLG addTopMargin">
+										</div><div class="clearfix"></div>
+										<div class="col-xs-6 limitTitleLG addTopMargin">
 											Excess Waivers
 										</div>
-										<div class="col-xs-4 addTopMargin">
+										<div class="col-xs-6 addTopMargin">
 											{{= hospital.inclusions.waivers == '-' ? 'None' : hospital.inclusions.waivers }}
-										</div>
+										</div><div class="clearfix"></div>
 									{{ } }}
 
 									<div class="col-xs-12">
@@ -120,18 +120,18 @@
 									</div>
 
 									{{ if(typeof hospital.inclusions !== 'undefined') { }}
-										<div class="col-xs-8 limitTitleLG">
+										<div class="col-xs-6 limitTitleLG">
 											Pre-existing conditions
 										</div>
-										<div class="col-xs-4">
+										<div class="col-xs-6">
 											{{= hospital.inclusions.waitingPeriods.PreExisting }}
-										</div>
-										<div class="col-xs-8 limitTitleLG addTopMargin">
+										</div><div class="clearfix"></div>
+										<div class="col-xs-6 limitTitleLG addTopMargin">
 											All other conditions
 										</div>
-										<div class="col-xs-4 addTopMargin">
+										<div class="col-xs-6 addTopMargin">
 											{{= hospital.inclusions.waitingPeriods.Other }}
-										</div>
+										</div><div class="clearfix"></div>
 									{{ } }}
 
 									{{ if(typeof hospitalCover !== 'undefined') { }}
@@ -160,6 +160,15 @@
 										{{ product.structureIndex = 4; }}
 										{{ product.showNotCoveredBenefits = false; }}
 										{{ product.ignoreLimits = false; }}
+								        {{ if(meerkat.modules.healthMoreInfo.hasPublicHospital(hospitalCover.inclusions)) { }}
+										<div class="row HLTicon-hospital benefitRow">
+											<div class="benefitContent">
+											<div class="col-xs-12 benefitTitle">
+												<p>Public Hospital</p>
+											</div>
+										</div>
+										</div>
+								        {{ } }}
 										{{= benefitTemplate(product) }}
 									</div>
 									<div class="col-xs-12 tab-pane hospitalNotCoveredPane">
@@ -185,8 +194,9 @@
 												<div class="col-xs-12 benefitTitle">
 													<p>{{= restriction.name }}</p>
 												</div>
-												<div class="col-xs-8 limitTitle">Waiting period</div><div class="col-xs-4 limitValue">{{= restriction.WaitingPeriod }}</div>
-												<div class="col-xs-8 limitTitle">Benefit Limitation Period</div><div class="col-xs-4 limitValue">{{= restriction.benefitLimitationPeriod }}</div>
+												<div class="col-xs-6 limitTitle">Waiting period</div><div class="col-xs-6 limitValue">{{= restriction.WaitingPeriod }}</div>
+												<div class="col-xs-6 limitTitle">Benefit Limitation Period</div><div class="col-xs-6 limitValue">{{= restriction.benefitLimitationPeriod }}</div>
+												<div class="clearfix"></div>
 											</div>
 										</div>
 										{{ }) }}
@@ -245,12 +255,16 @@
 						{{ } }}
 					</div>
 				</div>
+                <reward:campaign_tile_container_xs />
 			</div>
 			<!-- CTA BUTTON -->
 			<div class="hidden-xs moreInfoTopRightColumn">
                 <div class="sidebar-widget">
-						<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Apply Online<span class="icon-arrow-right" /></a>
-					</div>
+					<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Apply Online<span class="icon-arrow-right" /></a>
+				</div>
+
+                <reward:campaign_tile_container />
+
                 <div class="sidebar-widget sidebar-widget-padded sidebar-widget-background-contained">
                     <h3>Switching is simple!</h3>
                     <ul>
@@ -262,13 +276,13 @@
                 </div>
 
                 <div class="sidebar-widget sidebar-widget-padded">
-                    <h3>What is the Benefits Limitation Period?</h3>
+                    <h3>What is the Benefit Limitation Period?</h3>
                     <p>If your policy has benefit limitation periods, you will only be entitled to restricted benefits (as described above) for a set time. For example, you may decide to take out a policy that only pays restricted benefits for Heart surgery for the first two years membership of the policy. After two years membership, you would then normally be entitled to full benefits for Heart surgery.</p>
                     <p>
                         Where a waiting period already applies for a particular condition or treatment, funds may begin the benefit limitation period from the end of the normal waiting period.</p>
                 </div>
 
-			</div>
+            </div>
 		</div>
 	</div>
 </script>

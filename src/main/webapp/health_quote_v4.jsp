@@ -78,16 +78,16 @@
                                 <ul class="journeyProgressBar" data-phase="application"></ul>
                             </div>
                             <div class="hidden-xs col-sm-3">
-                                <a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton slide-control-about-you" data-slide-control="next" href="javascript:;"
-                                        <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />><span class="hidden-md hidden-lg">Preferences</span><span class="hidden-sm">Insurance preferences</span> <span class="icon icon-arrow-right"></span></a>
+                                <a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton slide-control-about-you" data-slide-control="next"
+                                   href="javascript:;" data-loadinganimation="inside" data-loadinganimation-showAtEnd="true" <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />><span class="hidden-md hidden-lg">Preferences</span><span class="hidden-sm">Insurance preferences</span> <span class="icon icon-arrow-right"></span></a>
                                 <a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton slide-control-insurance-preferences" data-slide-control="next"
-                                   href="javascript:;"  <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />>Contact details <span class="icon icon-arrow-right"></span></a>
+                                   href="javascript:;" data-loadinganimation="inside" data-loadinganimation-showAtEnd="true" <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />>Contact details <span class="icon icon-arrow-right"></span></a>
                                 <a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton slide-control-get-prices" data-slide-control="next"
-                                   href="javascript:;"  <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />>Get prices <span class="icon icon-arrow-right"></span></a>
+                                   href="javascript:;" data-loadinganimation="inside" data-loadinganimation-showAtEnd="true" <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />>Get prices <span class="icon icon-arrow-right"></span></a>
                                 <a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton slide-control-proceed-to-payment" data-slide-control="next"
-                                   href="javascript:;"  <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />>Proceed to Payment <span class="icon icon-arrow-right"></span></a>
+                                   href="javascript:;" data-loadinganimation="inside" data-loadinganimation-showAtEnd="true" <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />>Proceed to Payment <span class="icon icon-arrow-right"></span></a>
                                 <a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton slide-control-submit-application" data-slide-control="next"
-                                   href="javascript:;"  <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />>Submit Application <span class="icon icon-arrow-right"></span></a>
+                                   href="javascript:;" data-loadinganimation="inside" data-loadinganimation-showAtEnd="true" <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />>Submit Application <span class="icon icon-arrow-right"></span></a>
                             </div>
                         </div>
                     </div>
@@ -95,7 +95,7 @@
                 <div class="navbar-affix results-control-container">
                     <div class="container">
                         <div class="row">
-                            <div class="hidden-xs col-sm-6 col-md-4 results-filters-frequency"></div>
+                            <div class="col-xs-12 col-sm-6 col-md-4 results-filters-frequency"></div>
                             <div class="hidden-xs hidden-sm col-md-2 text-center small filter-results-hidden-products"></div>
                             <div class="col-sm-9 more-info-return-to-results text-left"><a data-slide-control="prev" href="javascript:;" class="btn-close-more-info" data-analytics="nav button"><span class="icon icon-angle-left"></span> Back to results</a> | <c:if test="${empty callCentre}"><a href="javascript:;" data-opensavequote="true" class="btn-save-quote-trigge" data-analytics="save button">Save for later</a></c:if></div>
                             <div class="col-xs-12 col-sm-6 col-md-3 results-pagination">
@@ -103,7 +103,6 @@
                                     <ul class="nav navbar-nav slide-feature-pagination" data-results-pagination-pages-cell="true"></ul>
                                 </div>
                             </div>
-                            <div class="col-xs-12 hidden-sm hidden-md hidden-lg hide-on-affix results-filters-frequency"></div>
                             <div class="hidden-xs hidden-sm col-md-3 text-center results-ref-sidebar">
                                 <div class="quote-reference-number"><h3>Quote Ref: <span class="transactionId"></span></h3></div>
                                 <div class="sidebar-widget sidebar-widget-attached filters-update-container" style="display: none">
@@ -163,6 +162,9 @@
                 <field_v1:hidden xpath="environmentValidatorOverride" />
                 <input type="hidden" name="transcheck" id="transcheck" value="1" />
                 <agg_v3:save_quote />
+
+                <%--Reward Campaign Template--%>
+                <reward:template_campaign_tile />
             </jsp:body>
         </layout_v1:journey_engine_page>
     </c:when>

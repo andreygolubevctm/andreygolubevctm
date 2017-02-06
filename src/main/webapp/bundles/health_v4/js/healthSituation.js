@@ -29,6 +29,8 @@
 
             meerkat.messaging.publish(moduleEvents.healthSituation.SITUATION_CHANGED, { situation: situation });
             meerkat.modules.healthChoices.setCover(situation);
+
+            meerkat.modules.healthDependants.toggleDependantsDefaultValue(meerkat.modules.healthDependants.situationEnablesDependants());
         });
     }
 
@@ -36,10 +38,15 @@
         return $healthSituation.filter(':checked').val();
     }
 
+    function getSituationAsText() {
+        return $.trim($healthSituation.filter(':checked').parent().text());
+    }
+
     meerkat.modules.register('healthSituation', {
         init: init,
         events: moduleEvents,
-        getSituation: getSituation
+        getSituation: getSituation,
+        getSituationAsText: getSituationAsText
     });
 
 })(jQuery);

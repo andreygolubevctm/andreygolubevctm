@@ -13,8 +13,8 @@
     </div>
 
     <ul class="nav nav-tabs health-filter-hospital-benefits">
-        <li class="active"><a data-toggle="tab" href="#hospitalBenefits">Comprehensive</a></li>
-        <li><a data-toggle="tab" href="#limitedHospital">Limited</a></li>
+        <li class="active"><a data-toggle="tab" href="#hospitalBenefits" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />>Comprehensive</a></li>
+        <li><a data-toggle="tab" href="#limitedHospital" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />>Limited</a></li>
     </ul>
     <div class="tab-content health-filter-hospital-benefits">
         <div id="hospitalBenefits" class="tab-pane fade active in">

@@ -322,7 +322,7 @@
     }
 
     function resizeDialog(dialogId) {
-        isXS = meerkat.modules.deviceMediaState.get() === "xs" ? true : false;
+        isXS = meerkat.modules.deviceMediaState.get() === "xs";
 
         var $dialog = $("#" + dialogId);
 
@@ -338,7 +338,7 @@
                 $modalBody = $dialog.find(".modal-body"),
                 $modalDialog = $dialog.find(".modal-dialog");
 
-            viewport_height = $(window).height();
+            viewport_height = window.innerHeight;
 
             if (!isXS) {
                 viewport_height -= 60; // top and bottom margin.

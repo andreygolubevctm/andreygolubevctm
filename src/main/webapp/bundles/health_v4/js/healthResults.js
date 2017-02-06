@@ -592,13 +592,13 @@
             Results.settings.animation.filter.active = prevAnimationState;
         });
 
-        meerkat.messaging.subscribe(meerkatEvents.filters.FILTERS_UPDATED, function unPinOnFilterChange() {
-            var prevAnimationState = Results.settings.animation.filter.active;
-            Results.settings.animation.filter.active = false;
-            _unpinProductHelper(pinnedProductId);
-            Results.settings.animation.filter.active = prevAnimationState;
-        });
+    }
 
+    function unpinProductFromFilterUpdate() {
+        var prevAnimationState = Results.settings.animation.filter.active;
+        Results.settings.animation.filter.active = false;
+        _unpinProductHelper(pinnedProductId);
+        Results.settings.animation.filter.active = prevAnimationState;
     }
 
     function startColumnWidthTracking() {
@@ -936,18 +936,15 @@
 
         // Do this only for the best price product
         if (position === 0) {
-
-            var benefitCodes = $.map(meerkat.modules.healthUtils.getSelectedBenefits(product.info.ProductType),
-                function (b) {
-                    return b.code;
-                });
-            var situation = meerkat.modules.healthUtils.getSelectedHealthSituation().name;
+            // todo this could just be replaced with a new method from benefitsModel
+            var benefitCodes = meerkat.modules.benefitsModel.getCodesForSelectedBenefits();
             var currentPHI = meerkat.modules.healthUtils.getPrimaryCurrentPHI();
             var specialOffer = meerkat.modules.healthUtils.getSpecialOffer(product);
             var excessesAndCoPayment = meerkat.modules.healthUtils.getExcessesAndCoPayment(product);
 
-            data["rank_healthMembership" + position] = meerkat.modules.healthSituation.getSituation();
-            data["rank_healthSituation" + position] = situation;
+            data["rank_healthMembership" + position] = meerkat.modules.healthSituation.getSituationAsText();
+            // This question is not in V4 at this time.
+            data["rank_healthSituation" + position] = "";
             data["rank_benefitCodes" + position] = benefitCodes.join(',');
             data["rank_coverType" + position] = product.info.ProductType;
             data["rank_primaryCurrentPHI" + position] = currentPHI;
@@ -1056,7 +1053,8 @@
         resultsStepIndex: resultsStepIndex,
         setSelectedBenefitsList: setSelectedBenefitsList,
         setCallCentreText: setCallCentreText,
-        resetCallCentreText: resetCallCentreText
+        resetCallCentreText: resetCallCentreText,
+        unpinProductFromFilterUpdate: unpinProductFromFilterUpdate
     });
 
 })(jQuery);

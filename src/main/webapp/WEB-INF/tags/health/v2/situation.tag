@@ -17,6 +17,7 @@
 	<form_v2:fieldset_columns sideHidden="true">
 
 		<jsp:attribute name="rightColumn">
+            <reward:campaign_tile_container />
 			<health_v2_content:sidebar />
 		</jsp:attribute>
 
@@ -244,7 +245,7 @@
 						<field_v2:checkbox
 								xpath="${pageSettings.getVerticalCode()}/contactDetails/optin"
 								value="Y"
-								className="validate"
+								className="validate row-content"
 								required="true"
 								label="${true}"
 								title="${termsAndConditions}"

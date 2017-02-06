@@ -42,7 +42,7 @@
             applyRebate: $('#health_healthCover_rebate'),
             rebateCheckbox: $('#health_healthCover_rebateCheckbox'),
             incomeSelectContainer: $('.income_container'),
-            lhcContainers: $('.health-cover,  .dateinput_container, #health_healthCover_primaryCover, .income_container .select'),
+            lhcContainers: $('.health-cover, [data-step="start"] .health-about-you .dateinput_container, [data-step="benefits"] .benefitsContainer .dateinput_container, #health_healthCover_primaryCover, .income_container .select'),
             dependentsSelect: $('#health_healthCover_dependants'),
             incomeSelect: $('#health_healthCover_income'),
             selectedRebateText: $('#selectedRebateText'),
@@ -65,6 +65,7 @@
 
             $elements.incomeSelectContainer.toggleClass('hidden', !isChecked);
             $elements.applyRebate.val(isChecked ? 'Y' : 'N');
+            meerkat.modules.healthDependants.toggleDependantsDefaultValue(isChecked);
         });
 
         $elements.editTier.off().on('click', function() {
@@ -83,11 +84,6 @@
                 _setRebate();
             }
 
-            // toggle dependants count if inEditMode
-            if (inEditMode) {
-                $elements.dependentsSelect.parent('.select').toggleClass('hidden', !meerkat.modules.healthDependants.situationEnablesDependants());
-            }
-
         });
 
         $elements.incomeSelect.on('change', function() {
@@ -99,7 +95,7 @@
         // on first load, select the dropdown value and set it as a text label
         var $elDropdownOption = $elements.incomeSelect.prop('selectedIndex') === 0 ? $elements.incomeSelect.find('option:eq(1)') : $elements.incomeSelect.find(':selected'),
             completeText = '',
-            dependantsText = 'including any adjustments for your dependants',
+            dependantsText = "including any adjustments for your dependants <br />(Based on an assumption of 2 dependents. EDIT to amend)",
             cover = meerkat.modules.healthChoices.returnCoverCode();
 
         if (cover !== '') {
@@ -122,13 +118,13 @@
 
         completeText += 'earning ' + $elDropdownOption.text();
 
-        if (meerkat.modules.healthTiers.shouldShowDependants()) {
+        if (meerkat.modules.healthDependants.situationEnablesDependants()) {
             completeText += ', ' + dependantsText;
         }
 
         _selectetedRebateLabelText = completeText;
 
-        $elements.selectedRebateText.text(completeText);
+        $elements.selectedRebateText.html(completeText);
 
         if ($elements.incomeSelect.prop('selectedIndex') === 0) {
             $elements.incomeSelect.prop('selectedIndex', 1);
@@ -176,8 +172,13 @@
     function toggleEdit(isEdit) {
         $elements.selectedRebateText.toggle(!isEdit);
         $elements.rebateLabel.toggle(!isEdit);
-        $elements.dependentsSelect.parent('.select').toggleClass('hidden', !isEdit || (isEdit && !meerkat.modules.healthDependants.situationEnablesDependants()));
         $elements.incomeSelect.parent('.select').toggleClass('hidden', !isEdit);
+
+        if (isEdit) {
+            meerkat.modules.healthDependants.toggleDependants();
+        } else {
+            meerkat.modules.healthDependants.hideDependants();
+        }
 
         if (!isEdit) {
             _updateRebateLabelText();

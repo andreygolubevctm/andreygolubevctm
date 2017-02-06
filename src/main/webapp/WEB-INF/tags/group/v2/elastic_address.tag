@@ -9,7 +9,14 @@
 <%@ attribute name="suburbAdditionalAttributes" required="false" rtexprvalue="true" description="Used for passing in additional attributes" %>
 <%@ attribute name="postCodeNameAdditionalAttributes" required="false" rtexprvalue="true" description="Used for passing in additional attributes" %>
 <%@ attribute name="postCodeAdditionalAttributes" required="false" rtexprvalue="true" description="Used for passing in additional attributes" %>
+<%@ attribute name="addRequiredAsterisk" required="false" rtexprvalue="true" description="Used for passing in additional attributes" %>
+
 <c:set var="isPostal" value="${type eq 'P'}"/>
+
+<c:if test="${addRequiredAsterisk eq true}">
+    <c:set var="requiredInputClass" value=" required_input " />
+</c:if>
+
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}"/>
@@ -65,7 +72,7 @@
     <c:if test="${not empty data[fullAddressFieldXpath]}">
         <go:setData dataVar="data" xpath="${fieldXpath}" value="${data[fullAddressFieldXpath]}"/>
     </c:if>
-    <form_v2:row fieldXpath="${fieldXpath}" label="Street Address" id="${autofilllessSearchXpath}_autofilllessSearchRow" addForAttr="false">
+    <form_v2:row fieldXpath="${fieldXpath}" label="Street Address" id="${autofilllessSearchXpath}_autofilllessSearchRow" addForAttr="false" className="${requiredInputClass}">
         <c:set var="placeholder" value="e.g. 5/20 Sample St"/>
         <field_v2:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-autofilllessSearch show-loading sessioncamexclude" title="the street address"
                          placeHolder="${placeholder}" required="false"
@@ -74,13 +81,13 @@
 
     <%-- POSTCODE --%>
     <c:set var="fieldXpath" value="${xpath}/nonStdPostCode"/>
-    <form_v2:row fieldXpath="${fieldXpath}" label="Postcode" id="${name}_postCode_suburb" className="${name}_nonStdFieldRow">
+    <form_v2:row fieldXpath="${fieldXpath}" label="Postcode" id="${name}_postCode_suburb" className="${requiredInputClass} ${name}_nonStdFieldRow">
         <field_v1:post_code xpath="${fieldXpath}" required="true" title="postcode" additionalAttributes="${postCodeNameAdditionalAttributes}"/>
     </form_v2:row>
 
     <%-- SUBURB DROPDOWN (populated from postcode) --%>
     <c:set var="fieldXpath" value="${xpath}/suburb"/>
-    <form_v2:row fieldXpath="${fieldXpath}" label="Suburb" className="${name}_nonStdFieldRow">
+    <form_v2:row fieldXpath="${fieldXpath}" label="Suburb" className="${requiredInputClass} ${name}_nonStdFieldRow">
         <c:choose>
             <c:when test="${not empty address.postCode or not empty address.nonStdPostCode}">
                 <div class="select">
@@ -126,10 +133,10 @@
 
     <%-- STREET NAME --%>
     <c:set var="fieldXpath" value="${xpath}/nonStdStreet"/>
-    <form_v2:row fieldXpath="${fieldXpath}" label="Street" className="${name}_nonStdFieldRow">
+    <form_v2:row fieldXpath="${fieldXpath}" label="Street" className="${requiredInputClass} ${name}_nonStdFieldRow">
         <c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Street" quoteChar="\"" /></c:set>
         <field_v2:input xpath="${fieldXpath}" title="the street" required="false" className="sessioncamexclude"
-                         additionalAttributes=" data-rule-validAddress='${name}' data-rule-validAddress='Please enter the residential street' ${analyticsAttr}"/>
+                         additionalAttributes=" data-rule-validAddress='${name}' data-rule-validAddress='Please enter the residential street' ${analyticsAttr}" "/>
     </form_v2:row>
 
     <%-- STREET NUMBER --%>
@@ -171,7 +178,7 @@
         <c:if test="${isPostal}">
             <c:set var="unableToFindCheckboxText" value="${unableToFindCheckboxText} or your address is a PO Box"/>
         </c:if>
-        
+
         <c:set var="analyticsAttr"><field_v1:analytics_attr analVal="No Address Match" quoteChar="\"" /></c:set>
         <field_v2:checkbox xpath="${fieldXpath}" value="Y" title="${unableToFindCheckboxText}" label="true" required="false" additionalLabelAttributes="${analyticsAttr}"/>
     </form_v2:row>

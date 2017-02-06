@@ -1,8 +1,9 @@
 (function ($, undefined) {
 
-    var meerkat = window.meerkat;
-
-    var $dependantsTemplateWrapper,
+    var meerkat = window.meerkat,
+        meerkatEvents = meerkat.modules.events,
+        moduleInitialised = false,
+        $dependantsTemplateWrapper,
         dependantTemplate,
         /**
          * The data that makes up a dependant.
@@ -55,7 +56,8 @@
             showApprenticeField: false
         },
         providerConfig,
-        maxDependantAge = 25;
+        maxDependantAge = 25,
+        $elements;
 
     function initHealthDependants() {
         $dependantsTemplateWrapper = $("#health-dependants-wrapper");
@@ -86,12 +88,67 @@
             }
         }
 
+
         renderDependants();
         applyEventListeners();
     }
 
+    function init() {
+        $(document).ready(function () {
+            $elements = {
+                dependants : $('select[name=health_healthCover_dependants]'),
+                selectedRebateText: $('#selectedRebateText'),
+                applyRebate: $('input[name=health_healthCover_rebateCheckbox]')
+            };
+
+            aboutYouApplyEventListeners();
+            toggleDependantsDefaultValue(situationEnablesDependants());
+            moduleInitialised = true;
+        });
+    }
+
     function getDefaultDependant() {
         return _.extend({},defaultDependant);
+    }
+
+    function aboutYouApplyEventListeners() {
+
+        // toggle the dependants field
+        meerkat.messaging.subscribe(meerkatEvents.healthSituation.SITUATION_CHANGED, function toggleZDependants(selected) {
+            toggleDependants();
+        });
+    }
+
+    function toggleDependantsDefaultValueCallback(shouldSetDefaultDependants) {
+        if (shouldSetDefaultDependants) {
+            // default to 2 dependants
+            $elements.dependants.val(2).attr('data-attach', true);
+        } else {
+            $elements.dependants.val('').removeAttr('data-attach');
+        }
+    }
+
+    function toggleDependantsDefaultValue(shouldSetDefaultDependants) {
+        if(moduleInitialised) {
+            toggleDependantsDefaultValueCallback(shouldSetDefaultDependants);
+        } else {
+            _.defer(function(){
+                toggleDependantsDefaultValueCallback(shouldSetDefaultDependants);
+            });
+        }
+    }
+
+    function toggleDependants() {
+        if (!_.isUndefined($elements) && !$elements.selectedRebateText.is(':visible') && $elements.applyRebate.is(':checked')) {
+            var showDependants = situationEnablesDependants();
+            $elements.dependants.closest('.select').toggleClass('hidden', !showDependants);
+        }
+    }
+
+    function hideDependants() {
+        if (!_.isUndefined($elements)) {
+            $elements.dependants.closest('.select').addClass('hidden');
+        }
     }
 
     /**
@@ -152,7 +209,7 @@
 
         initHealthDependants();
 
-        var dependantCountSpecified = $('#health_healthCover_dependants').val() || 1;
+        var dependantCountSpecified = $elements.dependants.val() || 1;
         var hasChildren = situationEnablesDependants();
         $('#health_application_dependants-selection').toggle(hasChildren);
         $('#health_application_dependants_threshold').toggle(dependantCountSpecified <= 0);
@@ -342,7 +399,7 @@
         if (hasChosenToNotApplyRebate) {
             $applyPageIncomeTierMenu.slideUp();
         } else if (depCount > 0) {
-            var $depCount = $('#health_healthCover_dependants'),
+            var $depCount = $elements.dependants,
                 originalDepCount = $depCount.val();
             // Refresh the dependants on the situation step. Only reset it to a smaller number if
             $depCount.val(depCount).trigger('change');
@@ -531,15 +588,19 @@
     }
 
     meerkat.modules.register("healthDependants", {
+        init: init,
         initHealthDependants: initHealthDependants,
         resetConfig: resetConfig,
         getConfig: getConfig,
         updateConfig: updateConfig,
         getMaxAge: getMaxAge,
         setMaxAge: setMaxAge,
+        hideDependants: hideDependants,
         updateDependantConfiguration: updateDependantConfiguration,
         getEducationalInstitutionsOptions: getEducationalInstitutionsOptions,
-        situationEnablesDependants: situationEnablesDependants
+        situationEnablesDependants: situationEnablesDependants,
+        toggleDependants: toggleDependants,
+        toggleDependantsDefaultValue: toggleDependantsDefaultValue
     });
 
 })(jQuery);

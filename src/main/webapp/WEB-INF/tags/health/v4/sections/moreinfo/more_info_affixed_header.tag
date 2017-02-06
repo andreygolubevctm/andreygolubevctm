@@ -3,7 +3,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <core_v1:js_template id="moreInfoAffixedHeaderTemplate">
 	{{ var priceTemplate = meerkat.modules.templateCache.getTemplate($("#price-template")); }}
-	{{ obj.showAltPremium = false; obj.renderedPriceTemplate =  priceTemplate(obj); }}
+	{{ obj.showAltPremium = false; obj.renderedPriceTemplate = priceTemplate(obj); }}
 
     <div class="col-xs-2">
         <div class="companyLogo {{= info.provider }}"></div>

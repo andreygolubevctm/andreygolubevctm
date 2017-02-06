@@ -128,7 +128,7 @@
 
             if ($policySummaryDualPricing.length > 0) {
                 product.showAltPremium = true;
-                htmlString = htmlTemplate(product);
+                htmlString = priceHtmlTemplate(product);
                 $policySummaryDualPricing.find('.altPremium').html(htmlString);
             }
         }
@@ -164,6 +164,7 @@
             $policySummaryDetailsComponents.find(".copayment").parent().addClass('hidden');
         }
 
+        $policySummaryDetailsComponents.find('.open-more-info').attr('data-productId',product.productId).attr('data-available', product.available);
 //		This is a deactivated split test as it is likely to be run again in the future
 //		if (meerkat.modules.splitTest.isActive(2)) {
 //			$policySummaryDetailsComponents.find(".companyLogo").attr('class', 'companyLogo hidden-sm'); //reset class
