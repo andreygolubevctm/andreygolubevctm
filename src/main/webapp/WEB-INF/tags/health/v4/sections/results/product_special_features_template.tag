@@ -4,7 +4,8 @@
 <core_v1:js_template id="results-product-special-features-template">
     {{ var module = meerkat.modules.healthResultsTemplate; }}
     {{ var structure = module.parseSpecialFeatures(obj); var content = module.getSpecialFeaturesContent(obj, structure, 2); }}
-    {{ var featureCount = module.getAvailableFeatureCount(structure); }}
+    <%-- TODO: once we figured out how to display more than 2 icons, change this back to normal featrueCount--%>
+    {{ var featureCount = module.getAvailableFeatureCount(structure) >= 2 ? 2 : 1; }}
     <div class="product-special-features features-{{= featureCount }} content isMultiRow" data-featureId="888888">
         {{= content }}
         <div class="clearfix"></div>
