@@ -386,10 +386,11 @@
         meerkat.modules.healthResults.setSelectedProduct(product, true);
 	}
 
-	function getPaymentMethodNode(){
-		var nodeName = '';
+	function getPaymentMethodNode(method){
+		var nodeName = '',
+			method = method || getSelectedPaymentMethod();
 
-		switch (getSelectedPaymentMethod()) {
+		switch (method) {
 			case 'cc':
 				var label = $paymentRadioGroup.find('label.active').text().trim();
 
