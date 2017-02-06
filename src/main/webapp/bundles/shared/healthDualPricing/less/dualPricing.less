@@ -415,6 +415,35 @@
       .downArrow();
     }
 
+    .current-pricing {
+      .quarterly,
+      .halfyearly {
+        .frequencyAmount {
+          @media (@md) {
+            line-height: 38px;
+          }
+
+          .frequencyTitle {
+            top: -8px;
+            left: 0;
+          }
+        }
+      }
+
+      @media (@md-only) {
+        .annually {
+          .frequencyAmount {
+            line-height: 38px;
+
+            .frequencyTitle {
+              top: -8px;
+              left: 0;
+            }
+          }
+        }
+      }
+    }
+
     .april-pricing {
       p {
         margin-bottom: 0;
@@ -436,6 +465,7 @@
 
         .frequencyTitle {
           font-size: 12px;
+          top: 11px;
           left: -18px;
 
           @media (@sm-only) {
