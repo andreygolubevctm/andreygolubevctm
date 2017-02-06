@@ -67,7 +67,9 @@
 	</form_v2:row>
 
 	<c:set var="fieldXpath" value="${xpath}/whenMovedIn/month" />
-	<form_v2:row fieldXpath="${fieldXpath}" label="Month you move into the home?" helpId="504" className="whenMovedInMonth">
+	<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Move in Month - Tool Tip" quoteChar="\"" /></c:set>
+	<form_v2:row fieldXpath="${fieldXpath}" label="Month you move into the home?" helpId="504"
+				 className="whenMovedInMonth" tooltipAttributes="${analyticsAttr}">
 		<field_v2:import_select xpath="${fieldXpath}"
 			required="true"
 			omitPleaseChoose="Y"
