@@ -89,6 +89,8 @@
         <health_v2_layout:slide_confirmation />
         <health_v3:brochure_template/>
         <health_v3:confirmation_fund_details_template />
+        <health_v1:logo_price_template />
+        <health_v1:dual_pricing_templates />
         <script class="crud-modal-template" type="text/html">
             <reward:redemption_form />
         </script>
