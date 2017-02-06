@@ -15,7 +15,7 @@
         };
 
     function initDualPricing() {
-        if (meerkat.site.healthAlternatePricingActive !== true) {
+        if (meerkat.site.isDualPricingActive !== true) {
             return false;
         }
 

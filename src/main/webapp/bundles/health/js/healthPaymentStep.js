@@ -335,7 +335,7 @@
 					// TODO work out this: //Results._refreshSimplesTooltipContent($('#update-premium .premium'));
 				}
 
-				if (typeof meerkat.site.healthAlternatePricingActive !== 'undefined' && meerkat.site.healthAlternatePricingActive === true) {
+				if (typeof meerkat.site.isDualPricingActive !== 'undefined' && meerkat.site.isDualPricingActive === true) {
 					meerkat.modules.healthDualPricing.renderTemplate('.policySummary.dualPricing', data, false, true);
 				}
 
@@ -379,7 +379,7 @@
 		product.premium = product.paymentTypePremiums[product.paymentNode];
 		product._selectedFrequency = getSelectedFrequency();
 
-		if (typeof meerkat.site.healthAlternatePricingActive !== 'undefined' && meerkat.site.healthAlternatePricingActive === true) {
+		if (typeof meerkat.site.isDualPricingActive !== 'undefined' && meerkat.site.isDualPricingActive === true) {
 			product.altPremium = product.paymentTypeAltPremiums[product.paymentNode];
 		}
 
