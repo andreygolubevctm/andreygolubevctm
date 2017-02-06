@@ -85,8 +85,8 @@
                                         <c:set var="analyticsLabelAttr"><field_v1:analytics_attr analVal="benefit ${benefitGroup}" quoteChar="\"" /></c:set>
                                         <c:set var="analyticsHelpAttr"><field_v1:analytics_attr analVal="qtip ${item.getShortlistKey()}" quoteChar="\"" /></c:set>
                                         <field_v2:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${item.getShortlistKey()}" value="Y" required="false" label="true"
-                                                           title="${item.getName()}" helpId="${item.getHelpId()}" errorMsg="Please tick" additionalLabelAttributes="${analyticsLabelAttr}"
-                                                           additionalHelpAttributes="${analyticsHelpAttr}" />
+                                        title="${item.getName()}" helpId="${item.getHelpId()}" errorMsg="Please tick" additionalLabelAttributes="${analyticsLabelAttr}"
+                                        additionalHelpAttributes="${analyticsHelpAttr}" />
                                     </c:otherwise>
                                 </c:choose>
 
@@ -114,16 +114,16 @@
                                                     <c:set var="benefitLabel">
 													<span class="benefitContent">
 														<div class="benefitTitle needsclick">${selectedValue.getName()}</div>
-														<span class="benefitSummary needsclick">${benefitsContentBlurbs.getSupplementaryValueByKey(selectedValue.getId())} <a href="javascript:;"
-                                                                                                                                                                   class="help_icon floatLeft"
-                                                                                                                                                                   data-content="helpid:${selectedValue.getHelpId()}"
-                                                                                                                                                                   data-toggle="popover">more</a></span>
+                                                            <span class="benefitSummary needsclick">${benefitsContentBlurbs.getSupplementaryValueByKey(selectedValue.getId())} <a href="javascript:;"
+                                                            class="help_icon floatLeft"
+                                                            data-content="helpid:${selectedValue.getHelpId()}"
+                                                            data-toggle="popover">more</a></span>
 													</span>
                                                     </c:set>
                                                     <field_v2:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${selectedValue.getShortlistKey()}" value="Y" required="false"
-                                                                       label="true" title="${benefitLabel}" errorMsg="Please tick"
-                                                                       customAttribute=" data-attach=true data-benefit-id='${selectedValue.getId()}' data-benefit-code='${selectedValue.getShortlistKey()}' " additionalLabelAttributes="${analyticsLabelAttr}"
-                                                                       additionalHelpAttributes="${analyticsHelpAttr}" />
+                                                    label="true" title="${benefitLabel}" errorMsg="Please tick"
+                                                    customAttribute=" data-attach=true data-benefit-id='${selectedValue.getId()}' data-benefit-code='${selectedValue.getShortlistKey()}' " additionalLabelAttributes="${analyticsLabelAttr}"
+                                                    additionalHelpAttributes="${analyticsHelpAttr}" />
                                                 </div>
                                             </c:if>
                                         </c:forEach>
@@ -134,7 +134,24 @@
                             </div>
                         </div>
                         <div class="tab-pane limited-pane">
-                                ${benefitsContent.getSupplementaryValueByKey('limitedText')}
+                            <div class="Extras-wrapper">
+                                <div class="children healthBenefits">
+                                    <div class="hasIcons">
+                                        <div class="categoriesCell short-list-item category expandable collapsed HLTicon-limited_cover LimitedCover_container">
+                                            <div class=" checkbox">
+                                                <input type="checkbox" name="health_benefits_benefitsExtras_LimitedCover" id="health_benefits_benefitsExtras_LimitedCover" class="checkbox-custom checkbox" value="Y" checked="checked" data-attach="true" disabled="disabled">
+                                                <label for="health_benefits_benefitsExtras_LimitedCover" data-analytics="benefit extras">
+                                                    <span class="benefitContent">
+                                                        <div class="benefitTitle needsclick">Limited Hospital Cover</div>
+                                                        <span class="benefitSummary needsclick">accidental cover, avoid paying Medicare Levy Surcharge</span>
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            ${benefitsContent.getSupplementaryValueByKey('limitedText')}
                         </div>
                     </div>
                     </c:if>
