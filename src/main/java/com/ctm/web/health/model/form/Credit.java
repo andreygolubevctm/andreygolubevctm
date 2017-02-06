@@ -45,7 +45,6 @@ public class Credit {
     }
 
     public void setNumber(String number) {
-        System.out.println("### BOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
         this.number = number.replaceAll("\\s","");
     }
 
