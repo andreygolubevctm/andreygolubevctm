@@ -28,12 +28,17 @@
                 coverType: $('input[name=health_situation_coverType]'),
                 hiddenHospitalCover: $('input[name="health_benefits_benefitsExtras_Hospital"]'),
                 hiddenExtraCover: $('input[name="health_benefits_benefitsExtras_GeneralHealth"]'),
-                accidentOnlyCover: $('input[name=health_situation_accidentOnlyCover]')
+                accidentOnlyCover: $('input[name=health_situation_accidentOnlyCover]'),
+                comprehensiveBenefitTab: $('#comprehensiveBenefitTab')
             };
 
             $('#tabs').find('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
                 setHospitalType($(this).data('benefit-cover-type'));
                 $('.hospital-content-toggle').toggle(getHospitalType() != 'limited');
+            });
+
+            $('label[for="health_benefits_benefitsExtras_LimitedCover"]').on('click', function () {
+                $elements.comprehensiveBenefitTab.find('a').trigger('click');
             });
 
             // was in step onInitialise, didnt work there for results.
@@ -132,7 +137,8 @@
         // toggle the quick select data in the hospital container
         $elements.hospital.find('.nav-tabs a').on('click', function toggleQuickSelect() {
             var target = $(this).attr('href');
-
+            // Check the input so it remains a green tick.
+            $('#health_benefits_benefitsExtras_LimitedCover').prop('checked', true);
             $elements.hospital.find($elements.quickSelectContainer).toggleClass('hidden', target === '.limited-pane');
             _hospitalType = target === '.limited-pane' ? 'limited' : 'customise';
         });

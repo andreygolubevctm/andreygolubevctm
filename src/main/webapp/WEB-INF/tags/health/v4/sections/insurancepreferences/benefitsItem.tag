@@ -57,7 +57,7 @@
                 </div>
                 <div id="tabs" class="benefitsTab">
                     <ul class="nav nav-tabs tab-count-2">
-                        <li class="active"><a data-toggle="tab" href=".comprehensive-pane" data-benefit-cover-type="customise" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />><h2 class="ignore" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />>Comprehensive</h2></a></li>
+                        <li id="comprehensiveBenefitTab" class="active"><a data-toggle="tab" href=".comprehensive-pane" data-benefit-cover-type="customise" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />><h2 class="ignore" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />>Comprehensive</h2></a></li>
                         <li><a data-toggle="tab" href=".limited-pane" data-benefit-cover-type="limited" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />><h2 class="ignore" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />>Limited Cover</h2></a></li>
                     </ul>
                     <div class="tab-content">
@@ -138,8 +138,8 @@
                                 <div class="children healthBenefits">
                                     <div class="hasIcons">
                                         <div class="categoriesCell short-list-item category expandable collapsed HLTicon-limited_cover LimitedCover_container">
-                                            <div class=" checkbox">
-                                                <input type="checkbox" name="health_benefits_benefitsExtras_LimitedCover" id="health_benefits_benefitsExtras_LimitedCover" class="checkbox-custom checkbox" value="Y" checked="checked" data-attach="true" disabled="disabled">
+                                            <div class="checkbox">
+                                                <input type="checkbox" name="health_benefits_benefitsExtras_LimitedCover" id="health_benefits_benefitsExtras_LimitedCover" class="checkbox-custom checkbox" value="Y" checked="checked" data-attach="true">
                                                 <label for="health_benefits_benefitsExtras_LimitedCover" data-analytics="benefit extras">
                                                     <span class="benefitContent">
                                                         <div class="benefitTitle needsclick">Limited Hospital Cover</div>
