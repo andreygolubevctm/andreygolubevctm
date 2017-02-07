@@ -39,7 +39,7 @@
 	{{ obj.displayLogo = false; }} <%-- Turns off the logo from the template --%>
 
 	<%-- If dual pricing is enabled, update the template --%>
-	{{ if (meerkat.site.healthAlternatePricingActive === true && meerkat.site.isCallCentreUser === true) { }}
+	{{ if (meerkat.site.healthAlternatePricingActive === true) { }}
 	    {{ obj.renderedDualPricing = meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false); }}
 	{{ } else { }}
 		{{ var logoTemplate = meerkat.modules.templateCache.getTemplate($("#logo-template")); }}
@@ -66,7 +66,7 @@
 	<div data-product-type="{{= info.ProductType }}" class="displayNone more-info-content ${variantClassName}">
 
 		<div class="fieldset-card row price-card <c:if test="${healthAlternatePricingActive eq true}">hasDualPricing</c:if>">
-			<health_v4_moreinfo:more_info_dual_pricing_header />
+				<health_v4_moreinfo:more_info_dual_pricing_header />
 			<div class="moreInfoTopLeftColumn Hospital_container">
 				<health_v4_moreinfo:more_info_product_summary />
                 <health_v4_moreinfo:more_info_product_extra_info />

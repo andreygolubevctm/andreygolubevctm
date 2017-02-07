@@ -190,7 +190,7 @@
   }
 }
 
-.moreInfoVisible[data-step="results"] {
+.moreInfoVisible[data-step="results"] .more-info-content {
   .hasDualPricing {
     h1.productName {
       padding-top: 20px;
@@ -203,18 +203,54 @@
       .current-pricing {
         border-radius: 10px;
         transition: all 0.65s ease;
+        padding-bottom: 10px;
       }
 
       .current-pricing-done {
-        background: lighten(@theme-accent-1, 15%);
+
+        .row {
+          display: flex;
+
+          .btn-container {
+            display: flex;
+            justify-content: center;
+            align-self: center;
+
+            a {
+              width: 100%;
+            }
+          }
+        }
+
+        background: lighten(@theme-accent-1, 35%);
+
+        h3,
+        .applyBy,
+        .premiumsRising,
+        .lhcText {
+          color: @theme-accent-1;
+        }
+
+
+        .frequencyAmount,
+        .cents{
+          color: @theme-dark;
+        }
       }
 
       // halve all the font sizes for april pricing
       .april-pricing-done {
-        background: lighten(@theme-accent-3, 25%);
+        background: lighten(@theme-accent-3, 35%);
 
+        *,
+        .premiumsRising,
+        .lhcText,
         .frequencyAmount {
           color: @theme-accent-3;
+        }
+
+        .dual-pricing-learn-more {
+          display: none;
         }
       }
 
