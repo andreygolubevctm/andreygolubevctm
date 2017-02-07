@@ -34,15 +34,15 @@
 				<div class="globalMap map_${imageName} toy${toyType}"></div>
 				<span class="mobilePostcardName">${firstName}</span>
 				<div class="mobileShareLinks">
-					<div class="facebookShare shareButton" url_location="https://www.comparethemarket.com.au/meerkat_toys/share/?location=${imageName}${toyType}"><img src="" data-defer-src="assets/brand/ctm/images/zeus/share_facebook.png" alt="Share on Facebook"></div>
-					<a class="twitterShare shareButton" href="https://twitter.com/intent/tweet?text=My%20%23Meerkattoy%20is%20on%20his%20way.%20Click%20your%20internet%20mouse%20below%20to%20find%20how%20you%20can%20get%20yours!&url=https://www.comparethemarket.com.au/meerkat_toys/share/?location=${imageName}${toyType}"><img src="" data-defer-src="assets/brand/ctm/images/zeus/share_twitter.png" alt="Share on Twitter"></a>
+					<div class="facebookShare shareButton" url_location="https://www.comparethemarket.com.au/meerkat-toys/share/?location=${imageName}${toyType}"><img src="" data-defer-src="assets/brand/ctm/images/zeus/share_facebook.png" alt="Share on Facebook"></div>
+					<a class="twitterShare shareButton" href="https://twitter.com/intent/tweet?text=My%20%23Meerkattoy%20is%20on%20his%20way.%20Click%20your%20internet%20mouse%20below%20to%20find%20how%20you%20can%20get%20yours!&url=https://www.comparethemarket.com.au/meerkat-toys/share/?location=${imageName}${toyType}"><img src="" data-defer-src="assets/brand/ctm/images/zeus/share_twitter.png" alt="Share on Twitter"></a>
 				</div>
 				<div class="postcardContainer">
 					<img class="postcard" src="" data-defer-src="assets/brand/ctm/images/zeus/postcard_${imageName}${toyType}.png" alt="Aleksandr Russian postcard">
 					<span class="postcardName">${firstName}</span>
 					<div class="shareLinks">
-						<div class="facebookShare shareButton" url_location="https://www.comparethemarket.com.au/meerkat_toys/share/?location=${imageName}${toyType}"><img src="" data-defer-src="assets/brand/ctm/images/zeus/share_facebook.png" alt="Share on Facebook"></div>
-						<a class="twitterShare shareButton" href="https://twitter.com/intent/tweet?text=My%20%23Meerkattoy%20is%20on%20his%20way.%20Click%20your%20internet%20mouse%20below%20to%20find%20how%20you%20can%20get%20yours!&url=https://www.comparethemarket.com.au/meerkat_toys/share/?location=${imageName}${toyType}"><img src="" data-defer-src="assets/brand/ctm/images/zeus/share_twitter.png" alt="Share on Twitter"></a>
+						<div class="facebookShare shareButton" url_location="https://www.comparethemarket.com.au/meerkat-toys/share/?location=${imageName}${toyType}"><img src="" data-defer-src="assets/brand/ctm/images/zeus/share_facebook.png" alt="Share on Facebook"></div>
+						<a class="twitterShare shareButton" href="https://twitter.com/intent/tweet?text=My%20%23Meerkattoy%20is%20on%20his%20way.%20Click%20your%20internet%20mouse%20below%20to%20find%20how%20you%20can%20get%20yours!&url=https://www.comparethemarket.com.au/meerkat-toys/share/?location=${imageName}${toyType}"><img src="" data-defer-src="assets/brand/ctm/images/zeus/share_twitter.png" alt="Share on Twitter"></a>
 					</div>
 				</div>
 			</div>
