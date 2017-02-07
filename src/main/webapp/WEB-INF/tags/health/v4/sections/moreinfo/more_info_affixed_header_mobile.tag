@@ -11,7 +11,7 @@
 			<div class="col-xs-6 text-center">
 				{{= renderedPriceTemplate }}
 			</div>
-			<div class="col-xs-12">
+			<div class="col-xs-12 productTitleText">
 				<h5 class="noTopMargin productName text-center">{{= info.productTitle }}</h5>
 			</div>
 			<div class="col-xs-12 text-center printableBrochuresLink">

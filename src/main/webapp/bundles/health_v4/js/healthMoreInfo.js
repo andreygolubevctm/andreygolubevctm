@@ -298,6 +298,7 @@
 
             $elements.modalHeader.find('.lhcText').toggleClass('hidden', $elements.moreInfoContainer.offset().top < calculatedHeight);
             $elements.modalHeader.find('.printableBrochuresLink').toggleClass('hidden', $elements.moreInfoContainer.offset().top < calculatedHeight);
+            $elements.modalHeader.find('.productTitleText').toggleClass('hidden', $elements.moreInfoContainer.offset().top < calculatedHeight);
             if(moreInfoDialogId && meerkat.modules.deviceMediaState.get() === 'xs') {
                 meerkat.modules.dialogs.resizeDialog(moreInfoDialogId);
             }
