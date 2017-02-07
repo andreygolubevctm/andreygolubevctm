@@ -172,6 +172,7 @@
                                 <option value="ComplaintOrGoodWill">Complaint/Good will gesture</option>
                                 <option value="FailedJoin">Failed join</option>
                                 <option value="OrderNotReceived">Order not received</option>
+                                <option value="CustomerDeclined">Customer Declined</option>
                                 <option value="ReturnedToSender">ReturnedToSender</option>
                                 <option value="DamagedGoods">Damaged goods</option>
                             </select>
