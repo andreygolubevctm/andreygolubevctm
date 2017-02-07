@@ -156,10 +156,16 @@
      * @param ft
      * @returns {*}
      */
-    function buildDisplayValue(pathValue, ft) {
+    function buildDisplayValue(pathValue, ft, obj) {
         var displayValue = Features.parseFeatureValue(pathValue, true);
-        if (displayValue) {
-            return getTitleBefore(ft) + '<strong>' + displayValue + '</strong> ' + _getExtraText(ft) + getTitleAfter(ft) + _getHelpTooltip(ft);
+        if(!_.isEmpty(displayValue)) {
+            displayValue = getNormalCopy(displayValue);
+        }
+        if(_.has(ft,'className') && !_.isEmpty(ft.className) && ft.className.search(/containsSubAndServiceLimits/) >= 0) {
+            displayValue = getLimitsCopy(displayValue,ft,obj);
+        }
+        if(!_.isEmpty(displayValue)) {
+            return getTitleBefore(ft) + displayValue + _getExtraText(ft) + getTitleAfter(ft) + _getHelpTooltip(ft);
         }
         return ft.safeName + ": <strong>None</strong>";
     }
@@ -198,7 +204,7 @@
             }
             ft.iconClass = _getIconClass(ft);
         } else if (ft.type == 'feature') {
-            ft.displayValue = buildDisplayValue(ft.pathValue, ft);
+            ft.displayValue = buildDisplayValue(ft.pathValue, ft, obj);
         }
 
         // For sub-category feature detail
@@ -220,7 +226,7 @@
      */
     function getExcessChildDisplayValue(obj, ft) {
         var pathValue = _getPathValue(obj, ft);
-        var displayValue = buildDisplayValue(pathValue, ft);
+        var displayValue = buildDisplayValue(pathValue, ft, obj);
         if (displayValue == "-") {
             return getTitleBefore(ft) + " None";
         }

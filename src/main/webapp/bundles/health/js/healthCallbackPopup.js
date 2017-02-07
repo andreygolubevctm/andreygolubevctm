@@ -10,7 +10,7 @@
 		hasDisplayedTimedCallBack = false;
 			
 	function init() {
-		if (meerkat.site.callbackPopup.enabled === true) {
+		if (meerkat.site.callbackPopup.enabled === true && meerkat.site.pageAction !== "confirmation") {
 
 			isMobile = meerkat.modules.performanceProfiling.isMobile();
 			var navigationId = meerkat.modules.address.getWindowHash().split("/")[0];

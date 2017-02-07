@@ -1,13 +1,18 @@
 /**
- * CRUD interface handler for creating administration pages in Simples 
- * 
- * For implementation notes:
- * http://confluence:8090/display/CM/Creating+Simples+Admin+Interfaces
+ * CRUD interface handler for creating CRUD pages
+ *
  */
 ;(function($, undefined){
 	
 	var meerkat = window.meerkat,
 		log = meerkat.logging.info;
+
+    var events = {
+            crud: {
+                CRUD_MODAL_OPENED: 'CRUD_MODAL_OPENED'
+            }
+        },
+        moduleEvents = events.crud;
 	
 	var loadingOverlayHTML = [
 			"<div id='crud-loading-overlay'>",
@@ -21,10 +26,10 @@
 		],
 		$loadingOverlay,
 		blurElements = "#page, #dynamic_dom";
-	var dataSetModule;
+	var crudModel;
 	
 	function init() {
-		dataSetModule = meerkat.modules.adminDataSet;
+        crudModel = meerkat.modules.crudModel;
 
 		$loadingOverlay = $(loadingOverlayHTML.join(""))
 			.appendTo("body");
@@ -47,7 +52,7 @@
 	
 	function dataCRUD(settings) {
 		var that = this;
-		this.dataSet = new dataSetModule.dataSet();
+		this.dataSet = new crudModel.dataSet();
 		this.modalId = "";
 		this.models = {};
 		
@@ -61,11 +66,11 @@
 			this.renderResults = function() {
 				var results = that.dataSet.get(),
 					resultsHTML = "";
-			
+
 				for(var i = 0; i < results.length; i++) {
 					resultsHTML += results[i].html;
 				}
-				
+
 				$(".sortable-results-table")
 					.html(resultsHTML)
 					.closest(".row")
@@ -115,26 +120,37 @@
 					var $row = $(this).closest(".sortable-results-row");
 					that.destroy($row);
 				}
-			});
+			})
+            .on("click", ".crud-cancel-entry", function() {
+                var doCancel = confirm("Do you want to cancel the record?");
+
+                if(doCancel) {
+                    var $row = $(this).closest(".sortable-results-row");
+                    that.cancel($row);
+                }
+            });
 	}
 	
 	/**
 	 * Opens a modal for creating or editing a record
 	 * @param $targetRow
-	 * @param isNew bool Forces new record to be written if true
+	 * @param isClone bool Forces new record to be written if true
 	 */
 	dataCRUD.prototype.openModal = function($targetRow, isClone) {
 		isClone = isClone || false;
 		
 		var that = this,
 			m,
-			modalHTML;
+			modalHTML,
+            searchId;
 
 		if($targetRow) {
-			var searchId = $targetRow.data("id");
-			m = this.dataSet.get(searchId).data;
+            searchId = $targetRow.data("id");
+            m = this.dataSet.get(searchId).data;
+        } else if (_.isFunction(this.models.db)) {
+		    m = new crudModel.dbModel(this.models.db());
 		} else {
-			m = new dataSetModule.dbModel(this.models.db);
+			m = new crudModel.dbModel(this.models.db);
 		}
 
 		if(isClone)
@@ -149,9 +165,9 @@
 		this.modalId = meerkat.modules.dialogs.show({
 			htmlContent: modalHTML
 		});
-		
+
 		// Initialize the text editors
-		var $textAreas = $("#" + this.modalId + " textarea.form-control");
+		var $textAreas = $("#" + this.modalId + " textarea.form-control.editor");
 		if($textAreas.length) {
 			$textAreas.trumbowyg({
 				fullscreenable: false,
@@ -160,25 +176,37 @@
 				btns: ["strong", "em", "underline", "|", "unorderedList", "orderedList", "|", "link"]
 			});
 		}
-		
-		$(document).on("click", "#" + that.modalId + " .crud-save-entry", function() {
-			var $modal = $("#" + that.modalId),
-				$inputs = $modal.find("input, textarea, select"),
-				data = {};
-			
-			for(var i = 0; i < $inputs.length; i++) {
-				var $input = $($inputs[i]);
-				data[$input.attr("name")] = $input.val();
-			}
-			
-			// If we are cloning, don't pass the target row so that we can force a new
-			// record instead of an update
-			if(isClone)
-				that.save(data);
-			else
-				that.save(data, $targetRow);
-		});
+
+        $(document).on("click", "#" + that.modalId + " .crud-save-entry", function() {
+            var $modal = $("#" + that.modalId),
+                data = that.getSaveRequestData($modal, searchId);
+
+            // If we are cloning, don't pass the target row so that we can force a new
+            // record instead of an update
+            if(isClone)
+                that.save(data);
+            else
+                that.save(data, $targetRow);
+        });
+
+        meerkat.messaging.publish(moduleEvents.CRUD_MODAL_OPENED, { modalId: this.modalId });
 	};
+
+    /**
+     * Default request data structure when saving a record,
+     * override the method if you have different request model
+     */
+    dataCRUD.prototype.getSaveRequestData = function ($modal) {
+        var $inputs = $modal.find("input, textarea, select"),
+            data = {};
+
+        for(var i = 0; i < $inputs.length; i++) {
+            var $input = $($inputs[i]);
+            data[$input.attr("name")] = $input.val();
+        }
+
+        return data;
+    };
 	
 	/**
 	 * Forces the results to render
@@ -197,7 +225,7 @@
 	
 	/**
 	 * 
-	 * @returns {dataSetModule.newDataSet}
+	 * @returns {crudModel.newDataSet}
 	 */
 	dataCRUD.prototype.dataSet = function() {
 		return this.dataSet;
@@ -220,7 +248,7 @@
 				if(response.length) {
 					for (var i = 0; i < response.length; i++) {
 						var datum = response[i],
-							obj = new dataSetModule.datumModel(that.primaryKey, that.models.datum, datum, that.views.row);
+							obj = new crudModel.datumModel(that.primaryKey, that.models.datum, datum, that.views.row);
 						that.dataSet.push(obj);
 					}
 				}
@@ -241,8 +269,8 @@
 			onSuccess = function(response) {
 				if(typeof response === "string")
 					response = JSON.parse(response);
-				
-				var responseObject = new dataSetModule.datumModel(that.primaryKey, that.models.datum, response, that.views.row);
+
+				var responseObject = new crudModel.datumModel(that.primaryKey, that.models.datum, response, that.views.row);
 		
 				if($targetRow) {
 					var index = that.dataSet.getIndex(responseObject.id);
@@ -322,11 +350,18 @@
 
 		return this.promise("delete", data, onSuccess);
 	};
+    /**
+     * Placeholder for cancel a record, currently only used for reward
+     * @param $row
+     */
+	dataCRUD.prototype.cancel = function ($row) {
+
+    };
 	
 	/**
 	 * Returns an AJAX promise via the comms module and utilises a modified error handler.
 	 */
-	dataCRUD.prototype.promise = function(action, data, onSuccess, method) {
+	dataCRUD.prototype.promise = function(action, data, onSuccess, method, forceJson) {
 		method = method || "post";
 		
 		var finalURL = this.baseURL + "/" + action + ".json";
@@ -335,13 +370,14 @@
 
 		switch(action) {
 			case "getAllRecords":
+            case "find":
 				loadingText = "Fetching Records";
 				break;
 			case "create":
 				loadingText = "Creating Record";
 				break;
 			case "update":
-				loadingText = "Updating Record";
+				loadingText = "Submitting";
 				break;
 			case "delete":
 				loadingText = "Deleting Record";
@@ -352,27 +388,34 @@
 
 		_showLoading(loadingText);
 
-		return meerkat.modules.comms[method]({
-			url: finalURL,
-			data: data,
-			errorLevel: "warning",
-			onSuccess: function(data, textStatus, jqXHR) {
-				if(typeof data === "string" && data !== "success")
-					data = JSON.parse(data);
+		var ajaxSettings = {
+            url: finalURL,
+            data: data,
+            errorLevel: "warning",
+            onSuccess: function(data, textStatus, jqXHR) {
+                if(typeof data === "string" && data !== "success")
+                    data = JSON.parse(data);
 
-				if(data && !data.hasOwnProperty("error")) {
-					if(onSuccess)
-						onSuccess(data);
-				} else {
-					var error = (typeof data !== "undefined" && data !== null && typeof data.error !== "undefined") ? data.error : [];
-					_handleErrorObject(error);
-				}
-			},
-			onComplete: function() {
-				_hideLoading();
-			},
-			onErrorDefaultHandling: _handleAJAXError
-		});
+                if(data && !data.hasOwnProperty("error")) {
+                    if(onSuccess)
+                        onSuccess(data);
+                } else {
+                    var error = (typeof data !== "undefined" && data !== null && typeof data.error !== "undefined") ? data.error : [];
+                    _handleErrorObject(error);
+                }
+            },
+            onComplete: function() {
+                _hideLoading();
+            },
+            onErrorDefaultHandling: _handleAJAXError
+        };
+
+		if(forceJson === true) {
+		    ajaxSettings.contentType = 'application/json; charset=utf-8';
+            ajaxSettings.doStringify = true;
+        }
+
+		return meerkat.modules.comms[method](ajaxSettings);
 	};
 	
 	function _handleErrorObject(error) {
@@ -405,7 +448,7 @@
 			var errorObject = {
 				errorLevel:		settings.errorLevel,
 				message:		jqXHR.responseText,
-				page:			'adminDataCRUD.js',
+				page:			'crud.js',
 				description:	"Error loading url: " + settings.url + ' : ' + textStatus + ' ' + errorThrown,
 				data:			data
 			};
@@ -416,9 +459,10 @@
 		}
 	}
 	
-	meerkat.modules.register('adminDataCRUD', {
+	meerkat.modules.register('crud', {
 		init: init,
-		newCRUD: dataCRUD
+		newCRUD: dataCRUD,
+        events: events
 	});
 	
 })(jQuery);

@@ -43,6 +43,7 @@ public class ResponseAdapterV2 {
 
             if (quoteResponse != null) {
                 int index = 1;
+                final boolean isAlternatePricingContent = alternatePricingContent != null && StringUtils.equalsIgnoreCase(alternatePricingContent.getContentValue(), "Y");
                 for (HealthQuote quote : quoteResponse.getQuotes()) {
                     HealthQuoteResult result = new HealthQuoteResult();
 
@@ -54,9 +55,12 @@ public class ResponseAdapterV2 {
                     result.setPromo(createPromo(quote.getPromotion(),request.getStaticOverride()));
                     result.setCustom(validateNode(quote.getCustom()));
 
+                    result.setDropDeadDate(quote.getDropDeadDate());
+                    result.setPricingDate(quote.getPricingDate());
+
                     if (quote.getPremium() != null) {
                         result.setPremium(createPremium(quote.getPremium(), quote.getInfo(), request.getQuote()));
-                        if (alternatePricingContent != null && StringUtils.equalsIgnoreCase(alternatePricingContent.getContentValue(), "Y")) {
+                        if (isAlternatePricingContent) {
                             com.ctm.web.health.quote.model.response.Premium alternativePremium = quote.getAlternativePremium();
                             if (alternativePremium != null) {
                                 result.setAltPremium(createPremium(alternativePremium, quote.getInfo(), request.getQuote()));
@@ -74,13 +78,21 @@ public class ResponseAdapterV2 {
                                     paymentTypePremiums.put(getPaymentType(entry.getKey()), createPremium(entry.getValue(), quote.getInfo(), request.getQuote()));
                                 });
                         result.setPaymentTypePremiums(paymentTypePremiums);
-                        if (quote.getPaymentTypeAltPremiums() != null && !quote.getPaymentTypeAltPremiums().isEmpty()) {
+                        if (isAlternatePricingContent) {
                             final HashMap<String, Premium> paymentTypeAltPremiums = new HashMap<>();
-                            quote.getPaymentTypeAltPremiums().entrySet()
-                                    .stream()
-                                    .forEach(entry -> {
-                                        paymentTypeAltPremiums.put(getPaymentType(entry.getKey()), createPremium(entry.getValue(), quote.getInfo(), request.getQuote()));
-                                    });
+                            if (quote.getPaymentTypeAltPremiums() != null && !quote.getPaymentTypeAltPremiums().isEmpty()) {
+                                quote.getPaymentTypeAltPremiums().entrySet()
+                                        .stream()
+                                        .forEach(entry -> {
+                                            paymentTypeAltPremiums.put(getPaymentType(entry.getKey()), createPremium(entry.getValue(), quote.getInfo(), request.getQuote()));
+                                        });
+                            } else {
+                                quote.getPaymentTypePremiums().entrySet()
+                                        .stream()
+                                        .forEach(entry -> {
+                                            paymentTypeAltPremiums.put(getPaymentType(entry.getKey()), createPremium(createDefaultPremium(), quote.getInfo(), request.getQuote()));
+                                        });
+                            }
                             result.setPaymentTypeAltPremiums(paymentTypeAltPremiums);
                         }
                     }

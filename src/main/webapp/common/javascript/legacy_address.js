@@ -889,7 +889,7 @@ function init_address(name, residentalAddress , isPostalAddress, defaultSuburbSe
 			fullAddressLineOne  = getFullAddressLineOne();
 		}
 
-		return fullAddressLineOne + "," +  jsonAddress.suburb + " " + jsonAddress.state + " " + jsonAddress.postCode;
+		return fullAddressLineOne + ", " +  jsonAddress.suburb + " " + jsonAddress.state + " " + jsonAddress.postCode;
 	};
 
 	$(document).ready(function() {

@@ -225,6 +225,8 @@
                 <field_v1:hidden xpath="environmentValidatorOverride" />
                 <input type="hidden" name="transcheck" id="transcheck" value="1" />
                 <agg_v3:save_quote />
+                <%--Reward Campaign Template--%>
+                <reward:template_campaign_tile />
             </jsp:body>
         </layout_v1:journey_engine_page>
 

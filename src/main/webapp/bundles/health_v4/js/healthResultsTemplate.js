@@ -196,10 +196,10 @@
             },
             {
                 id: 'marketingOffer',
-                title: "Marketing",
-                className: "icon-life",
-                text: "Get health cover and claim your meerkat toy",
-                active: false,
+                title: "Rewards",
+                className: "icon-" + meerkat.modules.rewardCampaign.getCampaignContentHtml().find('.reward-icon-code').html(),
+                text: meerkat.modules.rewardCampaign.getCampaignContentHtml().find('.reward-result-text').html(),
+                active: meerkat.modules.rewardCampaign.isCurrentCampaignValid(),
                 productId: product.productId
             },
             {

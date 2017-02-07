@@ -38,8 +38,8 @@
 	{{ obj.displayLogo = false; }} <%-- Turns off the logo from the template --%>
 
 	<%-- If dual pricing is enabled, update the template --%>
-	{{ if (meerkat.site.healthAlternatePricingActive === true) { }}
-		{{ obj.renderedDualPricing = meerkat.modules.dualPricing.renderTemplate('', obj, true, false); }}
+	{{ if (meerkat.site.healthAlternatePricingActive === true && meerkat.site.isCallCentreUser === true) { }}
+		{{ obj.renderedDualPricing = meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false); }}
 	{{ } else { }}
 		{{ var logoTemplate = meerkat.modules.templateCache.getTemplate($("#logo-template")); }}
 		{{ var priceTemplate = meerkat.modules.templateCache.getTemplate($("#price-template")); }}
@@ -54,6 +54,12 @@
 	{{ var template = $("#more-info-call-to-action-template").html(); }}
 	{{ var htmlTemplate = _.template(template); }}
 	{{ var callToActionBarHtml = htmlTemplate(obj); }}
+
+	{{ var comingSoonClass = ''; var priceContainerWidth = 'col-xs-6'; }}
+	{{ if (!_.isUndefined(obj.altPremium[obj._selectedFrequency])) { }}
+		{{ var productPremium = obj.altPremium[obj._selectedFrequency] }}
+		{{ comingSoonClass = ((productPremium.value && productPremium.value > 0) || (productPremium.text && productPremium.text.indexOf('$0.') < 0) || (productPremium.payableAmount && productPremium.payableAmount > 0))  ? '' : 'comingsoon' }}
+	{{ } }}
 
 	<c:set var="buyNowHeadingClass">
 		<c:choose>
@@ -76,7 +82,7 @@
 		<form_v3:save_results_button />
 	</c:if>
 
-	<div data-product-type="{{= info.ProductType }}" class="displayNone more-info-content col-xs-12 ${variantClassName}">
+	<div data-product-type="{{= info.ProductType }}" class="displayNone more-info-content col-xs-12 ${variantClassName} {{= comingSoonClass }}">
 
 		<div class="fieldset-card row price-card <c:if test="${healthAlternatePricingActive eq true}">hasDualPricing</c:if> {{= dropDatePassed ? 'dropDatePassedContainer' : ''}}">
 			<div class="${moreInfoTopLeftColumnWidth} moreInfoTopLeftColumn">
@@ -91,7 +97,7 @@
 				<div class="row priceRow productSummary hidden-xs">
 					<div class="col-xs-12">
 						<c:choose>
-							<c:when test="${healthAlternatePricingActive eq true}">
+							<c:when test="${healthAlternatePricingActive eq true and not empty callCentre}">
 								{{= renderedDualPricing }}
 							</c:when>
 							<c:otherwise>
@@ -114,13 +120,16 @@
 								Also, because health insurance prices are regulated, you’re paying no more through us than if you went directly to {{= info.providerName }}.</p>
 							{{ }  }}
 						</div>
+                        <c:if test="${empty callCentre or not callCentre}">
+                            {{= meerkat.modules.rewardCampaign.getCampaignContentHtml().find('.reward-more-info').prop('outerHTML') }}
+                        </c:if>
 					</div>
 				</div>
 
 					<div class="row priceRow productSummary hidden-sm hidden-md hidden-lg">
 						<div class="col-xs-12 col-sm-8">
 							<c:choose>
-								<c:when test="${healthAlternatePricingActive eq true}">
+								<c:when test="${healthAlternatePricingActive eq true and not empty callCentre}">
 									{{= renderedDualPricing }}
 								</c:when>
 								<c:otherwise>
@@ -144,7 +153,7 @@
 
 			</div>
 			<c:choose>
-				<c:when test="${healthAlternatePricingActive eq true}">
+				<c:when test="${healthAlternatePricingActive eq true and not empty callCentre}">
 					<div class="col-md-5 hidden-xs moreInfoTopRightColumn">
 						<div class="companyLogo {{= info.provider }}-mi"></div>
 							<div class="insureNow">
@@ -157,13 +166,11 @@
 				<c:otherwise>
 					<div class="col-sm-4 hidden-xs moreInfoTopRightColumn">
 						<div class="companyLogo {{= info.provider }}-mi"></div>
-						<c:if test="${not empty callCentre or moreinfo_splittest_default eq true}">
 						<div class="row">
 							<div class="col-xs-12">
 								<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now<span class="icon-arrow-right" /></a>
 							</div>
 						</div>
-						</c:if>
 
 						<p class="needHelp">or need help? Call<span>${callCentreNumber}</span></p>
 						<p class="referenceNo">Quote reference number <span>{{= transactionId }}</span></p>
@@ -363,6 +370,11 @@
 				</blockquote>
 				<p class="testimonialAuthor">{{= testimonial.author }}</p>
 			</div>
+            <c:if test="${empty callCentre or not callCentre}">
+                <div class="col-xs-12">
+                    <reward:campaign_tile_container_xs />
+                </div>
+            </c:if>
 		</div>
 
 		<div class="hidden-xs hiddenInMoreDetails">
