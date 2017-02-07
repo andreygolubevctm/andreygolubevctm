@@ -237,6 +237,10 @@
 
 			$frequencySelect.empty().append(options);
 			updateLHCText(product);
+
+			if (meerkat.site.isDualPricingActive) {
+				$frequencySelect.trigger('change.healthDualPricing');
+			}
 		}
 	}
 
@@ -387,8 +391,8 @@
 	}
 
 	function getPaymentMethodNode(method){
-		var nodeName = '',
-			method = method || getSelectedPaymentMethod();
+		var nodeName = '';
+		method = method || getSelectedPaymentMethod();
 
 		switch (method) {
 			case 'cc':
@@ -429,7 +433,7 @@
 		}
 
 		// Essential to ensure default copy if shown when loading a quote
-		$("#health_payment_details_frequency").trigger("change." + (meerkat.modules.healthResults.getSelectedProduct().info.FundCode));
+		$("#health_payment_details_frequency").trigger("change." + (meerkat.modules.healthResults.getSelectedProduct().info.provider));
 	}
 
 	// Check if details for the claims bank account needs to be shown

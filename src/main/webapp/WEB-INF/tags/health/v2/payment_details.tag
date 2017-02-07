@@ -26,7 +26,7 @@
 
 	<form_v3:fieldset legend="Payment Details" >
 
-		<c:if test="${isDualPriceActive}">
+		<c:if test="${isDualPriceActive eq true}">
 			<div class="alert alert-info">
 				Remember: Premiums will rise from 1st April. You <b>must</b> select a cover start date before <b>April</b> 1st to save.
 			</div>
@@ -50,7 +50,7 @@
 			<div class="fieldrow_legend lhcText"></div>
 		</form_v3:row>
 
-		<c:if test="${isDualPriceActive}">
+		<c:if test="${isDualPriceActive eq true}">
 			<div class="hidden frequencyWarning definition alert alert-info"></div>
 		</c:if>
 

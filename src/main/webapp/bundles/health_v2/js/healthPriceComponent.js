@@ -72,7 +72,7 @@
 	function onProductPremiumChange(selectedProduct, showIncPrice){
 		// Use the frequency selected on the payment step - if that is not set, refer to the results page frequency.
 		var displayedFrequency = $displayedFrequency.val();
-		if(displayedFrequency === "") displayedFrequency = Results.getFrequency();
+		if (_.isEmpty(displayedFrequency)) displayedFrequency = Results.getFrequency();
 		updateProductSummaryHeader(selectedProduct, displayedFrequency, showIncPrice);
 
 		// Update product summary

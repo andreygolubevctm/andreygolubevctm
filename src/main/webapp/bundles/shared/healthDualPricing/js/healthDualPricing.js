@@ -50,7 +50,9 @@
     }
 
     function _applyEventListeners() {
-        $elements.paymentDetailsFrequency.on('change', function updateWarningLabel() {
+        $elements.paymentDetailsFrequency.on('change.healthDualPricing', function updateWarningLabel() {
+            if (_.isEmpty($(this).val())) return;
+
             var frequency = $(this).val().toLowerCase();
 
             if (frequency === 'annually') {
