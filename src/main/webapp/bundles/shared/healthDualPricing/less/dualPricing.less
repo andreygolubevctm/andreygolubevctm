@@ -415,35 +415,6 @@
       .downArrow();
     }
 
-    .current-pricing {
-      .quarterly,
-      .halfyearly {
-        .frequencyAmount {
-          @media (@md) {
-            line-height: 38px;
-          }
-
-          .frequencyTitle {
-            top: -8px;
-            left: 0;
-          }
-        }
-      }
-
-      @media (@md-only) {
-        .annually {
-          .frequencyAmount {
-            line-height: 38px;
-
-            .frequencyTitle {
-              top: -8px;
-              left: 0;
-            }
-          }
-        }
-      }
-    }
-
     .april-pricing {
       p {
         margin-bottom: 0;
@@ -481,6 +452,40 @@
 
       .lhcText {
         font-size: 11px;
+      }
+    }
+  }
+}
+
+body[data-step=apply],
+body[data-step=payment] {
+  .policySummary-sidebar.hasDualPricing {
+    .current-pricing {
+      .quarterly,
+      .halfyearly {
+        .frequencyAmount {
+          @media (@md) {
+            line-height: 38px;
+          }
+
+          .frequencyTitle {
+            top: -8px;
+            left: 0;
+          }
+        }
+      }
+
+      @media (@md-only) {
+        .annually {
+          .frequencyAmount {
+            line-height: 38px;
+
+            .frequencyTitle {
+              top: -8px;
+              left: 0;
+            }
+          }
+        }
       }
     }
   }
