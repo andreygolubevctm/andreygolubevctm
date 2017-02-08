@@ -43,7 +43,8 @@
             paymentDetailsSelection: $('#health_payment_details-selection'),
             paymentDetailsFrequency: $('#health_payment_details-selection').find('#health_payment_details_frequency'),
             priceFrequencyTemplate: $('#price-frequency-template'),
-            frequencyWarning: $('#health_payment_details-selection').find('.frequencyWarning')
+            frequencyWarning: $('#health_payment_details-selection').find('.frequencyWarning'),
+            quoterefTemplate: $('#quoteref-template')
         };
 
         $elements.sideBarFrequency.hide();
@@ -162,9 +163,9 @@
         } else {
             $(target).html(dualPriceTemplate(product));
 
-            if (isForSidebar) {
-                var quoteReferenceTemplate = _.template($('#quoteref-template').html());
-                $(target).find('.quoteReferenceTemplateHolder').html(quoteReferenceTemplate());
+            if (isForSidebar && $elements.quoterefTemplate.length > 0) {
+                var quoterefTemplate = _.template($elements.quoterefTemplate.html());
+                $(target).parent().find('.quoterefTemplateHolder').html(quoterefTemplate());
             }
         }
     }
