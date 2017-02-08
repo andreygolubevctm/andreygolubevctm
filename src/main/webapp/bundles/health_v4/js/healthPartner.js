@@ -25,7 +25,7 @@
 
         $elements.partnerQuestionSet = $elements.partnerDOBD.add($elements.currentCover);
 
-        meerkat.modules.fieldUtilities.disable($elements.partnerCoverLoading);
+        meerkat.modules.fieldUtilities.hide($elements.partnerCoverLoading);
 
         var $checked = $elements.currentCover.filter(':checked');
         if($checked.length) {
@@ -37,11 +37,10 @@
         $elements.currentCover.on('change', function toggleContinuousCover() {
             var $this = $(this),
                 $checked = $this.filter(':checked'),
-                disableField = ($checked.val() === 'N') || ($checked.val() === 'Y' && meerkat.modules.age.isLessThan31Or31AndBeforeJuly1($elements.dob.val()));
-
-            meerkat.modules.fieldUtilities.toggleDisabled(
+                hideField = ($checked.val() === 'N') || ($checked.val() === 'Y' && meerkat.modules.age.isLessThan31Or31AndBeforeJuly1($elements.dob.val()));
+            meerkat.modules.fieldUtilities.toggleVisible(
                 $elements.partnerCoverLoading,
-                disableField
+                hideField
             );
         });
 
@@ -74,16 +73,15 @@
                 $elements.partnerQuestionSet.add($elements.partnerCoverLoading).closest('.fieldrow').hide();
                 $elements.benefitsScrollerLinks.add($elements.coverLoadingHeading).hide();
             } else {
-                $elements.partnerQuestionSet.add($elements.partnerCoverLoading).closest('.fieldrow').show();
+                $elements.partnerQuestionSet.add($elements.partnerCoverLoading).closest('.fieldrow');
                 $elements.benefitsScrollerLinks.add($elements.coverLoadingHeading).show();
-                meerkat.modules.fieldUtilities.disable($elements.partnerCoverLoading);
             }
         }
     }
 
     function _togglePartnerQuestionset(selected) {
         var hasPartner = _.indexOf(['F', 'C'], selected.situation) > -1;
-        meerkat.modules.fieldUtilities.toggleVisible($elements.partnerQuestionSet.add($elements.partnerCoverLoading), !hasPartner);
+        $elements.partnerQuestionSet.add($elements.partnerCoverLoading);
         if(hasPartner && !_.isUndefined(getCurrentCover())) {
             // Need to trigger continuous cover visibility if required
             var $checked = $elements.currentCover.filter(':checked');
