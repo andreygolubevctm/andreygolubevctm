@@ -304,10 +304,23 @@
 		if ($destination === false || $destination.length === 0) return;
 
 		if (message === false) {
-			$('.simples-home-buttons, .simples-notice-board').removeClass('hidden');
+			$('.simples-home-buttons, .simples-notice-board, .simples-remaining-sales-container').removeClass('hidden');
+
+			var remainingSalesTableTbody = $('.simples-remaining-sales-container #remaining-sales-table').find('tbody');
+			remainingSalesTableTbody.empty();
+
+			// update remaining sales
+			renderRemainingSales(function (data) {
+				for (var i = 0; i < data.length; i++) {
+					var remainingSales = data[i].remainingSales > 15 ? '15+' : (data[i].remainingSales);
+					var remainingDays = data[i].remainingDays == 1 ? data[i].remainingDays + ' day' : data[i].remainingDays + ' days';
+					remainingSalesTableTbody.append('<tr><td>' + data[i].fundName + '</td><td>' + remainingSales + ' left</td><td>in ' + remainingDays + '</td></tr>');
+				}
+			});
+
 		}
 		else {
-			$('.simples-home-buttons, .simples-notice-board').addClass('hidden');
+			$('.simples-home-buttons, .simples-notice-board, .simples-remaining-sales-container').addClass('hidden');
 
 			// swap numbers if there is only one mobile and this is the 2nd number as we want mobiles displayed first
 			if (isMobile(message.message.phoneNumber2) && !isMobile(message.message.phoneNumber1)) {
@@ -318,6 +331,21 @@
 		}
 
 		$destination.html( templateMessageDetail(message) );
+	}
+
+	function renderRemainingSales(callbackSuccess, callbackError) {
+		meerkat.modules.comms.get({
+			url: baseUrl + 'spring/rest/simples/remainingSales.json',
+			dataType: 'json',
+			cache: false,
+			errorLevel: 'silent',
+			onSuccess: function onSuccess(json) {
+				callbackSuccess(json);
+			},
+			onError: function onError(obj, txt, errorThrown) {
+				alert('Could not set to ' + type + '...\n' + txt + ': ' + errorThrown);
+			}
+		});
 	}
 
 	meerkat.modules.register('simplesMessage', {
