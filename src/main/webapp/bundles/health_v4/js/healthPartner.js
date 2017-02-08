@@ -73,7 +73,7 @@
                 $elements.partnerQuestionSet.add($elements.partnerCoverLoading).closest('.fieldrow').hide();
                 $elements.benefitsScrollerLinks.add($elements.coverLoadingHeading).hide();
             } else {
-                $elements.partnerQuestionSet.add($elements.partnerCoverLoading).closest('.fieldrow');
+                $elements.partnerQuestionSet.add($elements.partnerCoverLoading).closest('.fieldrow').show();
                 $elements.benefitsScrollerLinks.add($elements.coverLoadingHeading).show();
             }
         }
