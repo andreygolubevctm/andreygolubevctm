@@ -73,8 +73,9 @@
                 $elements.partnerQuestionSet.add($elements.partnerCoverLoading).closest('.fieldrow').hide();
                 $elements.benefitsScrollerLinks.add($elements.coverLoadingHeading).hide();
             } else {
-                $elements.partnerQuestionSet.add($elements.partnerCoverLoading).closest('.fieldrow').show();
+                $elements.partnerQuestionSet.add($elements.partnerCoverLoading).closest('.fieldrow');
                 $elements.benefitsScrollerLinks.add($elements.coverLoadingHeading).show();
+                meerkat.modules.fieldUtilities.hide($elements.partnerCoverLoading);
             }
         }
     }
