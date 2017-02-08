@@ -65,7 +65,9 @@
 
             $elements.incomeSelectContainer.toggleClass('hidden', !isChecked);
             $elements.applyRebate.val(isChecked ? 'Y' : 'N');
-            meerkat.modules.healthDependants.toggleDependantsDefaultValue(isChecked);
+            if (isChecked) {
+                meerkat.modules.healthDependants.toggleDependantsDefaultValue();
+            }
         });
 
         $elements.editTier.off().on('click', function() {

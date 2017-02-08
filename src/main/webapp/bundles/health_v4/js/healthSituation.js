@@ -29,8 +29,7 @@
 
             meerkat.messaging.publish(moduleEvents.healthSituation.SITUATION_CHANGED, { situation: situation });
             meerkat.modules.healthChoices.setCover(situation);
-
-            meerkat.modules.healthDependants.toggleDependantsDefaultValue(meerkat.modules.healthDependants.situationEnablesDependants());
+            meerkat.modules.healthDependants.toggleDependantsDefaultValue();
         });
     }
 

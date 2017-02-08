@@ -57,6 +57,7 @@
         },
         providerConfig,
         maxDependantAge = 25,
+        enableDefaultValueForDependants = false, // Enabled the default value in the dependents dropdown.
         $elements;
 
     function initHealthDependants() {
@@ -102,7 +103,7 @@
             };
 
             aboutYouApplyEventListeners();
-            toggleDependantsDefaultValue(situationEnablesDependants());
+            toggleDependantsDefaultValue();
             moduleInitialised = true;
         });
     }
@@ -128,7 +129,8 @@
         }
     }
 
-    function toggleDependantsDefaultValue(shouldSetDefaultDependants) {
+    function toggleDependantsDefaultValue() {
+        var shouldSetDefaultDependants = situationEnablesDependants() && enableDefaultValueForDependants;
         if(moduleInitialised) {
             toggleDependantsDefaultValueCallback(shouldSetDefaultDependants);
         } else {
