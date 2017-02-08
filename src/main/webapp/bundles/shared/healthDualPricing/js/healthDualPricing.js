@@ -64,10 +64,10 @@
 
                 if ((remainingPremium.value && remainingPremium.value > 0) || (remainingPremium.text && remainingPremium.text.indexOf('$0.') < 0) || (remainingPremium.payableAmount && remainingPremium.payableAmount > 0)) {
                     var template = _.template($elements.priceFrequencyTemplate.html()),
+                        pricingDate = new Date(selectedProduct.pricingDate),
                         obj = {
                             frequency: freqTextMapping[frequency],
-                            firstPremium: selectedProduct.premium[frequency].text,
-                            remainingPremium: remainingPremium.text
+                            pricingDateFormatted: meerkat.modules.dateUtils.format(pricingDate, "Do MMMM")
                         };
 
                     $elements.frequencyWarning.html(template(obj)).removeClass("hidden").slideDown();
@@ -88,6 +88,9 @@
         meerkat.messaging.subscribe(meerkatEvents.healthResults.SELECTED_PRODUCT_CHANGED, function hideSidebarFrequency(){
             $elements.sideBarFrequency.hide();
             $elements.frequencyWarning.hide();
+
+            // update pricing date
+            _updatePricingDate();
         });
 
         meerkat.messaging.subscribe(meerkatEvents.device.DEVICE_MEDIA_STATE_CHANGE, function editDetailsEnterXsState() {
@@ -118,6 +121,13 @@
         }
     }
 
+    function _updatePricingDate() {
+        var product = Results.getSelectedProduct(),
+            pricingDate = new Date(product.pricingDate);
+
+        $('.pricingDate').text(meerkat.modules.dateUtils.format(pricingDate, "Do MMMM"));
+    }
+
     function renderTemplate(target, product, returnTemplate, isForSidebar, page) {
 
         selectedProduct = product;
@@ -144,6 +154,11 @@
         product.showAltPremium = false;
         product.displayLogo = isForSidebar;
         product.showRoundingText = false;
+
+        var pricingDate = new Date(selectedProduct.pricingDate);
+        // named pricingDateFormatted because inside _updatePricingDate function it throws an invalid date when creating a new Date object with pricingDate,
+        // for some reason Results.getSelectedProduct().pricingDate gets updated
+        product.pricingDateFormatted = meerkat.modules.dateUtils.format(pricingDate, "MMMM Do, YYYY");
 
         var htmlTemplate = _.template($elements.logoPriceTemplate.html());
         product.renderedPriceTemplate = htmlTemplate(product);
