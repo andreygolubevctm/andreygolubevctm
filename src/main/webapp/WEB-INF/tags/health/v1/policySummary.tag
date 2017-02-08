@@ -35,6 +35,7 @@
 
 	<c:if test="${isDualPriceActive eq true}">
 		<h1 class="hidden-xs">Your quote details</h1>
+		<div class="quoterefTemplateHolder"></div>
 		<div class="policySummary productSummary dualPricing"></div>
 	</c:if>
 
