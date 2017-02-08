@@ -161,6 +161,11 @@
             return dualPriceTemplate(product);
         } else {
             $(target).html(dualPriceTemplate(product));
+
+            if (isForSidebar) {
+                var quoteReferenceTemplate = _.template($('#quoteref-template').html());
+                $(target).find('.quoteReferenceTemplateHolder').html(quoteReferenceTemplate());
+            }
         }
     }
 
