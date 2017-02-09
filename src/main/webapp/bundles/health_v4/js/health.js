@@ -197,9 +197,12 @@
                 // configure progress bar
                 configureProgressBar(true);
 
-                meerkat.modules.healthRebate.toggleEdit(false);
+                meerkat.modules.healthRebate.toggleEdit(true);
             },
             onAfterEnter: function healthAfterEnter() {
+                if (meerkat.modules.healthRebate.isRebateApplied()) {
+                    meerkat.modules.healthRebate.toggleEdit(false);
+                }
             },
             onBeforeLeave: function (event) {
                 meerkat.modules.healthTiers.setIncomeLabel();

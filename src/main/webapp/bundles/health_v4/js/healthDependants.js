@@ -97,7 +97,7 @@
     function init() {
         $(document).ready(function () {
             $elements = {
-                dependants : $('select[name=health_healthCover_dependants]'),
+                dependants: $('select[name=health_healthCover_dependants]'),
                 selectedRebateText: $('#selectedRebateText'),
                 applyRebate: $('input[name=health_healthCover_rebateCheckbox]')
             };
@@ -141,9 +141,13 @@
     }
 
     function toggleDependants() {
-        if (!_.isUndefined($elements) && !$elements.selectedRebateText.is(':visible') && $elements.applyRebate.is(':checked')) {
-            var showDependants = situationEnablesDependants();
-            $elements.dependants.closest('.select').toggleClass('hidden', !showDependants);
+        var showDependants = situationEnablesDependants() && meerkat.modules.healthRebate.editModeEnabled();
+        if(moduleInitialised) {
+                $elements.dependants.closest('.select').toggleClass('hidden', !showDependants);
+        } else {
+            _.defer(function(){
+                $elements.dependants.closest('.select').toggleClass('hidden', !showDependants);
+            });
         }
     }
 

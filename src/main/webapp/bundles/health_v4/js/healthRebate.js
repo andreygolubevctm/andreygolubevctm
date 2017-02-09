@@ -94,10 +94,14 @@
     }
 
     function updateSelectedRebateLabel() {
+
+
+
+
         // on first load, select the dropdown value and set it as a text label
         var $elDropdownOption = $elements.incomeSelect.prop('selectedIndex') === 0 ? $elements.incomeSelect.find('option:eq(1)') : $elements.incomeSelect.find(':selected'),
             completeText = '',
-            dependantsText = "including any adjustments for your dependants <br />(Based on an assumption of 2 dependents. EDIT to amend)",
+            dependantsText = "including any adjustments for your " + $elements.dependentsSelect.val() + " dependants <br />Click EDIT to amend",
             cover = meerkat.modules.healthChoices.returnCoverCode();
 
         if (cover !== '') {
@@ -172,6 +176,7 @@
     }
 
     function toggleEdit(isEdit) {
+        inEditMode = isEdit;
         $elements.selectedRebateText.toggle(!isEdit);
         $elements.rebateLabel.toggle(!isEdit);
         $elements.incomeSelect.parent('.select').toggleClass('hidden', !isEdit);
@@ -180,15 +185,14 @@
             meerkat.modules.healthDependants.toggleDependants();
         } else {
             meerkat.modules.healthDependants.hideDependants();
-        }
-
-        if (!isEdit) {
             _updateRebateLabelText();
             updateSelectedRebateLabel();
             _setRebate();
         }
+    }
 
-        inEditMode = isEdit;
+    function editModeEnabled() {
+        return inEditMode;
     }
 
     meerkat.modules.register("healthRebate", {
@@ -199,6 +203,7 @@
         getRebate: getRebate,
         isRebateApplied: isRebateApplied,
         toggleEdit: toggleEdit,
+        editModeEnabled: editModeEnabled,
         getRebateLabelText: getRebateLabelText,
         getSelectedRebateLabelText: getSelectedRebateLabelText
     });
