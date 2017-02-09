@@ -370,7 +370,7 @@
 					// TODO work out this: //Results._refreshSimplesTooltipContent($('#update-premium .premium'));
 				}
 
-				if (typeof meerkat.site.healthAlternatePricingActive !== 'undefined' && meerkat.site.healthAlternatePricingActive === true) {
+				if (typeof meerkat.site.healthAlternatePricingActive !== 'undefined' && meerkat.site.healthAlternatePricingActive === true && meerkat.site.isCallCentreUser) {
 					meerkat.modules.healthDualPricing.renderTemplate('.policySummary.dualPricing', data, false, true);
 				}
 

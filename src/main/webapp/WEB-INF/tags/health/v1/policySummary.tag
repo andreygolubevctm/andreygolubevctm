@@ -11,7 +11,7 @@
 <jsp:useBean id="healthPriceDetailService" class="com.ctm.web.health.services.HealthPriceDetailService" scope="page" />
 <c:set var="healthAlternatePricingActive" value="${healthPriceDetailService.isAlternatePriceActive(pageContext.getRequest())}" />
 
-<div class="sidebar-box<c:if test="${healthAlternatePricingActive eq true}"> hasDualPricing hidden-xs</c:if> policySummary-sidebar">
+<div class="sidebar-box<c:if test="${healthAlternatePricingActive eq true and not empty callCentre}"> hasDualPricing hidden-xs</c:if> policySummary-sidebar">
 	<c:if test="${empty callCentre or (healthAlternatePricingActive eq false and not empty callCentre)}">
 		<div class="policySummaryContainer ${className}">
 			<c:choose>
@@ -36,7 +36,7 @@
 		<div class="policySummary productSummary dualPricing"></div>
 	</c:if>
 
-<c:if test="${healthAlternatePricingActive eq true}">
+<c:if test="${healthAlternatePricingActive eq true and not empty callCentre}">
 </div>
 <div class="sidebar-box sidebarFrequency hidden-xs"></div>
 <div class="sidebar-box">
