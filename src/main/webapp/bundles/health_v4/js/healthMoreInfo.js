@@ -207,7 +207,6 @@
             obj = Results.getSelectedProduct();
 
         obj.renderedPriceTemplate = meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false);
-
         return headerTemplate(obj);
     }
 
@@ -236,12 +235,15 @@
         if (meerkat.site.healthAlternatePricingActive === true) {
             $('.april-pricing').addClass('april-pricing-done');
             $('.current-pricing').addClass('current-pricing-done');
+
+            var productPremium = product.altPremium,
+                comingSoonClass = ((productPremium.value && productPremium.value > 0) || (productPremium.text && productPremium.text.indexOf('$0.') < 0) || (productPremium.payableAmount && productPremium.payableAmount > 0))  ? '' : 'comingsoon';
+
+            $('.more-info-affixed-header').addClass(comingSoonClass);
+
+            // update the dropdeaddate. Tried in _getAffixedMobileHeaderData but that returns undefined
+            $elements.currentPricingContainer.find('.applyBy').text('Apply by ' + product.dropDeadDateFormatted);
         }
-
-        var productPremium = product.altPremium,
-            comingSoonClass = ((productPremium.value && productPremium.value > 0) || (productPremium.text && productPremium.text.indexOf('$0.') < 0) || (productPremium.payableAmount && productPremium.payableAmount > 0))  ? '' : 'comingsoon';
-
-        $('.more-info-affixed-header').addClass(comingSoonClass);
     }
 
     function onBeforeShowModal(jsonResult, dialogId) {

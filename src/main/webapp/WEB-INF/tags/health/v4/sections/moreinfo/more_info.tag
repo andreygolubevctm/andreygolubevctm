@@ -36,13 +36,12 @@
 	<%-- Prepare the price and dual price templates --%>
 	{{ obj._selectedFrequency = Results.getFrequency(); }}
 	{{ obj.mode = ''; }}
+	{{ obj.renderedDualPricing = ''; }}
 	{{ obj.displayLogo = false; }} <%-- Turns off the logo from the template --%>
 
 	<%-- If dual pricing is enabled, update the template --%>
-	{{ if (meerkat.site.healthAlternatePricingActive === true) { }}
-
+	{{ if (meerkat.site.healthAlternatePricingActive === true && meerkat.modules.deviceMediaState.get() !== 'xs') { }}
 			{{ obj.renderedDualPricing = meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false); }}
-
 	{{ } else { }}
 		{{ var logoTemplate = meerkat.modules.templateCache.getTemplate($("#logo-template")); }}
 		{{ var priceTemplate = meerkat.modules.templateCache.getTemplate($("#price-template")); }}
