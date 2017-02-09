@@ -6,12 +6,11 @@
         selectedProduct = {},
         modalId = null,
         freqTextMapping = {
-            'annually': 'per annum',
-            'halfyealy': 'per half year',
-            'quarterly': 'per quarter',
-            'monthly': 'per month',
-            'fortnightly': 'per fortnight',
-            'weekly': 'per week'
+            'halfyearly': 'half yearly',
+            'quarterly': 'quarterly',
+            'monthly': 'monthly',
+            'fortnightly': 'fortnightly',
+            'weekly': 'weekly'
         };
 
     function initDualPricing() {

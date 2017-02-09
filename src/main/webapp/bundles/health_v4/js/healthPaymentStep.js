@@ -272,6 +272,10 @@
 
 			$frequencySelect.empty().append(options);
 			updateLHCText(product);
+
+			if (meerkat.site.isDualPricingActive) {
+				$frequencySelect.trigger('change.healthDualPricing');
+			}
 		}
 	}
 
@@ -413,6 +417,10 @@
 		product.paymentNode = getPaymentMethodNode();
 		product.premium = product.paymentTypePremiums[product.paymentNode];
 		product._selectedFrequency = getSelectedFrequency();
+
+		if (typeof meerkat.site.isDualPricingActive !== 'undefined' && meerkat.site.isDualPricingActive === true) {
+			product.altPremium = product.paymentTypeAltPremiums[product.paymentNode];
+		}
 
         meerkat.modules.healthResults.setSelectedProduct(product, true);
 	}
