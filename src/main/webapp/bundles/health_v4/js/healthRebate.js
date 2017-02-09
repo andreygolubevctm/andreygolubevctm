@@ -131,10 +131,6 @@
         _selectetedRebateLabelText = completeText;
 
         $elements.selectedRebateText.html(completeText);
-
-        if ($elements.incomeSelect.prop('selectedIndex') === 0) {
-            $elements.incomeSelect.prop('selectedIndex', 1);
-        }
     }
 
     function getSelectedRebateLabelText() {
