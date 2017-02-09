@@ -136,7 +136,7 @@
     <form_v2:row fieldXpath="${fieldXpath}" label="Street" className="${requiredInputClass} ${name}_nonStdFieldRow">
         <c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Street" quoteChar="\"" /></c:set>
         <field_v2:input xpath="${fieldXpath}" title="the street" required="false" className="sessioncamexclude"
-                         additionalAttributes=" data-rule-validAddress='${name}' data-rule-validAddress='Please enter the residential street' ${analyticsAttr}" "/>
+                         additionalAttributes=" data-rule-validAddress='${name}' data-rule-validAddress='Please enter the residential street' ${analyticsAttr} "/>
     </form_v2:row>
 
     <%-- STREET NUMBER --%>
