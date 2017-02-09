@@ -53,11 +53,13 @@
   }
 }
 
-
 /* Results Page */
 [data-step="results"] {
 
   .resultInsert .dual-pricing-container {
+
+    height: 36px;
+
     .april-pricing {
       margin-top: 15px;
 
@@ -67,6 +69,11 @@
       .dollarSign,
       .cents {
         color: @gray;
+      }
+
+      .deadline,
+      .dual-pricing-learn-more {
+        font-size: 12px;
       }
 
       .price.premium {
@@ -92,25 +99,15 @@
 
       .altPriceContainer {
         text-align: center;
-
-        @media (@sm) {
-          display: inline-block;
-          float: left;
-          width: 50%;
-        }
+        display: inline-block;
+        float: left;
+        width: 45%;
       }
 
       .altPriceDetailsContainer {
         text-align: center;
-
-        .dual-pricing-learn-more {
-          display: block;
-        }
-
-        @media (@sm) {
-          display: inline-block;
-          width: 45%;
-        }
+        display: inline-block;
+        width: 55%;
       }
     }
 
@@ -276,6 +273,10 @@
 
         /* APRIL PRICING */
         .april-pricing {
+
+          .lhcText {
+            display: none;
+          }
 
           @media(@xs-only) {
             .frequencyTitle {

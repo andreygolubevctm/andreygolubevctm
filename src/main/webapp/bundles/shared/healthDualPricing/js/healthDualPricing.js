@@ -94,12 +94,14 @@
 
     function _showModal() {
         var template = _.template($elements.modalTemplate.html()),
-            product = Results.getSelectedProduct();
+            product = Results.getSelectedProduct(),
+            d = new Date(),
+            dropDeadDate = product !== false && String(product.dropDeadDate) !== 'Invalid Date' ? product.dropDeadDate : new Date('03/31/'+ d.getFullYear());
 
         modalId = meerkat.modules.dialogs.show({
             className: 'dual-pricing-modal',
             htmlContent: template({
-                dropDeadDate: meerkat.modules.dateUtils.format(product.dropDeadDate, "MMMM Do")
+                dropDeadDate: meerkat.modules.dateUtils.format(dropDeadDate, "MMMM Do")
             }),
             onOpen : function() {
                 $('a.live-chat').toggleClass('hidden', $('.LPMcontainer').length === 0);
