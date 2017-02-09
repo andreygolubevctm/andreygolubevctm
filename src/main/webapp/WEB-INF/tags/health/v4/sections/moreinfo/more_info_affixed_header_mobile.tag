@@ -23,9 +23,4 @@
 			</div>
 		</div>
 	</div>
-	<%-- Toggle for benefits --%>
-	<div class="hidden-sm hidden-md hidden-lg toggleBar">
-		<div class="selectionStatus extras">Your extras <span>0</span></div>
-		<div class="selectionStatus hospital">Your hospital <span>0</span></div>
-	</div>
 </script>

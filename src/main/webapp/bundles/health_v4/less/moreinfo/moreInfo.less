@@ -364,17 +364,18 @@
 
   @media (@xs-only) {
     .benefitsColumn {
-      width: 49%;
+      width: 100%;
       display: inline-block;
       vertical-align: top;
 
-      .HospitalBenefits {
+      .HospitalBenefits,
+      .ExtrasBenefits {
         padding-left: @grid-gutter-width;
         padding-right: @grid-gutter-width;
       }
 
-      .ExtrasBenefits {
-        padding-left: 60px;
+      &:not(:first-of-type) {
+        margin-top:20px;
       }
     }
 
@@ -387,7 +388,7 @@
     }
 
     .benefitsOverflow {
-      width: 200%;
+      width: 100%;
       overflow-x: hidden;
       position: relative;
     }
