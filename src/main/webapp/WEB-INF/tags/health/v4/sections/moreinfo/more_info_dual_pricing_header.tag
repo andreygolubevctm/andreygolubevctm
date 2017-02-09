@@ -6,11 +6,11 @@
 <c:set var="healthAlternatePricingActive" value="${healthPriceDetailService.isAlternatePriceActive(pageContext.getRequest())}" />
 
 <c:if test="${healthAlternatePricingActive eq true}">
-    <div class="row">
-        <div class="col-sm-4">
+    <div class="row hidden-xs">
+        <div class="col-sm-2">
             <div class="companyLogo {{= info.provider }}"></div>
         </div>
-        <div class="col-sm-8">
+        <div class="col-sm-10">
             {{= renderedDualPricing }}
         </div>
     </div>

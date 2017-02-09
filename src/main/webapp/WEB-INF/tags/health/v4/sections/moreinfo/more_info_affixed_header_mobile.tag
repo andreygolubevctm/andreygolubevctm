@@ -2,13 +2,17 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<%-- Setup variables needed for dual pricing --%>
+<jsp:useBean id="healthPriceDetailService" class="com.ctm.web.health.services.HealthPriceDetailService" scope="page" />
+<c:set var="healthAlternatePricingActive" value="${healthPriceDetailService.isAlternatePriceActive(pageContext.getRequest())}" />
+
 <script id="moreInfoAffixedHeaderMobileTemplate" type="text/html">
-	<div class="container">
+	<div class="container <c:if test="${healthAlternatePricingActive eq true}">hasDualPricing</c:if>">
 		<div class="row">
-			<div class="col-xs-6">
+			<div class="col-xs-6 logo-header">
 				<div class="companyLogo {{= info.provider }}"></div>
 			</div>
-			<div class="col-xs-6 text-center">
+			<div class="col-xs-6 text-center mobile-pricing">
 				{{= renderedPriceTemplate }}
 			</div>
 			<div class="col-xs-12">

@@ -203,13 +203,10 @@
     }
 
     function _getAffixedMobileHeaderData() {
-        var priceTemplate = meerkat.modules.templateCache.getTemplate($("#price-template")),
-            headerTemplate = meerkat.modules.templateCache.getTemplate($('#moreInfoAffixedHeaderMobileTemplate')),
+        var headerTemplate = meerkat.modules.templateCache.getTemplate($('#moreInfoAffixedHeaderMobileTemplate')),
             obj = Results.getSelectedProduct();
 
-        obj.showAltPremium = false;
-        obj._selectedFrequency = Results.getFrequency();
-        obj.renderedPriceTemplate = priceTemplate(obj);
+        obj.renderedPriceTemplate = meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false);
 
         return headerTemplate(obj);
     }
@@ -231,13 +228,20 @@
             $(this).prepend('<span class="icon icon-angle-right"></span>');
         });
 
-        // test
+        _setupDualPricing(product);
+        _setTabs();
+    }
+
+    function _setupDualPricing(product) {
         if (meerkat.site.healthAlternatePricingActive === true) {
             $('.april-pricing').addClass('april-pricing-done');
             $('.current-pricing').addClass('current-pricing-done');
         }
 
-        _setTabs();
+        var productPremium = product.altPremium,
+            comingSoonClass = ((productPremium.value && productPremium.value > 0) || (productPremium.text && productPremium.text.indexOf('$0.') < 0) || (productPremium.payableAmount && productPremium.payableAmount > 0))  ? '' : 'comingsoon';
+
+        $('.more-info-affixed-header').addClass(comingSoonClass);
     }
 
     function onBeforeShowModal(jsonResult, dialogId) {
@@ -273,6 +277,10 @@
             modalHeader: $('.modal-header')
         };
 
+        if (meerkat.site.healthAlternatePricingActive) {
+            $('.mobile-pricing, .logo-header').removeClass('col-xs-6').addClass('col-xs-12');
+        }
+
         _setTabs();
 
         var toggleBarInitSettings = {
@@ -282,6 +290,8 @@
             },
             product = Results.getSelectedProduct(),
             initToggleBar = (typeof product.hospitalCover !== 'undefined' && typeof product.extrasCover !== 'undefined');
+
+        _setupDualPricing(product);
 
         if (initToggleBar) {
             meerkat.modules.benefitsToggleBar.initToggleBar(toggleBarInitSettings);
@@ -304,6 +314,8 @@
 
             $elements.modalHeader.find('.lhcText').toggleClass('hidden', $elements.moreInfoContainer.offset().top < calculatedHeight);
             $elements.modalHeader.find('.printableBrochuresLink').toggleClass('hidden', $elements.moreInfoContainer.offset().top < calculatedHeight);
+            $elements.modalHeader.find('.april-pricing').toggleClass('hidden', $elements.moreInfoContainer.offset().top < calculatedHeight);
+
             if(moreInfoDialogId && meerkat.modules.deviceMediaState.get() === 'xs') {
                 meerkat.modules.dialogs.resizeDialog(moreInfoDialogId);
             }

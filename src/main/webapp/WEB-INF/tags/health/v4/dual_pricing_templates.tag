@@ -53,8 +53,11 @@
 <%-- MORE INFO TEMPLATES --%>
 <core_v1:js_template id="dual-pricing-moreinfo-template">
 	{{ var comingSoonClass = ''; }}
-	{{ if (!_.isUndefined(obj.altPremium[obj._selectedFrequency])) { }}
-		{{ var productPremium = obj.altPremium[obj._selectedFrequency] }}
+	{{ var altPremium = obj.altPremium[obj._selectedFrequency]; }}
+	{{ var lhcText = meerkat.site.isCallCentreUser ? 'pricing' : 'lhcfreepricing'; }}
+
+	{{ if (!_.isUndefined(altPremium)) { }}
+		{{ var productPremium = altPremium }}
 		{{ comingSoonClass = ((productPremium.value && productPremium.value > 0) || (productPremium.text && productPremium.text.indexOf('$0.') < 0) || (productPremium.payableAmount && productPremium.payableAmount > 0))  ? '' : 'comingsoon' }}
 	{{ } }}
 	<div class="dual-pricing-container {{ if (obj.dropDatePassed === true) { }}dropDatePassed{{ } }} {{= comingSoonClass }} row">
@@ -62,7 +65,6 @@
 			<h3>${april1Header}</h3>
 			{{= renderedAltPriceTemplate }}
 			<span class="premiumsRising">Premiums are rising</span>
-			<a href="javascript:;" class="dual-pricing-learn-more">learn more</a>
 		</div>
 		<div class="current-pricing col-xs-8">
 			<div class="row">
@@ -76,6 +78,15 @@
 				</div>
 			</div>
 		</div>
+		<div class="col-xs-4 april-pricing-details">
+			{{ if (comingSoonClass === '') { }}
+				<span>{{= obj.altPremium[obj._selectedFrequency][lhcText] }}</span>
+			{{ } }}
+			<a href="javascript:;" class="dual-pricing-learn-more">Learn more</a>
+		</div>
+		<div class="col-xs-8 current-pricing-details">
+			<span>{{= obj.premium[obj._selectedFrequency][lhcText] }}</span>
+		</div>
 	</div>
 </core_v1:js_template>
 
@@ -86,7 +97,6 @@
 	{{ comingSoonClass = ((productPremium.value && productPremium.value > 0) || (productPremium.text && productPremium.text.indexOf('$0.') < 0) || (productPremium.payableAmount && productPremium.payableAmount > 0))  ? '' : 'comingsoon' }}
 	{{ } }}
 	<div class="dual-pricing-container {{ if (obj.dropDatePassed === true) { }}dropDatePassed{{ } }} {{= comingSoonClass }}">
-		<div class="april-pricing">
 			<h3>${april1Header}</h3>
 			{{= renderedAltPriceTemplate }}
 			<span class="premiumsRising">Premiums are rising</span>

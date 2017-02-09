@@ -131,53 +131,13 @@
   }
 }
 
-/* Moreinfo Page */
-.moreInfoVisible[data-step="results"] {
-  .hasDualPricing {
-    h1.productName {
-      padding-top: 20px;
-    }
-
-    .dual-pricing-container {
-      display: flex;
-
-      .april-pricing,
-      .current-pricing {
-        border-radius: 10px;
-      }
-
-      .current-pricing {
-        background: @theme-accent-1;
-      }
-
-      // halve all the font sizes for april pricing
-      .april-pricing {
-        background: @theme-accent-3;
-      }
-
-
-      /* coming soon styles */
-      &.comingsoon {
-
-        .april-pricing {
-          div {
-            color: @white;
-          }
-        }
-
-        .current-pricing {
-          > * {
-            color: @white;
-          }
-        }
-      }
-    }
-  }
-}
-
 .priceAnimationStyles() {
   .current-pricing-done {
     background: lighten(@theme-accent-1, 30%);
+
+    .frequencyAmount {
+      color: @theme-dark;
+    }
   }
 
   // halve all the font sizes for april pricing
@@ -190,80 +150,133 @@
   }
 }
 
-.moreInfoVisible[data-step="results"] .more-info-content {
-  .hasDualPricing {
-    h1.productName {
-      padding-top: 20px;
-    }
+.moreInfoVisible[data-step="results"] {
+  .moreInfoDropdown,
+  .more-info-content {
+    .hasDualPricing {
 
-    .dual-pricing-container {
-      display: flex;
-
-      .april-pricing,
-      .current-pricing {
-        border-radius: 10px;
-        transition: all 0.65s ease;
-        padding-bottom: 10px;
+      .sidebar-widget {
+        display: none;
       }
+      .dual-pricing-container {
+        display: block;
+        align-items: initial;
 
-      .current-pricing {
-        margin-left: 10px;
-      }
+        .april-pricing,
+        .current-pricing {
+          border-radius: 10px;
+          transition: all 0.65s ease;
+          padding-bottom: 10px;
+          text-align: center;
 
-      .current-pricing-done {
-        border-left: initial;
+          @media(@xs-only) {
+            display: inline-block;
+          }
 
-        .row {
-          display: flex;
+          h3 {
+            margin-top: 5px;
+            margin-bottom: 0px;
+          }
 
-          .btn-container {
-            display: flex;
-            justify-content: center;
-            align-self: center;
-
-            a {
-              width: 100%;
-            }
+          h3,
+          .applyBy,
+          .premiumsRising {
+            font-size: 16px;
           }
         }
 
-        background: lighten(@theme-accent-1, 35%);
-
-        h3,
-        .applyBy,
-        .premiumsRising,
-        .lhcText {
-          color: @theme-accent-1;
+        .april-pricing,
+        .current-pricing,
+        .april-pricing-details {
+          text-align: center;
         }
 
+        /* override the shared module styling */
+        .current-pricing {
+          @media(@xs-only) {
+            width: 50%;
 
-        .frequencyAmount,
-        .cents{
-          color: @theme-dark;
+            .frequencyTitle {
+              display: none;
+            }
+          }
+          border-left: initial;
+          padding-left: initial;
+          margin-left: initial;
+
+          background: lighten(@theme-accent-1, 35%);
+
+          .frequencyAmount {
+            line-height: 40px;
+          }
+
+          > .row {
+            display: flex;
+
+            .btn-container {
+              display: flex;
+              align-items: center;
+              a {
+                width: 100%;
+              }
+            }
+          }
+
+          h3,
+          .applyBy,
+          .premiumsRising {
+            color: @theme-accent-1;
+          }
+
+          .lhcText {
+            display: none;
+          }
         }
-      }
 
-      // halve all the font sizes for april pricing
-      .april-pricing-done {
-        background: lighten(@theme-accent-3, 35%);
-
-        *,
-        .premiumsRising,
-        .lhcText,
-        .frequencyAmount {
-          color: @theme-accent-3;
+        .current-pricing-details {
+          font-size: 12px;
+          color: @gray;
         }
 
-        .dual-pricing-learn-more {
-          display: none;
-        }
-      }
+        .april-pricing {
 
-      /* coming soon styles */
-      &.comingsoon {
-        .priceAnimationStyles();
+          @media(@xs-only) {
+           width: 45%;
+            .dual-pricing-learn-more {
+              display: none;
+            }
+          }
+
+          margin-left: -10px;
+          margin-right: 10px;
+          .frequencyAmount {
+            font-size: 24px;
+
+            &.comingSoon {
+              line-height: 45px;
+            }
+          }
+
+          *,
+          .premiumsRising,
+          .frequencyAmount {
+            color: @white;
+          }
+        }
+
+        .april-pricing-done {
+          *,
+          .premiumsRising,
+          .frequencyAmount {
+            color: @theme-accent-3;
+          }
+        }
+
+        /* coming soon styles */
+        &.comingsoon {
+          .priceAnimationStyles();
+        }
       }
     }
   }
 }
-

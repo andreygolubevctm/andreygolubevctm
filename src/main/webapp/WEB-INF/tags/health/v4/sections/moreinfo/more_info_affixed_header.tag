@@ -4,7 +4,6 @@
 <core_v1:js_template id="moreInfoAffixedHeaderTemplate">
 	{{ var priceTemplate = meerkat.modules.templateCache.getTemplate($("#price-template")); }}
 	{{ obj.showAltPremium = false; obj.renderedPriceTemplate = priceTemplate(obj); }}
-
     <div class="col-xs-2">
         <div class="companyLogo {{= info.provider }}"></div>
     </div>
@@ -12,7 +11,7 @@
         <h3 class="noTopMargin productNames">{{= info.productTitle }}</h3>
     </div>
     <div class="col-xs-3 text-center">
-        {{= renderedPriceTemplate }}
+        {{ //  meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false) }}
     </div>
     <div class="col-xs-3 text-center">
         <div class="quote-reference-number"><h3>Quote Ref: <span class="transactionId">{{= obj.transactionId }}</span></h3></div>
