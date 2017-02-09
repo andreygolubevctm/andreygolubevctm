@@ -226,17 +226,16 @@
         /* CURRENT PRICING */
         /* override the shared module styling */
         .current-pricing {
-          @media(@xs-only) {
-            .frequencyTitle {
-              display: none;
-            }
-          }
+
           border-left: initial;
           padding-left: initial;
           margin-left: initial;
 
           background: lighten(@theme-accent-1, 35%);
 
+          .frequencyTitle {
+            display: none;
+          }
 
           &.no-background {
             background: none;
@@ -283,11 +282,6 @@
               display: none;
             }
 
-            .cents,
-            .dollarSign {
-              font-size: 12px;
-            }
-
             .dual-pricing-learn-more {
               display: none;
             }
@@ -297,6 +291,19 @@
             margin-left: -10px;
             margin-right: 10px;
           }
+
+
+          .cents,
+          .dollarSign {
+            @media(@lg) {
+              font-size: 16px;
+            }
+
+            @media(@xs) {
+              font-size: 12px;
+            }
+          }
+
 
           .frequencyAmount {
             font-size: 24px;
