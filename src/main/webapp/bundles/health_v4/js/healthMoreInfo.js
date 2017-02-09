@@ -328,8 +328,9 @@
                     .toggleClass('col-xs-6', $elements.moreInfoContainer.offset().top < calculatedHeight)
                     .toggleClass('col-xs-12', $elements.moreInfoContainer.offset().top >= calculatedHeight);
 
+
                 $elements.currentPricingDetails.toggleClass('hidden', $elements.moreInfoContainer.offset().top < calculatedHeight);
-                $elements.currentPricingDetails.toggleClass('no-background', $elements.moreInfoContainer.offset().top < calculatedHeight);
+                $elements.modalHeader.find('.current-pricing').toggleClass('no-background', $elements.moreInfoContainer.offset().top < calculatedHeight);
             }
 
             if(moreInfoDialogId && meerkat.modules.deviceMediaState.get() === 'xs') {
