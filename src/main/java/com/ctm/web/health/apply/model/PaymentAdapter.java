@@ -125,7 +125,7 @@ public class PaymentAdapter {
 
         final Claims claimsSameBankAccount;
         // Check if one of the providers then set to N
-        if (application.filter(a -> PROVIDERS_NO_SAME_BANK_CLAIMS_CHECK.contains(a.getProvider())).isPresent()) {
+        if (application.filter(a -> PROVIDERS_NO_SAME_BANK_CLAIMS_CHECK.contains(a.getProvider())).isPresent() && "cc".equals(paymentType)) {
             claimsSameBankAccount = Claims.N;
         } else {
             claimsSameBankAccount = bank.map(com.ctm.web.health.model.form.Bank::getClaims)
