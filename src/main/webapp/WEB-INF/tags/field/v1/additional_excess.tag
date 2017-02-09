@@ -14,6 +14,7 @@
 <%@ attribute name="increment" required="true" rtexprvalue="true" description="excess increment" %>
 <%@ attribute name="maxCount" required="true" rtexprvalue="true" description="maximum number of excesses to choose from" %>
 <%@ attribute name="additionalValues" required="false" rtexprvalue="true" description="comma deliminated extra values that wont work through an increment" %>
+<%@ attribute name="additionalAttributes" required="false" rtexprvalue="true" description="Additional attributes to be added to the select element" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}"/>
@@ -35,7 +36,7 @@
 <c:set var="findVal" value="value=\"${value}\""/>
 <c:set var="replaceVal" value="value='${value}' selected='selected'"/>
 
-<select name="${name}" id="${name}" class="${className}" <c:if test="${required}">required data-msg-required="Please choose ${title}"</c:if>>
+<select name="${name}" id="${name}" class="${className}" <c:if test="${required}">required data-msg-required="Please choose ${title}"</c:if> ${additionalAttributes}>
 
     <%-- Write the initial "please choose" option --%>
     <c:choose>

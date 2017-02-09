@@ -157,7 +157,8 @@
 				<div class="productSummary results">
 					<div class="compare-toggle-wrapper">
 						<input type="checkbox" class="compare-tick" data-productId="{{= obj.productId }}" id="features_compareTick_{{= obj.productId }}" />
-						<label for="features_compareTick_{{= obj.productId }}"></label>
+						<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Short List - {{= obj.brandCode }} | {{= obj.productId }}" quoteChar="\"" /></c:set>
+						<label for="features_compareTick_{{= obj.productId }}" ${analyticsAttr}></label>
 					</div>
 					<div class="clearfix">
 						{{= logo }}
@@ -180,7 +181,8 @@
 						<legend>Special Offer</legend>
 						{{= promotionText.replace('<b>SPECIAL OFFER:</b>', '') }}
 						{{ if (offerTermsContent.length > 0) { }}
-							<a class="small offerTerms" href="javascript:;">Conditions</a>
+						<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="nav button" quoteChar="\"" /></c:set>
+							<a class="small offerTerms" href="javascript:;" ${analyticsAttr}>Conditions</a>
 							<div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
 						{{ } }}
 					</fieldset>
@@ -194,8 +196,10 @@
 						{{= logo }}
 						<div class="compare-toggle-wrapper">
 							<input type="checkbox" class="compare-tick" data-productId="{{= obj.productId }}" id="price_compareTick_{{= obj.productId }}" />
-							<label for="price_compareTick_{{= obj.productId }}"></label>
-							<label for="price_compareTick_{{= obj.productId }}" class="compare-label"></label>
+							<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Short List - {{= obj.brandCode }} | {{= obj.productId }}" quoteChar="\"" /></c:set>
+							<label for="price_compareTick_{{= obj.productId }}" ${analyticsAttr}></label>
+							<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Short List - {{= obj.brandCode }} | {{= obj.productId }}" quoteChar="\"" /></c:set>
+							<label for="price_compareTick_{{= obj.productId }}" class="compare-label" ${analyticsAttr}></label>
 						</div>
 						<h2 class="hidden-xs productTitle">{{= productTitle }}</h2>
 
@@ -205,7 +209,8 @@
 						<div class="promotion small visible-sm">
 							<span class="icon icon-tag"></span>{{= specialOfferPrefix}}{{= promotionText }}
 							{{ if (offerTermsContent.length > 0) { }}
-								<a class="small offerTerms" href="javascript:;">Offer terms</a>
+							<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="nav button" quoteChar="\"" /></c:set>
+								<a class="small offerTerms" href="javascript:;" ${analyticsAttr}>Offer terms</a>
 								<div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
 							{{ } }}
 						</div>
@@ -222,7 +227,8 @@
 									<span class="frequencyName">Monthly</span> payment is not available for this product.
 								</div>
 
-								<a class="btn btn-cta btn-block btn-more-info hidden-xs hidden-md hidden-lg" href="javascript:;" data-productId="{{= obj.productId }}">More Info & Apply <span class="icon icon-arrow-right" /></a>
+								<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="nav button" quoteChar="\"" /></c:set>
+								<a class="btn btn-cta btn-block btn-more-info hidden-xs hidden-md hidden-lg" href="javascript:;" data-productId="{{= obj.productId }}" ${analyticsAttr}>More Info & Apply <span class="icon icon-arrow-right" /></a>
 							</div>
 
 							<div class="col-xs-12 col-sm-5 col-sm-pull-7 col-md-3 col-md-pull-4 col-lg-4 col-lg-pull-4 excess excessHome">
@@ -240,7 +246,8 @@
 							</div>
 
 							<div class="col-xs-12 col-md-5 col-lg-4 hidden-xs hidden-sm">
-								<a class="btn btn-cta btn-block btn-more-info" href="javascript:;" data-productId="{{= obj.productId }}">More Info & Apply <span class="icon icon-arrow-right" /></a>
+								<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="nav button" quoteChar="\"" /></c:set>
+								<a class="btn btn-cta btn-block btn-more-info" href="javascript:;" data-productId="{{= obj.productId }}" ${analyticsAttr}>More Info & Apply <span class="icon icon-arrow-right" /></a>
 							</div>
 						</div>
 						<div class="row">
@@ -255,7 +262,8 @@
 									<div class="promotion small hidden-sm">
 										<span class="icon icon-tag"></span>{{=specialOfferPrefix}}{{= promotionText }}
 										{{ if (offerTermsContent.length > 0) { }}
-											<a class="small hidden-xs offerTerms" href="javascript:;">Offer terms</a>
+											<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="nav button" quoteChar="\"" /></c:set>
+											<a class="small hidden-xs offerTerms" href="javascript:;" ${analyticsAttr}>Offer terms</a>
 											<div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
 										{{ } }}
 									</div>
@@ -452,7 +460,8 @@
 	<li>
 		<span class="active-product">
 			<input type="checkbox" class="compare-tick checked" data-productId="{{= products[i].productId }}" checked />
-			<label for="features_compareTick_{{= products[i].productId }}"></label>
+			<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Short List - {{= obj.brandCode }} | {{= obj.productId }}" quoteChar="\"" /></c:set>
+			<label for="features_compareTick_{{= products[i].productId }}" ${analyticsAttr}></label>
 		</span>
 
 		<span class="name">
@@ -533,7 +542,8 @@
 			{{ if(meerkat.modules.compare.isCompareOpen() === true) { }}
 				<a class="btn btn-compare-clear clear-compare btn-block" href="javascript:;">Clear Products<span class="icon icon-arrow-right"></span></a>
 			{{ } else { }}
-				<a class="btn btn-features-compare enter-compare-mode btn-block" href="javascript:;">Compare Products<span class="icon icon-arrow-right"></span></a>
+				<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="nav button" quoteChar="\"" /></c:set>
+				<a class="btn btn-features-compare enter-compare-mode btn-block" href="javascript:;" ${analyticsAttr}>Compare Products<span class="icon icon-arrow-right"></span></a>
 			{{ } }}
 		</div>
 	{{ } }}
@@ -554,8 +564,9 @@
 			{{= comparedItems }}
 		</ul>
 		{{ if(comparedResultsCount > 1) { }}
+			<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="nav button" quoteChar="\"" /></c:set>
 			<ul class="nav navbar-nav navbar-right">
-				<li class=""><a href="javascript:void(0);" class="compare-list enter-compare-mode">Compare Products <span class="icon icon-arrow-right"></span></a></li>
+				<li class=""><a href="javascript:void(0);" class="compare-list enter-compare-mode" ${analyticsAttr}>Compare Products <span class="icon icon-arrow-right"></span></a></li>
 			</ul>
 		{{ } }}
 	{{ } }}
@@ -652,7 +663,8 @@
 		<div class="promotion">
 			<span class="icon icon-phone-hollow"></span> {{= offlinePromotionText }}
 			{{ if (offerTermsContent.length > 0) { }}
-				<a class="small offerTerms" href="javascript:;">Offer terms</a>
+				<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="nav button" quoteChar="\"" /></c:set>
+				<a class="small offerTerms" href="javascript:;" ${analyticsAttr}>Offer terms</a>
 				<div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
 			{{ } }}
 		</div>

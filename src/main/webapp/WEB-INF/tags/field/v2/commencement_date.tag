@@ -41,7 +41,7 @@
 </c:if>
 
 <%-- HTML --%>
-<field_v2:calendar mobileClassName="${mobileClassName}" mode="${mode}" validateMinMax="true" xpath="${xpath}" required="true" title="commencement" minDate="${nowDate}" maxDate="${nowPlusMonthDate}" startView="0" nonLegacy="true"/>
+<field_v2:calendar mobileClassName="${mobileClassName}" mode="${mode}" validateMinMax="true" xpath="${xpath}" required="true" title="commencement" minDate="${nowDate}" maxDate="${nowPlusMonthDate}" startView="0" nonLegacy="true" analyticsPrefix="Commencement"/>
 <c:if test="${includeMobile eq 'true'}">
 	<field_v2:mobile_commencement_date_dropdown mobileClassName="hidden-md hidden-lg" xpath="${xpath}Dropdown" required="true" title="commencement"/>
 </c:if>
