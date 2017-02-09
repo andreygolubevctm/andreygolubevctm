@@ -29,7 +29,7 @@
                                 <span class="dollarSign">$</span>{{=  premiumSplit[0].replace('$', '') }}<span class="cents">.{{= premiumSplit[1] }}</span>
                                 <span class="frequencyTitle">
                                     {{= freq === 'annually' ? 'PER YEAR' : '' }}
-                                    {{= freq.toLowerCase() === 'halfyearly' ? 'PER HALF YEAR' : '' }}
+                                    {{= freq.toLowerCase() === 'halfyearly' ? ''PER HALF YEAR' : '' }}
                                     {{= freq === 'quarterly' ? 'PER QUARTER' : '' }}
                                     {{= freq === 'monthly' ? 'PER MONTH' : '' }}
                                     {{= freq === 'fortnightly' ? 'PER F/NIGHT' : '' }}

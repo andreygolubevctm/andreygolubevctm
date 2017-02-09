@@ -274,11 +274,14 @@
             extras: $('.GeneralHealth_container'),
             quickSelectContainer: $('.quickSelectContainer'),
             moreInfoContainer: $('.moreInfoTopLeftColumn'),
-            modalHeader: $('.modal-header')
+            modalHeader: $('.modal-header'),
+            pricingContainer: $('.mobile-pricing, .logo-header'),
+            currentPricingContainer: $('.current-container'),
+            currentPricingDetails: $('.current-pricing-details')
         };
 
         if (meerkat.site.healthAlternatePricingActive) {
-            $('.mobile-pricing, .logo-header').removeClass('col-xs-6').addClass('col-xs-12');
+            $elements.pricingContainer.removeClass('col-xs-6').addClass('col-xs-12');
         }
 
         _setTabs();
@@ -314,7 +317,20 @@
 
             $elements.modalHeader.find('.lhcText').toggleClass('hidden', $elements.moreInfoContainer.offset().top < calculatedHeight);
             $elements.modalHeader.find('.printableBrochuresLink').toggleClass('hidden', $elements.moreInfoContainer.offset().top < calculatedHeight);
-            $elements.modalHeader.find('.april-pricing').toggleClass('hidden', $elements.moreInfoContainer.offset().top < calculatedHeight);
+
+            if (meerkat.site.healthAlternatePricingActive) {
+                $elements.modalHeader.find('.april-container').toggleClass('hidden', $elements.moreInfoContainer.offset().top < calculatedHeight);
+                $elements.currentPricingContainer
+                    .toggleClass('col-xs-12', $elements.moreInfoContainer.offset().top < calculatedHeight)
+                    .toggleClass('col-xs-6', $elements.moreInfoContainer.offset().top >= calculatedHeight);
+
+                $elements.pricingContainer
+                    .toggleClass('col-xs-6', $elements.moreInfoContainer.offset().top < calculatedHeight)
+                    .toggleClass('col-xs-12', $elements.moreInfoContainer.offset().top >= calculatedHeight);
+
+                $elements.currentPricingDetails.toggleClass('hidden', $elements.moreInfoContainer.offset().top < calculatedHeight);
+                $elements.currentPricingDetails.toggleClass('no-background', $elements.moreInfoContainer.offset().top < calculatedHeight);
+            }
 
             if(moreInfoDialogId && meerkat.modules.deviceMediaState.get() === 'xs') {
                 meerkat.modules.dialogs.resizeDialog(moreInfoDialogId);

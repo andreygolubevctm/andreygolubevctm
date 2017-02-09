@@ -79,33 +79,57 @@
 			</div>
 		</div>
 		<div class="col-xs-4 april-pricing-details">
-			{{ if (comingSoonClass === '') { }}
+			{{ if (comingSoonClass === '' && !_.isUndefined(obj.altPremium[obj._selectedFrequency]) && !_.isUndefined(obj.altPremium[obj._selectedFrequency][lhcText])) { }}
 				<span>{{= obj.altPremium[obj._selectedFrequency][lhcText] }}</span>
 			{{ } }}
 			<a href="javascript:;" class="dual-pricing-learn-more">Learn more</a>
 		</div>
 		<div class="col-xs-8 current-pricing-details">
+			{{ if (!_.isUndefined(obj.premium[obj._selectedFrequency][lhcText])) { }}
 			<span>{{= obj.premium[obj._selectedFrequency][lhcText] }}</span>
+			{{ } }}
 		</div>
 	</div>
 </core_v1:js_template>
 
 <core_v1:js_template id="dual-pricing-moreinfo-xs-template">
 	{{ var comingSoonClass = ''; }}
+	{{ var lhcText = meerkat.site.isCallCentreUser ? 'pricing' : 'lhcfreepricing'; }}
+
 	{{ if (!_.isUndefined(obj.altPremium[obj._selectedFrequency])) { }}
-	{{ var productPremium = obj.altPremium[obj._selectedFrequency] }}
-	{{ comingSoonClass = ((productPremium.value && productPremium.value > 0) || (productPremium.text && productPremium.text.indexOf('$0.') < 0) || (productPremium.payableAmount && productPremium.payableAmount > 0))  ? '' : 'comingsoon' }}
+		{{ var productPremium = obj.altPremium[obj._selectedFrequency] }}
+		{{ comingSoonClass = ((productPremium.value && productPremium.value > 0) || (productPremium.text && productPremium.text.indexOf('$0.') < 0) || (productPremium.payableAmount && productPremium.payableAmount > 0))  ? '' : 'comingsoon' }}
 	{{ } }}
 	<div class="dual-pricing-container {{ if (obj.dropDatePassed === true) { }}dropDatePassed{{ } }} {{= comingSoonClass }}">
-			<h3>${april1Header}</h3>
-			{{= renderedAltPriceTemplate }}
-			<span class="premiumsRising">Premiums are rising</span>
-			<a href="javascript:;" class="dual-pricing-learn-more">learn more</a>
-		</div>
-		<div class="current-pricing">
-			<h3>Current {{= obj._selectedFrequency }} Pricing</h3>
-			{{= renderedPriceTemplate }}
-			<span class="applyBy">Apply by {{= obj.dropDeadDateFormatted }}</span>
+		<div class="row">
+			<div class="col-xs-6 april-container">
+				<div class="april-pricing">
+					<h3>${april1Header}</h3>
+					{{= renderedAltPriceTemplate }}
+					<span class="premiumsRising">Premiums are rising</span>
+				</div>
+				<div class="april-pricing-details">
+					{{ if (comingSoonClass === '') { }}
+						<span>{{= obj.altPremium[obj._selectedFrequency][lhcText] }}</span>
+					{{ } }}
+					<div>
+						<a href="javascript:;" class="dual-pricing-learn-more">learn more</a>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-6 current-container">
+				<div class="current-pricing">
+					<h3>Current {{= obj._selectedFrequency }} Pricing</h3>
+					{{= renderedPriceTemplate }}
+
+					<span class="applyBy">Apply by {{= obj.dropDeadDateFormatted }}</span>
+				</div>
+				<div class="current-pricing-details">
+					{{ if (!_.isUndefined(obj.premium[obj._selectedFrequency][lhcText])) { }}
+					<span>{{= obj.premium[obj._selectedFrequency][lhcText] }}</span>
+					{{ } }}
+				</div>
+			</div>
 		</div>
 	</div>
 </core_v1:js_template>

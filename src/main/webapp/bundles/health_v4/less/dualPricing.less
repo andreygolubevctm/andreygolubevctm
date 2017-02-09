@@ -151,6 +151,14 @@
 }
 
 .moreInfoVisible[data-step="results"] {
+
+  @media(@xs-only) {
+    .logo-header {
+      display: flex;
+      margin-bottom: 20px;
+    }
+  }
+
   .moreInfoDropdown,
   .more-info-content {
     .hasDualPricing {
@@ -162,6 +170,14 @@
         display: block;
         align-items: initial;
 
+        .april-container {
+          padding-right: 5px;
+        }
+
+        .current-container {
+          padding-left: 0px;
+        }
+
         .april-pricing,
         .current-pricing {
           border-radius: 10px;
@@ -169,19 +185,25 @@
           padding-bottom: 10px;
           text-align: center;
 
-          @media(@xs-only) {
-            display: inline-block;
-          }
 
           h3 {
             margin-top: 5px;
             margin-bottom: 0px;
+
+            @media(@xs-only) {
+              padding-top: 10px;
+            }
           }
+
 
           h3,
           .applyBy,
           .premiumsRising {
             font-size: 16px;
+
+            @media(@xs-only) {
+              font-size: 14px;
+            }
           }
         }
 
@@ -191,11 +213,10 @@
           text-align: center;
         }
 
+        /* CURRENT PRICING */
         /* override the shared module styling */
         .current-pricing {
           @media(@xs-only) {
-            width: 50%;
-
             .frequencyTitle {
               display: none;
             }
@@ -205,6 +226,10 @@
           margin-left: initial;
 
           background: lighten(@theme-accent-1, 35%);
+
+          &.no-background {
+            background: none;
+          }
 
           .frequencyAmount {
             line-height: 40px;
@@ -233,27 +258,42 @@
           }
         }
 
+        .april-pricing-details,
         .current-pricing-details {
           font-size: 12px;
           color: @gray;
         }
 
+        /* APRIL PRICING */
         .april-pricing {
 
           @media(@xs-only) {
-           width: 45%;
+            .frequencyTitle {
+              display: none;
+            }
+
+            .cents,
+            .dollarSign {
+              font-size: 12px;
+            }
+
             .dual-pricing-learn-more {
               display: none;
             }
           }
 
-          margin-left: -10px;
-          margin-right: 10px;
+          @media(@sm) {
+            margin-left: -10px;
+            margin-right: 10px;
+          }
+
           .frequencyAmount {
             font-size: 24px;
 
-            &.comingSoon {
-              line-height: 45px;
+            @media(@sm) {
+              &.comingSoon {
+                line-height: 45px;
+              }
             }
           }
 
@@ -272,10 +312,8 @@
           }
         }
 
-        /* coming soon styles */
-        &.comingsoon {
-          .priceAnimationStyles();
-        }
+        /* animation styles */
+        .priceAnimationStyles();
       }
     }
   }
