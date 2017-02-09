@@ -9,10 +9,14 @@
 <c:if test="${false}">
 	<c:set var="fromBrochure" scope="request" value="${true}"/>
 </c:if>
+
 <c:set var="priceDisplayMode"><content:get key="resultsDisplayMode" /></c:set>
+<c:set var="priceDisplayModeForXSandSM"><content:get key="resultsDisplayModeForXSandSM" /></c:set>
 <c:if test="${not empty param.display and (param.display eq 'price' or param.display eq 'features')}">
 	<c:set var="priceDisplayMode" value="${param.display}"/>
+	<c:set var="priceDisplayModeForXSandSM" value="${param.display}"/>
 </c:if>
+
 <c:set var="defaultToHomeQuote"><content:get key="makeHomeQuoteMainJourney" /></c:set>
 
 {
@@ -34,7 +38,8 @@
 		direction: 'right'
 	},
 	resultOptions: {
-		displayMode: "<c:out value="${priceDisplayMode}" />"
+		displayMode: "<c:out value="${priceDisplayMode}" />",
+		displayModeForXSandSM: "<c:out value="${priceDisplayModeForXSandSM}" />"
 	},
 	commencementDate : '${data.home.options.commencementDate}'
 }
