@@ -2,6 +2,9 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<%-- VARIABLES --%>
+<c:set var="navBtnAnalAttribute"><field_v1:analytics_attr analVal="nav button" quoteChar="\"" /></c:set>
+
 <%-- The following are hidden fields used by filters --%>
 <field_v1:hidden xpath="quote/paymentType" defaultValue="annual" />
 <field_v1:array_select
@@ -136,9 +139,9 @@
 		<%-- Main call to action button. --%>
 		{{ var mainCallToActionButton = '' }}
 		{{ if (obj.availableOnline == true) { }}
-		{{ mainCallToActionButton = '<a target="_blank" href="javascript:;" class="btn btn-lg btn-primary btn-cta btn-block btn-more-info-apply '+ctaBtnClass+'" data-productId="'+obj.productId+'">'+ctaBtnText+'<span class="icon-arrow-right"></span></a>' }}
+		{{ mainCallToActionButton = '<a target="_blank" href="javascript:;" class="btn btn-lg btn-primary btn-cta btn-block btn-more-info-apply '+ctaBtnClass+'" data-productId="'+obj.productId+'" ${navBtnAnalAttribute}>'+ctaBtnText+'<span class="icon-arrow-right"></span></a>' }}
 		{{ } else { }}
-		{{ mainCallToActionButton = '<div class="btnContainer"><a class="btn btn-lg btn-cta btn-block btn-call-actions btn-calldirect" data-callback-toggle="calldirect" href="javascript:;" data-productId="'+obj.productId+'">Call Insurer Direct</a></div>' }}
+		{{ mainCallToActionButton = '<div class="btnContainer"><a class="btn btn-lg btn-cta btn-block btn-call-actions btn-calldirect" data-callback-toggle="calldirect" href="javascript:;" data-productId="'+obj.productId+'" ${navBtnAnalAttribute}>Call Insurer Direct</a></div>' }}
 		{{ } }}
 
 		<%-- FEATURES MODE Templates --%>
@@ -171,8 +174,11 @@
 				<div class="resultInsert featuresMode">
 					<div class="productSummary results">
 						<div class="compare-toggle-wrapper">
-							<input type="checkbox" class="compare-tick" data-productId="{{= obj.productId }}" id="features_compareTick_{{= obj.productId }}" />
-							<label for="features_compareTick_{{= obj.productId }}"></label>
+							<c:set
+									var="analAttribute"><field_v1:analytics_attr analVal="Short List - {{= obj.brandCode }}|{{= obj.productId }}"
+																				 quoteChar="\"" /></c:set>
+							<input type="checkbox" class="compare-tick" data-productId="{{= obj.productId }}" id="features_compareTick_{{= obj.productId }}" ${analAttribute} />
+							<label for="features_compareTick_{{= obj.productId }}" ${analAttribute}></label>
 						</div>
 
 						<div class="clearfix">
@@ -199,7 +205,7 @@
 							<legend>Special Offer</legend>
 							{{= promotionText }}
 							{{ if (offerTermsContent.length > 0) { }}
-							<a class="small offerTerms" href="javascript:;">Conditions</a>
+							<a class="small offerTerms" href="javascript:;" ${navBtnAnalAttribute}>Conditions</a>
 							<div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
 							{{ } }}
 						</fieldset>
@@ -224,7 +230,7 @@
 							<div class="promotion visible-sm">
 								<span class="icon icon-tag"></span> {{= promotionText }}
 								{{ if (offerTermsContent.length > 0) { }}
-								<a class="small offerTerms" href="javascript:;">Offer terms</a>
+								<a class="small offerTerms" href="javascript:;" ${navBtnAnalAttribute}>Offer terms</a>
 								<div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
 								{{ } }}
 							</div>
@@ -250,14 +256,14 @@
 									</div>
 								</div>
 								<div class="col-xs-12 col-md-5 col-lg-4 hidden-xs">
-									<a class="btn btn-primary btn-cta btn-block btn-more-info" href="javascript:;" data-productId="{{= obj.productId }}">More Info & Apply <span class="icon icon-arrow-right" /></a>
+									<a class="btn btn-primary btn-cta btn-block btn-more-info" href="javascript:;" data-productId="{{= obj.productId }}" ${navBtnAnalAttribute}>More Info & Apply <span class="icon icon-arrow-right" /></a>
 								</div>
 							</div>
 							{{ if (promotionText.length > 0) { }}
 							<div class="promotion hidden-sm">
 								<span class="icon icon-tag"></span> {{= promotionText }}
 								{{ if (offerTermsContent.length > 0) { }}
-								<a class="small hidden-xs offerTerms" href="javascript:;">Offer terms</a>
+								<a class="small hidden-xs offerTerms" href="javascript:;" ${navBtnAnalAttribute}>Offer terms</a>
 								<div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
 								{{ } }}
 							</div>
@@ -550,7 +556,7 @@
 	</ul>
 	{{ if(comparedResultsCount > 1) { }}
 	<ul class="nav navbar-nav navbar-right">
-		<li class=""><a href="javascript:void(0);" class="compare-list enter-compare-mode">Compare Products <span class="icon icon-arrow-right"></span></a></li>
+		<li class=""><a href="javascript:void(0);" class="compare-list enter-compare-mode" ${navBtnAnalAttribute}>Compare Products <span class="icon icon-arrow-right"></span></a></li>
 	</ul>
 	{{ } }}
 	{{ } }}
@@ -560,10 +566,10 @@
 <!-- Call action buttons. -->
 <core_v1:js_template id="call-action-buttons-template">
 	<%-- Call Insurer Direct action button. --%>
-	{{ var callInsurerDirectActionButton = '<div class="btnContainer"><a class="btn btn-sm btn-call btn-block btn-call-actions btn-calldirect" data-callback-toggle="calldirect" href="javascript:;" data-productId="'+obj.productId+'">Call Direct</a></div>' }}
+	{{ var callInsurerDirectActionButton = '<div class="btnContainer"><a class="btn btn-sm btn-call btn-block btn-call-actions btn-calldirect" data-callback-toggle="calldirect" href="javascript:;" data-productId="'+obj.productId+'" ${navBtnAnalAttribute}>Call Direct</a></div>' }}
 
 	<%-- Call Me Back action button. --%>
-	{{ var callMeBackActionButton = '<div class="btnContainer"><a class="btn btn-sm btn-back btn-block btn-call-actions btn-callback" data-callback-toggle="callback" href="javascript:;" data-productId="'+obj.productId+'">Get a Call Back</a></div>' }}
+	{{ var callMeBackActionButton = '<div class="btnContainer"><a class="btn btn-sm btn-back btn-block btn-call-actions btn-callback" data-callback-toggle="callback" href="javascript:;" data-productId="'+obj.productId+'" ${navBtnAnalAttribute}>Get a Call Back</a></div>' }}
 
 	{{ var colClass = 'col-xs-12'; }}
 

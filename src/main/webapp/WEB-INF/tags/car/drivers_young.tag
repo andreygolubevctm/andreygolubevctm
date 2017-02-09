@@ -25,10 +25,12 @@
 		<form_v2:fieldset legend="Youngest Driver" id="${name}FieldSet">
 
 			<form_v2:row label="Will anyone younger than the regular driver be driving this car? (This may include a spouse or household member)" helpId="12" id="quote_drivers_youngDriverRow">
+				<c:set var="analAttribute"><field_v1:analytics_attr analVal="Young Driver" quoteChar="\"" /></c:set>
 				<field_v2:array_radio xpath="${xpath}/exists"
 								required="true"
 								items="Y=Yes,N=No"
-								title="if any driver (including a spouse or household member) is younger than the Regular Driver"/>
+								title="if any driver (including a spouse or household member) is younger than the Regular Driver"
+								additionalLabelAttributes="${analAttribute}" />
 			</form_v2:row>
 
 			<div id="${name}ToggleArea" class="show_${displaySuffix}">
@@ -53,11 +55,13 @@
 			</div>
 
 				<form_v2:row label="You may be able to reduce the premium if you restrict the age of the drivers" id="quote_restricted_ageRow">
+					<c:set var="analAttribute"><field_v1:analytics_attr analVal="Age 2 Driver" quoteChar="\"" /></c:set>
 					<field_v2:import_select xpath="quote/options/driverOption"
 										url="/WEB-INF/option_data/driver_option.html"
 										title="a driver age restriction option"
 										className="driver_option"
-										required="true" />
+										required="true"
+										additionalAttributes="${analAttribute}" />
 				</form_v2:row>
 
 		</form_v2:fieldset>

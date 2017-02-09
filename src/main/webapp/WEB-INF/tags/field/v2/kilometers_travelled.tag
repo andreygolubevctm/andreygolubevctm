@@ -10,6 +10,7 @@
 <%@ attribute name="className" 	required="false" rtexprvalue="true"	 description="additional css class attribute" %>
 <%@ attribute name="title" 		required="false" rtexprvalue="true"  description="title of the element" %>
 <%@ attribute name="placeHolder" required="false" rtexprvalue="true"  description="placeholder of the element" %>
+<%@ attribute name="additionalAttributes" required="false" rtexprvalue="true"  description="Additional attributes to be passed to the input field" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
@@ -27,9 +28,7 @@
 
 <%-- HTML --%>
 <c:set var="additionalAttributes">
-    <c:if test="${required}"> <%-- TODO: digitsIgnore may not be required. --%>
-        data-msg-required='${error_message}' data-rule-digitsIgnoreComma='true' data-msg-digitsIgnoreComma='${error_message}' <c:if test="${name eq 'quote_drivers_young_annualKilometres'}">data-rule-youngRegularDriversAnnualKilometersCheck='true'</c:if>
-    </c:if>
+    ${additionalAttributes} <c:if test="${required}"> data-msg-required='${error_message}' data-rule-digitsIgnoreComma='true' data-msg-digitsIgnoreComma='${error_message}' <c:if test="${name eq 'quote_drivers_young_annualKilometres'}">data-rule-youngRegularDriversAnnualKilometersCheck='true'</c:if></c:if>
 </c:set>
 
 <field_v2:input type="${inputType}" xpath="${xpath}" required="${required}" className="numeric ${className}" maxlength="${maxLength}" title="${title}" pattern="[0-9]*" placeHolder="${placeHolder}" formattedInteger="true" additionalAttributes="${additionalAttributes}" />

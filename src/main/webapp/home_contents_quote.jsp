@@ -134,7 +134,6 @@
 						<ul class="dropdown-menu">
 						</ul>
 					</li>
-					<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="nav button" quoteChar="\"" /></c:set>
 					<li class="filter-pricemode"><a href="javascript:void(0);" ${analyticsAttr}><span class="icon icon-th-list"></span> Quick price</a></li>
 					<li class="filter-featuresmode"><a href="javascript:void(0);" ${analyticsAttr}><span class="icon icon-th-vert"></span> Product features</a></li>
 					<li class="back-to-price-mode hidden"><a href="javascript:void(0);"><span class="icon icon-arrow-left"></span> Back</a></li>
