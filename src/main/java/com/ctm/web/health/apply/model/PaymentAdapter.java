@@ -22,9 +22,15 @@ import com.ctm.web.health.model.form.*;
 import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
+import static java.util.Arrays.asList;
+
 public class PaymentAdapter {
+
+    private static final List<String> PROVIDERS_NO_SAME_BANK_CLAIMS_CHECK = asList("BUD", "FRA", "GMH", "AHM", "QTU", "NIB");
+
 
     public static Payment createPayment(Optional<HealthQuote> quote) {
         final Optional<com.ctm.web.health.model.form.Payment> payment = quote.map(HealthQuote::getPayment);
@@ -34,7 +40,7 @@ public class PaymentAdapter {
                     createCreditCard(quote.map(HealthQuote::getPayment)),
                     createCreditIppCreditCard(quote.map(HealthQuote::getPayment)),
                     createGatewayCreditCard(quote.map(HealthQuote::getPayment)),
-                    createBank(quote.map(HealthQuote::getPayment)),
+                    createBank(quote.map(HealthQuote::getPayment), quote.map(HealthQuote::getApplication)),
                     createMedicare(quote.map(HealthQuote::getPayment)
                             .map(com.ctm.web.health.model.form.Payment::getMedicare)),
                     payment.map(com.ctm.web.health.model.form.Payment::getDetails)
@@ -110,14 +116,23 @@ public class PaymentAdapter {
         }
     }
 
-    protected static Bank createBank(Optional<com.ctm.web.health.model.form.Payment> payment) {
+    protected static Bank createBank(Optional<com.ctm.web.health.model.form.Payment> payment, Optional<Application> application) {
+
         final String paymentType = payment.map(com.ctm.web.health.model.form.Payment::getDetails)
                 .map(PaymentDetails::getType)
                 .orElse(null);
         final Optional<com.ctm.web.health.model.form.Bank> bank = payment.map(com.ctm.web.health.model.form.Payment::getBank);
-        final Claims claimsSameBankAccount = bank.map(com.ctm.web.health.model.form.Bank::getClaims)
-                .map(Claims::valueOf)
-                .orElse(Claims.N);
+
+        final Claims claimsSameBankAccount;
+        // Check if one of the providers then set to N
+        if (application.filter(a -> PROVIDERS_NO_SAME_BANK_CLAIMS_CHECK.contains(a.getProvider())).isPresent()) {
+            claimsSameBankAccount = Claims.N;
+        } else {
+            claimsSameBankAccount = bank.map(com.ctm.web.health.model.form.Bank::getClaims)
+                    .map(Claims::valueOf)
+                    .orElse(Claims.N);
+        }
+
         final Claims withRefund = payment.map(com.ctm.web.health.model.form.Payment::getDetails)
                 .map(PaymentDetails::getClaims)
                 .map(Claims::valueOf)
