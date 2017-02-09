@@ -49,7 +49,7 @@
 		try {
 			var displayMode = 'price';
 			if(typeof meerkat.site != 'undefined' && typeof meerkat.site.resultOptions != 'undefined') {
-				displayMode = meerkat.site.resultOptions[_.indexOf(["xs","sm"],meerkat.modules.deviceMediaState.get()) > -1 ? "displayMode" : "displayModeForXSandSM"];
+				displayMode = meerkat.site.resultOptions[_.indexOf(["xs","sm"],meerkat.modules.deviceMediaState.get()) > -1 ? "displayModeForXSandSM" : "displayMode"];
 			}
 
 			var price = {
