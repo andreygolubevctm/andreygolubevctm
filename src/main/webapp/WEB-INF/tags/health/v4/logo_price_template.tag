@@ -22,27 +22,10 @@
 				{{ var textPricing = premium.pricing ? premium.pricing : 'Includes rebate of ' + formatCurrency(premium.rebateAmount) + ' & LHC loading of ' + formatCurrency(premium.lhcAmount) }}
 				<div class="frequency {{=freq}} {{= obj._selectedFrequency === freq.toLowerCase() ? '' : 'displayNone' }}" data-text="{{= priceText }}" data-lhcfreetext="{{= priceLhcfreetext }}">
 					{{ if ((premium.value && premium.value > 0) || (premium.text && premium.text.indexOf('$0.') < 0) || (premium.payableAmount && premium.payableAmount > 0)) { }}
-                        {{ if (meerkat.modules.deviceMediaState.get() !== 'xs' || (meerkat.modules.deviceMediaState.get() === 'xs' && obj.showAltPremium === false)) { }}
-                            <div class="frequencyAmount">
-                                {{ var premiumSplit = (typeof mode === "undefined" || mode != "lhcInc" ? priceLhcfreetext : priceText) }}
-                                {{ premiumSplit = premiumSplit.split(".") }}
-                                <span class="dollarSign">$</span>{{=  premiumSplit[0].replace('$', '') }}<span class="cents">.{{= premiumSplit[1] }}</span>
-                                <span class="frequencyTitle">
-                                    {{= freq === 'annually' ? 'PER YEAR' : '' }}
-                                    {{= freq.toLowerCase() === 'halfyearly' ? 'PER HALF YEAR' : '' }}
-                                    {{= freq === 'quarterly' ? 'PER QUARTER' : '' }}
-                                    {{= freq === 'monthly' ? 'PER MONTH' : '' }}
-                                    {{= freq === 'fortnightly' ? 'PER F/NIGHT' : '' }}
-                                    {{= freq === 'weekly' ? 'PER WEEK' : '' }}
-                                </span>
-                            </div>
-                            <div class="lhcText">{{= typeof mode === "undefined" || mode != "lhcInc" ? textLhcFreePricing : textPricing }}</div>
-                        {{ } else { }}
-                            <span class="frequencyAmount">
-                                {{ var premiumSplit = (typeof mode === "undefined" || mode != "lhcInc" ? priceLhcfreetext : priceText) }}
-                                {{ premiumSplit = premiumSplit.split(".") }}
-                                <span class="dollarSign">$</span>{{=  premiumSplit[0].replace('$', '') }}<span class="cents">.{{= premiumSplit[1] }}</span>
-                            </span>
+                        <span class="frequencyAmount">
+                            {{ var premiumSplit = (typeof mode === "undefined" || mode != "lhcInc" ? priceLhcfreetext : priceText) }}
+                            {{ premiumSplit = premiumSplit.split(".") }}
+                            <span class="dollarSign">$</span>{{=  premiumSplit[0].replace('$', '') }}<span class="cents">.{{= premiumSplit[1] }}</span>
                             <span class="frequencyTitle">
                                 {{= freq === 'annually' ? 'per year' : '' }}
                                 {{= freq.toLowerCase() === 'halfyearly' ? 'per half year' : '' }}
@@ -50,11 +33,11 @@
                                 {{= freq === 'monthly' ? 'per month' : '' }}
                                 {{= freq === 'fortnightly' ? 'per f/night' : '' }}
                                 {{= freq === 'weekly' ? 'per week' : '' }}
-                                {{= typeof mode === "undefined" || mode != "lhcInc" ? textLhcFreePricing : textPricing }}
                             </span>
-                        {{ } }}
+                            <div class="lhcText">{{= typeof mode === "undefined" || mode != "lhcInc" ? textLhcFreePricing : textPricing }}</div>
+                        </span>
 					{{ } else { }}
-					<div class="frequencyAmount comingSoon">Coming Soon</div>
+					<div class="frequencyAmount comingSoon">New price not yet released</div>
 					{{ } }}
 					{{ if (typeof showRoundingText !== 'undefined' && showRoundingText === true) { }}
 					<div class="rounding">Premium may vary slightly due to rounding</div>

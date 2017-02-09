@@ -40,12 +40,9 @@
 				{{= renderedAltPriceTemplate }}
 			</div>
 			<div class="altPriceDetailsContainer">
-				<span class="deadline">${april1Header}</span>
+				<span class="deadline">Premium rise ${april1Header}</span>
 				<a href="javascript:;" class="dual-pricing-learn-more">learn more</a>
 			</div>
-		</div>
-		<div class="current-pricing">
-			{{= renderedPriceTemplate }}
 		</div>
 	</div>
 </core_v1:js_template>

@@ -57,24 +57,19 @@
 /* Results Page */
 [data-step="results"] {
 
-  .resultInsert .productSummary .dual-pricing-container {
+  .resultInsert .dual-pricing-container {
     .april-pricing {
-      border-bottom: 1px solid @dual-pricing-border-colour;
-      padding-bottom: 10px;
-      margin-bottom: 10px;
+      margin-top: 15px;
 
 
       .deadline,
       .frequencyAmount,
       .dollarSign,
       .cents {
-        color: @dual-pricing-border-colour;
+        color: @gray;
       }
 
       .price.premium {
-        padding-right: 15px;
-        float: right;
-
         .frequencyAmount {
           font-size: 28px;
         }
@@ -82,10 +77,12 @@
 
       .dollarSign {
         font-size: 15px;
+        vertical-align: super;
       }
 
       .cents {
         font-size: 14px;
+        vertical-align: super;
       }
 
       .frequencyTitle,
@@ -94,13 +91,26 @@
       }
 
       .altPriceContainer {
-        width: 50%;
-        display: inline-block;
+        text-align: center;
+
+        @media (@sm) {
+          display: inline-block;
+          float: left;
+          width: 50%;
+        }
       }
 
       .altPriceDetailsContainer {
-        width: 45%;
-        display:inline-block;
+        text-align: center;
+
+        .dual-pricing-learn-more {
+          display: block;
+        }
+
+        @media (@sm) {
+          display: inline-block;
+          width: 45%;
+        }
       }
     }
 
