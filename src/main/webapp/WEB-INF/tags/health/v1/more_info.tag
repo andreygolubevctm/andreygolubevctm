@@ -7,12 +7,7 @@
 </c:set>
 
 <%-- Setup variables needed for dual pricing --%>
-<jsp:useBean id="healthPriceDetailService" class="com.ctm.web.health.services.HealthPriceDetailService" scope="page" />
-<c:set var="healthAlternatePricingActive" value="${healthPriceDetailService.isAlternatePriceActive(pageContext.getRequest())}" />
-
-<c:if test="${healthAlternatePricingActive eq true}">
-	<c:set var="healthAlternatePricingMonth" value="${healthPriceDetailService.getAlternatePriceMonth(pageContext.getRequest())}" />
-</c:if>
+<health_v1:dual_pricing_settings />
 
 <%-- MORE INFO CALL TO ACTION BAR TEMPLATE --%>
 <%-- MORE INFO FOOTER --%>
@@ -38,7 +33,7 @@
 	{{ obj.displayLogo = false; }} <%-- Turns off the logo from the template --%>
 
 	<%-- If dual pricing is enabled, update the template --%>
-	{{ if (meerkat.site.healthAlternatePricingActive === true && meerkat.site.isCallCentreUser === true) { }}
+	{{ if (meerkat.modules.healthDualPricing.isDualPricingActive() === true && meerkat.site.isCallCentreUser === true) { }}
 		{{ obj.renderedDualPricing = meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false); }}
 	{{ } else { }}
 		{{ var logoTemplate = meerkat.modules.templateCache.getTemplate($("#logo-template")); }}
@@ -58,13 +53,13 @@
 
 	<c:set var="buyNowHeadingClass">
 		<c:choose>
-			<c:when test="${healthAlternatePricingActive eq true}">hidden-xs</c:when>
+			<c:when test="${isDualPricingActive eq true}">hidden-xs</c:when>
 			<c:otherwise>visible-xs</c:otherwise>
 		</c:choose>
 	</c:set>
 	<c:set var="moreInfoTopLeftColumnWidth">
 		<c:choose>
-			<c:when test="${healthAlternatePricingActive eq true}">col-md-7</c:when>
+			<c:when test="${isDualPricingActive eq true}">col-md-7</c:when>
 			<c:otherwise>col-md-8</c:otherwise>
 		</c:choose>
 	</c:set>
@@ -73,7 +68,7 @@
 	</c:set>
 	<div data-product-type="{{= info.ProductType }}" class="displayNone more-info-content col-xs-12 ${variantClassName}">
 
-		<div class="fieldset-card row price-card <c:if test="${healthAlternatePricingActive eq true}">hasDualPricing</c:if> {{= dropDatePassed ? 'dropDatePassedContainer' : ''}}">
+		<div class="fieldset-card row price-card <c:if test="${isDualPricingActive eq true}">hasDualPricing</c:if> {{= dropDatePassed ? 'dropDatePassedContainer' : ''}}">
 
 			<div class="col-xs-12 col-md-7 hidden-xs quoteRefContainer">
 				<p>Quote reference number <span class="text-secondary">{{= transactionId }}</span></p>
@@ -84,7 +79,7 @@
 					<div class="col-xs-3">
 						<div class="companyLogo {{= info.provider }}-mi"></div>
 					</div>
-					<div class="col-xs-9 <c:if test="${healthAlternatePricingActive eq true}">productDetails</c:if>">
+					<div class="col-xs-9 <c:if test="${isDualPricingActive eq true}">productDetails</c:if>">
 						<h1 class="noTopMargin productName">{{= info.productTitle }}</h1>
 
 						<div class="hidden-xs">
@@ -97,7 +92,7 @@
 				</div>
 
 				<c:choose>
-				<c:when test="${healthAlternatePricingActive eq true and not empty callCentre}">
+				<c:when test="${isDualPricingActive eq true and not empty callCentre}">
 					<div class="row priceRow">
 						<div class="col-xs-12 hidden-md hidden-lg">
 							{{= renderedDualPricing }}
@@ -143,7 +138,7 @@
 
 			</div>
 			<c:choose>
-				<c:when test="${healthAlternatePricingActive eq true and not empty callCentre}">
+				<c:when test="${isDualPricingActive eq true and not empty callCentre}">
 					<div class="col-md-5 hidden-xs hidden-sm moreInfoTopRightColumn">
 						<c:choose>
 							<c:when test="${moreinfo_splittest_variant1 eq true}">

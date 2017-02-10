@@ -2,10 +2,6 @@
 <%@ tag description="Dual pricing templates"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<%-- Setup variables needed for dual pricing --%>
-<jsp:useBean id="healthPriceDetailService" class="com.ctm.web.health.services.HealthPriceDetailService" scope="page" />
-<c:set var="healthAlternatePricingActive" value="${healthPriceDetailService.isAlternatePriceActive(pageContext.getRequest())}" />
-
 <jsp:useBean id="now" class="java.util.Date" />
 <c:set var="thisYear"><fmt:formatDate value="${now}" pattern="yyyy" /></c:set>
 

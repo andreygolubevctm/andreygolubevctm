@@ -14,8 +14,7 @@
 <%-- This is a deactivated split test as it is likely to be run again in the future --%>
 <%-- <jsp:useBean id="splitTestService" class="com.ctm.web.core.services.tracking.SplitTestService" /> --%>
 <%-- <c:set var="isAltView" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 2)}" /> --%>
-<jsp:useBean id="healthPriceDetailService" class="com.ctm.web.health.services.HealthPriceDetailService" scope="page" />
-<c:set var="healthAlternatePricingActive" value="${healthPriceDetailService.isAlternatePriceActive(pageContext.getRequest())}" />
+<health_v1:dual_pricing_settings />
 
 <%-- HTML --%>
 <div id="${name}-selection" class="health-payment_details ">

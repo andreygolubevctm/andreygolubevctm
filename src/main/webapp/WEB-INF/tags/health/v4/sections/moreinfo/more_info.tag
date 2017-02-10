@@ -2,17 +2,14 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-
-
 <c:set var="emailPlaceHolder">
 	<content:get key="emailPlaceHolder"/>
 </c:set>
 
 <%-- Setup variables needed for dual pricing --%>
-<jsp:useBean id="healthPriceDetailService" class="com.ctm.web.health.services.HealthPriceDetailService" scope="page" />
-<c:set var="healthAlternatePricingActive" value="${healthPriceDetailService.isAlternatePriceActive(pageContext.getRequest())}" />
+<health_v1:dual_pricing_settings />
 
-<c:if test="${healthAlternatePricingActive eq true}">
+<c:if test="${isDualPriceActive eq true}">
 	<c:set var="healthAlternatePricingMonth" value="${healthPriceDetailService.getAlternatePriceMonth(pageContext.getRequest())}" />
 </c:if>
 
@@ -40,7 +37,7 @@
 	{{ obj.displayLogo = false; }} <%-- Turns off the logo from the template --%>
 
 	<%-- If dual pricing is enabled, update the template --%>
-	{{ if (meerkat.site.healthAlternatePricingActive === true && meerkat.modules.deviceMediaState.get() !== 'xs') { }}
+	{{ if (meerkat.modules.healthDualPricing.isDualPricingActive() === true && meerkat.modules.deviceMediaState.get() !== 'xs') { }}
 		{{ obj.renderedDualPricing = meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false); }}
 		{{ _.delay(function() { $('.dualPricingAffixedHeader').html(obj.renderedDualPricing);}); }}
 	{{ } else { }}
@@ -58,7 +55,7 @@
 	{{ var benefitTemplate = meerkat.modules.templateCache.getTemplate($("#benefitLimitsTemplate")); }}
 	<c:set var="buyNowHeadingClass">
 		<c:choose>
-			<c:when test="${healthAlternatePricingActive eq true}">hidden-xs</c:when>
+			<c:when test="${isDualPriceActive eq true}">hidden-xs</c:when>
 			<c:otherwise>visible-xs</c:otherwise>
 		</c:choose>
 	</c:set>
@@ -67,7 +64,7 @@
 	</c:set>
 	<div data-product-type="{{= info.ProductType }}" class="displayNone more-info-content ${variantClassName}">
 
-		<div class="fieldset-card row price-card <c:if test="${healthAlternatePricingActive eq true}">hasDualPricing</c:if>">
+		<div class="fieldset-card row price-card <c:if test="${isDualPriceActive eq true}">hasDualPricing</c:if>">
 				<health_v4_moreinfo:more_info_dual_pricing_header />
 			<div class="moreInfoTopLeftColumn Hospital_container">
 				<health_v4_moreinfo:more_info_product_summary />

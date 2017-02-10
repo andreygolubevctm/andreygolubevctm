@@ -2,7 +2,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <core_v1:js_template id="moreInfoAffixedHeaderTemplate">
-    {{ if (!meerkat.site.healthAlternatePricingActive) { }}
+    {{ if (!meerkat.modules.healthDualPricing.isDualPricingActive()) { }}
         {{ var priceTemplate = meerkat.modules.templateCache.getTemplate($("#price-template")); }}
         {{ obj.showAltPremium = false; obj.renderedPriceTemplate = priceTemplate(obj); }}
         <div class="col-xs-2">

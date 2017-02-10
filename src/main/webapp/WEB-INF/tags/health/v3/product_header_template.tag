@@ -28,7 +28,7 @@
             </div>
         </div>
         {{ var comingSoonClass = ''; }}
-        {{ if (meerkat.site.healthAlternatePricingActive === true) { }}
+        {{ if (meerkat.modules.healthDualPricing.isDualPricingActive() === true) { }}
             {{ if (!_.isUndefined(obj.altPremium[Results.getFrequency()])) { }}
                 {{ var productPremium = obj.altPremium[Results.getFrequency()] }}
                 {{ comingSoonClass = ((productPremium.value && productPremium.value > 0) || (productPremium.text && productPremium.text.indexOf('$0.') < 0) || (productPremium.payableAmount && productPremium.payableAmount > 0))  ? '' : 'comingsoon' }}
@@ -40,7 +40,7 @@
                 {{ var logoTemplate = meerkat.modules.templateCache.getTemplate($("#logo-template")); }}
                 {{= logoTemplate(obj) }}
 
-                {{ if (meerkat.site.healthAlternatePricingActive === true && meerkat.site.isCallCentreUser === true) { }}
+                {{ if (meerkat.modules.healthDualPricing.isDualPricingActive() === true && meerkat.site.isCallCentreUser === true) { }}
                     {{= meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false, 'results') }}
                 {{ } else { }}
                     {{ var productTitleTemplate = meerkat.modules.templateCache.getTemplate($("#product-title-template")); }}

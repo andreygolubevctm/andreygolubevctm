@@ -34,7 +34,7 @@
                 <div class="more-info-text">View Product <span class="icon icon-angle-right"></span></div>
             </a>
 
-            {{ if (meerkat.site.healthAlternatePricingActive === true) { }}
+            {{ if (meerkat.modules.healthDualPricing.isDualPricingActive() === true) { }}
                 {{= meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false, 'results') }}
             {{ } }}
         </div>
