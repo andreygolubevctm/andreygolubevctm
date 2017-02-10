@@ -92,7 +92,7 @@
 				</div>
 
 				<c:choose>
-				<c:when test="${isDualPriceActive eq true and not empty callCentre}">
+				<c:when test="${isDualPriceActive eq true}">
 					<div class="row priceRow">
 						<div class="col-xs-12 hidden-md hidden-lg">
 							{{= renderedDualPricing }}
@@ -138,7 +138,7 @@
 
 			</div>
 			<c:choose>
-				<c:when test="${isDualPriceActive eq true and not empty callCentre}">
+				<c:when test="${isDualPriceActive eq true}">
 					<div class="col-md-5 hidden-xs hidden-sm moreInfoTopRightColumn">
 						<c:choose>
 							<c:when test="${moreinfo_splittest_variant1 eq true}">
