@@ -12,16 +12,24 @@
             'monthly': 'per month',
             'fortnightly': 'per fortnight',
             'weekly': 'per week'
-        };
+        },
+        isActive = null;
 
     function initDualPricing() {
-        if (meerkat.site.healthAlternatePricingActive !== true) {
+        if (!isDualPricingActive()) {
             return false;
         }
 
         _setupElements();
         _applyEventListeners();
         _eventSubscriptions();
+    }
+
+    function isDualPricingActive() {
+        if(isActive === null) {
+            isActive = typeof meerkat.site.isDualPricingActive !== 'undefined' && meerkat.site.isDualPricingActive;
+        }
+        return isActive;
     }
 
     function _setupElements() {
@@ -43,32 +51,31 @@
             paymentDetailsSelection: $('#health_payment_details-selection'),
             paymentDetailsFrequency: $('#health_payment_details-selection').find('#health_payment_details_frequency'),
             priceFrequencyTemplate: $('#price-frequency-template'),
-            frequencyWarning: $('#health_payment_details-selection').find('.frequencyWarning')
+            frequencyWarning: $('#health_payment_details-selection').find('.frequencyWarning'),
+            quoterefTemplate: $('#quoteref-template')
         };
 
         $elements.sideBarFrequency.hide();
     }
 
     function _applyEventListeners() {
-        $elements.paymentDetailsFrequency.on('change', function updateWarningLabel() {
+        $elements.paymentDetailsFrequency.on('change.healthDualPricing', function updateWarningLabel() {
+            if (_.isEmpty($(this).val())) return;
+
             var frequency = $(this).val().toLowerCase();
 
             if (frequency === 'annually') {
                 $elements.frequencyWarning.slideUp().html("");
             } else {
                 var selectedProduct = Results.getSelectedProduct(),
-                    remainingPremium = selectedProduct.altPremium[frequency];
+                    template = _.template($elements.priceFrequencyTemplate.html()),
+                    pricingDate = new Date(selectedProduct.pricingDate),
+                    obj = {
+                        frequency: freqTextMapping[frequency],
+                        pricingDateFormatted: meerkat.modules.dateUtils.format(pricingDate, "Do MMMM")
+                    };
 
-                if ((remainingPremium.value && remainingPremium.value > 0) || (remainingPremium.text && remainingPremium.text.indexOf('$0.') < 0) || (remainingPremium.payableAmount && remainingPremium.payableAmount > 0)) {
-                    var template = _.template($elements.priceFrequencyTemplate.html()),
-                        obj = {
-                            frequency: freqTextMapping[frequency],
-                            firstPremium: selectedProduct.premium[frequency].text,
-                            remainingPremium: remainingPremium.text
-                        };
-
-                    $elements.frequencyWarning.html(template(obj)).removeClass("hidden").slideDown();
-                }
+                $elements.frequencyWarning.html(template(obj)).removeClass("hidden").slideDown();
             }
         });
 
@@ -85,6 +92,9 @@
         meerkat.messaging.subscribe(meerkatEvents.healthResults.SELECTED_PRODUCT_CHANGED, function hideSidebarFrequency(){
             $elements.sideBarFrequency.hide();
             $elements.frequencyWarning.hide();
+
+            // update pricing date
+            _updatePricingDate();
         });
 
         meerkat.messaging.subscribe(meerkatEvents.device.DEVICE_MEDIA_STATE_CHANGE, function editDetailsEnterXsState() {
@@ -114,6 +124,13 @@
         }
     }
 
+    function _updatePricingDate() {
+        var product = Results.getSelectedProduct(),
+            pricingDate = new Date(product.pricingDate);
+
+        $('.pricingDate').text(meerkat.modules.dateUtils.format(pricingDate, "Do MMMM"));
+    }
+
     function renderTemplate(target, product, returnTemplate, isForSidebar, page) {
 
         selectedProduct = product;
@@ -141,6 +158,11 @@
         product.displayLogo = isForSidebar;
         product.showRoundingText = false;
 
+        var pricingDate = new Date(selectedProduct.pricingDate);
+        // named pricingDateFormatted because inside _updatePricingDate function it throws an invalid date when creating a new Date object with pricingDate,
+        // for some reason Results.getSelectedProduct().pricingDate gets updated
+        product.pricingDateFormatted = meerkat.modules.dateUtils.format(pricingDate, "MMMM Do, YYYY");
+
         var htmlTemplate = _.template($elements.logoPriceTemplate.html());
         product.renderedPriceTemplate = htmlTemplate(product);
 
@@ -158,6 +180,11 @@
             return dualPriceTemplate(product);
         } else {
             $(target).html(dualPriceTemplate(product));
+
+            if (isForSidebar && $elements.quoterefTemplate.length > 0) {
+                var quoterefTemplate = _.template($elements.quoterefTemplate.html());
+                $(target).parent().find('.quoterefTemplateHolder').html(quoterefTemplate());
+            }
         }
     }
 
@@ -175,6 +202,7 @@
 
     meerkat.modules.register('healthDualPricing', {
         initDualPricing: initDualPricing,
+        isDualPricingActive: isDualPricingActive,
         renderTemplate: renderTemplate
     });
 

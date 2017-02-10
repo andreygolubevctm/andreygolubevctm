@@ -27,19 +27,23 @@
 	<%-- Policy Holder First Name --%>
 	<c:set var="fieldXpath" value="${xpath}/firstName" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="First Name">
+		<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="First Name" quoteChar="\"" /></c:set>
 		<field_v1:person_name xpath="${fieldXpath}"
 			title="policy holder's first name"
 			required="true"
-			maxlength="50" />
+			maxlength="50"
+			additionalAttributes="${analyticsAttr}" />
 	</form_v2:row>
 
 	<%-- Policy Holder Last Name --%>
 	<c:set var="fieldXpath" value="${xpath}/lastName" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="Last Name">
+		<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Last Name" quoteChar="\"" /></c:set>
 		<field_v1:person_name xpath="${fieldXpath}"
 			title="policy holder's last name"
 			required="true"
-			maxlength="50" />
+			maxlength="50"
+			additionalAttributes="${analyticsAttr}" />
 	</form_v2:row>
 
 	<%-- Policy Holder DOB --%>
@@ -49,7 +53,8 @@
 			title="policy holder's"
 			required="true"
 			ageMin="16"
-			ageMax="99"/>
+			ageMax="99"
+			trackingPrefix="Policy Holder"/>
 	</form_v2:row>
 
 	<c:if test="${journeySplitTestActive eq true}">
@@ -106,7 +111,8 @@
 			required="true"
 			className="jointPolicyHolder"
 			ageMin="16"
-			ageMax="99"/>
+			ageMax="99"
+			trackingPrefix="Joint Policy Holder"/>
 	</form_v2:row>
 
 </form_v2:fieldset>
@@ -115,6 +121,7 @@
 <%-- Joint Policy Holder Button --%>
 	<c:set var="fieldXpath" value="${xpath}/addJointPolicyHolder" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="">
-		<a class="btn btn-next nav-next-btn toggleJointPolicyHolder addPolicyHolderBtn" href="javascript:;">Add Joint Policy Holder</a>
+		<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Additional Policy Holder" quoteChar="\"" /></c:set>
+		<a class="btn btn-next nav-next-btn toggleJointPolicyHolder addPolicyHolderBtn" href="javascript:;" ${analyticsAttr}>Add Joint Policy Holder</a>
 	</form_v2:row>
 </form_v2:fieldset>
