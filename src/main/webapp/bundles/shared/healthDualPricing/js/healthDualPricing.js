@@ -59,18 +59,14 @@
                 $elements.frequencyWarning.slideUp().html("");
             } else {
                 var selectedProduct = Results.getSelectedProduct(),
-                    remainingPremium = selectedProduct.altPremium[frequency];
+                    template = _.template($elements.priceFrequencyTemplate.html()),
+                    pricingDate = new Date(selectedProduct.pricingDate),
+                    obj = {
+                        frequency: freqTextMapping[frequency],
+                        pricingDateFormatted: meerkat.modules.dateUtils.format(pricingDate, "Do MMMM")
+                    };
 
-                if ((remainingPremium.value && remainingPremium.value > 0) || (remainingPremium.text && remainingPremium.text.indexOf('$0.') < 0) || (remainingPremium.payableAmount && remainingPremium.payableAmount > 0)) {
-                    var template = _.template($elements.priceFrequencyTemplate.html()),
-                        pricingDate = new Date(selectedProduct.pricingDate),
-                        obj = {
-                            frequency: freqTextMapping[frequency],
-                            pricingDateFormatted: meerkat.modules.dateUtils.format(pricingDate, "Do MMMM")
-                        };
-
-                    $elements.frequencyWarning.html(template(obj)).removeClass("hidden").slideDown();
-                }
+                $elements.frequencyWarning.html(template(obj)).removeClass("hidden").slideDown();
             }
         });
 
