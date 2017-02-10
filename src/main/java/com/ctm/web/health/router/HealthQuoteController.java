@@ -106,8 +106,14 @@ public class HealthQuoteController extends CommonQuoteRouter {
 
         final Date serverDate = ApplicationService.getApplicationDate(request);
         final PageSettings pageSettings = getPageSettingsByCode(brand, verticalType);
-        final Content alternatePricingActive = contentService
-                .getContent("alternatePricingActive", pageSettings.getBrandId(), pageSettings.getVertical().getId(), serverDate, true);
+        final Content alternatePricingActive;
+        if (isCallCentre) {
+            alternatePricingActive = contentService
+                    .getContent("simplesDPActive", pageSettings.getBrandId(), pageSettings.getVertical().getId(), serverDate, true);
+        } else {
+            alternatePricingActive = contentService
+                    .getContent("onlineDPActive", pageSettings.getBrandId(), pageSettings.getVertical().getId(), serverDate, true);
+        }
         final boolean competitionEnabled = StringUtils.equalsIgnoreCase(contentService.getContentValueNonStatic(request, "competitionEnabled"), "Y");
 
         final ResponseAdapterModel quotes = healthQuoteService.getQuotes(brand, data, alternatePricingActive, isCallCentre);

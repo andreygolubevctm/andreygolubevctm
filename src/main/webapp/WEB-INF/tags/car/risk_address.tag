@@ -15,12 +15,15 @@
 
     <group_v2:elastic_address xpath="${xpath}" type="R" />
 
-    <form_v2:row label="Where is the car parked at night" helpId="7">
+    <c:set var="analAttribute"><field_v1:analytics_attr analVal="park at night - Tool Tip" quoteChar="\"" /></c:set>
+    <form_v2:row label="Where is the car parked at night" helpId="7" tooltipAttributes="${analAttribute}">
+        <c:set var="analAttribute"><field_v1:analytics_attr analVal="park at night" quoteChar="\"" /></c:set>
         <field_v2:import_select xpath="quote/vehicle/parking"
                             url="/WEB-INF/option_data/parking_location.html"
                             title="the location where the car is parked at night"
                             className="parking_location"
-                            required="true" />
+                            required="true"
+                            additionalAttributes="${analAttribute}" />
     </form_v2:row>
 
 </form_v2:fieldset>

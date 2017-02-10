@@ -44,6 +44,7 @@
     "shared/radioGroupTile",
     "shared/radioRounded",
     "shared/fields",
-    "shared/healthDualPricing"
+    "shared/healthDualPricing",
+    "shared/reward"
   ]
 }

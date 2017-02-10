@@ -208,10 +208,11 @@
 
 		adjustLayout();
 
-		if (typeof meerkat.site.healthAlternatePricingActive !== 'undefined' && meerkat.site.healthAlternatePricingActive === true) {
+		if (meerkat.modules.healthDualPricing.isDualPricingActive()) {
 			// render dual pricing
 			meerkat.modules.healthDualPricing.initDualPricing();
-			meerkat.modules.healthDualPricing.renderTemplate('.policySummary.dualPricing', meerkat.modules.moreInfo.getProduct(), false, true);
+			confirmationProduct.altPremium = confirmationProduct.paymentTypeAltPremiums[meerkat.modules.healthPaymentStep.getPaymentMethodNode(confirmationProduct.paymentType)];
+			meerkat.modules.healthDualPricing.renderTemplate('.policySummary.dualPricing', confirmationProduct, false, true);
 		}
 
 		// hide the sidebar frequncy. only needed for payment page

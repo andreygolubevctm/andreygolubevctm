@@ -13,6 +13,7 @@
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:set var="inputType"><field_v2:get_numeric_input_type /></c:set>
+<c:set var="analAttribute"><field_v1:analytics_attr analVal="Age licence obtained" quoteChar="\"" /></c:set>
 
 <%-- HTML --%>
 
@@ -23,7 +24,7 @@
 		<c:if test="${required}">
 			<c:set var="validationRules">data-rule-ageLicenceObtained='${required}' data-msg-ageLicenceObtained="Age licence obtained invalid due to ${title} driver's age." data-rule-digits='${required}' data-msg-digits="Please enter the age the ${title} driver obtained a driver's licence"</c:set>
 		</c:if>
-		<field_v2:input type="${inputType}" xpath="${xpath}" required="${required}" className="age_licence numeric ${classname}" maxlength="${2}" title="${title}" size="2" formattedInteger="true" pattern="[0-9]*" additionalAttributes="${validationRules}" />
+		<field_v2:input type="${inputType}" xpath="${xpath}" required="${required}" className="age_licence numeric ${classname}" maxlength="${2}" title="${title}" size="2" formattedInteger="true" pattern="[0-9]*" additionalAttributes="${validationRules} ${analAttribute}" />
 	</div>
 
 	<c:if test="${helpId != null && helpId != ''}">

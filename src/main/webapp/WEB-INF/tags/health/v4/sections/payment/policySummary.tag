@@ -11,8 +11,10 @@
 <jsp:useBean id="healthPriceDetailService" class="com.ctm.web.health.services.HealthPriceDetailService" scope="page" />
 <c:set var="healthAlternatePricingActive" value="${healthPriceDetailService.isAlternatePriceActive(pageContext.getRequest())}" />
 
-<div class="sidebar-box<c:if test="${healthAlternatePricingActive eq true}"> hasDualPricing hidden-xs</c:if> policySummary-sidebar">
-<c:if test="${healthAlternatePricingActive eq false}">
+<health_v1:dual_pricing_settings />
+
+<div class="sidebar-box<c:if test="${isDualPriceActive eq true}"> hasDualPricing hidden-xs</c:if> policySummary-sidebar">
+<c:if test="${isDualPriceActive eq false}">
     <div class="policySummaryContainer ${className}">
         <c:choose>
             <c:when test="${isAltView}">
@@ -31,36 +33,13 @@
     </div>
 </c:if>
 
-<c:if test="${healthAlternatePricingActive eq true}">
-    <div class="policySummary dualPricing">
-        <ui:bubble variant="chatty" className="moreInfoBubble rateRise">
-            <div class="row">
-                Beat the rate rise
-            </div>
-        </ui:bubble>
-        <ui:bubble variant="chatty" className="moreInfoBubble pricingDetails">
-            <div class="row">
-                <div class="col-xs-5 col-sm-5 labels productSummary vertical Premium">
-
-                </div>
-                <div class="col-xs-2 col-sm-2 arrow-column">
-                    <span class="icon icon-arrow-thick-right"></span>
-                </div>
-                <div class="col-xs-5 col-sm-5 labels productSummary vertical altPremium">
-                </div>
-            </div>
-        </ui:bubble>
-        <div class="payAdvance">
-            <p>Did you know, if you buy now and <strong>pay up to 12 months in advance</strong> before the rate rise applies, you can <strong>lock in the current price.</strong></p>
-            <c:if test="${not empty callCentreNumber}">
-                <p class="datesDetail">Please note: cut off dates for each fund may vary.
-                    <br/><span class="callCentreNumberSection">Call <span class="noWrap callCentreNumber">${callCentreNumber}</span> and select Option 2 for more information</span></p>
-            </c:if>
-        </div>
-    </div>
+<c:if test="${isDualPriceActive eq true}">
+    <h1 class="hidden-xs">Your quote details</h1>
+    <div class="quoterefTemplateHolder"></div>
+    <div class="policySummary productSummary dualPricing"></div>
 </c:if>
 
-<c:if test="${healthAlternatePricingActive eq true}">
+<c:if test="${isDualPriceActive eq true}">
     </div>
     <div class="sidebar-box sidebarFrequency hidden-xs"></div>
     <div class="sidebar-box">

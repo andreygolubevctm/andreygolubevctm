@@ -70,22 +70,14 @@
         $tpftOption.toggleClass('hidden', excTPFT);
         $typeOfCoverDropdown.append($typeOfCoverOptions[excTPFT ? 'excTPFT' : 'full']);
 
-        _.defer(function() {
-            // if previous selection was TPFT and TPFT no longer applicable then unselect
-            if (excTPFT && _.indexOf([existingJourneySelection,existingFilterSelection],'TPFT') > -1) {
-                $typeOfCoverDropdown.val('');
-            } else {
-                if (!_.isEmpty(existingJourneySelection)) {
-                    $typeOfCoverDropdown.val(existingJourneySelection);
-                    $typeOfCover.val(existingJourneySelection);
-                } else if (!_.isEmpty(existingFilterSelection)) {
-                    $typeOfCoverDropdown.val(existingFilterSelection);
-                    $typeOfCover.val(existingFilterSelection);
-                } else {
-                    $typeOfCoverDropdown.val('');
-                }
-            }
-        });
+        // if previous selection was TPFT and TPFT no longer applicable then unselect
+        if (_.isEmpty(existingJourneySelection) || (excTPFT && _.indexOf([existingJourneySelection,existingFilterSelection],'TPFT') > -1)) {
+            $typeOfCoverDropdown.val('').prop('selectedIndex','0');
+            $typeOfCover.val('').prop('selectedIndex','0');
+        } else {
+            $typeOfCoverDropdown.val(existingJourneySelection);
+            $typeOfCover.val(existingJourneySelection);
+        }
     }
 
     function showCTPMessage() {

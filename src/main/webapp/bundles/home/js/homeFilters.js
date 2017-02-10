@@ -365,7 +365,7 @@
 			hashId : 'xsFilterBar',
 			rightBtn: {
 				label: 'UPDATE RESULTS',
-				className: 'btn-sm btn-save',
+				className: 'btn-sm btn-save btn-update-results-modal',
 				callback: saveModalChanges
 			},
 			closeOnHashChange: true,
@@ -386,6 +386,8 @@
 		$('#xsFilterBarFreqRow #xsFilterBar_freq_' + $('#home_paymentType').val()).prop('checked', true).change();
 		$('#xsFilterBar_homeExcess').val(currentValues.homeExcess);
 		$('#xsFilterBar_contentsexcess').val(currentValues.contentsExcess);
+
+		meerkat.modules.dataAnalyticsHelper.add($('#' + modal).find('.btn-update-results-modal'),'nav button');
 
 		toggleXSFilters();
 	}
@@ -488,17 +490,24 @@
 
 			$filterMenu = $filterHomeExcess.find('.dropdown-menu');
 			$('#filter_homeExcessOptions option').each(function() {
-				$filterMenu.append('<li><a href="javascript:;" data-value="' + this.value + '">' + this.text + '</a></li>');
+				$filterMenu.append('<li><a href="javascript:;" data-value="' + this.value + '"' + meerkat.modules.dataAnalyticsHelper.get('Home Excess ' + this.value,'"') + '>' + this.text + '</a></li>');
 			});
 
 			$filterMenu = $filterContentsExcess.find('.dropdown-menu');
 			$('#filter_contentsExcessOptions option').each(function() {
-				$filterMenu.append('<li><a href="javascript:;" data-value="' + this.value + '">' + this.text + '</a></li>');
+				$filterMenu.append('<li><a href="javascript:;" data-value="' + this.value + '"' + meerkat.modules.dataAnalyticsHelper.get('Contents Excess ' + this.value,'"') + '>' + this.text + '</a></li>');
 			});
 
 			$filterMenu = $filterFrequency.find('.dropdown-menu');
 			$('#filter_paymentType option').each(function() {
-				$filterMenu.append('<li><a href="javascript:;" data-value="' + this.value + '">' + this.text + '</a></li>');
+				$filterMenu.append('<li><a href="javascript:;" data-value="' + this.value + '"' + meerkat.modules.dataAnalyticsHelper.get('Payment Freq ' + this.value,'"') + '>' + this.text + '</a></li>');
+			});
+
+			// Add analytics to individual option buttons in mobile view
+			$('.resultsContainer .payment-frequency-buttons').find('label.btn').each(function(){
+				var $this = $(this);
+				var freq = $this.find('input:first').val();
+				$this.attr('data-analytics','Payment Freq ' + freq);
 			});
 
 			meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, _.bind(setCurrentDeviceState, this, {isXS:true}));

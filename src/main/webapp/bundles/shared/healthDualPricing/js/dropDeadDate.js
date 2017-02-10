@@ -17,7 +17,7 @@
         if ($.trim(dropDeadDateText) !== '') {
             try {
                 var newDate = meerkat.modules.dateUtils.returnDate(dropDeadDateText);
-                product.dropDeadDateFormatted = meerkat.modules.dateUtils.format(newDate, "Do of MMMM, YYYY");
+                product.dropDeadDateFormatted = meerkat.modules.dateUtils.format(newDate, "MMMM Do");
                 product.dropDeadDate =  newDate;
             } catch(err) {
                 meerkat.modules.errorHandling.error({
@@ -36,7 +36,7 @@
 
     function setDefaultDropDeadDate(product) {
         var d = new Date();
-        product.dropDeadDateFormatted = '31st March '+d.getFullYear();
+        product.dropDeadDateFormatted = 'March 31st';
         product.dropDeadDate =  new Date('31/3/'+d.getFullYear());
     }
 

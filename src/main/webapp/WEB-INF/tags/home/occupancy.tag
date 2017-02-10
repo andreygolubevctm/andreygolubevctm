@@ -35,12 +35,15 @@
 
 	<%-- PPoR --%>
 	<c:set var="fieldXpath" value="${xpath}/principalResidence" />
-	<form_v2:row fieldXpath="${fieldXpath}" label="Is it your principal place of residence?" helpId="503">
+	<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Principal Residence - Tool Tip" quoteChar="\"" /></c:set>
+	<form_v2:row fieldXpath="${fieldXpath}" label="Is it your principal place of residence?" helpId="503" tooltipAttributes="${analyticsAttr}">
+		<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Principal Residence" quoteChar="\"" /></c:set>
 		<field_v2:array_radio xpath="${fieldXpath}"
 			className="principalResidence pretty_buttons"
 			required="true"
 			items="Y=Yes,N=No"
-			title="if this is your principal place of residence" />
+			title="if this is your principal place of residence"
+			additionalLabelAttributes="${analyticsAttr}" />
 	</form_v2:row>
 
 	<%-- How Occupied --%>
@@ -55,14 +58,18 @@
 	<%-- When Moved in Year + Month --%>
 	<c:set var="fieldXpath" value="${xpath}/whenMovedIn/year" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="When did you move into the home?" className="whenMovedInYear">
+		<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Years Since Move" quoteChar="\"" /></c:set>
 		<field_v2:array_select xpath="${fieldXpath}"
 			items="${items}"
 			title="when you moved into the home"
-			required="true" />
+			required="true"
+			extraDataAttributes="${analyticsAttr}" />
 	</form_v2:row>
 
 	<c:set var="fieldXpath" value="${xpath}/whenMovedIn/month" />
-	<form_v2:row fieldXpath="${fieldXpath}" label="Month you move into the home?" helpId="504" className="whenMovedInMonth">
+	<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Move in Month - Tool Tip" quoteChar="\"" /></c:set>
+	<form_v2:row fieldXpath="${fieldXpath}" label="Month you move into the home?" helpId="504"
+				 className="whenMovedInMonth" tooltipAttributes="${analyticsAttr}">
 		<field_v2:import_select xpath="${fieldXpath}"
 			required="true"
 			omitPleaseChoose="Y"

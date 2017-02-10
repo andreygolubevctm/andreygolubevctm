@@ -1,0 +1,254 @@
+.zeusPage {
+	#location_details {
+		padding: 20px 0;
+
+		h1 {
+			font-weight: bold;
+		}
+
+		.meerkatCrest {
+			width: 70%;
+
+			@media(max-width: @screen-md) {
+				width: 100%;
+			}
+
+			@media(max-width: @screen-sm) {
+				height: 150px;
+				width: auto;
+				padding-top: 15px;
+			}
+		}
+	}
+
+	#location_container {
+		background-color: @theme-tertiary;
+		padding: 20px 0 40px 0;
+
+		@media(max-width: @screen-sm) {
+			padding: 20px 0 0 0;
+		}
+
+		.globalMap {
+			width: 100%;
+			background-repeat: no-repeat;
+			background-size: contain;
+			// Using map_china.png as an example the dimensions of the image is 1297x761. Therefore, to maintain aspect radio while making the empty div containing the background image responsive we do 761/1297, which equals ~0.5867 (which we turn into a percentage)
+			padding-bottom: 58.67%;
+
+			@media(max-width: @screen-sm) {
+				padding-bottom: 128.75%;
+			}
+
+			&.map_meerkovo {
+				background-image: url("../images/zeus/map_meerkovo.gif");
+				&.toy_aleks {
+					@media(max-width: @screen-sm) {
+						background-image: url("../images/zeus/mobile_meerkovo_aleks.png");
+					}
+				}
+
+				&.toy_sergei {
+					@media(max-width: @screen-sm) {
+						background-image: url("../images/zeus/mobile_meerkovo_sergei.png");
+					}
+				}
+			}
+
+			&.map_china {
+				background-image: url("../images/zeus/map_china.gif");
+				@media(max-width: @screen-sm) {
+					background-image: url("../images/zeus/mobile_china.png");
+				}
+			}
+
+			&.map_madagascar {
+				background-image: url("../images/zeus/map_madagascar.gif");
+				@media(max-width: @screen-sm) {
+					background-image: url("../images/zeus/mobile_madagascar.png");
+				}
+			}
+
+			&.map_new_zealand {
+				background-image: url("../images/zeus/map_new_zealand.gif");
+				@media(max-width: @screen-sm) {
+					background-image: url("../images/zeus/mobile_new_zealand.png");
+				}
+			}
+
+			&.map_australia {
+				background-image: url("../images/zeus/map_australia.gif");
+				@media(max-width: @screen-sm) {
+					background-image: url("../images/zeus/mobile_australia.png");
+				}
+			}
+		}
+
+		.mobilePostcardName {
+			display: none;
+
+			@media(max-width: @screen-sm) {
+				display: block;
+				position: absolute;
+				z-index: 1;
+				font-size: 33px;
+				top: 8%;
+				left: 6.8%;
+			}
+
+			@media(max-width: 630px) {
+				font-size: 26px;
+				left: 7.5%;
+			}
+
+			@media(max-width: 580px) {
+				font-size: 24px;
+				left: 7.5%;
+			}
+
+			@media(max-width: 520px) {
+				font-size: 22px;
+				left: 8%;
+			}
+
+			@media(max-width: 490px) {
+				font-size: 20px;
+				left: 8%;
+			}
+
+			@media(max-width: 460px) {
+				font-size: 18px;
+				left: 8%;
+			}
+
+			@media(max-width: 430px) {
+				font-size: 16px;
+				left: 8.5%;
+			}
+
+			@media(max-width: 400px) {
+				font-size: 14px;
+				left: 9%;
+			}
+
+			@media(max-width: 370px) {
+				font-size: 14px;
+				left: 9%;
+			}
+
+			@media(max-width: 350px) {
+				font-size: 13px;
+				left: 9.5%;
+			}
+
+			@media(max-width: 320px) {
+				font-size: 13px;
+				left: 9.3%;
+			}
+		}
+
+		.mobileShareLinks {
+			cursor: pointer;
+			display: none;
+			background-color: @theme-secondary;
+
+			@media(max-width: @screen-sm) {
+				display: inline-block;
+			}
+
+			.shareButton {
+				padding: 15px;
+				display: inline-block;
+				background-color: @theme-secondary;
+
+				@media(max-width: @screen-xs) {
+					padding: 10px;
+				}
+
+				img {
+					width: auto;
+					height: 35px;
+
+					@media(max-width: @screen-xs) {
+						height: 25px;
+					}
+				}
+			}
+		}
+
+		.postcardContainer {
+			position: relative;
+			margin-top: -70px;
+			position: relative;
+			width: 100%;
+
+			@media(max-width: @screen-sm) {
+				display: none;
+			}
+
+			.postcard {
+				width: 80%;
+			}
+
+			.postcardName {
+				position: absolute;
+				z-index: 1;
+				font-size: 25px;
+				left: 12.8%;
+				top: 13.8%;
+
+				@media(max-width: @screen-md-max) {
+					font-size: 22px;
+				}
+
+				@media(max-width: @screen-sm-max) {
+					font-size: 18px;
+				}
+			}
+
+			.shareLinks {
+				cursor: pointer;
+				position: absolute;
+				right: 10px;
+				top: 35%;
+
+				@media(max-width: @screen-md-max) {
+					right: 6px;
+				}
+
+				@media(max-width: @screen-sm-max) {
+					right: 5px;
+				}
+
+				.shareButton {
+					padding: 20px;
+					display: block;
+					background-color: @theme-secondary;
+					width: 100%;
+
+					@media(max-width: @screen-md-max) {
+						padding: 15px;
+					}
+
+					@media(max-width: @screen-sm-max) {
+						padding: 12px;
+					}
+
+					img {
+						width: 45px;
+						height: auto;
+
+						@media(max-width: @screen-md-max) {
+							width: 42px;
+						}
+
+						@media(max-width: @screen-sm-max) {
+							width: 30px;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+

@@ -25,10 +25,12 @@
 
 <%-- HTML --%>
 <form_v2:row label="What level of car insurance cover are you looking for?" id="${name}FieldRow" helpId="565">
+    <c:set var="analAttribute"><field_v1:analytics_attr analVal="Cover Type" quoteChar="\"" /></c:set>
     <field_v2:array_select xpath="${xpath}"
                            items="${typeOfCoverOptions}"
                            required="true"
                            title="what level of car insurance cover are you looking for"
-                           className="type_of_cover" />
+                           className="type_of_cover"
+                           extraDataAttributes="${analAttribute}" />
 </form_v2:row>
 

@@ -166,8 +166,10 @@
                 <health_v1:product_title_search />
                 <core_v1:application_date />
 
+                <health_v1:dual_pricing_settings />
+
                 <%-- Product summary header for mobile --%>
-                <div class="row productSummary-parent visible-xs">
+                <div class="row productSummary-parent <c:choose><c:when test="${isDualPriceActive eq true}">hidden</c:when><c:otherwise>visible-xs</c:otherwise></c:choose>">
                     <div class="productSummary-affix affix-top visible-xs">
                         <health_v1:policySummary />
                     </div>
@@ -225,6 +227,8 @@
                 <field_v1:hidden xpath="environmentValidatorOverride" />
                 <input type="hidden" name="transcheck" id="transcheck" value="1" />
                 <agg_v3:save_quote />
+                <%--Reward Campaign Template--%>
+                <reward:template_campaign_tile />
             </jsp:body>
         </layout_v1:journey_engine_page>
 

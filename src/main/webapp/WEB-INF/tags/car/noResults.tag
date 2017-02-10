@@ -2,6 +2,8 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<%-- VARIABLES --%>
+<c:set var="navBtnAnalAttribute"><field_v1:analytics_attr analVal="nav button" quoteChar="\"" /></c:set>
 <c:set var="noResultsCompany" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "companyIdAndPhone")}' />
 <c:set var="noResultsCompany" value='${miscUtils:randomiseContent(noResultsCompany)}' />
 
@@ -55,7 +57,7 @@
 
 	<div class="row findAnInsurerRow">
 		<div class="col-xs-12">
-			<p>Alternatively, you may want to refer to the <strong>Insurance Council of Australia</strong>'s "Find an Insurer" website at <a href="http://www.findaninsurer.com.au/" target="_blank">www.findaninsurer.com.au</a> and they may be able to provide you with a list of companies who can assist you with cover.</p>
+			<p>Alternatively, you may want to refer to the <strong>Insurance Council of Australia</strong>'s "Find an Insurer" website at <a href="http://www.findaninsurer.com.au/" target="_blank" ${navBtnAnalAttribute}>www.findaninsurer.com.au</a> and they may be able to provide you with a list of companies who can assist you with cover.</p>
 		</div>
 	</div>
 

@@ -43,6 +43,7 @@
     "shared/filters",
     "shared/radioGroupTile",
     "shared/bootstrapSwitch",
-    "shared/healthDualPricing"
+    "shared/healthDualPricing",
+    "shared/reward"
   ]
 }

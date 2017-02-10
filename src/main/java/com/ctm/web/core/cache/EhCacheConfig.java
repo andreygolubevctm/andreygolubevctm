@@ -52,12 +52,17 @@ public class EhCacheConfig implements CachingConfigurer {
         couponGetActiveCouponsCache.setMemoryStoreEvictionPolicyFromObject(LFU);
         couponGetActiveCouponsCache.setTransactionalMode("off");
 
+        final CacheConfiguration rewardGetActiveCampaigns = new CacheConfiguration("rewardGetActiveCampaigns", 30);
+        rewardGetActiveCampaigns.setTimeToLiveSeconds(MINUTES.toSeconds(2));
+        rewardGetActiveCampaigns.setMemoryStoreEvictionPolicyFromObject(LFU);
+        rewardGetActiveCampaigns.setTransactionalMode("off");
+
         final CacheConfiguration bsbCache = new CacheConfiguration("getBsbDetailsByBsbNumber", 100);
         bsbCache.setEternal(true);
         bsbCache.setMemoryStoreEvictionPolicyFromObject(LFU);
         bsbCache.setTransactionalMode("off");
 
-        return asList(contentControlCache, couponGetActiveCouponsCache, bsbCache);
+        return asList(contentControlCache, couponGetActiveCouponsCache, rewardGetActiveCampaigns, bsbCache);
     }
 
     @Bean

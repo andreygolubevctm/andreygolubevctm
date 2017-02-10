@@ -9,6 +9,8 @@
 
 <c:set var="vertical" value="${pageSettings.getVerticalCode()}" />
 
+<c:set var="navBtnAnalAttribute"><field_v1:analytics_attr analVal="nav button" quoteChar="\"" /></c:set>
+
 <c:if test="${empty helpPopoverPosition}">
 	<c:set var="helpPopoverPosition" value="left" />
 </c:if>
@@ -88,7 +90,7 @@
 									{{ if(obj.productDisclosures != null) { }}
 										{{ if(typeof obj.productDisclosures.pdsc != 'undefined') { }}
 											{{ if(obj.productDisclosures.pdsc.url != '') { }}
-												{{ pdsC = '<a href="'+obj.productDisclosures.pdsc.url+'" target="_blank" class="showDoc btn btn-sm btn-download" style="width: '+width+'%">Part C</a>' }}
+												{{ pdsC = '<a href="'+obj.productDisclosures.pdsc.url+'" target="_blank" class="showDoc btn btn-sm btn-download" style="width: '+width+'%" ${navBtnAnalAttribute}>Part C</a>' }}
 											{{ } else { }}
 												{{ width = '45' }}
 											{{ } }}
@@ -97,22 +99,22 @@
 										{{ } }}
 
 										{{ if(typeof obj.productDisclosures.pdsb != 'undefined') { }}
-											{{ pdsB = '<a href="'+obj.productDisclosures.pdsb.url+'" target="_blank" class="showDoc btn btn-sm btn-download" style="width: '+width+'%">Part B</a>' }}
+											{{ pdsB = '<a href="'+obj.productDisclosures.pdsb.url+'" target="_blank" class="showDoc btn btn-sm btn-download" style="width: '+width+'%" ${navBtnAnalAttribute}>Part B</a>' }}
 										{{ } else { }}
 											{{ width = '70' }}
 										{{ } }}
 
 
-										{{ pdsA = '<a href="'+obj.productDisclosures.pdsa.url+'" target="_blank" class="showDoc btn btn-sm btn-download" style="width: '+width+'%">Part A</a>' }}
+										{{ pdsA = '<a href="'+obj.productDisclosures.pdsa.url+'" target="_blank" class="showDoc btn btn-sm btn-download" style="width: '+width+'%" ${navBtnAnalAttribute}>Part A</a>' }}
 									{{ } }}
 
 									{{ displayValue = '<div class="btnContainer">'+pdsA+pdsB+pdsC+'</div>' }}
-								{{ } }}
+					 			{{ } }}
 
 								<%-- View more info --%>
 								{{ if ('${splitPath}' == 'action.moreInfo') { }}
 									{{ pathValue = true }}
-									{{  displayValue = '<div class="btnContainer"><a class="btn-more-info" href="javascript:;" data-productId="'+obj.productId+'">view more info</a></div>' }}
+									{{  displayValue = '<div class="btnContainer"><a class="btn-more-info" href="javascript:;" data-productId="'+obj.productId+'" ${navBtnAnalAttribute}>view more info</a></div>' }}
 								{{ } }}
 							</c:if>
 

@@ -154,6 +154,7 @@
                 <health_v4_layout:slide_results />
                 <health_v4_layout:slide_application />
                 <health_v4_layout:slide_payment />
+                <health_v4:dual_pricing_templates />
 
                 <health_v4_payment:payment_frequency_template />
 
@@ -162,6 +163,9 @@
                 <field_v1:hidden xpath="environmentValidatorOverride" />
                 <input type="hidden" name="transcheck" id="transcheck" value="1" />
                 <agg_v3:save_quote />
+
+                <%--Reward Campaign Template--%>
+                <reward:template_campaign_tile />
             </jsp:body>
         </layout_v1:journey_engine_page>
     </c:when>

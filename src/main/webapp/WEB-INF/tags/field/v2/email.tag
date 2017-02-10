@@ -26,6 +26,7 @@
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
+<c:set var="analAttribute"><field_v1:analytics_attr analVal="Email" quoteChar="\"" /></c:set>
 
 <%-- Only include the classname 'email' when field is required.
 	a silent error occurs when field is empty and not required --%>
@@ -60,7 +61,7 @@
 
 <%-- HTML --%>
 <span>
-	<input name="${name}" id="${name}" class="sessioncamexclude form-control ${className}" value="${value}" size="${size}" ${placeHolderAttribute}${tabIndexValue}${requiredAttribute} type="email" data-msg-required="Please enter ${titleText}" ${additionalAttributes} />
+	<input name="${name}" id="${name}" class="sessioncamexclude form-control ${className}" value="${value}" size="${size}" ${placeHolderAttribute}${tabIndexValue}${requiredAttribute} type="email" data-msg-required="Please enter ${titleText}" ${additionalAttributes} ${analAttribute} />
 </span>
 <c:if test="${not empty helptext}">
 	<i class="helptext">${helptext}</i>

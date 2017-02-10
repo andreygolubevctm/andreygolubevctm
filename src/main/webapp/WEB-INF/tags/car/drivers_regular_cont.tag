@@ -25,9 +25,11 @@
 			<group_v2:ncd_selection xpath="${xpath}" />
 
 			<form_v2:row label="Any motor insurance claims in the last 5 years (regardless of who was at fault)?" helpId="2" id="quote_drivers_regular_claimsRow">
+				<c:set var="analAttribute"><field_v1:analytics_attr analVal="Claims last 5y" quoteChar="\"" /></c:set>
 				<field_v2:array_radio xpath="${xpath}/claims" required="true"
 					items="Y=Yes,N=No,U=Unsure"
-					title="if the regular driver has had any motor insurance claims in the last 5 years" />
+					title="if the regular driver has had any motor insurance claims in the last 5 years"
+					additionalLabelAttributes="${analAttribute}" />
 			</form_v2:row>
 
 		</form_v2:fieldset>

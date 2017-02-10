@@ -97,7 +97,7 @@
             product.mode = '';
         }
         product.showAltPremium = false;
-        if (typeof meerkat.site.healthAlternatePricingActive !== 'undefined' && meerkat.site.healthAlternatePricingActive === true && premiumChangeEventFired === false) {
+        if (meerkat.modules.healthDualPricing.isDualPricingActive()) {
             product.displayLogo = false;
             if (typeof product.dropDeadDate === 'undefined') {
                 var selectedProduct = Results.getSelectedProduct();
@@ -128,7 +128,7 @@
 
             if ($policySummaryDualPricing.length > 0) {
                 product.showAltPremium = true;
-                htmlString = htmlTemplate(product);
+                htmlString = priceHtmlTemplate(product);
                 $policySummaryDualPricing.find('.altPremium').html(htmlString);
             }
         }
