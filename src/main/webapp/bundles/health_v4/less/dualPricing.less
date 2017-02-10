@@ -96,11 +96,12 @@
         @media (@sm) {
           display: inline-block;
           float: left;
-          width: 50%;
+          width: 55%;
         }
       }
 
       .altPriceDetailsContainer {
+        font-size: @font-size-small;
         text-align: center;
 
         .dual-pricing-learn-more {
@@ -123,8 +124,15 @@
     /* coming soon styles */
     &.comingsoon {
       .april-pricing {
+        height: 66px;
+        line-height: 66px;
         padding-bottom: initial;
         margin-bottom: initial;
+
+        @media (@sm) {
+          height: 46px;
+          line-height: 46px;
+        }
 
         .altPriceContainer {
           width: 100%;

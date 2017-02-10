@@ -41,7 +41,7 @@
 			</div>
 			<div class="altPriceDetailsContainer">
 				<span class="deadline">Premium rise ${april1Header}</span>
-				<a href="javascript:;" class="dual-pricing-learn-more">learn more</a>
+				<a href="javascript:;" class="dual-pricing-learn-more" data-dropDeadDate="{{= obj.dropDeadDate }}">Learn more</a>
 			</div>
 		</div>
 	</div>
@@ -79,7 +79,7 @@
 			{{ if (comingSoonClass === '' && !_.isUndefined(obj.altPremium[obj._selectedFrequency]) && !_.isUndefined(obj.altPremium[obj._selectedFrequency][lhcText])) { }}
 				<span>{{= obj.altPremium[obj._selectedFrequency][lhcText] }}</span>
 			{{ } }}
-			<a href="javascript:;" class="dual-pricing-learn-more">Learn more</a>
+			<a href="javascript:;" class="dual-pricing-learn-more" data-dropDeadDate="{{= obj.dropDeadDate }}">Learn more</a>
 		</div>
 		<div class="col-xs-8 current-pricing-details">
 			{{ if (!_.isUndefined(obj.premium[obj._selectedFrequency][lhcText])) { }}
@@ -110,7 +110,7 @@
 						<span>{{= obj.altPremium[obj._selectedFrequency][lhcText] }}</span>
 					{{ } }}
 					<div>
-						<a href="javascript:;" class="dual-pricing-learn-more">learn more</a>
+						<a href="javascript:;" class="dual-pricing-learn-more" data-dropDeadDate="{{= obj.dropDeadDate }}">learn more</a>
 					</div>
 				</div>
 			</div>

@@ -44,7 +44,7 @@
 			</div>
 			<div class="altPriceDetailsContainer">
 				<span class="deadline">${april1Header}</span>
-				<a href="javascript:;" class="dual-pricing-learn-more">learn more</a>
+				<a href="javascript:;" class="dual-pricing-learn-more" data-dropDeadDate="{{= obj.dropDeadDate }}">learn more</a>
 			</div>
 		</div>
 		<div class="current-pricing">
@@ -60,7 +60,7 @@
 			<h3>${april1HeaderNoSup}</h3>
 			{{= renderedAltPriceTemplate }}
 			<span class="premiumsRising">Premiums are rising</span>
-			<a href="javascript:;" class="dual-pricing-learn-more">learn more</a>
+			<a href="javascript:;" class="dual-pricing-learn-more" data-dropDeadDate="{{= obj.dropDeadDate }}">learn more</a>
 		</div>
 		<div class="current-pricing">
 			<h3>Current {{= obj._selectedFrequency }} Pricing</h3>
@@ -80,7 +80,7 @@
 				</div>
 				<div class="col-xs-6 detailsContainer">
 					<span class="premiumsRising">Premiums are rising</span>
-					<a href="javascript:;" class="dual-pricing-learn-more">learn more</a>
+					<a href="javascript:;" class="dual-pricing-learn-more" data-dropDeadDate="{{= obj.dropDeadDate }}">learn more</a>
 				</div>
 			</div>
 		</div>
