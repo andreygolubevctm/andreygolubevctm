@@ -206,7 +206,14 @@
         var headerTemplate = meerkat.modules.templateCache.getTemplate($('#moreInfoAffixedHeaderMobileTemplate')),
             obj = Results.getSelectedProduct();
 
-        obj.renderedPriceTemplate = meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false);
+        if (meerkat.site.healthAlternatePricingActive) {
+            obj.renderedPriceTemplate = meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false);
+        } else {
+            var priceTemplate = meerkat.modules.templateCache.getTemplate($("#price-template"));
+            obj.showAltPremium = false;
+            obj._selectedFrequency = Results.getFrequency();
+            obj.renderedPriceTemplate = priceTemplate(obj);
+        }
         return headerTemplate(obj);
     }
 
