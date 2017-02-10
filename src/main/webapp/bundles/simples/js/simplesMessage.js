@@ -311,11 +311,15 @@
 
 			// update remaining sales
 			renderRemainingSales(function (data) {
+				var htmlOutput = "";
+				var remainingSales = "";
+				var remainingDays = "";
 				for (var i = 0; i < data.length; i++) {
-					var remainingSales = data[i].remainingSales > 15 ? '15+' : (data[i].remainingSales);
-					var remainingDays = data[i].remainingDays == 1 ? data[i].remainingDays + ' day' : data[i].remainingDays + ' days';
-					remainingSalesTableTbody.append('<tr><td>' + data[i].fundName + '</td><td>' + remainingSales + ' left</td><td>in ' + remainingDays + '</td></tr>');
+					remainingSales = data[i].remainingSales > 15 ? '15+' : (data[i].remainingSales);
+					remainingDays = data[i].remainingDays == 1 ? data[i].remainingDays + ' day' : data[i].remainingDays + ' days';
+					htmlOutput += '<tr><td>' + data[i].fundName + '</td><td>' + remainingSales + ' left</td><td>in ' + remainingDays + '</td></tr>';
 				}
+				remainingSalesTableTbody.append(htmlOutput);
 			});
 
 		}
