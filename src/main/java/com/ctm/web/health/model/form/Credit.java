@@ -45,7 +45,7 @@ public class Credit {
     }
 
     public void setNumber(String number) {
-        this.number = number;
+        this.number = number.replaceAll("\\s","");
     }
 
     public Expiry getExpiry() {
