@@ -74,7 +74,7 @@
             },
             "rebate": {
                 name: 'health_filterBar_rebate',
-                defaultValueSourceSelector: '#health_healthCover_rebateRadio',
+                defaultValueSourceSelector: 'input[name="health_healthCover_rebate"]',
                 defaultValue: '',
                 events: {
                     init: function (filterObject) {
