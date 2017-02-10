@@ -242,7 +242,9 @@
             $('.more-info-affixed-header').addClass(comingSoonClass);
 
             // update the dropdeaddate. Tried in _getAffixedMobileHeaderData but that returns undefined
-            $elements.currentPricingContainer.find('.applyBy').text('Apply by ' + product.dropDeadDateFormatted);
+            if (!_.isUndefined($elements.applyBy)) {
+                $elements.applyBy.text('Apply by ' + product.dropDeadDateFormatted);
+            }
         }
     }
 
@@ -279,7 +281,8 @@
             modalHeader: $('.modal-header'),
             pricingContainer: $('.mobile-pricing, .logo-header'),
             currentPricingContainer: $('.current-container'),
-            currentPricingDetails: $('.current-pricing-details')
+            currentPricingDetails: $('.current-pricing-details'),
+            applyBy: $('.applyBy')
         };
 
         if (meerkat.site.healthAlternatePricingActive) {
@@ -320,7 +323,7 @@
             $elements.modalHeader.find('.lhcText').toggleClass('hidden', $elements.moreInfoContainer.offset().top < calculatedHeight);
             $elements.modalHeader.find('.printableBrochuresLink').toggleClass('hidden', $elements.moreInfoContainer.offset().top < calculatedHeight);
 
-            if (meerkat.site.healthAlternatePricingActive) {
+            if (meerkat.site.healthAlternatePricingActive && meerkat.modules.deviceMediaState.get() === 'xs') {
                 $elements.modalHeader.find('.april-container').toggleClass('hidden', $elements.moreInfoContainer.offset().top < calculatedHeight);
                 $elements.currentPricingContainer
                     .toggleClass('col-xs-12', $elements.moreInfoContainer.offset().top < calculatedHeight)
