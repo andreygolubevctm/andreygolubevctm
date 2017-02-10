@@ -128,12 +128,6 @@
         }
     }
 
-    function hideDependants() {
-        if (!_.isUndefined($elements)) {
-            $elements.dependantsRow.addClass('hidden');
-        }
-    }
-
     /**
      * Event Listeners for Health Dependants
      */
@@ -578,7 +572,6 @@
         updateConfig: updateConfig,
         getMaxAge: getMaxAge,
         setMaxAge: setMaxAge,
-        hideDependants: hideDependants,
         updateDependantConfiguration: updateDependantConfiguration,
         getEducationalInstitutionsOptions: getEducationalInstitutionsOptions,
         situationEnablesDependants: situationEnablesDependants,
