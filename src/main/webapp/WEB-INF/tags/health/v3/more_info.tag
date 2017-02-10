@@ -33,7 +33,7 @@
 	{{ obj.displayLogo = false; }} <%-- Turns off the logo from the template --%>
 
 	<%-- If dual pricing is enabled, update the template --%>
-	{{ if (meerkat.modules.healthDualPricing.isDualPricingActive() === true && meerkat.site.isCallCentreUser === true) { }}
+	{{ if (meerkat.modules.healthDualPricing.isDualPricingActive() === true) { }}
 		{{ obj.renderedDualPricing = meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false); }}
 	{{ } else { }}
 		{{ var logoTemplate = meerkat.modules.templateCache.getTemplate($("#logo-template")); }}
@@ -92,7 +92,7 @@
 				<div class="row priceRow productSummary hidden-xs">
 					<div class="col-xs-12">
 						<c:choose>
-							<c:when test="${isDualPricingActive eq true and not empty callCentre}">
+							<c:when test="${isDualPricingActive eq true}">
 								{{= renderedDualPricing }}
 							</c:when>
 							<c:otherwise>
@@ -124,7 +124,7 @@
 					<div class="row priceRow productSummary hidden-sm hidden-md hidden-lg">
 						<div class="col-xs-12 col-sm-8">
 							<c:choose>
-								<c:when test="${isDualPricingActive eq true and not empty callCentre}">
+								<c:when test="${isDualPricingActive eq true}">
 									{{= renderedDualPricing }}
 								</c:when>
 								<c:otherwise>
@@ -148,7 +148,7 @@
 
 			</div>
 			<c:choose>
-				<c:when test="${isDualPricingActive eq true and not empty callCentre}">
+				<c:when test="${isDualPricingActive eq true}">
 					<div class="col-md-5 hidden-xs moreInfoTopRightColumn">
 						<div class="companyLogo {{= info.provider }}-mi"></div>
 							<div class="insureNow">

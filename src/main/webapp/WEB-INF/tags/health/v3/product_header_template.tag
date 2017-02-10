@@ -40,7 +40,7 @@
                 {{ var logoTemplate = meerkat.modules.templateCache.getTemplate($("#logo-template")); }}
                 {{= logoTemplate(obj) }}
 
-                {{ if (meerkat.modules.healthDualPricing.isDualPricingActive() === true && meerkat.site.isCallCentreUser === true) { }}
+                {{ if (meerkat.modules.healthDualPricing.isDualPricingActive() === true) { }}
                     {{= meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false, 'results') }}
                 {{ } else { }}
                     {{ var productTitleTemplate = meerkat.modules.templateCache.getTemplate($("#product-title-template")); }}
