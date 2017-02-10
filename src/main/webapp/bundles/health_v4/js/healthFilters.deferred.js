@@ -84,7 +84,12 @@
                         updateRebateLabels();
                     },
                     update: function (filterObject) {
-                        $(filterObject.defaultValueSourceSelector).prop('checked', $('input[name=' + filterObject.name + ']').is(':checked')).trigger('change');
+                        var isChecked = $('input[name=' + filterObject.name + ']').is(':checked');
+                        if (isChecked) {
+                            $(filterObject.defaultValueSourceSelector+'[value="Y"]').prop('checked', true).trigger('change');
+                        } else {
+                            $(filterObject.defaultValueSourceSelector+'[value="N"]').prop('checked', true).trigger('change');
+                        }
 
                         _.defer(function () {
                             toggleRebateEdit(true);
