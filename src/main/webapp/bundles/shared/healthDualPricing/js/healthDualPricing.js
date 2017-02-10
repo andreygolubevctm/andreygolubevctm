@@ -6,21 +6,30 @@
         selectedProduct = {},
         modalId = null,
         freqTextMapping = {
-            'halfyearly': 'half yearly',
-            'quarterly': 'quarterly',
-            'monthly': 'monthly',
-            'fortnightly': 'fortnightly',
-            'weekly': 'weekly'
-        };
+            'annually': 'per annum',
+            'halfyealy': 'per half year',
+            'quarterly': 'per quarter',
+            'monthly': 'per month',
+            'fortnightly': 'per fortnight',
+            'weekly': 'per week'
+        },
+        isActive = null;
 
     function initDualPricing() {
-        if (meerkat.site.isDualPricingActive !== true) {
+        if (!isDualPricingActive()) {
             return false;
         }
 
         _setupElements();
         _applyEventListeners();
         _eventSubscriptions();
+    }
+
+    function isDualPricingActive() {
+        if(isActive === null) {
+            isActive = typeof meerkat.site.isDualPricingActive !== 'undefined' && meerkat.site.isDualPricingActive;
+        }
+        return isActive;
     }
 
     function _setupElements() {
@@ -194,6 +203,7 @@
 
     meerkat.modules.register('healthDualPricing', {
         initDualPricing: initDualPricing,
+        isDualPricingActive: isDualPricingActive,
         renderTemplate: renderTemplate
     });
 
