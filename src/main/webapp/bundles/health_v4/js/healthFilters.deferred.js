@@ -74,7 +74,7 @@
             },
             "rebate": {
                 name: 'health_filterBar_rebate',
-                defaultValueSourceSelector: '#health_healthCover_rebateCheckbox',
+                defaultValueSourceSelector: '#health_healthCover_rebateRadio',
                 defaultValue: '',
                 events: {
                     init: function (filterObject) {
@@ -361,7 +361,7 @@
     }
 
     function updateRebateLabels() {
-        $('#filtersRebateLabel span').html(meerkat.modules.healthRebate.getRebateLabelText());
+        $('#filtersRebateLabel span').html(meerkat.modules.healthRebate.getSelectedRebateTierLabelText());
         $('#filtersSelectedRebateText').html(meerkat.modules.healthRebate.getSelectedRebateLabelText());
     }
 

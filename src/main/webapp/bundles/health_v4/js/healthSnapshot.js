@@ -213,7 +213,7 @@
     }
 
     function _fetchRebateText() {
-        return meerkat.modules.healthRebate.getRebateLabelText($elements.rebate.val() === 'Y' ? undefined : 4);
+        return meerkat.modules.healthRebate.getSelectedRebateTierLabelText();
     }
 
     function _fetchRebateSubText(income) {

@@ -57,7 +57,6 @@
         },
         providerConfig,
         maxDependantAge = 25,
-        enableDefaultValueForDependants = false, // Enabled the default value in the dependents dropdown.
         $elements;
 
     function initHealthDependants() {
@@ -97,13 +96,11 @@
     function init() {
         $(document).ready(function () {
             $elements = {
-                dependants: $('select[name=health_healthCover_dependants]'),
-                selectedRebateText: $('#selectedRebateText'),
-                applyRebate: $('input[name=health_healthCover_rebateCheckbox]')
+                dependantsRow: $('#health_healthCover_dependants_field_row'),
+                dependants: $('select[name=health_healthCover_dependants]')
             };
 
             aboutYouApplyEventListeners();
-            toggleDependantsDefaultValue();
             moduleInitialised = true;
         });
     }
@@ -120,40 +117,20 @@
         });
     }
 
-    function toggleDependantsDefaultValueCallback(shouldSetDefaultDependants) {
-        if (shouldSetDefaultDependants) {
-            // default to 2 dependants
-            $elements.dependants.val(2).attr('data-attach', true);
-        } else {
-            $elements.dependants.val('').removeAttr('data-attach');
-        }
-    }
-
-    function toggleDependantsDefaultValue() {
-        var shouldSetDefaultDependants = situationEnablesDependants() && enableDefaultValueForDependants;
-        if(moduleInitialised) {
-            toggleDependantsDefaultValueCallback(shouldSetDefaultDependants);
-        } else {
-            _.defer(function(){
-                toggleDependantsDefaultValueCallback(shouldSetDefaultDependants);
-            });
-        }
-    }
-
     function toggleDependants() {
-        var showDependants = situationEnablesDependants() && meerkat.modules.healthRebate.editModeEnabled();
+        var showDependants = situationEnablesDependants() && meerkat.modules.healthRebate.isRebateApplied();
         if(moduleInitialised) {
-                $elements.dependants.closest('.select').toggleClass('hidden', !showDependants);
+                $elements.dependantsRow.toggleClass('hidden', !showDependants);
         } else {
             _.defer(function(){
-                $elements.dependants.closest('.select').toggleClass('hidden', !showDependants);
+                $elements.dependantsRow.toggleClass('hidden', !showDependants);
             });
         }
     }
 
     function hideDependants() {
         if (!_.isUndefined($elements)) {
-            $elements.dependants.closest('.select').addClass('hidden');
+            $elements.dependantsRow.addClass('hidden');
         }
     }
 
@@ -605,8 +582,7 @@
         updateDependantConfiguration: updateDependantConfiguration,
         getEducationalInstitutionsOptions: getEducationalInstitutionsOptions,
         situationEnablesDependants: situationEnablesDependants,
-        toggleDependants: toggleDependants,
-        toggleDependantsDefaultValue: toggleDependantsDefaultValue
+        toggleDependants: toggleDependants
     });
 
 })(jQuery);
