@@ -206,7 +206,7 @@
         var headerTemplate = meerkat.modules.templateCache.getTemplate($('#moreInfoAffixedHeaderMobileTemplate')),
             obj = Results.getSelectedProduct();
 
-        if (meerkat.site.healthAlternatePricingActive) {
+        if (meerkat.modules.healthDualPricing.isDualPricingActive()) {
             obj.renderedPriceTemplate = meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false);
         } else {
             var priceTemplate = meerkat.modules.templateCache.getTemplate($("#price-template"));
@@ -239,7 +239,7 @@
     }
 
     function _setupDualPricing(product) {
-        if (meerkat.site.healthAlternatePricingActive === true) {
+        if (meerkat.modules.healthDualPricing.isDualPricingActive() === true) {
             $('.april-pricing').addClass('april-pricing-done');
             $('.current-pricing').addClass('current-pricing-done');
 
@@ -292,7 +292,7 @@
             applyBy: $('.applyBy')
         };
 
-        if (meerkat.site.healthAlternatePricingActive) {
+        if (meerkat.modules.healthDualPricing.isDualPricingActive()) {
             $elements.pricingContainer.removeClass('col-xs-6').addClass('col-xs-12');
         }
 
@@ -330,7 +330,7 @@
             $elements.modalHeader.find('.lhcText').toggleClass('hidden', $elements.moreInfoContainer.offset().top < calculatedHeight);
             $elements.modalHeader.find('.printableBrochuresLink').toggleClass('hidden', $elements.moreInfoContainer.offset().top < calculatedHeight);
 
-            if (meerkat.site.healthAlternatePricingActive && meerkat.modules.deviceMediaState.get() === 'xs') {
+            if (meerkat.modules.healthDualPricing.isDualPricingActive() && meerkat.modules.deviceMediaState.get() === 'xs') {
                 $elements.modalHeader.find('.april-container').toggleClass('hidden', $elements.moreInfoContainer.offset().top < calculatedHeight);
                 $elements.currentPricingContainer
                     .toggleClass('col-xs-12', $elements.moreInfoContainer.offset().top < calculatedHeight)
