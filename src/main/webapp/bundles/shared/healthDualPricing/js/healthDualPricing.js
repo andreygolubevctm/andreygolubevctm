@@ -11,7 +11,8 @@
             'monthly': 'monthly',
             'fortnightly': 'fortnightly',
             'weekly': 'weekly'
-        };
+        },
+        isActive = null;
 
     function initDualPricing() {
         if (!isDualPricingActive()) {
@@ -24,7 +25,10 @@
     }
 
     function isDualPricingActive() {
-        return typeof meerkat.site.isDualPricingActive !== 'undefined' && meerkat.site.isDualPricingActive;
+        if(isActive === null) {
+            isActive = typeof meerkat.site.isDualPricingActive !== 'undefined' && meerkat.site.isDualPricingActive;
+        }
+        return isActive;
     }
 
     function _setupElements() {
