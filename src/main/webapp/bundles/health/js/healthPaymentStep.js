@@ -238,7 +238,7 @@
 			$frequencySelect.empty().append(options);
 			updateLHCText(product);
 
-			if (meerkat.site.isDualPricingActive) {
+			if (meerkat.modules.healthDualPricing.isDualPricingActive()) {
 				$frequencySelect.trigger('change.healthDualPricing');
 			}
 		}
@@ -339,7 +339,7 @@
 					// TODO work out this: //Results._refreshSimplesTooltipContent($('#update-premium .premium'));
 				}
 
-				if (typeof meerkat.site.isDualPricingActive !== 'undefined' && meerkat.site.isDualPricingActive === true) {
+				if (meerkat.modules.healthDualPricing.isDualPricingActive()) {
 					meerkat.modules.healthDualPricing.renderTemplate('.policySummary.dualPricing', data, false, true);
 				}
 
@@ -383,7 +383,7 @@
 		product.premium = product.paymentTypePremiums[product.paymentNode];
 		product._selectedFrequency = getSelectedFrequency();
 
-		if (typeof meerkat.site.isDualPricingActive !== 'undefined' && meerkat.site.isDualPricingActive === true) {
+		if (meerkat.modules.healthDualPricing.isDualPricingActive()) {
 			product.altPremium = product.paymentTypeAltPremiums[product.paymentNode];
 		}
 

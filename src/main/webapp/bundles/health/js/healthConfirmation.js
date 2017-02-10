@@ -208,7 +208,7 @@
 
 		adjustLayout();
 
-		if (typeof meerkat.site.isDualPricingActive !== 'undefined' && meerkat.site.isDualPricingActive === true) {
+		if (meerkat.modules.healthDualPricing.isDualPricingActive()) {
 			// render dual pricing
 			meerkat.modules.healthDualPricing.initDualPricing();
 			confirmationProduct.altPremium = confirmationProduct.paymentTypeAltPremiums[meerkat.modules.healthPaymentStep.getPaymentMethodNode(confirmationProduct.paymentType)];

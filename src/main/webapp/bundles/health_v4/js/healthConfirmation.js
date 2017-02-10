@@ -181,7 +181,7 @@
 
 		adjustLayout();
 
-		if (typeof meerkat.site.isDualPricingActive !== 'undefined' && meerkat.site.isDualPricingActive === true) {
+		if (meerkat.modules.healthDualPricing.isDualPricingActive()) {
 			// render dual pricing
 			meerkat.modules.healthDualPricing.initdualPricing();
 			meerkat.modules.healthDualPricing.renderTemplate('.policySummary.dualPricing', meerkat.modules.moreInfo.getProduct(), false, true);

@@ -14,13 +14,17 @@
         };
 
     function initDualPricing() {
-        if (meerkat.site.isDualPricingActive !== true) {
+        if (!isDualPricingActive()) {
             return false;
         }
 
         _setupElements();
         _applyEventListeners();
         _eventSubscriptions();
+    }
+
+    function isDualPricingActive() {
+        return typeof meerkat.site.isDualPricingActive !== 'undefined' && meerkat.site.isDualPricingActive;
     }
 
     function _setupElements() {
@@ -198,6 +202,7 @@
 
     meerkat.modules.register('healthDualPricing', {
         initDualPricing: initDualPricing,
+        isDualPricingActive: isDualPricingActive,
         renderTemplate: renderTemplate
     });
 
