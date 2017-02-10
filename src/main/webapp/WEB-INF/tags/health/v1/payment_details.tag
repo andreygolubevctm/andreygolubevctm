@@ -38,7 +38,7 @@
 			<field_v2:array_select items="=Please choose..." xpath="${fieldXpath}" title="frequency of payments" required="true" delims="||" className="health-payment_details-frequency" />
 		</form_v2:row>
 
-		<c:if test="${isDualPricingActive eq true}">
+		<c:if test="${isDualPriceActive eq true}">
 			<div class="hidden frequencyWarning definition alert alert-info"></div>
 		</c:if>
 		

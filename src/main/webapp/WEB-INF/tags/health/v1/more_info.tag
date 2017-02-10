@@ -53,13 +53,13 @@
 
 	<c:set var="buyNowHeadingClass">
 		<c:choose>
-			<c:when test="${isDualPricingActive eq true}">hidden-xs</c:when>
+			<c:when test="${isDualPriceActive eq true}">hidden-xs</c:when>
 			<c:otherwise>visible-xs</c:otherwise>
 		</c:choose>
 	</c:set>
 	<c:set var="moreInfoTopLeftColumnWidth">
 		<c:choose>
-			<c:when test="${isDualPricingActive eq true}">col-md-7</c:when>
+			<c:when test="${isDualPriceActive eq true}">col-md-7</c:when>
 			<c:otherwise>col-md-8</c:otherwise>
 		</c:choose>
 	</c:set>
@@ -68,7 +68,7 @@
 	</c:set>
 	<div data-product-type="{{= info.ProductType }}" class="displayNone more-info-content col-xs-12 ${variantClassName}">
 
-		<div class="fieldset-card row price-card <c:if test="${isDualPricingActive eq true}">hasDualPricing</c:if> {{= dropDatePassed ? 'dropDatePassedContainer' : ''}}">
+		<div class="fieldset-card row price-card <c:if test="${isDualPriceActive eq true}">hasDualPricing</c:if> {{= dropDatePassed ? 'dropDatePassedContainer' : ''}}">
 
 			<div class="col-xs-12 col-md-7 hidden-xs quoteRefContainer">
 				<p>Quote reference number <span class="text-secondary">{{= transactionId }}</span></p>
@@ -79,7 +79,7 @@
 					<div class="col-xs-3">
 						<div class="companyLogo {{= info.provider }}-mi"></div>
 					</div>
-					<div class="col-xs-9 <c:if test="${isDualPricingActive eq true}">productDetails</c:if>">
+					<div class="col-xs-9 <c:if test="${isDualPriceActive eq true}">productDetails</c:if>">
 						<h1 class="noTopMargin productName">{{= info.productTitle }}</h1>
 
 						<div class="hidden-xs">
@@ -92,7 +92,7 @@
 				</div>
 
 				<c:choose>
-				<c:when test="${isDualPricingActive eq true and not empty callCentre}">
+				<c:when test="${isDualPriceActive eq true and not empty callCentre}">
 					<div class="row priceRow">
 						<div class="col-xs-12 hidden-md hidden-lg">
 							{{= renderedDualPricing }}
@@ -138,7 +138,7 @@
 
 			</div>
 			<c:choose>
-				<c:when test="${isDualPricingActive eq true and not empty callCentre}">
+				<c:when test="${isDualPriceActive eq true and not empty callCentre}">
 					<div class="col-md-5 hidden-xs hidden-sm moreInfoTopRightColumn">
 						<c:choose>
 							<c:when test="${moreinfo_splittest_variant1 eq true}">

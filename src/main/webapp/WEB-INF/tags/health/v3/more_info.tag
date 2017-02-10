@@ -58,13 +58,13 @@
 
 	<c:set var="buyNowHeadingClass">
 		<c:choose>
-			<c:when test="${isDualPricingActive eq true}">hidden-xs</c:when>
+			<c:when test="${isDualPriceActive eq true}">hidden-xs</c:when>
 			<c:otherwise>visible-xs</c:otherwise>
 		</c:choose>
 	</c:set>
 	<c:set var="moreInfoTopLeftColumnWidth">
 		<c:choose>
-			<c:when test="${isDualPricingActive eq true}">col-md-7</c:when>
+			<c:when test="${isDualPriceActive eq true}">col-md-7</c:when>
 			<c:otherwise>col-sm-8</c:otherwise>
 		</c:choose>
 	</c:set>
@@ -79,20 +79,20 @@
 
 	<div data-product-type="{{= info.ProductType }}" class="displayNone more-info-content col-xs-12 ${variantClassName} {{= comingSoonClass }}">
 
-		<div class="fieldset-card row price-card <c:if test="${isDualPricingActive eq true}">hasDualPricing</c:if> {{= dropDatePassed ? 'dropDatePassedContainer' : ''}}">
+		<div class="fieldset-card row price-card <c:if test="${isDualPriceActive eq true}">hasDualPricing</c:if> {{= dropDatePassed ? 'dropDatePassedContainer' : ''}}">
 			<div class="${moreInfoTopLeftColumnWidth} moreInfoTopLeftColumn">
 				<div class="row hidden-sm hidden-md hidden-lg">
 					<div class="col-xs-3">
 						<div class="companyLogo {{= info.provider }}-mi"></div>
 					</div>
-					<div class="col-xs-9 <c:if test="${isDualPricingActive eq true}">productDetails</c:if>">
+					<div class="col-xs-9 <c:if test="${isDualPriceActive eq true}">productDetails</c:if>">
 						<h1 class="noTopMargin productName">{{= info.productTitle }}</h1>
 					</div>
 				</div>
 				<div class="row priceRow productSummary hidden-xs">
 					<div class="col-xs-12">
 						<c:choose>
-							<c:when test="${isDualPricingActive eq true}">
+							<c:when test="${isDualPriceActive eq true}">
 								{{= renderedDualPricing }}
 							</c:when>
 							<c:otherwise>
@@ -102,7 +102,7 @@
 					</div>
 				</div>
 				<div class="row hidden-xs">
-					<div class="col-xs-12 <c:if test="${isDualPricingActive eq true}">productDetails</c:if>">
+					<div class="col-xs-12 <c:if test="${isDualPriceActive eq true}">productDetails</c:if>">
 						<h1 class="noTopMargin productName">{{= info.productTitle }}</h1>
 
 						<div class="hidden-xs">
@@ -124,7 +124,7 @@
 					<div class="row priceRow productSummary hidden-sm hidden-md hidden-lg">
 						<div class="col-xs-12 col-sm-8">
 							<c:choose>
-								<c:when test="${isDualPricingActive eq true}">
+								<c:when test="${isDualPriceActive eq true}">
 									{{= renderedDualPricing }}
 								</c:when>
 								<c:otherwise>
@@ -148,7 +148,7 @@
 
 			</div>
 			<c:choose>
-				<c:when test="${isDualPricingActive eq true}">
+				<c:when test="${isDualPriceActive eq true}">
 					<div class="col-md-5 hidden-xs moreInfoTopRightColumn">
 						<div class="companyLogo {{= info.provider }}-mi"></div>
 							<div class="insureNow">
