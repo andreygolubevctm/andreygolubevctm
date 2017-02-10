@@ -25,7 +25,7 @@
 </core_v1:js_template>
 
 <c:set var="heading">Premiums are rising April 1</c:set>
-<c:set var="april1Header">from April 1<sup>st</sup></c:set>
+<c:set var="april1Header">from April 1st, 2017</c:set>
 
 <%-- RESULTS TEMPLATES --%>
 <core_v1:js_template id="dual-pricing-results-template">
@@ -65,8 +65,8 @@
 		</div>
 		<div class="current-pricing col-xs-8">
 			<div class="row">
-				<div class="col-xs-6">
-					<h3>Current {{= obj._selectedFrequency }} Pricing</h3>
+				<div class="col-xs-6 container">
+					<h3>Current {{= obj._selectedFrequency }} Price</h3>
 					{{= renderedPriceTemplate }}
 					<span class="applyBy">Apply by {{= obj.dropDeadDateFormatted }}</span>
 				</div>
@@ -116,7 +116,7 @@
 			</div>
 			<div class="col-xs-6 current-container">
 				<div class="current-pricing">
-					<h3>Current {{= obj._selectedFrequency }} Pricing</h3>
+					<h3>Current {{= obj._selectedFrequency }} Price</h3>
 					{{= renderedPriceTemplate }}
 
 					<span class="applyBy">Apply by {{= obj.dropDeadDateFormatted }}</span>

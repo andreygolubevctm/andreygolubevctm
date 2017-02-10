@@ -41,7 +41,8 @@
 
 	<%-- If dual pricing is enabled, update the template --%>
 	{{ if (meerkat.site.healthAlternatePricingActive === true && meerkat.modules.deviceMediaState.get() !== 'xs') { }}
-			{{ obj.renderedDualPricing = meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false); }}
+		{{ obj.renderedDualPricing = meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false); }}
+		{{ _.delay(function() { $('.dualPricingAffixedHeader').html(obj.renderedDualPricing);}); }}
 	{{ } else { }}
 		{{ var logoTemplate = meerkat.modules.templateCache.getTemplate($("#logo-template")); }}
 		{{ var priceTemplate = meerkat.modules.templateCache.getTemplate($("#price-template")); }}
