@@ -134,8 +134,10 @@
 	<c:set var="extrasCompareSpecialB" value="${benefitsContent.getSupplementaryValueByKey('extrasCompareSpecialB')}" />
 	<c:set var="hospitalCompareSpecialB" value="${benefitsContent.getSupplementaryValueByKey('hospitalCompareSpecialB')}" />
 
-<jsp:useBean id="healthPriceDetailService" class="com.ctm.web.health.services.HealthPriceDetailService" scope="page" />
-<c:set var="healthAlternatePricingActive" value="${healthPriceDetailService.isAlternatePriceActive(pageContext.getRequest())}" />
+	<jsp:useBean id="healthPriceDetailService" class="com.ctm.web.health.services.HealthPriceDetailService" scope="page" />
+	<c:set var="healthAlternatePricingActive" value="${healthPriceDetailService.isAlternatePriceActive(pageContext.getRequest())}" />
+
+	<health_v1:dual_pricing_settings />
 {
 	isCallCentreUser: <c:out value="${not empty callCentre}"/>,
 	<c:if test="${not empty callCentre}">
@@ -158,6 +160,7 @@
     isDefaultToHealthApply: ${defaultToHealthApply},
 	isTaxTime: '<content:get key="taxTime"/>',
 	healthAlternatePricingActive: ${healthAlternatePricingActive},
+	isDualPricingActive: ${isDualPriceActive},
 	<jsp:useBean id="healthApplicationService" class="com.ctm.web.health.services.HealthApplicationService"/>
 	<c:set var="providerList" value="${miscUtils:convertToJson(healthApplicationService.getAllProviders(pageSettings.getBrandId()))}"/>
 	navMenu: {

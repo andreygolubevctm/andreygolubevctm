@@ -237,6 +237,10 @@
 
 			$frequencySelect.empty().append(options);
 			updateLHCText(product);
+
+			if (meerkat.site.isDualPricingActive) {
+				$frequencySelect.trigger('change.healthDualPricing');
+			}
 		}
 	}
 
@@ -335,7 +339,7 @@
 					// TODO work out this: //Results._refreshSimplesTooltipContent($('#update-premium .premium'));
 				}
 
-				if (typeof meerkat.site.healthAlternatePricingActive !== 'undefined' && meerkat.site.healthAlternatePricingActive === true) {
+				if (typeof meerkat.site.isDualPricingActive !== 'undefined' && meerkat.site.isDualPricingActive === true) {
 					meerkat.modules.healthDualPricing.renderTemplate('.policySummary.dualPricing', data, false, true);
 				}
 
@@ -379,17 +383,18 @@
 		product.premium = product.paymentTypePremiums[product.paymentNode];
 		product._selectedFrequency = getSelectedFrequency();
 
-		if (typeof meerkat.site.healthAlternatePricingActive !== 'undefined' && meerkat.site.healthAlternatePricingActive === true) {
+		if (typeof meerkat.site.isDualPricingActive !== 'undefined' && meerkat.site.isDualPricingActive === true) {
 			product.altPremium = product.paymentTypeAltPremiums[product.paymentNode];
 		}
 
         meerkat.modules.healthResults.setSelectedProduct(product, true);
 	}
 
-	function getPaymentMethodNode(){
+	function getPaymentMethodNode(method){
 		var nodeName = '';
+		method = method || getSelectedPaymentMethod();
 
-		switch (getSelectedPaymentMethod()) {
+		switch (method) {
 			case 'cc':
 				var label = $paymentRadioGroup.find('label.active').text().trim();
 
@@ -428,7 +433,7 @@
 		}
 
 		// Essential to ensure default copy if shown when loading a quote
-		$("#health_payment_details_frequency").trigger("change." + (meerkat.modules.healthResults.getSelectedProduct().info.FundCode));
+		$("#health_payment_details_frequency").trigger("change." + (meerkat.modules.healthResults.getSelectedProduct().info.provider));
 	}
 
 	// Check if details for the claims bank account needs to be shown
