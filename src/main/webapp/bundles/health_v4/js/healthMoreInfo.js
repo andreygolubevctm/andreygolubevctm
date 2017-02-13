@@ -519,7 +519,8 @@
         return $.when(
             getProviderContentByType(product, 'ABT'),
             getProviderContentByType(product, 'NXT'),
-            getProviderContentByType(product, 'FWM')
+            getProviderContentByType(product, 'FWM'),
+            getProviderContentByType(product, 'DDD')
         );
     }
 
