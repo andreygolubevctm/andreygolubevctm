@@ -6,10 +6,10 @@ import com.ctm.web.core.resultsData.model.AvailableType;
 import com.ctm.web.health.model.PaymentType;
 import com.ctm.web.health.model.form.HealthRequest;
 import com.ctm.web.health.model.results.*;
-import com.ctm.web.health.model.results.Info;
-import com.ctm.web.health.model.results.Premium;
-import com.ctm.web.health.model.results.Price;
-import com.ctm.web.health.quote.model.response.*;
+import com.ctm.web.health.quote.model.response.HealthQuote;
+import com.ctm.web.health.quote.model.response.HealthResponseV2;
+import com.ctm.web.health.quote.model.response.Promotion;
+import com.ctm.web.health.quote.model.response.SpecialOffer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -22,14 +22,16 @@ import java.util.*;
 
 import static com.ctm.web.health.quote.model.response.Price.DEFAULT_PRICE;
 import static java.util.Collections.emptyList;
+import static java.util.Optional.empty;
+import static java.util.Optional.ofNullable;
 
 public class ResponseAdapterV2 {
 
     public static final String HEALTH_BROCHURE_URL = "health_brochure.jsp?pdf=";
 
-    public static ResponseAdapterModel adapt(HealthRequest request, HealthResponseV2 healthResponse, Content alternatePricingContent) {
+    public static ResponseAdapterModel adapt(final HealthRequest request, final HealthResponseV2 healthResponse, final Content alternatePricingContent) {
         boolean hasPriceChanged = false;
-        List<HealthQuoteResult> results = new ArrayList<>();
+        final List<HealthQuoteResult> results = new ArrayList<>();
         final IncomingQuotesResponse.Payload<HealthQuote> quoteResponse = healthResponse.getPayload();
 
         // Check if the response is unavailable
@@ -44,8 +46,12 @@ public class ResponseAdapterV2 {
             if (quoteResponse != null) {
                 int index = 1;
                 final boolean isAlternatePricingContent = alternatePricingContent != null && StringUtils.equalsIgnoreCase(alternatePricingContent.getContentValue(), "Y");
-                for (HealthQuote quote : quoteResponse.getQuotes()) {
-                    HealthQuoteResult result = new HealthQuoteResult();
+
+                final Optional<BigDecimal> rebateChangeover = Optional.ofNullable(request.getQuote().getRebateChangeover())
+                                                                .map(BigDecimal::new);
+
+                for (final HealthQuote quote : quoteResponse.getQuotes()) {
+                    final HealthQuoteResult result = new HealthQuoteResult();
 
                     result.setAvailable(quote.isAvailable() ? AvailableType.Y : AvailableType.N);
                     result.setTransactionId(request.getTransactionId());
@@ -58,14 +64,14 @@ public class ResponseAdapterV2 {
                     if (quote.getPremium() != null) {
                         result.setPremium(createPremium(quote.getPremium(), quote.getInfo(), request.getQuote()));
                         if (isAlternatePricingContent) {
-                            com.ctm.web.health.quote.model.response.Premium alternativePremium = quote.getAlternativePremium();
+                            final com.ctm.web.health.quote.model.response.Premium alternativePremium = quote.getAlternativePremium();
                             if (alternativePremium != null) {
-                                result.setAltPremium(createPremium(alternativePremium, quote.getInfo(), request.getQuote()));
+                                result.setAltPremium(createPremium(alternativePremium, quote.getInfo(), request.getQuote(), rebateChangeover));
                             } else {
-                                result.setAltPremium(createPremium(createDefaultPremium(), quote.getInfo(), request.getQuote()));
+                                result.setAltPremium(createPremium(createDefaultPremium(), quote.getInfo(), request.getQuote(), rebateChangeover));
                             }
                         } else {
-                            result.setAltPremium(createPremium(quote.getPremium(), quote.getInfo(), request.getQuote()));
+                            result.setAltPremium(createPremium(quote.getPremium(), quote.getInfo(), request.getQuote(), rebateChangeover));
                         }
                     } else if (quote.getPaymentTypePremiums() != null) {
                         final HashMap<String, Premium> paymentTypePremiums = new HashMap<>();
@@ -81,13 +87,13 @@ public class ResponseAdapterV2 {
                                 quote.getPaymentTypeAltPremiums().entrySet()
                                         .stream()
                                         .forEach(entry -> {
-                                            paymentTypeAltPremiums.put(getPaymentType(entry.getKey()), createPremium(entry.getValue(), quote.getInfo(), request.getQuote()));
+                                            paymentTypeAltPremiums.put(getPaymentType(entry.getKey()), createPremium(entry.getValue(), quote.getInfo(), request.getQuote(), rebateChangeover));
                                         });
                             } else {
                                 quote.getPaymentTypePremiums().entrySet()
                                         .stream()
                                         .forEach(entry -> {
-                                            paymentTypeAltPremiums.put(getPaymentType(entry.getKey()), createPremium(createDefaultPremium(), quote.getInfo(), request.getQuote()));
+                                            paymentTypeAltPremiums.put(getPaymentType(entry.getKey()), createPremium(createDefaultPremium(), quote.getInfo(), request.getQuote(), rebateChangeover));
                                         });
                             }
                             result.setPaymentTypeAltPremiums(paymentTypeAltPremiums);
@@ -110,12 +116,12 @@ public class ResponseAdapterV2 {
 
 
             return new ResponseAdapterModel(hasPriceChanged, results,
-                    Optional.ofNullable(healthResponse.getSummary())
+                    ofNullable(healthResponse.getSummary())
                             .map(s -> SummaryResponseAdapterV2.adapt(request, s)));
         }
     }
 
-    public static String getPaymentType(PaymentType paymentType) {
+    public static String getPaymentType(final PaymentType paymentType) {
         switch (paymentType) {
             case BANK: return "BankAccount";
             case CREDIT: return "CreditCard";
@@ -126,7 +132,7 @@ public class ResponseAdapterV2 {
     }
 
     private static com.ctm.web.health.quote.model.response.Premium createDefaultPremium() {
-        com.ctm.web.health.quote.model.response.Premium premium =
+        final com.ctm.web.health.quote.model.response.Premium premium =
                 new com.ctm.web.health.quote.model.response.Premium();
         premium.setAnnually(DEFAULT_PRICE);
         premium.setFortnightly(DEFAULT_PRICE);
@@ -137,15 +143,15 @@ public class ResponseAdapterV2 {
         return premium;
     }
 
-    private static JsonNode validateNode(JsonNode jsonNode) {
+    private static JsonNode validateNode(final JsonNode jsonNode) {
         if (!jsonNode.isNull()) {
             return jsonNode;
         }
         return new TextNode("");
     }
 
-    private static Promo createPromo(Promotion quotePromotion, String staticBranch) {
-        Promo promo = new Promo();
+    private static Promo createPromo(final Promotion quotePromotion, final String staticBranch) {
+        final Promo promo = new Promo();
         promo.setPromoText(createPromoText(quotePromotion.getSpecialOffer()));
         promo.setProviderPhoneNumber(quotePromotion.getProviderPhoneNumber());
         promo.setDiscountText(StringUtils.trimToEmpty(quotePromotion.getDiscountDescription()));
@@ -154,53 +160,80 @@ public class ResponseAdapterV2 {
         return promo;
     }
 
-    private static Premium createPremium(com.ctm.web.health.quote.model.response.Premium quotePremium,
-                                         com.ctm.web.health.quote.model.response.Info info,
-                                         com.ctm.web.health.model.form.HealthQuote healthQuote) {
-        Premium premium = new Premium();
-        premium.setAnnually(createPrice(quotePremium.getAnnually(), healthQuote));
-        premium.setMonthly(createPrice(quotePremium.getMonthly(), healthQuote));
-        premium.setFortnightly(createPrice(quotePremium.getFortnightly(), healthQuote));
-        premium.setWeekly(createPrice(quotePremium.getWeekly(), healthQuote));
-        premium.setHalfyearly(createPrice(quotePremium.getHalfYearly(), healthQuote));
-        premium.setQuarterly(createPrice(quotePremium.getQuarterly(), healthQuote));
+    private static Premium createPremium(final com.ctm.web.health.quote.model.response.Premium quotePremium,
+                                         final com.ctm.web.health.quote.model.response.Info info,
+                                         final com.ctm.web.health.model.form.HealthQuote healthQuote) {
+        return createPremium(quotePremium, info, healthQuote, empty());
+    }
+
+    private static Premium createPremium(final com.ctm.web.health.quote.model.response.Premium quotePremium,
+                                         final com.ctm.web.health.quote.model.response.Info info,
+                                         final com.ctm.web.health.model.form.HealthQuote healthQuote,
+                                         final Optional<BigDecimal> rebatePercentage) {
+        final Premium premium = new Premium();
+        premium.setAnnually(createPrice(quotePremium.getAnnually(), healthQuote, rebatePercentage));
+        premium.setMonthly(createPrice(quotePremium.getMonthly(), healthQuote, rebatePercentage));
+        premium.setFortnightly(createPrice(quotePremium.getFortnightly(), healthQuote, rebatePercentage));
+        premium.setWeekly(createPrice(quotePremium.getWeekly(), healthQuote, rebatePercentage));
+        premium.setHalfyearly(createPrice(quotePremium.getHalfYearly(), healthQuote, rebatePercentage));
+        premium.setQuarterly(createPrice(quotePremium.getQuarterly(), healthQuote, rebatePercentage));
         return premium;
     }
 
-    private static Price createPrice(com.ctm.web.health.quote.model.response.Price quotePrice,
-                                     com.ctm.web.health.model.form.HealthQuote healthQuote) {
+    private static Price createPrice(final com.ctm.web.health.quote.model.response.Price quotePrice,
+                                     final com.ctm.web.health.model.form.HealthQuote healthQuote,
+                                     final Optional<BigDecimal> rebatePercentage) {
 
         if (quotePrice == null) return null;
 
-        Price price = new Price();
+        final Price price = new Price();
 
         final boolean hasDiscount = quotePrice.getDiscountPercentage().compareTo(BigDecimal.ZERO) > 0;
+        final String rebateValue = formatCurrency(calculateRebateValue(rebatePercentage, quotePrice.getBasePremium(), quotePrice.getRebateAmount()), true, true);
+
         price.setDiscounted(hasDiscount ? "Y" : "N");
         price.setDiscountAmount(formatCurrency(quotePrice.getDiscountAmount(), true, true));
         price.setDiscountPercentage(quotePrice.getDiscountPercentage());
-        price.setText(formatCurrency(quotePrice.getPayableAmount(), true, true) + (hasDiscount ? "*" : ""));
-        price.setValue(quotePrice.getPayableAmount());
-        price.setPricing("Includes rebate of " + formatCurrency(quotePrice.getRebateAmount(), true, true) + " & LHC loading of " +
-                formatCurrency(quotePrice.getLhcAmount(), true, true));
-        price.setLhcfreetext(formatCurrency(quotePrice.getLhcFreeAmount(), true, true) + (hasDiscount ? "*" : ""));
-        price.setLhcfreevalue(quotePrice.getLhcFreeAmount());
-        price.setLhcfreepricing("excl " + formatCurrency(quotePrice.getLhcAmount(), true, true) + " LHC<span/> inc " +
-                formatCurrency(quotePrice.getRebateAmount(), true, true) + " Govt Rebate");
-        price.setRebateValue(formatCurrency(quotePrice.getRebateAmount(), true, true));
+
+        final BigDecimal lhcAmount = quotePrice.getLhcAmount();
+        price.setPricing("Includes rebate of " + rebateValue + " & LHC loading of " +
+                formatCurrency(lhcAmount, true, true));
+
+        final BigDecimal lhcFreeAmount = calculateLHCFreeAmount(rebatePercentage, quotePrice.getBasePremium(), quotePrice.getLhcFreeAmount());
+        price.setLhcfreetext(formatCurrency(lhcFreeAmount, true, true) + (hasDiscount ? "*" : ""));
+        price.setLhcfreevalue(lhcFreeAmount);
+
+        final BigDecimal payableAmount = lhcAmount.add(lhcFreeAmount);
+        price.setText(formatCurrency(payableAmount, true, true) + (hasDiscount ? "*" : ""));
+        price.setValue(payableAmount);
+
+        price.setLhcfreepricing("excl " + formatCurrency(lhcAmount, true, true) + " LHC<span/> inc " +
+                rebateValue + " Govt Rebate");
+
+        price.setRebateValue(rebateValue);
         price.setBase(formatCurrency(quotePrice.getBasePremium(), true, true));
         price.setBaseAndLHC(formatCurrency(quotePrice.getBaseAndLHC(), true, true));
 
         price.setHospitalValue(quotePrice.getHospitalValue());
-        price.setRebate(quotePrice.getRebatePercentage());
+        price.setRebate(rebatePercentage.orElse(quotePrice.getRebatePercentage()));
         price.setLhcPercentage(healthQuote.getLoading());
-        price.setLhc(formatCurrency(quotePrice.getLhcAmount(), true, true));
+        price.setLhc(formatCurrency(lhcAmount, true, true));
         price.setGrossPremium(formatCurrency(quotePrice.getGrossPremium(), true, true));
         return price;
     }
 
+    protected static BigDecimal calculateRebateValue(final Optional<BigDecimal> rebate, final BigDecimal basePremium, final BigDecimal calculatedRebateValue) {
+        return rebate.map(r -> basePremium.multiply(r.divide(new BigDecimal(100))).setScale(2, 4))
+                .orElse(calculatedRebateValue);
+    }
 
-    public static String formatCurrency(BigDecimal value, boolean showSymbol, boolean groupingUsed) {
-        NumberFormat form;
+    protected static BigDecimal calculateLHCFreeAmount(final Optional<BigDecimal> rebate, final BigDecimal basePremium, final BigDecimal calculateLHCFreeAmount) {
+        return rebate.map(r -> basePremium.multiply((new BigDecimal(100)).subtract(r).divide(new BigDecimal(100))).setScale(2, 4))
+                .orElse(calculateLHCFreeAmount);
+    }
+
+    public static String formatCurrency(final BigDecimal value, final boolean showSymbol, final boolean groupingUsed) {
+        final NumberFormat form;
         if(showSymbol) {
             form = NumberFormat.getCurrencyInstance();
         } else {
@@ -214,8 +247,8 @@ public class ResponseAdapterV2 {
         return form.format(value);
     }
 
-    private static String createPromoText(SpecialOffer specialOffer) {
-        StringBuilder sb = new StringBuilder("");
+    private static String createPromoText(final SpecialOffer specialOffer) {
+        final StringBuilder sb = new StringBuilder("");
         if (specialOffer != null) {
             sb.append(StringUtils.trimToEmpty(specialOffer.getSummary()));
             if (StringUtils.isNotBlank(specialOffer.getTerms())) {
@@ -231,8 +264,8 @@ public class ResponseAdapterV2 {
         return sb.toString();
     }
 
-    private static Info createInfo(com.ctm.web.health.quote.model.response.Info responseInfo, int index) {
-        Info info = new Info();
+    private static Info createInfo(final com.ctm.web.health.quote.model.response.Info responseInfo, final int index) {
+        final Info info = new Info();
         info.setRestrictedFund(responseInfo.isRestrictedFund() ? "Y" : "N");
         info.setProvider(responseInfo.getFundCode());
         info.setProviderName(responseInfo.getFundName());
@@ -245,7 +278,7 @@ public class ResponseAdapterV2 {
         info.setRank(responseInfo.getRank());
         info.setOtherProductFeatures(responseInfo.getOtherProductFeatures());
         info.setSituationFilter(responseInfo.getSituationFilter());
-        Map<String, String> otherInfoProperties = responseInfo.getOtherInfoProperties();
+        final Map<String, String> otherInfoProperties = responseInfo.getOtherInfoProperties();
         info.setCategory(otherInfoProperties.get("Category"));
         info.setFundCode(otherInfoProperties.get("FundCode"));
         info.setProductType(otherInfoProperties.get("ProductType"));
