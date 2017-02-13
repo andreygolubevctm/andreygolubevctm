@@ -95,7 +95,7 @@
 			product.mode = '';
 		}
 		product.showAltPremium = false;
-		if (typeof meerkat.site.healthAlternatePricingActive !== 'undefined' && meerkat.site.healthAlternatePricingActive === true && meerkat.site.isCallCentreUser) {
+		/*if (typeof meerkat.site.healthAlternatePricingActive !== 'undefined' && meerkat.site.healthAlternatePricingActive === true && meerkat.site.isCallCentreUser) {
 			product.displayLogo = false;
 			if (typeof product.dropDeadDate === 'undefined') {
 				var selectedProduct = Results.getSelectedProduct();
@@ -104,7 +104,7 @@
 				product.dropDeadDatePassed = selectedProduct.dropDeadDatePassed;
 			}
 			meerkat.modules.healthDualPricing.renderTemplate('.policySummary.dualPricing', product, false, true);
-		} else {
+		} else {*/
 			product.displayLogo = true;
 			var quoteRefHtmlTemplate = typeof quoteRefTemplate !== 'undefined' ? _.template(quoteRefTemplate) : null;
 			var priceHtmlTemplate = _.template(priceTemplate);
@@ -122,7 +122,7 @@
 //		}
 
 			$policySummaryContainer.find(".policyPriceWarning").hide();
-		}
+		//}
 	}
 
 	function updateProductSummaryDetails(product, startDateString, displayMoreInfoLink){
