@@ -46,11 +46,11 @@
 <%-- MORE INFO TEMPLATES --%>
 <core_v1:js_template id="dual-pricing-moreinfo-template">
 	{{ var comingSoonClass = ''; }}
-	{{ var altPremium = obj.altPremium[obj._selectedFrequency]; }}
+	{{ var alternatePremium = obj.altPremium[obj._selectedFrequency]; }}
 	{{ var lhcText = meerkat.site.isCallCentreUser ? 'pricing' : 'lhcfreepricing'; }}
 
-	{{ if (!_.isUndefined(altPremium)) { }}
-		{{ var productPremium = altPremium }}
+	{{ if (!_.isUndefined(alternatePremium)) { }}
+		{{ var productPremium = alternatePremium }}
 		{{ comingSoonClass = ((productPremium.value && productPremium.value > 0) || (productPremium.text && productPremium.text.indexOf('$0.') < 0) || (productPremium.payableAmount && productPremium.payableAmount > 0))  ? '' : 'comingsoon' }}
 	{{ } }}
 	<div class="dual-pricing-container {{ if (obj.dropDatePassed === true) { }}dropDatePassed{{ } }} {{= comingSoonClass }} row">
