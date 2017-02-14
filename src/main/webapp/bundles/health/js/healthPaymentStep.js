@@ -237,6 +237,8 @@
 
 			$frequencySelect.empty().append(options);
 			updateLHCText(product);
+
+			$('#health_payment_details_frequency').trigger("change");
 		}
 	}
 
