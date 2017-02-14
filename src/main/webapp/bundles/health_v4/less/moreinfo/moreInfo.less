@@ -153,7 +153,7 @@
 
   @media (@xs-only) {
     .companyLogo {
-      margin-top: 20px;
+      margin-top: 10px;
     }
     background-color: @theme-light;
   }
@@ -206,6 +206,10 @@
     color: @theme-accent-4;
   }
 
+  h3 {
+    margin-top: 0px;
+  }
+
   .printableBrochuresLink {
     @media (@xs) {
       padding-top: 10px;
@@ -254,12 +258,16 @@
   .frequencyAmount {
     color: @theme-tertiary;
     font-size: 48px;
+    line-height: 40px;
 
     .dollarSign,
     .cents,
     .frequencyTitle {
       font-size: 15px;
       vertical-align: super;
+    }
+    .frequencyTitle {
+      white-space: nowrap;
     }
   }
 
@@ -364,17 +372,18 @@
 
   @media (@xs-only) {
     .benefitsColumn {
-      width: 49%;
+      width: 100%;
       display: inline-block;
       vertical-align: top;
 
-      .HospitalBenefits {
+      .HospitalBenefits,
+      .ExtrasBenefits {
         padding-left: @grid-gutter-width;
         padding-right: @grid-gutter-width;
       }
 
-      .ExtrasBenefits {
-        padding-left: 60px;
+      &:not(:first-of-type) {
+        margin-top:20px;
       }
     }
 
@@ -387,7 +396,7 @@
     }
 
     .benefitsOverflow {
-      width: 200%;
+      width: 100%;
       overflow-x: hidden;
       position: relative;
     }

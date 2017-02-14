@@ -50,6 +50,12 @@
         <c:set var="callCentreHoursModal" scope="request"><content:getOpeningHoursModal /></c:set>
         <c:set var="callCentreCBModal" scope="request"><health_v3:callback_modal /></c:set>
 
+        <%-- SET SITUATION WHEN LOADING A QUOTE AND NO SITUATION SET.
+             ONLY OCCURS WHEN V4 QUOTE BEING LOADED INTO V2 --%>
+        <c:if test="${isNewQuote eq false and empty data[health/situation/healthSitu]}">
+            <go:setData dataVar="data" xpath="health/situation/healthSitu" value="LC" />
+        </c:if>
+
         <%-- HTML --%>
         <layout_v1:journey_engine_page title="Health Quote" bundleFileName="health_v2">
 
@@ -166,8 +172,10 @@
                 <health_v1:product_title_search />
                 <core_v1:application_date />
 
+                <health_v1:dual_pricing_settings />
+
                 <%-- Product summary header for mobile --%>
-                <div class="row productSummary-parent visible-xs">
+                <div class="row productSummary-parent <c:choose><c:when test="${isDualPriceActive eq true}">hidden</c:when><c:otherwise>visible-xs</c:otherwise></c:choose>">
                     <div class="productSummary-affix affix-top visible-xs">
                         <health_v1:policySummary />
                     </div>

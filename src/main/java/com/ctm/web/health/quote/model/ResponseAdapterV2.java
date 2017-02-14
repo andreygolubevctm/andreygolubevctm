@@ -61,6 +61,9 @@ public class ResponseAdapterV2 {
                     result.setPromo(createPromo(quote.getPromotion(),request.getStaticOverride()));
                     result.setCustom(validateNode(quote.getCustom()));
 
+                    result.setDropDeadDate(quote.getDropDeadDate());
+                    result.setPricingDate(quote.getPricingDate());
+
                     if (quote.getPremium() != null) {
                         result.setPremium(createPremium(quote.getPremium(), quote.getInfo(), request.getQuote()));
                         if (isAlternatePricingContent) {

@@ -72,7 +72,7 @@
 	function onProductPremiumChange(selectedProduct, showIncPrice){
 		// Use the frequency selected on the payment step - if that is not set, refer to the results page frequency.
 		var displayedFrequency = $displayedFrequency.val();
-		if(displayedFrequency === "") displayedFrequency = Results.getFrequency();
+		if (_.isEmpty(displayedFrequency)) displayedFrequency = Results.getFrequency();
 		updateProductSummaryHeader(selectedProduct, displayedFrequency, showIncPrice);
 
 		// Update product summary
@@ -95,7 +95,7 @@
 			product.mode = '';
 		}
 		product.showAltPremium = false;
-		/*if (typeof meerkat.site.healthAlternatePricingActive !== 'undefined' && meerkat.site.healthAlternatePricingActive === true && meerkat.site.isCallCentreUser) {
+		if (meerkat.modules.healthDualPricing.isDualPricingActive()) {
 			product.displayLogo = false;
 			if (typeof product.dropDeadDate === 'undefined') {
 				var selectedProduct = Results.getSelectedProduct();
@@ -104,7 +104,7 @@
 				product.dropDeadDatePassed = selectedProduct.dropDeadDatePassed;
 			}
 			meerkat.modules.healthDualPricing.renderTemplate('.policySummary.dualPricing', product, false, true);
-		} else {*/
+		} else {
 			product.displayLogo = true;
 			var quoteRefHtmlTemplate = typeof quoteRefTemplate !== 'undefined' ? _.template(quoteRefTemplate) : null;
 			var priceHtmlTemplate = _.template(priceTemplate);
@@ -122,7 +122,7 @@
 //		}
 
 			$policySummaryContainer.find(".policyPriceWarning").hide();
-		//}
+		}
 	}
 
 	function updateProductSummaryDetails(product, startDateString, displayMoreInfoLink){

@@ -22,7 +22,7 @@
 <%@ attribute name="otherElement" 		required="false"	rtexprvalue="true"	description="The other element we are comparing our percentage rule to if applicable" %>
 <%@ attribute name="otherElementName" 	required="false"	rtexprvalue="true"	description="The other element display name. Used for Validation Message" %>
 <%@ attribute name="altTitle"		 	required="false"	rtexprvalue="true"	description="Alternative title for percentage rules" %>
-
+<%@ attribute name="additionalAttributes"	required="false"	rtexprvalue="true"	description="Additional attributes to be passed to the input" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
@@ -81,5 +81,6 @@
 		maxlength="${maxLength}"
 		title="${title}"
 		defaultValue="${value}"
-		pattern="${pattern}" additionalAttributes=" data-rule-currency='${required}' data-msg-currency='${title} is not a valid amount' ${validationAttributes} ${loanAmountEntryRule}"
+		pattern="${pattern}"
+		additionalAttributes=" data-rule-currency='${required}' data-msg-currency='${title} is not a valid amount' ${validationAttributes} ${loanAmountEntryRule} ${additionalAttributes}"
 		/>

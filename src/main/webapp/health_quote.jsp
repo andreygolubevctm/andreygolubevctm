@@ -48,6 +48,12 @@
         <c:set var="openingHoursHeader" scope="request" ><content:getOpeningHours displayTodayOnly="true"/></c:set>
         <c:set var="callCentreHoursModal" scope="request"><content:getOpeningHoursModal /></c:set>
 
+        <%-- SET SITUATION WHEN LOADING A QUOTE AND NO SITUATION SET.
+             ONLY OCCURS WHEN V4 QUOTE BEING LOADED INTO V2 --%>
+        <c:if test="${isNewQuote eq false and empty data[health/situation/healthSitu]}">
+            <go:setData dataVar="data" xpath="health/situation/healthSitu" value="LC" />
+        </c:if>
+
         <%-- HTML --%>
         <layout_v1:journey_engine_page title="Health Quote">
 

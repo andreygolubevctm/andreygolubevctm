@@ -150,9 +150,17 @@ Process:
 
 	}
 
-	// Validate the credit card type
+	// Validate the credit card type - when switching between providers/products
+	// the $cardtype elements are replaced so need to ensure we have actual elements.
 	function isValid() {
-		return $cardtype.valid();
+		var valid = false;
+		try {
+			valid = $cardtype.valid();
+		} catch(e) {
+			$cardtype = $('.health-credit_card_details-type input');
+			valid = $cardtype.valid();
+		}
+		return valid;
 	}
 
 	function fail(reason) {

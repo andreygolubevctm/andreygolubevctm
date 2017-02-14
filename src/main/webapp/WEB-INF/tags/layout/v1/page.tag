@@ -171,10 +171,10 @@ ${newPage.init(pageContext.request, pageSettings)}
 									<ul class="mobile-nav-buttons nav navbar-nav pull-right">
 										<li class="refine-results"><a href="javascript:;">REFINE</a></li>
 										<c:if test="${saveQuoteEnabled == 'Y'}">
-											<li class="save-quote"><a href="javascript:;" class="save-quote-openAsModal">SAVE</a></li>
+											<li class="save-quote"><a href="javascript:;" class="save-quote-openAsModal" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>SAVE</a></li>
 										</c:if>
 										<li class="edit-details">
-											<a href="javascript:;" class="navbar-ellipses">
+											<a href="javascript:;" class="navbar-ellipses" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>
 												<span class="sr-only">Toggle Navigation</span>
 												...
 											</a>

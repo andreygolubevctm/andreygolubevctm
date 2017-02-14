@@ -11,7 +11,7 @@
 			<div class="col-xs-6 text-center">
 				{{= renderedPriceTemplate }}
 			</div>
-			<div class="col-xs-12">
+			<div class="col-xs-12 productTitleText">
 				<h5 class="noTopMargin productName text-center">{{= info.productTitle }}</h5>
 			</div>
 			<div class="col-xs-12 text-center printableBrochuresLink">
@@ -22,10 +22,5 @@
 				<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Apply Online<span class="icon-arrow-right" /></a>
 			</div>
 		</div>
-	</div>
-	<%-- Toggle for benefits --%>
-	<div class="hidden-sm hidden-md hidden-lg toggleBar">
-		<div class="selectionStatus extras">Your extras <span>0</span></div>
-		<div class="selectionStatus hospital">Your hospital <span>0</span></div>
 	</div>
 </script>

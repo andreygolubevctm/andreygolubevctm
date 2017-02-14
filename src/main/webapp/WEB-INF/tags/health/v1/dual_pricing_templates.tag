@@ -10,7 +10,7 @@
 <c:set var="thisYear"><fmt:formatDate value="${now}" pattern="yyyy" /></c:set>
 
 <core_v1:js_template id="price-frequency-template">
-	Your first payment will be {{= firstPremium }} and future payments will be {{= remainingPremium }} {{= frequency }}.
+	If you elect to pay your premium {{= frequency }}, only payments made by {{= pricingDateFormatted }} will be at the current amount, thereafter the new premium will apply.
 </core_v1:js_template>
 
 <%-- Working on the assumption there's going to be text changes so put this in the db --%>
@@ -107,7 +107,7 @@
 		<div class="april-pricing">
 			<p>Premiums are rising</p>
 			{{= renderedAltPriceTemplate }}
-			<p>from April 1st, 2017</p>
+			<p>from {{= pricingDateFormatted }}</p>
 		</div>
 	</div>
 </core_v1:js_template>

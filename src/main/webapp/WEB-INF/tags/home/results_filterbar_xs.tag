@@ -13,6 +13,7 @@
 		<form_v2:row label="Home Excess" id="${name}HomeExcessRow">
 			<div class="select">
 				<span class="input-group-addon"><i class="icon-sort"></i></span>
+				<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Home Excess" quoteChar="\"" /></c:set>
 				<field_v1:additional_excess
 					defaultVal="500"
 					increment="100"
@@ -23,13 +24,15 @@
 					required=""
 					omitPleaseChoose="Y"
 					className="form-control"
-					additionalValues="750,1000,1500,2000,3000,4000,5000"/>
+					additionalValues="750,1000,1500,2000,3000,4000,5000"
+					additionalAttributes="${analyticsAttr}" />
 			</div>
 		</form_v2:row>
 
 		<form_v2:row label="Contents Excess" id="${name}ContentsExcessRow">
 			<div class="select">
 				<span class="input-group-addon"><i class="icon-sort"></i></span>
+				<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Contents Excess" quoteChar="\"" /></c:set>
 				<field_v1:additional_excess
 						defaultVal="500"
 						increment="100"
@@ -40,7 +43,8 @@
 						required=""
 						omitPleaseChoose="Y"
 						className="form-control"
-						additionalValues="750,1000,1500,2000,3000,4000,5000"/>
+						additionalValues="750,1000,1500,2000,3000,4000,5000"
+						additionalAttributes="${analyticsAttr}" />
 			</div>
 		</form_v2:row>
 
