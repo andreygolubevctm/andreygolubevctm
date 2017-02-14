@@ -2,6 +2,8 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<health_v1:dual_pricing_settings />
+
 {{ var hasCustomHeaderContent = custom.info && custom.info.content && custom.info.content.results && custom.info.content.results.header; }}
 
 <div class="result">
@@ -35,7 +37,7 @@
             {{ } }}
         {{ } }}
         <div class="results-header-inner-container {{= comingSoonClass }}">
-            <div class="productSummary vertical results">
+            <div class="productSummary vertical results <c:if test="${isDualPriceActive eq true}">hasDualPricing</c:if>">
                 <%-- If dual pricing is enabled, update the template --%>
                 {{ var logoTemplate = meerkat.modules.templateCache.getTemplate($("#logo-template")); }}
                 {{= logoTemplate(obj) }}
