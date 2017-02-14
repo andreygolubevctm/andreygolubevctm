@@ -62,8 +62,10 @@
 
   .resultInsert .dual-pricing-container {
     .april-pricing {
+      @media (@xs-only) {
+        height: 81px;
+      }
       margin-top: 15px;
-
 
       .deadline,
       .frequencyAmount,
@@ -127,12 +129,19 @@
     /* coming soon styles */
     &.comingsoon {
       .april-pricing {
-        height: 66px;
-        line-height: 66px;
+        @media (@xs-only) {
+          padding-top: 20px;
+        }
+
         padding-bottom: initial;
         margin-bottom: initial;
 
         @media (@sm) {
+          height: 61px;
+          line-height: 61px;
+        }
+
+        @media (@lg) {
           height: 46px;
           line-height: 46px;
         }
@@ -308,9 +317,13 @@
       .frequencyAmount {
         font-size: 24px;
 
-        @media(@sm) {
-          &.comingSoon {
-            line-height: 45px;
+        &.comingSoon {
+          font-size: 18px;
+          line-height: 18px;
+          margin: 5px 0;
+
+          @media (@md) {
+            line-height: 36px;
           }
         }
       }
@@ -365,6 +378,13 @@
         .premiumsRising,
         .frequencyAmount {
           color: @theme-accent-3;
+        }
+
+        .frequencyAmount {
+          &.comingSoon {
+            font-size: 14px;
+            line-height: 14px;
+          }
         }
       }
 

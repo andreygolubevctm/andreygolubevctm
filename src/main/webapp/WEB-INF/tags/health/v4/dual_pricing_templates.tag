@@ -53,34 +53,39 @@
 		{{ var productPremium = alternatePremium }}
 		{{ comingSoonClass = ((productPremium.value && productPremium.value > 0) || (productPremium.text && productPremium.text.indexOf('$0.') < 0) || (productPremium.payableAmount && productPremium.payableAmount > 0))  ? '' : 'comingsoon' }}
 	{{ } }}
-	<div class="dual-pricing-container {{ if (obj.dropDatePassed === true) { }}dropDatePassed{{ } }} {{= comingSoonClass }} row">
-		<div class="april-pricing col-xs-4">
-			<h3>${april1Header}</h3>
-			{{= renderedAltPriceTemplate }}
-			<span class="premiumsRising">Premiums are rising</span>
-		</div>
-		<div class="current-pricing col-xs-8">
-			<div class="row">
-				<div class="col-xs-6 container">
-					<h3>Current {{= obj._selectedFrequency }} Price</h3>
-					{{= renderedPriceTemplate }}
-					<span class="applyBy">Apply by {{= obj.dropDeadDateFormatted }}</span>
-				</div>
-				<div class="col-xs-6 btn-container">
-					<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Apply Online<span class="icon-arrow-right" /></a>
+	<div class="dual-pricing-container {{ if (obj.dropDatePassed === true) { }}dropDatePassed{{ } }} {{= comingSoonClass }}">
+		<div class="row">
+			<div class="april-pricing col-xs-4">
+				<h3>${april1Header}</h3>
+				{{= renderedAltPriceTemplate }}
+				<span class="premiumsRising">Premiums are rising</span>
+			</div>
+			<div class="current-pricing col-xs-8">
+				<div class="row">
+					<div class="col-xs-6 container">
+						<h3>Current {{= obj._selectedFrequency }} Price</h3>
+						{{= renderedPriceTemplate }}
+						<span class="applyBy">Apply by {{= obj.dropDeadDateFormatted }}</span>
+					</div>
+					<div class="col-xs-6 btn-container">
+						<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Apply Online<span class="icon-arrow-right" /></a>
+					</div>
 				</div>
 			</div>
 		</div>
-		<div class="col-xs-4 april-pricing-details">
+
+		<div class="row">
+			<div class="col-xs-4 april-pricing-details">
 			{{ if (comingSoonClass === '' && !_.isUndefined(obj.altPremium[obj._selectedFrequency]) && !_.isUndefined(obj.altPremium[obj._selectedFrequency][lhcText])) { }}
-				<span>{{= obj.altPremium[obj._selectedFrequency][lhcText] }}</span>
+			<span>{{= obj.altPremium[obj._selectedFrequency][lhcText] }}</span>
 			{{ } }}
 			<a href="javascript:;" class="dual-pricing-learn-more" data-dropDeadDate="{{= obj.dropDeadDate }}">Learn more</a>
 		</div>
-		<div class="col-xs-8 current-pricing-details">
-			{{ if (!_.isUndefined(obj.premium[obj._selectedFrequency][lhcText])) { }}
-			<span>{{= obj.premium[obj._selectedFrequency][lhcText] }}</span>
-			{{ } }}
+			<div class="col-xs-8 current-pricing-details">
+				{{ if (!_.isUndefined(obj.premium[obj._selectedFrequency][lhcText])) { }}
+				<span>{{= obj.premium[obj._selectedFrequency][lhcText] }}</span>
+				{{ } }}
+			</div>
 		</div>
 	</div>
 </core_v1:js_template>
