@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="application/json; charset=UTF-8"
-         pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="application/json; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <c:set var="logger" value="${log:getLogger('jsp.ajax.json.health_application_ws')}" />
@@ -79,11 +78,13 @@
         ${healthApplicationService.createErrorResponse(data.current.transactionId, errorMessage,  "submission")}
     </c:when>
     <c:otherwise>
+
         <%-- Save client data; use outcome to know if this transaction is already confirmed --%>
         <c:set var="ct_outcome">
             <core_v1:transaction touch="P"/>
         </c:set>
         ${logger.info('Application has been set to pending. {}',  log:kv('productId', productId))}
+
 
         <c:choose>
             <c:when test="${ct_outcome == 'C'}">

@@ -10,6 +10,8 @@ ${newPage.init(pageContext.request, pageSettings)}
 <%@ attribute name="title"				required="false"  rtexprvalue="true"	 description="The title of the page" %>
 <%@ attribute name="skipJSCSS"	required="false"  rtexprvalue="true"	 description="Provide if wanting to exclude loading normal js/css (except jquery)" %>
 <%@ attribute required="false" name="body_class_name" description="Allow extra styles to be added to the rendered body tag" %>
+<%@ attribute required="false" name="bundleFileName" description="Pass in alternate bundle file name" %>
+<%@ attribute required="false" name="displayNavigationBar" description="Whether to display the navigation bar" %>
 
 <%@ attribute fragment="true" required="true" name="head" %>
 <%@ attribute fragment="true" required="true" name="head_meta" %>
@@ -35,7 +37,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 <c:set var="superTagEnabled" value="${pageSettings.getSetting('superTagEnabled') eq 'Y'}" />
 <c:set var="DTMEnabled" value="${pageSettings.getSetting('DTMEnabled') eq 'Y'}" />
 <c:set var="GTMEnabled" value="${pageSettings.getSetting('GTMEnabled') eq 'Y'}" />
-
+<c:if test="${empty displayNavigationBar}"><c:set var="displayNavigationBar" value="${true}" /></c:if>
 <c:set var="separateJS" value="${param.separateJS eq 'true'}"/>
 
 <%-- Whether we want to show logging or not (for use on Production) --%>
@@ -46,8 +48,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 
 <%-- for Health V2 A/B testing --%>
 <c:set var="fileName" value="${pageSettings.getVerticalCode()}" />
-<c:if test="${isHealthV2 eq true}"><c:set var="fileName" value="health_v2" /></c:if>
-
+<c:if test="${not empty bundleFileName}"><c:set var="fileName" value="${bundleFileName}" /></c:if>
 <!DOCTYPE html>
 <go:html>
 <head>
@@ -94,7 +95,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 		</c:if>
 
 		<%--  Modernizr --%>
-		<script src='${assetUrl}js/bundles/plugins/modernizr.min.js'></script>
+		<script src='${assetUrl}js/bundles/plugins/modernizr${pageSettings.getSetting('minifiedFileString')}.js'></script>
 	</c:if>
 
 <jsp:invoke fragment="head" />
@@ -220,26 +221,23 @@ ${newPage.init(pageContext.request, pageSettings)}
 
 				</div>
 				<jsp:invoke fragment="progress_bar" />
-				<nav id="navbar-main" class="navbar navbar-affix navbar-default navbar-collapse navbar-collapse-menu collapse navMenu-contents" role="navigation">
+				<c:if test="${displayNavigationBar eq true}">
+                    <nav id="navbar-main" class="navbar navbar-affix navbar-default navbar-collapse navbar-collapse-menu collapse navMenu-contents" role="navigation">
 
-					<div class="row">
-						<div class="container">
-							<jsp:invoke fragment="navbar" />
-						</div>
-					</div>
-					<jsp:invoke fragment="navbar_outer" />
-				</nav>
-
+                        <div class="row">
+                            <div class="container">
+                                <jsp:invoke fragment="navbar" />
+                            </div>
+                        </div>
+                        <jsp:invoke fragment="navbar_outer" />
+                    </nav>
+			    </c:if>
 				<jsp:invoke fragment="navbar_additional" />
 
 		</div>
 
-
-
-			<%-- XS Results Pagination --%>
-			<div class="navbar navbar-default xs-results-pagination navMenu-row-fixed visible-xs">
-				<jsp:invoke fragment="xs_results_pagination" />
-			</div>
+        <%-- XS Results Pagination --%>
+        <jsp:invoke fragment="xs_results_pagination" />
 
 		</header>
 
@@ -265,7 +263,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 		<%-- JS Libraries --%>
 
 		<!--[if lt IE 9]>
-		<script src="${assetUrl}js/bundles/plugins/respond.min.js"></script>
+		<script src="${assetUrl}js/bundles/plugins/respond${pageSettings.getSetting('minifiedFileString')}.js"></script>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 		<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}libraries/jquery/js/jquery-1.11.3${pageSettings.getSetting('minifiedFileString')}.js">\x3C/script>');</script>
 		<![endif]-->
@@ -328,6 +326,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 						name: '${pageSettings.getSetting("brandName")}',
 						vertical: '${pageSettings.getVerticalCode()}',
 						isDev: ${isDev}, <%-- boolean determined from conditions above in this tag --%>
+                        minifiedFileString: '${pageSettings.getSetting('minifiedFileString')}',
                         isCallCentreUser: <c:out value="${not empty callCentre}"/>,
 						<c:if test="${pageSettings.hasSetting('inInEnabled')}">
 						inInEnabled: ${pageSettings.getSetting('inInEnabled')},
@@ -406,7 +405,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 	</c:when>
 	<c:otherwise>
 			<!--[if lt IE 9]>
-			<script src="${assetUrl}js/bundles/plugins/respond.min.js"></script>
+			<script src="${assetUrl}js/bundles/plugins/respond${pageSettings.getSetting('minifiedFileString')}.js"></script>
 			<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 			<script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}libraries/jquery/js/jquery-1.11.3${pageSettings.getSetting('minifiedFileString')}.js">\x3C/script>');</script>
 			<![endif]-->
@@ -436,7 +435,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 			<go:insertmarker format="SCRIPT" name="onready" />
 
 			<c:if test="${pageSettings.getVerticalCode() ne 'generic'}">
-				yepnope.injectJs({
+                yepnope.injectJs({
 					src: '${assetUrl}js/bundles/${fileName}.deferred${pageSettings.getSetting('minifiedFileString')}.js?${revision}',
 					attrs: {
 						async: true

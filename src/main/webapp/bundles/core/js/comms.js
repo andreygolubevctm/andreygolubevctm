@@ -16,9 +16,10 @@
 
 	var defaultSettings = {
 		url: 'not-set',
+        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
 		data: null,
 		dataType: false,
-		numberOfAttempts: 1,
+        numberOfAttempts: 1,
 		attemptCallback: null,
 		timeout: 60000,
 		cache: false,
@@ -133,7 +134,8 @@
 		return ajax(settings, {
 			url: settings.url,
 			data: settings.data,
-			dataType: settings.dataType,
+            contentType: settings.contentType,
+            dataType: settings.dataType,
 			type: requestMethod,
 			timeout: settings.timeout,
 			async: settings.async
@@ -191,6 +193,10 @@
 			}
 
 			meerkat.modules.verificationToken.addTokenToRequest(ajaxProperties);
+
+            if(settings.doStringify === true && _.isObject(ajaxProperties.data)){
+                ajaxProperties.data = JSON.stringify(ajaxProperties.data);
+            }
 		}catch(e){
 		}
 

@@ -50,14 +50,14 @@
 
             //Add the needsclick class to an element to prevent the behaviour.
             if (Modernizr.touch) {
-                yepnope.injectJs(meerkat.site.urls.base + 'assets/js/bundles/plugins/fastclick.min.js', function initFastClick() {
+                yepnope.injectJs(meerkat.site.urls.base + 'assets/js/bundles/plugins/fastclick' + meerkat.site.minifiedFileString + '.js', function initFastClick() {
                     FastClick.attach(document.body);
                 });
             }
 
             // Add the startsWith ES6 prototype method
             if (!String.prototype.startsWith) {
-                String.prototype.startsWith = function(searchString, position) {
+                String.prototype.startsWith = function (searchString, position) {
                     position = position || 0;
                     return this.indexOf(searchString, position) === position;
                 };

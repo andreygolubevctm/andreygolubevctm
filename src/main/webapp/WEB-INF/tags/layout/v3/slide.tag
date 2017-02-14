@@ -47,4 +47,6 @@
 			</div>
 		</div>
 	</c:if>
+
+    <reward:campaign_tile_container_xs />
 </div>

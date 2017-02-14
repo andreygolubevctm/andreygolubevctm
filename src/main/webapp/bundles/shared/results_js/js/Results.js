@@ -15,7 +15,8 @@ var Results = {
 	view: {},
 	model: {},
 	cachedProcessedTemplates: {},
-	
+	$pinnedResultRow: null,
+
 	moduleEvents: {
 		RESULTS_INITIALISED: 'RESULTS_INITIALISED',
 		RESULTS_ERROR: 'RESULTS_ERROR'
@@ -180,7 +181,7 @@ var Results = {
 				pagination:{
 					pageItem: '<li><a class="btn-pagination" data-results-pagination-control="{{= pageNumber}}" data-analytics="pagination {{= pageNumber}}">{{= label}}</a></li>',
 					pageText: 'Page {{=currentPage}} of {{=totalPages}}',
-					page: '<li><a class="btn-pagination icon icon-angle-{{=icon}}" data-results-pagination-control="{{= type}}" data-analytics="pagination {{= type}}"><!-- empty --></a></li>',
+					page: '<li><a class="btn-pagination icon icon-angle-{{=icon}}" data-results-pagination-control="{{= type}}" data-analytics="pagination {{= type}}"><!-- empty --></a></li>'
 				}
 			},
 			show: {
@@ -385,7 +386,7 @@ var Results = {
 		// if we don't want the unavailable prices to be displayed
 		if (!Results.settings.show.nonAvailablePrices) {
 			// remove all the previously added filters on price availability for frequency
-			$.each(Results.settings.paths.price, function( currentFrequency, pricePath ){
+			$.each(Results.settings.paths.price, function( currentFrequency ){
 				Results.unfilterBy( "availability.price." + currentFrequency, "value" , false); // maybe render view should be true??
 			});
 			// apply the selected frequency's availability filter
@@ -407,10 +408,6 @@ var Results = {
 		Results.model.addCurrentProduct( product );
 		Results.setCurrentProduct( identifierPathName, Object.byString( product, identifierPathName ) );
 
-	},
-
-	removeCurrentProduct: function() {
-		Results.model.currentProduct = false;
 	},
 
 	setCurrentProduct: function( identifierPathName, currentProduct ){
@@ -439,10 +436,6 @@ var Results = {
 			console.log("You have been trying to retrieve a result through an identifier, but the path to that identifier does not seem to exist in the results objects: identifierPathName=", identifierPathName, "| value=", value);
 		}
 
-	},
-
-	getResultByIndex: function( productIndex ){
-		return Results.model.returnedProducts[ productIndex ];
 	},
 
 	getResultByProductId: function( productId ){
@@ -494,15 +487,6 @@ var Results = {
 		Results.view.setDisplayMode(mode, forceRefresh);
 	},
 
-	isResultDisplayed: function (resultModel){
-
-		if( $.inArray( resultModel, Results.model.filteredProducts ) == -1 ){
-			return false;
-		}
-
-		return true;
-	},
-
 	setPerformanceMode:function(level){
 		var profile = meerkat.modules.performanceProfiling.PERFORMANCE;
 
@@ -532,7 +516,6 @@ var Results = {
 
 	onError:function(message, page, description, data){
 
-		if (typeof meerkat !== 'undefined') {
 			meerkat.messaging.publish(Results.moduleEvents.RESULTS_ERROR);
 
 			meerkat.modules.errorHandling.error({
@@ -542,15 +525,7 @@ var Results = {
 				description:	description,
 				data:			data
 			});
-		}
-		else if (typeof FatalErrorDialog !== 'undefined') {
-			FatalErrorDialog.exec({
-				message:		message,
-				page:			page,
-				description:	description,
-				data:			data
-			});
-		}
+            meerkat.logging.exception(data);
 	},
 
 	startResultsFetch:function() {
@@ -581,6 +556,67 @@ var Results = {
 		if(meerkat.site.environment === 'localhost' || meerkat.site.environment === 'nxi'){
 			$("#environmentOverride").val($("#developmentApplicationEnvironment").val());
 		}
+	},
+    /**
+	 * Used in Health V4 designs to pin a product. Should be able to be used anywhere else, if the DOM structure lines up.
+     * @param {Integer|String} pinnedProductId
+     * @param {Function} beforePin
+     * @returns {null}
+     */
+	pinProduct: function(pinnedProductId, beforePin) {
+		if(Results.getDisplayMode() === 'price') {
+			return;
+		}
+        var product = Results.model.getResult("productId", pinnedProductId);
+        if (!product) {
+            return;
+        }
+        product.isPinned = 'Y';
+
+        // Must copy the element before filtering or it gets unnecessary classes etc.
+        Results.$pinnedResultRow = $('.result_' + pinnedProductId).clone(true);
+
+		// Now do the filtering to filter this product out of the normal results.
+        Results.filterBy('isPinned', "value", { "notEquals": 'Y' });
+
+        if(typeof beforePin === 'function') {
+        	beforePin.call(this, pinnedProductId, Results.$pinnedResultRow);
+		}
+
+		// Now prepend it to the results container, outside of results overflow.
+        Results.$pinnedResultRow.prependTo($(Results.settings.elements.resultsContainer));
+		var $resultsOverflow = $(Results.settings.elements.resultsOverflow);
+        $resultsOverflow.addClass('product-pinned');
+        var pageMeasurements = ResultsPagination.getPageMeasurements();
+        if (pageMeasurements) {
+        	// Reduce the container width by one column
+            $resultsOverflow
+                .width($resultsOverflow.width() - pageMeasurements.columnWidth);
+        }
+        Results.pagination.hasPinnedProduct = true;
+        return Results.$pinnedResultRow;
+	},
+
+	unpinProduct: function(pinnedProductId) {
+        if (!pinnedProductId) {
+            return;
+        }
+
+        var product = Results.model.getResult("productId", pinnedProductId);
+        if (!product) {
+            return;
+        }
+
+        if(Results.$pinnedResultRow) {
+            Results.$pinnedResultRow.remove();
+            Results.$pinnedResultRow = null;
+        }
+
+        $(Results.settings.elements.resultsOverflow).removeAttr('style');
+        Results.unfilterBy('isPinned', "value", true);
+        product.isPinned = 'N';
+        $(Results.settings.elements.resultsOverflow).removeClass('product-pinned');
+        Results.pagination.hasPinnedProduct = false;
 	}
 
 };

@@ -224,12 +224,12 @@ var healthFunds_CBH = {
 		if (!$('body').hasClass('injectingFund')) {
 
 			<%-- Dependants --%>
-			healthFunds._dependants('CBHS policies provide cover for all dependants under the age of 18 including step and foster children. Adult dependants who are aged between 18 and 24 years and who are: studying full time (min 20 hours per week), 1st or 2nd year apprentices or employed on an unpaid internship may continue to be covered by CBHS policies. Other adult dependants can apply for a separate policy (subject to meeting eligibility criteria).');
+            meerkat.modules.healthFunds._dependants('CBHS policies provide cover for all dependants under the age of 18 including step and foster children. Adult dependants who are aged between 18 and 24 years and who are: studying full time (min 20 hours per week), 1st or 2nd year apprentices or employed on an unpaid internship may continue to be covered by CBHS policies. Other adult dependants can apply for a separate policy (subject to meeting eligibility criteria).');
 
 			meerkat.modules.healthDependants.updateConfig({ showSchoolFields:true, 'schoolMinAge':18, 'schoolMaxAge':24, showSchoolIdField:false });
 
 			<%-- Partner authority --%>
-			healthFunds._partner_authority(true);
+            meerkat.modules.healthFunds._partner_authority(true);
 
 			<%-- Calendar for start cover --%>
 			meerkat.modules.healthPaymentStep.setCoverStartRange(0, 29);
@@ -285,10 +285,10 @@ var healthFunds_CBH = {
 		<%-- Run these if not loading a quote --%>
 		if (!$('body').hasClass('injectingFund')) {
 			<%-- Dependants --%>
-			healthFunds._dependants(false);
+            meerkat.modules.healthFunds._dependants(false);
 			meerkat.modules.healthDependants.resetConfig();
 
-			healthFunds._reset();
+            meerkat.modules.healthFunds._reset();
 
 			<%-- Payments --%>
 			meerkat.modules.radioGroup.changeLabelText( $('#health_payment_details_type'), 0, healthFunds_CBH.paymentLabelOriginal );
@@ -318,7 +318,8 @@ var healthFunds_CBH = {
 		if ($('#health_application_cbh_currentemployee').val() != 'N' || $('#health_application_cbh_formeremployee').val() != 'N' || $('#health_application_cbh_familymember').val() != 'Y')
 			return;
 
-		if (healthChoices._cover == 'S' || healthChoices._cover == 'SM' || healthChoices._cover == 'SF') {
+		var cover = meerkat.modules.healthChoices.returnCoverCode();
+		if (cover == 'S' || cover == 'SM' || cover == 'SF') {
 		$('#cbh_ineligible').slideUp(200, function(){ $(this).hide(); });
 			return true;
 		}

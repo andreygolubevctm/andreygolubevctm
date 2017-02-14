@@ -5,12 +5,13 @@
 		log = meerkat.logging.info;
 
 	var events = {
-		address_lookup : {
-			HIDDEN_FIELDS_POPULATED: 'HIDDEN_FIELDS_POPULATED'
-		}
-	};
+            address_lookup : {
+                HIDDEN_FIELDS_POPULATED: 'HIDDEN_FIELDS_POPULATED'
+            }
+        },
+        moduleEvents = events.address_lookup;
 
-	var moduleEvents = events.address_lookup;
+	var baseURL = '';
 
 	var $currentAjaxRequest = null,
 		dpIdCache = {},
@@ -53,7 +54,7 @@
 			// the given dpId
 			if(typeof dpId !== "undefined" && dpId !== "") {
 				$currentAjaxRequest = meerkat.modules.comms.post({
-					url: "address/get.json",
+					url: baseURL + "address/get.json",
 					errorLevel: "mandatory",
 					data: {
 						dpId: dpId
@@ -108,9 +109,14 @@
 		}
 	}
 
+    function setBaseURL(url){
+        baseURL = url || '';
+    }
+
 	meerkat.modules.register("address_lookup", {
 		init: initAddressLookup,
-		events: events
+		events: events,
+        setBaseURL: setBaseURL
 	});
 
 })(jQuery);

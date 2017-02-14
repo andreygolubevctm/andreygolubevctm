@@ -31,11 +31,15 @@
 
     function init() {
         // Triggers results loading virtual page
-        msg.subscribe(ResultsModel.moduleEvents.WEBAPP_LOCK, setResultsLoadingPage);
+        if(typeof ResultsModel != 'undefined') {
+            msg.subscribe(ResultsModel.moduleEvents.WEBAPP_LOCK, setResultsLoadingPage);
+        }
         // Triggers new page after results sorted and rendered
         msg.subscribe(meerkat.modules.events.RESULTS_RANKING_READY, _.bind(setResultsShownPage, this, 2000));
         // Triggers new page when results display mode is changed
-        msg.subscribe(ResultsView.moduleEvents.RESULTS_TOGGLE_MODE, onResultsDisplayTypeSet);
+        if(typeof ResultsView != 'undefined') {
+            msg.subscribe(ResultsView.moduleEvents.RESULTS_TOGGLE_MODE, onResultsDisplayTypeSet);
+        }
         /* Set the initial virtual page based on the navigationId rather than simply defaulting
          * to the page name - accounts for quotes being retrieved and testing with preload */
         msg.subscribe(meerkat.modules.events.journeyEngine.READY, setInitialPage);

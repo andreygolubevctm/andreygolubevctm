@@ -1,0 +1,17 @@
+// Support for woff/woff2 is now wide-spread enough we don't need eot, ttf, svg.
+// Used to generate fonts.
+.include-custom-font(@family: arial, @file: @file, @weight: normal, @style: normal){
+  @font-face {
+    font-family: @family;
+    src: url('../../../../assets/fonts/@{file}.woff2') format('woff2'),
+    url('../../../../assets/fonts/@{file}.woff') format('woff');
+    font-weight: @weight;
+    font-style: @style;
+  }
+}
+
+//
+// Calls the above mixins to add fonts to each brands css.
+// ---------------------------------------------------------------------------
+.include-custom-font(TheSansB, thesansb-w5plain, normal, normal);
+.include-custom-font(SourceSansProRegular, SourceSansPro-Regular, normal, normal);

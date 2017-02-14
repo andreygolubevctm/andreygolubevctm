@@ -38,18 +38,18 @@
 	{{ obj.displayLogo = false; }} <%-- Turns off the logo from the template --%>
 
 	<%-- If dual pricing is enabled, update the template --%>
-	{{ if (meerkat.site.healthAlternatePricingActive === true) { }}
-	{{ obj.renderedDualPricing = meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false); }}
+	{{ if (meerkat.site.healthAlternatePricingActive === true && meerkat.site.isCallCentreUser === true) { }}
+		{{ obj.renderedDualPricing = meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false); }}
 	{{ } else { }}
-	{{ var logoPriceTemplate = $('#logo-price-template').html(); }}
-	{{ var htmlTemplatePrice = _.template(logoPriceTemplate); }}
+		{{ var logoTemplate = meerkat.modules.templateCache.getTemplate($("#logo-template")); }}
+		{{ var priceTemplate = meerkat.modules.templateCache.getTemplate($("#price-template")); }}
 
-	{{ obj.showAltPremium = false; obj.renderedPriceTemplate = htmlTemplatePrice(obj); }}
-	{{ obj.showAltPremium = true;  obj.renderedAltPriceTemplate = htmlTemplatePrice(obj); }}
+		{{ obj.showAltPremium = false; obj.renderedPriceTemplate = logoTemplate(obj) + priceTemplate(obj); }}
+
 	{{ } }}
 
 	<%-- Check if drop dead date has passed --%>
-	{{ var dropDatePassed = meerkat.modules.healthDropDeadDate.getDropDatePassed(obj); }}
+	{{ var dropDatePassed = meerkat.modules.dropDeadDate.getDropDatePassed(obj); }}
 
 	<%-- Prepare the call to action bar template. --%>
 	{{ var template = $("#more-info-call-to-action-template").html(); }}
@@ -97,7 +97,7 @@
 				</div>
 
 				<c:choose>
-				<c:when test="${healthAlternatePricingActive eq true}">
+				<c:when test="${healthAlternatePricingActive eq true and not empty callCentre}">
 					<div class="row priceRow">
 						<div class="col-xs-12 hidden-md hidden-lg">
 							{{= renderedDualPricing }}
@@ -143,7 +143,7 @@
 
 			</div>
 			<c:choose>
-				<c:when test="${healthAlternatePricingActive eq true}">
+				<c:when test="${healthAlternatePricingActive eq true and not empty callCentre}">
 					<div class="col-md-5 hidden-xs hidden-sm moreInfoTopRightColumn">
 						<c:choose>
 							<c:when test="${moreinfo_splittest_variant1 eq true}">

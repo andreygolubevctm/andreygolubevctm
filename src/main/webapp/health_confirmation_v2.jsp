@@ -12,11 +12,9 @@
 <c:set var="openingHoursHeader" scope="request" ><content:getOpeningHours/></c:set>
 <c:set var="callCentreAllHoursContent" scope="request"><content:getOpeningHoursModal /></c:set>
 
-<c:set var="isHealthV2" value="${true}" scope="request" />
-
 <core_v1:quote_check quoteType="health" />
 
-<layout_v1:journey_engine_page title="Health Confirmation" ignore_journey_tracking="true">
+<layout_v1:journey_engine_page title="Health Confirmation" bundleFileName="health_v2" ignore_journey_tracking="true">
 
 	<jsp:attribute name="head">
 	</jsp:attribute>
@@ -91,6 +89,9 @@
 		<health_v2_layout:slide_confirmation />
 		<health_v3:brochure_template/>
 		<health_v3:confirmation_fund_details_template />
+        <script class="crud-modal-template" type="text/html">
+            <reward:redemption_form />
+        </script>
 	</jsp:body>
 
 </layout_v1:journey_engine_page>

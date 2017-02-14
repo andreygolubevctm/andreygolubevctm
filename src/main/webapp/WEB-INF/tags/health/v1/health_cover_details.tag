@@ -61,7 +61,7 @@
 
 			<form_v2:fieldset id="partner-health-cover" legend="Your Partner's Details" className="partner">
 				<c:set var="fieldXpath" value="${xpath}/partner/dob" />
-				<form_v2:row label="Your partner's date of birth" fieldXpath="${fieldXpath}">
+				<form_v2:row label="Your partner's date of birth" fieldXpath="${fieldXpath}" id="${name}_partner_dob">
 					<field_v2:person_dob xpath="${fieldXpath}" title="partner's" required="true" ageMin="16" ageMax="120" />
 				</form_v2:row>
 

@@ -21,11 +21,16 @@
 			meerkat.modules.journeyProgressBar.setComplete();
 			meerkat.modules.journeyProgressBar.disable();
 
+			if(_.isObject(result) && _.has(result,'ConfirmationData')) {
+				result.data = result.ConfirmationData;
+				result = _.pick(result,'data');
+			}
+
 			// Handle error display
 			// 'results' is a global object added by slide_confirmation.tag
 			if (result.hasOwnProperty('data') === false || result.data.status != 'OK' || result.data.product === '') {
 				meerkat.modules.errorHandling.error({
-					message: result.data.message,
+					message: result.hasOwnProperty('data') ? result.data.message : 'Failed to load confirmation data',
 					page: "healthConfirmation.js module",
 					description: "Trying to load the confirmation page failed",
 					data: null,
@@ -149,11 +154,33 @@
 						object: tracking
 					});
 					meerkat.modules.tracking.recordTouch('CONF','Confirmation Viewed');
+
+					// Call center joins to be posted to Google
+					if(meerkat.site.isCallCentreUser) {
+						// Allow small delay to allow page objects to load in
+						_.delay(registerSaleWithGA,500);
+					}
 				}
 			}
 
 		});
 
+	}
+
+	function registerSaleWithGA() {
+		var data = {
+			v :		1,
+			t :		'event',
+			ec :	'health journey conversions',
+			ea :	'health completed application',
+			el :	'health cc sale',
+			ds :	'call center',
+			dp :	'/ctm/health_confirmation_v2.jsp',
+			cd104 :	meerkat.site.contactType,
+			cd105 :	meerkat.site.userId,
+			cd28 :	meerkat.modules.transactionId.get(),
+		};
+		meerkat.modules.tracking.sendSaleDataToGoogleMeasurementProtocol(data);
 	}
 
 	function adjustLayout() {
@@ -181,11 +208,11 @@
 
 		adjustLayout();
 
-		if (typeof meerkat.site.healthAlternatePricingActive !== 'undefined' && meerkat.site.healthAlternatePricingActive === true) {
+		/*if (typeof meerkat.site.healthAlternatePricingActive !== 'undefined' && meerkat.site.healthAlternatePricingActive === true && meerkat.site.isCallCentreUser) {
 			// render dual pricing
-			meerkat.modules.healthDualPricing.initHealthDualPricing();
+			meerkat.modules.healthDualPricing.initDualPricing();
 			meerkat.modules.healthDualPricing.renderTemplate('.policySummary.dualPricing', meerkat.modules.moreInfo.getProduct(), false, true);
-		}
+		}*/
 
 		// hide the sidebar frequncy. only needed for payment page
 		$('.hasDualPricing .sidebarFrequency').hide();

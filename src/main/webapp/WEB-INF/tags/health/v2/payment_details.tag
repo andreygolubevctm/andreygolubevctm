@@ -24,6 +24,12 @@
 
 	<form_v3:fieldset legend="Payment Details" >
 
+		<c:if test="${healthAlternatePricingActive eq true and not empty callCentre}">
+			<div class="alert alert-info">
+				Remember: Premiums will rise from 1st April. You <b>must</b> select a cover start date before <b>April</b> 1st to save.
+			</div>
+		</c:if>
+
 		<div class="fundWarning alert alert-danger">
 				<%-- insert fund warning data --%>
 		</div>
@@ -42,7 +48,7 @@
 			<div class="fieldrow_legend lhcText"></div>
 		</form_v3:row>
 
-		<c:if test="${healthAlternatePricingActive eq true}">
+		<c:if test="${healthAlternatePricingActive eq true and not empty callCentre}">
 			<div class="hidden frequencyWarning definition alert alert-info"></div>
 		</c:if>
 

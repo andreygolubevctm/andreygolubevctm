@@ -15,7 +15,7 @@
     </div>
     <div class="row snapshot quote-ref">
         <div class="col-md-5">
-            <span class="snapshot-title">Quote Reference:</span>
+            <span class="snapshot-title">Quote Reference: </span>
         </div>
         <div class="col-md-7">
             <span class="snapshot-items hidden-xs hidden-sm">

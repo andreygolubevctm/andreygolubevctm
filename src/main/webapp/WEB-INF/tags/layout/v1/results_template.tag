@@ -26,13 +26,16 @@
 
 <%-- Fragments --%>
 <%@ attribute fragment="true" required="false" name="preResultsRow" %>
-<%@ attribute fragment="true" required="false" name="sidebarColumn" %>
+<%@ attribute fragment="true" required="false" name="sidebarColumnLeft" %>
+<%@ attribute fragment="true" required="false" name="sidebarColumnRight" %>
 <%@ attribute fragment="true" required="false" name="zeroResultsFoundMessage" %>
+<%@ attribute fragment="true" required="false" name="additionalPagination" %>
 <%@ attribute fragment="true" required="false" name="resultsErrorMessage" %>
 <%@ attribute fragment="true" required="false" name="hiddenInputs" description="Any hidden " %>
-<%@ attribute fragment="true" required="true" name="quoterefTemplate" description="A template customisable to display the quote reference number" %>
+<%@ attribute fragment="true" required="false" name="quoterefTemplate" description="A template customisable to display the quote reference number" %>
 <%@ attribute fragment="true" required="true" name="logoTemplate"
               description="A template just for the logo. Logos tend to be displayed in different places independent of price, so should be a different template." %>
+<%@ attribute fragment="true" required="false" name="productTitleTemplate" description="A template customisable to display the product title" %>
 <%@ attribute fragment="true" required="true" name="priceTemplate" description="A template customisable to display price based on frequency etc, must exclude logo" %>
 <%@ attribute fragment="true" required="false" name="compareTemplate" description="A template for compare mode" %>
 <%@ attribute fragment="true" required="true" name="resultsContainerTemplate" description="A template from the result-row wrapper" %>
@@ -42,8 +45,11 @@
 <c:set var="preResultsRow">
     <jsp:invoke fragment="preResultsRow"/>
 </c:set>
-<c:set var="sidebarColumn">
-    <jsp:invoke fragment="sidebarColumn"/>
+<c:set var="sidebarColumnLeft">
+    <jsp:invoke fragment="sidebarColumnLeft"/>
+</c:set>
+<c:set var="sidebarColumnRight">
+    <jsp:invoke fragment="sidebarColumnRight"/>
 </c:set>
 <c:set var="resultsErrorMessage">
     <jsp:invoke fragment="resultsErrorMessage"/>
@@ -51,9 +57,12 @@
 <c:set var="zeroResultsFoundMessage">
     <jsp:invoke fragment="zeroResultsFoundMessage"/>
 </c:set>
+<c:set var="quoterefTemplate">
+    <jsp:invoke fragment="quoterefTemplate"/>
+</c:set>
 <c:set var="resultsColsSm" value="8"/>
 <c:set var="resultsColsMd" value="9" />
-<c:if test="${empty sidebarColumn}">
+<c:if test="${empty sidebarColumnLeft and empty sidebarColumnRight}">
     <c:set var="resultsColsSm" value="12"/>
     <c:set var="resultsColsMd" value="12" />
 </c:if>
@@ -61,28 +70,19 @@
 <div class="row" id="resultsPage">
 
     <c:if test="${not empty preResultsRow}">
-        <div class="col-xs-12 col-sm-7 col-lg-8 results-prologue-row">
-            <div class="preResultsContainer hidden-xs"></div>
-                ${preResultsRow}
-        </div>
-        <div class="hidden-xs col-sm-5 col-lg-4 results-prologue-row results-pagination">
-            <div class="collapse navbar-collapse">
-                <span class="pagination-text-label">See more results</span>
-                <ul class="nav navbar-nav navbar-right slide-feature-pagination" data-results-pagination-pages-cell="true"></ul>
-            </div>
-        </div>
-        <div class="clearfix"></div>
+        ${preResultsRow}
     </c:if>
 
-    <c:if test="${not empty sidebarColumn}">
+    <%-- Currently applied on Health V2 --%>
+    <c:if test="${not empty sidebarColumnLeft}">
         <div class="hidden-xs col-sm-4 col-md-3" id="results-sidebar">
-                ${sidebarColumn}
+                ${sidebarColumnLeft}
         </div>
     </c:if>
 
-    <div class="col-sm-${resultsColsSm} col-md-${resultsColsMd} results-column-container">
+    <div class="col-md-${resultsColsMd} results-column-container">
         <div class="${resultsContainerClassName} resultsContainer featuresMode results-columns-xs-${xsResultsColumns} results-columns-sm-${smResultsColumns} results-columns-md-${mdResultsColumns} results-columns-lg-${lgResultsColumns}">
-            <agg_v1:results_pagination_floated_arrows />
+            <jsp:invoke fragment="additionalPagination"/>
             <div class="resultsOverflow notScrolling">
 
                 <div class="results-table"></div>
@@ -98,7 +98,7 @@
                     </c:choose>
                 </div>
 
-                <div class="noResults displayNone alert alert-info">
+                <div class="noResults displayNone alert alert-warning">
                     <c:choose>
                         <c:when test="${not empty zeroResultsFoundMessage}">
                             ${zeroResultsFoundMessage}
@@ -112,6 +112,13 @@
             </div>
         </div>
     </div>
+    <%-- Currently applied on Health V4 --%>
+    <c:if test="${not empty sidebarColumnRight}">
+        <div class="hidden-xs hidden-sm col-md-3" id="results-sidebar">
+                ${sidebarColumnRight}
+        </div>
+    </c:if>
+
     <div class="clearfix"></div>
 
     <jsp:doBody/>
@@ -122,8 +129,9 @@
 <%-- Temp div to hold the snapshot and complance text until new desgin can figure our where to put this --%>
 <div id="temp-health-snapshot" class="visible-xs"><p>Please download the policy brochures for the full policy limits, inclusions and exclusions.</p></div>
 <%-- Dump out the templates --%>
-<core_v1:js_template id="quoteref-template"><jsp:invoke fragment="quoterefTemplate"/></core_v1:js_template>
+<c:if test="${not empty quoterefTemplate}"><core_v1:js_template id="quoteref-template"><jsp:invoke fragment="quoterefTemplate"/></core_v1:js_template></c:if>
 <core_v1:js_template id="logo-template"><jsp:invoke fragment="logoTemplate"/></core_v1:js_template>
+<core_v1:js_template id="product-title-template"><jsp:invoke fragment="productTitleTemplate"/></core_v1:js_template>
 <core_v1:js_template id="price-template"><jsp:invoke fragment="priceTemplate"/></core_v1:js_template>
 <core_v1:js_template id="result-template"><jsp:invoke fragment="resultsContainerTemplate"/></core_v1:js_template>
 <core_v1:js_template id="result-header-template"><jsp:invoke fragment="resultsHeaderTemplate"/></core_v1:js_template>

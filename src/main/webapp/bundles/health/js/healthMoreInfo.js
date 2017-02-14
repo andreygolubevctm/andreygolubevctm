@@ -114,7 +114,7 @@
 
         meerkat.modules.healthResults.setSelectedProduct(product);
         // this variable declared in __health_legacy.js
-        healthFunds.load(product.info.provider, applyCallback);
+        meerkat.modules.healthFunds.load(product.info.provider, applyCallback);
 
         meerkat.modules.partnerTransfer.trackHandoverEvent({
             product: product,
@@ -437,7 +437,7 @@
                                 product.warningAlert = result.providerContentText;
                                 break;
                             case 'DDD':
-                                meerkat.modules.healthDropDeadDate.setDropDeadDate(result.providerContentText, product);
+                                meerkat.modules.dropDeadDate.setDropDeadDate(result.providerContentText, product);
                                 break;
                         }
                     }
