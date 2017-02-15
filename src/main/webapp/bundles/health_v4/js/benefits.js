@@ -29,12 +29,21 @@
                 hiddenHospitalCover: $('input[name="health_benefits_benefitsExtras_Hospital"]'),
                 hiddenExtraCover: $('input[name="health_benefits_benefitsExtras_GeneralHealth"]'),
                 accidentOnlyCover: $('input[name=health_situation_accidentOnlyCover]'),
-                comprehensiveBenefitTab: $('#comprehensiveBenefitTab')
+                comprehensiveBenefitTab: $('#comprehensiveBenefitTab'),
+                limitedCoverToggle: $('#health_benefits_benefitsExtras_LimitedCover')
             };
 
             $('#tabs').find('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                var hospitalType = getHospitalType();
+
                 setHospitalType($(this).data('benefit-cover-type'));
-                $('.hospital-content-toggle').toggle(getHospitalType() != 'limited');
+                $('.hospital-content-toggle').toggle(hospitalType !== 'limited');
+
+                if (hospitalType === 'limited') {
+                    $elements.limitedCoverToggle.removeAttr('data-ignore');
+                } else {
+                    $elements.limitedCoverToggle.attr('data-ignore', true);
+                }
             });
 
             $('label[for="health_benefits_benefitsExtras_LimitedCover"]').on('click', function () {
