@@ -139,7 +139,7 @@
                                     <div class="hasIcons">
                                         <div class="categoriesCell short-list-item category expandable collapsed HLTicon-limited_cover LimitedCover_container">
                                             <div class="checkbox">
-                                                <input type="checkbox" name="health_benefits_benefitsExtras_LimitedCover" id="health_benefits_benefitsExtras_LimitedCover" class="checkbox-custom checkbox" value="Y" checked="checked" data-attach="true">
+                                                <input type="checkbox" name="health_benefits_benefitsExtras_LimitedCover" id="health_benefits_benefitsExtras_LimitedCover" class="checkbox-custom checkbox" value="Y" checked="checked" data-attach="true" data-ignore="true">
                                                 <label for="health_benefits_benefitsExtras_LimitedCover" data-analytics="benefit extras">
                                                     <span class="benefitContent">
                                                         <div class="benefitTitle needsclick">Limited Hospital Cover</div>
