@@ -2,6 +2,8 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<health_v1:dual_pricing_settings />
+
 {{ var hasCustomHeaderContent = custom.info && custom.info.content && custom.info.content.results && custom.info.content.results.header; }}
 
 <div class="result">
@@ -28,19 +30,19 @@
             </div>
         </div>
         {{ var comingSoonClass = ''; }}
-        {{ if (meerkat.site.healthAlternatePricingActive === true) { }}
+        {{ if (meerkat.modules.healthDualPricing.isDualPricingActive() === true) { }}
             {{ if (!_.isUndefined(obj.altPremium[Results.getFrequency()])) { }}
                 {{ var productPremium = obj.altPremium[Results.getFrequency()] }}
                 {{ comingSoonClass = ((productPremium.value && productPremium.value > 0) || (productPremium.text && productPremium.text.indexOf('$0.') < 0) || (productPremium.payableAmount && productPremium.payableAmount > 0))  ? '' : 'comingsoon' }}
             {{ } }}
         {{ } }}
         <div class="results-header-inner-container {{= comingSoonClass }}">
-            <div class="productSummary vertical results">
+            <div class="productSummary vertical results <c:if test="${isDualPriceActive eq true}">hasDualPricing</c:if>">
                 <%-- If dual pricing is enabled, update the template --%>
                 {{ var logoTemplate = meerkat.modules.templateCache.getTemplate($("#logo-template")); }}
                 {{= logoTemplate(obj) }}
 
-                {{ if (meerkat.site.healthAlternatePricingActive === true && meerkat.site.isCallCentreUser === true) { }}
+                {{ if (meerkat.modules.healthDualPricing.isDualPricingActive() === true) { }}
                     {{= meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false, 'results') }}
                 {{ } else { }}
                     {{ var productTitleTemplate = meerkat.modules.templateCache.getTemplate($("#product-title-template")); }}

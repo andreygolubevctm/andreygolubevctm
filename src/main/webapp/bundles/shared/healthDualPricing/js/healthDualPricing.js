@@ -78,8 +78,8 @@
             }
         });
 
-        $(document).on('click', '.dual-pricing-learn-more', function() {
-            _showModal();
+        $(document).on('click', '.dual-pricing-learn-more', function(e) {
+            _showModal($(e.target).attr('data-dropDeadDate'));
         });
 
         $(document).on('click', 'a.live-chat', function() {
@@ -101,14 +101,13 @@
         });
     }
 
-    function _showModal() {
-        var template = _.template($elements.modalTemplate.html()),
-            product = Results.getSelectedProduct();
+    function _showModal(dropDeadDate) {
+        var template = _.template($elements.modalTemplate.html());
 
         modalId = meerkat.modules.dialogs.show({
             className: 'dual-pricing-modal',
             htmlContent: template({
-                dropDeadDate: meerkat.modules.dateUtils.format(product.dropDeadDate, "MMMM Do")
+                dropDeadDate: meerkat.modules.dateUtils.format(new Date(dropDeadDate), "MMMM Do")
             }),
             onOpen : function() {
                 $('a.live-chat').toggleClass('hidden', $('.LPMcontainer').length === 0);
