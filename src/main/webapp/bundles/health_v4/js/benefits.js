@@ -171,9 +171,6 @@
             coverType = 'E';
         }
         $elements.coverType.val(coverType);
-
-        // Update limited icon
-        $elements.limitedCoverIcon.prop('checked',isLimited);
     }
 
     function _reSelectBenefitCheckboxes(updatedBenefitsModel) {
@@ -186,6 +183,9 @@
         _.each(updatedBenefitsModel, function updateCheckboxes(id) {
             $elements[benefitType].find('input[data-benefit-id=' + id + ']').prop('checked', 'checked');
         });
+
+        // Update limited icon
+        $elements.limitedCoverIcon.prop('checked',meerkat.modules.benefits.getHospitalType() === 'limited');
     }
 
     function getHospitalType() {
