@@ -29,7 +29,8 @@
                 hiddenHospitalCover: $('input[name="health_benefits_benefitsExtras_Hospital"]'),
                 hiddenExtraCover: $('input[name="health_benefits_benefitsExtras_GeneralHealth"]'),
                 accidentOnlyCover: $('input[name=health_situation_accidentOnlyCover]'),
-                comprehensiveBenefitTab: $('#comprehensiveBenefitTab')
+                comprehensiveBenefitTab: $('#comprehensiveBenefitTab'),
+                limitedCoverIcon: $('#health_benefits_benefitsExtras_LimitedCover')
             };
 
             $('#tabs').find('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
@@ -138,7 +139,7 @@
         $elements.hospital.find('.nav-tabs a').on('click', function toggleQuickSelect() {
             var target = $(this).attr('href');
             // Check the input so it remains a green tick.
-            $('#health_benefits_benefitsExtras_LimitedCover').prop('checked', true);
+            $elements.limitedCoverIcon.prop('checked', true);
             $elements.hospital.find($elements.quickSelectContainer).toggleClass('hidden', target === '.limited-pane');
             _hospitalType = target === '.limited-pane' ? 'limited' : 'customise';
         });
@@ -162,6 +163,9 @@
             coverType = 'E';
         }
         $elements.coverType.val(coverType);
+
+        // Update limited icon
+        $elements.limitedCoverIcon.prop('checked',isLimited);
     }
 
     function _reSelectBenefitCheckboxes(updatedBenefitsModel) {
