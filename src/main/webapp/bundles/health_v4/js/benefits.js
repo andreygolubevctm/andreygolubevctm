@@ -38,12 +38,6 @@
 
                 setHospitalType($(this).data('benefit-cover-type'));
                 $('.hospital-content-toggle').toggle(hospitalType !== 'limited');
-
-                if (hospitalType === 'limited') {
-                    $elements.limitedCoverIcon.removeAttr('data-ignore');
-                } else {
-                    $elements.limitedCoverIcon.attr('data-ignore', true);
-                }
             });
 
             $('label[for="health_benefits_benefitsExtras_LimitedCover"]').on('click', function () {
