@@ -163,7 +163,7 @@
 
 .priceAnimationStyles() {
   .current-pricing-done {
-    background: lighten(@theme-accent-1, 30%);
+    background: fade(@theme-accent-1, 20%);
 
     .frequencyAmount {
       color: @theme-dark;
@@ -203,8 +203,8 @@
 
     .april-pricing,
     .current-pricing {
+      .priceAnimationTransitions();
       border-radius: 10px;
-      transition: all 3s ease 2s;
       padding-bottom: 10px;
       text-align: center;
 
@@ -267,12 +267,6 @@
         }
       }
 
-      //h3,
-      //.applyBy,
-      //.premiumsRising {
-      //  color: @theme-accent-1;
-      //}
-
       .lhcText {
         display: none;
       }
@@ -280,7 +274,7 @@
       h3,
       .applyBy,
       .frequencyAmount {
-        transition: all 3s ease 2s;
+        .priceAnimationTransitions();
         color: @white;
       }
     }
@@ -344,21 +338,22 @@
       *,
       .premiumsRising,
       .frequencyAmount {
-        transition: all 3s ease 2s;
+        .priceAnimationTransitions();
         color: @white;
       }
     }
 
-    //.april-pricing-done {
-    //  //*,
-    //  //.premiumsRising,
-    //  //.frequencyAmount {
-    //    color: @theme-accent-3;
-    //  //}
-    //}
-
     /* animation styles */
     .priceAnimationStyles();
+  }
+}
+
+.priceAnimationTransitions() {
+  transition: all @dual-pricing-transition-duration @dual-pricing-transition-easing;
+  transition-delay: @dual-pricing-transition-delay-xs;
+
+  @media (@sm) {
+    transition-delay: @dual-pricing-transition-delay;
   }
 }
 
@@ -403,7 +398,7 @@
       }
 
       .current-pricing {
-        background: lighten(@theme-accent-1, 30%);
+        background: fade(@theme-accent-1, 20%);
         width: 50%;
 
         > .row {
