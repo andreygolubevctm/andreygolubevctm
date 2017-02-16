@@ -130,10 +130,12 @@
         }
 
 
-        meerkat.modules.journeyEngine.configure({
+        var configureJourneyEngine = _.bind(meerkat.modules.journeyEngine.configure, this, {
             startStepId: startStepId,
             steps: _.toArray(steps)
         });
+        // Allow time for journey to be fully populated/rendered when loading an existing quote
+        _.delay(configureJourneyEngine, meerkat.site.isNewQuote === false ? 500 : 0);
 
         meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
             method: 'trackQuoteEvent',
