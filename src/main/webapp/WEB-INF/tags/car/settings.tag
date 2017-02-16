@@ -15,10 +15,8 @@
 </c:if>
 
 <c:set var="priceDisplayMode"><content:get key="resultsDisplayMode" /></c:set>
-<c:set var="priceDisplayModeForXSandSM"><content:get key="resultsDisplayModeForXSandSM" /></c:set>
 <c:if test="${not empty param.display and (param.display eq 'price' or param.display eq 'features')}">
 	<c:set var="priceDisplayMode" value="${param.display}"/>
-	<c:set var="priceDisplayModeForXSandSM" value="${param.display}"/>
 </c:if>
 
 <%-- Retrieve values passed from website --%>
@@ -84,8 +82,7 @@
 	},
 	nonStandardAccessoriesList : ${nonStandardAccessories},
 	resultOptions: {
-		displayMode: "<c:out value="${priceDisplayMode}" />",
-		displayModeForXSandSM: "<c:out value="${priceDisplayModeForXSandSM}" />"
+		displayMode: "<c:out value="${priceDisplayMode}" />"
 	},
 	commencementDate : '${data.quote.options.commencementDate}',
 	skipNewCoverTypeCarJourney: ${skipNewCoverTypeCarJourney},
