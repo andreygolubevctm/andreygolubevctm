@@ -120,7 +120,8 @@
         var startStepId = null;
         if (meerkat.site.isFromBrochureSite === true) {
             startStepId = steps.startStep.navigationId;
-        } else if (meerkat.site.journeyStage.length > 0 && meerkat.site.pageAction === 'amend') {
+        // Use the stage user was on when saving their quote
+        } else if (meerkat.site.journeyStage.length > 0 && _.indexOf(['amend', 'latest'], meerkat.site.pageAction) >= 0) {
             // Do not allow the user to go past the results page on amend.
             if (meerkat.site.journeyStage === 'apply' || meerkat.site.journeyStage === 'payment') {
                 startStepId = 'results';
@@ -128,7 +129,6 @@
                 startStepId = meerkat.site.journeyStage;
             }
         }
-
 
         var configureJourneyEngine = _.bind(meerkat.modules.journeyEngine.configure, this, {
             startStepId: startStepId,
