@@ -142,7 +142,7 @@ public class JourneyGateway {
 	}
 
 	private static StringBuilder getURLWithoutJParam(HttpServletRequest request, PageSettings pageSettings) throws ConfigSettingException {
-		StringBuilder url = new StringBuilder(pageSettings.getBaseUrl()+"health_quote_v2.jsp");
+		StringBuilder url = new StringBuilder(pageSettings.getBaseUrl()+"health_quote_v4.jsp");
 		url.append("?");
 		Map<String, String> qstr = getQueryMap(request.getQueryString());
 		for (Map.Entry<String, String> entry : qstr.entrySet()) {
