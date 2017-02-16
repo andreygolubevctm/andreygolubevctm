@@ -168,13 +168,21 @@
     .frequencyAmount {
       color: @theme-dark;
     }
+
+    h3,
+    .applyBy,
+    .premiumsRising {
+      color: @theme-accent-1;
+    }
   }
 
   // halve all the font sizes for april pricing
   .april-pricing-done {
     background: lighten(@theme-accent-3, 30%);
 
-    .frequencyAmount {
+    *,
+    .frequencyAmount,
+    .premiumsRising {
       color: @theme-accent-3;
     }
   }
@@ -196,10 +204,9 @@
     .april-pricing,
     .current-pricing {
       border-radius: 10px;
-      transition: all 0.65s ease;
+      transition: all 3s ease 2s;
       padding-bottom: 10px;
       text-align: center;
-
 
       h3 {
         margin-top: 5px;
@@ -231,12 +238,10 @@
     /* CURRENT PRICING */
     /* override the shared module styling */
     .current-pricing {
-
+      background: @theme-accent-1;
       border-left: initial;
       padding-left: initial;
       margin-left: initial;
-
-      background: lighten(@theme-accent-1, 35%);
 
       .frequencyTitle {
         display: none;
@@ -262,14 +267,21 @@
         }
       }
 
-      h3,
-      .applyBy,
-      .premiumsRising {
-        color: @theme-accent-1;
-      }
+      //h3,
+      //.applyBy,
+      //.premiumsRising {
+      //  color: @theme-accent-1;
+      //}
 
       .lhcText {
         display: none;
+      }
+
+      h3,
+      .applyBy,
+      .frequencyAmount {
+        transition: all 3s ease 2s;
+        color: @white;
       }
     }
 
@@ -281,6 +293,7 @@
 
     /* APRIL PRICING */
     .april-pricing {
+      background: @theme-accent-3;
 
       .lhcText {
         display: none;
@@ -331,17 +344,18 @@
       *,
       .premiumsRising,
       .frequencyAmount {
+        transition: all 3s ease 2s;
         color: @white;
       }
     }
 
-    .april-pricing-done {
-      *,
-      .premiumsRising,
-      .frequencyAmount {
-        color: @theme-accent-3;
-      }
-    }
+    //.april-pricing-done {
+    //  //*,
+    //  //.premiumsRising,
+    //  //.frequencyAmount {
+    //    color: @theme-accent-3;
+    //  //}
+    //}
 
     /* animation styles */
     .priceAnimationStyles();
@@ -394,6 +408,16 @@
 
         > .row {
           display: block;
+        }
+
+        .frequencyAmount {
+          color: @theme-dark;
+        }
+
+        h3,
+        .applyBy,
+        .premiumsRising {
+          color: @theme-accent-1;
         }
       }
 
