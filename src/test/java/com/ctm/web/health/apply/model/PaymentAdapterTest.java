@@ -81,7 +81,7 @@ public class PaymentAdapterTest {
 
     @Test
     public void testCreateBankEmpty() throws Exception {
-        assertNull(PaymentAdapter.createBank(Optional.empty()));
+        assertNull(PaymentAdapter.createBank(Optional.empty(), Optional.empty()));
     }
 
     @Test
@@ -90,7 +90,7 @@ public class PaymentAdapterTest {
         final PaymentDetails paymentDetails = mock(PaymentDetails.class);
         when(payment.getDetails()).thenReturn(paymentDetails);
         when(paymentDetails.getType()).thenReturn("xx");
-        assertNull(PaymentAdapter.createBank(Optional.of(payment)));
+        assertNull(PaymentAdapter.createBank(Optional.of(payment), Optional.empty()));
     }
 
     @Test
@@ -102,7 +102,7 @@ public class PaymentAdapterTest {
         when(payment.getBank()).thenReturn(bank);
         when(paymentDetails.getType()).thenReturn("ba");
         when(paymentDetails.getClaims()).thenReturn("Y");
-        assertNotNull(PaymentAdapter.createBank(Optional.of(payment)));
+        assertNotNull(PaymentAdapter.createBank(Optional.of(payment), Optional.empty()));
         verify(paymentDetails, times(1)).getType();
         verify(bank, times(1)).getClaims();
         verify(paymentDetails, times(1)).getClaims();
@@ -118,11 +118,55 @@ public class PaymentAdapterTest {
         when(payment.getBank()).thenReturn(bank);
         when(paymentDetails.getType()).thenReturn("cc");
         when(paymentDetails.getClaims()).thenReturn("Y");
-        assertNotNull(PaymentAdapter.createBank(Optional.of(payment)));
+        assertNotNull(PaymentAdapter.createBank(Optional.of(payment), Optional.empty()));
         verify(paymentDetails, times(1)).getType();
         verify(bank, never()).getAccount();
         verify(paymentDetails, times(1)).getClaims();
         verify(bank, times(1)).getClaim();
+    }
+
+    @Test
+    public void testCreateBankFromProviderNoSameBankClaimsCheck() {
+        final com.ctm.web.health.model.form.Payment payment = mock(com.ctm.web.health.model.form.Payment.class);
+        final PaymentDetails paymentDetails = mock(PaymentDetails.class);
+        final Bank bank = mock(Bank.class);
+        when(bank.getClaims()).thenReturn("Y");
+        when(payment.getDetails()).thenReturn(paymentDetails);
+        when(payment.getBank()).thenReturn(bank);
+        when(paymentDetails.getType()).thenReturn("cc");
+        when(paymentDetails.getClaims()).thenReturn("Y");
+
+        final Application application = mock(Application.class);
+        when(application.getProvider()).thenReturn("BUD");
+
+        assertNotNull(PaymentAdapter.createBank(Optional.of(payment), Optional.of(application)));
+        verify(paymentDetails, times(1)).getType();
+        verify(bank, never()).getAccount();
+        verify(paymentDetails, times(1)).getClaims();
+        verify(bank, times(1)).getClaim();
+        verify(bank, never()).getClaims();
+    }
+
+    @Test
+    public void testCreateBankFromProviderSameBankClaimsCheck() {
+        final com.ctm.web.health.model.form.Payment payment = mock(com.ctm.web.health.model.form.Payment.class);
+        final PaymentDetails paymentDetails = mock(PaymentDetails.class);
+        final Bank bank = mock(Bank.class);
+        when(bank.getClaims()).thenReturn("Y");
+        when(payment.getDetails()).thenReturn(paymentDetails);
+        when(payment.getBank()).thenReturn(bank);
+        when(paymentDetails.getType()).thenReturn("cc");
+        when(paymentDetails.getClaims()).thenReturn("Y");
+
+        final Application application = mock(Application.class);
+        when(application.getProvider()).thenReturn("BUP");
+
+        assertNotNull(PaymentAdapter.createBank(Optional.of(payment), Optional.of(application)));
+        verify(paymentDetails, times(1)).getType();
+        verify(bank, never()).getAccount();
+        verify(paymentDetails, times(1)).getClaims();
+        verify(bank, times(1)).getClaims();
+        verify(bank, never()).getClaim();
     }
 
     @Test
