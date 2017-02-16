@@ -35,22 +35,32 @@ public class RemainingSalesDaoTest {
 
     @Test
     public void zeroRemainingDays() {
-        assertEquals(0, remainingSalesDao.getRemainingDays(LocalDate.of(2017, 2, 8), LocalDate.of(2017, 2, 8)));
+        assertEquals(0, remainingSalesDao.getRemainingDays(LocalDate.of(2017, 2, 8), LocalDate.of(2017, 2, 8), 0, 0));
     }
 
     @Test
     public void zeroRemainingDaysEffectiveDateBefore() {
-        assertEquals(0, remainingSalesDao.getRemainingDays(LocalDate.of(2017, 1, 8), LocalDate.of(2017, 2, 8)));
+        assertEquals(0, remainingSalesDao.getRemainingDays(LocalDate.of(2017, 1, 8), LocalDate.of(2017, 2, 8), 0, 0));
     }
 
     @Test
     public void oneRemainingDay() {
-        assertEquals(1, remainingSalesDao.getRemainingDays(LocalDate.of(2017, 2, 9), LocalDate.of(2017, 2, 8)));
+        assertEquals(1, remainingSalesDao.getRemainingDays(LocalDate.of(2017, 2, 9), LocalDate.of(2017, 2, 8), 0, 0));
     }
 
     @Test
     public void extendedMonthRemainingDay() {
-        assertEquals(20, remainingSalesDao.getRemainingDays(LocalDate.of(2017, 3, 21), LocalDate.of(2017, 2, 8)));
+        assertEquals(20, remainingSalesDao.getRemainingDays(LocalDate.of(2017, 3, 21), LocalDate.of(2017, 2, 8), 0, 0));
+    }
+
+    @Test
+    public void remainingDays10Days() {
+        assertEquals(10, remainingSalesDao.getRemainingDays(LocalDate.of(2017, 2, 28), LocalDate.of(2017, 2, 16), 10, 10));
+    }
+
+    @Test
+    public void remainingDays12Days() {
+        assertEquals(12, remainingSalesDao.getRemainingDays(LocalDate.of(2017, 2, 28), LocalDate.of(2017, 2, 16), 2, 18));
     }
 
 }

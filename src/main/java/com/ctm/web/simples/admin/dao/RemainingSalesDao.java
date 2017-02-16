@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -53,31 +54,56 @@ public class RemainingSalesDao {
 
     public List<RemainingSale> getRemainingSales() throws DaoException {
         return jdbcTemplate.query(REMAINING_SALES_QUERY,
-                (rs, rowNum) -> RemainingSale.newBuilder()
+                (rs, rowNum) -> {
+
+                    final int sales = rs.getInt("sales");
+                    final int remainingSales = getRemainingSales(rs.getInt("cap_limit"), sales);
+                    return RemainingSale.newBuilder()
                                     .fundName(rs.getString("fund"))
-                                    .remainingDays(getRemainingDays(rs.getDate("effectiveEnd").toLocalDate(), LocalDate.now()))
-                                    .remainingSales(getRemainingSales(rs.getInt("cap_limit"), rs.getInt("sales")))
-                                    .build());
+                                    .remainingSales(remainingSales)
+                                    .remainingDays(getRemainingDays(rs.getDate("effectiveEnd").toLocalDate(), LocalDate.now(), sales, remainingSales))
+                                    .build();
+                });
     }
 
     protected int getRemainingSales(final int cappingLimit, final int sold) {
         return cappingLimit - sold;
     }
 
-    protected int getRemainingDays(final LocalDate effectiveEnd, final LocalDate compareDate) {
+    protected int getRemainingDays(final LocalDate effectiveEnd, final LocalDate compareDate, final int sales, final int remainingSales) {
 
         if (effectiveEnd.isAfter(compareDate)) {
 
             final int comparedMonth = compareDate.getMonth().compareTo(effectiveEnd.getMonth());
 
             // Same month
+            final int daysRemaining;
             if (comparedMonth == 0) {
                 // how many more days until the effectiveEnd
-                return effectiveEnd.getDayOfMonth() - compareDate.getDayOfMonth();
+                daysRemaining = effectiveEnd.getDayOfMonth() - compareDate.getDayOfMonth();
             } else {
                 // how many more days remaining of the comparedDate
-                return compareDate.lengthOfMonth() - compareDate.getDayOfMonth();
+                daysRemaining = compareDate.lengthOfMonth() - compareDate.getDayOfMonth();
             }
+
+            final BigDecimal averageSalesPerDay = new BigDecimal(sales)
+                    .divide(new BigDecimal(compareDate.getDayOfMonth()))
+                    .setScale(0, BigDecimal.ROUND_CEILING);
+
+            if (averageSalesPerDay.compareTo(BigDecimal.ZERO) != 0) {
+                final int calculatedRemainingDay = new BigDecimal(remainingSales)
+                        .divide(averageSalesPerDay)
+                        .setScale(0, BigDecimal.ROUND_CEILING)
+                        .intValue();
+                if (calculatedRemainingDay > daysRemaining) {
+                    return daysRemaining;
+                } else {
+                    return calculatedRemainingDay;
+                }
+            } else {
+                return daysRemaining;
+            }
+
         }
         else {
             return 0;
