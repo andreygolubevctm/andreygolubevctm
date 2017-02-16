@@ -56,11 +56,13 @@
 	<div class="dual-pricing-container {{ if (obj.dropDatePassed === true) { }}dropDatePassed{{ } }} {{= comingSoonClass }}">
 		<div class="row">
 			<div class="april-pricing col-xs-4">
-				<h3>${april1Header}</h3>
-				{{= renderedAltPriceTemplate }}
-				<span class="premiumsRising">Premiums are rising</span>
+				<div class="april-pricing-inner-wrapper">
+					<h3>${april1Header}</h3>
+					{{= renderedAltPriceTemplate }}
+					<span class="premiumsRising">Premiums are rising</span>
+				</div>
 			</div>
-			<div class="current-pricing col-xs-8">
+			<div class="current-pricing col-xs-7">
 				<div class="row">
 					<div class="col-xs-6 container">
 						<h3>Current {{= obj._selectedFrequency }} Price</h3>
