@@ -1,0 +1,17 @@
+.health {
+  &:not([data-step="results"]) {
+    .refine-results {
+      display: none;
+    }
+  }
+}
+
+.refine-results {
+  float: right;
+  line-height: 21px;
+  padding: 9px 10px;
+
+  @media (@sm) {
+    display: none;
+  }
+}

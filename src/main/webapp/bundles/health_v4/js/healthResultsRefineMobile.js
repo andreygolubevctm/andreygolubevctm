@@ -2,7 +2,8 @@
 
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
-        $elements = {};
+        $elements = {},
+        modalId = null;
 
     function initHealthResultsRefineMobile() {
         _setupElements();
@@ -24,14 +25,40 @@
     }
 
     function _eventSubscriptions() {
+        // Disable mobile nav buttons while results are in progress
+        $(document).on('resultsFetchStart', function onResultsFetchStart() {
+            disable();
+        });
+
+        $(document).on('resultsFetchFinish', function onResultsFetchFinish() {
+            enable();
+        });
+    }
+
+    function disable() {
+        $elements.refineBtn.addClass('disabled');
+    }
+
+    function enable() {
+        $elements.refineBtn.removeClass('disabled');
     }
 
     function _showModal() {
-        var template = _.template($elements.modalTemplate.html());
+        var template = _.template($elements.modalTemplate.html()),
+            hospitalType = meerkat.modules.benefits.getHospitalType(),
+            hospitalCount = meerkat.modules.benefits.getHospitalCount(),
+            comprehensiveText = hospitalCount > 0 ? hospitalCount + ' Benefits selected' : 'No Hospital',
+            extrasCount = meerkat.modules.benefits.getExtrasCount(),
+            data = {
+                hospitalType: hospitalType === 'customise' ? 'Comprehensive' : 'Limited',
+                hospitalCountText: hospitalType === 'customise' ? comprehensiveText : '',
+                extrasCountText: extrasCount > 0 ? extrasCount + ' Extra selected' : 'No Extras'
+            };
 
         modalId = meerkat.modules.dialogs.show({
+            title: 'Refine Results',
             className: 'refine-mobile-modal',
-            htmlContent: template()
+            htmlContent: template(data)
         });
 
         return modalId;
