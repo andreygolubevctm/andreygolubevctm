@@ -135,7 +135,7 @@
             steps: _.toArray(steps)
         });
         // Allow time for journey to be fully populated/rendered when loading an existing quote
-        _.delay(configureJourneyEngine, meerkat.site.isNewQuote === false ? 500 : 0);
+        _.delay(configureJourneyEngine, meerkat.site.isNewQuote === false ? 750 : 0);
 
         meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
             method: 'trackQuoteEvent',
