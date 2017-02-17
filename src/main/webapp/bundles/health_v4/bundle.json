@@ -45,6 +45,7 @@
     "shared/radioRounded",
     "shared/fields",
     "shared/healthDualPricing",
-    "shared/reward"
+    "shared/reward",
+    "shared/healthResultsRefineMobile"
   ]
 }
