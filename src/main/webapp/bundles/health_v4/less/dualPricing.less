@@ -178,14 +178,12 @@
 
   // halve all the font sizes for april pricing
   .april-pricing-done {
-    .april-pricing-inner-wrapper {
-      background: lighten(@theme-accent-3, 30%);
+    background: lighten(@theme-accent-3, 30%);
 
-      *,
-      .frequencyAmount,
-      .premiumsRising {
-        color: @theme-accent-3;
-      }
+    *,
+    .frequencyAmount,
+    .premiumsRising {
+      color: @theme-accent-3;
     }
   }
 }
@@ -203,7 +201,7 @@
       padding-left: 0px;
     }
 
-    .april-pricing .april-pricing-inner-wrapper,
+    .april-pricing,
     .current-pricing {
       .priceAnimationTransitions();
       border-radius: 10px;
@@ -289,59 +287,59 @@
 
     /* APRIL PRICING */
     .april-pricing {
-      .april-pricing-inner-wrapper {
-        background: @theme-accent-3;
-        padding-top: 5px;
+      background: @theme-accent-3;
 
-        h3 {
-          margin-top: 0;
-        }
+      .lhcText {
+        display: none;
+      }
 
-        .lhcText {
+      @media(@xs-only) {
+        .frequencyTitle {
           display: none;
         }
 
-        @media (@xs-only) {
-          .frequencyTitle {
-            display: none;
-          }
+        .dual-pricing-learn-more {
+          display: none;
+        }
+      }
 
-          .dual-pricing-learn-more {
-            display: none;
-          }
+      @media(@sm) {
+        margin-left: -10px;
+        margin-right: 10px;
+      }
+
+
+      .cents,
+      .dollarSign {
+        @media(@lg) {
+          font-size: 16px;
         }
 
-        .cents,
-        .dollarSign {
-          @media (@lg) {
-            font-size: 16px;
-          }
-
-          @media (@xs) {
-            font-size: 12px;
-          }
+        @media(@xs) {
+          font-size: 12px;
         }
+      }
 
-        .frequencyAmount {
-          font-size: 24px;
 
-          &.comingSoon {
-            font-size: 18px;
-            line-height: 18px;
-            margin: 5px 0;
+      .frequencyAmount {
+        font-size: 24px;
 
-            @media (@md) {
-              line-height: 36px;
-            }
+        &.comingSoon {
+          font-size: 18px;
+          line-height: 18px;
+          margin: 5px 0;
+
+          @media (@md) {
+            line-height: 36px;
           }
         }
+      }
 
-        *,
-        .premiumsRising,
-        .frequencyAmount {
-          .priceAnimationTransitions();
-          color: @white;
-        }
+      *,
+      .premiumsRising,
+      .frequencyAmount {
+        .priceAnimationTransitions();
+        color: @white;
       }
     }
 
@@ -374,29 +372,27 @@
     /* Overrides */
     .dual-pricing-container {
       .april-pricing {
-        .april-pricing-inner-wrapper {
-          background: lighten(@theme-accent-3, 30%);
+        background: lighten(@theme-accent-3, 30%);
 
-          .frequencyTitle {
-            display: none;
-          }
+        .frequencyTitle {
+          display: none;
+        }
 
-          h3,
-          .premiumsRising {
+        h3,
+        .premiumsRising {
+          font-size: 14px;
+        }
+
+        *,
+        .premiumsRising,
+        .frequencyAmount {
+          color: @theme-accent-3;
+        }
+
+        .frequencyAmount {
+          &.comingSoon {
             font-size: 14px;
-          }
-
-          *,
-          .premiumsRising,
-          .frequencyAmount {
-            color: @theme-accent-3;
-          }
-
-          .frequencyAmount {
-            &.comingSoon {
-              font-size: 14px;
-              line-height: 14px;
-            }
+            line-height: 14px;
           }
         }
       }
@@ -441,10 +437,10 @@
 }
 
 #health_payment_details-selection {
-   .alert-info {
-     margin-top: 15px;
-   }
- }
+  .alert-info {
+    margin-top: 15px;
+  }
+}
 
 /* Sidebar styles */
 .policySummary-sidebar.hasDualPricing {
