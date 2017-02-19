@@ -121,6 +121,8 @@
 		}
 	}
 
+	/** HELPER METHODS FOR COVER LEVEL TAB TESTS **/
+
 	function setDefaultCoverLevelTab(tab) {
 		if(!_.isEmpty(tab) && _.isString(tab)) {
 			tab = tab.toUpperCase();
@@ -140,8 +142,6 @@
 			}
 		}
 	}
-
-	/** HELPER METHODS FOR COVER LEVEL TAB TESTS **/
 
 	function setDefaultSingleCoverLevelTab(tab) {
 		setDefaultCoverLevelTab(tab);
