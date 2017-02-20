@@ -188,7 +188,7 @@
 	</jsp:attribute>
 			
 	<jsp:attribute name="footer">
-		<core_v1:footer_participatingsuppliers />
+		<car:footer />
 	</jsp:attribute>
 
     <jsp:attribute name="xs_results_pagination">
