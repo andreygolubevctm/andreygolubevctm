@@ -41,7 +41,7 @@
     }
 
     function setCover(cover) {
-        _cover = cover || 'SM'; // default to a single
+        _cover = cover || '';
     }
 
     function setState(state) {

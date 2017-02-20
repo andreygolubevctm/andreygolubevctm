@@ -9,10 +9,12 @@
 <c:if test="${false}">
 	<c:set var="fromBrochure" scope="request" value="${true}"/>
 </c:if>
+
 <c:set var="priceDisplayMode"><content:get key="resultsDisplayMode" /></c:set>
 <c:if test="${not empty param.display and (param.display eq 'price' or param.display eq 'features')}">
 	<c:set var="priceDisplayMode" value="${param.display}"/>
 </c:if>
+
 <c:set var="defaultToHomeQuote"><content:get key="makeHomeQuoteMainJourney" /></c:set>
 
 {

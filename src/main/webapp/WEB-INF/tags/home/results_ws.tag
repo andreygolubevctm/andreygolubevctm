@@ -604,7 +604,7 @@
 	{{ var homeExcessAmount = (obj.homeExcess !== null && obj.homeExcess.amount != '') ? obj.homeExcess.amount : null; }}
 
 	{{ if (contentsExcessAmount !== null && homeExcessAmount !== null && contentsExcessAmount === homeExcessAmount) { }}
-		<div class="col-xs-12">
+		<div class="col-xs-12 text-right">
 			<div class="excessAmount">{{= obj.homeExcess.amountFormatted }}</div>
 			<div class="excessTitle">Excess</div>
 		</div>

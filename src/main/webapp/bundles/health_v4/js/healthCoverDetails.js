@@ -1,13 +1,9 @@
 ;(function($, undefined) {
 
     var meerkat = window.meerkat,
-        modalId = false,
-        $healthCoverRebate;
+        modalId = false;
 
     function initHealthCoverDetails() {
-        $(document).ready(function () {
-            $healthCoverRebate = $('.health_cover_details_rebate');
-        });
     }
 
     //Previous funds, settings
