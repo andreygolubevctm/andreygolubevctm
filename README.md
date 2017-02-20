@@ -67,4 +67,3 @@ And constructed with the following guidelines:
 
 Copyright 2015 Compare The Market PTY LTD, all rights reserved. Privately owned project. No Public Licence.
 
-The end.
