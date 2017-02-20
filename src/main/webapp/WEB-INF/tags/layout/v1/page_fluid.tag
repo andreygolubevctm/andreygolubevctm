@@ -347,6 +347,7 @@ ${newPage.init(pageContext.request, pageSettings)}
                             kampyleId: 112902
                             </c:if>
                         };
+                        <core_v1:settings />
 
                         <%-- Vertical settings should be passed in as a JSP fragment --%>
                         <c:if test="${not empty vertical_settings}">
