@@ -22,8 +22,13 @@
         });
     }
 
+    function triggerScroll() {
+        $elements.scroller.find('a').trigger('click');
+    }
+
     meerkat.modules.register("benefitsSelectionScroller", {
-        init: init
+        init: init,
+        triggerScroll: triggerScroll
     });
 
 })(jQuery);

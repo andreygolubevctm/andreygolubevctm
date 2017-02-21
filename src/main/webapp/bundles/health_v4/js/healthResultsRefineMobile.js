@@ -14,13 +14,29 @@
     function _setupElements() {
         $elements = {
             refineBtn: $('.refine-results'),
-            modalTemplate: $('#refine-mobile-modal-template')
+            modalTemplate: $('#refine-results-modal-template'),
+            redirectBtn: $('.refine-results-redirect-btn')
         };
     }
 
     function _applyEventListeners() {
         $elements.refineBtn.on('click', function() {
             _showModal();
+        });
+
+        $(document).on('click', '.refine-results-redirect-btn', function() {
+            _hideModal();
+            meerkat.modules.address.setHash('benefits');
+
+            _.delay(function() {
+                meerkat.modules.benefitsSelectionScroller.triggerScroll();
+            }, 750);
+        });
+
+        $(document).on('click', '.refine-results-view-all-times', function() {
+            var anchorText = $(this).text() === 'view all times' ? 'show today only' : 'view all times';
+            $(this).text(anchorText);
+            $('.refine-results-all-times, .refine-results-today-hours').toggleClass('hidden');
         });
     }
 
@@ -44,21 +60,12 @@
     }
 
     function _showModal() {
-        var template = _.template($elements.modalTemplate.html()),
-            hospitalType = meerkat.modules.benefits.getHospitalType(),
-            hospitalCount = meerkat.modules.benefits.getHospitalCount(),
-            comprehensiveText = hospitalCount > 0 ? hospitalCount + ' Benefits selected' : 'No Hospital',
-            extrasCount = meerkat.modules.benefits.getExtrasCount(),
-            data = {
-                hospitalType: hospitalType === 'customise' ? 'Comprehensive' : 'Limited',
-                hospitalCountText: hospitalType === 'customise' ? comprehensiveText : '',
-                extrasCountText: extrasCount > 0 ? extrasCount + ' Extra selected' : 'No Extras'
-            };
+        var template = _.template($elements.modalTemplate.html());
 
         modalId = meerkat.modules.dialogs.show({
             title: 'Refine Results',
-            className: 'refine-mobile-modal',
-            htmlContent: template(data)
+            className: 'refine-results-modal',
+            htmlContent: template(_getData())
         });
 
         return modalId;
@@ -68,6 +75,23 @@
         if (modalId !== null) {
             $('#' + modalId).modal('hide');
         }
+    }
+
+    function _getData() {
+        var hospitalType = meerkat.modules.benefits.getHospitalType(),
+            hospitalCount = meerkat.modules.benefitsModel.getHospitalCount(),
+            hospitalPlural = hospitalCount > 1 ? 's' : '',
+            comprehensiveText = hospitalCount > 0 ? hospitalCount + ' Benefit' + hospitalPlural + ' selected' : 'No Hospital',
+            extrasCount = meerkat.modules.benefitsModel.getExtrasCount(),
+            extrasPlural = extrasCount > 1 ? 's' : '';
+
+        return {
+            hospitalType: hospitalType === 'customise' ? 'Comprehensive' : 'Limited',
+            hospitalBtnText: hospitalType === 'customise' ? (hospitalCount > 0 ? 'Change' : 'Add Hospital') : 'Change',
+            hospitalCountText: hospitalType === 'customise' ? comprehensiveText : '',
+            extrasBtnText: extrasCount > 0 ? 'Change' : 'Add Extras',
+            extrasCountText: extrasCount > 0 ? extrasCount + ' Extra' + extrasPlural + ' selected' : 'No Extras'
+        };
     }
 
     meerkat.modules.register('healthResultsRefineMobile', {
