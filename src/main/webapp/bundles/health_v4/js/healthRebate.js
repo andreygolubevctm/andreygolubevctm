@@ -70,7 +70,7 @@
 
             // update rebate
             if ($this.valid()) {
-                _setRebate();
+                setRebate();
             }
 
         });
@@ -136,7 +136,7 @@
         return _selectetedRebateTierLabelText;
     }
 
-    function _setRebate() {
+    function setRebate() {
         meerkat.modules.healthRates.loadRatesBeforeResultsPage(true, function (rates) {
             if (!isNaN(rates.rebate) && parseFloat(rates.rebate) > 0) {
                 $elements.rebateLegend.html('You are eligible for a ' + rates.rebate + '% rebate.');
@@ -168,6 +168,7 @@
         hasPartner: hasPartner,
         updateSelectedRebateLabel: updateSelectedRebateLabel,
         getRebate: getRebate,
+        setRebate: setRebate,
         toggleRebateQuestions: toggleRebateQuestions,
         isRebateApplied: isRebateApplied,
         getSelectedRebateLabelText: getSelectedRebateLabelText,
