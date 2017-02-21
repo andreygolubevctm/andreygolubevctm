@@ -381,7 +381,7 @@
      * user on local network or quote started with preload..
      */
     function addGTMInternalUser() {
-        window.gtmInternalUser = !_.has(meerkat.site,"gtmInternalUser") ? meerkat.site.gtmInternalUser : false;
+        window.gtmInternalUser = _.has(meerkat.site,"gtmInternalUser") ? meerkat.site.gtmInternalUser : false;
     }
 
     /**

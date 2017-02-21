@@ -8,7 +8,7 @@
 <%-- VARIABLES --%>
 <c:set var="localIP">
 	<c:choose>
-		<c:when test="${ipChkSvc.isLocalIPAddress(request) eq true}">${true}</c:when>
+		<c:when test="${ipChkSvc.isLocalIPAddress(pageContext.getRequest()) eq true}">${true}</c:when>
 		<c:otherwise>${false}</c:otherwise>
 	</c:choose>
 </c:set>
@@ -20,6 +20,4 @@
 </c:set>
 
 <%-- JS OBJECT --%>
-,{
-	gtmInternalUser : <c:choose><c:when test="${localIP eq true and isPreload eq true}">true</c:when><c:otherwise>false</c:otherwise></c:choose>
-}
+,gtmInternalUser : <c:choose><c:when test="${localIP eq true or isPreload eq true}">true</c:when><c:otherwise>false</c:otherwise></c:choose>
