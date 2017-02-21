@@ -78,7 +78,7 @@
                 defaultValue: '',
                 events: {
                     init: function (filterObject) {
-                        var isChecked = $(filterObject.defaultValueSourceSelector).is(':checked');
+                        var isChecked = $(filterObject.defaultValueSourceSelector + ":checked").length > 0 && $(filterObject.defaultValueSourceSelector + ":checked").val() === 'Y';
                         $('input[name=' + filterObject.name + ']').prop('checked', isChecked);
                         toggleIncome(!isChecked);
                         updateRebateLabels();
