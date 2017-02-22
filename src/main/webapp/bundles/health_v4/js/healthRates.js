@@ -29,6 +29,11 @@
             partnerLoadingManual: $('input[name="health_healthCover_partner_lhc"]'),
             dependants: $('#health_healthCover_dependants')
         };
+
+        $elements.income.on('change', meerkat.modules.healthRebate.setRebate);
+        if(meerkat.site.isNewQuote === false) {
+            $elements.income.trigger('change');
+        }
     }
 
     function loadRatesBeforeResultsPage(forceRebate, callback) {
