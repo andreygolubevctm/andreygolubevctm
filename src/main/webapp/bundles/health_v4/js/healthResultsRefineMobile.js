@@ -21,15 +21,19 @@
 
     function _applyEventListeners() {
         $elements.refineBtn.on('click', function() {
+            if ($(this).hasClass('disabled')) return;
+
             _showModal();
         });
 
         $(document).on('click', '.refine-results-redirect-btn', function() {
+            var benefit = $(this).attr('data-benefit');
+
             _hideModal();
             meerkat.modules.address.setHash('benefits');
 
             _.delay(function() {
-                meerkat.modules.benefitsSelectionScroller.triggerScroll();
+                meerkat.modules.benefitsSelectionScroller.triggerScroll(benefit);
             }, 750);
         });
 

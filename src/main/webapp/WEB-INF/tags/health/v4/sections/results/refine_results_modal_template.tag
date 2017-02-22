@@ -18,13 +18,13 @@
         <div class="refine-results-by-container">
             <div class="refine-results-hospital-type">{{= hospitalType }} Cover</div>
             <div class="refine-results-count-text">{{= hospitalCountText }}</div>
-            <a href="javascript:;" class="refine-results-redirect-btn">{{= hospitalBtnText }}</a>
+            <a href="javascript:;" class="refine-results-redirect-btn" data-benefit="hospital">{{= hospitalBtnText }}</a>
         </div>
 
         <div class="refine-results-sub-heading">Extras</div>
         <div class="refine-results-by-container">
             <div class="refine-results-count-text">{{= extrasCountText }}</div>
-            <a href="javascript:;" class="refine-results-redirect-btn">{{= extrasBtnText }}</a>
+            <a href="javascript:;" class="refine-results-redirect-btn" data-benefit="extras">{{= extrasBtnText }}</a>
         </div>
 
         <hr />
