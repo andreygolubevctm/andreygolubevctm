@@ -50,9 +50,8 @@
 
 		try {
 			var displayMode = 'features';
-			if(typeof meerkat.site != 'undefined' && typeof meerkat.site.resultOptions != 'undefined') {
-				// confirming its either features or price.
-				displayMode = meerkat.site.resultOptions.displayMode == 'features' ? 'features' : 'price';
+			if(_.has(meerkat.site,'resultOptions') && _.isObject(meerkat.site.resultOptions) && _.has(meerkat.site.resultOptions,'displayMode')) {
+				displayMode = meerkat.site.resultOptions.displayMode;
 			}
 
 

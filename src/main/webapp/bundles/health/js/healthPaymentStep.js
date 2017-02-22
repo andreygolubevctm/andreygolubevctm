@@ -395,15 +395,7 @@
 		method = method || getSelectedPaymentMethod();
 
 		switch (method) {
-			case 'cc':
-				var label = $paymentRadioGroup.find('label.active').text().trim();
-
-				if (label == 'Credit Card') {
-					nodeName = 'CreditCard';
-				} else {
-					nodeName = 'Invoice';
-				}
-				break;
+			case 'cc': nodeName = 'CreditCard';	break;
 			default: nodeName = 'BankAccount'; break;
 		}
 

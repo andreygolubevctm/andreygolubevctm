@@ -11,7 +11,6 @@
 
              <jsp:attribute name="rightColumn">
                  <reward:campaign_tile_container />
-                 <health_v4_content:snapshot />
              </jsp:attribute>
 
             <jsp:body>

@@ -120,7 +120,8 @@
         var startStepId = null;
         if (meerkat.site.isFromBrochureSite === true) {
             startStepId = steps.startStep.navigationId;
-        } else if (meerkat.site.journeyStage.length > 0 && meerkat.site.pageAction === 'amend') {
+        // Use the stage user was on when saving their quote
+        } else if (meerkat.site.journeyStage.length > 0 && _.indexOf(['amend', 'latest'], meerkat.site.pageAction) >= 0) {
             // Do not allow the user to go past the results page on amend.
             if (meerkat.site.journeyStage === 'apply' || meerkat.site.journeyStage === 'payment') {
                 startStepId = 'results';
@@ -129,11 +130,12 @@
             }
         }
 
-
-        meerkat.modules.journeyEngine.configure({
+        var configureJourneyEngine = _.bind(meerkat.modules.journeyEngine.configure, this, {
             startStepId: startStepId,
             steps: _.toArray(steps)
         });
+        // Allow time for journey to be fully populated/rendered when loading an existing quote
+        _.delay(configureJourneyEngine, meerkat.site.isNewQuote === false ? 750 : 0);
 
         meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
             method: 'trackQuoteEvent',
@@ -190,16 +192,16 @@
                     meerkat.modules.healthChoices.setState(meerkat.site.choices.state);
                     meerkat.modules.healthChoices.shouldPerformUpdate(meerkat.site.choices.performHealthChoicesUpdate);
                 }
+                meerkat.modules.healthRebate.toggleRebateQuestions();
             },
             onBeforeEnter: function() {
                 _incrementTranIdBeforeEnteringSlide();
 
                 // configure progress bar
                 configureProgressBar(true);
-
-                meerkat.modules.healthRebate.toggleEdit(false);
             },
             onAfterEnter: function healthAfterEnter() {
+
             },
             onBeforeLeave: function (event) {
                 meerkat.modules.healthTiers.setIncomeLabel();

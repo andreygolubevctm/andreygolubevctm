@@ -60,7 +60,7 @@
 				{{= renderedAltPriceTemplate }}
 				<span class="premiumsRising">Premiums are rising</span>
 			</div>
-			<div class="current-pricing col-xs-8">
+			<div class="current-pricing col-xs-7">
 				<div class="row">
 					<div class="col-xs-6 container">
 						<h3>Current {{= obj._selectedFrequency }} Price</h3>
