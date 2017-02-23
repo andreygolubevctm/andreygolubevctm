@@ -17,7 +17,6 @@
 	<c:set var="labelAttributes"><field_v1:analytics_attr analVal="state" quoteChar="\"" /></c:set>
 	<field_v2:array_radio xpath="${xpath}/state"
 						  className="health-situation-state"
-						  defaultValue="NSW"
 						  required="true"
 						  items="NSW=NSW,VIC=VIC,QLD=QLD,ACT=ACT,WA=WA,SA=SA,TAS=TAS,NT=NT"
 						  title="you're living in"
