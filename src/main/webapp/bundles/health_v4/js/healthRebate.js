@@ -59,6 +59,9 @@
 
         $elements.applyRebate.on('change', function() {
             toggleRebateQuestions();
+            if($(this).val() === "N") {
+                meerkat.modules.healthRates.unsetRebate();
+            }
         });
 
         // update the lhc message. used lhcElements for now as the questions have changed dramatically

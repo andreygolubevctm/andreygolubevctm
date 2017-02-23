@@ -157,12 +157,20 @@
         meerkat.modules.healthResults.setLhcApplicable(rates.loading);
     }
 
+    function unsetRebate() {
+        rates.rebate = "0";
+        rates.rebateChangeover = "0";
+        $("#health_rebate").val(rates.rebate);
+        $("#health_rebateChangeover").val(rates.rebateChangeover);
+    }
+
     meerkat.modules.register("healthRates", {
         init: init,
         events: moduleEvents,
         getRates: getRates,
         setRates: setRates,
         getRebate: getRebate,
+        unsetRebate: unsetRebate,
         fetchRates: fetchRates,
         loadRates: loadRates,
         loadRatesBeforeResultsPage: loadRatesBeforeResultsPage
