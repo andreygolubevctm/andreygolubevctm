@@ -164,7 +164,7 @@
 </c:choose>
 <c:set var="fieldXpath" value="${xpath}/nonStdStreet" />
 <form_v4:row fieldXpath="${fieldXpath}" label="Street" className="${name}_nonStd_street">
-    <field_v2:input xpath="${fieldXpath}" title="the street" required="false" className="sessioncamexclude" additionalAttributes="data-rule-validAddress='${name}' data-msg-validAddress='${nonStdStreetMessage}'${nonStdStreetAdditionalAttributes} " disableErrorContainer="${disableErrorContainer}" />
+    <field_v2:input xpath="${fieldXpath}" title="the street" required="false" className="sessioncamexclude" additionalAttributes="data-rule-validAddress='${name}' data-msg-validAddress='${nonStdStreetMessage}'${nonStdStreetAdditionalAttributes} data-rule-regex='[a-zA-Z0-9 ]+' data-msg-regex='Street name may only contain letters and numbers' data-validation-position='append' " disableErrorContainer="${false}" maxlength="32" />
 </form_v4:row>
 
 <c:choose>

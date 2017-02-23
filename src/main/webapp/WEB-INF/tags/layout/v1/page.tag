@@ -192,7 +192,6 @@ ${newPage.init(pageContext.request, pageSettings)}
 								</c:otherwise>
 							</c:choose>
 
-
 							<c:if test="${pageSettings.getVerticalCode() eq 'health' and pageSettings.getSetting('callbackPopupEnabled') eq 'Y'}">
 								<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Call Request" quoteChar="\"" /></c:set>
 								<a class="navbar-toggle wide phone collapsed" data-toggle="dialog"
@@ -203,6 +202,10 @@ ${newPage.init(pageContext.request, pageSettings)}
 									<span class="icon icon-phone" ${analyticsAttr}></span>
 									<span ${analyticsAttr}>Talk to our experts</span>
 								</a>
+							</c:if>
+
+							<c:if test="${bundleFileName eq 'health_v4'}">
+								<a class="refine-results" href="javascript:;">Refine</a>
 							</c:if>
 
 							<c:set var="exitUrl" value="" />
