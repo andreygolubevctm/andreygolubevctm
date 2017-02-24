@@ -161,7 +161,7 @@
     }
 
     function unsetRebate() {
-        if(!_.isEmpty(rates) && _.isObject(rates) && _.has(rate,"rebate")) {
+        if(!_.isEmpty(rates) && _.isObject(rates) && _.has(rates,"rebate")) {
             rates.rebate = "0";
             rates.rebateChangeover = "0";
             $("#health_rebate").val(rates.rebate);
