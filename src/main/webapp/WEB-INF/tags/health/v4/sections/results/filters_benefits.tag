@@ -7,6 +7,7 @@
 
 <div class="filter filter-hospital-benefits" data-filter-serverside="true">
     <div class="filter-sub-heading">Hospital</div>
+    <field_v2:switch xpath="${pageSettings.getVerticalCode()}/benefits/filters/HospitalSwitch" value="Y" className="benefits-switch switch-small" onText="On" offText="Off" />
     <div class="filter-by-container">
         <div class="filter-by-hospital-benefits small"></div>
         <a href="javascript:;" class="filter-toggle small" data-filter="hospital-benefits" <field_v1:analytics_attr analVal="hospital benefits filter" quoteChar="\"" />>Change</a>
@@ -38,7 +39,7 @@
 
 <div class="filter filter-extras-benefits" data-filter-serverside="true">
     <div class="filter-sub-heading">Extras</div>
-
+    <field_v2:switch xpath="${pageSettings.getVerticalCode()}/benefits/filters/ExtrasSwitch" value="Y" className="benefits-switch switch-small" onText="On" offText="Off" />
     <div class="filter-by-container">
         <span class="filter-by-extras-benefits small"></span>
         <a href="javascript:;" class="filter-toggle small" data-filter="extras-benefits" <field_v1:analytics_attr analVal="extras benefits filter" quoteChar="\"" />>Change</a>

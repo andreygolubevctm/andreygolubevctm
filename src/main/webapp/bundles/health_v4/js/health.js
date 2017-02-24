@@ -225,6 +225,9 @@
                 method: 'trackQuoteForms',
                 object: meerkat.modules.health.getTrackingFieldsObject
             },
+            onInitialise: function onBenefitsInit(event) {
+                meerkat.modules.benefitsSwitch.initBenefitsSwitch();
+            },
             onBeforeEnter: function enterBenefitsStep(event) {
                 // configure progress bar
                 configureProgressBar(true);

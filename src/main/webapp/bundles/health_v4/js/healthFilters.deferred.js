@@ -204,6 +204,22 @@
                     }
                 }
             },
+            "benefitsHospitalSwitch": {
+                name: 'health_benefits_filters_HospitalSwitch',
+                defaultValueSourceSelector: '#health_benefits_HospitalSwitch',
+                defaultValue: '',
+                events: {
+                    init: function (filterObject) {
+                        meerkat.modules.benefitsSwitch.setHospitalFilters();
+                    },
+                    update: function (filterObject) {
+                        var isSwitchedOn = $('input[name=' + filterObject.name + ']').bootstrapSwitch('state');
+
+                        $(filterObject.defaultValueSourceSelector).bootstrapSwitch('setState', isSwitchedOn);
+                        setFilterByHospitalBenefits();
+                    }
+                }
+            },
             "benefitsExtras": {
                 name: 'health_filterBar_benefitsExtras',
                 values: meerkat.modules.benefitsModel.getExtrasBenefitsForFilters(),
@@ -223,6 +239,22 @@
                     update: function () {
                         toggleFilterByContainer($('.filter-extras-benefits'), false);
                         toggleFilter($('.health-filter-extras-benefits'), false);
+                        setFilterByExtrasBenefits();
+                    }
+                }
+            },
+            "benefitsExtrasSwitch": {
+                name: 'health_benefits_filters_ExtrasSwitch',
+                defaultValueSourceSelector: '#health_benefits_ExtrasSwitch',
+                defaultValue: '',
+                events: {
+                    init: function (filterObject) {
+                        meerkat.modules.benefitsSwitch.setExtrasFilters();
+                    },
+                    update: function (filterObject) {
+                        var isSwitchedOn = $('input[name=' + filterObject.name + ']').bootstrapSwitch('state');
+
+                        $(filterObject.defaultValueSourceSelector).bootstrapSwitch('setState', isSwitchedOn);
                         setFilterByExtrasBenefits();
                     }
                 }
@@ -283,8 +315,8 @@
         // this needs to convert the shortlistkey names e.g. PrHospital to its id for it to work...
         // go back up to init filters and try and make it just run off ids.
         var selectedBenefits = {
-            'hospital': _getCheckedBenefitsFromFilters($('.filter-hospital-benefits')),
-            'extras': _getCheckedBenefitsFromFilters($('.filter-extras-benefits'))
+            'hospital': _getCheckedBenefitsFromFilters($('.health-filter-hospital-benefits')),
+            'extras': _getCheckedBenefitsFromFilters($('.health-filter-extras-benefits'))
         };
 
         meerkat.modules.healthResults.setSelectedBenefitsList(selectedBenefits.hospital.concat(selectedBenefits.extras));
@@ -389,7 +421,7 @@
             filterToggleText = 'Change';
         if (coverType === 'H' || extrasCount === 0) {
             benefitString = 'No Extras';
-            filterToggleText = 'Add Extras';
+            filterToggleText = meerkat.modules.benefitsSwitch.isExtrasOn() ? 'Add Extras': '';
         } else {
             var plural = extrasCount > 1 ? 's' : '';
             benefitString = extrasCount + ' Extra' + plural + ' selected';
@@ -404,16 +436,18 @@
             hospitalCount = meerkat.modules.benefitsModel.getHospitalCount(),
             benefitString = '',
             filterToggleText = 'Change';
+        // if (coverType === 'E' || hospitalCount === 0) {
         if (coverType === 'E' || hospitalCount === 0) {
             benefitString = 'No Hospital';
-            filterToggleText = 'Add Hospital';
+            filterToggleText = meerkat.modules.benefitsSwitch.isHospitalOn() ? 'Add Hospital' : '';
         } else {
             var plural = hospitalCount > 1 ? 's' : '';
             benefitString = hospitalCount + ' Benefit' + plural + ' selected';
         }
         var hospitalLabel = hospitalType == 'customise' ? 'Comprehensive' : 'Limited';
         var coverTypeLabel = '';
-        if (coverType !== 'E') { // Only when its H/C
+        // if (coverType !== 'E') { // Only when its H/C
+        if (coverType !== 'E' && meerkat.modules.benefitsSwitch.isHospitalOn()) {
             coverTypeLabel = '<div>' + hospitalLabel + ' Cover</div>';
 
             // Update the active tab for hospital filter to limited if applicable

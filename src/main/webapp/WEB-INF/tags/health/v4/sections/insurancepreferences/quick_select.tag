@@ -12,7 +12,7 @@
 <c:set var="noOfOptions" value="${fn:length(fn:split(options, '|'))}" />
 <fmt:formatNumber var="colWidth" maxFractionDigits="0" value="${maxColumns / noOfOptions}"/>
 
-<div class="row quickSelectContainer">
+<div class="row quickSelectContainer switch-toggleable">
 	<div class="col-xs-4">Quick select:</div>
 	<div class="col-xs-8 quickSelect">
 		<c:forTokens items="${options}" delims="|" var="qs">

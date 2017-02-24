@@ -71,7 +71,7 @@
             hospital: [],
             extras: []
         };
-        $elements.extras.add($elements.hospital).find('input').each(function () {
+        $elements.extras.add($elements.hospital).find('.healthBenefits input').each(function () {
             var $this = $(this),
                 benefitType = _isBenefitElementHospital($this) ? 'hospital' : 'extras';
             // If health filters needs any other properties in filters_benefits.tag, add them here.
@@ -134,6 +134,10 @@
 
         // updated the selected checkboxes
         meerkat.messaging.subscribe(meerkatEvents.benefitsModel.UPDATE_SELECTED_BENEFITS_CHECKBOX, _reSelectBenefitCheckboxes);
+
+        meerkat.messaging.subscribe(meerkatEvents.benefitsSwitch.SWITCH_CHANGED, function(e) {
+            _toggleBenefitSelection(e.benefit, e.isSwitchedOn);
+        });
     }
 
     function _registerXSBenefitsSlider() {
@@ -164,6 +168,15 @@
         } else if(extrasCount > 0) {
             coverType = 'E';
         }
+
+        if (!meerkat.modules.benefitsSwitch.isHospitalOn()) {
+            coverType = 'E';
+        }
+
+        if (!meerkat.modules.benefitsSwitch.isExtrasOn()) {
+            coverType = 'H';
+        }
+
         $elements.coverType.val(coverType);
     }
 
@@ -214,6 +227,12 @@
                 $elements.hiddenExtraCover.val('Y');
                 break;
         }
+    }
+
+    function _toggleBenefitSelection(benefit, isSwitchedOn) {
+        $elements[benefit].find('.switch-toggleable').toggleClass('disabled', !isSwitchedOn);
+
+        $elements[benefit].find('.healthBenefits input[type=checkbox]').prop('disabled', !isSwitchedOn);
     }
 
     meerkat.modules.register("benefits", {
