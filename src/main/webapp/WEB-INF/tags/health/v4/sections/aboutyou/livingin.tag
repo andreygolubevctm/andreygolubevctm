@@ -13,7 +13,7 @@
 <c:set var="fieldXpath" value="${xpath}/location" />
 <c:set var="state" value="${data['health/situation/state']}" />
 
-<form_v4:row label="You're living in" fieldXpath="${xpath}StateRow" className="health-state" subLabel="We've made an educated guess, correct us if we're wrong">
+<form_v4:row label="You're living in" fieldXpath="${xpath}StateRow" className="health-state">
 	<c:set var="labelAttributes"><field_v1:analytics_attr analVal="state" quoteChar="\"" /></c:set>
 	<field_v2:array_radio xpath="${xpath}/state"
 						  className="health-situation-state"
