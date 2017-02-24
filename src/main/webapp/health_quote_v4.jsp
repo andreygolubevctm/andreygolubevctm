@@ -8,6 +8,15 @@
 <%-- Redirect if Confirmation Page --%>
 <health_v1:redirect_rules />
 
+<%-- Redirect call centre consultants out of V4 --%>
+<c:if test="${callCentre && journeyOverride eq true}">
+    <c:set var="redirectURL" value="${pageSettings.getBaseUrl()}health_quote.jsp?" />
+    <c:forEach items="${param}" var="currentParam">
+        <c:set var="redirectURL">${redirectURL}${currentParam.key}=${currentParam.value}&</c:set>
+    </c:forEach>
+    <c:redirect url="${fn:substring(redirectURL,0,fn:length(redirectURL) - 1)}" />
+</c:if>
+
 <c:choose>
     <c:when test="${not callCentre}">
 

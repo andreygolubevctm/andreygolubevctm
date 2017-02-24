@@ -14,8 +14,8 @@
 <c:set var="redirectURL" value="${pageSettings.getBaseUrl()}health_quote_v4.jsp?" />
 <c:if test="${callCentre && journeyOverride eq true}">
     <c:set var="redirectURL" value="${pageSettings.getBaseUrl()}health_quote.jsp?" />
-    <c:forEach items="${param}" var="currentParam">
-        <c:set var="redirectURL">${redirectURL}${currentParam.key}=${currentParam.value}&</c:set>
-    </c:forEach>
 </c:if>
+<c:forEach items="${param}" var="currentParam">
+    <c:set var="redirectURL">${redirectURL}${currentParam.key}=${currentParam.value}&</c:set>
+</c:forEach>
 <c:redirect url="${fn:substring(redirectURL,0,fn:length(redirectURL) - 1)}" />
