@@ -75,12 +75,15 @@
             primary_loading: $elements.primaryLoading.filter(':checked').val(),
             primary_current: $elements.primaryCurrent.filter(':checked').val(),
             primary_loading_manual: $elements.primaryLoadingManual.val(),
-            partner_dob: $elements.partnerDob.val(),
-            partner_loading: $elements.partnerLoading.filter(':checked').val(),
-            partner_current: $elements.partnerCurrent.filter(':checked').val(),
-            partner_loading_manual: $elements.partnerLoadingManual.val(),
             cover: meerkat.modules.healthSituation.getSituation()
         };
+
+        if (meerkat.modules.healthRebate.hasPartner()) {
+            postData.partner_dob = $elements.partnerDob.val();
+            postData.partner_current = $elements.partnerCurrent.filter(':checked').val() || 'N';
+            postData.partner_loading = $elements.partnerLoading.filter(':checked').val() || 'N';
+            postData.partner_loading_manual = $elements.partnerLoadingManual.val();
+        }
 
         var applicationFields = $('#health_application_provider, #health_application_productId').val();
         if (typeof applicationFields !== 'undefined' && applicationFields !== '') {
@@ -118,7 +121,7 @@
         return meerkat.modules.comms.post({
             url: "ajax/json/health_rebate.jsp",
             data: postData,
-            cache: true,
+            cache: false,
             errorLevel: "warning",
             onSuccess: function onRatesSuccess(data) {
                 if (canSetRates === true) setRates(data);
