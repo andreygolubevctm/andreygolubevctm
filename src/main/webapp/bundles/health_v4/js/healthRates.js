@@ -161,10 +161,12 @@
     }
 
     function unsetRebate() {
-        rates.rebate = "0";
-        rates.rebateChangeover = "0";
-        $("#health_rebate").val(rates.rebate);
-        $("#health_rebateChangeover").val(rates.rebateChangeover);
+        if(!_.isEmpty(rates) && _.isObject(rates) && _.has(rates,"rebate")) {
+            rates.rebate = "0";
+            rates.rebateChangeover = "0";
+            $("#health_rebate").val(rates.rebate);
+            $("#health_rebateChangeover").val(rates.rebateChangeover);
+        }
     }
 
     meerkat.modules.register("healthRates", {
