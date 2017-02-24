@@ -53,7 +53,7 @@
             postData.primary_loading = 'Y';
         }
 
-        if (meerkat.modules.healthRebate.hasPartner()) {
+        if (meerkat.modules.healthRebate.hasPartner() && !_.isEmpty($elements.partnerDob.val())) {
             postData.partner_dob = $elements.partnerDob.val();
             postData.partner_current = $elements.partnerCurrent.filter(':checked').val() || 'N';
             postData.partner_loading = $elements.partnerLoading.filter(':checked').val() || 'N';
@@ -78,7 +78,7 @@
             cover: meerkat.modules.healthSituation.getSituation()
         };
 
-        if (meerkat.modules.healthRebate.hasPartner()) {
+        if (meerkat.modules.healthRebate.hasPartner() && !_.isEmpty($elements.partnerDob.val())) {
             postData.partner_dob = $elements.partnerDob.val();
             postData.partner_current = $elements.partnerCurrent.filter(':checked').val() || 'N';
             postData.partner_loading = $elements.partnerLoading.filter(':checked').val() || 'N';
@@ -102,7 +102,7 @@
 
     function fetchRates(postData, canSetRates, callback) {
         // Check if there is enough data to ask the server.
-        var coverTypeHasPartner = meerkat.modules.healthRebate.hasPartner();
+        var coverTypeHasPartner = meerkat.modules.healthRebate.hasPartner() && !_.isEmpty($elements.partnerDob.val());
         if (postData.cover === '') return false;
         if (postData.rebate_choice === '') return false;
         if (postData.primary_dob === '') return false;
@@ -161,12 +161,12 @@
     }
 
     function unsetRebate() {
-        if(!_.isEmpty(rates) && _.isObject(rates) && _.has(rates,"rebate")) {
-            rates.rebate = "0";
-            rates.rebateChangeover = "0";
-            $("#health_rebate").val(rates.rebate);
-            $("#health_rebateChangeover").val(rates.rebateChangeover);
-        }
+        if(_.isEmpty(rates)) rates = {};
+        rates.rebate = "0";
+        rates.rebateChangeover = "0";
+        setRates(rates);
+        $("#health_rebate").val(rates.rebate);
+        $("#health_rebateChangeover").val(rates.rebateChangeover);
     }
 
     meerkat.modules.register("healthRates", {
