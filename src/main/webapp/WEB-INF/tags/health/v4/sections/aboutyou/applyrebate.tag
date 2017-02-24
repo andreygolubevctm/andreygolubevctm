@@ -22,7 +22,7 @@
 <c:set var="analyticsAttr"><field_v1:analytics_attr analVal="rebate income level" quoteChar="\"" /></c:set>
 <c:set var="fieldXpath" value="${xpath}/income" />
 <form_v2:row label="What is your household income?" id="${name}_income_field_row">
-	<field_v2:array_select xpath="${fieldXpath}" title="your household income" required="true" items="=Please choose...||0=Tier 0||1=Tier 1||2=Tier 2||3=Tier 3" delims="||" className="income health_cover_details_income" extraDataAttributes="${analyticsAttr} data-attach=true" />
+	<field_v2:array_select xpath="${fieldXpath}" title="your household income" required="true" items="=Please choose...||0=Tier 0||1=Tier 1||2=Tier 2||3=Tier 3" delims="||" className="income health_cover_details_income" extraDataAttributes="${analyticsAttr}" />
 	<c:set var="income_label_xpath" value="${xpath}/incomelabel" />
 	<div id="rebateLabel"><span></span></div>
 	<div class="fieldrow_legend" id="health_healthCover_tier_row_legend"></div>
