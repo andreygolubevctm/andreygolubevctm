@@ -2,7 +2,7 @@
 
     var urlRegex = /(?:[^\s])\.(com|co|net|org|asn|ws|us|mobi)(\.[a-z][a-z])?/,
         personNameRegex = /^([a-zA-Z .'\-]*)$/,
-        personNameLtdRegex = /^([a-zA-Z]*)$/;
+        personNameLtdRegex = /^([a-zA-Z ]*)$/;
 
     /**
      * To enable this rule on an element, it needs the "data-rule-personName='true'" attribute to be added.
