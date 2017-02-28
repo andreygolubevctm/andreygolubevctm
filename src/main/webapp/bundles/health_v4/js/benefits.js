@@ -30,18 +30,23 @@
                 hiddenExtraCover: $('input[name="health_benefits_benefitsExtras_GeneralHealth"]'),
                 accidentOnlyCover: $('input[name=health_situation_accidentOnlyCover]'),
                 comprehensiveBenefitTab: $('#comprehensiveBenefitTab'),
-                limitedCoverIcon: $('#health_benefits_benefitsExtras_LimitedCover')
+                limitedCoverIcon: $('#health_benefits_benefitsExtras_LimitedCover'),
+                benefitSwitchAlert: $('.benefits-switch-alert')
             };
 
             $('#tabs').find('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-                var hospitalType = getHospitalType();
+                if (meerkat.modules.benefitsSwitch.isHospitalOn()) {
+                    var hospitalType = getHospitalType();
 
-                setHospitalType($(this).data('benefit-cover-type'));
-                $('.hospital-content-toggle').toggle(hospitalType !== 'limited');
+                    setHospitalType($(this).data('benefit-cover-type'));
+                    $('.hospital-content-toggle').toggle(hospitalType !== 'limited');
+                }
             });
 
             $('label[for="health_benefits_benefitsExtras_LimitedCover"]').on('click', function () {
-                $elements.comprehensiveBenefitTab.find('a').trigger('click');
+                if (meerkat.modules.benefits.isHospitalOn()) {
+                    $elements.comprehensiveBenefitTab.find('a').trigger('click');
+                }
             });
 
             // was in step onInitialise, didnt work there for results.
@@ -137,6 +142,7 @@
 
         meerkat.messaging.subscribe(meerkatEvents.benefitsSwitch.SWITCH_CHANGED, function(e) {
             _toggleBenefitSelection(e.benefit, e.isSwitchedOn);
+            _toggleSwitchValidation();
         });
     }
 
@@ -230,9 +236,15 @@
     }
 
     function _toggleBenefitSelection(benefit, isSwitchedOn) {
-        $elements[benefit].find('.switch-toggleable').toggleClass('disabled', !isSwitchedOn);
+        $elements[benefit].toggleClass('benefits-switched-off', !isSwitchedOn);
 
         $elements[benefit].find('.healthBenefits input[type=checkbox]').prop('disabled', !isSwitchedOn);
+    }
+
+    function _toggleSwitchValidation() {
+        var areBenefitsSwitchOn = meerkat.modules.benefitsSwitch.isHospitalOn() || meerkat.modules.benefitsSwitch.isExtrasOn();
+        $elements.benefitSwitchAlert.toggleClass('hidden', areBenefitsSwitchOn);
+        $('.journeyEngineSlide.active .journeyNavButton, .slide-control-insurance-preferences').attr('disabled', !areBenefitsSwitchOn);
     }
 
     meerkat.modules.register("benefits", {

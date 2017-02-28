@@ -219,7 +219,12 @@
                 includeFormData: true
             },
             validation: {
-                validate: true
+                validate: false,
+                customValidation: function validateSelection(callback) {
+                    var areBenefitsSwitchOn = meerkat.modules.benefitsSwitch.isHospitalOn() || meerkat.modules.benefitsSwitch.isExtrasOn();
+
+                    callback(areBenefitsSwitchOn);
+                }
             },
             externalTracking: {
                 method: 'trackQuoteForms',

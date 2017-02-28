@@ -46,11 +46,9 @@
                     <div class="title <c:if test="${category eq 'Hospital'}">hidden-xs</c:if>">
                         <h2 class="ignore">Extras</h2>
                         <field_v2:switch xpath="${pageSettings.getVerticalCode()}/benefits/ExtrasSwitch" value="Y" className="benefits-switch switch-small" onText="On" offText="Off" additionalAttributes="data-benefit='extras'" />
-                        <div class="switch-toggleable">
-                            <p>${colContent}</p>
-                            <health_v4_insuranceprefs:quick_select
-                                    options="Dental:dental|Sports:sports|Peace of Mind:peace" trackingLabel="extras" />
-                        </div>
+                        <p>${colContent}</p>
+                        <health_v4_insuranceprefs:quick_select
+                                options="Dental:dental|Sports:sports|Peace of Mind:peace" trackingLabel="extras" />
                     </div>
                 </c:if>
                 <c:if test="${category eq 'Hospital'}">
@@ -58,7 +56,7 @@
                     <h2 class="ignore">Hospital</h2>
                     <field_v2:switch xpath="${pageSettings.getVerticalCode()}/benefits/HospitalSwitch" value="Y" className="benefits-switch switch-small" onText="On" offText="Off" additionalAttributes="data-benefit='hospital'" />
                 </div>
-                <div id="tabs" class="benefitsTab switch-toggleable">
+                <div id="tabs" class="benefitsTab">
                     <ul class="nav nav-tabs tab-count-2">
                         <li id="comprehensiveBenefitTab" class="active"><a data-toggle="tab" href=".comprehensive-pane" data-benefit-cover-type="customise" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />><h2 class="ignore" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />>Comprehensive</h2></a></li>
                         <li><a data-toggle="tab" href=".limited-pane" data-benefit-cover-type="limited" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />><h2 class="ignore" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />>Limited Cover</h2></a></li>
@@ -97,7 +95,7 @@
                                     <%-- ACTUAL BENEFITS SECTION START --%>
                                     <%-- ======================= --%>
                                 <c:if test="${item.hasShortlistableChildren()}">
-                                <div class="children healthBenefits switch-toggleable">
+                                <div class="children healthBenefits">
                                     <div class="hasIcons">
                                         <c:forEach items="${item.getChildren()}" var="selectedValue">
                                             <c:if test="${selectedValue.isShortlistable()}">
@@ -138,7 +136,7 @@
                         </div>
                         <div class="tab-pane limited-pane">
                             <div class="Extras-wrapper">
-                                <div class="children healthBenefits switch-toggleable">
+                                <div class="children healthBenefits">
                                     <div class="hasIcons">
                                         <div class="categoriesCell short-list-item category expandable collapsed HLTicon-limited_cover LimitedCover_container">
                                             <div class="checkbox">
