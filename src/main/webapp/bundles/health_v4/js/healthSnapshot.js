@@ -36,7 +36,7 @@
                 dob: $('#health_healthCover_partner_dob'),
                 dobSpan: $('.quoteSnapshot .partner-dob .snapshot-items span')
             },
-            rebate: $('#health_healthCover_rebate'),
+            rebate: $('input[name=health_healthCover_rebate]'),
             rebateText: $('.quoteSnapshot .snapshot-items.rebate-text'),
             rebateSubText: $('.quoteSnapshot .rebate .snapshot-items.sub-text'),
             hospital: {
