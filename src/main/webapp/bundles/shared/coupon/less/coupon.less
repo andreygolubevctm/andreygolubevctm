@@ -63,3 +63,40 @@
 	padding: 0;
 	display: block;
 }
+
+// Hide the banner on various steps based off the class on the top element in the contentBanner field from the coupon database.
+body[data-step=start] {
+  .hideCouponBannerOnStart {
+    display: none;
+  }
+}
+
+body[data-step=benefits] {
+  .hideCouponBannerOnBenefits {
+    display: none;
+  }
+}
+
+body[data-step=contact] {
+  .hideCouponBannerOnContact {
+    display: none;
+  }
+}
+
+body[data-step=results] {
+  .hideCouponBannerOnResults {
+    display: none;
+  }
+}
+
+body[data-step=apply] {
+  .hideCouponBannerOnApply {
+    display: none;
+  }
+}
+
+body[data-step=payment] {
+  .hideCouponBannerOnPayment {
+    display: none;
+  }
+}

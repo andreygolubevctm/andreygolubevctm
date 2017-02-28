@@ -194,7 +194,16 @@
                 }
                 meerkat.modules.healthRebate.toggleRebateQuestions();
             },
-            onBeforeEnter: function() {
+            onBeforeEnter: function enterStartStep(event) {
+                if (event.isForward) {
+                    // Delay 1 sec to make sure we have the data bucket saved in to DB, then filter coupon
+                    _.delay(function () {
+                        // coupon logic, filter for user, then render banner
+                        meerkat.modules.coupon.loadCoupon('filter', null, function successCallBack() {
+                            meerkat.modules.coupon.renderCouponBanner();
+                        });
+                    }, 1000);
+                }
                 _incrementTranIdBeforeEnteringSlide();
 
                 // configure progress bar
@@ -228,6 +237,15 @@
             onBeforeEnter: function enterBenefitsStep(event) {
                 // configure progress bar
                 configureProgressBar(true);
+                if (event.isForward) {
+                    // Delay 1 sec to make sure we have the data bucket saved in to DB, then filter coupon
+                    _.delay(function () {
+                        // coupon logic, filter for user, then render banner
+                        meerkat.modules.coupon.loadCoupon('filter', null, function successCallBack() {
+                            meerkat.modules.coupon.renderCouponBanner();
+                        });
+                    }, 1000);
+                }
                 _incrementTranIdBeforeEnteringSlide();
             },
             onAfterEnter: function enterBenefitsStep(event) {
