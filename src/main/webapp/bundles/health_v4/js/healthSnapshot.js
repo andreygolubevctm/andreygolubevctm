@@ -217,7 +217,8 @@
     }
 
     function _fetchRebateSubText(income) {
-        if ($elements.rebate.val() === 'Y') {
+        var $optin = $elements.rebate.filter(':checked');
+        if ($optin.length && $optin.val() === 'Y') {
             if (income < 3) {
                 return meerkat.modules.healthRebate.getRebate();
             } else {
