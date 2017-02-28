@@ -29,7 +29,7 @@ var healthFunds_WFD = {
         healthFunds_WFD.$paymentFrequency.closest('div.row-content').append('<p class="statement" style="margin-top:1em">' + msg + '</p>');
 
         <%--Previous fund--%>
-        $('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').attr('maxlength', '10');
+        $('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').setRequired(false).attr('maxlength', '10');
 
         <%--Authority--%>
         meerkat.modules.healthFunds._previousfund_authority(true);
@@ -101,8 +101,8 @@ var healthFunds_WFD = {
     },
     renderDeductionMessage() {
         var deductionMsg = meerkat.modules.healthPaymentStep.getSelectedFrequency() === 'monthly' ?
-                'Your first payment will be debited within 48 hours and this will be a prorated amount for the remainder of the month. Your regular premium payment will be deducted from your nominated account on the 1st of every month.' :
-                'Your first payment will be debited within 48 hours and this will be a prorated amount until next Thursday. Your regular premium payment will be deducted from your nominated account on a Thursday';
+                'Your first payment will be debited within 48 hours and this will be a pro-rata amount for the remainder of the month. Your regular premium will be deducted from your nominated account on the 1st of every month.' :
+                'Your first payment will be debited within 48 hours and this will be a pro-rata amount until next Thursday. Your regular premium will be deducted from your nominated account on a Thursday.';
 
         healthFunds_WFD.$paymentFrequency.closest('div.row-content').find('.deduction-message').remove();
         healthFunds_WFD.$paymentFrequency.closest('div.row-content').find('.statement').before('<p class="deduction-message" style="margin-top:1em">'+ deductionMsg +'</p>');
@@ -126,7 +126,7 @@ var healthFunds_WFD = {
         healthFunds_WFD.$paymentFrequency.closest('div.row-content').find('p.deduction-message, p.statement').remove();
 
         <%--Previous fund--%>
-        $('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').removeAttr('maxlength');
+        $('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').setRequired(true).removeAttr('maxlength');
 
         <%--Authority Off--%>
         meerkat.modules.healthFunds._previousfund_authority(false);
