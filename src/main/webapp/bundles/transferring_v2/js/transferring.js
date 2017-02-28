@@ -78,8 +78,14 @@ $(window).load(function () {
                 var $mainForm = $('#mainform');
                 $mainForm.attr('method', 'POST').attr('action', loopedDecodeUriComponent(urlVars.handoverURL));
 
-                var textArea = $('<textarea>').attr('style', 'display:none').attr('name', loopedDecodeUriComponent(urlVars.handoverVar)).val(loopedDecodeUriComponent(urlVars.handoverData));
-                $mainForm.append(textArea);
+                var handoverVars = urlVars.handoverVar.split(',');
+                var handoverDatas =loopedDecodeUriComponent(urlVars.handoverData).split(',');
+
+                for (i = 0; i < handoverVars.length; i++) {
+                    var textArea = $('<textarea>').attr('style', 'display:none').attr('name', handoverVars[i]).val(handoverDatas[i]);
+                    $mainForm.append(textArea);
+                }
+
                 $mainForm.submit();
             } else {
                 try {
