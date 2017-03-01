@@ -37,7 +37,8 @@
         $elements.currentCover.on('change', function toggleContinuousCover() {
             var $this = $(this),
                 $checked = $this.filter(':checked'),
-                hideField = ($checked.val() === 'N') || ($checked.val() === 'Y' && meerkat.modules.age.isLessThan31Or31AndBeforeJuly1($elements.dob.val()));
+                hasPartner = _.indexOf(['F', 'C'], meerkat.modules.healthSituation.getSituation()) >= 0,
+                hideField = !$checked.length || !hasPartner || $checked.val() === 'N' || ($checked.val() === 'Y' && !_.isEmpty($elements.dob.val()) && meerkat.modules.age.isLessThan31Or31AndBeforeJuly1($elements.dob.val()));
             meerkat.modules.fieldUtilities.toggleVisible(
                 $elements.partnerCoverLoading,
                 hideField
@@ -48,7 +49,11 @@
             meerkat.messaging.publish(meerkatEvents.health.SNAPSHOT_FIELDS_CHANGE);
             _.defer(function(){
                 var $checked = $elements.currentCover.filter(':checked');
-                if($checked.length) $checked.change();
+                if($checked.length) {
+                    $checked.change();
+                } else {
+                    $elements.currentCover.change();
+                }
             });
         });
 
@@ -62,7 +67,6 @@
         meerkat.messaging.subscribe(meerkatEvents.healthSituation.SITUATION_CHANGED, function togglePartnerFields(selected) {
             _setupAppFields();
             _togglePartnerQuestionset(selected);
-
             positionFieldsForBrochureware();
         });
     }
@@ -73,7 +77,7 @@
                 $elements.partnerQuestionSet.add($elements.partnerCoverLoading).closest('.fieldrow').hide();
                 $elements.benefitsScrollerLinks.add($elements.coverLoadingHeading).hide();
             } else {
-                $elements.partnerQuestionSet.add($elements.partnerCoverLoading).closest('.fieldrow');
+                $elements.partnerQuestionSet.add($elements.partnerCoverLoading).closest('.fieldrow').show();
                 $elements.benefitsScrollerLinks.add($elements.coverLoadingHeading).show();
                 meerkat.modules.fieldUtilities.hide($elements.partnerCoverLoading);
             }
@@ -87,6 +91,8 @@
             // Need to trigger continuous cover visibility if required
             var $checked = $elements.currentCover.filter(':checked');
             if ($checked.length) $checked.change();
+        } else {
+            $elements.currentCover.change();
         }
     }
 

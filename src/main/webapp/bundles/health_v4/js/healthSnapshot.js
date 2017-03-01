@@ -36,7 +36,7 @@
                 dob: $('#health_healthCover_partner_dob'),
                 dobSpan: $('.quoteSnapshot .partner-dob .snapshot-items span')
             },
-            rebate: $('#health_healthCover_rebate'),
+            rebate: $('input[name=health_healthCover_rebate]'),
             rebateText: $('.quoteSnapshot .snapshot-items.rebate-text'),
             rebateSubText: $('.quoteSnapshot .rebate .snapshot-items.sub-text'),
             hospital: {
@@ -217,7 +217,8 @@
     }
 
     function _fetchRebateSubText(income) {
-        if ($elements.rebate.val() === 'Y') {
+        var $optin = $elements.rebate.filter(':checked');
+        if ($optin.length && $optin.val() === 'Y') {
             if (income < 3) {
                 return meerkat.modules.healthRebate.getRebate();
             } else {
