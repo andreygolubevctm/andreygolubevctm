@@ -21,20 +21,17 @@ var healthFunds_WFD = {
         meerkat.modules.healthPaymentStep.setCoverStartRange(0, 30);
 
         <%--dependant definition--%>
-        meerkat.modules.healthFunds._dependants('As a member of Westfund all children aged up to 21 are covered on a family policy. Children aged between 21-24 are entitled to stay on your cover at no extra charge if they are a full time or part-time student at School, college or University TAFE institution or serving an Apprenticeship or Traineeship.');
+        meerkat.modules.healthFunds._dependants('As a member of Westfund, your children aged between 21-24 are entitled to stay on your cover at no extra charge if they are a full time or part-time student at School, college or University TAFE institution or serving an Apprenticeship or Traineeship.');
 
         <%--schoolgroups and defacto--%>
-        meerkat.modules.healthDependants.updateConfig({showSchoolFields:true, 'schoolMinAge':18, 'schoolMaxAge':24, showSchoolIdField:true });
+        meerkat.modules.healthDependants.updateConfig({showSchoolFields:true, 'schoolMinAge':21, 'schoolMaxAge':24, showSchoolIdField:true });
 
         <%--Adding a statement--%>
         var msg = 'Please note that the LHC amount quoted is an estimate and will be confirmed once Westfund has verified your details.';
-        $paymentFrequency.closest('div.row-content').append('<p class="statement" style="margin-top:1em">' + msg + '</p>');
+        healthFunds_WFD.$paymentFrequency.closest('div.row-content').append('<p class="statement" style="margin-top:1em">' + msg + '</p>');
 
-        <%--fund Name's become optional--%>
-        $('#health_previousfund_primary_fundName, #health_previousfund_partner_fundName').setRequired(false);
-
-        <%--fund ID's become optional--%>
-        $('#clientMemberID input[type=text], #partnerMemberID input[type=text]').setRequired(false);
+        <%--Previous fund--%>
+        $('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').setRequired(false).attr('maxlength', '10');
 
         <%--Authority--%>
         meerkat.modules.healthFunds._previousfund_authority(true);
@@ -93,6 +90,23 @@ var healthFunds_WFD = {
             }
         });
 
+        <%-- Custom question: Partner relationship --%>
+        if ($('#wfd_partnerrel').length > 0) {
+            $('#wfd_partnerrel').show();
+        }
+        else {
+            <c:set var="html">
+            <c:set var="fieldXpath" value="health/application/wfd/partnerrel" />
+            <form_v2:row id="wfd_partnerrel" fieldXpath="${fieldXpath}" label="Relationship to you">
+            <field_v2:array_select xpath="${fieldXpath}"
+                    required="true"
+                    title="Relationship to you" items="=Please choose...,2=Spouse,3=Defacto" placeHolder="Relationship" disableErrorContainer="${true}" />
+            </form_v2:row>
+            </c:set>
+            <c:set var="html" value="${go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(html, slashChar, slashChar2), newLineChar, ''), newLineChar2, ''), aposChar, aposChar2), '	', '')}" />
+            $('#health_application_partner_genderRow').after('<c:out value="${html}" escapeXml="false" />');
+        }
+
     },
     renderPaymentDays: function() {
         var deductionDate = meerkat.modules.dateUtils.returnDate($('#health_payment_details_start').val());
@@ -145,11 +159,10 @@ var healthFunds_WFD = {
         }
         $('#health_declaration + label').html(healthFunds_WFD.joinDecLabelHtml);
 
-        $paymentFrequency.closest('div.row-content').find('p.statement').remove();
+        healthFunds_WFD.$paymentFrequency.closest('div.row-content').find('p.statement').remove();
 
-        <%--fund Name's become mandaory (back to default)--%>
-        $('#health_previousfund_primary_fundName').attr('required', 'required');
-        $('#health_previousfund_partner_fundName').attr('required', 'required');
+        <%--Previous fund--%>
+        $('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').setRequired(true).removeAttr('maxlength');
 
         <%--Authority Off--%>
         meerkat.modules.healthFunds._previousfund_authority(false);
@@ -160,6 +173,8 @@ var healthFunds_WFD = {
 
         delete healthFunds_WFD.$_dobPrimary;
         delete healthFunds_WFD.$_dobPartner;
+
+        $('#wfd_partnerrel').hide();
     }
 };
 </c:set>
