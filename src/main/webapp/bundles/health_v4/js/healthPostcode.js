@@ -95,9 +95,13 @@
                 cache: true,
                 errorLevel: "silent",
                 onSuccess: function(res) {
-                    if (res.length > 0) {
+                    var resultCount = !_.isEmpty(res) && _.isArray(res) ? res.length : 0;
+                    if (resultCount > 0) {
                         // show suburbs
                         _showResults(res);
+                        if(resultCount === 1) {
+                            _setSuburb(res.pop());
+                        }
                     } else {
                         // clear
                         _clearResults();
