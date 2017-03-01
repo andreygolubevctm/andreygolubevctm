@@ -29,7 +29,7 @@
         $elements.currentCover.on('change', function toggleContinuousCover() {
             var $this = $(this),
                 $checked = $this.filter(':checked'),
-                hideField = ($checked.val() === 'N') || ($checked.val() === 'Y' && meerkat.modules.age.isLessThan31Or31AndBeforeJuly1($elements.dob.val()));
+                hideField = !$checked.length || ($checked.val() === 'N') || ($checked.val() === 'Y' && meerkat.modules.age.isLessThan31Or31AndBeforeJuly1($elements.dob.val()));
 
             meerkat.modules.fieldUtilities.toggleVisible(
                 $elements.primaryCoverLoading,
@@ -52,6 +52,10 @@
 
         meerkat.messaging.subscribe(meerkatEvents.healthSituation.SITUATION_CHANGED, function togglePartnerFields() {
             positionFieldsForBrochureware();
+            _.defer(function(){
+                var $checked = $elements.currentCover.filter(':checked');
+                if($checked.length) $checked.change();
+            });
         });
     }
 
@@ -63,7 +67,7 @@
                 $elements.primaryCoverLoading.closest('.fieldrow').insertAfter($elements.primaryCoverRow);
             }
 
-            meerkat.modules.fieldUtilities.disable($elements.primaryCoverLoading);
+            meerkat.modules.fieldUtilities.hide($elements.primaryCoverLoading);
         }
     }
 
