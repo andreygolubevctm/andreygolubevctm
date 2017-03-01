@@ -158,7 +158,7 @@ public class HealthApplicationService extends CTMEndpointService {
 		data.put("health/application/discountAmt", premiumCalculator.getDiscountValue() * periods);
 		data.put("health/application/discount", premiumCalculator.getDiscountPercentage());
 		data.put("health/loadingAmt", premiumCalculator.getLoadingAmount() * periods);
-		data.put("health/rebateAmt", premiumCalculator.getRebateAmount() * periods);
+		data.put("health/rebateAmt", premiumCalculator.getRebateAmount());
 
 		data.putInteger("healthCover/income", request.income);
 
