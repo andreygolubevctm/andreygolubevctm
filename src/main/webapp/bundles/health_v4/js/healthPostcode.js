@@ -92,7 +92,7 @@
                 url: 'ajax/json/get_suburbs.jsp',
                 data: data,
                 dataType: 'json',
-                cache: true,
+                cache: false,
                 errorLevel: "silent",
                 onSuccess: function(res) {
                     var resultCount = !_.isEmpty(res) && _.isArray(res) ? res.length : 0;
