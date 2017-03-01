@@ -92,20 +92,24 @@
                 url: 'ajax/json/get_suburbs.jsp',
                 data: data,
                 dataType: 'json',
-                cache: true,
+                cache: false,
                 errorLevel: "silent",
                 onSuccess: function(res) {
-                    if (res.length > 0) {
+                    var resultCount = !_.isEmpty(res) && _.isArray(res) ? res.length : 0;
+                    if (resultCount > 0) {
                         // show suburbs
                         _showResults(res);
+                        if(resultCount === 1) {
+                            _setSuburb(res.pop());
+                        }
                     } else {
                         // clear
                         _clearResults();
                     }
 
-                    _scrollView(res.length > _minResultsForScrollView);
+                    _scrollView(resultCount > _minResultsForScrollView);
 
-                    _resultsCount = res.length;
+                    _resultsCount = resultCount;
                 },
                 onComplete: function() {
                     // preselect suburb
