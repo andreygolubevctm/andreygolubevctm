@@ -40,7 +40,7 @@
         var postData = {
             dependants: $elements.dependants.val(),
             income: $elements.income.val() || 0,
-            rebate_choice: forceRebate === true ? 'Y' : $elements.rebate.val(),
+            rebate_choice: forceRebate === true ? 'Y' : $elements.rebate.filter(':checked').val(),
             primary_dob: $elements.primaryDob.val(),
             primary_loading: $elements.primaryLoading.filter(':checked').val(),
             primary_current: $elements.primaryCurrent.filter(':checked').val(),
@@ -70,7 +70,7 @@
         var postData = {
             dependants: $elements.dependants.val(),
             income: $elements.income.val() || 0,
-            rebate_choice: $elements.rebate.val(),
+            rebate_choice: $elements.rebate.filter(':checked').val(),
             primary_dob: $elements.primaryDob.val(),
             primary_loading: $elements.primaryLoading.filter(':checked').val(),
             primary_current: $elements.primaryCurrent.filter(':checked').val(),
