@@ -8,10 +8,6 @@
 		background-color: @gray-lighter;
 		display: block;
 		overflow:hidden;
-		// &:hover{
-		// 	text-decoration: none;
-		// 	color:inherit;
-		// }
 
 		.coupon-icon-col {
 			text-align: center;
@@ -63,38 +59,11 @@
 }
 
 // Hide the banner on various steps based off the class on the top element in the contentBanner field from the coupon database.
-body[data-step=start] {
-  .hideCouponBannerOnStart {
-    display: none;
-  }
-}
-
-body[data-step=benefits] {
-  .hideCouponBannerOnBenefits {
-    display: none;
-  }
-}
-
-body[data-step=contact] {
-  .hideCouponBannerOnContact {
-    display: none;
-  }
-}
-
-body[data-step=results] {
-  .hideCouponBannerOnResults {
-    display: none;
-  }
-}
-
-body[data-step=apply] {
-  .hideCouponBannerOnApply {
-    display: none;
-  }
-}
-
-body[data-step=payment] {
-  .hideCouponBannerOnPayment {
-    display: none;
-  }
+body[data-step=start] .hideCouponBannerOnStart,
+body[data-step=benefits] .hideCouponBannerOnBenefits,
+body[data-step=contact] .hideCouponBannerOnContact,
+body[data-step=results] .hideCouponBannerOnResults,
+body[data-step=apply] .hideCouponBannerOnApply,
+body[data-step=payment] .hideCouponBannerOnPayment {
+	display: none;
 }
