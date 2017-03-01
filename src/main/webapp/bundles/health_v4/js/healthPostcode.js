@@ -107,9 +107,9 @@
                         _clearResults();
                     }
 
-                    _scrollView(res.length > _minResultsForScrollView);
+                    _scrollView(resultCount > _minResultsForScrollView);
 
-                    _resultsCount = res.length;
+                    _resultsCount = resultCount;
                 },
                 onComplete: function() {
                     // preselect suburb
