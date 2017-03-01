@@ -20,7 +20,8 @@
             currentCover: $('input[name=health_healthCover_partner_cover]'),
             appFields: $('#partnerFund, #partnerMemberID, #partnerContainer'),
             benefitsScrollerLinks: $('.benefitsScroller'),
-            coverLoadingHeading: $('.benefitsContainer').find('h3:first-child')
+            coverLoadingHeading: $('.benefitsContainer').find('h3:first-child'),
+            situation: $('input[name=health_situation_healthCvr]')
         };
 
         $elements.partnerQuestionSet = $elements.partnerDOBD.add($elements.currentCover);
@@ -37,8 +38,8 @@
         $elements.currentCover.on('change', function toggleContinuousCover() {
             var $this = $(this),
                 $checked = $this.filter(':checked'),
-                hasPartner = _.indexOf(['F', 'C'], selected.situation) >= 0,
-                hideField = !$checked.length || !hasPartner || (($checked.val() === 'N') || ($checked.val() === 'Y' && meerkat.modules.age.isLessThan31Or31AndBeforeJuly1($elements.dob.val())));
+                hasPartner = _.indexOf(['F', 'C'], $elements.situation.filter(':checked').val()) >= 0,
+                hideField = !$checked.length || !hasPartner || $checked.val() === 'N' || ($checked.val() === 'Y' && !_.isEmpty($elements.dob.val()) && meerkat.modules.age.isLessThan31Or31AndBeforeJuly1($elements.dob.val()));
             meerkat.modules.fieldUtilities.toggleVisible(
                 $elements.partnerCoverLoading,
                 hideField
@@ -49,7 +50,11 @@
             meerkat.messaging.publish(meerkatEvents.health.SNAPSHOT_FIELDS_CHANGE);
             _.defer(function(){
                 var $checked = $elements.currentCover.filter(':checked');
-                if($checked.length) $checked.change();
+                if($checked.length) {
+                    $checked.change();
+                } else {
+                    $elements.currentCover.change();
+                }
             });
         });
 
@@ -64,12 +69,6 @@
             _setupAppFields();
             _togglePartnerQuestionset(selected);
             positionFieldsForBrochureware();
-            _.defer(function(){
-                var $checked = $elements.currentCover.filter(':checked');
-                if($checked.length) {
-                    $checked.change();
-                }
-            });
         });
     }
 
@@ -93,6 +92,8 @@
             // Need to trigger continuous cover visibility if required
             var $checked = $elements.currentCover.filter(':checked');
             if ($checked.length) $checked.change();
+        } else {
+            $elements.currentCover.change();
         }
     }
 
