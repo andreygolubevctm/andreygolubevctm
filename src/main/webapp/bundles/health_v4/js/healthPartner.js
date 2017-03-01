@@ -65,7 +65,13 @@
             positionFieldsForBrochureware();
             _.defer(function(){
                 var $checked = $elements.currentCover.filter(':checked');
-                if($checked.length) $checked.change();
+                if($checked.length) {
+                    $checked.change();
+                } else {
+                    if(_.indexOf(['F', 'C'], selected.situation) === -1) {
+                        $elements.currentCover.change();
+                    }
+                }
             });
         });
     }
