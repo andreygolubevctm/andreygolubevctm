@@ -20,8 +20,7 @@
             currentCover: $('input[name=health_healthCover_partner_cover]'),
             appFields: $('#partnerFund, #partnerMemberID, #partnerContainer'),
             benefitsScrollerLinks: $('.benefitsScroller'),
-            coverLoadingHeading: $('.benefitsContainer').find('h3:first-child'),
-            situation: $('input[name=health_situation_healthCvr]')
+            coverLoadingHeading: $('.benefitsContainer').find('h3:first-child')
         };
 
         $elements.partnerQuestionSet = $elements.partnerDOBD.add($elements.currentCover);
