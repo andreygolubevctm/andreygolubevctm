@@ -37,7 +37,8 @@
         $elements.currentCover.on('change', function toggleContinuousCover() {
             var $this = $(this),
                 $checked = $this.filter(':checked'),
-                hideField = !$checked.length || (($checked.val() === 'N') || ($checked.val() === 'Y' && meerkat.modules.age.isLessThan31Or31AndBeforeJuly1($elements.dob.val())));
+                hasPartner = _.indexOf(['F', 'C'], selected.situation) >= 0,
+                hideField = !$checked.length || !hasPartner || (($checked.val() === 'N') || ($checked.val() === 'Y' && meerkat.modules.age.isLessThan31Or31AndBeforeJuly1($elements.dob.val())));
             meerkat.modules.fieldUtilities.toggleVisible(
                 $elements.partnerCoverLoading,
                 hideField
@@ -67,10 +68,6 @@
                 var $checked = $elements.currentCover.filter(':checked');
                 if($checked.length) {
                     $checked.change();
-                } else {
-                    if(_.indexOf(['F', 'C'], selected.situation) === -1) {
-                        $elements.currentCover.change();
-                    }
                 }
             });
         });
