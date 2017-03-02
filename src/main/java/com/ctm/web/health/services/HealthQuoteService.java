@@ -278,6 +278,7 @@ public class HealthQuoteService extends CommonRequestServiceV2 {
                     break;
                 case "wfd_456912":
                     providerFilter.setSingleProvider("7");
+                    break;
                 default:
                     throw new RouterException("Invalid providerKey");
             }
