@@ -309,16 +309,21 @@
 	{{ if (obj.lender === 'ME') img = 'ME'; }}
 	{{ if (obj.lender === 'ME Bank') img = 'ME'; }}
 	{{ if (obj.lender === 'MKM Capital Pty Ltd') img = 'MKM'; }}
+	{{ if (obj.lender === 'MyState') img = 'MYSTATE'; }}
 	{{ if (obj.lender === 'NAB Broker') img = 'NABBROKER'; }}
 	{{ if (obj.lender === 'National Australia Bank') img = 'NAB'; }}
 	{{ if (obj.lender === 'P&N Bank') img = 'PN'; }}
 	{{ if (obj.lender === 'Pepper Homeloans') img = 'PEPPER'; }}
+	{{ if (obj.lender === 'QBANK') img = 'QBANK'; }}
 	{{ if (obj.lender === 'QPCU') img = 'QPCU'; }}
 	{{ if (obj.lender === 'St George Bank') img = 'GEORGE'; }}
 	{{ if (obj.lender === 'Suncorp') img = 'SUNCORP'; }}
+	{{ if (obj.lender === 'Teachers Mutual Bank') img = 'TMB'; }}
 	{{ if (obj.lender === 'The Rock Building Society Limited') img = 'ROCK'; }}
 	{{ if (obj.lender === 'Westpac') img = 'WESTPAC'; }}
 	{{ if (obj.lender === 'Wide Bay Australia') img = 'WIDE'; }}
+
+	{{ console.log('lender', obj.lender); }}
 
 	<div class="companyLogo logo_{{= img }} noshrink"></div>
 </core_v1:js_template>
