@@ -47,7 +47,7 @@
 <c:otherwise>
     <c:if test="${showDefaultMessage eq true}">
         <form_v3:row label=" ">
-            <p>No Mando coupons available</p>
+            <p>No coupons available</p>
         </form_v3:row>
     </c:if>
 </c:otherwise>

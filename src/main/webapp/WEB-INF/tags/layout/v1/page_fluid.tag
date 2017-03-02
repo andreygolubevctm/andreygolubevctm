@@ -346,6 +346,7 @@ ${newPage.init(pageContext.request, pageSettings)}
                             vdn: '<c:out value="${go:decodeUrl(param.vdn)}" escapeXml="true" />'<c:if test="${pageSettings.getSetting('kampyleFeedback') eq 'Y'}">,
                             kampyleId: 112902
                             </c:if>
+                            <core_v1:settings />
                         };
 
                         <%-- Vertical settings should be passed in as a JSP fragment --%>
