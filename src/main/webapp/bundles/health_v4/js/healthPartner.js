@@ -5,10 +5,12 @@
         $elements = {};
 
     function initHealthPartner() {
-        _setupFields();
-        _applyEventListeners();
-        _eventSubscriptions();
-        _setupAppFields();
+        $(document).ready(function () {
+            _setupFields();
+            _applyEventListeners();
+            _eventSubscriptions();
+            _setupAppFields();
+        });
     }
 
     function _setupFields() {

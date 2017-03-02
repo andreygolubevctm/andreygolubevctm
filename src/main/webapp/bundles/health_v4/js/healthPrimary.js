@@ -5,9 +5,11 @@
         $elements = {};
 
     function initHealthPrimary() {
-        _setupFields();
-        _applyEventListeners();
-        _eventSubscriptions();
+        $(document).ready(function () {
+            _setupFields();
+            _applyEventListeners();
+            _eventSubscriptions();
+        });
     }
 
     function _setupFields() {
