@@ -38,16 +38,34 @@ public class FundDataAdapter {
                         .map(LocalDateUtils::parseAUSLocalDate)
                         .orElse(null),
                 createBenefits(quote),
-                quote.map(HealthQuote::getApplication)
-                    .map(Application::getCbh)
-                    .map(FundDataAdapter::createMembership)
-                    .orElseGet(() -> quote.map(HealthQuote::getApplication)
-                        .map(Application::getNhb)
-                        .map(FundDataAdapter::createMembership)
-                        .orElseGet(() -> quote.map(HealthQuote::getApplication)
-                                .map(Application::getQtu)
-                                .map(FundDataAdapter::createMembership)
-                                .orElse(null))));
+                createMembership(quote));
+    }
+
+    protected static Membership createMembership(Optional<HealthQuote> quote) {
+        // Check CBH
+        Optional<Membership> membership = quote.map(HealthQuote::getApplication)
+                .map(Application::getCbh)
+                .map(FundDataAdapter::createMembership);
+        // Check for Nhb
+        if (!membership.isPresent()) {
+            membership = quote.map(HealthQuote::getApplication)
+                    .map(Application::getNhb)
+                    .map(FundDataAdapter::createMembership);
+        }
+        // Check for Qtu
+        if (!membership.isPresent()) {
+            membership = quote.map(HealthQuote::getApplication)
+                    .map(Application::getQtu)
+                    .map(FundDataAdapter::createMembership);
+        }
+        // Check for Wfd
+        if (!membership.isPresent()) {
+            membership = quote.map(HealthQuote::getApplication)
+                    .map(Application::getWfd)
+                    .map(FundDataAdapter::createMembership);
+        }
+
+        return membership.orElse(null);
     }
 
     protected static Benefits createBenefits(Optional<HealthQuote> quote) {
@@ -221,6 +239,34 @@ public class FundDataAdapter {
                     nhb.map(Nhb::getPartnerrel)
                             .map(Relationship::fromCode)
                             .map(Relationship::toString)
+                            .map(RelationshipToPrimary::new)
+                            .orElse(null),
+                    null);
+        } else {
+            return null;
+        }
+    }
+
+    protected static Membership createMembership(Wfd theWfd) {
+        Optional<Wfd> wfd = Optional.ofNullable(theWfd);
+        if (wfd.isPresent()) {
+            return new Membership(
+                    null,
+                    null,
+                    null,
+                    null,
+                    createPartnerDetailsWFD(wfd),
+                    null,
+                    null);
+        } else {
+            return null;
+        }
+    }
+
+    private static PartnerDetails createPartnerDetailsWFD(Optional<Wfd> wfd) {
+        if (wfd.isPresent()) {
+            return new PartnerDetails(
+                    wfd.map(Wfd::getPartnerrel)
                             .map(RelationshipToPrimary::new)
                             .orElse(null),
                     null);
