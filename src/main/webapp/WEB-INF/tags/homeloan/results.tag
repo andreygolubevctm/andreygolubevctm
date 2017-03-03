@@ -323,8 +323,6 @@
 	{{ if (obj.lender === 'Westpac') img = 'WESTPAC'; }}
 	{{ if (obj.lender === 'Wide Bay Australia') img = 'WIDE'; }}
 
-	{{ console.log('lender', obj.lender); }}
-
 	<div class="companyLogo logo_{{= img }} noshrink"></div>
 </core_v1:js_template>
 
