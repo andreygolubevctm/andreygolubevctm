@@ -76,6 +76,7 @@
     function _eventSubscriptions() {
         meerkat.messaging.subscribe(meerkatEvents.healthLocation.STATE_CHANGED, function onStateChanged() {
             _hasSelection = false;
+            _postcode = '';
             if (meerkat.modules.journeyEngine.getCurrentStep().navigationId !== 'contact') {
                 $elements.input.val('');
                 _clearResults();

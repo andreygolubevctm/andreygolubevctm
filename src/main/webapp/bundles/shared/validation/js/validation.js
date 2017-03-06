@@ -278,7 +278,8 @@ var validation = false;
         initJourneyValidator: initJourneyValidator,
         events: events,
         isValid: isValid,
-        setupDefaultValidationOnForm: setupDefaultValidationOnForm
+        setupDefaultValidationOnForm: setupDefaultValidationOnForm,
+        getDefaultValidationObj: getDefaultValidationObj
     });
 
     /**
