@@ -48,6 +48,8 @@ public class Application {
 
     private Qtu qtu;
 
+    private Wfd wfd;
+
     public Address getAddress() {
         return address;
     }
@@ -231,5 +233,13 @@ public class Application {
 
     public void setQtu(Qtu qtu) {
         this.qtu = qtu;
+    }
+
+    public Wfd getWfd() {
+        return wfd;
+    }
+
+    public void setWfd(final Wfd wfd) {
+        this.wfd = wfd;
     }
 }
