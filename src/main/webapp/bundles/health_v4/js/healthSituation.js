@@ -33,11 +33,13 @@
     }
 
     function getSituation() {
-        return $healthSituation.filter(':checked').val();
+        var $checked = $healthSituation.filter(':checked');
+        return $checked.length ? $checked.val() : false;
     }
 
     function getSituationAsText() {
-        return $.trim($healthSituation.filter(':checked').parent().text());
+        var $checked = $healthSituation.filter(':checked');
+        return $checked.length ? $.trim($healthSituation.filter(':checked').parent().text()) : false;
     }
 
     meerkat.modules.register('healthSituation', {
