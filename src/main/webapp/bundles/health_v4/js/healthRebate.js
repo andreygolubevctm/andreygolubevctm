@@ -84,7 +84,8 @@
         $elements.householdIncomeRow.toggleClass('hidden', !isRebateApplied());
         meerkat.modules.healthDependants.toggleDependants();
         updateSelectedRebateLabel();
-        if($elements.applyRebate.filter(":checked").val() === "N") {
+        var $checked = $elements.applyRebate.filter(":checked");
+        if($checked.length && $checked.val() === "N") {
             meerkat.modules.healthRates.unsetRebate();
         }
     }
