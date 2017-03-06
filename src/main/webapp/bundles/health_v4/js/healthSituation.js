@@ -41,7 +41,7 @@
 
     function getSituationAsText() {
         var $checked = $healthSituation.filter(':checked');
-        return $checked.length ? $.trim($healthSituation.filter(':checked').parent().text()) : false;
+        return $checked.length ? $.trim($healthSituation.filter(':checked').parent().text()) : "";
     }
 
     meerkat.modules.register('healthSituation', {
