@@ -368,6 +368,7 @@
     function updateRebateLabels() {
         $('#filtersRebateLabel span').html(meerkat.modules.healthRebate.getSelectedRebateTierLabelText());
         $('#filtersSelectedRebateText').html(meerkat.modules.healthRebate.getSelectedRebateLabelText());
+        meerkat.modules.healthTiers.setIncomeLabel();
     }
 
     function toggleFilterByContainer($filter, toggle) {
