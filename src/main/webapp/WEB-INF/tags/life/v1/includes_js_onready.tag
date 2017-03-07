@@ -138,6 +138,23 @@
 		}
 	})();
 
-</go:script>
+	<%-- GLOBAL JS VARIABLE FOR GA TO DISINGUISH LOCAL USERS --%>
+	<jsp:useBean id="ipChkSvc" class="com.ctm.web.core.services.IPCheckService" scope="page" />
+	<c:set var="localIP">
+		<c:choose>
+			<c:when test="${ipChkSvc.isLocalIPAddress(pageContext.getRequest()) eq true}">${true}</c:when>
+			<c:otherwise>${false}</c:otherwise>
+		</c:choose>
+	</c:set>
+	<c:set var="isPreload">
+		<c:choose>
+			<c:when test="${not empty param.preload}">${true}</c:when>
+			<c:otherwise>${false}</c:otherwise>
+		</c:choose>
+	</c:set>
+	window.gtmInternalUser = <c:choose><c:when test="${localIP eq true or isPreload eq true}">true</c:when><c:otherwise>false</c:otherwise></c:choose>;
+	<%-- END GLOBAL JS VARIABLE --%>
 
-<form_v1:radio_button_group_validate />
+    </go:script>
+
+    <form_v1:radio_button_group_validate />

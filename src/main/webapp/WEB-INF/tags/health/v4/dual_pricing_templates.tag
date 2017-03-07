@@ -21,7 +21,7 @@
 </core_v1:js_template>
 
 <c:set var="heading">Premiums are rising April 1</c:set>
-<c:set var="april1Header">from April 1st, 2017</c:set>
+<c:set var="april1Header">from April 1st</c:set>
 
 <%-- RESULTS TEMPLATES --%>
 <core_v1:js_template id="dual-pricing-results-template">
