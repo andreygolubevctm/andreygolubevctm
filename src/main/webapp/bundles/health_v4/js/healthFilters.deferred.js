@@ -100,7 +100,7 @@
             },
             "income": {
                 name: 'health_filterBar_income',
-                defaultValueSourceSelector: '#health_healthCover_income',
+                defaultValueSourceSelector: 'select[name=health_healthCover_income]',
                 defaultValue: '',
                 events: {
                     init: function (filterObject) {
@@ -336,6 +336,7 @@
 
 
         $(document).on('change', '#health_filterBar_rebate', function toggleRebateDropdown() {
+            toggleRebateEdit(false);
             toggleIncome(!$(this).is(':checked'));
         });
 
