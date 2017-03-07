@@ -27,7 +27,8 @@
             partnerLoading: $('input[name="health_healthCover_partner_healthCoverLoading"]'),
             partnerCurrent: $('input[name="health_healthCover_partner_cover"]'),
             partnerLoadingManual: $('input[name="health_healthCover_partner_lhc"]'),
-            dependants: $('#health_healthCover_dependants')
+            dependants: $('#health_healthCover_dependants'),
+            commencementDate: $('#health_payment_details_start')
         };
 
         $elements.income.on('change', meerkat.modules.healthRebate.setRebate);
@@ -121,6 +122,12 @@
 
         if (!postData.primary_dob.match(dateRegex)) return false;
         if (coverTypeHasPartner && !postData.partner_dob.match(dateRegex))  return false;
+
+        postData.commencementDate = null;
+        var commencementDate = $elements.commencementDate.val();
+        if(!_.isEmpty(commencementDate)) {
+            postData.commencementDate = commencementDate;
+        }
 
         return meerkat.modules.comms.post({
             url: "ajax/json/health_rebate.jsp",
