@@ -211,6 +211,7 @@
                 });
             }
             addGAClientID();
+            addGTMInternalUser();
         });
 
     }
@@ -372,6 +373,15 @@
             value: getCurrentJourney()
         };
         window.sessioncamConfiguration.customDataObjects.push(item);
+    }
+
+    /**
+     * addGTMInternalUser() adds a global variable to the window object to
+     * allow GA to recognise internal and external traffic. Internal is any
+     * user on local network or quote started with preload..
+     */
+    function addGTMInternalUser() {
+        window.gtmInternalUser = _.has(meerkat.site,"gtmInternalUser") ? meerkat.site.gtmInternalUser : false;
     }
 
     /**

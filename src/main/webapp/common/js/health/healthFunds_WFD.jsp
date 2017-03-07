@@ -11,37 +11,32 @@ WFD
 --%>
 
 var healthFunds_WFD = {
-
     ajaxJoinDec: false,
-    $paymentType : $('#health_payment_details_type input'),
     $paymentFrequency : $('#health_payment_details_frequency'),
     $paymentStartDate: $("#health_payment_details_start"),
     set: function(){
         <%--calendar for start cover--%>
-        meerkat.modules.healthPaymentStep.setCoverStartRange(0, 30);
+        meerkat.modules.healthPaymentStep.setCoverStartRange(0, 29);
 
         <%--dependant definition--%>
-        meerkat.modules.healthFunds._dependants('As a member of Westfund all children aged up to 21 are covered on a family policy. Children aged between 21-24 are entitled to stay on your cover at no extra charge if they are a full time or part-time student at School, college or University TAFE institution or serving an Apprenticeship or Traineeship.');
+        meerkat.modules.healthFunds._dependants('As a member of Westfund, your children aged between 21-24 are entitled to stay on your cover at no extra charge if they are a full time or part-time student at School, college or University TAFE institution or serving an Apprenticeship or Traineeship.');
 
         <%--schoolgroups and defacto--%>
-        meerkat.modules.healthDependants.updateConfig({showSchoolFields:true, 'schoolMinAge':18, 'schoolMaxAge':24, showSchoolIdField:true });
+        meerkat.modules.healthDependants.updateConfig({showSchoolFields:true, 'schoolMinAge':21, 'schoolMaxAge':24, showSchoolIdField:true });
 
         <%--Adding a statement--%>
         var msg = 'Please note that the LHC amount quoted is an estimate and will be confirmed once Westfund has verified your details.';
-        $paymentFrequency.closest('div.row-content').append('<p class="statement" style="margin-top:1em">' + msg + '</p>');
+        healthFunds_WFD.$paymentFrequency.closest('div.row-content').append('<p class="statement" style="margin-top:1em">' + msg + '</p>');
 
-        <%--fund Name's become optional--%>
-        $('#health_previousfund_primary_fundName, #health_previousfund_partner_fundName').setRequired(false);
-
-        <%--fund ID's become optional--%>
-        $('#clientMemberID input[type=text], #partnerMemberID input[type=text]').setRequired(false);
+        <%--Previous fund--%>
+        $('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').setRequired(false).attr('maxlength', '10');
 
         <%--Authority--%>
         meerkat.modules.healthFunds._previousfund_authority(true);
 
         <%--credit card & bank account frequency & day frequency--%>
-        meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':false, 'fortnightly': false, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true });
-        meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':false, 'fortnightly': false, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true });
+        meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':false, 'fortnightly': false, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':false });
+        meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':false, 'fortnightly': false, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':false });
 
         <%--claims account--%>
         meerkat.modules.healthPaymentStep.overrideSettings('creditBankQuestions',true);
@@ -50,17 +45,10 @@ var healthFunds_WFD = {
         meerkat.modules.healthCreditCard.setCreditCardConfig({ 'visa':true, 'mc':true, 'amex':false, 'diners':false });
         meerkat.modules.healthCreditCard.render();
 
-        healthFunds_WFD.$paymentType.on('change.WFD', function renderPaymentDaysPaymentType(){
-            healthFunds_WFD.renderPaymentDays();
-        });
-
         healthFunds_WFD.$paymentFrequency.on('change.WFD', function renderPaymentDaysFrequency(){
-            healthFunds_WFD.renderPaymentDays();
+            healthFunds_WFD.renderDeductionMessage();
         });
 
-        healthFunds_WFD.$paymentStartDate.on("changeDate.WFD", function renderPaymentDaysCalendar(e) {
-            healthFunds_WFD.renderPaymentDays();
-        });
         <%--allow weekend selection from the datepicker--%>
         healthFunds_WFD.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
 
@@ -93,44 +81,34 @@ var healthFunds_WFD = {
             }
         });
 
+        <%-- Custom question: Partner relationship --%>
+        if ($('#wfd_partnerrel').length > 0) {
+            $('#wfd_partnerrel').show();
+        }
+        else {
+            <c:set var="html">
+            <c:set var="fieldXpath" value="health/application/wfd/partnerrel" />
+            <form_v2:row id="wfd_partnerrel" fieldXpath="${fieldXpath}" label="Relationship to you">
+            <field_v2:array_select xpath="${fieldXpath}"
+                    required="true"
+                    title="Relationship to you" items="=Please choose...,2=Spouse,3=Defacto" placeHolder="Relationship" disableErrorContainer="${true}" />
+            </form_v2:row>
+            </c:set>
+            <c:set var="html" value="${go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(html, slashChar, slashChar2), newLineChar, ''), newLineChar2, ''), aposChar, aposChar2), '	', '')}" />
+            $('#health_application_partner_genderRow').after('<c:out value="${html}" escapeXml="false" />');
+        }
+
     },
-    renderPaymentDays: function() {
-        var deductionDate = meerkat.modules.dateUtils.returnDate($('#health_payment_details_start').val());
-        var distance = 4 - deductionDate.getDay();
-        if(distance < 2) { <%-- COB Tue cutoff to make Thu of same week for payment--%>
-            distance += 7;
-        }
-        deductionDate.setDate(deductionDate.getDate() + distance);
+    renderDeductionMessage: function() {
+        var deductionMsg = meerkat.modules.healthPaymentStep.getSelectedFrequency() === 'monthly' ?
+                'Your first payment will be debited within 48 hours and this will be a pro-rata amount for the remainder of the month. Your regular premium will be deducted from your nominated account on the 1st of every month.' :
+                'Your first payment will be debited within 48 hours and this will be a pro-rata amount until next Thursday. Your regular premium will be deducted from your nominated account on a Thursday.';
 
-        var day = deductionDate.getDate();
-        var isTeen = (day > 10 && day < 20);
-        if((day % 10) == 1 && !isTeen ) {
-            day += "st";
-        } else if((day % 10) == 2 && !isTeen ) {
-            day += "nd";
-        } else if((day % 10) == 3 && !isTeen ) {
-            day += "rd";
-        } else {
-            day += "th";
-        }
-
-        var deductionText = 'Please note that your first or full payment (annual frequency) ' +
-                'will be debited from your payment method on ' + meerkat.modules.dateUtils.dateValueLongFormat(deductionDate);
-
-        $('.health_credit-card-details_policyDay-message').text( deductionText);
-        $('.health_bank-details_policyDay-message').text(deductionText);
-
-        var _dayString = meerkat.modules.numberUtils.leadingZero(deductionDate.getDate() );
-        var _monthString = meerkat.modules.numberUtils.leadingZero(deductionDate.getMonth() + 1 );
-        var deductionDateValue = deductionDate.getFullYear() +'-'+ _monthString +'-'+ _dayString;
-
-        $('.health_payment_credit_details-policyDay option').val(deductionDateValue);
-        $('.health_payment_bank_details-policyDay option').val(deductionDateValue);
+        healthFunds_WFD.$paymentFrequency.closest('div.row-content').find('.deduction-message').remove();
+        healthFunds_WFD.$paymentFrequency.closest('div.row-content').find('.statement').before('<p class="deduction-message" style="margin-top:1em">'+ deductionMsg +'</p>');
     },
     unset: function() {
-        healthFunds_WFD.$paymentType.off('change.WFD');
         healthFunds_WFD.$paymentFrequency.off('change.WFD');
-        healthFunds_WFD.$paymentStartDate.off("changeDate.WFD");
         meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), false);
         meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), false);
 
@@ -145,11 +123,10 @@ var healthFunds_WFD = {
         }
         $('#health_declaration + label').html(healthFunds_WFD.joinDecLabelHtml);
 
-        $paymentFrequency.closest('div.row-content').find('p.statement').remove();
+        healthFunds_WFD.$paymentFrequency.closest('div.row-content').find('p.deduction-message, p.statement').remove();
 
-        <%--fund Name's become mandaory (back to default)--%>
-        $('#health_previousfund_primary_fundName').attr('required', 'required');
-        $('#health_previousfund_partner_fundName').attr('required', 'required');
+        <%--Previous fund--%>
+        $('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').setRequired(true).removeAttr('maxlength');
 
         <%--Authority Off--%>
         meerkat.modules.healthFunds._previousfund_authority(false);
@@ -160,6 +137,8 @@ var healthFunds_WFD = {
 
         delete healthFunds_WFD.$_dobPrimary;
         delete healthFunds_WFD.$_dobPartner;
+
+        $('#wfd_partnerrel').hide();
     }
 };
 </c:set>

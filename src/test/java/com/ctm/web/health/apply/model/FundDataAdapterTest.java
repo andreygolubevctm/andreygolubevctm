@@ -164,4 +164,16 @@ public class FundDataAdapterTest {
         assertEquals("DODEFam", eligibility.getEligibilitySubReasonID().get());
     }
 
+    @Test
+    public void testWfdEmpty() throws Exception {
+        assertNull(FundDataAdapter.createMembership((Wfd)null));
+    }
+
+    @Test
+    public void testWfd() throws Exception {
+        Wfd wfd = mock(Wfd.class);
+        FundDataAdapter.createMembership(wfd);
+        verify(wfd, times(1)).getPartnerrel();
+    }
+
 }
