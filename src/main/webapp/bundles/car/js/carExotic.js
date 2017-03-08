@@ -33,7 +33,7 @@
 		$navBarContents = $('#navbar-filter .nav, #navbar-filter-labels');
 
 		// existing and new questions
-		$defaultQuestionsToHide = $('#quoteAccessoriesFieldSet, .noOfKms,  #accidentDamageRow, .rego-not-my-car, #employment_status_row, #ownsAnotherCar, #quote_restricted_ageRow, #quote_drivers_youngFieldSet, .ydGreenBubble');
+		$defaultQuestionsToHide = $('#quote_optionsTypeOfCoverFieldRow, #quoteAccessoriesFieldSet, .noOfKms,  #accidentDamageRow, .rego-not-my-car, #employment_status_row, #ownsAnotherCar, #quote_restricted_ageRow, #quote_drivers_youngFieldSet, .ydGreenBubble');
 		$exoticQuestionsToShow = $('#quote_drivers_regular_convictionsRow, .exoticUsageQuestions, #quote_drivers_youngExoticExoticFieldSet, #quote_drivers_youngExoticFieldSet, #quote_drivers_youngExoticContFieldSet, .ydSpeechBubbleDriverDetails, #preferredContactMethodRow');
 		$securityRow = $('#securityOptionRow');
 		$vehicleUse = $('#quote_vehicle_use');
