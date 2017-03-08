@@ -18,6 +18,7 @@
   }
 }
 
+
 @media (@xs-only) {
   body:not([data-step=results]) {
     .header-wrap {
@@ -26,6 +27,13 @@
     &.couponShown {
       .header-wrap {
         min-height: 127px;
+      }
+    }
+  }
+  body[data-step=results] {
+    &.couponShown {
+      .header-wrap {
+        min-height: 57px;
       }
     }
   }

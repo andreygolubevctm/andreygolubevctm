@@ -144,7 +144,7 @@
 	}
 
 	function renderCouponBanner() {
-		if (isCurrentCouponValid() === true && currentCoupon.hasOwnProperty('contentTile')) {
+		if (isCurrentCouponValid() === true && currentCoupon.hasOwnProperty('contentBanner')) {
             $('#contactForm').find('.quoteSnapshot').hide();
             $('.callCentreHelp').hide();
 			$('.coupon-banner-container').html(currentCoupon.contentBanner);
