@@ -29,7 +29,7 @@ var healthFunds_WFD = {
         healthFunds_WFD.$paymentFrequency.closest('div.row-content').append('<p class="statement" style="margin-top:1em">' + msg + '</p>');
 
         <%--Previous fund--%>
-        $('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').setRequired(false).attr('maxlength', '10');
+        $('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').attr('maxlength', '10');
 
         <%--Authority--%>
         meerkat.modules.healthFunds._previousfund_authority(true);
@@ -126,7 +126,7 @@ var healthFunds_WFD = {
         healthFunds_WFD.$paymentFrequency.closest('div.row-content').find('p.deduction-message, p.statement').remove();
 
         <%--Previous fund--%>
-        $('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').setRequired(true).removeAttr('maxlength');
+        $('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').removeAttr('maxlength');
 
         <%--Authority Off--%>
         meerkat.modules.healthFunds._previousfund_authority(false);
