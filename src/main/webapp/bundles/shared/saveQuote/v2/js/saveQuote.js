@@ -55,7 +55,7 @@
 		// Update local email value if empty and journey email value changed
 		msg.subscribe( meerkat.modules.events.contactDetails.email.FIELD_CHANGED, function(fieldDetails){
 			var journeyEmail = fieldDetails.$field.val();
-			if (_.isEmpty(email) && !_.isEmpty(journeyEmail)) {
+			if (!_.isEmpty($formElements.email) && _.isEmpty(email) && !_.isEmpty(journeyEmail)) {
 				email = $.trim(journeyEmail);
 				$formElements.email.val(email);
 			}
@@ -385,7 +385,8 @@
 
 	meerkat.modules.register("saveQuote", {
 		initSaveQuote: initSaveQuote,
-		events: events
+		events: events,
+		isAvailable: function() {}
 	});
 
 })(jQuery);

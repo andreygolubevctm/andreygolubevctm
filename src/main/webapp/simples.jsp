@@ -13,6 +13,7 @@
 <c:set var="callCentre" scope="session"><simples:security key="callCentre" /></c:set>
 <c:set var="isRoleSupervisor" scope="session"><simples:security key="supervisor" /></c:set>
 <c:set var="isRoleIT" scope="session"><simples:security key="IT" /></c:set>
+<c:set var="isRoleCcRewards" scope="session"><simples:security key="ccRewardsGroup" /></c:set>
 
 <c:set var="assetUrl" value="/${pageSettings.getContextFolder()}" />
 

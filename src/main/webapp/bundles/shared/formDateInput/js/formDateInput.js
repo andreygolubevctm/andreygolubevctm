@@ -40,7 +40,7 @@
 				.on('change', serialise);
 		}
 		else {
-			$component.find('input.dateinput-day, input.dateinput-month, input.dateinput-year')
+			$component.find(':input.dateinput-day, :input.dateinput-month, :input.dateinput-year')
 				.on('input', moveToNextInput)
 				.on('change', serialise);
 		}
@@ -58,8 +58,6 @@
 		var parts = value.split('/'),
 			nativeValue = '';
 
-		//alert('populate');
-
 		if ($component.attr('data-locked') == 1) return;
 		$component.attr('data-locked', 1);
 
@@ -75,17 +73,16 @@
 			}
 		}
 
-		$component.find('input.dateinput-day').val(parts[0]);
-		$component.find('input.dateinput-month').val(parts[1]);
-		$component.find('input.dateinput-year').val(parts[2]);
+		$component.find(':input.dateinput-day').val(parts[0]);
+		$component.find(':input.dateinput-month').val(parts[1]);
+		$component.find(':input.dateinput-year').val(parts[2]);
 
 		$component.find('.dateinput-nativePicker input').val(nativeValue);
-		//alert('populate2: ' + nativeValue);
 
 		if(meerkat.modules.performanceProfiling.isIE8() || meerkat.modules.performanceProfiling.isIE9()){
-			meerkat.modules.placeholder.invalidatePlaceholder($component.find('input.dateinput-day'));
-			meerkat.modules.placeholder.invalidatePlaceholder($component.find('input.dateinput-month'));
-			meerkat.modules.placeholder.invalidatePlaceholder($component.find('input.dateinput-year'));
+			meerkat.modules.placeholder.invalidatePlaceholder($component.find(':input.dateinput-day'));
+			meerkat.modules.placeholder.invalidatePlaceholder($component.find(':input.dateinput-month'));
+			meerkat.modules.placeholder.invalidatePlaceholder($component.find(':input.dateinput-year'));
 		}
 
 		$component.removeAttr('data-locked');
@@ -97,11 +94,12 @@
 	function moveToNextInput() {
 
 		var $this = $(this);
+		if($this.is('select')) { return; }
 		if (!$this.attr('maxlength')) {return;}
 		if ($this.hasClass('year') || $this.hasClass('dateinput-year')) {return;}
 
 		if ($this.val().length == $this.attr('maxlength')) {
-			var next = ($this.hasClass('dateinput-day')) ? 'input.dateinput-month' : 'input.dateinput-year';
+			var next = ($this.hasClass('dateinput-day')) ? ':input.dateinput-month' : ':input.dateinput-year';
 			$this.closest('[data-provide="dateinput"]').find(next).focus().select();
 		}
 	}
@@ -125,17 +123,17 @@
 			day = parts[2];
 		}
 		else {
-			day = $component.find('input.dateinput-day').val();
-			month = $component.find('input.dateinput-month').val();
-			year = $component.find('input.dateinput-year').val();
+			day = $component.find(':input.dateinput-day').val();
+			month = $component.find(':input.dateinput-month').val();
+			year = $component.find(':input.dateinput-year').val();
 		}
 
 		if (day.length === 1) day = '0' + day;
 		if (month.length === 1) month = '0' + month;
 
-		if ($component.attr('data-dateinput-type') != 'native') {
-			$component.find('input.dateinput-day').val(day);
-			$component.find('input.dateinput-month').val(month);
+		if ($component.attr('data-dateinput-type') != 'native' && $component.find('input.dateinput-day').length > 0) {
+			$component.find(':input.dateinput-day').val(day);
+			$component.find(':input.dateinput-month').val(month);
 		}
 
 		// Run 'simple' validation - only checks for non zero and is a valid number!!
@@ -154,8 +152,6 @@
 
 		$component.removeAttr('data-locked');
 	}
-
-
 
 	meerkat.modules.register("formDateInput", {
 		init: init,

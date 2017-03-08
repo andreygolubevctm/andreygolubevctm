@@ -10,6 +10,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 <%@ attribute name="title" required="false" rtexprvalue="true" description="The title of the page" %>
 <%@ attribute name="skipJSCSS" required="false" rtexprvalue="true" description="Provide if wanting to exclude loading normal js/css (except jquery)" %>
 <%@ attribute required="false" name="body_class_name" description="Allow extra styles to be added to the rendered body tag" %>
+<%@ attribute required="false" name="bundleFileName" description="Pass in alternate bundle file name" %>
 
 <%@ attribute fragment="true" required="true" name="head" %>
 <%@ attribute fragment="true" required="true" name="head_meta" %>
@@ -46,7 +47,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 
 <%-- for Health V2 A/B testing --%>
 <c:set var="fileName" value="${pageSettings.getVerticalCode()}"/>
-<c:if test="${isHealthV2 eq true}"><c:set var="fileName" value="health_v2"/></c:if>
+<c:if test="${not empty bundleFileName}"><c:set var="fileName" value="${bundleFileName}" /></c:if>
 
 <!DOCTYPE html>
 <go:html>
@@ -95,7 +96,7 @@ ${newPage.init(pageContext.request, pageSettings)}
             </c:if>
 
             <%--  Modernizr --%>
-            <script src='${assetUrl}js/bundles/plugins/modernizr.min.js'></script>
+            <script src='${assetUrl}js/bundles/plugins/modernizr${pageSettings.getSetting('minifiedFileString')}.js'></script>
         </c:if>
 
         <jsp:invoke fragment="head"/>
@@ -203,10 +204,8 @@ ${newPage.init(pageContext.request, pageSettings)}
 
             </div>
 
-
-                <%-- XS Results Pagination --%>
-            <div class="navbar navbar-default xs-results-pagination navMenu-row-fixed visible-xs">
-                <jsp:invoke fragment="xs_results_pagination"/>
+            <%-- XS Results Pagination --%>
+            <jsp:invoke fragment="xs_results_pagination"/>
             </div>
 
         </header>
@@ -231,7 +230,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 
                 <%-- JS Libraries --%>
                 <!--[if lt IE 9]>
-                <script src="${assetUrl}js/bundles/plugins/respond.min.js"></script>
+                <script src="${assetUrl}js/bundles/plugins/respond${pageSettings.getSetting('minifiedFileString')}.js"></script>
                 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
                 <script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}libraries/jquery/js/jquery-1.11.3${pageSettings.getSetting('minifiedFileString')}.js">\x3C/script>');</script>
                 <![endif]-->
@@ -291,6 +290,7 @@ ${newPage.init(pageContext.request, pageSettings)}
                             name: '${pageSettings.getSetting("brandName")}',
                             vertical: '${pageSettings.getVerticalCode()}',
                             isDev: ${isDev}, <%-- boolean determined from conditions above in this tag --%>
+                            minifiedFileString: '${pageSettings.getSetting('minifiedFileString')}',
                             isCallCentreUser: <c:out value="${not empty callCentre}"/>,
                             <c:if test="${pageSettings.hasSetting('inInEnabled')}">
                             inInEnabled: ${pageSettings.getSetting('inInEnabled')},
@@ -346,6 +346,7 @@ ${newPage.init(pageContext.request, pageSettings)}
                             vdn: '<c:out value="${go:decodeUrl(param.vdn)}" escapeXml="true" />'<c:if test="${pageSettings.getSetting('kampyleFeedback') eq 'Y'}">,
                             kampyleId: 112902
                             </c:if>
+                            <core_v1:settings />
                         };
 
                         <%-- Vertical settings should be passed in as a JSP fragment --%>
@@ -369,7 +370,7 @@ ${newPage.init(pageContext.request, pageSettings)}
             </c:when>
             <c:otherwise>
                 <!--[if lt IE 9]>
-                <script src="${assetUrl}js/bundles/plugins/respond.min.js"></script>
+                <script src="${assetUrl}js/bundles/plugins/respond${pageSettings.getSetting('minifiedFileString')}.js"></script>
                 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
                 <script>window.jQuery && window.jQuery.each || document.write('<script src="${assetUrl}libraries/jquery/js/jquery-1.11.3${pageSettings.getSetting('minifiedFileString')}.js">\x3C/script>');</script>
                 <![endif]-->

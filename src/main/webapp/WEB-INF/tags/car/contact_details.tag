@@ -20,13 +20,17 @@
 <form_v2:fieldset legend="Contact Details" id="${name}FieldSet">
 
 	<form_v2:row label="First Name" id="firstName">
+		<c:set var="analAttribute"><field_v1:analytics_attr analVal="First Name" quoteChar="\"" /></c:set>
 		<field_v1:person_name xpath="quote/drivers/regular/firstname"
-			required="false" title="the policy holder's first name" />
+			required="false" title="the policy holder's first name"
+			additionalAttributes="${analAttribute}" />
 	</form_v2:row>
 
 	<form_v2:row label="Last Name" id="lastName">
+		<c:set var="analAttribute"><field_v1:analytics_attr analVal="Last Name" quoteChar="\"" /></c:set>
 		<field_v1:person_name xpath="quote/drivers/regular/surname"
-			required="false" title="the policy holder's last name" />
+			required="false" title="the policy holder's last name"
+			additionalAttributes="${analAttribute}" />
 	</form_v2:row>
 
 	<form_v2:row label="Email Address" id="contactEmailRow">

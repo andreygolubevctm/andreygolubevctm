@@ -200,6 +200,7 @@
             $(selectorPrefix + '_schoolIDGroup').toggleClass('hidden', !providerConfig.showSchoolIdField);
             $(selectorPrefix + '_schoolDateGroup').toggleClass('hidden', !providerConfig.showSchoolCommencementField);
             $(selectorPrefix + '_apprenticeGroup').toggleClass('hidden', !providerConfig.showApprenticeField);
+            $('[name=health_application_dependants_dependant' + dependantId + '_schoolID]').prop('required',providerConfig.schoolIdRequired);
         } else {
             // Hide them all if they aren't in the date range.
             $(selectorPrefix + '_fulltimeGroup, ' + selectorPrefix + '_schoolGroup, ' + selectorPrefix + '_schoolIDGroup, ' + selectorPrefix + '_schoolDateGroup,' + selectorPrefix + '_apprenticeGroup').addClass('hidden');
@@ -394,7 +395,8 @@
      * @returns {boolean}
      */
     function situationEnablesDependants() {
-        return healthChoices._cover == 'SPF' || healthChoices._cover == 'F';
+        var cover = meerkat.modules.healthChoices.returnCoverCode();
+        return cover == 'SPF' || cover == 'F';
     }
 
     function animateToDependant($el) {

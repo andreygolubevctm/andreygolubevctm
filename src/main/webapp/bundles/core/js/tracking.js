@@ -211,6 +211,7 @@
                 });
             }
             addGAClientID();
+            addGTMInternalUser();
         });
 
     }
@@ -375,39 +376,147 @@
     }
 
     /**
+     * addGTMInternalUser() adds a global variable to the window object to
+     * allow GA to recognise internal and external traffic. Internal is any
+     * user on local network or quote started with preload..
+     */
+    function addGTMInternalUser() {
+        window.gtmInternalUser = _.has(meerkat.site,"gtmInternalUser") ? meerkat.site.gtmInternalUser : false;
+    }
+
+    /**
      * addGAClientID() adds a new or updates an existing xpath to store the GA Client ID
      * which is used for trackng purposes.
      */
     function addGAClientID() {
         var gaClientId = null;
 
-        // Retrieve the _ga cookie and assign its value to gaClientId
-        var cookieStr = document.cookie;
-        if(!_.isEmpty(cookieStr)) {
-            var rawCookies = cookieStr.split(";");
-            for(var i=0; i<rawCookies.length; i++){
-                var cookie = $.trim(rawCookies[i]).split("=");
-                if(cookie.length === 2) {
-                    if(cookie[0] === "_ga") {
-                        gaClientId = cookie[1];
-                        break;
+        if(meerkat.site.isCallCentreUser) {
+            // Maintain gaClientId from online journey if available
+            gaClientId = _.has(meerkat.site,'gaClientId') && !_.isEmpty(meerkat.site.gaClientId) ? meerkat.site.gaClientId : null;
+        } else {
+            // Otherwise, retrieve the _ga cookie and assign its value to gaClientId
+            var cookieStr = document.cookie;
+            if (!_.isEmpty(cookieStr)) {
+                var rawCookies = cookieStr.split(";");
+                for (var i = 0; i < rawCookies.length; i++) {
+                    var cookie = $.trim(rawCookies[i]).split("=");
+                    if (cookie.length === 2) {
+                        if (cookie[0] === "_ga") {
+                            gaClientId = cookie[1];
+                            break;
+                        }
                     }
+                }
+            }
+
+            // Derive element name and if exists then assign value or create a new one
+            if (!_.isEmpty(gaClientId)) {
+                var temp = gaClientId.split('.');
+                if (temp.length >= 2) {
+                    var partB = temp.pop();
+                    var partA = temp.pop();
+                    gaClientId = partA + '.' + partB;
                 }
             }
         }
 
-        // Derive element name and if exists then assign value or create a new one
-        var elementName = (meerkat.site.vertical === 'car' ? 'quote' : meerkat.site.vertical) + '_gaclientid';
-        if($('#' + elementName).length) {
-            $('#' + elementName).val(gaClientId);
-        } else {
-            $('#mainform').prepend($('<input/>', {
-                type: 'hidden',
-                id: elementName,
-                name: elementName,
-                value: gaClientId
-            }));
+        if(!_.isEmpty(gaClientId)) {
+            var elementName = (meerkat.site.vertical === 'car' ? 'quote' : meerkat.site.vertical) + '_gaclientid';
+            if ($('#' + elementName).length) {
+                $('#' + elementName).val(gaClientId);
+            } else {
+                $('#mainform').prepend($('<input/>', {
+                    type: 'hidden',
+                    id: elementName,
+                    name: elementName,
+                    value: gaClientId
+                }));
+            }
         }
+    }
+
+    /**
+     * Public method to send sale data to Google Analytics
+     * @param dataIn
+     */
+    function sendSaleDataToGoogleMeasurementProtocol(dataIn) {
+        try {
+            var data = !_.isEmpty(dataIn) && _.isObject(dataIn) ? dataIn : {};
+            if(!_.isEmpty(data)) {
+                appendDefaultsToSaleData(data);
+                if(isValidSaleObject(data)) {
+                    meerkat.modules.comms.post({
+                        url: 'https://www.google-analytics.com/collect',
+                        data: data,
+                        cache: false,
+                        errorLevel: "silent",
+                        useDefaultErrorHandling: true
+                    });
+                } else {
+                    meerkat.logging.info("sendSaleDataToGoogleMeasurementProtocol invalidData", data);
+                }
+            }
+        } catch(e) {
+            meerkat.logging.info("sendSaleDataToGoogleMeasurementProtocol catch", dataIn, e);
+        }
+    }
+
+    /**
+     * Verify that obj has minimum expected keys. Just as a safety net because
+     * sendSaleDataToGoogleMeasurementProtocol is publicly exposed.
+     * @param obj
+     * @returns {boolean}
+     */
+    function isValidSaleObject(obj) {
+        var keys = _.keys(obj);
+        var trustList = ['v','t','ec','ea','el','ds','dp','cid','ti','tid'];
+        for(var i=0; i<trustList.length; i++) {
+            if(_.indexOf(keys, trustList[i]) === -1) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Append common properties to the sale data
+     * @param saleData
+     */
+    function appendDefaultsToSaleData(saleData) {
+        var gaCode = getGACode();
+        var tranId = meerkat.modules.transactionId.get();
+        var clientId = _.has(meerkat.site,'gaClientId') && !_.isEmpty(meerkat.site.gaClientId) ? meerkat.site.gaClientId : null;
+        if(!_.isNull(gaCode)) {
+            _.extend(saleData,{tid:gaCode});
+        }
+        if(_.isNumber(tranId)) {
+            _.extend(saleData,{ti:tranId});
+        }
+        // Always send clientId even if empty (only empty when pure simples quote)
+        _.extend(saleData,{cid:clientId});
+    }
+
+    /**
+     * Return the environment specific GA code via window.gaData
+     * @returns {null}
+     */
+    function getGACode() {
+        try {
+            var gaData = window.gaData || null;
+            if(!_.isEmpty(gaData) && _.isObject(gaData)) {
+                var props = _.keys(gaData);
+                var test = /^UA-/;
+                for(var i=0; i<props.length; i++) {
+                    if(props[i].search(test) === 0) {
+                        return props[i];
+                    }
+                }
+            }
+        } catch(e) {
+            meerkat.logging.info("getGACode catch", e);
+        }
+        return null;
     }
 
     meerkat.modules.register("tracking", {
@@ -419,7 +528,8 @@
         applyLastFieldTouchListener: applyLastFieldTouchListener,
         getCurrentJourney: getCurrentJourney,
         updateObjectData: updateObjectData,
-        getTrackingVertical: getTrackingVertical
+        getTrackingVertical: getTrackingVertical,
+        sendSaleDataToGoogleMeasurementProtocol : sendSaleDataToGoogleMeasurementProtocol
     });
 
 })(jQuery);

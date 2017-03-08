@@ -39,6 +39,8 @@ public class ConfirmationData {
 
     private final String paymentType;
 
+    private final String redemptionId;
+
     private ConfirmationData(Builder builder) {
         this.transID = builder.transID;
         this.startDate = builder.startDate;
@@ -51,6 +53,7 @@ public class ConfirmationData {
         this.product = builder.product;
         this.policyNo = builder.policyNo;
         this.paymentType = builder.paymentType;
+        this.redemptionId = builder.redemptionId;
     }
 
     public static Builder newConfirmationData() {
@@ -109,6 +112,10 @@ public class ConfirmationData {
         return paymentType;
     }
 
+    public String getRedemptionId() {
+        return redemptionId;
+    }
+
     public static final class Builder {
         private String transID;
         private LocalDate startDate;
@@ -121,6 +128,7 @@ public class ConfirmationData {
         private String product;
         private String policyNo;
         private String paymentType;
+        private String redemptionId;
 
         private Builder() {
         }
@@ -181,6 +189,11 @@ public class ConfirmationData {
 
         public Builder paymentType(String paymentType) {
             this.paymentType = paymentType;
+            return this;
+        }
+
+        public Builder redemptionId(String redemptionId) {
+            this.redemptionId = redemptionId;
             return this;
         }
     }

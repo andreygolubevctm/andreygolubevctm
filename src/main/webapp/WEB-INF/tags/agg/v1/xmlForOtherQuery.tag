@@ -65,7 +65,7 @@
 	</c:forEach>
 
 
-	<c:if test="${productCount >= 5}">
+	<c:if test="${productCount >= 3}">
 		<%-- output it to the page --%>
 		${go:getEscapedXml(data['tempSQL'])}
 	</c:if>

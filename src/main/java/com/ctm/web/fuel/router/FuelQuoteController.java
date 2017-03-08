@@ -5,19 +5,24 @@ import com.ctm.fuelquote.model.request.QuoteRequest;
 import com.ctm.fuelquote.model.response.QuoteResponse;
 import com.ctm.httpclient.Client;
 import com.ctm.httpclient.RestSettings;
+import net.javacrumbs.futureconverter.springrx.FutureConverter;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
+import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import rx.Observable;
+import rx.schedulers.Schedulers;
 
 import javax.servlet.http.HttpServletRequest;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
+
 
 @RestController
 @RequestMapping("/rest/fuel")
@@ -62,7 +67,7 @@ public class FuelQuoteController {
                     .header("Content-Type", MediaType.APPLICATION_JSON_UTF8_VALUE)
                     .build();
 
-            return fuelQuoteClient.post(restSettings).toBlocking().first();
+            return fuelQuoteClient.post(restSettings).observeOn(Schedulers.io()).toBlocking().first();
         } else {
             return QuoteResponse.newBuilder().build();
         }

@@ -9,7 +9,14 @@
 <%@ attribute name="suburbAdditionalAttributes" required="false" rtexprvalue="true" description="Used for passing in additional attributes" %>
 <%@ attribute name="postCodeNameAdditionalAttributes" required="false" rtexprvalue="true" description="Used for passing in additional attributes" %>
 <%@ attribute name="postCodeAdditionalAttributes" required="false" rtexprvalue="true" description="Used for passing in additional attributes" %>
+<%@ attribute name="addRequiredAsterisk" required="false" rtexprvalue="true" description="Used for passing in additional attributes" %>
+
 <c:set var="isPostal" value="${type eq 'P'}"/>
+
+<c:if test="${addRequiredAsterisk eq true}">
+    <c:set var="requiredInputClass" value=" required_input " />
+</c:if>
+
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}"/>
@@ -65,7 +72,7 @@
     <c:if test="${not empty data[fullAddressFieldXpath]}">
         <go:setData dataVar="data" xpath="${fieldXpath}" value="${data[fullAddressFieldXpath]}"/>
     </c:if>
-    <form_v2:row fieldXpath="${fieldXpath}" label="Street Address" id="${autofilllessSearchXpath}_autofilllessSearchRow" addForAttr="false">
+    <form_v2:row fieldXpath="${fieldXpath}" label="Street Address" id="${autofilllessSearchXpath}_autofilllessSearchRow" addForAttr="false" className="${requiredInputClass}">
         <c:set var="placeholder" value="e.g. 5/20 Sample St"/>
         <field_v2:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-autofilllessSearch show-loading sessioncamexclude" title="the street address"
                          placeHolder="${placeholder}" required="false"
@@ -74,20 +81,20 @@
 
     <%-- POSTCODE --%>
     <c:set var="fieldXpath" value="${xpath}/nonStdPostCode"/>
-    <form_v2:row fieldXpath="${fieldXpath}" label="Postcode" id="${name}_postCode_suburb" className="${name}_nonStdFieldRow">
+    <form_v2:row fieldXpath="${fieldXpath}" label="Postcode" id="${name}_postCode_suburb" className="${requiredInputClass} ${name}_nonStdFieldRow">
         <field_v1:post_code xpath="${fieldXpath}" required="true" title="postcode" additionalAttributes="${postCodeNameAdditionalAttributes}"/>
     </form_v2:row>
 
     <%-- SUBURB DROPDOWN (populated from postcode) --%>
     <c:set var="fieldXpath" value="${xpath}/suburb"/>
-    <form_v2:row fieldXpath="${fieldXpath}" label="Suburb" className="${name}_nonStdFieldRow">
+    <form_v2:row fieldXpath="${fieldXpath}" label="Suburb" className="${requiredInputClass} ${name}_nonStdFieldRow">
         <c:choose>
             <c:when test="${not empty address.postCode or not empty address.nonStdPostCode}">
                 <div class="select">
 					<span class=" input-group-addon" data-target="${name}">
 						<i class="icon-sort"></i>
 					</span>
-                    <select name="${name}_suburb" id="${name}_suburb" class="form-control" data-attach="true" data-rule-validSuburb="${name}" ${suburbNameAdditionalAttributes}>
+                    <select name="${name}_suburb" id="${name}_suburb" class="form-control" data-attach="true" data-rule-validSuburb="${name}" ${suburbNameAdditionalAttributes} <field_v1:analytics_attr analVal="Suburb" quoteChar="\"" />>
                             <%-- Write the initial "Please select" option --%>
                         <option value="">Please select</option>
                             <%-- Write the options for each row --%>
@@ -114,7 +121,7 @@
 					<span class=" input-group-addon" data-target="${name}">
 						<i class="icon-sort"></i>
 					</span>
-                    <select name="${name}_suburb" id="${name}_suburb" class="form-control" data-attach="true" disabled="disabled" data-rule-validSuburb="${name}" ${suburbNameAdditionalAttributes}>
+                    <select name="${name}_suburb" id="${name}_suburb" class="form-control" data-attach="true" disabled="disabled" data-rule-validSuburb="${name}" ${suburbNameAdditionalAttributes} <field_v1:analytics_attr analVal="Suburb" quoteChar="\"" />>
                         <option value=''>Enter Postcode</option>
                     </select>
                 </div>
@@ -126,9 +133,10 @@
 
     <%-- STREET NAME --%>
     <c:set var="fieldXpath" value="${xpath}/nonStdStreet"/>
-    <form_v2:row fieldXpath="${fieldXpath}" label="Street" className="${name}_nonStdFieldRow">
+    <form_v2:row fieldXpath="${fieldXpath}" label="Street" className="${requiredInputClass} ${name}_nonStdFieldRow">
+        <c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Street" quoteChar="\"" /></c:set>
         <field_v2:input xpath="${fieldXpath}" title="the street" required="false" className="sessioncamexclude"
-                         additionalAttributes=" data-rule-validAddress='${name}' data-rule-validAddress='Please enter the residential street' "/>
+                         additionalAttributes=" data-rule-validAddress='${name}' data-rule-validAddress='Please enter the residential street' ${analyticsAttr} "/>
     </form_v2:row>
 
     <%-- STREET NUMBER --%>
@@ -140,23 +148,26 @@
 
     <form_v2:row fieldXpath="${fieldXpath}" label="${streetNoLabel}" id="${name}_streetNumRow" className="${name}_nonStdFieldRow">
         <div class="${name}_streetNum_container">
+            <c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Street No." quoteChar="\"" /></c:set>
             <field_v2:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetNum blur-on-select show-loading sessioncamexclude" title="the street no." includeInForm="true"
-                             required="false" additionalAttributes=" data-rule-validAddress='${name}' data-msg-validAddress='Please enter a valid street number'"/>
+                             required="false" additionalAttributes=" data-rule-validAddress='${name}' data-msg-validAddress='Please enter a valid street number' ${analyticsAttr}"/>
         </div>
     </form_v2:row>
 
     <%-- UNIT/SHOP NUMBER (Optional) --%>
     <c:set var="fieldXpath" value="${xpath}/unitShop"/>
     <form_v2:row fieldXpath="${fieldXpath}" label="Unit/Shop/Level" id="${name}_unitShopRow" className="${name}_nonStdFieldRow">
+        <c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Unit" quoteChar="\"" /></c:set>
         <field_v2:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-unitShop blur-on-select show-loading sessioncamexclude" title="the unit/shop" includeInForm="true"
-                         required="false"/>
+                         required="false" additionalAttributes="${analyticsAttr}" />
     </form_v2:row>
 
     <%-- UNIT/SHOP TYPE (Optional) --%>
     <c:set var="unitTypes">=Please choose...,CO=Cottage,DU=Duplex,FA=Factory,HO=House,KI=Kiosk,L=Level,M=Maisonette,MA=Marine Berth,OF=Office,PE=Penthouse,RE=Rear,RO=Room,SH=Shop,ST=Stall,SI=Site,SU=Suite,TO=Townhouse,UN=Unit,VI=Villa,WA=Ward,OT=Other</c:set>
     <c:set var="fieldXpath" value="${xpath}/nonStdUnitType"/>
     <form_v2:row fieldXpath="${fieldXpath}" label="Unit Type" className="${name}_nonStdFieldRow">
-        <field_v2:array_select items="${unitTypes}" xpath="${fieldXpath}" title="the unit type" required="false" includeInForm="true"/>
+        <c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Unit type" quoteChar="\"" /></c:set>
+        <field_v2:array_select items="${unitTypes}" xpath="${fieldXpath}" title="the unit type" required="false" includeInForm="true" extraDataAttributes="${analyticsAttr}"/>
     </form_v2:row>
 
     <!-- NON STANDARD CHECKBOX -->
@@ -168,7 +179,8 @@
             <c:set var="unableToFindCheckboxText" value="${unableToFindCheckboxText} or your address is a PO Box"/>
         </c:if>
 
-        <field_v2:checkbox xpath="${fieldXpath}" value="Y" title="${unableToFindCheckboxText}" label="true" required="false"/>
+        <c:set var="analyticsAttr"><field_v1:analytics_attr analVal="No Address Match" quoteChar="\"" /></c:set>
+        <field_v2:checkbox xpath="${fieldXpath}" value="Y" title="${unableToFindCheckboxText}" label="true" required="false" additionalLabelAttributes="${analyticsAttr}"/>
     </form_v2:row>
 
     <core_v1:clear/>

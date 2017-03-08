@@ -37,6 +37,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import rx.schedulers.Schedulers;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
@@ -116,7 +117,7 @@ public class CarQuoteService extends CommonRequestServiceV2 {
                     .response(CarResponseV2.class)
                     .build())
                     .doOnError(this::logHttpClientError)
-                    .single().toBlocking().single();
+                    .observeOn(Schedulers.io()).toBlocking().single();
 
             carResults = ResponseAdapterV2.adapt(carResponse);
         } else {
@@ -140,7 +141,7 @@ public class CarQuoteService extends CommonRequestServiceV2 {
                     .response(CarResponse.class)
                     .build())
                     .doOnError(this::logHttpClientError)
-                    .single().toBlocking().single();
+                    .observeOn(Schedulers.io()).toBlocking().single();
 
             carResults = ResponseAdapter.adapt(carResponse);
         }
@@ -163,6 +164,8 @@ public class CarQuoteService extends CommonRequestServiceV2 {
         return results.stream()
                 .filter(result -> AvailableType.Y.equals(result.getAvailable()))
                 .map(result -> {
+                            final String followupIntended = Optional.ofNullable(result.getFollowupIntended())
+                                    .orElse("");
                             result.setLeadfeedinfo(leadFeedInfo);
                             return new ResultPropertiesBuilder(request.getTransactionId(),
                                     result.getProductId())
@@ -178,6 +181,7 @@ public class CarQuoteService extends CommonRequestServiceV2 {
                                     .addResult("openingHours", result.getContact().getCallCentreHours())
                                     .addResult("leadNo", result.getQuoteNumber())
                                     .addResult("brandCode", result.getBrandCode())
+                                    .addResult("followupIntended", followupIntended)
                                     .getResultProperties();
                         }
                 ).flatMap(Collection::stream)
@@ -201,7 +205,7 @@ public class CarQuoteService extends CommonRequestServiceV2 {
                     .filter(row -> row.getAvailable().equals(AvailableType.Y))
                     .forEach(row -> {
                                 String productId = row.getProductId();
-                                BigDecimal premium = row.getPrice().getAnnualPremium();
+                                BigDecimal premium = row.getPrice().getAnnualPremium().setScale(0, BigDecimal.ROUND_CEILING);
                                 XmlNode product = new XmlNode(productId);
                                 XmlNode headline = new XmlNode("headline");
                                 XmlNode lumpSumTotal = new XmlNode("lumpSumTotal", premium.toString());

@@ -12,7 +12,8 @@
 <form_v2:fieldset legend="Regular Driver Details" id="${name}FieldSet">
 
     <form_v2:row label="Gender" id="${name}_genderRow">
-        <field_v2:array_radio id="${name}_gender" xpath="${xpath}/gender" required="true" items="M=Male,F=Female" title="${title} gender" className="health-person-details person-gender" />
+        <c:set var="analAttribute"><field_v1:analytics_attr analVal="Gender" quoteChar="\"" /></c:set>
+        <field_v2:array_radio id="${name}_gender" xpath="${xpath}/gender" required="true" items="M=Male,F=Female" title="${title} gender" className="health-person-details person-gender" additionalLabelAttributes="${analAttribute}" />
     </form_v2:row>
 
     <form_v2:row label="Date of Birth">
@@ -20,10 +21,13 @@
     </form_v2:row>
 
     <form_v2:row label="Employment status" helpId="27" id="employment_status_row">
+    <form_v2:row label="Employment status" helpId="27">
+        <c:set var="analAttribute"><field_v1:analytics_attr analVal="Employment status" quoteChar="\"" /></c:set>
         <field_v2:import_select xpath="${xpath}/employmentStatus"
             required="true" className="employment_status"
             url="/WEB-INF/option_data/employment_status.html"
-            title="regular driver's employment status" />
+            title="regular driver's employment status"
+            additionalAttributes="${analAttribute}"/>
     </form_v2:row>
 
     <form_v2:row label="Age drivers licence obtained" helpId="25">
@@ -31,8 +35,9 @@
     </form_v2:row>
 
     <form_v2:row label="Owns another car" id="ownsAnotherCar" helpId="26">
+        <c:set var="analAttribute"><field_v1:analytics_attr analVal="Owns another car" quoteChar="\"" /></c:set>
         <field_v2:array_radio xpath="${xpath}/ownsAnotherCar" required="true" items="Y=Yes,N=No"
-            title="if the regular driver owns another car" />
+            title="if the regular driver owns another car" additionalLabelAttributes="${analAttribute}" />
     </form_v2:row>
 
 </form_v2:fieldset>

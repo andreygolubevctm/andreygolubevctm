@@ -123,7 +123,7 @@
 
                         // remove the empty value option
                         $rebateElement.find('option[value=""]').remove();
-                        $rebateElement.attr('data-analytics','filter rebate');
+                        meerkat.modules.dataAnalyticsHelper.add($rebateElement,'filter rebate');
                         $('.filter-rebate-holder').html($rebateElement);
                     },
                     update: function (filterObject) {
@@ -194,8 +194,7 @@
             filters: [
                 {
                     template: '#filter-benefits-template',
-                    container: '.results-filters-benefits',
-                    context: '#results-sidebar'
+                    container: '.results-filters-benefits'
                 }
             ],
             events: {

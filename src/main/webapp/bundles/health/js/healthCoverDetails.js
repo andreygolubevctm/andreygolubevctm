@@ -29,7 +29,7 @@
             $_previousFund.find('.membership').removeClass('onA');
         }
 
-        if (healthChoices.hasSpouse() && partnerFund !== 'NONE' && partnerFund !== '') {
+        if (meerkat.modules.healthChoices.hasSpouse() && partnerFund !== 'NONE' && partnerFund !== '') {
             $_previousFund.find('#partnerMemberID').slideDown();
             $_previousFund.find('.membership').addClass('onB');
         } else {
@@ -53,7 +53,7 @@
 
     function setHealthFundsForPerson(initMode, $healthCover , $continuousCover, $dob, $lhcRow){
 
-        var lessThan31Or31AndBeforeJuly1 = isLessThan31Or31AndBeforeJuly1($dob.val());
+        var lessThan31Or31AndBeforeJuly1 = meerkat.modules.age.isLessThan31Or31AndBeforeJuly1($dob.val());
         var healthCoverValue = $healthCover.find(':checked').val();
         if( healthCoverValue == 'Y' ) {
             if( lessThan31Or31AndBeforeJuly1 ) {
@@ -81,8 +81,9 @@
     }
 
     function setIncomeBase (initMode){
-        var $incomeBase = $('#health_healthCover_incomeBase');
-        if((healthChoices._cover === 'S' || healthChoices._cover === 'SM' || healthChoices._cover === 'SF') && isRebateApplied()){
+        var $incomeBase = $('#health_healthCover_incomeBase'),
+            cover = meerkat.modules.healthChoices.returnCoverCode();
+        if((cover === 'S' || cover === 'SM' || cover === 'SF') && isRebateApplied()){
             show(initMode , $incomeBase);
         } else {
             hide(initMode , $incomeBase);

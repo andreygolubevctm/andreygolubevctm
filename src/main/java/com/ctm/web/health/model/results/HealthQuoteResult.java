@@ -1,9 +1,12 @@
 package com.ctm.web.health.model.results;
 
 import com.ctm.web.core.resultsData.model.Result;
+import com.ctm.web.core.serializers.LocalDateSerializer;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import java.time.LocalDate;
 import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -30,6 +33,12 @@ public class HealthQuoteResult extends Result {
     private Long transactionId;
 
     private Info info;
+
+    @JsonSerialize(using = LocalDateSerializer.class)
+    private LocalDate dropDeadDate;
+
+    @JsonSerialize(using = LocalDateSerializer.class)
+    private LocalDate pricingDate;
 
     public Promo getPromo() {
         return promo;
@@ -117,5 +126,21 @@ public class HealthQuoteResult extends Result {
 
     public void setPaymentTypeAltPremiums(Map<String, Premium> paymentTypeAltPremiums) {
         this.paymentTypeAltPremiums = paymentTypeAltPremiums;
+    }
+
+    public LocalDate getDropDeadDate() {
+        return dropDeadDate;
+    }
+
+    public void setDropDeadDate(final LocalDate dropDeadDate) {
+        this.dropDeadDate = dropDeadDate;
+    }
+
+    public LocalDate getPricingDate() {
+        return pricingDate;
+    }
+
+    public void setPricingDate(final LocalDate pricingDate) {
+        this.pricingDate = pricingDate;
     }
 }

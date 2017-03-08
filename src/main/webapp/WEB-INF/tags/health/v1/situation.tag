@@ -26,6 +26,9 @@
                     </div>
                 </div>
             </simples:dialogue>
+            <simples:dialogue id="68" vertical="health" />
+            <simples:dialogue id="69" vertical="health" />
+            <simples:dialogue id="70" vertical="health" />
             <simples:dialogue id="19" vertical="health" className="simples-dialog-inbound"/>
             <simples:dialogue id="20" vertical="health" className="simples-dialog-outbound"/>
             <simples:dialogue id="48" vertical="health" />
@@ -72,7 +75,8 @@
                 <%-- Medicare card question --%>
                 <c:if test="${callCentre}">
                     <c:set var="fieldXpath" value="${xpath}/cover" />
-                    <form_v3:row label="Private Health Insurance works in conjunction with Medicare, so just to confim that you are covered by a Blue or Green Medicare Card?" fieldXpath="${fieldXpath}" className="health_situation_medicare text-danger" helpId="564">
+                    <c:set var="fieldXpathName" value="${go:nameFromXpath(fieldXpath)}_wrapper" />
+                    <form_v3:row label="Private Health Insurance works in conjunction with Medicare, so just to confim that you are covered by a Blue or Green Medicare Card?" fieldXpath="${fieldXpath}" id="${fieldXpathName}" className="health_situation_medicare text-danger" helpId="564">
                         <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your Medicare card cover" required="true" className="health-medicare_details-card" id="${name}_cover" additionalAttributes="data-rule-isCheckedYes='true' data-msg-isCheckedYes='Unfortunately we cannot continue with your quote'" />
                     </form_v3:row>
                 </c:if>

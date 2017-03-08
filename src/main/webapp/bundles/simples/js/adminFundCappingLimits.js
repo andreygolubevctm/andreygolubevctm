@@ -1,5 +1,5 @@
 /**
- * Fund capping limits implementation of adminDataCRUD.js
+ * Fund capping limits implementation of crud.js
  */
 ;(function($, undefined){
 	
@@ -9,7 +9,7 @@
 	function init() {
 		$(document).ready(function() {
 			if($("#fund-capping-limits-container").length) {
-				CRUD = new meerkat.modules.adminDataCRUD.newCRUD({
+				CRUD = new meerkat.modules.crud.newCRUD({
 					baseURL: "../../admin/cappingLimits",
 					primaryKey: "cappingLimitsKey", 
 					models: {

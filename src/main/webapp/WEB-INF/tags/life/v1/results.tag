@@ -2454,7 +2454,6 @@ var highlightMeTextObj = new HighlightMeText();
 				<div class="provider asteron"></div>
 				<div class="provider bt-australia"></div>
 				<div class="provider comm-insure"></div>
-				<div class="provider macquarie"></div>
 				<div class="provider mlc"></div>
 				<div class="provider onepath"></div>
 				<c:if test="${vertical eq 'life'}">

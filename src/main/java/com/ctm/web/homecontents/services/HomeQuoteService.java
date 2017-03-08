@@ -34,6 +34,7 @@ import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import rx.schedulers.Schedulers;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
@@ -108,7 +109,7 @@ public class HomeQuoteService extends CommonRequestServiceV2 {
                 .response(HomeResponse.class)
                 .build())
                 .doOnError(this::logHttpClientError)
-                .single().toBlocking().single();
+                .observeOn(Schedulers.io()).toBlocking().single();
 
         final List<HomeResult> homeResults = ResponseAdapter.adapt(homeQuoteRequest, homeResponse);
 
@@ -169,7 +170,7 @@ public class HomeQuoteService extends CommonRequestServiceV2 {
                 .build())
 //                TODO: what to do on error
 //                .doOnError(t -> t.printStackTrace())
-                .single().toBlocking().single();
+                .observeOn(Schedulers.io()).toBlocking().single();
 
         return ResponseAdapter.adapt(moreInfoResponse);
     }
@@ -191,7 +192,7 @@ public class HomeQuoteService extends CommonRequestServiceV2 {
                     .filter(row -> AvailableType.Y.equals(row.getAvailable()))
                     .forEach(row -> {
                                 String productId = row.getProductId();
-                                BigDecimal premium = row.getPrice().getAnnualPremium();
+                                BigDecimal premium = row.getPrice().getAnnualPremium().setScale(0, BigDecimal.ROUND_CEILING);
                                 XmlNode product = new XmlNode(productId);
                                 XmlNode price = new XmlNode("price");
                                 XmlNode annual = new XmlNode("annual");

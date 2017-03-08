@@ -91,6 +91,7 @@
 	<c:set var="hospitalSpecificDisabled" value="${benefitsContent.getSupplementaryValueByKey('hospitalSpecificDisabled')}" />
 
 	<c:set var="hospitalLimitedAll" value="${benefitsContent.getSupplementaryValueByKey('hospitalLimitedAll')}" />
+	<c:set var="hospitalLimitedAllALT" value="${benefitsContent.getSupplementaryValueByKey('hospitalLimitedAllALT')}" />
 	<c:set var="hospitalLimitedHelp" value="${benefitsContent.getSupplementaryValueByKey('hospitalLimitedHelp')}" />
 
 	<c:set var="extrasFamilyYoung" value="${benefitsContent.getSupplementaryValueByKey('extrasFamilyYoung')}" />
@@ -133,10 +134,13 @@
 	<c:set var="extrasCompareSpecialB" value="${benefitsContent.getSupplementaryValueByKey('extrasCompareSpecialB')}" />
 	<c:set var="hospitalCompareSpecialB" value="${benefitsContent.getSupplementaryValueByKey('hospitalCompareSpecialB')}" />
 
-<jsp:useBean id="healthPriceDetailService" class="com.ctm.web.health.services.HealthPriceDetailService" scope="page" />
-<c:set var="healthAlternatePricingActive" value="${healthPriceDetailService.isAlternatePriceActive(pageContext.getRequest())}" />
+	<health_v1:dual_pricing_settings />
 {
 	isCallCentreUser: <c:out value="${not empty callCentre}"/>,
+	<c:if test="${not empty callCentre}">
+		contactType: "<c:out value="${data['health/simples/contactType']}"/>",
+	</c:if>
+	gaClientId: "<c:out value="${data['health/gaclientid']}"/>",
 	isFromBrochureSite: <c:out value="${fromBrochure}"/>,
 	journeyStage: "<c:out value="${data['health/journey/stage']}"/>",
 	pageAction: '<c:out value="${pageAction}"/>',
@@ -152,7 +156,7 @@
 	isDefaultToHealthQuote: ${defaultToHealthQuote},
     isDefaultToHealthApply: ${defaultToHealthApply},
 	isTaxTime: '<content:get key="taxTime"/>',
-	healthAlternatePricingActive: ${healthAlternatePricingActive},
+	isDualPricingActive: ${isDualPriceActive},
 	<jsp:useBean id="healthApplicationService" class="com.ctm.web.health.services.HealthApplicationService"/>
 	<c:set var="providerList" value="${miscUtils:convertToJson(healthApplicationService.getAllProviders(pageSettings.getBrandId()))}"/>
 	navMenu: {
@@ -234,6 +238,7 @@
 		combinedSpecificHelp			: "${combinedSpecificHelp}",
 
 		hospitalLimitedAll				: "${hospitalLimitedAll}",
+		hospitalLimitedAllALT			: "${hospitalLimitedAllALT}",
 		hospitalLimitedHelp				: "${hospitalLimitedHelp}",
 		extrasLimitedAll 				: "${extrasLimitedAll}",
 

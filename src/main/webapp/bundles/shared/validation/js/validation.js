@@ -108,7 +108,11 @@ var validation = false;
      * @param $formElement
      */
     function setupDefaultValidationOnForm($formElement) {
-        $formElement.validate({
+        $formElement.validate(getDefaultValidationObj());
+    }
+
+    function getDefaultValidationObj() {
+        var validationObj = {
             submitHandler: function (form) {
                 form.submit();
             },
@@ -129,7 +133,27 @@ var validation = false;
                 /** If the element has a row parent (where the error message gets inserted to), then scroll to that instead **/
                 if ($parent.length > 0) $ele = $parent;
                 jQuery.validator.scrollingInProgress = true;
-                meerkat.modules.utils.scrollPageTo($ele, 500, -50, function () {
+
+                var offsetFromTop = -50,
+                    $headerTopFixed = $('.header-top.navMenu-row-fixed'),
+                    $productSummaryAffixed = $('.productSummary-affix'),
+                    $progressBarAffix = $('.progress-bar-row.navbar-affix');
+
+                if (meerkat.modules.deviceMediaState.get() === 'xs') {
+                    if ($headerTopFixed.length > 0) {
+                        offsetFromTop -= $headerTopFixed.find('.container').height();
+                    }
+
+                    if ($productSummaryAffixed.length > 0) {
+                        offsetFromTop -= $productSummaryAffixed.height();
+                    }
+                }
+
+                if ($progressBarAffix.length > 0) {
+                    offsetFromTop -= $progressBarAffix.height();
+                }
+
+                meerkat.modules.utils.scrollPageTo($ele, 500, offsetFromTop, function () {
                     jQuery.validator.scrollingInProgress = false;
                 });
             },
@@ -225,9 +249,10 @@ var validation = false;
             unhighlight: function (element, errorClass, validClass) {
                 return this.ctm_unhighlight(element, errorClass, validClass);
             }
-        });
-    }
+        };
 
+        return validationObj;
+    }
 
     function isValid($element, displayErrors) {
         if (displayErrors)
@@ -241,7 +266,7 @@ var validation = false;
             $form = $("#mainForm");
 
         try {
-            return $form.validate().check($element);
+            return $form.validate(getDefaultValidationObj()).check($element);
         } catch (e) {
             return true;
         }
@@ -253,7 +278,8 @@ var validation = false;
         initJourneyValidator: initJourneyValidator,
         events: events,
         isValid: isValid,
-        setupDefaultValidationOnForm: setupDefaultValidationOnForm
+        setupDefaultValidationOnForm: setupDefaultValidationOnForm,
+        getDefaultValidationObj: getDefaultValidationObj
     });
 
     /**

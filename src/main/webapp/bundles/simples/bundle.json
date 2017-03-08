@@ -5,8 +5,12 @@
         "shared/results/v2",
         "plugins/inspectorJson",
         "shared/sliders",
-        "core",
+        "shared/fonts/v1",
+        "shared/headerBar/v1",
+	    "core",
         "shared/forms/v2",
-        "shared/datepicker"
+        "shared/datepicker",
+        "shared/crud",
+        "shared/reward"
     ]
 }

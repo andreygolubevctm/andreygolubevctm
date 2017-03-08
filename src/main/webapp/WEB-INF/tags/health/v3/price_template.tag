@@ -2,7 +2,11 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 {{ if (!obj.hasOwnProperty('premium')) {return;} }}
-{{ var availablePremiums = obj.hasOwnProperty('showAltPremium') && obj.showAltPremium === true ? obj.altPremium : obj.premium; }}
+{{ var isConfirmation = false; }}
+{{ try{ }}
+{{ isConfirmation = _.isNumber(meerkat.modules.healthConfirmation.getPremium()); }}
+{{ } catch(e){} }}
+{{ var availablePremiums = (!meerkat.site.isCallCentreUser || !isConfirmation) && _.has(meerkat.site,"alternatePricing") && meerkat.site.alternatePricing.isActive && _.has(obj,"altPremium") ? obj.altPremium : obj.premium; }}
 {{ var healthResultsTemplate = meerkat.modules.healthResultsTemplate; }}
 {{ var availableFrequencies = meerkat.modules.healthResults.getPaymentFrequencies(); }}
 <div class="price premium">

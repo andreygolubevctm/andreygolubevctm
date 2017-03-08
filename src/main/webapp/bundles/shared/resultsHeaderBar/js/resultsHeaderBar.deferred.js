@@ -11,6 +11,7 @@
 
     var settings = {
             disableOnXs: false,
+            navbarSelector: '#navbar-main',
             getStartOffset: function () {
                 return $(".header-top .container").height();
             }
@@ -36,7 +37,7 @@
         $resultsHeaderBg = $('.resultsHeadersBg');
         $affixOnScroll = $('.affixOnScroll');
         $resultsContainer = $('.resultsContainer');
-        navBarHeight = $("#navbar-main").height();
+        navBarHeight = $(settings.navbarSelector).outerHeight();
 
         // Self-initialise
         $(document).on('resultsLoaded', registerEventListeners);
@@ -138,7 +139,8 @@
     function onAnimationStart() {
         if (isContentAffixed() && contentAnimating === false) {
             contentAnimating = true;
-            var top = $(window).scrollTop() + navBarHeight - $resultsContainer.offset().top;
+            navBarHeight = $(settings.navbarSelector).outerHeight();
+            var top = $(window).scrollTop() + navBarHeight - $resultsContainer.offset().top + settings.whilePaginatingOffset;
             $resultsContainer.find(".result").css("top", top + 'px').end().removeClass("affixed").addClass("affixed-absoluted");
         }
     }

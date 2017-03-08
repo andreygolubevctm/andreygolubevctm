@@ -2,6 +2,9 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<%-- VARIABLES --%>
+<c:set var="navBtnAnalAttribute"><field_v1:analytics_attr analVal="nav button" quoteChar="\"" /></c:set>
+
 <%-- The following are hidden fields used by filters --%>
 <field_v1:hidden xpath="quote/paymentType" defaultValue="annual" />
 <field_v1:array_select
@@ -24,13 +27,13 @@
 		omitPleaseChoose="Y"
 		className="hidden" />
 
-<field_v1:hidden xpath="quote/typeOfCover" constantValue="COMPREHENSIVE" />
+<field_v1:hidden xpath="quote/typeOfCover" />
 
 <c:set var="coverTypeOptions">
-	<c:choose>
-		<c:when test="${skipNewCoverTypeCarJourney eq true}">COMPREHENSIVE=Comprehensive</c:when>
-		<c:otherwise>COMPREHENSIVE=Comprehensive,TPPD=3rd Party Property Damage,TPFT=3rd Party Fire and Theft</c:otherwise>
-	</c:choose>
+    <c:choose>
+        <c:when test="${skipNewCoverTypeCarJourney eq true or pageSettings.getBrandCode() ne 'ctm'}">COMPREHENSIVE=Comprehensive</c:when>
+        <c:otherwise>COMPREHENSIVE=Comprehensive,TPFT=Third party property&#44; fire and theft,TPPD=Third party property</c:otherwise>
+    </c:choose>
 </c:set>
 
 <field_v1:array_select
@@ -38,7 +41,7 @@
 		xpath="filter/coverTypeOptions"
 		title=""
 		required=""
-		className="hidden" />
+		className="hidden type_of_cover" />
 
 <car:results_filterbar_xs />
 
@@ -108,10 +111,10 @@
 
 	<%-- DEFAULT RESULT ROW --%>
 	<core_v1:js_template id="result-template">
-		{{ var productTitle = (typeof obj.productName !== 'undefined') ? obj.productName : 'Unknown product name'; }}
-		{{ var productDescription = (typeof obj.productDescription !== 'undefined') ? obj.productDescription : 'Unknown product name'; }}
-		{{ var promotionText = (typeof obj.discountOffer !== 'undefined' && obj.discountOffer.length > 0) ? obj.discountOffer : ''; }}
-		{{ var offerTermsContent = (typeof obj.discountOfferTerms !== 'undefined' && obj.discountOfferTerms != null && obj.discountOfferTerms.length > 0) ? obj.discountOfferTerms : ''; }}
+		{{ var productTitle = !_.isUndefined(obj.productName) ? obj.productName : 'Unknown product name'; }}
+		{{ var productDescription = !_.isUndefined(obj.productDescription) ? obj.productDescription : 'Unknown product name'; }}
+		{{ var promotionText = (!_.isUndefined(obj.discountOffer) && !_.isNull(obj.discountOffer) && obj.discountOffer.length > 0) ? obj.discountOffer : ''; }}
+		{{ var offerTermsContent = (!_.isUndefined(obj.discountOfferTerms) && !_.isNull(obj.discountOfferTerms) && obj.discountOfferTerms.length > 0) ? obj.discountOfferTerms : ''; }}
 
 		{{ var template = $("#provider-logo-template").html(); }}
 		{{ var logo = _.template(template); }}
@@ -136,9 +139,9 @@
 		<%-- Main call to action button. --%>
 		{{ var mainCallToActionButton = '' }}
 		{{ if (obj.availableOnline == true) { }}
-		{{ mainCallToActionButton = '<a target="_blank" href="javascript:;" class="btn btn-lg btn-primary btn-cta btn-block btn-more-info-apply '+ctaBtnClass+'" data-productId="'+obj.productId+'">'+ctaBtnText+'<span class="icon-arrow-right"></span></a>' }}
+		{{ mainCallToActionButton = '<a target="_blank" href="javascript:;" class="btn btn-lg btn-primary btn-cta btn-block btn-more-info-apply '+ctaBtnClass+'" data-productId="'+obj.productId+'" ${navBtnAnalAttribute}>'+ctaBtnText+'<span class="icon-arrow-right"></span></a>' }}
 		{{ } else { }}
-		{{ mainCallToActionButton = '<div class="btnContainer"><a class="btn btn-lg btn-cta btn-block btn-call-actions btn-calldirect" data-callback-toggle="calldirect" href="javascript:;" data-productId="'+obj.productId+'">Call Insurer Direct</a></div>' }}
+		{{ mainCallToActionButton = '<div class="btnContainer"><a class="btn btn-lg btn-cta btn-block btn-call-actions btn-calldirect" data-callback-toggle="calldirect" href="javascript:;" data-productId="'+obj.productId+'" ${navBtnAnalAttribute}>Call Insurer Direct</a></div>' }}
 		{{ } }}
 
 		<%-- FEATURES MODE Templates --%>
@@ -171,8 +174,11 @@
 				<div class="resultInsert featuresMode">
 					<div class="productSummary results">
 						<div class="compare-toggle-wrapper">
-							<input type="checkbox" class="compare-tick" data-productId="{{= obj.productId }}" id="features_compareTick_{{= obj.productId }}" />
-							<label for="features_compareTick_{{= obj.productId }}"></label>
+							<c:set
+									var="analAttribute"><field_v1:analytics_attr analVal="Short List - {{= obj.brandCode }}|{{= obj.productId }}"
+																				 quoteChar="\"" /></c:set>
+							<input type="checkbox" class="compare-tick" data-productId="{{= obj.productId }}" id="features_compareTick_{{= obj.productId }}" ${analAttribute} />
+							<label for="features_compareTick_{{= obj.productId }}" ${analAttribute}></label>
 						</div>
 
 						<div class="clearfix">
@@ -199,7 +205,7 @@
 							<legend>Special Offer</legend>
 							{{= promotionText }}
 							{{ if (offerTermsContent.length > 0) { }}
-							<a class="small offerTerms" href="javascript:;">Conditions</a>
+							<a class="small offerTerms" href="javascript:;" ${navBtnAnalAttribute}>Conditions</a>
 							<div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
 							{{ } }}
 						</fieldset>
@@ -224,7 +230,7 @@
 							<div class="promotion visible-sm">
 								<span class="icon icon-tag"></span> {{= promotionText }}
 								{{ if (offerTermsContent.length > 0) { }}
-								<a class="small offerTerms" href="javascript:;">Offer terms</a>
+								<a class="small offerTerms" href="javascript:;" ${navBtnAnalAttribute}>Offer terms</a>
 								<div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
 								{{ } }}
 							</div>
@@ -250,14 +256,14 @@
 									</div>
 								</div>
 								<div class="col-xs-12 col-md-5 col-lg-4 hidden-xs">
-									<a class="btn btn-primary btn-cta btn-block btn-more-info" href="javascript:;" data-productId="{{= obj.productId }}">More Info & Apply <span class="icon icon-arrow-right" /></a>
+									<a class="btn btn-primary btn-cta btn-block btn-more-info" href="javascript:;" data-productId="{{= obj.productId }}" ${navBtnAnalAttribute}>More Info & Apply <span class="icon icon-arrow-right" /></a>
 								</div>
 							</div>
 							{{ if (promotionText.length > 0) { }}
 							<div class="promotion hidden-sm">
 								<span class="icon icon-tag"></span> {{= promotionText }}
 								{{ if (offerTermsContent.length > 0) { }}
-								<a class="small hidden-xs offerTerms" href="javascript:;">Offer terms</a>
+								<a class="small hidden-xs offerTerms" href="javascript:;" ${navBtnAnalAttribute}>Offer terms</a>
 								<div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
 								{{ } }}
 							</div>
@@ -293,14 +299,14 @@
 		{{ var brandsKnockedOut = 0; }}
 		{{ var $featuresMode = $('.featuresMode'); }}
 		{{ _.each(obj, function(result) { }}
-		{{ if (result.available !== 'Y') { }}
-		{{ brandsKnockedOut++; }}
-		{{ logos += logo(result); }}
-		{{ } }}
+			{{ if (result.available !== 'Y') { }}
+				{{ brandsKnockedOut++; }}
+				{{ logos += logo(result); }}
+			{{ } }}
 		{{ }) }}
 		<div class="result-row result_unavailable_combined notfiltered" data-available="N" style="display:block" data-position="{{= obj.length }}" data-sort="{{= obj.length }}">
 			<div class="result">
-				{{ if (brandsKnockedOut == obj.length && $featuresMode.length == 0) { }}
+				{{ if (Results.model.availableCounts == 0) { }}
 				<c:choose>
 					<c:when test="${brandCode eq 'ctm' && not(environmentCode eq 'NXS')}">
 						<agg_v2:no_quotes id="no-results-content"/>
@@ -318,12 +324,14 @@
 					<div class="logos">{{= logos }}</div>
 				</div>
 				{{ } }}
+				{{ if (Results.model.availableCounts > 0) { }}
 				<div class="resultInsert featuresMode">
 					<div class="productSummary results clearfix">
 						<h2>We're sorry but these providers chose not to quote:</h2>
 						<div class="logos">{{= logos }}</div>
 					</div>
 				</div>
+				{{ } }}
 			</div>
 		</div>
 		</div>
@@ -403,7 +411,7 @@
 
 <core_v1:js_template id="annual-price-template">
 	<div class="frequency annual clearfix" data-availability="{{= obj.available }}">
-		<div class="frequencyAmount">{{= '$' }}{{= obj.price.annualPremium }}</div>
+		<div class="frequencyAmount">{{= '$' }}{{= obj.price.annualPremiumFormatted }}</div>
 		<div class="frequencyTitle">Annual Price</div>
 	</div>
 </core_v1:js_template>
@@ -429,7 +437,7 @@
 <core_v1:js_template id="annual-price-features-template">
 	<div class="frequency annual" data-availability="{{= obj.available }}">
 		<div class="frequencyAmount">
-			<span class="dollarSign">{{= '$' }}</span><span class="dollars">{{= obj.price.annualPremium }}</span>
+			<span class="dollarSign">{{= '$' }}</span><span class="dollars">{{= obj.price.annualPremiumFormatted }}</span>
 		</div>
 		<div class="frequencyTitle">Annual</div>
 	</div>
@@ -456,7 +464,7 @@
 			</span>
 			<span class="price">
 				<span class="frequency annual annually {{= annualHidden }}">
-					{{= '$' }}{{= products[i].price.annualPremium }}
+					{{= '$' }}{{= products[i].price.annualPremiumFormatted }}
 				</span>
 				<span class="frequency monthly {{= monthlyHidden }}">
 					{{= '$' }}{{= products[i].price.monthlyPremium.toFixed(2) }}
@@ -480,7 +488,7 @@
 		<span class="carCompanyLogo logo_{{= img }}" title="{{= products[i].name }}"></span>
 				<span class="price">
 					<span class="frequency annual annually {{= annualHidden }}">
-						{{= '$' }}{{= products[i].price.annualPremium }} <span class="small hidden-sm">annually</span>
+						{{= '$' }}{{= products[i].price.annualPremiumFormatted }} <span class="small hidden-sm">annually</span>
 					</span>
 					<span class="frequency monthly {{= monthlyHidden }}">
 						{{= '$' }}{{= products[i].price.monthlyPremium.toFixed(2) }} <span class="small hidden-sm">monthly</span>
@@ -553,7 +561,7 @@
 	</ul>
 	{{ if(comparedResultsCount > 1) { }}
 	<ul class="nav navbar-nav navbar-right">
-		<li class=""><a href="javascript:void(0);" class="compare-list enter-compare-mode">Compare Products <span class="icon icon-arrow-right"></span></a></li>
+		<li class=""><a href="javascript:void(0);" class="compare-list enter-compare-mode" ${navBtnAnalAttribute}>Compare Products <span class="icon icon-arrow-right"></span></a></li>
 	</ul>
 	{{ } }}
 	{{ } }}
@@ -563,14 +571,14 @@
 <!-- Call action buttons. -->
 <core_v1:js_template id="call-action-buttons-template">
 	<%-- Call Insurer Direct action button. --%>
-	{{ var callInsurerDirectActionButton = '<div class="btnContainer"><a class="btn btn-sm btn-call btn-block btn-call-actions btn-calldirect" data-callback-toggle="calldirect" href="javascript:;" data-productId="'+obj.productId+'">Call Direct</a></div>' }}
+	{{ var callInsurerDirectActionButton = '<div class="btnContainer"><a class="btn btn-sm btn-call btn-block btn-call-actions btn-calldirect" data-callback-toggle="calldirect" href="javascript:;" data-productId="'+obj.productId+'" ${navBtnAnalAttribute}>Call Direct</a></div>' }}
 
 	<%-- Call Me Back action button. --%>
-	{{ var callMeBackActionButton = '<div class="btnContainer"><a class="btn btn-sm btn-back btn-block btn-call-actions btn-callback" data-callback-toggle="callback" href="javascript:;" data-productId="'+obj.productId+'">Get a Call Back</a></div>' }}
+	{{ var callMeBackActionButton = '<div class="btnContainer"><a class="btn btn-sm btn-back btn-block btn-call-actions btn-callback" data-callback-toggle="callback" href="javascript:;" data-productId="'+obj.productId+'" ${navBtnAnalAttribute}>Get a Call Back</a></div>' }}
 
 	{{ var colClass = 'col-xs-12'; }}
 
-	{{ if(obj.contact.allowCallMeBack === true) { }}
+	{{ if(obj.contact.allowCallDirect === true && obj.contact.allowCallMeBack === true) { }}
 	{{ colClass = 'col-xs-6'; }}
 	{{ } }}
 

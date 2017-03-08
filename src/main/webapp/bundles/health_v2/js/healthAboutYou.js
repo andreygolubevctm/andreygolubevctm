@@ -3,6 +3,8 @@
 	// TODO: write unit test once DEVOPS-31 goes live
 
 	var meerkat = window.meerkat,
+		meerkatEvents = meerkat.modules.events,
+		currentSituation = null,
 		$aboutYouContainer,
 		$primaryCurrentCover,
 		$primaryContinuousCoverContainer,
@@ -25,7 +27,14 @@
 		$partnersDetails,
 		$lhcContainers,
 		$medicare,
-		$healthSituation;
+		$healthSituation,
+		$lookingTo;
+
+	var moduleEvents = {
+			healthSituation: {
+				CHANGED: 'HEALTH_SITUATION_CHANGED'
+			}
+	};
 
 	function init(){
 		$(document).ready(function () {
@@ -36,6 +45,10 @@
 
 			eventSubscriptions();
 			toggleMlsMessage();
+
+			if(meerkat.site.isNewQuote === false) {
+				checkSituation();
+			}
 		});
 	}
 
@@ -64,8 +77,13 @@
 			$medicare = $('.health-medicare_details'),
 			$healthSituation = $aboutYouContainer.find('input[name="health_situation_healthSitu"]');
 
+			if(meerkat.site.isCallCentreUser) {
+				$lookingTo = $('#health_situation_healthSitu');
+			} else {
+				$lookingTo = $('[name=health_situation_healthSitu][type=radio]');
+			}
 
-		if (!healthChoices.hasSpouse()) {
+		if (!meerkat.modules.healthChoices.hasSpouse()) {
 			$partnerContainer.hide();
 		}
 
@@ -89,6 +107,7 @@
 
 		$healthSituationHealthCvr.on('change', function toggleAboutYouFields() {
 			setupForm();
+			checkSituation();
 		});
 
 		$lhcContainers.find(':input').on('change', function updateRebateContinuousCover(event) {
@@ -108,10 +127,40 @@
 		});
 
 		$healthSituation.add($healthCoverIncome).on('change', toggleMlsMessage);
+
+		if(meerkat.site.isCallCentreUser === false) {
+			$lookingTo.on('change',checkSituation);
+		}
+	}
+
+	/**
+	 * Triggered whenever the family type or looking to values are changed. If the
+	 * situation is different and event is fired.
+	 */
+	function checkSituation() {
+		var familyType = $healthSituationHealthCvr.val();
+		var lookingTo = '';
+		if(meerkat.site.isCallCentreUser) {
+			lookingTo = $lookingTo.val();
+		} else {
+			if($lookingTo.is(':checked')) {
+				lookingTo = $lookingTo.filter(':checked').val();
+			}
+		}
+		if(!_.isEmpty(familyType) && !_.isEmpty(lookingTo)) {
+			var situation = {
+				familyType : familyType,
+				lookingTo : lookingTo
+			};
+			if(!_.isMatch(currentSituation,situation)) {
+				currentSituation = _.extend({},situation);
+				meerkat.messaging.publish(moduleEvents.healthSituation.CHANGED, currentSituation);
+			}
+		}
 	}
 
 	function togglePrimaryContinuousCover(isInitMode) {
-		if ($primaryCurrentCover.find('input').filter(':checked').val() === 'Y' && !isLessThan31Or31AndBeforeJuly1($primaryDOB.val())) {
+		if ($primaryCurrentCover.find('input').filter(':checked').val() === 'Y' && !meerkat.modules.age.isLessThan31Or31AndBeforeJuly1($primaryDOB.val())) {
 			$primaryContinuousCoverContainer.slideDown();
 		} else {
 			isInitMode === true ? $primaryContinuousCoverContainer.hide() : $primaryContinuousCoverContainer.find('input[name=health_healthCover_primary_healthCoverLoading]:checked').prop('checked', false).parent().removeClass('active').end().end().slideUp();
@@ -119,7 +168,7 @@
 	}
 
 	function togglePartnerContinuousCover(isInitMode) {
-		if ($partnerCurrentCover.find('input').filter(':checked').val() === 'Y' && !isLessThan31Or31AndBeforeJuly1($partnerDOB.val())) {
+		if ($partnerCurrentCover.find('input').filter(':checked').val() === 'Y' && !meerkat.modules.age.isLessThan31Or31AndBeforeJuly1($partnerDOB.val())) {
 			$partnerContinuousCoverContainer.slideDown();
 		} else {
 			isInitMode === true ? $partnerContinuousCoverContainer.hide() : $partnerContinuousCoverContainer.find('input[name=health_healthCover_partner_healthCoverLoading]:checked').prop('checked', false).parent().removeClass('active').end().end().slideUp();
@@ -213,6 +262,7 @@
 
 	meerkat.modules.register('healthAboutYou', {
 		init: init,
+		events: moduleEvents,
 		getPartnerCurrentCover : getPartnerCurrentCover,
 		getPrimaryCurrentCover : getPrimaryCurrentCover,
 		getSituation : getSituation

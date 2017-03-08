@@ -59,7 +59,7 @@
 			<core_v2:offcanvas_header />
 	
 			<li class="slide-feature-back">
-				<a href="javascript:;" data-slide-control="previous" class="btn-back"><span class="icon icon-arrow-left"></span> <span>Back</span></a>
+				<a href="javascript:;" data-slide-control="previous" class="btn-back" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />><span class="icon icon-arrow-left"></span> <span>Back</span></a>
 			</li>
 			<li class="slide-feature-closeMoreInfo">
 				<c:choose>
@@ -67,13 +67,13 @@
 						<a href="javascript:;" class="btn btn-back">Back to results</a>
 					</c:when>
 					<c:otherwise>
-						<a href="javascript:;" class="btn-back"><span class="icon icon-arrow-left"></span> <span>Back</span></a>
+						<a href="javascript:;" class="btn-back"><span class="icon icon-arrow-left" ></span> <span>Back</span></a>
 					</c:otherwise>
 				</c:choose>
 			</li>
 			<c:if test="${saveQuoteEnabled == 'Y'}">
 			<li class="slide-feature-emailquote hidden-lg hidden-md hidden-sm" data-openSaveQuote="true">
-				<a href="javascript:;" class="save-quote-openAsModal"><span class="icon icon-envelope"></span> <span><c:choose>
+				<a href="javascript:;" class="save-quote-openAsModal" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />><span class="icon icon-envelope"></span> <span><c:choose>
 							<c:when test="${not empty authenticatedData.login.user.uid}">Save Quote</c:when>
 							<c:otherwise>Save Quote</c:otherwise>
 						</c:choose></span> <b class="caret"></b></a>
@@ -81,7 +81,7 @@
 			</c:if>
 
 			<li class="dropdown dropdown-interactive slide-edit-quote-dropdown" id="edit-details-dropdown">
-				<a class="activator needsclick dropdown-toggle btn-back" data-toggle="dropdown" href="javascript:;"><span class="icon icon-cog"></span>
+				<a class="activator needsclick dropdown-toggle btn-back" data-toggle="dropdown" href="javascript:;" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />><span class="icon icon-cog"></span>
 				<span>My Details</span> <b class="caret"></b></a>
 				<div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
 					<div class="dropdown-container">
@@ -92,7 +92,7 @@
 		
 			<c:if test="${saveQuoteEnabled == 'Y'}">
 			<li class="dropdown dropdown-interactive slide-feature-emailquote hidden-xs" id="email-quote-dropdown">
-				<a class="activator needsclick btn-email dropdown-toggle" data-toggle="dropdown" href="javascript:;"><span class="icon icon-envelope"></span> <span><c:choose>
+				<a class="activator needsclick btn-email dropdown-toggle" data-toggle="dropdown" href="javascript:;" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />><span class="icon icon-envelope"></span> <span><c:choose>
 							<c:when test="${not empty authenticatedData.login.user.uid}">Save Quote</c:when>
 							<c:otherwise>Save Quote</c:otherwise>
 						</c:choose></span> <b class="caret"></b></a>
@@ -189,9 +189,28 @@
 	</jsp:attribute>
 			
 	<jsp:attribute name="footer">
-		<core_v1:footer_participatingsuppliers />
+		<car:footer />
 	</jsp:attribute>
-			
+
+    <jsp:attribute name="xs_results_pagination">
+		<div class="navbar navbar-default xs-results-pagination navMenu-row-fixed visible-xs">
+            <div class="container">
+                <ul class="nav navbar-nav ">
+                    <li class="navbar-text center hidden" data-results-pagination-pagetext="true"></li>
+
+                    <li>
+                        <a data-results-pagination-control="previous" href="javascript:;" class="btn-pagination" data-analytics="pagination previous"><span class="icon icon-arrow-left"></span>
+                            Prev</a>
+                    </li>
+
+                    <li class="right">
+                        <a data-results-pagination-control="next" href="javascript:;" class="btn-pagination " data-analytics="pagination next">Next <span class="icon icon-arrow-right"></span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+	</jsp:attribute>
+
 	<jsp:attribute name="vertical_settings">
 		<car:settings />
 	</jsp:attribute>

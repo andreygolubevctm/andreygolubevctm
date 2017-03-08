@@ -22,6 +22,7 @@
 
     var product,
         htmlTemplate,
+        affixedHeaderTemplate,
         isModalOpen = false,
         isBridgingPageOpen = false,
         modalId,
@@ -31,6 +32,8 @@
         defaults = {
             container: $('.bridgingContainer'), // if the template fills a container. If modal, not used
             template: $("#more-info-template").html(),
+            affixedHeaderTemplate: $('#moreInfoAffixedHeaderTemplate').html(),
+            affixedHeaderContainer: $('.more-info-affixed-header'),
             hideAction: 'slideUp',
             showAction: 'slideDown',
             showActionWhenOpen: 'slideDown', // some verticals may have a different animation to run when a bridging page is already open.
@@ -66,6 +69,11 @@
             // prepare compiled template
             if (typeof (settings.template) != "undefined") {
                 htmlTemplate = _.template(settings.template);
+
+                if (settings.affixedHeaderTemplate && typeof settings.affixedHeaderTemplate.length !== 'undefined') {
+                    affixedHeaderTemplate = _.template(settings.affixedHeaderTemplate);
+                }
+
                 applyEventListeners();
                 eventSubscriptions();
 
@@ -82,6 +90,8 @@
         if (typeof Results.settings !== "undefined") {
             // open bridging page
             $(Results.settings.elements.page).on("click", ".btn-more-info", openBridgingPage);
+            // some opens may be in modals or tooltips
+            $(document).on("click", ".open-more-info", openBridgingPage);
             // close bridging page
             $(Results.settings.elements.page + ", .navMenu-row header").on("click", ".btn-close-more-info", closeBridgingPage);
         }
@@ -190,6 +200,11 @@
             // append content
             moreInfoContainer.html(htmlString);
 
+            if (typeof affixedHeaderTemplate === 'function' && settings.affixedHeaderContainer && settings.affixedHeaderContainer.length === 1) {
+                var affixedHtmlString = affixedHeaderTemplate(product);
+                settings.affixedHeaderContainer.html(affixedHtmlString);
+            }
+
             if (typeof settings.onBeforeShowTemplate == 'function') {
                 settings.onBeforeShowTemplate(jsonResult, moreInfoContainer);
             }
@@ -261,6 +276,7 @@
         });
 
     }
+
     /**
      * If there's a modal to show.
      */
@@ -274,6 +290,10 @@
                 hashId: 'moreinfo',
                 closeOnHashChange: true
             };
+
+            if (!_.isEmpty(settings.modalOptions.htmlHeaderContent)) {
+                options.htmlHeaderContent = settings.modalOptions.htmlHeaderContent;
+            }
 
             if (typeof settings.onBeforeShowModal == 'function') {
                 options.onOpen = function (dialogId) {

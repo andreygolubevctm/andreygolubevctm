@@ -1,0 +1,53 @@
+// Global page overwrites (out of scope)
+.zeusPage {
+	text-align: center;
+	font-family: 'TheSansB', 'SourceSansProRegular', Helvetica, Arial, sans-serif;
+
+	#logo {
+		@media(max-width: @screen-sm) {
+			width: 100%;
+			margin: 10px auto;
+			background-position: center;
+		}
+	}
+
+	h1 {
+		font-size: 40px;
+		margin: 0px;
+	}
+
+	// Override normal page styles
+	header {
+		min-height: auto;
+	}
+
+	#navbar-main, .navbar-toggle {
+		display: none !important;
+	}
+
+	.navbar-header {
+		width: 100%;
+		text-align: center;
+	}
+
+	article {
+		&.container {
+			width: 100%;
+			padding: 0px;
+		}
+	}
+
+	.journeyEngineLoader {
+		width: 100%;
+	}
+
+	#footer {
+		display: none;
+	}
+
+	#footer_mcafee {
+		display: none;
+	}
+	// End normal page styles
+}
+

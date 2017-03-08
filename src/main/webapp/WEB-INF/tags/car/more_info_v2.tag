@@ -1,16 +1,19 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
+<%-- VARIABLES --%>
+<c:set var="navBtnAnalAttribute"><field_v1:analytics_attr analVal="nav button" quoteChar="\"" /></c:set>
+
 <core_v1:js_template id="promotion-offer-template">
-{{ obj.promotionText = (typeof obj.discountOffer !== 'undefined' && obj.discountOffer.length > 0) ? obj.discountOffer : ''; }}
-{{ obj.offerTermsContent = (typeof obj.discountOfferTerms !== 'undefined' && obj.discountOfferTerms != null && obj.discountOfferTerms.length > 0) ? obj.discountOfferTerms : ''; }}
+{{ obj.promotionText = (!_.isUndefined(obj.discountOffer) && !_.isNull(obj.discountOffer) && obj.discountOffer.length > 0) ? obj.discountOffer : ''; }}
+{{ obj.offerTermsContent = (!_.isUndefined(obj.discountOfferTerms) && !_.isNull(obj.discountOfferTerms) && obj.discountOfferTerms.length > 0) ? obj.discountOfferTerms : ''; }}
 
 {{ if (promotionText.length > 0) { }}
     <div class="promoHeading">Special offer</div>
     <div class="promoText">
         <span class="icon icon-tag"></span> {{= promotionText }}
         {{ if (offerTermsContent.length > 0) { }}
-        <a class="small offerTerms" href="javascript:;">Offer terms</a>
+        <a class="small offerTerms" href="javascript:;" ${navBtnAnalAttribute}>Offer terms</a>
         <div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
         {{ } }}
     </div>
@@ -25,14 +28,14 @@
         <div class="row">
 		{{ if (obj.productDisclosures.hasOwnProperty('pdsb') === false) { }}
             <div class="col-xs-12 col-md-6">
-			    <a href="{{= obj.productDisclosures.pdsa.url }}" target="_blank" class="showDoc btn btn-download">Product Disclosure Statement</a>
+			    <a href="{{= obj.productDisclosures.pdsa.url }}" target="_blank" class="showDoc btn btn-download" ${navBtnAnalAttribute}>Product Disclosure Statement</a>
             </div>
 		{{ } else { }}
             <div class="col-xs-12 col-sm-6">
-			    <a href="{{= obj.productDisclosures.pdsa.url }}" target="_blank" class="showDoc btn btn-download">Product Disclosure A</a>
+			    <a href="{{= obj.productDisclosures.pdsa.url }}" target="_blank" class="showDoc btn btn-download" ${navBtnAnalAttribute}>Product Disclosure A</a>
                 </div>
             <div class="col-xs-12 col-sm-6">
-			    <a href="{{= obj.productDisclosures.pdsb.url }}" target="_blank" class="showDoc btn btn-download">Product Disclosure B</a>
+			    <a href="{{= obj.productDisclosures.pdsb.url }}" target="_blank" class="showDoc btn btn-download" ${navBtnAnalAttribute}>Product Disclosure B</a>
             </div>
 		{{ } }}
         </div>
@@ -51,7 +54,7 @@
     <div class="row call-apply-xs-only">
         {{ if(obj.availableOnline === true) { }}
         <div class="col-xs-12">
-            <a target="_blank" href="javascript:;" class="btn btn-cta btn-lg btn-block btn-more-info-apply" data-productId="{{= obj.productId }}">
+            <a target="_blank" href="javascript:;" class="btn btn-cta btn-lg btn-block btn-more-info-apply" data-productId="{{= obj.productId }}" ${navBtnAnalAttribute}>
                 Go to Insurer
                 <span class="icon icon-arrow-right"></span>
             </a>
@@ -61,14 +64,14 @@
         {{ if(obj.contact.allowCallDirect === true) { }}
             {{ if(obj.contact.allowCallMeBack === true) { }}
             <div class="col-xs-6">
-                <a class="btn btn-block btn-call btn-call-actions" data-callback-toggle="calldirect" data-productId="{{= obj.productId }}" href="javascript:;">Call Insurer Direct</a>
+                <a class="btn btn-block btn-call btn-call-actions" data-callback-toggle="calldirect" data-productId="{{= obj.productId }}" href="javascript:;" ${navBtnAnalAttribute}>Call Insurer Direct</a>
             </div>
             <div class="col-xs-6">
-                <a class="btn btn-block btn-call btn-call-actions" data-callback-toggle="callback" data-productId="{{= obj.productId }}" href="javascript:;">Get a Call Back</a>
+                <a class="btn btn-block btn-call btn-call-actions" data-callback-toggle="callback" data-productId="{{= obj.productId }}" href="javascript:;" ${navBtnAnalAttribute}>Get a Call Back</a>
             </div>
             {{ } else { }}
             <div class="col-xs-12">
-                <a class="btn btn-block btn-call btn-call-actions" data-callback-toggle="calldirect" data-productId="{{= obj.productId }}" href="javascript:;">Call Insurer Direct</a>
+                <a class="btn btn-block btn-call btn-call-actions" data-callback-toggle="calldirect" data-productId="{{= obj.productId }}" href="javascript:;" ${navBtnAnalAttribute}>Call Insurer Direct</a>
             </div>
             {{ } }}
         {{ } }}
@@ -116,7 +119,7 @@
                         <div class="error-field"></div>
                     </div>
                     <div class="col-xs-12 col-md-4">
-                        <a href="javascript:;" class="btn btn-form btn-block btn-submit-callback" data-productId="{{= obj.productId }}">Submit</a>
+                        <a href="javascript:;" class="btn btn-form btn-block btn-submit-callback" data-productId="{{= obj.productId }}" ${navBtnAnalAttribute}>Submit</a>
                     </div>
                 </form>
             </div>
@@ -184,7 +187,7 @@
                     <div class="row hidden-xs">
                         {{ if(obj.availableOnline === true) { }}
                         <div class="col-sm-4 col-sm-push-8 col-lg-3 col-lg-push-9">
-                            <a target="_blank" href="javascript:;" class="btn btn-cta btn-lg btn-block btn-more-info-apply" data-productId="{{= obj.productId }}">
+                            <a target="_blank" href="javascript:;" class="btn btn-cta btn-lg btn-block btn-more-info-apply" data-productId="{{= obj.productId }}" ${navBtnAnalAttribute}>
                                 Go to Insurer
                                 <span class="icon icon-arrow-right"></span>
                             </a>

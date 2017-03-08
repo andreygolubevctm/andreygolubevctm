@@ -47,7 +47,7 @@
 			<core_v2:offcanvas_header />
 
 			<li class="slide-feature-back">
-				<a href="javascript:;" data-slide-control="previous" class="btn-back"><span class="icon icon-arrow-left"></span> <span>Back</span></a>
+				<a href="javascript:;" data-slide-control="previous" class="btn-back" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />><span class="icon icon-arrow-left"></span> <span>Back</span></a>
 			</li>
 
 			<%-- Save quote for off canvas menu --%>
@@ -61,7 +61,7 @@
 			</c:if>
 
 			<li class="dropdown dropdown-interactive slide-edit-quote-dropdown" id="edit-details-dropdown">
-				<a class="activator needsclick dropdown-toggle btn-back" data-toggle="dropdown" href="javascript:;"><span class="icon icon-cog"></span>
+				<a class="activator needsclick dropdown-toggle btn-back" data-toggle="dropdown" href="javascript:;" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />><span class="icon icon-cog"></span>
 				<span>Edit Details</span> <b class="caret"></b></a>
 				<div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
 					<div class="dropdown-container">
@@ -79,7 +79,7 @@
 
 			<c:if test="${saveQuoteEnabled == 'Y'}">
 			<li class="dropdown dropdown-interactive slide-feature-emailquote hidden-xs" id="email-quote-dropdown">
-				<a class="activator needsclick btn-email dropdown-toggle" data-toggle="dropdown" href="javascript:;"><span class="icon icon-envelope"></span> <span><c:choose>
+				<a class="activator needsclick btn-email dropdown-toggle" data-toggle="dropdown" href="javascript:;" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" /> ><span class="icon icon-envelope"></span> <span><c:choose>
 							<c:when test="${not empty authenticatedData.login.user.uid}">Save Quote</c:when>
 							<c:otherwise>Save Quote</c:otherwise>
 						</c:choose></span> <b class="caret"></b></a>
@@ -124,7 +124,8 @@
 						<ul class="dropdown-menu">
 						</ul>
 					</li>
-					<li class="excess-update"><a href="javascript:void(0);" class="btn btn-hollow updateFilters hidden" data-toggle="updateButton">update</a>
+					<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="nav button" quoteChar="\"" /></c:set>
+					<li class="excess-update"><a href="javascript:void(0);" class="btn btn-hollow updateFilters hidden" data-toggle="updateButton" ${analyticsAttr}>update</a>
 					</li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
@@ -133,8 +134,8 @@
 						<ul class="dropdown-menu">
 						</ul>
 					</li>
-					<li class="filter-pricemode"><a href="javascript:void(0);"><span class="icon icon-th-list"></span> Quick price</a></li>
-					<li class="filter-featuresmode"><a href="javascript:void(0);"><span class="icon icon-th-vert"></span> Product features</a></li>
+					<li class="filter-pricemode"><a href="javascript:void(0);" ${analyticsAttr}><span class="icon icon-th-list"></span> Quick price</a></li>
+					<li class="filter-featuresmode"><a href="javascript:void(0);" ${analyticsAttr}><span class="icon icon-th-vert"></span> Product features</a></li>
 					<li class="back-to-price-mode hidden"><a href="javascript:void(0);"><span class="icon icon-arrow-left"></span> Back</a></li>
 				</ul>
 			</div>
@@ -174,6 +175,25 @@
 
 	<jsp:attribute name="footer">
 		<home:footer />
+	</jsp:attribute>
+
+    <jsp:attribute name="xs_results_pagination">
+		<div class="navbar navbar-default xs-results-pagination navMenu-row-fixed visible-xs">
+            <div class="container">
+                <ul class="nav navbar-nav ">
+                    <li class="navbar-text center hidden" data-results-pagination-pagetext="true"></li>
+
+                    <li>
+                        <a data-results-pagination-control="previous" href="javascript:;" class="btn-pagination" data-analytics="pagination previous"><span class="icon icon-arrow-left"></span>
+                            Prev</a>
+                    </li>
+
+                    <li class="right">
+                        <a data-results-pagination-control="next" href="javascript:;" class="btn-pagination " data-analytics="pagination next">Next <span class="icon icon-arrow-right"></span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
 	</jsp:attribute>
 
 	<jsp:attribute name="vertical_settings">

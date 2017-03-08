@@ -64,6 +64,36 @@
     }
 
     /**
+     * Simply returns the provided copy wrapped in strong tags.
+     * @param copy
+     * @returns {string}
+     */
+    function getNormalCopy(copy) {
+        return '<strong>' + copy + '</strong> ';
+    }
+
+    function getLimitsCopy(copy,ft,obj) {
+        var resultPathTemp = ft.resultPath.split('.');
+        resultPathTemp[resultPathTemp.length - 1] = 'subLimit';
+        var subLimitResultPath = resultPathTemp.join('.');
+        resultPathTemp[resultPathTemp.length - 1] = 'serviceLimit';
+        var serviceLimitResultPath = resultPathTemp.join('.');
+        var displayValueList = [
+            !_.isEmpty(copy) ? copy : '',
+            '<h6>Sub-limits</h6>',
+            Features.parseFeatureValue(_getPathValue(obj, {resultPath:subLimitResultPath}), true),
+            '<h6>Service limits</h6>',
+            Features.parseFeatureValue(_getPathValue(obj, {resultPath:serviceLimitResultPath}), true),
+            '<br><br>'
+        ];
+        if(_.isEmpty(displayValueList[2])) displayValueList[2] = 'None';
+        if(_.isEmpty(displayValueList[4])) displayValueList[4] = 'None';
+        displayValueList[2] = getNormalCopy(displayValueList[2]);
+        displayValueList[4] = getNormalCopy(displayValueList[4]);
+        return displayValueList.join('');
+    }
+
+    /**
      * Remap the class string to just get the HLTicon- part of it.
      * @param ft
      * @returns {string}
@@ -88,7 +118,7 @@
             "303" : "excess waivers"
         };
         if(_.has(analytics, ft.helpId)) {
-            attribute = ' data-analytics="' + analytics[ft.helpId] + '"';
+            attribute = meerkat.modules.dataAnalyticsHelper.get(analytics[ft.helpId],'"');
         }
         return ft.helpId !== '' && ft.helpId != '0' ? '<a href="javascript:void(0);" class="help-icon" data-content="helpid:' + ft.helpId + '" data-toggle="popover" data-my="right center" data-at="left center" ' + attribute + '>(?)</a>' : '';
     }
@@ -135,10 +165,16 @@
      * @param ft
      * @returns {*}
      */
-    function buildDisplayValue(pathValue, ft) {
+    function buildDisplayValue(pathValue, ft, obj) {
         var displayValue = Features.parseFeatureValue(pathValue, true);
-        if (displayValue) {
-            return getTitleBefore(ft) + '<strong>' + displayValue + '</strong> ' + _getExtraText(ft) + getTitleAfter(ft) + _getHelpTooltip(ft);
+        if(!_.isEmpty(displayValue)) {
+            displayValue = getNormalCopy(displayValue);
+        }
+        if(_.has(ft,'className') && !_.isEmpty(ft.className) && ft.className.search(/containsSubAndServiceLimits/) >= 0) {
+            displayValue = getLimitsCopy(displayValue,ft,obj);
+        }
+        if(!_.isEmpty(displayValue)) {
+            return getTitleBefore(ft) + displayValue + _getExtraText(ft) + getTitleAfter(ft) + _getHelpTooltip(ft);
         }
         return ft.safeName + ": <strong>None</strong>";
     }
@@ -177,7 +213,7 @@
             }
             ft.iconClass = _getIconClass(ft);
         } else if (ft.type == 'feature') {
-            ft.displayValue = buildDisplayValue(ft.pathValue, ft);
+            ft.displayValue = buildDisplayValue(ft.pathValue, ft, obj);
         }
 
         // For sub-category feature detail
@@ -199,7 +235,7 @@
      */
     function getExcessChildDisplayValue(obj, ft) {
         var pathValue = _getPathValue(obj, ft);
-        var displayValue = buildDisplayValue(pathValue, ft);
+        var displayValue = buildDisplayValue(pathValue, ft, obj);
         if (displayValue == "-") {
             return getTitleBefore(ft) + " None";
         }

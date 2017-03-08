@@ -12,11 +12,9 @@
 <c:set var="openingHoursHeader" scope="request" ><content:getOpeningHours/></c:set>
 <c:set var="callCentreAllHoursContent" scope="request"><content:getOpeningHoursModal /></c:set>
 
-<c:set var="isHealthV2" value="${true}" scope="request" />
-
 <core_v1:quote_check quoteType="health" />
 
-<layout_v1:journey_engine_page title="Health Confirmation" ignore_journey_tracking="true">
+<layout_v1:journey_engine_page title="Health Confirmation" bundleFileName="health_v2" ignore_journey_tracking="true">
 
 	<jsp:attribute name="head">
 	</jsp:attribute>
@@ -62,7 +60,7 @@
             <li><a href="javascript:window.print();" class="btn-email"><span class="icon icon-blog"></span> <span>Print Page</span></a></li>
             <c:if test="${empty callCentre}">
                 <li>
-                    <a href="${pageSettings.getBaseUrl()}health_quote_v2.jsp" class="btn-dropdown needsclick"><span class="icon icon-undo"></span> <span>Start a new quote</span> <span class="icon icon-arrow-right hidden-xs"></span></a>
+                    <a href="${pageSettings.getBaseUrl()}health_quote_v4.jsp" class="btn-dropdown needsclick"><span class="icon icon-undo"></span> <span>Start a new quote</span> <span class="icon icon-arrow-right hidden-xs"></span></a>
                 </li>
             </c:if>
         </ul>
@@ -91,6 +89,11 @@
         <health_v2_layout:slide_confirmation />
         <health_v3:brochure_template/>
         <health_v3:confirmation_fund_details_template />
+        <health_v1:logo_price_template />
+        <health_v1:dual_pricing_templates />
+        <script class="crud-modal-template" type="text/html">
+            <reward:redemption_form />
+        </script>
     </jsp:body>
 
 </layout_v1:journey_engine_page>

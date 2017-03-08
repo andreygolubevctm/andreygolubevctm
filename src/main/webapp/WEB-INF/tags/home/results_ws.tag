@@ -2,6 +2,9 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<%-- VARIABLES --%>
+<c:set var="navBtnAnalyticsAttr"><field_v1:analytics_attr analVal="nav button" quoteChar="\"" /></c:set>
+
 <%-- The following are hidden fields used by filters --%>
 <field_v1:hidden xpath="home/paymentType" defaultValue="annual" />
 <field_v1:array_select
@@ -157,7 +160,8 @@
 				<div class="productSummary results">
 					<div class="compare-toggle-wrapper">
 						<input type="checkbox" class="compare-tick" data-productId="{{= obj.productId }}" id="features_compareTick_{{= obj.productId }}" />
-						<label for="features_compareTick_{{= obj.productId }}"></label>
+						<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Short List - {{= obj.brandCode }} | {{= obj.productId }}" quoteChar="\"" /></c:set>
+						<label for="features_compareTick_{{= obj.productId }}" ${analyticsAttr}></label>
 					</div>
 					<div class="clearfix">
 						{{= logo }}
@@ -180,7 +184,7 @@
 						<legend>Special Offer</legend>
 						{{= promotionText.replace('<b>SPECIAL OFFER:</b>', '') }}
 						{{ if (offerTermsContent.length > 0) { }}
-							<a class="small offerTerms" href="javascript:;">Conditions</a>
+							<a class="small offerTerms" href="javascript:;" ${navBtnAnalyticsAttr}>Conditions</a>
 							<div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
 						{{ } }}
 					</fieldset>
@@ -194,8 +198,9 @@
 						{{= logo }}
 						<div class="compare-toggle-wrapper">
 							<input type="checkbox" class="compare-tick" data-productId="{{= obj.productId }}" id="price_compareTick_{{= obj.productId }}" />
-							<label for="price_compareTick_{{= obj.productId }}"></label>
-							<label for="price_compareTick_{{= obj.productId }}" class="compare-label"></label>
+							<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Short List - {{= obj.brandCode }} | {{= obj.productId }}" quoteChar="\"" /></c:set>
+							<label for="price_compareTick_{{= obj.productId }}" ${analyticsAttr}></label>
+							<label for="price_compareTick_{{= obj.productId }}" class="compare-label" ${analyticsAttr}></label>
 						</div>
 						<h2 class="hidden-xs productTitle">{{= productTitle }}</h2>
 
@@ -205,7 +210,7 @@
 						<div class="promotion small visible-sm">
 							<span class="icon icon-tag"></span>{{= specialOfferPrefix}}{{= promotionText }}
 							{{ if (offerTermsContent.length > 0) { }}
-								<a class="small offerTerms" href="javascript:;">Offer terms</a>
+								<a class="small offerTerms" href="javascript:;" ${navBtnAnalyticsAttr}>Offer terms</a>
 								<div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
 							{{ } }}
 						</div>
@@ -222,7 +227,7 @@
 									<span class="frequencyName">Monthly</span> payment is not available for this product.
 								</div>
 
-								<a class="btn btn-cta btn-block btn-more-info hidden-xs hidden-md hidden-lg" href="javascript:;" data-productId="{{= obj.productId }}">More Info & Apply <span class="icon icon-arrow-right" /></a>
+								<a class="btn btn-cta btn-block btn-more-info hidden-xs hidden-md hidden-lg" href="javascript:;" data-productId="{{= obj.productId }}" ${navBtnAnalyticsAttr}>More Info & Apply <span class="icon icon-arrow-right" /></a>
 							</div>
 
 							<div class="col-xs-12 col-sm-5 col-sm-pull-7 col-md-3 col-md-pull-4 col-lg-4 col-lg-pull-4 excess excessHome">
@@ -240,7 +245,8 @@
 							</div>
 
 							<div class="col-xs-12 col-md-5 col-lg-4 hidden-xs hidden-sm">
-								<a class="btn btn-cta btn-block btn-more-info" href="javascript:;" data-productId="{{= obj.productId }}">More Info & Apply <span class="icon icon-arrow-right" /></a>
+								<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="nav button" quoteChar="\"" /></c:set>
+								<a class="btn btn-cta btn-block btn-more-info" href="javascript:;" data-productId="{{= obj.productId }}" ${analyticsAttr}>More Info & Apply <span class="icon icon-arrow-right" /></a>
 							</div>
 						</div>
 						<div class="row">
@@ -255,7 +261,7 @@
 									<div class="promotion small hidden-sm">
 										<span class="icon icon-tag"></span>{{=specialOfferPrefix}}{{= promotionText }}
 										{{ if (offerTermsContent.length > 0) { }}
-											<a class="small hidden-xs offerTerms" href="javascript:;">Offer terms</a>
+											<a class="small hidden-xs offerTerms" href="javascript:;" ${navBtnAnalyticsAttr}>Offer terms</a>
 											<div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
 										{{ } }}
 									</div>
@@ -410,7 +416,7 @@
 <%-- Price template --%>
 <core_v1:js_template id="annual-price-template">
 	<div class="frequency annual clearfix" data-availability="{{= obj.available }}">
-		<div class="frequencyAmount">{{= obj.price.annualPremiumFormatted }}</div>
+		<div class="frequencyAmount"><span class="dollarSign">{{= '$' }}</span>{{= obj.price.annualPremiumFormatted }}</div>
 		<div class="frequencyTitle">Annual Price</div>
 	</div>
 </core_v1:js_template>
@@ -436,7 +442,7 @@
 <core_v1:js_template id="annual-price-features-template">
 	<div class="frequency annual" data-availability="{{= obj.available }}">
 		<div class="frequencyAmount">
-			<span class="dollarSign">{{= '$' }}</span><span class="dollars">{{= obj.price.annualPremium }}</span>
+			<span class="dollarSign">{{= '$' }}</span><span class="dollars">{{= obj.price.annualPremiumFormatted }}</span>
 		</div>
 		<div class="frequencyTitle">Annual</div>
 	</div>
@@ -452,7 +458,8 @@
 	<li>
 		<span class="active-product">
 			<input type="checkbox" class="compare-tick checked" data-productId="{{= products[i].productId }}" checked />
-			<label for="features_compareTick_{{= products[i].productId }}"></label>
+			<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Short List - {{= obj.brandCode }} | {{= obj.productId }}" quoteChar="\"" /></c:set>
+			<label for="features_compareTick_{{= products[i].productId }}" ${analyticsAttr}></label>
 		</span>
 
 		<span class="name">
@@ -484,10 +491,10 @@
 		<span class="companyLogo logo_{{= img }}" title="{{= products[i].productName }}"></span>
 		<span class="price">
 			<span class="frequency annual annually {{= annualHidden }}">
-				{{= products[i].price.annualPremiumFormatted }} <span class="small hidden-sm">annually</span>
+				<span class="dollarSign">{{= '$' }}</span>{{= products[i].price.annualPremiumFormatted }} <span class="small hidden-sm">annually</span>
 			</span>
 			<span class="frequency monthly {{= monthlyHidden }}">
-				{{= products[i].price.monthlyPremiumFormatted }} <span class="small hidden-sm">monthly</span>
+				<span class="dollarSign">{{= '$' }}</span>{{= products[i].price.monthlyPremiumFormatted }} <span class="small hidden-sm">monthly</span>
 			</span>
 		</span>
 		<span class="icon icon-cross remove-compare" data-productId="{{= products[i].productId }}" title="Remove from shortlist"></span>
@@ -533,7 +540,7 @@
 			{{ if(meerkat.modules.compare.isCompareOpen() === true) { }}
 				<a class="btn btn-compare-clear clear-compare btn-block" href="javascript:;">Clear Products<span class="icon icon-arrow-right"></span></a>
 			{{ } else { }}
-				<a class="btn btn-features-compare enter-compare-mode btn-block" href="javascript:;">Compare Products<span class="icon icon-arrow-right"></span></a>
+				<a class="btn btn-features-compare enter-compare-mode btn-block" href="javascript:;" ${navBtnAnalyticsAttr}>Compare Products<span class="icon icon-arrow-right"></span></a>
 			{{ } }}
 		</div>
 	{{ } }}
@@ -555,7 +562,7 @@
 		</ul>
 		{{ if(comparedResultsCount > 1) { }}
 			<ul class="nav navbar-nav navbar-right">
-				<li class=""><a href="javascript:void(0);" class="compare-list enter-compare-mode">Compare Products <span class="icon icon-arrow-right"></span></a></li>
+				<li class=""><a href="javascript:void(0);" class="compare-list enter-compare-mode" ${navBtnAnalyticsAttr}>Compare Products <span class="icon icon-arrow-right"></span></a></li>
 			</ul>
 		{{ } }}
 	{{ } }}
@@ -597,7 +604,7 @@
 	{{ var homeExcessAmount = (obj.homeExcess !== null && obj.homeExcess.amount != '') ? obj.homeExcess.amount : null; }}
 
 	{{ if (contentsExcessAmount !== null && homeExcessAmount !== null && contentsExcessAmount === homeExcessAmount) { }}
-		<div class="col-xs-12">
+		<div class="col-xs-12 text-right">
 			<div class="excessAmount">{{= obj.homeExcess.amountFormatted }}</div>
 			<div class="excessTitle">Excess</div>
 		</div>
@@ -652,7 +659,7 @@
 		<div class="promotion">
 			<span class="icon icon-phone-hollow"></span> {{= offlinePromotionText }}
 			{{ if (offerTermsContent.length > 0) { }}
-				<a class="small offerTerms" href="javascript:;">Offer terms</a>
+				<a class="small offerTerms" href="javascript:;" ${navBtnAnalyticsAttr}>Offer terms</a>
 				<div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
 			{{ } }}
 		</div>

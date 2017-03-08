@@ -137,9 +137,9 @@
 				meerkat.modules.jqueryValidate.initJourneyValidator();
 
 				if(meerkat.site.choices) {
-					healthChoices.initialise(meerkat.site.choices.cover, meerkat.site.choices.situation, meerkat.site.choices.benefits);
-					healthChoices._state = meerkat.site.choices.state;
-					healthChoices._performUpdate = meerkat.site.choices.performHealthChoicesUpdate;
+					meerkat.modules.healthChoices.initialise(meerkat.site.choices.cover, meerkat.site.choices.situation, meerkat.site.choices.benefits);
+					meerkat.modules.healthChoices.setState(meerkat.site.choices.state);
+					meerkat.modules.healthChoices.shouldPerformUpdate(meerkat.site.choices.performHealthChoicesUpdate);
 				}
 
 				var $healthSitLocation = $('#health_situation_location'),
@@ -150,7 +150,7 @@
 
 				// Add event listeners.
 				$healthSitHealthCvr.on('change',function() {
-					healthChoices.setCover($(this).val());
+					meerkat.modules.healthChoices.setCover($(this).val());
 					meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
 				});
 
@@ -167,12 +167,12 @@
 				});
 
 				$healthSitLocation.on('blur',function() {
-					healthChoices.setLocation($(this).val());
+					meerkat.modules.healthChoices.setLocation($(this).val());
 				});
 
 				// For loading in.
 				if($healthSitLocation.val() !== '') {
-					healthChoices.setLocation($healthSitLocation.val());
+					meerkat.modules.healthChoices.setLocation($healthSitLocation.val());
 				}
 
 				// change benefits page layout when change the coverType
@@ -307,6 +307,8 @@
 			},
 			onBeforeEnter:function enterBenefitsStep(event) {
 				if (event.isForward) {
+					if(meerkat.site.isCallCentreUser) meerkat.modules.simplesBindings.updateSimplesMedicareCoverQuestionPosition();
+
 					// Delay 1 sec to make sure we have the data bucket saved in to DB, then filter coupon
 					_.delay(function() {
 						// coupon logic, filter for user, then render banner
@@ -362,7 +364,7 @@
 				meerkat.modules.healthAltPricing.initHealthAltPricing();
 				meerkat.modules.healthMoreInfo.initMoreInfo();
 				meerkat.modules.healthPriceComponent.initHealthPriceComponent();
-				meerkat.modules.healthDualPricing.initHealthDualPricing();
+				meerkat.modules.healthDualPricing.initDualPricing();
 
 			},
 			onBeforeEnter:function enterResultsStep(event){
@@ -370,6 +372,10 @@
 				meerkat.modules.healthDependants.resetConfig();
 				if(event.isForward && meerkat.site.isCallCentreUser) {
 					$('#journeyEngineSlidesContainer .journeyEngineSlide').eq(meerkat.modules.journeyEngine.getCurrentStepIndex()).find('.simples-dialogue').show();
+				}
+				if(meerkat.site.isCallCentreUser) {
+					// For Simples we need to only unload healthFund specific changes
+                    meerkat.modules.healthFunds.unload();
 				} else {
 					// Reset selected product. (should not be inside a forward or backward condition because users can skip steps backwards)
 					meerkat.modules.healthResults.resetSelectedProduct();
@@ -482,16 +488,13 @@
 					var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
 
 					// Show warning if applicable
-					if (typeof selectedProduct.warningAlert !== 'undefined' && selectedProduct.warningAlert !== '') {
-						$("#health_application-warning").find(".fundWarning").show().html(selectedProduct.warningAlert);
-					} else {
-						$("#health_application-warning").find(".fundWarning").hide().empty();
-					}
+					meerkat.modules.healthFunds.toggleWarning($('#health_application-warning'));
+
 					this.tracking.touchComment =  selectedProduct.info.provider + ' ' + selectedProduct.info.des;
 					this.tracking.productId = selectedProduct.productId.replace("PHIO-HEALTH-", "");
 
 					// Load the selected product details.
-					healthFunds.load(selectedProduct.info.provider);
+					meerkat.modules.healthFunds.load(selectedProduct.info.provider);
 
 					// Clear any previous validation errors on Apply or Payment
 					var $slide = $('#journeyEngineSlidesContainer .journeyEngineSlide').slice(meerkat.modules.journeyEngine.getCurrentStepIndex() - 1);
@@ -608,14 +611,8 @@
 					meerkat.modules.healthPaymentStep.rebindCreditCardRules();
 					var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
 
-					var paymentDetailsSection = $("#health_payment_details-selection");
-
 					// Show warning if applicable
-					if (typeof selectedProduct.warningAlert !== 'undefined' && selectedProduct.warningAlert !== '') {
-						paymentDetailsSection.find(".fundWarning").show().html(selectedProduct.warningAlert);
-					} else {
-						paymentDetailsSection.find(".fundWarning").hide().empty();
-					}
+					meerkat.modules.healthFunds.toggleWarning($('#health_payment_details-selection'));
 
 					// Insert fund into checkbox label
 					$('#mainform').find('.health_declaration span').text( selectedProduct.info.providerName  );
@@ -913,6 +910,12 @@
 		if(!postData.primary_dob.match(dateRegex)) return false;
 		if(coverTypeHasPartner && !postData.partner_dob.match(dateRegex))  return false;
 
+		postData.commencementDate = null;
+		var commencementDate = $('#health_payment_details_start').val();
+		if(!_.isEmpty(commencementDate)) {
+			postData.commencementDate = commencementDate;
+		}
+
 		return meerkat.modules.comms.post({
 			url:"ajax/json/health_rebate.jsp",
 			data: postData,
@@ -938,7 +941,7 @@
 		$('#health_situation_suburb').val(suburb);
 		$('#health_situation_postcode').val(postcode);
 		$('#health_situation_state').val(state);
-		healthChoices.setState(state);
+		meerkat.modules.healthChoices.setState(state);
 
 		window.location = this.href;
 
@@ -1258,8 +1261,8 @@
 			});
 
 			//call the custom fail handler for each fund
-			if (healthFunds.applicationFailed) {
-				healthFunds.applicationFailed();
+			if (meerkat.modules.healthFunds.applicationFailed) {
+                meerkat.modules.healthFunds.applicationFailed();
 			}
 		}
 
@@ -1351,8 +1354,8 @@
 			if (meerkat.site.pageAction === 'amend' || meerkat.site.pageAction === 'load' || meerkat.site.pageAction === 'start-again') {
 
 				// If retrieving a quote and a product had been selected, inject the fund's application set.
-				if (typeof healthFunds !== 'undefined' && healthFunds.checkIfNeedToInjectOnAmend) {
-					healthFunds.checkIfNeedToInjectOnAmend(function onLoadedAmeded(){
+				if (meerkat.modules.healthFunds.checkIfNeedToInjectOnAmend) {
+                    meerkat.modules.healthFunds.checkIfNeedToInjectOnAmend(function onLoadedAmeded(){
 						// Need to mark any populated field with a data attribute so it is picked up with by the journeyEngine.getFormData()
 						// This is because values from forward steps will not be selected and will be lost when the quote is re-saved.
 						meerkat.modules.form.markInitialFieldsWithValue($("#mainform"));

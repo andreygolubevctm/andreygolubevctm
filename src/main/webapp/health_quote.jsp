@@ -13,7 +13,7 @@
 <c:set var="journeyOverride" value="${pageSettings.getSetting('journeyOverride') eq 'Y'}" />
 <c:choose>
     <c:when test="${not callCentre && journeyOverride eq true}">
-        <c:set var="redirectURL" value="${pageSettings.getBaseUrl()}health_quote_v2.jsp?" />
+        <c:set var="redirectURL" value="${pageSettings.getBaseUrl()}health_quote_v4.jsp?" />
         <c:forEach items="${param}" var="currentParam">
             <c:set var="redirectURL">${redirectURL}${currentParam.key}=${currentParam.value}&</c:set>
         </c:forEach>
@@ -27,13 +27,12 @@
 
         <core_v2:quote_check quoteType="health" />
         <core_v2:load_preload />
+        <c:set var="assetUrl" value="/${pageSettings.getContextFolder()}assets/"/>
 
         <%-- Get data to build sections/categories/features on benefits and result pages. Used in results and benefits tags --%>
         <jsp:useBean id="resultsDisplayService" class="com.ctm.web.core.results.services.ResultsDisplayService" scope="request" />
         <jsp:useBean id="callCenterHours" class="com.ctm.web.core.web.openinghours.go.CallCenterHours" scope="page" />
         <jsp:useBean id="splitTestService" class="com.ctm.web.core.services.tracking.SplitTestService" scope="request" />
-        <jsp:useBean id="healthPriceDetailService" class="com.ctm.web.health.services.HealthPriceDetailService" scope="page" />
-        <c:set var="healthAlternatePricingActive" value="${healthPriceDetailService.isAlternatePriceActive(pageContext.getRequest())}" />
 
         <c:set var="resultTemplateItems" value="${resultsDisplayService.getResultsPageStructure('health')}" scope="request"  />
 
@@ -46,6 +45,12 @@
 
         <c:set var="openingHoursHeader" scope="request" ><content:getOpeningHours displayTodayOnly="true"/></c:set>
         <c:set var="callCentreHoursModal" scope="request"><content:getOpeningHoursModal /></c:set>
+
+        <%-- SET SITUATION WHEN LOADING A QUOTE AND NO SITUATION SET.
+             ONLY OCCURS WHEN V4 QUOTE BEING LOADED INTO V2 --%>
+        <c:if test="${isNewQuote eq false and empty data[health/situation/healthSitu]}">
+            <go:setData dataVar="data" xpath="health/situation/healthSitu" value="LC" />
+        </c:if>
 
         <%-- HTML --%>
         <layout_v1:journey_engine_page title="Health Quote">
@@ -108,27 +113,6 @@
                     </div>
                 </div>
             </li>
-            <li class="dropdown dropdown-interactive slide-feature-filters">
-                <a class="activator btn-dropdown dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);"><span class="icon icon-filter"></span> <span>Filter Your Results</span> &nbsp;&nbsp;<span class="icon icon-angle-down"></span></a>
-                <div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
-                    <div class="sidebar-widget results-filters">
-
-                    </div>
-                    <div class="sidebar-widget sidebar-widget-attached filters-update-container" style="display: none">
-
-                    </div>
-            </li>
-            <li class="dropdown dropdown-interactive slide-feature-benefits">
-                <a class="activator btn-dropdown dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);"><span class="icon icon-filter"></span> <span>Customise Cover</span> &nbsp;&nbsp;<span class="icon icon-angle-down"></span></a>
-                <div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
-                    <div class="sidebar-widget results-filters-benefits">
-
-                    </div>
-                    <div class="sidebar-widget sidebar-widget-attached filters-update-container" style="display: none">
-
-                    </div>
-                </div>
-            </li>
         </ul>
 
         <div class="slide-feature-close-more-info">
@@ -144,6 +128,25 @@
             <health_v1:footer />
         </jsp:attribute>
 
+        <jsp:attribute name="xs_results_pagination">
+            <div class="navbar navbar-default xs-results-pagination navMenu-row-fixed visible-xs">
+                <div class="container">
+                    <ul class="nav navbar-nav ">
+                        <li class="navbar-text center hidden" data-results-pagination-pagetext="true"></li>
+
+                        <li>
+                            <a data-results-pagination-control="previous" href="javascript:;" class="btn-pagination" data-analytics="pagination previous"><span class="icon icon-arrow-left"></span>
+                                Prev</a>
+                        </li>
+
+                        <li class="right">
+                            <a data-results-pagination-control="next" href="javascript:;" class="btn-pagination " data-analytics="pagination next">Next <span class="icon icon-arrow-right"></span></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </jsp:attribute>
+
         <jsp:attribute name="vertical_settings">
             <health_v1:settings />
         </jsp:attribute>
@@ -155,7 +158,7 @@
 
         <jsp:attribute name="additional_meerkat_scripts">
             <c:if test="${callCentre}">
-                <script src="${assetUrl}assets/js/bundles/simples_health${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
+                <script src="${assetUrl}js/bundles/simples_health${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
             </c:if>
         </jsp:attribute>
 

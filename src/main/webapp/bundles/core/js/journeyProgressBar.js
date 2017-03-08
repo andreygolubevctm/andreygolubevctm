@@ -45,9 +45,9 @@
 		progressBarSteps = progressBarStepsArgument;
 		// 99% width (if default) divided by number of steps (last li.end element takes 1% width)
 		if (endCollapsed !== 0) {
-			fullProgressBarWidth = $target.width();
-			elementWidth = nodeWidth;
-			usableWidth = fullProgressBarWidth - elementWidth;
+			var fullProgressBarWidth = $target.width();
+			var elementWidth = nodeWidth;
+			var usableWidth = fullProgressBarWidth - elementWidth;
 			progressBarWidth = usableWidth / fullProgressBarWidth * 100;
 		}
 		progressBarElementWidthPercentage = progressBarWidth / (progressBarSteps.length - endCollapsed);
@@ -113,7 +113,7 @@
 			if( isDisabled || isCurrentStep || foundCurrent ){
 				openTag = closeTag = 'div';
 			} else {
-				openTag = 'a href="javascript:;"' + tabindex + ' data-slide-control="' + progressBarStep.navigationId + '" data-analytics="ribbon step"';
+				openTag = 'a href="javascript:;"' + tabindex + ' data-slide-control="' + progressBarStep.navigationId + '" ' + meerkat.modules.dataAnalyticsHelper.get("ribbon step",'"');
 				closeTag = 'a';
 			}
 
