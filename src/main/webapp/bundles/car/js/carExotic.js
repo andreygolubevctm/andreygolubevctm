@@ -129,6 +129,10 @@
 				_updateSnapshotDataSource($carSnapshot);
 				_updateSnapshotDataSource($carSnapshotRegoFieldset);
 			});
+
+			if (meerkat.site.isExoticManualEntry) {
+				$exoticManualEntry.trigger('click');
+			}
 		}
 
 		_toggleReasonFields($('input[name=quote_drivers_regular_claims]'), $('#quote_drivers_regular_claims_reasonRow'));
