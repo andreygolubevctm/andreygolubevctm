@@ -21,7 +21,6 @@
     </form_v2:row>
 
     <form_v2:row label="Employment status" helpId="27" id="employment_status_row">
-    <form_v2:row label="Employment status" helpId="27">
         <c:set var="analAttribute"><field_v1:analytics_attr analVal="Employment status" quoteChar="\"" /></c:set>
         <field_v2:import_select xpath="${xpath}/employmentStatus"
             required="true" className="employment_status"
