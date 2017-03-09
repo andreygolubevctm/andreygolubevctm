@@ -29,9 +29,7 @@
 <%-- Override set in splittest_helper tag --%>
 <c:if test="${showOptInOnSlide3 eq false}">
     <c:set var="termsAndConditions">
-        <%-- PLEASE NOTE THAT THE MENTION OF COMPARE THE MARKET IN THE TEXT BELOW IS ON PURPOSE --%>
         ${optInText}
-
     </c:set>
 
     <%-- Optional question for users - mandatory if Contact Number is selected (Required = true as it won't be shown if no number is added) --%>
