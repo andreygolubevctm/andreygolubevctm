@@ -5,6 +5,7 @@ import com.ctm.httpclient.RestSettings;
 import com.ctm.web.core.competition.services.CompetitionService;
 import com.ctm.web.core.content.model.Content;
 import com.ctm.web.core.content.services.ContentService;
+import com.ctm.web.core.coupon.services.CouponService;
 import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.email.exceptions.EmailDetailsException;
 import com.ctm.web.core.exceptions.ConfigSettingException;
@@ -21,11 +22,13 @@ import com.ctm.web.core.services.EnvironmentService;
 import com.ctm.web.core.services.ServiceConfigurationServiceBean;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.core.web.go.xml.XmlNode;
+import com.ctm.web.health.dao.HealthTransactionDao;
 import com.ctm.web.health.model.form.*;
 import com.ctm.web.health.model.results.HealthQuoteResult;
 import com.ctm.web.health.model.results.PremiumRange;
 import com.ctm.web.health.quote.model.*;
 import com.ctm.web.health.quote.model.request.HealthQuoteRequest;
+import com.ctm.web.health.quote.model.response.GiftCard;
 import com.ctm.web.health.quote.model.response.HealthResponse;
 import com.ctm.web.health.quote.model.response.HealthResponseV2;
 import org.apache.commons.lang3.StringUtils;
@@ -42,6 +45,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.ctm.web.core.model.settings.Vertical.VerticalType.HEALTH;
+import static com.ctm.web.simples.services.TransactionService.writeTransactionDetail;
 
 @Component
 public class HealthQuoteService extends CommonRequestServiceV2 {
@@ -61,6 +65,9 @@ public class HealthQuoteService extends CommonRequestServiceV2 {
     private Client<Request<HealthQuoteRequest>, HealthResponse> clientQuotes;
 
     @Autowired
+    private CouponService couponService;
+
+    @Autowired
     public HealthQuoteService(ProviderFilterDao providerFilterDAO, ServiceConfigurationServiceBean serviceConfigurationServiceBean) {
         super(providerFilterDAO, serviceConfigurationServiceBean);
     }
@@ -74,7 +81,9 @@ public class HealthQuoteService extends CommonRequestServiceV2 {
             LOGGER.info("Calling health-quote v2");
             // Version 2
 
-            final HealthQuoteRequest quoteRequest = RequestAdapterV2.adapt(data, alternatePricingContent, isSimples);
+            final String coupon = couponService.getCouponForConfirmation(data.getTransactionId().toString());
+
+            final HealthQuoteRequest quoteRequest = RequestAdapterV2.adapt(data, alternatePricingContent, isSimples, coupon);
 
             final RatesheetOutgoingRequest<HealthQuoteRequest> request = RatesheetOutgoingRequest.<HealthQuoteRequest>newBuilder()
                     .transactionId(data.getTransactionId())
@@ -94,7 +103,31 @@ public class HealthQuoteService extends CommonRequestServiceV2 {
                     .doOnError(this::logHttpClientError)
                     .observeOn(Schedulers.io()).toBlocking().single();
 
-            return ResponseAdapterV2.adapt(data, healthResponse, alternatePricingContent);
+            final ResponseAdapterModel responseAdapterModel = ResponseAdapterV2.adapt(data, healthResponse, alternatePricingContent);
+
+            boolean isShowAll = "Y".equals(data.getQuote().getShowAll()); //showAll = true means they're looking at quotes and the healthResponse.getPayload.getQuotes will contain all the quote entries
+            if (!isShowAll) { //showAll = false means they're paying and the healthResponse.getPayload.getQuotes will only contain one entry- the one they're paying for
+                final Optional<GiftCard> giftCard = healthResponse.getPayload()
+                        .getQuotes()
+                        .stream()
+                        .findFirst()
+                        .flatMap(com.ctm.web.health.quote.model.response.HealthQuote::getGiftCard);
+                writeTransactionDetail(
+                        data.getTransactionId(),
+                        HealthTransactionDao.HealthTransactionSequenceNoEnum.RATE_RISE_GIFT_CARD_AMOUNT,
+                        giftCard
+                                .map(GiftCard::getAmount)
+                                .map(a -> Integer.toString(a.intValue())) //converting to integer before getting string because BigDecimal.toString is weird (and we know that the number will always be whole numbers multiples of 5 anyway)
+                                .orElse("0"));
+                writeTransactionDetail(
+                        data.getTransactionId(),
+                        HealthTransactionDao.HealthTransactionSequenceNoEnum.RATE_RISE_GIFT_CARD_PRODUCT_ID,
+                        giftCard
+                                .map(GiftCard::getPreviousProductId)
+                                .orElse("0"));
+            }
+
+            return responseAdapterModel;
         } else {
             LOGGER.info("Calling health-quote v1");
             // Version 1

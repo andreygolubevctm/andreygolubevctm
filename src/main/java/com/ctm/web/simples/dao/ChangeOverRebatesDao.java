@@ -29,6 +29,8 @@ public class ChangeOverRebatesDao {
 					"SELECT multiplier as currentMultiplier, " +
 						"(SELECT multiplier FROM `ctm`.`health_changeover_rebates` WHERE id = (SELECT min(id) " +
 						"            FROM `ctm`.`health_changeover_rebates` WHERE id > rebates.id)) as futureMultiplier, " +
+						"(SELECT multiplier FROM `ctm`.`health_changeover_rebates` WHERE id = (SELECT min(id) " +
+						"            FROM `ctm`.`health_changeover_rebates` WHERE id < rebates.id)) as previousMultiplier, " +
 						"(SELECT effectiveStart FROM `ctm`.`health_changeover_rebates` WHERE id = (SELECT min(id) " +
 						"            FROM `ctm`.`health_changeover_rebates` WHERE id > rebates.id)) as effectiveFutureStart, " +
 						"            effectiveStart " +
@@ -48,6 +50,7 @@ public class ChangeOverRebatesDao {
 				changeOverRebate.setEffectiveFutureStart(
 						results.getObject("effectiveFutureStart") != null ?
 								results.getDate("effectiveFutureStart") : results.getDate("effectiveStart"));
+				changeOverRebate.setPreviousMultiplier(results.getBigDecimal("previousMultiplier"));
 			}
 		}
 		catch (SQLException e) {

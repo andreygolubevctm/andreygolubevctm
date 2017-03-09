@@ -28,22 +28,44 @@ public class HealthTransactionDao {
 		public static final int CONFIRMATION_EMAIL_CODE = -1;
 	}
 
+	public static enum HealthTransactionSequenceNoEnum {
+		// entries with -99 already exist in database, do not use
+		RATE_RISE_GIFT_CARD_AMOUNT(-98, "current/rateRiseGiftValue"),
+		RATE_RISE_GIFT_CARD_PRODUCT_ID(-97, "current/rateRiseProductId");
+
+		private int sequenceNo;
+		private String xpath;
+
+		HealthTransactionSequenceNoEnum(final int sequenceNo, final String xpath) {
+			this.sequenceNo = sequenceNo;
+			this.xpath = xpath;
+		}
+
+		public int getSequenceNo() {
+			return sequenceNo;
+		}
+
+		public String getXpath() {
+			return xpath;
+		}
+	}
+
 	/**
 	 * Populates details: isConfirmed, confirmationKey, selectedProductTitle, selectedProductProvider
 	 * @param details The model that will have details added to
 	 * @return Updated model
 	 */
-	public HealthTransaction getHealthDetails(HealthTransaction details) throws DaoException {
+	public HealthTransaction getHealthDetails(final HealthTransaction details) throws DaoException {
 
 		if (details == null || details.getTransactionId() == 0) {
 			throw new DaoException("Please specify a transactionId on your model.");
 		}
 
-		SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
+		final SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
 		boolean found = false;
 
 		try {
-			PreparedStatement stmt;
+			final PreparedStatement stmt;
 			stmt = dbSource.getConnection().prepareStatement(
 				"SELECT IF(TransID > 0, 1, 0) AS isConfirmed, confirm.keyID AS confirmationKey, td1.textValue AS productTitle, td2.textValue AS provider " +
 				"FROM aggregator.transaction_header th " +
@@ -56,7 +78,7 @@ public class HealthTransactionDao {
 			);
 			stmt.setLong(1, details.getTransactionId());
 
-			ResultSet results = stmt.executeQuery();
+			final ResultSet results = stmt.executeQuery();
 
 			while (results.next()) {
 				mapHealthDetails(details, results);
@@ -79,9 +101,9 @@ public class HealthTransactionDao {
 		return details;
 	}
 
-	private HealthTransaction getHealthDetailsColdTable(HealthTransaction details) throws DaoException {
+	private HealthTransaction getHealthDetailsColdTable(final HealthTransaction details) throws DaoException {
 
-		String sql = "SELECT IF(TransID > 0, 1, 0) AS isConfirmed, confirm.keyID AS confirmationKey, " +
+		final String sql = "SELECT IF(TransID > 0, 1, 0) AS isConfirmed, confirm.keyID AS confirmationKey, " +
 				"td1.textValue AS productTitle, td2.textValue AS provider " +
 				"FROM aggregator.transaction_header2_cold th " +
 				"LEFT JOIN ctm.confirmations confirm ON th.TransactionId = confirm.TransID " +
@@ -101,14 +123,14 @@ public class HealthTransactionDao {
 				") " +
 				"WHERE th.TransactionId = ?;";
 
-		SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
+		final SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
 
 		try {
-			PreparedStatement stmt;
+			final PreparedStatement stmt;
 			stmt = dbSource.getConnection().prepareStatement(sql);
 			stmt.setLong(1, details.getTransactionId());
 
-			ResultSet results = stmt.executeQuery();
+			final ResultSet results = stmt.executeQuery();
 
 			while (results.next()) {
 				mapHealthDetails(details, results);
@@ -127,7 +149,7 @@ public class HealthTransactionDao {
 		return details;
 	}
 
-	private void mapHealthDetails(HealthTransaction details, ResultSet results) throws SQLException {
+	private void mapHealthDetails(final HealthTransaction details, final ResultSet results) throws SQLException {
 		details.setIsConfirmed(results.getBoolean("isConfirmed"));
 		details.setConfirmationKey(results.getString("confirmationKey"));
 		details.setSelectedProductTitle(results.getString("productTitle"));
@@ -141,9 +163,9 @@ public class HealthTransactionDao {
 	 * @param transactionId
 	 * @param errors value to write
 	 */
-	public void writeAllowableErrors(Long transactionId , String errors) throws DaoException {
+	public void writeAllowableErrors(final Long transactionId , final String errors) throws DaoException {
 
-		SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
+		final SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
 		PreparedStatement stmt = null;
 
 		try {
@@ -164,8 +186,43 @@ public class HealthTransactionDao {
 			if(stmt != null) {
 				try {
 					stmt.close();
-				} catch (SQLException e) {
+				} catch (final SQLException e) {
 					LOGGER.error("Failed to close health transaction db connection {}", kv("errors", errors), e);
+				}
+			}
+			dbSource.closeConnection();
+		}
+	}
+
+	public void writeTransactionDetail(final Long transactionId , final HealthTransactionSequenceNoEnum healthDetailsSeqNo, final String value) throws DaoException {
+
+		final SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
+		PreparedStatement stmt = null;
+
+		try {
+			stmt = dbSource.getConnection().prepareStatement(
+					"INSERT INTO aggregator.transaction_details " +
+							"(transactionId,sequenceNo,xpath,textValue,numericValue,dateValue) " +
+							"values (?, ?, ?, ?, default, now()) ON DUPLICATE KEY UPDATE textValue = ?, dateValue = now(); "
+			);
+			stmt.setLong(1, transactionId == null ? 0 : transactionId);
+			stmt.setInt(2, healthDetailsSeqNo.getSequenceNo());
+			stmt.setString (3, healthDetailsSeqNo.getXpath());
+			stmt.setString(4, checkLengthTextValue(value));
+			stmt.setString(5, checkLengthTextValue(value));
+
+			stmt.executeUpdate();
+		} catch (NamingException | SQLException e) {
+			throw new DaoException(e);
+		} finally {
+			if(stmt != null) {
+				try {
+					stmt.close();
+				} catch (final SQLException e) {
+					LOGGER.error("Failed to close health transaction db connection {} {}",
+							kv("healthDetailsSeqNo", healthDetailsSeqNo),
+							kv("value", value),
+							e);
 				}
 			}
 			dbSource.closeConnection();
