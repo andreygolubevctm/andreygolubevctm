@@ -13,11 +13,11 @@
 		$securityRow,
 		$navBarContents,
 		$youngDriver,
-		originalResultsTemplate = "",
 		$youngDriverQs,
 		$vehicleUse,
 		$vehicleUseOption,
-		_threshold = 150000;
+		_threshold = 150000,
+		$reasonElements = [];
 
 	function init(){
 		$marketValue = $('input[name=quote_vehicle_marketValue]');
@@ -43,7 +43,19 @@
 		$carSnapshot = $(".car-snapshot");
 		$carSnapshotRegoFieldset = $('#RegoFieldSet');
 
+		// reason fields
+		_setupReasonFields();
+
 		_eventSubscriptions();
+	}
+
+	function _setupReasonFields() {
+		$reasonElements = [
+			{ input: $('input[name=quote_drivers_regular_claims]'), row: $('#quote_drivers_regular_claims_reasonRow') },
+			{ input: $('input[name=quote_drivers_regular_convictions]'), row: $('#quote_drivers_regular_conviction_reasonRow') },
+			{ input: $('input[name=quote_drivers_youngExotic_claims]'), row: $('#quote_drivers_youngExotic_claims_reasonRow') },
+			{ input: $('input[name=quote_drivers_youngExotic_convictions]'), row: $('#quote_drivers_youngExotic_conviction_reasonRow') }
+		];
 	}
 
 	function toggleRequiredFields() {
@@ -131,11 +143,9 @@
 			});
 		}
 
-		_toggleReasonFields($('input[name=quote_drivers_regular_claims]'), $('#quote_drivers_regular_claims_reasonRow'));
-		_toggleReasonFields($('input[name=quote_drivers_regular_convictions]'), $('#quote_drivers_regular_conviction_reasonRow'));
-
-		_toggleReasonFields($('input[name=quote_drivers_youngExotic_claims]'), $('#quote_drivers_youngExotic_claims_reasonRow'));
-		_toggleReasonFields($('input[name=quote_drivers_youngExotic_convictions]'), $('#quote_drivers_youngExotic_conviction_reasonRow'));
+		for (var i = 0; i < $reasonElements.length; i++) {
+			_toggleReasonFields($reasonElements[i].input, $reasonElements[i].row);
+		}
 
 		$youngDriver.on('click', function toggleYoungDriverExotic(){
 			if ($(this).val() === 'Y') {
@@ -198,23 +208,20 @@
 
 	function toggleFamousResultsPage() {
 		if (isExotic()) {
-			var templateHTML = $resultsPage.html();
-			var _template = _.template(templateHTML);
+			$(Results.settings.elements.page).removeClass('hidden').show();
+		}
 
-			// backup the template
-			if (originalResultsTemplate === "") {
-				originalResultsTemplate = $(Results.settings.elements.page).html();
+		$(Results.settings.elements.resultsContainer).toggleClass('hidden', isExotic());
+		$resultsPage.toggleClass('hidden', !isExotic());
+	}
+
+	function toggleReasonFields() {
+		for (var i = 0; i < $reasonElements.length; i++) {
+			if (isExotic()) {
+				$reasonElements[i].input.filter(':checked').trigger('click');
+			} else {
+				$reasonElements[i].row.hide();
 			}
-
-			$(Results.settings.elements.page).html(_template({})).removeClass('hidden').show();
-
-			$('#famous-alt-verticals .verticalButtons > div').removeClass().addClass('col-xs-12 col-sm-3');
-		} else {
-
-			if (originalResultsTemplate !== "") {
-				$(Results.settings.elements.page).html(originalResultsTemplate);
-			}
-			$resultsPage.fadeIn();
 		}
 	}
 
@@ -225,7 +232,8 @@
 		updateSpeechBubble: updateSpeechBubble,
 		toggleRequiredFields: toggleRequiredFields,
 		toggleFamousResultsPage: toggleFamousResultsPage,
-		toggleNavBarContents: toggleNavBarContents
+		toggleNavBarContents: toggleNavBarContents,
+		toggleReasonFields: toggleReasonFields
 	});
 
 })(jQuery);
