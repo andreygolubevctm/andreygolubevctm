@@ -116,6 +116,7 @@ public class HealthQuoteRouterTest {
         when(healthQuoteService.getQuotes(any(), any(), any(), anyBoolean(), any())).thenReturn(mock(ResponseAdapterModel.class));
         healthQuoteRouter = new HealthQuoteController(sessionDataServiceBean, ipAddressHandler, contentService, healthQuoteService);
 
+
     }
 
     @Test

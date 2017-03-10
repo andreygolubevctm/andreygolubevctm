@@ -114,7 +114,7 @@ public class HealthQuoteController extends CommonQuoteRouter {
             alternatePricingActive = contentService
                     .getContent("onlineDPActive", pageSettings.getBrandId(), pageSettings.getVertical().getId(), serverDate, true);
         }
-        final Content payYourRateRise = contentService.getContent(request, "simplesPyrrActive");
+        final Content payYourRateRise = contentService.getContent("simplesPyrrActive", pageSettings.getBrandId(), pageSettings.getVertical().getId(), serverDate, false);
 
         final boolean competitionEnabled = StringUtils.equalsIgnoreCase(contentService.getContentValueNonStatic(request, "competitionEnabled"), "Y");
 
