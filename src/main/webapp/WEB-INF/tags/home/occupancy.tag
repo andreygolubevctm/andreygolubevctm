@@ -23,11 +23,6 @@
 	<c:set var="items" value="${items},${currentYear - 6}=More than 5 years,NotAtThisAddress=Not yet living at this address" />
 
 <form_v2:fieldset legend="Occupancy Details">
-	<%-- Commencement Date --%>
-	<c:if test="${journeySplitTestActive eq false}">
-		<c:set var="fieldXpath" value="${baseXpath}/startDate" />
-		<home:commencementDate xpath="${fieldXpath}" />
-	</c:if>
 
 	<%-- Address --%>
 	<c:set var="fieldXpath" value="${baseXpath}/property/address" />

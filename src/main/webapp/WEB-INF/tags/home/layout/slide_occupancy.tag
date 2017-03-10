@@ -22,7 +22,7 @@
 				</c:if>
 
 				<c:if test="${journeySplitTestActive eq true}">
-					<home:cover_history xpath="${xpath}/disclosures"  />
+					<home:cover_history xpath="${xpath}/disclosures" baseXpath="${xpath}" />
 				</c:if>
 
 			</layout_v1:slide_content>

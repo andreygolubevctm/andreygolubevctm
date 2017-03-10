@@ -4,6 +4,8 @@
 
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath" required="true" rtexprvalue="true" description="field group's xpath"%>
+<%@ attribute name="baseXpath" required="true" rtexprvalue="true" description="base xpath"%>
+
 
 <%-- VARIABLES --%>
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
@@ -90,5 +92,14 @@
 			title="if the policy holder, or any other household member has had any thefts, burglaries or has made any home and/or contents insurance claims in the last 5 years."
 			additionalLabelAttributes="${analyticsAttr}" />
 	</form_v2:row>
+
+</form_v2:fieldset>
+
+<form_v2:fieldset legend="Your preferred date to start the insurance">
+	<%-- Commencement Date --%>
+	<c:if test="${journeySplitTestActive eq false}">
+		<c:set var="fieldXpath" value="${baseXpath}/startDate" />
+		<home:commencementDate xpath="${fieldXpath}" />
+	</c:if>
 
 </form_v2:fieldset>
