@@ -113,7 +113,7 @@ public class HealthQuoteRouterTest {
         PowerMockito.when(ApplicationService.getBrandFromRequest(eq(httpServletRequest))).thenReturn(brand);
         when(sessionDataServiceBean.getDataForTransactionId(httpServletRequest, transactionId.toString(), true)).thenReturn(dataB);
         when(httpServletRequest.getSession()).thenReturn(session);
-        when(healthQuoteService.getQuotes(any(), any(), any(), anyBoolean())).thenReturn(mock(ResponseAdapterModel.class));
+        when(healthQuoteService.getQuotes(any(), any(), any(), anyBoolean(), any())).thenReturn(mock(ResponseAdapterModel.class));
         healthQuoteRouter = new HealthQuoteController(sessionDataServiceBean, ipAddressHandler, contentService, healthQuoteService);
 
     }

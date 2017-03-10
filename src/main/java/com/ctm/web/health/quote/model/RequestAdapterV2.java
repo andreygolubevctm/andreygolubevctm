@@ -29,7 +29,7 @@ public class RequestAdapterV2 {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RequestAdapterV2.class);
 
-    public static HealthQuoteRequest adapt(HealthRequest request, Content alternatePricingContent, boolean isSimples, final String coupon) {
+    public static HealthQuoteRequest adapt(HealthRequest request, Content alternatePricingContent, boolean isSimples, final boolean isGiftCardActive) {
 
         HealthQuoteRequest quoteRequest = new HealthQuoteRequest();
         Filters filters = new Filters();
@@ -107,9 +107,9 @@ public class RequestAdapterV2 {
 
         quoteRequest.setIncludeSummary(isSimples);
 
-        if (coupon != null) {
+        if (isGiftCardActive) {
+            quoteRequest.setIncludeGiftCard(true);
         }
-        quoteRequest.setIncludeGiftCard(true); //TODO is this dangerous? don't we only want to do this for the relevant health coupons? eg what if this is a travel coupon, and we send them a random giftcard???
 
         return quoteRequest;
     }

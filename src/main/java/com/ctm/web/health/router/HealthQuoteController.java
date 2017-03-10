@@ -114,9 +114,11 @@ public class HealthQuoteController extends CommonQuoteRouter {
             alternatePricingActive = contentService
                     .getContent("onlineDPActive", pageSettings.getBrandId(), pageSettings.getVertical().getId(), serverDate, true);
         }
+        final Content payYourRateRise = contentService.getContent(request, "simplesPyrrActive");
+
         final boolean competitionEnabled = StringUtils.equalsIgnoreCase(contentService.getContentValueNonStatic(request, "competitionEnabled"), "Y");
 
-        final ResponseAdapterModel quotes = healthQuoteService.getQuotes(brand, data, alternatePricingActive, isCallCentre);
+        final ResponseAdapterModel quotes = healthQuoteService.getQuotes(brand, data, alternatePricingActive, isCallCentre, payYourRateRise);
 
         if (quotes.getResults().isEmpty()) {
             return handleEmptyResults(request, data, healthQuoteTokenService, info);

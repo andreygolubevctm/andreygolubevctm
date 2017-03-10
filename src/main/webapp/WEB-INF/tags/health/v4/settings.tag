@@ -90,7 +90,7 @@
 </c:set>
 
 <health_v1:dual_pricing_settings />
-<health_v1:pyrr_campaign_settings />
+<health_v4:pyrr_campaign_settings />
 {
 	isCallCentreUser: <c:out value="${not empty callCentre}"/>,
 	isFromBrochureSite: <c:out value="${fromBrochure}"/>,
