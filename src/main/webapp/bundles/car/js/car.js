@@ -228,6 +228,9 @@
                 touchType: 'H',
                 touchComment: 'DriverDtls',
                 includeFormData: true
+            },
+            onBeforeEnter: function (event) {
+                meerkat.modules.carExotic.toggleReasonFields();
             }
         };
 
