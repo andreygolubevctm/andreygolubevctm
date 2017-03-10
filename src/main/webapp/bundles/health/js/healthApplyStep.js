@@ -8,7 +8,8 @@
         $paymentMedicareColour,
         $paymentMedicareCover,
         $medicareYellowMessage,
-        $genderToggle;
+        $genderToggle,
+        $unitElements;
 
     function init(){
         $(document).ready(function () {
@@ -17,6 +18,14 @@
             $paymentMedicareCover = $("#health_payment_medicare_cover");
             $medicareYellowMessage = $("#health_medicareDetails_yellowCardMessage");
             $genderToggle = $('.person-gender-toggle input[type=radio]');
+            $unitElements = {
+                appAddressUnitShop: $('#health_application_address_unitShop'),
+                appAddressStreetNum: $('#health_application_address_streetNum'),
+                appAddressUnitType: $('#health_application_address_unitType'),
+                appPostalUnitShop: $('#health_application_postal_unitShop'),
+                appPostalStreetNum: $('#health_application_postal_streetNum'),
+                appPostalUnitType: $('#health_application_postal_unitType')
+            }
         });
     }
 
@@ -48,6 +57,10 @@
         if (meerkat.modules.health.hasPartner()) {
             toggleSelectGender('partner');
         }
+
+        $unitElements.appAddressUnitType.add($unitElements.appPostalUnitType).on('change', function toggleUnitRequiredFields() {
+            _toggleUnitRequired(this.id.includes('address') ? 'Address' : 'Postal', this.value === 'UN');
+        });
     }
 
     function onInitialise() {
@@ -128,6 +141,17 @@
             }
         } else {
             $genderRow.slideUp();
+        }
+    }
+
+    function _toggleUnitRequired(addressType, isUnit) {
+        var $fields = $unitElements['app'+addressType+'UnitShop'].add($unitElements['app'+addressType+'StreetNum']);
+
+        $fields.setRequired(isUnit);
+
+        // blur out of fields to trigger validation when unitType not equal to 'UN'
+        if (!isUnit) {
+            $fields.blur();
         }
     }
 
