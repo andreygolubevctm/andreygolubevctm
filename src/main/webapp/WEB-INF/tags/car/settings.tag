@@ -88,6 +88,7 @@
 	skipNewCoverTypeCarJourney: ${skipNewCoverTypeCarJourney},
 	ctpMessage: "<content:get key="ctpMessageCopy"/>",
 	isFromExoticPage : ${isFromExoticPage},
+	isExoticManualEntry: ${isExoticManualEntry},
 	exoticCarContent: {
 		originalHeading : "${originalHeading}",
 		origintalCopy : "${origintalCopy}",

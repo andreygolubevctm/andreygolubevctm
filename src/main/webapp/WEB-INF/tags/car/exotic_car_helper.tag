@@ -8,6 +8,12 @@
     <c:set var="isFromExoticPage" scope="request" value="${true}" />
 </c:if>
 
+<c:set var="quote_vehicle_exoticManualEntry"><c:out value="${param.quote_vehicle_exoticManualEntry}" escapeXml="true" /></c:set>
+<c:set var="isExoticManualEntry" scope="request" value="${false}" />
+<c:if test="${not empty quote_vehicle_exoticManualEntry}">
+    <c:set var="isExoticManualEntry" scope="request" value="${true}" />
+    <c:set var="isFromExoticPage" scope="request" value="${true}" />
+</c:if>
 
 <c:set var="exoticCarContent" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "exoticCarContent")}' />
 
