@@ -78,8 +78,4 @@
 
 	<field_v1:hidden xpath="${xpath}/coverTypeWarning/chosenOption"/>
 
-	<c:if test="${journeySplitTestActive eq true}">
-		<home:business_activity_v2 xpath="home/businessActivity" />
-	</c:if>
-
 </form_v2:fieldset>
