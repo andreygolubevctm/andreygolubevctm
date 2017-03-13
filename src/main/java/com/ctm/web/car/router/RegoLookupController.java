@@ -55,7 +55,6 @@ public class RegoLookupController {
                                              @RequestParam("state") String state,
                                              HttpServletRequest request) {
         Map<String, Object> result = new HashMap<>();
-        String request_status = RegoLookupService.RegoLookupStatus.SUCCESS.getLabel();
         try {
             ApplicationService.setVerticalCodeOnRequest(request, Vertical.VerticalType.CAR.getCode());
             Optional<String> plateOptional = Stream.of(plateNumber).map(String::toUpperCase).
@@ -81,15 +80,6 @@ public class RegoLookupController {
             Map<String, String> error = new LinkedHashMap<>();
             error.put("exception", e.getMessage());
             result.put(COLLECTION_LABEL, error);
-            request_status = e.getStatus().getLabel();
-        }
-
-        // Log the lookup attempt
-        try {
-            carRegoLookupDao.logLookup(transactionId, plateNumber, state, request_status);
-        } catch (DaoException e) {
-            LOGGER.error("[rego lookup] Error logging car rego request {},{},{},{}", kv("transactionId", transactionId),
-                    kv("plateNumber", plateNumber), kv("state", state), kv("request_status", request_status));
         }
 
         return result;
