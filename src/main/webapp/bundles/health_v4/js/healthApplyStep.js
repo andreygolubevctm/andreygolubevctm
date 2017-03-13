@@ -108,7 +108,7 @@
         });
 
         $elements.appAddressUnitType.add($elements.appPostalUnitType).on('change', function toggleUnitRequiredFields() {
-           _toggleUnitRequired(this.id.includes('address') ? 'Address' : 'Postal', this.value === 'UN');
+           _toggleUnitRequired(this.id.indexOf('address') !== -1 ? 'Address' : 'Postal', this.value === 'UN');
         });
     }
 
@@ -158,6 +158,7 @@
     function _toggleUnitRequired(addressType, isUnit) {
         var $fields = $elements['app'+addressType+'UnitShop'].add($elements['app'+addressType+'StreetNum']);
 
+        console.log('isUnit', isUnit);
         $fields.setRequired(isUnit);
 
         // blur out of fields to trigger validation when unitType not equal to 'UN'
