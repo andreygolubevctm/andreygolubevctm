@@ -1,0 +1,94 @@
+;(function ($, undefined) {
+
+    var meerkat = window.meerkat,
+    meerkatEvents = meerkat.modules.events,
+    selectedProduct = {},
+    $elements = {},
+    isActive = null;
+
+    function initPyrrCampaign() {
+        if (!isPyrrActive()) {
+            return false;
+        }
+
+        _setupElements();
+        _applyEventListeners();
+    }
+
+    function isPyrrActive() {
+        if(isActive === null) {
+            isActive = typeof meerkat.site.isPyrrActive !== 'undefined' && meerkat.site.isPyrrActive;
+        }
+        return isActive;
+    }
+
+    function _setupElements() {
+        $elements = {
+            logoPriceTemplate: $('#logo-price-template'),
+            template: {
+                results: {
+                    default: $('#pyrr-campaign-results-template')
+                }
+            },
+            sideBarFrequency: $('.sidebarFrequency'),
+            paymentDetailsSelection: $('#health_payment_details-selection'),
+            paymentDetailsFrequency: $('#health_payment_details-selection').find('#health_payment_details_frequency'),
+            frequencyWarning: $('#health_payment_details-selection').find('.frequencyWarning'),
+            quoterefTemplate: $('#quoteref-template')
+        };
+
+        $elements.sideBarFrequency.hide();
+    }
+
+    function _applyEventListeners() {
+        $(document).on('click', 'a.live-chat', function() {
+            $('.LPMcontainer').trigger('click');
+        });
+    }
+
+    function renderTemplate(target, product, returnTemplate, isForSidebar, page) {
+        selectedProduct = product;
+
+        if(!_.isObject(product)) {
+            return "";
+        }
+
+        product.mode = product.mode !== '' ? product.mode : '';
+        if (meerkat.site.isCallCentreUser === true) {
+            product.mode = "lhcInc";
+        }
+
+        product.coupon = meerkat.modules.coupon.getCurrentCoupon();
+
+        var htmlTemplate = _.template($elements.logoPriceTemplate.html());
+        product.renderedAltPriceTemplate = htmlTemplate(product);
+        $elements.mainPyrrTemplate = _getTemplate(isForSidebar, page);
+        var pyrrTemplate = _.template($elements.mainPyrrTemplate.html());
+        if (returnTemplate === true) {
+            return pyrrTemplate(product);
+        } else {
+            $(target).html(pyrrTemplate(product));
+
+            if (isForSidebar && $elements.quoterefTemplate.length > 0) {
+                var quoterefTemplate = _.template($elements.quoterefTemplate.html());
+                $(target).parent().find('.quoterefTemplateHolder').html(quoterefTemplate());
+            }
+        }
+
+    }
+
+    function _getTemplate(isForSidebar, page) {
+
+        page  = page || 'moreinfo';
+        var deviceMediaState = meerkat.modules.deviceMediaState.get();
+
+        return $elements.template[page][deviceMediaState] || $elements.template[page]['default'];
+    }
+
+    meerkat.modules.register('healthPyrrCampaign', {
+        initPyrrCampaign: initPyrrCampaign,
+        isPyrrActive: isPyrrActive,
+        renderTemplate: renderTemplate
+    });
+
+})(jQuery);
