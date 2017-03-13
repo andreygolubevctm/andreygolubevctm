@@ -21,6 +21,7 @@ import com.ctm.web.core.services.IPCheckService;
 import com.ctm.web.core.services.ServiceConfigurationService;
 import com.ctm.web.core.utils.RequestUtils;
 import com.ctm.web.core.webservice.WebServiceUtils;
+import com.ctm.webservice.motorweb.MotorWebProvider;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.frontend.ClientProxy;
@@ -210,9 +211,11 @@ public class RegoLookupService {
         return isBlocked;
     }
 
-
     public Map<String, Object> execute(HttpServletRequest request, PageSettings pageSettings,
                                        Long transactionId, String plateNumber, String stateIn) throws RegoLookupException {
+
+        String motorwebNvic = null;
+        String motorwebRedbook = null;
 
         Map<String, Object> response = null;
 
@@ -223,6 +226,7 @@ public class RegoLookupService {
                 state = JurisdictionEnum.fromValue(stateIn);
             } catch (Exception e) {
                 LOGGER.debug("[rego lookup] Error doing rego lookup {},{}", kv("stateIn", stateIn), e);
+                logLookup(transactionId, plateNumber, stateIn, RegoLookupStatus.INVALID_STATE, motorwebNvic, motorwebRedbook);
                 throw new RegoLookupException(RegoLookupStatus.INVALID_STATE, e);
             }
 
@@ -231,14 +235,21 @@ public class RegoLookupService {
             try {
                 // Step 1 - get the redbook code from MotorWeb
                 motorwebResponse = getMotorwebResponse(pageSettings, transactionId, plateNumber, state);
+                if (motorwebResponse != null){
+                    motorwebNvic = motorwebResponse.map(MotorwebResponse::getNvicode).orElse(null);
+                    motorwebRedbook = motorwebResponse.map(MotorwebResponse::getRedbookCode).orElse(null);
+                }
             } catch (Exception e) {
                 LOGGER.debug("[rego lookup] Error getting MotorWeb response {},{}", kv("plateNumber", plateNumber), kv("stateIn", stateIn), e);
+                logLookup(transactionId, plateNumber, stateIn, RegoLookupStatus.SERVICE_ERROR, motorwebNvic, motorwebRedbook);
                 throw new RegoLookupException(RegoLookupStatus.SERVICE_ERROR, e);
             }
             if (motorwebResponse == null || !motorwebResponse.isPresent()) {
+                logLookup(transactionId, plateNumber, stateIn, RegoLookupStatus.REGO_NOT_FOUND, motorwebNvic, motorwebRedbook);
                 throw new RegoLookupException(RegoLookupStatus.REGO_NOT_FOUND);
             } else if (StringUtils.isBlank(motorwebResponse.get().getRedbookCode())) {
                 LOGGER.error("[rego lookup] No redbook code returned from Motorweb {}, {}", kv("plateNumber", plateNumber), kv("stateIn", stateIn));
+                logLookup(transactionId, plateNumber, stateIn, RegoLookupStatus.NO_REDBOOK_CODE, motorwebNvic, motorwebRedbook);
                 throw new RegoLookupException(RegoLookupStatus.NO_REDBOOK_CODE);
             } else {
                 // Step 2 - get vehicle details from dao
@@ -260,6 +271,7 @@ public class RegoLookupService {
                     response = carDetails.getSimple();
                 } catch (DaoException e) {
                     LOGGER.debug("[rego lookup] Error getting redbook car details {}", kv("plateNumber", plateNumber), kv("motorwebResponse", res), e);
+                    logLookup(transactionId, plateNumber, stateIn, RegoLookupStatus.DAO_ERROR, motorwebNvic, motorwebRedbook);
                     throw new RegoLookupException(RegoLookupStatus.DAO_ERROR, e);
                 }
                 // Step 3 - get data for vehicle selection fields
@@ -275,7 +287,20 @@ public class RegoLookupService {
                 response.put("data", vehicleLists);
             }
         }
+
+        logLookup(transactionId, plateNumber, stateIn, RegoLookupStatus.SUCCESS, motorwebNvic, motorwebRedbook);
+
         return response;
+    }
+
+    private void logLookup(Long transactionId, String plateNumber, String state, RegoLookupStatus status, String motorwebNvic, String motorwebRedbook){
+        // Log the lookup attempt
+        try {
+            carRegoLookupDao.logLookup(transactionId, plateNumber, state, status.getLabel(), motorwebNvic, motorwebRedbook);
+        } catch (DaoException e) {
+            LOGGER.error("[rego lookup] Error logging car rego request {},{},{},{}", kv("transactionId", transactionId),
+                    kv("plateNumber", plateNumber), kv("state", state), kv("request_status", status.getLabel()));
+        }
     }
 
     private Optional<MotorwebResponse> getMotorwebResponse(PageSettings pageSettings, Long transactionId, String plateNumber,

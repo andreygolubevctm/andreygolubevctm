@@ -25,6 +25,10 @@ Process:
 	var $success;
 	var $fail;
 	var $registered;
+	var $number;
+	var $type;
+	var $expiry;
+	var $name;
 
 	var calledBack = false,
 		successEventHandlerId = null,
@@ -45,7 +49,7 @@ Process:
 	}
 
 	function resetRegistered() {
-		return $registered.val('');
+		$registered.add($number).add($type).add($expiry).add($name).val('');
 	}
 
 	function success(params) {
@@ -189,6 +193,10 @@ Process:
 		$success = $('.' + settings.name + ' .success');
 		$fail = $('.' + settings.name + ' .fail');
 		$registered = $('#' + settings.name + '-registered');
+		$number = $('#' + settings.name + '_number');
+		$type = $('#' + settings.name + '_type');
+		$expiry = $('#' + settings.name + '_expiry');
+		$name = $('#' + settings.name + '_name');
 		settings.paymentEngine.setup(settings);
 
 		$('body').addClass(settings.name + '-active');

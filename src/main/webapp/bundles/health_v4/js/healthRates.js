@@ -27,7 +27,8 @@
             partnerLoading: $('input[name="health_healthCover_partner_healthCoverLoading"]'),
             partnerCurrent: $('input[name="health_healthCover_partner_cover"]'),
             partnerLoadingManual: $('input[name="health_healthCover_partner_lhc"]'),
-            dependants: $('#health_healthCover_dependants')
+            dependants: $('#health_healthCover_dependants'),
+            commencementDate: $('#health_payment_details_start')
         };
 
         $elements.income.on('change', meerkat.modules.healthRebate.setRebate);
@@ -37,69 +38,76 @@
     }
 
     function loadRatesBeforeResultsPage(forceRebate, callback) {
-        var postData = {
-            dependants: $elements.dependants.val(),
-            income: $elements.income.val() || 0,
-            rebate_choice: forceRebate === true ? 'Y' : $elements.rebate.val(),
-            primary_dob: $elements.primaryDob.val(),
-            primary_loading: $elements.primaryLoading.filter(':checked').val(),
-            primary_current: $elements.primaryCurrent.filter(':checked').val(),
-            primary_loading_manual: $elements.primaryLoadingManual.val(),
-            cover: meerkat.modules.healthSituation.getSituation()
-        };
+        _.defer(function(){
+            var postData = {
+                dependants: $elements.dependants.val(),
+                income: $elements.income.val() || 0,
+                rebate_choice: forceRebate === true ? 'Y' : $elements.rebate.filter(':checked').val(),
+                primary_dob: $elements.primaryDob.val(),
+                primary_loading: $elements.primaryLoading.filter(':checked').val(),
+                primary_current: $elements.primaryCurrent.filter(':checked').val(),
+                primary_loading_manual: $elements.primaryLoadingManual.val(),
+                cover: meerkat.modules.healthSituation.getSituation()
+            };
 
-        // If the customer answers Yes for current health insurance, assume 0% LHC
-        if (postData.primary_current === 'Y' && postData.primary_loading !== 'N') {
-            postData.primary_loading = 'Y';
-        }
+            // If the customer answers Yes for current health insurance, assume 0% LHC
+            if (postData.primary_current === 'Y' && postData.primary_loading !== 'N') {
+                postData.primary_loading = 'Y';
+            }
 
-        if (meerkat.modules.healthRebate.hasPartner()) {
-            postData.partner_dob = $elements.partnerDob.val();
-            postData.partner_current = $elements.partnerCurrent.filter(':checked').val() || 'N';
-            postData.partner_loading = $elements.partnerLoading.filter(':checked').val() || 'N';
-            postData.partner_loading_manual = $elements.partnerLoadingManual.val();
-        }
+            if (meerkat.modules.healthRebate.hasPartner() && !_.isEmpty($elements.partnerDob.val())) {
+                postData.partner_dob = $elements.partnerDob.val();
+                postData.partner_current = $elements.partnerCurrent.filter(':checked').val() || 'N';
+                postData.partner_loading = $elements.partnerLoading.filter(':checked').val() || 'N';
+                postData.partner_loading_manual = $elements.partnerLoadingManual.val();
+            }
 
-        if (!fetchRates(postData, true, callback)) {
-            exception("Failed to fetch rates");
-        }
+            if (!fetchRates(postData, true, callback)) {
+                exception("Failed to fetch rates");
+            }
+        });
     }
 
 // Load the rates object via ajax. Also validates currently filled in fields to ensure only valid attempts are made.
     function loadRates(callback) {
-        var postData = {
-            dependants: $elements.dependants.val(),
-            income: $elements.income.val() || 0,
-            rebate_choice: $elements.rebate.val(),
-            primary_dob: $elements.primaryDob.val(),
-            primary_loading: $elements.primaryLoading.filter(':checked').val(),
-            primary_current: $elements.primaryCurrent.filter(':checked').val(),
-            primary_loading_manual: $elements.primaryLoadingManual.val(),
-            partner_dob: $elements.partnerDob.val(),
-            partner_loading: $elements.partnerLoading.filter(':checked').val(),
-            partner_current: $elements.partnerCurrent.filter(':checked').val(),
-            partner_loading_manual: $elements.partnerLoadingManual.val(),
-            cover: meerkat.modules.healthSituation.getSituation()
-        };
+        _.defer(function() {
+            var postData = {
+                dependants: $elements.dependants.val(),
+                income: $elements.income.val() || 0,
+                rebate_choice: $elements.rebate.filter(':checked').val(),
+                primary_dob: $elements.primaryDob.val(),
+                primary_loading: $elements.primaryLoading.filter(':checked').val(),
+                primary_current: $elements.primaryCurrent.filter(':checked').val(),
+                primary_loading_manual: $elements.primaryLoadingManual.val(),
+                cover: meerkat.modules.healthSituation.getSituation()
+            };
 
-        var applicationFields = $('#health_application_provider, #health_application_productId').val();
-        if (typeof applicationFields !== 'undefined' && applicationFields !== '') {
-            // in application stage
-            postData.primary_dob = $elements.primaryAppDob.val();
-            postData.partner_dob = $elements.partnerAppDob.val() || postData.primary_dob;  // must default, otherwise fetchRates fails.
-            postData.primary_current = ( meerkat.modules.healthPreviousFund.getPrimaryFund() == 'NONE' ) ? 'N' : 'Y';
-            postData.partner_current = ( meerkat.modules.healthPreviousFund.getPartnerFund() == 'NONE' ) ? 'N' : 'Y';
+            if (meerkat.modules.healthRebate.hasPartner() && !_.isEmpty($elements.partnerDob.val())) {
+                postData.partner_dob = $elements.partnerDob.val();
+                postData.partner_current = $elements.partnerCurrent.filter(':checked').val() || 'N';
+                postData.partner_loading = $elements.partnerLoading.filter(':checked').val() || 'N';
+                postData.partner_loading_manual = $elements.partnerLoadingManual.val();
+            }
 
-        }
+            var applicationFields = $('#health_application_provider, #health_application_productId').val();
+            if (typeof applicationFields !== 'undefined' && applicationFields !== '') {
+                // in application stage
+                postData.primary_dob = $elements.primaryAppDob.val();
+                postData.partner_dob = $elements.partnerAppDob.val() || postData.primary_dob;  // must default, otherwise fetchRates fails.
+                postData.primary_current = ( meerkat.modules.healthPreviousFund.getPrimaryFund() == 'NONE' ) ? 'N' : 'Y';
+                postData.partner_current = ( meerkat.modules.healthPreviousFund.getPartnerFund() == 'NONE' ) ? 'N' : 'Y';
 
-        if (!fetchRates(postData, true, callback)) {
-            exception("Failed to Fetch Health Rebate Rates");
-        }
+            }
+
+            if (!fetchRates(postData, true, callback)) {
+                exception("Failed to Fetch Health Rebate Rates");
+            }
+        });
     }
 
     function fetchRates(postData, canSetRates, callback) {
         // Check if there is enough data to ask the server.
-        var coverTypeHasPartner = meerkat.modules.healthRebate.hasPartner();
+        var coverTypeHasPartner = meerkat.modules.healthRebate.hasPartner() && !_.isEmpty($elements.partnerDob.val());
         if (postData.cover === '') return false;
         if (postData.rebate_choice === '') return false;
         if (postData.primary_dob === '') return false;
@@ -115,10 +123,16 @@
         if (!postData.primary_dob.match(dateRegex)) return false;
         if (coverTypeHasPartner && !postData.partner_dob.match(dateRegex))  return false;
 
+        postData.commencementDate = null;
+        var commencementDate = $elements.commencementDate.val();
+        if(!_.isEmpty(commencementDate)) {
+            postData.commencementDate = commencementDate;
+        }
+
         return meerkat.modules.comms.post({
             url: "ajax/json/health_rebate.jsp",
             data: postData,
-            cache: true,
+            cache: false,
             errorLevel: "warning",
             onSuccess: function onRatesSuccess(data) {
                 if (canSetRates === true) setRates(data);
@@ -157,12 +171,22 @@
         meerkat.modules.healthResults.setLhcApplicable(rates.loading);
     }
 
+    function unsetRebate() {
+        if(_.isEmpty(rates)) rates = {};
+        rates.rebate = "0";
+        rates.rebateChangeover = "0";
+        setRates(rates);
+        $("#health_rebate").val(rates.rebate);
+        $("#health_rebateChangeover").val(rates.rebateChangeover);
+    }
+
     meerkat.modules.register("healthRates", {
         init: init,
         events: moduleEvents,
         getRates: getRates,
         setRates: setRates,
         getRebate: getRebate,
+        unsetRebate: unsetRebate,
         fetchRates: fetchRates,
         loadRates: loadRates,
         loadRatesBeforeResultsPage: loadRatesBeforeResultsPage

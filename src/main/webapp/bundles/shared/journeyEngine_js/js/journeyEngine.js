@@ -548,7 +548,7 @@
                     var $element = $(element);
                     var formValid = $element.valid();
                     if(formValid === false) isValid = false;
-                    errorList = $.merge(errorList, $element.validate().errorList);
+                    errorList = $.merge(errorList, $element.validate(meerkat.modules.jqueryValidate.getDefaultValidationObj()).errorList);
                 });
 
                 if(isAlreadyVisible === false) $slide.removeClass("active").addClass('hiddenSlide');
@@ -726,7 +726,7 @@
 
         $(".journeyEngineSlide.active form" ).each(function( index, element ) {
             var $element = $(element);
-            errorList = $.merge(errorList, $element.validate().errorList);
+            errorList = $.merge(errorList, $element.validate(meerkat.modules.jqueryValidate.getDefaultValidationObj()).errorList);
         });
 
 

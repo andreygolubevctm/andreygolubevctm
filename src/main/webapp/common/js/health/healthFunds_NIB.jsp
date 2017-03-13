@@ -15,6 +15,8 @@ var healthFunds_NIB = {
     $paymentFrequency : $('#health_payment_details_frequency'),
     $paymentStartDate: $("#health_payment_details_start"),
     $paymentTypeContainer: $('div.health-payment_details-type').siblings('div.fieldrow_legend'),
+    $medicareFirstname: $('#health_payment_medicare_firstName'),
+    $medicareLastname: $('#health_payment_medicare_surname'),
     set: function(){
         <%--Contact Point question--%>
         meerkat.modules.healthFunds.showHowToSendInfo('NIB', true);
@@ -92,6 +94,9 @@ var healthFunds_NIB = {
         onChangeNoEmailChkBox();
         $("#health_application_no_email").on("click.NIB",function() {onChangeNoEmailChkBox();});
 
+        <%-- Medicare Fields --%>
+        healthFunds_NIB.$medicareFirstname.add(healthFunds_NIB.$medicareLastname).attr('maxlength','24').attr('data-rule-personNameLtd','true').removeAttr('data-rule-personName');
+
     },
     renderPaymentDays: function(){
         var freq = meerkat.modules.healthPaymentStep.getSelectedFrequency();
@@ -140,6 +145,9 @@ var healthFunds_NIB = {
         <%--credit card options--%>
         meerkat.modules.healthCreditCard.resetConfig();
         meerkat.modules.healthCreditCard.render();
+
+        <%-- Medicare Fields --%>
+        healthFunds_NIB.$medicareFirstname.add(healthFunds_NIB.$medicareLastname).removeAttr('maxlength').removeAttr('data-rule-personNameLtd').attr('data-rule-personName','true');
     }
 };
 </c:set>

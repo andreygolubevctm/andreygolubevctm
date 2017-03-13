@@ -1,11 +1,23 @@
 <%--
-	UTILITIES quote page
+	Utilities Quote Page
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ include file="/WEB-INF/tags/taglib.tagf" %>
+<%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<session:new verticalCode="UTILITIES" authenticated="true"/>
+<jsp:useBean id="sessionUtils" class="com.ctm.web.core.utils.SessionUtils"/>
+<session:new verticalCode="UTILITIES" authenticated="true" />
 
+<%-- Force redirect if content control flag is set --%>
+<c:set var="redirectOverride"><content:get key="energyRedirectOverride"/></c:set>
+<c:if test="${empty redirectOverride or redirectOverride eq 'N'}">
+    <c:set var="redirectURL" value="${fn:replace(pageSettings.getRootUrl(),'secure.','')}energy/journey/start?" />
+    <c:forEach items="${param}" var="currentParam">
+        <c:set var="redirectURL">${redirectURL}${currentParam.key}=${currentParam.value}&</c:set>
+    </c:forEach>
+    <c:redirect url="${fn:substring(redirectURL,0,fn:length(redirectURL) - 1)}" />
+</c:if>
+
+<%-- Otherwise render the page as normal --%>
 <core_v2:quote_check quoteType="utilities"/>
 <core_v2:load_preload/>
 
@@ -43,10 +55,10 @@
                             <h4>Call us on</h4>
 
                             <h1><span class="noWrap">${callCentreNumber}</span></h1>
-                            <%-- This was hard-coded here instead of using health's opening hours tag
-                                 as Guilly suggested he didn't want to show other verticals opening hours in Simples and open it up to other users at this time.
-                                 Maybe one day, but its either this or nothing.
-                                 --%>
+                                <%-- This was hard-coded here instead of using health's opening hours tag
+                                     as Guilly suggested he didn't want to show other verticals opening hours in Simples and open it up to other users at this time.
+                                     Maybe one day, but its either this or nothing.
+                                     --%>
                             <div class="opening-hours">
                             <span>
                                 <span class="today-hours"><content:get key="utilitiesOpeningHours" /></span>
@@ -182,7 +194,7 @@
         <div class="hiddenFields">
             <form_v1:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid"/>
             <core_v1:referral_tracking vertical="${pageSettings.getVerticalCode()}"/>
-					</div>
+        </div>
         <input type="hidden" name="transcheck" id="transcheck" value="1"/>
         <input type="hidden" name="${pageSettings.getVerticalCode()}_partner_uniqueCustomerId" id="${pageSettings.getVerticalCode()}_partner_uniqueCustomerId" value="" />
         <field_v1:hidden xpath="environmentOverride" />
