@@ -8,7 +8,6 @@
         $paymentMedicareColour,
         $paymentMedicareCover,
         $medicareYellowMessage,
-        $genderToggle,
         $unitElements;
 
     function init(){
@@ -17,7 +16,6 @@
             $paymentMedicareColour = $("#health_payment_medicare_colour");
             $paymentMedicareCover = $("#health_payment_medicare_cover");
             $medicareYellowMessage = $("#health_medicareDetails_yellowCardMessage");
-            $genderToggle = $('.person-gender-toggle input[type=radio]');
             $unitElements = {
                 appAddressUnitShop: $('#health_application_address_unitShop'),
                 appAddressStreetNum: $('#health_application_address_streetNum'),
@@ -52,12 +50,6 @@
         meerkat.messaging.publish(meerkatEvents.healthPreviousFund.POPULATE_PRIMARY,
             meerkat.modules.healthAboutYou.getPrimaryCurrentCover());
 
-        toggleSelectGender('primary');
-
-        if (meerkat.modules.health.hasPartner()) {
-            toggleSelectGender('partner');
-        }
-
         $unitElements.appAddressUnitType.add($unitElements.appPostalUnitType).on('change', function toggleUnitRequiredFields() {
             _toggleUnitRequired(this.id.includes('address') ? 'Address' : 'Postal', this.value === 'UN');
         });
@@ -84,64 +76,6 @@
                 $("#health_payment_details_start").val( e.format() );
                 meerkat.messaging.publish(meerkatEvents.health.CHANGE_MAY_AFFECT_PREMIUM);
             });
-
-        $(document.body).on('change', '.selectContainerTitle select', function onTitleChange() {
-            var personDetailType = $(this).closest('.qe-window').find('.health-person-details')
-                                       .hasClass('primary') ? 'primary' : 'partner';
-
-            toggleSelectGender(personDetailType);
-        });
-
-        $genderToggle.on('change', function onGenderToggle() {
-            var personDetailType = $(this).closest('.qe-window').find('.health-person-details')
-                                       .hasClass('primary') ? 'primary' : 'partner',
-                gender = $(this).val();
-
-            $('#health_application_' + personDetailType + '_gender').val(gender);
-        });
-    }
-
-    function toggleSelectGender(personDetailType) {
-        var title =  $('#health_application_' + personDetailType + '_title').val(),
-            gender,
-            $gender = $('#health_application_' + personDetailType + '_gender'),
-            $genderRow = $('#health_application_' + personDetailType + '_genderRow'),
-            $genderToggle = $('[name=health_application_' + personDetailType + '_genderToggle]');
-
-        if (title) {
-            switch (title) {
-                case 'MR':
-                case 'MRS':
-                case 'MISS':
-                case 'MS':
-                    gender = title === 'MR' ? 'M' : 'F';
-                    $gender.val(gender);
-                    $genderRow.slideUp();
-                    break;
-
-                default:
-                    var genderToggleVal = $genderToggle.filter(':checked').val();
-
-                    if (genderToggleVal) {
-                        // if gender toggle has been 'toggled' before then
-                        // set hidden gender field to the checked gender
-                        $gender.val(genderToggleVal);
-                    } else {
-                        // otherwise, if hidden gender field has been set, then
-                        // toggle the gender
-                        if ($gender.val()) {
-                            $genderToggle
-                                .filter('[value=' + $gender.val() + ']')
-                                .prop('checked', true)
-                                .attr('checked', 'checked')
-                                .change();
-                        }
-                    }
-                    $genderRow.slideDown();
-            }
-        } else {
-            $genderRow.slideUp();
-        }
     }
 
     function _toggleUnitRequired(addressType, isUnit) {
