@@ -77,17 +77,27 @@
     }
 
     .pyrrContainerSimples {
-        padding: 15px 10px 0 10px;
-        color: @gray-dark;
+        display: inline-block;
+        text-align: center;
+        font-weight: bold;
+        padding-bottom: 15px;
+
         .row {
             .coupon-blurb {
-                padding-top: 12px;
-                font-size: 20px;
+                color: @theme-tertiary;
+                font-size: 24px;
             }
 
             .coupon-value {
+                color: @gray-light;
                 font-size: 38px;
             }
         }
+    }
+
+    .pyrrMoreInfoInline {
+        display: inline-block;
+        border-left: 1px @gray-dark solid;
+        padding-left: 25px;
     }
 }

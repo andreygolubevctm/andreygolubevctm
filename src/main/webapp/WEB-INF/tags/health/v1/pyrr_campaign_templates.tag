@@ -6,12 +6,14 @@
 <core_v1:js_template id="pyrr-campaign-moreinfo-template">
     <div class="container-fluid pyrrContainerSimples">
         <div class="row">
-            <div class="col-xs-6">
+            <div class="col-xs-12">
                 <div class="coupon-blurb">
-                    PYRR offer:
+                    PYRR voucher amount
                 </div>
             </div>
-            <div class="col-xs-6">
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
                 <span class="coupon-value">
                     &#36;{{= obj.giftCardAmount ? obj.giftCardAmount : 0 }}
                 </span>
