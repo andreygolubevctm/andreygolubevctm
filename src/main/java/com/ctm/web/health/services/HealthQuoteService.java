@@ -95,14 +95,7 @@ public class HealthQuoteService extends CommonRequestServiceV2 implements Initia
             // Version 2
 
             final boolean isGiftCardActive =
-                    ofNullable(payYourRateRise).filter(c -> "Y".equals(c.getContentValue())).isPresent() // payYourRateRise is Active
-                    ;
-            // TODO: comment back in when coupons have been added to transactionDetails (it's currently not clear who's responsible for doing so)
-//                    &&
-//                    Optional.ofNullable(couponDao.getCouponForConfirmation(data.getTransactionId().toString())) // Health Coupon is active
-//                        .filter(c -> c.getVerticalId() == healthVertical.getId())
-//                        .filter(c -> GIFT_CARD_COUPON.equals(c.getCouponCode()))
-//                        .isPresent();
+                    ofNullable(payYourRateRise).filter(c -> "Y".equals(c.getContentValue())).isPresent(); // payYourRateRise is Active
 
             final HealthQuoteRequest quoteRequest = RequestAdapterV2.adapt(data, alternatePricingContent, isSimples, isGiftCardActive);
 
