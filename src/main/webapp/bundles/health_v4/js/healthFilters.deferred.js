@@ -425,6 +425,7 @@
             filterToggleText = 'Change';
         if (coverType === 'H' || extrasCount === 0) {
             benefitString = 'No Extras';
+            filterToggleText = 'Add Extras';
         } else {
             var plural = extrasCount > 1 ? 's' : '';
             benefitString = extrasCount + ' Extra' + plural + ' selected';
@@ -441,6 +442,7 @@
             filterToggleText = 'Change';
         if (coverType === 'E' || hospitalCount === 0) {
             benefitString = 'No Hospital';
+            filterToggleText = 'Add Hospital';
         } else {
             var plural = hospitalCount > 1 ? 's' : '';
             benefitString = hospitalCount + ' Benefit' + plural + ' selected';
