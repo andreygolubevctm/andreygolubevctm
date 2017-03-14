@@ -107,9 +107,7 @@ public class RequestAdapterV2 {
 
         quoteRequest.setIncludeSummary(isSimples);
 
-        if (isGiftCardActive) {
-            quoteRequest.setIncludeGiftCard(true);
-        }
+        quoteRequest.setIncludeGiftCard(isGiftCardActive);
 
         return quoteRequest;
     }
