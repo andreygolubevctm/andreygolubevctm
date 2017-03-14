@@ -28,6 +28,9 @@
             template: {
                 results: {
                     default: $('#pyrr-campaign-results-template')
+                },
+                moreinfo: {
+                    default: $('#pyrr-campaign-moreinfo-template')
                 }
             },
             sideBarFrequency: $('.sidebarFrequency'),

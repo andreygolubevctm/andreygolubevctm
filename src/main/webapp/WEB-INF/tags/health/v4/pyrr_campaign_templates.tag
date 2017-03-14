@@ -23,4 +23,19 @@
 	</div>
 </core_v1:js_template>
 
-
+<%-- MORE INFO TEMPLATES --%>
+<core_v1:js_template id="pyrr-campaign-moreinfo-template">
+	<div class="pyrrMoreInfoContainer">
+		<div class="topHalf">
+			<div class="coupon-image">
+				<img src="assets/brand/ctm/images/health-giftcard-promotion-2017.png" alt="Gift Card Icon">
+			</div>
+			<div class="coupon-value">
+				&#36;{{= obj.giftCardAmount ? obj.giftCardAmount : 0 }}
+			</div>
+		</div>
+		<div class="coupon-blurb">
+			{{= obj.coupon.contentBanner }}
+		</div>
+	</div>
+</core_v1:js_template>
