@@ -44,7 +44,7 @@
             });
 
             $('label[for="health_benefits_benefitsExtras_LimitedCover"]').on('click', function () {
-                if (meerkat.modules.benefits.isHospitalOn()) {
+                if (meerkat.modules.benefitsSwitch.isHospitalOn()) {
                     $elements.comprehensiveBenefitTab.find('a').trigger('click');
                 }
             });
@@ -190,7 +190,7 @@
         var benefitType = meerkat.modules.benefitsModel.getBenefitType();
 
         // reset the checkboxes
-        $elements[benefitType].find(':checkbox').removeAttr('checked');
+        $elements[benefitType].find('input[data-benefit-id]').removeAttr('checked');
 
         // reselect the checkboxes
         _.each(updatedBenefitsModel, function updateCheckboxes(id) {

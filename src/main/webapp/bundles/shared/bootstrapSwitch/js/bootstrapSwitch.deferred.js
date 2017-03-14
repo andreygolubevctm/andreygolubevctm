@@ -23,7 +23,7 @@
 
         // Needs to be subscribed to a onload event, as bootstrapSwitch module won't be initialised.
         // meerkat.messaging.subscribe(meerkat.modules.events.healthBenefitsStep.RESET_SWITCH_STATE, resetState);
-        meerkat.messaging.subscribe(meerkat.modules.events.benefitsSwitch.RESET_SWITCH_STATE, resetState);
+        // meerkat.messaging.subscribe(meerkat.modules.events.benefitsSwitch.RESET_SWITCH_STATE, resetState);
 
     }
 

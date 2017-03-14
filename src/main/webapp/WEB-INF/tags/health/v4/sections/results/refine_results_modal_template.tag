@@ -16,14 +16,22 @@
 
         <div class="refine-results-sub-heading">Hospital</div>
         <div class="refine-results-by-container">
-            <div class="refine-results-hospital-type">{{= hospitalType }} Cover</div>
-            <div class="refine-results-count-text">{{= hospitalCountText }}</div>
+            {{ if (isHospitalOn) { }}
+                <div class="refine-results-hospital-type">{{= hospitalType }} Cover</div>
+                <div class="refine-results-count-text">{{= hospitalCountText }}</div>
+            {{ } else { }}
+                <div class="refine-results-no-hospital">No Hospital</div>
+            {{ } }}
             <a href="javascript:;" class="refine-results-redirect-btn" data-benefit="hospital">{{= hospitalBtnText }}</a>
         </div>
 
         <div class="refine-results-sub-heading">Extras</div>
         <div class="refine-results-by-container">
-            <div class="refine-results-count-text">{{= extrasCountText }}</div>
+            {{ if (isExtrasOn) { }}
+                <div class="refine-results-count-text">{{= extrasCountText }}</div>
+            {{ } else { }}
+                <div class="refine-results-no-extras">No Extras</div>
+            {{ } }}
             <a href="javascript:;" class="refine-results-redirect-btn" data-benefit="extras">{{= extrasBtnText }}</a>
         </div>
 

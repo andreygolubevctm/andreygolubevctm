@@ -24,7 +24,7 @@
 	<%--<div class="selectionStatus hospital">Your hospital benefits selection <span>0</span></div>--%>
 <%--</div>--%>
 
-<div class="alert alert-danger text-center hidden benefits-switch-alert">Please switch on at least one cover type below. No policies can be quoted without Hospital or Extras</div>
+<health_v4:benefits_switch_message />
 
 <div class="benefitsOverflow">
 <c:forEach items="${resultTemplateItems}" var="selectedValue">

@@ -38,6 +38,7 @@
   }
   .health-filter-hospital-benefits {
     margin-top: 10px;
+    margin-bottom: 10px;
   }
 
   &.filter-frequency {
@@ -50,4 +51,39 @@
 
 .filters-update-container {
   margin-bottom: 0;
+}
+
+//Benefits Switched Off
+.benefits-switched-off {
+  &.filter-hospital-benefits {
+    .nav-tabs,
+    .tab-content {
+      &.health-filter-hospital-benefits {
+        .opacity(0.3);
+
+        a {
+          pointer-events: none;
+          cursor: default;
+        }
+      }
+    }
+  }
+
+  &.filter-extras-benefits {
+    .benefits-list {
+      .opacity(0.3);
+
+      a {
+        pointer-events: none;
+        cursor: default;
+      }
+    }
+  }
+}
+
+.results-filters-benefits {
+  .alert {
+    margin-top: 10px;
+    margin-bottom: 0;
+  }
 }

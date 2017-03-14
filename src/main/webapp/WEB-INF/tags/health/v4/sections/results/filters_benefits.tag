@@ -5,6 +5,8 @@
 <core_v1:js_template id="filter-benefits-template">
 <div class="filter-heading">My Insurance Preferences</div>
 
+<health_v4:benefits_switch_message />
+
 <div class="filter filter-hospital-benefits" data-filter-serverside="true">
     <div class="filter-sub-heading">Hospital</div>
     <field_v2:switch xpath="${pageSettings.getVerticalCode()}/benefits/filters/HospitalSwitch" value="Y" className="benefits-switch switch-small" onText="On" offText="Off" />
