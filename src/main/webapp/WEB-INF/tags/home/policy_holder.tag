@@ -12,18 +12,6 @@
 <form_v2:fieldset legend="Policy Holder Details">
 
 	<%-- MAIN POLICY HOLDER --%>
-	<c:if test="${journeySplitTestActive eq false}">
-		<%-- Policy Holder Title --%>
-		<c:set var="fieldXpath" value="${xpath}/title" />
-		<form_v2:row fieldXpath="${fieldXpath}" label="Title">
-			<field_v2:import_select xpath="${fieldXpath}"
-				title="the policy holder's title"
-				required="false"
-				url="/WEB-INF/option_data/titles_simple.html"
-				className="person-title" />
-		</form_v2:row>
-	</c:if>
-
 	<%-- Policy Holder First Name --%>
 	<c:set var="fieldXpath" value="${xpath}/firstName" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="First Name">
@@ -73,16 +61,6 @@
 
 <form_v2:fieldset className="${joinPolicyHolderClassname}" legend="Joint Policy Holder <a class='btn btn-hollow-red btn-sm btn-right btn-wide toggleJointPolicyHolder' href='javascript:;'>Remove</a>" id="jointPolicyHolder">
 	<%-- 	JOINT POLICY HOLDER --%>
-	<%-- Joint Policy Holder Title --%>
-	<c:set var="fieldXpath" value="${xpath}/jointTitle" />
-	<form_v2:row fieldXpath="${fieldXpath}" label="Title">
-		<field_v2:import_select xpath="${fieldXpath}"
-			title="the joint policy holder's title"
-			required="false"
-			url="/WEB-INF/option_data/titles_simple.html"
-			className="person-title jointPolicyHolder" />
-	</form_v2:row>
-
 	<%-- Joint Policy Holder First Name --%>
 	<c:set var="fieldXpath" value="${xpath}/jointFirstName" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="First Name">
@@ -117,11 +95,14 @@
 
 </form_v2:fieldset>
 
-<form_v2:fieldset legend="" className="${joinPolicyHolderClassname}">
 <%-- Joint Policy Holder Button --%>
+<%-- Joint Policy Holder Button removed due to ticket HNC-463 - Associated Fields left in due to validation requirements for oldest policy holder over 55 AND for displaying old quotes --%>
+<%--
+<form_v2:fieldset legend="" className="${joinPolicyHolderClassname}">
 	<c:set var="fieldXpath" value="${xpath}/addJointPolicyHolder" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="">
 		<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Additional Policy Holder" quoteChar="\"" /></c:set>
 		<a class="btn btn-next nav-next-btn toggleJointPolicyHolder addPolicyHolderBtn" href="javascript:;" ${analyticsAttr}>Add Joint Policy Holder</a>
 	</form_v2:row>
 </form_v2:fieldset>
+--%>
