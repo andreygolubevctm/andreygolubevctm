@@ -152,7 +152,14 @@ Process:
 
 	// Validate the credit card type
 	function isValid() {
-		return $cardtype.valid();
+		var valid = false;
+		try {
+			valid = $cardtype.valid();
+		} catch(e) {
+			$cardtype = $('.health-credit_card_details-type input');
+			valid = $cardtype.valid();
+		}
+		return valid;
 	}
 
 	function fail(reason) {
