@@ -7,6 +7,10 @@
 
 {{ var hasCustomHeaderContent = custom.info && custom.info.content && custom.info.content.results && custom.info.content.results.header; }}
 
+{{ if (meerkat.modules.healthPyrrCampaign.isPyrrActive() === true) { }}
+    {{ obj.renderedPyrrCampaign = meerkat.modules.healthPyrrCampaign.renderTemplate('', obj, true, false); }}
+{{ } }}
+
 <div class="result">
     <div class="resultInsert">
         {{ if (!_.isEmpty(obj.promo) && !_.isEmpty(obj.promo.discountText)) { }}
@@ -45,9 +49,6 @@
 
                 {{ if (meerkat.modules.healthDualPricing.isDualPricingActive() === true) { }}
                     {{= meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false, 'results') }}
-
-                {{ } else if (meerkat.modules.healthPyrrCampaign.isPyrrActive() === true) { }}
-                    {{= meerkat.modules.healthPyrrCampaign.renderTemplate('', obj, true, false, 'results') }}
                 {{ } else { }}
                     {{ var productTitleTemplate = meerkat.modules.templateCache.getTemplate($("#product-title-template")); }}
                     {{ var priceTemplate = meerkat.modules.templateCache.getTemplate($("#price-template")); }}

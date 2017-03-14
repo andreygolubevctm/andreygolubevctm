@@ -3,7 +3,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- RESULTS TEMPLATES --%>
-<core_v1:js_template id="pyrr-campaign-results-template">
+<core_v1:js_template id="pyrr-campaign-moreinfo-template">
     <div class="container-fluid pyrrContainerSimples">
         <div class="row">
             <div class="col-xs-6">

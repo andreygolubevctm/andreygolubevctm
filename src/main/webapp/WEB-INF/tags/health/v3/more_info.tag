@@ -8,6 +8,7 @@
 
 <%-- Setup variables needed for dual pricing --%>
 <health_v1:dual_pricing_settings />
+<health_v1:pyrr_campaign_settings />
 
 <%-- MORE INFO CALL TO ACTION BAR TEMPLATE --%>
 <%-- MORE INFO FOOTER --%>
@@ -96,6 +97,9 @@
 								{{= renderedDualPricing }}
 							</c:when>
 							<c:otherwise>
+								<c:if test="${isPyrrActive eq true}">
+									{{= renderedPyrrCampaign }}
+								</c:if>
 								{{= renderedPriceTemplate }}
 							</c:otherwise>
 						</c:choose>

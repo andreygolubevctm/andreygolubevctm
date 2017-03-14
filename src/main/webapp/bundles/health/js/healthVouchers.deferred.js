@@ -80,6 +80,13 @@
                 updateData();
                 updateValueOptions(data.isOther ? data.other.reason : false);
                 updateView();
+
+                // If we have a PYRR offer add it to the dropdown.
+                var pyrrCoupon = meerkat.modules.healthPyrrCampaign.isPyrrActive();
+
+                if (pyrrCoupon) {
+                    $elements.inputs.reason.append('<option value="pay-your-rate-rise">Pay Your Rate Rise</option>');
+                }
             }
         });
     }
@@ -281,8 +288,16 @@
             // Flush the referralref field if not a referral offer
             $elements.inputs.referrerref.val('');
         }
+
         // Update value selector with applicable options
         updateValueOptions(reason);
+
+        // If Pay Your Rate Rise is selected.
+        if(reason === 'pay-your-rate-rise') {
+            var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
+            var giftCardAmount = selectedProduct.giftCardAmount;
+            $elements.inputs.value.empty().append('<option value="'+giftCardAmount+'">$'+giftCardAmount+'</option>');
+        }
     }
 
     /**
