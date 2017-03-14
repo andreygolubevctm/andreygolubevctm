@@ -53,14 +53,21 @@
             return "";
         }
 
+        product._selectedFrequency = typeof product._selectedFrequency === 'undefined' ? Results.getFrequency() : product._selectedFrequency;
         product.mode = product.mode !== '' ? product.mode : '';
+
         if (meerkat.site.isCallCentreUser === true) {
             product.mode = "lhcInc";
         }
 
+        product.showAltPremium = false;
+        product.displayLogo = isForSidebar;
+        product.showRoundingText = false;
         product.coupon = meerkat.modules.coupon.getCurrentCoupon();
-
         var htmlTemplate = _.template($elements.logoPriceTemplate.html());
+        product.renderedPriceTemplate = htmlTemplate(product);
+
+        htmlTemplate = _.template($elements.logoPriceTemplate.html());
         product.renderedAltPriceTemplate = htmlTemplate(product);
         $elements.mainPyrrTemplate = _getTemplate(isForSidebar, page);
         var pyrrTemplate = _.template($elements.mainPyrrTemplate.html());

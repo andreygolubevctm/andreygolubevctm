@@ -3,6 +3,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <health_v1:dual_pricing_settings />
+<health_v1:pyrr_campaign_settings />
 
 {{ var hasCustomHeaderContent = custom.info && custom.info.content && custom.info.content.results && custom.info.content.results.header; }}
 
@@ -44,6 +45,9 @@
 
                 {{ if (meerkat.modules.healthDualPricing.isDualPricingActive() === true) { }}
                     {{= meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false, 'results') }}
+
+                {{ } else if (meerkat.modules.healthPyrrCampaign.isPyrrActive() === true) { }}
+                    {{= meerkat.modules.healthPyrrCampaign.renderTemplate('', obj, true, false, 'results') }}
                 {{ } else { }}
                     {{ var productTitleTemplate = meerkat.modules.templateCache.getTemplate($("#product-title-template")); }}
                     {{ var priceTemplate = meerkat.modules.templateCache.getTemplate($("#price-template")); }}

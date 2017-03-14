@@ -4,17 +4,14 @@
 
 <%-- RESULTS TEMPLATES --%>
 <core_v1:js_template id="pyrr-campaign-results-template">
-    <div class="container-fluid pyrrContainer">
+    <div class="container-fluid pyrrContainerSimples">
         <div class="row">
-            <div class="col-xs-2">
-                <img src="assets/brand/ctm/images/health-giftcard-promotion-2017.png" alt="Gift Card Icon">
-            </div>
             <div class="col-xs-6">
                 <div class="coupon-blurb">
-                    {{= obj.coupon.contentBanner }}
+                    PYRR offer:
                 </div>
             </div>
-            <div class="col-xs-4">
+            <div class="col-xs-6">
                 <span class="coupon-value">
                     &#36;{{= obj.giftCardAmount ? obj.giftCardAmount : 0 }}
                 </span>

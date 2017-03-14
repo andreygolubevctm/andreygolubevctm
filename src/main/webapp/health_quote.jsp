@@ -219,6 +219,9 @@
                 <health_v2_layout:slide_application_details />
                 <health_v2_layout:slide_payment_details />
                 <health_v1:dual_pricing_templates />
+                <c:if test="${isPyrrActive eq true}">
+                    <health_v1:pyrr_campaign_templates />
+                </c:if>
                 <health_v3:payment_frequency_template />
 
                 <field_v1:hidden xpath="environmentOverride" />
