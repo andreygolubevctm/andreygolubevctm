@@ -161,9 +161,20 @@ public class ContentService {
 	public static Content getContentWithSupplementary(HttpServletRequest request, String contentKey) throws DaoException, ConfigSettingException{
 		PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
 		return getContentWithOptions(request, contentKey, pageSettings, true);
-
 	}
 
+	/**
+	 * Returns the Content model with the supplementary data
+	 * @param request used for get brand and vertical to match in the database
+	 * @param contentKey key that will match contentKey column in database must be comma separated list of valid values
+	 * @return
+	 * @throws DaoException
+	 * @throws ConfigSettingException
+	 */
+	public Content getContentWithSupplementaryNonStatic(HttpServletRequest request, String contentKey) throws DaoException, ConfigSettingException{
+		PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
+		return getContentWithOptions(request, contentKey, pageSettings, true);
+	}
 	/**
 	 * Private method to get content model with or with out supplementary data
      * @param request used for get brand and vertical to match in the database
