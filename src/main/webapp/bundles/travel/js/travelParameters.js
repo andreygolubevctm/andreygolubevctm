@@ -18,9 +18,9 @@
     var $secondTravellerRow,
         $childrenRow,
         $partyType,
+        $travel_party,
         $travel_adults,
-        $adult_dob_2
-        ;
+        $adult_dob_2;
 
     //------------------------------------------------------------------
 
@@ -28,6 +28,7 @@
     function initParams() {
         $secondTravellerRow = $(".second_traveller_age_row"),
         $childrenRow = $(".children_row"),
+        $travel_party = $('input[name=travel_party]'),
         $partyType = $("#partyType"),
         $travel_adults = $('#travel_adults'),
         $adult_dob_2 = $('#travel_travellers_traveller2DOB');
@@ -49,9 +50,27 @@
                 $adult_dob_2.removeClass('validate').removeAttr('required');
                 break;
             default:
-                $secondTravellerRow.hide();
-                $childrenRow.hide();
-                $travel_adults.val("1");
+            // The default here assumed that this is a new quote, therefore additional travels were getting cut off.
+            // This will check to see if travel_party is selected in the journey, or default back to what was causing the issue.
+                var selectedTravelParty = $travel_party.filter(':checked').val();
+                if (selectedTravelParty == "C") {
+                    $secondTravellerRow.show();
+                    $childrenRow.hide();
+                    $travel_adults.val("2");
+                    $adult_dob_2.addClass('validate').attr('required','required');
+
+                } else if (selectedTravelParty == "F") {
+                    $secondTravellerRow.show();
+                    $childrenRow.show();
+                    $travel_adults.val("2");
+                    $adult_dob_2.removeClass('validate').removeAttr('required');
+
+                } else {
+                    $secondTravellerRow.hide();
+                    $childrenRow.hide();
+                    $travel_adults.val("1");
+
+                }
         }
     }
 
