@@ -45,7 +45,7 @@
 				<jsp:useBean id="userAgentSniffer" class="com.ctm.web.core.services.UserAgentSniffer" />
 				<c:set var="deviceType" value="${userAgentSniffer.getDeviceType(pageContext.getRequest().getHeader('user-agent'))}" />
 
-				<form_v2:row label="Approximate annual kilometres driven by the youngest driver">
+				<form_v2:row label="Approximate annual kilometres driven by the youngest driver" id="quote_drivers_young_annualKilometresRow">
 					<field_v2:kilometers_travelled xpath="${xpath}/annualKilometres" id="annual_kilometres" className="annual_kilometres" placeHolder="Example: 20000" required="true" />
 				</form_v2:row>
 
