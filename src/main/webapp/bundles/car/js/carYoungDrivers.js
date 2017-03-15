@@ -115,9 +115,6 @@
 			} else {
 				$(elements.toggle).slideUp('fast', function(){
 					var $that = $(this);
-					$that.find(':text').val('');
-					$that.find(':radio').prop('checked',false).change();
-					$(elements.yng_dob).val('').change();
 					$that.find('.has-success').removeClass('has-success');
 					$that.find('.has-error').removeClass('has-error');
 					$that.find('.error-field').remove();
