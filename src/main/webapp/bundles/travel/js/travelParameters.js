@@ -35,46 +35,38 @@
     }
 
     function noOfTravellersDisplayLogic() {
+        // Param from brochure widget
         var travelPartyVal = $partyType.data("type");
-        switch(travelPartyVal) {
-            case "C":
-                $secondTravellerRow.show();
-                $childrenRow.hide();
-                $travel_adults.val("2");
-                $adult_dob_2.addClass('validate').attr('required','required');
-                break;
-            case "F":
-                $secondTravellerRow.show();
-                $childrenRow.show();
-                $travel_adults.val("2");
-                $adult_dob_2.removeClass('validate').removeAttr('required');
-                break;
-            default:
-            // The default here assumed that this is a new quote, therefore additional travels were getting cut off.
-            // This will check to see if travel_party is selected in the journey, or default back to what was causing the issue.
-                var selectedTravelParty = $travel_party.filter(':checked').val();
-                if (selectedTravelParty == "C") {
-                    $secondTravellerRow.show();
-                    $childrenRow.hide();
-                    $travel_adults.val("2");
-                    $adult_dob_2.addClass('validate').attr('required','required');
-
-                } else if (selectedTravelParty == "F") {
-                    $secondTravellerRow.show();
-                    $childrenRow.show();
-                    $travel_adults.val("2");
-                    $adult_dob_2.removeClass('validate').removeAttr('required');
-
-                } else {
-                    $secondTravellerRow.hide();
-                    $childrenRow.hide();
-                    $travel_adults.val("1");
-
-                }
+        if (_.indexOf(['C','F','S'], travelPartyVal) < 0) {
+            // Used when new journey or loaded from best price email
+            travelPartyVal = $travel_party.filter(':checked').val();
         }
+        configExtraTravellerFields(travelPartyVal);
     }
 
+    function configExtraTravellerFields(travelType) {
+        if (travelType == "C") {
+            // Couple
+            $childrenRow.hide();
+            $travel_adults.val("2");
+            $secondTravellerRow.show();
+            $adult_dob_2.addClass('validate').attr('required','required');
 
+        } else if (travelType == "F") {
+            // Family
+            $childrenRow.show();
+            $travel_adults.val("2");
+            $secondTravellerRow.show();
+            $adult_dob_2.removeClass('validate').removeAttr('required');
+
+        } else {
+            // Single
+            $childrenRow.hide();
+            $travel_adults.val("1");
+            $secondTravellerRow.hide();
+
+        }
+    }
 
     meerkat.modules.register("travelParameters", {
         init: initParams,
