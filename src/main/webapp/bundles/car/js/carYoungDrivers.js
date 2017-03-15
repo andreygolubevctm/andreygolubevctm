@@ -12,9 +12,7 @@
 
 	var elements = {
 			toggle:		"#quote_drivers_youngToggleArea",
-			extoggle:	"#quote_drivers_youngToggleExoticArea",
 			labels:		"#quote_drivers_youngDriverRow .row-content",
-			exLabels:	"#quote_drivers_youngDriverExoticRow .row-content",
 			restrict:	"#quote_options_driverOption",
 			reg_dob:	"#quote_drivers_regular_dob",
 			yng_dob:	"#quote_drivers_young_dob",
@@ -90,8 +88,7 @@
 	}
 
 	function isYoungDriverSelected() {
-		var labelEl = meerkat.modules.carExotic.isExotic() ? elements.exLabels : elements.labels,
-			 $e = $(labelEl).find("input:checked");
+		var $e = $(elements.labels).find("input:checked");
 
 		if(!_.isEmpty($e)) {
 			return $e.val() === 'Y';
@@ -133,46 +130,7 @@
 		}
 	}
 
-	function toggleVisibleExoticContent(updateVirtualPage) {
-
-		updateVirtualPage = updateVirtualPage || false;
-
-		var $e = $(elements.exLabels).find("input:checked");
-
-		if(!_.isEmpty($e)) {
-			if(isYoungDriverSelected()) {
-				$(elements.extoggle).slideDown('fast', function() {
-					if(updateVirtualPage) {
-						var sessionCamStep = getSessionCamStep();
-						sessionCamStep.navigationId += "-youngdriver";
-						meerkat.modules.sessionCamHelper.updateVirtualPage(sessionCamStep);
-
-					}
-				});
-				$('#quote_drivers_youngExoticContFieldSet').slideDown('fast');
-			} else {
-				$(elements.extoggle).slideUp('fast', function(){
-					var $that = $(this);
-					$that.find(':text').val('');
-					$that.find(':radio').prop('checked',false).change();
-					// $(elements.yng_dob).val('').change();
-					$that.find('.has-success').removeClass('has-success');
-					$that.find('.has-error').removeClass('has-error');
-					$that.find('.error-field').remove();
-
-					if(updateVirtualPage) {
-						meerkat.modules.sessionCamHelper.updateVirtualPage(getSessionCamStep());
-					}
-				});
-				$('#quote_drivers_youngExoticContFieldSet').slideUp('fast');
-			}
-		}
-	}
-
 	function initCarYoungDrivers() {
-
-		var self = this;
-
 		// Tell sessionCamHelper to ignore step updates for this step as handled inhouse (aka in this module)
 		meerkat.modules.sessionCamHelper.addStepToIgnoreList("details");
 
@@ -180,11 +138,7 @@
 		meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_CHANGED, function youngDriverStepOnStepChange(event) {
 			if(event.navigationId == "details") {
 				// Allow for standard step change stuff to finish
-				if (!meerkat.modules.carExotic.isExotic()) {
-					_.defer(_.bind(toggleVisibleContent, this, true));
-				} else {
-					_.defer(_.bind(toggleVisibleExoticContent, this, true));
-				}
+				_.defer(_.bind(toggleVisibleContent, this, true));
 			}
 		});
 
@@ -198,9 +152,6 @@
 
 		$(elements.reg_dob + "," + elements.yng_dob).on("change", updateRestrictAgeSelector);
 		captureOptions();
-
-		// otherwise toggle the new question set
-		bindYoungestDriverClick(elements.exLabels, toggleVisibleExoticContent);
 
 		// Need to allow time for the currentStep to be populated
 		setTimeout(function(){
