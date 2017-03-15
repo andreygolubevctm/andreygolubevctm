@@ -34,6 +34,10 @@
 			</form_v2:row>
 
 			<div id="${name}ToggleArea" class="show_${displaySuffix}">
+				<form_v2:row label="Youngest Driver's Gender" id="${name}_genderRow">
+					<field_v2:array_radio id="${name}_gender" xpath="${xpath}/gender" required="true" items="M=Male,F=Female" title="${title} gender" className="person-gender" />
+				</form_v2:row>
+
 				<form_v2:row label="Youngest driver's date of birth">
 					<field_v2:person_dob xpath="${xpath}/dob" title="youngest driver's" required="true" ageMin="16" ageMax="120" validateYoungest="${true}"/>
 				</form_v2:row>
@@ -47,10 +51,6 @@
 
 				<form_v2:row label="Approximate annual kilometres driven by the youngest driver" id="quote_drivers_young_annualKilometresRow">
 					<field_v2:kilometers_travelled xpath="${xpath}/annualKilometres" id="annual_kilometres" className="annual_kilometres" placeHolder="Example: 20000" required="true" />
-				</form_v2:row>
-
-				<form_v2:row label="Gender" id="${name}_genderRow">
-					<field_v2:array_radio id="${name}_gender" xpath="${xpath}/gender" required="true" items="M=Male,F=Female" title="${title} gender" className="person-gender" />
 				</form_v2:row>
 
 				<form_v2:row label="Any motor insurance claims in the last 5 years (regardless of who was at fault)?" helpId="2" id="quote_drivers_young_claimsRow">

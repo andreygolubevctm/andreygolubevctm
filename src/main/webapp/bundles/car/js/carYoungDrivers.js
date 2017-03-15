@@ -114,11 +114,6 @@
 				});
 			} else {
 				$(elements.toggle).slideUp('fast', function(){
-					var $that = $(this);
-					$that.find('.has-success').removeClass('has-success');
-					$that.find('.has-error').removeClass('has-error');
-					$that.find('.error-field').remove();
-
 					if(updateVirtualPage) {
 						meerkat.modules.sessionCamHelper.updateVirtualPage(getSessionCamStep());
 					}
