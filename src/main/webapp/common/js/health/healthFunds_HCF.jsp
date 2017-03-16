@@ -15,6 +15,8 @@ var healthFunds_HCF = {
     $paymentFrequency : $('#health_payment_details_frequency'),
     $paymentStartDate: $("#health_payment_details_start"),
 	$claimsAccountOptin: $('#health_payment_bank_claims'),
+    $paymentBankDayGroupLabel: $('.health_payment_bank-details_policyDay-group label'),
+    $paymentCreditDayGroupLabel: $('.health_payment_credit-details_policyDay-group label'),
     set: function(){
         <%--credit card & bank account frequency & day frequency--%>
         meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':false, 'fortnightly': true, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true });
@@ -43,6 +45,9 @@ var healthFunds_HCF = {
         healthFunds_HCF.$paymentStartDate.on("changeDate.HCF", function renderPaymentDayCalendar(e) {
             healthFunds_HCF.renderPaymentDay();
         });
+
+        <%--update policy day label--%>
+        healthFunds_HCF.$paymentBankDayGroupLabel.text('What day would you like your first and regular payment deducted?');
     },
     renderPaymentDay: function(){
         var _html = meerkat.modules.healthPaymentDay.paymentDays( healthFunds_HCF.$paymentStartDate.val() );
@@ -55,6 +60,9 @@ var healthFunds_HCF = {
         healthFunds_HCF.$paymentType.off("changeDate.HCF");
         healthFunds_HCF.$paymentFrequency.off("changeDate.HCF");
         healthFunds_HCF.$paymentStartDate.off("changeDate.HCF");
+
+        <%--reset policy day label--%>
+        healthFunds_HCF.$paymentBankDayGroupLabel.text('What day would you like your payment deducted?');
     }
 };
 </c:set>
