@@ -170,20 +170,30 @@
                         $emailQuoteBtn.removeClass("privacyOptinChecked");
                     }
                 });
-                meerkat.modules.carRegoLookup.lookup();
+
+                if (!meerkat.modules.carRegoLookup.lookup() && meerkat.site.tracking.brandCode !== 'choo') {
+                    meerkat.modules.carRegoLookup.redirectToRegoFields();
+                }
 
                 configureContactDetails();
             },
             validation: {
                 validate: true,
                 customValidation: function (callback) {
-                    $('#quote_vehicle_selection').find('select').each(function () {
-                        if ($(this).is('[disabled]')) {
-                            callback(false);
-                            return;
-                        }
-                    });
-                    callback(true);
+                    if (meerkat.modules.carRegoLookup.isRegoLookupMode()) {
+                        meerkat.modules.carRegoLookup.setSearchState();
+                        meerkat.modules.carRegoLookup.setSearchRego();
+                        meerkat.modules.carRegoLookup.lookup(callback);
+                    } else {
+                        $('#quote_vehicle_selection').find('select').each(function () {
+                            if ($(this).is('[disabled]')) {
+                                callback(false);
+                                return;
+                            }
+                        });
+
+                        callback(true);
+                    }
                 }
             }
         };

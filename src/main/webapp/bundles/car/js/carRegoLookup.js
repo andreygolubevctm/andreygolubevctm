@@ -13,19 +13,33 @@
                 REGO_LOOKUP_COMPLETE: 'REGO_LOOKUP_COMPLETE'
             }
         },
-        moduleEvents = events.regoLookup;
+        moduleEvents = events.regoLookup,
 
-    var $elements = {
-        container: null,
-        feedback: null
-    };
+        $elements = {
+            container: null,
+            feedback: null,
+            carRegoEntry: null,
+            carRegoExit: null,
+            vehicleSelectionWrapper: null,
+            regoLookupWrapper: null,
+            stateField: null,
+            regoField: null
+        },
 
-    var showCustomErrors = false;
+        showCustomErrors = false,
+        _isRegoLookupMode = false;
 
     function init() {
         $(document).ready(function () {
             $elements.container = $('#unableToFindRego');
             $elements.feedback = $('#regoErrorMessage');
+            $elements.carRegoEntry = $('.carRegoEntry');
+            $elements.carRegoExit = $('.carRegoExit');
+            $elements.vehicleSelectionWrapper = $('#vehicle_selection_wrapper');
+            $elements.regoLookupWrapper = $('#rego_lookup_wrapper');
+            $elements.stateField = $('#quote_regoLookup_state');
+            $elements.regoField = $('#quote_regoLookup_registrationNumber');
+
             applyEventListeners();
         });
     }
@@ -34,13 +48,23 @@
         meerkat.messaging.subscribe(meerkatEvents.car.DROPDOWN_CHANGED, function invisibleRego(states) {
             $('.rego-text').addClass('invisible');
         });
+
+        $elements.carRegoEntry.on('click', function showRegoFields() {
+           _toggleRegoFields(true);
+            _isRegoLookupMode = true;
+        });
+
+        $elements.carRegoExit.on('click', function hideRegoFields() {
+            _toggleRegoFields(false);
+            _isRegoLookupMode = false;
+        });
+
+        _toggleRegoFields(false);
     }
 
     function validate() {
-
-        var optionsObj = meerkat.site.vehicleSelectionDefaults;
-        var state = optionsObj.searchState || false;
-        var rego = optionsObj.searchRego || false;
+        var state = getSearchState() || false,
+            rego = getSearchRego() || false;
 
         if (state !== false && rego !== false) {
             return _.extend({}, {plateNumber: rego}, {state: state});
@@ -49,7 +73,7 @@
         }
     }
 
-    function lookup() {
+    function lookup(callback) {
         var data = validate();
         if (data !== false) {
             meerkat.messaging.publish(moduleEvents.REGO_LOOKUP_STARTED);
@@ -58,12 +82,30 @@
                 useDefaultErrorHandling: false,
                 onSuccess: _.bind(onLookup, this, data),
                 onError: _.bind(onLookupError, this, data)
-            }).done(meerkat.modules.journeyEngine.loadingHide)
-                .fail(meerkat.modules.journeyEngine.loadingHide)
-                .then(function () {
+            }).done(function(data) {
+                meerkat.modules.journeyEngine.loadingHide();
 
-                    $('.rego-text').removeClass('invisible');
-                });
+                if (_.isFunction(callback)) {
+                    if (_.isUndefined(data.vehicle_data.exception)) {
+                        hideError();
+                        callback(true);
+                    } else {
+                        meerkat.modules.loadingAnimation.hide($('.journeyNavButton'));
+                        _isRegoLookupMode = false;
+                        _toggleRegoFields(false);
+                        callback(false);
+                    }
+                }
+            })
+            .fail(meerkat.modules.journeyEngine.loadingHide)
+            .then(function () {
+
+                $('.rego-text').removeClass('invisible');
+            });
+
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -124,9 +166,62 @@
         }
     }
 
+    function hideError() {
+        $elements.container.addClass('hidden');
+    }
+
+    function _toggleRegoFields(toggle) {
+        $elements.vehicleSelectionWrapper.toggleClass('hidden', toggle === true);
+        $elements.regoLookupWrapper.toggleClass('hidden', toggle === false);
+    }
+
+    function setSearchState() {
+        meerkat.site.vehicleSelectionDefaults.searchState = $elements.stateField.val();
+    }
+
+    function getSearchState() {
+        return meerkat.site.vehicleSelectionDefaults.searchState;
+    }
+
+    function setSearchRego() {
+        meerkat.site.vehicleSelectionDefaults.searchRego = $elements.regoField.val();
+    }
+
+    function getSearchRego() {
+        return meerkat.site.vehicleSelectionDefaults.searchRego;
+    }
+
+    function isRegoLookupMode() {
+        return _isRegoLookupMode;
+    }
+
+    function redirectToRegoFields() {
+        var state = getSearchState() || false,
+            rego = getSearchRego() || false,
+            redirect = false;
+
+        if (state) {
+            $elements.stateField.val(state);
+            redirect = true;
+        }
+
+        if (rego) {
+            $elements.regoField.val(rego);
+            redirect = true;
+        }
+
+        if (redirect) {
+            $elements.carRegoEntry.trigger('click');
+        }
+    }
+
     meerkat.modules.register("carRegoLookup", {
         init: init,
         lookup: lookup,
+        setSearchState: setSearchState,
+        setSearchRego: setSearchRego,
+        isRegoLookupMode: isRegoLookupMode,
+        redirectToRegoFields: redirectToRegoFields,
         events: events
     });
 
