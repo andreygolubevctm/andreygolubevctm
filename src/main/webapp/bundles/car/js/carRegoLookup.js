@@ -23,7 +23,8 @@
             vehicleSelectionWrapper: null,
             regoLookupWrapper: null,
             stateField: null,
-            regoField: null
+            regoField: null,
+            prefillRegoNo: null
         },
 
         showCustomErrors = false,
@@ -39,6 +40,7 @@
             $elements.regoLookupWrapper = $('#rego_lookup_wrapper');
             $elements.stateField = $('#quote_regoLookup_state');
             $elements.regoField = $('#quote_regoLookup_registrationNumber');
+            $elements.prefillRegoNo = $('.prefillRegoNumber');
 
             applyEventListeners();
         });
@@ -91,6 +93,7 @@
                         callback(true);
                     } else {
                         meerkat.modules.loadingAnimation.hide($('.journeyNavButton'));
+                        $elements.prefillRegoNo.addClass('hidden');
                         _isRegoLookupMode = false;
                         _toggleRegoFields(false);
                         callback(false);
