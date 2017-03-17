@@ -139,6 +139,7 @@
                         renderError("Sorry, this service is presently unavailable.");
                         break;
                 }
+                $elements.prefillRegoNo.addClass('hidden');
             } else {
                 meerkat.messaging.publish(
                     moduleEvents.REGO_LOOKUP_COMPLETE,
