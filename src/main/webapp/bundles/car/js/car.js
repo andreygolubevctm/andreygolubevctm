@@ -171,7 +171,9 @@
                     }
                 });
 
-                if (!meerkat.modules.carRegoLookup.lookup() && meerkat.site.tracking.brandCode !== 'choo') {
+                // runs lookup() regardless...
+                if (!meerkat.modules.carRegoLookup.lookup() && meerkat.site.tracking.brandCode === 'ctm') {
+                    // if lookup() returns false runs the redirect function
                     meerkat.modules.carRegoLookup.redirectToRegoFields();
                 }
 

@@ -90,12 +90,14 @@
                 if (_.isFunction(callback)) {
                     if (_.isUndefined(data.vehicle_data.exception)) {
                         hideError();
+                        // allows journey engine to proceed to the next step
                         callback(true);
                     } else {
                         meerkat.modules.loadingAnimation.hide($('.journeyNavButton'));
                         $elements.prefillRegoNo.addClass('hidden');
                         _isRegoLookupMode = false;
                         _toggleRegoFields(false);
+                        // stops journey engine from proceeding
                         callback(false);
                     }
                 }

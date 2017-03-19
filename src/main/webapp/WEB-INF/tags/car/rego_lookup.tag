@@ -17,11 +17,6 @@
     </ui:bubble>
 
     <form_v2:fieldset legend="Your Car Registration Details" id="${name}_selection">
-        <div id="unableToFindRego" class="hidden">
-            <p>Sorry, your car cannot be matched using the registration provided</p>
-            <p><em>Please select you car below</em></p>
-            <br /><br />
-        </div>
         <form_v2:row label="State" id="${name}_stateRow">
             <field_v2:array_select xpath="${xpath}/state" required="true" title=" the state you use your car in" items="=Please choose...,ACT=ACT,NSW=NSW,NT=NT,QLD=QLD,SA=SA,TAS=TAS,VIC=VIC,WA=WA" />
         </form_v2:row>
