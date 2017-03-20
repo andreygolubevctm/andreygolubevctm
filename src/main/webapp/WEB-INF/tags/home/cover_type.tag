@@ -15,9 +15,7 @@
 <form_v2:fieldset legend="Cover for your home">
 
 	<%-- Commencement Date --%>
-	<c:if test="${journeySplitTestActive eq false}">
-		<home:commencementDate xpath="${xpath}/startDate" />
-	</c:if>
+	<home:commencementDate xpath="${xpath}/startDate" />
 
 	<%-- Address --%>
 	<group_v2:elastic_address xpath="${xpath}/property/address" type="R" />
