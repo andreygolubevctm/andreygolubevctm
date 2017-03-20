@@ -23,7 +23,7 @@
                 appPostalUnitShop: $('#health_application_postal_unitShop'),
                 appPostalStreetNum: $('#health_application_postal_streetNum'),
                 appPostalUnitType: $('#health_application_postal_unitType')
-            }
+            };
         });
     }
 
@@ -51,7 +51,7 @@
             meerkat.modules.healthAboutYou.getPrimaryCurrentCover());
 
         $unitElements.appAddressUnitType.add($unitElements.appPostalUnitType).on('change', function toggleUnitRequiredFields() {
-            _toggleUnitRequired(this.id.includes('address') ? 'Address' : 'Postal', this.value === 'UN');
+            _toggleUnitRequired(this.id.includes('address') ? 'Address' : 'Postal', this.value !== '');
         });
     }
 
