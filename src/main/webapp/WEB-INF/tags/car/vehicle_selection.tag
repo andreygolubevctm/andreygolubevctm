@@ -20,7 +20,7 @@
         </div>
         <field_v1:hidden xpath="${xpath}/nvicCode" />
 
-        <c:if test="${pageSettings.getBrandCode() ne 'choo'}">
+        <c:if test="${pageSettings.getBrandCode() eq 'ctm' and isFromExoticPage eq false}">
             <div class="prefillRegoNumber">
                 <a href="javascript:;" class="carRegoEntry">Prefill with your car Rego number</a>
             </div>

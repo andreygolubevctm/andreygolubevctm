@@ -173,7 +173,7 @@
                 });
 
                 // runs lookup() regardless...
-                if (!meerkat.modules.carRegoLookup.lookup() && meerkat.site.tracking.brandCode === 'ctm') {
+                if (!meerkat.modules.carExotic.isExotic() && !meerkat.modules.carRegoLookup.lookup() && meerkat.site.tracking.brandCode === 'ctm') {
                     // if lookup() returns false runs the redirect function
                     meerkat.modules.carRegoLookup.redirectToRegoFields();
                 }
@@ -183,21 +183,21 @@
             validation: {
                 validate: true,
                 customValidation: function (callback) {
-                    if (meerkat.modules.carRegoLookup.isRegoLookupMode()) {
-                        meerkat.modules.carRegoLookup.setSearchState();
-                        meerkat.modules.carRegoLookup.setSearchRego();
-                        meerkat.modules.carRegoLookup.lookup(callback);
-                    } else {
-                        if(!meerkat.modules.carExotic.isExotic()) {
+                    if (!meerkat.modules.carExotic.isExotic()) {
+                        if (meerkat.modules.carRegoLookup.isRegoLookupMode()) {
+                            meerkat.modules.carRegoLookup.setSearchState();
+                            meerkat.modules.carRegoLookup.setSearchRego();
+                            meerkat.modules.carRegoLookup.lookup(callback);
+                        } else {
                             $('#quote_vehicle_selection').find('select').each(function () {
                                 if ($(this).is('[disabled]')) {
                                     callback(false);
                                     return;
                                 }
                             });
-                        }
 
-                        callback(true);
+                            callback(true);
+                        }
                     }
                 }
             }
