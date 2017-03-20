@@ -11,10 +11,7 @@
 
 <%-- HTML --%>
 <div id="vehicle_selection_wrapper">
-    <ui:bubble variant="chatty">
-        <h4>Tell us about your car</h4>
-        <p>Answering these questions will help us supply you with car insurance quotes from our participating suppliers.</p>
-    </ui:bubble>
+    <car:speechBubble />
     <form_v2:fieldset legend="Your Car" id="${name}_selection">
         <div id="unableToFindRego" class="hidden">
             <p>Sorry, your car cannot be matched using the registration provided</p>
@@ -42,11 +39,19 @@
             <field_v1:hidden xpath="${xpath}/modelDes"></field_v1:hidden>
         </form_v2:row>
 
-        <form_v2:row label="Year" id="${name}_yearRow">
-            <c:set var="analAttribute"><field_v1:analytics_attr analVal="Car Year" quoteChar="\"" /></c:set>
-            <field_v2:general_select xpath="${xpath}/year" title="vehicle year" required="true" initialText="&nbsp;" additionalAttributes="${analAttribute} data-attach='true'"/>
-            <field_v1:hidden xpath="${xpath}/registrationYear"></field_v1:hidden>
-        </form_v2:row>
+    <form_v2:row label="Year" id="${name}_yearRow">
+        <c:set var="analAttribute"><field_v1:analytics_attr analVal="Car Year" quoteChar="\"" /></c:set>
+        <field_v2:general_select xpath="${xpath}/year" title="vehicle year" required="true" initialText="&nbsp;" additionalAttributes="${analAttribute} data-attach='true'"/>
+        <field_v1:hidden xpath="${xpath}/registrationYear"></field_v1:hidden>
+        <c:if test="${isFromExoticPage eq true}">
+        <div class="cannotFindCar">
+            <a href="javascript:;" class="exoticManualEntry">
+                <span>Can't find your car?</span>
+                <span>Click here to manually capture the car details</span>
+            </a>
+        </div>
+        </c:if>
+    </form_v2:row>
 
         <form_v2:row label="Body" id="${name}_bodyRow" className="hidden">
             <c:set var="analAttribute"><field_v1:analytics_attr analVal="Car Body" quoteChar="\"" /></c:set>

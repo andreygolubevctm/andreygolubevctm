@@ -472,6 +472,7 @@
         if (model !== false) $(elements.modelDes).val(model.label);
         var year = getDataForCode('years', $(elements.years).val());
         if (year !== false) $(elements.registrationYear).val(year.code);
+
         // Attempt to populate the next field
         if (invalid === false && next !== false) {
             disableFutureSelectors(next);
@@ -488,6 +489,7 @@
                 checkAndNotifyOfVehicleChange();
             }
         }
+
         meerkat.messaging.publish(moduleEvents.car.DROPDOWN_CHANGED);
     }
 

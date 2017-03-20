@@ -20,6 +20,9 @@
 				<agg_v1:provider_testing xpath="${xpath}" displayFullWidth="true" keyLabel="authToken" filterProperty="providerList" hideSelector="${false}" />
 
 				<car:vehicle_selection xpath="${xpath}/vehicle" />
+				<c:if test="${isFromExoticPage eq true}">
+					<car:exotic_vehicle_selection xpath="${xpath}/vehicle/exotic" />
+				</c:if>
 				<car:rego_lookup xpath="${xpath}/regoLookup" />
 			</layout_v1:slide_content>
 		</jsp:body>

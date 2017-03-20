@@ -15,10 +15,7 @@
 
         <jsp:body>
             <layout_v1:slide_content>
-                <ui:bubble variant="chatty">
-                    <h4>Tell us about your car</h4>
-                    <p>Answering these questions will help us supply you with car insurance quotes from our participating suppliers.</p>
-                </ui:bubble>
+                <car:speechBubble />
                 <car:rego_with_details/>
 
                 <car:options_type_of_cover xpath="${xpath}/optionsTypeOfCover"/>
