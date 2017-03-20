@@ -86,6 +86,8 @@
                 onError: _.bind(onLookupError, this, data)
             }).done(function(data) {
                 meerkat.modules.journeyEngine.loadingHide();
+                $elements.prefillRegoNo.addClass('hidden');
+                _toggleRegoFields(false);
 
                 if (_.isFunction(callback)) {
                     if (_.isUndefined(data.vehicle_data.exception)) {
@@ -94,9 +96,7 @@
                         callback(true);
                     } else {
                         meerkat.modules.loadingAnimation.hide($('.journeyNavButton'));
-                        $elements.prefillRegoNo.addClass('hidden');
                         _isRegoLookupMode = false;
-                        _toggleRegoFields(false);
                         // stops journey engine from proceeding
                         callback(false);
                     }
@@ -104,7 +104,6 @@
             })
             .fail(meerkat.modules.journeyEngine.loadingHide)
             .then(function () {
-
                 $('.rego-text').removeClass('invisible');
             });
 

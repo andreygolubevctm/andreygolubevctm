@@ -195,9 +195,10 @@
                                     return;
                                 }
                             });
-
                             callback(true);
                         }
+                    } else {
+                        callback(true);
                     }
                 }
             }
