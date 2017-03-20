@@ -162,8 +162,8 @@
                 <div class="col-lg-1">
                     {{= orderLine.orderStatus }}
                     {{ if (orderLine.orderStatus === 'Dispatched' && orderLine.trackingCode !== null) { }}
-                        <br>
-                        {{= orderLine.trackingCode  }}
+                        <br />
+                        {{= orderLine.trackingCode }}
                     {{ } }}
                 </div>
                 <div class="col-lg-1">
