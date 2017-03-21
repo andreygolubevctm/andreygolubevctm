@@ -53,18 +53,9 @@
 										maxLength="20"
 										required="${false}"
 										labelName="your contact number"/>
-			<%-- <p class="optinText"><content:get key="okToCall"/></p> --%>
 		</form_v2:row>
 
 		<form_v2:row label="" className="email-optin-row clear closer">
-			<%--
-			<field_v2:checkbox
-					xpath="${xpath}/optIn"
-					value="Y"
-					title="Yes, keep me updated about news, discounts and special offers from ${brandName}"
-					required="false"
-					label="true"/>
-			--%>
 			<%-- Mandatory agreement to OptIn to email  --%>
 			<field_v1:hidden xpath="${xpath}/optIn" defaultValue="Y" constantValue="Y" />
 
