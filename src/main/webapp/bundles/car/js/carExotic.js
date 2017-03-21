@@ -33,8 +33,8 @@
 		$navBarContents = $('#navbar-filter .nav, #navbar-filter-labels');
 
 		// existing and new questions
-		$defaultQuestionsToHide = $('#quote_optionsTypeOfCoverFieldRow, #quoteAccessoriesFieldSet, .noOfKms,  #accidentDamageRow, .rego-not-my-car, #employment_status_row, #ownsAnotherCar, #quote_restricted_ageRow, #quote_drivers_youngFieldSet, .ydGreenBubble');
-		$exoticQuestionsToShow = $('#quote_drivers_regular_convictionsRow, .exoticUsageQuestions, #quote_drivers_youngExoticExoticFieldSet, #quote_drivers_youngExoticFieldSet, #quote_drivers_youngExoticContFieldSet, .ydSpeechBubbleDriverDetails, #preferredContactMethodRow');
+		$defaultQuestionsToHide = $('#quote_optionsTypeOfCoverFieldRow, #quote_drivers_young_annualKilometresRow, #quoteAccessoriesFieldSet, .noOfKms,  #accidentDamageRow, .rego-not-my-car, #employment_status_row, #ownsAnotherCar, #quote_restricted_ageRow, .ydGreenBubble');
+		$exoticQuestionsToShow = $('#quote_drivers_regular_convictionsRow, #quote_drivers_young_claimsRow, #quote_drivers_young_convictionsRow, .exoticUsageQuestions, .ydSpeechBubbleDriverDetails, #preferredContactMethodRow');
 		$securityRow = $('#securityOptionRow');
 		$vehicleUse = $('#quote_vehicle_use');
 		$vehicleUseOption = $vehicleUse.find('option[value=02]');
