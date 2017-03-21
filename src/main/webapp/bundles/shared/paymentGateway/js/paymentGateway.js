@@ -154,12 +154,12 @@ Process:
 	// Reset settings and unhook
 	function reset() {
 		settings.handledType = {'credit': false, 'bank': false };
+		_type = '';
 
 		$('body').removeClass(settings.name + '-active');
 		clearValidation();
 		resetRegistered();
 		togglePanels();
-		_type = '';
 
 		// Turn off events
 		$('[data-provide="paymentGateway"]').off( "click", '[data-gateway="launcher"]', launch);
