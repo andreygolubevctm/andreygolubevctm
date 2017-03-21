@@ -7,7 +7,6 @@
 
 <%-- VARIABLES --%>
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
-<jsp:useBean id="splitTestService" class="com.ctm.web.core.services.tracking.SplitTestService" />
 
 <form_v2:fieldset legend="Policy Holder Details">
 
@@ -45,18 +44,11 @@
 			trackingPrefix="Policy Holder"/>
 	</form_v2:row>
 
-	<c:if test="${journeySplitTestActive eq true}">
-		<home:contact_details_v2 xpath="${xpath}" />
-	</c:if>
-
 </form_v2:fieldset>
 
 <%-- Class name to force join policy holder fields to be hidden --%>
 <c:set var="joinPolicyHolderClassname">
-	<c:choose>
-		<c:when test="${journeySplitTestActive eq true}">hidden</c:when>
-		<c:otherwise><%-- empty --%></c:otherwise>
-	</c:choose>
+	<%-- empty --%>
 </c:set>
 
 <%-- Joint Policy Holder Button removed due to ticket HNC-463 - Associated Fields left in due to validation requirements for oldest policy holder over 55 AND for displaying old quotes --%>
