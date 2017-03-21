@@ -59,6 +59,7 @@
 	</c:choose>
 </c:set>
 
+<%-- Joint Policy Holder Button removed due to ticket HNC-463 - Associated Fields left in due to validation requirements for oldest policy holder over 55 AND for displaying old quotes --%>
 <form_v2:fieldset className="${joinPolicyHolderClassname}" legend="Joint Policy Holder <a class='btn btn-hollow-red btn-sm btn-right btn-wide toggleJointPolicyHolder' href='javascript:;'>Remove</a>" id="jointPolicyHolder">
 	<%-- 	JOINT POLICY HOLDER --%>
 	<%-- Joint Policy Holder First Name --%>
@@ -94,15 +95,3 @@
 	</form_v2:row>
 
 </form_v2:fieldset>
-
-<%-- Joint Policy Holder Button --%>
-<%-- Joint Policy Holder Button removed due to ticket HNC-463 - Associated Fields left in due to validation requirements for oldest policy holder over 55 AND for displaying old quotes --%>
-<%--
-<form_v2:fieldset legend="" className="${joinPolicyHolderClassname}">
-	<c:set var="fieldXpath" value="${xpath}/addJointPolicyHolder" />
-	<form_v2:row fieldXpath="${fieldXpath}" label="">
-		<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Additional Policy Holder" quoteChar="\"" /></c:set>
-		<a class="btn btn-next nav-next-btn toggleJointPolicyHolder addPolicyHolderBtn" href="javascript:;" ${analyticsAttr}>Add Joint Policy Holder</a>
-	</form_v2:row>
-</form_v2:fieldset>
---%>
