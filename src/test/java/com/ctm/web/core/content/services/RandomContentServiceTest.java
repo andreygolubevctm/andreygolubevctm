@@ -43,7 +43,7 @@ public class RandomContentServiceTest {
     }
 
     @Test
-    public void iniWithNoValue() throws Exception {
+    public void initWithNoValue() throws Exception {
         ArrayList<ContentSupplement> supplementary = new ArrayList<>();
         String contentKey = setupContents(supplementary);
         randomContentService.init( contentService,  request,  contentKey);
