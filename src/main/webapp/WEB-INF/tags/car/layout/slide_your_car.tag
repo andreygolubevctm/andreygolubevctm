@@ -23,6 +23,7 @@
 				<c:if test="${isFromExoticPage eq true}">
 					<car:exotic_vehicle_selection xpath="${xpath}/vehicle/exotic" />
 				</c:if>
+				<car:rego_lookup xpath="${xpath}/regoLookup" />
 			</layout_v1:slide_content>
 		</jsp:body>
 
