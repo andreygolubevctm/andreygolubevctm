@@ -4,6 +4,10 @@
         meerkatEvents = meerkat.modules.events,
         $elements = {};
 
+    // Used to change the validation trigger on mobile to change.
+    // blur is used in all other instances.
+    var dynamicChangeEvent = meerkat.modules.performanceProfiling.isMobile() ? 'change' : 'blur';
+
     function initHealthContactNumber() {
         _setupFields();
         _applyEventListeners();
@@ -30,7 +34,7 @@
 
                 $elements.flexiNumber.val('');
                 if (!_.isEmpty($input.val())) {
-                    $input.trigger('blur');
+                    $input.trigger(dynamicChangeEvent);
                 }
             }
 
@@ -39,7 +43,7 @@
 
         });
 
-        $elements.inputs.on('blur', function onInputsBlur() {
+        $elements.inputs.on(dynamicChangeEvent, function onInputsEventTrigger() {
             $elements.flexiNumber.val($(this).valid() ? $(this).val().replace(/ /g,'') : '');
         });
     }
@@ -49,7 +53,7 @@
             var contactBy = contactNumber.match(/^(04|614|6104)/g) ? 'mobile' : 'other';
 
             $contactNumberContainer.attr('data-contact-by', contactBy);
-            $contactNumberContainer.find('.contact-number-' + contactBy + ' input.contact-number-field').val(contactNumber).trigger('blur');
+            $contactNumberContainer.find('.contact-number-' + contactBy + ' input.contact-number-field').val(contactNumber).trigger(dynamicChangeEvent);
         }
     }
 
