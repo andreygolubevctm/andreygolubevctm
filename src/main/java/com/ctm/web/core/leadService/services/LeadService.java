@@ -56,9 +56,6 @@ public abstract class LeadService {
         if(StringUtils.isEmpty(leadData.getPerson().getFirstName())) {
             return false;
         }
-        if(StringUtils.isEmpty(leadData.getPerson().getEmail())) {
-            return false;
-        }
         if(StringUtils.isEmpty(leadData.getPerson().getPhone()) && StringUtils.isEmpty(leadData.getPerson().getMobile())) {
             return false;
         }

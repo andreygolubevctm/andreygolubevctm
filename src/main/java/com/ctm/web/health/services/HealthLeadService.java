@@ -116,6 +116,12 @@ public class HealthLeadService extends LeadService {
             leadData.setAnalyticsId(data.getString("health/gaclientid"));
         }
 
+        if (StringUtils.isNotBlank(data.getString("health/tracking/cid"))) {
+            String cid = data.getString("health/tracking/cid");
+            cid = StringUtils.substringBefore(cid,"|"); // Required to handle cases like ps:ga:health:115969|2017-03-15
+            leadData.setCampaignId(cid);
+        }
+
         leadData.setVerticalType(VerticalType.HEALTH.name());
 
         List<String> benefitList = new ArrayList<>();

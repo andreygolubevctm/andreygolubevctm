@@ -19,6 +19,7 @@
     function _applyEventListeners() {
         $(document).on('click', '.contact-number-switch', function onSwitchClicked() {
             var $contactNumber = $(this).closest('.contact-number'),
+                deselectedField = $contactNumber.attr('data-contact-by'),
                 contactBy = $contactNumber.attr('data-contact-by') === 'mobile' ? 'other' : 'mobile';
 
             $contactNumber.attr('data-contact-by', contactBy);
@@ -32,6 +33,10 @@
                     $input.trigger('blur');
                 }
             }
+
+            var $redundantInput = $contactNumber.find('#health_contactDetails_contactNumber_' + deselectedField);
+            $redundantInput.val('');
+
         });
 
         $elements.inputs.on('blur', function onInputsBlur() {
