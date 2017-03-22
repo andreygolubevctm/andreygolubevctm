@@ -209,6 +209,8 @@ Process:
 
 		successEventHandlerId = meerkat.messaging.subscribe(moduleEvents.SUCCESS, success);
 		failEventHandlerId = meerkat.messaging.subscribe(moduleEvents.FAIL, fail);
+
+		setTypeFromControl();
 	}
 
 	// MODAL
