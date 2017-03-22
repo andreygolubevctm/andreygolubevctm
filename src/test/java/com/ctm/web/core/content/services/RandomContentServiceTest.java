@@ -1,6 +1,5 @@
 package com.ctm.web.core.content.services;
 
-import com.ctm.web.core.connectivity.SimpleConnection;
 import com.ctm.web.core.content.model.Content;
 import com.ctm.web.core.content.model.ContentSupplement;
 import com.ctm.web.core.exceptions.ConfigSettingException;
@@ -15,8 +14,6 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import javax.servlet.http.HttpServletRequest;
-
-import java.net.URL;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
@@ -32,56 +29,66 @@ public class RandomContentServiceTest {
     private ContentService contentService;
     @Mock
     private HttpServletRequest request;
+    @Mock
     private RandomNumberGenerator randomNumberGenerator;
+    private RandomContentService randomContentService;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        randomNumberGenerator = PowerMockito.mock(RandomNumberGenerator.class);
-        PowerMockito.whenNew(RandomNumberGenerator.class).withNoArguments().thenReturn(randomNumberGenerator);
+        PowerMockito.whenNew(RandomNumberGenerator.class).withNoArguments()
+                .thenReturn(randomNumberGenerator);
+        randomContentService = new RandomContentService();
 
     }
 
     @Test
-    public void init() throws Exception {
+    public void iniWithNoValue() throws Exception {
         ArrayList<ContentSupplement> supplementary = new ArrayList<>();
         String contentKey = setupContents(supplementary);
-        RandomContentService randomContentService = new RandomContentService();
         randomContentService.init( contentService,  request,  contentKey);
+        assertFalse(randomContentService.hasSupplementaryValue());
     }
 
     @Test
     public void initWithValue() throws Exception {
-        when(randomNumberGenerator.getRandomNumber(0)).thenReturn(0);
+        when(randomNumberGenerator.getRandomNumber(1)).thenReturn(0);
         String value = "supplementaryValue";
         ArrayList<ContentSupplement> supplementary = new ArrayList<>();
-        ContentSupplement contentSupplement = new ContentSupplement();
-        contentSupplement.setSupplementaryValue(value);
-        supplementary.add(contentSupplement);
+        createContentSupplement(supplementary, value);
 
         String contentKey = setupContents(supplementary);
-        RandomContentService randomContentService = new RandomContentService();
         randomContentService.init( contentService,  request,  contentKey);
+        assertTrue(randomContentService.hasSupplementaryValue());
         assertEquals(value, randomContentService.getSupplementaryValue());
     }
 
     @Test
     public void initWithValues() throws Exception {
-        when(randomNumberGenerator.getRandomNumber(1)).thenReturn(1);
+        when(randomNumberGenerator.getRandomNumber(3)).thenReturn(1);
         ArrayList<ContentSupplement> supplementary = new ArrayList<>();
         String value = "supplementaryValue";
-        ContentSupplement contentSupplement = new ContentSupplement();
-        contentSupplement.setSupplementaryValue(value);
-        supplementary.add(contentSupplement);
+        createContentSupplement(supplementary, value);
         String value2 = "supplementaryValue2";
-        ContentSupplement contentSupplement2 = new ContentSupplement();
-        contentSupplement2.setSupplementaryValue(value2);
-        supplementary.add(contentSupplement2);
+        createContentSupplement(supplementary,value2);
+        String value3 = "supplementaryValue3";
+        createContentSupplement(supplementary,value3);
 
         String contentKey = setupContents(supplementary);
-        RandomContentService randomContentService = new RandomContentService();
         randomContentService.init( contentService,  request,  contentKey);
-        assertEquals(value, randomContentService.getSupplementaryValue());
+        assertTrue(randomContentService.hasSupplementaryValue());
+        assertEquals(value2, randomContentService.getSupplementaryValue());
+
+        when(randomNumberGenerator.getRandomNumber(3)).thenReturn(2);
+        randomContentService.init( contentService,  request,  contentKey);
+        assertTrue(randomContentService.hasSupplementaryValue());
+        assertEquals(value3, randomContentService.getSupplementaryValue());
+    }
+
+    private void createContentSupplement(ArrayList<ContentSupplement> supplementary, String value) {
+        ContentSupplement contentSupplement2 = new ContentSupplement();
+        contentSupplement2.setSupplementaryValue(value);
+        supplementary.add(contentSupplement2);
     }
 
     private String setupContents(ArrayList<ContentSupplement> supplementary) throws DaoException, ConfigSettingException {
