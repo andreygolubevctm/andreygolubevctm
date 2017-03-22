@@ -22,7 +22,6 @@
 <%@ attribute name="type" 					required="false"  	rtexprvalue="true"	 description="What type of date input do you want?" %>
 
 <%-- VARIABLES --%>
-<c:if test="${empty type}"><c:set var="type" value="input" /></c:if>
 <c:if test="${empty outputJS}"><c:set var="outputJS" value="${true}" /></c:if>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:if test="${empty ageMin}">
@@ -65,6 +64,25 @@
 ${logger.trace('DOB Restricted to max: {},{}' , log:kv('nowLessAgeMinYears', nowLessAgeMinYears), log:kv('name', name))}
 
 <c:set var="minYear" value="${java.util.GregorianCalendar.YEAR - Integer.parseInt(ageMax)}" />
+
+<jsp:useBean id="userAgentSniffer" class="com.ctm.web.core.services.UserAgentSniffer" />
+<c:set var="deviceType" value="${userAgentSniffer.getDeviceType(pageContext.getRequest().getHeader('user-agent'))}" />
+<%--
+    If type is undefined use the deviceType to determine input type.
+    For mobile type would be type text according to HLT-4236
+ --%>
+<c:if test="${empty type}">
+    <c:set var="type">
+        <c:choose>
+            <c:when test="${deviceType eq 'MOBILE'}">
+                input
+            </c:when>
+            <c:otherwise>
+                select
+            </c:otherwise>
+        </c:choose>
+    </c:set>
+</c:if>
 
 <%-- HTML --%>
 <div class="dateinput_container" data-provide="dateinput">
