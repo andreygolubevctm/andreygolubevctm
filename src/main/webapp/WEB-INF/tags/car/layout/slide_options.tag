@@ -21,7 +21,14 @@
                 </ui:bubble>
                 <car:rego_with_details/>
 
-                <car:options_type_of_cover xpath="${xpath}/optionsTypeOfCover"/>
+                <c:choose>
+                    <c:when test="${pageSettings.getBrandCode() eq 'ctm'}">
+                        <car:options_type_of_cover xpath="${xpath}/optionsTypeOfCover"/>
+                    </c:when>
+                    <c:otherwise>
+                        <field_v1:hidden xpath="${xpath}/optionsTypeOfCover" defaultValue="COMPREHENSIVE" constantValue="COMPREHENSIVE" />
+                    </c:otherwise>
+                </c:choose>
 
                 <form_v2:fieldset legend="Accessories and Modifications" id="${name}AccessoriesFieldSet">
 

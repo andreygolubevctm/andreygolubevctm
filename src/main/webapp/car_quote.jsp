@@ -117,11 +117,15 @@
 		<nav id="navbar-filter" class="navbar navbar-default navbar-affix navbar-inverse hidden hidden-xs" data-affix-after="#navbar-main">
 			<div class="container">
 				<ul class="nav navbar-nav">
-					<li class="dropdown filter-cover-type">
-						<a href="javascript:void(0);" class="dropdown-toggle active" data-toggle="dropdown"><span>Comprehensive</span> <b class="icon icon-angle-down"></b></a>
-						<ul class="dropdown-menu">
-						</ul>
-					</li>
+
+					<c:if test="${pageSettings.getBrandCode() eq 'ctm'}">
+						<li class="dropdown filter-cover-type">
+							<a href="javascript:void(0);" class="dropdown-toggle active" data-toggle="dropdown"><span>Comprehensive</span> <b class="icon icon-angle-down"></b></a>
+							<ul class="dropdown-menu">
+							</ul>
+						</li>
+					</c:if>
+
 					<li class="dropdown filter-excess">
 						<a href="javascript:void(0);" class="dropdown-toggle active" data-toggle="dropdown"><span>Excess</span> <b class="icon icon-angle-down"></b></a>
 						<ul class="dropdown-menu">
@@ -145,7 +149,9 @@
 		<nav id="navbar-filter-labels" class="navbar hidden hidden-xs">
 			<div class="container">
 				<ul class="nav navbar-nav">
-					<li class="navbar-text filter-type-of-cover-label">Type of Cover</li>
+					<c:if test="${pageSettings.getBrandCode() eq 'ctm'}">
+						<li class="navbar-text filter-type-of-cover-label">Type of Cover</li>
+					</c:if>
 					<li class="navbar-text filter-excess-label">Excess</li>
 					<li class="navbar-text filter-cancel-label"><a href="javascript:void(0);" class="hidden">Cancel</a></li>
 				</ul>
