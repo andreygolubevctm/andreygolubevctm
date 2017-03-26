@@ -68,7 +68,6 @@ Process:
 
 		ajaxInProgress = true;
 		$maskedNumber.val('Loading...');
-		console.info("@@@ healthPaymentIPP AUTHORISE");
 		reset();
 
 		var authoriseUrl = '/' + meerkat.site.urls.context + "ajax/json/ipp/ipp_payment.jsp?ts=" + (new Date().getTime());
@@ -171,7 +170,6 @@ Process:
 			//add the time the whole process lasted
 			var failTime = ', ' + Math.round((new Date().getTime() - launchTime) / 1000) + ' seconds';
 			//Add reasons: HLT-1111
-			console.info("@@@ healthPaymentIPP FAIL");
 			$token.val('fail, ' + reason + failTime );
 			$maskedNumber.val('Try again or continue');
 			modalContent = '';
@@ -188,7 +186,6 @@ Process:
 	}
 
 	function reset() {
-		console.info("@@@ healthPaymentIPP RESET");
 		$token.val('');
 		$maskedNumber.val('');
 		modalContent = '';
@@ -236,7 +233,6 @@ Process:
 					fail('IPP Token Log false');
 					return;
 				}
-				console.info("@@@ healthPaymentIPP Register onSuccess");
 				$token.val(jsonData.sessionid);
 				$maskedNumber.val(jsonData.maskedcardno);
 				modalContent = '';
@@ -248,14 +244,13 @@ Process:
 		});
 	}
 
-
-
 	meerkat.modules.register("healthPaymentIPP", {
 		initHealthPaymentIPP: initHealthPaymentIPP,
 		show: show,
 		hide: hide,
 		fail: fail,
-		register: register
+		register: register,
+		reset: reset
 	});
 
 })(jQuery);

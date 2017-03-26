@@ -184,7 +184,6 @@ Process:
 	}
 
 	function setup(instanceSettings) {
-		console.info("@@@ paymentGateway setup");
 		settings = $.extend({}, settings, instanceSettings );
 		$('[data-provide="paymentGateway"]').on('click', '[data-gateway="launcher"]', launch);
 		if(settings.paymentEngine === null) {
