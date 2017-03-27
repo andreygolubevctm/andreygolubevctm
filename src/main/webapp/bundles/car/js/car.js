@@ -303,8 +303,8 @@
                         meerkat.modules.mobileNavButtons.disableSpecificButtons('refine,save');
                         meerkat.modules.saveQuote.disable();
                     }
-                    meerkat.modules.tracking.recordTouch('R','Results Page');
-                    meerkat.modules.tracking.recordTouch('EC','Famous Transaction');
+                    meerkat.modules.tracking.recordTouch('R','Results Page', 'FAME-01-01', true);
+                    meerkat.modules.tracking.recordTouch('EC','Famous Transaction', 'FAME-01-01', true);
                 }
             },
             onAfterEnter: function afterEnterResults(event) {
