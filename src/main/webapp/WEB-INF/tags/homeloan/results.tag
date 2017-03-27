@@ -296,11 +296,11 @@
 	{{ if (obj.lender === 'Bank SA') img = 'BANKSA'; }}
 	{{ if (obj.lender === 'Bank of Sydney') img = 'BOS'; }}
 	{{ if (obj.lender === 'Bankwest') img = 'BANKWEST'; }}
-	{{ if (obj.lender === 'Beyond Bank') img = 'BB'; }}
+	{{ if (obj.lender === 'Beyond Bank') img = 'BEYOND'; }}
 	{{ if (obj.lender === 'Bluestone') img = 'BLUESTONE'; }}
 	{{ if (obj.lender === 'Citibank') img = 'CITI'; }}
 	{{ if (obj.lender === 'Commonwealth Bank') img = 'CBA'; }}
-	{{ if (obj.lender === 'Firefighters Mutual Bank') img = 'FFMB'; }}
+	{{ if (obj.lender === 'Firefighters Mutual Bank') img = 'FIREFIGHTERS'; }}
 	{{ if (obj.lender === 'Heritage Bank') img = 'HERITAGE'; }}
 	{{ if (obj.lender === 'HomeStart Finance') img = 'HOMESTART'; }}
 	{{ if (obj.lender === 'Homeside Lending') img = 'HOMESIDE'; }}
