@@ -291,6 +291,7 @@
 
 		// Fetching done
 		$(document).on("resultsFetchFinish", function onResultsFetchFinish() {
+			meerkat.modules.homeFilters.setHomeResultsFilter();
 			// Results are hidden in the CSS so we don't see the scaffolding after #benefits
 			$(Results.settings.elements.page).show();
 
@@ -381,7 +382,6 @@
 	// After the results have been fetched, force data onto it to support our Results engine.
 	function massageResultsObject(products) {
 		products = products || Results.model.returnedProducts;
-
 		_.each(products, function massageJson(result, index) {
 			// Add properties
 			if (!_.isNull(result.price) && !_.isUndefined(result.price)) {
@@ -501,7 +501,6 @@
 
 
 	function onResultsLoaded() {
-		meerkat.modules.homeFilters.setHomeResultsFilter();
 		startColumnWidthTracking();
 
 		// Reset vars
