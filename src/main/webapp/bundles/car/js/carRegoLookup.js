@@ -49,6 +49,9 @@
     function applyEventListeners() {
         meerkat.messaging.subscribe(meerkatEvents.car.DROPDOWN_CHANGED, function invisibleRego(states) {
             $('.rego-text').addClass('invisible');
+
+            // set rego lookup mode to false
+            _isRegoLookupMode = false;
         });
 
         $elements.carRegoEntry.on('click', function showRegoFields() {
