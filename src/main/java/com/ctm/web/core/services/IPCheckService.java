@@ -172,8 +172,7 @@ public class IPCheckService {
         return result;
     }
 
-    public boolean isLocalIPAddress(HttpServletRequest request) {
-        final String ipAddress = ipAddressHandler.getIPAddress(request);
+    public boolean isIPAddressLocal(String ipAddress) {
         try {
             return InetAddress.getByName(ipAddress).isSiteLocalAddress();
         } catch(UnknownHostException e) {
@@ -182,4 +181,8 @@ public class IPCheckService {
         }
     }
 
+    public boolean isLocalIPAddress(HttpServletRequest request) {
+        final String ipAddress = ipAddressHandler.getIPAddress(request);
+        return isIPAddressLocal(ipAddress);
+    }
 }

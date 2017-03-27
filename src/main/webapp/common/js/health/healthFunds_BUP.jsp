@@ -148,6 +148,9 @@ set: function () {
 
 		healthFunds_BUP.$primaryMiddleName.setRequired(true);
 		healthFunds_BUP.$partnerMiddleName.setRequired(true);
+
+		<%-- Unset any ipp tokenisation --%>
+		meerkat.modules.healthPaymentIPP.reset();
 	}
 };
 </c:set>

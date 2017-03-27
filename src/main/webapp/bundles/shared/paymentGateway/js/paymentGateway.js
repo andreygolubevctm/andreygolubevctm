@@ -155,11 +155,11 @@ Process:
 	function reset() {
 		settings.handledType = {'credit': false, 'bank': false };
 		_type = '';
-		togglePanels();
 
 		$('body').removeClass(settings.name + '-active');
 		clearValidation();
 		resetRegistered();
+		togglePanels();
 
 		// Turn off events
 		$('[data-provide="paymentGateway"]').off( "click", '[data-gateway="launcher"]', launch);
@@ -209,6 +209,8 @@ Process:
 
 		successEventHandlerId = meerkat.messaging.subscribe(moduleEvents.SUCCESS, success);
 		failEventHandlerId = meerkat.messaging.subscribe(moduleEvents.FAIL, fail);
+
+		setTypeFromControl();
 	}
 
 	// MODAL

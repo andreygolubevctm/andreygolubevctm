@@ -4,6 +4,10 @@
         meerkatEvents = meerkat.modules.events,
         $elements = {};
 
+    // Used to change the validation trigger on mobile to change.
+    // blur is used in all other instances.
+    var dynamicChangeEvent = meerkat.modules.performanceProfiling.isMobile() ? 'change' : 'blur';
+
     function initHealthContactNumber() {
         _setupFields();
         _applyEventListeners();
@@ -19,6 +23,7 @@
     function _applyEventListeners() {
         $(document).on('click', '.contact-number-switch', function onSwitchClicked() {
             var $contactNumber = $(this).closest('.contact-number'),
+                deselectedField = $contactNumber.attr('data-contact-by'),
                 contactBy = $contactNumber.attr('data-contact-by') === 'mobile' ? 'other' : 'mobile';
 
             $contactNumber.attr('data-contact-by', contactBy);
@@ -29,12 +34,16 @@
 
                 $elements.flexiNumber.val('');
                 if (!_.isEmpty($input.val())) {
-                    $input.trigger('blur');
+                    $input.trigger(dynamicChangeEvent);
                 }
             }
+
+            var $redundantInput = $contactNumber.find('#health_contactDetails_contactNumber_' + deselectedField);
+            $redundantInput.val('');
+
         });
 
-        $elements.inputs.on('blur', function onInputsBlur() {
+        $elements.inputs.on(dynamicChangeEvent, function onInputsEventTrigger() {
             $elements.flexiNumber.val($(this).valid() ? $(this).val().replace(/ /g,'') : '');
         });
     }
@@ -44,7 +53,7 @@
             var contactBy = contactNumber.match(/^(04|614|6104)/g) ? 'mobile' : 'other';
 
             $contactNumberContainer.attr('data-contact-by', contactBy);
-            $contactNumberContainer.find('.contact-number-' + contactBy + ' input.contact-number-field').val(contactNumber).trigger('blur');
+            $contactNumberContainer.find('.contact-number-' + contactBy + ' input.contact-number-field').val(contactNumber).trigger(dynamicChangeEvent);
         }
     }
 

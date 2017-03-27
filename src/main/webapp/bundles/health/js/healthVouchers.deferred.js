@@ -48,8 +48,9 @@
                     approvedby:     $elements.root.find('.healthVoucherApprovedByRow').first(),
                     authorisation:  $elements.root.find('.healthVoucherAuthorisationRow').first(),
                     simples :   {
-                        referral :  $elements.root.find('.dialogue.referral').first(),
-                        other :     $elements.root.find('.dialogue.others').first()
+                        referral :      $elements.root.find('.dialogue.referral').first(),
+                        other :         $elements.root.find('.dialogue.others').first(),
+                        matchonline :   $elements.root.find('.dialogue.matchonline').first()
                     },
                     messages:       $elements.root.find('.voucher-validation-messages'),
                     disableables:   $elements.root.find('.disableable-fields')
@@ -223,14 +224,22 @@
                                     $elements.wrappers.referrerref.show();
                                     $elements.wrappers.simples.referral.show();
                                     $elements.wrappers.simples.other.hide();
+                                    $elements.wrappers.simples.matchonline.hide();
+                                } else if (data.other.reason === 'match-online-offer') {
+                                    $elements.wrappers.referrerref.hide();
+                                    $elements.wrappers.simples.referral.hide();
+                                    $elements.wrappers.simples.other.hide();
+                                    $elements.wrappers.simples.matchonline.show();
                                 } else {
                                     $elements.wrappers.referrerref.hide();
                                     $elements.wrappers.simples.referral.hide();
                                     $elements.wrappers.simples.other.show();
+                                    $elements.wrappers.simples.matchonline.hide();
                                 }
                             } else {
                                 $elements.wrappers.simples.referral.hide();
                                 $elements.wrappers.simples.other.hide();
+                                $elements.wrappers.simples.matchonline.hide();
                             }
                             $elements.wrappers.other.slideDown('fast');
                         });
