@@ -64,8 +64,8 @@
 		if (isExotic()) {
 			$requiredFieldsToToggle.attr('required', 'required');
 			$nameFields.attr('data-rule-personName','true');
-			$firstname.attr('data-msg-required','Please enter your name');
-			$surname.attr('data-msg-required','Please enter your surname');
+			$firstname.attr('data-msg-required','Please enter your first name');
+			$surname.attr('data-msg-required','Please enter your last name');
 		} else {
 			$requiredFieldsToToggle
 				.removeAttr('required')
