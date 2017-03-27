@@ -423,18 +423,32 @@
 
 <%-- Price template featuresMode --%>
 <core_v1:js_template id="monthly-price-features-template">
-	{{ var monthlyPremiumSplit = obj.price.monthlyPremium.toString().split('.'); }}
-	{{ var dollars = monthlyPremiumSplit[0]; }}
-	{{ var cents = monthlyPremiumSplit[1] ? '.' + monthlyPremiumSplit[1] : ''; }}
-	{{ if (cents.length === 2) cents += '0'; }}
+	{{ var dollars = 0; }}
+	{{ var cents = 0; }}
+	{{ if (obj.price.monthlyPremium !== null && obj.price.monthlyPremium != '' && typeof(obj.price.monthlyPremium) != 'undefined') { }}
+		{{ var monthlyPremiumSplit = obj.price.monthlyPremium.toString().split('.'); }}
+		{{ dollars = monthlyPremiumSplit[0]; }}
+		{{ cents = monthlyPremiumSplit[1] ? '.' + monthlyPremiumSplit[1] : ''; }}
+		{{ if (cents.length === 2) cents += '0'; }}
+	{{ } }}
+
+	{{ var firstMonthPrice = 0; }}
+	{{ var annualPrice = 0; }}
+
+	{{ if (obj.price.monthlyFirstMonth !== null && obj.price.monthlyFirstMonth != '' && typeof(obj.price.monthlyFirstMonth) != 'undefined') { }}
+		{{ firstMonthPrice = obj.price.monthlyFirstMonth.toFixed(2); }}
+	{{ } }}
+	{{ if (obj.price.annualisedMonthlyPremium !== null && obj.price.annualisedMonthlyPremium != '' && typeof(obj.price.annualisedMonthlyPremium) != 'undefined') { }}
+		{{ annualPrice = obj.price.annualisedMonthlyPremium.toFixed(2); }}
+	{{ } }}
 
 	<div class="frequency monthly" data-availability="{{= obj.available }}">
 		<div class="frequencyAmount">
 			<span class="dollarSign">{{= '$' }}</span><span class="dollars">{{= dollars }}</span><span class="cents">{{= cents }}</span></div>
 		<div class="frequencyTitle">Monthly</div>
 		<div class="monthlyBreakdown">
-			<span class="nowrap"><span class="firstPayment">1st Month: {{= '$' }}{{= obj.price.monthlyFirstMonth.toFixed(2) }}</span></span>
-			<span class="nowrap"><span class="totalPayment">Total: {{= '$' }}{{= obj.price.annualisedMonthlyPremium.toFixed(2) }}</span></span>
+			<span class="nowrap"><span class="firstPayment">1st Month: &#36;{{= firstMonthPrice }}</span></span>
+			<span class="nowrap"><span class="totalPayment">Total: &#36;{{= annualPrice }}</span></span>
 		</div>
 	</div>
 </core_v1:js_template>

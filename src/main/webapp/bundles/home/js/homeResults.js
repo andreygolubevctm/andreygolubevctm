@@ -54,11 +54,10 @@
 				displayMode = meerkat.site.resultOptions.displayMode;
 			}
 
-
 			var price = {
 				annual: "price.annualPremium",
 				annually: "price.annualPremium",
-				monthly: "price.annualisedMonthlyPremium"
+				monthly: "price.monthlyPremium"
 			};
 			var productAvailable = "available";
 			var productName = "productName";
@@ -206,7 +205,6 @@
 				},
 				incrementTransactionId: false
 			});
-
 		}
 		catch(e) {
 			Results.onError('Sorry, an error occurred initialising page', 'results.tag', 'meerkat.modules.homeResults.initResults(); '+e.message, e);
@@ -293,7 +291,6 @@
 
 		// Fetching done
 		$(document).on("resultsFetchFinish", function onResultsFetchFinish() {
-
 			// Results are hidden in the CSS so we don't see the scaffolding after #benefits
 			$(Results.settings.elements.page).show();
 
@@ -504,6 +501,7 @@
 
 
 	function onResultsLoaded() {
+		meerkat.modules.homeFilters.setHomeResultsFilter();
 		startColumnWidthTracking();
 
 		// Reset vars

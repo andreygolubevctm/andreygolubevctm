@@ -62,7 +62,9 @@
 			{{ } }}
 		{{ } }}
 		<div class="push-top-15">
+		{{ if (obj.productDisclosures.hasOwnProperty('hbkfs') !== false) { }}
 		<p class="keyFactSheets">By going to the insurer’s site you agree you have accessed the Key Facts Sheets for <a href="{{= obj.productDisclosures.hbkfs.url }}" target="_blank">Home Insurance</a> and <a href="{{= obj.productDisclosures.hckfs.url }}" target="_blank">Contents Insurance</a>.</p>
+		{{ } }}
 	{{ } }}
 	<h5>Disclaimer</h5>
 	<p>{{= obj.disclaimer }}</p>
