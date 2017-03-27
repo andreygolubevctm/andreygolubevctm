@@ -25,7 +25,7 @@
 
     <c:set var="fieldXpath" value="${xpath}/dob" />
     <form_v4:row fieldXpath="${fieldXpath}" label="Date of Birth" className="changes-premium">
-        <field_v4:person_dob xpath="${fieldXpath}" title="${dobTitle}" required="true" ageMin="16" ageMax="120" disableErrorContainer="${true}" type="select" />
+        <field_v4:person_dob xpath="${fieldXpath}" title="${dobTitle}" required="true" ageMin="16" ageMax="120" disableErrorContainer="${true}" />
     </form_v4:row>
 
     <c:set var="fieldXpath" value="${xpath}/gender" />

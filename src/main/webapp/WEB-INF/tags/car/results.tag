@@ -509,6 +509,9 @@
 			Click the <input type="checkbox" class="compare-tick"><label></label> to compare up to <span class="compare-max-count-label">{{= maxAllowable }} products</span>.
 
 		</p>
+		<p class="inc-gst">
+			All prices are inclusive of GST & Gov Charges
+		</p>
 		{{ }  else { }}
 
 		{{ var template = $("#compare-basket-features-item-template").html(); }}

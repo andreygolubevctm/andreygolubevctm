@@ -25,8 +25,7 @@
 
 	<%-- Best Contact Number --%>
 	<c:set var="fieldXPath" value="${xpath}/phone" />
-	<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Phone Number - Tool Tip" quoteChar="\"" /></c:set>
-	<form_v2:row fieldXpath="${fieldXPath}" label="Best contact number" className="clear" helpId="524" tooltipAttributes="${analyticsAttr}">
+	<form_v2:row fieldXpath="${fieldXPath}" label="Best contact number" className="clear">
 		<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Phone Number" quoteChar="\"" /></c:set>
 		<field_v1:flexi_contact_number xpath="${fieldXPath}"
 										maxLength="20"
