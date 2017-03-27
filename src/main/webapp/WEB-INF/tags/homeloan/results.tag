@@ -294,10 +294,13 @@
 	{{ if (obj.lender === 'Bank of Melbourne') img = 'BOM'; }}
 	{{ if (obj.lender === 'Bank of QLD') img = 'BOQ'; }}
 	{{ if (obj.lender === 'Bank SA') img = 'BANKSA'; }}
+	{{ if (obj.lender === 'Bank of Sydney') img = 'BOS'; }}
 	{{ if (obj.lender === 'Bankwest') img = 'BANKWEST'; }}
+	{{ if (obj.lender === 'Beyond Bank') img = 'BB'; }}
 	{{ if (obj.lender === 'Bluestone') img = 'BLUESTONE'; }}
 	{{ if (obj.lender === 'Citibank') img = 'CITI'; }}
 	{{ if (obj.lender === 'Commonwealth Bank') img = 'CBA'; }}
+	{{ if (obj.lender === 'Firefighters Mutual Bank') img = 'FFMB'; }}
 	{{ if (obj.lender === 'Heritage Bank') img = 'HERITAGE'; }}
 	{{ if (obj.lender === 'HomeStart Finance') img = 'HOMESTART'; }}
 	{{ if (obj.lender === 'Homeside Lending') img = 'HOMESIDE'; }}
@@ -310,8 +313,10 @@
 	{{ if (obj.lender === 'ME Bank') img = 'ME'; }}
 	{{ if (obj.lender === 'MKM Capital Pty Ltd') img = 'MKM'; }}
 	{{ if (obj.lender === 'MyState') img = 'MYSTATE'; }}
+	{{ if (obj.lender === 'NAB') img = 'NAB'; }}
 	{{ if (obj.lender === 'NAB Broker') img = 'NABBROKER'; }}
 	{{ if (obj.lender === 'National Australia Bank') img = 'NAB'; }}
+	{{ if (obj.lender === 'Newcastle Permanent') img = 'NP'; }}
 	{{ if (obj.lender === 'P&N Bank') img = 'PN'; }}
 	{{ if (obj.lender === 'Pepper Homeloans') img = 'PEPPER'; }}
 	{{ if (obj.lender === 'QBANK') img = 'QBANK'; }}
@@ -319,9 +324,12 @@
 	{{ if (obj.lender === 'St George Bank') img = 'GEORGE'; }}
 	{{ if (obj.lender === 'Suncorp') img = 'SUNCORP'; }}
 	{{ if (obj.lender === 'Teachers Mutual Bank') img = 'TMB'; }}
+	{{ if (obj.lender === 'The Rock') img = 'ROCK'; }}
 	{{ if (obj.lender === 'The Rock Building Society Limited') img = 'ROCK'; }}
+	{{ if (obj.lender === 'UniBank') img = 'UNIBANK'; }}
 	{{ if (obj.lender === 'Westpac') img = 'WESTPAC'; }}
 	{{ if (obj.lender === 'Wide Bay Australia') img = 'WIDE'; }}
+
 
 	<div class="companyLogo logo_{{= img }} noshrink"></div>
 </core_v1:js_template>
