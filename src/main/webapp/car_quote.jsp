@@ -30,6 +30,7 @@
 <%-- Set global variable to flags for active split tests --%>
 <car:splittest_helper />
 <car:exotic_car_helper />
+<car:rego_lookup_helper />
 
 <%-- HTML --%>
 <layout_v1:journey_engine_page title="Car Quote">
