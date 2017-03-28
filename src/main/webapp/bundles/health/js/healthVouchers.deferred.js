@@ -86,6 +86,7 @@
                 var pyrrCoupon = meerkat.modules.healthPyrrCampaign.isPyrrActive();
 
                 if (pyrrCoupon) {
+                    $elements.wrappers.simples.pyrrCampaign = $elements.root.find('.dialogue.pyrrCampaign').first();
                     $elements.inputs.reason.append('<option value="pay-your-rate-rise">Pay Your Rate Rise</option>');
                 }
             }
@@ -219,6 +220,10 @@
                         });
                     } else if(data.isOther) {
                         $elements.wrappers.mando.slideUp('fast', function(){
+                            var pyrrCoupon = meerkat.modules.healthPyrrCampaign.isPyrrActive();
+                            if (pyrrCoupon) {
+                                $elements.wrappers.simples.pyrrCampaign.hide();
+                            }
                             if(!_.isEmpty(data.other.reason)) {
                                 if (data.other.reason === 'referral-offer') {
                                     $elements.wrappers.referrerref.show();
@@ -230,6 +235,12 @@
                                     $elements.wrappers.simples.referral.hide();
                                     $elements.wrappers.simples.other.hide();
                                     $elements.wrappers.simples.matchonline.show();
+                                } else if (pyrrCoupon && data.other.reason === 'pay-your-rate-rise') {
+                                    $elements.wrappers.referrerref.hide();
+                                    $elements.wrappers.simples.referral.hide();
+                                    $elements.wrappers.simples.other.hide();
+                                    $elements.wrappers.simples.matchonline.hide();
+                                    $elements.wrappers.simples.pyrrCampaign.show();
                                 } else {
                                     $elements.wrappers.referrerref.hide();
                                     $elements.wrappers.simples.referral.hide();
