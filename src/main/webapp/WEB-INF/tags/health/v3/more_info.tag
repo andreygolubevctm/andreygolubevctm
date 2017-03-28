@@ -43,6 +43,10 @@
 		{{ obj.showAltPremium = false; obj.renderedPriceTemplate = logoTemplate(obj) + priceTemplate(obj); }}
 	{{ } }}
 
+	{{ if (meerkat.modules.healthPyrrCampaign.isPyrrActive() === true) { }}
+		{{ obj.renderedPyrrCampaign = meerkat.modules.healthPyrrCampaign.renderTemplate('', obj, true, false); }}
+	{{ } }}
+
 	<%-- Check if drop dead date has passed --%>
 	{{ var dropDatePassed = meerkat.modules.dropDeadDate.getDropDatePassed(obj); }}
 

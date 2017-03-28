@@ -9,8 +9,7 @@
 {{ var availablePremiums = (!meerkat.site.isCallCentreUser || !isConfirmation) && _.has(meerkat.site,"alternatePricing") && meerkat.site.alternatePricing.isActive && _.has(obj,"altPremium") ? obj.altPremium : obj.premium; }}
 {{ var healthResultsTemplate = meerkat.modules.healthResultsTemplate; }}
 {{ var availableFrequencies = meerkat.modules.healthResults.getPaymentFrequencies(); }}
-{{ var pyrrClass = meerkat.modules.healthPyrrCampaign.isPyrrActive() ? " pyrrMoreInfoInline" : ""; }}
-<div class="price premium{{= pyrrClass}}">
+<div class="price premium">
     {{ _.each(availableFrequencies, function(freqObj) { }}
     {{ var frequency = freqObj.key; }}
     {{ if (typeof availablePremiums[frequency] === "undefined") { return; } }}

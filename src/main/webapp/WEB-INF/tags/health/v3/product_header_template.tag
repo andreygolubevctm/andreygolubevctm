@@ -2,14 +2,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<health_v1:dual_pricing_settings />
-<health_v1:pyrr_campaign_settings />
-
 {{ var hasCustomHeaderContent = custom.info && custom.info.content && custom.info.content.results && custom.info.content.results.header; }}
-
-{{ if (meerkat.modules.healthPyrrCampaign.isPyrrActive() === true) { }}
-    {{ obj.renderedPyrrCampaign = meerkat.modules.healthPyrrCampaign.renderTemplate('', obj, true, false); }}
-{{ } }}
 
 <div class="result">
     <div class="resultInsert">
