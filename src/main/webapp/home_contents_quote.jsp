@@ -211,6 +211,10 @@
 			<core_v1:referral_tracking vertical="${pageSettings.getVerticalCode()}" />
 		</div>
 
+		<c:if test="${simplifiedJourneySplitTestActive}">
+			<home:button_tile_dropdown_selector_template />
+		</c:if>
+
 		<%-- Slides --%>
 		<home_layout:slide_cover_type />
 		<home_layout:slide_occupancy />

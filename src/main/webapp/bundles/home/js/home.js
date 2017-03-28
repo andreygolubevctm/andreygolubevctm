@@ -190,6 +190,11 @@
 				if(meerkat.modules.splitTest.isActive(2) === true) {
 					meerkat.modules.homeHistory.initHomeHistory();
 				}
+			},
+			onBeforeEnter: function onBeforeEnterOccupancy() {
+				if (meerkat.modules.splitTest.isActive(3) === true) {
+					meerkat.modules.homeOccupancy.setupButtonTileDropdownSelectors();
+				}
 			}
 		};
 
@@ -213,6 +218,10 @@
 				meerkat.modules.homePropertyFeatures.toggleSecurityFeatures(0);
 				meerkat.modules.homeCoverAmounts.toggleCoverAmountsFields(0);
 				meerkat.modules.homePropertyDetails.validateYearBuilt();
+
+				if (meerkat.modules.splitTest.isActive(3) === true) {
+					meerkat.modules.homePropertyDetails.setupButtonTileDropdownSelectors();
+				}
 			}
 		};
 
@@ -696,6 +705,48 @@
 		};
 		meerkat.modules.contactDetails.configure(contactDetailsFields);
 	}
+
+	function getPropertyType() {
+		return $('#home_property_address_unitSel').val() !== '0' || $('#home_property_address_unitShop').val() !== '' ? 'unit' : 'home';
+	}
+
+	function getHomeUnitsItems($el, dontSort) {
+		var arr = [],
+			homeUnitItems = {
+				home: null,
+				unit: null
+			};
+
+		$el.find('option').each(function() {
+			var obj = {
+				name: $(this).text(),
+				value: $(this).attr('value')
+			};
+
+			if ($(this).attr('value')) {
+				if (!dontSort) {
+					obj.homeOrder = $(this).attr('data-home-order');
+					obj.unitOrder = $(this).attr('data-unit-order');
+				}
+
+				arr.push(obj);
+			}
+		});
+
+		if (dontSort) {
+			return arr;
+		}
+
+		homeUnitItems.home = arr.sort(function(a, b) {
+			return a.homeOrder - b.homeOrder;
+		});
+
+		homeUnitItems.unit = arr.slice().sort(function(a, b) {
+			return a.unitOrder - b.unitOrder;
+		});
+
+		return homeUnitItems;
+	}
         
 	meerkat.modules.register("home", {
 		init: initHome,
@@ -703,7 +754,9 @@
 		initProgressBar: initProgressBar,
 		getCoverType: getCoverType,
 		getTrackingFieldsObject: getTrackingFieldsObject,
-		getVerticalFilter: getVerticalFilter
+		getVerticalFilter: getVerticalFilter,
+		getPropertyType: getPropertyType,
+		getHomeUnitsItems: getHomeUnitsItems
 	});
 
 })(jQuery);

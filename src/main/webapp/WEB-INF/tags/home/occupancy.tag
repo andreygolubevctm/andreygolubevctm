@@ -52,7 +52,12 @@
 		<field_v2:import_select xpath="${fieldXpath}"
 			required="true"
 			title="how the home is occupied"
-			url="/WEB-INF/option_data/occupied_type.html"/>
+			url="/WEB-INF/option_data/occupied_type.html"
+			hideElement="${simplifiedJourneySplitTestActive ? 'true' : 'false'}" />
+
+		<c:if test="${simplifiedJourneySplitTestActive}">
+			<div id="hasOccupiedContainer" data-selector="${go:nameFromXpath(fieldXpath)}"></div>
+		</c:if>
 	</form_v2:row>
 
 	<%-- When Moved in Year + Month --%>
