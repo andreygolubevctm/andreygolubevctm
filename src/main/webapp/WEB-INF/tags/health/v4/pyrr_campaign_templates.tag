@@ -9,14 +9,14 @@
 			<div class="col-xs-2">
 				<img src="assets/brand/ctm/images/health-giftcard-promotion-2017.png" alt="Gift Card Icon">
 			</div>
-			<div class="col-xs-6">
+			<div class="col-xs-5">
 				<div class="coupon-blurb">
 					{{= obj.coupon.contentBanner }}
 				</div>
 			</div>
-			<div class="col-xs-4">
+			<div class="col-xs-5">
 				<span class="coupon-value">
-					&#36;{{= obj.giftCardAmount ? obj.giftCardAmount : 0 }}
+					<sup class="smallDollar">&#36;</sup>{{= obj.giftCardAmount ? obj.giftCardAmount : 0 }}
 				</span>
 			</div>
 		</div>
@@ -25,17 +25,48 @@
 
 <%-- MORE INFO TEMPLATES --%>
 <core_v1:js_template id="pyrr-campaign-moreinfo-template">
-	<div class="pyrrMoreInfoContainer">
-		<div class="topHalf">
-			<div class="coupon-image">
+	<div class="container-fluid pyrrMoreInfoContainer">
+		<div class="row">
+			<div class="col-xs-4 imgCol">
 				<img src="assets/brand/ctm/images/health-giftcard-promotion-2017.png" alt="Gift Card Icon">
 			</div>
-			<div class="coupon-value">
-				&#36;{{= obj.giftCardAmount ? obj.giftCardAmount : 0 }}
+			<div class="col-xs-8">
+				<div class="row">
+					<div class="col-xs-12 blurbCol">
+						<div class="coupon-blurb">
+							{{= obj.coupon.contentBanner }}
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12 valueCol">
+						<div class="coupon-value">
+							<sup class="smallDollar">&#36;</sup>{{= obj.giftCardAmount ? obj.giftCardAmount : 0 }}
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
-		<div class="coupon-blurb">
-			{{= obj.coupon.contentBanner }}
+	</div>
+</core_v1:js_template>
+
+<%-- RESULTS TEMPLATES --%>
+<core_v1:js_template id="pyrr-campaign-moreinfo-xs-template">
+	<div class="col-xs-12 pyrrMoreInfoXSContainer">
+		<div class="row">
+			<div class="col-xs-3 imgCol">
+				<img src="assets/brand/ctm/images/health-giftcard-promotion-2017.png" alt="Gift Card Icon">
+			</div>
+			<div class="col-xs-6 blurbCol">
+				<div class="coupon-blurb">
+					{{= obj.coupon.contentBanner }}
+				</div>
+			</div>
+			<div class="col-xs-3 valueCol">
+				<span class="coupon-value">
+					<sup class="smallDollar">&#36;</sup>{{= obj.giftCardAmount ? obj.giftCardAmount : 0 }}
+				</span>
+			</div>
 		</div>
 	</div>
 </core_v1:js_template>

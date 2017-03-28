@@ -208,6 +208,8 @@
 
         if (meerkat.modules.healthDualPricing.isDualPricingActive()) {
             obj.renderedPriceTemplate = meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false);
+        } else if (meerkat.modules.healthPyrrCampaign.isPyrrActive()) {
+            obj.renderedPyrrCampaign = meerkat.modules.healthPyrrCampaign.renderTemplate('', obj, true, false);
         } else {
             var priceTemplate = meerkat.modules.templateCache.getTemplate($("#price-template"));
             obj.showAltPremium = false;

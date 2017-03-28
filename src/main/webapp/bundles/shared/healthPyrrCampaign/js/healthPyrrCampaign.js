@@ -30,7 +30,8 @@
                     default: $('#pyrr-campaign-results-template')
                 },
                 moreinfo: {
-                    default: $('#pyrr-campaign-moreinfo-template')
+                    default: $('#pyrr-campaign-moreinfo-template'),
+                    xs : $('#pyrr-campaign-moreinfo-xs-template')
                 }
             },
             sideBarFrequency: $('.sidebarFrequency'),
