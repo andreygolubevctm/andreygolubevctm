@@ -144,13 +144,17 @@
                         break;
                 }
                 $elements.prefillRegoNo.addClass('hidden');
+                track(false);
             } else {
                 meerkat.messaging.publish(
                     moduleEvents.REGO_LOOKUP_COMPLETE,
                     json,
                     _.bind(meerkat.modules.journeyEngine.gotoPath, this, "options")
                 );
+                track(true);
             }
+        } else {
+            track(false);
         }
     }
 
@@ -165,6 +169,21 @@
             data: data,
             id: meerkat.modules.transactionId.get()
         });
+        track(false);
+    }
+
+    function track(success) {
+        var data = {
+            method: "trackMotorWeb",
+            object: {
+                eventCategory: "car motorweb tracking",
+                eventAction: _.isBoolean(success) ? (success === true ? "MW Success" : "MW Fail") : "MW Not Used"
+            }
+        };
+        if(_.isBoolean(success)) {
+            _.extend(data,{eventLabel: "keyStrokeValue"});
+        }
+        meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL,data,true);
     }
 
     function renderError(copy) {
@@ -235,6 +254,7 @@
         isRegoLookupMode: isRegoLookupMode,
         redirectToRegoFields: redirectToRegoFields,
         triggerEntry: triggerEntry,
+        track: track,
         events: events
     });
 
