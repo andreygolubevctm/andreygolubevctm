@@ -46,7 +46,7 @@
             <i class="icon-sort"></i>
         </span>
         <select class="form-control array_select drop-down-selector" name="{{= obj.id }}_drop-down-selector" data-ignore="true">
-            <option>All the other options</option>
+            <option>Please select</option>
             {{ for (var i = obj.maxRadioItems; i < obj.items.length; i++) { }}
                 {{ var name = obj.items[i].name; }}
                 {{ var value = obj.items[i].value; }}
