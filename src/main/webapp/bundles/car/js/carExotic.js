@@ -85,9 +85,14 @@
 
 	// check if the user has used our normal journey or have come from the classic car landing page
 	function isExotic() {
+		if (meerkat.modules.carRegoLookup.isRegoLookupMode()) {
+			return false;
+		}
+
 		if(meerkat.site.tracking.brandCode === 'ctm') {
 			return parseInt($marketValue.val()) >= _threshold  || meerkat.site.isFromExoticPage === true || confirmPartnerTesting();
 		}
+
 		return false;
 	}
 
