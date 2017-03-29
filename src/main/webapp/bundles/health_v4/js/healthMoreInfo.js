@@ -264,12 +264,14 @@
     function _setupPyrr(product) {
         if (meerkat.modules.healthPyrrCampaign.isPyrrActive()) {
             // This class is in the database and is used to dynamically change the coupon banner.
-            if ($('.coupon-pyrr-banner-dynamic-price').length > 0) {
+            if ($('.coupon-pyrr-banner-dynamic-hidden').length > 0) {
                 var couponValue = product.giftCardAmount;
                 if (typeof couponValue === 'undefined') {
                     couponValue = 0;
                 }
-                $('.coupon-pyrr-banner-dynamic-price').text('$'+couponValue).show();
+                $('.coupon-pyrr-banner-dynamic-price').text('$'+couponValue);
+                $('.coupon-pyrr-banner-dynamic-hidden').show();
+                $('.coupon-pyrr-banner-static').hide();
             }
         }
     }
@@ -277,8 +279,9 @@
     function _unsetPyrr() {
         if (meerkat.modules.healthPyrrCampaign.isPyrrActive() && meerkat.modules.healthResults.getSelectedProduct() === null) {
             // This class is in the database and is used to dynamically change the coupon banner.
-            if ($('.coupon-pyrr-banner-dynamic-price').length > 0 ) {
-                $('.coupon-pyrr-banner-dynamic-price').text('').hide();
+            if ($('.coupon-pyrr-banner-dynamic-hidden').length > 0 ) {
+                $('.coupon-pyrr-banner-dynamic-hidden').hide();
+                $('.coupon-pyrr-banner-static').show();
             }
         }
     }
