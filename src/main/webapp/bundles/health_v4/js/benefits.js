@@ -71,16 +71,19 @@
             hospital: [],
             extras: []
         };
+        console.log($elements.hospital.find('input'));
         $elements.extras.add($elements.hospital).find('input').each(function () {
             var $this = $(this),
                 benefitType = _isBenefitElementHospital($this) ? 'hospital' : 'extras';
             // If health filters needs any other properties in filters_benefits.tag, add them here.
-            benefits[benefitType].push({
-                id: $this.attr('data-benefit-id'),
-                label: $this.next('label').find('.benefitTitle').text(),
-                value: $this.attr('data-benefit-id'), // this is needed for filters - filters.deferred.js requires a .value node
-                code: $this.attr('data-benefit-code') // this is needed for quote ranking and best price email
-            });
+            if ($this.next('label').find('.benefitTitle').text() !== 'Limited Hospital Cover') {
+              benefits[benefitType].push({
+                  id: $this.attr('data-benefit-id'),
+                  label: $this.next('label').find('.benefitTitle').text(),
+                  value: $this.attr('data-benefit-id'), // this is needed for filters - filters.deferred.js requires a .value node
+                  code: $this.attr('data-benefit-code') // this is needed for quote ranking and best price email
+              });
+            }
         });
         meerkat.modules.benefitsModel.initBenefitLabelStore(benefits);
     }
