@@ -175,8 +175,10 @@
     function track(success) {
         var data = {
             method: "trackMotorWeb",
-            eventCategory: "car motorweb tracking",
-            eventAction: _.isBoolean(success) ? (success === true ? "MW Success" : "MW Fail") : "MW Not Used"
+            object: {
+                eventCategory: "car motorweb tracking",
+                eventAction: _.isBoolean(success) ? (success === true ? "MW Success" : "MW Fail") : "MW Not Used"
+            }
         };
         if(_.isBoolean(success)) {
             _.extend(data,{eventLabel: "keyStrokeValue"});
