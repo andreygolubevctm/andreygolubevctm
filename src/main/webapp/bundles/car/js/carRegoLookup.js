@@ -219,8 +219,12 @@
         }
 
         if (redirect) {
-            $elements.carRegoEntry.trigger('click');
+            triggerEntry();
         }
+    }
+
+    function triggerEntry() {
+        $elements.carRegoEntry.trigger('click');
     }
 
     meerkat.modules.register("carRegoLookup", {
@@ -230,6 +234,7 @@
         setSearchRego: setSearchRego,
         isRegoLookupMode: isRegoLookupMode,
         redirectToRegoFields: redirectToRegoFields,
+        triggerEntry: triggerEntry,
         events: events
     });
 

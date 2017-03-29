@@ -172,10 +172,14 @@
                     }
                 });
 
-                // runs lookup() regardless...
-                if (!meerkat.modules.carExotic.isExotic() && !meerkat.modules.carRegoLookup.lookup() && meerkat.site.tracking.brandCode === 'ctm') {
-                    // if lookup() returns false runs the redirect function
-                    meerkat.modules.carRegoLookup.redirectToRegoFields();
+                if (meerkat.site.isRegoLookup) {
+                    meerkat.modules.carRegoLookup.triggerEntry();
+                } else {
+                    // runs lookup() regardless...
+                    if (!meerkat.modules.carExotic.isExotic() && !meerkat.modules.carRegoLookup.lookup() && meerkat.site.tracking.brandCode === 'ctm') {
+                        // if lookup() returns false runs the redirect function
+                        meerkat.modules.carRegoLookup.redirectToRegoFields();
+                    }
                 }
 
                 configureContactDetails();
