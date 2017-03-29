@@ -12,19 +12,23 @@
 
 <%-- if lineLimit and maxVerticals are exactly the same, it will try and print all the verticals on the one line --%>
 <c:if test="${empty lineLimit}">
-	<c:set var="lineLimit" value="5" />
+	<c:set var="lineLimit" value="6" />
 </c:if>
 
 <c:if test="${empty maxVerticals}">
-	<c:set var="maxVerticals" value="10" />
+	<c:set var="maxVerticals" value="11" />
 </c:if>
 
-<c:if test="${empty maxVerticals}">
-	<c:set var="maxVerticals" value="10" />
+<c:if test="${empty numRowsExcludeSidePadding}">
+	<c:set var="numRowsExcludeSidePadding" value="1" />
 </c:if>
+
+<c:set var="rowCounter" value="0" />
 
 <fmt:parseNumber var="maxVerticals" value="${maxVerticals}" />
 <fmt:parseNumber var="lineLimit" value="${lineLimit}" />
+<fmt:parseNumber var="numRowsExcludeSidePadding" value="${numRowsExcludeSidePadding}" />
+<fmt:parseNumber var="rowCounter" value="${rowCounter}" />
 
 <c:set var="fieldSetID">
 	<c:choose>
@@ -80,7 +84,7 @@
 				<c:set var="verticalSettings" value="${settingsService.getPageSettings(pageSettings.getBrandId(), fn:toUpperCase(vertical.getCode()))}" scope="page"  />
 
 				<c:if test="${verticalSettings.getSetting('displayOption') eq 'Y' and currentVertical ne fn:toLowerCase(vertical.getCode())}">
-					<c:if test="${displayedVerticalCount eq 1 && lineLimit < maxVerticals}">
+					<c:if test="${displayedVerticalCount eq 1 && (lineLimit < maxVerticals && rowCounter >= numRowsExcludeSidePadding)}">
 						<div class="col-sm-1 hidden-xs"></div>
 					</c:if>
 					<div class="${spacerClass} col-sm-2 ${pushClass} col-xs-6">
@@ -91,7 +95,13 @@
 					</div>
 					<c:if test="${displayedVerticalCount eq lineLimit && lineLimit < maxVerticals}">
 						<c:set var="displayedVerticalCount" value="0" />
-						<div class="col-sm-1 hidden-xs"></div>
+
+						<c:if test="${rowCounter >= numRowsExcludeSidePadding}">
+							<div class="col-sm-1 hidden-xs"></div>
+						</c:if>
+
+						<c:set var="rowCounter" value="${rowCounter + 1}" />
+
 						<c:if test="${addPushClass eq true}">
 							<c:set var="pushClass" value="col-sm-push-${smPushLength}" />
 						</c:if>
