@@ -212,7 +212,7 @@
 		</div>
 
 		<c:if test="${simplifiedJourneySplitTestActive}">
-			<home:button_tile_dropdown_selector_template />
+			<agg_v1:button_tile_dropdown_selector_template />
 		</c:if>
 
 		<%-- Slides --%>
