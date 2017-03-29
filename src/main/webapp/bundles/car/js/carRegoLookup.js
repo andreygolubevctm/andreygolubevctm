@@ -174,7 +174,7 @@
 
     function track(success) {
         var data = {
-            event: "trackMotorWeb",
+            method: "trackMotorWeb",
             eventCategory: "car motorweb tracking",
             eventAction: _.isBoolean(success) ? (success === true ? "MW Success" : "MW Fail") : "MW Not Used"
         };
