@@ -233,7 +233,6 @@ Process:
 					fail('IPP Token Log false');
 					return;
 				}
-
 				$token.val(jsonData.sessionid);
 				$maskedNumber.val(jsonData.maskedcardno);
 				modalContent = '';
@@ -245,14 +244,13 @@ Process:
 		});
 	}
 
-
-
 	meerkat.modules.register("healthPaymentIPP", {
 		initHealthPaymentIPP: initHealthPaymentIPP,
 		show: show,
 		hide: hide,
 		fail: fail,
-		register: register
+		register: register,
+		reset: reset
 	});
 
 })(jQuery);

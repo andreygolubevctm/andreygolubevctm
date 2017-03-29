@@ -10,5 +10,5 @@
 
 <c:set var="fieldXpath" value="${xpath}/primary/dob" />
 <form_v4:row label="Your date of birth" fieldXpath="${fieldXpath}" className="health-your_details-dob-group">
-	<field_v4:person_dob xpath="${fieldXpath}" title="primary person's" required="true" ageMin="16" ageMax="120" type="select" />
+	<field_v4:person_dob xpath="${fieldXpath}" title="primary person's" required="true" ageMin="16" ageMax="120" />
 </form_v4:row>

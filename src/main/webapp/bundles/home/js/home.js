@@ -187,15 +187,12 @@
 			onInitialise: function() {
 				meerkat.modules.homeOccupancy.initHomeOccupancy();
 				meerkat.modules.homeBusiness.initHomeBusiness();
-				if(meerkat.modules.splitTest.isActive(2) === true) {
-					meerkat.modules.homeHistory.initHomeHistory();
-				}
 			},
-			onBeforeEnter: function onBeforeEnterOccupancy() {
-				if (meerkat.modules.splitTest.isActive(3) === true) {
-					meerkat.modules.homeOccupancy.setupButtonTileDropdownSelectors();
-				}
-			}
+            onBeforeEnter: function onBeforeEnterOccupancy() {
+                if (meerkat.modules.splitTest.isActive(3) === true) {
+                    meerkat.modules.homeOccupancy.setupButtonTileDropdownSelectors();
+                }
+            }
 		};
 
 
@@ -238,11 +235,6 @@
 			onInitialise: function onInitialisePolicyHolder() {
 				// Init the results objects required for next step
 				meerkat.modules.homePolicyHolder.initHomePolicyHolder();
-				if(meerkat.modules.splitTest.isActive(2) === true) {
-					// Init the results objects required for next step
-					meerkat.modules.homeResults.initPage();
-					meerkat.modules.resultsFeatures.fetchStructure('hncamsws_');
-				}
 			},
 			onBeforeEnter: function onBeforeEnterPolicyHolder(event) {
 				meerkat.modules.homePolicyHolder.togglePolicyHolderFields();
@@ -254,9 +246,6 @@
 			touchComment: 'History',
 			includeFormData: true
 		};
-		if(meerkat.modules.splitTest.isActive(2)) {
-			historyTracking = null;
-		}
 
 		var historyStep = {
 			title: 'Cover',
@@ -265,24 +254,13 @@
 			tracking: historyTracking,
 			externalTracking: externalTrackingSettings,
 			onInitialise: function onInitialiseHistory(event){
-				if(meerkat.modules.splitTest.isActive(2) === false) {
-					// Init the results objects required for next step
-					meerkat.modules.homeResults.initPage();
+				// Init the results objects required for next step
+				meerkat.modules.homeResults.initPage();
 
-					meerkat.modules.homeHistory.initHomeHistory();
-					meerkat.modules.resultsFeatures.fetchStructure('hncamsws_');
-				} else {
-					$('#coverHistoryForm').parent().find('.btn-next').addClass('hidden');
-				}
+				meerkat.modules.homeHistory.initHomeHistory();
+				meerkat.modules.resultsFeatures.fetchStructure('hncamsws_');
 			},
 			onAfterEnter: function onAfterEnterHistory(event) {
-				if(meerkat.modules.splitTest.isActive(2) === true) {
-					var path = event.isForward ? "results" : "policyHolder";
-
-					_.defer(function() {
-						meerkat.modules.journeyEngine.gotoPath(path);
-					});
-				}
 			}
 		};
 
@@ -509,10 +487,7 @@
 		var keys = _.keys(steps);
 		var progressBarSteps = new Array(keys.length - 1);
 		var stepOmitList = [];
-		if(meerkat.modules.splitTest.isActive(2)) {
-			stepOmitList.push('historyStep');
-			progressBarSteps.pop();
-		}
+
 		for(var i=0; i<keys.length - 1; i++) {
 			var step = keys[i];
 			if(_.indexOf(stepOmitList,step) === -1) {
@@ -705,48 +680,6 @@
 		};
 		meerkat.modules.contactDetails.configure(contactDetailsFields);
 	}
-
-	function getPropertyType() {
-		return $('#home_property_address_unitSel').val() !== '0' || $('#home_property_address_unitShop').val() !== '' ? 'unit' : 'home';
-	}
-
-	function getHomeUnitsItems($el, dontSort) {
-		var arr = [],
-			homeUnitItems = {
-				home: null,
-				unit: null
-			};
-
-		$el.find('option').each(function() {
-			var obj = {
-				name: $(this).text(),
-				value: $(this).attr('value')
-			};
-
-			if ($(this).attr('value')) {
-				if (!dontSort) {
-					obj.homeOrder = $(this).attr('data-home-order');
-					obj.unitOrder = $(this).attr('data-unit-order');
-				}
-
-				arr.push(obj);
-			}
-		});
-
-		if (dontSort) {
-			return arr;
-		}
-
-		homeUnitItems.home = arr.sort(function(a, b) {
-			return a.homeOrder - b.homeOrder;
-		});
-
-		homeUnitItems.unit = arr.slice().sort(function(a, b) {
-			return a.unitOrder - b.unitOrder;
-		});
-
-		return homeUnitItems;
-	}
         
 	meerkat.modules.register("home", {
 		init: initHome,
@@ -754,9 +687,7 @@
 		initProgressBar: initProgressBar,
 		getCoverType: getCoverType,
 		getTrackingFieldsObject: getTrackingFieldsObject,
-		getVerticalFilter: getVerticalFilter,
-		getPropertyType: getPropertyType,
-		getHomeUnitsItems: getHomeUnitsItems
+		getVerticalFilter: getVerticalFilter
 	});
 
 })(jQuery);
