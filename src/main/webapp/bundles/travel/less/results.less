@@ -195,6 +195,11 @@
 		.result-row	{
 			padding-bottom: 0px;
 			border-bottom: none;
+			@media (@xs-only) {
+				&[data-available="Y"] .resultInsert.priceMode:after {
+					content: '';
+				}
+			}
 		}
 	}
 

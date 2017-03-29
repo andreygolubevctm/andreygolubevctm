@@ -184,6 +184,16 @@
         .resultInsert.priceMode {
           position: relative;
           padding-right: 40px;
+
+          &:after {
+            font-family: 'framework_font';
+            content: "\e910"; //icon-angle-right
+            position: absolute;
+            right: 0;
+            top: 20px;
+            font-size: 300%;
+            color: @results-border-color;
+          }
         }
       }
     }
