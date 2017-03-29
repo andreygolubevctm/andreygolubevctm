@@ -82,6 +82,12 @@
 				<a  href="${brochurewareUrl}fuel/"><span class="icon icon-fuel"></span>Fuel Prices</a>
 			</div>
 		</c:if>
+
+		<c:if test="${vertical != 'pet'}">
+			<div class="col-xs-6 col-sm-3">
+				<a  href="${brochurewareUrl}pet-insurance/"><span class="icon icon-pet"></span>Pet Insurance</a>
+			</div>
+		</c:if>
 	</div>
 
 </div>
