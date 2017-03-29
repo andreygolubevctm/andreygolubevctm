@@ -89,6 +89,7 @@
 	ctpMessage: "<content:get key="ctpMessageCopy"/>",
 	isFromExoticPage : ${isFromExoticPage},
 	isExoticManualEntry: ${isExoticManualEntry},
+	isRegoLookup: ${isRegoLookup},
 	exoticCarContent: {
 		originalHeading : "${originalHeading}",
 		origintalCopy : "${origintalCopy}",

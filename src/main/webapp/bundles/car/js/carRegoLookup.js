@@ -238,8 +238,12 @@
         }
 
         if (redirect) {
-            $elements.carRegoEntry.trigger('click');
+            triggerEntry();
         }
+    }
+
+    function triggerEntry() {
+        $elements.carRegoEntry.trigger('click');
     }
 
     meerkat.modules.register("carRegoLookup", {
@@ -249,8 +253,9 @@
         setSearchRego: setSearchRego,
         isRegoLookupMode: isRegoLookupMode,
         redirectToRegoFields: redirectToRegoFields,
-        events: events,
-        track: track
+        triggerEntry: triggerEntry,
+        track: track,
+        events: events
     });
 
 })(jQuery);
