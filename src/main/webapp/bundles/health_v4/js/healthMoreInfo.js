@@ -178,6 +178,9 @@
             }
         });
 
+        meerkat.messaging.subscribe(meerkatEvents.healthResults.SELECTED_PRODUCT_RESET, function bridgingPageLeaveXsState() {
+            _unsetPyrr();
+        });
     }
 
     /**
@@ -237,6 +240,7 @@
         });
 
         _setupDualPricing(product);
+        _setupPyrr(product);
         _setTabs();
     }
 
@@ -253,6 +257,28 @@
             // update the dropdeaddate. Tried in _getAffixedMobileHeaderData but that returns undefined
             if (!_.isUndefined($elements.applyBy)) {
                 $elements.applyBy.text('Apply by ' + product.dropDeadDateFormatted);
+            }
+        }
+    }
+
+    function _setupPyrr(product) {
+        if (meerkat.modules.healthPyrrCampaign.isPyrrActive()) {
+            // This class is in the database and is used to dynamically change the coupon banner.
+            if ($('.coupon-pyrr-banner-dynamic-price').length > 0) {
+                var couponValue = product.giftCardAmount;
+                if (typeof couponValue === 'undefined') {
+                    couponValue = 0;
+                }
+                $('.coupon-pyrr-banner-dynamic-price').text('$'+couponValue).show();
+            }
+        }
+    }
+
+    function _unsetPyrr() {
+        if (meerkat.modules.healthPyrrCampaign.isPyrrActive() && meerkat.modules.healthResults.getSelectedProduct() === null) {
+            // This class is in the database and is used to dynamically change the coupon banner.
+            if ($('.coupon-pyrr-banner-dynamic-price').length > 0 ) {
+                $('.coupon-pyrr-banner-dynamic-price').text('').hide();
             }
         }
     }
@@ -373,6 +399,7 @@
     function onBeforeHideTemplate() {
         // unfade all headers
         $(Results.settings.elements.page).find(".result").removeClass("faded");
+        _unsetPyrr();
     }
 
     function initialiseBrochureEmailForm(product, parent, form) {
