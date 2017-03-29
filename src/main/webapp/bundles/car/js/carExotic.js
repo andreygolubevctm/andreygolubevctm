@@ -26,8 +26,10 @@
 		$resultsPage = $('.famous-results-page');
 		$youngDriver = $('input[name=quote_drivers_youngExotic_exists]');
 		$youngDriverQs = $('#quote_drivers_youngExoticToggleExoticArea, #quote_drivers_youngExoticExoticContFieldSet');
-
-		$requiredFieldsToToggle = $('input[name=quote_contact_email], input[name=quote_contact_phoneinput]');
+		$firstname = $('#quote_drivers_regular_firstname');
+		$surname = $('#quote_drivers_regular_surname');
+		$nameFields = $firstname.add($surname);
+		$requiredFieldsToToggle = $('input[name=quote_contact_email], input[name=quote_contact_phoneinput]').add($nameFields);
 
 		// navbar contents
 		$navBarContents = $('#navbar-filter .nav, #navbar-filter-labels');
@@ -61,8 +63,14 @@
 	function toggleRequiredFields() {
 		if (isExotic()) {
 			$requiredFieldsToToggle.attr('required', 'required');
+			$nameFields.attr('data-rule-personName','true');
+			$firstname.attr('data-msg-required','Please enter your first name');
+			$surname.attr('data-msg-required','Please enter your last name');
 		} else {
-			$requiredFieldsToToggle.removeAttr('required');
+			$requiredFieldsToToggle
+				.removeAttr('required')
+				.removeAttr('data-rule-personName','true')
+				.removeAttr('data-msg-required');
 		}
 	}
 
