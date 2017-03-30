@@ -560,7 +560,7 @@
                 }
             }
 
-            if(!_.isNull(step.validation.customValidation) && !_.isUndefined(step.validation.customValidation)) {
+            if(!_.isNull(step.validation.customValidation) && !_.isUndefined(step.validation.customValidation) && _.isFunction(step.validation.customValidation)) {
                 waitForCallback = true;
                 step.validation.customValidation(function(valid){
                     if(valid){

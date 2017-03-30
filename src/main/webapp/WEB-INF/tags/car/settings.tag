@@ -86,5 +86,14 @@
 	},
 	commencementDate : '${data.quote.options.commencementDate}',
 	skipNewCoverTypeCarJourney: ${skipNewCoverTypeCarJourney},
-	ctpMessage: "<content:get key="ctpMessageCopy"/>"
+	ctpMessage: "<content:get key="ctpMessageCopy"/>",
+	isFromExoticPage : ${isFromExoticPage},
+	isExoticManualEntry: ${isExoticManualEntry},
+	isRegoLookup: ${isRegoLookup},
+	exoticCarContent: {
+		originalHeading : "${originalHeading}",
+		origintalCopy : "${origintalCopy}",
+		exoticHeading : "${exoticHeading}",
+		exoticCopy : "${exoticCopy}"
+	}
 }

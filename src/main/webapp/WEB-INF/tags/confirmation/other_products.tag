@@ -19,10 +19,6 @@
 	<c:set var="maxVerticals" value="10" />
 </c:if>
 
-<c:if test="${empty maxVerticals}">
-	<c:set var="maxVerticals" value="10" />
-</c:if>
-
 <fmt:parseNumber var="maxVerticals" value="${maxVerticals}" />
 <fmt:parseNumber var="lineLimit" value="${lineLimit}" />
 
