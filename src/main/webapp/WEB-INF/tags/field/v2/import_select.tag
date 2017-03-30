@@ -13,6 +13,7 @@
 <%@ attribute name="additionalAttributes" required="false"	rtexprvalue="true"	 description="additional attributes to apply to the select" %>
 <%@ attribute name="placeHolder" required="false"	rtexprvalue="true"	 description="dropdown placeholder" %>
 <%@ attribute name="disableErrorContainer" 	required="false" 	rtexprvalue="true"    	 description="Show or hide the error message container" %>
+<%@ attribute name="hideElement" 	required="false" 	rtexprvalue="true"    	 description="If true hides the entire element" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
@@ -44,7 +45,7 @@
 	<c:set var="additionalAttributes" value='${additionalAttributes}  data-disable-error-container="true" '/>
 </c:if>
 
-<div class="select">
+<div class="select"<c:if test="${hideElement eq true}"> style="height: 0; visibility: hidden;"</c:if>>
 	<span class=" input-group-addon">
 		<i class="icon-sort"></i>
 	</span>

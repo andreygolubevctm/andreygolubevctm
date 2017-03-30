@@ -18,7 +18,12 @@
 			required="true"
 			title="what type of property the home is"
 			url="/WEB-INF/option_data/property_type.html"
-			additionalAttributes="${analyticsAttr}" />
+			additionalAttributes="${analyticsAttr} data-attach='true'"
+			hideElement="${simplifiedJourneySplitTestActive ? 'true' : 'false'}" />
+
+		<c:if test="${simplifiedJourneySplitTestActive}">
+			<div id="propertyTypeContainer" data-selector="${go:nameFromXpath(fieldXpath)}"></div>
+		</c:if>
 	</form_v2:row>
 
 	<%-- Home Best Description --%>
@@ -41,7 +46,12 @@
 			required="true"
 			title="the main construction material for the walls"
 			url="/WEB-INF/option_data/property_wall_material.html"
-			additionalAttributes="${analyticsAttr}"/>
+			additionalAttributes="${analyticsAttr}"
+			hideElement="${simplifiedJourneySplitTestActive ? 'true' : 'false'}" />
+
+		<c:if test="${simplifiedJourneySplitTestActive}">
+			<div id="wallMaterialContainer" data-selector="${go:nameFromXpath(fieldXpath)}"></div>
+		</c:if>
 	</form_v2:row>
 
 	<%-- Roof Construction Material --%>
@@ -53,7 +63,12 @@
 			required="true"
 			title="the main construction material for the roof"
 			url="/WEB-INF/option_data/property_roof_material.html"
-			additionalAttributes="${analyticsAttr}"/>
+			additionalAttributes="${analyticsAttr}"
+			hideElement="${simplifiedJourneySplitTestActive ? 'true' : 'false'}" />
+
+		<c:if test="${simplifiedJourneySplitTestActive}">
+			<div id="roofMaterialContainer" data-selector="${go:nameFromXpath(fieldXpath)}"></div>
+		</c:if>
 	</form_v2:row>
 
 	<%-- Year Build --%>

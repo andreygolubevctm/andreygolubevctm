@@ -126,7 +126,7 @@
 				</c:if>
 		</c:if>
 
-		<input type="${type}" name="${name}" id="${name}" class="form-control ${className}" <c:if test="not empty validationErrorPlacementSelector">data-validation-placement="${validationErrorPlacementSelector}"</c:if> value="${value}" ${maxlength}${minlength}${requiredAttribute}${tabIndexValue}${placeHolderAttribute}${patternAttribute}${keyPressLimit}${includeAttribute}${additionalAttributes}>
+		<input type="${type}" name="${name}" id="${name}" class="form-control ${className}" <c:if test="${not empty validationErrorPlacementSelector}">data-validation-placement="${validationErrorPlacementSelector}"</c:if> value="${value}" ${maxlength}${minlength}${requiredAttribute}${tabIndexValue}${placeHolderAttribute}${patternAttribute}${keyPressLimit}${includeAttribute}${additionalAttributes}>
 
 		<c:if test="${not empty inputGroupText}">
 				<c:if test="${empty inputGroupTextPosition or inputGroupTextPosition eq 'right'}">
