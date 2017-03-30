@@ -6,8 +6,11 @@
 <!-- Product Summary. Logo, price, LHC etc... -->
 <div class="row priceRow productSummary hidden-xs">
     <div class="col-xs-8">
+        <c:if test="${isPyrrActive eq true}">
+            {{= renderedPyrrCampaign }}
+        </c:if>
         <c:if test="${!isDualPriceActive eq true}">
-        <div class="companyLogo {{= info.provider }}"></div>
+            <div class="companyLogo {{= info.provider }}"></div>
         </c:if>
         <h2 class="noTopMargin productName hidden-xs">{{= info.productTitle }}</h2>
     </div>

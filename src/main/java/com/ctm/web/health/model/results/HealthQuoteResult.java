@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Map;
 
@@ -39,6 +40,8 @@ public class HealthQuoteResult extends Result {
 
     @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate pricingDate;
+
+    private BigDecimal giftCardAmount;
 
     public Promo getPromo() {
         return promo;
@@ -142,5 +145,13 @@ public class HealthQuoteResult extends Result {
 
     public void setPricingDate(final LocalDate pricingDate) {
         this.pricingDate = pricingDate;
+    }
+
+    public BigDecimal getGiftCardAmount() {
+        return giftCardAmount;
+    }
+
+    public void setGiftCardAmount(final BigDecimal giftCardAmount) {
+        this.giftCardAmount = giftCardAmount;
     }
 }
