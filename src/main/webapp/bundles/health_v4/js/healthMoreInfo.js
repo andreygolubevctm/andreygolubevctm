@@ -179,7 +179,7 @@
         });
 
         meerkat.messaging.subscribe(meerkatEvents.healthResults.SELECTED_PRODUCT_RESET, function bridgingPageLeaveXsState() {
-            _unsetPyrr();
+            dynamicPyrrBanner();
         });
     }
 
@@ -240,7 +240,7 @@
         });
 
         _setupDualPricing(product);
-        _setupPyrr(product);
+        dynamicPyrrBanner(product);
         _setTabs();
     }
 
@@ -261,29 +261,31 @@
         }
     }
 
-    function _setupPyrr(product) {
+    function dynamicPyrrBanner(product) {
         if (meerkat.modules.healthPyrrCampaign.isPyrrActive()) {
-            // This class is in the database and is used to dynamically change the coupon banner.
-            if ($('.coupon-pyrr-banner-dynamic-hidden').length > 0) {
-                var couponValue = product.giftCardAmount;
-                if (typeof couponValue === 'undefined') {
-                    couponValue = 0;
-                }
-                $('.coupon-pyrr-banner-dynamic-price').text('$'+couponValue);
-                $('.coupon-pyrr-banner-dynamic-hidden').show();
-                $('.coupon-pyrr-banner-static').hide();
+            if (meerkat.modules.healthResults.getSelectedProduct() !== null) {
+                addShowDynamicPrice(meerkat.modules.healthResults.getSelectedProduct());
+
+            } else if (typeof product !== 'undefined') {
+                addShowDynamicPrice(product);
+
+            } else {
+                // This class is in the database and is used to dynamically change the coupon banner.
+                $('.coupon-pyrr-banner-dynamic-hidden').hide();
+                $('.coupon-pyrr-banner-static').show();
+
             }
         }
     }
 
-    function _unsetPyrr() {
-        if (meerkat.modules.healthPyrrCampaign.isPyrrActive() && meerkat.modules.healthResults.getSelectedProduct() === null) {
-            // This class is in the database and is used to dynamically change the coupon banner.
-            if ($('.coupon-pyrr-banner-dynamic-hidden').length > 0 ) {
-                $('.coupon-pyrr-banner-dynamic-hidden').hide();
-                $('.coupon-pyrr-banner-static').show();
-            }
+    function addShowDynamicPrice(product) {
+        var couponValue = product.giftCardAmount;
+        if (typeof couponValue === 'undefined') {
+            couponValue = 0;
         }
+        $('.coupon-pyrr-banner-dynamic-price').text('$'+couponValue);
+        $('.coupon-pyrr-banner-dynamic-hidden').show();
+        $('.coupon-pyrr-banner-static').hide();
     }
 
     function onBeforeShowModal(jsonResult, dialogId) {
@@ -402,7 +404,7 @@
     function onBeforeHideTemplate() {
         // unfade all headers
         $(Results.settings.elements.page).find(".result").removeClass("faded");
-        _unsetPyrr();
+        dynamicPyrrBanner();
     }
 
     function initialiseBrochureEmailForm(product, parent, form) {
@@ -687,7 +689,8 @@
         prepareCover: prepareCover,
         retrieveExternalCopy: retrieveExternalCopy,
         applyEventListeners: applyEventListeners,
-        hasPublicHospital: hasPublicHospital
+        hasPublicHospital: hasPublicHospital,
+        dynamicPyrrBanner: dynamicPyrrBanner
     });
 
 })(jQuery);
