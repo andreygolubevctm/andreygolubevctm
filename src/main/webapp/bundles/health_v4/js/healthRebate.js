@@ -41,7 +41,7 @@
             situationSelect: $('input[name=health_situation_healthCvr]'),
             applyRebate: $('input[name="health_healthCover_rebate"]'),
             householdIncomeRow: $('#health_healthCover_income_field_row'),
-            lhcContainers: $('.health-cover, [data-step="start"] .health-about-you .dateinput_container, [data-step="benefits"] .benefitsContainer .dateinput_container, #health_healthCover_primaryCover, .income_container .select'),
+            lhcContainers: $('.health-cover, [data-step="start"] .health-about-you .dateinput_container, [data-step="benefits"] .benefitsContainer .dateinput_container, #health_healthCover_primaryCover, .lhcRebateCalcTrigger, .income_container .select'),
             dependentsSelect: $('#health_healthCover_dependants'),
             incomeSelect: $('#health_healthCover_income'),
             rebateLabel: $('#rebateLabel'),
