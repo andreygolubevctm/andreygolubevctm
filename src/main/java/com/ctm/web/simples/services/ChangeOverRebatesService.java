@@ -41,6 +41,6 @@ public class ChangeOverRebatesService {
         calendar.set(Calendar.MONTH, 03);
         calendar.set(Calendar.DAY_OF_MONTH, 01);
 
-        return new ChangeOverRebate(new BigDecimal(1), new BigDecimal(1), calendar.getTime());
+        return new ChangeOverRebate(new BigDecimal(1), new BigDecimal(1), new BigDecimal(1), calendar.getTime());
     }
 }

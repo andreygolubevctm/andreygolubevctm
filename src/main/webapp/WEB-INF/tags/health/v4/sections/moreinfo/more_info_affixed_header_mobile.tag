@@ -14,6 +14,9 @@
 			<div class="col-xs-6 text-center mobile-pricing">
 				{{= renderedPriceTemplate }}
 			</div>
+			<c:if test="${isPyrrActive eq true}">
+				{{= renderedPyrrCampaign }}
+			</c:if>
 			<div class="col-xs-12 productTitleText">
 				<h5 class="noTopMargin productName text-center">{{= info.productTitle }}</h5>
 			</div>

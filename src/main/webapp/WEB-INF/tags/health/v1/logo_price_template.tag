@@ -11,7 +11,8 @@
     {{ if(typeof obj.displayLogo === 'undefined' || obj.displayLogo == true) { }}
     <div class="companyLogo {{= info.provider ? info.provider : info.fundCode }}"></div>
     {{ } }}
-    <div class="price premium">
+    {{ var pyrrClass = meerkat.modules.healthPyrrCampaign.isPyrrActive() ? " pyrrMoreInfoInline" : ""; }}
+    <div class="price premium{{= pyrrClass}}">
         {{ var formatCurrency = meerkat.modules.currencyField.formatCurrency }}
         {{ _.each(['annually','halfyearly','halfYearly','quarterly','monthly','fortnightly','weekly'], function(freq){ }}
         {{ if (typeof property[freq] !== "undefined") { }}

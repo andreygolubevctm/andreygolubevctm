@@ -6,10 +6,10 @@ import com.ctm.web.core.resultsData.model.AvailableType;
 import com.ctm.web.health.model.PaymentType;
 import com.ctm.web.health.model.form.HealthRequest;
 import com.ctm.web.health.model.results.*;
-import com.ctm.web.health.quote.model.response.HealthQuote;
-import com.ctm.web.health.quote.model.response.HealthResponseV2;
-import com.ctm.web.health.quote.model.response.Promotion;
-import com.ctm.web.health.quote.model.response.SpecialOffer;
+import com.ctm.web.health.model.results.Info;
+import com.ctm.web.health.model.results.Premium;
+import com.ctm.web.health.model.results.Price;
+import com.ctm.web.health.quote.model.response.*;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -47,8 +47,10 @@ public class ResponseAdapterV2 {
                 int index = 1;
                 final boolean isAlternatePricingContent = alternatePricingContent != null && StringUtils.equalsIgnoreCase(alternatePricingContent.getContentValue(), "Y");
 
-                final Optional<BigDecimal> rebateChangeover = Optional.ofNullable(request.getQuote().getRebateChangeover())
-                                                                .map(BigDecimal::new);
+                final Optional<BigDecimal> rebateChangeover = Optional.empty();
+
+//                        Optional.ofNullable(request.getQuote().getRebateChangeover())
+//                                                                .map(BigDecimal::new);
 
                 for (final HealthQuote quote : quoteResponse.getQuotes()) {
                     final HealthQuoteResult result = new HealthQuoteResult();
@@ -103,6 +105,8 @@ public class ResponseAdapterV2 {
                         }
                     }
 
+
+                    quote.getGiftCard().map(GiftCard::getAmount).ifPresent(result::setGiftCardAmount); //otherwise it will be null in order for web-ctm to parse correctly (web-ctm can't parse Optional.empty)
 
                     result.setInfo(createInfo(quote.getInfo(), index++));
                     result.setHospital(validateNode(quote.getHospital()));
