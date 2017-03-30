@@ -88,7 +88,6 @@
 	}
 
 	function isYoungDriverSelected() {
-
 		var $e = $(elements.labels).find("input:checked");
 
 		if(!_.isEmpty($e)) {
@@ -115,14 +114,6 @@
 				});
 			} else {
 				$(elements.toggle).slideUp('fast', function(){
-					var $that = $(this);
-					$that.find(':text').val('');
-					$that.find(':radio').prop('checked',false).change();
-					$(elements.yng_dob).val('').change();
-					$that.find('.has-success').removeClass('has-success');
-					$that.find('.has-error').removeClass('has-error');
-					$that.find('.error-field').remove();
-
 					if(updateVirtualPage) {
 						meerkat.modules.sessionCamHelper.updateVirtualPage(getSessionCamStep());
 					}
@@ -132,9 +123,6 @@
 	}
 
 	function initCarYoungDrivers() {
-
-		var self = this;
-
 		// Tell sessionCamHelper to ignore step updates for this step as handled inhouse (aka in this module)
 		meerkat.modules.sessionCamHelper.addStepToIgnoreList("details");
 
@@ -150,16 +138,13 @@
 		if (meerkat.site.vertical !== "car")
 			return false;
 
-		$(elements.labels + " label input").on("click", function(e){
-			// Allow for input value to be updated
-			_.defer(_.bind(toggleVisibleContent, this, true));
-		});
+		// keeping the if then statement broke the youngest driver if a user decides to do an exotic car first
+		// then modify the car details to a non-exotic vehicle
+		bindYoungestDriverClick(elements.labels, toggleVisibleContent);
 
 		$(elements.reg_dob + "," + elements.yng_dob).on("change", updateRestrictAgeSelector);
-
 		captureOptions();
 
-		toggleVisibleContent();
 		// Need to allow time for the currentStep to be populated
 		setTimeout(function(){
 			if(meerkat.modules.journeyEngine.getCurrentStep().navigationId == "details") {
@@ -171,8 +156,18 @@
 			}
 		},250);
 
-		updateRestrictAgeSelector();
+		if (!meerkat.modules.carExotic.isExotic()) {
+			updateRestrictAgeSelector();
+		}
 
+	}
+
+	function bindYoungestDriverClick(elementLabel, callback) {
+		$(elementLabel + " label input").on("click", function(e){
+			// Allow for input value to be updated
+			_.defer(_.bind(callback, this, true));
+		});
+		callback();
 	}
 
 	function getSessionCamStep() {

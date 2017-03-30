@@ -137,7 +137,7 @@
                         ajaxRequest = false;
                         ajaxInProgress = false;
                         meerkat.modules.loadingAnimation.hide($loadingIconElement);
-                        checkAndNotifyOfVehicleChange();
+                        checkAndNotifyOfVehicleChange(true);
                         disableFutureSelectors(type);
                         return true;
                     }
@@ -472,6 +472,7 @@
         if (model !== false) $(elements.modelDes).val(model.label);
         var year = getDataForCode('years', $(elements.years).val());
         if (year !== false) $(elements.registrationYear).val(year.code);
+
         // Attempt to populate the next field
         if (invalid === false && next !== false) {
             disableFutureSelectors(next);
@@ -485,9 +486,10 @@
                 (!_.isEmpty($element.val()))
             ) {
                 addValidationStyles($element);
-                checkAndNotifyOfVehicleChange();
+                checkAndNotifyOfVehicleChange(true);
             }
         }
+
         meerkat.messaging.publish(moduleEvents.car.DROPDOWN_CHANGED);
     }
 
@@ -529,7 +531,8 @@
         return false;
     }
 
-    function checkAndNotifyOfVehicleChange() {
+    function checkAndNotifyOfVehicleChange(manualSelection) {
+        manualSelection = manualSelection || false;
         var vehicle = isRadioButtonField('types') ? $(elements.types).find("input:checked") : $(elements.types);
         var rbc = vehicle ? vehicle.val() : null;
         if (!_.isEmpty(rbc)) {
@@ -548,6 +551,7 @@
             if (type !== false) {
                 $(elements.marketValue).val(type.marketValue);
                 $(elements.variant).val(type.label);
+                meerkat.modules.carRegoLookup.track();
             }
 
             _.defer(function () {

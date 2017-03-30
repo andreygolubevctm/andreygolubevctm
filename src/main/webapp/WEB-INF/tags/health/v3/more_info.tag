@@ -8,6 +8,7 @@
 
 <%-- Setup variables needed for dual pricing --%>
 <health_v1:dual_pricing_settings />
+<health_v1:pyrr_campaign_settings />
 
 <%-- MORE INFO CALL TO ACTION BAR TEMPLATE --%>
 <%-- MORE INFO FOOTER --%>
@@ -40,6 +41,10 @@
 		{{ var priceTemplate = meerkat.modules.templateCache.getTemplate($("#price-template")); }}
 
 		{{ obj.showAltPremium = false; obj.renderedPriceTemplate = logoTemplate(obj) + priceTemplate(obj); }}
+	{{ } }}
+
+	{{ if (meerkat.modules.healthPyrrCampaign.isPyrrActive() === true) { }}
+		{{ obj.renderedPyrrCampaign = meerkat.modules.healthPyrrCampaign.renderTemplate('', obj, true, false); }}
 	{{ } }}
 
 	<%-- Check if drop dead date has passed --%>
@@ -96,6 +101,9 @@
 								{{= renderedDualPricing }}
 							</c:when>
 							<c:otherwise>
+								<c:if test="${isPyrrActive eq true}">
+									{{= renderedPyrrCampaign }}
+								</c:if>
 								{{= renderedPriceTemplate }}
 							</c:otherwise>
 						</c:choose>

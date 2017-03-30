@@ -19,6 +19,7 @@
 			<surname>TheMarket</surname>
 			<dob>05/05/1979</dob>
 			<claims>N</claims>
+			<convictions>N</convictions>
 		</regular>
 	</drivers>
 	<terms>Y</terms>
@@ -114,6 +115,7 @@
 		<marketing>Y</marketing>
 		<phone>0755254545</phone>
 		<phoneinput>(07) 5525 4545</phoneinput>
+		<preferred>Email</preferred>
 		<oktocall>Y</oktocall>
 		<ctmoktocall>Y</ctmoktocall>
 		<email>preload.testing@comparethemarket.com.au</email>

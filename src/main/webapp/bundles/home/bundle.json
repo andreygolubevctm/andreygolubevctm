@@ -30,6 +30,7 @@
     "shared/resultsFilterLabels",
     "shared/paymentFrequencyButtons",
     "shared/resultsMobileDisplayModeToggle",
-    "shared/mobileNavButtons"
+    "shared/mobileNavButtons",
+    "shared/buttonTileDropdownSelector"
   ]
 }
