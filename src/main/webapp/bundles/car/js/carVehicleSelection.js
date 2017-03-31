@@ -551,7 +551,9 @@
             if (type !== false) {
                 $(elements.marketValue).val(type.marketValue);
                 $(elements.variant).val(type.label);
-                meerkat.modules.carRegoLookup.track();
+                if(manualSelection === true) {
+                    meerkat.modules.carRegoLookup.track();
+                }
             }
 
             _.defer(function () {

@@ -181,7 +181,7 @@
             }
         };
         if(_.isBoolean(success)) {
-            data = _.extend(data,{eventLabel: $elements.regoField.val()});
+            _.extend(data.object,{eventLabel: $elements.regoField.val()});
         }
         meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL,data,true);
     }
