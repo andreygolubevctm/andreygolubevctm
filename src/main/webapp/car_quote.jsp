@@ -29,7 +29,18 @@
 
 <%-- Set global variable to flags for active split tests --%>
 <car:splittest_helper />
-<car:exotic_car_helper />
+
+<c:choose>
+	<c:when test="${pageSettings.getBrandCode() eq 'ctm'}">
+		<car:exotic_car_helper />
+	</c:when>
+	<c:otherwise>
+		<c:set var="speechBubbleContent" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "speechBubbleContent")}' />
+		<c:set var="originalHeading" value="${speechBubbleContent.getSupplementaryValueByKey('normalHeading')}" scope="request" />
+		<c:set var="origintalCopy" value="${speechBubbleContent.getSupplementaryValueByKey('normalCopy')}" scope="request" />
+	</c:otherwise>
+</c:choose>
+
 <car:rego_lookup_helper />
 
 <%-- HTML --%>
