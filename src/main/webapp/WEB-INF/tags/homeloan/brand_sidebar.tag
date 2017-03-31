@@ -17,7 +17,7 @@
 	</c:forEach>
 
 	<div class="col-xs-12">
-	<a href="javascript:;" class="btn-view-brands pull-right" >View all <strong>all lenders</strong> here</a>
+	<a href="javascript:;" class="btn-view-brands pull-right" >View <strong>all lenders</strong> here</a>
 	</div>
 </div>
 </form_v2:fieldset>
