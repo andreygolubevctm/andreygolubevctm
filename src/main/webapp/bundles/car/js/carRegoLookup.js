@@ -181,7 +181,7 @@
             }
         };
         if(_.isBoolean(success)) {
-            _.extend(data,{eventLabel: "keyStrokeValue"});
+            _.extend(data.object,{eventLabel: $elements.regoField.val()});
         }
         meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL,data,true);
     }
