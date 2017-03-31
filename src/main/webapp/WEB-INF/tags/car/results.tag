@@ -199,8 +199,9 @@
 						</div>
 
 						{{= callActionButtonsTemplate }}
-
-						{{ if (promotionText.length > 0) { }}
+						<%-- weird string being sent from the providers, that requires a check so it doesn't get rendered  --%>
+						{{ if (promotionText.length > 0 && promotionText.indexOf('BA') !== 1) { }}
+						
 						<fieldset class="result-special-offer">
 							<legend>Special Offer</legend>
 							{{= promotionText }}
