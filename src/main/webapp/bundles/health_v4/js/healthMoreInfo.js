@@ -363,6 +363,11 @@
             $elements.modalHeader.find('.lhcText').toggleClass('hidden', $elements.moreInfoContainer.offset().top < calculatedHeight);
             $elements.modalHeader.find('.printableBrochuresLink').toggleClass('hidden', $elements.moreInfoContainer.offset().top < calculatedHeight);
 
+            if (meerkat.modules.healthPyrrCampaign.isPyrrActive()) {
+                $elements.modalHeader.find('.pyrrMoreInfoXSContainer').toggleClass('hidden', $elements.moreInfoContainer.offset().top < calculatedHeight);
+
+            }
+
             if (meerkat.modules.healthDualPricing.isDualPricingActive() && meerkat.modules.deviceMediaState.get() === 'xs') {
                 $elements.modalHeader.find('.april-container').toggleClass('hidden', $elements.moreInfoContainer.offset().top < calculatedHeight);
                 $elements.currentPricingContainer
