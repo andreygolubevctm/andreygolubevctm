@@ -362,6 +362,7 @@
 
             $elements.modalHeader.find('.lhcText').toggleClass('hidden', $elements.moreInfoContainer.offset().top < calculatedHeight);
             $elements.modalHeader.find('.printableBrochuresLink').toggleClass('hidden', $elements.moreInfoContainer.offset().top < calculatedHeight);
+            $elements.modalHeader.find('.productTitleText').toggleClass('hidden', $elements.moreInfoContainer.offset().top < calculatedHeight);
 
             if (meerkat.modules.healthPyrrCampaign.isPyrrActive()) {
                 $elements.modalHeader.find('.pyrrMoreInfoXSContainer').toggleClass('hidden', $elements.moreInfoContainer.offset().top < calculatedHeight);
