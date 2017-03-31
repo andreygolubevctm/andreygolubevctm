@@ -8,6 +8,7 @@
 
 <%-- Setup variables needed for dual pricing --%>
 <health_v1:dual_pricing_settings />
+<health_v4:pyrr_campaign_settings />
 
 <c:if test="${isDualPriceActive eq true}">
 	<c:set var="healthAlternatePricingMonth" value="${healthPriceDetailService.getAlternatePriceMonth(pageContext.getRequest())}" />
@@ -40,6 +41,8 @@
 	{{ if (meerkat.modules.healthDualPricing.isDualPricingActive() === true && meerkat.modules.deviceMediaState.get() !== 'xs') { }}
 		{{ obj.renderedDualPricing = meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false); }}
 		{{ _.delay(function() { $('.dualPricingAffixedHeader').html(obj.renderedDualPricing);}); }}
+	{{ } else if (meerkat.modules.healthPyrrCampaign.isPyrrActive() === true) { }}
+		{{ obj.renderedPyrrCampaign = meerkat.modules.healthPyrrCampaign.renderTemplate('', obj, true, false); }}
 	{{ } else { }}
 		{{ var logoTemplate = meerkat.modules.templateCache.getTemplate($("#logo-template")); }}
 		{{ var priceTemplate = meerkat.modules.templateCache.getTemplate($("#price-template")); }}
