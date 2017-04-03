@@ -10,7 +10,7 @@
 
     <groupId>com.ctm.web</groupId>
     <artifactId>ctm</artifactId>
-    <version>1.50.0-SNAPSHOT</version>
+    <version>1.50.0-RC5</version>
     <name>ctm</name>
     <description>Main web application</description>
     <packaging>war</packaging>
@@ -25,7 +25,7 @@
         <contact-validator-model.version>1.0.0-RC1</contact-validator-model.version>
         <life-quote.version>1.1.0-RC1</life-quote.version>
         <life-apply.version>1.0.0-RC0</life-apply.version>
-        <fuel-quote-model.version>1.0.0-RC0</fuel-quote-model.version>
+        <fuel-quote-model.version>1.3.0-RC1</fuel-quote-model.version>
         <reward-model.version>1.3.0-RC1</reward-model.version>
 
         <!-- 3rd party -->
