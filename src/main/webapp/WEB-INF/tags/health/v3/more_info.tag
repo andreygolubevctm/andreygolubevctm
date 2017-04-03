@@ -43,7 +43,7 @@
 		{{ obj.showAltPremium = false; obj.renderedPriceTemplate = logoTemplate(obj) + priceTemplate(obj); }}
 	{{ } }}
 
-	{{ if (meerkat.modules.healthPyrrCampaign.isPyrrActive() === true) { }}
+	{{ if (meerkat.modules.healthPyrrCampaign.isPyrrActive(true) === true) { }}
 		{{ obj.renderedPyrrCampaign = meerkat.modules.healthPyrrCampaign.renderTemplate('', obj, true, false); }}
 	{{ } }}
 
