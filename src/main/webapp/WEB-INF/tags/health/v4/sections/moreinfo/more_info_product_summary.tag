@@ -6,9 +6,9 @@
 <!-- Product Summary. Logo, price, LHC etc... -->
 <div class="row priceRow productSummary hidden-xs">
     <div class="col-xs-8">
-        <c:if test="${isPyrrActive eq true}">
+        {{ if (meerkat.modules.healthPyrrCampaign.isPyrrActive() === true) { }}
             {{= renderedPyrrCampaign }}
-        </c:if>
+        {{ } }}
         <c:if test="${!isDualPriceActive eq true}">
             <div class="companyLogo {{= info.provider }}"></div>
         </c:if>
