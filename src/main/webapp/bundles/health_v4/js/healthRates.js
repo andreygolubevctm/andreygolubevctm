@@ -142,11 +142,16 @@
                 if (canSetRates === true) setRates(data);
                 if (!_.isNull(callback) && typeof callback !== 'undefined') {
                     callback(data);
+                    updateSnapshot();
                 }
             }
         });
 
     }
+
+    var updateSnapshot = _.throttle(function updateSnapshot(){
+        meerkat.messaging.publish(meerkat.modules.events.health.SNAPSHOT_FIELDS_CHANGE);
+    },500);
 
     // Make the rates object available outside of this module.
     function getRates() {
