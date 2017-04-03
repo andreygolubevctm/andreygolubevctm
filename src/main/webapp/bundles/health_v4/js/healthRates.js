@@ -136,7 +136,7 @@
         return meerkat.modules.comms.post({
             url: "ajax/json/health_rebate.jsp",
             data: postData,
-            cache: false,
+            cache: true,
             errorLevel: "warning",
             onSuccess: function onRatesSuccess(data) {
                 if (canSetRates === true) setRates(data);
