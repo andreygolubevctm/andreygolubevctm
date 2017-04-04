@@ -12,7 +12,6 @@
 		.coupon-icon-col {
 			text-align: center;
 			color: @theme-accent-4;
-			padding-right: 5px;
 
 			@media(@md-only) {
 				padding-top: 14px;
@@ -55,6 +54,14 @@
 		.link {
 			color: @link-color;
 		}
+	}
+
+	// Shown on the results page under the CTA for each product.
+	.coupon-pyrr-banner-hidden, .coupon-pyrr-banner-dynamic-hidden {
+		display: none;
+	}
+	.coupon-pyrr-banner-dynamic-price {
+		display: inline-block;
 	}
 }
 

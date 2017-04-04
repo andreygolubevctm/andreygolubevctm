@@ -17,10 +17,10 @@
 			</c:choose>
 		</c:set>
 
-		<form_v2:row label="Cover Type" id="${name}CoverType" className="initial">
+		<form_v2:row label="Cover Type" id="${name}CoverType" className="initial ${pageSettings.getBrandCode() eq 'ctm' ? '' : ' hidden '}">
 			<c:set var="analAttribute"><field_v1:analytics_attr analVal="Cover Type" quoteChar="\"" /></c:set>
 			<field_v2:array_radio xpath="${xpath}/coverType" style="vertical" required="true"
-				className="" items="${coverTypeOptions}" title="" additionalLabelAttributes="${analAttribute}" />
+				className="${pageSettings.getBrandCode() eq 'ctm' ? '' : ' hidden '}" items="${coverTypeOptions}" title="" additionalLabelAttributes="${analAttribute}" additionalAttributes=" data-attach='true' " />
 		</form_v2:row>
 
 		<form_v2:row label="Excess" id="${name}ExcessRow">

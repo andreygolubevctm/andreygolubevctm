@@ -133,16 +133,28 @@
 								<div class="productTitle singleProductTitle">
 									{{= productTitle }}
 								</div>
-								<div class="col-xs-6 priceContainer">
-									<span class="priceAmount">
-										{{= obj.priceText }}
+								<div class="clearfix topContainer">
+									<div class="col-xs-6 priceContainer">
+										<span class="priceAmount">
+											{{= obj.priceText }}
 
-									</span>
-									<span class="priceTitle">Price</span>
+										</span>
+										<span class="priceTitle">Price</span>
+									</div>
+									<div class="col-xs-6 gotoContainer">
+										<a class="btn btn-primary btn-block btn-apply" href="javascript:;" data-productId="{{= obj.productId }}">
+											<span>Go to Insurer</span> <span class="icon icon-arrow-right" />
+										</a>
+									</div>
 								</div>
-								<div class="col-xs-6 excessContainer">
-									<span class="excessAmount">{{= obj.info.excess }}</span>
-									<span class="excessTitle">Excess</span>
+								<div class="clearfix btmContainer">
+									<div class="col-xs-6 excessContainer">
+										<span class="excessAmount">{{= obj.info.excess }}</span>
+										<span class="excessTitle">Excess</span>
+									</div>
+									<div class="col-xs-6 text-center infoContainer">
+											<a href="javascript:;">More Info <span class="icon icon-angle-right" /></a>
+									</div>
 								</div>
 							</div>
 						</div>

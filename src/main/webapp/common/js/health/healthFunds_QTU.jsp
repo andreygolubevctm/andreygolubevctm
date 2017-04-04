@@ -154,10 +154,16 @@ var healthFunds_QTU = {
         });
     },
     renderPaymentDays: function() {
+        <%--
+        payments
+             maxDay: maximum day in month
+             max: number of options to populate the select drop down
+             min: add x days to the cover start date so min = 1 == cover date + 1
+        --%>
         if (meerkat.modules.healthPaymentStep.getSelectedFrequency() === 'fortnightly') {
-            meerkat.modules.healthFunds.setPayments({'min': 0, 'max': 14, 'weekends': true});
+            meerkat.modules.healthFunds.setPayments({'min': 1, 'max': 14, 'weekends': false, 'maxDay': 27});
         } else {
-            meerkat.modules.healthFunds.setPayments({'min': 2, 'max': 27, 'weekends': true});
+            meerkat.modules.healthFunds.setPayments({'min': 1, 'max': 30, 'weekends': true, 'maxDay': 27});
         }
 
         var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
