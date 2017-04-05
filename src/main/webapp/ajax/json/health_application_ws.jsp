@@ -13,6 +13,7 @@
 <c:set var="effectiveDate" value="${data.health.payment.details.start}"/>
 <jsp:useBean id="changeOverRebatesService" class="com.ctm.web.simples.services.ChangeOverRebatesService" />
 <c:set var="changeOverRebates" value="${changeOverRebatesService.getChangeOverRebate(effectiveDate)}"/>
+<c:set var="rebate_multiplier_previous" value="${changeOverRebates.getPreviousMultiplier()}"/>
 <c:set var="rebate_multiplier_current" value="${changeOverRebates.getCurrentMultiplier()}"/>
 <c:set var="rebate_multiplier_future" value="${changeOverRebates.getFutureMultiplier()}"/>
 

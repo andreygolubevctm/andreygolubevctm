@@ -86,5 +86,14 @@
 	},
 	commencementDate : '${data.quote.options.commencementDate}',
 	skipNewCoverTypeCarJourney: ${skipNewCoverTypeCarJourney},
-	ctpMessage: "<content:get key="ctpMessageCopy"/>"
+	ctpMessage: "<content:get key="ctpMessageCopy"/>",
+	isFromExoticPage : <c:choose><c:when test="${not empty isFromExoticPage}">${isFromExoticPage}</c:when><c:otherwise>false</c:otherwise></c:choose>,
+	isExoticManualEntry: <c:choose><c:when test="${not empty isExoticManualEntry}">${isExoticManualEntry}</c:when><c:otherwise>false</c:otherwise></c:choose>,
+	isRegoLookup: ${isRegoLookup},
+	exoticCarContent: {
+		originalHeading : "${originalHeading}",
+		origintalCopy : "${origintalCopy}",
+		exoticHeading : <c:choose><c:when test="${not empty exoticHeading}">"${exoticHeading}"</c:when><c:otherwise>""</c:otherwise></c:choose>,
+		exoticCopy : <c:choose><c:when test="${not empty exoticCopy}">"${exoticCopy}"</c:when><c:otherwise>""</c:otherwise></c:choose>
+	}
 }

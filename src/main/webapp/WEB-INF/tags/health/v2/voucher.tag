@@ -5,6 +5,9 @@
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath" 		required="true"	 rtexprvalue="true"	 description="field group's xpath" %>
 
+
+<health_v1:pyrr_campaign_settings />
+
 <%-- HTML --%>
 <div class="disableable-fields">
 	<c:set var="fieldXpath" value="${xpath}/reason" />
@@ -60,4 +63,9 @@
     <div class="dialogue matchonline">
         <simples:dialogue id="72" vertical="health" mandatory="true" />
     </div>
+	<c:if test="${isPyrrActive eq true}">
+		<div class="dialogue pyrrCampaign">
+	        <simples:dialogue id="73" vertical="health" mandatory="true" />
+	    </div>
+	</c:if>
 </div>

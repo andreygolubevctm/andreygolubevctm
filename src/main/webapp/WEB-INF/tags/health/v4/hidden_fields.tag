@@ -27,6 +27,7 @@
 <field_v1:hidden xpath="health/renderingMode" />
 <field_v1:hidden xpath="health/rebate" />
 <field_v1:hidden xpath="health/rebateChangeover" />
+<field_v1:hidden xpath="health/previousRebate" />
 <field_v1:hidden xpath="health/loading" />
 <field_v1:hidden xpath="health/primaryCAE" />
 <field_v1:hidden xpath="health/partnerCAE" />
