@@ -150,11 +150,9 @@
 			length = 4;
 		}
 		for (var i = 0; i < length; i++) {
-			if (fields[i].ageMin != age) {
+			if (fields[i].ageMin !== age) {
 					fields[i].ageMin = age;
 					$(fields[i].target).data('msgYoungestdob', message);
-			} else {
-				break;
 			}
 		}
 	}
