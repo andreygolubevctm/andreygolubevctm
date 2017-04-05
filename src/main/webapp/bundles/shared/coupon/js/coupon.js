@@ -24,20 +24,7 @@
         isPreload = false,
 		isCouponValidAndSubmitted = false,
         subscriptionHandles = {},
-		// Defined in health_v4/less/layout.less
-		defaultXSMeasurements = {
-			headerMinHeightNoCoupon: 67,
-			headerMinHeightCoupon: 127,
-			headerMinHeightResultsCoupon: 57,
-			headerMinHeightResultsNoCoupon: null,
-			resultsPaddingTop: null,
-			resultsDockedTop: null
-		},
-        originalMeasurements = {
-			headerMinHeight: null,
-			resultsPaddingTop: null,
-			resultsDockedTop: null
-		};
+		defaultResultsDockedTop = 147; // Hard coded in: health_v4\less\results\resultsHeaderBar.less applied to ".result"
 
 	function init() {
 
@@ -67,7 +54,29 @@
 			resetWhenChangeStep();
 		});
 
-		$(document).on('headerAffixed, headerUnaffixed', function() {
+		// If we are already in small screen keep an eye out for a window resize.
+		if (meerkat.modules.deviceMediaState.get() === 'xs') {
+			meerkat.messaging.subscribe(meerkatEvents.device.RESIZE_DEBOUNCED, function resultsXsBreakpointEnter() {
+				dealWithAddedCouponHeight();
+			});
+		}
+
+		meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, function resultsXsBreakpointEnter() {
+			// The banner can still change in height so we need to watch the window resize and react accordingly.
+			meerkat.messaging.subscribe(meerkatEvents.device.RESIZE_DEBOUNCED, function resultsXsBreakpointEnter() {
+				dealWithAddedCouponHeight();
+			});
+		});
+
+		meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function resultsXsBreakpointLeave() {
+			meerkat.messaging.unsubscribe(meerkatEvents.device.RESIZE_DEBOUNCED);
+			dealWithAddedCouponHeight();
+		});
+
+		$(document).on('headerAffixed', function() {
+			dealWithAddedCouponHeight();
+		});
+		$(document).on('headerUnaffixed', function() {
 			dealWithAddedCouponHeight();
 		});
 	}
@@ -169,7 +178,6 @@
             $('.coupon-tile-container').html(currentCoupon.contentTile);
             $('body').addClass('couponShown');
 
-            dealWithAddedCouponHeight();
             meerkat.modules.healthMoreInfo.dynamicPyrrBanner();
 
 		} else {
@@ -178,124 +186,68 @@
             $('#contactForm').find('.callCentreHelp').hide();
             $('.coupon-banner-container, .coupon-tile-container').html('');
             $('body').removeClass('couponShown');
-            resetMeasurements();
 
         }
-	}
 
-	// Items affected.
-		// All slides, except results.
-			// Change 'min-height' on 'header-wrap'.
-			// Reset the 'padding-top' of 'body' tag
-		// Only results
-			// remove min-height from 'header-wrap'
-			// Set the 'padding-top' of 'body' tag
-			// Also need to update docked header.
-				// On header dock change the 'result' elements 'top' value
-				// On header de-dock change the 'result' elements 'top' back to original value
-	// Also need to apply original values when changing from xs to other and vice versa
-	// Also need to apply original values when coupon disappears part way through the journey
+		dealWithAddedCouponHeight();
+
+	}
 
 	function dealWithAddedCouponHeight() {
 		// If we have a visible coupon.
 		var $bodyWithCoupon = $('body.couponShown');
+		// Reset everything in case we have changed between results and other slides or changed view port.
+		resetMeasurements();
 		if ($bodyWithCoupon.length > 0) {
 			// Get the header.
 			var $headerWrap = $('.header-wrap');
 
-			// Reset everything in case we have changed between results and other slides or changed view port.
-			resetMeasurements();
 
 			// We need to accommodate the journey with additional space when we have coupon on mobile.
 			if (meerkat.modules.deviceMediaState.get() === 'xs') {
 				// Results is handled differently.
 				if (meerkat.modules.journeyEngine.getCurrentStep().navigationId === 'results') {
-					// Returns a string, eg 150px, or undefined
-					var currentBodyCouponPaddingTop = $bodyWithCoupon.css('padding-top');
+					// Get the coupon banners height and add it to the current padding.
+					var bannersHeight = $('.coupon-banner-container').innerHeight();
+					// The actual padding top is set in the less using various less calculations.
+					// Since it could be be a different hight we need to get the current value the add to it.
+					var bodyPaddingTop = typeof $bodyWithCoupon.css('padding-top') !== 'undefined' ? parseInt($bodyWithCoupon.css('padding-top').replace(/\D/g,'')): 0;
+					var newPaddingTop = bodyPaddingTop + bannersHeight;
 
-					if (typeof currentBodyCouponPaddingTop !== 'undefined') {
-						// Strip out the px from the css value
-						currentBodyCouponPaddingTop = parseInt(currentBodyCouponPaddingTop.replace(/\D/g,''));
+					// Clear the min height and apply the padding top to the body
+					$headerWrap.css({'min-height': ''});
+					$bodyWithCoupon.css({'padding-top': newPaddingTop + 'px'});
 
-						// Set the original height, for when the coupon is hidden or we go to results.
-						if (originalMeasurements.resultsPaddingTop === null) {
-							originalMeasurements.resultsPaddingTop = currentBodyCouponPaddingTop;
+					// Get the results affixed
+					var $dockedResultsHeaders = $('.affixed-settings .result');
 
-						}
-						// Get the coupon banners height and add it to the current padding.
-						var bannersHeight = $('.coupon-banner-container').innerHeight();
-						var newPaddingTop = originalMeasurements.resultsPaddingTop + bannersHeight;
-						$bodyWithCoupon.css({'padding-top': newPaddingTop + 'px'});
-
-						// Get the results affixed
-						var $dockedResultsHeaders = $('.affixed-settings .result');
-
-						iterateAndAddTopForDockedResults($dockedResultsHeaders);
-					}
+					$.each($dockedResultsHeaders, function() {
+						var $dockedResultsHeader = $(this);
+						topValueToBeApplied = defaultResultsDockedTop + bannersHeight;
+						$dockedResultsHeader.css({'top': topValueToBeApplied + 'px'});
+					});
 
 				} else {
 					// Get the inner divs combined height
 					var headersActualHeight = $headerWrap.children().innerHeight();
-					// Set the original height, for when the coupon is hidden or we go to results.
-					if (originalMeasurements.headerMinHeight === null) {
-						originalMeasurements.headerMinHeight = headersActualHeight;
-
-					}
 					// Now that's the real min height
 					$headerWrap.css({'min-height': headersActualHeight + 'px'});
+
 				}
 			}
 		}
 	}
 
+	// We need to reset the values back to default, since modifying these with jQuery will apply a
+	// style directly to the DOM, we can just remove that style attribute to reset it.
 	function resetMeasurements() {
 		var $headerWrap = $('.header-wrap');
-		if (originalMeasurements.headerMinHeight !==  null && $headerWrap.length > 0) {
-			$headerWrap.css({'min-height': originalMeasurements.headerMinHeight + 'px'});
-			originalMeasurements.headerMinHeight = null;
-
-		}
-
 		var $bodyWithCoupon = $('body.couponShown');
-		if (originalMeasurements.resultsPaddingTop !==  null && $bodyWithCoupon > 0) {
-			$bodyWithCoupon.css({'padding-top': originalMeasurements.resultsPaddingTop + 'px'});
-			originalMeasurements.resultsPaddingTop = null;
+		var $dockedResultsHeaders = $('.result');
+		$headerWrap.removeAttr('style');
+		$bodyWithCoupon.removeAttr('style');
+		$dockedResultsHeaders.removeAttr('style');
 
-		}
-
-		if (originalMeasurements.resultsDockedTop !==  null) {
-			var $dockedResultsHeaders = $('.result');
-			iterateAndAddTopForDockedResults($dockedResultsHeaders, originalMeasurements.resultsDockedTop);
-			originalMeasurements.resultsDockedTop = null;
-
-		}
-	}
-
-	function iterateAndAddTopForDockedResults($dockedResultsHeaders, presetTopValue) {
-		$.each($dockedResultsHeaders, function() {
-			var $dockedResultsHeader = $(this);
-			var topValueToBeApplied = 0;
-			if (typeof presetTopValue !== 'undefined') {
-				topValueToBeApplied = presetTopValue;
-			} else {
-				// Returns a string, eg 150px, or undefined
-				var currentResultsPaginationTop = $dockedResultsHeader.css('top');
-
-				if (typeof currentResultsPaginationTop !== 'undefined') {
-					// Strip out the px from the css value
-					currentResultsPaginationTop = parseInt(currentResultsPaginationTop.replace(/\D/g,''));
-					// Set the original height, for when the coupon is hidden or we go to results.
-					if (originalMeasurements.resultsDockedTop === null) {
-						originalMeasurements.resultsDockedTop = currentResultsPaginationTop;
-
-					}
-					var bannersHeight = $('.coupon-banner-container').innerHeight();
-					topValueToBeApplied = originalMeasurements.resultsDockedTop + bannersHeight;
-
-				}
-			}
-			$dockedResultsHeader.css({'top': topValueToBeApplied + 'px'});
-		});
 	}
 
 	function isCurrentCouponValid() {
