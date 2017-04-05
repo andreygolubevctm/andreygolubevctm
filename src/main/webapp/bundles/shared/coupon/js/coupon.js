@@ -23,7 +23,21 @@
 		isAvailable = false,
         isPreload = false,
 		isCouponValidAndSubmitted = false,
-        subscriptionHandles = {};
+        subscriptionHandles = {},
+		// Defined in health_v4/less/layout.less
+		defaultXSMeasurements = {
+			headerMinHeightNoCoupon: 67,
+			headerMinHeightCoupon: 127,
+			headerMinHeightResultsCoupon: 57,
+			headerMinHeightResultsNoCoupon: null,
+			resultsPaddingTop: null,
+			resultsDockedTop: null
+		},
+        originalMeasurements = {
+			headerMinHeight: null,
+			resultsPaddingTop: null,
+			resultsDockedTop: null
+		};
 
 	function init() {
 
@@ -51,6 +65,10 @@
 	function eventSubscriptions() {
 		meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_CHANGED, function() {
 			resetWhenChangeStep();
+		});
+
+		$(document).on('headerAffixed, headerUnaffixed', function() {
+			dealWithAddedCouponHeight();
 		});
 	}
 
@@ -120,7 +138,7 @@
 
 	function validateCouponCode(couponCode) {
 		if (isAvailable !== true) return;
-		
+
 		var transactionId = meerkat.modules.transactionId.get();
 
 		meerkat.modules.comms.get({
@@ -150,14 +168,134 @@
 			$('.coupon-banner-container').html(currentCoupon.contentBanner);
             $('.coupon-tile-container').html(currentCoupon.contentTile);
             $('body').addClass('couponShown');
+
+            dealWithAddedCouponHeight();
             meerkat.modules.healthMoreInfo.dynamicPyrrBanner();
+
 		} else {
             $('#contactForm').find('.quoteSnapshot').show();
             $('.callCentreHelp').show();
             $('#contactForm').find('.callCentreHelp').hide();
             $('.coupon-banner-container, .coupon-tile-container').html('');
             $('body').removeClass('couponShown');
+            resetMeasurements();
+
         }
+	}
+
+	// Items affected.
+		// All slides, except results.
+			// Change 'min-height' on 'header-wrap'.
+			// Reset the 'padding-top' of 'body' tag
+		// Only results
+			// remove min-height from 'header-wrap'
+			// Set the 'padding-top' of 'body' tag
+			// Also need to update docked header.
+				// On header dock change the 'result' elements 'top' value
+				// On header de-dock change the 'result' elements 'top' back to original value
+	// Also need to apply original values when changing from xs to other and vice versa
+	// Also need to apply original values when coupon disappears part way through the journey
+
+	function dealWithAddedCouponHeight() {
+		// If we have a visible coupon.
+		var $bodyWithCoupon = $('body.couponShown');
+		if ($bodyWithCoupon.length > 0) {
+			// Get the header.
+			var $headerWrap = $('.header-wrap');
+
+			// Reset everything in case we have changed between results and other slides or changed view port.
+			resetMeasurements();
+
+			// We need to accommodate the journey with additional space when we have coupon on mobile.
+			if (meerkat.modules.deviceMediaState.get() === 'xs') {
+				// Results is handled differently.
+				if (meerkat.modules.journeyEngine.getCurrentStep().navigationId === 'results') {
+					// Returns a string, eg 150px, or undefined
+					var currentBodyCouponPaddingTop = $bodyWithCoupon.css('padding-top');
+
+					if (typeof currentBodyCouponPaddingTop !== 'undefined') {
+						// Strip out the px from the css value
+						currentBodyCouponPaddingTop = parseInt(currentBodyCouponPaddingTop.replace(/\D/g,''));
+
+						// Set the original height, for when the coupon is hidden or we go to results.
+						if (originalMeasurements.resultsPaddingTop === null) {
+							originalMeasurements.resultsPaddingTop = currentBodyCouponPaddingTop;
+
+						}
+						// Get the coupon banners height and add it to the current padding.
+						var bannersHeight = $('.coupon-banner-container').innerHeight();
+						var newPaddingTop = originalMeasurements.resultsPaddingTop + bannersHeight;
+						$bodyWithCoupon.css({'padding-top': newPaddingTop + 'px'});
+
+						// Get the results affixed
+						var $dockedResultsHeaders = $('.affixed-settings .result');
+
+						iterateAndAddTopForDockedResults($dockedResultsHeaders);
+					}
+
+				} else {
+					// Get the inner divs combined height
+					var headersActualHeight = $headerWrap.children().innerHeight();
+					// Set the original height, for when the coupon is hidden or we go to results.
+					if (originalMeasurements.headerMinHeight === null) {
+						originalMeasurements.headerMinHeight = headersActualHeight;
+
+					}
+					// Now that's the real min height
+					$headerWrap.css({'min-height': headersActualHeight + 'px'});
+				}
+			}
+		}
+	}
+
+	function resetMeasurements() {
+		var $headerWrap = $('.header-wrap');
+		if (originalMeasurements.headerMinHeight !==  null && $headerWrap.length > 0) {
+			$headerWrap.css({'min-height': originalMeasurements.headerMinHeight + 'px'});
+			originalMeasurements.headerMinHeight = null;
+
+		}
+
+		var $bodyWithCoupon = $('body.couponShown');
+		if (originalMeasurements.resultsPaddingTop !==  null && $bodyWithCoupon > 0) {
+			$bodyWithCoupon.css({'padding-top': originalMeasurements.resultsPaddingTop + 'px'});
+			originalMeasurements.resultsPaddingTop = null;
+
+		}
+
+		if (originalMeasurements.resultsDockedTop !==  null) {
+			var $dockedResultsHeaders = $('.result');
+			iterateAndAddTopForDockedResults($dockedResultsHeaders, originalMeasurements.resultsDockedTop);
+			originalMeasurements.resultsDockedTop = null;
+
+		}
+	}
+
+	function iterateAndAddTopForDockedResults($dockedResultsHeaders, presetTopValue) {
+		$.each($dockedResultsHeaders, function() {
+			var $dockedResultsHeader = $(this);
+			var topValueToBeApplied = 0;
+			if (typeof presetTopValue !== 'undefined') {
+				topValueToBeApplied = presetTopValue;
+			} else {
+				// Returns a string, eg 150px, or undefined
+				var currentResultsPaginationTop = $dockedResultsHeader.css('top');
+
+				if (typeof currentResultsPaginationTop !== 'undefined') {
+					// Strip out the px from the css value
+					currentResultsPaginationTop = parseInt(currentResultsPaginationTop.replace(/\D/g,''));
+					// Set the original height, for when the coupon is hidden or we go to results.
+					if (originalMeasurements.resultsDockedTop === null) {
+						originalMeasurements.resultsDockedTop = currentResultsPaginationTop;
+
+					}
+					var bannersHeight = $('.coupon-banner-container').innerHeight();
+					topValueToBeApplied = originalMeasurements.resultsDockedTop + bannersHeight;
+
+				}
+			}
+			$dockedResultsHeader.css({'top': topValueToBeApplied + 'px'});
+		});
 	}
 
 	function isCurrentCouponValid() {
@@ -291,7 +429,8 @@
 		getCurrentCoupon: getCurrentCoupon,
 		validateCouponCode: validateCouponCode,
 		renderCouponBanner: renderCouponBanner,
-        triggerPopup: triggerPopup
+        triggerPopup: triggerPopup,
+        dealWithAddedCouponHeight: dealWithAddedCouponHeight
 	});
 
 })(jQuery);

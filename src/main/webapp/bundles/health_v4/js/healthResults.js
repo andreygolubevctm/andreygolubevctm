@@ -566,11 +566,13 @@
         meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, function resultsXsBreakpointEnter() {
             if (meerkat.modules.journeyEngine.getCurrentStep().navigationId === "results") {
                 startColumnWidthTracking();
+                meerkat.modules.coupon.dealWithAddedCouponHeight();
             }
         });
 
         meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function resultsXsBreakpointLeave() {
             stopColumnWidthTracking();
+            meerkat.modules.coupon.dealWithAddedCouponHeight();
         });
 
         /**
@@ -832,7 +834,7 @@
     }
 
     function onResultsLoaded() {
-
+        meerkat.modules.coupon.dealWithAddedCouponHeight();
         if (meerkat.modules.deviceMediaState.get() == "xs") {
             startColumnWidthTracking();
         }
