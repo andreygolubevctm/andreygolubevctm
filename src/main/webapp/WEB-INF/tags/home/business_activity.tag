@@ -31,7 +31,12 @@
 			required="true"
 			title="the type of business activity"
 			url="/WEB-INF/option_data/business_type.html"
-			additionalAttributes="${analyticsAttr}" />
+			additionalAttributes="${analyticsAttr}"
+			hideElement="${simplifiedJourneySplitTestActive ? 'true' : 'false'}" />
+
+			<c:if test="${simplifiedJourneySplitTestActive}">
+				<div id="businessTypeContainer" data-selector="${go:nameFromXpath(fieldXpath)}"></div>
+			</c:if>
 	</form_v2:row>
 
 	<%-- Business Rooms --%>

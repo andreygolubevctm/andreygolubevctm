@@ -401,6 +401,7 @@
 				meerkat.modules.healthMoreInfo.initMoreInfo();
 				meerkat.modules.healthPriceComponent.initHealthPriceComponent();
 				meerkat.modules.healthDualPricing.initDualPricing();
+				meerkat.modules.healthPyrrCampaign.initPyrrCampaign(true);
 
 			},
 			onBeforeEnter:function enterResultsStep(event){
@@ -849,6 +850,7 @@
 		rates = ratesObject;
 		$("#health_rebate").val((rates.rebate || ''));
 		$("#health_rebateChangeover").val((rates.rebateChangeover || ''));
+		$("#health_previousRebate").val((rates.previousRebate || ''));
 		$("#health_loading").val((rates.loading || ''));
 		$("#health_primaryCAE").val((rates.primaryCAE || ''));
 		$("#health_partnerCAE").val((rates.partnerCAE || ''));

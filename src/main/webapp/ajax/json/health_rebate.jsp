@@ -131,9 +131,13 @@ GOV Rebate Factor - Calculate new rebate based on rebate multiplier variables
 
 <jsp:useBean id="changeOverRebatesService" class="com.ctm.web.simples.services.ChangeOverRebatesService" />
 <c:set var="changeOverRebates" value="${changeOverRebatesService.getChangeOverRebate(param.commencementDate)}"/>
+<c:set var="rebate_multiplier_previous" value="${changeOverRebates.getPreviousMultiplier()}"/>
 <c:set var="rebate_multiplier_current" value="${changeOverRebates.getCurrentMultiplier()}"/>
 <c:set var="rebate_multiplier_future" value="${changeOverRebates.getFutureMultiplier()}"/>
 
+<c:set var="previousRebate">
+	<fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="3" value="${rebate * rebate_multiplier_previous}" />
+</c:set>
 <c:set var="rebateChangeover">
 	<fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="3" value="${rebate * rebate_multiplier_future}" />
 </c:set>
@@ -276,7 +280,7 @@ Certified Age of Entry: Defaults to 30.
 	</c:when>
 		<%-- retrieve loading and rebate --%>
 	<c:otherwise>
-		<c:set var="response">{ "status":"ok", "rebate":"${rebate}", "rebateChangeover":"${rebateChangeover}", "loading":"${loading}", "partnerLoading":"${partner_loading_rate}", "primaryLoading":"${primary_loading_rate}", "type":"${cover}", "tier":"${income}", "ageBonus":"${rebateBonus}", "primaryAge":"${primaryAge}", "primaryCAE":"${primaryCAE}","partnerCAE":"${partnerCAE}" }</c:set>
+		<c:set var="response">{ "status":"ok", "rebate":"${rebate}", "rebateChangeover":"${rebateChangeover}", "previousRebate":"${previousRebate}", "loading":"${loading}", "partnerLoading":"${partner_loading_rate}", "primaryLoading":"${primary_loading_rate}", "type":"${cover}", "tier":"${income}", "ageBonus":"${rebateBonus}", "primaryAge":"${primaryAge}", "primaryCAE":"${primaryCAE}","partnerCAE":"${partnerCAE}" }</c:set>
 	</c:otherwise>
 </c:choose>
 

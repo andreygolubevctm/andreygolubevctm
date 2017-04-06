@@ -41,14 +41,17 @@ public class RewardCampaignService {
 		return campaign -> campaign.getActive() && campaign.getEligibleForRedemption();
 	}
 
-	@Cacheable(cacheNames = {"rewardGetActiveCampaigns"}, condition = "#getFromCache")
-	public GetCampaignsResponse getAllActiveCampaigns(final Vertical.VerticalType vertical, final String brandCode,
+	@Cacheable(cacheNames = {"rewardGetActiveCampaigns"}, condition = "#getFromCache and !#operatorElevated")
+	public GetCampaignsResponse getAllActiveCampaigns(final Vertical.VerticalType vertical,
+													  final String brandCode,
 													  final ZonedDateTime effectiveDateTime,
-													  final boolean getFromCache) {
+													  final boolean getFromCache,
+													  final boolean operatorElevated) {
 		GetCampaigns request = new GetCampaigns();
 		request.setBrandCode(brandCode);
 		request.setVerticalCode(vertical.getCode());
 		request.setEffectiveDateTime(effectiveDateTime);
+		request.setOperatorElevated(operatorElevated);
 
 		final String url = rewardServiceUrl + REWARD_ENDPOINT_CAMPAIGNS_GET;
 		return rewardCampaignsGetClient.post(RestSettings.<GetCampaigns>builder()

@@ -33,10 +33,12 @@
             <a class="affixed-view-product show-on-affix more-info-showapply open-more-info text-center" href="javascript:;" data-productId="{{= obj.productId }}" data-available="{{= obj.available }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>
                 <div class="more-info-text">View Product <span class="icon icon-angle-right"></span></div>
             </a>
-
             {{ if (meerkat.modules.healthDualPricing.isDualPricingActive() === true) { }}
                 {{= meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false, 'results') }}
+            {{ } else if (meerkat.modules.healthPyrrCampaign.isPyrrActive() === true) { }}
+                {{= meerkat.modules.healthPyrrCampaign.renderTemplate('', obj, true, false, 'results') }}
             {{ } }}
+
         </div>
     </div>
 </div>
