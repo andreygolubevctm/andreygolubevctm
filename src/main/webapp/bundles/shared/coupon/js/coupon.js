@@ -198,42 +198,40 @@
 		var $bodyWithCoupon = $('body.couponShown');
 		// Reset everything in case we have changed between results and other slides or changed view port.
 		resetMeasurements();
-		if ($bodyWithCoupon.length > 0) {
+
+		// We need to accommodate the journey with additional space when we have coupon on mobile.
+		if ($bodyWithCoupon.length > 0 && meerkat.modules.deviceMediaState.get() === 'xs') {
 			// Get the header.
 			var $headerWrap = $('.header-wrap');
 
+			// Results is handled differently.
+			if (meerkat.modules.journeyEngine.getCurrentStep().navigationId === 'results') {
+				// Get the coupon banners height and add it to the current padding.
+				var bannersHeight = $('.coupon-banner-container').innerHeight();
+				// The actual padding top is set in the less using various less calculations.
+				// Since it could be be a different hight we need to get the current value the add to it.
+				var bodyPaddingTop = typeof $bodyWithCoupon.css('padding-top') !== 'undefined' ? parseInt($bodyWithCoupon.css('padding-top').replace(/\D/g,'')): 0;
+				var newPaddingTop = bodyPaddingTop + bannersHeight;
 
-			// We need to accommodate the journey with additional space when we have coupon on mobile.
-			if (meerkat.modules.deviceMediaState.get() === 'xs') {
-				// Results is handled differently.
-				if (meerkat.modules.journeyEngine.getCurrentStep().navigationId === 'results') {
-					// Get the coupon banners height and add it to the current padding.
-					var bannersHeight = $('.coupon-banner-container').innerHeight();
-					// The actual padding top is set in the less using various less calculations.
-					// Since it could be be a different hight we need to get the current value the add to it.
-					var bodyPaddingTop = typeof $bodyWithCoupon.css('padding-top') !== 'undefined' ? parseInt($bodyWithCoupon.css('padding-top').replace(/\D/g,'')): 0;
-					var newPaddingTop = bodyPaddingTop + bannersHeight;
+				// Clear the min height and apply the padding top to the body
+				$headerWrap.css({'min-height': ''});
+				$bodyWithCoupon.css({'padding-top': newPaddingTop + 'px'});
 
-					// Clear the min height and apply the padding top to the body
-					$headerWrap.css({'min-height': ''});
-					$bodyWithCoupon.css({'padding-top': newPaddingTop + 'px'});
+				// Get the results affixed
+				var $dockedResultsHeaders = $('.affixed-settings .result');
 
-					// Get the results affixed
-					var $dockedResultsHeaders = $('.affixed-settings .result');
+				$.each($dockedResultsHeaders, function() {
+					var $dockedResultsHeader = $(this);
+					topValueToBeApplied = defaultResultsDockedTop + bannersHeight;
+					$dockedResultsHeader.css({'top': topValueToBeApplied + 'px'});
+				});
 
-					$.each($dockedResultsHeaders, function() {
-						var $dockedResultsHeader = $(this);
-						topValueToBeApplied = defaultResultsDockedTop + bannersHeight;
-						$dockedResultsHeader.css({'top': topValueToBeApplied + 'px'});
-					});
+			} else {
+				// Get the inner divs combined height
+				var headersActualHeight = $headerWrap.children().innerHeight();
+				// Now that's the real min height
+				$headerWrap.css({'min-height': headersActualHeight + 'px'});
 
-				} else {
-					// Get the inner divs combined height
-					var headersActualHeight = $headerWrap.children().innerHeight();
-					// Now that's the real min height
-					$headerWrap.css({'min-height': headersActualHeight + 'px'});
-
-				}
 			}
 		}
 	}
