@@ -251,7 +251,8 @@ Process:
 		show: show,
 		hide: hide,
 		fail: fail,
-		register: register
+		register: register,
+		reset: reset
 	});
 
 })(jQuery);

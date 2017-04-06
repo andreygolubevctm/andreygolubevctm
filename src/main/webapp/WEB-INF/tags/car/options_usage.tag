@@ -11,6 +11,9 @@
 
 <%-- HTML --%>
 <form_v2:fieldset legend="Using Your Car" id="${name}FieldSet">
+	<div class="hidden exoticUsageQuestions">
+		<car:exotic_your_usage_questions xpath="${xpath}/exotic" />
+	</div>
 
 	<div id="securityOptionHiddenRow"></div>
 	<form_v2:row id="securityOptionRow" label="Does the car have an alarm or an immobiliser fitted?" helpId="5">
@@ -58,7 +61,7 @@
 	</form_v2:row>
 
 	<c:set var="analAttribute"><field_v1:analytics_attr analVal="Km Driven - Tool Tip" quoteChar="\"" /></c:set>
-	<form_v2:row label="Enter the number of kilometres the car is driven per year (Australian average 15,000 Km’s per year)" helpId="14" tooltipAttributes="${analAttribute}">
+	<form_v2:row label="Enter the number of kilometres the car is driven per year (Australian average 15,000 Km’s per year)" helpId="14" className="noOfKms" tooltipAttributes="${analAttribute}">
 		<c:set var="analAttribute"><field_v1:analytics_attr analVal="Km Driven" quoteChar="\"" /></c:set>
 		<field_v2:kilometers_travelled xpath="${xpath}/annualKilometres" id="annual_kilometres" className="annual_kilometres" placeHolder="Example: 20000" required="true" additionalAttributes="${analAttribute}" />
 	</form_v2:row>

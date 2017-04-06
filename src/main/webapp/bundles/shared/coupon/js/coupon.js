@@ -150,6 +150,7 @@
 			$('.coupon-banner-container').html(currentCoupon.contentBanner);
             $('.coupon-tile-container').html(currentCoupon.contentTile);
             $('body').addClass('couponShown');
+            meerkat.modules.healthMoreInfo.dynamicPyrrBanner();
 		} else {
             $('#contactForm').find('.quoteSnapshot').show();
             $('.callCentreHelp').show();
