@@ -23,11 +23,6 @@
 	<c:set var="items" value="${items},${currentYear - 6}=More than 5 years,NotAtThisAddress=Not yet living at this address" />
 
 <form_v2:fieldset legend="Occupancy Details">
-	<%-- Commencement Date --%>
-	<c:if test="${journeySplitTestActive eq false}">
-		<c:set var="fieldXpath" value="${baseXpath}/startDate" />
-		<home:commencementDate xpath="${fieldXpath}" />
-	</c:if>
 
 	<%-- Address --%>
 	<c:set var="fieldXpath" value="${baseXpath}/property/address" />
@@ -52,7 +47,12 @@
 		<field_v2:import_select xpath="${fieldXpath}"
 			required="true"
 			title="how the home is occupied"
-			url="/WEB-INF/option_data/occupied_type.html"/>
+			url="/WEB-INF/option_data/occupied_type.html"
+			hideElement="${simplifiedJourneySplitTestActive ? 'true' : 'false'}" />
+
+		<c:if test="${simplifiedJourneySplitTestActive}">
+			<div id="hasOccupiedContainer" data-selector="${go:nameFromXpath(fieldXpath)}"></div>
+		</c:if>
 	</form_v2:row>
 
 	<%-- When Moved in Year + Month --%>
@@ -82,9 +82,5 @@
 	</core_v1:js_template>
 
 	<field_v1:hidden xpath="${xpath}/coverTypeWarning/chosenOption"/>
-
-	<c:if test="${journeySplitTestActive eq true}">
-		<home:business_activity_v2 xpath="home/businessActivity" />
-	</c:if>
 
 </form_v2:fieldset>

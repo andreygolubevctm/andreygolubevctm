@@ -16,7 +16,6 @@ var healthFunds_BUP = {
 	$claimsAccountOptin: $('#health_payment_bank_claims'),
 	$primaryMiddleName: $('#health_application_primary_middleName'),
 	$partnerMiddleName: $('#health_application_partner_middleName'),
-	$ippTokenisation: $('#health_payment_credit_ipp_tokenisation'),
 set: function () {
 	"use strict";
 
@@ -151,7 +150,7 @@ set: function () {
 		healthFunds_BUP.$partnerMiddleName.setRequired(true);
 
 		<%-- Unset any ipp tokenisation --%>
-		healthFunds_BUP.$ippTokenisation.val("");
+		meerkat.modules.healthPaymentIPP.reset();
 	}
 };
 </c:set>

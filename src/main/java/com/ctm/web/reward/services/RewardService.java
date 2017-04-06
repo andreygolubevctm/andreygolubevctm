@@ -94,6 +94,7 @@ public class RewardService {
 		final Optional<AuthenticatedData> authenticatedData = Optional.ofNullable(sessionDataServiceBean.getAuthenticatedSessionData(request));
 
 		boolean getFromCache = true;
+		boolean operatorElevated = false;
 		ZonedDateTime effective = ZonedDateTime.now();
 		final Date appDate = ApplicationService.getApplicationDateIfSet(request);
 		if (appDate != null) {
@@ -105,18 +106,21 @@ public class RewardService {
 			// These people can do adhoc orders so make sure they do not get cached response
 			LOGGER.info("Reward: getAllActiveCampaigns cache busted. operatorId={}", authenticatedData.map(AuthenticatedData::getUid).orElse(null));
 			getFromCache = false;
+			operatorElevated = true;
 		}
 		//TODO else if get the "journey start time" from session
 
-		return getAllActiveCampaigns(vertical, brand.getCode(), effective, getFromCache);
+		return getAllActiveCampaigns(vertical, brand.getCode(), effective, getFromCache, operatorElevated);
 	}
 
 	public GetCampaignsResponse getAllActiveCampaigns(final Vertical.VerticalType vertical, final String brandCode,
 													  final ZonedDateTime effectiveDateTime,
-													  final boolean getFromCache) {
+													  final boolean getFromCache,
+													  final boolean operatorElevated) {
 		// Round the time so we can hit the cache
 		final ZonedDateTime roundedEffective = roundupMinutes(effectiveDateTime);
-		return rewardCampaignService.getAllActiveCampaigns(vertical, brandCode, roundedEffective, getFromCache);
+		return rewardCampaignService.getAllActiveCampaigns(vertical, brandCode, roundedEffective, getFromCache,
+				operatorElevated);
 	}
 
 	/*
