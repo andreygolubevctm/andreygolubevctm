@@ -365,7 +365,7 @@
 				meerkat.modules.healthMoreInfo.initMoreInfo();
 				meerkat.modules.healthPriceComponent.initHealthPriceComponent();
 				meerkat.modules.healthDualPricing.initDualPricing();
-				meerkat.modules.healthPyrrCampaign.initPyrrCampaign();
+				meerkat.modules.healthPyrrCampaign.initPyrrCampaign(true);
 
 			},
 			onBeforeEnter:function enterResultsStep(event){
