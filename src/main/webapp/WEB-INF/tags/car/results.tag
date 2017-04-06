@@ -116,6 +116,22 @@
 		{{ var promotionText = (!_.isUndefined(obj.discountOffer) && !_.isNull(obj.discountOffer) && obj.discountOffer.length > 0) ? obj.discountOffer : ''; }}
 		{{ var offerTermsContent = (!_.isUndefined(obj.discountOfferTerms) && !_.isNull(obj.discountOfferTerms) && obj.discountOfferTerms.length > 0) ? obj.discountOfferTerms : ''; }}
 
+		{{ var template = $("#title-download-special-template").html(); }}
+		{{ var htmlTemplate = _.template(template); }}
+		{{ var titleDownloadSpecialTemplate = htmlTemplate(obj); }}
+
+        {{ var template = $("#call-action-buttons-price-template").html(); }}
+        {{ var htmlTemplate = _.template(template); }}
+        {{ var callActionButtonsPriceTemplate = htmlTemplate(obj); }}
+
+        {{ var template = $("#promotion-price-template").html(); }}
+        {{ var htmlTemplate = _.template(template); }}
+        {{ var promotionPriceTemplate = htmlTemplate(obj); }}
+
+		{{ var template = $('#excess-price-template').html(); }}
+		{{ var htmlTemplate = _.template(template); }}
+		{{ var excessPriceTemplate = htmlTemplate(obj); }}
+
 		{{ var template = $("#provider-logo-template").html(); }}
 		{{ var logo = _.template(template); }}
 		{{ logo = logo(obj); }}
@@ -153,9 +169,9 @@
 		{{ var htmlTemplate = _.template(template); }}
 		{{ var annualPriceFeaturesTemplate = htmlTemplate(obj); }}
 
-		{{ var template = $("#call-action-buttons-template").html(); }}
+		{{ var template = $("#call-action-buttons-features-template").html(); }}
 		{{ var htmlTemplate = _.template(template); }}
-		{{ var callActionButtonsTemplate = htmlTemplate(obj); }}
+		{{ var callActionButtonsFeaturesTemplate = htmlTemplate(obj); }}
 
 		<div class="result-row result_{{= obj.productId }}" data-productId="{{= obj.productId }}" data-available="Y">
 
@@ -198,7 +214,7 @@
 							{{= mainCallToActionButton }}
 						</div>
 
-						{{= callActionButtonsTemplate }}
+						{{= callActionButtonsFeaturesTemplate }}
 
 						{{ if (promotionText.length > 0) { }}
 						<fieldset class="result-special-offer">
@@ -215,67 +231,71 @@
 
 				<div class="resultInsert priceMode">
 					<div class="row">
-						<div class="col-xs-3 col-sm-7 col-md-6">
-							{{= logo }}
+                        <div class="col-xs-3 col-sm-2 col-md-1">
+                            {{= logo }}
+                            <div class="hidden-md hidden-lg">
+                                {{= callActionButtonsPriceTemplate }}
+                            </div>
+
 							<div class="compare-toggle-wrapper">
 								<input type="checkbox" class="compare-tick" data-productId="{{= obj.productId }}" id="price_compareTick_{{= obj.productId }}" />
 								<label for="price_compareTick_{{= obj.productId }}"></label>
 								<label for="price_compareTick_{{= obj.productId }}" class="compare-label"></label>
 							</div>
-							<h2 class="hidden-xs productTitle">{{= productTitle }}</h2>
+                        </div>
 
-							<p class="description hidden-xs hidden-sm">{{= productDescription }}</p>
+                        <div class="col-xs-9 col-sm-10 col-md-11 right-col">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-7 col-md-6">
+                                    {{= titleDownloadSpecialTemplate }}
+                                </div>
 
-							{{ if (promotionText.length > 0) { }}
-							<div class="promotion visible-sm">
-								<span class="icon icon-tag"></span> {{= promotionText }}
-								{{ if (offerTermsContent.length > 0) { }}
-								<a class="small offerTerms" href="javascript:;" ${navBtnAnalAttribute}>Offer terms</a>
-								<div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
-								{{ } }}
-							</div>
-							{{ } }}
+                                <div class="col-xs-12 col-sm-5 col-md-6">
+                                    <div class="excess-price-container">
+										{{= excessPriceTemplate }}
 
-							{{ if (obj.specialConditions != null && typeof obj.specialConditions !== 'undefined' && obj.specialConditions.description != null && typeof obj.specialConditions.description !== 'undefined' &&  obj.specialConditions.description.length > 0) { }}
-							<p class="specialConditions hidden-xs"><small>Special conditions: {{= obj.specialConditions.description }}</small></p>
-							{{ } }}
-						</div>
-						<div class="col-xs-9 col-sm-4 col-sm-offset-1 col-md-offset-0 col-md-6">
-							<div class="row">
-								<div class="col-xs-6 col-xs-push-6 col-sm-push-0 col-md-3 excess">
-									<div class="excessAmount">{{= '$' }}{{= obj.excess }}</div>
-									<div class="excessTitle">Excess</div>
-								</div>
-								<div class="col-xs-6 col-xs-pull-6 col-sm-pull-0 col-md-4 col-lg-5 price">
-									{{= annualPriceTemplate }}
+                                        <div class="price-container">
+											{{= annualPriceTemplate }}
 
-									{{= monthlyPriceTemplate }}
+											{{= monthlyPriceTemplate }}
 
-									<div class="excessAndPrice hidden priceNotAvailable">
-										<span class="frequencyName">Monthly</span> payment is not available for this product.
+											<div class="excessAndPrice hidden priceNotAvailable">
+											<span class="frequencyName">Monthly</span> payment is not available for this product.
+											</div>
+                                        </div>
+                                    </div>
+
+									<div class="cta-container hidden-xs hidden-sm">
+										{{= mainCallToActionButton }}
+									</div>
+                                </div>
+                            </div>
+
+							<div class="clearfix">
+								{{= callActionButtonsPriceTemplate }}
+
+								<div class="promotion-cta-container hidden-xs">
+									<div class="promotion-container">
+										{{= promotionPriceTemplate }}
+									</div>
+
+									<div class="cta-container hidden-md hidden-lg">
+										{{= mainCallToActionButton }}
 									</div>
 								</div>
-								<div class="col-xs-12 col-md-5 col-lg-4 hidden-xs">
-									<a class="btn btn-primary btn-cta btn-block btn-more-info" href="javascript:;" data-productId="{{= obj.productId }}" ${navBtnAnalAttribute}>More Info & Apply <span class="icon icon-arrow-right" /></a>
-								</div>
 							</div>
-							{{ if (promotionText.length > 0) { }}
-							<div class="promotion hidden-sm">
-								<span class="icon icon-tag"></span> {{= promotionText }}
-								{{ if (offerTermsContent.length > 0) { }}
-								<a class="small hidden-xs offerTerms" href="javascript:;" ${navBtnAnalAttribute}>Offer terms</a>
-								<div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
-								{{ } }}
-							</div>
-							{{ } }}
-
-							{{ if (typeof obj.conditions !== 'undefined' && typeof obj.conditions.condition !== 'undefined' && obj.conditions.condition.length > 0) { }}
-							<div class="specialConditions visible-xs">
-								<small class="visible-xs">Special conditions apply</small>
-							</div>
-							{{ } }}
-						</div>
+                        </div>
 					</div><%-- /row --%>
+
+                    <div class="promotion-cta-container visible-xs">
+                        <div class="promotion-container">
+                            {{= promotionPriceTemplate }}
+                        </div>
+
+                        <div class="cta-container">
+                            {{= mainCallToActionButton }}
+                        </div>
+                    </div>
 				</div><%-- /resultInsert --%>
 
 			</div>
@@ -403,8 +423,8 @@
 		<div class="frequencyAmount">{{= '$' }}{{= obj.price.monthlyPremium.toFixed(2) }}</div>
 		<div class="frequencyTitle">Monthly Price</div>
 		<div class="monthlyBreakdown">
-			<span class="nowrap"><span class="firstPayment">1st Month: {{= '$' }}{{= obj.price.monthlyFirstMonth.toFixed(2) }}</span></span>
-			<span class="nowrap"><span class="totalPayment">Total: {{= '$' }}{{= obj.price.annualisedMonthlyPremium.toFixed(2) }}</span></span>
+			<span class="nowrap"><span class="firstPayment"><b>1st Month:</b> {{= '$' }}{{= obj.price.monthlyFirstMonth.toFixed(2) }}</span></span>
+			<span class="nowrap"><span class="totalPayment"><b>Total:</b> {{= '$' }}{{= obj.price.annualisedMonthlyPremium.toFixed(2) }}</span></span>
 		</div>
 	</div>
 </core_v1:js_template>
@@ -415,6 +435,66 @@
 		<div class="frequencyTitle">Annual Price</div>
 	</div>
 </core_v1:js_template>
+
+<core_v1:js_template id="title-download-special-template">
+	{{ var productTitle = !_.isUndefined(obj.productName) ? obj.productName : 'Unknown product name'; }}
+
+	<div class="title-download-special-container">
+		<h2 class="productTitle">{{= productTitle }}</h2>
+
+		<a href="javascript:;" class="link-more-info" data-productId="{{= obj.productId }}" ${navBtnAnalAttribute}>View product details and download disclosure statements</a>
+
+		{{ if (obj.specialConditions != null && typeof obj.specialConditions !== 'undefined' && obj.specialConditions.description != null && typeof obj.specialConditions.description !== 'undefined' &&  obj.specialConditions.description.length > 0) { }}
+			<p class="specialConditions">
+				<small>Special conditions: {{= obj.specialConditions.description }}</small>
+			</p>
+		{{ } }}
+	</div>
+</core_v1:js_template>
+
+<core_v1:js_template id="call-action-buttons-price-template">
+    <%-- Call Insurer Direct action button. --%>
+    {{ var callInsurerDirectActionButton = '<div class="btnContainer"><a class="btn btn-sm btn-call btn-block btn-call-actions btn-calldirect" data-callback-toggle="calldirect" href="javascript:;" data-productId="'+obj.productId+'" ${navBtnAnalAttribute}>Call Direct</a></div>' }}
+
+    <%-- Call Me Back action button. --%>
+    {{ var callMeBackActionButton = '<div class="btnContainer"><a class="btn btn-sm btn-back btn-block btn-call-actions btn-callback" data-callback-toggle="callback" href="javascript:;" data-productId="'+obj.productId+'" ${navBtnAnalAttribute}>Get Call Back</a></div>' }}
+
+    <div class="call-actions-buttons">
+        {{ if (obj.contact.allowCallDirect === true) { }}
+            {{= callInsurerDirectActionButton }}
+        {{ } }}
+        {{ if (obj.contact.allowCallMeBack === true) { }}
+            {{= callMeBackActionButton }}
+        {{ } }}
+    </div>
+</core_v1:js_template>
+
+<core_v1:js_template id="promotion-price-template">
+    {{ var promotionText = (!_.isUndefined(obj.discountOffer) && !_.isNull(obj.discountOffer) && obj.discountOffer.length > 0) ? obj.discountOffer : ''; }}
+    {{ var offerTermsContent = (!_.isUndefined(obj.discountOfferTerms) && !_.isNull(obj.discountOfferTerms) && obj.discountOfferTerms.length > 0) ? obj.discountOfferTerms : ''; }}
+
+    {{ if (promotionText.length > 0) { }}
+        <div class="promotion">
+            {{= promotionText }}
+            {{ if (offerTermsContent.length > 0) { }}
+                <a class="small offerTerms" href="javascript:;" ${navBtnAnalAttribute}>Offer terms</a>
+                <div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
+            {{ } }}
+        </div>
+    {{ } }}
+</core_v1:js_template>
+
+<core_v1:js_template id="excess-price-template">
+	<div class="excess-container">
+		<div class="excess">
+			<div class="excessAmount">{{= '$' }}{{= obj.excess }}</div>
+			<div class="excessTitle">Excess</div>
+		</div>
+
+		<a href="javascript:;" class="link-more-info" data-productId="{{= obj.productId }}" ${navBtnAnalAttribute}>Additional Excesses Applicable</a>
+	</div>
+</core_v1:js_template>
+
 
 <%-- Price template featuresMode --%>
 <core_v1:js_template id="monthly-price-features-template">
@@ -442,8 +522,6 @@
 		<div class="frequencyTitle">Annual</div>
 	</div>
 </core_v1:js_template>
-
-
 
 <!-- COMPARE TEMPLETING BELOW -->
 <%-- Template for CAR results list. --%>
@@ -572,7 +650,7 @@
 
 
 <!-- Call action buttons. -->
-<core_v1:js_template id="call-action-buttons-template">
+<core_v1:js_template id="call-action-buttons-features-template">
 	<%-- Call Insurer Direct action button. --%>
 	{{ var callInsurerDirectActionButton = '<div class="btnContainer"><a class="btn btn-sm btn-call btn-block btn-call-actions btn-calldirect" data-callback-toggle="calldirect" href="javascript:;" data-productId="'+obj.productId+'" ${navBtnAnalAttribute}>Call Direct</a></div>' }}
 
@@ -581,17 +659,17 @@
 
 	{{ var colClass = 'col-xs-12'; }}
 
-	{{ if(obj.contact.allowCallDirect === true && obj.contact.allowCallMeBack === true) { }}
+	{{ if (obj.contact.allowCallDirect === true && obj.contact.allowCallMeBack === true) { }}
 	{{ colClass = 'col-xs-6'; }}
 	{{ } }}
 
 	<div class="call-actions-buttons row">
-		{{ if(obj.contact.allowCallDirect === true) { }}
+		{{ if (obj.contact.allowCallDirect === true) { }}
 		<div class="{{= colClass }}">
 			{{= callInsurerDirectActionButton }}
 		</div>
 		{{ } }}
-		{{ if(obj.contact.allowCallMeBack === true) { }}
+		{{ if (obj.contact.allowCallMeBack === true) { }}
 		<div class="{{= colClass }}">
 			{{= callMeBackActionButton }}
 		</div>
