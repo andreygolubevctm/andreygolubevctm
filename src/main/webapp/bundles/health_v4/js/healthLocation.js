@@ -20,6 +20,7 @@
             location: $('#health_situation_location'),
             state: $('input[name=health_situation_state]'),
             postcode: $('#health_situation_postcode'),
+            postcodeApp: $('#health_application_address_postCode'),
             suburb: $('#health_situation_suburb')
         };
     }
@@ -45,6 +46,7 @@
             $elements.location.val(location);
             $elements.state.filter('[value='+state+']').trigger('click');
             $elements.postcode.val(postcode);
+            $elements.postcodeApp.val(postcode);
             $elements.suburb.val(suburb);
         }
     }

@@ -373,6 +373,11 @@
 		</div>
 	</core_v1:js_template>
 
+<%-- FAMOUS --%>
+<div class="hidden famous-results-page">
+	<car:famous_results />
+</div>
+
 <%-- NO RESULTS --%>
 <div class="hidden">
 	<agg_v2:no_quotes id="no-results-content"/>

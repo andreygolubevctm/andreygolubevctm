@@ -14,11 +14,13 @@
 
         $buttons,
         $refineResults,
+        $saveQuote,
         $editDetailsBtn;
 
     function init() {
         $buttons = $('.mobile-nav-buttons');
         $refineResults = $buttons.find('.refine-results a');
+        $saveQuote = $buttons.find('.save-quote a');
         $editDetailsBtn = $buttons.find('.edit-details a');
 
         applyEventListeners();
@@ -59,6 +61,21 @@
         $buttons.find('a').addClass('disabled');
     }
 
+    function disableSpecificButtons(list) {
+        var arr = list.split(',');
+
+        arr.forEach(function (btnClass) {
+            switch (btnClass) {
+                case 'refine':
+                    $refineResults.addClass('disabled');
+                    break;
+                case 'save':
+                    $saveQuote.addClass('disabled');
+                    break;
+            }
+        });
+    }
+
     function enable() {
         $buttons.removeClass('disabled');
         $buttons.find('a').removeClass('disabled');
@@ -67,6 +84,8 @@
     meerkat.modules.register('mobileNavButtons', {
         init: init,
         events: events,
-        disable: disable
+        disable: disable,
+        enable: enable,
+        disableSpecificButtons: disableSpecificButtons
     });
 })(jQuery);
