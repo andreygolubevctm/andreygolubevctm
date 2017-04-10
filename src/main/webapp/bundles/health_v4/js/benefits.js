@@ -72,7 +72,7 @@
             extras: []
         };
         
-        $elements.extras.add($elements.hospital).find('input').not('#health_benefits_benefitsExtras_LimitedCover').each(function () {
+        $elements.extras.add($elements.hospital).find('input').not($elements.limitedCoverIcon).each(function () {
             var $this = $(this),
                 benefitType = _isBenefitElementHospital($this) ? 'hospital' : 'extras';
             // If health filters needs any other properties in filters_benefits.tag, add them here.
