@@ -19,7 +19,13 @@
                 appStreetSearch: $('#health_application_address_streetSearch'),
                 appSuburb: $('#health_application_address_suburb'),
                 appSuburbName: $('#health_application_address_suburbName'),
-                appState: $('#health_application_address_state')
+                appState: $('#health_application_address_state'),
+                appAddressUnitShop: $('#health_application_address_unitShop'),
+                appAddressStreetNum: $('#health_application_address_streetNum'),
+                appAddressUnitType: $('#health_application_address_unitType'),
+                appPostalUnitShop: $('#health_application_postal_unitShop'),
+                appPostalStreetNum: $('#health_application_postal_streetNum'),
+                appPostalUnitType: $('#health_application_postal_unitType')
             };
         });
     }
@@ -100,6 +106,10 @@
 
             $('#health_application_' + personDetailType + '_gender').val(gender);
         });
+
+        $elements.appAddressUnitType.add($elements.appPostalUnitType).on('change', function toggleUnitRequiredFields() {
+           _toggleUnitRequired(this.id.indexOf('address') !== -1 ? 'Address' : 'Postal', this.value !== '');
+        });
     }
 
     function _toggleSelectGender(personDetailType) {
@@ -142,6 +152,17 @@
             }
         } else {
             $genderRow.slideUp();
+        }
+    }
+
+    function _toggleUnitRequired(addressType, isUnit) {
+        var $fields = $elements['app'+addressType+'UnitShop'].add($elements['app'+addressType+'StreetNum']);
+
+        $fields.setRequired(isUnit);
+
+        // blur out of fields to trigger validation when unitType not equal to 'UN'
+        if (!isUnit) {
+            $fields.blur();
         }
     }
 

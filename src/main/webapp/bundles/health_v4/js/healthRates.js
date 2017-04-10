@@ -28,7 +28,8 @@
             partnerCurrent: $('input[name="health_healthCover_partner_cover"]'),
             partnerLoadingManual: $('input[name="health_healthCover_partner_lhc"]'),
             dependants: $('#health_healthCover_dependants'),
-            commencementDate: $('#health_payment_details_start')
+            commencementDate: $('#health_payment_details_start'),
+            searchDate: $('#health_searchDate')
         };
 
         $elements.income.on('change', meerkat.modules.healthRebate.setRebate);
@@ -125,8 +126,11 @@
 
         postData.commencementDate = null;
         var commencementDate = $elements.commencementDate.val();
+        var searchDate = $elements.searchDate.val();
         if(!_.isEmpty(commencementDate)) {
             postData.commencementDate = commencementDate;
+        } else if (!_.isEmpty(searchDate)) {
+            postData.commencementDate = searchDate;
         }
 
         return meerkat.modules.comms.post({
@@ -164,6 +168,7 @@
         rates = ratesObject;
         $("#health_rebate").val((rates.rebate || ''));
         $("#health_rebateChangeover").val((rates.rebateChangeover || ''));
+        $("#health_previousRebate").val((rates.previousRebate || ''));
         $("#health_loading").val((rates.loading || ''));
         $("#health_primaryCAE").val((rates.primaryCAE || ''));
         $("#health_partnerCAE").val((rates.partnerCAE || ''));
@@ -175,9 +180,11 @@
         if(_.isEmpty(rates)) rates = {};
         rates.rebate = "0";
         rates.rebateChangeover = "0";
+        rates.previousRebate = "0";
         setRates(rates);
         $("#health_rebate").val(rates.rebate);
         $("#health_rebateChangeover").val(rates.rebateChangeover);
+        $("#health_previousRebate").val(rates.previousRebate);
     }
 
     meerkat.modules.register("healthRates", {

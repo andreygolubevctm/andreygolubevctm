@@ -25,7 +25,7 @@
 
 	function applyEventListeners() {
 		$carUseDropdown.on('change', function changeCarUse(){
-			if ($(this)[0].selectedIndex > 1){
+			if ($(this)[0].selectedIndex > (meerkat.modules.carExotic.isExotic() ? 2 : 1)){
 				$passengerPaymentRadio.slideDown();
 				$goodsPaymentRadio.slideDown();
 			} else {
