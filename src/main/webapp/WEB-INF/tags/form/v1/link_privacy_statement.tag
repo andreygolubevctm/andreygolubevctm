@@ -23,5 +23,14 @@
 	<c:when test="${useModalMessage == true}">
 		<a data-toggle="dialog" data-content="${openingContent}${bodyContent}" data-cache="true" data-dialog-hash-id="privacystatement">${anchorLabel}</a>
 	</c:when>
-	<c:otherwise><a href='/static/legal/privacy_policy.pdf' target='_blank'>${anchorLabel}</a></c:otherwise>
+	<c:otherwise>
+		<c:choose>
+			<c:when test="${pageSettings.getBrandCode() eq 'choo'}">
+				<a href='/static/legal/choo/privacy_policy.pdf' target='_blank'>${anchorLabel}</a>
+			</c:when>
+			<c:otherwise>
+				<a href='/static/legal/privacy_policy.pdf' target='_blank'>${anchorLabel}</a>
+			</c:otherwise>
+		</c:choose>
+	</c:otherwise>
 </c:choose>
