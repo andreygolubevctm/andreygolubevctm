@@ -478,6 +478,32 @@
 
 // Overrides for CAR-1399
 // Once HNC-484 has completed overrides will be placed within results_v2/v5
+.car {
+	&[data-step=results] {
+		.navbar {
+			.inc-gst {
+				display: none;
+			}
+		}
+
+		&.priceMode {
+			.navbar {
+				.inc-gst {
+					display: block;
+					line-height: @navbar-height;
+				}
+			}
+		}
+	}
+
+	.v2 {
+		.inc-gst {
+			color: @gray-light;
+			text-align: center;
+		}
+	}
+}
+
 .priceMode.v2 {
 	.result-row {
 		border-top: none;
@@ -485,13 +511,13 @@
 		border-left: none;
 		border-bottom: 1px solid @results-border-color;
 		margin-bottom: 15px;
-        .transition(border-color 0.3s ease-in-out);
 
         .productTitle {
             .transition(color 0.3s ease-in-out);
         }
 
         &.compared {
+			.transition(border-color 0.3s ease-in-out);
             border-color: @theme-secondary;
 
             .productTitle {
