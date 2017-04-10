@@ -98,7 +98,7 @@
 
 		<agg_v1:payment_frequency_buttons xpath="filter/paymentFrequency" />
 
-		<agg_v1:inclusive_gst />
+		<agg_v1:inclusive_gst className="visible-xs" />
 
 		<div class="resultsOverflow">
 			<div class="results-table"></div>

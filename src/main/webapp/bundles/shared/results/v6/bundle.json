@@ -1,6 +1,0 @@
-{
-  "dependencies": [
-    "shared/resultsFeaturesPagination/v1",
-    "shared/resultsFeaturesSpecialOffer"
-  ]
-}
