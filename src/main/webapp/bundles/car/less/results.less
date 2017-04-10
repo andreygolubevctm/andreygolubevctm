@@ -485,6 +485,11 @@
 		border-left: none;
 		border-bottom: 1px solid @results-border-color;
 		margin-bottom: 15px;
+        .transition(border-color 0.3s ease-in-out);
+
+        .productTitle {
+            .transition(color 0.3s ease-in-out);
+        }
 
         &.compared {
             border-color: @theme-secondary;
