@@ -40,6 +40,12 @@ public class RandomContentServiceTest {
                 .thenReturn(randomNumberGenerator);
         randomContentService = new RandomContentService();
 
+        when(randomNumberGenerator.getRandomNumber(0)).thenThrow(new IllegalArgumentException());
+        when(randomNumberGenerator.getRandomNumber(1)).thenReturn(0);
+        when(randomNumberGenerator.getRandomNumber(2)).thenReturn(0);
+        when(randomNumberGenerator.getRandomNumber(3)).thenReturn(0);
+        when(randomNumberGenerator.getRandomNumber(4)).thenReturn(0);
+
     }
 
     @Test
@@ -52,7 +58,6 @@ public class RandomContentServiceTest {
 
     @Test
     public void initWithValue() throws Exception {
-        when(randomNumberGenerator.getRandomNumber(1)).thenReturn(0);
         String value = "supplementaryValue";
         ArrayList<ContentSupplement> supplementary = new ArrayList<>();
         createContentSupplement(supplementary, value);
@@ -65,7 +70,6 @@ public class RandomContentServiceTest {
 
     @Test
     public void initWithValues() throws Exception {
-        when(randomNumberGenerator.getRandomNumber(3)).thenReturn(1);
         ArrayList<ContentSupplement> supplementary = new ArrayList<>();
         String value = "supplementaryValue";
         createContentSupplement(supplementary, value);
@@ -73,8 +77,14 @@ public class RandomContentServiceTest {
         createContentSupplement(supplementary,value2);
         String value3 = "supplementaryValue3";
         createContentSupplement(supplementary,value3);
-
         String contentKey = setupContents(supplementary);
+
+        when(randomNumberGenerator.getRandomNumber(3)).thenReturn(0);
+        randomContentService.init( contentService,  request,  contentKey);
+        assertTrue(randomContentService.hasSupplementaryValue());
+        assertEquals(value, randomContentService.getSupplementaryValue());
+
+        when(randomNumberGenerator.getRandomNumber(3)).thenReturn(1);
         randomContentService.init( contentService,  request,  contentKey);
         assertTrue(randomContentService.hasSupplementaryValue());
         assertEquals(value2, randomContentService.getSupplementaryValue());
