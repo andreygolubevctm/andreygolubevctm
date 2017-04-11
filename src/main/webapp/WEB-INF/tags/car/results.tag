@@ -430,7 +430,7 @@
 	<%-- Call Me Back action button. --%>
 	<div class="btnContainer">
 		<a class="btn btn-sm btn-back btn-block btn-call-actions btn-callback" data-callback-toggle="callback" href="javascript:;" data-productId="{{= obj.productId }}" ${navBtnAnalAttribute}>
-			Get a Call Back
+			Get <span class="hidden-xs">a</span> Call Back
 		</a>
 	</div>
 </core_v1:js_template>

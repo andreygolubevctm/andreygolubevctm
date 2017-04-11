@@ -24,8 +24,18 @@ body {
   }
 }
 
+#results_v5.priceMode {
+  .headers.featuresNormalHeader {
+    .btn-call-actions {
+      @media (@xs-only) {
+        border-width: 1px;
+      }
+    }
+  }
+}
+
 .priceMode.v6 {
-  .result-row {
+  .result-row[data-available=Y] {
     border-top: none;
     border-right: none;
     border-left: none;
@@ -34,6 +44,12 @@ body {
 
     .productTitle {
       .transition(color 0.3s ease-in-out);
+      color: @theme-dark;
+      font-family: @font-family-theme-regular;
+
+      @media (@xs-only) {
+        font-size: 18px;
+      }
     }
 
     &.compared {
@@ -49,201 +65,207 @@ body {
       padding: @results-price-row-padding / 2;
 
       // Product is available
-      &[data-available="Y"] {
-        cursor: default;
+      cursor: default;
 
-        .resultInsert.priceMode {
-          padding-right: 0;
+      .resultInsert.priceMode {
+        padding-right: 0;
 
-          &:after {
-            content: "";
-          }
+        &:after {
+          content: "";
         }
       }
     }
-  }
 
-  .companyLogo {
-    float: none;
+    .companyLogo {
+      float: none;
 
-    @media (max-width: @screen-xs) {
-      margin-left: 7px;
-    }
-
-    @media (@sm) {
-      margin: 0 auto;
-    }
-  }
-
-  .compare-toggle-wrapper {
-    display: none;
-
-    @media (@md) {
-      display: block;
-
-      .compare-tick {
-        + label {
-          margin-left: -15px;
-        }
-
-        .lt-ie9 &.checked + label + label,
-        &:checked + label + label {
-          color: @compare-label-selected-color;
-          &:before {
-            content: "Selected";
-            color: @theme-secondary;
-          }
-        }
-
-        .lt-ie9 &.checked,
-        &:checked {
-          & + label:before {
-            background-color: @compare-tick-selected-color;
-            border-radius: 100%;
-            color: #fff;
-            content: "\e931";
-            padding: 0.35em;
-            top: 2px;
-            left: -2px;
-          }
-          & + label:after {
-            content: "";
-          }
-        }
-        .lt-ie9 &.checked {
-          & + label:before {
-            background-color: @compare-tick-selected-color;
-            border-radius: 100%;
-            color: #fff;
-            content: "\e931";
-            padding: 0.35em;
-            top: 2px;
-            left: -2px;
-          }
-          & + label:after {
-            content: "";
-          }
-        }
+      @media (max-width: @screen-xs) {
+        margin-left: 7px;
       }
 
-      .compare-label {
-        top: -16px;
-        left: 28px;
+      @media (@sm) {
+        margin: 0 auto;
       }
     }
-  }
 
-  .right-col {
-    @media (@md) {
-      padding-left: 30px;
-    }
-
-    .call-actions-buttons {
+    .compare-toggle-wrapper {
       display: none;
+      margin-top: 7px;
 
       @media (@md) {
         display: block;
-        float: left;
-        margin: 10px auto;
-        width: 30%;
 
-        .btnContainer {
-          float: left;
-          width: 45%;
-          margin-right: 5%;
+        .compare-tick {
+          + label {
+            margin-left: -15px;
+          }
+
+          .lt-ie9 &.checked + label + label,
+          &:checked + label + label {
+            color: @compare-label-selected-color;
+            &:before {
+              content: "Selected";
+              color: @theme-secondary;
+            }
+          }
+
+          .lt-ie9 &.checked,
+          &:checked {
+            & + label:before {
+              background-color: @compare-tick-selected-color;
+              border-radius: 100%;
+              color: #fff;
+              content: "\e931";
+              padding: 0.35em;
+              top: 2px;
+              left: -2px;
+            }
+            & + label:after {
+              content: "";
+            }
+          }
+          .lt-ie9 &.checked {
+            & + label:before {
+              background-color: @compare-tick-selected-color;
+              border-radius: 100%;
+              color: #fff;
+              content: "\e931";
+              padding: 0.35em;
+              top: 2px;
+              left: -2px;
+            }
+            & + label:after {
+              content: "";
+            }
+          }
+        }
+
+        .compare-label {
+          top: -16px;
+          left: 28px;
         }
       }
     }
-  }
 
-  .call-actions-buttons {
-    width: 75px;
-
-    @media (@sm) {
-      width: 100%;
-    }
-
-    .btnContainer {
-      margin: 5px auto;
-      a {
-        padding: 5px 0;
-      }
-    }
-  }
-
-  h2 {
-    color: @theme-dark;
-    font-family: @font-family-theme-regular;
-
-    @media (@xs-only) {
-      font-size: 18px;
-    }
-  }
-
-  a:not(.btn) {
-    font-size: @font-size-small;
-  }
-
-  small {
-    font-style: normal;
-  }
-
-  .frequencyTitle,
-  .excessTitle,
-  .frequency.monthly .monthlyBreakdown .totalPayment {
-    text-transform: none;
-  }
-
-  .title-download-special-container {
-    margin-bottom: 10px;
-  }
-
-  .excess-price-container {
-    &:extend(.clearfix all);
-
-    @media (@sm) {
-      margin-left: -15px;
-    }
-
-    @media (@md) {
-      float: left;
-      width: 55%;
-    }
-  }
-
-  .excess-container {
-    &:extend(.clearfix all);
-    float: left;
-    padding-top: 5px;
-    width: 60%;
-
-    @media (@md) {
-      width: 50%;
-    }
-
-    .excess {
-      text-align: center;
-
-      @media (@xs-only) {
-        float: left;
-        width: 39%;
+    .right-col {
+      @media (@md) {
+        padding-left: 30px;
       }
 
-      div {
-        float: none;
-        width: auto;
-      }
-
-      .excessAmount {
-        margin-top: 0;
+      .call-actions-buttons {
+        display: none;
 
         @media (@md) {
-          font-size: 22px;
+          display: block;
+          float: left;
+          margin: 10px auto;
+          width: 30%;
+
+          .btnContainer {
+            float: left;
+            width: 45%;
+            margin-right: 5%;
+          }
+        }
+      }
+    }
+
+    .call-actions-buttons {
+      width: 75px;
+
+      @media (@sm) {
+        width: 100%;
+      }
+
+      .btnContainer {
+        margin: 5px auto;
+        a {
+          padding: 5px 0;
+        }
+      }
+    }
+
+    a:not(.btn) {
+      font-size: @font-size-small;
+    }
+
+    small {
+      font-style: normal;
+    }
+
+    .frequencyTitle,
+    .excessTitle,
+    .frequency.monthly .monthlyBreakdown .totalPayment {
+      text-transform: none;
+    }
+
+    .title-download-special-container {
+      margin-bottom: 10px;
+    }
+
+    .excess-price-container {
+      &:extend(.clearfix all);
+
+      @media (@sm) {
+        margin-left: -15px;
+      }
+
+      @media (@md) {
+        float: left;
+        width: 55%;
+      }
+    }
+
+    .excess-container {
+      &:extend(.clearfix all);
+      float: left;
+      padding-top: 5px;
+      width: 60%;
+
+      @media (@md) {
+        width: 50%;
+      }
+
+      .excess {
+        text-align: center;
+
+        @media (@xs-only) {
+          float: left;
+          width: 39%;
+        }
+
+        div {
+          float: none;
+          width: auto;
+        }
+
+        .excessAmount {
+          margin-top: 0;
+
+          @media (@md) {
+            font-size: 22px;
+          }
+        }
+
+        .excessTitle {
+          margin-top: 0;
+
+          @media (@sm) {
+            text-align: center;
+          }
         }
       }
 
-      .excessTitle {
-        margin-top: 0;
+      a {
+        display: block;
+        line-height: 14px;
+
+        @media (@xs-only) {
+          font-size: 11px;
+          float: right;
+          line-height: 12px;
+          width: 60%;
+        }
 
         @media (@sm) {
           text-align: center;
@@ -251,110 +273,94 @@ body {
       }
     }
 
-    a {
-      display: block;
-      line-height: 14px;
+    .price-container {
+      float: right;
+      width: 40%;
 
-      @media (@xs-only) {
-        font-size: 11px;
-        float: right;
-        line-height: 12px;
-        width: 60%;
+      @media (@md) {
+        width: 50%;
       }
 
-      @media (@sm) {
+      .frequency {
         text-align: center;
+
+        &.monthly {
+          .monthlyBreakdown {
+            color: @gray-slight-dark;
+            line-height: 14px;
+          }
+        }
       }
-    }
-  }
 
-  .price-container {
-    float: right;
-    width: 40%;
+      .frequencyAmount,
+      .frequencyTitle {
+        float: none;
+        margin-top: 0;
+        text-align: center;
+        width: 100%;
+      }
 
-    @media (@md) {
-      width: 50%;
-    }
-
-    .frequency {
-      text-align: center;
-
-      &.monthly {
-        .monthlyBreakdown {
-          color: @gray-slight-dark;
-          line-height: 14px;
+      .frequencyAmount {
+        @media (@lg) {
+          font-size: 40px;
         }
       }
     }
 
-    .frequencyAmount,
-    .frequencyTitle {
-      float: none;
-      margin-top: 0;
-      text-align: center;
-      width: 100%;
-    }
+    .promotion-cta-container {
+      &:extend(.clearfix all);
+      margin-top: 10px;
+      margin-bottom: 10px;
 
-    .frequencyAmount {
-      @media (@lg) {
-        font-size: 40px;
+      @media (@md) {
+        float: right;
+        width: 70%;
       }
     }
-  }
 
-  .promotion-cta-container {
-    &:extend(.clearfix all);
-    margin-top: 10px;
-    margin-bottom: 10px;
+    .promotion-container {
+      @media (@xs-sm-only) {
+        .centerChildElement(55px);
+        float: left;
+        width: 59%;
+      }
 
-    @media (@md) {
-      float: right;
-      width: 70%;
-    }
-  }
+      @media (@md) {
+        float: right;
+      }
 
-  .promotion-container {
-    @media (@xs-sm-only) {
-      .centerChildElement(55px);
-      float: left;
-      width: 59%;
-    }
+      .promotion {
+        background-color: fade(@theme-accent-4, 10%);
+        border-radius: @alert-border-radius;
+        color: @theme-accent-4;
+        font-size: @font-size-small;
+        margin: 0;
+        padding: 5px;
+        width: 100%;
 
-    @media (@md) {
-      float: right;
-    }
-
-    .promotion {
-      background-color: fade(@theme-accent-4, 10%);
-      border-radius: @alert-border-radius;
-      color: @theme-accent-4;
-      font-size: @font-size-small;
-      margin: 0;
-      padding: 5px;
-      width: 100%;
-
-      @media (@sm) {
-        padding: 10px;
-        font-size: @font-size-base;
+        @media (@sm) {
+          padding: 10px;
+          font-size: @font-size-base;
+        }
       }
     }
-  }
 
-  .cta-container {
-    float: right;
-    width: 39%;
+    .cta-container {
+      float: right;
+      width: 39%;
 
-    @media (@xs-sm-only) {
-      .centerChildElement(55px);
-    }
+      @media (@xs-sm-only) {
+        .centerChildElement(55px);
+      }
 
-    @media (@md) {
-      width: 45%;
-    }
+      @media (@md) {
+        width: 45%;
+      }
 
-    .btn-cta {
-      @media (@xs-only) {
-        font-size: @font-size-base;
+      .btn-cta {
+        @media (@xs-only) {
+          font-size: @font-size-base;
+        }
       }
     }
   }
