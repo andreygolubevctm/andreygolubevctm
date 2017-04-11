@@ -26,7 +26,7 @@
     <div class="title-download-special-container">
         <h2 class="productTitle">{{= productTitle }}</h2>
 
-        <a href="javascript:;" class="link-more-info" data-productId="{{= obj.productId }}" ${navBtnAnalAttribute}>View product details and download disclosure statements</a>
+        <a href="javascript:;" class="link-more-info" data-productId="{{= obj.productId }}">View product details and download disclosure statements</a>
 
         {{ if (obj.specialConditions != null && typeof obj.specialConditions !== 'undefined' && obj.specialConditions.description != null && typeof obj.specialConditions.description !== 'undefined' &&  obj.specialConditions.description.length > 0) { }}
         <p class="specialConditions">
@@ -64,7 +64,7 @@
     <div class="promotion">
         {{= promotionText }}
         {{ if (offerTermsContent.length > 0) { }}
-        <a class="small offerTerms" href="javascript:;" ${navBtnAnalAttribute}>Offer terms</a>
+        <a class="small offerTerms" href="javascript:;">Offer terms</a>
         <div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
         {{ } }}
     </div>
@@ -78,7 +78,7 @@
             <div class="excessTitle">Excess</div>
         </div>
 
-        <a href="javascript:;" class="link-more-info" data-productId="{{= obj.productId }}" ${navBtnAnalAttribute}>Additional Excesses Applicable</a>
+        <a href="javascript:;" class="link-more-info" data-productId="{{= obj.productId }}">Additional Excesses Applicable</a>
     </div>
 </core_v1:js_template>
 
@@ -120,7 +120,7 @@
         </ul>
         {{ if(comparedResultsCount > 1) { }}
         <ul class="nav navbar-nav navbar-right">
-            <li class=""><a href="javascript:void(0);" class="compare-list enter-compare-mode" ${navBtnAnalAttribute}>Compare Products <span class="icon icon-arrow-right"></span></a></li>
+            <li class=""><a href="javascript:void(0);" class="compare-list enter-compare-mode">Compare Products <span class="icon icon-arrow-right"></span></a></li>
         </ul>
         {{ } }}
     {{ } }}
