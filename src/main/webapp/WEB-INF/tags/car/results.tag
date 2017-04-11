@@ -45,8 +45,6 @@
 
 <car:results_filterbar_xs />
 
-
-
 <%-- Get data to build sections/categories/features --%>
 <jsp:useBean id="resultsDisplayService" class="com.ctm.web.core.results.services.ResultsDisplayService" scope="request" />
 <c:set var="jsonString" value="${resultsDisplayService.getResultItemsAsJsonString('carws_', 'category')}" scope="request"  />
@@ -149,17 +147,17 @@
 		{{ var ctaBtnText = 'Go to Insurer'; }}
 		{{ var ctaBtnClass = ''; }}
 
-		{{ if(meerkat.modules.splitTest.isActive(64)) { }}
-		{{ ctaBtnText = 'Continue to Insurer'; }}
-		{{ ctaBtnClass = 'ctaBtnExpanded'; }}
+		{{ if (meerkat.modules.splitTest.isActive(64)) { }}
+			{{ ctaBtnText = 'Continue to Insurer'; }}
+			{{ ctaBtnClass = 'ctaBtnExpanded'; }}
 		{{ } }}
 
 		<%-- Main call to action button. --%>
 		{{ var mainCallToActionButton = '' }}
 		{{ if (obj.availableOnline == true) { }}
-		{{ mainCallToActionButton = '<a target="_blank" href="javascript:;" class="btn btn-lg btn-primary btn-cta btn-block btn-more-info-apply '+ctaBtnClass+'" data-productId="'+obj.productId+'" ${navBtnAnalAttribute}>'+ctaBtnText+'<span class="icon-arrow-right"></span></a>' }}
+			{{ mainCallToActionButton = '<a target="_blank" href="javascript:;" class="btn btn-lg btn-primary btn-cta btn-block btn-more-info-apply '+ctaBtnClass+'" data-productId="'+obj.productId+'" ${navBtnAnalAttribute}>'+ctaBtnText+'<span class="icon-arrow-right"></span></a>' }}
 		{{ } else { }}
-		{{ mainCallToActionButton = '<div class="btnContainer"><a class="btn btn-lg btn-cta btn-block btn-call-actions btn-calldirect" data-callback-toggle="calldirect" href="javascript:;" data-productId="'+obj.productId+'" ${navBtnAnalAttribute}>Call Insurer Direct</a></div>' }}
+			{{ mainCallToActionButton = '<div class="btnContainer"><a class="btn btn-lg btn-cta btn-block btn-call-actions btn-calldirect" data-callback-toggle="calldirect" href="javascript:;" data-productId="'+obj.productId+'" ${navBtnAnalAttribute}>Call Insurer Direct</a></div>' }}
 		{{ } }}
 
 		<%-- FEATURES MODE Templates --%>
@@ -302,7 +300,7 @@
 
 			</div>
 
-				<%-- Feature list, defaults to a spinner --%>
+			<%-- Feature list, defaults to a spinner --%>
 			<div class="featuresList featuresElements">
 				<img src="brand/ctm/images/icons/spinning_orange_arrows.gif" class="featuresLoading"/><%-- #WHITELABEL CX --%>
 			</div>
@@ -395,286 +393,50 @@
 		</div>
 	</core_v1:js_template>
 
-<%-- FAMOUS --%>
-<div class="hidden famous-results-page">
-	<car:famous_results />
-</div>
+	<%-- FAMOUS --%>
+	<div class="hidden famous-results-page">
+		<car:famous_results />
+	</div>
 
-<%-- NO RESULTS --%>
-<div class="hidden">
-	<agg_v2:no_quotes id="no-results-content"/>
-</div>
+	<%-- NO RESULTS --%>
+	<div class="hidden">
+		<agg_v2:no_quotes id="no-results-content"/>
+	</div>
 
-<%-- FETCH ERROR --%>
-<div class="resultsFetchError displayNone">
-	Oops, something seems to have gone wrong. Sorry about that! Please <a href="javascript:void(0);" data-slide-control="start" title='Revise your details'>try again later</a>.
-</div>
+	<%-- FETCH ERROR --%>
+	<div class="resultsFetchError displayNone">
+		Oops, something seems to have gone wrong. Sorry about that! Please <a href="javascript:void(0);" data-slide-control="start" title='Revise your details'>try again later</a>.
+	</div>
 
-<%-- Logo template --%>
-<core_v1:js_template id="provider-logo-template">
-	{{ var img = 'default_w'; }}
-	{{ if (obj.hasOwnProperty('productId') && obj.productId.length > 1) img = obj.productId.substring(0, obj.productId.indexOf('-')); }}
-	<div class="companyLogo logo_{{= img }}"></div>
-</core_v1:js_template>
+	<%-- Logo template --%>
+	<core_v1:js_template id="provider-logo-template">
+		{{ var img = 'default_w'; }}
+		{{ if (obj.hasOwnProperty('productId') && obj.productId.length > 1) img = obj.productId.substring(0, obj.productId.indexOf('-')); }}
+		<div class="companyLogo logo_{{= img }}"></div>
+	</core_v1:js_template>
 
 </agg_v2_results:results>
 
-<%-- Price template priceMode --%>
-<core_v1:js_template id="monthly-price-template">
-	<div class="frequency monthly clearfix" data-availability="{{= obj.available }}">
-		<div class="frequencyAmount">{{= '$' }}{{= obj.price.monthlyPremium.toFixed(2) }}</div>
-		<div class="frequencyTitle">Monthly Price</div>
-		<div class="monthlyBreakdown">
-			<span class="nowrap"><span class="firstPayment"><b>1st Month:</b> {{= '$' }}{{= obj.price.monthlyFirstMonth.toFixed(2) }}</span></span>
-			<span class="nowrap"><span class="totalPayment"><b>Total:</b> {{= '$' }}{{= obj.price.annualisedMonthlyPremium.toFixed(2) }}</span></span>
-		</div>
-	</div>
-</core_v1:js_template>
-
-<core_v1:js_template id="annual-price-template">
-	<div class="frequency annual clearfix" data-availability="{{= obj.available }}">
-		<div class="frequencyAmount">{{= '$' }}{{= obj.price.annualPremiumFormatted }}</div>
-		<div class="frequencyTitle">Annual Price</div>
-	</div>
-</core_v1:js_template>
-
-<core_v1:js_template id="title-download-special-template">
-	{{ var productTitle = !_.isUndefined(obj.productName) ? obj.productName : 'Unknown product name'; }}
-
-	<div class="title-download-special-container">
-		<h2 class="productTitle">{{= productTitle }}</h2>
-
-		<a href="javascript:;" class="link-more-info" data-productId="{{= obj.productId }}" ${navBtnAnalAttribute}>View product details and download disclosure statements</a>
-
-		{{ if (obj.specialConditions != null && typeof obj.specialConditions !== 'undefined' && obj.specialConditions.description != null && typeof obj.specialConditions.description !== 'undefined' &&  obj.specialConditions.description.length > 0) { }}
-			<p class="specialConditions">
-				<small>Special conditions: {{= obj.specialConditions.description }}</small>
-			</p>
-		{{ } }}
-	</div>
-</core_v1:js_template>
-
-<core_v1:js_template id="call-action-buttons-price-template">
-    <%-- Call Insurer Direct action button. --%>
-    {{ var callInsurerDirectActionButton = '<div class="btnContainer"><a class="btn btn-sm btn-call btn-block btn-call-actions btn-calldirect" data-callback-toggle="calldirect" href="javascript:;" data-productId="'+obj.productId+'" ${navBtnAnalAttribute}>Call Direct</a></div>' }}
-
-    <%-- Call Me Back action button. --%>
-    {{ var callMeBackActionButton = '<div class="btnContainer"><a class="btn btn-sm btn-back btn-block btn-call-actions btn-callback" data-callback-toggle="callback" href="javascript:;" data-productId="'+obj.productId+'" ${navBtnAnalAttribute}>Get Call Back</a></div>' }}
-
-    <div class="call-actions-buttons">
-        {{ if (obj.contact.allowCallDirect === true) { }}
-            {{= callInsurerDirectActionButton }}
-        {{ } }}
-        {{ if (obj.contact.allowCallMeBack === true) { }}
-            {{= callMeBackActionButton }}
-        {{ } }}
-    </div>
-</core_v1:js_template>
-
-<core_v1:js_template id="promotion-price-template">
-    {{ var promotionText = (!_.isUndefined(obj.discountOffer) && !_.isNull(obj.discountOffer) && obj.discountOffer.length > 0) ? obj.discountOffer : ''; }}
-    {{ var offerTermsContent = (!_.isUndefined(obj.discountOfferTerms) && !_.isNull(obj.discountOfferTerms) && obj.discountOfferTerms.length > 0) ? obj.discountOfferTerms : ''; }}
-
-    {{ if (promotionText.length > 0) { }}
-        <div class="promotion">
-            {{= promotionText }}
-            {{ if (offerTermsContent.length > 0) { }}
-                <a class="small offerTerms" href="javascript:;" ${navBtnAnalAttribute}>Offer terms</a>
-                <div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
-            {{ } }}
-        </div>
-    {{ } }}
-</core_v1:js_template>
-
-<core_v1:js_template id="excess-price-template">
-	<div class="excess-container">
-		<div class="excess">
-			<div class="excessAmount">{{= '$' }}{{= obj.excess }}</div>
-			<div class="excessTitle">Excess</div>
-		</div>
-
-		<a href="javascript:;" class="link-more-info" data-productId="{{= obj.productId }}" ${navBtnAnalAttribute}>Additional Excesses Applicable</a>
-	</div>
-</core_v1:js_template>
-
-
-<%-- Price template featuresMode --%>
-<core_v1:js_template id="monthly-price-features-template">
-	{{ var monthlyPremiumSplit = obj.price.monthlyPremium.toString().split('.'); }}
-	{{ var dollars = monthlyPremiumSplit[0]; }}
-	{{ var cents = monthlyPremiumSplit[1] ? '.' + monthlyPremiumSplit[1] : ''; }}
-	{{ if (cents.length === 2) cents += '0'; }}
-
-	<div class="frequency monthly" data-availability="{{= obj.available }}">
-		<div class="frequencyAmount">
-			<span class="dollarSign">{{= '$' }}</span><span class="dollars">{{= dollars }}</span><span class="cents">{{= cents }}</span></div>
-		<div class="frequencyTitle">Month</div>
-		<div class="monthlyBreakdown">
-			<span class="nowrap"><span class="firstPayment">1st Month: {{= '$' }}{{= obj.price.monthlyFirstMonth.toFixed(2) }}</span></span>
-			<span class="nowrap"><span class="totalPayment">Total: {{= '$' }}{{= obj.price.annualisedMonthlyPremium.toFixed(2) }}</span></span>
-		</div>
-	</div>
-</core_v1:js_template>
-
-<core_v1:js_template id="annual-price-features-template">
-	<div class="frequency annual" data-availability="{{= obj.available }}">
-		<div class="frequencyAmount">
-			<span class="dollarSign">{{= '$' }}</span><span class="dollars">{{= obj.price.annualPremiumFormatted }}</span>
-		</div>
-		<div class="frequencyTitle">Annual</div>
-	</div>
-</core_v1:js_template>
-
-<!-- COMPARE TEMPLETING BELOW -->
-<%-- Template for CAR results list. --%>
-<core_v1:js_template id="compare-basket-features-item-template">
-	{{ var tFrequency = Results.getFrequency(); }}
-	{{ var monthlyHidden = tFrequency == 'monthly' ? '' : 'displayNone'; }}
-	{{ var annualHidden = tFrequency == 'annual' ? '' : 'displayNone'; }}
-
-	{{ for(var i = 0; i < products.length; i++) { }}
-	<li>
-			<span class="active-product">
-				<input type="checkbox" class="compare-tick checked" data-productId="{{= products[i].productId }}" checked />
-				<label for="features_compareTick_{{= products[i].productId }}"></label>
-			</span>
-
-			<span class="name">
-				{{= products[i].productName }}
-			</span>
-			<span class="price">
-				<span class="frequency annual annually {{= annualHidden }}">
-					{{= '$' }}{{= products[i].price.annualPremiumFormatted }}
-				</span>
-				<span class="frequency monthly {{= monthlyHidden }}">
-					{{= '$' }}{{= products[i].price.monthlyPremium.toFixed(2) }}
-				</span>
-			</span>
-	</li>
-	{{ } }}
-</core_v1:js_template>
-
-<core_v1:js_template id="compare-basket-price-item-template">
-	{{ var tFrequency = Results.getFrequency(); }}
-	{{ var tDisplayMode = Results.getDisplayMode(); }}
-	{{ var monthlyHidden = tFrequency == 'monthly' ? '' : 'displayNone'; }}
-	{{ var annualHidden = tFrequency == 'annual' ? '' : 'displayNone'; }}
-
-	{{ for(var i = 0; i < products.length; i++) { }}
-	{{ var img = products[i].brandCode; }}
-	{{ if ((typeof img === 'undefined' || img === '') && products[i].hasOwnProperty('productId') && products[i].productId.length > 1) img = products[i].productId.substring(0, products[i].productId.indexOf('-')); }}
-
-	<li class="compare-item">
-		<span class="carCompanyLogo logo_{{= img }}" title="{{= products[i].name }}"></span>
-				<span class="price">
-					<span class="frequency annual annually {{= annualHidden }}">
-						{{= '$' }}{{= products[i].price.annualPremiumFormatted }} <span class="small hidden-sm">annually</span>
-					</span>
-					<span class="frequency monthly {{= monthlyHidden }}">
-						{{= '$' }}{{= products[i].price.monthlyPremium.toFixed(2) }} <span class="small hidden-sm">monthly</span>
-					</span>
-				</span>
-		<span class="icon icon-cross remove-compare" data-productId="{{= products[i].productId }}" title="Remove from shortlist"></span>
-	</li>
-	{{ } }}
-</core_v1:js_template>
-
-<!-- Compare products colums -->
-<core_v1:js_template id="compare-basket-features-template">
-	<div class="compare-basket">
-		{{ if(comparedResultsCount === 0) { }}
-		<p>
-			We've found <span class="products-returned-count">{{= resultsCount }} products</span> matching your needs.
-			<br>
-			Click the <input type="checkbox" class="compare-tick"><label></label> to compare up to <span class="compare-max-count-label">{{= maxAllowable }} products</span>.
-
-		</p>
-
-        <agg_v1:inclusive_gst />
-
-		{{ }  else { }}
-
-		{{ var template = $("#compare-basket-features-item-template").html(); }}
-		{{ var htmlTemplate = _.template(template); }}
-		{{ var comparedItems = htmlTemplate(obj); }}
-
-
-		<ul class="compared-products-list">
-
-			{{= comparedItems }}
-
-			{{ if(comparedResultsCount < maxAllowable && isCompareOpen === false) { }}
-			{{ for(var m = 0; m < maxAllowable-comparedResultsCount; m++) { }}
-			<li>
-							<span class="compare-placeholder">
-								<input type="checkbox" class="compare-tick" disabled />
-								<label></label>
-								<span class="placeholderLabel">Add another product</span>
-							</span>
-			</li>
-			{{ } }}
-			{{ } }}
-		</ul>
-		{{ if (comparedResultsCount > 1) { }}
-		<div class="compareButtonsContainer">
-			{{ if(meerkat.modules.compare.isCompareOpen() === true) { }}
-			<a class="btn btn-features-compare clear-compare btn-block" href="javascript:;">Clear Products<span class="icon icon-arrow-right"></span></a>
-			{{ } else { }}
-			<a class="btn btn-features-compare enter-compare-mode btn-block" href="javascript:;">Compare Products<span class="icon icon-arrow-right"></span></a>
-			{{ } }}
-		</div>
-		{{ } }}
-		{{ } }}
-	</div>
-	<div class="expand-collapse-toggle small hidden-xs">
-		<a href="javascript:;" class="expandAllFeatures">Expand All</a> / <a href="javascript:;" class="collapseAllFeatures active">Collapse All</a>
-	</div>
-</core_v1:js_template>
-
-<!-- Compare view from quick price view. -->
-<core_v1:js_template id="compare-basket-price-template">
-	{{ if(comparedResultsCount > 0) { }}
-	{{ var template = $("#compare-basket-price-item-template").html(); }}
-	{{ var htmlTemplate = _.template(template); }}
-	{{ var comparedItems = htmlTemplate(obj); }}
-
-	<ul class="nav navbar-nav">
-		<li class="navbar-text">Add up to <span class="compare-max-count-label">{{= maxAllowable }} products</span> to your shortlist</li>
-		{{= comparedItems }}
-	</ul>
-	{{ if(comparedResultsCount > 1) { }}
-	<ul class="nav navbar-nav navbar-right">
-		<li class=""><a href="javascript:void(0);" class="compare-list enter-compare-mode" ${navBtnAnalAttribute}>Compare Products <span class="icon icon-arrow-right"></span></a></li>
-	</ul>
-	{{ } }}
-	{{ } }}
-</core_v1:js_template>
-
-
-<!-- Call action buttons. -->
-<core_v1:js_template id="call-action-buttons-features-template">
+<core_v1:js_template id="call-direct-button-template">
 	<%-- Call Insurer Direct action button. --%>
-	{{ var callInsurerDirectActionButton = '<div class="btnContainer"><a class="btn btn-sm btn-call btn-block btn-call-actions btn-calldirect" data-callback-toggle="calldirect" href="javascript:;" data-productId="'+obj.productId+'" ${navBtnAnalAttribute}>Call Direct</a></div>' }}
-
-	<%-- Call Me Back action button. --%>
-	{{ var callMeBackActionButton = '<div class="btnContainer"><a class="btn btn-sm btn-back btn-block btn-call-actions btn-callback" data-callback-toggle="callback" href="javascript:;" data-productId="'+obj.productId+'" ${navBtnAnalAttribute}>Get a Call Back</a></div>' }}
-
-	{{ var colClass = 'col-xs-12'; }}
-
-	{{ if (obj.contact.allowCallDirect === true && obj.contact.allowCallMeBack === true) { }}
-	{{ colClass = 'col-xs-6'; }}
-	{{ } }}
-
-	<div class="call-actions-buttons row">
-		{{ if (obj.contact.allowCallDirect === true) { }}
-		<div class="{{= colClass }}">
-			{{= callInsurerDirectActionButton }}
-		</div>
-		{{ } }}
-		{{ if (obj.contact.allowCallMeBack === true) { }}
-		<div class="{{= colClass }}">
-			{{= callMeBackActionButton }}
-		</div>
-		{{ } }}
+	<div class="btnContainer">
+		<a class="btn btn-sm btn-call btn-block btn-call-actions btn-calldirect" data-callback-toggle="calldirect" href="javascript:;" data-productId="{{= obj.productId }}" ${navBtnAnalAttribute}>
+			Call Direct
+		</a>
 	</div>
 </core_v1:js_template>
+
+<core_v1:js_template id="call-back-button-template">
+	<%-- Call Me Back action button. --%>
+	<div class="btnContainer">
+		<a class="btn btn-sm btn-back btn-block btn-call-actions btn-callback" data-callback-toggle="callback" href="javascript:;" data-productId="{{= obj.productId }}" ${navBtnAnalAttribute}>
+			Get a Call Back
+		</a>
+	</div>
+</core_v1:js_template>
+
+<%-- Include Price Mode templates --%>
+<car:results_price_mode_templates />
+
+<%-- Include Features Mode templates --%>
+<car:results_features_mode_templates />
