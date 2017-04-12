@@ -98,6 +98,7 @@
 	{{ var productDescription = (typeof obj.productDescription !== 'undefined') ? obj.productDescription : 'Unknown product name'; }}
 	{{ var promotionText = (typeof obj.discountOffer !== 'undefined' && obj.discountOffer.length > 0) ? obj.discountOffer : ''; }}
 	{{ var offerTermsContent = (typeof obj.discountOfferTerms !== 'undefined' && obj.discountOfferTerms.length > 0) ? obj.discountOfferTerms : ''; }}
+	{{ var priceDisclaimer = (!_.isUndefined(obj.price.priceDisclaimer) && !_.isNull(obj.price.priceDisclaimer) && obj.price.priceDisclaimer.length > 0) ? obj.price.priceDisclaimer : ''; }}
 
 	{{ var template = $("#provider-logo-template").html(); }}
 	{{ var logo = _.template(template); }}
@@ -172,6 +173,14 @@
 					{{= excessFeaturesTemplate }}
 
 					<h2 class="productTitle">{{= productTitle }}</h2>
+					{{ if (priceDisclaimer.length > 0) { }}
+					<div class="row priceDisclaimerRow">
+						<div class="col-xs-12 text-center">
+							<a class="small priceDisclaimer" href="javascript:;">{{= priceDisclaimer }}</a>
+							<div class="priceDisclaimer-content hidden"><p class="priceDisclaimer-para">{{= obj.disclaimer }}</p></div>
+						</div>
+					</div>
+					{{ } }}
 
 					<div class="headerButtonWrapper">
 						{{= mainCallToActionButton }}
@@ -203,6 +212,10 @@
 							<label for="price_compareTick_{{= obj.productId }}" class="compare-label" ${analyticsAttr}></label>
 						</div>
 						<h2 class="hidden-xs productTitle">{{= productTitle }}</h2>
+						{{ if (priceDisclaimer.length > 0) { }}
+						<a class="hidden-xs small priceDisclaimer" href="javascript:;">{{= priceDisclaimer }}</a>
+						<div class="priceDisclaimer-content hidden"><p class="priceDisclaimer-para">{{= obj.disclaimer }}</p></div>
+						{{ } }}
 
 						<p class="description hidden-xs hidden-sm">{{= productDescription }}</p>
 

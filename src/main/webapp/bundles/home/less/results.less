@@ -28,6 +28,12 @@
 	}
 }
 
+@media(@xs-only) {
+	.priceDisclaimer-para {
+		float: left;
+	}
+}
+
 //
 // Provider chose not quote group
 //
@@ -105,6 +111,13 @@
 
 	.offerTerms {
 		font-style: italic;
+	}
+
+	.priceDisclaimerRow {
+		float: left;
+		margin: -17px auto 0 auto;
+		width: 100%;
+		text-align: center;
 	}
 }
 
@@ -245,8 +258,14 @@
 	.priceMode .priceMode {
 		h2,
 		.description,
-		.specialConditions {
+		.specialConditions,
+		.priceDisclaimer {
 			margin-left: 95px;
+		}
+		.priceDisclaimer {
+			display: block;
+			text-align: left;
+			padding: 5px 0;
 		}
 	}
 }//media sm+
@@ -375,6 +394,24 @@
 						}
 					}
 				}
+			}
+		}
+
+		@media (@sm) {
+			.productTitle {
+				height: 54px;
+			}
+		}
+
+		@media (@md) {
+			.productTitle {
+				height: 54px;
+			}
+		}
+
+		@media (@lg) {
+			.productTitle {
+				height: 38px;
 			}
 		}
 

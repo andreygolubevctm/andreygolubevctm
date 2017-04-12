@@ -129,15 +129,11 @@
 		// This will show/hide products that are either monthly only or annual only.
 		// E.g The Ensurance products.
 		if (currentValues.frequency == 'monthly') {
-			Results.filterBy('price.monthly', "value", { "notEquals": null });
-			Results.unfilterBy('price.annual', "value", true);
+			Results.filterBy('price.monthlyAvailable', "value", {"equals": true});
+			Results.unfilterBy('price.annualAvailable', "value", true);
 		} else if (currentValues.frequency == 'annual') {
-			Results.filterBy('price.annual', "value", { "notEquals": null });
-			Results.unfilterBy('price.monthly', "value", true);
-		} else {
-			// If something goes weird with the current frequency then remove the limitation on results and show all products.
-			Results.unfilterBy('price.annual', "value", true);
-			Results.unfilterBy('price.monthly', "value", true);
+			Results.filterBy('price.annualAvailable', "value", {"equals": true});
+			Results.unfilterBy('price.monthlyAvailable', "value", true);
 		}
 	}
 
@@ -362,6 +358,8 @@
 		meerkat.messaging.subscribe(meerkatEvents.paymentFrequencyButtons.CHANGED, function() {
 			$('#home_paymentType').val(Results.getFrequency());
 			updateFilters();
+			storeCurrentValues();
+			setHomeResultsFilter();
 		});
 	}
 

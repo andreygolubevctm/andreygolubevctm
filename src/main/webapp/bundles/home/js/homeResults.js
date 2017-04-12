@@ -57,7 +57,9 @@
 			var price = {
 				annual: "price.annualPremium",
 				annually: "price.annualPremium",
-				monthly: "price.monthlyPremium"
+				monthly: "price.annualisedMonthlyPremium",
+				monthlyAvailable: "price.monthlyAvailable",
+				annualAvailable: "price.annualAvailable"
 			};
 			var productAvailable = "available";
 			var productName = "productName";
@@ -215,6 +217,7 @@
 
 		// Capture offer terms link clicks
 		$(document.body).on('click', 'a.offerTerms', launchOfferTerms);
+		$(document.body).on('click', 'a.priceDisclaimer', showPriceDisclaimer);
 
 		// Handle result row click
 		$(Results.settings.elements.resultsContainer).on('click', '.result-row', resultRowClick);
@@ -569,6 +572,26 @@
 		meerkat.modules.dialogs.show({
 			title: $logo.clone().wrap('<p>').addClass('hidden-xs').parent().html() + "<div class='hidden-xs heading'>" + $productName.html() + "</div>" + "<div class='heading'>Offer terms</div>",
 			hashId: 'offer-terms',
+			openOnHashChange: false,
+			closeOnHashChange: true,
+			htmlContent: $logo.clone().wrap('<p>').removeClass('hidden-xs').addClass('hidden-sm hidden-md hidden-lg').parent().html() + "<h2 class='visible-xs heading'>" + $productName.html() + "</h2>" +  $termsContent.html()
+		});
+	}
+
+	function showPriceDisclaimer(event) {
+		meerkat.modules.homeMoreInfo.setScrollPosition();
+		event.preventDefault();
+
+		var $element = $(event.target);
+		var $termsContent = $element.next('.priceDisclaimer-content');
+
+		var $logo =				$element.closest('.resultInsert, .more-info-content, .call-modal').find('.companyLogo');
+		var $productName =		$element.closest('.resultInsert, .more-info-content, .call-modal').find('.productTitle, .productName');
+
+		meerkat.modules.dialogs.show({
+			title: $logo.clone().wrap('<p>').addClass('hidden-xs').parent().html() + "<div class='hidden-xs heading'>" + $productName.html() + "</div>" + "<div class='heading'>Price Disclaimer</div>",
+			hashId: 'price-disclaimer',
+			className: 'price-disclaimer-modal',
 			openOnHashChange: false,
 			closeOnHashChange: true,
 			htmlContent: $logo.clone().wrap('<p>').removeClass('hidden-xs').addClass('hidden-sm hidden-md hidden-lg').parent().html() + "<h2 class='visible-xs heading'>" + $productName.html() + "</h2>" +  $termsContent.html()
