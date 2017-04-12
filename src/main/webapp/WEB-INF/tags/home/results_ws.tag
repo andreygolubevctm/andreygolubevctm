@@ -445,23 +445,13 @@
 		{{ if (cents.length === 2) cents += '0'; }}
 	{{ } }}
 
-	{{ var firstMonthPrice = 0; }}
-	{{ var annualPrice = 0; }}
-
-	{{ if (obj.price.monthlyFirstMonth !== null && obj.price.monthlyFirstMonth != '' && typeof(obj.price.monthlyFirstMonth) != 'undefined') { }}
-		{{ firstMonthPrice = obj.price.monthlyFirstMonth.toFixed(2); }}
-	{{ } }}
-	{{ if (obj.price.annualisedMonthlyPremium !== null && obj.price.annualisedMonthlyPremium != '' && typeof(obj.price.annualisedMonthlyPremium) != 'undefined') { }}
-		{{ annualPrice = obj.price.annualisedMonthlyPremium.toFixed(2); }}
-	{{ } }}
-
 	<div class="frequency monthly" data-availability="{{= obj.available }}">
 		<div class="frequencyAmount">
 			<span class="dollarSign">{{= '$' }}</span><span class="dollars">{{= dollars }}</span><span class="cents">{{= cents }}</span></div>
 		<div class="frequencyTitle">Monthly</div>
 		<div class="monthlyBreakdown">
-			<span class="nowrap"><span class="firstPayment">1st Month: &#36;{{= firstMonthPrice }}</span></span>
-			<span class="nowrap"><span class="totalPayment">Total: &#36;{{= annualPrice }}</span></span>
+			<span class="nowrap"><span class="firstPayment">1st Month: &#36;{{= obj.price.monthlyFirstMonthFormatted }}</span></span>
+			<span class="nowrap"><span class="totalPayment">Total: &#36;{{= obj.price.annualisedMonthlyPremiumFormatted }}</span></span>
 		</div>
 	</div>
 </core_v1:js_template>
