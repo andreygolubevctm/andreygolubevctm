@@ -839,7 +839,8 @@
                     element: $this,
                     contentValue: text,
                     contentType: 'content',
-                    showEvent: 'mouseenter',
+                    showSolo: true,
+                    showEvent: 'mouseentersticky',
                     position: {
                         my: 'top center',
                         at: 'bottom center'
@@ -848,6 +849,10 @@
                         classes: 'priceTooltips'
                     }
                 });
+                var api = $(this).qtip('api');
+
+                initPopOverSticky($this, api);
+
             } else {
                 meerkat.modules.errorHandling.error({
                     message: 'product does not have property premium',
@@ -856,6 +861,22 @@
                     errorLevel: 'silent',
                     data: product
                 });
+            }
+        });
+    }
+
+    function initPopOverSticky(element, api){
+        var count = 0;
+        element.click(function(){
+            if(api.elements.tooltip.is(':visible')){
+                count++;
+                if(count === 2){
+                    api.toggle(false);
+                    count = 0;
+                }
+            }
+            else {
+                api.toggle(true);
             }
         });
     }
