@@ -47,11 +47,11 @@
 
     <div class="call-actions-buttons">
         {{ if (obj.contact.allowCallDirect === true) { }}
-            {{= callInsurerDirectActionButton }}
+        {{= callInsurerDirectActionButton }}
         {{ } }}
 
         {{ if (obj.contact.allowCallMeBack === true) { }}
-            {{= callMeBackActionButton }}
+        {{= callMeBackActionButton }}
         {{ } }}
     </div>
 </core_v1:js_template>
@@ -64,8 +64,8 @@
     <div class="promotion">
         {{= promotionText }}
         {{ if (offerTermsContent.length > 0) { }}
-            <a class="small offerTerms" href="javascript:;">Offer terms</a>
-            <div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
+        <a class="small offerTerms" href="javascript:;">Offer terms</a>
+        <div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
         {{ } }}
     </div>
     {{ } }}

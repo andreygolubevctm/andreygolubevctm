@@ -144,6 +144,10 @@
 		{{ var htmlTemplate = _.template(template); }}
 		{{ var annualPriceTemplate = htmlTemplate(obj); }}
 
+		{{ var template = $("#compare-toggle-price-template").html(); }}
+		{{ var htmlTemplate = _.template(template); }}
+		{{ var compareTogglePriceTemplate = htmlTemplate(obj); }}
+
 		{{ var ctaBtnText = 'Go to Insurer'; }}
 		{{ var ctaBtnClass = ''; }}
 
@@ -237,11 +241,7 @@
                                 {{= callActionButtonsPriceTemplate }}
                             </div>
 
-							<div class="compare-toggle-wrapper">
-								<input type="checkbox" class="compare-tick" data-productId="{{= obj.productId }}" id="price_compareTick_{{= obj.productId }}" />
-								<label for="price_compareTick_{{= obj.productId }}"></label>
-								<label for="price_compareTick_{{= obj.productId }}" class="compare-label"></label>
-							</div>
+							{{= compareTogglePriceTemplate }}
                         </div>
 
                         <div class="col-xs-9 col-sm-10 col-md-11 right-col">
@@ -417,23 +417,14 @@
 
 </agg_v2_results:results>
 
-<core_v1:js_template id="call-direct-button-template">
-	<%-- Call Insurer Direct action button. --%>
-	<div class="btnContainer">
-		<a class="btn btn-sm btn-call btn-block btn-call-actions btn-calldirect" data-callback-toggle="calldirect" href="javascript:;" data-productId="{{= obj.productId }}" ${navBtnAnalAttribute}>
-			Call Direct
-		</a>
-	</div>
-</core_v1:js_template>
+<%-- Include call button templates --%>
+<agg_v1:results_call_button_templates />
 
-<core_v1:js_template id="call-back-button-template">
-	<%-- Call Me Back action button. --%>
-	<div class="btnContainer">
-		<a class="btn btn-sm btn-back btn-block btn-call-actions btn-callback" data-callback-toggle="callback" href="javascript:;" data-productId="{{= obj.productId }}" ${navBtnAnalAttribute}>
-			Get <span class="hidden-xs">a</span> Call Back
-		</a>
-	</div>
-</core_v1:js_template>
+<%-- Include shared priceMode templates --%>
+<agg_v1:results_price_mode_templates />
+
+<%-- Include shared featuresMode templates --%>
+<agg_v1:results_features_mode_templates />
 
 <%-- Include Price Mode templates --%>
 <car:results_price_mode_templates />
