@@ -147,26 +147,7 @@
     }
   }
 
-  &.non-comprehensive-cover {
-    .priceMode .promotion,
-    .bridgingContainer .promotionOffer,
-    .featuresNormalHeader .result-special-offer,
-    .featuresList .comprehensiveOnly,
-    .call-modal .offlineDiscount {
+  &.non-comprehensive-cover .featuresList .comprehensiveOnly {
       display: none !important;
-    }
-
-    #results_v5 {
-      .headers.featuresNormalHeader {
-        .compare-basket,
-        .productSummary {
-          height: 297px;
-
-          @media (@sm) {
-            height: 321px;
-          }
-        }
-      }
-    }
   }
 }
