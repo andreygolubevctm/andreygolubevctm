@@ -14,8 +14,6 @@
 	<c:set var="maxVerticals" value="11" />
 </c:if>
 
-<c:set var="rowCounter" value="1" />
-
 <fmt:parseNumber var="maxVerticals" value="${maxVerticals}" />
 
 <c:set var="fieldSetID">
@@ -38,8 +36,6 @@
 	<c:if test="${not empty copy}">
 		${copy}
 	</c:if>
-
-	<fmt:parseNumber var="maxVerticals" value="${maxVerticals}" />
 
 	<div class="row options-list clearfix verticalButtons">
 		<c:forEach items="${brand.sortVerticalsBySeq(maxVerticals)}" var="vertical" varStatus="loop">
