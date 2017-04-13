@@ -45,10 +45,6 @@
 
         meerkat.messaging.subscribe(meerkatEvents.healthSituation.SITUATION_CHANGED, function togglePartnerFields() {
             positionFieldsForBrochureware();
-            _.defer(function(){
-                var $checked = $elements.currentCover.filter(':checked');
-                if($checked.length) $checked.change();
-            });
         });
     }
 
