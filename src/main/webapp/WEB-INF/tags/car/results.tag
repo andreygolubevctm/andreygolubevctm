@@ -199,7 +199,7 @@
 						</div>
 
 						{{= callActionButtonsTemplate }}
-
+						
 						{{ if (promotionText.length > 0) { }}
 						<fieldset class="result-special-offer">
 							<legend>Special Offer</legend>
