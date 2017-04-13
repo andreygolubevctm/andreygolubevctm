@@ -102,10 +102,6 @@
 			clear: left;
 		}
 	}
-
-	.offerTerms {
-		font-style: italic;
-	}
 }
 
 .modal-header, .modal-body {
@@ -241,14 +237,6 @@
 		font-size: 22px;
 		line-height: 22px;
 	}
-
-	.priceMode .priceMode {
-		h2,
-		.description,
-		.specialConditions {
-			margin-left: 95px;
-		}
-	}
 }//media sm+
 
 @media(@lg) {
@@ -264,9 +252,6 @@
 		}
 		.excessTitle {
 			margin-top: 8px;
-		}
-		.excessAmount {
-			margin-bottom: 10px;
 		}
 		.excessHome {
 			padding-top: 7px;
@@ -456,3 +441,39 @@
 	}
 }
 
+// priceMode v6 overrides
+.priceMode.v6 {
+	.result-row[data-available=Y] {
+		.excess-container {
+			.excessTitle {
+				br {
+					display: none;
+				}
+			}
+
+			&.has-both-excess {
+				.excess {
+					float: left;
+					width: 48%;
+
+
+					.excessTitle {
+						br {
+							display: block;
+						}
+					}
+				}
+			}
+
+			a {
+				text-align: center;
+			}
+		}
+
+		.cta-container {
+			.btn-cta {
+				margin-top: 0;
+			}
+		}
+	}
+}

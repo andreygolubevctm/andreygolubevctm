@@ -27,9 +27,7 @@ body {
 #results_v5.priceMode {
   .headers.featuresNormalHeader {
     .btn-call-actions {
-      @media (@xs-only) {
-        border-width: 1px;
-      }
+      border-width: 1px;
     }
   }
 }
@@ -48,7 +46,7 @@ body {
       font-family: @font-family-theme-regular;
 
       @media (@xs-only) {
-        font-size: 18px;
+        font-size: @font-size-large;
       }
     }
 
@@ -220,7 +218,7 @@ body {
       &:extend(.clearfix all);
       float: left;
       padding-top: 5px;
-      width: 60%;
+      width: 55%;
 
       @media (@md) {
         width: 50%;
@@ -231,7 +229,7 @@ body {
 
         @media (@xs-only) {
           float: left;
-          width: 39%;
+          width: @price-mode-excess-xs-width;
         }
 
         div {
@@ -240,6 +238,9 @@ body {
         }
 
         .excessAmount {
+          display: block;
+          font-size: 24px;
+          line-height: 24px;
           margin-top: 0;
 
           @media (@md) {
@@ -248,6 +249,9 @@ body {
         }
 
         .excessTitle {
+          color: @gray-light;
+          font-size: @font-size-small;
+          line-height: 12px;
           margin-top: 0;
 
           @media (@sm) {
@@ -262,9 +266,9 @@ body {
 
         @media (@xs-only) {
           font-size: 11px;
-          float: right;
+          float: left;
           line-height: 12px;
-          width: 60%;
+          width: @price-mode-additional-text-xs-width;
         }
 
         @media (@sm) {
@@ -275,7 +279,7 @@ body {
 
     .price-container {
       float: right;
-      width: 40%;
+      width: 45%;
 
       @media (@md) {
         width: 50%;
@@ -287,6 +291,7 @@ body {
         &.monthly {
           .monthlyBreakdown {
             color: @gray-slight-dark;
+            font-size: @font-size-small;
             line-height: 14px;
           }
         }
