@@ -14,29 +14,17 @@
 
         templates = {
             premiumsPopOver: '{{ if(product.premium.hasOwnProperty(frequency)) { }}' +
-            '<strong>Total Price including rebate and LHC: </strong><span class="highlighted">{{= product.premium[frequency].text }}</span><br/> ' +
-            '<strong>Price including rebate but no LHC: </strong>{{=product.premium[frequency].lhcfreetext}}<br/> ' +
-            '<strong>Price including LHC but no rebate: </strong>{{= product.premium[frequency].baseAndLHC }}<br/> ' +
-            '<strong>Base price: </strong>{{= product.premium[frequency].base }}<br/> ' +
-            '{{ } }}' +
-            '<hr/> ' +
-            '{{ if(product.premium.hasOwnProperty(\'fortnightly\')) { }}' +
-            '<strong>Fortnightly (ex LHC): </strong>{{=product.premium.fortnightly.lhcfreetext}}<br/> ' +
-            '{{ } }}' +
-            '{{ if(product.premium.hasOwnProperty(\'monthly\')) { }}' +
-            '<strong>Monthly (ex LHC): </strong>{{=product.premium.monthly.lhcfreetext}}<br/> ' +
-            '{{ } }}' +
-            '{{ if(product.premium.hasOwnProperty(\'annually\')) { }}' +
-            '<strong>Annually (ex LHC): </strong>{{= product.premium.annually.lhcfreetext}}<br/> ' +
-            '{{ } }}' +
-            '<hr/> ' +
-            '{{ if(product.hasOwnProperty(\'info\')) { }}' +
-            '<strong>Name: </strong>{{=product.info.productTitle}}<br/> ' +
-            '<strong>Product Code: </strong>{{=product.info.productCode}}<br/> ' +
-            '<strong>Product ID: </strong>{{=product.productId}}<br/>' +
-            '<strong>State: </strong>{{=product.info.State}}<br/> ' +
-            '<strong>Membership Type: </strong>{{=product.info.Category}}' +
-            '{{ } }}'
+            '<h6>Customer Pays:</h6>'+
+            '<strong>Base Premium: </strong>'+'<span>{{= product.premium[frequency].base }}</span><br/>'+
+            '<strong>Fortnightly Premium: </strong>'+'<span>{{= product.premium[frequency].quarterly }}</span><br/>'+
+            '<strong>Monthly Premium: </strong>'+'<span>{{= product.premium[frequency].quarterly }}</span><br/>'+
+            '<strong>Annual Premium: </strong>'+'<span>{{= product.premium[frequency].quarterly }}</span><br/>'+
+            '<hr/>'+
+            '<h6>Useful Links:</h6>'+
+            '{{ for(var i in usefulLinks) { }}'+
+            "<a target='_blank' href='{{= usefulLinks[i].url}}'>{{= usefulLinks[i].name}}</a><br/>"+
+            '{{ } }}'+
+            '<br/>{{ } }}'
         },
         moduleEvents = {
             healthResults: {
@@ -816,6 +804,114 @@
         });
     }
 
+    function getUsefulLinks(fundCode){
+        var usefulLinks = [];
+        switch(fundCode){
+            case 'AHM':
+                usefulLinks.push(
+                    {"name" : "Privatehealth.gov.au", "url": "http://www.privatehealth.gov.au/dynamic/InsurerDetails.aspx?code=AHM"},
+                    {"name" : "Hospital Network", "url": "https://members.ahm.com.au/pages/find-a-provider/"}
+                );
+                break;
+            case 'AUF':
+                usefulLinks.push(
+                    {"name" : "Privatehealth.gov.au", "url": "http://www.privatehealth.gov.au/dynamic/InsurerDetails.aspx?code=AUF"},
+                    {"name" : "Hospital Network", "url": "http://www.australianunity.com.au/health-insurance/cover/find-a-health-care-provider/find-agreement-hospitals"},
+                    {"name" : "Dental Agreement", "url": "http://www.australianunity.com.au/health-insurance/cover/find-a-health-care-provider/national-dental-network"},
+                    {"name" : "Gap Cover Doctors", "url": "http://www.australianunity.com.au/health-insurance/cover/find-a-health-care-provider/find-gap-cover-doctors"},
+                    {"name" : "Hospital Network", "url": "https://www.smile.com.au/"}
+                );
+                break;
+            case 'BUD':
+                usefulLinks.push(
+                    {"name" : "Privatehealth.gov.au", "url": "http://www.privatehealth.gov.au/dynamic/InsurerDetails.aspx?code=GMH"},
+                    {"name" : "Hospital Network", "url": "https://www.budgetdirect.com.au/content/dam/budgetdirect/website-assets/participating-private-hospitals.pdf"}
+                );
+                break;
+            case 'BUP':
+                usefulLinks.push(
+                    {"name" : "Privatehealth.gov.au", "url": "http://www.privatehealth.gov.au/dynamic/InsurerDetails.aspx?code=BUP"},
+                    {"name" : "Hospital Network", "url": "http://www.bupa.com.au/find-a-provider"},
+                    {"name" : "Dental Agreement", "url": "http://www.bupa.com.au/find-a-provider"},
+                    {"name" : "Extra Benefit - Specsavers Optical", "url": "https://www.specsavers.com.au/health-funds/bupa"},
+                    {"name" : "Extra Benefit - Home Doctor", "url": "https://homedoctor.com.au/"}
+                );
+                break;
+            case 'CBH':
+                usefulLinks.push(
+                    {"name" : "Privatehealth.gov.au", "url": "http://www.privatehealth.gov.au/dynamic/InsurerDetails.aspx?code=CBH"},
+                    {"name" : "Hospital Network", "url": "https://www.cbhs.com.au/members/claims-information/hospital-search"},
+                    {"name" : "Dental Agreement", "url": "https://www.cbhs.com.au/members/member-information/choice-network-providers/find-your-provider"},
+                    {"name" : "Optical Agreement", "url": "https://www.cbhs.com.au/members/member-information/choice-network-providers/find-your-provider"},
+                    {"name" : "Eligibility", "url": "https://www.cbhs.com.au/join-cbhs/joining-cbhs/who-can-join-"}
+
+                );
+                break;
+            case 'CUA':
+                usefulLinks.push(
+                    {"name" : "Privatehealth.gov.au", "url": "http://www.privatehealth.gov.au/dynamic/InsurerDetails.aspx?code=CPS"},
+                    {"name" : "Hospital Network", "url": "http://www.privatehealth.gov.au/dynamic/AgreementHospitals.aspx?insurerid=24a7d5ed-1d30-4841-aabb-bd63558c5bd6"}
+                );
+                break;
+            case 'FRA':
+                usefulLinks.push(
+                    {"name" : "Privatehealth.gov.au", "url": "http://www.privatehealth.gov.au/dynamic/InsurerDetails.aspx?code=GMH"},
+                    {"name" : "Hospital Network", "url": "https://www.frankhealthinsurance.com.au/Documents/List-of-Participating-Hospitals.pdf"}
+                );
+                break;
+            case 'GMH':
+                usefulLinks.push(
+                    {"name" : "Privatehealth.gov.au", "url": "http://www.privatehealth.gov.au/dynamic/InsurerDetails.aspx?code=GMH"},
+                    {"name" : "Hospital Network", "url": "https://www.gmhba.com.au/documents/GMHBA%20Participating%20Private%20Hospitals.pdf"}
+                );
+                break;
+            case 'HBF':
+                usefulLinks.push(
+                    {"name" : "Privatehealth.gov.au", "url": "http://www.privatehealth.gov.au/dynamic/InsurerDetails.aspx?code=HBF"},
+                    {"name" : "Hospital Network", "url": "http://confluence:8090/display/CTMKB/Agreement+Hospitals"}
+                );
+                break;
+            case 'HCF':
+                usefulLinks.push(
+                    {"name" : "Privatehealth.gov.au", "url": "http://www.privatehealth.gov.au/dynamic/InsurerDetails.aspx?code=HCF"},
+                    {"name" : "Hospital Network", "url": "https://www.hcf.com.au/locations/participating-hospitals"},
+                    {"name" : "Dental Agreement", "url": ""}
+                );
+                break;
+            case 'NHB':
+                usefulLinks.push(
+                    {"name" : "Privatehealth.gov.au", "url": "http://www.privatehealth.gov.au/dynamic/InsurerDetails.aspx?code=NHB"},
+                    {"name" : "Hospital Network", "url": "https://navyhealth.com.au/member-services/providers/hospital-search/"},
+                    {"name" : "Eligibility", "url": "http://canijoin.com.au/"}
+                );
+                break;
+            case 'NIB':
+                usefulLinks.push(
+                    {"name" : "Privatehealth.gov.au", "url": "http://www.privatehealth.gov.au/dynamic/InsurerDetails.aspx?code=NIB"},
+                    {"name" : "Hospital Network", "url": "https://www.nib.com.au/health-information/going-to-hospital/hospital-search"},
+                    {"name" : "Hospital Network", "url": "https://www.whitecoat.com.au/preferred-provider/NIB/resident"}
+                );
+                break;
+            case 'QCH':
+                usefulLinks.push(
+                    {"name" : "Privatehealth.gov.au", "url": "http://www.privatehealth.gov.au/dynamic/InsurerDetails.aspx?code=QCH"},
+                    {"name" : "Hospital Network", "url": "http://www.qldcountryhealth.com.au/find-a-hospital"}
+                );
+                break;
+            case 'TUH':
+                usefulLinks.push(
+                    {"name" : "Privatehealth.gov.au", "url": "http://www.privatehealth.gov.au/dynamic/insurerdetails.aspx?code=QTU"},
+                    {"name" : "Hospital Network", "url": "http://tuh.com.au/understanding-health-insurance/about-hospital-cover/hospital-types-and-why-it-matters/"},
+                    {"name" : "Dental Agreement", "url": "http://tuh.com.au/brisbane-health-hub/"},
+                    {"name" : "Eligibility", "url": "http://tuh.com.au/why-tuh/who-can-join-tuh/"}
+                );
+                break;
+            default:
+                break;
+        }
+        return usefulLinks;
+    }
+
     /*
      * recreate the Simples tooltips over prices for Simples users
      * when the results get loaded/reloaded
@@ -832,6 +928,7 @@
 
                 var text = htmlTemplate({
                     product: product,
+                    usefulLinks: getUsefulLinks(product.info.FundCode),
                     frequency: Results.getFrequency()
                 });
 
