@@ -76,7 +76,7 @@
 		if(_.indexOf(['localhost','nxi','nxs'], meerkat.site.environment) > -1) {
 			var $providerList = $('#quote_filter_providerList');
 			var $authToken = $('#quote_filter_authToken');
-			return ($authToken.length && $authToken.val() === '0u812iiL7blk182') ||	($providerList.length && $providerList.val() === 'FAME');
+			return ($authToken.val() === '0u812iiL7blk182') || ($providerList.val() === 'FAME');
 		}
 		return false;
 	}

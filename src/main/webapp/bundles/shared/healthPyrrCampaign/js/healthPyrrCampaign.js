@@ -6,8 +6,8 @@
     $elements = {},
     isActive = null;
 
-    function initPyrrCampaign() {
-        if (!isPyrrActive()) {
+    function initPyrrCampaign(isSimples) {
+        if (!isPyrrActive(isSimples)) {
             return false;
         }
 
@@ -15,9 +15,16 @@
         _applyEventListeners();
     }
 
-    function isPyrrActive() {
-        if(isActive === null) {
+    function isPyrrActive(isSimples) {
+        if (isActive === null) {
             isActive = typeof meerkat.site.isPyrrActive !== 'undefined' && meerkat.site.isPyrrActive;
+            var currentCoupon = meerkat.modules.coupon.getCurrentCoupon();
+            // If this is simples, we ignore the fact that we don't have a valid pyrr coupon.
+            if (currentCoupon !== false || typeof currentCoupon !== 'undefined' && isActive !== false) {
+                if (currentCoupon.couponCode != 'pyrr' && isSimples !== true) {
+                    isActive = false;
+                }
+            }
         }
         return isActive;
     }

@@ -83,7 +83,7 @@
                 updateView();
 
                 // If we have a PYRR offer add it to the dropdown.
-                var pyrrCoupon = meerkat.modules.healthPyrrCampaign.isPyrrActive();
+                var pyrrCoupon = meerkat.modules.healthPyrrCampaign.isPyrrActive(true);
 
                 if (pyrrCoupon) {
                     $elements.wrappers.simples.pyrrCampaign = $elements.root.find('.dialogue.pyrrCampaign').first();
@@ -220,7 +220,7 @@
                         });
                     } else if(data.isOther) {
                         $elements.wrappers.mando.slideUp('fast', function(){
-                            var pyrrCoupon = meerkat.modules.healthPyrrCampaign.isPyrrActive();
+                            var pyrrCoupon = meerkat.modules.healthPyrrCampaign.isPyrrActive(true);
                             if (pyrrCoupon) {
                                 $elements.wrappers.simples.pyrrCampaign.hide();
                             }
