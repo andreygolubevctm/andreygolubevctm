@@ -14,6 +14,9 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static com.ctm.commonlogging.common.LoggingArguments.v;
 
@@ -169,4 +172,17 @@ public class IPCheckService {
         return result;
     }
 
+    public boolean isIPAddressLocal(String ipAddress) {
+        try {
+            return InetAddress.getByName(ipAddress).isSiteLocalAddress();
+        } catch(UnknownHostException e) {
+            LOGGER.error("An exception was thrown determining if IP address is local", kv("ipAddress", ipAddress), e);
+            return false;
+        }
+    }
+
+    public boolean isLocalIPAddress(HttpServletRequest request) {
+        final String ipAddress = ipAddressHandler.getIPAddress(request);
+        return isIPAddressLocal(ipAddress);
+    }
 }

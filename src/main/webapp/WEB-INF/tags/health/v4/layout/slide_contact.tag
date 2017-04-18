@@ -11,13 +11,13 @@
 
              <jsp:attribute name="rightColumn">
                  <reward:campaign_tile_container />
-                 <health_v4_content:snapshot />
              </jsp:attribute>
 
             <jsp:body>
 
 
                 <form_v4:fieldset id="health-contact-fieldset" legend="Fill in your details below to compare products">
+                    <health_v4_contact:required_text />
 
                     <c:set var="firstNamePlaceHolder">
                         <content:get key="firstNamePlaceHolder"/>

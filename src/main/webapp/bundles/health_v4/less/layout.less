@@ -11,12 +11,20 @@
 .btn-next {
   min-height: 40px;
   padding: 10px 0 0 0;
+  @media (@xs-only) {
+    width: 300px;
+    margin: 0 auto;
+    height: 60px;
+    font-size: 20px;
+    padding-top: 15px;
+  }
   @media (@lg) {
     font-size: @font-size-large;
     min-height: 48px;
     padding-top: 14px;
   }
 }
+
 
 @media (@xs-only) {
   body:not([data-step=results]) {
@@ -29,6 +37,13 @@
       }
     }
   }
+  body[data-step=results] {
+    &.couponShown {
+      .header-wrap {
+        min-height: 57px;
+      }
+    }
+  }
 }
 
 .slideAction,
@@ -36,5 +51,20 @@
   div:first-child {
     float: right;
     text-align: right;
+  }
+}
+
+body[data-step=contact] {
+  .required_input label.control-label:after {
+    content: "\002A";
+    color: @required-color;
+    padding-left: 2px;
+  }
+  .health-required-blurb  {
+    color: @gray-dark;
+    font-size: 16px;
+    span {
+      color: @required-color;
+    }
   }
 }

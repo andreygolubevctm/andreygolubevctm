@@ -28,12 +28,20 @@
                 coverType: $('input[name=health_situation_coverType]'),
                 hiddenHospitalCover: $('input[name="health_benefits_benefitsExtras_Hospital"]'),
                 hiddenExtraCover: $('input[name="health_benefits_benefitsExtras_GeneralHealth"]'),
-                accidentOnlyCover: $('input[name=health_situation_accidentOnlyCover]')
+                accidentOnlyCover: $('input[name=health_situation_accidentOnlyCover]'),
+                comprehensiveBenefitTab: $('#comprehensiveBenefitTab'),
+                limitedCoverIcon: $('#health_benefits_benefitsExtras_LimitedCover')
             };
 
             $('#tabs').find('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                var hospitalType = getHospitalType();
+
                 setHospitalType($(this).data('benefit-cover-type'));
-                $('.hospital-content-toggle').toggle(getHospitalType() != 'limited');
+                $('.hospital-content-toggle').toggle(hospitalType !== 'limited');
+            });
+
+            $('label[for="health_benefits_benefitsExtras_LimitedCover"]').on('click', function () {
+                $elements.comprehensiveBenefitTab.find('a').trigger('click');
             });
 
             // was in step onInitialise, didnt work there for results.
@@ -63,7 +71,8 @@
             hospital: [],
             extras: []
         };
-        $elements.extras.add($elements.hospital).find('input').each(function () {
+        
+        $elements.extras.add($elements.hospital).find('input').not($elements.limitedCoverIcon).each(function () {
             var $this = $(this),
                 benefitType = _isBenefitElementHospital($this) ? 'hospital' : 'extras';
             // If health filters needs any other properties in filters_benefits.tag, add them here.
@@ -132,7 +141,8 @@
         // toggle the quick select data in the hospital container
         $elements.hospital.find('.nav-tabs a').on('click', function toggleQuickSelect() {
             var target = $(this).attr('href');
-
+            // Check the input so it remains a green tick.
+            $elements.limitedCoverIcon.prop('checked', true);
             $elements.hospital.find($elements.quickSelectContainer).toggleClass('hidden', target === '.limited-pane');
             _hospitalType = target === '.limited-pane' ? 'limited' : 'customise';
         });
@@ -168,6 +178,9 @@
         _.each(updatedBenefitsModel, function updateCheckboxes(id) {
             $elements[benefitType].find('input[data-benefit-id=' + id + ']').prop('checked', 'checked');
         });
+
+        // Update limited icon
+        $elements.limitedCoverIcon.prop('checked',meerkat.modules.benefits.getHospitalType() === 'limited');
     }
 
     function getHospitalType() {

@@ -114,7 +114,7 @@
 		text-align: left;
 	}
 
-	
+
 	.mainBenefitsContainer {
 		border-top: 1px solid #e9e9e9;
 		background: #F8F8F8;
@@ -148,18 +148,13 @@
 	}
 
 	//This attemps to line up the prices with the logo on the left.
-	.resultsContainer[policytype="A"]{
-		.priceContainer, .excessContainer{
-			line-height: 60px;
-		}
-		.daysPerTrip {
+	.resultsContainer[policytype="A"] .daysPerTrip {
 			white-space: nowrap;
-		}
 	}
 
 	.priceContainer	{
 		text-align: left;
-		padding: 0px;
+		padding: 5px 0px 0px;
 		.priceAmount {
 			font-size: @priceSize;
 			line-height: @priceSize;
@@ -167,25 +162,54 @@
 	}
 
 	.excessContainer {
+		padding: 0;
 		.excessAmount {
-			line-height: @priceSize;	
+			line-height: @priceSize;
 		}
 	}
+
+	.gotoContainer {
+		padding: 0;
+		.btn {
+			padding: 6px 5px;
+			font-size: 12px;
+			line-height: 1.5;
+		}
+	}
+
+	.topContainer {
+		padding-top: 3px;
+	}
+
+	.btmContainer, .infoContainer {
+		padding-top: 5px;
+	}
+
+	.infoContainer {
+			font-size: 12px;
+			line-height: 1.4;
+	}
+
 
 	.priceMode {
 		.result-row	{
 			padding-bottom: 0px;
 			border-bottom: none;
+			@media (@xs-only) {
+				&[data-available="Y"] .resultInsert.priceMode:after {
+					content: '';
+				}
+			}
 		}
 	}
 
-	// aligns the arrow - should be backported to core if the other vertical designs 
+	// aligns the arrow - should be backported to core if the other vertical designs
 	.priceMode .result-row[data-available="Y"] .resultInsert.priceMode:after {
 		top: 50%;
 		margin-top: -35px;
 	}
 	.priceMode .result-row[data-available="Y"] .resultInsert.priceMode {
-		padding-right: 35px;
+		padding-right: 20px;
 	}
 
 	//Vertical Centering - the XS version!!
@@ -208,7 +232,7 @@
 				vertical-align: middle;
 				word-break:break-word;
 			}
-		}	
+		}
 	}
 
 	.productTitle {
@@ -236,7 +260,7 @@
 		padding-top: 10px;
 	}
 
-	.PDS, 
+	.PDS,
 	.moreInfo {
 		margin-top: 10px;
 		//text-align:center; //??
@@ -254,7 +278,7 @@
 	.results-table {
 		.result-row	{
 			padding: 0;
-			margin-bottom: 30px; 
+			margin-bottom: 30px;
 
 			.resultInsert > .row {
 				margin-left: 0;
@@ -288,7 +312,7 @@
 
 .vertical-center-row > div {
 	@media(@sm) {
-		
+
 		//This is important - it sets the height of what we're vertically centering against.
 		//min-height:120px; //freaks out IE8
 		height: 120px;
@@ -383,7 +407,7 @@
 		}
 	}
 
-	
+
 }
 
 @media(@lg) {

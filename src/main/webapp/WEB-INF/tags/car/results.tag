@@ -199,7 +199,7 @@
 						</div>
 
 						{{= callActionButtonsTemplate }}
-
+						
 						{{ if (promotionText.length > 0) { }}
 						<fieldset class="result-special-offer">
 							<legend>Special Offer</legend>
@@ -373,6 +373,11 @@
 		</div>
 	</core_v1:js_template>
 
+<%-- FAMOUS --%>
+<div class="hidden famous-results-page">
+	<car:famous_results />
+</div>
+
 <%-- NO RESULTS --%>
 <div class="hidden">
 	<agg_v2:no_quotes id="no-results-content"/>
@@ -503,6 +508,9 @@
 			<br>
 			Click the <input type="checkbox" class="compare-tick"><label></label> to compare up to <span class="compare-max-count-label">{{= maxAllowable }} products</span>.
 
+		</p>
+		<p class="inc-gst">
+			All prices are inclusive of GST & Gov Charges
 		</p>
 		{{ }  else { }}
 

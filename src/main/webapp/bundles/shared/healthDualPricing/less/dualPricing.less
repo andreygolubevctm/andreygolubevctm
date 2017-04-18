@@ -60,11 +60,12 @@
 }
 
 [data-step="results"] {
-  .resultInsert .productSummary {
-    /* height: 240px; removed for now since v2 isn't going live
+  .resultInsert .productSummary.hasDualPricing {
+    height: 240px;
     @media(@xs-only) {
       height: 210px;
-    }*/
+    }
+
     .dual-pricing-container {
 
       @media(@sm) {
@@ -121,11 +122,20 @@
         .altPriceContainer {
           width: 50%;
           display: inline-block;
+
+          @media (@sm-only) {
+            width: 100%;
+          }
         }
 
         .altPriceDetailsContainer {
           width: 45%;
-          display:inline-block;
+          display: inline-block;
+
+          @media (@sm-only) {
+            width: 100%;
+            text-align: center;
+          }
         }
       }
     }

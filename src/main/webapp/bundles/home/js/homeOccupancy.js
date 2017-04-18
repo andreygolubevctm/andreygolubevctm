@@ -105,11 +105,27 @@
 		}
 	}
 
+	function setupButtonTileDropdownSelectors() {
+		var occupiedTypeItems = meerkat.modules.home.getHomeUnitsItems($(elements.howOccupied)),
+			businessTypeItems = meerkat.modules.home.getHomeUnitsItems($('#home_businessActivity_businessType'), true),
+			settings = [{
+				$container: $('#hasOccupiedContainer'),
+				items: occupiedTypeItems[meerkat.modules.home.getPropertyType()],
+				maxRadioItems: 5
+			}, {
+				$container: $('#businessTypeContainer'),
+				items: businessTypeItems
+			}];
+
+		meerkat.modules.buttonTileDropdownSelector.initButtonTileDropdownSelector(settings);
+	}
+
 	meerkat.modules.register('homeOccupancy', {
 		initHomeOccupancy: initHomeOccupancy, //main entrypoint to be called.
 		events: moduleEvents,
-		isPrincipalResidence : isPrincipalResidence//exposes the events object
+		isPrincipalResidence : isPrincipalResidence, //exposes the events object
 		//here you can optionally expose functions for use on the 'meerkat.modules.example' object
+		setupButtonTileDropdownSelectors: setupButtonTileDropdownSelectors
 	});
 
 })(jQuery);

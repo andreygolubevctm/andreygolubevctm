@@ -11,18 +11,14 @@
 	<layout_v1:slide_columns sideHidden="false">
 
 		<jsp:attribute name="rightColumn">
-			<c:if test="${journeySplitTestActive eq false}">
-				<home:snapshot />
-			</c:if>
+			<home:snapshot />
 		</jsp:attribute>
 
 		<jsp:body>
 
 			<layout_v1:slide_content>
-				<c:if test="${journeySplitTestActive eq false}">
-					<home:cover_history xpath="${xpath}/disclosures"  />
-					<home:contact_optins xpath="${xpath}" />
-				</c:if>
+				<home:cover_history xpath="${xpath}/disclosures" baseXpath="${xpath}" />
+				<home:contact_optins xpath="${xpath}" />
 			</layout_v1:slide_content>
 
 		</jsp:body>

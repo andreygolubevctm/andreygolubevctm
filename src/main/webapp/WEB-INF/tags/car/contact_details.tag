@@ -51,6 +51,11 @@
 	<field_v1:hidden xpath="quote/contact/marketing" defaultValue="N" />
 	<field_v1:hidden xpath="quote/contact/oktocall" defaultValue="N" />
 
+	<form_v2:row label="Preferred method of contact" id="preferredContactMethodRow" className="hidden">
+		<field_v2:array_radio xpath="${xpath}/preferred" required="true" items="Email=Email,Phone=Phone"
+							  title="the preferred method of contact" />
+	</form_v2:row>
+
 	<%-- COMPETITION START --%>
 	<c:if test="${competitionEnabled == true}">
 		<form_v2:row className="car-competition-optin-group" hideHelpIconCol="true">

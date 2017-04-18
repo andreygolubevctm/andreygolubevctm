@@ -7,12 +7,8 @@
 </c:set>
 
 <%-- Setup variables needed for dual pricing --%>
-<jsp:useBean id="healthPriceDetailService" class="com.ctm.web.health.services.HealthPriceDetailService" scope="page" />
-<c:set var="healthAlternatePricingActive" value="${healthPriceDetailService.isAlternatePriceActive(pageContext.getRequest())}" />
-
-<c:if test="${healthAlternatePricingActive eq true}">
-	<c:set var="healthAlternatePricingMonth" value="${healthPriceDetailService.getAlternatePriceMonth(pageContext.getRequest())}" />
-</c:if>
+<health_v1:dual_pricing_settings />
+<health_v1:pyrr_campaign_settings />
 
 <%-- MORE INFO CALL TO ACTION BAR TEMPLATE --%>
 <%-- MORE INFO FOOTER --%>
@@ -38,13 +34,17 @@
 	{{ obj.displayLogo = false; }} <%-- Turns off the logo from the template --%>
 
 	<%-- If dual pricing is enabled, update the template --%>
-	{{ if (meerkat.site.healthAlternatePricingActive === true && meerkat.site.isCallCentreUser === true) { }}
+	{{ if (meerkat.modules.healthDualPricing.isDualPricingActive() === true) { }}
 		{{ obj.renderedDualPricing = meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false); }}
 	{{ } else { }}
 		{{ var logoTemplate = meerkat.modules.templateCache.getTemplate($("#logo-template")); }}
 		{{ var priceTemplate = meerkat.modules.templateCache.getTemplate($("#price-template")); }}
 
 		{{ obj.showAltPremium = false; obj.renderedPriceTemplate = logoTemplate(obj) + priceTemplate(obj); }}
+	{{ } }}
+
+	{{ if (meerkat.modules.healthPyrrCampaign.isPyrrActive(true) === true) { }}
+		{{ obj.renderedPyrrCampaign = meerkat.modules.healthPyrrCampaign.renderTemplate('', obj, true, false); }}
 	{{ } }}
 
 	<%-- Check if drop dead date has passed --%>
@@ -63,13 +63,13 @@
 
 	<c:set var="buyNowHeadingClass">
 		<c:choose>
-			<c:when test="${healthAlternatePricingActive eq true}">hidden-xs</c:when>
+			<c:when test="${isDualPriceActive eq true}">hidden-xs</c:when>
 			<c:otherwise>visible-xs</c:otherwise>
 		</c:choose>
 	</c:set>
 	<c:set var="moreInfoTopLeftColumnWidth">
 		<c:choose>
-			<c:when test="${healthAlternatePricingActive eq true}">col-md-7</c:when>
+			<c:when test="${isDualPriceActive eq true}">col-md-7</c:when>
 			<c:otherwise>col-sm-8</c:otherwise>
 		</c:choose>
 	</c:set>
@@ -84,30 +84,33 @@
 
 	<div data-product-type="{{= info.ProductType }}" class="displayNone more-info-content col-xs-12 ${variantClassName} {{= comingSoonClass }}">
 
-		<div class="fieldset-card row price-card <c:if test="${healthAlternatePricingActive eq true}">hasDualPricing</c:if> {{= dropDatePassed ? 'dropDatePassedContainer' : ''}}">
+		<div class="fieldset-card row price-card <c:if test="${isDualPriceActive eq true}">hasDualPricing</c:if> {{= dropDatePassed ? 'dropDatePassedContainer' : ''}}">
 			<div class="${moreInfoTopLeftColumnWidth} moreInfoTopLeftColumn">
 				<div class="row hidden-sm hidden-md hidden-lg">
 					<div class="col-xs-3">
 						<div class="companyLogo {{= info.provider }}-mi"></div>
 					</div>
-					<div class="col-xs-9 <c:if test="${healthAlternatePricingActive eq true}">productDetails</c:if>">
+					<div class="col-xs-9 <c:if test="${isDualPriceActive eq true}">productDetails</c:if>">
 						<h1 class="noTopMargin productName">{{= info.productTitle }}</h1>
 					</div>
 				</div>
 				<div class="row priceRow productSummary hidden-xs">
 					<div class="col-xs-12">
 						<c:choose>
-							<c:when test="${healthAlternatePricingActive eq true and not empty callCentre}">
+							<c:when test="${isDualPriceActive eq true}">
 								{{= renderedDualPricing }}
 							</c:when>
 							<c:otherwise>
+								<c:if test="${isPyrrActive eq true}">
+									{{= renderedPyrrCampaign }}
+								</c:if>
 								{{= renderedPriceTemplate }}
 							</c:otherwise>
 						</c:choose>
 					</div>
 				</div>
 				<div class="row hidden-xs">
-					<div class="col-xs-12 <c:if test="${healthAlternatePricingActive eq true}">productDetails</c:if>">
+					<div class="col-xs-12 <c:if test="${isDualPriceActive eq true}">productDetails</c:if>">
 						<h1 class="noTopMargin productName">{{= info.productTitle }}</h1>
 
 						<div class="hidden-xs">
@@ -129,7 +132,7 @@
 					<div class="row priceRow productSummary hidden-sm hidden-md hidden-lg">
 						<div class="col-xs-12 col-sm-8">
 							<c:choose>
-								<c:when test="${healthAlternatePricingActive eq true and not empty callCentre}">
+								<c:when test="${isDualPriceActive eq true}">
 									{{= renderedDualPricing }}
 								</c:when>
 								<c:otherwise>
@@ -153,7 +156,7 @@
 
 			</div>
 			<c:choose>
-				<c:when test="${healthAlternatePricingActive eq true and not empty callCentre}">
+				<c:when test="${isDualPriceActive eq true}">
 					<div class="col-md-5 hidden-xs moreInfoTopRightColumn">
 						<div class="companyLogo {{= info.provider }}-mi"></div>
 							<div class="insureNow">

@@ -20,6 +20,7 @@
 			heritage:				".heritage"
 
 	};
+
 	function validateYearBuilt () {
 		$('#'+elements.yearBuilt).blur();
 	}
@@ -64,11 +65,30 @@
 		}
 	}
 
+	function setupButtonTileDropdownSelectors() {
+		var propertyTypeItems = meerkat.modules.home.getHomeUnitsItems($('#home_property_propertyType')),
+			wallMaterialItems = meerkat.modules.home.getHomeUnitsItems($('#home_property_wallMaterial')),
+			roofMaterialItems = meerkat.modules.home.getHomeUnitsItems($('#home_property_roofMaterial')),
+			settings = [{
+				$container: $('#propertyTypeContainer'),
+				items: propertyTypeItems[meerkat.modules.home.getPropertyType()]
+			}, {
+				$container: $('#wallMaterialContainer'),
+				items: wallMaterialItems[meerkat.modules.home.getPropertyType()]
+			}, {
+				$container: $('#roofMaterialContainer'),
+				items: roofMaterialItems[meerkat.modules.home.getPropertyType()]
+			}];
+
+		meerkat.modules.buttonTileDropdownSelector.initButtonTileDropdownSelector(settings);
+	}
+
 	meerkat.modules.register('homePropertyDetails', {
 		initHomePropertyDetails: initHomePropertyDetails, //main entrypoint to be called.
 		events: moduleEvents, //exposes the events object
-		validateYearBuilt: validateYearBuilt
+		validateYearBuilt: validateYearBuilt,
 		//here you can optionally expose functions for use on the 'meerkat.modules.example' object
+		setupButtonTileDropdownSelectors: setupButtonTileDropdownSelectors
 	});
 
 })(jQuery);

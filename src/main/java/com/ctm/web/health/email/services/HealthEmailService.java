@@ -149,7 +149,7 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 			final String operator;
 			if (request != null && request.getSession() != null) {
 				AuthenticatedData authenticatedData = sessionDataService.getAuthenticatedSessionData(request);
-				if(authenticatedData != null) {
+				if(authenticatedData != null && StringUtils.isNotBlank(authenticatedData.getUid())) {
 					operator = authenticatedData.getUid();
 				} else {
 					operator = "ONLINE";

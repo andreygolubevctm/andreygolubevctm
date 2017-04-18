@@ -163,7 +163,39 @@
 
 		.quote-ref-xs {
 			color: @callback-dark-grey;
+			margin:0;
 		}
+
+	    #health-callback-form {
+		    .form-group.fieldrow {
+			    padding:10px 0 0 0;
+		    }
+		    .contact-number-mobile,
+		    .contact-number-other {
+			    .control-sub-label {
+					float:right;
+				    padding:0;
+				    margin-top:4px;
+			    }
+		    }
+	    }
+
+	    #callBackNow,
+	    #callBackLater {
+		    margin-top:20px;
+	    }
+
+	    label.btn {
+		    margin-top:0;
+	    }
+
+	    .outline {
+		    .form-group:nth-child(1) {
+			    label.control-label {
+				    display:none;
+			    }
+		    }
+	    }
 
 		.switch {
 			display: inline-block;
@@ -187,6 +219,7 @@
 		.today-hours-callback-modal,
 		.main h4 {
 			color: #909090;
+			line-height:1.1;
 		}
 
 		.today-hours-callback-modal {
@@ -198,7 +231,7 @@
 				border-top: 2px solid #ccc;
 			    content: " ";
 			    display: block;
-			    margin: 40px auto 20px;
+			    margin: 10px auto 0px;
 			    width: 100%;
 			}
 

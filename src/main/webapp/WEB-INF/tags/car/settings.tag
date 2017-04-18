@@ -13,6 +13,7 @@
 <c:if test="${not empty quote_vehicle_make || not empty quote_vehicle_model || not empty quote_vehicle_year || not empty quote_vehicle_searchRego || not empty quote_vehicle_searchState}">
 	<c:set var="fromBrochure" scope="request" value="${true}"/>
 </c:if>
+
 <c:set var="priceDisplayMode"><content:get key="resultsDisplayMode" /></c:set>
 <c:if test="${not empty param.display and (param.display eq 'price' or param.display eq 'features')}">
 	<c:set var="priceDisplayMode" value="${param.display}"/>
@@ -85,5 +86,14 @@
 	},
 	commencementDate : '${data.quote.options.commencementDate}',
 	skipNewCoverTypeCarJourney: ${skipNewCoverTypeCarJourney},
-	ctpMessage: "<content:get key="ctpMessageCopy"/>"
+	ctpMessage: "<content:get key="ctpMessageCopy"/>",
+	isFromExoticPage : <c:choose><c:when test="${not empty isFromExoticPage}">${isFromExoticPage}</c:when><c:otherwise>false</c:otherwise></c:choose>,
+	isExoticManualEntry: <c:choose><c:when test="${not empty isExoticManualEntry}">${isExoticManualEntry}</c:when><c:otherwise>false</c:otherwise></c:choose>,
+	isRegoLookup: ${isRegoLookup},
+	exoticCarContent: {
+		originalHeading : "${originalHeading}",
+		origintalCopy : "${origintalCopy}",
+		exoticHeading : <c:choose><c:when test="${not empty exoticHeading}">"${exoticHeading}"</c:when><c:otherwise>""</c:otherwise></c:choose>,
+		exoticCopy : <c:choose><c:when test="${not empty exoticCopy}">"${exoticCopy}"</c:when><c:otherwise>""</c:otherwise></c:choose>
+	}
 }

@@ -2,15 +2,21 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<%-- Setup variables needed for dual pricing --%>
+<health_v1:dual_pricing_settings />
+
 <script id="moreInfoAffixedHeaderMobileTemplate" type="text/html">
-	<div class="container">
+	<div class="container <c:if test="${isDualPriceActive eq true}">hasDualPricing</c:if>">
 		<div class="row">
-			<div class="col-xs-6">
+			<div class="col-xs-6 logo-header">
 				<div class="companyLogo {{= info.provider }}"></div>
 			</div>
-			<div class="col-xs-6 text-center">
+			<div class="col-xs-6 text-center mobile-pricing">
 				{{= renderedPriceTemplate }}
 			</div>
+			{{ if (meerkat.modules.healthPyrrCampaign.isPyrrActive() === true) { }}
+				{{= renderedPyrrCampaign }}
+			{{ } }}
 			<div class="col-xs-12 productTitleText">
 				<h5 class="noTopMargin productName text-center">{{= info.productTitle }}</h5>
 			</div>

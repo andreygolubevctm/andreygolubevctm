@@ -74,17 +74,22 @@
             },
             "rebate": {
                 name: 'health_filterBar_rebate',
-                defaultValueSourceSelector: '#health_healthCover_rebateCheckbox',
+                defaultValueSourceSelector: 'input[name="health_healthCover_rebate"]',
                 defaultValue: '',
                 events: {
                     init: function (filterObject) {
-                        var isChecked = $(filterObject.defaultValueSourceSelector).is(':checked');
+                        var isChecked = $(filterObject.defaultValueSourceSelector + ":checked").length > 0 && $(filterObject.defaultValueSourceSelector + ":checked").val() === 'Y';
                         $('input[name=' + filterObject.name + ']').prop('checked', isChecked);
                         toggleIncome(!isChecked);
                         updateRebateLabels();
                     },
                     update: function (filterObject) {
-                        $(filterObject.defaultValueSourceSelector).prop('checked', $('input[name=' + filterObject.name + ']').is(':checked')).trigger('change');
+                        var isChecked = $('input[name=' + filterObject.name + ']').is(':checked');
+                        if (isChecked) {
+                            $(filterObject.defaultValueSourceSelector+'[value="Y"]').prop('checked', true).trigger('change');
+                        } else {
+                            $(filterObject.defaultValueSourceSelector+'[value="N"]').prop('checked', true).trigger('change');
+                        }
 
                         _.defer(function () {
                             toggleRebateEdit(true);
@@ -95,7 +100,7 @@
             },
             "income": {
                 name: 'health_filterBar_income',
-                defaultValueSourceSelector: '#health_healthCover_income',
+                defaultValueSourceSelector: 'select[name=health_healthCover_income]',
                 defaultValue: '',
                 events: {
                     init: function (filterObject) {
@@ -331,6 +336,7 @@
 
 
         $(document).on('change', '#health_filterBar_rebate', function toggleRebateDropdown() {
+            toggleRebateEdit(false);
             toggleIncome(!$(this).is(':checked'));
         });
 
@@ -361,8 +367,9 @@
     }
 
     function updateRebateLabels() {
-        $('#filtersRebateLabel span').html(meerkat.modules.healthRebate.getRebateLabelText());
+        $('#filtersRebateLabel span').html(meerkat.modules.healthRebate.getSelectedRebateTierLabelText());
         $('#filtersSelectedRebateText').html(meerkat.modules.healthRebate.getSelectedRebateLabelText());
+        meerkat.modules.healthTiers.setIncomeLabel();
     }
 
     function toggleFilterByContainer($filter, toggle) {

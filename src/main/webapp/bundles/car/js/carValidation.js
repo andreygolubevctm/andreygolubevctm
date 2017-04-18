@@ -106,6 +106,9 @@
             case "quote_drivers_young_licenceAge":
                 driver = "#quote_drivers_young_dob";
                 break;
+            case "quote_drivers_youngExotic_licenceAge":
+                driver = "#quote_drivers_youngExotic_dob";
+                break;
             default:
                 return false;
         }

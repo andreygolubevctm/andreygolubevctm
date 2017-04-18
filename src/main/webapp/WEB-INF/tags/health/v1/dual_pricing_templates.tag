@@ -2,10 +2,6 @@
 <%@ tag description="Dual pricing templates"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<%-- Setup variables needed for dual pricing --%>
-<jsp:useBean id="healthPriceDetailService" class="com.ctm.web.health.services.HealthPriceDetailService" scope="page" />
-<c:set var="healthAlternatePricingActive" value="${healthPriceDetailService.isAlternatePriceActive(pageContext.getRequest())}" />
-
 <jsp:useBean id="now" class="java.util.Date" />
 <c:set var="thisYear"><fmt:formatDate value="${now}" pattern="yyyy" /></c:set>
 
@@ -44,7 +40,7 @@
 			</div>
 			<div class="altPriceDetailsContainer">
 				<span class="deadline">${april1Header}</span>
-				<a href="javascript:;" class="dual-pricing-learn-more">learn more</a>
+				<a href="javascript:;" class="dual-pricing-learn-more" data-dropDeadDate="{{= obj.dropDeadDate }}">learn more</a>
 			</div>
 		</div>
 		<div class="current-pricing">
@@ -60,7 +56,7 @@
 			<h3>${april1HeaderNoSup}</h3>
 			{{= renderedAltPriceTemplate }}
 			<span class="premiumsRising">Premiums are rising</span>
-			<a href="javascript:;" class="dual-pricing-learn-more">learn more</a>
+			<a href="javascript:;" class="dual-pricing-learn-more" data-dropDeadDate="{{= obj.dropDeadDate }}">learn more</a>
 		</div>
 		<div class="current-pricing">
 			<h3>Current {{= obj._selectedFrequency }} Pricing</h3>
@@ -80,7 +76,7 @@
 				</div>
 				<div class="col-xs-6 detailsContainer">
 					<span class="premiumsRising">Premiums are rising</span>
-					<a href="javascript:;" class="dual-pricing-learn-more">learn more</a>
+					<a href="javascript:;" class="dual-pricing-learn-more" data-dropDeadDate="{{= obj.dropDeadDate }}">learn more</a>
 				</div>
 			</div>
 		</div>
