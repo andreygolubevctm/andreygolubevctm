@@ -4,8 +4,6 @@
 
 <jsp:useBean id="ipAddressHandler" class="com.ctm.web.core.security.IPAddressHandler" />
 
-<%-- Comment to trigger build --%>
-
 <c:set var="logger" value="${log:getLogger('jsp.data')}"/>
 
 <c:import var="manifestContent" url="/META-INF/MANIFEST.MF"/>
