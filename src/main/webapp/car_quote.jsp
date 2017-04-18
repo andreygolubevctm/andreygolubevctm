@@ -124,6 +124,8 @@
 		<div class="collapse navbar-collapse">
 			<ul class="nav navbar-nav navbar-right slide-feature-pagination" data-results-pagination-pages-cell="true"></ul>
 		</div>
+
+        <agg_v1:inclusive_gst className="nav navbar-right" />
 	</jsp:attribute>
 
 	<jsp:attribute name="navbar_additional">

@@ -108,6 +108,7 @@
 			</ul>
 		</div>
 
+		<agg_v1:inclusive_gst className="nav navbar-right" />
 	</jsp:attribute>
 
 	<jsp:attribute name="navbar_additional">
