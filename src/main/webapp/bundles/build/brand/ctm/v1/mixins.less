@@ -256,5 +256,17 @@
 		outline: 0;
 		padding-left: (@pill-btn-pad-left - 1) !important;
 	}
+}
 
+// Mixin to center child element, given a min-height attribute
+.centerChildElement(@min-height) {
+	min-height: @min-height;
+	position: relative;
+
+	& > * {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
 }

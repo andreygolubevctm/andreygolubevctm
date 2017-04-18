@@ -45,7 +45,7 @@
 
         // When the type of cover filter changes, update type of cover dropdown
         meerkat.messaging.subscribe(meerkatEvents.carFilters.CHANGED, function onFilterChange(obj) {
-            if (obj.hasOwnProperty('coverType')) {
+            if (obj && obj.hasOwnProperty('coverType')) {
                 $typeOfCoverDropdown.val(obj.coverType);
             }
         });
