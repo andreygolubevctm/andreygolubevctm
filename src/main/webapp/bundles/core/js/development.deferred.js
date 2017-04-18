@@ -297,7 +297,7 @@
                             $e = $(this);
                             var href = $e.attr("href");
                             if (href && !_.isEmpty(href)) {
-                                var branch = $("#developmentStaticBranches").val();
+                                var branch = $("#developmentStaticBranches").val() || "static";
                                 var re = [
                                     // Fix URLs with existing static path
                                     new RegExp("\/static(((\_){1})([A-Z]{1,6})(-{1})([0-9]+))?\/", ""),
