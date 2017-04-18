@@ -114,9 +114,7 @@ public class UploadService {
 					part[i] = part[i].trim();
 				}
 
-                assert part != null;
-                if(part.length > 0){
-
+                if(part.length > 0 && !part[PRODUCT_CODE_COLUMN_NUMBER].isEmpty()){
                     createInsertProductMaster(update, effectiveDate, part);
 
                     if (!productCode.equals(prevProductCode)){
