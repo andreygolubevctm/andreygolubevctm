@@ -13,18 +13,25 @@
         resultsStepIndex = 3,
 
         templates = {
-            premiumsPopOver: '{{ if(product.premium.hasOwnProperty(frequency)) { }}' +
-            '<h6>Customer Pays:</h6>'+
-            '<strong>Base Premium: </strong>'+'<span>{{= product.premium[frequency].base }}</span><br/>'+
-            '<strong>Fortnightly Premium: </strong>'+'<span>{{= product.premium[frequency].quarterly }}</span><br/>'+
-            '<strong>Monthly Premium: </strong>'+'<span>{{= product.premium[frequency].quarterly }}</span><br/>'+
-            '<strong>Annual Premium: </strong>'+'<span>{{= product.premium[frequency].quarterly }}</span><br/>'+
-            '<hr/>'+
-            '<h6>Useful Links:</h6>'+
-            '{{ for(var i in usefulLinks) { }}'+
-            "<a target='_blank' href='{{= usefulLinks[i].url}}'>{{= usefulLinks[i].name}}</a><br/>"+
-            '{{ } }}'+
-            '<br/>{{ } }}'
+            premiumsPopOver:
+            '{{ if(product.premium.hasOwnProperty(frequency)) { }}' +
+                '<h6>Customer Pays:</h6>'+
+                '<ul class="price-list">'+
+                    '<li><strong>Base Premium: </strong>'+'<span>{{= product.premium[frequency].base }}</span></li>'+
+                    '<li><strong>Fortnightly Premium: </strong>'+'<span>{{= product.premium.fortnightly.text }}</span></li>'+
+                    '<li><strong>Monthly Premium: </strong>'+'<span>{{= product.premium.monthly.text }}</span></li>'+
+                    '<li><strong>Annual Premium: </strong>'+'<span>{{= product.premium.annually.text }}</span></li>'+
+                '</ul>'+
+                '{{ if(usefulLinks.length > 0) { }}'+
+                    '<hr/>'+
+                    '<h6>Useful Links:</h6>'+
+                    '<ul class="link-list">'+
+                        '{{ for(var i in usefulLinks) { }}'+
+                            "<li><a target='_blank' href='{{= usefulLinks[i].url}}'>{{= usefulLinks[i].name}}</a></li>"+
+                        '{{ } }}' +
+                    '</ul>'+
+                '{{ } }}'+
+            '{{ } }}'
         },
         moduleEvents = {
             healthResults: {
