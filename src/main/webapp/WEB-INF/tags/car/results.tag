@@ -485,16 +485,27 @@
 	{{ if ((typeof img === 'undefined' || img === '') && products[i].hasOwnProperty('productId') && products[i].productId.length > 1) img = products[i].productId.substring(0, products[i].productId.indexOf('-')); }}
 
 	<li class="compare-item">
-		<span class="carCompanyLogo logo_{{= img }}" title="{{= products[i].name }}"></span>
+		<div class="compareContainer">
+			<div class="logoPriceContainer">
+				<span class="companyLogo logo_{{= img }}" title="{{= products[i].name }}"></span>
 				<span class="price">
 					<span class="frequency annual annually {{= annualHidden }}">
-						{{= '$' }}{{= products[i].price.annualPremiumFormatted }} <span class="small hidden-sm">annually</span>
+						{{= '$' }}{{= products[i].price.annualPremiumFormatted }}
 					</span>
 					<span class="frequency monthly {{= monthlyHidden }}">
-						{{= '$' }}{{= products[i].price.monthlyPremium.toFixed(2) }} <span class="small hidden-sm">monthly</span>
+						{{= '$' }}{{= products[i].price.monthlyPremium.toFixed(2) }}
 					</span>
 				</span>
-		<span class="icon icon-cross remove-compare" data-productId="{{= products[i].productId }}" title="Remove from shortlist"></span>
+				</div>
+		<div class="productName">
+			<span>
+				{{= products[i].productName }}
+			</span>
+		</div>
+	</div>
+	<div class="remove-compare" data-productId="{{= products[i].productId }}" title="Remove from shortlist">
+		<span class="icon icon-cross"></span>
+	</div>
 	</li>
 	{{ } }}
 </core_v1:js_template>
@@ -553,21 +564,29 @@
 
 <!-- Compare view from quick price view. -->
 <core_v1:js_template id="compare-basket-price-template">
-	{{ if(comparedResultsCount > 0) { }}
+	
 	{{ var template = $("#compare-basket-price-item-template").html(); }}
 	{{ var htmlTemplate = _.template(template); }}
 	{{ var comparedItems = htmlTemplate(obj); }}
 
 	<ul class="nav navbar-nav">
-		<li class="navbar-text">Add up to <span class="compare-max-count-label">{{= maxAllowable }} products</span> to your shortlist</li>
+		
 		{{= comparedItems }}
+		{{ for(var i = 3; i > comparedResultsCount; i--) { }}
+			<li class="compare-item-placeholder">
+				Select a product above to compare
+			</li>
+		{{ } }}
+
+		<li class="navbar-right">
+		{{ if(comparedResultsCount > 1) { }}
+			<a href="javascript:void(0);" class="compareBtn enter-compare-mode compare-list" ${navBtnAnalAttribute}>Start Comparing <span class="icon icon-angle-right"></span></a>
+		{{ } else { }}
+			<span class="compareBtn" ${navBtnAnalAttribute}>Start Comparing <span class="icon icon-angle-right"></span></span>
+		{{ } }}
+		</li>
 	</ul>
-	{{ if(comparedResultsCount > 1) { }}
-	<ul class="nav navbar-nav navbar-right">
-		<li class=""><a href="javascript:void(0);" class="compare-list enter-compare-mode" ${navBtnAnalAttribute}>Compare Products <span class="icon icon-arrow-right"></span></a></li>
-	</ul>
-	{{ } }}
-	{{ } }}
+
 </core_v1:js_template>
 
 
