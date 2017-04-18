@@ -3,7 +3,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <core_v1:js_template id="monthly-price-features-template">
-    {{ var monthlyPremiumSplit = obj.price.monthlyPremium.toString().split('.'); }}
+    {{ var monthlyPremiumSplit = obj.price.monthlyPremiumFormatted.toString().split('.'); }}
     {{ var dollars = monthlyPremiumSplit[0]; }}
     {{ var cents = monthlyPremiumSplit[1] ? '.' + monthlyPremiumSplit[1] : ''; }}
     {{ if (cents.length === 2) cents += '0'; }}
@@ -13,8 +13,8 @@
             <span class="dollarSign">{{= '$' }}</span><span class="dollars">{{= dollars }}</span><span class="cents">{{= cents }}</span></div>
         <div class="frequencyTitle">Monthly</div>
         <div class="monthlyBreakdown">
-            <span class="nowrap"><span class="firstPayment">1st Month: {{= '$' }}{{= obj.price.monthlyFirstMonth.toFixed(2) }}</span></span>
-            <span class="nowrap"><span class="totalPayment">Total: {{= '$' }}{{= obj.price.annualisedMonthlyPremium.toFixed(2) }}</span></span>
+            <span class="nowrap"><span class="firstPayment">1st Month: {{= '$' }}{{= obj.price.monthlyFirstMonthFormatted }}</span></span>
+            <span class="nowrap"><span class="totalPayment">Total: {{= '$' }}{{= obj.price.annualisedMonthlyPremiumFormatted }}</span></span>
         </div>
     </div>
 </core_v1:js_template>

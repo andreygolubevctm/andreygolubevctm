@@ -229,13 +229,6 @@
 						<div class="hidden-md hidden-lg">
 							{{= callActionButtonsPriceTemplate }}
 						</div>
-						<h2 class="hidden-xs productTitle">{{= productTitle }}</h2>
-						{{ if (priceDisclaimer.length > 0) { }}
-						<a class="hidden-xs small priceDisclaimer" href="javascript:;">{{= priceDisclaimer }}</a>
-						<div class="priceDisclaimer-content hidden"><p class="priceDisclaimer-para">{{= obj.disclaimer }}</p></div>
-						{{ } }}
-
-						<p class="description hidden-xs hidden-sm">{{= productDescription }}</p>
 
 						{{= compareTogglePriceTemplate }}
 					</div>
@@ -309,6 +302,7 @@
 <%-- UNAVAILABLE ROW --%>
 <core_v1:js_template id="unavailable-template">
 	{{ var productTitle = (typeof obj.productName !== 'undefined') ? obj.productName : 'Unknown product name'; }}
+
 	{{ var productDescription = (typeof obj.productDescription !== 'undefined') ? obj.productDescription : 'Unknown product name'; }}
 
 	{{ var template = $("#provider-logo-template").html(); }}

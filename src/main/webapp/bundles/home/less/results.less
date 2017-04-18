@@ -109,10 +109,6 @@
 		}
 	}
 
-	.offerTerms {
-		font-style: italic;
-	}
-
 	.priceDisclaimerRow {
 		float: left;
 		margin: -17px auto 0 auto;
@@ -253,20 +249,6 @@
 	.excessAmount {
 		font-size: 22px;
 		line-height: 22px;
-	}
-
-	.priceMode .priceMode {
-		h2,
-		.description,
-		.specialConditions,
-		.priceDisclaimer {
-			margin-left: 95px;
-		}
-		.priceDisclaimer {
-			display: block;
-			text-align: left;
-			padding: 5px 0;
-		}
 	}
 }//media sm+
 
@@ -493,6 +475,12 @@
 // priceMode v6 overrides
 .priceMode.v6 {
 	.result-row[data-available=Y] {
+		.priceDisclaimer {
+			display: block;
+			text-align: left;
+			padding: 5px 0;
+		}
+
 		.excess-container {
 			.excess {
 				.excessAmount {
