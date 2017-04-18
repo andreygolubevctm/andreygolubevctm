@@ -284,9 +284,6 @@
 		.excessTitle {
 			margin-top: 8px;
 		}
-		.excessAmount {
-			margin-bottom: 10px;
-		}
 		.excessHome {
 			padding-top: 7px;
 		}
@@ -493,3 +490,49 @@
 	}
 }
 
+// priceMode v6 overrides
+.priceMode.v6 {
+	.result-row[data-available=Y] {
+		.excess-container {
+			.excess {
+				.excessAmount {
+					font-size: 20px;
+					line-height: 20px;
+				}
+
+				.excessTitle {
+					display: block;
+					margin-bottom: 2px;
+
+					br {
+						display: none;
+					}
+				}
+			}
+
+			&.has-both-excess {
+				.excess {
+					float: left;
+					width: 48%;
+
+
+					.excessTitle {
+						br {
+							display: block;
+						}
+					}
+				}
+			}
+
+			a {
+				text-align: center;
+			}
+		}
+
+		.cta-container {
+			.btn-cta {
+				margin-top: 0;
+			}
+		}
+	}
+}
