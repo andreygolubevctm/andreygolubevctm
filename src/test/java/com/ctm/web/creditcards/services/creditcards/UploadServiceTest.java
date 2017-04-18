@@ -1,8 +1,7 @@
 package com.ctm.web.creditcards.services.creditcards;
 
 import com.ctm.web.creditcards.model.UploadRequest;
-import org.hamcrest.text.IsEqualIgnoringCase;
-import org.hamcrest.text.IsEqualIgnoringWhiteSpace;
+import org.junit.Before;
 import org.junit.Test;
 
 import static com.ctm.common.test.TestUtil.readResource;
@@ -13,10 +12,17 @@ import static org.junit.Assert.*;
 
 public class UploadServiceTest {
 
+    private UploadRequest file;
+
+    @Before
+    public void setUp() throws Exception {
+        file = new UploadRequest();
+        file.providerCode = "1";
+
+    }
+
     @Test
     public void getRates() throws Exception {
-        UploadRequest file = new UploadRequest();
-        file.providerCode = "1";
         file.uploadedStream  = readResourceStream("com/ctm/creditcard/creditcardwithmschars.csv");
         String expect  = readResource("com/ctm/creditcard/expect.txt");
         String result = UploadService.getRates(file);
@@ -26,8 +32,6 @@ public class UploadServiceTest {
 
     @Test
     public void getRatesExtraLines() throws Exception {
-        UploadRequest file = new UploadRequest();
-        file.providerCode = "1";
         file.uploadedStream  = readResourceStream("com/ctm/creditcard/creditcardwithextralines.csv");
         String expect  = readResource("com/ctm/creditcard/expect.txt");
         String result = UploadService.getRates(file);
