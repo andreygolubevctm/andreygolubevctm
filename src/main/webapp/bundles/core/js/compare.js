@@ -165,7 +165,7 @@
 
     function afterSwitchMode(mode) {
       if (mode === 'features' && isAtMaxQueue()) {
-        meerkat.messaging.publish(moduleEvents.ENTER_COMPARE);
+        enterCompareModeAfterSwitch();
         meerkat.messaging.publish(moduleEvents.TOGGLE_CHECKBOXES);
       }
     }
@@ -349,12 +349,36 @@
     /**
      * Event
      */
+     function enterCompareModeAfterSwitch() {
+       comparisonOpen = true;
+       settings.elements.enterCompareMode.addClass('disabled');
+       settings.elements.exitCompareButton.removeClass('hidden');
+       filterResults();
+       if (previousMode == null) {
+         previousMode = Results.getDisplayMode();
+       }
+
+       // Expand hospital and extra sections
+       if (Results.settings.render.features.expandRowsOnComparison) {
+           $(".featuresHeaders .featuresList > .section.expandable.collapsed > .content").trigger('click');
+
+           // Expand selected items details.
+           $(".featuresHeaders .featuresList > .selectionHolder > .children > .category.expandable.collapsed > .content").trigger('click');
+       }
+
+       //meerkat.modules.address.appendToHash('compare');
+       meerkat.messaging.publish(moduleEvents.AFTER_ENTER_COMPARE_MODE);
+       trackComparison();
+       setTimeout(function () {
+           settings.elements.enterCompareMode.removeClass('disabled');
+       }, 250);
+     }
+     
     function enterCompareMode() {
         comparisonOpen = true;
 
         settings.elements.enterCompareMode.addClass('disabled');
         settings.elements.exitCompareButton.removeClass('hidden');
-
         previousMode = Results.getDisplayMode();
         if (previousMode == "price") {
             if (typeof settings.callbacks.switchMode === 'function') {
