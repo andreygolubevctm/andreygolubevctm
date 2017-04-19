@@ -122,6 +122,41 @@
 		}
 	}
 
+	function changeMinAge() {
+		var cover = meerkat.modules.healthChoices.returnCoverCode();
+		switch(cover) {
+			case "SM":
+			case "SF":
+				setMinAge(15);
+			break;
+			case "C":
+				setMinAge(15, true);
+			break;
+			default:
+				setMinAge(16, true);
+		}
+	}
+
+	function setMinAge(age, couple) {
+		var message = "Primary person's age cannot be under " + age;
+		var fields = [
+			dob_health_application_primary_dob,
+			dob_health_healthCover_primary_dob,
+			dob_health_application_partner_dob,
+			dob_health_healthCover_partner_dob
+		];
+		var length = 2;
+		if (couple) {
+			length = 4;
+		}
+		for (var i = 0; i < length; i++) {
+			if (fields[i] && _.has(fields[i],'ageMin') && fields[i].ageMin !== age) {
+					fields[i].ageMin = age;
+					$(fields[i].target).data('msgYoungestdob', message);
+			}
+		}
+	}
+
 	function setJourneyEngineSteps(){
 
 		var startStep = {
@@ -151,6 +186,7 @@
 				// Add event listeners.
 				$healthSitHealthCvr.on('change',function() {
 					meerkat.modules.healthChoices.setCover($(this).val());
+					changeMinAge();
 					meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
 				});
 

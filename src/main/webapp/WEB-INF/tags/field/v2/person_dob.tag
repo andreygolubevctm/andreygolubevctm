@@ -98,6 +98,6 @@ ${logger.trace('DOB Restricted to max: {},{}' , log:kv('nowLessAgeMinYears', now
 <%-- LEGACY... required by various health funds question sets --%>
 <c:if test="${outputJS}">
 <go:script marker="js-head">
-	var dob_${name} = { ageMin: ${ageMin},  ageMax: ${ageMax},  message: '' };
+	var dob_${name} = { ageMin: ${ageMin},  ageMax: ${ageMax},  message: '', target: '#${name}' };
 </go:script>
 </c:if>
