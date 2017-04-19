@@ -108,6 +108,7 @@
 			</ul>
 		</div>
 
+		<agg_v1:inclusive_gst className="nav navbar-right" />
 	</jsp:attribute>
 
 	<jsp:attribute name="navbar_additional">
@@ -210,6 +211,10 @@
 			<form_v1:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid" />
 			<core_v1:referral_tracking vertical="${pageSettings.getVerticalCode()}" />
 		</div>
+
+		<c:if test="${simplifiedJourneySplitTestActive}">
+			<agg_v1:button_tile_dropdown_selector_template />
+		</c:if>
 
 		<%-- Slides --%>
 		<home_layout:slide_cover_type />

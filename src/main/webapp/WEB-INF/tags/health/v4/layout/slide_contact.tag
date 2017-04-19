@@ -17,6 +17,7 @@
 
 
                 <form_v4:fieldset id="health-contact-fieldset" legend="Fill in your details below to compare products">
+                    <health_v4_contact:required_text />
 
                     <c:set var="firstNamePlaceHolder">
                         <content:get key="firstNamePlaceHolder"/>

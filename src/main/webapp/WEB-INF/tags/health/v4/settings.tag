@@ -90,6 +90,7 @@
 </c:set>
 
 <health_v1:dual_pricing_settings />
+<health_v4:pyrr_campaign_settings />
 {
 	isCallCentreUser: <c:out value="${not empty callCentre}"/>,
 	isFromBrochureSite: <c:out value="${fromBrochure}"/>,
@@ -108,6 +109,7 @@
     isDefaultToHealthApply: ${defaultToHealthApply},
 	isTaxTime: '<content:get key="taxTime"/>',
 	isDualPricingActive: ${isDualPriceActive},
+	isPyrrActive: ${isPyrrActive},
 	<jsp:useBean id="healthApplicationService" class="com.ctm.web.health.services.HealthApplicationService"/>
 	<c:set var="providerList" value="${miscUtils:convertToJson(healthApplicationService.getAllProviders(pageSettings.getBrandId()))}"/>
 	navMenu: {

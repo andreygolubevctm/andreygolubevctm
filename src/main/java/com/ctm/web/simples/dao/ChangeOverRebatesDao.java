@@ -11,8 +11,6 @@ import java.util.Date;
 
 public class ChangeOverRebatesDao {
 
-	/**
-	 */
 	public ChangeOverRebate getChangeOverRebates(Date commencementDate) throws DaoException {
 
 		SimpleDatabaseConnection dbSource = null;
@@ -22,13 +20,12 @@ public class ChangeOverRebatesDao {
 			PreparedStatement stmt;
 			dbSource = new SimpleDatabaseConnection();
 
-			//
-			// Execute the stored procedure for message details
-			//
 			stmt = dbSource.getConnection().prepareStatement(
 					"SELECT multiplier as currentMultiplier, " +
 						"(SELECT multiplier FROM `ctm`.`health_changeover_rebates` WHERE id = (SELECT min(id) " +
 						"            FROM `ctm`.`health_changeover_rebates` WHERE id > rebates.id)) as futureMultiplier, " +
+						"(SELECT multiplier FROM `ctm`.`health_changeover_rebates` WHERE id = (SELECT max(id) " +
+						"            FROM `ctm`.`health_changeover_rebates` WHERE id < rebates.id)) as previousMultiplier, " +
 						"(SELECT effectiveStart FROM `ctm`.`health_changeover_rebates` WHERE id = (SELECT min(id) " +
 						"            FROM `ctm`.`health_changeover_rebates` WHERE id > rebates.id)) as effectiveFutureStart, " +
 						"            effectiveStart " +
@@ -48,6 +45,7 @@ public class ChangeOverRebatesDao {
 				changeOverRebate.setEffectiveFutureStart(
 						results.getObject("effectiveFutureStart") != null ?
 								results.getDate("effectiveFutureStart") : results.getDate("effectiveStart"));
+				changeOverRebate.setPreviousMultiplier(results.getBigDecimal("previousMultiplier"));
 			}
 		}
 		catch (SQLException e) {

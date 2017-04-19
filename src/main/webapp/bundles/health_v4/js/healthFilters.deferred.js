@@ -100,7 +100,7 @@
             },
             "income": {
                 name: 'health_filterBar_income',
-                defaultValueSourceSelector: '#health_healthCover_income',
+                defaultValueSourceSelector: 'select[name=health_healthCover_income]',
                 defaultValue: '',
                 events: {
                     init: function (filterObject) {
@@ -371,6 +371,7 @@
 
 
         $(document).on('change', '#health_filterBar_rebate', function toggleRebateDropdown() {
+            toggleRebateEdit(false);
             toggleIncome(!$(this).is(':checked'));
         });
 
@@ -404,6 +405,7 @@
     function updateRebateLabels() {
         $('#filtersRebateLabel span').html(meerkat.modules.healthRebate.getSelectedRebateTierLabelText());
         $('#filtersSelectedRebateText').html(meerkat.modules.healthRebate.getSelectedRebateLabelText());
+        meerkat.modules.healthTiers.setIncomeLabel();
     }
 
     function toggleFilterByContainer($filter, toggle) {

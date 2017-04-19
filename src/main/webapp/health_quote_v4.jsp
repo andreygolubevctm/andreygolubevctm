@@ -164,6 +164,9 @@
                 <health_v4_layout:slide_application />
                 <health_v4_layout:slide_payment />
                 <health_v4:dual_pricing_templates />
+                <c:if test="${isPyrrActive eq true}">
+                    <health_v4:pyrr_campaign_templates />
+                </c:if>
 
                 <health_v4_payment:payment_frequency_template />
 

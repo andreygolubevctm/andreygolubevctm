@@ -183,11 +183,6 @@
 			.frequencyTitle, .excessTitle {
 				display:block !important;
 				margin-top: 0 !important;
-	}
-		}
-		.excess {
-			.excessAmount {
-				margin-top:11px !important;
 			}
 		}
 	}
@@ -212,17 +207,6 @@
 	.btn-more-info {
 		margin-top: 0;
 	}
-
-	.priceMode .priceMode {
-		h2,
-		.description,
-		.promotion,
-		.specialConditions {
-			margin-left: 95px;
-		}
-	}
-
-
 }//media md
 
 @media(@xs-only) {
@@ -353,27 +337,6 @@
 	}
 }
 
-@media(@md-only) {
-	.priceMode .result-row {
-		.frequency, .excess {
-			.frequencyTitle, .excessTitle {
-				text-align:right !important;
-			}
-		}
-	}
-}
-
-@media(@lg-only) {
-	.priceMode .result-row {
-		.frequency {
-			.frequencyTitle {
-				float:left !important;
-			}
-		}
-	}
-}
-
-
 //
 // Provider chose not quote group
 //
@@ -420,3 +383,82 @@
 		}
 	}
 }// chose not to quote combined
+
+
+//-------------------------------------------------------------------------------------
+// Famous underwriter styling
+//-------------------------------------------------------------------------------------
+
+.famous-container {
+	margin-top: 30px;
+
+	@media(@xs-only) {
+		img {
+			margin-left: auto;
+			margin-right: auto;
+			display: block;
+		}
+	}
+
+	.content-block {
+		@media(@sm-only) {
+			padding-left: 16%;
+		}
+
+		@media(@md-only) {
+			padding-left: 8%;
+		}
+	}
+
+	span {
+		font-family: SourceSansProSemiBold;
+	}
+
+	.famous-content {
+		padding-bottom: 30px;
+		border-bottom: 1px solid @gray-lighter;
+		@media(@xs-only) {
+			padding: 10px;
+		}
+	}
+
+	@media(@xs-only) {
+		.famousResults.logo_FAMO {
+			margin-left: auto;
+			margin-right: auto;
+		}
+	}
+
+	.famous-thank-you {
+		@media(@xs-only) {
+			margin-top: 20px;
+		}
+		font-size: 22px;
+		margin-bottom: 24px;
+	}
+
+	.famous-contact {
+		font-size: 16px;
+	}
+
+	#confirmation-compare-options {
+		margin-top: 30px;
+
+		h3 {
+			@media(@xs-only) {
+				font-size: 18px;
+			}
+
+			text-align: center;
+			color: @gray-lighter;
+			margin-bottom: 40px;
+		}
+
+		a .icon,
+		a .icon:hover {
+			background-color: transparent;
+			color: @theme-tertiary;
+		}
+
+	}
+}
