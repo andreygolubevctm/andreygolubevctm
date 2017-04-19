@@ -221,8 +221,7 @@
 //TODO
 		// When the navar docks/undocks
 		meerkat.messaging.subscribe(meerkatEvents.affix.AFFIXED, function navbarFixed() {
-			var width = $(window).width();
-			var margin = (width > 1200) ? '-60px' : '-80px';
+			var margin = (meerkat.modules.deviceMediaState.get() === 'lg') ? '-60px' : '-80px';
 			$('#resultsPage').css('margin-top', margin);
 			$('.productSummary .headerButtonWrapper').css('visibility', 'hidden');
 			$(Results.settings.elements.resultsContainer).addClass('affixed-settings');
