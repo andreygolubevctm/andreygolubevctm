@@ -71,7 +71,7 @@
 
 		//Because of the odd race conditions that the journeyEngine's journeyProgress bar now suffers from, I'm waiting for its init event before using affix on the navbar below it.
 		meerkat.messaging.subscribe(meerkatEvents.journeyProgressBar.INIT, function affixNavbar(step) {
-
+		
 			// If on XS, defer the affixing until/if the breakpoint increases
 			if (meerkat.modules.deviceMediaState.get() === 'xs') {
 				// Subscribe
@@ -85,7 +85,8 @@
 				});
 			}
 			else {
-				topDockBasedOnOffset($('.navbar-affix'));
+				if(meerkat.site.vertical !== 'homeloan') 
+						topDockBasedOnOffset($('.navbar-affix'));
 			}
 		});
 	}

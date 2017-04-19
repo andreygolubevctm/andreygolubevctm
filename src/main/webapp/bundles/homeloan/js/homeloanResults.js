@@ -423,6 +423,7 @@
 
 	function onResultsLoaded() {
 		startColumnWidthTracking();
+		meerkat.modules.affix.topDockBasedOnOffset($('.navbar-affix'));
 
 		// Reset vars
 		switch(Results.getDisplayMode()) {
