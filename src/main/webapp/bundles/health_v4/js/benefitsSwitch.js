@@ -99,6 +99,10 @@
         $('#health_benefits_filters_' + benefitUpperCased + 'Switch').closest('.has-switch').toggleClass('hidden', toggle);
     }
 
+    function switchOffHospitalFilters() {
+        $('#health_benefits_filters_HospitalSwitch').bootstrapSwitch('setState', false);
+    }
+
     meerkat.modules.register('benefitsSwitch', {
         initBenefitsSwitch: initBenefitsSwitch,
         events: moduleEvents,
@@ -108,7 +112,8 @@
         initExtrasFilters: initExtrasFilters,
         isFiltersHospitalOn: isFiltersHospitalOn,
         isFiltersExtrasOn: isFiltersExtrasOn,
-        toggleFiltersSwitch: toggleFiltersSwitch
+        toggleFiltersSwitch: toggleFiltersSwitch,
+        switchOffHospitalFilters: switchOffHospitalFilters
     });
 
 })(jQuery);
