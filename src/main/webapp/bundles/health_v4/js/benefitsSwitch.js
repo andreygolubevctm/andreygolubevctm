@@ -39,6 +39,13 @@
                 isSwitchedOn: data.value
             });
         });
+
+        // benefit selected
+        meerkat.messaging.subscribe(meerkatEvents.benefits.BENEFIT_SELECTED, function onBenefitSelected(options) {
+            if (options.isHospital && meerkat.modules.benefitsModel.getHospitalCount() === 0) {
+                $elements.hospitalSwitch.bootstrapSwitch('setState', false);
+            }
+        });
     }
 
     function isHospitalOn() {

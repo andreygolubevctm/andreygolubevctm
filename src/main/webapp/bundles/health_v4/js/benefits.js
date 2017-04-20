@@ -126,7 +126,7 @@
     }
 
     function _registerBenefitsSelection() {
-        $('.GeneralHealth_container, .Hospital_container').on('change', 'input', function () {
+        $('.GeneralHealth_container, .Hospital_container').on('change', '.healthBenefits input', function () {
             var $this = $(this),
                 options = {
                     benefitId: $this.attr('data-benefit-id'),
