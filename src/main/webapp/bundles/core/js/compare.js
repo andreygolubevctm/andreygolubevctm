@@ -3,7 +3,7 @@
  */
 
 ;(function ($, undefined) {
-
+  
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
         log = meerkat.logging.info;
@@ -303,10 +303,6 @@
     function resetComparison() {
         if (Results.getFilteredResults() === false)
             return;
-            
-        if (comparedProducts.length === 3 && meerkat.site.vertical !== 'homeloan' && previousMode == 'price') {
-            meerkat.messaging.publish(moduleEvents.TOGGLE_CHECKBOXES);
-        }
 
         comparedProducts = [];
 
