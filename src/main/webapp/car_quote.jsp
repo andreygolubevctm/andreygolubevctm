@@ -36,8 +36,8 @@
 	</c:when>
 	<c:otherwise>
 		<c:set var="speechBubbleContent" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "speechBubbleContent")}' />
-		<c:set var="originalHeading" value="${speechBubbleContent.getSupplementaryValueByKey('normalHeading')}" scope="request" />
-		<c:set var="origintalCopy" value="${speechBubbleContent.getSupplementaryValueByKey('normalCopy')}" scope="request" />
+		<c:set var="normalHeading" value="${speechBubbleContent.getSupplementaryValueByKey('normalHeading')}" scope="request" />
+		<c:set var="normalCopy" value="${speechBubbleContent.getSupplementaryValueByKey('normalCopy')}" scope="request" />
 	</c:otherwise>
 </c:choose>
 
