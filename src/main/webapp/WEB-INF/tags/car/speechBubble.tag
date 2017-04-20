@@ -1,8 +1,8 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<c:set var="h4Text" value="${originalHeading}"/>
-<c:set var="pText" value="${origintalCopy}"/>
+<c:set var="h4Text" value="${normalHeading}"/>
+<c:set var="pText" value="${normalCopy}"/>
 
 <c:if test="${isFromExoticPage eq true}">
 	<c:set var="h4Text" value="${exoticHeading}"/>
