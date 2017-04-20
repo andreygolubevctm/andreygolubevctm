@@ -64,6 +64,12 @@
         toggleFiltersSwitch('hospital', true);
 
         $('#health_benefits_filters_HospitalSwitch').on('switch-change', function(e, data) {
+            if (data.value && $('input[name=health_filterBar_benefitsHospital]:checked').length === 0) {
+                _.defer(function() {
+                    $('#health_filterBar_benefits_32273').trigger('click');
+                });
+            }
+
             meerkat.messaging.publish(moduleEvents.benefitsSwitch.FILTERS_SWITCH_CHANGED, {
                 benefit: 'hospital',
                 isSwitchedOn: data.value
