@@ -15,8 +15,9 @@
         {{ if(_.has(meerkat.site,'fund1800s') && meerkat.site.fund1800s.active) { }}
         {{ var phone = getFund1800(obj.info.provider.toLowerCase()); }}
         {{  if(!_.isEmpty(phone)) { }}
+        {{      var analVal = "fund1800 {{= obj.info.provider}";
                 <div class="fundCallCentreNumber visible-xs">
-                    <h1><a href="tel:{{= phone}}" class="callCentreNumber"><span class="icon icon-phone"></span>{{= phone}}</a></h1>
+                    <h1><a href="tel:{{= phone}}" class="callCentreNumber" data-analytics="{{= analVal}}"><span class="icon icon-phone" data-analytics="{{= analVal}}></span>{{= phone}}</a></h1>
                 </div>
         {{  } }}
         {{ } }}
