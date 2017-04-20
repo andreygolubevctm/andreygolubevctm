@@ -64,9 +64,11 @@
         toggleFiltersSwitch('hospital', true);
 
         $('#health_benefits_filters_HospitalSwitch').on('switch-change', function(e, data) {
-            if (data.value && $('input[name=health_filterBar_benefitsHospital]:checked').length === 0) {
+            var $hospitalBenefits = $('input[name=health_filterBar_benefitsHospital]');
+
+            if (data.value && $hospitalBenefits.filter(':checked').length === 0) {
                 _.defer(function() {
-                    $('#health_filterBar_benefits_32273').trigger('click');
+                    $hospitalBenefits.filter('[data-benefit-code=PrHospital]').trigger('click');
                 });
             }
 

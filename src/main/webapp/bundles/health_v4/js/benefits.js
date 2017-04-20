@@ -163,11 +163,17 @@
     function _registerXSBenefitsSlider() {
         // toggle the quick select data in the hospital container
         $elements.hospital.find('.nav-tabs a').on('click', function toggleQuickSelect() {
-            var target = $(this).attr('href');
+            var target = $(this).attr('href'),
+                limitedSelected = target === '.limited-pane';
+
             // Check the input so it remains a green tick.
             $elements.limitedCoverIcon.prop('checked', true);
-            $elements.hospital.find($elements.quickSelectContainer).toggleClass('hidden', target === '.limited-pane');
-            _hospitalType = target === '.limited-pane' ? 'limited' : 'customise';
+            $elements.hospital.find($elements.quickSelectContainer).toggleClass('hidden', limitedSelected);
+            _hospitalType = limitedSelected ? 'limited' : 'customise';
+
+            if (!limitedSelected) {
+                _checkPrivateHospital();
+            }
         });
     }
 

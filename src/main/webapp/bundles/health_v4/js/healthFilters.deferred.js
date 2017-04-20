@@ -395,6 +395,12 @@
         });
 
         $(document).on('shown.bs.tab', '.health-filter-hospital-benefits a[data-toggle="tab"]', function (e) {
+            var $hospitalBenefits = $('input[name=health_filterBar_benefitsHospital]');
+
+            if ($(this).attr('href').search(/hospital/) === 1 && $hospitalBenefits.filter(':checked').length === 0) {
+                $hospitalBenefits.filter('[data-benefit-code=PrHospital]').trigger('click');
+            }
+
             meerkat.messaging.publish(meerkatEvents.filters.FILTER_CHANGED, e);
         });
 
