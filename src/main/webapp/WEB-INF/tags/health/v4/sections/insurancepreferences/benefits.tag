@@ -24,7 +24,9 @@
 	<%--<div class="selectionStatus hospital">Your hospital benefits selection <span>0</span></div>--%>
 <%--</div>--%>
 
-<health_v4:benefits_switch_message />
+<c:if test="${not empty benefitsSwitchSplitTest and benefitsSwitchSplitTest eq true}">
+	<health_v4:benefits_switch_message />
+</c:if>
 
 <div class="benefitsOverflow">
 <c:forEach items="${resultTemplateItems}" var="selectedValue">

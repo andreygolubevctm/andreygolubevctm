@@ -16,22 +16,37 @@
 
         <div class="refine-results-sub-heading">Hospital</div>
         <div class="refine-results-by-container">
-            {{ if (isHospitalOn) { }}
-                <div class="refine-results-hospital-type">{{= hospitalType }} Cover</div>
-                <div class="refine-results-count-text">{{= hospitalCountText }}</div>
-            {{ } else { }}
-                <div class="refine-results-no-hospital">No Hospital</div>
-            {{ } }}
+            <c:choose>
+                <c:when test="${not empty benefitsSwitchSplitTest and benefitsSwitchSplitTest eq true}">
+                    {{ if (isHospitalOn) { }}
+                        <div class="refine-results-hospital-type">{{= hospitalType }} Cover</div>
+                        <div class="refine-results-count-text">{{= hospitalCountText }}</div>
+                    {{ } else { }}
+                        <div class="refine-results-no-hospital">No Hospital</div>
+                    {{ } }}
+                </c:when>
+                <c:otherwise>
+                    <div class="refine-results-hospital-type">{{= hospitalType }} Cover</div>
+                    <div class="refine-results-count-text">{{= hospitalCountText }}</div>
+                </c:otherwise>
+            </c:choose>
             <a href="javascript:;" class="refine-results-redirect-btn" data-benefit="hospital">{{= hospitalBtnText }}</a>
         </div>
 
         <div class="refine-results-sub-heading">Extras</div>
         <div class="refine-results-by-container">
-            {{ if (isExtrasOn) { }}
-                <div class="refine-results-count-text">{{= extrasCountText }}</div>
-            {{ } else { }}
-                <div class="refine-results-no-extras">No Extras</div>
-            {{ } }}
+            <c:choose>
+                <c:when test="${not empty benefitsSwitchSplitTest and benefitsSwitchSplitTest eq true}">
+                    {{ if (isExtrasOn) { }}
+                        <div class="refine-results-count-text">{{= extrasCountText }}</div>
+                    {{ } else { }}
+                        <div class="refine-results-no-extras">No Extras</div>
+                    {{ } }}
+                </c:when>
+                <c:otherwise>
+                    <div class="refine-results-count-text">{{= extrasCountText }}</div>
+                </c:otherwise>
+            </c:choose>
             <a href="javascript:;" class="refine-results-redirect-btn" data-benefit="extras">{{= extrasBtnText }}</a>
         </div>
 

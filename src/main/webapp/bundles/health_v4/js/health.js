@@ -230,9 +230,10 @@
             validation: {
                 validate: false,
                 customValidation: function validateSelection(callback) {
-                    var areBenefitsSwitchOn = meerkat.modules.benefitsSwitch.isHospitalOn() || meerkat.modules.benefitsSwitch.isExtrasOn();
+                    var areBenefitsSwitchOn = meerkat.modules.benefitsSwitch.isHospitalOn() || meerkat.modules.benefitsSwitch.isExtrasOn(),
+                        success = meerkat.modules.splitTest.isActive(2) ? areBenefitsSwitchOn : true;
 
-                    callback(areBenefitsSwitchOn);
+                    callback(success);
                 }
             },
             externalTracking: {
@@ -240,7 +241,9 @@
                 object: meerkat.modules.health.getTrackingFieldsObject
             },
             onInitialise: function onBenefitsInit(event) {
-                meerkat.modules.benefitsSwitch.initBenefitsSwitch();
+                if (meerkat.modules.splitTest.isActive(2)) {
+                    meerkat.modules.benefitsSwitch.initBenefitsSwitch();
+                }
             },
             onBeforeEnter: function enterBenefitsStep(event) {
                 // configure progress bar

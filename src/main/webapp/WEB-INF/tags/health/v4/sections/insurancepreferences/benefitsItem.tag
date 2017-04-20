@@ -45,7 +45,9 @@
                 <c:if test="${category != 'Hospital'}">
                     <div class="title <c:if test="${category eq 'Hospital'}">hidden-xs</c:if>">
                         <h2 class="ignore">Extras</h2>
-                        <field_v2:switch xpath="${pageSettings.getVerticalCode()}/benefits/ExtrasSwitch" value="Y" className="benefits-switch switch-small" onText="On" offText="Off" additionalAttributes="data-benefit='extras'" />
+                        <c:if test="${not empty benefitsSwitchSplitTest and benefitsSwitchSplitTest eq true}">
+                            <field_v2:switch xpath="${pageSettings.getVerticalCode()}/benefits/ExtrasSwitch" value="Y" className="benefits-switch switch-small" onText="On" offText="Off" additionalAttributes="data-benefit='extras'" />
+                        </c:if>
                         <p>${colContent}</p>
                         <health_v4_insuranceprefs:quick_select
                                 options="Dental:dental|Sports:sports|Peace of Mind:peace" trackingLabel="extras" />
@@ -54,7 +56,9 @@
                 <c:if test="${category eq 'Hospital'}">
                 <div class="title">
                     <h2 class="ignore">Hospital</h2>
-                    <field_v2:switch xpath="${pageSettings.getVerticalCode()}/benefits/HospitalSwitch" value="Y" className="benefits-switch switch-small" onText="On" offText="Off" additionalAttributes="data-benefit='hospital'" />
+                    <c:if test="${not empty benefitsSwitchSplitTest and benefitsSwitchSplitTest eq true}">
+                        <field_v2:switch xpath="${pageSettings.getVerticalCode()}/benefits/HospitalSwitch" value="Y" className="benefits-switch switch-small" onText="On" offText="Off" additionalAttributes="data-benefit='hospital'" />
+                    </c:if>
                 </div>
                 <div id="tabs" class="benefitsTab">
                     <ul class="nav nav-tabs tab-count-2">
