@@ -8,9 +8,9 @@
     <div class="row">
         <div class="col-xs-8 col-xs-offset-2">
             <form_v2:row label="PAYMENT FREQUENCY" hideHelpIconCol="true">
-                <field_v2:array_radio xpath="${xpath}" required="true"
-                                      className="" items="monthly=Monthly,annual=Annual"
-                                      id="${name}" title="" />
+				<field_v2:array_radio xpath="${xpath}" required="true"
+									  className="" items="monthly=Monthly,annual=Annually"
+									  id="${name}" title="" style="pill" />
             </form_v2:row>
         </div>
     </div>
