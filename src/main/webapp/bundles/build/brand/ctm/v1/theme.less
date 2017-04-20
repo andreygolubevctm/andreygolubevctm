@@ -1097,9 +1097,13 @@ fieldset h2 {
 }
 
 [data-toggle="radio"] > .btn-form-inverse { //not sure why there was an attribute selector at work here... they are slower.
+	outline: 0;
 	font-family: @font-family-sans-serif;
 	&.active, &:active {
 		color: @form-input-common-selected-text-colour;
+	}
+	&.focus, &:focus {
+		outline: 0;
 	}
 	// NOTE!! Button group states are part of .form-control-button-group-validation mixin after this declaration, but the current implementation is actually applying .disabled to the label and input of a .button-group.
 	&[disabled],
@@ -1128,8 +1132,22 @@ fieldset h2 {
 				border-left-width: @btn-border-width;
 			}
 		}
+
+		&.btn-form-inverse {
+			&:first-child {
+				border-right-width: 0;
+
+				& + .btn.btn-form-inverse {
+					border-left-width: 1px;
+				}
+			}
+			&.active:first-child + .btn.btn-form-inverse {
+				border-left-color: #1c3e93;
+			}
+		}
 	}
 }
+
   // CTM Overrides for On/off switch ('bootstrap-switch' plugin) in framework/jquery/plugins/bootstrap-switch-2.0.0.min.js
   .switch-wrapper {
   	&.right {
