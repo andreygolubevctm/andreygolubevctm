@@ -153,6 +153,7 @@
                 _toggleBenefitSelection(e.benefit, e.isSwitchedOn);
                 _toggleSwitchValidation();
                 _setCoverTypeField();
+                _updateHiddenFields();
 
                 if (e.benefit === 'hospital' && e.isSwitchedOn) {
                     _checkPrivateHospital();
