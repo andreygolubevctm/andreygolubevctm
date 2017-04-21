@@ -152,6 +152,7 @@
             meerkat.messaging.subscribe(meerkatEvents.benefitsSwitch.SWITCH_CHANGED, function (e) {
                 _toggleBenefitSelection(e.benefit, e.isSwitchedOn);
                 _toggleSwitchValidation();
+                _setCoverTypeField();
 
                 if (e.benefit === 'hospital' && e.isSwitchedOn) {
                     _checkPrivateHospital();
@@ -205,7 +206,7 @@
             }
         }
 
-        $elements.coverType.val(coverType);
+        meerkat.modules.healthChoices.setCoverType(coverType);
     }
 
     function _reSelectBenefitCheckboxes(updatedBenefitsModel) {
@@ -271,8 +272,18 @@
 
     function _toggleSwitchValidation() {
         var areBenefitsSwitchOn = meerkat.modules.benefitsSwitch.isHospitalOn() || meerkat.modules.benefitsSwitch.isExtrasOn();
-        $elements.benefitsSwitchAlert.toggleClass('hidden', areBenefitsSwitchOn);
+        $elements.benefitsSwitchAlert
+            .add($elements.benefitsSwitchAlert.find('.benefits-switch-off-message'))
+            .toggleClass('hidden', areBenefitsSwitchOn);
+        $elements.benefitsSwitchAlert.find('.benefits-switch-extras-message').addClass('hidden');
         $('.journeyEngineSlide.active .journeyNavButton, .slide-control-insurance-preferences').attr('disabled', !areBenefitsSwitchOn);
+    }
+
+    function toggleExtrasMessage(hide) {
+        $elements.benefitsSwitchAlert
+            .add($elements.benefitsSwitchAlert.find('.benefits-switch-extras-message'))
+            .toggleClass('hidden', hide);
+        $elements.benefitsSwitchAlert.find('.benefits-switch-off-message').toggleClass('hidden', !hide);
     }
 
     meerkat.modules.register("benefits", {
@@ -281,7 +292,8 @@
         updateModelOnPreload: updateModelOnPreload,
         getHospitalType: getHospitalType,
         setHospitalType: setHospitalType,
-        toggleHospitalTypeTabs: toggleHospitalTypeTabs
+        toggleHospitalTypeTabs: toggleHospitalTypeTabs,
+        toggleExtrasMessage: toggleExtrasMessage
     });
 
 })(jQuery);

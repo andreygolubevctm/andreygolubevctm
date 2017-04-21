@@ -233,6 +233,17 @@
                     var areBenefitsSwitchOn = meerkat.modules.benefitsSwitch.isHospitalOn() || meerkat.modules.benefitsSwitch.isExtrasOn(),
                         success = meerkat.modules.splitTest.isActive(2) ? areBenefitsSwitchOn : true;
 
+                    if (meerkat.modules.splitTest.isActive(2)) {
+                        if (meerkat.modules.benefitsSwitch.isExtrasOn()) {
+                            if (meerkat.modules.benefitsModel.getExtrasCount() === 0) {
+                                meerkat.modules.benefits.toggleExtrasMessage(false);
+                                success = false;
+                            } else {
+                                meerkat.modules.benefits.toggleExtrasMessage(true);
+                            }
+                        }
+                    }
+
                     callback(success);
                 }
             },
