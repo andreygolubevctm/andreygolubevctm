@@ -16,7 +16,7 @@
         {{ var phone = getFund1800(obj.info.provider.toLowerCase()); }}
         {{  if(!_.isEmpty(phone)) { }}
         {{      var analVal = "fund1800 " + obj.info.provider; }}
-                <div class="fundCallCentreNumber visible-xs">
+                <div class="fundCallCentreNumber">
                     <h1><a href="tel:{{= phone}}" class="callCentreNumber" data-analytics="{{= analVal}}"><span class="icon icon-phone" data-analytics="{{= analVal}}"></span>{{= phone}}</a></h1>
                 </div>
         {{  } }}
