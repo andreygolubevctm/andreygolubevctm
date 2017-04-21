@@ -189,16 +189,20 @@
 
   // Each product column is a result-row, floated left so they fit beside each other.
   .result-row {
-    border: 1px solid @results-border-color;
-    &.pinned {
-      border-color: @theme-accent-4;
-    }
-    &.not-pinned:hover {
-      border-color: @results-border-color-pinned;
+    border: 2px solid @results-border-color;
+
+    &.hovered {
+      border: 2px solid @theme-tertiary;
     }
 
     &.pinned {
+      border: 2px solid @theme-accent-4;
       float: left;
+
+      &.hovered {
+        border: 2px solid @theme-accent-4;
+      }
+
       .display-on-hover {
         .opacity(1);
       }
