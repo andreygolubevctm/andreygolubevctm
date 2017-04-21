@@ -29,13 +29,12 @@
 	<group_v2:elastic_address xpath="${fieldXpath}" type="R" />
 	
 	<%-- MoP --%>
-	<%-- <c:set var="fieldXpath" value="${xpath}/principalResidence" /> --%>
-	<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Mortgage Property" quoteChar="\"" /></c:set>
-	<form_v2:row fieldXpath="${fieldXpath}" label="Do you currently have a mortgage on the property?" tooltipAttributes="${analyticsAttr}">
-		<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Mortgage Property" quoteChar="\"" /></c:set>
+	<c:set var="fieldXpath" value="${xpath}/underFinance" />
+	<form_v2:row fieldXpath="${fieldXpath}" label="Do you currently have a mortgage on the property?">
+		<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Under Finance" quoteChar="\"" /></c:set>
 		<field_v2:array_radio xpath="${fieldXpath}"
-			className="mortgageProperty pretty_buttons"
-			required="true"
+			className="underFinance pretty_buttons"
+			required="false"
 			items="Y=Yes,N=No"
 			title="id you currently have a mortgage on the property"
 			additionalLabelAttributes="${analyticsAttr}" />
