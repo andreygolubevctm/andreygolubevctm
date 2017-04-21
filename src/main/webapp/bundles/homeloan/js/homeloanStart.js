@@ -175,9 +175,6 @@
             $currentLoanPanel = $('#homeloan_details_currentLoanToggleArea');
             $existingOwnerPanel = $('.homeloan_details_existingToggleArea');
             $purchasePricePanel = $('.homeloan_loanDetails_purchasePriceToggleArea');
-            $firstname.removeAttr('required');
-            $surname.removeAttr('required');
-            $email.removeAttr('required');
 
             applyEventListeners();
 
