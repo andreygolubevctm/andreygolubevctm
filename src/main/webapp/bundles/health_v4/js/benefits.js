@@ -274,17 +274,30 @@
     function _toggleSwitchValidation() {
         var areBenefitsSwitchOn = meerkat.modules.benefitsSwitch.isHospitalOn() || meerkat.modules.benefitsSwitch.isExtrasOn();
         $elements.benefitsSwitchAlert
-            .add($elements.benefitsSwitchAlert.find('.benefits-switch-off-message'))
+            .filter('.benefits-switch-off-message')
             .toggleClass('hidden', areBenefitsSwitchOn);
-        $elements.benefitsSwitchAlert.find('.benefits-switch-extras-message').addClass('hidden');
+        $elements.benefitsSwitchAlert.filter('.benefits-switch-extras-message').addClass('hidden');
         $('.journeyEngineSlide.active .journeyNavButton, .slide-control-insurance-preferences').attr('disabled', !areBenefitsSwitchOn);
     }
 
     function toggleExtrasMessage(hide) {
         $elements.benefitsSwitchAlert
-            .add($elements.benefitsSwitchAlert.find('.benefits-switch-extras-message'))
+            .filter('.benefits-switch-extras-message')
             .toggleClass('hidden', hide);
-        $elements.benefitsSwitchAlert.find('.benefits-switch-off-message').toggleClass('hidden', !hide);
+        $elements.benefitsSwitchAlert.filter('.benefits-switch-off-message').addClass('hidden');
+    }
+
+    function scrollToExtrasMessageOnXS() {
+        if (meerkat.modules.deviceMediaState.get() === 'xs') {
+            var $extrasMessage = $elements.benefitsSwitchAlert.filter('.benefits-switch-extras-message:visible'),
+                offsetTop = $extrasMessage.offset().top,
+                marginTop = parseInt($extrasMessage.css('marginTop'), 10),
+                extraHeight = $('.header-top.navMenu-row-fixed').outerHeight();
+
+            $('html,body').animate({
+                scrollTop: (offsetTop - marginTop) - extraHeight
+            }, 500);
+        }
     }
 
     meerkat.modules.register("benefits", {
@@ -294,7 +307,8 @@
         getHospitalType: getHospitalType,
         setHospitalType: setHospitalType,
         toggleHospitalTypeTabs: toggleHospitalTypeTabs,
-        toggleExtrasMessage: toggleExtrasMessage
+        toggleExtrasMessage: toggleExtrasMessage,
+        scrollToExtrasMessageOnXS: scrollToExtrasMessageOnXS
     });
 
 })(jQuery);

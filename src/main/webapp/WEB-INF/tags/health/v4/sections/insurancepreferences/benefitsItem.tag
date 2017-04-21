@@ -43,6 +43,12 @@
                     <%-- ======================= --%>
 
                 <c:if test="${category != 'Hospital'}">
+                    <c:if test="${not empty benefitsSwitchSplitTest and benefitsSwitchSplitTest eq true}">
+                        <div class="visible-xs">
+                            <health_v4:benefits_switch_extras_message />
+                        </div>
+                    </c:if>
+
                     <div class="title <c:if test="${category eq 'Hospital'}">hidden-xs</c:if>">
                         <h2 class="ignore">Extras</h2>
                         <c:if test="${not empty benefitsSwitchSplitTest and benefitsSwitchSplitTest eq true}">

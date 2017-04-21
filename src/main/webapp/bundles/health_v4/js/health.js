@@ -237,6 +237,7 @@
                         if (meerkat.modules.benefitsSwitch.isExtrasOn()) {
                             if (meerkat.modules.benefitsModel.getExtrasCount() === 0) {
                                 meerkat.modules.benefits.toggleExtrasMessage(false);
+                                meerkat.modules.benefits.scrollToExtrasMessageOnXS();
                                 success = false;
                             } else {
                                 meerkat.modules.benefits.toggleExtrasMessage(true);

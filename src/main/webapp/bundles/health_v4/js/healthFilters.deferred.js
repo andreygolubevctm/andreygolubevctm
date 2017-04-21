@@ -573,7 +573,7 @@
 
     function _toggleFiltersSwitchValidation() {
         var areBenefitsSwitchOn = meerkat.modules.benefitsSwitch.isFiltersHospitalOn() || meerkat.modules.benefitsSwitch.isFiltersExtrasOn();
-        $('.results-filters-benefits .benefits-switch-alert').toggleClass('hidden', areBenefitsSwitchOn);
+        $('.results-filters-benefits .benefits-switch-off-message').toggleClass('hidden', areBenefitsSwitchOn);
         $('.filter-update-changes').attr('disabled', !areBenefitsSwitchOn).prop('disabled', !areBenefitsSwitchOn);
         $('.filter.benefits-switched-off').attr('data-dontToggleUpdate', !areBenefitsSwitchOn);
     }

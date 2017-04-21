@@ -6,7 +6,8 @@
     <div class="filter-heading">My Insurance Preferences</div>
 
     <c:if test="${not empty benefitsSwitchSplitTest and benefitsSwitchSplitTest eq true}">
-        <health_v4:benefits_switch_message />
+        <health_v4:benefits_switch_off_message />
+        <health_v4:benefits_switch_extras_message />
     </c:if>
 
     <div class="filter filter-hospital-benefits" data-filter-serverside="true">
