@@ -71,6 +71,7 @@
 <%@ taglib tagdir="/WEB-INF/tags/home/landlord"		    prefix="home_landlord" %>
 <%@ taglib tagdir="/WEB-INF/tags/home/property"		    prefix="home_property" %>
 <%@ taglib tagdir="/WEB-INF/tags/home/layout"		    prefix="home_layout" %>
+<%@ taglib tagdir="/WEB-INF/tags/home/landlord"		    prefix="home_landlord" %>
 <%@ taglib tagdir="/WEB-INF/tags/homeloan"				prefix="homeloan" %>
 <%@ taglib tagdir="/WEB-INF/tags/homeloan/layout"		prefix="homeloan_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/ui"					prefix="ui" %>
