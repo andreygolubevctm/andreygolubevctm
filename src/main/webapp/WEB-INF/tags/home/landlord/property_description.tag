@@ -9,9 +9,9 @@
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
 
 <form_v2:fieldset legend="Property Description">
-    
-	<home_property:property_type  xpath="${xpath}" label="What type of property is the home?" />
-	<home:best_describes_home  xpath="${xpath}"/>
+
+    <home_property:property_type  xpath="${xpath}" label="What type of property are you insuring?" />
+    <home:best_describes_home  xpath="${xpath}"/>
 	<home:wallMaterial  xpath="${xpath}"/>
 	<home:roof_constuction_material xpath="${xpath}"	/>
 	<home:year_built 		xpath="${xpath}" />
