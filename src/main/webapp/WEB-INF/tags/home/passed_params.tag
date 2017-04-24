@@ -3,6 +3,9 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- Retrieve values passed from Brochure Site --%>
+<c:if test="${not empty param.landlord}">
+	<c:set var="landlord" value="${param.landlord eq 'true'}" />
+</c:if>
 <c:if test="${not empty param.ownProperty}">
 	<go:setData dataVar="data" value="${param.ownProperty}" xpath="home/occupancy/ownProperty" />
 </c:if>

@@ -218,12 +218,14 @@
 		</c:if>
 
 		<%-- Slides --%>
-		<home_layout:slide_cover_type />
-		<home_layout:slide_occupancy />
-		<home_layout:slide_your_property />
-		<home_layout:slide_policy_holders />
-		<home_layout:slide_history />
-		<home_layout:slide_results />
+		<c:choose>
+			<c:when test="${landlord}">
+				<home_landlord:home_contents_quote />
+			</c:when>
+			<c:otherwise>
+				<home:home_contents_quote />
+			</c:otherwise>
+		</c:choose>
 
 		<field_v1:hidden xpath="environmentOverride" />
 		<input type="hidden" name="transcheck" id="transcheck" value="1" />
