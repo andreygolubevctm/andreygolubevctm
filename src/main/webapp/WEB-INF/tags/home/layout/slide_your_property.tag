@@ -32,5 +32,7 @@
 
 	</layout_v1:slide_columns>
 
-	<home:property_cover_amounts xpath="${xpath}/coverAmounts" />
+	<home:property_cover_amounts
+			xpath="${xpath}/coverAmounts"
+			label="What is the total cost to rebuild the home at today's prices?" />
 </layout_v1:slide>

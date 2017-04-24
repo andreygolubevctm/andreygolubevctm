@@ -4,6 +4,7 @@
 
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath" required="true" rtexprvalue="true" description="field group's xpath"%>
+<%@ attribute name="label" 				required="false" rtexprvalue="true"	 description="label for the field"%>
 
 
 	<%-- Year Build --%>

@@ -4,6 +4,8 @@
 
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath" required="true" rtexprvalue="true" description="field group's xpath"%>
+<%@ attribute name="label" 				required="true" rtexprvalue="true"	 description="label for the field"%>
+
 
 <%-- VARIABLES --%>
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
@@ -18,7 +20,7 @@
 			<%-- Rebuild Cost --%>
 			<c:set var="fieldXpath" value="${xpath}/rebuildCost" />
 			<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Cost to Rebuild Home - Tool Tip" quoteChar="\"" /></c:set>
-			<form_v2:row fieldXpath="${fieldXpath}" label="What is the total cost to rebuild the home at today's prices?"  helpId="507" id="rebuildCostRow" tooltipAttributes="${analyticsAttr}">
+			<form_v2:row fieldXpath="${fieldXpath}" label="${label}"  helpId="507" id="rebuildCostRow" tooltipAttributes="${analyticsAttr}">
 				<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Cost to Rebuild Home" quoteChar="\"" /></c:set>
 				<field_v2:currency xpath="${fieldXpath}"
 					required="true"
