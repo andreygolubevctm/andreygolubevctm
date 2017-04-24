@@ -68,7 +68,6 @@
 <%@ taglib tagdir="/WEB-INF/tags/competition"			prefix="competition" %>
 <%@ taglib tagdir="/WEB-INF/tags/competition/layout"	prefix="competition_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/home"				    prefix="home" %>
-<%@ taglib tagdir="/WEB-INF/tags/home/landlord"		    prefix="home_landlord" %>
 <%@ taglib tagdir="/WEB-INF/tags/home/property"		    prefix="home_property" %>
 <%@ taglib tagdir="/WEB-INF/tags/home/layout"		    prefix="home_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/homeloan"				prefix="homeloan" %>
