@@ -214,9 +214,6 @@
 		// Capture offer terms link clicks
 		$(document.body).on('click', 'a.offerTerms', launchOfferTerms);
 
-		// Handle result row click
-		$(Results.settings.elements.resultsContainer).on('click', '.result-row', resultRowClick);
-
 		// When the navar docks/undocks
 		meerkat.messaging.subscribe(meerkatEvents.affix.AFFIXED, function navbarFixed() {
 			$('#resultsPage').css('margin-top', '35px');
@@ -230,7 +227,7 @@
 
 		// When the excess filter changes, fetch new results
 		meerkat.messaging.subscribe(meerkatEvents.carFilters.CHANGED, function onFilterChange(obj){
-			if (obj && obj.hasOwnProperty('excess') || obj.hasOwnProperty('coverType')) {
+			if (obj && obj.hasOwnProperty('excess') || obj && obj.hasOwnProperty('coverType')) {
 				// This is a little dirty however we need to temporarily override the
 				// setting which prevents the tranId from being incremented.
 				Results.settings.incrementTransactionId = true;
@@ -638,24 +635,6 @@
 				$(Results.settings.elements.features.container).addClass('featuresMode');
 			}
 		}
-	}
-
-	function resultRowClick(event) {
-		// Ensure only in XS price mode
-		if ($(Results.settings.elements.resultsContainer).hasClass('priceMode') === false) return;
-		if (meerkat.modules.deviceMediaState.get() !== 'xs') return;
-
-		var $resultrow = $(event.target);
-		if ($resultrow.hasClass('result-row') === false) {
-			$resultrow = $resultrow.parents('.result-row');
-		}
-
-		// Row must be available to click it.
-		if (typeof $resultrow.attr('data-available') === 'undefined' || $resultrow.attr('data-available') !== 'Y') return;
-
-		// Set product and launch bridging
-		meerkat.modules.moreInfo.setProduct(Results.getResult('productId', $resultrow.attr('data-productId')));
-		meerkat.modules.carMoreInfo.runDisplayMethod();
 	}
 
 	function initCompare(){

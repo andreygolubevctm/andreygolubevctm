@@ -42,6 +42,9 @@
 
 		setJourneyEngineSteps();
 		configureProgressBar();
+		if (render) {
+				meerkat.modules.journeyProgressBar.render(true);
+		}
 	}
 
 	function setJourneyEngineSteps(){

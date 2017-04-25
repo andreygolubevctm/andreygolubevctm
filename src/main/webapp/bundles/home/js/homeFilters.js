@@ -286,7 +286,7 @@
 			$priceMode.addClass('active');
 
 			meerkat.modules.homeResults.switchToPriceMode(true);
-
+			meerkat.modules.compare.afterSwitchMode('price');
 			meerkat.modules.session.poke();
 		});
 
@@ -298,7 +298,7 @@
 			$featuresMode.addClass('active');
 
 			meerkat.modules.homeResults.switchToFeaturesMode(true);
-
+			meerkat.modules.compare.afterSwitchMode('features');
 			meerkat.modules.session.poke();
 		});
 

@@ -218,9 +218,6 @@
 		// Capture offer terms link clicks
 		$(document.body).on('click', 'a.offerTerms', launchOfferTerms);
 
-		// Handle result row click
-		$(Results.settings.elements.resultsContainer).on('click', '.result-row', resultRowClick);
-
 //TODO
 		// When the navar docks/undocks
 		meerkat.messaging.subscribe(meerkatEvents.affix.AFFIXED, function navbarFixed() {
@@ -657,25 +654,6 @@
 				publishExtraSuperTagEvents();
 			}
 		}
-	}
-
-	function resultRowClick(event) {
-		// Ensure only in XS price mode
-		if ($(Results.settings.elements.resultsContainer).hasClass('priceMode') === false) return;
-		if (meerkat.modules.deviceMediaState.get() !== 'xs') return;
-
-
-		var $resultrow = $(event.target);
-		if ($resultrow.hasClass('result-row') === false) {
-			$resultrow = $resultrow.parents('.result-row');
-		}
-
-		// Row must be available to click it.
-		if (typeof $resultrow.attr('data-available') === 'undefined' || $resultrow.attr('data-available') !== 'Y') return;
-
-		// Set product and launch bridging
-		meerkat.modules.moreInfo.setProduct(Results.getResult('productId', $resultrow.attr('data-productId')));
-		meerkat.modules.homeMoreInfo.runDisplayMethod();
 	}
 
 	function initCompare(){
