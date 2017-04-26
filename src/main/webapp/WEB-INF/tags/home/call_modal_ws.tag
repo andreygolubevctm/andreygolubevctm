@@ -198,6 +198,14 @@
 	{{ var htmlTemplate = _.template(template); }}
 	{{ obj.headerTemplate = htmlTemplate(obj); }}
 
+	{{ var template = $("#monthly-price-template").html(); }}
+	{{ var htmlTemplate = _.template(template); }}
+	{{ obj.monthlyPriceTemplate = htmlTemplate(obj); }}
+
+	{{ var template = $("#annual-price-template").html(); }}
+	{{ var htmlTemplate = _.template(template); }}
+	{{ obj.annualPriceTemplate = htmlTemplate(obj); }}
+
 	{{ var template = $("#home-promotion-offer-template").html(); }}
 	{{ var htmlTemplate = _.template(template); }}
 	{{ obj.promotionOfferTemplate = htmlTemplate(obj); }}
