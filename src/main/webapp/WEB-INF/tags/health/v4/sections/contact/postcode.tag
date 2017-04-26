@@ -14,7 +14,6 @@
 	</div>
 	<div class="health_contact_details_postcode_results_wrapper">
 		<div class="health_contact_details_postcode_results"></div>
-		<a href="javascript:;" class="suburb-items-btn-edit">Edit</a>
 		<field_v2:validatedHiddenField xpath="${pageSettings.getVerticalCode()}/situation/location"
 									   additionalAttributes="data-rule-locationSelection='true'"/>
 	</div>

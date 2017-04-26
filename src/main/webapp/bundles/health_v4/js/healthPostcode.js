@@ -88,6 +88,9 @@
         _postcode = postcode;
         meerkat.modules.loadingAnimation.showAfter($elements.input);
 
+        $elements.results.hide();
+        $elements.resultsWrapper.height(0);
+
         var data = { term: postcode },
             request_obj = {
                 url: 'ajax/json/get_suburbs.jsp',
@@ -98,10 +101,11 @@
                 onSuccess: function(res) {
                     var resultCount = !_.isEmpty(res) && _.isArray(res) ? res.length : 0;
                     if (resultCount > 0) {
-                        // show suburbs
-                        _showResults(res);
                         if(resultCount === 1) {
                             _setSuburb(res.pop());
+                        } else {
+                            // show suburbs
+                            _showResults(res);
                         }
                     } else {
                         // clear
@@ -131,18 +135,65 @@
         $elements.results.find('.suburb-item').remove();
     }
 
-    function _showResults(suburbs) {
-        suburbs.forEach(function(suburb) {
-            var suburbText = suburb.replace(' ' + $elements.input.val(), ', ');
+    function _getSuburbState(suburb){
+        var state = suburb.substr(suburb.indexOf($elements.input.val()), suburb.length - 1);
+        state = state.replace($elements.input.val(), '').trim();
+        return state;
+    }
 
-            $elements.results
-                .append('' +
-                    '<div class="suburb-item" data-location="' + suburb + '">' +
-                        '<button type="button" class="btn btn-secondary">' + suburbText + '</button>' +
-                        '<span>' + suburbText + '</span>' +
-                    '</div>'
-                );
-        });
+    function _checkMultiStatePostcode(suburbs) {
+        var initialState;
+        var multiStatePostCode = false;
+
+        for (var i = 0; i < suburbs.length; i++ ) {
+            var state = _getSuburbState(suburbs[i]);
+
+            if (i === 0) initialState = state;
+
+            if (initialState !== state) {
+                multiStatePostCode = true;
+                break;
+            }
+        }
+        return multiStatePostCode;
+    }
+
+    function createSuburbItem(cssSelector, suburb, suburbText) {
+        $elements.results
+            .append('' +
+                '<div class="'+cssSelector+'" data-location="'+suburb+'">' +
+                '<button type="button" class="btn btn-secondary">' + suburbText + '</button>' +
+                '<span>' + suburbText + '</span>' +
+                '</div>'
+            );
+    }
+
+    function _showResults(suburbs) {
+        var multiStatePostCode = _checkMultiStatePostcode(suburbs);
+        var states = [];
+
+        for (var i = 0; i < suburbs.length; i++ ) {
+            var suburbText = suburbs[i].replace(' ' + $elements.input.val(), ', ');
+            var cssSelector = 'suburb-item';
+            var state = _getSuburbState(suburbs[i]);
+
+            if (multiStatePostCode){
+                if ($.inArray(state, states) === -1) states.push(state);
+            } else {
+                var suburb = 'NULL ' + $elements.input.val() + ' '+ state;
+                if(i === 0){
+                    cssSelector += ' selected';
+                    _setSuburb(suburb);
+                }
+                createSuburbItem(cssSelector, suburb, suburbText); // maybe delete
+            }
+        }
+
+        if (multiStatePostCode) {
+            for (i = 0; i < states.length; i++ ) 
+                createSuburbItem('suburb-item', 'NULL ' + $elements.input.val() + ' '+ states[i], states[i]);
+            $elements.results.show();
+        }
     }
 
     function _setSuburb(suburb) {

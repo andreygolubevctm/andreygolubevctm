@@ -5,7 +5,7 @@
         $('.health_contact_details_postcode_wrapper').toggleClass('has-location-error', !isValid);
 
         return isValid;
-    }, 'Please select your suburb.');
+    }, 'Please enter a valid postcode.');
 
     /**
      * This validation rule prevents someone who is a female from selecting "Mr" and vice versa.
