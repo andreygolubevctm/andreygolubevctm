@@ -159,8 +159,12 @@
 					<div class="visible-sm col-sm-6 hidden-md hidden-lg">
 						{{= promotionOfferHtml }}
 					</div>
-					<div class="visible-xs col-xs-4">
-						{{= annualPriceTemplate }}
+					<div class="visible-xs col-xs-5 text-right">
+						{{ if (Results.getFrequency() == 'annual' || Results.getFrequency() == 'annually') { }}
+							{{= annualPriceTemplate }}
+						{{ } else { }}
+							{{= monthlyPriceTemplate }}
+						{{ } }}
 					</div>
 					<div class="hidden-xs col-sm-6 col-md-5 col-lg-4 text-right">
 						<div class="quoteNumberTitle">{{ if(quoteNumber != '') { }} Quote Number {{ } }}</div>
@@ -173,9 +177,7 @@
 							{{= monthlyPriceTemplate }}
 						{{ } }}
 					</div>
-					<div class="visible-xs col-xs-4">
-						{{= monthlyPriceTemplate }}
-					</div>
+					<div class="visible-xs col-xs-4"></div>
 
 					<div class="col-xs-3 col-sm-4 hidden-md hidden-lg">
 						<div class="col-sm-6 {{= homeExcessState}} {{= excessAlign }} homeExcessContainer">
