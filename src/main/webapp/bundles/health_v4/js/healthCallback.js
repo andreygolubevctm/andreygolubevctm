@@ -95,7 +95,7 @@ Handling of the callback popup
 				$(options).each(function(index, val) {
 					var option = document.createElement('option');
 					option.value = date + 'T' + convertTo24Hour(val) + ':00' + offset;
-					option.text = val + " AEST";
+					option.text = val + " " + meerkat.site.openingHoursTimeZone;
 					$callbackTime.append(option);
 				});
 			} else {

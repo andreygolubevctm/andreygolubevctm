@@ -53,7 +53,7 @@
 					</div>
 				</c:if>
 			</div><br/>
-			<p>All Australian based call centre hours are AEST</p>
+			<p>All Australian based call centre hours are ${openingHoursTimeZone}</p>
 		</div>
 		<div class="call-details col-md-6" data-padding-pos="all" >
 			<div class="row">

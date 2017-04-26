@@ -104,6 +104,8 @@
 	</c:choose>
 </c:set>
 
+<c:set var="openingHoursTimeZone" scope="request"><content:get key="openingHoursTimeZone" /></c:set>
+
 <health_v1:dual_pricing_settings />
 <health_v4:pyrr_campaign_settings />
 {
@@ -186,4 +188,5 @@
 		phones : {${fund1800Numbers}}
 	}
 	</c:if>
+	,openingHoursTimeZone : '${openingHoursTimeZone}'
 }
