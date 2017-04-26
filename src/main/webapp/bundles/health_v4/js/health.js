@@ -237,9 +237,7 @@
                         if (meerkat.modules.benefitsSwitch.isExtrasOn()) {
                             if (meerkat.modules.benefitsModel.getExtrasCount() === 0) {
                                 meerkat.modules.benefits.toggleExtrasMessage(false);
-                                if (meerkat.modules.deviceMediaState.get() === 'xs') {
-                                    meerkat.modules.benefitsSelectionScroller.triggerScroll('extras');
-                                }
+                                meerkat.modules.benefitsSelectionScroller.triggerScroll('extras');
                                 success = false;
                             } else {
                                 meerkat.modules.benefits.toggleExtrasMessage(true);
