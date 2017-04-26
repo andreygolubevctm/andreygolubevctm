@@ -43,18 +43,15 @@
                     <%-- ======================= --%>
 
                 <c:if test="${category != 'Hospital'}">
-                    <c:if test="${not empty benefitsSwitchSplitTest and benefitsSwitchSplitTest eq true}">
-                        <div class="visible-xs">
-                            <health_v4:benefits_switch_extras_message />
-                        </div>
-                    </c:if>
-
                     <div class="title <c:if test="${category eq 'Hospital'}">hidden-xs</c:if>">
                         <h2 class="ignore">Extras</h2>
                         <c:if test="${not empty benefitsSwitchSplitTest and benefitsSwitchSplitTest eq true}">
                             <field_v2:switch xpath="${pageSettings.getVerticalCode()}/benefits/ExtrasSwitch" value="Y" className="benefits-switch switch-small" onText="On" offText="Off" additionalAttributes="data-benefit='extras'" />
                         </c:if>
                         <p>${colContent}</p>
+                        <c:if test="${not empty benefitsSwitchSplitTest and benefitsSwitchSplitTest eq true}">
+                            <health_v4:benefits_switch_extras_message />
+                        </c:if>
                         <health_v4_insuranceprefs:quick_select
                                 options="Dental:dental|Sports:sports|Peace of Mind:peace" trackingLabel="extras" />
                     </div>

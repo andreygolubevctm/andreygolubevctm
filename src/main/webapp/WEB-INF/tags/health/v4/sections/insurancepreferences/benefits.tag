@@ -26,9 +26,6 @@
 
 <c:if test="${not empty benefitsSwitchSplitTest and benefitsSwitchSplitTest eq true}">
 	<health_v4:benefits_switch_off_message />
-	<div class="hidden-xs">
-		<health_v4:benefits_switch_extras_message />
-	</div>
 </c:if>
 
 <div class="benefitsOverflow">

@@ -287,19 +287,6 @@
         $elements.benefitsSwitchAlert.filter('.benefits-switch-off-message').addClass('hidden');
     }
 
-    function scrollToExtrasMessageOnXS() {
-        if (meerkat.modules.deviceMediaState.get() === 'xs') {
-            var $extrasMessage = $elements.benefitsSwitchAlert.filter('.benefits-switch-extras-message:visible'),
-                offsetTop = $extrasMessage.offset().top,
-                marginTop = parseInt($extrasMessage.css('marginTop'), 10),
-                extraHeight = $('.header-top.navMenu-row-fixed').outerHeight();
-
-            $('html,body').animate({
-                scrollTop: (offsetTop - marginTop) - extraHeight
-            }, 500);
-        }
-    }
-
     meerkat.modules.register("benefits", {
         init: initBenefits,
         events: events,
@@ -307,8 +294,7 @@
         getHospitalType: getHospitalType,
         setHospitalType: setHospitalType,
         toggleHospitalTypeTabs: toggleHospitalTypeTabs,
-        toggleExtrasMessage: toggleExtrasMessage,
-        scrollToExtrasMessageOnXS: scrollToExtrasMessageOnXS
+        toggleExtrasMessage: toggleExtrasMessage
     });
 
 })(jQuery);

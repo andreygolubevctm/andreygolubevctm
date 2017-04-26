@@ -7,7 +7,6 @@
 
     <c:if test="${not empty benefitsSwitchSplitTest and benefitsSwitchSplitTest eq true}">
         <health_v4:benefits_switch_off_message />
-        <health_v4:benefits_switch_extras_message />
     </c:if>
 
     <div class="filter filter-hospital-benefits" data-filter-serverside="true">
@@ -48,6 +47,7 @@
         <div class="filter-sub-heading">Extras</div>
         <c:if test="${not empty benefitsSwitchSplitTest and benefitsSwitchSplitTest eq true}">
             <field_v2:switch xpath="${pageSettings.getVerticalCode()}/benefits/filters/ExtrasSwitch" value="Y" className="benefits-switch switch-small" onText="On" offText="Off" />
+            <health_v4:benefits_switch_extras_message />
         </c:if>
         <div class="filter-by-container">
             <span class="filter-by-extras-benefits small"></span>
