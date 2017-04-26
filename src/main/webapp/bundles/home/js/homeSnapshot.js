@@ -132,11 +132,27 @@
 		return address;
 	}
 
+	/*
+	*	Get the first line of the full address
+	*/
+	function getAddressFirstLine($element) {
+		var address = "";
+		if($element) {
+			address = $element.val();
+			if (address.indexOf(",") > 0) {
+				var pieces = address.split(/,/g);
+				address = $.trim(pieces[0]);
+			}
+		}
+		return address;
+	}
+
 	meerkat.modules.register('homeSnapshot', {
 		init: initHomeSnapshot,
 		events: events,
 		getIcon: getIcon,
 		getAddress: getAddress,
+		getAddressFirstLine: getAddressFirstLine,
         getHomeAmount: getHomeAmount,
         getContentAmount: getContentAmount,
         getJointHolderName: getJointHolderName,
