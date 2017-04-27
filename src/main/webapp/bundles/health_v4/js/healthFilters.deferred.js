@@ -183,14 +183,10 @@
                     },
                     update: function () {
                         // Forced to customise (or limited) as we don't have top/mid/basic in v4
-                        var $hospitalType = $('.results-filters-benefits .health-filter-hospital-benefits li.active').find('a');
-                        benefitCoverType = $hospitalType.length && $hospitalType.attr('href').search(/limited/) !== -1 ? 'limited' : 'customise';
-                        $('#health_benefits_covertype').val(benefitCoverType);
+                        var $hospitalType = $('.results-filters-benefits .health-filter-hospital-benefits li.active').find('a'),
+                            benefitCoverType = $hospitalType.length && $hospitalType.attr('href').search(/limited/) !== -1 ? 'limited' : 'customise';
 
-                        // reset hospital benefits to empty.
-                        if (benefitCoverType == 'limited') {
-                            $('.filter-hospital-benefits').find(':checked').prop('checked', false);
-                        }
+                        $('#health_benefits_covertype').val(benefitCoverType);
 
                         meerkat.modules.benefits.setHospitalType(benefitCoverType);
 
@@ -587,8 +583,10 @@
     function _toggleFiltersExtrasMessage() {
         var hide = $('input[name=health_filterBar_benefitsExtras]:checked').length !== 0 || !meerkat.modules.benefitsSwitch.isFiltersExtrasOn();
         $('.results-filters-benefits .benefits-switch-extras-message').toggleClass('hidden', hide);
-        $('.results-filters-benefits .benefits-switch-off-message').addClass('hidden');
-        $('.filter-update-changes').attr('disabled', !hide).prop('disabled', !hide);
+        if (meerkat.modules.benefitsSwitch.isFiltersHospitalOn() || meerkat.modules.benefitsSwitch.isFiltersExtrasOn()) {
+            $('.results-filters-benefits .benefits-switch-off-message').addClass('hidden');
+            $('.filter-update-changes').attr('disabled', !hide).prop('disabled', !hide);
+        }
     }
 
     meerkat.modules.register("healthFilters", {
