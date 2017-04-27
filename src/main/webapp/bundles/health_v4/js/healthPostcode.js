@@ -29,9 +29,10 @@
         $elements = {
             input: $('input.health_contact_details_postcode'),
             location: $('#health_situation_location'),
+            state: $('#health_situation_state'),
+            suburb: $('#health_situation_suburb'),
             resultsWrapper: $('.health_contact_details_postcode_results_wrapper'),
-            results: $('.health_contact_details_postcode_results'),
-            editBtn: $('.suburb-items-btn-edit')
+            results: $('.health_contact_details_postcode_results')
         };
     }
 
@@ -67,10 +68,6 @@
 
                 _setSuburb($suburbItem.attr('data-location'));
             });
-
-        $elements.editBtn.on('click', function() {
-           editMode(true);
-        });
     }
 
     function _eventSubscriptions() {
@@ -102,7 +99,7 @@
                     var resultCount = !_.isEmpty(res) && _.isArray(res) ? res.length : 0;
                     if (resultCount > 0) {
                         if(resultCount === 1) {
-                            _setSuburb(res.pop());
+                            _setSuburb(_trimSuburbName($elements.input.val(), _getSuburbState(res.pop())));
                         } else {
                             // show suburbs
                             _showResults(res);
@@ -143,12 +140,14 @@
 
     function _checkMultiStatePostcode(suburbs) {
         var initialState;
-        var multiStatePostCode = false;
+        var multiStatePostCode;
 
         for (var i = 0; i < suburbs.length; i++ ) {
             var state = _getSuburbState(suburbs[i]);
 
-            if (i === 0) initialState = state;
+            if (i === 0) {
+                initialState = state;
+            }
 
             if (initialState !== state) {
                 multiStatePostCode = true;
@@ -158,7 +157,7 @@
         return multiStatePostCode;
     }
 
-    function createSuburbItem(cssSelector, suburb, suburbText) {
+    function _createSuburbItem(cssSelector, suburb, suburbText) {
         $elements.results
             .append('' +
                 '<div class="'+cssSelector+'" data-location="'+suburb+'">' +
@@ -168,35 +167,47 @@
             );
     }
 
+    function _trimSuburbName(value, state) {
+        return 'NULL ' + value + ' ' + state;
+    }
+
     function _showResults(suburbs) {
+        var cssSelector = 'suburb-item';
         var multiStatePostCode = _checkMultiStatePostcode(suburbs);
         var states = [];
 
         for (var i = 0; i < suburbs.length; i++ ) {
             var suburbText = suburbs[i].replace(' ' + $elements.input.val(), ', ');
-            var cssSelector = 'suburb-item';
             var state = _getSuburbState(suburbs[i]);
 
             if (multiStatePostCode){
-                if ($.inArray(state, states) === -1) states.push(state);
+                if ($.inArray(state, states) === -1) {
+                    states.push(state);
+                }
             } else {
-                var suburb = 'NULL ' + $elements.input.val() + ' '+ state;
-                if(i === 0){
+                var suburb = _trimSuburbName($elements.input.val(), state);
+                if (i === 0){
                     cssSelector += ' selected';
                     _setSuburb(suburb);
+                    _createSuburbItem(cssSelector, suburb, suburbText);
+                } else {
+                    _createSuburbItem(cssSelector, suburb, suburbText);
                 }
-                createSuburbItem(cssSelector, suburb, suburbText); // maybe delete
             }
         }
 
         if (multiStatePostCode) {
-            for (i = 0; i < states.length; i++ ) 
-                createSuburbItem('suburb-item', 'NULL ' + $elements.input.val() + ' '+ states[i], states[i]);
+            for (i = 0; i < states.length; i++ ) {
+                _createSuburbItem(cssSelector, _trimSuburbName($elements.input.val(), states[i]), states[i]);
+            }
             $elements.results.show();
         }
     }
 
     function _setSuburb(suburb) {
+        $elements.state.val(_getSuburbState(suburb));
+        $elements.suburb.val('NULL');
+
         meerkat.modules.healthLocation.setLocation(suburb);
         _hasSelection = true;
         $elements.location.valid();
