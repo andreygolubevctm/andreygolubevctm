@@ -178,6 +178,9 @@
             }
         });
 
+        meerkat.messaging.subscribe(meerkatEvents.healthResults.SELECTED_PRODUCT_RESET, function bridgingPageLeaveXsState() {
+            dynamicPyrrBanner();
+        });
     }
 
     /**
@@ -208,6 +211,8 @@
 
         if (meerkat.modules.healthDualPricing.isDualPricingActive()) {
             obj.renderedPriceTemplate = meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false);
+        } else if (meerkat.modules.healthPyrrCampaign.isPyrrActive()) {
+            obj.renderedPyrrCampaign = meerkat.modules.healthPyrrCampaign.renderTemplate('', obj, true, false);
         } else {
             var priceTemplate = meerkat.modules.templateCache.getTemplate($("#price-template"));
             obj.showAltPremium = false;
@@ -235,6 +240,7 @@
         });
 
         _setupDualPricing(product);
+        dynamicPyrrBanner(product);
         _setTabs();
     }
 
@@ -253,6 +259,33 @@
                 $elements.applyBy.text('Apply by ' + product.dropDeadDateFormatted);
             }
         }
+    }
+
+    function dynamicPyrrBanner(product) {
+        if (meerkat.modules.healthPyrrCampaign.isPyrrActive()) {
+            if (meerkat.modules.healthResults.getSelectedProduct() !== null) {
+                addShowDynamicPrice(meerkat.modules.healthResults.getSelectedProduct());
+
+            } else if (typeof product !== 'undefined') {
+                addShowDynamicPrice(product);
+
+            } else {
+                // This class is in the database and is used to dynamically change the coupon banner.
+                $('.coupon-pyrr-banner-dynamic-hidden').hide();
+                $('.coupon-pyrr-banner-static').show();
+
+            }
+        }
+    }
+
+    function addShowDynamicPrice(product) {
+        var couponValue = product.giftCardAmount;
+        if (typeof couponValue === 'undefined') {
+            couponValue = 0;
+        }
+        $('.coupon-pyrr-banner-dynamic-price').text('$'+couponValue);
+        $('.coupon-pyrr-banner-dynamic-hidden').show();
+        $('.coupon-pyrr-banner-static').hide();
     }
 
     function onBeforeShowModal(jsonResult, dialogId) {
@@ -329,6 +362,12 @@
 
             $elements.modalHeader.find('.lhcText').toggleClass('hidden', $elements.moreInfoContainer.offset().top < calculatedHeight);
             $elements.modalHeader.find('.printableBrochuresLink').toggleClass('hidden', $elements.moreInfoContainer.offset().top < calculatedHeight);
+            $elements.modalHeader.find('.productTitleText').toggleClass('hidden', $elements.moreInfoContainer.offset().top < calculatedHeight);
+
+            if (meerkat.modules.healthPyrrCampaign.isPyrrActive()) {
+                $elements.modalHeader.find('.pyrrMoreInfoXSContainer').toggleClass('hidden', $elements.moreInfoContainer.offset().top < calculatedHeight);
+
+            }
 
             if (meerkat.modules.healthDualPricing.isDualPricingActive() && meerkat.modules.deviceMediaState.get() === 'xs') {
                 $elements.modalHeader.find('.april-container').toggleClass('hidden', $elements.moreInfoContainer.offset().top < calculatedHeight);
@@ -371,6 +410,7 @@
     function onBeforeHideTemplate() {
         // unfade all headers
         $(Results.settings.elements.page).find(".result").removeClass("faded");
+        dynamicPyrrBanner();
     }
 
     function initialiseBrochureEmailForm(product, parent, form) {
@@ -655,7 +695,8 @@
         prepareCover: prepareCover,
         retrieveExternalCopy: retrieveExternalCopy,
         applyEventListeners: applyEventListeners,
-        hasPublicHospital: hasPublicHospital
+        hasPublicHospital: hasPublicHospital,
+        dynamicPyrrBanner: dynamicPyrrBanner
     });
 
 })(jQuery);

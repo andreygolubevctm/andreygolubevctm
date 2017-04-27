@@ -89,7 +89,7 @@
         /* Show/Hide Bridging Page */
         if (typeof Results.settings !== "undefined") {
             // open bridging page
-            $(Results.settings.elements.page).on("click", ".btn-more-info", openBridgingPage);
+            $(Results.settings.elements.page).on("click", ".btn-more-info, .link-more-info", openBridgingPage);
             // some opens may be in modals or tooltips
             $(document).on("click", ".open-more-info", openBridgingPage);
             // close bridging page

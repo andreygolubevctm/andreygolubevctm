@@ -13,7 +13,7 @@
 <c:set var="journeyOverride" value="${pageSettings.getSetting('journeyOverride') eq 'Y'}" />
 <c:choose>
     <c:when test="${not callCentre && journeyOverride eq true}">
-        <c:set var="redirectURL" value="${pageSettings.getBaseUrl()}health_quote_v2.jsp?" />
+        <c:set var="redirectURL" value="${pageSettings.getBaseUrl()}health_quote_v4.jsp?" />
         <c:forEach items="${param}" var="currentParam">
             <c:set var="redirectURL">${redirectURL}${currentParam.key}=${currentParam.value}&</c:set>
         </c:forEach>
@@ -201,6 +201,7 @@
                     <field_v1:hidden xpath="health/renderingMode" />
                     <field_v1:hidden xpath="health/rebate" />
                     <field_v1:hidden xpath="health/rebateChangeover" />
+                    <field_v1:hidden xpath="health/previousRebate" />
                     <field_v1:hidden xpath="health/loading" />
                     <field_v1:hidden xpath="health/primaryCAE" />
                     <field_v1:hidden xpath="health/partnerCAE" />
@@ -218,6 +219,9 @@
                 <health_v2_layout:slide_application_details />
                 <health_v2_layout:slide_payment_details />
                 <health_v1:dual_pricing_templates />
+                <c:if test="${isPyrrActive eq true}">
+                    <health_v1:pyrr_campaign_templates />
+                </c:if>
                 <health_v3:payment_frequency_template />
 
                 <field_v1:hidden xpath="environmentOverride" />

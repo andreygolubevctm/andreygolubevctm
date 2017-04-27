@@ -24,7 +24,9 @@ public class Vertical {
 		COMPETITION ("COMPETITION"),
 		HOMELOAN ("HOMELOAN"),
 		CREDITCARD ("CREDITCARD"),
-		DISTIL("DISTIL");
+		DISTIL("DISTIL"),
+		PET("PET");
+
 
 		private final String code;
 

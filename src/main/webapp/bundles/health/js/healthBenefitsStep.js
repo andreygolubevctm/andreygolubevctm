@@ -62,6 +62,8 @@
             if($limitedCoverHidden.val() === 'Y') {
                 var filter = meerkat.modules.deviceMediaState.get() === 'xs' ? '.limited' : '.btn-save';
                 $hospitalCoverToggles.filter('[data-category=limited]' + filter).trigger('click');
+            } else {
+                $limitedCoverHidden.val('N');
             }
         });
     }

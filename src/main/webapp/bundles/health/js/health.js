@@ -122,6 +122,41 @@
 		}
 	}
 
+	function changeMinAge() {
+		var cover = meerkat.modules.healthChoices.returnCoverCode();
+		switch(cover) {
+			case "SM":
+			case "SF":
+				setMinAge(15);
+			break;
+			case "C":
+				setMinAge(15, true);
+			break;
+			default:
+				setMinAge(16, true);
+		}
+	}
+
+	function setMinAge(age, couple) {
+		var message = "Primary person's age cannot be under " + age;
+		var fields = [
+			dob_health_application_primary_dob,
+			dob_health_healthCover_primary_dob,
+			dob_health_application_partner_dob,
+			dob_health_healthCover_partner_dob
+		];
+		var length = 2;
+		if (couple) {
+			length = 4;
+		}
+		for (var i = 0; i < length; i++) {
+			if (fields[i] && _.has(fields[i],'ageMin') && fields[i].ageMin !== age) {
+					fields[i].ageMin = age;
+					$(fields[i].target).data('msgYoungestdob', message);
+			}
+		}
+	}
+
 	function setJourneyEngineSteps(){
 
 		var startStep = {
@@ -151,6 +186,7 @@
 				// Add event listeners.
 				$healthSitHealthCvr.on('change',function() {
 					meerkat.modules.healthChoices.setCover($(this).val());
+					changeMinAge();
 					meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
 				});
 
@@ -365,6 +401,7 @@
 				meerkat.modules.healthMoreInfo.initMoreInfo();
 				meerkat.modules.healthPriceComponent.initHealthPriceComponent();
 				meerkat.modules.healthDualPricing.initDualPricing();
+				meerkat.modules.healthPyrrCampaign.initPyrrCampaign(true);
 
 			},
 			onBeforeEnter:function enterResultsStep(event){
@@ -813,6 +850,7 @@
 		rates = ratesObject;
 		$("#health_rebate").val((rates.rebate || ''));
 		$("#health_rebateChangeover").val((rates.rebateChangeover || ''));
+		$("#health_previousRebate").val((rates.previousRebate || ''));
 		$("#health_loading").val((rates.loading || ''));
 		$("#health_primaryCAE").val((rates.primaryCAE || ''));
 		$("#health_partnerCAE").val((rates.partnerCAE || ''));
@@ -909,6 +947,12 @@
 
 		if(!postData.primary_dob.match(dateRegex)) return false;
 		if(coverTypeHasPartner && !postData.partner_dob.match(dateRegex))  return false;
+
+		postData.commencementDate = null;
+		var commencementDate = $('#health_payment_details_start').val();
+		if(!_.isEmpty(commencementDate)) {
+			postData.commencementDate = commencementDate;
+		}
 
 		return meerkat.modules.comms.post({
 			url:"ajax/json/health_rebate.jsp",

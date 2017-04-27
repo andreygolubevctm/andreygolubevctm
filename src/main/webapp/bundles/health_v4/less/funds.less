@@ -347,17 +347,19 @@ body{
       visibility:hidden !important;
     }
 
-    .health_payment_credit-details_policyDay-group,
-    .health_payment_bank-details_policyDay-group,
+    .health_person-details_authority_group,
     .health_payment_credit-details_policyDay-message,
     .health_payment_bank-details_policyDay-message {
       display:block !important;
     }
 
-    .health_payment_credit-details_day_group,
+    .health_payment_credit-details_day-group,
     .health_payment_bank_policyDay,
     .health_payment_bank-details_day-group,
-    .health_contact_authority{
+    .health_payment_credit-details_policyDay-group,
+    .health_payment_bank-details_policyDay-group,
+    .health_contact_authority,
+    #health_declaration-selection {
       display:none !important;
     }
 
@@ -608,9 +610,15 @@ body{
   }
   &.HCF {
     .health_payment_credit-details_paymentDay_group,
-    .health_payment_credit-details_policyDay-group,
+    .health_payment_bank-details_paymentDay_group,
+    .health_payment_credit-details_day-group,
+    .health_payment_bank-details_day-group,
     .health_bank-details_claims_group {
       display:none !important;
+    }
+    .health_payment_credit-details_policyDay-group,
+    .health_payment_bank-details_policyDay-group {
+      display:block !important;
     }
     .health_contact_authority{
       display:none !important;

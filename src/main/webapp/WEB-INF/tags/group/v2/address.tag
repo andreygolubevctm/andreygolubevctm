@@ -129,7 +129,7 @@
 	<%-- UNIT/SHOP (BOTH STD & NON STD) --%>
 	<c:set var="fieldXpath" value="${xpath}/unitShop" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="Unit/Shop/Level" id="${name}_unitShopRow" className="std_streetUnitShop ${name}_unitShopRow" smRowOverride="5" isNestedField="${true}" hideHelpIconCol="${true}">
-		<field_v2:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-unitShop blur-on-select show-loading sessioncamexclude" title="the unit/shop" includeInForm="true" required="false" placeHolder="Unit/Shop/Level"  />
+		<field_v2:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-unitShop blur-on-select show-loading sessioncamexclude" title="the unit/shop" includeInForm="true" required="false" placeHolder="Unit/Shop/Level" additionalAttributes="data-msg-required='Please enter a Unit number'  data-validation-position='append' " />
 	</form_v2:row>
 
 	<%-- STREET/HOUSE NUMBER (BOTH STD & NON STD) --%>
@@ -141,7 +141,7 @@
 	<c:set var="fieldXpath" value="${xpath}/streetNum" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="${streetLabel}" id="${name}_streetNumRow" className="std_streetNum" smRowOverride="2"  isNestedField="${true}" hideHelpIconCol="${true}">
 		<div class="${name}_streetNum_container">
-			<field_v2:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetNum blur-on-select show-loading sessioncamexclude" title="the street no." includeInForm="true" required="false" placeHolder="St. #" />
+			<field_v2:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetNum blur-on-select show-loading sessioncamexclude" title="the street no." includeInForm="true" required="false" placeHolder="St. #" additionalAttributes="data-msg-required='Please enter a street number' data-validation-position='append' " />
 		</div>
 	</form_v2:row>
 
@@ -171,7 +171,7 @@
 </c:choose>
 <c:set var="fieldXpath" value="${xpath}/nonStdStreet" />
 <form_v2:row fieldXpath="${fieldXpath}" label="Street" className="${name}_nonStd_street">
-	<field_v2:input xpath="${fieldXpath}" title="the street" required="false" className="sessioncamexclude" additionalAttributes="data-rule-validAddress='${name}' data-msg-validAddress='${nonStdStreetMessage}'${nonStdStreetAdditionalAttributes} " disableErrorContainer="${disableErrorContainer}" />
+	<field_v2:input xpath="${fieldXpath}" title="the street" required="false" className="sessioncamexclude" additionalAttributes="data-rule-validAddress='${name}' data-msg-validAddress='${nonStdStreetMessage}'${nonStdStreetAdditionalAttributes} data-rule-regex='[a-zA-Z0-9 ]+' data-msg-regex='Street name may only contain letters and numbers' data-validation-position='append' " disableErrorContainer="${false}" maxlength="32" />
 </form_v2:row>
 
 <c:choose>

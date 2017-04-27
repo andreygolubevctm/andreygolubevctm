@@ -1,7 +1,7 @@
 // NOTE: Additional 20kb of uncompressed data is caused from all the different logo sizes and breakpoints.
 // This file can be refined once the split test for moreInfo is over.
 
-@provider-list: ~"BUDD", ~"AI", ~"EXPO", ~"VIRG", ~"REIN", ~"1FOW", ~"EXDD", ~"WOOL", ~"IECO", ~"OZIC", ~"RETI";
+@provider-list: ~"BUDD", ~"AI", ~"EXPO", ~"VIRG", ~"REIN", ~"1FOW", ~"EXDD", ~"WOOL", ~"IECO", ~"OZIC", ~"RETI", ~"FAMO";
 
 .priceMode .compare-basket .carCompanyLogo {
   background: #fff;
@@ -12,8 +12,12 @@
   .providersHighResSpriteImages(~"car"; ~"logo_"; @provider-list; @logo-compare-scale;);
 }
 
-.companyLogo {
+.companyLogo, .priceMode .compare-v2 .compare-basket .companyLogo {
 	.providersHighResSpriteImages(~"car"; ~"logo_"; @provider-list; 0.53333); // 80px
+}
+
+.famousResults {
+	.providersHighResSpriteImages(~"car"; ~"logo_"; @provider-list; 1); // 160px
 }
 
 .moreInfoVisibleV2 {

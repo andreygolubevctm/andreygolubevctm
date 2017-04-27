@@ -168,3 +168,93 @@
 		}
 	}
 }
+
+.btn-pill-styles(
+	@btn-bg,
+    @btn-color: @btn-bg,
+    @btn-active-bg: darken(@btn-bg, 12%),
+    @btn-active-color: contrast(@btn-active-bg),
+    @btn-interact-bg: darken(@btn-bg, 12%),
+    @btn-interact-color: contrast(@btn-interact-bg),
+    @btn-border: @btn-bg,
+    @btn-active-border: @btn-active-bg,
+    @btn-interact-border: @btn-interact-bg,
+    @use-border-boolean: false,
+	@border-corner-radius: @pill-border-cnr-radius,
+	@pill-padding-top: @pill-btn-pad-top,
+	@pill-padding-bottom: @pill-btn-pad-bottom,
+	@pill-padding-left: @pill-btn-pad-left
+){
+	background-color: @btn-bg;
+	color: @btn-color;
+	padding-top: @pill-btn-pad-top;
+	padding-bottom: @pill-btn-pad-bottom;
+	padding-left: @pill-btn-pad-left;
+
+	& when (@use-border-boolean = true) {
+		border-color: @btn-border;
+		border-width: @btn-border-width;
+		border-style: @btn-border-style;
+		//padding: @btn-padding-bordered;
+		border-bottom-right-radius: @pill-border-cnr-radius !important;
+		border-top-right-radius: @pill-border-cnr-radius !important;
+		border-bottom-left-radius: @pill-border-cnr-radius !important;
+		border-top-left-radius: @pill-border-cnr-radius !important;
+	}
+	&:hover,
+	&:focus,
+	&.focus {
+		background-color: @btn-interact-bg;
+		color: @btn-interact-color;
+		outline: 0;
+		& when (@use-border-boolean = true) {
+			border-color: @btn-interact-border;
+		}
+	}
+	&::before {
+		content: "\e931";
+		user-select: none;
+		font-family: 'framework_font';
+		font-size: 16px;
+		float: left;
+		margin-left: -6px;
+		margin-right: 0px;
+		margin-top: -2px;
+
+		padding: 0.22em;
+		line-height: 1;
+		visibility: hidden;
+	}
+
+	&:active,
+	&.active {
+		background-color: @btn-active-bg;
+		color: @btn-active-color;
+		& when (@use-border-boolean = true) {
+			border-color: @btn-active-border;
+			border-bottom-right-radius: @pill-border-cnr-radius !important;
+			border-top-right-radius: @pill-border-cnr-radius !important;
+			border-bottom-left-radius: @pill-border-cnr-radius !important;
+			border-top-left-radius: @pill-border-cnr-radius !important;
+
+			&:hover,
+			&:focus,
+			&.focus {
+				border-color: @btn-active-border;
+				outline: none !important;
+			}
+		}
+	}
+	&:active::before,
+	&.active::before {
+		visibility: visible;
+	}
+	&:last-child:active,
+	&:last-child.active{
+		background-color: @btn-active-bg;
+		color: @btn-active-color;
+		outline: 0;
+		padding-left: (@pill-btn-pad-left - 1) !important;
+	}
+
+}

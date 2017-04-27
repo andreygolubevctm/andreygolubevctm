@@ -22,16 +22,14 @@
 
 	function initPage(){
 
-		initCompare();
-
 		initResults();
 
+		initCompare();
 		Features.init();
 		meerkat.modules.compare.initCompare();
-		eventSubscriptions();
 
 		breakpointTracking();
-
+		eventSubscriptions();
 	}
 
 	function onReturnToPage(){
@@ -216,9 +214,6 @@
 		// Capture offer terms link clicks
 		$(document.body).on('click', 'a.offerTerms', launchOfferTerms);
 
-		// Handle result row click
-		$(Results.settings.elements.resultsContainer).on('click', '.result-row', resultRowClick);
-
 		// When the navar docks/undocks
 		meerkat.messaging.subscribe(meerkatEvents.affix.AFFIXED, function navbarFixed() {
 			$('#resultsPage').css('margin-top', '35px');
@@ -232,7 +227,7 @@
 
 		// When the excess filter changes, fetch new results
 		meerkat.messaging.subscribe(meerkatEvents.carFilters.CHANGED, function onFilterChange(obj){
-			if (obj && obj.hasOwnProperty('excess') || obj.hasOwnProperty('coverType')) {
+			if (obj && obj.hasOwnProperty('excess') || obj && obj.hasOwnProperty('coverType')) {
 				// This is a little dirty however we need to temporarily override the
 				// setting which prevents the tranId from being incremented.
 				Results.settings.incrementTransactionId = true;
@@ -246,9 +241,9 @@
 		});
 
 		// If error occurs, go back in the journey
-		meerkat.messaging.subscribe(events.RESULTS_ERROR, function() {
+		meerkat.messaging.subscribe(events.RESULTS_ERROR, function () {
 			// Delayed to allow journey engine to unlock
-			_.delay(function() {
+			_.delay(function () {
 				meerkat.modules.journeyEngine.gotoPath('previous');
 			}, 1000);
 		});
@@ -258,20 +253,20 @@
 			massageResultsObject();
 		});
 
-		$(Results.settings.elements.resultsContainer).on("featuresDisplayMode", function(){
+		$(Results.settings.elements.resultsContainer).on("featuresDisplayMode", function () {
 			Features.buildHtml();
 		});
 
 		// Run the show method even when there are no available products
 		// This will render the unavailable combined template
-		$(Results.settings.elements.resultsContainer).on("noFilteredResults", function() {
+		$(Results.settings.elements.resultsContainer).on("noFilteredResults", function () {
 			Results.view.show();
 		});
 
 		$(document).on("resultsLoaded", onResultsLoaded);
 
 		// Scroll to the top when results come back
-		$(document).on("resultsReturned", function(){
+		$(document).on("resultsReturned", function () {
 			meerkat.modules.utils.scrollPageTo($("header"));
 
 			// Reset the feature header to match the new column content.
@@ -330,11 +325,11 @@
 			var time = meerkat.modules.performanceProfiling.endTest('results');
 
 			var score;
-			if(time < 800){
+			if (time < 800) {
 				score = meerkat.modules.performanceProfiling.PERFORMANCE.HIGH;
-			}else if (time < 8000 && meerkat.modules.performanceProfiling.isIE8() === false){
+			} else if (time < 8000 && meerkat.modules.performanceProfiling.isIE8() === false) {
 				score = meerkat.modules.performanceProfiling.PERFORMANCE.MEDIUM;
-			}else{
+			} else {
 				score = meerkat.modules.performanceProfiling.PERFORMANCE.LOW;
 			}
 
@@ -342,49 +337,55 @@
 
 		});
 
-		$(document).on("resultPageChange", function(event) {
+		$(document).on("resultPageChange", function (event) {
 			var pageData = event.pageData;
-			if(pageData.measurements === null) return false;
+			if (pageData.measurements === null) return false;
 
 			var items = Results.getFilteredResults().length;
 			var columnsPerPage = pageData.measurements.columnsPerPage;
-			var freeColumns = (columnsPerPage*pageData.measurements.numberOfPages)-items;
+			var freeColumns = (columnsPerPage * pageData.measurements.numberOfPages) - items;
 		});
 
 		// Hovering a row cell adds a class to the whole row to make it highlightable
-		$(document).on("FeaturesRendered", function(){
+		$(document).on("FeaturesRendered", function () {
 
-			$(Features.target + " .expandable > " + Results.settings.elements.features.values).off('mouseenter mouseleave').on("mouseenter", function(){
-				var featureId = $(this).attr("data-featureId");
-				var $hoverRow = $( Features.target + ' [data-featureId="' + featureId + '"]' );
+			$(Features.target + " .expandable > " + Results.settings.elements.features.values).off('mouseenter mouseleave').on("mouseenter", function () {
+					var featureId = $(this).attr("data-featureId");
+					var $hoverRow = $(Features.target + ' [data-featureId="' + featureId + '"]');
 
-				$hoverRow.addClass( Results.settings.elements.features.expandableHover.replace(/[#\.]/g, '') );
-			})
-			.on("mouseleave", function(){
-				var featureId = $(this).attr("data-featureId");
-				var $hoverRow = $( Features.target + ' [data-featureId="' + featureId + '"]' );
+					$hoverRow.addClass(Results.settings.elements.features.expandableHover.replace(/[#\.]/g, ''));
+				})
+				.on("mouseleave", function () {
+					var featureId = $(this).attr("data-featureId");
+					var $hoverRow = $(Features.target + ' [data-featureId="' + featureId + '"]');
 
-				$hoverRow.removeClass( Results.settings.elements.features.expandableHover.replace(/[#\.]/g, '') );
-			});
+					$hoverRow.removeClass(Results.settings.elements.features.expandableHover.replace(/[#\.]/g, ''));
+				});
 		});
 
 		$(document.body).on('click', '#results_v5 .btnContainer .btn-call-actions', function triggerMoreInfoCallActions(event) {
 			var element = $(this);
-			meerkat.messaging.publish(meerkatEvents.carResults.FEATURES_CALL_ACTION, {event: event, element: element});
+			meerkat.messaging.publish(meerkatEvents.carResults.FEATURES_CALL_ACTION, {
+				event: event,
+				element: element
+			});
 		});
 
 		$(document.body).on('click', '#results_v5 .call-modal .btn-call-actions', function triggerMoreInfoCallActionsFromModal(event) {
 			var element = $(this);
-			meerkat.messaging.publish(meerkatEvents.carResults.FEATURES_CALL_ACTION_MODAL, {event: event, element: element});
+			meerkat.messaging.publish(meerkatEvents.carResults.FEATURES_CALL_ACTION_MODAL, {
+				event: event,
+				element: element
+			});
 		});
 
 		$(document.body).on('click', '#results_v5 .btn-submit-callback', function triggerMoreInfoSubmitCallback(event) {
 			var element = $(this);
-			meerkat.messaging.publish(meerkatEvents.carResults.FEATURES_SUBMIT_CALLBACK, {event: event, element: element});
+			meerkat.messaging.publish(meerkatEvents.carResults.FEATURES_SUBMIT_CALLBACK, {
+				event: event,
+				element: element
+			});
 		});
-
-		//meerkat.messaging.subscribe(meerkatEvents.RESULTS_DATA_READY, publishExtraSuperTagEvents);
-		//meerkat.messaging.subscribe(meerkatEvents.RESULTS_SORTED, publishExtraSuperTagEvents);
 
 		meerkat.messaging.subscribe(meerkatEvents.resultsMobileDisplayModeToggle.DISPLAY_MODE_CHANGED, function(obj) {
 			if (obj.displayMode === 'price') {
@@ -447,7 +448,11 @@
         Results.updateAggregatorEnvironment();
 		meerkat.modules.carContactOptins.validateOptins();
 		meerkat.modules.resultsFeatures.fetchStructure('carws_').done(function() {
-			Results.get();
+			meerkat.modules.carExotic.toggleFamousResultsPage();
+
+			if (!meerkat.modules.carExotic.isExotic()) {
+				Results.get();
+			}
 		});
 	}
 
@@ -630,24 +635,6 @@
 				$(Results.settings.elements.features.container).addClass('featuresMode');
 			}
 		}
-	}
-
-	function resultRowClick(event) {
-		// Ensure only in XS price mode
-		if ($(Results.settings.elements.resultsContainer).hasClass('priceMode') === false) return;
-		if (meerkat.modules.deviceMediaState.get() !== 'xs') return;
-
-		var $resultrow = $(event.target);
-		if ($resultrow.hasClass('result-row') === false) {
-			$resultrow = $resultrow.parents('.result-row');
-		}
-
-		// Row must be available to click it.
-		if (typeof $resultrow.attr('data-available') === 'undefined' || $resultrow.attr('data-available') !== 'Y') return;
-
-		// Set product and launch bridging
-		meerkat.modules.moreInfo.setProduct(Results.getResult('productId', $resultrow.attr('data-productId')));
-		meerkat.modules.carMoreInfo.runDisplayMethod();
 	}
 
 	function initCompare(){

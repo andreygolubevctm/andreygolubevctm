@@ -220,7 +220,9 @@
 	function show() {
 		$component.removeClass('hidden').hide().slideDown(200);
 
-		$labels.removeClass('hidden').hide().slideDown(200);
+		if (!meerkat.modules.carExotic.isExotic()) {
+			$labels.removeClass('hidden').hide().slideDown(200);
+		}
 
 		storeCurrentValues();
 		preselectDropdowns();
@@ -303,6 +305,7 @@
 			$priceMode.addClass('active');
 
 			meerkat.modules.carResults.switchToPriceMode(true);
+			meerkat.modules.compare.afterSwitchMode('price');
 			if (updateBtnShown) $cancelUpdateBtn.trigger('click');
 
 			meerkat.modules.session.poke();
@@ -316,6 +319,7 @@
 			$featuresMode.addClass('active');
 
 			meerkat.modules.carResults.switchToFeaturesMode(true);
+			meerkat.modules.compare.afterSwitchMode('features');
 			if (updateBtnShown) $cancelUpdateBtn.trigger('click');
 
 			meerkat.modules.session.poke();

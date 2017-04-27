@@ -620,29 +620,31 @@
     // Wrapper around results component, load results data
     function get() {
         // Load rates before loading the results data (hidden fields are populated when rates are loaded).
-        meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'healthLoadRates' });
-        meerkat.modules.healthRates.loadRates(function afterFetchRates() {
+        var afterFetchRates = function() {
             meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, { source: 'healthLoadRates' });
             meerkat.modules.resultsFeatures.fetchStructure('health_v4').done(function () {
                 Results.updateAggregatorEnvironment();
                 Results.updateStaticBranch();
                 Results.get();
             });
-        });
+        };
+        meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'healthLoadRates' });
+        meerkat.modules.healthRates.loadRates(afterFetchRates);
     }
 
     // Wrapper around results component, load results data beofore result page
     function getBeforeResultsPage() {
         // Load rates before loading the results data (hidden fields are populated when rates are loaded).
-        meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'healthLoadRates' });
-        meerkat.modules.healthRates.loadRatesBeforeResultsPage(false, function afterFetchRates() {
+        var afterFetchRates = function() {
             meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, { source: 'healthLoadRates' });
             meerkat.modules.resultsFeatures.fetchStructure('health_v4').done(function () {
                 Results.updateAggregatorEnvironment();
                 Results.updateStaticBranch();
                 Results.get();
             });
-        });
+        };
+        meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'healthLoadRates' });
+        meerkat.modules.healthRates.loadRatesBeforeResultsPage(false, afterFetchRates);
     }
 
     // Get the selected product - a clone of the product object from the results component.
@@ -830,7 +832,7 @@
     }
 
     function onResultsLoaded() {
-
+        meerkat.modules.coupon.dealWithAddedCouponHeight();
         if (meerkat.modules.deviceMediaState.get() == "xs") {
             startColumnWidthTracking();
         }

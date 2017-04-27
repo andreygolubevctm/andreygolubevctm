@@ -48,8 +48,9 @@
                     approvedby:     $elements.root.find('.healthVoucherApprovedByRow').first(),
                     authorisation:  $elements.root.find('.healthVoucherAuthorisationRow').first(),
                     simples :   {
-                        referral :  $elements.root.find('.dialogue.referral').first(),
-                        other :     $elements.root.find('.dialogue.others').first()
+                        referral :      $elements.root.find('.dialogue.referral').first(),
+                        other :         $elements.root.find('.dialogue.others').first(),
+                        matchonline :   $elements.root.find('.dialogue.matchonline').first()
                     },
                     messages:       $elements.root.find('.voucher-validation-messages'),
                     disableables:   $elements.root.find('.disableable-fields')
@@ -80,6 +81,14 @@
                 updateData();
                 updateValueOptions(data.isOther ? data.other.reason : false);
                 updateView();
+
+                // If we have a PYRR offer add it to the dropdown.
+                var pyrrCoupon = meerkat.modules.healthPyrrCampaign.isPyrrActive(true);
+
+                if (pyrrCoupon) {
+                    $elements.wrappers.simples.pyrrCampaign = $elements.root.find('.dialogue.pyrrCampaign').first();
+                    $elements.inputs.reason.append('<option value="pay-your-rate-rise">Pay Your Rate Rise</option>');
+                }
             }
         });
     }
@@ -211,19 +220,37 @@
                         });
                     } else if(data.isOther) {
                         $elements.wrappers.mando.slideUp('fast', function(){
+                            var pyrrCoupon = meerkat.modules.healthPyrrCampaign.isPyrrActive(true);
+                            if (pyrrCoupon) {
+                                $elements.wrappers.simples.pyrrCampaign.hide();
+                            }
                             if(!_.isEmpty(data.other.reason)) {
                                 if (data.other.reason === 'referral-offer') {
                                     $elements.wrappers.referrerref.show();
                                     $elements.wrappers.simples.referral.show();
                                     $elements.wrappers.simples.other.hide();
+                                    $elements.wrappers.simples.matchonline.hide();
+                                } else if (data.other.reason === 'match-online-offer') {
+                                    $elements.wrappers.referrerref.hide();
+                                    $elements.wrappers.simples.referral.hide();
+                                    $elements.wrappers.simples.other.hide();
+                                    $elements.wrappers.simples.matchonline.show();
+                                } else if (pyrrCoupon && data.other.reason === 'pay-your-rate-rise') {
+                                    $elements.wrappers.referrerref.hide();
+                                    $elements.wrappers.simples.referral.hide();
+                                    $elements.wrappers.simples.other.hide();
+                                    $elements.wrappers.simples.matchonline.hide();
+                                    $elements.wrappers.simples.pyrrCampaign.show();
                                 } else {
                                     $elements.wrappers.referrerref.hide();
                                     $elements.wrappers.simples.referral.hide();
                                     $elements.wrappers.simples.other.show();
+                                    $elements.wrappers.simples.matchonline.hide();
                                 }
                             } else {
                                 $elements.wrappers.simples.referral.hide();
                                 $elements.wrappers.simples.other.hide();
+                                $elements.wrappers.simples.matchonline.hide();
                             }
                             $elements.wrappers.other.slideDown('fast');
                         });
@@ -281,8 +308,16 @@
             // Flush the referralref field if not a referral offer
             $elements.inputs.referrerref.val('');
         }
+
         // Update value selector with applicable options
         updateValueOptions(reason);
+
+        // If Pay Your Rate Rise is selected.
+        if(reason === 'pay-your-rate-rise') {
+            var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
+            var giftCardAmount = selectedProduct.giftCardAmount;
+            $elements.inputs.value.empty().append('<option value="'+giftCardAmount+'">$'+giftCardAmount+'</option>');
+        }
     }
 
     /**

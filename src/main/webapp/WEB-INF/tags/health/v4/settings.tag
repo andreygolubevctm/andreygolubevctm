@@ -58,6 +58,21 @@
 <c:set var="defaultToHealthQuote"><content:get key="makeHealthQuoteMainJourney" /></c:set>
 <c:set var="defaultToHealthApply"><content:get key="makeHealthApplyMainJourney" /></c:set>
 
+<c:set var="fund1800NumberActive">
+	<c:set var="temp"><content:get key="fundCallCentreNumber" /></c:set>
+	<c:choose>
+		<c:when test="${empty temp or temp eq 'n'}">false</c:when>
+		<c:otherwise>true</c:otherwise>
+	</c:choose>
+</c:set>
+<c:if test="${fund1800NumberActive eq 'true'}">
+	<c:set var="funds" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "fundCallCentreNumber")}' />
+	<c:set var="fund1800Numbers"></c:set>
+	<c:forEach items="${funds.getSupplementary()}" var="fund" varStatus="loop" >
+		<c:set var="fund1800Numbers">${fund1800Numbers}<c:if test="${loop.count > 1}">,</c:if>${fund.getSupplementaryKey().toLowerCase()}:"${fund.getSupplementaryValue()}"</c:set>
+	</c:forEach>
+</c:if>
+
 <c:set var="utm_source">
 	<c:choose>
 		<c:when test="${not empty param.utm_source}">
@@ -90,6 +105,7 @@
 </c:set>
 
 <health_v1:dual_pricing_settings />
+<health_v4:pyrr_campaign_settings />
 {
 	isCallCentreUser: <c:out value="${not empty callCentre}"/>,
 	isFromBrochureSite: <c:out value="${fromBrochure}"/>,
@@ -108,6 +124,7 @@
     isDefaultToHealthApply: ${defaultToHealthApply},
 	isTaxTime: '<content:get key="taxTime"/>',
 	isDualPricingActive: ${isDualPriceActive},
+	isPyrrActive: ${isPyrrActive},
 	<jsp:useBean id="healthApplicationService" class="com.ctm.web.health.services.HealthApplicationService"/>
 	<c:set var="providerList" value="${miscUtils:convertToJson(healthApplicationService.getAllProviders(pageSettings.getBrandId()))}"/>
 	navMenu: {
@@ -163,4 +180,10 @@
 	alternatePricing: <health_v1:alternate_pricing_json />,
 	bsbServiceURL : "<content:get key="bsbValidationServiceUrl" />",
 	ccOpeningHoursText : "<content:get key="ccHoursText" />"
+	<c:if test="${fund1800NumberActive eq 'true'}">
+	,fund1800s : {
+		active : ${fund1800NumberActive},
+		phones : {${fund1800Numbers}}
+	}
+	</c:if>
 }
