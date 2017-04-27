@@ -238,8 +238,11 @@
                         var isSwitchedOn = $('input[name=' + filterObject.name + ']').bootstrapSwitch('state');
 
                         $(filterObject.defaultValueSourceSelector).bootstrapSwitch('setState', isSwitchedOn);
-                        setFilterByHospitalBenefits();
-                        meerkat.modules.benefitsSwitch.toggleFiltersSwitch('hospital', true);
+
+                        _.defer(function() {
+                            setFilterByHospitalBenefits();
+                            meerkat.modules.benefitsSwitch.toggleFiltersSwitch('hospital', true);
+                        });
                     }
                 }
             },
@@ -256,8 +259,11 @@
                         var isSwitchedOn = $('input[name=' + filterObject.name + ']').bootstrapSwitch('state');
 
                         $(filterObject.defaultValueSourceSelector).bootstrapSwitch('setState', isSwitchedOn);
-                        setFilterByExtrasBenefits();
-                        meerkat.modules.benefitsSwitch.toggleFiltersSwitch('extras', true);
+
+                        _.defer(function() {
+                            setFilterByExtrasBenefits();
+                            meerkat.modules.benefitsSwitch.toggleFiltersSwitch('extras', true);
+                        });
                     }
                 }
             }
