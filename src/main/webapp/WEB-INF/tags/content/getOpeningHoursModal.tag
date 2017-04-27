@@ -5,6 +5,7 @@
 <jsp:useBean id="openingHoursService" class="com.ctm.web.core.openinghours.services.OpeningHoursService" scope="page" />
 <c:set var="callCentreNumber" scope="request"><content:get key="callCentreNumber"/></c:set>
 <c:set var="callCentreAppNumber" scope="request"><content:get key="callCentreAppNumber"/></c:set>
+<c:set var="openingHoursTimeZone"><content:get key="openingHoursTimeZone" /></c:set>
 
 <div class="all-opening-hours">
 	<div class="row">
