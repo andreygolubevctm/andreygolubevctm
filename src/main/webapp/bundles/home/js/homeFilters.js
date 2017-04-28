@@ -124,6 +124,19 @@
 				return;
 		}
 	}
+
+	function setHomeResultsFilter() {
+		// This will show/hide products that are either monthly only or annual only.
+		// E.g The Ensurance products.
+		if (currentValues.frequency == 'monthly') {
+			Results.filterBy('price.monthlyAvailable', "value", {"equals": true});
+			Results.unfilterBy('price.annualAvailable', "value", true);
+		} else if (currentValues.frequency == 'annual') {
+			Results.filterBy('price.annualAvailable', "value", {"equals": true});
+			Results.unfilterBy('price.monthlyAvailable', "value", true);
+		}
+	}
+
 	//
 	// Handle when any of the filter bar dropdown menu options are clicked
 	//
@@ -139,8 +152,8 @@
 			if(value !== currentValues.frequency) {
 				currentValues.frequency = value;
 				$('#home_paymentType').val(currentValues.frequency);
+				setHomeResultsFilter();
 				Results.setFrequency(value);
-
 				meerkat.messaging.publish(moduleEvents.CHANGED);
 				meerkat.modules.paymentFrequencyButtons.set(value);
 			}
@@ -286,7 +299,7 @@
 			$priceMode.addClass('active');
 
 			meerkat.modules.homeResults.switchToPriceMode(true);
-
+			meerkat.modules.compare.afterSwitchMode('price');
 			meerkat.modules.session.poke();
 		});
 
@@ -298,7 +311,7 @@
 			$featuresMode.addClass('active');
 
 			meerkat.modules.homeResults.switchToFeaturesMode(true);
-
+			meerkat.modules.compare.afterSwitchMode('features');
 			meerkat.modules.session.poke();
 		});
 
@@ -345,6 +358,8 @@
 		meerkat.messaging.subscribe(meerkatEvents.paymentFrequencyButtons.CHANGED, function() {
 			$('#home_paymentType').val(Results.getFrequency());
 			updateFilters();
+			storeCurrentValues();
+			setHomeResultsFilter();
 		});
 	}
 
@@ -529,7 +544,8 @@
 		disable: disable,
 		enable: enable,
 		onRequestModal: onRequestModal,
-		toggleXSFilters : toggleXSFilters
+		toggleXSFilters : toggleXSFilters,
+		setHomeResultsFilter: setHomeResultsFilter
 	});
 
 })(jQuery);

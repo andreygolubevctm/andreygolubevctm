@@ -28,6 +28,12 @@
 	}
 }
 
+@media(@xs-only) {
+	.priceDisclaimer-para {
+		float: left;
+	}
+}
+
 //
 // Provider chose not quote group
 //
@@ -103,8 +109,11 @@
 		}
 	}
 
-	.offerTerms {
-		font-style: italic;
+	.priceDisclaimerRow {
+		float: left;
+		margin: -17px auto 0 auto;
+		width: 100%;
+		text-align: center;
 	}
 }
 
@@ -241,14 +250,6 @@
 		font-size: 22px;
 		line-height: 22px;
 	}
-
-	.priceMode .priceMode {
-		h2,
-		.description,
-		.specialConditions {
-			margin-left: 95px;
-		}
-	}
 }//media sm+
 
 @media(@lg) {
@@ -264,9 +265,6 @@
 		}
 		.excessTitle {
 			margin-top: 8px;
-		}
-		.excessAmount {
-			margin-bottom: 10px;
 		}
 		.excessHome {
 			padding-top: 7px;
@@ -378,6 +376,24 @@
 			}
 		}
 
+		@media (@sm) {
+			.productTitle {
+				height: 54px;
+			}
+		}
+
+		@media (@md) {
+			.productTitle {
+				height: 54px;
+			}
+		}
+
+		@media (@lg) {
+			.productTitle {
+				height: 38px;
+			}
+		}
+
 		@media (@xs-only) {
 			// Normal heading
 			.labelInColumn {
@@ -456,3 +472,55 @@
 	}
 }
 
+// priceMode v6 overrides
+.priceMode.v6 {
+	.result-row[data-available=Y] {
+		.priceDisclaimer {
+			display: block;
+			text-align: left;
+			padding: 5px 0;
+		}
+
+		.excess-container {
+			.excess {
+				.excessAmount {
+					font-size: 20px;
+					line-height: 20px;
+				}
+
+				.excessTitle {
+					display: block;
+					margin-bottom: 2px;
+
+					br {
+						display: none;
+					}
+				}
+			}
+
+			&.has-both-excess {
+				.excess {
+					float: left;
+					width: 48%;
+
+
+					.excessTitle {
+						br {
+							display: block;
+						}
+					}
+				}
+			}
+
+			a {
+				text-align: center;
+			}
+		}
+
+		.cta-container {
+			.btn-cta {
+				margin-top: 0;
+			}
+		}
+	}
+}

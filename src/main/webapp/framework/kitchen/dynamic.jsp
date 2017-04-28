@@ -162,6 +162,7 @@
 			<span class="icon-home-contents" title="icon-home-contents"></span>
 			<span class="icon-fuel" title="icon-fuel"></span>
 			<span class="icon-energy" title="icon-energy"></span>
+			<span class="icon-pet" title="icon-pet"></span>
 			<span class="icon-ctp" title="icon-ctp"></span>
 
 			<span class="icon-blog" title="icon-blog"></span>
@@ -223,6 +224,7 @@
 			<span class="icon-vert-life" title="icon-vert-life"></span>
 			<span class="icon-vert-money" title="icon-vert-money"></span>
 			<span class="icon-vert-travel" title="icon-vert-travel"></span>
+			<span class="icon-vert-pet" title="icon-vert-pet"></span>
 			<span class="icon-callback" title="icon-callback"></span>
 			<span class="icon-pencil" title="icon-pencil"></span>
 		</div>

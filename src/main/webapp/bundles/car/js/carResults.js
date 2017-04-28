@@ -214,9 +214,6 @@
 		// Capture offer terms link clicks
 		$(document.body).on('click', 'a.offerTerms', launchOfferTerms);
 
-		// Handle result row click
-		$(Results.settings.elements.resultsContainer).on('click', '.result-row', resultRowClick);
-
 		// When the navar docks/undocks
 		meerkat.messaging.subscribe(meerkatEvents.affix.AFFIXED, function navbarFixed() {
 			$('#resultsPage').css('margin-top', '35px');
@@ -230,7 +227,7 @@
 
 		// When the excess filter changes, fetch new results
 		meerkat.messaging.subscribe(meerkatEvents.carFilters.CHANGED, function onFilterChange(obj){
-			if (obj && obj.hasOwnProperty('excess') || obj.hasOwnProperty('coverType')) {
+			if (obj && obj.hasOwnProperty('excess') || obj && obj.hasOwnProperty('coverType')) {
 				// This is a little dirty however we need to temporarily override the
 				// setting which prevents the tranId from being incremented.
 				Results.settings.incrementTransactionId = true;
@@ -479,14 +476,26 @@
 		products = products || Results.model.returnedProducts;
 
 		_.each(products, function massageJson(result, index) {
-
-			// Add formatted annual premium (ie without decimals)
-			if (!_.isEmpty(result.price) && !_.isUndefined(result.price.annualPremium)) {
-				result.price.annualPremiumFormatted = meerkat.modules.currencyField.formatCurrency(Math.ceil(result.price.annualPremium), {roundToDecimalPlace: 0, symbol: '', digitGroupSymbol:''});
-			}
-
-			if (result.excess !== null && !_.isUndefined(result.excess)) {
-				result.excessFormatted = meerkat.modules.currencyField.formatCurrency(result.excess, {roundToDecimalPlace: 0});
+			if (!_.isNull(result.price) && !_.isUndefined(result.price)) {
+				// Add formatted annual premium (ie without decimals)
+				if (!_.isEmpty(result.price) && !_.isUndefined(result.price.annualPremium)) {
+					result.price.annualPremiumFormatted = meerkat.modules.currencyField.formatCurrency(Math.ceil(result.price.annualPremium), {roundToDecimalPlace: 0, symbol: '', digitGroupSymbol:''});
+				}
+				//Monthly
+				if (!_.isUndefined(result.price.monthlyPremium)) {
+					if (!_.isUndefined(result.price.monthlyPremium)) {
+						result.price.monthlyPremiumFormatted = meerkat.modules.currencyField.formatCurrency(result.price.monthlyPremium, {roundToDecimalPlace: 2, symbol: ''});
+					}
+					if (!_.isUndefined(result.price.monthlyFirstMonth)) {
+						result.price.monthlyFirstMonthFormatted = meerkat.modules.currencyField.formatCurrency(result.price.monthlyFirstMonth, {roundToDecimalPlace: 2, symbol: ''});
+					}
+					if (!_.isUndefined(result.price.annualisedMonthlyPremium)) {
+						result.price.annualisedMonthlyPremiumFormatted = meerkat.modules.currencyField.formatCurrency(result.price.annualisedMonthlyPremium, {roundToDecimalPlace: 2, symbol: ''});
+					}
+				}
+				if (result.excess !== null && !_.isUndefined(result.excess)) {
+					result.excessFormatted = meerkat.modules.currencyField.formatCurrency(result.excess, {roundToDecimalPlace: 0});
+				}
 			}
 		});
 	}
@@ -638,24 +647,6 @@
 				$(Results.settings.elements.features.container).addClass('featuresMode');
 			}
 		}
-	}
-
-	function resultRowClick(event) {
-		// Ensure only in XS price mode
-		if ($(Results.settings.elements.resultsContainer).hasClass('priceMode') === false) return;
-		if (meerkat.modules.deviceMediaState.get() !== 'xs') return;
-
-		var $resultrow = $(event.target);
-		if ($resultrow.hasClass('result-row') === false) {
-			$resultrow = $resultrow.parents('.result-row');
-		}
-
-		// Row must be available to click it.
-		if (typeof $resultrow.attr('data-available') === 'undefined' || $resultrow.attr('data-available') !== 'Y') return;
-
-		// Set product and launch bridging
-		meerkat.modules.moreInfo.setProduct(Results.getResult('productId', $resultrow.attr('data-productId')));
-		meerkat.modules.carMoreInfo.runDisplayMethod();
 	}
 
 	function initCompare(){
