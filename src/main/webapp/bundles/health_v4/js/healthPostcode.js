@@ -62,11 +62,10 @@
         $elements.results
             .on('click', 'button', function() {
                 var $suburbItem = $(this).parent();
-
                 $elements.results.find('.suburb-item, .suburb-item button').removeClass('selected');
                 $suburbItem.addClass('selected').find('button').addClass('selected');
-
-                _setSuburb($suburbItem.attr('data-location'));
+                var location = _createLocationArray(_getLocationState($suburbItem.attr('data-location')));
+                _setLocation(location);
             });
     }
 
@@ -99,18 +98,16 @@
                     var resultCount = !_.isEmpty(res) && _.isArray(res) ? res.length : 0;
                     if (resultCount > 0) {
                         if(resultCount === 1) {
-                            _setSuburb(_trimSuburbName($elements.input.val(), _getSuburbState(res.pop())));
+                            // set individual location
+                            _setLocation(_createLocationArray(_getLocationState(res.pop())));
                         } else {
                             // show suburbs
                             _showResults(res);
                         }
                     } else {
-                        // clear
                         _clearResults();
                     }
-
                     _scrollView(resultCount > _minResultsForScrollView);
-
                     _resultsCount = resultCount;
                 },
                 onComplete: function() {
@@ -124,6 +121,14 @@
         meerkat.modules.comms.get(request_obj);
     }
 
+    function _getLocationSuburb(location) {
+        return location.substr(0, location.indexOf($elements.input.val()) - 1);
+    }
+
+    function _getLocationState(location) {
+        return location.substr(location.indexOf($elements.input.val()), location.length -1).replace($elements.input.val(), '').trim();
+    }
+
     function _scrollView(isScrollView) {
         $elements.resultsWrapper.toggleClass('scroll-view', isScrollView);
     }
@@ -132,83 +137,69 @@
         $elements.results.find('.suburb-item').remove();
     }
 
-    function _getSuburbState(suburb){
-        var state = suburb.substr(suburb.indexOf($elements.input.val()), suburb.length - 1);
-        state = state.replace($elements.input.val(), '').trim();
-        return state;
-    }
-
-    function _checkMultiStatePostcode(suburbs) {
-        var initialState;
+    function _checkMultiStatePostcode(locations) {
         var multiStatePostCode;
-
-        for (var i = 0; i < suburbs.length; i++ ) {
-            var state = _getSuburbState(suburbs[i]);
-
-            if (i === 0) {
-                initialState = state;
-            }
-
-            if (initialState !== state) {
-                multiStatePostCode = true;
-                break;
+        for (var i = 0; i < locations.length; i++ ) {
+            if (i > 0 && _getLocationState(locations[i]) !== _getLocationState(locations[i - 1])) {
+                return multiStatePostCode = true;
             }
         }
         return multiStatePostCode;
     }
 
-    function _createSuburbItem(cssSelector, suburb, suburbText) {
+    function _createLocationItem(cssSelector, location, buttonText) {
         $elements.results
             .append('' +
-                '<div class="'+cssSelector+'" data-location="'+suburb+'">' +
-                '<button type="button" class="btn btn-secondary">' + suburbText + '</button>' +
-                '<span>' + suburbText + '</span>' +
+                '<div class="'+cssSelector+'" data-location="'+_createLocationString(location)+'">' +
+                '<button type="button" class="btn btn-secondary">' + buttonText + '</button>' +
+                '<span>' + buttonText + '</span>' +
                 '</div>'
             );
     }
 
-    function _trimSuburbName(value, state) {
-        return 'NULL ' + value + ' ' + state;
-    }
-
-    function _showResults(suburbs) {
+    function _showResults(locations) {
         var cssSelector = 'suburb-item';
-        var multiStatePostCode = _checkMultiStatePostcode(suburbs);
+        var multiStatePostCode = _checkMultiStatePostcode(locations);
         var states = [];
 
-        for (var i = 0; i < suburbs.length; i++ ) {
-            var suburbText = suburbs[i].replace(' ' + $elements.input.val(), ', ');
-            var state = _getSuburbState(suburbs[i]);
+        for (var i = 0; i < locations.length; i++ ) {
 
+            var state = _getLocationState(locations[i]);
             if (multiStatePostCode){
+                // Create list of states without duplicates
                 if ($.inArray(state, states) === -1) {
                     states.push(state);
                 }
             } else {
-                var suburb = _trimSuburbName($elements.input.val(), state);
+                var location = _createLocationArray(state);
+
                 if (i === 0){
                     cssSelector += ' selected';
-                    _setSuburb(suburb);
-                    _createSuburbItem(cssSelector, suburb, suburbText);
-                } else {
-                    _createSuburbItem(cssSelector, suburb, suburbText);
+                    _setLocation(location);
                 }
+                _createLocationItem(cssSelector, location, $elements.input.val());
             }
         }
 
         if (multiStatePostCode) {
             for (i = 0; i < states.length; i++ ) {
-                _createSuburbItem(cssSelector, _trimSuburbName($elements.input.val(), states[i]), states[i]);
+                _createLocationItem(cssSelector, _createLocationArray(states[i]), states[i]);
             }
             $elements.results.show();
         }
     }
 
-    function _setSuburb(suburb) {
-        $elements.state.val(_getSuburbState(suburb));
-        $elements.suburb.val('NULL');
+    function _createLocationString(location) {
+        return location.toString().replace(/,/g , " ");
+    }
 
-        meerkat.modules.healthLocation.setLocation(suburb);
+    function _createLocationArray(state) {
+        return ['NULL', $elements.input.val(), state];
+    }
+
+    function _setLocation(location) {
+        $elements.state.val(location[2]);
+        meerkat.modules.healthLocation.setLocation(_createLocationString(location));
         _hasSelection = true;
         $elements.location.valid();
     }
