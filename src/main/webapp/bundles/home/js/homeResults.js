@@ -54,11 +54,12 @@
 				displayMode = meerkat.site.resultOptions.displayMode;
 			}
 
-
 			var price = {
 				annual: "price.annualPremium",
 				annually: "price.annualPremium",
-				monthly: "price.annualisedMonthlyPremium"
+				monthly: "price.annualisedMonthlyPremium",
+				monthlyAvailable: "price.monthlyAvailable",
+				annualAvailable: "price.annualAvailable"
 			};
 			var productAvailable = "available";
 			var productName = "productName";
@@ -206,7 +207,6 @@
 				},
 				incrementTransactionId: false
 			});
-
 		}
 		catch(e) {
 			Results.onError('Sorry, an error occurred initialising page', 'results.tag', 'meerkat.modules.homeResults.initResults(); '+e.message, e);
@@ -217,6 +217,7 @@
 
 		// Capture offer terms link clicks
 		$(document.body).on('click', 'a.offerTerms', launchOfferTerms);
+		$(document.body).on('click', 'a.priceDisclaimer', showPriceDisclaimer);
 
 //TODO
 		// When the navar docks/undocks
@@ -290,7 +291,7 @@
 
 		// Fetching done
 		$(document).on("resultsFetchFinish", function onResultsFetchFinish() {
-
+			meerkat.modules.homeFilters.setHomeResultsFilter();
 			// Results are hidden in the CSS so we don't see the scaffolding after #benefits
 			$(Results.settings.elements.page).show();
 
@@ -381,7 +382,6 @@
 	// After the results have been fetched, force data onto it to support our Results engine.
 	function massageResultsObject(products) {
 		products = products || Results.model.returnedProducts;
-
 		_.each(products, function massageJson(result, index) {
 			// Add properties
 			if (!_.isNull(result.price) && !_.isUndefined(result.price)) {
@@ -569,6 +569,26 @@
 		meerkat.modules.dialogs.show({
 			title: $logo.clone().wrap('<p>').addClass('hidden-xs').parent().html() + "<div class='hidden-xs heading'>" + $productName.html() + "</div>" + "<div class='heading'>Offer terms</div>",
 			hashId: 'offer-terms',
+			openOnHashChange: false,
+			closeOnHashChange: true,
+			htmlContent: $logo.clone().wrap('<p>').removeClass('hidden-xs').addClass('hidden-sm hidden-md hidden-lg').parent().html() + "<h2 class='visible-xs heading'>" + $productName.html() + "</h2>" +  $termsContent.html()
+		});
+	}
+
+	function showPriceDisclaimer(event) {
+		meerkat.modules.homeMoreInfo.setScrollPosition();
+		event.preventDefault();
+
+		var $element = $(event.target);
+		var $termsContent = $element.next('.priceDisclaimer-content');
+
+		var $logo =				$element.closest('.resultInsert, .more-info-content, .call-modal').find('.companyLogo');
+		var $productName =		$element.closest('.resultInsert, .more-info-content, .call-modal').find('.productTitle, .productName');
+
+		meerkat.modules.dialogs.show({
+			title: $logo.clone().wrap('<p>').addClass('hidden-xs').parent().html() + "<div class='hidden-xs heading'>" + $productName.html() + "</div>" + "<div class='heading'>Price Disclaimer</div>",
+			hashId: 'price-disclaimer',
+			className: 'price-disclaimer-modal',
 			openOnHashChange: false,
 			closeOnHashChange: true,
 			htmlContent: $logo.clone().wrap('<p>').removeClass('hidden-xs').addClass('hidden-sm hidden-md hidden-lg').parent().html() + "<h2 class='visible-xs heading'>" + $productName.html() + "</h2>" +  $termsContent.html()
