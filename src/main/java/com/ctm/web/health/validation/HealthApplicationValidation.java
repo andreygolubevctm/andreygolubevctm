@@ -62,7 +62,7 @@ public class HealthApplicationValidation {
 		 * Otherwise it is mandatory if yes was selected for do you want a rebate?
 		 * Dont send medicare details fo AUF when rebate is selected
 		 */
-		if(request.hasRebate && !request.application.provider.equals("AUF") || request.application.provider.equals("BUP")) {
+		if((request.hasRebate && !request.application.provider.equals("AUF")) || request.application.provider.equals("BUP")) {
 			String medicareNumber  = ValidationUtils.getValueAndAddToErrorsIfEmptyNumeric(request.payment.medicare.number, MEDICARE_NUMBER_XPATH, validationErrors);
 			if (!medicareNumber.isEmpty()) {
 				// check not empty
