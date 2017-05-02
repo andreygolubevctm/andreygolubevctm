@@ -133,6 +133,7 @@ public class TravelService extends CommonRequestServiceV2 {
                         data.getTransactionId(), result.getProductId());
                 builder.addResult("quoteUrl", result.getQuoteUrl());
                 builder.addResult("providerCode", result.getServiceName());
+                builder.addResult("gaClientId", quote.getGaclientid());
                 resultProperties.addAll(builder.getResultProperties());
 
             }

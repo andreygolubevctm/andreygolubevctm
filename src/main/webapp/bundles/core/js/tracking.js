@@ -13,6 +13,7 @@
 
     var lastFieldTouch = null;
     var lastFieldTouchXpath = null;
+    var googleAnalyticsClientId = "";
 
     function recordTouch(touchType, touchComment, productId, includeFormData, callback) {
 
@@ -386,7 +387,7 @@
 
     /**
      * addGAClientID() adds a new or updates an existing xpath to store the GA Client ID
-     * which is used for trackng purposes.
+     * which is used for tracking purposes.
      */
     function addGAClientID() {
         var gaClientId = null;
@@ -423,6 +424,7 @@
 
         if(!_.isEmpty(gaClientId)) {
             var elementName = (meerkat.site.vertical === 'car' ? 'quote' : meerkat.site.vertical) + '_gaclientid';
+            googleAnalyticsClientId = gaClientId;
             if ($('#' + elementName).length) {
                 $('#' + elementName).val(gaClientId);
             } else {
@@ -519,6 +521,10 @@
         return null;
     }
 
+    function getGaClientId() {
+        return googleAnalyticsClientId.toString();
+    }
+
     meerkat.modules.register("tracking", {
         init: initTracking,
         events: events,
@@ -529,7 +535,8 @@
         getCurrentJourney: getCurrentJourney,
         updateObjectData: updateObjectData,
         getTrackingVertical: getTrackingVertical,
-        sendSaleDataToGoogleMeasurementProtocol : sendSaleDataToGoogleMeasurementProtocol
+        sendSaleDataToGoogleMeasurementProtocol : sendSaleDataToGoogleMeasurementProtocol,
+        getGaClientId: getGaClientId
     });
 
 })(jQuery);
