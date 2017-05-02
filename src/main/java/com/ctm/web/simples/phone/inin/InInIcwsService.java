@@ -49,6 +49,8 @@ public class InInIcwsService {
 	private static final String SECURE_PAUSE_URL = "${cicUrl}/${sessionId}/interactions/${interactionId}/secure-pause";
 	public static final int DELAY = 500;
 	public static final int ATTEMPTS = 2;
+	public static final String XPATH_CURRENT_INTERACTION_ID = "current/icwsInteractionId";
+	public static final int XPATH_SEQUENCE_INTERACTION_ID = -99;
 
 	private SerializationMappers jacksonMappers;
 	private InInConfig inInConfig;
@@ -115,8 +117,8 @@ public class InInIcwsService {
 								// Get messages of agent activity (should give us the current phone call status)
 								.flatMap(s -> getInteractionId(cicUrl, connectionResp))
 								// Pause or resume the call
-								.flatMap(iId -> securePauseRequest(cicUrl, securePauseType, iId, connectionResp))
-								.flatMap(pauseResp -> Observable.just(PauseResumeResponse.success()))
+								.flatMap(iId -> securePauseRequest(cicUrl, securePauseType, iId, connectionResp ))
+							    .flatMap(pauseResp -> Observable.just(PauseResumeResponse.success(getInteractionId(cicUrl, connectionResp).toBlocking().first())))
 								.onErrorReturn(throwable -> handleSecurePauseError(securePauseType, agentUsername, throwable))
 				);
 	}
