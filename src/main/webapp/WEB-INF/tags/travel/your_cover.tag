@@ -11,7 +11,9 @@
 		id="${go:nameFromXpath(xpath)}" title="your cover type." />
 </form_v2:row>
 
-<div class="col-xs-12 col-sm-10 no-padding policy-info">
-    <content:get key="singleTripInfoText" />
-    <content:get key="annualMultiTripInfoText" />
+<div class="row">
+	<div class="col-xs-12 col-sm-10 policy-info">
+		<content:get key="singleTripInfoText" />
+		<content:get key="annualMultiTripInfoText" />
+	</div>
 </div>
