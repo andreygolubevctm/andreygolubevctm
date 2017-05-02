@@ -799,7 +799,7 @@ a {
   margin: 5px auto 0 8px;
   @media only screen and (@xs-only) {
     line-height: @font-size-small;
-    font-size: @font-size-small;
+    font-size: 0;
     .header_button_left & {
       margin: 9px auto 0 3px;
     }
@@ -1119,9 +1119,13 @@ fieldset h3 {
 }
 
 [data-toggle="radio"] > .btn-form-inverse { //not sure why there was an attribute selector at work here... they are slower.
+  outline: 0;
   font-family: @font-family-sans-serif;
   &.active, &:active {
     color: @form-input-common-selected-text-colour;
+  }
+  &.focus, &:focus {
+    outline: 0;
   }
   // NOTE!! Button group states are part of .form-control-button-group-validation mixin after this declaration, but the current implementation is actually applying .disabled to the label and input of a .button-group.
   &[disabled],
@@ -1149,6 +1153,19 @@ fieldset h3 {
       border-left-width: 0;
       &.active {
         border-left-width: @btn-border-width;
+      }
+    }
+
+    &.btn-form-inverse {
+      &:first-child {
+        border-right-width: 0;
+
+        & + .btn.btn-form-inverse {
+          border-left-width: 1px;
+        }
+      }
+      &.active:first-child + .btn.btn-form-inverse {
+        border-left-color: #1c3e93;
       }
     }
   }
