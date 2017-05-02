@@ -89,6 +89,14 @@ public class HealthApplicationValidationTest {
 	}
 
 	@Test
+	public void testValidateMedicareNumberForAUFWhenRebate() throws SQLException, DaoException {
+		healthApplication.application.provider = "AUF";
+		healthApplication.hasRebate = true;
+		List<SchemaValidationError> validationErrors = validationService.validate(healthApplication);
+		assertEquals(0 , validationErrors.size());
+	}
+
+	@Test
 	public void validateEmptyMedicareNumber() {
 		List<SchemaValidationError> validationErrors;
 		// medicare number cannot be empty
