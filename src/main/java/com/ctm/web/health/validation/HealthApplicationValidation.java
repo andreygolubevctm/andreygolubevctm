@@ -60,7 +60,7 @@ public class HealthApplicationValidation {
 		/**
 		 * Medicare number is mandatory for Bupa
 		 * Otherwise it is mandatory if yes was selected for do you want a rebate?
-		 * Dont send medicare details fo AUF when rebate is selected
+		 * don't validate medicare details for AUF when rebate is selected as those details are not sent to AUF
 		 */
 		if((request.hasRebate && !request.application.provider.equals("AUF")) || request.application.provider.equals("BUP")) {
 			String medicareNumber  = ValidationUtils.getValueAndAddToErrorsIfEmptyNumeric(request.payment.medicare.number, MEDICARE_NUMBER_XPATH, validationErrors);
