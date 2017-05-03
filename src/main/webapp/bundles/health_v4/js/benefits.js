@@ -9,7 +9,8 @@
         $elements = {},
         events = {
             benefits: {
-                BENEFIT_SELECTED: 'BENEFIT_SELECTED'
+                BENEFIT_SELECTED: 'BENEFIT_SELECTED',
+                EXTERNAL: 'TRACKING_EXTERNAL'
             }
         },
         moduleEvents = events.benefits,
@@ -305,7 +306,7 @@
             }
         };
 
-        meerkat.messaging.subscribe(moduleEvents.EXTERNAL, eventObject);
+        meerkat.messaging.publish(moduleEvents.EXTERNAL, eventObject);
     }
 
     meerkat.modules.register("benefits", {
