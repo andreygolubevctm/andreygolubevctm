@@ -293,12 +293,14 @@
     }
 
     function errorTracking(error) {
-        var eventObject = {
+        var errorName = (error === 'benefits-switch-off' ? 'health_toggles_off' : 'health_extras_none_selected') +
+                '_' + meerkat.modules.journeyEngine.getCurrentStep().navigationId,
+            eventObject = {
             method: 'errorTracking',
             object: {
                 error: {
-                    name: error === 'benefits-switch-off' ? 'benefits_both_switched_off' : 'benefits_extras_no_selection',
-                    validationMessage: $elements.benefitsSwitchAlert.filter('.' + error + '-message').text()
+                    name: errorName,
+                    validationMessage: $elements.benefitsSwitchAlert.filter('.' + error + '-message').text().trim()
                 }
             }
         };

@@ -584,6 +584,11 @@
         $('.results-filters-benefits .benefits-switch-extras-message').addClass('hidden');
         $('.filter-update-changes').attr('disabled', !areBenefitsSwitchOn).prop('disabled', !areBenefitsSwitchOn);
         $('.filter.benefits-switched-off').attr('data-dontToggleUpdate', !areBenefitsSwitchOn);
+
+        // push error tracking object into CtMDatalayer
+        if (!areBenefitsSwitchOn) {
+            meerkat.modules.benefits.errorTracking('benefits-switch-off');
+        }
     }
 
     function _toggleFiltersExtrasMessage() {
@@ -592,6 +597,11 @@
         if (meerkat.modules.benefitsSwitch.isFiltersHospitalOn() || meerkat.modules.benefitsSwitch.isFiltersExtrasOn()) {
             $('.results-filters-benefits .benefits-switch-off-message').addClass('hidden');
             $('.filter-update-changes').attr('disabled', !hide).prop('disabled', !hide);
+        }
+
+        // push error tracking object into CtMDatalayer
+        if (!hide) {
+            meerkat.modules.benefits.errorTracking('benefits-switch-extras');
         }
     }
 
