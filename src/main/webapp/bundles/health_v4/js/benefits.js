@@ -278,6 +278,11 @@
             .toggleClass('hidden', areBenefitsSwitchOn);
         $elements.benefitsSwitchAlert.filter('.benefits-switch-extras-message').addClass('hidden');
         $('.journeyEngineSlide.active .journeyNavButton, .slide-control-insurance-preferences').attr('disabled', !areBenefitsSwitchOn);
+
+        // push error tracking object into CtMDatalayer
+        if (!areBenefitsSwitchOn) {
+            errorTracking('benefits-switch-off');
+        }
     }
 
     function toggleExtrasMessage(hide) {
@@ -287,6 +292,20 @@
         $elements.benefitsSwitchAlert.filter('.benefits-switch-off-message').addClass('hidden');
     }
 
+    function errorTracking(error) {
+        var eventObject = {
+            method: 'errorTracking',
+            object: {
+                error: {
+                    name: error === 'benefits-switch-off' ? 'benefits_both_switched_off' : 'benefits_extras_no_selection',
+                    validationMessage: $elements.benefitsSwitchAlert.filter('.' + error + '-message').text()
+                }
+            }
+        };
+
+        meerkat.messaging.publish(moduleEvents.EXTERNAL, eventObject);
+    }
+
     meerkat.modules.register("benefits", {
         init: initBenefits,
         events: events,
@@ -294,7 +313,8 @@
         getHospitalType: getHospitalType,
         setHospitalType: setHospitalType,
         toggleHospitalTypeTabs: toggleHospitalTypeTabs,
-        toggleExtrasMessage: toggleExtrasMessage
+        toggleExtrasMessage: toggleExtrasMessage,
+        errorTracking: errorTracking
     });
 
 })(jQuery);
