@@ -125,6 +125,7 @@ public class TravelService extends CommonRequestServiceV2 {
             travelResults = ResponseAdapter.adapt(travelQuoteRequest, travelResponse);
         }
 
+        String gaClientId = quote.getGaclientid();
         List<ResultProperty> resultProperties = new ArrayList<>();
         for (TravelResult result : travelResults) {
             if (AvailableType.Y.equals(result.getAvailable())) {
@@ -133,7 +134,7 @@ public class TravelService extends CommonRequestServiceV2 {
                         data.getTransactionId(), result.getProductId());
                 builder.addResult("quoteUrl", result.getQuoteUrl());
                 builder.addResult("providerCode", result.getServiceName());
-                builder.addResult("gaClientId", quote.getGaclientid());
+                builder.addResult("gaClientId", gaClientId);
                 resultProperties.addAll(builder.getResultProperties());
 
             }
