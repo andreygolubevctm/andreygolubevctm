@@ -305,7 +305,7 @@
             }
         };
 
-        meerkat.messaging.publish(moduleEvents.EXTERNAL, eventObject);
+        meerkat.messaging.subscribe(moduleEvents.EXTERNAL, eventObject);
     }
 
     meerkat.modules.register("benefits", {
