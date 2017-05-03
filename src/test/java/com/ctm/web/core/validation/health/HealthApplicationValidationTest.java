@@ -38,6 +38,7 @@ public class HealthApplicationValidationTest {
 		healthApplication.application.dependants.dependants.add(d1);
 		healthApplication.application.dependants.dependants.add(d2);
 		setToValidState();
+		healthApplication.application.provider = "any";
 	}
 
 	@Test
@@ -50,7 +51,7 @@ public class HealthApplicationValidationTest {
 		String invalidMedicareNumber3 = "9249944514";
 		
 		healthApplication.payment.medicare.number = validMedicareNumber;
-		List<SchemaValidationError> validationErrors = validationService.validate(healthApplication);
+	    List<SchemaValidationError> validationErrors = validationService.validate(healthApplication);
 		assertEquals(0 , validationErrors.size());
 
 		healthApplication.payment.medicare.number = invalidMedicareNumber1;
@@ -85,6 +86,14 @@ public class HealthApplicationValidationTest {
 		runValidation(1);
 		healthApplication.payment.medicare.middleInitial = "A";
 		runValidation(0);
+	}
+
+	@Test
+	public void testValidateMedicareNumberForAUFWhenRebate() throws SQLException, DaoException {
+		healthApplication.application.provider = "AUF";
+		healthApplication.hasRebate = true;
+		List<SchemaValidationError> validationErrors = validationService.validate(healthApplication);
+		assertEquals(0 , validationErrors.size());
 	}
 
 	@Test
