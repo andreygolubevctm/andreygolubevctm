@@ -77,8 +77,13 @@
 			url="/WEB-INF/option_data/month_full.html"/>
 	</form_v2:row>
 
+	<c:set var="warningType" value="coverTypeWarningCopy" />
+	<c:if test="${landlord eq 'true'}">
+		<c:set var="warningType" value="coverTypeWarningCopyLandlord" />
+	</c:if>
+
 	<core_v1:js_template id="cover-type-warning-template">
-		<content:get key="coverTypeWarningCopy"/>
+		<content:get key="${warningType}"/>
 	</core_v1:js_template>
 
 	<field_v1:hidden xpath="${xpath}/coverTypeWarning/chosenOption"/>

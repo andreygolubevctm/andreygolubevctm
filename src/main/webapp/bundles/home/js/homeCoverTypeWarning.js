@@ -9,7 +9,8 @@
 
 	var
 		$coverType,
-		$ownsProperty = $("input[name=home_occupancy_ownProperty]"),
+		type = meerkat.site.isLandlord ? 'landlord' : 'occupancy',
+		input = 'input[name=home_' + type + '_ownProperty]',
 		$chosenCoverTypeOption,
 		warningDialogId = null,
 		initialised = false;
@@ -20,7 +21,7 @@
 			$coverType = $('#home_coverType');
 			$chosenCoverTypeOption = $('#home_occupancy_coverTypeWarning_chosenOption');
 
-			$ownsProperty.on("change.ownHome", function checkOwnership() {
+			$(input).on("change.ownHome", function checkOwnership() {
 				_.defer(validateSelections);
 			});
 
@@ -29,32 +30,38 @@
 			});
 
 			// Validate only if both fields have values
-			if ($coverType.val() && $("input[name=home_occupancy_ownProperty]:checked").val()) {
+			if ($coverType.val() && $(input + ":checked").val()) {
 				_.defer(_.bind(validateSelections, this, true));
 			}
 		}
 	}
 
 	function validateSelections(proceedToOccupancy) {
-		var isValid = true;
-		var navigation = 'start';
+		var isValid = true,
+				navigation = 'start';
 
-		if (meerkat.modules.journeyEngine.getCurrentStep().navigationId === navigation && $("input[name=home_occupancy_ownProperty]:checked").val() === 'N'
+		var typeInfo = {
+			occupancy: {
+				dialogTitle: "Oops, did you want to get contents only insurance?",
+				dialogTitleXS: "Oops, did you want contents only insurance?",
+				buttons: ["Switch to contents only", "I own or am paying off the home"]
+			},
+			landlord: {
+				dialogTitle: "Oops, are you renting your current property?",
+				dialogTitleXS: "Oops, are you renting your current property?",
+				buttons: ["Switch to contents only", "I am the landlord"]
+			}
+		};
+
+		if (meerkat.modules.journeyEngine.getCurrentStep().navigationId === navigation && $(input + ":checked").val() === 'N'
 			&& ($coverType.val() === 'Home & Contents Cover' || $coverType.val() === 'Home Cover Only')) {
 
-			var homeLabel = "I own or am paying off the home",
-				dialogTitle = "Oops, did you want to get contents only insurance?";
-
-			if (meerkat.modules.deviceMediaState.get() === 'xs') {
-				dialogTitle = "Oops, did you want contents only insurance?";
-			}
-
 			var buttons = [{
-				label : "Switch to contents only",
+				label : typeInfo[type].buttons[0],
 				className: "btn-next contentsOnlyBtnWP",
 				closeWindow: true,
 				action: function() {
-					$chosenCoverTypeOption.val('Switch to contents only');
+					$chosenCoverTypeOption.val(typeInfo[type].buttons[0]);
 					$coverType.val("Contents Cover Only");
 					meerkat.modules.contentPopulation.render('.journeyEngineSlide:eq(0) .snapshot'); // re-render the first step
 					meerkat.modules.contentPopulation.render('.journeyEngineSlide:eq(1) .snapshot'); // re-render the occupancy step
@@ -62,18 +69,18 @@
 					validateSelections();
 				}
 			},{
-				label : homeLabel,
+				label : typeInfo[type].buttons[1],
 				className: "btn-next ownBtnWP",
 				closeWindow: true,
 				action: function() {
-					$('#home_occupancy_ownProperty_Y').prop('checked', true).change();
-					$chosenCoverTypeOption.val("I own or am paying off the home");
+					$('#home_'+ type +'_ownProperty_Y').prop('checked', true).change();
+					$chosenCoverTypeOption.val(typeInfo[type].buttons[1]);
 				}
 			}];
 
 			if(meerkat.modules.dialogs.isDialogOpen(warningDialogId) === false) {
 				warningDialogId = meerkat.modules.dialogs.show({
-					title: dialogTitle,
+					title: (meerkat.modules.deviceMediaState.get() === 'xs') ? typeInfo[type].dialogTitleXS : typeInfo[type].dialogTitle,
 					onOpen: function (modalId) {
 						// update with the text within the cover type dropdown
 						var coverTypeCopy = ($coverType.val() === "Home Cover Only" ? "Home" : "Home and Contents"),
@@ -85,8 +92,8 @@
 						$modal.addClass('coverTypeWarningPopup'); // add class for css
 
 						// tweak the sizing to fit the content
-						$modal.find('.modal-body').outerHeight($('#' + modalId).find('.modal-body').outerHeight() - 20);
-						$modal.find('.modal-footer').outerHeight($('#' + modalId).find('.modal-footer').outerHeight() + 20);
+						$modal.find('.modal-body').outerHeight($modal.find('.modal-body').outerHeight() - 20);
+						$modal.find('.modal-footer').outerHeight($modal.find('.modal-footer').outerHeight() + 20);
 					},
 					buttons: buttons
 				});
