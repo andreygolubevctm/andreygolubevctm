@@ -23,7 +23,7 @@ public class TravelQuote {
     private String currentJourney; // if A/B test parameter is present
     private Filter filter;
     private String unknownDestinations; // For logging destinations the user has entered which did not match any
-    private String gaclientid;
+    private String gAClientId;
 
 
     @Destinations
@@ -196,14 +196,14 @@ public class TravelQuote {
         this.filter = filter;
     }
 
-    public String getGaclientid() {
-        if (gaclientid != null && !(gaclientid.isEmpty())) {
-            return gaclientid;
+    public String getGAClientId() {
+        if (gAClientId != null && !(gAClientId.isEmpty())) {
+            return gAClientId;
         } else {
             return "";
         }
 
     }
 
-    public void setGaclientid(String gaclientid) { this.gaclientid = gaclientid; }
+    public void setGAClientId(String gaclientid) { this.gAClientId = gaclientid; }
 }
