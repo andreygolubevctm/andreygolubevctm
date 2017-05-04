@@ -190,6 +190,7 @@ public class HomeQuoteService extends CommonRequestServiceV2 {
 
             quotes.stream()
                     .filter(row -> AvailableType.Y.equals(row.getAvailable()))
+                    .filter(row -> row.getPrice().isAnnualAvailable())
                     .forEach(row -> {
                                 String productId = row.getProductId();
                                 BigDecimal premium = row.getPrice().getAnnualPremium().setScale(0, BigDecimal.ROUND_CEILING);

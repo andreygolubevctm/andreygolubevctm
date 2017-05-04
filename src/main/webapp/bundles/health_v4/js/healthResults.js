@@ -832,7 +832,7 @@
     }
 
     function onResultsLoaded() {
-
+        meerkat.modules.coupon.dealWithAddedCouponHeight();
         if (meerkat.modules.deviceMediaState.get() == "xs") {
             startColumnWidthTracking();
         }

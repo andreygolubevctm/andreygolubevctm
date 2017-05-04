@@ -769,6 +769,139 @@ a{
 	}
 }
 
+// compare bar v2 styles
+
+#navbar-compare.compare-v2.hidden {
+	//overriding hidden #badpractice
+	display: block!important;
+	bottom: -200px;
+}
+
+#navbar-compare.compare-v2 {
+	max-height: 200px;
+		border-top: 0;
+		position: fixed;
+		bottom: 0;
+		margin: 0 auto;
+		left: 0;
+		right: 0;
+		max-width: 900px;
+		width: 100%;
+		transition: bottom 0.6s ease-out;
+		
+		.navbar-right {
+			margin: 0;
+			display: flex;
+			width: 25%;
+		}
+		ul {
+			padding: 10px;
+			width: 100%;
+			display: flex;
+		}
+		.compare-item-placeholder {
+			background-color: #4863a7;
+			color: white;
+			width: 25%;
+			margin: 0 5px;
+			border-radius: 10px;
+			padding: 65px 10px;
+			text-align: center;
+		}
+		.compare-item {
+			display: flex;
+			position: relative;
+			padding: 0;
+			margin: 0 5px;
+			width: 25%;
+			.compareContainer {
+				width: 100%;
+				display: flex;
+				flex-direction: column;
+				float: left;
+				border-radius: 14px;
+				background: white;
+			}
+			.logoPriceContainer {
+				background-color: white;
+				padding: 20px 10px;
+				border-radius: 10px 10px 0 0;
+				display: flex;
+				> span {
+					margin: auto;
+				}
+				.price {
+					font-size: 29px;
+					line-height: 29px;
+				}
+			}
+			.productName {
+				margin: auto 0 0 0;
+				text-align: center;
+				background-color: #4863a7;
+				color: white;
+				padding: 5px 10px;
+				height: 46px;
+				display: flex;
+				border-radius: 0 0 10px 10px;
+				span {
+					margin: auto;
+				}
+			}
+			.remove-compare {
+				position: absolute;
+				top: -7px;
+				right: -7px;
+				background-color: red;
+				width: 20px;
+				height: 20px;
+				border-radius: 100%;
+				border: 2px solid white;
+				span {
+					line-height: 0;
+					color: white;
+					position: absolute;
+					top: 8.5px;
+					left: 3.5px;
+				}
+			}
+		}
+		.compareBtn {
+			margin: auto;
+			display: block;
+			padding: 8px 14px;
+			border-radius: 5px;
+			background: none;
+			color: #4863a7;
+			border: 2px solid #1c3e93;
+			transition: 0.3s all ease;
+			line-height: 15px;
+			cursor: default;
+			&.enter-compare-mode {
+				border: 2px solid white;
+				color: white;
+				cursor: pointer;
+				&:hover {
+					background-color: #122860;
+				}
+			}
+			span {
+				padding-left: 5px;
+			}
+		}
+	
+		.compare-basket {
+			width: 100%;
+		}
+	
+		li > a {
+				border-color: @navbar-additional-link-active-bg;
+				line-height: @font-size-base;
+		}
+	}
+
+
+
 //
 // LOGO MAGIC
 // --------------------------------------------------
@@ -789,7 +922,7 @@ a{
 	margin: 8px auto 0 8px;
 	@media only screen and (@xs-only) {
 		line-height: @font-size-small;
-		font-size: @font-size-small;
+		font-size: 0;
 		.header_button_left & {
 			margin: 9px auto 0 3px;
 		}
@@ -1086,6 +1219,16 @@ fieldset h2 {
 	@btn-form-inverse-active-border-color, @btn-form-border-color, @input-border, true);
 }
 
+.btn-form-inverse-pill { // used for 2017 styled payment frequency buttons
+	.btn-pill-styles(@btn-form-inverse-pill-bg-color, @btn-form-inverse-pill-color,
+					@btn-form-inverse-pill-bg-color, @btn-form-inverse-pill-active-color,
+					@btn-form-inverse-pill-bg-color, @btn-form-inverse-pill-hover-color,
+					@btn-form-inverse-pill-bg-color, @btn-form-inverse-pill-active-color,
+					@btn-form-inverse-pill-bg-color, true, @pill-border-cnr-radius,
+					@pill-btn-pad-top, @pill-btn-pad-bottom, @pill-btn-pad-left
+	);
+}
+
 .btn-form { //used for everything else
 	.btn-styles(@btn-form-bg-color, @btn-form-color,
 	@btn-form-active-bg-color, @btn-form-active-color,
@@ -1097,9 +1240,13 @@ fieldset h2 {
 }
 
 [data-toggle="radio"] > .btn-form-inverse { //not sure why there was an attribute selector at work here... they are slower.
+	outline: 0;
 	font-family: @font-family-sans-serif;
 	&.active, &:active {
 		color: @form-input-common-selected-text-colour;
+	}
+	&.focus, &:focus {
+		outline: 0;
 	}
 	// NOTE!! Button group states are part of .form-control-button-group-validation mixin after this declaration, but the current implementation is actually applying .disabled to the label and input of a .button-group.
 	&[disabled],
@@ -1128,8 +1275,22 @@ fieldset h2 {
 				border-left-width: @btn-border-width;
 			}
 		}
+
+		&.btn-form-inverse {
+			&:first-child {
+				border-right-width: 0;
+
+				& + .btn.btn-form-inverse {
+					border-left-width: 1px;
+				}
+			}
+			&.active:first-child + .btn.btn-form-inverse {
+				border-left-color: #1c3e93;
+			}
+		}
 	}
 }
+
   // CTM Overrides for On/off switch ('bootstrap-switch' plugin) in framework/jquery/plugins/bootstrap-switch-2.0.0.min.js
   .switch-wrapper {
   	&.right {

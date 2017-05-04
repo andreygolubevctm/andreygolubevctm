@@ -34,24 +34,23 @@
 	<form_v2:fieldset legend="Your Contact Details">
 
 		<form_v2:row label="First name" className="halfrow">
-			<field_v1:person_name xpath="${xpath}/firstName" title="first name" required="false" />
+			<field_v1:person_name xpath="${xpath}/firstName" title="first name" required="true" />
 		</form_v2:row>
 
 		<form_v2:row label="Last name" className="halfrow">
-			<field_v1:person_name xpath="${xpath}/lastName" title="last name" required="false" />
+			<field_v1:person_name xpath="${xpath}/lastName" title="last name" required="true" />
 		</form_v2:row>
 
 		<form_v2:row label="Your email address" className="clear email-row">
-			<field_v2:email xpath="${xpath}/email" title="your email address" required="false" size="40"/>
+			<field_v2:email xpath="${xpath}/email" title="your email address" required="true" size="40"/>
 		</form_v2:row>
 
 		<c:set var="fieldXPath" value="${xpath}/contactNumber"/>
 
-
 		<form_v2:row label="Your contact number" className="clear">
 			<field_v1:flexi_contact_number xpath="${fieldXPath}"
 										maxLength="20"
-										required="${false}"
+										required="${true}"
 										labelName="your contact number"/>
 		</form_v2:row>
 

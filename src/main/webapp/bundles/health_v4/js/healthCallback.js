@@ -95,7 +95,7 @@ Handling of the callback popup
 				$(options).each(function(index, val) {
 					var option = document.createElement('option');
 					option.value = date + 'T' + convertTo24Hour(val) + ':00' + offset;
-					option.text = val + " AEDT";
+					option.text = val + " " + meerkat.site.openingHoursTimeZone;
 					$callbackTime.append(option);
 				});
 			} else {
@@ -118,11 +118,13 @@ Handling of the callback popup
         $(document).on('click', '#callBackNow', function(e) {
         	e.preventDefault();
 
-			var settings = { url : "spring/rest/health/callMeNow.json"},
+			var settings = { url : "spring/rest/health/callMeNow.json", callback : null},
 				$this = $(this);
 
-			$this.addClass('inactive disabled');
-			meerkat.modules.loadingAnimation.showInside($this, true);
+			settings.callback = function() {
+				$this.addClass('inactive disabled');
+				meerkat.modules.loadingAnimation.showInside($this, true);
+			};
 
 
 			callMeBack(settings);
@@ -133,12 +135,15 @@ Handling of the callback popup
 
 			var settings = {
 					url : "spring/rest/health/callMeBack.json",
-					scheduledTime : $('#health_callback_time').val()
+					scheduledTime : $('#health_callback_time').val(),
+					callback : null
 				},
 				$this = $(this);
 
-			$this.addClass('inactive disabled');
-			meerkat.modules.loadingAnimation.showInside($this, true);
+			settings.callback = function() {
+				$this.addClass('inactive disabled');
+				meerkat.modules.loadingAnimation.showInside($this, true);
+			};
 
 			callMeBack(settings);
         });
@@ -280,6 +285,8 @@ Handling of the callback popup
 	function callMeBack(settings) {
 
 		if ($("#health-callback-form").valid()) {
+
+			settings.callback();
 
 			var name = $callbackName.val();
 

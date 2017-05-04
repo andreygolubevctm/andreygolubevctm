@@ -515,6 +515,10 @@
 			},
 			errorLevel: "silent",
 			onSuccess: function (result) {
+				// If a provider does not have these stored in the database, we default to the actual products response.
+				result.benefits = result.benefits === '' ? product.benefits : result.benefits;
+				result.inclusions = result.inclusions === '' ? product.inclusions : result.inclusions;
+				result.optionalExtras = result.optionalExtras === '' ? product.optionalExtras : result.optionalExtras;
 				meerkat.modules.moreInfo.setDataResult(result);
 			},
 			onError: function(jqXHR) {

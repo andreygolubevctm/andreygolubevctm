@@ -3,7 +3,7 @@
  */
 
 ;(function ($, undefined) {
-
+  
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
         log = meerkat.logging.info;
@@ -13,11 +13,14 @@
                 RENDER_BASKET: "RENDER_BASKET",
                 BEFORE_ADD_COMPARE_PRODUCT: "BEFORE_ADD_COMPARE_PRODUCT",
                 ADD_PRODUCT: "COMPARE_ADD_PRODUCT",
+                ADD_PRODUCT_NEW: "ADD_PRODUCT_NEW",
                 REMOVE_PRODUCT: "COMPARE_REMOVE_PRODUCT",
                 ENTER_COMPARE: "ENTER_COMPARE",
                 AFTER_ENTER_COMPARE_MODE: "AFTER_ENTER_COMPARE_MODE",
                 EXIT_COMPARE: "EXIT_COMPARE_MODE",
-                RENDER_FINISHED: "RENDER_FINISHED"
+                RENDER_FINISHED: "RENDER_FINISHED",
+                TOGGLE_CHECKBOXES: "TOGGLE_CHECKBOXES",
+                AFTER_SWITCH: "AFTER_SWITCH"
             }
         },
         moduleEvents = events.compare;
@@ -139,9 +142,12 @@
     function eventSubscriptions() {
 
         meerkat.messaging.subscribe(moduleEvents.ADD_PRODUCT, addProductToCompare);
+        meerkat.messaging.subscribe(moduleEvents.ADD_PRODUCT_NEW, addProductToCompareV2);
         meerkat.messaging.subscribe(moduleEvents.REMOVE_PRODUCT, removeProduct);
         meerkat.messaging.subscribe(moduleEvents.RENDER_BASKET, renderBasket);
         meerkat.messaging.subscribe(moduleEvents.ENTER_COMPARE, enterCompareMode);
+        meerkat.messaging.subscribe(moduleEvents.TOGGLE_CHECKBOXES, toggleCheckboxes);
+        meerkat.messaging.subscribe(moduleEvents.AFTER_SWITCH, afterSwitchMode);
 
         // External events:
         // This mode is causing it to render 3 times for no reason when in compare mode... maybe hooked up in Results.js in the wrong place?
@@ -149,6 +155,19 @@
 
         meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, resetComparison);
         meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_CHANGED, resetComparison);
+    }
+    
+    
+    function toggleCheckboxes() {
+      var check = $('.compare-tick:checkbox:not(:checked)').is(':disabled');
+      $('.compare-tick:checkbox:not(:checked)').prop('disabled', !check);
+    }
+
+    function afterSwitchMode(mode) {
+      if (mode === 'features' && isAtMaxQueue()) {
+        enterCompareModeAfterSwitch();
+        meerkat.messaging.publish(moduleEvents.TOGGLE_CHECKBOXES);
+      }
     }
 
     /**
@@ -175,6 +194,9 @@
         if ($element.prop('checked')) {
             eventType = moduleEvents.ADD_PRODUCT;
             $element.addClass('checked');
+            if (meerkat.site.vertical === 'car' || meerkat.site.vertical === 'home') {
+              eventType = moduleEvents.ADD_PRODUCT_NEW;
+            }
         } else {
             eventType = moduleEvents.REMOVE_PRODUCT;
             $element.removeClass('checked');
@@ -222,6 +244,26 @@
             log("[compare] Failed to add product");
         }
     }
+    
+    function addProductToCompareV2(eventObject) {
+      meerkat.messaging.publish(moduleEvents.BEFORE_ADD_COMPARE_PRODUCT);
+      
+      var productId = eventObject.productId;
+      var success = addComparedProduct(productId, eventObject.product);
+      if (success) {
+        toggleSelectedState(productId, true);
+        if (isAtMaxQueue() && settings.autoCompareAtMax === true && Results.getDisplayMode() === 'features') {
+              meerkat.messaging.publish(moduleEvents.ENTER_COMPARE);
+          } else if(isAtMaxQueue()) {
+              meerkat.messaging.publish(moduleEvents.TOGGLE_CHECKBOXES);
+              meerkat.messaging.publish(moduleEvents.RENDER_BASKET);
+          } else {
+              meerkat.messaging.publish(moduleEvents.RENDER_BASKET);
+          }
+        } else {
+          log("[compare] Failed to add product");
+        }
+    }
 
     /**
      * The callback for the REMOVE_PRODUCT event
@@ -239,6 +281,10 @@
 
         if (success) {
             // If comparison is open, filter the results immediately
+            if (getComparedProducts().length === 2 && meerkat.site.vertical !== 'homeloan') {
+                meerkat.messaging.publish(moduleEvents.TOGGLE_CHECKBOXES);
+            }
+            
             if (isCompareOpen()) {
                 filterResults();
             }
@@ -299,12 +345,36 @@
     /**
      * Event
      */
+     function enterCompareModeAfterSwitch() {
+       comparisonOpen = true;
+       settings.elements.enterCompareMode.addClass('disabled');
+       settings.elements.exitCompareButton.removeClass('hidden');
+       filterResults();
+       if (previousMode == null) {
+         previousMode = Results.getDisplayMode();
+       }
+
+       // Expand hospital and extra sections
+       if (Results.settings.render.features.expandRowsOnComparison) {
+           $(".featuresHeaders .featuresList > .section.expandable.collapsed > .content").trigger('click');
+
+           // Expand selected items details.
+           $(".featuresHeaders .featuresList > .selectionHolder > .children > .category.expandable.collapsed > .content").trigger('click');
+       }
+
+       //meerkat.modules.address.appendToHash('compare');
+       meerkat.messaging.publish(moduleEvents.AFTER_ENTER_COMPARE_MODE);
+       trackComparison();
+       setTimeout(function () {
+           settings.elements.enterCompareMode.removeClass('disabled');
+       }, 250);
+     }
+     
     function enterCompareMode() {
         comparisonOpen = true;
 
         settings.elements.enterCompareMode.addClass('disabled');
         settings.elements.exitCompareButton.removeClass('hidden');
-
         previousMode = Results.getDisplayMode();
         if (previousMode == "price") {
             if (typeof settings.callbacks.switchMode === 'function') {
@@ -601,7 +671,8 @@
     meerkat.modules.register("compare", {
         initCompare: initCompare,
         events: events,
-        isCompareOpen: isCompareOpen
+        isCompareOpen: isCompareOpen,
+        afterSwitchMode: afterSwitchMode
     });
 
 })(jQuery);

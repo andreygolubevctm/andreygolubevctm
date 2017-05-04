@@ -157,8 +157,9 @@
 			</div>
 		</nav>		
 		<%-- The content of the container is appended only when a comparison is made. --%>
-		<nav id="navbar-compare" class="navbar navbar-default navbar-affix navbar-additional hidden-xs hidden" data-affix-after="#navbar-main">
-			<div class="container compare-basket">
+		
+		<nav id="navbar-compare" class="compare-v2 navbar hidden-xs hidden">
+			<div class="navbar-additional clearfix compare-basket">
 			</div>
 		</nav>
 	</jsp:attribute>
