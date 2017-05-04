@@ -7,15 +7,10 @@
                 POSTCODE_CHANGED: 'POSTCODE_CHANGED'
             }
         },
-
         $elements = {},
-        _postcode = '',
-        _hasSelection = false,
-        _minResultsForScrollView = 10,
-        _resultsCount = 0;
+        _postcode = '';
 
     function initPostcode() {
-        _hasSelection = meerkat.modules.healthLocation.getLocation() ? true : false;
         _setupFields();
         _applyEventListeners();
         _eventSubscriptions();
@@ -40,9 +35,6 @@
         $elements.input
             .on('keyup', function(event) {
                 var value = $(this).val();
-
-                editMode(true);
-                _hasSelection = false;
 
                 // if value valid and its not previously searched
                 if ($(this).isValid() && value !== _postcode) {
@@ -71,7 +63,6 @@
 
     function _eventSubscriptions() {
         meerkat.messaging.subscribe(meerkatEvents.healthLocation.STATE_CHANGED, function onStateChanged() {
-            _hasSelection = false;
             _postcode = '';
             if (meerkat.modules.journeyEngine.getCurrentStep().navigationId !== 'contact') {
                 $elements.input.val('');
@@ -107,13 +98,8 @@
                     } else {
                         _clearResults();
                     }
-                    _scrollView(resultCount > _minResultsForScrollView);
-                    _resultsCount = resultCount;
                 },
                 onComplete: function() {
-                    // preselect suburb
-                    _preselectSuburb();
-
                     meerkat.modules.loadingAnimation.hide($elements.input);
                 }
             };
@@ -121,16 +107,8 @@
         meerkat.modules.comms.get(request_obj);
     }
 
-    function _getLocationSuburb(location) {
-        return location.substr(0, location.indexOf($elements.input.val()) - 1);
-    }
-
     function _getLocationState(location) {
         return location.substr(location.indexOf($elements.input.val()), location.length -1).replace($elements.input.val(), '').trim();
-    }
-
-    function _scrollView(isScrollView) {
-        $elements.resultsWrapper.toggleClass('scroll-view', isScrollView);
     }
 
     function _clearResults() {
@@ -200,33 +178,11 @@
     function _setLocation(location) {
         $elements.state.val(location[2]);
         meerkat.modules.healthLocation.setLocation(_createLocationString(location));
-        _hasSelection = true;
         $elements.location.valid();
-    }
-
-    function _preselectSuburb() {
-        _.defer(function() {
-            var suburb = meerkat.modules.healthLocation.getLocation(),
-                $suburbItem = $elements.results.find('.suburb-item[data-location="' + suburb + '"]');
-
-            if (suburb && $suburbItem.length === 1 && _hasSelection) {
-                $suburbItem.find('button').trigger('click');
-                editMode();
-            }
-        });
-    }
-
-    function editMode(forceHide) {
-        var isEditMode = forceHide ? false : _hasSelection;
-        $elements.resultsWrapper.toggleClass('edit-mode', isEditMode);
-
-        _scrollView(!isEditMode && _resultsCount > _minResultsForScrollView);
     }
 
     meerkat.modules.register('healthPostcode', {
         initPostcode: initPostcode,
-        events: moduleEvents,
-        editMode: editMode
+        events: moduleEvents
     });
-
 })(jQuery);
