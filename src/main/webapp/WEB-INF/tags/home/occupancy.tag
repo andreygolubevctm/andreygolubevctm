@@ -28,18 +28,35 @@
 	<c:set var="fieldXpath" value="${baseXpath}/property/address" />
 	<group_v2:elastic_address xpath="${fieldXpath}" type="R" />
 
-	<%-- PPoR --%>
-	<c:set var="fieldXpath" value="${xpath}/principalResidence" />
-	<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Principal Residence - Tool Tip" quoteChar="\"" /></c:set>
-	<form_v2:row fieldXpath="${fieldXpath}" label="Is it your principal place of residence?" helpId="503" tooltipAttributes="${analyticsAttr}">
-		<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Principal Residence" quoteChar="\"" /></c:set>
-		<field_v2:array_radio xpath="${fieldXpath}"
-			className="principalResidence pretty_buttons"
-			required="true"
-			items="Y=Yes,N=No"
-			title="if this is your principal place of residence"
-			additionalLabelAttributes="${analyticsAttr}" />
-	</form_v2:row>
+	<div class="notLandlord">
+		<%-- PPoR --%>
+		<c:set var="fieldXpath" value="${xpath}/principalResidence" />
+		<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Principal Residence - Tool Tip" quoteChar="\"" /></c:set>
+		<form_v2:row fieldXpath="${fieldXpath}" label="Is it your principal place of residence?" helpId="503" tooltipAttributes="${analyticsAttr}">
+			<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Principal Residence" quoteChar="\"" /></c:set>
+			<field_v2:array_radio xpath="${fieldXpath}"
+				className="principalResidence pretty_buttons"
+				required="true"
+				items="Y=Yes,N=No"
+				title="if this is your principal place of residence"
+				additionalLabelAttributes="${analyticsAttr}" />
+		</form_v2:row>
+	</div>
+
+	<div class="isLandlord">
+		<c:set var="propertyType" value="=Please Select..., =Long term rental,  =Holiday/Short term rental, =Unoccupied property" />
+
+		<c:set var="fieldXpath" value="${xpath}/propertyType" />
+		<form_v2:row fieldXpath="${fieldXpath}" label="What type of property is it?" className="propertyType">
+			<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Property Type" quoteChar="\"" /></c:set>
+			<field_v2:array_select xpath="${fieldXpath}"
+				items="${propertyType}"
+				title="property type"
+				required="true"
+				extraDataAttributes="${analyticsAttr}" />
+		</form_v2:row>
+	</div>
+
 
 	<%-- How Occupied --%>
 	<c:set var="fieldXpath" value="${xpath}/howOccupied" />
@@ -77,13 +94,15 @@
 			url="/WEB-INF/option_data/month_full.html"/>
 	</form_v2:row>
 
-	<c:set var="warningType" value="coverTypeWarningCopy" />
-	<c:if test="${landlord eq 'true'}">
-		<c:set var="warningType" value="coverTypeWarningCopyLandlord" />
-	</c:if>
+	<c:set var="coverTypeWarningCopy" value="coverTypeWarningCopy" />
+	<c:set var="coverTypeWarningCopyLandlord" value="coverTypeWarningCopyLandlord" />
 
 	<core_v1:js_template id="cover-type-warning-template">
-		<content:get key="${warningType}"/>
+		<content:get key="${coverTypeWarningCopy}"/>
+	</core_v1:js_template>
+
+	<core_v1:js_template id="cover-type-warning-template-landlord">
+		<content:get key="${coverTypeWarningCopyLandlord}"/>
 	</core_v1:js_template>
 
 	<field_v1:hidden xpath="${xpath}/coverTypeWarning/chosenOption"/>

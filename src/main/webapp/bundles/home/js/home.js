@@ -55,6 +55,16 @@
 
 	}
 
+	function toggleLandlords() {
+		if (meerkat.site.isLandlord) {
+			$('.isLandlord').show();
+			$('.notLandlord').hide();
+		} else {
+			$('.notLandlord').show();
+			$('.isLandlord').hide();
+		}
+	}
+
 	function initJourneyEngine() {
 
 		if (meerkat.site.pageAction === "confirmation") {
@@ -62,13 +72,11 @@
 			meerkat.modules.journeyEngine.configure(null);
 
 		} else {
-			var htmlTemplate = _.template($('#test').html());
 
-			$('#coverForHome > .content').append(htmlTemplate({a: 1}))
 			// Initialise the journey engine steps and bar
 
 			initProgressBar(true);
-
+			toggleLandlords();
 			// Initialise the journey engine
 			var startStepId = null;
 			if (meerkat.site.isFromBrochureSite === true) {
@@ -734,7 +742,8 @@
 		getTrackingFieldsObject: getTrackingFieldsObject,
 		getVerticalFilter: getVerticalFilter,
 		getPropertyType: getPropertyType,
-		getHomeUnitsItems: getHomeUnitsItems
+		getHomeUnitsItems: getHomeUnitsItems,
+		toggleLandlords: toggleLandlords
 	});
 
 })(jQuery);

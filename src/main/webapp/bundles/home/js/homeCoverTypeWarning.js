@@ -6,6 +6,7 @@
 ;(function($, undefined){
 
 	var meerkat = window.meerkat,
+			isLandlord,
 			$coverType,
 			type,
 			input,
@@ -14,7 +15,8 @@
 			initialised = false;
 
 	function initHomeCoverTypeWarning() {
-		type = meerkat.site.isLandlord ? 'landlord' : 'occupancy';
+		isLandlord =  meerkat.site.isLandlord;
+		type = isLandlord ? 'landlord' : 'occupancy';
 		input = 'input[name=home_occupancy_ownProperty]';
 
 		if(!initialised) {
@@ -37,7 +39,16 @@
 		}
 	}
 
+	function resetValues() {
+		isLandlord = meerkat.site.isLandlord;
+		type = isLandlord ? 'landlord' : 'occupancy';
+	}
+
 	function validateSelections(proceedToOccupancy) {
+		if (isLandlord !== meerkat.site.isLandlord) {
+			resetValues();
+		}
+
 		var isValid = true,
 				navigation = 'start';
 
@@ -85,7 +96,7 @@
 					onOpen: function (modalId) {
 						// update with the text within the cover type dropdown
 						var coverTypeCopy = ($coverType.val() === "Home Cover Only" ? "Home" : "Home and Contents"),
-							htmlContent = $('#cover-type-warning-template').html(),
+							htmlContent = (type === 'occupancy' ? $('#cover-type-warning-template').html() : $('#cover-type-warning-template-landlord').html()),
 							$modal = $('#' + modalId);
 						htmlContent = htmlContent.replace(/\b(placeholder)\b/gi, coverTypeCopy);
 						meerkat.modules.dialogs.changeContent(modalId, htmlContent); // update the content
