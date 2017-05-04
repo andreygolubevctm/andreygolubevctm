@@ -25,15 +25,18 @@
 <form_v2:fieldset legend="Occupancy Details">
 
 	<%-- Address --%>
-<c:set var="fieldXpath" value="${xpath}/underFinance" />
+	<c:set var="fieldXpath" value="${baseXpath}/property/address" />
+	<group_v2:elastic_address xpath="${fieldXpath}" type="R" />
+
 	<%-- MoP --%>
+	<c:set var="fieldXpath" value="${baseXpath}/underFinance" />
 	<c:set var="didExist" value="true" />
 	<c:set var="isNewQuote" scope="session">
-			<c:choose>
-					<c:when test="${not empty param.action and not empty data.current.transactionId and param.action eq 'amend'}">${false}</c:when>
-					<c:when test="${empty data['current/transactionId']}">true</c:when>
-					<c:otherwise>${true}</c:otherwise>
-			</c:choose>
+		<c:choose>
+			<c:when test="${not empty param.action and not empty data.current.transactionId and param.action eq 'amend'}">${false}</c:when>
+			<c:when test="${empty data['current/transactionId']}">${true}</c:when>
+			<c:otherwise>${true}</c:otherwise>
+		</c:choose>
 	</c:set>
 
 

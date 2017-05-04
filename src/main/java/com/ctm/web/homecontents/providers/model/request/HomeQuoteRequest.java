@@ -48,6 +48,8 @@ public class HomeQuoteRequest {
 
     private boolean hadClaims;
 
+    private boolean underFinance;
+
     public String getClientIp() {
         return clientIp;
     }
@@ -207,6 +209,14 @@ public class HomeQuoteRequest {
 
     public void setHadClaims(boolean hadClaims) {
         this.hadClaims = hadClaims;
+    }
+
+    public boolean isUnderFinance() {
+        return underFinance;
+    }
+
+    public void setUnderFinance(boolean underFinance) {
+        this.underFinance = underFinance;
     }
 
 }

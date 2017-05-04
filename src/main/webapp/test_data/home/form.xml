@@ -4,6 +4,7 @@
 
 	<occupancy>
 		<ownProperty>Y</ownProperty>
+		<underFinance>N</underFinance>
 		<principalResidence>Y</principalResidence>
 		<howOccupied>Owner Occupied</howOccupied>
 		<whenMovedIn>
