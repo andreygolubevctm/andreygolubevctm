@@ -19,10 +19,10 @@
     </div>
 
     <div class="filter-brands filter" data-filter-serverside="true">
-        <div class="filter-sub-heading">Brands</div>
+        <div class="filter-sub-heading">Insurance Funds</div>
         <div class="filter-by-container">
             <span class="filter-by-brands small"></span>
-            <a href="javascript:;" class="filter-toggle small" data-filter="brands" <field_v1:analytics_attr analVal="brands filter" quoteChar="\"" />>Change</a>
+            <a href="javascript:;" class="filter-toggle small" data-filter="brands" <field_v1:analytics_attr analVal="brands filter" quoteChar="\"" />>Refine Funds <span class="icon expander"></span></a>
         </div>
 
         <div class="health-filter-brands provider-list">
