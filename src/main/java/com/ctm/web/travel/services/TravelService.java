@@ -125,7 +125,7 @@ public class TravelService extends CommonRequestServiceV2 {
             travelResults = ResponseAdapter.adapt(travelQuoteRequest, travelResponse);
         }
 
-        String gaClientId = quote.getGAClientId();
+        String gaClientId = quote.getGaclientid();
         List<ResultProperty> resultProperties = new ArrayList<>();
         for (TravelResult result : travelResults) {
             if (AvailableType.Y.equals(result.getAvailable())) {

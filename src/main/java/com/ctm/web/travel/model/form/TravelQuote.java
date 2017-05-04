@@ -196,7 +196,7 @@ public class TravelQuote {
         this.filter = filter;
     }
 
-    public String getGAClientId() {
+    public String getGaclientid() {
         if (gAClientId != null && !(gAClientId.isEmpty())) {
             return gAClientId;
         } else {
@@ -205,5 +205,5 @@ public class TravelQuote {
 
     }
 
-    public void setGAClientId(String gaclientid) { this.gAClientId = gaclientid; }
+    public void setGaclientid(String gaClientId) { this.gAClientId = gaClientId; }
 }
