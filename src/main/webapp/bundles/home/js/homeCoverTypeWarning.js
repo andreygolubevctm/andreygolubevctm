@@ -15,7 +15,7 @@
 
 	function initHomeCoverTypeWarning() {
 		type = meerkat.site.isLandlord ? 'landlord' : 'occupancy';
-		input = 'input[name=home_' + 'occupancy' + '_ownProperty]';
+		input = 'input[name=home_occupancy_ownProperty]';
 
 		if(!initialised) {
 			initialised = true;
@@ -74,7 +74,7 @@
 				className: "btn-next ownBtnWP",
 				closeWindow: true,
 				action: function() {
-					$('#home_'+ 'occupancy' +'_ownProperty_Y').prop('checked', true).change();
+					$('#home_occupancy_ownProperty_Y').prop('checked', true).change();
 					$chosenCoverTypeOption.val(typeInfo[type].buttons[1]);
 				}
 			}];
