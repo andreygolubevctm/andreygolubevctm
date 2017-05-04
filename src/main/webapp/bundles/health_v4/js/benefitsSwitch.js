@@ -25,19 +25,21 @@
             extrasSwitch: $('#health_benefits_ExtrasSwitch')
         };
 
-        $elements.hospitalSwitch.bootstrapSwitch('setState', _isSwitchedOn.hospital);
-        $elements.extrasSwitch.bootstrapSwitch('setState', _isSwitchedOn.extras);
+        if (meerkat.site.isNewQuote) {
+            $elements.hospitalSwitch.bootstrapSwitch('setState', _isSwitchedOn.hospital);
+            $elements.extrasSwitch.bootstrapSwitch('setState', _isSwitchedOn.extras);
+        } else {
+            $elements.hospitalSwitch.bootstrapSwitch('setState', $elements.hospitalSwitch.prop('checked'));
+            $elements.extrasSwitch.bootstrapSwitch('setState', $elements.extrasSwitch.prop('checked'));
+
+            _onBenefitsSwitch('hospital', $elements.hospitalSwitch.prop('checked'));
+            _onBenefitsSwitch('extras', $elements.extrasSwitch.prop('checked'));
+        }
     }
 
     function _eventSubscriptions() {
         $elements.hospitalSwitch.add($elements.extrasSwitch).on('switch-change', function onBenefitsSwitch(e, data) {
-            var benefit = $(data.el).attr('data-benefit');
-
-            _isSwitchedOn[benefit] = data.value;
-            meerkat.messaging.publish(moduleEvents.benefitsSwitch.SWITCH_CHANGED, {
-                benefit: benefit,
-                isSwitchedOn: data.value
-            });
+            _onBenefitsSwitch($(data.el).attr('data-benefit'), data.value);
         });
 
         // benefit selected
@@ -45,6 +47,14 @@
             if (options.isHospital && meerkat.modules.benefitsModel.getHospitalCount() === 0) {
                 $elements.hospitalSwitch.bootstrapSwitch('setState', false);
             }
+        });
+    }
+
+    function _onBenefitsSwitch(benefit, isSwitched) {
+        _isSwitchedOn[benefit] = isSwitched;
+        meerkat.messaging.publish(moduleEvents.benefitsSwitch.SWITCH_CHANGED, {
+            benefit: benefit,
+            isSwitchedOn: isSwitched
         });
     }
 
