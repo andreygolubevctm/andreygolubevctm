@@ -5,17 +5,18 @@
 
 ;(function($, undefined){
 
-	var meerkat = window.meerkat;
-
-	var
-		$coverType,
-		type = meerkat.site.isLandlord ? 'landlord' : 'occupancy',
-		input = 'input[name=home_' + type + '_ownProperty]',
-		$chosenCoverTypeOption,
-		warningDialogId = null,
-		initialised = false;
+	var meerkat = window.meerkat,
+			$coverType,
+			type,
+			input,
+			$chosenCoverTypeOption,
+			warningDialogId = null,
+			initialised = false;
 
 	function initHomeCoverTypeWarning() {
+		type = meerkat.site.isLandlord ? 'landlord' : 'occupancy';
+		input = 'input[name=home_' + 'occupancy' + '_ownProperty]';
+
 		if(!initialised) {
 			initialised = true;
 			$coverType = $('#home_coverType');
@@ -73,7 +74,7 @@
 				className: "btn-next ownBtnWP",
 				closeWindow: true,
 				action: function() {
-					$('#home_'+ type +'_ownProperty_Y').prop('checked', true).change();
+					$('#home_'+ 'occupancy' +'_ownProperty_Y').prop('checked', true).change();
 					$chosenCoverTypeOption.val(typeInfo[type].buttons[1]);
 				}
 			}];

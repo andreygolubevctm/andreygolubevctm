@@ -155,9 +155,9 @@
 					<li class="navbar-text filter-view-label">View</li>
 				</ul>
 			</div>
-		</nav>		
+		</nav>
 		<%-- The content of the container is appended only when a comparison is made. --%>
-		
+
 		<nav id="navbar-compare" class="compare-v2 navbar hidden-xs hidden">
 			<div class="navbar-additional clearfix compare-basket">
 			</div>
@@ -218,14 +218,12 @@
 		</c:if>
 
 		<%-- Slides --%>
-		<c:choose>
-			<c:when test="${landlord}">
-				<home_landlord:home_contents_quote />
-			</c:when>
-			<c:otherwise>
-				<home:home_contents_quote />
-			</c:otherwise>
-		</c:choose>
+		<home_layout:slide_cover_type />
+		<home_layout:slide_occupancy />
+		<home_layout:slide_your_property />
+		<home_layout:slide_policy_holders />
+		<home_layout:slide_history />
+		<home_layout:slide_results />
 
 		<field_v1:hidden xpath="environmentOverride" />
 		<input type="hidden" name="transcheck" id="transcheck" value="1" />

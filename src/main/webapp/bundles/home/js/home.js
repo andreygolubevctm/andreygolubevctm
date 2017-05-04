@@ -62,8 +62,11 @@
 			meerkat.modules.journeyEngine.configure(null);
 
 		} else {
+			var htmlTemplate = _.template($('#test').html());
 
+			$('#coverForHome > .content').append(htmlTemplate({a: 1}))
 			// Initialise the journey engine steps and bar
+
 			initProgressBar(true);
 
 			// Initialise the journey engine
@@ -722,7 +725,7 @@
 
 		return homeUnitItems;
 	}
-        
+
 	meerkat.modules.register("home", {
 		init: initHome,
 		events: moduleEvents,
