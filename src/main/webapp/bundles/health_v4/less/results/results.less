@@ -52,14 +52,7 @@
       padding-bottom: 10px;
     }
   }
-  /* Display Utilities only on hover of result insert */
-  .display-on-hover {
-    .opacity(0);
-    .transition(~"opacity ease-in-out .25s");
-  }
-  &:hover .display-on-hover {
-    .opacity(1);
-  }
+
   .product-pinned & {
     .pin-result {
       display: none;
@@ -190,6 +183,16 @@
   // Each product column is a result-row, floated left so they fit beside each other.
   .result-row {
     border: 2px solid @results-border-color;
+
+    /* Display Utilities only on hover of result insert */
+    .display-on-hover {
+      .opacity(0);
+      .transition(~"opacity ease-in-out .25s");
+    }
+
+    &:hover .display-on-hover {
+      .opacity(1);
+    }
 
     &.hovered {
       border: 2px solid @theme-tertiary;
