@@ -443,7 +443,7 @@
     function setFilterByBrands() {
         var numBrands = $(':input[name=health_filterBar_brands]').length,
             numBrandsChecked = $(':input[name=health_filterBar_brands]:checked').length,
-            filterByText = numBrands === numBrandsChecked ? 'All Brands' : numBrandsChecked + ' Brands selected';
+            filterByText = numBrands === numBrandsChecked ? 'All Funds' : numBrandsChecked + ' Brands selected';
 
         $('.filter-by-brands').text(filterByText);
     }

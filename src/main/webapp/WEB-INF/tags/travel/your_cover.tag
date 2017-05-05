@@ -5,8 +5,15 @@
 
 <%-- HTML --%>
 <c:set var="fieldXpath" value="travel/policyType" />
-<form_v2:row label="What type of cover are you looking for?" fieldXpath="${fieldXpath}" className="clear" helpId="535">
+<form_v2:row label="What type of cover are you looking for?" fieldXpath="${fieldXpath}" className="clear cover-type">
 	<field_v2:array_radio xpath="${fieldXpath}" required="true"
-		className="policy-type roundedCheckboxIcons" items="S=Single Trip,A=Multi-Trip"
+		className="policy-type " items="S=Single trip,A=Annual multi-trip"
 		id="${go:nameFromXpath(xpath)}" title="your cover type." />
 </form_v2:row>
+
+<div class="row">
+	<div class="col-xs-12 col-sm-10 policy-info">
+		<content:get key="singleTripInfoText" />
+		<content:get key="annualMultiTripInfoText" />
+	</div>
+</div>

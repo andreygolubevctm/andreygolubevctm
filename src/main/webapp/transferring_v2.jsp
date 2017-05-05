@@ -20,12 +20,14 @@
 <c:set var="verticalBrandCode" value="${pageSettings.getBrandCode()}" />
 <c:set var="trackingEnabled" value="${contentService.getContentValue(pageContext.getRequest(), 'trackingEnabled', verticalBrandCode, param.vertical)}" />
 
+<c:set var="gaClientId" value="${fn:replace(resultsService.getSingleResultPropertyValue(transactionId, productId, 'gaClientId'),'%26','&') }" />
+
 <c:if test="${trackingEnabled eq true and not empty quoteUrl and quoteUrl != 'DUPLICATE'}">
 	<c:set var="trackingURL" value="${contentService.getContentValue(pageContext.getRequest(), 'handoverTrackingURL', verticalBrandCode, param.vertical)}" />
 	<c:set var="trackingCode" value="${contentService.getContentWithSupplementary(pageContext.getRequest(), 'handoverTrackingURL', verticalBrandCode, param.vertical).getSupplementaryValueByKey(providerCode)}" />
 
 	<c:set var="quoteUrl">
-			<c:out value="${trackingURL}" />${trackingCode}/pubref:/Adref:${transactionId}/destination:${quoteUrl}
+			<c:out value="${trackingURL}" />${trackingCode}/pubref:${gaClientId}/Adref:${transactionId}/destination:${quoteUrl}
 	</c:set>
 </c:if>
 

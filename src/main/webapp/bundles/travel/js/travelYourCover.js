@@ -50,8 +50,8 @@
 			// hide the blue bubble amt and single trip content
 			$detailsForm.find('.well-chatty > .amt, .well-chatty > .single').hide();
 
-			$travel_policyType.find('label:nth-child(1)').addClass('travel-single-trip');
-			$travel_policyType.find('label:nth-child(2)').addClass('travel-multi-trip');
+			$travel_policyType.find('label:nth-child(1)').addClass('single-trip-policy');
+			$travel_policyType.find('label:nth-child(2)').addClass('multi-trip-policy');
 
 			// subscribe to the COVER_TYPE_CHANGE event
 			meerkat.messaging.subscribe(meerkatEvents.traveldetails.COVER_TYPE_CHANGE, toggleDetailsFields);
