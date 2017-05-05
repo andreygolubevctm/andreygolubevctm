@@ -85,7 +85,7 @@ public class RequestAdapter {
 
         quoteRequest.setHadClaims(convertToBoolean(quote.getDisclosures().getClaims()));
 
-        quoteRequest.setUnderFinance(convertToBoolean(quote.isUnderFinance()));
+        quoteRequest.setUnderFinance(convertToOptionalBoolean(quote.isUnderFinance()));
 
         quoteRequest.setClientIp(homeRequest.getClientIpAddress());
 
