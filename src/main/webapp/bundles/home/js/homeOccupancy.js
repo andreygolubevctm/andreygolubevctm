@@ -25,7 +25,9 @@
 			howOccupied:			"#home_occupancy_howOccupied",
 			whenMovedInYearRow:		".whenMovedInYear",
 			whenMovedInMonthRow:	".whenMovedInMonth",
-			howOccupiedRow:			".howOccupied"
+			howOccupiedRow:			".howOccupied",
+			lookingForLandlord: ".lookingForLandlord"
+
 
 	};
 
@@ -38,6 +40,35 @@
 		}
 		else {
 			return null;
+		}
+	}
+
+	function isHomeRented() {
+		if($(elements.howOccupied).val() === "Rented to tenants") {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	function toggleLookingForLandlord(speed) {
+		var landlordField = $(elements.lookingForLandlord);
+
+		if (isHomeRented()) {
+			landlordField.slideDown(speed);
+		} else {
+			landlordField.slideUp(speed);
+		}
+	}
+
+	function toggleLandlords() {
+		var landlordSwitch = $(elements.lookingForLandlord + ' input:radio:checked').val();
+		if ((landlordSwitch === 'N' || landlordSwitch == null) && meerkat.site.isLandlord) {
+			meerkat.site.isLandlord = false;
+			meerkat.modules.home.toggleLandlords();
+		} else if(landlordSwitch === 'Y' && !meerkat.site.isLandlord) {
+			meerkat.site.isLandlord = true;
+			meerkat.modules.home.toggleLandlords();
 		}
 	}
 	/* Here you put all functions for use in your module */
@@ -82,12 +113,20 @@
 	}
 	function applyEventListeners() {
 		$(document).ready(function() {
+			$(elements.howOccupied).on('change', function() {
+				toggleLookingForLandlord();
+			});
+
 			$('#'+elements.whenMovedInYear).on('change', function() {
 				yearSelected();
 			});
 
 			$('input[name='+elements.name+'_ownProperty], '+elements.howOccupied).on('change', function() {
 				togglePropertyOccupancyFields();
+			});
+
+			$(elements.lookingForLandlord + ' input:radio').on('change', function() {
+				toggleLandlords();
 			});
 
 			$('input[name='+elements.principalResidence+']').on('change', function() {
@@ -102,6 +141,7 @@
 			log("[HomeOccupancy] Initialised"); //purely informational
 			applyEventListeners();
 			togglePropertyOccupancyFields(0);
+			toggleLookingForLandlord(0);
 		}
 	}
 
@@ -129,4 +169,3 @@
 	});
 
 })(jQuery);
-

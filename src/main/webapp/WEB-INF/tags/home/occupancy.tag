@@ -41,35 +41,34 @@
 				title="if this is your principal place of residence"
 				additionalLabelAttributes="${analyticsAttr}" />
 		</form_v2:row>
-	</div>
-
-	<div class="isLandlord">
-		<c:set var="propertyType" value="=Please Select..., =Long term rental,  =Holiday/Short term rental, =Unoccupied property" />
-
-		<c:set var="fieldXpath" value="${xpath}/propertyType" />
-		<form_v2:row fieldXpath="${fieldXpath}" label="What type of property is it?" className="propertyType">
-			<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Property Type" quoteChar="\"" /></c:set>
-			<field_v2:array_select xpath="${fieldXpath}"
-				items="${propertyType}"
-				title="property type"
-				required="true"
-				extraDataAttributes="${analyticsAttr}" />
-		</form_v2:row>
-	</div>
-
 
 	<%-- How Occupied --%>
 	<c:set var="fieldXpath" value="${xpath}/howOccupied" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="How is the home occupied?" className="howOccupied">
 		<field_v2:import_select xpath="${fieldXpath}"
 			required="true"
-			title="how the home is occupied"
-			url="/WEB-INF/option_data/occupied_type.html"
-			hideElement="${simplifiedJourneySplitTestActive ? 'true' : 'false'}" />
+				title="how the home is occupied"
+				url="/WEB-INF/option_data/occupied_type.html"
+				hideElement="${simplifiedJourneySplitTestActive ? 'true' : 'false'}" />
 
-		<c:if test="${simplifiedJourneySplitTestActive}">
-			<div id="hasOccupiedContainer" data-selector="${go:nameFromXpath(fieldXpath)}"></div>
-		</c:if>
+			<c:if test="${simplifiedJourneySplitTestActive}">
+				<div id="hasOccupiedContainer" data-selector="${go:nameFromXpath(fieldXpath)}"></div>
+			</c:if>
+		</form_v2:row>
+	</div>
+
+
+
+	<%-- are you looking for landlord cover --%>
+	<c:set var="fieldXpath" value="${xpath}/isLandlord" />
+	<form_v2:row fieldXpath="${fieldXpath}" label="Are you looking for landlord cover?" className="lookingForLandlord">
+
+		<field_v2:array_radio xpath="${fieldXpath}"
+			className="pretty_buttons"
+			required="true"
+			items="Y=Yes,N=No"
+			title="are you looking for landlord"
+			additionalLabelAttributes="${analyticsAttr}" />
 	</form_v2:row>
 
 	<%-- When Moved in Year + Month --%>
@@ -93,6 +92,21 @@
 			title="the month you moved into the home"
 			url="/WEB-INF/option_data/month_full.html"/>
 	</form_v2:row>
+
+
+		<div class="isLandlord">
+			<c:set var="propertyType" value="=Please Select..., =Long term rental,  =Holiday/Short term rental, =Unoccupied property" />
+
+			<c:set var="fieldXpath" value="${xpath}/propertyType" />
+			<form_v2:row fieldXpath="${fieldXpath}" label="What type of property is it?" className="propertyType">
+				<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Property Type" quoteChar="\"" /></c:set>
+				<field_v2:array_select xpath="${fieldXpath}"
+					items="${propertyType}"
+					title="property type"
+					required="true"
+					extraDataAttributes="${analyticsAttr}" />
+			</form_v2:row>
+		</div>
 
 	<c:set var="coverTypeWarningCopy" value="coverTypeWarningCopy" />
 	<c:set var="coverTypeWarningCopyLandlord" value="coverTypeWarningCopyLandlord" />
