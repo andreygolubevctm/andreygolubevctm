@@ -114,24 +114,6 @@
 		return icon;
 	}
 
-	function getAddress($element) {
-		var address = "";
-		if($element) {
-			address = $element.val();
-			if (address.indexOf(",") > 0) {
-				// Had much nicer regex for this but didn't work in IE8 :(
-				var pieces = address.split(/,/g);
-				address = $.trim(pieces[0]) + "<br/>";
-				var remainder = pieces.slice(1);
-				for(var i=0; i<remainder.length; i++) {
-					address += i > 0 ? " " : "";
-					address += $.trim(remainder[i]);
-				}
-			}
-		}
-		return address;
-	}
-
 	/*
 	*	Get the first line of the full address
 	*/
@@ -151,7 +133,6 @@
 		init: initHomeSnapshot,
 		events: events,
 		getIcon: getIcon,
-		getAddress: getAddress,
 		getAddressFirstLine: getAddressFirstLine,
         getHomeAmount: getHomeAmount,
         getContentAmount: getContentAmount,
