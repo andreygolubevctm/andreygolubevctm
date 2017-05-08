@@ -215,14 +215,12 @@
 
         $ajax
             .done(function(data) {
-
                 if(typeof data === "string")
                     data = JSON.parse(data);
 
                 if(data && data.result) {
                     var result = data.result;
                     var landlord = isLandlord ? '&landlord=true' : '';
-                    console.log(landlord);
                     if(result.destUrl) {
                         window.location.href = result.destUrl + landlord + '&ts=' + Number(new Date());
                         return;
