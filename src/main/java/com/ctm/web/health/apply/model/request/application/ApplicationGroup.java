@@ -1,5 +1,6 @@
 package com.ctm.web.health.apply.model.request.application;
 
+import com.ctm.web.health.apply.model.request.application.GovernmentRebate.GovernmentRebateAck;
 import com.ctm.web.health.apply.model.request.application.applicant.Applicant;
 import com.ctm.web.health.apply.model.request.application.dependant.Dependant;
 import com.ctm.web.health.apply.model.request.application.situation.Situation;
@@ -22,16 +23,20 @@ public class ApplicationGroup {
 
     private Emigrate emigrate;
 
+    private GovernmentRebateAck governmentRebateAck;
+
     public ApplicationGroup(final Applicant primary,
                             final Applicant partner,
                             final List<Dependant> dependants,
                             final Situation situation,
-                            final Emigrate emigrate) {
+                            final Emigrate emigrate,
+                            final GovernmentRebateAck governmentRebateAck) {
         this.primary = primary;
         this.partner = partner;
         this.dependants = dependants;
         this.situation = situation;
         this.emigrate = emigrate;
+        this.governmentRebateAck = governmentRebateAck;
     }
 
     public Applicant getPrimary() {
@@ -52,5 +57,9 @@ public class ApplicationGroup {
 
     public Emigrate getEmigrate() {
         return emigrate;
+    }
+
+    public GovernmentRebateAck getGovernmentRebateAck() {
+        return governmentRebateAck;
     }
 }
