@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <home>
 	<coverType>Home &amp; Contents Cover</coverType>
+	<underFinance>N</underFinance>
 
 	<occupancy>
 		<ownProperty>Y</ownProperty>
-		<underFinance>N</underFinance>
 		<principalResidence>Y</principalResidence>
 		<howOccupied>Owner Occupied</howOccupied>
 		<whenMovedIn>
