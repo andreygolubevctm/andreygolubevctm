@@ -88,7 +88,15 @@
                 var currentIndex = index % availableRewards.length;
                 for (var i = 0; i < availableRewards.length; i++) {
                     if (i === availableRewards.length - 1) {
-                        currentBackupAssetOrder++;
+                        if ((availableRewards.length > 1) && (i === currentIndex)) {
+                            // allowance for 4 unique cards using 2 products
+                            data = availableRewards[i];
+                            data.assetOrder = currentBackupAssetOrder;
+                            currentBackupAssetOrder++;
+                            break;
+                        } else {
+                            currentBackupAssetOrder++;
+                        }
                     }
                     if (i === currentIndex) {
                         data = availableRewards[i];
