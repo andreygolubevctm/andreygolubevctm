@@ -95,15 +95,13 @@
 
 
 		<div class="isLandlord">
-			<c:set var="propertyType" value="=Please Select..., =Long term rental,  =Holiday/Short term rental, =Unoccupied property" />
-
-			<c:set var="fieldXpath" value="${xpath}/propertyType" />
-			<form_v2:row fieldXpath="${fieldXpath}" label="What type of property is it?" className="propertyType">
-				<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Property Type" quoteChar="\"" /></c:set>
+			<c:set var="fieldXpath" value="${xpath}/landLordDetails/propertyType" />
+			<form_v2:row fieldXpath="${fieldXpath}" label="Who manages the property?" className="propertyType">
+				<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Property type" quoteChar="\"" /></c:set>
 				<field_v2:array_select xpath="${fieldXpath}"
-					items="${propertyType}"
-					title="property type"
 					required="true"
+					title="what type of property is it"
+					items="=Please select...,1=Long term rental, 2=Holiday/Short term rental, 3=Unoccupied property"
 					extraDataAttributes="${analyticsAttr}" />
 			</form_v2:row>
 		</div>

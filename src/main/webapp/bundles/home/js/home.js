@@ -56,7 +56,11 @@
 	}
 
 	function toggleLandlords() {
-		if (meerkat.site.isLandlord) {
+		var landlord = meerkat.site.isLandlord;
+		$('#isLandlord').val(landlord);
+		$('.isLandlord input').prop('disabled', !landlord);
+		$('.notLandlord input').prop('disabled', landlord);
+		if (landlord) {
 			$('.isLandlord').show();
 			$('.notLandlord').hide();
 		} else {

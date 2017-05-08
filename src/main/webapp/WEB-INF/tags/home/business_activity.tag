@@ -101,8 +101,8 @@
 
 <div class="isLandlord">
 
-	<%-- Business Rooms --%>
-	<c:set var="fieldXpath" value="${xpath}/managesProperty" />
+	<%-- Property Managed by --%>
+	<c:set var="fieldXpath" value="${xpath}/landLordDetails/propertyManagedBy" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="Who manages the property?" className="managesProperty">
 		<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Rooms Used" quoteChar="\"" /></c:set>
 		<field_v2:array_select xpath="${fieldXpath}"
@@ -113,7 +113,7 @@
 	</form_v2:row>
 
 	<%-- Valid lease agreement  --%>
-	<c:set var="fieldXpath" value="${xpath}/leaseAgreement" />
+	<c:set var="fieldXpath" value="${xpath}/landLordDetails/validRentalLease" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="Do you have a valid lease agreement in place or intend to in the next 60 days?">
 		<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Business Activity" quoteChar="\"" /></c:set>
 		<field_v2:array_radio xpath="${fieldXpath}"
@@ -125,8 +125,8 @@
 	</form_v2:row>
 
 
-	<%-- Bicycles --%>
-	<c:set var="fieldXpath" value="${xpath}/specifiedPersonalEffects/bicycle" />
+	<%-- Weekly Rent Value --%>
+	<c:set var="fieldXpath" value="${xpath}/landLordDetails/weeklyRentValue" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="What is the weekly rental income?">
 		<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="rentalIncome" quoteChar="\"" /></c:set>
 		<field_v2:currency xpath="${fieldXpath}"
@@ -141,8 +141,8 @@
 	</form_v2:row>
 
 
-	<%-- Business Rooms --%>
-	<c:set var="fieldXpath" value="${xpath}/managesProperty" />
+	<%-- Number of tenants --%>
+	<c:set var="fieldXpath" value="${xpath}/landLordDetails/numberOfTenants" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="How many tenants have you has in the past 12 months?" className="managesProperty">
 		<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Rooms Used" quoteChar="\"" /></c:set>
 		<field_v2:array_select xpath="${fieldXpath}"

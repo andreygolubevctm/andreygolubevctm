@@ -3,6 +3,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- Retrieve values passed from Brochure Site --%>
+<c:set var="landlord" scope="request" value="${false}" />
 <c:if test="${not empty param.landlord}">
 	<c:set var="landlord" scope="request" value="${param.landlord eq 'true'}" />
 </c:if>
