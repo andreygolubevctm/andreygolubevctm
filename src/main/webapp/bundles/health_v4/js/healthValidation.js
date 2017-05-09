@@ -8,7 +8,9 @@
     }, function(value) {
         if($('.health_contact_details_postcode_results > .suburb-item').length > 1) {
             return 'Please select a state for your postcode.';
-        }else if (value === '') {
+        } else if($('#health_situation_postcode').val() === ""){
+            return '';
+        } else {
             return 'Please enter a valid postcode.';
         }
     });

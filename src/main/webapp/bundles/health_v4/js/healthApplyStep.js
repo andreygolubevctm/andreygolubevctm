@@ -167,12 +167,13 @@
     }
 
     function testStatesParity() {
-        if ($elements.appState.val() !== $('input[name=health_situation_state]:checked').val()) {
+        if ($elements.appState.val() !== $('#health_situation_state').val()) {
             var suburb = $elements.appSuburbName.val(),
                 state = $elements.appState.val();
 
             if (suburb.length && suburb.indexOf('Please select') < 0 && $elements.appPostcode.val().length == 4 && state.length) {
                 $elements.appPostcode.addClass('error');
+                $elements.appState.val("");
                 return false;
             }
         }
