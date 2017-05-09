@@ -36,6 +36,10 @@
             .on('keyup', function(event) {
                 var value = $(this).val();
 
+                if($elements.results.find('.suburb-item').length > 1) {
+                    _postcode = '';
+                }
+
                 // if value valid and its not previously searched
                 if ($(this).isValid() && value !== _postcode) {
                     // clear the results
@@ -46,6 +50,8 @@
                 } else {
                     if (value !== _postcode) {
                         $elements.location.val('');
+                        $elements.location.attr('value', '');
+                        $elements.state.val('');
                         $elements.results.find('.suburb-item, .suburb-item button').removeClass('selected');
                     }
                 }
@@ -74,9 +80,7 @@
     function _getResults(postcode) {
         _postcode = postcode;
         meerkat.modules.loadingAnimation.showAfter($elements.input);
-
         $elements.results.hide();
-        $elements.resultsWrapper.height(0);
 
         var data = { term: postcode },
             request_obj = {
@@ -149,13 +153,11 @@
                     states.push(state);
                 }
             } else {
-                var location = _createLocationArray(state);
-
                 if (i === 0){
-                    cssSelector += ' selected';
+                    var location = _createLocationArray(state);
                     _setLocation(location);
+                    _createLocationItem(cssSelector += ' selected', location, $elements.input.val());
                 }
-                _createLocationItem(cssSelector, location, $elements.input.val());
             }
         }
 
@@ -177,7 +179,11 @@
 
     function _setLocation(location) {
         $elements.state.val(location[2]);
-        meerkat.modules.healthLocation.setLocation(_createLocationString(location));
+        $elements.suburb.val(location[0]);
+        var locationString = _createLocationString(location);
+        meerkat.modules.healthLocation.setLocation(locationString);
+        $elements.location.val(locationString);
+        $elements.location.attr('value', locationString);
         $elements.location.valid();
     }
 

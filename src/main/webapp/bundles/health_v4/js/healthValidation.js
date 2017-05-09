@@ -5,7 +5,13 @@
         $('.health_contact_details_postcode_wrapper').toggleClass('has-location-error', !isValid);
 
         return isValid;
-    }, 'Please enter a valid postcode.');
+    }, function(value) {
+        if($('.health_contact_details_postcode_results > .suburb-item').length > 1) {
+            return 'Please select a state for your postcode.';
+        }else if (value === '') {
+            return 'Please enter a valid postcode.';
+        }
+    });
 
     /**
      * This validation rule prevents someone who is a female from selecting "Mr" and vice versa.
