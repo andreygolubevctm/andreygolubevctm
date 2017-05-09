@@ -73,7 +73,7 @@ public class RequestAdapterV2 {
             addBoundedExcessFilter(quoteRequest, filters, quote);
             addProductTitleSearchFilter(filters, quote);
             addSingleProviderFilterFromSituation(filters, situation);
-            filters.setApplyDiscounts(false);
+            addApplyDiscountsFilter(filters,quote);
         } else {
             // returns a single result with the criteria below
             quoteRequest.setSearchResults(1);
@@ -88,8 +88,7 @@ public class RequestAdapterV2 {
                 } else {
                     quoteRequest.setPaymentTypes(asList(PaymentType.BANK, PaymentType.CREDIT));
                 }
-
-                filters.setApplyDiscounts(true);
+                addApplyDiscountsFilter(filters,quote);
             }
         }
 
@@ -400,4 +399,11 @@ public class RequestAdapterV2 {
 
     }
 
+    protected static void addApplyDiscountsFilter(Filters filters, HealthQuote quote){
+        if(quote.getApplyDiscounts() != null && quote.getApplyDiscounts().equals("Y")){
+            filters.setApplyDiscounts(true);
+        }else{
+            filters.setApplyDiscounts(false);
+        }
+    }
 }

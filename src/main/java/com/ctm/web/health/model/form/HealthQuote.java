@@ -56,6 +56,8 @@ public class HealthQuote {
 
     private String contactAuthority;
 
+    private String applyDiscounts;
+
     public Application getApplication() {
         return application;
     }
@@ -270,6 +272,14 @@ public class HealthQuote {
 
     public void setContactAuthority(String contactAuthority) {
         this.contactAuthority = contactAuthority;
+    }
+
+    public String getApplyDiscounts() {
+        return applyDiscounts;
+    }
+
+    public void setApplyDiscounts(String applyDiscounts) {
+        this.applyDiscounts = applyDiscounts;
     }
 
 }
