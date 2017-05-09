@@ -302,6 +302,13 @@
                     }, 1000);
                 }
                 _incrementTranIdBeforeEnteringSlide();
+
+            },
+            onAfterEnter: function afterEnterContactStep(event) {
+                meerkat.modules.coupon.dealWithAddedCouponHeight();
+            },
+            onAfterLeave: function leaveContactStep(event) {
+
             }
         };
 
