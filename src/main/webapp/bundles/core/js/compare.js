@@ -349,7 +349,10 @@
        comparisonOpen = true;
        settings.elements.enterCompareMode.addClass('disabled');
        settings.elements.exitCompareButton.removeClass('hidden');
-       filterResults();
+       if (previousMode != 'price') {
+          filterResults();
+       }
+       
        if (previousMode == null) {
          previousMode = Results.getDisplayMode();
        }
