@@ -33,7 +33,11 @@
 		eventSubscriptions();
 
 		breakpointTracking();
-
+	}
+	
+	function affixFix() {
+		var $navbar = $('#navbar-main');
+		$navbar.data('bs.affix').options.offset.top = $navbar.offset().top;
 	}
 
 	function onReturnToPage(){
@@ -516,7 +520,7 @@
 				switchToPriceMode(false);
 				break;
 		}
-
+		affixFix();
 	}
 
 	function showNoResults() {
