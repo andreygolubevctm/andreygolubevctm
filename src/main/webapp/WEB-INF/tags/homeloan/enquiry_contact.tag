@@ -8,7 +8,6 @@
 
 <%-- VARIABLES --%>
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
-<c:set var="displayBestContact"><c:out value="${data[bestcontact]}" escapeXml="true"/></c:set>
 
 <%-- HTML --%>
 <div id="${name}-selection" class="${name}">
@@ -23,10 +22,6 @@
 			<field_v1:person_name xpath="${xpath}/lastName" title="last name" required="true" />
 		</form_v2:row>
 
-		<form_v2:row label="Best contact" className="clear">
-			<field_v2:array_select items="=Please choose...,P=Phone,E=Email" xpath="${xpath}/bestContact" title="best contact method" required="true" />
-		</form_v2:row>
-
 		<c:set var="fieldXPath" value="${xpath}/contactNumber"/>
 		<form_v2:row label="Your contact number" className="clear">
 			<field_v1:flexi_contact_number xpath="${fieldXPath}"
@@ -35,7 +30,7 @@
 										labelName="your contact number"/>
 		</form_v2:row>
 
-		<div id="${name}_bestcontactToggleArea" class="${name}_bestcontactToggleArea show_${displayBestContact}">
+		<div id="${name}_bestcontactToggleArea">
 		<form_v2:row label="What is the best time for someone to call you?" className="clear">
 			<field_v2:array_select items="=Please choose...,M=Morning,A=Afternoon,E=Evening,ANY=Anytime" xpath="${xpath}/bestTime" title="when is the best time for someone to call you" required="true" />
 		</form_v2:row>
