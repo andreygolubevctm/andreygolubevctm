@@ -16,7 +16,7 @@ var healthFunds_WFD = {
     $paymentStartDate: $("#health_payment_details_start"),
     set: function(){
         <%--calendar for start cover--%>
-        meerkat.modules.healthPaymentStep.setCoverStartRange(0, 29);
+        meerkat.modules.healthCoverStartDate.setCoverStartRange(0, 29);
 
         <%--dependant definition--%>
         meerkat.modules.healthFunds._dependants('As a member of Westfund, your children aged between 21-24 are entitled to stay on your cover at no extra charge if they are a full time or part-time student at School, college or University TAFE institution or serving an Apprenticeship or Traineeship.');

@@ -30,6 +30,12 @@
                 <health_v4_application:your_details />
                 <health_v4_application:partner_details />
                 <health_v4_application:dependants xpath="${pageSettings.getVerticalCode()}/application/dependants" />
+
+                <%-- Policy Start Date moved from payment_details.tag --%>
+                <%--<form_v4:fieldset legend="When to start your cover"
+                                  className="cover-start-date-on-application-step" >
+                    <health_v4_payment:calendar xpath="health/payment/details" />
+                </form_v4:fieldset>--%>
             </jsp:body>
         </form_v3:fieldset_columns>
 

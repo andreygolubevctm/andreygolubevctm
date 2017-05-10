@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="java.util.*" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
-
+<%-- TEST --%>
 <jsp:useBean id="ipAddressHandler" class="com.ctm.web.core.security.IPAddressHandler" />
 
 <c:set var="logger" value="${log:getLogger('jsp.data')}"/>
