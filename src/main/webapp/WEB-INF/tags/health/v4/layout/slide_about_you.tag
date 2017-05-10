@@ -17,6 +17,7 @@
             <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
 
                 <%-- HTML --%>
+            <zeus:offer_details_modal />
             <div id="${name}-selection" class="health-situation">
                 <form_v3:fieldset_columns sideHidden="true">
 
