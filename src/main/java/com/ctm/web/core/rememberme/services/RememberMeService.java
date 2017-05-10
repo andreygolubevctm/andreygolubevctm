@@ -1,5 +1,7 @@
 package com.ctm.web.core.rememberme.services;
 
+import com.ctm.web.core.content.services.ContentService;
+import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.SessionException;
 import com.ctm.web.core.security.StringEncryption;
@@ -34,7 +36,7 @@ public class RememberMeService {
     private SessionDataServiceBean sessionDataServiceBean;
     private TransactionDetailsDao transactionDetailsDao;
     private TransactionDao transactionDao;
-    private final String HEALTH_XPATH= "health/healthCover/primary/dob";
+    private final String HEALTH_XPATH = "health/healthCover/primary/dob";
     private static final Integer maxAttempts = 3;
 
 
@@ -49,17 +51,20 @@ public class RememberMeService {
     @Autowired
     public RememberMeService(final SessionDataServiceBean sessionDataServiceBean,
                              final TransactionDetailsDao transactionDetailsDao,
-                             final TransactionDao transactionDao){
+                             final TransactionDao transactionDao) {
         this.sessionDataServiceBean = sessionDataServiceBean;
         this.transactionDetailsDao = transactionDetailsDao;
         this.transactionDao = transactionDao;
         this.WHITE_LIST = new HashSet<>(Arrays.asList(getWhiteList().toLowerCase().split(",")));
     }
 
-    public static void setCookie(final String vertical, final Long transactionId, final HttpServletResponse response) throws GeneralSecurityException {
+    public static void setCookie(final String vertical,
+                                 final Long transactionId,
+                                 final HttpServletRequest request,
+                                 final HttpServletResponse response) throws GeneralSecurityException, DaoException, ConfigSettingException {
         final Optional<String> verticalOptional = Optional.ofNullable(vertical);
         final Optional<Long> transactionIdOptional = Optional.ofNullable(transactionId);
-        if(verticalOptional.isPresent() && transactionIdOptional.isPresent()) {
+        if (verticalOptional.isPresent() && transactionIdOptional.isPresent() && isRememberMeEnabled(request)) {
             final String cookieName = getCookieName(verticalOptional.get().toLowerCase() + COOKIE_SUFFIX);
             addCookie(response, transactionIdOptional.get(), cookieName);
         }
@@ -109,19 +114,21 @@ public class RememberMeService {
      * Used in health_quote_v2.jsp
      */
     @SuppressWarnings("unused")
-    public boolean hasRememberMe(final HttpServletRequest request, final String vertical) {
+    public boolean hasRememberMe(final HttpServletRequest request,
+                                 final String vertical) throws DaoException, ConfigSettingException  {
         try {
-            return getRememberMeCookie(request, vertical).isPresent();
+            return isRememberMeEnabled(request) && getRememberMeCookie(request, vertical).isPresent();
         } catch (GeneralSecurityException e) {
             LOGGER.error("Error retrieving cookie for remember me {}", kv("vertical", vertical), e);
         }
         return false;
     }
 
-    private Optional<Cookie> getRememberMeCookie(final HttpServletRequest request, final String vertical) throws GeneralSecurityException {
+    private Optional<Cookie> getRememberMeCookie(final HttpServletRequest request,
+                                                 final String vertical) throws GeneralSecurityException {
         final String cookieName = getCookieName(vertical.toLowerCase() + COOKIE_SUFFIX);
 
-        if(null != request.getCookies()) {
+        if (null != request.getCookies()) {
             return Arrays.stream(request.getCookies())
                     .filter(Objects::nonNull)
 
@@ -133,7 +140,7 @@ public class RememberMeService {
 
     private Long getCookieTransactionId(final String vertical, final HttpServletRequest request) throws GeneralSecurityException {
         final Optional<Cookie> cookie = getRememberMeCookie(request, vertical);
-         if(cookie.isPresent()) {
+        if (cookie.isPresent()) {
             return Long.valueOf(StringEncryption.decrypt(SECRET_KEY, cookie.get().getValue()));
         }
         return null;
@@ -141,20 +148,22 @@ public class RememberMeService {
 
 
     @SuppressWarnings("unused")
-    public boolean hasPersonalInfoAndLoadData(final HttpServletRequest request, final HttpServletResponse response,  final String vertical) throws GeneralSecurityException{
+    public boolean hasPersonalInfoAndLoadData(final HttpServletRequest request,
+                                              final HttpServletResponse response,
+                                              final String vertical) throws GeneralSecurityException {
         final Optional<Long> rememberMeValue = Optional.ofNullable(getCookieTransactionId(vertical.toLowerCase(), request));
         boolean hasPersonalInfo = false;
 
-        if(rememberMeValue.isPresent()){
+        if (rememberMeValue.isPresent()) {
             final List<TransactionDetail> transactionDetails = getTransactionDetails(rememberMeValue.get());
             String xpathToVerify = getXpathToVerifyForVertical(vertical);
 
-            if(transactionDetails != null){
+            if (transactionDetails != null) {
                 hasPersonalInfo = transactionDetails.stream()
                         .anyMatch(details -> details.getXPath().equals(xpathToVerify));
             }
 
-            if(!hasPersonalInfo) {
+            if (!hasPersonalInfo) {
                 loadData(request, rememberMeValue.orElse(null), transactionDetails);
                 deleteCookie(vertical, response);
             }
@@ -172,62 +181,60 @@ public class RememberMeService {
         if (rememberMeValue.isPresent()) {
             transactionDetails = getTransactionDetails(rememberMeValue.orElse(null));
             String xpathToVerify = getXpathToVerifyForVertical(vertical);
-            if(transactionDetails != null ) {
+            if (transactionDetails != null) {
                 isMatch = transactionDetails.stream()
                         .anyMatch(details -> details.getXPath().equals(xpathToVerify) && details.getTextValue().equals(answer));
 
             }
             if (isMatch) {
-                loadData(request, rememberMeValue.orElse(null) , transactionDetails);
+                loadData(request, rememberMeValue.orElse(null), transactionDetails);
             }
         }
         return isMatch;
     }
 
-    public void updateAttemptsCounter(final HttpServletRequest request , final HttpServletResponse response,
-                                                             final String vertical) throws GeneralSecurityException{
+    public void updateAttemptsCounter(final HttpServletRequest request, final HttpServletResponse response,
+                                      final String vertical) throws GeneralSecurityException {
         Integer attemptsCounter = 1;
         HttpSession session = request.getSession();
         String attemptsSessionAttributeName = getAttemptsSessionAttributeName(vertical);
-        if(attemptsSessionAttributeName != null)
-        {
+        if (attemptsSessionAttributeName != null) {
             Optional<Integer> attemptsSessionValue = getAttemptsCounterFromSession(session, attemptsSessionAttributeName);
-            if(attemptsSessionValue.isPresent()){
-                attemptsCounter = attemptsSessionValue.get()+1;
+            if (attemptsSessionValue.isPresent()) {
+                attemptsCounter = attemptsSessionValue.get() + 1;
                 session.setAttribute(attemptsSessionAttributeName, attemptsCounter);
-           }else{
+            } else {
                 session.setAttribute(attemptsSessionAttributeName, attemptsCounter);
             }
-            if(attemptsCounter >=  maxAttempts && session != null ){
+            if (attemptsCounter >= maxAttempts && session != null) {
                 removeAttemptsSessionAttribute(vertical, request);
                 deleteCookie(vertical, response);
             }
         }
     }
 
-    public void removeAttemptsSessionAttribute(final String vertical, final HttpServletRequest request)
-    {
+    public void removeAttemptsSessionAttribute(final String vertical, final HttpServletRequest request) {
         HttpSession session = request.getSession();
-        if(session != null){
+        if (session != null) {
             session.removeAttribute(getAttemptsSessionAttributeName(vertical));
         }
     }
 
-    private String getAttemptsSessionAttributeName(final String vertical){
+    private String getAttemptsSessionAttributeName(final String vertical) {
         if (vertical.equals("health")) {
             return "healthAttemptsCount";
         }
         return null;
     }
 
-    private  Optional<Integer> getAttemptsCounterFromSession(final HttpSession session, final String attributeName ){
-        if(session.getAttribute(attributeName)!= null){
-            return  Optional.of(Integer.parseInt(session.getAttribute(attributeName).toString()));
+    private Optional<Integer> getAttemptsCounterFromSession(final HttpSession session, final String attributeName) {
+        if (session.getAttribute(attributeName) != null) {
+            return Optional.of(Integer.parseInt(session.getAttribute(attributeName).toString()));
         }
         return Optional.empty();
     }
 
-    private void loadData(final HttpServletRequest request, final Long transactionId,  final List<TransactionDetail> transactionDetails ){
+    private void loadData(final HttpServletRequest request, final Long transactionId, final List<TransactionDetail> transactionDetails) {
         Optional.ofNullable(getDataBucket(request, transactionId))
                 .map(data -> {
                     transactionDetails.stream()
@@ -243,8 +250,12 @@ public class RememberMeService {
                 });
     }
 
-    private List<TransactionDetail> getTransactionDetails(final Long transactionId)
-    {
+    public static Boolean isRememberMeEnabled(HttpServletRequest request) throws DaoException, ConfigSettingException {
+        String available = ContentService.getContentValue(request, "rememberMeEnabled");
+        return available != null && available.equalsIgnoreCase("Y");
+    }
+
+    private List<TransactionDetail> getTransactionDetails(final Long transactionId) {
         try {
 
             final Long rootId = transactionDao.getRootIdOfTransactionId(transactionId);
@@ -253,7 +264,7 @@ public class RememberMeService {
             return transactionDetailsDao.getTransactionDetails(latestTransactionId);
 
 
-        }catch (DaoException e) {
+        } catch (DaoException e) {
             LOGGER.error("populateDataBucket: Error getting transaction details for transactionId {}", kv("transactionId", transactionId), e);
             throw new RuntimeException(e);
         }
@@ -288,20 +299,20 @@ public class RememberMeService {
 
     public String getWhiteList() {
         return "health/situation/healthCvr," +
-        "health/situation/location," +
-       " health/situation/healthSitu," +
-        "health/healthCover/primary/dob," +
-        "health/healthCover/primary/cover," +
-        "health/healthCover/primary/healthCoverLoading," +
-        "health/healthCover/partner/dob," +
-        "health/healthCover/partner/cover," +
-        "health/healthCover/partner/healthCoverLoading," +
-        "health/healthCover/rebate," +
-        "health/healthCover/dependants," +
-        "health/healthCover/income," +
-        "health/situation/coverType," +
-        "health/benefits/benefitsExtras,"+
-        "health/journey/stage,"+
-        "health/benefits/covertype";
+                "health/situation/location," +
+                " health/situation/healthSitu," +
+                "health/healthCover/primary/dob," +
+                "health/healthCover/primary/cover," +
+                "health/healthCover/primary/healthCoverLoading," +
+                "health/healthCover/partner/dob," +
+                "health/healthCover/partner/cover," +
+                "health/healthCover/partner/healthCoverLoading," +
+                "health/healthCover/rebate," +
+                "health/healthCover/dependants," +
+                "health/healthCover/income," +
+                "health/situation/coverType," +
+                "health/benefits/benefitsExtras," +
+                "health/journey/stage," +
+                "health/benefits/covertype";
     }
 }

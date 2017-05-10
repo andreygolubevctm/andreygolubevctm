@@ -66,7 +66,7 @@
                 param.comment eq 'HLT benefi' and
                 empty authenticatedData.login.user.uid}">
 <jsp:useBean id="rememberMeService" class="com.ctm.web.core.rememberme.services.RememberMeService" />
-<c:set var="rememberMe" value="${rememberMeService.setCookie(pageSettings.getVerticalCode(), data.current.transactionId, pageContext.response)}" scope="request"  />
+<c:set var="rememberMe" value="${rememberMeService.setCookie(pageSettings.getVerticalCode(), data.current.transactionId, pageContext.request, pageContext.response)}" scope="request"  />
 </c:when>
 </c:choose>
 

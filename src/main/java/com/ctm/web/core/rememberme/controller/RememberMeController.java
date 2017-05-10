@@ -42,8 +42,12 @@ public class RememberMeController {
         Integer accessTokenCounter;
 
         try {
-            isValidAnswer = rememberMeService.validateAnswerAndLoadData(vertical, userAnswer, request);
-            rememberMeService.updateAttemptsCounter(request, response, vertical);
+            if(RememberMeService.isRememberMeEnabled(request)){
+                isValidAnswer = rememberMeService.validateAnswerAndLoadData(vertical, userAnswer, request);
+                rememberMeService.updateAttemptsCounter(request, response, vertical);
+            } else {
+                response.sendRedirect(VerticalSettings.getHomePageJsp(vertical));
+            }
         } catch (Exception ex) {
             LOGGER.error("Error validating the  personal question" , ex);
             response.sendRedirect(VerticalSettings.getHomePageJsp(vertical));

@@ -1,5 +1,6 @@
 package com.ctm.web.core.rememberme.services;
 
+import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.SessionException;
 import com.ctm.web.core.model.settings.Vertical;
@@ -69,13 +70,13 @@ public class RememberMeServiceTest {
     }
 
     @Test
-    public void testHasRememberMeFalse() {
+    public void testHasRememberMeFalse() throws DaoException, ConfigSettingException {
         when(request.getCookies()).thenReturn(new Cookie[] {new Cookie("a" , "a"), new Cookie("b", "b")});
         assertFalse(service.hasRememberMe(request, "health"));
     }
 
     @Test
-    public void testHasRememberMeTrue() throws GeneralSecurityException {
+    public void testHasRememberMeTrue() throws GeneralSecurityException , DaoException, ConfigSettingException {
         final String cookieName = getCookieName();
         when(request.getCookies()).thenReturn(new Cookie[] {new Cookie("a" , "a"), new Cookie(cookieName, "b"), new Cookie("c", "c")});
         assertTrue(service.hasRememberMe(request, "health"));
@@ -86,7 +87,9 @@ public class RememberMeServiceTest {
         final ArgumentCaptor<Cookie> argumentCaptor = ArgumentCaptor.forClass(Cookie.class);
         EnvironmentService.setEnvironment(EnvironmentService.Environment.LOCALHOST.name());
 
-        service.setCookie("health", 12345678L, response);
+        when(service.hasRememberMe(request, "health")).thenReturn(true);
+
+        service.setCookie("health", 12345678L, request, response);
 
         verify(response, only()).addCookie(argumentCaptor.capture());
 
@@ -101,7 +104,7 @@ public class RememberMeServiceTest {
         final ArgumentCaptor<Cookie> argumentCaptor = ArgumentCaptor.forClass(Cookie.class);
         EnvironmentService.setEnvironment(EnvironmentService.Environment.PRO.name());
 
-        service.setCookie("health", 12345678L, response);
+        service.setCookie("health", 12345678L, request, response);
 
         verify(response, only()).addCookie(argumentCaptor.capture());
 
@@ -122,7 +125,7 @@ public class RememberMeServiceTest {
         existingCookie.setMaxAge(600);
 
         when(request.getCookies()).thenReturn(new Cookie[] {existingCookie});
-        service.setCookie("health", 12345678L, response);
+        service.setCookie("health", 12345678L, request, response);
 
         verify(response, only()).addCookie(argumentCaptor.capture());
 
