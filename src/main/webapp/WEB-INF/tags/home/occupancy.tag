@@ -46,10 +46,10 @@
 		</c:if>
 	</c:if>
 
-	<form_v2:row fieldXpath="${fieldXpath}" label="Do you currently have a mortgage on the property?">
+	<form_v2:row fieldXpath="${fieldXpath}" label="Do you currently have a mortgage on the property?" className="underFinanceRow">
 		<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Under Finance" quoteChar="\"" /></c:set>
 		<field_v2:array_radio xpath="${fieldXpath}"
-			className="underFinance pretty_buttons"
+			className="pretty_buttons"
 			required="${didExist}"
 			items="Y=Yes,N=No"
 			title="if you currently have a mortgage on the property"
