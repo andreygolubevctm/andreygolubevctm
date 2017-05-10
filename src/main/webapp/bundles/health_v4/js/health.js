@@ -193,6 +193,8 @@
                     meerkat.modules.healthChoices.shouldPerformUpdate(meerkat.site.choices.performHealthChoicesUpdate);
                 }
                 meerkat.modules.healthRebate.toggleRebateQuestions();
+
+                meerkat.modules.rewardCampaign.showZeusOfferDtlsModal();
             },
             onBeforeEnter: function enterStartStep(event) {
                 if (event.isForward) {

@@ -140,12 +140,40 @@
         return $campaignContentHtml || $();
     }
 
+    function showZeusOfferDtlsModal() {
+
+        if (isCurrentCampaignValid() !== true) return;
+
+        var $e = $('#zeus-offer-details-template');
+
+        if ($e.length > 0) {
+            templateCallback = _.template($e.html());
+        }
+        var obj = meerkat.modules.moreInfo.getOpenProduct();
+
+        var htmlContent = templateCallback(obj);
+
+        var modalId = meerkat.modules.dialogs.show({
+            htmlContent: htmlContent,
+            title: '',
+            closeOnHashChange: true,
+            openOnHashChange: false,
+            onOpen: function(modalId) {
+                $('.btn-zeus-offer-dtls', $('#'+modalId)).on('click.goBackZeus', function(event) {
+                    meerkat.modules.dialogs.close(modalId);
+                });
+            }
+        });
+
+    }
+
 
     meerkat.modules.register("rewardCampaign", {
         init: initRewardCampaign,
         getCurrentCampaign: getCurrentCampaign,
         getCampaignContentHtml: getCampaignContentHtml,
-        isCurrentCampaignValid: isCurrentCampaignValid
+        isCurrentCampaignValid: isCurrentCampaignValid,
+        showZeusOfferDtlsModal: showZeusOfferDtlsModal
     });
 
 })(jQuery);

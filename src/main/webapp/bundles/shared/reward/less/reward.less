@@ -16,7 +16,7 @@
   }
 
   .aleks-1 {
-    background-image: url("../graphics/reward/toy/aleks-1-lg.png");
+    background-image: url("../graphics/reward/toy/aleks-1-lg.png");  // banner 220x360px
   }
   .aleks-2 {
     background-image: url("../graphics/reward/toy/aleks-2-lg.png");
@@ -40,7 +40,7 @@
     background-image: url("../graphics/reward/toy/sergei-2-lg.png");
   }
   .aleks-1-sm {
-    background-image: url("../graphics/reward/toy/aleks-1-sm.png");
+    background-image: url("../graphics/reward/toy/aleks-1-sm.png");  // banner 140x300px
   }
   .aleks-2-sm {
     background-image: url("../graphics/reward/toy/aleks-2-sm.png");
@@ -80,7 +80,7 @@ body {
       .aleks-xs,
       .sergei-xs {
         height: 200px;
-        .highResImg('../graphics/reward/toy/toy-xs.png'; '../graphics/reward/toy/toy-xs@2x.png'; 300px; 200px);
+        .highResImg('../graphics/reward/toy/toy-xs.png'; '../graphics/reward/toy/toy-xs@2x.png'; 300px; 200px);   // banners 300x200px and 600x400px
       }
     }
   }
@@ -170,5 +170,46 @@ body {
   }
   .successful-message{
     flex-basis: 85%;
+  }
+}
+
+// contents of #zeus-offer-details-template
+.zeus-offer-details-content {
+  .offer-text {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  //mobile first
+  .zeus-offer-details-img {   // max-width: 410px - this is to cater for super small screens - calculated from image size
+    width: 280px;
+    height: 189px;
+    margin-left: 10px;
+    background-image: url("../graphics/reward/toy/meerkat_holding_toys_sm.png"); // banner 280x189px
+  }
+  @media only screen and (min-width: 411px) {    // min-width: 411px - this is to cater for larger screens - calculated from image size
+    .zeus-offer-details-img {
+      background-image: url("../graphics/reward/toy/meerkat_holding_toys.png"); // banner 390x263px
+      width: 390px;        //adjust for image specs
+      height: 263px;
+      margin-left: 20px;
+    }
+  }
+  @media (@xs-only) {    // max-width: 767px
+    .offer-btn-position {
+      padding-top: 10px;
+    }
+  }
+  @media (@sm) {    // min-width: 768px
+    .offer-btn-position {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      margin-bottom: 80px;
+      margin-right: 30px;
+    }
+  }
+  .reward-t-and-c-text {
+    padding-top: 10px;
   }
 }
