@@ -163,7 +163,8 @@
 
 		.quote-ref-xs {
 			color: @callback-dark-grey;
-			margin:0;
+			font-size: 22px;
+			margin: 0 0 25px 0;
 		}
 
 	    #health-callback-form {
@@ -233,6 +234,36 @@
 			    display: block;
 			    margin: 10px auto 0px;
 			    width: 100%;
+			}
+
+			&.visible-xs {
+				&::before {
+					border: 0;
+				}
+				.view-all-times {
+					margin: 20px 0;
+				}
+				.call-details-button {
+					display: inline-block;
+					font-size: 22px;
+					padding: 10px 40px;
+				}
+				.request-call-back {
+					margin: 15px 0;
+					display: block;
+				}
+				.view-all-times,
+				.request-call-back {
+					color: @theme-tertiary;
+					text-decoration: none;
+
+					&:focus {
+						color: @theme-tertiary;
+					}
+				}
+				.opening-hours-label {
+					color: @gray-darker;
+				}
 			}
 
 			h4 {

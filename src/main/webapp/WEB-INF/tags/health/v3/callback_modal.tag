@@ -130,7 +130,7 @@
 						</div>
 					</c:forEach>
 					</div>
-					<a href="Javascript:;" class="view-all-times center">view all times</a>
+					<a href="Javascript:;" class="view-all-times center">View All Times</a>
 				</div>
 			</div>
 		</div>
