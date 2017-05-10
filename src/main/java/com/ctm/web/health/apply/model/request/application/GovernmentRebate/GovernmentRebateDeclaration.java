@@ -1,5 +1,5 @@
 package com.ctm.web.health.apply.model.request.application.GovernmentRebate;
 
-public enum GovtRebateDeclaration {
+public enum GovernmentRebateDeclaration {
     Y, N
 }

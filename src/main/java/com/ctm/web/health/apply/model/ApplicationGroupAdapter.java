@@ -6,7 +6,8 @@ import com.ctm.web.health.apply.model.request.application.ApplicationGroup;
 import com.ctm.web.health.apply.model.request.application.Emigrate;
 import com.ctm.web.health.apply.model.request.application.GovernmentRebate.ApplicantCovered;
 import com.ctm.web.health.apply.model.request.application.GovernmentRebate.EntitledToMedicare;
-import com.ctm.web.health.apply.model.request.application.GovernmentRebate.GovernmentRebateAck;
+import com.ctm.web.health.apply.model.request.application.GovernmentRebate.GovernmentRebateAcknowledgement;
+import com.ctm.web.health.apply.model.request.application.GovernmentRebate.GovernmentRebateDeclaration;
 import com.ctm.web.health.apply.model.request.application.applicant.Applicant;
 import com.ctm.web.health.apply.model.request.application.applicant.CertifiedAgeEntry;
 import com.ctm.web.health.apply.model.request.application.applicant.healthCover.Cover;
@@ -61,32 +62,30 @@ public class ApplicationGroupAdapter {
                                 .map(Qch::getEmigrate)
                                 .map(Emigrate::valueOf)
                                 .orElse(null)),
-                createGovernmentRebateAck(
-                        quote.map(HealthQuote::getApplication)
-                                .map(Application::getGovtRebateDeclaration))
+                createGovernmentRebateAck(quote.map(HealthQuote::getApplication)
+                        .map(Application::getGovtRebateDeclaration))
         );
     }
 
 
-    protected static com.ctm.web.health.apply.model.request.application.GovernmentRebate.GovernmentRebateAck createGovernmentRebateAck(Optional<GovtRebateDeclaration>  govtRebateDeclaration){
-        if(govtRebateDeclaration.isPresent()){
-            return new GovernmentRebateAck(
-                    govtRebateDeclaration.map(GovtRebateDeclaration::getApplicantCovered)
-                            .map(ApplicantCovered::valueOf)
-                            .orElse(null),
+    protected static GovernmentRebateAcknowledgement createGovernmentRebateAck(final Optional<GovtRebateDeclaration> govtRebateDeclaration){
+        final GovernmentRebateAcknowledgement governmentRebateAcknowledgement = govtRebateDeclaration.map(governmentRebateDeclaration -> {
+            return new GovernmentRebateAcknowledgement(govtRebateDeclaration.map(GovtRebateDeclaration::getApplicantCovered)
+                    .map(ApplicantCovered::valueOf)
+                    .orElse(null),
                     govtRebateDeclaration.map(GovtRebateDeclaration::getEntitledToMedicare)
                             .map(EntitledToMedicare::valueOf)
                             .orElse(null),
                     govtRebateDeclaration.map(GovtRebateDeclaration::getGovtRebateDeclaration)
-                            .map(com.ctm.web.health.apply.model.request.application.GovernmentRebate.GovtRebateDeclaration::valueOf)
+                            .map(GovernmentRebateDeclaration::valueOf)
                             .orElse(null),
                     govtRebateDeclaration.map(GovtRebateDeclaration::getDeclarationDate)
                             .map(LocalDateUtils::parseISOLocalDate)
-                            .orElse(null)
-            );
-        } else {
+                            .orElse(null));
+        }).orElseGet(() -> {
             return null;
-        }
+        });
+        return governmentRebateAcknowledgement;
     }
 
     protected static com.ctm.web.health.apply.model.request.application.situation.Situation createSituation(Optional<com.ctm.web.health.model.form.Situation> situation) {
