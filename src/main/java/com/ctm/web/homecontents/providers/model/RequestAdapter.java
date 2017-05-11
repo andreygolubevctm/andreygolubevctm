@@ -91,16 +91,20 @@ public class RequestAdapter {
         com.ctm.web.homecontents.model.form.LandlordDetails landlordDetails = quote.getLandlordDetails();
 
         if(landlordDetails != null){
-            LandlordDetails landlordDetailsProvider = new LandlordDetails();
-            landlordDetailsProvider.setNumberOfTenants(landlordDetails.getNumberOfTenants());
-            landlordDetailsProvider.setPropertyManagedBy(landlordDetails.getPropertyManagedBy());
-            landlordDetailsProvider.setValidRentalLease(landlordDetails.getValidRentalLease());
-            landlordDetailsProvider.setWeeklyRentValue(landlordDetails.getWeeklyRentValue());
-            quoteRequest.setLandlordDetails(landlordDetailsProvider);
+            quoteRequest.setLandlordDetails(createLandlordDetails(landlordDetails));
         }
 
         return quoteRequest;
 
+    }
+
+    private static LandlordDetails createLandlordDetails(com.ctm.web.homecontents.model.form.LandlordDetails landlordDetails){
+        LandlordDetails landlordDetailsProvider = new LandlordDetails();
+        landlordDetailsProvider.setNumberOfTenants(landlordDetails.getNumberOfTenants());
+        landlordDetailsProvider.setPropertyManagedBy(landlordDetails.getPropertyManagedBy());
+        landlordDetailsProvider.setValidRentalLease(landlordDetails.getValidRentalLease());
+        landlordDetailsProvider.setWeeklyRentValue(landlordDetails.getWeeklyRentValue());
+        return landlordDetailsProvider;
     }
 
     private static PreviousCover createPreviousCover(Disclosures disclosures) {
