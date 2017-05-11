@@ -209,7 +209,6 @@
 
 		<div class="hiddenFields">
 			<field_v1:hidden xpath="home/renderingMode" />
-			<input type="hidden" name="home_isLandlord" id="isLandlord" value="${landlord}" />
 			<form_v1:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid" />
 			<core_v1:referral_tracking vertical="${pageSettings.getVerticalCode()}" />
 		</div>

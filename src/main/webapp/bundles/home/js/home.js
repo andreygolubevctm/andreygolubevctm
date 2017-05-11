@@ -57,7 +57,6 @@
 
 	function toggleLandlords() {
 		var landlord = meerkat.site.isLandlord;
-		$('#isLandlord').val(landlord);
 		$('.isLandlord input').prop('disabled', !landlord);
 		$('.notLandlord input').prop('disabled', landlord);
 		if (landlord) {
