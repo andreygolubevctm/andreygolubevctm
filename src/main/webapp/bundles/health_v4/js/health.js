@@ -292,8 +292,6 @@
                 // configure progress bar
                 configureProgressBar(true);
 
-                meerkat.modules.healthPostcode.editMode();
-
                 if (event.isForward) {
                     // Delay 1 sec to make sure we have the data bucket saved in to DB, then filter coupon
                     _.delay(function () {
@@ -304,13 +302,13 @@
                     }, 1000);
                 }
                 _incrementTranIdBeforeEnteringSlide();
+
             },
             onAfterEnter: function afterEnterContactStep(event) {
                 meerkat.modules.coupon.dealWithAddedCouponHeight();
             },
             onAfterLeave: function leaveContactStep(event) {
 
-                meerkat.modules.healthPostcode.editMode();
             }
         };
 
@@ -377,9 +375,6 @@
                 }
 
                 meerkat.modules.healthResults.resetCallCentreText();
-            },
-            onAfterLeave: function afterLeaveResultsStep(event) {
-                meerkat.modules.healthResults.recordPreviousBreakpoint();
             }
         };
 
