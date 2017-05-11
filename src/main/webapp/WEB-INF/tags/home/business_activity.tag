@@ -115,12 +115,24 @@
 
 	<%-- Valid lease agreement  --%>
 	<c:set var="fieldXpath" value="${baseXpath}/landLordDetails/validRentalLease" />
-	<form_v2:row fieldXpath="${fieldXpath}" label="Do you have a valid lease agreement in place or intend to in the next 60 days?">
+	<form_v2:row fieldXpath="${fieldXpath}" label="Do you have a written rental agreement in place?" className="validRentalLease">
 		<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Business Activity" quoteChar="\"" /></c:set>
 		<field_v2:array_radio xpath="${fieldXpath}"
 			required="true"
 			className="pretty_buttons"
-			title="Do you have a valid lease agreement in place or intend to in the next 60 days?"
+			title="Do you have a written rental agreement in place"
+			items="Y=Yes,N=No"
+			additionalLabelAttributes="${analyticsAttr}" />
+	</form_v2:row>
+	
+	<%-- Do you intend to have a wrritten rental agreement --%>
+	<c:set var="fieldXpath" value="${baseXpath}/landLordDetails/pendingRentalLease" />
+	<form_v2:row fieldXpath="${fieldXpath}" label="Do you intend to have a written rental agreement in place in the next 60 days?" className="pendingRentalLease">
+		<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Business Activity" quoteChar="\"" /></c:set>
+		<field_v2:array_radio xpath="${fieldXpath}"
+			required="true"
+			className="pretty_buttons"
+			title="Do you intend to have a written rental agreement in place in the next 60 days"
 			items="Y=Yes,N=No"
 			additionalLabelAttributes="${analyticsAttr}" />
 	</form_v2:row>
