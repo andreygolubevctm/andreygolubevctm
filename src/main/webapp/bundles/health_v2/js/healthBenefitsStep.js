@@ -36,8 +36,7 @@
 
     var events = {
             healthBenefitsStep: {
-                CHANGED: 'HEALTH_BENEFITS_CHANGED',
-                RESET_SWITCH_STATE: 'RESET_SWITCH_STATE' // reset bootstrap switch state.
+                CHANGED: 'HEALTH_BENEFITS_CHANGED'
             }
         },
         moduleEvents = events.healthBenefitsStep;

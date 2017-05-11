@@ -30,17 +30,22 @@
     function _eventSubscription() {
         // quick selection options
         $elements.quickSelect.on('click', 'a', function preSelectBenefits(){
-
             var $this = $(this),
                 isHospital = $this.closest($elements.hospital).length === 1,
-                selectedItems = isHospital ? meerkat.modules.benefitsModel.getHospital() : meerkat.modules.benefitsModel.getExtras(),
-                options = {
-                    isHospital: isHospital,
-                    benefitIds: _.union(selectedItems, meerkat.modules.benefitsModel.getDefaultSelections($this.data('select-type')))
-                };
+                isBenefitsSwitchedOn = meerkat.modules.splitTest.isActive(2) ?
+                    (isHospital ? meerkat.modules.benefitsSwitch.isHospitalOn() : meerkat.modules.benefitsSwitch.isExtrasOn()) :
+                    false;
+
+            if (isBenefitsSwitchedOn) {
+                var selectedItems = isHospital ? meerkat.modules.benefitsModel.getHospital() : meerkat.modules.benefitsModel.getExtras(),
+                    options = {
+                        isHospital: isHospital,
+                        benefitIds: _.union(selectedItems, meerkat.modules.benefitsModel.getDefaultSelections($this.data('select-type')))
+                    };
 
                 $this.closest($elements.quickSelect).next($elements.clear).removeClass('hidden');
                 meerkat.messaging.publish(benefitEvents.BENEFIT_SELECTED, options);
+            }
         });
 
         // clear selection
