@@ -95,7 +95,7 @@
 
 
 		<div class="isLandlord">
-			<c:set var="fieldXpath" value="${xpath}/landLordDetails/propertyType" />
+			<c:set var="fieldXpath" value="${baseXpath}/landLordDetails/propertyType" />
 			<form_v2:row fieldXpath="${fieldXpath}" label="Who manages the property?" className="propertyType">
 				<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Property type" quoteChar="\"" /></c:set>
 				<field_v2:array_select xpath="${fieldXpath}"
