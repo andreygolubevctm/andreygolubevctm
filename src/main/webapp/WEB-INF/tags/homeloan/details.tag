@@ -52,6 +52,17 @@ TODO F=Looking to Re-enter the Market to be added post relaunch
 			<field_v2:currency xpath="${xpath}/assetAmount" title="Current property value" decimal="${false}" defaultValue="" required="true" maxValue="1000000000" pattern="[0-9]*" />
 		</form_v2:row>
 	</div>
+	
+	<form_v4:row label="Comparing private health insurance for" fieldXpath="${fieldXpath}" className="health-cover">
+		<field_v2:array_radio xpath="${fieldXpath}"
+			required="true"
+			className="health-situation-healthCvr has-icons"
+			items="SM=Single Male,SF=Single Female,C=Couple,SPF=Single Parent Family,F=Family"
+			id="${go:nameFromXpath(fieldXPath)}"
+			style="radio-rounded"
+			title="the situation you are in"
+			additionalLabelAttributes="${analyticsAttr}" />
+	</form_v4:row>
 
 
 </form_v2:fieldset>
