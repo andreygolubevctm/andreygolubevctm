@@ -178,6 +178,8 @@
 
                 <%--Reward Campaign Template--%>
                 <reward:template_campaign_tile />
+
+                <zeus:offer_details_modal />
             </jsp:body>
         </layout_v1:journey_engine_page>
     </c:when>
