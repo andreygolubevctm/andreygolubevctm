@@ -93,11 +93,6 @@
 
 		var hideEvent = null;
 		switch( showEvent ){
-		    // Used for Health Simples Popover
-            case 'mouseentersticky':
-                showEvent = 'mouseenter';
-                hideEvent = '';
-                break;
 			case 'mouseenter':
 				hideEvent = 'mouseleave';
 				break;
