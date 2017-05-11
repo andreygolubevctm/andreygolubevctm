@@ -5,7 +5,15 @@ public class LandlordDetails {
     private String propertyManagedBy;
     private boolean validRentalLease;
     private Integer weeklyRentValue;
+    private Boolean pendingRentalLease;
 
+    public Boolean getPendingRentalLease() {
+        return pendingRentalLease;
+    }
+
+    public void setPendingRentalLease(Boolean pendingRentalLease) {
+        this.pendingRentalLease = pendingRentalLease;
+    }
 
     public Integer getNumberOfTenants() {
         return numberOfTenants;

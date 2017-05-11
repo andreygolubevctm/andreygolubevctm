@@ -104,6 +104,7 @@ public class RequestAdapter {
         landlordDetailsProvider.setPropertyManagedBy(landlordDetails.getPropertyManagedBy());
         landlordDetailsProvider.setValidRentalLease(landlordDetails.isValidRentalLease());
         landlordDetailsProvider.setWeeklyRentValue(landlordDetails.getWeeklyRentValue());
+        landlordDetailsProvider.setPendingRentalLease(landlordDetails.getPendingRentalLease());
         return landlordDetailsProvider;
     }
 
