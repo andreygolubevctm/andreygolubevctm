@@ -5,6 +5,7 @@ import com.ctm.web.homecontents.model.form.*;
 import com.ctm.web.homecontents.providers.model.request.Address;
 import com.ctm.web.homecontents.providers.model.request.BusinessActivity;
 import com.ctm.web.homecontents.providers.model.request.*;
+import com.ctm.web.homecontents.providers.model.request.LandlordDetails;
 import com.ctm.web.homecontents.providers.model.request.Occupancy;
 import com.ctm.web.homecontents.providers.model.request.PolicyHolder;
 import com.ctm.web.homecontents.providers.model.request.Property;
@@ -86,6 +87,17 @@ public class RequestAdapter {
         quoteRequest.setHadClaims(convertToBoolean(quote.getDisclosures().getClaims()));
 
         quoteRequest.setClientIp(homeRequest.getClientIpAddress());
+
+        com.ctm.web.homecontents.model.form.LandlordDetails landlordDetails = quote.getLandlordDetails();
+
+        if(landlordDetails != null){
+            LandlordDetails landlordDetailsProvider = new LandlordDetails();
+            landlordDetailsProvider.setNumberOfTenants(landlordDetails.getNumberOfTenants());
+            landlordDetailsProvider.setPropertyManagedBy(landlordDetails.getPropertyManagedBy());
+            landlordDetailsProvider.setValidRentalLease(landlordDetails.getValidRentalLease());
+            landlordDetailsProvider.setWeeklyRentValue(landlordDetails.getWeeklyRentValue());
+            quoteRequest.setLandlordDetails(landlordDetailsProvider);
+        }
 
         return quoteRequest;
 

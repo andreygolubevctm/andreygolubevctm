@@ -1,7 +1,6 @@
 package com.ctm.web.homecontents.model.form;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Required;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -59,6 +58,16 @@ public class HomeQuote {
     private String termsAccepted;
 
     private Filter filter;
+
+    private LandlordDetails landlordDetails;
+
+    public LandlordDetails getLandlordDetails() {
+        return landlordDetails;
+    }
+
+    public void setLandlordDetails(LandlordDetails landlordDetails) {
+        this.landlordDetails = landlordDetails;
+    }
 
     public HomeQuote() {
         filter = new Filter();
