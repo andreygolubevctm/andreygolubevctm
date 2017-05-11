@@ -96,10 +96,14 @@
 			$(elements.whenMovedInYearRow+', '+elements.whenMovedInMonthRow).slideUp(speed);
 		} else {
 			if(isItPrincipalResidence){
+				$(elements.lookingForLandlord).slideUp(speed);
 				$(elements.howOccupiedRow).slideUp(speed);
 				$(elements.whenMovedInYearRow).slideDown(speed);
 				yearSelected(speed);
 			} else {
+				if (isHomeRented()) {
+					$(elements.lookingForLandlord).slideDown(speed);
+				}
 				$(elements.howOccupiedRow).slideDown(speed);
 				$(elements.whenMovedInYearRow+', '+elements.whenMovedInMonthRow).slideUp(speed);
 			}
@@ -150,8 +154,6 @@
 				togglePropertyOccupancyFields();
 			});
 		});
-		
-		$('')
 	}
 	/* main entrypoint for the module to run first */
 	function initHomeOccupancy() {
