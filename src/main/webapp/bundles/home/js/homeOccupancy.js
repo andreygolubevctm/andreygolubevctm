@@ -26,7 +26,9 @@
 			whenMovedInYearRow:		".whenMovedInYear",
 			whenMovedInMonthRow:	".whenMovedInMonth",
 			howOccupiedRow:			".howOccupied",
-			lookingForLandlord: ".lookingForLandlord"
+			lookingForLandlord: ".lookingForLandlord",
+			validRentalLease: ".validRentalLease",
+			pendingRentalLease: ".pendingRentalLease"
 
 
 	};
@@ -52,12 +54,12 @@
 	}
 
 	function toggleLookingForLandlord(speed) {
-		var landlordField = $(elements.lookingForLandlord);
+		var $landlordField = $(elements.lookingForLandlord);
 
 		if (isHomeRented()) {
-			landlordField.slideDown(speed);
+			$landlordField.slideDown(speed);
 		} else {
-			landlordField.slideUp(speed);
+			$landlordField.slideUp(speed);
 		}
 	}
 
@@ -71,6 +73,17 @@
 			meerkat.modules.home.toggleLandlords();
 		}
 	}
+	
+	function togglePendingRentalLease(speed) {
+		var validRentalLease = $(elements.validRentalLease + ' input:radio:checked').val();
+		var $pendingRental = $(elements.pendingRentalLease);
+		if (validRentalLease === 'N') {
+			$pendingRental.slideDown(speed);
+		} else if(validRentalLease === 'Y' || validRentalLease == null) {
+			$pendingRental.slideUp(speed);
+		}
+	}
+	
 	/* Here you put all functions for use in your module */
 	function togglePropertyOccupancyFields(speed) {
 
@@ -83,10 +96,14 @@
 			$(elements.whenMovedInYearRow+', '+elements.whenMovedInMonthRow).slideUp(speed);
 		} else {
 			if(isItPrincipalResidence){
+				$(elements.lookingForLandlord).slideUp(speed);
 				$(elements.howOccupiedRow).slideUp(speed);
 				$(elements.whenMovedInYearRow).slideDown(speed);
 				yearSelected(speed);
 			} else {
+				if (isHomeRented()) {
+					$(elements.lookingForLandlord).slideDown(speed);
+				}
 				$(elements.howOccupiedRow).slideDown(speed);
 				$(elements.whenMovedInYearRow+', '+elements.whenMovedInMonthRow).slideUp(speed);
 			}
@@ -128,6 +145,10 @@
 			$(elements.lookingForLandlord + ' input:radio').on('change', function() {
 				toggleLandlords();
 			});
+			
+			$(elements.validRentalLease + ' input:radio').on('change', function() {
+				togglePendingRentalLease();
+			});
 
 			$('input[name='+elements.principalResidence+']').on('change', function() {
 				togglePropertyOccupancyFields();
@@ -142,6 +163,7 @@
 			applyEventListeners();
 			togglePropertyOccupancyFields(0);
 			toggleLookingForLandlord(0);
+			togglePendingRentalLease(0);
 		}
 	}
 
