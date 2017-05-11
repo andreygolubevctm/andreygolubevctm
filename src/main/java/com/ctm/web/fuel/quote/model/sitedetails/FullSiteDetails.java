@@ -1,6 +1,6 @@
 package com.ctm.web.fuel.quote.model.sitedetails;
 
-import com.ctm.fuelquote.model.citysites.Site;
+import com.ctm.web.fuel.quote.model.citysites.Site;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDateTime;

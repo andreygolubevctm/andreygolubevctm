@@ -1,6 +1,6 @@
 package com.ctm.web.fuel.quote.model.response;
 
-import com.ctm.fuelquote.model.pricebands.Band;
+import com.ctm.web.fuel.quote.model.pricebands.Band;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.util.List;

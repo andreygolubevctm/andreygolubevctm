@@ -1,6 +1,6 @@
 package com.ctm.web.fuel.quote.model.response;
 
-import com.ctm.fuelquote.model.citysites.Site;
+import com.ctm.web.fuel.quote.model.citysites.Site;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import java.util.List;
