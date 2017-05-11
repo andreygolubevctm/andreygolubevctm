@@ -2,6 +2,7 @@ package com.ctm.web.core.rememberme.controller;
 
 import com.ctm.web.core.model.settings.VerticalSettings;
 import com.ctm.web.core.rememberme.services.RememberMeService;
+import com.ctm.web.core.services.SettingsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,26 +34,26 @@ public class RememberMeController {
         this.rememberMeService = rememberMeService;
     }
 
-    @RequestMapping(value = QUOTE_GET_JSON, method= RequestMethod.GET)
+    @RequestMapping(value = QUOTE_GET_JSON, method = RequestMethod.GET)
     public boolean checkQuery(@RequestParam(QUOTE_TYPE) final String vertical,
-                           @RequestParam(QUERY_VALUE) final String userAnswer,
-                           final HttpServletRequest request,
-                           final HttpServletResponse response) throws IOException, GeneralSecurityException {
+                              @RequestParam(QUERY_VALUE) final String userAnswer,
+                              final HttpServletRequest request,
+                              final HttpServletResponse response) throws IOException, GeneralSecurityException {
         boolean isValidAnswer = false;
         Integer accessTokenCounter;
 
         try {
-            if(RememberMeService.isRememberMeEnabled(request)){
+            if (RememberMeService.isRememberMeEnabled(SettingsService.getPageSettingsForPage(request))) {
                 isValidAnswer = rememberMeService.validateAnswerAndLoadData(vertical, userAnswer, request);
                 rememberMeService.updateAttemptsCounter(request, response, vertical);
             } else {
                 response.sendRedirect(VerticalSettings.getHomePageJsp(vertical));
             }
         } catch (Exception ex) {
-            LOGGER.error("Error validating the  personal question" , ex);
+            LOGGER.error("Error validating the  personal question", ex);
             response.sendRedirect(VerticalSettings.getHomePageJsp(vertical));
         }
-        if(isValidAnswer) {
+        if (isValidAnswer) {
             rememberMeService.deleteCookie(vertical, response);
             rememberMeService.removeAttemptsSessionAttribute(vertical, request);
         }

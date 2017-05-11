@@ -1,9 +1,9 @@
 package com.ctm.web.core.rememberme.services;
 
-import com.ctm.web.core.content.services.ContentService;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.SessionException;
+import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.security.StringEncryption;
 import com.ctm.web.core.services.EnvironmentService;
 import com.ctm.web.core.services.SessionDataServiceBean;
@@ -60,11 +60,10 @@ public class RememberMeService {
 
     public static void setCookie(final String vertical,
                                  final Long transactionId,
-                                 final HttpServletRequest request,
                                  final HttpServletResponse response) throws GeneralSecurityException, DaoException, ConfigSettingException {
         final Optional<String> verticalOptional = Optional.ofNullable(vertical);
         final Optional<Long> transactionIdOptional = Optional.ofNullable(transactionId);
-        if (verticalOptional.isPresent() && transactionIdOptional.isPresent() && isRememberMeEnabled(request)) {
+        if (verticalOptional.isPresent() && transactionIdOptional.isPresent()) {
             final String cookieName = getCookieName(verticalOptional.get().toLowerCase() + COOKIE_SUFFIX);
             addCookie(response, transactionIdOptional.get(), cookieName);
         }
@@ -115,9 +114,9 @@ public class RememberMeService {
      */
     @SuppressWarnings("unused")
     public boolean hasRememberMe(final HttpServletRequest request,
-                                 final String vertical) throws DaoException, ConfigSettingException  {
+                                 final String vertical) throws DaoException, ConfigSettingException {
         try {
-            return isRememberMeEnabled(request) && getRememberMeCookie(request, vertical).isPresent();
+            return getRememberMeCookie(request, vertical).isPresent();
         } catch (GeneralSecurityException e) {
             LOGGER.error("Error retrieving cookie for remember me {}", kv("vertical", vertical), e);
         }
@@ -250,9 +249,8 @@ public class RememberMeService {
                 });
     }
 
-    public static Boolean isRememberMeEnabled(HttpServletRequest request) throws DaoException, ConfigSettingException {
-        String available = ContentService.getContentValue(request, "rememberMeEnabled");
-        return available != null && available.equalsIgnoreCase("Y");
+    public static Boolean isRememberMeEnabled(PageSettings settings) throws DaoException, ConfigSettingException {
+        return settings.getSettingAsBoolean("rememberMeEnabled");
     }
 
     private List<TransactionDetail> getTransactionDetails(final Long transactionId) {

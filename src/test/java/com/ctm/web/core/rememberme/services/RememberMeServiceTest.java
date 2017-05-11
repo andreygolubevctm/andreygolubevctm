@@ -71,14 +71,14 @@ public class RememberMeServiceTest {
 
     @Test
     public void testHasRememberMeFalse() throws DaoException, ConfigSettingException {
-        when(request.getCookies()).thenReturn(new Cookie[] {new Cookie("a" , "a"), new Cookie("b", "b")});
+        when(request.getCookies()).thenReturn(new Cookie[]{new Cookie("a", "a"), new Cookie("b", "b")});
         assertFalse(service.hasRememberMe(request, "health"));
     }
 
     @Test
-    public void testHasRememberMeTrue() throws GeneralSecurityException , DaoException, ConfigSettingException {
+    public void testHasRememberMeTrue() throws GeneralSecurityException, DaoException, ConfigSettingException {
         final String cookieName = getCookieName();
-        when(request.getCookies()).thenReturn(new Cookie[] {new Cookie("a" , "a"), new Cookie(cookieName, "b"), new Cookie("c", "c")});
+        when(request.getCookies()).thenReturn(new Cookie[]{new Cookie("a", "a"), new Cookie(cookieName, "b"), new Cookie("c", "c")});
         assertTrue(service.hasRememberMe(request, "health"));
     }
 
@@ -89,7 +89,7 @@ public class RememberMeServiceTest {
 
         when(service.hasRememberMe(request, "health")).thenReturn(true);
 
-        service.setCookie("health", 12345678L, request, response);
+        service.setCookie("health", 12345678L, response);
 
         verify(response, only()).addCookie(argumentCaptor.capture());
 
@@ -104,7 +104,7 @@ public class RememberMeServiceTest {
         final ArgumentCaptor<Cookie> argumentCaptor = ArgumentCaptor.forClass(Cookie.class);
         EnvironmentService.setEnvironment(EnvironmentService.Environment.PRO.name());
 
-        service.setCookie("health", 12345678L, request, response);
+        service.setCookie("health", 12345678L, response);
 
         verify(response, only()).addCookie(argumentCaptor.capture());
 
@@ -124,8 +124,8 @@ public class RememberMeServiceTest {
         final Cookie existingCookie = new Cookie(getCookieName(), "99999999");
         existingCookie.setMaxAge(600);
 
-        when(request.getCookies()).thenReturn(new Cookie[] {existingCookie});
-        service.setCookie("health", 12345678L, request, response);
+        when(request.getCookies()).thenReturn(new Cookie[]{existingCookie});
+        service.setCookie("health", 12345678L, response);
 
         verify(response, only()).addCookie(argumentCaptor.capture());
 
@@ -140,7 +140,7 @@ public class RememberMeServiceTest {
         final Long rootId = 11111111L;
         final Long lastTransactionId = 22222222L;
         final Data data = new Data();
-        final String answer="01/02/1985";
+        final String answer = "01/02/1985";
 
         when(request.getCookies()).thenReturn(new Cookie[]{new Cookie(getCookieName(), getTransactionId())});
         when(sessionDataServiceBean.getDataForTransactionId(request, "12345678", true)).thenReturn(data);
@@ -161,7 +161,7 @@ public class RememberMeServiceTest {
         list.add(new TransactionDetail("health/situation/location", "Brisbane"));
         list.add(new TransactionDetail("health/contactDetails/name", "aName"));
         list.add(new TransactionDetail("invalid/xpath", "aaaa"));
-        list.add(new TransactionDetail( "health/healthCover/primary/dob", "01/02/1985"));
+        list.add(new TransactionDetail("health/healthCover/primary/dob", "01/02/1985"));
 
         return list;
     }
