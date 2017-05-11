@@ -6,7 +6,7 @@
 
 <?xml version="1.0" encoding="UTF-8"?>
 <example>
-	<c:if test="${not fn:startsWith(clientIp,'192.168.') or fn:startsWith(clientIp,'10.4')}">
+	<c:if test="${not fn:startsWith(clientIp,'192.168.') or not fn:startsWith(clientIp,'10.4')}">
 		${authenticatedData}
 	</c:if>
 </example>
