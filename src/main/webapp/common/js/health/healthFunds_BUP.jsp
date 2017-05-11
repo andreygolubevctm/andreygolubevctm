@@ -27,7 +27,7 @@ set: function () {
 		healthFunds_BUP.$partnerMiddleName.setRequired(false);
 
 		<%-- calendar for start cover --%>
-		meerkat.modules.healthCoverStartDate.setCoverStartRange(0, 60);
+		meerkat.modules.healthPaymentStep.setCoverStartRange(0, 60);
 
 		<%-- Increase minimum age requirement for applicants from 16 to 17 --%>
 		healthFunds_BUP.$_dobPrimary = $('#health_application_primary_dob');
