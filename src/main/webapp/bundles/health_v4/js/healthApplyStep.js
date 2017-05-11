@@ -20,6 +20,7 @@
                 appSuburb: $('#health_application_address_suburb'),
                 appSuburbName: $('#health_application_address_suburbName'),
                 appState: $('#health_application_address_state'),
+                healthSituationState: $('#health_situation_state'),
                 appAddressUnitShop: $('#health_application_address_unitShop'),
                 appAddressStreetNum: $('#health_application_address_streetNum'),
                 appAddressUnitType: $('#health_application_address_unitType'),
@@ -167,7 +168,7 @@
     }
 
     function testStatesParity() {
-        if ($elements.appState.val() !== $('#health_situation_state').val()) {
+        if ($elements.appState.val() !== $elements.healthSituationState.val()) {
             var suburb = $elements.appSuburbName.val(),
                 state = $elements.appState.val();
 

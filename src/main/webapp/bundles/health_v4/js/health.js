@@ -307,9 +307,6 @@
             onAfterEnter: function afterEnterContactStep(event) {
                 meerkat.modules.coupon.dealWithAddedCouponHeight();
             },
-            onAfterEnter: function afterEnterContactStep(event) {
-                meerkat.modules.coupon.dealWithAddedCouponHeight();
-            },
             onAfterLeave: function leaveContactStep(event) {
 
             }

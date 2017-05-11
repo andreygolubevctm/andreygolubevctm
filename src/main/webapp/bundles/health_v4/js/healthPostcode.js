@@ -112,7 +112,8 @@
     }
 
     function _getLocationState(location) {
-        return location.substr(location.indexOf($elements.input.val()), location.length -1).replace($elements.input.val(), '').trim();
+        var postCodeInput = $elements.input.val();
+        return location.substr(location.indexOf(postCodeInput), location.length -1).replace(postCodeInput, '').trim();
     }
 
     function _clearResults() {
