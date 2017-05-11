@@ -37,6 +37,7 @@
 				CASE WHEN a.ProviderCode = 'AI' THEN 'AI'
 				WHEN a.ProviderCode IN ('WOOL','REAL') THEN 'Hollard'
 				WHEN a.ProviderCode = 'FAME' THEN 'Famous'
+				WHEN a.ProviderCode = 'ENSU' THEN 'Ensurance'
 				ELSE 'Budget'
 				END
 			) AS Name

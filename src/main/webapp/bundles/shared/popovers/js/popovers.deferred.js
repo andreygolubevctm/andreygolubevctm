@@ -16,6 +16,7 @@
 		element: null,
 		contentType: null,
 		contentValue: null,
+		showSolo: false,
 		showEvent: 'click',
 		onOpen:function(){
 
@@ -85,6 +86,11 @@
 			showEvent = settings.showEvent;
 		}
 
+		var showSolo = false;
+		if(settings.showSolo !== undefined){
+            showSolo = settings.showSolo;
+        }
+
 		var hideEvent = null;
 		switch( showEvent ){
 			case 'mouseenter':
@@ -119,6 +125,7 @@
 				viewport: $(window)
 			},
 			show: {
+			    solo: showSolo,
 				event: showEvent
 			},
 			hide:{

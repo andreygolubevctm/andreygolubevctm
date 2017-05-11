@@ -307,6 +307,9 @@
             onAfterEnter: function afterEnterContactStep(event) {
                 meerkat.modules.coupon.dealWithAddedCouponHeight();
             },
+            onAfterEnter: function afterEnterContactStep(event) {
+                meerkat.modules.coupon.dealWithAddedCouponHeight();
+            },
             onAfterLeave: function leaveContactStep(event) {
 
             }
@@ -366,6 +369,7 @@
                     meerkat.modules.healthTaxTime.disableFastTrack();
                 }
                 meerkat.modules.healthResults.setCallCentreText();
+
             },
             onBeforeLeave: function beforeLeaveResultsStep(event) {
                 // Increment the transactionId
@@ -424,6 +428,7 @@
                 }
             },
             onAfterEnter: function afterEnterApplyStep(event) {
+                meerkat.modules.coupon.dealWithAddedCouponHeight();
             }
         };
 
@@ -462,6 +467,9 @@
 
                     meerkat.modules.healthPaymentStep.updatePremium();
                 }
+            },
+            onAfterEnter: function afterEnterPaymentStep() {
+                meerkat.modules.coupon.dealWithAddedCouponHeight();
             }
         };
 

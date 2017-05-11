@@ -83,7 +83,15 @@
 
     function isWindowInCompactPosition() {
         // the +5 is to force the headers to affix first before we switch to compact mode for performance reasons
-        return $(window).scrollTop() >= topStartOffset + 5;
+        var randomOffset = 5;
+        // This offset of ?five? causes the docked result headers to "jump" when there is a coupon banner, because this function is false after the affixed class has been added but before the compact classes are added...
+        var currentCoupon = meerkat.modules.coupon.getCurrentCoupon();
+        if (currentCoupon !== false || typeof currentCoupon !== 'undefined') {
+            if (currentCoupon.hasOwnProperty('contentBanner')) {
+                randomOffset = 0;
+            }
+        }
+        return $(window).scrollTop() >= topStartOffset + randomOffset;
     }
 
     function isContentAffixed() {

@@ -11,7 +11,6 @@
 		stateSubmitInProgress = false,
 		$foundProperty,
 		$foundPanel,
-		$bestContact,
 		$bestContactPanel,
 		$submitButton;
 
@@ -26,14 +25,6 @@
 			var valid = meerkat.modules.journeyEngine.isCurrentStepValid();
 			if (valid) {
 				submitEnquiry();
-			}
-		});
-
-		$bestContact.on("change", function() {
-			if ($bestContact.val() === 'P') {
-				$bestContactPanel.addClass('show_Y').removeClass('show_N').removeClass('show_');
-			} else {
-				$bestContactPanel.addClass('show_N').removeClass('show_Y').removeClass('show_');
 			}
 		});
 
@@ -62,7 +53,6 @@
 		//Elements need to be in the page
 		$(document).ready(function() {
 			$submitButton = $("#submit_btn");
-			$bestContact = $("#homeloan_enquiry_contact_bestContact");
 			$bestContactPanel = $("#homeloan_enquiry_contact_bestcontactToggleArea");
 			$foundProperty = $("#homeloan_enquiry_newLoan_foundAProperty");
 			$foundPanel = $('#homeloan_enquiry_newLoan_foundToggleArea');
@@ -70,7 +60,6 @@
 			applyEventListeners();
 
 			// Re-flow the questionset in case there are pre-filled values e.g. load quote
-			$bestContact.trigger('change');
 			$foundProperty.trigger('change');
 		});
 	}
