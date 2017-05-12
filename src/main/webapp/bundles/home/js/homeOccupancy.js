@@ -26,11 +26,9 @@
 			whenMovedInYearRow:		".whenMovedInYear",
 			whenMovedInMonthRow:	".whenMovedInMonth",
 			howOccupiedRow:			".howOccupied",
-			lookingForLandlord: ".lookingForLandlord",
-			validRentalLease: ".validRentalLease",
+			lookingForLandlord: 	".lookingForLandlord",
+			validRentalLease: 		".validRentalLease",
 			pendingRentalLease: ".pendingRentalLease"
-
-
 	};
 
 	function isPrincipalResidence() {
@@ -61,19 +59,20 @@
 		} else {
 			$landlordField.slideUp(speed);
 		}
+		toggleLandlords();
 	}
 
 	function toggleLandlords() {
 		var landlordSwitch = $(elements.lookingForLandlord + ' input:radio:checked').val();
-		if ((landlordSwitch === 'N' || landlordSwitch == null) && meerkat.site.isLandlord) {
-			meerkat.site.isLandlord = false;
-			meerkat.modules.home.toggleLandlords();
-		} else if(landlordSwitch === 'Y' && !meerkat.site.isLandlord) {
+		if(landlordSwitch === 'Y' && !meerkat.site.isLandlord && isHomeRented()) {
 			meerkat.site.isLandlord = true;
+			meerkat.modules.home.toggleLandlords();
+		} else {
+			meerkat.site.isLandlord = false;
 			meerkat.modules.home.toggleLandlords();
 		}
 	}
-	
+
 	function togglePendingRentalLease(speed) {
 		var validRentalLease = $(elements.validRentalLease + ' input:radio:checked').val();
 		var $pendingRental = $(elements.pendingRentalLease);
@@ -83,7 +82,7 @@
 			$pendingRental.slideUp(speed);
 		}
 	}
-	
+
 	/* Here you put all functions for use in your module */
 	function togglePropertyOccupancyFields(speed) {
 
@@ -145,7 +144,7 @@
 			$(elements.lookingForLandlord + ' input:radio').on('change', function() {
 				toggleLandlords();
 			});
-			
+
 			$(elements.validRentalLease + ' input:radio').on('change', function() {
 				togglePendingRentalLease();
 			});
