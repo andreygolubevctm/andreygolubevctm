@@ -87,15 +87,23 @@
             hospitalPlural = hospitalCount > 1 ? 's' : '',
             comprehensiveText = hospitalCount > 0 ? hospitalCount + ' Benefit' + hospitalPlural + ' selected' : 'No Hospital',
             extrasCount = meerkat.modules.benefitsModel.getExtrasCount(),
-            extrasPlural = extrasCount > 1 ? 's' : '';
+            extrasPlural = extrasCount > 1 ? 's' : '',
+            data = {
+                hospitalType: hospitalType === 'customise' ? 'Comprehensive' : 'Limited',
+                hospitalBtnText: hospitalType === 'customise' ? (hospitalCount > 0 ? 'Change' : 'Add Hospital') : 'Change',
+                hospitalCountText: hospitalType === 'customise' ? comprehensiveText : '',
+                extrasBtnText: extrasCount > 0 ? 'Change' : 'Add Extras',
+                extrasCountText: extrasCount > 0 ? extrasCount + ' Extra' + extrasPlural + ' selected' : 'No Extras'
+            };
 
-        return {
-            hospitalType: hospitalType === 'customise' ? 'Comprehensive' : 'Limited',
-            hospitalBtnText: hospitalType === 'customise' ? (hospitalCount > 0 ? 'Change' : 'Add Hospital') : 'Change',
-            hospitalCountText: hospitalType === 'customise' ? comprehensiveText : '',
-            extrasBtnText: extrasCount > 0 ? 'Change' : 'Add Extras',
-            extrasCountText: extrasCount > 0 ? extrasCount + ' Extra' + extrasPlural + ' selected' : 'No Extras'
-        };
+        if (meerkat.modules.splitTest.isActive(2)) {
+            $.extend(data, {
+                isHospitalOn: meerkat.modules.benefitsSwitch.isHospitalOn(),
+                isExtrasOn: meerkat.modules.benefitsSwitch.isExtrasOn()
+            });
+        }
+
+        return data;
     }
 
     meerkat.modules.register('healthResultsRefineMobile', {

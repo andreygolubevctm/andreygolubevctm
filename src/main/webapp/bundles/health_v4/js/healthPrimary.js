@@ -36,13 +36,6 @@
                 hideField
             );
         });
-
-        $elements.dob.on('change', function updateContinuousCover() {
-            _.defer(function(){
-                var $checked = $elements.currentCover.filter(':checked');
-                if($checked.length) $checked.change();
-            });
-        });
     }
 
     function _eventSubscriptions() {
@@ -52,10 +45,6 @@
 
         meerkat.messaging.subscribe(meerkatEvents.healthSituation.SITUATION_CHANGED, function togglePartnerFields() {
             positionFieldsForBrochureware();
-            _.defer(function(){
-                var $checked = $elements.currentCover.filter(':checked');
-                if($checked.length) $checked.change();
-            });
         });
     }
 

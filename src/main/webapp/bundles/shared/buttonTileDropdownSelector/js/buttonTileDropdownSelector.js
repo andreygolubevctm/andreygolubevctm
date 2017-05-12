@@ -48,22 +48,23 @@
         });
 
         // on button tile click
-        $('.button-tile-selector').on('click', function() {
+        $('.button-tile-selector-label').on('click', function() {
             var $this = $(this),
+                $thisInput = $(this.firstElementChild),
                 $selectorLabel = _getButtonTileSelectorLabelEl($this),
                 $dropdownSelector = _getDropdownSelectorEl($this);
 
             // deselect all of them
             $selectorLabel.removeClass('active');
 
-            $this.parent().addClass('active');
+            $this.addClass('active');
 
             // deselect dropdown and show other link
-            _toggleSelect($this, false);
+            _toggleSelect($thisInput, false);
             $dropdownSelector.prop('selectedIndex', 0);
 
             // update hidden value
-            _setHiddenVal($this, $this.val());
+            _setHiddenVal($thisInput, $thisInput.val());
         });
 
         // on dropdown selector click

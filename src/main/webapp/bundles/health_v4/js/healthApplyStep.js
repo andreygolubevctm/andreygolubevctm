@@ -20,6 +20,7 @@
                 appSuburb: $('#health_application_address_suburb'),
                 appSuburbName: $('#health_application_address_suburbName'),
                 appState: $('#health_application_address_state'),
+                healthSituationState: $('#health_situation_state'),
                 appAddressUnitShop: $('#health_application_address_unitShop'),
                 appAddressStreetNum: $('#health_application_address_streetNum'),
                 appAddressUnitType: $('#health_application_address_unitType'),
@@ -167,12 +168,13 @@
     }
 
     function testStatesParity() {
-        if ($elements.appState.val() !== $('input[name=health_situation_state]:checked').val()) {
+        if ($elements.appState.val() !== $elements.healthSituationState.val()) {
             var suburb = $elements.appSuburbName.val(),
                 state = $elements.appState.val();
 
             if (suburb.length && suburb.indexOf('Please select') < 0 && $elements.appPostcode.val().length == 4 && state.length) {
                 $elements.appPostcode.addClass('error');
+                $elements.appState.val("");
                 return false;
             }
         }

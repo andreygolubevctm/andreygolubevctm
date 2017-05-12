@@ -52,7 +52,7 @@
 <c:set var="fieldXpath" value="${xpath}/postCode" />
 <form_v4:row label="Postcode" isNestedStyleGroup="${true}">
     <form_v4:row fieldXpath="${fieldXpath}" label="Postcode" id="${name}_postCode_suburb" smRowOverride="5" isNestedField="${true}">
-        <field_v1:post_code xpath="${fieldXpath}" required="true" title="postcode" additionalAttributes=" data-rule-validAddress='${name}' data-msg-validAddress='Please enter a valid postcode' " disableErrorContainer="${disableErrorContainer}" />
+        <field_v1:post_code xpath="${fieldXpath}" required="true" title="postcode" additionalAttributes=" data-rule-validAddress='${name}' data-msg-validAddress='Please enter a valid postcode' " disableErrorContainer="${false}" />
     </form_v4:row>
 
     <%-- SUBURB DROPDOWN (NON STD) --%>
@@ -189,7 +189,7 @@
 <field_v1:hidden xpath="${xpath}/suburbName" />
 <c:choose>
     <c:when test="${not empty stateValidationField}">
-        <field_v2:validatedHiddenField xpath="${xpath}/state" validationErrorPlacementSelector="${stateValidationField}" additionalAttributes=" required data-rule-matchStates='true' " />
+        <field_v2:validatedHiddenField xpath="${xpath}/state" validationErrorPlacementSelector="${stateValidationField}" additionalAttributes=" required data-rule-matchStates='true' " disableErrorContainer="${false}" />
     </c:when>
     <c:otherwise>
         <field_v1:hidden xpath="${xpath}/state" />

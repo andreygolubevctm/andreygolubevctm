@@ -16,10 +16,14 @@
 <c:set var="inputType"><field_v2:get_numeric_input_type /></c:set>
 
 <c:if test="${required}">
-	<c:set var="requiredAttribute" value=' required data-msg-required="Please enter ${title}"' />
+	<c:set var="requiredAttribute" value=' required data-msg-required="Please enter a ${title}."' />
 </c:if>
 <c:if test="${disableErrorContainer eq true}">
 	<c:set var="additionalAttributes" value="${additionalAttributes} data-disable-error-container='true' " />
+</c:if>
+
+<c:if test="${not fn:contains(data['health/situation/location'], ' ')}">
+	<c:set var="value"><c:out value="${data['health/situation/location']}" escapeXml="true"/></c:set>
 </c:if>
 
 <%-- HTML --%>

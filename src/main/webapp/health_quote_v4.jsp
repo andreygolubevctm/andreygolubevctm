@@ -57,7 +57,7 @@
                 <c:if test="${not empty callCentreNumber}">
                     <div class="navbar-collapse header-collapse-contact collapse">
                         <ul class="nav navbar-nav navbar-right callCentreNumberSection">
-                            <li class="navbar-text">Confused? Talk to our experts now.</li>
+                            <li class="navbar-text hidden-sm">Confused? Talk to our experts now.</li>
                             <li>
                                 <div class="navbar-text hidden-xs" data-livechat="target">
                                     Call <a href="javascript:;" data-toggle="dialog"
