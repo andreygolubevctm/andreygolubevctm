@@ -52,6 +52,16 @@ public class HomeQuoteRequest {
         return clientIp;
     }
 
+    private LandlordDetails landlordDetails;
+
+    public LandlordDetails getLandlordDetails() {
+        return landlordDetails;
+    }
+
+    public void setLandlordDetails(LandlordDetails landlordDetails) {
+        this.landlordDetails = landlordDetails;
+    }
+
     public HomeQuoteRequest setClientIp(String clientIp) {
         this.clientIp = clientIp;
         return this;
