@@ -64,12 +64,21 @@
 
 	function toggleLandlords() {
 		var landlordSwitch = $(elements.lookingForLandlord + ' input:radio:checked').val();
-		if(meerkat.site.isLandlord || (landlordSwitch === 'Y' && !meerkat.site.isLandlord && isHomeRented())) {
+		// Landlords is active, but the user said no to landlord journey OR home is not rented.
+		if ((meerkat.site.isLandlord && landlordSwitch === 'N') || !isHomeRented()) {
+			meerkat.site.isLandlord = false;
+			meerkat.modules.home.toggleLandlords();
+
+		// Landlords is active OR user wants to enable landlords.
+		} else if (meerkat.site.isLandlord || (landlordSwitch === 'Y' && isHomeRented())) {
 			meerkat.site.isLandlord = true;
 			meerkat.modules.home.toggleLandlords();
+
+		// Otherwise, disable landlords.
 		} else {
 			meerkat.site.isLandlord = false;
 			meerkat.modules.home.toggleLandlords();
+
 		}
 	}
 
@@ -85,26 +94,30 @@
 
 	/* Here you put all functions for use in your module */
 	function togglePropertyOccupancyFields(speed) {
-
 		var ownProperty = $('input:radio[name='+elements.ownProperty+']:checked').val();
 		var howOccupied =  $(elements.howOccupied).find('option:selected').val();
 		var isItPrincipalResidence = isPrincipalResidence();
 		var $howOccupied = $(elements.howOccupied);
+
 		if (isItPrincipalResidence === null || (!isItPrincipalResidence && (typeof ownProperty == 'undefined' || ownProperty == "N"))){
 			$(elements.howOccupiedRow).slideUp(speed);
 			$(elements.whenMovedInYearRow+', '+elements.whenMovedInMonthRow).slideUp(speed);
+
 		} else {
 			if(isItPrincipalResidence){
 				$(elements.lookingForLandlord).slideUp(speed);
 				$(elements.howOccupiedRow).slideUp(speed);
 				$(elements.whenMovedInYearRow).slideDown(speed);
 				yearSelected(speed);
+
 			} else {
 				if (isHomeRented()) {
 					$(elements.lookingForLandlord).slideDown(speed);
+
 				}
 				$(elements.howOccupiedRow).slideDown(speed);
 				$(elements.whenMovedInYearRow+', '+elements.whenMovedInMonthRow).slideUp(speed);
+
 			}
 		}
 	}
