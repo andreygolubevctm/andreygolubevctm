@@ -64,7 +64,7 @@
 
 	function toggleLandlords() {
 		var landlordSwitch = $(elements.lookingForLandlord + ' input:radio:checked').val();
-		if(landlordSwitch === 'Y' && !meerkat.site.isLandlord && isHomeRented()) {
+		if(meerkat.site.isLandlord || (landlordSwitch === 'Y' && !meerkat.site.isLandlord && isHomeRented())) {
 			meerkat.site.isLandlord = true;
 			meerkat.modules.home.toggleLandlords();
 		} else {
