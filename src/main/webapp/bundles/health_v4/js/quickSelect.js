@@ -36,7 +36,7 @@
                     (isHospital ? meerkat.modules.benefitsSwitch.isHospitalOn() : meerkat.modules.benefitsSwitch.isExtrasOn()) :
                     false;
 
-            if (isBenefitsSwitchedOn) {
+            if (!meerkat.modules.splitTest.isActive(2) || isBenefitsSwitchedOn) {
                 var selectedItems = isHospital ? meerkat.modules.benefitsModel.getHospital() : meerkat.modules.benefitsModel.getExtras(),
                     options = {
                         isHospital: isHospital,
