@@ -5,6 +5,7 @@ import com.ctm.web.homecontents.model.form.*;
 import com.ctm.web.homecontents.providers.model.request.Address;
 import com.ctm.web.homecontents.providers.model.request.BusinessActivity;
 import com.ctm.web.homecontents.providers.model.request.*;
+import com.ctm.web.homecontents.providers.model.request.LandlordDetails;
 import com.ctm.web.homecontents.providers.model.request.Occupancy;
 import com.ctm.web.homecontents.providers.model.request.PolicyHolder;
 import com.ctm.web.homecontents.providers.model.request.Property;
@@ -87,8 +88,24 @@ public class RequestAdapter {
 
         quoteRequest.setClientIp(homeRequest.getClientIpAddress());
 
+        com.ctm.web.homecontents.model.form.LandlordDetails landlordDetails = quote.getLandlordDetails();
+
+        if(landlordDetails != null){
+            quoteRequest.setLandlordDetails(createLandlordDetails(landlordDetails));
+        }
+
         return quoteRequest;
 
+    }
+
+    private static LandlordDetails createLandlordDetails(com.ctm.web.homecontents.model.form.LandlordDetails landlordDetails){
+        LandlordDetails landlordDetailsProvider = new LandlordDetails();
+        landlordDetailsProvider.setNumberOfTenants(landlordDetails.getNumberOfTenants());
+        landlordDetailsProvider.setPropertyManagedBy(landlordDetails.getPropertyManagedBy());
+        landlordDetailsProvider.setValidRentalLease(landlordDetails.isValidRentalLease());
+        landlordDetailsProvider.setWeeklyRentValue(landlordDetails.getWeeklyRentValue());
+        landlordDetailsProvider.setPendingRentalLease(landlordDetails.getPendingRentalLease());
+        return landlordDetailsProvider;
     }
 
     private static PreviousCover createPreviousCover(Disclosures disclosures) {
