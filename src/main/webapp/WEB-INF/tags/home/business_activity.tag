@@ -11,21 +11,29 @@
 
 <form_v2:fieldset legend="Business Activity">
 
-
-<div class="notLandlord">
-	<%-- Business Conducted --%>
 	<c:set var="fieldXpath" value="${xpath}/conducted" />
-	<form_v2:row fieldXpath="${fieldXpath}" label="Is there any business activity conducted from the home?">
-		<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Business Activity" quoteChar="\"" /></c:set>
-		<field_v2:array_radio xpath="${fieldXpath}"
-			required="true"
-			className="pretty_buttons"
-			title="if there is any business activity"
-			items="Y=Yes,N=No"
-			id=""
-			additionalLabelAttributes="${analyticsAttr}" />
-	</form_v2:row>
-
+	<c:choose>
+		<c:when test="${landlord eq true}">
+			<field_v1:hidden 
+				xpath="${fieldXpath}"
+				defaultValue="N" />
+		</c:when>
+		<c:otherwise>
+			<%-- Business Conducted --%>
+			<form_v2:row fieldXpath="${fieldXpath}" label="Is there any business activity conducted from the home?">
+				<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Business Activity" quoteChar="\"" /></c:set>
+				<field_v2:array_radio xpath="${fieldXpath}"
+					required="true"
+					className="pretty_buttons"
+					title="if there is any business activity"
+					items="Y=Yes,N=No"
+					id=""
+					additionalLabelAttributes="${analyticsAttr}" />
+			</form_v2:row>
+		</c:otherwise>
+	</c:choose>
+	
+<div class="notLandlord">
 	<%-- Business Type --%>
 	<c:set var="fieldXpath" value="${xpath}/businessType" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="What type of business is it?" className="businessType">

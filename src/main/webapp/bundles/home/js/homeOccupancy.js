@@ -15,7 +15,7 @@
 	var currentTime = new Date();
 	var currentYear = currentTime.getFullYear();
 	var currentMonth = currentTime.getMonth() + 1;
-
+	var isNormalJourney = $('.principalResidence').length > 0;
 	var elements = {
 			name:					"home_occupancy",
 			ownProperty:			"home_occupancy_ownProperty",
@@ -51,15 +51,18 @@
 		}
 	}
 
-	function toggleLookingForLandlord(speed) {
+	function homeOccupiedChange(speed) {
 		var $landlordField = $(elements.lookingForLandlord);
 
-		if (isHomeRented()) {
+		if (isHomeRented() && isNormalJourney) {
 			$landlordField.slideDown(speed);
 		} else {
 			$landlordField.slideUp(speed);
+			if (meerkat.site.isLandlord && isNormalJourney && !isHomeRented()) {
+				meerkat.site.isLandlord = false;
+				meerkat.modules.home.toggleLandlords();
+			}
 		}
-		toggleLandlords();
 	}
 
 	function toggleLandlords() {
@@ -98,8 +101,9 @@
 		var howOccupied =  $(elements.howOccupied).find('option:selected').val();
 		var isItPrincipalResidence = isPrincipalResidence();
 		var $howOccupied = $(elements.howOccupied);
+		var isLandlord = meerkat.site.isLandlord;
 
-		if (isItPrincipalResidence === null || (!isItPrincipalResidence && (typeof ownProperty == 'undefined' || ownProperty == "N"))){
+		if ((isItPrincipalResidence === null || (!isItPrincipalResidence && (typeof ownProperty == 'undefined' || ownProperty == "N"))) && !isLandlord) {
 			$(elements.howOccupiedRow).slideUp(speed);
 			$(elements.whenMovedInYearRow+', '+elements.whenMovedInMonthRow).slideUp(speed);
 
@@ -109,11 +113,17 @@
 				$(elements.howOccupiedRow).slideUp(speed);
 				$(elements.whenMovedInYearRow).slideDown(speed);
 				yearSelected(speed);
-
+				if(isLandlord) {
+					meerkat.site.isLandlord = false;
+					meerkat.modules.home.toggleLandlords();
+				}
 			} else {
-				if (isHomeRented()) {
+				if (isHomeRented() && !isLandlord) {
 					$(elements.lookingForLandlord).slideDown(speed);
-
+					if ($(elements.lookingForLandlord + ' input:checked').val() === "Y") {
+						meerkat.site.isLandlord = true;
+						meerkat.modules.home.toggleLandlords();
+					}
 				}
 				$(elements.howOccupiedRow).slideDown(speed);
 				$(elements.whenMovedInYearRow+', '+elements.whenMovedInMonthRow).slideUp(speed);
@@ -143,7 +153,7 @@
 	function applyEventListeners() {
 		$(document).ready(function() {
 			$(elements.howOccupied).on('change', function() {
-				toggleLookingForLandlord();
+				homeOccupiedChange();
 			});
 
 			$('#'+elements.whenMovedInYear).on('change', function() {
@@ -174,7 +184,7 @@
 			log("[HomeOccupancy] Initialised"); //purely informational
 			applyEventListeners();
 			togglePropertyOccupancyFields(0);
-			toggleLookingForLandlord(0);
+			homeOccupiedChange(0);
 			togglePendingRentalLease(0);
 		}
 	}

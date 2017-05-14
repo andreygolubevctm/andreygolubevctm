@@ -27,21 +27,30 @@
 	<%-- Address --%>
 	<c:set var="fieldXpath" value="${baseXpath}/property/address" />
 	<group_v2:elastic_address xpath="${fieldXpath}" type="R" />
+	
+	<c:set var="fieldXpath" value="${xpath}/principalResidence" />
+	<c:choose>
+		<c:when test="${landlord eq true}">
+			<field_v1:hidden 
+				xpath="${fieldXpath}"
+				defaultValue="N" />
+		</c:when>
+		<c:otherwise>
+			<%-- PPoR --%>
+			<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Principal Residence - Tool Tip" quoteChar="\"" /></c:set>
+			<form_v2:row fieldXpath="${fieldXpath}" label="Is it your principal place of residence?" helpId="503" tooltipAttributes="${analyticsAttr}">
+				<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Principal Residence" quoteChar="\"" /></c:set>
+				<field_v2:array_radio xpath="${fieldXpath}"
+					className="principalResidence pretty_buttons"
+					required="true"
+					items="Y=Yes,N=No"
+					title="if this is your principal place of residence"
+					additionalLabelAttributes="${analyticsAttr}" />
+			</form_v2:row>
+		</c:otherwise>
+	</c:choose>
+	
 
-	<div class="notLandlord">
-		<%-- PPoR --%>
-		<c:set var="fieldXpath" value="${xpath}/principalResidence" />
-		<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Principal Residence - Tool Tip" quoteChar="\"" /></c:set>
-		<form_v2:row fieldXpath="${fieldXpath}" label="Is it your principal place of residence?" helpId="503" tooltipAttributes="${analyticsAttr}">
-			<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Principal Residence" quoteChar="\"" /></c:set>
-			<field_v2:array_radio xpath="${fieldXpath}"
-				className="principalResidence pretty_buttons"
-				required="true"
-				items="Y=Yes,N=No"
-				title="if this is your principal place of residence"
-				additionalLabelAttributes="${analyticsAttr}" />
-		</form_v2:row>
-	</div>
 
 	<%-- How Occupied --%>
 	<c:set var="fieldXpath" value="${xpath}/howOccupied" />
