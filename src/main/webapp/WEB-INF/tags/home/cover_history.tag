@@ -47,16 +47,6 @@
 				additionalLabelAttributes="${analyticsAttr}" />
 		</form_v2:row>
 	</div>
-	<%-- Previous Insurance --%>
-	<c:set var="fieldXpath" value="${xpath}/previousInsurance" />
-	<form_v2:row fieldXpath="${fieldXpath}" label="Have you had home and/or contents insurance in the last 5 years?">
-		<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Previous Insurance" quoteChar="\"" /></c:set>
-		<field_v2:array_radio xpath="${fieldXpath}"
-			required="true"
-			items="Y=Yes,N=No"
-			title="if you have had insurance in the last 5 years"
-			additionalLabelAttributes="${analyticsAttr}" />
-	</form_v2:row>
 
 	<%-- At the current address --%>
 	<c:set var="fieldXpath" value="${xpath}/atCurrentAddress" />
