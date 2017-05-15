@@ -184,7 +184,7 @@ function init_address(name, residentalAddress , isPostalAddress, defaultSuburbSe
 	};
 
     nonStdFld.change(function () {
-        if (this.checked) {
+        if ($(this).is(':checked')) {
             postCodeFld.trigger('change');
         }
 	});
