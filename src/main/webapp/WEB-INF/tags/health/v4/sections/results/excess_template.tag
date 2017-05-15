@@ -7,7 +7,7 @@
     {{ var module = meerkat.modules.healthResultsTemplate; }}
     {{ var feature = module.getItem(obj, Features.getPageStructure(obj.featuresStructureIndexToUse)[0]); }}
     {{ var excessData = module.getExcessPrices(obj); if(excessData.hasExcesses) { }}
-    <div class="cell category expandable collapsed ">
+    <div class="cell category expandable">
         <div class="labelInColumn category expandable collapsed">
             <div class="content" data-featureId="{{= feature.id }}">
                 <div class="contentInner">
