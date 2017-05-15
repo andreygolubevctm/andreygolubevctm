@@ -76,7 +76,7 @@
                 <c:if test="${callCentre}">
                     <c:set var="fieldXpath" value="${xpath}/cover" />
                     <c:set var="fieldXpathName" value="${go:nameFromXpath(fieldXpath)}_wrapper" />
-                    <form_v3:row label="Private Health Insurance works in conjunction with Medicare, so just to confim that you are covered by a Blue or Green Medicare Card?" fieldXpath="${fieldXpath}" id="${fieldXpathName}" className="health_situation_medicare text-danger" helpId="564">
+                    <form_v3:row label="Private Health Insurance works in conjunction with Medicare, so just to confirm, do all people to be covered on this policy have a blue or green Medicare card?" fieldXpath="${fieldXpath}" id="${fieldXpathName}" className="health_situation_medicare text-danger" helpId="564">
                         <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your Medicare card cover" required="true" className="health-medicare_details-card" id="${name}_cover" additionalAttributes="data-rule-isCheckedYes='true' data-msg-isCheckedYes='Unfortunately we cannot continue with your quote'" />
                     </form_v3:row>
                 </c:if>

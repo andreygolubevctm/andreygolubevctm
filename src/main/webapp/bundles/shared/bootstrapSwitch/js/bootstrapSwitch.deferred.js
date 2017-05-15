@@ -11,18 +11,13 @@
 
     function bindSwitch() {
         if ($('input.checkbox-switch').length && _.isFunction($.fn.bootstrapSwitch)) {
-            $('input.checkbox-switch').bootstrapSwitch()
-                .bootstrapSwitch('setOnLabel', defaults.on)
-                .bootstrapSwitch('setOffLabel', defaults.off);
+            $('input.checkbox-switch').bootstrapSwitch();
         }
     }
     function init() {
         $(document).ready(function () {
             bindSwitch();
         });
-
-        // Needs to be subscribed to a onload event, as bootstrapSwitch module won't be initialised.
-        meerkat.messaging.subscribe(meerkat.modules.events.healthBenefitsStep.RESET_SWITCH_STATE, resetState);
     }
 
     function resetState(eventObject) {

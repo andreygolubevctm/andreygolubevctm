@@ -151,6 +151,10 @@ public class ResponseAdapter {
         price.setMonthlyPremium(quotePrice.getMonthlyPremium());
         price.setMonthlyFirstMonth(quotePrice.getMonthlyFirstMonth());
         price.setAnnualisedMonthlyPremium(quotePrice.getAnnualisedMonthlyPremium());
+        price.setShowMonthlyTotal(quotePrice.isShowMonthlyTotal());
+        price.setMonthlyAvailable(quotePrice.isMonthlyAvailable());
+        price.setAnnualAvailable(quotePrice.isAnnualAvailable());
+        price.setPriceDisclaimer(quotePrice.getPriceDisclaimer());
         return price;
     }
 

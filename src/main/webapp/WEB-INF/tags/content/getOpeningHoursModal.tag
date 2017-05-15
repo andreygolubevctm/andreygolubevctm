@@ -5,6 +5,7 @@
 <jsp:useBean id="openingHoursService" class="com.ctm.web.core.openinghours.services.OpeningHoursService" scope="page" />
 <c:set var="callCentreNumber" scope="request"><content:get key="callCentreNumber"/></c:set>
 <c:set var="callCentreAppNumber" scope="request"><content:get key="callCentreAppNumber"/></c:set>
+<c:set var="openingHoursTimeZone"><content:get key="openingHoursTimeZone" /></c:set>
 
 <div class="all-opening-hours">
 	<div class="row">
@@ -53,7 +54,7 @@
 					</div>
 				</c:if>
 			</div><br/>
-			<p>All Australian based call centre hours are AEDT</p>
+			<p>All Australian based call centre hours are ${openingHoursTimeZone}</p>
 		</div>
 		<div class="call-details col-md-6" data-padding-pos="all" >
 			<div class="row">

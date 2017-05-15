@@ -52,14 +52,7 @@
       padding-bottom: 10px;
     }
   }
-  /* Display Utilities only on hover of result insert */
-  .display-on-hover {
-    .opacity(0);
-    .transition(~"opacity ease-in-out .25s");
-  }
-  &:hover .display-on-hover {
-    .opacity(1);
-  }
+
   .product-pinned & {
     .pin-result {
       display: none;
@@ -189,16 +182,30 @@
 
   // Each product column is a result-row, floated left so they fit beside each other.
   .result-row {
-    border: 1px solid @results-border-color;
-    &.pinned {
-      border-color: @theme-accent-4;
+    border: 2px solid @results-border-color;
+
+    /* Display Utilities only on hover of result insert */
+    .display-on-hover {
+      .opacity(0);
+      .transition(~"opacity ease-in-out .25s");
     }
-    &.not-pinned:hover {
-      border-color: @results-border-color-pinned;
+
+    &:hover .display-on-hover {
+      .opacity(1);
+    }
+
+    &.hovered {
+      border: 2px solid @theme-tertiary;
     }
 
     &.pinned {
+      border: 2px solid @theme-accent-4;
       float: left;
+
+      &.hovered {
+        border: 2px solid @theme-accent-4;
+      }
+
       .display-on-hover {
         .opacity(1);
       }

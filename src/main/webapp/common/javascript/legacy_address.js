@@ -183,6 +183,12 @@ function init_address(name, residentalAddress , isPostalAddress, defaultSuburbSe
 		);
 	};
 
+    nonStdFld.change(function () {
+        if (this.checked) {
+            postCodeFld.trigger('change');
+        }
+	});
+
 	// Handle prefilled fields (e.g. retrieved quote)
 	postCodeFld.data('previous', postCodeFld.val());
 	updateSuburb(postCodeFld.val());

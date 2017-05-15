@@ -89,8 +89,8 @@
 		<a href="{{= obj.pdsaUrl }}" target="_blank" class="showDoc btn btn-sm btn-download">Product Disclosure Statement</a>
 	{{ } else { }}
 		<a href="{{= obj.pdsaUrl }}" target="_blank" class="showDoc btn btn-sm btn-download">Product Disclosure A</a>
-	<a href="{{= obj.pdsbUrl }}" target="_blank" class="showDoc btn btn-sm btn-download">Product Disclosure B</a>
-		{{ if(typeof pdscUrl != 'undefined' && pdscUrl != '') { }}
+		<a href="{{= obj.pdsbUrl }}" target="_blank" class="showDoc btn btn-sm btn-download">Product Disclosure B</a>
+		{{ if(typeof obj.pdscUrl != 'undefined' && obj.pdscUrl != '') { }}
 			<a href="{{= obj.pdscUrl }}" target="_blank" class="showDoc btn btn-sm btn-download btn-download-pds-c">Product Disclosure C</a>
 		{{ } }}
 	{{ } }}

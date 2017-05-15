@@ -4,11 +4,11 @@
 
 <core_v1:js_template id="monthly-price-template">
     <div class="frequency monthly clearfix" data-availability="{{= obj.available }}">
-        <div class="frequencyAmount">{{= '$' }}{{= obj.price.monthlyPremium.toFixed(2) }}</div>
+        <div class="frequencyAmount">{{= '$' }}{{= obj.price.monthlyPremiumFormatted }}</div>
         <div class="frequencyTitle">Monthly Price</div>
         <div class="monthlyBreakdown">
-            <span class="nowrap"><span class="firstPayment"><b>1st Month:</b> {{= '$' }}{{= obj.price.monthlyFirstMonth.toFixed(2) }}</span></span>
-            <span class="nowrap"><span class="totalPayment"><b>Total:</b> {{= '$' }}{{= obj.price.annualisedMonthlyPremium.toFixed(2) }}</span></span>
+            <span class="nowrap"><span class="firstPayment"><b>1st Month:</b> {{= '$' }}{{= obj.price.monthlyFirstMonthFormatted }}</span></span>
+            <span class="nowrap"><span class="totalPayment"><b>Total:</b> {{= '$' }}{{= obj.price.annualisedMonthlyPremiumFormatted }}</span></span>
         </div>
     </div>
 </core_v1:js_template>
@@ -22,9 +22,14 @@
 
 <core_v1:js_template id="title-download-special-template">
     {{ var productTitle = !_.isUndefined(obj.productName) ? obj.productName : 'Unknown product name'; }}
+    {{ var priceDisclaimer = (!_.isUndefined(obj.price.priceDisclaimer) && !_.isNull(obj.price.priceDisclaimer) && obj.price.priceDisclaimer.length > 0) ? obj.price.priceDisclaimer : ''; }}
 
     <div class="title-download-special-container">
         <h2 class="productTitle">{{= productTitle }}</h2>
+        {{ if (priceDisclaimer.length > 0) { }}
+            <a class="small priceDisclaimer" href="javascript:;">{{= priceDisclaimer }}</a>
+            <div class="priceDisclaimer-content hidden"><p class="priceDisclaimer-para">{{= obj.disclaimer }}</p></div>
+        {{ } }}
 
         <a href="javascript:;" class="link-more-info" data-productId="{{= obj.productId }}">View product details and download disclosure statements</a>
 

@@ -23,6 +23,11 @@
 	<%--<div class="selectionStatus extras">Your extras benefits selection <span>0</span></div>--%>
 	<%--<div class="selectionStatus hospital">Your hospital benefits selection <span>0</span></div>--%>
 <%--</div>--%>
+
+<c:if test="${not empty benefitsSwitchSplitTest and benefitsSwitchSplitTest eq true}">
+	<health_v4:benefits_switch_off_message />
+</c:if>
+
 <div class="benefitsOverflow">
 <c:forEach items="${resultTemplateItems}" var="selectedValue">
 	<health_v4_insuranceprefs:benefitsItem item="${selectedValue}"  />

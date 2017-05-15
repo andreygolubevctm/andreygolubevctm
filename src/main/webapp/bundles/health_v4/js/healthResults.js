@@ -492,6 +492,10 @@
                 $('.featuresList .extrasCover, .featuresList .selection_extra').addClass('hidden');
             }
 
+            $(Results.settings.elements.resultsContainer+' '+Results.settings.elements.rows).hover(function() {
+                $(this).toggleClass('hovered');
+            });
+
         });
     }
 
@@ -832,7 +836,7 @@
     }
 
     function onResultsLoaded() {
-
+        meerkat.modules.coupon.dealWithAddedCouponHeight();
         if (meerkat.modules.deviceMediaState.get() == "xs") {
             startColumnWidthTracking();
         }

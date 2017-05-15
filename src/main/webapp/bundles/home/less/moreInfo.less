@@ -98,8 +98,12 @@
 		padding-top: 3px;
 	}
 
-	.frequencyTitle, .quoteNumberTitle,
-	.homeExcessTitle, .contentsExcessTitle {
+	.frequencyTitle {
+		text-align: left;
+		display: block;
+	}
+
+	.quoteNumberTitle, .homeExcessTitle, .contentsExcessTitle {
 		text-align: right;
 		display: block;
 
@@ -159,13 +163,18 @@
 		}
 	}
 
-	.frequency,
-	.excess {
-			text-align: right;
+	.frequency {
+		text-align: left;
+		padding-top: 10px;
 	}
+
+	.excess {
+		text-align: right;
+	}
+
 	.totalPayment {
-			display: block;
-		}
+		display: block;
+	}
 
 	.quoteNumberTitle {
 		@media (min-width: @screen-md) {
