@@ -33,7 +33,11 @@
 		eventSubscriptions();
 
 		breakpointTracking();
-
+	}
+	
+	function affixFix() {
+		var $navbar = $('#navbar-main');
+		$navbar.data('bs.affix').options.offset.top = $navbar.offset().top;
 	}
 
 	function onReturnToPage(){
@@ -222,11 +226,14 @@
 //TODO
 		// When the navar docks/undocks
 		meerkat.messaging.subscribe(meerkatEvents.affix.AFFIXED, function navbarFixed() {
-			$('#resultsPage').css('margin-top', '35px');
+			var margin = (meerkat.modules.deviceMediaState.get() === 'lg') ? '-60px' : '-80px';
+			$('#resultsPage').css('margin-top', margin);
+			$('.productSummary .headerButtonWrapper').css('visibility', 'hidden');
 			$(Results.settings.elements.resultsContainer).addClass('affixed-settings');
 		});
 		meerkat.messaging.subscribe(meerkatEvents.affix.UNAFFIXED, function navbarUnfixed() {
 			$('#resultsPage').css('margin-top', '0');
+			$('.productSummary .headerButtonWrapper').css('visibility', 'visible');
 			$(Results.settings.elements.resultsContainer).removeClass('affixed-settings');
 		});
 
@@ -513,7 +520,7 @@
 				switchToPriceMode(false);
 				break;
 		}
-
+		affixFix();
 	}
 
 	function showNoResults() {
