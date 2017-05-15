@@ -15,7 +15,7 @@
                 </div>
             </div>
         </div>
-        <div class="children row excessDetailContainer text-center" data-fid="{{= feature.id }}">
+        <div class="children row excessDetailContainer text-center expanded " data-fid="{{= feature.id }}">
             <div class="col-xs-4">
                 <span class="excess-value">{{= excessData.perAdmission }}</span>
                 <p class="excess-label">/admission</p>
