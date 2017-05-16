@@ -1,3 +1,4 @@
+<%@ taglib prefix="logic" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
@@ -14,52 +15,95 @@
 <c:set var="callCentreHoursModal" scope="request"><content:getOpeningHoursModal /></c:set>
 <c:set var="callCentreCBModal" scope="request"><health_v4:callback_modal /></c:set>
 
-<layout_v1:remember_me_page title="Remember Me" bundleFileName="health_v4" displayNavigationBar="${false}">
+<layout_v1:journey_engine_page title="Health Quote" bundleFileName="health_v4" displayNavigationBar="${false}">
 
-	<jsp:attribute name="head">
-        <c:set var="isDev" value="${environmentService.getEnvironmentAsString() eq 'localhost' || environmentService.getEnvironmentAsString() eq 'NXI' || environmentService.getEnvironmentAsString() eq 'NXQ'}" />
-
-        <c:if test="${isDev eq true && !param['automated-test']}">
-            <script src="https://cdn.logrocket.com/LogRocket.min.js"></script>
-            <script>window.LogRocket && window.LogRocket.init('compare-the-market/web-ctm');</script>
-        </c:if>
-	</jsp:attribute>
+    <jsp:attribute name="head">
+    </jsp:attribute>
 
     <jsp:attribute name="head_meta">
-	</jsp:attribute>
+    </jsp:attribute>
 
     <jsp:attribute name="header">
         <c:if test="${not empty callCentreNumber}">
-             <div class="navbar-collapse header-collapse-contact collapse">
-                 <ul class="nav navbar-nav navbar-right callCentreNumberSection">
-                     <li class="navbar-text">Confused? Talk to our experts now.</li>
-                     <li>
-                         <div class="navbar-text hidden-xs" data-livechat="target">
-                             Call <a href="javascript:;" data-toggle="dialog"
-                                     data-content="#view_all_hours"
-                                     data-dialog-hash-id="view_all_hours"
-                                     data-title="Call Centre Hours" data-cache="true">
-                             <span class="noWrap callCentreNumber">${callCentreNumber}</span>
-                         </a> or <health_v4:callback_link /> ${callCentreCBModal}
-                         </div>
-
-                         <div id="view_all_hours" class="hidden">${callCentreHoursModal}</div>
-                     </li>
-                 </ul>
-             </div>
+            <div class="navbar-collapse header-collapse-contact collapse">
+                <ul class="nav navbar-nav navbar-right callCentreNumberSection">
+                    <li class="navbar-text">Confused? Talk to our experts now.</li>
+                    <li>
+                        <div class="navbar-text hidden-xs" data-livechat="target">
+                            Call <a href="javascript:;" data-toggle="dialog"
+                                    data-content="#view_all_hours"
+                                    data-dialog-hash-id="view_all_hours"
+                                    data-title="Call Centre Hours" data-cache="true">
+                            <span class="noWrap callCentreNumber">${callCentreNumber}</span>
+                            <span class="noWrap callCentreAppNumber">${callCentreAppNumber}</span>
+                        </a> or <health_v4:callback_link /> ${callCentreCBModal}
+                        </div>
+                        <div id="view_all_hours" class="hidden">${callCentreHoursModal}</div>
+                    </li>
+                </ul>
+            </div>
         </c:if>
-	</jsp:attribute>
+    </jsp:attribute>
 
-    <jsp:attribute name="form_bottom">
-	</jsp:attribute>
+    <jsp:attribute name="progress_bar">
+    </jsp:attribute>
 
-    <jsp:attribute name="footer">
-		<core_v1:whitelabeled_footer />
-	</jsp:attribute>
+    <jsp:attribute name="body_end">
+    </jsp:attribute>
+
+    <jsp:attribute name="additional_meerkat_scripts">
+        <c:if test="${callCentre}">
+            <script src="${assetUrl}assets/js/bundles/simples_health${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
+        </c:if>
+    </jsp:attribute>
 
     <jsp:attribute name="vertical_settings">
-	</jsp:attribute>
+        <health_v4:settings />
+    </jsp:attribute>
 
-    <jsp:attribute name="body_end" />
+    <jsp:attribute name="footer">
+        <health_v1:footer />
+    </jsp:attribute>
 
-</layout_v1:remember_me_page>
+    <jsp:attribute name="form_bottom">
+    </jsp:attribute>
+
+    <jsp:body>
+        <c:choose>
+            <c:when test="${pageSettings.getSetting('rememberMeEnabled') eq 'Y' and
+                        rememberMeService.hasRememberMe(pageContext.request, 'health') and
+                        (empty pageContext.request.queryString or fn:length(param.action) == 0) and
+                        empty param.preload and
+                        empty param.skipRemember and
+                        pageSettings.getBrandCode() eq 'ctm' and
+                        empty authenticatedData.login.user.uid and
+                        rememberMeService.hasPersonalInfoAndLoadData(pageContext.request, pageContext.response, 'health')}">
+                <div id="pageContent">
+                    <article class="container">
+                        <div class="remember-me text-center">
+                            <h1>Hi looks like you've compared health insurance with us before.</h1>
+                            <h2><a class="remember-me-remove" href="javascript:;">Not you?</a></h2>
+                            <h2>Enter your date of birth to review the products you found last time.</h2>
+
+                            <form id="rememberMeForm" class="remember-me-form">
+
+                                <form_v4:row label="Date of Birth" className="row primary_dob col-sm-offset-2">
+                                    <c:set var="fieldXpath" value="health/rememberme/dob" />
+                                    <field_v4:person_dob xpath="${fieldXpath}" title="your" required="true" ageMin="16" ageMax="120" disableErrorContainer="${false}" />
+                                </form_v4:row>
+
+                                <button type="submit" class="btn btn-lg btn-cta" id="submitButton"  name="submitButton" value="Submit">View Products and Prices <span class="icon icon-arrow-right"></span></button>
+                            </form>
+                            <a class="remember-me-remove" href="javascript:;">< Start a new quote</a>
+                        </div>
+                    </article>
+                </div>
+            </c:when>
+            <c:otherwise>
+                <c:redirect url="${pageSettings.getBaseUrl()}health_quote_v4.jsp" />
+            </c:otherwise>
+        </c:choose>
+        <%--Reward Campaign Template--%>
+        <reward:template_campaign_tile />
+    </jsp:body>
+</layout_v1:journey_engine_page>

@@ -48,36 +48,56 @@
         //     }
         // });
 
-        $('#rememberMeSubmit').click(function () {
-            event.preventDefault();
 
-            var d = $('#healthInputD').val();
-            var m = $('#healthInputM').val();
-            var y = $('#healthInputY').val();
+        $('#health_rememberme_dob').on("change keyup", function() {
+            console.log('s');
 
-            if(d !== "" && m !== "" && y !== ""){
-                var dob = d + "/" + m + "/" + y;
-                var data = {
-                    quoteType: 'health',
-                    userAnswer: dob
-                };
-                console.log(data);
+        });
 
-                meerkat.modules.comms.get({
-                    url: 'spring/rest/rememberme/quote/get.json',
-                    data: data,
-                    cache: true,
-                    errorLevel: "silent",
-                    onSuccess: function onSuccess(json) {
-                        console.log('yes!');
-                    },
-                    onError: function onError(obj, txt, errorThrown) {
-                        console.log(obj, errorThrown);
-                    }
-                });
-            } else{
+        $('#rememberMeForm').submit(function (e) {
+            e.preventDefault();
+            var $form = $(this);
 
+            // check if the input is valid
+            if(! $form.valid()) {
+                $('.primary_dob > .row-content').addClass('has-error');
+                $('#health_healthCover_primary_dob-error').wrap("<div class='error-field'></div>");
+
+                console.log('invalid');
+                return false;
             }
+            else {
+                $('.primary_dob > .row-content').find('.has-error').removeClass('has-error');
+                console.log('valid');
+            }
+            //
+            // var d = $('#healthInputD').val();
+            // var m = $('#healthInputM').val();
+            // var y = $('#healthInputY').val();
+            //
+            // if(d !== "" && m !== "" && y !== ""){
+            //     var dob = d + "/" + m + "/" + y;
+            //     var data = {
+            //         quoteType: 'health',
+            //         userAnswer: dob
+            //     };
+            //     console.log(data);
+            //
+            //     meerkat.modules.comms.get({
+            //         url: 'spring/rest/rememberme/quote/get.json',
+            //         data: data,
+            //         cache: true,
+            //         errorLevel: "silent",
+            //         onSuccess: function onSuccess(json) {
+            //             console.log('yes!');
+            //         },
+            //         onError: function onError(obj, txt, errorThrown) {
+            //             console.log(obj, errorThrown);
+            //         }
+            //     });
+            // } else{
+            //
+            // }
         });
     }
 
