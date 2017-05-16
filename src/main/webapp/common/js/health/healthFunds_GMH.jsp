@@ -48,7 +48,7 @@ var healthFunds_GMH = {
         meerkat.modules.healthCreditCard.render();
 
         <%--calendar for start cover--%>
-        meerkat.modules.healthPaymentStep.setCoverStartRange(0, 30);
+        meerkat.modules.healthCoverStartDate.setCoverStartRange(0, 30);
         healthFunds_GMH.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
 
         meerkat.messaging.subscribe(meerkat.modules.healthPaymentDate.events.POLICY_DATE_CHANGE, healthFunds_GMH.paymentDayChange);

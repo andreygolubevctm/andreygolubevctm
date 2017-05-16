@@ -59,7 +59,7 @@ var healthFunds_FRA = {
         meerkat.modules.healthCreditCard.render();
 
         <%--calendar for start cover--%>
-        meerkat.modules.healthPaymentStep.setCoverStartRange(0, 30);
+        meerkat.modules.healthCoverStartDate.setCoverStartRange(0, 30);
 
         <%-- Unset the refund optin radio buttons --%>
         healthFunds_FRA .$claimsAccountOptin.find("input:checked").each(function(){
