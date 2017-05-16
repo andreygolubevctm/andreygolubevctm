@@ -1178,85 +1178,102 @@ fieldset h3 {
   }
 }
 
-.has-switch {
-  border-radius: 20px;
-  min-width: 60px;
+#benefitsForm,
+#resultsForm {
+  .has-switch {
+    border: none;
+    border-radius: 13px;
+    min-width: 60px;
+    margin-top: -9px;
+    margin-left: 15px;
 
-  span, label, span.switch-right {
-    color: #ffffff;
-    text-align: center;
-  }
-  span {
-    &.switch-left {
+    span, label, span.switch-right {
       color: #ffffff;
-      background: @theme-secondary !important;
+      text-align: center;
+      text-transform: capitalize;
     }
+    span {
+      &.switch-left {
+        color: #ffffff;
+        background: transparent;
+      }
 
-    &.switch-small {
-      width: 45%;
-      font-weight: normal;
-      font-family: @font-family-theme-bold;
-    }
-    &.switch-right {
-      width: 45%;
-      padding-right: 2.25%;
-    }
-  }
-  label {
-    z-index: 9; //override default of 100
-
-    &:before {
-      content: '';
-      display: inline-block;
-      position: relative;
-    }
-
-    &.switch-small {
-      width: 10%;
-
-      &:before {
-        border: 1px solid #999999;
-        border-radius: 25px;
-        top: 8px;
-        margin-top: -11px;
-        margin-left: -8px;
-        width: 25px;
-        height: 25px;
-        background-color: #ededed;
+      &.switch-small {
+        width: 45%;
+        font-weight: normal;
+        font-family: @font-family-theme-bold;
+        line-height: 20px;
+      }
+      &.switch-right {
+        background: transparent;
+        color: #ffffff;
+        width: 45%;
+        padding-right: 2.25%;
       }
     }
+    label {
+      z-index: 9; //override default of 100
+
+      &:before {
+        content: '';
+        display: inline-block;
+        position: relative;
+      }
+
+      &.switch-small {
+        width: 10%;
+
+        &:before {
+          border-radius: 50%;
+          top: 6px;
+          margin-top: -11px;
+          margin-left: -6px;
+          width: 20px;
+          height: 20px;
+          background-color: #fff;
+        }
+      }
+    }
+
+    .switch-off {
+      &, label, span {
+        background-color: @theme-accent-3;
+      }
+    }
+
+    .switch-on {
+      &, label, span {
+        background-color: @theme-secondary;
+      }
+    }
+
+    // Special overrides
+    > div {
+      &.switch-animate {
+        .transition(left 0.1s);
+      }
+    }
+    html.lt-ie9 &.disabled {
+      > div, span, label {
+        .opacity(.5);
+      }
+    }
+    input[type=radio],
+    input[type=checkbox] {
+      display: block;
+      visibility: hidden;
+      position: absolute;
+    }
   }
 
-  .switch-off {
-    &, label, span {
-      background: @form-input-common-selected-bg-colour;
+  // Overrides for results filters
+  .results-filters-benefits {
+    .has-switch {
+      margin-top: -2px;
     }
-  }
-
-  .switch-on {
-    &, label, span {
-      background: @form-input-common-selected-bg-colour;
-    }
-  }
-
-  // Special overrides
-  > div {
-    &.switch-animate {
-      .transition(left 0.1s);
-    }
-  }
-  html.lt-ie9 &.disabled {
-    > div, span, label {
-      .opacity(.5);
-    }
-  }
-  input[type=radio],
-  input[type=checkbox] {
-    display: block;
-    visibility: hidden;
-    position: absolute;
   }
 }
+
 
 // Form control feedback states
 //

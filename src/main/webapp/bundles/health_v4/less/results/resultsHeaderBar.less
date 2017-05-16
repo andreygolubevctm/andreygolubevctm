@@ -98,7 +98,7 @@
       }
 
       .featuresList {
-        border: 1px solid @results-border-color;
+        border: 2px solid @results-border-color;
         margin: 0;
         padding: 15px 10px 0 10px;
         @media (@sm) {
@@ -120,8 +120,53 @@
     }
 
     .currentPage {
+      border: 0;
       .result {
         display: block;
+        border: 2px solid #ddd;
+        border-top: 0;
+        border-bottom: 0;
+      }
+      &.hovered {
+        border: 0;
+
+        .result {
+          border: 2px solid @theme-tertiary;
+          border-top: 0;
+          border-bottom: 0;
+
+          & + .featuresList{
+            border-color: @theme-tertiary;
+          }
+        }
+      }
+      .result,
+      &.hovered .result {
+        .results-header-inner-container{
+          border-bottom: 1px solid #ddd;
+          padding-bottom: 15px;
+          margin-bottom: 5px;
+        }
+      }
+
+      &.pinned {
+        border: 0;
+
+        &.hovered {
+          border: 0;
+
+          .result {
+            & + .featuresList {
+              border-color: @theme-accent-4;
+            }
+          }
+        }
+
+        .result {
+          border: 2px solid #008284;
+          border-top: 0;
+          border-bottom: 0;
+        }
       }
     }
   }
