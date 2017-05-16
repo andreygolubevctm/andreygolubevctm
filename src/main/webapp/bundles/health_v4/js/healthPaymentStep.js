@@ -269,7 +269,6 @@
 
 	// Calls the server for a new premium price based on current selections.
 	function updatePremium() {
-console.info("@@@ UPDATE PREMIUM");
 		// fire the tracking call
 		var data = {
 			actionStep: ' health application premium update'
