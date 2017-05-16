@@ -5,6 +5,8 @@
 <jsp:useBean id="sessionUtils" class="com.ctm.web.core.utils.SessionUtils" />
 <session:new verticalCode="HEALTH" authenticated="true" />
 
+<jsp:useBean id="rememberMeService" class="com.ctm.web.core.rememberme.services.RememberMeService" />
+
 <%-- Redirect if Confirmation Page --%>
 <health_v1:redirect_rules />
 
@@ -18,6 +20,18 @@
 </c:if>
 
 <c:choose>
+    <c:when test="${pageSettings.getSetting('rememberMeEnabled') eq 'Y' and
+                    rememberMeService.hasRememberMe(pageContext.request, 'health') and
+                    (empty pageContext.request.queryString or fn:length(param.action) == 0) and
+                    empty param.preload and
+                    empty param.skipRemember and
+                    pageSettings.getBrandCode() eq 'ctm' and
+                    empty authenticatedData.login.user.uid and
+                    rememberMeService.hasPersonalInfoAndLoadData(pageContext.request, pageContext.response, 'health')}">
+
+        <c:redirect url="${pageSettings.getBaseUrl()}remember_me.jsp" />
+
+    </c:when>
     <c:when test="${not callCentre}">
 
         <%-- ####### PRE JOURNEY SETUP ####### --%>

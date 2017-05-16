@@ -24,6 +24,7 @@ public class RememberMeController {
     private static final Logger LOGGER = LoggerFactory.getLogger(RememberMeController.class);
 
     private static final String QUOTE_GET_JSON = "/quote/get.json";
+    private static final String QUOTE_DELETE_COOKIE_JSON = "/quote/deleteCookie.json";
     private static final String QUOTE_TYPE = "quoteType";
     private static final String QUERY_VALUE = "userAnswer";
 
@@ -43,12 +44,12 @@ public class RememberMeController {
         Integer accessTokenCounter;
 
         try {
-            if (RememberMeService.isRememberMeEnabled(SettingsService.getPageSettingsForPage(request))) {
+          //  if (RememberMeService.isRememberMeEnabled(SettingsService.getPageSettingsForPage(request))) {
                 isValidAnswer = rememberMeService.validateAnswerAndLoadData(vertical, userAnswer, request);
                 rememberMeService.updateAttemptsCounter(request, response, vertical);
-            } else {
-                response.sendRedirect(VerticalSettings.getHomePageJsp(vertical));
-            }
+          //  } else {
+          //      response.sendRedirect(VerticalSettings.getHomePageJsp(vertical));
+          //  }
         } catch (Exception ex) {
             LOGGER.error("Error validating the  personal question", ex);
             response.sendRedirect(VerticalSettings.getHomePageJsp(vertical));
@@ -58,5 +59,16 @@ public class RememberMeController {
             rememberMeService.removeAttemptsSessionAttribute(vertical, request);
         }
         return isValidAnswer;
+    }
+
+
+    @RequestMapping(value = QUOTE_DELETE_COOKIE_JSON, method = RequestMethod.POST)
+    public boolean deleteCookie(@RequestParam(QUOTE_TYPE) final String vertical,
+                                 final HttpServletRequest request,
+                                 final HttpServletResponse response) throws IOException, GeneralSecurityException {
+        rememberMeService.deleteCookie(vertical, response);
+        rememberMeService.removeAttemptsSessionAttribute(vertical, request);
+
+        return true;
     }
 }

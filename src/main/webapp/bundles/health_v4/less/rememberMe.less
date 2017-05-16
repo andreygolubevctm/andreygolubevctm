@@ -1,0 +1,33 @@
+.remember-me {
+  min-height: 500px;
+
+  h1, h2, h3, h4, h5, h6 {
+    color: #333333;
+  }
+
+  &-form {
+    margin-bottom: 20px;
+    .btn {
+      display: inline-block;
+    }
+    .form-group {
+      border-bottom: 0;
+    }
+    .primary_dob {
+
+      @media (@xs-only) {
+        .control-label {
+          margin-bottom: 15px;
+          width: 100%;
+        }
+      }
+
+      @media (@sm) {
+        .control-label {
+          text-align: right;
+          line-height: 2.5;
+        }
+      }
+    }
+  }
+}
