@@ -1,3 +1,9 @@
+body.jeinit.remember-me-page {
+  .journeyEngineLoader {
+    display: none;
+  }
+}
+
 .remember-me {
   min-height: 500px;
 
@@ -13,7 +19,7 @@
     .form-group {
       border-bottom: 0;
     }
-    .primary_dob {
+    .remember-me-dob-group {
 
       @media (@xs-only) {
         .control-label {
@@ -23,6 +29,8 @@
       }
 
       label.error {
+        color: @theme-accent-3;
+        font-size: 0.9em;
         text-align: left;
         display: block;
       }
@@ -34,6 +42,7 @@
         }
 
         .control-label {
+          padding-top: 0;
           text-align: right;
           line-height: 2.5;
           width: auto;

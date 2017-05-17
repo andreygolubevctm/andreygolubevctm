@@ -51,7 +51,7 @@ public class RememberMeController {
           //      response.sendRedirect(VerticalSettings.getHomePageJsp(vertical));
           //  }
         } catch (Exception ex) {
-            LOGGER.error("Error validating the  personal question", ex);
+            LOGGER.error("Error validating the personal question", ex);
             response.sendRedirect(VerticalSettings.getHomePageJsp(vertical));
         }
         if (isValidAnswer) {

@@ -15,7 +15,7 @@
 <c:set var="callCentreHoursModal" scope="request"><content:getOpeningHoursModal /></c:set>
 <c:set var="callCentreCBModal" scope="request"><health_v4:callback_modal /></c:set>
 
-<layout_v1:journey_engine_page title="Health Quote" bundleFileName="health_v4" displayNavigationBar="${false}">
+<layout_v1:journey_engine_page title="Remember Me" ignore_journey_tracking="${true}" bundleFileName="health_v4" displayNavigationBar="${false}" body_class_name="remember-me-page">
 
     <jsp:attribute name="head">
     </jsp:attribute>
@@ -52,9 +52,6 @@
     </jsp:attribute>
 
     <jsp:attribute name="additional_meerkat_scripts">
-        <c:if test="${callCentre}">
-            <script src="${assetUrl}assets/js/bundles/simples_health${pageSettings.getSetting('minifiedFileString')}.js?${revision}"></script>
-        </c:if>
     </jsp:attribute>
 
     <jsp:attribute name="vertical_settings">
@@ -87,12 +84,15 @@
 
                             <form id="rememberMeForm" class="remember-me-form">
 
-                                <form_v4:row label="Date of Birth" className="row primary_dob col-sm-offset-2">
-                                    <c:set var="fieldXpath" value="health/rememberme/dob" />
-                                    <field_v4:person_dob xpath="${fieldXpath}" title="your" required="true" ageMin="16" ageMax="120" disableErrorContainer="${false}" />
-                                </form_v4:row>
-
-                                <button type="submit" class="btn btn-lg btn-cta" id="submitButton"  name="submitButton" value="Submit">View Products and Prices <span class="icon icon-arrow-right"></span></button>
+                                <c:set var="fieldXpath" value="rememberme/primary/dob" />
+                                <div class="col-sm-offset-2">
+                                    <form_v4:row label="Your Date of Birth" fieldXpath="${fieldXpath}" className="remember-me-dob-group">
+                                        <field_v4:person_dob xpath="${fieldXpath}" title="your" required="true" ageMin="16" ageMax="120" />
+                                    </form_v4:row>
+                                </div>
+                                <button type="submit" class="btn btn-lg btn-cta" id="submitButton" name="submitButton"
+                                        value="Submit">View Products and Prices <span
+                                        class="icon icon-arrow-right"></span></button>
                             </form>
                             <a class="remember-me-remove" href="javascript:;">< Start a new quote</a>
                         </div>
@@ -103,7 +103,5 @@
                 <c:redirect url="${pageSettings.getBaseUrl()}health_quote_v4.jsp" />
             </c:otherwise>
         </c:choose>
-        <%--Reward Campaign Template--%>
-        <reward:template_campaign_tile />
     </jsp:body>
 </layout_v1:journey_engine_page>
