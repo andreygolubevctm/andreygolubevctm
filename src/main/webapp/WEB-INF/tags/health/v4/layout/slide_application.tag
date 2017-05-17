@@ -30,6 +30,7 @@
                 <health_v4_application:your_details />
                 <health_v4_application:partner_details />
                 <health_v4_application:dependants xpath="${pageSettings.getVerticalCode()}/application/dependants" />
+                <health_v4_agr:modal />
             </jsp:body>
         </form_v3:fieldset_columns>
 

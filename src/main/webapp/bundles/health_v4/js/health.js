@@ -381,6 +381,7 @@
                     // Reset selected product. (should not be inside a forward or backward condition because users can skip steps backwards)
                     meerkat.modules.healthResults.resetSelectedProduct();
                 }
+
                 meerkat.messaging.publish(meerkatEvents.filters.FILTERS_CANCELLED);
             },
             onAfterEnter: function onAfterEnterResultsStep(event) {
@@ -415,6 +416,21 @@
                 method: 'trackQuoteForms',
                 object: meerkat.modules.health.getTrackingFieldsObject
             },
+            validation: {
+                validate: true,
+                customValidation: function validateSelection(callback) {
+                    if (meerkat.modules.healthAGRModal.isActivated()) {
+                        var showApplyReview = meerkat.modules.healthAGRModal.show();
+                        if (showApplyReview) {
+                            // show apply review modal
+                            meerkat.modules.healthAGRModal.open();
+                        }
+                        callback(!showApplyReview);
+                    } else {
+                        callback(true);
+                    }
+                }
+            },
             onInitialise: function onApplyInit(event) {
                 meerkat.modules.healthDependants.initHealthDependants();
                 meerkat.modules.healthMedicare.initHealthMedicare();
@@ -448,6 +464,7 @@
                     meerkat.modules.healthApplyStep.onBeforeEnter();
                     meerkat.modules.healthDependants.updateDependantConfiguration();
                     meerkat.modules.healthMedicare.onBeforeEnterApply();
+                    meerkat.modules.healthAGRModal.initAGRModal(['BUP', 'NIB']);
                 }
             },
             onAfterEnter: function afterEnterApplyStep(event) {
