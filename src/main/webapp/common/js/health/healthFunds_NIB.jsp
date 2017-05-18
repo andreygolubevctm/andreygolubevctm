@@ -38,7 +38,7 @@ var healthFunds_NIB = {
         meerkat.modules.healthFunds._previousfund_authority(true);
 
         <%--calendar for start cover--%>
-        meerkat.modules.healthPaymentStep.setCoverStartRange(0, 29);
+        meerkat.modules.healthCoverStartDate.setCoverStartRange(0, 29);
 
         <%--credit card & bank account frequency & day frequency--%>
         meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':false, 'fortnightly': true, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true });

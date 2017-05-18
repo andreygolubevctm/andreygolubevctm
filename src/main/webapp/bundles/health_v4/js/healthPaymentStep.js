@@ -5,7 +5,8 @@
 
 	var moduleEvents = {
 		WEBAPP_LOCK: 'WEBAPP_LOCK',
-		WEBAPP_UNLOCK: 'WEBAPP_UNLOCK'
+		WEBAPP_UNLOCK: 'WEBAPP_UNLOCK',
+		TRIGGER_UPDATE_PREMIUM: 'TRIGGER_UPDATE_PREMIUM'
 	};
 
 	var modalId;
@@ -14,8 +15,6 @@
 	var $paymentMethodLHCText;
 	var $bankSection;
 	var $creditCardSection;
-	var $paymentCalendar;
-
 	var $frequencySelect;
 
 	var settings = {
@@ -23,11 +22,7 @@
 		credit: [],
 		frequency: [],
 		creditBankSupply: false,
-		creditBankQuestions: false,
-		minStartDateOffset: 0,
-		maxStartDateOffset: 90,
-		minStartDate: '',
-		maxStartDate: ''
+		creditBankQuestions: false
 	};
 
 	var currentCoupon = false;
@@ -64,7 +59,6 @@
 		$paymentMethodLHCText = $('.changes-premium .lhcText');
 		$bankSection = $('.health_payment_bank-selection');
 		$creditCardSection = $('.health_payment_credit-selection');
-		$paymentCalendar = $('#health_payment_details_start');
 
 		// Containers
 		$paymentContainer = $(".update-content");
@@ -84,17 +78,13 @@
 		meerkat.messaging.subscribe(meerkatEvents.healthResults.SELECTED_PRODUCT_RESET, function jeStepChange(step){
 			resetSettings();
 		});
+
+		meerkat.messaging.subscribe(meerkatEvents.TRIGGER_UPDATE_PREMIUM, function triggerUpdatePremium(){
+			updatePremium();
+		});
 	}
 
 	function _applyEventListeners() {
-		$paymentCalendar.on('changeDate', function updateThePremiumOnCalendar(){
-			updatePremium();
-		});
-
-		$('#health_payment_details-selection .dateinput-tripleField input').on('change', function updateThePremiumOnInput(){
-			updatePremium();
-		});
-
 		$paymentRadioGroup.find('input').on('click', function() {
 			// Delay to avoid issue when fast clicking between payment options
 			_.defer(function(){
@@ -183,7 +173,6 @@
 
 	// Settings should be reset when the selected product changes.
 	function resetSettings(){
-
 		settings.bank = { 'weekly':false, 'fortnightly': true, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true };
 		settings.credit = { 'weekly':false, 'fortnightly': false, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true };
 		settings.frequency = { 'weekly':27, 'fortnightly':31, 'monthly':27, 'quarterly':27, 'halfyearly':27, 'annually':27 };
@@ -193,8 +182,7 @@
 		meerkat.modules.healthCreditCard.resetConfig();
 
 		// Clear start date
-
-		$paymentCalendar.val('');
+		meerkat.modules.healthCoverStartDate.flush();
 
 		// Clear payment method selection
 		$paymentRadioGroup.find('input').prop('checked', false).change();
@@ -206,7 +194,7 @@
 		// Clear bank account details selection
 		$("#health_payment_details_claims input").prop('checked', false).change().find('label').removeClass('active');
 
-		setCoverStartRange(0, 90);
+		meerkat.modules.healthCoverStartDate.setCoverStartRange(0, 90);
 
 	}
 
@@ -229,35 +217,6 @@
 
 	function getSelectedFrequency(){
 		return (!_.isEmpty($frequencySelect.val()) ? $frequencySelect.val() : Results.getFrequency());
-	}
-
-	function setCoverStartRange(min, max){
-		settings.minStartDateOffset = min;
-		settings.maxStartDateOffset = max;
-
-		// Get today's date in UTC timezone
-		var today = meerkat.modules.utils.getUTCToday(),
-			start = 0,
-			end = 0,
-			hourAsMs = 60 * 60 * 1000;
-
-		// Add 10 hours for QLD timezone
-		today += (10 * hourAsMs);
-
-		// Add the start day offset
-		start = today;
-		if (min > 0) {
-			start += (min * 24 * hourAsMs);
-		}
-
-		// Calculate the end date
-		end = today + (max * 24 * hourAsMs);
-
-		today = new Date(start);
-		settings.minStartDate = today.getUTCDate() + '/' + (today.getUTCMonth()+1) + '/' + today.getUTCFullYear();
-		today = new Date(end);
-		settings.maxStartDate = today.getUTCDate() + '/' + (today.getUTCMonth()+1) + '/' + today.getUTCFullYear();
-
 	}
 
 	// Show approved listings only, this can potentially change per fund
@@ -288,10 +247,8 @@
 		$paymentSection.find('.select').not('.disabled-by-fund').removeClass('disabled');
 		$paymentSection.find('.btn-group label').not('.disabled-by-fund').removeClass('disabled');
 
-		// Non-inline datepicker
-		//$('#health_payment_details_start').parent().addClass('input-group').find('.input-group-addon').removeClass('hidden');
-		// Inline datepicker
-		$paymentCalendar.parent().find('.datepicker').children().css('visibility', 'visible');
+		// Datepicker
+		meerkat.modules.healthCoverStartDate.enable();
 	}
 
 	function disableUpdatePremium(isSameSource, disableFields) {
@@ -304,17 +261,14 @@
 			$paymentSection.find('.select').addClass('disabled');
 			$paymentSection.find('.btn-group label').addClass('disabled');
 
-			// Non-inline datepicker
-			//$('#health_payment_details_start').parent().removeClass('input-group').find('.input-group-addon').addClass('hidden');
-			// Inline datepicker
-			$paymentCalendar.parent().find('.datepicker').children().css('visibility', 'hidden');
+			// Datepicker
+			meerkat.modules.healthCoverStartDate.disable();
 		}
 
 	}
 
 	// Calls the server for a new premium price based on current selections.
 	function updatePremium() {
-
 		// fire the tracking call
 		var data = {
 			actionStep: ' health application premium update'
@@ -455,11 +409,8 @@
 	}
 
 	function setDefaultFields() {
-		// default values are sent over when the premium is loaded for the first time on this page
-		// and the code below essentially sets the visual aspect of the payment page.
-		if (_.isEmpty($paymentCalendar.val())) {
-			$paymentCalendar.datepicker("update", new Date());
-		}
+
+		meerkat.modules.healthCoverStartDate.setDefault();
 
 		if (!$("#health_payment_details_type_cc").is(':checked')) {
 			// had to revert this back to a trigger as fund messaging wasn't being set otherwise
@@ -560,14 +511,14 @@
 	function updateValidationSelectorsPaymentGateway(functionToCall, name){
 		$('#health_payment_details_type input').on('click.' + name, functionToCall);
 		$('#health_payment_details_frequency').on('change.' + name, functionToCall);
-		$('#health_payment_details_start').on('changeDate.' + name, functionToCall);
+		meerkat.modules.healthCoverStartDate.updateValidationSelectorsPaymentGateway(functionToCall, name);
 	}
 
 	// Reset Hook into "update premium"
-	function resetValidationSelectorsPaymentGateway( name){
+	function resetValidationSelectorsPaymentGateway(name){
         $('#health_payment_details_type input').off('click.' + name);
         $('#health_payment_details_frequency').off('change.' + name);
-        $('#health_payment_details_start').off('changeDate.' + name);
+		meerkat.modules.healthCoverStartDate.resetValidationSelectorsPaymentGateway(name);
 	}
 
 	meerkat.modules.register("healthPaymentStep", {
@@ -576,7 +527,6 @@
 		events: moduleEvents,
 		getSetting: getSetting,
 		overrideSettings: overrideSettings,
-		setCoverStartRange: setCoverStartRange,
 		getSelectedFrequency: getSelectedFrequency,
 		getSelectedPaymentMethod: getSelectedPaymentMethod,
 		updatePremium: updatePremium,

@@ -433,6 +433,7 @@
             onInitialise: function onApplyInit(event) {
                 meerkat.modules.healthDependants.initHealthDependants();
                 meerkat.modules.healthMedicare.initHealthMedicare();
+                meerkat.modules.healthCoverStartDate.onInitialise();
                 meerkat.modules.healthApplyStep.onInitialise();
             },
             onBeforeEnter: function beforeEnterApplyStep(event) {
@@ -460,7 +461,8 @@
                     // Unset the Health Declaration checkbox (could be refactored to only uncheck if the fund changes)
                     $('#health_declaration input:checked').prop('checked', false).change();
 
-                    meerkat.modules.healthApplyStep.onBeforeEnter();
+	                meerkat.modules.healthCoverStartDate.onBeforeEnter();
+	                meerkat.modules.healthApplyStep.onBeforeEnter();
                     meerkat.modules.healthDependants.updateDependantConfiguration();
                     meerkat.modules.healthMedicare.onBeforeEnterApply();
 
@@ -506,7 +508,7 @@
                     // Insert fund into Contact Authority
                     $('#mainform').find('.health_contact_authority span').text( selectedProduct.info.providerName  );
 
-                    meerkat.modules.healthPaymentStep.updatePremium();
+	                meerkat.messaging.publish(meerkatEvents.TRIGGER_UPDATE_PREMIUM);
                 }
             },
             onAfterEnter: function afterEnterPaymentStep() {
