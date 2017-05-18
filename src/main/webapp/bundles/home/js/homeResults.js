@@ -318,6 +318,7 @@
 			// Check products length in case the reason for no results is an error e.g. 500
 			if (Results.model.availableCounts === 0 && _.isArray(Results.model.returnedProducts) && Results.model.returnedProducts.length > 0) {
 				showNoResults();
+				toggleNoResultsFeaturesMode();
 			}
 
 			meerkat.messaging.publish(meerkatEvents.commencementDate.RESULTS_RENDER_COMPLETED);
@@ -522,14 +523,21 @@
 		}
 		affixFix();
 	}
+	
+	function toggleNoResultsFeaturesMode() {
+	if (Results.model.availableCounts === 0) {
+		$("#results_v5.featuresMode " + Results.settings.elements.features.allElements).hide();
+		$("#results_v5.featuresMode").removeClass('featuresMode').find('.results-table').removeAttr('style');
+	} else {
+		// revert everything
+		$(Results.settings.elements.features.container + " " + Results.settings.elements.features.allElements).show();
+		if (!$(Results.settings.elements.features.container).hasClass('featuresMode')) {
+			$(Results.settings.elements.features.container).addClass('featuresMode');
+		}
+	}
+}
 
 	function showNoResults() {
-		if (meerkat.site.tracking.brandCode == 'ctm') {
-			meerkat.modules.dialogs.show({
-				htmlContent: $('#no-results-content')[0].outerHTML
-			});
-		}
-
 		if (meerkat.modules.hasOwnProperty('homeFilters')) {
 			meerkat.modules.homeFilters.disable();
 		}
@@ -680,6 +688,7 @@
 				meerkat.modules.resultsTracking.setResultsEventMode('Refresh');
 				publishExtraSuperTagEvents();
 			}
+			toggleNoResultsFeaturesMode();
 		}
 	}
 
