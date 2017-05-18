@@ -12,6 +12,7 @@
 
     function _setupFields() {
         $elements = {
+            startQuote: $('.remember-me-remove'),
             dobInput: $('#rememberme_primary_dob'),
             dobGroup: $('.remember-me-dob-group'),
             form: $('#rememberMeForm'),
@@ -22,8 +23,9 @@
     }
 
     function initEventListeners() {
-        $('.remember-me-remove').click(function () {
+        $elements.startQuote.click(function () {
             event.preventDefault();
+            showLoadingPage();
             deleteCookieAndRedirect();
         });
 
@@ -54,20 +56,23 @@
         });
     }
 
-    function showSuccess() {
-        $elements.dobGroup.removeClass('has-error').addClass('has-success');
-        $('.remember-me-dob-group label.error').hide();
-    }
-
     function showError() {
         $elements.dobGroup.removeClass('has-success').addClass('has-error');
-        $('.remember-me-dob-group label.error').show();
+        if (!$('#rememberme_additional-error').length) {
+            $('<label id="rememberme_additional-error" class="error">The date of birth you entered didn\'t match our records, enter your date of birth again or start a new quote</label>').insertAfter('#rememberme_primary_dob-error');
+        }
+        $('#rememberme_primary_dob-error, #rememberme_additional-error').show();
     }
 
-    function updateErrorRedirectMessage(){
-        $elements.loadingMessage.hide();
-        var $attemptsMessage = $("<h4>Sorry, you have exceeded the number of attempts allowed.</h4>");
-        $attemptsMessage.add("<h4>Redirecting you now to start a new quote...</h4>").insertAfter($elements.loadingMessage);
+    function updateErrorRedirectMessage() {
+        $elements.loadingMessage.html("Sorry, you have exceeded the number of attempts allowed.<br />Redirecting you now to start a new quote.");
+    }
+
+    function showLoadingPage() {
+        $elements.rememberMePage.fadeOut();
+        setTimeout(function () {
+            $elements.loadingPage.fadeIn();
+        }, 300);
     }
 
     function validateDob() {
@@ -75,45 +80,40 @@
             e.preventDefault();
             var $form = $(this);
 
-            if (attemptCount > 2) {
-                showError();
-                updateErrorRedirectMessage();
-
-                $elements.rememberMePage.fadeOut();
-
-                setTimeout(function(){
-                    $elements.loadingPage.fadeIn();
-                }, 300);
-
-                setTimeout(function() {
-                    deleteCookieAndRedirect();
-                }, 1000);
-            }
-            else if ($form.valid()) {
-                var data = {
-                    quoteType: 'health',
-                    userAnswer: $elements.dobInput.val()
-                };
-
-                console.log(data);
-
+            if ($form.valid()) {
                 meerkat.modules.comms.get({
                     url: 'spring/rest/rememberme/quote/get.json',
-                    data: data,
-                    cache: true,
-                    errorLevel: "silent",
-                    onSuccess: function onSuccess() {
-                        showSuccess();
-                        console.log('yes!');
-                        // window.location.replace("/ctm/health_quote_v4.jsp#results");
+                    data: {
+                        quoteType: 'health',
+                        userAnswer: $elements.dobInput.val()
+                    },
+                    cache: false,
+                    errorLevel: 'silent',
+                    onSuccess: function (result) {
+                        if (result === true) {
+                            $elements.loadingMessage.text('Loading Products & Prices Please wait...');
+                            showLoadingPage();
+                            window.location.replace("/ctm/health_quote_v4.jsp#results");
+                        } else {
+                            showError();
+                            attemptCount++;
+                        }
                     },
                     onError: function onError(obj, txt, errorThrown) {
                         console.log(obj, errorThrown);
                     }
                 });
-            }else {
+            } else {
                 showError();
                 attemptCount++;
+            }
+            if (attemptCount > 2) {
+                showError();
+                updateErrorRedirectMessage();
+                showLoadingPage();
+                setTimeout(function () {
+                    deleteCookieAndRedirect();
+                }, 800);
             }
         });
     }

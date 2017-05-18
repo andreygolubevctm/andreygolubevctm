@@ -182,7 +182,7 @@ public class RememberMeService {
             String xpathToVerify = getXpathToVerifyForVertical(vertical);
             if (transactionDetails != null) {
                 isMatch = transactionDetails.stream()
-                        .anyMatch(details -> details.getXPath().equals(xpathToVerify) && details.getTextValue().equals(answer));
+                        .anyMatch(transactionDetail -> transactionDetail.getXPath().equals(xpathToVerify) && transactionDetail.getTextValue().equals(answer));
 
             }
             if (isMatch) {
