@@ -75,6 +75,7 @@
             },
             postalMatch: $('#health_application_postalMatch'),
             email: $('#health_application_email'),
+            coverStartDate: $('#health_payment_details_start'),
             medicare: {
                 firstName: $('#health_payment_medicare_firstName'),
                 middleName: $('#health_payment_medicare_middleName'),
@@ -109,9 +110,7 @@
         }
 
         if (meerkat.modules.healthDependants.getNumberOfDependants() > 0) {
-            // $fields.dependant = [];
             for (var i = 1; i <= meerkat.modules.healthDependants.getNumberOfDependants(); i++) {
-                // $fields.dependant.push({
                 $fields['dependant'+i] = {
                     title: $('#health_application_dependants_dependant' + i + '_title'),
                     firstName: $('#health_application_dependants_dependant' + i + '_firstName'),
@@ -135,7 +134,7 @@
             _toggleRebateTable();
         });
 
-        $elements.affectsApplicationReviewInputs.on('change', function() {
+        $('#applicationDetailsForm :input').on('change', function() {
             _states.show = true;
         });
 
@@ -174,7 +173,6 @@
             },
             editBtn: $('.edit-details-btn'),
             viewRebateTableBtn: $('.view-rebate-table-btn'),
-            affectsApplicationReviewInputs: $('.affects-agr-modal :input'),
             form: $('#agr-form'),
             submitBtn: $('.btn-continue-to-payment'),
             applicantCovered: $('input[name=health_application_govtRebateDeclaration_applicantCovered]'),
@@ -225,6 +223,7 @@
 
     function _getTemplateData() {
         var email = $fields.email.val(),
+            coverStartDate = $fields.coverStartDate.val(),
             medicareFullName = $fields.medicare.firstName.val() + ' ' + $fields.medicare.middleName.val() + ' ' +
                 $fields.medicare.surname.val(),
             medicareNumber = $fields.medicare.number.val(),
@@ -256,14 +255,15 @@
         }
 
         data.primary.push({ label: 'Email address', value: email });
+        data.primary.push({ label: 'Date policy commences', value: coverStartDate });
 
         if (!_.isUndefined($fields.previousFund)) {
             var previousFundName = _getOptionText($fields.previousFund.name),
                 previousFundMemberId = $fields.previousFund.memberId.val() ? $fields.previousFund.memberId.val() : 'N/A';
 
             data.previousFund = [
-                { label: 'Name of health fund', value: previousFundName },
-                { label: 'Health fund membership number', value: previousFundMemberId }
+                { label: 'Name of current health fund', value: previousFundName },
+                { label: 'Membership number', value: previousFundMemberId }
             ];
         }
 
@@ -294,10 +294,9 @@
             ];
 
         if (person !== 'primary') {
-            var relationship = person === 'partner' ? 'Partner' : 'Dependant';
             data.push({
                 label: 'Relationship',
-                value: relationship
+                value: person === 'partner' ? 'Partner' : 'Dependant'
             });
         }
 

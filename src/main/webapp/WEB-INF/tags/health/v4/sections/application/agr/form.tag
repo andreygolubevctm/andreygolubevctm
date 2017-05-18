@@ -59,7 +59,7 @@
     <c:set var="title">${declaration}&nbsp;${declarationDate}</c:set>
 
     <form_v4:row fieldXpath="${fieldXpath}" label="Declaration" className="required_input">
-        <field_v2:checkbox xpath="${fieldXpath}" value="Y" title="${title}" label="${true}" required="true" customAttribute=" data-attach='true' " />
+        <field_v2:checkbox xpath="${fieldXpath}" value="Y" title="${title}" label="${true}" required="true" errorMsg="Please tick" customAttribute=" data-attach='true' " />
     </form_v4:row>
 
     <div class="row">

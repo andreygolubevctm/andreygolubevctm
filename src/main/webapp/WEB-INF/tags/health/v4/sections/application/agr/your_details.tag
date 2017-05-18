@@ -22,7 +22,11 @@
     <hr />
 
     {{ obj.medicareDetails.forEach(function(field) { }}
-        <form_v4:row label="{{= field.label }}">
+        {{ var subLabel = ''; }}
+        {{ if (field.label === 'Full name') { }}
+            {{ subLabel = '(as it appears on your medicare card)'; }}
+        {{ } }}
+        <form_v4:row label="{{= field.label }}" subLabel="{{= subLabel }}">
             {{= field.value }}
         </form_v4:row>
     {{ }); }}

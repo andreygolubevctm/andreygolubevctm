@@ -15,9 +15,11 @@
   }
 
   .edit-details-btn {
-    position: absolute;
-    top: 0;
-    right: 0;
+    @media (@sm) {
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
   }
 
   .view-rebate-table-btn {
@@ -164,11 +166,18 @@
     }
 
     .entitled-medicare-more-info-text {
+      font-size: @font-size-small;
       margin-bottom: 20px;
       a {
         white-space: pre-wrap;
         word-wrap: break-word;
         word-break: break-all;
+      }
+    }
+
+    .privacy-text {
+      p {
+        font-size: @font-size-small;
       }
     }
 

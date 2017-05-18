@@ -17,8 +17,6 @@ var healthFunds_NIB = {
     $paymentTypeContainer: $('div.health-payment_details-type').siblings('div.fieldrow_legend'),
     $medicareFirstname: $('#health_payment_medicare_firstName'),
     $medicareLastname: $('#health_payment_medicare_surname'),
-    $primaryDetails: $('.health-person-details-primary'),
-    $healthPaymentMedicareSelection: $('#health_payment_medicare-selection'),
     set: function(){
         <%--Contact Point question--%>
         meerkat.modules.healthFunds.showHowToSendInfo('NIB', true);
@@ -98,8 +96,6 @@ var healthFunds_NIB = {
 
         <%-- Medicare Fields --%>
         healthFunds_NIB.$medicareFirstname.add(healthFunds_NIB.$medicareLastname).attr('maxlength','24').attr('data-rule-personNameLtd','true').removeAttr('data-rule-personName');
-
-        healthFunds_NIB.$primaryDetails.add(healthFunds_NIB.$healthPaymentMedicareSelection).addClass('affects-agr-modal');
     },
     renderPaymentDays: function(){
         var freq = meerkat.modules.healthPaymentStep.getSelectedFrequency();
