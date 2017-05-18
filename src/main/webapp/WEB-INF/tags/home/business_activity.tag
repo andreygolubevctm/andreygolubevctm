@@ -9,29 +9,33 @@
 <%-- VARIABLES --%>
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
 
-<form_v2:fieldset legend="Business Activity">
+<c:set var="legend" value="Business Activity" />
 
+<form_v2:fieldset legend="">
+	
 	<c:set var="fieldXpath" value="${xpath}/conducted" />
-	<c:choose>
-		<c:when test="${landlord eq true}">
-			<field_v1:hidden 
-				xpath="${fieldXpath}"
-				defaultValue="N" />
-		</c:when>
-		<c:otherwise>
-			<%-- Business Conducted --%>
-			<form_v2:row fieldXpath="${fieldXpath}" label="Is there any business activity conducted from the home?">
-				<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Business Activity" quoteChar="\"" /></c:set>
-				<field_v2:array_radio xpath="${fieldXpath}"
-					required="true"
-					className="pretty_buttons"
-					title="if there is any business activity"
-					items="Y=Yes,N=No"
-					id=""
-					additionalLabelAttributes="${analyticsAttr}" />
-			</form_v2:row>
-		</c:otherwise>
-	</c:choose>
+	
+	<div class="notLandlord">
+		<h2>Business Activity</h2>
+		<form_v2:row fieldXpath="${fieldXpath}" label="Is there any business activity conducted from the home?">
+			<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Business Activity" quoteChar="\"" /></c:set>
+			<field_v2:array_radio xpath="${fieldXpath}"
+				required="true"
+				className="pretty_buttons"
+				title="if there is any business activity"
+				items="Y=Yes,N=No"
+				id=""
+				additionalLabelAttributes="${analyticsAttr}" />
+		</form_v2:row>
+	</div>
+	
+	<div class="isLandlord">
+		<h2>Rental Details</h2>
+		<field_v1:hidden 
+			xpath="${fieldXpath}"
+			defaultValue="N" />
+	</div>
+	
 	
 <div class="notLandlord">
 	<%-- Business Type --%>
@@ -117,7 +121,7 @@
 		<field_v2:array_select xpath="${fieldXpath}"
 			required="true"
 			title="who manages the property"
-			items="=Please select...,1=Real Estate Agent or Property Manager,2=Other"
+			items="=Please select...,REAL_ESTATE=Real Estate Agent or Property Manager,SELF_MANAGED=Self-managed for more than 3 years,OTHER=Other"
 			extraDataAttributes="${analyticsAttr}" />
 	</form_v2:row>
 
@@ -169,7 +173,7 @@
 		<field_v2:array_select xpath="${fieldXpath}"
 			required="true"
 			title="How many tenants have you has in the past 12 months"
-			items="=Please select...,1=1,2=2,3=3,4=4+"
+			items="=Please select...,0=None,1=1,2=2,3=3,4=4+"
 			extraDataAttributes="${analyticsAttr}" />
 	</form_v2:row>
 </div>
