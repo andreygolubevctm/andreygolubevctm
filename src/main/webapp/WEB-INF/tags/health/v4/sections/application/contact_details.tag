@@ -15,6 +15,10 @@
     </c:choose>
 </c:set>
 
+<c:set var="location" value="${data['health/situation/location']}" />
+<c:if test="${not empty location and location.matches('[0-9]+')}">
+	<go:setData dataVar="data" xpath="${xpath}/address/postCode" value="${location}" />
+</c:if>
 
 <%-- HTML --%>
 <div id="${name}-selection" class="health_application-details">
@@ -32,7 +36,7 @@
             />
         </c:when>
         <c:otherwise>
-            <group_v4:address xpath="${xpath}/address" type="R" stateValidationField="#health_application-selection .content"  disableErrorContainer="${true}" />
+            <group_v4:address xpath="${xpath}/address" type="R" stateValidationField="#health_application-selection .content"  disableErrorContainer="${false}" />
         </c:otherwise>
     </c:choose>
 
@@ -58,7 +62,7 @@
                 />
             </c:when>
             <c:otherwise>
-                <group_v4:address xpath="${xpath}/postal" type="P" stateValidationField="#health_application-selection .content" disableErrorContainer="${true}" nonStdStreetAdditionalAttributes=" maxlength='29'"/>
+                <group_v4:address xpath="${xpath}/postal" type="P" stateValidationField="#health_application-selection .content" disableErrorContainer="${false}" nonStdStreetAdditionalAttributes=" maxlength='29'"/>
             </c:otherwise>
         </c:choose>
     </div>

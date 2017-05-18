@@ -36,7 +36,7 @@ Process:
 
 	function onMessage(e) {
 		if (e.origin !== settings.origin){
-			console.error("domain name mismatch");
+			meerkat.logging.error("domain name mismatch");
 			return;
 		} else {
 			// we are expecting the iframe to return a load success message
