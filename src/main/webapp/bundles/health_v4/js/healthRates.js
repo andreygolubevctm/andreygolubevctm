@@ -29,7 +29,6 @@
             partnerCurrent: $('input[name="health_healthCover_partner_cover"]'),
             partnerLoadingManual: $('input[name="health_healthCover_partner_lhc"]'),
             dependants: $('#health_healthCover_dependants'),
-            commencementDate: $('#health_payment_details_start'),
             searchDate: $('#health_searchDate')
         };
 
@@ -121,7 +120,7 @@
         if (coverTypeHasPartner && !postData.partner_dob.match(dateRegex))  return false;
 
         postData.commencementDate = null;
-        var commencementDate = $elements.commencementDate.val();
+        var commencementDate = meerkat.modules.healthCoverStartDate.getVal();
         var searchDate = $elements.searchDate.val();
         if(!_.isEmpty(commencementDate)) {
             postData.commencementDate = commencementDate;
