@@ -54,7 +54,10 @@
                     unitType: $('#health_application_address_unitType'),
                     nonStdStreet: $('#health_application_address_nonStdStreet'),
                     streetSearch: $('#health_application_address_streetSearch'),
-                    nonStd: $('#health_application_address_nonStd')
+                    nonStd: $('#health_application_address_nonStd'),
+                    suburbName: $('#health_application_address_suburbName'),
+                    state: $('#health_application_address_state'),
+                    addrLn1: $('#health_application_address_fullAddressLineOne')
                 },
                 postal: {
                     postcode: $('#health_application_postal_postCode'),
@@ -64,7 +67,10 @@
                     unitType: $('#health_application_postal_unitType'),
                     nonStdStreet: $('#health_application_postal_nonStdStreet'),
                     streetSearch: $('#health_application_postal_streetSearch'),
-                    nonStd: $('#health_application_postal_nonStd')
+                    nonStd: $('#health_application_postal_nonStd'),
+                    suburbName: $('#health_application_postal_suburbName'),
+                    state: $('#health_application_postal_state'),
+                    addrLn1: $('#health_application_postal_fullAddressLineOne')
                 }
             },
             postalMatch: $('#health_application_postalMatch'),
@@ -76,7 +82,13 @@
                 number: $('#health_payment_medicare_number'),
                 expiryMonth: $('#health_payment_medicare_expiry_cardExpiryMonth'),
                 expiryYear: $('#health_payment_medicare_expiry_cardExpiryYear')
+            },
+            rebate: {
+                currentPercentage: $('#health_rebate'),  //need to confirm if it is the rebate or the rebateChangeover field
+                tier: $('#health_healthCover_income'),
+                tierIncomeBracket: $('#health_healthCover_incomelabel')
             }
+
         };
 
         if (meerkat.modules.healthPrimary.getCurrentCover() === 'Y') {
@@ -222,10 +234,12 @@
             mobileNumber = $fields.primary.mobileNumber.val(),
             otherNumber = $fields.primary.otherNumber.val(),
             daytimePhoneNumber = mobileNumber ? mobileNumber : otherNumber,
+            rebateTeir = _getRebateTeir($fields.rebate.tier.val()),
+            rabatePercent = rebateTeir + ' ' + $fields.rebate.currentPercentage.val() + '%',      //todo  must confirm that i am getting the correct % value  rebate vs rebateChangeover
 
             data = {
                 primary: _getPersonData('primary'),
-                rebate: { label: 'Rebate tier', value: 'Base Tier - 25.935%' },
+                rebate: { label: 'Rebate tier', value: rabatePercent },
                 medicareDetails: [
                     { label: 'Full name', value: medicareFullName },
                     { label: 'Medicare card number', value: medicareNumber },
@@ -306,10 +320,33 @@
     }
 
     function _getAddressData(addressType) {
-        var isPostalMatch = $fields.postalMatch.filter(':checked');
+        var isPostalMatch = ($fields.postalMatch.filter(':checked').length > 0);
+        var returnAddrType = isPostalMatch ? 'residential': addressType;
 
-        return $fields.address[isPostalMatch ? 'residential': addressType].streetSearch.val();
+        /*
+        if (isPostalMatch && (addressType === 'postal')) {
+            return 'As Above';
+        }
+        */
+
+        var addressStr =  $fields.address[returnAddrType].addrLn1.val() + "<br/>"
+            + $fields.address[returnAddrType].suburbName.val() + "  " + $fields.address[returnAddrType].state.val() + "  "
+            + $fields.address[returnAddrType].postcode.val();
+
+        return addressStr;
     }
+
+
+    function _getRebateTeir(rebateTeirEnum) {
+
+        //todo pull this data from elsewhere?
+        if (rebateTeirEnum > 0) {
+            return "Tier " + rebateTeirEnum;
+        } else {
+            return "Base tier";
+        }
+    }
+
 
     function close() {
         meerkat.modules.dialogs.close(_dialogId);
@@ -355,6 +392,8 @@
     }
 
     function _toggleRebateTable() {
+
+        //rebate table stuff goes here
 
     }
 

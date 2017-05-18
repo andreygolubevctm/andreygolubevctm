@@ -18,7 +18,7 @@
         {{= obj.rebate.value }}
         <a href="javascript:;" class="view-rebate-table-btn">View rebate table <span class="icon icon-angle-down"></span></a>
     </form_v4:row>
-
+    <health_v4_agr:rebate_tier_table />
     <hr />
 
     {{ obj.medicareDetails.forEach(function(field) { }}

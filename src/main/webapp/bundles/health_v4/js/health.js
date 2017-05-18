@@ -381,7 +381,6 @@
                     // Reset selected product. (should not be inside a forward or backward condition because users can skip steps backwards)
                     meerkat.modules.healthResults.resetSelectedProduct();
                 }
-
                 meerkat.messaging.publish(meerkatEvents.filters.FILTERS_CANCELLED);
             },
             onAfterEnter: function onAfterEnterResultsStep(event) {
@@ -464,6 +463,8 @@
                     meerkat.modules.healthApplyStep.onBeforeEnter();
                     meerkat.modules.healthDependants.updateDependantConfiguration();
                     meerkat.modules.healthMedicare.onBeforeEnterApply();
+
+                    // REMOVE BUP from below - it was only added to aid testing during dev #####################
                     meerkat.modules.healthAGRModal.initAGRModal(['BUP', 'NIB']);
                 }
             },
