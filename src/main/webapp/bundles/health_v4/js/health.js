@@ -318,6 +318,10 @@
             title: 'Your Results',
             navigationId: 'results',
             slideIndex: 3,
+            tracking: {
+                touchType: 'H',
+                touchComment: 'HLT results'
+            },
             validation: {
                 validate: false,
                 customValidation: function validateSelection(callback) {
