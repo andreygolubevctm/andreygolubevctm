@@ -19,7 +19,7 @@ var healthFunds_WFD = {
 	    if(_.has(meerkat.modules,'healthCoverStartDate')) {
 		    meerkat.modules.healthCoverStartDate.setCoverStartRange(0, 29);
 	    } else {
-		    meerkat.modules.healthPaymentStep.setCoverStartRange(0, 29)
+		    meerkat.modules.healthPaymentStep.setCoverStartRange(0, 29);
 	    }
 
         <%--dependant definition--%>

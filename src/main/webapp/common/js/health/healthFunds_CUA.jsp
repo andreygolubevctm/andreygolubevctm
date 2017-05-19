@@ -104,7 +104,7 @@ set: function () {
 		if(_.has(meerkat.modules,'healthCoverStartDate')) {
 			meerkat.modules.healthCoverStartDate.setCoverStartRange(0, 90);
 		} else {
-			meerkat.modules.healthPaymentStep.setCoverStartRange(0, 90)
+			meerkat.modules.healthPaymentStep.setCoverStartRange(0, 90);
 		}
 		dob_health_application_primary_dob.ageMax = 99;
 		dob_health_application_partner_dob.ageMax = 99;
