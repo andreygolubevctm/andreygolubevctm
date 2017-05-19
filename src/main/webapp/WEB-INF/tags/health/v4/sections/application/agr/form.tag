@@ -17,7 +17,7 @@
     <h3>Application to receive the Australian Government Rebate on Private Health Insurance as a reduced premium</h3>
     <health_v4_contact:required_text />
 
-    <c:set var="fieldXpath" value="${pageSettings.getVerticalCode()}/application/govtRebateDeclaration/applicantCovered" />
+    <c:set var="fieldXpath" value="${pageSettings.getVerticalCode()}/application/agr/applicantCovered" />
     <form_v4:row fieldXpath="${fieldXpath}" label="Are you covered by this policy?" id=""
                  className="required_input">
         <field_v2:array_radio items="Y=Yes,N=No" xpath="${fieldXpath}" title="" required="true" id="" />
@@ -30,7 +30,7 @@
     </form_v4:row>
 
 
-    <c:set var="fieldXpath" value="${pageSettings.getVerticalCode()}/application/govtRebateDeclaration/entitledToMedicare" />
+    <c:set var="fieldXpath" value="${pageSettings.getVerticalCode()}/application/agr/entitledToMedicare" />
     <form_v4:row fieldXpath="${fieldXpath}" label="Are all the people on the policy listed on a Medicare card or entitled to a Medicare card?" id=""
                  className="required_input">
         <field_v2:array_radio items="Y=Yes,N=No" xpath="${fieldXpath}" title="" required="true" id="" />
@@ -55,8 +55,8 @@
 
     <hr />
 
-    <c:set var="fieldXpath" value="${pageSettings.getVerticalCode()}/application/govtRebateDeclaration/declaration" />
-    <c:set var="title">${declaration}&nbsp;${declarationDate}</c:set>
+    <c:set var="fieldXpath" value="${pageSettings.getVerticalCode()}/application/agr/declaration" />
+    <c:set var="title">${declaration}&nbsp;<span class='declaration-date'>${declarationDate}</span></c:set>
 
     <form_v4:row fieldXpath="${fieldXpath}" label="Declaration" className="required_input">
         <field_v2:checkbox xpath="${fieldXpath}" value="Y" title="${title}" label="${true}" required="true" errorMsg="Please tick" customAttribute=" data-attach='true' " />

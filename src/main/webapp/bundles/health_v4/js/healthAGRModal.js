@@ -147,11 +147,7 @@
         });
 
         $elements.submitBtn.on('click', function() {
-            if ($elements.form.valid() && _.isUndefined($(this).attr('disabled'))) {
-                _states.show = false;
-                close();
-                meerkat.modules.journeyEngine.gotoPath('payment');
-            }
+            _onSubmit();
         });
 
         $elements.continueWithoutRebateLink.on('click', function() {
@@ -176,9 +172,14 @@
             viewRebateTableBtn: $('.view-rebate-table-btn'),
             form: $('#agr-form'),
             submitBtn: $('.btn-continue-to-payment'),
-            applicantCovered: $('input[name=health_application_govtRebateDeclaration_applicantCovered]'),
-            entitledToMedicare: $('input[name=health_application_govtRebateDeclaration_entitledToMedicare]'),
-            declare: $('#health_declaration_declare'),
+            applicantCovered: $('input[name=health_application_agr_applicantCovered]'),
+            entitledToMedicare: $('input[name=health_application_agr_entitledToMedicare]'),
+            declare: $('#health_application_agr_declaration'),
+            declareDate: $('.declaration-date'),
+            hiddenApplicantCovered: $('#health_application_govtRebateDeclaration_applicantCovered'),
+            hiddenEntitledToMedicare: $('#health_application_govtRebateDeclaration_entitledToMedicare'),
+            hiddenDeclare: $('#health_application_govtRebateDeclaration_declaration'),
+            hiddenDeclareDate: $('#health_application_govtRebateDeclaration_declarationDate'),
             continueWithoutRebateLink: $('a.continue-without-rebate'),
             rebateNo: $('input[name=health_healthCover_rebate][value=N]'),
             partnerSection: $('#partnerContainer'),
@@ -210,6 +211,7 @@
                 id: 'agr-modal',
                 title: 'Application Review',
                 htmlContent: htmlContent,
+                showCloseBtn: false,
                 onOpen: function (dialogId) {
                     _setupElements();
                     _applyEventListeners();
@@ -221,6 +223,7 @@
             });
 
             _tempStartDate = $fields.coverStartDate.val();
+            _updateHiddenXpaths(true);
         }
     }
 
@@ -238,10 +241,12 @@
             daytimePhoneNumber = mobileNumber ? mobileNumber : otherNumber,
             rebateTier = _getRebateTier($fields.rebate.tier.val()),
             rebatePercent = rebateTier + ' ' + meerkat.modules.healthRates.getRebate() + '%',
+            rebateTierTable = getRebateTableData('current'),
 
             data = {
                 primary: _getPersonData('primary'),
                 rebate: { label: 'Rebate tier', value: rebatePercent },
+                rebateTierTable: rebateTierTable,
                 medicareDetails: [
                     { label: 'Full name', value: medicareFullName },
                     { label: 'Medicare card number', value: medicareNumber },
@@ -280,6 +285,8 @@
                 data.dependants.push(_getPersonData('dependant'+i));
             }
         }
+
+        // data.declarationDate = now();
 
         return data;
     }
@@ -411,6 +418,24 @@
 
     function _toggleRebateTable() {
         $(".agrRebateTierTable").slideToggle("fast");
+    }
+
+    function _onSubmit() {
+        if ($elements.form.valid() && _.isUndefined($elements.submitBtn.attr('disabled'))) {
+            _states.show = false;
+            close();
+            meerkat.modules.journeyEngine.gotoPath('payment');
+
+            // update hidden xpaths for submission
+            _updateHiddenXpaths();
+        }
+    }
+
+    function _updateHiddenXpaths(flushIt) {
+        $elements.hiddenApplicantCovered.val(flushIt ? '' : $elements.applicantCovered.filter(':checked').val());
+        $elements.hiddenEntitledToMedicare.val(flushIt ? '' : $elements.entitledToMedicare.filter(':checked').val());
+        $elements.hiddenDeclare.val(flushIt ? '' : $elements.declare.is(':checked') ? 'Y' : 'N');
+        $elements.hiddenDeclareDate.val(flushIt ? '' : $elements.declareDate.text());
     }
 
     meerkat.modules.register('healthAGRModal', {

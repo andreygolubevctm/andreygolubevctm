@@ -2,6 +2,13 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<c:set var="fieldXpath" value="${pageSettings.getVerticalCode()}/application/govtRebateDeclaration" />
+
+<field_v1:hidden xpath="${fieldXpath}/applicantCovered" />
+<field_v1:hidden xpath="${fieldXpath}/entitledToMedicare" />
+<field_v1:hidden xpath="${fieldXpath}/declaration" />
+<field_v1:hidden xpath="${fieldXpath}/declarationDate" />
+
 <%-- HTML --%>
 <core_v1:js_template id="agr-modal-template">
     <%--your details--%>

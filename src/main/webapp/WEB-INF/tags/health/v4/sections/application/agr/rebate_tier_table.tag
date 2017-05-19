@@ -2,7 +2,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-{{ if (meerkat.modules.healthAGRModal.getRebateTableData('current')) { }}
+{{ if (obj.rebateTierTable) { }}
 <div class="agrRebateTierTable">
     <table class="agrRebateTiers">
         <caption><span class="sr-only">Australian Government Private Health Insurance Rebate</span></caption>
@@ -14,7 +14,7 @@
             </tr>
         </thead>
         <tbody>
-    {{ meerkat.modules.healthAGRModal.getRebateTableData('current').forEach(function(rebateRow) { }}
+    {{ obj.rebateTierTable.forEach(function(rebateRow) { }}
             <tr class="rebateTier">
                 <td>{{= rebateRow.label }}</td>
                 <td class="rebateIncomeRange">

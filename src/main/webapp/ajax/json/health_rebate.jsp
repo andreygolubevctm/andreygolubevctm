@@ -121,11 +121,6 @@ AGE ADJUSTMENT - if rebate not 0 (Take the OLDEST person and use their age)
 	<c:set var="rebate" value="${rebate + rebateBonus}" />
 </c:if>
 
-<c:set var="rebateTiers0" value="${(30 + rebateBonus)}" />
-<c:set var="rebateTiers1" value="${(20 + rebateBonus)}" />
-<c:set var="rebateTiers2" value="${(10 + rebateBonus)}" />
-<c:set var="rebateTiers3" value="0" />
-
 
 <%--
 *************
@@ -150,7 +145,11 @@ GOV Rebate Factor - Calculate new rebate based on rebate multiplier variables
 </c:set>
 
 
-<%-- rebate tiers array for each income bracket  --%>
+<%--
+*************
+rebate tiers array for each income bracket
+-------------
+--%>
 <c:set var="rebateTiers0" value="${(30 + rebateBonus)}" />
 <c:set var="rebateTiers1" value="${(20 + rebateBonus)}" />
 <c:set var="rebateTiers2" value="${(10 + rebateBonus)}" />

@@ -465,9 +465,7 @@
 	                meerkat.modules.healthApplyStep.onBeforeEnter();
                     meerkat.modules.healthDependants.updateDependantConfiguration();
                     meerkat.modules.healthMedicare.onBeforeEnterApply();
-
-                    // REMOVE BUP from below - it was only added to aid testing during dev #####################
-                    meerkat.modules.healthAGRModal.initAGRModal(['BUP', 'NIB']);
+                    meerkat.modules.healthAGRModal.initAGRModal(['NIB']);
                 }
             },
             onAfterEnter: function afterEnterApplyStep(event) {
@@ -491,7 +489,7 @@
             onInitialise: function onPaymentInit(event) {
                 meerkat.modules.healthPaymentDate.initPaymentDate();
                 meerkat.modules.healthPaymentIPP.initHealthPaymentIPP();
-                meerkat.modules.healthSubmitApplication.initHealthSubmitApplication();
+                meerkat.modules.healthSubmitApplication.initHealthSubmitApplirebateTierTablecation();
             },
             onBeforeEnter: function beforeEnterPaymentStep(event) {
 
