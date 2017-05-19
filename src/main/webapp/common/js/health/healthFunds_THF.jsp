@@ -148,7 +148,11 @@ var healthFunds_THF = {
 		}
 
 		<%--calendar for start cover--%>
-		meerkat.modules.healthCoverStartDate.setCoverStartRange(0, 60);
+		if(_.has(meerkat.modules,'healthCoverStartDate')) {
+			meerkat.modules.healthCoverStartDate.setCoverStartRange(0, 60);
+		} else {
+			meerkat.modules.healthPaymentStep.setCoverStartRange(0, 60)
+		}
 
 		<%-- elegibility --%>
 		healthFunds_THF.unionMembershipFld.on('change', function unionMembershipChange() {

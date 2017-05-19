@@ -232,7 +232,11 @@ var healthFunds_CBH = {
             meerkat.modules.healthFunds._partner_authority(true);
 
 			<%-- Calendar for start cover --%>
-			meerkat.modules.healthCoverStartDate.setCoverStartRange(0, 29);
+			if(_.has(meerkat.modules,'healthCoverStartDate')) {
+				meerkat.modules.healthCoverStartDate.setCoverStartRange(0, 29);
+			} else {
+				meerkat.modules.healthPaymentStep.setCoverStartRange(0, 29)
+			}
 
 			<%-- Payments --%>
 			healthFunds_CBH.paymentLabelOriginal = $('#health_payment_details_type label:first').text();
