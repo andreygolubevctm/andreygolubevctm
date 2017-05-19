@@ -160,6 +160,18 @@
             close();
             meerkat.modules.journeyEngine.gotoPath('payment');
         });
+
+        $elements.affixedJumpToFormLink.on('click', function() {
+            _scrollToForm();
+        });
+
+        $elements.modalBody.off("scroll.toggleAffixedJumpToForm").on("scroll.toggleAffixedJumpToForm", function () {
+            if ($elements.form.offset().top > $elements.modalBody.height()) {
+                $elements.affixedJumpToForm.fadeIn('fast');
+            } else {
+                $elements.affixedJumpToForm.fadeOut('fast');
+            }
+        });
     }
 
     function _setupElements() {
@@ -186,7 +198,10 @@
             dependentSection: $('#health_application_dependants-selection'),
             headerTopFixed: $('.header-top.navMenu-row-fixed'),
             progressBarAffix: $('.progress-bar-row.navbar-affix'),
-            productSummary: $('.productSummary-affix')
+            productSummary: $('.productSummary-affix'),
+            affixedJumpToForm: $('.affixed-jump-to-form'),
+            affixedJumpToFormLink: $('a.jump-to-rebate'),
+            modalBody: $('#agr-modal .modal-body')
         };
     }
 
@@ -240,7 +255,7 @@
             otherNumber = $fields.primary.otherNumber.val(),
             daytimePhoneNumber = mobileNumber ? mobileNumber : otherNumber,
             rebateTier = _getRebateTier($fields.rebate.tier.val()),
-            rebatePercent = rebateTier + ' ' + meerkat.modules.healthRates.getRebate() + '%',
+            rebatePercent = rebateTier + ' - ' + meerkat.modules.healthRates.getRebate() + '%',
             rebateTierTable = getRebateTableData('current'),
 
             data = {
@@ -285,8 +300,6 @@
                 data.dependants.push(_getPersonData('dependant'+i));
             }
         }
-
-        // data.declarationDate = now();
 
         return data;
     }
@@ -412,6 +425,16 @@
                 $elements[(meerkat.modules.healthChoices.hasPartner() ? 'partner' : 'dependent') + 'Section'].offset().top - offsetHeight;
 
         $('html,body').animate({
+            scrollTop: scrollTop
+        }, 500);
+    }
+
+    function _scrollToForm() {
+        var isXS = (meerkat.modules.deviceMediaState.get() === 'xs'),
+            offsetHeight = isXS ? 40 : 0,
+            scrollTop = $elements.modalBody[0].scrollHeight - $elements.form.height() - offsetHeight;
+
+        $elements.modalBody.animate({
             scrollTop: scrollTop
         }, 500);
     }

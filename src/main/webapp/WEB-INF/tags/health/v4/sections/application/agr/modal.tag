@@ -19,4 +19,7 @@
 
     <%--the form--%>
     <health_v4_agr:form />
+
+    <%--affixed jump to form--%>
+    <health_v4_agr:affixed_jump_to_form />
 </core_v1:js_template>
