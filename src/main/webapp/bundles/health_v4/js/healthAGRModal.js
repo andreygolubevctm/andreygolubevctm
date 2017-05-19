@@ -236,12 +236,12 @@
             mobileNumber = $fields.primary.mobileNumber.val(),
             otherNumber = $fields.primary.otherNumber.val(),
             daytimePhoneNumber = mobileNumber ? mobileNumber : otherNumber,
-            rebateTeir = _getRebateTeir($fields.rebate.tier.val()),
-            rabatePercent = rebateTeir + ' ' + $fields.rebate.currentPercentage.val() + '%',      //todo  must confirm that i am getting the correct % value  rebate vs rebateChangeover
+            rebateTier = _getRebateTier($fields.rebate.tier.val()),
+            rebatePercent = rebateTier + ' ' + meerkat.modules.healthRates.getRebate() + '%',
 
             data = {
                 primary: _getPersonData('primary'),
-                rebate: { label: 'Rebate tier', value: rabatePercent },
+                rebate: { label: 'Rebate tier', value: rebatePercent },
                 medicareDetails: [
                     { label: 'Full name', value: medicareFullName },
                     { label: 'Medicare card number', value: medicareNumber },
@@ -339,16 +339,28 @@
     }
 
 
-    function _getRebateTeir(rebateTeirEnum) {
-
-        //todo pull this data from elsewhere?
-        if (rebateTeirEnum > 0) {
-            return "Tier " + rebateTeirEnum;
+    function _getRebateTier(rebateTierEnum) {
+        if (rebateTierEnum > 0) {
+            return "Tier " + rebateTierEnum;
         } else {
             return "Base tier";
         }
     }
 
+    // rates period can be 'previous', 'current, 'future'
+    function getRebateTableData(ratesPeriod) {
+
+        var rebateTableIncomeRange = meerkat.modules.healthTiers.getRebateIncomeRange(),
+            rebateTablePercentageTiers = meerkat.modules.healthRates.getRates()['rebateTiersPercentage'],
+            rebateTableData = [];
+
+        for (var i = 0; i < rebateTableIncomeRange.length; i++) {
+            //return a json data table
+            rebateTableData.push({label: _getRebateTier(i), incomeRange: rebateTableIncomeRange[i], rebate: rebateTablePercentageTiers[ratesPeriod][i] });
+        }
+
+        return rebateTableData;
+    }
 
     function close() {
         meerkat.modules.dialogs.close(_dialogId);
@@ -398,9 +410,7 @@
     }
 
     function _toggleRebateTable() {
-
-        //rebate table stuff goes here
-
+        $(".agrRebateTierTable").slideToggle("fast");
     }
 
     meerkat.modules.register('healthAGRModal', {
@@ -408,7 +418,8 @@
         events: moduleEvents,
         isActivated: isActivated,
         open: open,
-        show: show
+        show: show,
+        getRebateTableData: getRebateTableData
     });
 
 })(jQuery);
