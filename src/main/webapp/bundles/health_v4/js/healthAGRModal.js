@@ -14,7 +14,8 @@
         },
         _dialoglId = null,
         $elements = {},
-        $fields = {};
+        $fields = {},
+        _tempStartDate = null;
 
     function initAGRModal(funds) {
         _states.activated = false;
@@ -134,7 +135,7 @@
             _toggleRebateTable();
         });
 
-        $('#applicationDetailsForm :input').on('change', function() {
+        $('#applicationDetailsForm :input').not($fields.coverStartDate).on('change', function() {
             _states.show = true;
         });
 
@@ -218,6 +219,8 @@
                 onClose: function (dialogId) {
                 }
             });
+
+            _tempStartDate = $fields.coverStartDate.val();
         }
     }
 
@@ -352,6 +355,10 @@
     }
 
     function show() {
+        if (_tempStartDate !== $fields.coverStartDate.val()) {
+            _states.show = true;
+        }
+
         return _states.show;
     }
 
