@@ -51,7 +51,7 @@ var healthFunds_GMH = {
 	    if(_.has(meerkat.modules,'healthCoverStartDate')) {
 		    meerkat.modules.healthCoverStartDate.setCoverStartRange(0, 30);
 	    } else {
-		    meerkat.modules.healthPaymentStep.setCoverStartRange(0, 30)
+		    meerkat.modules.healthPaymentStep.setCoverStartRange(0, 30);
 	    }
         healthFunds_GMH.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
 

@@ -232,7 +232,7 @@
               if(_.has(meerkat.modules,'healthCoverStartDate')) {
                   meerkat.modules.healthCoverStartDate.setCoverStartRange(0, 28);
               } else {
-	              meerkat.modules.healthPaymentStep.setCoverStartRange(0, 28)
+	              meerkat.modules.healthPaymentStep.setCoverStartRange(0, 28);
               }
 
               <%-- Payments --%>
