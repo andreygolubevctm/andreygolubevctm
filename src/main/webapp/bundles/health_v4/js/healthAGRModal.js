@@ -131,6 +131,9 @@
         });
 
         $elements.viewRebateTableBtn.on('click', function() {
+            var $viewHideText = $(this).find('.view-hide-text');
+
+            $viewHideText.text($viewHideText.text() ===  'View' ? 'Hide' : 'View');
             $(this).find('.icon').toggleClass('icon-angle-down icon-angle-up');
             _toggleRebateTable();
         });
