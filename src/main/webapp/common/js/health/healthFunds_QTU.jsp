@@ -115,7 +115,11 @@ var healthFunds_QTU = {
         healthFunds_QTU.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
 
         <%--set start date within the next 3 months--%>
-        meerkat.modules.healthCoverStartDate.setCoverStartRange(0, 90);
+	    if(_.has(meerkat.modules,'healthCoverStartDate')) {
+		    meerkat.modules.healthCoverStartDate.setCoverStartRange(0, 90);
+	    } else {
+		    meerkat.modules.healthPaymentStep.setCoverStartRange(0, 90)
+	    }
 
         healthFunds_QTU.$paymentType.on('change.QTU', function renderPaymentDaysPaymentType(){
             healthFunds_QTU.renderPaymentDays();
