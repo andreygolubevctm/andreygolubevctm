@@ -175,7 +175,8 @@
     }
 
     function _createLocationArray(state) {
-        return ['NULL', $elements.input.val(), state];
+    	var suburb = $elements.suburb.val();
+        return [!_.isEmpty(suburb)?suburb:'NULL', $elements.input.val(), state];
     }
 
     function _setLocation(location) {
