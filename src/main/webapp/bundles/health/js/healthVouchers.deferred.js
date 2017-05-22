@@ -230,7 +230,7 @@
                                     $elements.wrappers.simples.defaultReason.hide();
                                 }
                             } else {
-                                $elements.wrappers.simples.referral.hide();
+                                $elements.wrappers.simples.defaultReason.hide();
                             }
                             $elements.wrappers.other.slideDown('fast');
                         });
