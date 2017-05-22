@@ -23,6 +23,8 @@
             coverLoadingHeading: $('.benefitsContainer').find('h3:first-child')
         };
 
+        $elements.partnerCoverLoading.add($elements.dob).add($elements.currentCover).attr('data-attach','true');
+
         $elements.partnerQuestionSet = $elements.partnerDOBD.add($elements.currentCover);
 
         meerkat.modules.fieldUtilities.hide($elements.partnerCoverLoading);
