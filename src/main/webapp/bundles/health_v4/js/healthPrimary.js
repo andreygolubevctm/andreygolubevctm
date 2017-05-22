@@ -19,6 +19,8 @@
             partnerDOB: $('#benefits_partner_dob')
         };
 
+	    $elements.primaryCoverLoading.add($elements.dob).add($elements.currentCover).attr('data-attach','true');
+
         var $checked = $elements.currentCover.filter(':checked');
         if($checked.length) {
             $checked.change();
@@ -36,13 +38,6 @@
                 hideField
             );
         });
-
-        $elements.dob.on('change', function updateContinuousCover() {
-            _.defer(function(){
-                var $checked = $elements.currentCover.filter(':checked');
-                if($checked.length) $checked.change();
-            });
-        });
     }
 
     function _eventSubscriptions() {
@@ -52,10 +47,6 @@
 
         meerkat.messaging.subscribe(meerkatEvents.healthSituation.SITUATION_CHANGED, function togglePartnerFields() {
             positionFieldsForBrochureware();
-            _.defer(function(){
-                var $checked = $elements.currentCover.filter(':checked');
-                if($checked.length) $checked.change();
-            });
         });
     }
 

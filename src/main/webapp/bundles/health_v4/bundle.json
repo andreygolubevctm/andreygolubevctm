@@ -46,6 +46,7 @@
     "shared/fields",
     "shared/healthDualPricing",
     "shared/healthPyrrCampaign",
-    "shared/reward"
+    "shared/reward",
+    "shared/bootstrapSwitch"
   ]
 }

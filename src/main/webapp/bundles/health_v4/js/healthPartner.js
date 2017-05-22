@@ -23,6 +23,8 @@
             coverLoadingHeading: $('.benefitsContainer').find('h3:first-child')
         };
 
+        $elements.partnerCoverLoading.add($elements.dob).add($elements.currentCover).attr('data-attach','true');
+
         $elements.partnerQuestionSet = $elements.partnerDOBD.add($elements.currentCover);
 
         meerkat.modules.fieldUtilities.hide($elements.partnerCoverLoading);
@@ -47,14 +49,6 @@
 
         $elements.dob.on('change', function updateSnapshot() {
             meerkat.messaging.publish(meerkatEvents.health.SNAPSHOT_FIELDS_CHANGE);
-            _.defer(function(){
-                var $checked = $elements.currentCover.filter(':checked');
-                if($checked.length) {
-                    $checked.change();
-                } else {
-                    $elements.currentCover.change();
-                }
-            });
         });
 
     }
@@ -87,13 +81,6 @@
     function _togglePartnerQuestionset(selected) {
         var hasPartner = _.indexOf(['F', 'C'], selected.situation) > -1;
         meerkat.modules.fieldUtilities.toggleVisible($elements.partnerQuestionSet.add($elements.partnerCoverLoading), !hasPartner);
-        if(hasPartner && !_.isUndefined(getCurrentCover())) {
-            // Need to trigger continuous cover visibility if required
-            var $checked = $elements.currentCover.filter(':checked');
-            if ($checked.length) $checked.change();
-        } else {
-            $elements.currentCover.change();
-        }
     }
 
     function _setupAppFields() {

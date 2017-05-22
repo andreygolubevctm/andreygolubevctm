@@ -27,7 +27,7 @@
 	<c:set var="trackingCode" value="${contentService.getContentWithSupplementary(pageContext.getRequest(), 'handoverTrackingURL', verticalBrandCode, param.vertical).getSupplementaryValueByKey(providerCode)}" />
 
 	<c:set var="quoteUrl">
-			<c:out value="${trackingURL}" />${trackingCode}/pubref:${gaClientId}/Adref:${transactionId}/destination:${quoteUrl}
+			<c:out value="${trackingURL}" />${trackingCode}/pubref:${gaClientId}/adref:${transactionId}/destination:${quoteUrl}
 	</c:set>
 </c:if>
 

@@ -160,6 +160,7 @@ body.health {
         }
         h2 {
           color: @theme-accent-4;
+          display: inline-block;
           margin-bottom: 0;
           font-size: 21px;
         }
@@ -206,5 +207,55 @@ body.health {
         .benefitsIconSize(32px, @font-size-base, 0);
       }
     }
+  }
+}
+
+//Benefits Switched Off
+.benefits-switched-off {
+  &.Hospital_container {
+    .benefitsTab {
+      @media (@xs-only) {
+        display: none;
+      }
+
+      .opacity(0.3);
+
+      a {
+        pointer-events: none;
+        cursor: default;
+      }
+    }
+  }
+
+  &.GeneralHealth_container {
+    .title p,
+    .title .quickSelectContainer,
+    .Extras-wrapper {
+      @media (@xs-only) {
+        display: none;
+      }
+
+      .opacity(0.3);
+
+      a {
+        pointer-events: none;
+        cursor: default;
+      }
+    }
+  }
+}
+
+.GeneralHealth_container {
+  .has-switch {
+    @media (@xs-only) {
+      margin-left: 36px;
+    }
+  }
+}
+
+.benefits-switch-alert {
+  @media (@xs-only) {
+    margin-top: 15px;
+    margin-bottom: 0;
   }
 }
