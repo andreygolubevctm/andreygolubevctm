@@ -48,10 +48,8 @@
                     approvedby:     $elements.root.find('.healthVoucherApprovedByRow').first(),
                     authorisation:  $elements.root.find('.healthVoucherAuthorisationRow').first(),
                     simples :   {
-                        referral :      $elements.root.find('.dialogue.referral').first(),
-                        other :         $elements.root.find('.dialogue.others').first(),
-                        matchonline :   $elements.root.find('.dialogue.matchonline').first()
-                    },
+                        defaultReason :      $elements.root.find('.dialogue.defaultReason').first(),
+                          },
                     messages:       $elements.root.find('.voucher-validation-messages'),
                     disableables:   $elements.root.find('.disableable-fields')
                 };
@@ -225,32 +223,14 @@
                                 $elements.wrappers.simples.pyrrCampaign.hide();
                             }
                             if(!_.isEmpty(data.other.reason)) {
-                                if (data.other.reason === 'referral-offer') {
-                                    $elements.wrappers.referrerref.show();
-                                    $elements.wrappers.simples.referral.show();
-                                    $elements.wrappers.simples.other.hide();
-                                    $elements.wrappers.simples.matchonline.hide();
-                                } else if (data.other.reason === 'match-online-offer') {
-                                    $elements.wrappers.referrerref.hide();
-                                    $elements.wrappers.simples.referral.hide();
-                                    $elements.wrappers.simples.other.hide();
-                                    $elements.wrappers.simples.matchonline.show();
-                                } else if (pyrrCoupon && data.other.reason === 'pay-your-rate-rise') {
-                                    $elements.wrappers.referrerref.hide();
-                                    $elements.wrappers.simples.referral.hide();
-                                    $elements.wrappers.simples.other.hide();
-                                    $elements.wrappers.simples.matchonline.hide();
+                                if (pyrrCoupon && data.other.reason === 'pay-your-rate-rise') {
                                     $elements.wrappers.simples.pyrrCampaign.show();
                                 } else {
                                     $elements.wrappers.referrerref.hide();
-                                    $elements.wrappers.simples.referral.hide();
-                                    $elements.wrappers.simples.other.show();
-                                    $elements.wrappers.simples.matchonline.hide();
+                                    $elements.wrappers.simples.defaultReason.hide();
                                 }
                             } else {
                                 $elements.wrappers.simples.referral.hide();
-                                $elements.wrappers.simples.other.hide();
-                                $elements.wrappers.simples.matchonline.hide();
                             }
                             $elements.wrappers.other.slideDown('fast');
                         });
