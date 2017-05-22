@@ -222,16 +222,8 @@
                             if (pyrrCoupon) {
                                 $elements.wrappers.simples.pyrrCampaign.hide();
                             }
-                            if(!_.isEmpty(data.other.reason)) {
-                                if (pyrrCoupon && data.other.reason === 'pay-your-rate-rise') {
-                                    $elements.wrappers.simples.pyrrCampaign.show();
-                                } else {
-                                    $elements.wrappers.referrerref.hide();
-                                    $elements.wrappers.simples.defaultReason.hide();
-                                }
-                            } else {
-                                $elements.wrappers.simples.defaultReason.hide();
-                            }
+                            toggleReasonDialog(pyrrCoupon , data.other.reason);
+                            toggleReferrerReference( data.other.reason);
                             $elements.wrappers.other.slideDown('fast');
                         });
                     }
@@ -242,6 +234,27 @@
         }
     }
 
+    function toggleReferrerReference(otherReason) {
+        if(!_.isEmpty(otherReason)) {
+            if (otherReason === 'referral-offer') {
+                $elements.wrappers.referrerref.show();
+            } else {
+                $elements.wrappers.referrerref.hide();
+            }
+        }
+    }
+    function toggleReasonDialog(pyrrCoupon , otherReason) {
+        if(!_.isEmpty(otherReason)) {
+            if (pyrrCoupon && otherReason === 'pay-your-rate-rise') {
+                $elements.wrappers.simples.defaultReason.hide();
+                $elements.wrappers.simples.pyrrCampaign.show();
+            } else {
+                $elements.wrappers.simples.defaultReason.show();
+            }
+        } else {
+            $elements.wrappers.simples.defaultReason.hide();
+        }
+    }
     /**
      * resetData: resets the private data object to the default state
      */
