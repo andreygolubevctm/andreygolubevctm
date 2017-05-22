@@ -15,7 +15,8 @@
         _dialoglId = null,
         $elements = {},
         $fields = {},
-        _tempStartDate = null;
+        _tempStartDate = null,
+        $dependantsIncome = $('#health_application_dependants_income');
 
     function initAGRModal(funds) {
         _states.activated = false;
@@ -31,6 +32,11 @@
             _eventSubscriptions();
 
             _states.activated = true;
+
+            // need to turn 'off' when not activated
+            $dependantsIncome.on('change', function updateThePremiumOnInput() {
+                meerkat.messaging.publish(meerkatEvents.TRIGGER_UPDATE_PREMIUM);
+            });
         }
     }
 
@@ -58,7 +64,7 @@
                     nonStd: $('#health_application_address_nonStd'),
                     suburbName: $('#health_application_address_suburbName'),
                     state: $('#health_application_address_state'),
-                    addrLn1: $('#health_application_address_fullAddressLineOne')
+                    fullAddress: $('#health_application_address_fullAddress')
                 },
                 postal: {
                     postcode: $('#health_application_postal_postCode'),
@@ -71,7 +77,7 @@
                     nonStd: $('#health_application_postal_nonStd'),
                     suburbName: $('#health_application_postal_suburbName'),
                     state: $('#health_application_postal_state'),
-                    addrLn1: $('#health_application_postal_fullAddressLineOne')
+                    fullAddress: $('#health_application_postal_fullAddress')
                 }
             },
             postalMatch: $('#health_application_postalMatch'),
@@ -110,6 +116,10 @@
             };
         }
 
+        _createFieldsDependants();
+    }
+
+    function _createFieldsDependants() {
         if (meerkat.modules.healthDependants.getNumberOfDependants() > 0) {
             for (var i = 1; i <= meerkat.modules.healthDependants.getNumberOfDependants(); i++) {
                 $fields['dependant'+i] = {
@@ -133,7 +143,7 @@
         $elements.viewRebateTableBtn.on('click', function() {
             var $viewHideText = $(this).find('.view-hide-text');
 
-            $viewHideText.text($viewHideText.text() ===  'View' ? 'Hide' : 'View');
+            $viewHideText.text($viewHideText.text() === 'View' ? 'Hide' : 'View');
             $(this).find('.icon').toggleClass('icon-angle-down icon-angle-up');
             _toggleRebateTable();
         });
@@ -219,6 +229,8 @@
 
     function open() {
         if (_states.show) {
+            _createFieldsDependants();
+
             var htmlContent = _template(_getTemplateData());
 
             _dialogId = meerkat.modules.dialogs.show({
@@ -254,7 +266,7 @@
             otherNumber = $fields.primary.otherNumber.val(),
             daytimePhoneNumber = mobileNumber ? mobileNumber : otherNumber,
             rebateTier = _getRebateTier($fields.rebate.tier.val()),
-            rebatePercent = rebateTier + ' - ' + meerkat.modules.healthRates.getRebate() + '%',
+            rebatePercent = rebateTier + ' - ' + $fields.rebate.currentPercentage.val() + '%',
             rebateTierTable = getRebateTableData('current'),
 
             data = {
@@ -350,13 +362,25 @@
         }
         */
 
-        var addressStr =  $fields.address[returnAddrType].addrLn1.val() + "<br/>"
-            + $fields.address[returnAddrType].suburbName.val() + "  " + $fields.address[returnAddrType].state.val() + "  "
-            + $fields.address[returnAddrType].postcode.val();
+        //nonStdStreet and streetSearch cannot be trusted without checking the value of elasticSearch
+        var fullAddress = $fields.address[returnAddrType].fullAddress.val();
+        var suburb = $fields.address[returnAddrType].suburbName.val();
+        var state = $fields.address[returnAddrType].state.val();
+        var postcode = $fields.address[returnAddrType].postcode.val();
+        var addrLn1 = "";
 
-        return addressStr;
+        if (fullAddress.lastIndexOf(suburb) > 1) {
+            addrLn1 = fullAddress.substr(0, (fullAddress.lastIndexOf(suburb) - 1));
+        } else if (fullAddress.lastIndexOf(state) > 1) {
+            addrLn1 = fullAddress.substr(0, (fullAddress.lastIndexOf(state) - 1));
+        } else {
+            addrLn1 = fullAddress.substr(0, (fullAddress.lastIndexOf(postcode) - 1));
+        }
+
+        return addrLn1 + "<br/>"
+            + (suburb ? (suburb + "  ") : "") + (state ? (state + "  ") : "")
+            + postcode;
     }
-
 
     function _getRebateTier(rebateTierEnum) {
         if (rebateTierEnum > 0) {
@@ -390,11 +414,15 @@
             _states.show = true;
         }
 
+        if (meerkat.modules.healthTiers.getIncome() === '3') {
+            _states.show = false;
+        }
+
         return _states.show;
     }
 
     function _areFieldsAcceptable() {
-        return (_isCoveredBy() && _isAllPeopleEntitled());
+        return (_isCoveredBy() && _isAllPeopleEntitled() && _isDeclared());
     }
 
     function _isCoveredBy() {
