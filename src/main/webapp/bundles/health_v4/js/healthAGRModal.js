@@ -169,11 +169,7 @@
         });
 
         $elements.modalBody.off("scroll.toggleAffixedJumpToForm").on("scroll.toggleAffixedJumpToForm", function () {
-            if ($elements.form.offset().top > $elements.modalBody.height()) {
-                $elements.affixedJumpToForm.fadeIn('fast');
-            } else {
-                $elements.affixedJumpToForm.fadeOut('fast');
-            }
+            _toggleAffixedJumpToForm();
         });
     }
 
@@ -446,6 +442,14 @@
         $(".agrRebateTierTable").slideToggle("fast");
     }
 
+    function _toggleAffixedJumpToForm() {
+        if ($elements.form[0].getBoundingClientRect().top > $elements.modalBody.height()) {
+            $elements.affixedJumpToForm.fadeIn('fast');
+        } else {
+            $elements.affixedJumpToForm.fadeOut('fast');
+        }
+    }
+
     function _onSubmit() {
         if ($elements.form.valid() && _.isUndefined($elements.submitBtn.attr('disabled'))) {
             _states.show = false;
@@ -458,10 +462,12 @@
     }
 
     function _updateHiddenXpaths(flushIt) {
+        var declareDate = meerkat.modules.dateUtils.returnDate($elements.declareDate.text());
+
         $elements.hiddenApplicantCovered.val(flushIt ? '' : $elements.applicantCovered.filter(':checked').val());
         $elements.hiddenEntitledToMedicare.val(flushIt ? '' : $elements.entitledToMedicare.filter(':checked').val());
         $elements.hiddenDeclare.val(flushIt ? '' : $elements.declare.is(':checked') ? 'Y' : 'N');
-        $elements.hiddenDeclareDate.val(flushIt ? '' : $elements.declareDate.text());
+        $elements.hiddenDeclareDate.val(flushIt ? '' : meerkat.modules.dateUtils.format(declareDate, 'YYYY-MM-DD'));
     }
 
     meerkat.modules.register('healthAGRModal', {
