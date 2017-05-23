@@ -479,9 +479,9 @@
 
     function _toggleAffixedJumpToForm() {
         if ($elements.form[0].getBoundingClientRect().top > $elements.modalBody.height()) {
-            $elements.affixedJumpToForm.fadeIn('fast');
+            $elements.affixedJumpToForm.stop(true, true).fadeIn('fast');
         } else {
-            $elements.affixedJumpToForm.fadeOut('fast');
+            $elements.affixedJumpToForm.stop(true, true).fadeOut('fast');
         }
     }
 
