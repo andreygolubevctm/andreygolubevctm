@@ -2,10 +2,6 @@
 
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
-        moduleEvents = {
-            healthApplyReview: {
-            }
-        },
         _template = null,
         _states = {
             activated: false,
@@ -142,6 +138,15 @@
         }
     }
 
+    function _eventSubscriptions() {
+        meerkat.messaging.subscribe(meerkat.modules.journeyEngine.events.journeyEngine.STEP_CHANGED, function stepChangedEvent(navInfo) {
+            if (navInfo.isBackward && navInfo.navigationId === 'results' && _states.fetchResults) {
+                meerkat.modules.journeyEngine.loadingShow('...updating your quotes...', true);
+                meerkat.modules.healthResults.get();
+            }
+        });
+    }
+
     function _applyEventListeners() {
         $elements.editBtn.on('click', function() {
             var section = $(this).parent().hasClass('agr-your-details-section') ? 'your' : 'others';
@@ -218,17 +223,9 @@
             productSummary: $('.productSummary-affix'),
             affixedJumpToForm: $('.affixed-jump-to-form'),
             affixedJumpToFormLink: $('a.jump-to-rebate'),
-            modalBody: $('#agr-modal .modal-body')
+            modalBody: $('#agr-modal .modal-body'),
+            rebateTierTable: $('.agrRebateTierTable')
         };
-    }
-
-    function _eventSubscriptions() {
-        meerkat.messaging.subscribe(meerkat.modules.journeyEngine.events.journeyEngine.STEP_CHANGED, function stepChangedEvent(navInfo) {
-            if (navInfo.isBackward && navInfo.navigationId === 'results' && _states.fetchResults) {
-                meerkat.modules.journeyEngine.loadingShow('...updating your quotes...', true);
-                meerkat.modules.healthResults.get();
-            }
-        });
     }
 
     function isActivated() {
@@ -361,21 +358,14 @@
     }
 
     function _getAddressData(addressType) {
-        var isPostalMatch = ($fields.postalMatch.filter(':checked').length > 0);
-        var returnAddrType = isPostalMatch ? 'residential': addressType;
-
-        /*
-        if (isPostalMatch && (addressType === 'postal')) {
-            return 'As Above';
-        }
-        */
-
-        //nonStdStreet and streetSearch cannot be trusted without checking the value of elasticSearch
-        var fullAddress = $fields.address[returnAddrType].fullAddress.val();
-        var suburb = $fields.address[returnAddrType].suburbName.val();
-        var state = $fields.address[returnAddrType].state.val();
-        var postcode = $fields.address[returnAddrType].postcode.val();
-        var addrLn1 = "";
+        var isPostalMatch = ($fields.postalMatch.filter(':checked').length > 0),
+            returnAddrType = isPostalMatch ? 'residential': addressType,
+            //nonStdStreet and streetSearch cannot be trusted without checking the value of elasticSearch
+            fullAddress = $fields.address[returnAddrType].fullAddress.val(),
+            suburb = $fields.address[returnAddrType].suburbName.val(),
+            state = $fields.address[returnAddrType].state.val(),
+            postcode = $fields.address[returnAddrType].postcode.val(),
+            addrLn1 = '';
 
         if (fullAddress.lastIndexOf(suburb) > 1) {
             addrLn1 = fullAddress.substr(0, (fullAddress.lastIndexOf(suburb) - 1));
@@ -385,29 +375,32 @@
             addrLn1 = fullAddress.substr(0, (fullAddress.lastIndexOf(postcode) - 1));
         }
 
-        return addrLn1 + "<br/>"
-            + (suburb ? (suburb + "  ") : "") + (state ? (state + "  ") : "")
+        return addrLn1 + '<br/>'
+            + (suburb ? (suburb + '  ') : '') + (state ? (state + '  ') : '')
             + postcode;
     }
 
     function _getRebateTier(rebateTierEnum) {
         if (rebateTierEnum > 0) {
-            return "Tier " + rebateTierEnum;
+            return 'Tier ' + rebateTierEnum;
         } else {
-            return "Base tier";
+            return 'Base tier';
         }
     }
 
     // rates period can be 'previous', 'current, 'future'
     function getRebateTableData(ratesPeriod) {
-
         var rebateTableIncomeRange = meerkat.modules.healthTiers.getRebateIncomeRange(),
             rebateTablePercentageTiers = meerkat.modules.healthRates.getRates()['rebateTiersPercentage'],
             rebateTableData = [];
 
         for (var i = 0; i < rebateTableIncomeRange.length; i++) {
             //return a json data table
-            rebateTableData.push({label: _getRebateTier(i), incomeRange: rebateTableIncomeRange[i], rebate: rebateTablePercentageTiers[ratesPeriod][i] });
+            rebateTableData.push({
+                label: _getRebateTier(i),
+                incomeRange: rebateTableIncomeRange[i],
+                rebate: rebateTablePercentageTiers[ratesPeriod][i]
+            });
         }
 
         return rebateTableData;
@@ -476,7 +469,7 @@
     }
 
     function _toggleRebateTable() {
-        $(".agrRebateTierTable").slideToggle("fast");
+        $elements.rebateTierTable.slideToggle('fast');
     }
 
     function _toggleAffixedJumpToForm() {
