@@ -15,7 +15,7 @@
 	var currentTime = new Date();
 	var currentYear = currentTime.getFullYear();
 	var currentMonth = currentTime.getMonth() + 1;
-	var isNormalJourney = $('.principalResidence').length > 0;
+	var isNormalJourney = $('.isNormalJourney').length > 0;
 	var elements = {
 			name:					"home_occupancy",
 			ownProperty:			"home_occupancy_ownProperty",

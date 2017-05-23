@@ -53,6 +53,7 @@
 		</c:when>
 		
 		<c:otherwise>
+			<div class="isNormalJourney"></div>
 			<%-- PPoR --%>
 			<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Principal Residence - Tool Tip" quoteChar="\"" /></c:set>
 			<form_v2:row fieldXpath="${fieldXpath}" label="Is it your principal place of residence?" helpId="503" tooltipAttributes="${analyticsAttr}">
