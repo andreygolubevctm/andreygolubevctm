@@ -72,50 +72,6 @@ INSERT INTO ctm.product_properties_text VALUES(@product_id,'terms-general',0,'-C
 --[Credit Card Conditions of Use](http://info.westpac.com.au/creditcards/files/Consumer_Conditions_of_use.pdf)','','2040-12-31','');
 
 
-INSERT INTO ctm.product_master (ProductCat,ProductCode,ProviderId, ShortTitle, LongTitle,EffectiveStart,EffectiveEnd,Status) VALUES('CREDITCARD','WEST-LR',@provider_id,'Westpac Low Rate Card','Westpac Low Rate Card','','2040-12-31','');
-SET @product_id = LAST_INSERT_ID();
-INSERT INTO ctm.product_properties_text VALUES(@product_id,'terms-balance-transfer',0,'The promotional balance transfer rate is available when you apply for a new Westpac credit card between 12th October 2016 and 30th January 2017 and request at application to transfer balance(s) from up to 3 non-Westpac Australian issued credit, charge or store cards. The rates will apply to balance(s) transferred (min $200 up to 95% of your approved available credit limit) for the promotional period, unless the amount is paid off earlier. Card activation will trigger the processing of the balance transfer. The variable purchase rate will apply to balance(s) transferred but left unpaid at the end of the promotional period. Westpac will not be responsible for any delays that may occur in processing payment to your other card account(s) and will not close the account(s). The variable purchase interest rate applies to balance transfers requested at any other time. Interest free days don''t apply to balance transfers.','','2040-12-31','');
-INSERT INTO ctm.product_properties VALUES(@product_id,'card-class',0,0,'Visa',NULL,'','2040-12-31','',0);
-INSERT INTO ctm.product_properties_text VALUES(@product_id,'terms-interest-rate',0,'The introductory rate of 1.00% p.a. on purchases is available when you apply for a new Westpac credit card between 12th October 2016 and 30th January 2017. The introductory rate will be applied from the date of the first purchase on your account and expires 12 months after the date of card approval. At the end of this period the introductory purchase rate will switch to the variable purchase rate then applicable to your card account and any purchases that remain unpaid at that time will revert to the standard variable purchase rate then applicable to your card account.','','2040-12-31','');
-INSERT INTO ctm.product_properties VALUES(@product_id,'extended-warranty',0,0,'No',NULL,'','2040-12-31','',0);
-INSERT INTO ctm.product_properties VALUES(@product_id,'cash-advance-rate',0,21.49,'21.49%',NULL,'','2040-12-31','',0);
-INSERT INTO ctm.product_properties_text VALUES(@product_id,'other-features',0,'-Contactless Payments
--CardShield helps defend against fraudulent activity
--Secure online shopping through Verified by Visa
--Falcon&reg; Fraud Protection 24/7
--Fraud Money Back Guarantee- Cardholders will be will be reimbursed for any unauthorised transactions provided that the customer has not contributed to the loss and contacted Westpac promptly. Refer to your card''s conditions of use for full details, including when a customer will be liable.','','2040-12-31','');
-INSERT INTO ctm.product_properties VALUES(@product_id,'intro-rate',0,1.0,'1%',NULL,'','2040-12-31','',0);
-INSERT INTO ctm.product_properties VALUES(@product_id,'maximum-credit-limit',0,25000.0,'$25000',NULL,'','2040-12-31','',0);
-INSERT INTO ctm.product_properties VALUES(@product_id,'minimum-income',0,15000.0,'$15000',NULL,'','2040-12-31','',0);
-INSERT INTO ctm.product_properties VALUES(@product_id,'intro-balance-transfer-rate',0,0.0,'0%',NULL,'','2040-12-31','',0);
-INSERT INTO ctm.product_properties VALUES(@product_id,'special-offer',0,0,'Pay 0% p.a. on balance transfers for 16 months, receive complimentary insurances and access a platinum concierge service for a low annual fee.',NULL,'','2040-12-31','',0);
-INSERT INTO ctm.product_properties VALUES(@product_id,'annual-fee',0,59.0,'$59',NULL,'','2040-12-31','',0);
-INSERT INTO ctm.category_product_mapping (categoryId, productId) SELECT categoryId, @product_id FROM ctm.category_master WHERE categoryCode IN ('LOWINTERESTRATE','BALANCETRANSFER','INTERESTFREE');
-INSERT INTO ctm.product_properties VALUES(@product_id,'minimum-credit-limit',0,1000.0,'$1000',NULL,'','2040-12-31','',0);
-INSERT INTO ctm.product_properties VALUES(@product_id,'slug',0,0,'westpac-low-rate',NULL,'','2040-12-31','',0);
-INSERT INTO ctm.product_properties VALUES(@product_id,'intro-rate-period',0,12.0,'12',NULL,'','2040-12-31','',0);
-INSERT INTO ctm.product_properties VALUES(@product_id,'product-desc',0,0,'Enjoy summer and all its festivities with a low rate on purchases for up to a year.
-1%p.a.interest on purchases for up to 12 months from card approval.
-0%p.a.on balance transfers for 16 months requested at card application 
-Offer ends 30 January 2017. New cards only.',NULL,'','2040-12-31','',0);
-INSERT INTO ctm.product_properties VALUES(@product_id,'interest-free-days',0,55.0,'55',NULL,'','2040-12-31','',0);
-INSERT INTO ctm.product_properties VALUES(@product_id,'product-type',0,0,'Low Interest',NULL,'','2040-12-31','',0);
-INSERT INTO ctm.product_properties VALUES(@product_id,'foreign-exchange-fees',0,1,'Yes',NULL,'','2040-12-31','',0);
-INSERT INTO ctm.product_properties VALUES(@product_id,'complimentary-travel-insurance',0,0,'No',NULL,'','2040-12-31','',0);
-INSERT INTO ctm.product_properties VALUES(@product_id,'interest-rate',0,13.49,'13.49%',NULL,'','2040-12-31','',0);
-INSERT INTO ctm.product_properties VALUES(@product_id,'minimum-monthly-repayment',0,2.0,'2%',NULL,'','2040-12-31','',0);
-INSERT INTO ctm.product_properties VALUES(@product_id,'late-payment-fee',0,9.0,'$9',NULL,'','2040-12-31','',0);
-INSERT INTO ctm.product_properties VALUES(@product_id,'available-temporary-residents',0,0,'No',NULL,'','2040-12-31','',0);
-INSERT INTO ctm.product_properties VALUES(@product_id,'handover-url',0,0,'http://prf.hn/click/camref:1100lxWv/destination:http://adsfac.net/link.asp?cc=WCC071.221712.0&clk=1&creativeID=314335&ord=[timestamp]',NULL,'','2040-12-31','',0);
-INSERT INTO ctm.product_properties VALUES(@product_id,'additional-card-holder',0,1,'Yes',NULL,'','2040-12-31','',0);
-INSERT INTO ctm.product_properties VALUES(@product_id,'balance-transfer-rate',0,13.49,'13.49%',NULL,'','2040-12-31','',0);
-INSERT INTO ctm.product_properties VALUES(@product_id,'intro-balance-transfer-rate-period',0,16.0,'16',NULL,'','2040-12-31','',0);
-INSERT INTO ctm.product_properties_text VALUES(@product_id,'terms-general',0,'-Conditions, fees and credit criteria apply.
--This card is issued as a Visa card.
--View the terms and conditions:
---[Credit Card Conditions of Use](http://info.westpac.com.au/creditcards/files/Consumer_Conditions_of_use.pdf)','','2040-12-31','');
-
-
 INSERT INTO ctm.product_master (ProductCat,ProductCode,ProviderId, ShortTitle, LongTitle,EffectiveStart,EffectiveEnd,Status) VALUES('CREDITCARD','WEST-AP',@provider_id,'Westpac Altitude Platinum','Westpac Altitude Platinum','','2040-12-31','');
 SET @product_id = LAST_INSERT_ID();
 INSERT INTO ctm.product_properties VALUES(@product_id,'rewards-standard-card-points',0,1.0,'1',NULL,'','2040-12-31','',0);
