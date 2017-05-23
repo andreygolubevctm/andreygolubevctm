@@ -2,7 +2,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<div class="affixed-jump-to-form">
+<div class="affixed-jump-to-form hidden-xs">
     <div class="row">
         <div class="col-xs-12 col-sm-4">
             <a href="javascript:;" class="jump-to-rebate">Jump to rebate declaration <span class="icon icon-angle-down"></span></a>

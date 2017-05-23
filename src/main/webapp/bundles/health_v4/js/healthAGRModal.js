@@ -243,6 +243,11 @@
                 title: 'Application Review',
                 htmlContent: htmlContent,
                 showCloseBtn: false,
+                rightBtn: {
+                    label: 'Jump to declaration',
+                    className: 'btn-sm affixed-jump-to-form',
+                    callback: _scrollToForm
+                },
                 onOpen: function (dialogId) {
                     _setupElements();
                     _applyEventListeners();
