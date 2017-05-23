@@ -8,6 +8,7 @@
             show: true,
             fetchResults: false
         },
+        _stepChangedSubscribe = false,
         _dialoglId = null,
         $elements = {},
         $primaryDob = $('#health_application_primary_dob'),
@@ -30,6 +31,9 @@
         _states.activated = false;
         _states.show = true;
         _states.fetchResults = false;
+
+        meerkat.messaging.unsubscribe(meerkat.modules.journeyEngine.events.journeyEngine.STEP_CHANGED, _stepChangedSubscribe);
+        $primaryDob.add($partnerDob).add($dependantsIncome).off('change');
 
         _updateHiddenXpaths(true);
 
@@ -136,7 +140,7 @@
     }
 
     function _eventSubscriptions() {
-        meerkat.messaging.subscribe(meerkat.modules.journeyEngine.events.journeyEngine.STEP_CHANGED, function stepChangedEvent(navInfo) {
+        _stepChangedSubscribe = meerkat.messaging.subscribe(meerkat.modules.journeyEngine.events.journeyEngine.STEP_CHANGED, function stepChangedEvent(navInfo) {
             if (navInfo.isBackward) {
                 close();
             }
@@ -407,7 +411,9 @@
     }
 
     function close() {
-        meerkat.modules.dialogs.close(_dialogId);
+        if (meerkat.modules.dialogs.isDialogOpen(_dialogId)) {
+            meerkat.modules.dialogs.close(_dialogId);
+        }
     }
 
     function show() {
