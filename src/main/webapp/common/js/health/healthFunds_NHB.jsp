@@ -229,7 +229,11 @@
               meerkat.modules.healthFunds.showHowToSendInfo('Navy Health', true);
 
               <%-- Calendar for start cover --%>
-              meerkat.modules.healthPaymentStep.setCoverStartRange(0, 28);
+              if(_.has(meerkat.modules,'healthCoverStartDate')) {
+                  meerkat.modules.healthCoverStartDate.setCoverStartRange(0, 28);
+              } else {
+	              meerkat.modules.healthPaymentStep.setCoverStartRange(0, 28);
+              }
 
               <%-- Payments --%>
               meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':true, 'fortnightly': true, 'monthly': true, 'quarterly':true, 'halfyearly':true, 'annually':true });

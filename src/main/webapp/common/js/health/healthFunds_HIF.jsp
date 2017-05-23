@@ -91,7 +91,11 @@
                 meerkat.modules.healthFunds._partner_authority(true);
 
               <%-- Calendar for start cover --%>
-              meerkat.modules.healthPaymentStep.setCoverStartRange(0, 29);
+	            if(_.has(meerkat.modules,'healthCoverStartDate')) {
+		            meerkat.modules.healthCoverStartDate.setCoverStartRange(0, 29);
+	            } else {
+		            meerkat.modules.healthPaymentStep.setCoverStartRange(0, 29);
+	            }
 
               <%-- Payments --%>
               meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':false, 'fortnightly':true, 'monthly':true, 'quarterly':true, 'halfyearly':true, 'annually':true });
