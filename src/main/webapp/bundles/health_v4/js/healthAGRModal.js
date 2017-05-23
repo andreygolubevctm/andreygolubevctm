@@ -140,6 +140,10 @@
 
     function _eventSubscriptions() {
         meerkat.messaging.subscribe(meerkat.modules.journeyEngine.events.journeyEngine.STEP_CHANGED, function stepChangedEvent(navInfo) {
+            if (navInfo.isBackward) {
+                close();
+            }
+
             if (navInfo.isBackward && navInfo.navigationId === 'results' && _states.fetchResults) {
                 meerkat.modules.journeyEngine.loadingShow('...updating your quotes...', true);
                 meerkat.modules.healthResults.get();
