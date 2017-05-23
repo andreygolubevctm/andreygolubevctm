@@ -2,7 +2,7 @@ package com.ctm.web.energy.apply.services;
 
 import com.ctm.apply.model.response.ApplyResponse;
 import com.ctm.apply.model.response.SingleApplyResponse;
-import com.ctm.energyapply.model.request.EnergyApplicationDetails;
+import com.ctm.energy.apply.model.request.EnergyApplicationDetails;
 import com.ctm.interfaces.common.types.Status;
 import com.ctm.web.core.dao.ProviderFilterDao;
 import com.ctm.web.core.exceptions.DaoException;
@@ -12,7 +12,6 @@ import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.services.CommonRequestService;
 import com.ctm.web.core.services.Endpoint;
 import com.ctm.web.core.services.EnvironmentService;
-import com.ctm.web.core.services.ServiceConfigurationService;
 import com.ctm.web.energy.apply.adapter.EnergyApplyServiceRequestAdapter;
 import com.ctm.web.energy.apply.adapter.EnergyApplyServiceResponseAdapter;
 import com.ctm.web.core.apply.exceptions.FailedToRegisterException;
