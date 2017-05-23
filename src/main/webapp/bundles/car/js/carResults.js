@@ -315,6 +315,18 @@
 				toggleNoResultsFeaturesMode();
 			}
 
+            $.each(Results.model.returnedProducts, function(){
+                if (this.available === 'N') {
+                    // Track each Product that doesn't quote
+                    meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+                        method: 'trackQuoteNotProvided',
+                        object: {
+                            productID: this.productId
+                        }
+                    });
+                }
+            });
+
 			meerkat.messaging.publish(meerkatEvents.commencementDate.RESULTS_RENDER_COMPLETED);
 		});
 
