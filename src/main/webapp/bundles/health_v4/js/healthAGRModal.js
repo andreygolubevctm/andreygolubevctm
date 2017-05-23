@@ -14,14 +14,24 @@
         },
         _dialoglId = null,
         $elements = {},
+        $primaryDob = $('#health_application_primary_dob'),
+        $partnerDob = $('#health_application_partner_dob'),
+        $dependantsIncome = $('#health_application_dependants_income'),
         $fields = {},
-        _tempStartDate = null,
-        $dependantsIncome = $('#health_application_dependants_income');
+        $hiddenFields = {
+            applicantCovered: $('#health_application_govtRebateDeclaration_applicantCovered'),
+            entitledToMedicare: $('#health_application_govtRebateDeclaration_entitledToMedicare'),
+            declare: $('#health_application_govtRebateDeclaration_declaration'),
+            declareDate: $('#health_application_govtRebateDeclaration_declarationDate')
+        },
+        _tempStartDate = null;
 
     function initAGRModal(funds) {
         _states.activated = false;
         _states.show = true;
         _states.fetchResults = false;
+
+        _updateHiddenXpaths(true);
 
         if (_.contains(funds, Results.getSelectedProduct().info.FundCode) &&
             meerkat.modules.healthRebate.isRebateApplied()) {
@@ -34,7 +44,7 @@
             _states.activated = true;
 
             // need to turn 'off' when not activated
-            $dependantsIncome.on('change', function updateThePremiumOnInput() {
+            $primaryDob.add($partnerDob).add($dependantsIncome).on('change', function updateThePremiumOnInput() {
                 meerkat.messaging.publish(meerkatEvents.TRIGGER_UPDATE_PREMIUM);
             });
         }
@@ -168,10 +178,12 @@
             $elements.rebateNo.trigger('click');
 
             // close the dialog
+            close();
+            _states.activated = false;
             _states.show = false;
             _states.fetchResults = true;
-            close();
             meerkat.modules.journeyEngine.gotoPath('payment');
+            _updateHiddenXpaths(true);
         });
 
         $elements.affixedJumpToFormLink.on('click', function() {
@@ -197,10 +209,6 @@
             entitledToMedicare: $('input[name=health_application_agr_entitledToMedicare]'),
             declare: $('#health_application_agr_declaration'),
             declareDate: $('.declaration-date'),
-            hiddenApplicantCovered: $('#health_application_govtRebateDeclaration_applicantCovered'),
-            hiddenEntitledToMedicare: $('#health_application_govtRebateDeclaration_entitledToMedicare'),
-            hiddenDeclare: $('#health_application_govtRebateDeclaration_declaration'),
-            hiddenDeclareDate: $('#health_application_govtRebateDeclaration_declarationDate'),
             continueWithoutRebateLink: $('a.continue-without-rebate'),
             rebateNo: $('input[name=health_healthCover_rebate][value=N]'),
             partnerSection: $('#partnerContainer'),
@@ -416,6 +424,7 @@
 
         if (meerkat.modules.healthTiers.getIncome() === '3') {
             _states.show = false;
+            _updateHiddenXpaths(true);
         }
 
         return _states.show;
@@ -490,12 +499,11 @@
     }
 
     function _updateHiddenXpaths(flushIt) {
-        var declareDate = meerkat.modules.dateUtils.returnDate($elements.declareDate.text());
-
-        $elements.hiddenApplicantCovered.val(flushIt ? '' : $elements.applicantCovered.filter(':checked').val());
-        $elements.hiddenEntitledToMedicare.val(flushIt ? '' : $elements.entitledToMedicare.filter(':checked').val());
-        $elements.hiddenDeclare.val(flushIt ? '' : $elements.declare.is(':checked') ? 'Y' : 'N');
-        $elements.hiddenDeclareDate.val(flushIt ? '' : meerkat.modules.dateUtils.format(declareDate, 'YYYY-MM-DD'));
+        $hiddenFields.applicantCovered.val(flushIt ? '' : $elements.applicantCovered.filter(':checked').val());
+        $hiddenFields.entitledToMedicare.val(flushIt ? '' : $elements.entitledToMedicare.filter(':checked').val());
+        $hiddenFields.declare.val(flushIt ? '' : $elements.declare.is(':checked') ? 'Y' : 'N');
+        $hiddenFields.declareDate.val(flushIt ? '' :
+            meerkat.modules.dateUtils.format(meerkat.modules.dateUtils.returnDate($elements.declareDate.text()), 'YYYY-MM-DD'));
     }
 
     meerkat.modules.register('healthAGRModal', {

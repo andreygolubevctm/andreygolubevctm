@@ -419,12 +419,12 @@
                 validate: true,
                 customValidation: function validateSelection(callback) {
                     if (meerkat.modules.healthAGRModal.isActivated()) {
-                        var showApplyReview = meerkat.modules.healthAGRModal.show();
-                        if (showApplyReview) {
+                        var showAGR = meerkat.modules.healthAGRModal.show();
+                        if (showAGR) {
                             // show apply review modal
                             meerkat.modules.healthAGRModal.open();
                         }
-                        callback(!showApplyReview);
+                        callback(!showAGR);
                     } else {
                         callback(true);
                     }
