@@ -20,7 +20,11 @@
             declare: $('#health_application_govtRebateDeclaration_declaration'),
             declareDate: $('#health_application_govtRebateDeclaration_declarationDate')
         },
-        _tempStartDate = null;
+        _tempStartDate = null,
+        // hardcoded fund name to NIB in the meantime. this needs to be dynamic in the future
+        _defaultFundName = 'NIB Health Funds Limited',
+        // because we will never know the membership is going to be until they have paid, this is hardcoded
+        _defaultFundMembershipNum = 'To be provided by your new health fund';
 
     function initAGRModal(funds) {
         _states.activated = false;
@@ -104,13 +108,6 @@
             }
 
         };
-
-        if (meerkat.modules.healthPrimary.getCurrentCover() === 'Y') {
-            $fields.previousFund = {
-                name: $('#health_previousfund_primary_fundName'),
-                memberId: $('#health_previousfund_primary_memberID')
-            };
-        }
 
         if (meerkat.modules.healthChoices.hasPartner()) {
             $fields.partner = {
@@ -269,7 +266,6 @@
 
     function _getTemplateData() {
         var email = $fields.email.val(),
-            coverStartDate = $fields.coverStartDate.val(),
             medicareFullName = $fields.medicare.firstName.val() + ' ' + $fields.medicare.middleName.val() + ' ' +
                 $fields.medicare.surname.val(),
             medicareNumber = $fields.medicare.number.val(),
@@ -282,6 +278,7 @@
             rebateTier = _getRebateTier($fields.rebate.tier.val()),
             rebatePercent = rebateTier + ' - ' + $fields.rebate.currentPercentage.val() + '%',
             rebateTierTable = getRebateTableData('current'),
+            coverStartDate = $fields.coverStartDate.val(),
 
             data = {
                 primary: _getPersonData('primary'),
@@ -291,6 +288,11 @@
                     { label: 'Full name', value: medicareFullName },
                     { label: 'Medicare card number', value: medicareNumber },
                     { label: 'Medicare expiry', value: medicareExpiry }
+                ],
+                fund: [
+                    { label: 'Name of health fund', value: _defaultFundName },
+                    { label: 'Membership number', value: _defaultFundMembershipNum },
+                    { label: 'Date policy commences', value: coverStartDate }
                 ]
             };
 
@@ -303,17 +305,6 @@
         }
 
         data.primary.push({ label: 'Email address', value: email });
-        data.primary.push({ label: 'Date policy commences', value: coverStartDate });
-
-        if (!_.isUndefined($fields.previousFund)) {
-            var previousFundName = _getOptionText($fields.previousFund.name),
-                previousFundMemberId = $fields.previousFund.memberId.val() ? $fields.previousFund.memberId.val() : 'N/A';
-
-            data.previousFund = [
-                { label: 'Name of current health fund', value: previousFundName },
-                { label: 'Membership number', value: previousFundMemberId }
-            ];
-        }
 
         if (!_.isUndefined($fields.partner)) {
             data.partner = _getPersonData('partner');

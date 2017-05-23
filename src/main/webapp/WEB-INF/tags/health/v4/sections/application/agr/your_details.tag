@@ -35,13 +35,11 @@
 
     <hr />
 
-    {{ if (obj.previousFund) { }}
-        {{ obj.previousFund.forEach(function(field) { }}
-            <form_v4:row label="{{= field.label }}">
-                {{= field.value }}
-            </form_v4:row>
-        {{ }); }}
+    {{ obj.fund.forEach(function(field) { }}
+        <form_v4:row label="{{= field.label }}">
+            {{= field.value }}
+        </form_v4:row>
+    {{ }); }}
 
-        <hr />
-    {{ } }}
+    <hr />
 </div>
