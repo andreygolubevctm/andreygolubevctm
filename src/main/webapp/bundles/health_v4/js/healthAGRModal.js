@@ -33,7 +33,7 @@
         _states.fetchResults = false;
 
         meerkat.messaging.unsubscribe(meerkat.modules.journeyEngine.events.journeyEngine.STEP_CHANGED, _stepChangedSubscribe);
-        $primaryDob.add($partnerDob).add($dependantsIncome).off('change');
+        $primaryDob.add($partnerDob).add($dependantsIncome).off('change.AGR');
 
         _updateHiddenXpaths(true);
 
@@ -48,7 +48,7 @@
             _states.activated = true;
 
             // need to turn 'off' when not activated
-            $primaryDob.add($partnerDob).add($dependantsIncome).on('change', function updateThePremiumOnInput() {
+            $primaryDob.add($partnerDob).add($dependantsIncome).on('change.AGR', function updateThePremiumOnInput() {
                 meerkat.messaging.publish(meerkatEvents.TRIGGER_UPDATE_PREMIUM);
             });
         }
