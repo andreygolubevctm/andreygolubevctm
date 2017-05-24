@@ -2,6 +2,7 @@
 
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
+        _getRequiredFundsAjax = null,
         _funds = {},
         _template = null,
         _states = {
@@ -9,18 +10,13 @@
             fetchResults: false
         },
         _stepChangedSubscribe = false,
-        _dialoglId = null,
+        _dialogId = null,
         $elements = {},
-        $primaryDob = $('#health_application_primary_dob'),
-        $partnerDob = $('#health_application_partner_dob'),
-        $dependantsIncome = $('#health_application_dependants_income'),
+        $primaryDob = null,
+        $partnerDob = null,
+        $dependantsIncome = null,
         $fields = {},
-        $hiddenFields = {
-            applicantCovered: $('#health_application_govtRebateDeclaration_applicantCovered'),
-            entitledToMedicare: $('#health_application_govtRebateDeclaration_entitledToMedicare'),
-            declare: $('#health_application_govtRebateDeclaration_declaration'),
-            declareDate: $('#health_application_govtRebateDeclaration_declarationDate')
-        },
+        $hiddenFields = {},
         _tempStartDate = null,
         // because we will never know the membership is going to be until they have paid, this is hardcoded
         _defaultFundMembershipNum = 'To be provided by your new health fund';
@@ -29,11 +25,23 @@
         // get AGR required funds
         _getRequiredFunds();
         _setupFields();
+
+        $primaryDob = $('#health_application_primary_dob');
+        $partnerDob = $('#health_application_partner_dob');
+        $dependantsIncome = $('#health_application_dependants_income');
+
+        $hiddenFields = {
+            applicantCovered: $('#health_application_govtRebateDeclaration_applicantCovered'),
+            entitledToMedicare: $('#health_application_govtRebateDeclaration_entitledToMedicare'),
+            declare: $('#health_application_govtRebateDeclaration_declaration'),
+            declareDate: $('#health_application_govtRebateDeclaration_declarationDate')
+        };
+
         _template = _.template($('#agr-modal-template').html());
     }
 
     function _getRequiredFunds() {
-        meerkat.modules.comms.get({
+        _getRequiredFundsAjax = meerkat.modules.comms.get({
             url: 'spring/content/getsupplementary.json',
             data: {
                 vertical: 'HEALTH',
@@ -58,13 +66,15 @@
         _eventUnsubscriptions();
         _unApplyEventListeners();
 
-        if (isActivated()) {
-            _states.show = true;
-            _states.fetchResults = false;
+        _getRequiredFundsAjax && _getRequiredFundsAjax.done(function() {
+            if (isActivated()) {
+                _states.show = true;
+                _states.fetchResults = false;
 
-            _eventSubscriptions();
-            _applyEventListeners();
-        }
+                _eventSubscriptions();
+                _applyEventListeners();
+            }
+        });
     }
 
     function _setupFields() {
