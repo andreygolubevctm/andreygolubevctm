@@ -2,9 +2,9 @@
 
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
+        _funds = {},
         _template = null,
         _states = {
-            activated: false,
             show: true,
             fetchResults: false
         },
@@ -22,35 +22,48 @@
             declareDate: $('#health_application_govtRebateDeclaration_declarationDate')
         },
         _tempStartDate = null,
-        // hardcoded fund name to NIB in the meantime. this needs to be dynamic in the future
-        _defaultFundName = 'NIB Health Funds Limited',
         // because we will never know the membership is going to be until they have paid, this is hardcoded
         _defaultFundMembershipNum = 'To be provided by your new health fund';
 
-    function initAGRModal(funds) {
-        _states.activated = false;
-        _states.show = true;
-        _states.fetchResults = false;
+    function onInitialise() {
+        // get AGR required funds
+        _getRequiredFunds();
+        _setupFields();
+        _template = _.template($('#agr-modal-template').html());
+    }
 
-        meerkat.messaging.unsubscribe(meerkat.modules.journeyEngine.events.journeyEngine.STEP_CHANGED, _stepChangedSubscribe);
-        $primaryDob.add($partnerDob).add($dependantsIncome).off('change.AGR');
+    function _getRequiredFunds() {
+        meerkat.modules.comms.get({
+            url: 'spring/content/getsupplementary.json',
+            data: {
+                vertical: 'HEALTH',
+                key: 'FundsRequiringAgr'
+            },
+            cache: true,
+            dataType: 'json',
+            useDefaultErrorHandling: false,
+            errorLevel: 'silent',
+            timeout: 5000,
+            onSuccess: function onSubmitSuccess(data) {
+                // store supplementary value into _funds
+                data.supplementary.forEach(function(item) {
+                   _funds[item.supplementaryKey] = item.supplementaryValue;
+                });
+            }
+        });
+    }
 
+    function onBeforeEnterApply() {
         _updateHiddenXpaths(true);
+        _eventUnsubscriptions();
+        _unApplyEventListeners();
 
-        if (_.contains(funds, Results.getSelectedProduct().info.FundCode) &&
-            meerkat.modules.healthRebate.isRebateApplied()) {
+        if (isActivated()) {
+            _states.show = true;
+            _states.fetchResults = false;
 
-            _template = _.template($('#agr-modal-template').html());
-
-            _setupFields();
             _eventSubscriptions();
-
-            _states.activated = true;
-
-            // need to turn 'off' when not activated
-            $primaryDob.add($partnerDob).add($dependantsIncome).on('change.AGR', function updateThePremiumOnInput() {
-                meerkat.messaging.publish(meerkatEvents.TRIGGER_UPDATE_PREMIUM);
-            });
+            _applyEventListeners();
         }
     }
 
@@ -109,19 +122,15 @@
                 currentPercentage: $('#health_rebate'),  //need to confirm if it is the rebate or the rebateChangeover field
                 tier: $('#health_healthCover_income'),
                 tierIncomeBracket: $('#health_healthCover_incomelabel')
-            }
-
-        };
-
-        if (meerkat.modules.healthChoices.hasPartner()) {
-            $fields.partner = {
+            },
+            partner: {
                 title: $('#health_application_partner_title'),
                 firstName: $('#health_application_partner_firstname'),
                 surname: $('#health_application_partner_surname'),
                 dob: $('#health_application_partner_dob'),
                 gender: $('#health_application_partner_gender')
-            };
-        }
+            }
+        };
 
         _createFieldsDependants();
     }
@@ -152,7 +161,27 @@
         });
     }
 
+    function _eventUnsubscriptions() {
+        meerkat.messaging.unsubscribe(meerkat.modules.journeyEngine.events.journeyEngine.STEP_CHANGED, _stepChangedSubscribe);
+    }
+
+    function _unApplyEventListeners() {
+        // $('#applicationDetailsForm :input') not cached because application fields are dynamic such as for the dependants
+        $('#applicationDetailsForm :input').not($fields.coverStartDate).off('change.AGR');
+        $primaryDob.add($partnerDob).add($dependantsIncome).off('change.AGR');
+    }
+
     function _applyEventListeners() {
+        $('#applicationDetailsForm :input').not($fields.coverStartDate).on('change.AGR', function() {
+            _states.show = true;
+        });
+
+        $primaryDob.add($partnerDob).add($dependantsIncome).on('change.AGR', function updateThePremiumOnInput() {
+            meerkat.messaging.publish(meerkatEvents.TRIGGER_UPDATE_PREMIUM);
+        });
+    }
+
+    function _applyFormEventListeners() {
         $elements.editBtn.on('click', function() {
             var section = $(this).parent().hasClass('agr-your-details-section') ? 'your' : 'others';
 
@@ -166,10 +195,6 @@
             $viewHideText.text($viewHideText.text() === 'View' ? 'Hide' : 'View');
             $(this).find('.icon').toggleClass('icon-angle-down icon-angle-up');
             _toggleRebateTable();
-        });
-
-        $('#applicationDetailsForm :input').not($fields.coverStartDate).on('change', function() {
-            _states.show = true;
         });
 
         $elements.form.find(':input').on('change', function() {
@@ -189,7 +214,6 @@
 
             // close the dialog
             close();
-            _states.activated = false;
             _states.show = false;
             _states.fetchResults = true;
             meerkat.modules.journeyEngine.gotoPath('payment');
@@ -234,7 +258,8 @@
     }
 
     function isActivated() {
-        return _states.activated;
+        return ( Results.getSelectedProduct().info.FundCode in _funds &&
+            meerkat.modules.healthRebate.isRebateApplied() );
     }
 
     function open() {
@@ -255,7 +280,7 @@
                 },
                 onOpen: function (dialogId) {
                     _setupElements();
-                    _applyEventListeners();
+                    _applyFormEventListeners();
 
                     meerkat.modules.jqueryValidate.setupDefaultValidationOnForm($elements.form);
                 },
@@ -282,6 +307,7 @@
             rebateTier = _getRebateTier($fields.rebate.tier.val()),
             rebatePercent = rebateTier + ' - ' + $fields.rebate.currentPercentage.val() + '%',
             rebateTierTable = getRebateTableData('current'),
+            fundName = _funds[Results.getSelectedProduct().info.FundCode],
             coverStartDate = $fields.coverStartDate.val(),
 
             data = {
@@ -294,7 +320,7 @@
                     { label: 'Medicare expiry', value: medicareExpiry }
                 ],
                 fund: [
-                    { label: 'Name of health fund', value: _defaultFundName },
+                    { label: 'Name of health fund', value: fundName },
                     { label: 'Membership number', value: _defaultFundMembershipNum },
                     { label: 'Date policy commences', value: coverStartDate }
                 ]
@@ -310,7 +336,7 @@
 
         data.primary.push({ label: 'Email address', value: email });
 
-        if (!_.isUndefined($fields.partner)) {
+        if (meerkat.modules.healthChoices.hasPartner()) {
             data.partner = _getPersonData('partner');
         }
 
@@ -506,7 +532,8 @@
     }
 
     meerkat.modules.register('healthAGRModal', {
-        initAGRModal: initAGRModal,
+        onInitialise: onInitialise,
+        onBeforeEnterApply: onBeforeEnterApply,
         events: moduleEvents,
         isActivated: isActivated,
         open: open,

@@ -421,7 +421,7 @@
                     if (meerkat.modules.healthAGRModal.isActivated()) {
                         var showAGR = meerkat.modules.healthAGRModal.show();
                         if (showAGR) {
-                            // show apply review modal
+                            // open AGR modal
                             meerkat.modules.healthAGRModal.open();
                         }
                         callback(!showAGR);
@@ -435,6 +435,7 @@
                 meerkat.modules.healthMedicare.initHealthMedicare();
                 meerkat.modules.healthCoverStartDate.onInitialise();
                 meerkat.modules.healthApplyStep.onInitialise();
+                meerkat.modules.healthAGRModal.onInitialise();
             },
             onBeforeEnter: function beforeEnterApplyStep(event) {
                 meerkat.modules.benefitsToggleBar.deRegisterScroll();
@@ -465,7 +466,7 @@
 	                meerkat.modules.healthApplyStep.onBeforeEnter();
                     meerkat.modules.healthDependants.updateDependantConfiguration();
                     meerkat.modules.healthMedicare.onBeforeEnterApply();
-                    meerkat.modules.healthAGRModal.initAGRModal(['NIB']);
+                    meerkat.modules.healthAGRModal.onBeforeEnterApply();
                 }
             },
             onAfterEnter: function afterEnterApplyStep(event) {
