@@ -36,16 +36,16 @@ public class RememberMeController {
     }
 
     @RequestMapping(value = QUOTE_GET_JSON, method = RequestMethod.GET)
-    public boolean checkQuery(@RequestParam(QUOTE_TYPE) final String vertical,
+    public String checkQuery(@RequestParam(QUOTE_TYPE) final String vertical,
                               @RequestParam(QUERY_VALUE) final String userAnswer,
                               final HttpServletRequest request,
                               final HttpServletResponse response) throws IOException, GeneralSecurityException {
-        boolean isValidAnswer = false;
+        String transactionId = "";
         Integer accessTokenCounter;
 
         try {
             if (RememberMeService.isRememberMeEnabled(SettingsService.getPageSettingsForPage(request, vertical))) {
-                isValidAnswer = rememberMeService.validateAnswerAndLoadData(vertical, userAnswer, request);
+                transactionId = rememberMeService.validateAnswerAndLoadData(vertical, userAnswer, request);
                 rememberMeService.updateAttemptsCounter(request, response, vertical);
             } else {
                 response.sendRedirect(VerticalSettings.getHomePageJsp(vertical));
@@ -54,11 +54,11 @@ public class RememberMeController {
             LOGGER.error("Error validating the personal question", ex);
             response.sendRedirect(VerticalSettings.getHomePageJsp(vertical));
         }
-        if (isValidAnswer) {
+        if (transactionId != null) {
             rememberMeService.deleteCookie(vertical, response);
             rememberMeService.removeAttemptsSessionAttribute(vertical, request);
         }
-        return isValidAnswer;
+        return transactionId;
     }
 
 

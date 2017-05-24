@@ -90,10 +90,10 @@
                     cache: false,
                     errorLevel: 'silent',
                     onSuccess: function (result) {
-                        if (result === true) {
+                        if (result !== "") {
                             $elements.loadingMessage.text('Loading Products & Prices Please wait...');
                             showLoadingPage();
-                            window.location.replace("/ctm/health_quote_v4.jsp#results");
+                            window.location.replace('/ctm/health_quote_v4.jsp?action=remember&transactionId='+result+'#results');
                         } else {
                             showError();
                             attemptCount++;

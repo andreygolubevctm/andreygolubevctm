@@ -171,7 +171,7 @@ public class RememberMeService {
         return hasPersonalInfo;
     }
 
-    public boolean validateAnswerAndLoadData(final String vertical, final String answer,
+    public String validateAnswerAndLoadData(final String vertical, final String answer,
                                              final HttpServletRequest request) throws GeneralSecurityException {
         final Optional<Long> rememberMeValue = Optional.ofNullable(getCookieTransactionId(vertical.toLowerCase(), request));
         final List<TransactionDetail> transactionDetails;
@@ -187,9 +187,10 @@ public class RememberMeService {
             }
             if (isMatch) {
                 loadData(request, rememberMeValue.orElse(null), transactionDetails);
+                return rememberMeValue.orElse(null).toString();
             }
         }
-        return isMatch;
+        return null;
     }
 
     public void updateAttemptsCounter(final HttpServletRequest request, final HttpServletResponse response,

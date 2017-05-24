@@ -37,7 +37,7 @@
 
             configureContactDetails();
 
-            if (_.indexOf(['amend', 'latest', 'load', 'start-again'], meerkat.site.pageAction) >= 0) {
+            if (_.indexOf(['remember','amend', 'latest', 'load', 'start-again'], meerkat.site.pageAction) >= 0) {
 
                 // If retrieving a quote and a product had been selected, inject the fund's application set.
                 if (meerkat.modules.healthFunds.checkIfNeedToInjectOnAmend) {
@@ -121,9 +121,10 @@
         if (meerkat.site.isFromBrochureSite === true) {
             startStepId = steps.startStep.navigationId;
         // Use the stage user was on when saving their quote
-        } else if (meerkat.site.journeyStage.length > 0 && _.indexOf(['amend', 'latest'], meerkat.site.pageAction) >= 0) {
+        } else if (meerkat.site.journeyStage.length > 0 && _.indexOf(['remember', 'amend', 'latest'], meerkat.site.pageAction) >= 0) {
             // Do not allow the user to go past the results page on amend.
-            if (meerkat.site.journeyStage === 'apply' || meerkat.site.journeyStage === 'payment') {
+            // If remember me redirect set step to results
+            if (meerkat.site.journeyStage === 'remember' || meerkat.site.journeyStage === 'apply' || meerkat.site.journeyStage === 'payment') {
                 startStepId = 'results';
             } else {
                 startStepId = meerkat.site.journeyStage;
