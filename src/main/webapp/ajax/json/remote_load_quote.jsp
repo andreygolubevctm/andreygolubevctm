@@ -147,12 +147,12 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 
 						<%-- AMEND QUOTE --%>
 						<c:when test="${loadAction eq 'amend' || loadAction eq 'start-again'}">
-								<destUrl>${remoteLoadQuoteService.getActionQuoteUrl(quoteType, loadAction, data.current.transactionId, jParam)}</destUrl>
+								<destUrl>${remoteLoadQuoteService.getActionQuoteUrl(quoteType, loadAction, data.current.transactionId, jParam, trackingParams)}</destUrl>
 						</c:when>
 
 						<%-- BACK TO START IF PRIVACYOPTIN HASN'T BEEN TICKED FOR OLD QUOTES --%>
 						<c:when test="${loadType ne 'promotion' && loadType ne 'bestprice' && (loadAction eq 'latest' || loadAction eq 'load') && data[xpathQuoteType].privacyoptin!='Y'}">
-							<destUrl>${remoteLoadQuoteService.getStartAgainQuoteUrl(quoteType,data.current.transactionId,jParam)}</destUrl>
+							<destUrl>${remoteLoadQuoteService.getStartAgainQuoteUrl(quoteType,data.current.transactionId,jParam, trackingParams)}</destUrl>
 						</c:when>
 
 							<%-- GET TRAVEL MULTI-TRIP --%>
@@ -162,7 +162,7 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 								</c:if>
 
 								<core_v1:transaction touch="L" noResponse="true" />
-								<destUrl>travel_quote.jsp?type=A&amp;action=latest&amp;transactionId=${data.current.transactionId}${jParam}</destUrl>
+								<destUrl>travel_quote.jsp?type=A&amp;action=latest&amp;transactionId=${data.current.transactionId}${jParam}${trackingParams}</destUrl>
 								<go:setData dataVar="data" value="true" xpath="userData/emailSent"/>
 						</c:when>
 
@@ -181,11 +181,7 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 									<go:setData dataVar="data" xpath="${fieldXPath}" value="${param.expired}" />
 								</c:if>
 								<core_v1:transaction touch="L" noResponse="true" />
-								<c:set var="quotePagePrefix">
-									<c:choose>
-										<c:when test="${xpathQuoteType eq 'home'}">home_contents</c:when>
-										<c:otherwise>${quoteType}</c:otherwise>
-									</c:choose>
+								<c:set var="quotePagePrefix" value="quoteType">
 								</c:set>
 								<c:set var="action">
 								<c:choose>
@@ -194,7 +190,7 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 								</c:choose>
 								</c:set>
 								<c:set var="allParams">${jParam}${trackingParams}</c:set>
-								<destUrl>${remoteLoadQuoteService.getActionQuoteUrl(quotePagePrefix,action,data.current.transactionId,allParams)}</destUrl>
+								<destUrl>${remoteLoadQuoteService.getActionQuoteUrl(quotePagePrefix,action,data.current.transactionId,allParams, trackingParams)}</destUrl>
 							</c:when>
 
 							<%-- GET LATEST --%>
@@ -204,7 +200,7 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 								</c:if>
 
 								<core_v1:transaction touch="L" noResponse="true" />
-								<destUrl>${remoteLoadQuoteService.getLatestQuoteUrl(quoteType, data.current.transactionId,jParam)}</destUrl>
+								<destUrl>${remoteLoadQuoteService.getLatestQuoteUrl(quoteType, data.current.transactionId,jParam, trackingParams)}</destUrl>
 								<%-- Have only made this happen for travel --%>
 								<c:if test="${quoteType eq 'travel'}">
 									<go:setData dataVar="data" value="true" xpath="userData/emailSent"/>
