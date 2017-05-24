@@ -44,12 +44,12 @@ public class RememberMeController {
         Integer accessTokenCounter;
 
         try {
-          //  if (RememberMeService.isRememberMeEnabled(SettingsService.getPageSettingsForPage(request))) {
+            if (RememberMeService.isRememberMeEnabled(SettingsService.getPageSettingsForPage(request, vertical))) {
                 isValidAnswer = rememberMeService.validateAnswerAndLoadData(vertical, userAnswer, request);
                 rememberMeService.updateAttemptsCounter(request, response, vertical);
-          //  } else {
-          //      response.sendRedirect(VerticalSettings.getHomePageJsp(vertical));
-          //  }
+            } else {
+                response.sendRedirect(VerticalSettings.getHomePageJsp(vertical));
+            }
         } catch (Exception ex) {
             LOGGER.error("Error validating the personal question", ex);
             response.sendRedirect(VerticalSettings.getHomePageJsp(vertical));
