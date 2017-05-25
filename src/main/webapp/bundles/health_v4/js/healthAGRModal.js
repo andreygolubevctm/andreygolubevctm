@@ -220,7 +220,7 @@
 
         $elements.continueWithoutRebateLink.on('click', function() {
             // uncheck rebate
-            $elements.rebateNo.trigger('click');
+            $elements.rebateNo.prop('checked', true).trigger('change');
 
             // close the dialog
             close();
