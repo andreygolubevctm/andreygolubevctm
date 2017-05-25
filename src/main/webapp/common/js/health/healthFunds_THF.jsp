@@ -151,7 +151,7 @@ var healthFunds_THF = {
 		if(_.has(meerkat.modules,'healthCoverStartDate')) {
 			meerkat.modules.healthCoverStartDate.setCoverStartRange(0, 60);
 		} else {
-			meerkat.modules.healthPaymentStep.setCoverStartRange(0, 60)
+			meerkat.modules.healthPaymentStep.setCoverStartRange(0, 60);
 		}
 
 		<%-- elegibility --%>

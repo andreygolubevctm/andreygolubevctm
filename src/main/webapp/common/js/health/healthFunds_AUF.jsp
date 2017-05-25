@@ -30,11 +30,11 @@ var healthFunds_AUF = {
     meerkat.modules.healthPaymentStep.overrideSettings('credit', {'weekly':false, 'fortnightly': false, 'monthly': true, 'quarterly':true, 'halfyearly':false, 'annually':true });
 
     <%--calendar for start cover--%>
-	  if(_.has(meerkat.modules,'healthCoverStartDate')) {
-		  meerkat.modules.healthCoverStartDate.setCoverStartRange(0, 30);
-	  } else {
-		  meerkat.modules.healthPaymentStep.setCoverStartRange(0, 30)
-	  }
+    if(_.has(meerkat.modules,'healthCoverStartDate')) {
+        meerkat.modules.healthCoverStartDate.setCoverStartRange(0, 30);
+    } else {
+        meerkat.modules.healthPaymentStep.setCoverStartRange(0, 30);
+    }
 
     <%--selections for payment date--%>
     meerkat.modules.healthFunds.setPayments({ 'min':0, 'max':5, 'weekends':false });
