@@ -577,7 +577,8 @@
         getEducationalInstitutionsOptions: getEducationalInstitutionsOptions,
         situationEnablesDependants: situationEnablesDependants,
         toggleDependants: toggleDependants,
-        getNumberOfDependants: getNumberOfDependants
+        getNumberOfDependants: getNumberOfDependants,
+        updateApplicationDetails: updateApplicationDetails
     });
 
 })(jQuery);

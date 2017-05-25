@@ -228,6 +228,11 @@
             _states.fetchResults = true;
             meerkat.modules.journeyEngine.gotoPath('payment');
             _updateHiddenXpaths(true);
+
+            // handle displaying the estimated taxable income menu
+            if (meerkat.modules.healthDependants.getNumberOfDependants() > 0) {
+                meerkat.modules.healthDependants.updateApplicationDetails();
+            }
         });
 
         $elements.affixedJumpToFormLink.on('click', function() {
