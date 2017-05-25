@@ -68,7 +68,11 @@ var healthFunds_QCH = {
 			$('#clientMemberID input, #partnerMemberID input').setRequired(false);
 
 			<%-- Calendar for start cover --%>
-			meerkat.modules.healthCoverStartDate.setCoverStartRange(0, 29);
+			if(_.has(meerkat.modules,'healthCoverStartDate')) {
+				meerkat.modules.healthCoverStartDate.setCoverStartRange(0, 29);
+			} else {
+				meerkat.modules.healthPaymentStep.setCoverStartRange(0, 29)
+			}
 
 			<%--allow weekend selection from the datepicker--%>
 			healthFunds_QCH.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
