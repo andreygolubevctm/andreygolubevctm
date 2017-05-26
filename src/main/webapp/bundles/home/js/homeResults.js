@@ -227,12 +227,10 @@
 			}
 		}
 	}
-	
-	
 
 	function eventSubscriptions() {
 		meerkat.messaging.subscribe(Results.model.moduleEvents.RESULTS_MODEL_UPDATE_BEFORE_FILTERSHOW, function modelUpdated() {
-				Results.model.homeCustomSort = sortRealAndWool;
+			Results.model.homeCustomSort = sortRealAndWool;
 		});
 		
 		// Capture offer terms link clicks
