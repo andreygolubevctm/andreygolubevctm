@@ -13,6 +13,7 @@
         $email,
         $marketing,
         $iAm,
+        iAm,
         $lookingTo,
         $currentHomeLoan,
         $purchasePrice,
@@ -27,7 +28,6 @@
 
 
     function applyEventListeners() {
-
         $(document.body).on('click', '.btn-view-brands', displayBrandsModal);
 
         $marketing.on('change', function () {
@@ -45,9 +45,10 @@
 
         $iAm.on("change", function () {
             var arr = [],
+                $iAmChecked = $(iAm + ':checked'),
                 currLookingToValue = $lookingTo.val();
             $lookingTo.val('');
-            if ($iAm.val() === 'E') {
+            if ($iAmChecked.val() === 'E') {
                 arr = [{code: 'APL', label: 'Buy another property to live in'},
                     {code: 'IP', label: 'Buy an investment property'},
                     {code: 'REP', label: 'Renovate my existing property'},
@@ -162,7 +163,8 @@
             $surname = $('#homeloan_contact_lastName');
             $email = $('#homeloan_contact_email');
             $marketing = $('#homeloan_contact_optIn');
-            $iAm = $("#homeloan_details_situation");
+            $iAm = $("input[name=homeloan_details_situation]");
+            iAm = "input[name=homeloan_details_situation]";
             $lookingTo = $("#homeloan_details_goal");
             $currentHomeLoan = $('input:radio[name="homeloan_details_currentLoan"]');
             $purchasePrice = $('#homeloan_loanDetails_purchasePriceentry');
