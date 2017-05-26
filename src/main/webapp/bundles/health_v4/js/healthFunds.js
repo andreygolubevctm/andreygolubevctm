@@ -156,7 +156,9 @@
             HTML_dependantDefinition = $_dependantDefinition.html();
             $_dependantDefinition.html(message);
         } else {
-            $_dependantDefinition.html(HTML_dependantDefinition);
+            if ($_dependantDefinition.html()) {
+                $_dependantDefinition.html(HTML_dependantDefinition);
+            }
             $_dependantDefinition = undefined;
             HTML_dependantDefinition = undefined;
         }
