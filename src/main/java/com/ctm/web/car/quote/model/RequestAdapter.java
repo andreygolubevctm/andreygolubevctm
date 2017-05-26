@@ -43,6 +43,7 @@ public class RequestAdapter {
             }
         }
 
+        quoteRequest.setQuoteReferenceNumber(carQuote.getQuoteReferenceNumber());
 
         if(carQuote.getFilter().getProviders() != null && !carQuote.getFilter().getProviders().isEmpty()){
             quoteRequest.setProviderFilter(carQuote.getFilter().getProviders());

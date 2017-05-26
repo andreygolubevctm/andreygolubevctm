@@ -47,6 +47,8 @@ public class RequestAdapterV2 {
 
         quoteRequest.setClientIp(carRequest.getClientIpAddress());
 
+        quoteRequest.setQuoteReferenceNumber(carQuote.getQuoteReferenceNumber());
+
         return quoteRequest;
     }
 
