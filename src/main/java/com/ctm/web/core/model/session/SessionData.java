@@ -50,6 +50,16 @@ public class SessionData {
 
 	/**
 	 *
+	 * @param data
+	 * @return
+	 */
+	public Data addTransactionData(Data data){
+		getTransactionSessionData().add(data);
+		return data;
+	}
+
+	/**
+	 *
 	 * @param transactionId that is stored against the data
 	 * @return Data
 	 */

@@ -3,10 +3,11 @@ package com.ctm.web.core.rememberme.services;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.SessionException;
-import com.ctm.web.core.model.settings.PageSettings;
+import com.ctm.web.core.model.session.SessionData;
 import com.ctm.web.core.security.StringEncryption;
 import com.ctm.web.core.services.EnvironmentService;
 import com.ctm.web.core.services.SessionDataServiceBean;
+import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.core.transaction.dao.TransactionDetailsDao;
 import com.ctm.web.core.transaction.model.TransactionDetail;
@@ -21,15 +22,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.security.GeneralSecurityException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 @Component
 public class RememberMeService {
     private static final Logger LOGGER = LoggerFactory.getLogger(RememberMeService.class);
-    private static final String HEALTH_BENEFITS_BENEFITS_EXTRAS_PREFIX = "health/benefits/benefitsextras";
-    private Set<String> WHITE_LIST;
     private static final String COOKIE_SUFFIX = "RememberMe";
     private static final String SECRET_KEY = "ruCSj2WR3a1O1zLMr92rDA==";
     private static final int MAX_AGE = 2592000; // 30 days
@@ -40,12 +42,15 @@ public class RememberMeService {
     private static final Integer maxAttempts = 3;
 
 
+    /**
+     * Used by health_quote_v4.jsp
+     */
     @SuppressWarnings("unused")
     public RememberMeService() {
         this.sessionDataServiceBean = new SessionDataServiceBean();
         this.transactionDetailsDao = new TransactionDetailsDao();
+        this.transactionDetailsDao = new TransactionDetailsDao();
         this.transactionDao = new TransactionDao();
-        this.WHITE_LIST = new HashSet<>(Arrays.asList(getWhiteList().toLowerCase().split(",")));
     }
 
     @Autowired
@@ -55,25 +60,22 @@ public class RememberMeService {
         this.sessionDataServiceBean = sessionDataServiceBean;
         this.transactionDetailsDao = transactionDetailsDao;
         this.transactionDao = transactionDao;
-        this.WHITE_LIST = new HashSet<>(Arrays.asList(getWhiteList().toLowerCase().split(",")));
     }
 
     public static void setCookie(final String vertical,
                                  final Long transactionId,
                                  final HttpServletResponse response) throws GeneralSecurityException, DaoException, ConfigSettingException {
-        final Optional<String> verticalOptional = Optional.ofNullable(vertical);
-        final Optional<Long> transactionIdOptional = Optional.ofNullable(transactionId);
-        if (verticalOptional.isPresent() && transactionIdOptional.isPresent()) {
-            final String cookieName = getCookieName(verticalOptional.get().toLowerCase() + COOKIE_SUFFIX);
-            addCookie(response, transactionIdOptional.get(), cookieName);
+        if (vertical != null && transactionId != null) {
+            final String cookieName = getCookieName(vertical.toLowerCase() + COOKIE_SUFFIX);
+            addCookie(response, transactionId, cookieName);
         }
     }
 
-    private static String getCookieName(String content) throws GeneralSecurityException {
+    private static String getCookieName(final String content) throws GeneralSecurityException {
         return StringEncryption.encrypt(SECRET_KEY, content);
     }
 
-    private static void addCookie(HttpServletResponse response, Long transactionId, String cookieName) throws GeneralSecurityException {
+    private static void addCookie(HttpServletResponse response, final Long transactionId, final String cookieName) throws GeneralSecurityException {
         final Cookie cookie = new Cookie(cookieName, StringEncryption.encrypt(SECRET_KEY, transactionId.toString()));
         cookie.setMaxAge(MAX_AGE); // 30 days
         cookie.setPath("/");
@@ -116,81 +118,74 @@ public class RememberMeService {
     public boolean hasRememberMe(final HttpServletRequest request,
                                  final String vertical) throws DaoException, ConfigSettingException {
         try {
-            return getRememberMeCookie(request, vertical).isPresent();
+            if (isRememberMeEnabled(request, vertical)) {
+                Cookie cookie = getRememberMeCookie(request, vertical);
+                if (cookie != null)
+                    return true;
+            }
         } catch (GeneralSecurityException e) {
             LOGGER.error("Error retrieving cookie for remember me {}", kv("vertical", vertical), e);
         }
         return false;
     }
 
-    private Optional<Cookie> getRememberMeCookie(final HttpServletRequest request,
-                                                 final String vertical) throws GeneralSecurityException {
+    private Cookie getRememberMeCookie(final HttpServletRequest request,
+                                       final String vertical) throws GeneralSecurityException {
         final String cookieName = getCookieName(vertical.toLowerCase() + COOKIE_SUFFIX);
+        return Arrays.stream(request.getCookies())
+                .filter(Objects::nonNull)
+                .filter(cookie -> cookie.getName().equals(cookieName))
+                .findFirst()
+                .orElse(null);
+    }
 
-        if (null != request.getCookies()) {
-            return Arrays.stream(request.getCookies())
-                    .filter(Objects::nonNull)
-
-                    .filter(cookie -> cookie.getName().equals(cookieName))
-                    .findFirst();
+    public Optional<String> getTransactionIdFromCookie(final String vertical, final HttpServletRequest request) throws GeneralSecurityException {
+        final Cookie cookie = getRememberMeCookie(request, vertical);
+        if (cookie !=null) {
+            return Optional.ofNullable(StringEncryption.decrypt(SECRET_KEY, cookie.getValue()));
         }
         return Optional.empty();
     }
 
-    private Long getCookieTransactionId(final String vertical, final HttpServletRequest request) throws GeneralSecurityException {
-        final Optional<Cookie> cookie = getRememberMeCookie(request, vertical);
-        if (cookie.isPresent()) {
-            return Long.valueOf(StringEncryption.decrypt(SECRET_KEY, cookie.get().getValue()));
-        }
-        return null;
-    }
-
-
+    /**
+     * Used in health_quote-v4.jsp
+     */
     @SuppressWarnings("unused")
-    public boolean hasPersonalInfoAndLoadData(final HttpServletRequest request,
+    public boolean hasPersonalInfoAndLoadData(HttpServletRequest request,
                                               final HttpServletResponse response,
                                               final String vertical) throws GeneralSecurityException {
-        final Optional<Long> rememberMeValue = Optional.ofNullable(getCookieTransactionId(vertical.toLowerCase(), request));
-        boolean hasPersonalInfo = false;
-
-        if (rememberMeValue.isPresent()) {
-            final List<TransactionDetail> transactionDetails = getTransactionDetails(rememberMeValue.get());
-            String xpathToVerify = getXpathToVerifyForVertical(vertical);
-
-            if (transactionDetails != null) {
-                hasPersonalInfo = transactionDetails.stream()
-                        .anyMatch(details -> details.getXPath().equals(xpathToVerify));
-            }
-
-            if (!hasPersonalInfo) {
-                loadData(request, rememberMeValue.orElse(null), transactionDetails);
-                deleteCookie(vertical, response);
-            }
-        }
-
-        return hasPersonalInfo;
+        return Optional.ofNullable(getTransactionIdFromCookie(vertical.toLowerCase(), request))
+                .map(rememberMeCookieValue -> Optional.ofNullable(getTransactionDetails(rememberMeCookieValue.get()))
+                        .map(presentTransactionDetails -> {
+                            boolean hasPersonalInfo = presentTransactionDetails.stream().anyMatch(details ->
+                                    details.getXPath().equals(getXpathToVerifyForVertical(vertical))); //npe?
+                            if (!hasPersonalInfo) {
+                                loadSessionData(request, vertical, rememberMeCookieValue.orElse(null), presentTransactionDetails);
+                                try {
+                                    deleteCookie(vertical, response);
+                                } catch (GeneralSecurityException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }
+                            return hasPersonalInfo;
+                        })
+                        .orElse(false))
+                .orElse(false);
     }
 
-    public String validateAnswerAndLoadData(final String vertical, final String answer,
-                                             final HttpServletRequest request) throws GeneralSecurityException {
-        final Optional<Long> rememberMeValue = Optional.ofNullable(getCookieTransactionId(vertical.toLowerCase(), request));
-        final List<TransactionDetail> transactionDetails;
-        boolean isMatch = false;
-
-        if (rememberMeValue.isPresent()) {
-            transactionDetails = getTransactionDetails(rememberMeValue.orElse(null));
-            String xpathToVerify = getXpathToVerifyForVertical(vertical);
-            if (transactionDetails != null) {
-                isMatch = transactionDetails.stream()
-                        .anyMatch(transactionDetail -> transactionDetail.getXPath().equals(xpathToVerify) && transactionDetail.getTextValue().equals(answer));
-
-            }
-            if (isMatch) {
-                loadData(request, rememberMeValue.orElse(null), transactionDetails);
-                return rememberMeValue.orElse(null).toString();
-            }
-        }
-        return null;
+    public boolean validateAnswerAndLoadData(final String vertical, final String answer,
+                                             HttpServletRequest request) throws GeneralSecurityException {
+        return Optional.ofNullable(getTransactionIdFromCookie(vertical.toLowerCase(), request))
+                .map(rememberMeCookieValue -> Optional.ofNullable(getTransactionDetails(rememberMeCookieValue.get()))
+                        .map(presentTransactionDetails -> {
+                            boolean match = presentTransactionDetails.stream().anyMatch(details ->
+                                    details.getXPath().equals(getXpathToVerifyForVertical(vertical)) && details.getTextValue().equals(answer));
+                            if (match) {
+                                loadSessionData(request, vertical, rememberMeCookieValue.orElse(null), presentTransactionDetails);
+                            }
+                            return match;
+                        }).orElse(false))
+                .orElse(false);
     }
 
     public void updateAttemptsCounter(final HttpServletRequest request, final HttpServletResponse response,
@@ -207,17 +202,19 @@ public class RememberMeService {
                 session.setAttribute(attemptsSessionAttributeName, attemptsCounter);
             }
             if (attemptsCounter >= maxAttempts && session != null) {
-                removeAttemptsSessionAttribute(vertical, request);
+                removeAttemptsSessionAttribute(request, vertical);
                 deleteCookie(vertical, response);
             }
         }
     }
 
-    public void removeAttemptsSessionAttribute(final String vertical, final HttpServletRequest request) {
+    public Boolean removeAttemptsSessionAttribute(final HttpServletRequest request, final String vertical) {
         HttpSession session = request.getSession();
         if (session != null) {
             session.removeAttribute(getAttemptsSessionAttributeName(vertical));
+            return true;
         }
+        return false;
     }
 
     private String getAttemptsSessionAttributeName(final String vertical) {
@@ -234,56 +231,62 @@ public class RememberMeService {
         return Optional.empty();
     }
 
-    private void loadData(final HttpServletRequest request, final Long transactionId, final List<TransactionDetail> transactionDetails) {
-        Optional.ofNullable(getDataBucket(request, transactionId))
-                .map(data -> {
+    private void loadSessionData(HttpServletRequest request, final String vertical, final String transactionId, final List<TransactionDetail> transactionDetails) {
+        Data data = getDataBucket(request, transactionId);
+        Optional.ofNullable(data)
+                .map(sessionData -> {
                     transactionDetails.stream()
-                            .filter(transactionDetail ->
-                                    WHITE_LIST.contains(transactionDetail.getXPath().toLowerCase()) ||
-                                            transactionDetail.getXPath().toLowerCase().startsWith(HEALTH_BENEFITS_BENEFITS_EXTRAS_PREFIX))
                             .forEach(transactionDetail -> data.put(transactionDetail.getXPath(), transactionDetail.getTextValue()));
                     return null;
-                })
-                .orElseGet(() -> {
-                    LOGGER.info("populateDataBucket: TranId not found in databucket currentTransactionId={}", transactionId);
-                    return null;
                 });
+
+        //if session data is cleared, reload it
+        if (data != null && data.getString("current/transactionId") == null) {
+            SessionData sessionData = (SessionData) request.getSession().getAttribute("sessionData");
+            data.put("current/verticalCode", vertical.toUpperCase());
+            data.put("current/brandCode", "ctm");
+            data.put("current/transactionId", transactionId);
+            data.put("rootId", transactionId);
+            sessionData.addTransactionData(data);
+        }
     }
 
-    public static Boolean isRememberMeEnabled(PageSettings settings) throws DaoException, ConfigSettingException {
-        return settings.getSettingAsBoolean("rememberMeEnabled");
+    public static Boolean isRememberMeEnabled(final HttpServletRequest request, final String vertical) throws DaoException, ConfigSettingException {
+        return SettingsService.getPageSettingsForPage(request, vertical)
+                .getSettingAsBoolean("rememberMeEnabled");
     }
 
-    private List<TransactionDetail> getTransactionDetails(final Long transactionId) {
+    private List<TransactionDetail> getTransactionDetails(final String transactionId) {
         try {
-
-            final Long rootId = transactionDao.getRootIdOfTransactionId(transactionId);
+            final Long rootId = transactionDao.getRootIdOfTransactionId(Long.valueOf(transactionId));
             final Long latestTransactionId = transactionDao.getLatestTransactionIdByRootId(rootId);
 
             return transactionDetailsDao.getTransactionDetails(latestTransactionId);
-
-
         } catch (DaoException e) {
             LOGGER.error("populateDataBucket: Error getting transaction details for transactionId {}", kv("transactionId", transactionId), e);
             throw new RuntimeException(e);
         }
     }
 
-    private Data getDataBucket(HttpServletRequest request, Long transactionId) {
+    private Data getDataBucket(final HttpServletRequest request,final String transactionId) {
         try {
-            return sessionDataServiceBean.getDataForTransactionId(request, transactionId.toString(), true);
+            return sessionDataServiceBean.getDataForTransactionId(request, transactionId, true);
         } catch (DaoException | SessionException e) {
             LOGGER.error("Error getting data for transactionId {}", kv("transactionId", transactionId), e);
             throw new RuntimeException(e);
         }
     }
 
-    public void deleteCookie(final String vertical, final HttpServletResponse response) throws GeneralSecurityException {
+    public Boolean deleteCookie(final String vertical, final HttpServletResponse response) throws GeneralSecurityException {
         final String cookieName = getCookieName(vertical.toLowerCase() + COOKIE_SUFFIX);
-        final Cookie cookie = new Cookie(cookieName, "");
-        cookie.setMaxAge(0);
-        cookie.setPath("/");
-        response.addCookie(cookie);
+        if (cookieName != null) {
+            final Cookie cookie = new Cookie(cookieName, "");
+            cookie.setMaxAge(0);
+            cookie.setPath("/");
+            response.addCookie(cookie);
+            return true;
+        }
+        return false;
     }
 
     private String getXpathToVerifyForVertical(final String vertical) {
@@ -294,24 +297,5 @@ public class RememberMeService {
                 break;
         }
         return xpath;
-    }
-
-    public String getWhiteList() {
-        return "health/situation/healthCvr," +
-                "health/situation/location," +
-                " health/situation/healthSitu," +
-                "health/healthCover/primary/dob," +
-                "health/healthCover/primary/cover," +
-                "health/healthCover/primary/healthCoverLoading," +
-                "health/healthCover/partner/dob," +
-                "health/healthCover/partner/cover," +
-                "health/healthCover/partner/healthCoverLoading," +
-                "health/healthCover/rebate," +
-                "health/healthCover/dependants," +
-                "health/healthCover/income," +
-                "health/situation/coverType," +
-                "health/benefits/benefitsExtras," +
-                "health/journey/stage," +
-                "health/benefits/covertype";
     }
 }

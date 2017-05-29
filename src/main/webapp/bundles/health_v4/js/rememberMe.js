@@ -48,7 +48,7 @@
             cache: true,
             errorLevel: "silent",
             onSuccess: function onSuccess() {
-                window.location.replace("/ctm/health_quote_v4.jsp");
+                window.location.replace("health_quote_v4.jsp");
             },
             onError: function onError(obj, txt, errorThrown) {
                 console.log(obj, errorThrown);
@@ -93,7 +93,7 @@
                         if (result !== "") {
                             $elements.loadingMessage.text('Loading Products & Prices Please wait...');
                             showLoadingPage();
-                            window.location.replace('/ctm/health_quote_v4.jsp?action=remember&transactionId='+result+'#results');
+                            window.location.replace('health_quote_v4.jsp?action=remember&transactionId='+result+'#results');
                         } else {
                             showError();
                             attemptCount++;

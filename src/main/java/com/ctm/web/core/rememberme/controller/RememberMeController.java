@@ -1,8 +1,6 @@
 package com.ctm.web.core.rememberme.controller;
 
-import com.ctm.web.core.model.settings.VerticalSettings;
 import com.ctm.web.core.rememberme.services.RememberMeService;
-import com.ctm.web.core.services.SettingsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.Optional;
 
 
 @SuppressWarnings("unused")
@@ -36,39 +35,40 @@ public class RememberMeController {
     }
 
     @RequestMapping(value = QUOTE_GET_JSON, method = RequestMethod.GET)
-    public String checkQuery(@RequestParam(QUOTE_TYPE) final String vertical,
-                              @RequestParam(QUERY_VALUE) final String userAnswer,
-                              final HttpServletRequest request,
-                              final HttpServletResponse response) throws IOException, GeneralSecurityException {
-        String transactionId = "";
+    public String validateAnswer(@RequestParam(QUOTE_TYPE) final String vertical,
+                                 @RequestParam(QUERY_VALUE) final String userAnswer,
+                                 HttpServletRequest request,
+                                 final HttpServletResponse response) throws IOException, GeneralSecurityException {
+        boolean isValidAnswer;
         Integer accessTokenCounter;
-
+        Optional<String> transactionId;
         try {
-            if (RememberMeService.isRememberMeEnabled(SettingsService.getPageSettingsForPage(request, vertical))) {
-                transactionId = rememberMeService.validateAnswerAndLoadData(vertical, userAnswer, request);
+            if (RememberMeService.isRememberMeEnabled(request, vertical)) {
+                transactionId = rememberMeService.getTransactionIdFromCookie(vertical, request);
+                isValidAnswer = rememberMeService.validateAnswerAndLoadData(vertical, userAnswer, request);
                 rememberMeService.updateAttemptsCounter(request, response, vertical);
+                if(isValidAnswer) {
+                    rememberMeService.deleteCookie(vertical, response);
+                    rememberMeService.removeAttemptsSessionAttribute(request, vertical);
+                    return transactionId.orElse(null);
+                }
             } else {
-                response.sendRedirect(VerticalSettings.getHomePageJsp(vertical));
+                return null;
             }
         } catch (Exception ex) {
             LOGGER.error("Error validating the personal question", ex);
-            response.sendRedirect(VerticalSettings.getHomePageJsp(vertical));
+            return null;
         }
-        if (transactionId != null) {
-            rememberMeService.deleteCookie(vertical, response);
-            rememberMeService.removeAttemptsSessionAttribute(vertical, request);
-        }
-        return transactionId;
+        return null;
     }
 
 
     @RequestMapping(value = QUOTE_DELETE_COOKIE_JSON, method = RequestMethod.POST)
     public boolean deleteCookie(@RequestParam(QUOTE_TYPE) final String vertical,
-                                 final HttpServletRequest request,
-                                 final HttpServletResponse response) throws IOException, GeneralSecurityException {
-        rememberMeService.deleteCookie(vertical, response);
-        rememberMeService.removeAttemptsSessionAttribute(vertical, request);
-
-        return true;
+                                final HttpServletRequest request,
+                                final HttpServletResponse response) throws IOException, GeneralSecurityException {
+        Boolean isCookieRemoved = rememberMeService.deleteCookie(vertical, response);
+        Boolean isAttemptsAttributeRemoved = rememberMeService.removeAttemptsSessionAttribute(request, vertical);
+        return (isCookieRemoved && isAttemptsAttributeRemoved);
     }
 }

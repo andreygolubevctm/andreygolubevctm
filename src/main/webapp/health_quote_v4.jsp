@@ -20,8 +20,7 @@
 </c:if>
 
 <c:choose>
-    <c:when test="${pageSettings.getSetting('rememberMeEnabled') eq 'Y' and
-                    rememberMeService.hasRememberMe(pageContext.request, 'health') and
+    <c:when test="${rememberMeService.hasRememberMe(pageContext.request, 'health') and
                     (empty pageContext.request.queryString or fn:length(param.action) == 0) and
                     empty param.preload and
                     empty param.skipRemember and
