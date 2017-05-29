@@ -3,7 +3,7 @@ package com.ctm.web.homecontents.model.form;
 public class LandlordDetails {
     private Integer numberOfTenants;
     private String propertyManagedBy;
-    private boolean validRentalLease;
+    private String validRentalLease;
     private Integer weeklyRentValue;
     private Boolean pendingRentalLease;
 
@@ -31,11 +31,11 @@ public class LandlordDetails {
         this.propertyManagedBy = propertyManagedBy;
     }
 
-    public boolean isValidRentalLease() {
+    public String isValidRentalLease() {
         return validRentalLease;
     }
 
-    public void setValidRentalLease(boolean validRentalLease) {
+    public void setValidRentalLease(String validRentalLease) {
         this.validRentalLease = validRentalLease;
     }
 
