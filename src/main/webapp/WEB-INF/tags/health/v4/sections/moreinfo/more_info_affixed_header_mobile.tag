@@ -33,7 +33,7 @@
 
 				<c:choose>
 					<c:when test="${callCentreOpen eq true}">
-						<a href="tel:1800777712" class="btn btn-cta btn-more-info-call-now" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />> <span class="icon-phone" />&nbsp;Call 1800 777 712</a>
+						<a href="tel:1800777712" target="_blank" class="btn btn-cta btn-more-info-call-now" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />> <span class="icon-phone" />&nbsp;Call 1800 777 712</a>
 						<a href="javascript:;" class="btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Apply Online &gt;</a>
 					</c:when>
 					<c:otherwise>
