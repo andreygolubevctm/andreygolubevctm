@@ -24,9 +24,18 @@
     function findCountryNameByIsoCode(isoCode) {
         var countryList = window.countrySelectionList.isoLocations;
         for (var i = 0; i < countryList.length; i++) {
-            if (countryList[i].isoCode == isoCode) {
+            if (countryList[i].isoCode === isoCode) {
                 return countryList[i].countryName;
 
+            }
+        }
+    }
+
+    function findCountryObjectByName(country) {
+        var countryList = window.countrySelectionList.isoLocations;
+        for (var i = 0; i < countryList.length; i++) {
+            if (countryList[i].countryName === country) {
+                return countryList[i];
             }
         }
     }
@@ -37,8 +46,52 @@
             $countrySelector = $('#travel_destinations');
             $unknownDestinations = $('#travel_unknownDestinations');
             applyEventListeners();
+            populatePopularDestinations();
             setDefaultsFromDataBucket();
         }
+    }
+
+    function populatePopularDestinations() {
+        // $(window).on('load', function() {
+        //     meerkat.modules.popovers.create({
+        //         element: $('#travel_destinations'),
+        //         contentValue: template,
+        //         contentType: 'content',
+        //         showEvent: 'click',
+        //         position: {
+        //             my: 'top left',
+        //             at: 'bottom left'
+        //         },
+        //         style: {
+        //             classes: 'priceTooltips'
+        //         }
+        //     });
+        // });
+
+        // $(window).on('load', function() {
+        //
+        //     // need to defer links
+        //
+        //     $.when(x()).then(function () {
+        //
+        //         $('#popdest a.test-country').each(function(){
+        //             var country = $(this).text();
+        //
+        //             // Rename Australia Label
+        //             if(country === 'Australia (domestic travel)') {
+        //                 country = 'Australia';
+        //             }
+        //
+        //             console.log(country);
+        //
+        //             var obj = findCountryObjectByName(country);
+        //             $(this).attr("data-country", JSON.stringify(obj));
+        //             $(this).data("country", obj);
+        //         });
+        //
+        //     });
+        //
+        // });
     }
 
     function setDefaultsFromDataBucket() {
