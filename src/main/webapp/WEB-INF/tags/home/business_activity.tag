@@ -115,7 +115,7 @@
 <div class="isLandlord">
 
 	<%-- Property Managed by --%>
-	<c:set var="fieldXpath" value="${baseXpath}/landLordDetails/propertyManagedBy" />
+	<c:set var="fieldXpath" value="${baseXpath}/landlordDetails/propertyManagedBy" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="Who manages the property?" className="managesProperty">
 		<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Rooms Used" quoteChar="\"" /></c:set>
 		<field_v2:array_select xpath="${fieldXpath}"
@@ -126,7 +126,7 @@
 	</form_v2:row>
 
 	<%-- Valid lease agreement  --%>
-	<c:set var="fieldXpath" value="${baseXpath}/landLordDetails/validRentalLease" />
+	<c:set var="fieldXpath" value="${baseXpath}/landlordDetails/validRentalLease" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="Do you have a written rental agreement in place?" className="validRentalLease">
 		<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Business Activity" quoteChar="\"" /></c:set>
 		<field_v2:array_radio xpath="${fieldXpath}"
@@ -138,7 +138,7 @@
 	</form_v2:row>
 	
 	<%-- Do you intend to have a wrritten rental agreement --%>
-	<c:set var="fieldXpath" value="${baseXpath}/landLordDetails/pendingRentalLease" />
+	<c:set var="fieldXpath" value="${baseXpath}/landlordDetails/pendingRentalLease" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="Do you intend to have a written rental agreement in place in the next 60 days?" className="pendingRentalLease">
 		<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Business Activity" quoteChar="\"" /></c:set>
 		<field_v2:array_radio xpath="${fieldXpath}"
@@ -151,7 +151,7 @@
 
 
 	<%-- Weekly Rent Value --%>
-	<c:set var="fieldXpath" value="${baseXpath}/landLordDetails/weeklyRentValue" />
+	<c:set var="fieldXpath" value="${baseXpath}/landlordDetails/weeklyRentValue" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="What is the weekly rental income?">
 		<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="rentalIncome" quoteChar="\"" /></c:set>
 		<field_v2:currency xpath="${fieldXpath}"
@@ -167,7 +167,7 @@
 
 
 	<%-- Number of tenants --%>
-	<c:set var="fieldXpath" value="${baseXpath}/landLordDetails/numberOfTenants" />
+	<c:set var="fieldXpath" value="${baseXpath}/landlordDetails/numberOfTenants" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="How many tenants have you has in the past 12 months?" className="managesProperty">
 		<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Rooms Used" quoteChar="\"" /></c:set>
 		<field_v2:array_select xpath="${fieldXpath}"
