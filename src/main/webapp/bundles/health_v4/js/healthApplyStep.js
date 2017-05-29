@@ -9,7 +9,6 @@
     function init(){
         $(document).ready(function () {
             $elements = {
-                paymentDetailsStart: $("#health_payment_details_start"),
                 paymentMedicareColour: $("#health_payment_medicare_colour"),
                 paymentMedicareCover: $("#health_payment_medicare_cover"),
                 medicareYellowMessage: $("#health_medicareDetails_yellowCardMessage"),
@@ -20,6 +19,7 @@
                 appSuburb: $('#health_application_address_suburb'),
                 appSuburbName: $('#health_application_address_suburbName'),
                 appState: $('#health_application_address_state'),
+                healthSituationState: $('#health_situation_state'),
                 appAddressUnitShop: $('#health_application_address_unitShop'),
                 appAddressStreetNum: $('#health_application_address_streetNum'),
                 appAddressUnitType: $('#health_application_address_unitType'),
@@ -32,18 +32,6 @@
 
     // Get the selected benefits from the forms hidden fields (the source of truth! - not the checkboxes)
     function onBeforeEnter() {
-        // Change min and max dates for start date picker based on current stored values from healthPaymentStep module which can change based on selected fund
-        var min = meerkat.modules.healthPaymentStep.getSetting('minStartDate'),
-            max = meerkat.modules.healthPaymentStep.getSetting('maxStartDate');
-
-        $elements.paymentDetailsStart
-            .removeRule('earliestDateEUR')
-            .removeRule('latestDateEUR')
-            .addRule('earliestDateEUR', min, 'Please enter a date on or after ' + min)
-            .addRule('latestDateEUR', max, 'Please enter a date on or before ' + max)
-            .datepicker('setStartDate', min)
-            .datepicker('setEndDate', max);
-
         // validate at least 1 contact number is entered
         $elements.appMobile.addRule('requireOneContactNumber', true, 'Please include at least one phone number');
 
@@ -82,15 +70,6 @@
                 $elements.medicareYellowMessage.toggleClass('hidden', value !== 'yellow');
             })
             .trigger('change');
-
-        // initialise start date datepicker from payment step as it will be used by selected fund
-        $elements.paymentDetailsStart
-            .datepicker({ clearBtn:false, format:"dd/mm/yyyy" })
-            .on("changeDate", function updateStartCoverDateHiddenField(e) {
-                // fill the hidden field with selected value
-                $("#health_payment_details_start").val( e.format() );
-                meerkat.messaging.publish(meerkatEvents.health.CHANGE_MAY_AFFECT_PREMIUM);
-            });
 
         $(document.body).on('change', '.selectContainerTitle select', function onTitleChange() {
             var personDetailType = $(this).closest('.qe-window').find('.health-person-details')
@@ -167,12 +146,13 @@
     }
 
     function testStatesParity() {
-        if ($elements.appState.val() !== $('input[name=health_situation_state]:checked').val()) {
+        if ($elements.appState.val() !== $elements.healthSituationState.val()) {
             var suburb = $elements.appSuburbName.val(),
                 state = $elements.appState.val();
 
             if (suburb.length && suburb.indexOf('Please select') < 0 && $elements.appPostcode.val().length == 4 && state.length) {
                 $elements.appPostcode.addClass('error');
+                $elements.appState.val("");
                 return false;
             }
         }

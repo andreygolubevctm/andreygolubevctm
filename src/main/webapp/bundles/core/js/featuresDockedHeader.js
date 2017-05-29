@@ -93,13 +93,14 @@
 					}
 
 					var $currentPage = $('.currentPage'),
+						$resultsRow = $('.result-row'),
 						topPosition = $('#navbar-filter').height() + $('#navbar-main').outerHeight(),
 						dockedHeaderTop = event == 'startPaginationScroll' ? '0' : topPosition + 'px',
-						dockedHeaderWidth = $('.result-row').first().width();
+						dockedHeaderWidth = $resultsRow.first().width();
 
 					var pageContentOffSet = $('#pageContent').offset(),
-						navFilterOffSet = $('#navbar-filter').offset(),
-						offSetFromTopPlusNav = (_.isUndefined(navFilterOffSet) ? 0 : navFilterOffSet.top) - (_.isUndefined(pageContentOffSet) ? 0 : pageContentOffSet.top) + 7,
+						dockedHeaderOffset = _.isUndefined($resultsRow.offset()) ? 0 : $resultsRow.offset().top,
+						offSetFromTopPlusNav = ($(window).scrollTop() - dockedHeaderOffset) + topPosition,
 						dockedHeaderPosition = event == 'startPaginationScroll' ? 'absolute' : 'fixed',
 						dockedHeaderPaddingTop = event == 'startPaginationScroll' ? offSetFromTopPlusNav + 'px' : '0px';
 

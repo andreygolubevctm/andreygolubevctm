@@ -492,6 +492,10 @@
                 $('.featuresList .extrasCover, .featuresList .selection_extra').addClass('hidden');
             }
 
+            $(Results.settings.elements.resultsContainer+' '+Results.settings.elements.rows).hover(function() {
+                $(this).toggleClass('hovered');
+            });
+
         });
     }
 
@@ -789,10 +793,9 @@
                 _.findWhere(postData, { name: "health_incrementTransactionId" }).value = "N";
 
                 // Dynamically add these fields because they are disabled when this method is called.
-                postData.push({
-                    name: "health_payment_details_start",
-                    value: $("#health_payment_details_start").val()
-                });
+                postData.push(
+                    meerkat.modules.healthCoverStartDate.getNameValue()
+                );
                 postData.push({
                     name: "health_payment_details_type",
                     value: meerkat.modules.healthPaymentStep.getSelectedPaymentMethod()

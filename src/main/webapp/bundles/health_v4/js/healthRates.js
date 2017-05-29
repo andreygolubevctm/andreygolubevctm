@@ -7,6 +7,7 @@
             healthRates: {}
         },
         rates = null,
+        ratesAjaxObj = null,
         $elements = {};
 
     function init() {
@@ -28,11 +29,9 @@
             partnerCurrent: $('input[name="health_healthCover_partner_cover"]'),
             partnerLoadingManual: $('input[name="health_healthCover_partner_lhc"]'),
             dependants: $('#health_healthCover_dependants'),
-            commencementDate: $('#health_payment_details_start'),
             searchDate: $('#health_searchDate')
         };
 
-        $elements.income.on('change', meerkat.modules.healthRebate.setRebate);
         if(meerkat.site.isNewQuote === false) {
             $elements.income.trigger('change');
         }
@@ -63,9 +62,7 @@
                 postData.partner_loading_manual = $elements.partnerLoadingManual.val();
             }
 
-            if (!fetchRates(postData, true, callback)) {
-                exception("Failed to fetch rates");
-            }
+            fetchRates(postData, true, callback);
         });
     }
 
@@ -100,9 +97,7 @@
 
             }
 
-            if (!fetchRates(postData, true, callback)) {
-                exception("Failed to Fetch Health Rebate Rates");
-            }
+            fetchRates(postData, true, callback);
         });
     }
 
@@ -125,7 +120,7 @@
         if (coverTypeHasPartner && !postData.partner_dob.match(dateRegex))  return false;
 
         postData.commencementDate = null;
-        var commencementDate = $elements.commencementDate.val();
+        var commencementDate = meerkat.modules.healthCoverStartDate.getVal();
         var searchDate = $elements.searchDate.val();
         if(!_.isEmpty(commencementDate)) {
             postData.commencementDate = commencementDate;
@@ -133,19 +128,33 @@
             postData.commencementDate = searchDate;
         }
 
-        return meerkat.modules.comms.post({
+        if(!_.isNull(ratesAjaxObj) && _.isObject(ratesAjaxObj) && _.has(ratesAjaxObj,"abort")) {
+            ratesAjaxObj.abort();
+        }
+
+        ratesAjaxObj = meerkat.modules.comms.post({
             url: "ajax/json/health_rebate.jsp",
             data: postData,
-            cache: false,
+            cache: true,
             errorLevel: "warning",
             onSuccess: function onRatesSuccess(data) {
                 if (canSetRates === true) setRates(data);
                 if (!_.isNull(callback) && typeof callback !== 'undefined') {
                     callback(data);
                 }
+                // Update snapshot with latest rates
+                meerkat.messaging.publish(meerkat.modules.events.health.SNAPSHOT_FIELDS_CHANGE);
+            },
+            onError: function onRatesError() {
+                ratesAjaxObj = null;
+                exception("Failed to Fetch Health Rebate Rates");
+            },
+            onComplete: function onRatesComplete() {
+                ratesAjaxObj = null;
             }
         });
 
+        return ratesAjaxObj;
     }
 
     // Make the rates object available outside of this module.

@@ -229,11 +229,37 @@
                 includeFormData: true
             },
             validation: {
-                validate: true
+                validate: false,
+                customValidation: function validateSelection(callback) {
+                    var areBenefitsSwitchOn = meerkat.modules.benefitsSwitch.isHospitalOn() || meerkat.modules.benefitsSwitch.isExtrasOn(),
+                        success = meerkat.modules.splitTest.isActive(2) ? areBenefitsSwitchOn : true;
+
+                    if (meerkat.modules.splitTest.isActive(2)) {
+                        if (meerkat.modules.benefitsSwitch.isExtrasOn()) {
+                            if (meerkat.modules.benefitsModel.getExtrasCount() === 0) {
+                                meerkat.modules.benefits.toggleExtrasMessage(false);
+                                meerkat.modules.benefitsSelectionScroller.triggerScroll('extras');
+                                // push error tracking object into CtMDatalayer
+                                meerkat.modules.benefits.errorTracking('benefits-switch-extras');
+
+                                success = false;
+                            } else {
+                                meerkat.modules.benefits.toggleExtrasMessage(true);
+                            }
+                        }
+                    }
+
+                    callback(success);
+                }
             },
             externalTracking: {
                 method: 'trackQuoteForms',
                 object: meerkat.modules.health.getTrackingFieldsObject
+            },
+            onInitialise: function onBenefitsInit(event) {
+                if (meerkat.modules.splitTest.isActive(2)) {
+                    meerkat.modules.benefitsSwitch.initBenefitsSwitch();
+                }
             },
             onBeforeEnter: function enterBenefitsStep(event) {
                 // configure progress bar
@@ -293,8 +319,6 @@
                 // configure progress bar
                 configureProgressBar(true);
 
-                meerkat.modules.healthPostcode.editMode();
-
                 if (event.isForward) {
                     // Delay 1 sec to make sure we have the data bucket saved in to DB, then filter coupon
                     _.delay(function () {
@@ -305,13 +329,13 @@
                     }, 1000);
                 }
                 _incrementTranIdBeforeEnteringSlide();
+
             },
             onAfterEnter: function afterEnterContactStep(event) {
                 meerkat.modules.coupon.dealWithAddedCouponHeight();
             },
             onAfterLeave: function leaveContactStep(event) {
 
-                meerkat.modules.healthPostcode.editMode();
             }
         };
 
@@ -382,9 +406,6 @@
                 }
 
                 meerkat.modules.healthResults.resetCallCentreText();
-            },
-            onAfterLeave: function afterLeaveResultsStep(event) {
-                meerkat.modules.healthResults.recordPreviousBreakpoint();
             }
         };
 
@@ -402,6 +423,7 @@
             onInitialise: function onApplyInit(event) {
                 meerkat.modules.healthDependants.initHealthDependants();
                 meerkat.modules.healthMedicare.initHealthMedicare();
+                meerkat.modules.healthCoverStartDate.onInitialise();
                 meerkat.modules.healthApplyStep.onInitialise();
             },
             onBeforeEnter: function beforeEnterApplyStep(event) {
@@ -429,7 +451,8 @@
                     // Unset the Health Declaration checkbox (could be refactored to only uncheck if the fund changes)
                     $('#health_declaration input:checked').prop('checked', false).change();
 
-                    meerkat.modules.healthApplyStep.onBeforeEnter();
+	                meerkat.modules.healthCoverStartDate.onBeforeEnter();
+	                meerkat.modules.healthApplyStep.onBeforeEnter();
                     meerkat.modules.healthDependants.updateDependantConfiguration();
                     meerkat.modules.healthMedicare.onBeforeEnterApply();
                 }
@@ -472,7 +495,7 @@
                     // Insert fund into Contact Authority
                     $('#mainform').find('.health_contact_authority span').text( selectedProduct.info.providerName  );
 
-                    meerkat.modules.healthPaymentStep.updatePremium();
+	                meerkat.messaging.publish(meerkatEvents.TRIGGER_UPDATE_PREMIUM);
                 }
             },
             onAfterEnter: function afterEnterPaymentStep() {

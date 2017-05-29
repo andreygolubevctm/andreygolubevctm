@@ -36,6 +36,7 @@
 <%@ attribute name="required" 	required="false" rtexprvalue="true"  description="is this switch required?" %>
 <%@ attribute name="onText" 	required="false" rtexprvalue="true"  description="Text for the on state. Default: ON" %>
 <%@ attribute name="offText" 	required="false" rtexprvalue="true"  description="Text for the off state. Default: OFF" %>
+<%@ attribute name="additionalAttributes"	required="false" rtexprvalue="true"  description="Additional Attributes" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
@@ -65,4 +66,4 @@
 
 
 <%-- HTML --%>
-<input type="checkbox" name="${name}" id="${name}" class="checkbox-switch ${className}" value="${value}"${checked}${requiredAttribute} data-text-label="" data-on-text="${onText}" data-off-text="${offText}">
+<input type="checkbox" name="${name}" id="${name}" class="checkbox-switch ${className}" value="${value}"${checked}${requiredAttribute} data-text-label="" data-on-text="${onText}" data-off-text="${offText}" ${additionalAttributes}>

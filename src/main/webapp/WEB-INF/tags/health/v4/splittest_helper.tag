@@ -30,3 +30,13 @@
 
 </c:if>
 <%-- END HLT-3540 - Competition --%>
+
+<jsp:useBean id="splitTestService" class="com.ctm.web.core.services.tracking.SplitTestService" />
+
+<%-- HLT-4069 Split Test J=2 test --%>
+<c:set var="benefitsSwitchSplitTest" scope="request">
+    <c:choose>
+        <c:when test="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 2)}">${true}</c:when>
+        <c:otherwise>${false}</c:otherwise>
+    </c:choose>
+</c:set>
