@@ -48,6 +48,7 @@
             cache: true,
             errorLevel: "silent",
             onSuccess: function onSuccess() {
+                meerkat.modules.leavePageWarning.disable();
                 window.location.replace("health_quote_v4.jsp");
             },
             onError: function onError(obj, txt, errorThrown) {
@@ -91,6 +92,7 @@
                     errorLevel: 'silent',
                     onSuccess: function (result) {
                         if (result.validAnswer === true && result.transactionId !== "") {
+                            meerkat.modules.leavePageWarning.disable();
                             $elements.loadingMessage.text('Loading Products & Prices Please wait...');
                             showLoadingPage();
                             window.location.replace('health_quote_v4.jsp?action=remember&transactionId='+result.transactionId+'#results');
