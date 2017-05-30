@@ -49,7 +49,6 @@ public class RememberMeService {
     public RememberMeService() {
         this.sessionDataServiceBean = new SessionDataServiceBean();
         this.transactionDetailsDao = new TransactionDetailsDao();
-        this.transactionDetailsDao = new TransactionDetailsDao();
         this.transactionDao = new TransactionDao();
     }
 
