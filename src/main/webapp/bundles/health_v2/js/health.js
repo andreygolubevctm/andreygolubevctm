@@ -1034,12 +1034,14 @@
             // Push in values from 1st slide only when have been beyond it
             if (furtherest_step > meerkat.modules.journeyEngine.getStepIndex('start')) {
                 var contactType = null;
-                if ($('#health_simples_contactType_inbound').is(':checked')) {
+                if ($('#health_simples_contactType_inbound').is(':checked') ) {
                     contactType = 'inbound';
                 } else if ($('#health_simples_contactType_outbound').is(':checked')) {
                     contactType = 'outbound';
                 } else if ($('#health_simples_contactType_clioutbound').is(':checked')) {
                     contactType = 'clioutbound';
+                } else if ($('#health_simples_contactType_trialcampaign').is(':checked')) {
+                    contactType = 'trialcampaign';
                 }
 
                 $.extend(response, {

@@ -192,14 +192,23 @@
                 .removeClass('inbound')
                 .addClass('outbound');
 
-            if ($('#health_simples_contactType_outbound').is(':checked')) {
+            if (($('#health_simples_contactType_outbound').is(':checked')) || ($('#health_simples_contactType_trialcampaign').is(':checked'))) {
                 _moveSituationMedicareField();
             }
         }
     }
 
     function getCallType() {
-        return $healthContactType.is(':checked') ? $healthContactType.filter(':checked').val() : null;
+        var callTypeToBeReturned = $healthContactType.is(':checked') ? $healthContactType.filter(':checked').val() : null;
+
+        // treat trial campaign as outbound
+        // for all intents and purposes trial campaign should be handled as an outbound call type - just have a different value stored in the DB
+        // unsure if cli outbound should be handled here too
+        if (callTypeToBeReturned === 'trialcampaign') {
+            callTypeToBeReturned = 'outbound'
+        }
+
+        return callTypeToBeReturned;
     }
 
     // Toggle visibility on follow call dialogs based on call type and whether is a followup call
