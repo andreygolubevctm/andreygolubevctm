@@ -60,6 +60,8 @@ public class HomeQuote {
 
     private Filter filter;
 
+    private String underFinance;
+
     public HomeQuote() {
         filter = new Filter();
     }
@@ -284,4 +286,13 @@ public class HomeQuote {
     public void setFilter(Filter filter) {
         this.filter = filter;
     }
+
+    public String isUnderFinance() {
+        return underFinance;
+    }
+
+    public void setUnderFinance(String underFinance) {
+        this.underFinance = underFinance;
+    }
+
 }

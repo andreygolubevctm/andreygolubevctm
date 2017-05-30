@@ -276,9 +276,9 @@
 	function applyValuesFromBrochureSite() {
 		if(meerkat.site.isFromBrochureSite === true) {
 			_.defer(function(){
-				if(meerkat.site.brochureValues.hasOwnProperty('situation')) {
+				if(meerkat.site.brochureValues.situation) {
 					if($('#homeloan_details_situation_' + meerkat.site.brochureValues.situation).length === 1) {
-						$('#homeloan_details_situation').val(meerkat.site.brochureValues.situation);
+						$('#homeloan_details_situation_' + meerkat.site.brochureValues.situation).prop('checked', true).change();
 					}
 				}
 				if(meerkat.site.brochureValues.hasOwnProperty('location')) {

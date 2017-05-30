@@ -21,6 +21,7 @@
     "shared/resultsRankings",
     "shared/contentPopulation",
     "shared/leavePageWarning",
-    "shared/ie8SelectMenuAutoExpand"
+    "shared/ie8SelectMenuAutoExpand",
+    "shared/radioRounded"
   ]
 }

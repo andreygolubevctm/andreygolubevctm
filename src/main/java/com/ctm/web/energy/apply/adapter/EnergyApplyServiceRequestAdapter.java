@@ -1,12 +1,12 @@
 package com.ctm.web.energy.apply.adapter;
 
-import com.ctm.energyapply.model.request.EnergyApplicationDetails;
-import com.ctm.energyapply.model.request.application.address.AddressDetails;
-import com.ctm.energyapply.model.request.application.address.ApplicationAddress;
-import com.ctm.energyapply.model.request.application.address.State;
-import com.ctm.energyapply.model.request.application.applicant.ApplicantDetails;
-import com.ctm.energyapply.model.request.application.contact.ContactDetails;
-import com.ctm.energyapply.model.request.relocation.RelocationDetails;
+import com.ctm.energy.apply.model.request.EnergyApplicationDetails;
+import com.ctm.energy.apply.model.request.application.address.AddressDetails;
+import com.ctm.energy.apply.model.request.application.address.ApplicationAddress;
+import com.ctm.energy.apply.model.request.application.address.State;
+import com.ctm.energy.apply.model.request.application.applicant.ApplicantDetails;
+import com.ctm.energy.apply.model.request.application.contact.ContactDetails;
+import com.ctm.energy.apply.model.request.relocation.RelocationDetails;
 import com.ctm.web.core.model.formData.YesNo;
 import com.ctm.web.core.utils.MiscUtils;
 import com.ctm.web.core.utils.common.utils.LocalDateUtils;
