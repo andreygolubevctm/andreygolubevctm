@@ -173,7 +173,7 @@ public class RememberMeService {
                 .orElse(false);
     }
 
-    public boolean validateAnswerAndLoadData(final String vertical, final String answer,
+    public Boolean validateAnswerAndLoadData(final String vertical, final String answer,
                                              HttpServletRequest request) throws GeneralSecurityException {
         return Optional.ofNullable(getTransactionIdFromCookie(vertical.toLowerCase(), request))
                 .map(rememberMeCookieValue -> Optional.ofNullable(getTransactionDetails(rememberMeCookieValue.get()))

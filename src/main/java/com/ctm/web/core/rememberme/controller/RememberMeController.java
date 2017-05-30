@@ -1,9 +1,11 @@
 package com.ctm.web.core.rememberme.controller;
 
 import com.ctm.web.core.rememberme.services.RememberMeService;
+import com.ctm.web.core.rememberme.model.RememberMeModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,36 +36,38 @@ public class RememberMeController {
         this.rememberMeService = rememberMeService;
     }
 
-    @RequestMapping(value = QUOTE_GET_JSON, method = RequestMethod.GET)
-    public String validateAnswer(@RequestParam(QUOTE_TYPE) final String vertical,
+    @RequestMapping(value = QUOTE_GET_JSON, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE )
+    public RememberMeModel validateAnswer(@RequestParam(QUOTE_TYPE) final String vertical,
                                  @RequestParam(QUERY_VALUE) final String userAnswer,
                                  HttpServletRequest request,
                                  final HttpServletResponse response) throws IOException, GeneralSecurityException {
-        boolean isValidAnswer;
+        Boolean isValidAnswer;
         Integer accessTokenCounter;
         Optional<String> transactionId;
+        RememberMeModel responseValue = new RememberMeModel(false, null);
         try {
-            if (RememberMeService.isRememberMeEnabled(request, vertical)) {
+            if (!vertical.isEmpty() && !userAnswer.isEmpty() && RememberMeService.isRememberMeEnabled(request, vertical)) {
                 transactionId = rememberMeService.getTransactionIdFromCookie(vertical, request);
                 isValidAnswer = rememberMeService.validateAnswerAndLoadData(vertical, userAnswer, request);
                 rememberMeService.updateAttemptsCounter(request, response, vertical);
                 if(isValidAnswer) {
                     rememberMeService.deleteCookie(vertical, response);
                     rememberMeService.removeAttemptsSessionAttribute(request, vertical);
-                    return transactionId.orElse(null);
+                    responseValue.setTransactionId(transactionId.orElse(null));
+                    responseValue.setValidAnswer(true);
                 }
             } else {
-                return null;
+                return responseValue;
             }
         } catch (Exception ex) {
             LOGGER.error("Error validating the personal question", ex);
-            return null;
+            return responseValue;
         }
-        return null;
+        return responseValue;
     }
 
 
-    @RequestMapping(value = QUOTE_DELETE_COOKIE_JSON, method = RequestMethod.POST)
+    @RequestMapping(value = QUOTE_DELETE_COOKIE_JSON, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public boolean deleteCookie(@RequestParam(QUOTE_TYPE) final String vertical,
                                 final HttpServletRequest request,
                                 final HttpServletResponse response) throws IOException, GeneralSecurityException {
