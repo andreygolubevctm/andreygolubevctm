@@ -23,7 +23,7 @@
     }
 
     function initEventListeners() {
-        $elements.startQuote.click(function () {
+        $elements.startQuote.click(function (event) {
             event.preventDefault();
             showLoadingPage();
             deleteCookieAndRedirect();
