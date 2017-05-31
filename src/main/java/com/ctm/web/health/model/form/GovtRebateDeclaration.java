@@ -6,7 +6,7 @@ public class GovtRebateDeclaration {
 
     private String entitledToMedicare;
 
-    private String govtRebateDeclaration;
+    private String declaration;
 
     private String declarationDate;
 
@@ -26,12 +26,12 @@ public class GovtRebateDeclaration {
         this.entitledToMedicare = entitledToMedicare;
     }
 
-    public String getGovtRebateDeclaration() {
-        return govtRebateDeclaration;
+    public String getDeclaration() {
+        return declaration;
     }
 
-    public void setGovtRebateDeclaration(String govtRebateDeclaration) {
-        this.govtRebateDeclaration = govtRebateDeclaration;
+    public void setDeclaration(String declaration) {
+        this.declaration = declaration;
     }
 
     public String getDeclarationDate() {
