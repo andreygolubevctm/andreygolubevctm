@@ -2,11 +2,11 @@
 	
 	var $elements = {
 		add: $('#plus'),
-		remove: '.icon-exit',
-		warning: $('#warning-label'),
+		remove: $('.icon-exit'),
+		warning: $('.warning-label-hidden'),
 		input: $('.age-item input'),
 		container: $('.age-container'),
-		numberOfTravellers: $('#num-travellers'),
+		numberOfTravellers: $('#num-travellers')
 	};
 
 	var meerkat = window.meerkat,
@@ -20,8 +20,8 @@
 	function getTemplate(index) {
 		return (
 			'<div class="age-item"> <span>Age(years)</span><div class="clearfix">' +
-	      '<input name="travellers-age-'+ index +'"data-msg-required="Please add age" data-msg-range="Please add age" data-rule-range="1,99" required type="text" maxlength="2" />' +
-	    '<div class="exit-container"> <a href="javascript:;" class="icon-exit"></a> </div> </div></div>'
+			'<input name="travellers-age-'+ index +'"data-msg-required="Please add age" data-msg-range="Please add age" data-rule-range="1,99" required type="text" maxlength="2" />' +
+			'<div class="exit-container"> <a href="javascript:;" class="icon-exit"></a> </div> </div></div>'
 		);
 	}
 	

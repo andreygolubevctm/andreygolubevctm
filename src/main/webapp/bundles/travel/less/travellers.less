@@ -20,12 +20,14 @@
     color: @plus;
     text-decoration: none;
   }
-  &.disabled .icon-add {
-    color: white;
-    background: #cecece;
-    border-radius: 100%;
-    border: 1px solid #cecece;
-    cursor: default;
+  &.disabled {
+    .icon-add {
+      color: white;
+      background: #cecece;
+      border-radius: 100%;
+      border: 1px solid #cecece;
+      cursor: default;
+    }
   }
 }
 
@@ -96,7 +98,7 @@
   }
 }
 
-#warning-label {
+.warning-label-hidden {
   padding-top: 5px;
   color: red;
   display: none;

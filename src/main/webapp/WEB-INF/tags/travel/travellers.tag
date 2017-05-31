@@ -7,12 +7,10 @@
     
     <%--labels  --%>
     <div class="col-sm-4 col-xs-10">
-      <div>
         <p class="traveler-heading">
           Who's travelling?
         </p>
-      </div>
-      <span>
+      <span class="traveler-age-label">
         The age of all travelling adults and children who will be covered under this insurance policy
       </span>
     </div>
@@ -24,23 +22,21 @@
           Number of travellers
         </span>
       </div>
-      <div>
-        <div class="col-sm-6" id="num-travellers" data-max="50">
-          1
-        </div>
-        <div class="col-sm-6" id="plus">
-          <a href="javascript:;" class="icon-add"></a>
-        </div>
+      <div class="col-sm-6" id="num-travellers" data-max="50">
+        1
       </div>
-      <div id="warning-label">
+      <div class="col-sm-6" id="plus">
+        <a href="javascript:;" class="icon-add"></a>
+      </div>
+      <div class="warning-label-hidden">
         Maximum number of travellers is 50
       </div>
     </div>
     
-    <%-- age boxes --%>
+    <%-- default age box --%>
     <div class="col-sm-5 col-xs-12 age-container">
       <div class="age-item">
-        <span>
+        <span class="age-label">
           Age(years)
         </span>
         <div class="clearfix">
