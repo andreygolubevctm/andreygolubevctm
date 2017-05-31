@@ -31,21 +31,6 @@
     function init() {
         $(document).ready(function () {
 
-            // if data already exists load data into radio btn
-            if ($('#health_simples_contactType').val()) {
-                if ($('#health_simples_contactTypeTrial').val() === 'Trial Campaign') {
-                        $('#health_simples_contactTypeRadio_trialcampaign').prop("checked", true);
-                } else {
-                    if ($('#health_simples_contactType').val() === 'inbound') {
-                        $('#health_simples_contactTypeRadio_inbound').prop("checked", true);
-                    } else if ($('#health_simples_contactType').val() === 'outbound') {
-                        $('#health_simples_contactTypeRadio_outbound').prop("checked", true);
-                    } else if ($('#health_simples_contactType').val() === 'cli') {
-                        $('#health_simples_contactTypeRadio_clioutbound').prop("checked", true);
-                    }
-                }
-            }
-
             // cache selectors
             $healthContactTypeRadio = $('input[name=health_simples_contactTypeRadio]');
             $healthContactType = $('#health_simples_contactType');
@@ -75,6 +60,7 @@
             $applicantWrappers.partner = $('#partner-health-cover .content:first');
 
             // Handle pre-filled
+            populatePrevAssignedRadioBtnGroupValue();
             toggleInboundOutbound();
             toggleBenefitsDialogue();
             initDBDrivenCheckboxes();
@@ -85,6 +71,24 @@
 
             meerkat.modules.provider_testing.setApplicationDateCalendar();
         });
+    }
+
+    function populatePrevAssignedRadioBtnGroupValue() {
+
+        // if data already exists for xpath load data into radio btn
+        if ($healthContactType.val()) {
+            if ($healthContactTypeTrial.val() === 'Trial Campaign') {
+                $('#health_simples_contactTypeRadio_trialcampaign').prop("checked", true);
+            } else {
+                if ($healthContactType.val() === 'inbound') {
+                    $('#health_simples_contactTypeRadio_inbound').prop("checked", true);
+                } else if ($healthContactType.val() === 'outbound') {
+                    $('#health_simples_contactTypeRadio_outbound').prop("checked", true);
+                } else if ($healthContactType.val() === 'cli') {
+                    $('#health_simples_contactTypeRadio_clioutbound').prop("checked", true);
+                }
+            }
+        }
     }
 
     function _moveSituationMedicareField() {
