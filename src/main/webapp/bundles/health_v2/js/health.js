@@ -1028,20 +1028,26 @@
                 marketOptIn: null,
                 okToCall: null,
                 contactType: null,
+                contactTypeTrial: null,
                 simplesUser: meerkat.site.isCallCentreUser
             };
 
             // Push in values from 1st slide only when have been beyond it
             if (furtherest_step > meerkat.modules.journeyEngine.getStepIndex('start')) {
                 var contactType = null;
+                var contactTypeTrial = null;
                 if ($('#health_simples_contactType_inbound').is(':checked')) {
                     contactType = 'inbound';
+                    contactTypeTrial = '';
                 } else if ($('#health_simples_contactType_outbound').is(':checked')) {
                     contactType = 'outbound';
+                    contactTypeTrial = '';
                 } else if ($('#health_simples_contactType_clioutbound').is(':checked')) {
                     contactType = 'clioutbound';
+                    contactTypeTrial = '';
                 } else if ($('#health_simples_contactType_trialcampaign').is(':checked')) {
-                    contactType = 'trialcampaign';
+                    contactType = 'outbound';
+                    contactTypeTrial = 'Trial Campaign';
                 }
 
                 $.extend(response, {
@@ -1049,7 +1055,8 @@
                     state: state,
                     healthCoverType: $("#health_situation_healthCvr").val(),
                     healthSituation: $("input[name=health_situation_healthSitu]").filter(":checked").val(),
-                    contactType: contactType
+                    contactType: contactType,
+                    contactTypeTrial: contactTypeTrial
                 });
             }
 

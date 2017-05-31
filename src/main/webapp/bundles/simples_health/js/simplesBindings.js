@@ -2,7 +2,9 @@
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events;
 
-    var $healthContactType,
+    var $healthContactTypeRadio,
+        $healthContactType,
+        $healthContactTypeTrial,
         $healthCoverRebate,
         $healthSituationCvr,
         $healthSitCoverType,
@@ -28,8 +30,26 @@
 
     function init() {
         $(document).ready(function () {
+
+            // if data already exists load data into radio btn
+            if ($('#health_simples_contactType').val()) {
+                if ($('#health_simples_contactTypeTrial').val() === 'Trial Campaign') {
+                        $('#health_simples_contactTypeRadio_trialcampaign').prop("checked", true);
+                } else {
+                    if ($('#health_simples_contactType').val() === 'inbound') {
+                        $('#health_simples_contactTypeRadio_inbound').prop("checked", true);
+                    } else if ($('#health_simples_contactType').val() === 'outbound') {
+                        $('#health_simples_contactTypeRadio_outbound').prop("checked", true);
+                    } else if ($('#health_simples_contactType').val() === 'cli') {
+                        $('#health_simples_contactTypeRadio_clioutbound').prop("checked", true);
+                    }
+                }
+            }
+
             // cache selectors
-            $healthContactType = $('input[name=health_simples_contactType]');
+            $healthContactTypeRadio = $('input[name=health_simples_contactTypeRadio]');
+            $healthContactType = $('#health_simples_contactType');
+            $healthContactTypeTrial = $('#health_simples_contactTypeTrial');
             $healthCoverRebate = $('input[name=health_healthCover_rebate]');
             $healthSituationCvr = $('select[name=health_situation_healthCvr]');
             $healthSitCoverType = $('#health_situation_coverType');
@@ -120,7 +140,7 @@
         });
 
         // Handle toggle inbound/outbound
-        $healthContactType.on('change', function(){
+        $healthContactTypeRadio.on('change', function(){
             toggleInboundOutbound();
             toggleFollowupCallDialog();
         });
@@ -179,7 +199,11 @@
         var $body = $('body');
 
         // Inbound
-        if ($('#health_simples_contactType_inbound').is(':checked')) {
+        if ($('#health_simples_contactTypeRadio_inbound').is(':checked')) {
+
+            $('#health_simples_contactType').val('inbound');
+            $('#health_simples_contactTypeTrial').val('');
+
             $body
                 .removeClass('outbound')
                 .addClass('inbound');
@@ -192,20 +216,34 @@
                 .removeClass('inbound')
                 .addClass('outbound');
 
-            if (($('#health_simples_contactType_outbound').is(':checked')) || ($('#health_simples_contactType_trialcampaign').is(':checked'))) {
+            if (($('#health_simples_contactTypeRadio_outbound').is(':checked')) || ($('#health_simples_contactTypeRadio_trialcampaign').is(':checked'))) {
                 _moveSituationMedicareField();
+
+                $('#health_simples_contactType').val('outbound');
+
+                if ($('#health_simples_contactTypeRadio_outbound').is(':checked')) {
+                    $('#health_simples_contactTypeTrial').val('');
+                } else {
+                    $('#health_simples_contactTypeTrial').val('Trial Campaign');
+                }
+
+            } else {
+                // cli outbound
+                $('#health_simples_contactTypeTrial').val('');
+                $('#health_simples_contactType').val('cli');
             }
+
         }
     }
 
     function getCallType() {
-        var callTypeToBeReturned = $healthContactType.is(':checked') ? $healthContactType.filter(':checked').val() : null;
+        var callTypeToBeReturned = $healthContactTypeRadio.is(':checked') ? $healthContactTypeRadio.filter(':checked').val() : null;
 
         // treat trial campaign as outbound
         // for all intents and purposes trial campaign should be handled as an outbound call type - just have a different value stored in the DB
         // unsure if cli outbound should be handled here too
         if (callTypeToBeReturned === 'trialcampaign') {
-            callTypeToBeReturned = 'outbound'
+            callTypeToBeReturned = 'outbound';
         }
 
         return callTypeToBeReturned;
