@@ -44,7 +44,6 @@ public class RememberMeController {
                                           final HttpServletResponse response) throws IOException, GeneralSecurityException {
         Boolean isValidAnswer;
         Optional<String> transactionId;
-        RememberMeModel responseValue = new RememberMeModel(false, null);
         try {
             if (!vertical.isEmpty() && !userAnswer.isEmpty() && RememberMeService.isRememberMeEnabled(request, vertical)) {
                 transactionId = rememberMeService.getTransactionIdFromCookie(vertical, request);
@@ -53,17 +52,16 @@ public class RememberMeController {
                 if(isValidAnswer) {
                     rememberMeService.deleteCookie(vertical, response);
                     rememberMeService.removeAttemptsSessionAttribute(request, vertical);
-                    responseValue.setTransactionId(transactionId.orElse(null));
-                    responseValue.setValidAnswer(true);
+                    return new RememberMeModel(true, transactionId.orElse(null));
                 }
             } else {
-                return responseValue;
+                return new RememberMeModel(false, null);
             }
         } catch (Exception ex) {
             LOGGER.error("Error validating the personal question", ex);
-            return responseValue;
+            return new RememberMeModel(false, null);
         }
-        return responseValue;
+        return new RememberMeModel(false, null);
     }
 
 
@@ -73,8 +71,7 @@ public class RememberMeController {
     public boolean deleteCookie(@RequestParam(QUOTE_TYPE) final String vertical,
                                 final HttpServletRequest request,
                                 final HttpServletResponse response) throws IOException, GeneralSecurityException {
-        Boolean isCookieRemoved = rememberMeService.deleteCookie(vertical, response);
-        Boolean isAttemptsAttributeRemoved = rememberMeService.removeAttemptsSessionAttribute(request, vertical);
-        return (isCookieRemoved && isAttemptsAttributeRemoved);
+
+        return rememberMeService.deleteCookie(vertical, response) && rememberMeService.removeAttemptsSessionAttribute(request, vertical);
     }
 }

@@ -14,15 +14,8 @@ public class RememberMeModel
         return isValidAnswer;
     }
 
-    public void setValidAnswer(final Boolean validAnswer) {
-        isValidAnswer = validAnswer;
-    }
-
     public String getTransactionId() {
         return transactionId;
     }
 
-    public void setTransactionId(final String transactionId) {
-        this.transactionId = transactionId;
-    }
 }
