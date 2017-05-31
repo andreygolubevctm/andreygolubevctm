@@ -205,8 +205,8 @@
         // Inbound
         if ($('#health_simples_contactTypeRadio_inbound').is(':checked')) {
 
-            $('#health_simples_contactType').val('inbound');
-            $('#health_simples_contactTypeTrial').val('');
+            $healthContactType.val('inbound');
+            $healthContactTypeTrial.val('');
 
             $body
                 .removeClass('outbound')
@@ -223,18 +223,18 @@
             if (($('#health_simples_contactTypeRadio_outbound').is(':checked')) || ($('#health_simples_contactTypeRadio_trialcampaign').is(':checked'))) {
                 _moveSituationMedicareField();
 
-                $('#health_simples_contactType').val('outbound');
+                $healthContactType.val('outbound');
 
                 if ($('#health_simples_contactTypeRadio_outbound').is(':checked')) {
-                    $('#health_simples_contactTypeTrial').val('');
+                    $healthContactTypeTrial.val('');
                 } else {
-                    $('#health_simples_contactTypeTrial').val('Trial Campaign');
+                    $healthContactTypeTrial.val('Trial Campaign');
                 }
 
             } else {
                 // cli outbound
-                $('#health_simples_contactTypeTrial').val('');
-                $('#health_simples_contactType').val('cli');
+                $healthContactTypeTrial.val('');
+                $healthContactType.val('cli');
             }
 
         }
