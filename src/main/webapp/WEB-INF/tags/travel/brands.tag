@@ -12,14 +12,13 @@
 	<div class="brands-content">
 		<h2><content:get key="modalHeading"/></h2>
 		<p><content:get key="modalCopy"/></p>
-	<c:forEach items="${providerCodes}" var="pc">
-		<c:if test="${not empty pc}">
-			<div class="col-sm-2">
-				<div class="travelCompanyLogo logo_${pc}"></div>
-			</div>
-		</c:if>
-	</c:forEach>
-		<div class="col-sm-12 underwriters small"><content:get key="underwriters"/></div>
+		<c:forEach items="${providerCodes}" var="pc">
+			<c:if test="${not empty pc}">
+				<div class="col-sm-2">
+					<div class="travelCompanyLogo logo_${pc}"></div>
+				</div>
+			</c:if>
+		</c:forEach>
 	</div>
 
 </core_v1:js_template>
