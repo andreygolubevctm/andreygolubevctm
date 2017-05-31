@@ -36,13 +36,13 @@ public class RememberMeController {
         this.rememberMeService = rememberMeService;
     }
 
-    @RequestMapping(value = QUOTE_GET_JSON, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE )
+    @RequestMapping(value = QUOTE_GET_JSON,
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE )
     public RememberMeModel validateAnswer(@RequestParam(QUOTE_TYPE) final String vertical,
-                                 @RequestParam(QUERY_VALUE) final String userAnswer,
-                                 HttpServletRequest request,
-                                 final HttpServletResponse response) throws IOException, GeneralSecurityException {
+                                          @RequestParam(QUERY_VALUE) final String userAnswer,HttpServletRequest request,
+                                          final HttpServletResponse response) throws IOException, GeneralSecurityException {
         Boolean isValidAnswer;
-        Integer accessTokenCounter;
         Optional<String> transactionId;
         RememberMeModel responseValue = new RememberMeModel(false, null);
         try {
@@ -67,7 +67,9 @@ public class RememberMeController {
     }
 
 
-    @RequestMapping(value = QUOTE_DELETE_COOKIE_JSON, method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = QUOTE_DELETE_COOKIE_JSON,
+            method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public boolean deleteCookie(@RequestParam(QUOTE_TYPE) final String vertical,
                                 final HttpServletRequest request,
                                 final HttpServletResponse response) throws IOException, GeneralSecurityException {
