@@ -50,6 +50,8 @@ public class Application {
 
     private Wfd wfd;
 
+    private Bupa bupa;
+
     private GovtRebateDeclaration govtRebateDeclaration;
 
     public Address getAddress() {
@@ -251,5 +253,13 @@ public class Application {
 
     public void setGovtRebateDeclaration(GovtRebateDeclaration govtRebateDeclaration) {
         this.govtRebateDeclaration = govtRebateDeclaration;
+    }
+
+    public Bupa getBupa() {
+        return bupa;
+    }
+
+    public void setBupa(final Bupa bupa) {
+        this.bupa = bupa;
     }
 }

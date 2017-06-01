@@ -69,9 +69,36 @@ public class FundDataAdapter {
     }
 
     protected static Benefits createBenefits(Optional<HealthQuote> quote) {
-        List<String> benefits = quote.map(HealthQuote::getApplication)
+        // Check HBF
+        Optional<Benefits> benefits = quote.map(HealthQuote::getApplication)
                 .map(Application::getHbf)
-                .map(Hbf::getFlexiextras)
+                .map(FundDataAdapter::createBenefits);
+
+        if(!benefits.isPresent()){
+            benefits = quote.map(HealthQuote::getApplication)
+                    .map(Application::getBupa)
+                    .map(FundDataAdapter::createBenefits);
+        }
+        return benefits.orElse(null);
+    }
+
+    protected static Benefits createBenefits(Hbf theHbf) {
+        Optional<Hbf> hbf = Optional.ofNullable(theHbf);
+
+        List<String> benefits = hbf.map(Hbf::getFlexiextras)
+                .map(f -> Arrays.asList(StringUtils.split(f, ",")))
+                .orElse(emptyList());
+        if (!benefits.isEmpty()) {
+            return new Benefits(benefits);
+        } else {
+            return null;
+        }
+    }
+
+    protected static Benefits createBenefits(Bupa theBupa) {
+        Optional<Bupa> bupa = Optional.ofNullable(theBupa);
+
+        List<String> benefits = bupa.map(Bupa::getFlexiextras)
                 .map(f -> Arrays.asList(StringUtils.split(f, ",")))
                 .orElse(emptyList());
         if (!benefits.isEmpty()) {
@@ -274,5 +301,4 @@ public class FundDataAdapter {
             return null;
         }
     }
-
 }
