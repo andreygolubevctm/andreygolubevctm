@@ -181,7 +181,7 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 									<go:setData dataVar="data" xpath="${fieldXPath}" value="${param.expired}" />
 								</c:if>
 								<core_v1:transaction touch="L" noResponse="true" />
-								<c:set var="quotePagePrefix" value="quoteType">
+								<c:set var="quotePagePrefix" value="${quoteType}">
 								</c:set>
 								<c:set var="action">
 								<c:choose>
