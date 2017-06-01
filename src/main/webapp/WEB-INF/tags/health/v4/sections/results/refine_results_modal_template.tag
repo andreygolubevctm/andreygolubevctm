@@ -91,7 +91,7 @@
                 </c:forEach>
             </div>
 
-            <a href="javascript:;" class="refine-results-view-all-times">view all times</a>
+            <a href="javascript:;" class="refine-results-view-all-times">View All Times <span class='caret'></span></a>
         </div>
     </div>
 </core_v1:js_template>

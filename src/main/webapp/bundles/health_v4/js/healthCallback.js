@@ -78,9 +78,16 @@ Handling of the callback popup
 
         $(document).on('click', '.view-all-times', function(e) {
         	e.preventDefault();
-			var anchorText = $(this).text() === 'view all times' ? 'show today only' : 'view all times';
-			$(this).text(anchorText);
+            var anchorText = $(this).text() === 'View All Times ' ? 'Show Today Only ' : 'View All Times ';
+            $(this).html(anchorText + "<span class='caret'></span>");
+            $(this).toggleClass('dropup');
             $('.all-times-callback-modal, .today-hours-callback-modal').toggleClass('hidden');
+        });
+
+        $(document).on('click', '.request-call-back', function (e) {
+            e.preventDefault();
+            $(this).toggleClass('dropup');
+            $('.request-call-panel').toggleClass('hidden');
         });
 
 		$(document).on('click', '.callbackDay .btn', function() {

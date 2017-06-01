@@ -105,8 +105,6 @@ public class UploadService {
 
 			// Get first line
             part = reader.readNext();
-            String[] lineNext = part;
-
 
 			do {
 				for(int i = 0; i< (part != null ? part.length : 0); i++){
@@ -133,10 +131,8 @@ public class UploadService {
                         }
 					}
 				}
-
-                part = lineNext;
 			}
-			while(((lineNext = reader.readNext()) != null) || part != null);
+			while(((part = reader.readNext()) != null));
 
             reader.close();
 

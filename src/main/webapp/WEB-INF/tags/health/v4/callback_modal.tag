@@ -15,12 +15,116 @@
 <core_v1:js_template id="view_all_hours_cb">
     <div id="health-callback" callbackModal="true">
         <div class="row">
-            <div class="col-sm-12">
+            <%--Mobile (xs) modal Layout --%>
+            <div class="col-sm-12 visible-xs">
                 <h3 class="hidden-xs">Talk to our experts</h3>
                 <div class="quote-ref hidden-xs">Quote Ref: <c:out value="${data['current/transactionId']}"/></div>
                 <h3 class="quote-ref-xs text-center visible-xs">Quote Ref: <c:out value="${data['current/transactionId']}"/></h3>
             </div>
-            <div class="col-sm-8 main" data-padding-pos="all" data-hover-bg="" data-delay="0">
+            <div class="call-details col-sm-4 text-center visible-xs" data-padding-pos="all" >
+                <div class="row">
+                    <div class="col-sm-12">
+                        <c:if test="${not empty todayOpeningHours}">
+                            <div class="today-hours-callback-modal">Today, ${todays_day}: <span class="opening-hours-label">${todayOpeningHours}</span></div>
+                        </c:if>
+                        <div class="all-times-callback-modal hidden">
+                            <c:forEach var="hoursOfDay"
+                                       items="${openingHoursService.getAllOpeningHoursForDisplay(pageContext.getRequest(),false)}">
+
+                                <c:set var="matchClass" value="" />
+                                <c:if test="${hoursOfDay.description eq todays_day}">
+                                    <c:set var="matchClass" value="currentCCDay" />
+                                </c:if>
+                                <div class="row day_row <c:out value="${matchClass}"/>">
+                                    <div class="day-description col-md-4 col-xs-4 text-right"> ${hoursOfDay.description}</div>
+                                    <div class="col-md-8 col-xs-8">
+                                        <c:choose>
+                                            <c:when test="${empty hoursOfDay.startTime}">
+                                                <c:out value="Closed"/>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <c:out value="${hoursOfDay.startTime} - ${hoursOfDay.endTime}"/>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </div>
+                                </div>
+                            </c:forEach>
+                        </div>
+                        <a href="Javascript:;" class="view-all-times center">View All Times <span class="caret"></span></a>
+                    </div>
+                </div>
+                <div class="row">
+                    <a href="tel:${fn:replace(callCentreNumber, ' ', '')}" class="btn btn-primary btn-lg call-details-button">
+                        <span class="call-details-button-label"><span class="icon icon-phone"></span> Call </span>
+                        ${callCentreNumber}
+                    </a>
+                </div>
+
+                <div class="row">
+                    <a href="Javascript:;" class="request-call-back center">Request a Call Back <span class="caret"></span></a>
+                </div>
+            </div>
+
+            <div class="col-sm-8 main request-call-panel hidden" data-padding-pos="all" data-hover-bg="" data-delay="0">
+                <div class="row">
+                    <%--<div class="col-sm-12">--%>
+                        <%--<h4>Let one of our experts call you!</h4>--%>
+                    <%--</div>--%>
+                    <div class="col-sm-12">
+                        <form id="health-callback-form">
+                            <c:set var="fieldXpath" value="${xpath}/name" />
+                            <form_v4:row label="Your name" fieldXpath="${fieldXpath}" className="clear required_input">
+                                <field_v3:person_name xpath="${fieldXpath}" title="name" required="true" />
+                            </form_v4:row>
+
+                            <field_v4:contact_number mobileXpath="${xpath}/mobile" otherXpath="${xpath}/otherNumber" className="callback-contact-number" />
+                        </form>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <a href="javascript:;" class="switch call-type">Choose another time for a call?</a>
+                    </div>
+                    <div class="col-sm-5">
+                        <c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Call Request" quoteChar="\"" /></c:set>
+                        <button id="callBackNow" class="btn btn-secondary btn-lg btn-block" ${analyticsAttr}>Call me now</button><small>within 30 mins, during call centre opening hours</small>
+                    </div>
+                </div>
+                <div class="row hidden">
+                    <div class="col-sm-6 hidden-xs">
+                        <a href="javascript:;" class="switch call-type">Cancel, I prefer a call right now</a>
+                    </div>
+                    <div class="col-sm-5">
+                        <c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Call Request" quoteChar="\"" /></c:set>
+                        <button id="callBackLater" class="btn btn-secondary btn-lg btn-block" ${analyticsAttr}>Call me later...</button>
+                    </div>
+                    <div class="col-sm-12 outline">
+                        <form_v4:row label=" ">
+                            <field_v2:array_radio xpath="${xpath}/day" required="true" className="callbackDay"
+                                                  items="Today=,Tomorrow=,NextDay=,LastDay="
+                                                  title="" wrapCopyInSpan="true" />
+                        </form_v4:row>
+                        <form_v4:row label="Pick a time for " id="pickATimeLabel">
+                            <field_v2:array_select xpath="${xpath}/time" required="true" className="callbackTime"
+                                                   items="="
+                                                   title="" />
+                        </form_v4:row>
+                    </div>
+                    <div class="col-sm-6 visible-xs">
+                        <a href="javascript:;" class="switch call-type">Cancel</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8 confirmation-content-panel hidden visible-xs">
+            </div>
+
+            <%-- >= Tablet (sm) modal Layout --%>
+            <div class="col-sm-12 hidden-xs">
+                <h3 class="hidden-xs">Talk to our experts</h3>
+                <div class="quote-ref hidden-xs">Quote Ref: <c:out value="${data['current/transactionId']}"/></div>
+                <h3 class="quote-ref-xs text-center visible-xs">Quote Ref: <c:out value="${data['current/transactionId']}"/></h3>
+            </div>
+            <div class="col-sm-8 main hidden-xs" data-padding-pos="all" data-hover-bg="" data-delay="0">
                 <div class="row">
                     <div class="col-sm-12">
                         <h4>Let one of our experts call you!</h4>
@@ -70,9 +174,9 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-8 confirmation-content-panel hidden">
+            <div class="col-sm-8 confirmation-content-panel hidden hidden-xs">
             </div>
-            <div class="call-details col-sm-4 text-center" data-padding-pos="all" >
+            <div class="call-details col-sm-4 text-center hidden-xs" data-padding-pos="all" >
                 <div class="row">
                     <div class="col-sm-12">
                         <h4>Call us on </h4>
@@ -110,7 +214,7 @@
                                 </div>
                             </c:forEach>
                         </div>
-                        <a href="Javascript:;" class="view-all-times center">view all times</a>
+                        <a href="Javascript:;" class="view-all-times center">View All Times <span class="caret"></span></a>
                     </div>
                 </div>
             </div>
