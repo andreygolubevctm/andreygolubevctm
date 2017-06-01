@@ -37,7 +37,7 @@
             }, 750);
         });
 
-        $(document).on('click', '.refine-results-view-all-times', function() {
+        $(document).on('click', '.refine-results-view-all-times', function(e) {
             e.preventDefault();
             var anchorText = $(this).text() === 'View All Times ' ? 'Show Today Only ' : 'View All Times ';
             $(this).html(anchorText + "<span class='caret'></span>");
