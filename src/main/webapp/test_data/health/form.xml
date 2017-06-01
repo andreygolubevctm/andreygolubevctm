@@ -46,7 +46,7 @@
 	<healthCover>
 		<income>0</income>
 		<dependants>12</dependants>
-		<rebate>N</rebate>
+		<rebate>Y</rebate>
 		<primary>
 			<cover>Y</cover>
 			<dob>25/01/1967</dob>

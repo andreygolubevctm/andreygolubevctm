@@ -8,7 +8,8 @@
 <%-- HTML --%>
 <div class="disableable-fields">
     <c:set var="fieldXpath" value="${xpath}/reason" />
-    <form_v4:row label="Reason for voucher?" fieldXpath="${fieldXpath}" className="healthVoucherReasonRow">
+    <form_v4:row label="Reason for voucher?"
+                 fieldXpath="${fieldXpath}" className="healthVoucherReasonRow">
         <field_v2:general_select xpath="${fieldXpath}" type="healthVoucherReason" required="true" title="voucher reason" additionalAttributes="data-attach='true'" />
         <p id="healthVoucherReason" class="display-only"></p>
     </form_v4:row>
@@ -51,13 +52,7 @@
 </div>
 
 <div class="voucherDialogue">
-    <div class="dialogue others">
-        <simples:dialogue id="65" vertical="health" mandatory="true" />
-    </div>
-    <div class="dialogue referral">
-        <simples:dialogue id="66" vertical="health" mandatory="true" />
-    </div>
-    <div class="dialogue matchonline">
+    <div class="dialogue defaultReason">
         <simples:dialogue id="72" vertical="health" mandatory="true" />
     </div>
 </div>
