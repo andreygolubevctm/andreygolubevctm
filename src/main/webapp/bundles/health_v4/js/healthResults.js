@@ -793,10 +793,9 @@
                 _.findWhere(postData, { name: "health_incrementTransactionId" }).value = "N";
 
                 // Dynamically add these fields because they are disabled when this method is called.
-                postData.push({
-                    name: "health_payment_details_start",
-                    value: $("#health_payment_details_start").val()
-                });
+                postData.push(
+                    meerkat.modules.healthCoverStartDate.getNameValue()
+                );
                 postData.push({
                     name: "health_payment_details_type",
                     value: meerkat.modules.healthPaymentStep.getSelectedPaymentMethod()

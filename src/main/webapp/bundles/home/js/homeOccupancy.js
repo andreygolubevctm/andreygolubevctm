@@ -28,7 +28,10 @@
 			howOccupiedRow:			".howOccupied",
 			lookingForLandlord: 	".lookingForLandlord",
 			validRentalLease: 		".validRentalLease",
-			pendingRentalLease: ".pendingRentalLease"
+			pendingRentalLease: ".pendingRentalLease",
+			coverType:				"#home_coverType",
+			underFinanceRow:		".underFinanceRow"
+
 	};
 
 	function isPrincipalResidence() {
@@ -92,6 +95,19 @@
 			$pendingRental.slideDown(speed);
 		} else if(validRentalLease === 'Y' || validRentalLease == null) {
 			$pendingRental.slideUp(speed);
+		}
+	}
+
+
+	function toggleUnderFinanceQuestion() {
+		var selectdCoverType = $(elements.coverType).val();
+
+		if (selectdCoverType == 'Contents Cover Only') {
+			$(elements.underFinanceRow).hide();
+
+		} else {
+			$(elements.underFinanceRow).show();
+
 		}
 	}
 
@@ -175,6 +191,11 @@
 			$('input[name='+elements.principalResidence+']').on('change', function() {
 				togglePropertyOccupancyFields();
 			});
+
+			$(elements.coverType).on('blur', function() {
+				toggleUnderFinanceQuestion();
+
+			});
 		});
 	}
 	/* main entrypoint for the module to run first */
@@ -186,6 +207,7 @@
 			togglePropertyOccupancyFields(0);
 			homeOccupiedChange(0);
 			togglePendingRentalLease(0);
+			toggleUnderFinanceQuestion();
 		}
 	}
 

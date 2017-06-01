@@ -86,6 +86,8 @@ public class RequestAdapter {
 
         quoteRequest.setHadClaims(convertToBoolean(quote.getDisclosures().getClaims()));
 
+        quoteRequest.setUnderFinance(convertToOptionalBoolean(quote.isUnderFinance()));
+
         quoteRequest.setClientIp(homeRequest.getClientIpAddress());
 
         com.ctm.web.homecontents.model.form.LandlordDetails landlordDetails = quote.getLandlordDetails();

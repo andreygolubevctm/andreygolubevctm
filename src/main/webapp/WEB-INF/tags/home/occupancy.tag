@@ -27,13 +27,43 @@
 	<%-- Address --%>
 	<c:set var="fieldXpath" value="${baseXpath}/property/address" />
 	<group_v2:elastic_address xpath="${fieldXpath}" type="R" />
-	
+
+
+	<%-- MoP --%>
+	<c:set var="fieldXpath" value="${baseXpath}/underFinance" />
+	<c:set var="didExist" value="true" />
+	<c:set var="isNewQuote" scope="session">
+		<c:choose>
+			<c:when test="${not empty param.action and not empty data.current.transactionId and param.action eq 'amend'}">${false}</c:when>
+			<c:when test="${empty data['current/transactionId']}">${true}</c:when>
+			<c:otherwise>${true}</c:otherwise>
+		</c:choose>
+	</c:set>
+
+
+	<c:if test="${empty data[fieldXpath]}">
+		<c:if test="${!isNewQuote}">
+			<c:set var="didExist" value="false" />
+		</c:if>
+	</c:if>
+
+	<form_v2:row fieldXpath="${fieldXpath}" label="Do you currently have a mortgage on the property?" className="underFinanceRow">
+		<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Under Finance" quoteChar="\"" /></c:set>
+		<field_v2:array_radio xpath="${fieldXpath}"
+			className="pretty_buttons"
+			required="${didExist}"
+			items="Y=Yes,N=No"
+			title="if you currently have a mortgage on the property"
+			additionalLabelAttributes="${analyticsAttr}" />
+	</form_v2:row>
+
+	<%-- PPoR --%>
 	<c:set var="fieldXpath" value="${xpath}/principalResidence" />
 
 	<c:choose>
 		<c:when test="${landlord eq true}">
 		<div class="isLandlord">
-			<field_v1:hidden 
+			<field_v1:hidden
 				xpath="${fieldXpath}"
 				defaultValue="N" />
 		</div>
@@ -51,7 +81,7 @@
 			</form_v2:row>
 		</div>
 		</c:when>
-		
+
 		<c:otherwise>
 			<div class="isNormalJourney"></div>
 			<%-- PPoR --%>
@@ -67,7 +97,7 @@
 			</form_v2:row>
 		</c:otherwise>
 	</c:choose>
-	
+
 
 
 	<%-- How Occupied --%>
