@@ -415,11 +415,27 @@
                 method: 'trackQuoteForms',
                 object: meerkat.modules.health.getTrackingFieldsObject
             },
+            validation: {
+                validate: true,
+                customValidation: function validateSelection(callback) {
+                    if (meerkat.modules.healthAGRModal.isActivated()) {
+                        var showAGR = meerkat.modules.healthAGRModal.show();
+                        if (showAGR) {
+                            // open AGR modal
+                            meerkat.modules.healthAGRModal.open();
+                        }
+                        callback(!showAGR);
+                    } else {
+                        callback(true);
+                    }
+                }
+            },
             onInitialise: function onApplyInit(event) {
                 meerkat.modules.healthDependants.initHealthDependants();
                 meerkat.modules.healthMedicare.initHealthMedicare();
                 meerkat.modules.healthCoverStartDate.onInitialise();
                 meerkat.modules.healthApplyStep.onInitialise();
+                meerkat.modules.healthAGRModal.onInitialise();
             },
             onBeforeEnter: function beforeEnterApplyStep(event) {
                 meerkat.modules.benefitsToggleBar.deRegisterScroll();
@@ -450,6 +466,7 @@
 	                meerkat.modules.healthApplyStep.onBeforeEnter();
                     meerkat.modules.healthDependants.updateDependantConfiguration();
                     meerkat.modules.healthMedicare.onBeforeEnterApply();
+                    meerkat.modules.healthAGRModal.onBeforeEnterApply();
                 }
             },
             onAfterEnter: function afterEnterApplyStep(event) {

@@ -1,0 +1,250 @@
+#agr-modal {
+  .modal-body {
+    @media (@xs-only) {
+      margin-top: 40px;
+    }
+
+    @media (@sm) {
+      padding-bottom: 0;
+    }
+  }
+
+  h3,
+  label[for=health_application_agr_declaration].control-label {
+    color: @gray-darker;
+  }
+
+  .agr-details-section {
+    position: relative;
+  }
+
+  .edit-details-btn {
+    @media (@sm) {
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+  }
+
+  .view-rebate-table-btn {
+    float: right;
+  }
+
+  .agrRebateTierTable{
+    display: none;
+
+    .rebatePercent {
+      text-align: right;
+    }
+
+    thead > tr > th {
+      background-color: #dddddd;
+    }
+
+    // .modal-body table > tbody >
+    tbody > tr:nth-child(odd) > td{
+      //todo replace with @param for background color
+      background-color: #ffffff;
+    }
+
+    table {
+      margin-bottom: 0;
+    }
+  }
+
+  .form-group {
+    border: none;
+    line-height: 1.5;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  hr {
+    border-color: @modal-content-border-color;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  label.control-label {
+    font-size: @font-size-base;
+
+    &[for=health_application_agr_declaration] {
+      font-size: 20px;
+      padding-top: 0;
+    }
+  }
+
+  .checkbox {
+    input {
+      + label {
+        font-size: @font-size-base;
+      }
+    }
+  }
+
+  .agr-others-details-section {
+    margin-top: 10px;
+
+    @media (@sm) {
+      .row {
+        .col-sm-6 {
+          &:nth-child(odd) {
+            &:after {
+              content: "";
+              border-right: 1px solid @modal-content-border-color;
+              height: 85%;
+              width: 1px;
+              position: absolute;
+              right: 0;
+              top: 7.5%;
+            }
+
+            hr {
+              margin-right: -15px;
+            }
+          }
+
+          &:nth-child(even) {
+            hr {
+              margin-left: -15px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .affixed-jump-to-form {
+    @media (@sm) {
+      border: 1px solid @gray-light;
+      border-top: none;
+      border-bottom-left-radius: @modal-content-border-radius;
+      border-bottom-right-radius: @modal-content-border-radius;
+      box-shadow: 0px -2px 4px @gray-light;
+      background-color: #fff;
+      padding: 10px 20px;
+      position: fixed;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      text-align: center;
+
+      a {
+        &.jump-to-rebate {
+          display: block;
+          line-height: 40px;
+          text-align: left;
+
+          @media (@md) {
+            line-height: 48px;
+          }
+
+          .icon {
+            line-height: 20px;
+          }
+        }
+      }
+    }
+  }
+
+  form {
+    background-color: @gray-lighter;
+    border-top: 1px solid @theme-accent-4;
+    border-bottom: 1px solid @theme-accent-4;
+    margin: 0 -@modal-inner-padding;
+    padding: @modal-inner-padding;
+
+    .no-help {
+      .help-text {
+        .clearfix();
+        background-color: @gray-dark;
+        color: #fff;
+        font-size: @font-size-small;
+        margin-top: 15px;
+        padding: 10px;
+        position: relative;
+
+        &:before {
+          @arrow-width: 10px;
+          border: @arrow-width solid transparent;
+          border-bottom-color: @gray-dark;
+          border-top-width: 0;
+          content: "";
+          display: block;
+          position: absolute;
+          top: -@arrow-width;
+          left: 75%;
+          margin-left: -@arrow-width;
+        }
+      }
+
+      .continue-without-rebate {
+        @media (@sm) {
+          text-align: right;
+        }
+      }
+    }
+
+    .continue-without-rebate {
+      display: block;
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    hr {
+      border-color: @gray-light;
+      margin: 0;
+    }
+
+    ul {
+      margin-top: 5px;
+      padding-left: 18px;
+    }
+
+    .entitled-medicare-text {
+      .clearfix();
+      margin-bottom: 5px;
+
+      ul {
+        margin-bottom: 0;
+
+        &:nth-of-type(2) {
+          @media (@xs-only) {
+            margin-top: 0;
+          }
+        }
+
+        @media (@sm) {
+          float: left;
+          width: 50%;
+        }
+        li {
+          font-size: @font-size-small;
+        }
+      }
+    }
+
+    .entitled-medicare-more-info-text {
+      font-size: @font-size-small;
+      margin-bottom: 20px;
+      a {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        word-break: break-all;
+      }
+    }
+
+    .privacy-text {
+      p {
+        font-size: @font-size-small;
+      }
+    }
+
+    @media (@sm) {
+      border-left: 1px solid @theme-accent-4;
+      border-right: 1px solid @theme-accent-4;
+      border-bottom-left-radius: @modal-content-border-radius;
+      border-bottom-right-radius: @modal-content-border-radius;
+    }
+  }
+}
