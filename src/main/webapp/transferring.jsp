@@ -2,12 +2,47 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <settings:setVertical verticalCode="GENERIC" />
-<c:set var="transactionId">
-	<c:out value="${param.transactionId}" escapeXml="true" />
-</c:set>
-<c:set var="productId">
-	<c:out value="${param.productId}" escapeXml="true" />
-</c:set>
+
+<c:choose>
+
+	<c:when test="${not empty param.token}">
+		<jsp:useBean id="tokenServiceFactory" class="com.ctm.web.core.email.services.token.EmailTokenServiceFactory"/>
+		<c:set var="tokenService" value="${tokenServiceFactory.getEmailTokenServiceInstanceAlt(pageContext.getRequest())}" />
+
+		<c:set var="parametersMap" value="${tokenService.decryptToken(param.token)}"/>
+		<c:set var="emailData" value="${tokenService.getIncomingEmailDetails(param.token)}"/>
+
+		<c:if test="${empty emailData}">
+			<c:set var="hasLogin" value="${tokenService.hasLogin(param.token)}"/>
+			<c:choose>
+				<c:when test="${hasLogin}">
+					${logger.info('Token has expired and user can login. Redirecting to retrieve_quotes.jsp {}', log:kv('parameters', parametersMap))}
+					<c:redirect url="${pageSettings.getBaseUrl()}retrieve_quotes.jsp"/>
+				</c:when>
+				<c:otherwise>
+					${logger.info('Token has expired and user cannot login. Redirecting to start_quote.jsp {}', log:kv('parameters', parametersMap))}
+					<c:redirect url="${pageSettings.getBaseUrl()}start_quote.jsp"/>
+				</c:otherwise>
+			</c:choose>
+		</c:if>
+
+		<c:set var="transactionId"><c:out value="${parametersMap.transactionId}" escapeXml="true"/></c:set>
+		<c:set var="productId"><c:out value="${parametersMap.productId}" escapeXml="true"/></c:set>
+
+	</c:when>
+
+	<%--Add in another when for when token service is not used --%>
+
+	<c:otherwise>
+		<c:set var="transactionId">
+			<c:out value="${param.transactionId}" escapeXml="true" />
+		</c:set>
+		<c:set var="productId">
+			<c:out value="${param.productId}" escapeXml="true" />
+		</c:set>
+	</c:otherwise>
+</c:choose>
+
 <c:set var="revision" value="${webUtils.buildRevisionAsQuerystringParam()}" />
 
 <jsp:useBean id="resultsService" class="com.ctm.web.core.services.ResultsService" scope="request" />
@@ -24,10 +59,9 @@
 	<c:set var="trackingCode" value="${contentService.getContentWithSupplementary(pageContext.getRequest(), 'handoverTrackingURL', verticalBrandCode, param.vertical).getSupplementaryValueByKey(providerCode)}" />
 
 	<c:set var="quoteUrl">
-			<c:out value="${trackingURL}" />${trackingCode}/pubref:/Adref:${transactionId}/destination:${quoteUrl}
+		<c:out value="${trackingURL}" />${trackingCode}/pubref:/Adref:${transactionId}/destination:${quoteUrl}
 	</c:set>
 </c:if>
-
 
 <%-- HTML --%>
 <layout_v1:generic_page title="Transferring you...">
@@ -48,6 +82,12 @@
 			<%-- Mock results objects because same reason as above --%>
 			window.ResultsModel = { moduleEvents: { WEBAPP_LOCK: 'WEBAPP_LOCK' } };
 			window.ResultsView = { moduleEvents: { RESULTS_TOGGLE_MODE: 'RESULTS_TOGGLE_MODE' } };
+
+			var returnedResult = {
+                <c:forEach items="${resultsService.getResultsPropertiesForTransactionId(transactionId, productId)}" var="result" varStatus="status">
+                	"${result.property}":"${result.value}" <c:if test="${!status.last}">,</c:if>
+                </c:forEach>
+            };
 		</script>
 
 	</jsp:attribute>
@@ -94,7 +134,7 @@
 								</c:otherwise>
 							</c:choose>
 						</p>
-						<div class="quoteUrl" quoteUrl="${quoteUrl}"></div>
+						<div class="quoteUrl" transactionId="${transactionId}" quoteUrl="${quoteUrl}"></div>
 					</div>
 				</div>
 			</article>
