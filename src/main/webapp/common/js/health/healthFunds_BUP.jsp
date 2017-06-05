@@ -17,7 +17,166 @@ var healthFunds_BUP = {
 	$primaryMiddleName: $('#health_application_primary_middleName'),
 	$partnerMiddleName: $('#health_application_partner_middleName'),
 set: function () {
-	"use strict";
+
+
+    healthFunds_BUP.productType = meerkat.modules.healthResults.getSelectedProduct().info.ProductType;
+
+    <%-- todo - work out which funds will be included for the flexi icons  Your Choice Extras --%>
+    if (healthFunds_BUP.productType === 'GeneralHealth' || healthFunds_BUP.productType === 'Combined') {
+
+        <%-- Custom question: BUP flexi extras --%>
+        if ($('#bup_flexi_extras').length > 0) {
+            $('#bup_flexi_extras').show();
+        } else {
+
+            <c:set var="html">
+				<form_v2:fieldset id="bup_flexi_extras" legend="" className="primary">
+
+
+            <%-- TODO - swap images from HBF to BUP once ready --%>
+					<div class="col-sm-8 col-md-4 col-lg-3 hidden-xs no-padding"><img src="assets/graphics/logos/health/BUP.png" /></div>
+					<div class="col-sm-7 col-md-8 col-lg-9 no-padding">
+                		<%-- TODO - use content from db or rate sheet rather than hard code --%>
+						<h2>BUPA <span class="saver-flexi">Saver </span>Your Choice Extras</h2>
+						<p><strong><span class="saver-flexi">Saver </span>Your Choice Extras</strong> gives you the flexibility to choose the services you want to be covered for. Pick any <strong><span class="flexi-available">4</span> services</strong> from the selection below to build the right cover for your needs.</p>
+					</div>
+					<div class="flexi-message">You have selected <span class="flexi-selected text-tertiary"></span> of your <span class="flexi-available text-tertiary">4</span> <span class="text-tertiary">available</span> extras cover inclusions, <strong class="text-warning"><span class="flexi-remaining"></span> more selections remaining</strong></div>
+					<div class="flexi-message-complete hidden">You have selected all of your <span class="flexi-available">4</span> available extras cover inclusions.</div>
+
+					<ul class="flexi-extras-icons">
+                		<%-- TODO - confirm icons required and icon order --%>
+						<%-- General Dental, Major Dental, Orthodontics, Optical, Physiotherapy, Chiropractic/Osteopath, Natural Therapies, Podiatry, Pharmacy, Speech/Eye/Occupational Therapies, Living Well  --%>
+						<li class="flexi-icon HLTicon-general-dental" data-value="GDL"><field_v2:help_icon helpId="269" /><br />General Dental</li>
+
+            			<%-- TODO - confirm help text and helpId  --%>
+						<li class="flexi-icon HLTicon-major-dental"  data-value="MDL"><field_v2:help_icon helpId="270" /><br />Major Dental</li>
+
+                        <%-- TODO - confirm data-value and helpId --%>
+						<li class="HLTicon-orthodontic" data-value="MDL"><field_v2:help_icon helpId="272" /><br />Orthodontics</li>
+
+						<li class="flexi-icon HLTicon-optical" data-value="OPT"><field_v2:help_icon helpId="273" /><br />Optical</li>
+						<li class="flexi-icon HLTicon-physiotherapy" data-value="PHY"><field_v2:help_icon helpId="274" /><br />Physiotherapy</li>
+
+						<%-- TODO - confirm data-value and helpId - need to create new help text --%>
+						<li class="flexi-icon HLTicon-chiropractor" data-value="CHI"><field_v2:help_icon helpId="275" /><br />Chiropractic/ Osteopath</li>
+
+						<li class="flexi-icon HLTicon-naturopathy non-saver" data-value="NAT"><field_v2:help_icon helpId="278" /><br />Natural Therapies</li>
+						<li class="flexi-icon HLTicon-podiatry" data-value="POD"><field_v2:help_icon helpId="556" /><br />Podiatry</li>
+						<li class="flexi-icon HLTicon-non-pbs-pharm" data-value="PHA"><field_v2:help_icon helpId="283" /><br />Pharmacy</li>
+
+						<%-- TODO - confirm data-value and helpId - need to create new help text --%>
+						<li class="flexi-icon HLTicon-speech-therapy non-saver" data-value="SPT"><field_v2:help_icon helpId="297" /><br />Speech/Eye/ Occupational Therapies</li>
+
+						<%-- TODO - confirm data-value and helpId - was refered to as Healthy living programs in HBF --%>
+						<li class="flexi-icon HLTicon-lifestyle-products non-saver" data-value="HLP"><field_v2:help_icon helpId="293" /><br />Living Well</li>
+
+					</ul>
+            <%-- TODO - New xpath!!! --%>
+					<field_v2:validatedHiddenField xpath="health/application/bup/flexiextras" additionalAttributes=' data-rule-flexiExtras="true"' />
+				</form_v2:fieldset>
+            </c:set>
+            <c:set var="html" value="${go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(html, slashChar, slashChar2), newLineChar, ''), newLineChar2, ''), aposChar, aposChar2), '	', '')}" />
+
+            $('#health_application').prepend('<c:out value="${html}" escapeXml="false" />');
+
+
+		}
+
+
+        <%-- TODO - is saver probably will need to be changed to something else --%>
+        var $bup_flexi_extras = $('#bup_flexi_extras'),
+            $flexiExtrasHidden = $('#health_application_bup_flexiextras'),
+            isSaver = meerkat.modules.healthResults.getSelectedProduct().info.productTitle.indexOf('Saver Flexi') > -1;
+
+        <%-- TODO - pull flexi-available value from ratesheet data --%>
+        if (isSaver === true) {
+            $bup_flexi_extras.find('.non-saver').hide();
+            $bup_flexi_extras.find('.saver-flexi').show();
+            $bup_flexi_extras.find('.flexi-available').text('4');
+            $bup_flexi_extras.find('.HLTicon-major-dental').find('.help-icon').removeAttr('data-hasqtip aria-describedby').attr('data-content', 'helpid:555');
+        } else {
+            $bup_flexi_extras.find('.non-saver').show();
+            $bup_flexi_extras.find('.saver-flexi').hide();
+            $bup_flexi_extras.find('.flexi-available').text('10');
+            $bup_flexi_extras.find('.HLTicon-major-dental').find('.help-icon').removeAttr('data-hasqtip aria-describedby').attr('data-content', 'helpid:560');
+        }
+
+        $bup_flexi_extras.find('.flexi-extras-icons .flexi-icon').on('click.BUP', function onFlexiExtraClick() {
+            var $this = $(this);
+            if ($this.hasClass('disabled')) {return;}
+            toggleFlexiExtra($this.data('value'), !$this.hasClass('active'))
+        });
+
+        <%-- preload --%>
+        updateFromHiddenField();
+
+        function toggleFlexiExtra(value, state){
+            $bup_flexi_extras.find('.flexi-extras-icons .flexi-icon').filter(function filterByValue() {
+                return $(this).data('value')=== value;
+            }).toggleClass('active', state);
+
+            return updateHiddenField();
+        }
+
+        function updateHiddenField() {
+            var selectedExtrasArray = $bup_flexi_extras.find('.flexi-extras-icons .flexi-icon.active').map(function() {
+                    return $(this).data('value');
+                }).get(),
+                selectedCount = selectedExtrasArray.length,
+                availableCount = $bup_flexi_extras.find('.flexi-available:first').text(),
+                remainingCount =  availableCount - selectedCount;
+
+            $flexiExtrasHidden.val(selectedExtrasArray.join());
+
+            if (remainingCount > 0) {
+                $bup_flexi_extras.find('.flexi-extras-icons .flexi-icon.disabled').removeClass('disabled');
+                $bup_flexi_extras.find('.flexi-message-complete').addClass('hidden');
+                $bup_flexi_extras.find('.flexi-message').removeClass('hidden');
+                $bup_flexi_extras.find('.flexi-selected').text(selectedCount);
+                $bup_flexi_extras.find('.flexi-remaining').text(remainingCount);
+            } else if (remainingCount === 0){
+                $bup_flexi_extras.find('.flexi-extras-icons .flexi-icon:not(.active)').addClass('disabled');
+                $bup_flexi_extras.find('.flexi-message-complete').removeClass('hidden');
+                $bup_flexi_extras.find('.flexi-message').addClass('hidden');
+                $flexiExtrasHidden.valid();
+            } else {
+                <%-- remainingCount < 0, reset, only happens when user selected Flexi extra then go back selects Saver --%>
+                $bup_flexi_extras.find('.flexi-extras-icons .flexi-icon.active').removeClass('active');
+                $bup_flexi_extras.find('.flexi-extras-icons .flexi-icon.disabled').removeClass('disabled');
+                $bup_flexi_extras.find('.flexi-message-complete').addClass('hidden');
+                $bup_flexi_extras.find('.flexi-message').removeClass('hidden');
+                $bup_flexi_extras.find('.flexi-selected').text(0);
+                $bup_flexi_extras.find('.flexi-remaining').text(availableCount);
+                $flexiExtrasHidden.val('');
+                return false;
+            }
+            return true;
+        }
+
+        function updateFromHiddenField() {
+            var values = $flexiExtrasHidden.val().split(',');
+
+            $bup_flexi_extras.find('.flexi-extras-icons .flexi-icon').each(function() {
+                var value = $(this).data('value');
+                return toggleFlexiExtra(value, $.inArray( value, values ) > -1);
+            });
+        }
+
+        $.validator.addMethod('flexiExtras', function() {
+            var isValid = $bup_flexi_extras.find('.flexi-extras-icons .flexi-icon.active').length - $bup_flexi_extras.find('.flexi-available:first').text() === 0;
+            $bup_flexi_extras.toggleClass('has-error', !isValid);
+            return isValid;
+        });
+
+
+
+
+	}
+
+
+
+
+
 
 		<%-- Authority Fund Name --%>
         meerkat.modules.healthFunds._previousfund_authority(true);
@@ -108,6 +267,14 @@ set: function () {
 	},
 	unset: function () {
 		"use strict";
+
+        <%-- Authority Fund Name --%>
+        var $bup_flexi_extras = $('#bup_flexi_extras');
+        <%-- Hide Fund specific questions --%>
+        $bup_flexi_extras.find('.flexi-extras-icons .flexi-icon').off('click.BUP');
+        $bup_flexi_extras.hide();
+
+
         meerkat.modules.healthFunds._reset();
 
 		<%-- Authority Fund Name --%>
