@@ -76,16 +76,17 @@
     function populatePrevAssignedRadioBtnGroupValue() {
 
         // if data already exists for xpath load data into radio btn
-        if ($healthContactType.val()) {
+	    var contactType = $healthContactType.val();
+        if (!_.isEmpty(contactType)) {
             if ($healthContactTypeTrial.val() === 'Trial Campaign') {
-                $('#health_simples_contactTypeRadio_trialcampaign').prop("checked", true);
+                $('#health_simples_contactTypeRadio_trialcampaign').prop("checked", true).change();
             } else {
-                if ($healthContactType.val() === 'inbound') {
-                    $('#health_simples_contactTypeRadio_inbound').prop("checked", true);
-                } else if ($healthContactType.val() === 'outbound') {
-                    $('#health_simples_contactTypeRadio_outbound').prop("checked", true);
-                } else if ($healthContactType.val() === 'cli') {
-                    $('#health_simples_contactTypeRadio_clioutbound').prop("checked", true);
+                if (contactType === 'inbound') {
+                    $('#health_simples_contactTypeRadio_inbound').prop("checked", true).change();
+                } else if (contactType === 'outbound') {
+                    $('#health_simples_contactTypeRadio_outbound').prop("checked", true).change();
+                } else if (contactType === 'cli') {
+                    $('#health_simples_contactTypeRadio_clioutbound').prop("checked", true).change();
                 }
             }
         }
