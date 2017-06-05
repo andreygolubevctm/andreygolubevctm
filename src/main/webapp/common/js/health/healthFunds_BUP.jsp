@@ -61,7 +61,7 @@ set: function () {
 						<li class="flexi-icon HLTicon-chiropractor" data-value="CHI"><field_v2:help_icon helpId="275" /><br />Chiropractic/ Osteopath</li>
 
 						<li class="flexi-icon HLTicon-naturopathy non-saver" data-value="NAT"><field_v2:help_icon helpId="278" /><br />Natural Therapies</li>
-						<li class="flexi-icon HLTicon-podiatry" data-value="POD"><field_v2:help_icon helpId="556" /><br />Podiatry</li>
+						<li class="flexi-icon HLTicon-podiatry" data-value="POD"><field_v2:help_icon helpId="276" /><br />Podiatry</li>
 						<li class="flexi-icon HLTicon-non-pbs-pharm" data-value="PHA"><field_v2:help_icon helpId="283" /><br />Pharmacy</li>
 
 						<%-- TODO - confirm data-value and helpId - need to create new help text --%>
