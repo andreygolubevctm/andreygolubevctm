@@ -30,6 +30,7 @@ Handling of the callback popup
 		$cbContactNumber,
 		$cdContactNumber,
 		$contactDetailsNumberInput,
+		$requestCallBackLink,
 		_isClosed = false,
 		aedtOffset = 600;
 
@@ -213,6 +214,8 @@ Handling of the callback popup
 		// contact details page details
 		$contactDetailsName = $('#health_contactDetails_name');
 		$contactDetailsNumberInput = $('#health_contactDetails_flexiContactNumber');
+
+		$requestCallBackLink = $('.request-call-back');
 	}
 
 	function updateCBModalFields() {
@@ -354,6 +357,8 @@ Handling of the callback popup
 							selectedDate: selectedDate,
 							selectedTime: selectedTime
 						};
+
+						$requestCallBackLink.hide();
 					} else {
 						htmlTemplate = _.template($('#error-template').html());
 					}
