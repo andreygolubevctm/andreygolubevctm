@@ -17,6 +17,8 @@ Handling of the callback popup
 		origLabel = '',
 		selectedDateObj,
 		initComplete = false,
+		$callbackFormTmpl,
+		$callbackFormContainer,
 		$callbackTime,
 		$callbackName,
 		$callDetailsPanel,
@@ -28,6 +30,7 @@ Handling of the callback popup
 		$cbContactNumber,
 		$cdContactNumber,
 		$contactDetailsNumberInput,
+		$requestCallBackLink,
 		_isClosed = false,
 		aedtOffset = 600;
 
@@ -39,6 +42,8 @@ Handling of the callback popup
 
 	
 	initHealthCallback =  function(){
+		$callbackFormTmpl = $('#tmpl-health-callback-form');
+
 		applyEventListeners();
 
 		day = new Date();
@@ -185,6 +190,11 @@ Handling of the callback popup
     }
 
 	function _initFields() {
+    	// Render callback form to DOM
+		$callbackFormContainer = $('#health-callback-form-' + (meerkat.modules.deviceMediaState.get() == 'xs' ? 'mobile' : 'normal'));
+		var html = _.template($callbackFormTmpl.html());
+		$callbackFormContainer.append(html());
+
 		// init fields
 		$pickATimeLabel = $('#pickATimeLabel').find('label');
 		origLabel = $.trim($pickATimeLabel.text());
@@ -204,6 +214,8 @@ Handling of the callback popup
 		// contact details page details
 		$contactDetailsName = $('#health_contactDetails_name');
 		$contactDetailsNumberInput = $('#health_contactDetails_flexiContactNumber');
+
+		$requestCallBackLink = $('.request-call-back');
 	}
 
 	function updateCBModalFields() {
@@ -345,6 +357,8 @@ Handling of the callback popup
 							selectedDate: selectedDate,
 							selectedTime: selectedTime
 						};
+
+						$requestCallBackLink.hide();
 					} else {
 						htmlTemplate = _.template($('#error-template').html());
 					}
