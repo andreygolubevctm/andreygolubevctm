@@ -264,6 +264,8 @@
         result.hasValidPrice = (prem.value && prem.value > 0) || (prem.text && prem.text.indexOf('$0.') < 0) ||
             (prem.payableAmount && prem.payableAmount > 0);
         result.lhcFreePriceMode = typeof mode === "undefined" || mode !== "lhcInc";
+        result.discounted = prem.discounted === 'Y';
+        result.discountPercentage = prem.discountPercentage;
         return result;
     }
 
