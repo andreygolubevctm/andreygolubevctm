@@ -17,6 +17,8 @@ Handling of the callback popup
 		origLabel = '',
 		selectedDateObj,
 		initComplete = false,
+		$callbackFormTmpl,
+		$callbackFormContainer,
 		$callbackTime,
 		$callbackName,
 		$callDetailsPanel,
@@ -39,6 +41,8 @@ Handling of the callback popup
 
 	
 	initHealthCallback =  function(){
+		$callbackFormTmpl = $('#tmpl-health-callback-form');
+
 		applyEventListeners();
 
 		day = new Date();
@@ -185,6 +189,11 @@ Handling of the callback popup
     }
 
 	function _initFields() {
+    	// Render callback form to DOM
+		$callbackFormContainer = $('#health-callback-form-' + (meerkat.modules.deviceMediaState.get() == 'xs' ? 'mobile' : 'normal'));
+		var html = _.template($callbackFormTmpl.html());
+		$callbackFormContainer.append(html());
+
 		// init fields
 		$pickATimeLabel = $('#pickATimeLabel').find('label');
 		origLabel = $.trim($pickATimeLabel.text());
