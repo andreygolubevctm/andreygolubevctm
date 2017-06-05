@@ -9,6 +9,7 @@
 {{ var availablePremiums = (!meerkat.site.isCallCentreUser || !isConfirmation) && _.has(meerkat.site,"alternatePricing") && meerkat.site.alternatePricing.isActive && _.has(obj,"altPremium") ? obj.altPremium : obj.premium; }}
 {{ var healthResultsTemplate = meerkat.modules.healthResultsTemplate; }}
 {{ var availableFrequencies = meerkat.modules.healthResults.getPaymentFrequencies(); }}
+{{ var discountText = obj.hasOwnProperty('promo') && obj.promo.hasOwnProperty('discountText') ? obj.promo.discountText : ''; }}
 <div class="price premium">
     {{ _.each(availableFrequencies, function(freqObj) { }}
     {{ var frequency = freqObj.key; }}
@@ -37,7 +38,17 @@
         <span class="frequencyTitle">{{= freqObj.label }}</span>
     </div>
 
-    <div class="lhcText">{{= result.lhcFreePriceMode ? result.textLhcFreePricing : result.textPricing }}</div>
+    <div class="lhcText">
+        <span>
+            {{= result.lhcFreePriceMode ? result.textLhcFreePricing : result.textPricing }}
+        </span>
+        {{ if (result.discounted) { }}
+        <span class="discountText">
+                inc {{= result.discountPercentage }}% Discount
+                <a href="javascript:;" class="discount-tool-tip" data-toggle="popover" data-content="{{= discountText }}">?</a>
+            </span>
+        {{ } }}
+    </div>
 
     {{ if (typeof showRoundingText !== 'undefined' && showRoundingText === true) { }}
     <div class="rounding">Premium may vary slightly due to rounding</div>
