@@ -376,6 +376,32 @@
         $('.filter-results-hidden-products').html(message);
     }
 
+    function getDiscountText(result) {
+        var discountText = result.hasOwnProperty('promo') && result.promo.hasOwnProperty('discountText') ?
+                result.promo.discountText : '';
+
+        if (result.info.FundCode === 'AUF') {
+            discountText = discountText.replace('%%discountPercentage%%', getDiscountPercentage('AUF')+'%');
+        }
+
+        return discountText;
+    }
+
+    function getDiscountPercentage(fundCode, result) {
+        var discountPercentage = !_.isUndefined(result) && result.hasOwnProperty('discountPercentage') ? result.discountPercentage : '';
+
+        if (fundCode === 'AUF') {
+            if (meerkat.modules.healthPrimary.getCurrentCover() === 'N' ||
+                (meerkat.modules.healthChoices.hasPartner() && meerkat.modules.healthPartner.getCurrentCover() === 'N')) {
+                discountPercentage = '7.5';
+            } else {
+                discountPercentage = '4';
+            }
+        }
+
+        return discountPercentage;
+    }
+
     meerkat.modules.register('healthResultsTemplate', {
         init: init,
         getAvailableBenefits: getAvailableBenefits,
@@ -392,7 +418,9 @@
         getSpecialFeaturesContent: getSpecialFeaturesContent,
         getAvailableFeatureCount: getAvailableFeatureCount,
         parseSpecialFeatures: parseSpecialFeatures,
-        unhideFilteredProducts: unhideFilteredProducts
+        unhideFilteredProducts: unhideFilteredProducts,
+        getDiscountText: getDiscountText,
+        getDiscountPercentage: getDiscountPercentage
     });
 
 })(jQuery);
