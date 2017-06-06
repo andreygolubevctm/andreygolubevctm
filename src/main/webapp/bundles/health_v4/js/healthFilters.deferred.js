@@ -103,7 +103,7 @@
                         if (isChecked) {
                             $(filterObject.defaultValueSourceSelector+'[value="Y"]').prop('checked', true).trigger('change');
                         } else {
-                            $(filterObject.defaultValueSourceSelector+'[value="N"]').prop('checked', true).trigger('change');
+                            $(filterObject.defaultValueSourceSelector+'[value="N"]').prop('checked', true).trigger('change', [false]);
                         }
 
                         _.defer(function () {

@@ -48,7 +48,7 @@ public class ApplicationGroupAdapterTest {
         verify(govtRebateDeclaration, times(1)).getApplicantCovered();
         verify(govtRebateDeclaration, times(1)).getDeclarationDate();
         verify(govtRebateDeclaration, times(1)).getEntitledToMedicare();
-        verify(govtRebateDeclaration, times(1)).getGovtRebateDeclaration();
+        verify(govtRebateDeclaration, times(1)).getDeclaration();
     }
 
 

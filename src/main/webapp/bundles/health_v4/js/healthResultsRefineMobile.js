@@ -38,9 +38,11 @@
             }, 750);
         });
 
-        $(document).on('click', '.refine-results-view-all-times', function() {
-            var anchorText = $(this).text() === 'view all times' ? 'show today only' : 'view all times';
-            $(this).text(anchorText);
+        $(document).on('click', '.refine-results-view-all-times', function(e) {
+            e.preventDefault();
+            var anchorText = $(this).text() === 'View All Times ' ? 'Show Today Only ' : 'View All Times ';
+            $(this).html(anchorText + "<span class='caret'></span>");
+            $(this).toggleClass('dropup');
             $('.refine-results-all-times, .refine-results-today-hours').toggleClass('hidden');
         });
 

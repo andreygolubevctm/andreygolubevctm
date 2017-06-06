@@ -2,7 +2,7 @@ package com.ctm.web.car.model.form;
 
 public class Young {
 
-    private String annualKilometres;
+    private Integer annualKilometres;
 
     private String dob;
 
@@ -18,11 +18,11 @@ public class Young {
 
     private String licenceAge;
 
-    public String getAnnualKilometres() {
+    public Integer getAnnualKilometres() {
         return annualKilometres;
     }
 
-    public void setAnnualKilometres(String annualKilometres) {
+    public void setAnnualKilometres(Integer annualKilometres) {
         this.annualKilometres = annualKilometres;
     }
 
