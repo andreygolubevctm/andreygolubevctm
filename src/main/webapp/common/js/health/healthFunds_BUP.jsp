@@ -37,8 +37,8 @@ set: function () {
 					<div class="col-sm-8 col-md-4 col-lg-3 hidden-xs no-padding"><img src="assets/graphics/logos/health/BUP.png" /></div>
 					<div class="col-sm-7 col-md-8 col-lg-9 no-padding">
                 		<%-- TODO - use content from db or rate sheet rather than hard code --%>
-						<h2>BUPA <span class="saver-flexi">Saver </span>Your Choice Extras</h2>
-						<p><strong><span class="saver-flexi">Saver </span>Your Choice Extras</strong> gives you the flexibility to choose the services you want to be covered for. Pick any <strong><span class="flexi-available">4</span> services</strong> from the selection below to build the right cover for your needs.</p>
+						<h2>BUPA Your Choice Extras</h2>
+						<p><strong>Your Choice Extras</strong> gives you the flexibility to choose the services you want to be covered for. Pick any <strong><span class="flexi-available">4</span> services</strong> from the selection below to build the right cover for your needs.</p>
 					</div>
 					<div class="flexi-message">You have selected <span class="flexi-selected text-tertiary"></span> of your <span class="flexi-available text-tertiary">4</span> <span class="text-tertiary">available</span> extras cover inclusions, <strong class="text-warning"><span class="flexi-remaining"></span> more selections remaining</strong></div>
 					<div class="flexi-message-complete hidden">You have selected all of your <span class="flexi-available">4</span> available extras cover inclusions.</div>
@@ -60,15 +60,15 @@ set: function () {
 						<%-- TODO - confirm data-value and helpId - need to create new help text --%>
 						<li class="flexi-icon HLTicon-chiropractor" data-value="CHI"><field_v2:help_icon helpId="275" /><br />Chiropractic/ Osteopath</li>
 
-						<li class="flexi-icon HLTicon-naturopathy non-saver" data-value="NAT"><field_v2:help_icon helpId="278" /><br />Natural Therapies</li>
+						<li class="flexi-icon HLTicon-naturopathy" data-value="NAT"><field_v2:help_icon helpId="278" /><br />Natural Therapies</li>
 						<li class="flexi-icon HLTicon-podiatry" data-value="POD"><field_v2:help_icon helpId="276" /><br />Podiatry</li>
 						<li class="flexi-icon HLTicon-non-pbs-pharm" data-value="PHA"><field_v2:help_icon helpId="283" /><br />Pharmacy</li>
 
 						<%-- TODO - confirm data-value and helpId - need to create new help text --%>
-						<li class="flexi-icon HLTicon-speech-therapy non-saver" data-value="SPT"><field_v2:help_icon helpId="297" /><br />Speech/Eye/ Occupational Therapies</li>
+						<li class="flexi-icon HLTicon-speech-therapy" data-value="SPT"><field_v2:help_icon helpId="297" /><br />Speech/Eye/ Occupational Therapies</li>
 
 						<%-- TODO - confirm data-value and helpId - was refered to as Healthy living programs in HBF --%>
-						<li class="flexi-icon HLTicon-lifestyle-products non-saver" data-value="HLP"><field_v2:help_icon helpId="293" /><br />Living Well</li>
+						<li class="flexi-icon HLTicon-lifestyle-products" data-value="HLP"><field_v2:help_icon helpId="293" /><br />Living Well</li>
 
 					</ul>
             <%-- TODO - New xpath!!! --%>
@@ -83,23 +83,13 @@ set: function () {
 		}
 
 
-        <%-- TODO - is saver probably will need to be changed to something else --%>
         var $bup_flexi_extras = $('#bup_flexi_extras'),
-            $flexiExtrasHidden = $('#health_application_bup_flexiextras'),
-            isSaver = meerkat.modules.healthResults.getSelectedProduct().info.productTitle.indexOf('Saver Flexi') > -1;
+            $flexiExtrasHidden = $('#health_application_bup_flexiextras');
+            //isSaver = meerkat.modules.healthResults.getSelectedProduct().info.productTitle.indexOf('Saver Flexi') > -1;
 
         <%-- TODO - pull flexi-available value from ratesheet data --%>
-        if (isSaver === true) {
-            $bup_flexi_extras.find('.non-saver').hide();
-            $bup_flexi_extras.find('.saver-flexi').show();
-            $bup_flexi_extras.find('.flexi-available').text('4');
-            $bup_flexi_extras.find('.HLTicon-major-dental').find('.help-icon').removeAttr('data-hasqtip aria-describedby').attr('data-content', 'helpid:555');
-        } else {
-            $bup_flexi_extras.find('.non-saver').show();
-            $bup_flexi_extras.find('.saver-flexi').hide();
-            $bup_flexi_extras.find('.flexi-available').text('10');
-            $bup_flexi_extras.find('.HLTicon-major-dental').find('.help-icon').removeAttr('data-hasqtip aria-describedby').attr('data-content', 'helpid:560');
-        }
+		$bup_flexi_extras.find('.flexi-available').text('4');  // set the number of extras you can choose here
+		//$bup_flexi_extras.find('.HLTicon-major-dental').find('.help-icon').removeAttr('data-hasqtip aria-describedby').attr('data-content', 'helpid:560');
 
         $bup_flexi_extras.find('.flexi-extras-icons .flexi-icon').on('click.BUP', function onFlexiExtraClick() {
             var $this = $(this);
