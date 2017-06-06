@@ -47,10 +47,10 @@ Handling of the callback popup
 		applyEventListeners();
 
 		day = new Date();
-        
+
 		timezone = -day.getTimezoneOffset();
 		direction = timezone >= 0 ? '%2B' : '%2D';
-		offset = direction + ('00'+(timezone / 60)).slice(-2) + ':' + ('00'+(timezone % 60)).slice(-2);
+		offset = direction + ('00' + (timezone / 60)).slice(-2) + ':' + ('00' + (timezone % 60)).slice(-2);
 	};
 
     function applyEventListeners() {
@@ -168,10 +168,6 @@ Handling of the callback popup
 			if(typeof $(this).find('#health-callback').attr('callbackModal') !== 'undefined') {
 				$(this).addClass('health-callback');
 
-				initComplete = false;
-				meerkat.messaging.publish(events.callbackModal.CALLBACK_MODAL_OPEN);
-	            meerkat.modules.jqueryValidate.setupDefaultValidationOnForm($('#health-callback-form'));
-
 				if (meerkat.modules.deviceMediaState.get() == 'xs') {
 					$('button').each(function() {
 						var $link = $(this).parent();
@@ -184,6 +180,10 @@ Handling of the callback popup
 
 				_initFields();
 				updateCBModalFields();
+
+                initComplete = false;
+                meerkat.messaging.publish(events.callbackModal.CALLBACK_MODAL_OPEN);
+                meerkat.modules.jqueryValidate.setupDefaultValidationOnForm($('#health-callback-form'));
 			}
 
 		});
@@ -192,8 +192,8 @@ Handling of the callback popup
 	function _initFields() {
     	// Render callback form to DOM
 		$callbackFormContainer = $('#health-callback-form-' + (meerkat.modules.deviceMediaState.get() == 'xs' ? 'mobile' : 'normal'));
-		var html = _.template($callbackFormTmpl.html());
-		$callbackFormContainer.append(html());
+		var htmlout = _.template($callbackFormTmpl.html());
+		$callbackFormContainer.append(htmlout());
 
 		// init fields
 		$pickATimeLabel = $('#pickATimeLabel').find('label');
