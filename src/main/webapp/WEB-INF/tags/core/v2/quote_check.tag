@@ -34,13 +34,7 @@
         </c:when>
         <c:otherwise>
             <go:setData dataVar="data" xpath="current/reloadCount" value="${data.current.reloadCount + 1}" />
-            <c:if test="${loadAction != 'load' or quoteType  !=  'health'}">
-                <c:set var="tmpIncrementedTranID">
-                    <core_v1:get_transaction_id quoteType="${quoteType}"
-                                                id_handler="increment_tranId"
-                                                transactionId="${data.current.transactionId}"/>
-                </c:set>
-            </c:if>
+            <c:set var="tmpIncrementedTranID"><core_v1:get_transaction_id quoteType="${quoteType}" id_handler="increment_tranId" transactionId="${data.current.transactionId}"/></c:set>
             <core_v1:transaction touch="L" />
         </c:otherwise>
     </c:choose>
