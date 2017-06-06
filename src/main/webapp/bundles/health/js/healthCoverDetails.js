@@ -108,12 +108,22 @@
         }
     }
 
+    function hasPrimaryCover() {
+        return meerkat.site.hasPrimaryCover === 'Y';
+    }
+
+    function hasPartnerCover() {
+        return meerkat.site.hasPartnerCover === 'Y';
+    }
+
     meerkat.modules.register("healthCoverDetails", {
         init: initHealthCoverDetails,
         isRebateApplied: isRebateApplied,
         displayHealthFunds: displayHealthFunds,
         setHealthFunds: setHealthFunds,
-        setIncomeBase: setIncomeBase
+        setIncomeBase: setIncomeBase,
+        hasPrimaryCover: hasPrimaryCover,
+        hasPartnerCover: hasPartnerCover
     });
 
 })(jQuery);

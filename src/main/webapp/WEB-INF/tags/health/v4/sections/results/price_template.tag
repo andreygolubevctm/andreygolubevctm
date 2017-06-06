@@ -5,7 +5,7 @@
 {{ var availablePremiums = obj.hasOwnProperty('showAltPremium') && obj.showAltPremium === true ? obj.altPremium : obj.premium; }}
 {{ var healthResultsTemplate = meerkat.modules.healthResultsTemplate; }}
 {{ var availableFrequencies = meerkat.modules.healthResults.getPaymentFrequencies(); }}
-{{ var discountText = obj.hasOwnProperty('promo') && obj.promo.hasOwnProperty('discountText') ? obj.promo.discountText : ''; }}
+{{ var discountText = healthResultsTemplate.getDiscountText(obj); }}
 <div class="price premium">
     {{ _.each(availableFrequencies, function(freqObj) { }}
     {{ var frequency = freqObj.key; }}
@@ -14,6 +14,7 @@
         {{ obj.mode = "lhcInc"; }}
     </c:if>
     {{ var result = healthResultsTemplate.getPricePremium(frequency, availablePremiums, obj.mode); }}
+    {{ var discountPercentage = healthResultsTemplate.getDiscountPercentage(obj.info.FundCode, result); }}
 
     <div class="frequency {{= result.frequency }} {{= obj._selectedFrequency === result.frequency ? '' : 'displayNone' }}">
 
@@ -40,7 +41,7 @@
         </span>
         {{ if (result.discounted) { }}
             <span class="discountText">
-                inc {{= result.discountPercentage }}% Discount
+                inc {{= discountPercentage }}% Discount
                 <a href="javascript:;" class="discount-tool-tip" data-toggle="popover" data-content="{{= discountText }}">?</a>
             </span>
         {{ } }}
