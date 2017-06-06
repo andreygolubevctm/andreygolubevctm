@@ -387,6 +387,32 @@
         }
     }
 
+    function getDiscountText(result) {
+        var discountText = result.hasOwnProperty('promo') && result.promo.hasOwnProperty('discountText') ?
+            result.promo.discountText : '';
+
+        if (result.info.FundCode === 'AUF') {
+            discountText = discountText.replace('%%discountPercentage%%', getDiscountPercentage('AUF')+'%');
+        }
+
+        return discountText;
+    }
+
+    function getDiscountPercentage(fundCode, result) {
+        var discountPercentage = !_.isUndefined(result) && result.hasOwnProperty('discountPercentage') ? result.discountPercentage : '';
+
+        if (fundCode === 'AUF') {
+            if (!meerkat.modules.healthCoverDetails.hasPrimaryCover() ||
+                (_.indexOf(['C','F'], meerkat.site.situationHealthCvr) === 1 && !meerkat.modules.healthCoverDetails.hasPartnerCover())) {
+                discountPercentage = '7.5';
+            } else {
+                discountPercentage = '4';
+            }
+        }
+
+        return discountPercentage;
+    }
+
     meerkat.modules.register('healthResultsTemplate', {
         init: init,
         getAvailableExtrasAsList: getAvailableExtrasAsList,
@@ -398,7 +424,9 @@
         getItem: getItem,
         postRenderFeatures: postRenderFeatures,
         numberOfSelectedExtras: numberOfSelectedExtras,
-        toggleRemoveResultPagination: toggleRemoveResultPagination
+        toggleRemoveResultPagination: toggleRemoveResultPagination,
+        getDiscountText: getDiscountText,
+        getDiscountPercentage: getDiscountPercentage
     });
 
 })(jQuery);
