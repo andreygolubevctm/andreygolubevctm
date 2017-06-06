@@ -58,14 +58,14 @@ set: function () {
 						<li class="flexi-icon HLTicon-physiotherapy" data-value="PHY"><field_v2:help_icon helpId="274" /><br />Physiotherapy</li>
 
 						<%-- TODO - confirm data-value and helpId - need to create new help text --%>
-						<li class="flexi-icon HLTicon-chiropractor" data-value="CHI"><field_v2:help_icon helpId="275" /><br />Chiropractic/ Osteopath</li>
+						<li class="flexi-icon HLTicon-chiropractor" data-value="CHI"><field_v2:help_icon helpId="567" /><br />Chiropractic/ Osteopath</li>
 
 						<li class="flexi-icon HLTicon-naturopathy" data-value="NAT"><field_v2:help_icon helpId="278" /><br />Natural Therapies</li>
 						<li class="flexi-icon HLTicon-podiatry" data-value="POD"><field_v2:help_icon helpId="276" /><br />Podiatry</li>
 						<li class="flexi-icon HLTicon-non-pbs-pharm" data-value="PHA"><field_v2:help_icon helpId="283" /><br />Pharmacy</li>
 
 						<%-- TODO - confirm data-value and helpId - need to create new help text --%>
-						<li class="flexi-icon HLTicon-speech-therapy" data-value="SPT"><field_v2:help_icon helpId="297" /><br />Speech/Eye/ Occupational Therapies</li>
+						<li class="flexi-icon HLTicon-speech-therapy" data-value="SPT"><field_v2:help_icon helpId="568" /><br />Speech/Eye/ Occupational Therapies</li>
 
 						<%-- TODO - confirm data-value and helpId - was refered to as Healthy living programs in HBF --%>
 						<li class="flexi-icon HLTicon-lifestyle-products" data-value="HLP"><field_v2:help_icon helpId="293" /><br />Living Well</li>
@@ -85,11 +85,11 @@ set: function () {
 
         var $bup_flexi_extras = $('#bup_flexi_extras'),
             $flexiExtrasHidden = $('#health_application_bup_flexiextras');
-            //isSaver = meerkat.modules.healthResults.getSelectedProduct().info.productTitle.indexOf('Saver Flexi') > -1;
+        <%-- isSaver = meerkat.modules.healthResults.getSelectedProduct().info.productTitle.indexOf('Saver Flexi') > -1; --%>
 
         <%-- TODO - pull flexi-available value from ratesheet data --%>
-		$bup_flexi_extras.find('.flexi-available').text('4');  // set the number of extras you can choose here
-		//$bup_flexi_extras.find('.HLTicon-major-dental').find('.help-icon').removeAttr('data-hasqtip aria-describedby').attr('data-content', 'helpid:560');
+		$bup_flexi_extras.find('.flexi-available').text('4');  <%-- set the number of extras you can choose here --%>
+        <%-- $bup_flexi_extras.find('.HLTicon-major-dental').find('.help-icon').removeAttr('data-hasqtip aria-describedby').attr('data-content', 'helpid:560'); --%>
 
         $bup_flexi_extras.find('.flexi-extras-icons .flexi-icon').on('click.BUP', function onFlexiExtraClick() {
             var $this = $(this);
