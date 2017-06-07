@@ -97,7 +97,7 @@
             $aggEngineContainer.show();
             $aggEngineContainer.html('Loading aggregators...');
 
-            var aggregationBaseUrl = "http://nxi-vm-ken01-ctm-app-x1:8080"; // for NXI
+            var aggregationBaseUrl = "http://web-ctm-dev.ctm.cloud.local:8080"; // for NXI
 
 
             aggregationServicePromise = meerkat.modules.comms.get({
