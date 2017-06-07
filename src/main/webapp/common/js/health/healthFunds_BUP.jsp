@@ -30,8 +30,7 @@ var healthFunds_BUP = {
 
 				<c:set var="html">
 					<form_v2:fieldset id="bup_flexi_extras" legend="" className="primary">
-
-				<%-- TODO - Fix BUP IMG --%>
+                
 						<div class="col-sm-4 col-md-4 col-lg-3 hidden-xs no-padding"><img src="assets/graphics/logos/health/BUP.png" /></div>
 						<div class="col-sm-8 col-md-8 col-lg-9 no-padding">
 							<%-- TODO - use content from db or rate sheet rather than hard code --%>
@@ -43,20 +42,20 @@ var healthFunds_BUP = {
 
 						<ul class="flexi-extras-icons">
 							<%-- TODO - confirm all help text  --%>
-							<li class="flexi-icon HLTicon-general-dental" data-value="GDL"><field_v2:help_icon helpId="269" /><br />General Dental</li>
-							<li class="flexi-icon HLTicon-major-dental"  data-value="MDL"><field_v2:help_icon helpId="270" /><br />Major Dental</li>
+							<li class="flexi-icon HLTicon-general-dental" data-value="general-dental"><field_v2:help_icon helpId="269" /><br />General Dental</li>
+							<li class="flexi-icon HLTicon-major-dental"  data-value="major-dental"><field_v2:help_icon helpId="270" /><br />Major Dental</li>
 							<%-- TODO - confirm data-value --%>
-							<li class="flexi-icon HLTicon-orthodontic" data-value="ODL"><field_v2:help_icon helpId="272" /><br />Orthodontics</li>
-							<li class="flexi-icon HLTicon-optical" data-value="OPT"><field_v2:help_icon helpId="273" /><br />Optical</li>
-							<li class="flexi-icon HLTicon-physiotherapy" data-value="PHY"><field_v2:help_icon helpId="274" /><br />Physiotherapy</li>
+							<li class="flexi-icon HLTicon-orthodontic" data-value="orthodontics"><field_v2:help_icon helpId="272" /><br />Orthodontics</li>
+							<li class="flexi-icon HLTicon-optical" data-value="optical"><field_v2:help_icon helpId="273" /><br />Optical</li>
+							<li class="flexi-icon HLTicon-physiotherapy" data-value="physiotherapy"><field_v2:help_icon helpId="274" /><br />Physiotherapy</li>
 							<%-- TODO - confirm data-value and helpId --%>
-							<li class="flexi-icon HLTicon-chiropractor" data-value="CHO"><field_v2:help_icon helpId="567" /><br />Chiropractic/ Osteopath</li>
-							<li class="flexi-icon HLTicon-naturopathy" data-value="NAT"><field_v2:help_icon helpId="278" /><br />Natural Therapies</li>
-							<li class="flexi-icon HLTicon-podiatry" data-value="POD"><field_v2:help_icon helpId="276" /><br />Podiatry</li>
-							<li class="flexi-icon HLTicon-non-pbs-pharm" data-value="PHA"><field_v2:help_icon helpId="283" /><br />Pharmacy</li>
+							<li class="flexi-icon HLTicon-chiropractor" data-value="chiropractic_osteopath"><field_v2:help_icon helpId="567" /><br />Chiropractic/ Osteopath</li>
+							<li class="flexi-icon HLTicon-naturopathy" data-value="natural-therapies"><field_v2:help_icon helpId="278" /><br />Natural Therapies</li>
+							<li class="flexi-icon HLTicon-podiatry" data-value="podiatry"><field_v2:help_icon helpId="276" /><br />Podiatry</li>
+							<li class="flexi-icon HLTicon-non-pbs-pharm" data-value="pharmacy"><field_v2:help_icon helpId="283" /><br />Pharmacy</li>
 							<%-- TODO - confirm data-value and helpId --%>
-							<li class="flexi-icon HLTicon-speech-therapy" data-value="SEO"><field_v2:help_icon helpId="568" /><br />Speech/Eye/ Occupational Therapies</li>
-							<li class="flexi-icon HLTicon-lifestyle-products" data-value="HLP"><field_v2:help_icon helpId="293" /><br />Living Well</li>
+							<li class="flexi-icon HLTicon-speech-therapy" data-value="speech_eye_occupational-therapies"><field_v2:help_icon helpId="568" /><br />Speech/Eye/ Occupational Therapies</li>
+							<li class="flexi-icon HLTicon-lifestyle-products" data-value="living-well"><field_v2:help_icon helpId="293" /><br />Living Well</li>
 						</ul>
 				<%-- TODO - New xpath!!! --%>
 						<field_v2:validatedHiddenField xpath="health/application/bup/flexiextras" additionalAttributes=' data-rule-flexiExtras="true"' />
