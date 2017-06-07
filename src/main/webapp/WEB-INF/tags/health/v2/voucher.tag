@@ -12,7 +12,9 @@
 <div class="disableable-fields">
 	<c:set var="fieldXpath" value="${xpath}/reason" />
 	<form_v3:row label="Reason for voucher?" fieldXpath="${fieldXpath}" className="healthVoucherReasonRow">
-		<field_v2:general_select xpath="${fieldXpath}" type="healthVoucherReason" required="true" title="voucher reason" additionalAttributes="data-attach='true'" />
+		<field_v2:general_select xpath="${fieldXpath}"
+								 type="healthVoucherReason" required="true"
+								 title="voucher reason" additionalAttributes="data-attach='true'" />
 		<p id="healthVoucherReason" class="display-only"></p>
 	</form_v3:row>
 
@@ -54,15 +56,9 @@
 </div>
 
 <div class="voucherDialogue">
-	<div class="dialogue others">
-		<simples:dialogue id="65" vertical="health" mandatory="true" />
+	<div class="dialogue defaultReason">
+		<simples:dialogue id="72" vertical="health" mandatory="true" />
 	</div>
-	<div class="dialogue referral">
-		<simples:dialogue id="66" vertical="health" mandatory="true" />
-	</div>
-    <div class="dialogue matchonline">
-        <simples:dialogue id="72" vertical="health" mandatory="true" />
-    </div>
 	<c:if test="${isPyrrActive eq true}">
 		<div class="dialogue pyrrCampaign">
 	        <simples:dialogue id="73" vertical="health" mandatory="true" />

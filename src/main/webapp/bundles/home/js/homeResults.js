@@ -33,7 +33,11 @@
 		eventSubscriptions();
 
 		breakpointTracking();
-
+	}
+	
+	function affixFix() {
+		var $navbar = $('#navbar-main');
+		$navbar.data('bs.affix').options.offset.top = $navbar.offset().top;
 	}
 
 	function onReturnToPage(){
@@ -219,14 +223,17 @@
 		$(document.body).on('click', 'a.offerTerms', launchOfferTerms);
 		$(document.body).on('click', 'a.priceDisclaimer', showPriceDisclaimer);
 
-//TODO
+		// TODO
 		// When the navar docks/undocks
 		meerkat.messaging.subscribe(meerkatEvents.affix.AFFIXED, function navbarFixed() {
-			$('#resultsPage').css('margin-top', '35px');
+			var margin = (meerkat.modules.deviceMediaState.get() === 'lg') ? '-60px' : '-80px';
+			$('#resultsPage').css('margin-top', margin);
+			$('.productSummary .headerButtonWrapper').css('visibility', 'hidden');
 			$(Results.settings.elements.resultsContainer).addClass('affixed-settings');
 		});
 		meerkat.messaging.subscribe(meerkatEvents.affix.UNAFFIXED, function navbarUnfixed() {
 			$('#resultsPage').css('margin-top', '0');
+			$('.productSummary .headerButtonWrapper').css('visibility', 'visible');
 			$(Results.settings.elements.resultsContainer).removeClass('affixed-settings');
 		});
 
@@ -311,15 +318,26 @@
 			// Check products length in case the reason for no results is an error e.g. 500
 			if (Results.model.availableCounts === 0 && _.isArray(Results.model.returnedProducts) && Results.model.returnedProducts.length > 0) {
 				showNoResults();
+				toggleNoResultsFeaturesMode();
 			}
 
-			meerkat.messaging.publish(meerkatEvents.commencementDate.RESULTS_RENDER_COMPLETED);
+            $.each(Results.model.returnedProducts, function(){
+            	if (this.available === 'N') {
+                    // Track each Product that doesn't quote
+                    meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+                        method: 'trackQuoteNotProvided',
+                        object: {
+                            productID: this.productId
+                        }
+                    });
+				}
+            });
 
+			meerkat.messaging.publish(meerkatEvents.commencementDate.RESULTS_RENDER_COMPLETED);
 		});
 
 		$(document).on("populateFeaturesStart", function onPopulateFeaturesStart() {
 			meerkat.modules.performanceProfiling.startTest('results');
-
 		});
 
 		$(Results.settings.elements.resultsContainer).on("populateFeaturesEnd", function onPopulateFeaturesEnd() {
@@ -513,16 +531,23 @@
 				switchToPriceMode(false);
 				break;
 		}
-
+		affixFix();
 	}
+	
+	function toggleNoResultsFeaturesMode() {
+	if (Results.model.availableCounts === 0) {
+		$("#results_v5.featuresMode " + Results.settings.elements.features.allElements).hide();
+		$("#results_v5.featuresMode").removeClass('featuresMode').find('.results-table').removeAttr('style');
+	} else {
+		// revert everything
+		$(Results.settings.elements.features.container + " " + Results.settings.elements.features.allElements).show();
+		if (!$(Results.settings.elements.features.container).hasClass('featuresMode')) {
+			$(Results.settings.elements.features.container).addClass('featuresMode');
+		}
+	}
+}
 
 	function showNoResults() {
-		if (meerkat.site.tracking.brandCode == 'ctm') {
-			meerkat.modules.dialogs.show({
-				htmlContent: $('#no-results-content')[0].outerHTML
-			});
-		}
-
 		if (meerkat.modules.hasOwnProperty('homeFilters')) {
 			meerkat.modules.homeFilters.disable();
 		}
@@ -673,6 +698,7 @@
 				meerkat.modules.resultsTracking.setResultsEventMode('Refresh');
 				publishExtraSuperTagEvents();
 			}
+			toggleNoResultsFeaturesMode();
 		}
 	}
 

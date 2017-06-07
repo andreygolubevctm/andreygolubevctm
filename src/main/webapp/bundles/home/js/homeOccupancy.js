@@ -25,7 +25,9 @@
 			howOccupied:			"#home_occupancy_howOccupied",
 			whenMovedInYearRow:		".whenMovedInYear",
 			whenMovedInMonthRow:	".whenMovedInMonth",
-			howOccupiedRow:			".howOccupied"
+			howOccupiedRow:			".howOccupied",
+			coverType:				"#home_coverType",
+			underFinanceRow:		".underFinanceRow"
 
 	};
 
@@ -40,6 +42,19 @@
 			return null;
 		}
 	}
+
+	function toggleUnderFinanceQuestion() {
+		var selectdCoverType = $(elements.coverType).val();
+
+		if (selectdCoverType == 'Contents Cover Only') {
+			$(elements.underFinanceRow).hide();
+
+		} else {
+			$(elements.underFinanceRow).show();
+
+		}
+	}
+
 	/* Here you put all functions for use in your module */
 	function togglePropertyOccupancyFields(speed) {
 
@@ -93,6 +108,11 @@
 			$('input[name='+elements.principalResidence+']').on('change', function() {
 				togglePropertyOccupancyFields();
 			});
+
+			$(elements.coverType).on('blur', function() {
+				toggleUnderFinanceQuestion();
+
+			});
 		});
 	}
 	/* main entrypoint for the module to run first */
@@ -102,6 +122,7 @@
 			log("[HomeOccupancy] Initialised"); //purely informational
 			applyEventListeners();
 			togglePropertyOccupancyFields(0);
+			toggleUnderFinanceQuestion();
 		}
 	}
 

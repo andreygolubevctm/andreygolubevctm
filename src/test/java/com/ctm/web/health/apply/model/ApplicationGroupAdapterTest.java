@@ -27,11 +27,13 @@ public class ApplicationGroupAdapterTest {
         final Application application = mock(Application.class);
         final Hif hif = mock(Hif.class);
         final Qch qch = mock(Qch.class);
+        final GovtRebateDeclaration govtRebateDeclaration = mock(GovtRebateDeclaration.class);
         final com.ctm.web.health.model.form.PreviousFund previousFund = mock(com.ctm.web.health.model.form.PreviousFund.class);
         when(healthQuote.getApplication()).thenReturn(application);
         when(healthQuote.getPreviousfund()).thenReturn(previousFund);
         when(application.getHif()).thenReturn(hif);
         when(application.getQch()).thenReturn(qch);
+        when(application.getGovtRebateDeclaration()).thenReturn(govtRebateDeclaration);
         final ApplicationGroup applicationGroup = ApplicationGroupAdapter.createApplicationGroup(Optional.ofNullable(healthQuote));
         assertNotNull(applicationGroup);
         assertNull(applicationGroup.getSituation());
@@ -43,7 +45,12 @@ public class ApplicationGroupAdapterTest {
         verify(healthQuote, times(1)).getSituation();
         verify(hif, times(1)).getEmigrate();
         verify(qch, times(1)).getEmigrate();
+        verify(govtRebateDeclaration, times(1)).getApplicantCovered();
+        verify(govtRebateDeclaration, times(1)).getDeclarationDate();
+        verify(govtRebateDeclaration, times(1)).getEntitledToMedicare();
+        verify(govtRebateDeclaration, times(1)).getDeclaration();
     }
+
 
     @Test
     public void testCreateApplicantEmpty() throws Exception {

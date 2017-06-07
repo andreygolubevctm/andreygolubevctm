@@ -50,6 +50,8 @@ public class Application {
 
     private Wfd wfd;
 
+    private GovtRebateDeclaration govtRebateDeclaration;
+
     public Address getAddress() {
         return address;
     }
@@ -241,5 +243,13 @@ public class Application {
 
     public void setWfd(final Wfd wfd) {
         this.wfd = wfd;
+    }
+
+    public GovtRebateDeclaration getGovtRebateDeclaration() {
+        return govtRebateDeclaration;
+    }
+
+    public void setGovtRebateDeclaration(GovtRebateDeclaration govtRebateDeclaration) {
+        this.govtRebateDeclaration = govtRebateDeclaration;
     }
 }

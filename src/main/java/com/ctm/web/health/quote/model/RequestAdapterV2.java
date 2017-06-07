@@ -73,7 +73,7 @@ public class RequestAdapterV2 {
             addBoundedExcessFilter(quoteRequest, filters, quote);
             addProductTitleSearchFilter(filters, quote);
             addSingleProviderFilterFromSituation(filters, situation);
-            filters.setApplyDiscounts(false);
+            addApplyDiscountsFilter(filters, quote);
         } else {
             // returns a single result with the criteria below
             quoteRequest.setSearchResults(1);
@@ -88,7 +88,6 @@ public class RequestAdapterV2 {
                 } else {
                     quoteRequest.setPaymentTypes(asList(PaymentType.BANK, PaymentType.CREDIT));
                 }
-
                 filters.setApplyDiscounts(true);
             }
         }
@@ -108,6 +107,19 @@ public class RequestAdapterV2 {
         quoteRequest.setIncludeSummary(isSimples);
 
         quoteRequest.setIncludeGiftCard(isGiftCardActive);
+
+        HealthCover cover = quote.getHealthCover();
+        if(cover != null && cover.getPrimary()!= null) {
+            quoteRequest.setPrimaryHealthCover(toBoolean(cover.getPrimary().getCover()));
+        } else {
+            quoteRequest.setPrimaryHealthCover(null);
+        }
+
+        if(cover != null && cover.getPartner()!= null) {
+            quoteRequest.setPartnerHealthCover(toBoolean(cover.getPartner().getCover()));
+        }else {
+            quoteRequest.setPartnerHealthCover(null);
+        }
 
         return quoteRequest;
     }
@@ -400,4 +412,11 @@ public class RequestAdapterV2 {
 
     }
 
+    protected static void addApplyDiscountsFilter(Filters filters, final HealthQuote quote) {
+        if (quote.getApplyDiscounts() != null && quote.getApplyDiscounts().equals("Y")) {
+            filters.setApplyDiscounts(true);
+        } else {
+            filters.setApplyDiscounts(false);
+        }
+    }
 }

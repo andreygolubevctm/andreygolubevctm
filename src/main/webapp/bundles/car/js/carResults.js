@@ -216,12 +216,15 @@
 
 		// When the navar docks/undocks
 		meerkat.messaging.subscribe(meerkatEvents.affix.AFFIXED, function navbarFixed() {
-			$('#resultsPage').css('margin-top', '35px');
+			var margin = (meerkat.modules.deviceMediaState.get() === 'lg') ? '-10px' : '-25px';
+			$('#resultsPage').css('margin-top', margin);
+			$('.productSummary .headerButtonWrapper').css('visibility', 'hidden');
 			$(Results.settings.elements.resultsContainer).addClass('affixed-settings');
 		});
 
 		meerkat.messaging.subscribe(meerkatEvents.affix.UNAFFIXED, function navbarUnfixed() {
 			$('#resultsPage').css('margin-top', '0');
+			$('.productSummary .headerButtonWrapper').css('visibility', 'visible');
 			$(Results.settings.elements.resultsContainer).removeClass('affixed-settings');
 		});
 
@@ -311,6 +314,18 @@
 				showNoResults();
 				toggleNoResultsFeaturesMode();
 			}
+
+            $.each(Results.model.returnedProducts, function(){
+                if (this.available === 'N') {
+                    // Track each Product that doesn't quote
+                    meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+                        method: 'trackQuoteNotProvided',
+                        object: {
+                            productID: this.productId
+                        }
+                    });
+                }
+            });
 
 			meerkat.messaging.publish(meerkatEvents.commencementDate.RESULTS_RENDER_COMPLETED);
 		});
@@ -476,6 +491,16 @@
 		products = products || Results.model.returnedProducts;
 
 		_.each(products, function massageJson(result, index) {
+			// If the brandCode is iBox, add the quoteReferenceNumber to a persisted xpath.
+			if (result.brandCode == 'IBOX') {
+				if (meerkat.site.IBOXquoteNumber === null) {
+					// Set the value to the "global" site variable to "persist".
+					meerkat.site.IBOXquoteNumber = result.quoteNumber;
+				}
+				// Set the hidden xpath.
+				// "quote/quoteReferenceNumber"
+				$('#quote_quoteReferenceNumber').val(meerkat.site.IBOXquoteNumber);
+			}
 			if (!_.isNull(result.price) && !_.isUndefined(result.price)) {
 				// Add formatted annual premium (ie without decimals)
 				if (!_.isEmpty(result.price) && !_.isUndefined(result.price.annualPremium)) {

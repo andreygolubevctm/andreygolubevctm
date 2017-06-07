@@ -15,6 +15,10 @@
     </c:choose>
 </c:set>
 
+<c:set var="location" value="${data['health/situation/location']}" />
+<c:if test="${not empty location and location.matches('[0-9]+')}">
+	<go:setData dataVar="data" xpath="${xpath}/address/postCode" value="${location}" />
+</c:if>
 
 <%-- HTML --%>
 <div id="${name}-selection" class="health_application-details">
