@@ -110,9 +110,14 @@
 	
 	function SortLandlordFiltersXS() {
 		var filters = meerkat.site.landlordFilters;
-		
-		for (var f in filters) {
-			console.log(filters[f]);
+		var checkbox = '.mobile-drop .landlord-filter-items .checkbox input';
+		if (!filters.showall) {
+			$(checkbox + '[name="' + showall +'"]')[0].checked = false;
+			for (var f in filters) {
+				if (filters[f]) {
+					$(checkbox + 'input[name="' + f +'"]')[0].checked = true;
+				}
+			}
 		}
 	}
 	
@@ -548,7 +553,6 @@
 	}
 	
 	function landlordToggles() {
-		console.log('fired');
 		var $landlordMenu = $landlordShowAll.find('.landlord-filter-items');
 		var $landlordCheckboxes = $landlordMenu.find('.checkbox input');
 		var firstCheckbox = $landlordCheckboxes[0];
@@ -581,7 +585,6 @@
 				filters.label.push(filters.labels[isChecked[i].id]);
 			}
 
-			
 			var string = filters.label.toString();
 			if (string.length > 14) {
 				string = string.substring(0, 14) + '...';
@@ -616,7 +619,6 @@
 		
 		// uncheck show all if other input is checked 
 		$landlordCheckboxes.on('click', function(e) {
-			console.log(this.id);
 			var filters = meerkat.site.landlordFilters;
 			$updateFiltersBtn.removeClass('hidden');
 			filters[this.id] = this.checked;
