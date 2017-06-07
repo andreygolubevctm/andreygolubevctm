@@ -32,6 +32,7 @@ set: function () {
 		} else {
 			meerkat.modules.healthPaymentStep.setCoverStartRange(0, 60);
 		}
+		healthFunds_BUP.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '0,6');
 
 		<%-- Increase minimum age requirement for applicants from 16 to 17 --%>
 		healthFunds_BUP.$_dobPrimary = $('#health_application_primary_dob');
@@ -91,7 +92,6 @@ set: function () {
 		};
 
 		meerkat.modules.healthFunds.setPayments({ 'min':6, 'max':7, 'weekends':false });
-		healthFunds_BUP.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '0,6');
 
 		var date = new Date();
 		var _html = meerkat.modules.healthPaymentDay.paymentDays(meerkat.modules.dateUtils.dateValueFormFormat(date));

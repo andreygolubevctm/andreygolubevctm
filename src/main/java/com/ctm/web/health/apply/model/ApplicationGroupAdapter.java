@@ -76,7 +76,7 @@ public class ApplicationGroupAdapter {
                     govtRebateDeclaration.map(GovtRebateDeclaration::getEntitledToMedicare)
                             .map(EntitledToMedicare::valueOf)
                             .orElse(null),
-                    govtRebateDeclaration.map(GovtRebateDeclaration::getGovtRebateDeclaration)
+                    govtRebateDeclaration.map(GovtRebateDeclaration::getDeclaration)
                             .map(GovernmentRebateDeclaration::valueOf)
                             .orElse(null),
                     govtRebateDeclaration.map(GovtRebateDeclaration::getDeclarationDate)

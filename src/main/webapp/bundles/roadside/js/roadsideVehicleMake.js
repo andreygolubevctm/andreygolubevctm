@@ -20,7 +20,7 @@
 
         $(document).ready(function () {
 
-            if(meerkat.site.vertical !== "roadside") {
+            if (meerkat.site.vertical !== "roadside") {
                 return;
             }
 
@@ -77,9 +77,9 @@
                 continue;
             }
 
-
             var item = makeData.makes[key],
                 option;
+
             option = $('<option/>', {
                 text: item.label,
                 value: item.code
@@ -89,7 +89,7 @@
                 option.prop('selected', true);
             }
 
-            if (item.isTopMake === true) {
+            if (item.isTop === true) {
                 option.appendTo(options[1], options[2]);
             } else {
                 options[2].append(option);
@@ -100,7 +100,7 @@
         for (var o = 0; o < options.length; o++) {
             $makeElement.append(options[o]);
         }
-        if(selected !== "") {
+        if (selected !== "") {
             $makeElement.trigger('change');
         }
 

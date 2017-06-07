@@ -20,9 +20,7 @@
     {{ var annualHidden = tFrequency == 'annual' ? '' : 'displayNone'; }}
 
     {{ for(var i = 0; i < products.length; i++) { }}
-    {{ var img = products[i].brandCode; }}
-    {{ if ((typeof img === 'undefined' || img === '') && products[i].hasOwnProperty('productId') && products[i].productId.length > 1) img = products[i].productId.substring(0, products[i].productId.indexOf('-')); }}
-
+    {{ var img = products[i].productId.substring(0, products[i].productId.indexOf('-')); }}
     <li class="compare-item">
   		<div class="compareContainer">
   			<div class="logoPriceContainer">

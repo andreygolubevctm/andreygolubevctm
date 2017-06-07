@@ -100,16 +100,19 @@ var healthFunds_NIB = {
 
         <%-- Medicare Fields --%>
         healthFunds_NIB.$medicareFirstname.add(healthFunds_NIB.$medicareLastname).attr('maxlength','24').attr('data-rule-personNameLtd','true').removeAttr('data-rule-personName');
-
     },
     renderPaymentDays: function(){
         var freq = meerkat.modules.healthPaymentStep.getSelectedFrequency();
         if (freq == 'fortnightly') {
             meerkat.modules.healthFunds.setPayments({ 'min':0, 'max':10, 'weekends':false, 'countFrom' : 'effectiveDate'});
-            healthFunds_NIB.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '0,6');
+            <%-- Redundant code, due to the fact that rules are getting triggered on the payment step for cover start date
+                 calendar on the application step, due to the cover start date being moved to the application step. --%>
+            <%--healthFunds_NIB.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '0,6');--%>
         } else {
             meerkat.modules.healthFunds.setPayments({ 'min':0, 'max':27, 'weekends':true , 'countFrom' : 'today', 'maxDay' : 27});
-            healthFunds_NIB.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
+            <%-- Redundant code, due to the fact that rules are getting triggered on the payment step for cover start date
+                 calendar on the application step, due to the cover start date being moved to the application step. --%>
+            <%--healthFunds_NIB.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');--%>
         }
         var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
         meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), _html);
