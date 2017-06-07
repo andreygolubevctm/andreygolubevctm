@@ -30,7 +30,7 @@ var healthFunds_BUP = {
 
 				<c:set var="html">
 					<form_v2:fieldset id="bup_flexi_extras" legend="" className="primary">
-                
+
 						<div class="col-sm-4 col-md-4 col-lg-3 hidden-xs no-padding"><img src="assets/graphics/logos/health/BUP.png" /></div>
 						<div class="col-sm-8 col-md-8 col-lg-9 no-padding">
 							<%-- TODO - use content from db or rate sheet rather than hard code --%>
@@ -57,7 +57,6 @@ var healthFunds_BUP = {
 							<li class="flexi-icon HLTicon-speech-therapy" data-value="speech_eye_occupational-therapies"><field_v2:help_icon helpId="568" /><br />Speech/Eye/ Occupational Therapies</li>
 							<li class="flexi-icon HLTicon-lifestyle-products" data-value="living-well"><field_v2:help_icon helpId="293" /><br />Living Well</li>
 						</ul>
-				<%-- TODO - New xpath!!! --%>
 						<field_v2:validatedHiddenField xpath="health/application/bup/flexiextras" additionalAttributes=' data-rule-flexiExtras="true"' />
 					</form_v2:fieldset>
 				</c:set>
