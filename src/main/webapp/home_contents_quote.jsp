@@ -61,7 +61,7 @@
 			</c:if>
 
 			<li class="dropdown dropdown-interactive slide-edit-quote-dropdown" id="edit-details-dropdown">
-				<a class="activator needsclick dropdown-toggle btn-back" data-toggle="dropdown" href="javascript:;" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />><span class="icon icon-cog"></span>
+				<a class="activator needsclick dropdown-toggle btn-back" data-toggle="dropdown" href="javascript:;" <field_v1:analytics_attr analVal="nav button" quoteChar="" />><span class="icon icon-cog"></span>
 				<span>Edit Details</span> <b class="caret"></b></a>
 				<div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
 					<div class="dropdown-container">
@@ -123,6 +123,16 @@
 					<li class="dropdown filter-excess contentsExcess">
 						<a href="javascript:void(0);" class="dropdown-toggle active" data-toggle="dropdown"><span>Contents Excess</span> <b class="icon icon-angle-down"></b></a>
 						<ul class="dropdown-menu">
+						</ul>
+					</li>
+					<li class="dropdown landlordShowAll isLandlord">
+						<a href="javascript:void(0);" class="dropdown-toggle active" data-toggle="dropdown"><span>Show all</span> <b class="icon icon-angle-down"></b></a>
+						<ul class="dropdown-menu landlord-filter-items">
+							<li class="checkbox"><input type="checkbox" checked name="showall" id="showall" /> <label for="showall" class=""></label>Show All</li>
+							<span>Only show products that include:</span>
+							<li class="checkbox"><input type="checkbox" name="lossrent" id="lossrent" /> <label for="lossrent"></label>Loss of rent</li>
+							<li class="checkbox"><input type="checkbox" name="malt" id="malt" /> <label for="malt"></label>Malicious damage</li>
+							<li class="checkbox"><input type="checkbox" name="rdef" id="rdef" /> <label for="rdef"></label>Tenant default</li>
 						</ul>
 					</li>
 					<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="nav button" quoteChar="\"" /></c:set>

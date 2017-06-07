@@ -37,7 +37,10 @@
 	
 	function affixFix() {
 		var $navbar = $('#navbar-main');
-		$navbar.data('bs.affix').options.offset.top = $navbar.offset().top;
+		if ($navbar.data('bs.affix') && $navbar.data('bs.affix').options) {
+			$navbar.data('bs.affix').options.offset.top = $navbar.offset().top;
+		}
+		
 	}
 
 	function onReturnToPage(){
@@ -216,9 +219,28 @@
 			Results.onError('Sorry, an error occurred initialising page', 'results.tag', 'meerkat.modules.homeResults.initResults(); '+e.message, e);
 		}
 	}
+	
+	
+	function landlordFilter(results) {
+		var filters = meerkat.site.landlordFilters;
+		if (filters && !filters.showall) {
+			for (var key in filters) {
+				if (filters[key] === true) {
+					if (!results.a.features[key] || (results.a.features && results.a.features[key].value !== "Y")) {
+						results.a.available = "N";
+					}
+					if (!results.b.features[key] || (results.a.features && results.b.features[key].value !== "Y")) {
+						results.b.available = "N";
+					}
+				}
+			}
+		}
+	}
 
 	function eventSubscriptions() {
-
+		meerkat.messaging.subscribe(Results.model.moduleEvents.RESULTS_MODEL_UPDATE_BEFORE_FILTERSHOW, function modelUpdated() {
+			Results.model.landlordFilter = landlordFilter;
+		});
 		// Capture offer terms link clicks
 		$(document.body).on('click', 'a.offerTerms', launchOfferTerms);
 		$(document.body).on('click', 'a.priceDisclaimer', showPriceDisclaimer);
@@ -239,7 +261,8 @@
 
 		// When the excess filter changes, fetch new results
 		meerkat.messaging.subscribe(meerkatEvents.homeFilters.CHANGED, function onFilterChange(obj){
-			if (obj && (obj.hasOwnProperty('homeExcess') || obj.hasOwnProperty('contentsExcess'))) {
+			
+			if (obj && (obj.homeExcess || obj.contentsExcess || obj.filters)) {
 				// This is a little dirty however we need to temporarily override the
 				// setting which prevents the tranId from being incremented.
 				meerkat.modules.resultsTracking.setResultsEventMode('Load');

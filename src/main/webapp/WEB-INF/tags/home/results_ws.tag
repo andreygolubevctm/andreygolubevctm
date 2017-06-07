@@ -165,7 +165,6 @@
 	{{ obj.offlineDiscountTemplate = htmlTemplate(obj); }}
 
 	<div class="result-row result_{{= obj.productId }}" data-productId="{{= obj.productId }}" data-available="Y">
-
 		<div class="result featuresDockedHeader">
 			<div class="resultInsert featuresMode">
 				{{= logo }}
@@ -259,7 +258,13 @@
 								</div>
 							</div>
 						</div>
-
+						{{ if (meerkat.site.isLandlord) { }}
+							<div class="landlord-filters">
+								{{= obj.features.lossrent && obj.features.lossrent.value === "Y" ? '<span><i class="icon-skinny-tick"></i> Loss of rent</span>' : '' }}
+								{{= obj.features.malt && obj.features.malt.value === "Y" ? '<span><i class="icon-skinny-tick"></i> Malicious damage</span>' : ''}}
+								{{= obj.features.rdef && obj.features.rdef.value === "Y" ? '<span><i class="icon-skinny-tick"></i> Tenant default cover</span>' : ''}}
+							</div>
+						{{ } }}
 						<div class="clearfix">
 							{{= callActionButtonsPriceTemplate }}
 
