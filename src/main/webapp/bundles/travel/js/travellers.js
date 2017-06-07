@@ -60,8 +60,8 @@
 
 	function _eventListeners() {
 		$elements.add.on('click', _add);
-		$(document).on('click', $elements.remove, _remove);
-		$(document).on('change', $elements.input, _removeValidationError);
+		$(document).on('click', '.icon-exit', _remove);
+		$(document).on('change', '.age-item input', _removeValidationError);
 	}
 	
 	function init() {

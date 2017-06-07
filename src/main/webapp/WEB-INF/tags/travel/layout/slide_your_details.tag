@@ -100,7 +100,30 @@
 				<form_v2:fieldset legend="Dates &amp; Travellers" className="travel_details_datesTravellers" id="datestravellersfs">
 					<field_v2:date_range xpath="travel/dates" required="true" labelFrom="When do you leave?" labelTo="When do you return?" titleFrom="departure" titleTo="return" minDateFrom="${now_Date}" maxDateFrom="${nowPlusYear_Date}" minDateTo="${now_Date}" maxDateTo="${nowPlusYear_Date}" offsetText="up to 1 year" helpIdFrom="214" helpIdTo="215" />
 					
+					<form_v2:row label="Who's travelling?" className="smallWidth" helpId="216">
+						<field_v2:array_radio items="S=Single,C=Couple,F=Family" xpath="travel/party" title="who is travelling" required="true" className="thinner_input travel_party roundedCheckboxIcons" />
+					</form_v2:row>
+					<form_v2:row label="Your date of birth?" className="smallWidth">
+						<field_v2:person_dob xpath="travel/travellers/traveller1DOB" title="your" required="true" ageMin="16" ageMax="99" />
+					</form_v2:row>
+					<form_v2:row label="Second traveller's date of birth" className="second_traveller_age_row">
+						<field_v2:person_dob xpath="travel/travellers/traveller2DOB" title="the second traveller's" required="true" ageMin="16" ageMax="99" />
+					</form_v2:row>
+					<field_v1:hidden xpath="travel/travellers/travellersDOB" />
+					
 					<travel:travellers />
+					
+					<form_v2:row label="Will you be travelling with children?" className="single_parent_row" >
+						<field_v2:array_radio xpath="travel/singleParent" required="true" defaultValue="N" items="Y=Yes,N=No" className="single_parent" title="whether you will be travelling with children" />
+					</form_v2:row>
+					<form_v2:row label="How many children?" className="smallWidth children_row" helpId="217">
+						<field_v2:array_select items="=Select the number of children,1=1,2=2,3=3,4=4,5=5,6=6,7=7,8=8,9=9,10=10" xpath="travel/childrenSelect" title="at least 1 child" required="true" className="thinner_input" />
+					</form_v2:row>
+
+					<field_v1:hidden xpath="travel/adults" />
+					<field_v1:hidden xpath="travel/children" />
+					
+					
 				</form_v2:fieldset>
 				<c:set var="fieldSetHeading">
 					<c:if test="${data.travel.currentJourney == null or empty data.travel.currentJourney or (data.travel.currentJourney != null && data.travel.currentJourney != 7)}">
