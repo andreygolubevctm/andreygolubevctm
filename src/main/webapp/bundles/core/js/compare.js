@@ -350,6 +350,7 @@
        settings.elements.enterCompareMode.addClass('disabled');
        settings.elements.exitCompareButton.removeClass('hidden');
        filterResults();
+       
        if (previousMode == null) {
          previousMode = Results.getDisplayMode();
        }
@@ -364,7 +365,9 @@
 
        //meerkat.modules.address.appendToHash('compare');
        meerkat.messaging.publish(moduleEvents.AFTER_ENTER_COMPARE_MODE);
-       trackComparison();
+       if (previousMode !== 'price') {
+          trackComparison();
+       }
        setTimeout(function () {
            settings.elements.enterCompareMode.removeClass('disabled');
        }, 250);

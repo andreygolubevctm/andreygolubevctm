@@ -31,7 +31,6 @@
     </jsp:attribute>
 
 	<jsp:attribute name="navbar">
-
 		<ul class="nav navbar-nav" role="menu">
             <core_v2:offcanvas_header />
             <li class="slide-feature-back">

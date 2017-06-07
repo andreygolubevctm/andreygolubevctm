@@ -47,6 +47,8 @@ public class RequestAdapterV2 {
 
         quoteRequest.setClientIp(carRequest.getClientIpAddress());
 
+        quoteRequest.setQuoteReferenceNumber(carQuote.getQuoteReferenceNumber());
+
         return quoteRequest;
     }
 
@@ -168,6 +170,7 @@ public class RequestAdapterV2 {
         youngestDriver.setDateOfBirth(parseAUSLocalDate(young.getDob()));
         youngestDriver.setLicenceAge(Integer.parseInt(young.getLicenceAge()));
         youngestDriver.setGender(GenderType.fromValue(young.getGender()));
+        youngestDriver.setAnnualKilometres(young.getAnnualKilometres());
         return youngestDriver;
     }
 

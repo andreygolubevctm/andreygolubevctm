@@ -50,6 +50,7 @@
 
 	<field_v1:hidden xpath="quote/contact/marketing" defaultValue="N" />
 	<field_v1:hidden xpath="quote/contact/oktocall" defaultValue="N" />
+	<field_v1:hidden xpath="quote/quoteReferenceNumber" defaultValue="${meerkat.site.IBOXquoteNumber}"/>
 
 	<form_v2:row label="Preferred method of contact" id="preferredContactMethodRow" className="hidden">
 		<field_v2:array_radio xpath="${xpath}/preferred" required="true" items="Email=Email,Phone=Phone"

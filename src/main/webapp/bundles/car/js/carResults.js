@@ -315,6 +315,18 @@
 				toggleNoResultsFeaturesMode();
 			}
 
+            $.each(Results.model.returnedProducts, function(){
+                if (this.available === 'N') {
+                    // Track each Product that doesn't quote
+                    meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+                        method: 'trackQuoteNotProvided',
+                        object: {
+                            productID: this.productId
+                        }
+                    });
+                }
+            });
+
 			meerkat.messaging.publish(meerkatEvents.commencementDate.RESULTS_RENDER_COMPLETED);
 		});
 
@@ -479,6 +491,16 @@
 		products = products || Results.model.returnedProducts;
 
 		_.each(products, function massageJson(result, index) {
+			// If the brandCode is iBox, add the quoteReferenceNumber to a persisted xpath.
+			if (result.brandCode == 'IBOX') {
+				if (meerkat.site.IBOXquoteNumber === null) {
+					// Set the value to the "global" site variable to "persist".
+					meerkat.site.IBOXquoteNumber = result.quoteNumber;
+				}
+				// Set the hidden xpath.
+				// "quote/quoteReferenceNumber"
+				$('#quote_quoteReferenceNumber').val(meerkat.site.IBOXquoteNumber);
+			}
 			if (!_.isNull(result.price) && !_.isUndefined(result.price)) {
 				// Add formatted annual premium (ie without decimals)
 				if (!_.isEmpty(result.price) && !_.isUndefined(result.price.annualPremium)) {

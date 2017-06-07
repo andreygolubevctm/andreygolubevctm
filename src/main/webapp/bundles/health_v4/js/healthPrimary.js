@@ -19,6 +19,8 @@
             partnerDOB: $('#benefits_partner_dob')
         };
 
+	    $elements.primaryCoverLoading.add($elements.dob).add($elements.currentCover).attr('data-attach','true');
+
         var $checked = $elements.currentCover.filter(':checked');
         if($checked.length) {
             $checked.change();

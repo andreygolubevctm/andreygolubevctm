@@ -42,6 +42,8 @@ public class CarQuote {
 
     private String typeOfCover;
 
+    private String quoteReferenceNumber;
+
     public CarQuote() {
         filter = new Filter();
     }
@@ -173,6 +175,15 @@ public class CarQuote {
     public void setTypeOfCover(String typeOfCover) {
         this.typeOfCover = typeOfCover;
     }
+
+    public String getQuoteReferenceNumber() {
+        return quoteReferenceNumber;
+    }
+
+    public void setQuoteReferenceNumber(String quoteReferenceNumber) {
+        this.quoteReferenceNumber = quoteReferenceNumber;
+    }
+
 
     public String createLeadFeedInfo() {
         String separator = "||";
