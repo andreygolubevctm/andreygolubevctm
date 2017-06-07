@@ -15,7 +15,8 @@
         $elements = {
             refineBtn: $('.refine-results'),
             modalTemplate: $('#refine-results-modal-template'),
-            redirectBtn: $('.refine-results-redirect-btn')
+            redirectBtn: $('.refine-results-redirect-btn'),
+            applyDiscount: $('input[name=health_applyDiscounts]')
         };
     }
 
@@ -44,6 +45,18 @@
             $(this).toggleClass('dropup');
             $('.refine-results-all-times, .refine-results-today-hours').toggleClass('hidden');
         });
+
+        $(document).on('click', '#health_refine_results_discount', function() {
+            var isChecked = $(this).is(':checked');
+
+            // update hidden apply discount element
+            $elements.applyDiscount.val(isChecked ? 'Y' : 'N');
+            _hideModal();
+
+            // retrieve new prices
+            meerkat.modules.journeyEngine.loadingShow('...updating your quotes...', true);
+            meerkat.modules.healthResults.get();
+        });
     }
 
     function _eventSubscriptions() {
@@ -71,7 +84,10 @@
         modalId = meerkat.modules.dialogs.show({
             title: 'Refine Results',
             className: 'refine-results-modal',
-            htmlContent: template(_getData())
+            htmlContent: template(_getData()),
+            onOpen: function(id) {
+                $('#health_refine_results_discount').prop('checked', $elements.applyDiscount.val() === 'Y');
+            }
         });
 
         return modalId;

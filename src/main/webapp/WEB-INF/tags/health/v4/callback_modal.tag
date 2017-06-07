@@ -70,16 +70,7 @@
                     <%--<div class="col-sm-12">--%>
                         <%--<h4>Let one of our experts call you!</h4>--%>
                     <%--</div>--%>
-                    <div class="col-sm-12">
-                        <form id="health-callback-form">
-                            <c:set var="fieldXpath" value="${xpath}/name" />
-                            <form_v4:row label="Your name" fieldXpath="${fieldXpath}" className="clear required_input">
-                                <field_v3:person_name xpath="${fieldXpath}" title="name" required="true" />
-                            </form_v4:row>
-
-                            <field_v4:contact_number mobileXpath="${xpath}/mobile" otherXpath="${xpath}/otherNumber" className="callback-contact-number" />
-                        </form>
-                    </div>
+                    <div id="health-callback-form-mobile" class="col-sm-12"><%-- populated dynamically --%></div>
                 </div>
                 <div class="row">
                     <div class="col-sm-6">
@@ -129,16 +120,7 @@
                     <div class="col-sm-12">
                         <h4>Let one of our experts call you!</h4>
                     </div>
-                    <div class="col-sm-12">
-                        <form id="health-callback-form">
-                            <c:set var="fieldXpath" value="${xpath}/name" />
-                            <form_v4:row label="Your name" fieldXpath="${fieldXpath}" className="clear required_input">
-                                <field_v3:person_name xpath="${fieldXpath}" title="name" required="true" />
-                            </form_v4:row>
-
-                            <field_v4:contact_number mobileXpath="${xpath}/mobile" otherXpath="${xpath}/otherNumber" className="callback-contact-number" />
-                        </form>
-                    </div>
+                    <div id="health-callback-form-normal" class="col-sm-12"><%-- populated dynamically --%></div>
                 </div>
                 <div class="row">
                     <div class="col-sm-6">
@@ -274,4 +256,15 @@
             </div>
         </div>
     </div>
+</core_v1:js_template>
+
+<core_v1:js_template id="tmpl-health-callback-form">
+    <form id="health-callback-form">
+        <c:set var="fieldXpath" value="${xpath}/name" />
+        <form_v4:row label="Your name" fieldXpath="${fieldXpath}" className="clear required_input">
+            <field_v3:person_name xpath="${fieldXpath}" title="name" required="true" />
+        </form_v4:row>
+
+        <field_v4:contact_number mobileXpath="${xpath}/mobile" otherXpath="${xpath}/otherNumber" className="callback-contact-number" />
+    </form>
 </core_v1:js_template>

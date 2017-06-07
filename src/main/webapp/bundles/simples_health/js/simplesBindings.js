@@ -22,11 +22,13 @@
         $inboundQuestionsetFollowupDialogue,
         $inboundQuestionsetFollowupToggles,
         $inboundApplicationFollowupDialogue,
+        $privatePatientDialogue,
         $inboundApplicationFollowupToggles,
         $followupDialogueContentContainers,
         $simplesMedicareCoverForm = null,
         $applicantWrappers = {},
-        currentFamilyType = null;
+        currentFamilyType = null,
+        $limitedCoverHidden;
 
     function init() {
         $(document).ready(function () {
@@ -58,6 +60,8 @@
             $simplesMedicareCoverForm = $('#health_situation_cover_wrapper');
             $applicantWrappers.primary = $('#health-contact-fieldset .content:first');
             $applicantWrappers.partner = $('#partner-health-cover .content:first');
+	        $privatePatientDialogue = $('.simples-dialogue-24');
+            $limitedCoverHidden = $("input[name='health_situation_accidentOnlyCover']");
 
             // Handle pre-filled
             populatePrevAssignedRadioBtnGroupValue();
@@ -76,16 +80,17 @@
     function populatePrevAssignedRadioBtnGroupValue() {
 
         // if data already exists for xpath load data into radio btn
-        if ($healthContactType.val()) {
+	    var contactType = $healthContactType.val();
+        if (!_.isEmpty(contactType)) {
             if ($healthContactTypeTrial.val() === 'Trial Campaign') {
-                $('#health_simples_contactTypeRadio_trialcampaign').prop("checked", true);
+                $('#health_simples_contactTypeRadio_trialcampaign').prop("checked", true).change();
             } else {
-                if ($healthContactType.val() === 'inbound') {
-                    $('#health_simples_contactTypeRadio_inbound').prop("checked", true);
-                } else if ($healthContactType.val() === 'outbound') {
-                    $('#health_simples_contactTypeRadio_outbound').prop("checked", true);
-                } else if ($healthContactType.val() === 'cli') {
-                    $('#health_simples_contactTypeRadio_clioutbound').prop("checked", true);
+                if (contactType === 'inbound') {
+                    $('#health_simples_contactTypeRadio_inbound').prop("checked", true).change();
+                } else if (contactType === 'outbound') {
+                    $('#health_simples_contactTypeRadio_outbound').prop("checked", true).change();
+                } else if (contactType === 'cli') {
+                    $('#health_simples_contactTypeRadio_clioutbound').prop("checked", true).change();
                 }
             }
         }
@@ -337,9 +342,14 @@
         $dialoguePartnerCover.toggleClass('hidden', $healthPartnerCover.filter(':checked').val() !== "Y");
     }
 
+    function toggleLimitedCoverDialogue() {
+        $privatePatientDialogue.toggleClass('hidden', $limitedCoverHidden.val() !== 'Y');
+    }
+
     meerkat.modules.register("simplesBindings", {
         init: init,
-        updateSimplesMedicareCoverQuestionPosition: updateSimplesMedicareCoverQuestionPosition
+        updateSimplesMedicareCoverQuestionPosition: updateSimplesMedicareCoverQuestionPosition,
+        toggleLimitedCoverDialogue: toggleLimitedCoverDialogue
     });
 
 })(jQuery);
