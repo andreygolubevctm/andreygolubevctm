@@ -4,7 +4,6 @@
 
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath" required="true" rtexprvalue="true" description="field group's xpath"%>
-<div class="notLandlord">
 	<%-- VARIABLES --%>
 	<c:set var="name"  value="${go:nameFromXpath(xpath)}" />
 
@@ -45,4 +44,3 @@
 		</form_v2:row>
 
 	</form_v2:fieldset>
-</div>
