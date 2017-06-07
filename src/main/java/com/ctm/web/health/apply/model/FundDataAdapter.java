@@ -76,7 +76,7 @@ public class FundDataAdapter {
 
         if(!benefits.isPresent()){
             benefits = quote.map(HealthQuote::getApplication)
-                    .map(Application::getBupa)
+                    .map(Application::getBup)
                     .map(FundDataAdapter::createBenefits);
         }
         return benefits.orElse(null);
@@ -95,10 +95,10 @@ public class FundDataAdapter {
         }
     }
 
-    protected static Benefits createBenefits(Bupa theBupa) {
-        Optional<Bupa> bupa = Optional.ofNullable(theBupa);
+    protected static Benefits createBenefits(Bup theBup) {
+        Optional<Bup> bup = Optional.ofNullable(theBup);
 
-        List<String> benefits = bupa.map(Bupa::getFlexiextras)
+        List<String> benefits = bup.map(Bup::getFlexiextras)
                 .map(f -> Arrays.asList(StringUtils.split(f, ",")))
                 .orElse(emptyList());
         if (!benefits.isEmpty()) {

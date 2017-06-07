@@ -1,6 +1,6 @@
 package com.ctm.web.health.model.form;
 
-public class Bupa {
+public class Bup {
 
     private String flexiextras;
 
@@ -8,7 +8,7 @@ public class Bupa {
         return flexiextras;
     }
 
-    public Bupa setFlexiextras(String flexiextras) {
+    public Bup setFlexiextras(String flexiextras) {
         this.flexiextras = flexiextras;
         return this;
     }

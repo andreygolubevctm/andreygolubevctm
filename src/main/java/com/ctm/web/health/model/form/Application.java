@@ -50,7 +50,7 @@ public class Application {
 
     private Wfd wfd;
 
-    private Bupa bupa;
+    private Bup bup;
 
     private GovtRebateDeclaration govtRebateDeclaration;
 
@@ -255,11 +255,11 @@ public class Application {
         this.govtRebateDeclaration = govtRebateDeclaration;
     }
 
-    public Bupa getBupa() {
-        return bupa;
+    public Bup getBup() {
+        return bup;
     }
 
-    public void setBupa(final Bupa bupa) {
-        this.bupa = bupa;
+    public void setBup(final Bup bup) {
+        this.bup = bup;
     }
 }
