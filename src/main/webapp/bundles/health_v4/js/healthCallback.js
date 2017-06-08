@@ -17,6 +17,8 @@ Handling of the callback popup
 		origLabel = '',
 		selectedDateObj,
 		initComplete = false,
+		$callbackFormTmpl,
+		$callbackFormContainer,
 		$callbackTime,
 		$callbackName,
 		$callDetailsPanel,
@@ -28,6 +30,7 @@ Handling of the callback popup
 		$cbContactNumber,
 		$cdContactNumber,
 		$contactDetailsNumberInput,
+		$requestCallBackLink,
 		_isClosed = false,
 		aedtOffset = 600;
 
@@ -39,13 +42,15 @@ Handling of the callback popup
 
 	
 	initHealthCallback =  function(){
+		$callbackFormTmpl = $('#tmpl-health-callback-form');
+
 		applyEventListeners();
 
 		day = new Date();
-        
+
 		timezone = -day.getTimezoneOffset();
 		direction = timezone >= 0 ? '%2B' : '%2D';
-		offset = direction + ('00'+(timezone / 60)).slice(-2) + ':' + ('00'+(timezone % 60)).slice(-2);
+		offset = direction + ('00' + (timezone / 60)).slice(-2) + ':' + ('00' + (timezone % 60)).slice(-2);
 	};
 
     function applyEventListeners() {
@@ -78,9 +83,16 @@ Handling of the callback popup
 
         $(document).on('click', '.view-all-times', function(e) {
         	e.preventDefault();
-			var anchorText = $(this).text() === 'view all times' ? 'show today only' : 'view all times';
-			$(this).text(anchorText);
+            var anchorText = $(this).text() === 'View All Times ' ? 'Show Today Only ' : 'View All Times ';
+            $(this).html(anchorText + "<span class='caret'></span>");
+            $(this).toggleClass('dropup');
             $('.all-times-callback-modal, .today-hours-callback-modal').toggleClass('hidden');
+        });
+
+        $(document).on('click', '.request-call-back', function (e) {
+            e.preventDefault();
+            $(this).toggleClass('dropup');
+            $('.request-call-panel').toggleClass('hidden');
         });
 
 		$(document).on('click', '.callbackDay .btn', function() {
@@ -156,10 +168,6 @@ Handling of the callback popup
 			if(typeof $(this).find('#health-callback').attr('callbackModal') !== 'undefined') {
 				$(this).addClass('health-callback');
 
-				initComplete = false;
-				meerkat.messaging.publish(events.callbackModal.CALLBACK_MODAL_OPEN);
-	            meerkat.modules.jqueryValidate.setupDefaultValidationOnForm($('#health-callback-form'));
-
 				if (meerkat.modules.deviceMediaState.get() == 'xs') {
 					$('button').each(function() {
 						var $link = $(this).parent();
@@ -172,12 +180,21 @@ Handling of the callback popup
 
 				_initFields();
 				updateCBModalFields();
+
+                initComplete = false;
+                meerkat.messaging.publish(events.callbackModal.CALLBACK_MODAL_OPEN);
+                meerkat.modules.jqueryValidate.setupDefaultValidationOnForm($('#health-callback-form'));
 			}
 
 		});
     }
 
 	function _initFields() {
+    	// Render callback form to DOM
+		$callbackFormContainer = $('#health-callback-form-' + (meerkat.modules.deviceMediaState.get() == 'xs' ? 'mobile' : 'normal'));
+		var htmlout = _.template($callbackFormTmpl.html());
+		$callbackFormContainer.append(htmlout());
+
 		// init fields
 		$pickATimeLabel = $('#pickATimeLabel').find('label');
 		origLabel = $.trim($pickATimeLabel.text());
@@ -197,6 +214,8 @@ Handling of the callback popup
 		// contact details page details
 		$contactDetailsName = $('#health_contactDetails_name');
 		$contactDetailsNumberInput = $('#health_contactDetails_flexiContactNumber');
+
+		$requestCallBackLink = $('.request-call-back');
 	}
 
 	function updateCBModalFields() {
@@ -338,6 +357,8 @@ Handling of the callback popup
 							selectedDate: selectedDate,
 							selectedTime: selectedTime
 						};
+
+						$requestCallBackLink.hide();
 					} else {
 						htmlTemplate = _.template($('#error-template').html());
 					}

@@ -37,6 +37,10 @@ public class HealthQuoteRequest
 
     private boolean includeGiftCard;
 
+    private Boolean primaryHealthCover;
+
+    private Boolean partnerHealthCover;
+
     /**
      * Use rebates
      */
@@ -167,5 +171,21 @@ public class HealthQuoteRequest
 
     public void setIncludeSummary(Boolean includeSummary) {
         this.includeSummary = includeSummary;
+    }
+
+    public Boolean isPrimaryHealthCover() {
+        return primaryHealthCover;
+    }
+
+    public void setPrimaryHealthCover(Boolean primaryHealthCover) {
+        this.primaryHealthCover = primaryHealthCover;
+    }
+
+    public Boolean isPartnerHealthCover() {
+        return partnerHealthCover;
+    }
+
+    public void setPartnerHealthCover(Boolean partnerHealthCover) {
+        this.partnerHealthCover = partnerHealthCover;
     }
 }

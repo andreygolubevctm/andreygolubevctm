@@ -21,6 +21,7 @@
                     '<li><strong>Fortnightly Premium: </strong>'+'<span>{{= product.premium.fortnightly.text }}</span></li>'+
                     '<li><strong>Monthly Premium: </strong>'+'<span>{{= product.premium.monthly.text }}</span></li>'+
                     '<li><strong>Annual Premium: </strong>'+'<span>{{= product.premium.annually.text }}</span></li>'+
+                    '<li><strong>Price including Rebate, excluding LHC: </strong>'+'<span>{{= product.premium[frequency].lhcfreetext }}</span></li>'+
                 '</ul>'+
                 '{{ if(usefulLinks.length > 0) { }}'+
                     '<hr/>'+

@@ -14,6 +14,16 @@ public class YoungestDriver {
 
     private Integer licenceAge;
 
+    private Integer annualKilometres;
+
+    public Integer getAnnualKilometres() {
+        return annualKilometres;
+    }
+
+    public void setAnnualKilometres(Integer annualKilometres) {
+        this.annualKilometres = annualKilometres;
+    }
+
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }

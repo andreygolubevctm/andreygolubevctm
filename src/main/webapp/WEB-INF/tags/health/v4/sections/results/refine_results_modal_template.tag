@@ -12,6 +12,15 @@
 
 <core_v1:js_template id="refine-results-modal-template">
     <div class="refine-results-container">
+        <field_v2:checkbox
+                xpath="health_refine_results_discount"
+                className="refine-results-discount"
+                value="Y"
+                required="true"
+                label="${true}"
+                title="Apply all available discounts to show me the lowest possible price"
+        />
+
         <h3>My Insurance Preferences</h3>
 
         <div class="refine-results-sub-heading">Hospital</div>
@@ -91,7 +100,7 @@
                 </c:forEach>
             </div>
 
-            <a href="javascript:;" class="refine-results-view-all-times">view all times</a>
+            <a href="javascript:;" class="refine-results-view-all-times">View All Times <span class='caret'></span></a>
         </div>
     </div>
 </core_v1:js_template>
