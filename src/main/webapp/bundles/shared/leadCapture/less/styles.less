@@ -1,0 +1,68 @@
+@main: #0db14b;
+@sub-color: @sidebar-right-bg-color;
+@third-color: #008284;
+
+
+.lead-capture {
+  .well.well-help {
+    background-color: @third-color;
+    color: white;
+    h4 {
+      color: white;
+    }
+    &:after {
+      border-width: 20px 20px 0px 20px;
+      left: 74px;
+      border-color: @third-color transparent;
+    }
+  }
+  h2 {
+    margin-bottom: 5px;
+    color: @third-color;
+  }
+  
+  .info {
+    margin-bottom: 20px;
+  }
+  
+  .radioBtn {
+    width: 25%;
+    float: left;
+    text-align: center;
+    position: relative;
+    input {
+      opacity: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    &.active {
+      label {
+        color: @main;
+        border-color: @main;
+      }
+      .product-name, i {
+        color: @main;
+      }
+    }
+  }
+  
+  .product-name {
+    font-size: 18px;
+    color: @sub-color;
+  }
+  
+  label {
+    border: 2px solid #dddddd;
+    border-radius: 100%;
+    width: 70px;
+    height: 70px;
+    cursor: pointer;
+  }
+
+  i {
+    font-size: 36px;
+    color: @sub-color;
+    padding: 15px;
+  }
+}
