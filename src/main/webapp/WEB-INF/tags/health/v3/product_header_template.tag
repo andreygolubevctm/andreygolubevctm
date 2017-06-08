@@ -16,7 +16,7 @@
             <div class="restrictedFund" data-title="This is a Restricted Fund" data-toggle="popover" data-adjust-y="5" data-trigger="mouseenter click" data-my="top center"
                  data-at="bottom center" data-content="#restrictedFundText" data-class="restrictedTooltips">Restricted Fund (?)
             </div>
-            {{ } else if( hasCustomHeaderContent && custom.info.content.results.header.label) { }}
+            {{ } else if( hasCustomHeaderContent && (!_.isEmpty(custom.info.content.results.header.label) || !_.isEmpty(custom.info.content.results.header.text))) { }}
             <div class="customHeaderContent" data-toggle="popover" data-adjust-y="5" data-trigger="mouseenter click" data-my="top center"
                  data-at="bottom center" data-content="{{= custom.info.content.results.header.text}}" data-class="resultHeaderTooltips">{{= custom.info.content.results.header.label}} (?)
             </div>
