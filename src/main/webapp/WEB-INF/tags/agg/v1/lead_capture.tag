@@ -2,11 +2,11 @@
 <%@ tag description="Group for vehicle selection"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<form_v2:fieldset className="lead-capture" legend="Interested in comparng other insurance products?">
+<form_v2:fieldset className="lead-capture" legend="Interested in comparing other insurance products?">
   <div class="info">After comparing Home and Contents insurance products</div>
   <ui:bubble variant="help">
     <h4>Hi</h4>
-    <p>We noticed you're moving house. If you need your power connected, select "Energy" and we'll help you find the best price for your next energy bill!</p>
+    <p><content:get key="leadCaptureWellHelpText"/></p>
   </ui:bubble>
   <div>
     <div class="radioBtn">
@@ -21,15 +21,15 @@
       <label for="energy-insurance-xpath">
         <i class="icon-energy"></i>
       </label>
-      
-      <div class="product-name">Energy comparision</div>
+
+      <div class="product-name">Energy comparison</div>
     </div>
     <div class="radioBtn">
       <input name="life-insurance-xpath" id="life-insurance-xpath" type="checkbox" />
       <label for="life-insurance-xpath">
         <i class="icon-heart-solid"></i>
       </label>
-      
+
       <div class="product-name">Life insurance</div>
     </div>
     <div class="radioBtn">
@@ -37,7 +37,7 @@
       <label for="home-insurance-xpath"> 
         <i class="icon-home"></i>
       </label>
-      
+
       <div class="product-name">Home loans</div>
     </div>
   </div>

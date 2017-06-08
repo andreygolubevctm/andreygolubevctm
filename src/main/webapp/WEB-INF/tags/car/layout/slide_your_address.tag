@@ -25,7 +25,9 @@
                 <car:commencement_date xpath="${xpath}/options/commencementDate" />
 
                 <car:contact_details xpath="${xpath}/contact" />
-								<agg_v1:lead_capture />
+                <c:if test="${leadCaptureActive eq true}">
+				    <agg_v1:lead_capture />
+                </c:if>
                 <car:contact_optins xpath="${xpath}/termsAndConditions" />
 
 			</layout_v1:slide_content>
