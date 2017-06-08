@@ -112,10 +112,10 @@
 		var filters = meerkat.site.landlordFilters;
 		var checkbox = '.mobile-drop .landlord-filter-items .checkbox input';
 		if (!filters.showall) {
-			$(checkbox + '[name="' + showall +'"]')[0].checked = false;
+			$(checkbox + '[name="showall"]')[0].checked = false;
 			for (var f in filters) {
-				if (filters[f]) {
-					$(checkbox + 'input[name="' + f +'"]')[0].checked = true;
+				if (filters[f] === true) {
+					$(checkbox + '[name="' + f +'"]')[0].checked = true;
 				}
 			}
 		}
@@ -126,7 +126,7 @@
 		var homeXSFilterRow = $("#xsFilterBarHomeExcessRow");
 		var contentsXSFilterRow = $("#xsFilterBarContentsExcessRow");
 		if(!meerkat.site.isLandlord) meerkat.modules.home.toggleLandlords();
-		SortLandlordTogglesXS();
+		SortLandlordFiltersXS();
 		switch (coverType){
 			case 'H':
 				homeXSFilterRow.show();
