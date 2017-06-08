@@ -190,7 +190,7 @@
     }
 
     function validate() {
-        if (!_.isEmpty($elements.input.val())) {
+        if (!_.isEmpty($elements.input.val()) && $elements.results.find('.suburb-item').length > 0) {
             $elements.input.valid();
         }
     }
