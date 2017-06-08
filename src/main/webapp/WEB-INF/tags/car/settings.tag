@@ -95,5 +95,6 @@
 		normalCopy : "${normalCopy}",
 		exoticHeading : <c:choose><c:when test="${not empty exoticHeading}">"${exoticHeading}"</c:when><c:otherwise>""</c:otherwise></c:choose>,
 		exoticCopy : <c:choose><c:when test="${not empty exoticCopy}">"${exoticCopy}"</c:when><c:otherwise>""</c:otherwise></c:choose>
-	}
+	},
+	IBOXquoteNumber: null
 }

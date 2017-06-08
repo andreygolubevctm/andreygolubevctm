@@ -304,6 +304,15 @@
 				if (this.available === 'Y' && this.productId !== 'CURR') {
 					availableCounts++;
 				}
+				else if (this.available === 'N') {
+					// Track each Product that doesn't quote
+                    meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+                        method: 'trackQuoteNotProvided',
+                        object: {
+                            productID: this.productId
+                        }
+                    });
+				}
 			});
 
 			if (availableCounts === 0 && !Results.model.hasValidationErrors ) {
@@ -458,6 +467,7 @@
 	 */
 	function publishExtraTrackingEvents(additionalData) {
 		additionalData = typeof additionalData === 'undefined' ? {} : additionalData;
+
 		meerkat.messaging.publish(meerkatEvents.resultsTracking.TRACK_QUOTE_RESULTS_LIST, {
 			additionalData: $.extend({
 				sortBy: Results.getSortBy() +'-'+ Results.getSortDir()

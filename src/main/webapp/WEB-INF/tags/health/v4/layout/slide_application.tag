@@ -36,6 +36,8 @@
                                   className="cover-start-date-on-application-step" >
                     <health_v4_payment:calendar xpath="health/payment/details" />
                 </form_v4:fieldset>
+
+                <health_v4_agr:modal />
             </jsp:body>
         </form_v3:fieldset_columns>
 

@@ -106,6 +106,8 @@ set: function () {
 		} else {
 			meerkat.modules.healthPaymentStep.setCoverStartRange(0, 90);
 		}
+		healthFunds_CUA.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
+
 		dob_health_application_primary_dob.ageMax = 99;
 		dob_health_application_partner_dob.ageMax = 99;
 
@@ -134,7 +136,7 @@ set: function () {
 	},
 	renderPaymentDays: function (){
 		meerkat.modules.healthFunds.setPayments({ 'min':0, 'max':14, 'weekends':true, 'countFrom' : meerkat.modules.healthPaymentDay.EFFECTIVE_DATE, 'maxDay' : 28});
-		healthFunds_CUA.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
+
 		var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
 		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), _html);
 		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), _html);
