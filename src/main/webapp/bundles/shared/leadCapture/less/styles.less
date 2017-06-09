@@ -2,23 +2,38 @@
 @sub-color: @sidebar-right-bg-color;
 @third-color: #008284;
 
+.optional-tag {
+  display: inline-block;
+  text-transform: uppercase;
+  color: black;
+  background-color: #f0f0f0;
+  padding: 2px 5px;
+  margin: 5px 0;
+}
 
 .lead-capture {
   .well.well-help {
     background-color: @third-color;
     color: white;
+    width: 70%;
+    float: right;
     h4 {
       color: white;
     }
     &:after {
-      border-width: 20px 20px 0px 20px;
-      left: 74px;
-      border-color: @third-color transparent;
+      border-right: 20px solid @third-color;
+      border-top: 20px solid transparent;
+      border-bottom: 20px solid transparent;
+      left: -20px;
+      bottom: 50%;
+      transform: translateY(50%);
     }
   }
+
   h2 {
     margin-bottom: 5px;
     color: @third-color;
+    position: relative;
   }
   
   .info {
@@ -26,7 +41,9 @@
   }
   
   .radioBtn {
-    width: 25%;
+    margin-top: 30px;
+    padding-right: 3%;
+    width: 27%;
     float: left;
     text-align: center;
     position: relative;
@@ -41,7 +58,11 @@
         color: @main;
         border-color: @main;
       }
-      .product-name, i {
+      .tick-checkbox {
+        background-color: @main;
+        border-color: @main;
+      }
+      .product-name, label > i {
         color: @main;
       }
     }
@@ -53,16 +74,48 @@
   }
   
   label {
+    .tick-checkbox {
+      position: absolute;
+      left: -10px;
+      top: -10px;
+      border: 2px solid #95989a;
+      background: white;
+      border-radius: 8px;
+      line-height: 1;
+      z-index: 10;
+      i {
+        color: white;
+        font-size: 18px;
+        padding: 4px;
+      }
+    }
+    > i {
+      font-size: 46px;
+      color: @sub-color;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translateY(-50%) translateX(-50%);
+      z-index: 0;
+    }
+    margin: 0;
+    position: relative;
     border: 2px solid #dddddd;
     border-radius: 100%;
     width: 70px;
     height: 70px;
     cursor: pointer;
   }
+}
 
-  i {
-    font-size: 36px;
-    color: @sub-color;
-    padding: 15px;
+@media(max-width: 767px) { 
+  .lead-capture {
+    .radioBtn {
+      width: 100%;
+      float: left;
+    }
+    .well.well-help {
+      float: left;
+    }
   }
 }

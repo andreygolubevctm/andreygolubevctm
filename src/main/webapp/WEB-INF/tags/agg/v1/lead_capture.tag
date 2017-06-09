@@ -2,43 +2,35 @@
 <%@ tag description="Group for vehicle selection"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
-<form_v2:fieldset className="lead-capture" legend="Interested in comparing other insurance products?">
-  <div class="info">After comparing Home and Contents insurance products</div>
-  <ui:bubble variant="help">
-    <h4>Hi</h4>
-    <p><content:get key="leadCaptureWellHelpText"/></p>
-  </ui:bubble>
-  <div>
-    <div class="radioBtn">
-      <input name="health-insurance-xpath" id="health-insurance-xpath" type="checkbox" />
-      <label for="health-insurance-xpath">
-        <i class="icon-health"></i>
-      </label>
-      <div class="product-name">Health insurance</div>
-    </div>
-    <div class="radioBtn">
-      <input name="energy-insurance-xpath" id="energy-insurance-xpath" type="checkbox" />
-      <label for="energy-insurance-xpath">
-        <i class="icon-energy"></i>
-      </label>
+<%@ attribute name="vertical" required="true" description="vertical checkbox to show" %>
+<%@ attribute name="label" required="true" description="checkbox label" %>
+<%@ attribute name="heading" required="true" description="heading" %>
+<%@ attribute name="info" required="false" description="info label" %>
+<%@ attribute name="baseXpath" required="true" rtexprvalue="true"	description="variable's xpath" %>
 
-      <div class="product-name">Energy comparison</div>
-    </div>
-    <div class="radioBtn">
-      <input name="life-insurance-xpath" id="life-insurance-xpath" type="checkbox" />
-      <label for="life-insurance-xpath">
-        <i class="icon-heart-solid"></i>
-      </label>
+<c:set var="xpath" value="${baseXpath}/leadCapture/${vertical}" scope="session" />
+<c:set var="name" value="${go:nameFromXpath(xpath)}" />
 
-      <div class="product-name">Life insurance</div>
-    </div>
+<span class="optional-tag">optional</span>
+<form_v2:fieldset className="lead-capture" legend="${heading}">
+  <c:if test="${not empty info}">
+    <div class="info">${info}</div>
+  </c:if>
+  <div class="radioBtnContainer clearfix">
+    <ui:bubble variant="help">
+      <h4>Hi</h4>
+      <p><content:get key="leadCaptureWellHelpText"/></p>
+    </ui:bubble>
     <div class="radioBtn">
-      <input name="home-insurance-xpath" id="home-insurance-xpath" type="checkbox" />
-      <label for="home-insurance-xpath"> 
-        <i class="icon-home"></i>
+      <input type="hidden" value="N" id="${name}" name="${name}" />
+      <input name="${vertical}-insurance-checkbox" id="${vertical}-insurance-checkbox" type="checkbox" />
+      <label for="${vertical}-insurance-checkbox" class="${name}">
+        <div class="tick-checkbox">
+          <i class="icon-tick"></i>
+        </div>
+        <i class="icon-${vertical}"></i>
       </label>
-
-      <div class="product-name">Home loans</div>
+      <div class="product-name">${label}</div>
     </div>
   </div>
 </form_v2:fieldset>
