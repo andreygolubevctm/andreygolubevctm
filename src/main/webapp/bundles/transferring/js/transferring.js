@@ -84,9 +84,8 @@ $(window).load(function () {
             data.brand = window.returnedResult.brandCode;
 
             meerkat.messaging.publish(meerkat.modules.events.tracking.EXTERNAL, {
-                method: 'trackQuoteHandoverClick',
+                method: 'trackEmailQuoteHandoverClick',
                 object: {
-                    event: "trackQuoteHandoverClick",
                     actionStep: vertical + " transfer online",
                     brandCode: "ctm",
                     currentJourney: 1,
