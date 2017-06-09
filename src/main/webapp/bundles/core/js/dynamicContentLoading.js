@@ -52,6 +52,7 @@
 
 		var contentType = null;
 		var contentValue = null;
+		var contentReplace = null;
 		var $currentTarget = $(eventObject.currentTarget);
 		var targetContent = $currentTarget.attr('data-content');
 		var targetType = $currentTarget.attr('data-toggle');
@@ -64,10 +65,14 @@
 			if( targetContent[0] === '#' || targetContent[0] === '.' ){
 				contentType = 'selector';
 				contentValue = $(targetContent).html();
-			// Special helpid: for helo tooltips
+			// Special helpid: for help tooltips
 			} else if( targetContent.substr(0,7) == 'helpid:') {
 				contentType = 'url';
 				contentValue = "ajax/xml/help.jsp?id=" + targetContent.substr(7,targetContent.length);
+
+				if ($currentTarget.attr('data-content-replace')) {
+					contentReplace = $currentTarget.attr('data-content-replace');
+				}
 			// external URLs (start with http or www)
 			} else if( targetContent.substring(0,4) === "http" || targetContent.substring(0,3) === "www" ) {
 				contentType = 'externalUrl';
@@ -85,7 +90,8 @@
 			meerkat.messaging.publish(moduleEvents["PARSED_" + targetType.toUpperCase()], {
 				element: $currentTarget,
 				contentType: contentType,
-				contentValue: contentValue
+				contentValue: contentValue,
+				contentReplace: contentReplace
 			});
 
 		} else {
