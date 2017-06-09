@@ -94,11 +94,9 @@ $(window).load(function () {
                     productName: window.returnedResult.productDes,
                     quoteReferenceNumber: transactionId,
                     rootID: transactionId,
-                    trackingKey: "",
                     transactionID: transactionId,
                     type: "online",
-                    vertical: vertical,
-                    simplesUser: false
+                    vertical: vertical
                 }
             });
 
