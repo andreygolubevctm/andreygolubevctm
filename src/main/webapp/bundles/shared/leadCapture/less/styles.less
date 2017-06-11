@@ -111,11 +111,21 @@
 @media(max-width: 767px) { 
   .lead-capture {
     .radioBtn {
-      width: 100%;
+      width: auto;
       float: left;
+      margin-top: 15px;
     }
     .well.well-help {
       float: left;
+      width: 100%;
+      &:after {
+        border-top: 20px solid @third-color;
+        border-left: 20px solid transparent;
+        border-bottom: 20px solid transparent;
+        border-right: 20px solid transparent;
+        bottom: -20px;
+        left: 45px;
+      }
     }
   }
 }

@@ -1,38 +1,41 @@
 ;(function($, undefined) {
   
-  var firstName = $('.person_name').first();
-  var firstNameValue = firstName.val();
-  var leadCapturePopup = $('.lead-capture .well h4');
-
-  function clickHandler() {
-    $('.lead-capture .radioBtn label').on('click', function(e) {
-      $(this).parent().toggleClass('active');
-      mapValueToInput(this);
-    });
-  }
+  var firstName = $('.person_name').first(),
+      firstNameValue = firstName.val(),
+      $elements = {
+        textBubbleHeader: $('.lead-capture .well h4'),
+        radioBtn: $('.lead-capture .radioBtn label')
+      };
   
-  function mapValueToInput(el) {
+  function _mapValueToInput(el) {
     var checked = $(el).parent().hasClass('active');
     var backendValue = checked ? 'Y' : 'N';
     var targetClass = el.className;
     $('#' + targetClass).val(backendValue);
   }
   
-  function onBlur() {
+  function _appendName(value) {
+    $elements.textBubbleHeader.text('Hi ' + value);
+  }
+  
+  function _clickHandler() {
+    $elements.radioBtn.on('click', function(e) {
+      $(this).parent().toggleClass('active');
+      _mapValueToInput(this);
+    });
+  }
+  
+  function _onBlur() {
     firstName.on('blur', function(e) {
       firstNameValue = e.target.value;
       appendName(firstNameValue);
     });
   }
-  
-  function appendName(value) {
-    leadCapturePopup.text('Hi ' + value);
-  }
 
   function init() {
-    clickHandler();
-    onBlur();
-    appendName(firstNameValue);
+    _clickHandler();
+    _onBlur();
+    _appendName(firstNameValue);
   }
   
   window.meerkat.modules.register("leadCapture", {
