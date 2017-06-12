@@ -7,6 +7,11 @@
 <%@ attribute name="heading" required="true" description="heading" %>
 <%@ attribute name="info" required="false" description="info label" %>
 <%@ attribute name="baseXpath" required="true" rtexprvalue="true"	description="variable's xpath" %>
+<%@ attribute name="key" required="false" description="key to get help text from db" %>
+
+<c:if test="${empty key}">
+  <c:set var="key" value="leadCaptureWellHelpText" />
+</c:if>
 
 <c:set var="xpath" value="${baseXpath}/leadCapture/${vertical}" scope="session" />
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
@@ -19,7 +24,7 @@
   <div class="radioBtnContainer clearfix">
     <ui:bubble variant="help">
       <h4>Hi</h4>
-      <p><content:get key="leadCaptureWellHelpText"/></p>
+      <p><content:get key="${key}"/></p>
     </ui:bubble>
     <div class="radioBtn">
       <input type="hidden" value="N" id="${name}" name="${name}" />

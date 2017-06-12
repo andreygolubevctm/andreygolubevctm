@@ -37,10 +37,10 @@
 	
 	<c:if test="${leadCaptureActive eq true}">
 		<div class="f1">
-			<agg_v1:lead_capture vertical="health" label="Health Insurance" baseXpath="${xpath}" heading="Interested in comparing health insurance plans later?" info="After comparing Car insurance products" />
+			<agg_v1:lead_capture vertical="health" key="leadCaptureWellHelpText" label="Health Insurance" baseXpath="${xpath}" heading="Interested in comparing health insurance plans later?" />
 		</div>
 		<div class="f2">
-			<agg_v1:lead_capture vertical="energy" label="Energy comparision" baseXpath="${xpath}" heading="Interested in comparing energy plans later?" />
+			<agg_v1:lead_capture vertical="energy" key="leadCaptureWellHelpText2" label="Energy comparision" baseXpath="${xpath}" heading="Interested in comparing energy plans later?" />
 		</div>
 	</c:if>
 
