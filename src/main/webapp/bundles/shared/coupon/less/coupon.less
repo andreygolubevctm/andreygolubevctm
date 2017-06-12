@@ -63,3 +63,25 @@
 	padding: 0;
 	display: block;
 }
+
+.coupon-banner-container {
+	.coupon-call-to-action {
+		.copy {
+			color: #ffffff;
+			font-size: 12px;
+			padding:5px;
+			margin: 0 10px;
+			background:@theme-secondary;
+		}
+	}
+	@media(@xs-only) {
+		.coupon-call-to-action {
+			background:@theme-secondary;
+			padding: 10px;
+			.copy {
+				margin: 0;
+				padding: 0 10px 0 0;
+			}
+		}
+	}
+}
