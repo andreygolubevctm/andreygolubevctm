@@ -3,9 +3,13 @@ package com.ctm.web.health.validation;
 import com.ctm.web.core.validation.FormValidation;
 import com.ctm.web.core.validation.ValidationUtils;
 import com.ctm.web.core.validation.SchemaValidationError;
+import com.ctm.web.health.model.form.HealthRequest;
 import com.ctm.web.health.model.request.HealthApplicationRequest;
+import com.ctm.web.health.services.HealthApplicationService;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.ctm.web.health.services.HealthApplicationService.*;
 
@@ -31,6 +35,14 @@ public class HealthApplicationValidation {
 		return validationErrors;
 	}
 
+    public static List<SchemaValidationError> validateCoverType(HealthRequest data) {
+        List<SchemaValidationError> validationErrors = new ArrayList<>();
+        boolean hasPartner = Optional.ofNullable(data.getHealth().getSituation()).map(sit -> "F".equals(sit.getHealthCvr()) || "C".equals(sit.getHealthCvr())).orElse(false);
+        boolean valid = !hasPartner || Optional.ofNullable(data.getHealth().getHealthCover()).map(hc -> hc.getPartner() != null).orElse(false);
+        addToListIfInvalid(valid, HealthApplicationService.HEALTH_COVER_XPATH, validationErrors);
+        return validationErrors;
+    }
+
 	private void validateRebate() {
 		boolean valid = false;
 		valid = request.rebateValue <= 40 && request.rebateValue >= 0;
@@ -46,13 +58,17 @@ public class HealthApplicationValidation {
 	}
 
 	private void addToListIfInvalid(boolean valid, String xpath) {
-		if(!valid) {
-			SchemaValidationError error = new SchemaValidationError();
-			error.setElementXpath(xpath);
-			error.setMessage(SchemaValidationError.INVALID);
-			validationErrors.add(error);
-		}
-	}
+        addToListIfInvalid( valid,  xpath, validationErrors);
+    }
+
+    private static void addToListIfInvalid(boolean valid, String xpath, List<SchemaValidationError> validationErrors) {
+        if(!valid) {
+            SchemaValidationError error = new SchemaValidationError();
+            error.setElementXpath(xpath);
+            error.setMessage(SchemaValidationError.INVALID);
+            validationErrors.add(error);
+        }
+    }
 
 
 	private List<SchemaValidationError> validateMedicareNumber() {

@@ -228,7 +228,7 @@
                 includeFormData: true
             },
             validation: {
-                validate: false,
+                validate: true,
                 customValidation: function validateSelection(callback) {
                     var areBenefitsSwitchOn = meerkat.modules.benefitsSwitch.isHospitalOn() || meerkat.modules.benefitsSwitch.isExtrasOn(),
                         success = meerkat.modules.splitTest.isActive(2) ? areBenefitsSwitchOn : true;
