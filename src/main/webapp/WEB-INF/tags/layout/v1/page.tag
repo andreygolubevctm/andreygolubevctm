@@ -49,6 +49,17 @@ ${newPage.init(pageContext.request, pageSettings)}
 <%-- for Health V2 A/B testing --%>
 <c:set var="fileName" value="${pageSettings.getVerticalCode()}" />
 <c:if test="${not empty bundleFileName}"><c:set var="fileName" value="${bundleFileName}" /></c:if>
+
+<%-- Check and set call centre open status --%>
+<jsp:useBean id="openingHoursService" class="com.ctm.web.core.openinghours.services.OpeningHoursService" scope="page" />
+<c:set var="verticalId" value="${pageSettings.getVertical().getId()}"/>
+<c:set var="callCentreOpen" scope="request">${openingHoursService.isCallCentreOpen(verticalId, pageContext.getRequest())}</c:set>
+<c:set var="isCallCentreOpenClass">
+	<c:choose>
+		<c:when test="${callCentreOpen eq true}">callcentreopen</c:when>
+		<c:otherwise>callcentreclosed</c:otherwise>
+	</c:choose>
+</c:set>
 <!DOCTYPE html>
 <go:html>
 <head>
@@ -112,7 +123,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 </c:set>
 </head>
 
-	<body class="jeinit  ${bodyClass}">
+	<body class="jeinit  ${bodyClass} ${isCallCentreOpenClass}">
 
     <c:if test="${GTMEnabled eq true and not empty pageSettings and pageSettings.hasSetting('GTMPropertyId')}">
         <c:if test="${not empty pageSettings.getSetting('GTMPropertyId')}">
