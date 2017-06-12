@@ -115,6 +115,8 @@
                         $("#health_contactDetails_state_" + _getSelectedResidentialState() ).prop("checked", true).change();
                     }
 
+                    _addEcommerceDataModalImpression();
+
                     $modalElements.state.click(function() {
                         //get the selected value and set the xpath
                         setResidentialState( $('input[name=health_contactDetails_state]:checked').val() );
@@ -127,6 +129,7 @@
 
                             // this value is set only if user actually successfully skips the contact details
                             $elements.trackingXPath.val('Y');
+                            _addEcommerceDataModalSubmission();
 
                             meerkat.modules.dialogs.close(modalId);
                             meerkat.modules.journeyEngine.gotoPath('results');
@@ -177,6 +180,37 @@
         $elements.otherNumber.parent().parent().removeClass("required_input");
         $elements.email.parent().parent().parent().removeClass("required_input");
         $elements.postcode.parent().parent().parent().removeClass("required_input");
+    }
+
+    function _addEcommerceDataModalImpression() {
+        //Variables for banner impression
+        var bannerPopupImpression = {
+            event: "trackQuoteExitPopUp",
+            eventCategory: "exit banner popup",
+            eventAction: (meerkat.site.vertical.toLowerCase() + " - " + meerkat.modules.journeyEngine.getCurrentStep()['navigationId'].toLowerCase()),
+            eventLabel: "exit banner submissions"
+        };
+        // "eventAction": "{{vertical name}} - {{slide name}}" (e.g health - contact page)
+
+        if (!_isEmpty(CtMDataLayer)) {
+            CtMDataLayer.push(bannerPopupImpression);
+        }
+    }
+
+    function _addEcommerceDataModalSubmission() {
+
+        //Variables for banner submission
+        var bannerPopupSubmissions = {
+            event: "trackQuoteExitPopUp",
+            eventCategory: "exit banner popup",
+            eventAction: (meerkat.site.vertical.toLowerCase() + " - " + meerkat.modules.journeyEngine.getCurrentStep()['navigationId'].toLowerCase()),
+            eventLabel: "exit banner submissions"
+        };
+        // "eventAction": "{{vertical name}} - {{slide name}}" (e.g health - contact page)
+
+        if (!_isEmpty(CtMDataLayer)) {
+            CtMDataLayer.push(bannerPopupSubmissions);
+        }
     }
 
     meerkat.modules.register("healthExitModal", {
