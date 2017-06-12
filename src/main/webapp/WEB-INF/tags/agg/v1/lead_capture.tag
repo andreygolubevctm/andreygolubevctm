@@ -23,8 +23,8 @@
     </ui:bubble>
     <div class="radioBtn">
       <input type="hidden" value="N" id="${name}" name="${name}" />
-      <input name="${vertical}-insurance-checkbox" id="${vertical}-insurance-checkbox" type="checkbox" />
-      <label for="${vertical}-insurance-checkbox" class="${name}">
+      <input name="${vertical}-crosssell-checkbox" id="${vertical}-crosssell-checkbox" type="checkbox" />
+      <label for="${vertical}-crosssell-checkbox" class="${name}">
         <div class="tick-checkbox">
           <i class="icon-tick"></i>
         </div>

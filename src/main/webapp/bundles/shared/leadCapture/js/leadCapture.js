@@ -22,14 +22,19 @@
     $elements.radioBtn.on('click', function(e) {
       $(this).parent().toggleClass('active');
       _mapValueToInput(this);
+      _track();
     });
   }
   
   function _onBlur() {
     firstName.on('blur', function(e) {
       firstNameValue = e.target.value;
-      appendName(firstNameValue);
+      _appendName(firstNameValue);
     });
+  }
+  
+  function _track() {
+    
   }
 
   function init() {
