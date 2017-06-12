@@ -321,7 +321,7 @@
         }
 
         if(_.indexOf(['q-jun$100-offer','q-jun$200-offer'],reason) !== -1) {
-            $elements.input.value.val(valueRange.custom[reason].max);
+            $elements.inputs.value.val(valueRange.custom[reason].max);
         }
     }
 
