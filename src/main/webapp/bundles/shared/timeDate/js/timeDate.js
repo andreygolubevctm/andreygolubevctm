@@ -20,18 +20,19 @@
             day = todayParts[0],
             date = todayParts[2],
             month = todayParts[1],
-            display = h + ':' + _checkTime(m) + ampm + ', ' + day + ' ' + date + ' ' + month;
+            display = _checkHour(h) + ':' + _checkTime(m) + ampm + ', ' + day + ' ' + date + ' ' + month;
 
         $elements.container.text(display);
 
         var t = setTimeout(_startTime, 1000);
     }
 
+    function _checkHour(h) {
+        return h > 12 ? h - 12 : h;
+    }
+
     function _checkTime(i) {
-        if (i < 10) {
-            i = "0" + i;
-        }
-        return i;
+        return i < 10 ? "0" + i : i;
     }
 
     meerkat.modules.register('timeDate', {

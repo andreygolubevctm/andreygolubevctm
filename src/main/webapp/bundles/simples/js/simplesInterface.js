@@ -10,9 +10,8 @@
 		},
 		moduleEvents = events.simplesInterface;
 
-	var $iframe = $('#simplesiframe');
-
-
+	var $iframe = $('#simplesiframe'),
+        $simplesCalendar = $('.simples-calendar .icon-calendar');
 
 	function resizeIframe() {
 		if ($iframe.length === 0) return;
@@ -52,11 +51,24 @@
 			window.addEventListener('message', receiveMessage, false);
 		}
 
-		// Load time date
-		meerkat.modules.timeDate.initTimeDate($('.time-date-holder'));
 
-		// Setup calendar to today
-		$('.simples-calendar .icon-calendar').datepicker('update', new Date().toLocaleDateString());
+        $(document).ready(function() {
+            // Load time date
+            meerkat.modules.timeDate.initTimeDate($('.time-date-holder'));
+
+            // Setup calendar to today
+            $simplesCalendar.datepicker('update', new Date().toLocaleDateString());
+
+			// On iframe load
+            $iframe.on('load', function() {
+                var $framebody = $iframe.contents().find('body');
+
+				// Hide datepicker on iframe click
+                $framebody.on('click', function () {
+                    $simplesCalendar.datepicker('hide');
+                });
+            });
+        });
 	}
 
 
