@@ -5,6 +5,11 @@
       $elements = {
         textBubbleHeader: $('.lead-capture .well h4'),
         radioBtn: $('.lead-capture .radioBtn label')
+      },
+      state = {
+        field: 1,
+        value: 'N',
+        leadVertical: 'health' 
       };
   
   function _mapValueToInput(el) {
@@ -12,6 +17,7 @@
     var backendValue = checked ? 'Y' : 'N';
     var targetClass = el.className;
     $('#' + targetClass).val(backendValue);
+    state.value = backendValue;
   }
   
   function _appendName(value) {
@@ -36,10 +42,53 @@
   function _track() {
     
   }
+  
+  function _onChange() {
+    if (window.meerkat.site.vertical === 'home') {
+      $('#home_occupancy_whenMovedIn_year').on('change', _checkJustMovedIn);
+      $('#home_occupancy_whenMovedIn_month').on('change', _checkJustMovedIn);
+    }
+  }
+  
+  function _switch(field) {
+    var $f1 = $('.f1');
+    var $f2 = $('.f2');
+    if (field !== state.field) {
+      $f1.toggle();
+      $f2.toggle();
+      state.field = field;
+      state.leadVertical = field === 1 ? 'health' : 'energy';
+    }
+  }
+  
+  function _checkJustMovedIn() {
+    var date = new Date();
+    var year = date.getFullYear().toString();
+    var month = date.getMonth().toString();
+    var movedInYear = $('#home_occupancy_whenMovedIn_year').val();
+    var movedInMonth = $('#home_occupancy_whenMovedIn_month').val();
+    if (movedInYear === year && movedInMonth === month || movedInYear === 'NotAtThisAddress') {
+      _switch(2);
+    } else {
+      _switch(1);
+    }
+  }
+  
+  function _hideField2() {
+    if (window.meerkat.site.vertical === 'home') {
+      $('.f2').hide();
+    }
+  }
+
+  function _eventListeners() {
+    _clickHandler();
+    _onChange();
+    _onBlur();
+  }
 
   function init() {
-    _clickHandler();
-    _onBlur();
+    _hideField2();
+    _eventListeners();
     _appendName(firstNameValue);
   }
   

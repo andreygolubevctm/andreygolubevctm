@@ -1,5 +1,5 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
-<%@ tag description="Group for vehicle selection"%>
+<%@ tag description="Lead capture component"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <%@ attribute name="vertical" required="true" description="vertical checkbox to show" %>

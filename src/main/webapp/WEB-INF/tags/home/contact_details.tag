@@ -34,6 +34,15 @@
 										validationAttribute=" data-rule-validateOkToCall='true' "
 										additionalAttributes="${analyticsAttr}" />
 	</form_v2:row>
+	
+	<c:if test="${leadCaptureActive eq true}">
+		<div class="f1">
+			<agg_v1:lead_capture vertical="health" label="Health Insurance" baseXpath="${xpath}" heading="Interested in comparing health insurance plans later?" info="After comparing Car insurance products" />
+		</div>
+		<div class="f2">
+			<agg_v1:lead_capture vertical="energy" label="Energy comparision" baseXpath="${xpath}" heading="Interested in comparing energy plans later?" />
+		</div>
+	</c:if>
 
 	<%-- OK to call --%>
 	<field_v1:hidden xpath="${xpath}/oktocall" defaultValue="N" />

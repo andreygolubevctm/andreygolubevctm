@@ -12,7 +12,13 @@
 }
 
 .lead-capture {
+  .radioBtnContainer {
+    margin-top: 20px;
+    display: flex;
+  }
+  
   .well.well-help {
+    order: 2;
     background-color: @third-color;
     color: white;
     width: 70%;
@@ -36,11 +42,8 @@
     position: relative;
   }
   
-  .info {
-    margin-bottom: 20px;
-  }
-  
   .radioBtn {
+    order: 1;
     margin-top: 30px;
     padding-right: 3%;
     width: 27%;
@@ -110,6 +113,9 @@
 
 @media(max-width: 767px) { 
   .lead-capture {
+    .radioBtnContainer {
+      display: block;
+    }
     .radioBtn {
       width: auto;
       float: left;
