@@ -16,28 +16,26 @@
 <c:set var="xpath" value="${baseXpath}/leadCapture/${vertical}" scope="session" />
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 
-<div class="leadCapture-${vertical}">
-  <span class="optional-tag">optional</span>
-  <form_v2:fieldset className="lead-capture" legend="${heading}">
-    <c:if test="${not empty info}">
-      <div class="info">${info}</div>
-    </c:if>
-    <div class="radioBtnContainer clearfix">
-      <ui:bubble variant="help">
-        <h4>Hi</h4>
-        <p><content:get key="${key}"/></p>
-      </ui:bubble>
-      <div class="radioBtn">
-        <input type="hidden" value="N" id="${name}" name="${name}" />
-        <input name="${vertical}-crosssell-checkbox" id="${vertical}-crosssell-checkbox" type="checkbox" />
-        <label for="${vertical}-crosssell-checkbox" class="${name}">
-          <div class="tick-checkbox">
-            <i class="icon-tick"></i>
-          </div>
-          <i class="icon-${vertical}"></i>
-        </label>
-        <div class="product-name">${label}</div>
-      </div>
+<span class="optional-tag">optional</span>
+<form_v2:fieldset className="lead-capture" legend="${heading}">
+  <c:if test="${not empty info}">
+    <div class="info">${info}</div>
+  </c:if>
+  <div class="radioBtnContainer clearfix">
+    <ui:bubble variant="help">
+      <h4>Hi</h4>
+      <p><content:get key="${key}"/></p>
+    </ui:bubble>
+    <div class="radioBtn">
+      <input type="hidden" value="N" id="${name}" name="${name}" />
+      <input name="${vertical}-crosssell-checkbox" id="${vertical}-crosssell-checkbox" type="checkbox" />
+      <label for="${vertical}-crosssell-checkbox" class="${name}">
+        <div class="tick-checkbox">
+          <i class="icon-tick"></i>
+        </div>
+        <i class="icon-${vertical}"></i>
+      </label>
+      <div class="product-name">${label}</div>
     </div>
-  </form_v2:fieldset>
-</div>
+  </div>
+</form_v2:fieldset>

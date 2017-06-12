@@ -36,7 +36,7 @@
 
 			<layout_v1:slide_content>
 
-				<home:contact_details xpath="${xpath}/policyHolder" baseXpath="${xpath}" />
+				<home:contact_details xpath="${xpath}/policyHolder" />
 
 			</layout_v1:slide_content>
 

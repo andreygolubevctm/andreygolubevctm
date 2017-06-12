@@ -26,7 +26,7 @@
 
                 <car:contact_details xpath="${xpath}/contact" />
                 <c:if test="${leadCaptureActive eq true}">
-                    <agg_v1:lead_capture vertical="health" label="Health Insurance" baseXpath="${xpath}" heading="Interested in comparing health insurance plans later?" info="After comparing Car insurance products" />
+				    			<agg_v1:lead_capture vertical="health" label="Health Insurance" baseXpath="${xpath}" heading="Interested in comparing health insurance plans later?" info="After comparing Car insurance products" />
                 </c:if>
                 <car:contact_optins xpath="${xpath}/termsAndConditions" />
 

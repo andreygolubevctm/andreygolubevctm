@@ -2,11 +2,6 @@
 @sub-color: @sidebar-right-bg-color;
 @third-color: #008284;
 
-// Energy is not shown by default.
-.leadCapture-energy {
-  display: none;
-}
-
 .optional-tag {
   display: inline-block;
   text-transform: uppercase;
@@ -21,7 +16,7 @@
     margin-top: 20px;
     display: flex;
   }
-
+  
   .well.well-help {
     order: 2;
     background-color: @third-color;
@@ -46,7 +41,7 @@
     color: @third-color;
     position: relative;
   }
-
+  
   .radioBtn {
     order: 1;
     margin-top: 30px;
@@ -75,12 +70,12 @@
       }
     }
   }
-
+  
   .product-name {
     font-size: 18px;
     color: @sub-color;
   }
-
+  
   label {
     .tick-checkbox {
       position: absolute;
@@ -116,7 +111,7 @@
   }
 }
 
-@media(max-width: 767px) {
+@media(max-width: 767px) { 
   .lead-capture {
     .radioBtnContainer {
       display: block;
