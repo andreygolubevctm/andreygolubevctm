@@ -332,6 +332,9 @@
             },
             onAfterEnter: function afterEnterContactStep(event) {
                 meerkat.modules.coupon.dealWithAddedCouponHeight();
+                if (meerkat.site.isFromBrochureSite) {
+                    meerkat.modules.healthPostcode.validate();
+                }
             },
             onAfterLeave: function leaveContactStep(event) {
 
