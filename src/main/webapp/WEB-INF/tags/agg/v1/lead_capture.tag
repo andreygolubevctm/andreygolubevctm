@@ -10,7 +10,7 @@
 <%@ attribute name="key" required="false" description="key to get help text from db" %>
 
 <c:if test="${empty key}">
-  <c:set var="key" value="leadCaptureWellHelpText" />
+  <c:set var="key" value="leadCaptureTextHealth" />
 </c:if>
 
 <c:set var="xpath" value="${baseXpath}/leadCapture/${vertical}" scope="session" />

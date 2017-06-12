@@ -40,7 +40,7 @@
   }
   
   function _track() {
-    
+    // needs work for tracking
   }
   
   function _onChange() {
@@ -51,11 +51,11 @@
   }
   
   function _switch(field) {
-    var $f1 = $('.f1');
-    var $f2 = $('.f2');
+    var $leadCaptureTextHealth = $('.leadCaptureTextHealth');
+    var $leadCaptureTextEnergy = $('.leadCaptureTextEnergy');
     if (field !== state.field) {
-      $f1.toggle();
-      $f2.toggle();
+      $leadCaptureTextHealth.toggle();
+      $leadCaptureTextEnergy.toggle();
       state.field = field;
       state.leadVertical = field === 1 ? 'health' : 'energy';
     }
@@ -76,7 +76,7 @@
   
   function _hideField2() {
     if (window.meerkat.site.vertical === 'home') {
-      $('.f2').hide();
+      $('.leadCaptureTextEnergy').hide();
     }
   }
 
