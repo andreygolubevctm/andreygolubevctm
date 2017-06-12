@@ -192,13 +192,12 @@
         };
         // "eventAction": "{{vertical name}} - {{slide name}}" (e.g health - contact page)
 
-        if (!_isEmpty(CtMDataLayer)) {
+        if (!_.isEmpty(CtMDataLayer)) {
             CtMDataLayer.push(bannerPopupImpression);
         }
     }
 
     function _addEcommerceDataModalSubmission() {
-
         //Variables for banner submission
         var bannerPopupSubmissions = {
             event: "trackQuoteExitPopUp",
@@ -208,7 +207,7 @@
         };
         // "eventAction": "{{vertical name}} - {{slide name}}" (e.g health - contact page)
 
-        if (!_isEmpty(CtMDataLayer)) {
+        if (!_.isEmpty(CtMDataLayer)) {
             CtMDataLayer.push(bannerPopupSubmissions);
         }
     }
