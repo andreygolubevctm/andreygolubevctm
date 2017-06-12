@@ -51,6 +51,12 @@
 		if (window.addEventListener) {
 			window.addEventListener('message', receiveMessage, false);
 		}
+
+		// Load time date
+		meerkat.modules.timeDate.initTimeDate($('.time-date-holder'));
+
+		// Setup calendar to today
+		$('.simples-calendar .icon-calendar').datepicker('update', new Date().toLocaleDateString());
 	}
 
 
