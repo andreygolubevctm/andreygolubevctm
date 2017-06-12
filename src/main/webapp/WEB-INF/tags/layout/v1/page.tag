@@ -53,7 +53,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 <%-- Check and set call centre open status --%>
 <jsp:useBean id="openingHoursService" class="com.ctm.web.core.openinghours.services.OpeningHoursService" scope="page" />
 <c:set var="verticalId" value="${pageSettings.getVertical().getId()}"/>
-<c:set var="callCentreOpen" scope="request">${openingHoursService.isCallCentreOpen(verticalId, pageContext.getRequest())}</c:set>
+<c:set var="callCentreOpen" scope="request">${openingHoursService.isCallCentreOpenNow(verticalId, pageContext.getRequest())}</c:set>
 <c:set var="isCallCentreOpenClass">
 	<c:choose>
 		<c:when test="${callCentreOpen eq true}">callcentreopen</c:when>
