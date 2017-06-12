@@ -1,5 +1,17 @@
 (function ($) {
     $.validator.addMethod("locationSelection", function (value, element, param) {
+
+        var attr = $('#health_situation_postcode').attr('required');
+        // For some browsers, `attr` is undefined; for others, `attr` is false. Check for both.
+        if ( !(typeof attr !== typeof undefined && attr !== false)) {
+            // postcode is not a required field if state is populated
+            if (_.isEmpty(value) && ( !_.isEmpty($('#health_situation_state')) )) {
+                var isValid = true;
+                $('.health_contact_details_postcode_wrapper').toggleClass('has-location-error', !isValid);
+                return isValid;
+            }
+        }
+
         var isValid = !_.isEmpty(value);
 
         $('.health_contact_details_postcode_wrapper').toggleClass('has-location-error', !isValid);

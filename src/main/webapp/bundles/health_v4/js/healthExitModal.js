@@ -11,47 +11,52 @@
 
     function init() {
         $(document).ready(function () {
-            //_setupFields();
+            _setupFields();
             _active = false;
             _modalViewed = false;
             _selectedResidentialState = '';
         });
     }
 
-    /*
     function _setupFields() {
         $elements = {
+            exitModalPage: $('[data-step="contact"]'),
             state: $('#health_situation_state'),
+            trackingXPath: $('#health_contactDetails_skippedContact'),
+            name: $('#health_contactDetails_name'),
+            mobileNumber: $('#health_contactDetails_contactNumber_mobileinput'),
+            otherNumber: $('#health_contactDetails_contactNumber_otherinput'),
+            email: $('#health_contactDetails_email'),
             postcode: $('#health_situation_postcode'),
-            suburb: $('#health_situation_suburb')
+            postcodeWrapper: $('.health_contact_details_postcode_wrapper'),
+            location: $('#health_situation_location'),
+            requiredBlurb: $(".health-required-blurb")
         };
     }
-    */
 
     function activateFeature() {
+        init();
         _active = true;
-
         // unsure if I should do a check here to prevent this being fired if the pages in in the xs media query size
 
         //Event listener triggers modal when user moves mouse within a few pixels from the top of the window
-        $('[data-step="contact"]').on( "mousemove.goBackSkipContctDtlsModal", function( event ) {
-
-            //for debugging purpose - note that the speed that the mouse is moved depends on the final cursor coordinate before the cursor leaves the window - it is possible for the y value to be 70 or higher
-            // use this in conjunction with the div #log on the
-            //$( "#log" ).text( "pageY: " + event.pageY );
+        $elements.exitModalPage.on( "mousemove.goBackSkipContctDtlsModal", function( event ) {
 
             // If last Mouse Y Coordinate is less than 8px open modal  - note that the speed that the mouse is moved depends on the final cursor coordinate before the
             // cursor leaves the window - it is possible for the y value to be 70 or higher after the mouse has left the window if cursor was moved quickly
-            if (event.pageY < 8) {
-                showSkipContactDtlsModal();
+            if ($elements.exitModalPage.scrollTop() > 0) {
+                // deduct the scroll offset
+                if ((event.pageY - $elements.exitModalPage.scrollTop()) < 8) {
+                    showSkipContactDtlsModal();
+                }
+            } else {
+                if (event.pageY < 8) {
+                    showSkipContactDtlsModal();
+                }
             }
         });
-
     }
-    function deactivateFeature() {
-        _active = false;
-    }
-    function featureIsActive() {
+    function _featureIsActive() {
         return _active;
     }
 
@@ -59,47 +64,32 @@
         _modalViewed = true;
     }
 
-    function _getSkippedContactXpathVal() {
-        return $('#health_contactDetails_skippedContact').val();
-    }
-
-    function modalHasBeenTriggered() {
+    function _modalHasBeenTriggered() {
         return _modalViewed;
     }
+
     function _getSelectedResidentialState() {
         return _selectedResidentialState;
     }
+
     function setResidentialState(residentialState) {
         _selectedResidentialState = residentialState || '';
     }
 
     function showSkipContactDtlsModal() {
 
-        if (featureIsActive() !== true) return;
+        if (_featureIsActive() !== true) return;
 
         //unbind the mousemove event
-        $('[data-step="contact"]').unbind('mousemove.goBackSkipContctDtlsModal');
+        $elements.exitModalPage.off('mousemove.goBackSkipContctDtlsModal');
 
-        //only triger modal once
-        if (modalHasBeenTriggered() === true) return;
+        //only trigger modal once
+        if (_modalHasBeenTriggered() === true) return;
         _modalTriggered();
 
         // populate residential State value if it has already been set
-        if( !_.isEmpty($('#health_situation_state').val()) ) {
-            setResidentialState( $('#health_situation_state').val() );
-        } else {
-
-            //check if a value was supplied for state in the health_situation_location xpath
-            if( !_.isEmpty($('#health_situation_location').val()) ) {
-                var locationArray = $('#health_situation_location').val().split(" ");
-                if( !_.isEmpty(locationArray[2]) ) {
-                    var locationState = locationArray[2];
-                    if (locationState !== "NULL") {
-                        //found a valid value for state
-                        setResidentialState(locationState);
-                    }
-                }
-            }
+        if( !_.isEmpty( $elements.state.val()) ) {
+            setResidentialState( $elements.state.val() );
         }
 
         var $e = $('#skip-contact-details-template');
@@ -108,7 +98,6 @@
             templateCallback = _.template($e.html());
 
             var obj = meerkat.modules.moreInfo.getOpenProduct();
-
             var htmlContent = templateCallback(obj);
 
             var modalId = meerkat.modules.dialogs.show({
@@ -118,12 +107,15 @@
                 openOnHashChange: false,
                 onOpen: function(modalId) {
 
+                    $modalElements = {
+                        state: $('input[name=health_contactDetails_state]')
+                    };
+
                     if( !_.isEmpty(_getSelectedResidentialState()) ) {
-                        $("#health_contactDetails_state_" + _getSelectedResidentialState() ).prop("checked", true);
-                        $("#health_contactDetails_state_" + _getSelectedResidentialState() ).parent().addClass( "active" );
+                        $("#health_contactDetails_state_" + _getSelectedResidentialState() ).prop("checked", true).change();
                     }
 
-                    $('input[name=health_contactDetails_state]').click(function() {
+                    $modalElements.state.click(function() {
                         //get the selected value and set the xpath
                         setResidentialState( $('input[name=health_contactDetails_state]:checked').val() );
                     });
@@ -134,44 +126,64 @@
                             meerkat.modules.healthLocation.setResidentialState(_getSelectedResidentialState());
 
                             // this value is set only if user actually successfully skips the contact details
-                            $('#health_contactDetails_skippedContact').val('Y');
+                            $elements.trackingXPath.val('Y');
 
                             meerkat.modules.dialogs.close(modalId);
                             meerkat.modules.journeyEngine.gotoPath('results');
                         } else {
-                            //todo - fire proper validation if required
-                            //alert('Please select a state');
-
-                            //alternate to the the above todo - close the modal but dont hide the fields
+                            // we could remove the required fields at this point too
                             meerkat.modules.dialogs.close(modalId);
                         }
                     });
                 }
             });
         }
-
     }
 
     function _removeRequiredFieldAttributes() {
-
-        $(".contact-details-contact-number").addClass('hidden');
-        $(".health-required-blurb ~ .required_input").addClass('hidden');
+        // remove '* fields are required' text
         $(".health-required-blurb").addClass('hidden');
-        $("#health-contact-fieldset.qe-window.fieldset div.content div h3").html("Please click Get Prices to continue");
-    }
 
+        // remove required attributes
+        $('#health_contactDetails_name').removeAttr("required");
+
+        $elements.mobileNumber.removeAttr("required");
+        $elements.mobileNumber.removeAttr("aria-required");
+        $elements.mobileNumber.removeAttr("aria-invalid");
+        $elements.mobileNumber.removeAttr("data-rule-requireonecontactnumber");
+        $elements.mobileNumber.removeAttr("data-rule-validatemobiletelno").change();
+        $elements.mobileNumber.removeRule('requireOneContactNumber');
+
+        $elements.otherNumber.removeAttr("required");
+        $elements.otherNumber.removeAttr("aria-required");
+        $elements.otherNumber.removeAttr("aria-invalid");
+        $elements.otherNumber.removeAttr("data-rule-requireonecontactnumber");
+        $elements.otherNumber.removeAttr("data-rule-validatelandlinetelno").change();
+        $elements.otherNumber.removeRule('requireOneContactNumber');
+
+        $elements.email.removeAttr("required");
+
+        $elements.postcode.removeAttr("required");
+        $elements.postcode.removeAttr("aria-required");
+        $elements.postcode.removeAttr("aria-invalid");
+
+        $elements.location.removeAttr("data-rule-locationselection");
+        $elements.location.removeClass("validate");
+
+        //remove required asterisk from labels
+        $elements.name.parent().parent().removeClass("required_input");
+        $elements.otherNumber.parent().parent().parent().removeClass("required_input"); //.contact-details-contact-number
+        $elements.mobileNumber.parent().parent().parent().removeClass("required_input");
+        $elements.otherNumber.parent().parent().removeClass("required_input");
+        $elements.email.parent().parent().parent().removeClass("required_input");
+        $elements.postcode.parent().parent().parent().removeClass("required_input");
+    }
 
     meerkat.modules.register("healthExitModal", {
         events: moduleEvents,
         init: init,
-        featureActivate: activateFeature,
-        featureDeactivate: deactivateFeature,
-        featureIsActive: featureIsActive,
-        modalHasBeenTriggered: modalHasBeenTriggered,
+        activateFeature: activateFeature,
         showSkipContactDtlsModal: showSkipContactDtlsModal
-        //, getSkippedContactXpathVal: _getSkippedContactXpathVal
-        //, removeRequiredFieldAttributes: _removeRequiredFieldAttributes
-
     });
 
 })(jQuery);

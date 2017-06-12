@@ -19,11 +19,6 @@
                 <form_v4:fieldset id="health-contact-fieldset" legend="Fill in your details below to compare products">
                     <health_v4_contact:required_text />
 
-                    <%-- for debugging purposes only - to track mouse position - add the following jquery inside the event in meerkat.modules.healthExitModal.activateFeature()    $( "#log" ).text( "pageY: " + event.pageY );    --%>
-                    <%--
-                    <div id="log"></div>
-                    --%>
-
                     <c:set var="firstNamePlaceHolder">
                         <content:get key="firstNamePlaceHolder"/>
                     </c:set>
@@ -45,7 +40,6 @@
                     <field_v1:hidden xpath="health/altContactFormRendered" constantValue="Y" />
 
                     <field_v1:hidden xpath="${xpath}/skippedContact" defaultValue="N" />
-
                     <health_v4_contact:skip_contact_details_modal xpath="${xpath}" />
 
                 </form_v4:fieldset>
