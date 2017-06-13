@@ -72,19 +72,22 @@
 			font-size: 12px;
 			padding:5px;
 			margin: 0 10px;
-			background:@theme-secondary;
+			background: @theme-accent-4;
+		}
+		.btn-block + .btn-block {
+			margin-top: 0;
 		}
 	}
 	@media(@xs-only) {
 		.coupon-call-to-action {
-			background:@theme-secondary;
+			background: @theme-accent-4;
 			padding: 10px;
 			margin-top:0px;
 			.copy,.cta {
 				float:left;
 			}
 			.copy {
-				margin: 0;
+				margin: 4px 0;
 				padding: 0;
 				width:40%;
 			}
