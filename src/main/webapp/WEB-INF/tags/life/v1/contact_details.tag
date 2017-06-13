@@ -47,10 +47,6 @@
 		<form_v1:row label="Postcode">
 			<field_v1:post_code_and_state xpath="${vertical}/primary/postCode" title="${error_phrase_postcode}postcode" required="true" className="" />
 		</form_v1:row>
-		
-		
-
-		
 
 		<%-- COMPETITION START --%>
 		<c:if test="${competitionEnabled == true}">
@@ -115,10 +111,8 @@
 							</div>
 					</div>
 				</div>
-			</c:if>
-			
+			</c:if>	
     </div>
-
 
     <%-- CSS --%>
 <go:style marker="css-head">
@@ -169,7 +163,6 @@
 		max-width: 410px;
 		margin-bottom: 10px;
 	}
-	
 </go:style>
 
 <%-- JAVASCRIPT --%>
