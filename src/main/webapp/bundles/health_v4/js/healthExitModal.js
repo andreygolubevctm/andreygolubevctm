@@ -95,51 +95,57 @@
         var $e = $('#skip-contact-details-template');
 
         if ($e.length > 0) {
-            templateCallback = _.template($e.html());
 
-            var obj = meerkat.modules.moreInfo.getOpenProduct();
-            var htmlContent = templateCallback(obj);
+            //dont show modal if content does not exist
+            if ($e.html().length > 0) {
 
-            var modalId = meerkat.modules.dialogs.show({
-                htmlContent: htmlContent,
-                title: '',
-                closeOnHashChange: true,
-                openOnHashChange: false,
-                onOpen: function(modalId) {
+                templateCallback = _.template($e.html());
 
-                    $modalElements = {
-                        state: $('input[name=health_contactDetails_state]')
-                    };
+                var obj = meerkat.modules.moreInfo.getOpenProduct();
+                var htmlContent = templateCallback(obj);
 
-                    if( !_.isEmpty(_getSelectedResidentialState()) ) {
-                        $("#health_contactDetails_state_" + _getSelectedResidentialState() ).prop("checked", true).change();
+                var modalId = meerkat.modules.dialogs.show({
+                    htmlContent: htmlContent,
+                    title: '',
+                    closeOnHashChange: true,
+                    openOnHashChange: false,
+                    onOpen: function(modalId) {
+
+                        $modalElements = {
+                            state: $('input[name=health_contactDetails_state]')
+                        };
+
+                        if( !_.isEmpty(_getSelectedResidentialState()) ) {
+                            $("#health_contactDetails_state_" + _getSelectedResidentialState() ).prop("checked", true).change();
+                        }
+
+                        _addEcommerceDataModalImpression();
+
+                        $modalElements.state.click(function() {
+                            //get the selected value and set the xpath
+                            setResidentialState( $('input[name=health_contactDetails_state]:checked').val() );
+                        });
+                        $('.btn-skip-contact-dtls', $('#'+modalId)).on('click.goBackSkipContctDtlsModal', function(event) {
+                            if (!_.isEmpty(_getSelectedResidentialState())) {
+                                _removeRequiredFieldAttributes();
+
+                                meerkat.modules.healthLocation.setResidentialState(_getSelectedResidentialState());
+
+                                // this value is set only if user actually successfully skips the contact details
+                                $elements.trackingXPath.val('Y');
+                                _addEcommerceDataModalSubmission();
+
+                                meerkat.modules.dialogs.close(modalId);
+                                meerkat.modules.journeyEngine.gotoPath('results');
+                            } else {
+                                // we could remove the required fields at this point too
+                                meerkat.modules.dialogs.close(modalId);
+                            }
+                        });
                     }
 
-                    _addEcommerceDataModalImpression();
-
-                    $modalElements.state.click(function() {
-                        //get the selected value and set the xpath
-                        setResidentialState( $('input[name=health_contactDetails_state]:checked').val() );
-                    });
-                    $('.btn-skip-contact-dtls', $('#'+modalId)).on('click.goBackSkipContctDtlsModal', function(event) {
-                        if (!_.isEmpty(_getSelectedResidentialState())) {
-                            _removeRequiredFieldAttributes();
-
-                            meerkat.modules.healthLocation.setResidentialState(_getSelectedResidentialState());
-
-                            // this value is set only if user actually successfully skips the contact details
-                            $elements.trackingXPath.val('Y');
-                            _addEcommerceDataModalSubmission();
-
-                            meerkat.modules.dialogs.close(modalId);
-                            meerkat.modules.journeyEngine.gotoPath('results');
-                        } else {
-                            // we could remove the required fields at this point too
-                            meerkat.modules.dialogs.close(modalId);
-                        }
-                    });
-                }
-            });
+                });
+            }
         }
     }
 
