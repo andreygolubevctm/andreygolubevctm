@@ -47,6 +47,10 @@
 		<form_v1:row label="Postcode">
 			<field_v1:post_code_and_state xpath="${vertical}/primary/postCode" title="${error_phrase_postcode}postcode" required="true" className="" />
 		</form_v1:row>
+		
+		
+
+		
 
 		<%-- COMPETITION START --%>
 		<c:if test="${competitionEnabled == true}">
@@ -83,7 +87,38 @@
 
         </form_v1:fieldset>
 
+				
+				<c:set var="leadCaptureActive"><content:get key="leadCaptureActive" /></c:set>
+				<c:if test="${leadCaptureActive eq 'Y'}">
+					<c:set var="nameXpath" value="life/leadCapture/health" scope="session" />
+					<c:set var="leadName" value="${go:nameFromXpath(nameXpath)}" />
+					<div class="lead-capture">
+						<span class="optional-tag">optional</span>
+						<div>
+							<span class="h2">Interested in comparing health insurance plans later?</span>
+							<div class="radioBtnContainer clearfix">
+								<ui:bubble variant="help">
+									<h4>Hi</h4>
+									<p><content:get key="leadCaptureTextHealth"/></p>
+								</ui:bubble>
+								<div class="radioBtn">
+									<input type="hidden" value="N" id="${leadName}" name="${leadName}" />
+									<input name="health-crosssell-checkbox" id="health-crosssell-checkbox" type="checkbox" />
+									<label for="health-crosssell-checkbox" class="${leadName}">
+										<div class="tick-checkbox">
+											<i class="icon-tick"></i>
+										</div>
+										<i class="icon-health"></i>
+									</label>
+									<div class="product-name">Health Insurance</div>
+								</div>
+							</div>
+					</div>
+				</div>
+			</c:if>
+			
     </div>
+
 
     <%-- CSS --%>
 <go:style marker="css-head">
@@ -134,6 +169,7 @@
 		max-width: 410px;
 		margin-bottom: 10px;
 	}
+	
 </go:style>
 
 <%-- JAVASCRIPT --%>
@@ -165,6 +201,39 @@
 
 		${name}_original_phone_number = tel;
 	});
+	
+	function _clickHandler() {
+		$('.lead-capture .radioBtn label').on('click', function(e) {
+			$(this).parent().toggleClass('active');
+			_mapValueToInput(this);
+		});
+	}
+	
+	function _mapValueToInput(el) {
+		var checked = $(el).parent().hasClass('active');
+		var backendValue = checked ? 'Y' : 'N';
+		var targetClass = el.className;
+		$('#' + targetClass).val(backendValue);
+	}
+	
+	
+	function _onBlur() {
+		$('#life_primary_firstName').on('blur', function(e) {
+			_appendName(e.target.value);
+		});
+	}
+	
+	function _appendName(value) {
+		$('.radioBtnContainer .well h4').text('Hi ' + value);
+	}
+	
+	function init() {
+		_clickHandler();
+		_onBlur();
+		_appendName($('#life_primary_firstName').val());
+	}
+	
+	init();
 
 	<%-- Life split test makes phone mandatory so no
 		 need to do it here if split test is active --%>
