@@ -195,7 +195,7 @@
             event: "trackQuoteExitPopUp",
             eventCategory: "exit banner popup",
             eventAction: (meerkat.site.vertical.toLowerCase() + " - " + meerkat.modules.journeyEngine.getCurrentStep()['navigationId'].toLowerCase()),
-            eventLabel: "exit banner submissions"
+            eventLabel: "exit banner impressions"
         };
         // "eventAction": "{{vertical name}} - {{slide name}}" (e.g health - contact page)
 
