@@ -58,7 +58,7 @@ public class OpeningHoursService {
         return openingHoursDao.isCallCentreOpen(verticalId, effectiveDate);
     }
 
-    public boolean isCallCentreOpen(final int verticalId, HttpServletRequest request) throws DaoException {
+    public boolean isCallCentreOpenNow(final int verticalId, HttpServletRequest request) throws DaoException {
         Date theAppDate = ApplicationService.getApplicationDate(request);
         LocalDateTime theLocalAppDate =  DateUtils.toLocalDateTime(theAppDate);
         return openingHoursDao.isCallCentreOpen(verticalId, theLocalAppDate);
