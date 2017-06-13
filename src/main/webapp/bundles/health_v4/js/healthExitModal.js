@@ -181,6 +181,7 @@
 
         //remove required asterisk from labels
         $elements.name.parent().parent().removeClass("required_input");
+        $elements.mobileNumber.parent().parent().removeClass("required_input");
         $elements.otherNumber.parent().parent().parent().removeClass("required_input"); //.contact-details-contact-number
         $elements.mobileNumber.parent().parent().parent().removeClass("required_input");
         $elements.otherNumber.parent().parent().removeClass("required_input");
