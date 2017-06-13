@@ -4,7 +4,7 @@
 
 <jsp:useBean id="openingHoursService" class="com.ctm.web.core.openinghours.services.OpeningHoursService" scope="page" />
 <c:set var="verticalId" value="${pageSettings.getVertical().getId()}"/>
-<c:set var="callCentreOpen" scope="request">${openingHoursService.isCallCentreOpenNow(verticalId, pageContext.getRequest())}</c:set>
+<c:set var="callCentreOpen" scope="request">${openingHoursService.isCallCentreOpen(verticalId, pageContext.getRequest())}</c:set>
 
 <c:set var="callCentreNumber" scope="request"><content:get key="callCentreNumber"/></c:set>
 
