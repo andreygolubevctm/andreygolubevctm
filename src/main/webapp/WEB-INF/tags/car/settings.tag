@@ -39,6 +39,8 @@
 <%-- Retrieve non-standard accessories list --%>
 <c:set var="nonStandardAccessories" value="${service.getVehicleNonStandardsJson()}" />
 
+<car:lead_capture_settings />
+
 
 {
 	isCallCentreUser: <c:out value="${not empty callCentre}"/>,
