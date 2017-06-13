@@ -119,11 +119,11 @@ ${newPage.init(pageContext.request, pageSettings)}
 
 <%-- There's a bug in the JSTL parser which eats up the spaces between dynamic classes like this so using c:out sorts it out --%>
 <c:set var="bodyClass">
-	<c:out value="${pageSettings.getVerticalCode()} ${callCentre ? ' callCentre simples' : ''} ${body_class_name}" />
+	<c:out value="${pageSettings.getVerticalCode()} ${callCentre ? ' callCentre simples' : ''} ${body_class_name} ${isCallCentreOpenClass}" />
 </c:set>
 </head>
 
-	<body class="jeinit  ${bodyClass} ${isCallCentreOpenClass}">
+	<body class="jeinit  ${bodyClass}">
 
     <c:if test="${GTMEnabled eq true and not empty pageSettings and pageSettings.hasSetting('GTMPropertyId')}">
         <c:if test="${not empty pageSettings.getSetting('GTMPropertyId')}">
