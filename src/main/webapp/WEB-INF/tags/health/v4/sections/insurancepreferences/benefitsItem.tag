@@ -65,8 +65,8 @@
                 </div>
                 <div id="tabs" class="benefitsTab">
                     <ul class="nav nav-tabs tab-count-2">
-                        <li id="comprehensiveBenefitTab" class="active"><a data-toggle="tab" href=".comprehensive-pane" data-benefit-cover-type="customise" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />><h2 class="ignore" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />>Comprehensive</h2></a></li>
-                        <li><a data-toggle="tab" href=".limited-pane" data-benefit-cover-type="limited" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />><h2 class="ignore" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />>Limited Cover</h2></a></li>
+                        <li id="comprehensiveBenefitTab" class="active"><a data-toggle="tab" href=".comprehensive-pane" data-benefit-cover-type="customise" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />><h2 class="ignore" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />>${benefitsContent.getSupplementaryValueByKey('comprehensiveTabCopy')}</h2></a></li>
+                        <li><a data-toggle="tab" href=".limited-pane" data-benefit-cover-type="limited" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />><h2 class="ignore" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />>${benefitsContent.getSupplementaryValueByKey('limitedTabCopy')}</h2></a></li>
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane comprehensive-pane active in">
