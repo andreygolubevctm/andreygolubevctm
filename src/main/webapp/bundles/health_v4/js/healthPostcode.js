@@ -189,8 +189,15 @@
         $elements.location.valid();
     }
 
+    function validate() {
+        if (!_.isEmpty($elements.input.val()) && $elements.location.isValid()) {
+            $elements.input.valid();
+        }
+    }
+
     meerkat.modules.register('healthPostcode', {
         initPostcode: initPostcode,
-        events: moduleEvents
+        events: moduleEvents,
+        validate: validate
     });
 })(jQuery);
