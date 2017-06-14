@@ -23,6 +23,15 @@ public class ResultsTemplateItem implements Comparable<ResultsTemplateItem> {
 	private int helpId;
 	private String shortlistKey;
 	private int flag;
+	private String isLandlordFeature;
+
+	public String getIsLandlordFeature() {
+		return isLandlordFeature;
+	}
+
+	public void setIsLandlordFeature(String isLandlordFeature) {
+		this.isLandlordFeature = isLandlordFeature;
+	}
 
 	ArrayList<ResultsTemplateItem> children;
 
