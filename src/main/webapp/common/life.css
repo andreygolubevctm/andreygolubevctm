@@ -1746,3 +1746,157 @@ body.stage-0 #reference_number a {display:none;}
 	float: left;
 	margin-bottom: 20px;
 }
+
+
+.optional-tag {
+	display: inline-block;
+	text-transform: uppercase;
+	color: black;
+	background-color: #f0f0f0;
+	padding: 2px 5px;
+	margin: 5px 0;
+}
+
+.lead-capture .radioBtnContainer {
+	margin-top: 20px;
+	display: block;
+	display: flex;
+}
+
+.lead-capture .well.well-help {
+	order: 2;
+	background-color: #008284;
+	color: white;
+	width: 70%;
+	float: right;
+	border-radius: 10px;
+	padding: 20px 20px;
+	position: relative;
+}
+
+.lead-capture .well.well-help h4 {
+	color: white;
+	margin-bottom: 5px;
+}
+
+.lead-capture .well.well-help:after {
+	content: "";
+	display: block;
+	position: absolute;
+	width: 0;
+	border-right: 20px solid #008284;
+	border-top: 20px solid transparent;
+	border-bottom: 20px solid transparent;
+	left: -20px;
+	bottom: 50%;
+	transform: translateY(50%);
+}
+
+.lead-capture .h2 {
+	margin-bottom: 5px;
+	color: #008284;
+	position: relative;
+	font-size: 20px;
+	border-bottom: 1px solid #f1f1f1;
+	padding-bottom: 3px;
+	margin-top: 0;
+}
+
+.lead-capture .radioBtn {
+	order: 1;
+	margin-top: 10px;
+	padding-right: 3%;
+	width: 27%;
+	float: left;
+	text-align: center;
+	position: relative;
+}
+
+.lead-capture .radioBtn input {
+	opacity: 0;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.lead-capture .radioBtn.active label {
+	color: #0db14b;
+	border-color: #0db14b;
+}
+
+.lead-capture .radioBtn.active .tick-checkbox {
+	background-color: #0db14b;
+	border-color: #0db14b;
+}
+
+.lead-capture .radioBtn.active .product-name,
+.lead-capture .radioBtn.active label > i {
+	color: #0db14b;
+}
+
+.lead-capture .product-name {
+	font-size: 18px;
+	color: #064667;
+}
+
+.lead-capture label {
+	margin: 0;
+	position: relative;
+	border: 2px solid #dddddd;
+	border-radius: 100%;
+	width: 70px;
+	height: 70px;
+	cursor: pointer;
+	display: inline-block;
+}
+
+.lead-capture label .tick-checkbox {
+	position: absolute;
+	left: -10px;
+	top: -10px;
+	border: 2px solid #95989a;
+	background: white;
+	border-radius: 8px;
+	line-height: 1;
+	z-index: 10;
+}
+
+.lead-capture label .tick-checkbox i {
+	color: white;
+	font-size: 18px;
+	padding: 4px;
+}
+
+.lead-capture label > i {
+	font-size: 46px;
+	color: #064667;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translateY(-50%) translateX(-50%);
+	z-index: 0;
+}
+
+@font-face {
+	font-family: 'framework_font';
+	src:url('/ctm/assets/fonts/CTM.eot?20161213');
+	src:url('/ctm/assets/fonts/CTM.eot?#iefix20161213') format('embedded-opentype'),
+	url('/ctm/assets/fonts/CTM.woff?20161213') format('woff'),
+	url('/ctm/assets/fonts/CTM.ttf?20161213') format('truetype'),
+	url('/ctm/assets/fonts/CTM.svg?20161213#CTM') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+.icon, .icon-health, .icon-tick {
+	font-family: 'framework_font';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+	vertical-align: text-top;
+	display:inline-block;
+}
+.icon-tick::before { content: "\e600"; }
+.icon-health::before { content: "\e924"; } 
