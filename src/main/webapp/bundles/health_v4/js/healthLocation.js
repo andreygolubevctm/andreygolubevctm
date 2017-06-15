@@ -44,7 +44,7 @@
                 suburb = pieces.join(' ');
 
             $elements.location.val(location);
-            $elements.state.filter('[value='+state+']').trigger('click');
+            $elements.state.val(state);
             $elements.postcode.val(postcode);
             $elements.postcodeApp.val(postcode);
             $elements.suburb.val(suburb);

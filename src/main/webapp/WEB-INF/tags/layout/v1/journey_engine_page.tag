@@ -118,6 +118,7 @@
                         </c:if>
 
                         <core_v2:tracking_key />
+	                    <core_v2:gaClientId />
 
                         <div id="journeyEngineSlidesContainer">
                             <jsp:doBody />

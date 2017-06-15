@@ -15,6 +15,7 @@
 
         $elements = {
             partnerDOBD: $(':input[name=health_healthCover_partner_dobInputD]'),
+            partnerHeading: $('.healthCoverPartnerHeading'),
             partnerCoverLoading: $(':input[name=health_healthCover_partner_healthCoverLoading]'),
             dob: $('#health_healthCover_partner_dob'),
             currentCover: $('input[name=health_healthCover_partner_cover]'),
@@ -25,7 +26,7 @@
 
         $elements.partnerCoverLoading.add($elements.dob).add($elements.currentCover).attr('data-attach','true');
 
-        $elements.partnerQuestionSet = $elements.partnerDOBD.add($elements.currentCover);
+        $elements.partnerQuestionSet = $elements.partnerDOBD.add($elements.currentCover).add($elements.partnerHeading);
 
         meerkat.modules.fieldUtilities.hide($elements.partnerCoverLoading);
 

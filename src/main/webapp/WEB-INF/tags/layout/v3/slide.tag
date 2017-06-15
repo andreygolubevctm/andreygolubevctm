@@ -48,6 +48,10 @@
 		</div>
 	</c:if>
 
+	<div class="visible-xs">
+		<health_v4:cta_panel />
+	</div>
+
 	<testimonial:testimonial />
 
     <reward:campaign_tile_container_xs />
