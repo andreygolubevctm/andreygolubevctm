@@ -21,6 +21,8 @@
     function _setupFields() {
         $elements = {
             exitModalPage: $('[data-step="contact"]'),
+            exitModalPageSubmitBtn1: $('[data-slide-control="next"].slide-control-get-prices'),
+            exitModalPageSubmitBtn2: $('[data-slide-control="next"]').filter(function(){ return $(this).text() === 'Get Prices '; }),
             state: $('#health_situation_state'),
             trackingXPath: $('#health_contactDetails_skippedContact'),
             name: $('#health_contactDetails_name'),
@@ -40,7 +42,7 @@
         // unsure if I should do a check here to prevent this being fired if the pages in in the xs media query size
 
         //Event listener triggers modal when user moves mouse within a few pixels from the top of the window
-        $elements.exitModalPage.on( "mousemove.goBackSkipContctDtlsModal", function( event ) {
+        $elements.exitModalPage.on( "mousemove.skipContctDtlsModal", function( event ) {
 
             // If last Mouse Y Coordinate is less than 8px open modal  - note that the speed that the mouse is moved depends on the final cursor coordinate before the
             // cursor leaves the window - it is possible for the y value to be 70 or higher after the mouse has left the window if cursor was moved quickly
@@ -55,7 +57,25 @@
                 }
             }
         });
+
+        //Event listener triggers deactivate if user clicks either of the 'next' buttons to move forward to the results page
+        $elements.exitModalPageSubmitBtn1.on( "click.skipContctDtlsModal1", function( event ) {
+            deactivateFeature();
+        });
+        $elements.exitModalPageSubmitBtn2.on( "click.skipContctDtlsModal2", function( event ) {
+            deactivateFeature();
+        });
+
+
     }
+    function deactivateFeature() {
+        _active = false;
+        //unbind the mousemove event
+        $elements.exitModalPage.off('mousemove.skipContctDtlsModal');
+        $elements.exitModalPage.off('click.skipContctDtlsModal1');
+        $elements.exitModalPage.off('click.skipContctDtlsModal2');
+    }
+
     function _featureIsActive() {
         return _active;
     }
@@ -80,8 +100,11 @@
 
         if (_featureIsActive() !== true) return;
 
+        //only show modal on the contact page (dont remove the listener if navigating back to insurance preferences or about you page / using browser back button
+        if ( meerkat.modules.journeyEngine.getCurrentStep()['navigationId'].toLowerCase() !== 'contact') return;
+
         //unbind the mousemove event
-        $elements.exitModalPage.off('mousemove.goBackSkipContctDtlsModal');
+        deactivateFeature();
 
         //only trigger modal once
         if (_modalHasBeenTriggered() === true) return;
@@ -125,7 +148,7 @@
                             //get the selected value and set the xpath
                             setResidentialState( $('input[name=health_contactDetails_state]:checked').val() );
                         });
-                        $('.btn-skip-contact-dtls', $('#'+modalId)).on('click.goBackSkipContctDtlsModal', function(event) {
+                        $('.btn-skip-contact-dtls', $('#'+modalId)).on('click.skipContctDtlsModal', function(event) {
                             if (!_.isEmpty(_getSelectedResidentialState())) {
                                 _removeRequiredFieldAttributes();
 
@@ -223,6 +246,7 @@
         events: moduleEvents,
         init: init,
         activateFeature: activateFeature,
+        deactivateFeature: deactivateFeature,
         showSkipContactDtlsModal: showSkipContactDtlsModal
     });
 
