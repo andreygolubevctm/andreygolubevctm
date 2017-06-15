@@ -26,12 +26,15 @@
 
         if (meerkat.modules.journeyEngine.getCurrentStep()['navigationId'].toLowerCase() === 'contact') {
 
+
+            var $e = $('#testimonial-template');
+
             if ($e.length > 0) {
 
                 //dont show modal if content does not exist
                 if ($e.html().length > 0) {
 
-                    var testimonialTemplate = _.template($('#testimonial-template').html());
+                    var testimonialTemplate = _.template($e.html());
                     $('.testimonial-tile-container').empty().append(testimonialTemplate());
                 }
             }
