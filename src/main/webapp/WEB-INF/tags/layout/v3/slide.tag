@@ -48,5 +48,7 @@
 		</div>
 	</c:if>
 
+	<testimonial:testimonial />
+
     <reward:campaign_tile_container_xs />
 </div>
