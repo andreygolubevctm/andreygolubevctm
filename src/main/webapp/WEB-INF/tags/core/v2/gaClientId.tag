@@ -9,7 +9,7 @@
 </c:if>
 
 <%-- If gaClientId already exists then render as hidden input --%>
-<c:set var="fieldXpath" value="${journeyVertical}/_gaclientid" />
-<c:if test="${not empty data[fieldXpath]}">
+<c:set var="fieldXpath" value="${journeyVertical}/gaclientid" />
+<c:if test="${not empty data.health.gaclientid}">
 	<field_v1:hidden xpath="${fieldXpath}" />
 </c:if>

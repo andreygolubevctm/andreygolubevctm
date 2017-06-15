@@ -423,12 +423,12 @@
         }
 
 	    var elementName = (meerkat.site.vertical === 'car' ? 'quote' : meerkat.site.vertical) + '_gaclientid';
-        var $gacElement = $('#' + elementName);
-        if($gacElement && $gacElement.length && !_.isEmpty($gacElement.val())) {
-	        gaClientId = $gacElement.val();
+        var $gaClientId = $('#' + elementName);
+        if($gaClientId && $gaClientId.length && !_.isEmpty($gaClientId.val())) {
+	        gaClientId = $gaClientId.val();
         } else if(!_.isEmpty(gaClientId)) {
-            if ($gacElement && $gacElement.length) {
-	            $gacElement.val(gaClientId);
+            if ($gaClientId && $gaClientId.length) {
+	            $gaClientId.val(gaClientId);
             } else {
                 $('#mainform').prepend($('<input/>', {
                     type: 'hidden',
