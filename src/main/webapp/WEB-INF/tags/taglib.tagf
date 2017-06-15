@@ -55,7 +55,6 @@
 <%@ taglib tagdir="/WEB-INF/tags/health/v4/sections/application/agr"	prefix="health_v4_agr" %>
 <%@ taglib tagdir="/WEB-INF/tags/health/v4/sections/payment"	prefix="health_v4_payment" %>
 <%@ taglib tagdir="/WEB-INF/tags/simples"				prefix="simples" %>
-<%@ taglib tagdir="/WEB-INF/tags/testimonial"			prefix="testimonial" %>
 <%@ taglib tagdir="/WEB-INF/tags/travel"				prefix="travel" %>
 <%@ taglib tagdir="/WEB-INF/tags/travel/layout"			prefix="travel_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/fuel"				    prefix="fuel" %>

@@ -45,6 +45,8 @@
 
                 </form_v4:fieldset>
 
+                <health_v4_contact:testimonial />
+
             </jsp:body>
 
         </form_v3:fieldset_columns>
