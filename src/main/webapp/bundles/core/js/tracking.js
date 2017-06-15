@@ -422,11 +422,13 @@
             }
         }
 
-        if(!_.isEmpty(gaClientId)) {
-            var elementName = (meerkat.site.vertical === 'car' ? 'quote' : meerkat.site.vertical) + '_gaclientid';
-            googleAnalyticsClientId = gaClientId;
-            if ($('#' + elementName).length) {
-                $('#' + elementName).val(gaClientId);
+	    var elementName = (meerkat.site.vertical === 'car' ? 'quote' : meerkat.site.vertical) + '_gaclientid';
+        var $gacElement = $('#' + elementName);
+        if($gacElement && $gacElement.length && !_.isEmpty($gacElement.val())) {
+	        gaClientId = $gacElement.val();
+        } else if(!_.isEmpty(gaClientId)) {
+            if ($gacElement && $gacElement.length) {
+	            $gacElement.val(gaClientId);
             } else {
                 $('#mainform').prepend($('<input/>', {
                     type: 'hidden',
@@ -436,6 +438,9 @@
                 }));
             }
         }
+	    if(!_.isEmpty(gaClientId)) {
+		    googleAnalyticsClientId = gaClientId;
+	    }
     }
 
     /**
