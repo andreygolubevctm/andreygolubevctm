@@ -22,7 +22,7 @@
 <%-- Get call centre number --%>
 <c:set var="callCentreNumber" scope="request"><content:get key="callCentreNumber"/></c:set>
 
-<div class="cta-panel">
+<div class="cta-panel hidden">
     <span class="copy">
         ${ctaCopy}
     </span>

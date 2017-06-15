@@ -8,7 +8,6 @@
   background-color: @theme-accent-4;
   border-radius: 10px;
   color: @white;
-  display: none;
   margin: 0 auto;
   max-width: 300px;
 
@@ -38,15 +37,17 @@
 }
 
 body {
-  &[data-step=contact] {
-    &.ctaPanel-active {
-      .cta-panel {
-        display: block;
-      }
+  @media (@xs-only) {
+    &[data-step=contact] {
+      &.ctaPanel-active {
+        .cta-panel {
+          display: block;
+        }
 
-      .campaign-tile-container,
-      .campaign-tile-container-xs {
-        display: none;
+        .campaign-tile-container,
+        .campaign-tile-container-xs {
+          display: none;
+        }
       }
     }
   }

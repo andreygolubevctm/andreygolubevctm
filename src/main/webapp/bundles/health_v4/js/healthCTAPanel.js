@@ -5,6 +5,9 @@
 
     function trigger() {
         $('body').addClass('ctaPanel-active');
+
+        $('.cta-panel').removeClass('hidden');
+        $('#contactForm .campaign-tile-container').addClass('hidden');
     }
 
     meerkat.modules.register('healthCTAPanel', {
