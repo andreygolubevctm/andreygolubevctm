@@ -103,7 +103,7 @@
                 </c:when>
                 <c:when test="${param.action == 'load' || param.action == 'amend'}">
                     <input type="hidden" name="health_retrieve_savedResults" value="Y" />
-                    <input type="hidden" name="health_retrieve_transactionId" value="${data['current/previousTransactionId']}" />
+                    <input type="hidden" name="health_retrieve_transactionId" value="<c:out value='${param.transactionId}' escapeXml="true" />" />
                 </c:when>
             </c:choose>
         </c:if>

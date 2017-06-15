@@ -22,11 +22,13 @@
         $inboundQuestionsetFollowupDialogue,
         $inboundQuestionsetFollowupToggles,
         $inboundApplicationFollowupDialogue,
+        $privatePatientDialogue,
         $inboundApplicationFollowupToggles,
         $followupDialogueContentContainers,
         $simplesMedicareCoverForm = null,
         $applicantWrappers = {},
-        currentFamilyType = null;
+        currentFamilyType = null,
+        $limitedCoverHidden;
 
     function init() {
         $(document).ready(function () {
@@ -58,6 +60,8 @@
             $simplesMedicareCoverForm = $('#health_situation_cover_wrapper');
             $applicantWrappers.primary = $('#health-contact-fieldset .content:first');
             $applicantWrappers.partner = $('#partner-health-cover .content:first');
+	        $privatePatientDialogue = $('.simples-dialogue-24');
+            $limitedCoverHidden = $("input[name='health_situation_accidentOnlyCover']");
 
             // Handle pre-filled
             populatePrevAssignedRadioBtnGroupValue();
@@ -338,9 +342,14 @@
         $dialoguePartnerCover.toggleClass('hidden', $healthPartnerCover.filter(':checked').val() !== "Y");
     }
 
+    function toggleLimitedCoverDialogue() {
+        $privatePatientDialogue.toggleClass('hidden', $limitedCoverHidden.val() !== 'Y');
+    }
+
     meerkat.modules.register("simplesBindings", {
         init: init,
-        updateSimplesMedicareCoverQuestionPosition: updateSimplesMedicareCoverQuestionPosition
+        updateSimplesMedicareCoverQuestionPosition: updateSimplesMedicareCoverQuestionPosition,
+        toggleLimitedCoverDialogue: toggleLimitedCoverDialogue
     });
 
 })(jQuery);

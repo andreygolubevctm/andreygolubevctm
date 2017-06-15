@@ -16,11 +16,13 @@
 
                 <simples:dialogue id="49" vertical="health" />
 
-                <form_v4:fieldset legend="" className="benefitsContainer">
+                <form_v4:fieldset
+                        legend=""
+                        className="benefitsContainer">
                     <!-- TODO: update the fields with the newer fields -->
                     <c:set var="xpath" value="${pageSettings.getVerticalCode()}/healthCover" />
                     <health_v4_insuranceprefs:continuous_cover xpath="${xpath}" />
-
+                    <div class="fieldrow healthCoverPartnerHeading"><h3>We have a few additional questions about you and your partner</h3></div>
                     <c:set var="xpath" value="${pageSettings.getVerticalCode()}/healthCover" />
                     <health_v4_insuranceprefs:partner_dob xpath="${xpath}" />
                     <health_v4_insuranceprefs:partner_cover xpath="${xpath}" />

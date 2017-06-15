@@ -42,7 +42,7 @@ var Track_Life = {
 			var email = 		$("#life_contactDetails_email").val();
 			
 				tran_id = tran_id || ( typeof meerkat !== "undefined" ? meerkat.modules.transactionId.get() : referenceNo.getTransactionID(false) );
-
+			var crossVerticalOptin = $('#life_leadCapture_health').val() || null;
 			var fields = {
 				vertical:				this._type,
 				actionStep:				actionStep,
@@ -53,8 +53,12 @@ var Track_Life = {
 					email: 					email,
 					emailID:			    null,
 			    postCode: 				postcode,
-					state: 					state
+					state: 					state,
 			};
+			
+			if (crossVerticalOptin != null && crossVerticalOptin === 'Y') {
+				fields.crossVerticalOptin = 'health';
+			}
 			
 				Track.runTrackingCall('trackQuoteForms', fields);
 			}
