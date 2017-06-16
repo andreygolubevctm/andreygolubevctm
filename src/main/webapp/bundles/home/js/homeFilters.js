@@ -109,7 +109,7 @@
 	}
 	
 	function SortLandlordFiltersXS() {
-		var filters = meerkat.site.landlordFilters;
+		var filters = meerkat.site.landlordFilters.filters;
 		var checkbox = '.mobile-drop .landlord-filter-items .checkbox input';
 		if (!filters.showall) {
 			$(checkbox + '[name="showall"]')[0].checked = false;
@@ -334,10 +334,37 @@
 
 		// Dropdown options
 		$component.on('click', '.dropdown-menu a', handleDropdownOption);
-
+		
+		function landlordFiltersSort() {
+			var filters  = meerkat.site.landlordFilters.filters;
+			var toFilter = meerkat.site.landlordFilters.toFilter;
+			
+			for(var i = 0; toFilter.length > i; i++) {
+				for (var j in toFilter[i].filters) {
+					var toHide = false;
+					if (filters[j] && filters[j] !== toFilter[i].filters[j]) {
+						toHide = true;
+					}
+					if (toHide) {
+						$(toFilter[i].key).hide();
+					} else {
+						$(toFilter[i].key).show();
+					}
+				}
+			}
+		}
 
 		$updateBtn.on('click', function updateResults() {
-			meerkat.messaging.publish(moduleEvents.CHANGED, {contentsExcess:currentValues.contentsExcess, homeExcess:currentValues.homeExcess});
+			var revised = {
+					display: $('#xsFilterBarSortRow input:checked').val(),
+					homeExcess : $('#xsFilterBarHomeExcessRow select').val(),
+					contentsExcess : $('#xsFilterBarContentsExcessRow select').val()
+			};
+			if (previousValues.contentsExcess || previousValues.homeExcess) {
+				meerkat.messaging.publish(moduleEvents.CHANGED, {contentsExcess:currentValues.contentsExcess, homeExcess:currentValues.homeExcess});
+			} else {
+				landlordFiltersSort();
+			}
 			toggleUpdate(true);
 		});
 
@@ -426,7 +453,6 @@
 	function saveModalChanges() {
 		var $homeExcess = $('#home_homeExcess');
 		var $contentsExcess = $('#home_contentsExcess');
-		var isChecked = $('.mobile-drop .landlord-filter-items .checkbox input:checked');
 		var filters = meerkat.site.landlordFilters;
 		var revised = {
 				display: $('#xsFilterBarSortRow input:checked').val(),
@@ -455,14 +481,14 @@
 		meerkat.modules.dialogs.close(modalID);
 		meerkat.modules.navMenu.close();
 
-		if (isChecked.length > 0) {
-			meerkat.messaging.publish(moduleEvents.CHANGED, {filters: filters});
-		}
+
 		if( currentValues.homeExcess !== revised.homeExcess ) {
+			console.log('fired');
 			currentValues.homeExcess = revised.homeExcess;
 			meerkat.messaging.publish(moduleEvents.CHANGED, {homeExcess:revised.homeExcess});
 		}
 		if( currentValues.contentsExcess !== revised.contentsExcess ) {
+			console.log('fired 2');
 			currentValues.contentsExcess = revised.contentsExcess;
 			meerkat.messaging.publish(moduleEvents.CHANGED, {contentsExcess:revised.contentsExcess});
 		}
@@ -562,12 +588,15 @@
 		$landlordMenu.on('click', function(e) {
 			e.stopPropagation();
 		});
-		
+		meerkat.site.LandlordToFilter = [];
 		meerkat.site.landlordFilters = {
-			showall: true,
-			rdef: false,
-			malt: false,
-			lossrent: false,
+			toFilter: [],
+			filters: {
+				showall: true,
+				rdef: false,
+				malt: false,
+				lossrent: false
+			},
 			labels: {
 				showall: "Show All",
 				rdef: "Tenant Default",
@@ -599,7 +628,7 @@
 		// TODO: refactor these two functions, ran out of time
 		$(document).on('click', '.mobile-drop .landlord-filter-items .checkbox input', function(e) {
 			var first = $('#showall_m')[0];
-			var filters = meerkat.site.landlordFilters;
+			var filters = meerkat.site.landlordFilters.filters;
 			filters[e.target.name] = this.checked;
 			if (first.name !== e.target.name) {
 				if (first.checked && this.checked) {
@@ -619,7 +648,7 @@
 		
 		// uncheck show all if other input is checked 
 		$landlordCheckboxes.on('click', function(e) {
-			var filters = meerkat.site.landlordFilters;
+			var filters = meerkat.site.landlordFilters.filters;
 			$updateFiltersBtn.removeClass('hidden');
 			filters[this.id] = this.checked;
 			if (firstCheckbox.id !== this.id) {

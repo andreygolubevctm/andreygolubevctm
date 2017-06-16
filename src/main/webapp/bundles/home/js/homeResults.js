@@ -261,8 +261,7 @@
 
 		// When the excess filter changes, fetch new results
 		meerkat.messaging.subscribe(meerkatEvents.homeFilters.CHANGED, function onFilterChange(obj){
-			
-			if (obj && (obj.homeExcess || obj.contentsExcess || obj.filters)) {
+			if (obj && (obj.homeExcess || obj.contentsExcess)) {
 				// This is a little dirty however we need to temporarily override the
 				// setting which prevents the tranId from being incremented.
 				meerkat.modules.resultsTracking.setResultsEventMode('Load');

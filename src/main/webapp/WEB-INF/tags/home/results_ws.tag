@@ -163,6 +163,18 @@
 	{{ var template = $("#home-offline-discount-template").html(); }}
 	{{ var htmlTemplate = _.template(template); }}
 	{{ obj.offlineDiscountTemplate = htmlTemplate(obj); }}
+	{{ if(meerkat.site.isLandlord) { }}
+		{{ var filters = {} }}
+		{{ filters.lossrent = obj.features.lossrent && obj.features.lossrent.value === "Y" ? true : false }}
+		{{ filters.malt = obj.features.malt && obj.features.malt.value === "Y" ? true : false }}
+		{{ filters.rdef = obj.features.rdef && obj.features.rdef.value === "Y" ? true : false }}
+		{{ var key = '.result_' + obj.productId }}
+		{{ meerkat.site.landlordFilters.toFilter.push({key, filters}) }}
+		
+		{{ var lossrent = filters.lossrent ? '<span><i class="icon-skinny-tick"></i> Loss of rent</span>' : '' }}
+		{{ var malt = filters.malt ? '<span><i class="icon-skinny-tick"></i> Malicious damage</span>' : ''}}
+		{{ var rdef = filters.rdef ? '<span><i class="icon-skinny-tick"></i> Tenant default cover</span>' : ''}}
+	{{ } }}
 
 	<div class="result-row result_{{= obj.productId }}" data-productId="{{= obj.productId }}" data-available="Y">
 		<div class="result featuresDockedHeader">
@@ -260,9 +272,9 @@
 						</div>
 						{{ if (meerkat.site.isLandlord) { }}
 							<div class="landlord-filters">
-								{{= obj.features.lossrent && obj.features.lossrent.value === "Y" ? '<span><i class="icon-skinny-tick"></i> Loss of rent</span>' : '' }}
-								{{= obj.features.malt && obj.features.malt.value === "Y" ? '<span><i class="icon-skinny-tick"></i> Malicious damage</span>' : ''}}
-								{{= obj.features.rdef && obj.features.rdef.value === "Y" ? '<span><i class="icon-skinny-tick"></i> Tenant default cover</span>' : ''}}
+								{{= lossrent }}
+								{{= malt }}
+								{{= rdef }}
 							</div>
 						{{ } }}
 						<div class="clearfix">
