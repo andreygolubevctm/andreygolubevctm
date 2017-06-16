@@ -65,7 +65,6 @@ public class ResultsDisplayService {
                 item.setHelpId(result.getInt("helpId"));
                 item.setShortlistKey(result.getString("shortlistKey"));
                 item.setFlag(result.getInt("flag"));
-                item.setIsLandlordFeature(result.getBoolean("isLandlordFeature") + "");
                 unorganisedList.add(item);
             }
 
