@@ -22,6 +22,7 @@
 
 	<c:set var="fieldXpath" value="${xpath}/firstname" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="First Name" hideHelpIconCol="true" smRowOverride="4" isNestedField="${true}">
+		<span class="hidden person-name-check-format">Check format</span>
 		<field_v1:person_name xpath="${fieldXpath}" required="true" title="${title} first name" className="contactField" placeholder="First name" disableErrorContainer="${true}" maxlength="${firstNameMaxlength}" />
 	</form_v2:row>
 	<c:if test="${showInitial eq true}">
@@ -32,6 +33,7 @@
 	</c:if>
 	<c:set var="fieldXpath" value="${xpath}/surname" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="Last Name" hideHelpIconCol="true" smRowOverride="4" isNestedField="${true}">
+		<span class="hidden person-name-check-format">Check format</span>
 		<field_v1:person_name xpath="${fieldXpath}" required="true" title="${title} last name" className="contactField" placeholder="Last name" disableErrorContainer="${true}" maxlength="${lastNameMaxlength}" />
 	</form_v2:row>
 </form_v2:row>

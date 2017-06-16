@@ -8,7 +8,8 @@
         $paymentMedicareColour,
         $paymentMedicareCover,
         $medicareYellowMessage,
-        $unitElements;
+        $unitElements,
+        $personName;
 
     function init(){
         $(document).ready(function () {
@@ -24,6 +25,7 @@
                 appPostalStreetNum: $('#health_application_postal_streetNum'),
                 appPostalUnitType: $('#health_application_postal_unitType')
             };
+            $personName = $('.contactField.person_name');
         });
     }
 
@@ -53,6 +55,9 @@
         $unitElements.appAddressUnitType.add($unitElements.appPostalUnitType).on('change', function toggleUnitRequiredFields() {
             _toggleUnitRequired(this.id.includes('address') ? 'Address' : 'Postal', this.value !== '');
         });
+
+        // Default Check format message on person name field
+        $personName.parent().find('.person-name-check-format').addClass('hidden');
     }
 
     function onInitialise() {
@@ -76,6 +81,29 @@
                 $("#health_payment_details_start").val( e.format() );
                 meerkat.messaging.publish(meerkatEvents.health.CHANGE_MAY_AFFECT_PREMIUM);
             });
+
+        // Show Check format message on name fields when field isn't in 'Proper case'
+        $personName.on('change', function() {
+            var value = $(this).val(),
+                showCheckFormat = false,
+                i = 1,
+                character = '',
+                $checkFormat = $(this).parent().find('.person-name-check-format');
+
+            if (!_.isEmpty(value)) {
+                for (i = 1; i < value.length; i++) {
+                    character = value.charAt(i);
+
+                    if (character === character.toUpperCase()) {
+                        showCheckFormat = true;
+                    }
+                }
+
+                $checkFormat.toggleClass('hidden', showCheckFormat === false);
+            } else {
+                $checkFormat.addClass('hidden');
+            }
+        });
     }
 
     function _toggleUnitRequired(addressType, isUnit) {
