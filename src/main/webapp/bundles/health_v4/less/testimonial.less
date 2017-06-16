@@ -1,25 +1,25 @@
 body{
-	/* pages to display the testimonials */
+	/* pages to display the contact testimonials */
 	&[data-step=contact] {
-		.loadingQuoteText {
+		.contactQuoteTestimonial {
 			display: block;
 		}
 	}
-	/* pages to exclude the testimonials */
+	/* pages to exclude the contact testimonials */
 	&:not([data-step=contact]) {
-		.loadingQuoteText {
+		.contactQuoteTestimonial {
 			display: none;
 		}
 	}
 }
 
-blockquote.loadingQuoteText{
+blockquote.contactQuoteTestimonial{
 	padding:0;
 	margin:0;
 	border-left: none;
 }
 
-.loadingQuoteText {
+.contactQuoteTestimonial {
 	font-family: @font-family-theme-light;
 	font-size: @font-size-large;
 
