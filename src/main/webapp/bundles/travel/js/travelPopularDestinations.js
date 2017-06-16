@@ -1,4 +1,4 @@
-;(function($, undefined){
+;(function ($, undefined) {
 
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
@@ -27,7 +27,7 @@
 
     function eventSubscriptions() {
 
-        $destinationsfs.find('ul.selected-tags').on('DOMSubtreeModified', function(){
+        $destinationsfs.find('ul.selected-tags').on('DOMSubtreeModified', function () {
             $travelDestinations.qtip().reposition();
         });
 
@@ -88,7 +88,9 @@
         $destinationsList.find('a.destination-item').on('click', function onTravelDestinationClick() {
             var $this = $(this),
                 country = $this.data('country');
+
             if ($this.hasClass('active')) {
+                // Remove country from selected-tags list
                 $destinationsfs.find('.selected-tag').filter(function filterByIsoCode() {
                     return country.isoCode === $(this).data('value');
                 }).find('button').trigger('click');
@@ -100,7 +102,7 @@
     }
 
     function toggleSelectedIcon(isoCode, state) {
-        $destinationsfs.find('.popular-countries-container a').filter(function filterByIsoCode() {
+        $destinationsList.find('a.destination-item').filter(function filterByIsoCode() {
             return $(this).data('country').isoCode === isoCode;
         }).toggleClass('active', state);
     }
