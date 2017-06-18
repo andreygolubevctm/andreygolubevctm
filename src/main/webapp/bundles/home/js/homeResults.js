@@ -249,6 +249,11 @@
 	}
 
 	function eventSubscriptions() {
+		meerkat.messaging.subscribe(meerkatEvents.commencementDate.RESULTS_RENDER_COMPLETED, function landlordSortFilter() {
+			if (meerkat.site.isLandlord) {
+					meerkat.modules.homeFilters.landlordFiltersSort();
+			}
+		});
 		meerkat.messaging.subscribe(Results.model.moduleEvents.RESULTS_MODEL_UPDATE_BEFORE_FILTERSHOW, function modelUpdated() {
 			Results.model.landlordFilter = landlordFilter;
 			Results.model.homeCustomSort = sortRealAndWool;

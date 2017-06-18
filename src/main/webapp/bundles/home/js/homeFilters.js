@@ -334,25 +334,6 @@
 
 		// Dropdown options
 		$component.on('click', '.dropdown-menu a', handleDropdownOption);
-		
-		function landlordFiltersSort() {
-			var filters  = meerkat.site.landlordFilters.filters;
-			var toFilter = meerkat.site.landlordFilters.toFilter;
-			
-			for(var i = 0; toFilter.length > i; i++) {
-				for (var j in toFilter[i].filters) {
-					var toHide = false;
-					if (filters[j] && filters[j] !== toFilter[i].filters[j]) {
-						toHide = true;
-					}
-					if (toHide) {
-						$(toFilter[i].key).hide();
-					} else {
-						$(toFilter[i].key).show();
-					}
-				}
-			}
-		}
 
 		$updateBtn.on('click', function updateResults() {
 			var revised = {
@@ -360,7 +341,9 @@
 					homeExcess : $('#xsFilterBarHomeExcessRow select').val(),
 					contentsExcess : $('#xsFilterBarContentsExcessRow select').val()
 			};
-			if (previousValues.contentsExcess || previousValues.homeExcess) {
+			if (previousValues.contentsExcess && previousValues.contentsExcess !== currentValues.contentsExcess || previousValues.homeExcess && previousValues.homeExcess !== currentValues.homeExcess)  {
+				previousValues.homeExcess = currentValues.homeExcess;
+				previousValues.contentsExcess = currentValues.contentsExcess; 
 				meerkat.messaging.publish(moduleEvents.CHANGED, {contentsExcess:currentValues.contentsExcess, homeExcess:currentValues.homeExcess});
 			} else {
 				landlordFiltersSort();
@@ -405,6 +388,25 @@
 			storeCurrentValues();
 			setHomeResultsFilter();
 		});
+	}
+	
+	function landlordFiltersSort() {
+		var filters  = meerkat.site.landlordFilters.filters;
+		var toFilter = meerkat.site.landlordFilters.toFilter;
+		
+		for(var i = 0; toFilter.length > i; i++) {
+			for (var j in toFilter[i].filters) {
+				var toHide = false;
+				if (filters[j] && filters[j] !== toFilter[i].filters[j]) {
+					toHide = true;
+				}
+				if (toHide) {
+					$(toFilter[i].key).hide();
+				} else {
+					$(toFilter[i].key).show();
+				}
+			}
+		}
 	}
 
 	function renderModal() {
@@ -483,12 +485,10 @@
 
 
 		if( currentValues.homeExcess !== revised.homeExcess ) {
-			console.log('fired');
 			currentValues.homeExcess = revised.homeExcess;
 			meerkat.messaging.publish(moduleEvents.CHANGED, {homeExcess:revised.homeExcess});
 		}
 		if( currentValues.contentsExcess !== revised.contentsExcess ) {
-			console.log('fired 2');
 			currentValues.contentsExcess = revised.contentsExcess;
 			meerkat.messaging.publish(moduleEvents.CHANGED, {contentsExcess:revised.contentsExcess});
 		}
@@ -679,7 +679,8 @@
 		enable: enable,
 		onRequestModal: onRequestModal,
 		toggleXSFilters : toggleXSFilters,
-		setHomeResultsFilter: setHomeResultsFilter
+		setHomeResultsFilter: setHomeResultsFilter,
+		landlordFiltersSort: landlordFiltersSort
 	});
 
 })(jQuery);
