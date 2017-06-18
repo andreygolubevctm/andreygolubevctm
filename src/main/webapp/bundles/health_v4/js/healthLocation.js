@@ -51,6 +51,10 @@
         }
     }
 
+    function setResidentialState(value) {
+        $('#health_situation_state').val(value);
+    }
+
     function _isValidLocation(location) {
         var search_match = new RegExp(/^((\s)*([^~,])+\s+)+\d{4}((\s)+(ACT|NSW|QLD|TAS|SA|NT|VIC|WA)(\s)*)$/),
             value = $.trim(String(location));
@@ -72,7 +76,8 @@
         initHealthLocation: initHealthLocation,
         events: moduleEvents,
         setLocation: setLocation,
-        getLocation: getLocation
+        getLocation: getLocation,
+        setResidentialState: setResidentialState
     });
 
 })(jQuery);

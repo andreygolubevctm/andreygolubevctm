@@ -49,6 +49,17 @@ ${newPage.init(pageContext.request, pageSettings)}
 <%-- for Health V2 A/B testing --%>
 <c:set var="fileName" value="${pageSettings.getVerticalCode()}" />
 <c:if test="${not empty bundleFileName}"><c:set var="fileName" value="${bundleFileName}" /></c:if>
+
+<%-- Check and set call centre open status --%>
+<jsp:useBean id="openingHoursService" class="com.ctm.web.core.openinghours.services.OpeningHoursService" scope="page" />
+<c:set var="verticalId" value="${pageSettings.getVertical().getId()}"/>
+<c:set var="callCentreOpen" scope="request">${openingHoursService.isCallCentreOpenNow(verticalId, pageContext.getRequest())}</c:set>
+<c:set var="isCallCentreOpenClass">
+	<c:choose>
+		<c:when test="${callCentreOpen eq true}">callcentreopen</c:when>
+		<c:otherwise>callcentreclosed</c:otherwise>
+	</c:choose>
+</c:set>
 <!DOCTYPE html>
 <go:html>
 <head>
@@ -108,7 +119,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 
 <%-- There's a bug in the JSTL parser which eats up the spaces between dynamic classes like this so using c:out sorts it out --%>
 <c:set var="bodyClass">
-	<c:out value="${pageSettings.getVerticalCode()} ${callCentre ? ' callCentre simples' : ''} ${body_class_name}" />
+	<c:out value="${pageSettings.getVerticalCode()} ${callCentre ? ' callCentre simples' : ''} ${body_class_name} ${isCallCentreOpenClass}" />
 </c:set>
 </head>
 
