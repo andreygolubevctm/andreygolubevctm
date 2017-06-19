@@ -51,7 +51,13 @@
             meerkat.modules.healthAboutYou.getPrimaryCurrentCover());
 
         $unitElements.appAddressUnitType.add($unitElements.appPostalUnitType).on('change', function toggleUnitRequiredFields() {
-            _toggleUnitRequired(this.id.includes('address') ? 'Address' : 'Postal', (!_.isEmpty(this.value) && this.value !== 'HO'));
+            var addressType = this.id.indexOf('address') !== -1 ? 'Address' : 'Postal';
+
+            _toggleUnitRequired(addressType, this.value !== '');
+
+            if (addressType === 'Postal') {
+                _changeStreetNoLabel(this.value);
+            }
         });
     }
 
@@ -87,6 +93,17 @@
         if (!isUnit) {
             $fields.blur();
         }
+    }
+
+    function _changeStreetNoLabel(unitType) {
+        var $label = $unitElements.appPostalStreetNum.closest('.form-group').find('label'),
+            labelText = 'Street No.';
+
+        if (unitType === 'PO') {
+            labelText = 'Box No.';
+        }
+
+        $label.text(labelText);
     }
 
     meerkat.modules.register('healthApplyStep', {
