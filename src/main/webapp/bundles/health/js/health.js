@@ -605,10 +605,14 @@
 						errorLevel: "silent",
 						onSuccess: function getProviderContentSuccess(result) {
 							if (result.hasOwnProperty('providerContentText')) {
-								meerkat.modules.dialogs.show({
-									title: 'Declaration',
-									htmlContent : result.providerContentText
-								});
+								var callback = function applyCusotmisedProviderContentCallback(content) {
+									meerkat.modules.dialogs.show({
+										title: 'Declaration',
+										htmlContent : content
+									});
+								};
+								// Call function to update placeholder copy
+								applyCusotmisedProviderContent(selectedProduct, result.providerContentText, callback);
 							}
 						}
 					});
@@ -671,6 +675,64 @@
 			applyStep: applyStep,
 			paymentStep: paymentStep
 		};
+	}
+
+	/**
+	 * applyCusotmisedProviderContent() method to replace placeholder content with product
+	 * specific copy. The expected placeholders and the objects containing their values
+	 * are stored in content_control/supplementary.
+	 * @param product Object
+	 * @param content String
+	 * @param callback Function
+	 */
+	function applyCusotmisedProviderContent(product, content, callback) {
+		meerkat.modules.comms.get({
+			url: "spring/content/getsupplementary.json",
+			data: {
+				vertical: 'HEALTH',
+				key: 'simplesJoinDecVariables'
+			},
+			cache: true,
+			errorLevel: "silent",
+			onSuccess: function getProviderContentSuccess(resultData) {
+				if(_.isObject(resultData) && _.has(resultData,'supplementary') && !_.isEmpty(resultData.supplementary) && _.isArray(resultData.supplementary)) {
+					// Lint safe method to EVAL basic strings
+					var evalString = function (str, contexta) {
+						contexta = contexta || window;
+						var evalStringSimple = function(str, contextb) {
+							contextb = contextb || window;
+							var namespaces = str.split(".");
+							var prop = namespaces.pop();
+							namespaces.shift();
+							for (var i = 0; i < namespaces.length; i++) {
+								contextb = contextb[namespaces[i]];
+							}
+							return contextb[prop];
+						};
+						// If str contains square brackets then execute that first
+						var exp = /\[(.)+\]/g;
+						if(exp.test(str)) {
+							var sub = str.match(exp)[0].replace("[","").replace("]","");
+							var subval = evalStringSimple(sub, contexta);
+							str = str.replace(exp,"." + subval);
+						}
+						return evalStringSimple(str, contexta);
+					};
+
+					/**
+					 * Cycle through each key/value defined in content_supplementary and
+					 * use to replace the placeholders in the copy.
+					 */
+					for(var i=0; i<resultData.supplementary.length; i++) {
+						var supp = resultData.supplementary[i];
+						content = content.replace("[" + supp.supplementaryKey + "]",evalString(supp.supplementaryValue, product));
+					}
+				}
+			},
+			onComplete: function() {
+				callback(content);
+			}
+		});
 	}
 
 	function configureProgressBar(){
