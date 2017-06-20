@@ -54,7 +54,7 @@
 	<c:set var="fieldXpath" value="${xpath}/streetNum" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="Street No." id="${name}_streetNumRow" className="std_streetNum" smRowOverride="5" hideHelpIconCol="${true}">
 		<div class="${name}_streetNum_container">
-			<field_v2:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetNum blur-on-select show-loading sessioncamexclude" title="the street no." includeInForm="true" required="false" placeHolder="St. #" additionalAttributes="data-msg-required='Please enter a street number' data-validation-position='append' " />
+			<field_v2:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetNum blur-on-select show-loading sessioncamexclude" title="the street no." includeInForm="true" required="true" placeHolder="St. #" additionalAttributes="data-msg-required='Please enter a street number' data-validation-position='append' " />
 		</div>
 	</form_v2:row>
 
