@@ -14,6 +14,7 @@ var healthFunds_AIA = {
     $paymentStartDate: $("#health_payment_details_start"),
     $partnerEmailRow: null,
     $partnerEmail: null,
+    emailUniqueMsg: 'To activate your Vitality membership, a unique email is required for each adult on the policy. Duplicate emails are not supported.',
 
     paymentDayChange : function(value) {
         healthFunds_AIA.$policyDateHiddenField.val(value);
@@ -38,7 +39,7 @@ var healthFunds_AIA = {
             healthFunds_AIA.$partnerEmail
                 .attr('data-rule-isUnique', true)
                 .attr('data-isUniqueTo', $('#health_application_email').val())
-                .attr('data-msg-isUnique', 'Email must be unique');
+                .attr('data-msg-isUnique', healthFunds_AIA.emailUniqueMsg);
         }
 
         <%--Contact Point question--%>
