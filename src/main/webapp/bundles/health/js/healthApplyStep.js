@@ -22,7 +22,8 @@
                 appAddressUnitType: $('#health_application_address_unitType'),
                 appPostalUnitShop: $('#health_application_postal_unitShop'),
                 appPostalStreetNum: $('#health_application_postal_streetNum'),
-                appPostalUnitType: $('#health_application_postal_unitType')
+                appPostalUnitType: $('#health_application_postal_unitType'),
+                appPostalNonStdStreet: $('#health_application_postal_nonStdStreet')
             };
         });
     }
@@ -53,11 +54,12 @@
         $unitElements.appAddressUnitType.add($unitElements.appPostalUnitType).on('change', function toggleUnitRequiredFields() {
             var addressType = this.id.indexOf('address') !== -1 ? 'Address' : 'Postal';
 
-            _toggleUnitRequired(addressType, this.value);
-
             if (addressType === 'Postal') {
                 _changeStreetNoLabel(this.value);
+                _toggleStreetRules(this.value);
             }
+
+            _toggleUnitRequired(addressType, this.value);
         });
     }
 
@@ -91,7 +93,7 @@
             $unitElements['app' + addressType + 'UnitShop'].setRequired(!isPoxBox);
 
             if (isPoxBox) {
-                $unitElements['app' + addressType + 'UnitShop'].blur();
+                $unitElements.appPostalUnitShop.add($unitElements.appPostalNonStdStreet).blur();
             }
         } else {
             $unitElements['app' + addressType + 'UnitShop'].setRequired(false).blur();
@@ -114,6 +116,18 @@
 
         if ($errorField.length > 0) {
             $errorField.text(msgRequired);
+        }
+    }
+
+    function _toggleStreetRules(unitType) {
+        if (unitType === 'PO') {
+            $unitElements.appPostalNonStdStreet
+                .removeRule('regex')
+                .removeRule('validAddress');
+        } else {
+            $unitElements.appPostalNonStdStreet
+                .addRule('regex', '[a-zA-Z0-9 ]+')
+                .addRule('validAddress', 'health_application_postal');
         }
     }
 
