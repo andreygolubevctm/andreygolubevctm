@@ -53,7 +53,7 @@
         $unitElements.appAddressUnitType.add($unitElements.appPostalUnitType).on('change', function toggleUnitRequiredFields() {
             var addressType = this.id.indexOf('address') !== -1 ? 'Address' : 'Postal';
 
-            _toggleUnitRequired(addressType, this.value !== '');
+            _toggleUnitRequired(addressType, this.value);
 
             if (addressType === 'Postal') {
                 _changeStreetNoLabel(this.value);
@@ -84,26 +84,37 @@
             });
     }
 
-    function _toggleUnitRequired(addressType, isUnit) {
-        var $fields = $unitElements['app'+addressType+'UnitShop'].add($unitElements['app'+addressType+'StreetNum']);
+    function _toggleUnitRequired(addressType, unitType) {
+        var isPoxBox = unitType === 'PO';
 
-        $fields.setRequired(isUnit);
+        if (!_.isEmpty(unitType)) {
+            $unitElements['app' + addressType + 'UnitShop'].setRequired(!isPoxBox);
 
-        // blur out of fields to trigger validation when unitType not equal to 'UN'
-        if (!isUnit) {
-            $fields.blur();
+            if (isPoxBox) {
+                $unitElements['app' + addressType + 'UnitShop'].blur();
+            }
+        } else {
+            $unitElements['app' + addressType + 'UnitShop'].setRequired(false).blur();
         }
     }
 
     function _changeStreetNoLabel(unitType) {
-        var $label = $unitElements.appPostalStreetNum.closest('.form-group').find('label'),
-            labelText = 'Street No.';
+        var $label = $unitElements.appPostalStreetNum.closest('.form-group').find('label.control-label'),
+            $errorField = $('#health_application_postal_streetNum-error'),
+            labelText = 'Street No.',
+            msgRequired = 'Please enter a street number';
 
         if (unitType === 'PO') {
             labelText = 'Box No.';
+            msgRequired = 'Please enter a box number';
         }
 
         $label.text(labelText);
+        $unitElements.appPostalStreetNum.attr('data-msg-required', msgRequired);
+
+        if ($errorField.length > 0) {
+            $errorField.text(msgRequired);
+        }
     }
 
     meerkat.modules.register('healthApplyStep', {
