@@ -79,7 +79,9 @@
                     <c:set var="fieldXpath" value="${xpath}/cover" />
                     <c:set var="fieldXpathName" value="${go:nameFromXpath(fieldXpath)}_wrapper" />
                     <form_v3:row label="Private Health Insurance works in conjunction with Medicare, so just to confirm, do all people to be covered on this policy have a blue or green Medicare card?" fieldXpath="${fieldXpath}" id="${fieldXpathName}" className="health_situation_medicare text-danger" helpId="564">
-                        <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your Medicare card cover" required="true" className="health-medicare_details-card" id="${name}_cover" additionalAttributes="data-rule-isCheckedYes='true' data-msg-isCheckedYes='Unfortunately we cannot continue with your quote'" />
+                        <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}"
+                            title="your Medicare card cover" required="true" className="health-medicare_details-card"
+                            id="${name}_cover" additionalAttributes="data-rule-isCheckedYes='true' data-msg-isCheckedYes='Customer not eligible for standard health insurance but may be eligible for Overseas Visitors Cover (OVC). Please warm transfer the customer to the \"Bupa OVC\" line and then disposition lead as OVC. '" />
                     </form_v3:row>
                 </c:if>
 
