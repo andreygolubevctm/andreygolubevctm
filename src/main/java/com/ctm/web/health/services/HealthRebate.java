@@ -9,21 +9,21 @@ import java.math.BigDecimal;
 public class HealthRebate {
 
     ChangeOverRebatesService changeOverRebatesService;
-    private BigDecimal currentRebate;
-    private BigDecimal previousRebate;
-    private BigDecimal futureRebate;
-    private BigDecimal rebateTier0Current;
-    private BigDecimal rebateTier1Current;
-    private BigDecimal rebateTier2Current;
-    private BigDecimal rebateTier3Current;
-    private BigDecimal rebateTier0Previous;
-    private BigDecimal rebateTier1Previous;
-    private BigDecimal rebateTier2Previous;
-    private BigDecimal rebateTier3Previous;
-    private BigDecimal rebateTier0Future;
-    private BigDecimal rebateTier1Future;
-    private BigDecimal rebateTier2Future;
-    private BigDecimal rebateTier3Future;
+    private String currentRebate;
+    private String previousRebate;
+    private String futureRebate;
+    private String rebateTier0Current;
+    private String rebateTier1Current;
+    private String rebateTier2Current;
+    private String rebateTier3Current;
+    private String rebateTier0Previous;
+    private String rebateTier1Previous;
+    private String rebateTier2Previous;
+    private String rebateTier3Previous;
+    private String rebateTier0Future;
+    private String rebateTier1Future;
+    private String rebateTier2Future;
+    private String rebateTier3Future;
 
     public HealthRebate(){
         changeOverRebatesService = new ChangeOverRebatesService();
@@ -44,17 +44,17 @@ public class HealthRebate {
         rebateTier0Previous = calculateRebate( age, new BigDecimal(30), previousMultiplier);
         rebateTier1Previous = calculateRebate( age, new BigDecimal(20), previousMultiplier);
         rebateTier2Previous = calculateRebate( age, new BigDecimal(10), previousMultiplier);
-        rebateTier3Previous = BigDecimal.ZERO;
+        rebateTier3Previous = "0";
 
         rebateTier0Current = calculateRebate( age, new BigDecimal(30), multiplier);
         rebateTier1Current = calculateRebate( age, new BigDecimal(20), multiplier);
         rebateTier2Current = calculateRebate( age, new BigDecimal(10), multiplier);
-        rebateTier3Current = BigDecimal.ZERO;
+        rebateTier3Current = "0";
 
         rebateTier0Future = calculateRebate( age, new BigDecimal(30), futureMultiplier);
         rebateTier1Future = calculateRebate( age, new BigDecimal(20), futureMultiplier);
         rebateTier2Future = calculateRebate( age, new BigDecimal(10), futureMultiplier);
-        rebateTier3Future = BigDecimal.ZERO;
+        rebateTier3Future  = "0";
 
         if ("N".equals(rebateChoice) || income == 3) {
             currentRebate  = rebateTier3Current;
@@ -73,12 +73,9 @@ public class HealthRebate {
             previousRebate = rebateTier2Previous;
             futureRebate = rebateTier2Future;
         }
-
-        previousRebate =  rebate.multiply(changeOverRebates.getPreviousMultiplier());
-        futureRebate =  rebate.multiply(new BigDecimal(changeOverRebates.getFutureMultiplier()));
     }
 
-    protected BigDecimal calculateRebate(int age, BigDecimal rebateTier, BigDecimal multiplier) {
+    protected String calculateRebate(int age, BigDecimal rebateTier, BigDecimal multiplier) {
 
         BigDecimal rebate = rebateTier;
         if (age >= 65 && age <= 69) {
@@ -86,66 +83,66 @@ public class HealthRebate {
         } else  if (age >= 70) {
             rebate = rebateTier.add(new BigDecimal(10));
         }
-        return rebate.multiply(multiplier);
+        return rebate.multiply(multiplier).setScale(3, BigDecimal.ROUND_HALF_UP).toString();
     }
 
-    public BigDecimal getCurrentRebate() {
-        return currentRebate;
+    public String getCurrentRebate() {
+        return currentRebate.toString();
     }
 
-    public BigDecimal getPreviousRebate() {
+    public String getPreviousRebate() {
         return previousRebate;
     }
 
-    public BigDecimal getFutureRebate() {
+    public String getFutureRebate() {
         return futureRebate;
     }
 
-    public BigDecimal getRebateTier0Current() {
+    public String getRebateTier0Current() {
         return rebateTier0Current;
     }
 
-    public BigDecimal getRebateTier1Current() {
+    public String getRebateTier1Current() {
         return rebateTier1Current;
     }
 
-    public BigDecimal getRebateTier2Current() {
+    public String getRebateTier2Current() {
         return rebateTier2Current;
     }
 
-    public BigDecimal getRebateTier3Current() {
+    public String getRebateTier3Current() {
         return rebateTier3Current;
     }
 
-    public BigDecimal getRebateTier0Previous() {
+    public String getRebateTier0Previous() {
         return rebateTier0Previous;
     }
 
-    public BigDecimal getRebateTier1Previous() {
+    public String getRebateTier1Previous() {
         return rebateTier1Previous;
     }
 
-    public BigDecimal getRebateTier2Previous() {
+    public String getRebateTier2Previous() {
         return rebateTier2Previous;
     }
 
-    public BigDecimal getRebateTier3Previous() {
+    public String getRebateTier3Previous() {
         return rebateTier3Previous;
     }
 
-    public BigDecimal getRebateTier0Future() {
+    public String getRebateTier0Future() {
         return rebateTier0Future;
     }
 
-    public BigDecimal getRebateTier1Future() {
+    public String getRebateTier1Future() {
         return rebateTier1Future;
     }
 
-    public BigDecimal getRebateTier2Future() {
+    public String getRebateTier2Future() {
         return rebateTier2Future;
     }
 
-    public BigDecimal getRebateTier3Future() {
+    public String getRebateTier3Future() {
         return rebateTier3Future;
     }
 }
