@@ -10,7 +10,11 @@
     {{ var ft = featureIterator[i]; }}
     <%-- In health, we need to do this check, as we apply a property to the child object of the initial structure,
     when copying it to the 'your selected benefits'. --%>
-    {{ if(ft.doNotRender === true) { continue; } }}
+    {{ var filterByLandlord = false; }}
+    {{ if (meerkat.site.isLandlord && ft.className && ft.className.indexOf('notLandlord') > -1) filterByLandlord = true; }}
+    {{ if (!meerkat.site.isLandlord && ft.className && ft.className.indexOf('isLandlord') > -1) filterByLandlord = true; }}
+    
+    {{ if(ft.doNotRender === true || filterByLandlord) { continue; } }}
 
 
     {{ var dataSKey = typeof ft.shortlistKey != 'undefined' && ft.shortlistKey != '' ? 'data-skey="'+ft.shortlistKey + '"' : ''; }}

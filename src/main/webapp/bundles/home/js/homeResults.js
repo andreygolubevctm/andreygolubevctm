@@ -68,6 +68,11 @@
 				monthlyAvailable: "price.monthlyAvailable",
 				annualAvailable: "price.annualAvailable"
 			};
+			var features = {
+				lossrent: "features.lossrent.value",
+				rdef: "features.rdef.value",
+				malt: "features.malt.value"
+			};
 			var productAvailable = "available";
 			var productName = "productName";
 			var homeQuoteResultsUrl = "ajax/json/home_results_ws.jsp";
@@ -83,6 +88,7 @@
 						product: productAvailable,
 						price: price
 					},
+					features: features,
 					productId: "productId",
 					productBrandCode: "brandCode",
 					productName: productName
@@ -251,7 +257,7 @@
 	function eventSubscriptions() {
 		meerkat.messaging.subscribe(meerkatEvents.commencementDate.RESULTS_RENDER_COMPLETED, function landlordSortFilter() {
 			if (meerkat.site.isLandlord) {
-					meerkat.modules.homeFilters.landlordFiltersSort();
+					meerkat.modules.homeFilters.setLandlordFilters();
 			}
 		});
 		meerkat.messaging.subscribe(Results.model.moduleEvents.RESULTS_MODEL_UPDATE_BEFORE_FILTERSHOW, function modelUpdated() {

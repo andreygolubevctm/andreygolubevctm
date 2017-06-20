@@ -168,9 +168,6 @@
 		{{ filters.lossrent = obj.features.lossrent && obj.features.lossrent.value === "Y" ? true : false }}
 		{{ filters.malt = obj.features.malt && obj.features.malt.value === "Y" ? true : false }}
 		{{ filters.rdef = obj.features.rdef && obj.features.rdef.value === "Y" ? true : false }}
-		{{ var key = '.result_' + obj.productId }}
-		{{ meerkat.site.landlordFilters.toFilter.push({key, filters}) }}
-		
 		{{ var lossrent = filters.lossrent ? '<span><i class="icon-skinny-tick"></i> Loss of rent</span>' : '' }}
 		{{ var malt = filters.malt ? '<span><i class="icon-skinny-tick"></i> Malicious damage</span>' : ''}}
 		{{ var rdef = filters.rdef ? '<span><i class="icon-skinny-tick"></i> Tenant default cover</span>' : ''}}

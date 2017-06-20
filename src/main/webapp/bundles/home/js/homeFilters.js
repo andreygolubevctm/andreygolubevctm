@@ -346,7 +346,7 @@
 				previousValues.contentsExcess = currentValues.contentsExcess; 
 				meerkat.messaging.publish(moduleEvents.CHANGED, {contentsExcess:currentValues.contentsExcess, homeExcess:currentValues.homeExcess});
 			} else {
-				landlordFiltersSort();
+				setLandlordFilters();
 			}
 			toggleUpdate(true);
 		});
@@ -388,25 +388,6 @@
 			storeCurrentValues();
 			setHomeResultsFilter();
 		});
-	}
-	
-	function landlordFiltersSort() {
-		var filters  = meerkat.site.landlordFilters.filters;
-		var toFilter = meerkat.site.landlordFilters.toFilter;
-		
-		for(var i = 0; toFilter.length > i; i++) {
-			for (var j in toFilter[i].filters) {
-				var toHide = false;
-				if (filters[j] && filters[j] !== toFilter[i].filters[j]) {
-					toHide = true;
-				}
-				if (toHide) {
-					$(toFilter[i].key).hide();
-				} else {
-					$(toFilter[i].key).show();
-				}
-			}
-		}
 	}
 
 	function renderModal() {
@@ -578,6 +559,21 @@
 		});
 	}
 	
+	function setFeatureFilter(filter, stringName) {
+		if (filter) {
+			Results.filterBy(stringName, "value", { "equals": 'Y' });
+		} else {
+			Results.unfilterBy(stringName, "value", { "equals": 'Y' });
+		}
+	}
+	
+	function setLandlordFilters() {
+		var filters = meerkat.site.landlordFilters.filters;
+		setFeatureFilter(filters.lossrent, 'features.lossrent');
+		setFeatureFilter(filters.rdef, 'features.rdef');
+		setFeatureFilter(filters.malt, 'features.malt');
+	}
+	
 	function landlordToggles() {
 		var $landlordMenu = $landlordShowAll.find('.landlord-filter-items');
 		var $landlordCheckboxes = $landlordMenu.find('.checkbox input');
@@ -588,9 +584,7 @@
 		$landlordMenu.on('click', function(e) {
 			e.stopPropagation();
 		});
-		meerkat.site.LandlordToFilter = [];
 		meerkat.site.landlordFilters = {
-			toFilter: [],
 			filters: {
 				showall: true,
 				rdef: false,
@@ -680,7 +674,7 @@
 		onRequestModal: onRequestModal,
 		toggleXSFilters : toggleXSFilters,
 		setHomeResultsFilter: setHomeResultsFilter,
-		landlordFiltersSort: landlordFiltersSort
+		setLandlordFilters: setLandlordFilters
 	});
 
 })(jQuery);
