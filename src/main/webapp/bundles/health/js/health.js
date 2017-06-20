@@ -605,14 +605,14 @@
 						errorLevel: "silent",
 						onSuccess: function getProviderContentSuccess(result) {
 							if (result.hasOwnProperty('providerContentText')) {
-								var callback = function applyCusotmisedProviderContentCallback(content) {
+								var callback = function applyCustomisedProviderContentCallback(content) {
 									meerkat.modules.dialogs.show({
 										title: 'Declaration',
 										htmlContent : content
 									});
 								};
 								// Call function to update placeholder copy
-								applyCusotmisedProviderContent(selectedProduct, result.providerContentText, callback);
+								applyCustomisedProviderContent(selectedProduct, result.providerContentText, callback);
 							}
 						}
 					});
@@ -678,14 +678,14 @@
 	}
 
 	/**
-	 * applyCusotmisedProviderContent() method to replace placeholder content with product
+	 * applyCustomisedProviderContent() method to replace placeholder content with product
 	 * specific copy. The expected placeholders and the objects containing their values
 	 * are stored in content_control/supplementary.
 	 * @param product Object
 	 * @param content String
 	 * @param callback Function
 	 */
-	function applyCusotmisedProviderContent(product, content, callback) {
+	function applyCustomisedProviderContent(product, content, callback) {
 		meerkat.modules.comms.get({
 			url: "spring/content/getsupplementary.json",
 			data: {
