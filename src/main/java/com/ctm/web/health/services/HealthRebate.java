@@ -25,35 +25,42 @@ public class HealthRebate {
     private String rebateTier2Future;
     private String rebateTier3Future;
 
-    public HealthRebate(){
-        changeOverRebatesService = new ChangeOverRebatesService();
+    /**
+     * used by health_rebate.jsp
+     */
+    @SuppressWarnings("unused")
+    public HealthRebate() {
+        this(new ChangeOverRebatesService());
     }
 
     public HealthRebate(ChangeOverRebatesService changeOverRebatesService){
-        changeOverRebatesService = new ChangeOverRebatesService();
+        this.changeOverRebatesService = changeOverRebatesService;
     }
-    
+
     public void calcRebate(String rebateChoice, String commencementDate, int age, int income) {
         ChangeOverRebate changeOverRebates = changeOverRebatesService.getChangeOverRebate(commencementDate);
-        BigDecimal rebate = new BigDecimal(0);
 
         BigDecimal previousMultiplier =  changeOverRebates.getPreviousMultiplier();
-        BigDecimal multiplier =  new BigDecimal(changeOverRebates.getCurrentMultiplier());
-        BigDecimal futureMultiplier =  new BigDecimal(changeOverRebates.getFutureMultiplier());
+        BigDecimal multiplier =  changeOverRebates.getCurrentMultiplier();
+        BigDecimal futureMultiplier =  changeOverRebates.getFutureMultiplier();
 
-        rebateTier0Previous = calculateRebate( age, new BigDecimal(30), previousMultiplier);
-        rebateTier1Previous = calculateRebate( age, new BigDecimal(20), previousMultiplier);
-        rebateTier2Previous = calculateRebate( age, new BigDecimal(10), previousMultiplier);
+        BigDecimal rebateTier0 = new BigDecimal(30);
+        BigDecimal rebateTier1 = new BigDecimal(20);
+        BigDecimal rebateTier2 = new BigDecimal(10);
+
+        rebateTier0Previous = calculateRebate( age, rebateTier0, previousMultiplier);
+        rebateTier1Previous = calculateRebate( age, rebateTier1, previousMultiplier);
+        rebateTier2Previous = calculateRebate( age, rebateTier2, previousMultiplier);
         rebateTier3Previous = "0";
 
-        rebateTier0Current = calculateRebate( age, new BigDecimal(30), multiplier);
-        rebateTier1Current = calculateRebate( age, new BigDecimal(20), multiplier);
-        rebateTier2Current = calculateRebate( age, new BigDecimal(10), multiplier);
+        rebateTier0Current = calculateRebate( age, rebateTier0, multiplier);
+        rebateTier1Current = calculateRebate( age, rebateTier1, multiplier);
+        rebateTier2Current = calculateRebate( age, rebateTier2, multiplier);
         rebateTier3Current = "0";
 
-        rebateTier0Future = calculateRebate( age, new BigDecimal(30), futureMultiplier);
-        rebateTier1Future = calculateRebate( age, new BigDecimal(20), futureMultiplier);
-        rebateTier2Future = calculateRebate( age, new BigDecimal(10), futureMultiplier);
+        rebateTier0Future = calculateRebate( age, rebateTier0, futureMultiplier);
+        rebateTier1Future = calculateRebate( age, rebateTier1, futureMultiplier);
+        rebateTier2Future = calculateRebate( age, rebateTier2, futureMultiplier);
         rebateTier3Future  = "0";
 
         if ("N".equals(rebateChoice) || income == 3) {
@@ -87,7 +94,7 @@ public class HealthRebate {
     }
 
     public String getCurrentRebate() {
-        return currentRebate.toString();
+        return currentRebate;
     }
 
     public String getPreviousRebate() {
