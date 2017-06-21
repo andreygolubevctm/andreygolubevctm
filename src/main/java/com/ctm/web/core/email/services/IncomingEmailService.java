@@ -87,7 +87,7 @@ public class IncomingEmailService {
 					} else if(quoteUrl != null && validateDate != null && this.validateDateNotExpired(validateDate)) {
 						// Set to the quoteUrl recorded in the result set
 						// Send the user to transferring.jsp, instead of handing directly over to the partner if car or home.
-						if (pageSettings.getVertical() == VerticalType.CAR || pageSettings.getVertical() == VerticalType.HOME) {
+						if (pageSettings.getVertical().getType() == VerticalType.CAR || pageSettings.getVertical().getType() == VerticalType.HOME) {
 							emailUrlService.updateWithTransferringData(redirectionUrl, emailData);
 						} else {
 							// If not car or home just do the normal handover.
