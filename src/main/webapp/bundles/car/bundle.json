@@ -41,6 +41,7 @@
     "shared/resultsMobileDisplayModeToggle",
     "shared/mobileNavButtons",
     "shared/buttonGroupVertical",
-    "shared/resultsFilterLabels"
+    "shared/resultsFilterLabels",
+    "shared/leadCapture"
   ]
 }

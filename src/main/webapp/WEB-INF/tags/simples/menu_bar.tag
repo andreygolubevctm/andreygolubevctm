@@ -91,7 +91,17 @@
 						<li class="dropdown-header">Tran ID: <span class="simples-show-transactionid"></span></li>
 						<li><a class="action-comment" href="javascript:void(0);">Comments</a></li>
                         <li><a class="action-unlock hidden" href="javascript:void(0);">Unlock quote</a></li>
-			</ul>
+					</ul>
+				</li>
+
+				<%-- Time Date --%>
+				<li class="time-date">
+					Currently <span class="time-date-holder"></span>
+				</li>
+
+				<%-- Calendar --%>
+				<li class="simples-calendar">
+					<i class="icon-calendar"></i>
 				</li>
 			</ul>
 

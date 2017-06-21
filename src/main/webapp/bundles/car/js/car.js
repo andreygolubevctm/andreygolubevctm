@@ -539,6 +539,14 @@
                 });
             }
 
+            var crossVerticalOptin = meerkat.modules.leadCapture.getTrackingData();
+
+            if (crossVerticalOptin !== null && current_step === meerkat.modules.journeyEngine.getStepIndex('results')) {
+                _.extend(response, {
+                    crossVerticalOptin: crossVerticalOptin
+                });
+            }
+
             return response;
 
         } catch (e) {

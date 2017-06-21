@@ -52,16 +52,16 @@ public class RemoteLoadQuoteService {
 		return new ArrayList<>();
 	}
 
-	public String getActionQuoteUrl(String vertical , String action , Long transactionId , String jParam){
-		return VerticalSettings.getHomePageJsp(vertical) + "?action=" + action + "&amp;transactionId=" + transactionId + jParam;
+	public String getActionQuoteUrl(String vertical , String action , Long transactionId , String jParam, String trackingParams){
+		return VerticalSettings.getHomePageJsp(vertical) + "?action=" + action + "&amp;transactionId=" + transactionId + jParam + trackingParams;
 	}
 
-	public String getStartAgainQuoteUrl(String vertical , Long transactionId , String jParam){
-		return getActionQuoteUrl( vertical , "start-again" ,  transactionId ,  jParam);
+	public String getStartAgainQuoteUrl(String vertical , Long transactionId , String jParam, String trackingParams){
+		return getActionQuoteUrl( vertical , "start-again" ,  transactionId ,  jParam, trackingParams);
 	}
 
-	public String getLatestQuoteUrl(String vertical , Long transactionId , String jParam){
-		return getActionQuoteUrl( vertical , "latest" ,  transactionId ,  jParam);
+	public String getLatestQuoteUrl(String vertical , Long transactionId , String jParam,  String trackingParams){
+		return getActionQuoteUrl( vertical , "latest" ,  transactionId ,  jParam, trackingParams);
 	}
 
 

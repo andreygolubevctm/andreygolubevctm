@@ -121,7 +121,6 @@ var healthFunds_QCH = {
 	renderPaymentDays: function() {
 		var freq = meerkat.modules.healthPaymentStep.getSelectedFrequency();
 		meerkat.modules.healthFunds.setPayments({ 'min':0, 'max':1, 'weekends':true });
-		healthFunds_QCH.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
 		var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
 		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), _html);
 		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), _html);

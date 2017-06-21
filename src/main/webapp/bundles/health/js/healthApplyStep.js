@@ -8,7 +8,8 @@
         $paymentMedicareColour,
         $paymentMedicareCover,
         $medicareYellowMessage,
-        $unitElements;
+        $unitElements,
+        $personName;
 
     function init(){
         $(document).ready(function () {
@@ -22,8 +23,10 @@
                 appAddressUnitType: $('#health_application_address_unitType'),
                 appPostalUnitShop: $('#health_application_postal_unitShop'),
                 appPostalStreetNum: $('#health_application_postal_streetNum'),
-                appPostalUnitType: $('#health_application_postal_unitType')
+                appPostalUnitType: $('#health_application_postal_unitType'),
+                appPostalNonStdStreet: $('#health_application_postal_nonStdStreet')
             };
+            $personName = $('.contactField.person_name');
         });
     }
 
@@ -51,8 +54,18 @@
             meerkat.modules.healthAboutYou.getPrimaryCurrentCover());
 
         $unitElements.appAddressUnitType.add($unitElements.appPostalUnitType).on('change', function toggleUnitRequiredFields() {
-            _toggleUnitRequired(this.id.includes('address') ? 'Address' : 'Postal', this.value !== '');
+            var addressType = this.id.indexOf('address') !== -1 ? 'Address' : 'Postal';
+
+            if (addressType === 'Postal') {
+                _changeStreetNoLabel(this.value);
+                _toggleStreetRules(this.value);
+            }
+
+            _toggleUnitRequired(addressType, this.value);
         });
+
+        // Default Check format message on person name field
+        $personName.parent().find('.person-name-check-format').addClass('hidden');
     }
 
     function onInitialise() {
@@ -76,16 +89,73 @@
                 $("#health_payment_details_start").val( e.format() );
                 meerkat.messaging.publish(meerkatEvents.health.CHANGE_MAY_AFFECT_PREMIUM);
             });
+
+        // Show Check format message on name fields when field isn't in 'Proper case'
+        $personName.on('change', function() {
+            var value = $(this).val(),
+                showCheckFormat = false,
+                i = 1,
+                character = '',
+                $checkFormat = $(this).parent().find('.person-name-check-format');
+
+            if (!_.isEmpty(value)) {
+                for (i = 1; i < value.length; i++) {
+                    character = value.charAt(i);
+
+                    if (character === character.toUpperCase()) {
+                        showCheckFormat = true;
+                    }
+                }
+
+                $checkFormat.toggleClass('hidden', showCheckFormat === false);
+            } else {
+                $checkFormat.addClass('hidden');
+            }
+        });
     }
 
-    function _toggleUnitRequired(addressType, isUnit) {
-        var $fields = $unitElements['app'+addressType+'UnitShop'].add($unitElements['app'+addressType+'StreetNum']);
+    function _toggleUnitRequired(addressType, unitType) {
+        var isPoxBox = unitType === 'PO';
 
-        $fields.setRequired(isUnit);
+        if (!_.isEmpty(unitType)) {
+            $unitElements['app' + addressType + 'UnitShop'].setRequired(!isPoxBox);
 
-        // blur out of fields to trigger validation when unitType not equal to 'UN'
-        if (!isUnit) {
-            $fields.blur();
+            if (isPoxBox) {
+                $unitElements.appPostalUnitShop.add($unitElements.appPostalNonStdStreet).blur();
+            }
+        } else {
+            $unitElements['app' + addressType + 'UnitShop'].setRequired(false).blur();
+        }
+    }
+
+    function _changeStreetNoLabel(unitType) {
+        var $label = $unitElements.appPostalStreetNum.closest('.form-group').find('label.control-label'),
+            $errorField = $('#health_application_postal_streetNum-error'),
+            labelText = 'Street No.',
+            msgRequired = 'Please enter a street number';
+
+        if (unitType === 'PO') {
+            labelText = 'Box No.';
+            msgRequired = 'Please enter a box number';
+        }
+
+        $label.text(labelText);
+        $unitElements.appPostalStreetNum.attr('data-msg-required', msgRequired);
+
+        if ($errorField.length > 0) {
+            $errorField.text(msgRequired);
+        }
+    }
+
+    function _toggleStreetRules(unitType) {
+        if (unitType === 'PO') {
+            $unitElements.appPostalNonStdStreet
+                .removeRule('regex')
+                .removeRule('validAddress');
+        } else {
+            $unitElements.appPostalNonStdStreet
+                .addRule('regex', '[a-zA-Z0-9 ]+')
+                .addRule('validAddress', 'health_application_postal');
         }
     }
 

@@ -14,9 +14,11 @@
 
     <jsp:attribute name="sidebarColumnRight">
         <coupon:promo_tile />
+        <div class="sidebar-widget sidebar-widget-padded results-filters-discount"></div>
         <div class="sidebar-widget sidebar-widget-padded results-filters-rebate"></div>
         <div class="sidebar-widget sidebar-widget-padded results-filters-benefits"></div>
         <div class="sidebar-widget sidebar-widget-padded results-filters"></div>
+        <health_v4_results:filters_discount />
         <health_v4_results:filters_rebate />
         <health_v4_results:filters_benefits />
         <health_v4_results:filters_template />
@@ -89,6 +91,7 @@
 
     <jsp:attribute name="hiddenInputs">
         <%-- Hidden fields necessary for Results page --%>
+        <input type="hidden" name="health_applyDiscounts" value="Y" />
         <input type="hidden" name="health_showAll" value="Y" />
         <input type="hidden" name="health_onResultsPage" value="Y" />
         <input type="hidden" name="health_incrementTransactionId" value="Y" />
@@ -100,7 +103,7 @@
                 </c:when>
                 <c:when test="${param.action == 'load' || param.action == 'amend'}">
                     <input type="hidden" name="health_retrieve_savedResults" value="Y" />
-                    <input type="hidden" name="health_retrieve_transactionId" value="${data['current/previousTransactionId']}" />
+                    <input type="hidden" name="health_retrieve_transactionId" value="<c:out value='${param.transactionId}' escapeXml="true" />" />
                 </c:when>
             </c:choose>
         </c:if>

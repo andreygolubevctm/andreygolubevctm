@@ -23,7 +23,15 @@
                 'referral-offer': {
                     min: 25,
                     max: 100
-                }
+                },
+	            'q-jun$100-offer': {
+		            min: 100,
+		            max: 100
+	            },
+	            'q-jun$200-offer': {
+		            min: 200,
+		            max: 200
+	            }
             }
     };
 
@@ -310,6 +318,10 @@
             var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
             var giftCardAmount = selectedProduct.giftCardAmount;
             $elements.inputs.value.empty().append('<option value="'+giftCardAmount+'">$'+giftCardAmount+'</option>');
+        }
+
+        if(_.indexOf(['q-jun$100-offer','q-jun$200-offer'],reason) !== -1) {
+            $elements.inputs.value.val(valueRange.custom[reason].max);
         }
     }
 

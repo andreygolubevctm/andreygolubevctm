@@ -12,7 +12,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 @JsonInclude(NON_EMPTY)
 public class GovernmentRebateAcknowledgement {
 
-    private ApplicantCovered applicationCovered;
+    private ApplicantCovered applicantCovered;
 
     private EntitledToMedicare entitledToMedicare;
 
@@ -25,14 +25,14 @@ public class GovernmentRebateAcknowledgement {
                                            final EntitledToMedicare entitledToMedicare,
                                            final GovernmentRebateDeclaration governmentRebateDeclaration,
                                            final LocalDate declarationDate ){
-        this.applicationCovered = applicantCovered;
+        this.applicantCovered = applicantCovered;
         this.entitledToMedicare = entitledToMedicare;
         this.governmentRebateDeclaration = governmentRebateDeclaration;
         this.declarationDate = declarationDate;
     }
 
-    public ApplicantCovered getApplicationCovered() {
-        return applicationCovered;
+    public ApplicantCovered getApplicantCovered() {
+        return applicantCovered;
     }
 
     public EntitledToMedicare getEntitledToMedicare() {
