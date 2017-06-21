@@ -337,10 +337,10 @@
 			<Value>
 				<xsl:choose>
 					<xsl:when test="$emailTokenEnabled = 'true'">
-						<xsl:value-of disable-output-escaping="yes" select="concat('&lt;![CDATA[',$baseURL,'transferring.jsp?vertical=home&amp;cid=em:cm:hc:500195&amp;et_rid=172883275&amp;utm_source=hc_quote_',$year,'&amp;utm_medium=email&amp;utm_campaign=hc_quote&amp;token=',$currentProduct/loadQuoteToken,']]&gt;')" />
+						<xsl:value-of disable-output-escaping="yes" select="concat('&lt;![CDATA[',$baseURL,'email/incoming/gateway.json?cid=em:cm:hc:500195&amp;et_rid=172883275&amp;utm_source=hc_quote_',$year,'&amp;utm_medium=email&amp;utm_campaign=hc_quote&amp;token=',$currentProduct/loadQuoteToken,']]&gt;')" />
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:value-of disable-output-escaping="yes" select="concat('&lt;![CDATA[',$baseURL,'transferring.jsp?vertical=home&amp;cid=em:cm:hc:500195&amp;et_rid=172883275&amp;utm_source=hc_quote_',$year,'&amp;utm_medium=email&amp;utm_campaign=hc_quote&amp;vertical=home&amp;type=bestprice','&amp;pid=',$productId,'&amp;id=',$tranId,'&amp;email=',$sendToEmail,'&amp;hash=',$hashedEmail,']]&gt;')" />
+						<xsl:value-of disable-output-escaping="yes" select="concat('&lt;![CDATA[',$baseURL,'email/incoming/gateway.json?cid=em:cm:hc:500195&amp;et_rid=172883275&amp;utm_source=hc_quote_',$year,'&amp;utm_medium=email&amp;utm_campaign=hc_quote&amp;vertical=home&amp;type=bestprice','&amp;pid=',$productId,'&amp;id=',$tranId,'&amp;email=',$sendToEmail,'&amp;hash=',$hashedEmail,']]&gt;')" />
 					</xsl:otherwise>
 				</xsl:choose>
 			</Value>

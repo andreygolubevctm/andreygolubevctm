@@ -119,6 +119,20 @@ public class EmailUrlService {
 	}
 
 	/**
+	 * updateWithTransferringData provides a common method to update the redirection URL to land on the transferring page
+	 *
+	 * @param redirectionUrl
+	 * @param emailData
+	 */
+	public void updateWithTransferringData(StringBuilder redirectionUrl, IncomingEmail emailData) {
+		redirectionUrl.append(baseUrl);
+		redirectionUrl.append("transferring.jsp?"+createVerticalParam() + "&id=" + emailData.getTransactionId());
+		if(emailData.getProductId() != null) {
+			redirectionUrl.append("&productId=" + emailData.getProductId());
+		}
+	}
+
+	/**
 	 * updateAsExpired provides a common method to update the redirection URL with expired param
 	 *
 	 * @param redirectionUrl

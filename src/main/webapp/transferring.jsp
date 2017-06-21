@@ -3,45 +3,12 @@
 
 <settings:setVertical verticalCode="GENERIC" />
 
-<c:choose>
-
-	<c:when test="${not empty param.token}">
-		<jsp:useBean id="tokenServiceFactory" class="com.ctm.web.core.email.services.token.EmailTokenServiceFactory"/>
-		<c:set var="tokenService" value="${tokenServiceFactory.getEmailTokenServiceInstanceAlt(pageContext.getRequest())}" />
-
-		<c:set var="parametersMap" value="${tokenService.decryptToken(param.token)}"/>
-		<c:set var="emailData" value="${tokenService.getIncomingEmailDetails(param.token)}"/>
-
-		<c:if test="${empty emailData}">
-			<c:set var="hasLogin" value="${tokenService.hasLogin(param.token)}"/>
-			<c:choose>
-				<c:when test="${hasLogin}">
-					${logger.info('Token has expired and user can login. Redirecting to retrieve_quotes.jsp {}', log:kv('parameters', parametersMap))}
-					<c:redirect url="${pageSettings.getBaseUrl()}retrieve_quotes.jsp"/>
-				</c:when>
-				<c:otherwise>
-					${logger.info('Token has expired and user cannot login. Redirecting to start_quote.jsp {}', log:kv('parameters', parametersMap))}
-					<c:redirect url="${pageSettings.getBaseUrl()}start_quote.jsp"/>
-				</c:otherwise>
-			</c:choose>
-		</c:if>
-
-		<c:set var="transactionId"><c:out value="${parametersMap.transactionId}" escapeXml="true"/></c:set>
-		<c:set var="productId"><c:out value="${parametersMap.productId}" escapeXml="true"/></c:set>
-
-	</c:when>
-
-	<%--Add in another when for when token service is not used --%>
-
-	<c:otherwise>
-		<c:set var="transactionId">
-			<c:out value="${param.transactionId}" escapeXml="true" />
-		</c:set>
-		<c:set var="productId">
-			<c:out value="${param.productId}" escapeXml="true" />
-		</c:set>
-	</c:otherwise>
-</c:choose>
+<c:set var="transactionId">
+	<c:out value="${param.transactionId}" escapeXml="true" />
+</c:set>
+<c:set var="productId">
+	<c:out value="${param.productId}" escapeXml="true" />
+</c:set>
 
 <c:set var="revision" value="${webUtils.buildRevisionAsQuerystringParam()}" />
 
