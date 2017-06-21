@@ -18,14 +18,14 @@
     <%-- controls --%>
     <div class="col-sm-3 col-xs-12 traveler-controls">
       <div class="clearfix">
-        <span class="col-sm-6 controls-heading">
+        <span class="col-md-6 controls-heading">
           Number of travellers
         </span>
       </div>
-      <div class="col-sm-6" id="num-travellers" data-max="50">
+      <div class="col-xs-6" id="num-travellers" data-max="50">
         1
       </div>
-      <div class="col-sm-6" id="plus">
+      <div class="col-xs-6" id="plus">
         <a href="javascript:;" class="icon-add"></a>
       </div>
       <div class="warning-label-hidden">
@@ -35,7 +35,7 @@
     
     <%-- default age box --%>
     <div class="col-sm-5 col-xs-12 age-container">
-      <div class="age-item">
+      <div class="age-item col-md-5 col-lg-3">
         <span class="age-label">
           Age(years)
         </span>
