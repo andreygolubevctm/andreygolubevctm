@@ -283,6 +283,7 @@
 
 	function initCurrencyField () {
 		var $this = $(this);
+		console.log($this);
 		var entryName = getEntryName($this);
 
 		applyEventListeners($this);

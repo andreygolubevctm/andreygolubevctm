@@ -49,6 +49,7 @@
 			<form_v2:row fieldXpath="${fieldXpath}" label="What is the total cost to replace the contents at today's prices?"  helpId="509" id="replaceContentsCostRow" tooltipAttributes="${analyticsAttr}">
 				<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Cost to Replace Contents" quoteChar="\"" /></c:set>
 				<field_v2:currency xpath="${fieldXpath}"
+					landlordFix="${xpath}/replaceContentsCostLandlord"
 					required="true"
 					decimal="${false}"
 					minValue="10000"
@@ -68,14 +69,11 @@
 					required="true"
 					decimal="${false}"
 					minValue="20000"
-				    maxValue="349999"
+				  maxValue="349999"
 					title="The total contents replacement cost"
 					additionalAttributes="${analyticsAttr}" />
 			</form_v2:row>
-		</div>
 
-
-		<div class="notLandlord">
 			<%-- Contents above policy Limits --%>
 			<c:set var="fieldXpath" value="${xpath}/abovePolicyLimits" />
 			<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Policy Limits - Tool Tip" quoteChar="\"" /></c:set>
