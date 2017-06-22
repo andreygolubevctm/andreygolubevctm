@@ -31,9 +31,9 @@ public class RequestAdapterV2 {
 
         final List<Traveller> travellers = new ArrayList<>();
 
-        quote.getTravellers().getTravellersDOB()
+        quote.getTravellers().getTravellersAge()
                 .stream()
-                .map(dob -> createTraveller(TravellerType.ADULT, Optional.of(dob)))
+                .map(age -> createTraveller(TravellerType.ADULT, Optional.of(age)))
                 .forEach(travellers::add);
 
         IntStream.range(0, quote.getChildren())
@@ -68,11 +68,19 @@ public class RequestAdapterV2 {
 
     }
 
-    protected static Traveller createTraveller(TravellerType travellerType, Optional<LocalDate> dateOfBirth) {
+    protected static Traveller createTraveller(TravellerType travellerType, Optional<Integer> age) {
         final Traveller traveller = new Traveller();
         traveller.setTravellerType(travellerType);
-        dateOfBirth.ifPresent(traveller::setDateOfBirth);
+        age.ifPresent(traveller::setAge);
         return traveller;
     }
 
+
+  /*  protected static Traveller createTraveller(TravellerType travellerType, Optional<LocalDate> dateOfBirth) {
+        final Traveller traveller = new Traveller();
+        traveller.setTravellerType(travellerType);
+        dateOfBirth.ifPresent(traveller::setAge);
+        return traveller;
+    }
+*/
 }
