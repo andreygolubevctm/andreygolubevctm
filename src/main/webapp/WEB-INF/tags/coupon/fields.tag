@@ -40,9 +40,6 @@
     <form_v2:row className="coupon-optin-group hidden">
         <field_v2:checkbox xpath="${xpath}/coupon/optin" value="Y" required="true" label="${true}" title="" className="coupon-optin-field" errorMsg="Please agree to the Terms &amp; Conditions" />
     </form_v2:row>
-
-    <%-- Mando mandatory dialogue --%>
-    <simples:dialogue id="64" vertical="health" mandatory="true" />
 </c:when>
 <c:otherwise>
     <c:if test="${showDefaultMessage eq true}">

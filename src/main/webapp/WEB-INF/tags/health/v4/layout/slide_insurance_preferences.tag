@@ -13,9 +13,6 @@
             <health_v4_insuranceprefs:benefitsSelectionScroller isSidebar="${true}" />
         </jsp:attribute>
             <jsp:body>
-
-                <simples:dialogue id="49" vertical="health" />
-
                 <form_v4:fieldset
                         legend=""
                         className="benefitsContainer">

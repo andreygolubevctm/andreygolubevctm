@@ -50,9 +50,3 @@
         </div>
     </form_v4:row>
 </div>
-
-<div class="voucherDialogue">
-    <div class="dialogue defaultReason">
-        <simples:dialogue id="72" vertical="health" mandatory="true" />
-    </div>
-</div>
