@@ -72,7 +72,7 @@ public class PhoneController extends CommonQuoteRouter {
             try{
                 transactionId = Long.parseLong(request.getParameter("transactionId"));
             }catch(NumberFormatException e){
-                LOGGER.error("Unable to parse TransactionId={} " + transactionId);
+                LOGGER.error("Unable to parse TransactionId={} ", transactionId);
             }
         }
         // Logic if we're using the InIn dialler
