@@ -68,8 +68,13 @@ public class PhoneController extends CommonQuoteRouter {
         PauseResumeResponse pauseResumeResponse = PauseResumeResponse.fail("Failed");
         Long transactionId =null;
 
-        if(null != request.getParameter("transactionId"))
-            transactionId = Long.parseLong(request.getParameter("transactionId"));
+        if(null != request.getParameter("transactionId")) {
+            try{
+                transactionId = Long.parseLong(request.getParameter("transactionId"));
+            }catch(NumberFormatException e){
+                LOGGER.error("Unable to parse TransactionId={} " + transactionId);
+            }
+        }
         // Logic if we're using the InIn dialler
         if (inInEnabled) {
             String authName = null;
@@ -113,9 +118,9 @@ public class PhoneController extends CommonQuoteRouter {
         td.setSequenceNo(InInIcwsService.XPATH_SEQUENCE_INTERACTION_ID);
         try {
             transactionDetailsDao.addTransactionDetailsWithDuplicateKeyUpdate(transactionId, td);
-            LOGGER.info("Persisted  interactionId={}, transactionId={}", interactionId, transactionId);
+            LOGGER.info("Persisted  interactionId={} against transactionId={}", interactionId, transactionId);
         } catch (DaoException e) {
-            LOGGER.error("Reward: Failed to persist interactionId. interactionId={}, transactionId={}", interactionId, transactionId);
+            LOGGER.error("Failed to persist interactionId={} against transactionId={}", interactionId, transactionId);
         }
     }
 
