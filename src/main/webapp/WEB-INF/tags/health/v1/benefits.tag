@@ -37,7 +37,7 @@
                         <h4>Limited Cover</h4>
                         <c:set var="fieldXpath" value="health/situation/accidentOnlyCover"/>
                         <field_v2:checkbox xpath="${fieldXpath}" id="accidentCover" required="false" title="Limited Cover" value="Y" label="true"/>
-                        <simples:dialogue id="44" vertical="health" mandatory="true" />
+                        <simples:dialogue id="44" vertical="health" className="red" />
                     </div>
                 </div>
 
