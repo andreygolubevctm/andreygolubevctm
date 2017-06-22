@@ -73,7 +73,7 @@ $(window).load(function () {
         }
 
         // For Quotes from Email campaigns
-        if ((vertical === 'car' || vertical === 'home') && urlVars.utm_medium === 'email') {
+        if ((vertical === 'car' || vertical === 'home') && urlVars.trackingSource === 'email') {
 
             if (transactionId !== undefined) {
                 transactionId = $('.quoteUrl').attr('transactionId');
@@ -100,7 +100,7 @@ $(window).load(function () {
                 }
             });
 
-            delay = 2000;
+            delay = 3000;
         }
 
         next();
