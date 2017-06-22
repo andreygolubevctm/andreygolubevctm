@@ -51,7 +51,7 @@
             meerkat.modules.healthAboutYou.getPrimaryCurrentCover());
 
         $unitElements.appAddressUnitType.add($unitElements.appPostalUnitType).on('change', function toggleUnitRequiredFields() {
-            _toggleUnitRequired(this.id.includes('address') ? 'Address' : 'Postal', this.value !== '');
+            _toggleUnitRequired(this.id.includes('address') ? 'Address' : 'Postal', (!_.isEmpty(this.value) && this.value !== 'HO'));
         });
     }
 
