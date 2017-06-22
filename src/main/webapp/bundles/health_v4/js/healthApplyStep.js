@@ -87,7 +87,7 @@
         });
 
         $elements.appAddressUnitType.add($elements.appPostalUnitType).on('change', function toggleUnitRequiredFields() {
-           _toggleUnitRequired(this.id.indexOf('address') !== -1 ? 'Address' : 'Postal', this.value !== '');
+           _toggleUnitRequired(this.id.indexOf('address') !== -1 ? 'Address' : 'Postal', (!_.isEmpty(this.value) && this.value !== 'HO'));
         });
     }
 

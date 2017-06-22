@@ -117,7 +117,7 @@
     function _toggleUnitRequired(addressType, unitType) {
         var isPoxBox = unitType === 'PO';
 
-        if (!_.isEmpty(unitType)) {
+        if (!_.isEmpty(unitType) && unitType !== 'HO') {
             $unitElements['app' + addressType + 'UnitShop'].setRequired(!isPoxBox);
 
             if (isPoxBox) {
