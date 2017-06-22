@@ -126,7 +126,7 @@ public class EmailUrlService {
 	 */
 	public void updateWithTransferringData(StringBuilder redirectionUrl, IncomingEmail emailData) {
 		redirectionUrl.append(baseUrl);
-		redirectionUrl.append("transferring.jsp?"+createVerticalParam() + "&id=" + emailData.getTransactionId());
+		redirectionUrl.append("transferring.jsp?"+createVerticalParam() + "&transactionId=" + emailData.getTransactionId());
 		if(emailData.getProductId() != null) {
 			redirectionUrl.append("&productId=" + emailData.getProductId());
 		}
