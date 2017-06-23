@@ -18,8 +18,6 @@
                 <health_v4_payment:contactAuthority xpath="${pageSettings.getVerticalCode()}/contactAuthority" />
                 <health_v4_payment:whatsNext />
 
-                <simples:dialogue id="31" vertical="health" mandatory="true" />
-
                 <c:if test="${callCentre and not empty worryFreePromo and worryFreePromo eq '35'}">
                     <div class="simples-dialogue row-content  optionalDialogue">
                         <c:set var="simplesCompCopy"><content:get key="worryFreePromoSimplesCopy_Body" /></c:set>

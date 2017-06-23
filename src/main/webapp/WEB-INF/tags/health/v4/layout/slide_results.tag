@@ -11,7 +11,6 @@
         <health_v4_moreinfo:more_info />
 
         <health_v4_results:prices_have_changed_notification />
-        <health_v4_results:simples_bottom />
         <health_v4:dual_pricing_modal />
         <health_v4:logo_price_template />
         <health_v4_results:refine_results_modal_template />

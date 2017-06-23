@@ -12,8 +12,6 @@
 	<field_v1:hidden xpath="${pageSettings.getVerticalCode()}/benefits/covertype" defaultValue="customise" />
 </form_v2:fieldset>
 
-<simples:dialogue id="46" className="simples-dialogue-hospital-cover" vertical="health" />
-
 <field_v1:hidden xpath="${pageSettings.getVerticalCode()}/situation/coverType" defaultValue="C" />
 <%-- Toggle for benefits --%>
 <%-- Note: Not sure if this will be introduced back in a later date --%>
