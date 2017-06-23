@@ -57,11 +57,11 @@
 
 <div class="voucherDialogue">
 	<div class="dialogue defaultReason">
-		<simples:dialogue id="72" vertical="health" mandatory="true" />
+		<simples:dialogue id="72" vertical="health" className="red" />
 	</div>
 	<c:if test="${isPyrrActive eq true}">
 		<div class="dialogue pyrrCampaign">
-	        <simples:dialogue id="73" vertical="health" mandatory="true" />
+	        <simples:dialogue id="73" vertical="health" className="red" />
 	    </div>
 	</c:if>
 </div>

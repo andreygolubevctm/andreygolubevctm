@@ -15,8 +15,8 @@
             <jsp:body>
                 <health_v4_payment:payment xpath="${pageSettings.getVerticalCode()}/payment" />
 
-                <simples:dialogue id="38" vertical="health" mandatory="true" className="simples-dialog-inbound" />
-                <simples:dialogue id="40" vertical="health" mandatory="true" className="simples-dialog-inbound" />
+                <simples:dialogue id="38" vertical="health" className="red simples-dialog-inbound" />
+                <simples:dialogue id="40" vertical="health" className="red simples-dialog-inbound" />
 
                 <health_v4_payment:declaration xpath="${pageSettings.getVerticalCode()}/declaration" />
                 <health_v4_payment:contactAuthority xpath="${pageSettings.getVerticalCode()}/contactAuthority" />
