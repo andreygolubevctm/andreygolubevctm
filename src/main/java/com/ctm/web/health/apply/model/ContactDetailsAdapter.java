@@ -39,8 +39,16 @@ public class ContactDetailsAdapter {
                                     .map(Application::getPostal)) : null,
                     quote.map(HealthQuote::getApplication)
                             .map(Application::getContactPoint)
-                            .filter(c -> c.equals("E") || c.equals("P"))
-                            .map(c -> c.equals("E") ? PreferredContact.EMAIL : PreferredContact.POST)
+                            .filter(c -> c.equals("E") || c.equals("P") || c.equals("S"))
+                            .map(c -> {
+                                if (c.equals("E")) {
+                                    return PreferredContact.EMAIL;
+                                } else if (c.equals("S")) {
+                                    return PreferredContact.SMS;
+                                } else {
+                                    return PreferredContact.POST;
+                                }
+                            })
                             .orElse(null),
                     quote.map(HealthQuote::getContactAuthority)
                             .map(Contactable::valueOf)
