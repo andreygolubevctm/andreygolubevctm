@@ -168,9 +168,9 @@
 		{{ filters.lossrent = obj.features.lossrent && obj.features.lossrent.value === "Y" ? true : false }}
 		{{ filters.malt = obj.features.malt && obj.features.malt.value === "Y" ? true : false }}
 		{{ filters.rdef = obj.features.rdef && obj.features.rdef.value === "Y" ? true : false }}
-		{{ var lossrent = filters.lossrent ? '<span><i class="icon-skinny-tick"></i> Loss of rent</span>' : '' }}
-		{{ var malt = filters.malt ? '<span><i class="icon-skinny-tick"></i> Malicious damage</span>' : ''}}
-		{{ var rdef = filters.rdef ? '<span><i class="icon-skinny-tick"></i> Tenant default cover</span>' : ''}}
+		{{ var lossrent = filters.lossrent ? '<span><i class="icon-skinny-tick"></i> Loss of rent</span>' : '<span class="not-active"><i class="icon-cross"></i>  Loss of rent</span>' }}
+		{{ var malt = filters.malt ? '<span><i class="icon-skinny-tick"></i> Malicious damage</span>' : '<span class="not-active"><i class="icon-cross"></i> Malicious damage</span>'}}
+		{{ var rdef = filters.rdef ? '<span><i class="icon-skinny-tick"></i> Tenant default cover</span>' : '<span class="not-active"><i class="icon-cross"></i> Tenant default cover</span>'}}
 	{{ } }}
 
 	<div class="result-row result_{{= obj.productId }}" data-productId="{{= obj.productId }}" data-available="Y">

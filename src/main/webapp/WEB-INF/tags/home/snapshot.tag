@@ -18,7 +18,12 @@
         </div>
         <div class="col-sm-10">
             <p><strong>Home cover: </strong><span data-source="#home_coverAmounts_rebuildCostentry" data-callback="meerkat.modules.homeSnapshot.getHomeAmount"></span></p>
-            <p><strong>Contents cover: </strong><span data-source="#home_coverAmounts_replaceContentsCostentry" data-callback="meerkat.modules.homeSnapshot.getContentAmount"></span></p>
+						<div class="notLandlord">
+						    <p><strong>Contents cover: </strong><span data-source="#home_coverAmounts_replaceContentsCostentry" data-callback="meerkat.modules.homeSnapshot.getContentAmount"></span></p>
+						</div>
+        		<div class="isLandlord">
+								<p><strong>Contents cover: </strong><span data-source="#home_coverAmounts_replaceContentsCostLandlordentry" data-callback="meerkat.modules.homeSnapshot.getContentAmount"></span></p>
+						</div>
         </div>
     </div>
     <div class="row snapshot holder-snapshot">

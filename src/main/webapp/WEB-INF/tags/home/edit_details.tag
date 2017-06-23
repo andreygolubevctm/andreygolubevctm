@@ -178,7 +178,11 @@
 									<li>Home Value: <span data-source="#home_coverAmounts_rebuildCostentry"></span></li>
 								{{ } }}
 								{{ if(coverType == 'Contents Cover Only' || coverType == 'Home & Contents Cover') { }}
-									<li>Contents Value: <span data-source="#home_coverAmounts_replaceContentsCostentry"></span></li>
+									{{ if(!meerkat.site.isLandlord) { }}
+										<li>Contents Value: <span data-source="#home_coverAmounts_replaceContentsCostentry"></span></li>
+									{{ } else { }}
+										<li>Contents Value: <span data-source="#home_coverAmounts_replaceContentsCostLandlordentry"></span></li>
+									{{ } }}
 									{{ if(isSpecifyingPersonalEffects && isPrincipalResidence) { }}
 										<li>Unspecified Personal Effects <span data-source="#home_coverAmounts_unspecifiedCoverAmount"></span></li>
 										{{ if(specifiedPersonalEffects) { }}
