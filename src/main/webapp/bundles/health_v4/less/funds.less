@@ -48,6 +48,19 @@
 .health_payment_gateway-bank {
   display: none;
 }
+
+#health_application_contactPoint {
+  label {
+    &:nth-child(2) {
+      .border-right-radius(10px);
+    }
+
+    &:nth-child(3) {
+      display: none;
+    }
+  }
+}
+
 body.health_payment_gateway-active #health_payment_gateway-content {
   display: block;
 }
@@ -112,6 +125,18 @@ body{
     }
   }
 
+  /* AIA */
+  &.AIA {
+    #health_application_contactPoint {
+      label:nth-child(2) {
+        display: none;
+      }
+      label:nth-child(3) {
+        .border-right-radius(10);
+        display: table-cell;
+      }
+    }
+  }
 
   /* FRANK */
   &.FRA{
