@@ -50,17 +50,6 @@
 
         meerkat.messaging.publish(meerkatEvents.healthPreviousFund.POPULATE_PRIMARY,
             meerkat.modules.healthAboutYou.getPrimaryCurrentCover());
-
-        $unitElements.appAddressUnitType.add($unitElements.appPostalUnitType).on('change', function toggleUnitRequiredFields() {
-            var addressType = this.id.indexOf('address') !== -1 ? 'Address' : 'Postal';
-
-            if (addressType === 'Postal') {
-                _changeStreetNoLabel(this.value);
-                _toggleStreetRules(this.value);
-            }
-
-            _toggleUnitRequired(addressType, this.value);
-        });
     }
 
     function onInitialise() {
@@ -84,20 +73,15 @@
                 $("#health_payment_details_start").val( e.format() );
                 meerkat.messaging.publish(meerkatEvents.health.CHANGE_MAY_AFFECT_PREMIUM);
             });
-    }
 
-    function _toggleUnitRequired(addressType, unitType) {
-        var isPoxBox = unitType === 'PO';
+        $unitElements.appPostalUnitType.on('change', function toggleUnitRequiredFields() {
+            _changeStreetNoLabel(this.value);
+            _toggleStreetRules(this.value);
+        });
 
-        if (!_.isEmpty(unitType)) {
-            $unitElements['app' + addressType + 'UnitShop'].setRequired(!isPoxBox);
-
-            if (isPoxBox) {
-                $unitElements.appPostalUnitShop.add($unitElements.appPostalNonStdStreet).blur();
-            }
-        } else {
-            $unitElements['app' + addressType + 'UnitShop'].setRequired(false).blur();
-        }
+        $unitElements.appAddressUnitShop.add($unitElements.appPostalUnitShop).on('change', function toggleUnitShopRequiredFields() {
+            _toggleUnitShopRequired(this.id.indexOf('address') !== -1 ? 'Address' : 'Postal', !_.isEmpty(this.value));
+        });
     }
 
     function _changeStreetNoLabel(unitType) {
@@ -128,6 +112,15 @@
             $unitElements.appPostalNonStdStreet
                 .addRule('regex', '[a-zA-Z0-9 ]+')
                 .addRule('validAddress', 'health_application_postal');
+        }
+    }
+
+    function _toggleUnitShopRequired(addressType, isUnitShop) {
+        $unitElements['app'+addressType+'UnitType'].setRequired(isUnitShop);
+
+        // blur out of fields to trigger validation when unitShop not empty
+        if (!isUnitShop) {
+            $unitElements['app'+addressType+'UnitType'].blur();
         }
     }
 

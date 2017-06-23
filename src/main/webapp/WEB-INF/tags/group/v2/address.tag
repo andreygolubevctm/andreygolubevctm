@@ -40,7 +40,7 @@
 <%-- POSTCODE --%>
 <c:set var="fieldXpath" value="${xpath}/postCode" />
 <form_v2:row fieldXpath="${fieldXpath}" label="Postcode" id="${name}_postCode_suburb" smRowOverride="5" hideHelpIconCol="${true}">
-	<field_v1:post_code xpath="${fieldXpath}" required="true" title="postcode" additionalAttributes=" data-rule-validAddress='${name}' data-msg-validAddress='Please enter a valid postcode' " disableErrorContainer="${disableErrorContainer}" />
+	<field_v1:post_code xpath="${fieldXpath}" required="true" title="postcode" additionalAttributes=" data-rule-validAddress='${name}' data-msg-validAddress='Please enter a valid postcode' data-validation-position='append' " disableErrorContainer="${disableErrorContainer}" />
 </form_v2:row>
 <core_v1:clear />
 
@@ -48,7 +48,7 @@
 	<%-- UNIT TYPE --%>
 	<c:set var="fieldXpath" value="${xpath}/unitType" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="Unit Type" className="${name}_nonStd_street ${name}_unitShopRow" smRowOverride="5" hideHelpIconCol="${true}">
-		<field_v2:array_select items="${unitTypes}" xpath="${fieldXpath}" title="the unit type" required="false" includeInForm="true" placeHolder="Unit Type" />
+		<field_v2:array_select items="${unitTypes}" xpath="${fieldXpath}" title="the unit type" required="false" includeInForm="true" placeHolder="Unit Type" extraDataAttributes="data-validation-position='append'" />
 	</form_v2:row>
 
 	<%-- UNIT/SHOP (BOTH STD & NON STD) --%>
@@ -115,7 +115,7 @@
 					<span class=" input-group-addon" data-target="${name}">
 						<i class="icon-sort"></i>
 					</span>
-					<select name="${name}_suburb" id="${name}_suburb" title="the suburb" class="form-control" data-attach="true" data-rule-validSuburb="${name}" data-msg-validSuburb="Please select a suburb" <c:if test="${disableErrorContainer eq true}"> data-disable-error-container='true'</c:if>>
+					<select name="${name}_suburb" id="${name}_suburb" title="the suburb" class="form-control" data-attach="true" data-rule-validSuburb="${name}" data-msg-validSuburb="Please select a suburb" <c:if test="${disableErrorContainer eq true}"> data-disable-error-container='true'</c:if> data-validation-position='append'>
 						<%-- Write the initial "Please select" option --%>
 						<option value="">Suburb</option>
 						<%-- Write the options for each row --%>
@@ -137,7 +137,7 @@
 					<span class=" input-group-addon" data-target="${name}">
 						<i class="icon-sort"></i>
 					</span>
-					<select name="${name}_suburb" id="${name}_suburb" title="the suburb" class="form-control" data-msg-required="Please select a suburb" data-attach="true" disabled="disabled" data-rule-validSuburb="${name}" data-msg-validSuburb="Please select a suburb">
+					<select name="${name}_suburb" id="${name}_suburb" title="the suburb" class="form-control" data-msg-required="Please select a suburb" data-attach="true" disabled="disabled" data-rule-validSuburb="${name}" data-msg-validSuburb="Please select a suburb" data-validation-position="append">
 						<option value=''>Enter Postcode</option>
 					</select>
 				</div>
