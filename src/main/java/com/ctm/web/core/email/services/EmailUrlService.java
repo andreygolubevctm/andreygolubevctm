@@ -130,6 +130,25 @@ public class EmailUrlService {
 		if(emailData.getProductId() != null) {
 			redirectionUrl.append("&productId=" + emailData.getProductId());
 		}
+		if(emailData.getEmailType() != null) {
+			redirectionUrl.append("&type=" + emailData.getEmailType());
+		}
+		if(emailData.getCampaignId() != null) {
+			redirectionUrl.append("&cid=" + emailData.getCampaignId());
+		}
+		if(emailData.getETRid() != null) {
+			redirectionUrl.append("&et_rid=" + emailData.getETRid());
+		}
+		if(emailData.getUTMSource() != null) {
+			redirectionUrl.append("&utm_source=" + emailData.getUTMSource());
+		}
+		if(emailData.getUTMMedium() != null) {
+			redirectionUrl.append("&utm_medium=" + emailData.getUTMMedium());
+		}
+		if(emailData.getUTMCampaign() != null) {
+			redirectionUrl.append("&utm_campaign=" + emailData.getUTMCampaign());
+		}
+		redirectionUrl.append("&" + createEmailParam(emailData.getEmailMaster()));
 	}
 
 	/**
