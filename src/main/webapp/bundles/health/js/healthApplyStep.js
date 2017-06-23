@@ -52,20 +52,6 @@
 
         meerkat.messaging.publish(meerkatEvents.healthPreviousFund.POPULATE_PRIMARY,
             meerkat.modules.healthAboutYou.getPrimaryCurrentCover());
-
-        $unitElements.appAddressUnitType.add($unitElements.appPostalUnitType).on('change', function toggleUnitRequiredFields() {
-            var addressType = this.id.indexOf('address') !== -1 ? 'Address' : 'Postal';
-
-            if (addressType === 'Postal') {
-                _changeStreetNoLabel(this.value);
-                _toggleStreetRules(this.value);
-            }
-
-            _toggleUnitRequired(addressType, this.value);
-        });
-
-        // Default Check format message on person name field
-        $personName.parent().find('.person-name-check-format').addClass('hidden');
     }
 
     function onInitialise() {
@@ -90,42 +76,14 @@
                 meerkat.messaging.publish(meerkatEvents.health.CHANGE_MAY_AFFECT_PREMIUM);
             });
 
-        // Show Check format message on name fields when field isn't in 'Proper case'
-        $personName.on('change', function() {
-            var value = $(this).val(),
-                showCheckFormat = false,
-                i = 1,
-                character = '',
-                $checkFormat = $(this).parent().find('.person-name-check-format');
-
-            if (!_.isEmpty(value)) {
-                for (i = 1; i < value.length; i++) {
-                    character = value.charAt(i);
-
-                    if (character === character.toUpperCase()) {
-                        showCheckFormat = true;
-                    }
-                }
-
-                $checkFormat.toggleClass('hidden', showCheckFormat === false);
-            } else {
-                $checkFormat.addClass('hidden');
-            }
+        $unitElements.appPostalUnitType.on('change', function toggleUnitRequiredFields() {
+            _changeStreetNoLabel(this.value);
+            _toggleStreetRules(this.value);
         });
-    }
 
-    function _toggleUnitRequired(addressType, unitType) {
-        var isPoxBox = unitType === 'PO';
-
-        if (!_.isEmpty(unitType) && unitType !== 'HO') {
-            $unitElements['app' + addressType + 'UnitShop'].setRequired(!isPoxBox);
-
-            if (isPoxBox) {
-                $unitElements.appPostalUnitShop.add($unitElements.appPostalNonStdStreet).blur();
-            }
-        } else {
-            $unitElements['app' + addressType + 'UnitShop'].setRequired(false).blur();
-        }
+        $unitElements.appAddressUnitShop.add($unitElements.appPostalUnitShop).on('change', function toggleUnitShopRequiredFields() {
+            _toggleUnitShopRequired(this.id.indexOf('address') !== -1 ? 'Address' : 'Postal', !_.isEmpty(this.value));
+        });
     }
 
     function _changeStreetNoLabel(unitType) {
@@ -156,6 +114,15 @@
             $unitElements.appPostalNonStdStreet
                 .addRule('regex', '[a-zA-Z0-9 ]+')
                 .addRule('validAddress', 'health_application_postal');
+        }
+    }
+
+    function _toggleUnitShopRequired(addressType, isUnitShop) {
+        $unitElements['app'+addressType+'UnitType'].setRequired(isUnitShop);
+
+        // blur out of fields to trigger validation when unitShop not empty
+        if (!isUnitShop) {
+            $unitElements['app'+addressType+'UnitType'].blur();
         }
     }
 
