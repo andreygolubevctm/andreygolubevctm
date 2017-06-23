@@ -38,13 +38,7 @@
 		<script>
 			<%-- In case we want to turn off looped URI Decoding --%>
 			window.useLoopedTransferringURIDecoding = ${pageSettings.getSetting("useLoopedTransferringURIDecoding")};
-
-			<%-- Mock underscore.js (_) because we don't need it but our framework insists that it is required :( --%>
-			window._ = {};
-			var properties = ['debounce', 'isNull', 'isUndefined', 'template', 'bind', 'isEmpty'];
-			for(var i = 0; i < properties.length; i++){
-				window._[properties[i]] = function() {};
-			}
+			
 
 			<%-- Mock results objects because same reason as above --%>
 			window.ResultsModel = { moduleEvents: { WEBAPP_LOCK: 'WEBAPP_LOCK' } };
@@ -56,7 +50,7 @@
                 </c:forEach>
             };
 		</script>
-
+		<go:script href="common/js/underscore-1.5.2.min.js" marker="js-href" />
 	</jsp:attribute>
 
 	<jsp:attribute name="head_meta">

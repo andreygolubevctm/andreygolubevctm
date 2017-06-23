@@ -28,6 +28,11 @@ function transferError(description, data) {
 }
 
 $(window).load(function () {
+    meerkat.site.tracking = {
+      GTMEnabled: true
+    };
+  
+    meerkat.modules.tracking.init();
     var urlVars = getUrlVars();
 
     var transactionId = loopedDecodeUriComponent(urlVars.transactionId);
@@ -82,11 +87,11 @@ $(window).load(function () {
 
             data.productId = window.returnedResult.productId;
             data.brand = window.returnedResult.brandCode;
-
+            var verticalFix = vertical === 'home' ? 'home_contents' : vertical;
             meerkat.messaging.publish(meerkat.modules.events.tracking.EXTERNAL, {
                 method: 'trackEmailQuoteHandoverClick',
                 object: {
-                    actionStep: vertical + " transfer online",
+                    actionStep: verticalFix + " transfer online",
                     brandCode: "ctm",
                     currentJourney: 1,
                     productBrandCode: window.returnedResult.brandCode,
@@ -96,7 +101,7 @@ $(window).load(function () {
                     rootID: transactionId,
                     transactionID: transactionId,
                     type: "online",
-                    vertical: vertical
+                    vertical: verticalFix
                 }
             });
 
