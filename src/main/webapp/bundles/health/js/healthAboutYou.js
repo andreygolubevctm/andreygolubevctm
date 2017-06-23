@@ -134,6 +134,7 @@
 		switch($healthSituationHealthCvr.val())
 		{
 			case 'F':
+            case 'EF':
 				$partnerContainer.slideDown();
 				$healthCoverIncomeMessage.show();
 
@@ -144,6 +145,7 @@
 				$partnersDetails.show();
 				break;
 			case 'SPF':
+            case 'ESP':
 				$partnerContainer.slideUp();
 
 				if($('#health_healthCover_health_cover_rebate').find('input:checked').val() !== 'N'){
@@ -168,10 +170,16 @@
 		if(meerkat.site.isCallCentreUser === true){
 			var $rebateLabel = $('.health_cover_details_rebate > label');
 
+
+			/* The $rebateLabel.text that is set below is flat out wrong and misleading the question should read do you wish to claim the rebate */
+			/* or the single one could read:   The Government provides a rebate which is based on your taxable income. So can I just confirm, do you earn below $140,001 a year?*/
+			/* or the family one would always be wrong once dependents come into the picture!!:   The Government provides a rebate which is based on your taxable income. So can I just confirm, do you earn below $280,001 a year as a household?  */
 			switch($healthSituationHealthCvr.val()) {
 				case 'C':
 				case 'F':
-				case 'SPF':
+				case 'EF':
+                case 'SPF':
+                case 'ESP':
 					$rebateLabel.text('The Government provides a rebate which is based on your taxable income. So can I just confirm, do you earn below $180,000 a year as a household?');
 					break;
 				default:

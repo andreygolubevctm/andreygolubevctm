@@ -782,7 +782,7 @@
     // Use the situation value to determine if a partner is visible on the journey.
     function hasPartner() {
         var cover = $(':input[name="health_situation_healthCvr"]').val();
-        if (cover == 'F' || cover == 'C') {
+        if (cover == 'F' || (cover == 'EF' || cover == 'C')) {
             return true;
         } else {
             return false;
@@ -1357,7 +1357,7 @@
         } else {
             $('#health_healthCover_tier').show();
             var cover = $(':input[name="health_situation_healthCvr"]').val();
-            if (cover === 'F' || cover === 'SPF') {
+            if (cover === 'F' || (cover === 'EF' || (cover === 'SPF' || cover === 'ESP'))) {
                 $('.health_cover_details_dependants').show();
             }
         }

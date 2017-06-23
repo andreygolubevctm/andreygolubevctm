@@ -194,6 +194,7 @@
 <%-- CHECK IF SAFE TO WRITE QUOTE ................................................. --%>
 <c:if test="${write_quote != 'N'}">
 	<%-- Does this transaction have a confirmation touch? No need to check if we've just touched with a C. --%>
+	<%-- unsure if this needs to be expanded to include EF / ESP / SPF --%>
 	<c:if test="${touch != 'C'}">
 		<sql:query var="confirmationQuery">
 			SELECT COALESCE(t1.type,t2.type,1) AS editable FROM ctm.touches t0

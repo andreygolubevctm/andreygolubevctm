@@ -13,6 +13,7 @@
         $dialoguePrimaryCover,
         $dialoguePartnerCover,
         $dialogue56,
+        $dialogue74,
         $healthSituationMedicare,
         $aboutYouFieldset,
         $yourDetailsFieldset,
@@ -45,6 +46,7 @@
             $dialoguePrimaryCover = $('.simples-dialogue-primary-current-cover');
             $dialoguePartnerCover = $('.simples-dialogue-partner-current-cover');
             $dialogue56 = $('.simples-dialogue-56');
+            $dialogue74 = $('.simples-dialogue-74');
             $healthSituationMedicare = $('.health_situation_medicare');
             $aboutYouFieldset = $('#healthAboutYou > .content');
             $yourDetailsFieldset = $('#health-contact-fieldset .content');
@@ -119,7 +121,7 @@
             var familyType = meerkat.modules.health.getSituation();
             if (!_.isEmpty(familyType) && (_.isNull(currentFamilyType) || familyType !== currentFamilyType)) {
                 var $tempMedicareForm = $simplesMedicareCoverForm.detach();
-                var $wrapperToUse = $applicantWrappers[_.indexOf(['F', 'C'], familyType) > -1 ? 'partner' : 'primary'];
+                var $wrapperToUse = $applicantWrappers[_.indexOf(['F', 'C', 'EF'], familyType) > -1 ? 'partner' : 'primary'];
                 $wrapperToUse.append($tempMedicareForm);
                 currentFamilyType = familyType;
             }
@@ -308,6 +310,7 @@
 
     function toggleRebateDialogue() {
         $dialogue56.toggleClass('hidden', $healthCoverRebate.filter(':checked').val() !== "Y");
+        $dialogue74.toggleClass('hidden', !($healthSituationCvr.val() === "ESP" || $healthSituationCvr.val() === "EF"));
     }
 
     function toggleBenefitsDialogue() {
@@ -349,7 +352,8 @@
     meerkat.modules.register("simplesBindings", {
         init: init,
         updateSimplesMedicareCoverQuestionPosition: updateSimplesMedicareCoverQuestionPosition,
-        toggleLimitedCoverDialogue: toggleLimitedCoverDialogue
+        toggleLimitedCoverDialogue: toggleLimitedCoverDialogue,
+        toggleRebateDialogue: toggleRebateDialogue
     });
 
 })(jQuery);

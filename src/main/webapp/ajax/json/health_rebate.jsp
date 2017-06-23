@@ -37,6 +37,7 @@ Lifetime Health Cover and Rebate Discount Calculator
 COVER TYPE
 **********
 --%>
+<%-- TODO: check if the changes made for Extended Single parent Family and Extended Family are suffecient --%>
 <c:choose>
 	<c:when test="${cover == 'SM'}">
 		<c:set var="cover" value="singles" />
@@ -47,10 +48,10 @@ COVER TYPE
 	<c:when test="${cover == 'S'}">
 		<c:set var="cover" value="singles" />
 	</c:when>
-	<c:when test="${cover == 'SPF'}">
+	<c:when test="${cover == 'SPF' || cover == 'ESP'}">
 		<c:set var="cover" value="singlefamily" />
 	</c:when>
-	<c:when test="${cover == 'F' || cover == 'C' }">
+	<c:when test="${cover == 'F' || (cover == 'C' || cover == 'EF') }">
 		<c:set var="cover" value="families" />
 		<c:if test="${not empty param.partner_dob}">
 			<fmt:formatNumber var="partnerDobYear" value="${fn:substring(fn:trim(param.partner_dob), 6, 12)+0}" pattern="####" minIntegerDigits="4" />

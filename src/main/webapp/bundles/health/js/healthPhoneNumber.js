@@ -61,7 +61,7 @@
 			if(_.indexOf(['N','SHN'], situ.lookingTo) > -1) {
 				sanitisedSitu = situ.lookingTo;
 			} else {
-				var isFamily = _.indexOf(['SPF','F'], situ.familyType) > -1;
+				var isFamily = _.indexOf(['SPF','F','ESP','EF'], situ.familyType) > -1;
 				if(_.indexOf(['CSF','SF'],situ.lookingTo) > -1) {
 					sanitisedSitu = situ.lookingTo + "_" + (!isFamily ? 'S' : 'F');
 				}
