@@ -53,7 +53,7 @@
 
 	<%-- UNIT/SHOP (BOTH STD & NON STD) --%>
 	<c:set var="fieldXpath" value="${xpath}/unitShop" />
-	<form_v2:row fieldXpath="${fieldXpath}" label="Unit/Shop/Level" id="${name}_unitShopRow" className="std_streetUnitShop ${name}_unitShopRow" smRowOverride="5" hideHelpIconCol="${true}">
+	<form_v2:row fieldXpath="${fieldXpath}" label="Unit/Shop/Level No." id="${name}_unitShopRow" className="std_streetUnitShop ${name}_unitShopRow" smRowOverride="5" hideHelpIconCol="${true}">
 		<field_v2:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-unitShop blur-on-select show-loading sessioncamexclude" title="the unit/shop" includeInForm="true" required="false" placeHolder="Unit/Shop/Level" additionalAttributes="data-msg-required='Please enter a Unit number'  data-validation-position='append' " />
 	</form_v2:row>
 
