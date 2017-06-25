@@ -887,7 +887,7 @@
 	// Use the situation value to determine if a partner is visible on the journey.
 	function hasPartner(){
 		var cover = $(':input[name="health_situation_healthCvr"]').val();
-		if(cover == 'F' || cover == 'C'){
+		if(cover == 'F' || (cover == 'C' || cover == 'EF')){
 			return true;
 		}else{
 			return false;
@@ -1421,7 +1421,7 @@
 	function toggleRebate() {
 		if(meerkat.modules.healthCoverDetails.isRebateApplied()){
 			$('#health_healthCover_tier').show();
-			if(getSituation() === 'F' || getSituation() === 'SPF'){
+			if(getSituation() === 'F' || (getSituation() === 'SPF' || (getSituation() === 'EF' || getSituation() === 'ESP'))){
 				$('.health_cover_details_dependants').show();
 			}
 		} else {

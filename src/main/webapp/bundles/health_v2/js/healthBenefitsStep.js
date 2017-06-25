@@ -255,7 +255,7 @@
             case 'SF':
                 var isSingleMale = situation === 'SM';
                 var isSingleCouple = _.indexOf(['SM', 'SF', 'C'], situation) >= 0;
-                var isFamOrSPF = _.indexOf(['F','SPF'], situation) >= 0;
+                var isFamOrSPF = _.indexOf(['F','SPF','EF','ESP'], situation) >= 0;
                 if (age >= 40) {
                     hospitalContent = meerkat.site.content.hospitalSettledFamilyOlder;
                     extrasContent = meerkat.site.content[isSingleCouple ? 'extrasSettledFamilyOlderSingleCouple' : 'extrasSettledFamilyOlder'];
@@ -428,7 +428,7 @@
                     } else if (currentSituation === 'csf' && currentFamilyType === 'sm') {
                         $benefitCheckbox.hospital.privateHosp.prop('checked', true).change();
                         $benefitCheckbox.extras.generalDental.prop('checked', true).change();
-                    } else if (currentSituation === 'csf' && _.indexOf(['sf', 'c', 'f', 'spf'], currentFamilyType) >= 0) {
+                    } else if (currentSituation === 'csf' && _.indexOf(['sf', 'c', 'f', 'spf', 'ef', 'esp'], currentFamilyType) >= 0) {
                         $benefitCheckbox.hospital.privateHosp.prop('checked', true).change();
                         $benefitCheckbox.hospital.birthServices.prop('checked', true).change();
                         $benefitCheckbox.hospital.assistedReproduction.prop('checked', true).change();
@@ -459,7 +459,7 @@
                         $benefitCheckbox.extras.generalDental.prop('checked', true).change();
                         $benefitCheckbox.extras.optical.prop('checked', true).change();
                         $benefitCheckbox.extras.physiotherapy.prop('checked', true).change();
-                    } else if (currentSituation === 'csf' && _.indexOf(['sf', 'c', 'f', 'spf'], currentFamilyType) >= 0) {
+                    } else if (currentSituation === 'csf' && _.indexOf(['sf', 'c', 'f', 'spf', 'ef', 'esp'], currentFamilyType) >= 0) {
                         $benefitCheckbox.hospital.privateHosp.prop('checked', true).change();
                         $benefitCheckbox.hospital.heartSurgery.prop('checked', true).change();
                         $benefitCheckbox.hospital.birthServices.prop('checked', true).change();

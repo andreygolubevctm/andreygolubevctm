@@ -54,6 +54,7 @@
         switch (_cover) {
             case 'C':
             case 'F':
+            case 'EF':
                 return true;
             default:
                 return false;
@@ -118,6 +119,8 @@
         switch (_cover) {
             case 'F':
             case 'SPF':
+            case 'EF':
+            case 'ESP':
                 copy = copy.replace('Start a family', 'Grow my family');
                 break;
             default:

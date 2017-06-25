@@ -18,6 +18,11 @@ var healthFunds_HCF = {
     $paymentBankDayGroupLabel: $('.health_payment_bank-details_policyDay-group label'),
     $paymentCreditDayGroupLabel: $('.health_payment_credit-details_policyDay-group label'),
     set: function(){
+
+        <%-- Dependants --%>
+        meerkat.modules.healthFunds._dependants('This policy provides cover for your children aged less than 22 years plus students studying full time between the ages of 22 and 24. You can still obtain cover for your adult child outside these criteria by applying for a separate singles policy');
+        <%-- unsure if something like this is required?  -     meerkat.modules.healthDependants.updateConfig({showFullTimeField:true, showSchoolFields:false, 'schoolMinAge':21, 'schoolMaxAge':25 }); --%>
+
         <%--credit card & bank account frequency & day frequency--%>
         meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':false, 'fortnightly': true, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true });
 
@@ -55,6 +60,12 @@ var healthFunds_HCF = {
         meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), _html);
     },
     unset: function(){
+
+        meerkat.modules.healthFunds._dependants(false);
+        meerkat.modules.healthDependants.resetConfig();
+
+        <%-- unsure if this is required too -    meerkat.modules.healthFunds._reset();  --%>
+
         $('.hcf-clearance-certificate').remove();
 
         healthFunds_HCF.$paymentType.off("changeDate.HCF");

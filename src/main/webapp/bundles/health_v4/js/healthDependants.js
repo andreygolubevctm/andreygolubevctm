@@ -53,7 +53,9 @@
             showRelationship:false,
             defactoMinAge: 21,
             defactoMaxAge: 24,
-            showApprenticeField: false
+            showApprenticeField: false,
+            extendedFamilyMinAge: 21,
+            extendedFamilyMaxAge: 25
         },
         providerConfig,
         maxDependantAge = 25,
@@ -225,6 +227,8 @@
             selectorPrefix = '#health_application_dependants_dependant' + dependantId,
             $dob = $(selectorPrefix + '_dob');
         var age = meerkat.modules.age.returnAge($dob.val(), true) || 0;
+        
+        // see   \health\js\healthDependants.js if extendedFamily integration is required in the future
         // If the dependant is between the school age
         if (age >= providerConfig.schoolMinAge && age <= providerConfig.schoolMaxAge) {
             // If the config is set to true, we want to remove the class.
@@ -429,7 +433,7 @@
      */
     function situationEnablesDependants() {
         var coverCode = meerkat.modules.healthChoices.returnCoverCode();
-        return coverCode == 'SPF' || coverCode == 'F';
+        return coverCode == 'SPF' || (coverCode == 'F' || (coverCode == 'ESP' || coverCode == 'EF'));
     }
 
     function animateToDependant($el) {
