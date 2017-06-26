@@ -50,7 +50,7 @@
                 </c:forEach>
             };
 		</script>
-		<go:script href="common/js/underscore-1.5.2.min.js" marker="js-href" />
+		<go:script href="assets/libraries/underscore-1.8.3.min.js" marker="js-href" />
 	</jsp:attribute>
 
 	<jsp:attribute name="head_meta">

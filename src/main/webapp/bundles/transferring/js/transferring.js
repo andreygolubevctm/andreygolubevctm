@@ -28,9 +28,11 @@ function transferError(description, data) {
 }
 
 $(window).load(function () {
-    meerkat.site.tracking = {
-      GTMEnabled: true
-    };
+    if (meerkat.site.tracking.GTMEnabled == null) {
+      meerkat.site.tracking = {
+        GTMEnabled: true
+      };
+    }
   
     meerkat.modules.tracking.init();
     var urlVars = getUrlVars();
