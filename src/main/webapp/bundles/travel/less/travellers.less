@@ -6,6 +6,10 @@
   font-size: 16px;
 }
 
+.travel_party {
+  display: flex;
+}
+
 #num-travellers {
   color: @heading;
   font-size: 24px;
@@ -61,8 +65,7 @@
       color: @grey;
     }
     
-    padding-bottom: 15px;
-    max-width: 33.33%;
+    padding: 0 0 15px;
     float: left;
     position: relative;
   }
@@ -104,4 +107,32 @@
   color: red;
   display: none;
   float: left;
+}
+
+@media(@md-only) {
+  .travel_party.roundedCheckboxIcons label:before {
+    line-height: 63px;
+    width: 63px;
+    font-size: 40px;
+  }
+}
+
+@media(@sm-only) {
+  .travel_party.roundedCheckboxIcons label:before {
+    line-height: 43px;
+    width: 45px;
+    font-size: 30px;
+  }
+  #plus .icon-add {
+    font-size: 40px;
+  }
+}
+
+@media(@xs-only) {
+  .age-container {
+    padding: 15px;
+  }
+  .travel_party {
+    display: block;
+  }
 }

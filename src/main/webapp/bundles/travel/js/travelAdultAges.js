@@ -44,8 +44,12 @@
 				$('#travel_childrenSelect').val(0);
 				$single_parent_row[hideMethod]();
 				$travel_adults.val(2);
-			} else if (selected === "F" || selected === "G") {
+			} else if (selected === "F") {
 				$children_row[showMethod]();
+				$single_parent_row[hideMethod]();
+				$travel_adults.val(2);
+			} else if(selected === "G") {
+				$children_row[hideMethod]();
 				$single_parent_row[hideMethod]();
 				$travel_adults.val(2);
 			}
