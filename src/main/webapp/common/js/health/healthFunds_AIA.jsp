@@ -15,6 +15,8 @@ var healthFunds_AIA = {
     $partnerEmailRow: null,
     $partnerEmail: null,
     emailUniqueMsg: 'To activate your Vitality membership, a unique email is required for each adult on the policy. Duplicate emails are not supported.',
+    $policyDateCreditMessage : $('.health_payment_credit-details_policyDay-message'),
+    $policyDateBankMessage : $('.health_payment_bank-details_policyDay-message'),
 
     paymentDayChange : function(value) {
         healthFunds_AIA.$policyDateHiddenField.val(value);
@@ -73,9 +75,13 @@ var healthFunds_AIA = {
         } else {
             meerkat.modules.healthPaymentStep.setCoverStartRange(0, 30);
         }
-        healthFunds_AIA.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
+        healthFunds_AIA.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '0,6');
 
         meerkat.messaging.subscribe(meerkat.modules.healthPaymentDate.events.POLICY_DATE_CHANGE, healthFunds_AIA.paymentDayChange);
+
+        <%-- update deduction message --%>
+        var deductionText = "Your payment will be deducted on the policy start date";
+        healthFunds_AIA.$policyDateCreditMessage.add(healthFunds_AIA.$policyDateBankMessage).text(deductionText);
     },
     unset: function(){
         healthFunds_AIA.$partnerEmailRow.hide();
