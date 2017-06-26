@@ -5,14 +5,14 @@
 <layout_v3:slide formId="resultsForm" className="resultsSlide">
 
 	<layout_v3:slide_content>
-		<simples:dialogue id="28" vertical="health" mandatory="true" />
+		<simples:dialogue id="28" vertical="health" className="red" />
 		<simples:dialogue id="33" vertical="health" />
 
 		<health_v1:results />
 		<health_v1:more_info />
 		<health_v1:prices_have_changed_notification />
 
-		<simples:dialogue id="24" vertical="health" mandatory="true" />
+		<simples:dialogue id="24" vertical="health" className="red" />
 	</layout_v3:slide_content>
 
 </layout_v3:slide>

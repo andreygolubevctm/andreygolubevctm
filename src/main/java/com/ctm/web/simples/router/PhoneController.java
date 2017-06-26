@@ -10,9 +10,11 @@ import com.ctm.web.core.router.CommonQuoteRouter;
 import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.services.SettingsService;
+import com.ctm.web.core.transaction.model.TransactionDetail;
 import com.ctm.web.simples.phone.inin.InInIcwsService;
 import com.ctm.web.simples.phone.inin.model.PauseResumeResponse;
 import com.ctm.web.simples.phone.verint.VerintPauseResumeService;
+import com.ctm.web.core.transaction.dao.TransactionDetailsDao;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,11 +45,13 @@ public class PhoneController extends CommonQuoteRouter {
     }
 
     private InInIcwsService inInIcwsService;
+    private TransactionDetailsDao transactionDetailsDao;
 
     @Autowired
-    public PhoneController(SessionDataServiceBean sessionDataServiceBean, InInIcwsService inInIcwsService, IPAddressHandler ipAddressHandler) {
+    public PhoneController(SessionDataServiceBean sessionDataServiceBean, InInIcwsService inInIcwsService, IPAddressHandler ipAddressHandler, TransactionDetailsDao transactionDetailsDao ) {
         super(sessionDataServiceBean, ipAddressHandler);
         this.inInIcwsService = inInIcwsService;
+        this.transactionDetailsDao = transactionDetailsDao;
     }
 
     @RequestMapping(
@@ -62,7 +66,15 @@ public class PhoneController extends CommonQuoteRouter {
 
         final boolean inInEnabled = StringUtils.equalsIgnoreCase("true", pageSettings.getSetting("inInEnabled"));
         PauseResumeResponse pauseResumeResponse = PauseResumeResponse.fail("Failed");
+        Long transactionId =null;
 
+        if(null != request.getParameter("transactionId")) {
+            try{
+                transactionId = Long.parseLong(request.getParameter("transactionId"));
+            }catch(NumberFormatException e){
+                LOGGER.error("Unable to parse TransactionId={} ", transactionId);
+            }
+        }
         // Logic if we're using the InIn dialler
         if (inInEnabled) {
             String authName = null;
@@ -78,8 +90,14 @@ public class PhoneController extends CommonQuoteRouter {
             } else {
                 if (action == PauseRecord) {
                     pauseResumeResponse = inInIcwsService.pause(authName, Optional.empty()).observeOn(Schedulers.io()).toBlocking().first();
+                      if(null != transactionId && null != pauseResumeResponse.getInteractionId()) {
+                          persistInteractionId(transactionId, pauseResumeResponse.getInteractionId());
+                      }
                 } else if (action == ResumeRecord) {
                     pauseResumeResponse = inInIcwsService.resume(authName, Optional.empty()).observeOn(Schedulers.io()).toBlocking().first();
+                    if(null != transactionId && null != pauseResumeResponse.getInteractionId()) {
+                        persistInteractionId(transactionId, pauseResumeResponse.getInteractionId());
+                    }
                 }
             }
         // Normal Verint telephony system
@@ -93,6 +111,17 @@ public class PhoneController extends CommonQuoteRouter {
             response.setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
         }
         return pauseResumeResponse;
+    }
+
+    private void persistInteractionId(final Long transactionId , final String interactionId) {
+        TransactionDetail td = new TransactionDetail(InInIcwsService.XPATH_CURRENT_INTERACTION_ID, interactionId);
+        td.setSequenceNo(InInIcwsService.XPATH_SEQUENCE_INTERACTION_ID);
+        try {
+            transactionDetailsDao.addTransactionDetailsWithDuplicateKeyUpdate(transactionId, td);
+            LOGGER.info("Persisted  interactionId={} against transactionId={}", interactionId, transactionId);
+        } catch (DaoException e) {
+            LOGGER.error("Failed to persist interactionId={} against transactionId={}", interactionId, transactionId);
+        }
     }
 
     @ExceptionHandler
