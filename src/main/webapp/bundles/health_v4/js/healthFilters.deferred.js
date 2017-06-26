@@ -72,6 +72,21 @@
                     }
                 }
             },
+            "discount": {
+                name: 'health_filterBar_discount',
+                defaultValueSourceSelector: 'input[name="health_applyDiscounts"]',
+                defaultValue: '',
+                events: {
+                    init: function (filterObject) {
+                        var isChecked = $(filterObject.defaultValueSourceSelector).val() === 'Y';
+                        $('input[name=' + filterObject.name + ']').prop('checked', isChecked);
+                    },
+                    update: function (filterObject) {
+                        var isChecked = $('input[name=' + filterObject.name + ']').is(':checked');
+                        $(filterObject.defaultValueSourceSelector).val(isChecked ? 'Y' : 'N');
+                    }
+                }
+            },
             "rebate": {
                 name: 'health_filterBar_rebate',
                 defaultValueSourceSelector: 'input[name="health_healthCover_rebate"]',
@@ -88,7 +103,7 @@
                         if (isChecked) {
                             $(filterObject.defaultValueSourceSelector+'[value="Y"]').prop('checked', true).trigger('change');
                         } else {
-                            $(filterObject.defaultValueSourceSelector+'[value="N"]').prop('checked', true).trigger('change');
+                            $(filterObject.defaultValueSourceSelector+'[value="N"]').prop('checked', true).trigger('change', [false]);
                         }
 
                         _.defer(function () {
@@ -272,6 +287,11 @@
             verticalContextChange: ['xs', 'sm'],
             xsContext: '.header-top',
             filters: [
+                {
+                    template: '#filter-discount-template',
+                    container: '.results-filters-discount',
+                    context: '#results-sidebar'
+                },
                 {
                     template: '#filter-rebate-template',
                     container: '.results-filters-rebate',

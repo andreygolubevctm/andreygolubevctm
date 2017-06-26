@@ -108,6 +108,19 @@ public class RequestAdapterV2 {
 
         quoteRequest.setIncludeGiftCard(isGiftCardActive);
 
+        HealthCover cover = quote.getHealthCover();
+        if(cover != null && cover.getPrimary()!= null) {
+            quoteRequest.setPrimaryHealthCover(toBoolean(cover.getPrimary().getCover()));
+        } else {
+            quoteRequest.setPrimaryHealthCover(null);
+        }
+
+        if(cover != null && cover.getPartner()!= null) {
+            quoteRequest.setPartnerHealthCover(toBoolean(cover.getPartner().getCover()));
+        }else {
+            quoteRequest.setPartnerHealthCover(null);
+        }
+
         return quoteRequest;
     }
 

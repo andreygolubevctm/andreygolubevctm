@@ -47,7 +47,8 @@
   }
 }
 
-body[data-step=contact] {
+body[data-step=contact],
+#agr-modal {
   .required_input label.control-label:after {
     content: "\002A";
     color: @required-color;
@@ -60,4 +61,9 @@ body[data-step=contact] {
       color: @required-color;
     }
   }
+}
+
+.centerRowContents {
+  float: none;
+  margin: 0 auto;
 }

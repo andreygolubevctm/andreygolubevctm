@@ -2,7 +2,9 @@
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events;
 
-    var $healthContactType,
+    var $healthContactTypeRadio,
+        $healthContactType,
+        $healthContactTypeTrial,
         $healthCoverRebate,
         $healthSituationCvr,
         $healthSitCoverType,
@@ -20,16 +22,21 @@
         $inboundQuestionsetFollowupDialogue,
         $inboundQuestionsetFollowupToggles,
         $inboundApplicationFollowupDialogue,
+        $privatePatientDialogue,
         $inboundApplicationFollowupToggles,
         $followupDialogueContentContainers,
         $simplesMedicareCoverForm = null,
         $applicantWrappers = {},
-        currentFamilyType = null;
+        currentFamilyType = null,
+        $limitedCoverHidden;
 
     function init() {
         $(document).ready(function () {
+
             // cache selectors
-            $healthContactType = $('input[name=health_simples_contactType]');
+            $healthContactTypeRadio = $('input[name=health_simples_contactTypeRadio]');
+            $healthContactType = $('#health_simples_contactType');
+            $healthContactTypeTrial = $('#health_simples_contactTypeTrial');
             $healthCoverRebate = $('input[name=health_healthCover_rebate]');
             $healthSituationCvr = $('select[name=health_situation_healthCvr]');
             $healthSitCoverType = $('#health_situation_coverType');
@@ -53,8 +60,11 @@
             $simplesMedicareCoverForm = $('#health_situation_cover_wrapper');
             $applicantWrappers.primary = $('#health-contact-fieldset .content:first');
             $applicantWrappers.partner = $('#partner-health-cover .content:first');
+	        $privatePatientDialogue = $('.simples-dialogue-24');
+            $limitedCoverHidden = $("input[name='health_situation_accidentOnlyCover']");
 
             // Handle pre-filled
+            populatePrevAssignedRadioBtnGroupValue();
             toggleInboundOutbound();
             toggleBenefitsDialogue();
             initDBDrivenCheckboxes();
@@ -65,6 +75,25 @@
 
             meerkat.modules.provider_testing.setApplicationDateCalendar();
         });
+    }
+
+    function populatePrevAssignedRadioBtnGroupValue() {
+
+        // if data already exists for xpath load data into radio btn
+	    var contactType = $healthContactType.val();
+        if (!_.isEmpty(contactType)) {
+            if ($healthContactTypeTrial.val() === 'Trial Campaign') {
+                $('#health_simples_contactTypeRadio_trialcampaign').prop("checked", true).change();
+            } else {
+                if (contactType === 'inbound') {
+                    $('#health_simples_contactTypeRadio_inbound').prop("checked", true).change();
+                } else if (contactType === 'outbound') {
+                    $('#health_simples_contactTypeRadio_outbound').prop("checked", true).change();
+                } else if (contactType === 'cli') {
+                    $('#health_simples_contactTypeRadio_clioutbound').prop("checked", true).change();
+                }
+            }
+        }
     }
 
     function _moveSituationMedicareField() {
@@ -113,14 +142,13 @@
     }
 
     function applyEventListeners() {
-
         // General Toggle
         $('.simples-dialogue.optionalDialogue h3.toggle').parent('.simples-dialogue').addClass('toggle').on('click', function () {
             $(this).find('h3 + div').slideToggle(200);
         });
 
         // Handle toggle inbound/outbound
-        $healthContactType.on('change', function(){
+        $healthContactTypeRadio.on('change', function(){
             toggleInboundOutbound();
             toggleFollowupCallDialog();
         });
@@ -134,29 +162,6 @@
         $healthPrimaryCover.on('change', togglePrimaryCoverDialogue);
         // Handle toggle partnerCoverDialogue
         $healthPartnerCover.on('change', togglePartnerCoverDialogue);
-
-        // open bridging page
-        $('#resultsPage').on("click", ".btn-more-info", openBridgingPage);
-    }
-
-    function openBridgingPage(e) {
-        var i = 0,
-            needsValidation;
-
-        $('#resultsForm .simples-dialogue').find('input[type=checkbox]').each(function() {
-            if (!$(this).prop('checked')) {
-                i++;
-            }
-        });
-
-        needsValidation = i !== 0;
-
-        if (needsValidation) {
-            e.stopImmediatePropagation();
-            $('#resultsForm').valid();
-        }
-
-        return i === 0;
     }
 
     function eventSubscriptions() {
@@ -179,7 +184,11 @@
         var $body = $('body');
 
         // Inbound
-        if ($('#health_simples_contactType_inbound').is(':checked')) {
+        if ($('#health_simples_contactTypeRadio_inbound').is(':checked')) {
+
+            $healthContactType.val('inbound');
+            $healthContactTypeTrial.val('');
+
             $body
                 .removeClass('outbound')
                 .addClass('inbound');
@@ -192,14 +201,37 @@
                 .removeClass('inbound')
                 .addClass('outbound');
 
-            if ($('#health_simples_contactType_outbound').is(':checked')) {
+            if (($('#health_simples_contactTypeRadio_outbound').is(':checked')) || ($('#health_simples_contactTypeRadio_trialcampaign').is(':checked'))) {
                 _moveSituationMedicareField();
+
+                $healthContactType.val('outbound');
+
+                if ($('#health_simples_contactTypeRadio_outbound').is(':checked')) {
+                    $healthContactTypeTrial.val('');
+                } else {
+                    $healthContactTypeTrial.val('Trial Campaign');
+                }
+
+            } else {
+                // cli outbound
+                $healthContactTypeTrial.val('');
+                $healthContactType.val('cli');
             }
+
         }
     }
 
     function getCallType() {
-        return $healthContactType.is(':checked') ? $healthContactType.filter(':checked').val() : null;
+        var callTypeToBeReturned = $healthContactTypeRadio.is(':checked') ? $healthContactTypeRadio.filter(':checked').val() : null;
+
+        // treat trial campaign as outbound
+        // for all intents and purposes trial campaign should be handled as an outbound call type - just have a different value stored in the DB
+        // unsure if cli outbound should be handled here too
+        if (callTypeToBeReturned === 'trialcampaign') {
+            callTypeToBeReturned = 'outbound';
+        }
+
+        return callTypeToBeReturned;
     }
 
     // Toggle visibility on follow call dialogs based on call type and whether is a followup call
@@ -286,9 +318,14 @@
         $dialoguePartnerCover.toggleClass('hidden', $healthPartnerCover.filter(':checked').val() !== "Y");
     }
 
+    function toggleLimitedCoverDialogue() {
+        $privatePatientDialogue.toggleClass('hidden', $limitedCoverHidden.val() !== 'Y');
+    }
+
     meerkat.modules.register("simplesBindings", {
         init: init,
-        updateSimplesMedicareCoverQuestionPosition: updateSimplesMedicareCoverQuestionPosition
+        updateSimplesMedicareCoverQuestionPosition: updateSimplesMedicareCoverQuestionPosition,
+        toggleLimitedCoverDialogue: toggleLimitedCoverDialogue
     });
 
 })(jQuery);

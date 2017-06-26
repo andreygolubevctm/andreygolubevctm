@@ -39,7 +39,7 @@
 	<%-- Determine if Exact Target or OLD method --%>
 	<c:set var="isExactTarget">
 		<c:choose>
-		<c:when test="${fn:contains('health_app,health_bestprice,health_quote,home_bestprice,car_bestprice,generic_reset', param.tmpl)}">${true}</c:when>
+		<c:when test="${fn:contains('health_bestprice,health_quote,home_bestprice,car_bestprice,generic_reset', param.tmpl)}">${true}</c:when>
 			<c:otherwise>${false}</c:otherwise>
 		</c:choose>
 	</c:set>

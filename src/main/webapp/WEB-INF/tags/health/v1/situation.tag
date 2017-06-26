@@ -22,7 +22,9 @@
             <simples:dialogue id="0" vertical="health" className="red">
                 <div class="row">
                     <div class="col-sm-12">
-                        <field_v2:array_radio xpath="health/simples/contactType" items="outbound=Outbound quote,inbound=Inbound quote,cli=CLI" required="true" title="contact type (outbound/inbound)" />
+                        <field_v2:array_radio xpath="health/simples/contactTypeRadio" items="outbound=Outbound quote,inbound=Inbound quote,cli=CLI,trialcampaign=Trial Campaign" required="true" title="contact type (outbound/inbound)" />
+                        <field_v1:hidden xpath="health/simples/contactType" />
+                        <field_v1:hidden xpath="health/simples/contactTypeTrial" />
                     </div>
                 </div>
             </simples:dialogue>
@@ -33,8 +35,8 @@
             <simples:dialogue id="20" vertical="health" className="simples-dialog-outbound"/>
             <simples:dialogue id="48" vertical="health" />
             <simples:dialogue id="63" vertical="health" />
-            <simples:dialogue id="21" vertical="health" mandatory="true" /> <%-- 3 Point Security Check --%>
-            <simples:dialogue id="36" vertical="health" mandatory="true" className="simples-dialog-inbound" />
+            <simples:dialogue id="21" vertical="health" className="red" /> <%-- 3 Point Security Check --%>
+            <simples:dialogue id="36" vertical="health" className="red simples-dialog-inbound" />
 
             <c:set var="subText" value="" />
             <c:if test="${not callCentre}">
@@ -77,7 +79,9 @@
                     <c:set var="fieldXpath" value="${xpath}/cover" />
                     <c:set var="fieldXpathName" value="${go:nameFromXpath(fieldXpath)}_wrapper" />
                     <form_v3:row label="Private Health Insurance works in conjunction with Medicare, so just to confirm, do all people to be covered on this policy have a blue or green Medicare card?" fieldXpath="${fieldXpath}" id="${fieldXpathName}" className="health_situation_medicare text-danger" helpId="564">
-                        <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your Medicare card cover" required="true" className="health-medicare_details-card" id="${name}_cover" additionalAttributes="data-rule-isCheckedYes='true' data-msg-isCheckedYes='Unfortunately we cannot continue with your quote'" />
+                        <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}"
+                            title="your Medicare card cover" required="true" className="health-medicare_details-card"
+                            id="${name}_cover" additionalAttributes="data-rule-isCheckedYes='true' data-msg-isCheckedYes='Customer not eligible for standard health insurance but may be eligible for Overseas Visitors Cover (OVC). Please warm transfer the customer to the \"Bupa OVC\" line and then disposition lead as OVC. '" />
                     </form_v3:row>
                 </c:if>
 

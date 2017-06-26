@@ -242,6 +242,11 @@
         _setupDualPricing(product);
         dynamicPyrrBanner(product);
         _setTabs();
+
+        // HLT-4339: AUF discount override
+        if (product.info.FundCode === 'AUF') {
+            $('.productExtraInfo .discountText').text(meerkat.modules.healthResultsTemplate.getDiscountText(product));
+        }
     }
 
     function _setupDualPricing(product) {

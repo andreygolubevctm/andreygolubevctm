@@ -42,7 +42,7 @@
     </form_v2:row>
 
     <%-- Mando mandatory dialogue --%>
-    <simples:dialogue id="64" vertical="health" mandatory="true" />
+    <simples:dialogue id="64" vertical="health" className="red" />
 </c:when>
 <c:otherwise>
     <c:if test="${showDefaultMessage eq true}">

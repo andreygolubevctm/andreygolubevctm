@@ -32,7 +32,9 @@
 
                         <health_v4_aboutyou:simples />
 
-                        <form_v4:fieldset id="healthAboutYou" legend="Tell us about yourself, so we can find the right cover for you" className="health-about-you">
+                        <form_v4:fieldset id="healthAboutYou"
+                                          legend="Tell us about yourself, so we can find the right cover for you"
+                                          className="health-about-you">
                             <health_v4_aboutyou:youarea xpath="${xpath}" />
                             <c:set var="xpath" value="${pageSettings.getVerticalCode()}/healthCover" />
                             <health_v4_aboutyou:dob xpath="${xpath}" />

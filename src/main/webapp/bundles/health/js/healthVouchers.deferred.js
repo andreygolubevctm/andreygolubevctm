@@ -23,7 +23,15 @@
                 'referral-offer': {
                     min: 25,
                     max: 100
-                }
+                },
+	            'q-jun$100-offer': {
+		            min: 100,
+		            max: 100
+	            },
+	            'q-jun$200-offer': {
+		            min: 200,
+		            max: 200
+	            }
             }
     };
 
@@ -48,10 +56,8 @@
                     approvedby:     $elements.root.find('.healthVoucherApprovedByRow').first(),
                     authorisation:  $elements.root.find('.healthVoucherAuthorisationRow').first(),
                     simples :   {
-                        referral :      $elements.root.find('.dialogue.referral').first(),
-                        other :         $elements.root.find('.dialogue.others').first(),
-                        matchonline :   $elements.root.find('.dialogue.matchonline').first()
-                    },
+                        defaultReason :      $elements.root.find('.dialogue.defaultReason').first(),
+                          },
                     messages:       $elements.root.find('.voucher-validation-messages'),
                     disableables:   $elements.root.find('.disableable-fields')
                 };
@@ -224,34 +230,8 @@
                             if (pyrrCoupon) {
                                 $elements.wrappers.simples.pyrrCampaign.hide();
                             }
-                            if(!_.isEmpty(data.other.reason)) {
-                                if (data.other.reason === 'referral-offer') {
-                                    $elements.wrappers.referrerref.show();
-                                    $elements.wrappers.simples.referral.show();
-                                    $elements.wrappers.simples.other.hide();
-                                    $elements.wrappers.simples.matchonline.hide();
-                                } else if (data.other.reason === 'match-online-offer') {
-                                    $elements.wrappers.referrerref.hide();
-                                    $elements.wrappers.simples.referral.hide();
-                                    $elements.wrappers.simples.other.hide();
-                                    $elements.wrappers.simples.matchonline.show();
-                                } else if (pyrrCoupon && data.other.reason === 'pay-your-rate-rise') {
-                                    $elements.wrappers.referrerref.hide();
-                                    $elements.wrappers.simples.referral.hide();
-                                    $elements.wrappers.simples.other.hide();
-                                    $elements.wrappers.simples.matchonline.hide();
-                                    $elements.wrappers.simples.pyrrCampaign.show();
-                                } else {
-                                    $elements.wrappers.referrerref.hide();
-                                    $elements.wrappers.simples.referral.hide();
-                                    $elements.wrappers.simples.other.show();
-                                    $elements.wrappers.simples.matchonline.hide();
-                                }
-                            } else {
-                                $elements.wrappers.simples.referral.hide();
-                                $elements.wrappers.simples.other.hide();
-                                $elements.wrappers.simples.matchonline.hide();
-                            }
+                            toggleReasonDialog(pyrrCoupon , data.other.reason);
+                            toggleReferrerReference( data.other.reason);
                             $elements.wrappers.other.slideDown('fast');
                         });
                     }
@@ -262,6 +242,27 @@
         }
     }
 
+    function toggleReferrerReference(otherReason) {
+        if(!_.isEmpty(otherReason)) {
+            if (otherReason === 'referral-offer') {
+                $elements.wrappers.referrerref.show();
+            } else {
+                $elements.wrappers.referrerref.hide();
+            }
+        }
+    }
+    function toggleReasonDialog(pyrrCoupon , otherReason) {
+        if(!_.isEmpty(otherReason)) {
+            if (pyrrCoupon && otherReason === 'pay-your-rate-rise') {
+                $elements.wrappers.simples.defaultReason.hide();
+                $elements.wrappers.simples.pyrrCampaign.show();
+            } else {
+                $elements.wrappers.simples.defaultReason.show();
+            }
+        } else {
+            $elements.wrappers.simples.defaultReason.hide();
+        }
+    }
     /**
      * resetData: resets the private data object to the default state
      */
@@ -317,6 +318,10 @@
             var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
             var giftCardAmount = selectedProduct.giftCardAmount;
             $elements.inputs.value.empty().append('<option value="'+giftCardAmount+'">$'+giftCardAmount+'</option>');
+        }
+
+        if(_.indexOf(['q-jun$100-offer','q-jun$200-offer'],reason) !== -1) {
+            $elements.inputs.value.val(valueRange.custom[reason].max);
         }
     }
 

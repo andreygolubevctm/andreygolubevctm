@@ -33,6 +33,7 @@ Handling of the rebate tiers based off situation
 				incomeTier3:280001
 			}
 		},
+		rebateIncomeRange = [],
 		$dependants,
 		$incomeBase,
 		$income,
@@ -71,7 +72,7 @@ Handling of the rebate tiers based off situation
 		} else {
 			_cover = meerkat.modules.healthChoices.returnCoverCode();
 		}
-
+        rebateIncomeRange = [];
 		// Reset and then loop through all of the options
 		$income.find('option').each( function() {
 			//set default vars
@@ -91,15 +92,19 @@ Handling of the rebate tiers based off situation
 				switch(_value) {
 					case '0':
 						_text = '$'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.single.incomeBaseTier) +' or less';
+                        rebateIncomeRange.push(_text);
 						break;
 					case '1':
 						_text = '$'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.single.incomeTier1.from) +' - $'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.single.incomeTier1.to);
+                        rebateIncomeRange.push(_text);
 						break;
 					case '2':
 						_text = '$'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.single.incomeTier2.from) +' - $'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.single.incomeTier2.to);
+                        rebateIncomeRange.push(_text);
 						break;
 					case '3':
 						_text = '$'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.single.incomeTier3) + '+ (no rebate)';
+                        rebateIncomeRange.push('$'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.single.incomeTier3) + '+');
 						break;
 				}
 			} else {
@@ -109,15 +114,19 @@ Handling of the rebate tiers based off situation
 				switch(_value) {
 					case '0':
 						_text = '$'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.familyOrCouple.incomeBaseTier + allowance) +' or less';
+                        rebateIncomeRange.push(_text);
 						break;
 					case '1':
 						_text = '$'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.familyOrCouple.incomeTier1.from + allowance) +' - $'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.familyOrCouple.incomeTier1.to + allowance);
+                        rebateIncomeRange.push(_text);
 						break;
 					case '2':
 						_text = '$'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.familyOrCouple.incomeTier2.from + allowance) +' - $'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.familyOrCouple.incomeTier2.to + allowance);
+                        rebateIncomeRange.push(_text);
 						break;
 					case '3':
 						_text = '$'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.familyOrCouple.incomeTier3 + allowance) + '+ (no rebate)';
+                        rebateIncomeRange.push('$'+ meerkat.modules.currencyUtils.formatMoney(rebateTiers.familyOrCouple.incomeTier3 + allowance) + '+');
 						break;
 					}
 			}
@@ -134,11 +143,21 @@ Handling of the rebate tiers based off situation
 		}
 	}
 
+    function getRebateIncomeRange() {
+        return rebateIncomeRange;
+    }
+
+    function getIncome() {
+    	return $income.val();
+	}
+
 	meerkat.modules.register("healthTiers", {
 		initHealthTiers: initHealthTiers,
 		setTiers: setTiers,
 		shouldShowDependants: shouldShowDependants,
-		setIncomeLabel: setIncomeLabel
+		setIncomeLabel: setIncomeLabel,
+        getRebateIncomeRange: getRebateIncomeRange,
+		getIncome: getIncome
 	});
 
 })(jQuery);
