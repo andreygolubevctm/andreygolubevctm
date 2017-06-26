@@ -19,12 +19,13 @@
         selectedCountryObj = {},
         selectedTextHTML,
         showingError = false,
-        initialised = false;
+        initialised = false,
+        inputPlaceholder = meerkat.modules.deviceMediaState.get() !== 'xs' ? 'Please select or type in your destination(s)' : 'Please type in your destination(s)';
 
     function findCountryNameByIsoCode(isoCode) {
         var countryList = window.countrySelectionList.isoLocations;
         for (var i = 0; i < countryList.length; i++) {
-            if (countryList[i].isoCode == isoCode) {
+            if (countryList[i].isoCode === isoCode) {
                 return countryList[i].countryName;
 
             }
@@ -60,7 +61,6 @@
     }
 
     function applyEventListeners() {
-
         $countrySelector.on('keydown', function (e) {
             if (e.which == 13) { // if it's the enter key
                 $(".tt-suggestion:first-child").trigger('click'); // select the first item in the dropdown
@@ -71,39 +71,35 @@
         }).on('typeahead:opened', function () {
             selectedCountryObj = {};
             $countrySelector.val("");
-        })
-            .on('typeahead:selected', function typeAheadSelected(obj, datum, name) {
-                selectedCountryObj = datum;
+        }).on('typeahead:selected', function typeAheadSelected(obj, datum, name) {
+            selectedCountryObj = datum;
 
-                var $list = meerkat.modules.selectTags.getListElement($(this));
-                if (typeof datum.countryName !== 'undefined' && !meerkat.modules.selectTags.isAlreadySelected($list, datum.isoCode)) {
-                    selectedTextHTML = datum.countryName;
-                    var selectedLocation = selectedTextHTML.length > 25 ? selectedTextHTML.substr(0, 20) + '...' : selectedTextHTML;
-                    meerkat.modules.selectTags.appendToTagList($list, selectedLocation, datum.countryName, datum.isoCode);
-                    _.defer(function(){
-                        if(!$countrySelector.is(':focus')) {
-                            $countrySelector.focus();
-                        }
-                    });
-                }
-                showingError = false;
-            })
-            .on('click focus', function (event) {
-                $countrySelector.data('ttView').datasets[0].valueKey = 'id';
-                // bit of a hack to prevent the number 1 from being shown. It seems to be a bug from within typeahead itself. The chained version works here.
-                // Still need the .val("") call after setQuery as the 1 still appears if removed
-                $countrySelector.val("").typeahead("setQuery", "1").val("");
-                $('.tt-hint').hide();
-            })
-            .on('blur', function (event) {
-                // bit of a hack to prevent the number 1 from being shown. It seems to be a bug from within typeahead itself. Did try to chain it in between
-                // the $countrySelector and .typeahead call below but that didn't work. Still need the .val("") call after setQuery as the 1 still appears if removed
-                $countrySelector.val("");
-                if (!selectedCountryObj)
-                    $countrySelector.typeahead('setQuery', '').val('');
+            var $list = meerkat.modules.selectTags.getListElement($(this));
+            if (typeof datum.countryName !== 'undefined' && !meerkat.modules.selectTags.isAlreadySelected($list, datum.isoCode)) {
+                selectedTextHTML = datum.countryName;
+                var selectedLocation = selectedTextHTML.length > 25 ? selectedTextHTML.substr(0, 20) + '...' : selectedTextHTML;
+                meerkat.modules.selectTags.appendToTagList($list, selectedLocation, datum.countryName, datum.isoCode);
+                _.defer(function () {
+                    if (!$countrySelector.is(':focus')) {
+                        $countrySelector.focus();
+                    }
+                });
+            }
+            showingError = false;
+        }).on('click focus', function (event) {
+            $countrySelector.data('ttView').datasets[0].valueKey = 'id';
+            // bit of a hack to prevent the number 1 from being shown. It seems to be a bug from within typeahead itself. The chained version works here.
+            // Still need the .val("") call after setQuery as the 1 still appears if removed
+            $countrySelector.val("").typeahead("setQuery", "1").val("");
+            $('.tt-hint').hide();
+        }).on('blur', function (event) {
+            // bit of a hack to prevent the number 1 from being shown. It seems to be a bug from within typeahead itself. Did try to chain it in between
+            // the $countrySelector and .typeahead call below but that didn't work. Still need the .val("") call after setQuery as the 1 still appears if removed
+            $countrySelector.val("");
+            if (!selectedCountryObj)
+                $countrySelector.typeahead('setQuery', '').val('');
 
-            }).attr('placeholder', 'Please type in your destination');
-
+        }).attr('placeholder', inputPlaceholder);
     }
 
     function addValueToCountriesForDefaultFocusEvent() {
@@ -198,7 +194,6 @@
                         showingError = true;
                     }
                     meerkat.modules.autocomplete.autocompleteComplete($component);
-
                 }
             },
             limit: 300

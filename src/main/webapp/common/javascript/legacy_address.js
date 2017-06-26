@@ -189,6 +189,14 @@ function init_address(name, residentalAddress , isPostalAddress, defaultSuburbSe
         }
 	});
 
+	suburbFld.off('change.nonStdAddress').on('change.nonStdAddress', function(){
+		if(nonStdFld.is(':checked')) {
+			var id = $(this).val();
+			var suburb = $(this).find("option[value=" + id + "]").text();
+			suburbNameFld.val(suburb);
+		}
+	});
+
 	// Handle prefilled fields (e.g. retrieved quote)
 	postCodeFld.data('previous', postCodeFld.val());
 	updateSuburb(postCodeFld.val());
