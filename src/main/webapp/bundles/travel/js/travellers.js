@@ -6,7 +6,8 @@
 		warning: $('.warning-label-hidden'),
 		input: $('.age-item input'),
 		container: $('.age-container'),
-		numberOfTravellers: $('#num-travellers')
+		numberOfTravellers: $('#num-travellers'),
+		travelParty: $('.travel_party input')
 	};
 	
 	var state = {
@@ -29,11 +30,11 @@
 		if (typeof callback === 'function') callback();
 	}
 	
-	function getTemplate(index, canDelete) {
+	function getTemplate(canDelete) {
 		var className = canDelete ? 'col-lg-4' : 'col-lg-3';
 		return (
 			'<div class="age-item col-md-5 ' + className + '"> <span>Age(years)</span><div class="clearfix">' +
-			'<input name="travellers-age-'+ index +'"data-msg-required="Please add age" data-msg-range="Please add age" data-rule-range="1,99" required type="text" maxlength="2" />' +
+			'<input data-msg-required="Please add age" data-msg-range="Please add age" data-rule-range="1,99" required type="text" maxlength="2" />' +
 			(canDelete ? '<div class="exit-container"> <a href="javascript:;" class="icon-exit"></a> </div>' : '') + '</div></div>'
 		);
 	}
@@ -44,7 +45,7 @@
 		if (items > state.travellers) {
 			_removeExcess();
 		} else if (items < state.travellers) {
-			container.append(getTemplate(2));
+			container.append(getTemplate());
 		}
 		_renderAddBtn();
 		_updateNumber(state.travellers);
@@ -100,7 +101,7 @@
 	function _add() {
 		var number = state.travellers + state.addedFields;
 		if (number < max) {
-			$elements.container.append(getTemplate(number + 1, true));
+			$elements.container.append(getTemplate(true));
 			setState({ addedFields: state.addedFields + 1 }, _updateNumber);
 			if (number === max - 1) {
 				_disableBtn();
@@ -120,12 +121,27 @@
 			$(e.target).prev().remove();
 		}
 	}
+	
+	function _mapValuesToInput() {
+		var inputVals = '';
+		$elements.container.find('input').each(function(index) {
+			if(this.value !== '') {
+				if (index === 0) {
+					inputVals = this.value;
+				} else {
+					inputVals = inputVals + ',' + this.value;
+				}
+			}
+		});
+		$('#ages-hidden-input').val(inputVals);
+	}
 
 	function _eventListeners() {
 		$elements.add.on('click', _add);
 		$(document).on('click', '.icon-exit', _remove);
 		$(document).on('change', '.age-item input', _removeValidationError);
-		$('.travel_party input').on('change', _travelPartyChange);
+		$(document).on('blur', '.age-item input', _mapValuesToInput);
+		$elements.travelParty.on('change', _travelPartyChange);
 	}
 	
 	function init() {

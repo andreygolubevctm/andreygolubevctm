@@ -40,10 +40,11 @@
           Age(years)
         </span>
         <div class="clearfix">
-          <input data-msg-required="Please add age" data-msg-range="Please add age" data-rule-range="1,99" name="travellers-age-1" required type="text" maxlength="2" />
+          <input data-msg-required="Please add age" data-msg-range="Please add age" data-rule-range="1,99" required type="text" maxlength="2" />
         </div>
       </div>
     </div>
+    <input id="ages-hidden-input" type="hidden" name="travel_ages" />
   </div>
 
 
