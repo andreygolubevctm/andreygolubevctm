@@ -37,8 +37,13 @@ import java.util.List;
         return travellersAge;
     }
 
-    public void setTravellersAge(List<Integer> travellersAge) {
-        this.travellersAge = travellersAge;
+    public void setTravellersAge(String ages) {
+        travellersAge = new ArrayList<>();
+        String[] agesArr = ages.split(",");
+        Arrays.stream(agesArr).forEach(age->{
+            travellersAge.add(Integer.valueOf(age));
+        });
+        //this.travellersAge = travellersAge;
     }
 
     /* private Travellers(List<LocalDate> travellersDOB) {

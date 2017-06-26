@@ -60,7 +60,7 @@ public class TravelServiceTest {
 		travelQuote.setChildren(1);
 
 		travellers = new Travellers();
-		travellers.setTravellersAge(getTravellerAges());
+		travellers.setTravellersAge("45,54,23,44");
 		travelQuote.setTravellers(travellers);
 
 		isValid(travelRequest, vertical);
@@ -110,7 +110,7 @@ public class TravelServiceTest {
 		travelQuote.setChildren(1);
 
 		travellers = new Travellers();
-		travellers.setTravellersAge(getTravellerAges());
+		travellers.setTravellersAge("45,54,23,44");
 		travelQuote.setTravellers(travellers);
 
 		// Destination field only accepts 3 letter characters
@@ -155,7 +155,7 @@ public class TravelServiceTest {
 		travelQuote.setChildren(1);
 
 		travellers = new Travellers();
-		travellers.setTravellersAge(getTravellerAges());
+		travellers.setTravellersAge("45,54,23,44");
 		travelQuote.setTravellers(travellers);
 
 		isValid(travelRequest, vertical);
@@ -187,7 +187,7 @@ public class TravelServiceTest {
 		travelQuote.setChildren(1);
 
 		travellers = new Travellers();
-		travellers.setTravellersAge(getTravellerAges());
+		travellers.setTravellersAge("45,54,23,44");
 		travelQuote.setTravellers(travellers);
 
 		isValid(travelRequest, vertical);
