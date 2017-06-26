@@ -28,7 +28,7 @@ function transferError(description, data) {
 }
 
 $(window).load(function () {
-    if (meerkat.site.tracking.GTMEnabled == null) {
+    if (!meerkat.site.tracking || meerkat.site.tracking.GTMEnabled == null) {
       meerkat.site.tracking = {
         GTMEnabled: true
       };
