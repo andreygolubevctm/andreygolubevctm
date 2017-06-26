@@ -170,7 +170,10 @@
 		{{ filters.rdef = obj.features.rdef && obj.features.rdef.value === "Y" ? true : false }}
 		{{ var lossrent = filters.lossrent ? '<span><i class="icon-skinny-tick"></i> Loss of rent</span>' : '<span class="not-active"><i class="icon-cross"></i>  Loss of rent</span>' }}
 		{{ var malt = filters.malt ? '<span><i class="icon-skinny-tick"></i> Malicious damage</span>' : '<span class="not-active"><i class="icon-cross"></i> Malicious damage</span>'}}
-		{{ var rdef = filters.rdef ? '<span><i class="icon-skinny-tick"></i> Tenant default cover</span>' : '<span class="not-active"><i class="icon-cross"></i> Tenant default cover</span>'}}
+		{{ var rdef = filters.rdef ? '<span><i class="icon-skinny-tick"></i> Tenant default</span>' : '<span class="not-active"><i class="icon-cross"></i> Tenant default cover</span>'}}
+		{{ var lossrentMobile = filters.lossrent ? '<span><i class="icon-skinny-tick"></i> Loss of<br />rent</span>' : '<span class="not-active"><i class="icon-cross"></i> Loss of<br />rent</span>' }}
+		{{ var maltMobile = filters.malt ? '<span><i class="icon-skinny-tick"></i> Malicious<br />damage</span>' : '<span class="not-active"><i class="icon-cross"></i> Malicious<br />damage</span>'}}
+		{{ var rdefMobile = filters.rdef ? '<span><i class="icon-skinny-tick"></i> Tenant<br />default</span>' : '<span class="not-active"><i class="icon-cross"></i> Tenant<br />default</span>'}}
 	{{ } }}
 
 	<div class="result-row result_{{= obj.productId }}" data-productId="{{= obj.productId }}" data-available="Y">
@@ -268,10 +271,15 @@
 							</div>
 						</div>
 						{{ if (meerkat.site.isLandlord) { }}
-							<div class="landlord-filters">
+							<div class="landlord-filters clearfix">
 								{{= lossrent }}
 								{{= malt }}
 								{{= rdef }}
+							</div>
+							<div class="landlord-filters-mobile clearfix">
+								{{= lossrentMobile }}
+								{{= maltMobile }}
+								{{= rdefMobile }}
 							</div>
 						{{ } }}
 						<div class="clearfix">
