@@ -142,7 +142,6 @@
     }
 
     function applyEventListeners() {
-
         // General Toggle
         $('.simples-dialogue.optionalDialogue h3.toggle').parent('.simples-dialogue').addClass('toggle').on('click', function () {
             $(this).find('h3 + div').slideToggle(200);
@@ -163,29 +162,6 @@
         $healthPrimaryCover.on('change', togglePrimaryCoverDialogue);
         // Handle toggle partnerCoverDialogue
         $healthPartnerCover.on('change', togglePartnerCoverDialogue);
-
-        // open bridging page
-        $('#resultsPage').on("click", ".btn-more-info", openBridgingPage);
-    }
-
-    function openBridgingPage(e) {
-        var i = 0,
-            needsValidation;
-
-        $('#resultsForm .simples-dialogue').find('input[type=checkbox]').each(function() {
-            if (!$(this).prop('checked')) {
-                i++;
-            }
-        });
-
-        needsValidation = i !== 0;
-
-        if (needsValidation) {
-            e.stopImmediatePropagation();
-            $('#resultsForm').valid();
-        }
-
-        return i === 0;
     }
 
     function eventSubscriptions() {

@@ -35,9 +35,9 @@
 					</div>
 				</div>
 			</simples:dialogue>
-			<simples:dialogue id="21" vertical="health" mandatory="true" /> <%-- 3 Point Security Check --%>
-			<simples:dialogue id="36" vertical="health" mandatory="true" className="hidden simples-privacycheck-statement" /> <%-- Inbound --%>
-			<simples:dialogue id="25" vertical="health" mandatory="true" className="hidden follow-up-call" /> <%-- Follow up call --%>
+			<simples:dialogue id="21" vertical="health" className="red" /> <%-- 3 Point Security Check --%>
+			<simples:dialogue id="36" vertical="health" className="hidden red simples-privacycheck-statement" /> <%-- Inbound --%>
+			<simples:dialogue id="25" vertical="health" className="hidden red follow-up-call" /> <%-- Follow up call --%>
 
             <c:set var="subText" value="" />
             <c:if test="${not callCentre}">
@@ -196,7 +196,7 @@
 					</form_v2:row>
 				</c:if>
 			</form_v3:fieldset>
-			<simples:dialogue id="26" vertical="health" mandatory="true" />
+			<simples:dialogue id="26" vertical="health" className="red" />
 			<form_v3:fieldset id="australian-government-rebate" legend="Australian Government Rebate" postLegend="Most Australians can reduce their upfront health insurance costs by applying the Government Rebate.">
 				<c:set var="fieldXpath" value="${xpath}/rebate" />
 				<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="rebate application" quoteChar="\"" /></c:set>
@@ -255,7 +255,7 @@
 					</div>
 				</div>
 			</c:if>
-			<simples:dialogue id="37" vertical="health" mandatory="true" className="hidden" />
+			<simples:dialogue id="37" vertical="health" className="hidden red" />
 
 		</jsp:body>
 	</form_v2:fieldset_columns>

@@ -82,7 +82,7 @@
 					</form_v2:row>
 				</c:if>
 			</form_v2:fieldset>
-				<simples:dialogue id="26" vertical="health" mandatory="true" />
+				<simples:dialogue id="26" vertical="health" className="red" />
 		</jsp:body>
 
 	</form_v2:fieldset_columns>
@@ -133,7 +133,7 @@
 				</form_v2:row>
 
 			</form_v2:fieldset>
-				<simples:dialogue id="37" vertical="health" mandatory="true" />
+				<simples:dialogue id="37" vertical="health" className="red" />
 			</jsp:body>
 
 		</form_v2:fieldset_columns>

@@ -20,7 +20,7 @@
 	};
 
 	var driverOptions = {};
-	var driverOptionsOrder = ['0','3','H','7','A','D'];
+	var driverOptionsOrder = ['0','3','H','7','A','D','J'];
 
 	var selectorHTML = null;
 
@@ -48,9 +48,13 @@
 			$(elements.age_row).slideDown();
 			updateSelector(['H','7','A']);
 		}
+        else if (age <= 49) {
+            $(elements.age_row).slideDown();
+            updateSelector(['H','7','A','D']);
+        }
 		else {
 			$(elements.age_row).slideDown();
-			updateSelector(['H','7','A','D']);
+			updateSelector(['H','7','A','D','J']);
 		}
 	}
 
