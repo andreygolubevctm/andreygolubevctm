@@ -157,6 +157,9 @@
 				<ul class="nav navbar-nav">
 					<li class="navbar-text filter-home-excess-label">Home Excess</li>
 					<li class="navbar-text filter-contents-excess-label">Contents Excess</li>
+					<span class="isLandlord landlord-navbar-text">
+						<li class="navbar-text filter-contents-excess-label">Landlord Filters</li>
+					</span>
 					<li class="navbar-text filter-cancel-label"><a href="javascript:void(0);" class="hidden">Cancel</a></li>
 				</ul>
 

@@ -434,6 +434,7 @@
 	}
 
 	function saveModalChanges() {
+		setLandlordFilters();
 		var $homeExcess = $('#home_homeExcess');
 		var $contentsExcess = $('#home_contentsExcess');
 		var filters = meerkat.site.landlordFilters;
