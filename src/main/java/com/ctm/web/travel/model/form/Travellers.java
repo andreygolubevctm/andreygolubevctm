@@ -15,22 +15,46 @@ import java.util.List;
  */
     public class Travellers {
 
-    private List<LocalDate> travellersDOB;
-    private final static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    //private List<LocalDate> travellersDOB;
+
+    private List<Integer> travellersAge;
+
+    //private final static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public Travellers() {
 
     }
 
-    private Travellers(List<LocalDate> travellersDOB) {
+    private Travellers(List<Integer> travellersAge){
+        this.travellersAge = Collections.unmodifiableList(travellersAge);
+    }
+
+    public static Travellers of(final List<Integer> ages) {
+        return new Travellers(ages);
+    }
+
+    public List<Integer> getTravellersAge() {
+        return travellersAge;
+    }
+
+    public void setTravellersAge(String ages) {
+        travellersAge = new ArrayList<>();
+        String[] agesArr = ages.split(",");
+        Arrays.stream(agesArr).forEach(age->{
+            travellersAge.add(Integer.valueOf(age));
+        });
+        //this.travellersAge = travellersAge;
+    }
+
+    /* private Travellers(List<LocalDate> travellersDOB) {
         this.travellersDOB = Collections.unmodifiableList(travellersDOB);
-    }
+    }*/
 
-    public static Travellers of(final List<LocalDate> Dobs) {
+    /*public static Travellers of(final List<LocalDate> Dobs) {
         return new Travellers(Dobs);
-    }
+    }*/
 
-    public void setTravellersDOB(String dobs) {
+   /* public void setTravellersDOB(String dobs) {
 
         travellersDOB = new ArrayList<>();
 
@@ -45,5 +69,5 @@ import java.util.List;
 
     public List<LocalDate> getTravellersDOB() {
         return this.travellersDOB;
-    }
+    }*/
 }

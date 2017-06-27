@@ -37,6 +37,9 @@ public class TravelQuoteRequest {
     @JsonSerialize(contentUsing = LocalDateSerializer.class)
     private List<LocalDate> travellersDOB;
 
+    @JsonSerialize
+    private List<Integer> travellersAge;
+
     private ArrayList<String> providerFilter = new ArrayList<String>();
     private SingleTripDetails singleTripDetails;
 
@@ -97,6 +100,14 @@ public class TravelQuoteRequest {
 
     public void setTravellersDOB(List<LocalDate> travellersDOBs) {
         this.travellersDOB = travellersDOBs;
+    }
+
+    public List<Integer> getTravellersAge() {
+        return travellersAge;
+    }
+
+    public void setTravellersAge(List<Integer> travellersAge) {
+        this.travellersAge = travellersAge;
     }
 
     public ArrayList<String> getProviderFilter() {
