@@ -53,6 +53,6 @@
 
 <div class="voucherDialogue">
     <div class="dialogue defaultReason">
-        <simples:dialogue id="72" vertical="health" className="red" />
+        <simples:dialogue id="72" vertical="health" mandatory="true" />
     </div>
 </div>
