@@ -11,7 +11,7 @@
 <%-- HTML --%>
 <div id="${name}-selection" class="health-medicare_details">
 
-	<simples:dialogue id="30" vertical="health" className="red" />
+	<simples:dialogue id="30" vertical="health" mandatory="true" />
 
 		<c:set var="fieldXpath" value="${xpath}/cover" />
 		<field_v1:hidden xpath="${fieldXpath}" defaultValue="Y" />

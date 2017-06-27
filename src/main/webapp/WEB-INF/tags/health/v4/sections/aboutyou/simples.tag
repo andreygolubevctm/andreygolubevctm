@@ -11,6 +11,6 @@
 		</div>
 	</div>
 </simples:dialogue>
-<simples:dialogue id="21" vertical="health" className="red" /> <%-- 3 Point Security Check --%>
-<simples:dialogue id="36" vertical="health" className="hidden red simples-privacycheck-statement" /> <%-- Inbound --%>
-<simples:dialogue id="25" vertical="health" className="hidden follow-up-call red" /> <%-- Follow up call --%>
+<simples:dialogue id="21" vertical="health" mandatory="true" /> <%-- 3 Point Security Check --%>
+<simples:dialogue id="36" vertical="health" mandatory="true" className="hidden simples-privacycheck-statement" /> <%-- Inbound --%>
+<simples:dialogue id="25" vertical="health" mandatory="true" className="hidden follow-up-call" /> <%-- Follow up call --%>
