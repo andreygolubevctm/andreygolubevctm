@@ -15,4 +15,4 @@
 <health_v1:payment_day_details xpath="${xpath}/bank" />
 <health_v1:payment_day_details xpath="${xpath}/credit" />
 
-<simples:dialogue id="29" vertical="health" className="red" />
+<simples:dialogue id="29" vertical="health" mandatory="true" />

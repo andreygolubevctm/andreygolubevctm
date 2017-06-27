@@ -49,4 +49,4 @@
         </div>
     </div>
 </c:if>
-<simples:dialogue id="37" vertical="health" className="hidden red" />
+<simples:dialogue id="37" vertical="health" mandatory="true" className="hidden" />
