@@ -44,7 +44,7 @@
         </div>
       </div>
     </div>
-    <input id="ages-hidden-input" type="hidden" name="travel_ages" />
+    <input id="ages-hidden-input" type="hidden" name="travel_travellers_travellersAge" />
   </div>
 
 
