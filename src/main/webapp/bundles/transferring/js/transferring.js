@@ -28,7 +28,15 @@ function transferError(description, data) {
 }
 
 $(window).load(function () {
+    if (!meerkat.site.tracking || meerkat.site.tracking.GTMEnabled == null) {
+      meerkat.site.tracking = {
+        GTMEnabled: true
+      };
+    }
+  
+    meerkat.modules.tracking.init();
     var urlVars = getUrlVars();
+
     var transactionId = loopedDecodeUriComponent(urlVars.transactionId);
     var productId = loopedDecodeUriComponent(urlVars.productId);
     var vertical = loopedDecodeUriComponent(urlVars.vertical);
@@ -44,6 +52,8 @@ $(window).load(function () {
         brand: brand,
         tracking: tracking
     };
+
+    var delay = 1000;
 
     if (urlVars.hasOwnProperty('tracking')) {
         try {
@@ -62,16 +72,47 @@ $(window).load(function () {
             $('.message').text(msg);
         }
 
-        if (typeof meerkat == 'object' && tracking !== null && typeof tracking == 'object') {
+        if (typeof meerkat === 'object' && tracking !== null && typeof tracking === 'object') {
             meerkat.messaging.publish(meerkat.modules.events.tracking.EXTERNAL, {
                 method: 'trackQuoteTransfer',
                 object: tracking
             }, true);
         }
 
+        // For Quotes from Email campaigns
+        if ((vertical === 'car' || vertical === 'home') && urlVars.trackingSource === 'email') {
+
+            if (transactionId !== undefined) {
+                transactionId = $('.quoteUrl').attr('transactionId');
+                data.transactionId = transactionId;
+            }
+
+            data.productId = window.returnedResult.productId;
+            data.brand = window.returnedResult.brandCode;
+            var verticalFix = vertical === 'home' ? 'home_contents' : vertical;
+            meerkat.messaging.publish(meerkat.modules.events.tracking.EXTERNAL, {
+                method: 'trackEmailQuoteHandoverClick',
+                object: {
+                    actionStep: verticalFix + " transfer online",
+                    brandCode: "ctm",
+                    currentJourney: 1,
+                    productBrandCode: window.returnedResult.brandCode,
+                    productID: window.returnedResult.productId,
+                    productName: window.returnedResult.productDes,
+                    quoteReferenceNumber: transactionId,
+                    rootID: transactionId,
+                    transactionID: transactionId,
+                    type: "online",
+                    vertical: verticalFix
+                }
+            });
+
+            delay = 3000;
+        }
+
         next();
     })
-        .delay(1000)
+        .delay(delay)
         .queue(function (next) {
             var urlVars = getUrlVars();
             if (urlVars.hasOwnProperty('handoverType') && urlVars.handoverType == "post") {
@@ -90,6 +131,7 @@ $(window).load(function () {
             } else {
                 try {
                     var quoteUrl = $('.quoteUrl').attr('quoteUrl');
+
                     if (quoteUrl !== '') {
                         if (quoteUrl == 'DUPLICATE') {
                             transferError("Duplicate productId " + productId + " encounted on " + vertical, data);

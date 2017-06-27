@@ -8,7 +8,8 @@
         $paymentMedicareColour,
         $paymentMedicareCover,
         $medicareYellowMessage,
-        $unitElements;
+        $unitElements,
+        $personName;
 
     function init(){
         $(document).ready(function () {
@@ -25,6 +26,7 @@
                 appPostalUnitType: $('#health_application_postal_unitType'),
                 appPostalNonStdStreet: $('#health_application_postal_nonStdStreet')
             };
+            $personName = $('.contactField.person_name');
         });
     }
 
@@ -50,6 +52,9 @@
 
         meerkat.messaging.publish(meerkatEvents.healthPreviousFund.POPULATE_PRIMARY,
             meerkat.modules.healthAboutYou.getPrimaryCurrentCover());
+
+        // Default Check format message on person name field
+        $personName.parent().find('.person-name-check-format').addClass('hidden');
     }
 
     function onInitialise() {
@@ -81,6 +86,29 @@
 
         $unitElements.appAddressUnitShop.add($unitElements.appPostalUnitShop).on('change', function toggleUnitShopRequiredFields() {
             _toggleUnitShopRequired(this.id.indexOf('address') !== -1 ? 'Address' : 'Postal', !_.isEmpty(this.value));
+        });
+
+        // Show Check format message on name fields when field isn't in 'Proper case'
+        $personName.on('change', function() {
+            var value = $(this).val(),
+                showCheckFormat = false,
+                i = 1,
+                character = '',
+                $checkFormat = $(this).parent().find('.person-name-check-format');
+
+            if (!_.isEmpty(value)) {
+                for (i = 1; i < value.length; i++) {
+                    character = value.charAt(i);
+
+                    if (character === character.toUpperCase()) {
+                        showCheckFormat = true;
+                    }
+                }
+
+                $checkFormat.toggleClass('hidden', showCheckFormat === false);
+            } else {
+                $checkFormat.addClass('hidden');
+            }
         });
     }
 
