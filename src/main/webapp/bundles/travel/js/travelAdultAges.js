@@ -71,12 +71,8 @@
 	function updateHiddenField() {
 		var totalAdults = parseInt($('#travel_adults').val()),
 				numAdults = $('.age-container input').length,
-				numChildren = parseInt($('#travel_childrenSelect').val());
-			
-		if (numChildren == null) {
-			numChildren = 0;
-		}
-
+				numChildren = parseInt($('#travel_childrenSelect').val()) || 0;
+				
 		$('#travel_adults').val(numAdults);
 		$('#travel_children').val(numChildren);
 	}

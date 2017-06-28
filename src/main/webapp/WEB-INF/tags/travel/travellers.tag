@@ -46,7 +46,3 @@
     </div>
     <input id="ages-hidden-input" type="hidden" name="travel_travellers_travellersAge" />
   </div>
-
-
-
-  <field_v1:hidden xpath="travel/adults" />
