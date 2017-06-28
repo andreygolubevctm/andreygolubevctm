@@ -24,7 +24,6 @@
                     <health_v4_insuranceprefs:partner_dob xpath="${xpath}" />
                     <health_v4_insuranceprefs:partner_cover xpath="${xpath}" />
                     <health_v4_insuranceprefs:partner_cover_loading xpath="${xpath}" />
-                    <health_v4_insuranceprefs:simples xpath="${xpath}" />
 
                     <health_v4_insuranceprefs:benefitsSelectionScroller />
                     <c:set var="xpath" value="${pageSettings.getVerticalCode()}/benefits" />
