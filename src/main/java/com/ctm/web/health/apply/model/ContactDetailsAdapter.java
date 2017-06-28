@@ -136,7 +136,10 @@ public class ContactDetailsAdapter {
 
             String streetName = StringUtils.isNotBlank(address.getStreetName()) ? address.getStreetName() : address.getNonStdStreet();
 
-            sb.append(address.getStreetNum()).append(" ").append(streetName);
+            sb.append(address.getStreetNum());
+            if(null != streetName) {
+                sb.append(" ").append(streetName);
+            }
             return new FullAddressOneLine(sb.toString());
         }
         return null;
