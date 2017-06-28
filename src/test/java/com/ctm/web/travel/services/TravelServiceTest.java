@@ -94,14 +94,6 @@ public class TravelServiceTest {
 		isInvalid(travelRequest, vertical);
 	}
 
-	private List<Integer> getTravellerAges(){
-		List<Integer> ages = new ArrayList<>();
-		ages.add(45);
-		ages.add(56);
-		ages.add(55);
-		return ages;
-	}
-
 	@Test
 	public void testShouldValidateDestination() throws SQLException, DaoException {
 
