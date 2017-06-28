@@ -28,7 +28,7 @@ function transferError(description, data) {
 }
 
 $(window).load(function () {
-	var redirectionDisabled = false;
+	var redirectionDisabled = true;
 	var delay = 1000;
 
 	var urlVars = getUrlVars();
@@ -58,16 +58,16 @@ $(window).load(function () {
 
 	// Create a public object to provide readonly access to the gaclientid
 	var gaclientid = null;
-	var transferGAClientId = function(gid) {
+	var TransferGAClientId = function(gid) {
 		var gaClientId = gid;
 		this.get = function() {
-			return this.gaClientId;
+			return gaClientId;
 		};
 	};
 	if (tracking !== null && _.isObject(tracking) && _.has(tracking,'gaclientid')) {
 		gaclientid = tracking.gaclientid;
 	}
-	window.transferGAClientIdObj = new transferGAClientId(gaclientid);
+	window.transferGAClientIdObj = new TransferGAClientId(gaclientid);
 
     $(window).queue(function (next) {
         window.focus();
