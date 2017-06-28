@@ -9,4 +9,3 @@
 </core_v1:js_template>
 <field_v1:hidden xpath="health/simples/dialogue-checkbox-62a" />
 <field_v1:hidden xpath="health/simples/dialogue-checkbox-62b" />
-<field_v1:hidden xpath="health/simples/dialogue-checkbox-62c" />
