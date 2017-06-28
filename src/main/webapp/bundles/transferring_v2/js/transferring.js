@@ -28,7 +28,7 @@ function transferError(description, data) {
 }
 
 $(window).load(function () {
-	var redirectionDisabled = true;
+	var redirectionDisabled = false
 	var delay = 1000;
 
 	var urlVars = getUrlVars();
