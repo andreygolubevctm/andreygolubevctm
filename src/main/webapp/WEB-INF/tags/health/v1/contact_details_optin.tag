@@ -109,7 +109,8 @@
                         required="true"
                         label="${true}"
                         title="${termsAndConditions}"
-                        errorMsg="Please agree to the Terms &amp; Conditions" />
+                        errorMsg="Please agree to the Terms &amp; Conditions"
+                        customAttribute="data-attach='true'" />
             </form_v2:row>
 
             <%-- Did it this way to prevent the snapshot from pushing the fields below up/down depending on the option selected with the health_situation_healthCvr field --%>
