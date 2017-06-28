@@ -403,7 +403,7 @@
 
         if (fundCode === 'AUF') {
             if (!meerkat.modules.healthCoverDetails.hasPrimaryCover() ||
-                (_.indexOf(['C','F'], meerkat.site.situationHealthCvr) !== -1 && !meerkat.modules.healthCoverDetails.hasPartnerCover())) {
+                (_.indexOf(['C','F','EF'], meerkat.site.situationHealthCvr) !== -1 && !meerkat.modules.healthCoverDetails.hasPartnerCover())) {
                 discountPercentage = '7.5';
             } else {
                 discountPercentage = '4';

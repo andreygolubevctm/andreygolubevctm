@@ -369,8 +369,6 @@
 	</c:if>
 </c:if>
 
-<%-- unsure if this needs to be expanded to include EF / ESP / SPF --%>
-
 <%-- Check if transaction is confirmed or pending --%>
 <sql:query var="confirmationQuery">
 	SELECT COALESCE(t1.type,t2.type,1) AS editable FROM ctm.touches t0

@@ -108,6 +108,7 @@
                 case 'C':
                     statusText = 'Couples ';
                     break;
+                case 'EF':
                 case 'F':
                     statusText = 'Families ';
                     break;
@@ -115,7 +116,7 @@
                     statusText = '';
                     break;
             }
-            completeText = statusText;
+            completeText = statusText;  // is it the correct behaviour to exclude 'Single Parent Families ' in the list above?
         }
 
         completeText += selectedIncome;

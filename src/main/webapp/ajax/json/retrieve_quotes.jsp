@@ -52,9 +52,6 @@
 			<sql:setDataSource dataSource="${datasource:getDataSource()}" />
 			<go:setData dataVar="authenticatedData" xpath="tmp" value="*DELETE" />
 
-
-<%-- unsure if this needs to be expanded to include EF / ESP / SPF --%>
-
 			<%-- Load in quotes from MySQL --%>
 			<%-- Find the latest transactionIds for the user.  --%>
 			<sql:query var="transactions">

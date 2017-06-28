@@ -37,7 +37,6 @@ Lifetime Health Cover and Rebate Discount Calculator
 COVER TYPE
 **********
 --%>
-<%-- TODO: check if the changes made for Extended Single parent Family and Extended Family are suffecient --%>
 <c:choose>
 	<c:when test="${cover == 'SM'}">
 		<c:set var="cover" value="singles" />
