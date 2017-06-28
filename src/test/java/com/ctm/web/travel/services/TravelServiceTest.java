@@ -14,10 +14,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.function.Supplier;
 
 import static org.junit.Assert.assertNotNull;
