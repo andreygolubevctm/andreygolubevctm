@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <settings:setVertical verticalCode="GENERIC" />
-
+<c:set var="isDev" value="${environmentService.getEnvironmentAsString() eq 'localhost' || environmentService.getEnvironmentAsString() eq 'NXI'}"/>
 <c:set var="transactionId">
 	<c:out value="${param.transactionId}" escapeXml="true" />
 </c:set>
@@ -51,7 +51,12 @@
                 </c:forEach>
             };
 		</script>
-		<go:script href="assets/libraries/underscore-1.8.3.min.js" marker="js-href" />
+
+		<%--  Underscore --%>
+		<c:if test="${isDev eq false}">
+			<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+		</c:if>
+		<script>window._ || document.write('<script src="${assetUrl}assets/libraries/underscore-1.8.3.min.js">\x3C/script>')</script>
 	</jsp:attribute>
 
 	<jsp:attribute name="head_meta">
