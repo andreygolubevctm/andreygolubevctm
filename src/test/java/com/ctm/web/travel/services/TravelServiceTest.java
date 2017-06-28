@@ -14,10 +14,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.function.Supplier;
 
 import static org.junit.Assert.assertNotNull;
@@ -92,14 +89,6 @@ public class TravelServiceTest {
 		travelQuote.setFirstName("test");
 		travelQuote.setSurname("O'Test-you");
 		isInvalid(travelRequest, vertical);
-	}
-
-	private List<Integer> getTravellerAges(){
-		List<Integer> ages = new ArrayList<>();
-		ages.add(45);
-		ages.add(56);
-		ages.add(55);
-		return ages;
 	}
 
 	@Test
