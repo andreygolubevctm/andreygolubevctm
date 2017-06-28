@@ -21,7 +21,7 @@
 			$travel_party.find('label:nth-child(1)').addClass('icon-single');
 			$travel_party.find('label:nth-child(2)').addClass('icon-couple');
 			$travel_party.find('label:nth-child(3)').addClass('icon-family');
-			$travel_party.find('label:nth-child(4)').addClass('icon-family');
+			$travel_party.find('label:nth-child(4)').addClass('icon-group-travel');
 
 			$single_parent = $('.single_parent');
 			$single_parent_row = $('.single_parent_row');
@@ -70,24 +70,12 @@
 
 	function updateHiddenField() {
 		var totalAdults = parseInt($('#travel_adults').val()),
-			numAdults = 0,
-			numChildren = parseInt($('#travel_childrenSelect').val()),
-			adultDOBs = [numAdults];
-
-		for (var i = 0; i < totalAdults; i++) {
-			var dob = $('#travel_travellers_traveller'+(i+1)+'DOB').val();
-			// Family can have 1 or 2 adults
-			if(dob !== '') {
-				adultDOBs[i] = $('#travel_travellers_traveller'+(i+1)+'DOB').val();
-				numAdults += 1;
-			}
+				numAdults = $('.age-container input').length,
+				numChildren = parseInt($('#travel_childrenSelect').val());
+			
+		if (numChildren == null) {
+			numChildren = 0;
 		}
-
-        if(isNaN(numChildren)) {
-        	numChildren = 0;
-        }
-
-		$('#travel_travellers_travellersDOB').val(adultDOBs.join(','));
 
 		$('#travel_adults').val(numAdults);
 		$('#travel_children').val(numChildren);

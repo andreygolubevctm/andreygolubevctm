@@ -30,11 +30,11 @@
 		if (typeof callback === 'function') callback();
 	}
 	
-	function getTemplate(canDelete) {
+	function getTemplate(index, canDelete) {
 		var className = canDelete ? 'col-lg-4' : 'col-lg-3';
 		return (
 			'<div class="age-item col-md-5 ' + className + '"> <span>Age(years)</span><div class="clearfix">' +
-			'<input data-msg-required="Please add age" data-msg-range="Please add age" data-rule-range="1,99" required type="text" maxlength="2" />' +
+			'<input name="travellers-age-'+ index +'" data-msg-required="Please add age" data-msg-range="Please add age" data-rule-range="1,99" required type="text" maxlength="2" />' +
 			(canDelete ? '<div class="exit-container"> <a href="javascript:;" class="icon-exit"></a> </div>' : '') + '</div></div>'
 		);
 	}
@@ -45,7 +45,7 @@
 		if (items > state.travellers) {
 			_removeExcess();
 		} else if (items < state.travellers) {
-			container.append(getTemplate());
+			container.append(getTemplate(2));
 		}
 		_renderAddBtn();
 		_updateNumber(state.travellers);
@@ -101,7 +101,7 @@
 	function _add() {
 		var number = state.travellers + state.addedFields;
 		if (number < max) {
-			$elements.container.append(getTemplate(true));
+			$elements.container.append(getTemplate(number + 1, true));
 			setState({ addedFields: state.addedFields + 1 }, _updateNumber);
 			if (number === max - 1) {
 				_disableBtn();
