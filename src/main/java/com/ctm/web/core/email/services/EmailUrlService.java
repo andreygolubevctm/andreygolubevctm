@@ -148,7 +148,6 @@ public class EmailUrlService {
 		if(emailData.getUTMCampaign() != null) {
 			redirectionUrl.append("&utm_campaign=" + emailData.getUTMCampaign());
 		}
-		redirectionUrl.append("&" + createEmailParam(emailData.getEmailMaster()));
 	}
 
 	/**
