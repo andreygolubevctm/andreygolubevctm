@@ -339,10 +339,6 @@
                 initEnvironmentMonitor();
             });
         }
-
-        if(!!window.LogRocket) {
-            window.LogRocket.identify(meerkat.modules.transactionId.get());
-        }
     }
 
     function getAggregationServicePromise() {
