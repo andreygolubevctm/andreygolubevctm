@@ -24,7 +24,7 @@
 				<health_v1:contactAuthority xpath="${pageSettings.getVerticalCode()}/contactAuthority" />
 				<health_v2:whats-next />
 
-				<simples:dialogue id="31" vertical="health" mandatory="true" />
+				<simples:dialogue id="31" vertical="health" className="red" />
 
 				<c:if test="${callCentre and not empty worryFreePromo and worryFreePromo eq '35'}">
 					<div class="simples-dialogue row-content  optionalDialogue">
