@@ -25,7 +25,7 @@
 	</p>
 
 	<p class="launcher row-content">
-		<button data-gateway="launcher" type="button" class="btn btn-modal btn-md">Register your credit card details</button>
+		<button data-gateway="launcher" type="button" class="btn btn-modal btn-md btn-info">Register your credit card details</button>
 	</p>
 
 	<field_v2:validatedHiddenField xpath="${xpath}-registered" validationErrorPlacementSelector="button[data-gateway='launcher']:visible" additionalAttributes=" required "/>
