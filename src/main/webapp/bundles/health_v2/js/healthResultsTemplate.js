@@ -391,9 +391,13 @@
         var discountText = result.hasOwnProperty('promo') && result.promo.hasOwnProperty('discountText') ?
             result.promo.discountText : '';
 
+        /**
+         * Remove AUF discount amount: HLT-4562
+         * Temporary commented it out for future use
         if (result.info.FundCode === 'AUF') {
             discountText = discountText.replace('%%discountPercentage%%', getDiscountPercentage('AUF')+'%');
         }
+         */
 
         return discountText;
     }
@@ -401,6 +405,9 @@
     function getDiscountPercentage(fundCode, result) {
         var discountPercentage = !_.isUndefined(result) && result.hasOwnProperty('discountPercentage') ? result.discountPercentage : '';
 
+        /**
+         * Remove AUF discount amount: HLT-4562
+         * Temporary commented it out for future use
         if (fundCode === 'AUF') {
             if (!meerkat.modules.healthCoverDetails.hasPrimaryCover() ||
                 (_.indexOf(['C','F'], meerkat.site.situationHealthCvr) !== -1 && !meerkat.modules.healthCoverDetails.hasPartnerCover())) {
@@ -409,6 +416,7 @@
                 discountPercentage = '4';
             }
         }
+         */
 
         return discountPercentage;
     }
