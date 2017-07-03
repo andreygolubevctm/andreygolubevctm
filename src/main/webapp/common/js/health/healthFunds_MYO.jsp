@@ -6,10 +6,10 @@
 <%--Important use JSP comments as whitespace is being removed--%>
 <%--
 =======================
-AIA
+MYO
 =======================
 --%>
-var healthFunds_AIA = {
+var healthFunds_MYO = {
     $policyDateHiddenField : $('.health_details-policyDate'),
     $paymentStartDate: $("#health_payment_details_start"),
     $partnerEmailRow: null,
@@ -19,12 +19,12 @@ var healthFunds_AIA = {
     $policyDateBankMessage : $('.health_payment_bank-details_policyDay-message'),
 
     paymentDayChange : function(value) {
-        healthFunds_AIA.$policyDateHiddenField.val(value);
+        healthFunds_MYO.$policyDateHiddenField.val(value);
     },
 
     set: function() {
-        if (!_.isNull(healthFunds_AIA.$partnerEmailRow)) {
-            healthFunds_AIA.$partnerEmailRow.show();
+        if (!_.isNull(healthFunds_MYO.$partnerEmailRow)) {
+            healthFunds_MYO.$partnerEmailRow.show();
         } else {
             <c:set var="html">
                 <c:set var="fieldXpath" value="health/application/partner/email" />
@@ -36,16 +36,16 @@ var healthFunds_AIA = {
             <c:set var="html" value="${go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(html, slashChar, slashChar2), newLineChar, ''), newLineChar2, ''), aposChar, aposChar2), '	', '')}" />
             $('.health-person-details-partner .form-group:nth-child(2)').after('<c:out value="${html}" escapeXml="false" />');
 
-            healthFunds_AIA.$partnerEmailRow = $('#partner-email');
-            healthFunds_AIA.$partnerEmail = healthFunds_AIA.$partnerEmailRow.find('input');
-            healthFunds_AIA.$partnerEmail
+            healthFunds_MYO.$partnerEmailRow = $('#partner-email');
+            healthFunds_MYO.$partnerEmail = healthFunds_MYO.$partnerEmailRow.find('input');
+            healthFunds_MYO.$partnerEmail
                 .attr('data-rule-isUnique', true)
                 .attr('data-isUniqueTo', $('#health_application_email').val())
-                .attr('data-msg-isUnique', healthFunds_AIA.emailUniqueMsg);
+                .attr('data-msg-isUnique', healthFunds_MYO.emailUniqueMsg);
         }
 
         <%--Contact Point question--%>
-        meerkat.modules.healthFunds.showHowToSendInfo('AIA', true);
+        meerkat.modules.healthFunds.showHowToSendInfo('MYO', true);
 
         <%--Authority--%>
         meerkat.modules.healthFunds._previousfund_authority(true);
@@ -75,21 +75,21 @@ var healthFunds_AIA = {
         } else {
             meerkat.modules.healthPaymentStep.setCoverStartRange(0, 30);
         }
-        healthFunds_AIA.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '0,6');
+        healthFunds_MYO.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '0,6');
 
-        meerkat.messaging.subscribe(meerkat.modules.healthPaymentDate.events.POLICY_DATE_CHANGE, healthFunds_AIA.paymentDayChange);
+        meerkat.messaging.subscribe(meerkat.modules.healthPaymentDate.events.POLICY_DATE_CHANGE, healthFunds_MYO.paymentDayChange);
 
         <%-- update deduction message --%>
         var deductionText = "Your payment will be deducted on the policy start date";
-        healthFunds_AIA.$policyDateCreditMessage.add(healthFunds_AIA.$policyDateBankMessage).text(deductionText);
+        healthFunds_MYO.$policyDateCreditMessage.add(healthFunds_MYO.$policyDateBankMessage).text(deductionText);
     },
     unset: function(){
-        healthFunds_AIA.$partnerEmailRow.hide();
+        healthFunds_MYO.$partnerEmailRow.hide();
 
         <%--Contact Point question--%>
         meerkat.modules.healthFunds.hideHowToSendInfo();
 
-        meerkat.messaging.unsubscribe(meerkat.modules.healthPaymentDate.events.POLICY_DATE_CHANGE, healthFunds_AIA.paymentDayChange);
+        meerkat.messaging.unsubscribe(meerkat.modules.healthPaymentDate.events.POLICY_DATE_CHANGE, healthFunds_MYO.paymentDayChange);
 
         meerkat.modules.healthFunds._reset();
 
