@@ -122,7 +122,7 @@
 		}
 	}
 	
-	function _mapValuesToInput() {
+	function mapValuesToInput() {
 		var inputVals = '';
 		$elements.container.find('input').each(function(index) {
 			if(this.value !== '') {
@@ -140,7 +140,6 @@
 		$elements.add.on('click', _add);
 		$(document).on('click', '.icon-exit', _remove);
 		$(document).on('change', '.age-item input', _removeValidationError);
-		$(document).on('blur', '.age-item input', _mapValuesToInput);
 		$elements.travelParty.on('change', _travelPartyChange);
 	}
 	
@@ -148,8 +147,9 @@
 		_eventListeners();
 	}
 
-	meerkat.modules.register("travelers", {
-		init: init
+	meerkat.modules.register("travellers", {
+		init: init,
+		mapValues: mapValuesToInput
 	});
 
 })(jQuery);
