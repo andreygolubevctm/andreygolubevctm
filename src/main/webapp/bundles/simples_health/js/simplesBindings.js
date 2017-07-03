@@ -5,14 +5,11 @@
     var $healthContactTypeRadio,
         $healthContactType,
         $healthContactTypeTrial,
-        $healthCoverRebate,
-        $healthSituationCvr,
         $healthSitCoverType,
         $healthPrimaryCover,
         $healthPartnerCover,
         $dialoguePrimaryCover,
         $dialoguePartnerCover,
-        $dialogue56,
         $healthSituationMedicare,
         $aboutYouFieldset,
         $yourDetailsFieldset,
@@ -37,14 +34,11 @@
             $healthContactTypeRadio = $('input[name=health_simples_contactTypeRadio]');
             $healthContactType = $('#health_simples_contactType');
             $healthContactTypeTrial = $('#health_simples_contactTypeTrial');
-            $healthCoverRebate = $('input[name=health_healthCover_rebate]');
-            $healthSituationCvr = $('select[name=health_situation_healthCvr]');
             $healthSitCoverType = $('#health_situation_coverType');
             $healthPrimaryCover = $('input[name=health_healthCover_primary_cover]');
             $healthPartnerCover = $('input[name=health_healthCover_partner_cover]');
             $dialoguePrimaryCover = $('.simples-dialogue-primary-current-cover');
             $dialoguePartnerCover = $('.simples-dialogue-partner-current-cover');
-            $dialogue56 = $('.simples-dialogue-56');
             $healthSituationMedicare = $('.health_situation_medicare');
             $aboutYouFieldset = $('#healthAboutYou > .content');
             $yourDetailsFieldset = $('#health-contact-fieldset .content');
@@ -155,8 +149,6 @@
         });
         // Handle callback checkbox 68
         $followupCallCheckbox.on('change', toggleFollowupCallDialog);
-        // Handle toggle rebateDialogue
-        $healthCoverRebate.add($healthSituationCvr).on('change', toggleRebateDialogue);
         // Handle toggle benefitsDialogue
         $healthSitCoverType.on('change', toggleBenefitsDialogue);
         // Handle toggle primaryCoverDialogue
@@ -304,10 +296,6 @@
                 .add($inboundApplicationFollowupDialogue)
                 .addClass('hidden');
         }
-    }
-
-    function toggleRebateDialogue() {
-        $dialogue56.toggleClass('hidden', $healthCoverRebate.filter(':checked').val() !== "Y");
     }
 
     function toggleBenefitsDialogue() {

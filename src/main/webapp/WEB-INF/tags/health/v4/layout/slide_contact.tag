@@ -10,6 +10,7 @@
         <form_v3:fieldset_columns sideHidden="true">
 
              <jsp:attribute name="rightColumn">
+                 <health_v4:cta_panel />
                  <reward:campaign_tile_container />
              </jsp:attribute>
 
@@ -43,6 +44,8 @@
                     <health_v4_contact:skip_contact_details_modal xpath="${xpath}" />
 
                 </form_v4:fieldset>
+
+                <health_v4_contact:testimonial />
 
             </jsp:body>
 

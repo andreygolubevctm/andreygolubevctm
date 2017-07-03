@@ -5,13 +5,11 @@
 <layout_v3:slide formId="resultsForm" className="resultsSlide">
 
     <layout_v3:slide_content>
-        <health_v4_results:simples_top />
         <health_v4_results:results />
 
         <health_v4_moreinfo:more_info />
 
         <health_v4_results:prices_have_changed_notification />
-        <health_v4_results:simples_bottom />
         <health_v4:dual_pricing_modal />
         <health_v4:logo_price_template />
         <health_v4_results:refine_results_modal_template />

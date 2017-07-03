@@ -22,6 +22,16 @@
 			businessType:		".businessType",
 			employeeAmount:		".employeeAmount"
 	};
+	
+	function businessFieldChange() {
+		$(document).on('click', '#businessTypeContainer input' , function() {
+			toggleBusinessFields();
+		});
+		
+		$(document).on('change', '#businessTypeContainer select[name=home_businessActivity_businessType_drop-down-selector]', function() {
+			toggleBusinessFields();
+		});
+	}
 
 	/* Here you put all functions for use in your module */
 	function toggleBusinessFields(speed){
@@ -63,6 +73,7 @@
 		$(elements.businessType+', '+elements.businessRooms+', '+elements.employees+', '+elements.employeeAmount+', '+elements.dayCareChildren+', '+elements.registeredDayCare).slideUp(speed);
 	}
 	function applyEventListeners() {
+		businessFieldChange();
 		$(document).ready(function() {
 			$('input[name='+elements.name+'_conducted]').on('change', function(){
 				toggleBusinessType();

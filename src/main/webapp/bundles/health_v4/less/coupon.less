@@ -4,10 +4,13 @@
 	.coupon-banner-v4 {
 		width: 100%;
 		text-align: center;
-		padding: 10px 0;
 		background-color: @gray-lighter;
 		display: block;
 		overflow:hidden;
+
+		@media (@sm) {
+			padding: 10px 0;
+		}
 
 		.coupon-icon-col {
 			text-align: center;
@@ -27,7 +30,7 @@
 			padding: 4px 0 4px 5px;
 
 			@media(@xs-only) {
-				padding: 0 15px;
+				padding: 10px 15px;
 			}
 
 			.coupon-heading

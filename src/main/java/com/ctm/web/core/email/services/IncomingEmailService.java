@@ -10,6 +10,7 @@ import com.ctm.web.core.exceptions.EnvironmentException;
 import com.ctm.web.core.exceptions.VerticalException;
 import com.ctm.web.core.model.TransactionProperties;
 import com.ctm.web.core.model.settings.PageSettings;
+import com.ctm.web.core.model.settings.Vertical.VerticalType;
 import com.ctm.web.core.results.dao.ResultsDao;
 import com.ctm.web.core.results.model.ResultProperty;
 import com.ctm.web.core.services.SettingsService;
@@ -85,7 +86,13 @@ public class IncomingEmailService {
 						}
 					} else if(quoteUrl != null && validateDate != null && this.validateDateNotExpired(validateDate)) {
 						// Set to the quoteUrl recorded in the result set
-						redirectionUrl.append(quoteUrl);
+						// Send the user to transferring.jsp, instead of handing directly over to the partner if car or home.
+						if (pageSettings.getVertical().getType() == VerticalType.CAR || pageSettings.getVertical().getType() == VerticalType.HOME) {
+							emailUrlService.updateWithTransferringData(redirectionUrl, emailData);
+						} else {
+							// If not car or home just do the normal handover.
+							redirectionUrl.append(quoteUrl);
+						}
 					} else {
 						// Otherwise use url for loading the first page of the journey
 						emailUrlService.updateWithLoadQuoteUrl(redirectionUrl, emailData);
