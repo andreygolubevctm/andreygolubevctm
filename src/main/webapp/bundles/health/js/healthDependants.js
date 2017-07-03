@@ -204,6 +204,7 @@
             if (age >= providerConfig.extendedFamilyMinAge && age < providerConfig.extendedFamilyMaxAge) {
                 $(selectorPrefix + '_fulltimeGroup, ' + selectorPrefix + '_schoolGroup, ' + selectorPrefix + '_schoolIDGroup, ' + selectorPrefix + '_schoolDateGroup,' + selectorPrefix + '_apprenticeGroup').addClass('hidden');
             } else if (age >= providerConfig.schoolMinAge && age <= providerConfig.schoolMaxAge) {
+                // TODO: unsure if this will ever be necessary for Extended Family?
                 $(selectorPrefix + '_fulltimeGroup').toggleClass('hidden', !providerConfig.showFullTimeField);
                 $(selectorPrefix + '_schoolGroup').toggleClass('hidden', !providerConfig.showSchoolFields);
                 $(selectorPrefix + '_schoolIDGroup').toggleClass('hidden', !providerConfig.showSchoolIdField);
@@ -211,7 +212,7 @@
                 $(selectorPrefix + '_apprenticeGroup').toggleClass('hidden', !providerConfig.showApprenticeField);
                 $('[name=health_application_dependants_dependant' + dependantId + '_schoolID]').prop('required',providerConfig.schoolIdRequired);
             } else {
-                // Hide them all if they aren't in the date range.
+                // Hide them all if they aren't in the age range.
                 $(selectorPrefix + '_fulltimeGroup, ' + selectorPrefix + '_schoolGroup, ' + selectorPrefix + '_schoolIDGroup, ' + selectorPrefix + '_schoolDateGroup,' + selectorPrefix + '_apprenticeGroup').addClass('hidden');
             }
 

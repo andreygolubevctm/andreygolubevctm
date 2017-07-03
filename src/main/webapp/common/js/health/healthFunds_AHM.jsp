@@ -28,7 +28,17 @@ var healthFunds_AHM = {
       dependantsString += '.';
     }
 
-    meerkat.modules.healthFunds._dependants(dependantsString);
+    <%-- Dependant's Age and message --%>
+    var familyCoverType = meerkat.modules.healthChoices.returnCoverCode();
+    if (familyCoverType === 'EF' || familyCoverType === 'ESP') {
+
+        <%--  TODO: confirm AHM Extended Family Dependants Text and Extended family Dependants min/max Age rules --%>
+        meerkat.modules.healthFunds._dependants('This product provides cover for Adult Dependants aged between 21 and 25');
+        meerkat.modules.healthDependants.updateConfig({extendedFamilyMinAge: 21, extendedFamilyMaxAge: 25});
+    } else {
+        meerkat.modules.healthFunds._dependants(dependantsString);
+    }
+
     <%--change age of dependants and school--%>
     meerkat.modules.healthDependants.setMaxAge(25);
     <%--schoolgroups and defacto--%>
