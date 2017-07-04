@@ -42,15 +42,11 @@ var healthFunds_HCF = {
             healthFunds_HCF.renderPaymentDay();
         });
 
-        healthFunds_HCF.$paymentStartDate.on("changeDate.HCF", function renderPaymentDayCalendar(e) {
-            healthFunds_HCF.renderPaymentDay();
-        });
-
         <%--update policy day label--%>
         healthFunds_HCF.$paymentBankDayGroupLabel.text('What day would you like your first and regular payment deducted?');
     },
     renderPaymentDay: function(){
-        var _html = meerkat.modules.healthPaymentDay.paymentDays( healthFunds_HCF.$paymentStartDate.val() );
+        var _html = meerkat.modules.healthPaymentDay.paymentDays( new Date() );
         meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), _html);
         meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), _html);
     },
