@@ -1,0 +1,75 @@
+.health-situation {
+  .help-text {
+    .clearfix();
+    background-color: @gray-dark;
+    color: #fff;
+    font-size: @font-size-small;
+    margin-top: 15px;
+    padding: 10px;
+    position: relative;
+
+    &:before {
+      @arrow-width: 10px;
+      border: @arrow-width solid transparent;
+      border-bottom-color: @gray-dark;
+      border-top-width: 0;
+      content: "";
+      display: block;
+      position: absolute;
+      top: -@arrow-width;
+      left: 75%;
+      margin-left: -@arrow-width;
+    }
+
+    &.yes-help{
+      &:before {
+        left: 25%;
+      }
+    }
+
+    &.success {
+      background-color: #DCF8E3;
+      color: #22B14C;
+
+      &:before {
+        border-bottom-color: #DCF8E3;
+      }
+    }
+
+    .icon-area {
+      float: left;
+      width: 10%;
+      padding-top: 12px;
+
+      @media (@xs-only) {
+        width: 15%;
+      }
+
+      .tick {
+        &:before {
+          font-family: 'framework_font';
+          background-color: #0DB14B;
+          border-color: #0DB14B;
+          color: #FFFFFF;
+          content: "\e931";
+          font-size: 16px;
+          float: none;
+          border-radius: 50%;
+          /* margin-left: 5px; */
+          margin-right: 5px;
+          margin-top:30%;
+          vertical-align: middle;
+          padding: 0.48em;
+        }
+      }
+      &~ .content{
+        float: left;
+        width: 90%;
+
+        @media (@xs-only) {
+          width: 85%;
+        }
+      }
+    }
+  }
+}
