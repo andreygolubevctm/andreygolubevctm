@@ -1,9 +1,13 @@
 package com.ctm.web.core.services;
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.ctm.web.core.model.settings.VerticalSettings;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,6 +40,7 @@ public class RemoteLoadQuoteService {
 	}
 
 	public List<TransactionDetail> getTransactionDetails(String hashedEmail, String vertical, String type, String emailAddress, long transactionId, int brandId) throws DaoException{
+		List<TransactionDetail> transactionDetails = new ArrayList<>();
 		emailAddress = EmailUrlService.decodeEmailAddress(emailAddress);
 		LOGGER.debug("Checking details vertical {},{},{},{},{}", kv("vertical", vertical), kv("type", type), kv("emailAddress", emailAddress),
 			kv("transactionId", transactionId), kv("brandId", brandId));
@@ -47,9 +52,53 @@ public class RemoteLoadQuoteService {
 		emailData.setTransactionId(transactionId);
 		emailData.setEmailType(emailMode);
 		if( transactionAccessService.hasAccessToTransaction(emailData,brandId, verticalType)) {
-			return transactionDetailsDao.getTransactionDetails(transactionId);
+			transactionDetails = transactionDetailsDao.getTransactionDetails(transactionId);
+			// Get DOBs and generate ages for new xpath
+			String travel = VerticalType.TRAVEL.getCode();
+			if(verticalType.getCode().equalsIgnoreCase(travel)){
+				StringBuffer ages = new StringBuffer();
+				for(TransactionDetail transaction : transactionDetails){
+					if(transaction.getXPath().equalsIgnoreCase("travel/travellers/traveller1DOB")){
+						ages.append(getAgeFromDob(parseStringToLocalDate(transaction.getTextValue())));
+					}
+					if(transaction.getXPath().equalsIgnoreCase("travel/travellers/traveller2DOB")){
+						ages.append(",");
+						ages.append(getAgeFromDob(parseStringToLocalDate(transaction.getTextValue())));
+					}
+					if(StringUtils.isNotEmpty(ages)){
+						TransactionDetail newTransactionDetail = new TransactionDetail("travel/travellers/travellersAge" ,"ages");
+						transactionDetails.add(newTransactionDetail);
+					}
+				}
+				 /*transactionDetails.stream().forEach(transaction ->{
+					if(transaction.getXPath().equalsIgnoreCase("travel/travellers/traveller1DOB")){
+						ages.append(getAgeFromDob(parseStringToLocalDate(transaction.getTextValue())));
+					}
+					if(transaction.getXPath().equalsIgnoreCase("travel/travellers/traveller2DOB")){
+						ages.append(",");
+						ages.append(getAgeFromDob(parseStringToLocalDate(transaction.getTextValue())));
+					}
+					});
+					if(StringUtils.isNotEmpty(ages)){
+						TransactionDetail newTransactionDetail = new TransactionDetail("travel/travellers/travellersAge" ,"ages");
+						transactionDetails.add(newTransactionDetail);
+					}*/
+
+			}
 		}
-		return new ArrayList<>();
+		return transactionDetails;
+	}
+
+	LocalDate parseStringToLocalDate(String date) {
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("d/M/yyyy");
+		return LocalDate.parse(date,dtf);
+
+	}
+
+	int getAgeFromDob(LocalDate dob) {
+		final LocalDate today = LocalDate.now();
+		final Period age = Period.between(dob,today);
+		return age.getYears();
 	}
 
 	public String getActionQuoteUrl(String vertical , String action , Long transactionId , String jParam, String trackingParams){
