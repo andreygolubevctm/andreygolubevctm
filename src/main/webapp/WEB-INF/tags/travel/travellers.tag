@@ -11,7 +11,7 @@
           Who's travelling?
         </p>
       <span class="traveler-age-label">
-        The age of all travelling adults and children who will be covered under this insurance policy
+        The age of all travelling adult?
       </span>
     </div>
     
@@ -40,7 +40,7 @@
           Age(years)
         </span>
         <div class="clearfix">
-          <input data-msg-required="Please add age" data-msg-range="Please add age" data-rule-range="1,99" name="travellers-age-1" required type="text" maxlength="2" />
+          <input data-msg-required="Please add age" data-msg-range="Age must be between 16-99" data-rule-range="16,99" name="travellers-age-1" required type="text" maxlength="2" />
         </div>
       </div>
     </div>
