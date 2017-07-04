@@ -7,14 +7,24 @@
 		input: $('.age-item input'),
 		container: $('.age-container'),
 		numberOfTravellers: $('#num-travellers'),
-		travelParty: $('.travel_party input')
+		travelParty: $('.travel_party input'),
+		travelPartText: $('.traveler-age-label')
 	};
+	
+	var travelText = {
+		S: 'The age of all travelling adult?',
+		C: 'The age of all travelling adults?',
+		F: 'The age of all travelling adults?',
+		G: 'Age of all travelling adults and age of all travelling children in the group?'
+	}
 	
 	var state = {
 		travellers: 1,
 		selection: 'S',
 		showAddBtn: false,
-		addedFields: 0
+		addedFields: 0,
+		minAge: 16,
+		maxAge: 99
 	};
 
 	var meerkat = window.meerkat,
@@ -34,7 +44,7 @@
 		var className = canDelete ? 'col-lg-4' : 'col-lg-3';
 		return (
 			'<div class="age-item col-md-5 ' + className + '"> <span>Age(years)</span><div class="clearfix">' +
-			'<input name="travellers-age-'+ index +'" data-msg-required="Please add age" data-msg-range="Please add age" data-rule-range="1,99" required type="text" maxlength="2" />' +
+			'<input name="travellers-age-'+ index +'" data-msg-required="Please add age" data-msg-range="age must be between ' + state.maxAge + '-' + state.maxAge + '" data-rule-range="' + state.minAge + ',' + state.maxAge + '" required type="text" maxlength="2" />' +
 			(canDelete ? '<div class="exit-container"> <a href="javascript:;" class="icon-exit"></a> </div>' : '') + '</div></div>'
 		);
 	}
@@ -44,9 +54,12 @@
 		var items = container.children().length;
 		if (items > state.travellers) {
 			_removeExcess();
-		} else if (items < state.travellers) {
-			container.append(getTemplate(2));
+		} else if (state.travellers > items) {
+			for(var i = items; state.travellers > i; i++) {
+				container.append(getTemplate(i));
+			}
 		}
+		_changeValidation();
 		_renderAddBtn();
 		_updateNumber(state.travellers);
 	}
@@ -68,26 +81,38 @@
 		}
 	}
 	
+	function _changeTravelText(travelParty) {
+		$elements.travelPartText.text(travelText[travelParty]);
+	}
+	
 	function _travelPartyChange(e) {
 		var travelParty = e.target.value;
 		if (travelParty !== state.selection) {
 			switch (travelParty) {
 				case "S":
-						setState({ travellers: 1, showAddBtn: false, selection: travelParty, addedFields: 0 });
+						setState({ travellers: 1, showAddBtn: false, selection: travelParty, addedFields: 0, minAge: 16 });
 					break;
 				case "C":
-						setState({ travellers: 2, showAddBtn: false, selection: travelParty, addedFields: 0 });
+						setState({ travellers: 2, showAddBtn: false, selection: travelParty, addedFields: 0, minAge: 16 });
 					break;
-				case "F":setState({ travellers: 2, showAddBtn: false, selection: travelParty, addedFields: 0 });
+				case "F":
+						setState({ travellers: 2, showAddBtn: false, selection: travelParty, addedFields: 0, minAge: 16 });
 					break;
 				case "G":
-						setState({ travellers: 2, showAddBtn: true, selection: travelParty });
+						setState({ travellers: 3, showAddBtn: true, selection: travelParty, minAge: 0 });
 					break;
 			}
+			_changeTravelText(travelParty);
 			_renderCheckboxes();
 		}
 	}
 
+	function _changeValidation() {
+		var inputs = $('.age-container input');
+		var ageLabel = state.minAge + '-' + state.maxAge;
+		inputs.data('ruleRange', state.minAge + ',' + state.maxAge);
+		inputs.data('msgRange', 'Age must be between ' + ageLabel);
+	}
 	
 	function _enableBtn() {
 		$elements.warning.hide();
@@ -122,7 +147,7 @@
 		}
 	}
 	
-	function _mapValuesToInput() {
+	function mapValuesToInput() {
 		var inputVals = '';
 		$elements.container.find('input').each(function(index) {
 			if(this.value !== '') {
@@ -140,7 +165,6 @@
 		$elements.add.on('click', _add);
 		$(document).on('click', '.icon-exit', _remove);
 		$(document).on('change', '.age-item input', _removeValidationError);
-		$(document).on('blur', '.age-item input', _mapValuesToInput);
 		$elements.travelParty.on('change', _travelPartyChange);
 	}
 	
@@ -148,8 +172,9 @@
 		_eventListeners();
 	}
 
-	meerkat.modules.register("travelers", {
-		init: init
+	meerkat.modules.register("travellers", {
+		init: init,
+		mapValues: mapValuesToInput
 	});
 
 })(jQuery);
