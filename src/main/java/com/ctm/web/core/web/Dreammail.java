@@ -18,7 +18,7 @@ public class Dreammail {
 
 		StringBuffer resp;
 		try {
-			LOGGER.info("Sending best price email for {} {} {} ", getLoggingParams(transactionId, is_exact_target, vertical));
+			LOGGER.info("Sending best price email for {} {} {} ", kv("transactionId", transactionId), kv("vertical", vertical), kv("exactTarget", is_exact_target));
 			if(xml_content == null || xml_content.isEmpty()) {
 				throw new IllegalArgumentException("xml content is empty");
 			}
@@ -53,18 +53,16 @@ public class Dreammail {
 			while ((inputLine = in.readLine()) != null) {
 				resp.append(inputLine);
 			}
-			LOGGER.info("After email request is sent for {} {} {} {}" , getLoggingParams(transactionId, is_exact_target, vertical),
-					kv("emailProviderResponse", resp));
+			LOGGER.info("After email request is sent for {} {} {} {}" ,
+					kv("transactionId", transactionId), kv("vertical", vertical),
+					kv("exactTarget", is_exact_target), kv("emailProviderResponse", resp));
 		}
 		catch(Exception e){
-			LOGGER.error("Caught exception sending best price email  for {} {} {} {}" , getLoggingParams(transactionId, is_exact_target, vertical),
-					kv("reason", e.getMessage()));
+			LOGGER.error("Caught exception sending best price email  for {} {} {} {}" ,
+					kv("transactionId", transactionId), kv("vertical", vertical),
+					kv("exactTarget", is_exact_target), kv("reason", e.getMessage()));
 			throw e;
 		}
 		return resp.toString();
-	}
-
-	private static String getLoggingParams(String transactionId, boolean isExactTarget, String vertical){
-		return kv("transactionId", transactionId).toString() + kv("vertical", vertical)+ kv("exactTarget", isExactTarget);
 	}
 }
