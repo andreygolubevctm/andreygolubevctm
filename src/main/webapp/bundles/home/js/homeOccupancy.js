@@ -80,7 +80,7 @@
 			meerkat.site.isLandlord = true;
 			meerkat.modules.home.toggleLandlords();
 			// hacky soultion to activate the radioBtn on for the first page
-			$('#home_occupancy_ownProperty_Y').prop('checked', true).change();
+			$('.isLandlord #home_occupancy_ownProperty_Y').prop('checked', true).change();
 		// Otherwise, disable landlords.
 		} else {
 			meerkat.site.isLandlord = false;

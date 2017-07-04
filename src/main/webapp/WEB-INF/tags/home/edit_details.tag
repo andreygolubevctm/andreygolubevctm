@@ -81,7 +81,7 @@
 						<div class="col-xs-12">
 							<p class="detail-title">Occupancy</p>
 							<ul>
-								<li>{{ if(ownsHome) { }}Owns home{{ } else { }}Does not own home{{ } }}</li>
+								<li>{{ if(ownsHome || ownsHomeLandlord) { }}Owns home{{ } else { }}Does not own home{{ } }}</li>
 								{{ if(isPrincipalResidence) { }}
 									<li>Principal place of residence</li>
 									{{ if (ownsHome) { }}
@@ -287,16 +287,30 @@
 						<div class="col-xs-12">
 							<p class="detail-title">Previous Cover</p>
 							<ul>
-								{{ if(previousCover) { }}
-									<li>Has had home and/or contents insurance in the last 5 years</li>
+								{{ console.log(landlordInsuranceLast5Years, landlordInsuranceClaims) }}
+								{{ if(meerkat.site.isLandlord) { }}
+									{{ if(landlordInsuranceLast5Years) { }}
+											<li>Has had landlord insurance in the last 5 years</li>
+									{{ } else { }}
+											<li>Has not had landlord insurance in the last 5 years</li>
+									{{ } }}
+									{{ if(landlordInsuranceClaims) { }}
+											<li>Has made landlord claims in the last 5 years</li>
+									{{ } else { }}
+											<li>Has not made landlord claims in the last 5 years</li>
+									{{ } }}
 								{{ } else { }}
-									<li>Has not had home and/or contents insurance in the last 5 years</li>
-								{{ } }}
-								{{ if(previousClaims) { }}
-									<li>Has made home and/or contents claims in the last 5 years</li>
-								{{ } else { }}
-									<li>Has not made home and/or contents claims in the last 5 years</li>
-								{{ } }}
+									{{ if(previousCover) { }}
+										<li>Has had home and/or contents insurance in the last 5 years</li>
+									{{ } else { }}
+										<li>Has not had home and/or contents insurance in the last 5 years</li>
+									{{ } }}
+									{{ if(previousClaims) { }}
+										<li>Has made home and/or contents claims in the last 5 years</li>
+									{{ } else { }}
+										<li>Has not made home and/or contents claims in the last 5 years</li>
+									{{ } }}
+							{{ } }}
 							</ul>
 
 						</div>
