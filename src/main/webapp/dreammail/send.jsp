@@ -225,9 +225,11 @@
 						</html>
 					</c:when>
 					<c:otherwise>
+						<c:set var="verticalBestPrice">${param.tmpl}</c:set>
+						<c:set var="transactionId">${param.transactionId}</c:set>
 						<%-- Send to dreammail and output the result to the page --%>
 						<c:catch var="error">
-							<c:set var="emailResponseXML" scope="session">${go:Dreammail(dmUsername,dmPassword,dmServer,dmUrl,myResult,dmDebug,isExactTarget)}</c:set>
+							<c:set var="emailResponseXML" scope="session">${go:Dreammail(dmUsername,dmPassword,dmServer,dmUrl,myResult,dmDebug,isExactTarget,transactionId,verticalBestPrice)}</c:set>
 						</c:catch>
 						<c:if test="${not empty error}">
 							<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
