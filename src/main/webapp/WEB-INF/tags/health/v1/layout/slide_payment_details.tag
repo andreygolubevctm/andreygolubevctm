@@ -25,7 +25,7 @@
 				<health_v1:declaration xpath="${pageSettings.getVerticalCode()}/declaration" className="${pageSettings.getVerticalCode()}_declaration-group"/>
 				<health_v1:contactAuthority xpath="${pageSettings.getVerticalCode()}/contactAuthority" />
 				<health_v1:whats-next />
-				<simples:dialogue id="31" vertical="health" mandatory="true" />
+				<simples:dialogue id="31" vertical="health" className="red" />
 
 				<form_v2:row id="confirm-step" hideHelpIconCol="true">
 					<a href="javascript:void(0);" class="btn btn-next col-xs-12 col-sm-8 col-md-5 journeyNavButton" id="submit_btn">Submit Application <span class="icon icon-arrow-right"></span></a>

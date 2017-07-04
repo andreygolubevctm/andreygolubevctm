@@ -79,6 +79,21 @@
       height: 175px;
     }
     overflow: hidden;
+
+    &.compressed {
+      .companyLogo {
+        background: none;
+        font-size: 16px;
+        font-weight: bold;
+        max-width: 100%;
+        width: 100%;
+        height: auto;
+        min-height: 0;
+        line-height: initial;
+        margin: 0;
+        text-indent: initial;
+      }
+    }
   }
 
   // override core to give greater gap.

@@ -49,4 +49,3 @@
         </div>
     </div>
 </c:if>
-<simples:dialogue id="37" vertical="health" mandatory="true" className="hidden" />

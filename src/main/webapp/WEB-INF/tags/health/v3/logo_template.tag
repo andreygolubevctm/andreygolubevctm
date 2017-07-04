@@ -3,5 +3,5 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 {{ if (!obj.hasOwnProperty('premium')) {return;} }}
 {{ if(typeof obj.displayLogo === 'undefined' || obj.displayLogo == true) { }}
-<div class="companyLogo {{= info.provider ? info.provider : info.fundCode }}"></div>
+<div class="companyLogo {{= info.provider ? info.provider : info.fundCode }}">{{= info.providerName }}</div>
 {{ } }}
