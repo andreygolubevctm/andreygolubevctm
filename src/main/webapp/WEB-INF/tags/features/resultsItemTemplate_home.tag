@@ -20,6 +20,11 @@
     {{ pathValue = true }}
     {{ if (!_.isEmpty(obj.contentsExcess.insuredValue) || obj.contentsExcess.insuredValue !== null) { }}
         {{ displayValue = '$'+obj.contentsExcess.insuredValue.toString().replace(r, ","); }}
+        {{ var contentsCost = meerkat.site.isLandlord ? $('#home_coverAmounts_replaceContentsCostLandlord').val() : $('#home_coverAmounts_replaceContentsCost').val(); }}
+
+        {{ if (parseInt(contentsCost) !== parseInt(obj.contentsExcess.insuredValue)) { }}
+            {{ displayValue += '<div class="insuredAmountMinimum">minimum insurable value for this provider</div>'; }}
+        {{ } }}
     {{ } }}
 {{ } }}
 

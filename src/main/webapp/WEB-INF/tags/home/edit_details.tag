@@ -81,14 +81,14 @@
 						<div class="col-xs-12">
 							<p class="detail-title">Occupancy</p>
 							<ul>
-								<li>{{ if(ownsHome || ownsHomeLandlord) { }}Owns home{{ } else { }}Does not own home{{ } }}</li>
+								<li>{{ if(ownsHome) { }}Owns home{{ } else if(ownsHomeLandlord) { }} Owns property - Rented to tenants {{ }  else { }} Does not own home{{ } }}</li>
 								{{ if(isPrincipalResidence) { }}
 									<li>Principal place of residence</li>
 									{{ if (ownsHome) { }}
 										<li><span data-source="#home_occupancy_howOccupied"></span></li>
 									{{ } }}
 								{{ } else { }}
-									{{ if (ownsHome) { }}
+									{{ if (ownsHome && !meerkat.site.isLandlord) { }}
 										<li><span data-source="#home_occupancy_howOccupied"></span></li>
 									{{ } }}
 								{{ } }}

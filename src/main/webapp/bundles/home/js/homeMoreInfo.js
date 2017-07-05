@@ -269,9 +269,10 @@
 			var rebuildCost = parseInt($('#home_coverAmounts_rebuildCost').val());
 			addRow('Home Cover', rebuildCost);
 		}
-
+		
 		if(coverType == "C" || coverType == "HC") {
-			var contentsCost = parseInt($('#home_coverAmounts_replaceContentsCost').val());
+			var contentsCost = parseInt(meerkat.site.isLandlord ? $('#home_coverAmounts_replaceContentsCostLandlord').val() : $('#home_coverAmounts_replaceContentsCost').val());
+			
 			var selectedProduct = Results.getSelectedProduct();
 			if(!_.isEmpty(selectedProduct) && parseInt(selectedProduct.contentsExcess.insuredValue) !== contentsCost) {
 				contentsCost = selectedProduct.contentsExcess.insuredValue;
