@@ -13,12 +13,11 @@ public class Dreammail {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(Dreammail.class);
 
-	public static String send(String username, String password, String servername, String rtm_url, String xml_content, String debugOn, Boolean is_exact_target
-	,String transactionId, String vertical) throws Exception {
+	public static String send(String username, String password, String servername, String rtm_url, String xml_content, String debugOn, Boolean is_exact_target ,String transactionId, String emailTemplate) throws Exception {
 
 		StringBuffer resp;
 		try {
-			LOGGER.info("Sending best price email for {} {} {} ", kv("transactionId", transactionId), kv("vertical", vertical), kv("exactTarget", is_exact_target));
+			LOGGER.info("Sending email for {} {} {} ", kv("transactionId", transactionId), kv("emailTemplate", emailTemplate), kv("exactTarget", is_exact_target));
 			if(xml_content == null || xml_content.isEmpty()) {
 				throw new IllegalArgumentException("xml content is empty");
 			}
@@ -54,13 +53,13 @@ public class Dreammail {
 				resp.append(inputLine);
 			}
 			LOGGER.info("After email request is sent for {} {} {} {}" ,
-					kv("transactionId", transactionId), kv("vertical", vertical),
+					kv("transactionId", transactionId), kv("emailTemplate", emailTemplate),
 					kv("exactTarget", is_exact_target), kv("emailProviderResponse", resp));
 		}
 		catch(Exception e){
-			LOGGER.error("Caught exception sending best price email  for {} {} {} {}" ,
-					kv("transactionId", transactionId), kv("vertical", vertical),
-					kv("exactTarget", is_exact_target), kv("reason", e.getMessage()));
+			LOGGER.error("Caught exception sending email  for {} {} {} {}" ,
+					kv("transactionId", transactionId), kv("emailTemplate", emailTemplate),
+					kv("exactTarget", is_exact_target), kv("caughtException", e.getMessage()));
 			throw e;
 		}
 		return resp.toString();
