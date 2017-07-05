@@ -99,6 +99,7 @@
 			
 		<c:if test="${extraSql == 'Y'}">
 			<c:import var="sqlStatement" url="/dreammail/${param.tmpl}.sql" />
+			${logger.info('Generating rowXML content for email: {},{}', log:kv('transactionId', param.transactionId) ,log:kv('emailTemplate', param.tmpl))}
 			<c:choose>
 				<c:when test="${param.tmpl eq 'travel_edm'}">
 					<c:set var="rowXML"><core_v1:xmlForOtherQuery sqlSelect="${sqlStatement}" tranId="${param.transactionId}" calcSequence="${data.travel.calcSequence}" rankPosition="${data.travel.bestPricePosition}"></core_v1:xmlForOtherQuery></c:set>
