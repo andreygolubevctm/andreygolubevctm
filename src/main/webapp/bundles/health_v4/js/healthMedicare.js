@@ -3,7 +3,6 @@
     var meerkat = window.meerkat,
         $elements = {},
         _mustShowList = [
-            "AIA",
             "GMHBA",
             "Frank",
             "Budget Direct",
@@ -12,7 +11,8 @@
             "QCHF",
             "Navy Health",
             "HBF",
-            "TUH"
+            "TUH",
+            "MYO"
         ];
 
     function initHealthMedicare() {
