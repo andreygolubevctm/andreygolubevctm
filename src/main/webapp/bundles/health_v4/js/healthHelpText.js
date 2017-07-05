@@ -4,7 +4,8 @@
         meerkatEvents = meerkat.modules.events,
         _featureIsActive = false,
         $elements = {
-            about_already_have_insurance: $('#health_healthCover_health_cover')
+            about_already_have_insurance: $('#health_healthCover_health_cover'),
+            insurance_pref_partner_already_have_insurance: $('#_partner_health_cover')
         };
 
     function _toggleHelp($el) {
@@ -13,9 +14,15 @@
         }
     }
 
-    function activateFeature($el) {
+    function activateFeature() {
         _featureIsActive = true;
     }
+
+    $elements.insurance_pref_partner_already_have_insurance.find(':input').on('change', function() {
+        if (_featureIsActive) {
+            _toggleHelp($(this));
+        }
+    });
 
     $elements.about_already_have_insurance.find(':input').on('change', function() {
         if (_featureIsActive) {

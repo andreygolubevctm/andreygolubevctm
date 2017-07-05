@@ -1,8 +1,9 @@
-.health-situation {
+.health-situation,
+[data-step="benefits"] {
   .help-text {
     .clearfix();
     background-color: @gray-dark;
-    color: #fff;
+    color: @white;
     font-size: @font-size-small;
     margin-top: 15px;
     padding: 10px;
@@ -28,11 +29,11 @@
     }
 
     &.success {
-      background-color: #DCF8E3;
-      color: #22B14C;
+      background-color: @btn-secondary-active-bg-color;
+      color: @theme-secondary;
 
       &:before {
-        border-bottom-color: #DCF8E3;
+        border-bottom-color: @btn-secondary-active-bg-color;
       }
     }
 
@@ -48,14 +49,13 @@
       .tick {
         &:before {
           font-family: 'framework_font';
-          background-color: #0DB14B;
-          border-color: #0DB14B;
-          color: #FFFFFF;
+          background-color: @theme-secondary;
+          border-color: @theme-secondary;
+          color: @white;
           content: "\e931";
           font-size: 16px;
           float: none;
           border-radius: 50%;
-          /* margin-left: 5px; */
           margin-right: 5px;
           margin-top:30%;
           vertical-align: middle;
