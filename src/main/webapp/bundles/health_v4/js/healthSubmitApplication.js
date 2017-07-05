@@ -45,7 +45,14 @@
 
             // Validation passed, submit the application.
             if (valid) {
-                _submitApplication();
+                var submitCallback = _submitApplication;
+                if(meerkat.site.environmentCode.toLowerCase() === 'pro' && meerkat.modules.performanceProfiling.amILocal()) {
+                	if(confirm("WARNING: PLEASE BE AWARE THAT YOU ARE IN PRODUCTION. DO NOT SUBMIT A PRODUCTION JOIN")) {
+		                _submitApplication();
+	                }
+                } else {
+	                _submitApplication();
+                }
             }
         });
     }
