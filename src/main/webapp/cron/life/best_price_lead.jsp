@@ -65,7 +65,7 @@
 					<sql:query var="transactionData">
 						SELECT xpath, textValue
 						FROM aggregator.transaction_details
-						WHERE transaction_id = ?;
+						WHERE transactionId = ?;
 						<sql:param value="${result.transaction_id}" />
 					</sql:query>
 				</c:catch>
@@ -162,7 +162,7 @@
 				</c:choose>
 			</c:when>
 			<c:otherwise>
-				${logger.error('skipped best price lead for . {}', log:kv('transaction_id',result.transaction_id ))}
+				${logger.error('skipped best price lead for . {}', log:kv('transactionId',result.transaction_id ))}
 			</c:otherwise>
 			</c:choose>
 		</c:forEach>
