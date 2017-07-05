@@ -57,32 +57,25 @@ public class RemoteLoadQuoteService {
 			String travel = VerticalType.TRAVEL.getCode();
 			if(verticalType.getCode().equalsIgnoreCase(travel)){
 				StringBuffer ages = new StringBuffer();
-				for(TransactionDetail transaction : transactionDetails){
+
+				 transactionDetails.stream().forEach(transaction ->{
 					if(transaction.getXPath().equalsIgnoreCase("travel/travellers/traveller1DOB")){
+						if(StringUtils.isNotEmpty(ages)) {
+							ages.append(",");
+						}
 						ages.append(getAgeFromDob(parseStringToLocalDate(transaction.getTextValue())));
 					}
 					if(transaction.getXPath().equalsIgnoreCase("travel/travellers/traveller2DOB")){
-						ages.append(",");
-						ages.append(getAgeFromDob(parseStringToLocalDate(transaction.getTextValue())));
-					}
-					if(StringUtils.isNotEmpty(ages)){
-						TransactionDetail newTransactionDetail = new TransactionDetail("travel/travellers/travellersAge" ,"ages");
-						transactionDetails.add(newTransactionDetail);
-					}
-				}
-				 /*transactionDetails.stream().forEach(transaction ->{
-					if(transaction.getXPath().equalsIgnoreCase("travel/travellers/traveller1DOB")){
-						ages.append(getAgeFromDob(parseStringToLocalDate(transaction.getTextValue())));
-					}
-					if(transaction.getXPath().equalsIgnoreCase("travel/travellers/traveller2DOB")){
-						ages.append(",");
+						if(StringUtils.isNotEmpty(ages)) {
+							ages.append(",");
+						}
 						ages.append(getAgeFromDob(parseStringToLocalDate(transaction.getTextValue())));
 					}
 					});
 					if(StringUtils.isNotEmpty(ages)){
-						TransactionDetail newTransactionDetail = new TransactionDetail("travel/travellers/travellersAge" ,"ages");
+						TransactionDetail newTransactionDetail = new TransactionDetail("travel/travellers/travellersAge" ,ages.toString());
 						transactionDetails.add(newTransactionDetail);
-					}*/
+					}
 
 			}
 		}
