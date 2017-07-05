@@ -5,13 +5,13 @@ public class LandlordDetails {
     private String propertyManagedBy;
     private String validRentalLease;
     private Integer weeklyRentValue;
-    private Boolean pendingRentalLease;
+    private String pendingRentalLease;
 
-    public Boolean getPendingRentalLease() {
+    public String getPendingRentalLease() {
         return pendingRentalLease;
     }
 
-    public void setPendingRentalLease(Boolean pendingRentalLease) {
+    public void setPendingRentalLease(String pendingRentalLease) {
         this.pendingRentalLease = pendingRentalLease;
     }
 
