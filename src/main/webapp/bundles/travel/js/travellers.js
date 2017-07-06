@@ -178,7 +178,6 @@
 	
 	function insertValues() {
 		values = state.hiddenValues;
-		$('input[name=travel_adults]').val(values.length);
 		for (var i = 0; values.length > i; i++) {
 			var indexFix = i + 1;
 			if ($('input[name=travellers-age-'+ indexFix +']').length > 0) {
