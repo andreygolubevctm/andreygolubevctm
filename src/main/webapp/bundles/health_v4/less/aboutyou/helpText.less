@@ -1,0 +1,75 @@
+.health-situation,
+[data-step="benefits"] {
+  .help-text {
+    .clearfix();
+    background-color: @gray-dark;
+    color: @white;
+    font-size: @font-size-small;
+    margin-top: 15px;
+    padding: 10px;
+    position: relative;
+
+    &:before {
+      @arrow-width: 10px;
+      border: @arrow-width solid transparent;
+      border-bottom-color: @gray-dark;
+      border-top-width: 0;
+      content: "";
+      display: block;
+      position: absolute;
+      top: -@arrow-width;
+      left: 75%;
+      margin-left: -@arrow-width;
+    }
+
+    &.yes-help{
+      &:before {
+        left: 25%;
+      }
+    }
+
+    &.success {
+      background-color: @btn-secondary-active-bg-color;
+      color: @theme-secondary;
+
+      &:before {
+        border-bottom-color: @btn-secondary-active-bg-color;
+      }
+    }
+
+    .icon-area {
+      float: left;
+      width: 10%;
+      padding-top: 12px;
+
+      @media (@xs-only) {
+        width: 15%;
+      }
+
+      .tick {
+        &:before {
+          font-family: 'framework_font';
+          background-color: @theme-secondary;
+          border-color: @theme-secondary;
+          color: @white;
+          content: "\e931";
+          font-size: 16px;
+          float: none;
+          border-radius: 50%;
+          margin-right: 5px;
+          margin-top:30%;
+          vertical-align: middle;
+          padding: 0.48em;
+        }
+      }
+      &~ .content{
+        float: left;
+        width: 90%;
+
+        @media (@xs-only) {
+          width: 85%;
+        }
+      }
+    }
+  }
+}
