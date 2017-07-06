@@ -8,7 +8,8 @@
 		container: $('.age-container'),
 		numberOfTravellers: $('#num-travellers'),
 		travelParty: $('.travel_party input'),
-		travelPartText: $('.traveler-age-label')
+		travelPartText: $('.traveler-age-label'),
+		hiddenInput: $('#travel_travellers_travellersAge'),
 	};
 	
 	var travelText = {
@@ -24,7 +25,8 @@
 		showAddBtn: false,
 		addedFields: 0,
 		minAge: 16,
-		maxAge: 99
+		maxAge: 99,
+		hiddenValues: []
 	};
 
 	var meerkat = window.meerkat,
@@ -40,11 +42,12 @@
 		if (typeof callback === 'function') callback();
 	}
 	
-	function getTemplate(index, canDelete) {
+	function getTemplate(index, canDelete, value) {
+		var value = value || '';
 		var className = canDelete ? 'col-lg-4' : 'col-lg-3';
 		return (
 			'<div class="age-item col-md-5 ' + className + '"> <span>Age(years)</span><div class="clearfix">' +
-			'<input name="travellers-age-'+ index +'" data-msg-required="Please add age" data-msg-range="age must be between ' + state.maxAge + '-' + state.maxAge + '" data-rule-range="' + state.minAge + ',' + state.maxAge + '" required type="text" maxlength="2" />' +
+			'<input value="' + value + '" name="travellers-age-'+ index +'" data-msg-required="Please add age" data-msg-range="age must be between ' + state.minAge + '-' + state.maxAge + '" data-rule-range="' + state.minAge + ',' + state.maxAge + '" required type="text" maxlength="2" />' +
 			(canDelete ? '<div class="exit-container"> <a href="javascript:;" class="icon-exit"></a> </div>' : '') + '</div></div>'
 		);
 	}
@@ -56,7 +59,7 @@
 			_removeExcess();
 		} else if (state.travellers > items) {
 			for(var i = items; state.travellers > i; i++) {
-				container.append(getTemplate(i));
+				container.append(getTemplate(i + 1));
 			}
 		}
 		_changeValidation();
@@ -85,8 +88,8 @@
 		$elements.travelPartText.text(travelText[travelParty]);
 	}
 	
-	function _travelPartyChange(e) {
-		var travelParty = e.target.value;
+	function _travelPartyChange(e, bypass) {
+		var travelParty = bypass || e.target.value;
 		if (travelParty !== state.selection) {
 			switch (travelParty) {
 				case "S":
@@ -123,10 +126,10 @@
 		$elements.numberOfTravellers.text(state.travellers + state.addedFields);
 	}
 	
-	function _add() {
+	function _add(e, value) {
 		var number = state.travellers + state.addedFields;
 		if (number < max) {
-			$elements.container.append(getTemplate(number + 1, true));
+			$elements.container.append(getTemplate(number + 1, true, value));
 			setState({ addedFields: state.addedFields + 1 }, _updateNumber);
 			if (number === max - 1) {
 				_disableBtn();
@@ -158,7 +161,33 @@
 				}
 			}
 		});
-		$('#ages-hidden-input').val(inputVals);
+		setState({ hiddenValues: inputVals });
+		$elements.hiddenInput.val(inputVals);
+	}
+	
+	function prefillFields() {
+		var value = $elements.hiddenInput.val();
+		var selected = $('.travel_party input:checked').val();
+		if (value != null && value.length > 0) {
+			var arrayValues = value.split(/\s*,\s*/);
+			setState({ hiddenValues: arrayValues });
+			_travelPartyChange(this, selected);
+			insertValues();
+		}
+	}
+	
+	function insertValues() {
+		values = state.hiddenValues;
+		console.log('fires');
+		$('input[name=travel_adults]').val(values.length);
+		for (var i = 0; values.length > i; i++) {
+			var indexFix = i + 1;
+			if ($('input[name=travellers-age-'+ indexFix +']').length > 0) {
+				$('input[name=travellers-age-'+ indexFix +']').val(values[i]);
+			} else {
+				_add(null, values[i]);
+			}
+		}
 	}
 
 	function _eventListeners() {
@@ -170,6 +199,7 @@
 	
 	function init() {
 		_eventListeners();
+		prefillFields();
 	}
 
 	meerkat.modules.register("travellers", {

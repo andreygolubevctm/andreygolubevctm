@@ -22,14 +22,14 @@
           Number of travellers
         </span>
       </div>
-      <div class="col-xs-6" id="num-travellers" data-max="50">
+      <div class="col-xs-6" id="num-travellers" data-max="25">
         1
       </div>
       <div class="col-xs-6" id="plus">
         <a href="javascript:;" class="icon-add"></a>
       </div>
       <div class="warning-label-hidden">
-        Maximum number of travellers is 50
+        Maximum number of travellers is 25
       </div>
     </div>
     
@@ -44,5 +44,5 @@
         </div>
       </div>
     </div>
-    <input id="ages-hidden-input" type="hidden" name="travel_travellers_travellersAge" />
+     <field_v1:hidden xpath="travel/travellers/travellersAge" />
   </div>
