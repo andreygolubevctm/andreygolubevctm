@@ -28,7 +28,9 @@
     function eventSubscriptions() {
 
         $destinationsfs.find('ul.selected-tags').on('DOMSubtreeModified', function () {
+          if (typeof $travelDestinations.qtip === 'function' && typeof $travelDestinations.qtip().reposition === 'function') {
             $travelDestinations.qtip().reposition();
+          }
         });
 
         meerkat.messaging.subscribe(meerkatEvents.selectTags.SELECTED_TAG_REMOVED, function onSelectedTagRemove(isoCode) {

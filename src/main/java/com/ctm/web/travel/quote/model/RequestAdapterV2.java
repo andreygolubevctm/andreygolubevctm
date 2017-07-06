@@ -4,7 +4,6 @@ import com.ctm.web.travel.model.form.TravelQuote;
 import com.ctm.web.travel.model.form.TravelRequest;
 import com.ctm.web.travel.quote.model.request.*;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -21,7 +20,7 @@ public class RequestAdapterV2 {
      * @param travelRequest
      * @return
      */
-    public final static TravelQuoteRequest adapt(TravelRequest travelRequest){
+    public final static TravelQuoteRequest adapt(TravelRequest travelRequest) {
 
         // Retrieve quote as submitted from front end
         final TravelQuote quote = travelRequest.getQuote();
@@ -31,9 +30,9 @@ public class RequestAdapterV2 {
 
         final List<Traveller> travellers = new ArrayList<>();
 
-        quote.getTravellers().getTravellersDOB()
+        quote.getTravellers().getTravellersAge()
                 .stream()
-                .map(dob -> createTraveller(TravellerType.ADULT, Optional.of(dob)))
+                .map(age -> createTraveller(TravellerType.ADULT, Optional.of(age)))
                 .forEach(travellers::add);
 
         IntStream.range(0, quote.getChildren())
@@ -42,7 +41,7 @@ public class RequestAdapterV2 {
 
         quoteRequest.setTravellers(travellers);
 
-        if(quote.getPolicyType().equals("S")){
+        if (quote.getPolicyType().equals("S")) {
             quoteRequest.setPolicyType(PolicyType.SINGLE);
             SingleTripDetails details = new SingleTripDetails();
             details.setDestinations(quote.getDestinations());
@@ -52,11 +51,11 @@ public class RequestAdapterV2 {
 
             quoteRequest.setSingleTripDetails(details);
 
-        }else{
+        } else {
             quoteRequest.setPolicyType(PolicyType.MULTI);
         }
 
-        if(quote.getRenderingMode() != null && quote.getRenderingMode().equalsIgnoreCase("XS")){
+        if (quote.getRenderingMode() != null && quote.getRenderingMode().equalsIgnoreCase("XS")) {
             quoteRequest.setMobileUrls(true);
         }
         quoteRequest.setFirstName(quote.getFirstName());
@@ -68,11 +67,10 @@ public class RequestAdapterV2 {
 
     }
 
-    protected static Traveller createTraveller(TravellerType travellerType, Optional<LocalDate> dateOfBirth) {
+    protected static Traveller createTraveller(TravellerType travellerType, Optional<Integer> age) {
         final Traveller traveller = new Traveller();
         traveller.setTravellerType(travellerType);
-        dateOfBirth.ifPresent(traveller::setDateOfBirth);
+        age.ifPresent(traveller::setAge);
         return traveller;
     }
-
 }
