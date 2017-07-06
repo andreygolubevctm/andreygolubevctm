@@ -46,6 +46,7 @@ $(window).load(function () {
     var msg = loopedDecodeUriComponent(urlVars.msg);
     var brand = loopedDecodeUriComponent(urlVars.brand);
     var tracking = null;
+	var gaclientid = null;
 
     var data = {
         transactionId: transactionId,
@@ -65,7 +66,6 @@ $(window).load(function () {
     }
 
 	// Create a public object to provide readonly access to the gaclientid
-	var gaclientid = null;
 	var TransferGAClientId = function(gid) {
 		var gaClientId = gid;
 		this.get = function() {
@@ -74,6 +74,8 @@ $(window).load(function () {
 	};
 	if (tracking !== null && _.isObject(tracking) && _.has(tracking,'gaclientid')) {
 		gaclientid = tracking.gaclientid;
+	} else if(urlVars.hasOwnProperty('gaclientid')) {
+		gaclientid = loopedDecodeUriComponent(urlVars.gaclientid)
 	}
 	window.transferGAClientIdObj = new TransferGAClientId(gaclientid);
 
