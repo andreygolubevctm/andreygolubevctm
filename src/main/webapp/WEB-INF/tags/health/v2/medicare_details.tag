@@ -12,7 +12,7 @@
 <%-- HTML --%>
 <div id="${name}-selection" class="health-medicare_details">
 
-	<simples:dialogue id="30" vertical="health" mandatory="true" />
+	<simples:dialogue id="30" vertical="health" className="red" />
 
 	<form_v3:fieldset legend="Medicare Details" id="medicare_details" className="medicare_details">
 

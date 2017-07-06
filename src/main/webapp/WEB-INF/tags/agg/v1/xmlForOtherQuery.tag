@@ -64,8 +64,12 @@
 
 	</c:forEach>
 
-
-	<c:if test="${productCount >= 3}">
-		<%-- output it to the page --%>
-		${go:getEscapedXml(data['tempSQL'])}
-	</c:if>
+	<c:choose>
+		<c:when test="${productCount >= 3}">
+			<%-- output it to the page --%>
+			${go:getEscapedXml(data['tempSQL'])}
+		</c:when>
+		<c:otherwise>
+			${logger.info('Not enough products to send Best Price email: {},{},{}', log:kv('transactionId', tranId), log:kv('vertical', vertical), log:kv('productCount', productCount))}
+		</c:otherwise>
+	</c:choose>

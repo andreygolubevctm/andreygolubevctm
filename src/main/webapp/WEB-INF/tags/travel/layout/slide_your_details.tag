@@ -39,8 +39,8 @@
 <%-- TODO: Minimum/Maximum Dates used to be handled with this crazy go tag, lets determine what difference this has to the above. --%>
 <%-- <fmt:formatDate value="${go:AddDays(now,365)}" var="nowPlusYear_Date" type="date" pattern="dd/MM/yyyy"/> --%>
 
-<layout_v1:slide formId="detailsForm" nextLabel="Get Quote">
-	<layout_v1:slide_columns>
+<layout_v1:slide formId="detailsForm" nextLabel="Get Quotes">
+    <layout_v1:slide_columns>
 		<jsp:attribute name="rightColumn">
 			<ui:bubble variant="info" className="hidden-xs">
 				<content:get key="step1Info"/>

@@ -55,7 +55,7 @@ var healthFunds_BUP = {
 							<li class="flexi-icon HLTicon-non-pbs-pharm" data-value="pharmacy"><field_v2:help_icon helpId="283" /><br />Pharmacy</li>
 							<%-- TODO - confirm data-value and helpId --%>
 							<li class="flexi-icon HLTicon-speech-therapy" data-value="speech_eye_occupational-therapies"><field_v2:help_icon helpId="568" /><br />Speech/Eye/ Occupational Therapies</li>
-							<li class="flexi-icon HLTicon-lifestyle-products" data-value="living-well"><field_v2:help_icon helpId="293" /><br />Living Well</li>
+							<li class="flexi-icon HLTicon-lifestyle-products" data-value="health_management"><field_v2:help_icon helpId="570" /><br />Health Management</li>
 						</ul>
 						<field_v2:validatedHiddenField xpath="health/application/bup/flexiextras" additionalAttributes=' data-rule-flexiExtras="true"' />
 					</form_v2:fieldset>
