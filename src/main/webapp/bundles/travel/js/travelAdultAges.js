@@ -51,7 +51,7 @@
 			} else if(selected === "G") {
 				$children_row[hideMethod]();
 				$single_parent_row[hideMethod]();
-				$travel_adults.val(2);
+				$('#travel_childrenSelect').val(0);
 			}
 		});
 
