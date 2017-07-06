@@ -27,7 +27,7 @@ public class RequestAdapter {
         // Convert front end quote request to travel-quote request
         TravelQuoteRequest quoteRequest = new TravelQuoteRequest();
 
-        quoteRequest.setTravellersDOB(quote.getTravellers().getTravellersDOB());
+        quoteRequest.setTravellersAge(quote.getTravellers().getTravellersAge());
         quoteRequest.setNumberOfAdults(quote.getAdults());
         quoteRequest.setNumberOfChildren(quote.getChildren());
 
