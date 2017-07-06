@@ -17,7 +17,7 @@
 		C: 'The age of all travelling adults?',
 		F: 'The age of all travelling adults?',
 		G: 'Age of all travelling adults and age of all travelling children in the group?'
-	}
+	};
 	
 	var state = {
 		travellers: 1,
@@ -43,11 +43,11 @@
 	}
 	
 	function getTemplate(index, canDelete, value) {
-		var value = value || '';
+		var val = value || '';
 		var className = canDelete ? 'col-lg-4' : 'col-lg-3';
 		return (
 			'<div class="age-item col-md-5 ' + className + '"> <span>Age(years)</span><div class="clearfix">' +
-			'<input value="' + value + '" name="travellers-age-'+ index +'" data-msg-required="Please add age" data-msg-range="age must be between ' + state.minAge + '-' + state.maxAge + '" data-rule-range="' + state.minAge + ',' + state.maxAge + '" required type="text" maxlength="2" />' +
+			'<input value="' + val + '" name="travellers-age-'+ index +'" data-msg-required="Please add age" data-msg-range="age must be between ' + state.minAge + '-' + state.maxAge + '" data-rule-range="' + state.minAge + ',' + state.maxAge + '" required type="text" maxlength="2" />' +
 			(canDelete ? '<div class="exit-container"> <a href="javascript:;" class="icon-exit"></a> </div>' : '') + '</div></div>'
 		);
 	}
