@@ -106,12 +106,17 @@ public class TravelEmailService extends EmailServiceHandler implements BestPrice
 			emailModel.setEndDate((String) data.get("travel/dates/toDate"));
 			String dob1 = (String) data.get("travel/travellers/traveller1DOB");
 			String dob2 = (String) data.get("travel/travellers/traveller2DOB");
-			LocalDate dob = parseStringToLocalDate(dob1);
-			emailModel.setAdult1Age(getAgeFromDob(dob)+"");
+			LocalDate dob = null;
+			if(StringUtils.isNotEmpty(dob1)) {
+				dob = parseStringToLocalDate(dob1);
+				emailModel.setAdult1Age(getAgeFromDob(dob) + "");
+			}
 			if(StringUtils.isNotEmpty(dob2)) {
 				dob = parseStringToLocalDate(dob2);
 				emailModel.setAdult2Age(getAgeFromDob(dob)+"");
 			}
+			String travellerAges = (String)data.get("travel/travellers/travellersAge");
+			emailModel.setAdult1Age(travellerAges);
 			// default to standard if travel/coverLevelTab xpath is not found
 			String coverLevelTab = (String) data.get("travel/coverLevelTab");
 			coverLevelTab = (coverLevelTab == null || coverLevelTab.equals(""))  ? "standard" : coverLevelTab;
