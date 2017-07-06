@@ -29,7 +29,7 @@
 			// adults
 			txt += adults + ' adult' + (adults == 1 ? '' : 's');
 		} else {
-			txt += adults + 'travelling';
+			txt += adults + ' travelling';
 		}
 		
 		
