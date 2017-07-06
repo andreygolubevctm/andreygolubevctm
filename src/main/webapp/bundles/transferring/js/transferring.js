@@ -75,7 +75,7 @@ $(window).load(function () {
 	if (tracking !== null && _.isObject(tracking) && _.has(tracking,'gaclientid')) {
 		gaclientid = tracking.gaclientid;
 	} else if(urlVars.hasOwnProperty('gaclientid')) {
-		gaclientid = loopedDecodeUriComponent(urlVars.gaclientid)
+		gaclientid = loopedDecodeUriComponent(urlVars.gaclientid);
 	}
 	window.transferGAClientIdObj = new TransferGAClientId(gaclientid);
 
