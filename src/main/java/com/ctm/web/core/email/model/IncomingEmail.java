@@ -7,6 +7,7 @@ public class IncomingEmail {
 	private EmailMode emailType = null;
 	private String productId = null;
 	private Long transactionId = null;
+	private String gaclientid = null;
 	private String campaignId = null;
 	private String etRid = null;
 	private String utmSource = null;
@@ -30,6 +31,10 @@ public class IncomingEmail {
 
 	public void setEmailHash(String emailHash) {
 		emailMaster.setHashedEmail(emailHash);
+	}
+
+	public void setGAClientId(String gaclientid) {
+		this.gaclientid = gaclientid;
 	}
 
 	public void setCampaignId(String campaignId) {
@@ -64,6 +69,10 @@ public class IncomingEmail {
 
 	public String getHashedEmail() {
 		return emailMaster.getHashedEmail();
+	}
+
+	public String getGAClientId() {
+		return this.gaclientid;
 	}
 
 	public String getCampaignId() {
@@ -105,6 +114,7 @@ public class IncomingEmail {
 				", utm_source='" + utmSource + '\'' +
 				", utm_medium='" + utmMedium + '\'' +
 				", utm_campaign='" + utmCampaign + '\'' +
+                ", gaclientid='" + gaclientid + '\'' +
 				", emailMaster=" + emailMaster +
 				'}';
 	}

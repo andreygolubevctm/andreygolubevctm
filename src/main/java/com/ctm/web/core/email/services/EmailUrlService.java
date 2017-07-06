@@ -37,6 +37,7 @@ public class EmailUrlService {
 	public static final String HASHED_EMAIL = "hashedEmail";
 	public static final String STYLE_CODE_ID = "styleCodeId";
 	public static final String EMAIL_ADDRESS = "emailAddress";
+    public static final String GACLIENTID = "gaclientid";
 	public static final String CID = "cid";
 	public static final String ET_RID = "et_rid";
 	public static final String UTM_SOURCE = "utm_source";
@@ -132,6 +133,9 @@ public class EmailUrlService {
 		}
 		if(emailData.getEmailType() != null) {
 			redirectionUrl.append("&type=" + emailData.getEmailType());
+		}
+		if(emailData.getGAClientId() != null) {
+			redirectionUrl.append("&gaclientid=" + emailData.getGAClientId());
 		}
 		if(emailData.getCampaignId() != null) {
 			redirectionUrl.append("&cid=" + emailData.getCampaignId());
