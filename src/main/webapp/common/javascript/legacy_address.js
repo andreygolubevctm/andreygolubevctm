@@ -873,10 +873,18 @@ function init_address(name, residentalAddress , isPostalAddress, defaultSuburbSe
 		}
 		var fullAddressLineOneValue  = "";
 		if(window.selectedAddressObj[getType()].unitNo != "" && window.selectedAddressObj[getType()].unitNo != '0') {
+			var unitTypeText = window.selectedAddressObj[getType()].unitTypeText;
+			var unitNo = window.selectedAddressObj[getType()].unitNo;
+
 			if(window.selectedAddressObj[getType()].unitType != "OT" && window.selectedAddressObj[getType()].unitType != "" && typeof window.selectedAddressObj[getType()].unitType != 'undefined') {
-				fullAddressLineOneValue  += window.selectedAddressObj[getType()].unitTypeText + " ";
+				fullAddressLineOneValue  += unitTypeText + " ";
+
+				if (unitNo.indexOf(unitTypeText.toUpperCase()) !== -1) {
+					unitNo = unitNo.replace(unitTypeText.toUpperCase(), '').trim();
+				}
 			}
-			fullAddressLineOneValue  += window.selectedAddressObj[getType()].unitNo + " ";
+
+			fullAddressLineOneValue  += unitNo + " ";
 		}
 		if(window.selectedAddressObj[getType()].houseNo != "" && window.selectedAddressObj[getType()].houseNo != '0') {
 			var isPostBox = false;

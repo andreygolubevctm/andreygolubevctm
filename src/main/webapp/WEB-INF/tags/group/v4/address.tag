@@ -34,6 +34,11 @@
     <form_v2:row fieldXpath="${fieldXpath}" labelTag="h5" label="${isPostalAddress? 'Postal' : 'Residential'} Address" id="22" className="addressHeading" hideHelpIconCol="true"></form_v2:row>
 </c:if>
 
+<form_v4:row className="fullAddressLineOne_container" smRowOverride="8">
+    <%-- Validation requires it to be wrapped in a div, so targeting works correctly --%>
+    <field_v2:validatedHiddenField xpath="${xpath}/fullAddressLineOne" />
+</form_v4:row>
+
 <field_v1:hidden xpath="${xpath}/elasticSearch" defaultValue="N" />
 <field_v1:hidden xpath="${xpath}/type" defaultValue="${type}" />
 
@@ -53,15 +58,15 @@
 
     <%-- UNIT/SHOP (BOTH STD & NON STD) --%>
     <c:set var="fieldXpath" value="${xpath}/unitShop" />
-    <form_v4:row fieldXpath="${fieldXpath}" label="Unit/Shop/Level No." id="${name}_unitShopRow" className="std_streetUnitShop ${name}_unitShopRow" smRowOverride="5">
-        <field_v2:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-unitShop blur-on-select show-loading sessioncamexclude" title="the unit/shop" includeInForm="true" required="false" placeHolder="Unit/Shop/Level" additionalAttributes="data-msg-required='Please enter a Unit number'  data-validation-position='append' " />
+    <form_v4:row fieldXpath="${fieldXpath}" label="Unit/Shop/Level Number" id="${name}_unitShopRow" className="std_streetUnitShop ${name}_unitShopRow" smRowOverride="5">
+        <field_v2:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-unitShop blur-on-select show-loading sessioncamexclude" title="the unit/shop" includeInForm="true" required="false" placeHolder="eg. 23" additionalAttributes="data-msg-required='Please enter a Unit number'  data-validation-position='append' " />
     </form_v4:row>
 
     <%-- STREET NUM --%>
     <c:set var="fieldXpath" value="${xpath}/streetNum" />
-    <form_v4:row fieldXpath="${fieldXpath}" label="Street No." id="${name}_streetNumRow" className="std_streetNum" smRowOverride="5">
+    <form_v4:row fieldXpath="${fieldXpath}" label="Street Number" id="${name}_streetNumRow" className="std_streetNum" smRowOverride="5">
         <div class="${name}_streetNum_container">
-            <field_v2:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetNum blur-on-select show-loading sessioncamexclude" title="the street no." includeInForm="true" required="true" placeHolder="St. #" additionalAttributes="data-msg-required='Please enter a street number' data-validation-position='append' " />
+            <field_v2:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetNum blur-on-select show-loading sessioncamexclude" title="the street no." includeInForm="true" required="true" placeHolder="eg. 45" additionalAttributes="data-msg-required='Please enter a street number' data-validation-position='append' " />
         </div>
     </form_v4:row>
 
@@ -175,7 +180,6 @@
     </c:otherwise>
 </c:choose>
 <field_v1:hidden xpath="${xpath}/dpId" />
-<field_v1:hidden xpath="${xpath}/fullAddressLineOne" />
 <field_v1:hidden xpath="${xpath}/fullAddress" />
 
 <go:script marker="onready">
