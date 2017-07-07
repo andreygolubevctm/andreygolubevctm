@@ -1,23 +1,22 @@
 package com.ctm.web.core.services;
 
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-
+import com.ctm.web.core.email.model.EmailMode;
+import com.ctm.web.core.email.model.IncomingEmail;
+import com.ctm.web.core.email.services.EmailUrlService;
+import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.model.settings.Vertical.VerticalType;
 import com.ctm.web.core.model.settings.VerticalSettings;
+import com.ctm.web.core.transaction.dao.TransactionDetailsDao;
+import com.ctm.web.core.transaction.model.TransactionDetail;
+import com.ctm.web.core.utils.common.utils.DateUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ctm.web.core.transaction.dao.TransactionDetailsDao;
-import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.web.core.transaction.model.TransactionDetail;
-import com.ctm.web.core.email.model.EmailMode;
-import com.ctm.web.core.email.model.IncomingEmail;
-import com.ctm.web.core.model.settings.Vertical.VerticalType;
-import com.ctm.web.core.email.services.EmailUrlService;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
@@ -54,45 +53,46 @@ public class RemoteLoadQuoteService {
 		if( transactionAccessService.hasAccessToTransaction(emailData,brandId, verticalType)) {
 			transactionDetails = transactionDetailsDao.getTransactionDetails(transactionId);
 			// Get DOBs and generate ages for new xpath
-			String travel = VerticalType.TRAVEL.getCode();
-			if(verticalType.getCode().equalsIgnoreCase(travel)){
+			if(VerticalType.TRAVEL == verticalType){
 				StringBuffer ages = new StringBuffer();
 
-				 transactionDetails.stream().forEach(transaction ->{
+				 /*transactionDetails.stream().forEach(transaction ->{
 					if(transaction.getXPath().equalsIgnoreCase("travel/travellers/traveller1DOB")){
 						if(StringUtils.isNotEmpty(ages)) {
 							ages.append(",");
 						}
-						ages.append(getAgeFromDob(parseStringToLocalDate(transaction.getTextValue())));
+						ages.append(DateUtils.getAgeFromDob(DateUtils.parseStringToLocalDate(transaction.getTextValue())));
 					}
 					if(transaction.getXPath().equalsIgnoreCase("travel/travellers/traveller2DOB")){
 						if(StringUtils.isNotEmpty(ages)) {
 							ages.append(",");
 						}
-						ages.append(getAgeFromDob(parseStringToLocalDate(transaction.getTextValue())));
+						ages.append(DateUtils.getAgeFromDob(DateUtils.parseStringToLocalDate(transaction.getTextValue())));
 					}
 					});
 					if(StringUtils.isNotEmpty(ages)){
 						TransactionDetail newTransactionDetail = new TransactionDetail("travel/travellers/travellersAge" ,ages.toString());
 						transactionDetails.add(newTransactionDetail);
 					}
+*/
+				TransactionDetail newTransactionDetail = transactionDetails.stream()
+							.filter(td -> Arrays.asList("travel/travellers/traveller1DOB","travel/travellers/traveller2DOB").contains(td.getXPath()))
+							.filter(td -> StringUtils.isNotBlank(td.getTextValue()))
+							.map(td -> DateUtils.parseStringToLocalDate(td.getTextValue()))
+							.map(td -> DateUtils.getAgeFromDob(td))
+							.map(String::valueOf)
+							.collect(Collectors.collectingAndThen(Collectors.joining(","),
+									ages1 -> new TransactionDetail("travel/travellers/travellersAge",ages1)));
+				if(StringUtils.isNotBlank(newTransactionDetail.getTextValue())){
+					transactionDetails.add(newTransactionDetail);
+				}
+
 
 			}
 		}
 		return transactionDetails;
 	}
 
-	LocalDate parseStringToLocalDate(String date) {
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("d/M/yyyy");
-		return LocalDate.parse(date,dtf);
-
-	}
-
-	int getAgeFromDob(LocalDate dob) {
-		final LocalDate today = LocalDate.now();
-		final Period age = Period.between(dob,today);
-		return age.getYears();
-	}
 
 	public String getActionQuoteUrl(String vertical , String action , Long transactionId , String jParam, String trackingParams){
 		return VerticalSettings.getHomePageJsp(vertical) + "?action=" + action + "&amp;transactionId=" + transactionId + jParam + trackingParams;

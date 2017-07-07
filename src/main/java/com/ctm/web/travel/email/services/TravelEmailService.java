@@ -20,6 +20,7 @@ import com.ctm.web.core.model.settings.Vertical.VerticalType;
 import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.transaction.dao.TransactionDao;
+import com.ctm.web.core.utils.common.utils.DateUtils;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.travel.email.model.TravelBestPriceEmailModel;
 import com.ctm.web.travel.email.model.TravelBestPriceRanking;
@@ -28,8 +29,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
-import java.time.Period;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class TravelEmailService extends EmailServiceHandler implements BestPriceEmailHandler {
@@ -108,12 +107,12 @@ public class TravelEmailService extends EmailServiceHandler implements BestPrice
 			String dob2 = (String) data.get("travel/travellers/traveller2DOB");
 			LocalDate dob = null;
 			if(StringUtils.isNotEmpty(dob1)) {
-				dob = parseStringToLocalDate(dob1);
-				emailModel.setAdult1Age(getAgeFromDob(dob) + "");
+				dob = DateUtils.parseStringToLocalDate(dob1);
+				emailModel.setAdult1Age(DateUtils.getAgeFromDob(dob) + "");
 			}
 			if(StringUtils.isNotEmpty(dob2)) {
-				dob = parseStringToLocalDate(dob2);
-				emailModel.setAdult2Age(getAgeFromDob(dob)+"");
+				dob = DateUtils.parseStringToLocalDate(dob2);
+				emailModel.setAdult2Age(DateUtils.getAgeFromDob(dob)+"");
 			}
 			String travellerAges = (String)data.get("travel/travellers/travellersAge");
 			emailModel.setAdult1Age(travellerAges);
@@ -192,19 +191,6 @@ public class TravelEmailService extends EmailServiceHandler implements BestPrice
 			}
 
         return "";
-	}
-
-	LocalDate parseStringToLocalDate(String date) {
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("d/M/yyyy");
-		return LocalDate.parse(date,dtf);
-
-	}
-
-
-	int getAgeFromDob(LocalDate dob) {
-		final LocalDate today = LocalDate.now();
-		final Period age = Period.between(dob,today);
-		return age.getYears();
 	}
 
 	private void setupRankingDetails(TravelBestPriceEmailModel emailModel, Long transactionId) throws DaoException {
