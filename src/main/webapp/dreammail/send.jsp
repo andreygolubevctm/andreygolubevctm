@@ -99,6 +99,7 @@
 			
 		<c:if test="${extraSql == 'Y'}">
 			<c:import var="sqlStatement" url="/dreammail/${param.tmpl}.sql" />
+			${logger.info('Generating rowXML content for email: {},{}', log:kv('transactionId', param.transactionId) ,log:kv('emailTemplate', param.tmpl))}
 			<c:choose>
 				<c:when test="${param.tmpl eq 'travel_edm'}">
 					<c:set var="rowXML"><core_v1:xmlForOtherQuery sqlSelect="${sqlStatement}" tranId="${param.transactionId}" calcSequence="${data.travel.calcSequence}" rankPosition="${data.travel.bestPricePosition}"></core_v1:xmlForOtherQuery></c:set>
@@ -225,9 +226,11 @@
 						</html>
 					</c:when>
 					<c:otherwise>
+						<c:set var="emailTemplate">${param.tmpl}</c:set>
+						<c:set var="transactionId">${param.transactionId}</c:set>
 						<%-- Send to dreammail and output the result to the page --%>
 						<c:catch var="error">
-							<c:set var="emailResponseXML" scope="session">${go:Dreammail(dmUsername,dmPassword,dmServer,dmUrl,myResult,dmDebug,isExactTarget)}</c:set>
+							<c:set var="emailResponseXML" scope="session">${go:Dreammail(dmUsername,dmPassword,dmServer,dmUrl,myResult,dmDebug,isExactTarget,transactionId,emailTemplate)}</c:set>
 						</c:catch>
 						<c:if test="${not empty error}">
 							<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
