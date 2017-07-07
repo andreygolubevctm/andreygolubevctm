@@ -878,10 +878,10 @@ function init_address(name, residentalAddress , isPostalAddress, defaultSuburbSe
 
 			if(window.selectedAddressObj[getType()].unitType != "OT" && window.selectedAddressObj[getType()].unitType != "" && typeof window.selectedAddressObj[getType()].unitType != 'undefined') {
 				fullAddressLineOneValue  += unitTypeText + " ";
-
-				if (unitNo.indexOf(unitTypeText.toUpperCase()) !== -1) {
-					unitNo = unitNo.replace(unitTypeText.toUpperCase(), '').trim();
-				}
+			}
+			var regex = /(^duplex)|(^floor)|(^house)|(^level)|(^lot)|(^shop)|(^suite)|(^townhouse)|(^unit)/i;
+			if (regex.test(unitNo)) {
+				unitNo = $.trim(unitNo.replace(regex, ''));
 			}
 
 			fullAddressLineOneValue  += unitNo + " ";
