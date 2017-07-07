@@ -82,6 +82,23 @@ var healthFunds_MYO = {
         <%-- update deduction message --%>
         var deductionText = "Your payment will be deducted on the policy start date";
         healthFunds_MYO.$policyDateCreditMessage.add(healthFunds_MYO.$policyDateBankMessage).text(deductionText);
+
+        meerkat.modules.paymentGateway.setup({
+            "paymentEngine" : meerkat.modules.healthPaymentGatewayNAB,
+            "name" : 'health_payment_gateway',
+            "src": '${ctmSettings.getBaseUrl()}', <%-- the CTM iframe source URL --%>
+            "origin": '${hostOrigin}', <%-- the CTM host origin --%>
+            "providerCode": 'myo',
+            "brandCode": '${pageSettings.getBrandCode()}',
+            "handledType" :  {
+                "credit" : true,
+                "bank" : false
+            },
+            "updateValidationSelectors" : meerkat.modules.healthPaymentStep.updateValidationSelectorsPaymentGateway,
+            "resetValidationSelectors" : meerkat.modules.healthPaymentStep.resetValidationSelectorsPaymentGateway,
+            "paymentTypeSelector" : $("input[name='health_payment_details_type']:checked"),
+            "getSelectedPaymentMethod" :  meerkat.modules.healthPaymentStep.getSelectedPaymentMethod
+        });
     },
     unset: function(){
         healthFunds_MYO.$partnerEmailRow.hide();
@@ -103,6 +120,8 @@ var healthFunds_MYO = {
         <%--credit card options--%>
         meerkat.modules.healthCreditCard.resetConfig();
         meerkat.modules.healthCreditCard.render();
+
+        meerkat.modules.paymentGateway.reset();
     }
 };
 
