@@ -34,11 +34,6 @@
     <form_v2:row fieldXpath="${fieldXpath}" labelTag="h5" label="${isPostalAddress? 'Postal' : 'Residential'} Address" id="22" className="addressHeading" hideHelpIconCol="true"></form_v2:row>
 </c:if>
 
-<form_v4:row className="fullAddressLineOne_container" smRowOverride="8">
-    <%-- Validation requires it to be wrapped in a div, so targeting works correctly --%>
-    <field_v2:validatedHiddenField xpath="${xpath}/fullAddressLineOne" />
-</form_v4:row>
-
 <field_v1:hidden xpath="${xpath}/elasticSearch" defaultValue="N" />
 <field_v1:hidden xpath="${xpath}/type" defaultValue="${type}" />
 
