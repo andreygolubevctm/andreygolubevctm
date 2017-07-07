@@ -11,6 +11,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.NoSuchElementException;
@@ -200,5 +201,17 @@ public class DateUtils {
         LocalDate now = new LocalDate();
         Period period = new Period(birthdate, now, PeriodType.yearMonthDay());
         return period.getYears();
+    }
+
+    public static java.time.LocalDate parseStringToLocalDate(String date) {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("d/M/yyyy");
+        return java.time.LocalDate.parse(date,dtf);
+
+    }
+
+    public static int getAgeFromDob(java.time.LocalDate dob) {
+        final java.time.LocalDate today = java.time.LocalDate.now();
+        final java.time.Period age = java.time.Period.between(dob,today);
+        return age.getYears();
     }
 }
