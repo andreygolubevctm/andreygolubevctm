@@ -41,6 +41,12 @@
 
 	<jsp:attribute name="head">
 		<jsp:invoke fragment="head" />
+        <c:set var="isDev" value="${environmentService.getEnvironmentAsString() eq 'localhost' || environmentService.getEnvironmentAsString() eq 'NXI' || environmentService.getEnvironmentAsString() eq 'NXQ'}" />
+
+        <c:if test="${isDev eq true && !param['automated-test']}">
+            <%-- <script src="https://cdn.logrocket.com/LogRocket.min.js"></script>
+            <script>window.LogRocket && window.LogRocket.init('compare-the-market/web-ctm');</script> --%>
+        </c:if>
 	</jsp:attribute>
 
     <jsp:attribute name="head_meta">
