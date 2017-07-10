@@ -209,7 +209,7 @@ public class DateUtils {
 
     }
 
-    public static int getAgeFromDob(java.time.LocalDate dob) {
+    public static int getAgeFromDateOfBirth(java.time.LocalDate dob) {
         final java.time.LocalDate today = java.time.LocalDate.now();
         final java.time.Period age = java.time.Period.between(dob,today);
         return age.getYears();

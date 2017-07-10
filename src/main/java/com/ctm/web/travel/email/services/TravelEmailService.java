@@ -108,11 +108,11 @@ public class TravelEmailService extends EmailServiceHandler implements BestPrice
 			LocalDate dob = null;
 			if(StringUtils.isNotEmpty(dob1)) {
 				dob = DateUtils.parseStringToLocalDate(dob1);
-				emailModel.setAdult1Age(DateUtils.getAgeFromDob(dob) + "");
+				emailModel.setAdult1Age(DateUtils.getAgeFromDateOfBirth(dob) + "");
 			}
 			if(StringUtils.isNotEmpty(dob2)) {
 				dob = DateUtils.parseStringToLocalDate(dob2);
-				emailModel.setAdult2Age(DateUtils.getAgeFromDob(dob)+"");
+				emailModel.setAdult2Age(DateUtils.getAgeFromDateOfBirth(dob)+"");
 			}
 			String travellerAges = (String)data.get("travel/travellers/travellersAge");
 			emailModel.setAdult1Age(travellerAges);

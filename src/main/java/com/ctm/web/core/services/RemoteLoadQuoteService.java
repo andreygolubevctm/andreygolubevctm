@@ -9,9 +9,11 @@ import com.ctm.web.core.model.settings.VerticalSettings;
 import com.ctm.web.core.transaction.dao.TransactionDetailsDao;
 import com.ctm.web.core.transaction.model.TransactionDetail;
 import com.ctm.web.core.utils.common.utils.DateUtils;
+import com.ctm.web.travel.services.TravelService;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,89 +24,72 @@ import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 public class RemoteLoadQuoteService {
 
-	private final TransactionDetailsDao transactionDetailsDao;
-	private final TransactionAccessService transactionAccessService;
+    private final TransactionDetailsDao transactionDetailsDao;
+    private final TransactionAccessService transactionAccessService;
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(RemoteLoadQuoteService.class);
+    @Autowired
+    private TravelService travelService;
 
-	// do not remove as used by the jsp
-	public RemoteLoadQuoteService(){
-		transactionDetailsDao = new TransactionDetailsDao();
-		transactionAccessService = new TransactionAccessService();
-	}
+    private static final Logger LOGGER = LoggerFactory.getLogger(RemoteLoadQuoteService.class);
 
-	public RemoteLoadQuoteService(TransactionAccessService transactionAccessService, TransactionDetailsDao transactionDetailsDao){
-		this.transactionAccessService = transactionAccessService;
-		this.transactionDetailsDao = transactionDetailsDao;
-	}
+    // do not remove as used by the jsp
+    public RemoteLoadQuoteService() {
+        transactionDetailsDao = new TransactionDetailsDao();
+        transactionAccessService = new TransactionAccessService();
+    }
 
-	public List<TransactionDetail> getTransactionDetails(String hashedEmail, String vertical, String type, String emailAddress, long transactionId, int brandId) throws DaoException{
-		List<TransactionDetail> transactionDetails = new ArrayList<>();
-		emailAddress = EmailUrlService.decodeEmailAddress(emailAddress);
-		LOGGER.debug("Checking details vertical {},{},{},{},{}", kv("vertical", vertical), kv("type", type), kv("emailAddress", emailAddress),
-			kv("transactionId", transactionId), kv("brandId", brandId));
-		EmailMode emailMode = EmailMode.findByCode(type);
-		VerticalType verticalType = VerticalType.findByCode(vertical);
-		IncomingEmail emailData = new IncomingEmail();
-		emailData.setEmailAddress(emailAddress);
-		emailData.setEmailHash(hashedEmail);
-		emailData.setTransactionId(transactionId);
-		emailData.setEmailType(emailMode);
-		if( transactionAccessService.hasAccessToTransaction(emailData,brandId, verticalType)) {
-			transactionDetails = transactionDetailsDao.getTransactionDetails(transactionId);
-			// Get DOBs and generate ages for new xpath
-			if(VerticalType.TRAVEL == verticalType){
-				StringBuffer ages = new StringBuffer();
+    public RemoteLoadQuoteService(TransactionAccessService transactionAccessService, TransactionDetailsDao transactionDetailsDao) {
+        this.transactionAccessService = transactionAccessService;
+        this.transactionDetailsDao = transactionDetailsDao;
+    }
 
-				 /*transactionDetails.stream().forEach(transaction ->{
-					if(transaction.getXPath().equalsIgnoreCase("travel/travellers/traveller1DOB")){
-						if(StringUtils.isNotEmpty(ages)) {
-							ages.append(",");
-						}
-						ages.append(DateUtils.getAgeFromDob(DateUtils.parseStringToLocalDate(transaction.getTextValue())));
-					}
-					if(transaction.getXPath().equalsIgnoreCase("travel/travellers/traveller2DOB")){
-						if(StringUtils.isNotEmpty(ages)) {
-							ages.append(",");
-						}
-						ages.append(DateUtils.getAgeFromDob(DateUtils.parseStringToLocalDate(transaction.getTextValue())));
-					}
-					});
-					if(StringUtils.isNotEmpty(ages)){
-						TransactionDetail newTransactionDetail = new TransactionDetail("travel/travellers/travellersAge" ,ages.toString());
-						transactionDetails.add(newTransactionDetail);
-					}
-*/
-				TransactionDetail newTransactionDetail = transactionDetails.stream()
-							.filter(td -> Arrays.asList("travel/travellers/traveller1DOB","travel/travellers/traveller2DOB").contains(td.getXPath()))
-							.filter(td -> StringUtils.isNotBlank(td.getTextValue()))
-							.map(td -> DateUtils.parseStringToLocalDate(td.getTextValue()))
-							.map(td -> DateUtils.getAgeFromDob(td))
-							.map(String::valueOf)
-							.collect(Collectors.collectingAndThen(Collectors.joining(","),
-									ages1 -> new TransactionDetail("travel/travellers/travellersAge",ages1)));
-				if(StringUtils.isNotBlank(newTransactionDetail.getTextValue())){
-					transactionDetails.add(newTransactionDetail);
-				}
+    public List<TransactionDetail> getTransactionDetails(String hashedEmail, String vertical, String type, String emailAddress, long transactionId, int brandId) throws DaoException {
+        List<TransactionDetail> transactionDetails = new ArrayList<>();
+        emailAddress = EmailUrlService.decodeEmailAddress(emailAddress);
+        LOGGER.debug("Checking details vertical {},{},{},{},{}", kv("vertical", vertical), kv("type", type), kv("emailAddress", emailAddress),
+                kv("transactionId", transactionId), kv("brandId", brandId));
+        EmailMode emailMode = EmailMode.findByCode(type);
+        VerticalType verticalType = VerticalType.findByCode(vertical);
+        IncomingEmail emailData = new IncomingEmail();
+        emailData.setEmailAddress(emailAddress);
+        emailData.setEmailHash(hashedEmail);
+        emailData.setTransactionId(transactionId);
+        emailData.setEmailType(emailMode);
+        if (transactionAccessService.hasAccessToTransaction(emailData, brandId, verticalType)) {
+            transactionDetails = transactionDetailsDao.getTransactionDetails(transactionId);
+            // Get DOBs and generate ages for new xpath
+            if (VerticalType.TRAVEL == verticalType) {
+                TransactionDetail newTransactionDetail = transactionDetails.stream()
+                        .filter(td -> Arrays.asList("travel/travellers/traveller1DOB", "travel/travellers/traveller2DOB").contains(td.getXPath()))
+                        .filter(td -> StringUtils.isNotBlank(td.getTextValue()))
+                        .map(td -> DateUtils.parseStringToLocalDate(td.getTextValue()))
+                        .map(td -> DateUtils.getAgeFromDateOfBirth(td))
+                        .map(String::valueOf)
+                        //Build a new xpath for traveller ages for those transactions that previously stored DOB xpaths
+                        .collect(Collectors.collectingAndThen(Collectors.joining(","),
+                                //return new TransactionDetail object for transactions with previous DOB xpaths; null otherwise
+                                ages -> (StringUtils.isNotEmpty(ages)) ? new TransactionDetail("travel/travellers/travellersAge", ages) : null
+                        ));
+                if (newTransactionDetail != null) {
+                    transactionDetails.add(newTransactionDetail);
+                }
+            }
+        }
+        return transactionDetails;
+    }
 
 
-			}
-		}
-		return transactionDetails;
-	}
+    public String getActionQuoteUrl(String vertical, String action, Long transactionId, String jParam, String trackingParams) {
+        return VerticalSettings.getHomePageJsp(vertical) + "?action=" + action + "&amp;transactionId=" + transactionId + jParam + trackingParams;
+    }
 
+    public String getStartAgainQuoteUrl(String vertical, Long transactionId, String jParam, String trackingParams) {
+        return getActionQuoteUrl(vertical, "start-again", transactionId, jParam, trackingParams);
+    }
 
-	public String getActionQuoteUrl(String vertical , String action , Long transactionId , String jParam, String trackingParams){
-		return VerticalSettings.getHomePageJsp(vertical) + "?action=" + action + "&amp;transactionId=" + transactionId + jParam + trackingParams;
-	}
-
-	public String getStartAgainQuoteUrl(String vertical , Long transactionId , String jParam, String trackingParams){
-		return getActionQuoteUrl( vertical , "start-again" ,  transactionId ,  jParam, trackingParams);
-	}
-
-	public String getLatestQuoteUrl(String vertical , Long transactionId , String jParam,  String trackingParams){
-		return getActionQuoteUrl( vertical , "latest" ,  transactionId ,  jParam, trackingParams);
-	}
+    public String getLatestQuoteUrl(String vertical, Long transactionId, String jParam, String trackingParams) {
+        return getActionQuoteUrl(vertical, "latest", transactionId, jParam, trackingParams);
+    }
 
 
 }
