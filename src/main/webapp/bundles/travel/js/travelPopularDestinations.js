@@ -13,7 +13,8 @@
     var $destinationsfs,
         $travelDestinations,
         $destinationsPopover,
-        $destinationsList;
+        $destinationsList,
+        $fromTravelDates;
 
     function initTravelPopularDestinations() {
         var data = {};
@@ -21,6 +22,7 @@
         $travelDestinations = $('#travel_destinations');
         $destinationsPopover = $('#destinations-popover');
         $destinationsList = $('#destinations-list');
+        $fromTravelDates = $('#travel_dates_fromDateInputD, #travel_dates_fromDateInputM, #travel_dates_fromDateInputY');
         initTravelPopover();
         eventSubscriptions();
     }
@@ -69,7 +71,7 @@
                         render: function (event, api) {
                             $destinationsPopover.removeClass('hide');
                             applyTravelDestinationClickListener();
-                            toggleTravelSelectionDisplay(api);
+                            applyTravelDestinationDisplayListeners(api);
                         }
                     }
                 });
@@ -77,13 +79,21 @@
         }
     }
 
-    function toggleTravelSelectionDisplay(api) {
+    function applyTravelDestinationDisplayListeners(api) {
         $travelDestinations.on('keyup', function (e) {
-            e.preventDefault();
-            if (api.elements.tooltip.is(':visible')) {
-                api.toggle(false);
-            }
+            hidePopover(e, api);
         });
+
+        $fromTravelDates.on('focus', function (e) {
+            hidePopover(e, api);
+        });
+    }
+
+    function hidePopover(e, api) {
+        e.preventDefault();
+        if (api.elements.tooltip.is(':visible')) {
+            api.toggle(false);
+        }
     }
 
     function applyTravelDestinationClickListener() {
