@@ -13,7 +13,7 @@
 	};
 	
 	var travelText = {
-		S: 'The age of all travelling adult?',
+		S: 'The age of the travelling adult?',
 		C: 'The age of all travelling adults?',
 		F: 'The age of all travelling adults?',
 		G: 'Age of all travelling adults and age of all travelling children in the group?'
