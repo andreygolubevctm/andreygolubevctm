@@ -18,7 +18,7 @@ var healthFunds_AHM = {
   set: function(){
 
     <%--Dependants--%>
-    var dependantsString = 'ahm Health Insurance provides cover for your children up to the age of 21 plus students who are single and studying full time aged between 21 and 25. Adult dependants outside this criteria can be covered by an additional premium on certain covers';
+    var dependantsString = 'ahm can offer adult dependant coverage at an additional premium for a child of the Principal Member or their Partner, who is not married or living in a de facto relationship, has reached the age of 21 but is under the age of 25, and is not a Student Dependant. ahm call this +21';
 
     if(meerkat.site.content.callCentreNumber !== ''){
       dependantsString += ' so please call '+meerkat.site.content.brandDisplayName+' on <span class=\"callCentreNumber\">'+meerkat.site.content.callCentreNumber+"</span>";
@@ -31,10 +31,8 @@ var healthFunds_AHM = {
     <%-- Dependant's Age and message --%>
     var familyCoverType = meerkat.modules.healthChoices.returnCoverCode();
     if (familyCoverType === 'EF' || familyCoverType === 'ESP') {
-
-        <%--  TODO: confirm AHM Extended Family Dependants Text and Extended family Dependants min/max Age rules --%>
-        meerkat.modules.healthFunds._dependants('This product provides cover for Adult Dependants aged between 21 and 25');
-        meerkat.modules.healthDependants.updateConfig({extendedFamilyMinAge: 21, extendedFamilyMaxAge: 25});
+        meerkat.modules.healthFunds._dependants('This product provides cover for Adult Dependants at an additional premium for a child of the Principal Member or their Partner, who is not married or living in a de facto relationship, has reached the age of 21 but is under the age of 25, and is not a Student Dependant');
+        meerkat.modules.healthDependants.updateConfig({extendedFamilyMinAge: 21, extendedFamilyMaxAge: 24});
     } else {
         meerkat.modules.healthFunds._dependants(dependantsString);
     }
