@@ -276,37 +276,99 @@
 				<p><strong>Hospital waiting period for pre-existing conditions:</strong> 12 months. For all other conditions: 2 months. See policy brochure for more details</p>
 				{{ } }}
 				{{ if(hospitalCover.inclusions.length > 0) { }}
-				<h5>You will be covered for the following services</h5>
+					<%-- has inclusions START --%>
 
-				<ul class="benefitsIcons inclusions">
-					{{ _.each(hospitalCover.inclusions, function(inclusion){ }}
-					<li class="{{= inclusion.className }}"><span>{{= inclusion.name }}</span></li>
-					{{ }) }}
-				</ul>
+					{{ if (hospital.ClassificationHospital) { }}
+						{{ if (hospital.ClassificationHospital === 'Public') { }} <%-- TODO: This is NOT enough to target 'limited' hospital Cover!!!! there's Public (first product from BUD when selecting limited no extras), Accident Private (Care N Repair from AUF), Inclusions (Basic Hospital from NIB)  --%>
+						<%-- if limited hospital cover and has inclusions START --%>
+
+							<h5 class="text-danger">You will be covered for the following services only</h5>
+
+							<ul class="exclusions inclusions">
+							{{ _.each(hospitalCover.inclusions, function(inclusion){ }}
+								<li class="simplesMoreInfoInclusions text-danger"><span>{{= inclusion.name }}</span></li>
+							{{ }) }}
+
+							{{ if (typeof custom !== 'undefined' && custom.info && custom.info.inclusions && custom.info.inclusions.cover) { }}
+								{{ _.each(custom.info.inclusions.cover.split('|'), function(inclusionsFrmRateSheet){ }}
+									<li class="simplesMoreInfoInclusions text-danger fromRatesheet"><span>{{= inclusionsFrmRateSheet }}</span></li>
+								{{ }) }}
+							{{ } }}
+							</ul>
+
+						<%-- if limited hospital cover and has inclusions END --%>
+						{{ } else { }}
+						<%-- else regular hospital cover and has inclusions START --%>
+
+							<h5>You will be covered for the following services</h5>
+
+							<ul class="exclusions inclusions">
+								{{ _.each(hospitalCover.inclusions, function(inclusion){ }}
+									<li class="simplesMoreInfoInclusions"><span>{{= inclusion.name }}</span></li>
+								{{ }) }}
+							</ul>
+
+						<%-- else regular hospital cover and has inclusions END --%>
+						{{ } }}
+					{{ } }}
+
+					<%-- has inclusions END --%>
 				{{ } }}
 
 				{{ if(hospitalCover.restrictions.length > 0) { }}
-				<h5>You will have restricted cover for the following services</h5>
-				<ul class="benefitsIcons restrictions">
-					{{ _.each(hospitalCover.restrictions, function(restriction){ }}
-					<li class="{{= restriction.className }}"><span>{{= restriction.name }}</span></li>
-					{{ }) }}
-				</ul>
-				<span class="text-italic small">Limits may apply. See policy brochure for more details.</span>
+					<h5>You will have restricted cover for the following services</h5>
+					<ul class="exclusions restrictions">
+						{{ _.each(hospitalCover.restrictions, function(restriction){ }}
+							<li class="simplesMoreInfoRestrictions"><span>{{= restriction.name }}</span></li>
+						{{ }) }}
+
+						{{ if (typeof custom !== 'undefined' && custom.info && custom.info.restrictions && custom.info.restrictions.cover) { }}
+							{{ _.each(custom.info.restrictions.cover.split('|'), function(restrictionsFrmRateSheet){ }}
+								<li class="simplesMoreInfoRestrictions fromRatesheet"><span>{{= restrictionsFrmRateSheet }}</span></li>
+							{{ }) }}
+						{{ } }}
+
+					</ul>
+					<span class="text-italic small">Limits may apply. See policy brochure for more details.</span>
 				{{ } }}
 
 				{{ if(hospitalCover.exclusions.length > 0) { }}
-				<h5>You will not be covered for the following services</h5>
-				<ul class="exclusions">
-					{{ _.each(hospitalCover.exclusions, function(exclusion){ }}
-					<li>{{= exclusion.name }}</li>
-					{{ }) }}
+					<%-- has exclusions START --%>
 
-						{{ if (typeof custom !== 'undefined' && custom.info && custom.info.exclusions && custom.info.exclusions.cover) { }}
-						<li class="text-danger"><span class="icon-cross" /></span>{{= custom.info.exclusions.cover }}</li>
+					<h5>You will not be covered for the following services</h5>
+
+					{{ if (hospital.ClassificationHospital) { }}
+						{{ if (hospital.ClassificationHospital === 'Public') { }}  <%-- TODO: This is NOT enough to target 'limited' hospital Cover!!!! there's Public (first product from BUD when selecting limited no extras), Accident Private (Care N Repair from AUF), Inclusions (Basic Hospital from NIB)  --%>
+							<%-- if limited hospital cover and has exclusions START --%>
+
+								{{ if (typeof custom !== 'undefined' && custom.info && custom.info.exclusions && custom.info.exclusions.cover) { }}
+									{{ _.each(custom.info.exclusions.cover.split('|'), function(exclusionsFrmRateSheet){ }}
+										<p class="text-danger exclusion fromRatesheet"><span>{{= exclusionsFrmRateSheet }}</span></p>
+									{{ }) }}
+								{{ } }}
+
+							<%-- if limited hospital cover and has exclusions END --%>
+						{{ } else { }}
+							<%-- else regular hospital cover and has exclusions START --%>
+
+							<ul class="exclusions">
+								{{ _.each(hospitalCover.exclusions, function(exclusion){ }}
+									<li>{{= exclusion.name }}</li>
+								{{ }) }}
+
+								{{ if (typeof custom !== 'undefined' && custom.info && custom.info.exclusions && custom.info.exclusions.cover) { }}
+									{{ _.each(custom.info.exclusions.cover.split('|'), function(exclusionsFrmRateSheet){ }}
+										<li class="fromRatesheet"><span>{{= exclusionsFrmRateSheet }}</span></li>
+									{{ }) }}
+								{{ } }}
+							</ul>
+
+							<%-- else regular hospital cover and has exclusions END --%>
 						{{ } }}
-				</ul>
-				<content:get key="hospitalExclusionsDisclaimer"/>
+					{{ } }}
+					<content:get key="hospitalExclusionsDisclaimer"/>
+
+					<%-- has exclusions END --%>
 				{{ } }}
 			</div>
 			{{ } }}
