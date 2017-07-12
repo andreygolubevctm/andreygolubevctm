@@ -76,11 +76,11 @@
                         }
                     }
                 });
-            });
 
-            if($travel_policyType_S.prop('checked') && meerkat.modules.journeyEngine.getCurrentStepIndex() === 0 && $destinationsfs.is(':visible')){
-                showTravelPopularDestPopover();
-            }
+                if (meerkat.modules.journeyEngine.getCurrentStepIndex() === 0 && $destinationsfs.is(':visible') && $travel_policyType_S.prop('checked')) {
+                    showTravelPopularDestPopover();
+                }
+            });
 
             // Show TravelPopularDestPopover when Single Trip is clicked
             $travel_policyType_S.on('click', function () {
