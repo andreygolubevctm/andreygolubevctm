@@ -1,8 +1,11 @@
 .featuresMode.resultsContainer {
   .results-v2 {
-    .restrictedLabel {
-      font-size: 14px;
-      margin-bottom: 0;
+    .featuresListExcess {
+      .cell {
+        &:first-of-type {
+          border-bottom: 1px solid @gray;
+        }
+      }
     }
 
     .featuresListHospitalOtherList {
@@ -18,11 +21,17 @@
     }
 
     .expander {
-      position: relative;
+      position: absolute;
       right: initial;
-      top: initial;
-      margin-top: 5px;
-      margin-right: 5px;
+      top: 50%;
+      margin-top: -6px;
+
+      @media (@md) {
+        position: relative;
+        top: initial;
+        margin-top: 5px;
+        margin-right: 5px;
+      }
     }
 
     .labelInColumn.category.expandable {
@@ -33,7 +42,9 @@
             color: @theme-secondary;
             font-family: 'framework_font';
             position: absolute;
-            right: 10px;
+            right: 0;
+            top: 50%;
+            margin-top: -7px;
           }
         }
 
@@ -64,6 +75,11 @@
             visibility: hidden;
           }
         }
+        &[data-fid='29700'] {
+          .featureLabel {
+            width: 100%;
+          }
+        }
       }
     }
 
@@ -76,6 +92,22 @@
         position: relative;
         top: 35%;
         text-align: center;
+      }
+    }
+
+    .restrictedLabel {
+      font-size: 14px;
+      margin-bottom: 0;
+    }
+
+    .contentSafeName {
+      display: inline-block;
+      max-width: 80%;
+      margin: 0 10%;
+
+      @media (@md) {
+        max-width: inherit;
+        margin: 0;
       }
     }
   }

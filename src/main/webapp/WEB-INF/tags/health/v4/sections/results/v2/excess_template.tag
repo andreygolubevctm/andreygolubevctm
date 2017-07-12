@@ -13,17 +13,19 @@
                 {{= feature.safeName }}
             </div>
             <div class="featureValue">
-                <span class="excess-value">{{= excessData.perAdmission }} /admission</span>
+                <span class="excess-value">{{= excessData.perAdmission }} <small>/admission</small></span>
             </div>
             <div class="clearfix"></div>
         </div>
     </div>
     {{ } }}
     {{ _.each(feature.children, function(ft) { }}{{ if(excessData.hasExcesses && ft.name == "Excess") { return; } }}
-    {{ ft = module.getExcessItem(obj, ft); }}<div class="cell {{= ft.classString }}">
-    <div class="content {{= ft.contentClassString }}" data-featureId="{{= ft.id }}">
-        <div class="featureLabel here">{{= ft.safeName }}</div><div class="featureValue">{{= ft.displayValue }}</div><div class="clearfix"></div>
-    </div>
+    {{ ft = module.getExcessItem(obj, ft); }}
+    {{ if(_.indexOf([29695,29699], ft.id) != -1) { return; } }}
+    <div class="cell {{= ft.classString }}">
+        <div class="content {{= ft.contentClassString }}" data-featureId="{{= ft.id }}">
+            <div class="featureLabel">{{= ft.safeName }}</div><div class="featureValue">{{= ft.displayValue }}</div><div class="clearfix"></div>
+        </div>
     </div>
     {{ }); }}
 </core_v1:js_template>

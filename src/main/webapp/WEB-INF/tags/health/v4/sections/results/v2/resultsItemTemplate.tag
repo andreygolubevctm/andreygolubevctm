@@ -13,6 +13,32 @@
     {{ ft.classString = ft.classString.replace('expandable', 'expanded'); }}
     {{ } }}
 
+    {{ if (ft.id === 29700) { }}
+    {{ var cellClassString = 'expandable ' + ft.classString; }}
+    <div class="cell {{= cellClassString }}">
+        {{ var labelClassStringForInlineLabel = 'expandable ' + ft.classStringForInlineLabel; }}
+        <div class="labelInColumn {{= labelClassStringForInlineLabel }}">
+            <div class="content {{= ft.labelInColumnContentClass }}" data-featureId="{{= ft.id }}">
+                <div class="contentInner" data-analytics="compare BL hospital">
+                    <span class="icon expander"></span>
+                    <span class="contentSafeName">{{= ft.safeName }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="children {{ if(ft.isNotCovered) { 'hideChildren'; } }}" data-fid="{{= ft.id }}">
+            {{ if(ft.isNotCovered) { }}
+            <div class="content noCoverContainer"><h5 class="noCoverLabel">Not Covered</h5></div>
+            {{ } }}
+            <div class="cell feature">
+                <div class="content">
+                    <div class="featureLabel">Choice of hospital</div>
+                    <div class="featureLabel">Choice of Doctor</div>
+                    <div class="featureLabel">Avoid waiting list for treatments</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ } else { }}
     <div class="cell {{= ft.classString }}">
         {{ if(ft.displayItem) { }}
         {{ if(ft.type == 'category') { }}
@@ -28,7 +54,8 @@
         <div class="labelInColumn {{= ft.classStringForInlineLabel }}">
             <div class="content {{= ft.labelInColumnContentClass }}" data-featureId="{{= ft.id }}">
                 <div class="contentInner" data-analytics="compare BL {{= benefitGroup }}">
-                    {{ if(ft.hasChildFeatures) { }}<span class="icon expander"></span>{{ } }} {{= ft.safeName }}
+                    {{ if(ft.hasChildFeatures) { }}<span class="icon expander"></span>{{ } }}
+                    <span class="contentSafeName">{{= ft.safeName }}</span>
                 </div>
             </div>
         </div>
@@ -39,7 +66,7 @@
             {{ if(ft.isNotCovered) { }}
             <div class="content noCoverContainer"><h5 class="noCoverLabel">Not Covered</h5></div>
             {{ } }}
-            {{ if(ft.type == 'category' && obj.featureType != 'extras') { }}
+            {{ if(ft.type == 'category' && obj.featureType == 'hospital') { }}
             <h5 class="restrictedLabel{{ if(!ft.isRestricted) { }} invisible{{ } }}">Restricted Benefit</h5>
             {{ } }}
             {{ obj.childFeatureDetails = ft.children; }}
@@ -58,5 +85,6 @@
         </div>
         {{ } else { }}{{ delete obj.childFeatureDetails; }}{{ } }}
     </div>
+    {{ } }}
     {{ } }}
 </core_v1:js_template>
