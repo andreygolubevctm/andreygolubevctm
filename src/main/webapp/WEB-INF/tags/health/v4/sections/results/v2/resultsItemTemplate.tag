@@ -25,7 +25,7 @@
                 </div>
             </div>
         </div>
-        <div class="children {{ if(ft.isNotCovered) { 'hideChildren'; } }}" data-fid="{{= ft.id }}">
+        <div class="children{{ if(ft.isNotCovered) { }} hideChildren{{ } }}" data-fid="{{= ft.id }}">
             {{ if(ft.isNotCovered) { }}
             <div class="content noCoverContainer"><h5 class="noCoverLabel">Not Covered</h5></div>
             {{ } }}
