@@ -42,10 +42,6 @@ var healthFunds_HCF = {
             healthFunds_HCF.renderPaymentDay();
         });
 
-        healthFunds_HCF.$paymentStartDate.on("changeDate.HCF", function renderPaymentDayCalendar(e) {
-            healthFunds_HCF.renderPaymentDay();
-        });
-
         <%--update policy day label--%>
         healthFunds_HCF.$paymentBankDayGroupLabel.text('What day would you like your first and regular payment deducted?');
     },
