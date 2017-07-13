@@ -21,8 +21,8 @@
     {{ } }}
     {{ _.each(feature.children, function(ft) { }}{{ if(excessData.hasExcesses && ft.name == "Excess") { return; } }}
     {{ ft = module.getExcessItem(obj, ft); }}
-    <%-- Dont render Excess Waivers and Waiting Period For Pre... features (feature id of 29695/29699) --%>
-    {{ if(_.indexOf([29695,29699], ft.id) != -1) { return; } }}
+    <%-- Dont render Excess Waivers and Waiting Period For Pre... features (shortlistKey of 'ExWaivers' and 'WaitPeriPre') --%>
+    {{ if(_.indexOf(['ExWaivers','WaitPeriPre'], ft.shortlistKey) != -1) { return; } }}
     <div class="cell {{= ft.classString }}">
         <div class="content {{= ft.contentClassString }}" data-featureId="{{= ft.id }}">
             <div class="featureLabel">{{= ft.safeName }}</div><div class="featureValue">{{= ft.displayValue }}</div><div class="clearfix"></div>

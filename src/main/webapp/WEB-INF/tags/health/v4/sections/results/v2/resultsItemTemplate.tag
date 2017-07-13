@@ -9,13 +9,16 @@
     {{ for(var i = 0; i < featureIterator.length; i++) { var ft = module.getItem(obj, featureIterator[i]); if(ft.doNotRender === true) { continue; } }}
     {{ if(ft.classStringForInlineLabel.indexOf('more-info-only') != -1) { continue; } }}
 
+    <%-- Remove Special Features featurel; ft.shortlistKey = SpFeatures --%>
+    {{ if(ft.shortlistKey === 'SpFeatures') { continue; } }}
+
     <%-- Expand features for hospital/extras other list (feature-index of 4/5) --%>
     {{ if(_.indexOf([4,5], obj.featuresStructureIndexToUse) && ft.classString.indexOf('section') !== -1) { }}
     {{ ft.classString = ft.classString.replace('expandable', 'expanded'); }}
     {{ } }}
 
-    <%-- Custom render Private Hospital; ft.id = 29700 --%>
-    {{ if(ft.id === 29700) { }}
+    <%-- Custom render Private Hospital; ft.shortlistKey = PrHospital --%>
+    {{ if(ft.shortlistKey === 'PrHospital') { }}
     {{ var cellClassString = 'expandable ' + ft.classString; }}
     <div class="cell {{= cellClassString }}">
         {{ var labelClassStringForInlineLabel = 'expandable ' + ft.classStringForInlineLabel; }}
