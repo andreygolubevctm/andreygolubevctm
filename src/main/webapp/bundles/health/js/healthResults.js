@@ -818,7 +818,7 @@
             case 'AHM':
                 usefulLinks.push(
                     {"name" : "Privatehealth.gov.au", "url": "http://www.privatehealth.gov.au/dynamic/InsurerDetails.aspx?code=AHM"},
-                    {"name" : "Hospital Network", "url": "https://members.ahm.com.au/pages/find-a-provider/"}
+                    {"name" : "Hospital Network", "url": "https://members.ahm.com.au/find-a-provider"}
                 );
                 break;
             case 'AUF':
