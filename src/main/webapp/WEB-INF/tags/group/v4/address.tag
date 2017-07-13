@@ -53,15 +53,15 @@
 
     <%-- UNIT/SHOP (BOTH STD & NON STD) --%>
     <c:set var="fieldXpath" value="${xpath}/unitShop" />
-    <form_v4:row fieldXpath="${fieldXpath}" label="Unit/Shop/Level No." id="${name}_unitShopRow" className="std_streetUnitShop ${name}_unitShopRow" smRowOverride="5">
-        <field_v2:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-unitShop blur-on-select show-loading sessioncamexclude" title="the unit/shop" includeInForm="true" required="false" placeHolder="Unit/Shop/Level" additionalAttributes="data-msg-required='Please enter a Unit number'  data-validation-position='append' " />
+    <form_v4:row fieldXpath="${fieldXpath}" label="Unit/Shop/Level Number" id="${name}_unitShopRow" className="std_streetUnitShop ${name}_unitShopRow" smRowOverride="5">
+        <field_v2:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-unitShop blur-on-select show-loading sessioncamexclude" title="the unit/shop" includeInForm="true" required="false" placeHolder="eg. 23" additionalAttributes="data-msg-required='Please enter a Unit number'  data-validation-position='append' " />
     </form_v4:row>
 
     <%-- STREET NUM --%>
     <c:set var="fieldXpath" value="${xpath}/streetNum" />
-    <form_v4:row fieldXpath="${fieldXpath}" label="Street No." id="${name}_streetNumRow" className="std_streetNum" smRowOverride="5">
+    <form_v4:row fieldXpath="${fieldXpath}" label="Street Number" id="${name}_streetNumRow" className="std_streetNum" smRowOverride="5">
         <div class="${name}_streetNum_container">
-            <field_v2:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetNum blur-on-select show-loading sessioncamexclude" title="the street no." includeInForm="true" required="true" placeHolder="St. #" additionalAttributes="data-msg-required='Please enter a street number' data-validation-position='append' " />
+            <field_v2:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetNum blur-on-select show-loading sessioncamexclude" title="the street no." includeInForm="true" required="true" placeHolder="eg. 45" additionalAttributes="data-msg-required='Please enter a street number' data-validation-position='append' " />
         </div>
     </form_v4:row>
 
@@ -175,8 +175,8 @@
     </c:otherwise>
 </c:choose>
 <field_v1:hidden xpath="${xpath}/dpId" />
-<field_v1:hidden xpath="${xpath}/fullAddressLineOne" />
 <field_v1:hidden xpath="${xpath}/fullAddress" />
+<field_v1:hidden xpath="${xpath}/fullAddressLineOne" />
 
 <go:script marker="onready">
     <c:choose>

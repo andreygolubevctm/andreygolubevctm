@@ -140,8 +140,6 @@ var healthFunds_AHM = {
     <%--Previous fund--%>
     $('#health_previousfund_primary_authority').setRequired(true, 'AHM require authorisation to contact your previous fund');
     $('#health_previousfund_partner_authority').setRequired(true, 'AHM require authorisation to contact your partner\'s previous fund');
-    $('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').attr('maxlength', '10');
-
     <%--Authority--%>
       meerkat.modules.healthFunds._previousfund_authority(true);
 
@@ -223,7 +221,6 @@ var healthFunds_AHM = {
 
     <%--Previous fund--%>
     $('#health_previousfund_primary_authority, #health_previousfund_partner_authority').setRequired(false);
-    $('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').removeAttr('maxlength');
 
     <%--Authority off--%>
       meerkat.modules.healthFunds._previousfund_authority(false);

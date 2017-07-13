@@ -237,7 +237,7 @@
 					} else {
 						emailQuoteBtn.removeClass("privacyOptinChecked");
 					}
-				});
+				}).trigger('click');
 
 				$healthSitRebate.on('change', function() {
 					toggleRebate();
@@ -1480,7 +1480,7 @@
 				$('#health_privacyoptin').val(optinVal);
 				$("#health_contactDetails_optInEmail").val(optinVal);
 				$("#health_contactDetails_call").val(optinVal);
-			});
+			}).trigger('click');
 
 			if ($('input[name="health_directApplication"]').val() === 'Y') {
 				$('#health_application_productId').val( meerkat.site.loadProductId );

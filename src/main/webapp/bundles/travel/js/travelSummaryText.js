@@ -24,10 +24,15 @@
 
 		var adults = $adults.val(),
 		children = $children.val();
-
-		// adults
-		txt += adults + ' adult' + (adults == 1 ? '' : 's');
-
+		
+		if (adults < 3) {
+			// adults
+			txt += adults + ' adult' + (adults == 1 ? '' : 's');
+		} else {
+			txt += adults;
+		}
+		
+		
 		// children
 		if (children > 0)
 		{

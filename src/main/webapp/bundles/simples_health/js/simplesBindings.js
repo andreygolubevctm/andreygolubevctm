@@ -12,7 +12,6 @@
         $healthPartnerCover,
         $dialoguePrimaryCover,
         $dialoguePartnerCover,
-        $dialogue56,
         $dialogue74,
         $healthSituationMedicare,
         $aboutYouFieldset,
@@ -45,7 +44,6 @@
             $healthPartnerCover = $('input[name=health_healthCover_partner_cover]');
             $dialoguePrimaryCover = $('.simples-dialogue-primary-current-cover');
             $dialoguePartnerCover = $('.simples-dialogue-partner-current-cover');
-            $dialogue56 = $('.simples-dialogue-56');
             $dialogue74 = $('.simples-dialogue-74');
             $healthSituationMedicare = $('.health_situation_medicare');
             $aboutYouFieldset = $('#healthAboutYou > .content');
@@ -164,6 +162,29 @@
         $healthPrimaryCover.on('change', togglePrimaryCoverDialogue);
         // Handle toggle partnerCoverDialogue
         $healthPartnerCover.on('change', togglePartnerCoverDialogue);
+
+        // open bridging page
+        $('#resultsPage').on("click", ".btn-more-info", openBridgingPage);
+    }
+
+    function openBridgingPage(e) {
+        var i = 0,
+            needsValidation;
+
+        $('#resultsForm .simples-dialogue').find('input[type=checkbox]').each(function() {
+            if (!$(this).prop('checked')) {
+                i++;
+            }
+        });
+
+        needsValidation = i !== 0;
+
+        if (needsValidation) {
+            e.stopImmediatePropagation();
+            $('#resultsForm').valid();
+        }
+
+        return i === 0;
     }
 
     function eventSubscriptions() {
@@ -285,7 +306,6 @@
     }
 
     function toggleRebateDialogue() {
-        $dialogue56.toggleClass('hidden', $healthCoverRebate.filter(':checked').val() !== "Y");
         $dialogue74.toggleClass('hidden', !($healthSituationCvr.val() === "ESP" || $healthSituationCvr.val() === "EF"));
     }
 

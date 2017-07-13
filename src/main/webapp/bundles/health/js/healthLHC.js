@@ -10,7 +10,7 @@
 
                 $('.health_cover_details_rebate .fieldrow_legend').html(getOverallLoadingText(rates.loading));
 
-                $('.simples-dialogue-26 span[data-loading=true]').html(rates.loading);
+                $('.simples_dialogue-checkbox-26 span[data-loading=true]').html(rates.loading);
 
                 if(meerkat.modules.health.hasPartner()){
                     $('#health_healthCover_primaryCover .fieldrow_legend')
