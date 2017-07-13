@@ -5,7 +5,14 @@
 <layout_v3:slide formId="resultsForm" className="resultsSlide">
 
     <layout_v3:slide_content>
-        <health_v4_results:results />
+        <c:choose>
+            <c:when test="${not empty resultsSplitTest and resultsSplitTest eq true}">
+                <health_v4_results_v2:results />
+            </c:when>
+            <c:otherwise>
+                <health_v4_results:results />
+            </c:otherwise>
+        </c:choose>
 
         <health_v4_moreinfo:more_info />
 
