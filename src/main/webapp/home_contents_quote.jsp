@@ -155,7 +155,12 @@
 		<nav id="navbar-filter-labels" class="navbar hidden hidden-xs">
 			<div class="container">
 				<ul class="nav navbar-nav">
-					<li class="navbar-text filter-home-excess-label">Home Excess</li>
+					<span class="isLandlord landlord-navbar-text">
+						<li class="navbar-text filter-home-excess-label">Building Excess</li>
+					</span>
+					<span class="notLandlord landlord-navbar-text">
+						<li class="navbar-text filter-home-excess-label">Home Excess</li>
+					</span>
 					<li class="navbar-text filter-contents-excess-label">Contents Excess</li>
 					<span class="isLandlord landlord-navbar-text">
 						<li class="navbar-text filter-contents-excess-label">Landlord Filters</li>

@@ -244,7 +244,7 @@
 		var addRow = function(coverType, coverAmount, extraCopy) {
 			// convert value to comma separated digits
 			coverAmount = coverAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-
+			
 			var tempHTML = [
 				'<tr>',
 				'<td>',
@@ -267,7 +267,12 @@
 
 		if(coverType == "H" || coverType == "HC") {
 			var rebuildCost = parseInt($('#home_coverAmounts_rebuildCost').val());
-			addRow('Home Cover', rebuildCost);
+			if (meerkat.site.isLandlord) {
+				addRow('Building Cover', rebuildCost);
+			} else {
+				addRow('Home Cover', rebuildCost);
+			}
+			
 		}
 		
 		if(coverType == "C" || coverType == "HC") {
