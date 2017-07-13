@@ -47,6 +47,9 @@
 
 
 	<!-- SET THE VARIABLES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+		<xsl:variable name="gaclientid">
+			<xsl:value-of select="home/gaclientid" />
+		</xsl:variable>
 
 		<xsl:variable name="address">
 			<xsl:value-of select="home/property/address/fullAddress" />
@@ -217,12 +220,14 @@
 							<xsl:call-template name="product">
 								<xsl:with-param name="index">1</xsl:with-param>
 								<xsl:with-param name="currentProduct" select="results/product0" />
+								<xsl:with-param name="gaclientid" select="$gaclientid" />
 							</xsl:call-template>
 
 							<xsl:if test="results/product1/headline/name != ''">
 								<xsl:call-template name="product">
 									<xsl:with-param name="index">2</xsl:with-param>
 									<xsl:with-param name="currentProduct" select="results/product1" />
+									<xsl:with-param name="gaclientid" select="$gaclientid" />
 								</xsl:call-template>
 							</xsl:if>
 
@@ -230,6 +235,7 @@
 								<xsl:call-template name="product">
 									<xsl:with-param name="index">3</xsl:with-param>
 									<xsl:with-param name="currentProduct" select="results/product2" />
+									<xsl:with-param name="gaclientid" select="$gaclientid" />
 								</xsl:call-template>
 							</xsl:if>
 
@@ -237,6 +243,7 @@
 								<xsl:call-template name="product">
 									<xsl:with-param name="index">4</xsl:with-param>
 									<xsl:with-param name="currentProduct" select="results/product3" />
+									<xsl:with-param name="gaclientid" select="$gaclientid" />
 								</xsl:call-template>
 							</xsl:if>
 
@@ -244,6 +251,7 @@
 								<xsl:call-template name="product">
 									<xsl:with-param name="index">5</xsl:with-param>
 									<xsl:with-param name="currentProduct" select="results/product4" />
+									<xsl:with-param name="gaclientid" select="$gaclientid" />
 								</xsl:call-template>
 							</xsl:if>
 
@@ -286,6 +294,7 @@
 
 		<xsl:param name="index" />
 		<xsl:param name="currentProduct" />
+		<xsl:param name="gaclientid" />
 
 		<xsl:variable name="imageURL_prefix"><xsl:value-of select="$ImageUrlPrefix" /></xsl:variable>
 		<xsl:variable name="imageURL_suffix"><xsl:value-of select="$ImageUrlSuffix" /></xsl:variable>
@@ -337,10 +346,10 @@
 			<Value>
 				<xsl:choose>
 					<xsl:when test="$emailTokenEnabled = 'true'">
-						<xsl:value-of disable-output-escaping="yes" select="concat('&lt;![CDATA[',$baseURL,'email/incoming/gateway.json?cid=em:cm:hc:500195:hnc_bp&amp;et_rid=172883275&amp;utm_source=hnc_quote_bp&amp;utm_medium=email&amp;utm_campaign=hnc_quote_bp&amp;token=',$currentProduct/loadQuoteToken,']]&gt;')" />
+						<xsl:value-of disable-output-escaping="yes" select="concat('&lt;![CDATA[',$baseURL,'email/incoming/gateway.json?gaclientid=',$gaclientid,'&amp;cid=em:cm:hc:500195:hnc_bp&amp;et_rid=172883275&amp;utm_source=hnc_quote_bp&amp;utm_medium=email&amp;utm_campaign=hnc_quote_bp&amp;token=',$currentProduct/loadQuoteToken,']]&gt;')" />
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:value-of disable-output-escaping="yes" select="concat('&lt;![CDATA[',$baseURL,'email/incoming/gateway.json?cid=em:cm:hc:500195:hnc_bp&amp;et_rid=172883275&amp;utm_source=hnc_quote_bp&amp;utm_medium=email&amp;utm_campaign=hnc_quote_bp&amp;vertical=home&amp;type=bestprice','&amp;pid=',$productId,'&amp;id=',$tranId,'&amp;email=',$sendToEmail,'&amp;hash=',$hashedEmail,']]&gt;')" />
+						<xsl:value-of disable-output-escaping="yes" select="concat('&lt;![CDATA[',$baseURL,'email/incoming/gateway.json?gaclientid=',$gaclientid,'&amp;cid=em:cm:hc:500195:hnc_bp&amp;et_rid=172883275&amp;utm_source=hnc_quote_bp&amp;utm_medium=email&amp;utm_campaign=hnc_quote_bp&amp;vertical=home&amp;type=bestprice','&amp;pid=',$productId,'&amp;id=',$tranId,'&amp;email=',$sendToEmail,'&amp;hash=',$hashedEmail,']]&gt;')" />
 					</xsl:otherwise>
 				</xsl:choose>
 			</Value>
