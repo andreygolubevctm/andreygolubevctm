@@ -200,7 +200,10 @@
 
         if (familyCoverType === 'EF' || familyCoverType === 'ESP') {
 
-            //"Dependant School" fields aren't shown in "Application" based on new rule; dependant age is >= 21 & dependant age is < 25 & cover type = "EF" | cover type = "ESP"
+            /*
+            * "Dependant School" fields aren't shown in "Application" based on new rule:
+            *      dependant age is >= 21 & dependant age is < 25 & cover type = "EF" | cover type = "ESP"
+            */
             if (age >= providerConfig.extendedFamilyMinAge && age < providerConfig.extendedFamilyMaxAge) {
                 $(selectorPrefix + '_fulltimeGroup, ' + selectorPrefix + '_schoolGroup, ' + selectorPrefix + '_schoolIDGroup, ' + selectorPrefix + '_schoolDateGroup,' + selectorPrefix + '_apprenticeGroup').addClass('hidden');
             } else if (age >= providerConfig.schoolMinAge && age <= providerConfig.schoolMaxAge) {
@@ -423,7 +426,7 @@
      */
     function situationEnablesDependants() {
         var cover = meerkat.modules.healthChoices.returnCoverCode();
-        return cover == 'SPF' || (cover == 'F' || (cover == 'ESP' || cover == 'EF'));
+        return cover == 'SPF' || cover == 'F' || cover == 'ESP' || cover == 'EF';
     }
 
     function animateToDependant($el) {

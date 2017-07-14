@@ -329,7 +329,7 @@
 
                     var healthSituationHealthCvr = $('#health_situation_healthCvr').val();
 
-                    if (healthSituationHealthCvr == 'EF' || healthSituationHealthCvr ==='ESP') {
+                    if (healthSituationHealthCvr === 'EF' || healthSituationHealthCvr ==='ESP') {
 
                         //Get an array of distinct providers from the results returned
                         Results.model.filteredProducts.forEach(

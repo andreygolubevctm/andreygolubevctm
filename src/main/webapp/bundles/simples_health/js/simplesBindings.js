@@ -306,7 +306,10 @@
     }
 
     function toggleRebateDialogue() {
-        $dialogue74.toggleClass('hidden', !($healthSituationCvr.val() === "ESP" || $healthSituationCvr.val() === "EF"));
+
+        var healthSituationCover = $healthSituationCvr.val();
+
+        $dialogue74.toggleClass('hidden', !(healthSituationCover === "ESP" || healthSituationCover === "EF"));
     }
 
     function toggleBenefitsDialogue() {

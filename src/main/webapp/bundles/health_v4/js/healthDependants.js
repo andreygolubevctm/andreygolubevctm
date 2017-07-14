@@ -433,7 +433,7 @@
      */
     function situationEnablesDependants() {
         var coverCode = meerkat.modules.healthChoices.returnCoverCode();
-        return coverCode == 'SPF' || (coverCode == 'F' || (coverCode == 'ESP' || coverCode == 'EF'));
+        return coverCode == 'SPF' || coverCode == 'F' || coverCode == 'ESP' || coverCode == 'EF';
     }
 
     function animateToDependant($el) {
