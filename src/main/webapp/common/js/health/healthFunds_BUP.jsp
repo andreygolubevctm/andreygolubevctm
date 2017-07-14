@@ -191,11 +191,11 @@ var healthFunds_BUP = {
 		var familyCoverType = meerkat.modules.healthChoices.returnCoverCode();
         if (familyCoverType === 'EF' || familyCoverType === 'ESP') {
             meerkat.modules.healthFunds._dependants('This product provides cover for Adult Dependants aged between 21 and 25');
-            meerkat.modules.healthDependants.updateConfig({extendedFamilyMinAge: this.extendedFamilyMinAge, extendedFamilyMaxAge: this.extendedFamilyMaxAge});
+            meerkat.modules.healthDependants.updateConfig({extendedFamilyMinAge: healthFunds_BUP.extendedFamilyMinAge, extendedFamilyMaxAge: healthFunds_BUP.extendedFamilyMaxAge});
 		} else {
             meerkat.modules.healthFunds._dependants('Dependent child means a person who does not have a partner and is \(i\) aged under 21 or \(ii\) is receiving a full time education at a school, college or university recognised by the company and who is not aged 25 or over.');
 		}
-		meerkat.modules.healthDependants.setMaxAge(this.healthDependantMaxAge);
+		meerkat.modules.healthDependants.setMaxAge(healthFunds_BUP.healthDependantMaxAge);
 		meerkat.modules.healthDependants.updateConfig({showMiddleName: true});
 
 		<%-- Unset the refund optin radio buttons --%>
