@@ -7,5 +7,7 @@ public enum HealthCoverCategory {
     C,
     F,
     SP,
-    SPF;
+    SPF,
+    EF,
+    ESP;
 }

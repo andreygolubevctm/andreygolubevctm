@@ -5,11 +5,14 @@
     var $healthContactTypeRadio,
         $healthContactType,
         $healthContactTypeTrial,
+        $healthCoverRebate,
+        $healthSituationCvr,
         $healthSitCoverType,
         $healthPrimaryCover,
         $healthPartnerCover,
         $dialoguePrimaryCover,
         $dialoguePartnerCover,
+        $dialogue74,
         $healthSituationMedicare,
         $aboutYouFieldset,
         $yourDetailsFieldset,
@@ -34,11 +37,14 @@
             $healthContactTypeRadio = $('input[name=health_simples_contactTypeRadio]');
             $healthContactType = $('#health_simples_contactType');
             $healthContactTypeTrial = $('#health_simples_contactTypeTrial');
+            $healthCoverRebate = $('input[name=health_healthCover_rebate]');
+            $healthSituationCvr = $('select[name=health_situation_healthCvr]');
             $healthSitCoverType = $('#health_situation_coverType');
             $healthPrimaryCover = $('input[name=health_healthCover_primary_cover]');
             $healthPartnerCover = $('input[name=health_healthCover_partner_cover]');
             $dialoguePrimaryCover = $('.simples-dialogue-primary-current-cover');
             $dialoguePartnerCover = $('.simples-dialogue-partner-current-cover');
+            $dialogue74 = $('.simples-dialogue-74');
             $healthSituationMedicare = $('.health_situation_medicare');
             $aboutYouFieldset = $('#healthAboutYou > .content');
             $yourDetailsFieldset = $('#health-contact-fieldset .content');
@@ -113,7 +119,7 @@
             var familyType = meerkat.modules.health.getSituation();
             if (!_.isEmpty(familyType) && (_.isNull(currentFamilyType) || familyType !== currentFamilyType)) {
                 var $tempMedicareForm = $simplesMedicareCoverForm.detach();
-                var $wrapperToUse = $applicantWrappers[_.indexOf(['F', 'C'], familyType) > -1 ? 'partner' : 'primary'];
+                var $wrapperToUse = $applicantWrappers[_.indexOf(['F', 'C', 'EF'], familyType) > -1 ? 'partner' : 'primary'];
                 $wrapperToUse.append($tempMedicareForm);
                 currentFamilyType = familyType;
             }
@@ -136,7 +142,6 @@
     }
 
     function applyEventListeners() {
-
         // General Toggle
         $('.simples-dialogue.optionalDialogue h3.toggle').parent('.simples-dialogue').addClass('toggle').on('click', function () {
             $(this).find('h3 + div').slideToggle(200);
@@ -149,6 +154,8 @@
         });
         // Handle callback checkbox 68
         $followupCallCheckbox.on('change', toggleFollowupCallDialog);
+        // Handle toggle rebateDialogue
+        $healthCoverRebate.add($healthSituationCvr).on('change', toggleRebateDialogue);
         // Handle toggle benefitsDialogue
         $healthSitCoverType.on('change', toggleBenefitsDialogue);
         // Handle toggle primaryCoverDialogue
@@ -298,6 +305,13 @@
         }
     }
 
+    function toggleRebateDialogue() {
+
+        var healthSituationCover = $healthSituationCvr.val();
+
+        $dialogue74.toggleClass('hidden', !(healthSituationCover === "ESP" || healthSituationCover === "EF"));
+    }
+
     function toggleBenefitsDialogue() {
         var $hospitalScripts = $('.simples-dialogue-hospital-cover'),
             $extrasScripts = $('.simples-dialogue-extras-cover');
@@ -337,7 +351,8 @@
     meerkat.modules.register("simplesBindings", {
         init: init,
         updateSimplesMedicareCoverQuestionPosition: updateSimplesMedicareCoverQuestionPosition,
-        toggleLimitedCoverDialogue: toggleLimitedCoverDialogue
+        toggleLimitedCoverDialogue: toggleLimitedCoverDialogue,
+        toggleRebateDialogue: toggleRebateDialogue
     });
 
 })(jQuery);
