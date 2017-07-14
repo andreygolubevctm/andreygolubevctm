@@ -20,11 +20,11 @@
 <c:set var="isPostalAddress" value="${type == 'P'}" />
 <c:set var="isResidentialAddress" value="${type == 'R'}" />
 
-<c:set var="unitTypes">=Optional,UN=Unit</c:set>
+<c:set var="unitTypes">=Select unit type if applicable,UN=Unit</c:set>
 <c:if test="${!isResidentialAddress}">
     <c:set var="unitTypes">${unitTypes},PO=PO Box</c:set>
 </c:if>
-<c:set var="unitTypes">${unitTypes},L=Level,HO=House,TO=Townhouse,SH=Shop,OT=Other</c:set>
+<c:set var="unitTypes">${unitTypes},L=Level,TO=Townhouse,SH=Shop,OT=Other</c:set>
 
 
 <%-- HTML --%>
@@ -53,15 +53,15 @@
 
     <%-- UNIT/SHOP (BOTH STD & NON STD) --%>
     <c:set var="fieldXpath" value="${xpath}/unitShop" />
-    <form_v4:row fieldXpath="${fieldXpath}" label="Unit/Shop/Level No." id="${name}_unitShopRow" className="std_streetUnitShop ${name}_unitShopRow" smRowOverride="5">
-        <field_v2:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-unitShop blur-on-select show-loading sessioncamexclude" title="the unit/shop" includeInForm="true" required="false" placeHolder="Unit/Shop/Level" additionalAttributes="data-msg-required='Please enter a Unit number'  data-validation-position='append' " />
+    <form_v4:row fieldXpath="${fieldXpath}" label="Unit/Shop/Level Number" id="${name}_unitShopRow" className="std_streetUnitShop ${name}_unitShopRow" smRowOverride="5">
+        <field_v2:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-unitShop blur-on-select show-loading sessioncamexclude" title="the unit/shop" includeInForm="true" required="false" placeHolder="Enter unit number if applicable e.g. 3" additionalAttributes="data-msg-required='Please enter a Unit number'  data-validation-position='append' " />
     </form_v4:row>
 
     <%-- STREET NUM --%>
     <c:set var="fieldXpath" value="${xpath}/streetNum" />
-    <form_v4:row fieldXpath="${fieldXpath}" label="Street No." id="${name}_streetNumRow" className="std_streetNum" smRowOverride="5">
+    <form_v4:row fieldXpath="${fieldXpath}" label="Street Number" id="${name}_streetNumRow" className="std_streetNum" smRowOverride="5">
         <div class="${name}_streetNum_container">
-            <field_v2:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetNum blur-on-select show-loading sessioncamexclude" title="the street no." includeInForm="true" required="true" placeHolder="St. #" additionalAttributes="data-msg-required='Please enter a street number' data-validation-position='append' " />
+            <field_v2:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetNum blur-on-select show-loading sessioncamexclude" title="the street number" includeInForm="true" required="true" placeHolder="Enter street number e.g. 66" additionalAttributes="data-msg-required='Please enter a street number' data-validation-position='append' " />
         </div>
     </form_v4:row>
 
@@ -79,8 +79,8 @@
         </c:otherwise>
     </c:choose>
     <c:set var="fieldXpath" value="${xpath}/nonStdStreet" />
-    <form_v4:row fieldXpath="${fieldXpath}" label="Street" className="${name}_nonStd_street" smRowOverride="5">
-        <field_v2:input xpath="${fieldXpath}" title="the street" required="false" className="sessioncamexclude" additionalAttributes="data-rule-validAddress='${name}' data-msg-validAddress='${nonStdStreetMessage}'${nonStdStreetAdditionalAttributes} data-rule-regex='[a-zA-Z0-9 ]+' data-msg-regex='Street name may only contain letters and numbers' data-validation-position='append' " disableErrorContainer="${false}" maxlength="32" />
+    <form_v4:row fieldXpath="${fieldXpath}" label="Street Name" className="${name}_nonStd_street" smRowOverride="5">
+        <field_v2:input xpath="${fieldXpath}" title="the street" required="false" className="sessioncamexclude" placeHolder="Enter street name e.g. Smith Street" additionalAttributes="data-rule-validAddress='${name}' data-msg-validAddress='${nonStdStreetMessage}'${nonStdStreetAdditionalAttributes} data-rule-regex='[a-zA-Z0-9 ]+' data-msg-regex='Street Name may only contain letters and numbers' data-validation-position='append' " disableErrorContainer="${false}" maxlength="32" />
     </form_v4:row>
 </div>
 
@@ -117,7 +117,7 @@
 					</span>
                     <select name="${name}_suburb" id="${name}_suburb" title="the suburb" class="form-control" data-attach="true" data-rule-validSuburb="${name}" data-msg-validSuburb="Please select a suburb" <c:if test="${disableErrorContainer eq true}"> data-disable-error-container='true'</c:if> data-validation-position='append'>
                             <%-- Write the initial "Please select" option --%>
-                        <option value="">Suburb</option>
+                        <option value="">Select suburb</option>
                             <%-- Write the options for each row --%>
                         <c:forEach var="row" items="${result.rows}">
                             <c:choose>
