@@ -62,7 +62,7 @@
 				sanitisedSitu = situ.lookingTo;
 			} else {
 				var isFamily = _.indexOf(['SPF','F','ESP','EF'], situ.familyType) > -1;
-				if(_.indexOf(['CSF','SF'],situ.lookingTo) > -1) {  // this appears to be wrong - maybe it should be looking for SF, SM, S, C although C is actually a family for AGR purposes
+				if(_.indexOf(['CSF','SF'],situ.lookingTo) > -1) {  // This is/was used to track what the user wanted health insurance for eg start a family, save money for tax purposes
 					sanitisedSitu = situ.lookingTo + "_" + (!isFamily ? 'S' : 'F');
 				}
 			}
