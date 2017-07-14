@@ -11,6 +11,7 @@
         $_authorityText,
         _payments = {},
         $_dependantDefinition,
+        HTML_dependantDefinition,
         $_optionDR,
         medicareHelpId;
 
@@ -152,10 +153,12 @@
         if (message !== false) {
             // SET and ADD the dependant definition
             $_dependantDefinition = $('#mainform').find('.health-dependants').find('.definition');
+            HTML_dependantDefinition = $_dependantDefinition.html();
             $_dependantDefinition.html(message);
         } else {
-            $_dependantDefinition.html('');
+            $_dependantDefinition.html(HTML_dependantDefinition);
             $_dependantDefinition = undefined;
+            HTML_dependantDefinition = undefined;
         }
     }
 

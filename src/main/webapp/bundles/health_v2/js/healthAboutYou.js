@@ -179,7 +179,6 @@
 		switch($healthSituationHealthCvr.val())
 		{
 			case 'F':
-            case 'EF':
 				$partnerContainer.slideDown();
 				$healthCoverIncomeMessage.show();
 
@@ -190,7 +189,6 @@
 				$partnersDetails.show();
 				break;
             case 'SPF':
-			case 'ESP':
 				$partnerContainer.slideUp();
 
 				if($('#health_healthCover_health_cover_rebate').find('input:checked').val() !== 'N'){
