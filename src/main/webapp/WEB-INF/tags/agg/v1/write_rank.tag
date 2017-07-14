@@ -14,13 +14,11 @@
 
 <jsp:useBean id="fatalErrorService" class="com.ctm.web.core.services.FatalErrorService" scope="page" />
 
-
-	<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 <c:set var="transactionId" value="${data['current/transactionId']}" />
 <c:set var="calcSequenceSUFF" value="/calcSequence" />
 <c:set var="prefix"><c:out value="${rootPath}" escapeXml="true"/></c:set>
 <c:set var="calcSequence" value="${prefix}${calcSequenceSUFF}" />
-
 
 <c:set var="calcSequence" value="${data[calcSequence]}" />
 
@@ -122,11 +120,11 @@
 
 			<c:if test="${pageSettings.getVerticalCode() == 'travel'}">
 				<travel:write_rank_extra calcSequence="${calcSequence}" rankPosition="${position}" rankSequence="${rankSequence}" transactionId="${transactionId}" />
-		</c:if>
+			</c:if>
 
-				<c:if test="${pageSettings.getVerticalCode() == 'life'}">
-					<life_v1:write_rank_extra calcSequence="${calcSequence}" rankPosition="${position}" rankSequence="${rankSequence}" transactionId="${transactionId}" />
-		</c:if>
+			<c:if test="${pageSettings.getVerticalCode() == 'life'}">
+				<life_v1:write_rank_extra calcSequence="${calcSequence}" rankPosition="${position}" rankSequence="${rankSequence}" transactionId="${transactionId}" />
+			</c:if>
 	
 			</c:if>
 
@@ -142,7 +140,8 @@
 		</sql:update>
 	</c:if>
 
-<jsp:useBean id="emailService" class="com.ctm.web.core.email.services.EmailService" scope="page" />
+	<jsp:useBean id="emailService" class="com.ctm.web.core.email.services.EmailService" scope="page" />
+
 	<c:choose>
 		<c:when test="${pageSettings.getVerticalCode() == 'travel'}">
 			<%-- Attempt to send email only after best price has been set and only if not call centre user --%>
@@ -184,8 +183,14 @@
 		</c:when>
 		<c:when test="${pageSettings.getVerticalCode() == 'home'}">
 			<%-- Attempt to send email only once and only if not call centre user MUST BE AT LEAST 5 products --%>
-				<c:if test="${empty authenticatedData.login.user.uid and not empty data.home.policyHolder.email && empty data.userData.emailSent}">
+			<c:if test="${empty authenticatedData.login.user.uid and not empty data.home.policyHolder.email && empty data.userData.emailSent}">
 				<agg_v1:email_send brand="${pageSettings.getBrandCode()}" vertical="${pageSettings.getVerticalCode()}" email="${data.home.policyHolder.email}" mode="bestprice" tmpl="${pageSettings.getVerticalCode()}" />
+			</c:if>
+			<c:if test="${not empty data.userData.emailSent}">
+				${logger.info("[Email] Email already sent to user: {} {}", log:kv('transactionId', transactionId), log:kv('vertical', pageSettings.getVerticalCode()))}
+			</c:if>
+			<c:if test="${empty data.home.policyHolder.email}">
+				${logger.info("[Email] Home Policy Holder email empty: {} {}", log:kv('transactionId', transactionId), log:kv('vertical', pageSettings.getVerticalCode()))}
 			</c:if>
 		</c:when>
 		<c:when test="${pageSettings.getVerticalCode() == 'car'}">
@@ -193,8 +198,15 @@
 			<c:if test="${empty authenticatedData.login.user.uid and not empty data.quote.contact.email && empty data.userData.emailSent}">
 				<agg_v1:email_send brand="${pageSettings.getBrandCode()}" vertical="${pageSettings.getVerticalCode()}" email="${data.quote.contact.email}" mode="bestprice" tmpl="${pageSettings.getVerticalCode()}" />
 			</c:if>
+			<c:if test="${not empty data.userData.emailSent}">
+				${logger.info("[Email] Email already sent to user: {} {}", log:kv('transactionId', transactionId), log:kv('vertical', pageSettings.getVerticalCode()))}
+			</c:if>
+			<c:if test="${empty data.quote.contact.email}">
+				${logger.info("[Email] Contact email empty: {} {}", log:kv('transactionId', transactionId), log:kv('vertical', pageSettings.getVerticalCode()))}
+			</c:if>
 		</c:when>
-
-		<c:otherwise><%-- ignore --%></c:otherwise>
+		<c:otherwise>
+			${logger.warn('[Email] No matching verical to send email to user: {} {}', log:kv('transactionId', transactionId), log:kv('vertical', pageSettings.getVerticalCode()))}
+		</c:otherwise>
 	</c:choose>
 </c:if>
