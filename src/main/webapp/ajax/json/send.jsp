@@ -5,7 +5,6 @@
 
 <session:get settings="true" verticalCode="${fn:toUpperCase(param.vertical)}" />
 
-
 <c:set var="emailAddress" value="${param.emailAddress}" />
 <c:set var="emailSubscribed" value="${param.emailSubscribed}" />
 <c:set var="hashedEmail" value="${param.hashedEmail}" />
@@ -18,6 +17,9 @@
 	</c:if>
 	<c:if test="${empty emailSubscribed}">
 		<c:set var="emailSubscribed" value="${userData.optInMarketing}" />
+	</c:if>
+	<c:if test="${empty hashedEmail}">
+		${logger.info('No Hashed Email: {}', log:kv('email', param.emailAddress))}
 	</c:if>
 </c:if>
 
@@ -96,13 +98,13 @@
 						${logger.debug('[Email] Mode: {},{},{},{},{}', log:kv('mode',param.mode ) , log:kv('MailingName',MailingName ), log:kv('OptInMailingName',OptInMailingName ),  log:kv('tmpl',tmpl ), log:kv('emailAddress',param.emailAddress ))}
 					</c:when>
 					<c:otherwise>
-						${logger.warn('[Email] Mode passed but missing required page settings. {}', log:kv('mode',param.mode ))})}
+						${logger.warn('[Email] Mode passed but missing required page settings. {}', log:kv('mode', param.mode))}
 					</c:otherwise>
 				</c:choose>
 			</c:when>
 			<%-- Reset password, called from forgotten_password.jsp --%>
 			<c:otherwise>
-				${logger.warn('[Email] No matching mode passed. {}', log:kv('mode',param.mode ))}
+				${logger.warn('[Email] No matching mode passed. {}', log:kv('mode', param.mode))}
 			</c:otherwise>
 		</c:choose>
 
@@ -126,7 +128,7 @@
 
 		<c:choose>
 			<c:when test="${empty MailingName}">
-				${logger.warn('[Email] No email found to be sent. {}', log:kv('emailAddress',emailAddress ))}
+				${logger.warn('[Email] No email found to be sent. {}', log:kv('emailAddress', emailAddress ))}
 			</c:when>
 			<c:otherwise>
 				<%-- Dial into the send script --%>

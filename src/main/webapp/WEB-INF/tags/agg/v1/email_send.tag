@@ -44,7 +44,7 @@
 			</c:choose>
 		</c:set>
 		<c:set var="emailResponse">
-			<c:import url="../json/send.jsp">
+			<c:import url="/ajax/json/send.jsp">
 				<c:param name="vertical" value="${fn:toUpperCase(vertical)}" />
 				<c:param name="mode" value="${mode}" />
 				<c:param name="tmpl" value="${tmpl}" />
