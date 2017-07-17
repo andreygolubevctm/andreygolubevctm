@@ -19,7 +19,7 @@
 		<c:set var="emailSubscribed" value="${userData.optInMarketing}" />
 	</c:if>
 	<c:if test="${empty hashedEmail}">
-		${logger.info('No Hashed Email: {}', log:kv('email', param.emailAddress))}
+		${logger.info('No Hashed Email: {} {}', log:kv('email', emailAddress), log:kv('transactionId', data.current.transactionId))}
 	</c:if>
 </c:if>
 
@@ -98,7 +98,7 @@
 						${logger.debug('[Email] Mode: {},{},{},{},{}', log:kv('mode',param.mode ) , log:kv('MailingName',MailingName ), log:kv('OptInMailingName',OptInMailingName ),  log:kv('tmpl',tmpl ), log:kv('emailAddress',param.emailAddress ))}
 					</c:when>
 					<c:otherwise>
-						${logger.warn('[Email] Mode passed but missing required page settings. {}', log:kv('mode', param.mode))}
+						${logger.warn('[Email] Mode passed but missing required page settings. {} {}', log:kv('mode', param.mode), log:kv('transactionId', data.current.transactionId))}
 					</c:otherwise>
 				</c:choose>
 			</c:when>
@@ -128,7 +128,7 @@
 
 		<c:choose>
 			<c:when test="${empty MailingName}">
-				${logger.warn('[Email] No email found to be sent. {}', log:kv('emailAddress', emailAddress ))}
+				${logger.warn('[Email] Mailing Name empty, no email found to be sent. {} {} {} {} {}', log:kv('emailAddress', emailAddress), log:kv('transactionId', data.current.transactionId), log:kv('hashedEmail', hashedEmail), log:kv('OptInMailingName', OptInMailingName), log:kv('emailSubscribed', emailSubscribed)}
 			</c:when>
 			<c:otherwise>
 				<%-- Dial into the send script --%>

@@ -143,9 +143,7 @@
 				</c:otherwise>
 			</c:choose>
 		</c:if>
-
 		<c:choose>
-
 			<c:when test="${rowXML != '' }">
 
 				<c:if test="${paramSend != 'Y'}">
@@ -161,10 +159,10 @@
 							<title>Compare the Market - Process SQL and send to dreammail</title>
 						</head>
 						<body>
-								<h3>SQL Call:</h3>
-								<pre><c:out value="${sqlStatement}"/></pre>
-							<h3>Row XML:</h3>
-							<pre><c:out value="${rowXML}" escapeXml="true"/></pre>
+						<h3>SQL Call:</h3>
+						<pre><c:out value="${sqlStatement}"/></pre>
+						<h3>Row XML:</h3>
+						<pre><c:out value="${rowXML}" escapeXml="true"/></pre>
 				</c:if>
 			
 				<c:set var="MailingName">${param.MailingName}</c:set>
@@ -216,52 +214,54 @@
 				</x:transform>
 			</c:set>
 
-				<%-- If we're outputting to the page only, just output the result. --%>
-				<c:choose>
-					<c:when test="${paramSend != 'Y'}">
-							<h3>Result XML:</h3>
-							<pre><c:out value="${myResult}" escapeXml="true"/></pre>
-							<hr />
-						</body>
-						</html>
-					</c:when>
-					<c:otherwise>
-						<c:set var="emailTemplate">${param.tmpl}</c:set>
-						<c:set var="transactionId">${param.transactionId}</c:set>
-						<%-- Send to dreammail and output the result to the page --%>
-						<c:catch var="error">
-							<c:set var="emailResponseXML" scope="session">${go:Dreammail(dmUsername,dmPassword,dmServer,dmUrl,myResult,dmDebug,isExactTarget,transactionId,emailTemplate)}</c:set>
-						</c:catch>
-						<c:if test="${not empty error}">
-							<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
-								<c:param name="page" value="/dreammail/send.jsp" />
-									<c:param name="message" value="Dreammail: ${error.cause.message}" />
-									<c:param name="description" value="Failed to send email" />
-								<c:param name="data" value="${myResult}" />
-							</c:import>
-							<%-- JSON result failure returned --%>
-							<json:object>
-								<json:property name="result" value="SEND_FAILURE"/>
-								<json:property name="message" value="${error.cause.message}"/>
-							</json:object>
-						</c:if>
+			<%-- If we're outputting to the page only, just output the result. --%>
+			<c:choose>
+				<c:when test="${paramSend != 'Y'}">
+						<h3>Result XML:</h3>
+						<pre><c:out value="${myResult}" escapeXml="true"/></pre>
+						<hr />
+					</body>
+					</html>
+				</c:when>
+				<c:otherwise>
+					<c:set var="emailTemplate">${param.tmpl}</c:set>
+					<c:set var="transactionId">${param.transactionId}</c:set>
+					<%-- Send to dreammail and output the result to the page --%>
+					<c:catch var="error">
+						<c:set var="emailResponseXML" scope="session">${go:Dreammail(dmUsername,dmPassword,dmServer,dmUrl,myResult,dmDebug,isExactTarget,transactionId,emailTemplate)}</c:set>
+					</c:catch>
+					<c:if test="${not empty error}">
+						<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
+							<c:param name="page" value="/dreammail/send.jsp" />
+								<c:param name="message" value="Dreammail: ${error.cause.message}" />
+								<c:param name="description" value="Failed to send email" />
+							<c:param name="data" value="${myResult}" />
+						</c:import>
+						${logger.warn('Failed to send email. {} {} {} {} {} {} {}', log.kv('errorMessage', error.cause.message), log:kv('transactionId', param.tranId), log:kv('hashedEmail', param.hashedEmail), log:kv('OptInMailingName', param.OptInMailingName), log:kv('tmpl', param.tmpl), log:kv('emailSubscribed', param.emailSubscribed), log:kv('MailingName', param.MailingName))}
+						<%-- JSON result failure returned --%>
+						<json:object>
+							<json:property name="result" value="SEND_FAILURE"/>
+							<json:property name="message" value="${error.cause.message}"/>
+						</json:object>
+					</c:if>
 
-						<x:parse xml="${emailResponseXML}" var="output"/>
-						<x:set var="resultNode" select="string($output//*[local-name()='CreateResponse']/*[local-name()='OverallStatus']/text())" />
-						<c:if test="${resultNode != 'OK' and isExactTarget eq true}">
-							<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
-								<c:param name="page" value="/dreammail/send.jsp" />
-								<c:param name="message" value="Dreammail: Email Response Failure" />
-								<c:param name="description" value="Email response failure" />
-								<c:param name="data" value="PARAMS: ${param} RESPONSE:${emailResponseXML}" />
-							</c:import>
-							${logger.warn('Email response failure occured. Did not send')}
-						</c:if>
-					</c:otherwise>
-				</c:choose>
+					<x:parse xml="${emailResponseXML}" var="output"/>
+					<x:set var="resultNode" select="string($output//*[local-name()='CreateResponse']/*[local-name()='OverallStatus']/text())" />
+					<c:if test="${resultNode != 'OK' and isExactTarget eq true}">
+						<c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
+							<c:param name="page" value="/dreammail/send.jsp" />
+							<c:param name="message" value="Dreammail: Email Response Failure" />
+							<c:param name="description" value="Email response failure" />
+							<c:param name="data" value="PARAMS: ${param} RESPONSE:${emailResponseXML}" />
+						</c:import>
+						${logger.warn('Email response failure occured - did not send. {} {} {} {} {} {}', log:kv('transactionId', param.tranId), log:kv('hashedEmail', param.hashedEmail), log:kv('OptInMailingName', param.OptInMailingName), log:kv('tmpl', param.tmpl), log:kv('emailSubscribed', param.emailSubscribed), log:kv('MailingName', param.MailingName))}
+					</c:if>
+				</c:otherwise>
+			</c:choose>
+
 			</c:when>
 			<c:otherwise>
-				${logger.info('No content for email - not sending.')}
+				${logger.info('[Email] No content for email - not sending. {} {} {} {} {} {}', log:kv('transactionId', param.tranId), log:kv('hashedEmail', param.hashedEmail), log:kv('OptInMailingName', param.OptInMailingName), log:kv('tmpl', param.tmpl), log:kv('emailSubscribed', param.emailSubscribed), log:kv('MailingName', param.MailingName))}
 			</c:otherwise>
 		</c:choose>
 	</c:otherwise>
