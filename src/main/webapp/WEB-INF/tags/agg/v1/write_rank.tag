@@ -146,8 +146,7 @@
 		<c:when test="${pageSettings.getVerticalCode() == 'travel'}">
 			<%-- Attempt to send email only after best price has been set and only if not call centre user --%>
 			<c:if test="${empty authenticatedData.login.user.uid and not empty data.travel.email && empty data.userData.emailSent}">
-
-					<%-- enums are not will handled in jsp --%>
+				<%-- enums are not will handled in jsp --%>
 				<% request.setAttribute("BEST_PRICE", EmailMode.BEST_PRICE); %>
 				<c:catch var="error">
 					${emailService.sendJsp(pageContext.request, BEST_PRICE , data.travel.email, transactionId)}
@@ -161,8 +160,8 @@
 					${logger.error('Failed to send best price for {}', log:kv('email',data.travel.email ), error)}
 					${fatalErrorService.logFatalError(error, pageSettings.getBrandId(), pageContext.request.servletPath , pageContext.session.id, false, transactionId)}
 				</c:if>
-				</c:if>
-			</c:when>
+			</c:if>
+		</c:when>
 		<c:when test="${pageSettings.getVerticalCode() == 'health'}">
 			<%-- Attempt to send email only once and only if not call centre user --%>
 			<c:if test="${empty authenticatedData.login.user.uid and not empty data.health.contactDetails.email && empty data.userData.emailSent}">
@@ -186,11 +185,8 @@
 			<c:if test="${empty authenticatedData.login.user.uid and not empty data.home.policyHolder.email && empty data.userData.emailSent}">
 				<agg_v1:email_send brand="${pageSettings.getBrandCode()}" vertical="${pageSettings.getVerticalCode()}" email="${data.home.policyHolder.email}" mode="bestprice" tmpl="${pageSettings.getVerticalCode()}" />
 			</c:if>
-			<c:if test="${not empty data.userData.emailSent}">
-				${logger.info("[Email] Email already sent to user: {} {}", log:kv('transactionId', transactionId), log:kv('vertical', pageSettings.getVerticalCode()))}
-			</c:if>
 			<c:if test="${empty data.home.policyHolder.email}">
-				${logger.info("[Email] Home Policy Holder email empty: {} {}", log:kv('transactionId', transactionId), log:kv('vertical', pageSettings.getVerticalCode()))}
+				${logger.info("[Email] Home Policy Holder email empty: {} {}", log:kv('transactionId', transactionId), log:kv('verticalType', pageSettings.getVerticalCode()))}
 			</c:if>
 		</c:when>
 		<c:when test="${pageSettings.getVerticalCode() == 'car'}">
@@ -198,15 +194,12 @@
 			<c:if test="${empty authenticatedData.login.user.uid and not empty data.quote.contact.email && empty data.userData.emailSent}">
 				<agg_v1:email_send brand="${pageSettings.getBrandCode()}" vertical="${pageSettings.getVerticalCode()}" email="${data.quote.contact.email}" mode="bestprice" tmpl="${pageSettings.getVerticalCode()}" />
 			</c:if>
-			<c:if test="${not empty data.userData.emailSent}">
-				${logger.info("[Email] Email already sent to user: {} {}", log:kv('transactionId', transactionId), log:kv('vertical', pageSettings.getVerticalCode()))}
-			</c:if>
 			<c:if test="${empty data.quote.contact.email}">
-				${logger.info("[Email] Contact email empty: {} {}", log:kv('transactionId', transactionId), log:kv('vertical', pageSettings.getVerticalCode()))}
+				${logger.info("[Email] Contact email empty: {} {}", log:kv('transactionId', transactionId), log:kv('verticalType', pageSettings.getVerticalCode()))}
 			</c:if>
 		</c:when>
 		<c:otherwise>
-			${logger.warn('[Email] No matching verical to send email to user: {} {}', log:kv('transactionId', transactionId), log:kv('vertical', pageSettings.getVerticalCode()))}
+			${logger.warn('[Email] No matching verical to send email to user: {} {}', log:kv('transactionId', transactionId), log:kv('verticalType', pageSettings.getVerticalCode()))}
 		</c:otherwise>
 	</c:choose>
 </c:if>
