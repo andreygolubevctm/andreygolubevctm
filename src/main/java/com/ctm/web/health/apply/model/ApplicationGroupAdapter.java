@@ -131,6 +131,9 @@ public class ApplicationGroupAdapter {
                             .orElse(null),
                     person.map(Person::getAuthority)
                             .map(Authority::valueOf)
+                            .orElse(null),
+                    person.map(Person::getEmail)
+                            .map(Email::new)
                             .orElse(null));
         }
         return null;

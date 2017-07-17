@@ -92,7 +92,7 @@
 		<c:set var="fieldXpath" value="${xpath}/contactPoint" />
 		<form_v2:row fieldXpath="${fieldXpath}" label="How would you like <span>the Fund</span> to send you information?" id="${name}_contactPoint-group"
 					className="health_application-details_contact-group hidden">
-			<field_v2:array_radio items="E=Email,P=Post" xpath="${fieldXpath}" title="like the fund to contact you" required="false" id="${name}_contactPoint" />
+			<field_v2:array_radio items="E=Email,P=Post,S=SMS" xpath="${fieldXpath}" title="like the fund to contact you" required="false" id="${name}_contactPoint" />
 		</form_v2:row>
 		
 		<%-- Product Information --%>
