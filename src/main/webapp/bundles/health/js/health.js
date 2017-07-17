@@ -237,7 +237,7 @@
 					} else {
 						emailQuoteBtn.removeClass("privacyOptinChecked");
 					}
-				});
+				}).trigger('click');
 
 				$healthSitRebate.on('change', function() {
 					toggleRebate();
@@ -887,7 +887,7 @@
 	// Use the situation value to determine if a partner is visible on the journey.
 	function hasPartner(){
 		var cover = $(':input[name="health_situation_healthCvr"]').val();
-		if(cover == 'F' || cover == 'C'){
+		if (cover == 'F' || cover == 'C' || cover == 'EF') {
 			return true;
 		}else{
 			return false;
@@ -1420,8 +1420,11 @@
 
 	function toggleRebate() {
 		if(meerkat.modules.healthCoverDetails.isRebateApplied()){
+
+			var situation = getSituation();
+
 			$('#health_healthCover_tier').show();
-			if(getSituation() === 'F' || getSituation() === 'SPF'){
+			if(situation === 'F' || situation === 'SPF' || situation === 'EF' || situation === 'ESP'){
 				$('.health_cover_details_dependants').show();
 			}
 		} else {
@@ -1480,7 +1483,7 @@
 				$('#health_privacyoptin').val(optinVal);
 				$("#health_contactDetails_optInEmail").val(optinVal);
 				$("#health_contactDetails_call").val(optinVal);
-			});
+			}).trigger('click');
 
 			if ($('input[name="health_directApplication"]').val() === 'Y') {
 				$('#health_application_productId').val( meerkat.site.loadProductId );

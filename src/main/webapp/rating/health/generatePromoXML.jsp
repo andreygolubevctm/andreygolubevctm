@@ -58,6 +58,12 @@ this was made for CUA so it may not work for other provider use and your own ris
 					<c:if test="${coverNameSplit[0] == 'SP'}">
 							<c:set var="situation" value="Single_Parent" />
 					</c:if>
+					<c:if test="${coverNameSplit[0] == 'EF'}">
+						<c:set var="situation" value="Extended_Family" />
+					</c:if>
+					<c:if test="${coverNameSplit[0] == 'ESP'}">
+						<c:set var="situation" value="Extended_Single_Parent" />
+					</c:if>
 
 					<c:set var="fileName" value="${fn:replace(rr.extrasCoverName, '+', 'And')}" />
 					<c:set var="fileName" value="${fn:replace(fileName, '- $', 'With_')}" />
@@ -130,6 +136,12 @@ this was made for CUA so it may not work for other provider use and your own ris
 						</c:if>
 						<c:if test="${coverNameSplit[0] == 'SP'}">
 							<c:set var="situation" value="Single_Parent" />
+						</c:if>
+						<c:if test="${coverNameSplit[0] == 'EF'}">
+							<c:set var="situation" value="Extended_Family" />
+						</c:if>
+						<c:if test="${coverNameSplit[0] == 'ESP'}">
+							<c:set var="situation" value="Extended_Single_Parent" />
 						</c:if>
 
 						<c:set var="hospitalFileName" value="${fn:replace(rr.hospitalCoverName, '- $', 'With_')}" />
@@ -208,6 +220,12 @@ this was made for CUA so it may not work for other provider use and your own ris
 						<c:if test="${coverNameSplit[0] == 'SP'}">
 							<c:set var="situation" value="Single_Parent" />
 						</c:if>
+						<c:if test="${coverNameSplit[0] == 'EF'}">
+							<c:set var="situation" value="Extended_Family" />
+						</c:if>
+						<c:if test="${coverNameSplit[0] == 'ESP'}">
+							<c:set var="situation" value="Extended_Single_Parent" />
+						</c:if>
 
 						<c:set var="fileName" value="${fn:replace(rr.hospitalCoverName, '- $', 'With_')}" />
 						<c:set var="fileName" value="${fn:replace(fileName, '%', '_Percent')}" />
@@ -274,6 +292,12 @@ this was made for CUA so it may not work for other provider use and your own ris
 							</c:if>
 							<c:if test="${coverNameSplit[0] == 'SP'}">
 								<c:set var="situation" value="Single_Parent" />
+							</c:if>
+							<c:if test="${coverNameSplit[0] == 'EF'}">
+								<c:set var="situation" value="Extended_Family" />
+							</c:if>
+							<c:if test="${coverNameSplit[0] == 'ESP'}">
+								<c:set var="situation" value="Extended_Single_Parent" />
 							</c:if>
 
 						<c:set var="fileName" value="${fn:replace(rr.extrasCoverName, '- $', 'With_')}" />

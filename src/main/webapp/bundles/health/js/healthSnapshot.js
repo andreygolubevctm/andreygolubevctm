@@ -200,7 +200,7 @@
         if(!_.isEmpty(situation)) {
             situationCopy = elements.situation.find("option[value='" + situation + "']").text();
             situationCopySuffix = '';
-            if (situation === 'SPF') {
+            if (situation === 'SPF' || situation === 'ESP') {
                 var dependants = elements.dependants.val();
                 if(!_.isEmpty(dependants)) {
                     var childrenLabel = dependants + ' ' + (parseInt(dependants, 10) > 1 ? 'children' : 'child');

@@ -101,7 +101,7 @@
             </c:set>
 
             <%-- Optional question for users - mandatory if Contact Number is selected (Required = true as it won't be shown if no number is added) --%>
-            <form_v2:row className="health-contact-details-optin-group" hideHelpIconCol="true">
+            <form_v2:row className="health-contact-details-optin-group hidden" hideHelpIconCol="true">
                 <field_v2:checkbox
                         xpath="${xpath}/optin"
                         value="Y"
@@ -109,7 +109,8 @@
                         required="true"
                         label="${true}"
                         title="${termsAndConditions}"
-                        errorMsg="Please agree to the Terms &amp; Conditions" />
+                        errorMsg="Please agree to the Terms &amp; Conditions"
+                        customAttribute="data-attach='true' checked='checked'" />
             </form_v2:row>
 
             <%-- Did it this way to prevent the snapshot from pushing the fields below up/down depending on the option selected with the health_situation_healthCvr field --%>

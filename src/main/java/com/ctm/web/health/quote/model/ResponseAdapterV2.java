@@ -112,6 +112,7 @@ public class ResponseAdapterV2 {
                     result.setHospital(validateNode(quote.getHospital()));
                     result.setExtras(validateNode(quote.getExtras()));
                     result.setAmbulance(validateNode(quote.getAmbulance()));
+                    result.setAccident(validateNode(quote.getAccident()));
 
                     if (quote.isPriceChanged()) {
                         hasPriceChanged = true;

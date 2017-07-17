@@ -1,0 +1,113 @@
+.featuresMode.resultsContainer {
+  .results-v2 {
+    .featuresListExcess {
+      .cell {
+        &:first-of-type {
+          border-bottom: 1px solid @gray;
+        }
+      }
+    }
+
+    .featuresListHospitalOtherList {
+      margin-top: 0;
+      padding-top: 0;
+      border-top: none;
+    }
+
+    .featuresListExtrasOtherList {
+      .hasShortlistableChildren {
+        padding-bottom: 10px;
+      }
+    }
+
+    .expander {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      margin-top: -6px;
+
+      @media (@md) {
+        position: relative;
+        margin-top: 5px;
+        margin-right: 5px;
+      }
+    }
+
+    .labelInColumn.category.expandable {
+      .content {
+        .contentInner {
+          &::after {
+            content: '\e600';
+            color: @theme-secondary;
+            font-family: 'framework_font';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            margin-top: -7px;
+          }
+        }
+
+        &.noCover {
+          .contentInner {
+            &::after {
+              content: '\e601';
+              color: @theme-accent-3;
+            }
+          }
+        }
+
+        &.restrictedCover {
+          .contentInner {
+            &::after {
+              color: #f6b14b;
+            }
+          }
+        }
+      }
+    }
+
+    .cell.expandable.category {
+      .children {
+        position: relative;
+        &.hideChildren {
+          .cell.feature {
+            visibility: hidden;
+          }
+        }
+        &[data-fid='29700'] {
+          .featureLabel {
+            width: 100%;
+          }
+        }
+      }
+    }
+
+    .noCoverContainer {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+
+      .noCoverLabel {
+        position: relative;
+        top: 35%;
+        text-align: center;
+      }
+    }
+
+    .restrictedLabel {
+      font-size: 14px;
+      margin-bottom: 0;
+    }
+
+    .contentSafeName {
+      display: inline-block;
+      max-width: 80%;
+      margin: 0 10%;
+
+      @media (@md) {
+        max-width: inherit;
+        margin: 0;
+      }
+    }
+  }
+}

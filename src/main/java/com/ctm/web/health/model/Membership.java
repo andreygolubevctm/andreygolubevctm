@@ -8,7 +8,9 @@ public enum Membership {
 	SINGLE ("S"),
 	COUPLE ("C"),
 	SINGLE_PARENT ("SP"),
-	FAMILY ("F");
+	FAMILY ("F"),
+	EXTENDED_FAMILY("EF"),
+	EXTENDED_SINGLE_PARENT("ESP");
 
 	private final String code;
 

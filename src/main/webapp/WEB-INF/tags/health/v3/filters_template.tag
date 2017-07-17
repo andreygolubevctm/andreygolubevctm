@@ -6,6 +6,9 @@
 
     {{ var hiddenHospital = meerkat.modules.health.getCoverType() === 'E' ? ' hidden' : ''; }}
 
+    {{ var currentFamilySituation = meerkat.modules.healthChoices.returnCoverCode();}}
+    {{ var hiddenExtendedFamily = (currentFamilySituation === 'F' ? '' : (currentFamilySituation === 'EF' ? '' : (currentFamilySituation === 'SPF' ? '' : (currentFamilySituation === 'ESP' ? '' : ' hidden' )))); }}
+
     <div class="sidebar-title hidden-xs">Filter Results</div>
 
     <div class="row filter">
@@ -27,6 +30,32 @@
         </div>
     </div>
 
+    <div class="row filter need-extendedFamily {{=hiddenExtendedFamily }}" data-filter-serverside="true">
+        <div class="col-xs-12">
+            <div class="sidebar-subtitle-container">
+                <span class="heading-text">Family Type</span>
+            </div>
+            <div class="filter-cover-level select">
+                <span class=" input-group-addon">
+                    <i class="icon-sort"></i>
+                </span>
+                <select class="form-control array_select " id="health_filterBar_extendedFamily" name="health_filterBar_extendedFamily" data-msg-required="Please choose " <field_v1:analytics_attr analVal="filter familytype" quoteChar="\"" />>
+                    {{ _.each(model.extendedFamily.values, function(object) { }}
+                        {{ var selected = object.selected ? ' selected="selected"' : ''; }}
+                        {{ if(currentFamilySituation === 'F' || currentFamilySituation === 'EF') { }}
+                            {{ if(object.value === 'F' || object.value === 'EF') { }}
+                                <option id="health_filterBar_extendedFamily_{{= object.value }}" value="{{= object.value }}" {{=selected }}>{{= object.label }}</option>
+                            {{ } }}
+                        {{ }  else { }}
+                            {{ if(object.value === 'SPF' || object.value === 'ESP') { }}
+                                <option id="health_filterBar_extendedFamily_{{= object.value }}" value="{{= object.value }}" {{=selected }}>{{= object.label }}</option>
+                            {{ } }}
+                        {{ } }}
+                    {{ }) }}
+                </select>
+            </div>
+        </div>
+    </div>
     <div class="row filter need-hospital {{=hiddenHospital }}" data-filter-serverside="true">
         <div class="col-xs-12">
             <div class="sidebar-subtitle-container">

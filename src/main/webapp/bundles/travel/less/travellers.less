@@ -1,0 +1,137 @@
+@heading: #00807d;
+@grey: #686868;
+
+.traveler-heading {
+  color: @heading;
+  font-size: 16px;
+}
+
+.travel_party {
+  display: flex;
+}
+
+#num-travellers {
+  color: @heading;
+  font-size: 24px;
+  padding: 10px 0;
+  text-align: center;
+}
+
+#plus {
+  display: none;
+  padding-left: 0px;
+  .icon-add {
+    font-size: 50px;
+    color: @plus;
+    text-decoration: none;
+  }
+  &.disabled {
+    .icon-add {
+      color: white;
+      background: #cecece;
+      border-radius: 100%;
+      border: 1px solid #cecece;
+      cursor: default;
+    }
+  }
+}
+
+.controls-heading {
+  color: @grey;
+  padding: 0;
+  text-align: center;
+  font-size: 12px;
+}
+
+.age-container {
+  padding: 0;
+  .age-item {
+    &:first-child {
+      padding-right: 10px;
+    }
+    
+    .error-field {
+      position: absolute;
+      font-size: 12px;
+      top: 60px;
+    }
+    
+    > div {
+      padding: 1px 15px 0 0;
+    }
+    
+    > span {
+      color: @grey;
+    }
+    
+    padding: 0 0 20px;
+    float: left;
+    position: relative;
+  }
+  
+  .exit-container {
+    float: left;
+    background: #f2efed;
+    min-height: 40px;
+    padding: 8px 2.5px;
+    border-radius: 0 10% 10% 0;
+    border: 1px solid @grey;
+    border-left: 0;
+    a {
+      border-radius: 100%;
+      border: 1px solid white;
+      color: red;
+      font-size: 20px;
+      text-decoration: none;
+    }
+  }
+  input {
+    border: 1px solid @grey;
+    float: left;
+    font-size: 20px;
+    font-family: sans-serif;
+    min-height: 40px;
+    padding: 5px;
+    width: 55px;
+    text-align: center;
+    &.has-error {
+      border-color: red;
+      background-color: #ffeaed;
+    }
+  }
+}
+
+.warning-label-hidden {
+  padding-top: 5px;
+  color: red;
+  display: none;
+  float: left;
+}
+
+@media(@md-only) {
+  .travel_party.roundedCheckboxIcons label:before {
+    line-height: 63px;
+    width: 63px;
+    font-size: 40px;
+  }
+}
+
+@media(@sm-only) {
+  .travel_party.roundedCheckboxIcons label:before {
+    line-height: 43px;
+    width: 45px;
+    font-size: 30px;
+  }
+  #plus .icon-add {
+    font-size: 40px;
+  }
+}
+
+@media(@xs-only) {
+  .age-container {
+    padding: 15px;
+  }
+  .travel_party {
+    display: block;
+  }
+}
