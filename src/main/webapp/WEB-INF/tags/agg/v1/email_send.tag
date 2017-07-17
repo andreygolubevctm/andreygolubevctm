@@ -57,7 +57,6 @@
 			</c:import>
 		</c:set>
 		<go:setData dataVar="data" xpath="userData/emailSent" value="true" />
-
 	</c:when>
 	<c:when test="${sendYN eq 'N'}">
 		${logger.warn('[sendYN] No email sent - Emails are not sent for this brand/vertical combo: {} {} {} {}', log:kv('verticalType', verticalType), log:kv('brand', brand), log:kv('mode', mode), log:kv('transactionId', data.current.transactionId))}
