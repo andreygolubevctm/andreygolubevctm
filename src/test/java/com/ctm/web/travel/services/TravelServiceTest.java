@@ -14,7 +14,6 @@ import org.junit.Test;
 import org.mockito.Mock;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.function.Supplier;
 
@@ -41,8 +40,7 @@ public class TravelServiceTest {
 		travelRequest = new TravelRequest();
 		travelQuote = new TravelQuote();
 
-		travellers = Travellers.of(Arrays.asList(LocalDate.of(1935, 1, 1), LocalDate.of(1965, 1, 1)));
-
+		travellers = Travellers.of(Arrays.asList(45, 55));
 		travelQuote.setTravellers(travellers);
 		travelQuote.setAdults(2);
 		travelQuote.setChildren(1);
@@ -59,7 +57,7 @@ public class TravelServiceTest {
 		travelQuote.setChildren(1);
 
 		travellers = new Travellers();
-		travellers.setTravellersDOB("01/01/1985");
+		travellers.setTravellersAge("45,54,23,44");
 		travelQuote.setTravellers(travellers);
 
 		isValid(travelRequest, vertical);
@@ -101,7 +99,7 @@ public class TravelServiceTest {
 		travelQuote.setChildren(1);
 
 		travellers = new Travellers();
-		travellers.setTravellersDOB("01/01/1985");
+		travellers.setTravellersAge("45,54,23,44");
 		travelQuote.setTravellers(travellers);
 
 		// Destination field only accepts 3 letter characters
@@ -146,7 +144,7 @@ public class TravelServiceTest {
 		travelQuote.setChildren(1);
 
 		travellers = new Travellers();
-		travellers.setTravellersDOB("01/01/1985");
+		travellers.setTravellersAge("45,54,23,44");
 		travelQuote.setTravellers(travellers);
 
 		isValid(travelRequest, vertical);
@@ -178,7 +176,7 @@ public class TravelServiceTest {
 		travelQuote.setChildren(1);
 
 		travellers = new Travellers();
-		travellers.setTravellersDOB("01/01/1985");
+		travellers.setTravellersAge("45,54,23,44");
 		travelQuote.setTravellers(travellers);
 
 		isValid(travelRequest, vertical);

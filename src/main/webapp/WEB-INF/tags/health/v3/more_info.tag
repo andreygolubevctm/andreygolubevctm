@@ -162,7 +162,6 @@
 							<div class="insureNow">
 								<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now<span class="icon-arrow-right" /></a>
 							</div>
-							<h3 class="text-dark">or need help? Call <span class="text-secondary">${callCentreNumber}</span></h3>
 							<p class="referenceNo">Quote reference number <span>{{= transactionId }}</span></p>
 					</div>
 				</c:when>
@@ -174,12 +173,79 @@
 								<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now<span class="icon-arrow-right" /></a>
 							</div>
 						</div>
-
-						<p class="needHelp">or need help? Call<span>${callCentreNumber}</span></p>
 						<p class="referenceNo">Quote reference number <span>{{= transactionId }}</span></p>
 					</div>
 				</c:otherwise>
 			</c:choose>
+
+
+			<div class="policyBrochures col-xs-12">
+				<div class="col-xs-12">
+					<h2>Policy brochures</h2>
+					<p>See your policy brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' && promo.hospitalPDF != promo.extrasPDF ? "s" : "" }} below for the full guide on policy limits, inclusions and exclusions</p>
+				</div>
+
+				<div class="col-xs-12 col-md-6">
+
+					<div class="row">
+						{{ if(typeof hospitalCover !== 'undefined' && typeof extrasCover !== 'undefined' && promo.hospitalPDF == promo.extrasPDF) { }}
+						<div class="col-xs-12">
+							<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn download-policy-brochure col-xs-12" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>Policy Brochure</a>
+						</div>
+						{{ } else { }}
+
+						{{ if(typeof hospitalCover !== 'undefined') { }}
+						<div class="{{ if(typeof extrasCover !== 'undefined'){ }}col-sm-6{{ } }} col-xs-12">
+							<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn download-hospital-brochure col-xs-12" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>Hospital Policy Brochure</a>
+						</div>
+						{{ } }}
+
+						{{ if(typeof extrasCover !== 'undefined') { }}
+						<div class="{{ if(typeof hospitalCover !== 'undefined'){ }}col-sm-6{{ } }} col-xs-12 ">
+							<a href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" class="btn download-extras-brochure col-xs-12">Extras Policy Brochure</a>
+						</div>
+						{{ } }}
+						{{ } }}
+					</div>
+
+				</div>
+
+				<div class="col-xs-12 col-md-6 moreInfoEmailBrochures" novalidate="novalidate">
+
+					<div class="row formInput">
+						<div class="col-sm-7 col-xs-12">
+							<field_v2:email xpath="emailAddress"  required="true"
+											className="sendBrochureEmailAddress"
+											placeHolder="${emailPlaceHolder}" />
+						</div>
+						<div class="col-sm-5 hidden-xs">
+							<a href="javascript:;" class="btn btn-save disabled btn-email-brochure" <field_v1:analytics_attr analVal="email button" quoteChar="\"" />>Email Brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' && promo.hospitalPDF != promo.extrasPDF ? "s" : "" }}</a>
+						</div>
+					</div>
+					<div class="row row-content formInput optInMarketingRow">
+						<div class="col-xs-12">
+							<field_v2:checkbox className="optInMarketing checkbox-custom"
+											   xpath="health/sendBrochures/optInMarketing" required="false"
+											   value="Y" label="true"
+											   title="Stay up to date with news and offers direct to your inbox" />
+						</div>
+					</div>
+
+					<div class="row row-content formInput hidden-sm hidden-md hidden-lg emailBrochureButtonRow">
+						<div class="col-xs-12">
+							<a href="javascript:;" class="btn btn-save disabled btn-email-brochure" <field_v1:analytics_attr analVal="email button" quoteChar="\"" />>Email Brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' ? "s" : "" }}</a>
+						</div>
+					</div>
+					<div class="row row-content moreInfoEmailBrochuresSuccess hidden">
+						<div class="col-xs-12">
+							<div class="success alert alert-success">
+								Success! Your policy brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' ? "s have" : " has" }} been emailed to you.
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
 
 		</div>
 
@@ -288,91 +354,6 @@
 			{{ } }}
 			</c:if>
 
-			<div class="policyBrochures col-xs-12">
-				<div class="col-xs-12">
-					<h2>Policy brochures</h2>
-					<p>See your policy brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' && promo.hospitalPDF != promo.extrasPDF ? "s" : "" }} below for the full guide on policy limits, inclusions and exclusions</p>
-				</div>
-
-				<div class="col-xs-12 col-md-6">
-
-					<div class="row">
-						{{ if(typeof hospitalCover !== 'undefined' && typeof extrasCover !== 'undefined' && promo.hospitalPDF == promo.extrasPDF) { }}
-						<div class="col-xs-12">
-							<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn download-policy-brochure col-xs-12" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>Policy Brochure</a>
-						</div>
-						{{ } else { }}
-
-						{{ if(typeof hospitalCover !== 'undefined') { }}
-						<div class="{{ if(typeof extrasCover !== 'undefined'){ }}col-sm-6{{ } }} col-xs-12">
-							<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn download-hospital-brochure col-xs-12" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>Hospital Policy Brochure</a>
-						</div>
-						{{ } }}
-
-						{{ if(typeof extrasCover !== 'undefined') { }}
-						<div class="{{ if(typeof hospitalCover !== 'undefined'){ }}col-sm-6{{ } }} col-xs-12 ">
-							<a href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" class="btn download-extras-brochure col-xs-12">Extras Policy Brochure</a>
-						</div>
-						{{ } }}
-						{{ } }}
-					</div>
-
-				</div>
-				<div class="col-xs-12 col-md-6 moreInfoEmailBrochures" novalidate="novalidate">
-
-					<div class="row formInput">
-						<div class="col-sm-7 col-xs-12">
-							<field_v2:email xpath="emailAddress"  required="true"
-											 className="sendBrochureEmailAddress"
-											 placeHolder="${emailPlaceHolder}" />
-						</div>
-						<div class="col-sm-5 hidden-xs">
-							<a href="javascript:;" class="btn btn-save disabled btn-email-brochure" <field_v1:analytics_attr analVal="email button" quoteChar="\"" />>Email Brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' && promo.hospitalPDF != promo.extrasPDF ? "s" : "" }}</a>
-						</div>
-					</div>
-					<div class="row row-content formInput optInMarketingRow">
-						<div class="col-xs-12">
-							<field_v2:checkbox className="optInMarketing checkbox-custom"
-												xpath="health/sendBrochures/optInMarketing" required="false"
-												value="Y" label="true"
-												title="Stay up to date with news and offers direct to your inbox" />
-						</div>
-					</div>
-
-					<div class="row row-content formInput hidden-sm hidden-md hidden-lg emailBrochureButtonRow">
-						<div class="col-xs-12">
-							<a href="javascript:;" class="btn btn-save disabled btn-email-brochure" <field_v1:analytics_attr analVal="email button" quoteChar="\"" />>Email Brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' ? "s" : "" }}</a>
-						</div>
-					</div>
-					<div class="row row-content moreInfoEmailBrochuresSuccess hidden">
-						<div class="col-xs-12">
-							<div class="success alert alert-success">
-								Success! Your policy brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' ? "s have" : " has" }} been emailed to you.
-							</div>
-						</div>
-					</div>
-
-				</div>
-			</div>
-
-			<div class="col-xs-12 switching">
-				<h2>Switching is simple</h2>
-				<ol>
-					<li>You can change your fund whenever you like</li>
-					<li>We'll pass your current fund details to your new fund, to transfer
-						any hospital waiting periods that have already been served</li>
-					<li>Most funds will give you immediate cover for the same extras benefits
-						you were able to claim previously. Your old fund will reimburse any
-						premiums paid in advance.</li>
-				</ol>
-			</div>
-			<div class="col-xs-12 testimonials">
-				<h2>Join the thousands of Australians who already have compared and saved</h2>
-				<blockquote>
-					<span class="openQuote">“</span>{{= testimonial.quote }}<span class="closeQuote">”</span>
-				</blockquote>
-				<p class="testimonialAuthor">{{= testimonial.author }}</p>
-			</div>
             <c:if test="${empty callCentre or not callCentre}">
                 <div class="col-xs-12">
                     <reward:campaign_tile_container_xs />

@@ -1,4 +1,4 @@
-;(function($, undefined){
+;(function ($, undefined) {
 
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
@@ -11,63 +11,28 @@
     };
 
     var $destinationsfs,
-        $travelDestinations;
+        $travelDestinations,
+        $destinationsPopover,
+        $destinationsList,
+        $fromTravelDates;
 
     function initTravelPopularDestinations() {
-
         var data = {};
         $destinationsfs = $('#destinationsfs');
         $travelDestinations = $('#travel_destinations');
-
-        if(meerkat.site.isDev === true) {
-            // need to wait for the development.deferred module to be initialised
-            // then wait for the ajax call there to get all available service URL
-            // IE8-10 is not working because for some reason the promise doesn't get set until 10 secs later
-
-            meerkat.modules.utils.pluginReady("development").done(function() {
-                meerkat.modules.development.getAggregationServicePromise().done(function() {
-                    data.environmentOverride = $("#developmentAggregatorEnvironment").val();
-                    getPopularCountriesList(data);
-                });
-            });
-
-            return;
-        }
-        getPopularCountriesList(data);
-    }
-
-    function getPopularCountriesList(data) {
-        meerkat.modules.comms.get({
-            url: "spring/rest/travel/popularDestinations/list.json",
-            data: data,
-            cache: true,
-            errorLevel: "warning",
-            dataType: 'json'
-        })
-        .done(function onSuccess(json) {
-            var popularCountriesTemplate = _.template($("#travel-popular-countries-template").html());
-            $destinationsfs.find('.content > div:first-child').after(popularCountriesTemplate(json));
-            eventSubscriptions();
-        })
-        .fail(function onError(obj, txt, errorThrown) {
-            exception(txt + ': ' + errorThrown);
-        });
+        $destinationsPopover = $('#destinations-popover');
+        $destinationsList = $('#destinations-list');
+        $fromTravelDates = $('#travel_dates_fromDateInputD, #travel_dates_fromDateInputM, #travel_dates_fromDateInputY');
+        initTravelPopover();
+        eventSubscriptions();
     }
 
     function eventSubscriptions() {
-        $destinationsfs.find('.popular-countries-container a').on('click', function onPopularCountryClick() {
-            var $this = $(this),
-                country = $this.data('country');
 
-            if ($this.hasClass('active')) {
-                $destinationsfs.find('.selected-tag').filter(function filterByIsoCode() {
-                    return country.isoCode === $(this).data('value');
-                }).find('button').trigger('click');
-            } else {
-                $travelDestinations.trigger('typeahead:selected', country);
-            }
-
-            $this.toggleClass('active');
+        $destinationsfs.find('ul.selected-tags').on('DOMSubtreeModified', function () {
+          if (typeof $travelDestinations.qtip === 'function' && typeof $travelDestinations.qtip().reposition === 'function') {
+            $travelDestinations.qtip().reposition();
+          }
         });
 
         meerkat.messaging.subscribe(meerkatEvents.selectTags.SELECTED_TAG_REMOVED, function onSelectedTagRemove(isoCode) {
@@ -79,12 +44,80 @@
         });
     }
 
+    function initTravelPopover() {
+        if (meerkat.modules.deviceMediaState.get() !== 'xs') {
+            $(window).on('load', function () {
+                $travelDestinations.qtip({
+                    prerender: true,
+                    content: {
+                        text: $destinationsPopover,
+                        button: 'Close'
+                    },
+                    show: 'click',
+                    hide: 'unfocus',
+                    position: {
+                        my: 'top left',
+                        at: 'bottom left'
+                    },
+                    style: {
+                        classes: 'qtip-bootstrap travelDestinationPopover',
+                        tip: {
+                            width: 14,
+                            height: 12,
+                            mimic: 'center'
+                        }
+                    },
+                    events: {
+                        render: function (event, api) {
+                            $destinationsPopover.removeClass('hide');
+                            applyTravelDestinationClickListener();
+                            applyTravelDestinationDisplayListeners(api);
+                        }
+                    }
+                });
+            });
+        }
+    }
+
+    function applyTravelDestinationDisplayListeners(api) {
+        $travelDestinations.on('keyup', function (e) {
+            hidePopover(e, api);
+        });
+
+        $fromTravelDates.on('focus', function (e) {
+            hidePopover(e, api);
+        });
+    }
+
+    function hidePopover(e, api) {
+        e.preventDefault();
+        if (api.elements.tooltip.is(':visible')) {
+            api.toggle(false);
+        }
+    }
+
+    function applyTravelDestinationClickListener() {
+        $destinationsList.find('a.destination-item').on('click', function onTravelDestinationClick() {
+            var $this = $(this),
+                country = $this.data('country');
+
+            if ($this.hasClass('active')) {
+                // Remove country from selected-tags list
+                $destinationsfs.find('.selected-tag').filter(function filterByIsoCode() {
+                    return country.isoCode === $(this).data('value');
+                }).find('button').trigger('click');
+            } else {
+                $travelDestinations.trigger('typeahead:selected', country);
+            }
+            $this.toggleClass('active');
+        });
+    }
+
     function toggleSelectedIcon(isoCode, state) {
-        $destinationsfs.find('.popular-countries-container a').filter(function filterByIsoCode() {
+        $destinationsList.find('a.destination-item').filter(function filterByIsoCode() {
             return $(this).data('country').isoCode === isoCode;
         }).toggleClass('active', state);
     }
-
 
     meerkat.modules.register("travelPopularDestinations", {
         initTravelPopularDestinations: initTravelPopularDestinations,
