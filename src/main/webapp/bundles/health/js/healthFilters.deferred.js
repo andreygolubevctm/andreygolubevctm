@@ -78,7 +78,7 @@
                 ],
                 events: {
                     update: function (filterObject) {
-                        if (_.indexOf(['F', 'EF', 'SPF', 'ESP'], $('#health_situation_healthCvr').val()) > -1) {
+                        if (_.indexOf(['F', 'EF', 'SPF', 'ESP'], meerkat.modules.healthSituation.getSituation()) > -1) {
                             var value = $('select[name=' + filterObject.name + ']').val();
                             $(filterObject.defaultValueSourceSelector).val(value);
                             meerkat.modules.healthChoices.setCover(value);
