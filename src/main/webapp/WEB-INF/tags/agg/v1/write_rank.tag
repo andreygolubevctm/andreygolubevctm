@@ -74,132 +74,132 @@
  </sql:update>
 
 <c:if test="${empty rankParamName}">
-		<c:set var="rankParamName" value="rank_productId"/>
+	<c:set var="rankParamName" value="rank_productId"/>
 </c:if>
-	<c:if test="${param.rootPath eq 'car' or param.rootPath eq 'home' or param.rootPath eq 'travel'}">
-		<c:set var="rankParamPremium" value="rank_premium"/>
-		<c:set var="addKnockouts" value="true"/>
-	</c:if>
-	<%-- Read through the params --%>
-	<jsp:useBean id="insertParams" class="java.util.ArrayList" />
-	<c:set var="sandbox">${insertParams.clear()}</c:set>
-	<c:set var="sqlBulkInsert" value="${go:getStringBuilder()}" />
-	${go:appendString(sqlBulkInsert ,'INSERT INTO aggregator.ranking_details (TransactionId,CalcSequence,RankSequence,RankPosition,Property,Value) VALUES ')}
 
-	<c:set var="count" value="0" />
-	<c:forEach var="position" begin="0" end="${param.rank_count-1}" varStatus="status">
-		<c:set var="paramName" value="${rankParamName}${position}" />
-		<c:set var="productId" value="${param[paramName]}"/>
-		<c:set var="paramPremium" value="${rankParamPremium}${position}" />
-		<c:set var="premium" value="${param[paramPremium]}" />
-		<c:if test="${addKnockouts and (empty premium or premium eq '9999999999')}">
-			<c:set var="position"><c:out value="${position + 100}" /></c:set>
+<c:if test="${param.rootPath eq 'car' or param.rootPath eq 'home' or param.rootPath eq 'travel'}">
+	<c:set var="rankParamPremium" value="rank_premium"/>
+	<c:set var="addKnockouts" value="true"/>
+</c:if>
+<%-- Read through the params --%>
+<jsp:useBean id="insertParams" class="java.util.ArrayList" />
+<c:set var="sandbox">${insertParams.clear()}</c:set>
+<c:set var="sqlBulkInsert" value="${go:getStringBuilder()}" />
+${go:appendString(sqlBulkInsert ,'INSERT INTO aggregator.ranking_details (TransactionId,CalcSequence,RankSequence,RankPosition,Property,Value) VALUES ')}
+
+<c:set var="count" value="0" />
+<c:forEach var="position" begin="0" end="${param.rank_count-1}" varStatus="status">
+	<c:set var="paramName" value="${rankParamName}${position}" />
+	<c:set var="productId" value="${param[paramName]}"/>
+	<c:set var="paramPremium" value="${rankParamPremium}${position}" />
+	<c:set var="premium" value="${param[paramPremium]}" />
+	<c:if test="${addKnockouts and (empty premium or premium eq '9999999999')}">
+		<c:set var="position"><c:out value="${position + 100}" /></c:set>
+	</c:if>
+	<c:if test="${not empty productId and productId != 'undefined'}">
+		${go:appendString(sqlBulkInsert, '(')}
+		${go:appendString(sqlBulkInsert, transactionId)}
+		<c:set var="prefix" value=", " />
+		${go:appendString(sqlBulkInsert, prefix)}
+		${go:appendString(sqlBulkInsert, calcSequence)}
+		${go:appendString(sqlBulkInsert, prefix)}
+		${go:appendString(sqlBulkInsert, rankSequence)}
+		${go:appendString(sqlBulkInsert, ", ?, 'productId', ?)")}
+
+		<c:if test="${count ne param.rank_count-1}">
+			${go:appendString(sqlBulkInsert, prefix)}
 		</c:if>
-		<c:if test="${not empty productId and productId != 'undefined'}">
-			${go:appendString(sqlBulkInsert, '(')}
-			${go:appendString(sqlBulkInsert, transactionId)}
-			<c:set var="prefix" value=", " />
-			${go:appendString(sqlBulkInsert, prefix)}
-			${go:appendString(sqlBulkInsert, calcSequence)}
-			${go:appendString(sqlBulkInsert, prefix)}
-			${go:appendString(sqlBulkInsert, rankSequence)}
-			${go:appendString(sqlBulkInsert, ", ?, 'productId', ?)")}
 
-			<c:if test="${count ne param.rank_count-1}">
-				${go:appendString(sqlBulkInsert, prefix)}
-			</c:if>
+		<c:set var="ignore">
+			${insertParams.add(position)};
+			${insertParams.add(productId)};
+		</c:set>
 
-			<c:set var="ignore">
-				${insertParams.add(position)};
-				${insertParams.add(productId)};
-			</c:set>
+		<c:if test="${pageSettings.getVerticalCode() == 'health'}">
+			<health_v1:write_rank_extra calcSequence="${calcSequence}" rankPosition="${position}" rankSequence="${rankSequence}" transactionId="${transactionId}" />
+		</c:if>
 
-			<c:if test="${pageSettings.getVerticalCode() == 'health'}">
-				<health_v1:write_rank_extra calcSequence="${calcSequence}" rankPosition="${position}" rankSequence="${rankSequence}" transactionId="${transactionId}" />
-			</c:if>
+		<c:if test="${pageSettings.getVerticalCode() == 'travel'}">
+			<travel:write_rank_extra calcSequence="${calcSequence}" rankPosition="${position}" rankSequence="${rankSequence}" transactionId="${transactionId}" />
+		</c:if>
 
-			<c:if test="${pageSettings.getVerticalCode() == 'travel'}">
-				<travel:write_rank_extra calcSequence="${calcSequence}" rankPosition="${position}" rankSequence="${rankSequence}" transactionId="${transactionId}" />
-			</c:if>
-
-			<c:if test="${pageSettings.getVerticalCode() == 'life'}">
-				<life_v1:write_rank_extra calcSequence="${calcSequence}" rankPosition="${position}" rankSequence="${rankSequence}" transactionId="${transactionId}" />
-			</c:if>
-	
-			</c:if>
-
-		<c:set var="count" value="${count+1}" />
-	</c:forEach>
-	
-		<%-- Don't need to insert into the ranking_details table if there are no available results --%>
-	<c:if test="${not empty sqlBulkInsert}">
-		<sql:update sql="${sqlBulkInsert.toString()}">
-			<c:forEach var="item" items="${insertParams}">
-				<sql:param value="${item}" />
-			</c:forEach>
-		</sql:update>
+		<c:if test="${pageSettings.getVerticalCode() == 'life'}">
+			<life_v1:write_rank_extra calcSequence="${calcSequence}" rankPosition="${position}" rankSequence="${rankSequence}" transactionId="${transactionId}" />
+		</c:if>
 	</c:if>
+	<c:set var="count" value="${count+1}" />
+</c:forEach>
+	
+<%-- Don't need to insert into the ranking_details table if there are no available results --%>
+<c:if test="${not empty sqlBulkInsert}">
+	<sql:update sql="${sqlBulkInsert.toString()}">
+		<c:forEach var="item" items="${insertParams}">
+			<sql:param value="${item}" />
+		</c:forEach>
+	</sql:update>
+</c:if>
 
-	<jsp:useBean id="emailService" class="com.ctm.web.core.email.services.EmailService" scope="page" />
+<jsp:useBean id="emailService" class="com.ctm.web.core.email.services.EmailService" scope="page" />
 
-	<c:choose>
-		<c:when test="${pageSettings.getVerticalCode() == 'travel'}">
-			<%-- Attempt to send email only after best price has been set and only if not call centre user --%>
-			<c:if test="${empty authenticatedData.login.user.uid and not empty data.travel.email && empty data.userData.emailSent}">
-				<%-- enums are not will handled in jsp --%>
-				<% request.setAttribute("BEST_PRICE", EmailMode.BEST_PRICE); %>
-				<c:catch var="error">
-					${emailService.sendJsp(pageContext.request, BEST_PRICE , data.travel.email, transactionId)}
-				</c:catch>
-				<go:setData dataVar="data" value="true" xpath="userData/emailSent"/>
-				<%--
-				This will either be a RuntimeException or SendEmailException
-				If this fails it is not a show stopper so log and keep calm and carry on
-				--%>
-				<c:if test="${not empty error}">
-					${logger.error('Failed to send best price for {}', log:kv('email',data.travel.email ), error)}
-					${fatalErrorService.logFatalError(error, pageSettings.getBrandId(), pageContext.request.servletPath , pageContext.session.id, false, transactionId)}
-				</c:if>
+<c:choose>
+	<c:when test="${pageSettings.getVerticalCode() == 'travel'}">
+		<%-- Attempt to send email only after best price has been set and only if not call centre user --%>
+		<c:if test="${empty authenticatedData.login.user.uid and not empty data.travel.email && empty data.userData.emailSent}">
+			<%-- enums are not will handled in jsp --%>
+			<% request.setAttribute("BEST_PRICE", EmailMode.BEST_PRICE); %>
+			<c:catch var="error">
+				${emailService.sendJsp(pageContext.request, BEST_PRICE , data.travel.email, transactionId)}
+			</c:catch>
+			<go:setData dataVar="data" value="true" xpath="userData/emailSent"/>
+			<%--
+			This will either be a RuntimeException or SendEmailException
+			If this fails it is not a show stopper so log and keep calm and carry on
+			--%>
+			<c:if test="${not empty error}">
+				${logger.error('[Email] Failed to send best price for {} {}', log:kv('transactionId', transactionId), log:kv('email', data.travel.email), error)}
+				${fatalErrorService.logFatalError(error, pageSettings.getBrandId(), pageContext.request.servletPath , pageContext.session.id, false, transactionId)}
 			</c:if>
-		</c:when>
-		<c:when test="${pageSettings.getVerticalCode() == 'health'}">
-			<%-- Attempt to send email only once and only if not call centre user --%>
-			<c:if test="${empty authenticatedData.login.user.uid and not empty data.health.contactDetails.email && empty data.userData.emailSent}">
-				<%-- enums are not will handled in jsp --%>
-				<% request.setAttribute("BEST_PRICE", EmailMode.BEST_PRICE); %>
-				<c:catch var="error">
-					${emailService.sendJsp(pageContext.request, BEST_PRICE , data.health.contactDetails.email, transactionId)}
-				</c:catch>
-				<go:setData dataVar="data" value="true" xpath="userData/emailSent"/>
-				<%--
-				This will either be a RuntimeException or SendEmailException
-				If this fails it is not a show stopper so log and keep calm and carry on
-				--%>
-				<c:if test="${not empty error}">
-					${fatalErrorService.logFatalError(error, pageSettings.getBrandId(), pageContext.request.servletPath , pageContext.session.id, false, transactionId)}
-				</c:if>
+		</c:if>
+	</c:when>
+	<c:when test="${pageSettings.getVerticalCode() == 'health'}">
+		<%-- Attempt to send email only once and only if not call centre user --%>
+		<c:if test="${empty authenticatedData.login.user.uid and not empty data.health.contactDetails.email && empty data.userData.emailSent}">
+			<%-- enums are not will handled in jsp --%>
+			<% request.setAttribute("BEST_PRICE", EmailMode.BEST_PRICE); %>
+			<c:catch var="error">
+				${emailService.sendJsp(pageContext.request, BEST_PRICE , data.health.contactDetails.email, transactionId)}
+			</c:catch>
+			<go:setData dataVar="data" value="true" xpath="userData/emailSent"/>
+			<%--
+			This will either be a RuntimeException or SendEmailException
+			If this fails it is not a show stopper so log and keep calm and carry on
+			--%>
+			<c:if test="${not empty error}">
+				${logger.error('[Email] Failed to send best price for {} {}', log:kv('transactionId', transactionId), log:kv('email', data.health.contactDetails.email), error)}
+				${fatalErrorService.logFatalError(error, pageSettings.getBrandId(), pageContext.request.servletPath , pageContext.session.id, false, transactionId)}
 			</c:if>
-		</c:when>
-		<c:when test="${pageSettings.getVerticalCode() == 'home'}">
-			<%-- Attempt to send email only once and only if not call centre user MUST BE AT LEAST 5 products --%>
-			<c:if test="${empty authenticatedData.login.user.uid and not empty data.home.policyHolder.email && empty data.userData.emailSent}">
-				<agg_v1:email_send brand="${pageSettings.getBrandCode()}" vertical="${pageSettings.getVerticalCode()}" email="${data.home.policyHolder.email}" mode="bestprice" tmpl="${pageSettings.getVerticalCode()}" />
-			</c:if>
-			<c:if test="${empty data.home.policyHolder.email}">
-				${logger.info("[Email] Home Policy Holder email empty: {} {}", log:kv('transactionId', transactionId), log:kv('verticalType', pageSettings.getVerticalCode()))}
-			</c:if>
-		</c:when>
-		<c:when test="${pageSettings.getVerticalCode() == 'car'}">
-			<%-- Attempt to send email only once and only if not call centre user MUST BE AT LEAST 5 products --%>
-			<c:if test="${empty authenticatedData.login.user.uid and not empty data.quote.contact.email && empty data.userData.emailSent}">
-				<agg_v1:email_send brand="${pageSettings.getBrandCode()}" vertical="${pageSettings.getVerticalCode()}" email="${data.quote.contact.email}" mode="bestprice" tmpl="${pageSettings.getVerticalCode()}" />
-			</c:if>
-			<c:if test="${empty data.quote.contact.email}">
-				${logger.info("[Email] Contact email empty: {} {}", log:kv('transactionId', transactionId), log:kv('verticalType', pageSettings.getVerticalCode()))}
-			</c:if>
-		</c:when>
-		<c:otherwise>
-			${logger.warn('[Email] No matching verical to send email to user: {} {}', log:kv('transactionId', transactionId), log:kv('verticalType', pageSettings.getVerticalCode()))}
-		</c:otherwise>
+		</c:if>
+	</c:when>
+	<c:when test="${pageSettings.getVerticalCode() == 'home'}">
+		<%-- Attempt to send email only once and only if not call centre user MUST BE AT LEAST 5 products --%>
+		<c:if test="${empty authenticatedData.login.user.uid and not empty data.home.policyHolder.email && empty data.userData.emailSent}">
+			<agg_v1:email_send brand="${pageSettings.getBrandCode()}" vertical="${pageSettings.getVerticalCode()}" email="${data.home.policyHolder.email}" mode="bestprice" tmpl="${pageSettings.getVerticalCode()}" />
+		</c:if>
+		<c:if test="${empty data.home.policyHolder.email}">
+			${logger.warn("[Email] Home Policy Holder email address empty: {} {}", log:kv('transactionId', transactionId), log:kv('verticalType', pageSettings.getVerticalCode()))}
+		</c:if>
+	</c:when>
+	<c:when test="${pageSettings.getVerticalCode() == 'car'}">
+		<%-- Attempt to send email only once and only if not call centre user MUST BE AT LEAST 5 products --%>
+		<c:if test="${empty authenticatedData.login.user.uid and not empty data.quote.contact.email && empty data.userData.emailSent}">
+			<agg_v1:email_send brand="${pageSettings.getBrandCode()}" vertical="${pageSettings.getVerticalCode()}" email="${data.quote.contact.email}" mode="bestprice" tmpl="${pageSettings.getVerticalCode()}" />
+		</c:if>
+		<c:if test="${empty data.quote.contact.email}">
+			${logger.warn("[Email] Contact email address empty: {} {}", log:kv('transactionId', transactionId), log:kv('verticalType', pageSettings.getVerticalCode()))}
+		</c:if>
+	</c:when>
+	<c:otherwise>
+		${logger.warn('[Email] No matching vertical to send email to user: {} {}', log:kv('transactionId', transactionId), log:kv('verticalType', pageSettings.getVerticalCode()))}
+	</c:otherwise>
 	</c:choose>
 </c:if>
