@@ -17,6 +17,8 @@ var healthFunds_MYO = {
     emailUniqueMsg: 'To activate your Vitality membership, a unique email is required for each adult on the policy. Duplicate emails are not supported.',
     $policyDateCreditMessage : $('.health_payment_credit-details_policyDay-message'),
     $policyDateBankMessage : $('.health_payment_bank-details_policyDay-message'),
+    $contactPoint: $('#health_application_contactPoint'),
+    $contactPointMessage: null,
 
     paymentDayChange : function(value) {
         healthFunds_MYO.$policyDateHiddenField.val(value);
@@ -99,6 +101,15 @@ var healthFunds_MYO = {
             "paymentTypeSelector" : $("input[name='health_payment_details_type']:checked"),
             "getSelectedPaymentMethod" :  meerkat.modules.healthPaymentStep.getSelectedPaymentMethod
         });
+
+
+        if (_.isNull(healthFunds_MYO.$contactPointMessage)) {
+            var contactPointCopy = '<span class="fieldrow_legend" id="health_application_contactPointMessage">SMS is limited to notifications, members communications will be sent by email.</span>';
+            $(contactPointCopy).insertAfter(healthFunds_MYO.$contactPoint);
+            healthFunds_MYO.$contactPointMessage = $('#health_application_contactPointMessage');
+        } else {
+            healthFunds_MYO.$contactPointMessage.show();
+        }
     },
     unset: function(){
         healthFunds_MYO.$partnerEmailRow.hide();
@@ -122,6 +133,8 @@ var healthFunds_MYO = {
         meerkat.modules.healthCreditCard.render();
 
         meerkat.modules.paymentGateway.reset();
+
+        healthFunds_MYO.$contactPointMessage.hide();
     }
 };
 
