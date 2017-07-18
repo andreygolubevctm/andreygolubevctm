@@ -78,10 +78,12 @@
                 ],
                 events: {
                     update: function (filterObject) {
-                        var value = $('select[name=' + filterObject.name + ']').val();
-                        $(filterObject.defaultValueSourceSelector).val(value);
-                        meerkat.modules.healthChoices.setCover(value);
-                        meerkat.modules.simplesBindings.toggleRebateDialogue();
+                        if (_.indexOf(['F', 'EF', 'SPF', 'ESP'], meerkat.modules.health.getSituation()) > -1) {
+                            var value = $('select[name=' + filterObject.name + ']').val();
+                            $(filterObject.defaultValueSourceSelector).val(value);
+                            meerkat.modules.healthChoices.setCover(value);
+                            meerkat.modules.simplesBindings.toggleRebateDialogue();
+                        }
                     }
                 }
             },
