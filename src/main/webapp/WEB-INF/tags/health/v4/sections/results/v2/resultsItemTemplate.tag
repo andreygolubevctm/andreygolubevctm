@@ -10,7 +10,7 @@
     {{ if(ft.classStringForInlineLabel.indexOf('more-info-only') != -1) { continue; } }}
 
     <%-- Remove Special Features featurel; ft.shortlistKey = SpFeatures --%>
-    {{ if(ft.shortlistKey === 'SpFeatures') { continue; } }}
+    {{ if(ft.safeName === 'Special Features' && ft.type === 'category') { continue; } }}
 
     <%-- Expand features for hospital/extras other list (feature-index of 4/5) --%>
     {{ if(_.indexOf([4,5], obj.featuresStructureIndexToUse) && ft.classString.indexOf('section') !== -1) { }}
