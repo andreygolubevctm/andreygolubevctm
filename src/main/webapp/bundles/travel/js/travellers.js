@@ -168,7 +168,7 @@
 	function prefillFields() {
 		var value = $elements.hiddenInput.val();
 		var selected = $('.travel_party input:checked').val();
-		if (value != null && value.length > 0) {
+		if (value != null && value.length > 0 || selected) {
 			var arrayValues = value.split(/\s*,\s*/);
 			setState({ hiddenValues: arrayValues });
 			_travelPartyChange(this, selected);

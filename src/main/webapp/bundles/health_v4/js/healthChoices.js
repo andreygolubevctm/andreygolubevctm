@@ -34,6 +34,7 @@
         switch (_cover) {
             case 'C':
             case 'F':
+            case 'EF':
                 return true;
             default:
                 return false;
