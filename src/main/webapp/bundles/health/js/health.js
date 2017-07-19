@@ -725,7 +725,7 @@
 					 */
 					for(var i=0; i<resultData.supplementary.length; i++) {
 						var supp = resultData.supplementary[i];
-						var regex = new RegExp("[" + supp.supplementaryKey + "]","gi");
+						var regex = new RegExp("\\[" + supp.supplementaryKey + "\\]","gi");
 						content = content.replace(regex,evalString(supp.supplementaryValue, product));
 					}
 				}
