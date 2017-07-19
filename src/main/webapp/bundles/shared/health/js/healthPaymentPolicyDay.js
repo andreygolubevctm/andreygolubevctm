@@ -73,7 +73,6 @@
     reset selections for payment date 
     */
     function reset(providerName) {
-        if(!initialised) init();
        //reset selections for payment date
         meerkat.modules.healthPaymentDay.paymentDaysRender( $policyDayBank, false);
 		meerkat.modules.healthPaymentDay.paymentDaysRender( $policyDayCredit, false);
