@@ -48,6 +48,19 @@
 .health_payment_gateway-bank {
   display: none;
 }
+
+#health_application_contactPoint {
+  label {
+    &:nth-child(2) {
+      .border-right-radius(10px);
+    }
+
+    &:nth-child(3) {
+      display: none;
+    }
+  }
+}
+
 body.health_payment_gateway-active #health_payment_gateway-content {
   display: block;
 }
@@ -114,6 +127,63 @@ body{
     }
   }
 
+  /* MYO */
+  &.MYO {
+    #health_application_contactPoint {
+      label:nth-child(2) {
+        display: none;
+      }
+      label:nth-child(3) {
+        .border-right-radius(10);
+        border-left: 1px solid @input-border;
+        display: table-cell;
+      }
+    }
+
+    .health-credit_card_details {
+      .fieldrow.health_payment_credit-details_paymentDay_group,
+      .fieldrow.health_payment_credit-details_day_group,
+      .fieldrow.health_credit-card_details_type_group,
+      .fieldrow.health_credit-card-details_name,
+      .fieldrow.health_credit-card-details_expiry_group,
+      .fieldrow.health_credit-card-details_ccv,
+      .fieldrow.health_credit-card-details_number_group,
+      .fieldrow.nestedGroup,
+      .payment_assurance_message {
+        display: none !important;
+      }
+    }
+
+    .health_payment_credit-details_policyDay-group,
+    .health_payment_credit-details_policyDay-message,
+    .health_payment_bank-details_policyDay-group,
+    .health_payment_bank-details_policyDay-message {
+      display: block !important;
+    }
+
+    .health_payment_credit-details_day-group,
+    .health_payment_bank-details_day-group,
+    .health_declaration {
+      display: none !important;
+    }
+
+    .health_payment_credit-details_policyDay-group .select,
+    .health_payment_bank-details_policyDay-group .select,
+    .health_payment_credit-details_paymentDay_group .select,
+    .health_payment_bank-details_paymentDay_group .select {
+      position: absolute;
+      visibility: hidden;
+
+      select {
+        display:none;
+      }
+    }
+
+    .health_payment_credit-details_policyDay-group label,
+    .health_payment_bank-details_policyDay-group label {
+      visibility:hidden !important;
+    }
+  }
 
   /* FRANK */
   &.FRA{
@@ -213,7 +283,6 @@ body{
       display:block !important;
     }
 
-    .health_payment_credit-details_day-group,
     .health_payment_credit-details_day_group,
     .health_payment_bank-details_day-group,
     .health_payment_credit-details_paymentDay_group,
@@ -635,17 +704,13 @@ body{
     }
   }
   &.HBF {
-    .health_payment_credit-details_paymentDay_group,
-    .health_payment_bank-details_paymentDay_group,
-    .health_payment_medicare_cardPosition-group {
+    .health_payment_medicare_cardPosition-group,
+    .health_payment_credit-details_policyDay-group,
+    .health_payment_credit-details_policyDay-message,
+    .health_payment_bank-details_policyDay-group,
+    .health_payment_bank-details_policyDay-message {
       display: block !important;
     }
-    .health_payment_bank-details_day-group,
-    .health_payment_bank-details_policyDay-group,
-    .health_payment_credit-details_day_group,
-    .health_payment_credit-details_day-group,
-    .health_payment_credit-details_policyDay-group,
-    .health_payment-day_message,
     .health_bank-details_claims_group {
       display:none !important;
     }
@@ -656,6 +721,31 @@ body{
         }
       }
     }
+
+    .health_payment_bank-details_day-group,
+    .health_payment_credit-details_day-group {
+      display:none !important;
+    }
+    .health_payment_credit-details_policyDay-group label,
+    .health_payment_bank-details_policyDay-group label,
+    .health_payment_credit-details_policyDay-group .select,
+    .health_payment_bank-details_policyDay-group .select {
+      visibility:hidden !important;
+    }
+    .health_payment_credit-details_policyDay-group .select,
+    .health_payment_bank-details_policyDay-group .select {
+      position: absolute;
+      visibility: hidden;
+    }
+    .health_payment_credit-details_policyDay-group .select select,
+    .health_payment_bank-details_policyDay-group .select select {
+      visibility:hidden !important;
+    }
+    .health_payment_bank-details_policyDay-group .control_label,
+    .health_payment_credit-details_policyDay-group .control_label{
+      visibility: hidden;
+    }
+
   }
   &.QTU {
     .health-credit_card_details .fieldrow.health_payment_credit-details_paymentDay_group,

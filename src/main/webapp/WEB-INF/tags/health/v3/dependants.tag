@@ -18,11 +18,10 @@
 <div id="${name}-selection" class="health-dependants">
 
 	<form_v2:fieldset legend="Your Dependants' Details" >
-	
-		<%-- //FIX: need to insert fund's real definition here --%>
-        <p class="definition">
-			This policy provides cover for your children aged less than 22 years plus students studying full time between the ages of 22 and 24. You can still obtain cover for your adult child outside these criteria by applying for a separate singles policy
-		</p>
+
+		<%-- the funds's dependants details definition dynamically inserted here - currently defined in the fund specific healthFunds_ file --%>
+		<%-- this template is currently used by simples --%>
+        <p class="definition"></p>
 		
 		<div id="${name}_threshold" class="text-danger">
 

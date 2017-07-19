@@ -88,6 +88,8 @@
             }
             if (ft.isNotCovered) {
                 ft.labelInColumnContentClass = ' noCover';
+            } else if (ft.isRestricted) {
+                ft.labelInColumnContentClass = ' restrictedCover';
             } else {
                 ft.labelInColumnContentClass = '';
             }

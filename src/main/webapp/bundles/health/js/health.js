@@ -556,7 +556,7 @@
 					meerkat.modules.healthMedicare.updateMedicareLabel();
 
 					var product = meerkat.modules.healthResults.getSelectedProduct();
-					var mustShowList = ["GMHBA","Frank","Budget Direct","Bupa","HIF","QCHF","Navy Health","HBF","TUH"];
+					var mustShowList = ["GMHBA","Frank","Budget Direct","Bupa","HIF","QCHF","Navy Health","HBF","TUH","My Own"];
 
 					if( !meerkat.modules.healthCoverDetails.isRebateApplied() && $.inArray(product.info.providerName, mustShowList) == -1) {
 						$("#health_payment_medicare-selection").hide().attr("style", "display:none !important");
@@ -887,7 +887,7 @@
 	// Use the situation value to determine if a partner is visible on the journey.
 	function hasPartner(){
 		var cover = $(':input[name="health_situation_healthCvr"]').val();
-		if(cover == 'F' || cover == 'C'){
+		if (cover == 'F' || cover == 'C' || cover == 'EF') {
 			return true;
 		}else{
 			return false;
@@ -1420,8 +1420,11 @@
 
 	function toggleRebate() {
 		if(meerkat.modules.healthCoverDetails.isRebateApplied()){
+
+			var situation = getSituation();
+
 			$('#health_healthCover_tier').show();
-			if(getSituation() === 'F' || getSituation() === 'SPF'){
+			if(situation === 'F' || situation === 'SPF' || situation === 'EF' || situation === 'ESP'){
 				$('.health_cover_details_dependants').show();
 			}
 		} else {
