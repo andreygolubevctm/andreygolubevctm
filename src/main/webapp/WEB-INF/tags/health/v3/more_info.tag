@@ -270,15 +270,15 @@
 			<div class="col-xs-12 col-md-6 hospitalCover">
 				{{ if(typeof hospital.inclusions !== 'undefined') { }}
 				<h2>Hospital cover</h2>
-				<p><strong>Hospital Excess:</strong> {{= hospital.inclusions.excess }}</p>
-				<p><strong>Excess Waivers:</strong> {{= hospital.inclusions.waivers }}</p>
-				<p><strong>Co-payment / % Hospital Contribution:</strong> {{= hospital.inclusions.copayment }}</p>
+				<p><strong>Hospital Excess:</strong><br>{{= hospital.inclusions.excess }}</p>
+				<p><strong>Excess Waivers:</strong><br>{{= hospital.inclusions.waivers }}</p>
+				<p><strong>Co-payment / % Hospital Contribution:</strong><br>{{= hospital.inclusions.copayment }}</p>
 
-				<p><strong>Accident Override:</strong>
+				<p><strong>Accident Override:</strong><br>
 					{{ if(!_.isEmpty(obj.accident) && obj.accident.covered === 'Y') { }}
-					<br>{{= obj.accident.overrideDetails }}</p>
+					{{= obj.accident.overrideDetails }}</p>
 					{{ }else{ }}
-					None
+					-
 					{{ } }}
 				{{ } }}
 				{{ if(hospitalCover.inclusions.length > 0) { }}
