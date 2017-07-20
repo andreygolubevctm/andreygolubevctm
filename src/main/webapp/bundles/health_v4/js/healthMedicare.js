@@ -11,7 +11,8 @@
             "QCHF",
             "Navy Health",
             "HBF",
-            "TUH"
+            "TUH",
+            "My Own"
         ];
 
     function initHealthMedicare() {

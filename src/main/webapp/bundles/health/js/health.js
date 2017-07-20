@@ -556,7 +556,7 @@
 					meerkat.modules.healthMedicare.updateMedicareLabel();
 
 					var product = meerkat.modules.healthResults.getSelectedProduct();
-					var mustShowList = ["GMHBA","Frank","Budget Direct","Bupa","HIF","QCHF","Navy Health","HBF","TUH"];
+					var mustShowList = ["GMHBA","Frank","Budget Direct","Bupa","HIF","QCHF","Navy Health","HBF","TUH","My Own"];
 
 					if( !meerkat.modules.healthCoverDetails.isRebateApplied() && $.inArray(product.info.providerName, mustShowList) == -1) {
 						$("#health_payment_medicare-selection").hide().attr("style", "display:none !important");
@@ -710,7 +710,7 @@
 							return contextb[prop];
 						};
 						// If str contains square brackets then execute that first
-						var exp = /\[(.)+\]/g;
+						var exp = /\[(.)+\]/gi;
 						if(exp.test(str)) {
 							var sub = str.match(exp)[0].replace("[","").replace("]","");
 							var subval = evalStringSimple(sub, contexta);
@@ -725,7 +725,8 @@
 					 */
 					for(var i=0; i<resultData.supplementary.length; i++) {
 						var supp = resultData.supplementary[i];
-						content = content.replace("[" + supp.supplementaryKey + "]",evalString(supp.supplementaryValue, product));
+						var regex = new RegExp("\\[" + supp.supplementaryKey + "\\]","gi");
+						content = content.replace(regex,evalString(supp.supplementaryValue, product));
 					}
 				}
 			},

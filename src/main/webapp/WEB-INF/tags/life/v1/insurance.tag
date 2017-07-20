@@ -167,7 +167,7 @@ var minInsuranceSelected = function(type) {
 
 	for(var i = 0; i < InsuranceHandler.fields.length; i++) {
 		var field = InsuranceHandler.fields[i];
-		var value = $('#${name}_' + type + '_insurance_' + field + 'entry').val();
+		var value = $('#${name}_' + type + '_insurance_' + field + 'entry').val().replace(/,/g, '');
 
 		if( value != '' && value != 0 ) {
 			is_valid = true;
@@ -178,32 +178,59 @@ var minInsuranceSelected = function(type) {
 			break;
 		}
 	}
-	if(  is_valid )	{
-		for(var j = 0; j < InsuranceHandler.fields.length; j++) {
-			$('#${name}_' + type + '_insurance_' + InsuranceHandler.fields[j] + 'entry').removeClass('error');
-		}
-	} else {
-		for(var k = 0; k < InsuranceHandler.fields.length; k++) {
-			$('#${name}_' + type + '_insurance_' + InsuranceHandler.fields[k] + 'entry').addClass('error');
-		}
-	}
 
 	return is_valid;
 };
 
-// Custom Validation
-$.validator.addMethod("minPrimaryInsuranceSelected",
-	function(value, element) {
-		return minInsuranceSelected('primary');
-	},
-	"Please enter a dollar value for at least one insurance type"
-);
-$.validator.addMethod("minPartnerInsuranceSelected",
-	function(value, element) {
-		return minInsuranceSelected('partner');
-	},
-	"Please enter a dollar value for at least one insurance type"
-);
+function checkFieldInput(type, field, minValue) {
+	var inputValue = $('#${name}_' + type + '_insurance_' + field + 'entry').val().replace(/,/g, '');
+	return inputValue === '' || (inputValue !== 0 && inputValue >= minValue);
+};
+
+$.validator.addMethod("validatePrimaryInsuranceCover", function(value, element) {
+	$.validator.messages.validatePrimaryInsuranceCover = "Please enter a dollar value for at least one insurance type";
+	if (minInsuranceSelected('primary')) {
+		if (checkFieldInput('primary', 'term', 42840)){
+			return true;
+		} else {
+			$.validator.messages.validatePrimaryInsuranceCover = "Your selection is below the minimum level of cover of $42,840";
+			return false;
+		}
+	} else {
+		return false;
+	}
+}, "Please enter a dollar value for at least one insurance type");
+
+$.validator.addMethod("validatePrimaryTpd", function(value, element) {
+	return checkFieldInput('primary', 'tpd', 37663);
+}, "Your selection is below the minimum level of cover of $37,663");
+
+$.validator.addMethod("validatePrimaryTrauma", function(value, element) {
+	return checkFieldInput('primary', 'trauma', 8626);
+}, "Your selection is below the minimum level of cover of $8,626");
+
+$.validator.addMethod("validatePartnerInsuranceCover", function(value, element) {
+	$.validator.messages.validatePartnerInsuranceCover = "Please enter a dollar value for at least one insurance type for your partner";
+	if (minInsuranceSelected('partner')) {
+		if (checkFieldInput('partner', 'term', 42840)){
+			return true;
+		} else {
+			$.validator.messages.validatePartnerInsuranceCover = "Your selection is below the minimum level of cover of $42,840";
+			return false;
+		}
+	} else {
+		return false;
+	}
+}, "Please enter a dollar value for at least one insurance type for your partner");
+
+$.validator.addMethod("validatePartnerTpd", function(value, element) {
+	return checkFieldInput('partner', 'tpd', 37663);
+}, "Your selection is below the minimum level of cover of $37,663");
+
+$.validator.addMethod("validatePartnerTrauma", function(value, element) {
+	return checkFieldInput('partner', 'trauma', 8626);
+}, "Your selection is below the minimum level of cover of $8,626");
+
 </go:script>
 
 <go:script marker="onready">
@@ -389,5 +416,11 @@ $.validator.addMethod("minPartnerInsuranceSelected",
 </go:style>
 
 <%-- VALIDATION --%>
-<go:validate selector="${name}${primary_label}_termentry" rule="minPrimaryInsuranceSelected" parm="true" message="Please enter a dollar value for at least one insurance type for you" />
-<go:validate selector="${name}${partner_label}_termentry" rule="minPartnerInsuranceSelected" parm="true" message="Please enter a dollar value for at least one insurance type for your partner" />
+<go:validate selector="${name}${primary_label}_termentry" rule="validatePrimaryInsuranceCover" parm="true" />
+<go:validate selector="${name}${partner_label}_termentry" rule="validatePartnerInsuranceCover" parm="true" />
+
+<go:validate selector="${name}${primary_label}_tpdentry" rule="validatePrimaryTpd" parm="true" />
+<go:validate selector="${name}${partner_label}_tpdentry" rule="validatePartnerTpd" parm="true" />
+
+<go:validate selector="${name}${primary_label}_traumaentry" rule="validatePrimaryTrauma" parm="true" />
+<go:validate selector="${name}${partner_label}_traumaentry" rule="validatePartnerTrauma" parm="true" />
