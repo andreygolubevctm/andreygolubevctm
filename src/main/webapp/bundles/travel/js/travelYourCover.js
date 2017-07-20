@@ -19,7 +19,6 @@
 		$travel_dates_toDate_row,
 		$detailsForm,
 		$resultsContainer,
-		$destinationSelector,
 		modalId = null,
 		initialised = false;
 
@@ -39,7 +38,6 @@
 			$travel_dates_toDate_row = $('#travel_dates_toDate_row');
 			$detailsForm = $('#detailsForm');
 			$resultsContainer = $('.resultsContainer');
-            $destinationSelector = $('#travel_destinations');
 
 			// hide the destinations section, travellers section, leave date and return date
 			$destinationfs.hide();
@@ -104,13 +102,6 @@
 
 			// update section header name for dates & travellers section
 			$datestravellersfs.find('h2').text("Dates & Travellers");
-
-            $destinationSelector.focus();
-
-			// Show Destination Qtip popover
-			setTimeout(function(){
-                $destinationSelector.qtip('toggle', true);
-			}, 750);
 
 		} else {
 			// AMT
