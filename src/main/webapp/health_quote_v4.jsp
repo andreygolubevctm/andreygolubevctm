@@ -90,7 +90,7 @@
                                 <a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton slide-control-about-you" data-slide-control="next"
                                    href="javascript:;" data-loadinganimation="inside" data-loadinganimation-showAtEnd="true" <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />><span class="hidden-md hidden-lg">Preferences</span><span class="hidden-sm">Insurance preferences</span> <span class="icon icon-arrow-right"></span></a>
                                 <a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton slide-control-insurance-preferences" data-slide-control="next"
-                                   href="javascript:;" data-loadinganimation="inside" data-loadinganimation-showAtEnd="true" <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />>Contact details <span class="icon icon-arrow-right"></span></a>
+                                   href="javascript:;" data-loadinganimation="inside" data-loadinganimation-showAtEnd="true" <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />>Next step <span class="icon icon-arrow-right"></span></a>
                                 <a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton slide-control-get-prices" data-slide-control="next"
                                    href="javascript:;" data-loadinganimation="inside" data-loadinganimation-showAtEnd="true" <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />>Get prices <span class="icon icon-arrow-right"></span></a>
                                 <a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton slide-control-proceed-to-payment" data-slide-control="next"
