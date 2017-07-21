@@ -278,7 +278,7 @@
 				{{ if(hospitalCover.inclusions.length > 0) { }}
 					<%-- has inclusions START --%>
 
-					{{ if(info.situationFilter === 'Y') { }}
+					{{ if((!_.isEmpty(info.situationFilter)) && info.situationFilter === 'Y') { }}
 					<%-- if limited hospital cover and has inclusions START --%>
 
 						<h5 class="text-danger">You will be covered for the following services only</h5>
@@ -335,7 +335,7 @@
 
 					<h5>You will not be covered for the following services</h5>
 
-					{{ if(info.situationFilter === 'Y') { }}
+					{{ if((!_.isEmpty(info.situationFilter)) && info.situationFilter === 'Y') { }}
 						<%-- if limited hospital cover and has exclusions START --%>
 
 							{{ if (typeof custom !== 'undefined' && custom.info && custom.info.exclusions && custom.info.exclusions.cover) { }}
