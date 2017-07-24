@@ -563,9 +563,6 @@
 					} else {
 						$("#health_payment_medicare-selection").removeAttr("style");
 					}
-
-                    setHospitalCoverClass(selectedProduct);
-                    setExtrasCoverClass(selectedProduct);
 				}
 			},
 			onAfterEnter: function afterEnterApplyStep(event){
@@ -1504,40 +1501,6 @@
 
 
 	}
-
-    function setHospitalCoverClass(theSelectedItem) {
-        var returnVal = "";
-
-        if ((!_.isEmpty(theSelectedItem.info.situationFilter)) && theSelectedItem.info.situationFilter === 'Y') {
-            returnVal = "limited";
-        } else {
-            if (!_.isEmpty(theSelectedItem.hospital.ClassificationHospital)){
-                if (theSelectedItem.hospital.ClassificationHospital === 'Budget' || theSelectedItem.hospital.ClassificationHospital === 'Public') {
-                    returnVal = "basic";
-                } else {
-                    returnVal = theSelectedItem.hospital.ClassificationHospital.toLowerCase();
-                }
-            }
-        }
-
-        $('#health_application_productClassification_hospital').val(returnVal);
-    }
-
-
-    function setExtrasCoverClass(theSelectedItem) {
-        var returnVal = "";
-
-        if (!_.isEmpty(theSelectedItem.extras.ClassificationGeneralHealth)) {
-        	if (theSelectedItem.extras.ClassificationGeneralHealth === "Budget") {
-                returnVal = "basic";
-			} else {
-                returnVal = theSelectedItem.extras.ClassificationGeneralHealth.toLowerCase();
-			}
-        }
-
-        $('#health_application_productClassification_extras').val(returnVal);
-    }
-
 
 	function getCoverType() {
 		return $('#health_situation_coverType input').filter(":checked").val();

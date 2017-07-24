@@ -20,10 +20,7 @@
                 appSuburb: $('#health_application_address_suburb'),
                 appSuburbName: $('#health_application_address_suburbName'),
                 appState: $('#health_application_address_state'),
-                healthSituationState: $('#health_situation_state'),
-                healthProductHospitalClass: $('#health_application_productClassification_hospital'),
-                healthProductExtrasClass: $('#health_application_productClassification_extras')
-
+                healthSituationState: $('#health_situation_state')
             };
 
             $unitElements = {
@@ -54,9 +51,6 @@
         if (meerkat.modules.healthChoices.hasPartner()) {
             _toggleSelectGender('partner');
         }
-
-        setHospitalCoverClass();
-        setExtrasCoverClass();
     }
 
     function onInitialise() {
@@ -203,41 +197,6 @@
         }
 
         return true;
-    }
-
-    function setHospitalCoverClass() {
-
-        var theSelectedItem = meerkat.modules.healthResults.getSelectedProduct();
-        var returnVal = "";
-
-        if ((!_.isEmpty(theSelectedItem.info.situationFilter)) && theSelectedItem.info.situationFilter === 'Y') {
-            returnVal = "limited";
-        } else {
-            if (!_.isEmpty(theSelectedItem.hospital.ClassificationHospital)){
-                if (theSelectedItem.hospital.ClassificationHospital === 'Budget' || theSelectedItem.hospital.ClassificationHospital === 'Public') {
-                    returnVal = "basic";
-                } else {
-                    returnVal = theSelectedItem.hospital.ClassificationHospital.toLowerCase();
-                }
-            }
-        }
-
-        $elements.healthProductHospitalClass.val(returnVal);
-    }
-
-    function setExtrasCoverClass() {
-        var theSelectedItem = meerkat.modules.healthResults.getSelectedProduct();
-        var returnVal = "";
-
-        if (!_.isEmpty(theSelectedItem.extras.ClassificationGeneralHealth)) {
-            if (theSelectedItem.extras.ClassificationGeneralHealth === "Budget") {
-                returnVal = "basic";
-            } else {
-                returnVal = theSelectedItem.extras.ClassificationGeneralHealth.toLowerCase();
-            }
-        }
-
-        $elements.healthProductExtrasClass.val(returnVal);
     }
 
     meerkat.modules.register('healthApplyStep', {
