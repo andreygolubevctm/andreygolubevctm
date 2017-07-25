@@ -11,7 +11,7 @@
 <c:set var="fieldXpath" value="${xpath}/rebate" />
 <c:set var="analyticsAttr"><field_v1:analytics_attr analVal="rebate application" quoteChar="\"" /></c:set>
 <form_v4:row label="Apply the Australian Government Rebate to lower my upfront premium?" fieldXpath="${fieldXpath}" id="${name}_rebate_field_row" helpId="240" className="lhcRebateCalcTrigger hidden">
-	<field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your private health cover" required="true" className="validate" id="${name}_rebate" additionalLabelAttributes="${analyticsAttr} data-ignore='true'"/>
+	<field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your private health cover" required="true" className="validate" id="${name}_rebate" additionalLabelAttributes="${analyticsAttr}" additionalAttributes=" data-attach='true'"/>
 </form_v4:row>
 
 <c:set var="fieldXpath" value="${xpath}/dependants" />
