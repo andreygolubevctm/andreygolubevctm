@@ -2,7 +2,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<layout_v3:slide formId="benefitsForm" nextLabel="Contact details">
+<layout_v3:slide formId="benefitsForm" nextLabel="Next step">
 
     <layout_v3:slide_content>
         <form_v3:fieldset_columns sideHidden="true">
@@ -13,9 +13,6 @@
             <health_v4_insuranceprefs:benefitsSelectionScroller isSidebar="${true}" />
         </jsp:attribute>
             <jsp:body>
-
-                <simples:dialogue id="49" vertical="health" />
-
                 <form_v4:fieldset
                         legend=""
                         className="benefitsContainer">
@@ -27,7 +24,6 @@
                     <health_v4_insuranceprefs:partner_dob xpath="${xpath}" />
                     <health_v4_insuranceprefs:partner_cover xpath="${xpath}" />
                     <health_v4_insuranceprefs:partner_cover_loading xpath="${xpath}" />
-                    <health_v4_insuranceprefs:simples xpath="${xpath}" />
 
                     <health_v4_insuranceprefs:benefitsSelectionScroller />
                     <c:set var="xpath" value="${pageSettings.getVerticalCode()}/benefits" />

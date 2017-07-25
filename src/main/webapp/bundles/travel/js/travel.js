@@ -178,6 +178,7 @@
 				meerkat.modules.travelCoverLevelTabs.initTravelCoverLevelTabs();
 			},
 			onBeforeEnter: function enterResultsStep(event) {
+				meerkat.modules.travellers.mapValues();
 				// Always force it to be a "Load" in travel, as currently, we always get a new tranid.
 				meerkat.modules.resultsTracking.setResultsEventMode('Load');
 				$('#resultsPage').addClass('hidden');

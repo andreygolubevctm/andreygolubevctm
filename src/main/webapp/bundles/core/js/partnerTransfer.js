@@ -52,7 +52,7 @@
 		try {
 
 			// build the initial url
-			url = transferringPage + "?transactionId="+meerkat.modules.transactionId.get()+"&ctmGacid="+window.ctmGacid+"&trackCode="+product.trackCode+"&brand="+brand+"&msg="+msg+"&vertical="+meerkat.site.vertical+"&productId="+product.productId+"&tracking=" + tracking;
+			url = transferringPage + "?transactionId="+meerkat.modules.transactionId.get()+"&trackCode="+product.trackCode+"&brand="+brand+"&msg="+msg+"&vertical="+meerkat.site.vertical+"&productId="+product.productId+"&tracking=" + tracking;
 
 			if (handoverType.toLowerCase() === "post")
 			{
@@ -100,6 +100,7 @@
 		meerkat.modules.tracking.updateObjectData(tracking);
 		// Guarantee all fields exist in the object
 		tracking = $.extend({
+			gaclientid:             meerkat.modules.tracking.getGaClientId(),
 			actionStep:				null,
 			brandCode:				null,
 			currentJourney:			null,

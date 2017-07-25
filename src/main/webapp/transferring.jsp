@@ -2,18 +2,20 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <settings:setVertical verticalCode="GENERIC" />
+<c:set var="isDev" value="${environmentService.getEnvironmentAsString() eq 'localhost' || environmentService.getEnvironmentAsString() eq 'NXI'}"/>
 <c:set var="transactionId">
 	<c:out value="${param.transactionId}" escapeXml="true" />
 </c:set>
 <c:set var="productId">
 	<c:out value="${param.productId}" escapeXml="true" />
 </c:set>
+
 <c:set var="revision" value="${webUtils.buildRevisionAsQuerystringParam()}" />
 
 <jsp:useBean id="resultsService" class="com.ctm.web.core.services.ResultsService" scope="request" />
 <c:set var="providerCode" value="brandCode" /> <%-- prefer to use providerCode which makes more sense than brandCode --%>
 <c:if test="${param.vertical eq 'travel'}"><c:set var="providerCode" value="providerCode" /></c:if>
-<c:set var="quoteUrl" value="${fn:replace(resultsService.getSingleResultPropertyValue(transactionId, productId, 'quoteUrl'),'%26','&') }&ctmGacid=${param.ctmGacid}" />
+<c:set var="quoteUrl" value="${fn:replace(resultsService.getSingleResultPropertyValue(transactionId, productId, 'quoteUrl'),'%26','&') }" />
 <c:set var="providerCode" value="${fn:replace(resultsService.getSingleResultPropertyValue(transactionId, productId, providerCode),'%26','&') }" />
 
 <c:set var="verticalBrandCode" value="${pageSettings.getBrandCode()}" />
@@ -24,9 +26,10 @@
 	<c:set var="trackingCode" value="${contentService.getContentWithSupplementary(pageContext.getRequest(), 'handoverTrackingURL', verticalBrandCode, param.vertical).getSupplementaryValueByKey(providerCode)}" />
 
 	<c:set var="quoteUrl">
-		<c:out value="${trackingURL}" />${trackingCode}/pubref:/Adref:${transactionId}/destination:${quoteUrl}
+			<c:out value="${trackingURL}" />${trackingCode}/pubref:/Adref:${transactionId}/destination:${quoteUrl}
 	</c:set>
 </c:if>
+
 
 <%-- HTML --%>
 <layout_v1:generic_page title="Transferring you...">
@@ -36,19 +39,24 @@
 		<script>
 			<%-- In case we want to turn off looped URI Decoding --%>
 			window.useLoopedTransferringURIDecoding = ${pageSettings.getSetting("useLoopedTransferringURIDecoding")};
-
-			<%-- Mock underscore.js (_) because we don't need it but our framework insists that it is required :( --%>
-			window._ = {};
-			var properties = ['debounce', 'isNull', 'isUndefined', 'template', 'bind', 'isEmpty'];
-			for(var i = 0; i < properties.length; i++){
-				window._[properties[i]] = function() {};
-			}
+			
 
 			<%-- Mock results objects because same reason as above --%>
 			window.ResultsModel = { moduleEvents: { WEBAPP_LOCK: 'WEBAPP_LOCK' } };
 			window.ResultsView = { moduleEvents: { RESULTS_TOGGLE_MODE: 'RESULTS_TOGGLE_MODE' } };
+
+			var returnedResult = {
+                <c:forEach items="${resultsService.getResultsPropertiesForTransactionId(transactionId, productId)}" var="result" varStatus="status">
+                	"${result.property}":"${result.value}" <c:if test="${!status.last}">,</c:if>
+                </c:forEach>
+            };
 		</script>
 
+		<%--  Underscore --%>
+		<c:if test="${isDev eq false}">
+			<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+		</c:if>
+		<script>window._ || document.write('<script src="${assetUrl}assets/libraries/underscore-1.8.3.min.js">\x3C/script>')</script>
 	</jsp:attribute>
 
 	<jsp:attribute name="head_meta">
@@ -93,7 +101,7 @@
 								</c:otherwise>
 							</c:choose>
 						</p>
-						<div class="quoteUrl" quoteUrl="${quoteUrl}"></div>
+						<div class="quoteUrl" transactionId="${transactionId}" quoteUrl="${quoteUrl}"></div>
 					</div>
 				</div>
 			</article>

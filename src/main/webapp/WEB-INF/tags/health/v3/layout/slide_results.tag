@@ -6,6 +6,7 @@
 
     <layout_v3:slide_content>
         <simples:dialogue id="24" className="" vertical="health" />
+        <simples:dialogue id="74" className="extendedFamilyRules hidden" vertical="health"/>
         <health_v3:results />
         <health_v3:more_info/>
         <health_v1:prices_have_changed_notification/>

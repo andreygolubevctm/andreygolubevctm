@@ -40,7 +40,7 @@
         $elements.currentCover.on('change', function toggleContinuousCover() {
             var $this = $(this),
                 $checked = $this.filter(':checked'),
-                hasPartner = _.indexOf(['F', 'C'], meerkat.modules.healthSituation.getSituation()) >= 0,
+                hasPartner = _.indexOf(['F', 'C', 'EF'], meerkat.modules.healthSituation.getSituation()) >= 0,
                 hideField = !$checked.length || !hasPartner || $checked.val() === 'N' || ($checked.val() === 'Y' && !_.isEmpty($elements.dob.val()) && meerkat.modules.age.isLessThan31Or31AndBeforeJuly1($elements.dob.val()));
             meerkat.modules.fieldUtilities.toggleVisible(
                 $elements.partnerCoverLoading,
@@ -80,7 +80,7 @@
     }
 
     function _togglePartnerQuestionset(selected) {
-        var hasPartner = _.indexOf(['F', 'C'], selected.situation) > -1;
+        var hasPartner = _.indexOf(['F', 'C', 'EF'], selected.situation) > -1;
         meerkat.modules.fieldUtilities.toggleVisible($elements.partnerQuestionSet.add($elements.partnerCoverLoading), !hasPartner);
     }
 
