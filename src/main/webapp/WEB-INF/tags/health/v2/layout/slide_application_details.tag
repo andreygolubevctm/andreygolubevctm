@@ -37,6 +37,9 @@
 					<health_v3:dependants xpath="${pageSettings.getVerticalCode()}/application/dependants" />
 				</form>
 
+				<input type="hidden" id="${pageSettings.getVerticalCode()}_application_productClassification_hospital" name="${pageSettings.getVerticalCode()}_application_productClassification_hospital" value="">
+				<input type="hidden" id="${pageSettings.getVerticalCode()}_application_productClassification_extras" name="${pageSettings.getVerticalCode()}_application_productClassification_extras" value="">
+
 			</layout_v1:slide_content>
 
 		</jsp:body>
