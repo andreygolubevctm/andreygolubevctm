@@ -7,7 +7,7 @@
 
 <%-- Heritage Listed --%>
 <c:set var="fieldXpath" value="${xpath}/isHeritage" />
-<form_v2:row fieldXpath="${fieldXpath}" label="Is the home heritage listed?" className="heritage">
+<form_v2:row fieldXpath="${fieldXpath}" label="Is the property heritage listed?" className="heritage">
     <field_v2:array_radio xpath="${fieldXpath}"
                           required="true"
                           className="pretty_buttons"

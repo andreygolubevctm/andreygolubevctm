@@ -21,7 +21,7 @@
 	</div>
 	
 	<c:set var="fieldXpath" value="${xpath}/conducted" />
-	<form_v2:row fieldXpath="${fieldXpath}" label="Is there any business activity conducted from the home?">
+	<form_v2:row fieldXpath="${fieldXpath}" label="Is there any business activity conducted from the property?">
 		<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Business Activity" quoteChar="\"" /></c:set>
 		<field_v2:array_radio xpath="${fieldXpath}"
 			required="true"

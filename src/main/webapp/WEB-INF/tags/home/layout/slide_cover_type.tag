@@ -18,7 +18,7 @@
 				<%-- PROVIDER TESTING --%>
 				<agg_v1:provider_testing xpath="${xpath}" displayFullWidth="true" keyLabel="authToken" filterProperty="providerList" hideSelector="${false}" />
 
-				<form_v2:fieldset legend="Cover for your home">
+				<form_v2:fieldset legend="Cover for your property">
 
 						<div class="isLandlord">
 							<%-- Are you the landlord --%>

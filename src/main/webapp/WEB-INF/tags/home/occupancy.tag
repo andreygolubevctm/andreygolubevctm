@@ -102,7 +102,7 @@
 
 	<%-- How Occupied --%>
 	<c:set var="fieldXpath" value="${xpath}/howOccupied" />
-	<form_v2:row fieldXpath="${fieldXpath}" label="How is the home occupied?" className="howOccupied">
+	<form_v2:row fieldXpath="${fieldXpath}" label="How is the property occupied?" className="howOccupied">
 		<field_v2:import_select xpath="${fieldXpath}"
 			required="true"
 			title="how the home is occupied"
