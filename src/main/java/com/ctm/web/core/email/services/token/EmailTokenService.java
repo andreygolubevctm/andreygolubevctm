@@ -183,6 +183,7 @@ public class EmailTokenService {
             IncomingEmail incomingEmail = null;
             if (emailMaster != null) {
                 incomingEmail = new IncomingEmail();
+                incomingEmail.setGAClientId(map.get(EmailUrlService.GACLIENTID));
                 incomingEmail.setCampaignId(map.get(EmailUrlService.CAMPAIGN_ID));
                 incomingEmail.setEmailAddress(EmailUrlService.decodeEmailAddress(emailMaster.getEmailAddress()));
                 incomingEmail.setEmailHash(emailMaster.getHashedEmail());

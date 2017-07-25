@@ -47,10 +47,10 @@ COVER TYPE
 	<c:when test="${cover == 'S'}">
 		<c:set var="cover" value="singles" />
 	</c:when>
-	<c:when test="${cover == 'SPF'}">
+	<c:when test="${cover == 'SPF' || cover == 'ESP'}">
 		<c:set var="cover" value="singlefamily" />
 	</c:when>
-	<c:when test="${cover == 'F' || cover == 'C' }">
+	<c:when test="${cover == 'F' || cover == 'C' || cover == 'EF' }">
 		<c:set var="cover" value="families" />
 		<c:if test="${not empty param.partner_dob}">
 			<fmt:formatNumber var="partnerDobYear" value="${fn:substring(fn:trim(param.partner_dob), 6, 12)+0}" pattern="####" minIntegerDigits="4" />
@@ -90,7 +90,6 @@ REBATE TABLE - replaced by direct tier call
 		<c:set var="rebate" value="0" />
 	</c:when>
 </c:choose>
-
 
 <%--
 --------------
@@ -144,6 +143,59 @@ GOV Rebate Factor - Calculate new rebate based on rebate multiplier variables
 <c:set var="rebate">
 	<fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="3" value="${rebate * rebate_multiplier_current}" />
 </c:set>
+
+
+<%--
+*************
+rebate tiers array for each income bracket
+-------------
+--%>
+<c:set var="rebateTiers0" value="${(30 + rebateBonus)}" />
+<c:set var="rebateTiers1" value="${(20 + rebateBonus)}" />
+<c:set var="rebateTiers2" value="${(10 + rebateBonus)}" />
+<c:set var="rebateTiers3" value="0" />
+
+<c:set var="rebateTier0Previous">
+	<fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="3" value="${rebateTiers0 * rebate_multiplier_previous}" />
+</c:set>
+<c:set var="rebateTier0Current">
+	<fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="3" value="${rebateTiers0 * rebate_multiplier_current}" />
+</c:set>
+<c:set var="rebateTier0Future">
+	<fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="3" value="${rebateTiers0 * rebate_multiplier_future}" />
+</c:set>
+
+<c:set var="rebateTier1Previous">
+	<fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="3" value="${rebateTiers1 * rebate_multiplier_previous}" />
+</c:set>
+<c:set var="rebateTier1Current">
+	<fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="3" value="${rebateTiers1 * rebate_multiplier_current}" />
+</c:set>
+<c:set var="rebateTier1Future">
+	<fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="3" value="${rebateTiers1 * rebate_multiplier_future}" />
+</c:set>
+
+<c:set var="rebateTier2Previous">
+	<fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="3" value="${rebateTiers2 * rebate_multiplier_previous}" />
+</c:set>
+<c:set var="rebateTier2Current">
+	<fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="3" value="${rebateTiers2 * rebate_multiplier_current}" />
+</c:set>
+<c:set var="rebateTier2Future">
+	<fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="3" value="${rebateTiers2 * rebate_multiplier_future}" />
+</c:set>
+
+<c:set var="rebateTier3Previous" value="${rebateTiers3}" />
+<c:set var="rebateTier3Current" value="${rebateTiers3}" />
+<c:set var="rebateTier3Future" value="${rebateTiers3}" />
+
+<%-- This json object contains the rebate tiers percentage values based on the selected age bracket --%>
+<c:set var="rebateTiersPercentage">{
+	"previous": ["${rebateTier0Previous}", "${rebateTier1Previous}", "${rebateTier2Previous}", "${rebateTier3Previous}"],
+	"current": ["${rebateTier0Current}", "${rebateTier1Current}", "${rebateTier2Current}", "${rebateTier3Current}"],
+	"future": ["${rebateTier0Future}", "${rebateTier1Future}", "${rebateTier2Future}", "${rebateTier3Future}"]
+}</c:set>
+
 
 <%--
 *************
@@ -280,7 +332,7 @@ Certified Age of Entry: Defaults to 30.
 	</c:when>
 		<%-- retrieve loading and rebate --%>
 	<c:otherwise>
-		<c:set var="response">{ "status":"ok", "rebate":"${rebate}", "rebateChangeover":"${rebateChangeover}", "previousRebate":"${previousRebate}", "loading":"${loading}", "partnerLoading":"${partner_loading_rate}", "primaryLoading":"${primary_loading_rate}", "type":"${cover}", "tier":"${income}", "ageBonus":"${rebateBonus}", "primaryAge":"${primaryAge}", "primaryCAE":"${primaryCAE}","partnerCAE":"${partnerCAE}" }</c:set>
+		<c:set var="response">{ "status":"ok", "rebate":"${rebate}", "rebateChangeover":"${rebateChangeover}", "previousRebate":"${previousRebate}", "loading":"${loading}", "partnerLoading":"${partner_loading_rate}", "primaryLoading":"${primary_loading_rate}", "type":"${cover}", "tier":"${income}", "ageBonus":"${rebateBonus}", "primaryAge":"${primaryAge}", "primaryCAE":"${primaryCAE}","partnerCAE":"${partnerCAE}", "rebateTiersPercentage":${rebateTiersPercentage} }</c:set>
 	</c:otherwise>
 </c:choose>
 

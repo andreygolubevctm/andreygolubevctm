@@ -146,15 +146,19 @@
                 meerkat.messaging.publish(meerkat.modules.events.health.SNAPSHOT_FIELDS_CHANGE);
             },
             onError: function onRatesError() {
-                ratesAjaxObj = null;
+                meerkat.modules.healthRates.setRatesAjaxObj(null);
                 exception("Failed to Fetch Health Rebate Rates");
             },
             onComplete: function onRatesComplete() {
-                ratesAjaxObj = null;
+                meerkat.modules.healthRates.setRatesAjaxObj(null);
             }
         });
 
         return ratesAjaxObj;
+    }
+
+    function setRatesAjaxObj(obj) {
+        ratesAjaxObj = obj;
     }
 
     // Make the rates object available outside of this module.
@@ -174,7 +178,7 @@
 
     // Set the rates object and hidden fields in the form so it is included in post data.
     function setRates(ratesObject) {
-        rates = ratesObject;
+        rates = $.extend(true, {}, ratesObject);
         $("#health_rebate").val((rates.rebate || ''));
         $("#health_rebateChangeover").val((rates.rebateChangeover || ''));
         $("#health_previousRebate").val((rates.previousRebate || ''));
@@ -205,7 +209,8 @@
         unsetRebate: unsetRebate,
         fetchRates: fetchRates,
         loadRates: loadRates,
-        loadRatesBeforeResultsPage: loadRatesBeforeResultsPage
+        loadRatesBeforeResultsPage: loadRatesBeforeResultsPage,
+        setRatesAjaxObj: setRatesAjaxObj
     });
 
 })(jQuery);

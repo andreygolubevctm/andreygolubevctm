@@ -44,11 +44,15 @@
                 suburb = pieces.join(' ');
 
             $elements.location.val(location);
-            $elements.state.filter('[value='+state+']').trigger('click');
+            $elements.state.val(state);
             $elements.postcode.val(postcode);
             $elements.postcodeApp.val(postcode);
             $elements.suburb.val(suburb);
         }
+    }
+
+    function setResidentialState(value) {
+        $('#health_situation_state').val(value);
     }
 
     function _isValidLocation(location) {
@@ -72,7 +76,8 @@
         initHealthLocation: initHealthLocation,
         events: moduleEvents,
         setLocation: setLocation,
-        getLocation: getLocation
+        getLocation: getLocation,
+        setResidentialState: setResidentialState
     });
 
 })(jQuery);

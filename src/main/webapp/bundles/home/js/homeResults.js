@@ -37,7 +37,9 @@
 	
 	function affixFix() {
 		var $navbar = $('#navbar-main');
-		$navbar.data('bs.affix').options.offset.top = $navbar.offset().top;
+		if($navbar.data('bs.affix') && $navbar.data('bs.affix').options) {
+			$navbar.data('bs.affix').options.offset.top = $navbar.offset().top;
+		}
 	}
 
 	function onReturnToPage(){
@@ -223,7 +225,7 @@
 		$(document.body).on('click', 'a.offerTerms', launchOfferTerms);
 		$(document.body).on('click', 'a.priceDisclaimer', showPriceDisclaimer);
 
-//TODO
+		// TODO
 		// When the navar docks/undocks
 		meerkat.messaging.subscribe(meerkatEvents.affix.AFFIXED, function navbarFixed() {
 			var margin = (meerkat.modules.deviceMediaState.get() === 'lg') ? '-60px' : '-80px';
@@ -321,13 +323,23 @@
 				toggleNoResultsFeaturesMode();
 			}
 
-			meerkat.messaging.publish(meerkatEvents.commencementDate.RESULTS_RENDER_COMPLETED);
+            $.each(Results.model.returnedProducts, function(){
+            	if (this.available === 'N') {
+                    // Track each Product that doesn't quote
+                    meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+                        method: 'trackQuoteNotProvided',
+                        object: {
+                            productID: this.productId
+                        }
+                    });
+				}
+            });
 
+			meerkat.messaging.publish(meerkatEvents.commencementDate.RESULTS_RENDER_COMPLETED);
 		});
 
 		$(document).on("populateFeaturesStart", function onPopulateFeaturesStart() {
 			meerkat.modules.performanceProfiling.startTest('results');
-
 		});
 
 		$(Results.settings.elements.resultsContainer).on("populateFeaturesEnd", function onPopulateFeaturesEnd() {

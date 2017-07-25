@@ -26,10 +26,14 @@
 <c:if test="${empty emailSubscribed or emailSubscribed eq 'N'}">
 	<c:choose>
 		<c:when test="${verticalCode == 'car' and param.mode == 'bestprice'}">
-			<c:set var="ignoreEmailSendToUnsubscribed" value="${true}" />
+		<%-- Set this to false, as we have an unresolved bug that doesn't write to the opt in table --%>
+		<%-- The results logic dictates that if you gets to results you MUST opt in, so this should never be true --%>
+			<c:set var="ignoreEmailSendToUnsubscribed" value="${false}" />
 		</c:when>
 		<c:when test="${verticalCode == 'home' and param.mode == 'bestprice'}">
-			<c:set var="ignoreEmailSendToUnsubscribed" value="${true}" />
+		<%-- Set this to false, as we have an unresolved bug that doesn't write to the opt in table --%>
+		<%-- The results logic dictates that if you gets to results you MUST opt in, so this should never be true --%>
+			<c:set var="ignoreEmailSendToUnsubscribed" value="${false}" />
 		</c:when>
 		<c:otherwise><%-- Continue--%></c:otherwise>
 	</c:choose>

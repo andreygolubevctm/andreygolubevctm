@@ -185,9 +185,11 @@ Process:
 	}
 
 	function reset() {
-		$token.val('');
-		$maskedNumber.val('');
-		modalContent = '';
+        if (initialised) {
+            $token.val('');
+            $maskedNumber.val('');
+            modalContent = '';
+        }
 	}
 
 	function cardType() {

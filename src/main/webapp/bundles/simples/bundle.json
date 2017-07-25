@@ -11,6 +11,7 @@
         "shared/forms/v2",
         "shared/datepicker",
         "shared/crud",
-        "shared/reward"
+        "shared/reward",
+        "shared/timeDate"
     ]
 }

@@ -62,15 +62,15 @@
         });
 
         // update the lhc message. used lhcElements for now as the questions have changed dramatically
-        $elements.lhcContainers.find(':input').on('change', function updateRebateContinuousCover(event) {
-
+        $elements.lhcContainers.find(':input').on('change', function updateRebateContinuousCover(event, forceRebateFromFilters) {
+            var forceRebate = typeof forceRebateFromFilters === 'undefined' ? true : forceRebateFromFilters;
             var $this = $(this);
 
             if ($this.hasClass('dateinput-day') || $this.hasClass('dateinput-month') || $this.hasClass('dateinput-year') || ($this.attr('name').indexOf('primary_dob') >= 0 && $this.val() === "") || ($this.attr('name').indexOf('partner_dob') >= 0 && $this.val() === "")) return;
 
             // update rebate
             if ($this.valid()) {
-                setRebate();
+                setRebate(forceRebate);
             }
 
         });
@@ -108,6 +108,7 @@
                 case 'C':
                     statusText = 'Couples ';
                     break;
+                case 'EF':
                 case 'F':
                     statusText = 'Families ';
                     break;
@@ -115,7 +116,7 @@
                     statusText = '';
                     break;
             }
-            completeText = statusText;
+            completeText = statusText;  // is it the correct behaviour to exclude 'Single Parent Families ' in the list above?
         }
 
         completeText += selectedIncome;
@@ -140,8 +141,8 @@
         return _selectetedRebateTierLabelText;
     }
 
-    function setRebate() {
-        meerkat.modules.healthRates.loadRatesBeforeResultsPage(true, function (rates) {
+    function setRebate(forceRebate) {
+        meerkat.modules.healthRates.loadRatesBeforeResultsPage(forceRebate, function (rates) {
             if (!isNaN(rates.rebate) && parseFloat(rates.rebate) > 0) {
                 $elements.rebateLegend.html('You are eligible for a ' + rates.rebate + '% rebate.');
                 rebate = rates.rebate;
@@ -159,7 +160,7 @@
     // Use the situation value to determine if a partner is visible on the journey.
     function hasPartner() {
         var cover = meerkat.modules.healthSituation.getSituation();
-        return cover == 'F' || cover == 'C';
+        return cover == 'F' || cover == 'C' || cover == 'EF';
     }
 
     function isRebateApplied() {

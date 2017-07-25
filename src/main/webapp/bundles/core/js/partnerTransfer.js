@@ -100,6 +100,7 @@
 		meerkat.modules.tracking.updateObjectData(tracking);
 		// Guarantee all fields exist in the object
 		tracking = $.extend({
+			gaclientid:             meerkat.modules.tracking.getGaClientId(),
 			actionStep:				null,
 			brandCode:				null,
 			currentJourney:			null,

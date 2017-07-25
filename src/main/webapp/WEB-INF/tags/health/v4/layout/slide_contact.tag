@@ -10,6 +10,7 @@
         <form_v3:fieldset_columns sideHidden="true">
 
              <jsp:attribute name="rightColumn">
+                 <health_v4:cta_panel />
                  <reward:campaign_tile_container />
              </jsp:attribute>
 
@@ -38,7 +39,13 @@
 
                     <health_v4_contact:simples_referral_tracking />
                     <field_v1:hidden xpath="health/altContactFormRendered" constantValue="Y" />
+
+                    <field_v1:hidden xpath="${xpath}/skippedContact" defaultValue="N" />
+                    <health_v4_contact:skip_contact_details_modal xpath="${xpath}" />
+
                 </form_v4:fieldset>
+
+                <health_v4_contact:testimonial />
 
             </jsp:body>
 

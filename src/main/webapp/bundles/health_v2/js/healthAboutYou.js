@@ -188,7 +188,7 @@
 				$partnerContainer.slideDown();
 				$partnersDetails.show();
 				break;
-			case 'SPF':
+            case 'SPF':
 				$partnerContainer.slideUp();
 
 				if($('#health_healthCover_health_cover_rebate').find('input:checked').val() !== 'N'){

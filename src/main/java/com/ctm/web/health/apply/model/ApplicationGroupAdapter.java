@@ -76,7 +76,7 @@ public class ApplicationGroupAdapter {
                     govtRebateDeclaration.map(GovtRebateDeclaration::getEntitledToMedicare)
                             .map(EntitledToMedicare::valueOf)
                             .orElse(null),
-                    govtRebateDeclaration.map(GovtRebateDeclaration::getGovtRebateDeclaration)
+                    govtRebateDeclaration.map(GovtRebateDeclaration::getDeclaration)
                             .map(GovernmentRebateDeclaration::valueOf)
                             .orElse(null),
                     govtRebateDeclaration.map(GovtRebateDeclaration::getDeclarationDate)
@@ -131,6 +131,9 @@ public class ApplicationGroupAdapter {
                             .orElse(null),
                     person.map(Person::getAuthority)
                             .map(Authority::valueOf)
+                            .orElse(null),
+                    person.map(Person::getEmail)
+                            .map(Email::new)
                             .orElse(null));
         }
         return null;

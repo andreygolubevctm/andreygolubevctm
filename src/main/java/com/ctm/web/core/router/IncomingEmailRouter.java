@@ -70,6 +70,10 @@ public class IncomingEmailRouter extends HttpServlet {
 			}
 		}
 
+		if (request.getParameter("gaclientid") != null && emailData != null) {
+			emailData.setGAClientId(request.getParameter("gaclientid"));
+		}
+
 		if (request.getParameter("cid") != null && emailData != null) {
 			emailData.setCampaignId(request.getParameter("cid"));
 		}
