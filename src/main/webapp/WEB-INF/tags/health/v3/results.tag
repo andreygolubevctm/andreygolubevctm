@@ -119,6 +119,7 @@
 
     <jsp:attribute name="hiddenInputs">
         <%-- Hidden fields necessary for Results page --%>
+        <input type="hidden" name="health_applyDiscounts" value="Y" />
         <input type="hidden" name="health_showAll" value="Y" />
         <input type="hidden" name="health_onResultsPage" value="Y" />
         <input type="hidden" name="health_incrementTransactionId" value="Y" />
