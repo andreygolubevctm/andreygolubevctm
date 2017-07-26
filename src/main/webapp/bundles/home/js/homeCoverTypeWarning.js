@@ -96,9 +96,9 @@
 		}
 
 		// Go to occupancy only if its valid and first time into journey
-		if(isValid && proceedToOccupancy) {
-			_.defer(_.bind(meerkat.modules.journeyEngine.gotoPath, this, "occupancy"));
-		}
+		// if(isValid && proceedToOccupancy) {
+		// 	_.defer(_.bind(meerkat.modules.journeyEngine.gotoPath, this, "occupancy"));
+		// }
 
 		return isValid;
 	}
