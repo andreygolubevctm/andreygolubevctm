@@ -32,3 +32,52 @@ html.touch {
 		}
 	}
 }
+
+@media(@xs-only) {
+	.qtip.travelDestinationPopover {
+		display: none !important;
+	}
+}
+
+#destinations-popover {
+	padding-top: 15px;
+}
+
+.qtip {
+	&.travelDestinationPopover {
+		max-width: 900px;
+		background: #fff;
+
+		& > .qtip-content {
+			max-height: 100vh;
+
+			.region-title {
+				font-size: 16px;
+				margin: 5px 0;
+			}
+
+			ul {
+				list-style: none;
+				padding: 0;
+
+				.destination-item.active {
+					font-weight: bold;
+				}
+			}
+
+		}
+
+		.qtip-close {
+			&.qtip-icon {
+				right: 10px;
+				top: 5px;
+
+				.ui-icon-close {
+					font-size: 28px;
+					line-height: 20px;
+				}
+			}
+		}
+	}
+}
+

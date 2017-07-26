@@ -24,7 +24,7 @@
 					required="true"
 					decimal="${false}"
 					minValue="120000"
-					maxValue="1099999"
+					maxValue="1500000"
 					title="The total cost to rebuild the home"
 					additionalAttributes="${analyticsAttr}" />
 			</form_v2:row>

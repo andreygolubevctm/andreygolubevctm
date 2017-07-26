@@ -40,7 +40,7 @@
 		if ($navbar.data('bs.affix') && $navbar.data('bs.affix').options) {
 			$navbar.data('bs.affix').options.offset.top = $navbar.offset().top;
 		}
-		
+
 	}
 
 	function onReturnToPage(){
@@ -225,8 +225,8 @@
 			Results.onError('Sorry, an error occurred initialising page', 'results.tag', 'meerkat.modules.homeResults.initResults(); '+e.message, e);
 		}
 	}
-	
-	
+
+
 	function landlordFilter(results) {
 		var filters = meerkat.site.landlordFilters;
 		if (filters && !filters.showall) {

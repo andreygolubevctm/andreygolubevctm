@@ -46,9 +46,32 @@ ${newPage.init(pageContext.request, pageSettings)}
 <c:set var="assetUrl" value="/${pageSettings.getContextFolder()}assets/" />
 <c:set var="revision" value="${webUtils.buildRevisionAsQuerystringParam()}" />
 
+<%-- IP Address --%>
+<jsp:useBean id="ipAddressHandler" class="com.ctm.web.core.security.IPAddressHandler" scope="application" />
+<c:set var="ipAddress" value="${ipAddressHandler.getIPAddress(pageContext.request)}"  />
+
+<%-- Environment --%>
+<c:set var="environmentCode">
+	<c:choose>
+		<c:when test="${not empty param.overrideEnvironment}">${fn:toLowerCase(param.overrideEnvironment)}</c:when>
+		<c:otherwise>${fn:toLowerCase(environmentService.getEnvironmentAsString())}</c:otherwise>
+	</c:choose>
+</c:set>
+
 <%-- for Health V2 A/B testing --%>
 <c:set var="fileName" value="${pageSettings.getVerticalCode()}" />
 <c:if test="${not empty bundleFileName}"><c:set var="fileName" value="${bundleFileName}" /></c:if>
+
+<%-- Check and set call centre open status --%>
+<jsp:useBean id="openingHoursService" class="com.ctm.web.core.openinghours.services.OpeningHoursService" scope="page" />
+<c:set var="verticalId" value="${pageSettings.getVertical().getId()}"/>
+<c:set var="callCentreOpen" scope="request">${openingHoursService.isCallCentreOpenNow(verticalId, pageContext.getRequest())}</c:set>
+<c:set var="isCallCentreOpenClass">
+	<c:choose>
+		<c:when test="${callCentreOpen eq true}">callcentreopen</c:when>
+		<c:otherwise>callcentreclosed</c:otherwise>
+	</c:choose>
+</c:set>
 <!DOCTYPE html>
 <go:html>
 <head>
@@ -108,7 +131,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 
 <%-- There's a bug in the JSTL parser which eats up the spaces between dynamic classes like this so using c:out sorts it out --%>
 <c:set var="bodyClass">
-	<c:out value="${pageSettings.getVerticalCode()} ${callCentre ? ' callCentre simples' : ''} ${body_class_name}" />
+	<c:out value="${pageSettings.getVerticalCode()} ${callCentre ? ' callCentre simples' : ''} ${body_class_name} ${isCallCentreOpenClass}" />
 </c:set>
 </head>
 
@@ -336,12 +359,14 @@ ${newPage.init(pageContext.request, pageSettings)}
 						</c:if>
 						showLogging: <c:out value="${showLogging}" />,
 						environment: '${fn:toLowerCase(environmentService.getEnvironmentAsString())}',
+						environmentCode: '${environmentCode}',
 						serverDate: new Date(<fmt:formatDate value="${now}" type="DATE" pattern="yyyy"/>, <c:out value="${serverMonth}" />, <fmt:formatDate value="${now}" type="DATE" pattern="d"/>),
                         revision: '<core_v1:buildIdentifier />',
 						tokenEnabled: '${newPage.tokenEnabled}',
 						<c:if test="${param.callStack eq 'true'}">callStack: true,</c:if>
 						verificationToken: '${newPage.createTokenForNewPage(pageContext.request , data.current.transactionId ,pageSettings)}',
 						<c:if test="${not empty data.current.transactionId}">initialTransactionId: ${data.current.transactionId}, </c:if><%-- DO NOT rely on this variable to get the transaction ID, it gets wiped by the transactionId module. Use transactionId.get() instead --%>
+						ipaddress: '${ipAddress}',
 						urls:{
 							base: '${pageSettings.getBaseUrl()}',
 							exit: '${exitUrl}',

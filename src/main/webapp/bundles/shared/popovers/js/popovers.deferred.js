@@ -57,6 +57,11 @@
 							html += $(this).text();
 						});
 
+						if (settings.contentReplace) {
+							var contentReplaceParts = settings.contentReplace.split(',');
+							html = html.replace(contentReplaceParts[0], contentReplaceParts[1]);
+						}
+
 						returnString = html;
 
 						api.set('content.text', html);

@@ -32,6 +32,7 @@
     "shared/paymentFrequencyButtons",
     "shared/resultsMobileDisplayModeToggle",
     "shared/mobileNavButtons",
-    "shared/buttonTileDropdownSelector"
+    "shared/buttonTileDropdownSelector",
+    "shared/leadCapture"
   ]
 }
