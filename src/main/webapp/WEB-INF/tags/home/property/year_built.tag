@@ -9,7 +9,7 @@
 
 	<%-- Year Build --%>
 	<c:set var="fieldXpath" value="${xpath}/yearBuilt" />
-	<form_v2:row fieldXpath="${fieldXpath}" label="What year was the home built?">
+	<form_v2:row fieldXpath="${fieldXpath}" label="What year was the property built?">
 		<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Year Built" quoteChar="\"" /></c:set>
 		<field_v2:import_select xpath="${fieldXpath}"
 			required="true"

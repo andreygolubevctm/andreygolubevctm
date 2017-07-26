@@ -161,11 +161,11 @@
 
 	<%-- Number of tenants --%>
 	<c:set var="fieldXpath" value="${baseXpath}/landlordDetails/numberOfTenants" />
-	<form_v2:row fieldXpath="${fieldXpath}" label="How many tenants have you has in the past 12 months?" className="managesProperty">
+	<form_v2:row fieldXpath="${fieldXpath}" label="How many tenants have you had in the past 12 months?" className="managesProperty">
 		<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Rooms Used" quoteChar="\"" /></c:set>
 		<field_v2:array_select xpath="${fieldXpath}"
 			required="true"
-			title="How many tenants have you has in the past 12 months"
+			title="How many tenants have you had in the past 12 months"
 			items="=Please select...,0=None,1=1,2=2,3=3,4=4+"
 			extraDataAttributes="${analyticsAttr}" />
 	</form_v2:row>
