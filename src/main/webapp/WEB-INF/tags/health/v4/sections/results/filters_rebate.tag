@@ -8,12 +8,5 @@
             <input type="checkbox" name="{{= model.rebate.name }}" id="{{= model.rebate.name }}" class="checkbox-custom checkbox" value="Y" />
             <label for="{{= model.rebate.name }}">Apply the Australian Government Rebate to lower my upfront premium</label>
         </div>
-        <div class="income_container hidden">
-            <div class="rebate-label" id="filtersRebateLabel">
-                <span></span> <a href="javascript:;" class="filtersEditTier">EDIT</a>
-            </div>
-            <div class="selectedRebate" id="filtersSelectedRebateText"></div>
-            <div class="filter-income-holder"></div>
-        </div>
     </div>
 </core_v1:js_template>
