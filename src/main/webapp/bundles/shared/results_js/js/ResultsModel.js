@@ -527,21 +527,7 @@ var ResultsModel = {
 				return 1;
 			}
 		}
-
-		// sorting for real & wool for home & contents
-		if (Results.model.homeCustomSort != null) {
-			var resultsData = {
-				brandCodes: [resultA.brandCode, resultB.brandCode],
-				values: [valueA, valueB]
-			}
-			
-			var returnedResults = Results.model.homeCustomSort(resultsData);
-			// only returns a value if real and wool have the same premium
-			if (returnedResults) {
-				return returnedResults;
-			}
-		}
-
+		
 		if (valueA < valueB){
 			returnValue = -1;
 		} else if (valueA > valueB){
@@ -569,7 +555,6 @@ var ResultsModel = {
 		return returnValue;
 	},
 	landlordFilter: null,
-	homeCustomSort: null,
 	addFilter: function( filterBy, condition, options ){
 
 		if(
