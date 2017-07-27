@@ -70,13 +70,14 @@
 		if ((meerkat.site.isLandlord && landlordSwitch === 'N') || !isHomeRented()) {
 			meerkat.site.isLandlord = false;
 			meerkat.modules.home.toggleLandlords();
-
+			$(elements.coverType).find('option.notLandlord[value="' + $(elements.coverType).val() + '"]').prop('selected', 'selected');
 		// Landlords is active OR user wants to enable landlords.
 		} else if (meerkat.site.isLandlord || (landlordSwitch === 'Y' && isHomeRented())) {
 			meerkat.site.isLandlord = true;
 			meerkat.modules.home.toggleLandlords();
 			// hacky soultion to activate the radioBtn on for the first page
 			$('.isLandlord #home_occupancy_ownProperty_Y').prop('checked', true).change();
+			$(elements.coverType).find('option.isLandlord[value="' + $(elements.coverType).val() + '"]').prop('selected', 'selected');
 		// Otherwise, disable landlords.
 		} else {
 			meerkat.site.isLandlord = false;
@@ -136,6 +137,7 @@
 					if ($(elements.lookingForLandlord + ' input:checked').val() === "Y") {
 						meerkat.site.isLandlord = true;
 						meerkat.modules.home.toggleLandlords();
+						$(elements.coverType).find('option.isLandlord[value="' + $(elements.coverType).val() + '"]').prop('selected', 'selected');
 					}
 				}
 				$(elements.howOccupiedRow).slideDown(speed);
