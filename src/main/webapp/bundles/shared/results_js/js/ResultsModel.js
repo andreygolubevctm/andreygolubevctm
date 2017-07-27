@@ -497,7 +497,6 @@ var ResultsModel = {
 			}
 			var returnedResults = Results.model.landlordFilter(resultsData);
 			if (returnedResults) {
-				console.log('foobar');
 				resultA = returnedResults.resultA,
 				resultB = returnedResults.resultB
 			}
