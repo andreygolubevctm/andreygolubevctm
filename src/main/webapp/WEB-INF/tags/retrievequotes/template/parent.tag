@@ -19,10 +19,9 @@
         {{ var quotesList = obj.previousQuotes.result; }}
 
         {{ if(!$.isArray(quotesList)) quotesList = [quotesList]; }}
-    
+
         <%-- For each saved quote, render the template --%>
         {{ for(var i = 0; i < quotesList.length; i++) { }}
-
             {{ var vertical = meerkat.modules.retrievequotesListQuotes.getVerticalFromObject(quotesList[i]); }}
 
             {{ quotesList[i].verticalCode = vertical; }}
@@ -68,7 +67,9 @@
             {{ } else if(_.isEmpty(verticalData.inPast) && obj.verticalCode === "health") { }}
                 <a href="javascript:;" data-vertical="{{= obj.verticalCode }}" data-transactionId="{{= obj.transactionId }}" class="btn btn-block btn-secondary btn-latest"><span>Get Latest Results</span></a>
             {{ } }}
-            {{ if(obj.verticalCode !== "health") { }}
+            {{ if(obj.verticalCode === 'home') { }}
+                <a href="javascript:;" data-islandlord="{{= obj.home.isLandlord}}" data-vertical="{{= obj.verticalCode }}" data-transactionId="{{= obj.transactionId }}" class="btn btn-block btn-tertiary btn-amend"><span>Amend Quote</span></a>
+            {{ } else if(obj.verticalCode !== "health") { }}
                 <a href="javascript:;" data-vertical="{{= obj.verticalCode }}" data-transactionId="{{= obj.transactionId }}" class="btn btn-block btn-tertiary btn-amend"><span>Amend Quote</span></a>
             {{ } }}
         {{ } }}

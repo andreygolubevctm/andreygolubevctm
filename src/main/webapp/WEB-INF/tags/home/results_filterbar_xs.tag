@@ -24,7 +24,7 @@
 					required=""
 					omitPleaseChoose="Y"
 					className="form-control"
-					additionalValues="750,1000,1500,2000,3000,4000,5000"
+					additionalValues="750,1000,1500,2000,3000,4000,5000,6000"
 					additionalAttributes="${analyticsAttr}" />
 			</div>
 		</form_v2:row>
@@ -47,6 +47,31 @@
 						additionalAttributes="${analyticsAttr}" />
 			</div>
 		</form_v2:row>
+		<div class="dropdown landlordShowAll isLandlord mobile-drop">
+			<span>Only show products that include:</span>
+			<div class="landlord-filter-items">
+				<div class="checkbox">
+					<input type="checkbox" checked name="showall" id="showall_m" />
+					<label for="showall_m" class=""></label>
+					Show All
+				</div>
+				<div class="checkbox">
+					<input type="checkbox" name="lossrent" id="lossrent_m" />
+					<label for="lossrent_m"></label>
+					Loss of rent
+				</div>
+				<div class="checkbox">
+					<input type="checkbox" name="malt" id="malt_m" />
+					<label for="malt_m"></label>
+					Malicious damage
+				</div>
+				<div class="checkbox">
+					<input type="checkbox" name="rdef" id="rdef_m" />
+					<label for="rdef_m"></label>
+					Tenant default
+				</div>
+			</div>
+		</div>
 
 	</form_v2:fieldset>
 
