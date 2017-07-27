@@ -28,6 +28,7 @@
 	<c:set var="fieldXpath" value="${baseXpath}/property/address" />
 	<group_v2:elastic_address xpath="${fieldXpath}" type="R" />
 
+
 	<%-- MoP --%>
 	<c:set var="fieldXpath" value="${baseXpath}/underFinance" />
 	<c:set var="didExist" value="true" />
@@ -58,20 +59,50 @@
 
 	<%-- PPoR --%>
 	<c:set var="fieldXpath" value="${xpath}/principalResidence" />
-	<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Principal Residence - Tool Tip" quoteChar="\"" /></c:set>
-	<form_v2:row fieldXpath="${fieldXpath}" label="Is it your principal place of residence?" helpId="503" tooltipAttributes="${analyticsAttr}">
-		<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Principal Residence" quoteChar="\"" /></c:set>
-		<field_v2:array_radio xpath="${fieldXpath}"
-			className="principalResidence pretty_buttons"
-			required="true"
-			items="Y=Yes,N=No"
-			title="if this is your principal place of residence"
-			additionalLabelAttributes="${analyticsAttr}" />
-	</form_v2:row>
+
+	<c:choose>
+		<c:when test="${landlord eq true}">
+		<div class="isLandlord">
+			<field_v1:hidden
+				xpath="${fieldXpath}"
+				defaultValue="N" />
+		</div>
+		<div class="notLandlord">
+			<%-- PPoR --%>
+			<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Principal Residence - Tool Tip" quoteChar="\"" /></c:set>
+			<form_v2:row fieldXpath="${fieldXpath}" label="Is it your principal place of residence?" helpId="503" tooltipAttributes="${analyticsAttr}">
+				<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Principal Residence" quoteChar="\"" /></c:set>
+				<field_v2:array_radio xpath="${fieldXpath}"
+					className="principalResidence pretty_buttons"
+					required="true"
+					items="Y=Yes,N=No"
+					title="if this is your principal place of residence"
+					additionalLabelAttributes="${analyticsAttr}" />
+			</form_v2:row>
+		</div>
+		</c:when>
+
+		<c:otherwise>
+			<div class="isNormalJourney"></div>
+			<%-- PPoR --%>
+			<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Principal Residence - Tool Tip" quoteChar="\"" /></c:set>
+			<form_v2:row fieldXpath="${fieldXpath}" label="Is it your principal place of residence?" helpId="503" tooltipAttributes="${analyticsAttr}">
+				<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Principal Residence" quoteChar="\"" /></c:set>
+				<field_v2:array_radio xpath="${fieldXpath}"
+					className="principalResidence pretty_buttons"
+					required="true"
+					items="Y=Yes,N=No"
+					title="if this is your principal place of residence"
+					additionalLabelAttributes="${analyticsAttr}" />
+			</form_v2:row>
+		</c:otherwise>
+	</c:choose>
+
+
 
 	<%-- How Occupied --%>
 	<c:set var="fieldXpath" value="${xpath}/howOccupied" />
-	<form_v2:row fieldXpath="${fieldXpath}" label="How is the home occupied?" className="howOccupied">
+	<form_v2:row fieldXpath="${fieldXpath}" label="How is the property occupied?" className="howOccupied">
 		<field_v2:import_select xpath="${fieldXpath}"
 			required="true"
 			title="how the home is occupied"
@@ -81,6 +112,18 @@
 		<c:if test="${simplifiedJourneySplitTestActive}">
 			<div id="hasOccupiedContainer" data-selector="${go:nameFromXpath(fieldXpath)}"></div>
 		</c:if>
+	</form_v2:row>
+
+	<%-- Toggle landlords question set --%>
+	<c:set var="fieldXpath" value="${xpath}/isLandlord" />
+	<form_v2:row fieldXpath="${fieldXpath}" label="Are you looking for landlord cover?" className="lookingForLandlord">
+		<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Is Landlords" quoteChar="\"" /></c:set>
+		<field_v2:array_radio xpath="${fieldXpath}"
+			className="pretty_buttons"
+			required="true"
+			items="Y=Yes,N=No"
+			title="are you looking for landlord"
+			additionalLabelAttributes="${analyticsAttr}" />
 	</form_v2:row>
 
 	<%-- When Moved in Year + Month --%>
@@ -105,8 +148,15 @@
 			url="/WEB-INF/option_data/month_full.html"/>
 	</form_v2:row>
 
+	<c:set var="coverTypeWarningCopy" value="coverTypeWarningCopy" />
+	<c:set var="coverTypeWarningCopyLandlord" value="coverTypeWarningCopyLandlord" />
+
 	<core_v1:js_template id="cover-type-warning-template">
-		<content:get key="coverTypeWarningCopy"/>
+		<content:get key="${coverTypeWarningCopy}"/>
+	</core_v1:js_template>
+
+	<core_v1:js_template id="cover-type-warning-template-landlord">
+		<content:get key="${coverTypeWarningCopyLandlord}"/>
 	</core_v1:js_template>
 
 	<field_v1:hidden xpath="${xpath}/coverTypeWarning/chosenOption"/>

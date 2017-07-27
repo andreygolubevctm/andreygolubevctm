@@ -10,6 +10,10 @@
 	<c:set var="fromBrochure" scope="request" value="${true}"/>
 </c:if>
 
+<c:if test="${empty param.landlord}">
+	<c:set var="landlord" scope="request" value="${false}" />
+</c:if>
+
 <c:set var="priceDisplayMode"><content:get key="resultsDisplayMode" /></c:set>
 <c:if test="${not empty param.display and (param.display eq 'price' or param.display eq 'features')}">
 	<c:set var="priceDisplayMode" value="${param.display}"/>
@@ -18,6 +22,7 @@
 <c:set var="defaultToHomeQuote"><content:get key="makeHomeQuoteMainJourney" /></c:set>
 <home:lead_capture_settings />
 {
+	isLandlord: <c:out value="${landlord}" />,
 	isCallCentreUser: <c:out value="${not empty callCentre}"/>,
 	isFromBrochureSite: <c:out value="${fromBrochure}"/>,
 	brochureValues: {},
