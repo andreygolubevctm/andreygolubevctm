@@ -89,7 +89,7 @@
 										{{ if(typeof hospitalCover !== 'undefined') { }}
 											</div>
 											<div class="{{ if(typeof extrasCover !== 'undefined'){ }}col-xs-6{{ } }} text-right">
-												<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn btn-secondary btn-sm btn-block download-hospital-brochure col-xs-12" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>View Brochure</a>
+												<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn btn-secondary btn-sm btn-block download-hospital-brochure col-xs-12" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>View brochure</a>
 											</div>
 										</div>
 										{{ } }}
