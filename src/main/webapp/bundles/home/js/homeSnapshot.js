@@ -85,7 +85,7 @@
             $('#home_policyHolder_jointFirstName'),
             $('#home_policyHolder_jointLastName'),
             $('#home_policyHolder_jointDob'),
-						$('#home_coverAmounts_replaceContentsCostLandlordentry')
+            $('#home_coverAmounts_replaceContentsCostLandlordentry')
         ];
 
         $(fieldsArray).each(function () {

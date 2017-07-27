@@ -117,6 +117,7 @@
 	<%-- Toggle landlords question set --%>
 	<c:set var="fieldXpath" value="${xpath}/isLandlord" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="Are you looking for landlord cover?" className="lookingForLandlord">
+		<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Is Landlords" quoteChar="\"" /></c:set>
 		<field_v2:array_radio xpath="${fieldXpath}"
 			className="pretty_buttons"
 			required="true"

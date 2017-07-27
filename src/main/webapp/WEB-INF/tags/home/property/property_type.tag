@@ -1,4 +1,4 @@
-<%@ tag description="Property Description" %>
+<%@ tag description="Property Type" %>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 

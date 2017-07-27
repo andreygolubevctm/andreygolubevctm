@@ -309,7 +309,7 @@
 									{{ } else { }}
 										<li>Has not made home and/or contents claims in the last 5 years</li>
 									{{ } }}
-							{{ } }}
+								{{ } }}
 							</ul>
 
 						</div>

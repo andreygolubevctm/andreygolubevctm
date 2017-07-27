@@ -15,7 +15,7 @@
 <%@ attribute name="maxValue" 			required="false" 	rtexprvalue="true"  description="Set a maximum number for input value" %>
 <%@ attribute name="className" 			required="false" 	rtexprvalue="true"	description="additional css class attribute" %>
 <%@ attribute name="title" 				required="true"	 	rtexprvalue="true"	description="The subject of the field (e.g. 'regular driver')" %>
-<%@ attribute name="landlordFix" 				required="false"	 	rtexprvalue="true"	description="fixing multiple ids causing errors for landlord" %>
+<%@ attribute name="landlordFix" 		required="false"	 	rtexprvalue="true"	description="fixing multiple ids causing errors for landlord" %>
 <%@ attribute name="pattern" 			required="false"	rtexprvalue="true"	description="Allows the user to provide a pattern for input, and also makes some devices show numeric keypads." %>
 
 <%@ attribute name="percentage" 		required="false" 	rtexprvalue="true"	description="percentage rule validation, expects digits only (eg '10' for 10%)" %>
