@@ -47,11 +47,7 @@
 	}
 
 	function isHomeRented() {
-		if($(elements.howOccupied).val() === "Rented to tenants") {
-			return true;
-		} else {
-			return false;
-		}
+		return $(elements.howOccupied).val() === "Rented to tenants";
 	}
 
 	function homeOccupiedChange(speed) {
@@ -169,34 +165,13 @@
 	}
 	function applyEventListeners() {
 		$(document).ready(function() {
-			$(elements.howOccupied).on('change', function() {
-				homeOccupiedChange();
-			});
-
-			$('#'+elements.whenMovedInYear).on('change', function() {
-				yearSelected();
-			});
-
-			$('input[name='+elements.name+'_ownProperty], '+elements.howOccupied).on('change', function() {
-				togglePropertyOccupancyFields();
-			});
-
-			$(elements.lookingForLandlord + ' input:radio').on('change', function() {
-				toggleLandlords();
-			});
-
-			$(elements.validRentalLease + ' input:radio').on('change', function() {
-				togglePendingRentalLease();
-			});
-
-			$('input[name='+elements.principalResidence+']').on('change', function() {
-				togglePropertyOccupancyFields();
-			});
-
-			$(elements.coverType).on('blur', function() {
-				toggleUnderFinanceQuestion();
-
-			});
+			$(elements.howOccupied).on('change', homeOccupiedChange);
+			$('#'+elements.whenMovedInYear).on('change', yearSelected);
+			$('input[name='+elements.name+'_ownProperty], '+elements.howOccupied).on('change', togglePropertyOccupancyFields);
+			$(elements.lookingForLandlord + ' input:radio').on('change', toggleLandlords);
+			$(elements.validRentalLease + ' input:radio').on('change', togglePendingRentalLease);
+			$('input[name='+elements.principalResidence+']').on('change', togglePropertyOccupancyFields);
+			$(elements.coverType).on('blur', toggleUnderFinanceQuestion);
 		});
 	}
 	/* main entrypoint for the module to run first */
