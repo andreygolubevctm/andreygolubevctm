@@ -19,6 +19,7 @@
         listenersRegistered = false,
         $resultsHeaderBg,
         $affixOnScroll,
+        $bodyElement,
         $resultsContainer,
         navBarHeight,
         topStartOffset = 0,
@@ -36,6 +37,7 @@
 
         $resultsHeaderBg = $('.resultsHeadersBg');
         $affixOnScroll = $('.affixOnScroll');
+        $bodyElement = $('body');
         $resultsContainer = $('.resultsContainer');
         navBarHeight = $(settings.navbarSelector).outerHeight();
 
@@ -113,11 +115,20 @@
         if (isWindowInAffixPosition() === true) {
 
             if (isContentAffixed() === false) {
-                $affixOnScroll.addClass("affixed");
-                $resultsContainer.addClass("affixed-settings");
+                var skipAffix = false;
+                if ( $bodyElement.hasClass('health') && $bodyElement.hasClass('dontAffixXsBanners')) {
+                    skipAffix = true;
+                }
+                if (!skipAffix) {
+                    $affixOnScroll.addClass("affixed");
+                    $resultsContainer.addClass("affixed-settings");
+                }
             }
 
             if (isWindowInCompactPosition() === true && isContentCompact() === false) {
+                if ( $bodyElement.hasClass('health') && $bodyElement.hasClass('dontAffixXsBanners')) {
+                    return;
+                }
                 $affixOnScroll.addClass("affixed-compact");
                 $resultsContainer.find(".result .productSummary").addClass("compressed");
                 $(document).trigger('headerAffixed');
@@ -134,8 +145,11 @@
     }
 
     function removeCompactClasses() {
-        $affixOnScroll.removeClass("affixed-compact");
         $resultsContainer.find(".result .productSummary").removeClass("compressed");
+        if ( $bodyElement.hasClass('health') && $bodyElement.hasClass('dontAffixXsBanners')) {
+            return;
+        }
+        $affixOnScroll.removeClass("affixed-compact");
     }
 
     function removeAffixClasses() {

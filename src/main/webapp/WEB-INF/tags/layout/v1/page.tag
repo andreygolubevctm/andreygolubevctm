@@ -131,7 +131,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 
 <%-- There's a bug in the JSTL parser which eats up the spaces between dynamic classes like this so using c:out sorts it out --%>
 <c:set var="bodyClass">
-	<c:out value="${pageSettings.getVerticalCode()} ${callCentre ? ' callCentre simples' : ''} ${body_class_name} ${isCallCentreOpenClass}" />
+	<c:out value="${pageSettings.getVerticalCode()} ${callCentre ? ' callCentre simples' : ''} ${body_class_name} ${isCallCentreOpenClass} dontAffixXsBanners" />
 </c:set>
 </head>
 
@@ -152,7 +152,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 	<!-- body content -->
 		<header class="header-wrap">
 
-			<div class="header-top dropdown-interactive-base navMenu-row-fixed">
+			<div class="header-top dropdown-interactive-base navMenu-row-fixed dontAffixXsBanners">
 
 			<div class="dynamicTopHeaderContent">
 				<content:get key="topHeaderContent" />

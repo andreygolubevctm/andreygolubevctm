@@ -129,7 +129,7 @@
         </jsp:attribute>
 
         <jsp:attribute name="xs_results_pagination">
-            <div class="navbar navbar-default xs-results-pagination navMenu-row-fixed visible-xs">
+            <div class="navbar navbar-default xs-results-pagination visible-xs helloYou">
                 <div class="container">
                     <ul class="nav navbar-nav ">
                         <li class="navbar-text center hidden" data-results-pagination-pagetext="true"></li>

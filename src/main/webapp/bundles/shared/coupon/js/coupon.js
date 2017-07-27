@@ -215,7 +215,10 @@
 
 				// Clear the min height and apply the padding top to the body
 				$headerWrap.css({'min-height': ''});
-				$bodyWithCoupon.css({'padding-top': newPaddingTop + 'px'});
+
+                if (!($bodyWithCoupon.hasClass('dontAffixXsBanners') && $bodyWithCoupon.hasClass('health')) ){
+                    $bodyWithCoupon.css({'padding-top': newPaddingTop + 'px'});
+				}
 
 				// Get the results affixed
 				var $dockedResultsHeaders = $('.affixed-settings .result');
