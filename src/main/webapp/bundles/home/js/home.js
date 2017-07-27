@@ -515,7 +515,11 @@
 	}
 
 	function getVerticalFilter() {
-		return $('#home_coverType').val() || null;
+		var homeCoverType = $('#home_coverType').val() || null;
+		if (homeCoverType && meerkat.site.isLandlord) {
+			homeCoverType = 'Landlord ' + homeCoverType;
+		}
+		return homeCoverType;
 	}
 	// Build an object to be sent by SuperTag tracking.
 	function getTrackingFieldsObject(special_case){
