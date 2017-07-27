@@ -117,9 +117,25 @@ public class InInIcwsService {
 								// Get messages of agent activity (should give us the current phone call status)
 								.flatMap(s -> getInteractionId(cicUrl, connectionResp))
 								// Pause or resume the call
-								.flatMap(iId -> securePauseRequest(cicUrl, securePauseType, iId, connectionResp ))
+								.flatMap(interaction -> securePauseRequest(cicUrl, securePauseType, interaction , connectionResp ))
 							    .flatMap(pauseResp -> Observable.just(PauseResumeResponse.success(pauseResp.getInteractionId())))
 								.onErrorReturn(throwable -> handleSecurePauseError(securePauseType, agentUsername, throwable))
+				);
+	}
+
+
+	public Observable<String> getCallId(final String agentUserName){
+		String cicUrl = inInConfig.getCicPrimaryUrl();
+		return connection(cicUrl)
+				.flatMap(connectionResp ->
+						// Put a subscription on agent activity
+						queueSubscription(cicUrl, agentUserName, connectionResp)
+								.delay(1, TimeUnit.SECONDS)
+								// Get messages of agent activity (should give us the current phone call status)
+								.flatMap(s -> getInteractionId(cicUrl, connectionResp))
+								.flatMap(interaction -> Observable.just(interaction.getAttributes()))
+								.flatMap(interactionAttributes -> Observable.just(interactionAttributes.getCallIdKey()))
+						.onErrorReturn(throwable ->  "error")
 				);
 	}
 
@@ -203,26 +219,25 @@ public class InInIcwsService {
 		return messageClient.get(settings).flatMap(Observable::<Message>from);
 	}
 
-	private Observable<String> getInteractionId(final String cicUrl, final ResponseEntity<ConnectionResp> connectionResp) {
+	private Observable<Interaction> getInteractionId(final String cicUrl, final ResponseEntity<ConnectionResp> connectionResp) {
 		final Observable<Message> messages = getMessages(cicUrl, connectionResp);
-		final Observable<Optional<String>> interactionId = messages
+		final Observable<Optional<Interaction>> interaction = messages
 				// Look at messages that have added or changed interactions
 				.filter(message -> message.getInteractionsAdded().size() > 0 || message.getInteractionsChanged().size() > 0)
 				// Smoosh all those interactions into a new stream
 				.flatMap(msgs -> Observable.merge(Observable.from(msgs.getInteractionsAdded()), Observable.from(msgs.getInteractionsChanged())))
-				.map(interaction -> {
-					LOGGER.info("Possible interaction: {}", interaction);
-					return interaction;
+				.map(interactionDetails -> {
+					LOGGER.info("Possible interaction: {}", interactionDetails);
+					return interactionDetails;
 				})
 				// Find interaction with valid call state
 				.filter(this::isValidInteractionState)
-				.map(Interaction::getInteractionId)
 				.map(Optional::of)
 				.firstOrDefault(Optional.empty());
 
-		return interactionId
+		return interaction
 				.flatMap(s -> {
-					LOGGER.debug("getInteractionId: {}", s);
+					LOGGER.debug("getInteractionId: {}", s.get().getInteractionId());
 					if (s.isPresent()) {
 						return Observable.just(s.get());
 					} else {
@@ -240,9 +255,9 @@ public class InInIcwsService {
      * Trigger the secure pause/resume.
 	 * @return InteractionId
 	 */
-	private Observable<SecurePauseResult> securePauseRequest(final String cicUrl, final SecurePauseType securePauseType, final String interactionId, final ResponseEntity<ConnectionResp> connectionResp) {
+	private Observable<SecurePauseResult> securePauseRequest(final String cicUrl, final SecurePauseType securePauseType, final Interaction interaction, final ResponseEntity<ConnectionResp> connectionResp) {
 		final HttpHeaders headers = connectionResp.getHeaders();
-		final String url = createSecurePauseUrl(cicUrl, interactionId, headers);
+		final String url = createSecurePauseUrl(cicUrl, interaction.getInteractionId(), headers);
 		final SecurePause securePause = new SecurePause(securePauseType, 0);
 		RestSettings<SecurePause> settings = authenticatedRestSettings(RestSettings.<SecurePause>builder(), connectionResp)
 				.request(securePause)
@@ -250,7 +265,7 @@ public class InInIcwsService {
 				.url(url)
 				.retryAttempts(ATTEMPTS).retryDelay(DELAY)
 				.build();
-		return securePauseClient.post(settings).flatMap(body -> Observable.just(new SecurePauseResult(interactionId, body)));
+		return securePauseClient.post(settings).flatMap(body -> Observable.just(new SecurePauseResult(interaction.getAttributes().getCallIdKey(), body)));
 	}
 
 	private String createQueueSubscriptionUrl(final String cicUrl, final String sessionId, final String subscriptionName) {
