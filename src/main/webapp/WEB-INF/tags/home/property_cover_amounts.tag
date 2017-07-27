@@ -42,6 +42,38 @@
 
 	<jsp:body>
 		<form_v2:fieldset legend="">
+			
+					<div class="notLandlord">
+						<%-- Contents Cost --%>
+						<c:set var="fieldXpath" value="${xpath}/replaceContentsCost" />
+						<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Cost to Replace Contents" quoteChar="\"" /></c:set>
+						<form_v2:row fieldXpath="${fieldXpath}" label="What is the total cost to replace the contents at today's prices?"  helpId="509" id="replaceContentsCostRow" tooltipAttributes="${analyticsAttr}">
+							<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Cost to Replace Contents" quoteChar="\"" /></c:set>
+							<field_v2:currency xpath="${fieldXpath}"
+								required="true"
+								decimal="${false}"
+								minValue="20000"
+							  maxValue="349999"
+								title="The total contents replacement cost"
+								additionalAttributes="${analyticsAttr}" />
+						</form_v2:row>
+
+						<%-- Contents above policy Limits --%>
+						<c:set var="fieldXpath" value="${xpath}/abovePolicyLimits" />
+						<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Policy Limits - Tool Tip" quoteChar="\"" /></c:set>
+						<form_v2:row fieldXpath="${fieldXpath}" label="<strong>Specify contents above policy limits</strong></br>Do you wish to cover specified contents above the policy limits?"  helpId="511" id="abovePolicyLimitsRow" tooltipAttributes="${analyticsAttr}">
+							<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Policy Limits" quoteChar="\"" /></c:set>
+							<field_v2:array_radio xpath="${fieldXpath}"
+								required="true"
+								className="pretty_buttons abovePolicyLimitsRadio"
+								items="Y=Yes,N=No"
+								title="if you wish to cover specified contents above the policy limits"
+								additionalLabelAttributes="${analyticsAttr}" />
+						</form_v2:row>
+					</div>
+			
+			
+			
 		<div class="isLandlord">
 			<%-- Contents Cost --%>
 			<c:set var="fieldXpath" value="${xpath}/replaceContentsCost" />
@@ -56,35 +88,6 @@
 					maxValue="100000"
 					title="The total contents replacement cost"
 					additionalAttributes="${analyticsAttr}" />
-			</form_v2:row>
-		</div>
-
-		<div class="notLandlord">
-			<%-- Contents Cost --%>
-			<c:set var="fieldXpath" value="${xpath}/replaceContentsCost" />
-			<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Cost to Replace Contents" quoteChar="\"" /></c:set>
-			<form_v2:row fieldXpath="${fieldXpath}" label="What is the total cost to replace the contents at today's prices?"  helpId="509" id="replaceContentsCostRow" tooltipAttributes="${analyticsAttr}">
-				<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Cost to Replace Contents" quoteChar="\"" /></c:set>
-				<field_v2:currency xpath="${fieldXpath}"
-					required="true"
-					decimal="${false}"
-					minValue="20000"
-				  maxValue="349999"
-					title="The total contents replacement cost"
-					additionalAttributes="${analyticsAttr}" />
-			</form_v2:row>
-
-			<%-- Contents above policy Limits --%>
-			<c:set var="fieldXpath" value="${xpath}/abovePolicyLimits" />
-			<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Policy Limits - Tool Tip" quoteChar="\"" /></c:set>
-			<form_v2:row fieldXpath="${fieldXpath}" label="<strong>Specify contents above policy limits</strong></br>Do you wish to cover specified contents above the policy limits?"  helpId="511" id="abovePolicyLimitsRow" tooltipAttributes="${analyticsAttr}">
-				<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Policy Limits" quoteChar="\"" /></c:set>
-				<field_v2:array_radio xpath="${fieldXpath}"
-					required="true"
-					className="pretty_buttons abovePolicyLimitsRadio"
-					items="Y=Yes,N=No"
-					title="if you wish to cover specified contents above the policy limits"
-					additionalLabelAttributes="${analyticsAttr}" />
 			</form_v2:row>
 		</div>
 

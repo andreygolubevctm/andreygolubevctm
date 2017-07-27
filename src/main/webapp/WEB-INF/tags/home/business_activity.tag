@@ -50,7 +50,7 @@
 
 	<%-- Business Rooms --%>
 	<c:set var="fieldXpath" value="${xpath}/rooms" />
-	<form_v2:row fieldXpath="${fieldXpath}" label="How many rooms are used for business?" className="businessRooms">
+	<form_v2:row fieldXpath="${fieldXpath}" label="How many rooms are  used for business?" className="businessRooms">
 		<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Rooms Used" quoteChar="\"" /></c:set>
 		<field_v2:array_select xpath="${fieldXpath}"
 			required="true"

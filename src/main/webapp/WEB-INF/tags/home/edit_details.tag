@@ -287,7 +287,6 @@
 						<div class="col-xs-12">
 							<p class="detail-title">Previous Cover</p>
 							<ul>
-								{{ console.log(landlordInsuranceLast5Years, landlordInsuranceClaims) }}
 								{{ if(meerkat.site.isLandlord) { }}
 									{{ if(landlordInsuranceLast5Years) { }}
 											<li>Has had landlord insurance in the last 5 years</li>
