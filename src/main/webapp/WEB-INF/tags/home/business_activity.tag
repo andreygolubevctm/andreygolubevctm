@@ -54,7 +54,7 @@
 		<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Rooms Used" quoteChar="\"" /></c:set>
 		<field_v2:array_select xpath="${fieldXpath}"
 			required="true"
-			title="how many rooms are used for busines"
+			title="how many rooms are used for business"
 			items="=Please select...,1=1,2=2,3=3,4=4,5=5,6=6,7=7+"
 			extraDataAttributes="${analyticsAttr}" />
 	</form_v2:row>
