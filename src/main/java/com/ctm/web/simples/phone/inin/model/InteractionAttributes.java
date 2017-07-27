@@ -4,6 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class InteractionAttributes {
 
+	public String getCallIdKey() {
+		return callIdKey;
+	}
+
 	@JsonProperty("Eic_CallIdKey")
 	public String callIdKey;
 

@@ -51,6 +51,7 @@
 	function set( newTransactionId, newRootId ) {
 		if(newTransactionId != transactionId) {
 			meerkat.messaging.publish(moduleEvents.CHANGED, {transactionId: transactionId});
+            meerkat.modules.simplesInteraction.storeCallId(newTransactionId);
 		}
 		transactionId = newTransactionId;
 		if(typeof newRootId != 'undefined') {
