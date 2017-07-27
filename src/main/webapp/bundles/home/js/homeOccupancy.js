@@ -47,11 +47,7 @@
 	}
 
 	function isHomeRented() {
-		if($(elements.howOccupied).val() === "Rented to tenants") {
-			return true;
-		} else {
-			return false;
-		}
+		return $(elements.howOccupied).val() === "Rented to tenants";
 	}
 
 	function homeOccupiedChange(speed) {
@@ -74,13 +70,14 @@
 		if ((meerkat.site.isLandlord && landlordSwitch === 'N') || !isHomeRented()) {
 			meerkat.site.isLandlord = false;
 			meerkat.modules.home.toggleLandlords();
-
+			$(elements.coverType).find('option.notLandlord[value="' + $(elements.coverType).val() + '"]').prop('selected', 'selected');
 		// Landlords is active OR user wants to enable landlords.
 		} else if (meerkat.site.isLandlord || (landlordSwitch === 'Y' && isHomeRented())) {
 			meerkat.site.isLandlord = true;
 			meerkat.modules.home.toggleLandlords();
 			// hacky soultion to activate the radioBtn on for the first page
 			$('.isLandlord #home_occupancy_ownProperty_Y').prop('checked', true).change();
+			$(elements.coverType).find('option.isLandlord[value="' + $(elements.coverType).val() + '"]').prop('selected', 'selected');
 		// Otherwise, disable landlords.
 		} else {
 			meerkat.site.isLandlord = false;
@@ -140,6 +137,7 @@
 					if ($(elements.lookingForLandlord + ' input:checked').val() === "Y") {
 						meerkat.site.isLandlord = true;
 						meerkat.modules.home.toggleLandlords();
+						$(elements.coverType).find('option.isLandlord[value="' + $(elements.coverType).val() + '"]').prop('selected', 'selected');
 					}
 				}
 				$(elements.howOccupiedRow).slideDown(speed);
@@ -169,34 +167,13 @@
 	}
 	function applyEventListeners() {
 		$(document).ready(function() {
-			$(elements.howOccupied).on('change', function() {
-				homeOccupiedChange();
-			});
-
-			$('#'+elements.whenMovedInYear).on('change', function() {
-				yearSelected();
-			});
-
-			$('input[name='+elements.name+'_ownProperty], '+elements.howOccupied).on('change', function() {
-				togglePropertyOccupancyFields();
-			});
-
-			$(elements.lookingForLandlord + ' input:radio').on('change', function() {
-				toggleLandlords();
-			});
-
-			$(elements.validRentalLease + ' input:radio').on('change', function() {
-				togglePendingRentalLease();
-			});
-
-			$('input[name='+elements.principalResidence+']').on('change', function() {
-				togglePropertyOccupancyFields();
-			});
-
-			$(elements.coverType).on('blur', function() {
-				toggleUnderFinanceQuestion();
-
-			});
+			$(elements.howOccupied).on('change', homeOccupiedChange);
+			$('#'+elements.whenMovedInYear).on('change', yearSelected);
+			$('input[name='+elements.name+'_ownProperty], '+elements.howOccupied).on('change', togglePropertyOccupancyFields);
+			$(elements.lookingForLandlord + ' input:radio').on('change', toggleLandlords);
+			$(elements.validRentalLease + ' input:radio').on('change', togglePendingRentalLease);
+			$('input[name='+elements.principalResidence+']').on('change', togglePropertyOccupancyFields);
+			$(elements.coverType).on('blur', toggleUnderFinanceQuestion);
 		});
 	}
 	/* main entrypoint for the module to run first */

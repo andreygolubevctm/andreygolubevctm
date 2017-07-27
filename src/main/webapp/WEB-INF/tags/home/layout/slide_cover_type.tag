@@ -25,7 +25,7 @@
 							<c:set var="fieldXpath" value="${xpath}/occupancy/ownProperty" />
 							<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Landlord or Occupant"
 																										quoteChar="\"" /></c:set>
-							<form_v2:row fieldXpath="${fieldXpath}" label="Are you the landlord or the tenant?">
+							<form_v2:row fieldXpath="${fieldXpath}" label="Are you the landlord or the occupant?">
 								<field_v2:array_radio xpath="${fieldXpath}"
 									className="ownProperty radioIcons"
 									required="true"
