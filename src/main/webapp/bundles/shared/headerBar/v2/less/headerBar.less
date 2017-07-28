@@ -103,10 +103,6 @@ body > div > header {
   body[data-step="results"] {
     padding-top: @navbar-height;
 
-    &.health.dontAffixXsBanners {
-      padding-top: 0;
-    }
-
     &.priceMode {
       // No padding in price/horizontal mode
       padding-top: 0;
@@ -232,10 +228,6 @@ body > div > header {
     .fixedInPlace;
     top: 0; //Overlap the padding top on the body with this.
     z-index: (@zindex-dropdown-interactive-base - 100);
-
-    .health > div > header > &.dontAffixXsBanners {
-      position: relative;
-    }
 
     .benefits-component {
       .scrollable {

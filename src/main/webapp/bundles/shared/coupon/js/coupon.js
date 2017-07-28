@@ -8,7 +8,8 @@
 
 	var events = {
 		coupon: {
-			COUPON_LOADED : "COUPON_LOADED"
+			COUPON_LOADED : "COUPON_LOADED",
+            PADDING_TOP_CHANGED : "PADDING_TOP_CHANGED"
 		}
 	};
 
@@ -216,9 +217,8 @@
 				// Clear the min height and apply the padding top to the body
 				$headerWrap.css({'min-height': ''});
 
-                if (!($bodyWithCoupon.hasClass('dontAffixXsBanners') && $bodyWithCoupon.hasClass('health')) ){
-                    $bodyWithCoupon.css({'padding-top': newPaddingTop + 'px'});
-				}
+                $bodyWithCoupon.css({'padding-top': newPaddingTop + 'px'});
+                meerkat.messaging.publish(events.coupon.PADDING_TOP_CHANGED);
 
 				// Get the results affixed
 				var $dockedResultsHeaders = $('.affixed-settings .result');
@@ -266,8 +266,8 @@
 	}
 
 	/*
-	 * Vlidation logic when user submit the coupon
-	 * It is not using the jounery jQuery validation as we still want the user to be able to progress the jounery with failed validation
+	 * Validation logic when user submit the coupon
+	 * It is not using the jounery jQuery validation as we still want the user to be able to progress the journey with failed validation
 	 */
 	function validateField() {
 
