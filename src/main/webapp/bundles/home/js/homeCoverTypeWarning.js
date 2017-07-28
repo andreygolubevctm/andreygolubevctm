@@ -37,9 +37,6 @@
 
 	function validateSelections(proceedToOccupancy) {
 		var isValid = true;
-		var params = new URLSearchParams(window.location.search.substring(1));
-		var isCoverTypeParamPresent = false;
-		var isOwnPropertyParamPresent = false;
 		var navigation = 'start';
 
 		if (meerkat.modules.journeyEngine.getCurrentStep().navigationId === navigation && $("input[name=home_occupancy_ownProperty]:checked").val() === 'N'
@@ -98,16 +95,9 @@
 			isValid = false;
 		}
 
-		// check if the coverType & ownProperty params are present in the url
-		if (params.get("coverType") && params.get("ownProperty")) {
-            isCoverTypeParamPresent = true;
-            isOwnPropertyParamPresent = true;
-        }
-
-
         // Go to occupancy only if its valid and first time into journey and
 		// if the coverType and ownProperty params are present
-        if(isValid && proceedToOccupancy && isCoverTypeParamPresent && isOwnPropertyParamPresent) {
+        if(isValid && proceedToOccupancy && meerkat.site.brochureValues.coverType && meerkat.site.brochureValues.ownProperty) {
           _.defer(_.bind(meerkat.modules.journeyEngine.gotoPath, this, "occupancy"));
         }
 
