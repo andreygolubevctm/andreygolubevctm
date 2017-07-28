@@ -38,8 +38,6 @@
             var $checked = $elements.currentCover.filter(':checked'),
                 hideField = !$checked.length || ($checked.val() === 'N') || ($checked.val() === 'Y' && meerkat.modules.age.isLessThan31Or31AndBeforeJuly1($elements.dob.val()));
 
-            // console.log('hideField', hideField);
-
             meerkat.modules.fieldUtilities.toggleVisible(
                 $elements.primaryCoverLoading,
                 hideField
