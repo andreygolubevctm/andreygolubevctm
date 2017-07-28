@@ -9,6 +9,18 @@
         _applyEventListeners();
         _eventSubscriptions();
         _setupAppFields();
+
+        _.defer(function() {
+            var $checked = $elements.currentCover.filter(':checked');
+            if ($checked.length) {
+                $checked.change();
+            } else {
+                meerkat.modules.fieldUtilities.toggleVisible(
+                    $elements.partnerCoverLoading,
+                    true
+                );
+            }
+        });
     }
 
     function _setupFields() {
@@ -28,15 +40,6 @@
 
         $elements.partnerQuestionSet = $elements.partnerDOBD.add($elements.currentCover).add($elements.partnerHeading);
 
-        var $checked = $elements.currentCover.filter(':checked');
-        if ($checked.length) {
-            $checked.change();
-        } else {
-            meerkat.modules.fieldUtilities.toggleVisible(
-                $elements.partnerCoverLoading,
-                true
-            );
-        }
     }
 
     function _applyEventListeners() {
