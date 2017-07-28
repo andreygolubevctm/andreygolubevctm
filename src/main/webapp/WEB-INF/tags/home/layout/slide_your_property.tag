@@ -32,5 +32,6 @@
 
 	</layout_v1:slide_columns>
 
-	<home:property_cover_amounts xpath="${xpath}/coverAmounts" />
+	<home:property_cover_amounts
+			xpath="${xpath}/coverAmounts" />
 </layout_v1:slide>
