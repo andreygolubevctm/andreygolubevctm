@@ -135,7 +135,7 @@ public class InInIcwsService {
 								.flatMap(s -> getInteractionId(cicUrl, connectionResp))
 								.flatMap(interaction -> Observable.just(interaction.getAttributes()))
 								.flatMap(interactionAttributes -> Observable.just(interactionAttributes.getCallIdKey()))
-						.onErrorReturn(throwable ->  "error")
+								.onErrorReturn(throwable ->  throwable.getMessage())
 				);
 	}
 

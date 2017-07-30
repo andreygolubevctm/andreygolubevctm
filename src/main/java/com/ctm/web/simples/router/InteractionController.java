@@ -63,13 +63,14 @@ public class InteractionController extends CommonQuoteRouter {
             AuthenticatedData authenticatedData = sessionDataServiceBean.getAuthenticatedSessionData(request);
             if (authenticatedData != null && authenticatedData.getUid() != null) {
                 String callId = inInIcwsService.getCallId(authenticatedData.getUid()).observeOn(Schedulers.io()).toBlocking().first();
-                if(null != callId && !callId.equals("error")) {
+                if(null != callId && !callId.equals("No value present")) {
                     interactionService.persistInteractionId(transId, callId);
                     return "success";
+                } else {
+                    LOGGER.error("Not call Id exists for the user:" + authenticatedData.getUid());
                 }
             }
         }
-        response.setStatus(HttpStatus.SERVICE_UNAVAILABLE.value());
         return "fail";
     }
 }
