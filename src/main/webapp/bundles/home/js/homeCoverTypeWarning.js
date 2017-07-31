@@ -26,7 +26,7 @@
 			dialogTitleXS: "Oops, are you renting your current property?",
 			buttons: ["Switch to contents only", "I am the landlord"]
 		}
-	}
+	};
 
 	function initHomeCoverTypeWarning() {
 		isLandlord =  meerkat.site.isLandlord;
