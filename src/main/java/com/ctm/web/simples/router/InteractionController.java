@@ -67,10 +67,11 @@ public class InteractionController extends CommonQuoteRouter {
                     interactionService.persistInteractionId(transId, callId);
                     return "success";
                 } else {
-                    LOGGER.error("Not call Id exists for the user:" + authenticatedData.getUid());
+                    LOGGER.error("No call Id exists for the user:" + authenticatedData.getUid());
                 }
             }
         }
+        response.setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
         return "fail";
     }
 }
