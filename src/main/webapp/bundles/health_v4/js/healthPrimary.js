@@ -7,18 +7,6 @@
     function initHealthPrimary() {
         _setupFields();
         _applyEventListeners();
-
-        _.defer(function() {
-            var $checked = $elements.currentCover.filter(':checked');
-            if ($checked.length) {
-                $checked.change();
-            } else {
-                meerkat.modules.fieldUtilities.toggleVisible(
-                    $elements.primaryCoverLoading,
-                    true
-                );
-            }
-        });
     }
 
     function _setupFields() {
@@ -49,9 +37,22 @@
         return $elements.currentCover.filter(':checked').val();
     }
 
+    function onStartInit() {
+        var $checked = $elements.currentCover.filter(':checked');
+        if ($checked.length) {
+            $checked.change();
+        } else {
+            meerkat.modules.fieldUtilities.toggleVisible(
+                $elements.primaryCoverLoading,
+                true
+            );
+        }
+    }
+
     meerkat.modules.register('healthPrimary', {
         init: initHealthPrimary,
-        getCurrentCover: getCurrentCover
+        getCurrentCover: getCurrentCover,
+        onStartInit: onStartInit
     });
 
 })(jQuery);
