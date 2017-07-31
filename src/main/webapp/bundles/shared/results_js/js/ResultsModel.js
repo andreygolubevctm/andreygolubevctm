@@ -494,11 +494,11 @@ var ResultsModel = {
 			var resultsData = {
 				a: resultA,
 				b: resultB
-			}
+			};
 			var returnedResults = Results.model.landlordFilter(resultsData);
 			if (returnedResults) {
-				resultA = returnedResults.resultA,
-				resultB = returnedResults.resultB
+				resultA = returnedResults.resultA;
+				resultB = returnedResults.resultB;
 			}
 		}
 
