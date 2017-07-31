@@ -53,6 +53,21 @@
                     }
                 }
             },
+            "discount": {
+                name: 'health_filterBar_discount',
+                defaultValueSourceSelector: 'input[name="health_applyDiscounts"]',
+                defaultValue: '',
+                events: {
+                    init: function (filterObject) {
+                        var isChecked = $(filterObject.defaultValueSourceSelector).val() === 'Y';
+                        $('input[name=' + filterObject.name + ']').prop('checked', isChecked);
+                    },
+                    update: function (filterObject) {
+                        var isChecked = $('input[name=' + filterObject.name + ']').is(':checked');
+                        $(filterObject.defaultValueSourceSelector).val(isChecked ? 'Y' : 'N');
+                    }
+                }
+            },
             "extendedFamily": {
                 name: 'health_filterBar_extendedFamily',
                 defaultValueSourceSelector: '#health_situation_healthCvr',

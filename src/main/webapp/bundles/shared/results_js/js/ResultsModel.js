@@ -92,7 +92,6 @@ var ResultsModel = {
 			dataType: "json",
 			cache: false,
 			success: function(jsonResult){
-
 				Results.model.updateTransactionIdFromResult(jsonResult);
 				meerkat.modules.verificationToken.readTokenFromResponse(jsonResult);
 
@@ -491,7 +490,17 @@ var ResultsModel = {
 	},
 
 	defaultSortMethod: function(resultA, resultB) {
-
+		if (Results.model.landlordFilter != null && (resultA.available === 'Y' || resultB.available === 'Y')) {
+			var resultsData = {
+				a: resultA,
+				b: resultB
+			};
+			var returnedResults = Results.model.landlordFilter(resultsData);
+			if (returnedResults) {
+				resultA = returnedResults.resultA;
+				resultB = returnedResults.resultB;
+			}
+		}
 
 		var valueA = Object.byString(resultA, Object.byString( Results.settings.paths, Results.settings.sort.sortBy) ) ;
 		var valueB = Object.byString(resultB, Object.byString( Results.settings.paths, Results.settings.sort.sortBy) ) ;
@@ -517,7 +526,7 @@ var ResultsModel = {
 				return 1;
 			}
 		}
-
+		
 		if (valueA < valueB){
 			returnValue = -1;
 		} else if (valueA > valueB){
@@ -544,6 +553,7 @@ var ResultsModel = {
 		}
 		return returnValue;
 	},
+	landlordFilter: null,
 	addFilter: function( filterBy, condition, options ){
 
 		if(

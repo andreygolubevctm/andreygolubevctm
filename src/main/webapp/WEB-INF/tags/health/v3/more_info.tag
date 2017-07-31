@@ -178,6 +178,9 @@
 				</c:otherwise>
 			</c:choose>
 
+			<div class="col-xs-12">
+				<simples:dialogue id="76" vertical="health" mandatory="true" />
+			</div>
 
 			<div class="policyBrochures col-xs-12">
 				<div class="col-xs-12">
