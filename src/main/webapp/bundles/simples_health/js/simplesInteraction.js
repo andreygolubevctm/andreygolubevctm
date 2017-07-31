@@ -17,7 +17,17 @@
             useDefaultErrorHandling: false,
             errorLevel: "silent",
             onError: function onStoreCallIdError(obj, txt, errorThrown) {
-                console.log("on error in store call id");
+                meerkat.modules.errorHandling.error({
+                    errorLevel: "silent",
+                    message: "Store call Id error",
+                    description: "An error occurred while storing the callId : " + txt + ' ' + errorThrown,
+                    data: {
+                        status: txt,
+                        error: errorThrown,
+                        transactionId:transactionId
+                    },
+                    id: transactionId
+                });
 
             }
         });
