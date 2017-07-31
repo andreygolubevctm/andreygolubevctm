@@ -28,8 +28,14 @@
 <%@ attribute name="inputGroupText" 	required="false" rtexprvalue="true"  description="Optional inputgroup text" %>
 <%@ attribute name="inputGroupTextPosition" 	required="false" rtexprvalue="true"  description="left or right. Position of group text element specified by inputGroupText" %>
 <%@ attribute name="disableErrorContainer" required="false" rtexprvalue="true"    	 description="Show or hide the error message container" %>
+<%@ attribute name="landlordFix" required="false"	rtexprvalue="true" description="fixing multiple ids causing errors for landlord" %>
 
 <%-- VARIABLES --%>
+<c:set var="id" value="${go:nameFromXpath(xpath)}" />
+<c:if test="${not empty landlordFix}">
+	<c:set var="id" value="${go:nameFromXpath(landlordFix)}" />
+</c:if>
+
 <c:if test="${readOnly}">
 	<go:setData dataVar="data" xpath="readonly/${xpath}" value="${data[xpath]}" />
 </c:if>
@@ -126,7 +132,7 @@
 				</c:if>
 		</c:if>
 
-		<input type="${type}" name="${name}" id="${name}" class="form-control ${className}" <c:if test="${not empty validationErrorPlacementSelector}">data-validation-placement="${validationErrorPlacementSelector}"</c:if> value="${value}" ${maxlength}${minlength}${requiredAttribute}${tabIndexValue}${placeHolderAttribute}${patternAttribute}${keyPressLimit}${includeAttribute}${additionalAttributes}>
+		<input type="${type}" name="${name}" id="${id}" class="form-control ${className}" <c:if test="${not empty validationErrorPlacementSelector}">data-validation-placement="${validationErrorPlacementSelector}"</c:if> value="${value}" ${maxlength}${minlength}${requiredAttribute}${tabIndexValue}${placeHolderAttribute}${patternAttribute}${keyPressLimit}${includeAttribute}${additionalAttributes}>
 
 		<c:if test="${not empty inputGroupText}">
 				<c:if test="${empty inputGroupTextPosition or inputGroupTextPosition eq 'right'}">
@@ -136,7 +142,7 @@
 		</c:if>
 	</c:when>
 	<c:otherwise>
-		<input type="hidden" name="${name}" id="${name}" class="${className}" value="${value}" ${additionalAttributes}>
-		<div class="field readonly" id="${name}-readonly">${data[xpath]}</div>
+		<input type="hidden" name="${name}" id="${id}" class="${className}" value="${value}" ${additionalAttributes}>
+		<div class="field readonly" id="${id}-readonly">${data[xpath]}</div>
 	</c:otherwise>
 </c:choose>

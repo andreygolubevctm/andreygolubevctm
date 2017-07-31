@@ -193,7 +193,7 @@
                     meerkat.modules.healthChoices.setState(meerkat.site.choices.state);
                     meerkat.modules.healthChoices.shouldPerformUpdate(meerkat.site.choices.performHealthChoicesUpdate);
                 }
-                meerkat.modules.healthRebate.toggleRebateQuestions();
+                meerkat.modules.healthRebate.onStartInit();
             },
             onBeforeEnter: function enterStartStep(event) {
                 if (event.isForward) {

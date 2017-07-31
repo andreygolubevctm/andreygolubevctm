@@ -120,7 +120,7 @@
     }
 
     function toggleDependants() {
-        var showDependants = situationEnablesDependants() && meerkat.modules.healthRebate.isRebateApplied();
+        var showDependants = situationEnablesDependants();
         if(moduleInitialised) {
                 $elements.dependantsRow.toggleClass('hidden', !showDependants);
         } else {

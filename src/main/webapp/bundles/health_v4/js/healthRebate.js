@@ -36,6 +36,15 @@
         updateSelectedRebateLabel();
     }
 
+    function onStartInit() {
+        // make rebate selected 'Y' by default
+        if ($elements.applyRebate.is(':checked') === false) {
+            $elements.applyRebate.filter('[value=Y]').trigger('click');
+        } else {
+            toggleRebateQuestions();
+        }
+    }
+
     function _setupFields() {
         $elements = {
             situationSelect: $('input[name=health_situation_healthCvr]'),
@@ -43,6 +52,10 @@
             householdIncomeRow: $('#health_healthCover_income_field_row'),
             lhcContainers: $('.lhcRebateCalcTrigger'),
             dependentsSelect: $('#health_healthCover_dependants'),
+            incomeLabelSpans: {
+                single: $('#health_healthCover_income_field_row .control-label span[data-situation=single]'),
+                hasPartner: $('#health_healthCover_income_field_row .control-label span[data-situation=hasPartner]')
+            },
             incomeSelect: $('#health_healthCover_income'),
             rebateLabel: $('#rebateLabel'),
             rebateLabelText: $('#rebateLabel span'),
@@ -78,10 +91,13 @@
         $elements.incomeSelect.on('change', function() {
             updateSelectedRebateLabel();
         });
+
+        meerkat.messaging.subscribe(meerkatEvents.healthSituation.SITUATION_CHANGED, function situationChanged() {
+            toggleIncomeLabel();
+        });
     }
 
     function toggleRebateQuestions() {
-        $elements.householdIncomeRow.toggleClass('hidden', !isRebateApplied());
         meerkat.modules.healthDependants.toggleDependants();
         updateSelectedRebateLabel();
         var $checked = $elements.applyRebate.filter(":checked");
@@ -167,9 +183,15 @@
         return $elements.applyRebate.prop('checked');
     }
 
+    function toggleIncomeLabel() {
+        $elements.incomeLabelSpans.single.toggleClass('hidden', hasPartner());
+        $elements.incomeLabelSpans.hasPartner.toggleClass('hidden', !hasPartner());
+    }
+
     meerkat.modules.register("healthRebate", {
         init: init,
         events: moduleEvents,
+        onStartInit: onStartInit,
         hasPartner: hasPartner,
         updateSelectedRebateLabel: updateSelectedRebateLabel,
         getRebate: getRebate,

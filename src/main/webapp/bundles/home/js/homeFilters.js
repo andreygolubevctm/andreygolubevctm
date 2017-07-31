@@ -24,6 +24,7 @@
 		$filterHomeExcess,
 		$filterContentsExcess,
 		$filterHomeExcessLabel,
+		$landlordShowAll,
 		$filterContentsExcessLabel,
 		$updateBtn,
 		$cancelUpdateBtn,
@@ -46,7 +47,7 @@
 	// Refresh filters from form/page
 	//
 	function updateFilters() {
-
+		
 		hideExcessLists();
 		$priceMode.removeClass('active');
 		$featuresMode.removeClass('active');
@@ -61,7 +62,7 @@
 					$featuresMode.addClass('active');
 					break;
 			}
-
+			
 			meerkat.messaging.publish(meerkatEvents.resultsMobileDisplayModeToggle.DISPLAY_MODE_UPDATED);
 		}
 
@@ -106,10 +107,26 @@
 				return;
 		}
 	}
+	
+	function sortLandlordFiltersXS() {
+		var filters = meerkat.site.landlordFilters.filters;
+		var checkbox = '.mobile-drop .landlord-filter-items .checkbox input';
+		if (!filters.showall) {
+			$(checkbox + '[name="showall"]')[0].checked = false;
+			for (var f in filters) {
+				if (filters[f] === true) {
+					$(checkbox + '[name="' + f +'"]')[0].checked = true;
+				}
+			}
+		}
+	}
+	
 	function toggleXSFilters () {
 		var coverType = meerkat.modules.home.getCoverType();
 		var homeXSFilterRow = $("#xsFilterBarHomeExcessRow");
 		var contentsXSFilterRow = $("#xsFilterBarContentsExcessRow");
+		if(!meerkat.site.isLandlord) meerkat.modules.home.toggleLandlords();
+		sortLandlordFiltersXS();
 		switch (coverType){
 			case 'H':
 				homeXSFilterRow.show();
@@ -318,9 +335,19 @@
 		// Dropdown options
 		$component.on('click', '.dropdown-menu a', handleDropdownOption);
 
-
 		$updateBtn.on('click', function updateResults() {
-			meerkat.messaging.publish(moduleEvents.CHANGED, {contentsExcess:currentValues.contentsExcess, homeExcess:currentValues.homeExcess});
+			var revised = {
+					display: $('#xsFilterBarSortRow input:checked').val(),
+					homeExcess : $('#xsFilterBarHomeExcessRow select').val(),
+					contentsExcess : $('#xsFilterBarContentsExcessRow select').val()
+			};
+			if (previousValues.contentsExcess && previousValues.contentsExcess !== currentValues.contentsExcess || previousValues.homeExcess && previousValues.homeExcess !== currentValues.homeExcess)  {
+				previousValues.homeExcess = currentValues.homeExcess;
+				previousValues.contentsExcess = currentValues.contentsExcess; 
+				meerkat.messaging.publish(moduleEvents.CHANGED, {contentsExcess:currentValues.contentsExcess, homeExcess:currentValues.homeExcess});
+			} else {
+				setLandlordFilters();
+			}
 			toggleUpdate(true);
 		});
 
@@ -391,7 +418,6 @@
 	}
 
 	function onModalOpen(modal) {
-
 		if (typeof Results.settings !== 'undefined' && Results.settings.hasOwnProperty('displayMode') === true) {
 			$('#xsFilterBarSortRow input:checked').prop('checked', false);
 			$('#xsFilterBarSortRow #xsFilterBar_sort_' + Results.getDisplayMode()).prop('checked', true).change();
@@ -408,9 +434,10 @@
 	}
 
 	function saveModalChanges() {
+		setLandlordFilters();
 		var $homeExcess = $('#home_homeExcess');
 		var $contentsExcess = $('#home_contentsExcess');
-
+		var filters = meerkat.site.landlordFilters;
 		var revised = {
 				display: $('#xsFilterBarSortRow input:checked').val(),
 				homeExcess : $('#xsFilterBarHomeExcessRow select').val(),
@@ -437,6 +464,7 @@
 
 		meerkat.modules.dialogs.close(modalID);
 		meerkat.modules.navMenu.close();
+
 
 		if( currentValues.homeExcess !== revised.homeExcess ) {
 			currentValues.homeExcess = revised.homeExcess;
@@ -482,7 +510,7 @@
 			if (!$component.length) return;
 
 			$allDropDownToggles = $component.find('li.dropdown, .dropdown-toggle');
-			$excessDropDownToggles = $component.find('li.dropdown.filter-excess, .filter-excess .dropdown-toggle');
+			$excessDropDownToggles = $component.find('li.dropdown.filter-excess, .filter-excess .dropdown-toggle, .landlordShowAll, .landlordShowAll .dropdown-toggle');
 			$freqDropDownToggles = $component.find('li.dropdown.filter-frequency, .filter-frequency .dropdown-toggle');
 			$labels = $('#navbar-filter-labels');
 			$priceMode = $component.find('.filter-pricemode');
@@ -496,11 +524,10 @@
 			$filterContentsExcessLabel = $labels.find('.filter-contents-excess-label');
 			$updateBtn = $component.find('.updateFilters');
 			$cancelUpdateBtn = $labels.find('.filter-cancel-label a');
-
+			$landlordShowAll = $component.find('.landlordShowAll');
 			setDefaultExcess();
-
 			eventSubscriptions();
-
+			landlordToggles();
 			var $filterMenu;
 
 			$filterMenu = $filterHomeExcess.find('.dropdown-menu');
@@ -532,8 +559,110 @@
 			setCurrentDeviceState();
 		});
 	}
+	
+	function setFeatureFilter(filter, stringName) {
+		if (filter) {
+			Results.filterBy(stringName, "value", { "equals": 'Y' });
+		} else {
+			Results.unfilterBy(stringName, "value", { "equals": 'Y' });
+		}
+	}
+	
+	function setLandlordFilters() {
+		var filters = meerkat.site.landlordFilters.filters;
+		setFeatureFilter(filters.lossrent, 'features.lossrent');
+		setFeatureFilter(filters.rdef, 'features.rdef');
+		setFeatureFilter(filters.malt, 'features.malt');
+	}
+	
+	function landlordToggles() {
+		var $landlordMenu = $landlordShowAll.find('.landlord-filter-items');
+		var $landlordCheckboxes = $landlordMenu.find('.checkbox input');
+		var firstCheckbox = $landlordCheckboxes[0];
+		var $updateFiltersBtn = $('.updateFilters');
+		
+		// prevent jquery dropdown closing on input click inside dropdown 
+		$landlordMenu.on('click', function(e) {
+			e.stopPropagation();
+		});
+		meerkat.site.landlordFilters = {
+			filters: {
+				showall: true,
+				rdef: false,
+				malt: false,
+				lossrent: false
+			},
+			labels: {
+				showall: "Show All",
+				rdef: "Tenant Default",
+				malt: "Malicious Damage",
+				lossrent: "Loss Of Rent"
+			},
+			label: ['Show All']
+		};
+		
+		function adjustLabels() {
+			var isChecked = $landlordMenu.find('.checkbox input:checked');
+			var filters = meerkat.site.landlordFilters;
+			filters.label = [];
+			for (var i = 0; i < isChecked.length; i++) {
+				filters.label.push(filters.labels[isChecked[i].id]);
+			}
 
-
+			var string = filters.label.toString();
+			if (string.length > 14) {
+				string = string.substring(0, 14) + '...';
+			}
+			if (filters.label.length === 0) {
+				string = filters.labels.showall;
+			}
+			
+			$('.landlordShowAll .dropdown-toggle span').text(string);
+		}
+		
+		// TODO: refactor these two functions, ran out of time
+		$(document).on('click', '.mobile-drop .landlord-filter-items .checkbox input', function(e) {
+			var first = $('#showall_m')[0];
+			var filters = meerkat.site.landlordFilters.filters;
+			filters[e.target.name] = this.checked;
+			if (first.name !== e.target.name) {
+				if (first.checked && this.checked) {
+					first.checked = false;
+					filters.showall = false;
+				}
+			} else if (firstCheckbox.id === e.target.name && this.checked) {
+				var isChecked = $('.mobile-drop .landlord-filter-items .checkbox input:checked');
+				for (var i = 0; i < isChecked.length; i++) {
+					if (e.target.name !== isChecked[i].name) {
+						isChecked[i].checked = false;
+						filters[isChecked[i].name] = false;
+					}
+				}
+			}
+		});
+		
+		// uncheck show all if other input is checked 
+		$landlordCheckboxes.on('click', function(e) {
+			var filters = meerkat.site.landlordFilters.filters;
+			$updateFiltersBtn.removeClass('hidden');
+			filters[this.id] = this.checked;
+			if (firstCheckbox.id !== this.id) {
+				if (firstCheckbox.checked && this.checked) {
+					firstCheckbox.checked = false;
+					filters.showall = false;
+				}
+			} else if (firstCheckbox.id === this.id && this.checked) {
+				var isChecked = $landlordMenu.find('.checkbox input:checked');
+				for (var i = 0; i < isChecked.length; i++) {
+					if (this.id !== isChecked[i].id) {
+						isChecked[i].checked = false;
+						filters[isChecked[i].id] = false;
+					}
+				}
+			}
+			adjustLabels();
+		});
+	}
 
 	meerkat.modules.register('homeFilters', {
 		initHomeFilters: initHomeFilters,
@@ -545,7 +674,8 @@
 		enable: enable,
 		onRequestModal: onRequestModal,
 		toggleXSFilters : toggleXSFilters,
-		setHomeResultsFilter: setHomeResultsFilter
+		setHomeResultsFilter: setHomeResultsFilter,
+		setLandlordFilters: setLandlordFilters
 	});
 
 })(jQuery);
