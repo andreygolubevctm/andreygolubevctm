@@ -9,22 +9,9 @@
         _applyEventListeners();
         _eventSubscriptions();
         _setupAppFields();
-
-        _.defer(function() {
-            var $checked = $elements.currentCover.filter(':checked');
-            if ($checked.length) {
-                $checked.change();
-            } else {
-                meerkat.modules.fieldUtilities.toggleVisible(
-                    $elements.partnerCoverLoading,
-                    true
-                );
-            }
-        });
     }
 
     function _setupFields() {
-
         $elements = {
             partnerDOBD: $(':input[name=health_healthCover_partner_dobInputD]'),
             partnerHeading: $('.healthCoverPartnerHeading'),
@@ -39,13 +26,12 @@
         $elements.partnerCoverLoading.add($elements.dob).add($elements.currentCover).attr('data-attach','true');
 
         $elements.partnerQuestionSet = $elements.partnerDOBD.add($elements.currentCover).add($elements.partnerHeading);
-
     }
 
     function _applyEventListeners() {
         $elements.currentCover.add($elements.dob).on('change', function toggleContinuousCover() {
             var $checked = $elements.currentCover.filter(':checked'),
-                hasPartner = _.indexOf(['F', 'C', 'EF'], meerkat.modules.healthSituation.getSituation()) >= 0,
+                hasPartner = meerkat.modules.healthChoices.hasPartner(),
                 hideField = !$checked.length || !hasPartner || $checked.val() === 'N' || ($checked.val() === 'Y' && !_.isEmpty($elements.dob.val()) && meerkat.modules.age.isLessThan31Or31AndBeforeJuly1($elements.dob.val()));
 
             meerkat.modules.fieldUtilities.toggleVisible(
@@ -57,7 +43,6 @@
         $elements.dob.on('change', function updateSnapshot() {
             meerkat.messaging.publish(meerkatEvents.health.SNAPSHOT_FIELDS_CHANGE);
         });
-
     }
 
     function _eventSubscriptions() {
@@ -68,7 +53,7 @@
     }
 
     function _togglePartnerQuestionset(selected) {
-        var hasPartner = _.indexOf(['F', 'C', 'EF'], selected.situation) > -1;
+        var hasPartner = meerkat.modules.healthChoices.hasPartner();
         meerkat.modules.fieldUtilities.toggleVisible($elements.partnerQuestionSet, !hasPartner);
     }
 
@@ -80,9 +65,22 @@
         return $elements.currentCover.filter(':checked').val();
     }
 
+    function onStartInit() {
+        var $checked = $elements.currentCover.filter(':checked');
+        if ($checked.length) {
+            $checked.change();
+        } else {
+            meerkat.modules.fieldUtilities.toggleVisible(
+                $elements.partnerCoverLoading,
+                true
+            );
+        }
+    }
+
     meerkat.modules.register('healthPartner', {
         init: initHealthPartner,
-        getCurrentCover: getCurrentCover
+        getCurrentCover: getCurrentCover,
+        onStartInit: onStartInit
     });
 
 })(jQuery);

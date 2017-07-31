@@ -194,6 +194,8 @@
                     meerkat.modules.healthChoices.shouldPerformUpdate(meerkat.site.choices.performHealthChoicesUpdate);
                 }
                 meerkat.modules.healthRebate.onStartInit();
+                meerkat.modules.healthPrimary.onStartInit();
+                meerkat.modules.healthPartner.onStartInit();
             },
             onBeforeEnter: function enterStartStep(event) {
                 if (event.isForward) {
@@ -209,6 +211,7 @@
 
                 // configure progress bar
                 configureProgressBar(true);
+
             },
             onAfterEnter: function healthAfterEnter() {
 
