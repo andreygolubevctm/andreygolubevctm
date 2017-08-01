@@ -154,8 +154,6 @@ public class RememberMeServiceTest {
     @Test
     public void testValidateAnswer() throws GeneralSecurityException, DaoException, SessionException {
         final Long cookieTransactionId = 12345678L;
-        final Long rootId = 11111111L;
-        final Long lastTransactionId = 22222222L;
         final Data data = new Data();
         final String validAnswer = "01/02/1985";
         final String invalidAnswer = "01/02/1983";
@@ -163,9 +161,7 @@ public class RememberMeServiceTest {
         when(request.getSession().getAttribute("sessionData")).thenReturn(new SessionData());
         when(request.getCookies()).thenReturn(new Cookie[]{new Cookie(getCookieName(), getTransactionId())});
         when(sessionDataServiceBean.getDataForTransactionId(request, "12345678", true)).thenReturn(data);
-        when(transactionDao.getRootIdOfTransactionId(cookieTransactionId)).thenReturn(rootId);
-        when(transactionDao.getLatestTransactionIdByRootId(rootId)).thenReturn(lastTransactionId);
-        when(transactionDetailsDao.getTransactionDetails(lastTransactionId)).thenReturn(createTransactionDetails());
+        when(transactionDetailsDao.getTransactionDetails(cookieTransactionId)).thenReturn(createTransactionDetails());
         assertTrue(service.validateAnswerAndLoadData(Vertical.VerticalType.HEALTH.name().toLowerCase(), validAnswer, request));
         assertEquals("<this><health><situation><healthCvr>F</healthCvr><location>Brisbane</location></situation><contactDetails>" +
                         "<name>aName</name></contactDetails><healthCover><primary><dob>01/02/1985</dob></primary></healthCover></health>" +
