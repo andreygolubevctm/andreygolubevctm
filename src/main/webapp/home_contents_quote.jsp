@@ -125,6 +125,16 @@
 						<ul class="dropdown-menu">
 						</ul>
 					</li>
+					<li class="dropdown landlordShowAll isLandlord">
+						<a href="javascript:void(0);" class="dropdown-toggle active" data-toggle="dropdown"><span>Show all</span> <b class="icon icon-angle-down"></b></a>
+						<ul class="dropdown-menu landlord-filter-items">
+							<li class="checkbox"><input type="checkbox" checked name="showall" id="showall" /> <label for="showall" class=""></label>Show All</li>
+							<span>Only show products that include:</span>
+							<li class="checkbox"><input type="checkbox" name="lossrent" id="lossrent" /> <label for="lossrent"></label>Loss of rent</li>
+							<li class="checkbox"><input type="checkbox" name="malt" id="malt" /> <label for="malt"></label>Malicious damage</li>
+							<li class="checkbox"><input type="checkbox" name="rdef" id="rdef" /> <label for="rdef"></label>Tenant default</li>
+						</ul>
+					</li>
 					<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="nav button" quoteChar="\"" /></c:set>
 					<li class="excess-update"><a href="javascript:void(0);" class="btn btn-hollow updateFilters hidden" data-toggle="updateButton" ${analyticsAttr}>update</a>
 					</li>
@@ -145,8 +155,16 @@
 		<nav id="navbar-filter-labels" class="navbar hidden hidden-xs">
 			<div class="container">
 				<ul class="nav navbar-nav">
-					<li class="navbar-text filter-home-excess-label">Home Excess</li>
+					<span class="isLandlord landlord-navbar-text">
+						<li class="navbar-text filter-home-excess-label">Building Excess</li>
+					</span>
+					<span class="notLandlord landlord-navbar-text">
+						<li class="navbar-text filter-home-excess-label">Home Excess</li>
+					</span>
 					<li class="navbar-text filter-contents-excess-label">Contents Excess</li>
+					<span class="isLandlord landlord-navbar-text">
+						<li class="navbar-text filter-contents-excess-label">Landlord Filters</li>
+					</span>
 					<li class="navbar-text filter-cancel-label"><a href="javascript:void(0);" class="hidden">Cancel</a></li>
 				</ul>
 
@@ -155,9 +173,9 @@
 					<li class="navbar-text filter-view-label">View</li>
 				</ul>
 			</div>
-		</nav>		
+		</nav>
 		<%-- The content of the container is appended only when a comparison is made. --%>
-		
+
 		<nav id="navbar-compare" class="compare-v2 navbar hidden-xs hidden">
 			<div class="navbar-additional clearfix compare-basket">
 			</div>

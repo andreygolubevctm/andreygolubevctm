@@ -182,7 +182,11 @@
 					<div class="col-xs-3 col-sm-4 hidden-md hidden-lg">
 						<div class="col-sm-6 {{= homeExcessState}} {{= excessAlign }} homeExcessContainer">
 							<div class="homeExcessAmount">\${{= homeExcessAmount }}</div>
-							<div class="homeExcessTitle">Home Excess</div>
+							{{ if (meerkat.site.isLandlord) { }}
+								<div class="homeExcessTitle">Building excess</div>
+							{{ } else { }}
+								<div class="homeExcessTitle">Home Excess</div>
+							{{ } }}
 						</div>
 						<div class="col-sm-6 {{= contentsExcessState}} {{= excessAlign }} contentsExcessContainer">
 							<div class="contentsExcessAmount">\${{= contentsExcessAmount }}</div>
@@ -260,7 +264,11 @@
 				</div>
 				<div class="{{= homeExcessState}} homeExcessContainer">
 					<div class="homeExcessAmount">\${{= homeExcessAmount }}</div>
-					<div class="homeExcessTitle">Home Excess</div>
+					{{ if (meerkat.site.isLandlord) { }}
+						<div class="homeExcessTitle">Building excess</div>
+					{{ } else { }}
+						<div class="homeExcessTitle">Home Excess</div>
+					{{ } }}
 				</div>
 				<div class="{{= contentsExcessState}} contentsExcessContainer">
 					<div class="contentsExcessAmount">\${{= contentsExcessAmount }}</div>

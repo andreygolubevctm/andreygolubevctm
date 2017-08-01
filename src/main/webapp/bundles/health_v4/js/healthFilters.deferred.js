@@ -95,8 +95,6 @@
                     init: function (filterObject) {
                         var isChecked = $(filterObject.defaultValueSourceSelector + ":checked").length > 0 && $(filterObject.defaultValueSourceSelector + ":checked").val() === 'Y';
                         $('input[name=' + filterObject.name + ']').prop('checked', isChecked);
-                        toggleIncome(!isChecked);
-                        updateRebateLabels();
                     },
                     update: function (filterObject) {
                         var isChecked = $('input[name=' + filterObject.name + ']').is(':checked');
@@ -105,39 +103,6 @@
                         } else {
                             $(filterObject.defaultValueSourceSelector+'[value="N"]').prop('checked', true).trigger('change', [false]);
                         }
-
-                        _.defer(function () {
-                            toggleRebateEdit(true);
-                            updateRebateLabels();
-                        });
-                    }
-                }
-            },
-            "income": {
-                name: 'health_filterBar_income',
-                defaultValueSourceSelector: 'select[name=health_healthCover_income]',
-                defaultValue: '',
-                events: {
-                    init: function (filterObject) {
-                        /**
-                         * Copy the element and place it in the filters with a new id etc. (jQuery Clone doesn't copy the value...)
-                         */
-                        var $defaultValueSourceSelector = $(filterObject.defaultValueSourceSelector),
-                            $incomeElement = $defaultValueSourceSelector.parent().clone();
-
-                        $incomeElement
-                            .addClass('hidden')
-                            .find('select').attr({
-                            'id': filterObject.name,
-                            'name': filterObject.name,
-                            'data-analytics': 'filter rebate'
-                        }).val($defaultValueSourceSelector.val())
-                            .find('option[value=""]').remove();
-
-                        $('.filter-income-holder').html($incomeElement);
-                    },
-                    update: function (filterObject) {
-                        $(filterObject.defaultValueSourceSelector).val($('select[name=' + filterObject.name + ']').val()).trigger('change');
                     }
                 }
             },
@@ -395,16 +360,6 @@
             meerkat.messaging.publish(meerkatEvents.filters.FILTER_CHANGED, e);
         });
 
-
-        $(document).on('change', '#health_filterBar_rebate', function toggleRebateDropdown() {
-            toggleRebateEdit(false);
-            toggleIncome(!$(this).is(':checked'));
-        });
-
-        $(document).on('click', '.filtersEditTier', function () {
-            toggleRebateEdit(false);
-        });
-
         $(document).on('click', '.filter-toggle', function () {
             var filter = $(this).attr('data-filter');
 
@@ -435,21 +390,6 @@
         $(document).on('click', 'input[name=health_filterBar_benefitsExtras]', function () {
             _toggleFiltersExtrasMessage();
         });
-    }
-
-    function toggleIncome(toggle) {
-        $('.results-filters-rebate .income_container').toggleClass('hidden', toggle);
-    }
-
-    function toggleRebateEdit(toggle) {
-        $('#filtersRebateLabel, #filtersSelectedRebateText').toggle(toggle);
-        $('.filter-income-holder .select').toggleClass('hidden', toggle);
-    }
-
-    function updateRebateLabels() {
-        $('#filtersRebateLabel span').html(meerkat.modules.healthRebate.getSelectedRebateTierLabelText());
-        $('#filtersSelectedRebateText').html(meerkat.modules.healthRebate.getSelectedRebateLabelText());
-        meerkat.modules.healthTiers.setIncomeLabel();
     }
 
     function toggleFilterByContainer($filter, toggle) {

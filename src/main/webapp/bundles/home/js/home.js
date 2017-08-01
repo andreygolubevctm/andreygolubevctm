@@ -55,6 +55,19 @@
 
 	}
 
+	function toggleLandlords() {
+		var landlord = meerkat.site.isLandlord;
+		$('.isLandlord input').prop('disabled', !landlord);
+		$('.notLandlord input').prop('disabled', landlord);
+		if (landlord) {
+			$('.isLandlord').show();
+			$('.notLandlord').hide();
+		} else {
+			$('.notLandlord').show();
+			$('.isLandlord').hide();
+		}
+	}
+
 	function initJourneyEngine() {
 
 		if (meerkat.site.pageAction === "confirmation") {
@@ -64,8 +77,9 @@
 		} else {
 
 			// Initialise the journey engine steps and bar
-			initProgressBar(true);
 
+			initProgressBar(true);
+			toggleLandlords();
 			// Initialise the journey engine
 			var startStepId = null;
 			if (meerkat.site.isFromBrochureSite === true) {
@@ -501,7 +515,11 @@
 	}
 
 	function getVerticalFilter() {
-		return $('#home_coverType').val() || null;
+		var homeCoverType = $('#home_coverType').val() || null;
+		if (homeCoverType && meerkat.site.isLandlord) {
+			homeCoverType = 'Landlord ' + homeCoverType;
+		}
+		return homeCoverType;
 	}
 	// Build an object to be sent by SuperTag tracking.
 	function getTrackingFieldsObject(special_case){
@@ -730,7 +748,7 @@
 
 		return homeUnitItems;
 	}
-        
+
 	meerkat.modules.register("home", {
 		init: initHome,
 		events: moduleEvents,
@@ -739,7 +757,8 @@
 		getTrackingFieldsObject: getTrackingFieldsObject,
 		getVerticalFilter: getVerticalFilter,
 		getPropertyType: getPropertyType,
-		getHomeUnitsItems: getHomeUnitsItems
+		getHomeUnitsItems: getHomeUnitsItems,
+		toggleLandlords: toggleLandlords
 	});
 
 })(jQuery);

@@ -15,6 +15,7 @@
 <%@ attribute name="maxValue" 			required="false" 	rtexprvalue="true"  description="Set a maximum number for input value" %>
 <%@ attribute name="className" 			required="false" 	rtexprvalue="true"	description="additional css class attribute" %>
 <%@ attribute name="title" 				required="true"	 	rtexprvalue="true"	description="The subject of the field (e.g. 'regular driver')" %>
+<%@ attribute name="landlordFix" 		required="false"	 	rtexprvalue="true"	description="fixing multiple ids causing errors for landlord" %>
 <%@ attribute name="pattern" 			required="false"	rtexprvalue="true"	description="Allows the user to provide a pattern for input, and also makes some devices show numeric keypads." %>
 
 <%@ attribute name="percentage" 		required="false" 	rtexprvalue="true"	description="percentage rule validation, expects digits only (eg '10' for 10%)" %>
@@ -26,6 +27,10 @@
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
+<c:set var="id" value="${go:nameFromXpath(xpath)}" />
+<c:if test="${not empty landlordFix}">
+	<c:set var="id" value="${go:nameFromXpath(landlordFix)}" />
+</c:if>
 <c:set var="inputType"><field_v2:get_numeric_input_type /></c:set>
 <c:if test="${not empty otherElement}">
 	<c:set var="otherElement" value="${go:nameFromXpath(otherElement)}" />
@@ -71,10 +76,11 @@
 </c:if>
 
 <%-- HTML --%>
-<input type="hidden" name="${name}" id="${name}" value="${value}" class="currency"/>
+<input type="hidden" name="${name}" id="${id}" value="${value}" class="currency"/>
 <c:set var="validationAttributes">data-rule-currencyrange='{<c:if test="${not empty minValue}">"min": "${minValue}",</c:if><c:if test="${not empty maxValue}">"max": "${maxValue}",</c:if><c:if test="${not empty defaultValue}">"dV": "${defaultValue}",</c:if>"t": "${title}"}' </c:set>
 
 	<field_v2:input type="${inputType}"
+		landlordFix="${id}entry"
 		xpath="${xpath}entry"
 		required="${required}"
 		className="${className}"

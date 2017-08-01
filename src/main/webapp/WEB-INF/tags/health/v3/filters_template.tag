@@ -30,6 +30,17 @@
         </div>
     </div>
 
+    <div class="row filter" data-filter-serverside="true">
+        <div class="col-xs-12">
+            <div class="filter-discount">
+                <div class="checkbox">
+                    <input type="checkbox" name="health_filterBar_discount" id="health_filterBar_discount" value="Y">
+                    <label for="health_filterBar_discount">Apply all available discounts</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="row filter need-extendedFamily {{=hiddenExtendedFamily }}" data-filter-serverside="true">
         <div class="col-xs-12">
             <div class="sidebar-subtitle-container">
