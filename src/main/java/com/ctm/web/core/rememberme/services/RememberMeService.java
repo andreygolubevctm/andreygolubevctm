@@ -257,9 +257,6 @@ public class RememberMeService {
 
     private List<TransactionDetail> getTransactionDetails(final String transactionId) {
         try {
-           // final Long rootId = transactionDao.getRootIdOfTransactionId(Long.valueOf(transactionId));
-            //final Long latestTransactionId = transactionDao.getLatestTransactionIdByRootId(rootId);
-
             return transactionDetailsDao.getTransactionDetails(Long.valueOf(transactionId));
         } catch (DaoException e) {
             LOGGER.error("populateDataBucket: Error getting transaction details for transactionId {}", kv("transactionId", transactionId), e);
