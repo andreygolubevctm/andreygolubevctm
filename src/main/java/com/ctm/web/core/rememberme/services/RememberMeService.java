@@ -157,7 +157,7 @@ public class RememberMeService {
                 .map(rememberMeCookieValue -> Optional.ofNullable(getTransactionDetails(rememberMeCookieValue.get()))
                         .map(presentTransactionDetails -> {
                             boolean hasPersonalInfo = presentTransactionDetails.stream().anyMatch(details ->
-                                    details.getXPath().equals(getXpathToVerifyForVertical(vertical))); //npe?
+                                    details.getXPath().equals(getXpathToVerifyForVertical(vertical)));
                             if (!hasPersonalInfo) {
                                 loadSessionData(request, vertical, rememberMeCookieValue.orElse(null), presentTransactionDetails);
                                 try {
@@ -257,10 +257,10 @@ public class RememberMeService {
 
     private List<TransactionDetail> getTransactionDetails(final String transactionId) {
         try {
-            final Long rootId = transactionDao.getRootIdOfTransactionId(Long.valueOf(transactionId));
-            final Long latestTransactionId = transactionDao.getLatestTransactionIdByRootId(rootId);
+           // final Long rootId = transactionDao.getRootIdOfTransactionId(Long.valueOf(transactionId));
+            //final Long latestTransactionId = transactionDao.getLatestTransactionIdByRootId(rootId);
 
-            return transactionDetailsDao.getTransactionDetails(latestTransactionId);
+            return transactionDetailsDao.getTransactionDetails(Long.valueOf(transactionId));
         } catch (DaoException e) {
             LOGGER.error("populateDataBucket: Error getting transaction details for transactionId {}", kv("transactionId", transactionId), e);
             throw new RuntimeException(e);
