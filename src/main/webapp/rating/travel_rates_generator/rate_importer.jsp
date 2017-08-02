@@ -103,29 +103,32 @@
                             productIds.add(product.get("productId"));
 
                             // Rename product?
-                            if(part[PRODUCT_RENAME_ACTION_COLUMN_NUMBER].equals("1")){
+                            if(part[PRODUCT_RENAME_ACTION_COLUMN_NUMBER].equals("1")) {
         %>
         /* Rename product */<br/>
-        UPDATE ctm.product_master SET longTitle = '<%=providerName %>&nbsp;<%=product.get("name") %>' WHERE ProductId = <%=product.get("productId") %>;<br/>
-        UPDATE ctm.product_master SET shortTitle = '<%=providerShortName %>&nbsp;<%=product.get("name") %>' WHERE ProductId = <%=product.get("productId") %>;<br/>
+        SET @product_id = (SELECT ProductId FROM ctm.product_master WHERE ProductCode='<%=product.get("productCode") %>');<br/>
+        UPDATE ctm.product_master SET longTitle = '<%=providerName %>&nbsp;<%=product.get("name") %>' WHERE ProductId = @product_id;<br/>
+        UPDATE ctm.product_master SET shortTitle = '<%=providerShortName %>&nbsp;<%=product.get("name") %>' WHERE ProductId = @product_id;<br/>
         <br/>
         <%
             }
 
             // Delete product?
-            if(part[PRODUCT_IS_ACTIVE_ACTION_COLUMN_NUMBER].equals("1")==false){
+            if(part[PRODUCT_IS_ACTIVE_ACTION_COLUMN_NUMBER].equals("1") == false) {
         %>
         /* Delete existing product master */<br/>
-        DELETE FROM ctm.product_master WHERE ProductId = <%=product.get("productId") %>;<br/>
+        SET @product_id = (SELECT ProductId FROM ctm.product_master WHERE ProductCode='<%=product.get("productCode") %>');<br/>
+        DELETE FROM ctm.product_master WHERE ProductId = @product_id;<br/>
         <br/>
         <%
             }
 
             // Add product?
-            if(part[PRODUCT_ADD_ACTION_COLUMN_NUMBER].equals("1")){
+            if(part[PRODUCT_ADD_ACTION_COLUMN_NUMBER].equals("1")) {
         %>
         /* Add new product master */<br/>
-        INSERT INTO ctm.product_master (ProductId, ProductCat, ProductCode, ProviderId, ShortTitle, LongTitle, EffectiveStart, EffectiveEnd) VALUES (<%=product.get("productId") %>, 'TRAVEL',<%=product.get("productCode") %>, <%=providerId %>,'<%=providerShortName %>&nbsp;<%=product.get("name") %>','<%=providerName %>&nbsp;<%=product.get("name") %>',curdate(),'2040-12-31');
+        SET @product_id = (SELECT ProductId FROM ctm.product_master WHERE ProductCode='<%=product.get("productCode") %>');<br/>
+        INSERT INTO ctm.product_master (ProductId, ProductCat, ProductCode, ProviderId, ShortTitle, LongTitle, EffectiveStart, EffectiveEnd) VALUES (@product_id, 'TRAVEL', '<%=product.get("productCode") %>', <%=providerId %>, '<%=providerShortName %>&nbsp;<%=product.get("name") %>', '<%=providerName %>&nbsp;<%=product.get("name") %>', curdate(), '2040-12-31');
         <br/>
         <br/>
         <%
