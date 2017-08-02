@@ -14,33 +14,37 @@
 <script id="moreInfoAffixedHeaderMobileTemplate" type="text/html">
 	<div class="container <c:if test="${isDualPriceActive eq true}">hasDualPricing</c:if>">
 		<div class="row">
-			<div class="col-xs-6 logo-header">
+			<div class="col-xs-6 logo-header alwaysHidden">
 				<div class="companyLogo {{= info.provider }}"></div>
 			</div>
-			<div class="col-xs-6 text-center mobile-pricing">
+			<div class="col-xs-6 text-center mobile-pricing alwaysHidden">
 				{{= renderedPriceTemplate }}
 			</div>
 			{{ if (meerkat.modules.healthPyrrCampaign.isPyrrActive() === true) { }}
 				{{= renderedPyrrCampaign }}
 			{{ } }}
-			<div class="col-xs-12 productTitleText">
+			<div class="col-xs-12 productTitleText alwaysHidden">
 				<h5 class="noTopMargin productName text-center">{{= info.productTitle }}</h5>
 			</div>
-			<div class="col-xs-12 text-center printableBrochuresLink">
+			<div class="col-xs-12 text-center printableBrochuresLink alwaysHidden">
 				<a href="javascript:;" class="getPrintableBrochures">Email myself brochures</a>
 			</div>
-			<div class="col-xs-12 text-center">
-				<div class="quote-reference-number"><h3>Quote Ref: <span class="transactionId">{{= obj.transactionId }}</span></h3></div>
+			<div class="col-xs-12 text-center dockedHeaderSlim">
 				<c:choose>
 					<c:when test="${callCentreOpen eq true}">
 						<a href="tel:{{= '${callCentreNumber}'.replace(/\s/g, '') }}" target="_blank" class="btn btn-cta btn-more-info-call-now" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />> <span class="icon-phone" />&nbsp;Call&nbsp;${callCentreNumber}</a>
-						<a href="javascript:;" class="btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Apply Online&nbsp;<span class="icon-arrow-right" /></a>
+						<div class="col-xs-6">
+							<div class="quote-reference-number smallBlack left"><h3>Quote Ref: <span class="transactionId">{{= obj.transactionId }}</span></h3></div>
+						</div>
+						<div class="col-xs-6">
+							<a href="javascript:;" class="btn-more-info-apply right" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Apply Online&nbsp;<span class="icon-arrow-right" /></a>
+						</div>
 					</c:when>
 					<c:otherwise>
 						<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Apply Online<span class="icon-arrow-right" /></a>
+						<div class="quote-reference-number smallBlack"><h3 class="text-center">Quote Ref: <span class="transactionId">{{= obj.transactionId }}</span></h3></div>
 					</c:otherwise>
 				</c:choose>
-
 			</div>
 		</div>
 	</div>
