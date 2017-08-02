@@ -42,11 +42,12 @@
             int PROVIDER_SHORT_NAME_COLUMN_NUMBER = 3;
 
             int PRODUCT_ID_COLUMN_NUMBER = 1;
-            int PRODUCT_NAME_COLUMN_NUMBER = 2;
-            int PRODUCT_IS_ACTIVE_ACTION_COLUMN_NUMBER = 3;
-            int PRODUCT_ADD_ACTION_COLUMN_NUMBER = 4;
-            int PRODUCT_RENAME_ACTION_COLUMN_NUMBER = 5;
-            int PRODUCT_INCLUDE_ACTION_COLUMN_NUMBER = 6;
+            int PRODUCT_CODE_COLUMN_NUMBER = 2;
+            int PRODUCT_NAME_COLUMN_NUMBER = 3;
+            int PRODUCT_IS_ACTIVE_ACTION_COLUMN_NUMBER = 4;
+            int PRODUCT_ADD_ACTION_COLUMN_NUMBER = 5;
+            int PRODUCT_RENAME_ACTION_COLUMN_NUMBER = 6;
+            int PRODUCT_INCLUDE_ACTION_COLUMN_NUMBER = 7;
 
             int PROPERTY_PRODUCT_ID_COLUMN_NUMBER = 1;
             int PROPERTY_PROPERTY_ID_COLUMN_NUMBER = 2;
@@ -94,6 +95,7 @@
                         if(part[PRODUCT_INCLUDE_ACTION_COLUMN_NUMBER].equals("1")){
 
                             product.put("productId",part[PRODUCT_ID_COLUMN_NUMBER]);
+                            product.put("productCode", part[PRODUCT_CODE_COLUMN_NUMBER]);
                             product.put("name",part[PRODUCT_NAME_COLUMN_NUMBER]);
                             product.put("active",part[PRODUCT_IS_ACTIVE_ACTION_COLUMN_NUMBER]);
 
@@ -123,7 +125,7 @@
             if(part[PRODUCT_ADD_ACTION_COLUMN_NUMBER].equals("1")){
         %>
         /* Add new product master */<br/>
-        INSERT INTO ctm.product_master (ProductId, ProductCat, ProviderId, ShortTitle, LongTitle, EffectiveStart, EffectiveEnd) VALUES (<%=product.get("productId") %>, 'TRAVEL',<%=providerId %>,'<%=providerShortName %>&nbsp;<%=product.get("name") %>','<%=providerName %>&nbsp;<%=product.get("name") %>',curdate(),'2040-12-31');
+        INSERT INTO ctm.product_master (ProductId, ProductCat, ProductCode, ProviderId, ShortTitle, LongTitle, EffectiveStart, EffectiveEnd) VALUES (<%=product.get("productId") %>, 'TRAVEL',<%=product.get("productCode") %>, <%=providerId %>,'<%=providerShortName %>&nbsp;<%=product.get("name") %>','<%=providerName %>&nbsp;<%=product.get("name") %>',curdate(),'2040-12-31');
         <br/>
         <br/>
         <%
