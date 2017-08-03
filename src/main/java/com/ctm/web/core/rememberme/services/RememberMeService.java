@@ -131,11 +131,14 @@ public class RememberMeService {
     private Cookie getRememberMeCookie(final HttpServletRequest request,
                                        final String vertical) throws GeneralSecurityException {
         final String cookieName = getCookieName(vertical.toLowerCase() + COOKIE_SUFFIX);
-        return Arrays.stream(request.getCookies())
-                .filter(Objects::nonNull)
-                .filter(cookie -> cookie.getName().equals(cookieName))
-                .findFirst()
-                .orElse(null);
+        if(request.getCookies() != null ){
+            return Arrays.stream(request.getCookies())
+                    .filter(Objects::nonNull)
+                    .filter(cookie -> cookie.getName().equals(cookieName))
+                    .findFirst()
+                    .orElse(null);
+        }else
+            return null;
     }
 
     public Optional<String> getTransactionIdFromCookie(final String vertical, final HttpServletRequest request) throws GeneralSecurityException {
@@ -170,6 +173,27 @@ public class RememberMeService {
                         })
                         .orElse(false))
                 .orElse(false);
+    }
+
+    /**
+     * Used in remember_me.jsp
+     */
+    @SuppressWarnings("unused")
+    public String getNameOfUser(HttpServletRequest request,
+                                final HttpServletResponse response,
+                                final String vertical) throws GeneralSecurityException {
+        return Optional.ofNullable(getTransactionIdFromCookie(vertical.toLowerCase(), request))
+                .map(rememberMeCookieValue -> Optional.ofNullable(getTransactionDetails(rememberMeCookieValue.get()))
+                        .map(presentTransactionDetails -> {
+                            TransactionDetail detail = presentTransactionDetails.stream().
+                                    filter(transactionDetail -> transactionDetail.getXPath().equals(getXpathForName(vertical))).findFirst().orElse(null);
+                            if (detail != null)
+                                return detail.getTextValue();
+                            else
+                                return "";
+                        })
+                        .orElse(""))
+                .orElse("");
     }
 
     public Boolean validateAnswerAndLoadData(final String vertical, final String answer,
@@ -290,6 +314,16 @@ public class RememberMeService {
         switch (vertical) {
             case "health":
                 xpath = HEALTH_XPATH;
+                break;
+        }
+        return xpath;
+    }
+
+    private String getXpathForName(final String vertical) {
+        String xpath = null;
+        switch (vertical) {
+            case "health":
+                xpath = "health/contactDetails/name";
                 break;
         }
         return xpath;

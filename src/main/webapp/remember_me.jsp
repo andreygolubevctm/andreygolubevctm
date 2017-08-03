@@ -74,11 +74,13 @@
                         pageSettings.getBrandCode() eq 'ctm' and
                         empty authenticatedData.login.user.uid and
                         rememberMeService.hasPersonalInfoAndLoadData(pageContext.request, pageContext.response, 'health')}">
+                <c:set var="firstname" value="${rememberMeService.getNameOfUser(pageContext.request, pageContext.response, 'health')}" />
                 <div id="pageContent">
                     <article class="container">
                         <div class="remember-me text-center">
-                            <h1>Hi looks like you've compared health insurance with us before.</h1>
-                            <h2><a class="remember-me-remove" href="javascript:;">Not you?</a></h2>
+                            <h1 style="display: inline">Hi ${firstname}, </h1>
+                            <h2 style="display: inline"><a class="remember-me-remove" href="javascript:;">  Not you?</a></h2>
+                            <h1> looks like you've compared health insurance with us before.</h1>
                             <h2>Enter your date of birth to review the products you found last time.</h2>
 
                             <form id="rememberMeForm" class="remember-me-form">
