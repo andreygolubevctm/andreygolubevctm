@@ -162,7 +162,7 @@
 				</c:choose>
 			</c:when>
 			<c:otherwise>
-				${logger.error('skipped best price lead for . {}', log:kv('transactionId',result.transaction_id ))}
+				${logger.error('CRON touch found when sending lead. Skipping best price lead for . {}', log:kv('transactionId',result.transaction_id ))}
 			</c:otherwise>
 			</c:choose>
 		</c:forEach>
