@@ -293,7 +293,6 @@
         var tStart = 0;
 
         $(Results.settings.elements.resultsContainer).on("featuresDisplayMode", function () {
-            _resetSelectionsStructureObject();
             Features.buildHtml();
             _.defer(meerkat.modules.healthResultsTemplate.postRenderFeatures);
         });
@@ -512,55 +511,6 @@
             }
         }
         return null;
-    }
-
-
-    /**
-     * Reset the object to remove "do not render" flag
-     * i.e. if the user changes selected benefits.
-     * @private
-     */
-    function _resetSelectionsStructureObject() {
-        var structure = Features.getPageStructure();
-        for (var i = 0; i < structure.length; i++) {
-            if (typeof structure[i].children !== 'undefined' && structure[i].children.length) {
-                for (var m = 0; m < structure[i].children.length; m++) {
-                    delete structure[i].children[m].doNotRender;
-                }
-            }
-        }
-    }
-
-    /**
-     * This function copies the benefits from the parent's pageStructure object, and injects it into the "selections" object.
-     * We cannot splice from the original object, as if someone changes their filter, a benefit that used to be selected will not appear anymore.
-     * We shouldn't store the object in memory twice, as its 100kb.
-     * We can't set a property onto the object, without first removing the property after every rebuild.
-     * @param injectIntoParent
-     * @param injectFromParent
-     * @private
-     */
-    function _setupSelectedBenefits(injectIntoParent, injectFromParent) {
-
-        // Fetch the relevant objects so we can update the features structure
-        var structure = Features.getPageStructure();
-
-        // This is the object we are going to inject the selected benefits into.
-        var selectedBenefitsStructureObject = _findByKey(structure, injectIntoParent, 'name');
-
-        // reset it on each build, as benefits could change
-        selectedBenefitsStructureObject.children = [];
-        // this is where we are going to pull the children benefits from.
-        var featuresStructureCover = _findByKey(structure, injectFromParent, 'name');
-
-        // For each of the selected benefits
-        for (var i = 0; i < selectedBenefitsList.length; i++) {
-            var putInShortList = _findByKey(featuresStructureCover.children, selectedBenefitsList[i], 'id');
-            if (putInShortList) {
-                selectedBenefitsStructureObject.children.push($.extend({}, putInShortList));
-                putInShortList.doNotRender = true;
-            }
-        }
     }
 
     function breakpointTracking() {
