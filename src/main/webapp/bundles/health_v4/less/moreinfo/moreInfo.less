@@ -500,10 +500,6 @@
 .moreInfoDropdown{
   @media (@xs-only) {
 
-    .alwaysHidden {
-      display: none !important;
-    }
-
     .dockedHeaderSlim{
       margin-bottom: -15px;
 
@@ -520,30 +516,31 @@
         padding-left: 0px;
         padding-right: 0px;
       }
-    }
 
-    .quote-reference-number.smallBlack {
-      h3 {
-        font-size: 14px;
-        color: @gray-darker;
-        margin-bottom: 0px;
-        line-height: @line-height-base;
-        font-weight: bold;
-        text-align: left;
-        span{
-          font-weight: normal;
-        }
-        &.text-center{
+      .quote-reference-number {
+        h3 {
+          font-size: @font-size-base;
+          line-height: @line-height-base;
+          color: @gray-darker;
+          margin-bottom: 0px;
           text-align: center;
+          span{
+            font-weight: @font-family-theme-regular;
+          }
         }
       }
-      &.left{
-        text-align: left;
-      }
-    }
 
-    .btn-more-info-apply.right {
-      float: right;
+      &.callCentreOpen {
+        .quote-reference-number {
+          h3 {
+            text-slign:left;
+          }
+        }
+        .btn-more-info-apply {
+          float: right;
+        }
+
+      }
     }
   }
 }
