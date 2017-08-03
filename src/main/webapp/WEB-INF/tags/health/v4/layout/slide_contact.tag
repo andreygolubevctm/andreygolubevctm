@@ -12,6 +12,7 @@
              <jsp:attribute name="rightColumn">
                  <health_v4:cta_panel />
                  <reward:campaign_tile_container />
+                 <health_v4_content:snapshot/>
              </jsp:attribute>
 
             <jsp:body>
