@@ -18,6 +18,8 @@
         $yourDetailsFieldset,
         $followupCallCheckboxDialogue,
         $followupCallCheckbox,
+        $cliCallCheckboxDialogue,
+        $nonCliCallCheckboxDialogue,
         $outboundFollowupDialogue,
         $inboundQuestionsetFollowupDialogue,
         $inboundQuestionsetFollowupToggles,
@@ -50,6 +52,8 @@
             $yourDetailsFieldset = $('#health-contact-fieldset .content');
             $followupCallCheckboxDialogue = $('.simples-dialogue-68');
             $followupCallCheckbox = $('#health_simples_dialogue-checkbox-68');
+            $cliCallCheckboxDialogue = $('.simples-dialogue-78');
+            $nonCliCallCheckboxDialogue = $('.simples-dialogue-20');
             $outboundFollowupDialogue = $('.simples-dialogue-69');
             $inboundQuestionsetFollowupDialogue = $('.simples-dialogue-70');
             $inboundQuestionsetFollowupToggles = $inboundQuestionsetFollowupDialogue.find('a');
@@ -269,6 +273,8 @@
         }
         // Toggle visibility of followup call checkbox
         $followupCallCheckboxDialogue.toggleClass('hidden',!isValidCallType);
+        $cliCallCheckboxDialogue.toggleClass('hidden',isValidCallType);
+        $nonCliCallCheckboxDialogue.toggleClass('hidden',!isValidCallType);
         if(isFollowupCall && isValidCallType) {
             if(callType === 'outbound'){
                 // Hide inbound dialogs and show outbound
