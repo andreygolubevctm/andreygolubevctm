@@ -69,6 +69,8 @@
 
             ArrayList<HashMap<String,String>> productsArray = new ArrayList<HashMap<String,String>>();
             ArrayList<String> productIds = new ArrayList<String>();
+            ArrayList<String> productCodes = new ArrayList<String>();
+            ArrayList<String> productIdSets = new ArrayList<String>();
 
             ArrayList<HashMap<String,String>> propertiesArray = new ArrayList<HashMap<String,String>>();
 
@@ -101,7 +103,7 @@
 
                             productsArray.add(product);
                             productIds.add(product.get("productId"));
-
+                            productCodes.add(product.get("productCode"));
                             // Rename product?
                             if(part[PRODUCT_RENAME_ACTION_COLUMN_NUMBER].equals("1")) {
         %>
@@ -208,11 +210,20 @@
         %>
         -- ================ TESTS =====================<br />
         -- ========= BEFORE INSERT TESTS ==============<br />
-        -- When this is run before anything else on the ctm.product_properties table, query should return <%= initialResultCount %> rows<br />
-        SELECT * FROM ctm.product_properties WHERE ProductId IN(<%=StringUtil.join(productIds, ",")%>) AND SequenceNo > 0 LIMIT 999999;<br/><br/>
+        <br />
+        /* When this is run before anything else on the ctm.product_properties table, query should return <%= initialResultCount %> rows */<br /><br />
+        <%
+        for(String code : productCodes) { %>
+            SET @<%= code.replaceAll("-", "_") %>_product_id = (SELECT ProductId FROM ctm.product_master WHERE ProductCode='<%= code %>'); <br/>
+        <%  productIdSets.add("@" + code.replaceAll("-", "_") + "_product_id");
+         }
+        %>
+
+        <br />
+        SELECT * FROM ctm.product_properties WHERE ProductId IN(<%=StringUtil.join(productIdSets, ",")%>) AND SequenceNo > 0 LIMIT 999999;<br/><br/>
 
         /* Delete existing prices in product properties */<br/>
-        DELETE FROM ctm.product_properties WHERE ProductId IN(<%=StringUtil.join(productIds, ",")%>) AND SequenceNo > 0 LIMIT <%= initialResultCount %>;<br/><br/>
+        DELETE FROM ctm.product_properties WHERE ProductId IN(<%=StringUtil.join(productIdSets, ",")%>) AND SequenceNo > 0 LIMIT <%= initialResultCount %>;<br/><br/>
         /* Insert product properties pricing*/<br/>
         <%
             }
@@ -232,6 +243,7 @@
             while((line = in.readLine()) != null) {
                 lineNo++;
                 int productId = -1;
+                String productIdSet = "";
 
                 // Remove " chars
                 String[] part = line.split(",(?=(?:(?:[^\"]*\"){2})*[^\"]*$)");
@@ -248,16 +260,17 @@
                             String productNameFromPrice = part[1];
                             if(product.get("name").equals(productNameFromPrice)){
                                 productId = Integer.parseInt(product.get("productId"));
+                                productIdSet = "@" + product.get("productCode").replaceAll("-", "_") + "_product_id";
                                 break;
                             }
                         }
 
 
-                        if (productId > -1){
+                        if (productId > -1) {
 
                             prevProductId = ratesImporter.map(productId,prevProductId, map);
 
-                            for (String key : map.keySet()){
+                            for (String key : map.keySet()) {
                                 int index = 0;
                                 index++;
 
@@ -287,7 +300,7 @@
         INSERT INTO ctm.product_properties VALUES
         <% } %>
         (
-        <%=productId%>,
+        <%=productIdSet%>,
         '<%=key%>',
         <%=ratesImporter.getSequenceNo()%>,
         <%=part[idx]%>,
