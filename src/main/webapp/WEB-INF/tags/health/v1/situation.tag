@@ -7,6 +7,7 @@
 
 <%-- VARIABLES --%>
 <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
+<c:set var="ovcScripting"><content:get key="simplesOVCCopy" /></c:set>
 
 <%-- HTML --%>
 <div id="${name}-selection" class="health-situation">
@@ -73,6 +74,17 @@
                     <field_v1:hidden xpath="${xpath}/postcode" />
 
                 </form_v3:row>
+
+                <%-- Medicare card question --%>
+                <c:if test="${callCentre}">
+                    <c:set var="fieldXpath" value="${xpath}/cover" />
+                    <c:set var="fieldXpathName" value="${go:nameFromXpath(fieldXpath)}_wrapper" />
+                    <form_v3:row label="Private Health Insurance works in conjunction with Medicare, so just to confirm, do all people to be covered on this policy have a blue or green Medicare card?" fieldXpath="${fieldXpath}" id="${fieldXpathName}" className="health_situation_medicare text-danger" helpId="564">
+                        <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}"
+                            title="your Medicare card cover" required="true" className="health-medicare_details-card"
+                            id="${name}_cover" additionalAttributes="data-rule-isCheckedYes='true' data-msg-isCheckedYes='${ovcScripting}'" />
+                    </form_v3:row>
+                </c:if>
 
                 <%-- health situation used be radio buttons, hidden in call centre as requested --%>
                 <field_v1:hidden xpath="${xpath}/healthSitu" defaultValue="LC" />
