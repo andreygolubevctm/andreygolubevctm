@@ -294,8 +294,6 @@
 
         $(Results.settings.elements.resultsContainer).on("featuresDisplayMode", function () {
             _resetSelectionsStructureObject();
-            _setupSelectedBenefits('Extras Selections', 'Extras Cover');
-            _setupSelectedBenefits('Hospital Selections', 'Hospital Cover');
             Features.buildHtml();
             _.defer(meerkat.modules.healthResultsTemplate.postRenderFeatures);
         });
