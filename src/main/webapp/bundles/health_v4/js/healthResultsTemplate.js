@@ -290,32 +290,7 @@
     }
 
     function postRenderFeatures() {
-
         eventSubscriptions();
-
-        $('.featuresListHospitalOther > .collapsed').removeClass('collapsed');
-
-        // For each result, check if there are restricted benefits. If there are, display the restricted benefit text.
-        $('.hospitalCoverSection', $('.result-row')).each(function () {
-            var $el = $(this);
-            if ($el.find('sup').length) {
-                $el.find('.restrictedBenefit').removeClass('hidden');
-            }
-        });
-
-        // populate extras selections list with empty div
-        if (numberOfSelectedExtras() === 0) {
-            $('.featuresListExtrasSelections .children').html('<div class="cell category collapsed"><div class="labelInColumn no-selections"><div class="content" data-featureid="9997"><div class="contentInner">No extras benefits selected</div></div></div></div>');
-        }
-
-        if (numberOfSelectedHospitals() === 0) {
-            $('.featuresListHospitalSelections .children').each(function () {
-                if ($.trim($(this).html()) === '') {
-                    $(this).html('<div class="cell category collapsed"><div class="labelInColumn no-selections"><div class="content" data-featureid="9996"><div class="contentInner">No hospital benefits selected</div></div></div></div>');
-                }
-            });
-        }
-
     }
 
     function numberOfSelectedExtras() {
@@ -329,7 +304,6 @@
     }
 
     function eventSubscriptions() {
-
         $(document).off('click', '.remove-result').on('click', '.remove-result', function () {
             var $el = $(this);
             if (!$el.hasClass('disabled')) {

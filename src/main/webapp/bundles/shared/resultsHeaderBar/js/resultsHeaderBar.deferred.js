@@ -113,11 +113,20 @@
         if (isWindowInAffixPosition() === true) {
 
             if (isContentAffixed() === false) {
-                $affixOnScroll.addClass("affixed");
-                $resultsContainer.addClass("affixed-settings");
+                var skipAffix = false;
+                if (_.has(settings, 'removeAffixXs') && settings.removeAffixXs) {
+                    skipAffix = true;
+                }
+                if (!skipAffix) {
+                    $affixOnScroll.addClass("affixed");
+                    $resultsContainer.addClass("affixed-settings");
+                }
             }
 
             if (isWindowInCompactPosition() === true && isContentCompact() === false) {
+                if (_.has(settings, 'removeAffixXs') && settings.removeAffixXs) {
+                    return;
+                }
                 $affixOnScroll.addClass("affixed-compact");
                 $resultsContainer.find(".result .productSummary").addClass("compressed");
                 $(document).trigger('headerAffixed');
@@ -134,8 +143,11 @@
     }
 
     function removeCompactClasses() {
-        $affixOnScroll.removeClass("affixed-compact");
         $resultsContainer.find(".result .productSummary").removeClass("compressed");
+        if (_.has(settings, 'removeAffixXs') && settings.removeAffixXs) {
+            return;
+        }
+        $affixOnScroll.removeClass("affixed-compact");
     }
 
     function removeAffixClasses() {
