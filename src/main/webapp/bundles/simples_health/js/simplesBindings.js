@@ -273,8 +273,8 @@
         }
         // Toggle visibility of followup call checkbox
         $followupCallCheckboxDialogue.toggleClass('hidden',!isValidCallType);
-        $cliCallCheckboxDialogue.toggleClass('hidden',isValidCallType);
-        $nonCliCallCheckboxDialogue.toggleClass('hidden',!isValidCallType);
+        $cliCallCheckboxDialogue.toggleClass('hidden',(getCallType()=== null ? true : isValidCallType));
+        $nonCliCallCheckboxDialogue.toggleClass('hidden',!(getCallType() === null ? true : isValidCallType));
         if(isFollowupCall && isValidCallType) {
             if(callType === 'outbound'){
                 // Hide inbound dialogs and show outbound
