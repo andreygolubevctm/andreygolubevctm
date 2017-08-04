@@ -55,6 +55,7 @@
 			}
 		});
 		var coverType = $(elements.coverType).find('option:selected').val();
+		var landlordFix = meerkat.site.isLandlord ? '.isLandlord ' : '.notLandlord ';
 		switch(coverType){
 			case "Home Cover Only":
 				$(elements.abovePolicyLimits+', '+
@@ -79,7 +80,7 @@
 				elements.specifyPersonalEffects
 				).slideDown(speed);
 
-				$hidden = $(elements.replaceContentsCost+' input[type="hidden"]');
+				$hidden = $(landlordFix + elements.replaceContentsCost+' input[type="hidden"]');
 				$hidden.val($hidden.attr('data-value'));
 
 				break;
@@ -93,9 +94,8 @@
 
 				$hidden = $(elements.rebuildCost+' input[type="hidden"]');
 				$hidden.val($hidden.attr('data-value'));
-				$hidden = $(elements.replaceContentsCost+' input[type="hidden"]');
+				$hidden = $(landlordFix + elements.replaceContentsCost+' input[type="hidden"]');
 				$hidden.val($hidden.attr('data-value'));
-
 				break;
 			default:
 				break;
