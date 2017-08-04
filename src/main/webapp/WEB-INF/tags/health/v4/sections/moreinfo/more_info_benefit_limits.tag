@@ -24,7 +24,13 @@
                 <p>{{= ft.safeName }}</p>
             </div>
             {{ } }}
-        {{ if(ft.type == 'feature') { }}<div class="col-xs-6 limitTitle">{{= ft.safeName }}</div><div class="col-xs-6 limitValue">{{= ft.displayValue }}</div><div class="clearfix"></div>{{ } }}
+        {{ if(ft.type == 'feature') { }}
+            {{ if(ft.className) { }}<div class="{{= ft.className }}">{{ } }}
+                <div class="col-xs-6 limitTitle">{{= ft.safeName }}</div>
+                <div class="col-xs-6 limitValue">{{= ft.displayValue }}</div>
+            {{ if(ft.className) { }}</div>{{ } }}
+            <div class="clearfix"></div>
+        {{ } }}
         {{ } if(ft.displayChildren && (ft.isNotCovered == obj.showNotCoveredBenefits || obj.ignoreLimits) && ft.isRestricted == false) { }}
             {{ obj.childFeatureDetails = ft.children; }}
             {{ if(ft.type == 'category' && obj.featureType == 'extras') { }} <div class="limits-label">Limits</div> {{ } }}
