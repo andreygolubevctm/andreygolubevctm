@@ -538,7 +538,7 @@
             journey: {
                 startStep: 'About You',
                 benefitStep: '<span class="hidden-sm hidden-md hidden-lg">Preferences</span><span class="hidden-xs">Insurance Preferences</span>',
-                contactStep: 'Contact details'
+                contactStep: 'Contact Details'
             },
             application: {
                 applyStep: 'Application',
