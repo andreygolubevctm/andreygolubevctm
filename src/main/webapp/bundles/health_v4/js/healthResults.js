@@ -227,7 +227,8 @@
                 },
                 templates: {
                     pagination: {
-                        pageItem: '<li class="hidden-md hidden-lg"><a class="btn-pagination" data-results-pagination-control="{{= pageNumber}}" data-analytics="pagination {{= pageNumber}}">{{= label}}</a></li>'
+                        pageItem: '<li class="hidden-md hidden-lg"><a class="btn-pagination" data-results-pagination-control="{{= pageNumber}}" data-analytics="pagination {{= pageNumber}}">{{= label}}</a></li>',
+                        summary: '<li class="summary hidden-xs hidden-sm"><div><span class="hidden-md">Products</span> <span class="boldtext">{{= rangeStart}}</span> to <span class="boldtext">{{= rangeEnd}}</span> of {{= totalProducts}}</div></li>'
                     }
                 },
                 dictionary: {
