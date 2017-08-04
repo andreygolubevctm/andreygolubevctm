@@ -549,7 +549,7 @@
 
         if (meerkat.modules.splitTest.isActive(4)) {
             labels.journey.startStep = '<span class="hidden-sm hidden-md hidden-lg">About</span><span class="hidden-xs">About You</span>';
-            labels.journey.contactStep = 'Details';
+            labels.journey.contactStep = '<span class="hidden-sm hidden-md hidden-lg">Details</span><span class="hidden-xs">Contact Details</span>';
             labels.journey.resultsStep = '<span class="hidden-sm hidden-md hidden-lg">Prices</span><span class="hidden-xs">Get Prices</span>';
         }
 
