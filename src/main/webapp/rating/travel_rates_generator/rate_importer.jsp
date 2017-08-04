@@ -50,10 +50,12 @@
             int PRODUCT_INCLUDE_ACTION_COLUMN_NUMBER = 7;
 
             int PROPERTY_PRODUCT_ID_COLUMN_NUMBER = 1;
-            int PROPERTY_PROPERTY_ID_COLUMN_NUMBER = 2;
-            int PROPERTY_VALUE_COLUMN_NUMBER = 3;
-            int PROPERTY_TEXT_COLUMN_NUMBER = 4;
-            int PROPERTY_ORDER_COLUMN_NUMBER = 5;
+            int PROPERTY_PRODUCT_CODE_COLUMN_NUMBER = 2;
+            int PROPERTY_PROPERTY_ID_COLUMN_NUMBER = 3;
+            int PROPERTY_VALUE_COLUMN_NUMBER = 4;
+            int PROPERTY_TEXT_COLUMN_NUMBER = 5;
+            int PROPERTY_ORDER_COLUMN_NUMBER = 6;
+
             ratesImporter.init(request);
             String providerName = "NOT_SET";
             String providerId = "NOT_SET";
@@ -151,6 +153,7 @@
                                 property.put("text",part[PROPERTY_TEXT_COLUMN_NUMBER]);
                                 property.put("order",part[PROPERTY_ORDER_COLUMN_NUMBER]);
                                 property.put("productId",product.get("productId"));
+                                property.put("productCode", product.get("productCode"));
                                 propertiesArray.add(property);
                             }
                         }else{
@@ -160,8 +163,8 @@
                             property.put("value",part[PROPERTY_VALUE_COLUMN_NUMBER]);
                             property.put("text",part[PROPERTY_TEXT_COLUMN_NUMBER]);
                             property.put("order",part[PROPERTY_ORDER_COLUMN_NUMBER]);
-
                             property.put("productId",part[PROPERTY_PRODUCT_ID_COLUMN_NUMBER]);
+                            property.put("productCode", part[PROPERTY_PRODUCT_CODE_COLUMN_NUMBER]);
                             propertiesArray.add(property);
                         }
 
@@ -178,15 +181,24 @@
             if(propertiesArray.size() > 0){
         %>
         /* Delete existing product properties (including SEQUENCE 0)) */<br/>
-        DELETE FROM ctm.product_properties WHERE ProductId IN(<%=StringUtil.join(productIds, ",")%>);<br/><br/>
+        <%
+            productIdSets.clear();
+            for(String code : productCodes) { %>
+        SET @<%= code.replaceAll("-", "_") %>_property_product_id = (SELECT ProductId FROM ctm.product_master WHERE ProductCode='<%= code %>'); <br/>
+        <%  productIdSets.add("@" + code.replaceAll("-", "_") + "_property_product_id");
+        }
+        %>
+
+        DELETE FROM ctm.product_properties WHERE ProductId IN(<%=StringUtil.join(productIdSets, ",")%>);<br/><br/>
         <br/><br/>/* Insert product properties */<br/><br/>
         <%
 
             for (HashMap<String, String> property : propertiesArray){
+            String propertyProductIdSet = "@" + property.get("productCode").replaceAll("-", "_") + "_property_product_id";
 
         %>
         INSERT INTO ctm.product_properties VALUES(
-        <%=property.get("productId")%>,
+        <%=propertyProductIdSet%>,
         '<%=property.get("propertyId")%>',
         0,
         <%=property.get("value")%>,
@@ -213,6 +225,7 @@
         <br />
         /* When this is run before anything else on the ctm.product_properties table, query should return <%= initialResultCount %> rows */<br /><br />
         <%
+        productIdSets.clear();
         for(String code : productCodes) { %>
             SET @<%= code.replaceAll("-", "_") %>_product_id = (SELECT ProductId FROM ctm.product_master WHERE ProductCode='<%= code %>'); <br/>
         <%  productIdSets.add("@" + code.replaceAll("-", "_") + "_product_id");
