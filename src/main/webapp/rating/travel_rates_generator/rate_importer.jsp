@@ -349,7 +349,7 @@
         <br /><br />
         -- ========= AFTER INSERT TESTS ==============<br />
         -- When this is run after the insert statements on the ctm.product_properties table, query should return <%= (newResultCount) %> rows<br />
-        SELECT * FROM ctm.product_properties WHERE ProductId IN(<%=StringUtil.join(productIds, ",")%>) AND SequenceNo > 0 LIMIT 999999;<br />
+        SELECT * FROM ctm.product_properties WHERE ProductId IN(<%=StringUtil.join(productIdSets, ",")%>) AND SequenceNo > 0 LIMIT 999999;<br />
         -- ================ =====================<br /><br />
     </c:otherwise>
 </c:choose>

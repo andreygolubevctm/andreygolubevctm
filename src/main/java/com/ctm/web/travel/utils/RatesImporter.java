@@ -87,6 +87,18 @@ public class RatesImporter {
         map.put("R5_DUO",21);
         map.put("R5_FAM",22);
 
+        map.put("R6_SIN",23);
+        map.put("R6_DUO",24);
+        map.put("R6_FAM",25);
+
+        map.put("R7_SIN",26);
+        map.put("R7_DUO",27);
+        map.put("R7_FAM",28);
+
+        map.put("R8_SIN",29);
+        map.put("R8_DUO",30);
+        map.put("R8_FAM",31);
+
         int sizeOfMap = map.size();
         LOGGER.debug("the size of the map is:" + sizeOfMap);
         return prevProductId;
