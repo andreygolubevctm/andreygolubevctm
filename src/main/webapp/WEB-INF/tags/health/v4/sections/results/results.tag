@@ -105,6 +105,10 @@
                     <input type="hidden" name="health_retrieve_savedResults" value="Y" />
                     <input type="hidden" name="health_retrieve_transactionId" value="<c:out value='${param.transactionId}' escapeXml="true" />" />
                 </c:when>
+                 <c:when test="${param.action == 'remember' && not empty param.transactionId}">
+                     <input type="hidden" name="health_rememberme" value="Y" />
+                     <input type="hidden" name="health_previous_transactionId" value="<c:out value='${param.transactionId}' escapeXml="true" />" />
+                </c:when>
             </c:choose>
         </c:if>
 
