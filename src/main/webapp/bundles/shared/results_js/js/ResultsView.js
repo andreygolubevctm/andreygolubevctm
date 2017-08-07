@@ -126,7 +126,7 @@ var ResultsView = {
 
 			if(typeof meerkat !== 'undefined') {
 				meerkat.messaging.publish(Results.view.moduleEvents.RESULTS_TOGGLE_MODE);
-		}
+			}
 		}
 
 	},

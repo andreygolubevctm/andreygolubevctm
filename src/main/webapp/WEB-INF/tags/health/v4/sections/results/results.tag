@@ -62,23 +62,17 @@
                     <div class="hospitalSelectionsExcessContainer">
                         <div class="hospitalExcessSectionBorder">
                             <div class="featuresListExcess" data-feature-template="#results-features-excess-template" data-feature-index="1" data-feature-type="excess"></div>
-                            <div class="yourSelectionsHospital">
-                                <div class="selected-benefits-title">My Selected Benefits</div>
-                            </div>
                         </div>
                         {{ if(info.situationFilter == 'Y') { }}
                         <div class="featuresListHospitalSelections"><health_v4_results:limited_cover_label /></div>
-                        {{ } else { }}
-                        <div class="featuresListHospitalSelections" data-feature-index="2" data-feature-type="hospital"></div>
                         {{ } }}
                     </div>
-                    <div class="featuresListHospitalOtherList text-center small" data-feature-template="#results-features-extras-template" data-feature-index="4" data-feature-type="hospital"></div>
+                    <div class="featuresListHospitalOtherList" data-feature-index="4" data-feature-type="hospital"></div>
                 </div>
                 {{ } if(coverType == 'E' || coverType == 'C') { }}
                 <div class="extrasCoverSection">
                     <h2>Extras</h2>
-                    <div class="featuresListExtrasSelections" data-feature-index="3" data-feature-type="extras"></div>
-                    <div class="featuresListExtrasOtherList text-center small" data-feature-template="#results-features-extras-template" data-feature-index="5" data-feature-type="extras"></div>
+                    <div class="featuresListExtrasOtherList" data-feature-index="5" data-feature-type="extras"></div>
                 </div>
                 {{ } }}
                 <div class="ambulanceCoverSection">
