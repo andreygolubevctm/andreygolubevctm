@@ -151,13 +151,10 @@ var ResultsPagination = {
 						var num = i+1;
 						htmlString = pageItemTemplate({pageNumber: num, label: num});
 						Results.pagination.$pagesContainer.append(htmlString);
-
-
+						
                         if(showPaginationSummary) {
                             htmlString = $(htmlString).addClass('hidden-xs hidden-sm');
                         }
-
-
 
 						// Next Button
 						if(num >= pageMeasurements.numberOfPages) {
