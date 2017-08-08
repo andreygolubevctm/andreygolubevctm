@@ -131,8 +131,7 @@
             if(part[PRODUCT_ADD_ACTION_COLUMN_NUMBER].equals("1")) {
         %>
         /* Add new product master */<br/>
-        SET @product_id = (SELECT ProductId FROM ctm.product_master WHERE ProductCode='<%=product.get("productCode") %>');<br/>
-        INSERT INTO ctm.product_master (ProductId, ProductCat, ProductCode, ProviderId, ShortTitle, LongTitle, EffectiveStart, EffectiveEnd) VALUES (@product_id, 'TRAVEL', '<%=product.get("productCode") %>', <%=providerId %>, '<%=providerShortName %>&nbsp;<%=product.get("name") %>', '<%=providerName %>&nbsp;<%=product.get("name") %>', curdate(), '2040-12-31');
+        INSERT INTO ctm.product_master (ProductCat, ProductCode, ProviderId, ShortTitle, LongTitle, EffectiveStart, EffectiveEnd) VALUES ('TRAVEL', '<%=product.get("productCode") %>', <%=providerId %>, '<%=providerShortName %>&nbsp;<%=product.get("name") %>', '<%=providerName %>&nbsp;<%=product.get("name") %>', curdate(), '2040-12-31');
         <br/>
         <br/>
         <%
@@ -236,7 +235,7 @@
         SELECT * FROM ctm.product_properties WHERE ProductId IN(<%=StringUtil.join(productIdSets, ",")%>) AND SequenceNo > 0 LIMIT 999999;<br/><br/>
 
         /* Delete existing prices in product properties */<br/>
-        DELETE FROM ctm.product_properties WHERE ProductId IN(<%=StringUtil.join(productIdSets, ",")%>) AND SequenceNo > 0 LIMIT <%= initialResultCount %>;<br/><br/>
+        DELETE FROM ctm.product_properties WHERE ProductId IN(<%=StringUtil.join(productIdSets, ",")%>) AND SequenceNo > 0 LIMIT 999999;<br/><br/>
         /* Insert product properties pricing*/<br/>
         <%
             }
@@ -319,19 +318,12 @@
         <%=part[idx]%>,
         '<%=currency%>',
         NULL,
-        CURDATE(),
+        '2017-07-01',
         '2040-12-31',
         '',
         0
-        )
-        <% ratesImporter.handleCount(newResultCount,initialResultCount);
-            if(newResultCount <= initialResultCount - 1) {  %>
-        , <!--  put a semi colon or comma here if last one. -->
-        <!--  also report on the nubmer of inserts per product id -->
-        <% } else { %>
-        ;
-        <% } %>
-
+        ),
+        <% ratesImporter.handleCount(newResultCount,initialResultCount);%>
         <br />
         <%
 
