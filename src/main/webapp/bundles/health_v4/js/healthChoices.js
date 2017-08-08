@@ -33,9 +33,9 @@
     }
 
     function _eventSubscriptions() {
-        meerkat.messaging.subscribe(meerkatEvents.healthSituation.SITUATION_CHANGED, function toggleHasPartner() {
-            $elements.body.attr('data-has-partner', function() {
-                return hasPartner() ? true : false;
+        meerkat.messaging.subscribe(meerkatEvents.healthSituation.SITUATION_CHANGED, function toggleIsSingle() {
+            $elements.body.attr('data-is-single', function() {
+                return _.indexOf(['SM', 'SF'], meerkat.modules.healthSituation.getSituation()) !== -1 ? true : false;
             });
         });
     }
