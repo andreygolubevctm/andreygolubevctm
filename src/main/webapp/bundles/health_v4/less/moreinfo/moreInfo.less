@@ -500,7 +500,36 @@
 .moreInfoDropdown{
   @media (@xs-only) {
 
-    .dockedHeaderSlim{
+    li.navbar-text.modal-title-label{
+      padding-right: 15px;
+    }
+
+    .dockedHeaderLarge {
+      .hidden-lg {
+        display: none !important;
+      }
+
+      h5.productName{
+        margin-right: -15px;
+      }
+
+      .frequencyAmount{
+        font-size: 35px;
+        line-height: 30px;
+
+        .frequencyTitle{
+          line-height: 20px;
+        }
+      }
+    }
+
+    .dockedHeaderSlim {
+      .hidden-slim {
+        display: none !important;
+      }
+    }
+
+    .dockedHeaderBottom{
       margin-bottom: -15px;
 
       .btn-cta.btn-more-info-apply,
@@ -535,6 +564,9 @@
           h3 {
             text-align:left;
           }
+        }
+        .getPrintableBrochures {
+          text-align:left;
         }
         .btn-more-info-apply {
           float: right;
