@@ -23,7 +23,7 @@ public class RatesImporter {
 
     public String processWebCTMHomeDir() {
         if(webCtmHomeDir == null) {
-            return "/home/pgomes/Desktop/workspace/web_ctm/";
+            return "C:/dev/web_ctm/";
         }
         else {
             return webCtmHomeDir;
