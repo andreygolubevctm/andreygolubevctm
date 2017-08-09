@@ -32,7 +32,8 @@
                 accidentOnlyCover: $('input[name=health_situation_accidentOnlyCover]'),
                 comprehensiveBenefitTab: $('#comprehensiveBenefitTab'),
                 limitedCoverIcon: $('#health_benefits_benefitsExtras_LimitedCover'),
-                privateHospitalBenefit: $('input[name=health_benefits_benefitsExtras_PrHospital]')
+                privateHospitalBenefit: $('input[name=health_benefits_benefitsExtras_PrHospital]'),
+                generalDentalBenefit: $('input[name=health_benefits_benefitsExtras_DentalGeneral]')
             };
 
             if (meerkat.modules.splitTest.isActive(2)) {
@@ -62,9 +63,15 @@
             _populateBenefitsLabelsStore();
 
             _.defer(function(){
-                // Ensure that Private Hospital is selected as default cover
-                if(meerkat.site.isNewQuote && !$('#health_benefits_benefitsExtras_PrHospital').prop('checked')) {
-                    $('#health_benefits_benefitsExtras_PrHospital').prop('checked',true).change();
+                // Ensure that Private Hospital and General Dental is selected as default cover
+                if (meerkat.site.isNewQuote) {
+                    if (!$elements.privateHospitalBenefit.prop('checked')) {
+                        _checkPrivateHospital();
+                    }
+
+                    if (meerkat.modules.splitTest.isActive(2) && !$elements.generalDentalBenefit.prop('checked')) {
+                        _checkGeneralDental();
+                    }
                 }
             });
         });
@@ -269,6 +276,12 @@
     function _checkPrivateHospital() {
         if (meerkat.modules.benefitsModel.getHospitalCount() === 0) {
             $elements.privateHospitalBenefit.trigger('click');
+        }
+    }
+
+    function _checkGeneralDental() {
+        if (meerkat.modules.benefitsModel.getExtrasCount() === 0) {
+            $elements.generalDentalBenefit.trigger('click');
         }
     }
 
