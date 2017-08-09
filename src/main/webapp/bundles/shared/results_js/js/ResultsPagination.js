@@ -127,10 +127,13 @@ var ResultsPagination = {
 				var pageUpDownTemplate = _.template(Results.settings.templates.pagination.page);
 
                 paginationSummaryTemplate = null;
+                showPaginationSummary = false;
                 if(!_.isEmpty(Results.settings.templates.pagination.summary)) {
-                    paginationSummaryTemplate = _.template(Results.settings.templates.pagination.summary);
+                	if (Results.settings.templates.pagination.summary) {
+                        paginationSummaryTemplate = _.template(Results.settings.templates.pagination.summary);
+                        showPaginationSummary = true;
+					}
                 }
-                showPaginationSummary = !_.isEmpty(paginationSummaryTemplate);
 
 				Results.pagination.empty(Results.pagination.$pagesContainer);
 
