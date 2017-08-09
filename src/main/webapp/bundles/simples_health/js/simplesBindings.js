@@ -28,7 +28,8 @@
         $simplesMedicareCoverForm = null,
         $applicantWrappers = {},
         currentFamilyType = null,
-        $limitedCoverHidden;
+        $limitedCoverHidden,
+        $moreInfoDialogue;
 
     function init() {
         $(document).ready(function () {
@@ -348,11 +349,17 @@
         $privatePatientDialogue.toggleClass('hidden', $limitedCoverHidden.val() !== 'Y');
     }
 
+    function toggleMoreInfoDialogue() {
+        $moreInfoDialogue = $('.simples-dialogue-76');
+        $moreInfoDialogue.toggleClass('hidden', $healthSitCoverType.find('input:checked').val().toLowerCase() === "e");
+    }
+
     meerkat.modules.register("simplesBindings", {
         init: init,
         updateSimplesMedicareCoverQuestionPosition: updateSimplesMedicareCoverQuestionPosition,
         toggleLimitedCoverDialogue: toggleLimitedCoverDialogue,
-        toggleRebateDialogue: toggleRebateDialogue
+        toggleRebateDialogue: toggleRebateDialogue,
+        toggleMoreInfoDialogue: toggleMoreInfoDialogue
     });
 
 })(jQuery);
