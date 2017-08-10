@@ -364,39 +364,43 @@
 
             var currentTopOffset = $elements.moreInfoContainer.offset().top;
 
+
+            var currentTopOffsetLtCalcHght = currentTopOffset < calculatedHeight;
+            var currentTopOffsetGtOrEqlToCalcHght = currentTopOffset >= calculatedHeight;
+
             if (calculatedHeight === startTopOffset) {
                 // need to get the newly calculated height since we hide some data
                 calculatedHeight = startTopOffset - (startHeaderHeight - $elements.modalHeader.height());
             }
 
-            $elements.modalHeader.find('.lhcText').toggleClass('hidden', currentTopOffset < calculatedHeight);
-            $elements.modalHeader.find('.printableBrochuresLink').toggleClass('hidden', currentTopOffset < calculatedHeight);
-            $elements.modalHeader.find('.productTitleText').toggleClass('hidden', currentTopOffset < calculatedHeight);
+            $elements.modalHeader.find('.lhcText').toggleClass('hidden', currentTopOffsetLtCalcHght);
+            $elements.modalHeader.find('.printableBrochuresLink').toggleClass('hidden', currentTopOffsetLtCalcHght);
+            $elements.modalHeader.find('.productTitleText').toggleClass('hidden', currentTopOffsetLtCalcHght);
 
             $elements.modalHeader.find('.dockedHdr')
-                .toggleClass('dockedHeaderSlim', currentTopOffset < calculatedHeight)
-                .toggleClass('dockedHeaderLarge', currentTopOffset >= calculatedHeight);
+                .toggleClass('dockedHeaderSlim', currentTopOffsetLtCalcHght)
+                .toggleClass('dockedHeaderLarge', currentTopOffsetGtOrEqlToCalcHght);
 
-            $('#' + moreInfoDialogId).find('.xs-results-pagination').toggleClass('dockedHeaderSlim', currentTopOffset < calculatedHeight);
+            $('#' + moreInfoDialogId).find('.xs-results-pagination').toggleClass('dockedHeaderSlim', currentTopOffsetLtCalcHght);
 
             if (meerkat.modules.healthPyrrCampaign.isPyrrActive()) {
-                $elements.modalHeader.find('.pyrrMoreInfoXSContainer').toggleClass('hidden', currentTopOffset < calculatedHeight);
+                $elements.modalHeader.find('.pyrrMoreInfoXSContainer').toggleClass('hidden', currentTopOffsetLtCalcHght);
 
             }
 
             if (meerkat.modules.healthDualPricing.isDualPricingActive() && meerkat.modules.deviceMediaState.get() === 'xs') {
-                $elements.modalHeader.find('.april-container').toggleClass('hidden', currentTopOffset < calculatedHeight);
+                $elements.modalHeader.find('.april-container').toggleClass('hidden', currentTopOffsetLtCalcHght);
                 $elements.currentPricingContainer
-                    .toggleClass('col-xs-12', currentTopOffset < calculatedHeight)
-                    .toggleClass('col-xs-6', currentTopOffset >= calculatedHeight);
+                    .toggleClass('col-xs-12', currentTopOffsetLtCalcHght)
+                    .toggleClass('col-xs-6', currentTopOffsetGtOrEqlToCalcHght);
 
                 $elements.pricingContainer
-                    .toggleClass('col-xs-6', currentTopOffset < calculatedHeight)
-                    .toggleClass('col-xs-12', currentTopOffset >= calculatedHeight);
+                    .toggleClass('col-xs-6', currentTopOffsetLtCalcHght)
+                    .toggleClass('col-xs-12', currentTopOffsetGtOrEqlToCalcHght);
 
 
-                $elements.currentPricingDetails.toggleClass('hidden', currentTopOffset < calculatedHeight);
-                $elements.modalHeader.find('.current-pricing').toggleClass('no-background', currentTopOffset < calculatedHeight);
+                $elements.currentPricingDetails.toggleClass('hidden', currentTopOffsetLtCalcHght);
+                $elements.modalHeader.find('.current-pricing').toggleClass('no-background', currentTopOffsetLtCalcHght);
             }
 
             if(moreInfoDialogId && meerkat.modules.deviceMediaState.get() === 'xs') {
