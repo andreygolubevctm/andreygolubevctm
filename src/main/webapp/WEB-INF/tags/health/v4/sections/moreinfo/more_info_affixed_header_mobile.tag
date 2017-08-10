@@ -14,7 +14,7 @@
 <script id="moreInfoAffixedHeaderMobileTemplate" type="text/html">
 	<div class="container <c:if test="${isDualPriceActive eq true}">hasDualPricing</c:if>">
 		<div class="row dockedHdr dockedHeaderLarge">
-			<div class="col-xs-12 quoteRefHdr">Quote Ref: <span class="quoteRefHdrTransId">{{= obj.transactionId }}</span></div>
+			<div class="col-xs-6 col-xs-offset-6 quoteRefHdr">Quote Ref: <span class="quoteRefHdrTransId">{{= obj.transactionId }}</span></div>
 			<div class="col-xs-6">
 				<div class="logo-header hidden-slim">
 					<div class="companyLogo {{= info.provider }}"></div>
