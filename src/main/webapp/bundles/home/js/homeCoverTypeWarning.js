@@ -100,8 +100,7 @@
 	}
 
 	function resetValues() {
-		isLandlord = meerkat.site.isLandlord;
-		type = isLandlord ? 'landlord' : 'occupancy';
+		type = meerkat.site.isLandlord ? 'landlord' : 'occupancy';
 	}
 
 	function validateSelections(proceedToOccupancy) {
@@ -132,7 +131,8 @@
 				className: "btn-next ownBtnWP",
 				closeWindow: true,
 				action: function() {
-					$('#home_occupancy_ownProperty_Y').prop('checked', true).change();
+					var targetClass = meerkat.site.isLandlord ? '.isLandlord' : '.notLandlord';
+					$(targetClass + ' #home_occupancy_ownProperty_Y').prop('checked', true).change();
 					$chosenCoverTypeOption.val(data[type].buttons[1]);
 				}
 			}];

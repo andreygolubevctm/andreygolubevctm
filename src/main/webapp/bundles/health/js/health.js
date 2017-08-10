@@ -177,7 +177,8 @@
 					meerkat.modules.healthChoices.shouldPerformUpdate(meerkat.site.choices.performHealthChoicesUpdate);
 				}
 
-				var $healthSitLocation = $('#health_situation_location'),
+				var $body = $('body'),
+					$healthSitLocation = $('#health_situation_location'),
 					$healthSitHealthCvr = $('#health_situation_healthCvr'),
 					$healthSitHealthSitu = $("input[name=health_situation_healthSitu]"),
 					$healthSitCoverType = $('#health_situation_coverType'),
@@ -185,9 +186,15 @@
 
 				// Add event listeners.
 				$healthSitHealthCvr.on('change',function() {
-					meerkat.modules.healthChoices.setCover($(this).val());
+					var value = $(this).val();
+
+					meerkat.modules.healthChoices.setCover(value);
 					changeMinAge();
 					meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
+
+					$body.attr('data-is-single', function() {
+						return _.indexOf(['SM', 'SF'], value) !== -1 ? true : false;
+					});
 				});
 
 				// we need to wait till the field gets proparly populated from the address search ajax
