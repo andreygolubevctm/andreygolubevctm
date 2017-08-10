@@ -278,7 +278,6 @@
                 // This class is in the database and is used to dynamically change the coupon banner.
                 $('.coupon-pyrr-banner-dynamic-hidden').hide();
                 $('.coupon-pyrr-banner-static').show();
-
             }
         }
     }
@@ -363,8 +362,6 @@
         $('.modal-body').off("scroll.moreInfoXS").on("scroll.moreInfoXS", function () {
 
             var currentTopOffset = $elements.moreInfoContainer.offset().top;
-
-
             var currentTopOffsetLtCalcHght = currentTopOffset < calculatedHeight;
             var currentTopOffsetGtOrEqlToCalcHght = currentTopOffset >= calculatedHeight;
 
