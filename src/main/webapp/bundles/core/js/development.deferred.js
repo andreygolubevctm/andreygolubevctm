@@ -97,7 +97,7 @@
             $aggEngineContainer.show();
             $aggEngineContainer.html('Loading aggregators...');
 
-            var aggregationBaseUrl = "http://web-ctm-dev.ctm.cloud.local"; // for NXI
+            var aggregationBaseUrl = "https://nxi.secure.comparethemarket.com.au"; // for NXI
 
 
             aggregationServicePromise = meerkat.modules.comms.get({
@@ -155,7 +155,7 @@
             $applicationEngineContainer.show();
             $applicationEngineContainer.html('Loading application services...');
 
-            var applicationBaseUrl = "http://web-ctm-dev.ctm.cloud.local"; // for NXI
+            var applicationBaseUrl = "https://nxi.secure.comparethemarket.com.au"; // for NXI
 
 
             meerkat.modules.comms.get({
@@ -209,7 +209,7 @@
             $validatorEngineContainer.show();
             $validatorEngineContainer.html('Loading Validator services...');
 
-            var validatorBaseUrl = "http://web-ctm-dev.ctm.cloud.local"; // for NXI
+            var validatorBaseUrl = "https://nxi.secure.comparethemarket.com.au"; // for NXI
 
 
             meerkat.modules.comms.get({
@@ -260,7 +260,7 @@
             $staticBranchesContainer.show();
             $staticBranchesContainer.html('Loading static content...');
 
-            var staticBaseUrl = "http://web-ctm-dev.ctm.cloud.local"; // for NXI
+            var staticBaseUrl = "https://nxi.secure.comparethemarket.com.au"; // for NXI
 
 
             meerkat.modules.comms.get({
