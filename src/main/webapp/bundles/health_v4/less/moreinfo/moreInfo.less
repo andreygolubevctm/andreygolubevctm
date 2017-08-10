@@ -521,16 +521,14 @@ body[data-is-single="true"] {
 .moreInfoDropdown{
   @media (@xs-only) {
 
+    li.navbar-text.modal-title-label{
+      padding-right: 15px;
+      float: right;
+    }
+
     .dockedHeaderLarge {
       .hidden-lg {
         display: none !important;
-      }
-
-      .quoteRefHdr {
-        text-align: right;
-        margin-top: -31px;
-        z-index: 400;
-        color: @more-info-header-text-color;
       }
 
       h5.productName {
@@ -538,7 +536,6 @@ body[data-is-single="true"] {
       }
 
       .frequencyAmount {
-        font-size: 35px;
         line-height: 30px;
 
         .frequencyTitle {

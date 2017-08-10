@@ -352,6 +352,7 @@
         }
 
         $(toggleBarInitSettings.container).find('.toggleBar').toggleClass('hidden', initToggleBar === false);
+        $('#' + moreInfoDialogId).find('.navbar-text.modal-title-label').html('<span class="quoteRefHdr">Quote Ref: <span class="quoteRefHdrTransId">' + meerkat.modules.transactionId.get() + '</span></span>');
     }
 
     function _trackScroll() {
@@ -372,6 +373,8 @@
             $elements.modalHeader.find('.dockedHdr')
                 .toggleClass('dockedHeaderSlim', $elements.moreInfoContainer.offset().top < calculatedHeight)
                 .toggleClass('dockedHeaderLarge', $elements.moreInfoContainer.offset().top >= calculatedHeight);
+
+            $('#' + moreInfoDialogId).find('.xs-results-pagination').toggleClass('dockedHeaderSlim', $elements.moreInfoContainer.offset().top < calculatedHeight);
 
             if (meerkat.modules.healthPyrrCampaign.isPyrrActive()) {
                 $elements.modalHeader.find('.pyrrMoreInfoXSContainer').toggleClass('hidden', $elements.moreInfoContainer.offset().top < calculatedHeight);
