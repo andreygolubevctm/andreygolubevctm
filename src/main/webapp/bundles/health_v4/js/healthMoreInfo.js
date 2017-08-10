@@ -361,39 +361,42 @@
             calculatedHeight = startTopOffset;
 
         $('.modal-body').off("scroll.moreInfoXS").on("scroll.moreInfoXS", function () {
+
+            var currentTopOffset = $elements.moreInfoContainer.offset().top;
+
             if (calculatedHeight === startTopOffset) {
                 // need to get the newly calculated height since we hide some data
                 calculatedHeight = startTopOffset - (startHeaderHeight - $elements.modalHeader.height());
             }
 
-            $elements.modalHeader.find('.lhcText').toggleClass('hidden', $elements.moreInfoContainer.offset().top < calculatedHeight);
-            $elements.modalHeader.find('.printableBrochuresLink').toggleClass('hidden', $elements.moreInfoContainer.offset().top < calculatedHeight);
-            $elements.modalHeader.find('.productTitleText').toggleClass('hidden', $elements.moreInfoContainer.offset().top < calculatedHeight);
+            $elements.modalHeader.find('.lhcText').toggleClass('hidden', currentTopOffset < calculatedHeight);
+            $elements.modalHeader.find('.printableBrochuresLink').toggleClass('hidden', currentTopOffset < calculatedHeight);
+            $elements.modalHeader.find('.productTitleText').toggleClass('hidden', currentTopOffset < calculatedHeight);
 
             $elements.modalHeader.find('.dockedHdr')
-                .toggleClass('dockedHeaderSlim', $elements.moreInfoContainer.offset().top < calculatedHeight)
-                .toggleClass('dockedHeaderLarge', $elements.moreInfoContainer.offset().top >= calculatedHeight);
+                .toggleClass('dockedHeaderSlim', currentTopOffset < calculatedHeight)
+                .toggleClass('dockedHeaderLarge', currentTopOffset >= calculatedHeight);
 
-            $('#' + moreInfoDialogId).find('.xs-results-pagination').toggleClass('dockedHeaderSlim', $elements.moreInfoContainer.offset().top < calculatedHeight);
+            $('#' + moreInfoDialogId).find('.xs-results-pagination').toggleClass('dockedHeaderSlim', currentTopOffset < calculatedHeight);
 
             if (meerkat.modules.healthPyrrCampaign.isPyrrActive()) {
-                $elements.modalHeader.find('.pyrrMoreInfoXSContainer').toggleClass('hidden', $elements.moreInfoContainer.offset().top < calculatedHeight);
+                $elements.modalHeader.find('.pyrrMoreInfoXSContainer').toggleClass('hidden', currentTopOffset < calculatedHeight);
 
             }
 
             if (meerkat.modules.healthDualPricing.isDualPricingActive() && meerkat.modules.deviceMediaState.get() === 'xs') {
-                $elements.modalHeader.find('.april-container').toggleClass('hidden', $elements.moreInfoContainer.offset().top < calculatedHeight);
+                $elements.modalHeader.find('.april-container').toggleClass('hidden', currentTopOffset < calculatedHeight);
                 $elements.currentPricingContainer
-                    .toggleClass('col-xs-12', $elements.moreInfoContainer.offset().top < calculatedHeight)
-                    .toggleClass('col-xs-6', $elements.moreInfoContainer.offset().top >= calculatedHeight);
+                    .toggleClass('col-xs-12', currentTopOffset < calculatedHeight)
+                    .toggleClass('col-xs-6', currentTopOffset >= calculatedHeight);
 
                 $elements.pricingContainer
-                    .toggleClass('col-xs-6', $elements.moreInfoContainer.offset().top < calculatedHeight)
-                    .toggleClass('col-xs-12', $elements.moreInfoContainer.offset().top >= calculatedHeight);
+                    .toggleClass('col-xs-6', currentTopOffset < calculatedHeight)
+                    .toggleClass('col-xs-12', currentTopOffset >= calculatedHeight);
 
 
-                $elements.currentPricingDetails.toggleClass('hidden', $elements.moreInfoContainer.offset().top < calculatedHeight);
-                $elements.modalHeader.find('.current-pricing').toggleClass('no-background', $elements.moreInfoContainer.offset().top < calculatedHeight);
+                $elements.currentPricingDetails.toggleClass('hidden', currentTopOffset < calculatedHeight);
+                $elements.modalHeader.find('.current-pricing').toggleClass('no-background', currentTopOffset < calculatedHeight);
             }
 
             if(moreInfoDialogId && meerkat.modules.deviceMediaState.get() === 'xs') {
