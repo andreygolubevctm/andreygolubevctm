@@ -12,7 +12,7 @@
             "Navy Health",
             "HBF",
             "TUH",
-            "My Own"
+            "myOwn"
         ];
 
     function initHealthMedicare() {
