@@ -124,7 +124,7 @@
         } else if (meerkat.site.journeyStage.length > 0 && _.indexOf(['remember', 'amend', 'latest'], meerkat.site.pageAction) >= 0) {
             // Do not allow the user to go past the results page on amend.
             // If remember me redirect set step to results
-            if (meerkat.site.journeyStage === 'remember' || meerkat.site.journeyStage === 'apply' || meerkat.site.journeyStage === 'payment') {
+            if (_.indexOf(['remember', 'latest'], meerkat.site.pageAction) >= 0 || (meerkat.site.pageAction === 'amend' && (meerkat.site.journeyStage === 'apply' || meerkat.site.journeyStage === 'payment'))) {
                 startStepId = 'results';
             } else {
                 startStepId = meerkat.site.journeyStage;

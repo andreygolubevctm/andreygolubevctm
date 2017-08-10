@@ -28,7 +28,12 @@
                     empty authenticatedData.login.user.uid and
                     rememberMeService.hasPersonalInfoAndLoadData(pageContext.request, pageContext.response, 'health')}">
 
-        <c:redirect url="${pageSettings.getBaseUrl()}remember_me.jsp" />
+        <%-- Preserve the query string params and pass them to remember_me.jsp --%>
+        <c:set var="redirectURL" value="${pageSettings.getBaseUrl()}remember_me.jsp?" />
+        <c:forEach items="${param}" var="currentParam">
+            <c:set var="redirectURL">${redirectURL}${currentParam.key}=${currentParam.value}&</c:set>
+        </c:forEach>
+        <c:redirect url="${fn:substring(redirectURL,0,fn:length(redirectURL) - 1)}" />
 
     </c:when>
     <c:when test="${not callCentre}">

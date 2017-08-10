@@ -95,7 +95,28 @@
                             meerkat.modules.leavePageWarning.disable();
                             $elements.loadingMessage.text('Loading Products & Prices Please wait...');
                             showLoadingPage();
-                            window.location.replace('health_quote_v4.jsp?action=remember&transactionId='+result.transactionId+'#results');
+                            var srcQSParams = {};
+                            if(_.isEmpty(window.location.search)) {
+                                var tmp = window.location.search.split("?").pop().split("&");
+                                for(var i=0; i<tmp.length; i++) {
+                                    var pieces = tmp[i].split("=");
+	                                if(pieces.length === 2) {
+	                                    srcQSParams[pieces[0]] = pieces[1];
+	                                }
+                                }
+                            }
+                            var newQSParams = {
+                                action : "remember",
+                                transactionId : result.transactionId
+                            };
+                            var finalQSParams = _.extend({},srcQSParams,newQSParams);
+                            var queryStr = [];
+                            for(var j in finalQSParams) {
+                                if(_.has(finalQSParams,j)) {
+                                    queryStr.push(j+"="+finalQSParams[j]);
+                                }
+                            }
+                            window.location.replace("health_quote_v4.jsp?" + queryStr.join("&") + "#results");
                         } else {
                             showError();
                             attemptCount++;
