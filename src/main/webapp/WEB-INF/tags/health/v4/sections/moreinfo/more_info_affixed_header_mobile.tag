@@ -33,7 +33,7 @@
 					<c:when test="${callCentreOpen eq true}">
 						<a href="tel:{{= '${callCentreNumber}'.replace(/\s/g, '') }}" target="_blank" class="btn btn-cta btn-more-info-call-now" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />> <span class="icon-phone" />&nbsp;Call&nbsp;${callCentreNumber}</a>
 						<div class="col-xs-6">
-							<div class="quote-reference-number hidden-lg">
+							<div class="quote-reference-number hidden-large">
 								<h3>Quote Ref: <span class="transactionId">{{= obj.transactionId }}</span></h3>
 							</div>
 							<div class="getPrintableBrochures hidden-slim">
@@ -46,7 +46,7 @@
 					</c:when>
 					<c:otherwise>
 						<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Apply Online<span class="icon-arrow-right" /></a>
-						<div class="quote-reference-number hidden-lg">
+						<div class="quote-reference-number hidden-large">
 							<h3>Quote Ref: <span class="transactionId">{{= obj.transactionId }}</span></h3>
 						</div>
 						<a href="javascript:;" class="getPrintableBrochures hidden-slim">Email brochures</a>
