@@ -151,16 +151,34 @@ body.simples {
     display: inline-block;
   }
 
-	.time-date,
-	.simples-calendar {
-		border-right: 1px solid #fff;
-		color: #fff;
-		padding: 11px 15px;
+  .time-date,
+  .simples-calendar {
+    border-right: 1px solid #fff;
+    color: #fff;
+    padding: 11px 15px;
 
-		.icon-calendar {
-			cursor: pointer;
-		}
-	}
+    .icon-calendar {
+      cursor: pointer;
+    }
+  }
+
+  .simples-dialogue {
+    padding: 15px;
+    margin-bottom: 18px;
+    border-radius: 5px;
+    background-color: @state-info-bg;
+    border-color: @brand-info;
+    color: @brand-info;
+    border: none;
+    padding-bottom: 10px;
+
+    & h2,
+    & h3 {
+      margin-top: 0;
+      margin-bottom: 5px;
+      color: inherit;
+    }
+  }
 
 }//body.simples
 

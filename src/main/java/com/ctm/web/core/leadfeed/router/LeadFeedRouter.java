@@ -143,7 +143,7 @@ public abstract class LeadFeedRouter extends HttpServlet {
 	}
 
 	protected abstract String getVerticalCode();
-	
+
 	protected abstract LeadFeedService getLeadFeedService();
 
 }

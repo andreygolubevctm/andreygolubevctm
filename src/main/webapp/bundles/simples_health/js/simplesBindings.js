@@ -18,6 +18,8 @@
         $yourDetailsFieldset,
         $followupCallCheckboxDialogue,
         $followupCallCheckbox,
+        $cliCallCheckboxDialogue,
+        $nonCliCallCheckboxDialogue,
         $outboundFollowupDialogue,
         $inboundQuestionsetFollowupDialogue,
         $inboundQuestionsetFollowupToggles,
@@ -28,7 +30,8 @@
         $simplesMedicareCoverForm = null,
         $applicantWrappers = {},
         currentFamilyType = null,
-        $limitedCoverHidden;
+        $limitedCoverHidden,
+        $moreInfoDialogue;
 
     function init() {
         $(document).ready(function () {
@@ -50,6 +53,8 @@
             $yourDetailsFieldset = $('#health-contact-fieldset .content');
             $followupCallCheckboxDialogue = $('.simples-dialogue-68');
             $followupCallCheckbox = $('#health_simples_dialogue-checkbox-68');
+            $cliCallCheckboxDialogue = $('.simples-dialogue-78');
+            $nonCliCallCheckboxDialogue = $('.simples-dialogue-20');
             $outboundFollowupDialogue = $('.simples-dialogue-69');
             $inboundQuestionsetFollowupDialogue = $('.simples-dialogue-70');
             $inboundQuestionsetFollowupToggles = $inboundQuestionsetFollowupDialogue.find('a');
@@ -269,6 +274,8 @@
         }
         // Toggle visibility of followup call checkbox
         $followupCallCheckboxDialogue.toggleClass('hidden',!isValidCallType);
+        $cliCallCheckboxDialogue.toggleClass('hidden',(getCallType()=== null ? true : isValidCallType));
+        $nonCliCallCheckboxDialogue.toggleClass('hidden',!(getCallType() === null ? true : isValidCallType));
         if(isFollowupCall && isValidCallType) {
             if(callType === 'outbound'){
                 // Hide inbound dialogs and show outbound
@@ -348,11 +355,17 @@
         $privatePatientDialogue.toggleClass('hidden', $limitedCoverHidden.val() !== 'Y');
     }
 
+    function toggleMoreInfoDialogue() {
+        $moreInfoDialogue = $('.simples-dialogue-76');
+        $moreInfoDialogue.toggleClass('hidden', $healthSitCoverType.find('input:checked').val().toLowerCase() === "e");
+    }
+
     meerkat.modules.register("simplesBindings", {
         init: init,
         updateSimplesMedicareCoverQuestionPosition: updateSimplesMedicareCoverQuestionPosition,
         toggleLimitedCoverDialogue: toggleLimitedCoverDialogue,
-        toggleRebateDialogue: toggleRebateDialogue
+        toggleRebateDialogue: toggleRebateDialogue,
+        toggleMoreInfoDialogue: toggleMoreInfoDialogue
     });
 
 })(jQuery);
