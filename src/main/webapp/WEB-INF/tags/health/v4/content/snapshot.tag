@@ -5,13 +5,13 @@
 <jsp:useBean id="sessionDataUtils" class="com.ctm.web.core.utils.SessionDataUtils" scope="page" />
 
 <fieldset class="quoteSnapshot sidebar-box hidden-sm">
-    <div class="row snapshot living-in">
+    <div class="row snapshot living-in hidden">
         <div class="col-md-4">
             <span class="snapshot-title">Living In</span>
         </div>
         <div class="col-md-8">
             <span class="snapshot-items">
-                <span data-source=".health-situation-state" data-type="radiogroup"></span>
+                <span data-source="#health_situation_state" data-type="radiogroup"></span>
             </span>
         </div>
     </div>
