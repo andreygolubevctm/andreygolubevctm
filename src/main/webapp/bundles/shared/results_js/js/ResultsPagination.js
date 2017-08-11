@@ -128,11 +128,10 @@ var ResultsPagination = {
 
                 paginationSummaryTemplate = null;
                 showPaginationSummary = false;
-                if(!_.isEmpty(Results.settings.templates.pagination.summary)) {
-                	if (Results.settings.templates.pagination.summary) {
-                        paginationSummaryTemplate = _.template(Results.settings.templates.pagination.summary);
-                        showPaginationSummary = true;
-					}
+                
+                if((!_.isEmpty(Results.settings.templates.pagination.summary)) && Results.settings.templates.pagination.summary)  {
+                    paginationSummaryTemplate = _.template(Results.settings.templates.pagination.summary);
+                    showPaginationSummary = true;
                 }
 
 				Results.pagination.empty(Results.pagination.$pagesContainer);
