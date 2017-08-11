@@ -70,5 +70,38 @@ body[data-step=contact],
 
 .pageRangeStart,
 .pageRangeEnd {
-  font-family: @font-family-theme-Semibold-new;
+  font-family: @font-family-theme-semibold;
+}
+
+.results-pagination {
+  .nav > li  {
+    .btn-pagination.btn-secondary {
+      border-width: 1px;
+      border-style: solid;
+      color:@btn-secondary-color;
+      background-color: @btn-secondary-bg-color;
+      border-color: @btn-secondary-border-color;
+
+      &:hover,
+      &:focus{
+        color:@btn-secondary-hover-color;
+        background-color: @btn-secondary-hover-bg-color;
+        border-color: @btn-secondary-hover-border-color;
+      }
+
+      &:active,
+      &.active{
+        color:@btn-secondary-active-color;
+        background-color: @btn-secondary-active-bg-color;
+        border-color: @btn-secondary-active-border-color;
+      }
+      &.inactive {
+        border-width: 0px;
+        cursor: default;
+        background-color: @white;
+        opacity: 1;
+        color: @gray-dark;
+      }
+    }
+  }
 }
