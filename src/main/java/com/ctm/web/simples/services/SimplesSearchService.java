@@ -11,7 +11,6 @@ import com.ctm.web.core.web.go.Data;
 import com.ctm.web.core.web.go.xml.XmlNode;
 import com.ctm.web.core.web.go.xml.XmlParser;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
@@ -25,6 +24,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
@@ -40,7 +41,7 @@ public class SimplesSearchService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(HealthPriceService.class);
 
     public enum SearchMode {
-        TRANS, PHONE, EMAIL, OTHER
+        TRANS, PHONE, EMAIL, POLICYNO, ADDRESS, OTHER
     }
 
     public SearchMode getSearchMode() {
@@ -51,10 +52,14 @@ public class SimplesSearchService {
         if (searchString != null) {
             if (searchString.length() > 1 && searchString.substring(0, 1).equalsIgnoreCase("0")) {
                 searchMode = SearchMode.PHONE;
-            } else if (NumberUtils.isNumber(searchString)) {
+            } else if (isLikeTransactionId(searchString) && transactionIdExists(searchString)) {
                 searchMode = SearchMode.TRANS;
             } else if (searchString.contains("@")) {
                 searchMode = SearchMode.EMAIL;
+            } else if (isLikePolicyNumber(searchString) && !isLikeName(searchString)) {
+                searchMode = SearchMode.POLICYNO;
+            } else if (isLikeAddress(searchString)) {
+                searchMode = SearchMode.ADDRESS;
             } else {
                 searchMode = SearchMode.OTHER;
             }
@@ -115,6 +120,12 @@ public class SimplesSearchService {
                 break;
             case TRANS:
                 performTransactionSearch();
+                break;
+            case POLICYNO:
+                performPolicyNoSearch();
+                break;
+            case ADDRESS:
+                performAddressSearch();
                 break;
             case OTHER:
                 performNameSearch();
@@ -318,6 +329,89 @@ public class SimplesSearchService {
             transactionIDs = (List<Long>) sqlDao.getAll(mapping, sql);
         }
         hotTransactionIdsCsv = StringUtils.join(transactionIDs, ",");
+    }
+
+    /**
+     * If search string is like policyno then search in transaction IDs
+     * @throws DaoException
+     */
+    private void performPolicyNoSearch() throws DaoException {
+        String sql;
+        SqlDao<Object> sqlDao = new SqlDao<>();
+        DatabaseQueryMapping<Object> mapping;
+        List<Long> transactionIDsHot = new ArrayList<>();
+        List<Long> transactionIDsCold = new ArrayList<>();
+        sql = "SELECT td.transactionId AS id , 'hot' AS 'src' FROM aggregator.transaction_details AS td \n" +
+                "\t\t\tWHERE xpath='health/policyNo' AND td.textValue=? \n" +
+                "UNION ALL\n" +
+                "SELECT td.transactionId AS id, 'cold' AS 'src' FROM aggregator.transaction_details2_cold AS td \n" +
+                "\t\t\tLEFT JOIN aggregator.transaction_fields AS f ON f.fieldId=td.fieldId \n" +
+                "\t\t\tWHERE f.fieldCode='health/policyNo' AND td.textValue=? \n" +
+                "LIMIT 25;";
+        mapping = new DatabaseQueryMapping<Object>() {
+            @Override
+            protected void mapParams() throws SQLException {
+                set(searchString);
+                set(searchString);
+            }
+
+            @Override
+            public Object handleResult(ResultSet rs) throws SQLException {
+                while (rs.next()) {
+                    if(rs.getString("src").equals("hot")) {
+                        transactionIDsHot.add(rs.getLong("id"));
+                    } else {
+                        transactionIDsCold.add(rs.getLong("id"));
+                    }
+                }
+                return null;
+            }
+        };
+        sqlDao.getAll(mapping, sql);
+        hotTransactionIdsCsv = StringUtils.join(transactionIDsHot, ",");
+        coldTransactionIdsCsv = StringUtils.join(transactionIDsCold, ",");
+    }
+
+    /**
+     * If search string is like street number and name then search in transaction IDs
+     * @throws DaoException
+     */
+    private void performAddressSearch() throws DaoException {
+        String sql;
+        SqlDao<Object> sqlDao = new SqlDao<>();
+        DatabaseQueryMapping<Object> mapping;
+        List<Long> transactionIDsHot = new ArrayList<>();
+        List<Long> transactionIDsCold = new ArrayList<>();
+        sql = "SELECT td.transactionId AS id, 'hot' AS 'src' FROM aggregator.transaction_details AS td \n" +
+                "\t\t\tWHERE xpath LIKE 'health/application/address/fullAddress%' AND td.textValue=? \n" +
+                "UNION ALL\n" +
+                "SELECT td.transactionId AS id, 'cold' AS 'src' FROM aggregator.transaction_details2_cold AS td \n" +
+                "\t\t\tLEFT JOIN aggregator.transaction_fields AS f ON f.fieldId=td.fieldId \n" +
+                "\t\t\tWHERE f.fieldCode LIKE 'health/application/address/fullAddress%' AND td.textValue=? \n" +
+                "LIMIT 25;";
+        mapping = new DatabaseQueryMapping<Object>() {
+            @Override
+            protected void mapParams() throws SQLException {
+                set(searchString);
+                set(searchString);
+            }
+
+            @Override
+            public Object handleResult(ResultSet rs) throws SQLException {
+                List<Long> transactionIDs = new ArrayList<>();
+                while (rs.next()) {
+                    if(rs.getString("src").equals("hot")) {
+                        transactionIDsHot.add(rs.getLong("id"));
+                    } else {
+                        transactionIDsCold.add(rs.getLong("id"));
+                    }
+                }
+                return null;
+            }
+        };
+        sqlDao.getAll(mapping, sql);
+        hotTransactionIdsCsv = StringUtils.join(transactionIDsHot, ",");
+        coldTransactionIdsCsv = StringUtils.join(transactionIDsCold, ",");
     }
 
     /**
@@ -548,5 +642,69 @@ public class SimplesSearchService {
             LOGGER.error("Error writing data into data bucket {},{},{}", kv("allowDuplicates", allowDuplicates),
                 kv("xml", xml), kv("value", value), kv("xpath", xPath));
         }
+    }
+
+    private boolean transactionIdExists(String transactionId) {
+        TransactionService transactionService = new TransactionService();
+        boolean exists = false;
+        try {
+            exists = transactionService.transactionIdExists(Long.valueOf(transactionId).longValue());
+        } catch(DaoException e) {
+            LOGGER.debug("Error confirming transactionId exists - " + e.getMessage(), e);
+        }
+        return exists;
+    }
+
+    /**
+     * isLikeTransactionId passes a simple regex over the string
+     * and confirms if it is like a transactionId.
+     * @param str
+     * @return
+     */
+    private boolean isLikeTransactionId(String str) {
+        LOGGER.info("@@@ isLikeTransactionId");
+        return isMatch("^[0-9]+$", str);
+    }
+
+    /**
+     * isLikePolicyNumber passes a simple regex over the string
+     * and confirms if it is like a policyNumnber ie alphanumeric.
+     * @param str
+     * @return
+     */
+    private boolean isLikePolicyNumber(String str) {
+        return isMatch("^[a-zA-Z0-9]+$", str);
+    }
+
+    /**
+     * isLikeName passes a simple regex over the string and confirms
+     * if it is like a persons name.
+     * @param str
+     * @return
+     */
+    private boolean isLikeName(String str) {
+        return isMatch("^[a-zA-Z \\'\\-\\\\s]+$", str);
+    }
+
+    /**
+     * isLikeAddress passes a simple regex over the string
+     * and confirms if it is like a street number and name.
+     * @param str
+     * @return
+     */
+    private boolean isLikeAddress(String str) {
+        return isMatch("[0-9]+(\\s)+(\\S)+(\\s)+", str);
+    }
+
+    /**
+     * isMatch tests whether the regex is found in the string.
+     * @param regex
+     * @param str
+     * @return
+     */
+    private boolean isMatch(String regex, String str) {
+        Pattern pattern = Pattern.compile(regex);
+        Matcher  matcher = pattern.matcher(str);
+        return matcher.matches();
     }
 }
