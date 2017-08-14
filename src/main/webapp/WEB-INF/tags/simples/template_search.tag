@@ -75,6 +75,9 @@
 								{{ } }}
 
 								<ul class="list-unstyled small">
+									{{ if (result.policyNo !== '') { }}
+									<li><strong>Policy No:</strong> <span class="label label-success">{{= result.policyNo }}</span></li>
+									{{ } }}
 									<li><strong>Situation:</strong> {{= result.resultData.situation }}</li>
 									{{ if (result.resultData.income !== '') { }}<li><strong>Income:</strong> {{= result.resultData.income }}</li>{{ } }}
 									<li><strong>Dependants:</strong> {{= result.resultData.dependants }}</li>
