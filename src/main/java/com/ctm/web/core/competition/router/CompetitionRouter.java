@@ -8,21 +8,19 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.*;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 @WebServlet(urlPatterns = {
-        "/competitions/australiazoo/names.json"
+        "/competitions/australia-zoo-meerkats/names.json"
 })
 public class CompetitionRouter extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(CompetitionRouter.class);
@@ -36,7 +34,7 @@ public class CompetitionRouter extends HttpServlet {
             response.setContentType("application/json");
         }
 
-        if (uri.endsWith("/competitions/australiazoo/names.json")) {
+        if (uri.endsWith("/competitions/australia-zoo-meerkats/names.json")) {
             try {
                 StringBuilder sb = new StringBuilder();
                 BufferedReader br = request.getReader();
@@ -45,11 +43,9 @@ public class CompetitionRouter extends HttpServlet {
                     sb.append(str);
                 }
                 JSONObject obj = new JSONObject(sb.toString());
-                String email = obj.getString("email");
-                String name = obj.getString("name");
-                Integer postCode = obj.getInt("post_code");
-                Integer phoneNumber = obj.getInt("phone_number");
-                response.getWriter().write("Record set for : " + name);
+                request.setAttribute("data", obj);
+                RequestDispatcher rd = request.getRequestDispatcher("/ajax/write/competition.jsp");
+                rd.forward(request, response);
 
             } catch (JSONException e) {
                 LOGGER.error("Australia Zoo Competition post request failed {}", kv("uri", request.getRequestURI()), e);
