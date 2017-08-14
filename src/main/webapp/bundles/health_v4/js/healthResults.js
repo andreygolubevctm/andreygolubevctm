@@ -229,7 +229,7 @@
                     pagination: {
                         page: '<li><a class="btn-pagination icon icon-angle-{{=icon}} btn-secondary" data-results-pagination-control="{{= type}}" ' + meerkat.modules.dataAnalyticsHelper.get("pagination {{= type}}",'"') + '><!-- empty --></a></li>',
                         pageItem: '<li class="hidden-md hidden-lg"><a class="btn-pagination" data-results-pagination-control="{{= pageNumber}}" data-analytics="pagination {{= pageNumber}}">{{= label}}</a></li>',
-                        summary: '<li class="summary hidden-xs hidden-sm"><div><span class="hidden-md">Products</span> <span class="pageRangeStart">{{= rangeStart}}</span> to <span class="pageRangeEnd">{{= rangeEnd}}</span> of <span class="totalPages">{{= totalProducts}}</span></div></li>'
+                        summary: '<li class="summary hidden-xs hidden-sm"><div><span class="hidden-md productsDisplayedText">Products</span> <span class="pageRangeStart">{{= rangeStart}}</span> <span class="productsDisplayedText">to</span> <span class="pageRangeEnd">{{= rangeEnd}}</span> of <span class="totalPages">{{= totalProducts}}</span></div></li>'
                     }
                 },
                 dictionary: {
