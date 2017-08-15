@@ -263,7 +263,7 @@
 
 		</c:when>
 		<c:otherwise>
-			${logger.info('[Email] No content for email - not sending. {} {} {} {} {} {}', log:kv('transactionId', param.tranId), log:kv('hashedEmail', param.hashedEmail), log:kv('OptInMailingName', param.OptInMailingName), log:kv('tmpl', param.tmpl), log:kv('emailSubscribed', param.emailSubscribed), log:kv('MailingName', param.MailingName))}
+			${logger.info('BPEMAIL No content for email - not sending. {} {} {} {} {} {}', log:kv('transactionId', param.tranId), log:kv('hashedEmail', param.hashedEmail), log:kv('OptInMailingName', param.OptInMailingName), log:kv('tmpl', param.tmpl), log:kv('emailSubscribed', param.emailSubscribed), log:kv('MailingName', param.MailingName))}
 		</c:otherwise>
 	</c:choose>
 </c:otherwise>

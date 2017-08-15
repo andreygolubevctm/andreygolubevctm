@@ -49,7 +49,7 @@ public abstract class EmailServiceHandler {
 	public abstract String send(HttpServletRequest request, String emailAddress,
 			long transactionId) throws SendEmailException;
 
-	protected boolean isTestEmailAddress(String emailAddress){
+	public static boolean isTestEmailAddress(String emailAddress){
 		return testEmails.contains(emailAddress);
 	}
 

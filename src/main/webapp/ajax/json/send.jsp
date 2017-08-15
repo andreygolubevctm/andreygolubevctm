@@ -43,7 +43,7 @@
 
 <c:choose>
 	<c:when test="${ignoreEmailSendToUnsubscribed eq true}">
-		${logger.info('Email skipped as user not subscribed. {}', log:kv('emailAddress',param.emailAddress ))}
+		${logger.info('Email skipped as user not subscribed. {} {}', log:kv('transactionId', data.current.transactionId))}
 	</c:when>
 	<c:otherwise>
 
@@ -70,10 +70,10 @@
 					<c:when test="${pageSettings.hasSetting('sendAppMailingName') and pageSettings.hasSetting('sendAppTmpl')}">
 						<c:set var="MailingName" value="${pageSettings.getSetting('sendAppMailingName')}" />
 						<c:set var="tmpl" value="${pageSettings.getSetting('sendAppTmpl')}" />
-						${logger.debug('[Email] Mode. {},{},{}', log:kv('mode',param.mode ), log:kv('MailingName',MailingName ), log:kv('tmpl',tmpl ))}
+						${logger.debug('BPEMAIL Mode. {} {} {}', log:kv('mode', param.mode), log:kv('MailingName', MailingName), log:kv('tmpl', tmpl))}
 					</c:when>
 					<c:otherwise>
-						${logger.warn('[Email] Mode passed but missing required page settings. {}', log:kv('mode',param.mode ))}
+						${logger.warn('BPEMAIL Mode passed but missing required page settings. {}', log:kv('mode', param.mode))}
 					</c:otherwise>
 				</c:choose>
 			</c:when>
@@ -95,16 +95,16 @@
 						<c:set var="MailingName" value="${pageSettings.getSetting('sendBestPriceMailingName')}" />
 						<c:set var="OptInMailingName" value="${pageSettings.getSetting('sendBestPriceOptInMailingName')}"/>
 						<c:set var="tmpl" value="${pageSettings.getSetting('sendBestPriceTmpl')}" />
-						${logger.debug('[Email] Mode: {},{},{},{},{}', log:kv('mode',param.mode ) , log:kv('MailingName',MailingName ), log:kv('OptInMailingName',OptInMailingName ),  log:kv('tmpl',tmpl ), log:kv('emailAddress',param.emailAddress ))}
+						${logger.debug('BPEMAIL Mode: {} {} {} {} {}', log:kv('mode', param.mode) , log:kv('MailingName', MailingName), log:kv('OptInMailingName', OptInMailingName), log:kv('tmpl', tmpl))}
 					</c:when>
 					<c:otherwise>
-						${logger.warn('[Email] Mode passed but missing required page settings. {} {}', log:kv('mode', param.mode), log:kv('transactionId', data.current.transactionId))}
+						${logger.warn('BPEMAIL Mode passed but missing required page settings. {} {}', log:kv('mode', param.mode), log:kv('transactionId', data.current.transactionId))}
 					</c:otherwise>
 				</c:choose>
 			</c:when>
 			<%-- Reset password, called from forgotten_password.jsp --%>
 			<c:otherwise>
-				${logger.warn('[Email] No matching mode passed. {}', log:kv('mode', param.mode))}
+				${logger.warn('BPEMAIL No matching mode passed. {} {}', log:kv('mode', param.mode), log:kv('transactionId', data.current.transactionId))}
 			</c:otherwise>
 		</c:choose>
 
@@ -128,7 +128,7 @@
 
 		<c:choose>
 			<c:when test="${empty MailingName}">
-				${logger.warn('[Email] Mailing Name empty, no email found to be sent. {} {} {} {} {}', log:kv('emailAddress', emailAddress), log:kv('transactionId', data.current.transactionId), log:kv('hashedEmail', hashedEmail), log:kv('OptInMailingName', OptInMailingName), log:kv('emailSubscribed', emailSubscribed)}
+				${logger.warn('BPEMAIL Mailing Name empty, no email found to be sent. {} {} {} {} {}', log:kv('transactionId', data.current.transactionId), log:kv('OptInMailingName', OptInMailingName), log:kv('emailSubscribed', emailSubscribed)}
 			</c:when>
 			<c:otherwise>
 				<%-- Dial into the send script --%>
