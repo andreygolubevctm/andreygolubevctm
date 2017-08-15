@@ -173,7 +173,6 @@
                         // Add any travel-quote branch to the list (except for the default if viewing this on NXI)
 
                         var vertical = meerkat.site.vertical;
-git
                         if (vertical === 'utilities') {
                             vertical = 'energy';
                         }
