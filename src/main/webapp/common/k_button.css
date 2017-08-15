@@ -3,7 +3,7 @@
 	bottom: 0;
 	right: 0;
 	position:fixed;
-	z-index: 20001;<%-- Make it higher than lightbox --%>
+	z-index: 20001;/* Make it higher than lightbox */
 }
 
 #kampyle a{
