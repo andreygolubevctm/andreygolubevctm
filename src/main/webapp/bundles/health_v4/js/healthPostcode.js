@@ -50,7 +50,7 @@
                 } else {
                     $elements.location.val('');
                     $elements.location.attr('value', '');
-                    $elements.state.val('');
+                    $elements.state.val('').trigger('change');
                     $elements.results.find('.suburb-item, .suburb-item button').removeClass('selected');
                 }
             });
@@ -178,7 +178,7 @@
     }
 
     function _setLocation(location) {
-        $elements.state.val(location[2]);
+        $elements.state.val(location[2]).trigger('change');
         $elements.suburb.val(location[0]);
         var locationString = _createLocationString(location);
         meerkat.modules.healthLocation.setLocation(locationString);
