@@ -7,6 +7,11 @@
   body[data-step="results"] {
     //Push the page down to make some space
     padding-top: @navbar-height + 110;
+
+    &.dontAffixXsBanners {
+      padding-top:0;
+    }
+
     // a reset
     .results-control-container {
       padding-top: 0;
@@ -170,7 +175,6 @@
 }
 
 .featuresMode {
-
   // The actual results container, to the right of the feature labels.
   // Fix margins for rows on XS @todo may be unnecessary in v4
   .result-row {
@@ -312,9 +316,7 @@
   // Override styles for the excess and hospital cover sections.
 
   .featuresListHospitalOtherList {
-    margin-top: 7.5px;
     padding: 10px 0;
-    border-top: 1px solid @results-border-color;
     border-bottom: 1px solid @results-border-color;
   }
   .hospitalSelectionsExcessContainer {
@@ -350,6 +352,135 @@
     .featuresListExcess {
       .content {
         padding-bottom: 5px;
+      }
+    }
+  }
+
+  &.resultsContainer {
+    .featuresList.featuresElements {
+      .featuresListExcess {
+        .cell {
+          &:first-of-type {
+            border-bottom: 1px solid @gray;
+          }
+        }
+      }
+
+      .featuresListHospitalOtherList {
+        margin-top: 0;
+        padding-top: 0;
+        border-top: none;
+      }
+
+      .featuresListExtrasOtherList {
+        .hasShortlistableChildren {
+          padding-bottom: 10px;
+        }
+      }
+
+      .expander {
+        position: absolute;
+        left: 0;
+        top: 50%;
+        margin-top: -6px;
+
+        @media (@md) {
+          position: relative;
+          margin-top: 5px;
+          margin-right: 5px;
+        }
+      }
+
+      .labelInColumn.category.expandable {
+        .content {
+          .contentInner {
+            &::after {
+              content: '\e600';
+              color: @theme-secondary;
+              font-family: 'framework_font';
+              position: absolute;
+              right: 0;
+              top: 50%;
+              margin-top: -7px;
+            }
+          }
+
+          &.noCover {
+            .contentInner {
+              &::after {
+                content: '\e601';
+                color: @theme-accent-3;
+              }
+            }
+          }
+
+          &.restrictedCover {
+            .contentInner {
+              &::after {
+                color: #f6b14b;
+              }
+            }
+          }
+        }
+      }
+
+      .cell.expandable.category {
+        .children {
+          position: relative;
+          &.hideChildren {
+            .cell.feature {
+              visibility: hidden;
+            }
+          }
+          .cell.feature.noValue {
+            .content {
+              padding: 0;
+              .featureLabel {
+                width: 100%;
+              }
+              .featureValue {
+                display: none;
+              }
+            }
+          }
+        }
+
+        &.privateHospital {
+          .children {
+            padding-top: @results-column-side-padding-width;
+            .restrictedLabel.invisible {
+              display: none;
+            }
+          }
+        }
+      }
+
+      .noCoverContainer {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+
+        .noCoverLabel {
+          position: relative;
+          top: 35%;
+          text-align: center;
+        }
+      }
+
+      .restrictedLabel {
+        font-size: 14px;
+        margin-bottom: 0;
+      }
+
+      .contentSafeName {
+        display: inline-block;
+        max-width: 80%;
+        margin: 0 10%;
+
+        @media (@md) {
+          max-width: inherit;
+          margin: 0;
+        }
       }
     }
   }
@@ -459,3 +590,10 @@
   }
 }
 
+body[data-is-single="true"] {
+  .featuresMode {
+    .cell.feature.per-person {
+      display: none;
+    }
+  }
+}

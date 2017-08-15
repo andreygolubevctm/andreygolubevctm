@@ -12,6 +12,7 @@
     function init() {
         $(document).ready(function () {
             _setupFields();
+            _eventSubscriptions();
         });
     }
 
@@ -21,6 +22,7 @@
 
     function _setupFields() {
         $elements = {
+            body: $('body'),
             healthSit: $('#health_benefits_healthSitu'),
             healthSitGroup: $("input[name=health_situation_healthSitu]"),
             healthSitCSF: $('#health_situation_healthSitu_CSF'),
@@ -28,6 +30,14 @@
             postcode: $('#health_situation_postcode'),
             suburb: $('#health_situation_suburb')
         };
+    }
+
+    function _eventSubscriptions() {
+        meerkat.messaging.subscribe(meerkatEvents.healthSituation.SITUATION_CHANGED, function toggleIsSingle() {
+            $elements.body.attr('data-is-single', function() {
+                return _.indexOf(['SM', 'SF'], meerkat.modules.healthSituation.getSituation()) !== -1 ? true : false;
+            });
+        });
     }
 
     function hasPartner() {

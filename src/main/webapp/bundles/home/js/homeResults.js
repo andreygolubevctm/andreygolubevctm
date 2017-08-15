@@ -226,6 +226,16 @@
 		}
 	}
 
+	function sortRealAndWool(results) {
+		var isWoolOrRealA = (results.brandCodes[0] === 'WOOL' || results.brandCodes[0] === "REIN");
+		var isWoolOrRealB = (results.brandCodes[1] === 'WOOL' || results.brandCodes[1] === "REIN");
+		var sameBrand = (results.brandCodes[0] === results.brandCodes[1]);
+		if (isWoolOrRealA && isWoolOrRealB && !sameBrand) {
+			if (results.values[0] === results.values[1]) {
+				return results.brandCodes[0] === 'WOOL' ? -1 : 1;
+			}
+		}
+	}
 
 	function landlordFilter(results) {
 		var filters = meerkat.site.landlordFilters;
@@ -251,7 +261,9 @@
 		});
 		meerkat.messaging.subscribe(Results.model.moduleEvents.RESULTS_MODEL_UPDATE_BEFORE_FILTERSHOW, function modelUpdated() {
 			Results.model.landlordFilter = landlordFilter;
+			Results.model.homeCustomSort = sortRealAndWool;
 		});
+
 		// Capture offer terms link clicks
 		$(document.body).on('click', 'a.offerTerms', launchOfferTerms);
 		$(document.body).on('click', 'a.priceDisclaimer', showPriceDisclaimer);

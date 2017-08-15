@@ -7,6 +7,7 @@
 
 <%-- VARIABLES --%>
 <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
+<c:set var="ovcScripting"><content:get key="simplesOVCCopy" /></c:set>
 
 <%-- HTML --%>
 <div id="${name}-selection" class="health-situation">
@@ -33,6 +34,7 @@
             <simples:dialogue id="70" vertical="health" />
             <simples:dialogue id="19" vertical="health" className="simples-dialog-inbound"/>
             <simples:dialogue id="20" vertical="health" className="simples-dialog-outbound"/>
+            <simples:dialogue id="78" vertical="health" className="simples-dialog-cli"/>
             <simples:dialogue id="48" vertical="health" />
             <simples:dialogue id="63" vertical="health" />
             <simples:dialogue id="21" vertical="health" mandatory="true" /> <%-- 3 Point Security Check --%>
@@ -71,7 +73,6 @@
                     <field_v1:hidden xpath="${xpath}/suburb" />
                     <field_v1:hidden xpath="${xpath}/postcode" />
 
-
                 </form_v3:row>
 
                 <%-- Medicare card question --%>
@@ -81,7 +82,7 @@
                     <form_v3:row label="Private Health Insurance works in conjunction with Medicare, so just to confirm, do all people to be covered on this policy have a blue or green Medicare card?" fieldXpath="${fieldXpath}" id="${fieldXpathName}" className="health_situation_medicare text-danger" helpId="564">
                         <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}"
                             title="your Medicare card cover" required="true" className="health-medicare_details-card"
-                            id="${name}_cover" additionalAttributes="data-rule-isCheckedYes='true' data-msg-isCheckedYes='Customer not eligible for standard health insurance but may be eligible for Overseas Visitors Cover (OVC). Please warm transfer the customer to the \"Bupa OVC\" line and then disposition lead as OVC. '" />
+                            id="${name}_cover" additionalAttributes="data-rule-isCheckedYes='true' data-msg-isCheckedYes='${ovcScripting}'" />
                     </form_v3:row>
                 </c:if>
 

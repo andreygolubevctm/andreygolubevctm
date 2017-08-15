@@ -25,7 +25,10 @@
 	isLandlord: <c:out value="${landlord}" />,
 	isCallCentreUser: <c:out value="${not empty callCentre}"/>,
 	isFromBrochureSite: <c:out value="${fromBrochure}"/>,
-	brochureValues: {},
+	brochureValues: {
+		coverType: '<c:out value="${param.coverType}"/>',
+		ownProperty: '<c:out value="${param.ownProperty}"/>'
+	},
 	journeyStage: "<c:out value="${data['home/journey/stage']}"/>",
 	pageAction: '<c:out value="${param.action}"/>',
 	previousTransactionId: "<c:out value="${data['current/previousTransactionId']}"/>",

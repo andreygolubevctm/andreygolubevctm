@@ -100,8 +100,7 @@
 	}
 
 	function resetValues() {
-		isLandlord = meerkat.site.isLandlord;
-		type = isLandlord ? 'landlord' : 'occupancy';
+		type = meerkat.site.isLandlord ? 'landlord' : 'occupancy';
 	}
 
 	function validateSelections(proceedToOccupancy) {
@@ -132,7 +131,8 @@
 				className: "btn-next ownBtnWP",
 				closeWindow: true,
 				action: function() {
-					$('#home_occupancy_ownProperty_Y').prop('checked', true).change();
+					var targetClass = meerkat.site.isLandlord ? '.isLandlord' : '.notLandlord';
+					$(targetClass + ' #home_occupancy_ownProperty_Y').prop('checked', true).change();
 					$chosenCoverTypeOption.val(data[type].buttons[1]);
 				}
 			}];
@@ -161,10 +161,11 @@
 			isValid = false;
 		}
 
-		// Go to occupancy only if its valid and first time into journey
-		if(isValid && proceedToOccupancy) {
-			_.defer(_.bind(meerkat.modules.journeyEngine.gotoPath, this, "occupancy"));
-		}
+        // Go to occupancy only if its valid and first time into journey and
+		// if the coverType and ownProperty params are present
+        if(isValid && proceedToOccupancy && meerkat.site.brochureValues.coverType && meerkat.site.brochureValues.ownProperty) {
+          _.defer(_.bind(meerkat.modules.journeyEngine.gotoPath, this, "occupancy"));
+        }
 
 		return isValid;
 	}

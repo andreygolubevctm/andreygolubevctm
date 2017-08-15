@@ -35,13 +35,12 @@
 
 	/* Here you put all functions for use in your module */
 	function toggleBusinessFields(speed){
-		var businessTypeValue = $('#'+elements.name+'_businessType').find('option:selected').text().toLowerCase();
-
-		if ( businessTypeValue == 'home office' || businessTypeValue == 'surgery/consulting rooms') {
+		var businessTypeValue = $('#'+elements.name+'_businessType').find('option:selected').val().toLowerCase();
+		if ( businessTypeValue === 'home office' || businessTypeValue === 'surgery/consulting rooms') {
 			$(elements.businessRooms+', '+elements.employees).slideDown(speed);
 			$(elements.dayCareChildren+', '+elements.registeredDayCare).slideUp(speed);
 			toggleEmployeeAmount();
-		} else if ( businessTypeValue == 'day care') {
+		} else if ( businessTypeValue === 'day care') {
 			$(elements.dayCareChildren+', '+elements.registeredDayCare).slideDown(speed);
 			$(elements.businessRooms+', '+elements.employees+', '+elements.employeeAmount).slideUp(speed);
 		} else {

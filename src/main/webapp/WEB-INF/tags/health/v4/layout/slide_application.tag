@@ -16,7 +16,7 @@
 
                 <%-- Product summary header for mobile --%>
                 <div class="row productSummary-parent <c:choose><c:when test="${isDualPriceActive eq true}">hidden</c:when><c:otherwise>visible-xs</c:otherwise></c:choose>">
-                    <div class="productSummary-affix affix-top visible-xs">
+                    <div class="productSummary visible-xs">
                         <health_v4_payment:policySummary />
                     </div>
                 </div>
