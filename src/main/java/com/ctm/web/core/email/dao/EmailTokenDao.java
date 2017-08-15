@@ -95,6 +95,37 @@ public class EmailTokenDao {
                 "WHERE et.transactionId = ? AND et.emailId = ? AND et.emailTokenType = ? AND et.action = ? ");
     }
 
+    public EmailMaster getEmailDetails(Long emailId) throws DaoException {
+
+        return new SqlDao<EmailMaster>().get(new DatabaseQueryMapping<EmailMaster>() {
+            @Override
+            protected void mapParams() throws SQLException {
+                set(emailId);
+            }
+
+            @Override
+            public EmailMaster handleResult(ResultSet rs) throws SQLException {
+                final EmailMaster emailMaster = new EmailMaster();
+                emailMaster.setVertical(rs.getString("vertical"));
+                emailMaster.setEmailId(rs.getInt("emailId"));
+                emailMaster.setHashedEmail(rs.getString("hashedEmail"));
+                emailMaster.setEmailAddress(rs.getString("emailAddress"));
+                emailMaster.setFirstName(rs.getString("firstName"));
+                emailMaster.setLastName(rs.getString("lastName"));
+                emailMaster.setValid(true);
+                return emailMaster;
+            }
+        }, "SELECT DISTINCT\n" +
+                "  em.emailId      AS emailId,\n" +
+                "  em.firstName    AS firstName,\n" +
+                "  em.lastName     AS lastName,\n" +
+                "  em.emailAddress AS emailAddress,\n" +
+                "  em.hashedEmail  AS hashedEmail,\n" +
+                "  em.vertical     AS vertical\n" +
+                "FROM aggregator.email_master em\n" +
+                "WHERE em.emailId = ?");
+    }
+
     public void incrementTotalAttempts(Long transactionId, Long emailId, String emailTokenType, String action) throws DaoException {
         SqlDao sqlDao = new SqlDao();
         sqlDao.update(new DatabaseUpdateMapping() {

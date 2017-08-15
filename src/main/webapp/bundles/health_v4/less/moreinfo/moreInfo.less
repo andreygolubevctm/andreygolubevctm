@@ -507,3 +507,94 @@
     }
   }
 }
+
+body[data-is-single="true"] {
+  .moreInfoDropdown {
+    .benefitContent {
+      .per-person {
+        display: none;
+      }
+    }
+  }
+}
+
+.moreInfoDropdown{
+  @media (@xs-only) {
+
+    li.navbar-text.modal-title-label{
+      padding-right: 15px;
+      float: right;
+    }
+
+    .dockedHeaderLarge {
+      .hidden-large {
+        display: none;
+      }
+
+      h5.productName {
+        margin-right: -15px;
+      }
+
+      .frequencyAmount {
+        line-height: 30px;
+
+        .frequencyTitle {
+          line-height: 20px;
+        }
+      }
+    }
+
+    .dockedHeaderSlim {
+      .quoteRefHdr,
+      .logo-header.hidden-slim,
+      .hidden-slim {
+        display: none;
+      }
+    }
+
+    .dockedHeaderBottom{
+      margin-bottom: -15px;
+
+      .btn-cta.btn-more-info-apply,
+      .btn-cta.btn-more-info-call-now {
+        margin-top: 5px;
+        margin-bottom: 5px;
+      }
+
+      .btn-cta.btn-more-info-apply + .col-xs-6,
+      .btn-cta.btn-more-info-apply + .col-xs-6 + .col-xs-6,
+      .btn-cta.btn-more-info-call-now + .col-xs-6,
+      .btn-cta.btn-more-info-call-now + .col-xs-6 + .col-xs-6{
+        padding-left: 0px;
+        padding-right: 0px;
+      }
+
+      .quote-reference-number {
+        h3 {
+          font-size: @font-size-base;
+          line-height: @line-height-base;
+          color: @gray-darker;
+          margin-bottom: 0px;
+          text-align: center;
+          span{
+            font-weight: @font-family-theme-regular;
+          }
+        }
+      }
+
+      &.callCentreOpen {
+        .quote-reference-number {
+          h3 {
+            text-align:left;
+          }
+        }
+        .getPrintableBrochures {
+          text-align:left;
+        }
+        .btn-more-info-apply {
+          float: right;
+        }
+      }
+    }
+  }
+}
