@@ -43,11 +43,17 @@ public class CompetitionRouter extends HttpServlet {
                     sb.append(str);
                 }
                 JSONObject obj = new JSONObject(sb.toString());
+                request.setAttribute("competition_id", obj.getInt("competition_id"));
                 request.setAttribute("first_name", obj.getString("first_name"));
                 request.setAttribute("last_name", obj.getString("last_name"));
                 request.setAttribute("email", obj.getString("email"));
                 request.setAttribute("post_code", obj.getInt("post_code"));
                 request.setAttribute("phone_number", obj.getInt("phone_number"));
+                request.setAttribute("name_1", obj.getString("name_1"));
+                request.setAttribute("name_2", obj.getString("name_2"));
+                request.setAttribute("name_3", obj.getString("name_3"));
+                request.setAttribute("name_4", obj.getString("name_4"));
+                request.setAttribute("reason", obj.getString("reason"));
                 RequestDispatcher rd = request.getRequestDispatcher("/ajax/write/competition.jsp");
                 rd.forward(request, response);
 

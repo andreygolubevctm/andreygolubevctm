@@ -10,13 +10,13 @@
 
 <core_v1:transaction touch="P" noResponse="true" />
 
-<c:set var="transactionId"	value="${data.current.transactionId}" />
+<%--<c:set var="transactionId"	value="${data.current.transactionId}" />--%>
 <c:set var="styleCodeId">2</c:set>
 <c:set var="styleCode">meer</c:set>
 
 
 <%-- Variables --%>
-<c:set var="competition_id" value="${data['competition/competitionId']}" />
+<c:set var="competition_id" value="${competition_id}" />
 <c:set var="competition_email" value="${email}" />
 <c:set var="brand" value="${styleCode}" />
 <c:set var="vertical" value="COMPETITION" />
@@ -64,7 +64,7 @@ LIMIT 1;
 <c:set var="errorPool" value="{error:'Failed to retrieve the emailId to make the entry.'}" />
 </c:when>
 <c:otherwise>
-<c:set var="items">firstname=${data['competition/firstName']}:: lastname=${data['competition/lastName']}::postcode=${data['competition/postcode']}:: dateofbirth=${data['competition/dob']}:: promocode=${data['competition/promocode']}</c:set>
+<c:set var="items">firstname=${first_name}:: lastname=${last_name}:: email=${email}:: postcode=${post_code}:: phone=${phone_number}:: name1=${name_1}:: name2=${name_2}:: name3=${name_3}:: name4=${name_4}:: reason=${reason}</c:set>
 
 <c:set var="entry_result">
 <agg_v1:write_competition
@@ -104,12 +104,12 @@ ${logger.info('Returning errors to the browser', log:kv('errorPool', errorPool))
 <c:param name="page" value="${pageContext.request.servletPath}" />
 <c:param name="message" value="Competition error" />
 <c:param name="description" value="${errorPool}" />
-<c:param name="data" value="competition_id:${competition_id} email:${competition_email} firstname:${data['competition/firstname']} lastname:${data['competition/lastname']} postcode=${data['competition/postcode']} dateofbirth=${data['competition/dob']}  promocode=${data['competition/promocode']}" />
+<c:param name="data" value="competition_id:${competition_id} email:${competition_email} firstname:${first_name} lastname:${last_name} email:${email} postcode:${post_code} phone:${phone_number} name1:${name_1} name2:${name_2} name3:${name_3} name4:${name_4} reason:${reason}" />
 </c:import>
 </c:when>
 <c:otherwise>
 {
-"result": "OK", "promocode": "${promocode}"
+"result": "OK"
 }
 </c:otherwise>
 </c:choose>
