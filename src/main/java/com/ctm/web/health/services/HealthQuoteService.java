@@ -91,7 +91,7 @@ public class HealthQuoteService extends CommonRequestServiceV2 implements Initia
         final QuoteServiceProperties properties = getQuoteServiceProperties("healthQuoteServiceBER", brand, HEALTH.getCode(), ofNullable(data.getEnvironmentOverride()));
 
         if (properties.getServiceUrl().matches(".*://.*/health-quote-v2.*") || properties.getServiceUrl().startsWith("http://localhost")) {
-            LOGGER.info("Calling health-quote v2" + properties.getServiceUrl());
+            LOGGER.info("Calling health-quote v2 url" + properties.getServiceUrl());
             // Version 2
 
             final boolean isGiftCardActive =
