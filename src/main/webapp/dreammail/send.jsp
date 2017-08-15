@@ -27,7 +27,7 @@
 
 <c:set var="gomezhashedEmail"><security:hashed_email email="gomez.testing@aihco.com.au" brand="${pageSettings.getBrandCode()}" /></c:set>
 <c:set var="paramSend">${param.send}</c:set>
-	
+
 <%-- If the vertical is running through Gomez, then kill the emails sent out --%>
 <c:choose>
 	<c:when test="${gomezhashedEmail == param.hashedEmail}">
@@ -49,7 +49,7 @@
 <c:choose>
 <c:when test="${tmpl==''}">
 	Please supply template (templ)
-	${logger.warning('[Email] No templ supplied for email - cannot send email: {} {}', log:kv('transactionId', param.tranId), log:kv('tmpl', param.tmpl))}
+	${logger.warning('BPEMAIL No templ supplied for email - cannot send email: {} {}', log:kv('transactionId', param.tranId), log:kv('tmpl', param.tmpl))}
 </c:when>
 <c:otherwise>
 	<c:set var="template" value="/dreammail/${tmpl}.xsl" />
@@ -100,7 +100,7 @@
 
 	<c:if test="${extraSql == 'Y'}">
 		<c:import var="sqlStatement" url="/dreammail/${param.tmpl}.sql" />
-		${logger.info('[Email] Generating rowXML content for email: {},{}', log:kv('transactionId', param.transactionId) ,log:kv('emailTemplate', param.tmpl))}
+		${logger.info('BPEMAIL Generating rowXML content for email: {},{}', log:kv('transactionId', param.transactionId) ,log:kv('emailTemplate', param.tmpl))}
 		<c:choose>
 			<c:when test="${param.tmpl eq 'travel_edm'}">
 				<c:set var="rowXML"><core_v1:xmlForOtherQuery sqlSelect="${sqlStatement}" tranId="${param.transactionId}" calcSequence="${data.travel.calcSequence}" rankPosition="${data.travel.bestPricePosition}"></core_v1:xmlForOtherQuery></c:set>
@@ -239,7 +239,7 @@
 							<c:param name="description" value="Failed to send email" />
 						<c:param name="data" value="${myResult}" />
 					</c:import>
-					${logger.warn('Failed to send email. {} {} {} {} {} {} {}', log.kv('errorMessage', error.cause.message), log:kv('transactionId', param.tranId), log:kv('hashedEmail', param.hashedEmail), log:kv('OptInMailingName', param.OptInMailingName), log:kv('tmpl', param.tmpl), log:kv('emailSubscribed', param.emailSubscribed), log:kv('MailingName', param.MailingName))}
+					${logger.warn('Failed to send email. {} {} {} {} {} {} {}', log.kv('error', error), log:kv('transactionId', param.tranId), log:kv('OptInMailingName', param.OptInMailingName), log:kv('tmpl', param.tmpl), log:kv('emailSubscribed', param.emailSubscribed), log:kv('MailingName', param.MailingName))}
 					<%-- JSON result failure returned --%>
 					<json:object>
 						<json:property name="result" value="SEND_FAILURE"/>
@@ -256,14 +256,14 @@
 						<c:param name="description" value="Email response failure" />
 						<c:param name="data" value="PARAMS: ${param} RESPONSE:${emailResponseXML}" />
 					</c:import>
-					${logger.warn('Email response failure occured - did not send. {} {} {} {} {} {}', log:kv('transactionId', param.tranId), log:kv('hashedEmail', param.hashedEmail), log:kv('OptInMailingName', param.OptInMailingName), log:kv('tmpl', param.tmpl), log:kv('emailSubscribed', param.emailSubscribed), log:kv('MailingName', param.MailingName))}
+					${logger.warn('Email response failure occured - did not send. {} {} {} {} {} {}', log:kv('transactionId', param.tranId), log:kv('OptInMailingName', param.OptInMailingName), log:kv('tmpl', param.tmpl), log:kv('emailSubscribed', param.emailSubscribed), log:kv('MailingName', param.MailingName))}
 				</c:if>
 			</c:otherwise>
 		</c:choose>
 
 		</c:when>
 		<c:otherwise>
-			${logger.info('[Email] No content for email - not sending. {} {} {} {} {} {}', log:kv('transactionId', param.tranId), log:kv('hashedEmail', param.hashedEmail), log:kv('OptInMailingName', param.OptInMailingName), log:kv('tmpl', param.tmpl), log:kv('emailSubscribed', param.emailSubscribed), log:kv('MailingName', param.MailingName))}
+			${logger.info('BPEMAIL No content for email - not sending. {} {} {} {} {} {}', log:kv('transactionId', param.tranId), log:kv('OptInMailingName', param.OptInMailingName), log:kv('tmpl', param.tmpl), log:kv('emailSubscribed', param.emailSubscribed), log:kv('MailingName', param.MailingName))}
 		</c:otherwise>
 	</c:choose>
 </c:otherwise>
