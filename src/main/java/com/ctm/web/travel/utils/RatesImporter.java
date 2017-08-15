@@ -23,7 +23,7 @@ public class RatesImporter {
 
     public String processWebCTMHomeDir() {
         if(webCtmHomeDir == null) {
-            return "C:/dev/web_ctm/";
+            return "/home/akhurana/workspace/web-ctm-fred/";
         }
         else {
             return webCtmHomeDir;

@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?><soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns1="http://exacttarget.com/wsdl/partnerAPI" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <soapenv:Header>
+        <wsse:Security soapenv:mustUnderstand="1">
+            <wsse:UsernameToken>
+                <wsse:Username>6212063_API_User</wsse:Username>
+                <wsse:Password>c039@r3t3</wsse:Password>
+            </wsse:UsernameToken>
+        </wsse:Security>
+    </soapenv:Header>
+    <soapenv:Body>
+        <CreateRequest xmlns="http://exacttarget.com/wsdl/partnerAPI">
+            <Options/>
+            <Objects xsi:type="ns1:TriggeredSend">
+                <Client>
+                    <ID>6212063</ID>
+                </Client>
+                <TriggeredSendDefinition>
+                    <CustomerKey>QA_CTM_HC_Quote_Com_TS_Key</CustomerKey>
+                </TriggeredSendDefinition>
+                <Subscribers>
+                    <Attributes>
+                        <Name>ProductType</Name>
+                        <Value>HC</Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>ProductLabel</Name>
+                        <Value>Home &amp; Contents Cover Insurance</Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>Brand</Name>
+                        <Value>ctm</Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>FirstName</Name>
+                        <Value>Test</Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>LastName</Name>
+                        <Value>User</Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>EmailAddress</Name>
+                        <Value>preload.testing@comparethemarket.com.au</Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>OptIn</Name>
+                        <Value>Y</Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>UnsubscribeURL</Name>
+                        <Value><![CDATA[http://localhost:8080/ctm/unsubscribe.jsp?vertical=home&token=oZw7NX6YcFuZ1jnpBtvTo7w-q3PmC53zEdDlJ18ZxOYdDgJJWxbK5j0Ly6hHpOjV5U6jhs8ACi98btLCVzPEZxYM74aPQdgv8nm5EJNqn9Wh86nWjOo4cmGSqghrO84iN74bI8zWeBzaZfYw44JPwsNDD7fNbYh34DQ8lkJ-e2FwC0Qa4GjhpFcQvUr3NWHazoJi8DFKfBJ6X3Xh5Pjz9NvG4CvvZao8K8F4gvcR3BA]]></Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>CallcentreHours_Text</Name>
+                        <Value><![CDATA[Monday to Friday (8am-8pm EST) and Saturday (8am-5pm EST)]]></Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>CallcentreHours</Name>
+                        <Value><![CDATA[Monday to Friday (8am-8pm EST) and Saturday (8am-5pm EST)]]></Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>CoverType1</Name>
+                        <Value>Smart Home And Contents Insurance</Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>ValidDate1</Name>
+                        <Value>14 September 2017</Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>Provider1</Name>
+                        <Value>BUDGET DIRECT</Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>SmallLogo1</Name>
+                        <Value>http://image.e.comparethemarket.com.au/lib/fe9b12727466047b76/m/1/hc_budd.png</Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>Premium1</Name>
+                        <Value>$1047</Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>ExcessHome1</Name>
+                        <Value>$500</Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>ExcessContents1</Name>
+                        <Value>$500</Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>ApplyURL1</Name>
+                        <Value><![CDATA[http://localhost:8080/ctm/email/incoming/gateway.json?gaclientid=1610065762.1496023410&cid=em:cm:hc:500195:hnc_bp&et_rid=172883275&utm_source=hnc_quote_bp&utm_medium=email&utm_campaign=hnc_quote_bp&token=oZw7NX6YcFuZ1jnpBtvTo7w-q3PmC53zEdDlJ18ZxOYdDgJJWxbK5j0Ly6hHpOjV5U6jhs8ACi98btLCVzPEZyk0qYuEyc7Z_QDi90B7TNtQk6s8jYVONR77WaFGXUe5X0n_kZ1dqZd8zPCG3VBVT_PF_D7g_l2_orl3xArSfmat1_8LjxJhk3UwTicyBrEOM4sa7o92oF7oOtjlHdQSDrphE0BlyhDqxRFB8Y5BuUI]]></Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>PremiumLabel1</Name>
+                        <Value><![CDATA[Annual Online Premium]]></Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>PhoneNumber1</Name>
+                        <Value>1800 042 757</Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>QuoteRef1</Name>
+                        <Value>Z7H007259</Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>CoverType2</Name>
+                        <Value>Home and Contents Insurance</Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>ValidDate2</Name>
+                        <Value>14 September 2017</Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>Provider2</Name>
+                        <Value>Home and Contents Insurance</Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>SmallLogo2</Name>
+                        <Value>http://image.e.comparethemarket.com.au/lib/fe9b12727466047b76/m/1/hc_exdd.png</Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>Premium2</Name>
+                        <Value>$1053</Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>ExcessHome2</Name>
+                        <Value>$500</Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>ExcessContents2</Name>
+                        <Value>$500</Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>ApplyURL2</Name>
+                        <Value><![CDATA[http://localhost:8080/ctm/email/incoming/gateway.json?gaclientid=1610065762.1496023410&cid=em:cm:hc:500195:hnc_bp&et_rid=172883275&utm_source=hnc_quote_bp&utm_medium=email&utm_campaign=hnc_quote_bp&token=oZw7NX6YcFuZ1jnpBtvTo7w-q3PmC53zEdDlJ18ZxOYdDgJJWxbK5j0Ly6hHpOjV5U6jhs8ACi98btLCVzPEZyk0qYuEyc7Z_QDi90B7TNuK_Cz5wqdKiZvo-dRUuH71X0n_kZ1dqZd8zPCG3VBVT_PF_D7g_l2_orl3xArSfmat1_8LjxJhk3UwTicyBrEOM4sa7o92oF7oOtjlHdQSDrphE0BlyhDqxRFB8Y5BuUI]]></Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>PremiumLabel2</Name>
+                        <Value><![CDATA[Annual Online Premium]]></Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>PhoneNumber2</Name>
+                        <Value>1800 003 631</Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>QuoteRef2</Name>
+                        <Value>Z7H007261</Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>CoverType3</Name>
+                        <Value>Gold Home and Contents Insurance</Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>ValidDate3</Name>
+                        <Value>14 September 2017</Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>Provider3</Name>
+                        <Value>Gold Home and Contents Insurance</Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>SmallLogo3</Name>
+                        <Value>http://image.e.comparethemarket.com.au/lib/fe9b12727466047b76/m/1/hc_expo.png</Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>Premium3</Name>
+                        <Value>$1079</Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>ExcessHome3</Name>
+                        <Value>$500</Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>ExcessContents3</Name>
+                        <Value>$500</Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>ApplyURL3</Name>
+                        <Value><![CDATA[http://localhost:8080/ctm/email/incoming/gateway.json?gaclientid=1610065762.1496023410&cid=em:cm:hc:500195:hnc_bp&et_rid=172883275&utm_source=hnc_quote_bp&utm_medium=email&utm_campaign=hnc_quote_bp&token=oZw7NX6YcFuZ1jnpBtvTo7w-q3PmC53zEdDlJ18ZxOYdDgJJWxbK5j0Ly6hHpOjV5U6jhs8ACi98btLCVzPEZyk0qYuEyc7Z_QDi90B7TNt51bHHwdil5LksW1ufJD1PX0n_kZ1dqZd8zPCG3VBVT_PF_D7g_l2_orl3xArSfmat1_8LjxJhk3UwTicyBrEOM4sa7o92oF7oOtjlHdQSDrphE0BlyhDqxRFB8Y5BuUI]]></Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>PremiumLabel3</Name>
+                        <Value><![CDATA[Annual Online Premium]]></Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>PhoneNumber3</Name>
+                        <Value>1800 220 044</Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>QuoteRef3</Name>
+                        <Value>Z7H007262</Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>CoverType4</Name>
+                        <Value>Virgin Home &amp; Contents Insurance Price Saver</Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>ValidDate4</Name>
+                        <Value>14 September 2017</Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>Provider4</Name>
+                        <Value>Virgin Home &amp; Contents Insurance Price Saver</Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>SmallLogo4</Name>
+                        <Value>http://image.e.comparethemarket.com.au/lib/fe9b12727466047b76/m/1/hc_virg.png</Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>Premium4</Name>
+                        <Value>$1100</Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>ExcessHome4</Name>
+                        <Value>$500</Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>ExcessContents4</Name>
+                        <Value>$500</Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>ApplyURL4</Name>
+                        <Value><![CDATA[http://localhost:8080/ctm/email/incoming/gateway.json?gaclientid=1610065762.1496023410&cid=em:cm:hc:500195:hnc_bp&et_rid=172883275&utm_source=hnc_quote_bp&utm_medium=email&utm_campaign=hnc_quote_bp&token=oZw7NX6YcFuZ1jnpBtvTo7w-q3PmC53zEdDlJ18ZxOYdDgJJWxbK5j0Ly6hHpOjV5U6jhs8ACi98btLCVzPEZyk0qYuEyc7Z_QDi90B7TNtiTp_qsnqMEjwN-OiZiYcytQxXVKbHYGuRe83ttn6MJvPF_D7g_l2_orl3xArSfmat1_8LjxJhk3UwTicyBrEOM4sa7o92oF7oOtjlHdQSDrphE0BlyhDqxRFB8Y5BuUI]]></Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>PremiumLabel4</Name>
+                        <Value><![CDATA[Annual Online Premium]]></Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>PhoneNumber4</Name>
+                        <Value>1800 010 414</Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>QuoteRef4</Name>
+                        <Value>Z7H007260</Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>SubscriberKey</Name>
+                        <Value>preload.testing@comparethemarket.com.au</Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>Address</Name>
+                        <Value>22 Peregrine Cres, Coomera QLD 4209</Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>PremiumFrequency</Name>
+                        <Value>Annual</Value>
+                    </Attributes>
+                    <SubscriberKey>preload.testing@comparethemarket.com.au</SubscriberKey>
+                    <EmailAddress>preload.testing@comparethemarket.com.au</EmailAddress>
+                </Subscribers>
+            </Objects>
+        </CreateRequest>
+    </soapenv:Body>
+</soapenv:Envelope>
