@@ -55,16 +55,12 @@ LIMIT 1;
 <c:if test="${not empty emailMaster and emailMaster.rowCount > 0}">${emailMaster.rows[0].emailId}</c:if>
 </c:set>
 
-<c:set var="promocode">
-<c:if test="${not empty emailMaster and emailMaster.rowCount > 0}">${emailMaster.rows[0].hashedEmail}</c:if>
-</c:set>
-
 <c:choose>
 <c:when test="${empty email_id}">
 <c:set var="errorPool" value="{error:'Failed to retrieve the emailId to make the entry.'}" />
 </c:when>
 <c:otherwise>
-<c:set var="items">firstname=${first_name}:: lastname=${last_name}:: email=${email}:: postcode=${post_code}:: phone=${phone_number}:: name1=${name_1}:: name2=${name_2}:: name3=${name_3}:: name4=${name_4}:: reason=${reason}</c:set>
+<c:set var="items">firstname=${first_name}::lastname=${last_name}::email=${email}::postcode=${post_code}::phone=${phone_number}::name1=${name_1}::name2=${name_2}::name3=${name_3}::name4=${name_4}::reason=${reason}</c:set>
 
 <c:set var="entry_result">
 <agg_v1:write_competition
