@@ -6,7 +6,6 @@ import com.ctm.web.core.email.model.EmailResponse;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.SessionException;
-import com.ctm.web.core.model.Touch;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical.VerticalType;
 import com.ctm.web.core.services.FatalErrorService;
@@ -14,7 +13,6 @@ import com.ctm.web.core.services.SessionDataService;
 import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.core.utils.RequestUtils;
 import com.ctm.web.core.validation.EmailValidation;
-import com.ctm.web.core.web.Utils;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.factory.EmailServiceFactory;
 import org.json.JSONObject;
@@ -114,7 +112,6 @@ public class EmailService {
 			String emailAddress, long transactionId) throws SendEmailException {
 		boolean isValid = EmailValidation.validate(emailAddress);
 		if(isValid) {
-			Utils.createBPTouches(transactionId, Touch.TouchType.BP_EMAIL_STARTED, emailAddress,false);
 			Data data = null;
 				try {
 					if(transactionId > 0) {
@@ -151,6 +148,5 @@ public class EmailService {
 		} else {
 			throw new SendEmailException(transactionId + ": invalid email received emailAddress:" +  emailAddress);
 		}
-		Utils.createBPTouches(transactionId, Touch.TouchType.BP_EMAIL_END, emailAddress,false);
 	}
 }

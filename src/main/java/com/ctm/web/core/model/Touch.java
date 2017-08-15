@@ -63,9 +63,7 @@ public class Touch extends AbstractJsonModel {
 		EMAIL_GATEWAY ("Email gateway", "EmlGateway"),
 		CRON_ACTIONED("CRON Actioned", "CRON"),
 		CONFIRMATION_VIEWED("Confirmation Page Viewed", "CONF"),
-        MORE_INFO("More Info", "MoreInfo"),
-		BP_EMAIL_STARTED("Email sent started", "BPSTART"),
-		BP_EMAIL_END("Email sent started", "BPEND");
+        MORE_INFO("More Info", "MoreInfo");
 
 		private final String description, code;
 
