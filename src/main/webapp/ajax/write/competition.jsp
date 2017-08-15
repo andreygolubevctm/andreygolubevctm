@@ -17,7 +17,7 @@
 
 <%-- Variables --%>
 <c:set var="competition_id" value="${data['competition/competitionId']}" />
-<c:set var="competition_email" value="${data.email}" />
+<c:set var="competition_email" value="${email}" />
 <c:set var="brand" value="${styleCode}" />
 <c:set var="vertical" value="COMPETITION" />
 <c:set var="source" value="Meerkat" />
@@ -31,8 +31,8 @@
     brand="${brand}"
     vertical="${vertical}"
     emailAddress="${competition_email}"
-    firstName="${data.first_name}"
-    lastName="${data.last_name}"
+    firstName="${first_name}"
+    lastName="${last_name}"
     items="marketing=Y,okToCall=N" />
 
 <sql:setDataSource dataSource="${datasource:getDataSource()}"/>
