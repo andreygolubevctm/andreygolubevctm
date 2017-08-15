@@ -7,7 +7,6 @@ import com.ctm.interfaces.common.types.CorrelationId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.net.ssl.HttpsURLConnection;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -39,7 +38,7 @@ public class SimpleConnection {
 	public String get(String url) {
 		try {
 			URL u = new URL(url);
-			HttpsURLConnection c = (HttpsURLConnection) u.openConnection();
+			HttpURLConnection c = (HttpURLConnection) u.openConnection();
 			if(hasCorrelationId) {
 				final Optional<CorrelationId> correlationId = LoggingVariables.getCorrelationId();
 				correlationId.ifPresent(cId -> CorrelationIdUtils.setCorrelationIdRequestHeader(c, cId));
