@@ -25,6 +25,6 @@
 	<field_v2:array_select xpath="${fieldXpath}" title="your household income" required="true" items="=Please choose...||0=Tier 0||1=Tier 1||2=Tier 2||3=Tier 3" delims="||" className="income health_cover_details_income" extraDataAttributes="${analyticsAttr} data-attach=true" />
 	<c:set var="income_label_xpath" value="${xpath}/incomelabel" />
 	<div id="rebateLabel"><span></span></div>
-	<div class="fieldrow_legend" id="health_healthCover_tier_row_legend"></div>
+	<div class="fieldrow_legend" id="health_healthCover_tier_row_legend">Depending on your taxable income, you may be eligible for a government discount on your premium.</div>
 </form_v2:row>
 <input type="hidden" name="${go:nameFromXpath(xpath)}_incomelabel" id="${go:nameFromXpath(xpath)}_incomelabel" value="${data[income_label_xpath]}" />
