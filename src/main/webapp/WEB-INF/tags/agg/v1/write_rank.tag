@@ -156,7 +156,7 @@
 				If this fails it is not a show stopper so log and keep calm and carry on
 				--%>
 				<c:if test="${not empty error}">
-					${logger.error('[Email] Failed to send best price for {} {}', log:kv('transactionId', transactionId), log:kv('email', data.travel.email), error)}
+					${logger.error('BPEMAIL Failed to send best price for {} {}', log:kv('transactionId', transactionId), log:kv('email', data.travel.email), error)}
 					${fatalErrorService.logFatalError(error, pageSettings.getBrandId(), pageContext.request.servletPath , pageContext.session.id, false, transactionId)}
 				</c:if>
 			</c:if>

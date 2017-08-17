@@ -19,7 +19,7 @@
 		<c:set var="emailSubscribed" value="${userData.optInMarketing}" />
 	</c:if>
 	<c:if test="${empty hashedEmail}">
-		${logger.info('No Hashed Email: {} {}', log:kv('email', emailAddress), log:kv('transactionId', data.current.transactionId))}
+		${logger.error('BPEMAIL No Hashed Email: {}', log:kv('transactionId', data.current.transactionId))}
 	</c:if>
 </c:if>
 
@@ -43,7 +43,7 @@
 
 <c:choose>
 	<c:when test="${ignoreEmailSendToUnsubscribed eq true}">
-		${logger.info('Email skipped as user not subscribed. {} {}', log:kv('transactionId', data.current.transactionId))}
+		${logger.info('BPEMAIL Email skipped as user not subscribed. {} {}', log:kv('transactionId', data.current.transactionId))}
 	</c:when>
 	<c:otherwise>
 
@@ -58,10 +58,10 @@
 					<c:when test="${pageSettings.hasSetting('sendQuoteMailingName') and pageSettings.hasSetting('sendQuoteTmpl')}">
 						<c:set var="MailingName" value="${pageSettings.getSetting('sendQuoteMailingName')}" />
 						<c:set var="tmpl" value="${pageSettings.getSetting('sendQuoteTmpl')}" />
-						${logger.info('Email Mode is quote and mode is enabled. {},{},{}', log:kv('mode',param.mode ), log:kv('MailingName',MailingName ), log:kv('tmpl',tmpl ))}
+						${logger.debug('BPEMAIL Email Mode is quote and mode is enabled. {} {} {}', log:kv('mode', param.mode), log:kv('MailingName', MailingName), log:kv('tmpl', tmpl))}
 					</c:when>
 					<c:otherwise>
-						${logger.info('param.mode passed but missing required page settings. {}', log:kv('mode',param.mode ))}
+						${logger.warn('BPEMAIL param.mode passed but missing required page settings. {}', log:kv('mode', param.mode))}
 					</c:otherwise>
 				</c:choose>
 			</c:when>
@@ -82,10 +82,10 @@
 					<c:when test="${pageSettings.hasSetting('sendEdmMailingName') and pageSettings.hasSetting('sendEdmTmpl')}">
 						<c:set var="MailingName" value="${pageSettings.getSetting('sendEdmMailingName')}" />
 						<c:set var="tmpl" value="${pageSettings.getSetting('sendEdmTmpl')}" />
-						${logger.debug('Email Mode is edm. {},{},{}', log:kv('mode',param.mode ), log:kv('MailingName',MailingName ), log:kv('tmpl',tmpl ))}
+						${logger.debug('BPEMAIL Email Mode is edm. {} {} {}', log:kv('mode', param.mode), log:kv('MailingName', MailingName), log:kv('tmpl', tmpl))}
 					</c:when>
 					<c:otherwise>
-						${logger.warn('Mode passed but missing required page settings. {}', log:kv('mode',param.mode ))}
+						${logger.warn('BPEMAIL Mode passed but missing required page settings. {}', log:kv('mode',param.mode ))}
 					</c:otherwise>
 				</c:choose>
 			</c:when>

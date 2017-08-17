@@ -223,7 +223,7 @@
 					<hr />
 				</body>
 				</html>
-				${logger.info('Email result outputted to page only: {} {} {}', log:kv("paramSend", paramSend), log:kv("myResult", myResult), log:kv("transactionId", param.tranId))}
+				${logger.info('BPEMAIL Email result outputted to page only: {} {} {}', log:kv("paramSend", paramSend), log:kv("myResult", myResult), log:kv("transactionId", param.tranId))}
 			</c:when>
 			<c:otherwise>
 				<c:set var="emailTemplate">${param.tmpl}</c:set>
@@ -239,7 +239,7 @@
 							<c:param name="description" value="Failed to send email" />
 						<c:param name="data" value="${myResult}" />
 					</c:import>
-					${logger.warn('Failed to send email. {} {} {} {} {} {} {}', log.kv('error', error), log:kv('transactionId', param.tranId), log:kv('OptInMailingName', param.OptInMailingName), log:kv('tmpl', param.tmpl), log:kv('emailSubscribed', param.emailSubscribed), log:kv('MailingName', param.MailingName))}
+					${logger.warn('BPEMAIL Failed to send email. {} {} {} {} {} {} {}', log.kv('error', error), log:kv('transactionId', param.tranId), log:kv('OptInMailingName', param.OptInMailingName), log:kv('tmpl', param.tmpl), log:kv('emailSubscribed', param.emailSubscribed), log:kv('MailingName', param.MailingName))}
 					<%-- JSON result failure returned --%>
 					<json:object>
 						<json:property name="result" value="SEND_FAILURE"/>
@@ -256,7 +256,7 @@
 						<c:param name="description" value="Email response failure" />
 						<c:param name="data" value="PARAMS: ${param} RESPONSE:${emailResponseXML}" />
 					</c:import>
-					${logger.warn('Email response failure occured - did not send. {} {} {} {} {} {}', log:kv('transactionId', param.tranId), log:kv('OptInMailingName', param.OptInMailingName), log:kv('tmpl', param.tmpl), log:kv('emailSubscribed', param.emailSubscribed), log:kv('MailingName', param.MailingName))}
+					${logger.warn('BPEMAIL Email response failure occured - did not send. {} {} {} {} {} {}', log:kv('transactionId', param.tranId), log:kv('OptInMailingName', param.OptInMailingName), log:kv('tmpl', param.tmpl), log:kv('emailSubscribed', param.emailSubscribed), log:kv('MailingName', param.MailingName))}
 				</c:if>
 			</c:otherwise>
 		</c:choose>
