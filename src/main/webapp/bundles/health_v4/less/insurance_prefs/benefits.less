@@ -58,7 +58,7 @@ body.health {
           .checkbox {
             padding: 0;
 
-            input {
+            input:not([disabled]) {
               &:checked,
               &.checked {
                 & + label {
@@ -167,6 +167,7 @@ body.health {
       }
 
       .nav-tabs {
+        margin-top: 5px;
         padding-left: 10px;
         padding-right: 10px;
         background-color: transparent;

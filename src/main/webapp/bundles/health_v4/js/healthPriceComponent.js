@@ -76,7 +76,7 @@
         // Update product summary
         var startDateString = "Please confirm";
         var startDateInput = meerkat.modules.healthCoverStartDate.getVal();
-        if(_.isEmpty(startDateInput)){
+        if (!_.isEmpty(startDateInput)){
             startDateString = startDateInput;
         }
 

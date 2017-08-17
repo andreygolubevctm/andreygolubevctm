@@ -19,16 +19,6 @@
         };
 
 	    $elements.primaryCoverLoading.add($elements.dob).add($elements.currentCover).attr('data-attach','true');
-
-        var $checked = $elements.currentCover.filter(':checked');
-        if ($checked.length) {
-            $checked.change();
-        } else {
-            meerkat.modules.fieldUtilities.toggleVisible(
-                $elements.primaryCoverLoading,
-                true
-            );
-        }
     }
 
     function _applyEventListeners() {
@@ -47,9 +37,22 @@
         return $elements.currentCover.filter(':checked').val();
     }
 
+    function onStartInit() {
+        var $checked = $elements.currentCover.filter(':checked');
+        if ($checked.length) {
+            $checked.change();
+        } else {
+            meerkat.modules.fieldUtilities.toggleVisible(
+                $elements.primaryCoverLoading,
+                true
+            );
+        }
+    }
+
     meerkat.modules.register('healthPrimary', {
         init: initHealthPrimary,
-        getCurrentCover: getCurrentCover
+        getCurrentCover: getCurrentCover,
+        onStartInit: onStartInit
     });
 
 })(jQuery);
