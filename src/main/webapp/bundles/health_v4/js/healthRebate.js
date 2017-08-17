@@ -160,7 +160,9 @@
     function setRebate(forceRebate) {
         meerkat.modules.healthRates.loadRatesBeforeResultsPage(forceRebate, function (rates) {
             if (!isNaN(rates.rebate) && parseFloat(rates.rebate) > 0) {
-                $elements.rebateLegend.html('You are eligible for a ' + rates.rebate + '% rebate.');
+                if ($elements.incomeSelect.prop('selectedIndex') > 0) {
+                    $elements.rebateLegend.html('You are eligible for a ' + rates.rebate + '% rebate.');
+                }
                 rebate = rates.rebate;
             } else {
                 $elements.rebateLegend.html('');
