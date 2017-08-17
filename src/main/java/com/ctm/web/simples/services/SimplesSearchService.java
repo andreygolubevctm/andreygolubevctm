@@ -50,7 +50,8 @@ public class SimplesSearchService {
 
     private void setSearchMode() {
         if (searchString != null) {
-            if (searchString.length() > 1 && searchString.substring(0, 1).equalsIgnoreCase("0")) {
+            if (searchString.replaceAll("\\s","").length() == 10 && searchString.substring(0, 1).equalsIgnoreCase("0")) {
+                searchString = searchString.replaceAll("\\s","");
                 searchMode = SearchMode.PHONE;
             } else if (isLikeTransactionId(searchString) && transactionIdExists(searchString)) {
                 searchMode = SearchMode.TRANS;
@@ -84,7 +85,8 @@ public class SimplesSearchService {
         try {
             setupHotAndColdTransactions();
             if (hotTransactionIdsCsv.trim().equalsIgnoreCase("") && coldTransactionIdsCsv.trim().equalsIgnoreCase("")) {
-                throw new DaoException("No records found");
+                writeDataIntoDataBucket(false, "<empty>true</empty>", null, "no_results");
+                return;
             } else {
                 LOGGER.debug("Search transaction ids {},{}", kv("coldIds", coldTransactionIdsCsv), kv("hotIds", hotTransactionIdsCsv));
             }
