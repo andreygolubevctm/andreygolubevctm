@@ -70,6 +70,6 @@
 			${go:getEscapedXml(data['tempSQL'])}
 		</c:when>
 		<c:otherwise>
-			${logger.info('Not enough products to send Best Price email: {},{},{}', log:kv('transactionId', tranId), log:kv('verticalType', verticalType), log:kv('productCount', productCount))}
+			${logger.info('BPEMAIL Not enough products to send Best Price email: {},{},{}', log:kv('transactionId', tranId), log:kv('verticalType', verticalType), log:kv('productCount', productCount))}
 		</c:otherwise>
 	</c:choose>

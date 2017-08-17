@@ -26,7 +26,7 @@
 		</sql:update>
 	</c:catch>
 	<c:if test="${not empty ignoreable_error}">
-		${logger.warn('Transaction header record does not contain current email address: {} {} {} {} {}', log:kv('ignoreable_error', ignoreable_error), log:kv('transactionId', data.current.transactionId), log:kv('verticalType', verticalType), log:kv('brand', brand), log:kv('mode', mode))}
+		${logger.error('BPEMAIL Transaction header record does not contain current email address: {} {} {} {} {}', log:kv('ignoreable_error', ignoreable_error), log:kv('transactionId', data.current.transactionId), log:kv('verticalType', verticalType), log:kv('brand', brand), log:kv('mode', mode))}
 	</c:if>
 </c:if>
 
@@ -59,9 +59,9 @@
 		<go:setData dataVar="data" xpath="userData/emailSent" value="true" />
 	</c:when>
 	<c:when test="${sendYN eq 'N'}">
-		${logger.warn('[sendYN] No email sent - Emails are not sent for this brand/vertical combo: {} {} {} {}', log:kv('verticalType', verticalType), log:kv('brand', brand), log:kv('mode', mode), log:kv('transactionId', data.current.transactionId))}
+		${logger.warn('BPEMAIL [sendYN] No email sent - Emails are not sent for this brand/vertical combo: {} {} {} {}', log:kv('verticalType', verticalType), log:kv('brand', brand), log:kv('mode', mode), log:kv('transactionId', data.current.transactionId))}
 	</c:when>
 	<c:otherwise>
-		${logger.warn('[sendYN] No email sent - No setting defined for this brand/vertical combo: {} {} {} {}', log:kv('verticalType', verticalType), log:kv('brand', brand), log:kv('mode', mode), log:kv('transactionId', data.current.transactionId))}
+		${logger.warn('BPEMAIL [sendYN] No email sent - No setting defined for this brand/vertical combo: {} {} {} {}', log:kv('verticalType', verticalType), log:kv('brand', brand), log:kv('mode', mode), log:kv('transactionId', data.current.transactionId))}
 	</c:otherwise>
 </c:choose>
