@@ -74,7 +74,7 @@
 									<div class="text-info">{{= result.email }}</div>
 								{{ } }}
 
-								<ul class="list-unstyled small">
+								<ul class="core-properties list-unstyled small">
 									{{ if (result.policyNo !== '') { }}
 									<li><strong>Policy No:</strong> <span class="label label-success">{{= result.policyNo }}</span></li>
 									{{ } }}

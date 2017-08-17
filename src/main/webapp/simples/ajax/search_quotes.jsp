@@ -22,6 +22,7 @@ ${logger.info('Begin search Quotes. {}' , log:kv('searchPhrase',searchPhrase ))}
 </c:catch>
 <c:choose>
 	<c:when test="${empty error}">
+${logger.info(data)}
 		<%-- Read the data bucket and formate results --%>
 		<c:choose>
 			<c:when test="${not empty data['no_results']}">
@@ -39,8 +40,6 @@ ${logger.info('Begin search Quotes. {}' , log:kv('searchPhrase',searchPhrase ))}
 
 				<%-- Convert XML results into JSON and delete all search data from data bucket --%>
 				${go:XMLtoJSON(resultsXml)}
-				<go:setData dataVar="data" xpath="search_results" value="*DELETE" />
-				<x:transform doc="${go:getEscapedXml(data['search_results'])}" xslt="${xslt}" />
 			</c:otherwise>
 		</c:choose>
 	</c:when>
