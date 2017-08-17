@@ -5,6 +5,7 @@
 <session:new verticalCode="HEALTH" authenticated="true" />
 
 <jsp:useBean id="rememberMeService" class="com.ctm.web.core.rememberme.services.RememberMeService" />
+<agg_v1:remember_me_settings vertical="health" />
 
 <%-- Call centre numbers --%>
 <jsp:useBean id="callCenterHours" class="com.ctm.web.core.web.openinghours.go.CallCenterHours" scope="page" />
@@ -67,19 +68,13 @@
 
     <jsp:body>
         <c:choose>
-            <c:when test="${rememberMeService.hasRememberMe(pageContext.request, 'health') and
-                        (empty pageContext.request.queryString or fn:length(param.action) == 0) and
-                        empty param.preload and
-                        empty param.skipRemember and
-                        pageSettings.getBrandCode() eq 'ctm' and
-                        empty authenticatedData.login.user.uid and
-                        rememberMeService.hasPersonalInfoAndLoadData(pageContext.request, pageContext.response, 'health')}">
+            <c:when test="${isRememberMe}">
                 <c:set var="firstname" value="${rememberMeService.getNameOfUser(pageContext.request, pageContext.response, 'health')}" />
                 <div id="pageContent">
                     <article class="container">
                         <div class="remember-me text-center">
                             <h1 style="display: inline">Hi ${firstname}, </h1>
-                            <h2 style="display: inline"><a class="remember-me-remove" href="javascript:;">  Not you?</a></h2>
+                            <h2 style="display: inline"><a class="remember-me-remove" href="javascript:;" data-track-action="token expired">  Not you?</a></h2>
                             <h1> looks like you've compared health insurance with us before.</h1>
                             <h2>Enter your date of birth to review the products you found last time.</h2>
 
@@ -95,7 +90,7 @@
                                         value="Submit">View Products and Prices <span
                                         class="icon icon-arrow-right"></span></button>
                             </form>
-                            <a class="remember-me-remove" href="javascript:;">< Start a new quote</a>
+                            <a class="remember-me-remove" href="javascript:;" data-track-action="new quote started">< Start a new quote</a>
                         </div>
                     </article>
                 </div>

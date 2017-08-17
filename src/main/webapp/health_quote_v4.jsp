@@ -6,6 +6,7 @@
 <session:new verticalCode="HEALTH" authenticated="true" />
 
 <jsp:useBean id="rememberMeService" class="com.ctm.web.core.rememberme.services.RememberMeService" />
+<agg_v1:remember_me_settings vertical="health" />
 
 <%-- Redirect if Confirmation Page --%>
 <health_v1:redirect_rules />
@@ -20,14 +21,7 @@
 </c:if>
 
 <c:choose>
-    <c:when test="${rememberMeService.hasRememberMe(pageContext.request, 'health') and
-                    (empty pageContext.request.queryString or fn:length(param.action) == 0) and
-                    empty param.preload and
-                    empty param.skipRemember and
-                    pageSettings.getBrandCode() eq 'ctm' and
-                    empty authenticatedData.login.user.uid and
-                    rememberMeService.hasPersonalInfoAndLoadData(pageContext.request, pageContext.response, 'health')}">
-
+    <c:when test="${isRememberMe}">
         <%-- Preserve the query string params and pass them to remember_me.jsp --%>
         <c:set var="redirectURL" value="${pageSettings.getBaseUrl()}remember_me.jsp?" />
         <c:forEach items="${param}" var="currentParam">
