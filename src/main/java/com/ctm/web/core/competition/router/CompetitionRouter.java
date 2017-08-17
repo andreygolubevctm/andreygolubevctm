@@ -24,7 +24,6 @@ import static com.ctm.commonlogging.common.LoggingArguments.kv;
 })
 public class CompetitionRouter extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(CompetitionRouter.class);
-    private static final long serialVersionUID = 75L;
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
