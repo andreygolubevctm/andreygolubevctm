@@ -149,6 +149,7 @@ public class EmailService {
 			EmailServiceHandler emailService = this.emailServiceFactory.newInstance(pageSettings, mode, data);
 			emailService.send(request, emailAddress, transactionId);
 		} else {
+			LOGGER.info("BPEMAIL Email Validation failed, skipping send.");
 			throw new SendEmailException(transactionId + ": invalid email received emailAddress:" +  emailAddress);
 		}
 		Utils.createBPTouches(transactionId, Touch.TouchType.BP_EMAIL_END, emailAddress,false);
