@@ -18,6 +18,7 @@
 					<quoteDate><xsl:value-of select="quoteDate" /></quoteDate>
 					<quoteTime><xsl:value-of select="quoteTime" /></quoteTime>
 					<quoteType><xsl:value-of select="quoteType" /></quoteType>
+                    <policyNo><xsl:value-of select="policyNo" /></policyNo>
 					<editable><xsl:value-of select="editable" /></editable>
 
 					<contacts>
