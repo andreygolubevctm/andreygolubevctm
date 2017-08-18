@@ -186,4 +186,14 @@ public class TransactionService {
 		return message;
 	}
 
+	/**
+	 * transactionIdExists calls the DAO to confirm the transactionId exists in the database.
+	 * @param transactionId
+	 * @return
+	 * @throws DaoException
+	 */
+	public boolean transactionIdExists(long transactionId) throws DaoException {
+	    final TransactionDao transactionDao = new TransactionDao();
+		return transactionDao.transactionIdExists(transactionId);
+	}
 }
