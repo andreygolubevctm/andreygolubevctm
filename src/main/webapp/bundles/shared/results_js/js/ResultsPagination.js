@@ -7,6 +7,7 @@ var ResultsPagination = {
 	$nextButton:null,
 	$previousButton:null,
 	$pageText: null, //elements to contain text like 'Page 3 of 12'
+    $summary: null,
 
     $floatedNextButton: null,
     $floatedPreviousButton: null,
@@ -25,6 +26,9 @@ var ResultsPagination = {
 
 	touchendSnapTimeout: false,
 	scrollCheckTimeout: false,
+
+	paginationSummaryTemplate: null,
+	showPaginationSummary: false,
 
 	init: function(){
 
@@ -122,6 +126,14 @@ var ResultsPagination = {
 				var pageItemTemplate = _.template(Results.settings.templates.pagination.pageItem);
 				var pageUpDownTemplate = _.template(Results.settings.templates.pagination.page);
 
+                paginationSummaryTemplate = null;
+                showPaginationSummary = false;
+
+                if((!_.isEmpty(Results.settings.templates.pagination.summary)) && Results.settings.templates.pagination.summary)  {
+                    paginationSummaryTemplate = _.template(Results.settings.templates.pagination.summary);
+                    showPaginationSummary = true;
+                }
+
 				Results.pagination.empty(Results.pagination.$pagesContainer);
 
                 Results.pagination.$floatedNextButton.addClass('hidden');
@@ -139,8 +151,13 @@ var ResultsPagination = {
 						}
 						// Page Numbers
 						var num = i+1;
-						htmlString = pageItemTemplate({pageNumber:num, label:num});
+						htmlString = pageItemTemplate({pageNumber: num, label: num});
 						Results.pagination.$pagesContainer.append(htmlString);
+						
+                        if(showPaginationSummary) {
+                            htmlString = $(htmlString).addClass('hidden-xs hidden-sm');
+                        }
+
 						// Next Button
 						if(num >= pageMeasurements.numberOfPages) {
 							htmlString = pageUpDownTemplate({type:'next', icon:'right'});
@@ -190,6 +207,15 @@ var ResultsPagination = {
 				Results.pagination.deactivateButton(this.$nextButton);
 			}else{
 				Results.pagination.activateButton(this.$nextButton);
+			}
+
+			if(showPaginationSummary) {
+				var summaryData = Results.pagination.getPaginationSummary();
+				htmlString = paginationSummaryTemplate(summaryData);
+				_.defer(function(){
+                    Results.pagination.$pagesContainer.find('.summary').remove();
+					$(htmlString).insertAfter(Results.pagination.$pagesContainer.find('[data-results-pagination-control="previous"]').closest("li"));
+				});
 			}
 
 			// Done
@@ -396,6 +422,17 @@ var ResultsPagination = {
 			}
 		}
 		return noColumns;
+	},
+
+	getPaginationSummary: function(){
+		var pageMeasurements = Results.pagination.getPageMeasurements();
+		var totalProducts = Results.model.availableCounts;
+		var rangeStart = (pageMeasurements.columnsPerPage * Results.pagination.getCurrentPageNumber()) - (pageMeasurements.columnsPerPage - 1);
+		var rangeEnd = pageMeasurements.columnsPerPage * Results.pagination.getCurrentPageNumber();
+		if(rangeEnd > totalProducts) {
+			rangeEnd = totalProducts;
+		}
+		return {rangeStart: rangeStart, rangeEnd: rangeEnd, totalProducts:totalProducts};
 	},
 
 	gotoStart: function(invalidate){
