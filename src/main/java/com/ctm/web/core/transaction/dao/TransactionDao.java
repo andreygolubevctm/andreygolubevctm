@@ -235,4 +235,36 @@ public class TransactionDao {
 		return relatedTransactionId;
 	}
 
+	public boolean transactionIdExists(long transactionId) throws DaoException {
+
+	    boolean exists = false;
+
+		SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
+
+		try {
+			PreparedStatement stmt;
+
+			stmt = dbSource.getConnection().prepareStatement(
+					"SELECT TransactionId AS 'transactionId' FROM aggregator.transaction_header WHERE TransactionId = ? " +
+					"UNION ALL " +
+					"SELECT transactionId FROM aggregator.transaction_header2_cold WHERE transactionId = ?;"
+			);
+
+			stmt.setLong(1, transactionId);
+			stmt.setLong(2, transactionId);
+
+			ResultSet results = stmt.executeQuery();
+
+			exists = results.next();
+		}
+		catch (SQLException | NamingException e) {
+        	throw new DaoException(e);
+		}
+		finally {
+            dbSource.closeConnection();
+		}
+
+		return exists;
+	}
+
 }
