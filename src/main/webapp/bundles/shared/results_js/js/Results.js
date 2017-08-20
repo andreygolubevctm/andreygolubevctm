@@ -181,7 +181,8 @@ var Results = {
 				pagination:{
 					pageItem: '<li><a class="btn-pagination" data-results-pagination-control="{{= pageNumber}}" ' + meerkat.modules.dataAnalyticsHelper.get("pagination {{= pageNumber}}",'"') + '>{{= label}}</a></li>',
 					pageText: 'Page {{=currentPage}} of {{=totalPages}}',
-					page: '<li><a class="btn-pagination icon icon-angle-{{=icon}}" data-results-pagination-control="{{= type}}" ' + meerkat.modules.dataAnalyticsHelper.get("pagination {{= type}}",'"') + '><!-- empty --></a></li>'
+					page: '<li><a class="btn-pagination icon icon-angle-{{=icon}}" data-results-pagination-control="{{= type}}" ' + meerkat.modules.dataAnalyticsHelper.get("pagination {{= type}}",'"') + '><!-- empty --></a></li>',
+                    summary: null
 				}
 			},
 			show: {
