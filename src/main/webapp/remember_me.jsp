@@ -70,7 +70,7 @@
                 <div id="pageContent">
                     <article class="container">
                         <div class="remember-me text-center">
-                            <h1>Hi ${firstname}, <a class="remember-me-remove" href="javascript:;">  Not you?</a></h1>
+                            <h1>Hi ${firstname}, <a class="remember-me-remove" href="javascript:;" data-track-action="token expired">  Not you?</a></h1>
                             <h1> looks like you've compared health insurance with us before.</h1>
                             <h2>Enter your date of birth to review the products you found last time.</h2>
 
