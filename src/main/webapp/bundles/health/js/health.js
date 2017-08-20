@@ -6,7 +6,8 @@
 		moduleEvents = {
 			health: {
 				CHANGE_MAY_AFFECT_PREMIUM: 'CHANGE_MAY_AFFECT_PREMIUM',
-				SNAPSHOT_FIELDS_CHANGE:'SNAPSHOT_FIELDS_CHANGE'
+				SNAPSHOT_FIELDS_CHANGE:'SNAPSHOT_FIELDS_CHANGE',
+                PAYMENT_SUBMIT_APPLICATION: 'PAYMENT_SUBMIT_APPLICATION'
 			},
 			WEBAPP_LOCK: 'WEBAPP_LOCK',
 			WEBAPP_UNLOCK: 'WEBAPP_UNLOCK'
@@ -602,6 +603,7 @@
 
 				meerkat.modules.healthPaymentDate.initPaymentDate();
 				meerkat.modules.healthPaymentIPP.initHealthPaymentIPP();
+                meerkat.modules.healthPayConfDetailsModal.onInitialise();
 
 				$("#joinDeclarationDialog_link").on('click',function(){
 					var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
@@ -651,11 +653,15 @@
 						});
 					}
 
-					// Validation passed, submit the application.
+					// Validation passed, submit the application after showing confirmation modal - see subscribe event below.
 					if (valid) {
-						submitApplication();
+                        meerkat.modules.healthPayConfDetailsModal.open();
 					}
 				});
+
+				meerkat.messaging.subscribe(moduleEvents.health.PAYMENT_SUBMIT_APPLICATION, function() {
+				    submitApplication();
+                });
 
 			},
 			onBeforeEnter: function enterPaymentStep(event){
