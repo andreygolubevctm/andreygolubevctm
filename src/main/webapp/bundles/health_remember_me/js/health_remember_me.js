@@ -7,6 +7,7 @@
 
     function init() {
         if (meerkat.site.isRememberMe) {
+            meerkat.modules.jqueryValidate.initJourneyValidator();
             _setupFields();
             validateDob();
             initEventListeners();
@@ -106,9 +107,9 @@
                                 var tmp = window.location.search.split("?").pop().split("&");
                                 for(var i=0; i<tmp.length; i++) {
                                     var pieces = tmp[i].split("=");
-	                                if(pieces.length === 2) {
-	                                    srcQSParams[pieces[0]] = pieces[1];
-	                                }
+                                    if(pieces.length === 2) {
+                                        srcQSParams[pieces[0]] = pieces[1];
+                                    }
                                 }
                             }
                             var newQSParams = {

@@ -52,14 +52,11 @@ public class RememberMeController {
                 if(isValidAnswer) {
                     rememberMeService.deleteCookie(vertical, response);
                     rememberMeService.removeAttemptsSessionAttribute(request, vertical);
-                    return new RememberMeModel(true, transactionId.orElse(null));
                 }
-            } else {
-                return new RememberMeModel(false, null);
+                return new RememberMeModel(isValidAnswer, transactionId.orElse(null));
             }
         } catch (Exception ex) {
             LOGGER.error("Error validating the personal question", ex);
-            return new RememberMeModel(false, null);
         }
         return new RememberMeModel(false, null);
     }

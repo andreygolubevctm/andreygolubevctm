@@ -1,0 +1,16 @@
+{
+  "themeVersion": 2,
+  "brandCodes": [
+    "ctm"
+  ],
+  "dependencies": [
+    "shared/journeyEngine/v2",
+    "shared/validation",
+    "shared/fonts/v2",
+    "shared/headerBar/v2",
+    "core",
+    "shared/forms/v4",
+    "shared/leavePageWarning",
+    "shared/formDateInput"
+  ]
+}

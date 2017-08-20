@@ -12,11 +12,9 @@
 <c:set var="callCentreNumber" scope="request"><content:get key="callCentreNumber" /></c:set>
 <c:set var="callCentreAppNumber" scope="request"><content:get key="callCentreAppNumber" /></c:set>
 <c:set var="callCentreHelpNumber" scope="request"><content:get key="callCentreHelpNumber" /></c:set>
-
 <c:set var="callCentreHoursModal" scope="request"><content:getOpeningHoursModal /></c:set>
-<c:set var="callCentreCBModal" scope="request"><health_v4:callback_modal /></c:set>
 
-<layout_v1:journey_engine_page title="Remember Me" ignore_journey_tracking="${true}" bundleFileName="health_v4" displayNavigationBar="${false}" body_class_name="remember-me-page">
+<layout_v1:journey_engine_page title="Remember Me" ignore_journey_tracking="${true}" bundleFileName="health_remember_me" displayNavigationBar="${false}" body_class_name="remember-me-page">
 
     <jsp:attribute name="head">
     </jsp:attribute>
@@ -33,11 +31,10 @@
                         <div class="navbar-text hidden-xs" data-livechat="target">
                             Call <a href="javascript:;" data-toggle="dialog"
                                     data-content="#view_all_hours"
-                                    data-dialog-hash-id="view_all_hours"
                                     data-title="Call Centre Hours" data-cache="true">
                             <span class="noWrap callCentreNumber">${callCentreNumber}</span>
                             <span class="noWrap callCentreAppNumber">${callCentreAppNumber}</span>
-                        </a> or <health_v4:callback_link /> ${callCentreCBModal}
+                        </a>
                         </div>
                         <div id="view_all_hours" class="hidden">${callCentreHoursModal}</div>
                     </li>
@@ -73,8 +70,7 @@
                 <div id="pageContent">
                     <article class="container">
                         <div class="remember-me text-center">
-                            <h1 style="display: inline">Hi ${firstname}, </h1>
-                            <h2 style="display: inline"><a class="remember-me-remove" href="javascript:;" data-track-action="token expired">  Not you?</a></h2>
+                            <h1>Hi ${firstname}, <a class="remember-me-remove" href="javascript:;">  Not you?</a></h1>
                             <h1> looks like you've compared health insurance with us before.</h1>
                             <h2>Enter your date of birth to review the products you found last time.</h2>
 
@@ -90,7 +86,7 @@
                                         value="Submit">View Products and Prices <span
                                         class="icon icon-arrow-right"></span></button>
                             </form>
-                            <a class="remember-me-remove" href="javascript:;" data-track-action="new quote started">< Start a new quote</a>
+                            <a class="remember-me-remove" href="javascript:;" data-track-action="new quote started"><span class="icon-angle-left"></span>&nbsp;&nbsp;Start a new quote</a>
                         </div>
                     </article>
                 </div>
