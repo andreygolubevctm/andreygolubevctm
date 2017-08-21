@@ -65,12 +65,12 @@ public class InteractionController extends CommonQuoteRouter {
                 String callId = inInIcwsService.getCallId(authenticatedData.getUid()).observeOn(Schedulers.io()).toBlocking().first();
                 if(null != callId && !callId.equals("No value present")) {
                     interactionService.persistInteractionId(transId, callId);
-                    return "success";
+                    return "Success. Call Details are stored for the transaction" + transactionId;
                 } else {
                     LOGGER.error("No call Id exists for the user:" + authenticatedData.getUid());
                 }
             }
         }
-       return "failed to store callId for the transaction";
+       return "Failed to store callId for the transaction"+ transactionId;
     }
 }
