@@ -64,7 +64,9 @@ public class Touch extends AbstractJsonModel {
 		CRON_ACTIONED("CRON Actioned", "CRON"),
 		CONFIRMATION_VIEWED("Confirmation Page Viewed", "CONF"),
         MORE_INFO("More Info", "MoreInfo"),
-		REMEMBER_ME("RememberMe","RememberMe");
+		REMEMBER_ME("RememberMe","RememberMe"),
+		BP_EMAIL_STARTED("Email sent started", "BPSTART"),
+		BP_EMAIL_END("Email sent started", "BPEND");
 
 		private final String description, code;
 
