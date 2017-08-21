@@ -18,7 +18,7 @@
         $partnerDob = $('#health_application_partner_dob');
         $dependantsIncome = $('#health_application_dependants_income');
 
-        _template = _.template($('#agr-modal-template').html());
+        _template = _.template($('#payment-confirm-details-modal-template').html());
     }
 
     function _setupFields() {
@@ -97,8 +97,6 @@
     function _applyFormEventListeners() {
         $elements.editBtn.on('click', function() {
 
-            //remotely remove subscription
-            meerkat.messaging.publish(meerkatEvents.health.PAYMENT_SUBMIT_APPLICATION_UNSUBSCRIBE);
             // navigate to the apply step
             meerkat.modules.journeyEngine.gotoPath('apply');
             close();
@@ -118,8 +116,8 @@
     function _setupElements() {
         $elements = {
             section: {
-                your: $('.agr-your-details-section'),
-                others: $('.agr-others-details-section')
+                your: $('.payment-confirm-details-your-details-section'),
+                others: $('.payment-confirm-details-others-details-section')
             },
             editBtn: $('.edit-details-btn'),
             form: $('#payment-confirm-dtls-form'),
@@ -132,7 +130,7 @@
             productSummary: $('.productSummary-affix'),
             affixedJumpToForm: $('.affixed-jump-to-form'),
             affixedJumpToFormLink: $('a.jump-to-rebate'),
-            modalBody: $('#agr-modal .modal-body')
+            modalBody: $('#payment-confirm-details-modal .modal-body')
         };
     }
 
@@ -142,7 +140,7 @@
         var htmlContent = _template(_getTemplateData());
 
         _dialogId = meerkat.modules.dialogs.show({
-            id: 'agr-modal',
+            id: 'payment-confirm-details-modal',
             title: 'Application Review',
             htmlContent: htmlContent,
             showCloseBtn: false,

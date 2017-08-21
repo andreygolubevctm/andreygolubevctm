@@ -3,8 +3,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- HTML --%>
-<%-- TODO CHANGE THE id below --%>
-<core_v1:js_template id="agr-modal-template">
+<core_v1:js_template id="payment-confirm-details-modal-template">
     <%--your details  health_v2_confirmation  --%>
     <health_v2_confirmation:your_details />
 

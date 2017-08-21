@@ -4,8 +4,7 @@
 
 {{ if (obj.partner || obj.dependants) { }}
 
-<%-- TODO CHANGE THE CSS CLASSES below --%>
-    <div class="agr-others-details-section agr-details-section">
+    <div class="payment-confirm-details-others-details-section payment-confirm-details-section">
         <h3>Please confirm the details of others on this policy</h3>
 
         <health_v2_confirmation:edit_details_btn />

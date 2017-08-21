@@ -1,4 +1,4 @@
-#agr-modal {
+#payment-confirm-details-modal {
   .modal-body {
     @media (@xs-only) {
       margin-top: 40px;
@@ -9,12 +9,11 @@
     }
   }
 
-  h3,
-  label[for=health_application_agr_declaration].control-label {
+  h3 {
     color: @gray-darker;
   }
 
-  .agr-details-section {
+  .payment-confirm-details-section {
     position: relative;
   }
 
@@ -41,11 +40,6 @@
 
   label.control-label {
     font-size: @font-size-base;
-
-    &[for=health_application_agr_declaration] {
-      font-size: 20px;
-      padding-top: 0;
-    }
   }
 
   .checkbox {
@@ -56,7 +50,7 @@
     }
   }
 
-  .agr-others-details-section {
+  .payment-confirm-details-others-details-section {
     margin-top: 10px;
 
     @media (@sm) {
