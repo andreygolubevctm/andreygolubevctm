@@ -106,11 +106,6 @@
         $elements.submitBtn.on('click', function() {
             _onSubmit();
         });
-
-        /* ############# unsure if this is still required ################## */
-        $elements.modalBody.off("scroll.toggleAffixedJumpToForm").on("scroll.toggleAffixedJumpToForm", function () {
-            _toggleAffixedJumpToForm();
-        });
     }
 
     function _setupElements() {
@@ -128,8 +123,6 @@
             headerTopFixed: $('.header-top.navMenu-row-fixed'),
             progressBarAffix: $('.progress-bar-row.navbar-affix'),
             productSummary: $('.productSummary-affix'),
-            affixedJumpToForm: $('.affixed-jump-to-form'),
-            affixedJumpToFormLink: $('a.jump-to-rebate'),
             modalBody: $('#payment-confirm-details-modal .modal-body')
         };
     }
@@ -144,10 +137,6 @@
             title: 'Application Review',
             htmlContent: htmlContent,
             showCloseBtn: false,
-            rightBtn: {
-                label: 'Jump to declaration',
-                className: 'btn-sm affixed-jump-to-form'
-            },
             onOpen: function (dialogId) {
                 _setupElements();
                 _applyFormEventListeners();
@@ -269,14 +258,6 @@
     function close() {
         if (meerkat.modules.dialogs.isDialogOpen(_dialogId)) {
             meerkat.modules.dialogs.close(_dialogId);
-        }
-    }
-
-    function _toggleAffixedJumpToForm() {
-        if ($elements.form[0].getBoundingClientRect().top > $elements.modalBody.height()) {
-            $elements.affixedJumpToForm.stop(true, true).fadeIn('fast');
-        } else {
-            $elements.affixedJumpToForm.stop(true, true).fadeOut('fast');
         }
     }
 
