@@ -2,7 +2,12 @@
 
     var meerkat = window.meerkat,
         attemptCount = 0,
-        $elements = {};
+        $elements = {},
+        errorTypes = {
+            INVALID : 0,
+            NOMATCH : 1,
+            ATTEMPTS : 2
+        };
 
     function init() {
         meerkat.modules.jqueryValidate.initJourneyValidator();
@@ -62,15 +67,17 @@
         });
     }
 
-    function showError(invalid_date) {
-        invalid_date = invalid_date || false;
+    function showError(type) {
+        type = type || false;
         $elements.dobGroup.removeClass('has-success').addClass('has-error');
 	    $elements.errors.primary.add($elements.errors.additional).hide();
-        if(invalid_date === true) {
+        if(type === errorTypes.INVALID) {
 	        $elements.errors.primary.show();
-        } else if (!$elements.errors.additional.length) {
+        } else if (type === errorTypes.NOMATCH && !$elements.errors.additional.length) {
             $('<label id="rememberme_additional-error" class="error">The date of birth you entered didn\'t match our records, enter your date of birth again or start a new quote</label>').insertAfter('#rememberme_primary_dob-error');
 	        $elements.errors.additional.show();
+        } else {
+            // All other cases simply keep the error fields hidden
         }
     }
 
@@ -127,7 +134,7 @@
                             }
                             window.location.replace("health_quote_v4.jsp?" + queryStr.join("&") + "#results");
                         } else {
-                            showError();
+                            showError(errorTypes.NOMATCH);
                             attemptCount++;
                         }
                     },
@@ -139,10 +146,10 @@
                     }
                 });
             } else {
-                showError(true);
+                showError(errorTypes.INVALID);
             }
             if (attemptCount > 2) {
-                showError();
+                showError(errorTypes.ATTEMPTS);
                 updateErrorRedirectMessage();
                 showLoadingPage();
                 setTimeout(function () {
