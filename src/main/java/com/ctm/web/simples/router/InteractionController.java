@@ -71,7 +71,6 @@ public class InteractionController extends CommonQuoteRouter {
                 }
             }
         }
-        response.setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
-        return "fail";
+       return "failed to store callId for the transaction";
     }
 }
