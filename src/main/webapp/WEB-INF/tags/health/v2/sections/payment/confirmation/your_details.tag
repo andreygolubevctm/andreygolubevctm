@@ -13,8 +13,11 @@
 
     <hr />
 
-    <form_v2:row label="{{= obj.rebate.label }}" className="rebate-tier">
-        {{= obj.rebate.value }}
-    </form_v2:row>
+    {{ if (obj.showRebateData === 'Y') { }}
+        <form_v2:row label="{{= obj.rebate.label }}" className="rebate-tier">
+            {{= obj.rebate.value }}
+        </form_v2:row>
+    {{ } }}
+
     <hr />
 </div>
