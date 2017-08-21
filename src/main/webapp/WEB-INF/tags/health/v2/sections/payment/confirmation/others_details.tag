@@ -14,9 +14,9 @@
             {{ if (obj.partner) { }}
                 <div class="col-xs-12 col-sm-6">
                     {{ obj.partner.forEach(function(field, index) { }}
-                        <form_v4:row label="{{= field.label }}">
+                        <form_v2:row label="{{= field.label }}">
                             {{= field.value }}
-                        </form_v4:row>
+                        </form_v2:row>
 
                         {{ if (index === 3) { }}
                             <hr />
@@ -29,9 +29,9 @@
                 {{ obj.dependants.forEach(function(dependant) { }}
                     <div class="col-xs-12 col-sm-6">
                         {{ dependant.forEach(function(field, index) { }}
-                            <form_v4:row label="{{= field.label }}">
+                            <form_v2:row label="{{= field.label }}">
                                 {{= field.value }}
-                            </form_v4:row>
+                            </form_v2:row>
 
                             {{ if (index === 3) { }}
                                 <hr />
