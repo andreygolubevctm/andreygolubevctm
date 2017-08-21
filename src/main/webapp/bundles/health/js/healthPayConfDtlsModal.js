@@ -65,6 +65,7 @@
             email: $('#health_application_email'),
 
             rebate: {
+                applyRebate: $('input[name=health_healthCover_rebate]'),
                 currentPercentage: $('#health_rebate'),
                 tier: $('#health_healthCover_income')
             },
@@ -117,7 +118,6 @@
             editBtn: $('.edit-details-btn'),
             form: $('#payment-confirm-dtls-form'),
             submitBtn: $('.btn-continue-to-payment'),
-            rebateNo: $('input[name=health_healthCover_rebate][value=N]'),
             partnerSection: $('#partnerContainer'),
             dependentSection: $('#health_application_dependants-selection'),
             headerTopFixed: $('.header-top.navMenu-row-fixed'),
@@ -160,7 +160,8 @@
 
             data = {
                 primary: _getPersonData('primary'),
-                rebate: { label: 'Rebate tier', value: rebatePercent }
+                rebate: { label: 'Rebate tier', value: rebatePercent },
+                showRebateData: $fields.rebate.applyRebate.filter(':checked').val()
             };
 
         data.primary.push({ label: 'Residential address', value: residentialAddress });
