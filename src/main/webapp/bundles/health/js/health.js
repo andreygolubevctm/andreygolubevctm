@@ -170,7 +170,9 @@
 			onInitialise: function onStartInit(event){
 
 				meerkat.modules.jqueryValidate.initJourneyValidator();
-                meerkat.modules.simplesInteraction.storeCallId();
+                if(meerkat.site.isCallCentreUser) {
+                    meerkat.modules.simplesInteraction.storeCallId();
+                }
 
 				if(meerkat.site.choices) {
 					meerkat.modules.healthChoices.initialise(meerkat.site.choices.cover, meerkat.site.choices.situation, meerkat.site.choices.benefits);
