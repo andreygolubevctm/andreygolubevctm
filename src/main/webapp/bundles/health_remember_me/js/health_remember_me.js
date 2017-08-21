@@ -58,12 +58,16 @@
         });
     }
 
-    function showError() {
+    function showError(invalid_date) {
+        invalid_date = invalid_date || false;
         $elements.dobGroup.removeClass('has-success').addClass('has-error');
-        if (!$('#rememberme_additional-error').length) {
+	    $('#rememberme_primary_dob-error, #rememberme_additional-error').hide();
+        if(invalid_date === true) {
+	        $('#rememberme_primary_dob-error').show();
+        } else if (!$('#rememberme_additional-error').length) {
             $('<label id="rememberme_additional-error" class="error">The date of birth you entered didn\'t match our records, enter your date of birth again or start a new quote</label>').insertAfter('#rememberme_primary_dob-error');
+	        $('#rememberme_additional-error').show();
         }
-        $('#rememberme_primary_dob-error, #rememberme_additional-error').show();
     }
 
     function updateErrorRedirectMessage() {
@@ -128,7 +132,7 @@
                     }
                 });
             } else {
-                showError();
+                showError(true);
                 attemptCount++;
             }
             if (attemptCount > 2) {
