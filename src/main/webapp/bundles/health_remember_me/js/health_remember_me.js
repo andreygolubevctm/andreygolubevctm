@@ -19,7 +19,11 @@
             form: $('#rememberMeForm'),
             loadingPage: $('.journeyEngineLoader'),
             loadingMessage: $('.journeyEngineLoader > .message'),
-            rememberMePage: $('#journeyEngineSlidesContainer')
+            rememberMePage: $('#journeyEngineSlidesContainer'),
+            errors : {
+                primary : $('#rememberme_primary_dob-error'),
+                additional : $('#rememberme_additional-error')
+            }
         };
     }
 
@@ -61,12 +65,12 @@
     function showError(invalid_date) {
         invalid_date = invalid_date || false;
         $elements.dobGroup.removeClass('has-success').addClass('has-error');
-	    $('#rememberme_primary_dob-error, #rememberme_additional-error').hide();
+	    $elements.errors.primary.add($elements.errors.additional).hide();
         if(invalid_date === true) {
-	        $('#rememberme_primary_dob-error').show();
-        } else if (!$('#rememberme_additional-error').length) {
+	        $elements.errors.primary.show();
+        } else if (!$elements.errors.additional.length) {
             $('<label id="rememberme_additional-error" class="error">The date of birth you entered didn\'t match our records, enter your date of birth again or start a new quote</label>').insertAfter('#rememberme_primary_dob-error');
-	        $('#rememberme_additional-error').show();
+	        $elements.errors.additional.show();
         }
     }
 
@@ -128,12 +132,14 @@
                         }
                     },
                     onError: function onError(obj, txt, errorThrown) {
-                        console.log(obj, errorThrown);
+                        meerkat.logging.debug(obj, errorThrown);
+                    },
+                    onComplete: function(){
+	                    $elements.errors.primary.add($elements.errors.additional).hide();
                     }
                 });
             } else {
                 showError(true);
-                attemptCount++;
             }
             if (attemptCount > 2) {
                 showError();
