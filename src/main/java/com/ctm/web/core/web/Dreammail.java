@@ -1,5 +1,6 @@
 package com.ctm.web.core.web;
 
+import com.ctm.web.core.model.Touch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +18,10 @@ public class Dreammail {
 
 		StringBuffer resp;
 		try {
-			LOGGER.info("Sending email for {} {} {} ", kv("transactionId", transactionId), kv("emailTemplate", emailTemplate), kv("exactTarget", is_exact_target));
+			Utils.createBPTouches(transactionId, Touch.TouchType.BP_EMAIL_STARTED, xml_content,true);
+			LOGGER.info("BPEMAIL Sending email for: {} {} {} {}",
+					kv("transactionId", transactionId), kv("emailTemplate", emailTemplate),
+					kv("exactTarget", is_exact_target), kv("rtm_url", rtm_url));
 			if(xml_content == null || xml_content.isEmpty()) {
 				throw new IllegalArgumentException("xml content is empty");
 			}
@@ -52,14 +56,15 @@ public class Dreammail {
 			while ((inputLine = in.readLine()) != null) {
 				resp.append(inputLine);
 			}
-			LOGGER.info("After email request is sent for {} {} {} {}" ,
+			LOGGER.info("BPEMAIL Email successfully sent for: {} {} {} {} {}" ,
 					kv("transactionId", transactionId), kv("emailTemplate", emailTemplate),
-					kv("exactTarget", is_exact_target), kv("emailProviderResponse", resp));
+					kv("exactTarget", is_exact_target), kv("emailProviderResponse", resp), kv("rtm_url", rtm_url));
+			Utils.createBPTouches(transactionId, Touch.TouchType.BP_EMAIL_END,xml_content, true);
 		}
 		catch(Exception e){
-			LOGGER.error("Caught exception sending email  for {} {} {} {}" ,
+			LOGGER.error("BPEMAIL Caught exception sending email for: {} {} {} {} {}" ,
 					kv("transactionId", transactionId), kv("emailTemplate", emailTemplate),
-					kv("exactTarget", is_exact_target), kv("caughtException", e.getMessage()));
+					kv("exactTarget", is_exact_target), kv("caughtException", e.getMessage()), kv("rtm_url", rtm_url));
 			throw e;
 		}
 		return resp.toString();
