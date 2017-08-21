@@ -33,6 +33,17 @@
 									title="if you are the landlord"
 									additionalLabelAttributes="${analyticsAttr}" />
 							</form_v2:row>
+
+                                    <%-- Cover type --%>
+                            <c:set var="fieldXpath" value="${xpath}/coverType" />
+                            <c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Cover Type" quoteChar="\"" /></c:set>
+                            <form_v2:row fieldXpath="${fieldXpath}" label="Type of cover">
+                                <field_v2:import_select xpath="${fieldXpath}"
+                                    required="true"
+                                    title="the type of cover"
+                                    url="/WEB-INF/option_data/landlord_cover_type.html"
+                                    additionalAttributes="${analyticsAttr}" />
+                                </form_v2:row>
 						</div>
 
 						<div class="notLandlord">
@@ -47,19 +58,18 @@
 									title="if you own the home"
 									additionalLabelAttributes="${analyticsAttr}" />
 							</form_v2:row>
+
+                            <%-- Cover type --%>
+                            <c:set var="fieldXpath" value="${xpath}/coverType" />
+                            <c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Cover Type" quoteChar="\"" /></c:set>
+                            <form_v2:row fieldXpath="${fieldXpath}" label="Type of cover">
+                                <field_v2:import_select xpath="${fieldXpath}"
+                                    required="true"
+                                    title="the type of cover"
+                                    url="/WEB-INF/option_data/home_contents_cover_type.html"
+                                    additionalAttributes="${analyticsAttr}" />
+                            </form_v2:row>
 						</div>
-
-						<%-- Cover type --%>
-						<c:set var="fieldXpath" value="${xpath}/coverType" />
-						<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Cover Type" quoteChar="\"" /></c:set>
-						<form_v2:row fieldXpath="${fieldXpath}" label="Type of cover">
-							<field_v2:import_select xpath="${fieldXpath}"
-								required="true"
-								title="the type of cover"
-								url="/WEB-INF/option_data/home_contents_cover_type.html"
-								additionalAttributes="${analyticsAttr}" />
-						</form_v2:row>
-
 
 
 				</form_v2:fieldset>
