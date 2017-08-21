@@ -6,15 +6,15 @@
     <health_v2_confirmation:edit_details_btn />
 
     {{ obj.primary.forEach(function(field) { }}
-        <form_v4:row label="{{= field.label }}">
+        <form_v2:row label="{{= field.label }}">
             {{= field.value }}
-        </form_v4:row>
+        </form_v2:row>
     {{ }); }}
 
     <hr />
 
-    <form_v4:row label="{{= obj.rebate.label }}" className="rebate-tier">
+    <form_v2:row label="{{= obj.rebate.label }}" className="rebate-tier">
         {{= obj.rebate.value }}
-    </form_v4:row>
+    </form_v2:row>
     <hr />
 </div>
