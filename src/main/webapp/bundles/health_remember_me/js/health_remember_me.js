@@ -1,6 +1,7 @@
 ;(function ($) {
 
     var meerkat = window.meerkat,
+        meerkatEvents = meerkat.modules.events,
         attemptCount = 0,
         $elements = {},
         errorTypes = {
@@ -10,10 +11,13 @@
         };
 
     function init() {
-        meerkat.modules.jqueryValidate.initJourneyValidator();
-        _setupFields();
-        validateDob();
-        initEventListeners();
+        if (meerkat.site.isRememberMe) {
+            meerkat.modules.jqueryValidate.initJourneyValidator();
+            _setupFields();
+            validateDob();
+            initEventListeners();
+            _track('offered');
+        }
     }
 
     function _setupFields() {
@@ -36,7 +40,7 @@
         $elements.startQuote.click(function (event) {
             event.preventDefault();
             showLoadingPage();
-            deleteCookieAndRedirect();
+            deleteCookieAndRedirect($(this).data('track-action'));
         });
 
         $elements.dobInput.on("change", function () {
@@ -48,7 +52,7 @@
         });
     }
 
-    function deleteCookieAndRedirect() {
+    function deleteCookieAndRedirect(eventAction) {
         meerkat.modules.comms.post({
             url: 'spring/rest/rememberme/quote/deleteCookie.json',
             data: {
@@ -58,6 +62,7 @@
             cache: true,
             errorLevel: "silent",
             onSuccess: function onSuccess() {
+                _track(eventAction);
                 meerkat.modules.leavePageWarning.disable();
                 window.location.replace("health_quote_v4.jsp");
             },
@@ -108,6 +113,7 @@
                     errorLevel: 'silent',
                     onSuccess: function (result) {
                         if (result.validAnswer === true && result.transactionId !== "") {
+                            _track('success');
                             meerkat.modules.leavePageWarning.disable();
                             $elements.loadingMessage.text('Loading Products & Prices Please wait...');
                             showLoadingPage();
@@ -134,6 +140,7 @@
                             }
                             window.location.replace("health_quote_v4.jsp?" + queryStr.join("&") + "#results");
                         } else {
+                            _track('validation failed');
                             showError(errorTypes.NOMATCH);
                             attemptCount++;
                         }
@@ -146,6 +153,7 @@
                     }
                 });
             } else {
+                _track('validation failed');
                 showError(errorTypes.INVALID);
             }
             if (attemptCount > 2) {
@@ -153,8 +161,19 @@
                 updateErrorRedirectMessage();
                 showLoadingPage();
                 setTimeout(function () {
-                    deleteCookieAndRedirect();
+                    deleteCookieAndRedirect('token expired');
                 }, 800);
+            }
+        });
+    }
+
+    function _track(eventAction) {
+        meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+            method: 'trackRememberMeQuote',
+            object: {
+                vertical: 'health',
+                eventCategory: 'remember me',
+                eventAction: 'remember me - ' + eventAction
             }
         });
     }
