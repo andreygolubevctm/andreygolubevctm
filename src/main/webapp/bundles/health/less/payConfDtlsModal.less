@@ -39,6 +39,7 @@
   }
 
   .fieldrow {
+    margin-bottom: 0;
     .control-label {
       color: @theme-accent-4;
       font-size: @font-size-base;
@@ -70,7 +71,7 @@
 
     @media (@sm) {
       .row {
-        .col-sm-6 {
+        .col-sm-6:not(.row-content){
           &:nth-child(odd) {
             &:after {
               content: "";
