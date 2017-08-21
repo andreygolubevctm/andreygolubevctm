@@ -171,7 +171,7 @@
 
 				meerkat.modules.jqueryValidate.initJourneyValidator();
                 if(meerkat.site.isCallCentreUser) {
-                    meerkat.modules.simplesInteraction.storeCallId();
+                    meerkat.modules.simplesInteraction.storeCallId(meerkat.modules.transactionId.get());
                 }
 
 				if(meerkat.site.choices) {
