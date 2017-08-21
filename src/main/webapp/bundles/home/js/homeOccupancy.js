@@ -53,7 +53,7 @@
 	function homeOccupiedChange(speed) {
 		var $landlordField = $(elements.lookingForLandlord);
 
-		if (isHomeRented() && isNormalJourney) {
+		if (isHomeRented() && isNormalJourney && meerkat.site.name !== 'Choosi') {
 			$landlordField.slideDown(speed);
 		} else {
 			$landlordField.slideUp(speed);
@@ -132,7 +132,7 @@
 					meerkat.modules.home.toggleLandlords();
 				}
 			} else {
-				if (isHomeRented() && !isLandlord) {
+				if (isHomeRented() && !isLandlord && meerkat.site.name !== 'Choosi') {
 					$(elements.lookingForLandlord).slideDown(speed);
 					if ($(elements.lookingForLandlord + ' input:checked').val() === "Y") {
 						meerkat.site.isLandlord = true;
