@@ -59,7 +59,7 @@ public class InteractionController extends CommonQuoteRouter {
             LOGGER.error("Unable to parse TransactionId={} ", transactionId);
         }
 
-        if (inInEnabled &&  null != transId && null != transId) {
+        if (inInEnabled &&  null != transId) {
             AuthenticatedData authenticatedData = sessionDataServiceBean.getAuthenticatedSessionData(request);
             if (authenticatedData != null && authenticatedData.getUid() != null) {
                 String callId = inInIcwsService.getCallId(authenticatedData.getUid()).observeOn(Schedulers.io()).toBlocking().first();
