@@ -3,7 +3,12 @@
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
         attemptCount = 0,
-        $elements = {};
+        $elements = {},
+        errorTypes = {
+            INVALID : 0,
+            NOMATCH : 1,
+            ATTEMPTS : 2
+        };
 
     function init() {
         if (meerkat.site.isRememberMe) {
@@ -23,7 +28,11 @@
             form: $('#rememberMeForm'),
             loadingPage: $('.journeyEngineLoader'),
             loadingMessage: $('.journeyEngineLoader > .message'),
-            rememberMePage: $('#journeyEngineSlidesContainer')
+            rememberMePage: $('#journeyEngineSlidesContainer'),
+            errors : {
+                primary : $('#rememberme_primary_dob-error'),
+                additional : $('#rememberme_additional-error')
+            }
         };
     }
 
@@ -63,12 +72,18 @@
         });
     }
 
-    function showError() {
+    function showError(type) {
+        type = type || false;
         $elements.dobGroup.removeClass('has-success').addClass('has-error');
-        if (!$('#rememberme_additional-error').length) {
+	    $elements.errors.primary.add($elements.errors.additional).hide();
+        if(type === errorTypes.INVALID) {
+	        $elements.errors.primary.show();
+        } else if (type === errorTypes.NOMATCH && !$elements.errors.additional.length) {
             $('<label id="rememberme_additional-error" class="error">The date of birth you entered didn\'t match our records, enter your date of birth again or start a new quote</label>').insertAfter('#rememberme_primary_dob-error');
+	        $elements.errors.additional.show();
+        } else {
+            // All other cases simply keep the error fields hidden
         }
-        $('#rememberme_primary_dob-error, #rememberme_additional-error').show();
     }
 
     function updateErrorRedirectMessage() {
@@ -126,21 +141,23 @@
                             window.location.replace("health_quote_v4.jsp?" + queryStr.join("&") + "#results");
                         } else {
                             _track('validation failed');
-                            showError();
+                            showError(errorTypes.NOMATCH);
                             attemptCount++;
                         }
                     },
                     onError: function onError(obj, txt, errorThrown) {
-                        console.log(obj, errorThrown);
+                        meerkat.logging.debug(obj, errorThrown);
+                    },
+                    onComplete: function(){
+	                    $elements.errors.primary.add($elements.errors.additional).hide();
                     }
                 });
             } else {
                 _track('validation failed');
-                showError();
-                attemptCount++;
+                showError(errorTypes.INVALID);
             }
             if (attemptCount > 2) {
-                showError();
+                showError(errorTypes.ATTEMPTS);
                 updateErrorRedirectMessage();
                 showLoadingPage();
                 setTimeout(function () {
