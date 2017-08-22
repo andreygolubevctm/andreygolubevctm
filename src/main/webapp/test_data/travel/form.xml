@@ -5,7 +5,7 @@
 		<toDate>18/03/2015</toDate>
 	</dates>
 	<travellers>
-		<traveller1DOB>01/01/1955</traveller1DOB>
+		<travellersAge>21</travellersAge>
 	</travellers>
 	<surname>User</surname>
 	<policyType>S</policyType>
@@ -14,7 +14,6 @@
 	<destinations>Please choose your Destination(s)...</destinations>
 	<destination>NZL</destination>
 	<party>S</party>
-	<adults>1</adults>
 	<children>0</children>
 	<marketing>Y</marketing>
 	<privacyoptin>Y</privacyoptin>
