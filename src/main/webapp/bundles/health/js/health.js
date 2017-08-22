@@ -6,8 +6,7 @@
 		moduleEvents = {
 			health: {
 				CHANGE_MAY_AFFECT_PREMIUM: 'CHANGE_MAY_AFFECT_PREMIUM',
-				SNAPSHOT_FIELDS_CHANGE:'SNAPSHOT_FIELDS_CHANGE',
-                PAYMENT_SUBMIT_APPLICATION: 'PAYMENT_SUBMIT_APPLICATION'
+				SNAPSHOT_FIELDS_CHANGE:'SNAPSHOT_FIELDS_CHANGE'
 			},
 			WEBAPP_LOCK: 'WEBAPP_LOCK',
 			WEBAPP_UNLOCK: 'WEBAPP_UNLOCK'
@@ -657,13 +656,9 @@
 
 					// Validation passed, submit the application after showing confirmation modal - see subscribe event below.
 					if (valid) {
-                        meerkat.modules.healthPayConfDetailsModal.open();
+                        meerkat.modules.healthPayConfDetailsModal.open(submitApplication);
 					}
 				});
-
-				meerkat.messaging.subscribe(moduleEvents.health.PAYMENT_SUBMIT_APPLICATION, function() {
-				    submitApplication();
-                });
 
 			},
 			onBeforeEnter: function enterPaymentStep(event){

@@ -17,7 +17,7 @@
         <form_v2:row label="{{= obj.rebate.label }}" className="rebate-tier">
             {{= obj.rebate.value }}
         </form_v2:row>
+        <hr />
     {{ } }}
 
-    <hr />
 </div>
