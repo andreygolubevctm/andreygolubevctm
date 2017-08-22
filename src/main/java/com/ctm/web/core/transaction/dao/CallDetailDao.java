@@ -30,8 +30,9 @@ public class CallDetailDao {
                     @Override
                     public String getStatement() {
                         return  "INSERT INTO `aggregator`.`transaction_call_details` " +
-                                "( `transactionId`, `callIdKey`) " +
-                                "VALUES (?,?);";
+                                "( `transactionId`, `callIdKey`,`lastUpdated`) " +
+                                "VALUES (?,?, now()) " +
+                                " ON DUPLICATE KEY UPDATE callIdKey=VALUES(callIdKey) , lastUpdated=VALUES(lastUpdated)";
 
                     }
                 }
