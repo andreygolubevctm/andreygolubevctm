@@ -105,6 +105,7 @@
 						setState({ travellers: 3, showAddBtn: true, selection: travelParty, minAge: 0 });
 					break;
 			}
+			_enableBtn();
 			_changeTravelText(travelParty);
 			_renderCheckboxes();
 		}
