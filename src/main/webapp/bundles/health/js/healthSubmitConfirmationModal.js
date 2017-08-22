@@ -8,11 +8,14 @@
         $primaryDob = null,
         $partnerDob = null,
         $dependantsIncome = null,
-        $fields = {};
+        $fields = {},
+        _callbackFunction = null;
 
     function onInitialise() {
 
         _setupFields();
+
+        _callbackFunction = null;
 
         $primaryDob = $('#health_application_primary_dob');
         $partnerDob = $('#health_application_partner_dob');
@@ -127,10 +130,12 @@
         };
     }
 
-    function open() {
+    function open(submitCallbackFunction) {
         _createFieldsDependants();
 
         var htmlContent = _template(_getTemplateData());
+
+        _callbackFunction = submitCallbackFunction;
 
         _dialogId = meerkat.modules.dialogs.show({
             id: 'payment-confirm-details-modal',
@@ -264,7 +269,9 @@
 
     function _onSubmit() {
         close();
-        meerkat.messaging.publish(meerkatEvents.health.PAYMENT_SUBMIT_APPLICATION);
+
+        //trigger submitApplication() in health.js
+        _callbackFunction();
     }
 
     meerkat.modules.register('healthPayConfDetailsModal', {
