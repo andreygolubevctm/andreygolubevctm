@@ -67,3 +67,40 @@ body[data-step=contact],
   float: none;
   margin: 0 auto;
 }
+
+.productsDisplayedText,
+.pageRangeStart,
+.pageRangeEnd {
+  font-family: @font-family-theme-semibold;
+}
+
+.results-pagination {
+  .nav > li  {
+    .btn-pagination.btn-secondary {
+      border: 1px solid @btn-secondary-border-color;
+      color:@btn-secondary-color;
+      background-color: @btn-secondary-bg-color;
+
+      &:hover,
+      &:focus{
+        color:@btn-secondary-hover-color;
+        background-color: @btn-secondary-hover-bg-color;
+        border-color: @btn-secondary-hover-border-color;
+      }
+
+      &:active,
+      &.active{
+        color:@btn-secondary-active-color;
+        background-color: @btn-secondary-active-bg-color;
+        border-color: @btn-secondary-active-border-color;
+      }
+      &.inactive {
+        border-color: transparent;
+        cursor: default;
+        background-color: @white;
+        opacity: 1;
+        color: @gray-dark;
+      }
+    }
+  }
+}
