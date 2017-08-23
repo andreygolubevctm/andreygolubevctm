@@ -57,7 +57,7 @@ public class CarQuoteServiceTest {
         carResults.add(carResult);
         final List<ResultProperty> resultProperties = service.getResultProperties(carRequest, carResults);
         assertFalse(resultProperties.isEmpty());
-        assertEquals(13, resultProperties.size());
+        assertEquals(15, resultProperties.size());
     }
 
     @Test
@@ -72,7 +72,7 @@ public class CarQuoteServiceTest {
         carResults.add(carResult2);
         final List<ResultProperty> resultProperties = service.getResultProperties(carRequest, carResults);
         assertFalse(resultProperties.isEmpty());
-        assertEquals(26, resultProperties.size());
+        assertEquals(30, resultProperties.size());
     }
 
     @Test
@@ -87,6 +87,6 @@ public class CarQuoteServiceTest {
         carResults.add(carResult2);
         final List<ResultProperty> resultProperties = service.getResultProperties(carRequest, carResults);
         assertFalse(resultProperties.isEmpty());
-        assertEquals(13, resultProperties.size());
+        assertEquals(15, resultProperties.size());
     }
 }
