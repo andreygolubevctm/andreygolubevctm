@@ -49,17 +49,17 @@ public abstract class EmailServiceHandler {
 	public abstract String send(HttpServletRequest request, String emailAddress,
 			long transactionId) throws SendEmailException;
 
-	protected boolean isTestEmailAddress(String emailAddress){
+	public static boolean isTestEmailAddress(String emailAddress){
 		return testEmails.contains(emailAddress);
 	}
 
 	protected void setCustomerKey(EmailModel emailModel, String mailingName) {
 		setCustomerKey(emailModel, mailingName, true);
 	}
-	
+
 	protected void setCustomerKey(EmailModel emailModel, String mailingName, Boolean prefixCustomerKey) {
 		String key;
-		
+
 		if(prefixCustomerKey) {
 		if(EnvironmentService.getEnvironment() == EnvironmentService.Environment.PRO){
 				key = pageSettings.getBrandCode().toUpperCase() + "_" + mailingName;

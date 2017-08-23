@@ -5,8 +5,8 @@ import com.ctm.interfaces.common.exception.InvalidQuoteException;
 import com.ctm.interfaces.common.util.SerializationMappers;
 import com.ctm.web.core.resultsData.model.ErrorInfo;
 import com.ctm.web.core.security.IPAddressHandler;
+import com.ctm.web.core.services.InteractionService;
 import com.ctm.web.core.services.SessionDataServiceBean;
-import com.ctm.web.core.transaction.dao.TransactionDetailsDao;
 import com.ctm.web.simples.phone.inin.InInIcwsService;
 import com.ctm.web.simples.phone.inin.model.PauseResumeResponse;
 import org.junit.Assert;
@@ -26,12 +26,9 @@ import static org.mockito.Mockito.when;
 public class PhoneControllerTest {
 	@Autowired
 	private SerializationMappers jacksonMappers;
-
-
-
 	@Test
 	public void testHandleException() throws Exception {
-		PhoneController phoneController = new PhoneController(mock(SessionDataServiceBean.class), mock(InInIcwsService.class), mock(IPAddressHandler.class), mock(TransactionDetailsDao.class));
+		PhoneController phoneController = new PhoneController(mock(SessionDataServiceBean.class), mock(InInIcwsService.class), mock(IPAddressHandler.class), mock(InteractionService.class));
 		InvalidQuoteException exceptionMock = mock(InvalidQuoteException.class);
 		when(exceptionMock.getMessage()).thenReturn("Failed!");
 
