@@ -92,7 +92,7 @@ public class HomeContentsTransactionControllerTest extends BaseControllerTest {
 
     /**
      * Dependency "com.jayway.jsonpath:json-path" is excluded by "com.github.tomakehurst:wiremock"
-     * Therefore, here we can assert values by JsonPath
+     * Therefore, here we can't assert values by JsonPath
      * {@link org.springframework.test.util.JsonPathExpectationsHelper#JsonPathExpectationsHelper(String, Object...) }
      */
     @Test
