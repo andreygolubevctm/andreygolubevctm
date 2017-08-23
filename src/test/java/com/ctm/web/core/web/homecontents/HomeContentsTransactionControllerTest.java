@@ -23,6 +23,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import wiremock.org.apache.commons.lang.math.RandomUtils;
 
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
@@ -63,7 +64,7 @@ public class HomeContentsTransactionControllerTest extends BaseControllerTest {
     private HomeContentsTransactionController transactionController;
 
     private final String secretKey = "UyNf-Kh4jnzztSZQI8Z6Wg";
-    private final Long transactionId = 100000L;
+    private final Long transactionId = RandomUtils.nextLong();
     private final List<TransactionDetail> transactionDetails = new ArrayList<>();
 
     @Before
