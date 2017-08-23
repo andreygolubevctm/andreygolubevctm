@@ -142,7 +142,12 @@
 					productBrandCode: confirmationProduct.info.provider,
 					productName: confirmationProduct.info.productTitle,
 					quoteReferenceNumber: confirmationProduct.transactionId,
-					reedemedCouponID: $('.coupon-confirmation').data('couponId')
+					reedemedCouponID: $('.coupon-confirmation').data('couponId'),
+					saleChannel: 'health ' +
+						(meerkat.site.isCallCentreUser ?
+							(meerkat.site.isContactTypeTrialCampaign ? 'trial campaign' : meerkat.site.contactType) :
+							'online'
+						)
 				};
 
 				meerkat.modules.tracking.updateObjectData(tracking);
