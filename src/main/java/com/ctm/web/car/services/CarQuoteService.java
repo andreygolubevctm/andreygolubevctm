@@ -177,6 +177,8 @@ public class CarQuoteService extends CommonRequestServiceV2 {
                                     .addResult("excess/total", result.getExcess())
                                     .addResult("headline/name", result.getProductName())
                                     .addResult("quoteUrl", result.getQuoteUrl())
+                                    .addResult("discountOffer", result.getDiscountOffer())
+                                    .addResult("discountOfferTerm", result.getDiscountOfferTerms())
                                     .addResult("telNo", result.getContact().getPhoneNumber())
                                     .addResult("openingHours", result.getContact().getCallCentreHours())
                                     .addResult("leadNo", result.getQuoteNumber())
