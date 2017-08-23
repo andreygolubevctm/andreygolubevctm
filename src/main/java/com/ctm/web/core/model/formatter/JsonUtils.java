@@ -1,10 +1,8 @@
 package com.ctm.web.core.model.formatter;
 
 import com.ctm.web.core.model.AbstractJsonModel;
+import com.ctm.web.core.utils.ObjectMapperUtil;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.simple.JSONArray;
@@ -20,10 +18,6 @@ import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 public abstract class JsonUtils {
 	private static final Logger LOGGER = LoggerFactory.getLogger(JsonUtils.class);
-
-	private static final ObjectMapper mapper = new ObjectMapper()
-			.registerModule(new Jdk8Module())
-			.registerModule(new JavaTimeModule());
 
 	/**
 	 * Adds a list of {@link AbstractJsonModel} to a provided JSON Object.
@@ -70,7 +64,7 @@ public abstract class JsonUtils {
      */
     public static Map<String, Object> convertToMap(final String str) {
         try {
-            return mapper.readValue(str, new TypeReference<Map<String, Object>>() {
+            return ObjectMapperUtil.getObjectMapper().readValue(str, new TypeReference<Map<String, Object>>() {
             });
         } catch (IOException e) {
             LOGGER.error("Failed to read JSON value from string. Reason: " + e.getMessage());
