@@ -205,8 +205,6 @@
 							<xsl:call-template name="product">
 								<xsl:with-param name="index">1</xsl:with-param>
 								<xsl:with-param name="currentProduct" select="results/product0" />
-								<xsl:with-param name="discountOffer" select="results/product0/discountOffer" />
-								<xsl:with-param name="discountOfferTerm" select="results/product0/discountOfferTerm" />
                                 <xsl:with-param name="gaclientid" select="$gaclientid" />
 							</xsl:call-template>
 
@@ -214,8 +212,6 @@
 								<xsl:call-template name="product">
 									<xsl:with-param name="index">2</xsl:with-param>
 									<xsl:with-param name="currentProduct" select="results/product1" />
-									<xsl:with-param name="discountOffer" select="results/product1/discountOffer" />
-									<xsl:with-param name="discountOfferTerm" select="results/product1/discountOfferTerm" />
                                     <xsl:with-param name="gaclientid" select="$gaclientid" />
 								</xsl:call-template>
 							</xsl:if>
@@ -224,8 +220,6 @@
 								<xsl:call-template name="product">
 									<xsl:with-param name="index">3</xsl:with-param>
 									<xsl:with-param name="currentProduct" select="results/product2" />
-									<xsl:with-param name="discountOffer" select="results/product2/discountOffer" />
-									<xsl:with-param name="discountOfferTerm" select="results/product2/discountOfferTerm" />
                                     <xsl:with-param name="gaclientid" select="$gaclientid" />
 								</xsl:call-template>
 							</xsl:if>
@@ -234,8 +228,6 @@
 								<xsl:call-template name="product">
 									<xsl:with-param name="index">4</xsl:with-param>
 									<xsl:with-param name="currentProduct" select="results/product3" />
-									<xsl:with-param name="discountOffer" select="results/product3/discountOffer" />
-									<xsl:with-param name="discountOfferTerm" select="results/product3/discountOfferTerm" />
                                     <xsl:with-param name="gaclientid" select="$gaclientid" />
 								</xsl:call-template>
 							</xsl:if>
@@ -244,8 +236,6 @@
 								<xsl:call-template name="product">
 									<xsl:with-param name="index">5</xsl:with-param>
 									<xsl:with-param name="currentProduct" select="results/product4" />
-									<xsl:with-param name="discountOffer" select="results/product4/discountOffer" />
-									<xsl:with-param name="discountOfferTerm" select="results/product4/discountOfferTerm" />
                                     <xsl:with-param name="gaclientid" select="$gaclientid" />
 								</xsl:call-template>
 							</xsl:if>
@@ -289,8 +279,6 @@
 
 		<xsl:param name="index" />
 		<xsl:param name="currentProduct" />
-		<xsl:param name="discountOffer" />
-		<xsl:param name="discountOfferTerm" />
         <xsl:param name="gaclientid" />
 
 		<xsl:variable name="imageURL_prefix"><xsl:value-of select="$ImageUrlPrefix" /></xsl:variable>
@@ -309,6 +297,16 @@
 		<Attributes>
 			<Name>ValidDate<xsl:value-of select="$index" /></Name>
 			<Value><xsl:value-of select="$currentProduct/validateDate/display" /></Value>
+		</Attributes>
+
+		<Attributes>
+			<Name>SpecialOffer<xsl:value-of select="$index" /></Name>
+			<Value><xsl:value-of select="$currentProduct/discountOffer" /></Value>
+		</Attributes>
+
+		<Attributes>
+			<Name>OfferTerms<xsl:value-of select="$index" /></Name>
+			<Value><xsl:value-of select="$currentProduct/discountOfferTerms" /></Value>
 		</Attributes>
 
 		<Attributes>
