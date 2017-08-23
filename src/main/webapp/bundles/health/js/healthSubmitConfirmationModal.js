@@ -135,7 +135,9 @@
 
         var htmlContent = _template(_getTemplateData());
 
-        _submitCallback = submitCallback;
+        if (_.isEmpty(_submitCallback)) {
+            _submitCallback = submitCallback;
+        }
 
         _dialogId = meerkat.modules.dialogs.show({
             id: 'payment-confirm-details-modal',
@@ -149,7 +151,6 @@
                 meerkat.modules.jqueryValidate.setupDefaultValidationOnForm($elements.form);
             },
             onClose: function (dialogId) {
-                _submitCallback = null;
             }
         });
     }
