@@ -75,6 +75,7 @@
 	/* Get the hash from the browser's window */
 	function getWindowHash(){
 		var hash = window.location.hash;
+		alert('getWindowHash hash: ' + hash);
 		return hash !== "" ? hash.replace('#', '') : "";
 	}
 
