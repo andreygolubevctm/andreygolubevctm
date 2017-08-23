@@ -21,7 +21,7 @@
 
 <%-- HTML --%>
 <div class="health-person-details-${id} health-person-details ${id}">
-		<field_v3:name_group xpath="${xpath}" showInitial="true" firstNameMaxlength="24" lastNameMaxlength="20" />
+		<field_v3:name_group_as_medicare_name xpath="${xpath}" showInitial="true" firstNameMaxlength="24" lastNameMaxlength="20" />
 
 		<c:set var="fieldXpath" value="${xpath}/dob" />
 		<form_v2:row fieldXpath="${fieldXpath}" label="Date of Birth" className="changes-premium">
@@ -39,7 +39,5 @@
 				<field_v2:array_radio id="${name}_authority" xpath="${fieldXpath}" required="true" items="Y=Yes,N=No" title="${title} authority permission" className="health-person-details-authority" />
 			</form_v2:row>
 		</c:if>
-
-
 
 </div>
