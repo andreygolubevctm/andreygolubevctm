@@ -490,12 +490,15 @@ var ResultsModel = {
 	},
 
 	defaultSortMethod: function(resultA, resultB) {
+		var resultsData = null;
+		var returnedResults = null;
+
 		if (Results.model.landlordFilter != null && (resultA.available === 'Y' || resultB.available === 'Y')) {
-			var resultsData = {
+			resultsData = {
 				a: resultA,
 				b: resultB
 			};
-			var returnedResults = Results.model.landlordFilter(resultsData);
+			returnedResults = Results.model.landlordFilter(resultsData);
 			if (returnedResults) {
 				resultA = returnedResults.resultA;
 				resultB = returnedResults.resultB;
@@ -529,12 +532,12 @@ var ResultsModel = {
 
 		// sorting for real & wool for home & contents
 		if (Results.model.homeCustomSort != null) {
-			var resultsData = {
+			resultsData = {
 				brandCodes: [resultA.brandCode, resultB.brandCode],
 				values: [valueA, valueB]
-			}
+			};
 
-			var returnedResults = Results.model.homeCustomSort(resultsData);
+			returnedResults = Results.model.homeCustomSort(resultsData);
 			// only returns a value if real and wool have the same premium
 			if (returnedResults) {
 				return returnedResults;

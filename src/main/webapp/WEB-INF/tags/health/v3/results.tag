@@ -9,11 +9,10 @@
 
     <jsp:attribute name="preResultsRow">
         <health_v3:pre_results_row_content_template />
-        <div class="col-xs-12 col-sm-7 col-lg-8 results-prologue-row">
+        <div class="col-xs-12 results-prologue-row">
             <div class="preResultsContainer hidden-xs"></div>
-
         </div>
-        <div class="hidden-xs col-sm-5 col-lg-4 results-prologue-row results-pagination">
+        <div class="hidden-xs col-sm-5 col-sm-offset-7 col-lg-4 col-lg-offset-8 results-prologue-row results-pagination">
             <div class="collapse navbar-collapse">
                 <span class="pagination-text-label">See more results</span>
                 <ul class="nav navbar-nav navbar-right slide-feature-pagination" data-results-pagination-pages-cell="true"></ul>
