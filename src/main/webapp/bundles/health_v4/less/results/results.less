@@ -424,33 +424,45 @@
         }
       }
 
-      .cell.expandable.category {
-        .children {
-          position: relative;
-          &.hideChildren {
-            .cell.feature {
-              visibility: hidden;
+      .cell.category {
+        &.expandable {
+          .children {
+            position: relative;
+            &.hideChildren {
+              .cell.feature {
+                visibility: hidden;
+              }
+            }
+            .cell.feature.noValue {
+              .content {
+                padding: 0;
+                .featureLabel {
+                  width: 100%;
+                }
+                .featureValue {
+                  display: none;
+                }
+              }
             }
           }
-          .cell.feature.noValue {
-            .content {
-              padding: 0;
-              .featureLabel {
-                width: 100%;
-              }
-              .featureValue {
+
+          &.privateHospital {
+            .children {
+              padding-top: @results-column-side-padding-width;
+              .restrictedLabel.invisible {
                 display: none;
               }
             }
           }
         }
 
-        &.privateHospital {
-          .children {
-            padding-top: @results-column-side-padding-width;
-            .restrictedLabel.invisible {
-              display: none;
-            }
+        &.displayAsRows {
+          .featureLabel {
+            width: 100%;
+          }
+          .featureValue {
+            text-align: left;
+            width: 100%;
           }
         }
       }
