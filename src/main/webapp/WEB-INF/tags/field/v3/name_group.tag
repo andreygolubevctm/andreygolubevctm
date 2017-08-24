@@ -7,7 +7,7 @@
 <%@ attribute name="firstNameMaxlength" required="false" rtexprvalue="true" description="The maximum length for Person's First Name input field" %>
 <%@ attribute name="lastNameMaxlength" required="false" rtexprvalue="true" description="The maximum length for Person's Last Name input field" %>
 <%@ attribute name="middleInitialMaxlength" required="false" rtexprvalue="true" description="The maximum length for Person's Middle Initial input field" %> <%-- If the case where a person has several middle names, Medicare only uses the first initial from the first middlename --%>
-<%@ attribute name="rowLabelOverride" required="false" rtexprvalue="true" description="Overrides the text for the default row label" %>
+<%@ attribute name="label" required="false" rtexprvalue="true" description="Overrides the text for the default row label" %>
 
 <c:set var="titleOverride">3</c:set>
 
@@ -15,12 +15,12 @@
 	<c:set var="titleOverride">2</c:set>
 </c:if>
 
-<c:if test="${empty rowLabelOverride}">
-	<c:set var="rowLabelOverride">Name</c:set>
+<c:if test="${empty label}">
+	<c:set var="label">Name</c:set>
 </c:if>
 
 <%-- HTML --%>
-<form_v2:row label="${rowLabelOverride}" hideHelpIconCol="true" className="row" isNestedStyleGroup="${true}">
+<form_v2:row label="${label}" hideHelpIconCol="true" className="row" isNestedStyleGroup="${true}">
 	<c:set var="fieldXpath" value="${xpath}/title" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="Title" hideHelpIconCol="true" smRowOverride="${titleOverride}" isNestedField="${true}" className="selectContainerTitle" id="${go:nameFromXpath(fieldXpath)}Row">
 		<field_v3:import_select xpath="${fieldXpath}" title="${title} title"  required="true" url="/WEB-INF/option_data/titles_quick.html" className="person-title" additionalAttributes=" data-rule-genderTitle='true' " placeHolder="Title" disableErrorContainer="${false}" />
