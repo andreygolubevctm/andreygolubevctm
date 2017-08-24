@@ -21,7 +21,7 @@
 
 <%-- HTML --%>
 <div class="health-person-details-${id} health-person-details ${id}">
-		<field_v3:name_group xpath="${xpath}" showInitial="true" firstNameMaxlength="24" lastNameMaxlength="20" middleInitialMaxlength="1" rowLabelOverride="Name as it appears on Medicare Card" />
+		<field_v3:name_group xpath="${xpath}" showInitial="true" firstNameMaxlength="24" lastNameMaxlength="20" middleInitialMaxlength="1" label="Name as it appears on Medicare Card" />
 
 		<c:set var="fieldXpath" value="${xpath}/dob" />
 		<form_v2:row fieldXpath="${fieldXpath}" label="Date of Birth" className="changes-premium">
