@@ -230,7 +230,8 @@
                     callback: meerkat.modules.healthResults.rankingCallback,
                     forceIdNumeric: true
                 },
-                incrementTransactionId: false
+                incrementTransactionId: false,
+                setContainerWidthCB: getElementWidth
             });
 
         } catch (e) {
@@ -475,6 +476,12 @@
                 $('.featuresList .extrasCover, .featuresList .selection_extra').addClass('hidden');
             }
 
+        });
+
+        meerkat.messaging.subscribe(meerkatEvents.device.RESIZE_DEBOUNCED, function resultsWindowResized() {
+            if (meerkat.modules.journeyEngine.getCurrentStep().navigationId === "results") {
+                Results.view.calculateResultsContainerWidth();
+            }
         });
     }
 
@@ -1118,6 +1125,16 @@
     function hideNavigationLink() {
         $('.floated-next-arrow').addClass('hidden');
         $('.floated-previous-arrow').addClass('hidden');
+    }
+
+    function getElementWidth($element) {
+        if ($element.length === 0) return 0;
+
+        var boundingClientRectWidth = $element[0].getBoundingClientRect().width,
+            marginLeft = parseInt($element.css('margin-left')),
+            marginRight = parseInt($element.css('margin-right'));
+
+        return boundingClientRectWidth + marginLeft + marginRight;
     }
 
     meerkat.modules.register('healthResults', {
