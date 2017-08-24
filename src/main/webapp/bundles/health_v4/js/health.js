@@ -404,7 +404,11 @@
                     // Reset selected product. (should not be inside a forward or backward condition because users can skip steps backwards)
                     meerkat.modules.healthResults.resetSelectedProduct();
                 }
-                meerkat.messaging.publish(meerkatEvents.filters.FILTERS_CANCELLED);
+
+                // Race condition, need to wait for healthFilters module to be ready for Remember Me redirect to results to work
+                meerkat.modules.utils.pluginReady('healthFilters').done(function() {
+                    meerkat.messaging.publish(meerkatEvents.filters.FILTERS_CANCELLED);
+                });
             },
             onAfterEnter: function onAfterEnterResultsStep(event) {
                 if (event.isForward === true) {
