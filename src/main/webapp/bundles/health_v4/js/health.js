@@ -126,7 +126,7 @@
             // If remember me redirect set step to results
             if (
                 meerkat.site.pageAction === 'latest' ||
-                (meerkat.site.pageAction === 'remember' && meerkat.site.reviewedit === false) ||
+                (meerkat.site.pageAction === 'remember' && meerkat.site.reviewEdit === false) ||
                 (
                     meerkat.site.pageAction === 'amend' &&
                     (
@@ -136,7 +136,7 @@
                 )
             ) {
 	            startStepId = 'results';
-            } else if(meerkat.site.pageAction === 'remember' && meerkat.site.reviewedit === true) {
+            } else if(meerkat.site.pageAction === 'remember' && meerkat.site.reviewEdit === true) {
 	            startStepId = 'start';
             } else {
                 startStepId = meerkat.site.journeyStage;
