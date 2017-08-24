@@ -27,7 +27,8 @@ public class RememberMeController {
     private static final String QUOTE_GET_JSON = "/quote/get.json";
     private static final String QUOTE_DELETE_COOKIE_JSON = "/quote/deleteCookie.json";
     private static final String QUOTE_TYPE = "quoteType";
-    private static final String QUERY_VALUE = "userAnswer";
+    private static final String ANSWER_VALUE = "userAnswer";
+    private static final String REVIEWEDIT_VALUE = "reviewedit";
 
     private final RememberMeService rememberMeService;
 
@@ -40,25 +41,28 @@ public class RememberMeController {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE )
     public RememberMeModel validateAnswer(@RequestParam(QUOTE_TYPE) final String vertical,
-                                          @RequestParam(QUERY_VALUE) final String userAnswer,HttpServletRequest request,
+                                          @RequestParam(ANSWER_VALUE) final String userAnswer,
+                                          @RequestParam(REVIEWEDIT_VALUE) final String reviewedit,HttpServletRequest request,
                                           final HttpServletResponse response) throws IOException, GeneralSecurityException {
         Boolean isValidAnswer;
         Optional<String> transactionId;
+        Boolean isReviewEdit;
         try {
             if (!vertical.isEmpty() && !userAnswer.isEmpty() && RememberMeService.isRememberMeEnabled(request, vertical)) {
                 transactionId = rememberMeService.getTransactionIdFromCookie(vertical, request);
                 isValidAnswer = rememberMeService.validateAnswerAndLoadData(vertical, userAnswer, request);
+                isReviewEdit = reviewedit.equalsIgnoreCase("Y");
                 rememberMeService.updateAttemptsCounter(request, response, vertical);
                 if(isValidAnswer) {
                     rememberMeService.deleteCookie(vertical, response);
                     rememberMeService.removeAttemptsSessionAttribute(request, vertical);
                 }
-                return new RememberMeModel(isValidAnswer, transactionId.orElse(null));
+                return new RememberMeModel(isValidAnswer, transactionId.orElse(null), isReviewEdit);
             }
         } catch (Exception ex) {
             LOGGER.error("Error validating the personal question", ex);
         }
-        return new RememberMeModel(false, null);
+        return new RememberMeModel(false, null, null);
     }
 
 

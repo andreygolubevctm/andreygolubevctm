@@ -54,6 +54,12 @@
 		</c:otherwise>
 	</c:choose>
 </c:set>
+<c:set var="reviewEdit">
+	<c:choose>
+		<c:when test="${not empty param.reviewedit}">true</c:when>
+		<c:otherwise>false</c:otherwise>
+	</c:choose>
+</c:set>
 <c:set var="defaultToHealthQuote"><content:get key="makeHealthQuoteMainJourney" /></c:set>
 <c:set var="defaultToHealthApply"><content:get key="makeHealthApplyMainJourney" /></c:set>
 
@@ -113,6 +119,7 @@
 	isFromBrochureSite: <c:out value="${fromBrochure}"/>,
 	journeyStage: "<c:out value="${data['health/journey/stage']}"/>",
 	pageAction: '<c:out value="${pageAction}"/>',
+	reviewEdit: '<c:out value="${reviewEdit}"/>',
 	previousTransactionId: "<c:out value="${data['current/previousTransactionId']}"/>",
 	isNewQuote: <c:out value="${isNewQuote eq true}" />,
 	productId: '<c:out value="${data.health.application.productId}" />',

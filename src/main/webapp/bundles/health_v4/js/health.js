@@ -124,8 +124,20 @@
         } else if (meerkat.site.journeyStage.length > 0 && _.indexOf(['remember', 'amend', 'latest'], meerkat.site.pageAction) >= 0) {
             // Do not allow the user to go past the results page on amend.
             // If remember me redirect set step to results
-            if (_.indexOf(['remember', 'latest'], meerkat.site.pageAction) >= 0 || (meerkat.site.pageAction === 'amend' && (meerkat.site.journeyStage === 'apply' || meerkat.site.journeyStage === 'payment'))) {
-                startStepId = 'results';
+            if (
+                meerkat.site.pageAction === 'latest' ||
+                (meerkat.site.pageAction === 'remember' && meerkat.site.reviewedit === false) ||
+                (
+                    meerkat.site.pageAction === 'amend' &&
+                    (
+                        meerkat.site.journeyStage === 'apply' ||
+                        meerkat.site.journeyStage === 'payment'
+                    )
+                )
+            ) {
+	            startStepId = 'results';
+            } else if(meerkat.site.pageAction === 'remember' && meerkat.site.reviewedit === true) {
+	            startStepId = 'start';
             } else {
                 startStepId = meerkat.site.journeyStage;
             }

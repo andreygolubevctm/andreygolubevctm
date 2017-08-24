@@ -29,9 +29,11 @@
             loadingPage: $('.journeyEngineLoader'),
             loadingMessage: $('.journeyEngineLoader > .message'),
             rememberMePage: $('#journeyEngineSlidesContainer'),
-            errors : {
-                primary : $('#rememberme_primary_dob-error'),
-                additional : $('#rememberme_additional-error')
+            reviewedit: $('#rememberme_reviewedit'),
+            revieweditButton: $('#rememberme-reviewedit-btn'),
+            errors: {
+                primary: $('#rememberme_primary_dob-error'),
+                additional: $('#rememberme_additional-error')
             }
         };
     }
@@ -50,6 +52,11 @@
                 $error.hide();
             }
         });
+
+        $elements.revieweditButton.on("click", function(){
+            _setReviewEdit();
+            $elements.form.trigger("submit");
+        });
     }
 
     function deleteCookieAndRedirect(eventAction) {
@@ -64,10 +71,11 @@
             onSuccess: function onSuccess() {
                 _track(eventAction);
                 meerkat.modules.leavePageWarning.disable();
-                window.location.replace("health_quote_v4.jsp");
+                window.location.replace("health_quote_v4.jsp" + _getQueryString());
             },
             onError: function onError(obj, txt, errorThrown) {
-                console.log(obj, errorThrown);
+                // @TODO Should have better error handling here
+	            meerkat.logging.debug(obj, errorThrown);
             }
         });
     }
@@ -107,38 +115,25 @@
                     url: 'spring/rest/rememberme/quote/get.json',
                     data: {
                         quoteType: 'health',
-                        userAnswer: $elements.dobInput.val()
+                        userAnswer: $elements.dobInput.val(),
+	                    reviewedit: $elements.reviewedit.val()
                     },
                     cache: false,
                     errorLevel: 'silent',
                     onSuccess: function (result) {
-                        if (result.validAnswer === true && result.transactionId !== "") {
+                    	if (result.validAnswer === true && result.transactionId !== "") {
                             _track('success');
                             meerkat.modules.leavePageWarning.disable();
                             $elements.loadingMessage.text('Loading Products & Prices Please wait...');
                             showLoadingPage();
-                            var srcQSParams = {};
-                            if(_.isEmpty(window.location.search)) {
-                                var tmp = window.location.search.split("?").pop().split("&");
-                                for(var i=0; i<tmp.length; i++) {
-                                    var pieces = tmp[i].split("=");
-                                    if(pieces.length === 2) {
-                                        srcQSParams[pieces[0]] = pieces[1];
-                                    }
-                                }
-                            }
                             var newQSParams = {
                                 action : "remember",
                                 transactionId : result.transactionId
                             };
-                            var finalQSParams = _.extend({},srcQSParams,newQSParams);
-                            var queryStr = [];
-                            for(var j in finalQSParams) {
-                                if(_.has(finalQSParams,j)) {
-                                    queryStr.push(j+"="+finalQSParams[j]);
-                                }
+                            if(result.reviewEdit === true) {
+                            	newQSParams["reviewedit"] = "true";
                             }
-                            window.location.replace("health_quote_v4.jsp?" + queryStr.join("&") + "#results");
+                            window.location.replace("health_quote_v4.jsp" + _getQueryString(newQSParams));
                         } else {
                             _track('validation failed');
                             showError(errorTypes.NOMATCH);
@@ -149,10 +144,12 @@
                         meerkat.logging.debug(obj, errorThrown);
                     },
                     onComplete: function(){
+                        _unsetReviewEdit();
 	                    $elements.errors.primary.add($elements.errors.additional).hide();
                     }
                 });
             } else {
+            	_unsetReviewEdit();
                 _track('validation failed');
                 showError(errorTypes.INVALID);
             }
@@ -167,6 +164,40 @@
         });
     }
 
+    function _getQueryString(data) {
+
+    	// Ensure new query string elements is an object
+	    data = data || null;
+		var newQSParams = {};
+		if(!_.isEmpty(data) || _.isObject(data)) {
+			newQSParams = data;
+		}
+
+		// Prep existing query string into object
+	    var srcQSParams = {};
+	    if(_.isEmpty(window.location.search)) {
+		    var tmp = window.location.search.split("?").pop().split("&");
+		    for(var i=0; i<tmp.length; i++) {
+			    var pieces = tmp[i].split("=");
+			    if(pieces.length === 2) {
+				    srcQSParams[pieces[0]] = pieces[1];
+			    }
+		    }
+	    }
+
+	    // Combine new and existing into single array of name/value pairs
+	    var finalQSParams = _.extend({},srcQSParams,newQSParams);
+	    var queryStr = [];
+	    for(var j in finalQSParams) {
+		    if(_.has(finalQSParams,j)) {
+			    queryStr.push(j+"="+finalQSParams[j]);
+		    }
+	    }
+
+	    // Return as generic query string
+	    return _.isEmpty(queryStr) ? "" : "?" + queryStr.join("&");
+    }
+
     function _track(eventAction) {
         meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
             method: 'trackRememberMeQuote',
@@ -176,6 +207,14 @@
                 eventAction: 'remember me - ' + eventAction
             }
         });
+    }
+
+    function _setReviewEdit() {
+        $elements.reviewedit.val("Y");
+    }
+
+    function _unsetReviewEdit() {
+        $elements.reviewedit.val("N");
     }
 
     meerkat.modules.register('rememberMe', {

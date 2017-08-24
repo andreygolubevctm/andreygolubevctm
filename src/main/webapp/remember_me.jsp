@@ -70,7 +70,8 @@
                 <div id="pageContent">
                     <article class="container">
                         <div class="remember-me text-center">
-                            <h1>Hi ${firstname}, <a class="remember-me-remove" href="javascript:;" data-track-action="token expired">  Not you?</a></h1>
+                            <h1>Hi ${firstname}, <a class="remember-me-remove" href="javascript:;"
+                                                    data-track-action="token expired">  Not you? Start new quote</a></h1>
                             <h1> looks like you've compared health insurance with us before.</h1>
                             <h2>Enter your date of birth to review the products you found last time.</h2>
 
@@ -82,11 +83,13 @@
                                         <field_v4:person_dob xpath="${fieldXpath}" title="your" required="true" ageMin="16" ageMax="120" />
                                     </form_v4:row>
                                 </div>
+	                            <c:set var="fieldXpath" value="rememberme/reviewedit" />
+	                            <field_v1:hidden xpath="${fieldXpath}" defaultValue="N" />
                                 <button type="submit" class="btn btn-lg btn-cta" id="submitButton" name="submitButton"
-                                        value="Submit">View Products and Prices <span
+                                        value="Submit">Get Prices <span
                                         class="icon icon-arrow-right"></span></button>
                             </form>
-                            <a class="remember-me-remove" href="javascript:;" data-track-action="new quote started"><span class="icon-angle-left"></span>&nbsp;&nbsp;Start a new quote</a>
+                            <a id="rememberme-reviewedit-btn" href="javascript:;" data-track-action="review edit"><span class="icon-angle-left"></span>&nbsp;&nbsp;Review and edit my details</a>
                         </div>
                     </article>
                 </div>
