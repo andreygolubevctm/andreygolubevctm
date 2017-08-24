@@ -89,7 +89,7 @@
 		
 		function changeDropdownVals() {
 			var $target = $('#home_coverType');
-			$targetVal = $target.val();
+			var $targetVal = $target.val();
 		  var type = meerkat.site.isLandlord ? 'landlord' : 'home';
 		  $target.find('.temp-items').remove();
 		  for (var i = 0; items[type].length > i; i++) {
