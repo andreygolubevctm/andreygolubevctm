@@ -29,7 +29,7 @@
             };
             $personName = $('.contactField.person_name');
 
-            $primaryName ={
+            $primaryName = {
                 first: $('#health_application_primary_firstname'),
                 middle: $('#health_application_primary_middleName'),
                 last: $('#health_application_primary_surname'),
