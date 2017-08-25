@@ -20,46 +20,46 @@
 
 				<form_v2:fieldset legend="Cover for your property">
 
-						<div class="isLandlord">
-							<%-- Are you the landlord --%>
-							<c:set var="fieldXpath" value="${xpath}/occupancy/ownProperty" />
-							<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Landlord or Occupant"
-																										quoteChar="\"" /></c:set>
-							<form_v2:row fieldXpath="${fieldXpath}" label="Are you the landlord or the occupant?">
-								<field_v2:array_radio xpath="${fieldXpath}"
-									className="ownProperty radioIcons"
-									required="true"
-									items="Y=Landlord,N=Tenant"
-									title="if you are the landlord"
-									additionalLabelAttributes="${analyticsAttr}" />
-							</form_v2:row>
-						</div>
-
-						<div class="notLandlord">
 							<%-- Own the home --%>
-							<c:set var="fieldXpath" value="${xpath}/occupancy/ownProperty" />
-							<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Own or Rent" quoteChar="\"" /></c:set>
-							<form_v2:row fieldXpath="${fieldXpath}" label="Are you the home owner or are you renting?">
-								<field_v2:array_radio xpath="${fieldXpath}"
-									className="ownProperty radioIcons"
-									required="true"
-									items="Y=Home Owner,N=Renting"
-									title="if you own the home"
-									additionalLabelAttributes="${analyticsAttr}" />
-							</form_v2:row>
-						</div>
+					<div class="notLandlord">
+						<c:set var="fieldXpath" value="${xpath}/occupancy/ownProperty" />
+						<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Own or Rent" quoteChar="\"" /></c:set>
+						<form_v2:row fieldXpath="${fieldXpath}" label="Are you the home owner or are you renting?">
+							<field_v2:array_radio xpath="${fieldXpath}"
+													className="ownProperty radioIcons"
+													required="true"
+													items="Y=Home Owner,N=Renting"
+													title="if you own the home"
+													additionalLabelAttributes="${analyticsAttr}" />
+						</form_v2:row>
+					</div>
+					
+					<div class="isLandlord">
+						<%-- Are you the landlord --%>
+						<c:set var="fieldXpath" value="${xpath}/occupancy/ownProperty" />
+						<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Landlord or Occupant"
+																									quoteChar="\"" /></c:set>
+						<form_v2:row fieldXpath="${fieldXpath}" label="Are you the landlord or the occupant?">
+							<field_v2:array_radio xpath="${fieldXpath}"
+								className="ownProperty radioIcons"
+								required="true"
+								items="Y=Landlord,N=Tenant"
+								title="if you are the landlord"
+								additionalLabelAttributes="${analyticsAttr}" />
+						</form_v2:row>
+					</div>
+
 
 						<%-- Cover type --%>
-						<c:set var="fieldXpath" value="${xpath}/coverType" />
-						<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Cover Type" quoteChar="\"" /></c:set>
-						<form_v2:row fieldXpath="${fieldXpath}" label="Type of cover">
-							<field_v2:import_select xpath="${fieldXpath}"
-								required="true"
-								title="the type of cover"
-								url="/WEB-INF/option_data/home_contents_cover_type.html"
-								additionalAttributes="${analyticsAttr}" />
-						</form_v2:row>
-
+					<c:set var="fieldXpath" value="${xpath}/coverType" />
+					<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Cover Type" quoteChar="\"" /></c:set>
+					<form_v2:row fieldXpath="${fieldXpath}" label="Type of cover">
+						<field_v2:import_select xpath="${fieldXpath}"
+												required="true"
+												title="the type of cover"
+												url="/WEB-INF/option_data/home_contents_cover_type.html"
+												additionalAttributes="${analyticsAttr}" />
+					</form_v2:row>
 
 
 				</form_v2:fieldset>

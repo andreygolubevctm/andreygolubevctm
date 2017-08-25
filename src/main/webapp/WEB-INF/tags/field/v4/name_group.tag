@@ -7,16 +7,16 @@
 <%@ attribute name="firstNameMaxlength" required="false" rtexprvalue="true" description="The maximum length for Person's First Name input field" %>
 <%@ attribute name="lastNameMaxlength" required="false" rtexprvalue="true" description="The maximum length for Person's Last Name input field" %>
 
-<c:set var="titleOverride">3</c:set>
+<c:set var="smRowOverride">3</c:set><%-- Specifies the bootstrap sm-col size for the title field --%>
 
 <c:if test="${showInitial eq true}">
-    <c:set var="titleOverride">2</c:set>
+    <c:set var="smRowOverride">2</c:set>
 </c:if>
 
 <%-- HTML --%>
 <form_v4:row label="Name" className="row" isNestedStyleGroup="${true}">
     <c:set var="fieldXpath" value="${xpath}/title" />
-    <form_v4:row fieldXpath="${fieldXpath}" label="Title" smRowOverride="${titleOverride}" isNestedField="${true}" className="selectContainerTitle" id="${go:nameFromXpath(fieldXpath)}Row">
+    <form_v4:row fieldXpath="${fieldXpath}" label="Title" smRowOverride="${smRowOverride}" isNestedField="${true}" className="selectContainerTitle" id="${go:nameFromXpath(fieldXpath)}Row">
         <field_v3:import_select xpath="${fieldXpath}" title="${title} title"  required="true" url="/WEB-INF/option_data/titles_quick.html" className="person-title" additionalAttributes=" data-rule-genderTitle='true' " placeHolder="Title" disableErrorContainer="${true}" />
     </form_v4:row>
 

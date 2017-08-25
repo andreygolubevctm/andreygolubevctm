@@ -11,7 +11,7 @@
           Who's travelling?
         </p>
       <span class="traveler-age-label">
-        The age of all travelling adult?
+        The age of the travelling adult?
       </span>
     </div>
     

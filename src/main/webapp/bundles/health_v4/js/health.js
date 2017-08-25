@@ -128,6 +128,8 @@
             } else {
                 startStepId = meerkat.site.journeyStage;
             }
+        } else if (meerkat.site.utm_medium === 'email') {
+            startStepId = 'results';
         }
 
         var configureJourneyEngine = _.bind(meerkat.modules.journeyEngine.configure, this, {

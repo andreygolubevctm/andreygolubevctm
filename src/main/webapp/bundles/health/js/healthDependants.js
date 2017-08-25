@@ -570,7 +570,8 @@
         getMaxAge: getMaxAge,
         setMaxAge: setMaxAge,
         updateDependantConfiguration: updateDependantConfiguration,
-        getEducationalInstitutionsOptions: getEducationalInstitutionsOptions
+        getEducationalInstitutionsOptions: getEducationalInstitutionsOptions,
+        getNumberOfDependants: getNumberOfDependants
     });
 
 })(jQuery);

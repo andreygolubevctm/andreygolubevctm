@@ -1,7 +1,11 @@
 var ResultsUtilities = {
 
 	setContainerWidth: function( elements, container ){
-		var width = $( elements ).first().outerWidth(true) * $( elements ).length;
+		var $firstElement = $( elements ).first(),
+			firstElementWidth = _.isFunction(Results.settings.setContainerWidthCB) ?
+				Results.settings.setContainerWidthCB( $firstElement ) : $firstElement.outerWidth(true),
+			width = firstElementWidth * $( elements ).length;
+
 		$( container ).css('width', width + "px");
 	},
 
