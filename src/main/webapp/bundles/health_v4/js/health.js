@@ -95,10 +95,7 @@
             $("#health_contactDetails_call").val(optinVal);
         });
 
-        $('select.form-control')
-            .on('change', function() {
-                $(this).toggleClass('text-placeholder-color', _.isEmpty($(this).val()));
-            });
+        meerkat.modules.fieldUtilities.selectsOnChange();
     }
 
 
@@ -216,7 +213,7 @@
                 // configure progress bar
                 configureProgressBar(true);
 
-                _toggleSelectPlaceholderColor();
+                meerkat.modules.fieldUtilities.toggleSelectsPlaceholderColor();
             },
             onAfterEnter: function healthAfterEnter() {
 
@@ -479,8 +476,7 @@
                     meerkat.modules.healthDependants.updateDependantConfiguration();
                     meerkat.modules.healthMedicare.onBeforeEnterApply();
                     meerkat.modules.healthAGRModal.onBeforeEnterApply();
-
-                    _toggleSelectPlaceholderColor();
+                    meerkat.modules.fieldUtilities.toggleSelectsPlaceholderColor();
                 }
             },
             onAfterEnter: function afterEnterApplyStep(event) {
@@ -522,8 +518,7 @@
                     $('#mainform').find('.health_contact_authority span').text( selectedProduct.info.providerName  );
 
 	                meerkat.messaging.publish(meerkatEvents.TRIGGER_UPDATE_PREMIUM);
-
-                    _toggleSelectPlaceholderColor();
+                    meerkat.modules.fieldUtilities.toggleSelectsPlaceholderColor();
                 }
             },
             onAfterEnter: function afterEnterPaymentStep() {
@@ -836,13 +831,6 @@
         if (meerkat.modules.journeyEngine.getCurrentStepIndex() > 3) {
             meerkat.modules.transactionId.getNew(3);
         }
-    }
-
-    function _toggleSelectPlaceholderColor() {
-        $('select.form-control')
-            .each(function() {
-                $(this).toggleClass('text-placeholder-color', _.isEmpty($(this).val()));
-            });
     }
 
     meerkat.modules.register("health", {

@@ -12,7 +12,10 @@ New way of disabling a field
 			DISABLED : 'disabled',
 			VISIBLE : 'hidden-toggle'
 		},
-		toggleClasses = {};
+		toggleClasses = {
+			PLACEHOLDER_COLOR: 'text-placeholder-color'
+		},
+		$selectFormControl = $('select.form-control');
 
 	function disable(fields) {
 		toggleFields(fields, true, toggleType.DISABLED);
@@ -50,6 +53,24 @@ New way of disabling a field
 		$('.fieldrow.disabled, .fieldrow.hidden-toggle').find(':input').prop('disabled', true);
 	}
 
+	function selectsOnChange() {
+		$selectFormControl
+			.on('change.togglePlaceholderColor', function togglePlaceholderColor() {
+				_toggleSelectPlaceholderColor($(this));
+			});
+	}
+
+	function toggleSelectsPlaceholderColor() {
+		$selectFormControl
+			.each(function() {
+				_toggleSelectPlaceholderColor($(this));
+			});
+	}
+
+	function _toggleSelectPlaceholderColor($select) {
+		$select.toggleClass(toggleClasses.PLACEHOLDER_COLOR, _.isEmpty($select.val()));
+	}
+
 	meerkat.modules.register("fieldUtilities", {
 		initFields: initFields,
 		disable: disable,
@@ -59,6 +80,8 @@ New way of disabling a field
 		toggleFields: toggleFields,
 		toggleDisabled: toggleDisabled,
 		toggleVisible: toggleVisible,
+		selectsOnChange: selectsOnChange,
+		toggleSelectsPlaceholderColor: toggleSelectsPlaceholderColor,
 		toggleType: toggleType
 	});
 
