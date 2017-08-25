@@ -604,6 +604,7 @@
 
 				meerkat.modules.healthPaymentDate.initPaymentDate();
 				meerkat.modules.healthPaymentIPP.initHealthPaymentIPP();
+                meerkat.modules.healthPayConfDetailsModal.onInitialise();
 
 				$("#joinDeclarationDialog_link").on('click',function(){
 					var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
@@ -653,9 +654,9 @@
 						});
 					}
 
-					// Validation passed, submit the application.
+					// Validation passed, submit the application after showing confirmation modal - see subscribe event below.
 					if (valid) {
-						submitApplication();
+                        meerkat.modules.healthPayConfDetailsModal.open(submitApplication);
 					}
 				});
 
