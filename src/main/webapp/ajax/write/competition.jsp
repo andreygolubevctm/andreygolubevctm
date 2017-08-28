@@ -6,11 +6,8 @@
 
 <core_v1:transaction touch="P" noResponse="true" />
 
-<%--<session:get settings="true" />--%>
-
 <security:populateDataFromParams rootPath="competition" />
 
-<%--<c:set var="transactionId"	value="${data.current.transactionId}" />--%>
 <c:set var="styleCodeId">2</c:set>
 <c:set var="styleCode">meer</c:set>
 
