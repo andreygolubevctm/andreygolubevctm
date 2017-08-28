@@ -256,7 +256,9 @@ Features = {
 		if(Features.target === false || (typeof Results.getDisplayMode === 'function' && Results.getDisplayMode() == 'price')) {
 			return;
 		}
-		var visibleMultiRowElements = $( Features.target + " " + Results.settings.elements.features.values+":visible"  ); // Removed .filter(":visible") because IE couldn't handle it.
+		var currentPageElements = (meerkat.modules.deviceMediaState.get() === 'xs' &&
+			Results.settings.balanceCurrentPageRowsHeightOnly.mobile) ? ' .result-row.currentPage ' : ' ';
+		var visibleMultiRowElements = $( Features.target + currentPageElements + Results.settings.elements.features.values+":visible"  ); // Removed .filter(":visible") because IE couldn't handle it.
 		Features.sameHeightRows( visibleMultiRowElements );
 	},
 

@@ -30,10 +30,15 @@ var ResultsPagination = {
 	paginationSummaryTemplate: null,
 	showPaginationSummary: false,
 
+	moduleEvents: {
+		CONTROL_CLICKED: 'CONTROL_CLICKED'
+	},
+
 	init: function(){
 
 		$(document).on('click', '[data-results-pagination-control]', function paginationControlClick(event){
 			Results.pagination.controlListener( event );
+			meerkat.messaging.publish(ResultsPagination.moduleEvents.CONTROL_CLICKED);
 		});
 
 		Results.pagination.$pagesContainer = $('[data-results-pagination-pages-cell]');
