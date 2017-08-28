@@ -185,38 +185,57 @@
 	
 	/**
 	 * Sorts the data set by specified key in a particular direction.
-	 * @param key - The key to sort by (e.g. "data.offerId")
+	 * @param key - The key to sort by (e.g. "data.offerId,data.effectiveDate")
 	 * @param direction - "asc" or "desc" 
 	 * @param callback - Either a string denoting the object path (e.g. meerkat.modules.simplesSpecialOffers.refresh) or a method.
 	 */
 	dataSet.prototype.sort = function(key, direction, callback) {
-		var keyChain = key.split(".");
+		var orderItems = key.split(",");
+		var keyChain = orderItems[0].split(".");
+		if(orderItems.length > 1) {
+            var additionalSortingKeys = orderItems[1].split(".");
+        }
 		
 		direction = direction || "asc";
 
-		var sort = function(a, b) {
-			for(var i = 0; i < keyChain.length; i++) {
-				var keyChainItem = keyChain[i];
-				a = a[keyChainItem];
-				b = b[keyChainItem];
-			}
+        var sort = function(a, b) {
+        	var c = a;
+        	var d = b;
+            for (var i = 0; i < keyChain.length; i++) {
+                var keyChainItem = keyChain[i];
+                a = a[keyChainItem];
+                b = b[keyChainItem];
+            }
 
-			if(typeof a === "string")
-				a = a.toLowerCase();
-			
-			if(typeof b === "string")
-				b = b.toLowerCase();
-			
-			if ((a < b && direction === "asc") || (a > b && direction === "desc"))
-				return -1;
-			if ((a > b && direction === "asc") || (a < b && direction === "desc"))
-				return 1;
-			return 0;
-		};
-		
+            for (var j = 0; orderItems.length > 1 &&  j < additionalSortingKeys.length; j++) {
+                var seondaryKeyChainItem = additionalSortingKeys[j];
+                c = c[seondaryKeyChainItem];
+                d = d[seondaryKeyChainItem];
+            }
+
+            if (typeof a === "string")
+                a = a.toLowerCase();
+
+            if (typeof b === "string")
+                b = b.toLowerCase();
+
+            if ((a < b && direction === "asc") || (a > b && direction === "desc"))
+                return -1;
+            if ((a > b && direction === "asc") || (a < b && direction === "desc"))
+                return 1;
+
+            if ((orderItems.length > 1 && a === b && direction === "asc")) {
+                if ((c < d && direction === "asc") || (c > d && direction === "desc"))
+                    return -1;
+                if ((c > d && direction === "asc") || (c < d && direction === "desc"))
+                    return 1;
+            }
+            return 0;
+        };
+
 		var sortedDataSet = this.dataSet.sort(sort);
 		this.set(sortedDataSet);
-		
+
 		if(typeof callback === "string")
 			_getObject(callback)();
 		else if(typeof callback === "function")

@@ -35,6 +35,6 @@
 		</form_v2:row>
 	</form_v2:row>
 
-	<field_v3:medicare_name_group xpath="${xpath}" showInitial="${true}" />
+	<field_v3:medicare_name_group_hidden_names xpath="${xpath}" showInitial="${true}" />
 
 </div>

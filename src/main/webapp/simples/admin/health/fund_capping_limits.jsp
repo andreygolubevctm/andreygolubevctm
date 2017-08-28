@@ -13,7 +13,7 @@
 				<div class="row">
 					<ul>
 						<li class="col-lg-2">
-							<a href="javascript:;">
+							<a href="javascript:;" class="toggle sort-by" data-sortkey="data.providerName,data.effectiveStart" data-sortdir="asc">
 								<span class="icon"></span>
 								<span>Provider</span>
 							</a>
@@ -43,7 +43,7 @@
 							</a>
 						</li>
 						<li class="col-lg-1">
-							<a href="javascript:;">
+							<a href="javascript:;" class="toggle" data-sortkey="data.effectiveStart,data.providerName" data-sortdir="asc">
 								<span class="icon"></span>
 								<span>Effective Start</span>
 							</a>
