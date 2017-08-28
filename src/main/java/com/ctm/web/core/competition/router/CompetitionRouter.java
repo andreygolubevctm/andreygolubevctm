@@ -31,8 +31,7 @@ public class CompetitionRouter extends HttpServlet {
         String uri = request.getRequestURI();
         if (uri.endsWith(".json")) {
             response.setContentType("application/json");
-            response.addHeader("Access-Control-Allow-Origin", "*.comparethemarket.com.au");
-            response.addHeader("Access-Control-Allow-Methods", "POST");
+            addAllowOriginHeader(request, response);
         }
 
         if (uri.endsWith("/competitions/australia-zoo-meerkats/names.json")) {
@@ -61,6 +60,16 @@ public class CompetitionRouter extends HttpServlet {
             } catch (JSONException e) {
                 LOGGER.error("Australia Zoo Competition post request failed {}", kv("uri", request.getRequestURI()), e);
             }
+        }
+    }
+
+    private void addAllowOriginHeader(final HttpServletRequest request, final HttpServletResponse response) {
+        final Optional<String> origin = Optional.ofNullable(request.getHeader("Origin"))
+                .map(String::toLowerCase)
+                .filter(s -> s.contains("comparethemarket.com.au"));
+        if(origin.isPresent()) {
+            LOGGER.debug("Adding Allow-Origin header for: {}", kv("remote address access", origin));
+            response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
         }
     }
 }
