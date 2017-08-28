@@ -31,6 +31,8 @@ public class CompetitionRouter extends HttpServlet {
         String uri = request.getRequestURI();
         if (uri.endsWith(".json")) {
             response.setContentType("application/json");
+            response.addHeader("Access-Control-Allow-Origin", "*.comparethemarket.com.au");
+            response.addHeader("Access-Control-Allow-Methods", "POST");
         }
 
         if (uri.endsWith("/competitions/australia-zoo-meerkats/names.json")) {
