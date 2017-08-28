@@ -169,10 +169,41 @@ public class RememberMeService {
                                     throw new RuntimeException(e);
                                 }
                             }
-                            return hasPersonalInfo;
+                            if (vertical.equals("health")) {
+                                if (isCoverAndLocationMatch(presentTransactionDetails, request)) {
+                                    return hasPersonalInfo;
+                                } else
+                                    return false;
+                            } else
+                                return hasPersonalInfo;
+
                         })
                         .orElse(false))
                 .orElse(false);
+    }
+
+
+    /**
+     * match the cover and location values from broucher with the remembered transaction details
+     * @param transactionDetails
+     * @param request
+     * @return
+     */
+    private boolean isCoverAndLocationMatch(final List<TransactionDetail> transactionDetails, final HttpServletRequest request){
+        TransactionDetail healthCvr = transactionDetails.stream().
+                filter(transactionDetail -> transactionDetail.getXPath().equals("health/situation/healthCvr")).findFirst().orElse(null);
+
+        TransactionDetail location = transactionDetails.stream().
+                filter(transactionDetail -> transactionDetail.getXPath().equals("health/situation/location")).findFirst().orElse(null);
+
+        if(request.getParameter("cover") == null  && request.getParameter("health_location") == null )
+            return true;
+        else if ((healthCvr != null && healthCvr.getTextValue().equals(request.getParameter("cover")))
+                && (location != null && location.getTextValue().contains(request.getParameter("health_location")))) {
+            return true;
+        } else
+            return false;
+
     }
 
     /**
