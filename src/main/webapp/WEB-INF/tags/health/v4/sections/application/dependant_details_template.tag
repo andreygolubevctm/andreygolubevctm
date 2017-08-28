@@ -74,7 +74,7 @@
 
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/school"/>
             <form_v4:row fieldXpath="${fieldXpath}" label="{{= (usesSchoolDropdown ? 'Educational institute this dependant is attending' : 'Name of school your child is attending') }}" id="${name}_schoolGroup"
-                         className="health_dependant_details_schoolGroup hidden {{= usesSchoolDropdown ? 'hide-help-icon' : '' }}" helpId="290">
+                         className="health_dependant_details_schoolGroup hidden {{= usesSchoolDropdown ? 'hide-help-icon' : '' }}" helpId="290" showHelpIconInLabel="true">
                 {{ if(usesSchoolDropdown === true) { }}
                 <c:set var="storeGroupName" value="${go:nameFromXpath(fieldXpath)}" />
                 <div class="select">

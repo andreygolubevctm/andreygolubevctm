@@ -12,7 +12,7 @@
 <c:set var="analyticsAttr"><field_v1:analytics_attr analVal="health insurance status" quoteChar="\"" /></c:set>
 <c:set var="alreadyHaveHealthInsurance"><content:get key="alreadyHaveHealthInsurance" /></c:set>
 
-<form_v4:row label="Already have private health insurance cover?<span class='help-icon-with-label'><a href='javascript:void(0);' class='help-icon icon-info' data-content='helpid:572' data-toggle='popover' tabindex='-1'><span class='text-hide'>Need Help?</span></a></span>" fieldXpath="${fieldXpath}" id="${name}_primaryCover" className="lhcRebateCalcTrigger">
+<form_v4:row label="Already have private health insurance cover?" fieldXpath="${fieldXpath}" id="${name}_primaryCover" className="lhcRebateCalcTrigger" helpId="572" showHelpIconInLabel="true">
 	<field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your private health cover" required="true" className="health-cover_details" id="${name}_health_cover" additionalLabelAttributes="${analyticsAttr}"/>
 
 	<c:set var="fieldXpathName" value="${go:nameFromXpath(fieldXpath)}" />

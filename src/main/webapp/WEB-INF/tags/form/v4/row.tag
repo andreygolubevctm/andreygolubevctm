@@ -14,6 +14,7 @@
 <%@ attribute name="fieldXpath" required="false" rtexprvalue="true" description="The xpath of the field the label needs to point to" %>
 <%@ attribute name="showHelpText" required="false" rtexprvalue="true" description="Trigger to display help icon as text rather than icon" %>
 <%@ attribute name="helpId" required="false" rtexprvalue="true" description="Help tooltip ID" %>
+<%@ attribute name="showHelpIconInLabel" required="false" rtexprvalue="true" description="Trigger to display help icon beside the label text" %>
 <%@ attribute name="addForAttr" required="false" rtexprvalue="true" description="Bool to add or not the for attribute" %>
 
 <%-- SETUP --%>
@@ -22,6 +23,7 @@
 <c:if test="${empty helpId}"><c:set var="showHelpIcon" value="${false}" /></c:if>
 <c:set var="showLabel" value="${true}" />
 <c:if test="${empty label or label eq '' or label eq 'empty'}"><c:set var="showLabel" value="${false}" /></c:if>
+<c:if test="${empty showHelpIconInLabel}"><c:set var="showHelpIconInLabel" value="${false}" /></c:if>
 <c:set var="inputWidthSm" value="8 " />
 <c:if test="${not empty smRowOverride}"><c:set var="inputWidthSm" value="${smRowOverride} " /></c:if>
 <c:set var="labelWidthXs" value="10" />
@@ -40,15 +42,20 @@
 </c:if>
 <c:set var="inputOffsetSm" value="" />
 <c:if test="${showLabel eq false}"><c:set var="inputOffsetSm" value="col-sm-offset-4 " /></c:if>
+
+<c:set var="labelHelpIconId" value="" />
+<c:if test='${showHelpIcon eq true and showHelpIconInLabel eq true}'>
+    <c:set var="labelHelpIconId" value="${helpId} " />
+</c:if>
 <%-- / SETUP --%>
 
 <div class="${formGroupClasses} fieldrow ${className}"<c:if test="${not empty id}"> id="${id}"</c:if>>
     <%-- Row Label --%>
     <c:if test="${showLabel}">
         <div class="col-xs-<c:out value="${labelWidthXs} " /> col-sm-4 <c:out value="${labelClass}" />">
-            <field_v2:label value="${label}" xpath="${fieldXpath}" addForAttr="${addForAttr}" />
+            <field_v2:label_with_help_icon value="${label}" xpath="${fieldXpath}" addForAttr="${addForAttr}" helpId="${labelHelpIconId}" />
             <c:if test="${not empty subLabel}"><div class="control-sub-label">${subLabel}</div></c:if>
-            <c:if test="${showHelpIcon eq true}"><div class="hidden-xs">
+            <c:if test="${showHelpIcon eq true and not showHelpIconInLabel eq true}"><div class="hidden-xs">
                 <field_v2:help_icon helpId="${helpId}" showText="${showHelpText}" />
             </div></c:if>
         </div>
