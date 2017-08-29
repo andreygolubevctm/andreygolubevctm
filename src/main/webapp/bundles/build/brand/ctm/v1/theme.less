@@ -350,6 +350,10 @@ ul.themed {
 	color: @theme-light;
 }
 
+.text-placeholder-color {
+	color: @input-color-placeholder;
+}
+
 .text-bold {
 	font-weight: normal;
 	font-family: @font-family-theme-bold;
@@ -1195,6 +1199,13 @@ fieldset h2 {
 .select .input-group-addon {
 	height: 41px; //Temporary fix for inconsistency between verticals for select input addons
 }
+
+select.text-placeholder-color {
+	option:not([value=""]) {
+		color: @gray-dark;
+	}
+}
+
 .fieldrow_legend {
 	//.help-block; //Because we always write out empty fieldrow_legend this isn't suitable.
 	color: @input-color-placeholder;
