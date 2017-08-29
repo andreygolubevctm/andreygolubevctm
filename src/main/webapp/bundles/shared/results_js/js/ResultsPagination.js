@@ -30,7 +30,6 @@ var ResultsPagination = {
 	paginationSummaryTemplate: null,
 	showPaginationSummary: false,
 
-
 	init: function(){
 
 		$(document).on('click', '[data-results-pagination-control]', function paginationControlClick(event){
