@@ -70,10 +70,8 @@
 <%@ taglib tagdir="/WEB-INF/tags/competition"			prefix="competition" %>
 <%@ taglib tagdir="/WEB-INF/tags/competition/layout"	prefix="competition_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/home"				    prefix="home" %>
-<%@ taglib tagdir="/WEB-INF/tags/home/landlord"		    prefix="home_landlord" %>
 <%@ taglib tagdir="/WEB-INF/tags/home/property"		    prefix="home_property" %>
 <%@ taglib tagdir="/WEB-INF/tags/home/layout"		    prefix="home_layout" %>
-<%@ taglib tagdir="/WEB-INF/tags/home/landlord"		    prefix="home_landlord" %>
 <%@ taglib tagdir="/WEB-INF/tags/homeloan"				prefix="homeloan" %>
 <%@ taglib tagdir="/WEB-INF/tags/homeloan/layout"		prefix="homeloan_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/ui"					prefix="ui" %>
@@ -108,3 +106,4 @@
 <%@ taglib tagdir="/WEB-INF/tags/distil"                prefix="distil" %>
 <%@ taglib tagdir="/WEB-INF/tags/reward"			    prefix="reward" %>
 <%@ taglib tagdir="/WEB-INF/tags/zeus"			    	prefix="zeus" %>
+<%@ taglib tagdir="/WEB-INF/tags/health/v2/sections/payment/confirmation"	prefix="health_v2_confirmation" %>

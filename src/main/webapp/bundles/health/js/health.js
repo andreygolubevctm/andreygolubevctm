@@ -170,6 +170,9 @@
 			onInitialise: function onStartInit(event){
 
 				meerkat.modules.jqueryValidate.initJourneyValidator();
+                if(meerkat.site.isCallCentreUser) {
+                    meerkat.modules.simplesInteraction.storeCallId(meerkat.modules.transactionId.get());
+                }
 
 				if(meerkat.site.choices) {
 					meerkat.modules.healthChoices.initialise(meerkat.site.choices.cover, meerkat.site.choices.situation, meerkat.site.choices.benefits);
@@ -601,6 +604,7 @@
 
 				meerkat.modules.healthPaymentDate.initPaymentDate();
 				meerkat.modules.healthPaymentIPP.initHealthPaymentIPP();
+                meerkat.modules.healthPayConfDetailsModal.onInitialise();
 
 				$("#joinDeclarationDialog_link").on('click',function(){
 					var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
@@ -650,9 +654,9 @@
 						});
 					}
 
-					// Validation passed, submit the application.
+					// Validation passed, submit the application after showing confirmation modal - see subscribe event below.
 					if (valid) {
-						submitApplication();
+                        meerkat.modules.healthPayConfDetailsModal.open(submitApplication);
 					}
 				});
 

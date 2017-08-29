@@ -14,9 +14,9 @@
 	
 	var travelText = {
 		S: 'The age of the travelling adult?',
-		C: 'The age of all travelling adults?',
-		F: 'The age of all travelling adults?',
-		G: 'Age of all travelling adults and age of all travelling children in the group?'
+		C: 'The age of the travelling adults?',
+		F: 'The age of the travelling adults?',
+		G: 'The age of all adults travelling and the age of all children travelling in the group?'
 	};
 	
 	var state = {
@@ -105,6 +105,7 @@
 						setState({ travellers: 3, showAddBtn: true, selection: travelParty, minAge: 0 });
 					break;
 			}
+			_enableBtn();
 			_changeTravelText(travelParty);
 			_renderCheckboxes();
 		}

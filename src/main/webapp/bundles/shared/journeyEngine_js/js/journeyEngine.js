@@ -128,14 +128,12 @@
         // Show the initial step (either the first step, or the one defined in the settings, or the one identified in the hash)
 
         if(settings.startStepId === null && meerkat.modules.address.getWindowHash() === ''){
-
             settings.startStepId = settings.steps[0].navigationId;
 
             meerkat.modules.address.setStartHash(settings.startStepId); // so the address module knows what the hash should be
             onNavigationChange({navigationId:settings.startStepId});
 
         }else{
-
             if(settings.startStepId === null){
                 // Use the browser hash as the start step.
                 var hashValue = meerkat.modules.address.getWindowHashAt(0);

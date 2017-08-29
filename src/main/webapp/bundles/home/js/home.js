@@ -66,6 +66,39 @@
 			$('.notLandlord').show();
 			$('.isLandlord').hide();
 		}
+		changeCoverQuestions();
+	}
+	
+	function changeCoverQuestions() {
+		var items = {
+		  landlord: [
+		    { value: 'Home Cover Only', text: 'Building Cover Only' },
+		    { value: 'Contents Cover Only', text: 'Contents Cover Only' },
+		    { value: 'Home & Contents Cover', text: 'Building & Contents Cover' }
+		  ],
+		  home: [
+		    { value: 'Home Cover Only', text: 'Home Cover Only' },
+		    { value: 'Contents Cover Only', text: 'Contents Cover Only' },
+		    { value: 'Home & Contents Cover', text: 'Home & Contents Cover' }
+		  ]
+		};
+		
+		function template(value, text) {
+			return '<option class="temp-items" value="' + value + '">' + text + '</option>';
+		}
+		
+		function changeDropdownVals() {
+			var $target = $('#home_coverType');
+			var $targetVal = $target.val();
+		  var type = meerkat.site.isLandlord ? 'landlord' : 'home';
+		  $target.find('.temp-items').remove();
+		  for (var i = 0; items[type].length > i; i++) {
+		  	$target.append(template(items[type][i].value, items[type][i].text));
+		  }
+			$target.val($targetVal);
+		}
+		
+		changeDropdownVals();
 	}
 
 	function initJourneyEngine() {
