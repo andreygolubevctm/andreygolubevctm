@@ -8,6 +8,7 @@ import com.ctm.web.health.apply.model.request.application.common.Authority;
 import com.ctm.web.health.apply.model.request.application.common.FirstName;
 import com.ctm.web.health.apply.model.request.application.common.LastName;
 import com.ctm.web.health.apply.model.request.application.common.Title;
+import com.ctm.web.health.apply.model.request.application.common.Email;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -43,9 +44,12 @@ public class Applicant {
 
     private final Authority authority;
 
+    @JsonSerialize(using = TypeSerializer.class)
+    private final Email email;
+
     public Applicant(final Title title, final FirstName firstName, final LastName lastName, final Gender gender,
                      final LocalDate dateOfBirth, final HealthCover healthCover, final PreviousFund previousFund,
-                     final CertifiedAgeEntry certifiedAgeEntry, final Authority authority) {
+                     final CertifiedAgeEntry certifiedAgeEntry, final Authority authority,final Email email) {
         this.title = title;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -55,6 +59,7 @@ public class Applicant {
         this.previousFund = previousFund;
         this.certifiedAgeEntry = certifiedAgeEntry;
         this.authority = authority;
+        this.email = email;
     }
 
     public Title getTitle() {
@@ -91,6 +96,10 @@ public class Applicant {
 
     public Authority getAuthority() {
         return authority;
+    }
+
+    public Email getEmail() {
+        return email;
     }
 
 }

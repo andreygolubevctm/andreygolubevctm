@@ -30,8 +30,6 @@
                         <%-- PROVIDER TESTING --%>
                         <health_v1:provider_testing xpath="${pageSettings.getVerticalCode()}" />
 
-                        <health_v4_aboutyou:simples />
-
                         <form_v4:fieldset id="healthAboutYou"
                                           legend="Tell us about yourself, so we can find the right cover for you"
                                           className="health-about-you">
@@ -39,6 +37,7 @@
                             <c:set var="xpath" value="${pageSettings.getVerticalCode()}/healthCover" />
                             <health_v4_aboutyou:dob xpath="${xpath}" />
                             <health_v4_aboutyou:currentlyowninsurance xpath="${xpath}" />
+                            <health_v4_aboutyou:continuous_cover xpath="${xpath}" />
                             <health_v4_aboutyou:applyrebate xpath="${xpath}" />
                             <health_v4_aboutyou:optin xpath="${xpath}" />
                         </form_v4:fieldset>

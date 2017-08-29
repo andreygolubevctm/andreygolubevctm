@@ -12,12 +12,14 @@
         $healthPartnerCover,
         $dialoguePrimaryCover,
         $dialoguePartnerCover,
-        $dialogue56,
+        $dialogue74,
         $healthSituationMedicare,
         $aboutYouFieldset,
         $yourDetailsFieldset,
         $followupCallCheckboxDialogue,
         $followupCallCheckbox,
+        $cliCallCheckboxDialogue,
+        $nonCliCallCheckboxDialogue,
         $outboundFollowupDialogue,
         $inboundQuestionsetFollowupDialogue,
         $inboundQuestionsetFollowupToggles,
@@ -28,7 +30,9 @@
         $simplesMedicareCoverForm = null,
         $applicantWrappers = {},
         currentFamilyType = null,
-        $limitedCoverHidden;
+        $limitedCoverHidden,
+        $moreInfoDialogue,
+        $dialogue36;
 
     function init() {
         $(document).ready(function () {
@@ -44,12 +48,14 @@
             $healthPartnerCover = $('input[name=health_healthCover_partner_cover]');
             $dialoguePrimaryCover = $('.simples-dialogue-primary-current-cover');
             $dialoguePartnerCover = $('.simples-dialogue-partner-current-cover');
-            $dialogue56 = $('.simples-dialogue-56');
+            $dialogue74 = $('.simples-dialogue-74');
             $healthSituationMedicare = $('.health_situation_medicare');
             $aboutYouFieldset = $('#healthAboutYou > .content');
             $yourDetailsFieldset = $('#health-contact-fieldset .content');
             $followupCallCheckboxDialogue = $('.simples-dialogue-68');
             $followupCallCheckbox = $('#health_simples_dialogue-checkbox-68');
+            $cliCallCheckboxDialogue = $('.simples-dialogue-78');
+            $nonCliCallCheckboxDialogue = $('.simples-dialogue-20');
             $outboundFollowupDialogue = $('.simples-dialogue-69');
             $inboundQuestionsetFollowupDialogue = $('.simples-dialogue-70');
             $inboundQuestionsetFollowupToggles = $inboundQuestionsetFollowupDialogue.find('a');
@@ -62,6 +68,7 @@
             $applicantWrappers.partner = $('#partner-health-cover .content:first');
 	        $privatePatientDialogue = $('.simples-dialogue-24');
             $limitedCoverHidden = $("input[name='health_situation_accidentOnlyCover']");
+            $dialogue36 = $('.simples-dialogue-36');
 
             // Handle pre-filled
             populatePrevAssignedRadioBtnGroupValue();
@@ -119,7 +126,7 @@
             var familyType = meerkat.modules.health.getSituation();
             if (!_.isEmpty(familyType) && (_.isNull(currentFamilyType) || familyType !== currentFamilyType)) {
                 var $tempMedicareForm = $simplesMedicareCoverForm.detach();
-                var $wrapperToUse = $applicantWrappers[_.indexOf(['F', 'C'], familyType) > -1 ? 'partner' : 'primary'];
+                var $wrapperToUse = $applicantWrappers[_.indexOf(['F', 'C', 'EF'], familyType) > -1 ? 'partner' : 'primary'];
                 $wrapperToUse.append($tempMedicareForm);
                 currentFamilyType = familyType;
             }
@@ -142,7 +149,6 @@
     }
 
     function applyEventListeners() {
-
         // General Toggle
         $('.simples-dialogue.optionalDialogue h3.toggle').parent('.simples-dialogue').addClass('toggle').on('click', function () {
             $(this).find('h3 + div').slideToggle(200);
@@ -166,6 +172,10 @@
 
         // open bridging page
         $('#resultsPage').on("click", ".btn-more-info", openBridgingPage);
+
+        $dialogue36.find('a').on('click', function toggleMoreText() {
+            $dialogue36.find('.simples-dialogue-36-extra-text').toggleClass('hidden');
+        });
     }
 
     function openBridgingPage(e) {
@@ -265,13 +275,15 @@
         var isFollowupCall = $followupCallCheckbox.is(':checked');
         // Set the calltype variables
         callType = getCallType();
-        if(!_.isEmpty(callType)) {
-            isValidCallType = _.indexOf(['outbound','inbound'],callType) >= 0;
+        if (!_.isEmpty(callType)) {
+            isValidCallType = _.indexOf(['outbound','inbound','cli'],callType) >= 0;
         }
         // Toggle visibility of followup call checkbox
         $followupCallCheckboxDialogue.toggleClass('hidden',!isValidCallType);
-        if(isFollowupCall && isValidCallType) {
-            if(callType === 'outbound'){
+        $cliCallCheckboxDialogue.toggleClass('hidden',(getCallType()=== null ? true : isValidCallType));
+        $nonCliCallCheckboxDialogue.toggleClass('hidden',!(getCallType() === null ? true : isValidCallType));
+        if (isFollowupCall && isValidCallType) {
+            if (_.indexOf(['outbound','cli'], callType) >= 0) {
                 // Hide inbound dialogs and show outbound
                 $inboundQuestionsetFollowupDialogue
                     .add($inboundApplicationFollowupDialogue)
@@ -307,7 +319,10 @@
     }
 
     function toggleRebateDialogue() {
-        $dialogue56.toggleClass('hidden', $healthCoverRebate.filter(':checked').val() !== "Y");
+
+        var healthSituationCover = $healthSituationCvr.val();
+
+        $dialogue74.toggleClass('hidden', !(healthSituationCover === "ESP" || healthSituationCover === "EF"));
     }
 
     function toggleBenefitsDialogue() {
@@ -346,10 +361,17 @@
         $privatePatientDialogue.toggleClass('hidden', $limitedCoverHidden.val() !== 'Y');
     }
 
+    function toggleMoreInfoDialogue() {
+        $moreInfoDialogue = $('.simples-dialogue-76');
+        $moreInfoDialogue.toggleClass('hidden', $healthSitCoverType.find('input:checked').val().toLowerCase() === "e");
+    }
+
     meerkat.modules.register("simplesBindings", {
         init: init,
         updateSimplesMedicareCoverQuestionPosition: updateSimplesMedicareCoverQuestionPosition,
-        toggleLimitedCoverDialogue: toggleLimitedCoverDialogue
+        toggleLimitedCoverDialogue: toggleLimitedCoverDialogue,
+        toggleRebateDialogue: toggleRebateDialogue,
+        toggleMoreInfoDialogue: toggleMoreInfoDialogue
     });
 
 })(jQuery);

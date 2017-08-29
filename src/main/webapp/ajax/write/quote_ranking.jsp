@@ -4,5 +4,4 @@
 	Used to send the values chosen on the toggles back to the iSeries.
 	Called whenever the user changes the "importance" of any of the toggles.
 --%>
-
 <agg_v1:write_rank rootPath="${param.rootPath}" rankBy="${param.rankBy}" />

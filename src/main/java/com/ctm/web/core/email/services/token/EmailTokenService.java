@@ -17,6 +17,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
@@ -158,7 +159,8 @@ public class EmailTokenService {
         String emailTokenAction = map.get(EmailUrlService.EMAIL_TOKEN_ACTION);
 
         try {
-            return emailTokenDao.getEmailDetails(transactionId, emailId, emailTokenType, emailTokenAction);
+            return Optional.ofNullable(emailTokenDao.getEmailDetails(transactionId, emailId, emailTokenType, emailTokenAction))
+                    .orElse(emailTokenDao.getEmailDetails(emailId));
         } catch (DaoException e) {
             LOGGER.error("Failed to get email details {},{},{},{},{}",
                     kv("emailId", emailId),
@@ -183,6 +185,7 @@ public class EmailTokenService {
             IncomingEmail incomingEmail = null;
             if (emailMaster != null) {
                 incomingEmail = new IncomingEmail();
+                incomingEmail.setGAClientId(map.get(EmailUrlService.GACLIENTID));
                 incomingEmail.setCampaignId(map.get(EmailUrlService.CAMPAIGN_ID));
                 incomingEmail.setEmailAddress(EmailUrlService.decodeEmailAddress(emailMaster.getEmailAddress()));
                 incomingEmail.setEmailHash(emailMaster.getHashedEmail());

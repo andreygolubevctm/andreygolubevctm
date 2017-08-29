@@ -17,7 +17,7 @@
 
 				<home:occupancy xpath="${xpath}/occupancy" baseXpath="${xpath}" />
 
-				<home:business_activity xpath="${xpath}/businessActivity" />
+				<home:business_activity xpath="${xpath}/businessActivity" baseXpath="${xpath}" />
 
 			</layout_v1:slide_content>
 

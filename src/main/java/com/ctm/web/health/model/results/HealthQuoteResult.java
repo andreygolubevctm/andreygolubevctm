@@ -29,6 +29,8 @@ public class HealthQuoteResult extends Result {
 
     private JsonNode ambulance;
 
+    private JsonNode accident;
+
     private JsonNode hospital;
 
     private Long transactionId;
@@ -153,5 +155,13 @@ public class HealthQuoteResult extends Result {
 
     public void setGiftCardAmount(final BigDecimal giftCardAmount) {
         this.giftCardAmount = giftCardAmount;
+    }
+
+    public JsonNode getAccident() {
+        return accident;
+    }
+
+    public void setAccident(JsonNode accident) {
+        this.accident = accident;
     }
 }

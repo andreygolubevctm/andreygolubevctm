@@ -64,3 +64,50 @@
     }
   }
 }
+
+.landlord-filters-mobile {
+	display: none;
+	padding: 5px 0;
+	span {
+		float: left;
+		width: 33%;
+		position: relative;
+		padding: 0 1rem;
+		i {
+			position: absolute;
+			left: -5px;
+			top: 0;
+		}
+	}
+}
+
+.landlord-navbar-text {
+	float: left;
+}
+
+@media (@sm) {
+	.landlord-filters {
+		padding: 5px 0;
+	}
+}
+
+@media (@sm-only) {
+	.home #navbar-filter li.filter-excess {
+		width: 90px;
+	}
+	.home #navbar-filter-labels .navbar-text.filter-home-excess-label, .home #navbar-filter-labels .navbar-text.filter-contents-excess-label {
+		width: 90px;
+	}
+	#navbar-filter-labels .navbar-text {
+		font-size: 10px;
+	}
+}
+
+@media (@xs-only) {
+	.landlord-filters {
+		display: none;
+	}
+	.landlord-filters-mobile {
+		display: block;
+	}
+}

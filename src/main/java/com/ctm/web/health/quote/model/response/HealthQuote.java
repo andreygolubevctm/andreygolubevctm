@@ -29,6 +29,7 @@ public class HealthQuote {
     private JsonNode hospital;
     private JsonNode extras;
     private JsonNode ambulance;
+    private JsonNode accident;
 
     private Promotion promotion;
 
@@ -174,5 +175,13 @@ public class HealthQuote {
 
     public void setGiftCard(final GiftCard giftCard) {
         this.giftCard = giftCard;
+    }
+
+    public JsonNode getAccident() {
+        return accident;
+    }
+
+    public void setAccident(JsonNode accident) {
+        this.accident = accident;
     }
 }

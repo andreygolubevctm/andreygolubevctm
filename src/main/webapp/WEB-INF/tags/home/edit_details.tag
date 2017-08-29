@@ -81,14 +81,14 @@
 						<div class="col-xs-12">
 							<p class="detail-title">Occupancy</p>
 							<ul>
-								<li>{{ if(ownsHome) { }}Owns home{{ } else { }}Does not own home{{ } }}</li>
+								<li>{{ if(ownsHome) { }}Owns home{{ } else if(ownsHomeLandlord) { }} Owns property - Rented to tenants {{ }  else { }} Does not own home{{ } }}</li>
 								{{ if(isPrincipalResidence) { }}
 									<li>Principal place of residence</li>
 									{{ if (ownsHome) { }}
 										<li><span data-source="#home_occupancy_howOccupied"></span></li>
 									{{ } }}
 								{{ } else { }}
-									{{ if (ownsHome) { }}
+									{{ if (ownsHome && !meerkat.site.isLandlord) { }}
 										<li><span data-source="#home_occupancy_howOccupied"></span></li>
 									{{ } }}
 								{{ } }}
@@ -178,7 +178,11 @@
 									<li>Home Value: <span data-source="#home_coverAmounts_rebuildCostentry"></span></li>
 								{{ } }}
 								{{ if(coverType == 'Contents Cover Only' || coverType == 'Home & Contents Cover') { }}
-									<li>Contents Value: <span data-source="#home_coverAmounts_replaceContentsCostentry"></span></li>
+									{{ if(!meerkat.site.isLandlord) { }}
+										<li>Contents Value: <span data-source="#home_coverAmounts_replaceContentsCostentry"></span></li>
+									{{ } else { }}
+										<li>Contents Value: <span data-source="#home_coverAmounts_replaceContentsCostLandlordentry"></span></li>
+									{{ } }}
 									{{ if(isSpecifyingPersonalEffects && isPrincipalResidence) { }}
 										<li>Unspecified Personal Effects <span data-source="#home_coverAmounts_unspecifiedCoverAmount"></span></li>
 										{{ if(specifiedPersonalEffects) { }}
@@ -283,15 +287,28 @@
 						<div class="col-xs-12">
 							<p class="detail-title">Previous Cover</p>
 							<ul>
-								{{ if(previousCover) { }}
-									<li>Has had home and/or contents insurance in the last 5 years</li>
+								{{ if(meerkat.site.isLandlord) { }}
+									{{ if(landlordInsuranceLast5Years) { }}
+											<li>Has had landlord insurance in the last 5 years</li>
+									{{ } else { }}
+											<li>Has not had landlord insurance in the last 5 years</li>
+									{{ } }}
+									{{ if(landlordInsuranceClaims) { }}
+											<li>Has made landlord claims in the last 5 years</li>
+									{{ } else { }}
+											<li>Has not made landlord claims in the last 5 years</li>
+									{{ } }}
 								{{ } else { }}
-									<li>Has not had home and/or contents insurance in the last 5 years</li>
-								{{ } }}
-								{{ if(previousClaims) { }}
-									<li>Has made home and/or contents claims in the last 5 years</li>
-								{{ } else { }}
-									<li>Has not made home and/or contents claims in the last 5 years</li>
+									{{ if(previousCover) { }}
+										<li>Has had home and/or contents insurance in the last 5 years</li>
+									{{ } else { }}
+										<li>Has not had home and/or contents insurance in the last 5 years</li>
+									{{ } }}
+									{{ if(previousClaims) { }}
+										<li>Has made home and/or contents claims in the last 5 years</li>
+									{{ } else { }}
+										<li>Has not made home and/or contents claims in the last 5 years</li>
+									{{ } }}
 								{{ } }}
 							</ul>
 

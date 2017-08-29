@@ -128,6 +128,8 @@
             } else {
                 startStepId = meerkat.site.journeyStage;
             }
+        } else if (meerkat.site.utm_medium === 'email') {
+            startStepId = 'results';
         }
 
         var configureJourneyEngine = _.bind(meerkat.modules.journeyEngine.configure, this, {
@@ -192,7 +194,9 @@
                     meerkat.modules.healthChoices.setState(meerkat.site.choices.state);
                     meerkat.modules.healthChoices.shouldPerformUpdate(meerkat.site.choices.performHealthChoicesUpdate);
                 }
-                meerkat.modules.healthRebate.toggleRebateQuestions();
+                meerkat.modules.healthRebate.onStartInit();
+                meerkat.modules.healthPrimary.onStartInit();
+                meerkat.modules.healthPartner.onStartInit();
             },
             onBeforeEnter: function enterStartStep(event) {
                 if (event.isForward) {
@@ -208,6 +212,7 @@
 
                 // configure progress bar
                 configureProgressBar(true);
+
             },
             onAfterEnter: function healthAfterEnter() {
 
@@ -228,7 +233,7 @@
                 includeFormData: true
             },
             validation: {
-                validate: false,
+                validate: true,
                 customValidation: function validateSelection(callback) {
                     var areBenefitsSwitchOn = meerkat.modules.benefitsSwitch.isHospitalOn() || meerkat.modules.benefitsSwitch.isExtrasOn(),
                         success = meerkat.modules.splitTest.isActive(2) ? areBenefitsSwitchOn : true;
@@ -531,36 +536,62 @@
 
     // @todo review this during progress bar refactor
     function configureProgressBar(isJourney) {
+        var labels = {
+            journey: {
+                startStep: 'About You',
+                benefitStep: '<span class="hidden-sm hidden-md hidden-lg">Preferences</span><span class="hidden-xs">Insurance Preferences</span>',
+                contactStep: 'Contact Details'
+            },
+            application: {
+                applyStep: 'Application',
+                paymentStep: 'Payment',
+                thankYouStep: 'Thank You'
+            }
+        };
+
+        if (meerkat.modules.splitTest.isActive(4)) {
+            labels.journey.startStep = '<span class="hidden-sm hidden-md hidden-lg">About</span><span class="hidden-xs">About You</span>';
+            labels.journey.contactStep = '<span class="hidden-sm hidden-md hidden-lg">Details</span><span class="hidden-xs">Contact Details</span>';
+            labels.journey.resultsStep = '<span class="hidden-sm hidden-md hidden-lg">Prices</span><span class="hidden-xs">Get Prices</span>';
+        }
+
         var phase = isJourney ? 'journey' : 'application',
             progressBarSteps = {
                 journey: [
                     {
-                        label: 'About you',
+                        label: labels.journey.startStep,
                         navigationId: steps.startStep.navigationId
                     },
                     {
-                        label: '<span class="hidden-sm hidden-md hidden-lg">Preferences</span><span class="hidden-xs">Insurance preferences</span>',
+                        label: labels.journey.benefitStep,
                         navigationId: steps.benefitsStep.navigationId
                     },
                     {
-                        label: 'Contact details',
+                        label: labels.journey.contactStep,
                         navigationId: steps.contactStep.navigationId
                     }
                 ],
                 application: [
                     {
-                        label: 'Application',
+                        label: labels.application.applyStep,
                         navigationId: steps.applyStep.navigationId
                     },
                     {
-                        label: 'Payment',
+                        label: labels.application.paymentStep,
                         navigationId: steps.paymentStep.navigationId
                     },
                     {
-                        label: 'Thank You'
+                        label: labels.application.thankYouStep
                     }
                 ]
             };
+
+        if (meerkat.modules.splitTest.isActive(4)) {
+            progressBarSteps.journey.push({
+                label: labels.journey.resultsStep,
+                navigationId: steps.resultsStep.navigationId
+            });
+        }
 
         // Better progressBar just works...
         meerkat.modules.journeyProgressBar.changeTargetElement('.journeyProgressBar[data-phase='+phase+']');

@@ -85,6 +85,8 @@
 			<xsl:when test="/health/situation/healthCvr = 'C'">C</xsl:when>
 			<xsl:when test="/health/situation/healthCvr = 'SPF'">U</xsl:when>
 			<xsl:when test="/health/situation/healthCvr = 'F'">F</xsl:when>
+			<xsl:when test="/health/situation/healthCvr = 'ESP'">U</xsl:when>
+			<xsl:when test="/health/situation/healthCvr = 'EF'">F</xsl:when>
 		</xsl:choose>
 	</xsl:variable>
 

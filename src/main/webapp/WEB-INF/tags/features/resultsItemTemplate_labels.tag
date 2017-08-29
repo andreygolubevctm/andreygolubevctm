@@ -10,7 +10,11 @@
     {{ var feature = featureIterator[i]; }}
     <%-- In health, we need to do this check, as we apply a property to the child object of the initial structure,
     when copying it to the 'your selected benefits'. Doing it in this manner prevents the need to store a copy of 100kb+ structure in memory --%>
-    {{ if(feature.doNotRender === true) { continue; } }}
+    {{ var filterByLandlord = false; }}
+    {{ if (meerkat.site.isLandlord && feature.className && feature.className.indexOf('notLandlord') > -1) filterByLandlord = true; }}
+    {{ if (!meerkat.site.isLandlord && feature.className && feature.className.indexOf('isLandlord') > -1) filterByLandlord = true; }}
+
+    {{ if (feature.doNotRender === true || filterByLandlord) { continue; } }}
 
 
     {{ var dataSKey = typeof feature.shortlistKey != 'undefined' && feature.shortlistKey != '' ? 'data-skey="'+feature.shortlistKey + '"' : ''; }}

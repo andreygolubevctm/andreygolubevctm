@@ -33,27 +33,25 @@
 
     function _applyEventListeners() {
         $elements.input
-            .on('keyup', function(event) {
+            .on('change', function(event) {
                 var value = $(this).val();
 
-                if($elements.results.find('.suburb-item').length > 1) {
+                if ($elements.results.find('.suburb-item').length > 1) {
                     _postcode = '';
                 }
 
-                // if value valid and its not previously searched
-                if ($(this).isValid() && value !== _postcode) {
+                // if value valid
+                if ($(this).isValid()) {
                     // clear the results
                     _clearResults();
 
                     // do search
                     _getResults(value);
                 } else {
-                    if (value !== _postcode) {
-                        $elements.location.val('');
-                        $elements.location.attr('value', '');
-                        $elements.state.val('');
-                        $elements.results.find('.suburb-item, .suburb-item button').removeClass('selected');
-                    }
+                    $elements.location.val('');
+                    $elements.location.attr('value', '');
+                    $elements.state.val('').trigger('change');
+                    $elements.results.find('.suburb-item, .suburb-item button').removeClass('selected');
                 }
             });
 
@@ -180,7 +178,7 @@
     }
 
     function _setLocation(location) {
-        $elements.state.val(location[2]);
+        $elements.state.val(location[2]).trigger('change');
         $elements.suburb.val(location[0]);
         var locationString = _createLocationString(location);
         meerkat.modules.healthLocation.setLocation(locationString);

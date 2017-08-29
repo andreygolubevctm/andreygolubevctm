@@ -48,7 +48,7 @@
             <div class="companyLogo hidden-sm"></div>
         </c:if>
         <h5 class="name">NAME</h5>
-        <p>
+        <p class="startDate-wrapper">
             <strong>Start Date:</strong> <span class="startDate">XXX</span>
         </p>
         <p>

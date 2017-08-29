@@ -22,16 +22,25 @@
 			businessType:		".businessType",
 			employeeAmount:		".employeeAmount"
 	};
+	
+	function businessFieldChange() {
+		$(document).on('click', '#businessTypeContainer input' , function() {
+			toggleBusinessFields();
+		});
+		
+		$(document).on('change', '#businessTypeContainer select[name=home_businessActivity_businessType_drop-down-selector]', function() {
+			toggleBusinessFields();
+		});
+	}
 
 	/* Here you put all functions for use in your module */
 	function toggleBusinessFields(speed){
-		var businessTypeValue = $('#'+elements.name+'_businessType').find('option:selected').text().toLowerCase();
-
-		if ( businessTypeValue == 'home office' || businessTypeValue == 'surgery/consulting rooms') {
+		var businessTypeValue = $('#'+elements.name+'_businessType').find('option:selected').val().toLowerCase();
+		if ( businessTypeValue === 'home office' || businessTypeValue === 'surgery/consulting rooms') {
 			$(elements.businessRooms+', '+elements.employees).slideDown(speed);
 			$(elements.dayCareChildren+', '+elements.registeredDayCare).slideUp(speed);
 			toggleEmployeeAmount();
-		} else if ( businessTypeValue == 'day care') {
+		} else if ( businessTypeValue === 'day care') {
 			$(elements.dayCareChildren+', '+elements.registeredDayCare).slideDown(speed);
 			$(elements.businessRooms+', '+elements.employees+', '+elements.employeeAmount).slideUp(speed);
 		} else {
@@ -63,6 +72,7 @@
 		$(elements.businessType+', '+elements.businessRooms+', '+elements.employees+', '+elements.employeeAmount+', '+elements.dayCareChildren+', '+elements.registeredDayCare).slideUp(speed);
 	}
 	function applyEventListeners() {
+		businessFieldChange();
 		$(document).ready(function() {
 			$('input[name='+elements.name+'_conducted]').on('change', function(){
 				toggleBusinessType();

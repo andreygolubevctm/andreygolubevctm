@@ -12,7 +12,12 @@
         {{ if (obj.homeExcess !== null && obj.homeExcess.amount !== '') { }}
             <div class="excess">
                 <div class="excessAmount">{{= obj.homeExcess.amountFormatted }}</div>
-                <div class="excessTitle">Home<br /> excess</div>
+                {{ if(meerkat.site.isLandlord) { }}
+                    <div class="excessTitle">Building<br /> excess</div>
+                {{ } else { }}
+                    <div class="excessTitle">Home<br /> excess</div>
+                {{ } }}
+                
             </div>
         {{ } }}
 

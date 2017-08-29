@@ -8,13 +8,9 @@
 <%-- VARIABLES --%>
 <c:set var="benefitsIntroCopy"><content:get key="benefitsIntroCopy" /></c:set>
 
-<simples:dialogue id="49" vertical="health" />
-
-<form_v2:fieldset legend="What would you like covered in your new health insurance policy?" postLegend="${benefitsIntroCopy}" className="mainBenefitHeading">
+<form_v2:fieldset legend="What would you like covered in your new health policy?" postLegend="${benefitsIntroCopy}" className="mainBenefitHeading">
 	<field_v1:hidden xpath="${pageSettings.getVerticalCode()}/benefits/covertype" defaultValue="customise" />
 </form_v2:fieldset>
-
-<simples:dialogue id="46" className="simples-dialogue-hospital-cover" vertical="health" />
 
 <field_v1:hidden xpath="${pageSettings.getVerticalCode()}/situation/coverType" defaultValue="C" />
 <%-- Toggle for benefits --%>

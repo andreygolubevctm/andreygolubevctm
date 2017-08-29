@@ -4,7 +4,8 @@
 
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
-        $elements = {};
+        $elements = {},
+        $unitElements;
 
     function init(){
         $(document).ready(function () {
@@ -20,12 +21,19 @@
                 appSuburbName: $('#health_application_address_suburbName'),
                 appState: $('#health_application_address_state'),
                 healthSituationState: $('#health_situation_state'),
+                healthProductHospitalClass: $('#health_application_productClassification_hospital'),
+                healthProductExtrasClass: $('#health_application_productClassification_extras')
+
+            };
+
+            $unitElements = {
                 appAddressUnitShop: $('#health_application_address_unitShop'),
                 appAddressStreetNum: $('#health_application_address_streetNum'),
                 appAddressUnitType: $('#health_application_address_unitType'),
                 appPostalUnitShop: $('#health_application_postal_unitShop'),
                 appPostalStreetNum: $('#health_application_postal_streetNum'),
-                appPostalUnitType: $('#health_application_postal_unitType')
+                appPostalUnitType: $('#health_application_postal_unitType'),
+                appPostalNonStdStreet: $('#health_application_postal_nonStdStreet')
             };
         });
     }
@@ -46,6 +54,9 @@
         if (meerkat.modules.healthChoices.hasPartner()) {
             _toggleSelectGender('partner');
         }
+
+        setHospitalCoverClass();
+        setExtrasCoverClass();
     }
 
     function onInitialise() {
@@ -86,8 +97,13 @@
             $('#health_application_' + personDetailType + '_gender').val(gender);
         });
 
-        $elements.appAddressUnitType.add($elements.appPostalUnitType).on('change', function toggleUnitRequiredFields() {
-           _toggleUnitRequired(this.id.indexOf('address') !== -1 ? 'Address' : 'Postal', this.value !== '');
+        $unitElements.appPostalUnitType.on('change', function toggleUnitRequiredFields() {
+            _changeStreetNoLabel(this.value);
+            _toggleStreetRules(this.value);
+        });
+
+        $unitElements.appAddressUnitShop.add($unitElements.appPostalUnitShop).on('change', function toggleUnitShopRequiredFields() {
+            _toggleUnitShopRequired(this.id.indexOf('address') !== -1 ? 'Address' : 'Postal', !_.isEmpty(this.value));
         });
     }
 
@@ -134,14 +150,43 @@
         }
     }
 
-    function _toggleUnitRequired(addressType, isUnit) {
-        var $fields = $elements['app'+addressType+'UnitShop'].add($elements['app'+addressType+'StreetNum']);
+    function _changeStreetNoLabel(unitType) {
+        var $label = $unitElements.appPostalStreetNum.closest('.form-group').find('label.control-label'),
+            $errorField = $('#health_application_postal_streetNum-error'),
+            labelText = 'Street No.',
+            msgRequired = 'Please enter a street number';
 
-        $fields.setRequired(isUnit);
+        if (unitType === 'PO') {
+            labelText = 'Box No.';
+            msgRequired = 'Please enter a box number';
+        }
 
-        // blur out of fields to trigger validation when unitType not equal to 'UN'
-        if (!isUnit) {
-            $fields.blur();
+        $label.text(labelText);
+        $unitElements.appPostalStreetNum.attr('data-msg-required', msgRequired);
+
+        if ($errorField.length > 0) {
+            $errorField.text(msgRequired);
+        }
+    }
+
+    function _toggleStreetRules(unitType) {
+        if (unitType === 'PO') {
+            $unitElements.appPostalNonStdStreet
+                .removeRule('regex')
+                .removeRule('validAddress');
+        } else {
+            $unitElements.appPostalNonStdStreet
+                .addRule('regex', '[a-zA-Z0-9 ]+')
+                .addRule('validAddress', 'health_application_postal');
+        }
+    }
+
+    function _toggleUnitShopRequired(addressType, isUnitShop) {
+        $unitElements['app'+addressType+'UnitType'].setRequired(isUnitShop);
+
+        // blur out of fields to trigger validation when unitShop not empty
+        if (!isUnitShop) {
+            $unitElements['app'+addressType+'UnitType'].blur();
         }
     }
 
@@ -158,6 +203,41 @@
         }
 
         return true;
+    }
+
+    function setHospitalCoverClass() {
+
+        var theSelectedItem = meerkat.modules.healthResults.getSelectedProduct();
+        var returnVal = "";
+
+        if ((!_.isEmpty(theSelectedItem.info.situationFilter)) && theSelectedItem.info.situationFilter === 'Y') {
+            returnVal = "limited";
+        } else {
+            if (!_.isEmpty(theSelectedItem.hospital.ClassificationHospital)){
+                if (theSelectedItem.hospital.ClassificationHospital === 'Budget' || theSelectedItem.hospital.ClassificationHospital === 'Public') {
+                    returnVal = "basic";
+                } else {
+                    returnVal = theSelectedItem.hospital.ClassificationHospital.toLowerCase();
+                }
+            }
+        }
+
+        $elements.healthProductHospitalClass.val(returnVal);
+    }
+
+    function setExtrasCoverClass() {
+        var theSelectedItem = meerkat.modules.healthResults.getSelectedProduct();
+        var returnVal = "";
+
+        if (!_.isEmpty(theSelectedItem.extras.ClassificationGeneralHealth)) {
+            if (theSelectedItem.extras.ClassificationGeneralHealth === "Budget") {
+                returnVal = "basic";
+            } else {
+                returnVal = theSelectedItem.extras.ClassificationGeneralHealth.toLowerCase();
+            }
+        }
+
+        $elements.healthProductExtrasClass.val(returnVal);
     }
 
     meerkat.modules.register('healthApplyStep', {

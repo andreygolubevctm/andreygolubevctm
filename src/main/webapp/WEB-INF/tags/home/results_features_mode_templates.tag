@@ -97,7 +97,12 @@
         {{ var homeExcessCol = (contentsExcessAmount !== null && homeExcessAmount !== null) ? '6' : '12'; }}
         <div class="col-xs-{{= homeExcessCol }}">
             <div class="excessAmount">{{= obj.homeExcess.amountFormatted }}</div>
-            <div class="excessTitle">Home excess</div>
+            
+            {{ if(meerkat.site.isLandlord) { }}
+              <div class="excessTitle">Building excess</div>
+            {{ } else { }}
+              <div class="excessTitle">Home excess</div>
+            {{ } }}
         </div>
         {{ } else { }}
         <div class="col-xs-12">

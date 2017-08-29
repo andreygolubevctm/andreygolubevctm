@@ -18,6 +18,6 @@
         <c:if test="${!isDualPriceActive eq true}">
         {{= renderedPriceTemplate }}
         </c:if>
-        <a href="javascript:;" class="getPrintableBrochures">Get printable brochures in your email inbox</a>
+        <a href="javascript:;" class="btn btn-secondary btn-sm btn-block narrowMarginTop getPrintableBrochures">Email myself brochures</a>
     </div>
 </div>

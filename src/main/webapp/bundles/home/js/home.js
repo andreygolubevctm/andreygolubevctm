@@ -55,6 +55,52 @@
 
 	}
 
+	function toggleLandlords() {
+		var landlord = meerkat.site.isLandlord;
+		$('.isLandlord input').prop('disabled', !landlord);
+		$('.notLandlord input').prop('disabled', landlord);
+		if (landlord) {
+			$('.isLandlord').show();
+			$('.notLandlord').hide();
+		} else {
+			$('.notLandlord').show();
+			$('.isLandlord').hide();
+		}
+		changeCoverQuestions();
+	}
+	
+	function changeCoverQuestions() {
+		var items = {
+		  landlord: [
+		    { value: 'Home Cover Only', text: 'Building Cover Only' },
+		    { value: 'Contents Cover Only', text: 'Contents Cover Only' },
+		    { value: 'Home & Contents Cover', text: 'Building & Contents Cover' }
+		  ],
+		  home: [
+		    { value: 'Home Cover Only', text: 'Home Cover Only' },
+		    { value: 'Contents Cover Only', text: 'Contents Cover Only' },
+		    { value: 'Home & Contents Cover', text: 'Home & Contents Cover' }
+		  ]
+		};
+		
+		function template(value, text) {
+			return '<option class="temp-items" value="' + value + '">' + text + '</option>';
+		}
+		
+		function changeDropdownVals() {
+			var $target = $('#home_coverType');
+			var $targetVal = $target.val();
+		  var type = meerkat.site.isLandlord ? 'landlord' : 'home';
+		  $target.find('.temp-items').remove();
+		  for (var i = 0; items[type].length > i; i++) {
+		  	$target.append(template(items[type][i].value, items[type][i].text));
+		  }
+			$target.val($targetVal);
+		}
+		
+		changeDropdownVals();
+	}
+
 	function initJourneyEngine() {
 
 		if (meerkat.site.pageAction === "confirmation") {
@@ -64,8 +110,9 @@
 		} else {
 
 			// Initialise the journey engine steps and bar
-			initProgressBar(true);
 
+			initProgressBar(true);
+			toggleLandlords();
 			// Initialise the journey engine
 			var startStepId = null;
 			if (meerkat.site.isFromBrochureSite === true) {
@@ -501,7 +548,11 @@
 	}
 
 	function getVerticalFilter() {
-		return $('#home_coverType').val() || null;
+		var homeCoverType = $('#home_coverType').val() || null;
+		if (homeCoverType && meerkat.site.isLandlord) {
+			homeCoverType = 'Landlord ' + homeCoverType;
+		}
+		return homeCoverType;
 	}
 	// Build an object to be sent by SuperTag tracking.
 	function getTrackingFieldsObject(special_case){
@@ -730,7 +781,7 @@
 
 		return homeUnitItems;
 	}
-        
+
 	meerkat.modules.register("home", {
 		init: initHome,
 		events: moduleEvents,
@@ -739,7 +790,8 @@
 		getTrackingFieldsObject: getTrackingFieldsObject,
 		getVerticalFilter: getVerticalFilter,
 		getPropertyType: getPropertyType,
-		getHomeUnitsItems: getHomeUnitsItems
+		getHomeUnitsItems: getHomeUnitsItems,
+		toggleLandlords: toggleLandlords
 	});
 
 })(jQuery);

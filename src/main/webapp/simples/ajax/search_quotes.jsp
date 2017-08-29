@@ -22,15 +22,26 @@ ${logger.info('Begin search Quotes. {}' , log:kv('searchPhrase',searchPhrase ))}
 </c:catch>
 <c:choose>
 	<c:when test="${empty error}">
+${logger.info(data)}
 		<%-- Read the data bucket and formate results --%>
-		<c:import var="xslt" url="/WEB-INF/xslt/simples_search_results.xsl" />
-		<c:set var="resultsXml">
-			<x:transform doc="${go:getEscapedXml(data['search_results'])}" xslt="${xslt}" />
-		</c:set>
+		<c:choose>
+			<c:when test="${not empty data['no_results']}">
+				{
+					"errors": [{"message":"No results found for [${go:jsEscape(searchPhrase)}]"}] ,
+					"searchPhrase": "${go:jsEscape(searchPhrase)}",
+					"simplesMode": "${searchService.getSearchMode().toString()}"
+				}
+			</c:when>
+			<c:otherwise>
+				<c:import var="xslt" url="/WEB-INF/xslt/simples_search_results.xsl" />
+				<c:set var="resultsXml">
+					<x:transform doc="${go:getEscapedXml(data['search_results'])}" xslt="${xslt}" />
+				</c:set>
 
-		<%-- Convert XML results into JSON and delete all search data from data bucket --%>
-		${go:XMLtoJSON(resultsXml)}
-		<go:setData dataVar="data" xpath="search_results" value="*DELETE" />
+				<%-- Convert XML results into JSON and delete all search data from data bucket --%>
+				${go:XMLtoJSON(resultsXml)}
+			</c:otherwise>
+		</c:choose>
 	</c:when>
 	<c:otherwise>
 		{

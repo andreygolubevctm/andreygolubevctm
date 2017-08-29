@@ -16,7 +16,7 @@
 
                 <%-- Product summary header for mobile --%>
                 <div class="row productSummary-parent <c:choose><c:when test="${isDualPriceActive eq true}">hidden</c:when><c:otherwise>visible-xs</c:otherwise></c:choose>">
-                    <div class="productSummary-affix affix-top visible-xs">
+                    <div class="productSummary visible-xs">
                         <health_v4_payment:policySummary />
                     </div>
                 </div>
@@ -36,6 +36,9 @@
                                   className="cover-start-date-on-application-step" >
                     <health_v4_payment:calendar xpath="health/payment/details" />
                 </form_v4:fieldset>
+
+                <input type="hidden" id="${pageSettings.getVerticalCode()}_application_productClassification_hospital" name="${pageSettings.getVerticalCode()}_application_productClassification_hospital" value="">
+                <input type="hidden" id="${pageSettings.getVerticalCode()}_application_productClassification_extras" name="${pageSettings.getVerticalCode()}_application_productClassification_extras" value="">
 
                 <health_v4_agr:modal />
             </jsp:body>

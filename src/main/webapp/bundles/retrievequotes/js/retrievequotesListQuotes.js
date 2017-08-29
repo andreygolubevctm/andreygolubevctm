@@ -118,6 +118,7 @@
 
         var data = {
             $element: $element,
+            isLandlord: ('true' == $element.attr("data-islandlord")),
             vertical: $element.attr("data-vertical"),
             transactionId: $element.attr("data-transactionid"),
             inPast: $element.attr("data-inpast") || false
@@ -172,10 +173,10 @@
 
     function _onClickAmend(e) {
         var data = _getClickElementData(e.target);
-        _retrieveQuote(data.vertical, "amend", data.transactionId);
+        _retrieveQuote(data.vertical, "amend", data.transactionId, null, data.isLandlord);
     }
 
-    function _retrieveQuote(vertical, action, transactionId, newDate) {
+    function _retrieveQuote(vertical, action, transactionId, newDate, isLandlord) {
         if(vertical === "quote")
             vertical = "car";
 
@@ -190,7 +191,6 @@
 
         if (newDate)
             data.newDate = newDate;
-
         var $ajax = meerkat.modules.comms.post({
             url: "ajax/json/load_quote.jsp",
             errorLevel: "silent",
@@ -220,9 +220,9 @@
 
                 if(data && data.result) {
                     var result = data.result;
-
+                    var landlord = isLandlord ? '&landlord=true' : '';
                     if(result.destUrl) {
-                        window.location.href = result.destUrl + '&ts=' + Number(new Date());
+                        window.location.href = result.destUrl + landlord + '&ts=' + Number(new Date());
                         return;
                     } else {
                         if(result.showToUser && result.error) {

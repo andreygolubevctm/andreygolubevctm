@@ -11,6 +11,10 @@
         premiumIncreaseContent = $('.healthPremiumIncreaseContent'),
         maxMilliSecondsForMessage = $("#maxMilliSecToWait").val(),
         resultsStepIndex = 3,
+        extendedFamilyResultsRulesAjax = null,
+        providersReturned = [],
+        extendedFamilyResultsRulesData = {},
+        extendedFamilyResultsRules = '',
 
         templates = {
             premiumsPopOver:
@@ -226,7 +230,8 @@
                     callback: meerkat.modules.healthResults.rankingCallback,
                     forceIdNumeric: true
                 },
-                incrementTransactionId: false
+                incrementTransactionId: false,
+                setContainerWidthCB: getElementWidth
             });
 
         } catch (e) {
@@ -314,6 +319,35 @@
                 meerkat.modules.healthSnapshot.renderPreResultsRowSnapshot();
                 // turn off increment tranId
                 Results.settings.incrementTransactionId = false;
+
+                providersReturned = [];
+                extendedFamilyResultsRulesData = {};
+                extendedFamilyResultsRules = "";
+                extendedFamilyResultsRulesAjax = null;
+
+                //Only look for Extended Family rules if (simples && (extendedFamily || ExtendedSingleParentFamily))
+                if (meerkat.site.isCallCentreUser) {
+
+                    var healthSituationHealthCvr = $('#health_situation_healthCvr').val();
+
+                    if (healthSituationHealthCvr === 'EF' || healthSituationHealthCvr ==='ESP') {
+
+                        //Get an array of distinct providers from the results returned
+                        Results.model.filteredProducts.forEach(
+                            function(item){
+                                if (providersReturned.indexOf(item.info.provider) < 0) {
+                                    providersReturned.push(item.info.provider);
+                                }
+                            }
+                        );
+                        if (providersReturned.length > -1){
+                            //get any extended family rules from the content_supplementary table for the returned providers and insert them into the dialog box
+                            setExtendedFamilyResultsRules();
+                        } else {
+                            $('.extFamilyFundSpecificRules').html('');
+                        }
+                    }
+                }
             });
             var tEnd = new Date().getTime();
             var tFetchFinish = (tEnd - tStart);
@@ -334,7 +368,7 @@
                 }
             }
 
-            // if online user load quote from brochures edm (with attached productId), compare it with returend result set, if it is in there, select it, and go to apply stage.
+            // if online user load quote from brochures edm (with attached productId), compare it with returned result set, if it is in there, select it, and go to apply stage.
             if (($('input[name="health_directApplication"]').val() === 'Y')) {
                 Results.setSelectedProduct(meerkat.site.loadProductId);
                 var productMatched = Results.getSelectedProduct();
@@ -443,7 +477,54 @@
             }
 
         });
+
+        meerkat.messaging.subscribe(meerkatEvents.device.RESIZE_DEBOUNCED, function resultsWindowResized() {
+            if (meerkat.modules.journeyEngine.getCurrentStep().navigationId === "results") {
+                Results.view.calculateResultsContainerWidth();
+            }
+        });
     }
+
+
+    function getProvidersReturned() {
+        return providersReturned;
+    }
+
+
+    function setExtendedFamilyResultsRules(){
+
+        extendedFamilyResultsRulesAjax = meerkat.modules.comms.get({
+            url: 'spring/content/getsupplementary.json',
+            data: {
+                vertical: 'HEALTH',
+                key: 'ExtendedFamilyRulesResultsPageInfo'
+            },
+            cache: true,
+            dataType: 'json',
+            useDefaultErrorHandling: false,
+            errorLevel: 'silent',
+            timeout: 5000,
+            onSuccess: function onSubmitSuccess(data) {
+
+                //get each extended family rule returned from the content_supplementary table
+                data.supplementary.forEach(function(item) {
+                    extendedFamilyResultsRulesData[item.supplementaryKey] = item.supplementaryValue;
+                });
+
+                //build extended family rules HTML for the providers returned on the results page
+                providersReturned.forEach(function(provider){
+                    if (extendedFamilyResultsRulesData[provider]) {
+                        extendedFamilyResultsRules += extendedFamilyResultsRulesData[provider];
+                    }
+                });
+
+                //insert returned rules into Dialog box
+                $('.extFamilyFundSpecificRules').html(extendedFamilyResultsRules);
+            }
+        });
+
+    }
+
 
     /**
      * Utility function to find an object by object value.
@@ -818,7 +899,7 @@
             case 'AHM':
                 usefulLinks.push(
                     {"name" : "Privatehealth.gov.au", "url": "http://www.privatehealth.gov.au/dynamic/InsurerDetails.aspx?code=AHM"},
-                    {"name" : "Hospital Network", "url": "https://members.ahm.com.au/pages/find-a-provider/"}
+                    {"name" : "Hospital Network", "url": "https://members.ahm.com.au/find-a-provider"}
                 );
                 break;
             case 'AUF':
@@ -1046,6 +1127,16 @@
         $('.floated-previous-arrow').addClass('hidden');
     }
 
+    function getElementWidth($element) {
+        if ($element.length === 0) return 0;
+
+        var boundingClientRectWidth = $element[0].getBoundingClientRect().width,
+            marginLeft = parseInt($element.css('margin-left')),
+            marginRight = parseInt($element.css('margin-right'));
+
+        return boundingClientRectWidth + marginLeft + marginRight;
+    }
+
     meerkat.modules.register('healthResults', {
         init: init,
         events: moduleEvents,
@@ -1069,7 +1160,8 @@
         setLhcApplicable: setLhcApplicable,
         resultsStepIndex: resultsStepIndex,
         setSelectedBenefitsList: setSelectedBenefitsList,
-        hideNavigationLink: hideNavigationLink
+        hideNavigationLink: hideNavigationLink,
+        getProvidersReturned : getProvidersReturned
     });
 
 })(jQuery);
