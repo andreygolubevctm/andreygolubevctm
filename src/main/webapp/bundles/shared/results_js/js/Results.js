@@ -78,7 +78,7 @@ var Results = {
 				mode: 'slide', //page
 				touchEnabled: false,
 				emptyContainerFunction: false, //You can specify a function for custom code that will empty the pagination container
-				afterPaginationRefreshFunction: Results.afterPaginationRefreshFunction, //You can specify a function for custom code to run after the pagination links have been generated
+				afterPaginationRefreshFunction: false, //You can specify a function for custom code to run after the pagination links have been generated
 				useSubPixelWidths: false
 			},
 			availability: {
@@ -621,15 +621,5 @@ var Results = {
         product.isPinned = 'N';
         $(Results.settings.elements.resultsOverflow).removeClass('product-pinned');
         Results.pagination.hasPinnedProduct = false;
-	},
-
-	afterPaginationRefreshFunction: function() {
-		if (Results.settings.balanceCurrentPageRowsHeightOnly.mobile && meerkat.modules.deviceMediaState.get() === 'xs') {
-			_.delay(function() {
-				Features.clearSetHeights();
-				Features.balanceVisibleRowsHeight();
-				$(Results.settings.elements.resultsContainer).trigger("populateFeaturesEnd");
-			}, 25);
-		}
 	}
 };

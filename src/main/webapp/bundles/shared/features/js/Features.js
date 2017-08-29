@@ -27,8 +27,7 @@ Features = {
 				// Perform tasks required after breakpoint change
 				if ($(Results.settings.elements.resultsContainer+" :visible").length > 0) {
 					Results.view.calculateResultsContainerWidth();
-					Features.clearSetHeights();
-					Features.balanceVisibleRowsHeight();
+					Features.clearAndBalanceRowsHeight();
 				}
 
 			});
@@ -72,8 +71,7 @@ Features = {
 		Features.setExpandableRows();
 
 		_.defer(function(){
-			Features.clearSetHeights();
-			Features.balanceVisibleRowsHeight();
+			Features.clearAndBalanceRowsHeight();
 			$(Results.settings.elements.resultsContainer).trigger("populateFeaturesEnd");
 		});
 
@@ -381,6 +379,10 @@ Features = {
 
 	flush: function(){
 		$( Features.target ).find( Results.settings.elements.features.list ).html('');
-	}
+	},
 
+	clearAndBalanceRowsHeight: function() {
+		Features.clearSetHeights();
+		Features.balanceVisibleRowsHeight();
+	}
 };
