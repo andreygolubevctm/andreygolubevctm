@@ -166,7 +166,7 @@
             rebatePercent = rebateTier + ' - ' + $fields.rebate.currentPercentage.val() + '%',
 
             data = {
-                primary: _getPersonData('primary', false),
+                primary: _getPersonData('primary'),
                 rebate: { label: 'Rebate tier', value: rebatePercent },
                 showRebateData: $fields.rebate.applyRebate.filter(':checked').val()
             };
@@ -182,25 +182,25 @@
         data.primary.push({ label: 'Email address', value: email });
 
         if (meerkat.modules.health.hasPartner()) {
-            data.partner = _getPersonData('partner', false);
+            data.partner = _getPersonData('partner');
         }
 
         if (meerkat.modules.healthDependants.getNumberOfDependants() > 0) {
             data.dependants = [];
             for (var i = 1; i <= meerkat.modules.healthDependants.getNumberOfDependants(); i++) {
-                data.dependants.push(_getPersonData('dependant'+i, true));
+                data.dependants.push(_getPersonData('dependant'+i));
             }
         }
 
         return data;
     }
 
-    function _getPersonData(person, useDependantsGenderCheck) {
+    function _getPersonData(person) {
         var fullName = _getOptionText($fields[person].title) + ' ' + $fields[person].firstName.val() + ' ' +
                 (!_.isUndefined($fields[person].middleName) ? $fields[person].middleName.val() + ' ' : '') +
                 $fields[person].surname.val(),
             dob = _getDobFormatted($fields[person].dob),
-            gender = (useDependantsGenderCheck ? _getDependantGender($fields[person]) : _getGender($fields[person]) ),
+            gender = _getGender($fields[person]),
             data = [
                 { label: 'Full name', value: fullName },
                 { label: 'Date of birth', value: dob },
@@ -222,11 +222,7 @@
     }
 
     function _getGender($person) {
-        return !_.isUndefined($person.gender.filter(':checked').val()) ? ($person.gender.filter(':checked').val() === 'F' ? 'Female' : 'Male') : '';
-    }
-
-    function _getDependantGender($person) {
-        return !_.isUndefined($person.title.val()) ? ($person.title.val() === 'MR' ? 'Male' : 'Female') : '';
+        return !_.isUndefined($person.gender.filter(':checked').val()) ? ($person.gender.filter(':checked').val() === 'F' ? 'Female' : 'Male') : (!_.isUndefined($person.title.val()) ? ($person.title.val() === 'MR' ? 'Male' : 'Female') : '');
     }
 
     function _getDobFormatted($el) {
