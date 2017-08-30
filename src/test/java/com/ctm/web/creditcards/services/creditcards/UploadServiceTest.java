@@ -21,7 +21,6 @@ public class UploadServiceTest {
 
     }
 
-    /*
     @Test
     public void getRates() throws Exception {
         file.uploadedStream  = readResourceStream("com/ctm/creditcard/creditcardwithmschars.csv");
@@ -38,7 +37,6 @@ public class UploadServiceTest {
         String result = UploadService.getRates(file);
         assertThat(result, equalToIgnoringWhiteSpace(expect));
     }
-*/
 
     @Test
     public void replaceMsCharactersTest() throws Exception {
