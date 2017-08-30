@@ -220,7 +220,7 @@
     function _getOptionText($el) {
         return $el.find('option').filter(':selected').text();
     }
-    
+
     function _getGender($person) {
         return !_.isUndefined($person.gender.filter(':checked').val()) ? ($person.gender.filter(':checked').val() === 'F' ? 'Female' : 'Male') : '';
     }
