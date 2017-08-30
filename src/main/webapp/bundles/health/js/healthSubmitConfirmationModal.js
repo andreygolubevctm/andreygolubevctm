@@ -226,8 +226,7 @@
     }
 
     function _getDependantGender($person) {
-        return !_.isUndefined($person.gender) ? ($person.gender.val() === 'F' ? 'Female' : 'Male') :
-            ($person.title.val() === 'MR' ? 'Male' : 'Female');
+        return !_.isUndefined($person.title.val()) ? ($person.title.val() === 'MR' ? 'Male' : 'Female') : '';
     }
 
     function _getDobFormatted($el) {
