@@ -32,7 +32,7 @@
                 middleName: $('#health_application_primary_middleName'),
                 surname: $('#health_application_primary_surname'),
                 dob: $('#health_application_primary_dob'),
-                gender: $('#health_application_primary_gender'),
+                gender: $('input[name=health_application_primary_gender]'),
                 mobileNumber: $('#health_application_mobileinput'),
                 otherNumber: $('#health_application_otherinput')
             },
@@ -78,7 +78,7 @@
                 firstName: $('#health_application_partner_firstname'),
                 surname: $('#health_application_partner_surname'),
                 dob: $('#health_application_partner_dob'),
-                gender: $('#health_application_partner_gender')
+                gender: $('input[name=health_application_partner_gender]')
             }
         };
 
@@ -166,7 +166,7 @@
             rebatePercent = rebateTier + ' - ' + $fields.rebate.currentPercentage.val() + '%',
 
             data = {
-                primary: _getPersonData('primary'),
+                primary: _getPersonData('primary', false),
                 rebate: { label: 'Rebate tier', value: rebatePercent },
                 showRebateData: $fields.rebate.applyRebate.filter(':checked').val()
             };
@@ -182,25 +182,25 @@
         data.primary.push({ label: 'Email address', value: email });
 
         if (meerkat.modules.health.hasPartner()) {
-            data.partner = _getPersonData('partner');
+            data.partner = _getPersonData('partner', false);
         }
 
         if (meerkat.modules.healthDependants.getNumberOfDependants() > 0) {
             data.dependants = [];
             for (var i = 1; i <= meerkat.modules.healthDependants.getNumberOfDependants(); i++) {
-                data.dependants.push(_getPersonData('dependant'+i));
+                data.dependants.push(_getPersonData('dependant'+i, true));
             }
         }
 
         return data;
     }
 
-    function _getPersonData(person) {
+    function _getPersonData(person, useDependantsGenderCheck) {
         var fullName = _getOptionText($fields[person].title) + ' ' + $fields[person].firstName.val() + ' ' +
                 (!_.isUndefined($fields[person].middleName) ? $fields[person].middleName.val() + ' ' : '') +
                 $fields[person].surname.val(),
             dob = _getDobFormatted($fields[person].dob),
-            gender = _getGender($fields[person]),
+            gender = (useDependantsGenderCheck ? _getDependantGender($fields[person]) : _getGender($fields[person]) ),
             data = [
                 { label: 'Full name', value: fullName },
                 { label: 'Date of birth', value: dob },
@@ -220,8 +220,12 @@
     function _getOptionText($el) {
         return $el.find('option').filter(':selected').text();
     }
-
+    
     function _getGender($person) {
+        return !_.isUndefined($person.gender.filter(':checked').val()) ? ($person.gender.filter(':checked').val() === 'F' ? 'Female' : 'Male') : '';
+    }
+
+    function _getDependantGender($person) {
         return !_.isUndefined($person.gender) ? ($person.gender.val() === 'F' ? 'Female' : 'Male') :
             ($person.title.val() === 'MR' ? 'Male' : 'Female');
     }
