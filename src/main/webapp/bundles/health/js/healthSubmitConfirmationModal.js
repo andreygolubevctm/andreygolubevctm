@@ -222,7 +222,12 @@
     }
 
     function _getGender($person) {
-        return !_.isUndefined($person.gender.filter(':checked').val()) ? ($person.gender.filter(':checked').val() === 'F' ? 'Female' : 'Male') : (!_.isUndefined($person.title.val()) ? ($person.title.val() === 'MR' ? 'Male' : 'Female') : '');
+
+        if (!_.isUndefined($person.gender)) {
+            return $person.gender.filter(':checked').val() === 'F' ? 'Female' : 'Male';
+        } else {
+            return (!_.isUndefined($person.title.val()) ? ($person.title.val() === 'MR' ? 'Male' : 'Female') : '');
+        }
     }
 
     function _getDobFormatted($el) {
