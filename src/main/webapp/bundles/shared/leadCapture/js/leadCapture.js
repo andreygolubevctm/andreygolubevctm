@@ -4,16 +4,15 @@
       firstNameValue = firstName.val(),
       $elements = {
         principalResidenceInputs: $('input[name=home_occupancy_principalResidence]'),
-        movedInYear: $('#home_occupancy_whenMovedIn_year'),
-        movedInMonth: $('#home_occupancy_whenMovedIn_month'),
+        whenMovedIn: $('#home_occupancy_whenMovedIn_year'),
         textBubbleHeader: $('.lead-capture .well h4'),
         radioBtn: $('.lead-capture .radioBtn label'),
-        leadCaptureHealth: $('.leadCapture-health'),
-        leadCaptureEnergy: $('.leadCapture-energy')
+        currentLiving: $('.leadCapture-living-at-property'),
+        movingIn: $('.leadCapture-not-living-at-property')
       },
       state = {
         value: 'N',
-        leadCaptureVertical: 'health'
+        leadCaptureVertical: (window.meerkat.site.vertical === 'home' ? 'energy' : 'health')
       };
 
   function _mapValueToInput(el) {
@@ -51,33 +50,25 @@
 
   function _onChange() {
     if (window.meerkat.site.vertical === 'home') {
-      $elements.principalResidenceInputs.on('change', _checkJustMovedIn);
-      $elements.movedInYear.on('change', _checkJustMovedIn);
-      $elements.movedInMonth.on('change', _checkJustMovedIn);
+      $elements.whenMovedIn.on('change', _checkJustMovedIn);
+      $elements.principalResidenceInputs.on('change', _principalResidenceChange);
     }
   }
-
-  function _switchLeadCaptureComponent(leadCaptureVertical) {
-    if (leadCaptureVertical !== state.leadCaptureVertical) {
-      $elements.leadCaptureHealth.toggle();
-      $elements.leadCaptureEnergy.toggle();
-      state.leadCaptureVertical = leadCaptureVertical;
+  
+  function _principalResidenceChange() {
+    if ($('input[name=home_occupancy_principalResidence]:checked').val() === 'N') {
+      $elements.currentLiving.hide();
+      $elements.movingIn.hide();
     }
   }
 
   function _checkJustMovedIn() {
-    var date = new Date();
-    var year = date.getFullYear().toString();
-    var lastMonth = date.getMonth().toString();
-    var thisMonth = (date.getMonth() + 1).toString();
-    var principalResidence = $('input[name=home_occupancy_principalResidence]:checked').val() === "Y";
-    var movedInYear = $elements.movedInYear.val();
-    var movedInMonth = $elements.movedInMonth.val();
-    // Must be principalResidence, not moved in yet or the last two months.
-    if (principalResidence && ((movedInYear === year && _.indexOf([lastMonth, thisMonth], movedInMonth) !== -1) || movedInYear === 'NotAtThisAddress')) {
-      _switchLeadCaptureComponent('energy');
+    if ($elements.whenMovedIn.val() === 'NotAtThisAddress') {
+      $elements.currentLiving.hide();
+      $elements.movingIn.show();
     } else {
-      _switchLeadCaptureComponent('health');
+      $elements.currentLiving.show();
+      $elements.movingIn.hide();
     }
   }
 
