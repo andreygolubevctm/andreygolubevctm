@@ -9,7 +9,8 @@
         $paymentMedicareCover,
         $medicareYellowMessage,
         $unitElements,
-        $personName;
+        $personName,
+        $primaryName;
 
     function init(){
         $(document).ready(function () {
@@ -27,6 +28,18 @@
                 appPostalNonStdStreet: $('#health_application_postal_nonStdStreet')
             };
             $personName = $('.contactField.person_name');
+
+            $primaryName = {
+                first: $('#health_application_primary_firstname'),
+                middle: $('#health_application_primary_middleName'),
+                last: $('#health_application_primary_surname'),
+                medicare: {
+                    first: $('#health_payment_medicare_firstName'),
+                    middle: $('#health_payment_medicare_middleName'),
+                    last: $('#health_payment_medicare_surname')
+                }
+            };
+
         });
     }
 
@@ -109,6 +122,18 @@
             } else {
                 $checkFormat.addClass('hidden');
             }
+        });
+
+        $primaryName.first.on('blur.apply', function(){
+            $primaryName.medicare.first.val($primaryName.first.val());
+        });
+
+        $primaryName.middle.on('blur.apply', function(){
+            $primaryName.medicare.middle.val($primaryName.middle.val());
+        });
+
+        $primaryName.last.on('blur.apply', function(){
+            $primaryName.medicare.last.val($primaryName.last.val());
         });
     }
 

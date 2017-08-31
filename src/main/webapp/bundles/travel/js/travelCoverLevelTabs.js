@@ -18,7 +18,7 @@
 	var singleTripTabs = [{
 		label : "Comprehensive <span class='hidden-xs'>Cover</span>",
 		rankingFilter : "C",
-		defaultTab : false,
+		defaultTab : true,
 		disableAnimationsBetweenTabs : true,
 		showCount : true,
 		filter : function() {
@@ -29,7 +29,7 @@
 	}, {
 		label : "Mid Range <span class='hidden-xs'>Cover</span>",
 		rankingFilter : "M",
-		defaultTab : true,
+		defaultTab : false,
 		showCount : true,
 		filter : function() {
 			Results.filterBy("coverLevel", "value", {
