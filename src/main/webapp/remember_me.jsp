@@ -85,11 +85,17 @@
                                 </div>
 	                            <c:set var="fieldXpath" value="rememberme/reviewedit" />
 	                            <field_v1:hidden xpath="${fieldXpath}" defaultValue="N" />
-                                <button type="submit" class="btn btn-lg btn-cta" id="submitButton" name="submitButton"
-                                        value="Submit">Get Prices <span
+                                <button type="submit" class="btn btn-lg btn-secondary hidden-xs rememberne-review-btn"
+                                        name="reviewButton" data-track-action="submit review"
+                                        value="Submit">Review my chosen benefits</button>
+                                <button type="submit" class="btn btn-lg btn-cta rememberme-submit-btn"
+                                        name="submitButton" data-track-action="submit results"
+                                        value="Submit">View latest results <span
                                         class="icon icon-arrow-right"></span></button>
+                                <button type="submit" class="btn btn-lg btn-secondary visible-xs rememberne-review-btn"
+                                        name="reviewButton" data-track-action="submit review"
+                                        value="Submit">Review my chosen benefits</button>
                             </form>
-                            <a id="rememberme-reviewedit-btn" href="javascript:;" data-track-action="review edit"><span class="icon-angle-left"></span>&nbsp;&nbsp;Review and edit my details</a>
                         </div>
                     </article>
                 </div>

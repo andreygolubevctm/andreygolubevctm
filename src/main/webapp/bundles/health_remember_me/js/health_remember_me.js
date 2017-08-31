@@ -30,7 +30,7 @@
             loadingMessage: $('.journeyEngineLoader > .message'),
             rememberMePage: $('#journeyEngineSlidesContainer'),
             reviewedit: $('#rememberme_reviewedit'),
-            revieweditButton: $('#rememberme-reviewedit-btn'),
+            revieweditButton: $('.rememberme-review-btn'),
             errors: {
                 primary: $('#rememberme_primary_dob-error'),
                 additional: $('#rememberme_additional-error')
