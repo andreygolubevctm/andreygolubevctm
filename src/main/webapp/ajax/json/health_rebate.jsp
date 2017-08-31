@@ -219,7 +219,7 @@ Certified Age of Entry: Defaults to 30.
 		<%-- Only retrieve loading --%>
 		<c:set var="response">{ "status":"ok", "loading":"${loading}", "partnerLoading":"${partner_loading_rate}", "primaryLoading":"${primary_loading_rate}", "type":"${cover}", "primaryAge":"${primaryAge}", "primaryCAE":"${primaryCAE}","partnerCAE":"${partnerCAE}" }</c:set>
 	</c:when>
-	<c:when test="${empty param.rebate || empty cover || empty income || empty primaryAge}">
+	<c:when test="${empty healthRebate.currentRebate || empty cover || empty income || empty primaryAge}">
 		<c:set var="response">{ "status":"error", "message":"missing required information", "ageBonus":"${rebateBonus}"  }</c:set>
 	</c:when>
 		<%-- retrieve loading and rebate --%>
