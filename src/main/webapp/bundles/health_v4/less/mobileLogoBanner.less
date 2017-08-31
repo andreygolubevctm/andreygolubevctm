@@ -2,15 +2,26 @@ body {
   @media (@xs-only) {
     &[data-step=contact] {
 
-      .mobile-logo-container .logoPanel,
-      .mobile-logo-container .logoPanelCollapsed {
+      .mobile-logo-container {
+        border: 1px solid #ddd;
+        background-color: #fff;
+        margin-bottom: 15px;
+        h3 {
+          margin-top: 0;
+          color: #008284;
+        }
+      }
+
+
+      .mobile-logo-container .logo-panel,
+      .mobile-logo-container .logo-panel-collapsed {
         display: block;
         margin: auto;
         width: 231px;
       }
 
-      .mobile-logo-container .logoPanelCollapsedLink,
-      .mobile-logo-container .logoPanelLink {
+      .mobile-logo-container .logo-panel-collapsed-link,
+      .mobile-logo-container .logo-panel-link {
         padding-top: 10px;
         text-align: center;
       }
