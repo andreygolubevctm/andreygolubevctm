@@ -240,7 +240,10 @@ var Results = {
 				filterUnavailableProducts: true
 			},
 			// Flag to auto-increment the transactionId when requesting results
-			incrementTransactionId : true
+			incrementTransactionId : true,
+			balanceCurrentPageRowsHeightOnly: {
+				mobile: false
+			}
 		};
 		$.extend(true, settings, userSettings);
 
@@ -619,5 +622,4 @@ var Results = {
         $(Results.settings.elements.resultsOverflow).removeClass('product-pinned');
         Results.pagination.hasPinnedProduct = false;
 	}
-
 };

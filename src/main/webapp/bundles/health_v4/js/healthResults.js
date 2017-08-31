@@ -265,7 +265,10 @@
                     callback: meerkat.modules.healthResults.rankingCallback,
                     forceIdNumeric: true
                 },
-                incrementTransactionId: false
+                incrementTransactionId: false,
+                balanceCurrentPageRowsHeightOnly: {
+                    mobile: true
+                }
             });
 
         } catch (e) {
