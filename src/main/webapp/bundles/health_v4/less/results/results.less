@@ -379,15 +379,29 @@
       }
 
       .expander {
+        .icon-plus;
+        border: 1px solid;
+        border-radius: 100%;
+        font-size: 6px;
         position: absolute;
         left: 0;
         top: 50%;
         margin-top: -6px;
+        padding: 2px;
+        width: 12px;
 
         @media (@md) {
           position: relative;
-          margin-top: 5px;
+          margin-top: 3px;
           margin-right: 5px;
+        }
+      }
+
+      .expanded {
+        > .category.expandable {
+          .expander {
+            .icon-minus;
+          }
         }
       }
 
@@ -486,8 +500,8 @@
 
       .contentSafeName {
         display: inline-block;
-        max-width: 80%;
-        margin: 0 10%;
+        max-width: 76%;
+        margin: 0 12%;
 
         @media (@md) {
           max-width: inherit;
