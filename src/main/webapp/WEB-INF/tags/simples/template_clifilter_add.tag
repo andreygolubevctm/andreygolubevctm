@@ -2,7 +2,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<div class="addToCliFilter">
+<div class="add-to-cli-filter">
 	<h2>Add to CLI Filter</h2>
 	<div class="simples-clifilter-modal-body">
 		<div class="alert alert-success hidden"></div>

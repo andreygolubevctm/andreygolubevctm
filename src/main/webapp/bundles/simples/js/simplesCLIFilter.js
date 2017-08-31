@@ -14,7 +14,7 @@
             successMsgElement.html('').addClass('hidden');
 
             // Event: CLI Filter form submit (uses #dynamic_dom because that is static on the page so retains the event binds)
-            $('.addToCliFilter').on('click', '[data-provide="simples-clifilter-submit"]', function(event) {
+            $('.add-to-cli-filter').on('click', '[data-provide="simples-clifilter-submit"]', function(event) {
                 performSubmit();
             });
 
@@ -43,7 +43,7 @@
     function performSubmit() {
 
         //Setup target form
-        $targetForm = $('.addToCliFilter #simples-add-clifilter');
+        $targetForm = $('.add-to-cli-filter #simples-add-clifilter');
 
         if (validateForm()) {
             var formData = {

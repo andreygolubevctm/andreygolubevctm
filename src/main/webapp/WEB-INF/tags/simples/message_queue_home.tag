@@ -57,9 +57,7 @@
 
 <div class="simplesLanding hidden">
 	<simples:dialogue id="77" vertical="health" className="simples-dialog-inbound" />
-	<div class="panel-tile">
-		<simples:template_clifilter_add />
-	</div>
+	<simples:template_clifilter_add />
 </div>
 
 <div class="simples-message-details-container">
