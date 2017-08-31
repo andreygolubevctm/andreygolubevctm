@@ -6,26 +6,36 @@ body {
         border: 1px solid #ddd;
         background-color: #fff;
         margin-bottom: 15px;
+
         h3 {
           margin-top: 0;
           color: #008284;
         }
+
+        .logo-images-container{
+          display: block;
+          margin: auto;
+          width: 231px;
+
+          .logo-panel {
+            height: 262px;
+            display: block;
+            background-image: url('../../../graphics/logos/health/partner-logos.png');
+
+            &.collapsed {
+              height: 81px;
+              display: block;
+              background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #ffffff) bottom/231px 40px no-repeat scroll, url('../../../graphics/logos/health/partner-logos.png');
+            }
+          }
+        }
+
+        .logo-panel-collapsed-link,
+        .logo-panel-link {
+          padding-top: 10px;
+          text-align: center;
+        }
       }
-
-
-      .mobile-logo-container .logo-panel,
-      .mobile-logo-container .logo-panel-collapsed {
-        display: block;
-        margin: auto;
-        width: 231px;
-      }
-
-      .mobile-logo-container .logo-panel-collapsed-link,
-      .mobile-logo-container .logo-panel-link {
-        padding-top: 10px;
-        text-align: center;
-      }
-
     }
   }
 }
