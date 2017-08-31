@@ -19,20 +19,8 @@
 				<agg_v1:provider_testing xpath="${xpath}" displayFullWidth="true" keyLabel="authToken" filterProperty="providerList" hideSelector="${false}" />
 
 				<form_v2:fieldset legend="Cover for your property">
-
-							<%-- Own the home --%>
-					<div class="notLandlord">
-						<c:set var="fieldXpath" value="${xpath}/occupancy/ownProperty" />
-						<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Own or Rent" quoteChar="\"" /></c:set>
-						<form_v2:row fieldXpath="${fieldXpath}" label="Are you the home owner or are you renting?">
-							<field_v2:array_radio xpath="${fieldXpath}"
-													className="ownProperty radioIcons"
-													required="true"
-													items="Y=Home Owner,N=Renting"
-													title="if you own the home"
-													additionalLabelAttributes="${analyticsAttr}" />
-						</form_v2:row>
-					</div>
+					
+					
 					
 					<div class="isLandlord">
 						<%-- Are you the landlord --%>
@@ -48,7 +36,20 @@
 								additionalLabelAttributes="${analyticsAttr}" />
 						</form_v2:row>
 					</div>
-
+					
+					<%-- Own the home --%>
+					<div class="notLandlord">
+						<c:set var="fieldXpath" value="${xpath}/occupancy/ownProperty" />
+						<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Own or Rent" quoteChar="\"" /></c:set>
+						<form_v2:row fieldXpath="${fieldXpath}" label="Are you the home owner or are you renting?">
+							<field_v2:array_radio xpath="${fieldXpath}"
+													className="ownProperty radioIcons"
+													required="true"
+													items="Y=Home Owner,N=Renting"
+													title="if you own the home"
+													additionalLabelAttributes="${analyticsAttr}" />
+						</form_v2:row>
+					</div>
 
 						<%-- Cover type --%>
 					<c:set var="fieldXpath" value="${xpath}/coverType" />
