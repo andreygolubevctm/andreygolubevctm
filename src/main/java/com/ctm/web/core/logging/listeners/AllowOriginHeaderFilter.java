@@ -42,6 +42,7 @@ public class AllowOriginHeaderFilter implements Filter {
             if (origin.isPresent()) {
                 LOGGER.debug("Adding Allow-Origin header for: {}", kv("remote address access", origin));
                 response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+                response.setHeader("Access-Control-Allow-Headers","Origin, X-Requested-With, Content-Type, Accept");
             }
         } catch (Exception e) {
             LOGGER.error("Failed to parse request logging context values", e);
