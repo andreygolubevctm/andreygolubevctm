@@ -88,9 +88,12 @@
 	        $elements.errors.primary.show();
         } else if (type === errorTypes.NOMATCH) {
             if(!$elements.errors.additional.length) {
-	            $elements.errors.additional = $('<label id="rememberme_additional-error" class="error">The date of birth you entered didn\'t match our records, enter your date of birth again or start a new quote</label>').insertAfter('#rememberme_primary_dob');
+	            $('<label id="rememberme_additional-error" class="error">The date of birth you entered didn\'t match our records, enter your date of birth again or start a new quote</label>').insertAfter('#rememberme_primary_dob');
 	        }
-	        _.defer($elements.errors.additional.show);
+	        _.defer(function() {
+		        $elements.errors.additional = $('#rememberme_additional-error');
+                $elements.errors.additional.show();
+	        });
         } else {
             // All other cases simply keep the error fields hidden
         }
