@@ -304,7 +304,7 @@
 		if ($destination === false || $destination.length === 0) return;
 
 		if (message === false) {
-			$('.simples-home-buttons, .simples-notice-board, .simples-remaining-sales-container').removeClass('hidden');
+			$('.simples-notice-board, .simples-splashpage-item').removeClass('hidden');
 
 			var remainingSalesTableTbody = $('.simples-remaining-sales-container #remaining-sales-table').find('tbody');
 			remainingSalesTableTbody.empty();
@@ -324,7 +324,7 @@
 
 		}
 		else {
-			$('.simples-home-buttons, .simples-notice-board, .simples-remaining-sales-container').addClass('hidden');
+			$('.simples-notice-board, .simples-splashpage-item').addClass('hidden');
 
 			// swap numbers if there is only one mobile and this is the 2nd number as we want mobiles displayed first
 			if (isMobile(message.message.phoneNumber2) && !isMobile(message.message.phoneNumber1)) {

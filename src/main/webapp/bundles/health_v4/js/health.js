@@ -94,6 +94,8 @@
             $("#health_contactDetails_optInEmail").val(optinVal);
             $("#health_contactDetails_call").val(optinVal);
         });
+
+        meerkat.modules.fieldUtilities.selectsOnChange();
     }
 
 
@@ -213,6 +215,7 @@
                 // configure progress bar
                 configureProgressBar(true);
 
+                meerkat.modules.fieldUtilities.toggleSelectsPlaceholderColor();
             },
             onAfterEnter: function healthAfterEnter() {
 
@@ -475,6 +478,7 @@
                     meerkat.modules.healthDependants.updateDependantConfiguration();
                     meerkat.modules.healthMedicare.onBeforeEnterApply();
                     meerkat.modules.healthAGRModal.onBeforeEnterApply();
+                    meerkat.modules.fieldUtilities.toggleSelectsPlaceholderColor();
                 }
             },
             onAfterEnter: function afterEnterApplyStep(event) {
@@ -516,6 +520,7 @@
                     $('#mainform').find('.health_contact_authority span').text( selectedProduct.info.providerName  );
 
 	                meerkat.messaging.publish(meerkatEvents.TRIGGER_UPDATE_PREMIUM);
+                    meerkat.modules.fieldUtilities.toggleSelectsPlaceholderColor();
                 }
             },
             onAfterEnter: function afterEnterPaymentStep() {
