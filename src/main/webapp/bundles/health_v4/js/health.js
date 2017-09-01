@@ -560,6 +560,14 @@
             labels.journey.resultsStep = '<span class="hidden-sm hidden-md hidden-lg">Prices</span><span class="hidden-xs">Get Prices</span>';
         }
 
+        if (meerkat.modules.splitTest.isActive(15)) {
+            labels.journey.startStep = '<span class="hidden-sm hidden-md hidden-lg">About</span><span class="hidden-xs">About You</span>';
+            labels.journey.benefitStep = '<span class="hidden-sm hidden-md hidden-lg">Cover</span><span class="hidden-xs">Your Cover</span>';
+            labels.journey.contactStep = '<span class="hidden-sm hidden-md hidden-lg">Details</span><span class="hidden-xs">Your Details</span>';
+            labels.journey.resultsStep = '<span class="hidden-sm hidden-md hidden-lg">Compare</span><span class="hidden-xs">Compare Cover</span>';
+            labels.application.applyStep = '<span class="hidden-sm hidden-md hidden-lg">Purchase</span><span class="hidden-xs">Purchase Cover</span>';
+        }
+
         var phase = isJourney ? 'journey' : 'application',
             progressBarSteps = {
                 journey: [
@@ -596,6 +604,40 @@
                 label: labels.journey.resultsStep,
                 navigationId: steps.resultsStep.navigationId
             });
+        }
+
+        if (meerkat.modules.splitTest.isActive(15)) {
+
+            //add 'Application' steps to the end of the 'Journey' breadcrumbs
+            progressBarSteps.journey.push({
+                label: labels.journey.resultsStep,
+                navigationId: steps.resultsStep.navigationId
+            });
+            progressBarSteps.journey.push({
+                label: labels.application.applyStep,
+                navigationId: steps.applyStep.navigationId
+            });
+
+            //add 'Journey' steps to the beginning of the 'Application' breadcrumbs
+            progressBarSteps.application.unshift({
+                label: labels.journey.resultsStep,
+                navigationId: steps.resultsStep.navigationId
+            });
+            progressBarSteps.application.unshift({
+                label: labels.journey.contactStep,
+                navigationId: steps.contactStep.navigationId
+            });
+            progressBarSteps.application.unshift({
+                label: labels.journey.benefitStep,
+                navigationId: steps.benefitsStep.navigationId
+            });
+            progressBarSteps.application.unshift({
+                label: labels.journey.startStep,
+                navigationId: steps.startStep.navigationId
+            });
+
+            progressBarSteps.application.pop(); //remove 'Thank You' from the 'Application' breadcrumbs
+            progressBarSteps.application.pop(); //remove 'Payment' from the 'Application' breadcrumbs
         }
 
         // Better progressBar just works...
