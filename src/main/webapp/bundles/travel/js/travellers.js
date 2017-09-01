@@ -10,6 +10,8 @@
 		travelParty: $('.travel_party input'),
 		travelPartText: $('.traveler-age-label'),
 		hiddenInput: $('#travel_travellers_travellersAge'),
+		travelChildren: $('#travel_children'),
+		travelChildrenDropdown: $('#travel_childrenSelect')
 	};
 	
 	var travelText = {
@@ -170,7 +172,7 @@
 		var value = $elements.hiddenInput.val();
 		var selected = $('.travel_party input:checked').val();
 		if (value != null && value.length > 0 || selected) {
-			var arrayValues = value.split(/\s*,\s*/);
+			var arrayValues = JSON.parse(value);
 			setState({ hiddenValues: arrayValues });
 			_travelPartyChange(this, selected);
 			insertValues();
@@ -186,6 +188,9 @@
 			} else {
 				_add(null, values[i]);
 			}
+		}
+		if ($elements.travelChildren.val() > 0) {
+				$elements.travelChildrenDropdown.val($elements.travelChildren.val());
 		}
 	}
 
