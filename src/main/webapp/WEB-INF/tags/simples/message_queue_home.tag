@@ -55,7 +55,7 @@
 	</div>
 </div>
 
-<div class="simples-message-queue-home-left-hand-side-content-area simples-splashpage-item hidden">
+<div class="simples-splashpage-item hidden">
 	<simples:dialogue id="77" vertical="health" className="simples-dialog-inbound" />
 	<simples:clifilter_add />
 </div>
