@@ -77,13 +77,6 @@
 					</ul>
 				</li>
 
-				<li data-provide="dropdown">
-					<a href="javascript:void(0);" class="dropdown-toggle active" data-toggle="dropdown">CLI Filter<b class="caret"></b></a>
-					<ul class="dropdown-menu">
-						<li data-provide="simples-clifilter-action"><a href="javascript:void(0);" data-action="add">Add</a></li>
-					</ul>
-				</li>
-
 				<%-- Action menu hidden by default; a module will hide/show it --%>
 				<li class="dropdown hidden" data-provide="simples-quote-actions">
 					<a href="javascript:void(0);" class="dropdown-toggle active" data-toggle="dropdown">Actions <b class="caret"></b></a>
