@@ -4,7 +4,7 @@
 
 <div class="add-to-cli-filter">
 	<h2>Add to CLI Filter</h2>
-	<div class="simples-clifilter-modal-body">
+	<div class="simples-clifilter-pane-body">
 		<div class="alert alert-success hidden"></div>
 		<div class="alert alert-danger hidden"></div>
 		<form id="simples-add-clifilter" class="form-horizontal">

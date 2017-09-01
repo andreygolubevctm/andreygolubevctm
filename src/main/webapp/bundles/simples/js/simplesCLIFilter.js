@@ -2,8 +2,8 @@
 
     var meerkat = window.meerkat,
         log = meerkat.logging.info,
-        errorMsgElement = $('.simples-clifilter-modal-body .alert.alert-danger'),
-        successMsgElement = $('.simples-clifilter-modal-body .alert.alert-danger');
+        errorMsgElement = $('.simples-clifilter-pane-body .alert.alert-danger'),
+        successMsgElement = $('.simples-clifilter-pane-body .alert.alert-danger');
 
     var $targetForm = false;
 
@@ -24,18 +24,18 @@
     function updateValidationMsg(data) {
         data = data || {};
 
-        var errorMsgElement = $('.simples-clifilter-modal-body .alert.alert-danger');
-        var successMsgElement = $('.simples-clifilter-modal-body .alert.alert-danger');
+        var errorMsgElement = $('.simples-clifilter-pane-body .alert.alert-danger');
+        var successMsgElement = $('.simples-clifilter-pane-body .alert.alert-danger');
 
         errorMsgElement.addClass('hidden').html('');
         successMsgElement.addClass('hidden').html('');
 
         if (data.errorMessage && data.errorMessage.length > 0) {
             // Error message has been specified elsewhere
-            $('.simples-clifilter-modal-body .alert.alert-danger').html(data.errorMessage).removeClass('hidden');
+            $('.simples-clifilter-pane-body .alert.alert-danger').html(data.errorMessage).removeClass('hidden');
         }
         if (data.successMessage && data.successMessage.length > 0) {
-            $('.simples-clifilter-modal-body .alert.alert-success').html(data.successMessage).removeClass('hidden');
+            $('.simples-clifilter-pane-body .alert.alert-success').html(data.successMessage).removeClass('hidden');
         }
 
     }
