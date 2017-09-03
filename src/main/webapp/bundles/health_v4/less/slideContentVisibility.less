@@ -39,11 +39,27 @@
 
   &[data-step="results"] {
     .progress-bar-row {
+      .slide-feature-is-visible();
+    }
+
+    .journeyProgressBar[data-phase="application"] {
       .slide-feature-hidden();
     }
+
+    .journeyProgressBar[data-phase="journey"] {
+      .slide-feature-is-visible();
+    }
+
     .results-control-container {
       .slide-feature-is-visible();
     }
+
+    &.moreInfoVisible {
+      .progress-bar-row {
+        .slide-feature-hidden();
+      }
+    }
+
   }
 
   &[data-step="apply"] {
