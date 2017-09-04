@@ -608,6 +608,8 @@
 
         if (meerkat.modules.splitTest.isActive(15)) {
 
+            $('body.health[data-step="results"]').addClass('split-test-15');
+
             //add 'Application' steps to the end of the 'Journey' breadcrumbs
             progressBarSteps.journey.push({
                 label: labels.journey.resultsStep,
