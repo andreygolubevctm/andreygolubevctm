@@ -50,9 +50,11 @@
   					<span class="frequency annual annually {{= annualHidden }}">
   						{{= '$' }}{{= products[i].price.annualPremiumFormatted }}
   					</span>
-  					<span class="frequency monthly {{= monthlyHidden }}">
+					<c:if test="${not empty products[i].price.monthlyPremium}">
+						<span class="frequency monthly {{= monthlyHidden }}">
   						{{= '$' }}{{= products[i].price.monthlyPremium.toFixed(2) }}
-  					</span>
+  						</span>
+					</c:if>
   				</span>
   				</div>
   		<div class="productName">
