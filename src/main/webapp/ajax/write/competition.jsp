@@ -36,10 +36,7 @@ LIMIT 1;
 </c:catch>
 
 <c:choose>
-<c:when test="${not empty email_exist and email_exist.rowCount > 0}">
-<c:set var="errorPool" value="{error:'Email address already present in database.'}" />
-</c:when>
-<c:otherwise>
+<c:when test="${empty email_exist or email_exist.rowCount == 0}">
 <c:catch var="error">
 <agg_v1:write_email
     source="${source}"
@@ -61,7 +58,7 @@ LIMIT 1;
 <sql:param value="${styleCodeId}" />
 </sql:query>
 </c:catch>
-</c:otherwise>
+</c:when>
 </c:choose>
 
 <%-- STEP 2: Write competition details to ctm.competition_data --%>
@@ -96,9 +93,12 @@ LIMIT 1;
 <%-- STEP 3: Return results to the client --%>
 
 </c:when>
+<c:when test="${not empty email_exist and email_exist.rowCount > 0}">
+<c:set var="errorPool" value='{"error":"Email address already present in database."}' />
+</c:when>
 <c:when test="${empty error and (empty emailMaster or emailMaster.rowCount == 0)}">
 ${logger.warn('Failed to locate emailId. {}' , log:kv('email', competition_email))}
-<c:set var="errorPool" value="{error:'Failed to locate registered user.'}" />
+<c:set var="errorPool" value='{"error":"Failed to locate registered user."}' />
 </c:when>
 <c:otherwise>
 ${logger.error('Database error querying aggregator.email_master. {}', log:kv('email', competition_email) , error)}
@@ -110,7 +110,7 @@ ${logger.error('Database error querying aggregator.email_master. {}', log:kv('em
 <c:choose>
 <c:when test="${not empty errorPool}">
 ${logger.info('Returning errors to the browser', log:kv('errorPool', errorPool))}
-{[${errorPool}]}
+${errorPool}
 
 <c:import var="fatal_error" url="/ajax/write/register_fatal_error.jsp">
 <c:param name="transactionId" value="${data.current.transactionId}" />
@@ -122,7 +122,7 @@ ${logger.info('Returning errors to the browser', log:kv('errorPool', errorPool))
 </c:when>
 <c:otherwise>
 {
-"result": "OK"
+"result": "New entry created in the database."
 }
 </c:otherwise>
 </c:choose>
