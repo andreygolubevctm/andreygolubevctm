@@ -235,8 +235,6 @@
                     hasPopularModels = true;
                 }
 
-                var hasPopularColours = type == "colours";
-
                 if (type == 'makes' || hasPopularModels) {
                     var label = type.charAt(0).toUpperCase() + type.slice(1);
                     options.push(
@@ -244,13 +242,6 @@
                     );
                     options.push(
                         $('<optgroup/>', {label: "All " + label})
-                    );
-                } else if (hasPopularColours) {
-                    options.push(
-                        $('<optgroup/>', {label: "Frequently Selected"})
-                    );
-                    options.push(
-                        $('<optgroup/>', {label: "Other colours" })
                     );
                 } else if (!isRadioButtonField(type) && isIosXS && autoSelect !== true) {
                     options.push(
@@ -302,11 +293,15 @@
                             selected = true;
                         }
 
-                        if (type == 'makes' || (type == "models" && hasPopularModels) || hasPopularColours) {
+                        if (type == 'makes' || (type == "models" && hasPopularModels)) {
                             if (item['isTop'] === true) {
                                 option.appendTo(options[1], options[2]);
                             } else {
                                 options[2].append(option);
+                            }
+                        } else if (type == 'colours') {
+                            if (item['isTop'] === true || item['code'] === 'other') {
+                                options.push(option);
                             }
                         } else {
                             if (!isRadioButtonField(type) && isIosXS && autoSelect !== true) {
