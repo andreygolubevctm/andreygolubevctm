@@ -65,15 +65,15 @@
         <p>How your premium is calculated:</p>
         <hr />
         <div class="row">
-            <div class="col-xs-12 col-md-8">Premium:</div>
-            <div class="col-xs-12 col-md-4 text-right">{{= availablePremiums[frequency].grossPremium }}</div>
+            <div class="col-xs-12 col-md-7">Cost of policy:</div>
+            <div class="col-xs-12 col-md-5 text-right">{{= availablePremiums[frequency].grossPremium }}</div>
         </div>
         {{ } }}
 
         {{ if (showLHCRow) { }}
         <div class="row">
-            <div class="col-xs-12 col-md-8">LHC Loading: <span class="icon icon-info lhc-loading-help"></span></div>
-            <div class="col-xs-12 col-md-4 text-right">+{{= availablePremiums[frequency].lhc }}</div>
+            <div class="col-xs-12 col-md-8 col-lg-7">LHC Loading based on {{= availablePremiums[frequency].lhcPercentage}}%: <span class="icon icon-info lhc-loading-help"></span></div>
+            <div class="col-xs-12 col-md-4 col-lg-5 text-right">+{{= availablePremiums[frequency].lhc }}</div>
         </div>
         {{ } }}
 

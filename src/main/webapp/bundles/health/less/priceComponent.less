@@ -57,10 +57,22 @@
 			background-color: #eee;
 			border-top: 1px solid #ddd;
 			border-bottom: 1px solid #ddd;
+			font-size: @font-size-base;
 			margin: 20px -20px 0;
 			padding: 10px;
+			text-align: center;
+
+			@media (@md) {
+				font-size: @font-size-large;
+				padding: 20px 40px;
+			}
 		}
 	}
+
+	.lhc-loading-help {
+		cursor: pointer;
+	}
+
   	.footer{
 	  text-align: right;
 	  font-size: @font-size-small;
