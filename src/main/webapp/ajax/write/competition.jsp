@@ -21,7 +21,25 @@
 <c:set var="errorPool" value="" />
 <c:set var="promoCode" value="" />
 
-<%-- STEP 1: Write email data to aggregator.email_master and get the EmailID --%>
+<%-- STEP 1: Check if the email exists in the DB. If not, then write email data to aggregator.email_master and get the EmailID --%>
+<c:catch var="error">
+<sql:setDataSource dataSource="${datasource:getDataSource()}"/>
+<sql:query var="email_exist">
+SELECT emailId, hashedEmail
+FROM aggregator.email_master
+WHERE emailAddress = ?
+AND styleCodeId = ?
+LIMIT 1;
+<sql:param value="${competition_email}" />
+<sql:param value="${styleCodeId}" />
+</sql:query>
+</c:catch>
+
+<c:choose>
+<c:when test="${not empty email_exist and email_exist.rowCount > 0}">
+<c:set var="errorPool" value="{error:'Email address already present in database.'}" />
+</c:when>
+<c:otherwise>
 <c:catch var="error">
 <agg_v1:write_email
     source="${source}"
@@ -43,6 +61,8 @@ LIMIT 1;
 <sql:param value="${styleCodeId}" />
 </sql:query>
 </c:catch>
+</c:otherwise>
+</c:choose>
 
 <%-- STEP 2: Write competition details to ctm.competition_data --%>
 <c:choose>
