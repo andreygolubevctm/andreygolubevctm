@@ -25,6 +25,42 @@
 }
 
 .policySummaryContainer{
+	.price-breakdown-lhc-copy {
+		font-size: @font-size-small;
+		@media (@xs-only) {
+			display: none;
+		}
+	}
+	.price-breakdown {
+		font-size: @font-size-small;
+		text-align: initial;
+
+		@media (@xs-only) {
+			display: none;
+		}
+
+		p {
+			font-family: @font-family-theme-bold;
+			margin-bottom: 9px;
+		}
+
+		hr {
+			margin-top: 9px;
+			margin-bottom: 9px;
+		}
+
+		.row {
+			margin-bottom: 9px;
+		}
+
+		.price-breakdown-copy-panel {
+			background-color: #eee;
+			border-top: 1px solid #ddd;
+			border-bottom: 1px solid #ddd;
+			margin: 20px -20px 0;
+			padding: 10px;
+		}
+	}
   	.footer{
 	  text-align: right;
 	  font-size: @font-size-small;

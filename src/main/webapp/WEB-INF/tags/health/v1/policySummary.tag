@@ -23,7 +23,7 @@
 					<div class="policySummaryTemplateHolder productSummary horizontal hidden-md hidden-lg"></div>
 				</c:when>
 				<c:otherwise>
-					<h1 class="hidden-xs">Your quote details</h1>
+					<h1 class="hidden-xs">Your Chosen Policy</h1>
 					<div class="policySummaryTemplateHolder productSummary horizontal"></div>
 				</c:otherwise>
 			</c:choose>

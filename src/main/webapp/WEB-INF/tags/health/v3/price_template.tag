@@ -39,6 +39,7 @@
         <span class="frequencyTitle">{{= freqObj.label }}</span>
     </div>
 
+    {{ if (!obj.hasOwnProperty('priceBreakdown')) { }}
     <div class="lhcText">
         <span>
             {{= result.lhcFreePriceMode ? result.textLhcFreePricing : result.textPricing }}
@@ -53,6 +54,48 @@
 
     {{ if (typeof showRoundingText !== 'undefined' && showRoundingText === true) { }}
     <div class="rounding">Premium may vary slightly due to rounding</div>
+    {{ } }}
+    {{ } else { }}
+    <div class="price-breakdown">
+        {{ var showLHCRow = availablePremiums[frequency].lhcPercentage > 0; }}
+        {{ var showRebateRow = availablePremiums[frequency].rebate > 0; }}
+        {{ var showDiscountRow = availablePremiums[frequency].discounted === 'Y'; }}
+
+        {{ if (showLHCRow || showRebateRow || showDiscountRow) { }}
+        <p>How your premium is calculated:</p>
+        <hr />
+        <div class="row">
+            <div class="col-xs-12 col-md-8">Premium:</div>
+            <div class="col-xs-12 col-md-4 text-right">{{= availablePremiums[frequency].grossPremium }}</div>
+        </div>
+        {{ } }}
+
+        {{ if (showLHCRow) { }}
+        <div class="row">
+            <div class="col-xs-12 col-md-8">LHC Loading: <span class="icon icon-info lhc-loading-help"></span></div>
+            <div class="col-xs-12 col-md-4 text-right">+{{= availablePremiums[frequency].lhc }}</div>
+        </div>
+        {{ } }}
+
+        {{ if (showRebateRow) { }}
+        <div class="row">
+            <div class="col-xs-12 col-md-8">Australian Government Rebate {{= availablePremiums[frequency].rebate }}%:</div>
+            <div class="col-xs-12 col-md-4 text-right">-{{= availablePremiums[frequency].rebateValue }}</div>
+        </div>
+        {{ } }}
+
+        {{ if (showDiscountRow) { }}
+        <div class="row">
+            <div class="col-xs-12 col-md-8">Fund discount {{= availablePremiums[frequency].discountPercentage }}% {{= frequency }}:</div>
+            <div class="col-xs-12 col-md-4 text-right">-{{= availablePremiums[frequency].discountAmount }}</div>
+        </div>
+        {{ } }}
+
+        <div class="price-breakdown-copy-panel">
+            <c:set var="priceBreakdownCopy" scope="request"><content:get key="priceBreakdownCopy"/></c:set>
+            ${priceBreakdownCopy}
+        </div>
+    </div>
     {{ } }}
 </div>
 
