@@ -19,10 +19,8 @@
 	 * init() trigger DOM elements to be created (online journey only)
 	 */
 	function init() {
-		if(!meerkat.site.isCallCentreUser) {
-			for (var i in labels) {
-				populateDOM(labels[i]);
-			}
+		for (var i in labels) {
+			populateDOM(labels[i]);
 		}
 	}
 
@@ -41,7 +39,7 @@
 			affiliateProperty = getCookieValue(ref);
 		}
 		if(!_.isEmpty(affiliateProperty)) {
-			var elementName = (meerkat.site.vertical === 'car' ? 'quote' : meerkat.site.vertical) + ref;
+			var elementName = (meerkat.site.vertical === 'car' ? 'quote' : meerkat.site.vertical) + '_' + ref;
 			var $affiliateProperty = $('#' + elementName);
 			if ($affiliateProperty && $affiliateProperty.length) {
 				$affiliateProperty.val(affiliateProperty);
