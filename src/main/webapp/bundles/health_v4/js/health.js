@@ -403,6 +403,10 @@
                     meerkat.modules.healthTaxTime.disableFastTrack();
                 }
                 meerkat.modules.healthResults.setCallCentreText();
+                
+                if (meerkat.modules.splitTest.isActive(15)) {
+                    $('body.health[data-step="results"]').addClass('split-test-15');
+                }
 
             },
             onBeforeLeave: function beforeLeaveResultsStep(event) {
