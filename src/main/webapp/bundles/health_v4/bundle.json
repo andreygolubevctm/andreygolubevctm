@@ -49,6 +49,6 @@
     "shared/healthPyrrCampaign",
     "shared/reward",
     "shared/bootstrapSwitch",
-    "shared/cashRewards"
+    "shared/affiliateProperties"
   ]
 }

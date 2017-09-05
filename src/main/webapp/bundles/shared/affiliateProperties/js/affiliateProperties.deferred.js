@@ -1,11 +1,11 @@
 /**
- * cashRewards module ensures the CachRewards cookie values are stored as xpaths in the journey.
+ * affiliateProperties module ensures the affiliate cookie values are stored as xpaths in the journey.
  * Applied to online journey only - not call centre
  */
 ;(function ($, undefined) {
 
 	/**
-	 * labels: xpath and cookie names for CashRewards references
+	 * labels: xpath and cookie names for affiliate references
 	 * @type {{id: string, campaign: string, clickRef: string, cd1: string}}
 	 */
 	var labels = {
@@ -28,23 +28,29 @@
 
 	/**
 	 * populateDOM ensure an element for the reference exists in the DOM and
-	 * has the current value from the cookie
+	 * has the current value from the transaction or attempt to fallback to
+	 * the cookie value
 	 *
 	 * @param ref
 	 */
 	function populateDOM(ref) {
-		var cashReward = getCookieValue(ref);
-		var elementName = (meerkat.site.vertical === 'car' ? 'quote' : meerkat.site.vertical) + ref;
-		var $cashReward = $('#' + elementName);
-		if(!_.isEmpty(cashReward)) {
-			if ($cashReward && $cashReward.length) {
-				$cashReward.val(cashReward);
+		var affiliateProperty = null;
+		if(meerkat.site.isCallCentreUser) {
+			affiliateProperty = _.has(meerkat.site,ref) && !_.isEmpty(meerkat.site[ref]) ? meerkat.site[ref] : null;
+		} else {
+			affiliateProperty = getCookieValue(ref);
+		}
+		if(!_.isEmpty(affiliateProperty)) {
+			var elementName = (meerkat.site.vertical === 'car' ? 'quote' : meerkat.site.vertical) + ref;
+			var $affiliateProperty = $('#' + elementName);
+			if ($affiliateProperty && $affiliateProperty.length) {
+				$affiliateProperty.val(affiliateProperty);
 			} else {
 				$('#mainform').prepend($('<input/>', {
 					type: 'hidden',
 					id: elementName,
 					name: elementName,
-					value: cashReward
+					value: affiliateProperty
 				}));
 			}
 		}
@@ -72,7 +78,7 @@
 		return null;
 	}
 
-	meerkat.modules.register("cashRewards", {
+	meerkat.modules.register("affiliateProperties", {
 		init: init
 	});
 
