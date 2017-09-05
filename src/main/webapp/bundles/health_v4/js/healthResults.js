@@ -265,7 +265,10 @@
                     callback: meerkat.modules.healthResults.rankingCallback,
                     forceIdNumeric: true
                 },
-                incrementTransactionId: false
+                incrementTransactionId: false,
+                balanceCurrentPageRowsHeightOnly: {
+                    mobile: true
+                }
             });
 
         } catch (e) {
@@ -495,6 +498,8 @@
                 $(this).toggleClass('hovered');
             });
 
+            // Default Private Hospital benefit to be expanded
+            $(".privateHospital.cell.category.expandable").addClass("expanded");
         });
     }
 
