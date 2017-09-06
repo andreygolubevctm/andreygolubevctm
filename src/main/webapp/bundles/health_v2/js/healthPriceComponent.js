@@ -125,7 +125,6 @@
 					timeout: 5000,
 					onSuccess: function onSubmitSuccess(data) {
 						lhcHtml = data.contentValue;
-						console.log('lhcHtml', lhcHtml);
 					}
 				});
 
