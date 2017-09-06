@@ -403,7 +403,7 @@
                     meerkat.modules.healthTaxTime.disableFastTrack();
                 }
                 meerkat.modules.healthResults.setCallCentreText();
-                
+
                 if (meerkat.modules.splitTest.isActive(15)) {
                     $('body.health[data-step="results"]').addClass('split-test-15');
                 }
@@ -477,8 +477,8 @@
                     // Unset the Health Declaration checkbox (could be refactored to only uncheck if the fund changes)
                     $('#health_declaration input:checked').prop('checked', false).change();
 
-	                meerkat.modules.healthCoverStartDate.onBeforeEnter();
-	                meerkat.modules.healthApplyStep.onBeforeEnter();
+                    meerkat.modules.healthCoverStartDate.onBeforeEnter();
+                    meerkat.modules.healthApplyStep.onBeforeEnter();
                     meerkat.modules.healthDependants.updateDependantConfiguration();
                     meerkat.modules.healthMedicare.onBeforeEnterApply();
                     meerkat.modules.healthAGRModal.onBeforeEnterApply();
@@ -523,7 +523,7 @@
                     // Insert fund into Contact Authority
                     $('#mainform').find('.health_contact_authority span').text( selectedProduct.info.providerName  );
 
-	                meerkat.messaging.publish(meerkatEvents.TRIGGER_UPDATE_PREMIUM);
+                    meerkat.messaging.publish(meerkatEvents.TRIGGER_UPDATE_PREMIUM);
                     meerkat.modules.fieldUtilities.toggleSelectsPlaceholderColor();
                 }
             },
@@ -548,7 +548,7 @@
         var labels = {
             journey: {
                 startStep: 'About You',
-                benefitStep: '<span class="hidden-sm hidden-md hidden-lg">Preferences</span><span class="hidden-xs">Insurance Preferences</span>',
+                benefitStep: '<span class="hidden-xs">Insurance </span>Preferences',
                 contactStep: 'Contact Details'
             },
             application: {
@@ -559,17 +559,17 @@
         };
 
         if (meerkat.modules.splitTest.isActive(4)) {
-            labels.journey.startStep = '<span class="hidden-sm hidden-md hidden-lg">About</span><span class="hidden-xs">About You</span>';
-            labels.journey.contactStep = '<span class="hidden-sm hidden-md hidden-lg">Details</span><span class="hidden-xs">Contact Details</span>';
-            labels.journey.resultsStep = '<span class="hidden-sm hidden-md hidden-lg">Prices</span><span class="hidden-xs">Get Prices</span>';
+            labels.journey.startStep = 'About<span class="hidden-xs"> You</span>';
+            labels.journey.contactStep = '<span class="hidden-xs">Contact </span>Details';
+            labels.journey.resultsStep = '<span class="hidden-xs">Get </span>Prices';
         }
 
         if (meerkat.modules.splitTest.isActive(15)) {
-            labels.journey.startStep = '<span class="hidden-sm hidden-md hidden-lg">About</span><span class="hidden-xs">About You</span>';
-            labels.journey.benefitStep = '<span class="hidden-sm hidden-md hidden-lg">Cover</span><span class="hidden-xs">Your Cover</span>';
-            labels.journey.contactStep = '<span class="hidden-sm hidden-md hidden-lg">Details</span><span class="hidden-xs">Your Details</span>';
-            labels.journey.resultsStep = '<span class="hidden-sm hidden-md hidden-lg">Compare</span><span class="hidden-xs">Compare Cover</span>';
-            labels.application.applyStep = '<span class="hidden-sm hidden-md hidden-lg">Purchase</span><span class="hidden-xs">Purchase Cover</span>';
+            labels.journey.startStep = 'About<span class="hidden-xs"> You</span>';
+            labels.journey.benefitStep = '<span class="hidden-xs">Your </span>Cover';
+            labels.journey.contactStep = '<span class="hidden-xs">Your </span>Details';
+            labels.journey.resultsStep = 'Compare<span class="hidden-xs"> Cover</span>';
+            labels.application.applyStep = 'Purchase<span class="hidden-xs"> Cover</span>';
         }
 
         var phase = isJourney ? 'journey' : 'application',
