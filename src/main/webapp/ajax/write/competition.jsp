@@ -33,10 +33,17 @@ LIMIT 1;
 <sql:param value="${competition_email}" />
 <sql:param value="${styleCodeId}" />
 </sql:query>
+<sql:query var="entry_exist">
+SELECT entry_id
+FROM ctm.competition_master
+WHERE email_id = ?
+LIMIT 1;
+<sql:param>${email_exist.rows[0].emailId}</sql:param>
+</sql:query>
 </c:catch>
 
 <c:choose>
-<c:when test="${empty email_exist or email_exist.rowCount == 0}">
+<c:when test="${empty entry_exist or entry_exist.rowCount == 0}">
 <c:catch var="error">
 <agg_v1:write_email
     source="${source}"
@@ -45,7 +52,7 @@ LIMIT 1;
     emailAddress="${competition_email}"
     firstName="${first_name}"
     lastName="${last_name}"
-    items="marketing=Y,okToCall=N" />
+    items="marketing=${marketing},okToCall=N" />
 
 <sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 <sql:query var="emailMaster">
@@ -74,7 +81,7 @@ LIMIT 1;
 <c:set var="errorPool" value="{error:'Failed to retrieve the emailId to make the entry.'}" />
 </c:when>
 <c:otherwise>
-<c:set var="items">firstname=${first_name}::lastname=${last_name}::email=${email}::postcode=${post_code}::phone=${phone_number}::name1=${name_1}::name2=${name_2}::name3=${name_3}::name4=${name_4}::reason=${reason}</c:set>
+<c:set var="items">firstname=${first_name}::lastname=${last_name}::email=${email}::postcode=${post_code}::phone=${phone_number}::name1=${name_1}::name2=${name_2}::name3=${name_3}::name4=${name_4}::reason=${reason}::age18=${age_18}</c:set>
 
 <c:set var="entry_result">
 <agg_v1:write_competition
@@ -117,7 +124,7 @@ ${errorPool}
 <c:param name="page" value="${pageContext.request.servletPath}" />
 <c:param name="message" value="Competition error" />
 <c:param name="description" value="${errorPool}" />
-<c:param name="data" value="competition_id:${competition_id} email:${competition_email} firstname:${first_name} lastname:${last_name} email:${email} postcode:${post_code} phone:${phone_number} name1:${name_1} name2:${name_2} name3:${name_3} name4:${name_4} reason:${reason}" />
+<c:param name="data" value="competition_id:${competition_id} email:${competition_email} firstname:${first_name} lastname:${last_name} email:${email} postcode:${post_code} phone:${phone_number} name1:${name_1} name2:${name_2} name3:${name_3} name4:${name_4} reason:${reason} age18:${age_18}" />
 </c:import>
 </c:when>
 <c:otherwise>

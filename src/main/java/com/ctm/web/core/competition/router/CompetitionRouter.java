@@ -43,6 +43,8 @@ public class CompetitionRouter extends HttpServlet {
                 }
                 JSONObject obj = new JSONObject(sb.toString());
                 request.setAttribute("competition_id", obj.getInt("competition_id"));
+                request.setAttribute("age_18", obj.getBoolean("age_18"));
+                request.setAttribute("marketing", obj.getString("marketing"));
                 request.setAttribute("first_name", obj.getString("first_name"));
                 request.setAttribute("last_name", obj.getString("last_name"));
                 request.setAttribute("email", obj.getString("email"));
