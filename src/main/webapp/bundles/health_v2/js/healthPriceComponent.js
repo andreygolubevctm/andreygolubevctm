@@ -111,8 +111,10 @@
 			product.displayLogo = true;
 			product.priceBreakdown = true;
 
+			var getLHCCopyAjax = null;
+
 			if (product.premium[product._selectedFrequency].lhcPercentage > 0) {
-				meerkat.modules.comms.get({
+				getLHCCopyAjax = meerkat.modules.comms.get({
 					url: 'spring/content/get.json',
 					data: {
 						vertical: 'HEALTH',
@@ -149,11 +151,12 @@
 
 			var quoteRefHtmlTemplate = typeof quoteRefTemplate !== 'undefined' ? _.template(quoteRefTemplate) : null;
 			var priceHtmlTemplate = _.template(priceTemplate);
-			var logoHtmlTemplate = _.template(logoTemplate);
+			var logoHtmlTemplate = _.template(logoTemplate);var htmlString = (typeof quoteRefHtmlTemplate === 'function' ? quoteRefHtmlTemplate({}) : "") + logoHtmlTemplate(product) + priceHtmlTemplate(product);
 
-			_.defer(function() {
-				var htmlString = (typeof quoteRefHtmlTemplate === 'function' ? quoteRefHtmlTemplate({}) : "") + lhcHtml + logoHtmlTemplate(product) + priceHtmlTemplate(product);
-				$policySummaryTemplateHolder.html(htmlString);
+			$policySummaryTemplateHolder.html(htmlString);
+
+			getLHCCopyAjax && getLHCCopyAjax.done(function() {
+				$policySummaryTemplateHolder.prepend(lhcHtml);
 			});
 
 //		This is a deactivated split test as it is likely to be run again in the future
