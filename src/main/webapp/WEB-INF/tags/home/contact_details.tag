@@ -43,7 +43,6 @@
 		<div id="lead-ab-test-health">
 			<agg_v1:lead_capture vertical="health" label="Health comparision" baseXpath="${baseXpath}" heading="Interested in Health Insurance?" key="leadCaptureTextHealth" className="health" />
 		</div>
-		</div>
 	</c:if>
 
 	<%-- OK to call --%>
