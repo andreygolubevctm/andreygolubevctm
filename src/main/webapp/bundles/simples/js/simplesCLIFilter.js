@@ -3,12 +3,15 @@
     var meerkat = window.meerkat,
         log = meerkat.logging.info,
         errorMsgElement = $('.simples-clifilter-pane-body .alert.alert-danger'),
-        successMsgElement = $('.simples-clifilter-pane-body .alert.alert-danger');
+        successMsgElement = $('.simples-clifilter-pane-body .alert.alert-danger'),
+        baseUrl = '';
 
     var $targetForm = false;
 
     function init() {
         $(document).ready(function() {
+
+            baseUrl = meerkat.modules.simples.getBaseUrl();
 
             errorMsgElement.html('').addClass('hidden');
             successMsgElement.html('').addClass('hidden');
@@ -50,7 +53,7 @@
                 value: $targetForm.find('input[name="phone"]').val().trim().replace(/\s+/g, '')
             };
 
-            var url = 'spring/rest/simples/clifilter/add.json',
+            var url = baseUrl + 'spring/rest/simples/clifilter/add.json',
                 successMessage = 'Success : ' + formData.value + ' is added to CLI Filter';
             makeAjaxCall(url, formData, successMessage);
         }
