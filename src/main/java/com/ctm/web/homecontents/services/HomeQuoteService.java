@@ -145,6 +145,8 @@ public class HomeQuoteService extends CommonRequestServiceV2 {
                             .addResult("HHC/excess/amount", result.getContentsExcess() != null ? result.getContentsExcess().getAmount() : "0")
                             .addResult("headline/name", result.getProductName())
                             .addResult("quoteUrl", result.getQuoteUrl())
+                            .addResult("discountOffer", result.getDiscountOffer())
+                            .addResult("discountOfferTerms", result.getDiscountOfferTerms())
                             .addResult("telNo", result.getContact().getPhoneNumber())
                             .addResult("openingHours", result.getContact().getCallCentreHours())
                             .addResult("leadNo", result.getQuoteNumber())
