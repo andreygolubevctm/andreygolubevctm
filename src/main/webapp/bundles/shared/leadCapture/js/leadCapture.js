@@ -7,12 +7,12 @@
         whenMovedIn: $('#home_occupancy_whenMovedIn_year'),
         textBubbleHeader: $('.lead-capture .well h4'),
         radioBtn: $('.lead-capture .radioBtn label'),
-        currentLiving: $('.leadCapture-living-at-property'),
-        movingIn: $('.leadCapture-not-living-at-property')
+        health: $('.leadCapture-health'),
+        energy: $('.leadCapture-energy')
       },
       state = {
         value: 'N',
-        leadCaptureVertical: (window.meerkat.site.vertical === 'home' ? 'energy' : 'health')
+        leadCaptureVertical: 'health'
       };
 
   function _mapValueToInput(el) {
@@ -49,7 +49,7 @@
   }
 
   function _onChange() {
-    if (window.meerkat.site.vertical === 'home') {
+    if (window.meerkat.site.vertical === 'home' && window.meerkat.site.tracking.brandCode === 'ctm') {
       $elements.whenMovedIn.on('change', _checkJustMovedIn);
       $elements.principalResidenceInputs.on('change', _principalResidenceChange);
     }
@@ -57,18 +57,20 @@
   
   function _principalResidenceChange() {
     if ($('input[name=home_occupancy_principalResidence]:checked').val() === 'N') {
-      $elements.currentLiving.hide();
-      $elements.movingIn.hide();
+      $elements.health.hide();
+      $elements.energy.hide();
     }
   }
 
   function _checkJustMovedIn() {
     if ($elements.whenMovedIn.val() === 'NotAtThisAddress') {
-      $elements.currentLiving.hide();
-      $elements.movingIn.show();
+      $elements.health.hide();
+      $elements.energy.show();
+      state.leadCaptureVertical = 'energy';
     } else {
-      $elements.currentLiving.show();
-      $elements.movingIn.hide();
+      $elements.health.show();
+      $elements.energy.hide();
+      state.leadCaptureVertical = 'health';
     }
   }
 

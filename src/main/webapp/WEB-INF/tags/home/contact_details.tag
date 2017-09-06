@@ -37,9 +37,12 @@
 	</form_v2:row>
 
 	<c:if test="${leadCaptureActive eq true}">
-		<div id="energy-ab-test">
-			<agg_v1:lead_capture vertical="energy" label="Energy comparision" baseXpath="${baseXpath}" heading="Interested in comparing energy plans later?" key="leadCaptureNotLiving" className="not-living-at-property" />
-			<agg_v1:lead_capture vertical="energy" label="Energy comparision" baseXpath="${baseXpath}" heading="Interested in comparing energy plans later?" key="leadCaptureCurrentlyResiding" className="living-at-property" />
+		<div id="lead-ab-test-energy">
+			<agg_v1:lead_capture vertical="energy" label="Energy comparision" baseXpath="${baseXpath}" heading="Interested in comparing energy plans later?" key="leadCaptureNotLiving" className="energy" />
+		</div>
+		<div id="lead-ab-test-health">
+			<agg_v1:lead_capture vertical="health" label="Health comparision" baseXpath="${baseXpath}" heading="Interested in Health Insurance?" key="leadCaptureTextHealth" className="health" />
+		</div>
 		</div>
 	</c:if>
 
