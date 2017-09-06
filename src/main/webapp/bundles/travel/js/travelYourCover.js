@@ -101,7 +101,7 @@
 			$destinationfs.add($datestravellersfs).add($travel_dates_fromDate_row).add($travel_dates_toDate_row)[showMethod]();
 
 			// update section header name for dates & travellers section
-			$datestravellersfs.find('h2').text("Dates & Travellers");
+			$datestravellersfs.find('h2').text("Travellers");
 
 		} else {
 			// AMT

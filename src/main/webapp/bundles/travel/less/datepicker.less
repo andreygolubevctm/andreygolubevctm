@@ -1,0 +1,79 @@
+.dp__input__header {
+  font-size: 14px;
+  float: left;
+  padding-bottom: 1px;
+}
+
+.dp__textContainer {
+  padding: 0;
+}
+
+.dp__input__item {
+  border: 1px solid #666666;
+  border-radius: 4px;
+  height: 41px;
+  float: left;
+  width: 100%;
+  padding: 10px;
+}
+
+.dp__input__item--active {
+  box-shadow: 4px 4px 16px -2px rgba(0, 0, 0, 0.52);
+  border-color: #6b8aca;
+}
+
+.dp__input__hidden {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  opacity: 0;
+  height: 41px;
+  width: calc(100% - 10px);
+}
+
+.dp__input {
+  width: 50%;
+  float: left;
+  padding-right: 10px;
+  position: relative;
+}
+
+.flatpickr-calendar {
+  margin-top: 15px;
+}
+
+.flatpickr-calendar {
+  border-radius: 0;
+  border: 1px solid #6b8aca;
+  &:before {
+    border-width: 11px;
+    margin: 0 -11px;
+    border-bottom-color: #6b8aca!important;
+  }
+  &:after {
+    border-width: 10px;
+    margin: 0 -10px;
+  }
+}
+
+span.flatpickr-day.selected, span.flatpickr-day.selected.startRange, span.flatpickr-day.selected.endRange, span.flatpickr-day.startRange.inRange, span.flatpickr-day.endRange.inRange {
+  border-radius: 0;
+  background-color: @theme-secondary;
+  margin: 0;
+  border-color: @theme-secondary;
+}
+
+.rangeMode .flatpickr-day {
+  margin: 0;
+}
+
+span.flatpickr-day:hover {
+  border-radius: 0;
+}
+
+span.flatpickr-day.inRange {
+  margin: 0;
+  background-color: #7dcc9b;
+  box-shadow: -5px 0 0 #7dcc9b, 5px 0 0 #7dcc9b;
+  border-color: transparent;
+}
