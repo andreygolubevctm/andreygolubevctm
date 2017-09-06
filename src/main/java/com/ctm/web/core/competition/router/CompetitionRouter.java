@@ -48,7 +48,7 @@ public class CompetitionRouter extends HttpServlet {
                 request.setAttribute("first_name", obj.getString("first_name"));
                 request.setAttribute("last_name", obj.getString("last_name"));
                 request.setAttribute("email", obj.getString("email"));
-                request.setAttribute("post_code", obj.getInt("post_code"));
+                request.setAttribute("post_code", obj.getString("post_code"));
                 request.setAttribute("phone_number", obj.getString("phone_number"));
                 request.setAttribute("name_1", obj.getString("name_1"));
                 request.setAttribute("name_2", obj.getString("name_2"));
