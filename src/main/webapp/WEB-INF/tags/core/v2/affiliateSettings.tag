@@ -8,7 +8,7 @@
 	<c:set var="journeyVertical" value="quote" />
 </c:if>
 
-<%-- If affiliate properties already exists then render them as hidden inputs --%>
+<%-- If affiliate data exists then create affiliate properties --%>
 <c:set var="fieldXpath" value="${journeyVertical}/affiliate_id" />
 <c:if test="${not empty data[fieldXpath]}">
 	affiliate_id: "<c:out value="${data[fieldXpath]}"/>",
