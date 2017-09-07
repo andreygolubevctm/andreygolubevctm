@@ -128,7 +128,7 @@
             <c:param name="page" value="${pageContext.request.servletPath}" />
             <c:param name="message" value="Competition error" />
             <c:param name="description" value="${errorPool}" />
-            <c:param name="data" value="competition_id:${competition_id} email:${competition_email} firstname:${first_name} lastname:${last_name} email:${email} postcode:${post_code} phone:${phone_number} name1:${name_1} name2:${name_2} name3:${name_3} name4:${name_4} reason:${reason} age18:${age_18}" />
+            <c:param name="data" value="competition_id:${competition_id}" />
         </c:import>
     </c:when>
     <c:otherwise>
