@@ -47,6 +47,7 @@
     "shared/health",
     "shared/healthPyrrCampaign",
     "shared/reward",
-    "shared/affiliateProperties"
+    "shared/affiliateProperties",
+    "shared/fields"
   ]
 }
