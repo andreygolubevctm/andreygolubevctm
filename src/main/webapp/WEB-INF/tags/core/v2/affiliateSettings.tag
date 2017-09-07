@@ -9,19 +9,20 @@
 </c:if>
 
 <%-- If affiliate data exists then create affiliate properties --%>
-<c:set var="fieldXpath" value="${journeyVertical}/affiliate_id" />
+<c:set var="fieldXpath" value="${journeyVertical}/affiliate/id" />
+
 <c:if test="${not empty data[fieldXpath]}">
 	affiliate_id: "<c:out value="${data[fieldXpath]}"/>",
 </c:if>
-<c:set var="fieldXpath" value="${journeyVertical}/affiliate_campaign" />
+<c:set var="fieldXpath" value="${journeyVertical}/affiliate/campaign" />
 <c:if test="${not empty data[fieldXpath]}">
 	affiliate_campaign: "<c:out value="${data[fieldXpath]}"/>",
 </c:if>
-<c:set var="fieldXpath" value="${journeyVertical}/affiliate_clickref" />
+<c:set var="fieldXpath" value="${journeyVertical}/affiliate/clickref" />
 <c:if test="${not empty data[fieldXpath]}">
 	affiliate_clickref: "<c:out value="${data[fieldXpath]}"/>",
 </c:if>
-<c:set var="fieldXpath" value="${journeyVertical}/affiliate_cd1" />
+<c:set var="fieldXpath" value="${journeyVertical}/affiliate/cd1" />
 <c:if test="${not empty data[fieldXpath]}">
 	affiliate_cd1: "<c:out value="${data[fieldXpath]}"/>",
 </c:if>
