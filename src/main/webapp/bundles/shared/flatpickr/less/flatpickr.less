@@ -573,13 +573,26 @@ span.flatpickr-weekday {
 }
 
 .flatpickr-day.today {
-    border-color: #959ea9;
+    border-color: #f0f0f0;
+    background-color: #f0f0f0;
+    &:before {
+      content: 'TODAY';
+      position: absolute;
+      top: -13px;
+      left: 0;
+      font-size: 9px;
+      right: 0;
+      font-weight: 800;
+      color: #444444;
+    }
 }
+
+
 
 .flatpickr-day.today:hover,
 .flatpickr-day.today:focus {
-    border-color: #959ea9;
-    background: #959ea9;
+    border-color: @theme-secondary;
+    background: @theme-secondary;
     color: #fff
 }
 
