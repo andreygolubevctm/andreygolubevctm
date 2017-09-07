@@ -80,7 +80,6 @@
             toggleBenefitsDialogue();
             initDBDrivenCheckboxes();
             toggleFollowupCallDialog();
-            toggleAffiliateRewardsDialogue();
 
             applyEventListeners();
             eventSubscriptions();
