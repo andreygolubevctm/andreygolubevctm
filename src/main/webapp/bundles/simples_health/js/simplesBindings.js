@@ -372,7 +372,7 @@
 
     function toggleAffiliateRewardsDialogue(affiliateId) {
         $cashRewardsDialogue.toggleClass('hidden', affiliateId !== 'cashRewards');
-        $rewardGatewaryDialogue.toggleClass('hidden', affiliateId !== 'rewardGateway')
+        $rewardGatewaryDialogue.toggleClass('hidden', affiliateId !== 'rewardGateway');
     }
 
     meerkat.modules.register("simplesBindings", {
