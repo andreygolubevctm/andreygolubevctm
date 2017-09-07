@@ -108,7 +108,7 @@
             meerkat.modules.healthDualPricing.renderTemplate('.policySummary.dualPricing', product, false, true);
         } else {
             product.displayLogo = true;
-            product.priceBreakdown = true;
+            product.priceBreakdown = meerkat.modules.journeyEngine.getCurrentStep().navigationId !== 'results' ? true : false;
 
             if (product.premium[product._selectedFrequency].lhcPercentage > 0) {
                 meerkat.modules.comms.get({
