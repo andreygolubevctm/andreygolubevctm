@@ -222,6 +222,7 @@
     }
 
     function _getGender($person) {
+
         if (!_.isUndefined($person.gender)) {
             return $person.gender.filter(':checked').val() === 'F' ? 'Female' : 'Male';
         } else {
