@@ -320,11 +320,6 @@
 		</Attributes>
 
 		<Attributes>
-			<Name>OfferTerms<xsl:value-of select="$index" /></Name>
-			<Value><xsl:value-of select="$currentProduct/discountOfferTerms" /></Value>
-		</Attributes>
-
-		<Attributes>
 			<Name>Provider<xsl:value-of select="$index" /></Name>
 			<Value><xsl:value-of select="$currentProduct/productDes" /></Value>
 		</Attributes>
