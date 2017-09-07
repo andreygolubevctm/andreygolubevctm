@@ -1,3 +1,6 @@
+@light: fade(@theme-secondary, 59%);
+
+
 .dp__input__header {
   font-size: 14px;
   float: left;
@@ -38,17 +41,20 @@
   position: relative;
 }
 
-.flatpickr-calendar {
+.flatpickr-calendar.arrowTop {
   margin-top: 15px;
+}
+
+.flatpickr-calendar.arrowBottom {
+  margin-top: -15px;
 }
 
 .flatpickr-calendar {
   border-radius: 0;
-  border: 1px solid #6b8aca;
+  border: 2px solid #6b8aca;
   &:before {
-    border-width: 11px;
-    margin: 0 -11px;
-    border-bottom-color: #6b8aca!important;
+    border-width: 13px;
+    margin: 0 -13px;
   }
   &:after {
     border-width: 10px;
@@ -73,7 +79,7 @@ span.flatpickr-day:hover {
 
 span.flatpickr-day.inRange {
   margin: 0;
-  background-color: #7dcc9b;
-  box-shadow: -5px 0 0 #7dcc9b, 5px 0 0 #7dcc9b;
+  background-color: @light;
+  box-shadow: -5px 0 0 rgb(112, 209, 149), 5px 0 0 rgba(13, 177, 75, 0.59);
   border-color: transparent;
 }

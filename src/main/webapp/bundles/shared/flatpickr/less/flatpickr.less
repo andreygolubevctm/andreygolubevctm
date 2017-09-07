@@ -1,3 +1,5 @@
+@light: fade(@theme-secondary, 59%);
+
 .flatpickr-calendar {
     background: transparent;
     overflow: hidden;
@@ -20,8 +22,6 @@
     -ms-touch-action: manipulation;
     touch-action: manipulation;
     background: #fff;
-    -webkit-box-shadow: 1px 0 0 #6B8ACD, -1px 0 0 #6B8ACD, 0 1px 0 #6B8ACD, 0 -1px 0 #6B8ACD, 0 3px 13px rgba(0, 0, 0, 0.08);
-    box-shadow: 1px 0 0 #6B8ACD, -1px 0 0 #6B8ACD, 0 1px 0 #6B8ACD, 0 -1px 0 #6B8ACD, 0 3px 13px rgba(0, 0, 0, 0.08);
 }
 
 .flatpickr-calendar.open,
@@ -75,7 +75,7 @@
 
 .flatpickr-calendar.showTimeInput.hasTime .flatpickr-time {
     height: 40px;
-    border-top: 1px solid #6B8ACD
+    border-top: 1px solid @theme-secondary
 }
 
 .flatpickr-calendar.noCalendar.hasTime .flatpickr-time {
@@ -116,7 +116,7 @@
 }
 
 .flatpickr-calendar.arrowTop:before {
-    border-bottom-color: #6B8ACD
+    border-bottom-color: #6b8aca;
 }
 
 .flatpickr-calendar.arrowTop:after {
@@ -129,7 +129,7 @@
 }
 
 .flatpickr-calendar.arrowBottom:before {
-    border-top-color: #6B8ACD;
+    border-top-color: #6b8aca;
 }
 
 .flatpickr-calendar.arrowBottom:after {
@@ -561,8 +561,8 @@ span.flatpickr-weekday {
 .flatpickr-day.nextMonthDay:focus {
     cursor: pointer;
     outline: 0;
-    background: #6B8ACD;
-    border-color: #6B8ACD
+    background: fade(@theme-secondary, 59%);
+    background: fade(@theme-secondary, 59%);
 }
 
 .flatpickr-day:hover,
@@ -648,8 +648,7 @@ span.flatpickr-weekday {
 
 .flatpickr-day.inRange {
     border-radius: 0;
-    -webkit-box-shadow: -5px 0 0 #6B8ACD, 5px 0 0 #6B8ACD;
-    box-shadow: -5px 0 0 #6B8ACD, 5px 0 0 #6B8ACD
+    box-shadow: -5px 0 0 @light, 5px 0 0 @light;
 }
 
 .flatpickr-day.disabled,
@@ -687,8 +686,8 @@ span.flatpickr-weekday {
 
 .flatpickr-weekwrapper .flatpickr-weeks {
     padding: 0 12px;
-    -webkit-box-shadow: 1px 0 0 #6B8ACD;
-    box-shadow: 1px 0 0 #6B8ACD
+    -webkit-box-shadow: 1px 0 0 @theme-secondary;
+    box-shadow: 1px 0 0 @theme-secondary
 }
 
 .flatpickr-weekwrapper .flatpickr-weekday {

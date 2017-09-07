@@ -6,12 +6,12 @@
   var elements = {
     departure: document.getElementById('departure'),
     returned: document.getElementById('return')
-  }
+  };
   
   var display = {
     departure: document.getElementById('departureDisplay'),
     returned: document.getElementById('returnDisplay')
-  }
+  };
 
   var options = {
     departureOptions: {
@@ -33,6 +33,7 @@
     returnOptions: {
       dateFormat: "d/m/y",
     	mode: 'range',
+      minDate: 'today',
       onOpen: function() {
         display.returned.classList.add('dp__input__item--active');
       },
