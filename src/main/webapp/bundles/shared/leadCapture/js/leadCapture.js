@@ -90,17 +90,6 @@
     }
   }
   
-  /*
-  var test = {
-    movingIn: {
-      energy: 100
-    },
-    currentLivingIn: {
-      energy: 50,
-      health: 50
-    }
-  };
-  */
   function splitTest(values) {
     var currentLivingIn = values.currentLivingIn,
         movingIn = values.movingIn,
