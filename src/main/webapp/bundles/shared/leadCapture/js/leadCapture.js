@@ -8,11 +8,14 @@
         textBubbleHeader: $('.lead-capture .well h4'),
         radioBtn: $('.lead-capture .radioBtn label'),
         health: $('.leadCapture-health'),
-        energy: $('.leadCapture-energy')
+        energyMovingIn: $('.leadCapture-energy-movingIn'),
+        energyResiding: $('.leadCapture-energy-residing')
       },
       state = {
         value: 'N',
-        leadCaptureVertical: 'health'
+        leadCaptureVertical: 'health',
+        movingIn: null,
+        currentLivingIn: null
       };
 
   function _mapValueToInput(el) {
@@ -57,22 +60,65 @@
   
   function _principalResidenceChange() {
     if ($('input[name=home_occupancy_principalResidence]:checked').val() === 'N') {
+      $elements.energyMovingIn.hide();
       $elements.health.hide();
-      $elements.energy.hide();
+      $elements.energyResiding.hide();
     }
   }
 
   function _checkJustMovedIn() {
-    if ($elements.whenMovedIn.val() === 'NotAtThisAddress') {
+    if ($elements.whenMovedIn.val() === 'NotAtThisAddress' && state.movingIn) {
+      $elements.energyMovingIn.show();
       $elements.health.hide();
-      $elements.energy.show();
+      $elements.energyResiding.hide();
+      state.leadCaptureVertical = 'energy';
+    } else if(state.currentLivingIn === 'health') {
+      $elements.energyMovingIn.hide();
+      $elements.health.show();
+      $elements.energyResiding.hide();
+      state.leadCaptureVertical = 'health';
+    } else if(state.currentLivingIn === 'energy') {
+      $elements.energyMovingIn.hide();
+      $elements.health.hide();
+      $elements.energyResiding.show();
       state.leadCaptureVertical = 'energy';
     } else {
-      $elements.health.show();
-      $elements.energy.hide();
-      state.leadCaptureVertical = 'health';
+      $elements.energyMovingIn.hide();
+      $elements.health.hide();
+      $elements.energyResiding.hide();
+      state.leadCaptureVertical = null;
     }
   }
+  
+  /*
+  var test = {
+    movingIn: {
+      energy: 100
+    },
+    currentLivingIn: {
+      energy: 50,
+      health: 50
+    }
+  };
+  */
+  function splitTest(values) {
+    var currentLivingIn = values.currentLivingIn,
+        movingIn = values.movingIn,
+        rangeValue = Math.random() * 100;
+    if (currentLivingIn.energy > rangeValue) {
+      state.currentLivingIn = 'energy';
+    } else if((currentLivingIn.health + currentLivingIn.energy) > rangeValue) {
+      state.currentLivingIn = 'health';
+    } else {
+      state.currentLivingIn = null;
+    }
+    if (movingIn.energy > rangeValue) {
+      state.movingIn = 'energy';
+    } else {
+      state.movingIn = null;
+    }
+  }
+
 
   function _eventListeners() {
     _clickHandler();
@@ -87,6 +133,7 @@
 
   window.meerkat.modules.register("leadCapture", {
     init: init,
-    getTrackingData: getTrackingData
+    getTrackingData: getTrackingData,
+    splitTest: splitTest
   });
 })(jQuery);
