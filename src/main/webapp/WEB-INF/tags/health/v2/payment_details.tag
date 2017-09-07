@@ -16,17 +16,16 @@
 <%-- <jsp:useBean id="splitTestService" class="com.ctm.web.core.services.tracking.SplitTestService" /> --%>
 <%-- <c:set var="isAltView" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 2)}" /> --%>
 
-<jsp:useBean id="healthPriceDetailService" class="com.ctm.web.health.services.HealthPriceDetailService" scope="page" />
-<c:set var="healthAlternatePricingActive" value="${healthPriceDetailService.isAlternatePriceActive(pageContext.getRequest())}" />
+<health_v1:dual_pricing_settings />
 
 <%-- HTML --%>
 <div id="${name}-selection" class="health-payment_details ">
 
 	<form_v3:fieldset legend="Payment Details" >
 
-		<c:if test="${healthAlternatePricingActive eq true and not empty callCentre}">
+		<c:if test="${isDualPriceActive eq true}">
 			<div class="alert alert-info">
-				Remember: Premiums will rise from 1st April. You <b>must</b> select a cover start date before <b>April</b> 1st to save.
+				Remember: Premiums will rise from <span class="pricingDate"></span>. You <b>must</b> select a cover start date <b>before <span class="pricingDate"></span></b> to be eligible for the lower rate.
 			</div>
 		</c:if>
 
@@ -48,7 +47,7 @@
 			<div class="fieldrow_legend lhcText"></div>
 		</form_v3:row>
 
-		<c:if test="${healthAlternatePricingActive eq true and not empty callCentre}">
+		<c:if test="${isDualPriceActive eq true}">
 			<div class="hidden frequencyWarning definition alert alert-info"></div>
 		</c:if>
 

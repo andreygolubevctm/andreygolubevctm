@@ -11,31 +11,31 @@
         premiumIncreaseContent = $('.healthPremiumIncreaseContent'),
         maxMilliSecondsForMessage = $("#maxMilliSecToWait").val(),
         resultsStepIndex = 3,
+        extendedFamilyResultsRulesAjax = null,
+        providersReturned = [],
+        extendedFamilyResultsRulesData = {},
+        extendedFamilyResultsRules = '',
 
         templates = {
-            premiumsPopOver: '{{ if(product.premium.hasOwnProperty(frequency)) { }}' +
-            '<strong>Total Price including rebate and LHC: </strong><span class="highlighted">{{= product.premium[frequency].text }}</span><br/> ' +
-            '<strong>Price including rebate but no LHC: </strong>{{=product.premium[frequency].lhcfreetext}}<br/> ' +
-            '<strong>Price including LHC but no rebate: </strong>{{= product.premium[frequency].baseAndLHC }}<br/> ' +
-            '<strong>Base price: </strong>{{= product.premium[frequency].base }}<br/> ' +
-            '{{ } }}' +
-            '<hr/> ' +
-            '{{ if(product.premium.hasOwnProperty(\'fortnightly\')) { }}' +
-            '<strong>Fortnightly (ex LHC): </strong>{{=product.premium.fortnightly.lhcfreetext}}<br/> ' +
-            '{{ } }}' +
-            '{{ if(product.premium.hasOwnProperty(\'monthly\')) { }}' +
-            '<strong>Monthly (ex LHC): </strong>{{=product.premium.monthly.lhcfreetext}}<br/> ' +
-            '{{ } }}' +
-            '{{ if(product.premium.hasOwnProperty(\'annually\')) { }}' +
-            '<strong>Annually (ex LHC): </strong>{{= product.premium.annually.lhcfreetext}}<br/> ' +
-            '{{ } }}' +
-            '<hr/> ' +
-            '{{ if(product.hasOwnProperty(\'info\')) { }}' +
-            '<strong>Name: </strong>{{=product.info.productTitle}}<br/> ' +
-            '<strong>Product Code: </strong>{{=product.info.productCode}}<br/> ' +
-            '<strong>Product ID: </strong>{{=product.productId}}<br/>' +
-            '<strong>State: </strong>{{=product.info.State}}<br/> ' +
-            '<strong>Membership Type: </strong>{{=product.info.Category}}' +
+            premiumsPopOver:
+            '{{ if(product.premium.hasOwnProperty(frequency)) { }}' +
+                '<h6>Customer Pays:</h6>'+
+                '<ul class="price-list">'+
+                    '<li><strong>Base Premium: </strong>'+'<span>{{= product.premium[frequency].base }}</span></li>'+
+                    '<li><strong>Fortnightly Premium: </strong>'+'<span>{{= product.premium.fortnightly.text }}</span></li>'+
+                    '<li><strong>Monthly Premium: </strong>'+'<span>{{= product.premium.monthly.text }}</span></li>'+
+                    '<li><strong>Annual Premium: </strong>'+'<span>{{= product.premium.annually.text }}</span></li>'+
+                    '<li><strong>Price including Rebate, excluding LHC: </strong>'+'<span>{{= product.premium[frequency].lhcfreetext }}</span></li>'+
+                '</ul>'+
+                '{{ if(usefulLinks.length > 0) { }}'+
+                    '<hr/>'+
+                    '<h6>Useful Links:</h6>'+
+                    '<ul class="link-list">'+
+                        '{{ for(var i in usefulLinks) { }}'+
+                            "<li><a target='_blank' href='{{= usefulLinks[i].url}}'>{{= usefulLinks[i].name}}</a></li>"+
+                        '{{ } }}' +
+                    '</ul>'+
+                '{{ } }}'+
             '{{ } }}'
         },
         moduleEvents = {
@@ -230,7 +230,8 @@
                     callback: meerkat.modules.healthResults.rankingCallback,
                     forceIdNumeric: true
                 },
-                incrementTransactionId: false
+                incrementTransactionId: false,
+                setContainerWidthCB: getElementWidth
             });
 
         } catch (e) {
@@ -318,6 +319,35 @@
                 meerkat.modules.healthSnapshot.renderPreResultsRowSnapshot();
                 // turn off increment tranId
                 Results.settings.incrementTransactionId = false;
+
+                providersReturned = [];
+                extendedFamilyResultsRulesData = {};
+                extendedFamilyResultsRules = "";
+                extendedFamilyResultsRulesAjax = null;
+
+                //Only look for Extended Family rules if (simples && (extendedFamily || ExtendedSingleParentFamily))
+                if (meerkat.site.isCallCentreUser) {
+
+                    var healthSituationHealthCvr = $('#health_situation_healthCvr').val();
+
+                    if (healthSituationHealthCvr === 'EF' || healthSituationHealthCvr ==='ESP') {
+
+                        //Get an array of distinct providers from the results returned
+                        Results.model.filteredProducts.forEach(
+                            function(item){
+                                if (providersReturned.indexOf(item.info.provider) < 0) {
+                                    providersReturned.push(item.info.provider);
+                                }
+                            }
+                        );
+                        if (providersReturned.length > -1){
+                            //get any extended family rules from the content_supplementary table for the returned providers and insert them into the dialog box
+                            setExtendedFamilyResultsRules();
+                        } else {
+                            $('.extFamilyFundSpecificRules').html('');
+                        }
+                    }
+                }
             });
             var tEnd = new Date().getTime();
             var tFetchFinish = (tEnd - tStart);
@@ -338,7 +368,7 @@
                 }
             }
 
-            // if online user load quote from brochures edm (with attached productId), compare it with returend result set, if it is in there, select it, and go to apply stage.
+            // if online user load quote from brochures edm (with attached productId), compare it with returned result set, if it is in there, select it, and go to apply stage.
             if (($('input[name="health_directApplication"]').val() === 'Y')) {
                 Results.setSelectedProduct(meerkat.site.loadProductId);
                 var productMatched = Results.getSelectedProduct();
@@ -447,7 +477,54 @@
             }
 
         });
+
+        meerkat.messaging.subscribe(meerkatEvents.device.RESIZE_DEBOUNCED, function resultsWindowResized() {
+            if (meerkat.modules.journeyEngine.getCurrentStep().navigationId === "results") {
+                Results.view.calculateResultsContainerWidth();
+            }
+        });
     }
+
+
+    function getProvidersReturned() {
+        return providersReturned;
+    }
+
+
+    function setExtendedFamilyResultsRules(){
+
+        extendedFamilyResultsRulesAjax = meerkat.modules.comms.get({
+            url: 'spring/content/getsupplementary.json',
+            data: {
+                vertical: 'HEALTH',
+                key: 'ExtendedFamilyRulesResultsPageInfo'
+            },
+            cache: true,
+            dataType: 'json',
+            useDefaultErrorHandling: false,
+            errorLevel: 'silent',
+            timeout: 5000,
+            onSuccess: function onSubmitSuccess(data) {
+
+                //get each extended family rule returned from the content_supplementary table
+                data.supplementary.forEach(function(item) {
+                    extendedFamilyResultsRulesData[item.supplementaryKey] = item.supplementaryValue;
+                });
+
+                //build extended family rules HTML for the providers returned on the results page
+                providersReturned.forEach(function(provider){
+                    if (extendedFamilyResultsRulesData[provider]) {
+                        extendedFamilyResultsRules += extendedFamilyResultsRulesData[provider];
+                    }
+                });
+
+                //insert returned rules into Dialog box
+                $('.extFamilyFundSpecificRules').html(extendedFamilyResultsRules);
+            }
+        });
+
+    }
+
 
     /**
      * Utility function to find an object by object value.
@@ -816,6 +893,114 @@
         });
     }
 
+    function getUsefulLinks(fundCode){
+        var usefulLinks = [];
+        switch(fundCode){
+            case 'AHM':
+                usefulLinks.push(
+                    {"name" : "Privatehealth.gov.au", "url": "http://www.privatehealth.gov.au/dynamic/InsurerDetails.aspx?code=AHM"},
+                    {"name" : "Hospital Network", "url": "https://members.ahm.com.au/find-a-provider"}
+                );
+                break;
+            case 'AUF':
+                usefulLinks.push(
+                    {"name" : "Privatehealth.gov.au", "url": "http://www.privatehealth.gov.au/dynamic/InsurerDetails.aspx?code=AUF"},
+                    {"name" : "Hospital Network", "url": "http://www.australianunity.com.au/health-insurance/cover/find-a-health-care-provider/find-agreement-hospitals"},
+                    {"name" : "Dental Agreement", "url": "http://www.australianunity.com.au/health-insurance/cover/find-a-health-care-provider/national-dental-network"},
+                    {"name" : "Gap Cover Doctors", "url": "http://www.australianunity.com.au/health-insurance/cover/find-a-health-care-provider/find-gap-cover-doctors"},
+                    {"name" : "Hospital Network", "url": "https://www.smile.com.au/"}
+                );
+                break;
+            case 'BUD':
+                usefulLinks.push(
+                    {"name" : "Privatehealth.gov.au", "url": "http://www.privatehealth.gov.au/dynamic/InsurerDetails.aspx?code=GMH"},
+                    {"name" : "Hospital Network", "url": "https://www.budgetdirect.com.au/content/dam/budgetdirect/website-assets/participating-private-hospitals.pdf"}
+                );
+                break;
+            case 'BUP':
+                usefulLinks.push(
+                    {"name" : "Privatehealth.gov.au", "url": "http://www.privatehealth.gov.au/dynamic/InsurerDetails.aspx?code=BUP"},
+                    {"name" : "Hospital Network", "url": "http://www.bupa.com.au/find-a-provider"},
+                    {"name" : "Dental Agreement", "url": "http://www.bupa.com.au/find-a-provider"},
+                    {"name" : "Extra Benefit - Specsavers Optical", "url": "https://www.specsavers.com.au/health-funds/bupa"},
+                    {"name" : "Extra Benefit - Home Doctor", "url": "https://homedoctor.com.au/"}
+                );
+                break;
+            case 'CBH':
+                usefulLinks.push(
+                    {"name" : "Privatehealth.gov.au", "url": "http://www.privatehealth.gov.au/dynamic/InsurerDetails.aspx?code=CBH"},
+                    {"name" : "Hospital Network", "url": "https://www.cbhs.com.au/members/claims-information/hospital-search"},
+                    {"name" : "Dental Agreement", "url": "https://www.cbhs.com.au/members/member-information/choice-network-providers/find-your-provider"},
+                    {"name" : "Optical Agreement", "url": "https://www.cbhs.com.au/members/member-information/choice-network-providers/find-your-provider"},
+                    {"name" : "Eligibility", "url": "https://www.cbhs.com.au/join-cbhs/joining-cbhs/who-can-join-"}
+
+                );
+                break;
+            case 'CUA':
+                usefulLinks.push(
+                    {"name" : "Privatehealth.gov.au", "url": "http://www.privatehealth.gov.au/dynamic/InsurerDetails.aspx?code=CPS"},
+                    {"name" : "Hospital Network", "url": "http://www.privatehealth.gov.au/dynamic/AgreementHospitals.aspx?insurerid=24a7d5ed-1d30-4841-aabb-bd63558c5bd6"}
+                );
+                break;
+            case 'FRA':
+                usefulLinks.push(
+                    {"name" : "Privatehealth.gov.au", "url": "http://www.privatehealth.gov.au/dynamic/InsurerDetails.aspx?code=GMH"},
+                    {"name" : "Hospital Network", "url": "https://www.frankhealthinsurance.com.au/Documents/List-of-Participating-Hospitals.pdf"}
+                );
+                break;
+            case 'GMH':
+                usefulLinks.push(
+                    {"name" : "Privatehealth.gov.au", "url": "http://www.privatehealth.gov.au/dynamic/InsurerDetails.aspx?code=GMH"},
+                    {"name" : "Hospital Network", "url": "https://www.gmhba.com.au/documents/GMHBA%20Participating%20Private%20Hospitals.pdf"}
+                );
+                break;
+            case 'HBF':
+                usefulLinks.push(
+                    {"name" : "Privatehealth.gov.au", "url": "http://www.privatehealth.gov.au/dynamic/InsurerDetails.aspx?code=HBF"},
+                    {"name" : "Hospital Network", "url": "http://confluence:8090/display/CTMKB/Agreement+Hospitals"}
+                );
+                break;
+            case 'HCF':
+                usefulLinks.push(
+                    {"name" : "Privatehealth.gov.au", "url": "http://www.privatehealth.gov.au/dynamic/InsurerDetails.aspx?code=HCF"},
+                    {"name" : "Hospital Network", "url": "https://www.hcf.com.au/locations/participating-hospitals"},
+                    {"name" : "Dental Agreement", "url": ""}
+                );
+                break;
+            case 'NHB':
+                usefulLinks.push(
+                    {"name" : "Privatehealth.gov.au", "url": "http://www.privatehealth.gov.au/dynamic/InsurerDetails.aspx?code=NHB"},
+                    {"name" : "Hospital Network", "url": "https://navyhealth.com.au/member-services/providers/hospital-search/"},
+                    {"name" : "Eligibility", "url": "http://canijoin.com.au/"}
+                );
+                break;
+            case 'NIB':
+                usefulLinks.push(
+                    {"name" : "Privatehealth.gov.au", "url": "http://www.privatehealth.gov.au/dynamic/InsurerDetails.aspx?code=NIB"},
+                    {"name" : "Hospital Network", "url": "https://www.nib.com.au/health-information/going-to-hospital/hospital-search"},
+                    {"name" : "Hospital Network", "url": "https://www.whitecoat.com.au/preferred-provider/NIB/resident"}
+                );
+                break;
+            case 'QCH':
+                usefulLinks.push(
+                    {"name" : "Privatehealth.gov.au", "url": "http://www.privatehealth.gov.au/dynamic/InsurerDetails.aspx?code=QCH"},
+                    {"name" : "Hospital Network", "url": "http://www.qldcountryhealth.com.au/find-a-hospital"}
+                );
+                break;
+            case 'TUH':
+                usefulLinks.push(
+                    {"name" : "Privatehealth.gov.au", "url": "http://www.privatehealth.gov.au/dynamic/insurerdetails.aspx?code=QTU"},
+                    {"name" : "Hospital Network", "url": "http://tuh.com.au/understanding-health-insurance/about-hospital-cover/hospital-types-and-why-it-matters/"},
+                    {"name" : "Dental Agreement", "url": "http://tuh.com.au/brisbane-health-hub/"},
+                    {"name" : "Eligibility", "url": "http://tuh.com.au/why-tuh/who-can-join-tuh/"}
+                );
+                break;
+            default:
+                break;
+        }
+        return usefulLinks;
+    }
+
     /*
      * recreate the Simples tooltips over prices for Simples users
      * when the results get loaded/reloaded
@@ -832,6 +1017,7 @@
 
                 var text = htmlTemplate({
                     product: product,
+                    usefulLinks: getUsefulLinks(product.info.FundCode),
                     frequency: Results.getFrequency()
                 });
 
@@ -839,7 +1025,8 @@
                     element: $this,
                     contentValue: text,
                     contentType: 'content',
-                    showEvent: 'mouseenter',
+                    showSolo: true,
+                    showEvent: 'click',
                     position: {
                         my: 'top center',
                         at: 'bottom center'
@@ -940,6 +1127,16 @@
         $('.floated-previous-arrow').addClass('hidden');
     }
 
+    function getElementWidth($element) {
+        if ($element.length === 0) return 0;
+
+        var boundingClientRectWidth = $element[0].getBoundingClientRect().width,
+            marginLeft = parseInt($element.css('margin-left')),
+            marginRight = parseInt($element.css('margin-right'));
+
+        return boundingClientRectWidth + marginLeft + marginRight;
+    }
+
     meerkat.modules.register('healthResults', {
         init: init,
         events: moduleEvents,
@@ -963,7 +1160,8 @@
         setLhcApplicable: setLhcApplicable,
         resultsStepIndex: resultsStepIndex,
         setSelectedBenefitsList: setSelectedBenefitsList,
-        hideNavigationLink: hideNavigationLink
+        hideNavigationLink: hideNavigationLink,
+        getProvidersReturned : getProvidersReturned
     });
 
 })(jQuery);

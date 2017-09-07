@@ -227,7 +227,9 @@
                 },
                 templates: {
                     pagination: {
-                        pageItem: '<li class="hidden-md hidden-lg"><a class="btn-pagination" data-results-pagination-control="{{= pageNumber}}" data-analytics="pagination {{= pageNumber}}">{{= label}}</a></li>'
+                        page: '<li><a class="btn-pagination icon icon-angle-{{=icon}} btn-secondary" data-results-pagination-control="{{= type}}" ' + meerkat.modules.dataAnalyticsHelper.get("pagination {{= type}}",'"') + '><!-- empty --></a></li>',
+                        pageItem: '<li class="hidden-md hidden-lg"><a class="btn-pagination" data-results-pagination-control="{{= pageNumber}}" data-analytics="pagination {{= pageNumber}}">{{= label}}</a></li>',
+                        summary: '<li class="summary hidden-xs hidden-sm"><div><span class="hidden-md productsDisplayedText">Products</span> <span class="pageRangeStart">{{= rangeStart}}</span> <span class="productsDisplayedText">to</span> <span class="pageRangeEnd">{{= rangeEnd}}</span> of <span class="totalPages">{{= totalProducts}}</span></div></li>'
                     }
                 },
                 dictionary: {
@@ -263,7 +265,10 @@
                     callback: meerkat.modules.healthResults.rankingCallback,
                     forceIdNumeric: true
                 },
-                incrementTransactionId: false
+                incrementTransactionId: false,
+                balanceCurrentPageRowsHeightOnly: {
+                    mobile: true
+                }
             });
 
         } catch (e) {
@@ -293,9 +298,6 @@
         var tStart = 0;
 
         $(Results.settings.elements.resultsContainer).on("featuresDisplayMode", function () {
-            _resetSelectionsStructureObject();
-            _setupSelectedBenefits('Extras Selections', 'Extras Cover');
-            _setupSelectedBenefits('Hospital Selections', 'Hospital Cover');
             Features.buildHtml();
             _.defer(meerkat.modules.healthResultsTemplate.postRenderFeatures);
         });
@@ -492,6 +494,12 @@
                 $('.featuresList .extrasCover, .featuresList .selection_extra').addClass('hidden');
             }
 
+            $(Results.settings.elements.resultsContainer+' '+Results.settings.elements.rows).hover(function() {
+                $(this).toggleClass('hovered');
+            });
+
+            // Default Private Hospital benefit to be expanded
+            $(".privateHospital.cell.category.expandable").addClass("expanded");
         });
     }
 
@@ -510,55 +518,6 @@
             }
         }
         return null;
-    }
-
-
-    /**
-     * Reset the object to remove "do not render" flag
-     * i.e. if the user changes selected benefits.
-     * @private
-     */
-    function _resetSelectionsStructureObject() {
-        var structure = Features.getPageStructure();
-        for (var i = 0; i < structure.length; i++) {
-            if (typeof structure[i].children !== 'undefined' && structure[i].children.length) {
-                for (var m = 0; m < structure[i].children.length; m++) {
-                    delete structure[i].children[m].doNotRender;
-                }
-            }
-        }
-    }
-
-    /**
-     * This function copies the benefits from the parent's pageStructure object, and injects it into the "selections" object.
-     * We cannot splice from the original object, as if someone changes their filter, a benefit that used to be selected will not appear anymore.
-     * We shouldn't store the object in memory twice, as its 100kb.
-     * We can't set a property onto the object, without first removing the property after every rebuild.
-     * @param injectIntoParent
-     * @param injectFromParent
-     * @private
-     */
-    function _setupSelectedBenefits(injectIntoParent, injectFromParent) {
-
-        // Fetch the relevant objects so we can update the features structure
-        var structure = Features.getPageStructure();
-
-        // This is the object we are going to inject the selected benefits into.
-        var selectedBenefitsStructureObject = _findByKey(structure, injectIntoParent, 'name');
-
-        // reset it on each build, as benefits could change
-        selectedBenefitsStructureObject.children = [];
-        // this is where we are going to pull the children benefits from.
-        var featuresStructureCover = _findByKey(structure, injectFromParent, 'name');
-
-        // For each of the selected benefits
-        for (var i = 0; i < selectedBenefitsList.length; i++) {
-            var putInShortList = _findByKey(featuresStructureCover.children, selectedBenefitsList[i], 'id');
-            if (putInShortList) {
-                selectedBenefitsStructureObject.children.push($.extend({}, putInShortList));
-                putInShortList.doNotRender = true;
-            }
-        }
     }
 
     function breakpointTracking() {
@@ -620,29 +579,31 @@
     // Wrapper around results component, load results data
     function get() {
         // Load rates before loading the results data (hidden fields are populated when rates are loaded).
-        meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'healthLoadRates' });
-        meerkat.modules.healthRates.loadRates(function afterFetchRates() {
+        var afterFetchRates = function() {
             meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, { source: 'healthLoadRates' });
             meerkat.modules.resultsFeatures.fetchStructure('health_v4').done(function () {
                 Results.updateAggregatorEnvironment();
                 Results.updateStaticBranch();
                 Results.get();
             });
-        });
+        };
+        meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'healthLoadRates' });
+        meerkat.modules.healthRates.loadRates(afterFetchRates);
     }
 
     // Wrapper around results component, load results data beofore result page
     function getBeforeResultsPage() {
         // Load rates before loading the results data (hidden fields are populated when rates are loaded).
-        meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'healthLoadRates' });
-        meerkat.modules.healthRates.loadRatesBeforeResultsPage(false, function afterFetchRates() {
+        var afterFetchRates = function() {
             meerkat.messaging.publish(moduleEvents.WEBAPP_UNLOCK, { source: 'healthLoadRates' });
             meerkat.modules.resultsFeatures.fetchStructure('health_v4').done(function () {
                 Results.updateAggregatorEnvironment();
                 Results.updateStaticBranch();
                 Results.get();
             });
-        });
+        };
+        meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'healthLoadRates' });
+        meerkat.modules.healthRates.loadRatesBeforeResultsPage(false, afterFetchRates);
     }
 
     // Get the selected product - a clone of the product object from the results component.
@@ -787,10 +748,9 @@
                 _.findWhere(postData, { name: "health_incrementTransactionId" }).value = "N";
 
                 // Dynamically add these fields because they are disabled when this method is called.
-                postData.push({
-                    name: "health_payment_details_start",
-                    value: $("#health_payment_details_start").val()
-                });
+                postData.push(
+                    meerkat.modules.healthCoverStartDate.getNameValue()
+                );
                 postData.push({
                     name: "health_payment_details_type",
                     value: meerkat.modules.healthPaymentStep.getSelectedPaymentMethod()
@@ -830,7 +790,7 @@
     }
 
     function onResultsLoaded() {
-
+        meerkat.modules.coupon.dealWithAddedCouponHeight();
         if (meerkat.modules.deviceMediaState.get() == "xs") {
             startColumnWidthTracking();
         }

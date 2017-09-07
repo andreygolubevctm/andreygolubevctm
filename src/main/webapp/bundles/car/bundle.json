@@ -8,6 +8,7 @@
     "plugins/scrollTo",
     "shared/results/v2",
     "shared/results/v5",
+    "shared/results/v6",
     "shared/features",
     "shared/validation",
     "shared/fonts/v1",
@@ -40,6 +41,7 @@
     "shared/resultsMobileDisplayModeToggle",
     "shared/mobileNavButtons",
     "shared/buttonGroupVertical",
-    "shared/resultsFilterLabels"
+    "shared/resultsFilterLabels",
+    "shared/leadCapture"
   ]
 }

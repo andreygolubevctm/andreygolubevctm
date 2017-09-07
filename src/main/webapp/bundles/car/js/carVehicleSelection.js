@@ -137,7 +137,7 @@
                         ajaxRequest = false;
                         ajaxInProgress = false;
                         meerkat.modules.loadingAnimation.hide($loadingIconElement);
-                        checkAndNotifyOfVehicleChange();
+                        checkAndNotifyOfVehicleChange(true);
                         disableFutureSelectors(type);
                         return true;
                     }
@@ -235,8 +235,6 @@
                     hasPopularModels = true;
                 }
 
-                var hasPopularColours = type == "colours";
-
                 if (type == 'makes' || hasPopularModels) {
                     var label = type.charAt(0).toUpperCase() + type.slice(1);
                     options.push(
@@ -244,13 +242,6 @@
                     );
                     options.push(
                         $('<optgroup/>', {label: "All " + label})
-                    );
-                } else if (hasPopularColours) {
-                    options.push(
-                        $('<optgroup/>', {label: "Frequently Selected"})
-                    );
-                    options.push(
-                        $('<optgroup/>', {label: "Other colours" })
                     );
                 } else if (!isRadioButtonField(type) && isIosXS && autoSelect !== true) {
                     options.push(
@@ -302,11 +293,15 @@
                             selected = true;
                         }
 
-                        if (type == 'makes' || (type == "models" && hasPopularModels) || hasPopularColours) {
+                        if (type == 'makes' || (type == "models" && hasPopularModels)) {
                             if (item['isTop'] === true) {
                                 option.appendTo(options[1], options[2]);
                             } else {
                                 options[2].append(option);
+                            }
+                        } else if (type == 'colours') {
+                            if (item['isTop'] === true || item['code'] === 'other') {
+                                options.push(option);
                             }
                         } else {
                             if (!isRadioButtonField(type) && isIosXS && autoSelect !== true) {
@@ -472,6 +467,7 @@
         if (model !== false) $(elements.modelDes).val(model.label);
         var year = getDataForCode('years', $(elements.years).val());
         if (year !== false) $(elements.registrationYear).val(year.code);
+
         // Attempt to populate the next field
         if (invalid === false && next !== false) {
             disableFutureSelectors(next);
@@ -485,9 +481,10 @@
                 (!_.isEmpty($element.val()))
             ) {
                 addValidationStyles($element);
-                checkAndNotifyOfVehicleChange();
+                checkAndNotifyOfVehicleChange(true);
             }
         }
+
         meerkat.messaging.publish(moduleEvents.car.DROPDOWN_CHANGED);
     }
 
@@ -529,7 +526,8 @@
         return false;
     }
 
-    function checkAndNotifyOfVehicleChange() {
+    function checkAndNotifyOfVehicleChange(manualSelection) {
+        manualSelection = manualSelection || false;
         var vehicle = isRadioButtonField('types') ? $(elements.types).find("input:checked") : $(elements.types);
         var rbc = vehicle ? vehicle.val() : null;
         if (!_.isEmpty(rbc)) {
@@ -548,6 +546,9 @@
             if (type !== false) {
                 $(elements.marketValue).val(type.marketValue);
                 $(elements.variant).val(type.label);
+                if(manualSelection === true) {
+                    meerkat.modules.carRegoLookup.track();
+                }
             }
 
             _.defer(function () {

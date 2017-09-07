@@ -38,22 +38,67 @@ public class FundDataAdapter {
                         .map(LocalDateUtils::parseAUSLocalDate)
                         .orElse(null),
                 createBenefits(quote),
-                quote.map(HealthQuote::getApplication)
-                    .map(Application::getCbh)
-                    .map(FundDataAdapter::createMembership)
-                    .orElseGet(() -> quote.map(HealthQuote::getApplication)
-                        .map(Application::getNhb)
-                        .map(FundDataAdapter::createMembership)
-                        .orElseGet(() -> quote.map(HealthQuote::getApplication)
-                                .map(Application::getQtu)
-                                .map(FundDataAdapter::createMembership)
-                                .orElse(null))));
+                createMembership(quote));
+    }
+
+    protected static Membership createMembership(Optional<HealthQuote> quote) {
+        // Check CBH
+        Optional<Membership> membership = quote.map(HealthQuote::getApplication)
+                .map(Application::getCbh)
+                .map(FundDataAdapter::createMembership);
+        // Check for Nhb
+        if (!membership.isPresent()) {
+            membership = quote.map(HealthQuote::getApplication)
+                    .map(Application::getNhb)
+                    .map(FundDataAdapter::createMembership);
+        }
+        // Check for Qtu
+        if (!membership.isPresent()) {
+            membership = quote.map(HealthQuote::getApplication)
+                    .map(Application::getQtu)
+                    .map(FundDataAdapter::createMembership);
+        }
+        // Check for Wfd
+        if (!membership.isPresent()) {
+            membership = quote.map(HealthQuote::getApplication)
+                    .map(Application::getWfd)
+                    .map(FundDataAdapter::createMembership);
+        }
+
+        return membership.orElse(null);
     }
 
     protected static Benefits createBenefits(Optional<HealthQuote> quote) {
-        List<String> benefits = quote.map(HealthQuote::getApplication)
+        // Check HBF
+        Optional<Benefits> benefits = quote.map(HealthQuote::getApplication)
                 .map(Application::getHbf)
-                .map(Hbf::getFlexiextras)
+                .map(FundDataAdapter::createBenefits);
+
+        if(!benefits.isPresent()){
+            benefits = quote.map(HealthQuote::getApplication)
+                    .map(Application::getBup)
+                    .map(FundDataAdapter::createBenefits);
+        }
+        return benefits.orElse(null);
+    }
+
+    protected static Benefits createBenefits(Hbf theHbf) {
+        Optional<Hbf> hbf = Optional.ofNullable(theHbf);
+
+        List<String> benefits = hbf.map(Hbf::getFlexiextras)
+                .map(f -> Arrays.asList(StringUtils.split(f, ",")))
+                .orElse(emptyList());
+        if (!benefits.isEmpty()) {
+            return new Benefits(benefits);
+        } else {
+            return null;
+        }
+    }
+
+    protected static Benefits createBenefits(Bup theBup) {
+        Optional<Bup> bup = Optional.ofNullable(theBup);
+
+        List<String> benefits = bup.map(Bup::getFlexiextras)
                 .map(f -> Arrays.asList(StringUtils.split(f, ",")))
                 .orElse(emptyList());
         if (!benefits.isEmpty()) {
@@ -229,4 +274,31 @@ public class FundDataAdapter {
         }
     }
 
+    protected static Membership createMembership(Wfd theWfd) {
+        Optional<Wfd> wfd = Optional.ofNullable(theWfd);
+        if (wfd.isPresent()) {
+            return new Membership(
+                    null,
+                    null,
+                    null,
+                    null,
+                    createPartnerDetailsWFD(wfd),
+                    null,
+                    null);
+        } else {
+            return null;
+        }
+    }
+
+    private static PartnerDetails createPartnerDetailsWFD(Optional<Wfd> wfd) {
+        if (wfd.isPresent()) {
+            return new PartnerDetails(
+                    wfd.map(Wfd::getPartnerrel)
+                            .map(RelationshipToPrimary::new)
+                            .orElse(null),
+                    null);
+        } else {
+            return null;
+        }
+    }
 }

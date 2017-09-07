@@ -45,6 +45,9 @@
     "shared/radioRounded",
     "shared/fields",
     "shared/healthDualPricing",
-    "shared/reward"
+    "shared/health",
+    "shared/healthPyrrCampaign",
+    "shared/reward",
+    "shared/bootstrapSwitch"
   ]
 }

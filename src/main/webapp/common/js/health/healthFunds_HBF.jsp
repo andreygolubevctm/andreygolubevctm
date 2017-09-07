@@ -11,10 +11,7 @@ HBF
 --%>
 
 var healthFunds_HBF = {
-    $paymentType : $('#health_payment_details_type input'),
-    $paymentFrequency : $('#health_payment_details_frequency'),
-    $paymentStartDate: $("#health_payment_details_start"),
-	$claimsAccountOptin: $('#health_payment_bank_claims'),
+    $claimsAccountOptin: $('#health_payment_bank_claims'),
     hasPartner: false,
     set: function(){
         healthFunds_HBF.productType = meerkat.modules.healthResults.getSelectedProduct().info.ProductType;
@@ -29,7 +26,7 @@ var healthFunds_HBF = {
                         <div class="col-sm-8 col-md-4 col-lg-3 hidden-xs no-padding"><img src="assets/graphics/logos/health/HBF.png" /></div>
                         <div class="col-sm-7 col-md-8 col-lg-9 no-padding">
                             <h2>HBF <span class="saver-flexi">Saver </span>Flexi Extras</h2>
-                            <p><strong>HBF <span class="saver-flexi">Saver </span>Flexi Extras</strong> allows you to chosse your extras cover for your needs, pick any <strong><span class="flexi-available">4</span> extras</strong> from the selection below to build the right cover for your needs.</p>
+                            <p><strong>HBF <span class="saver-flexi">Saver </span>Flexi Extras</strong> allows you to choose your extras cover for your needs, pick any <strong><span class="flexi-available">4</span> extras</strong> from the selection below to build the right cover for your needs.</p>
                         </div>
                         <div class="flexi-message">You have selected <span class="flexi-selected text-tertiary"></span> of your <span class="flexi-available text-tertiary">4</span> <span class="text-tertiary">available</span> extras cover inclusions, <strong class="text-warning"><span class="flexi-remaining"></span> more selections remaining</strong></div>
                         <div class="flexi-message-complete hidden">You have selected all of your <span class="flexi-available">4</span> available extras cover inclusions.</div>
@@ -188,7 +185,11 @@ var healthFunds_HBF = {
         }
 
         <%-- Calendar for start cover --%>
-        meerkat.modules.healthPaymentStep.setCoverStartRange(0, 30);
+	    if(_.has(meerkat.modules,'healthCoverStartDate')) {
+		    meerkat.modules.healthCoverStartDate.setCoverStartRange(0, 30);
+	    } else {
+		    meerkat.modules.healthPaymentStep.setCoverStartRange(0, 30);
+	    }
 
         <%--credit card & bank account frequency & day frequency--%>
         meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':false, 'fortnightly': true, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true });
@@ -205,18 +206,7 @@ var healthFunds_HBF = {
             $emailField.setRequired($('#health_application_contactPoint_E').is(':checked')).valid();
         });
 
-        <%-- update dom when change premium related fields --%>
-        healthFunds_HBF.$paymentType.on('change.HBF', function updatePaymentMsgPaymentType(){
-            healthFunds_HBF.updateMessage();
-        });
-
-        healthFunds_HBF.$paymentFrequency.on('change.HBF', function updatePaymentMsgFrequency(){
-            healthFunds_HBF.updateMessage();
-        });
-
-        healthFunds_HBF.$paymentStartDate.on("changeDate.HBF", function updatePaymentMsgCalendar(e) {
-            healthFunds_HBF.updateMessage();
-        });
+        meerkat.modules.healthPaymentPolicyDay.updatePaymentEventListeners(healthFunds_HBF.updateMessage, "HBF");
 
 		<%-- Unset the refund optin radio buttons --%>
 		healthFunds_HBF.$claimsAccountOptin.find("input:checked").each(function(){
@@ -224,18 +214,8 @@ var healthFunds_HBF = {
 		});
     },
     updateMessage: function() {
-        var isBank = meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() !== 'cc';
-
-        if (meerkat.modules.healthPaymentStep.getSelectedFrequency() === 'fortnightly') {
-            meerkat.modules.healthFunds.setPayments({
-                'min':0,
-                'max':14,
-                'weekends':false
-            });
-            meerkat.modules.healthPaymentDate.populateFuturePaymentDays($('#health_payment_details_start').val(), 0, false, isBank);
-        } else {
-            meerkat.modules.healthPaymentDate.populateFuturePaymentDays($('#health_payment_details_start').val(), 0, false, isBank, 28);
-        }
+        var deductionText = 'Your account will be debited within the next 48 hours.';
+        meerkat.modules.healthPaymentPolicyDay.populatePaymentDay( deductionText);
     },
     unset: function(){
         var $hbf_flexi_extras = $('#hbf_flexi_extras');
@@ -271,12 +251,7 @@ var healthFunds_HBF = {
         meerkat.modules.healthCreditCard.resetConfig();
         meerkat.modules.healthCreditCard.render();
 
-        <%--off payment deduction dates--%>
-        healthFunds_HBF.$paymentType.off('change.HBF');
-        healthFunds_HBF.$paymentFrequency.off('change.HBF');
-        healthFunds_HBF.$paymentStartDate.off("changeDate.HBF");
-        meerkat.modules.healthPaymentDay.paymentDaysRender( $('#health_payment_bank_paymentDay'), false);
-        meerkat.modules.healthPaymentDay.paymentDaysRender( $('#health_payment_credit_paymentDay'), false);
+        meerkat.modules.healthPaymentPolicyDay.reset("HBF",healthFunds_HBF);
 
         healthFunds_HBF.$primaryAuthorityInput.prop('required',null).attr('data-msg-required',null);
         if (healthFunds_HBF.hasPartner === true) {

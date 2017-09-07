@@ -12,6 +12,7 @@
 }
 
 body.health {
+
   .health-your_details-opt-group a {
     display: inline-block;
     font-size: 14px;
@@ -58,7 +59,7 @@ body.health {
           .checkbox {
             padding: 0;
 
-            input {
+            input:not([disabled]) {
               &:checked,
               &.checked {
                 & + label {
@@ -109,6 +110,7 @@ body.health {
               -ms-word-wrap: break-word;
               word-wrap: break-word;
               font-size: 12px;
+              font-style:italic;
               color: @gray;
               a {
                 margin-left: 5px;
@@ -159,12 +161,14 @@ body.health {
         }
         h2 {
           color: @theme-accent-4;
+          display: inline-block;
           margin-bottom: 0;
           font-size: 21px;
         }
       }
 
       .nav-tabs {
+        margin-top: 5px;
         padding-left: 10px;
         padding-right: 10px;
         background-color: transparent;
@@ -205,5 +209,55 @@ body.health {
         .benefitsIconSize(32px, @font-size-base, 0);
       }
     }
+  }
+}
+
+//Benefits Switched Off
+.benefits-switched-off {
+  &.Hospital_container {
+    .benefitsTab {
+      @media (@xs-only) {
+        display: none;
+      }
+
+      .opacity(0.3);
+
+      a {
+        pointer-events: none;
+        cursor: default;
+      }
+    }
+  }
+
+  &.GeneralHealth_container {
+    .title p,
+    .title .quickSelectContainer,
+    .Extras-wrapper {
+      @media (@xs-only) {
+        display: none;
+      }
+
+      .opacity(0.3);
+
+      a {
+        pointer-events: none;
+        cursor: default;
+      }
+    }
+  }
+}
+
+.GeneralHealth_container {
+  .has-switch {
+    @media (@xs-only) {
+      margin-left: 36px;
+    }
+  }
+}
+
+.benefits-switch-alert {
+  @media (@xs-only) {
+    margin-top: 15px;
+    margin-bottom: 0;
   }
 }

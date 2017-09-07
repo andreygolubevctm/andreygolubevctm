@@ -150,9 +150,17 @@ Process:
 
 	}
 
-	// Validate the credit card type
+	// Validate the credit card type - when switching between providers/products
+	// the $cardtype elements are replaced so need to ensure we have actual elements.
 	function isValid() {
-		return $cardtype.valid();
+		var valid = false;
+		try {
+			valid = $cardtype.valid();
+		} catch(e) {
+			$cardtype = $('.health-credit_card_details-type input');
+			valid = $cardtype.valid();
+		}
+		return valid;
 	}
 
 	function fail(reason) {
@@ -178,9 +186,11 @@ Process:
 	}
 
 	function reset() {
-		$token.val('');
-		$maskedNumber.val('');
-		modalContent = '';
+        if (initialised) {
+            $token.val('');
+            $maskedNumber.val('');
+            modalContent = '';
+        }
 	}
 
 	function cardType() {
@@ -225,7 +235,6 @@ Process:
 					fail('IPP Token Log false');
 					return;
 				}
-
 				$token.val(jsonData.sessionid);
 				$maskedNumber.val(jsonData.maskedcardno);
 				modalContent = '';
@@ -237,14 +246,13 @@ Process:
 		});
 	}
 
-
-
 	meerkat.modules.register("healthPaymentIPP", {
 		initHealthPaymentIPP: initHealthPaymentIPP,
 		show: show,
 		hide: hide,
 		fail: fail,
-		register: register
+		register: register,
+		reset: reset
 	});
 
 })(jQuery);

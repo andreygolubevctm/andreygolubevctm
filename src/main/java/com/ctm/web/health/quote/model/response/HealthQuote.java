@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import java.time.LocalDate;
 import java.util.Map;
+import java.util.Optional;
 
 public class HealthQuote {
 
@@ -28,6 +29,7 @@ public class HealthQuote {
     private JsonNode hospital;
     private JsonNode extras;
     private JsonNode ambulance;
+    private JsonNode accident;
 
     private Promotion promotion;
 
@@ -36,6 +38,8 @@ public class HealthQuote {
     private LocalDate dropDeadDate;
 
     private LocalDate pricingDate;
+
+    private GiftCard giftCard;
 
     public boolean isAvailable() {
         return available;
@@ -163,5 +167,21 @@ public class HealthQuote {
 
     public void setPricingDate(final LocalDate pricingDate) {
         this.pricingDate = pricingDate;
+    }
+
+    public Optional<GiftCard> getGiftCard() {
+        return Optional.ofNullable(giftCard);
+    }
+
+    public void setGiftCard(final GiftCard giftCard) {
+        this.giftCard = giftCard;
+    }
+
+    public JsonNode getAccident() {
+        return accident;
+    }
+
+    public void setAccident(JsonNode accident) {
+        this.accident = accident;
     }
 }

@@ -14,7 +14,8 @@
 	<div class="promotion">
 		<span class="hidden-xs icon icon-tag"></span> {{= promotionText }}
 		{{ if (offerTermsContent.length > 0) { }}
-			<a class="small offerTerms" href="javascript:;">Offer terms</a>
+			<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="nav button" quoteChar="\"" /></c:set>
+			<a class="small offerTerms" href="javascript:;" ${analyticsAttr}>Offer terms</a>
 			<div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
 		{{ } }}
 	</div>
@@ -34,7 +35,8 @@
 	<div class="promotion hidden-xs">
 		<span class="onlineOfferText">{{= onlineText }}</span>
 		{{ if (offerTermsContent.length > 0 && onlineText !== '') { }}
-			<a class="small offerTerms" href="javascript:;">Offer terms</a>
+			<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="nav button" quoteChar="\"" /></c:set>
+			<a class="small offerTerms" href="javascript:;" ${analyticsAttr}>Offer terms</a>
 			<div class="offerTerms-content hidden">{{= offerTermsContent }}</div>
 		{{ } }}
 	</div>
@@ -71,7 +73,8 @@
 			{{= obj.onlineDiscountTemplate }}
 		</div>
 		<div class="col-xs-12 col-sm-6 insurerBtn">
-			<a target="_blank" href="javascript:;" class="btn btn-fat btn-cta btn-more-info-apply" data-productId="{{= obj.productId }}">Go to Insurer</a>
+			<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="nav button" quoteChar="\"" /></c:set>
+			<a target="_blank" href="javascript:;" class="btn btn-fat btn-cta btn-more-info-apply" data-productId="{{= obj.productId }}" ${analyticsAttr}>Go to Insurer</a>
 		</div>
 	{{ } }}
 	<div class="col-xs-4 visible-xs text-right push-top-15">
@@ -122,7 +125,8 @@
 				</div>
 				<div class="row">
 					<div class="col-xs-12 col-sm-6 col-sm-offset-6">
-						<a href="javascript:;" class="btn btn-form btn-block btn-submit-callback" data-productId="{{= obj.productId }}">Submit</a><br />
+						<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="nav button" quoteChar="\"" /></c:set>
+						<a href="javascript:;" class="btn btn-form btn-block btn-submit-callback" data-productId="{{= obj.productId }}" ${analyticsAttr}>Submit</a><br />
 					</div>
 				</div>
 			</form>
@@ -133,7 +137,8 @@
 			Would you prefer to call direct?
 		</div>
 		<div class="col-xs-12 col-sm-6">
-			<a class="btn btn-call-inverse btn-block btn-call-actions btn-calldirect" data-callback-toggle="calldirect" data-productId="{{= obj.productId }}" href="javascript:;">Call Insurer Direct</a>
+			<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="nav button" quoteChar="\"" /></c:set>
+			<a class="btn btn-call-inverse btn-block btn-call-actions btn-calldirect" data-callback-toggle="calldirect" data-productId="{{= obj.productId }}" href="javascript:;" ${analyticsAttr}>Call Insurer Direct</a>
 		</div>
 	</div>
 </core_v1:js_template>
@@ -160,7 +165,8 @@
 				{{= promotionOfferTemplate }}
 			</div>
 			<div class="col-xs-12 visible-xs push-top-15">
-				<a class="needsclick btn btn-call btn-block btn-call-actions btn-calldirect" href="tel:{{= contact.phoneNumber }}">{{= contact.phoneNumber }}</a>
+				<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="nav button" quoteChar="\"" /></c:set>
+				<a class="needsclick btn btn-call btn-block btn-call-actions btn-calldirect" href="tel:{{= contact.phoneNumber }}" ${analyticsAttr}>{{= contact.phoneNumber }}</a>
 			</div>
 			<div class="hidden-xs">
 				<h2>Call Centre Opening Hours</h2>
@@ -179,7 +185,8 @@
 					Would you prefer to have the insurer call you?
 				</div>
 				<div class="">
-					<a class="btn btn-call-inverse btn-block btn-call-actions btn-callback" href="javascript:;" data-callback-toggle="callback">Get a Call Back</a>
+					<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="nav button" quoteChar="\"" /></c:set>
+					<a class="btn btn-call-inverse btn-block btn-call-actions btn-callback" href="javascript:;" data-callback-toggle="callback" ${analyticsAttr}>Get a Call Back</a>
 				</div>
 			{{ } }}
 		</div>
@@ -190,6 +197,14 @@
 	{{ var template = $("#home-call-header-template").html(); }}
 	{{ var htmlTemplate = _.template(template); }}
 	{{ obj.headerTemplate = htmlTemplate(obj); }}
+
+	{{ var template = $("#monthly-price-template").html(); }}
+	{{ var htmlTemplate = _.template(template); }}
+	{{ obj.monthlyPriceTemplate = htmlTemplate(obj); }}
+
+	{{ var template = $("#annual-price-template").html(); }}
+	{{ var htmlTemplate = _.template(template); }}
+	{{ obj.annualPriceTemplate = htmlTemplate(obj); }}
 
 	{{ var template = $("#home-promotion-offer-template").html(); }}
 	{{ var htmlTemplate = _.template(template); }}

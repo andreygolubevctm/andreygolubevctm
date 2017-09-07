@@ -77,13 +77,6 @@
 					</ul>
 				</li>
 
-				<li data-provide="dropdown">
-					<a href="javascript:void(0);" class="dropdown-toggle active" data-toggle="dropdown">CLI Filter<b class="caret"></b></a>
-					<ul class="dropdown-menu">
-						<li data-provide="simples-clifilter-action"><a href="javascript:void(0);" data-action="add">Add</a></li>
-					</ul>
-				</li>
-
 				<%-- Action menu hidden by default; a module will hide/show it --%>
 				<li class="dropdown hidden" data-provide="simples-quote-actions">
 					<a href="javascript:void(0);" class="dropdown-toggle active" data-toggle="dropdown">Actions <b class="caret"></b></a>
@@ -91,7 +84,17 @@
 						<li class="dropdown-header">Tran ID: <span class="simples-show-transactionid"></span></li>
 						<li><a class="action-comment" href="javascript:void(0);">Comments</a></li>
                         <li><a class="action-unlock hidden" href="javascript:void(0);">Unlock quote</a></li>
-			</ul>
+					</ul>
+				</li>
+
+				<%-- Time Date --%>
+				<li class="time-date">
+					Currently <span class="time-date-holder"></span>
+				</li>
+
+				<%-- Calendar --%>
+				<li class="simples-calendar">
+					<i class="icon-calendar"></i>
 				</li>
 			</ul>
 

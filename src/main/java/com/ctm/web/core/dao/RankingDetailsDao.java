@@ -43,10 +43,10 @@ public class RankingDetailsDao {
 							"WHERE TransactionId = ? " +
 							"AND Property = ? " +
 							"AND Value = ? " +
-							"ORDER BY CalcSequence, RankPosition ASC " +
 						") AS rankDetails " +
 						"INNER JOIN aggregator.ranking_details rd ON rd.transactionid = rankDetails.transactionid " +
-						"WHERE rd.CalcSequence = rankDetails.CalcSequence AND rd.RankSequence = rankDetails.RankSequence AND rd.RankPosition = rankDetails.RankPosition;"
+						"WHERE rd.CalcSequence = rankDetails.CalcSequence AND rd.RankSequence = rankDetails.RankSequence AND rd.RankPosition = rankDetails.RankPosition " +
+						"ORDER BY rd.CalcSequence desc, RankPosition ASC;"
 					);
 
 				stmt.setLong(1 , transactionId);

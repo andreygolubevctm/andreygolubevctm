@@ -8,7 +8,9 @@
         $paymentMedicareColour,
         $paymentMedicareCover,
         $medicareYellowMessage,
-        $genderToggle;
+        $unitElements,
+        $personName,
+        $primaryName;
 
     function init(){
         $(document).ready(function () {
@@ -16,7 +18,28 @@
             $paymentMedicareColour = $("#health_payment_medicare_colour");
             $paymentMedicareCover = $("#health_payment_medicare_cover");
             $medicareYellowMessage = $("#health_medicareDetails_yellowCardMessage");
-            $genderToggle = $('.person-gender-toggle input[type=radio]');
+            $unitElements = {
+                appAddressUnitShop: $('#health_application_address_unitShop'),
+                appAddressStreetNum: $('#health_application_address_streetNum'),
+                appAddressUnitType: $('#health_application_address_unitType'),
+                appPostalUnitShop: $('#health_application_postal_unitShop'),
+                appPostalStreetNum: $('#health_application_postal_streetNum'),
+                appPostalUnitType: $('#health_application_postal_unitType'),
+                appPostalNonStdStreet: $('#health_application_postal_nonStdStreet')
+            };
+            $personName = $('.contactField.person_name');
+
+            $primaryName = {
+                first: $('#health_application_primary_firstname'),
+                middle: $('#health_application_primary_middleName'),
+                last: $('#health_application_primary_surname'),
+                medicare: {
+                    first: $('#health_payment_medicare_firstName'),
+                    middle: $('#health_payment_medicare_middleName'),
+                    last: $('#health_payment_medicare_surname')
+                }
+            };
+
         });
     }
 
@@ -43,11 +66,8 @@
         meerkat.messaging.publish(meerkatEvents.healthPreviousFund.POPULATE_PRIMARY,
             meerkat.modules.healthAboutYou.getPrimaryCurrentCover());
 
-        toggleSelectGender('primary');
-
-        if (meerkat.modules.health.hasPartner()) {
-            toggleSelectGender('partner');
-        }
+        // Default Check format message on person name field
+        $personName.parent().find('.person-name-check-format').addClass('hidden');
     }
 
     function onInitialise() {
@@ -72,62 +92,88 @@
                 meerkat.messaging.publish(meerkatEvents.health.CHANGE_MAY_AFFECT_PREMIUM);
             });
 
-        $(document.body).on('change', '.selectContainerTitle select', function onTitleChange() {
-            var personDetailType = $(this).closest('.qe-window').find('.health-person-details')
-                                       .hasClass('primary') ? 'primary' : 'partner';
-
-            toggleSelectGender(personDetailType);
+        $unitElements.appPostalUnitType.on('change', function toggleUnitRequiredFields() {
+            _changeStreetNoLabel(this.value);
+            _toggleStreetRules(this.value);
         });
 
-        $genderToggle.on('change', function onGenderToggle() {
-            var personDetailType = $(this).closest('.qe-window').find('.health-person-details')
-                                       .hasClass('primary') ? 'primary' : 'partner',
-                gender = $(this).val();
+        $unitElements.appAddressUnitShop.add($unitElements.appPostalUnitShop).on('change', function toggleUnitShopRequiredFields() {
+            _toggleUnitShopRequired(this.id.indexOf('address') !== -1 ? 'Address' : 'Postal', !_.isEmpty(this.value));
+        });
 
-            $('#health_application_' + personDetailType + '_gender').val(gender);
+        // Show Check format message on name fields when field isn't in 'Proper case'
+        $personName.on('change', function() {
+            var value = $(this).val(),
+                showCheckFormat = false,
+                i = 1,
+                character = '',
+                $checkFormat = $(this).parent().find('.person-name-check-format');
+
+            if (!_.isEmpty(value)) {
+                for (i = 1; i < value.length; i++) {
+                    character = value.charAt(i);
+
+                    if (character === character.toUpperCase()) {
+                        showCheckFormat = true;
+                    }
+                }
+
+                $checkFormat.toggleClass('hidden', showCheckFormat === false);
+            } else {
+                $checkFormat.addClass('hidden');
+            }
+        });
+
+        $primaryName.first.on('blur.apply', function(){
+            $primaryName.medicare.first.val($primaryName.first.val());
+        });
+
+        $primaryName.middle.on('blur.apply', function(){
+            $primaryName.medicare.middle.val($primaryName.middle.val());
+        });
+
+        $primaryName.last.on('blur.apply', function(){
+            $primaryName.medicare.last.val($primaryName.last.val());
         });
     }
 
-    function toggleSelectGender(personDetailType) {
-        var title =  $('#health_application_' + personDetailType + '_title').val(),
-            gender,
-            $gender = $('#health_application_' + personDetailType + '_gender'),
-            $genderRow = $('#health_application_' + personDetailType + '_genderRow'),
-            $genderToggle = $('[name=health_application_' + personDetailType + '_genderToggle]');
+    function _changeStreetNoLabel(unitType) {
+        var $label = $unitElements.appPostalStreetNum.closest('.form-group').find('label.control-label'),
+            $errorField = $('#health_application_postal_streetNum-error'),
+            labelText = 'Street No.',
+            msgRequired = 'Please enter a street number';
 
-        if (title) {
-            switch (title) {
-                case 'MR':
-                case 'MRS':
-                case 'MISS':
-                case 'MS':
-                    gender = title === 'MR' ? 'M' : 'F';
-                    $gender.val(gender);
-                    $genderRow.slideUp();
-                    break;
+        if (unitType === 'PO') {
+            labelText = 'Box No.';
+            msgRequired = 'Please enter a box number';
+        }
 
-                default:
-                    var genderToggleVal = $genderToggle.filter(':checked').val();
+        $label.text(labelText);
+        $unitElements.appPostalStreetNum.attr('data-msg-required', msgRequired);
 
-                    if (genderToggleVal) {
-                        // if gender toggle has been 'toggled' before then
-                        // set hidden gender field to the checked gender
-                        $gender.val(genderToggleVal);
-                    } else {
-                        // otherwise, if hidden gender field has been set, then
-                        // toggle the gender
-                        if ($gender.val()) {
-                            $genderToggle
-                                .filter('[value=' + $gender.val() + ']')
-                                .prop('checked', true)
-                                .attr('checked', 'checked')
-                                .change();
-                        }
-                    }
-                    $genderRow.slideDown();
-            }
+        if ($errorField.length > 0) {
+            $errorField.text(msgRequired);
+        }
+    }
+
+    function _toggleStreetRules(unitType) {
+        if (unitType === 'PO') {
+            $unitElements.appPostalNonStdStreet
+                .removeRule('regex')
+                .removeRule('validAddress');
         } else {
-            $genderRow.slideUp();
+            $unitElements.appPostalNonStdStreet
+                .addRule('regex', '[a-zA-Z0-9 ]+')
+                .addRule('validAddress', 'health_application_postal');
+        }
+    }
+
+    function _toggleUnitShopRequired(addressType, isUnitShop) {
+        $unitElements['app'+addressType+'UnitType'].setRequired(isUnitShop);
+
+        // blur out of fields to trigger validation when unitShop not empty
+        if (!isUnitShop) {
+            $unitElements['app'+addressType+'UnitType'].blur();
         }
     }
 

@@ -22,16 +22,14 @@
 
 	function initPage(){
 
-		initCompare();
-
 		initResults();
 
+		initCompare();
 		Features.init();
 		meerkat.modules.compare.initCompare();
-		eventSubscriptions();
 
 		breakpointTracking();
-
+		eventSubscriptions();
 	}
 
 	function onReturnToPage(){
@@ -48,9 +46,8 @@
 
 		try {
 			var displayMode = 'features';
-			if(typeof meerkat.site != 'undefined' && typeof meerkat.site.resultOptions != 'undefined') {
-				// confirming its either features or price.
-				displayMode = meerkat.site.resultOptions.displayMode == 'features' ? 'features' : 'price';
+			if(_.has(meerkat.site,'resultOptions') && _.isObject(meerkat.site.resultOptions) && _.has(meerkat.site.resultOptions,'displayMode')) {
+				displayMode = meerkat.site.resultOptions.displayMode;
 			}
 
 			var price = {
@@ -217,23 +214,23 @@
 		// Capture offer terms link clicks
 		$(document.body).on('click', 'a.offerTerms', launchOfferTerms);
 
-		// Handle result row click
-		$(Results.settings.elements.resultsContainer).on('click', '.result-row', resultRowClick);
-
 		// When the navar docks/undocks
 		meerkat.messaging.subscribe(meerkatEvents.affix.AFFIXED, function navbarFixed() {
-			$('#resultsPage').css('margin-top', '35px');
+			var margin = (meerkat.modules.deviceMediaState.get() === 'lg') ? '-10px' : '-25px';
+			$('#resultsPage').css('margin-top', margin);
+			$('.productSummary .headerButtonWrapper').css('visibility', 'hidden');
 			$(Results.settings.elements.resultsContainer).addClass('affixed-settings');
 		});
 
 		meerkat.messaging.subscribe(meerkatEvents.affix.UNAFFIXED, function navbarUnfixed() {
 			$('#resultsPage').css('margin-top', '0');
+			$('.productSummary .headerButtonWrapper').css('visibility', 'visible');
 			$(Results.settings.elements.resultsContainer).removeClass('affixed-settings');
 		});
 
 		// When the excess filter changes, fetch new results
 		meerkat.messaging.subscribe(meerkatEvents.carFilters.CHANGED, function onFilterChange(obj){
-			if (obj && obj.hasOwnProperty('excess') || obj.hasOwnProperty('coverType')) {
+			if (obj && obj.hasOwnProperty('excess') || obj && obj.hasOwnProperty('coverType')) {
 				// This is a little dirty however we need to temporarily override the
 				// setting which prevents the tranId from being incremented.
 				Results.settings.incrementTransactionId = true;
@@ -247,9 +244,9 @@
 		});
 
 		// If error occurs, go back in the journey
-		meerkat.messaging.subscribe(events.RESULTS_ERROR, function() {
+		meerkat.messaging.subscribe(events.RESULTS_ERROR, function () {
 			// Delayed to allow journey engine to unlock
-			_.delay(function() {
+			_.delay(function () {
 				meerkat.modules.journeyEngine.gotoPath('previous');
 			}, 1000);
 		});
@@ -259,20 +256,20 @@
 			massageResultsObject();
 		});
 
-		$(Results.settings.elements.resultsContainer).on("featuresDisplayMode", function(){
+		$(Results.settings.elements.resultsContainer).on("featuresDisplayMode", function () {
 			Features.buildHtml();
 		});
 
 		// Run the show method even when there are no available products
 		// This will render the unavailable combined template
-		$(Results.settings.elements.resultsContainer).on("noFilteredResults", function() {
+		$(Results.settings.elements.resultsContainer).on("noFilteredResults", function () {
 			Results.view.show();
 		});
 
 		$(document).on("resultsLoaded", onResultsLoaded);
 
 		// Scroll to the top when results come back
-		$(document).on("resultsReturned", function(){
+		$(document).on("resultsReturned", function () {
 			meerkat.modules.utils.scrollPageTo($("header"));
 
 			// Reset the feature header to match the new column content.
@@ -318,6 +315,18 @@
 				toggleNoResultsFeaturesMode();
 			}
 
+            $.each(Results.model.returnedProducts, function(){
+                if (this.available === 'N') {
+                    // Track each Product that doesn't quote
+                    meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+                        method: 'trackQuoteNotProvided',
+                        object: {
+                            productID: this.productId
+                        }
+                    });
+                }
+            });
+
 			meerkat.messaging.publish(meerkatEvents.commencementDate.RESULTS_RENDER_COMPLETED);
 		});
 
@@ -331,11 +340,11 @@
 			var time = meerkat.modules.performanceProfiling.endTest('results');
 
 			var score;
-			if(time < 800){
+			if (time < 800) {
 				score = meerkat.modules.performanceProfiling.PERFORMANCE.HIGH;
-			}else if (time < 8000 && meerkat.modules.performanceProfiling.isIE8() === false){
+			} else if (time < 8000 && meerkat.modules.performanceProfiling.isIE8() === false) {
 				score = meerkat.modules.performanceProfiling.PERFORMANCE.MEDIUM;
-			}else{
+			} else {
 				score = meerkat.modules.performanceProfiling.PERFORMANCE.LOW;
 			}
 
@@ -343,49 +352,55 @@
 
 		});
 
-		$(document).on("resultPageChange", function(event) {
+		$(document).on("resultPageChange", function (event) {
 			var pageData = event.pageData;
-			if(pageData.measurements === null) return false;
+			if (pageData.measurements === null) return false;
 
 			var items = Results.getFilteredResults().length;
 			var columnsPerPage = pageData.measurements.columnsPerPage;
-			var freeColumns = (columnsPerPage*pageData.measurements.numberOfPages)-items;
+			var freeColumns = (columnsPerPage * pageData.measurements.numberOfPages) - items;
 		});
 
 		// Hovering a row cell adds a class to the whole row to make it highlightable
-		$(document).on("FeaturesRendered", function(){
+		$(document).on("FeaturesRendered", function () {
 
-			$(Features.target + " .expandable > " + Results.settings.elements.features.values).off('mouseenter mouseleave').on("mouseenter", function(){
-				var featureId = $(this).attr("data-featureId");
-				var $hoverRow = $( Features.target + ' [data-featureId="' + featureId + '"]' );
+			$(Features.target + " .expandable > " + Results.settings.elements.features.values).off('mouseenter mouseleave').on("mouseenter", function () {
+					var featureId = $(this).attr("data-featureId");
+					var $hoverRow = $(Features.target + ' [data-featureId="' + featureId + '"]');
 
-				$hoverRow.addClass( Results.settings.elements.features.expandableHover.replace(/[#\.]/g, '') );
-			})
-			.on("mouseleave", function(){
-				var featureId = $(this).attr("data-featureId");
-				var $hoverRow = $( Features.target + ' [data-featureId="' + featureId + '"]' );
+					$hoverRow.addClass(Results.settings.elements.features.expandableHover.replace(/[#\.]/g, ''));
+				})
+				.on("mouseleave", function () {
+					var featureId = $(this).attr("data-featureId");
+					var $hoverRow = $(Features.target + ' [data-featureId="' + featureId + '"]');
 
-				$hoverRow.removeClass( Results.settings.elements.features.expandableHover.replace(/[#\.]/g, '') );
-			});
+					$hoverRow.removeClass(Results.settings.elements.features.expandableHover.replace(/[#\.]/g, ''));
+				});
 		});
 
 		$(document.body).on('click', '#results_v5 .btnContainer .btn-call-actions', function triggerMoreInfoCallActions(event) {
 			var element = $(this);
-			meerkat.messaging.publish(meerkatEvents.carResults.FEATURES_CALL_ACTION, {event: event, element: element});
+			meerkat.messaging.publish(meerkatEvents.carResults.FEATURES_CALL_ACTION, {
+				event: event,
+				element: element
+			});
 		});
 
 		$(document.body).on('click', '#results_v5 .call-modal .btn-call-actions', function triggerMoreInfoCallActionsFromModal(event) {
 			var element = $(this);
-			meerkat.messaging.publish(meerkatEvents.carResults.FEATURES_CALL_ACTION_MODAL, {event: event, element: element});
+			meerkat.messaging.publish(meerkatEvents.carResults.FEATURES_CALL_ACTION_MODAL, {
+				event: event,
+				element: element
+			});
 		});
 
 		$(document.body).on('click', '#results_v5 .btn-submit-callback', function triggerMoreInfoSubmitCallback(event) {
 			var element = $(this);
-			meerkat.messaging.publish(meerkatEvents.carResults.FEATURES_SUBMIT_CALLBACK, {event: event, element: element});
+			meerkat.messaging.publish(meerkatEvents.carResults.FEATURES_SUBMIT_CALLBACK, {
+				event: event,
+				element: element
+			});
 		});
-
-		//meerkat.messaging.subscribe(meerkatEvents.RESULTS_DATA_READY, publishExtraSuperTagEvents);
-		//meerkat.messaging.subscribe(meerkatEvents.RESULTS_SORTED, publishExtraSuperTagEvents);
 
 		meerkat.messaging.subscribe(meerkatEvents.resultsMobileDisplayModeToggle.DISPLAY_MODE_CHANGED, function(obj) {
 			if (obj.displayMode === 'price') {
@@ -448,7 +463,11 @@
         Results.updateAggregatorEnvironment();
 		meerkat.modules.carContactOptins.validateOptins();
 		meerkat.modules.resultsFeatures.fetchStructure('carws_').done(function() {
-			Results.get();
+			meerkat.modules.carExotic.toggleFamousResultsPage();
+
+			if (!meerkat.modules.carExotic.isExotic()) {
+				Results.get();
+			}
 		});
 	}
 
@@ -472,14 +491,36 @@
 		products = products || Results.model.returnedProducts;
 
 		_.each(products, function massageJson(result, index) {
-
-			// Add formatted annual premium (ie without decimals)
-			if (!_.isEmpty(result.price) && !_.isUndefined(result.price.annualPremium)) {
-				result.price.annualPremiumFormatted = meerkat.modules.currencyField.formatCurrency(Math.ceil(result.price.annualPremium), {roundToDecimalPlace: 0, symbol: '', digitGroupSymbol:''});
+			// If the brandCode is iBox, add the quoteReferenceNumber to a persisted xpath.
+			if (result.brandCode == 'IBOX') {
+				if (meerkat.site.IBOXquoteNumber === null) {
+					// Set the value to the "global" site variable to "persist".
+					meerkat.site.IBOXquoteNumber = result.quoteNumber;
+				}
+				// Set the hidden xpath.
+				// "quote/quoteReferenceNumber"
+				$('#quote_quoteReferenceNumber').val(meerkat.site.IBOXquoteNumber);
 			}
-
-			if (result.excess !== null && !_.isUndefined(result.excess)) {
-				result.excessFormatted = meerkat.modules.currencyField.formatCurrency(result.excess, {roundToDecimalPlace: 0});
+			if (!_.isNull(result.price) && !_.isUndefined(result.price)) {
+				// Add formatted annual premium (ie without decimals)
+				if (!_.isEmpty(result.price) && !_.isUndefined(result.price.annualPremium)) {
+					result.price.annualPremiumFormatted = meerkat.modules.currencyField.formatCurrency(Math.ceil(result.price.annualPremium), {roundToDecimalPlace: 0, symbol: '', digitGroupSymbol:''});
+				}
+				//Monthly
+				if (!_.isUndefined(result.price.monthlyPremium)) {
+					if (!_.isUndefined(result.price.monthlyPremium)) {
+						result.price.monthlyPremiumFormatted = meerkat.modules.currencyField.formatCurrency(result.price.monthlyPremium, {roundToDecimalPlace: 2, symbol: ''});
+					}
+					if (!_.isUndefined(result.price.monthlyFirstMonth)) {
+						result.price.monthlyFirstMonthFormatted = meerkat.modules.currencyField.formatCurrency(result.price.monthlyFirstMonth, {roundToDecimalPlace: 2, symbol: ''});
+					}
+					if (!_.isUndefined(result.price.annualisedMonthlyPremium)) {
+						result.price.annualisedMonthlyPremiumFormatted = meerkat.modules.currencyField.formatCurrency(result.price.annualisedMonthlyPremium, {roundToDecimalPlace: 2, symbol: ''});
+					}
+				}
+				if (result.excess !== null && !_.isUndefined(result.excess)) {
+					result.excessFormatted = meerkat.modules.currencyField.formatCurrency(result.excess, {roundToDecimalPlace: 0});
+				}
 			}
 		});
 	}
@@ -631,24 +672,6 @@
 				$(Results.settings.elements.features.container).addClass('featuresMode');
 			}
 		}
-	}
-
-	function resultRowClick(event) {
-		// Ensure only in XS price mode
-		if ($(Results.settings.elements.resultsContainer).hasClass('priceMode') === false) return;
-		if (meerkat.modules.deviceMediaState.get() !== 'xs') return;
-
-		var $resultrow = $(event.target);
-		if ($resultrow.hasClass('result-row') === false) {
-			$resultrow = $resultrow.parents('.result-row');
-		}
-
-		// Row must be available to click it.
-		if (typeof $resultrow.attr('data-available') === 'undefined' || $resultrow.attr('data-available') !== 'Y') return;
-
-		// Set product and launch bridging
-		meerkat.modules.moreInfo.setProduct(Results.getResult('productId', $resultrow.attr('data-productId')));
-		meerkat.modules.carMoreInfo.runDisplayMethod();
 	}
 
 	function initCompare(){

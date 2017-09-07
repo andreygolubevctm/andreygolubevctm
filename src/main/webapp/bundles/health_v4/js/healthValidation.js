@@ -1,11 +1,36 @@
 (function ($) {
     $.validator.addMethod("locationSelection", function (value, element, param) {
-        var isValid = !_.isEmpty(value);
+
+        var isValid;
+
+        var attr = $('#health_situation_postcode').attr('required');
+        // For some browsers, `attr` is undefined; for others, `attr` is false. Check for both.
+        if ( !(typeof attr !== typeof undefined && attr !== false)) {
+            // postcode is not a required field if state is populated
+            if (_.isEmpty(value) && ( !_.isEmpty($('#health_situation_state')) )) {
+                isValid = true;
+                $('.health_contact_details_postcode_wrapper').toggleClass('has-location-error', !isValid);
+                return isValid;
+            }
+        }
+
+        //if postcode is a required field or if it is not a required field but has a value ensure that the value is valid
+
+        isValid = !_.isEmpty(value);
 
         $('.health_contact_details_postcode_wrapper').toggleClass('has-location-error', !isValid);
 
         return isValid;
-    }, 'Please select your suburb.');
+
+    }, function(value) {
+        if($('.health_contact_details_postcode_results > .suburb-item').length > 1) {
+            return 'Please select a state for your postcode.';
+        } else if($('#health_situation_postcode').val() === ""){
+            return '';
+        } else {
+            return 'Please enter a valid postcode.';
+        }
+    });
 
     /**
      * This validation rule prevents someone who is a female from selecting "Mr" and vice versa.

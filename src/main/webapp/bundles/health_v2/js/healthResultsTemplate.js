@@ -118,7 +118,7 @@
             "303" : "excess waivers"
         };
         if(_.has(analytics, ft.helpId)) {
-            attribute = ' data-analytics="' + analytics[ft.helpId] + '"';
+            attribute = meerkat.modules.dataAnalyticsHelper.get(analytics[ft.helpId],'"');
         }
         return ft.helpId !== '' && ft.helpId != '0' ? '<a href="javascript:void(0);" class="help-icon" data-content="helpid:' + ft.helpId + '" data-toggle="popover" data-my="right center" data-at="left center" ' + attribute + '>(?)</a>' : '';
     }
@@ -264,6 +264,8 @@
         result.hasValidPrice = (prem.value && prem.value > 0) || (prem.text && prem.text.indexOf('$0.') < 0) ||
             (prem.payableAmount && prem.payableAmount > 0);
         result.lhcFreePriceMode = typeof mode === "undefined" || mode !== "lhcInc";
+        result.discounted = prem.discounted === 'Y';
+        result.discountPercentage = prem.discountPercentage;
         return result;
     }
 
@@ -385,6 +387,40 @@
         }
     }
 
+    function getDiscountText(result) {
+        var discountText = result.hasOwnProperty('promo') && result.promo.hasOwnProperty('discountText') ?
+            result.promo.discountText : '';
+
+        /**
+         * Remove AUF discount amount: HLT-4562
+         * Temporary commented it out for future use
+        if (result.info.FundCode === 'AUF') {
+            discountText = discountText.replace('%%discountPercentage%%', getDiscountPercentage('AUF')+'%');
+        }
+         */
+
+        return discountText;
+    }
+
+    function getDiscountPercentage(fundCode, result) {
+        var discountPercentage = !_.isUndefined(result) && result.hasOwnProperty('discountPercentage') ? result.discountPercentage : '';
+
+        /**
+         * Remove AUF discount amount: HLT-4562
+         * Temporary commented it out for future use
+        if (fundCode === 'AUF') {
+            if (!meerkat.modules.healthCoverDetails.hasPrimaryCover() ||
+                (_.indexOf(['C','F'], meerkat.site.situationHealthCvr) !== -1 && !meerkat.modules.healthCoverDetails.hasPartnerCover())) {
+                discountPercentage = '7.5';
+            } else {
+                discountPercentage = '4';
+            }
+        }
+         */
+
+        return discountPercentage;
+    }
+
     meerkat.modules.register('healthResultsTemplate', {
         init: init,
         getAvailableExtrasAsList: getAvailableExtrasAsList,
@@ -396,7 +432,9 @@
         getItem: getItem,
         postRenderFeatures: postRenderFeatures,
         numberOfSelectedExtras: numberOfSelectedExtras,
-        toggleRemoveResultPagination: toggleRemoveResultPagination
+        toggleRemoveResultPagination: toggleRemoveResultPagination,
+        getDiscountText: getDiscountText,
+        getDiscountPercentage: getDiscountPercentage
     });
 
 })(jQuery);

@@ -13,6 +13,7 @@
 
     var lastFieldTouch = null;
     var lastFieldTouchXpath = null;
+    var googleAnalyticsClientId = "";
 
     function recordTouch(touchType, touchComment, productId, includeFormData, callback) {
 
@@ -211,6 +212,7 @@
                 });
             }
             addGAClientID();
+            addGTMInternalUser();
         });
 
     }
@@ -375,8 +377,17 @@
     }
 
     /**
+     * addGTMInternalUser() adds a global variable to the window object to
+     * allow GA to recognise internal and external traffic. Internal is any
+     * user on local network or quote started with preload..
+     */
+    function addGTMInternalUser() {
+        window.gtmInternalUser = meerkat.site && meerkat.site.gtmInternalUser ? meerkat.site.gtmInternalUser : false;
+    }
+
+    /**
      * addGAClientID() adds a new or updates an existing xpath to store the GA Client ID
-     * which is used for trackng purposes.
+     * which is used for tracking purposes.
      */
     function addGAClientID() {
         var gaClientId = null;
@@ -411,10 +422,13 @@
             }
         }
 
-        if(!_.isEmpty(gaClientId)) {
-            var elementName = (meerkat.site.vertical === 'car' ? 'quote' : meerkat.site.vertical) + '_gaclientid';
-            if ($('#' + elementName).length) {
-                $('#' + elementName).val(gaClientId);
+	    var elementName = (meerkat.site.vertical === 'car' ? 'quote' : meerkat.site.vertical) + '_gaclientid';
+        var $gaClientId = $('#' + elementName);
+        if($gaClientId && $gaClientId.length && !_.isEmpty($gaClientId.val())) {
+	        gaClientId = $gaClientId.val();
+        } else if(!_.isEmpty(gaClientId)) {
+            if ($gaClientId && $gaClientId.length) {
+	            $gaClientId.val(gaClientId);
             } else {
                 $('#mainform').prepend($('<input/>', {
                     type: 'hidden',
@@ -424,6 +438,9 @@
                 }));
             }
         }
+	    if(!_.isEmpty(gaClientId)) {
+		    googleAnalyticsClientId = gaClientId;
+	    }
     }
 
     /**
@@ -509,6 +526,10 @@
         return null;
     }
 
+    function getGaClientId() {
+        return googleAnalyticsClientId.toString();
+    }
+
     meerkat.modules.register("tracking", {
         init: initTracking,
         events: events,
@@ -519,7 +540,8 @@
         getCurrentJourney: getCurrentJourney,
         updateObjectData: updateObjectData,
         getTrackingVertical: getTrackingVertical,
-        sendSaleDataToGoogleMeasurementProtocol : sendSaleDataToGoogleMeasurementProtocol
+        sendSaleDataToGoogleMeasurementProtocol : sendSaleDataToGoogleMeasurementProtocol,
+        getGaClientId: getGaClientId
     });
 
 })(jQuery);

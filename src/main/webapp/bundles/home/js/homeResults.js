@@ -33,6 +33,13 @@
 		eventSubscriptions();
 
 		breakpointTracking();
+	}
+	
+	function affixFix() {
+		var $navbar = $('#navbar-main');
+		if ($navbar.data('bs.affix') && $navbar.data('bs.affix').options) {
+			$navbar.data('bs.affix').options.offset.top = $navbar.offset().top;
+		}
 
 	}
 
@@ -50,16 +57,21 @@
 
 		try {
 			var displayMode = 'features';
-			if(typeof meerkat.site != 'undefined' && typeof meerkat.site.resultOptions != 'undefined') {
-				// confirming its either features or price.
-				displayMode = meerkat.site.resultOptions.displayMode == 'features' ? 'features' : 'price';
+			if(_.has(meerkat.site,'resultOptions') && _.isObject(meerkat.site.resultOptions) && _.has(meerkat.site.resultOptions,'displayMode')) {
+				displayMode = meerkat.site.resultOptions.displayMode;
 			}
-
 
 			var price = {
 				annual: "price.annualPremium",
 				annually: "price.annualPremium",
-				monthly: "price.annualisedMonthlyPremium"
+				monthly: "price.annualisedMonthlyPremium",
+				monthlyAvailable: "price.monthlyAvailable",
+				annualAvailable: "price.annualAvailable"
+			};
+			var features = {
+				lossrent: "features.lossrent.value",
+				rdef: "features.rdef.value",
+				malt: "features.malt.value"
 			};
 			var productAvailable = "available";
 			var productName = "productName";
@@ -76,6 +88,7 @@
 						product: productAvailable,
 						price: price
 					},
+					features: features,
 					productId: "productId",
 					productBrandCode: "brandCode",
 					productName: productName
@@ -207,35 +220,71 @@
 				},
 				incrementTransactionId: false
 			});
-
 		}
 		catch(e) {
 			Results.onError('Sorry, an error occurred initialising page', 'results.tag', 'meerkat.modules.homeResults.initResults(); '+e.message, e);
 		}
 	}
 
+	function sortRealAndWool(results) {
+		var isWoolOrRealA = (results.brandCodes[0] === 'WOOL' || results.brandCodes[0] === "REIN");
+		var isWoolOrRealB = (results.brandCodes[1] === 'WOOL' || results.brandCodes[1] === "REIN");
+		var sameBrand = (results.brandCodes[0] === results.brandCodes[1]);
+		if (isWoolOrRealA && isWoolOrRealB && !sameBrand) {
+			if (results.values[0] === results.values[1]) {
+				return results.brandCodes[0] === 'WOOL' ? -1 : 1;
+			}
+		}
+	}
+
+	function landlordFilter(results) {
+		var filters = meerkat.site.landlordFilters;
+		if (filters && !filters.showall) {
+			for (var key in filters) {
+				if (filters[key] === true) {
+					if (!results.a.features[key] || (results.a.features && results.a.features[key].value !== "Y")) {
+						results.a.available = "N";
+					}
+					if (!results.b.features[key] || (results.a.features && results.b.features[key].value !== "Y")) {
+						results.b.available = "N";
+					}
+				}
+			}
+		}
+	}
+
 	function eventSubscriptions() {
+		meerkat.messaging.subscribe(meerkatEvents.commencementDate.RESULTS_RENDER_COMPLETED, function landlordSortFilter() {
+			if (meerkat.site.isLandlord) {
+					meerkat.modules.homeFilters.setLandlordFilters();
+			}
+		});
+		meerkat.messaging.subscribe(Results.model.moduleEvents.RESULTS_MODEL_UPDATE_BEFORE_FILTERSHOW, function modelUpdated() {
+			Results.model.landlordFilter = landlordFilter;
+			Results.model.homeCustomSort = sortRealAndWool;
+		});
 
 		// Capture offer terms link clicks
 		$(document.body).on('click', 'a.offerTerms', launchOfferTerms);
+		$(document.body).on('click', 'a.priceDisclaimer', showPriceDisclaimer);
 
-		// Handle result row click
-		$(Results.settings.elements.resultsContainer).on('click', '.result-row', resultRowClick);
-
-//TODO
+		// TODO
 		// When the navar docks/undocks
 		meerkat.messaging.subscribe(meerkatEvents.affix.AFFIXED, function navbarFixed() {
-			$('#resultsPage').css('margin-top', '35px');
+			var margin = (meerkat.modules.deviceMediaState.get() === 'lg') ? '-60px' : '-80px';
+			$('#resultsPage').css('margin-top', margin);
+			$('.productSummary .headerButtonWrapper').css('visibility', 'hidden');
 			$(Results.settings.elements.resultsContainer).addClass('affixed-settings');
 		});
 		meerkat.messaging.subscribe(meerkatEvents.affix.UNAFFIXED, function navbarUnfixed() {
 			$('#resultsPage').css('margin-top', '0');
+			$('.productSummary .headerButtonWrapper').css('visibility', 'visible');
 			$(Results.settings.elements.resultsContainer).removeClass('affixed-settings');
 		});
 
 		// When the excess filter changes, fetch new results
 		meerkat.messaging.subscribe(meerkatEvents.homeFilters.CHANGED, function onFilterChange(obj){
-			if (obj && (obj.hasOwnProperty('homeExcess') || obj.hasOwnProperty('contentsExcess'))) {
+			if (obj && (obj.homeExcess || obj.contentsExcess)) {
 				// This is a little dirty however we need to temporarily override the
 				// setting which prevents the tranId from being incremented.
 				meerkat.modules.resultsTracking.setResultsEventMode('Load');
@@ -294,7 +343,7 @@
 
 		// Fetching done
 		$(document).on("resultsFetchFinish", function onResultsFetchFinish() {
-
+			meerkat.modules.homeFilters.setHomeResultsFilter();
 			// Results are hidden in the CSS so we don't see the scaffolding after #benefits
 			$(Results.settings.elements.page).show();
 
@@ -314,15 +363,26 @@
 			// Check products length in case the reason for no results is an error e.g. 500
 			if (Results.model.availableCounts === 0 && _.isArray(Results.model.returnedProducts) && Results.model.returnedProducts.length > 0) {
 				showNoResults();
+				toggleNoResultsFeaturesMode();
 			}
 
-			meerkat.messaging.publish(meerkatEvents.commencementDate.RESULTS_RENDER_COMPLETED);
+            $.each(Results.model.returnedProducts, function(){
+            	if (this.available === 'N') {
+                    // Track each Product that doesn't quote
+                    meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+                        method: 'trackQuoteNotProvided',
+                        object: {
+                            productID: this.productId
+                        }
+                    });
+				}
+            });
 
+			meerkat.messaging.publish(meerkatEvents.commencementDate.RESULTS_RENDER_COMPLETED);
 		});
 
 		$(document).on("populateFeaturesStart", function onPopulateFeaturesStart() {
 			meerkat.modules.performanceProfiling.startTest('results');
-
 		});
 
 		$(Results.settings.elements.resultsContainer).on("populateFeaturesEnd", function onPopulateFeaturesEnd() {
@@ -385,7 +445,6 @@
 	// After the results have been fetched, force data onto it to support our Results engine.
 	function massageResultsObject(products) {
 		products = products || Results.model.returnedProducts;
-
 		_.each(products, function massageJson(result, index) {
 			// Add properties
 			if (!_.isNull(result.price) && !_.isUndefined(result.price)) {
@@ -517,16 +576,23 @@
 				switchToPriceMode(false);
 				break;
 		}
-
+		affixFix();
 	}
+	
+	function toggleNoResultsFeaturesMode() {
+	if (Results.model.availableCounts === 0) {
+		$("#results_v5.featuresMode " + Results.settings.elements.features.allElements).hide();
+		$("#results_v5.featuresMode").removeClass('featuresMode').find('.results-table').removeAttr('style');
+	} else {
+		// revert everything
+		$(Results.settings.elements.features.container + " " + Results.settings.elements.features.allElements).show();
+		if (!$(Results.settings.elements.features.container).hasClass('featuresMode')) {
+			$(Results.settings.elements.features.container).addClass('featuresMode');
+		}
+	}
+}
 
 	function showNoResults() {
-		if (meerkat.site.tracking.brandCode == 'ctm') {
-			meerkat.modules.dialogs.show({
-				htmlContent: $('#no-results-content')[0].outerHTML
-			});
-		}
-
 		if (meerkat.modules.hasOwnProperty('homeFilters')) {
 			meerkat.modules.homeFilters.disable();
 		}
@@ -573,6 +639,26 @@
 		meerkat.modules.dialogs.show({
 			title: $logo.clone().wrap('<p>').addClass('hidden-xs').parent().html() + "<div class='hidden-xs heading'>" + $productName.html() + "</div>" + "<div class='heading'>Offer terms</div>",
 			hashId: 'offer-terms',
+			openOnHashChange: false,
+			closeOnHashChange: true,
+			htmlContent: $logo.clone().wrap('<p>').removeClass('hidden-xs').addClass('hidden-sm hidden-md hidden-lg').parent().html() + "<h2 class='visible-xs heading'>" + $productName.html() + "</h2>" +  $termsContent.html()
+		});
+	}
+
+	function showPriceDisclaimer(event) {
+		meerkat.modules.homeMoreInfo.setScrollPosition();
+		event.preventDefault();
+
+		var $element = $(event.target);
+		var $termsContent = $element.next('.priceDisclaimer-content');
+
+		var $logo =				$element.closest('.resultInsert, .more-info-content, .call-modal').find('.companyLogo');
+		var $productName =		$element.closest('.resultInsert, .more-info-content, .call-modal').find('.productTitle, .productName');
+
+		meerkat.modules.dialogs.show({
+			title: $logo.clone().wrap('<p>').addClass('hidden-xs').parent().html() + "<div class='hidden-xs heading'>" + $productName.html() + "</div>" + "<div class='heading'>Price Disclaimer</div>",
+			hashId: 'price-disclaimer',
+			className: 'price-disclaimer-modal',
 			openOnHashChange: false,
 			closeOnHashChange: true,
 			htmlContent: $logo.clone().wrap('<p>').removeClass('hidden-xs').addClass('hidden-sm hidden-md hidden-lg').parent().html() + "<h2 class='visible-xs heading'>" + $productName.html() + "</h2>" +  $termsContent.html()
@@ -657,26 +743,8 @@
 				meerkat.modules.resultsTracking.setResultsEventMode('Refresh');
 				publishExtraSuperTagEvents();
 			}
+			toggleNoResultsFeaturesMode();
 		}
-	}
-
-	function resultRowClick(event) {
-		// Ensure only in XS price mode
-		if ($(Results.settings.elements.resultsContainer).hasClass('priceMode') === false) return;
-		if (meerkat.modules.deviceMediaState.get() !== 'xs') return;
-
-
-		var $resultrow = $(event.target);
-		if ($resultrow.hasClass('result-row') === false) {
-			$resultrow = $resultrow.parents('.result-row');
-		}
-
-		// Row must be available to click it.
-		if (typeof $resultrow.attr('data-available') === 'undefined' || $resultrow.attr('data-available') !== 'Y') return;
-
-		// Set product and launch bridging
-		meerkat.modules.moreInfo.setProduct(Results.getResult('productId', $resultrow.attr('data-productId')));
-		meerkat.modules.homeMoreInfo.runDisplayMethod();
 	}
 
 	function initCompare(){

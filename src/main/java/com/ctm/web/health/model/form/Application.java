@@ -48,6 +48,12 @@ public class Application {
 
     private Qtu qtu;
 
+    private Wfd wfd;
+
+    private Bup bup;
+
+    private GovtRebateDeclaration govtRebateDeclaration;
+
     public Address getAddress() {
         return address;
     }
@@ -231,5 +237,29 @@ public class Application {
 
     public void setQtu(Qtu qtu) {
         this.qtu = qtu;
+    }
+
+    public Wfd getWfd() {
+        return wfd;
+    }
+
+    public void setWfd(final Wfd wfd) {
+        this.wfd = wfd;
+    }
+
+    public GovtRebateDeclaration getGovtRebateDeclaration() {
+        return govtRebateDeclaration;
+    }
+
+    public void setGovtRebateDeclaration(GovtRebateDeclaration govtRebateDeclaration) {
+        this.govtRebateDeclaration = govtRebateDeclaration;
+    }
+
+    public Bup getBup() {
+        return bup;
+    }
+
+    public void setBup(final Bup bup) {
+        this.bup = bup;
     }
 }

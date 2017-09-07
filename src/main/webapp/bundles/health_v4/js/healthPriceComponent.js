@@ -16,10 +16,8 @@
     var $policySummaryContainer;
     var $policySummaryTemplateHolder;
     var $policySummaryDetailsComponents;
-    var $policySummaryDualPricing = [];
 
     var $displayedFrequency;
-    var $startDateInput;
 
     var initialised = false,
         premiumChangeEventFired = false;
@@ -38,12 +36,10 @@
             $policySummaryContainer = $(".policySummaryContainer");
             $policySummaryTemplateHolder = $(".policySummaryTemplateHolder");
             $policySummaryDetailsComponents = $(".productSummaryDetails");
-            $policySummaryDualPricing = $('.policySummary.dualPricing');
 
             if(meerkat.site.pageAction != "confirmation"){
 
                 $displayedFrequency = $("#health_payment_details_frequency");
-                $startDateInput = $("#health_payment_details_start");
 
                 meerkat.messaging.subscribe(meerkatEvents.healthResults.SELECTED_PRODUCT_CHANGED, function(selectedProduct){
                     // This should be called when the user selects a product on the results page.
@@ -74,13 +70,14 @@
     function onProductPremiumChange(selectedProduct, showIncPrice){
         // Use the frequency selected on the payment step - if that is not set, refer to the results page frequency.
         var displayedFrequency = $displayedFrequency.val();
-        if(displayedFrequency === "") displayedFrequency = Results.getFrequency();
+        if (_.isEmpty(displayedFrequency)) displayedFrequency = Results.getFrequency();
         updateProductSummaryHeader(selectedProduct, displayedFrequency, showIncPrice);
 
         // Update product summary
         var startDateString = "Please confirm";
-        if($startDateInput.val() !== ""){
-            startDateString = $startDateInput.val();
+        var startDateInput = meerkat.modules.healthCoverStartDate.getVal();
+        if (!_.isEmpty(startDateInput)){
+            startDateString = startDateInput;
         }
 
         updateProductSummaryDetails(selectedProduct, startDateString);
@@ -97,7 +94,7 @@
             product.mode = '';
         }
         product.showAltPremium = false;
-        if (typeof meerkat.site.healthAlternatePricingActive !== 'undefined' && meerkat.site.healthAlternatePricingActive === true && premiumChangeEventFired === false) {
+        if (meerkat.modules.healthDualPricing.isDualPricingActive()) {
             product.displayLogo = false;
             if (typeof product.dropDeadDate === 'undefined') {
                 var selectedProduct = Results.getSelectedProduct();
@@ -114,23 +111,7 @@
             var htmlString = (typeof quoteRefHtmlTemplate === 'function' ? quoteRefHtmlTemplate({}) : "") + logoHtmlTemplate(product) + priceHtmlTemplate(product);
 
             $policySummaryTemplateHolder.html(htmlString);
-
-            $policySummaryDualPricing.find('.Premium').html(htmlString);
-//		This is a deactivated split test as it is likely to be run again in the future
-            // A/B testing price itemisation
-//		if (meerkat.modules.splitTest.isActive(2)) {
-//			var htmlTemplate_B = _.template($("#price-itemisation-template").html());
-//			var htmlString_B = htmlTemplate_B(product);
-//			$(".priceItemisationTemplateHolder").html(htmlString_B);
-//		}
-
             $policySummaryContainer.find(".policyPriceWarning").hide();
-
-            if ($policySummaryDualPricing.length > 0) {
-                product.showAltPremium = true;
-                htmlString = priceHtmlTemplate(product);
-                $policySummaryDualPricing.find('.altPremium').html(htmlString);
-            }
         }
     }
 

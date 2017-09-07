@@ -11,10 +11,11 @@
 <form_v4:row label="Postcode" fieldXpath="${fieldXpath}" className="clear required_input">
 	<div class="health_contact_details_postcode_wrapper">
 		<field_v1:post_code xpath="${fieldXpath}" title="postcode" required="true" className="health_contact_details_postcode" />
+		<field_v1:hidden xpath="${xpath}/suburb" />
+		<field_v1:hidden xpath="${xpath}/state" />
 	</div>
 	<div class="health_contact_details_postcode_results_wrapper">
 		<div class="health_contact_details_postcode_results"></div>
-		<a href="javascript:;" class="suburb-items-btn-edit">Edit</a>
 		<field_v2:validatedHiddenField xpath="${pageSettings.getVerticalCode()}/situation/location"
 									   additionalAttributes="data-rule-locationSelection='true'"/>
 	</div>

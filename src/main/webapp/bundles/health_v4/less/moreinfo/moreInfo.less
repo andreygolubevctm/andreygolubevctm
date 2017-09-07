@@ -24,12 +24,7 @@
   }
 
   .container {
-
     .callCentreNumberSection {
-      a {
-        font-size: @font-size-base;
-      }
-
       li:first-child {
         display: block;
       }
@@ -38,6 +33,24 @@
 }
 
 .moreInfoVisible[data-step="results"] {
+  .more-info-left-header-col {
+    width: 75%;
+    float: left;
+
+    .btn-more-info-apply {
+      display: none;
+    }
+
+    .current-pricing .container {
+      width :100%;
+    }
+  }
+
+  .more-info-right-header-col {
+    width: 25%;
+    float: left;
+  }
+
   .results-control-container {
     .results-filters-frequency,
     .filter-results-hidden-products,
@@ -67,9 +80,6 @@
     .callCentreNumberSection {
       li:first-child {
         display: none;
-      }
-      a {
-        font-size: 16px;
       }
     }
   }
@@ -153,7 +163,7 @@
 
   @media (@xs-only) {
     .companyLogo {
-      margin-top: 20px;
+      margin-top: 10px;
     }
     background-color: @theme-light;
   }
@@ -184,11 +194,23 @@
     border-bottom: 2px solid @gray;
   }
 
+  .btn-more-info-call-now {
+    margin-bottom: 10px;
+    font-size: 20px;
+  }
+
   .productSummary {
 
     .frequency {
       .lhcText {
         color: @gray;
+        span {
+          display: block;
+
+          &.discount-percentage {
+            display: inline-block;
+          }
+        }
       }
     }
     .companyLogo {
@@ -204,6 +226,10 @@
   h3,
   .productName {
     color: @theme-accent-4;
+  }
+
+  h3 {
+    margin-top: 0px;
   }
 
   .printableBrochuresLink {
@@ -249,17 +275,24 @@
     font-size: 10px;
     line-height: 12px;
     color: @gray;
+    span {
+      display: block;
+    }
   }
 
   .frequencyAmount {
     color: @theme-tertiary;
     font-size: 48px;
+    line-height: 40px;
 
     .dollarSign,
     .cents,
     .frequencyTitle {
       font-size: 15px;
       vertical-align: super;
+    }
+    .frequencyTitle {
+      white-space: nowrap;
     }
   }
 
@@ -271,6 +304,17 @@
       vertical-align: top;
       display: inline-block;
       color: @theme-secondary;
+    }
+
+    &.privateHospital {
+      .benefitContent {
+        .limitTitle {
+          width: 100%;
+        }
+        .limitValue {
+          display: none;
+        }
+      }
     }
 
     &.HLTicon-special-features {
@@ -364,17 +408,18 @@
 
   @media (@xs-only) {
     .benefitsColumn {
-      width: 49%;
+      width: 100%;
       display: inline-block;
       vertical-align: top;
 
-      .HospitalBenefits {
+      .HospitalBenefits,
+      .ExtrasBenefits {
         padding-left: @grid-gutter-width;
         padding-right: @grid-gutter-width;
       }
 
-      .ExtrasBenefits {
-        padding-left: 60px;
+      &:not(:first-of-type) {
+        margin-top:20px;
       }
     }
 
@@ -387,7 +432,7 @@
     }
 
     .benefitsOverflow {
-      width: 200%;
+      width: 100%;
       overflow-x: hidden;
       position: relative;
     }
@@ -459,6 +504,97 @@
 
     .moreInfoTopRightColumn {
       display: none;
+    }
+  }
+}
+
+body[data-is-single="true"] {
+  .moreInfoDropdown {
+    .benefitContent {
+      .per-person {
+        display: none;
+      }
+    }
+  }
+}
+
+.moreInfoDropdown{
+  @media (@xs-only) {
+
+    li.navbar-text.modal-title-label{
+      padding-right: 15px;
+      float: right;
+    }
+
+    .dockedHeaderLarge {
+      .hidden-large {
+        display: none;
+      }
+
+      h5.productName {
+        margin-right: -15px;
+      }
+
+      .frequencyAmount {
+        line-height: 30px;
+
+        .frequencyTitle {
+          line-height: 20px;
+        }
+      }
+    }
+
+    .dockedHeaderSlim {
+      .quoteRefHdr,
+      .logo-header.hidden-slim,
+      .hidden-slim {
+        display: none;
+      }
+    }
+
+    .dockedHeaderBottom{
+      margin-bottom: -15px;
+
+      .btn-cta.btn-more-info-apply,
+      .btn-cta.btn-more-info-call-now {
+        margin-top: 5px;
+        margin-bottom: 5px;
+      }
+
+      .btn-cta.btn-more-info-apply + .col-xs-6,
+      .btn-cta.btn-more-info-apply + .col-xs-6 + .col-xs-6,
+      .btn-cta.btn-more-info-call-now + .col-xs-6,
+      .btn-cta.btn-more-info-call-now + .col-xs-6 + .col-xs-6{
+        padding-left: 0px;
+        padding-right: 0px;
+      }
+
+      .quote-reference-number {
+        h3 {
+          font-size: @font-size-base;
+          line-height: @line-height-base;
+          color: @gray-darker;
+          margin-bottom: 0px;
+          text-align: center;
+          span{
+            font-weight: @font-family-theme-regular;
+          }
+        }
+      }
+
+      &.callCentreOpen {
+        .quote-reference-number {
+          h3 {
+            text-align:left;
+          }
+        }
+        .getPrintableBrochures {
+          text-align:left;
+        }
+        .btn-more-info-apply {
+          float: right;
+        }
+      }
     }
   }
 }

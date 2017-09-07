@@ -23,7 +23,10 @@
 		return {
 			coverType: $('#home_coverType').val(),
 			icon: meerkat.modules.homeSnapshot.getIcon(),
-			ownsHome: $('#home_occupancy_ownProperty_Y').is(':checked'),
+			landlordInsuranceLast5Years: $('.isLandlord #home_disclosures_previousInsurance_Y')[0].checked,
+			landlordInsuranceClaims: $('.isLandlord #home_disclosures_claims_Y')[0].checked,
+			ownsHome: $('.notLandlord #home_occupancy_ownProperty_Y').is(':checked'),
+			ownsHomeLandlord: $('.isLandlord #home_occupancy_ownProperty_Y').is(':checked'),
 			isPrincipalResidence: $('#home_occupancy_principalResidence_Y').is(':checked'),
 			businessActivity: $('#home_businessActivity_conducted_Y').is(':checked'),
 			isBodyCorp: $('#home_property_bodyCorp_Y').is(':checked'),

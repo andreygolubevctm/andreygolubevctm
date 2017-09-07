@@ -30,8 +30,9 @@
 	${expiredPanel}
 	<div class="panel-group accordion accordion-xs scrollable" id="edit-details-panel-group">
 		<div class="panel accordion-panel col-xs-12 col-sm-6 col-lg-4">
+			<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Edit Details - Cover" quoteChar="\"" /></c:set>
 			<div class="accordion-heading visible-xs active-panel">
-				<a href="#start" class="btn btn-sm btn-edit btn-accordion-control btn-hollow-inverse needsclick">Edit</a>
+				<a href="#start" class="btn btn-sm btn-edit btn-accordion-control btn-hollow-inverse needsclick" ${analyticsAttr}>Edit</a>
 				<span class="icon icon-arrow-down" data-toggle="collapse" data-parent="#edit-details-panel-group" href="#step1"></span>
 				<p class="accordion-title">
 					<a class="needsclick" data-toggle="collapse" data-parent="#edit-details-panel-group" href="#step1"> 1. Cover </a>
@@ -39,7 +40,7 @@
 			</div>
 			<div id="step1" class="accordion-collapse collapse in first-panel">
 				<div class="accordion-body">
-					<a href="#start" class="btn btn-sm btn-edit hidden-xs needsclick">Edit</a>
+					<a href="#start" class="btn btn-sm btn-edit hidden-xs needsclick" ${analyticsAttr}>Edit</a>
 					<h5 class="hidden-xs">
 						Step 1. Cover
 					</h5>
@@ -61,8 +62,9 @@
 			</div>
 		</div>
 		<div class="panel accordion-panel col-xs-12 col-sm-6 col-lg-4">
+			<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Edit Details - Occupancy" quoteChar="\"" /></c:set>
 			<div class="accordion-heading visible-xs">
-				<a href="#occupancy" class="btn btn-sm btn-edit btn-accordion-control btn-hollow-inverse needsclick">Edit</a>
+				<a href="#occupancy" class="btn btn-sm btn-edit btn-accordion-control btn-hollow-inverse needsclick" ${analyticsAttr}>Edit</a>
 				<span class="icon icon-arrow-down" data-toggle="collapse" data-parent="#edit-details-panel-group" href="#step2"></span>
 				<p class="accordion-title">
 					<a class="needsclick" data-toggle="collapse" data-parent="#edit-details-panel-group" href="#step2"> 2. Occupancy </a>
@@ -70,7 +72,7 @@
 			</div>
 			<div id="step2" class="accordion-collapse collapse">
 				<div class="accordion-body">
-					<a href="#occupancy" class="btn btn-sm btn-edit hidden-xs needsclick">Edit</a>
+					<a href="#occupancy" class="btn btn-sm btn-edit hidden-xs needsclick" ${analyticsAttr}>Edit</a>
 					<h5 class="hidden-xs">
 						Step 2. Occupancy
 					</h5>
@@ -121,8 +123,9 @@
 			</div>
 		</div>
 		<div class="panel accordion-panel col-xs-12 col-sm-6 col-lg-4 col-r pull-lg-right clear-sm-both">
+			<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Edit Details - Property Description" quoteChar="\"" /></c:set>
 			<div class="accordion-heading visible-xs">
-				<a href="#property" class="btn btn-sm btn-edit btn-accordion-control btn-hollow-inverse needsclick">Edit</a>
+				<a href="#property" class="btn btn-sm btn-edit btn-accordion-control btn-hollow-inverse needsclick" ${analyticsAttr}>Edit</a>
 				<span class="icon icon-arrow-down" data-toggle="collapse" data-parent="#edit-details-panel-group" href="#step3"></span>
 				<p class="accordion-title">
 					<a class="needsclick" data-toggle="collapse" data-parent="#edit-details-panel-group" href="#step3"> 3. Property Description</a>
@@ -130,7 +133,7 @@
 			</div>
 			<div id="step3" class="accordion-collapse collapse">
 				<div class="accordion-body">
-					<a href="#property" class="btn btn-sm btn-edit hidden-xs needsclick">Edit</a>
+					<a href="#property" class="btn btn-sm btn-edit hidden-xs needsclick" ${analyticsAttr}>Edit</a>
 					<h5 class="hidden-xs">
 						Step 3. Property Description
 					</h5>
@@ -219,8 +222,9 @@
 
 		<!-- SessionCam:Hide -->
 		<div class="panel accordion-panel col-xs-12 col-sm-6 col-lg-4 clear-lg-left">
+			<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Edit Details - Policy Holders" quoteChar="\"" /></c:set>
 			<div class="accordion-heading visible-xs">
-				<a href="#policyHolder" class="btn btn-sm btn-edit btn-accordion-control btn-hollow-inverse needsclick">Edit</a>
+				<a href="#policyHolder" class="btn btn-sm btn-edit btn-accordion-control btn-hollow-inverse needsclick" ${analyticsAttr}>Edit</a>
 				<span class="icon icon-arrow-down" data-toggle="collapse" data-parent="#edit-details-panel-group" href="#step4"></span>
 				<p class="accordion-title">
 					<a class="needsclick" data-toggle="collapse" data-parent="#edit-details-panel-group" href="#step4"> 4. Policy Holders </a>
@@ -228,7 +232,7 @@
 			</div>
 			<div id="step4" class="accordion-collapse collapse">
 				<div class="accordion-body">
-					<a href="#policyHolder" class="btn btn-sm btn-edit hidden-xs needsclick">Edit</a>
+					<a href="#policyHolder" class="btn btn-sm btn-edit hidden-xs needsclick" ${analyticsAttr}>Edit</a>
 					<h5 class="hidden-xs">
 						Step 4. Policy Holders
 					</h5>

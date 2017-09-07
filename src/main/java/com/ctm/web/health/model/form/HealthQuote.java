@@ -10,6 +10,8 @@ public class HealthQuote {
 
     private Double rebateChangeover;
 
+    private Double previousRebate;
+
     private Integer loading;
 
     private Integer primaryCAE;
@@ -54,6 +56,8 @@ public class HealthQuote {
 
     private String contactAuthority;
 
+    private String applyDiscounts;
+
     public Application getApplication() {
         return application;
     }
@@ -84,6 +88,14 @@ public class HealthQuote {
 
     public void setRebateChangeover(Double rebateChangeover) {
         this.rebateChangeover = rebateChangeover;
+    }
+
+    public Double getPreviousRebate() {
+        return previousRebate;
+    }
+
+    public void setPreviousRebate(final Double previousRebate) {
+        this.previousRebate = previousRebate;
     }
 
     public Integer getLoading() {
@@ -260,6 +272,14 @@ public class HealthQuote {
 
     public void setContactAuthority(String contactAuthority) {
         this.contactAuthority = contactAuthority;
+    }
+
+    public String getApplyDiscounts() {
+        return applyDiscounts;
+    }
+
+    public void setApplyDiscounts(String applyDiscounts) {
+        this.applyDiscounts = applyDiscounts;
     }
 
 }

@@ -35,7 +35,19 @@ public class HealthQuoteRequest
 
     private boolean includeAlternativePricing;
 
+    private boolean includeGiftCard;
+
+    private Boolean primaryHealthCover;
+
+    private Boolean partnerHealthCover;
+
+    /**
+     * Use rebates
+     */
+    @Deprecated
     private BigDecimal rebate;
+
+    private Rebates rebates;
 
     private Boolean includeSummary;
 
@@ -121,12 +133,28 @@ public class HealthQuoteRequest
         this.includeAlternativePricing = includeAlternativePricing;
     }
 
+    public boolean isIncludeGiftCard() {
+        return includeGiftCard;
+    }
+
+    public void setIncludeGiftCard(final boolean includeGiftCard) {
+        this.includeGiftCard = includeGiftCard;
+    }
+
     public BigDecimal getRebate() {
         return rebate;
     }
 
     public void setRebate(BigDecimal rebate) {
         this.rebate = rebate;
+    }
+
+    public Rebates getRebates() {
+        return rebates;
+    }
+
+    public void setRebates(final Rebates rebates) {
+        this.rebates = rebates;
     }
 
     public List<PaymentType> getPaymentTypes() {
@@ -143,5 +171,21 @@ public class HealthQuoteRequest
 
     public void setIncludeSummary(Boolean includeSummary) {
         this.includeSummary = includeSummary;
+    }
+
+    public Boolean isPrimaryHealthCover() {
+        return primaryHealthCover;
+    }
+
+    public void setPrimaryHealthCover(Boolean primaryHealthCover) {
+        this.primaryHealthCover = primaryHealthCover;
+    }
+
+    public Boolean isPartnerHealthCover() {
+        return partnerHealthCover;
+    }
+
+    public void setPartnerHealthCover(Boolean partnerHealthCover) {
+        this.partnerHealthCover = partnerHealthCover;
     }
 }

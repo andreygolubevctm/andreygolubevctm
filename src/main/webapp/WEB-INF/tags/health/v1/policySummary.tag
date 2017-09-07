@@ -8,11 +8,10 @@
 <%-- <c:set var="isAltView" value="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 2)}" /> --%>
 
 <%-- Setup variables needed for dual pricing --%>
-<jsp:useBean id="healthPriceDetailService" class="com.ctm.web.health.services.HealthPriceDetailService" scope="page" />
-<c:set var="healthAlternatePricingActive" value="${healthPriceDetailService.isAlternatePriceActive(pageContext.getRequest())}" />
+<health_v1:dual_pricing_settings />
 
-<div class="sidebar-box<c:if test="${healthAlternatePricingActive eq true}"> hasDualPricing hidden-xs</c:if> policySummary-sidebar">
-	<c:if test="${empty callCentre or (healthAlternatePricingActive eq false and not empty callCentre)}">
+<div class="sidebar-box<c:if test="${isDualPriceActive eq true}"> hasDualPricing hidden-xs</c:if> policySummary-sidebar">
+	<c:if test="${isDualPriceActive eq false}">
 		<div class="policySummaryContainer ${className}">
 			<c:choose>
 				<c:when test="${isAltView}">
@@ -31,12 +30,13 @@
 		</div>
 	</c:if>
 
-	<c:if test="${healthAlternatePricingActive eq true and not empty callCentre}">
+	<c:if test="${isDualPriceActive eq true}">
 		<h1 class="hidden-xs">Your quote details</h1>
+		<div class="quoterefTemplateHolder"></div>
 		<div class="policySummary productSummary dualPricing"></div>
 	</c:if>
 
-<c:if test="${healthAlternatePricingActive eq true}">
+<c:if test="${isDualPriceActive eq true}">
 </div>
 <div class="sidebar-box sidebarFrequency hidden-xs"></div>
 <div class="sidebar-box">

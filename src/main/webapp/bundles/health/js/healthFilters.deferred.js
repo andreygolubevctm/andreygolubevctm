@@ -53,6 +53,55 @@
                     }
                 }
             },
+            "discount": {
+                name: 'health_filterBar_discount',
+                defaultValueSourceSelector: 'input[name="health_applyDiscounts"]',
+                defaultValue: '',
+                events: {
+                    init: function (filterObject) {
+                        var isChecked = $(filterObject.defaultValueSourceSelector).val() === 'Y';
+                        $('input[name=' + filterObject.name + ']').prop('checked', isChecked);
+                    },
+                    update: function (filterObject) {
+                        var isChecked = $('input[name=' + filterObject.name + ']').is(':checked');
+                        $(filterObject.defaultValueSourceSelector).val(isChecked ? 'Y' : 'N');
+                    }
+                }
+            },
+            "extendedFamily": {
+                name: 'health_filterBar_extendedFamily',
+                defaultValueSourceSelector: '#health_situation_healthCvr',
+                defaultValue: '',
+                values: [
+                    {
+                        value: 'F',
+                        label: 'Family'
+                    },
+                    {
+                        value: 'EF',
+                        label: 'Extended Family'
+                    },
+                    {
+                        value: 'SPF',
+                        label: 'Single Parent Family'
+                    },
+                    {
+                        value: 'ESP',
+                        label: 'Extended Single Parent Family'
+                    }
+
+                ],
+                events: {
+                    update: function (filterObject) {
+                        if (_.indexOf(['F', 'EF', 'SPF', 'ESP'], meerkat.modules.health.getSituation()) > -1) {
+                            var value = $('select[name=' + filterObject.name + ']').val();
+                            $(filterObject.defaultValueSourceSelector).val(value);
+                            meerkat.modules.healthChoices.setCover(value);
+                            meerkat.modules.simplesBindings.toggleRebateDialogue();
+                        }
+                    }
+                }
+            },
             "coverLevel": {
                 name: 'health_filterBar_coverLevel',
                 defaultValueSourceSelector: '#health_benefits_covertype',
@@ -239,6 +288,8 @@
                         Results.unfilterBy('productId', "value", false);
                         Results.settings.incrementTransactionId = true;
                         meerkat.modules.healthResults.get();
+
+                        meerkat.modules.simplesBindings.toggleLimitedCoverDialogue();
                     },100);
                 }
             }

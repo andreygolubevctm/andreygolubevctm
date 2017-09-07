@@ -18,7 +18,7 @@
 	var singleTripTabs = [{
 		label : "Comprehensive <span class='hidden-xs'>Cover</span>",
 		rankingFilter : "C",
-		defaultTab : false,
+		defaultTab : true,
 		disableAnimationsBetweenTabs : true,
 		showCount : true,
 		filter : function() {
@@ -29,7 +29,7 @@
 	}, {
 		label : "Mid Range <span class='hidden-xs'>Cover</span>",
 		rankingFilter : "M",
-		defaultTab : true,
+		defaultTab : false,
 		showCount : true,
 		filter : function() {
 			Results.filterBy("coverLevel", "value", {
@@ -121,6 +121,42 @@
 		}
 	}
 
+	/** HELPER METHODS FOR COVER LEVEL TAB TESTS **/
+
+	function setDefaultCoverLevelTab(tab) {
+		if(!_.isEmpty(tab) && _.isString(tab)) {
+			tab = tab.toUpperCase();
+			var tab_obj = null;
+			if(_.indexOf(['C','M','B'], tab) >= 0) {
+				tab_obj = singleTripTabs;
+			} else if (_.indexOf(['I','D'], tab) >= 0) {
+				tab_obj = annualMultiTripTabs;
+			}
+			if(!_.isNull(tab_obj)) {
+				for(var i=0; i<tab_obj.length; i++) {
+					tab_obj[i].defaultTab = false;
+					if(tab_obj[i].rankingFilter === tab) {
+						tab_obj[i].defaultTab = true;
+					}
+				}
+			}
+		}
+	}
+
+	function setDefaultSingleCoverLevelTab(tab) {
+		setDefaultCoverLevelTab(tab);
+	}
+
+	function setDefaultMultiCoverLevelTab(tab) {
+		setDefaultCoverLevelTab(tab);
+	}
+
+	function getCurrentCoverLevelTab() {
+		return meerkat.modules.coverLevelTabs.getRankingFilter();
+	}
+
+	/** END HELPER METHODS **/
+
 	/**
 	 * Reset the active tab setting onto the cover level tab object So it
 	 * doesn't have to be re-initialised on each beforeEnter. As results can
@@ -135,7 +171,10 @@
 	meerkat.modules.register("travelCoverLevelTabs", {
 		initTravelCoverLevelTabs : initTravelCoverLevelTabs,
 		events : events,
-		updateSettings : updateSettings
+		updateSettings : updateSettings,
+		setDefaultSingleCoverLevelTab : setDefaultSingleCoverLevelTab,
+		setDefaultMultiCoverLevelTab : setDefaultMultiCoverLevelTab,
+		getCurrentCoverLevelTab : getCurrentCoverLevelTab
 	});
 
 })(jQuery);

@@ -19,11 +19,15 @@
         $(document).ready(function () {
             _setupFields();
             _eventListeners();
+
+            if (!_.isEmpty($elements.healthCover.val())) {
+                $elements.healthCover.change();
+            }
         });
     }
 
     function initialise(cover, situation, benefits) {
-        setCover(cover, true, true);
+        setCover(cover);
         var performUpdate = _performUpdate;
         setSituation(situation, performUpdate);
     }
@@ -32,8 +36,7 @@
         $elements = {
             healthSit: $('#health_benefits_healthSitu'),
             healthSitGroup: $("input[name=health_situation_healthSitu]"),
-            healthSitCSF: $('#health_situation_healthSitu_CSF'),
-            healthCover: $('input[name=health_situation_healthCvr]'),
+            healthCover: $('#health_situation_healthCvr'),
             state: $('#health_situation_state'),
             postcode: $('#health_situation_postcode'),
             suburb: $('#health_situation_suburb')
@@ -41,10 +44,6 @@
     }
 
     function _eventListeners() {
-        $elements.healthCover.on('change', function () {
-            meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
-        });
-
         $elements.healthSitGroup.on('change', function () {
             meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
         });
@@ -54,6 +53,7 @@
         switch (_cover) {
             case 'C':
             case 'F':
+            case 'EF':
                 return true;
             default:
                 return false;
@@ -62,8 +62,6 @@
 
     function setCover(cover) {
         _cover = cover; // default to a single
-
-        updateSituation();
     }
 
     function setState(state) {
@@ -110,20 +108,6 @@
 
     function shouldPerformUpdate(performUpdate) {
         _performUpdate = performUpdate;
-    }
-
-    function updateSituation() {
-        var $familyTile = $('#health_situation_healthSitu_CSF').siblings("span").first();
-        var copy = $familyTile.text();
-        switch (_cover) {
-            case 'F':
-            case 'SPF':
-                copy = copy.replace('Start a family', 'Grow my family');
-                break;
-            default:
-                copy = copy.replace('Grow my family', 'Start a family');
-        }
-        $familyTile.text(copy);
     }
 
     function setSituation(situation, performUpdate) {

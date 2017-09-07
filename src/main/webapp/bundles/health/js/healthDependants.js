@@ -52,10 +52,15 @@
             showRelationship:false,
             defactoMinAge: 21,
             defactoMaxAge: 24,
-            showApprenticeField: false
+            showApprenticeField: false,
+            extendedFamilyMinAge: 21,
+            extendedFamilyMaxAge: 25
+
         },
         providerConfig,
         maxDependantAge = 25;
+
+        /* Why is there a defacto min/max age? and why is the max age 24? */
 
     function initHealthDependants() {
         $dependantsTemplateWrapper = $("#health-dependants-wrapper");
@@ -191,18 +196,44 @@
             selectorPrefix = '#health_application_dependants_dependant' + dependantId,
             $dob = $(selectorPrefix + '_dob');
         var age = meerkat.modules.age.returnAge($dob.val(), true) || 0;
-        // If the dependant is between the school age
-        if (age >= providerConfig.schoolMinAge && age <= providerConfig.schoolMaxAge) {
-            // If the config is set to true, we want to remove the class.
-            // To remove a class, toggleClass needs false, so we flip the config option.
-            $(selectorPrefix + '_fulltimeGroup').toggleClass('hidden', !providerConfig.showFullTimeField);
-            $(selectorPrefix + '_schoolGroup').toggleClass('hidden', !providerConfig.showSchoolFields);
-            $(selectorPrefix + '_schoolIDGroup').toggleClass('hidden', !providerConfig.showSchoolIdField);
-            $(selectorPrefix + '_schoolDateGroup').toggleClass('hidden', !providerConfig.showSchoolCommencementField);
-            $(selectorPrefix + '_apprenticeGroup').toggleClass('hidden', !providerConfig.showApprenticeField);
+        var familyCoverType = meerkat.modules.healthChoices.returnCoverCode();
+
+        if (familyCoverType === 'EF' || familyCoverType === 'ESP') {
+
+            /*
+            * "Dependant School" fields aren't shown in "Application" based on new rule:
+            *      dependant age is >= 21 & dependant age is < 25 & cover type = "EF" | cover type = "ESP"
+            */
+            if (age >= providerConfig.extendedFamilyMinAge && age < providerConfig.extendedFamilyMaxAge) {
+                $(selectorPrefix + '_fulltimeGroup, ' + selectorPrefix + '_schoolGroup, ' + selectorPrefix + '_schoolIDGroup, ' + selectorPrefix + '_schoolDateGroup,' + selectorPrefix + '_apprenticeGroup').addClass('hidden');
+            } else if (age >= providerConfig.schoolMinAge && age <= providerConfig.schoolMaxAge) {
+                $(selectorPrefix + '_fulltimeGroup').toggleClass('hidden', !providerConfig.showFullTimeField);
+                $(selectorPrefix + '_schoolGroup').toggleClass('hidden', !providerConfig.showSchoolFields);
+                $(selectorPrefix + '_schoolIDGroup').toggleClass('hidden', !providerConfig.showSchoolIdField);
+                $(selectorPrefix + '_schoolDateGroup').toggleClass('hidden', !providerConfig.showSchoolCommencementField);
+                $(selectorPrefix + '_apprenticeGroup').toggleClass('hidden', !providerConfig.showApprenticeField);
+                $('[name=health_application_dependants_dependant' + dependantId + '_schoolID]').prop('required',false);
+            } else {
+                // Hide them all if they aren't in the age range.
+                $(selectorPrefix + '_fulltimeGroup, ' + selectorPrefix + '_schoolGroup, ' + selectorPrefix + '_schoolIDGroup, ' + selectorPrefix + '_schoolDateGroup,' + selectorPrefix + '_apprenticeGroup').addClass('hidden');
+            }
+
         } else {
-            // Hide them all if they aren't in the date range.
-            $(selectorPrefix + '_fulltimeGroup, ' + selectorPrefix + '_schoolGroup, ' + selectorPrefix + '_schoolIDGroup, ' + selectorPrefix + '_schoolDateGroup,' + selectorPrefix + '_apprenticeGroup').addClass('hidden');
+
+            // If the dependant is between the school age
+            if (age >= providerConfig.schoolMinAge && age <= providerConfig.schoolMaxAge) {
+                // If the config is set to true, we want to remove the class.
+                // To remove a class, toggleClass needs false, so we flip the config option.
+                $(selectorPrefix + '_fulltimeGroup').toggleClass('hidden', !providerConfig.showFullTimeField);
+                $(selectorPrefix + '_schoolGroup').toggleClass('hidden', !providerConfig.showSchoolFields);
+                $(selectorPrefix + '_schoolIDGroup').toggleClass('hidden', !providerConfig.showSchoolIdField);
+                $(selectorPrefix + '_schoolDateGroup').toggleClass('hidden', !providerConfig.showSchoolCommencementField);
+                $(selectorPrefix + '_apprenticeGroup').toggleClass('hidden', !providerConfig.showApprenticeField);
+                $('[name=health_application_dependants_dependant' + dependantId + '_schoolID]').prop('required',providerConfig.schoolIdRequired);
+            } else {
+                // Hide them all if they aren't in the date range.
+                $(selectorPrefix + '_fulltimeGroup, ' + selectorPrefix + '_schoolGroup, ' + selectorPrefix + '_schoolIDGroup, ' + selectorPrefix + '_schoolDateGroup,' + selectorPrefix + '_apprenticeGroup').addClass('hidden');
+            }
         }
     }
 
@@ -395,7 +426,7 @@
      */
     function situationEnablesDependants() {
         var cover = meerkat.modules.healthChoices.returnCoverCode();
-        return cover == 'SPF' || cover == 'F';
+        return cover == 'SPF' || cover == 'F' || cover == 'ESP' || cover == 'EF';
     }
 
     function animateToDependant($el) {
@@ -539,7 +570,8 @@
         getMaxAge: getMaxAge,
         setMaxAge: setMaxAge,
         updateDependantConfiguration: updateDependantConfiguration,
-        getEducationalInstitutionsOptions: getEducationalInstitutionsOptions
+        getEducationalInstitutionsOptions: getEducationalInstitutionsOptions,
+        getNumberOfDependants: getNumberOfDependants
     });
 
 })(jQuery);

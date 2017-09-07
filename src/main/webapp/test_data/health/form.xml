@@ -20,10 +20,10 @@
 	</contactDetails>
 	<situation>
 		<healthCvr>F</healthCvr>
-		<location>O'bil Bil 4626 QLD</location>
+		<location>Toowong 4066 QLD</location>
 		<state>QLD</state>
-		<suburb>O'bil Bil</suburb>
-		<postcode>4626</postcode>
+		<suburb>Toowong</suburb>
+		<postcode>4066</postcode>
 		<healthSitu>LC</healthSitu>
 		<cover>Y</cover>
 		<singleProvider></singleProvider>
@@ -46,7 +46,7 @@
 	<healthCover>
 		<income>0</income>
 		<dependants>12</dependants>
-		<rebate>N</rebate>
+		<rebate>Y</rebate>
 		<primary>
 			<cover>Y</cover>
 			<dob>25/01/1967</dob>
@@ -306,6 +306,7 @@
 		<dialogue-checkbox-33>Y</dialogue-checkbox-33>
 		<dialogue-checkbox-58>Y</dialogue-checkbox-58>
 		<dialogue-checkbox-30>Y</dialogue-checkbox-30>
+		<dialogue-checkbox-76>Y</dialogue-checkbox-76>
 
 		<contactType>outbound</contactType>
 	</simples>

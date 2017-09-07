@@ -59,7 +59,7 @@
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/dob"/>
             <form_v4:row fieldXpath="${fieldXpath}" label="Date of Birth">
                 <field_v4:person_dob xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s date of birth" required="true" ageMin="0"
-                                     additionalAttributes=" data-rule-limitDependentAgeToUnder25='true' " outputJS="${false}" disableErrorContainer="${true}" type="select"/>
+                                     additionalAttributes=" data-rule-limitDependentAgeToUnder25='true' " outputJS="${false}" disableErrorContainer="${true}" />
             </form_v4:row>
                 <%-- Only shows if showFullTimeField is true, AND the school age is between schoolMinAge and schoolMaxAge --%>
             {{ if(providerConfig.showFullTimeField === true) { }}
@@ -92,7 +92,7 @@
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/schoolID"/>
             <form_v4:row fieldXpath="${fieldXpath}" label="Student ID Number" id="${name}_schoolIDGroup"
                          className="health_dependant_details_schoolIDGroup hidden">
-                <field_v2:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s student ID number" required="{{= providerConfig.schoolIdRequired }}" className="sessioncamexclude" maxlength="{{= providerConfig.schoolIdMaxLength }}" defaultValue="{{= obj.schoolID }}"  disableErrorContainer="${true}"/>
+                <field_v2:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s student ID number" required="false" className="sessioncamexclude" maxlength="{{= providerConfig.schoolIdMaxLength }}" defaultValue="{{= obj.schoolID }}"  disableErrorContainer="${true}"/>
             </form_v4:row>
             {{ } }}
 

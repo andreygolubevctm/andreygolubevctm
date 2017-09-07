@@ -128,14 +128,12 @@
         // Show the initial step (either the first step, or the one defined in the settings, or the one identified in the hash)
 
         if(settings.startStepId === null && meerkat.modules.address.getWindowHash() === ''){
-
             settings.startStepId = settings.steps[0].navigationId;
 
             meerkat.modules.address.setStartHash(settings.startStepId); // so the address module knows what the hash should be
             onNavigationChange({navigationId:settings.startStepId});
 
         }else{
-
             if(settings.startStepId === null){
                 // Use the browser hash as the start step.
                 var hashValue = meerkat.modules.address.getWindowHashAt(0);
@@ -548,7 +546,7 @@
                     var $element = $(element);
                     var formValid = $element.valid();
                     if(formValid === false) isValid = false;
-                    errorList = $.merge(errorList, $element.validate().errorList);
+                    errorList = $.merge(errorList, $element.validate(meerkat.modules.jqueryValidate.getDefaultValidationObj()).errorList);
                 });
 
                 if(isAlreadyVisible === false) $slide.removeClass("active").addClass('hiddenSlide');
@@ -560,7 +558,7 @@
                 }
             }
 
-            if(!_.isNull(step.validation.customValidation) && !_.isUndefined(step.validation.customValidation)) {
+            if(!_.isNull(step.validation.customValidation) && !_.isUndefined(step.validation.customValidation) && _.isFunction(step.validation.customValidation)) {
                 waitForCallback = true;
                 step.validation.customValidation(function(valid){
                     if(valid){
@@ -726,7 +724,7 @@
 
         $(".journeyEngineSlide.active form" ).each(function( index, element ) {
             var $element = $(element);
-            errorList = $.merge(errorList, $element.validate().errorList);
+            errorList = $.merge(errorList, $element.validate(meerkat.modules.jqueryValidate.getDefaultValidationObj()).errorList);
         });
 
 

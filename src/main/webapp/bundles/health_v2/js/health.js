@@ -809,6 +809,7 @@
         rates = ratesObject;
         $("#health_rebate").val((rates.rebate || ''));
         $("#health_rebateChangeover").val((rates.rebateChangeover || ''));
+        $("#health_previousRebate").val((rates.previousRebate || ''));
         $("#health_loading").val((rates.loading || ''));
         $("#health_primaryCAE").val((rates.primaryCAE || ''));
         $("#health_partnerCAE").val((rates.partnerCAE || ''));
@@ -1027,18 +1028,23 @@
                 marketOptIn: null,
                 okToCall: null,
                 contactType: null,
+                contactTypeTrial: null,
                 simplesUser: meerkat.site.isCallCentreUser
             };
 
             // Push in values from 1st slide only when have been beyond it
             if (furtherest_step > meerkat.modules.journeyEngine.getStepIndex('start')) {
                 var contactType = null;
+                var contactTypeTrial = '';
                 if ($('#health_simples_contactType_inbound').is(':checked')) {
                     contactType = 'inbound';
                 } else if ($('#health_simples_contactType_outbound').is(':checked')) {
                     contactType = 'outbound';
                 } else if ($('#health_simples_contactType_clioutbound').is(':checked')) {
                     contactType = 'clioutbound';
+                } else if ($('#health_simples_contactType_trialcampaign').is(':checked')) {
+                    contactType = 'outbound';
+                    contactTypeTrial = 'Trial Campaign';
                 }
 
                 $.extend(response, {
@@ -1046,7 +1052,8 @@
                     state: state,
                     healthCoverType: $("#health_situation_healthCvr").val(),
                     healthSituation: $("input[name=health_situation_healthSitu]").filter(":checked").val(),
-                    contactType: contactType
+                    contactType: contactType,
+                    contactTypeTrial: contactTypeTrial
                 });
             }
 
@@ -1350,7 +1357,7 @@
         } else {
             $('#health_healthCover_tier').show();
             var cover = $(':input[name="health_situation_healthCvr"]').val();
-            if (cover === 'F' || cover === 'SPF') {
+            if (cover === 'F' || (cover === 'EF' || (cover === 'SPF' || cover === 'ESP'))) {
                 $('.health_cover_details_dependants').show();
             }
         }

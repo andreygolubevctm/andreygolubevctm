@@ -18,7 +18,9 @@
 <%@ attribute name="validateYoungest" 		required="false"  	rtexprvalue="true"	 description="Add validation for youngest person" %>
 <%@ attribute name="additionalAttributes" 	required="false"  	rtexprvalue="true"	 description="Add additional attributes" %>
 <%@ attribute name="outputJS" 	required="false"  	rtexprvalue="true"	 description="Whether to output the JS" %>
-<%@ attribute name="disableErrorContainer" required="false" rtexprvalue="true"    	 description="Show or hide the error message container" %>
+<%@ attribute name="disableErrorContainer"	required="false" rtexprvalue="true"    	 description="Show or hide the error message container" %>
+<%@ attribute name="trackingPrefix" 		required="false" rtexprvalue="true"
+			  description="Prefix to be added to the Google Analytics tracking value" %>
 
 <%-- VARIABLES --%>
 <c:if test="${empty outputJS}"><c:set var="outputJS" value="${true}" /></c:if>
@@ -57,6 +59,10 @@
 	</c:if>
 </c:set>
 
+<c:if test="${not empty trackingPrefix}" >
+	<c:set var="trackingPrefix" value="${trackingPrefix} " />
+</c:if>
+
 <jsp:useBean id="nowLessAgeMinYears" class="java.util.GregorianCalendar" />
 <% nowLessAgeMinYears.add(java.util.GregorianCalendar.YEAR, -Integer.parseInt(ageMin)); %>
 <fmt:formatDate var="nowLessAgeMinYears" pattern="yyyy-MM-dd" value="${nowLessAgeMinYears.time}" />
@@ -68,13 +74,16 @@ ${logger.trace('DOB Restricted to max: {},{}' , log:kv('nowLessAgeMinYears', now
 <div class="dateinput_container" data-provide="dateinput">
 	<div class="row dateinput-tripleField">
 		<div class="col-sm-3 col-xs-4 dayContainer">
-			<field_v2:input type="text" className="sessioncamexclude dateinput-day dontSubmit ${className}" xpath="${xpath}InputD" maxlength="2" pattern="[0-9]*" placeHolder="DD" required="false" requiredMessage="Please enter the day" />
+			<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="${trackingPrefix}DOB - Day" quoteChar="\"" /></c:set>
+			<field_v2:input type="text" className="sessioncamexclude dateinput-day dontSubmit ${className}" xpath="${xpath}InputD" maxlength="2" pattern="[0-9]*" placeHolder="DD" required="false" requiredMessage="Please enter the day" additionalAttributes="${analyticsAttr}" />
 		</div>
 		<div class="col-sm-3 col-xs-4 monthContainer">
-			<field_v2:input type="text" className="sessioncamexclude dateinput-month dontSubmit ${className}" xpath="${xpath}InputM" maxlength="2" pattern="[0-9]*" placeHolder="MM" required="false" requiredMessage="Please enter the month" />
+			<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="${trackingPrefix}DOB - Month" quoteChar="\"" /></c:set>
+			<field_v2:input type="text" className="sessioncamexclude dateinput-month dontSubmit ${className}" xpath="${xpath}InputM" maxlength="2" pattern="[0-9]*" placeHolder="MM" required="false" requiredMessage="Please enter the month" additionalAttributes="${analyticsAttr}" />
 		</div>
 		<div class="col-md-4 col-sm-5 col-xs-4">
-			<field_v2:input type="text" className="sessioncamexclude dateinput-year dontSubmit ${className}" xpath="${xpath}InputY" maxlength="4" pattern="[0-9]*" placeHolder="YYYY" required="false" requiredMessage="Please enter the year" />
+			<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="${trackingPrefix}DOB - Year" quoteChar="\"" /></c:set>
+			<field_v2:input type="text" className="sessioncamexclude dateinput-year dontSubmit ${className}" xpath="${xpath}InputY" maxlength="4" pattern="[0-9]*" placeHolder="YYYY" required="false" requiredMessage="Please enter the year" additionalAttributes="${analyticsAttr}" />
 		</div>
 	</div>
 	<div class="hidden select dateinput-nativePicker">
@@ -89,6 +98,6 @@ ${logger.trace('DOB Restricted to max: {},{}' , log:kv('nowLessAgeMinYears', now
 <%-- LEGACY... required by various health funds question sets --%>
 <c:if test="${outputJS}">
 <go:script marker="js-head">
-	var dob_${name} = { ageMin: ${ageMin},  ageMax: ${ageMax},  message: '' };
+	var dob_${name} = { ageMin: ${ageMin},  ageMax: ${ageMax},  message: '', target: '#${name}' };
 </go:script>
 </c:if>

@@ -47,7 +47,7 @@
 			<core_v2:offcanvas_header />
 
 			<li class="slide-feature-back">
-				<a href="javascript:;" data-slide-control="previous" class="btn-back"><span class="icon icon-arrow-left"></span> <span>Back</span></a>
+				<a href="javascript:;" data-slide-control="previous" class="btn-back" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />><span class="icon icon-arrow-left"></span> <span>Back</span></a>
 			</li>
 
 			<%-- Save quote for off canvas menu --%>
@@ -61,7 +61,7 @@
 			</c:if>
 
 			<li class="dropdown dropdown-interactive slide-edit-quote-dropdown" id="edit-details-dropdown">
-				<a class="activator needsclick dropdown-toggle btn-back" data-toggle="dropdown" href="javascript:;"><span class="icon icon-cog"></span>
+				<a class="activator needsclick dropdown-toggle btn-back" data-toggle="dropdown" href="javascript:;" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />><span class="icon icon-cog"></span>
 				<span>Edit Details</span> <b class="caret"></b></a>
 				<div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
 					<div class="dropdown-container">
@@ -79,7 +79,7 @@
 
 			<c:if test="${saveQuoteEnabled == 'Y'}">
 			<li class="dropdown dropdown-interactive slide-feature-emailquote hidden-xs" id="email-quote-dropdown">
-				<a class="activator needsclick btn-email dropdown-toggle" data-toggle="dropdown" href="javascript:;"><span class="icon icon-envelope"></span> <span><c:choose>
+				<a class="activator needsclick btn-email dropdown-toggle" data-toggle="dropdown" href="javascript:;" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" /> ><span class="icon icon-envelope"></span> <span><c:choose>
 							<c:when test="${not empty authenticatedData.login.user.uid}">Save Quote</c:when>
 							<c:otherwise>Save Quote</c:otherwise>
 						</c:choose></span> <b class="caret"></b></a>
@@ -108,6 +108,7 @@
 			</ul>
 		</div>
 
+		<agg_v1:inclusive_gst className="nav navbar-right" />
 	</jsp:attribute>
 
 	<jsp:attribute name="navbar_additional">
@@ -124,7 +125,18 @@
 						<ul class="dropdown-menu">
 						</ul>
 					</li>
-					<li class="excess-update"><a href="javascript:void(0);" class="btn btn-hollow updateFilters hidden" data-toggle="updateButton">update</a>
+					<li class="dropdown landlordShowAll isLandlord">
+						<a href="javascript:void(0);" class="dropdown-toggle active" data-toggle="dropdown"><span>Show all</span> <b class="icon icon-angle-down"></b></a>
+						<ul class="dropdown-menu landlord-filter-items">
+							<li class="checkbox"><input type="checkbox" checked name="showall" id="showall" /> <label for="showall" class=""></label>Show All</li>
+							<span>Only show products that include:</span>
+							<li class="checkbox"><input type="checkbox" name="lossrent" id="lossrent" /> <label for="lossrent"></label>Loss of rent</li>
+							<li class="checkbox"><input type="checkbox" name="malt" id="malt" /> <label for="malt"></label>Malicious damage</li>
+							<li class="checkbox"><input type="checkbox" name="rdef" id="rdef" /> <label for="rdef"></label>Tenant default</li>
+						</ul>
+					</li>
+					<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="nav button" quoteChar="\"" /></c:set>
+					<li class="excess-update"><a href="javascript:void(0);" class="btn btn-hollow updateFilters hidden" data-toggle="updateButton" ${analyticsAttr}>update</a>
 					</li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
@@ -133,8 +145,8 @@
 						<ul class="dropdown-menu">
 						</ul>
 					</li>
-					<li class="filter-pricemode"><a href="javascript:void(0);"><span class="icon icon-th-list"></span> Quick price</a></li>
-					<li class="filter-featuresmode"><a href="javascript:void(0);"><span class="icon icon-th-vert"></span> Product features</a></li>
+					<li class="filter-pricemode"><a href="javascript:void(0);" ${analyticsAttr}><span class="icon icon-th-list"></span> Quick price</a></li>
+					<li class="filter-featuresmode"><a href="javascript:void(0);" ${analyticsAttr}><span class="icon icon-th-vert"></span> Product features</a></li>
 					<li class="back-to-price-mode hidden"><a href="javascript:void(0);"><span class="icon icon-arrow-left"></span> Back</a></li>
 				</ul>
 			</div>
@@ -143,8 +155,16 @@
 		<nav id="navbar-filter-labels" class="navbar hidden hidden-xs">
 			<div class="container">
 				<ul class="nav navbar-nav">
-					<li class="navbar-text filter-home-excess-label">Home Excess</li>
+					<span class="isLandlord landlord-navbar-text">
+						<li class="navbar-text filter-home-excess-label">Building Excess</li>
+					</span>
+					<span class="notLandlord landlord-navbar-text">
+						<li class="navbar-text filter-home-excess-label">Home Excess</li>
+					</span>
 					<li class="navbar-text filter-contents-excess-label">Contents Excess</li>
+					<span class="isLandlord landlord-navbar-text">
+						<li class="navbar-text filter-contents-excess-label">Landlord Filters</li>
+					</span>
 					<li class="navbar-text filter-cancel-label"><a href="javascript:void(0);" class="hidden">Cancel</a></li>
 				</ul>
 
@@ -153,10 +173,11 @@
 					<li class="navbar-text filter-view-label">View</li>
 				</ul>
 			</div>
-		</nav>		
+		</nav>
 		<%-- The content of the container is appended only when a comparison is made. --%>
-		<nav id="navbar-compare" class="navbar navbar-default navbar-affix navbar-additional hidden-xs hidden" data-affix-after="#navbar-main">
-			<div class="container compare-basket">
+
+		<nav id="navbar-compare" class="compare-v2 navbar hidden-xs hidden">
+			<div class="navbar-additional clearfix compare-basket">
 			</div>
 		</nav>
 	</jsp:attribute>
@@ -209,6 +230,10 @@
 			<form_v1:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid" />
 			<core_v1:referral_tracking vertical="${pageSettings.getVerticalCode()}" />
 		</div>
+
+		<c:if test="${simplifiedJourneySplitTestActive}">
+			<agg_v1:button_tile_dropdown_selector_template />
+		</c:if>
 
 		<%-- Slides --%>
 		<home_layout:slide_cover_type />

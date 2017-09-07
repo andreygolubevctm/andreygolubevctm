@@ -220,7 +220,9 @@
 	function show() {
 		$component.removeClass('hidden').hide().slideDown(200);
 
-		$labels.removeClass('hidden').hide().slideDown(200);
+		if (!meerkat.modules.carExotic.isExotic()) {
+			$labels.removeClass('hidden').hide().slideDown(200);
+		}
 
 		storeCurrentValues();
 		preselectDropdowns();
@@ -303,6 +305,7 @@
 			$priceMode.addClass('active');
 
 			meerkat.modules.carResults.switchToPriceMode(true);
+			meerkat.modules.compare.afterSwitchMode('price');
 			if (updateBtnShown) $cancelUpdateBtn.trigger('click');
 
 			meerkat.modules.session.poke();
@@ -316,6 +319,7 @@
 			$featuresMode.addClass('active');
 
 			meerkat.modules.carResults.switchToFeaturesMode(true);
+			meerkat.modules.compare.afterSwitchMode('features');
 			if (updateBtnShown) $cancelUpdateBtn.trigger('click');
 
 			meerkat.modules.session.poke();
@@ -515,7 +519,7 @@
 		$filterMenu.empty();
 
 		$('#filter_coverTypeOptions option:not(.hidden)').each(function () {
-			$filterMenu.append('<li><a href="javascript:;" data-value="' + this.value + '">' + this.text + '</a></li>');
+			$filterMenu.append('<li><a href="javascript:;" data-value="' + this.value + '" ' + meerkat.modules.dataAnalyticsHelper.get('Cover Type - ' + this.value,'"') + '>' + this.text + '</a></li>');
 		});
 	}
 
@@ -549,12 +553,12 @@
 
 			$filterMenu = $filterExcess.find('.dropdown-menu');
 			$('#filter_excessOptions option').each(function () {
-				$filterMenu.append('<li><a href="javascript:;" data-value="' + this.value + '">' + this.text + '</a></li>');
+				$filterMenu.append('<li><a href="javascript:;" data-value="' + this.value + '" ' + meerkat.modules.dataAnalyticsHelper.get('Excess - ' + this.value, '"') + '>' + this.text + '</a></li>');
 			});
 
 			$filterMenu = $filterFrequency.find('.dropdown-menu');
 			$('#filter_paymentType option').each(function () {
-				$filterMenu.append('<li><a href="javascript:;" data-value="' + this.value + '">' + this.text + '</a></li>');
+				$filterMenu.append('<li><a href="javascript:;" data-value="' + this.value + '" ' + meerkat.modules.dataAnalyticsHelper.get('Payment Freq ' + this.text,'"') + '>' + this.text + '</a></li>');
 			});
 
 			meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, _.bind(setCurrentDeviceState, this, {isXS: true}));

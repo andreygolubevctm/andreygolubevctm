@@ -16,6 +16,7 @@
 		element: null,
 		contentType: null,
 		contentValue: null,
+		showSolo: false,
 		showEvent: 'click',
 		onOpen:function(){
 
@@ -56,6 +57,11 @@
 							html += $(this).text();
 						});
 
+						if (settings.contentReplace) {
+							var contentReplaceParts = settings.contentReplace.split(',');
+							html = html.replace(contentReplaceParts[0], contentReplaceParts[1]);
+						}
+
 						returnString = html;
 
 						api.set('content.text', html);
@@ -84,6 +90,11 @@
 		} else {
 			showEvent = settings.showEvent;
 		}
+
+		var showSolo = false;
+		if(settings.showSolo !== undefined){
+            showSolo = settings.showSolo;
+        }
 
 		var hideEvent = null;
 		switch( showEvent ){
@@ -119,6 +130,7 @@
 				viewport: $(window)
 			},
 			show: {
+			    solo: showSolo,
 				event: showEvent
 			},
 			hide:{

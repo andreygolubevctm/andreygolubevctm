@@ -244,7 +244,7 @@
 		var addRow = function(coverType, coverAmount, extraCopy) {
 			// convert value to comma separated digits
 			coverAmount = coverAmount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-
+			
 			var tempHTML = [
 				'<tr>',
 				'<td>',
@@ -267,11 +267,17 @@
 
 		if(coverType == "H" || coverType == "HC") {
 			var rebuildCost = parseInt($('#home_coverAmounts_rebuildCost').val());
-			addRow('Home Cover', rebuildCost);
+			if (meerkat.site.isLandlord) {
+				addRow('Building Cover', rebuildCost);
+			} else {
+				addRow('Home Cover', rebuildCost);
+			}
+			
 		}
-
+		
 		if(coverType == "C" || coverType == "HC") {
-			var contentsCost = parseInt($('#home_coverAmounts_replaceContentsCost').val());
+			var contentsCost = parseInt(meerkat.site.isLandlord ? $('#home_coverAmounts_replaceContentsCostLandlord').val() : $('#home_coverAmounts_replaceContentsCost').val());
+			
 			var selectedProduct = Results.getSelectedProduct();
 			if(!_.isEmpty(selectedProduct) && parseInt(selectedProduct.contentsExcess.insuredValue) !== contentsCost) {
 				contentsCost = selectedProduct.contentsExcess.insuredValue;
@@ -515,6 +521,10 @@
 			},
 			errorLevel: "silent",
 			onSuccess: function (result) {
+				// If a provider does not have these stored in the database, we default to the actual products response.
+				result.benefits = result.benefits === '' ? product.benefits : result.benefits;
+				result.inclusions = result.inclusions === '' ? product.inclusions : result.inclusions;
+				result.optionalExtras = result.optionalExtras === '' ? product.optionalExtras : result.optionalExtras;
 				meerkat.modules.moreInfo.setDataResult(result);
 			},
 			onError: function(jqXHR) {

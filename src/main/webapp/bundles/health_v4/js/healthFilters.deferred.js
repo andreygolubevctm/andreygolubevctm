@@ -72,52 +72,37 @@
                     }
                 }
             },
-            "rebate": {
-                name: 'health_filterBar_rebate',
-                defaultValueSourceSelector: '#health_healthCover_rebateCheckbox',
+            "discount": {
+                name: 'health_filterBar_discount',
+                defaultValueSourceSelector: 'input[name="health_applyDiscounts"]',
                 defaultValue: '',
                 events: {
                     init: function (filterObject) {
-                        var isChecked = $(filterObject.defaultValueSourceSelector).is(':checked');
+                        var isChecked = $(filterObject.defaultValueSourceSelector).val() === 'Y';
                         $('input[name=' + filterObject.name + ']').prop('checked', isChecked);
-                        toggleIncome(!isChecked);
-                        updateRebateLabels();
                     },
                     update: function (filterObject) {
-                        $(filterObject.defaultValueSourceSelector).prop('checked', $('input[name=' + filterObject.name + ']').is(':checked')).trigger('change');
-
-                        _.defer(function () {
-                            toggleRebateEdit(true);
-                            updateRebateLabels();
-                        });
+                        var isChecked = $('input[name=' + filterObject.name + ']').is(':checked');
+                        $(filterObject.defaultValueSourceSelector).val(isChecked ? 'Y' : 'N');
                     }
                 }
             },
-            "income": {
-                name: 'health_filterBar_income',
-                defaultValueSourceSelector: '#health_healthCover_income',
+            "rebate": {
+                name: 'health_filterBar_rebate',
+                defaultValueSourceSelector: 'input[name="health_healthCover_rebate"]',
                 defaultValue: '',
                 events: {
                     init: function (filterObject) {
-                        /**
-                         * Copy the element and place it in the filters with a new id etc. (jQuery Clone doesn't copy the value...)
-                         */
-                        var $defaultValueSourceSelector = $(filterObject.defaultValueSourceSelector),
-                            $incomeElement = $defaultValueSourceSelector.parent().clone();
-
-                        $incomeElement
-                            .addClass('hidden')
-                            .find('select').attr({
-                            'id': filterObject.name,
-                            'name': filterObject.name,
-                            'data-analytics': 'filter rebate'
-                        }).val($defaultValueSourceSelector.val())
-                            .find('option[value=""]').remove();
-
-                        $('.filter-income-holder').html($incomeElement);
+                        var isChecked = $(filterObject.defaultValueSourceSelector + ":checked").length > 0 && $(filterObject.defaultValueSourceSelector + ":checked").val() === 'Y';
+                        $('input[name=' + filterObject.name + ']').prop('checked', isChecked);
                     },
                     update: function (filterObject) {
-                        $(filterObject.defaultValueSourceSelector).val($('select[name=' + filterObject.name + ']').val()).trigger('change');
+                        var isChecked = $('input[name=' + filterObject.name + ']').is(':checked');
+                        if (isChecked) {
+                            $(filterObject.defaultValueSourceSelector+'[value="Y"]').prop('checked', true).trigger('change');
+                        } else {
+                            $(filterObject.defaultValueSourceSelector+'[value="N"]').prop('checked', true).trigger('change', [false]);
+                        }
                     }
                 }
             },
@@ -178,14 +163,10 @@
                     },
                     update: function () {
                         // Forced to customise (or limited) as we don't have top/mid/basic in v4
-                        var $hospitalType = $('.results-filters-benefits .health-filter-hospital-benefits li.active').find('a');
-                        benefitCoverType = $hospitalType.length && $hospitalType.attr('href').search(/limited/) !== -1 ? 'limited' : 'customise';
-                        $('#health_benefits_covertype').val(benefitCoverType);
+                        var $hospitalType = $('.results-filters-benefits .health-filter-hospital-benefits li.active').find('a'),
+                            benefitCoverType = $hospitalType.length && $hospitalType.attr('href').search(/limited/) !== -1 ? 'limited' : 'customise';
 
-                        // reset hospital benefits to empty.
-                        if (benefitCoverType == 'limited') {
-                            $('.filter-hospital-benefits').find(':checked').prop('checked', false);
-                        }
+                        $('#health_benefits_covertype').val(benefitCoverType);
 
                         meerkat.modules.benefits.setHospitalType(benefitCoverType);
 
@@ -222,12 +203,60 @@
                     }
                 }
             }
+        },
+        benefitsSwitchModel = {
+            "benefitsHospitalSwitch": {
+                name: 'health_benefits_filters_HospitalSwitch',
+                defaultValueSourceSelector: '#health_benefits_HospitalSwitch',
+                defaultValue: '',
+                events: {
+                    init: function (filterObject) {
+                        meerkat.modules.benefitsSwitch.initHospitalFilters();
+                        _toggleFiltersBenefitSelection('hospital', meerkat.modules.benefitsSwitch.isHospitalOn());
+                    },
+                    update: function (filterObject) {
+                        var isSwitchedOn = $('input[name=' + filterObject.name + ']').bootstrapSwitch('state');
 
+                        $(filterObject.defaultValueSourceSelector).bootstrapSwitch('setState', isSwitchedOn);
+
+                        _.defer(function() {
+                            setFilterByHospitalBenefits();
+                            meerkat.modules.benefitsSwitch.toggleFiltersSwitch('hospital', true);
+                        });
+                    }
+                }
+            },
+            "benefitsExtrasSwitch": {
+                name: 'health_benefits_filters_ExtrasSwitch',
+                defaultValueSourceSelector: '#health_benefits_ExtrasSwitch',
+                defaultValue: '',
+                events: {
+                    init: function (filterObject) {
+                        meerkat.modules.benefitsSwitch.initExtrasFilters();
+                        _toggleFiltersBenefitSelection('extras', meerkat.modules.benefitsSwitch.isExtrasOn());
+                    },
+                    update: function (filterObject) {
+                        var isSwitchedOn = $('input[name=' + filterObject.name + ']').bootstrapSwitch('state');
+
+                        $(filterObject.defaultValueSourceSelector).bootstrapSwitch('setState', isSwitchedOn);
+
+                        _.defer(function() {
+                            setFilterByExtrasBenefits();
+                            meerkat.modules.benefitsSwitch.toggleFiltersSwitch('extras', true);
+                        });
+                    }
+                }
+            }
         },
         settings = {
             verticalContextChange: ['xs', 'sm'],
             xsContext: '.header-top',
             filters: [
+                {
+                    template: '#filter-discount-template',
+                    container: '.results-filters-discount',
+                    context: '#results-sidebar'
+                },
                 {
                     template: '#filter-rebate-template',
                     container: '.results-filters-rebate',
@@ -278,8 +307,8 @@
         // this needs to convert the shortlistkey names e.g. PrHospital to its id for it to work...
         // go back up to init filters and try and make it just run off ids.
         var selectedBenefits = {
-            'hospital': _getCheckedBenefitsFromFilters($('.filter-hospital-benefits')),
-            'extras': _getCheckedBenefitsFromFilters($('.filter-extras-benefits'))
+            'hospital': _getCheckedBenefitsFromFilters($('.health-filter-hospital-benefits')),
+            'extras': _getCheckedBenefitsFromFilters($('.health-filter-extras-benefits'))
         };
 
         meerkat.modules.healthResults.setSelectedBenefitsList(selectedBenefits.hospital.concat(selectedBenefits.extras));
@@ -291,7 +320,6 @@
         meerkat.modules.benefitsModel.setBenefits(selectedBenefits.hospital);
 
         meerkat.messaging.publish(meerkatEvents.benefitsModel.BENEFITS_MODEL_UPDATE_COMPLETED);
-
     }
 
     function init() {
@@ -304,7 +332,10 @@
             $hiddenProductsWrapper = $('.filter-results-hidden-products', $navBarFiltersContext);
             $paginationWrapper = $('.results-pagination', $navBarFiltersContext);
             _placeFrequencyFilters();
-            meerkat.modules.filters.initFilters(settings, model);
+            meerkat.modules.filters.initFilters(
+                settings,
+                meerkat.modules.splitTest.isActive(2) ? $.extend({}, model, benefitsSwitchModel) : model
+            );
             applyEventListeners();
             eventSubscriptions();
         });
@@ -329,40 +360,36 @@
             meerkat.messaging.publish(meerkatEvents.filters.FILTER_CHANGED, e);
         });
 
-
-        $(document).on('change', '#health_filterBar_rebate', function toggleRebateDropdown() {
-            toggleIncome(!$(this).is(':checked'));
-        });
-
-        $(document).on('click', '.filtersEditTier', function () {
-            toggleRebateEdit(false);
-        });
-
         $(document).on('click', '.filter-toggle', function () {
             var filter = $(this).attr('data-filter');
 
             toggleFilterByContainer($('.filter-' + filter));
             toggleFilter($('.health-filter-' + filter), true);
+
+            if (meerkat.modules.splitTest.isActive(2)) {
+                meerkat.modules.benefitsSwitch.toggleFiltersSwitch(filter.replace('-benefits', ''), false);
+            }
         });
 
         $(document).on('shown.bs.tab', '.health-filter-hospital-benefits a[data-toggle="tab"]', function (e) {
+            var $hospitalBenefits = $('input[name=health_filterBar_benefitsHospital]');
+
+            if ($(this).attr('href').search(/hospital/) === 1 && $hospitalBenefits.filter(':checked').length === 0) {
+                $hospitalBenefits.filter('[data-benefit-code=PrHospital]').trigger('click');
+            }
+
             meerkat.messaging.publish(meerkatEvents.filters.FILTER_CHANGED, e);
         });
 
-    }
+        $(document).on('click', 'input[name=health_filterBar_benefitsHospital]', function () {
+            if ($('input[name=health_filterBar_benefitsHospital]:checked').length === 0) {
+                meerkat.modules.benefitsSwitch.switchOffHospitalFilters();
+            }
+        });
 
-    function toggleIncome(toggle) {
-        $('.results-filters-rebate .income_container').toggleClass('hidden', toggle);
-    }
-
-    function toggleRebateEdit(toggle) {
-        $('#filtersRebateLabel, #filtersSelectedRebateText').toggle(toggle);
-        $('.filter-income-holder .select').toggleClass('hidden', toggle);
-    }
-
-    function updateRebateLabels() {
-        $('#filtersRebateLabel span').html(meerkat.modules.healthRebate.getRebateLabelText());
-        $('#filtersSelectedRebateText').html(meerkat.modules.healthRebate.getSelectedRebateLabelText());
+        $(document).on('click', 'input[name=health_filterBar_benefitsExtras]', function () {
+            _toggleFiltersExtrasMessage();
+        });
     }
 
     function toggleFilterByContainer($filter, toggle) {
@@ -436,7 +463,7 @@
     function setFilterByBrands() {
         var numBrands = $(':input[name=health_filterBar_brands]').length,
             numBrandsChecked = $(':input[name=health_filterBar_brands]:checked').length,
-            filterByText = numBrands === numBrandsChecked ? 'All Brands' : numBrandsChecked + ' Brands selected';
+            filterByText = numBrands === numBrandsChecked ? 'All Funds' : numBrandsChecked + ' Brands selected';
 
         $('.filter-by-brands').text(filterByText);
     }
@@ -483,6 +510,13 @@
             }
         });
 
+        if (meerkat.modules.splitTest.isActive(2)) {
+            meerkat.messaging.subscribe(meerkatEvents.benefitsSwitch.FILTERS_SWITCH_CHANGED, function (e) {
+                _toggleFiltersBenefitSelection(e.benefit, e.isSwitchedOn);
+                _toggleFiltersSwitchValidation();
+                _toggleFiltersExtrasMessage();
+            });
+        }
     }
 
     /**
@@ -495,6 +529,39 @@
             $frequency.detach().insertAfter($paginationWrapper);
         } else {
             $frequency.detach().insertBefore($hiddenProductsWrapper);
+        }
+    }
+
+    function _toggleFiltersBenefitSelection(benefit, isSwitchedOn) {
+        $('.filter-' + benefit + '-benefits')
+            .toggleClass('benefits-switched-off', !isSwitchedOn)
+            .find('.benefits-list input[type=checkbox]').prop('disabled', !isSwitchedOn);
+    }
+
+    function _toggleFiltersSwitchValidation() {
+        var areBenefitsSwitchOn = meerkat.modules.benefitsSwitch.isFiltersHospitalOn() || meerkat.modules.benefitsSwitch.isFiltersExtrasOn();
+        $('.results-filters-benefits .benefits-switch-off-message').toggleClass('hidden', areBenefitsSwitchOn);
+        $('.results-filters-benefits .benefits-switch-extras-message').addClass('hidden');
+        $('.filter-update-changes').attr('disabled', !areBenefitsSwitchOn).prop('disabled', !areBenefitsSwitchOn);
+        $('.filter.benefits-switched-off').attr('data-dontToggleUpdate', !areBenefitsSwitchOn);
+
+        // push error tracking object into CtMDatalayer
+        if (!areBenefitsSwitchOn) {
+            meerkat.modules.benefits.errorTracking('benefits-switch-off');
+        }
+    }
+
+    function _toggleFiltersExtrasMessage() {
+        var hide = $('input[name=health_filterBar_benefitsExtras]:checked').length !== 0 || !meerkat.modules.benefitsSwitch.isFiltersExtrasOn();
+        $('.results-filters-benefits .benefits-switch-extras-message').toggleClass('hidden', hide);
+        if (meerkat.modules.benefitsSwitch.isFiltersHospitalOn() || meerkat.modules.benefitsSwitch.isFiltersExtrasOn()) {
+            $('.results-filters-benefits .benefits-switch-off-message').addClass('hidden');
+            $('.filter-update-changes').attr('disabled', !hide).prop('disabled', !hide);
+        }
+
+        // push error tracking object into CtMDatalayer
+        if (!hide) {
+            meerkat.modules.benefits.errorTracking('benefits-switch-extras');
         }
     }
 

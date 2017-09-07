@@ -62,7 +62,9 @@
 			{{ } }}
 		{{ } }}
 		<div class="push-top-15">
+		{{ if (obj.productDisclosures.hasOwnProperty('hbkfs') !== false) { }}
 		<p class="keyFactSheets">By going to the insurer’s site you agree you have accessed the Key Facts Sheets for <a href="{{= obj.productDisclosures.hbkfs.url }}" target="_blank">Home Insurance</a> and <a href="{{= obj.productDisclosures.hckfs.url }}" target="_blank">Contents Insurance</a>.</p>
+		{{ } }}
 	{{ } }}
 	<h5>Disclaimer</h5>
 	<p>{{= obj.disclaimer }}</p>
@@ -157,8 +159,12 @@
 					<div class="visible-sm col-sm-6 hidden-md hidden-lg">
 						{{= promotionOfferHtml }}
 					</div>
-					<div class="visible-xs col-xs-4">
-						{{= annualPriceTemplate }}
+					<div class="visible-xs col-xs-5 text-right">
+						{{ if (Results.getFrequency() == 'annual' || Results.getFrequency() == 'annually') { }}
+							{{= annualPriceTemplate }}
+						{{ } else { }}
+							{{= monthlyPriceTemplate }}
+						{{ } }}
 					</div>
 					<div class="hidden-xs col-sm-6 col-md-5 col-lg-4 text-right">
 						<div class="quoteNumberTitle">{{ if(quoteNumber != '') { }} Quote Number {{ } }}</div>
@@ -171,14 +177,16 @@
 							{{= monthlyPriceTemplate }}
 						{{ } }}
 					</div>
-					<div class="visible-xs col-xs-4">
-						{{= monthlyPriceTemplate }}
-					</div>
+					<div class="visible-xs col-xs-4"></div>
 
 					<div class="col-xs-3 col-sm-4 hidden-md hidden-lg">
 						<div class="col-sm-6 {{= homeExcessState}} {{= excessAlign }} homeExcessContainer">
 							<div class="homeExcessAmount">\${{= homeExcessAmount }}</div>
-							<div class="homeExcessTitle">Home Excess</div>
+							{{ if (meerkat.site.isLandlord) { }}
+								<div class="homeExcessTitle">Building excess</div>
+							{{ } else { }}
+								<div class="homeExcessTitle">Home Excess</div>
+							{{ } }}
 						</div>
 						<div class="col-sm-6 {{= contentsExcessState}} {{= excessAlign }} contentsExcessContainer">
 							<div class="contentsExcessAmount">\${{= contentsExcessAmount }}</div>
@@ -256,7 +264,11 @@
 				</div>
 				<div class="{{= homeExcessState}} homeExcessContainer">
 					<div class="homeExcessAmount">\${{= homeExcessAmount }}</div>
-					<div class="homeExcessTitle">Home Excess</div>
+					{{ if (meerkat.site.isLandlord) { }}
+						<div class="homeExcessTitle">Building excess</div>
+					{{ } else { }}
+						<div class="homeExcessTitle">Home Excess</div>
+					{{ } }}
 				</div>
 				<div class="{{= contentsExcessState}} contentsExcessContainer">
 					<div class="contentsExcessAmount">\${{= contentsExcessAmount }}</div>

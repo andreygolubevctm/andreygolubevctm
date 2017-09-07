@@ -237,6 +237,10 @@
 
 			$frequencySelect.empty().append(options);
 			updateLHCText(product);
+
+			if (meerkat.modules.healthDualPricing.isDualPricingActive()) {
+				$frequencySelect.trigger('change.healthDualPricing');
+			}
 		}
 	}
 
@@ -335,7 +339,7 @@
 					// TODO work out this: //Results._refreshSimplesTooltipContent($('#update-premium .premium'));
 				}
 
-				if (typeof meerkat.site.healthAlternatePricingActive !== 'undefined' && meerkat.site.healthAlternatePricingActive === true) {
+				if (meerkat.modules.healthDualPricing.isDualPricingActive()) {
 					meerkat.modules.healthDualPricing.renderTemplate('.policySummary.dualPricing', data, false, true);
 				}
 
@@ -379,26 +383,19 @@
 		product.premium = product.paymentTypePremiums[product.paymentNode];
 		product._selectedFrequency = getSelectedFrequency();
 
-		if (typeof meerkat.site.healthAlternatePricingActive !== 'undefined' && meerkat.site.healthAlternatePricingActive === true) {
+		if (meerkat.modules.healthDualPricing.isDualPricingActive()) {
 			product.altPremium = product.paymentTypeAltPremiums[product.paymentNode];
 		}
 
         meerkat.modules.healthResults.setSelectedProduct(product, true);
 	}
 
-	function getPaymentMethodNode(){
+	function getPaymentMethodNode(method){
 		var nodeName = '';
+		method = method || getSelectedPaymentMethod();
 
-		switch (getSelectedPaymentMethod()) {
-			case 'cc':
-				var label = $paymentRadioGroup.find('label.active').text().trim();
-
-				if (label == 'Credit Card') {
-					nodeName = 'CreditCard';
-				} else {
-					nodeName = 'Invoice';
-				}
-				break;
+		switch (method) {
+			case 'cc': nodeName = 'CreditCard';	break;
 			default: nodeName = 'BankAccount'; break;
 		}
 
@@ -428,7 +425,7 @@
 		}
 
 		// Essential to ensure default copy if shown when loading a quote
-		$("#health_payment_details_frequency").trigger("change." + (meerkat.modules.healthResults.getSelectedProduct().info.FundCode));
+		$("#health_payment_details_frequency").trigger("change." + (meerkat.modules.healthResults.getSelectedProduct().info.provider));
 	}
 
 	// Check if details for the claims bank account needs to be shown

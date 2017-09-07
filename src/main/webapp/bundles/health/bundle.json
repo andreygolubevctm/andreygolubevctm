@@ -44,6 +44,8 @@
     "shared/radioGroupTile",
     "shared/bootstrapSwitch",
     "shared/healthDualPricing",
+    "shared/health",
+    "shared/healthPyrrCampaign",
     "shared/reward"
   ]
 }

@@ -2,7 +2,9 @@
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events;
 
-    var $healthContactType,
+    var $healthContactTypeRadio,
+        $healthContactType,
+        $healthContactTypeTrial,
         $healthCoverRebate,
         $healthSituationCvr,
         $healthSitCoverType,
@@ -10,26 +12,35 @@
         $healthPartnerCover,
         $dialoguePrimaryCover,
         $dialoguePartnerCover,
-        $dialogue56,
+        $dialogue74,
         $healthSituationMedicare,
         $aboutYouFieldset,
         $yourDetailsFieldset,
         $followupCallCheckboxDialogue,
         $followupCallCheckbox,
+        $cliCallCheckboxDialogue,
+        $nonCliCallCheckboxDialogue,
         $outboundFollowupDialogue,
         $inboundQuestionsetFollowupDialogue,
         $inboundQuestionsetFollowupToggles,
         $inboundApplicationFollowupDialogue,
+        $privatePatientDialogue,
         $inboundApplicationFollowupToggles,
         $followupDialogueContentContainers,
         $simplesMedicareCoverForm = null,
         $applicantWrappers = {},
-        currentFamilyType = null;
+        currentFamilyType = null,
+        $limitedCoverHidden,
+        $moreInfoDialogue,
+        $dialogue36;
 
     function init() {
         $(document).ready(function () {
+
             // cache selectors
-            $healthContactType = $('input[name=health_simples_contactType]');
+            $healthContactTypeRadio = $('input[name=health_simples_contactTypeRadio]');
+            $healthContactType = $('#health_simples_contactType');
+            $healthContactTypeTrial = $('#health_simples_contactTypeTrial');
             $healthCoverRebate = $('input[name=health_healthCover_rebate]');
             $healthSituationCvr = $('select[name=health_situation_healthCvr]');
             $healthSitCoverType = $('#health_situation_coverType');
@@ -37,12 +48,14 @@
             $healthPartnerCover = $('input[name=health_healthCover_partner_cover]');
             $dialoguePrimaryCover = $('.simples-dialogue-primary-current-cover');
             $dialoguePartnerCover = $('.simples-dialogue-partner-current-cover');
-            $dialogue56 = $('.simples-dialogue-56');
+            $dialogue74 = $('.simples-dialogue-74');
             $healthSituationMedicare = $('.health_situation_medicare');
             $aboutYouFieldset = $('#healthAboutYou > .content');
             $yourDetailsFieldset = $('#health-contact-fieldset .content');
             $followupCallCheckboxDialogue = $('.simples-dialogue-68');
             $followupCallCheckbox = $('#health_simples_dialogue-checkbox-68');
+            $cliCallCheckboxDialogue = $('.simples-dialogue-78');
+            $nonCliCallCheckboxDialogue = $('.simples-dialogue-20');
             $outboundFollowupDialogue = $('.simples-dialogue-69');
             $inboundQuestionsetFollowupDialogue = $('.simples-dialogue-70');
             $inboundQuestionsetFollowupToggles = $inboundQuestionsetFollowupDialogue.find('a');
@@ -53,8 +66,12 @@
             $simplesMedicareCoverForm = $('#health_situation_cover_wrapper');
             $applicantWrappers.primary = $('#health-contact-fieldset .content:first');
             $applicantWrappers.partner = $('#partner-health-cover .content:first');
+	        $privatePatientDialogue = $('.simples-dialogue-24');
+            $limitedCoverHidden = $("input[name='health_situation_accidentOnlyCover']");
+            $dialogue36 = $('.simples-dialogue-36');
 
             // Handle pre-filled
+            populatePrevAssignedRadioBtnGroupValue();
             toggleInboundOutbound();
             toggleBenefitsDialogue();
             initDBDrivenCheckboxes();
@@ -65,6 +82,25 @@
 
             meerkat.modules.provider_testing.setApplicationDateCalendar();
         });
+    }
+
+    function populatePrevAssignedRadioBtnGroupValue() {
+
+        // if data already exists for xpath load data into radio btn
+	    var contactType = $healthContactType.val();
+        if (!_.isEmpty(contactType)) {
+            if ($healthContactTypeTrial.val() === 'Trial Campaign') {
+                $('#health_simples_contactTypeRadio_trialcampaign').prop("checked", true).change();
+            } else {
+                if (contactType === 'inbound') {
+                    $('#health_simples_contactTypeRadio_inbound').prop("checked", true).change();
+                } else if (contactType === 'outbound') {
+                    $('#health_simples_contactTypeRadio_outbound').prop("checked", true).change();
+                } else if (contactType === 'cli') {
+                    $('#health_simples_contactTypeRadio_clioutbound').prop("checked", true).change();
+                }
+            }
+        }
     }
 
     function _moveSituationMedicareField() {
@@ -90,7 +126,7 @@
             var familyType = meerkat.modules.health.getSituation();
             if (!_.isEmpty(familyType) && (_.isNull(currentFamilyType) || familyType !== currentFamilyType)) {
                 var $tempMedicareForm = $simplesMedicareCoverForm.detach();
-                var $wrapperToUse = $applicantWrappers[_.indexOf(['F', 'C'], familyType) > -1 ? 'partner' : 'primary'];
+                var $wrapperToUse = $applicantWrappers[_.indexOf(['F', 'C', 'EF'], familyType) > -1 ? 'partner' : 'primary'];
                 $wrapperToUse.append($tempMedicareForm);
                 currentFamilyType = familyType;
             }
@@ -113,14 +149,13 @@
     }
 
     function applyEventListeners() {
-
         // General Toggle
         $('.simples-dialogue.optionalDialogue h3.toggle').parent('.simples-dialogue').addClass('toggle').on('click', function () {
             $(this).find('h3 + div').slideToggle(200);
         });
 
         // Handle toggle inbound/outbound
-        $healthContactType.on('change', function(){
+        $healthContactTypeRadio.on('change', function(){
             toggleInboundOutbound();
             toggleFollowupCallDialog();
         });
@@ -137,6 +172,10 @@
 
         // open bridging page
         $('#resultsPage').on("click", ".btn-more-info", openBridgingPage);
+
+        $dialogue36.find('a').on('click', function toggleMoreText() {
+            $dialogue36.find('.simples-dialogue-36-extra-text').toggleClass('hidden');
+        });
     }
 
     function openBridgingPage(e) {
@@ -179,7 +218,11 @@
         var $body = $('body');
 
         // Inbound
-        if ($('#health_simples_contactType_inbound').is(':checked')) {
+        if ($('#health_simples_contactTypeRadio_inbound').is(':checked')) {
+
+            $healthContactType.val('inbound');
+            $healthContactTypeTrial.val('');
+
             $body
                 .removeClass('outbound')
                 .addClass('inbound');
@@ -192,14 +235,37 @@
                 .removeClass('inbound')
                 .addClass('outbound');
 
-            if ($('#health_simples_contactType_outbound').is(':checked')) {
+            if (($('#health_simples_contactTypeRadio_outbound').is(':checked')) || ($('#health_simples_contactTypeRadio_trialcampaign').is(':checked'))) {
                 _moveSituationMedicareField();
+
+                $healthContactType.val('outbound');
+
+                if ($('#health_simples_contactTypeRadio_outbound').is(':checked')) {
+                    $healthContactTypeTrial.val('');
+                } else {
+                    $healthContactTypeTrial.val('Trial Campaign');
+                }
+
+            } else {
+                // cli outbound
+                $healthContactTypeTrial.val('');
+                $healthContactType.val('cli');
             }
+
         }
     }
 
     function getCallType() {
-        return $healthContactType.is(':checked') ? $healthContactType.filter(':checked').val() : null;
+        var callTypeToBeReturned = $healthContactTypeRadio.is(':checked') ? $healthContactTypeRadio.filter(':checked').val() : null;
+
+        // treat trial campaign as outbound
+        // for all intents and purposes trial campaign should be handled as an outbound call type - just have a different value stored in the DB
+        // unsure if cli outbound should be handled here too
+        if (callTypeToBeReturned === 'trialcampaign') {
+            callTypeToBeReturned = 'outbound';
+        }
+
+        return callTypeToBeReturned;
     }
 
     // Toggle visibility on follow call dialogs based on call type and whether is a followup call
@@ -209,13 +275,15 @@
         var isFollowupCall = $followupCallCheckbox.is(':checked');
         // Set the calltype variables
         callType = getCallType();
-        if(!_.isEmpty(callType)) {
-            isValidCallType = _.indexOf(['outbound','inbound'],callType) >= 0;
+        if (!_.isEmpty(callType)) {
+            isValidCallType = _.indexOf(['outbound','inbound','cli'],callType) >= 0;
         }
         // Toggle visibility of followup call checkbox
         $followupCallCheckboxDialogue.toggleClass('hidden',!isValidCallType);
-        if(isFollowupCall && isValidCallType) {
-            if(callType === 'outbound'){
+        $cliCallCheckboxDialogue.toggleClass('hidden',(getCallType()=== null ? true : isValidCallType));
+        $nonCliCallCheckboxDialogue.toggleClass('hidden',!(getCallType() === null ? true : isValidCallType));
+        if (isFollowupCall && isValidCallType) {
+            if (_.indexOf(['outbound','cli'], callType) >= 0) {
                 // Hide inbound dialogs and show outbound
                 $inboundQuestionsetFollowupDialogue
                     .add($inboundApplicationFollowupDialogue)
@@ -251,7 +319,10 @@
     }
 
     function toggleRebateDialogue() {
-        $dialogue56.toggleClass('hidden', $healthCoverRebate.filter(':checked').val() !== "Y");
+
+        var healthSituationCover = $healthSituationCvr.val();
+
+        $dialogue74.toggleClass('hidden', !(healthSituationCover === "ESP" || healthSituationCover === "EF"));
     }
 
     function toggleBenefitsDialogue() {
@@ -286,9 +357,21 @@
         $dialoguePartnerCover.toggleClass('hidden', $healthPartnerCover.filter(':checked').val() !== "Y");
     }
 
+    function toggleLimitedCoverDialogue() {
+        $privatePatientDialogue.toggleClass('hidden', $limitedCoverHidden.val() !== 'Y');
+    }
+
+    function toggleMoreInfoDialogue() {
+        $moreInfoDialogue = $('.simples-dialogue-76');
+        $moreInfoDialogue.toggleClass('hidden', $healthSitCoverType.find('input:checked').val().toLowerCase() === "e");
+    }
+
     meerkat.modules.register("simplesBindings", {
         init: init,
-        updateSimplesMedicareCoverQuestionPosition: updateSimplesMedicareCoverQuestionPosition
+        updateSimplesMedicareCoverQuestionPosition: updateSimplesMedicareCoverQuestionPosition,
+        toggleLimitedCoverDialogue: toggleLimitedCoverDialogue,
+        toggleRebateDialogue: toggleRebateDialogue,
+        toggleMoreInfoDialogue: toggleMoreInfoDialogue
     });
 
 })(jQuery);

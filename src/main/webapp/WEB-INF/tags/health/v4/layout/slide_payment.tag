@@ -8,20 +8,15 @@
         <form_v3:fieldset_columns sideHidden="true">
 
             <jsp:attribute name="rightColumn">
+                <reward:campaign_tile_container />
                 <health_v4_payment:policySummary showProductDetails="true" />
             </jsp:attribute>
 
             <jsp:body>
                 <health_v4_payment:payment xpath="${pageSettings.getVerticalCode()}/payment" />
-
-                <simples:dialogue id="38" vertical="health" mandatory="true" className="simples-dialog-inbound" />
-                <simples:dialogue id="40" vertical="health" mandatory="true" className="simples-dialog-inbound" />
-
                 <health_v4_payment:declaration xpath="${pageSettings.getVerticalCode()}/declaration" />
                 <health_v4_payment:contactAuthority xpath="${pageSettings.getVerticalCode()}/contactAuthority" />
                 <health_v4_payment:whatsNext />
-
-                <simples:dialogue id="31" vertical="health" mandatory="true" />
 
                 <c:if test="${callCentre and not empty worryFreePromo and worryFreePromo eq '35'}">
                     <div class="simples-dialogue row-content  optionalDialogue">

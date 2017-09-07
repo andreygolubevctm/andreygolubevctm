@@ -7,6 +7,7 @@ import java.util.Date;
  * Created by voba on 15/09/2015.
  */
 public class ChangeOverRebate {
+    private BigDecimal previousMultiplier;
     private BigDecimal currentMultiplier;
     private BigDecimal futureMultiplier;
 
@@ -17,22 +18,31 @@ public class ChangeOverRebate {
 
     }
 
-    public ChangeOverRebate(BigDecimal currentMultiplier, BigDecimal futureMultiplier, Date effectiveStart) {
+    public ChangeOverRebate(BigDecimal previousMultiplier, BigDecimal currentMultiplier, BigDecimal futureMultiplier, Date effectiveStart) {
+        this.previousMultiplier = previousMultiplier;
         this.currentMultiplier = currentMultiplier;
         this.futureMultiplier = futureMultiplier;
         this.effectiveStart = effectiveStart;
     }
 
-    public Float getCurrentMultiplier() {
-        return currentMultiplier.floatValue();
+    public BigDecimal getPreviousMultiplier() {
+        return previousMultiplier;
+    }
+
+    public void setPreviousMultiplier(final BigDecimal previousMultiplier) {
+        this.previousMultiplier = previousMultiplier;
+    }
+
+    public BigDecimal getCurrentMultiplier() {
+        return currentMultiplier;
     }
 
     public void setCurrentMultiplier(BigDecimal currentMultiplier) {
         this.currentMultiplier = currentMultiplier;
     }
 
-    public Float getFutureMultiplier() {
-        return futureMultiplier.floatValue();
+    public BigDecimal getFutureMultiplier() {
+        return futureMultiplier;
     }
 
     public void setFutureMultiplier(BigDecimal futureMultiplier) {

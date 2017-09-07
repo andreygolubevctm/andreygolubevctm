@@ -60,7 +60,7 @@
             <li><a href="javascript:window.print();" class="btn-email"><span class="icon icon-blog"></span> <span>Print Page</span></a></li>
             <c:if test="${empty callCentre}">
                 <li>
-                    <a href="${pageSettings.getBaseUrl()}health_quote_v2.jsp" class="btn-dropdown needsclick"><span class="icon icon-undo"></span> <span>Start a new quote</span> <span class="icon icon-arrow-right hidden-xs"></span></a>
+                    <a href="${pageSettings.getBaseUrl()}health_quote_v4.jsp" class="btn-dropdown needsclick"><span class="icon icon-undo"></span> <span>Start a new quote</span> <span class="icon icon-arrow-right hidden-xs"></span></a>
                 </li>
             </c:if>
         </ul>
@@ -89,6 +89,8 @@
         <health_v2_layout:slide_confirmation />
         <health_v3:brochure_template/>
         <health_v3:confirmation_fund_details_template />
+        <health_v1:logo_price_template />
+        <health_v1:dual_pricing_templates />
         <script class="crud-modal-template" type="text/html">
             <reward:redemption_form />
         </script>

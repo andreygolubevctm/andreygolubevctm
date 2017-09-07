@@ -78,15 +78,15 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 		<%-- Now we get back to basics and load the data for the requested transaction --%>
 		<jsp:useBean id="remoteLoadQuoteService" class="com.ctm.web.core.services.RemoteLoadQuoteService" scope="page" />
 
-				<c:catch var="error">
+		<c:catch var="error">
 			<c:set var="details" value="${remoteLoadQuoteService.getTransactionDetails(emailHash, quoteType, loadType, param.email, requestedTransaction, styleCodeId)}" />
-				</c:catch>
+		</c:catch>
 
-				<c:choose>
-					<c:when test="${not empty error}">
-						${logger.error("Failed to get transaction details. {},{},{},{}", log:kv('quoteType',param.vertical), log:kv('param.type',param.type), log:kv('param.email',param.email), log:kv('styleCodeId',styleCodeId ), error)}
-						<c:set var="result"><result><error>Error loading quote data: ${error.rootCause}</error></result></c:set>
-					</c:when>
+		<c:choose>
+			<c:when test="${not empty error}">
+				${logger.error("Failed to get transaction details. {},{},{},{}", log:kv('quoteType',param.vertical), log:kv('param.type',param.type), log:kv('param.email',param.email), log:kv('styleCodeId',styleCodeId ), error)}
+				<c:set var="result"><result><error>Error loading quote data: ${error.rootCause}</error></result></c:set>
+			</c:when>
 			<c:when test="${empty details}">
 						<c:set var="result"><result><error>No transaction data exists for transaction [${requestedTransaction}] and hash [${emailHash}] combination.</error></result></c:set>
 			</c:when>
@@ -137,22 +137,22 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 								<core_v1:transaction touch="L" noResponse="true" />
 								<c:choose>
 									<c:when test="${not empty param.productId and param.productId != '' and not empty param.productTitle and param.productTitle != ''}">
-										<destUrl>${quoteType}_quote.jsp?action=load&amp;transactionId=${data.current.transactionId}&amp;productId=${param.productId}&amp;productTitle=${param.productTitle}${jParam}#results</destUrl>
+										<destUrl>${quoteType}_quote.jsp?action=load&amp;transactionId=${param.transactionId}&amp;productId=${param.productId}&amp;productTitle=${param.productTitle}${jParam}</destUrl>
 									</c:when>
 									<c:otherwise>
-										<destUrl>${quoteType}_quote.jsp?action=load&amp;transactionId=${data.current.transactionId}${jParam}${trackingParams}#results</destUrl>
+										<destUrl>${quoteType}_quote.jsp?action=load&amp;transactionId=${param.transactionId}${jParam}${trackingParams}</destUrl>
 									</c:otherwise>
 								</c:choose>
 							</c:when>
 
 						<%-- AMEND QUOTE --%>
 						<c:when test="${loadAction eq 'amend' || loadAction eq 'start-again'}">
-								<destUrl>${remoteLoadQuoteService.getActionQuoteUrl(quoteType, loadAction, data.current.transactionId, jParam)}</destUrl>
+								<destUrl>${remoteLoadQuoteService.getActionQuoteUrl(quoteType, loadAction, data.current.transactionId, jParam, trackingParams)}</destUrl>
 						</c:when>
 
 						<%-- BACK TO START IF PRIVACYOPTIN HASN'T BEEN TICKED FOR OLD QUOTES --%>
 						<c:when test="${loadType ne 'promotion' && loadType ne 'bestprice' && (loadAction eq 'latest' || loadAction eq 'load') && data[xpathQuoteType].privacyoptin!='Y'}">
-							<destUrl>${remoteLoadQuoteService.getStartAgainQuoteUrl(quoteType,data.current.transactionId,jParam)}</destUrl>
+							<destUrl>${remoteLoadQuoteService.getStartAgainQuoteUrl(quoteType,data.current.transactionId,jParam, trackingParams)}</destUrl>
 						</c:when>
 
 							<%-- GET TRAVEL MULTI-TRIP --%>
@@ -162,7 +162,7 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 								</c:if>
 
 								<core_v1:transaction touch="L" noResponse="true" />
-								<destUrl>travel_quote.jsp?type=A&amp;action=latest&amp;transactionId=${data.current.transactionId}${jParam}</destUrl>
+								<destUrl>travel_quote.jsp?type=A&amp;action=latest&amp;transactionId=${data.current.transactionId}${jParam}${trackingParams}</destUrl>
 								<go:setData dataVar="data" value="true" xpath="userData/emailSent"/>
 						</c:when>
 
@@ -181,11 +181,7 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 									<go:setData dataVar="data" xpath="${fieldXPath}" value="${param.expired}" />
 								</c:if>
 								<core_v1:transaction touch="L" noResponse="true" />
-								<c:set var="quotePagePrefix">
-									<c:choose>
-										<c:when test="${xpathQuoteType eq 'home'}">home_contents</c:when>
-										<c:otherwise>${quoteType}</c:otherwise>
-									</c:choose>
+								<c:set var="quotePagePrefix" value="${quoteType}">
 								</c:set>
 								<c:set var="action">
 								<c:choose>
@@ -194,7 +190,7 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 								</c:choose>
 								</c:set>
 								<c:set var="allParams">${jParam}${trackingParams}</c:set>
-								<destUrl>${remoteLoadQuoteService.getActionQuoteUrl(quotePagePrefix,action,data.current.transactionId,allParams)}</destUrl>
+								<destUrl>${remoteLoadQuoteService.getActionQuoteUrl(quotePagePrefix,action,data.current.transactionId,allParams, trackingParams)}</destUrl>
 							</c:when>
 
 							<%-- GET LATEST --%>
@@ -204,7 +200,7 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 								</c:if>
 
 								<core_v1:transaction touch="L" noResponse="true" />
-								<destUrl>${remoteLoadQuoteService.getLatestQuoteUrl(quoteType, data.current.transactionId,jParam)}</destUrl>
+								<destUrl>${remoteLoadQuoteService.getLatestQuoteUrl(quoteType, data.current.transactionId,jParam, trackingParams)}</destUrl>
 								<%-- Have only made this happen for travel --%>
 								<c:if test="${quoteType eq 'travel'}">
 									<go:setData dataVar="data" value="true" xpath="userData/emailSent"/>
@@ -223,16 +219,16 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 						</c:choose>
 					</result>
 				</c:set>
-					</c:otherwise>
-				</c:choose>
-			</c:when>
-			<c:otherwise>
-				${logger.warn('Proceedinator did not pass. {}', log:kv('proceedinator',proceedinator))}
-				<c:set var="result">
-					<result><error>This quote has been reserved by another user. Please try again later.</error></result>
-				</c:set>
 			</c:otherwise>
 		</c:choose>
+	</c:when>
+	<c:otherwise>
+		${logger.warn('Proceedinator did not pass. {}', log:kv('proceedinator',proceedinator))}
+		<c:set var="result">
+			<result><error>This quote has been reserved by another user. Please try again later.</error></result>
+		</c:set>
+	</c:otherwise>
+</c:choose>
 ${logger.debug('End Load Quote. {}', log:kv('result',result))}
 <%-- Return the results as json --%>
 ${go:XMLtoJSON(result)}

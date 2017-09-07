@@ -92,7 +92,7 @@
             <c:set var="fieldXpath" value="${xpath}{{= obj.dependantId }}/schoolID"/>
             <form_v2:row fieldXpath="${fieldXpath}" label="Student ID Number" id="${name}_schoolIDGroup"
                           className="health_dependant_details_schoolIDGroup hidden">
-                <field_v2:input xpath="${fieldXpath}" title="dependant {{= obj.dependantId }}'s student ID number" required="{{= providerConfig.schoolIdRequired }}" className="sessioncamexclude" maxlength="{{= providerConfig.schoolIdMaxLength }}" defaultValue="{{= obj.schoolID }}"  disableErrorContainer="${true}"/>
+                <field_v2:input xpath="${fieldXpath}" required="false" className="sessioncamexclude" maxlength="{{= providerConfig.schoolIdMaxLength }}" defaultValue="{{= obj.schoolID }}"  disableErrorContainer="${true}"/>
             </form_v2:row>
             {{ } }}
 

@@ -155,6 +155,7 @@
             },
             onInitialise: function onStartInit(event) {
                 meerkat.modules.jqueryValidate.initJourneyValidator();
+                meerkat.modules.currencyField.initCurrency();
                 // Hook up privacy optin to Email Quote button
                 var $emailQuoteBtn = $(".slide-feature-emailquote, .save-quote");
 
@@ -170,20 +171,39 @@
                         $emailQuoteBtn.removeClass("privacyOptinChecked");
                     }
                 });
-                meerkat.modules.carRegoLookup.lookup();
+
+                if (meerkat.site.isRegoLookup) {
+                    meerkat.modules.carRegoLookup.triggerEntry();
+                } else {
+                    // runs lookup() regardless...
+                    if (!meerkat.modules.carExotic.isExotic() && !meerkat.modules.carRegoLookup.lookup() && meerkat.site.tracking.brandCode === 'ctm') {
+                        // if lookup() returns false runs the redirect function
+                        meerkat.modules.carRegoLookup.redirectToRegoFields();
+                    }
+                }
 
                 configureContactDetails();
             },
             validation: {
                 validate: true,
                 customValidation: function (callback) {
-                    $('#quote_vehicle_selection').find('select').each(function () {
-                        if ($(this).is('[disabled]')) {
-                            callback(false);
-                            return;
+                    if (!meerkat.modules.carExotic.isExotic()) {
+                        if (meerkat.modules.carRegoLookup.isRegoLookupMode()) {
+                            meerkat.modules.carRegoLookup.setSearchState();
+                            meerkat.modules.carRegoLookup.setSearchRego();
+                            meerkat.modules.carRegoLookup.lookup(callback);
+                        } else {
+                            $('#quote_vehicle_selection').find('select').each(function () {
+                                if ($(this).is('[disabled]')) {
+                                    callback(false);
+                                    return;
+                                }
+                            });
+                            callback(true);
                         }
-                    });
-                    callback(true);
+                    } else {
+                        callback(true);
+                    }
                 }
             }
         };
@@ -206,6 +226,10 @@
                 meerkat.modules.carCommencementDate.initCarCommencementDate();
                 meerkat.modules.carYoungDrivers.initCarYoungDrivers();
                 meerkat.modules.carUsingYourCar.initUsingYourCar();
+            },
+            onBeforeEnter: function (event) {
+                meerkat.modules.carExotic.toggleQuestions();
+                meerkat.modules.carExotic.updateSpeechBubble();
             }
         };
 
@@ -221,6 +245,9 @@
                 touchType: 'H',
                 touchComment: 'DriverDtls',
                 includeFormData: true
+            },
+            onBeforeEnter: function (event) {
+                meerkat.modules.carExotic.toggleReasonFields();
             }
         };
 
@@ -239,6 +266,9 @@
             },
             onInitialise: function (event) {
                 meerkat.modules.resultsFeatures.fetchStructure('carws_');
+            },
+            onBeforeEnter: function (event) {
+                meerkat.modules.carExotic.toggleRequiredFields();
             },
             onAfterEnter: function (event) {
             },
@@ -264,15 +294,35 @@
             onBeforeEnter: function enterResultsStep(event) {
                 meerkat.modules.journeyProgressBar.hide();
                 $('#resultsPage').addClass('hidden');
+                meerkat.modules.carExotic.toggleNavBarContents();
                 // show disclaimer here.
                 // Sync the filters to the results engine
-                meerkat.modules.carFilters.updateFilters();
+                if (!meerkat.modules.carExotic.isExotic()) {
+                    if (meerkat.modules.deviceMediaState.get() === 'xs') {
+                        meerkat.modules.mobileNavButtons.enable();
+                    }
+                    meerkat.modules.carFilters.updateFilters();
+                } else {
+                    if (meerkat.modules.deviceMediaState.get() === 'xs') {
+                        meerkat.modules.mobileNavButtons.disableSpecificButtons('refine,save');
+                        meerkat.modules.saveQuote.disable();
+                    }
+                    meerkat.modules.tracking.recordTouch('R','Results Page', 'FAME-01-01', true);
+                    meerkat.modules.tracking.recordTouch('EC','Famous Transaction', 'FAME-01-01', true);
+                }
             },
             onAfterEnter: function afterEnterResults(event) {
                 meerkat.modules.carResults.get();
+
                 // Show the filters bar
                 meerkat.modules.carFilters.show();
-                $('.header-wrap .quoteSnapshot').removeClass("hidden");
+                if (!meerkat.modules.carExotic.isExotic()) {
+                    meerkat.modules.carFilters.enable();
+
+                    $('.header-wrap .quoteSnapshot').removeClass("hidden");
+                } else {
+                    meerkat.modules.carFilters.disable();
+                }
             },
             onBeforeLeave: function (event) {
                 // Increment the transactionId
@@ -486,6 +536,14 @@
                     marketOptIn: marketOptIn,
                     okToCall: okToCall,
                     commencementDate: commencementDate
+                });
+            }
+
+            var crossVerticalOptin = meerkat.modules.leadCapture.getTrackingData();
+
+            if (crossVerticalOptin !== null && current_step === meerkat.modules.journeyEngine.getStepIndex('results')) {
+                _.extend(response, {
+                    crossVerticalOptin: crossVerticalOptin
                 });
             }
 

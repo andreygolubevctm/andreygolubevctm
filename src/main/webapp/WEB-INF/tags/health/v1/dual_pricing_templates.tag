@@ -2,15 +2,11 @@
 <%@ tag description="Dual pricing templates"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<%-- Setup variables needed for dual pricing --%>
-<jsp:useBean id="healthPriceDetailService" class="com.ctm.web.health.services.HealthPriceDetailService" scope="page" />
-<c:set var="healthAlternatePricingActive" value="${healthPriceDetailService.isAlternatePriceActive(pageContext.getRequest())}" />
-
 <jsp:useBean id="now" class="java.util.Date" />
 <c:set var="thisYear"><fmt:formatDate value="${now}" pattern="yyyy" /></c:set>
 
 <core_v1:js_template id="price-frequency-template">
-	Your first payment will be {{= firstPremium }} and future payments will be {{= remainingPremium }} {{= frequency }}.
+	If you elect to pay your premium {{= frequency }}, only payments made by {{= pricingDateFormatted }} will be at the current amount, thereafter the new premium will apply.
 </core_v1:js_template>
 
 <%-- Working on the assumption there's going to be text changes so put this in the db --%>
@@ -44,7 +40,7 @@
 			</div>
 			<div class="altPriceDetailsContainer">
 				<span class="deadline">${april1Header}</span>
-				<a href="javascript:;" class="dual-pricing-learn-more">learn more</a>
+				<a href="javascript:;" class="dual-pricing-learn-more" data-dropDeadDate="{{= obj.dropDeadDate }}">learn more</a>
 			</div>
 		</div>
 		<div class="current-pricing">
@@ -60,7 +56,7 @@
 			<h3>${april1HeaderNoSup}</h3>
 			{{= renderedAltPriceTemplate }}
 			<span class="premiumsRising">Premiums are rising</span>
-			<a href="javascript:;" class="dual-pricing-learn-more">learn more</a>
+			<a href="javascript:;" class="dual-pricing-learn-more" data-dropDeadDate="{{= obj.dropDeadDate }}">learn more</a>
 		</div>
 		<div class="current-pricing">
 			<h3>Current {{= obj._selectedFrequency }} Pricing</h3>
@@ -80,7 +76,7 @@
 				</div>
 				<div class="col-xs-6 detailsContainer">
 					<span class="premiumsRising">Premiums are rising</span>
-					<a href="javascript:;" class="dual-pricing-learn-more">learn more</a>
+					<a href="javascript:;" class="dual-pricing-learn-more" data-dropDeadDate="{{= obj.dropDeadDate }}">learn more</a>
 				</div>
 			</div>
 		</div>
@@ -107,7 +103,7 @@
 		<div class="april-pricing">
 			<p>Premiums are rising</p>
 			{{= renderedAltPriceTemplate }}
-			<p>from April 1st, 2017</p>
+			<p>from {{= pricingDateFormatted }}</p>
 		</div>
 	</div>
 </core_v1:js_template>

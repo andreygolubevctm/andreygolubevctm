@@ -28,13 +28,25 @@ function transferError(description, data) {
 }
 
 $(window).load(function () {
+	var redirectionDisabled = false;
+	var delay = 1000;
+
+    if (!meerkat.site.tracking || meerkat.site.tracking.GTMEnabled == null) {
+      meerkat.site.tracking = {
+        GTMEnabled: true
+      };
+    }
+  
+    meerkat.modules.tracking.init();
     var urlVars = getUrlVars();
+
     var transactionId = loopedDecodeUriComponent(urlVars.transactionId);
     var productId = loopedDecodeUriComponent(urlVars.productId);
     var vertical = loopedDecodeUriComponent(urlVars.vertical);
     var msg = loopedDecodeUriComponent(urlVars.msg);
     var brand = loopedDecodeUriComponent(urlVars.brand);
     var tracking = null;
+	var gaclientid = null;
 
     var data = {
         transactionId: transactionId,
@@ -50,11 +62,25 @@ $(window).load(function () {
             var tmp = JSON.parse(loopedDecodeUriComponent(urlVars.tracking));
             tracking = _.omit(tmp, 'brandXCode');
             tracking.brandCode = tmp.brandXCode;
-        } catch (e) {/* IGNORE */
-        }
+        } catch (e) {/* IGNORE */}
     }
 
-    $(window).queue(function (next) {
+	// Create a public object to provide readonly access to the gaclientid
+	var TransferGAClientId = function(gid) {
+		var gaClientId = gid;
+		this.get = function() {
+			return gaClientId;
+		};
+	};
+	if (tracking !== null && _.isObject(tracking) && _.has(tracking,'gaclientid')) {
+		gaclientid = tracking.gaclientid;
+	} else if(urlVars.hasOwnProperty('gaclientid')) {
+		gaclientid = loopedDecodeUriComponent(urlVars.gaclientid);
+	}
+	window.transferGAClientIdObj = new TransferGAClientId(gaclientid);
+
+
+	$(window).queue(function (next) {
         window.focus();
 
         var message = '';
@@ -62,28 +88,68 @@ $(window).load(function () {
             $('.message').text(msg);
         }
 
-        if (typeof meerkat == 'object' && tracking !== null && typeof tracking == 'object') {
+        if (typeof meerkat === 'object' && tracking !== null && typeof tracking === 'object') {
             meerkat.messaging.publish(meerkat.modules.events.tracking.EXTERNAL, {
                 method: 'trackQuoteTransfer',
                 object: tracking
             }, true);
         }
 
+        // For Quotes from Email campaigns
+        if ((vertical === 'car' || vertical === 'home') && urlVars.trackingSource === 'email') {
+
+            if (transactionId !== undefined) {
+                transactionId = $('.quoteUrl').attr('transactionId');
+                data.transactionId = transactionId;
+            }
+
+            data.productId = window.returnedResult.productId;
+            data.brand = window.returnedResult.brandCode;
+            var verticalFix = vertical === 'home' ? 'home_contents' : vertical;
+            meerkat.messaging.publish(meerkat.modules.events.tracking.EXTERNAL, {
+                method: 'trackEmailQuoteHandoverClick',
+                object: {
+                    actionStep: verticalFix + " transfer online",
+                    brandCode: "ctm",
+                    currentJourney: 1,
+                    productBrandCode: window.returnedResult.brandCode,
+                    productID: window.returnedResult.productId,
+                    productName: window.returnedResult.productDes,
+                    quoteReferenceNumber: transactionId,
+                    rootID: transactionId,
+                    transactionID: transactionId,
+                    type: "online",
+                    vertical: verticalFix
+                }
+            });
+
+            delay = 3000;
+        }
+
         next();
     })
-        .delay(1000)
+        .delay(delay)
         .queue(function (next) {
             var urlVars = getUrlVars();
             if (urlVars.hasOwnProperty('handoverType') && urlVars.handoverType == "post") {
                 var $mainForm = $('#mainform');
                 $mainForm.attr('method', 'POST').attr('action', loopedDecodeUriComponent(urlVars.handoverURL));
 
-                var textArea = $('<textarea>').attr('style', 'display:none').attr('name', loopedDecodeUriComponent(urlVars.handoverVar)).val(loopedDecodeUriComponent(urlVars.handoverData));
-                $mainForm.append(textArea);
-                $mainForm.submit();
+                var handoverVars = urlVars.handoverVar.split(',');
+                var handoverDatas =loopedDecodeUriComponent(urlVars.handoverData).split(',');
+
+                for (i = 0; i < handoverVars.length; i++) {
+                    var textArea = $('<textarea>').attr('style', 'display:none').attr('name', handoverVars[i]).val(handoverDatas[i]);
+                    $mainForm.append(textArea);
+                }
+
+                if(!redirectionDisabled) {
+                	$mainForm.submit();
+                }
             } else {
                 try {
                     var quoteUrl = $('.quoteUrl').attr('quoteUrl');
+
                     if (quoteUrl !== '') {
                         if (quoteUrl == 'DUPLICATE') {
                             transferError("Duplicate productId " + productId + " encounted on " + vertical, data);
@@ -91,7 +157,9 @@ $(window).load(function () {
                             if (vertical == 'travel') {
                                 quoteUrl = loopedDecodeUriComponent(quoteUrl);
                             }
-                            window.location.replace(quoteUrl);
+                            if(!redirectionDisabled) {
+                            	window.location.replace(quoteUrl);
+                            }
                         }
                     } else {
                         transferError("No quoteURL was found for the transfer handover for " + vertical, data);

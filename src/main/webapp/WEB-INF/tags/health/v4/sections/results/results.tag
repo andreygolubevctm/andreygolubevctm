@@ -5,11 +5,6 @@
 <jsp:useBean id="healthPriceDetailService" class="com.ctm.web.health.services.HealthPriceDetailService" scope="page" />
 <jsp:useBean id="openingHoursService" class="com.ctm.web.core.openinghours.services.OpeningHoursService" scope="page" />
 
-<%-- Setup variables needed for dual pricing --%>
-<c:set var="healthAlternatePricingActive" value="${healthPriceDetailService.isAlternatePriceActive(pageContext.getRequest())}" />
-<c:if test="${healthAlternatePricingActive eq true}">
-    <c:set var="healthAlternatePricingMonth" value="${healthPriceDetailService.getAlternatePriceMonth(pageContext.getRequest())}" />
-</c:if>
 <layout_v1:results_template xsResultsColumns="2" resultsContainerClassName=" affixOnScroll sessioncamignorechanges ">
 
     <jsp:attribute name="preResultsRow">
@@ -19,9 +14,11 @@
 
     <jsp:attribute name="sidebarColumnRight">
         <coupon:promo_tile />
+        <div class="sidebar-widget sidebar-widget-padded results-filters-discount"></div>
         <div class="sidebar-widget sidebar-widget-padded results-filters-rebate"></div>
         <div class="sidebar-widget sidebar-widget-padded results-filters-benefits"></div>
         <div class="sidebar-widget sidebar-widget-padded results-filters"></div>
+        <health_v4_results:filters_discount />
         <health_v4_results:filters_rebate />
         <health_v4_results:filters_benefits />
         <health_v4_results:filters_template />
@@ -65,23 +62,17 @@
                     <div class="hospitalSelectionsExcessContainer">
                         <div class="hospitalExcessSectionBorder">
                             <div class="featuresListExcess" data-feature-template="#results-features-excess-template" data-feature-index="1" data-feature-type="excess"></div>
-                            <div class="yourSelectionsHospital">
-                                <div class="selected-benefits-title">My Selected Benefits</div>
-                            </div>
                         </div>
                         {{ if(info.situationFilter == 'Y') { }}
                         <div class="featuresListHospitalSelections"><health_v4_results:limited_cover_label /></div>
-                        {{ } else { }}
-                        <div class="featuresListHospitalSelections" data-feature-index="2" data-feature-type="hospital"></div>
                         {{ } }}
                     </div>
-                    <div class="featuresListHospitalOtherList text-center small" data-feature-template="#results-features-extras-template" data-feature-index="4" data-feature-type="hospital"></div>
+                    <div class="featuresListHospitalOtherList" data-feature-index="4" data-feature-type="hospital"></div>
                 </div>
                 {{ } if(coverType == 'E' || coverType == 'C') { }}
                 <div class="extrasCoverSection">
                     <h2>Extras</h2>
-                    <div class="featuresListExtrasSelections" data-feature-index="3" data-feature-type="extras"></div>
-                    <div class="featuresListExtrasOtherList text-center small" data-feature-template="#results-features-extras-template" data-feature-index="5" data-feature-type="extras"></div>
+                    <div class="featuresListExtrasOtherList" data-feature-index="5" data-feature-type="extras"></div>
                 </div>
                 {{ } }}
                 <div class="ambulanceCoverSection">
@@ -94,6 +85,7 @@
 
     <jsp:attribute name="hiddenInputs">
         <%-- Hidden fields necessary for Results page --%>
+        <input type="hidden" name="health_applyDiscounts" value="Y" />
         <input type="hidden" name="health_showAll" value="Y" />
         <input type="hidden" name="health_onResultsPage" value="Y" />
         <input type="hidden" name="health_incrementTransactionId" value="Y" />
@@ -105,7 +97,7 @@
                 </c:when>
                 <c:when test="${param.action == 'load' || param.action == 'amend'}">
                     <input type="hidden" name="health_retrieve_savedResults" value="Y" />
-                    <input type="hidden" name="health_retrieve_transactionId" value="${data['current/previousTransactionId']}" />
+                    <input type="hidden" name="health_retrieve_transactionId" value="<c:out value='${param.transactionId}' escapeXml="true" />" />
                 </c:when>
             </c:choose>
         </c:if>

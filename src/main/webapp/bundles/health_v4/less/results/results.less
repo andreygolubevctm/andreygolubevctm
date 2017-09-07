@@ -7,6 +7,11 @@
   body[data-step="results"] {
     //Push the page down to make some space
     padding-top: @navbar-height + 110;
+
+    &.dontAffixXsBanners {
+      padding-top:0;
+    }
+
     // a reset
     .results-control-container {
       padding-top: 0;
@@ -52,14 +57,7 @@
       padding-bottom: 10px;
     }
   }
-  /* Display Utilities only on hover of result insert */
-  .display-on-hover {
-    .opacity(0);
-    .transition(~"opacity ease-in-out .25s");
-  }
-  &:hover .display-on-hover {
-    .opacity(1);
-  }
+
   .product-pinned & {
     .pin-result {
       display: none;
@@ -149,20 +147,23 @@
       text-align: center;
       .small;
       padding-bottom: 5px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      min-height: 47px;
     }
     @media (@lg) {
       .frequencyAmount, .lhcText {
         float: left;
         width: 50%;
+        min-height: auto;
       }
 
       .lhcText {
         padding-bottom: 0;
         text-align: right;
         .small;
-        display: flex;
-        height: 50px;
-        align-items: flex-end;
+        height: 53px;
       }
     }
 
@@ -174,7 +175,6 @@
 }
 
 .featuresMode {
-
   // The actual results container, to the right of the feature labels.
   // Fix margins for rows on XS @todo may be unnecessary in v4
   .result-row {
@@ -189,16 +189,30 @@
 
   // Each product column is a result-row, floated left so they fit beside each other.
   .result-row {
-    border: 1px solid @results-border-color;
-    &.pinned {
-      border-color: @theme-accent-4;
+    border: 2px solid @results-border-color;
+
+    /* Display Utilities only on hover of result insert */
+    .display-on-hover {
+      .opacity(0);
+      .transition(~"opacity ease-in-out .25s");
     }
-    &.not-pinned:hover {
-      border-color: @results-border-color-pinned;
+
+    &:hover .display-on-hover {
+      .opacity(1);
+    }
+
+    &.hovered {
+      border: 2px solid @theme-tertiary;
     }
 
     &.pinned {
+      border: 2px solid @theme-accent-4;
       float: left;
+
+      &.hovered {
+        border: 2px solid @theme-accent-4;
+      }
+
       .display-on-hover {
         .opacity(1);
       }
@@ -302,9 +316,7 @@
   // Override styles for the excess and hospital cover sections.
 
   .featuresListHospitalOtherList {
-    margin-top: 7.5px;
     padding: 10px 0;
-    border-top: 1px solid @results-border-color;
     border-bottom: 1px solid @results-border-color;
   }
   .hospitalSelectionsExcessContainer {
@@ -340,6 +352,161 @@
     .featuresListExcess {
       .content {
         padding-bottom: 5px;
+      }
+    }
+  }
+
+  &.resultsContainer {
+    .featuresList.featuresElements {
+      .featuresListExcess {
+        .cell {
+          &:first-of-type {
+            border-bottom: 1px solid @gray;
+          }
+        }
+      }
+
+      .featuresListHospitalOtherList {
+        margin-top: 0;
+        padding-top: 0;
+        border-top: none;
+      }
+
+      .featuresListExtrasOtherList {
+        .hasShortlistableChildren {
+          padding-bottom: 10px;
+        }
+      }
+
+      .expander {
+        .icon-plus;
+        border: 1px solid;
+        border-radius: 100%;
+        font-size: 6px;
+        position: absolute;
+        left: 0;
+        top: 50%;
+        margin-top: -6px;
+        padding: 2px;
+        width: 12px;
+
+        @media (@md) {
+          position: relative;
+          margin-top: 4px;
+          margin-right: 5px;
+        }
+      }
+
+      .expanded {
+        > .category.expandable {
+          .expander {
+            .icon-minus;
+          }
+        }
+      }
+
+      .labelInColumn.category.expandable {
+        .content {
+          .contentInner {
+            &::after {
+              content: '\e600';
+              color: @theme-secondary;
+              font-family: 'framework_font';
+              position: absolute;
+              right: 0;
+              top: 50%;
+              margin-top: -7px;
+            }
+          }
+
+          &.noCover {
+            .contentInner {
+              &::after {
+                content: '\e601';
+                color: @theme-accent-3;
+              }
+            }
+          }
+
+          &.restrictedCover {
+            .contentInner {
+              &::after {
+                color: #f6b14b;
+              }
+            }
+          }
+        }
+      }
+
+      .cell {
+        &.category.expandable {
+          .children {
+            position: relative;
+            &.hideChildren {
+              .cell.feature {
+                visibility: hidden;
+              }
+            }
+            .cell.feature.noValue {
+              .content {
+                padding: 0;
+                .featureLabel {
+                  width: 100%;
+                }
+                .featureValue {
+                  display: none;
+                }
+              }
+            }
+          }
+
+          &.privateHospital {
+            .children {
+              padding-top: @results-column-side-padding-width;
+              .restrictedLabel.invisible {
+                display: none;
+              }
+            }
+          }
+        }
+
+        &.displayAsRows {
+          .featureLabel {
+            width: 100%;
+          }
+          .featureValue {
+            text-align: left;
+            width: 100%;
+          }
+        }
+      }
+
+      .noCoverContainer {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+
+        .noCoverLabel {
+          position: relative;
+          top: 35%;
+          text-align: center;
+        }
+      }
+
+      .restrictedLabel {
+        font-size: 14px;
+        margin-bottom: 0;
+      }
+
+      .contentSafeName {
+        display: inline-block;
+        max-width: 76%;
+        margin: 0 12%;
+
+        @media (@md) {
+          max-width: inherit;
+          margin: 0;
+        }
       }
     }
   }
@@ -420,7 +587,24 @@
       }
     }
   }
-
+  .fundCallCentreNumber {
+    margin-left:-15px;
+    margin-right:-15px;
+    h1 {
+      font-size:18px;
+      @media(@sm) {
+        font-size: 26px;
+      }
+      margin-top:0;
+      text-align:center;
+      a {
+        color:#0DB14B;
+        span {
+          margin-top:-1px;
+        }
+      }
+    }
+  }
 }
 
 // Outside the structure.
@@ -432,3 +616,10 @@
   }
 }
 
+body[data-is-single="true"] {
+  .featuresMode {
+    .cell.feature.per-person {
+      display: none;
+    }
+  }
+}

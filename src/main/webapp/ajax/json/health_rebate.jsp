@@ -47,10 +47,10 @@ COVER TYPE
 	<c:when test="${cover == 'S'}">
 		<c:set var="cover" value="singles" />
 	</c:when>
-	<c:when test="${cover == 'SPF'}">
+	<c:when test="${cover == 'SPF' || cover == 'ESP'}">
 		<c:set var="cover" value="singlefamily" />
 	</c:when>
-	<c:when test="${cover == 'F' || cover == 'C' }">
+	<c:when test="${cover == 'F' || cover == 'C' || cover == 'EF' }">
 		<c:set var="cover" value="families" />
 		<c:if test="${not empty param.partner_dob}">
 			<fmt:formatNumber var="partnerDobYear" value="${fn:substring(fn:trim(param.partner_dob), 6, 12)+0}" pattern="####" minIntegerDigits="4" />
@@ -60,37 +60,6 @@ COVER TYPE
 		</c:if>
 	</c:when>
 </c:choose>
-
-
-<%--
-------------
-REBATE TABLE - replaced by direct tier call
-************
---%>
-<c:choose>
-	<%-- Chosen not to use the rebate, so make it 0 --%>
-	<c:when test="${param.rebate_choice == 'N'}">
-		<c:set var="rebate" value="0" />
-		<c:set var="income" value="-1" />
-	</c:when>
-	<%-- Tier 0 (no change) --%>
-	<c:when test="${income == 0}">
-		<c:set var="rebate" value="30" />
-	</c:when>
-	<%-- Tier 1 --%>
-	<c:when test="${income == 1}">
-		<c:set var="rebate" value="20" />
-	</c:when>
-	<%-- Tier 2 --%>
-	<c:when test="${income == 2}">
-		<c:set var="rebate" value="10" />
-	</c:when>
-	<%-- Tier 3 --%>
-	<c:when test="${income == 3}">
-		<c:set var="rebate" value="0" />
-	</c:when>
-</c:choose>
-
 
 <%--
 --------------
@@ -108,38 +77,17 @@ AGE ADJUSTMENT - if rebate not 0 (Take the OLDEST person and use their age)
 	</c:otherwise>
 </c:choose>
 
-<%-- CALC: age adjustment --%>
-<c:choose>
-	<c:when test="${age >= 65 && age <= 69}">
-		<c:set var="rebateBonus" value="${5}" />
-	</c:when>
-	<c:when test="${age >= 70}">
-		<c:set var="rebateBonus" value="${10}" />
-	</c:when>
-</c:choose>
 
-<c:if test="${not empty rebate && rebate > 0}">
-	<c:set var="rebate" value="${rebate + rebateBonus}" />
-</c:if>
+<jsp:useBean id="healthRebate" class="com.ctm.web.health.services.HealthRebate" />
+${healthRebate.calcRebate(param.rebate_choice, param.commencementDate,  age,  income)}
 
+<%-- This json object contains the rebate tiers percentage values based on the selected age bracket --%>
+<c:set var="rebateTiersPercentage">{
+	"previous": ["${healthRebate.rebateTier0Previous}", "${healthRebate.rebateTier1Previous}", "${healthRebate.rebateTier2Previous}", "${healthRebate.rebateTier3Previous}"],
+	"current": ["${healthRebate.rebateTier0Current}", "${healthRebate.rebateTier1Current}", "${healthRebate.rebateTier2Current}", "${healthRebate.rebateTier3Current}"],
+	"future": ["${healthRebate.rebateTier0Future}", "${healthRebate.rebateTier1Future}", "${healthRebate.rebateTier2Future}", "${healthRebate.rebateTier2Future}"]
+}</c:set>
 
-<%--
-*************
-GOV Rebate Factor - Calculate new rebate based on rebate multiplier variables
--------------
---%>
-
-<jsp:useBean id="changeOverRebatesService" class="com.ctm.web.simples.services.ChangeOverRebatesService" />
-<c:set var="changeOverRebates" value="${changeOverRebatesService.getChangeOverRebate(null)}"/>
-<c:set var="rebate_multiplier_current" value="${changeOverRebates.getCurrentMultiplier()}"/>
-<c:set var="rebate_multiplier_future" value="${changeOverRebates.getFutureMultiplier()}"/>
-
-<c:set var="rebateChangeover">
-	<fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="3" value="${rebate * rebate_multiplier_future}" />
-</c:set>
-<c:set var="rebate">
-	<fmt:formatNumber type="number" minFractionDigits="2" maxFractionDigits="3" value="${rebate * rebate_multiplier_current}" />
-</c:set>
 
 <%--
 *************
@@ -271,12 +219,12 @@ Certified Age of Entry: Defaults to 30.
 		<%-- Only retrieve loading --%>
 		<c:set var="response">{ "status":"ok", "loading":"${loading}", "partnerLoading":"${partner_loading_rate}", "primaryLoading":"${primary_loading_rate}", "type":"${cover}", "primaryAge":"${primaryAge}", "primaryCAE":"${primaryCAE}","partnerCAE":"${partnerCAE}" }</c:set>
 	</c:when>
-	<c:when test="${empty rebate || empty cover || empty income || empty primaryAge}">
+	<c:when test="${empty healthRebate.currentRebate || empty cover || empty income || empty primaryAge}">
 		<c:set var="response">{ "status":"error", "message":"missing required information", "ageBonus":"${rebateBonus}"  }</c:set>
 	</c:when>
 		<%-- retrieve loading and rebate --%>
 	<c:otherwise>
-		<c:set var="response">{ "status":"ok", "rebate":"${rebate}", "rebateChangeover":"${rebateChangeover}", "loading":"${loading}", "partnerLoading":"${partner_loading_rate}", "primaryLoading":"${primary_loading_rate}", "type":"${cover}", "tier":"${income}", "ageBonus":"${rebateBonus}", "primaryAge":"${primaryAge}", "primaryCAE":"${primaryCAE}","partnerCAE":"${partnerCAE}" }</c:set>
+		<c:set var="response">{ "status":"ok", "rebate":"${healthRebate.currentRebate}", "rebateChangeover":"${healthRebate.futureRebate}", "previousRebate":"${healthRebate.previousRebate}", "loading":"${loading}", "partnerLoading":"${partner_loading_rate}", "primaryLoading":"${primary_loading_rate}", "type":"${cover}", "tier":"${income}", "ageBonus":"${rebateBonus}", "primaryAge":"${primaryAge}", "primaryCAE":"${primaryCAE}","partnerCAE":"${partnerCAE}", "rebateTiersPercentage":${rebateTiersPercentage} }</c:set>
 	</c:otherwise>
 </c:choose>
 

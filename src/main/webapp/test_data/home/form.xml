@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <home>
 	<coverType>Home &amp; Contents Cover</coverType>
+	<underFinance>N</underFinance>
 
 	<occupancy>
 		<ownProperty>Y</ownProperty>
@@ -10,11 +11,20 @@
 			<year>2016</year>
 			<month>2</month>
 		</whenMovedIn>
+		<howOccupied>Rented to tenants</howOccupied>
+		<isLandlord>Y</isLandlord>
 	</occupancy>
 
 	<businessActivity>
 		<conducted>N</conducted>
+		home_landlordDetails_propertyManagedBy
 	</businessActivity>
+	<landlordDetails>
+		<propertyManagedBy>REAL_ESTATE</propertyManagedBy>
+		<validRentalLease>Y</validRentalLease>
+		<weeklyRentValueentry>900</weeklyRentValueentry>
+		<numberOfTenants>1</numberOfTenants>
+	</landlordDetails>
 
 	<property>
 		<propertyType>Freestanding Home</propertyType>
@@ -60,7 +70,7 @@
 
 	<coverAmounts>
 		<rebuildCostentry>$350,000</rebuildCostentry>
-		<replaceContentsCostentry>$150,000</replaceContentsCostentry>
+		<replaceContentsCostentry>$100,000</replaceContentsCostentry>
 		<rebuildCost>350000</rebuildCost>
 		<replaceContentsCost>150000</replaceContentsCost>
 		<abovePolicyLimits>N</abovePolicyLimits>
@@ -102,7 +112,7 @@
 		<previousInsurance>Y</previousInsurance>
 		<atCurrentAddress>Y</atCurrentAddress>
 		<insurer>AAMI</insurer>
-		<expiry>05/04/2012</expiry>
+		<expiry>05/04/2014</expiry>
 		<coverLength>4</coverLength>
 		<claims>N</claims>
 	</disclosures>

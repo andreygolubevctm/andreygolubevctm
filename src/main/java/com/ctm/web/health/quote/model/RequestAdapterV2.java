@@ -29,11 +29,7 @@ public class RequestAdapterV2 {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RequestAdapterV2.class);
 
-    public static HealthQuoteRequest adapt(HealthRequest request, boolean isSimples) {
-        return adapt(request, null, isSimples);
-    }
-
-    public static HealthQuoteRequest adapt(HealthRequest request, Content alternatePricingContent, boolean isSimples) {
+    public static HealthQuoteRequest adapt(HealthRequest request, Content alternatePricingContent, boolean isSimples, final boolean isGiftCardActive) {
 
         HealthQuoteRequest quoteRequest = new HealthQuoteRequest();
         Filters filters = new Filters();
@@ -77,7 +73,7 @@ public class RequestAdapterV2 {
             addBoundedExcessFilter(quoteRequest, filters, quote);
             addProductTitleSearchFilter(filters, quote);
             addSingleProviderFilterFromSituation(filters, situation);
-            filters.setApplyDiscounts(false);
+            addApplyDiscountsFilter(filters, quote);
         } else {
             // returns a single result with the criteria below
             quoteRequest.setSearchResults(1);
@@ -92,7 +88,6 @@ public class RequestAdapterV2 {
                 } else {
                     quoteRequest.setPaymentTypes(asList(PaymentType.BANK, PaymentType.CREDIT));
                 }
-
                 filters.setApplyDiscounts(true);
             }
         }
@@ -111,12 +106,38 @@ public class RequestAdapterV2 {
 
         quoteRequest.setIncludeSummary(isSimples);
 
+        quoteRequest.setIncludeGiftCard(isGiftCardActive);
+
+        HealthCover cover = quote.getHealthCover();
+        if(cover != null && cover.getPrimary()!= null) {
+            quoteRequest.setPrimaryHealthCover(toBoolean(cover.getPrimary().getCover()));
+        } else {
+            quoteRequest.setPrimaryHealthCover(null);
+        }
+
+        if(cover != null && cover.getPartner()!= null) {
+            quoteRequest.setPartnerHealthCover(toBoolean(cover.getPartner().getCover()));
+        }else {
+            quoteRequest.setPartnerHealthCover(null);
+        }
+
         return quoteRequest;
     }
 
     protected static void addRebateFilter(HealthQuoteRequest quoteRequest, HealthQuote quote) {
         if (quote.getRebate() != null) {
-            quoteRequest.setRebate(new BigDecimal(quote.getRebate()));
+            final Rebates rebates = new Rebates();
+            rebates.setCurrentRebate(new BigDecimal(quote.getRebate()));
+
+            if (quote.getRebateChangeover() != null) {
+                rebates.setFutureRebate(new BigDecimal(quote.getRebateChangeover()));
+            }
+
+            if (quote.getPreviousRebate() != null) {
+                rebates.setPreviousRebate(new BigDecimal(quote.getPreviousRebate()));
+            }
+
+            quoteRequest.setRebates(rebates);
         }
     }
 
@@ -391,4 +412,11 @@ public class RequestAdapterV2 {
 
     }
 
+    protected static void addApplyDiscountsFilter(Filters filters, final HealthQuote quote) {
+        if (quote.getApplyDiscounts() != null && quote.getApplyDiscounts().equals("Y")) {
+            filters.setApplyDiscounts(true);
+        } else {
+            filters.setApplyDiscounts(false);
+        }
+    }
 }

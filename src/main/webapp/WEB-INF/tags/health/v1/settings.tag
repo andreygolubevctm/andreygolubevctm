@@ -134,12 +134,20 @@
 	<c:set var="extrasCompareSpecialB" value="${benefitsContent.getSupplementaryValueByKey('extrasCompareSpecialB')}" />
 	<c:set var="hospitalCompareSpecialB" value="${benefitsContent.getSupplementaryValueByKey('hospitalCompareSpecialB')}" />
 
-<jsp:useBean id="healthPriceDetailService" class="com.ctm.web.health.services.HealthPriceDetailService" scope="page" />
-<c:set var="healthAlternatePricingActive" value="${healthPriceDetailService.isAlternatePriceActive(pageContext.getRequest())}" />
+	<health_v1:dual_pricing_settings />
+	<health_v1:pyrr_campaign_settings />
+
+	<c:set var="isContactTypeTrialCampaign">
+		<c:choose>
+			<c:when test="${not empty data['health/simples/contactTypeTrial']}">true</c:when>
+			<c:otherwise>false</c:otherwise>
+		</c:choose>
+	</c:set>
 {
 	isCallCentreUser: <c:out value="${not empty callCentre}"/>,
 	<c:if test="${not empty callCentre}">
 		contactType: "<c:out value="${data['health/simples/contactType']}"/>",
+		isContactTypeTrialCampaign: ${isContactTypeTrialCampaign},
 	</c:if>
 	gaClientId: "<c:out value="${data['health/gaclientid']}"/>",
 	isFromBrochureSite: <c:out value="${fromBrochure}"/>,
@@ -157,7 +165,8 @@
 	isDefaultToHealthQuote: ${defaultToHealthQuote},
     isDefaultToHealthApply: ${defaultToHealthApply},
 	isTaxTime: '<content:get key="taxTime"/>',
-	healthAlternatePricingActive: ${healthAlternatePricingActive},
+	isDualPricingActive: ${isDualPriceActive},
+	isPyrrActive: ${isPyrrActive},
 	<jsp:useBean id="healthApplicationService" class="com.ctm.web.health.services.HealthApplicationService"/>
 	<c:set var="providerList" value="${miscUtils:convertToJson(healthApplicationService.getAllProviders(pageSettings.getBrandId()))}"/>
 	navMenu: {
@@ -274,5 +283,8 @@
 	<c:if test="${not empty data.health.application.dependants}">dependants:  <c:out value="${go:XMLtoJSON(data.health.application.dependants)}" escapeXml="false" />,</c:if>
 	alternatePricing: <health_v1:alternate_pricing_json />,
 	bsbServiceURL : "<content:get key="bsbValidationServiceUrl" />",
-	ccOpeningHoursText : "<content:get key="ccHoursText" />"
+	ccOpeningHoursText : "<content:get key="ccHoursText" />",
+	situationHealthCvr: "<c:out value="${data['health/situation/healthCvr']}"/>",
+	hasPrimaryCover: "<c:out value="${data['health/healthCover/primary/cover']}"/>",
+	hasPartnerCover: "<c:out value="${data['health/healthCover/partner/cover']}"/>"
 }

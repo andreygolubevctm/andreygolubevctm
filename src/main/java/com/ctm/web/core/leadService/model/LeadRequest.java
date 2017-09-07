@@ -17,6 +17,8 @@ public class LeadRequest {
     private LeadMetadata metadata;
     private ZonedDateTime scheduledDateTime;
     private LeadType leadType;
+    private String analyticsId;
+    private String campaignId;
 
     public String getSource() {
         return source;
@@ -94,6 +96,21 @@ public class LeadRequest {
         this.leadType = leadType;
     }
 
+    public void setAnalyticsId(final String analyticsId) {
+        this.analyticsId = analyticsId;
+    }
+
+    public String getAnalyticsId() {
+        return analyticsId;
+    }
+
+    public String getCampaignId() {
+        return campaignId;
+    }
+    public void setCampaignId(String campaignId) {
+        this.campaignId = campaignId;
+    }
+
     public String getValues() {
         StringBuilder builder = new StringBuilder();
         builder.append(source);
@@ -117,6 +134,10 @@ public class LeadRequest {
         builder.append(scheduledDateTime);
         builder.append(",");
         builder.append(leadType);
+        builder.append(",");
+        builder.append(analyticsId);
+        builder.append(",");
+        builder.append(campaignId);
         return builder.toString();
     }
 
@@ -134,6 +155,8 @@ public class LeadRequest {
                 ", metadata=" + metadata +
                 ", scheduledDateTime=" + scheduledDateTime +
                 ", leadType=" + leadType +
+                ", analyticsId=" + analyticsId +
+                ", campaignId=" + campaignId +
                 '}';
     }
 

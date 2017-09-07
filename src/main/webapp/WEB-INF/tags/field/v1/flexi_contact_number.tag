@@ -42,7 +42,7 @@
 </c:if>
 
 <c:if test="${required && requireOnePlusNumber}">
-	<c:set var="additionalAttributes" value=" data-rule-requireOneContactNumber='true' data-msg-requireOneContactNumber='Please include at least one phone number' " />
+	<c:set var="additionalAttributes" value=" ${additionalAttributes} data-rule-requireOneContactNumber='true' data-msg-requireOneContactNumber='Please include at least one phone number' " />
 </c:if>
 
 <%-- VALIDATION --%>

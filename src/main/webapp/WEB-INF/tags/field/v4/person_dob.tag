@@ -22,7 +22,6 @@
 <%@ attribute name="type" 					required="false"  	rtexprvalue="true"	 description="What type of date input do you want?" %>
 
 <%-- VARIABLES --%>
-<c:if test="${empty type}"><c:set var="type" value="input" /></c:if>
 <c:if test="${empty outputJS}"><c:set var="outputJS" value="${true}" /></c:if>
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 <c:if test="${empty ageMin}">
@@ -65,6 +64,25 @@
 ${logger.trace('DOB Restricted to max: {},{}' , log:kv('nowLessAgeMinYears', nowLessAgeMinYears), log:kv('name', name))}
 
 <c:set var="minYear" value="${java.util.GregorianCalendar.YEAR - Integer.parseInt(ageMax)}" />
+
+<jsp:useBean id="userAgentSniffer" class="com.ctm.web.core.services.UserAgentSniffer" />
+<c:set var="deviceType" value="${userAgentSniffer.getDeviceType(pageContext.getRequest().getHeader('user-agent'))}" />
+<%--
+    If type is undefined use the deviceType to determine input type.
+    For mobile type would be type text according to HLT-4236
+ --%>
+<c:if test="${empty type}">
+    <c:set var="type">
+        <c:choose>
+            <c:when test="${deviceType eq 'MOBILE'}">
+                input
+            </c:when>
+            <c:otherwise>
+                select
+            </c:otherwise>
+        </c:choose>
+    </c:set>
+</c:if>
 
 <%-- HTML --%>
 <div class="dateinput_container" data-provide="dateinput">
@@ -109,13 +127,13 @@ ${logger.trace('DOB Restricted to max: {},{}' , log:kv('nowLessAgeMinYears', now
 		<c:otherwise>
 			<div class="row dateinput-tripleField">
 				<div class="col-sm-3 col-xs-4 dayContainer">
-					<field_v2:input type="text" className="sessioncamexclude dateinput-day dontSubmit ${className}" xpath="${xpath}InputD" maxlength="2" pattern="[0-9]*" placeHolder="DD" required="false" requiredMessage="Please enter the day" />
+					<field_v2:input type="number" className="sessioncamexclude dateinput-day dontSubmit ${className}" xpath="${xpath}InputD" maxlength="2" pattern="[0-9]*" placeHolder="DD" required="false" requiredMessage="Please enter the day" />
 				</div>
 				<div class="col-sm-3 col-xs-4 monthContainer">
-					<field_v2:input type="text" className="sessioncamexclude dateinput-month dontSubmit ${className}" xpath="${xpath}InputM" maxlength="2" pattern="[0-9]*" placeHolder="MM" required="false" requiredMessage="Please enter the month" />
+					<field_v2:input type="number" className="sessioncamexclude dateinput-month dontSubmit ${className}" xpath="${xpath}InputM" maxlength="2" pattern="[0-9]*" placeHolder="MM" required="false" requiredMessage="Please enter the month" />
 				</div>
 				<div class="col-md-4 col-sm-5 col-xs-4">
-					<field_v2:input type="text" className="sessioncamexclude dateinput-year dontSubmit ${className}" xpath="${xpath}InputY" maxlength="4" pattern="[0-9]*" placeHolder="YYYY" required="false" requiredMessage="Please enter the year" />
+					<field_v2:input type="number" className="sessioncamexclude dateinput-year dontSubmit ${className}" xpath="${xpath}InputY" maxlength="4" pattern="[0-9]*" placeHolder="YYYY" required="false" requiredMessage="Please enter the year" />
 				</div>
 			</div>
 		</c:otherwise>

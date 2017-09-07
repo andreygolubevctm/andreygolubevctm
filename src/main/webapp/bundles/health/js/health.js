@@ -122,6 +122,41 @@
 		}
 	}
 
+	function changeMinAge() {
+		var cover = meerkat.modules.healthChoices.returnCoverCode();
+		switch(cover) {
+			case "SM":
+			case "SF":
+				setMinAge(15);
+			break;
+			case "C":
+				setMinAge(15, true);
+			break;
+			default:
+				setMinAge(16, true);
+		}
+	}
+
+	function setMinAge(age, couple) {
+		var message = "Primary person's age cannot be under " + age;
+		var fields = [
+			dob_health_application_primary_dob,
+			dob_health_healthCover_primary_dob,
+			dob_health_application_partner_dob,
+			dob_health_healthCover_partner_dob
+		];
+		var length = 2;
+		if (couple) {
+			length = 4;
+		}
+		for (var i = 0; i < length; i++) {
+			if (fields[i] && _.has(fields[i],'ageMin') && fields[i].ageMin !== age) {
+					fields[i].ageMin = age;
+					$(fields[i].target).data('msgYoungestdob', message);
+			}
+		}
+	}
+
 	function setJourneyEngineSteps(){
 
 		var startStep = {
@@ -135,6 +170,9 @@
 			onInitialise: function onStartInit(event){
 
 				meerkat.modules.jqueryValidate.initJourneyValidator();
+                if(meerkat.site.isCallCentreUser) {
+                    meerkat.modules.simplesInteraction.storeCallId(meerkat.modules.transactionId.get());
+                }
 
 				if(meerkat.site.choices) {
 					meerkat.modules.healthChoices.initialise(meerkat.site.choices.cover, meerkat.site.choices.situation, meerkat.site.choices.benefits);
@@ -142,7 +180,8 @@
 					meerkat.modules.healthChoices.shouldPerformUpdate(meerkat.site.choices.performHealthChoicesUpdate);
 				}
 
-				var $healthSitLocation = $('#health_situation_location'),
+				var $body = $('body'),
+					$healthSitLocation = $('#health_situation_location'),
 					$healthSitHealthCvr = $('#health_situation_healthCvr'),
 					$healthSitHealthSitu = $("input[name=health_situation_healthSitu]"),
 					$healthSitCoverType = $('#health_situation_coverType'),
@@ -150,8 +189,15 @@
 
 				// Add event listeners.
 				$healthSitHealthCvr.on('change',function() {
-					meerkat.modules.healthChoices.setCover($(this).val());
+					var value = $(this).val();
+
+					meerkat.modules.healthChoices.setCover(value);
+					changeMinAge();
 					meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
+
+					$body.attr('data-is-single', function() {
+						return _.indexOf(['SM', 'SF'], value) !== -1 ? true : false;
+					});
 				});
 
 				// we need to wait till the field gets proparly populated from the address search ajax
@@ -201,7 +247,7 @@
 					} else {
 						emailQuoteBtn.removeClass("privacyOptinChecked");
 					}
-				});
+				}).trigger('click');
 
 				$healthSitRebate.on('change', function() {
 					toggleRebate();
@@ -365,6 +411,7 @@
 				meerkat.modules.healthMoreInfo.initMoreInfo();
 				meerkat.modules.healthPriceComponent.initHealthPriceComponent();
 				meerkat.modules.healthDualPricing.initDualPricing();
+				meerkat.modules.healthPyrrCampaign.initPyrrCampaign(true);
 
 			},
 			onBeforeEnter:function enterResultsStep(event){
@@ -432,6 +479,8 @@
 				if (meerkat.modules.healthTaxTime.isFastTrack()) {
 					meerkat.modules.healthTaxTime.disableFastTrack();
 				}
+
+				meerkat.modules.simplesBindings.toggleLimitedCoverDialogue();
 			},
 			onBeforeLeave: function(event) {
 				// Increment the transactionId
@@ -517,13 +566,16 @@
 					meerkat.modules.healthMedicare.updateMedicareLabel();
 
 					var product = meerkat.modules.healthResults.getSelectedProduct();
-					var mustShowList = ["GMHBA","Frank","Budget Direct","Bupa","HIF","QCHF","Navy Health","HBF","TUH"];
+					var mustShowList = ["GMHBA","Frank","Budget Direct","Bupa","HIF","QCHF","Navy Health","HBF","TUH","myOwn"];
 
 					if( !meerkat.modules.healthCoverDetails.isRebateApplied() && $.inArray(product.info.providerName, mustShowList) == -1) {
 						$("#health_payment_medicare-selection").hide().attr("style", "display:none !important");
 					} else {
 						$("#health_payment_medicare-selection").removeAttr("style");
 					}
+
+                    setHospitalCoverClass(selectedProduct);
+                    setExtrasCoverClass(selectedProduct);
 				}
 			},
 			onAfterEnter: function afterEnterApplyStep(event){
@@ -552,6 +604,7 @@
 
 				meerkat.modules.healthPaymentDate.initPaymentDate();
 				meerkat.modules.healthPaymentIPP.initHealthPaymentIPP();
+                meerkat.modules.healthPayConfDetailsModal.onInitialise();
 
 				$("#joinDeclarationDialog_link").on('click',function(){
 					var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
@@ -566,10 +619,14 @@
 						errorLevel: "silent",
 						onSuccess: function getProviderContentSuccess(result) {
 							if (result.hasOwnProperty('providerContentText')) {
-								meerkat.modules.dialogs.show({
-									title: 'Declaration',
-									htmlContent : result.providerContentText
-								});
+								var callback = function applyCustomisedProviderContentCallback(content) {
+									meerkat.modules.dialogs.show({
+										title: 'Declaration',
+										htmlContent : content
+									});
+								};
+								// Call function to update placeholder copy
+								applyCustomisedProviderContent(selectedProduct, result.providerContentText, callback);
 							}
 						}
 					});
@@ -597,9 +654,9 @@
 						});
 					}
 
-					// Validation passed, submit the application.
+					// Validation passed, submit the application after showing confirmation modal - see subscribe event below.
 					if (valid) {
-						submitApplication();
+                        meerkat.modules.healthPayConfDetailsModal.open(submitApplication);
 					}
 				});
 
@@ -632,6 +689,65 @@
 			applyStep: applyStep,
 			paymentStep: paymentStep
 		};
+	}
+
+	/**
+	 * applyCustomisedProviderContent() method to replace placeholder content with product
+	 * specific copy. The expected placeholders and the objects containing their values
+	 * are stored in content_control/supplementary.
+	 * @param product Object
+	 * @param content String
+	 * @param callback Function
+	 */
+	function applyCustomisedProviderContent(product, content, callback) {
+		meerkat.modules.comms.get({
+			url: "spring/content/getsupplementary.json",
+			data: {
+				vertical: 'HEALTH',
+				key: 'simplesJoinDecVariables'
+			},
+			cache: true,
+			errorLevel: "silent",
+			onSuccess: function getProviderContentSuccess(resultData) {
+				if(_.isObject(resultData) && _.has(resultData,'supplementary') && !_.isEmpty(resultData.supplementary) && _.isArray(resultData.supplementary)) {
+					// Lint safe method to EVAL basic strings
+					var evalString = function (str, contexta) {
+						contexta = contexta || window;
+						var evalStringSimple = function(str, contextb) {
+							contextb = contextb || window;
+							var namespaces = str.split(".");
+							var prop = namespaces.pop();
+							namespaces.shift();
+							for (var i = 0; i < namespaces.length; i++) {
+								contextb = contextb[namespaces[i]];
+							}
+							return contextb[prop];
+						};
+						// If str contains square brackets then execute that first
+						var exp = /\[(.)+\]/gi;
+						if(exp.test(str)) {
+							var sub = str.match(exp)[0].replace("[","").replace("]","");
+							var subval = evalStringSimple(sub, contexta);
+							str = str.replace(exp,"." + subval);
+						}
+						return evalStringSimple(str, contexta);
+					};
+
+					/**
+					 * Cycle through each key/value defined in content_supplementary and
+					 * use to replace the placeholders in the copy.
+					 */
+					for(var i=0; i<resultData.supplementary.length; i++) {
+						var supp = resultData.supplementary[i];
+						var regex = new RegExp("\\[" + supp.supplementaryKey + "\\]","gi");
+						content = content.replace(regex,evalString(supp.supplementaryValue, product));
+					}
+				}
+			},
+			onComplete: function() {
+				callback(content);
+			}
+		});
 	}
 
 	function configureProgressBar(){
@@ -786,7 +902,7 @@
 	// Use the situation value to determine if a partner is visible on the journey.
 	function hasPartner(){
 		var cover = $(':input[name="health_situation_healthCvr"]').val();
-		if(cover == 'F' || cover == 'C'){
+		if (cover == 'F' || cover == 'C' || cover == 'EF') {
 			return true;
 		}else{
 			return false;
@@ -813,6 +929,7 @@
 		rates = ratesObject;
 		$("#health_rebate").val((rates.rebate || ''));
 		$("#health_rebateChangeover").val((rates.rebateChangeover || ''));
+		$("#health_previousRebate").val((rates.previousRebate || ''));
 		$("#health_loading").val((rates.loading || ''));
 		$("#health_primaryCAE").val((rates.primaryCAE || ''));
 		$("#health_partnerCAE").val((rates.partnerCAE || ''));
@@ -909,6 +1026,12 @@
 
 		if(!postData.primary_dob.match(dateRegex)) return false;
 		if(coverTypeHasPartner && !postData.partner_dob.match(dateRegex))  return false;
+
+		postData.commencementDate = null;
+		var commencementDate = $('#health_payment_details_start').val();
+		if(!_.isEmpty(commencementDate)) {
+			postData.commencementDate = commencementDate;
+		}
 
 		return meerkat.modules.comms.post({
 			url:"ajax/json/health_rebate.jsp",
@@ -1031,16 +1154,23 @@
 				marketOptIn:			null,
 				okToCall:				null,
 				contactType:			null,
+				contactTypeTrial:		null,
 				simplesUser:			meerkat.site.isCallCentreUser
 			};
 
 			// Push in values from 1st slide only when have been beyond it
 			if(furtherest_step > meerkat.modules.journeyEngine.getStepIndex('start')) {
 				var contactType = null;
-				if ($('#health_simples_contactType_inbound').is(':checked')) {
+				var contactTypeTrial = '';
+				if ($('#health_simples_contactTypeRadio_inbound').is(':checked')) {
 					contactType = 'inbound';
-				} else if ($('#health_simples_contactType_outbound').is(':checked')) {
+				} else if ($('#health_simples_contactTypeRadio_outbound').is(':checked')) {
 					contactType = 'outbound';
+				} else if ($('#health_simples_contactTypeRadio_clioutbound').is(':checked')) {
+					contactType = 'clioutbound';
+				} else if ($('#health_simples_contactTypeRadio_trialcampaign').is(':checked')) {
+					contactType = 'outbound';
+                    contactTypeTrial = 'Trial Campaign';
 				}
 
 				$.extend(response, {
@@ -1048,7 +1178,8 @@
 					state:					state,
 					healthCoverType:		$("#health_situation_healthCvr").val(),
 					healthSituation:		$("input[name=health_situation_healthSitu]").val(),
-					contactType:			contactType
+					contactType:			contactType,
+                    contactTypeTrial:		contactTypeTrial
 				});
 			}
 
@@ -1304,8 +1435,11 @@
 
 	function toggleRebate() {
 		if(meerkat.modules.healthCoverDetails.isRebateApplied()){
+
+			var situation = getSituation();
+
 			$('#health_healthCover_tier').show();
-			if(getSituation() === 'F' || getSituation() === 'SPF'){
+			if(situation === 'F' || situation === 'SPF' || situation === 'EF' || situation === 'ESP'){
 				$('.health_cover_details_dependants').show();
 			}
 		} else {
@@ -1364,7 +1498,7 @@
 				$('#health_privacyoptin').val(optinVal);
 				$("#health_contactDetails_optInEmail").val(optinVal);
 				$("#health_contactDetails_call").val(optinVal);
-			});
+			}).trigger('click');
 
 			if ($('input[name="health_directApplication"]').val() === 'Y') {
 				$('#health_application_productId').val( meerkat.site.loadProductId );
@@ -1381,6 +1515,40 @@
 
 
 	}
+
+    function setHospitalCoverClass(theSelectedItem) {
+        var returnVal = "";
+
+        if ((!_.isEmpty(theSelectedItem.info.situationFilter)) && theSelectedItem.info.situationFilter === 'Y') {
+            returnVal = "limited";
+        } else {
+            if (!_.isEmpty(theSelectedItem.hospital.ClassificationHospital)){
+                if (theSelectedItem.hospital.ClassificationHospital === 'Budget' || theSelectedItem.hospital.ClassificationHospital === 'Public') {
+                    returnVal = "basic";
+                } else {
+                    returnVal = theSelectedItem.hospital.ClassificationHospital.toLowerCase();
+                }
+            }
+        }
+
+        $('#health_application_productClassification_hospital').val(returnVal);
+    }
+
+
+    function setExtrasCoverClass(theSelectedItem) {
+        var returnVal = "";
+
+        if (!_.isEmpty(theSelectedItem.extras.ClassificationGeneralHealth)) {
+            if (theSelectedItem.extras.ClassificationGeneralHealth === "Budget") {
+                returnVal = "basic";
+            } else {
+                returnVal = theSelectedItem.extras.ClassificationGeneralHealth.toLowerCase();
+            }
+        }
+
+        $('#health_application_productClassification_extras').val(returnVal);
+    }
+
 
 	function getCoverType() {
 		return $('#health_situation_coverType input').filter(":checked").val();

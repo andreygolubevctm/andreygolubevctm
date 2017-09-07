@@ -5,7 +5,8 @@
 
 	var moduleEvents = {
 		WEBAPP_LOCK: 'WEBAPP_LOCK',
-		WEBAPP_UNLOCK: 'WEBAPP_UNLOCK'
+		WEBAPP_UNLOCK: 'WEBAPP_UNLOCK',
+		TRIGGER_UPDATE_PREMIUM: 'TRIGGER_UPDATE_PREMIUM'
 	};
 
 	var modalId;
@@ -14,8 +15,6 @@
 	var $paymentMethodLHCText;
 	var $bankSection;
 	var $creditCardSection;
-	var $paymentCalendar;
-
 	var $frequencySelect;
 
 	var settings = {
@@ -23,11 +22,7 @@
 		credit: [],
 		frequency: [],
 		creditBankSupply: false,
-		creditBankQuestions: false,
-		minStartDateOffset: 0,
-		maxStartDateOffset: 90,
-		minStartDate: '',
-		maxStartDate: ''
+		creditBankQuestions: false
 	};
 
 	var currentCoupon = false;
@@ -64,7 +59,6 @@
 		$paymentMethodLHCText = $('.changes-premium .lhcText');
 		$bankSection = $('.health_payment_bank-selection');
 		$creditCardSection = $('.health_payment_credit-selection');
-		$paymentCalendar = $('#health_payment_details_start');
 
 		// Containers
 		$paymentContainer = $(".update-content");
@@ -84,17 +78,13 @@
 		meerkat.messaging.subscribe(meerkatEvents.healthResults.SELECTED_PRODUCT_RESET, function jeStepChange(step){
 			resetSettings();
 		});
+
+		meerkat.messaging.subscribe(meerkatEvents.TRIGGER_UPDATE_PREMIUM, function triggerUpdatePremium(){
+			updatePremium();
+		});
 	}
 
 	function _applyEventListeners() {
-		$paymentCalendar.on('changeDate', function updateThePremiumOnCalendar(){
-			updatePremium();
-		});
-
-		$('#health_payment_details-selection .dateinput-tripleField input').on('change', function updateThePremiumOnInput(){
-			updatePremium();
-		});
-
 		$paymentRadioGroup.find('input').on('click', function() {
 			// Delay to avoid issue when fast clicking between payment options
 			_.defer(function(){
@@ -150,10 +140,14 @@
 				errorLevel: "silent",
 				onSuccess: function getProviderContentSuccess(result) {
 					if (result.hasOwnProperty('providerContentText')) {
-						meerkat.modules.dialogs.show({
-							title: 'Declaration',
-							htmlContent : result.providerContentText
-						});
+                        var callback = function applyCustomisedProviderContentCallback(content) {
+                            meerkat.modules.dialogs.show({
+                                title: 'Declaration',
+                                htmlContent : content
+                            });
+                        };
+                        // Call function to update placeholder copy
+                        applyCustomisedProviderContent(selectedProduct, result.providerContentText, callback);
 					}
 				}
 			});
@@ -183,7 +177,6 @@
 
 	// Settings should be reset when the selected product changes.
 	function resetSettings(){
-
 		settings.bank = { 'weekly':false, 'fortnightly': true, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true };
 		settings.credit = { 'weekly':false, 'fortnightly': false, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true };
 		settings.frequency = { 'weekly':27, 'fortnightly':31, 'monthly':27, 'quarterly':27, 'halfyearly':27, 'annually':27 };
@@ -193,8 +186,7 @@
 		meerkat.modules.healthCreditCard.resetConfig();
 
 		// Clear start date
-
-		$paymentCalendar.val('');
+		meerkat.modules.healthCoverStartDate.flush();
 
 		// Clear payment method selection
 		$paymentRadioGroup.find('input').prop('checked', false).change();
@@ -206,7 +198,7 @@
 		// Clear bank account details selection
 		$("#health_payment_details_claims input").prop('checked', false).change().find('label').removeClass('active');
 
-		setCoverStartRange(0, 90);
+		meerkat.modules.healthCoverStartDate.setCoverStartRange(0, 90);
 
 	}
 
@@ -231,35 +223,6 @@
 		return (!_.isEmpty($frequencySelect.val()) ? $frequencySelect.val() : Results.getFrequency());
 	}
 
-	function setCoverStartRange(min, max){
-		settings.minStartDateOffset = min;
-		settings.maxStartDateOffset = max;
-
-		// Get today's date in UTC timezone
-		var today = meerkat.modules.utils.getUTCToday(),
-			start = 0,
-			end = 0,
-			hourAsMs = 60 * 60 * 1000;
-
-		// Add 10 hours for QLD timezone
-		today += (10 * hourAsMs);
-
-		// Add the start day offset
-		start = today;
-		if (min > 0) {
-			start += (min * 24 * hourAsMs);
-		}
-
-		// Calculate the end date
-		end = today + (max * 24 * hourAsMs);
-
-		today = new Date(start);
-		settings.minStartDate = today.getUTCDate() + '/' + (today.getUTCMonth()+1) + '/' + today.getUTCFullYear();
-		today = new Date(end);
-		settings.maxStartDate = today.getUTCDate() + '/' + (today.getUTCMonth()+1) + '/' + today.getUTCFullYear();
-
-	}
-
 	// Show approved listings only, this can potentially change per fund
 	function updateFrequencySelectOptions(){
 		var product = meerkat.modules.healthResults.getSelectedProduct();
@@ -272,6 +235,10 @@
 
 			$frequencySelect.empty().append(options);
 			updateLHCText(product);
+
+			if (meerkat.modules.healthDualPricing.isDualPricingActive()) {
+				$frequencySelect.trigger('change.healthDualPricing');
+			}
 		}
 	}
 
@@ -284,10 +251,8 @@
 		$paymentSection.find('.select').not('.disabled-by-fund').removeClass('disabled');
 		$paymentSection.find('.btn-group label').not('.disabled-by-fund').removeClass('disabled');
 
-		// Non-inline datepicker
-		//$('#health_payment_details_start').parent().addClass('input-group').find('.input-group-addon').removeClass('hidden');
-		// Inline datepicker
-		$paymentCalendar.parent().find('.datepicker').children().css('visibility', 'visible');
+		// Datepicker
+		meerkat.modules.healthCoverStartDate.enable();
 	}
 
 	function disableUpdatePremium(isSameSource, disableFields) {
@@ -300,17 +265,14 @@
 			$paymentSection.find('.select').addClass('disabled');
 			$paymentSection.find('.btn-group label').addClass('disabled');
 
-			// Non-inline datepicker
-			//$('#health_payment_details_start').parent().removeClass('input-group').find('.input-group-addon').addClass('hidden');
-			// Inline datepicker
-			$paymentCalendar.parent().find('.datepicker').children().css('visibility', 'hidden');
+			// Datepicker
+			meerkat.modules.healthCoverStartDate.disable();
 		}
 
 	}
 
 	// Calls the server for a new premium price based on current selections.
 	function updatePremium() {
-
 		// fire the tracking call
 		var data = {
 			actionStep: ' health application premium update'
@@ -370,7 +332,7 @@
 					// TODO work out this: //Results._refreshSimplesTooltipContent($('#update-premium .premium'));
 				}
 
-				if (typeof meerkat.site.healthAlternatePricingActive !== 'undefined' && meerkat.site.healthAlternatePricingActive === true) {
+				if (meerkat.modules.healthDualPricing.isDualPricingActive()) {
 					meerkat.modules.healthDualPricing.renderTemplate('.policySummary.dualPricing', data, false, true);
 				}
 
@@ -414,6 +376,10 @@
 		product.premium = product.paymentTypePremiums[product.paymentNode];
 		product._selectedFrequency = getSelectedFrequency();
 
+		if (meerkat.modules.healthDualPricing.isDualPricingActive()) {
+			product.altPremium = product.paymentTypeAltPremiums[product.paymentNode];
+		}
+
         meerkat.modules.healthResults.setSelectedProduct(product, true);
 	}
 
@@ -447,11 +413,8 @@
 	}
 
 	function setDefaultFields() {
-		// default values are sent over when the premium is loaded for the first time on this page
-		// and the code below essentially sets the visual aspect of the payment page.
-		if (_.isEmpty($paymentCalendar.val())) {
-			$paymentCalendar.datepicker("update", new Date());
-		}
+
+		meerkat.modules.healthCoverStartDate.setDefault();
 
 		if (!$("#health_payment_details_type_cc").is(':checked')) {
 			// had to revert this back to a trigger as fund messaging wasn't being set otherwise
@@ -552,15 +515,74 @@
 	function updateValidationSelectorsPaymentGateway(functionToCall, name){
 		$('#health_payment_details_type input').on('click.' + name, functionToCall);
 		$('#health_payment_details_frequency').on('change.' + name, functionToCall);
-		$('#health_payment_details_start').on('changeDate.' + name, functionToCall);
+		meerkat.modules.healthCoverStartDate.updateValidationSelectorsPaymentGateway(functionToCall, name);
 	}
 
 	// Reset Hook into "update premium"
-	function resetValidationSelectorsPaymentGateway( name){
+	function resetValidationSelectorsPaymentGateway(name){
         $('#health_payment_details_type input').off('click.' + name);
         $('#health_payment_details_frequency').off('change.' + name);
-        $('#health_payment_details_start').off('changeDate.' + name);
+		meerkat.modules.healthCoverStartDate.resetValidationSelectorsPaymentGateway(name);
 	}
+
+    /**
+     * applyCustomisedProviderContent() method to replace placeholder content with product
+     * specific copy. The expected placeholders and the objects containing their values
+     * are stored in content_control/supplementary.
+     * @param product Object
+     * @param content String
+     * @param callback Function
+     */
+    function applyCustomisedProviderContent(product, content, callback) {
+        meerkat.modules.comms.get({
+            url: "spring/content/getsupplementary.json",
+            data: {
+                vertical: 'HEALTH',
+                key: 'healthJoinDecVariables'
+            },
+            cache: true,
+            errorLevel: "silent",
+            onSuccess: function getProviderContentSuccess(resultData) {
+                if(_.isObject(resultData) && _.has(resultData,'supplementary') && !_.isEmpty(resultData.supplementary) && _.isArray(resultData.supplementary)) {
+                    // Lint safe method to EVAL basic strings
+                    var evalString = function (str, contexta) {
+                        contexta = contexta || window;
+                        var evalStringSimple = function(str, contextb) {
+                            contextb = contextb || window;
+                            var namespaces = str.split(".");
+                            var prop = namespaces.pop();
+                            namespaces.shift();
+                            for (var i = 0; i < namespaces.length; i++) {
+                                contextb = contextb[namespaces[i]];
+                            }
+                            return contextb[prop];
+                        };
+                        // If str contains square brackets then execute that first
+                        var exp = /\[(.)+\]/gi;
+                        if(exp.test(str)) {
+                            var sub = str.match(exp)[0].replace("[","").replace("]","");
+                            var subval = evalStringSimple(sub, contexta);
+                            str = str.replace(exp,"." + subval);
+                        }
+                        return evalStringSimple(str, contexta);
+                    };
+
+                    /**
+                     * Cycle through each key/value defined in content_supplementary and
+                     * use to replace the placeholders in the copy.
+                     */
+                    for(var i=0; i < resultData.supplementary.length; i++) {
+                        var supp = resultData.supplementary[i];
+                        var regex = new RegExp("\\[" + supp.supplementaryKey + "\\]","gi");
+                        content = content.replace(regex,evalString(supp.supplementaryValue, product));
+                    }
+                }
+            },
+            onComplete: function() {
+                callback(content);
+            }
+        });
+    }
 
 	meerkat.modules.register("healthPaymentStep", {
 		init: initHealthPaymentStep,
@@ -568,7 +590,6 @@
 		events: moduleEvents,
 		getSetting: getSetting,
 		overrideSettings: overrideSettings,
-		setCoverStartRange: setCoverStartRange,
 		getSelectedFrequency: getSelectedFrequency,
 		getSelectedPaymentMethod: getSelectedPaymentMethod,
 		updatePremium: updatePremium,

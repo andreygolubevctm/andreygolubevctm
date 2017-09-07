@@ -8,7 +8,8 @@
 
 	var events = {
 		coupon: {
-			COUPON_LOADED : "COUPON_LOADED"
+			COUPON_LOADED : "COUPON_LOADED",
+            PADDING_TOP_CHANGED : "PADDING_TOP_CHANGED"
 		}
 	};
 
@@ -23,7 +24,8 @@
 		isAvailable = false,
         isPreload = false,
 		isCouponValidAndSubmitted = false,
-        subscriptionHandles = {};
+        subscriptionHandles = {},
+		defaultResultsDockedTop = 147; // Hard coded in: health_v4\less\results\resultsHeaderBar.less applied to ".result"
 
 	function init() {
 
@@ -51,6 +53,32 @@
 	function eventSubscriptions() {
 		meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_CHANGED, function() {
 			resetWhenChangeStep();
+		});
+
+		// If we are already in small screen keep an eye out for a window resize.
+		if (meerkat.modules.deviceMediaState.get() === 'xs') {
+			meerkat.messaging.subscribe(meerkatEvents.device.RESIZE_DEBOUNCED, function resultsXsBreakpointEnter() {
+				dealWithAddedCouponHeight();
+			});
+		}
+
+		meerkat.messaging.subscribe(meerkatEvents.device.STATE_ENTER_XS, function resultsXsBreakpointEnter() {
+			// The banner can still change in height so we need to watch the window resize and react accordingly.
+			meerkat.messaging.subscribe(meerkatEvents.device.RESIZE_DEBOUNCED, function resultsXsBreakpointEnter() {
+				dealWithAddedCouponHeight();
+			});
+		});
+
+		meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function resultsXsBreakpointLeave() {
+			meerkat.messaging.unsubscribe(meerkatEvents.device.RESIZE_DEBOUNCED);
+			dealWithAddedCouponHeight();
+		});
+
+		$(document).on('headerAffixed', function() {
+			dealWithAddedCouponHeight();
+		});
+		$(document).on('headerUnaffixed', function() {
+			dealWithAddedCouponHeight();
 		});
 	}
 
@@ -120,7 +148,7 @@
 
 	function validateCouponCode(couponCode) {
 		if (isAvailable !== true) return;
-		
+
 		var transactionId = meerkat.modules.transactionId.get();
 
 		meerkat.modules.comms.get({
@@ -144,19 +172,83 @@
 	}
 
 	function renderCouponBanner() {
-		if (isCurrentCouponValid() === true && currentCoupon.hasOwnProperty('contentTile')) {
+		if (isCurrentCouponValid() === true && currentCoupon.hasOwnProperty('contentBanner')) {
             $('#contactForm').find('.quoteSnapshot').hide();
             $('.callCentreHelp').hide();
 			$('.coupon-banner-container').html(currentCoupon.contentBanner);
             $('.coupon-tile-container').html(currentCoupon.contentTile);
             $('body').addClass('couponShown');
+
+            meerkat.modules.healthMoreInfo.dynamicPyrrBanner();
+
 		} else {
             $('#contactForm').find('.quoteSnapshot').show();
             $('.callCentreHelp').show();
             $('#contactForm').find('.callCentreHelp').hide();
             $('.coupon-banner-container, .coupon-tile-container').html('');
             $('body').removeClass('couponShown');
+
         }
+
+		dealWithAddedCouponHeight();
+
+	}
+
+	function dealWithAddedCouponHeight() {
+		// If we have a visible coupon.
+		var $bodyWithCoupon = $('body.couponShown');
+		// Reset everything in case we have changed between results and other slides or changed view port.
+		resetMeasurements();
+
+		// We need to accommodate the journey with additional space when we have coupon on mobile.
+		if ($bodyWithCoupon.length > 0 && meerkat.modules.deviceMediaState.get() === 'xs') {
+			// Get the header.
+			var $headerWrap = $('.header-wrap');
+
+			// Results is handled differently.
+			if (meerkat.modules.journeyEngine.getCurrentStep().navigationId === 'results') {
+				// Get the coupon banners height and add it to the current padding.
+				var bannersHeight = $('.coupon-banner-container').innerHeight();
+				// The actual padding top is set in the less using various less calculations.
+				// Since it could be be a different hight we need to get the current value the add to it.
+				var bodyPaddingTop = typeof $bodyWithCoupon.css('padding-top') !== 'undefined' ? parseInt($bodyWithCoupon.css('padding-top').replace(/\D/g,'')): 0;
+				var newPaddingTop = bodyPaddingTop + bannersHeight;
+
+				// Clear the min height and apply the padding top to the body
+				$headerWrap.css({'min-height': ''});
+
+                $bodyWithCoupon.css({'padding-top': newPaddingTop + 'px'});
+                meerkat.messaging.publish(events.coupon.PADDING_TOP_CHANGED);
+
+				// Get the results affixed
+				var $dockedResultsHeaders = $('.affixed-settings .result');
+
+				$.each($dockedResultsHeaders, function() {
+					var $dockedResultsHeader = $(this);
+					topValueToBeApplied = defaultResultsDockedTop + bannersHeight;
+					$dockedResultsHeader.css({'top': topValueToBeApplied + 'px'});
+				});
+
+			} else {
+				// Get the inner divs combined height
+				var headersActualHeight = $headerWrap.children().innerHeight();
+				// Now that's the real min height
+				$headerWrap.css({'min-height': headersActualHeight + 'px'});
+
+			}
+		}
+	}
+
+	// We need to reset the values back to default, since modifying these with jQuery will apply a
+	// style directly to the DOM, we can just remove that style attribute to reset it.
+	function resetMeasurements() {
+		var $headerWrap = $('.header-wrap');
+		var $bodyWithCoupon = $('body.couponShown');
+		var $dockedResultsHeaders = $('.result');
+		$headerWrap.removeAttr('style');
+		$bodyWithCoupon.removeAttr('style');
+		$dockedResultsHeaders.removeAttr('style');
+
 	}
 
 	function isCurrentCouponValid() {
@@ -174,8 +266,8 @@
 	}
 
 	/*
-	 * Vlidation logic when user submit the coupon
-	 * It is not using the jounery jQuery validation as we still want the user to be able to progress the jounery with failed validation
+	 * Validation logic when user submit the coupon
+	 * It is not using the jounery jQuery validation as we still want the user to be able to progress the journey with failed validation
 	 */
 	function validateField() {
 
@@ -290,7 +382,8 @@
 		getCurrentCoupon: getCurrentCoupon,
 		validateCouponCode: validateCouponCode,
 		renderCouponBanner: renderCouponBanner,
-        triggerPopup: triggerPopup
+        triggerPopup: triggerPopup,
+        dealWithAddedCouponHeight: dealWithAddedCouponHeight
 	});
 
 })(jQuery);

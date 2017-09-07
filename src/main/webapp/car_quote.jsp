@@ -30,6 +30,19 @@
 <%-- Set global variable to flags for active split tests --%>
 <car:splittest_helper />
 
+<c:choose>
+	<c:when test="${pageSettings.getBrandCode() eq 'ctm'}">
+		<car:exotic_car_helper />
+	</c:when>
+	<c:otherwise>
+		<c:set var="speechBubbleContent" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "speechBubbleContent")}' />
+		<c:set var="normalHeading" value="${speechBubbleContent.getSupplementaryValueByKey('normalHeading')}" scope="request" />
+		<c:set var="normalCopy" value="${speechBubbleContent.getSupplementaryValueByKey('normalCopy')}" scope="request" />
+	</c:otherwise>
+</c:choose>
+
+<car:rego_lookup_helper />
+
 <%-- HTML --%>
 <layout_v1:journey_engine_page title="Car Quote">
 
@@ -58,7 +71,7 @@
 			<core_v2:offcanvas_header />
 	
 			<li class="slide-feature-back">
-				<a href="javascript:;" data-slide-control="previous" class="btn-back"><span class="icon icon-arrow-left"></span> <span>Back</span></a>
+				<a href="javascript:;" data-slide-control="previous" class="btn-back" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />><span class="icon icon-arrow-left"></span> <span>Back</span></a>
 			</li>
 			<li class="slide-feature-closeMoreInfo">
 				<c:choose>
@@ -66,13 +79,13 @@
 						<a href="javascript:;" class="btn btn-back">Back to results</a>
 					</c:when>
 					<c:otherwise>
-						<a href="javascript:;" class="btn-back"><span class="icon icon-arrow-left"></span> <span>Back</span></a>
+						<a href="javascript:;" class="btn-back"><span class="icon icon-arrow-left" ></span> <span>Back</span></a>
 					</c:otherwise>
 				</c:choose>
 			</li>
 			<c:if test="${saveQuoteEnabled == 'Y'}">
 			<li class="slide-feature-emailquote hidden-lg hidden-md hidden-sm" data-openSaveQuote="true">
-				<a href="javascript:;" class="save-quote-openAsModal"><span class="icon icon-envelope"></span> <span><c:choose>
+				<a href="javascript:;" class="save-quote-openAsModal" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />><span class="icon icon-envelope"></span> <span><c:choose>
 							<c:when test="${not empty authenticatedData.login.user.uid}">Save Quote</c:when>
 							<c:otherwise>Save Quote</c:otherwise>
 						</c:choose></span> <b class="caret"></b></a>
@@ -80,7 +93,7 @@
 			</c:if>
 
 			<li class="dropdown dropdown-interactive slide-edit-quote-dropdown" id="edit-details-dropdown">
-				<a class="activator needsclick dropdown-toggle btn-back" data-toggle="dropdown" href="javascript:;"><span class="icon icon-cog"></span>
+				<a class="activator needsclick dropdown-toggle btn-back" data-toggle="dropdown" href="javascript:;" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />><span class="icon icon-cog"></span>
 				<span>My Details</span> <b class="caret"></b></a>
 				<div class="dropdown-menu dropdown-menu-large" role="menu" aria-labelledby="dLabel">
 					<div class="dropdown-container">
@@ -91,7 +104,7 @@
 		
 			<c:if test="${saveQuoteEnabled == 'Y'}">
 			<li class="dropdown dropdown-interactive slide-feature-emailquote hidden-xs" id="email-quote-dropdown">
-				<a class="activator needsclick btn-email dropdown-toggle" data-toggle="dropdown" href="javascript:;"><span class="icon icon-envelope"></span> <span><c:choose>
+				<a class="activator needsclick btn-email dropdown-toggle" data-toggle="dropdown" href="javascript:;" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />><span class="icon icon-envelope"></span> <span><c:choose>
 							<c:when test="${not empty authenticatedData.login.user.uid}">Save Quote</c:when>
 							<c:otherwise>Save Quote</c:otherwise>
 						</c:choose></span> <b class="caret"></b></a>
@@ -111,17 +124,23 @@
 		<div class="collapse navbar-collapse">
 			<ul class="nav navbar-nav navbar-right slide-feature-pagination" data-results-pagination-pages-cell="true"></ul>
 		</div>
+
+        <agg_v1:inclusive_gst className="nav navbar-right" />
 	</jsp:attribute>
 
 	<jsp:attribute name="navbar_additional">
 		<nav id="navbar-filter" class="navbar navbar-default navbar-affix navbar-inverse hidden hidden-xs" data-affix-after="#navbar-main">
 			<div class="container">
 				<ul class="nav navbar-nav">
-					<li class="dropdown filter-cover-type">
-						<a href="javascript:void(0);" class="dropdown-toggle active" data-toggle="dropdown"><span>Comprehensive</span> <b class="icon icon-angle-down"></b></a>
-						<ul class="dropdown-menu">
-						</ul>
-					</li>
+
+					<c:if test="${pageSettings.getBrandCode() eq 'ctm'}">
+						<li class="dropdown filter-cover-type">
+							<a href="javascript:void(0);" class="dropdown-toggle active" data-toggle="dropdown"><span>Comprehensive</span> <b class="icon icon-angle-down"></b></a>
+							<ul class="dropdown-menu">
+							</ul>
+						</li>
+					</c:if>
+
 					<li class="dropdown filter-excess">
 						<a href="javascript:void(0);" class="dropdown-toggle active" data-toggle="dropdown"><span>Excess</span> <b class="icon icon-angle-down"></b></a>
 						<ul class="dropdown-menu">
@@ -145,7 +164,9 @@
 		<nav id="navbar-filter-labels" class="navbar hidden hidden-xs">
 			<div class="container">
 				<ul class="nav navbar-nav">
-					<li class="navbar-text filter-type-of-cover-label">Type of Cover</li>
+					<c:if test="${pageSettings.getBrandCode() eq 'ctm'}">
+						<li class="navbar-text filter-type-of-cover-label">Type of Cover</li>
+					</c:if>
 					<li class="navbar-text filter-excess-label">Excess</li>
 					<li class="navbar-text filter-cancel-label"><a href="javascript:void(0);" class="hidden">Cancel</a></li>
 				</ul>
@@ -156,9 +177,9 @@
 				</ul>
 			</div>
 		</nav>
-
-		<nav id="navbar-compare" class="navbar navbar-default navbar-affix navbar-additional hidden-xs hidden" data-affix-after="#navbar-main">
-			<div class="container compare-basket">
+		
+		<nav id="navbar-compare" class="compare-v2 navbar hidden-xs hidden">
+			<div class="navbar-additional clearfix compare-basket">
 			</div>
 		</nav>
 
@@ -188,7 +209,7 @@
 	</jsp:attribute>
 			
 	<jsp:attribute name="footer">
-		<core_v1:footer_participatingsuppliers />
+		<car:footer />
 	</jsp:attribute>
 
     <jsp:attribute name="xs_results_pagination">

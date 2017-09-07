@@ -229,7 +229,12 @@
               meerkat.modules.healthFunds.showHowToSendInfo('Navy Health', true);
 
               <%-- Calendar for start cover --%>
-              meerkat.modules.healthPaymentStep.setCoverStartRange(0, 28);
+              if(_.has(meerkat.modules,'healthCoverStartDate')) {
+                  meerkat.modules.healthCoverStartDate.setCoverStartRange(0, 28);
+              } else {
+	              meerkat.modules.healthPaymentStep.setCoverStartRange(0, 28);
+              }
+              healthFunds_NHB.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '0,6');
 
               <%-- Payments --%>
               meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':true, 'fortnightly': true, 'monthly': true, 'quarterly':true, 'halfyearly':true, 'annually':true });
@@ -281,7 +286,6 @@
 		  renderPaymentDays: function() {
 			healthFunds_NHB.$paymentTypeContainer.text('*Navy Health offers a 2% discount on Half Yearly or a 4% discount on Annual payments').slideDown();
 			meerkat.modules.healthFunds.setPayments({ 'min':0, 'max':14, 'weekends':false, 'countFrom' : meerkat.modules.healthPaymentDay.EFFECTIVE_DATE, 'maxDay' : 28});
-			healthFunds_NHB.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '0,6');
 			
             var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
             meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), _html);

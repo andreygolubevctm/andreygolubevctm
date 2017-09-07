@@ -12,6 +12,14 @@ public class Price {
 
     private BigDecimal annualisedMonthlyPremium;
 
+    private boolean showMonthlyTotal;
+
+    private boolean monthlyAvailable;
+
+    private boolean annualAvailable;
+
+    private String priceDisclaimer;
+
     public BigDecimal getAnnualPremium() {
         return annualPremium;
     }
@@ -42,5 +50,37 @@ public class Price {
 
     public void setAnnualisedMonthlyPremium(BigDecimal annualisedMonthlyPremium) {
         this.annualisedMonthlyPremium = annualisedMonthlyPremium;
+    }
+
+    public boolean isShowMonthlyTotal() {
+        return showMonthlyTotal;
+    }
+
+    public void setShowMonthlyTotal(final boolean showMonthlyTotal) {
+        this.showMonthlyTotal = showMonthlyTotal;
+    }
+
+    public boolean isMonthlyAvailable() {
+        return monthlyAvailable;
+    }
+
+    public void setMonthlyAvailable(final boolean monthlyAvailable) {
+        this.monthlyAvailable = monthlyAvailable;
+    }
+
+    public boolean isAnnualAvailable() {
+        return annualAvailable;
+    }
+
+    public void setAnnualAvailable(final boolean annualAvailable) {
+        this.annualAvailable = annualAvailable;
+    }
+
+    public String getPriceDisclaimer() {
+        return priceDisclaimer;
+    }
+
+    public void setPriceDisclaimer(final String priceDisclaimer) {
+        this.priceDisclaimer = priceDisclaimer;
     }
 }

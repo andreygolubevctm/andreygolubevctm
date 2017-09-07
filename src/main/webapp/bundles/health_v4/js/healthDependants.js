@@ -53,7 +53,9 @@
             showRelationship:false,
             defactoMinAge: 21,
             defactoMaxAge: 24,
-            showApprenticeField: false
+            showApprenticeField: false,
+            extendedFamilyMinAge: 21,
+            extendedFamilyMaxAge: 25
         },
         providerConfig,
         maxDependantAge = 25,
@@ -96,13 +98,11 @@
     function init() {
         $(document).ready(function () {
             $elements = {
-                dependants : $('select[name=health_healthCover_dependants]'),
-                selectedRebateText: $('#selectedRebateText'),
-                applyRebate: $('input[name=health_healthCover_rebateCheckbox]')
+                dependantsRow: $('#health_healthCover_dependants_field_row'),
+                dependants: $('select[name=health_healthCover_dependants]')
             };
 
             aboutYouApplyEventListeners();
-            toggleDependantsDefaultValue(situationEnablesDependants());
             moduleInitialised = true;
         });
     }
@@ -119,35 +119,14 @@
         });
     }
 
-    function toggleDependantsDefaultValueCallback(shouldSetDefaultDependants) {
-        if (shouldSetDefaultDependants) {
-            // default to 2 dependants
-            $elements.dependants.val(2).attr('data-attach', true);
-        } else {
-            $elements.dependants.val('').removeAttr('data-attach');
-        }
-    }
-
-    function toggleDependantsDefaultValue(shouldSetDefaultDependants) {
+    function toggleDependants() {
+        var showDependants = situationEnablesDependants();
         if(moduleInitialised) {
-            toggleDependantsDefaultValueCallback(shouldSetDefaultDependants);
+                $elements.dependantsRow.toggleClass('hidden', !showDependants);
         } else {
             _.defer(function(){
-                toggleDependantsDefaultValueCallback(shouldSetDefaultDependants);
+                $elements.dependantsRow.toggleClass('hidden', !showDependants);
             });
-        }
-    }
-
-    function toggleDependants() {
-        if (!_.isUndefined($elements) && !$elements.selectedRebateText.is(':visible') && $elements.applyRebate.is(':checked')) {
-            var showDependants = situationEnablesDependants();
-            $elements.dependants.closest('.select').toggleClass('hidden', !showDependants);
-        }
-    }
-
-    function hideDependants() {
-        if (!_.isUndefined($elements)) {
-            $elements.dependants.closest('.select').addClass('hidden');
         }
     }
 
@@ -248,6 +227,8 @@
             selectorPrefix = '#health_application_dependants_dependant' + dependantId,
             $dob = $(selectorPrefix + '_dob');
         var age = meerkat.modules.age.returnAge($dob.val(), true) || 0;
+        
+        // see   \health\js\healthDependants.js if extendedFamily integration is required in the future
         // If the dependant is between the school age
         if (age >= providerConfig.schoolMinAge && age <= providerConfig.schoolMaxAge) {
             // If the config is set to true, we want to remove the class.
@@ -257,6 +238,7 @@
             $(selectorPrefix + '_schoolIDGroup').toggleClass('hidden', !providerConfig.showSchoolIdField);
             $(selectorPrefix + '_schoolDateGroup').toggleClass('hidden', !providerConfig.showSchoolCommencementField);
             $(selectorPrefix + '_apprenticeGroup').toggleClass('hidden', !providerConfig.showApprenticeField);
+            $('[name=health_application_dependants_dependant' + dependantId + '_schoolID]').prop('required',providerConfig.schoolIdRequired);
         } else {
             // Hide them all if they aren't in the date range.
             $(selectorPrefix + '_fulltimeGroup, ' + selectorPrefix + '_schoolGroup, ' + selectorPrefix + '_schoolIDGroup, ' + selectorPrefix + '_schoolDateGroup,' + selectorPrefix + '_apprenticeGroup').addClass('hidden');
@@ -451,7 +433,7 @@
      */
     function situationEnablesDependants() {
         var coverCode = meerkat.modules.healthChoices.returnCoverCode();
-        return coverCode == 'SPF' || coverCode == 'F';
+        return coverCode == 'SPF' || coverCode == 'F' || coverCode == 'ESP' || coverCode == 'EF';
     }
 
     function animateToDependant($el) {
@@ -595,12 +577,12 @@
         updateConfig: updateConfig,
         getMaxAge: getMaxAge,
         setMaxAge: setMaxAge,
-        hideDependants: hideDependants,
         updateDependantConfiguration: updateDependantConfiguration,
         getEducationalInstitutionsOptions: getEducationalInstitutionsOptions,
         situationEnablesDependants: situationEnablesDependants,
         toggleDependants: toggleDependants,
-        toggleDependantsDefaultValue: toggleDependantsDefaultValue
+        getNumberOfDependants: getNumberOfDependants,
+        updateApplicationDetails: updateApplicationDetails
     });
 
 })(jQuery);

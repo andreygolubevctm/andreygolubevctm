@@ -7,7 +7,7 @@
 <simples:template_messagedetail />
 <simples:template_touches />
 
-<div class="simples-home-buttons hidden">
+<div class="simples-home-buttons simples-splashpage-item hidden">
 <c:choose>
 	<c:when test="${pageSettings.getSetting('inInEnabled')}">
 		<%-- <p>InInInteractionId: <c:out value="${sessionScope.ininInteractionId}" /></p> --%>
@@ -26,5 +26,40 @@
 	<a href="/${pageSettings.getContextFolder()}simples/startQuote.jsp?verticalCode=HEALTH" class="btn btn-form btn-lg message-inbound">Start New Quote <span class="icon icon-arrow-right"></span></a>
 </div>
 
+<div class="simples-remaining-sales-container simples-splashpage-item hidden">
+	<div class="remaining-sales-container">
+		<div class="row">
+			<div>
+				<h1>Remaining Sales</h1>
+			</div>
+		</div>
+		<div id="remaining-sales-row" class="row">
+			<div>
+				<table id="remaining-sales-table" class="remaining-sales-table table table-hover">
+					<thead>
+					<tr>
+						<th>Fund</th>
+						<th>Remaining Sales</th>
+						<th>Estimated end</th>
+					</tr>
+					</thead>
+					<tbody></tbody>
+				</table>
+			</div>
+		</div>
+		<div class="row">
+			<div>
+				<b>If a fund is not shown above, there is no monthly sale limit</b>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="simples-splashpage-item hidden">
+	<simples:dialogue id="77" vertical="health" className="simples-dialog-inbound" />
+	<simples:clifilter_add />
+</div>
+
 <div class="simples-message-details-container">
+
 </div>

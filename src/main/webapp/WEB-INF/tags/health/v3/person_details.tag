@@ -21,19 +21,16 @@
 
 <%-- HTML --%>
 <div class="health-person-details-${id} health-person-details ${id}">
-		<field_v3:name_group xpath="${xpath}" showInitial="true" firstNameMaxlength="24" lastNameMaxlength="20" />
+		<field_v3:name_group xpath="${xpath}" showInitial="true" firstNameMaxlength="24" lastNameMaxlength="20" middleInitialMaxlength="1" label="Name as it appears on Medicare Card" />
 
 		<c:set var="fieldXpath" value="${xpath}/dob" />
 		<form_v2:row fieldXpath="${fieldXpath}" label="Date of Birth" className="changes-premium">
 			<field_v2:person_dob xpath="${fieldXpath}" title="${dobTitle}" required="true" ageMin="16" ageMax="120" disableErrorContainer="${true}" />
 		</form_v2:row>
 
-		<c:set var="fieldXpath" value="${xpath}/gender"  />
-		<field_v1:hidden xpath="${fieldXpath}" className="health-person-details person-gender" />
-
-		<c:set var="fieldXpath" value="${xpath}/genderToggle" />
+		<c:set var="fieldXpath" value="${xpath}/gender" />
 		<form_v2:row fieldXpath="${fieldXpath}" label="Gender" id="${name}_genderRow" smRowOverride="5">
-			<field_v2:array_radio id="${name}_genderToggle" xpath="${fieldXpath}" required="true" items="M=Male,F=Female" title="${title} gender" className="health-person-details person-gender-toggle" disableErrorContainer="${true}" additionalAttributes=" data-ignore='true'" />
+			<field_v2:array_radio id="${name}_gender" xpath="${fieldXpath}" required="true" items="M=Male,F=Female" title="${title} gender" className="health-person-details person-gender" disableErrorContainer="${true}" />
 		</form_v2:row>
 
 		<c:if test="${id == 'partner'}">
@@ -42,7 +39,5 @@
 				<field_v2:array_radio id="${name}_authority" xpath="${fieldXpath}" required="true" items="Y=Yes,N=No" title="${title} authority permission" className="health-person-details-authority" />
 			</form_v2:row>
 		</c:if>
-
-
 
 </div>

@@ -320,6 +320,10 @@ ul.themed {
   border-color: @btn-secondary-active-color;
 }
 
+.narrowMarginTop {
+  margin-top: 5px;
+}
+
 //** Between pages, the journey nav button should have custom padding on XS.
 @media (@xs-only) {
   .journeyNavButton {
@@ -365,6 +369,10 @@ ul.themed {
 
 .text-light {
   color: @theme-light;
+}
+
+.text-placeholder-color {
+  color: @input-color-placeholder;
 }
 
 .text-bold {
@@ -794,12 +802,12 @@ a {
   display: inline-block;
 
   //XS Mobile first base
-  width: 136px; // for the hidden text.
+  width: 43px; // for the hidden text.
   height: 32px;
   margin: 5px auto 0 8px;
   @media only screen and (@xs-only) {
     line-height: @font-size-small;
-    font-size: @font-size-small;
+    font-size: 0;
     .header_button_left & {
       margin: 9px auto 0 3px;
     }
@@ -1074,6 +1082,12 @@ fieldset h3 {
   height: 41px; //Temporary fix for inconsistency between verticals for select input addons
 }
 
+select.text-placeholder-color {
+  option:not([value=""]) {
+    color: @gray-dark;
+  }
+}
+
 .fieldrow_legend {
   //.help-block; //Because we always write out empty fieldrow_legend this isn't suitable.
   color: @input-color-placeholder;
@@ -1098,6 +1112,16 @@ fieldset h3 {
           @btn-form-inverse-active-border-color, @btn-form-border-color, @input-border, true);
 }
 
+.btn-form-inverse-pill { // used for 2017 styled payment frequency buttons
+  .btn-pill-styles(@btn-form-inverse-pill-bg-color, @btn-form-inverse-pill-color,
+          @btn-form-inverse-pill-bg-color, @btn-form-inverse-pill-active-color,
+          @btn-form-inverse-pill-bg-color, @btn-form-inverse-pill-hover-color,
+          @btn-form-inverse-pill-bg-color, @btn-form-inverse-pill-active-color,
+          @btn-form-inverse-pill-bg-color, true, @pill-border-cnr-radius,
+          @pill-btn-pad-top, @pill-btn-pad-bottom, @pill-btn-pad-left
+  );
+}
+
 .btn-form { //used for everything else
   .btn-styles(@btn-form-bg-color, @btn-form-color,
           @btn-form-active-bg-color, @btn-form-active-color,
@@ -1109,9 +1133,13 @@ fieldset h3 {
 }
 
 [data-toggle="radio"] > .btn-form-inverse { //not sure why there was an attribute selector at work here... they are slower.
+  outline: 0;
   font-family: @font-family-sans-serif;
   &.active, &:active {
     color: @form-input-common-selected-text-colour;
+  }
+  &.focus, &:focus {
+    outline: 0;
   }
   // NOTE!! Button group states are part of .form-control-button-group-validation mixin after this declaration, but the current implementation is actually applying .disabled to the label and input of a .button-group.
   &[disabled],
@@ -1141,6 +1169,19 @@ fieldset h3 {
         border-left-width: @btn-border-width;
       }
     }
+
+    &.btn-form-inverse {
+      &:first-child {
+        border-right-width: 0;
+
+        & + .btn.btn-form-inverse {
+          border-left-width: 1px;
+        }
+      }
+      &.active:first-child + .btn.btn-form-inverse {
+        border-left-color: #1c3e93;
+      }
+    }
   }
 }
 
@@ -1151,85 +1192,102 @@ fieldset h3 {
   }
 }
 
-.has-switch {
-  border-radius: 20px;
-  min-width: 60px;
+#benefitsForm,
+#resultsForm {
+  .has-switch {
+    border: none;
+    border-radius: 13px;
+    min-width: 60px;
+    margin-top: -9px;
+    margin-left: 15px;
 
-  span, label, span.switch-right {
-    color: #ffffff;
-    text-align: center;
-  }
-  span {
-    &.switch-left {
+    span, label, span.switch-right {
       color: #ffffff;
-      background: @theme-secondary !important;
+      text-align: center;
+      text-transform: capitalize;
     }
+    span {
+      &.switch-left {
+        color: #ffffff;
+        background: transparent;
+      }
 
-    &.switch-small {
-      width: 45%;
-      font-weight: normal;
-      font-family: @font-family-theme-bold;
-    }
-    &.switch-right {
-      width: 45%;
-      padding-right: 2.25%;
-    }
-  }
-  label {
-    z-index: 9; //override default of 100
-
-    &:before {
-      content: '';
-      display: inline-block;
-      position: relative;
-    }
-
-    &.switch-small {
-      width: 10%;
-
-      &:before {
-        border: 1px solid #999999;
-        border-radius: 25px;
-        top: 8px;
-        margin-top: -11px;
-        margin-left: -8px;
-        width: 25px;
-        height: 25px;
-        background-color: #ededed;
+      &.switch-small {
+        width: 45%;
+        font-weight: normal;
+        font-family: @font-family-theme-bold;
+        line-height: 20px;
+      }
+      &.switch-right {
+        background: transparent;
+        color: #ffffff;
+        width: 45%;
+        padding-right: 2.25%;
       }
     }
+    label {
+      z-index: 9; //override default of 100
+
+      &:before {
+        content: '';
+        display: inline-block;
+        position: relative;
+      }
+
+      &.switch-small {
+        width: 10%;
+
+        &:before {
+          border-radius: 50%;
+          top: 6px;
+          margin-top: -11px;
+          margin-left: -6px;
+          width: 20px;
+          height: 20px;
+          background-color: #fff;
+        }
+      }
+    }
+
+    .switch-off {
+      &, label, span {
+        background-color: @theme-accent-3;
+      }
+    }
+
+    .switch-on {
+      &, label, span {
+        background-color: @theme-secondary;
+      }
+    }
+
+    // Special overrides
+    > div {
+      &.switch-animate {
+        .transition(left 0.1s);
+      }
+    }
+    html.lt-ie9 &.disabled {
+      > div, span, label {
+        .opacity(.5);
+      }
+    }
+    input[type=radio],
+    input[type=checkbox] {
+      display: block;
+      visibility: hidden;
+      position: absolute;
+    }
   }
 
-  .switch-off {
-    &, label, span {
-      background: @form-input-common-selected-bg-colour;
+  // Overrides for results filters
+  .results-filters-benefits {
+    .has-switch {
+      margin-top: -2px;
     }
-  }
-
-  .switch-on {
-    &, label, span {
-      background: @form-input-common-selected-bg-colour;
-    }
-  }
-
-  // Special overrides
-  > div {
-    &.switch-animate {
-      .transition(left 0.1s);
-    }
-  }
-  html.lt-ie9 &.disabled {
-    > div, span, label {
-      .opacity(.5);
-    }
-  }
-  input[type=radio],
-  input[type=checkbox] {
-    display: block;
-    visibility: hidden;
-    position: absolute;
   }
 }
+
 
 // Form control feedback states
 //

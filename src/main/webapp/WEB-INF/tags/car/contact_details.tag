@@ -20,13 +20,17 @@
 <form_v2:fieldset legend="Contact Details" id="${name}FieldSet">
 
 	<form_v2:row label="First Name" id="firstName">
+		<c:set var="analAttribute"><field_v1:analytics_attr analVal="First Name" quoteChar="\"" /></c:set>
 		<field_v1:person_name xpath="quote/drivers/regular/firstname"
-			required="false" title="the policy holder's first name" />
+			required="false" title="the policy holder's first name"
+			additionalAttributes="${analAttribute}" />
 	</form_v2:row>
 
 	<form_v2:row label="Last Name" id="lastName">
+		<c:set var="analAttribute"><field_v1:analytics_attr analVal="Last Name" quoteChar="\"" /></c:set>
 		<field_v1:person_name xpath="quote/drivers/regular/surname"
-			required="false" title="the policy holder's last name" />
+			required="false" title="the policy holder's last name"
+			additionalAttributes="${analAttribute}" />
 	</form_v2:row>
 
 	<form_v2:row label="Email Address" id="contactEmailRow">
@@ -46,6 +50,12 @@
 
 	<field_v1:hidden xpath="quote/contact/marketing" defaultValue="N" />
 	<field_v1:hidden xpath="quote/contact/oktocall" defaultValue="N" />
+	<field_v1:hidden xpath="quote/quoteReferenceNumber" defaultValue="${meerkat.site.IBOXquoteNumber}"/>
+
+	<form_v2:row label="Preferred method of contact" id="preferredContactMethodRow" className="hidden">
+		<field_v2:array_radio xpath="${xpath}/preferred" required="true" items="Email=Email,Phone=Phone"
+							  title="the preferred method of contact" />
+	</form_v2:row>
 
 	<%-- COMPETITION START --%>
 	<c:if test="${competitionEnabled == true}">

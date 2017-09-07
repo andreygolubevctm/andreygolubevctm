@@ -1,0 +1,73 @@
+.health {
+  &:not([data-step="results"]) {
+    .refine-results {
+      display: none;
+    }
+  }
+}
+
+.refine-results {
+  float: right;
+  line-height: 21px;
+  padding: 9px 10px;
+
+  @media (@sm) {
+    display: none;
+  }
+}
+
+.refine-results-modal {
+  .refine-results-discount {
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+
+  h3,
+  .refine-results-sub-heading {
+    color: @theme-accent-4;
+  }
+
+  .refine-results-sub-heading {
+    font-size: @font-size-large;
+    margin-bottom: 10px;
+  }
+
+  .refine-results-by-container {
+    position: relative;
+    margin-bottom: 20px;
+
+    .refine-results-redirect-btn {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+    }
+  }
+
+  .refine-results-call-back {
+    color: @gray-dark;
+    text-align: center;
+
+    .refine-results-call-text,
+    .refine-results-call-number {
+      margin-bottom: 15px;
+    }
+
+    .refine-results-call-number {
+      display: block;
+      font-size: 28px;
+
+      .icon-phone {
+        color: @white;
+        background-color: @theme-secondary;
+        border-radius: 100%;
+        width: 36px;
+        height: 36px;
+      }
+    }
+
+    .refine-results-view-all-times {
+      display: block;
+      margin-top: 10px;
+    }
+  }
+}

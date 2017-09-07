@@ -1,4 +1,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
+<%@ include file="/WEB-INF/tags/taglib.tagf"%>
+
+<c:set var="navBtnAnalAttribute"><field_v1:analytics_attr analVal="nav button" quoteChar="\"" /></c:set>
 
 {{ var parsedValue = '' }}
 
@@ -22,7 +25,7 @@
 {{ displayValue = '<div class="btnContainerNoBtn">'+parsedValue+'</div>' }}
 
 {{ if(obj.contact.allowCallDirect === true) { }}
-{{ displayValue = '<div class="btnContainer"><a class="btn btn-call btn-block btn-call-actions btn-calldirect" data-callback-toggle="calldirect" href="javascript:;" data-productId="'+obj.productId+'">Call Insurer Direct</a></div>' }}
+{{ displayValue = '<div class="btnContainer"><a class="btn btn-call btn-block btn-call-actions btn-calldirect" data-callback-toggle="calldirect" href="javascript:;" data-productId="'+obj.productId+'" ${navBtnAnalAttribute}>Call Insurer Direct</a></div>' }}
 {{ } }}
 {{ } }}
 
@@ -34,7 +37,7 @@
 {{ displayValue = '<div class="btnContainerNoBtn">'+parsedValue+'</div>' }}
 
 {{ if(obj.contact.allowCallMeBack === true) { }}
-{{ displayValue = '<div class="btnContainer"><a class="btn btn-back btn-block btn-call-actions btn-callback" data-callback-toggle="callback" href="javascript:;" data-productId="'+obj.productId+'">Get a Call Back</a></div>' }}
+{{ displayValue = '<div class="btnContainer"><a class="btn btn-back btn-block btn-call-actions btn-callback" data-callback-toggle="callback" href="javascript:;" data-productId="'+obj.productId+'" ${navBtnAnalAttribute}>Get a Call Back</a></div>' }}
 {{ } }}
 {{ } }}
 
@@ -50,7 +53,7 @@
 {{ if(obj.productDisclosures != null) { }}
 {{ if(typeof obj.productDisclosures.pdsc != 'undefined') { }}
 {{ if(obj.productDisclosures.pdsc.url != '') { }}
-{{ pdsC = '<a href="'+obj.productDisclosures.pdsc.url+'" target="_blank" class="showDoc btn btn-sm btn-download" style="width: '+width+'%">Part C</a>' }}
+{{ pdsC = '<a href="'+obj.productDisclosures.pdsc.url+'" target="_blank" class="showDoc btn btn-sm btn-download" ${navBtnAnalAttribute} style="width: '+width+'%">Part C</a>' }}
 {{ } else { }}
 {{ width = '45' }}
 {{ } }}
@@ -59,13 +62,13 @@
 {{ } }}
 
 {{ if(typeof obj.productDisclosures.pdsb != 'undefined') { }}
-{{ pdsB = '<a href="'+obj.productDisclosures.pdsb.url+'" target="_blank" class="showDoc btn btn-sm btn-download" style="width: '+width+'%">Part B</a>' }}
+{{ pdsB = '<a href="'+obj.productDisclosures.pdsb.url+'" target="_blank" class="showDoc btn btn-sm btn-download" ${navBtnAnalAttribute} style="width: '+width+'%">Part B</a>' }}
 {{ } else { }}
 {{ width = '70' }}
 {{ } }}
 
 
-{{ pdsA = '<a href="'+obj.productDisclosures.pdsa.url+'" target="_blank" class="showDoc btn btn-sm btn-download" style="width: '+width+'%">Part A</a>' }}
+{{ pdsA = '<a href="'+obj.productDisclosures.pdsa.url+'" target="_blank" class="showDoc btn btn-sm btn-download" ${navBtnAnalAttribute} style="width: '+width+'%">Part A</a>' }}
 {{ } }}
 
 {{ displayValue = '<div class="btnContainer">'+pdsA+pdsB+pdsC+'</div>' }}
@@ -74,5 +77,5 @@
 <%-- View more info --%>
 {{ if (ft.resultPath == 'action.moreInfo') { }}
 {{ pathValue = true }}
-{{  displayValue = '<div class="btnContainer"><a class="btn-more-info" href="javascript:;" data-productId="'+obj.productId+'">view more info</a></div>' }}
+{{  displayValue = '<div class="btnContainer"><a class="btn-more-info" href="javascript:;" data-productId="'+obj.productId+'" ${navBtnAnalAttribute}>view more info</a></div>' }}
 {{ } }}

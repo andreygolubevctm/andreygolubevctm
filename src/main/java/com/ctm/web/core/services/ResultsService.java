@@ -33,6 +33,22 @@ public class ResultsService {
      * These are specific xpaths from the results set that were stored after the results were returned.
      *
      * @param transactionId
+     * @return
+     * @throws DaoException
+     */
+    public static ArrayList<ResultProperty> getResultsPropertiesForTransactionId(Long transactionId, String productId) throws DaoException{
+
+        ResultsDao resultsDao = new ResultsDao();
+        ArrayList<ResultProperty> properties = resultsDao.getResultPropertiesForTransaction(transactionId, productId);
+        return properties;
+
+    }
+
+    /**
+     * Returns an array of product properties stored against a transaction id.
+     * These are specific xpaths from the results set that were stored after the results were returned.
+     *
+     * @param transactionId
      * @param productId
      * @param property
      * @return propertyValue

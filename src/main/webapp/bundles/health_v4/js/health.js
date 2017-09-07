@@ -94,6 +94,8 @@
             $("#health_contactDetails_optInEmail").val(optinVal);
             $("#health_contactDetails_call").val(optinVal);
         });
+
+        meerkat.modules.fieldUtilities.selectsOnChange();
     }
 
 
@@ -120,20 +122,24 @@
         var startStepId = null;
         if (meerkat.site.isFromBrochureSite === true) {
             startStepId = steps.startStep.navigationId;
-        } else if (meerkat.site.journeyStage.length > 0 && meerkat.site.pageAction === 'amend') {
+        // Use the stage user was on when saving their quote
+        } else if (meerkat.site.journeyStage.length > 0 && _.indexOf(['amend', 'latest'], meerkat.site.pageAction) >= 0) {
             // Do not allow the user to go past the results page on amend.
             if (meerkat.site.journeyStage === 'apply' || meerkat.site.journeyStage === 'payment') {
                 startStepId = 'results';
             } else {
                 startStepId = meerkat.site.journeyStage;
             }
+        } else if (meerkat.site.utm_medium === 'email') {
+            startStepId = 'results';
         }
 
-
-        meerkat.modules.journeyEngine.configure({
+        var configureJourneyEngine = _.bind(meerkat.modules.journeyEngine.configure, this, {
             startStepId: startStepId,
             steps: _.toArray(steps)
         });
+        // Allow time for journey to be fully populated/rendered when loading an existing quote
+        _.delay(configureJourneyEngine, meerkat.site.isNewQuote === false ? 750 : 0);
 
         meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
             method: 'trackQuoteEvent',
@@ -190,16 +196,29 @@
                     meerkat.modules.healthChoices.setState(meerkat.site.choices.state);
                     meerkat.modules.healthChoices.shouldPerformUpdate(meerkat.site.choices.performHealthChoicesUpdate);
                 }
+                meerkat.modules.healthRebate.onStartInit();
+                meerkat.modules.healthPrimary.onStartInit();
+                meerkat.modules.healthPartner.onStartInit();
             },
-            onBeforeEnter: function() {
+            onBeforeEnter: function enterStartStep(event) {
+                if (event.isForward) {
+                    // Delay 1 sec to make sure we have the data bucket saved in to DB, then filter coupon
+                    _.delay(function () {
+                        // coupon logic, filter for user, then render banner
+                        meerkat.modules.coupon.loadCoupon('filter', null, function successCallBack() {
+                            meerkat.modules.coupon.renderCouponBanner();
+                        });
+                    }, 1000);
+                }
                 _incrementTranIdBeforeEnteringSlide();
 
                 // configure progress bar
                 configureProgressBar(true);
 
-                meerkat.modules.healthRebate.toggleEdit(false);
+                meerkat.modules.fieldUtilities.toggleSelectsPlaceholderColor();
             },
             onAfterEnter: function healthAfterEnter() {
+
             },
             onBeforeLeave: function (event) {
                 meerkat.modules.healthTiers.setIncomeLabel();
@@ -217,15 +236,50 @@
                 includeFormData: true
             },
             validation: {
-                validate: true
+                validate: true,
+                customValidation: function validateSelection(callback) {
+                    var areBenefitsSwitchOn = meerkat.modules.benefitsSwitch.isHospitalOn() || meerkat.modules.benefitsSwitch.isExtrasOn(),
+                        success = meerkat.modules.splitTest.isActive(2) ? areBenefitsSwitchOn : true;
+
+                    if (meerkat.modules.splitTest.isActive(2)) {
+                        if (meerkat.modules.benefitsSwitch.isExtrasOn()) {
+                            if (meerkat.modules.benefitsModel.getExtrasCount() === 0) {
+                                meerkat.modules.benefits.toggleExtrasMessage(false);
+                                meerkat.modules.benefitsSelectionScroller.triggerScroll('extras');
+                                // push error tracking object into CtMDatalayer
+                                meerkat.modules.benefits.errorTracking('benefits-switch-extras');
+
+                                success = false;
+                            } else {
+                                meerkat.modules.benefits.toggleExtrasMessage(true);
+                            }
+                        }
+                    }
+
+                    callback(success);
+                }
             },
             externalTracking: {
                 method: 'trackQuoteForms',
                 object: meerkat.modules.health.getTrackingFieldsObject
             },
+            onInitialise: function onBenefitsInit(event) {
+                if (meerkat.modules.splitTest.isActive(2)) {
+                    meerkat.modules.benefitsSwitch.initBenefitsSwitch();
+                }
+            },
             onBeforeEnter: function enterBenefitsStep(event) {
                 // configure progress bar
                 configureProgressBar(true);
+                if (event.isForward) {
+                    // Delay 1 sec to make sure we have the data bucket saved in to DB, then filter coupon
+                    _.delay(function () {
+                        // coupon logic, filter for user, then render banner
+                        meerkat.modules.coupon.loadCoupon('filter', null, function successCallBack() {
+                            meerkat.modules.coupon.renderCouponBanner();
+                        });
+                    }, 1000);
+                }
                 _incrementTranIdBeforeEnteringSlide();
             },
             onAfterEnter: function enterBenefitsStep(event) {
@@ -272,8 +326,6 @@
                 // configure progress bar
                 configureProgressBar(true);
 
-                meerkat.modules.healthPostcode.editMode();
-
                 if (event.isForward) {
                     // Delay 1 sec to make sure we have the data bucket saved in to DB, then filter coupon
                     _.delay(function () {
@@ -284,10 +336,16 @@
                     }, 1000);
                 }
                 _incrementTranIdBeforeEnteringSlide();
+
+            },
+            onAfterEnter: function afterEnterContactStep(event) {
+                meerkat.modules.coupon.dealWithAddedCouponHeight();
+                if (meerkat.site.isFromBrochureSite) {
+                    meerkat.modules.healthPostcode.validate();
+                }
             },
             onAfterLeave: function leaveContactStep(event) {
 
-                meerkat.modules.healthPostcode.editMode();
             }
         };
 
@@ -322,6 +380,8 @@
                 meerkat.modules.healthMoreInfo.initMoreInfo();
                 meerkat.modules.healthPriceComponent.initHealthPriceComponent();
                 meerkat.modules.healthDualPricing.initDualPricing();
+                meerkat.modules.healthPyrrCampaign.initPyrrCampaign();
+                meerkat.modules.healthResultsRefineMobile.initHealthResultsRefineMobile();
             },
             onBeforeEnter: function enterResultsStep(event) {
                 meerkat.modules.healthDependants.resetConfig();
@@ -343,6 +403,7 @@
                     meerkat.modules.healthTaxTime.disableFastTrack();
                 }
                 meerkat.modules.healthResults.setCallCentreText();
+
             },
             onBeforeLeave: function beforeLeaveResultsStep(event) {
                 // Increment the transactionId
@@ -351,9 +412,6 @@
                 }
 
                 meerkat.modules.healthResults.resetCallCentreText();
-            },
-            onAfterLeave: function afterLeaveResultsStep(event) {
-                meerkat.modules.healthResults.recordPreviousBreakpoint();
             }
         };
 
@@ -368,10 +426,27 @@
                 method: 'trackQuoteForms',
                 object: meerkat.modules.health.getTrackingFieldsObject
             },
+            validation: {
+                validate: true,
+                customValidation: function validateSelection(callback) {
+                    if (meerkat.modules.healthAGRModal.isActivated()) {
+                        var showAGR = meerkat.modules.healthAGRModal.show();
+                        if (showAGR) {
+                            // open AGR modal
+                            meerkat.modules.healthAGRModal.open();
+                        }
+                        callback(!showAGR);
+                    } else {
+                        callback(true);
+                    }
+                }
+            },
             onInitialise: function onApplyInit(event) {
                 meerkat.modules.healthDependants.initHealthDependants();
                 meerkat.modules.healthMedicare.initHealthMedicare();
+                meerkat.modules.healthCoverStartDate.onInitialise();
                 meerkat.modules.healthApplyStep.onInitialise();
+                meerkat.modules.healthAGRModal.onInitialise();
             },
             onBeforeEnter: function beforeEnterApplyStep(event) {
                 meerkat.modules.benefitsToggleBar.deRegisterScroll();
@@ -398,12 +473,16 @@
                     // Unset the Health Declaration checkbox (could be refactored to only uncheck if the fund changes)
                     $('#health_declaration input:checked').prop('checked', false).change();
 
-                    meerkat.modules.healthApplyStep.onBeforeEnter();
+	                meerkat.modules.healthCoverStartDate.onBeforeEnter();
+	                meerkat.modules.healthApplyStep.onBeforeEnter();
                     meerkat.modules.healthDependants.updateDependantConfiguration();
                     meerkat.modules.healthMedicare.onBeforeEnterApply();
+                    meerkat.modules.healthAGRModal.onBeforeEnterApply();
+                    meerkat.modules.fieldUtilities.toggleSelectsPlaceholderColor();
                 }
             },
             onAfterEnter: function afterEnterApplyStep(event) {
+                meerkat.modules.coupon.dealWithAddedCouponHeight();
             }
         };
 
@@ -440,8 +519,12 @@
                     // Insert fund into Contact Authority
                     $('#mainform').find('.health_contact_authority span').text( selectedProduct.info.providerName  );
 
-                    meerkat.modules.healthPaymentStep.updatePremium();
+	                meerkat.messaging.publish(meerkatEvents.TRIGGER_UPDATE_PREMIUM);
+                    meerkat.modules.fieldUtilities.toggleSelectsPlaceholderColor();
                 }
+            },
+            onAfterEnter: function afterEnterPaymentStep() {
+                meerkat.modules.coupon.dealWithAddedCouponHeight();
             }
         };
 
@@ -458,36 +541,62 @@
 
     // @todo review this during progress bar refactor
     function configureProgressBar(isJourney) {
+        var labels = {
+            journey: {
+                startStep: 'About You',
+                benefitStep: '<span class="hidden-sm hidden-md hidden-lg">Preferences</span><span class="hidden-xs">Insurance Preferences</span>',
+                contactStep: 'Contact Details'
+            },
+            application: {
+                applyStep: 'Application',
+                paymentStep: 'Payment',
+                thankYouStep: 'Thank You'
+            }
+        };
+
+        if (meerkat.modules.splitTest.isActive(4)) {
+            labels.journey.startStep = '<span class="hidden-sm hidden-md hidden-lg">About</span><span class="hidden-xs">About You</span>';
+            labels.journey.contactStep = '<span class="hidden-sm hidden-md hidden-lg">Details</span><span class="hidden-xs">Contact Details</span>';
+            labels.journey.resultsStep = '<span class="hidden-sm hidden-md hidden-lg">Prices</span><span class="hidden-xs">Get Prices</span>';
+        }
+
         var phase = isJourney ? 'journey' : 'application',
             progressBarSteps = {
                 journey: [
                     {
-                        label: 'About you',
+                        label: labels.journey.startStep,
                         navigationId: steps.startStep.navigationId
                     },
                     {
-                        label: '<span class="hidden-sm hidden-md hidden-lg">Preferences</span><span class="hidden-xs">Insurance preferences</span>',
+                        label: labels.journey.benefitStep,
                         navigationId: steps.benefitsStep.navigationId
                     },
                     {
-                        label: 'Contact details',
+                        label: labels.journey.contactStep,
                         navigationId: steps.contactStep.navigationId
                     }
                 ],
                 application: [
                     {
-                        label: 'Application',
+                        label: labels.application.applyStep,
                         navigationId: steps.applyStep.navigationId
                     },
                     {
-                        label: 'Payment',
+                        label: labels.application.paymentStep,
                         navigationId: steps.paymentStep.navigationId
                     },
                     {
-                        label: 'Thank You'
+                        label: labels.application.thankYouStep
                     }
                 ]
             };
+
+        if (meerkat.modules.splitTest.isActive(4)) {
+            progressBarSteps.journey.push({
+                label: labels.journey.resultsStep,
+                navigationId: steps.resultsStep.navigationId
+            });
+        }
 
         // Better progressBar just works...
         meerkat.modules.journeyProgressBar.changeTargetElement('.journeyProgressBar[data-phase='+phase+']');

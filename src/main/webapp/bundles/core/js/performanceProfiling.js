@@ -145,6 +145,30 @@
 		}
 	}
 
+	/** amILocal confirms whether the users IP address is within local network
+	 *  IP rules are as follows:
+	 *      a] 192.168.*.*
+	 *      b] 172.16.*.* to 172.31.*.*
+	 *      c] 10.*.*.*
+	 *      d] 127.0.0.1
+	 *  meerkat.site.ipAddress is available to ALL verticals
+	 * @returns {boolean}
+	 */
+	function amILocal() {
+		var ipTests = [
+				/^192\.168\.(\d){1,3}\.(\d){1,3}$/,
+				/^172\.(1[6-9]|2[0-9]|3[01])\.(\d){1,3}\.(\d){1,3}$/,
+				/^10\.(\d){1,3}\.(\d){1,3}\.(\d){1,3}$/,
+				/^127\.0\.0\.1$/
+		];
+		for(var i=0; i<ipTests.length; i++) {
+			if(ipTests[i].test(meerkat.site.ipaddress)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	meerkat.modules.register("performanceProfiling", {
 		PERFORMANCE:PERFORMANCE,
 		startTest: startTest,
@@ -165,7 +189,8 @@
 		isIE9:isIE9,
 		isIE10:isIE10,
 		isIE11:isIE11,
-		getIEVersion: getIEVersion
+		getIEVersion: getIEVersion,
+		amILocal: amILocal
 	});
 
 })(jQuery);

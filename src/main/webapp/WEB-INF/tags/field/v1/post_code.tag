@@ -16,11 +16,11 @@
 <c:set var="inputType"><field_v2:get_numeric_input_type /></c:set>
 
 <c:if test="${required}">
-	<c:set var="requiredAttribute" value=' required data-msg-required="Please enter ${title}"' />
+	<c:set var="requiredAttribute" value=' required data-msg-required="Please enter a ${title}."' />
 </c:if>
 <c:if test="${disableErrorContainer eq true}">
 	<c:set var="additionalAttributes" value="${additionalAttributes} data-disable-error-container='true' " />
 </c:if>
 
 <%-- HTML --%>
-<input type="${inputType}" ${requiredAttribute} name="${name}" pattern="[0-9]*" maxlength="4" id="${name}" class="form-control ${className}" value="${value}" size="4" data-rule-minlength="4" data-msg-minlength="Postcode should be 4 characters long" data-rule-number="true" data-msg-number="Postcode must contain numbers only." ${additionalAttributes} placeholder="Postcode" />
+<input type="${inputType}" ${requiredAttribute} name="${name}" pattern="[0-9]*" maxlength="4" id="${name}" class="form-control ${className}" value="${value}" size="4" data-rule-minlength="4" data-msg-minlength="Postcode should be 4 characters long" data-rule-number="true" data-msg-number="Postcode must contain numbers only." ${additionalAttributes} placeholder="PostCode" <field_v1:analytics_attr analVal="Postcode" quoteChar="\"" /> />

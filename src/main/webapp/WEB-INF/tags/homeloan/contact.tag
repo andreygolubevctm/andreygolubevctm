@@ -9,7 +9,24 @@
 <%-- VARIABLES --%>
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
 <c:set var="contactNumber"	value="${go:nameFromXpath(xpath)}_contactNumber" />
-<c:set var="optIn"	value="${go:nameFromXpath(xpath)}_call" />
+
+<c:set var="optInText"><content:get key="optInText" /></c:set>
+
+<%-- Get current  --%>
+<c:set var="websiteTermConfigToUse">
+	<content:get key="websiteTermsUrlConfig"/>
+</c:set>
+
+<c:set var="websiteTermConfigPlaceHolder">${pageSettings.getSetting(websiteTermConfigToUse)}</c:set>
+<c:set var="privacyStmtPlaceHolder"><form_v1:link_privacy_statement /></c:set>
+<c:set var="creditGuidePlaceHolder"	value="/static/legal/CreditGuide.pdf" />
+
+<c:set var="optInText" value="${fn:replace
+									(fn:replace(
+										fn:replace(optInText,
+											'%creditGuidePlaceHolder%', creditGuidePlaceHolder),
+											'%privacyStmtPlaceHolder%', privacyStmtPlaceHolder),
+											'%websiteTermConfigPlaceHolder%', websiteTermConfigPlaceHolder)}" />
 
 <%-- HTML --%>
 <div id="${name}-selection" class="${name}">
@@ -17,33 +34,30 @@
 	<form_v2:fieldset legend="Your Contact Details">
 
 		<form_v2:row label="First name" className="halfrow">
-			<field_v1:person_name xpath="${xpath}/firstName" title="first name" required="false" />
+			<field_v1:person_name xpath="${xpath}/firstName" title="first name" required="true" />
 		</form_v2:row>
 
 		<form_v2:row label="Last name" className="halfrow">
-			<field_v1:person_name xpath="${xpath}/lastName" title="last name" required="false" />
+			<field_v1:person_name xpath="${xpath}/lastName" title="last name" required="true" />
 		</form_v2:row>
 
 		<form_v2:row label="Your email address" className="clear email-row">
-			<field_v2:email xpath="${xpath}/email" title="your email address" required="false" size="40"/>
+			<field_v2:email xpath="${xpath}/email" title="your email address" required="true" size="40"/>
 		</form_v2:row>
 
 		<c:set var="fieldXPath" value="${xpath}/contactNumber"/>
+
 		<form_v2:row label="Your contact number" className="clear">
 			<field_v1:flexi_contact_number xpath="${fieldXPath}"
 										maxLength="20"
-										required="${false}"
+										required="${true}"
 										labelName="your contact number"/>
-			<p class="optinText"><content:get key="okToCall"/></p>
 		</form_v2:row>
 
 		<form_v2:row label="" className="email-optin-row clear closer">
-			<field_v2:checkbox
-					xpath="${xpath}/optIn"
-					value="Y"
-					title="Yes, keep me updated about news, discounts and special offers from ${brandName}"
-					required="false"
-					label="true"/>
+			<%-- Mandatory agreement to OptIn to email  --%>
+			<field_v1:hidden xpath="${xpath}/optIn" defaultValue="Y" constantValue="Y" />
+
 		</form_v2:row>
 
 		<%-- Mandatory agreement to privacy policy --%>
@@ -55,7 +69,7 @@
 			<c:otherwise>--%>
 				<form_v2:row hideHelpIconCol="true">
 					<c:set var="label">
-						* I have read the <form_v1:link_privacy_statement /> and <a href="/static/legal/CreditGuide.pdf" target="_blank">credit guide</a>.
+						${optInText}
 					</c:set>
 					<field_v2:checkbox
 						xpath="homeloan/privacyoptin"

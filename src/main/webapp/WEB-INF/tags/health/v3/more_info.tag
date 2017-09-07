@@ -7,12 +7,8 @@
 </c:set>
 
 <%-- Setup variables needed for dual pricing --%>
-<jsp:useBean id="healthPriceDetailService" class="com.ctm.web.health.services.HealthPriceDetailService" scope="page" />
-<c:set var="healthAlternatePricingActive" value="${healthPriceDetailService.isAlternatePriceActive(pageContext.getRequest())}" />
-
-<c:if test="${healthAlternatePricingActive eq true}">
-	<c:set var="healthAlternatePricingMonth" value="${healthPriceDetailService.getAlternatePriceMonth(pageContext.getRequest())}" />
-</c:if>
+<health_v1:dual_pricing_settings />
+<health_v1:pyrr_campaign_settings />
 
 <%-- MORE INFO CALL TO ACTION BAR TEMPLATE --%>
 <%-- MORE INFO FOOTER --%>
@@ -38,13 +34,17 @@
 	{{ obj.displayLogo = false; }} <%-- Turns off the logo from the template --%>
 
 	<%-- If dual pricing is enabled, update the template --%>
-	{{ if (meerkat.site.healthAlternatePricingActive === true && meerkat.site.isCallCentreUser === true) { }}
+	{{ if (meerkat.modules.healthDualPricing.isDualPricingActive() === true) { }}
 		{{ obj.renderedDualPricing = meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false); }}
 	{{ } else { }}
 		{{ var logoTemplate = meerkat.modules.templateCache.getTemplate($("#logo-template")); }}
 		{{ var priceTemplate = meerkat.modules.templateCache.getTemplate($("#price-template")); }}
 
 		{{ obj.showAltPremium = false; obj.renderedPriceTemplate = logoTemplate(obj) + priceTemplate(obj); }}
+	{{ } }}
+
+	{{ if (meerkat.modules.healthPyrrCampaign.isPyrrActive(true) === true) { }}
+		{{ obj.renderedPyrrCampaign = meerkat.modules.healthPyrrCampaign.renderTemplate('', obj, true, false); }}
 	{{ } }}
 
 	<%-- Check if drop dead date has passed --%>
@@ -63,13 +63,13 @@
 
 	<c:set var="buyNowHeadingClass">
 		<c:choose>
-			<c:when test="${healthAlternatePricingActive eq true}">hidden-xs</c:when>
+			<c:when test="${isDualPriceActive eq true}">hidden-xs</c:when>
 			<c:otherwise>visible-xs</c:otherwise>
 		</c:choose>
 	</c:set>
 	<c:set var="moreInfoTopLeftColumnWidth">
 		<c:choose>
-			<c:when test="${healthAlternatePricingActive eq true}">col-md-7</c:when>
+			<c:when test="${isDualPriceActive eq true}">col-md-7</c:when>
 			<c:otherwise>col-sm-8</c:otherwise>
 		</c:choose>
 	</c:set>
@@ -84,30 +84,33 @@
 
 	<div data-product-type="{{= info.ProductType }}" class="displayNone more-info-content col-xs-12 ${variantClassName} {{= comingSoonClass }}">
 
-		<div class="fieldset-card row price-card <c:if test="${healthAlternatePricingActive eq true}">hasDualPricing</c:if> {{= dropDatePassed ? 'dropDatePassedContainer' : ''}}">
+		<div class="fieldset-card row price-card <c:if test="${isDualPriceActive eq true}">hasDualPricing</c:if> {{= dropDatePassed ? 'dropDatePassedContainer' : ''}}">
 			<div class="${moreInfoTopLeftColumnWidth} moreInfoTopLeftColumn">
 				<div class="row hidden-sm hidden-md hidden-lg">
 					<div class="col-xs-3">
 						<div class="companyLogo {{= info.provider }}-mi"></div>
 					</div>
-					<div class="col-xs-9 <c:if test="${healthAlternatePricingActive eq true}">productDetails</c:if>">
+					<div class="col-xs-9 <c:if test="${isDualPriceActive eq true}">productDetails</c:if>">
 						<h1 class="noTopMargin productName">{{= info.productTitle }}</h1>
 					</div>
 				</div>
 				<div class="row priceRow productSummary hidden-xs">
 					<div class="col-xs-12">
 						<c:choose>
-							<c:when test="${healthAlternatePricingActive eq true and not empty callCentre}">
+							<c:when test="${isDualPriceActive eq true}">
 								{{= renderedDualPricing }}
 							</c:when>
 							<c:otherwise>
+								<c:if test="${isPyrrActive eq true}">
+									{{= renderedPyrrCampaign }}
+								</c:if>
 								{{= renderedPriceTemplate }}
 							</c:otherwise>
 						</c:choose>
 					</div>
 				</div>
 				<div class="row hidden-xs">
-					<div class="col-xs-12 <c:if test="${healthAlternatePricingActive eq true}">productDetails</c:if>">
+					<div class="col-xs-12 <c:if test="${isDualPriceActive eq true}">productDetails</c:if>">
 						<h1 class="noTopMargin productName">{{= info.productTitle }}</h1>
 
 						<div class="hidden-xs">
@@ -129,7 +132,7 @@
 					<div class="row priceRow productSummary hidden-sm hidden-md hidden-lg">
 						<div class="col-xs-12 col-sm-8">
 							<c:choose>
-								<c:when test="${healthAlternatePricingActive eq true and not empty callCentre}">
+								<c:when test="${isDualPriceActive eq true}">
 									{{= renderedDualPricing }}
 								</c:when>
 								<c:otherwise>
@@ -153,13 +156,12 @@
 
 			</div>
 			<c:choose>
-				<c:when test="${healthAlternatePricingActive eq true and not empty callCentre}">
+				<c:when test="${isDualPriceActive eq true}">
 					<div class="col-md-5 hidden-xs moreInfoTopRightColumn">
 						<div class="companyLogo {{= info.provider }}-mi"></div>
 							<div class="insureNow">
 								<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now<span class="icon-arrow-right" /></a>
 							</div>
-							<h3 class="text-dark">or need help? Call <span class="text-secondary">${callCentreNumber}</span></h3>
 							<p class="referenceNo">Quote reference number <span>{{= transactionId }}</span></p>
 					</div>
 				</c:when>
@@ -171,12 +173,82 @@
 								<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Get Insured Now<span class="icon-arrow-right" /></a>
 							</div>
 						</div>
-
-						<p class="needHelp">or need help? Call<span>${callCentreNumber}</span></p>
 						<p class="referenceNo">Quote reference number <span>{{= transactionId }}</span></p>
 					</div>
 				</c:otherwise>
 			</c:choose>
+
+			<div class="col-xs-12">
+				<simples:dialogue id="76" vertical="health" mandatory="true" />
+			</div>
+
+			<div class="policyBrochures col-xs-12">
+				<div class="col-xs-12">
+					<h2>Policy brochures</h2>
+					<p>See your policy brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' && promo.hospitalPDF != promo.extrasPDF ? "s" : "" }} below for the full guide on policy limits, inclusions and exclusions</p>
+				</div>
+
+				<div class="col-xs-12 col-md-6">
+
+					<div class="row">
+						{{ if(typeof hospitalCover !== 'undefined' && typeof extrasCover !== 'undefined' && promo.hospitalPDF == promo.extrasPDF) { }}
+						<div class="col-xs-12">
+							<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn download-policy-brochure col-xs-12" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>Policy Brochure</a>
+						</div>
+						{{ } else { }}
+
+						{{ if(typeof hospitalCover !== 'undefined') { }}
+						<div class="{{ if(typeof extrasCover !== 'undefined'){ }}col-sm-6{{ } }} col-xs-12">
+							<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn download-hospital-brochure col-xs-12" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>Hospital Policy Brochure</a>
+						</div>
+						{{ } }}
+
+						{{ if(typeof extrasCover !== 'undefined') { }}
+						<div class="{{ if(typeof hospitalCover !== 'undefined'){ }}col-sm-6{{ } }} col-xs-12 ">
+							<a href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" class="btn download-extras-brochure col-xs-12">Extras Policy Brochure</a>
+						</div>
+						{{ } }}
+						{{ } }}
+					</div>
+
+				</div>
+
+				<div class="col-xs-12 col-md-6 moreInfoEmailBrochures" novalidate="novalidate">
+
+					<div class="row formInput">
+						<div class="col-sm-7 col-xs-12">
+							<field_v2:email xpath="emailAddress"  required="true"
+											className="sendBrochureEmailAddress"
+											placeHolder="${emailPlaceHolder}" />
+						</div>
+						<div class="col-sm-5 hidden-xs">
+							<a href="javascript:;" class="btn btn-save disabled btn-email-brochure" <field_v1:analytics_attr analVal="email button" quoteChar="\"" />>Email Brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' && promo.hospitalPDF != promo.extrasPDF ? "s" : "" }}</a>
+						</div>
+					</div>
+					<div class="row row-content formInput optInMarketingRow">
+						<div class="col-xs-12">
+							<field_v2:checkbox className="optInMarketing checkbox-custom"
+											   xpath="health/sendBrochures/optInMarketing" required="false"
+											   value="Y" label="true"
+											   title="Stay up to date with news and offers direct to your inbox" />
+						</div>
+					</div>
+
+					<div class="row row-content formInput hidden-sm hidden-md hidden-lg emailBrochureButtonRow">
+						<div class="col-xs-12">
+							<a href="javascript:;" class="btn btn-save disabled btn-email-brochure" <field_v1:analytics_attr analVal="email button" quoteChar="\"" />>Email Brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' ? "s" : "" }}</a>
+						</div>
+					</div>
+					<div class="row row-content moreInfoEmailBrochuresSuccess hidden">
+						<div class="col-xs-12">
+							<div class="success alert alert-success">
+								Success! Your policy brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' ? "s have" : " has" }} been emailed to you.
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
 
 		</div>
 
@@ -201,43 +273,107 @@
 			<div class="col-xs-12 col-md-6 hospitalCover">
 				{{ if(typeof hospital.inclusions !== 'undefined') { }}
 				<h2>Hospital cover</h2>
-				<p><strong>Hospital Excess:</strong> {{= hospital.inclusions.excess }}</p>
-				<p><strong>Excess Waivers:</strong> {{= hospital.inclusions.waivers }}</p>
-				<p><strong>Co-payment / % Hospital Contribution:</strong> {{= hospital.inclusions.copayment }}</p>
-				<p><strong>Hospital waiting period for pre-existing conditions:</strong> 12 months. For all other conditions: 2 months. See policy brochure for more details</p>
+				<p><strong>Hospital Excess:</strong><br>{{= hospital.inclusions.excess }}</p>
+				<p><strong>Excess Waivers:</strong><br>{{= hospital.inclusions.waivers }}</p>
+				<p><strong>Co-payment / % Hospital Contribution:</strong><br>{{= hospital.inclusions.copayment }}</p>
+
+				<p><strong>Accident Override:</strong><br>
+					{{ if(!_.isEmpty(obj.accident) && obj.accident.covered === 'Y') { }}
+					{{= obj.accident.overrideDetails }}</p>
+					{{ }else{ }}
+					-
+					{{ } }}
 				{{ } }}
 				{{ if(hospitalCover.inclusions.length > 0) { }}
-				<h5>You will be covered for the following services</h5>
+					<%-- has inclusions START --%>
 
-				<ul class="benefitsIcons inclusions">
-					{{ _.each(hospitalCover.inclusions, function(inclusion){ }}
-					<li class="{{= inclusion.className }}"><span>{{= inclusion.name }}</span></li>
-					{{ }) }}
-				</ul>
+					{{ if((!_.isEmpty(info.situationFilter)) && info.situationFilter === 'Y') { }}
+					<%-- if limited hospital cover and has inclusions START --%>
+
+						<h5 class="text-danger">You will be covered for the following services only</h5>
+
+						<ul class="exclusions inclusions">
+						{{ _.each(hospitalCover.inclusions, function(inclusion){ }}
+							<li class="simplesMoreInfoInclusions text-danger"><span>{{= inclusion.name }}</span></li>
+						{{ }) }}
+
+						{{ if (typeof custom !== 'undefined' && custom.info && custom.info.inclusions && custom.info.inclusions.cover) { }}
+							{{ _.each(custom.info.inclusions.cover.split('|'), function(inclusionsFrmRateSheet){ }}
+								<li class="simplesMoreInfoInclusions text-danger fromRatesheet"><span>{{= inclusionsFrmRateSheet }}</span></li>
+							{{ }) }}
+						{{ } }}
+						</ul>
+
+					<%-- if limited hospital cover and has inclusions END --%>
+					{{ } else { }}
+					<%-- else regular hospital cover and has inclusions START --%>
+
+						<h5>You will be covered for the following services</h5>
+
+						<ul class="exclusions inclusions">
+							{{ _.each(hospitalCover.inclusions, function(inclusion){ }}
+								<li class="simplesMoreInfoInclusions"><span>{{= inclusion.name }}</span></li>
+							{{ }) }}
+						</ul>
+
+					<%-- else regular hospital cover and has inclusions END --%>
+					{{ } }}
+
+					<%-- has inclusions END --%>
 				{{ } }}
 
 				{{ if(hospitalCover.restrictions.length > 0) { }}
-				<h5>You will have restricted cover for the following services</h5>
-				<ul class="benefitsIcons restrictions">
-					{{ _.each(hospitalCover.restrictions, function(restriction){ }}
-					<li class="{{= restriction.className }}"><span>{{= restriction.name }}</span></li>
-					{{ }) }}
-				</ul>
-				<span class="text-italic small">Limits may apply. See policy brochure for more details.</span>
+					<h5>You will have restricted cover for the following services</h5>
+					<ul class="exclusions restrictions">
+						{{ _.each(hospitalCover.restrictions, function(restriction){ }}
+							<li class="simplesMoreInfoRestrictions"><span>{{= restriction.name }}</span></li>
+						{{ }) }}
+
+						{{ if (typeof custom !== 'undefined' && custom.info && custom.info.restrictions && custom.info.restrictions.cover) { }}
+							{{ _.each(custom.info.restrictions.cover.split('|'), function(restrictionsFrmRateSheet){ }}
+								<li class="simplesMoreInfoRestrictions fromRatesheet"><span>{{= restrictionsFrmRateSheet }}</span></li>
+							{{ }) }}
+						{{ } }}
+
+					</ul>
+					<span class="text-italic small">Limits may apply. See policy brochure for more details.</span>
 				{{ } }}
 
 				{{ if(hospitalCover.exclusions.length > 0) { }}
-				<h5>You will not be covered for the following services</h5>
-				<ul class="exclusions">
-					{{ _.each(hospitalCover.exclusions, function(exclusion){ }}
-					<li>{{= exclusion.name }}</li>
-					{{ }) }}
+					<%-- has exclusions START --%>
 
-						{{ if (typeof custom !== 'undefined' && custom.info && custom.info.exclusions && custom.info.exclusions.cover) { }}
-						<li class="text-danger"><span class="icon-cross" /></span>{{= custom.info.exclusions.cover }}</li>
-						{{ } }}
-				</ul>
-				<content:get key="hospitalExclusionsDisclaimer"/>
+					<h5>You will not be covered for the following services</h5>
+
+					{{ if((!_.isEmpty(info.situationFilter)) && info.situationFilter === 'Y') { }}
+						<%-- if limited hospital cover and has exclusions START --%>
+
+							{{ if (typeof custom !== 'undefined' && custom.info && custom.info.exclusions && custom.info.exclusions.cover) { }}
+								{{ _.each(custom.info.exclusions.cover.split('|'), function(exclusionsFrmRateSheet){ }}
+									<p class="text-danger exclusion fromRatesheet"><span>{{= exclusionsFrmRateSheet }}</span></p>
+								{{ }) }}
+							{{ } }}
+
+						<%-- if limited hospital cover and has exclusions END --%>
+					{{ } else { }}
+						<%-- else regular hospital cover and has exclusions START --%>
+
+						<ul class="exclusions">
+							{{ _.each(hospitalCover.exclusions, function(exclusion){ }}
+								<li>{{= exclusion.name }}</li>
+							{{ }) }}
+
+							{{ if (typeof custom !== 'undefined' && custom.info && custom.info.exclusions && custom.info.exclusions.cover) { }}
+								{{ _.each(custom.info.exclusions.cover.split('|'), function(exclusionsFrmRateSheet){ }}
+									<li class="fromRatesheet"><span>{{= exclusionsFrmRateSheet }}</span></li>
+								{{ }) }}
+							{{ } }}
+						</ul>
+
+						<%-- else regular hospital cover and has exclusions END --%>
+					{{ } }}
+					<content:get key="hospitalExclusionsDisclaimer"/>
+
+					<%-- has exclusions END --%>
 				{{ } }}
 			</div>
 			{{ } }}
@@ -285,91 +421,6 @@
 			{{ } }}
 			</c:if>
 
-			<div class="policyBrochures col-xs-12">
-				<div class="col-xs-12">
-					<h2>Policy brochures</h2>
-					<p>See your policy brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' && promo.hospitalPDF != promo.extrasPDF ? "s" : "" }} below for the full guide on policy limits, inclusions and exclusions</p>
-				</div>
-
-				<div class="col-xs-12 col-md-6">
-
-					<div class="row">
-						{{ if(typeof hospitalCover !== 'undefined' && typeof extrasCover !== 'undefined' && promo.hospitalPDF == promo.extrasPDF) { }}
-						<div class="col-xs-12">
-							<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn download-policy-brochure col-xs-12" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>Policy Brochure</a>
-						</div>
-						{{ } else { }}
-
-						{{ if(typeof hospitalCover !== 'undefined') { }}
-						<div class="{{ if(typeof extrasCover !== 'undefined'){ }}col-sm-6{{ } }} col-xs-12">
-							<a href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" class="btn download-hospital-brochure col-xs-12" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />>Hospital Policy Brochure</a>
-						</div>
-						{{ } }}
-
-						{{ if(typeof extrasCover !== 'undefined') { }}
-						<div class="{{ if(typeof hospitalCover !== 'undefined'){ }}col-sm-6{{ } }} col-xs-12 ">
-							<a href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" class="btn download-extras-brochure col-xs-12">Extras Policy Brochure</a>
-						</div>
-						{{ } }}
-						{{ } }}
-					</div>
-
-				</div>
-				<div class="col-xs-12 col-md-6 moreInfoEmailBrochures" novalidate="novalidate">
-
-					<div class="row formInput">
-						<div class="col-sm-7 col-xs-12">
-							<field_v2:email xpath="emailAddress"  required="true"
-											 className="sendBrochureEmailAddress"
-											 placeHolder="${emailPlaceHolder}" />
-						</div>
-						<div class="col-sm-5 hidden-xs">
-							<a href="javascript:;" class="btn btn-save disabled btn-email-brochure" <field_v1:analytics_attr analVal="email button" quoteChar="\"" />>Email Brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' && promo.hospitalPDF != promo.extrasPDF ? "s" : "" }}</a>
-						</div>
-					</div>
-					<div class="row row-content formInput optInMarketingRow">
-						<div class="col-xs-12">
-							<field_v2:checkbox className="optInMarketing checkbox-custom"
-												xpath="health/sendBrochures/optInMarketing" required="false"
-												value="Y" label="true"
-												title="Stay up to date with news and offers direct to your inbox" />
-						</div>
-					</div>
-
-					<div class="row row-content formInput hidden-sm hidden-md hidden-lg emailBrochureButtonRow">
-						<div class="col-xs-12">
-							<a href="javascript:;" class="btn btn-save disabled btn-email-brochure" <field_v1:analytics_attr analVal="email button" quoteChar="\"" />>Email Brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' ? "s" : "" }}</a>
-						</div>
-					</div>
-					<div class="row row-content moreInfoEmailBrochuresSuccess hidden">
-						<div class="col-xs-12">
-							<div class="success alert alert-success">
-								Success! Your policy brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' ? "s have" : " has" }} been emailed to you.
-							</div>
-						</div>
-					</div>
-
-				</div>
-			</div>
-
-			<div class="col-xs-12 switching">
-				<h2>Switching is simple</h2>
-				<ol>
-					<li>You can change your fund whenever you like</li>
-					<li>We'll pass your current fund details to your new fund, to transfer
-						any hospital waiting periods that have already been served</li>
-					<li>Most funds will give you immediate cover for the same extras benefits
-						you were able to claim previously. Your old fund will reimburse any
-						premiums paid in advance.</li>
-				</ol>
-			</div>
-			<div class="col-xs-12 testimonials">
-				<h2>Join the thousands of Australians who already have compared and saved</h2>
-				<blockquote>
-					<span class="openQuote">“</span>{{= testimonial.quote }}<span class="closeQuote">”</span>
-				</blockquote>
-				<p class="testimonialAuthor">{{= testimonial.author }}</p>
-			</div>
             <c:if test="${empty callCentre or not callCentre}">
                 <div class="col-xs-12">
                     <reward:campaign_tile_container_xs />

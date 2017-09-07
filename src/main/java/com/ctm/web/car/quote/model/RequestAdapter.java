@@ -43,6 +43,7 @@ public class RequestAdapter {
             }
         }
 
+        quoteRequest.setQuoteReferenceNumber(carQuote.getQuoteReferenceNumber());
 
         if(carQuote.getFilter().getProviders() != null && !carQuote.getFilter().getProviders().isEmpty()){
             quoteRequest.setProviderFilter(carQuote.getFilter().getProviders());
@@ -169,6 +170,7 @@ public class RequestAdapter {
         youngestDriver.setDateOfBirth(parseAUSLocalDate(young.getDob()));
         youngestDriver.setLicenceAge(Integer.parseInt(young.getLicenceAge()));
         youngestDriver.setGender(GenderType.fromValue(young.getGender()));
+        youngestDriver.setAnnualKilometres(young.getAnnualKilometres());
         return youngestDriver;
     }
 

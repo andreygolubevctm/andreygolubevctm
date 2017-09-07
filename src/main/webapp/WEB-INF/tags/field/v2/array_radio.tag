@@ -57,6 +57,10 @@
 		<c:set var="classVar" value="btn btn-form-inverse ${classLabel}" />
 		<c:set var="className" value='radio-rounded ${className}" data-toggle="radio' />
 	</c:when>
+	<c:when test="${style == 'pill'}">
+		<c:set var="classVar" value="btn btn-form-inverse-pill ${classLabel}" />
+		<c:set var="className" value='btn-group btn-group-justified ${className}" data-toggle="radio' />
+	</c:when>
 	<c:otherwise>
 		<c:set var="classVar" value="btn btn-form-inverse ${classLabel}" />
 		<c:set var="className" value='btn-group btn-group-justified ${className}" data-toggle="radio' />
@@ -93,7 +97,7 @@
 
 		<c:choose>
 			<%-- FOR GROUPED STYLE --%>
-			<c:when test="${style == 'group' or style == 'group-tile' or style == 'inline' or style == 'vertical' or style == 'radio-rounded'}">
+			<c:when test="${style == 'group' or style == 'group-tile' or style == 'inline' or style == 'vertical' or style == 'radio-rounded' or style == 'pill'}">
 				<label class="${classVar} ${active}" ${additionalLabelAttributes}>
 					<input type="radio" name="${name}" id="${id}" value="${val}" ${checked} data-msg-required="Please choose ${title}" ${requiredAttribute} ${additionalAttributes}>
 					<c:if test="${wrapCopyInSpan}"><c:out value="<span>" escapeXml="false" /></c:if>

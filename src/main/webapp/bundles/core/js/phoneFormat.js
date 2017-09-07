@@ -104,8 +104,10 @@
 						}
 					}
 
-					element.focus();
-					element.setSelectionRange(caretPosition, caretPosition);
+					// if element is currently focused
+					if ($(element).is(':focus')) {
+						element.setSelectionRange(caretPosition, caretPosition);
+					}
 				}
 			}
 		});

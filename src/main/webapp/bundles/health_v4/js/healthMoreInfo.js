@@ -178,6 +178,9 @@
             }
         });
 
+        meerkat.messaging.subscribe(meerkatEvents.healthResults.SELECTED_PRODUCT_RESET, function bridgingPageLeaveXsState() {
+            dynamicPyrrBanner();
+        });
     }
 
     /**
@@ -203,14 +206,19 @@
     }
 
     function _getAffixedMobileHeaderData() {
-        var priceTemplate = meerkat.modules.templateCache.getTemplate($("#price-template")),
-            headerTemplate = meerkat.modules.templateCache.getTemplate($('#moreInfoAffixedHeaderMobileTemplate')),
+        var headerTemplate = meerkat.modules.templateCache.getTemplate($('#moreInfoAffixedHeaderMobileTemplate')),
             obj = Results.getSelectedProduct();
 
-        obj.showAltPremium = false;
-        obj._selectedFrequency = Results.getFrequency();
-        obj.renderedPriceTemplate = priceTemplate(obj);
-
+        if (meerkat.modules.healthDualPricing.isDualPricingActive()) {
+            obj.renderedPriceTemplate = meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false);
+        } else if (meerkat.modules.healthPyrrCampaign.isPyrrActive()) {
+            obj.renderedPyrrCampaign = meerkat.modules.healthPyrrCampaign.renderTemplate('', obj, true, false);
+        } else {
+            var priceTemplate = meerkat.modules.templateCache.getTemplate($("#price-template"));
+            obj.showAltPremium = false;
+            obj._selectedFrequency = Results.getFrequency();
+            obj.renderedPriceTemplate = priceTemplate(obj);
+        }
         return headerTemplate(obj);
     }
 
@@ -231,7 +239,57 @@
             $(this).prepend('<span class="icon icon-angle-right"></span>');
         });
 
+        _setupDualPricing(product);
+        dynamicPyrrBanner(product);
         _setTabs();
+
+        // HLT-4339: AUF discount override
+        if (product.info.FundCode === 'AUF') {
+            $('.productExtraInfo .discountText').text(meerkat.modules.healthResultsTemplate.getDiscountText(product));
+        }
+    }
+
+    function _setupDualPricing(product) {
+        if (meerkat.modules.healthDualPricing.isDualPricingActive() === true) {
+            $('.april-pricing').addClass('april-pricing-done');
+            $('.current-pricing').addClass('current-pricing-done');
+
+            var productPremium = product.altPremium,
+                comingSoonClass = ((productPremium.value && productPremium.value > 0) || (productPremium.text && productPremium.text.indexOf('$0.') < 0) || (productPremium.payableAmount && productPremium.payableAmount > 0))  ? '' : 'comingsoon';
+
+            $('.more-info-affixed-header').addClass(comingSoonClass);
+
+            // update the dropdeaddate. Tried in _getAffixedMobileHeaderData but that returns undefined
+            if (!_.isUndefined($elements.applyBy)) {
+                $elements.applyBy.text('Apply by ' + product.dropDeadDateFormatted);
+            }
+        }
+    }
+
+    function dynamicPyrrBanner(product) {
+        if (meerkat.modules.healthPyrrCampaign.isPyrrActive()) {
+            if (meerkat.modules.healthResults.getSelectedProduct() !== null) {
+                addShowDynamicPrice(meerkat.modules.healthResults.getSelectedProduct());
+
+            } else if (typeof product !== 'undefined') {
+                addShowDynamicPrice(product);
+
+            } else {
+                // This class is in the database and is used to dynamically change the coupon banner.
+                $('.coupon-pyrr-banner-dynamic-hidden').hide();
+                $('.coupon-pyrr-banner-static').show();
+            }
+        }
+    }
+
+    function addShowDynamicPrice(product) {
+        var couponValue = product.giftCardAmount;
+        if (typeof couponValue === 'undefined') {
+            couponValue = 0;
+        }
+        $('.coupon-pyrr-banner-dynamic-price').text('$'+couponValue);
+        $('.coupon-pyrr-banner-dynamic-hidden').show();
+        $('.coupon-pyrr-banner-static').hide();
     }
 
     function onBeforeShowModal(jsonResult, dialogId) {
@@ -264,8 +322,16 @@
             extras: $('.GeneralHealth_container'),
             quickSelectContainer: $('.quickSelectContainer'),
             moreInfoContainer: $('.moreInfoTopLeftColumn'),
-            modalHeader: $('.modal-header')
+            modalHeader: $('.modal-header'),
+            pricingContainer: $('.mobile-pricing, .logo-header'),
+            currentPricingContainer: $('.current-container'),
+            currentPricingDetails: $('.current-pricing-details'),
+            applyBy: $('.applyBy')
         };
+
+        if (meerkat.modules.healthDualPricing.isDualPricingActive()) {
+            $elements.pricingContainer.removeClass('col-xs-6').addClass('col-xs-12');
+        }
 
         _setTabs();
 
@@ -277,12 +343,15 @@
             product = Results.getSelectedProduct(),
             initToggleBar = (typeof product.hospitalCover !== 'undefined' && typeof product.extrasCover !== 'undefined');
 
+        _setupDualPricing(product);
+
         if (initToggleBar) {
             meerkat.modules.benefitsToggleBar.initToggleBar(toggleBarInitSettings);
             _trackScroll();
         }
 
         $(toggleBarInitSettings.container).find('.toggleBar').toggleClass('hidden', initToggleBar === false);
+        $('#' + moreInfoDialogId).find('.navbar-text.modal-title-label').html('<span class="quoteRefHdr">Quote Ref: <span class="quoteRefHdrTransId">' + meerkat.modules.transactionId.get() + '</span></span>');
     }
 
     function _trackScroll() {
@@ -291,13 +360,46 @@
             calculatedHeight = startTopOffset;
 
         $('.modal-body').off("scroll.moreInfoXS").on("scroll.moreInfoXS", function () {
+
+            var currentTopOffset = $elements.moreInfoContainer.offset().top;
+            var currentTopOffsetLtCalcHght = currentTopOffset < calculatedHeight;
+            var currentTopOffsetGtOrEqlToCalcHght = currentTopOffset >= calculatedHeight;
+
             if (calculatedHeight === startTopOffset) {
                 // need to get the newly calculated height since we hide some data
                 calculatedHeight = startTopOffset - (startHeaderHeight - $elements.modalHeader.height());
             }
 
-            $elements.modalHeader.find('.lhcText').toggleClass('hidden', $elements.moreInfoContainer.offset().top < calculatedHeight);
-            $elements.modalHeader.find('.printableBrochuresLink').toggleClass('hidden', $elements.moreInfoContainer.offset().top < calculatedHeight);
+            $elements.modalHeader.find('.lhcText').toggleClass('hidden', currentTopOffsetLtCalcHght);
+            $elements.modalHeader.find('.printableBrochuresLink').toggleClass('hidden', currentTopOffsetLtCalcHght);
+            $elements.modalHeader.find('.productTitleText').toggleClass('hidden', currentTopOffsetLtCalcHght);
+
+            $elements.modalHeader.find('.dockedHdr')
+                .toggleClass('dockedHeaderSlim', currentTopOffsetLtCalcHght)
+                .toggleClass('dockedHeaderLarge', currentTopOffsetGtOrEqlToCalcHght);
+
+            $('#' + moreInfoDialogId).find('.xs-results-pagination').toggleClass('dockedHeaderSlim', currentTopOffsetLtCalcHght);
+
+            if (meerkat.modules.healthPyrrCampaign.isPyrrActive()) {
+                $elements.modalHeader.find('.pyrrMoreInfoXSContainer').toggleClass('hidden', currentTopOffsetLtCalcHght);
+
+            }
+
+            if (meerkat.modules.healthDualPricing.isDualPricingActive() && meerkat.modules.deviceMediaState.get() === 'xs') {
+                $elements.modalHeader.find('.april-container').toggleClass('hidden', currentTopOffsetLtCalcHght);
+                $elements.currentPricingContainer
+                    .toggleClass('col-xs-12', currentTopOffsetLtCalcHght)
+                    .toggleClass('col-xs-6', currentTopOffsetGtOrEqlToCalcHght);
+
+                $elements.pricingContainer
+                    .toggleClass('col-xs-6', currentTopOffsetLtCalcHght)
+                    .toggleClass('col-xs-12', currentTopOffsetGtOrEqlToCalcHght);
+
+
+                $elements.currentPricingDetails.toggleClass('hidden', currentTopOffsetLtCalcHght);
+                $elements.modalHeader.find('.current-pricing').toggleClass('no-background', currentTopOffsetLtCalcHght);
+            }
+
             if(moreInfoDialogId && meerkat.modules.deviceMediaState.get() === 'xs') {
                 meerkat.modules.dialogs.resizeDialog(moreInfoDialogId);
             }
@@ -324,6 +426,7 @@
     function onBeforeHideTemplate() {
         // unfade all headers
         $(Results.settings.elements.page).find(".result").removeClass("faded");
+        dynamicPyrrBanner();
     }
 
     function initialiseBrochureEmailForm(product, parent, form) {
@@ -472,7 +575,8 @@
         return $.when(
             getProviderContentByType(product, 'ABT'),
             getProviderContentByType(product, 'NXT'),
-            getProviderContentByType(product, 'FWM')
+            getProviderContentByType(product, 'FWM'),
+            getProviderContentByType(product, 'DDD')
         );
     }
 
@@ -607,7 +711,8 @@
         prepareCover: prepareCover,
         retrieveExternalCopy: retrieveExternalCopy,
         applyEventListeners: applyEventListeners,
-        hasPublicHospital: hasPublicHospital
+        hasPublicHospital: hasPublicHospital,
+        dynamicPyrrBanner: dynamicPyrrBanner
     });
 
 })(jQuery);

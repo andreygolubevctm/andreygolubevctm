@@ -1,0 +1,76 @@
+.green-cta-btn() {
+  background-color: @theme-secondary;
+  font-size: 28px;
+  padding: 5px 0;
+}
+
+.cta-panel {
+  background-color: @theme-accent-4;
+  border-radius: 10px;
+  color: @white;
+  margin: 0 auto;
+  max-width: 300px;
+
+  @media (@xs-only) {
+    margin-bottom: 15px;
+  }
+
+  .copy {
+    display: block;
+    font-size: 18px;
+    padding: 15px;
+  }
+
+  a {
+    color: @white;
+    display: block;
+    text-align: center;
+
+    &.call-centre-number {
+      .green-cta-btn();
+
+      @media (@sm) {
+        font-size: 24px;
+      }
+    }
+  }
+}
+
+body {
+  @media (@xs-only) {
+    &[data-step=contact] {
+      &.ctaPanel-active {
+        .cta-panel {
+          display: block;
+        }
+
+        .campaign-tile-container,
+        .campaign-tile-container-xs {
+          display: none;
+        }
+      }
+    }
+  }
+
+  &.callcentreopen {
+    a {
+      &.schedule-a-call {
+        padding: 10px 0 15px;
+      }
+    }
+  }
+
+  &.callcentreclosed {
+    a {
+      &.schedule-a-call {
+        .green-cta-btn();
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+
+        @media (@sm-only) {
+          font-size: 18px;
+        }
+      }
+    }
+  }
+}

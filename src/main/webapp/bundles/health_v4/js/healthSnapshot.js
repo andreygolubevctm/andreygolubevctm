@@ -22,6 +22,9 @@
     function _setupFields() {
         $elements = {
             quoteSnapshot: $('.quoteSnapshot'),
+            livingIn: $('.quoteSnapshot .living-in'),
+            livingInSpan: $('.quoteSnapshot .living-in .snapshot-items span'),
+            state: $('#health_situation_state'),
             cover: $('input[name=health_situation_healthCvr]'),
             income: $('#health_healthCover_income'),
             toggleList: $('.toggle-snapshot-list'),
@@ -36,7 +39,7 @@
                 dob: $('#health_healthCover_partner_dob'),
                 dobSpan: $('.quoteSnapshot .partner-dob .snapshot-items span')
             },
-            rebate: $('#health_healthCover_rebate'),
+            rebate: $('input[name=health_healthCover_rebate]'),
             rebateText: $('.quoteSnapshot .snapshot-items.rebate-text'),
             rebateSubText: $('.quoteSnapshot .rebate .snapshot-items.sub-text'),
             hospital: {
@@ -108,6 +111,13 @@
     function _render() {
         var data = _getData(),
             noData = !_hasData(data);
+
+        if (!noData && !_.isEmpty(data.livingIn)) {
+            $elements.livingIn.removeClass('hidden');
+            $elements.livingInSpan.text(data.livingIn);
+        } else {
+            $elements.livingIn.addClass('hidden');
+        }
 
         if (!noData && !_.isEmpty(data.coverFor)) {
             var notSingle = _.indexOf(["Couple","Family"], data.coverFor) >= 0;
@@ -183,7 +193,8 @@
     }
 
     function _getData() {
-        var coverFor = $.trim($elements.cover.filter(":checked").parent().text()),
+        var livingIn = $elements.state.val(),
+            coverFor = $.trim($elements.cover.filter(":checked").parent().text()),
             primaryBorn = $elements.primary.dob.val(),
             partnerBorn = $elements.partner.dob.val(),
             rebateText = _fetchRebateText(),
@@ -192,6 +203,7 @@
             extras = _fetchBenefits();
 
         return {
+            livingIn: _.isEmpty(livingIn) ? false : livingIn,
             coverFor: _.isEmpty(coverFor) ? false : coverFor,
             primaryBorn: _.isEmpty(primaryBorn) ? false : primaryBorn,
             partnerBorn: _.isEmpty(partnerBorn) ? false : partnerBorn,
@@ -213,11 +225,12 @@
     }
 
     function _fetchRebateText() {
-        return meerkat.modules.healthRebate.getRebateLabelText($elements.rebate.val() === 'Y' ? undefined : 4);
+        return meerkat.modules.healthRebate.getSelectedRebateTierLabelText();
     }
 
     function _fetchRebateSubText(income) {
-        if ($elements.rebate.val() === 'Y') {
+        var $optin = $elements.rebate.filter(':checked');
+        if ($optin.length && $optin.val() === 'Y') {
             if (income < 3) {
                 return meerkat.modules.healthRebate.getRebate();
             } else {

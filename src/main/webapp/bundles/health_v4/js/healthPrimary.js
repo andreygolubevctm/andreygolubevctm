@@ -7,7 +7,6 @@
     function initHealthPrimary() {
         _setupFields();
         _applyEventListeners();
-        _eventSubscriptions();
     }
 
     function _setupFields() {
@@ -19,62 +18,41 @@
             partnerDOB: $('#benefits_partner_dob')
         };
 
-        var $checked = $elements.currentCover.filter(':checked');
-        if($checked.length) {
-            $checked.change();
-        }
+	    $elements.primaryCoverLoading.add($elements.dob).add($elements.currentCover).attr('data-attach','true');
     }
 
     function _applyEventListeners() {
-        $elements.currentCover.on('change', function toggleContinuousCover() {
-            var $this = $(this),
-                $checked = $this.filter(':checked'),
-                disableField = ($checked.val() === 'N') || ($checked.val() === 'Y' && meerkat.modules.age.isLessThan31Or31AndBeforeJuly1($elements.dob.val()));
+        $elements.currentCover.add($elements.dob).on('change', function toggleContinuousCover() {
+            var $checked = $elements.currentCover.filter(':checked'),
+                hideField = !$checked.length || ($checked.val() === 'N') || ($checked.val() === 'Y' && meerkat.modules.age.isLessThan31Or31AndBeforeJuly1($elements.dob.val()));
 
-            meerkat.modules.fieldUtilities.toggleDisabled(
+            meerkat.modules.fieldUtilities.toggleVisible(
                 $elements.primaryCoverLoading,
-                disableField
+                hideField
             );
         });
-
-        $elements.dob.on('change', function updateContinuousCover() {
-            _.defer(function(){
-                var $checked = $elements.currentCover.filter(':checked');
-                if($checked.length) $checked.change();
-            });
-        });
-    }
-
-    function _eventSubscriptions() {
-        meerkat.messaging.subscribe(meerkatEvents.journeyEngine.STEP_INIT, function updateForBrochureware() {
-            positionFieldsForBrochureware();
-        });
-
-        meerkat.messaging.subscribe(meerkatEvents.healthSituation.SITUATION_CHANGED, function togglePartnerFields() {
-            positionFieldsForBrochureware();
-        });
-    }
-
-    function positionFieldsForBrochureware() {
-        if (meerkat.site.isFromBrochureSite) {
-            if (meerkat.modules.healthChoices.hasPartner()) {
-                $elements.primaryCoverLoading.closest('.fieldrow').insertBefore($elements.partnerDOB);
-            } else {
-                $elements.primaryCoverLoading.closest('.fieldrow').insertAfter($elements.primaryCoverRow);
-            }
-
-            meerkat.modules.fieldUtilities.disable($elements.primaryCoverLoading);
-        }
     }
 
     function getCurrentCover() {
         return $elements.currentCover.filter(':checked').val();
     }
 
+    function onStartInit() {
+        var $checked = $elements.currentCover.filter(':checked');
+        if ($checked.length) {
+            $checked.change();
+        } else {
+            meerkat.modules.fieldUtilities.toggleVisible(
+                $elements.primaryCoverLoading,
+                true
+            );
+        }
+    }
+
     meerkat.modules.register('healthPrimary', {
         init: initHealthPrimary,
         getCurrentCover: getCurrentCover,
-        positionFieldsForBrochureware: positionFieldsForBrochureware
+        onStartInit: onStartInit
     });
 
 })(jQuery);

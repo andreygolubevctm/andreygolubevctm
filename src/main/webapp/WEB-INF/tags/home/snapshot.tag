@@ -9,7 +9,7 @@
 		</div>
 		<div class="col-sm-10">
             <p><strong>Cover: </strong><span data-source="#home_coverType"></span></p>
-            <p><strong>Address: </strong><span data-source="#home_property_address_fullAddress" data-callback="meerkat.modules.homeSnapshot.getAddress"></span></p>
+            <p><strong>Address: </strong><span data-source="#home_property_address_fullAddress" data-callback="meerkat.modules.homeSnapshot.getAddressFirstLine"></span><br /><span data-source="#home_property_address_suburbName"></span> <span data-source="#home_property_address_state"></span> <span data-source="#home_property_address_postCode"></span></p>
 		</div>
 	</div>
     <div class="row snapshot amount-snapshot">
@@ -18,7 +18,12 @@
         </div>
         <div class="col-sm-10">
             <p><strong>Home cover: </strong><span data-source="#home_coverAmounts_rebuildCostentry" data-callback="meerkat.modules.homeSnapshot.getHomeAmount"></span></p>
-            <p><strong>Contents cover: </strong><span data-source="#home_coverAmounts_replaceContentsCostentry" data-callback="meerkat.modules.homeSnapshot.getContentAmount"></span></p>
+						<div class="notLandlord">
+						    <p><strong>Contents cover: </strong><span data-source="#home_coverAmounts_replaceContentsCostentry" data-callback="meerkat.modules.homeSnapshot.getContentAmount"></span></p>
+						</div>
+        		<div class="isLandlord">
+								<p><strong>Contents cover: </strong><span data-source="#home_coverAmounts_replaceContentsCostLandlordentry" data-callback="meerkat.modules.homeSnapshot.getContentAmount"></span></p>
+						</div>
         </div>
     </div>
     <div class="row snapshot holder-snapshot">

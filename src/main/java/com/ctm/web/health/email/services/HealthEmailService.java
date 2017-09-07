@@ -149,7 +149,7 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 			final String operator;
 			if (request != null && request.getSession() != null) {
 				AuthenticatedData authenticatedData = sessionDataService.getAuthenticatedSessionData(request);
-				if(authenticatedData != null) {
+				if(authenticatedData != null && StringUtils.isNotBlank(authenticatedData.getUid())) {
 					operator = authenticatedData.getUid();
 				} else {
 					operator = "ONLINE";
@@ -282,7 +282,7 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 
 		HealthApplicationEmailModel emailModel = new HealthApplicationEmailModel();
 		emailModel.setEmailAddress(emailDetails.getEmailAddress());
-		emailModel.setFirstName(emailDetails.getFirstName());
+		emailModel.setFirstName(HealthEmailMapper.getFirstName(emailDetails, data));
 		emailModel.setBccEmail(response.getBccEmail());
 		emailModel.setOptIn("Y".equals(data.map(HealthRequest::getQuote)
 				.map(HealthQuote::getApplication)
@@ -442,6 +442,8 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 		setCustomerKey(emailModel, mailingName);
 		return emailModel;
 	}
+
+
 
 	private Optional<JSONObject> getJsonObject(JSONObject jsonObject, String key) {
 		if (jsonObject.has(key)) {

@@ -151,6 +151,10 @@
 		background-color: #fbfbfb;
 		border: 1px solid #f7f7f7;
 	}
+	.view-all-times {
+		margin-top: 10px;
+		display: block;
+	}
     @media (@xs-only) {
 		.outline {
 			border-top: 2px solid @callback-dark-grey;
@@ -163,7 +167,40 @@
 
 		.quote-ref-xs {
 			color: @callback-dark-grey;
+			font-size: 22px;
+			margin: 0 0 25px 0;
 		}
+
+	    #health-callback-form {
+		    .form-group.fieldrow {
+			    padding:10px 0 0 0;
+		    }
+		    .contact-number-mobile,
+		    .contact-number-other {
+			    .control-sub-label {
+					float:right;
+				    padding:0;
+				    margin-top:4px;
+			    }
+		    }
+	    }
+
+	    #callBackNow,
+	    #callBackLater {
+		    margin-top:20px;
+	    }
+
+	    label.btn {
+		    margin-top:0;
+	    }
+
+	    .outline {
+		    .form-group:nth-child(1) {
+			    label.control-label {
+				    display:none;
+			    }
+		    }
+	    }
 
 		.switch {
 			display: inline-block;
@@ -187,6 +224,7 @@
 		.today-hours-callback-modal,
 		.main h4 {
 			color: #909090;
+			line-height:1.1;
 		}
 
 		.today-hours-callback-modal {
@@ -198,19 +236,53 @@
 				border-top: 2px solid #ccc;
 			    content: " ";
 			    display: block;
-			    margin: 40px auto 20px;
+			    margin: 10px auto 0px;
 			    width: 100%;
 			}
 
-			h4 {
-				display: inline-block;
-				font-size: 25px;
-				color: @theme-secondary;
+			&.visible-xs {
+				&::before {
+					border: 0;
+				}
 			}
 
-			h1 a,
-			.view-all-times {
+			h1 a {
 				text-decoration: underline;
+			}
+
+			h4 {
+				color: @theme-secondary;
+				display: inline-block;
+				font-size: 25px;
+			}
+
+			.view-all-times {
+				margin: 20px 0;
+			}
+
+			.call-details-button {
+				display: inline-block;
+				font-size: 22px;
+				padding: 10px 40px;
+			}
+
+			.request-call-back {
+				margin: 15px 0;
+				display: block;
+			}
+
+			.view-all-times,
+			.request-call-back {
+				color: @theme-tertiary;
+				text-decoration: none;
+
+				&:focus {
+					color: @theme-tertiary;
+				}
+			}
+
+			.opening-hours-label {
+				color: @gray-darker;
 			}
 		}
 
@@ -218,11 +290,6 @@
 			display: inline-block;
 			padding-left: 5px;
 		}
-	}
-
-	.view-all-times {
-		margin-top: 10px;
-		display: block;
 	}
 }
 .health-callback {

@@ -106,6 +106,19 @@ public class TransactionService {
 		}
 	}
 
+	public static void writeTransactionDetail(final Long transactionId,
+											final HealthTransactionDao.HealthTransactionSequenceNoEnum transactionSeqNo,
+											final String value) throws DaoException {
+		if (StringUtils.isNotBlank(value)) {
+			try {
+				final HealthTransactionDao transactionHealthDao = new HealthTransactionDao();
+				transactionHealthDao.writeTransactionDetail(transactionId, transactionSeqNo, value);
+			} catch (DaoException e) {
+				LOGGER.warn("Exception thrown writing transaction detail.", e);
+			}
+		}
+	}
+
 	/**
 	 * Find if any transaction chained from the provided Root ID is confirmed (sold).
 	 * @param rootIds
@@ -173,4 +186,14 @@ public class TransactionService {
 		return message;
 	}
 
+	/**
+	 * transactionIdExists calls the DAO to confirm the transactionId exists in the database.
+	 * @param transactionId
+	 * @return
+	 * @throws DaoException
+	 */
+	public boolean transactionIdExists(long transactionId) throws DaoException {
+	    final TransactionDao transactionDao = new TransactionDao();
+		return transactionDao.transactionIdExists(transactionId);
+	}
 }

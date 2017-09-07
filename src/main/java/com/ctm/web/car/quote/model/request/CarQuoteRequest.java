@@ -28,6 +28,8 @@ public class CarQuoteRequest {
 
     private TypeOfCover typeOfCover;
 
+    private String quoteReferenceNumber;
+
     private List<String> providerFilter = new ArrayList<String>();
 
     public String getClientIp() {
@@ -108,5 +110,13 @@ public class CarQuoteRequest {
 
     public void setTypeOfCover(TypeOfCover typeOfCover) {
         this.typeOfCover = typeOfCover;
+    }
+
+    public String getQuoteReferenceNumber() {
+        return quoteReferenceNumber;
+    }
+
+    public void setQuoteReferenceNumber(String quoteReferenceNumber) {
+        this.quoteReferenceNumber = quoteReferenceNumber;
     }
 }

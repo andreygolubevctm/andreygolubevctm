@@ -45,7 +45,13 @@
                 <c:if test="${category != 'Hospital'}">
                     <div class="title <c:if test="${category eq 'Hospital'}">hidden-xs</c:if>">
                         <h2 class="ignore">Extras</h2>
+                        <c:if test="${not empty benefitsSwitchSplitTest and benefitsSwitchSplitTest eq true}">
+                            <field_v2:switch xpath="${pageSettings.getVerticalCode()}/benefits/ExtrasSwitch" value="Y" className="benefits-switch switch-small" onText="On" offText="Off" additionalAttributes="data-benefit='extras' data-attach='true'" />
+                        </c:if>
                         <p>${colContent}</p>
+                        <c:if test="${not empty benefitsSwitchSplitTest and benefitsSwitchSplitTest eq true}">
+                            <health_v4:benefits_switch_extras_message />
+                        </c:if>
                         <health_v4_insuranceprefs:quick_select
                                 options="Dental:dental|Sports:sports|Peace of Mind:peace" trackingLabel="extras" />
                     </div>
@@ -53,12 +59,14 @@
                 <c:if test="${category eq 'Hospital'}">
                 <div class="title">
                     <h2 class="ignore">Hospital</h2>
-                    <p class="hospital-content-toggle"><%-- not required according to Emma/Ahmed --%></p>
+                    <c:if test="${not empty benefitsSwitchSplitTest and benefitsSwitchSplitTest eq true}">
+                        <field_v2:switch xpath="${pageSettings.getVerticalCode()}/benefits/HospitalSwitch" value="Y" className="benefits-switch switch-small" onText="On" offText="Off" additionalAttributes="data-benefit='hospital' data-attach='true'" />
+                    </c:if>
                 </div>
                 <div id="tabs" class="benefitsTab">
                     <ul class="nav nav-tabs tab-count-2">
-                        <li class="active"><a data-toggle="tab" href=".comprehensive-pane" data-benefit-cover-type="customise" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />><h2 class="ignore" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />>Comprehensive</h2></a></li>
-                        <li><a data-toggle="tab" href=".limited-pane" data-benefit-cover-type="limited" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />><h2 class="ignore" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />>Limited Cover</h2></a></li>
+                        <li id="comprehensiveBenefitTab" class="active"><a data-toggle="tab" href=".comprehensive-pane" data-benefit-cover-type="customise" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />><h2 class="ignore" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />>${benefitsContent.getSupplementaryValueByKey('comprehensiveTabCopy')}</h2></a></li>
+                        <li><a data-toggle="tab" href=".limited-pane" data-benefit-cover-type="limited" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />><h2 class="ignore" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />>${benefitsContent.getSupplementaryValueByKey('limitedTabCopy')}</h2></a></li>
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane comprehensive-pane active in">
@@ -85,8 +93,8 @@
                                         <c:set var="analyticsLabelAttr"><field_v1:analytics_attr analVal="benefit ${benefitGroup}" quoteChar="\"" /></c:set>
                                         <c:set var="analyticsHelpAttr"><field_v1:analytics_attr analVal="qtip ${item.getShortlistKey()}" quoteChar="\"" /></c:set>
                                         <field_v2:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${item.getShortlistKey()}" value="Y" required="false" label="true"
-                                                           title="${item.getName()}" helpId="${item.getHelpId()}" errorMsg="Please tick" additionalLabelAttributes="${analyticsLabelAttr}"
-                                                           additionalHelpAttributes="${analyticsHelpAttr}" />
+                                        title="${item.getName()}" helpId="${item.getHelpId()}" errorMsg="Please tick" additionalLabelAttributes="${analyticsLabelAttr}"
+                                        additionalHelpAttributes="${analyticsHelpAttr}" />
                                     </c:otherwise>
                                 </c:choose>
 
@@ -114,16 +122,16 @@
                                                     <c:set var="benefitLabel">
 													<span class="benefitContent">
 														<div class="benefitTitle needsclick">${selectedValue.getName()}</div>
-														<span class="benefitSummary needsclick">${benefitsContentBlurbs.getSupplementaryValueByKey(selectedValue.getId())} <a href="javascript:;"
-                                                                                                                                                                   class="help_icon floatLeft"
-                                                                                                                                                                   data-content="helpid:${selectedValue.getHelpId()}"
-                                                                                                                                                                   data-toggle="popover">more</a></span>
+                                                            <span class="benefitSummary needsclick">${benefitsContentBlurbs.getSupplementaryValueByKey(selectedValue.getId())} <a href="javascript:;"
+                                                            class="help_icon floatLeft"
+                                                            data-content="helpid:${selectedValue.getHelpId()}"
+                                                            data-toggle="popover">more</a></span>
 													</span>
                                                     </c:set>
                                                     <field_v2:checkbox xpath="${pageSettings.getVerticalCode()}/benefits/benefitsExtras/${selectedValue.getShortlistKey()}" value="Y" required="false"
-                                                                       label="true" title="${benefitLabel}" errorMsg="Please tick"
-                                                                       customAttribute=" data-attach=true data-benefit-id='${selectedValue.getId()}' data-benefit-code='${selectedValue.getShortlistKey()}' " additionalLabelAttributes="${analyticsLabelAttr}"
-                                                                       additionalHelpAttributes="${analyticsHelpAttr}" />
+                                                    label="true" title="${benefitLabel}" errorMsg="Please tick"
+                                                    customAttribute=" data-attach=true data-benefit-id='${selectedValue.getId()}' data-benefit-code='${selectedValue.getShortlistKey()}' " additionalLabelAttributes="${analyticsLabelAttr}"
+                                                    additionalHelpAttributes="${analyticsHelpAttr}" />
                                                 </div>
                                             </c:if>
                                         </c:forEach>
@@ -134,7 +142,24 @@
                             </div>
                         </div>
                         <div class="tab-pane limited-pane">
-                                ${benefitsContent.getSupplementaryValueByKey('limitedText')}
+                            <div class="Extras-wrapper">
+                                <div class="children healthBenefits">
+                                    <div class="hasIcons">
+                                        <div class="categoriesCell short-list-item category expandable collapsed HLTicon-limited_cover LimitedCover_container">
+                                            <div class="checkbox">
+                                                <input type="checkbox" name="health_benefits_benefitsExtras_LimitedCover" id="health_benefits_benefitsExtras_LimitedCover" class="checkbox-custom checkbox" value="Y" checked="checked" data-attach="true" data-ignore="true">
+                                                <label for="health_benefits_benefitsExtras_LimitedCover" data-analytics="benefit extras">
+                                                    <span class="benefitContent">
+                                                        <div class="benefitTitle needsclick">Limited Hospital Cover</div>
+                                                        <span class="benefitSummary needsclick">accidental cover, avoid paying Medicare Levy Surcharge</span>
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            ${benefitsContent.getSupplementaryValueByKey('limitedText')}
                         </div>
                     </div>
                     </c:if>
@@ -146,14 +171,4 @@
             </div>
         </div>
     </form_v2:fieldset>
-
-    <c:choose>
-        <c:when test="${coverType == 'Hospital'}">
-            <simples:dialogue id="45" className="simples-dialogue-hospital-cover" vertical="health" />
-            <simples:dialogue id="50" className="simples-dialogue-extras-cover" vertical="health" />
-        </c:when>
-        <c:otherwise>
-            <simples:dialogue id="51" className="simples-dialogue-extras-cover" vertical="health" />
-        </c:otherwise>
-    </c:choose>
 </c:if>

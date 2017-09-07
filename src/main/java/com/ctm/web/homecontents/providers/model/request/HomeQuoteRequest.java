@@ -48,8 +48,20 @@ public class HomeQuoteRequest {
 
     private boolean hadClaims;
 
+    private Boolean underFinance;
+
     public String getClientIp() {
         return clientIp;
+    }
+
+    private LandlordDetails landlordDetails;
+
+    public LandlordDetails getLandlordDetails() {
+        return landlordDetails;
+    }
+
+    public void setLandlordDetails(LandlordDetails landlordDetails) {
+        this.landlordDetails = landlordDetails;
     }
 
     public HomeQuoteRequest setClientIp(String clientIp) {
@@ -207,6 +219,14 @@ public class HomeQuoteRequest {
 
     public void setHadClaims(boolean hadClaims) {
         this.hadClaims = hadClaims;
+    }
+
+    public Boolean isUnderFinance() {
+        return underFinance;
+    }
+
+    public void setUnderFinance(Boolean underFinance) {
+        this.underFinance = underFinance;
     }
 
 }

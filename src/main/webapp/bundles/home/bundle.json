@@ -5,6 +5,7 @@
     "plugins/scrollTo",
     "shared/results/v2",
     "shared/results/v5",
+    "shared/results/v6",
     "shared/features",
     "shared/validation",
 	"shared/fonts/v1",
@@ -30,6 +31,8 @@
     "shared/resultsFilterLabels",
     "shared/paymentFrequencyButtons",
     "shared/resultsMobileDisplayModeToggle",
-    "shared/mobileNavButtons"
+    "shared/mobileNavButtons",
+    "shared/buttonTileDropdownSelector",
+    "shared/leadCapture"
   ]
 }

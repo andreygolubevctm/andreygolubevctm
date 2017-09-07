@@ -2,6 +2,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <settings:setVertical verticalCode="GENERIC" />
+<c:set var="isDev" value="${environmentService.getEnvironmentAsString() eq 'localhost' || environmentService.getEnvironmentAsString() eq 'NXI'}"/>
 <c:set var="transactionId">
 	<c:out value="${param.transactionId}" escapeXml="true" />
 </c:set>
@@ -20,12 +21,14 @@
 <c:set var="verticalBrandCode" value="${pageSettings.getBrandCode()}" />
 <c:set var="trackingEnabled" value="${contentService.getContentValue(pageContext.getRequest(), 'trackingEnabled', verticalBrandCode, param.vertical)}" />
 
+<c:set var="gaClientId" value="${fn:replace(resultsService.getSingleResultPropertyValue(transactionId, productId, 'gaClientId'),'%26','&') }" />
+
 <c:if test="${trackingEnabled eq true and not empty quoteUrl and quoteUrl != 'DUPLICATE'}">
 	<c:set var="trackingURL" value="${contentService.getContentValue(pageContext.getRequest(), 'handoverTrackingURL', verticalBrandCode, param.vertical)}" />
 	<c:set var="trackingCode" value="${contentService.getContentWithSupplementary(pageContext.getRequest(), 'handoverTrackingURL', verticalBrandCode, param.vertical).getSupplementaryValueByKey(providerCode)}" />
 
 	<c:set var="quoteUrl">
-			<c:out value="${trackingURL}" />${trackingCode}/pubref:/Adref:${transactionId}/destination:${quoteUrl}
+			<c:out value="${trackingURL}" />${trackingCode}/pubref:${gaClientId}/adref:${transactionId}/destination:${quoteUrl}
 	</c:set>
 </c:if>
 
@@ -39,17 +42,16 @@
 			<%-- In case we want to turn off looped URI Decoding --%>
 			window.useLoopedTransferringURIDecoding = ${pageSettings.getSetting("useLoopedTransferringURIDecoding")};
 
-			<%-- Mock underscore.js (_) because we don't need it but our framework insists that it is required :( --%>
-			window._ = {};
-			var properties = ['debounce', 'isNull', 'isUndefined', 'template', 'bind', 'isEmpty'];
-			for(var i = 0; i < properties.length; i++){
-				window._[properties[i]] = function() {};
-			}
-
 			<%-- Mock results objects because same reason as above --%>
 			window.ResultsModel = { moduleEvents: { WEBAPP_LOCK: 'WEBAPP_LOCK' } };
 			window.ResultsView = { moduleEvents: { RESULTS_TOGGLE_MODE: 'RESULTS_TOGGLE_MODE' } };
 		</script>
+
+		<%--  Underscore --%>
+		<c:if test="${isDev eq false}">
+			<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+		</c:if>
+		<script>window._ || document.write('<script src="${assetUrl}assets/libraries/underscore-1.8.3.min.js">\x3C/script>')</script>
 	</jsp:attribute>
 
 	<jsp:attribute name="head_meta">

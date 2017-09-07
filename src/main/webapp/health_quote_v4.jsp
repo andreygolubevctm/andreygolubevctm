@@ -8,6 +8,15 @@
 <%-- Redirect if Confirmation Page --%>
 <health_v1:redirect_rules />
 
+<%-- Redirect call centre consultants out of V4 --%>
+<c:if test="${callCentre && journeyOverride eq true}">
+    <c:set var="redirectURL" value="${pageSettings.getBaseUrl()}health_quote.jsp?" />
+    <c:forEach items="${param}" var="currentParam">
+        <c:set var="redirectURL">${redirectURL}${currentParam.key}=${currentParam.value}&</c:set>
+    </c:forEach>
+    <c:redirect url="${fn:substring(redirectURL,0,fn:length(redirectURL) - 1)}" />
+</c:if>
+
 <c:choose>
     <c:when test="${not callCentre}">
 
@@ -48,7 +57,7 @@
                 <c:if test="${not empty callCentreNumber}">
                     <div class="navbar-collapse header-collapse-contact collapse">
                         <ul class="nav navbar-nav navbar-right callCentreNumberSection">
-                            <li class="navbar-text">Confused? Talk to our experts now.</li>
+                            <li class="navbar-text hidden-sm">Confused? Talk to our experts now.</li>
                             <li>
                                 <div class="navbar-text hidden-xs" data-livechat="target">
                                     Call <a href="javascript:;" data-toggle="dialog"
@@ -81,7 +90,7 @@
                                 <a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton slide-control-about-you" data-slide-control="next"
                                    href="javascript:;" data-loadinganimation="inside" data-loadinganimation-showAtEnd="true" <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />><span class="hidden-md hidden-lg">Preferences</span><span class="hidden-sm">Insurance preferences</span> <span class="icon icon-arrow-right"></span></a>
                                 <a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton slide-control-insurance-preferences" data-slide-control="next"
-                                   href="javascript:;" data-loadinganimation="inside" data-loadinganimation-showAtEnd="true" <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />>Contact details <span class="icon icon-arrow-right"></span></a>
+                                   href="javascript:;" data-loadinganimation="inside" data-loadinganimation-showAtEnd="true" <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />>Next step <span class="icon icon-arrow-right"></span></a>
                                 <a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton slide-control-get-prices" data-slide-control="next"
                                    href="javascript:;" data-loadinganimation="inside" data-loadinganimation-showAtEnd="true" <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />>Get prices <span class="icon icon-arrow-right"></span></a>
                                 <a class="btn btn-next btn-block nav-next-btn show-loading journeyNavButton slide-control-proceed-to-payment" data-slide-control="next"
@@ -154,6 +163,10 @@
                 <health_v4_layout:slide_results />
                 <health_v4_layout:slide_application />
                 <health_v4_layout:slide_payment />
+                <health_v4:dual_pricing_templates />
+                <c:if test="${isPyrrActive eq true}">
+                    <health_v4:pyrr_campaign_templates />
+                </c:if>
 
                 <health_v4_payment:payment_frequency_template />
 
@@ -165,6 +178,8 @@
 
                 <%--Reward Campaign Template--%>
                 <reward:template_campaign_tile />
+
+                <zeus:offer_details_modal />
             </jsp:body>
         </layout_v1:journey_engine_page>
     </c:when>
