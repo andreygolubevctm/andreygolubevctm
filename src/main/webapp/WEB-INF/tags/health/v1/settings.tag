@@ -150,6 +150,7 @@
 		isContactTypeTrialCampaign: ${isContactTypeTrialCampaign},
 	</c:if>
 	gaClientId: "<c:out value="${data['health/gaclientid']}"/>",
+	<core_v2:affiliateSettings />
 	isFromBrochureSite: <c:out value="${fromBrochure}"/>,
 	journeyStage: "<c:out value="${data['health/journey/stage']}"/>",
 	pageAction: '<c:out value="${pageAction}"/>',
