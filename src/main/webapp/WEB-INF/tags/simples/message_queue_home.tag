@@ -7,7 +7,7 @@
 <simples:template_messagedetail />
 <simples:template_touches />
 
-<div class="simples-home-buttons hidden">
+<div class="simples-home-buttons simples-splashpage-item hidden">
 <c:choose>
 	<c:when test="${pageSettings.getSetting('inInEnabled')}">
 		<%-- <p>InInInteractionId: <c:out value="${sessionScope.ininInteractionId}" /></p> --%>
@@ -26,7 +26,7 @@
 	<a href="/${pageSettings.getContextFolder()}simples/startQuote.jsp?verticalCode=HEALTH" class="btn btn-form btn-lg message-inbound">Start New Quote <span class="icon icon-arrow-right"></span></a>
 </div>
 
-<div class="simples-remaining-sales-container hidden">
+<div class="simples-remaining-sales-container simples-splashpage-item hidden">
 	<div class="remaining-sales-container">
 		<div class="row">
 			<div>
@@ -55,7 +55,10 @@
 	</div>
 </div>
 
-<simples:dialogue id="77" vertical="health" className="simples-dialog-inbound" />
+<div class="simples-splashpage-item hidden">
+	<simples:dialogue id="77" vertical="health" className="simples-dialog-inbound" />
+	<simples:clifilter_add />
+</div>
 
 <div class="simples-message-details-container">
 
