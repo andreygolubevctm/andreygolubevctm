@@ -28,9 +28,17 @@
       },
     	onClose: function(selectedDates, dateStr) {
         display.departure.classList.remove('dp__input__item--active');
-        returnPicker.set('minDate', dateStr);
-        returnPicker.setDate(dateStr, true);
-        returnPicker.open();
+        var dates = returnPicker.selectedDates;
+        if (dates.length === 2 && dates[0] > dates[1]) {
+          dates.reverse();
+        }
+        if (dates.length === 0 || selectedDates.length === 0 || dates[0].getTime() !== selectedDates[0].getTime()) {
+          console.log(dates[0]);
+          console.log(selectedDates[0]);
+          returnPicker.set('minDate', dateStr);
+          returnPicker.setDate(dateStr, true);
+          returnPicker.open();
+        }
       }
     },
     returnOptions: {
