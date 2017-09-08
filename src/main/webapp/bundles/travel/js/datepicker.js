@@ -17,14 +17,14 @@
 
   var options = {
     departureOptions: {
-      dateFormat: "dd/mm/y",
+      dateFormat: "d/m/y",
       minDate: 'today',
       onOpen: function() {
         display.departure.classList.add('dp__input__item--active');
       },
       onChange: function(selectedDates, dateStr, instance) {
-        display.departure.value = formatDate(instance.selectedDates[0]);
-        elements.hiddenDeparture.value = formatDate(instance.selectedDates[0]);    
+        display.departure.value = dateStr;
+        elements.hiddenDeparture.value = dateStr;    
       },
     	onClose: function(selectedDates, dateStr) {
         display.departure.classList.remove('dp__input__item--active');
@@ -34,7 +34,7 @@
       }
     },
     returnOptions: {
-      dateFormat: "dd/mm/y",
+      dateFormat: "d/m/y",
     	mode: 'range',
       minDate: 'today',
       onOpen: function() {
@@ -42,8 +42,14 @@
       },
       onChange: function(selectedDates, dateStr, instance) {
         if (instance.selectedDates.length > 1) {
-          display.returned.value = formatDate(instance.selectedDates[1]);
-          elements.hiddenReturned.value = formatDate(instance.selectedDates[1]);
+          var dates = instance.selectedDates;
+          if (dates[0] > dates[1]) {
+            dates.reverse();
+          }
+          departurePicker.set('minDate', dates[0]);
+          departurePicker.setDate(dates[0], true);
+          display.returned.value = formatDate(dates[1]);
+          elements.hiddenReturned.value = formatDate(dates[1]);
         }
       },
       onClose: function() {
@@ -55,7 +61,7 @@
   function formatDate(date) {
     if (typeof date.getMonth === 'function') {
       var day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
-      var month = date.getMonth() < 10 ? '0' + date.getMonth() : date.getMonth();
+      var month = date.getMonth() < 9 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1;
       var year = date.getFullYear();
       return day + '/' + month + '/' + year;
     }
