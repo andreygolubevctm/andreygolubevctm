@@ -31,7 +31,7 @@
         <span class="frequencyTitle">{{= freqObj.label }}</span>
     </div>
 
-    {{ if (!obj.hasOwnProperty('priceBreakdown')) { }}
+    {{ if (!obj.hasOwnProperty('priceBreakdown') || (obj.hasOwnProperty('priceBreakdown') && !obj.priceBreakdown)) { }}
     <div class="lhcText hide-on-affix">
         <span>
             {{= result.lhcFreePriceMode ? result.textLhcFreePricing : result.textPricing }}
