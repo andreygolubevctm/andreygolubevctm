@@ -45,7 +45,7 @@
     </div>
     {{ } else { }}
     <div class="price-breakdown">
-        {{ var showLHCRow = availablePremiums[frequency].lhcPercentage > 0; }}
+        {{ var showLHCRow = obj.showLHCRow; }}
         {{ var showRebateRow = availablePremiums[frequency].rebate > 0; }}
         {{ var showDiscountRow = availablePremiums[frequency].discounted === 'Y'; }}
 

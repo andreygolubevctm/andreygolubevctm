@@ -110,7 +110,7 @@
             product.displayLogo = true;
             product.priceBreakdown = meerkat.modules.journeyEngine.getCurrentStep().navigationId !== 'results' ? true : false;
 
-            if (product.premium[product._selectedFrequency].lhcPercentage > 0) {
+            if (product.premium[product._selectedFrequency].lhc !== '$0.00') {
                 meerkat.modules.comms.get({
                     url: 'spring/content/get.json',
                     data: {
@@ -142,8 +142,10 @@
                         lhcHelpCopy = data.contentValue;
                     }
                 });
+                product.showLHCRow = true;
             } else {
                 lhcHtml = '';
+                product.showLHCRow = false;
             }
 
             var quoteRefHtmlTemplate = typeof quoteRefTemplate !== 'undefined' ? _.template(quoteRefTemplate) : null;
