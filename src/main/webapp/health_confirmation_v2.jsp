@@ -14,7 +14,7 @@
 
 <core_v1:quote_check quoteType="health" />
 
-<layout_v1:journey_engine_page title="Health Confirmation" bundleFileName="health_v2">
+<layout_v1:journey_engine_page title="Health Confirmation" bundleFileName="health_v2" ignore_journey_tracking="true">
 
 	<jsp:attribute name="head">
 	</jsp:attribute>

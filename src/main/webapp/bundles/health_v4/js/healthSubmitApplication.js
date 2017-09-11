@@ -92,8 +92,7 @@
 
                     meerkat.modules.leavePageWarning.disable();
 
-                    var priceBreakdownParam = meerkat.modules.splitTest.isActive(5) ? '&j=5' : '';
-                    var redirectURL = "health_confirmation_v2.jsp?action=confirmation&transactionId=" + meerkat.modules.transactionId.get() + priceBreakdownParam + "&token=";
+                    var redirectURL = "health_confirmation_v2.jsp?action=confirmation&transactionId=" + meerkat.modules.transactionId.get() + "&token=";
                     var extraParameters = "";
 
                     if (meerkat.site.utm_source !== '' && meerkat.site.utm_medium !== '' && meerkat.site.utm_campaign !== '') {
