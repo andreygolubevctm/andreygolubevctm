@@ -109,11 +109,11 @@
 			meerkat.modules.healthDualPricing.renderTemplate('.policySummary.dualPricing', product, false, true);
 		} else {
 			product.displayLogo = true;
-			product.priceBreakdown = true;
+			product.priceBreakdown = meerkat.modules.splitTest.isActive(5);
 
 			var getLHCCopyAjax = null;
 
-			if (product.premium[product._selectedFrequency].lhc !== '$0.00') {
+			if (meerkat.modules.splitTest.isActive(5) && product.premium[product._selectedFrequency].lhc !== '$0.00') {
 				getLHCCopyAjax = meerkat.modules.comms.get({
 					url: 'spring/content/get.json',
 					data: {

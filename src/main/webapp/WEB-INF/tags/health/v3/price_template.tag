@@ -39,7 +39,7 @@
         <span class="frequencyTitle">{{= freqObj.label }}</span>
     </div>
 
-    {{ if (!obj.hasOwnProperty('priceBreakdown') || meerkat.site.isCallCentreUser) { }}
+    {{ if (!obj.hasOwnProperty('priceBreakdown') || (obj.hasOwnProperty('priceBreakdown') && !obj.priceBreakdown) || meerkat.site.isCallCentreUser) { }}
     <div class="lhcText">
         <span>
             {{= result.lhcFreePriceMode ? result.textLhcFreePricing : result.textPricing }}
