@@ -275,11 +275,13 @@
 								{{= lossrent }}
 								{{= malt }}
 								{{= rdef }}
+								<field_v2:help_icon helpId="575" showText="" />
 							</div>
 							<div class="landlord-filters-mobile clearfix">
 								{{= lossrentMobile }}
 								{{= maltMobile }}
 								{{= rdefMobile }}
+								<field_v2:help_icon helpId="575" showText="" />
 							</div>
 						{{ } }}
 						<div class="clearfix">
