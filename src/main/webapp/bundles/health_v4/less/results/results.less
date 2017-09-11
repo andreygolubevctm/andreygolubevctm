@@ -16,6 +16,24 @@
     .results-control-container {
       padding-top: 0;
     }
+
+    &.split-test-15 {
+
+      .results-control-container {
+        padding-bottom: 0;
+      }
+
+      .results-pagination {
+        margin-bottom: 0;
+      }
+
+      .progress-bar-row,
+      .results-filters-frequency {
+        margin-bottom: 15px;
+      }
+
+    }
+
   }
 }
 
@@ -379,15 +397,29 @@
       }
 
       .expander {
+        .icon-plus;
+        border: 1px solid;
+        border-radius: 100%;
+        font-size: 6px;
         position: absolute;
         left: 0;
         top: 50%;
         margin-top: -6px;
+        padding: 2px;
+        width: 12px;
 
         @media (@md) {
           position: relative;
-          margin-top: 5px;
+          margin-top: 4px;
           margin-right: 5px;
+        }
+      }
+
+      .expanded {
+        > .category.expandable {
+          .expander {
+            .icon-minus;
+          }
         }
       }
 
@@ -424,33 +456,45 @@
         }
       }
 
-      .cell.expandable.category {
-        .children {
-          position: relative;
-          &.hideChildren {
-            .cell.feature {
-              visibility: hidden;
+      .cell {
+        &.category.expandable {
+          .children {
+            position: relative;
+            &.hideChildren {
+              .cell.feature {
+                visibility: hidden;
+              }
+            }
+            .cell.feature.noValue {
+              .content {
+                padding: 0;
+                .featureLabel {
+                  width: 100%;
+                }
+                .featureValue {
+                  display: none;
+                }
+              }
             }
           }
-          .cell.feature.noValue {
-            .content {
-              padding: 0;
-              .featureLabel {
-                width: 100%;
-              }
-              .featureValue {
+
+          &.privateHospital {
+            .children {
+              padding-top: @results-column-side-padding-width;
+              .restrictedLabel.invisible {
                 display: none;
               }
             }
           }
         }
 
-        &.privateHospital {
-          .children {
-            padding-top: @results-column-side-padding-width;
-            .restrictedLabel.invisible {
-              display: none;
-            }
+        &.displayAsRows {
+          .featureLabel {
+            width: 100%;
+          }
+          .featureValue {
+            text-align: left;
+            width: 100%;
           }
         }
       }
@@ -474,8 +518,8 @@
 
       .contentSafeName {
         display: inline-block;
-        max-width: 80%;
-        margin: 0 10%;
+        max-width: 76%;
+        margin: 0 12%;
 
         @media (@md) {
           max-width: inherit;

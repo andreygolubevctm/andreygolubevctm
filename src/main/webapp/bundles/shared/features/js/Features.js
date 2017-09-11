@@ -27,8 +27,7 @@ Features = {
 				// Perform tasks required after breakpoint change
 				if ($(Results.settings.elements.resultsContainer+" :visible").length > 0) {
 					Results.view.calculateResultsContainerWidth();
-					Features.clearSetHeights();
-					Features.balanceVisibleRowsHeight();
+					Features.clearAndBalanceRowsHeight();
 				}
 
 			});
@@ -72,8 +71,7 @@ Features = {
 		Features.setExpandableRows();
 
 		_.defer(function(){
-			Features.clearSetHeights();
-			Features.balanceVisibleRowsHeight();
+			Features.clearAndBalanceRowsHeight();
 			$(Results.settings.elements.resultsContainer).trigger("populateFeaturesEnd");
 		});
 
@@ -256,7 +254,9 @@ Features = {
 		if(Features.target === false || (typeof Results.getDisplayMode === 'function' && Results.getDisplayMode() == 'price')) {
 			return;
 		}
-		var visibleMultiRowElements = $( Features.target + " " + Results.settings.elements.features.values+":visible"  ); // Removed .filter(":visible") because IE couldn't handle it.
+		var currentPageElements = (meerkat.modules.deviceMediaState.get() === 'xs' &&
+			Results.settings.balanceCurrentPageRowsHeightOnly.mobile) ? ' .result-row.currentPage ' : ' ';
+		var visibleMultiRowElements = $( Features.target + currentPageElements + Results.settings.elements.features.values+":visible"  ); // Removed .filter(":visible") because IE couldn't handle it.
 		Features.sameHeightRows( visibleMultiRowElements );
 	},
 
@@ -379,6 +379,10 @@ Features = {
 
 	flush: function(){
 		$( Features.target ).find( Results.settings.elements.features.list ).html('');
-	}
+	},
 
+	clearAndBalanceRowsHeight: function() {
+		Features.clearSetHeights();
+		Features.balanceVisibleRowsHeight();
+	}
 };

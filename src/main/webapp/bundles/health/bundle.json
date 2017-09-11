@@ -46,6 +46,8 @@
     "shared/healthDualPricing",
     "shared/health",
     "shared/healthPyrrCampaign",
-    "shared/reward"
+    "shared/reward",
+    "shared/affiliateProperties",
+    "shared/fields"
   ]
 }

@@ -8,6 +8,7 @@
 <%@ attribute name="info" required="false" description="info label" %>
 <%@ attribute name="baseXpath" required="true" rtexprvalue="true"	description="variable's xpath" %>
 <%@ attribute name="key" required="false" description="key to get help text from db" %>
+<%@ attribute name="className" required="false" description="class to toggle visibility" %>
 
 <c:if test="${empty key}">
   <c:set var="key" value="leadCaptureTextHealth" />
@@ -16,7 +17,7 @@
 <c:set var="xpath" value="${baseXpath}/leadCapture/${vertical}" scope="session" />
 <c:set var="name" value="${go:nameFromXpath(xpath)}" />
 
-<div class="leadCapture-${vertical}">
+<div class="leadCapture-${className}">
   <span class="optional-tag">optional</span>
   <form_v2:fieldset className="lead-capture" legend="${heading}">
     <c:if test="${not empty info}">

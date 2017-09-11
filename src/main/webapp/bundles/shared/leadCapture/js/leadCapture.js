@@ -4,16 +4,18 @@
       firstNameValue = firstName.val(),
       $elements = {
         principalResidenceInputs: $('input[name=home_occupancy_principalResidence]'),
-        movedInYear: $('#home_occupancy_whenMovedIn_year'),
-        movedInMonth: $('#home_occupancy_whenMovedIn_month'),
+        whenMovedIn: $('#home_occupancy_whenMovedIn_year'),
         textBubbleHeader: $('.lead-capture .well h4'),
         radioBtn: $('.lead-capture .radioBtn label'),
-        leadCaptureHealth: $('.leadCapture-health'),
-        leadCaptureEnergy: $('.leadCapture-energy')
+        health: $('.leadCapture-health'),
+        energyMovingIn: $('.leadCapture-energy-movingIn'),
+        energyResiding: $('.leadCapture-energy-residing')
       },
       state = {
         value: 'N',
-        leadCaptureVertical: 'health'
+        leadCaptureVertical: 'health',
+        movingIn: null,
+        currentLivingIn: null
       };
 
   function _mapValueToInput(el) {
@@ -50,36 +52,62 @@
   }
 
   function _onChange() {
-    if (window.meerkat.site.vertical === 'home') {
-      $elements.principalResidenceInputs.on('change', _checkJustMovedIn);
-      $elements.movedInYear.on('change', _checkJustMovedIn);
-      $elements.movedInMonth.on('change', _checkJustMovedIn);
+    if (window.meerkat.site.vertical === 'home' && window.meerkat.site.tracking.brandCode === 'ctm') {
+      $elements.whenMovedIn.on('change', _checkJustMovedIn);
+      $elements.principalResidenceInputs.on('change', _principalResidenceChange);
     }
   }
-
-  function _switchLeadCaptureComponent(leadCaptureVertical) {
-    if (leadCaptureVertical !== state.leadCaptureVertical) {
-      $elements.leadCaptureHealth.toggle();
-      $elements.leadCaptureEnergy.toggle();
-      state.leadCaptureVertical = leadCaptureVertical;
+  
+  function _principalResidenceChange() {
+    if ($('input[name=home_occupancy_principalResidence]:checked').val() === 'N') {
+      $elements.energyMovingIn.hide();
+      $elements.health.hide();
+      $elements.energyResiding.hide();
     }
   }
 
   function _checkJustMovedIn() {
-    var date = new Date();
-    var year = date.getFullYear().toString();
-    var lastMonth = date.getMonth().toString();
-    var thisMonth = (date.getMonth() + 1).toString();
-    var principalResidence = $('input[name=home_occupancy_principalResidence]:checked').val() === "Y";
-    var movedInYear = $elements.movedInYear.val();
-    var movedInMonth = $elements.movedInMonth.val();
-    // Must be principalResidence, not moved in yet or the last two months.
-    if (principalResidence && ((movedInYear === year && _.indexOf([lastMonth, thisMonth], movedInMonth) !== -1) || movedInYear === 'NotAtThisAddress')) {
-      _switchLeadCaptureComponent('energy');
+    if ($elements.whenMovedIn.val() === 'NotAtThisAddress' && state.movingIn) {
+      $elements.energyMovingIn.show();
+      $elements.health.hide();
+      $elements.energyResiding.hide();
+      state.leadCaptureVertical = 'energy';
+    } else if(state.currentLivingIn === 'health') {
+      $elements.energyMovingIn.hide();
+      $elements.health.show();
+      $elements.energyResiding.hide();
+      state.leadCaptureVertical = 'health';
+    } else if(state.currentLivingIn === 'energy') {
+      $elements.energyMovingIn.hide();
+      $elements.health.hide();
+      $elements.energyResiding.show();
+      state.leadCaptureVertical = 'energy';
     } else {
-      _switchLeadCaptureComponent('health');
+      $elements.energyMovingIn.hide();
+      $elements.health.hide();
+      $elements.energyResiding.hide();
+      state.leadCaptureVertical = null;
     }
   }
+  
+  function splitTest(values) {
+    var currentLivingIn = values.currentLivingIn,
+        movingIn = values.movingIn,
+        rangeValue = Math.random() * 100;
+    if (currentLivingIn.energy > rangeValue) {
+      state.currentLivingIn = 'energy';
+    } else if((currentLivingIn.health + currentLivingIn.energy) > rangeValue) {
+      state.currentLivingIn = 'health';
+    } else {
+      state.currentLivingIn = null;
+    }
+    if (movingIn.energy > rangeValue) {
+      state.movingIn = 'energy';
+    } else {
+      state.movingIn = null;
+    }
+  }
+
 
   function _eventListeners() {
     _clickHandler();
@@ -94,6 +122,7 @@
 
   window.meerkat.modules.register("leadCapture", {
     init: init,
-    getTrackingData: getTrackingData
+    getTrackingData: getTrackingData,
+    splitTest: splitTest
   });
 })(jQuery);

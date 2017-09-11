@@ -604,6 +604,7 @@
 
 				meerkat.modules.healthPaymentDate.initPaymentDate();
 				meerkat.modules.healthPaymentIPP.initHealthPaymentIPP();
+                meerkat.modules.healthPayConfDetailsModal.onInitialise();
 
 				$("#joinDeclarationDialog_link").on('click',function(){
 					var selectedProduct = meerkat.modules.healthResults.getSelectedProduct();
@@ -653,12 +654,17 @@
 						});
 					}
 
-					// Validation passed, submit the application.
+					// Validation passed, submit the application after showing confirmation modal - see subscribe event below.
 					if (valid) {
-						submitApplication();
+                        meerkat.modules.healthPayConfDetailsModal.open(submitApplication);
 					}
 				});
 
+				var $affiliateId = $('#health_affiliate_id');
+				if ($affiliateId.length > 0) {
+					meerkat.modules.simplesBindings.toggleAffiliateRewardsDialogue($affiliateId.val());
+					meerkat.modules.fieldUtilities.hide($('input[name=health_voucher_available]'));
+				}
 			},
 			onBeforeEnter: function enterPaymentStep(event){
 

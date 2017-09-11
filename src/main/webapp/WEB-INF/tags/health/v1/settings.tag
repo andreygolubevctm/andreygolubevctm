@@ -136,12 +136,21 @@
 
 	<health_v1:dual_pricing_settings />
 	<health_v1:pyrr_campaign_settings />
+
+	<c:set var="isContactTypeTrialCampaign">
+		<c:choose>
+			<c:when test="${not empty data['health/simples/contactTypeTrial']}">true</c:when>
+			<c:otherwise>false</c:otherwise>
+		</c:choose>
+	</c:set>
 {
 	isCallCentreUser: <c:out value="${not empty callCentre}"/>,
 	<c:if test="${not empty callCentre}">
 		contactType: "<c:out value="${data['health/simples/contactType']}"/>",
+		isContactTypeTrialCampaign: ${isContactTypeTrialCampaign},
 	</c:if>
 	gaClientId: "<c:out value="${data['health/gaclientid']}"/>",
+	<core_v2:affiliateSettings />
 	isFromBrochureSite: <c:out value="${fromBrochure}"/>,
 	journeyStage: "<c:out value="${data['health/journey/stage']}"/>",
 	pageAction: '<c:out value="${pageAction}"/>',

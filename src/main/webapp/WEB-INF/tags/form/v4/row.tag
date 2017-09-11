@@ -19,7 +19,10 @@
 <%-- SETUP --%>
 <c:if test="${empty addForAttr}"><c:set var="addForAttr" value="${true}" /></c:if>
 <c:set var="showHelpIcon" value="${true}" />
-<c:if test="${empty helpId}"><c:set var="showHelpIcon" value="${false}" /></c:if>
+<c:if test="${empty helpId}">
+    <c:set var="helpId" value="" />
+    <c:set var="showHelpIcon" value="${false}" />
+</c:if>
 <c:set var="showLabel" value="${true}" />
 <c:if test="${empty label or label eq '' or label eq 'empty'}"><c:set var="showLabel" value="${false}" /></c:if>
 <c:set var="inputWidthSm" value="8 " />
@@ -46,11 +49,8 @@
     <%-- Row Label --%>
     <c:if test="${showLabel}">
         <div class="col-xs-<c:out value="${labelWidthXs} " /> col-sm-4 <c:out value="${labelClass}" />">
-            <field_v2:label value="${label}" xpath="${fieldXpath}" addForAttr="${addForAttr}" />
+            <field_v2:label value="${label}" xpath="${fieldXpath}" addForAttr="${addForAttr}" helpId="${helpId}" showText="${showHelpText}" />
             <c:if test="${not empty subLabel}"><div class="control-sub-label">${subLabel}</div></c:if>
-            <c:if test="${showHelpIcon eq true}"><div class="hidden-xs">
-                <field_v2:help_icon helpId="${helpId}" showText="${showHelpText}" />
-            </div></c:if>
         </div>
         <%-- XS Help Tip: Only show if there's a label too. --%>
         <c:if test="${showHelpIcon eq true}">

@@ -2,19 +2,11 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<script id="simples-template-clifilter-add" type="text/html">
-
-<div class="simples-clifilter-modal">
-	<div class="simples-clifilter-modal-header">
-		<h2>Add to CLI Filter</h2>
-	</div>
-	<div class="simples-clifilter-modal-body">
-		{{ if (typeof successMessage !== 'undefined' && successMessage.length > 0) { }}
-			<div class="alert alert-success">{{= successMessage }}</div>
-		{{ } }}
-		{{ if (typeof errorMessage !== 'undefined' && errorMessage.length > 0) { }}
-			<div class="alert alert-danger">{{= errorMessage }}</div>
-		{{ } }}
+<div class="add-to-cli-filter">
+	<h2>Add to CLI Filter</h2>
+	<div class="simples-clifilter-pane-body">
+		<div class="alert alert-success hidden"></div>
+		<div class="alert alert-danger hidden"></div>
 		<form id="simples-add-clifilter" class="form-horizontal">
 			<div class="form-group row">
 				<label for="phone" class="col-xs-3 control-label">Phone Number</label>
@@ -30,6 +22,5 @@
 			</div>
 		</form>
 	</div>
-</div>
 
-</script>
+</div>

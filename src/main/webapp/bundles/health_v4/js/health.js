@@ -94,6 +94,8 @@
             $("#health_contactDetails_optInEmail").val(optinVal);
             $("#health_contactDetails_call").val(optinVal);
         });
+
+        meerkat.modules.fieldUtilities.selectsOnChange();
     }
 
 
@@ -128,6 +130,8 @@
             } else {
                 startStepId = meerkat.site.journeyStage;
             }
+        } else if (meerkat.site.utm_medium === 'email') {
+            startStepId = 'results';
         }
 
         var configureJourneyEngine = _.bind(meerkat.modules.journeyEngine.configure, this, {
@@ -211,6 +215,7 @@
                 // configure progress bar
                 configureProgressBar(true);
 
+                meerkat.modules.fieldUtilities.toggleSelectsPlaceholderColor();
             },
             onAfterEnter: function healthAfterEnter() {
 
@@ -399,6 +404,10 @@
                 }
                 meerkat.modules.healthResults.setCallCentreText();
 
+                if (meerkat.modules.splitTest.isActive(15)) {
+                    $('body.health[data-step="results"]').addClass('split-test-15');
+                }
+
             },
             onBeforeLeave: function beforeLeaveResultsStep(event) {
                 // Increment the transactionId
@@ -468,11 +477,12 @@
                     // Unset the Health Declaration checkbox (could be refactored to only uncheck if the fund changes)
                     $('#health_declaration input:checked').prop('checked', false).change();
 
-	                meerkat.modules.healthCoverStartDate.onBeforeEnter();
-	                meerkat.modules.healthApplyStep.onBeforeEnter();
+                    meerkat.modules.healthCoverStartDate.onBeforeEnter();
+                    meerkat.modules.healthApplyStep.onBeforeEnter();
                     meerkat.modules.healthDependants.updateDependantConfiguration();
                     meerkat.modules.healthMedicare.onBeforeEnterApply();
                     meerkat.modules.healthAGRModal.onBeforeEnterApply();
+                    meerkat.modules.fieldUtilities.toggleSelectsPlaceholderColor();
                 }
             },
             onAfterEnter: function afterEnterApplyStep(event) {
@@ -513,7 +523,8 @@
                     // Insert fund into Contact Authority
                     $('#mainform').find('.health_contact_authority span').text( selectedProduct.info.providerName  );
 
-	                meerkat.messaging.publish(meerkatEvents.TRIGGER_UPDATE_PREMIUM);
+                    meerkat.messaging.publish(meerkatEvents.TRIGGER_UPDATE_PREMIUM);
+                    meerkat.modules.fieldUtilities.toggleSelectsPlaceholderColor();
                 }
             },
             onAfterEnter: function afterEnterPaymentStep() {
@@ -537,7 +548,7 @@
         var labels = {
             journey: {
                 startStep: 'About You',
-                benefitStep: '<span class="hidden-sm hidden-md hidden-lg">Preferences</span><span class="hidden-xs">Insurance Preferences</span>',
+                benefitStep: '<span class="hidden-xs">Insurance </span>Preferences',
                 contactStep: 'Contact Details'
             },
             application: {
@@ -548,9 +559,17 @@
         };
 
         if (meerkat.modules.splitTest.isActive(4)) {
-            labels.journey.startStep = '<span class="hidden-sm hidden-md hidden-lg">About</span><span class="hidden-xs">About You</span>';
-            labels.journey.contactStep = '<span class="hidden-sm hidden-md hidden-lg">Details</span><span class="hidden-xs">Contact Details</span>';
-            labels.journey.resultsStep = '<span class="hidden-sm hidden-md hidden-lg">Prices</span><span class="hidden-xs">Get Prices</span>';
+            labels.journey.startStep = 'About<span class="hidden-xs"> You</span>';
+            labels.journey.contactStep = '<span class="hidden-xs">Contact </span>Details';
+            labels.journey.resultsStep = '<span class="hidden-xs">Get </span>Prices';
+        }
+
+        if (meerkat.modules.splitTest.isActive(15)) {
+            labels.journey.startStep = 'About<span class="hidden-xs"> You</span>';
+            labels.journey.benefitStep = '<span class="hidden-xs">Your </span>Cover';
+            labels.journey.contactStep = '<span class="hidden-xs">Your </span>Details';
+            labels.journey.resultsStep = 'Compare<span class="hidden-xs"> Cover</span>';
+            labels.application.applyStep = 'Purchase<span class="hidden-xs"> Cover</span>';
         }
 
         var phase = isJourney ? 'journey' : 'application',
@@ -589,6 +608,42 @@
                 label: labels.journey.resultsStep,
                 navigationId: steps.resultsStep.navigationId
             });
+        }
+
+        if (meerkat.modules.splitTest.isActive(15)) {
+
+            $('body.health[data-step="results"]').addClass('split-test-15');
+
+            //add 'Application' steps to the end of the 'Journey' breadcrumbs
+            progressBarSteps.journey.push({
+                label: labels.journey.resultsStep,
+                navigationId: steps.resultsStep.navigationId
+            });
+            progressBarSteps.journey.push({
+                label: labels.application.applyStep,
+                navigationId: steps.applyStep.navigationId
+            });
+
+            //add 'Journey' steps to the beginning of the 'Application' breadcrumbs
+            progressBarSteps.application.unshift({
+                label: labels.journey.resultsStep,
+                navigationId: steps.resultsStep.navigationId
+            });
+            progressBarSteps.application.unshift({
+                label: labels.journey.contactStep,
+                navigationId: steps.contactStep.navigationId
+            });
+            progressBarSteps.application.unshift({
+                label: labels.journey.benefitStep,
+                navigationId: steps.benefitsStep.navigationId
+            });
+            progressBarSteps.application.unshift({
+                label: labels.journey.startStep,
+                navigationId: steps.startStep.navigationId
+            });
+
+            progressBarSteps.application.pop(); //remove 'Thank You' from the 'Application' breadcrumbs
+            progressBarSteps.application.pop(); //remove 'Payment' from the 'Application' breadcrumbs
         }
 
         // Better progressBar just works...

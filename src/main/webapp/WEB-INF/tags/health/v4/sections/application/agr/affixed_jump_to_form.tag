@@ -13,4 +13,5 @@
                 <span class="icon icon-arrow-right"></span>
             </a>
         </div>
+    </div>
 </div>

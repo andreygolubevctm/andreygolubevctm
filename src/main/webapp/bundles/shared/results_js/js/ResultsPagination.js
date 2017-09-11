@@ -223,6 +223,12 @@ var ResultsPagination = {
 				Results.settings.pagination.afterPaginationRefreshFunction(Results.pagination.$pagesContainer);
 			}
 
+			if (Results.settings.balanceCurrentPageRowsHeightOnly.mobile && meerkat.modules.deviceMediaState.get() === 'xs') {
+				_.defer(function() {
+					Features.clearAndBalanceRowsHeight();
+				});
+			}
+
 		}else{
 			Results.pagination.toggleScrollButtons(Results.pagination.previousScrollPosition);
 		}

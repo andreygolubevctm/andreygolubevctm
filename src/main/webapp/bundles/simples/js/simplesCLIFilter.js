@@ -1,138 +1,119 @@
 ;(function($, undefined){
 
-	var meerkat = window.meerkat,
-		log = meerkat.logging.info;
+    var meerkat = window.meerkat,
+        log = meerkat.logging.info,
+        errorMsgElement = $('.simples-clifilter-pane-body .alert.alert-danger'),
+        successMsgElement = $('.simples-clifilter-pane-body .alert.alert-danger'),
+        baseUrl = '';
 
-	var modalId = false,
-		templateCLIFilter = false,
-		$targetForm = false;
+    var $targetForm = false;
 
-	function init() {
-		$(document).ready(function() {
+    function init() {
+        $(document).ready(function() {
 
-			// Set up templates
-			var $e = $('#simples-template-clifilter-add');
-			if ($e.length > 0) {
-				templateCLIFilter = _.template($e.html());
-			}
+            baseUrl = meerkat.modules.simples.getBaseUrl();
 
-			$('[data-provide="simples-clifilter-action"]').on('click', 'a', function(event) {
-				event.preventDefault();
-				openModal();
-			});
+            errorMsgElement.html('').addClass('hidden');
+            successMsgElement.html('').addClass('hidden');
 
-			// Event: CLI Filter form submit (uses #dynamic_dom because that is static on the page so retains the event binds)
-			$('#dynamic_dom').on('click', '[data-provide="simples-clifilter-submit"]', function(event) {
-				event.preventDefault();
-				performSubmit();
-			});
+            // Event: CLI Filter form submit (uses #dynamic_dom because that is static on the page so retains the event binds)
+            $('.add-to-cli-filter').on('click', '[data-provide="simples-clifilter-submit"]', function(event) {
+                performSubmit();
+            });
 
-		});
-	}
+        });
+    }
 
-	function openModal() {
-		modalId = meerkat.modules.dialogs.show({
-			title: ' ',
-			fullHeight: true,
-			onOpen: function(id) {
-				modalId = id;
-				updateModal();
-			},
-			onClose: function() {
-			}
-		});
-	}
+    function updateValidationMsg(data) {
+        data = data || {};
 
-	function updateModal(data) {
-		var htmlContent = 'No template found.';
-		data = data || {};
+        var errorMsgElement = $('.simples-clifilter-pane-body .alert.alert-danger');
+        var successMsgElement = $('.simples-clifilter-pane-body .alert.alert-danger');
 
-		if (typeof templateCLIFilter === 'function') {
+        errorMsgElement.addClass('hidden').html('');
+        successMsgElement.addClass('hidden').html('');
 
-			if (data.errorMessage && data.errorMessage.length > 0) {
-				// Error message has been specified elsewhere
-			}
+        if (data.errorMessage && data.errorMessage.length > 0) {
+            // Error message has been specified elsewhere
+            $('.simples-clifilter-pane-body .alert.alert-danger').html(data.errorMessage).removeClass('hidden');
+        }
+        if (data.successMessage && data.successMessage.length > 0) {
+            $('.simples-clifilter-pane-body .alert.alert-success').html(data.successMessage).removeClass('hidden');
+        }
 
-			// Run the template
-			htmlContent = templateCLIFilter(data);
-		}
+    }
 
-		// Replace modal with updated contents
-		meerkat.modules.dialogs.changeContent(modalId, htmlContent);
+    function performSubmit() {
 
-	}
+        //Setup target form
+        $targetForm = $('.add-to-cli-filter #simples-add-clifilter');
 
-	function performSubmit() {
+        if (validateForm()) {
+            var formData = {
+                value: $targetForm.find('input[name="phone"]').val().trim().replace(/\s+/g, '')
+            };
 
-		//Setup target form
-		$targetForm = $('#simples-add-clifilter');
-		
-		if (validateForm()) {
-			var formData = {
-				value: $targetForm.find('input[name="phone"]').val().trim().replace(/\s+/g, '')
-			};
+            var url = baseUrl + 'spring/rest/simples/clifilter/add.json',
+                successMessage = 'Success : ' + formData.value + ' is added to CLI Filter';
+            makeAjaxCall(url, formData, successMessage);
+        }
 
-			var url = 'spring/rest/simples/clifilter/add.json',
-				successMessage = 'Success : ' + formData.value + ' is added to CLI Filter';
-			makeAjaxCall(url, formData, successMessage);
-		}
+    }
 
-	}
+    function makeAjaxCall(url, formData, successMessage) {
+        meerkat.modules.comms.post({
+            url: url,
+            dataType: 'json',
+            cache: false,
+            errorLevel: 'silent',
+            timeout: 10000,
+            data: formData,
+            onSuccess: function onSuccess(json) {
+                if(json.outcome === 'success') {
+                    updateValidationMsg({'successMessage': successMessage});
+                } else {
+                    updateValidationMsg({'errorMessage': 'Failed : ' + json.outcome});
+                }
+            },
+            onError: function onError(obj, txt, errorThrown) {
+                updateValidationMsg({errorMessage: txt + ': ' + errorThrown});
+            }
+        });
+    }
 
-	function makeAjaxCall(url, formData, successMessage) {
-		meerkat.modules.comms.post({
-			url: url,
-			dataType: 'json',
-			cache: false,
-			errorLevel: 'silent',
-			timeout: 10000,
-			data: formData,
-			onSuccess: function onSuccess(json) {
-				if(json.outcome === 'success') {
-					updateModal({'successMessage': successMessage});
-				} else {
-					updateModal({'errorMessage': 'Failed : ' + json.outcome});
-				}
-			},
-			onError: function onError(obj, txt, errorThrown) {
-				updateModal({errorMessage: txt + ': ' + errorThrown});
-			}
-		});
-	}
+    function validateForm() {
 
-	function validateForm() {
+        if ($targetForm === false) return false;
 
-		if ($targetForm === false) return false;
+        var phoneNumber = $targetForm.find('input[name="phone"]').val().trim().replace(/\s+/g, '');
+        var $error = $targetForm.find('.form-error');
 
-		var phoneNumber = $targetForm.find('input[name="phone"]').val().trim().replace(/\s+/g, '');
-		var $error = $targetForm.find('.form-error');
+        if (phoneNumber === '' || !isValidPhoneNumber(phoneNumber)) {
+            $error.text('Please enter a valid phone number.');
+            return false;
+        }
 
-		if (phoneNumber === '' || !isValidPhoneNumber(phoneNumber)) {
-			$error.text('Please enter a valid phone number.');
-			return false;
-		}
+        $error.text('');
+        return true;
+    }
 
-		$error.text('');
-		return true;
-	}
+    // Validate phone number
+    function isValidPhoneNumber(phone) {
+        if (phone.length === 0) return true;
 
-	// Validate phone number
-	function isValidPhoneNumber(phone) {
-		if (phone.length === 0) return true;
+        var valid = true;
+        var strippedValue = phone.replace(/[^0-9]/g, '');
+        if (strippedValue.length === 0 && phone.length > 0) {
+            return false;
+        }
 
-		var valid = true;
-		var strippedValue = phone.replace(/[^0-9]/g, '');
-		if (strippedValue.length === 0 && phone.length > 0) {
-			return false;
-		}
+        var phoneRegex = new RegExp('^(0[234785]{1}[0-9]{8})$');
+        valid = phoneRegex.test(strippedValue);
+        return valid;
+    }
 
-		var phoneRegex = new RegExp('^(0[234785]{1}[0-9]{8})$');
-		valid = phoneRegex.test(strippedValue);
-		return valid;
-	}
-
-	meerkat.modules.register('simplesCLIFilter', {
-		init: init
-	});
+    meerkat.modules.register('simplesCLIFilter', {
+        init: init
+    });
 
 })(jQuery);
