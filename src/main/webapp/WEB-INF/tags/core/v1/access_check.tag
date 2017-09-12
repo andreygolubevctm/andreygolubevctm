@@ -6,6 +6,7 @@
 <%@ attribute name="quoteType" 	required="true"		rtexprvalue="true"	description="The vertical this quote is for"%>
 <%@ attribute name="tranid" 	required="false"	rtexprvalue="true" 	description="Transaction ID to test otherwise use that in data bucket" %>
 
+<session:getAuthenticated />
 <jsp:useBean id="accessTouchService" class="com.ctm.web.core.services.AccessCheckService" scope="page" />
 
 <c:set var="id_to_check">

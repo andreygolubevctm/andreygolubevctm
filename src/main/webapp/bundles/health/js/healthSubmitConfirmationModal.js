@@ -32,7 +32,7 @@
                 middleName: $('#health_application_primary_middleName'),
                 surname: $('#health_application_primary_surname'),
                 dob: $('#health_application_primary_dob'),
-                gender: $('#health_application_primary_gender'),
+                gender: $('input[name=health_application_primary_gender]'),
                 mobileNumber: $('#health_application_mobileinput'),
                 otherNumber: $('#health_application_otherinput')
             },
@@ -78,7 +78,7 @@
                 firstName: $('#health_application_partner_firstname'),
                 surname: $('#health_application_partner_surname'),
                 dob: $('#health_application_partner_dob'),
-                gender: $('#health_application_partner_gender')
+                gender: $('input[name=health_application_partner_gender]')
             }
         };
 
@@ -222,8 +222,12 @@
     }
 
     function _getGender($person) {
-        return !_.isUndefined($person.gender) ? ($person.gender.val() === 'F' ? 'Female' : 'Male') :
-            ($person.title.val() === 'MR' ? 'Male' : 'Female');
+
+        if (!_.isUndefined($person.gender)) {
+            return $person.gender.filter(':checked').val() === 'F' ? 'Female' : 'Male';
+        } else {
+            return (!_.isUndefined($person.title.val()) ? ($person.title.val() === 'MR' ? 'Male' : 'Female') : '');
+        }
     }
 
     function _getDobFormatted($el) {
