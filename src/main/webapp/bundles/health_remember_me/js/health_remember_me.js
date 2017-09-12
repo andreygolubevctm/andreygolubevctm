@@ -113,10 +113,11 @@
     function validateDob() {
         $elements.form.submit(function (e) {
             e.preventDefault();
-            var $form = $(this);
+            var $form = $(this),
+                rememberMeGetPromise = null;
 
             if ($form.valid()) {
-                meerkat.modules.comms.get({
+                rememberMeGetPromise = meerkat.modules.comms.get({
                     url: 'spring/rest/rememberme/quote/get.json',
                     data: {
                         quoteType: 'health',
@@ -162,14 +163,17 @@
                 _track('validation failed');
                 showError(errorTypes.INVALID);
             }
-            if (attemptCount > 2) {
-                showError(errorTypes.ATTEMPTS);
-                updateErrorRedirectMessage();
-                showLoadingPage();
-                setTimeout(function () {
-                    deleteCookieAndRedirect('token expired');
-                }, 800);
-            }
+
+            rememberMeGetPromise && rememberMeGetPromise.done(function() {
+                if (attemptCount > 2) {
+                    showError(errorTypes.ATTEMPTS);
+                    updateErrorRedirectMessage();
+                    showLoadingPage();
+                    setTimeout(function () {
+                        deleteCookieAndRedirect('token expired');
+                    }, 800);
+                }
+            });
         });
     }
 
