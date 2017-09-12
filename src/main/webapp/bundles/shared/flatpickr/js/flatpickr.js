@@ -1,7 +1,6 @@
-/* jshint ignore:start */
-"use strict";
+"use strict"; // jshint ignore:line
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; // jshint ignore:line
 
 /*! flatpickr v3.0.6, @license MIT */
 function FlatpickrInstance(element, config) {
@@ -2071,7 +2070,7 @@ FlatpickrInstance.prototype = {
 								}
 							} else if (!isBackSlash) regexStr += "."; // don't really care
 
-							ops.forEach(function (_ref) {
+							ops.forEach(function (_ref) { // jshint ignore:line
 								var fn = _ref.fn,
 								    val = _ref.val;
 								return parsedDate = fn(parsedDate, val) || parsedDate;
@@ -2342,7 +2341,7 @@ flatpickr.formatDate = FlatpickrInstance.prototype.formatDate;
 
 /* istanbul ignore next */
 if (typeof jQuery !== "undefined") {
-	jQuery.fn.flatpickr = function (config) {
+	jQuery.fn.flatpickr = function (config) { // jshint ignore:line
 		return _flatpickr(this, config);
 	};
 }
@@ -2351,5 +2350,4 @@ Date.prototype.fp_incr = function (days) {
 	return new Date(this.getFullYear(), this.getMonth(), this.getDate() + parseInt(days, 10));
 };
 
-if (typeof module !== "undefined") module.exports = flatpickr;
-/* jshint ignore:end */
+if (typeof module !== "undefined") module.exports = flatpickr; // jshint ignore:line
