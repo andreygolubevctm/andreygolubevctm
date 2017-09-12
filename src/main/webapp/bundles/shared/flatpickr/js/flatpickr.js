@@ -1,3 +1,4 @@
+/* jshint ignore:start */
 "use strict";
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -2351,3 +2352,4 @@ Date.prototype.fp_incr = function (days) {
 };
 
 if (typeof module !== "undefined") module.exports = flatpickr;
+/* jshint ignore:end */
