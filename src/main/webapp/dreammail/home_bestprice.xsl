@@ -315,6 +315,11 @@
 		</Attributes>
 
 		<Attributes>
+			<Name>SpecialOffer<xsl:value-of select="$index" /></Name>
+			<Value><xsl:value-of select="$currentProduct/discountOffer" /></Value>
+		</Attributes>
+
+		<Attributes>
 			<Name>Provider<xsl:value-of select="$index" /></Name>
 			<Value><xsl:value-of select="$currentProduct/productDes" /></Value>
 		</Attributes>

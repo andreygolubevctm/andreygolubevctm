@@ -364,7 +364,7 @@ public class SessionDataServiceBean {
 	 * @param request
 	 */
 	public long getClientDefaultExpiryTimeout(HttpServletRequest request) {
-		return ((request.getSession(false).getMaxInactiveInterval() / 60) - SESSION_EXPIRY_DIFFERENCE) * 60 * 1000;
+		return ((request.getSession(false).getMaxInactiveInterval() / 60) - SESSION_EXPIRY_DIFFERENCE) * 90 * 1000;
 	}
 
 	/**

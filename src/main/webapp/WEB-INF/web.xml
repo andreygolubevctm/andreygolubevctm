@@ -172,6 +172,18 @@
 	-->
 
 	<filter>
+		<filter-name>allowOriginHeaderFilter</filter-name>
+		<filter-class>com.ctm.web.core.logging.listeners.AllowOriginHeaderFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>allowOriginHeaderFilter</filter-name>
+		<url-pattern>/ajax/*</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>allowOriginHeaderFilter</filter-name>
+		<url-pattern>*.json</url-pattern>
+	</filter-mapping>
+	<filter>
 		<filter-name>mdcFilter</filter-name>
 		<filter-class>com.ctm.web.core.logging.listeners.MDCFilter</filter-class>
 	</filter>

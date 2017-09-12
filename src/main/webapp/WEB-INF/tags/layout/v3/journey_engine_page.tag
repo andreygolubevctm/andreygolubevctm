@@ -146,6 +146,7 @@
 
                         <core_v2:tracking_key />
 	                    <core_v2:gaClientId />
+	                    <core_v2:affiliateProperties />
 
                         <div id="journeyEngineSlidesContainer">
                             <jsp:doBody />
