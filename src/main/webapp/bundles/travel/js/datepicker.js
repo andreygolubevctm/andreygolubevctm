@@ -1,15 +1,15 @@
 (function ($, undefined) {
-  
+
   var departurePicker;
   var returnPicker;
-  
+
   var elements = {
     departure: document.getElementById('departure'),
     returned: document.getElementById('return'),
     hiddenDeparture: document.getElementById('travel_dates_fromDate'),
     hiddenReturned: document.getElementById('travel_dates_toDate')
   };
-  
+
   var display = {
     departure: document.getElementById('departureDisplay'),
     returned: document.getElementById('returnDisplay')
@@ -24,7 +24,7 @@
       },
       onChange: function(selectedDates, dateStr, instance) {
         display.departure.value = dateStr;
-        elements.hiddenDeparture.value = dateStr;    
+        elements.hiddenDeparture.value = dateStr;
       },
     	onClose: function(selectedDates, dateStr) {
         display.departure.classList.remove('dp__input__item--active');
@@ -33,8 +33,6 @@
           dates.reverse();
         }
         if (dates.length === 0 || selectedDates.length === 0 || dates[0].getTime() !== selectedDates[0].getTime()) {
-          console.log(dates[0]);
-          console.log(selectedDates[0]);
           returnPicker.set('minDate', dateStr);
           returnPicker.setDate(dateStr, true);
           returnPicker.open();
@@ -54,7 +52,6 @@
           if (dates[0] > dates[1]) {
             dates.reverse();
           }
-          departurePicker.set('minDate', dates[0]);
           departurePicker.setDate(dates[0], true);
           display.returned.value = formatDate(dates[1]);
           elements.hiddenReturned.value = formatDate(dates[1]);
@@ -65,7 +62,7 @@
       }
     }
   };
-    
+
   function formatDate(date) {
     if (typeof date.getMonth === 'function') {
       var day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
