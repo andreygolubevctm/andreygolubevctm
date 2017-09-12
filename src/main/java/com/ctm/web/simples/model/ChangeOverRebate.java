@@ -33,16 +33,16 @@ public class ChangeOverRebate {
         this.previousMultiplier = previousMultiplier;
     }
 
-    public Float getCurrentMultiplier() {
-        return currentMultiplier.floatValue();
+    public BigDecimal getCurrentMultiplier() {
+        return currentMultiplier;
     }
 
     public void setCurrentMultiplier(BigDecimal currentMultiplier) {
         this.currentMultiplier = currentMultiplier;
     }
 
-    public Float getFutureMultiplier() {
-        return futureMultiplier.floatValue();
+    public BigDecimal getFutureMultiplier() {
+        return futureMultiplier;
     }
 
     public void setFutureMultiplier(BigDecimal futureMultiplier) {

@@ -63,6 +63,41 @@
     }
 
     /**
+     * Generate the display value with title before or after, extra text, etc.
+     * Logic may not work as expected compared to the old way
+     * @param pathValue
+     * @param ft
+     * @returns {*}
+     */
+    function buildDisplayValue(pathValue, ft, obj) {
+        var displayValue = Features.parseFeatureValue(pathValue, true);
+
+        if(!_.isEmpty(displayValue)) {
+            return displayValue + _getHelpTooltip(ft);
+        }
+        return 'None';
+    }
+
+    /**
+     *
+     * @param ft
+     * @returns {string}
+     * @private
+     */
+    function _getHelpTooltip(ft) {
+        var attribute = '';
+        var analytics = {
+            "300" : "no COP",
+            "301" : "waiting period",
+            "303" : "excess waivers"
+        };
+        if(_.has(analytics, ft.helpId)) {
+            attribute = meerkat.modules.dataAnalyticsHelper.get(analytics[ft.helpId],'"');
+        }
+        return ft.helpId !== '' && ft.helpId != '0' ? '<a href="javascript:void(0);" class="help-icon icon-info" data-content="helpid:' + ft.helpId + '" data-toggle="popover" ' + attribute + '><span class="text-hide">Need Help?</span></a>' : '';
+    }
+
+    /**
      * resultsItemTemplate helper to remove logic out of the template.
      * @param obj
      * @param ft
@@ -94,7 +129,7 @@
                 ft.labelInColumnContentClass = '';
             }
         } else if (ft.type == 'feature') {
-            ft.displayValue = Features.parseFeatureValue(ft.pathValue, true) || 'None';
+            ft.displayValue = buildDisplayValue(ft.pathValue, ft, obj);
         }
 
         // For sub-category feature detail

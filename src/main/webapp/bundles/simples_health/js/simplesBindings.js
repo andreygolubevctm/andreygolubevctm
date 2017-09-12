@@ -32,7 +32,9 @@
         currentFamilyType = null,
         $limitedCoverHidden,
         $moreInfoDialogue,
-        $dialogue36;
+        $dialogue36,
+        $cashRewardsDialogue,
+        $rewardGatewaryDialogue;
 
     function init() {
         $(document).ready(function () {
@@ -69,6 +71,8 @@
 	        $privatePatientDialogue = $('.simples-dialogue-24');
             $limitedCoverHidden = $("input[name='health_situation_accidentOnlyCover']");
             $dialogue36 = $('.simples-dialogue-36');
+            $cashRewardsDialogue = $('.simples-dialogue-79');
+            $rewardGatewaryDialogue = $('.simples-dialogue-80');
 
             // Handle pre-filled
             populatePrevAssignedRadioBtnGroupValue();
@@ -366,12 +370,18 @@
         $moreInfoDialogue.toggleClass('hidden', $healthSitCoverType.find('input:checked').val().toLowerCase() === "e");
     }
 
+    function toggleAffiliateRewardsDialogue(affiliateId) {
+        $cashRewardsDialogue.toggleClass('hidden', affiliateId !== 'cashRewards');
+        $rewardGatewaryDialogue.toggleClass('hidden', affiliateId !== 'rewardGateway');
+    }
+
     meerkat.modules.register("simplesBindings", {
         init: init,
         updateSimplesMedicareCoverQuestionPosition: updateSimplesMedicareCoverQuestionPosition,
         toggleLimitedCoverDialogue: toggleLimitedCoverDialogue,
         toggleRebateDialogue: toggleRebateDialogue,
-        toggleMoreInfoDialogue: toggleMoreInfoDialogue
+        toggleMoreInfoDialogue: toggleMoreInfoDialogue,
+        toggleAffiliateRewardsDialogue: toggleAffiliateRewardsDialogue
     });
 
 })(jQuery);
