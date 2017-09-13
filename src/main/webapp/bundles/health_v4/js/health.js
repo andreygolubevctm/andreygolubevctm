@@ -382,6 +382,7 @@
                 meerkat.modules.healthDualPricing.initDualPricing();
                 meerkat.modules.healthPyrrCampaign.initPyrrCampaign();
                 meerkat.modules.healthResultsRefineMobile.initHealthResultsRefineMobile();
+                meerkat.modules.healthTopThree.initHealthTopThree();
             },
             onBeforeEnter: function enterResultsStep(event) {
                 meerkat.modules.healthDependants.resetConfig();

@@ -273,6 +273,8 @@ var ResultsView = {
 
 		results = Results.model.sortedProducts;
 
+		results[2].info.topThree = true;
+
 		// build the HTML results
 		if(Results.settings.show.hasOwnProperty('resultsAsRows') && Results.settings.show.resultsAsRows === true) {
 			$.each(results, function (index, result) {
@@ -316,6 +318,10 @@ var ResultsView = {
 					countVisible++;
 				}
 				$(resultRow).attr("id", "result-row-" + index).attr("data-sort", index);
+
+				if (result.info.topThree) {
+					$(resultRow).addClass('result-top-three').prepend('<div class="result-top-three-tag">Popular plan <span class="icon icon-info"></span></div>');
+				}
 
 				// if top result, add top result markup
 				if (result == topResult) {
