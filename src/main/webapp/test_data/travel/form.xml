@@ -5,7 +5,8 @@
 		<toDate>18/03/2015</toDate>
 	</dates>
 	<travellers>
-		<traveller1DOB>01/01/1955</traveller1DOB>
+		<travellersAge>29</travellersAge>
+		<travellersAge>29</travellersAge>
 	</travellers>
 	<surname>User</surname>
 	<policyType>S</policyType>
@@ -13,9 +14,8 @@
 	<email>preload.testing@comparethemarket.com.au</email>
 	<destinations>Please choose your Destination(s)...</destinations>
 	<destination>NZL</destination>
-	<party>S</party>
-	<adults>1</adults>
-	<children>0</children>
+	<party>F</party>
+	<children>2</children>
 	<marketing>Y</marketing>
 	<privacyoptin>Y</privacyoptin>
 </travel>
