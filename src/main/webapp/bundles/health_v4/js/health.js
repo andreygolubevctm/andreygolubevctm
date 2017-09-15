@@ -239,20 +239,18 @@
                 validate: true,
                 customValidation: function validateSelection(callback) {
                     var areBenefitsSwitchOn = meerkat.modules.benefitsSwitch.isHospitalOn() || meerkat.modules.benefitsSwitch.isExtrasOn(),
-                        success = meerkat.modules.splitTest.isActive(2) ? areBenefitsSwitchOn : true;
+                        success = areBenefitsSwitchOn;
 
-                    if (meerkat.modules.splitTest.isActive(2)) {
-                        if (meerkat.modules.benefitsSwitch.isExtrasOn()) {
-                            if (meerkat.modules.benefitsModel.getExtrasCount() === 0) {
-                                meerkat.modules.benefits.toggleExtrasMessage(false);
-                                meerkat.modules.benefitsSelectionScroller.triggerScroll('extras');
-                                // push error tracking object into CtMDatalayer
-                                meerkat.modules.benefits.errorTracking('benefits-switch-extras');
+                    if (meerkat.modules.benefitsSwitch.isExtrasOn()) {
+                        if (meerkat.modules.benefitsModel.getExtrasCount() === 0) {
+                            meerkat.modules.benefits.toggleExtrasMessage(false);
+                            meerkat.modules.benefitsSelectionScroller.triggerScroll('extras');
+                            // push error tracking object into CtMDatalayer
+                            meerkat.modules.benefits.errorTracking('benefits-switch-extras');
 
-                                success = false;
-                            } else {
-                                meerkat.modules.benefits.toggleExtrasMessage(true);
-                            }
+                            success = false;
+                        } else {
+                            meerkat.modules.benefits.toggleExtrasMessage(true);
                         }
                     }
 
@@ -264,9 +262,7 @@
                 object: meerkat.modules.health.getTrackingFieldsObject
             },
             onInitialise: function onBenefitsInit(event) {
-                if (meerkat.modules.splitTest.isActive(2)) {
-                    meerkat.modules.benefitsSwitch.initBenefitsSwitch();
-                }
+                meerkat.modules.benefitsSwitch.initBenefitsSwitch();
             },
             onBeforeEnter: function enterBenefitsStep(event) {
                 // configure progress bar

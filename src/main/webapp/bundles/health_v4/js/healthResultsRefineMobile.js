@@ -111,15 +111,10 @@
                 hospitalBtnText: hospitalType === 'customise' ? (hospitalCount > 0 ? 'Change' : 'Add Hospital') : 'Change',
                 hospitalCountText: hospitalType === 'customise' ? comprehensiveText : '',
                 extrasBtnText: extrasCount > 0 ? 'Change' : 'Add Extras',
-                extrasCountText: extrasCount > 0 ? extrasCount + ' Extra' + extrasPlural + ' selected' : 'No Extras'
-            };
-
-        if (meerkat.modules.splitTest.isActive(2)) {
-            $.extend(data, {
+                extrasCountText: extrasCount > 0 ? extrasCount + ' Extra' + extrasPlural + ' selected' : 'No Extras',
                 isHospitalOn: meerkat.modules.benefitsSwitch.isHospitalOn(),
                 isExtrasOn: meerkat.modules.benefitsSwitch.isExtrasOn()
-            });
-        }
+            };
 
         return data;
     }

@@ -33,16 +33,12 @@
                 comprehensiveBenefitTab: $('#comprehensiveBenefitTab'),
                 limitedCoverIcon: $('#health_benefits_benefitsExtras_LimitedCover'),
                 privateHospitalBenefit: $('input[name=health_benefits_benefitsExtras_PrHospital]'),
-                generalDentalBenefit: $('input[name=health_benefits_benefitsExtras_DentalGeneral]')
+                generalDentalBenefit: $('input[name=health_benefits_benefitsExtras_DentalGeneral]'),
+                benefitsSwitchAlert: $('.benefits-switch-alert')
             };
 
-            if (meerkat.modules.splitTest.isActive(2)) {
-                $elements.benefitsSwitchAlert = $('.benefits-switch-alert');
-            }
-
             $('#tabs').find('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-                if (!meerkat.modules.splitTest.isActive(2) ||
-                    (meerkat.modules.splitTest.isActive(2) && meerkat.modules.benefitsSwitch.isHospitalOn())) {
+                if (meerkat.modules.benefitsSwitch.isHospitalOn()) {
                     var hospitalType = getHospitalType();
 
                     setHospitalType($(this).data('benefit-cover-type'));
@@ -51,8 +47,7 @@
             });
 
             $('label[for="health_benefits_benefitsExtras_LimitedCover"]').on('click', function () {
-                if (!meerkat.modules.splitTest.isActive(2) ||
-                    (meerkat.modules.splitTest.isActive(2) && meerkat.modules.benefitsSwitch.isHospitalOn())) {
+                if (meerkat.modules.benefitsSwitch.isHospitalOn()) {
                     $elements.comprehensiveBenefitTab.find('a').trigger('click');
                 }
             });
@@ -69,7 +64,7 @@
                         _checkPrivateHospital();
                     }
 
-                    if (meerkat.modules.splitTest.isActive(2) && !$elements.generalDentalBenefit.prop('checked')) {
+                    if (!$elements.generalDentalBenefit.prop('checked')) {
                         _checkGeneralDental();
                     }
                 }
@@ -155,19 +150,16 @@
         // updated the selected checkboxes
         meerkat.messaging.subscribe(meerkatEvents.benefitsModel.UPDATE_SELECTED_BENEFITS_CHECKBOX, _reSelectBenefitCheckboxes);
 
+        meerkat.messaging.subscribe(meerkatEvents.benefitsSwitch.SWITCH_CHANGED, function (e) {
+            _toggleBenefitSelection(e.benefit, e.isSwitchedOn);
+            _toggleSwitchValidation();
+            _setCoverTypeField();
+            _updateHiddenFields();
 
-        if (meerkat.modules.splitTest.isActive(2)) {
-            meerkat.messaging.subscribe(meerkatEvents.benefitsSwitch.SWITCH_CHANGED, function (e) {
-                _toggleBenefitSelection(e.benefit, e.isSwitchedOn);
-                _toggleSwitchValidation();
-                _setCoverTypeField();
-                _updateHiddenFields();
-
-                if (e.benefit === 'hospital' && e.isSwitchedOn) {
-                    _checkPrivateHospital();
-                }
-            });
-        }
+            if (e.benefit === 'hospital' && e.isSwitchedOn) {
+                _checkPrivateHospital();
+            }
+        });
     }
 
     function _registerXSBenefitsSlider() {
@@ -205,14 +197,12 @@
             coverType = 'E';
         }
 
-        if (meerkat.modules.splitTest.isActive(2)) {
-            if (!meerkat.modules.benefitsSwitch.isHospitalOn()) {
-                coverType = 'E';
-            }
+        if (!meerkat.modules.benefitsSwitch.isHospitalOn()) {
+            coverType = 'E';
+        }
 
-            if (!meerkat.modules.benefitsSwitch.isExtrasOn()) {
-                coverType = 'H';
-            }
+        if (!meerkat.modules.benefitsSwitch.isExtrasOn()) {
+            coverType = 'H';
         }
 
         meerkat.modules.healthChoices.setCoverType(coverType);
