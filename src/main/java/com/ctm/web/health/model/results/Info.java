@@ -42,6 +42,8 @@ public class Info {
 
     private String situationFilter;
 
+    private Boolean popularProduct;
+
     public String getTrackCode() {
         return trackCode;
     }
@@ -168,5 +170,13 @@ public class Info {
 
     public void setSituationFilter(String situationFilter) {
         this.situationFilter = situationFilter;
+    }
+
+    public Boolean getPopularProduct() {
+        return popularProduct;
+    }
+
+    public void setPopularProduct(Boolean popularProduct) {
+        this.popularProduct = popularProduct;
     }
 }

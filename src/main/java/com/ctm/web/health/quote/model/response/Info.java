@@ -30,6 +30,8 @@ public class Info {
 
     private String situationFilter;
 
+    private Boolean popularProduct;
+
     public boolean isRestrictedFund() {
         return restrictedFund;
     }
@@ -124,5 +126,13 @@ public class Info {
 
     public void setSituationFilter(String situationFilter) {
         this.situationFilter = situationFilter;
+    }
+
+    public Boolean getPopularProduct() {
+        return popularProduct;
+    }
+
+    public void setPopularProduct(Boolean popularProduct) {
+        this.popularProduct = popularProduct;
     }
 }

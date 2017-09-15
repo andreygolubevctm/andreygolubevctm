@@ -41,6 +41,8 @@ public class HealthQuoteRequest
 
     private Boolean partnerHealthCover;
 
+    private Integer age;
+
     /**
      * Use rebates
      */
@@ -188,4 +190,13 @@ public class HealthQuoteRequest
     public void setPartnerHealthCover(Boolean partnerHealthCover) {
         this.partnerHealthCover = partnerHealthCover;
     }
+
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
 }
