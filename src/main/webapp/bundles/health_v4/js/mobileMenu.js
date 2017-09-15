@@ -48,6 +48,7 @@
         _setupElements();
         _applyEventListeners();
         _eventSubscriptions();
+        _calcBodyHeight();
 
         $elements.menuBody.html(_settings.template.html());
 
@@ -60,9 +61,11 @@
             container: $('.mobile-menu-container'),
             overlay: $('.mobile-menu-container .overlay'),
             cross: $('.mobile-menu-container .icon-cross'),
+            header: $('.mobile-menu-header'),
             backBtn: $('.mobile-menu-header-back-btn'),
             title: $('.mobile-menu-header-title'),
             menuBody: $('.mobile-menu-body'),
+            footer: $('.mobile-menu-footer'),
             footerBtn: $('.mobile-menu-footer button')
         };
     }
@@ -109,6 +112,12 @@
                 .addClass('btn-call')
                 .text(_settings.footerButtonUpdateText);
         });
+    }
+
+    function _calcBodyHeight() {
+        var height = $(window).height() - $elements.header[0].getBoundingClientRect().height - $elements.footer[0].getBoundingClientRect().height;
+
+        $elements.menuBody.css('height', height);
     }
 
     function open() {
