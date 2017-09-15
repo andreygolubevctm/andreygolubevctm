@@ -60,6 +60,17 @@
 <timeout>${sessionDataService.getClientSessionTimeout(pageContext.getRequest())}</timeout>
 </c:set>
 
+<c:choose>
+<c:when test="${pageSettings.getSetting('rememberMeEnabled') eq 'Y' and
+				pageSettings.getVerticalCode() eq 'health' and
+                param.touchtype eq 'H' and
+                param.comment eq 'HLT results' and
+                empty authenticatedData.login.user.uid}">
+<jsp:useBean id="rememberMeService" class="com.ctm.web.core.rememberme.services.RememberMeService" />
+<c:set var="rememberMe" value="${rememberMeService.setCookie(pageSettings.getVerticalCode(), data.current.transactionId, pageContext.response)}" scope="request"  />
+</c:when>
+</c:choose>
+
 <%-- Return the results as json --%>
 <c:set var="accessTouchResponse" >${go:XMLtoJSON(result)}</c:set>
 ${sessionDataService.updateTokenWithNewTransactionIdResponse(pageContext.request, accessTouchResponse, data.current.transactionId)}
