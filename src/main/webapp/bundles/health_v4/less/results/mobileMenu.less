@@ -42,6 +42,7 @@
     transition: transform 150ms ease-in-out;
 
     .mobile-menu-header {
+      position: relative;
       border-bottom: 1px solid #ddd;
       font-size: 16px;
       padding: 10px 15px;
@@ -49,8 +50,12 @@
 
       .mobile-menu-header-back-btn {
         position: absolute;
-        left: 15px;
+        left: 5px;
+        top: 50%;
+        margin-top: -15px;
         font-size: 20px;
+        line-height: 30px;
+        width: 30px;
       }
     }
 
@@ -58,6 +63,7 @@
       height: 84.2%;
       position: relative;
       overflow-y: auto;
+      overflow-x: hidden;
 
       section {
         background-color: #fff;

@@ -35,7 +35,7 @@
             }
         },
         $elements = {},
-        _setting = {},
+        _settings = {},
         _callUpdateCB = false;
 
     function initMobileMenu(instanceSettings) {
