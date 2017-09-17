@@ -367,7 +367,7 @@
         <dependency>
             <groupId>com.ctm.common</groupId>
             <artifactId>common-logging</artifactId>
-            <version>${common-logging.version}</version>
+            <version>${commokn-logging.version}</version>
         </dependency>
 
         <dependency>
