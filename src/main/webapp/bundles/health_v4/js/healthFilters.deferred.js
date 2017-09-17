@@ -567,9 +567,14 @@
         }
     }
 
+    function getModel() {
+        return model;
+    }
+
     meerkat.modules.register("healthFilters", {
         init: init,
-        events: {}
+        events: {},
+        getModel: getModel
     });
 
 })(jQuery);

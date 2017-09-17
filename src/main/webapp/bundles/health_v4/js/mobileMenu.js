@@ -14,6 +14,7 @@
             footerButtonCloseText: 'Close',
             footerButtonUpdateText: 'Update..',
             footerButtonUpdateCB: null,
+            htmlContent: '',
             templates: {
                 container:
                     '<div class="mobile-menu-container">' +
@@ -50,7 +51,7 @@
         _eventSubscriptions();
         _calcBodyHeight();
 
-        $elements.menuBody.html(_settings.template.html());
+        $elements.menuBody.html(_settings.htmlContent);
 
         reset();
     }
