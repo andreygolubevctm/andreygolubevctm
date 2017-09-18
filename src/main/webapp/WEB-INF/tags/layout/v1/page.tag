@@ -242,7 +242,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 						</nav>
 
 						<jsp:invoke fragment="header" />
-
+						<competition:navSection />
 					</div>
 
 				</div>

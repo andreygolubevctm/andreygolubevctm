@@ -5,6 +5,11 @@
 <%-- SET ESCAPEXML'd VARIABLES HERE FROM BROCHUREWARE --%>
 
 <%-- VARIABLES --%>
+<c:set var="octoberComp" scope="application" value="${false}"/>
+<c:if test="${pageSettings.getBrandCode() eq 'ctm' && pageSettings.getVerticalCode() eq 'home'}">
+	<c:set var="octoberComp" scope="application" value="${true}"/>
+</c:if>
+
 <c:set var="fromBrochure" scope="request" value="${false}"/>
 <c:if test="${false}">
 	<c:set var="fromBrochure" scope="request" value="${true}"/>

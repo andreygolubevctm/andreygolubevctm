@@ -68,7 +68,7 @@
 		}
 		changeCoverQuestions();
 	}
-	
+
 	function changeCoverQuestions() {
 		var items = {
 		  landlord: [
@@ -82,11 +82,11 @@
 		    { value: 'Home & Contents Cover', text: 'Home & Contents Cover' }
 		  ]
 		};
-		
+
 		function template(value, text) {
 			return '<option class="temp-items" value="' + value + '">' + text + '</option>';
 		}
-		
+
 		function changeDropdownVals() {
 			var $target = $('#home_coverType');
 			var $targetVal = $target.val();
@@ -97,7 +97,7 @@
 		  }
 			$target.val($targetVal);
 		}
-		
+
 		changeDropdownVals();
 	}
 
@@ -317,6 +317,7 @@
 			slideIndex: 5,
 			externalTracking: externalTrackingSettings,
 			onInitialise: function onResultsInit(event) {
+				meerkat.modules.octoberComp.showNav();
 				meerkat.modules.homeMoreInfo.initMoreInfo();
 				meerkat.modules.homeEditDetails.initEditDetails();
 				meerkat.modules.homeFilters.initHomeFilters();
@@ -343,7 +344,7 @@
 			},
 			onAfterLeave: function onAfterLeaveResults(event) {
 				meerkat.modules.journeyProgressBar.show();
-
+				meerkat.modules.octoberComp.hideNav();
 				// Hide the filters bar
 				meerkat.modules.homeFilters.hide();
 				meerkat.modules.homeEditDetails.hide();

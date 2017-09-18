@@ -42,6 +42,7 @@
     "shared/mobileNavButtons",
     "shared/buttonGroupVertical",
     "shared/resultsFilterLabels",
-    "shared/leadCapture"
+    "shared/leadCapture",
+    "shared/competition"
   ]
 }
