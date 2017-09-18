@@ -153,8 +153,20 @@
         meerkat.messaging.subscribe(meerkatEvents.benefitsSwitch.SWITCH_CHANGED, function (e) {
             _toggleBenefitSelection(e.benefit, e.isSwitchedOn);
             _toggleSwitchValidation();
-            _setCoverTypeField();
-            _updateHiddenFields();
+
+            if (e.updateCoverType) {
+                var coverType = 'C';
+                if (!meerkat.modules.benefitsSwitch.isHospitalOn()) {
+                    coverType = 'E';
+                }
+
+                if (!meerkat.modules.benefitsSwitch.isExtrasOn()) {
+                    coverType = 'H';
+                }
+                meerkat.modules.healthChoices.setCoverType(coverType);
+
+                _updateHiddenFields();
+            }
 
             if (e.benefit === 'hospital' && e.isSwitchedOn) {
                 _checkPrivateHospital();
@@ -197,12 +209,13 @@
             coverType = 'E';
         }
 
-        if (!meerkat.modules.benefitsSwitch.isHospitalOn()) {
-            coverType = 'E';
-        }
-
-        if (!meerkat.modules.benefitsSwitch.isExtrasOn()) {
-            coverType = 'H';
+        if (meerkat.site.pageAction === 'remember') {
+            if ($elements.hiddenHospitalCover.val() === '' && $elements.hiddenExtraCover.val() === 'Y') {
+                coverType = 'E';
+            }
+            if ($elements.hiddenHospitalCover.val() === 'Y' && $elements.hiddenExtraCover.val() === '') {
+                coverType = 'H';
+            }
         }
 
         meerkat.modules.healthChoices.setCoverType(coverType);
