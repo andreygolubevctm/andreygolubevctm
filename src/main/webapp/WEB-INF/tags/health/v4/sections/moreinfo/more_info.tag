@@ -46,8 +46,7 @@
 	{{ } else { }}
 		{{ var logoTemplate = meerkat.modules.templateCache.getTemplate($("#logo-template")); }}
 		{{ var priceTemplate = meerkat.modules.templateCache.getTemplate($("#price-template")); }}
-
-		{{ obj.showAltPremium = false; obj.renderedPriceTemplate = logoTemplate(obj) + priceTemplate(obj); }}
+		{{ obj.showAltPremium = false; obj.priceBreakdown = false; obj.renderedPriceTemplate = logoTemplate(obj) + priceTemplate(obj); }}
 	{{ } }}
 
 	<%-- Prepare the call to action bar template. --%>
