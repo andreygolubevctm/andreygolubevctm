@@ -8,13 +8,22 @@
         },
         rates = null,
         ratesAjaxObj = null,
-        $elements = {};
+        $elements = {},
+        splitTest16Active;
 
     function init() {
         _setupFields();
     }
 
     function _setupFields() {
+
+        /* TODO This is a check for  HLT-4717 Split Test J=16 -  meerkat.modules.splitTest.isActive(16) */
+        if ($('#health_healthCover_income').prop('type') === 'select-one'){
+            splitTest16Active = false;
+        } else {
+            splitTest16Active = true;
+        }
+
         $elements = {
             income: $(':input[name="health_healthCover_income"]'),
             rebate: $('input[name="health_healthCover_rebate"]'),
@@ -41,7 +50,8 @@
         _.defer(function(){
             var postData = {
                 dependants: $elements.dependants.val(),
-                income: $elements.income.val() || 0,
+                /* TODO This is a check for  HLT-4717 Split Test J=16 -  meerkat.modules.splitTest.isActive(16) */
+                income: (splitTest16Active ? ($elements.income.filter(':checked').val() || 0) : ($elements.income.val() || 0)),
                 rebate_choice: forceRebate === true ? 'Y' : $elements.rebate.filter(':checked').val(),
                 primary_dob: $elements.primaryDob.val(),
                 primary_loading: $elements.primaryLoading.filter(':checked').val(),
@@ -71,7 +81,8 @@
         _.defer(function() {
             var postData = {
                 dependants: $elements.dependants.val(),
-                income: $elements.income.val() || 0,
+                /* TODO This is a check for  HLT-4717 Split Test J=16 -  meerkat.modules.splitTest.isActive(16) */
+                income: (splitTest16Active ? ($elements.income.filter(':checked').val() || 0) : ($elements.income.val() || 0)),
                 rebate_choice: $elements.rebate.filter(':checked').val(),
                 primary_dob: $elements.primaryDob.val(),
                 primary_loading: $elements.primaryLoading.filter(':checked').val(),
