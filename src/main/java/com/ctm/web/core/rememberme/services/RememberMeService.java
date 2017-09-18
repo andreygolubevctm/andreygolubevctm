@@ -119,7 +119,7 @@ public class RememberMeService {
         try {
             if (isRememberMeEnabled(request, vertical)) {
                 Cookie cookie = getRememberMeCookie(request, vertical);
-                if (cookie != null)
+                if (cookie != null && !cookie.getValue().isEmpty())
                     return true;
             }
         } catch (GeneralSecurityException e) {
@@ -143,7 +143,7 @@ public class RememberMeService {
 
     public Optional<String> getTransactionIdFromCookie(final String vertical, final HttpServletRequest request) throws GeneralSecurityException {
         final Cookie cookie = getRememberMeCookie(request, vertical);
-        if (cookie !=null) {
+        if (cookie !=null && !cookie.getValue().isEmpty()) {
             return Optional.ofNullable(StringEncryption.decrypt(SECRET_KEY, cookie.getValue()));
         }
         return Optional.empty();
