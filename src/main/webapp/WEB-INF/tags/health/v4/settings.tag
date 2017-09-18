@@ -196,5 +196,6 @@
 	}
 	</c:if>
 	,openingHoursTimeZone : '${openingHoursTimeZone}',
-	isRememberMe: ${isRememberMe}
+	isRememberMe: ${isRememberMe},
+	splitTest16: ${taxableIncomeSplitTest}
 }
