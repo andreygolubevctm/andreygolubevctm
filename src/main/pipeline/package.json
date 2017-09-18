@@ -44,7 +44,8 @@
     "mkdirp": "^0.5.1",
     "run-sequence": "^1.1.4",
     "xml2js": "^0.4.12",
-    "yargs": "6.6.0"
+    "yargs": "6.6.0",
+    "js-beautify": "1.6.14" // Added due to latest version throwing errors. Jacob V 20170918
   },
   "devDependencies": {
     "gulp-clean-css": "^2.3.2",
