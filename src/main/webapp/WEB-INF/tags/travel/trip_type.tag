@@ -16,7 +16,7 @@
                     label="true" />
         </div>
         <div class="col-xs-6 col-sm-7">
-            <field_v2:help_icon helpId="213" tooltipClassName="" />
+            <field_v2:help_icon helpId="576" tooltipClassName="" />
         </div>
     </div>
     <div class="row">
@@ -29,7 +29,7 @@
                     label="true" />
         </div>
         <div class="col-xs-6 col-sm-7">
-            <field_v2:help_icon helpId="213" tooltipClassName="" />
+            <field_v2:help_icon helpId="577" tooltipClassName="" />
         </div>
     </div>
     <div class="row">
@@ -42,7 +42,7 @@
                     label="true" />
         </div>
         <div class="col-xs-6 col-sm-7">
-            <field_v2:help_icon helpId="213" tooltipClassName="" />
+            <field_v2:help_icon helpId="578" tooltipClassName="" />
         </div>
     </div>
 </form_v2:row>

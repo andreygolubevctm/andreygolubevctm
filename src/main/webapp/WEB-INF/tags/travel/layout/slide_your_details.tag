@@ -107,7 +107,7 @@
 				</c:set>
 
 				<%-- TRIP TYPE SECTION --%>
-				<form_v2:fieldset showHelpText="true" legend="Trip type" id="triptype">
+				<form_v2:fieldset legend="Trip type" id="triptype">
 					<travel:trip_type />
 				</form_v2:fieldset>
 
