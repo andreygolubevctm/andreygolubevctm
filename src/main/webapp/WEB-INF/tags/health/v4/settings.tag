@@ -121,6 +121,7 @@
 <health_v4:pyrr_campaign_settings />
 <agg_v1:remember_me_settings vertical="health" />
 {
+	octoberComp: <c:out value="${octoberComp}" />,
 	isCallCentreUser: <c:out value="${not empty callCentre}"/>,
 	isFromBrochureSite: <c:out value="${fromBrochure}"/>,
 	journeyStage: "<c:out value="${data['health/journey/stage']}"/>",

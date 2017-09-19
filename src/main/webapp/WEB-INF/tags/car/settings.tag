@@ -49,6 +49,7 @@
 
 
 {
+	octoberComp: <c:out value="${octoberComp}" />,
 	isCallCentreUser: <c:out value="${not empty callCentre}"/>,
 	isFromBrochureSite: <c:out value="${fromBrochure}"/>,
 	brochureValues: {},

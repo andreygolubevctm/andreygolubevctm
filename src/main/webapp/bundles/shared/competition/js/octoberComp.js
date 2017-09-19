@@ -5,6 +5,7 @@
   const trigger = document.querySelector('.octoberComp__mobile__trigger');
   const banner = document.querySelector('.octoberComp__mobile');
   const nav = document.querySelector('.octoberComp__navbar');
+  const octoberComp = meerkat.site.octoberComp;
   var bannerTxt;
 
   function setFooterPos() {
@@ -23,23 +24,25 @@
 
 
   function init() {
-    bannerTxt = banner.querySelector('p');
-    trigger.addEventListener('click', toggleFooter);
-    setFooterPos();
+      bannerTxt = banner.querySelector('p');
+      trigger.addEventListener('click', toggleFooter);
+      setFooterPos();
   }
 
   function showNav() {
-    nav.style.display = '';
-    nav.classList.add('octoberComp__navbar--active');
+      nav.style.display = '';
+      nav.classList.add('octoberComp__navbar--active');
   }
 
   function hideNav() {
-    nav.classList.remove('octoberComp__navbar--active');
+      nav.classList.remove('octoberComp__navbar--active');
   }
 
-	meerkat.modules.register("octoberComp", {
+  var modules = octoberComp ? {
 		init: init,
     showNav: showNav,
     hideNav: hideNav
-  });
+  } : {};
+
+	meerkat.modules.register("octoberComp", modules);
 })(jQuery);

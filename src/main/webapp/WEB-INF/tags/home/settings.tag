@@ -28,6 +28,7 @@
 <c:set var="defaultToHomeQuote"><content:get key="makeHomeQuoteMainJourney" /></c:set>
 <home:lead_capture_settings />
 {
+	octoberComp: <c:out value="${octoberComp}" />,
 	isLandlord: <c:out value="${landlord}" />,
 	isCallCentreUser: <c:out value="${not empty callCentre}"/>,
 	isFromBrochureSite: <c:out value="${fromBrochure}"/>,
