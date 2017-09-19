@@ -273,8 +273,6 @@ var ResultsView = {
 
 		results = Results.model.sortedProducts;
 
-		//results[2].info.topThree = true;
-
 		// build the HTML results
 		if(Results.settings.show.hasOwnProperty('resultsAsRows') && Results.settings.show.resultsAsRows === true) {
 			$.each(results, function (index, result) {

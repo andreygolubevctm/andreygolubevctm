@@ -18,38 +18,39 @@
         $elements = {
             banner: $('.results-top-three-banner'),
             options: $('.results-top-three-banner .top-three-options'),
-            optionsBtn: $('.results-top-three-banner .top-three-options button'),
             deciding: $('.results-top-three-banner .top-three-deciding'),
-            decidingBtn: $('.results-top-three-banner .top-three-deciding button')
+            button: $('.results-top-three-banner button'),
+            popularProducts: $(':input[name=health_popularProducts]')
         };
     }
 
     function _eventSubscriptions() {
-        $elements.optionsBtn.on('click', function() {
-            $elements.options.addClass('hidden');
-            $elements.deciding.removeClass('hidden');
-        });
-
-        $elements.decidingBtn.on('click', function() {
-            $elements.options.removeClass('hidden');
-            $elements.deciding.addClass('hidden');
+        $elements.button.on('click', function() {
+            $elements.popularProducts.val($(this).attr('data-popular-products'));
+            meerkat.modules.journeyEngine.loadingShow('...updating your quotes...', true);
+            meerkat.modules.healthResults.get();
         });
     }
 
     function show() {
         $elements.banner.removeClass('invisible');
-        $elements.options.removeClass('hidden');
-        $elements.deciding.addClass('hidden');
+        $elements.options.toggleClass('hidden', $elements.popularProducts.val() === 'Y');
+        $elements.deciding.toggleClass('hidden', $elements.popularProducts.val() === 'N');
     }
 
     function hide() {
         $elements.banner.addClass('invisible');
     }
 
+    function setPopularProducts() {
+        $elements.popularProducts.val('N');
+    }
+
     meerkat.modules.register('healthTopThree', {
         initHealthTopThree: initHealthTopThree,
         show: show,
-        hide: hide
+        hide: hide,
+        setPopularProducts: setPopularProducts
     });
 
 })(jQuery);

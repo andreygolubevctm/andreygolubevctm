@@ -394,6 +394,7 @@
                     meerkat.modules.healthResults.resetSelectedProduct();
                 }
                 meerkat.messaging.publish(meerkatEvents.filters.FILTERS_CANCELLED);
+                meerkat.modules.healthTopThree.setPopularProducts();
             },
             onAfterEnter: function onAfterEnterResultsStep(event) {
                 if (event.isForward === true) {
