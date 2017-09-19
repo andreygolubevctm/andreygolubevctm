@@ -1,10 +1,18 @@
 package com.ctm.web.email;
 
+import com.ctm.web.core.model.session.SessionData;
+import com.ctm.web.core.services.SessionDataService;
+import com.ctm.web.core.web.go.Data;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by akhurana on 15/09/17.
@@ -14,18 +22,72 @@ import javax.servlet.http.HttpServletResponse;
 public class EmailController {
 
     private MarketingEmailService emailService;
+    private final SessionDataService sessionDataService = new SessionDataService();
+
 
     @RequestMapping("/sendEmail")
     public void sendEmail(HttpServletRequest request, HttpServletResponse response){
         EmailRequest emailRequest = new EmailRequest();
-        emailRequest.setCoverType1(request.getParameter("rank_coverType0"));
-        emailRequest.setP1ProductName(request.getParameter("rank_productName0"));
-        emailRequest.setP2ProductName(request.getParameter("rank_productName1"));
-        emailRequest.setP3ProductName(request.getParameter("rank_productName2"));
-        emailRequest.setP4ProductName(request.getParameter("rank_productName3"));
-        emailRequest.setP5ProductName(request.getParameter("rank_productName4"));
-        emailRequest.setFirstName(request.getParameter("rank_productName4"));
 
+        List<String> coverTypes = new ArrayList<>();
+        coverTypes.add(request.getParameter("rank_coverType0"));
+        emailRequest.setCoverTypes(coverTypes);
+
+        emailRequest.setFirstName(request.getParameter("rank_productName4"));
+        emailRequest.setEmailAddress(request.getParameter("email"));
+        emailRequest.setFirstName(request.getParameter("name"));
+        emailRequest.setAddress(request.getParameter("address"));
+
+        SessionData sessionData = sessionDataService.getSessionDataFromSession(request);
+        ArrayList<Data> dataArrayList = sessionData.getTransactionSessionData();
+        Data data = dataArrayList.get(0);
+
+        String firstName = (String) data.get("health/contactDetails/name");
+        String fullAddress = (String) data.get("health/application/address/fullAddress");
+        String optIn = (String) data.get("health/contactDetails/optInEmail");
+        String provider1 = (String) request.getParameter("rank_providerName0");
+        String provider2 = (String) request.getParameter("rank_providerName1");
+        String provider3 = (String) request.getParameter("rank_providerName2");
+        String provider4 = (String) request.getParameter("rank_providerName3");
+        String provider5 = (String) request.getParameter("rank_providerName4");
+        String provider6 = (String) request.getParameter("rank_providerName5");
+        String provider7 = (String) request.getParameter("rank_providerName6");
+        String provider8 = (String) request.getParameter("rank_providerName7");
+        String provider9 = (String) request.getParameter("rank_providerName8");
+        String provider10 = (String) request.getParameter("rank_providerName9");
+
+        String premiumLabel1 = (String) request.getParameter("rank_premiumText0");
+        String premiumLabel2 = (String) request.getParameter("rank_premiumText1");
+        String premiumLabel3 = (String) request.getParameter("rank_premiumText2");
+        String premiumLabel4 = (String) request.getParameter("rank_premiumText3");
+        String premiumLabel5 = (String) request.getParameter("rank_premiumText4");
+        String premiumLabel6 = (String) request.getParameter("rank_premiumText5");
+        String premiumLabel7 = (String) request.getParameter("rank_premiumText6");
+        String premiumLabel8 = (String) request.getParameter("rank_premiumText7");
+        String premiumLabel9 = (String) request.getParameter("rank_premiumText8");
+        String premiumLabel10 = (String) request.getParameter("rank_premiumText9");
+
+        String premium1 = (String) request.getParameter("rank_premium0");
+        String premium2 = (String) request.getParameter("rank_premium1");
+        String premium3 = (String) request.getParameter("rank_premium2");
+        String premium4 = (String) request.getParameter("rank_premium3");
+        String premium5 = (String) request.getParameter("rank_premium4");
+        String premium6 = (String) request.getParameter("rank_premium5");
+        String premium7 = (String) request.getParameter("rank_premium6");
+        String premium8 = (String) request.getParameter("rank_premium7");
+        String premium9 = (String) request.getParameter("rank_premium8");
+        String premium10 = (String) request.getParameter("rank_premium9");
+
+        String frequency1 = (String) request.getParameter("rank_frequency0");
+        String frequency2 = (String) request.getParameter("rank_frequency1");
+        String frequency3 = (String) request.getParameter("rank_frequency2");
+        String frequency4 = (String) request.getParameter("rank_frequency3");
+        String frequency5 = (String) request.getParameter("rank_frequency4");
+        String frequency6 = (String) request.getParameter("rank_frequency5");
+        String frequency7 = (String) request.getParameter("rank_frequency6");
+        String frequency8 = (String) request.getParameter("rank_frequency7");
+        String frequency9 = (String) request.getParameter("rank_frequency8");
+        String frequency10 = (String) request.getParameter("rank_frequency9");
 
 
 
