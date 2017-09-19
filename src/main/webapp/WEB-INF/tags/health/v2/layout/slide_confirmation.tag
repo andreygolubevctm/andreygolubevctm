@@ -80,8 +80,9 @@
 			<jsp:body>
 
 				<layout_v1:slide_content >
-
+				<competition:confirmEntry />
 					<form_v3:fieldset legend="" className="confirmation">
+
                         <reward:reward_confirmation_message />
 						{{ var personName = typeof firstName !== 'undefined' && typeof lastName !== 'undefined' ? "Well done <span>" + firstName + " " + lastName + "</span>,<br />": '' }}
 						<div class="row confirmation-complete">

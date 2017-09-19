@@ -14,6 +14,11 @@
 <c:set var="state" value="${data[xpathSituation].state}" />
 <c:set var="situation" value="${data[xpathSituation].healthSitu}" />
 
+<c:set var="octoberComp" scope="application" value="${false}"/>
+<c:if test="${pageSettings.getBrandCode() eq 'ctm'}">
+	<c:set var="octoberComp" scope="application" value="${true}"/>
+</c:if>
+
 <%-- Test if the data is already set. Advance the user if Params are filled. Preload will override any params --%>
 <c:if test="${empty data[xpathSituation].healthCvr && empty data[xpathSituation].healthSitu}">
 

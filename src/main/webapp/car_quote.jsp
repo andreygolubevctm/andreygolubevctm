@@ -216,7 +216,7 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="footer">
-		<competition:mobileFooter />
+		<competition:mobileFooter vertical="car" />
 		<car:footer />
 	</jsp:attribute>
 

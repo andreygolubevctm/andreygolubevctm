@@ -1,4 +1,5 @@
 @compColour: #21418f;
+@compSecondColour: #162d62;
 
 .octoberComp {
   width: 100%;
@@ -8,24 +9,83 @@
   padding-top: 26px;
 }
 
+.octoberComp__snapshot {
+  background: @compColour;
+  color: white;
+  padding: 15px;
+  h1 {
+    color: white;
+    margin-top: 0;
+  }
+  position: relative;
+}
+
+.octoberComp__snapshot__aleksandr {
+  position: absolute;
+  bottom: 0;
+  max-width: 185px;
+  right: -40px;
+  width: 85%;
+}
+
+.octoberComp__snapshot_tcs {
+  padding: 0 20px;
+  a {
+    color: white;
+    text-decoration: underline;
+  }
+}
+
+.octoberComp__snapshot_center {
+  text-align: center;
+  padding: 0 20px;
+}
+
+.octoberComp__snapshot_prize {
+  background: @compSecondColour;
+  padding: 15px 15px 15px 35px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  float: left;
+  width: 100%;
+  > div {
+    position: relative;
+    padding-bottom: 10px;
+    float: left;
+    width: 100%;
+  }
+  span {
+    float: left;
+    width: 100%;
+  }
+  img {
+    position: absolute;
+    top: 0;
+    left: -27px;
+    max-width: 22px;
+  }
+}
+
 .octoberComp__mobile {
   width: 100%;
   min-height: 50px;
   position: fixed;
-  bottom: 0;
   left: 0;
   background-color: @compColour;
   z-index: 100;
   transition: all .5s cubic-bezier(0, 1, 0.5, 1);
   display: none;
+  color: white;
+  text-align: center;
+  a {
+    text-decoration: underline;
+    color: white;
+  }
+  h2 {
+    color: white;
+  }
   &--active {
-    min-height: 70px;
-    .octoberComp__mobile__image {
-      display: none;
-      &--active {
-        display: block;
-      }
-    }
+    bottom: 0px;
     .octoberComp__mobile__trigger {
       top: 20px;
       span {
@@ -35,12 +95,6 @@
   }
 }
 
-.octoberComp__mobile__image {
-  display: block;
-  &--active {
-    display: none;
-  }
-}
 
 .octoberComp__mobile__trigger {
   width: 45px;
@@ -68,18 +122,62 @@
   }
 }
 
-
 .octoberComp__mobile__trigger__icon {
   color: white;
 }
 
+.octoberComp__confirm {
+  margin-bottom: 20px;
+  background: @compColour;
+  color: white;
+  padding: 15px 35px 33px 60px;
+  h3, a {
+    color: white;
+  }
+  p {
+    font-size: 16px;
+  }
+  a {
+    text-decoration: underline;
+  }
+}
+
+.octoberComp__confirm__tcs {
+  font-size: 12px;
+}
+
+.octoberComp__confirm__header {
+  position: relative;
+  img {
+    max-width: 35px;
+    position: absolute;
+    left: -40px;
+    top: 0;
+  }
+}
+
+//tablet
 @media (max-width: 991px) {
+  .octoberComp__snapshot__aleksandr {
+    display: none;
+  }
+
+  .octoberComp__snapshot_tcs, .octoberComp__snapshot_center {
+    padding: 0;
+  }
+
+  .octoberComp__snapshot_center h1 {
+    font-size: 25px;
+  }
+
   .octoberComp__navbar {
     padding-top: 8px;
   }
 }
 
+//mobile
 @media (max-width: 767px) {
+
   .octoberComp__mobile {
     display: block;
   }

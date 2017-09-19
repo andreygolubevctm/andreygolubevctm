@@ -136,7 +136,6 @@ ${newPage.init(pageContext.request, pageSettings)}
 </head>
 
 	<body class="jeinit  ${bodyClass}">
-
     <c:if test="${GTMEnabled eq true and not empty pageSettings and pageSettings.hasSetting('GTMPropertyId')}">
         <c:if test="${not empty pageSettings.getSetting('GTMPropertyId')}">
             <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -147,8 +146,8 @@ ${newPage.init(pageContext.request, pageSettings)}
         </c:if>
     </c:if>
 
-	<div class="navMenu-row">
 
+	<div class="navMenu-row">
 	<!-- body content -->
 		<header class="header-wrap">
 
@@ -242,7 +241,6 @@ ${newPage.init(pageContext.request, pageSettings)}
 						</nav>
 
 						<jsp:invoke fragment="header" />
-						<competition:navSection />
 					</div>
 
 				</div>

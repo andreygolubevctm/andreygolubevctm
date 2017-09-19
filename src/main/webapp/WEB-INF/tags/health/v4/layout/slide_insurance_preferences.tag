@@ -8,8 +8,9 @@
         <form_v3:fieldset_columns sideHidden="true">
 
         <jsp:attribute name="rightColumn">
-            <simples:snapshot />
-            <health_v4_content:snapshot/>
+          <competition:snapshot vertical="health" />
+          <simples:snapshot />
+          <health_v4_content:snapshot/>
         </jsp:attribute>
             <jsp:body>
                 <form_v4:fieldset

@@ -1,12 +1,16 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Competition Snapshot"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
+
+<%@ attribute name="vertical" required="true" description="vertical"%>
+
 <c:if test="${octoberComp}">
   <div class="octoberComp">
-    <div class="octoberComp__mobile octoberComp__mobile--active">
-      <img class="octoberComp__mobile__image--active" src="/ctm/assets/brand/ctm/competition/octoberComp/mobile-active.png" />
-      <img class="octoberComp__mobile__image" src="/ctm/assets/brand/ctm/competition/octoberComp/mobile.png" />
-      <div class="octoberComp__mobile__trigger"><span class="octoberComp__mobile__trigger__icon icon-angle-down"></span></div>
+    <div class="octoberComp__mobile">
+      <h2>A winner every day!</h2>
+      <p>Buy ${vertical} insurance for your chance to win a share of $81,000. <a href="https://secure.comparethemarket.com.au/static/legal/october_promotion.pdf
+">T&C's apply.</a></p>
+      <div class="octoberComp__mobile__trigger"><span class="octoberComp__mobile__trigger__icon icon-angle-up"></span></div>
     </div>
   </div>
 </c:if>
