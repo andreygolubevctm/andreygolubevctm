@@ -298,6 +298,8 @@
 					meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
 				});
 
+				$healthSitCoverType.trigger('change');
+
 				$hospitalBenefits.click(function() {
 					meerkat.messaging.publish(moduleEvents.health.SNAPSHOT_FIELDS_CHANGE);
 				});
