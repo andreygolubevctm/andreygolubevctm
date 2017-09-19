@@ -158,9 +158,7 @@
                 var coverType = 'C';
                 if (!meerkat.modules.benefitsSwitch.isHospitalOn()) {
                     coverType = 'E';
-                }
-
-                if (!meerkat.modules.benefitsSwitch.isExtrasOn()) {
+                }else if (!meerkat.modules.benefitsSwitch.isExtrasOn()) {
                     coverType = 'H';
                 }
                 meerkat.modules.healthChoices.setCoverType(coverType);
@@ -210,10 +208,12 @@
         }
 
         if (meerkat.site.pageAction === 'remember') {
-            if ($elements.hiddenHospitalCover.val() === '' && $elements.hiddenExtraCover.val() === 'Y') {
+            var hasHospitalCover = $elements.hiddenHospitalCover.val() === 'Y',
+                hasExtrasCover = $elements.hiddenExtraCover.val() === 'Y';
+
+            if (!hasHospitalCover && hasExtrasCover) {
                 coverType = 'E';
-            }
-            if ($elements.hiddenHospitalCover.val() === 'Y' && $elements.hiddenExtraCover.val() === '') {
+            }else if (hasHospitalCover && !hasExtrasCover) {
                 coverType = 'H';
             }
         }

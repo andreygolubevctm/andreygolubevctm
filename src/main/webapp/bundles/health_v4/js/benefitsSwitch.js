@@ -27,11 +27,14 @@
             hiddenExtraCover: $('input[name="health_benefits_benefitsExtras_GeneralHealth"]')
         };
 
-        $elements.hospitalSwitch.bootstrapSwitch('setState', $elements.hiddenHospitalCover.val() === 'Y');
-        $elements.extrasSwitch.bootstrapSwitch('setState', $elements.hiddenExtraCover.val() === 'Y');
+        var hasHospitalCover = $elements.hiddenHospitalCover.val() === 'Y',
+            hasExtrasCover = $elements.hiddenExtraCover.val() === 'Y';
 
-        _onBenefitsSwitch('hospital', $elements.hiddenHospitalCover.val() === 'Y', false);
-        _onBenefitsSwitch('extras', $elements.hiddenExtraCover.val() === 'Y');
+        $elements.hospitalSwitch.bootstrapSwitch('setState', hasHospitalCover);
+        $elements.extrasSwitch.bootstrapSwitch('setState', hasExtrasCover);
+
+        _onBenefitsSwitch('hospital', hasHospitalCover, false);
+        _onBenefitsSwitch('extras', hasExtrasCover);
     }
 
     function _eventSubscriptions() {
