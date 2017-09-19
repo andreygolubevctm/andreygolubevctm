@@ -124,6 +124,7 @@ public class RequestAdapterV2 {
             quoteRequest.setPartnerHealthCover(null);
         }
         addPrimaryAge(quoteRequest, cover);
+        addFamilyType(quoteRequest, situation);
 
         return quoteRequest;
     }
@@ -136,6 +137,12 @@ public class RequestAdapterV2 {
         } catch (Exception exception) {
             LOGGER.error("Cannot cover date of birth to age: " + healthCover.getPrimary().getDob());
         }
+    }
+
+    protected static void addFamilyType(HealthQuoteRequest quoteRequest, Situation situation) {
+            if (situation != null) {
+                quoteRequest.setFamilyType(situation.getHealthCvr());
+            }
     }
 
     protected static void addRebateFilter(HealthQuoteRequest quoteRequest, HealthQuote quote) {

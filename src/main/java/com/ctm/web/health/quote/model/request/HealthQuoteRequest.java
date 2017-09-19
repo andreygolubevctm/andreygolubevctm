@@ -43,6 +43,8 @@ public class HealthQuoteRequest
 
     private Integer age;
 
+    private String familyType;
+
     /**
      * Use rebates
      */
@@ -198,5 +200,14 @@ public class HealthQuoteRequest
     public void setAge(Integer age) {
         this.age = age;
     }
+
+    public String getFamilyType() {
+        return familyType;
+    }
+
+    public void setFamilyType(String familyType) {
+        this.familyType = familyType;
+    }
+
 
 }
