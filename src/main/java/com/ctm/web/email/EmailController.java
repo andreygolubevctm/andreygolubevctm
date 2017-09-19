@@ -3,6 +3,7 @@ package com.ctm.web.email;
 import com.ctm.web.core.model.session.SessionData;
 import com.ctm.web.core.services.SessionDataService;
 import com.ctm.web.core.web.go.Data;
+import com.ctm.web.email.health.HealthEmailModel;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +30,8 @@ public class EmailController {
     public void sendEmail(HttpServletRequest request, HttpServletResponse response){
         EmailRequest emailRequest = new EmailRequest();
 
-        List<String> coverTypes = new ArrayList<>();
-        coverTypes.add(request.getParameter("rank_coverType0"));
-        emailRequest.setCoverTypes(coverTypes);
+
+        String coverType = request.getParameter("rank_coverType0");
 
         emailRequest.setFirstName(request.getParameter("rank_productName4"));
         emailRequest.setEmailAddress(request.getParameter("email"));
@@ -45,6 +45,7 @@ public class EmailController {
         String firstName = (String) data.get("health/contactDetails/name");
         String fullAddress = (String) data.get("health/application/address/fullAddress");
         String optIn = (String) data.get("health/contactDetails/optInEmail");
+        String phoneNumber = (String) data.get("health/contactDetails/contactNumber/mobile");
         String provider1 = (String) request.getParameter("rank_providerName0");
         String provider2 = (String) request.getParameter("rank_providerName1");
         String provider3 = (String) request.getParameter("rank_providerName2");
@@ -89,19 +90,70 @@ public class EmailController {
         String frequency9 = (String) request.getParameter("rank_frequency8");
         String frequency10 = (String) request.getParameter("rank_frequency9");
 
+        String providerCode1 = (String) request.getParameter("rank_provider0");
+        String providerCode2 = (String) request.getParameter("rank_provider1");
+        String providerCode3 = (String) request.getParameter("rank_provider2");
+        String providerCode4 = (String) request.getParameter("rank_provider3");
+        String providerCode5 = (String) request.getParameter("rank_provider4");
+        String providerCode6 = (String) request.getParameter("rank_provider5");
+        String providerCode7 = (String) request.getParameter("rank_provider6");
+        String providerCode8 = (String) request.getParameter("rank_provider7");
+        String providerCode9 = (String) request.getParameter("rank_provider8");
+        String providerCode10 = (String) request.getParameter("rank_provider9");
+
+        String transactionId = (String) request.getParameter("transactionId");
+        String benefitCodes = (String) request.getParameter("rank_benefitCodes0");
 
 
+        emailRequest.setAddress(fullAddress);
+        emailRequest.setFirstName(firstName);
+        emailRequest.setOptIn(OptIn.valueOf(optIn));
+        List<String> premium = new ArrayList<>();
+        premium.add(premium1);
+        premium.add(premium2);
+        premium.add(premium3);
+        premium.add(premium4);
+        premium.add(premium5);
+        premium.add(premium6);
+        premium.add(premium7);
+        premium.add(premium8);
+        premium.add(premium9);
+        premium.add(premium10);
 
+        List<String> premiumLabel = new ArrayList<>();
+        premiumLabel.add(premiumLabel1);
+        premiumLabel.add(premiumLabel2);
+        premiumLabel.add(premiumLabel3);
+        premiumLabel.add(premiumLabel4);
+        premiumLabel.add(premiumLabel5);
+        premiumLabel.add(premiumLabel6);
+        premiumLabel.add(premiumLabel7);
+        premiumLabel.add(premiumLabel8);
+        premiumLabel.add(premiumLabel9);
+        premiumLabel.add(premiumLabel10);
 
+        List<String> providerCodes = new ArrayList<>();
+        providerCodes.add(providerCode1);
+        providerCodes.add(providerCode2);
+        providerCodes.add(providerCode3);
+        providerCodes.add(providerCode4);
+        providerCodes.add(providerCode5);
+        providerCodes.add(providerCode6);
+        providerCodes.add(providerCode7);
+        providerCodes.add(providerCode8);
+        providerCodes.add(providerCode9);
+        providerCodes.add(providerCode10);
 
+        emailRequest.setPremium(premium);
+        emailRequest.setPremiumLabel(premiumLabel);
+        emailRequest.setProviderCode(providerCodes);
+        emailRequest.setTransactionId(transactionId);
+        emailRequest.setPhoneNumber(phoneNumber);
 
-
-
-
-
-
-
-
+        HealthEmailModel healthEmailModel = new HealthEmailModel();
+        healthEmailModel.setCoverType(coverType);
+        healthEmailModel.setBenefitCodes(benefitCodes);
+        emailRequest.setHealthEmailModel(healthEmailModel);
 
 
         request.getParameterMap().forEach((s, strings) -> System.out.println("parametersprinted:" + s + ":" + strings));
