@@ -33,18 +33,18 @@
 
 <jsp:useBean id="splitTestService" class="com.ctm.web.core.services.tracking.SplitTestService" />
 
-<%-- HLT-4069 Split Test J=2 test --%>
-<c:set var="benefitsSwitchSplitTest" scope="request">
-    <c:choose>
-        <c:when test="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 2)}">${true}</c:when>
-        <c:otherwise>${false}</c:otherwise>
-    </c:choose>
-</c:set>
-
 <%-- HLT-4637 Split Test J=4 test --%>
 <c:set var="navBarSplitTest" scope="request">
     <c:choose>
         <c:when test="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 4)}">${true}</c:when>
+        <c:otherwise>${false}</c:otherwise>
+    </c:choose>
+</c:set>
+
+<%-- HLT-4680 Split Test J=5 test --%>
+<c:set var="priceBreakdownTest" scope="request">
+    <c:choose>
+        <c:when test="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 5)}">${true}</c:when>
         <c:otherwise>${false}</c:otherwise>
     </c:choose>
 </c:set>

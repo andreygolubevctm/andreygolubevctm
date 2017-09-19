@@ -16,6 +16,7 @@ import com.ctm.web.core.model.Touch;
 import com.ctm.web.core.model.session.AuthenticatedData;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
+import com.ctm.web.core.rememberme.services.RememberMeService;
 import com.ctm.web.core.router.CommonQuoteRouter;
 import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.SessionDataServiceBean;
@@ -58,9 +59,11 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.NotFoundException;
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
@@ -96,17 +99,20 @@ public class HealthApplicationController extends CommonQuoteRouter {
     private LeadService leadService;
     private RewardService rewardService;
     private TransactionDetailsDao transactionDetailsDao;
+    private RememberMeService rememberMeService;
 
     @Autowired
     public HealthApplicationController(SessionDataServiceBean sessionDataServiceBean,
                                        IPAddressHandler ipAddressHandler,
                                        TransactionDetailsDao transactionDetailsDao,
                                        HealthLeadService leadService,
-									   RewardService rewardService) {
+									   RewardService rewardService,
+                                       RememberMeService rememberMeService ) {
         super(sessionDataServiceBean, ipAddressHandler);
         this.transactionDetailsDao = transactionDetailsDao;
         this.leadService = leadService;
         this.rewardService = rewardService;
+        this.rememberMeService = rememberMeService;
     }
 
     @ApiOperation(value = "apply/get.json", notes = "Submit an health application", produces = "application/json")
@@ -116,7 +122,8 @@ public class HealthApplicationController extends CommonQuoteRouter {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public HealthResultWrapper getHealthApply(@ModelAttribute final HealthRequest data,
                                               BindingResult bindingResult,
-                                              HttpServletRequest request) throws DaoException, IOException, ServiceConfigurationException, ConfigSettingException {
+                                              HttpServletRequest request,
+                                              final HttpServletResponse httpServletResponse) throws DaoException, IOException, ServiceConfigurationException, ConfigSettingException , GeneralSecurityException {
 
         if (bindingResult.hasErrors()) {
             for (ObjectError e : bindingResult.getAllErrors()) {
@@ -278,6 +285,8 @@ public class HealthApplicationController extends CommonQuoteRouter {
         }
 
         LOGGER.debug("Health application complete. {},{}", kv("transactionId", data.getTransactionId()), kv("response", result));
+
+        rememberMeService.deleteCookie(Vertical.VerticalType.HEALTH.name(), httpServletResponse);
 
         final HealthResultWrapper resultWrapper = new HealthResultWrapper();
         resultWrapper.setResult(result);
