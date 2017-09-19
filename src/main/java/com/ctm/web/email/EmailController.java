@@ -1,5 +1,6 @@
 package com.ctm.web.email;
 
+import com.ctm.httpclient.RestSettings;
 import com.ctm.web.core.model.session.SessionData;
 import com.ctm.web.core.services.SessionDataService;
 import com.ctm.web.core.web.go.Data;
@@ -7,6 +8,8 @@ import com.ctm.web.email.health.HealthEmailModel;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,6 +17,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+
+import com.ctm.httpclient.Client;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by akhurana on 15/09/17.
@@ -24,6 +31,8 @@ public class EmailController {
 
     private MarketingEmailService emailService;
     private final SessionDataService sessionDataService = new SessionDataService();
+    @Autowired
+    private Client<EmailRequest,EmailResponse> client;
 
 
     @RequestMapping("/sendEmail")
@@ -103,7 +112,15 @@ public class EmailController {
 
         String transactionId = (String) request.getParameter("transactionId");
         String benefitCodes = (String) request.getParameter("rank_benefitCodes0");
-
+        String primaryCurrentPHI0 = (String) request.getParameter("rank_primaryCurrentPHI0");
+        String extrasPdsUrl = (String) request.getParameter("rank_extrasPdsUrl0");
+        String coPayment=  (String) request.getParameter("rank_coPayment0");
+        String excessPerPerson = (String) request.getParameter("rank_excessPerPerson0");
+        String excessPerPolicy = (String) request.getParameter("rank_excessPerPolicy0");
+        String healthMembership = (String) request.getParameter("rank_healthMembership0");
+        String excessPerAdmission = (String) request.getParameter("rank_excessPerAdmission0");
+        String hospitalPdsUrl = (String) request.getParameter("rank_hospitalPdsUrl0");
+        String healthSituation = (String) request.getParameter("rank_healthSituation0");
 
         emailRequest.setAddress(fullAddress);
         emailRequest.setFirstName(firstName);
@@ -153,11 +170,23 @@ public class EmailController {
         HealthEmailModel healthEmailModel = new HealthEmailModel();
         healthEmailModel.setCoverType(coverType);
         healthEmailModel.setBenefitCodes(benefitCodes);
+        healthEmailModel.setPrimaryCurrentPHI(primaryCurrentPHI0);
+        healthEmailModel.setP1ExtrasPdsUrl(extrasPdsUrl);
+        healthEmailModel.setP1Copayment(coPayment);
+        healthEmailModel.setP1ExcessPerPerson(excessPerPerson);
+        healthEmailModel.setP1ExcessPerPolicy(excessPerPolicy);
+        healthEmailModel.setHealthMembership(healthMembership);
+        healthEmailModel.setP1ExcessPerAdmission(excessPerAdmission);
+        healthEmailModel.setP1HospitalPdsUrl(hospitalPdsUrl);
+        healthEmailModel.setSituationType(healthSituation);
         emailRequest.setHealthEmailModel(healthEmailModel);
 
 
         request.getParameterMap().forEach((s, strings) -> System.out.println("parametersprinted:" + s + ":" + strings));
-
+        client.post(RestSettings.<EmailRequest>builder().request(emailRequest).response(EmailResponse.class)
+                .responseType(MediaType.APPLICATION_JSON).header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .url("https://marketing-automation-service-dev.ctm.cloud.local/marketing-automation/sendEmailRequest")
+                .timeout(30).retryAttempts(2).build()).observeOn(Schedulers.io()).toBlocking().first();
 
     }
 
