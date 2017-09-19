@@ -10,7 +10,7 @@
 <c:set var="hideDiv" value=""/>
 <c:if test="${octoberComp && !isHeader}">
 	<c:set var="hideDiv" value="hidden"/>
-	<competition:snapshot />
+	<competition:snapshot vertical="car" />
 </c:if>
 
 <div class="${hideDiv}">

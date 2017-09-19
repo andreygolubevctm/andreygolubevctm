@@ -3,6 +3,9 @@
 
 .octoberComp {
   width: 100%;
+  &--home {
+    padding-bottom: 20px;
+  }
 }
 
 .octoberComp__desktop {
@@ -112,13 +115,36 @@
   }
 }
 
+.octoberComp__navbar__header {
+  font-size: 20px;
+  text-align: center;
+}
+
+.octoberComp__navbarContainer {
+  position: relative;
+  width: 60%;
+  float: right;
+  height: 90px;
+}
 
 .octoberComp__navbar {
-  float: right;
-  padding-top: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 0;
+  padding: 10px;
   display: none;
+  position: absolute;
+  background: @compColour;
+  color: white;
+  div {
+    margin: auto;
+  }
+  a {
+    text-decoration: underline;
+    color: white;
+  }
   &--active {
-    display: block;
+    display: flex;
   }
 }
 
@@ -158,6 +184,11 @@
 
 //tablet
 @media (max-width: 991px) {
+  .octoberComp__navbarContainer {
+    width: 65%;
+    height: 70px;
+  }
+
   .octoberComp__snapshot__aleksandr {
     display: none;
   }
@@ -168,10 +199,6 @@
 
   .octoberComp__snapshot_center h1 {
     font-size: 25px;
-  }
-
-  .octoberComp__navbar {
-    padding-top: 8px;
   }
 }
 

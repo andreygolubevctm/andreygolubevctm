@@ -239,6 +239,9 @@ ${newPage.init(pageContext.request, pageSettings)}
 							<span id="logo" class="navbar-brand text-hide">${pageSettings.getSetting('windowTitle')}</span>
 							<c:if test="${not empty exitUrl}"></a></c:if>
 						</nav>
+						<c:if test="${pageSettings.getVerticalCode() eq 'home'}">
+							<competition:navSection />
+						</c:if>
 
 						<jsp:invoke fragment="header" />
 					</div>
