@@ -27,6 +27,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
@@ -75,7 +76,7 @@ public class EmailService {
 		emailResponse.setTransactionId(transactionId);
 		emailResponse.setSuccessful(false);
 		try {
-			send(request, mode , emailAddress, transactionId);
+			send(request, mode , emailAddress, transactionId, null);
 			emailResponse.setSuccessful(true);
 		} catch (SendEmailException e) {
 			fatalErrorService.logFatalError(e, "failed to send " + mode + " to " + emailAddress, true);
@@ -96,9 +97,9 @@ public class EmailService {
      */
     @Deprecated
     public void sendJsp(HttpServletRequest request, EmailMode mode,
-                     String emailAddress, long transactionId) throws SendEmailException {
+						String emailAddress, long transactionId, HttpServletResponse response) throws SendEmailException {
         init(request.getServletContext());
-        this.send( request,  mode,emailAddress,  transactionId);
+        this.send( request,  mode,emailAddress,  transactionId, response);
 
     }
 	/**
@@ -111,7 +112,7 @@ public class EmailService {
 	 * @param transactionId
 	 */
 	public void send(HttpServletRequest request, EmailMode mode,
-			String emailAddress, long transactionId) throws SendEmailException {
+			String emailAddress, long transactionId, HttpServletResponse response ) throws SendEmailException {
 		boolean isValid = EmailValidation.validate(emailAddress);
 		if(isValid) {
 			Utils.createBPTouches(transactionId, Touch.TouchType.BP_EMAIL_STARTED, emailAddress,false);

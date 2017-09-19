@@ -148,7 +148,7 @@
 				<%-- enums are not will handled in jsp --%>
 				<% request.setAttribute("BEST_PRICE", EmailMode.BEST_PRICE); %>
 				<c:catch var="error">
-					${emailService.sendJsp(pageContext.request, BEST_PRICE , data.travel.email, transactionId)}
+					${emailService.sendJsp(pageContext.request, BEST_PRICE , data.travel.email, transactionId,null)}
 				</c:catch>
 				<go:setData dataVar="data" value="true" xpath="userData/emailSent"/>
 				<%--
@@ -167,7 +167,7 @@
 				<%-- enums are not will handled in jsp --%>
 				<% request.setAttribute("BEST_PRICE", EmailMode.BEST_PRICE); %>
 				<c:catch var="error">
-					${emailService.sendJsp(pageContext.request, BEST_PRICE , data.health.contactDetails.email, transactionId)}
+					${emailService.sendJsp(pageContext.request, BEST_PRICE , data.health.contactDetails.email, transactionId, pageContext.response)}
 				</c:catch>
 				<go:setData dataVar="data" value="true" xpath="userData/emailSent"/>
 				<%--
@@ -202,4 +202,5 @@
 			${logger.error('BPEMAIL No matching vertical to send email to user: {} {}', log:kv('transactionId', transactionId), log:kv('verticalType', pageSettings.getVerticalCode()))}
 		</c:otherwise>
 	</c:choose>
+	<jsp:forward page="/spring/marketing-automation/sendEmail"/>
 </c:if>
