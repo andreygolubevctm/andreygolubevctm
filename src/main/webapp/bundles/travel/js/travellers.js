@@ -171,12 +171,18 @@
 	function prefillFields() {
 		var value = $elements.hiddenInput.val();
 		var selected = $('.travel_party input:checked').val();
-		if (value != null && value.length > 0 || selected) {
+
+		if (value != null && value.length > 0) {
 			var arrayValues = typeof JSON.parse(value) === 'object' ? JSON.parse(value) : [JSON.parse(value)];
 			setState({ hiddenValues: arrayValues });
-			_travelPartyChange(this, selected);
-			insertValues();
+
 		}
+
+		if (typeof selected !== 'undefined') {
+			_travelPartyChange(this, selected);
+
+		}
+		insertValues();
 	}
 
 	function insertValues() {
