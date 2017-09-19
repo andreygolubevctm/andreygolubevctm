@@ -10,7 +10,8 @@
 <c:set var="quote_vehicle_searchState"><c:out value="${param.quote_vehicle_searchState}" escapeXml="true" /></c:set>
 
 <c:set var="octoberComp" scope="application" value="${false}"/>
-<c:if test="${pageSettings.getBrandCode() eq 'ctm'}">
+<c:set var="octoberCompDB"><content:get key="octoberComp" /></c:set>
+<c:if test="${pageSettings.getBrandCode() eq 'ctm' && octoberCompDB eq 'Y'}">
 	<c:set var="octoberComp" scope="application" value="${true}"/>
 </c:if>
 

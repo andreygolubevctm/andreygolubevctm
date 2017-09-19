@@ -15,7 +15,8 @@
 <c:set var="situation" value="${data[xpathSituation].healthSitu}" />
 
 <c:set var="octoberComp" scope="application" value="${false}"/>
-<c:if test="${pageSettings.getBrandCode() eq 'ctm'}">
+<c:set var="octoberCompDB"><content:get key="octoberComp" /></c:set>
+<c:if test="${pageSettings.getBrandCode() eq 'ctm' && octoberCompDB eq 'Y'}">
 	<c:set var="octoberComp" scope="application" value="${true}"/>
 </c:if>
 
