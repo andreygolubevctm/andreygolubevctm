@@ -48,11 +48,7 @@ Handling of the rebate tiers based off situation
 		$healthCoverIncomeLabel = $('#health_healthCover_incomelabel');
 
         /* TODO This is a check for  HLT-4717 Split Test J=16 -  meerkat.modules.splitTest.isActive(16) */
-        if (meerkat.site.splitTest16){
-            splitTest16Active = true;
-        } else {
-            splitTest16Active = false;
-        }
+        splitTest16Active = meerkat.modules.health.getSplitTest16Active();
 	}
 
 	function shouldShowDependants() {

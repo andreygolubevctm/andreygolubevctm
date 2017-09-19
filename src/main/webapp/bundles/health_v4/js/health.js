@@ -9,14 +9,18 @@
         log = meerkat.logging.info;
 
     var moduleEvents = {
-        health: {
-            SNAPSHOT_FIELDS_CHANGE:'SNAPSHOT_FIELDS_CHANGE'
+            health: {
+                SNAPSHOT_FIELDS_CHANGE:'SNAPSHOT_FIELDS_CHANGE'
+            },
+            WEBAPP_LOCK: 'WEBAPP_LOCK',
+            WEBAPP_UNLOCK: 'WEBAPP_UNLOCK'
         },
-        WEBAPP_LOCK: 'WEBAPP_LOCK',
-        WEBAPP_UNLOCK: 'WEBAPP_UNLOCK'
-    }, steps = null;
+        steps = null,
+        _splitTest16Active;
 
     function initHealth() {
+
+        setSplitTest16Active();
 
         $(document).ready(function () {
 
@@ -900,11 +904,21 @@
         }
     }
 
+
+    function getSplitTest16Active() {
+        return _splitTest16Active;
+    }
+
+    function setSplitTest16Active() {
+        _splitTest16Active = meerkat.site.splitTest16;
+    }
+
     meerkat.modules.register("health", {
         init: initHealth,
         events: moduleEvents,
         initProgressBar: initProgressBar,
-        getTrackingFieldsObject: getTrackingFieldsObject
+        getTrackingFieldsObject: getTrackingFieldsObject,
+        getSplitTest16Active: getSplitTest16Active
     });
 
 
