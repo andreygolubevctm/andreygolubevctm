@@ -82,6 +82,7 @@
   display: none;
   color: white;
   text-align: center;
+  bottom: 0;
   a {
     text-decoration: underline;
     color: white;
@@ -128,6 +129,10 @@
   width: 60%;
   float: right;
   height: 90px;
+  display: none;
+  &--active {
+    display: block;
+  }
 }
 
 .octoberComp__navbar {
@@ -135,19 +140,16 @@
   transform: translateY(-50%);
   right: 0;
   padding: 10px;
-  display: none;
   position: absolute;
   background: @compColour;
   color: white;
+  display: flex;
   div {
     margin: auto;
   }
   a {
     text-decoration: underline;
     color: white;
-  }
-  &--active {
-    display: flex;
   }
 }
 
@@ -211,7 +213,7 @@
   .octoberComp__mobile {
     display: block;
   }
-  .octoberComp__navbar--active {
+  .octoberComp__navbarContainer--active {
     display: none;
   }
 }
