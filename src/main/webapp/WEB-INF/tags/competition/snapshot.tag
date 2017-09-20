@@ -14,12 +14,12 @@
     </div>
     <div class="octoberComp__snapshot_prize">
       <div class="octoberComp__snapshot_prize__textContainer">
-        <img src="/./assets/brand/ctm/competition/octoberComp/money-symbol.svg" />
+        <img src="./assets/brand/ctm/competition/octoberComp/money-symbol.svg" />
         <span>Daily prize: </span>
         <span>$1,000</span>
       </div>
       <div class="octoberComp__snapshot_prize__textContainer">
-        <img src="/./assets/brand/ctm/competition/octoberComp/money-symbol.svg" />
+        <img src="./assets/brand/ctm/competition/octoberComp/money-symbol.svg" />
         <span>Grand prizes: </span>
         <span>5 x $10,000</span>
       </div>
