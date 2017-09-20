@@ -224,13 +224,14 @@
 	function buildTabs() {
 
 		if(typeof settings.activeTabSet === 'undefined') {
-			return;
+    return;
 		}
 		log("[coverleveltabs] buildTabs", settings.activeTabSet);
 		var tabLength = settings.activeTabSet.length,
-		xsCols = parseInt(12 / tabLength, 10),
+		xsCols = parseInt(6 / tabLength, 10),
 		state = meerkat.modules.deviceMediaState.get();
-		for(var out = '',
+		var out = '';
+		for(out = '',
 				i = 0; i < tabLength; i ++) {
 			var tab = settings.activeTabSet[i],
 				count = counts[tab.rankingFilter] || null;
@@ -244,6 +245,12 @@
 				originatingTab = settings.verticalMapping[tab.rankingFilter];
 			}
 		}
+		out += '<div class="col-xs-4 has-success">';
+		out +=		'<div class="col-xs-12 clt-trip-type">Additional activities covered</div>';
+		out +=		'<div class="col-xs-4 clt-trip-type"><input type="checkbox" name="snow_sports" id ="snow_sports" class="checkbox-custom checkbox has-success" value="SnowSports"><label for="snow_sports">Snow Sports</label></div>';
+		out +=		'<div class="col-xs-3 clt-trip-type"><input type="checkbox" name="cruise" id ="cruise" class="checkbox-custom checkbox has-success" value="Cruise"><label for="cruise">Cruise</label></div>';
+		out +=		'<div class="col-xs-5 clt-trip-type"><input type="checkbox" name="adventure_sports" id ="adventure_sports" class="checkbox-custom checkbox has-success" value="AdventureSports"><label for="adventure_sports">Adventure Sports</label></div>';
+		out += '</div>';
 
 		$currentTabContainer.empty().html(out);
 

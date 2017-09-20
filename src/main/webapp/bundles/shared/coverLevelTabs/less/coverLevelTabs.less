@@ -1,19 +1,33 @@
 .coverLevelTabs {
 
 	.clt-action {
-		padding: 12px 0;
+		padding: 8px 0;
+		margin-bottom: 8px;
+		margin-right: 10px;
 		cursor: pointer;
 		font-size: 14px;
 	  	line-height: 14px;
-	  	border-radius: 20px 20px 0 0;
-	  	border: 1px solid #fff;
-		border-top: none;
-		background-color: @clt-inactive-bg-color;
-	  	color: @clt-inactive-color;
+	  	border-radius: 8px;
+		border: 1px solid @clt-inactive-bg-color;
+		background-color: transparent;
+		color: @clt-inactive-bg-color;
+
 	}
 	.active, .clt-action:hover {
-		background-color: @clt-active-bg;
-		color: @clt-active-color;
+		border: 1px solid @clt-active-bg;
+		background-color: transparent;
+		color: @clt-active-bg;
+	}
+	.clt-trip-type {
+		padding: 0;
+
+		input, label {
+			float:left;
+		}
+
+		label {
+			margin-left: 5px;
+		}
 	}
 
 	// xs styles
