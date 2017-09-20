@@ -8,7 +8,7 @@
   <div class="octoberComp">
     <div class="octoberComp__mobile">
       <h2>A winner every day!</h2>
-      <p>Buy ${vertical} insurance for your chance to win a share of $81,000. <a href="https://secure.comparethemarket.com.au/static/legal/october_promotion.pdf
+      <p>Buy ${vertical} insurance for your chance to win a share of $81,000. <a target="_blank" href="https://secure.comparethemarket.com.au/static/legal/october_promotion.pdf
 ">T&C's apply.</a></p>
       <div class="octoberComp__mobile__trigger"><span class="octoberComp__mobile__trigger__icon icon-angle-up"></span></div>
     </div>

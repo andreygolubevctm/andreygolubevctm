@@ -24,7 +24,7 @@
         <span>5 x $10,000</span>
       </div>
     </div>
-    <div class="octoberComp__snapshot_tcs"><a href="https://secure.comparethemarket.com.au/static/legal/october_promotion.pdf
+    <div class="octoberComp__snapshot_tcs"><a target="_blank" href="https://secure.comparethemarket.com.au/static/legal/october_promotion.pdf
 ">T&C's apply.</a></div>
     <img class="octoberComp__snapshot__aleksandr" src="/ctm/assets/brand/ctm/competition/octoberComp/aleksandr.png" />
   </div>
