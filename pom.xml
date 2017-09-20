@@ -78,11 +78,11 @@
 
 
     <dependencies>
-        <dependency>
+        <!--<dependency>
             <groupId>com.ctm.marketing</groupId>
             <artifactId>marketing-automation-service</artifactId>
             <version>1.0-SNAPSHOT</version>
-        </dependency>
+        </dependency>-->
 
         <dependency>
             <groupId>net.javacrumbs.future-converter</groupId>

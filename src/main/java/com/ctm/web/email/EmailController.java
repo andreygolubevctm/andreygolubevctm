@@ -43,7 +43,7 @@ public class EmailController {
         String coverType = request.getParameter("rank_coverType0");
 
         emailRequest.setFirstName(request.getParameter("rank_productName4"));
-        emailRequest.setEmailAddress(request.getParameter("email"));
+
         emailRequest.setFirstName(request.getParameter("name"));
         emailRequest.setAddress(request.getParameter("address"));
 
@@ -51,6 +51,8 @@ public class EmailController {
         ArrayList<Data> dataArrayList = sessionData.getTransactionSessionData();
         Data data = dataArrayList.get(0);
 
+        String email = (String) data.get("health/contactDetails/email");
+        emailRequest.setEmailAddress(email);
         String firstName = (String) data.get("health/contactDetails/name");
         String fullAddress = (String) data.get("health/application/address/fullAddress");
         String optIn = (String) data.get("health/contactDetails/optInEmail");
@@ -65,6 +67,21 @@ public class EmailController {
         String provider8 = (String) request.getParameter("rank_providerName7");
         String provider9 = (String) request.getParameter("rank_providerName8");
         String provider10 = (String) request.getParameter("rank_providerName9");
+
+        List<String> providerName = new ArrayList<>();
+        providerName.add(provider1);
+        providerName.add(provider2);
+        providerName.add(provider3);
+        providerName.add(provider4);
+        providerName.add(provider5);
+        providerName.add(provider6);
+        providerName.add(provider7);
+        providerName.add(provider8);
+        providerName.add(provider9);
+        providerName.add(provider10);
+
+
+        emailRequest.setProvider(providerName);
 
         String premiumLabel1 = (String) request.getParameter("rank_premiumText0");
         String premiumLabel2 = (String) request.getParameter("rank_premiumText1");
@@ -98,6 +115,7 @@ public class EmailController {
         String frequency8 = (String) request.getParameter("rank_frequency7");
         String frequency9 = (String) request.getParameter("rank_frequency8");
         String frequency10 = (String) request.getParameter("rank_frequency9");
+        emailRequest.setPremiumFrequency(request.getParameter("rank_frequency0"));
 
         String providerCode1 = (String) request.getParameter("rank_provider0");
         String providerCode2 = (String) request.getParameter("rank_provider1");
