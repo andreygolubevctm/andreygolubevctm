@@ -4,7 +4,7 @@
   const trigger = document.querySelector('.octoberComp__mobile__trigger');
   const banner = document.querySelector('.octoberComp__mobile');
   const nav = document.querySelector('.octoberComp__navbarContainer');
-  const octoberComp = trigger && banner && nav;
+  const octoberComp = banner && trigger;
   var bannerTxt;
 
   function setFooterPos() {
@@ -42,6 +42,5 @@
     showNav: showNav,
     hideNav: hideNav
   } : {};
-  console.log(modules);
 	meerkat.modules.register("octoberComp", modules);
 })(jQuery);
