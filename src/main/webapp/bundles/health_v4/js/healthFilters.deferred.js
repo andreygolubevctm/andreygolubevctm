@@ -202,9 +202,7 @@
                         setFilterByExtrasBenefits();
                     }
                 }
-            }
-        },
-        benefitsSwitchModel = {
+            },
             "benefitsHospitalSwitch": {
                 name: 'health_benefits_filters_HospitalSwitch',
                 defaultValueSourceSelector: '#health_benefits_HospitalSwitch',
@@ -334,7 +332,7 @@
             _placeFrequencyFilters();
             meerkat.modules.filters.initFilters(
                 settings,
-                meerkat.modules.splitTest.isActive(2) ? $.extend({}, model, benefitsSwitchModel) : model
+                model
             );
             applyEventListeners();
             eventSubscriptions();
@@ -366,9 +364,7 @@
             toggleFilterByContainer($('.filter-' + filter));
             toggleFilter($('.health-filter-' + filter), true);
 
-            if (meerkat.modules.splitTest.isActive(2)) {
-                meerkat.modules.benefitsSwitch.toggleFiltersSwitch(filter.replace('-benefits', ''), false);
-            }
+            meerkat.modules.benefitsSwitch.toggleFiltersSwitch(filter.replace('-benefits', ''), false);
         });
 
         $(document).on('shown.bs.tab', '.health-filter-hospital-benefits a[data-toggle="tab"]', function (e) {
@@ -510,13 +506,11 @@
             }
         });
 
-        if (meerkat.modules.splitTest.isActive(2)) {
-            meerkat.messaging.subscribe(meerkatEvents.benefitsSwitch.FILTERS_SWITCH_CHANGED, function (e) {
-                _toggleFiltersBenefitSelection(e.benefit, e.isSwitchedOn);
-                _toggleFiltersSwitchValidation();
-                _toggleFiltersExtrasMessage();
-            });
-        }
+        meerkat.messaging.subscribe(meerkatEvents.benefitsSwitch.FILTERS_SWITCH_CHANGED, function (e) {
+            _toggleFiltersBenefitSelection(e.benefit, e.isSwitchedOn);
+            _toggleFiltersSwitchValidation();
+            _toggleFiltersExtrasMessage();
+        });
     }
 
     /**

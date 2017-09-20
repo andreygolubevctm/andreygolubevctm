@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <travel>
 	<adults>1</adults>
-	<oldest>23</oldest>
+	<party>S</party>
+	<travellers>
+		<travellersAge>29</travellersAge>
+	</travellers>
 	<surname>User</surname>
 	<policyType>A</policyType>
 	<firstName>Test</firstName>

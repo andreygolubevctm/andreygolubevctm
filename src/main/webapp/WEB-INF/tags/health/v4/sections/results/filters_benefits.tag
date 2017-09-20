@@ -5,15 +5,11 @@
 <core_v1:js_template id="filter-benefits-template">
     <div class="filter-heading">My Insurance Preferences</div>
 
-    <c:if test="${not empty benefitsSwitchSplitTest and benefitsSwitchSplitTest eq true}">
-        <health_v4:benefits_switch_off_message />
-    </c:if>
+    <health_v4:benefits_switch_off_message />
 
     <div class="filter filter-hospital-benefits" data-filter-serverside="true">
         <div class="filter-sub-heading">Hospital</div>
-        <c:if test="${not empty benefitsSwitchSplitTest and benefitsSwitchSplitTest eq true}">
-            <field_v2:switch xpath="${pageSettings.getVerticalCode()}/benefits/filters/HospitalSwitch" value="Y" className="benefits-switch switch-small" onText="On" offText="Off" />
-        </c:if>
+        <field_v2:switch xpath="${pageSettings.getVerticalCode()}/benefits/filters/HospitalSwitch" value="Y" className="benefits-switch switch-small" onText="On" offText="Off" />
         <div class="filter-by-container">
             <div class="filter-by-hospital-benefits small"></div>
             <a href="javascript:;" class="filter-toggle small" data-filter="hospital-benefits" <field_v1:analytics_attr analVal="hospital benefits filter" quoteChar="\"" />>Change</a>
@@ -45,10 +41,8 @@
     
     <div class="filter filter-extras-benefits" data-filter-serverside="true">
         <div class="filter-sub-heading">Extras</div>
-        <c:if test="${not empty benefitsSwitchSplitTest and benefitsSwitchSplitTest eq true}">
-            <field_v2:switch xpath="${pageSettings.getVerticalCode()}/benefits/filters/ExtrasSwitch" value="Y" className="benefits-switch switch-small" onText="On" offText="Off" />
-            <health_v4:benefits_switch_extras_message />
-        </c:if>
+        <field_v2:switch xpath="${pageSettings.getVerticalCode()}/benefits/filters/ExtrasSwitch" value="Y" className="benefits-switch switch-small" onText="On" offText="Off" />
+        <health_v4:benefits_switch_extras_message />
         <div class="filter-by-container">
             <span class="filter-by-extras-benefits small"></span>
             <a href="javascript:;" class="filter-toggle small" data-filter="extras-benefits" <field_v1:analytics_attr analVal="extras benefits filter" quoteChar="\"" />>Change</a>

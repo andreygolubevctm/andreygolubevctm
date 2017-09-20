@@ -22,6 +22,9 @@
     var initialised = false,
         premiumChangeEventFired = false;
 
+    var lhcHtml = '';
+    var lhcHelpCopy = '';
+
     function initHealthPriceComponent(){
 
         if(!initialised) {
@@ -105,10 +108,51 @@
             meerkat.modules.healthDualPricing.renderTemplate('.policySummary.dualPricing', product, false, true);
         } else {
             product.displayLogo = true;
+            product.priceBreakdown = (meerkat.modules.splitTest.isActive(5) &&
+                meerkat.modules.journeyEngine.getCurrentStep().navigationId !== 'results') ? true : false;
+
+            if (meerkat.modules.splitTest.isActive(5) && product.premium[product._selectedFrequency].lhc !== '$0.00') {
+                meerkat.modules.comms.get({
+                    url: 'spring/content/get.json',
+                    data: {
+                        vertical: 'HEALTH',
+                        key: 'priceBreakdownLHCCopy'
+                    },
+                    cache: true,
+                    dataType: 'json',
+                    useDefaultErrorHandling: false,
+                    errorLevel: 'silent',
+                    timeout: 5000,
+                    onSuccess: function onSubmitSuccess(data) {
+                        lhcHtml = data.contentValue;
+                    }
+                });
+
+                meerkat.modules.comms.get({
+                    url: 'spring/content/get.json',
+                    data: {
+                        vertical: 'HEALTH',
+                        key: 'priceBreakdownLHCHelpCopy'
+                    },
+                    cache: true,
+                    dataType: 'json',
+                    useDefaultErrorHandling: false,
+                    errorLevel: 'silent',
+                    timeout: 5000,
+                    onSuccess: function onSubmitSuccess(data) {
+                        lhcHelpCopy = data.contentValue;
+                    }
+                });
+                product.showLHCRow = true;
+            } else {
+                lhcHtml = '';
+                product.showLHCRow = false;
+            }
+
             var quoteRefHtmlTemplate = typeof quoteRefTemplate !== 'undefined' ? _.template(quoteRefTemplate) : null;
             var priceHtmlTemplate = _.template(priceTemplate);
             var logoHtmlTemplate = _.template(logoTemplate);
-            var htmlString = (typeof quoteRefHtmlTemplate === 'function' ? quoteRefHtmlTemplate({}) : "") + logoHtmlTemplate(product) + priceHtmlTemplate(product);
+            var htmlString = (typeof quoteRefHtmlTemplate === 'function' ? quoteRefHtmlTemplate({}) : "") + lhcHtml + logoHtmlTemplate(product) + priceHtmlTemplate(product);
 
             $policySummaryTemplateHolder.html(htmlString);
             $policySummaryContainer.find(".policyPriceWarning").hide();
@@ -158,6 +202,14 @@
             meerkat.modules.dialogs.show({
                 title: 'Here is how your premium is calculated:',
                 htmlContent: '<p>The BASE PREMIUM is the cost of a policy set by the health fund. This cost excludes any discounts or additional charges that are applied to the policy due to your age or income.</p><p>LHC LOADING is an initiative designed by the Federal Government to encourage people to take out private hospital cover earlier in life. If you&rsquo;re over the age of 31 and don&rsquo;t already have cover, you&rsquo;ll be required to pay a 2% Lifetime Health Cover loading for every year over the age of 30 that you were without hospital cover. The loading is applied to the BASE PREMIUM of the hospital component of your cover if applicable.<br/>For full information please go to: <a href="http://www.privatehealth.gov.au/healthinsurance/incentivessurcharges/lifetimehealthcover.htm" target="_blank">http://www.privatehealth.gov.au/healthinsurance/incentivessurcharges/lifetimehealthcover.htm</a></p><p>The AUSTRALIAN GOVERNMENT REBATE exists to provide financial assistance to those who need help with the cost of their health insurance premium. It is currently income-tested and tiered according to total income and the age of the oldest person covered by the policy. If you claim a rebate and find at the end of the financial year that it was incorrect for whatever reason, the Australian Tax Office will simply correct the amount either overpaid or owing to you after your tax return has been completed. There is no penalty for making a rebate claim that turns out to have been incorrect. The rebate is calculated against the BASE PREMIUM for both the hospital &amp; extras components of your cover.<br/>For full information please go to: <a href="https://www.ato.gov.au/Calculators-and-tools/Private-health-insurance-rebate-calculator/" target="_blank">https://www.ato.gov.au/Calculators-and-tools/Private-health-insurance-rebate-calculator/</a></p><p>PAYMENT DISCOUNTS can be offered by health funds for people who choose to pay by certain payment methods or pay their premiums upfront. These are applied to the total premium costs.</p>'
+            });
+        });
+
+        $(document).on('click', '.lhc-loading-help', function() {
+            meerkat.modules.dialogs.show({
+                title: 'LHC Loading',
+                htmlContent: lhcHelpCopy,
+                showCloseBtn: true
             });
         });
     }
