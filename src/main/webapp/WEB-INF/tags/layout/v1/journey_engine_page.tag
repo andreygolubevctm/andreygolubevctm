@@ -101,18 +101,30 @@
         <div id="pageContent">
 
                 <%-- <div id="pageContentTop"></div> --%>
-
+            
             <article class="container">
-
-                <div id="journeyEngineContainer">
+              <c:set var="octoberCompClass" value=""></c:set>
+              <c:if test="${pageSettings.getBrandCode() eq 'ctm' && octoberComp}">
+                <c:set var="octoberCompClass" value="octoberComp" />
+              </c:if>
+                <div id="journeyEngineContainer" class="${octoberCompClass}">
+                  
                     <div id="journeyEngineLoading" class="journeyEngineLoader opacityTransitionQuick">
+                      
                         <div class="loading-logo"></div>
+                        
                         <p class="message">Please wait...</p>
-                        <jsp:invoke fragment="results_loading_message" />
+                        <c:choose>
+                          <c:when test="${octoberComp}">
+                            <competition:loading />
+                          </c:when >
+                          <c:otherwise>
+                            <jsp:invoke fragment="results_loading_message" />
+                          </c:otherwise>
+                        </c:choose>          
                     </div>
 
                     <div id="mainform" class="form-horizontal">
-
                         <c:if test="${ignore_journey_tracking != 'true'}">
                             <core_v2:journey_tracking />
                         </c:if>
