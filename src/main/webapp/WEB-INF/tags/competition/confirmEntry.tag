@@ -5,7 +5,7 @@
 <div class="octoberComp">
   <div class="octoberComp__confirm">
     <div class="octoberComp__confirm__header">
-      <img src="/ctm/assets/brand/ctm/competition/octoberComp/money-symbol.svg" />
+      <img src="/./assets/brand/ctm/competition/octoberComp/money-symbol.svg" />
       <h3>You're now in the draw to win a share of $81,000</h3>
     </div>
     <p>Follow us on Facebook as we annoce the winners</p>
