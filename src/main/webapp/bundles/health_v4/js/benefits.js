@@ -67,6 +67,9 @@
                     if (!$elements.generalDentalBenefit.prop('checked')) {
                         _checkGeneralDental();
                     }
+                } else if (meerkat.modules.healthChoices.getCoverType() !== 'H' &&
+                           meerkat.modules.benefitsModel.getExtrasCount() === 0) {
+                    _checkGeneralDental();
                 }
             });
         });
