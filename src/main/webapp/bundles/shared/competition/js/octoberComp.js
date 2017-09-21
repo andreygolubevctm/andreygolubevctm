@@ -66,6 +66,10 @@
         });
     }
   }
+  
+  function compOff() {
+    return;
+  }
 
   var modules = octoberComp ? {
 		init: init,
@@ -74,6 +78,13 @@
     showMobileBanner: showMobileBanner,
     hideMobileBanner: hideMobileBanner,
     closeMobileBanner: closeMobileBanner
-  } : {};
+  } : 
+  {
+    showNav: compOff,
+    hideNav: compOff,
+    showMobileBanner: compOff,
+    hideMobileBanner: compOff,
+    closeMobileBanner: compOff
+  };
 	meerkat.modules.register("octoberComp", modules);
 })(jQuery);

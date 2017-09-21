@@ -116,7 +116,7 @@
                         <p class="message">Please wait...</p>
                         <c:choose>
                           <c:when test="${octoberComp}">
-                            <competition:loading />
+                            <competition:loading vertical="${pageSettings.getVerticalCode()}"/>
                           </c:when >
                           <c:otherwise>
                             <jsp:invoke fragment="results_loading_message" />
