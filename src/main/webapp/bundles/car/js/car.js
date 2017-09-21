@@ -222,6 +222,7 @@
                 includeFormData: true
             },
             onInitialise: function () {
+                meerkat.modules.octoberComp.closeMobileBanner();
                 meerkat.modules.carTypeOfCover.initCarTypeOfCover();
                 meerkat.modules.carCommencementDate.initCarCommencementDate();
                 meerkat.modules.carYoungDrivers.initCarYoungDrivers();

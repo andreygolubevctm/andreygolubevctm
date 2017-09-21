@@ -289,7 +289,7 @@
 			},
 			onInitialise: function onResultsInit(event){
 				meerkat.modules.healthResults.initPage();
-
+				meerkat.modules.octoberComp.closeMobileBanner();
 				var $healthSitCoverType = $('#health_situation_coverType');
 				var $hospitalBenefits = $('.Hospital_container  input:checkbox');
 				var $extraBenefits = $('.GeneralHealth_container input:checkbox');

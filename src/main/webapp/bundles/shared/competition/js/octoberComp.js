@@ -37,6 +37,10 @@
       nav.classList.remove('octoberComp__navbarContainer--active');
   }
   
+  function closeMobileBanner() {
+    banner.classList.remove('octoberComp__mobile--active');
+  }
+  
   function showMobileBanner() {
     banner.classList.remove('octoberComp__mobile__disabled');
   }
@@ -50,7 +54,8 @@
     showNav: showNav,
     hideNav: hideNav,
     showMobileBanner: showMobileBanner,
-    hideMobileBanner: hideMobileBanner
+    hideMobileBanner: hideMobileBanner,
+    closeMobileBanner: closeMobileBanner
   } : {};
 	meerkat.modules.register("octoberComp", modules);
 })(jQuery);

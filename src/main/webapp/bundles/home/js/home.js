@@ -232,6 +232,7 @@
 			},
 			externalTracking: externalTrackingSettings,
 			onInitialise: function() {
+				meerkat.modules.octoberComp.closeMobileBanner();
 				meerkat.modules.homeOccupancy.initHomeOccupancy();
 				meerkat.modules.homeBusiness.initHomeBusiness();
 			},
