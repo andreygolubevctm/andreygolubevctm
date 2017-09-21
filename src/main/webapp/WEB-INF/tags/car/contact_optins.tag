@@ -22,15 +22,17 @@
 
 <c:choose>
 	<c:when test="${octoberComp}">
-		<c:set var="optInText" value='I understand and accept the Promotion terms and conditions, <a href="%websiteTermConfigPlaceHolder%" target="_blank" data-title="Website Terms of Use" class="termsLink showDoc">Website Terms of Use<span class="sr-only">Opens in new window</span></a>, <a href="%FinancialServicesGuidePlaceHolder%" target="_blank" data-title="Financial Services Guide" class="termsLink showDoc">Financial Services Guide<span class="sr-only">Opens in new window</span></a> and %privacyStmtPlaceHolder% I agree that comparethemarket.com.au may contact me about the services it provides, and that one of comparethemarket.com.au’s trusted car insurance partners may call, email or SMS me to discuss my insurance needs.' />
+		<c:set var="optInText"><content:get key="octoberCompOptInText" /></c:set>
 		<c:set var="optInText" value="${fn:replace(
 											fn:replace(
 												fn:replace(
-													fn:replace(optInText,
-														'%FinancialServicesGuidePlaceHolder%', fsgPlaceHolder),
-														'%privacyStmtPlaceHolder%', privacyStmtPlaceHolder),
-														'%websiteTermConfigPlaceHolder%', websiteTermConfigPlaceHolder),
-														'%companyNamePlaceHolder%', companyNamePlaceHolder)}" />
+													fn:replace(
+														fn:replace(optInText,
+															'%FinancialServicesGuidePlaceHolder%', fsgPlaceHolder),
+															'%vertical%', 'car'),
+															'%privacyStmtPlaceHolder%', privacyStmtPlaceHolder),
+															'%websiteTermConfigPlaceHolder%', websiteTermConfigPlaceHolder),
+															'%companyNamePlaceHolder%', companyNamePlaceHolder)}" />
 	</c:when>
 	<c:otherwise>
 		<c:set var="optInText" value="${fn:replace(

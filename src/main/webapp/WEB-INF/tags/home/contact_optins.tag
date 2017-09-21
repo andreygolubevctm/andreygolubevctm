@@ -27,8 +27,10 @@
 		<c:set var="optInText" value="${fn:replace(
 											fn:replace(
 												fn:replace(
+													fn:replace(
 													fn:replace(optInText,
 														'%FinancialServicesGuidePlaceHolder%', fsgPlaceHolder),
+														'%vertical%', 'home and/or contents'),
 														'%privacyStmtPlaceHolder%', privacyStmtPlaceHolder),
 														'%websiteTermConfigPlaceHolder%', websiteTermConfigPlaceHolder),
 														'%companyNamePlaceHolder%', companyNamePlaceHolder)}" />

@@ -18,8 +18,7 @@
 
 <c:choose>
 	<c:when test="${octoberComp}">
-
-		<c:set var="optInText" value='I understand and accept the Promotion terms and conditions, <a href="%websiteTermConfigPlaceHolder%" target="_blank" data-title="Website Terms of Use" class="termsLink showDoc">Website Terms of Use<span class="sr-only">Opens in new window</span></a> and the %privacyStmtPlaceHolder%. I agree that comparethemarket.com.au or its partners may call me during the Call Centre opening hours, and email or SMS me, about the services it provides.' />
+    <c:set var="optInText"><content:get key="octoberCompOptInText" /></c:set>
 	</c:when>
 	<c:otherwise>
     <c:set var="optInText"><content:get key="optInText" /></c:set>
