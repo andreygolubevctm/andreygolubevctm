@@ -10,7 +10,6 @@
         <form_v3:fieldset_columns sideHidden="true">
 
              <jsp:attribute name="rightColumn">
-               <competition:snapshot vertical="health" />
                <health_v4:cta_panel />
                <reward:campaign_tile_container />
                <health_v4_content:snapshot/>
