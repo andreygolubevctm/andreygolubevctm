@@ -45,6 +45,7 @@ public class EmailController {
     @RequestMapping("/sendEmail")
     public void sendEmail(HttpServletRequest request, HttpServletResponse response){
         try {
+
             SessionData sessionData = sessionDataService.getSessionDataFromSession(request);
             EmailRequest emailRequest = new EmailRequest();
             emailRequest.setFirstName(request.getParameter("rank_productName4"));
@@ -71,11 +72,12 @@ public class EmailController {
             setDataFields(emailRequest, data, "health");
             setDataFields(emailRequest, data, "car");
             request.getParameterMap().forEach((s, strings) -> System.out.println("parametersprinted:" + s + ":" + strings));
+            LOGGER.info("Sending email request to marketing automation service");
             EmailResponse emailResponse = client.post(RestSettings.<EmailRequest>builder().request(emailRequest).response(EmailResponse.class)
                     .responseType(MediaType.APPLICATION_JSON).header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                     .url("https://marketing-automation-service-dev.ctm.cloud.local/marketing-automation/sendEmailRequest")
                     .timeout(30).retryAttempts(2).build()).observeOn(Schedulers.io()).toBlocking().first();
-            emailResponse.getSuccess();
+            LOGGER.info("Email response from marketing automation service" + emailResponse.getSuccess() + emailResponse.getMessage());
         }
         catch(Exception e){
             LOGGER.error("Exception: " + e.getMessage());
