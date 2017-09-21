@@ -194,7 +194,7 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="footer">
-		<competition:mobileFooter vertical="home & contents" />
+		<competition:mobileFooter vertical="home and/or contents" />
 		<home:footer />
 	</jsp:attribute>
 

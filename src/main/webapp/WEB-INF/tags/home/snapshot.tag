@@ -4,7 +4,7 @@
 
 <c:choose>
 	<c:when test="${octoberComp}">
-		<competition:snapshot vertical="home & contents" additionalClass="--home" />
+		<competition:snapshot vertical="home and/or contents" additionalClass="--home" />
 	</c:when>
 	<c:otherwise>
 		<form_v2:fieldset legend="Snapshot of Your Quote" className="hidden quoteSnapshot">
