@@ -25,6 +25,8 @@
             $elements.applyDiscount.val($('#health_refine_results_discount').is(':checked') ? 'Y' : 'N');
             $elements.applyRebate.val($('#health_refine_results_rebate').is(':checked') ? 'Y': 'N');
 
+            // meerkat.modules.healthFilters.getCheckedBenefitsFromFilters($('.health-refine-results-hospital-benefits'));
+
             meerkat.modules.journeyEngine.loadingShow('...updating your quotes...', true);
             meerkat.modules.healthResults.get();
         };
@@ -51,6 +53,11 @@
 
             $('#health_refine_results_discount').prop('checked', $elements.applyDiscount.val() === 'Y');
             $('#health_refine_results_rebate').prop('checked', $elements.applyRebate.val() === 'Y');
+
+            // loop through selected hospital benefits
+            _.each(meerkat.modules.benefitsModel.getHospitalBenefitsForFilters(), function(benefit) {
+                $('#health_refineResults_benefits_' + benefit.id).prop('checked', benefit.selected);
+            });
         });
 
         $(document).on('change', '.mobile-menu-body :input', function() {

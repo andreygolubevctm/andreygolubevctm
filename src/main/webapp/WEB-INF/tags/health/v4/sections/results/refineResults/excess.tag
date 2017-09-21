@@ -3,5 +3,5 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <section data-panel="Excess">
-    Excess items go here testing...
+    Excess items go here
 </section>

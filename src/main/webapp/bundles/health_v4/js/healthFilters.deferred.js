@@ -291,7 +291,7 @@
         $hiddenProductsWrapper,
         $paginationWrapper;
 
-    function _getCheckedBenefitsFromFilters($container) {
+    function getCheckedBenefitsFromFilters($container) {
         var array = [];
         $container.find('input[type="checkbox"]:checked').map(function () {
             array.push(this.value);
@@ -307,8 +307,8 @@
         // this needs to convert the shortlistkey names e.g. PrHospital to its id for it to work...
         // go back up to init filters and try and make it just run off ids.
         var selectedBenefits = {
-            'hospital': _getCheckedBenefitsFromFilters($('.health-filter-hospital-benefits')),
-            'extras': _getCheckedBenefitsFromFilters($('.health-filter-extras-benefits'))
+            'hospital': getCheckedBenefitsFromFilters($('.health-filter-hospital-benefits')),
+            'extras': getCheckedBenefitsFromFilters($('.health-filter-extras-benefits'))
         };
 
         meerkat.modules.healthResults.setSelectedBenefitsList(selectedBenefits.hospital.concat(selectedBenefits.extras));
@@ -574,7 +574,8 @@
     meerkat.modules.register("healthFilters", {
         init: init,
         events: {},
-        getModel: getModel
+        getModel: getModel,
+        getCheckedBenefitsFromFilters: getCheckedBenefitsFromFilters
     });
 
 })(jQuery);
