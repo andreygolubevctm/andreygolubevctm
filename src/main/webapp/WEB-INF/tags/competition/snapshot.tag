@@ -16,12 +16,12 @@
       <div class="octoberComp__snapshot_prize__textContainer">
         <img src="./assets/brand/ctm/competition/octoberComp/money-symbol.svg" />
         <span>Daily prize: </span>
-        <span>$1,000</span>
+        <span><b>$1,000</b></span>
       </div>
       <div class="octoberComp__snapshot_prize__textContainer">
         <img src="./assets/brand/ctm/competition/octoberComp/money-symbol.svg" />
         <span>Grand prizes: </span>
-        <span>5 x $10,000</span>
+        <span><b>5 x $10,000</b></span>
       </div>
     </div>
     <div class="octoberComp__snapshot_tcs"><a target="_blank" href="https://secure.comparethemarket.com.au/static/legal/october_promotion.pdf
