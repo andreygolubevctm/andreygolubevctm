@@ -58,7 +58,7 @@
 
         /* bind events */
         $(document)
-        .on('focus', 'input', function() {
+        .on('focus', 'input[type=number], input[type=text]', function() {
             $body.addClass('fixfixed');
         })
         .on('blur', 'input', function() {
