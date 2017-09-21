@@ -404,7 +404,7 @@
 				}
 			},
 			onInitialise: function onInitResults(event){
-
+				meerkat.modules.octoberComp.hideMobileBanner();
 				meerkat.modules.healthSafariColumnCountFix.initHealthSafariColumnCountFix();
 				meerkat.modules.healthPriceRangeFilter.initHealthPriceRangeFilter();
 				meerkat.modules.healthAltPricing.initHealthAltPricing();
@@ -489,6 +489,7 @@
 				}
 			},
 			onAfterLeave: function(event){
+				meerkat.modules.octoberComp.showMobileBanner();
 				meerkat.modules.healthResults.recordPreviousBreakpoint();
 			}
 		};

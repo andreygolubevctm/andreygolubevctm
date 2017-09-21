@@ -317,6 +317,7 @@
 			slideIndex: 5,
 			externalTracking: externalTrackingSettings,
 			onInitialise: function onResultsInit(event) {
+				meerkat.modules.octoberComp.hideMobileBanner();
 				meerkat.modules.octoberComp.showNav();
 				meerkat.modules.homeMoreInfo.initMoreInfo();
 				meerkat.modules.homeEditDetails.initEditDetails();
@@ -345,6 +346,7 @@
 			onAfterLeave: function onAfterLeaveResults(event) {
 				meerkat.modules.journeyProgressBar.show();
 				meerkat.modules.octoberComp.hideNav();
+				meerkat.modules.octoberComp.showMobileBanner();
 				// Hide the filters bar
 				meerkat.modules.homeFilters.hide();
 				meerkat.modules.homeEditDetails.hide();

@@ -285,6 +285,7 @@
                 object: meerkat.modules.car.getTrackingFieldsObject
             },
             onInitialise: function onResultsInit(event) {
+                meerkat.modules.octoberComp.hideMobileBanner();
                 meerkat.modules.octoberComp.showNav();
                 meerkat.modules.carResults.initPage();
                 meerkat.modules.carMoreInfo.initMoreInfo();
@@ -334,6 +335,7 @@
             },
             onAfterLeave: function (event) {
                 meerkat.modules.journeyProgressBar.show();
+                meerkat.modules.octoberComp.showMobileBanner();
                 meerkat.modules.octoberComp.hideNav();
                 // Hide the filters bar
                 meerkat.modules.carFilters.hide();
