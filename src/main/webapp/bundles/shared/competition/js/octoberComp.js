@@ -25,7 +25,7 @@
   function init() {
       bannerTxt = banner.querySelector('p');
       trigger.addEventListener('click', toggleFooter);
-      setFooterPos();
+      toggleFooter();
   }
 
   function showNav() {
