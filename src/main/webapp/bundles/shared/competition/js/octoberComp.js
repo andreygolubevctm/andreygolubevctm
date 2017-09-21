@@ -26,6 +26,7 @@
       bannerTxt = banner.querySelector('p');
       trigger.addEventListener('click', toggleFooter);
       toggleFooter();
+      mobileFixedCssFix();
   }
 
   function showNav() {
@@ -39,6 +40,7 @@
   
   function closeMobileBanner() {
     banner.classList.remove('octoberComp__mobile--active');
+    setFooterPos();
   }
   
   function showMobileBanner() {
@@ -47,6 +49,22 @@
   
   function hideMobileBanner() {
     banner.classList.add('octoberComp__mobile__disabled');
+  }
+  
+  function mobileFixedCssFix() {
+    if ('ontouchstart' in window) {
+        /* cache dom references */ 
+        var $body = $('body'); 
+
+        /* bind events */
+        $(document)
+        .on('focus', 'input', function() {
+            $body.addClass('fixfixed');
+        })
+        .on('blur', 'input', function() {
+            $body.removeClass('fixfixed');
+        });
+    }
   }
 
   var modules = octoberComp ? {
