@@ -55,7 +55,7 @@
 	<jsp:attribute name="header">
 		<c:choose>
 			<c:when test="${octoberComp}">
-				<competition:navSection />
+				<competition:navSection vertical="car" />
 			</c:when>
 			<c:otherwise>
 				<car:snapshot label="Vehicle Quoted" isHeader="true" />

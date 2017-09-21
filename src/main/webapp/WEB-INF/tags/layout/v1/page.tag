@@ -240,7 +240,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 							<c:if test="${not empty exitUrl}"></a></c:if>
 						</nav>
 						<c:if test="${pageSettings.getVerticalCode() eq 'home'}">
-							<competition:navSection />
+							<competition:navSection vertical="home and/or contents" />
 						</c:if>
 
 						<jsp:invoke fragment="header" />
