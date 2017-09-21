@@ -5,11 +5,6 @@
 <%-- SET ESCAPEXML'd VARIABLES HERE FROM BROCHUREWARE --%>
 
 <%-- VARIABLES --%>
-<c:set var="octoberComp" scope="application" value="${false}"/>
-<c:set var="octoberCompDB"><content:get key="octoberComp" /></c:set>
-<c:if test="${pageSettings.getBrandCode() eq 'ctm' && octoberCompDB eq 'Y'}">
-	<c:set var="octoberComp" scope="application" value="${true}"/>
-</c:if>
 
 <c:set var="fromBrochure" scope="request" value="${false}"/>
 <c:if test="${false}">
@@ -27,6 +22,7 @@
 
 <c:set var="defaultToHomeQuote"><content:get key="makeHomeQuoteMainJourney" /></c:set>
 <home:lead_capture_settings />
+<competition:octoberCompSettings />
 {
 	octoberComp: <c:out value="${octoberComp}" />,
 	isLandlord: <c:out value="${landlord}" />,

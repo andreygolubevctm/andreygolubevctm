@@ -14,12 +14,6 @@
 <c:set var="state" value="${data[xpathSituation].state}" />
 <c:set var="situation" value="${data[xpathSituation].healthSitu}" />
 
-<c:set var="octoberComp" scope="application" value="${false}"/>
-<c:set var="octoberCompDB"><content:get key="octoberComp" /></c:set>
-<c:if test="${pageSettings.getBrandCode() eq 'ctm' && octoberCompDB eq 'Y'}">
-	<c:set var="octoberComp" scope="application" value="${true}"/>
-</c:if>
-
 <%-- Test if the data is already set. Advance the user if Params are filled. Preload will override any params --%>
 <c:if test="${empty data[xpathSituation].healthCvr && empty data[xpathSituation].healthSitu}">
 
@@ -117,6 +111,7 @@
 
 <c:set var="openingHoursTimeZone"><content:get key="openingHoursTimeZone" /></c:set>
 
+<competition:octoberCompSettings />
 <health_v1:dual_pricing_settings />
 <health_v4:pyrr_campaign_settings />
 <agg_v1:remember_me_settings vertical="health" />
