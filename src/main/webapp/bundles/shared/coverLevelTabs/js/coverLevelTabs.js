@@ -245,16 +245,14 @@
 				originatingTab = settings.verticalMapping[tab.rankingFilter];
 			}
 		}
-		out += '<div class="col-xs-4 clt-trip-filter">';
-		out +=		'<div class="col-xs-12 no-padding"><b>Additional activities covered</b></div>';
-		out +=		'<div class="col-xs-4 no-padding"><div class="checkbox"><input type="checkbox" name="snow_sports" id ="snow_sports" class="checkbox-custom checkbox" value="SnowSports"><label for="snow_sports">Snow Sports</label></div></div>';
-		out +=		'<div class="col-xs-3 no-padding"><div class="checkbox"><input type="checkbox" name="cruise" id ="cruise" class="checkbox-custom checkbox" value="Cruise"><label for="cruise">Cruise</label></div></div>';
-		out +=		'<div class="col-xs-5 no-padding"><div class="checkbox"><input type="checkbox" name="adventure_sports" id ="adventure_sports" class="checkbox-custom checkbox" value="AdventureSports"><label for="adventure_sports">Adventure Sports</label></div></div>';
+		out += '<div class="col-xs-2 clt-trip-filter">';
+		out += 		'<div class="col-xs-12"><b>Excess up to</b></div>';
+		out +=		'<div class="col-xs-12">$150</div>';
 		out += '</div>';
-		out += '<div class="col-xs-1 clt-trip-filter">';
-		out += 		'<div class="col-xs-12 no-padding"><b>Excess up to</b></div>';
-		out +=		'<div class="col-xs-12 no-padding">$150</div>';
-		out += '</div>';
+        out += '<div class="col-xs-2 clt-trip-filter">';
+        out += 		'<div class="col-xs-12">&nbsp;</div>';
+        out +=		'<div class="col-xs-12">More filters</div>';
+        out += '</div>';
 
 		$currentTabContainer.empty().html(out);
 

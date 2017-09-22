@@ -1,0 +1,38 @@
+.travel {
+  .navbar-inverse {
+    background-color: @theme-light;
+  }
+
+  ul.navbar-nav {
+    > li {
+      &:first-child {
+        border-right: 0px;
+      }
+
+      &.active {
+        > a, a:hover, a:focus {
+          background-color: transparent;
+          color: @theme-secondary;
+        }
+      }
+
+      text-shadow: none;
+      > a {
+        border-right: none !important; // last ditch attempt
+        text-transform: none;
+        color: @theme-tertiary;
+        &:hover {
+          background-color: transparent;
+          color: @theme-tertiary;
+        }
+      }
+
+      .navbar-brand {
+        color: @theme-dark;
+        &:hover {
+          color: @theme-dark;
+        }
+      }
+    }
+  }
+}

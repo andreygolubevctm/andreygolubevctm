@@ -71,8 +71,8 @@
 					</li>
 					<li class="container row sortbar-children">
 						<ul class="nav navbar-nav navbar-inverse col-sm-12">
-							<li class="hidden-xs col-sm-2 col-lg-4">
-								<span class="navbar-brand">Sort <span class="optional-lg">your</span> <span class="optional-md">results</span> by</span>
+							<li class="hidden-xs col-sm-1 col-lg-4">
+								<span class="navbar-brand">Sort results</span>
 							</li>
 							<li class="col-sm-2 col-lg-1">
 								<a href="javascript:;" data-sort-type="benefits.excess" data-sort-dir="asc"><span class="icon"></span> <span>Excess</span></a>
