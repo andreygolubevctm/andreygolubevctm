@@ -37,19 +37,14 @@
 .dp__input {
   width: 50%;
   float: left;
-
   position: relative;
+  &--left {
+    padding-right: 5px;
+  }
+  &--right {
+    padding-left: 5px;
+  }
 }
-
-.dp__input--left {
-  padding-right: 5px;
-}
-
-.dp__input--right {
-  padding-left: 5px;
-}
-
-
 
 .dp__inputContainer {
   width: 50%;
@@ -96,4 +91,13 @@ span.flatpickr-day.inRange {
   background-color: @light;
   box-shadow: -5px 0 0 #70d195, 5px 0 0 #70d195;
   border-color: transparent;
+}
+
+@media (max-width: 767px) {
+  .dp__input {
+    width: 100%;
+    &--left, &--right {
+      padding: 0;
+    }
+  }
 }
