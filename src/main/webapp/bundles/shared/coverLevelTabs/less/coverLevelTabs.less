@@ -1,37 +1,20 @@
 .coverLevelTabs {
 
 	.clt-action {
-		padding: 8px 0;
-		margin-bottom: 8px;
-		margin-right: 10px;
+		padding: 12px 0;
 		cursor: pointer;
 		font-size: 14px;
 	  	line-height: 14px;
-	  	border-radius: 8px;
-		border: 1px solid @theme-tertiary;
-		background-color: transparent;
-		color: @theme-tertiary;
+	  	border-radius: 20px 20px 0 0;
+		border: 1px solid #fff;
+		border-top: none;
+		background-color: @clt-inactive-bg-color;
+		color: @clt-inactive-color;
 
 	}
 	.active, .clt-action:hover {
-		border: 1px solid @theme-secondary;
-		background-color: transparent;
-		color: @theme-secondary;
-	}
-	.clt-trip-filter {
-
-		.checkbox {
-			margin: 0;
-			padding-left: 17px;
-		}
-
-		input, label {
-			float:left;
-		}
-
-		label {
-			margin-left: 5px;
-		}
+		background-color: @clt-active-bg;
+		color: @clt-active-color;
 	}
 
 	// xs styles

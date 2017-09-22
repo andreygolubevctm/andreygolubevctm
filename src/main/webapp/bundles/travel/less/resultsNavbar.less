@@ -3,6 +3,27 @@
     background-color: @theme-light;
   }
 
+  .coverLevelTabs {
+    .clt-action {
+      padding: 8px 0;
+      margin-bottom: 8px;
+      margin-right: 10px;
+      cursor: pointer;
+      font-size: 14px;
+      line-height: 14px;
+      border-radius: 8px;
+      border: 1px solid @theme-tertiary;
+      background-color: transparent;
+      color: @theme-tertiary;
+
+    }
+    .active, .clt-action:hover {
+      border: 1px solid @theme-secondary;
+      background-color: transparent;
+      color: @theme-secondary;
+    }
+  }
+
   ul.navbar-nav {
     > li {
       &:first-child {
