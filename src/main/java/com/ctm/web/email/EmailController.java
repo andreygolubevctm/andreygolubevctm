@@ -79,7 +79,7 @@ public class EmailController {
             setDataFields(emailRequest, data, "health");
             setDataFields(emailRequest, data, "car");
             request.getParameterMap().forEach((s, strings) -> System.out.println("parametersprinted:" + s + ":" + strings));
-            LOGGER.info("Sending email request to marketing automation service");
+            LOGGER.info("Sending email request to marketing automation service" + url);
             EmailResponse emailResponse = client.post(RestSettings.<EmailRequest>builder().request(emailRequest).response(EmailResponse.class)
                     .responseType(MediaType.APPLICATION_JSON).header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                     .url(url)
