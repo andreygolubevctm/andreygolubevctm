@@ -81,7 +81,7 @@
 				</form_v2:fieldset>
 
 				<%-- DATES AND TRAVELLERS SECTION --%>
-				<form_v2:fieldset legend="Dates" className="travel_details_datesTravellers">
+				<form_v2:fieldset legend="Dates" className="travel_details_datesTravellers" id="travelDatePicker">
 					<travel:date_picker xpath="travel" />
 				</form_v2:fieldset>
 				<form_v2:fieldset legend="Travellers" className="travel_details_datesTravellers" id="datestravellersfs">

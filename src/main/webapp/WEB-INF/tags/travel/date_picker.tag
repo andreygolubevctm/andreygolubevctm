@@ -16,14 +16,14 @@
   <div class="col-sm-6 col-xs-12 row-content">
     <div class="dp__input dp__input--left">
       <span class="dp__input__header">Departure</span>
-      <input id="departureDisplay" class="dp__input__item" />
-      <input id="departure" class="dp__input__hidden" />
+      <input id="departureDisplay" class="dp__input__item" name="travel_dates_departure_vis" />
+      <input id="departure" class="dp__input__hidden" name="travel_dates_departure" />
       <field_v1:hidden xpath="${xpath}/dates/fromDate" defaultValue="${callId}" />
     </div>
     <div class="dp__input dp__input--right">
       <span class="dp__input__header">Return</span>
-      <input id="returnDisplay" class="dp__input__item" />
-      <input id="return" class="dp__input__hidden" />
+      <input id="returnDisplay" class="dp__input__item" name="travel_dates_return_vis" />
+      <input id="return" class="dp__input__hidden" name="travel_dates_return" />
       <field_v1:hidden xpath="${xpath}/dates/toDate" defaultValue="${callId}" />
     </div>
   </div>
