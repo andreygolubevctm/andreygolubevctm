@@ -1,17 +1,14 @@
 package com.ctm.web.email;
 
 import com.ctm.httpclient.RestSettings;
-import com.ctm.web.car.router.CarRouter;
-import com.ctm.web.core.email.services.IncomingEmailService;
+import com.ctm.interfaces.common.types.VerticalType;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.session.SessionData;
 import com.ctm.web.core.results.model.ResultProperty;
-import com.ctm.web.core.services.ResultsService;
 import com.ctm.web.core.services.SessionDataService;
 import com.ctm.web.core.web.go.Data;
-import com.ctm.web.email.health.HealthEmailModel;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.ctm.web.email.health.HealthModelTranslator;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,20 +17,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Observable;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
 import com.ctm.httpclient.Client;
 import rx.schedulers.Schedulers;
-import sun.rmi.runtime.Log;
 
 /**
  * Created by akhurana on 15/09/17.
@@ -50,34 +40,31 @@ public class EmailController {
 
     @Value("${marketing.automation.url}")
     private String url;
+    @Autowired
+    private EmailUtils emailUtils;
+    @Autowired
+    private HealthModelTranslator healthModelTranslator;
 
     @RequestMapping("/sendEmail")
     public void sendEmail(HttpServletRequest request, HttpServletResponse response){
         try {
-
+            String dataXml = request.getParameter("data");
+            String verticalCode = emailUtils.getParamFromXml(dataXml, "verticalCode", "/current/");
             SessionData sessionData = sessionDataService.getSessionDataFromSession(request);
             EmailRequest emailRequest = new EmailRequest();
-            emailRequest.setFirstName(request.getParameter("rank_productName4"));
+
+            String transactionId = request.getParameter("transactionId");
+            Data data = sessionData.getSessionDataForTransactionId(transactionId);
             emailRequest.setFirstName(request.getParameter("name"));
             emailRequest.setAddress(request.getParameter("address"));
 
-            ArrayList<Data> dataArrayList = sessionData.getTransactionSessionData();
-            Data data = dataArrayList.get(0);
-            emailRequest.setPremiumFrequency(request.getParameter("rank_frequency0"));
-            String transactionId = request.getParameter("transactionId");
-            List<String> providerName = buildParameterList(request, "rank_providerName");
-            List<String> premiumLabel = buildParameterList(request, "rank_premiumText");
-            List<String> premium = buildParameterList(request, "rank_premium");
-            List<String> providerCodes = buildParameterList(request, "rank_provider");
-            emailRequest.setProvider(providerName);
-            emailRequest.setPremiumLabel(premiumLabel);
-            emailRequest.setProviderCode(providerCodes);
-            emailRequest.setPremium(premium);
             emailRequest.setTransactionId(transactionId);
-            setHealthFields(emailRequest, request);
-            setCarFields(emailRequest,transactionId,data);
-            setDataFields(emailRequest, data, "health");
-            setDataFields(emailRequest, data, "car");
+            if(VerticalType.HEALTH == VerticalType.valueOf(verticalCode)) {
+                healthModelTranslator.setHealthFields(emailRequest, request, data);
+            }
+            if(VerticalType.CAR == VerticalType.valueOf(verticalCode)) {
+                setCarFields(emailRequest,transactionId,data);
+            }
             request.getParameterMap().forEach((s, strings) -> System.out.println("parametersprinted:" + s + ":" + strings));
             LOGGER.info("Sending email request to marketing automation service" + url);
             EmailResponse emailResponse = client.post(RestSettings.<EmailRequest>builder().request(emailRequest).response(EmailResponse.class)
@@ -92,42 +79,18 @@ public class EmailController {
 
     }
 
-    private List<ResultProperty> getResultProperties(String tranId) throws DaoException {
-        try {
-            return ResultsService.getResultsPropertiesForTransactionId(Long.parseLong(tranId));
-        } catch (DaoException e) {
-            e.printStackTrace();
-            throw e;
-        }
-    }
-
-    private void setDataFields(EmailRequest emailRequest, Data data, String vertical){
-        String email = getParamSafely(data,vertical + "/contactDetails/email");
-        String firstName = getParamSafely(data,vertical + "/contactDetails/name");
-        String fullAddress = getParamSafely(data,vertical + "/application/address/fullAddress");
-        String optIn = getParamSafely(data,vertical+ "/contactDetails/optInEmail");
-        String phoneNumber = getParamSafely(data,vertical + "/contactDetails/contactNumber/mobile");
-        emailRequest.setPhoneNumber(phoneNumber);
-        if(optIn!=null) emailRequest.setOptIn(OptIn.valueOf(optIn));
-        emailRequest.setAddress(fullAddress);
-        emailRequest.setFirstName(firstName);
-        emailRequest.setEmailAddress(email);
-    }
-
     private void setCarFields(EmailRequest emailRequest, String tranId, Data data) throws DaoException {
-        List<ResultProperty> resultsProperties =  getResultProperties(tranId);
+        List<ResultProperty> resultsProperties =  emailUtils.getResultPropertiesForTransaction(tranId);
 
         List<String> providerName = getAllResultProperties(resultsProperties, "productDes");
         List<String> providerPhoneNumber = getAllResultProperties(resultsProperties, "telNo");
-        //List<String> callCentreHours = getAllResultProperties(resultsProperties, "openingHours");
-
         resultsProperties.forEach(resultProperty -> {
             System.out.println("" + resultProperty.getProperty() + ":" +  resultProperty.getValue());
         } );
         emailRequest.setProvider(providerName);
         emailRequest.setProviderPhoneNumber(providerPhoneNumber);
-        String email = getParamSafely(data,  "/quote/contact/email");
-        emailRequest.setEmailAddress(email);
+        String email = emailUtils.getParamSafely(data,  "/quote/contact/email");
+        if(!StringUtils.isBlank(email)) emailRequest.setEmailAddress(email);
     }
 
     private List<String> getAllResultProperties(List<ResultProperty> resultProperties, String property){
@@ -135,49 +98,6 @@ public class EmailController {
                 .map(resultProperty -> resultProperty.getValue()).collect(Collectors.toList());
     }
 
-    private void setHealthFields(EmailRequest emailRequest, HttpServletRequest request){
-        String benefitCodes = request.getParameter("rank_benefitCodes0");
-        String primaryCurrentPHI0 = request.getParameter("rank_primaryCurrentPHI0");
-        String extrasPdsUrl = request.getParameter("rank_extrasPdsUrl0");
-        String coPayment =  request.getParameter("rank_coPayment0");
-        String excessPerPerson = request.getParameter("rank_excessPerPerson0");
-        String excessPerPolicy = request.getParameter("rank_excessPerPolicy0");
-        String healthMembership = request.getParameter("rank_healthMembership0");
-        String excessPerAdmission = request.getParameter("rank_excessPerAdmission0");
-        String hospitalPdsUrl = request.getParameter("rank_hospitalPdsUrl0");
-        String healthSituation = request.getParameter("rank_healthSituation0");
-        String coverType = request.getParameter("rank_coverType0");
-
-        HealthEmailModel healthEmailModel = new HealthEmailModel();
-        healthEmailModel.setCoverType(coverType);
-        healthEmailModel.setBenefitCodes(benefitCodes);
-        healthEmailModel.setPrimaryCurrentPHI(primaryCurrentPHI0);
-        healthEmailModel.setP1ExtrasPdsUrl(extrasPdsUrl);
-        healthEmailModel.setP1Copayment(coPayment);
-        healthEmailModel.setP1ExcessPerPerson(excessPerPerson);
-        healthEmailModel.setP1ExcessPerPolicy(excessPerPolicy);
-        healthEmailModel.setHealthMembership(healthMembership);
-        healthEmailModel.setP1ExcessPerAdmission(excessPerAdmission);
-        healthEmailModel.setP1HospitalPdsUrl(hospitalPdsUrl);
-        healthEmailModel.setSituationType(healthSituation);
-        emailRequest.setHealthEmailModel(healthEmailModel);
-    }
-
-    private List<String> buildParameterList(HttpServletRequest httpServletRequest, String paramName){
-        List params = new ArrayList();
-        IntStream.range(0,10).forEach(idx -> params.add(httpServletRequest.getParameter(paramName + idx)));
-        return params;
-    }
-
-    private String getParamSafely(Data data, String param) {
-        try {
-            return (String) data.get(param);
-        }
-        catch(Exception e){
-            LOGGER.warn("Field " + param + " not found before sending email");
-        }
-        return null;
-    }
 
     /**
      * -22 07:55:06.313 DEBUG 28688 --- [bio-8084-exec-6] c.c.w.c.s.tracking.TrackingKeyService    [2527008::car:bd244df7-04c3-4cce-8af8-c78c266cb1f6] : Generated tracking key. key=dab7ac844c03ee967d834f2098ec725eb62e362c
