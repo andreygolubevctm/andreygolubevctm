@@ -18,11 +18,6 @@ public class EmailRequest {
     private String partnersQuoted;
     private String prospectID;
     private List<String> coverTypes;
-    private String p1ProductName;
-    private String p2ProductName;
-    private String p3ProductName;
-    private String p4ProductName;
-    private String p5ProductName;
     private List<String> provider;
     private List<String> premiumLabel;
     private OptIn optIn;
@@ -51,6 +46,14 @@ public class EmailRequest {
 
     private HealthEmailModel healthEmailModel;
 
+    public HealthEmailModel getHealthEmailModel() {
+        return healthEmailModel;
+    }
+
+    public void setHealthEmailModel(HealthEmailModel healthEmailModel) {
+        this.healthEmailModel = healthEmailModel;
+    }
+
     public String getPartnersQuoted() {
         return partnersQuoted;
     }
@@ -73,46 +76,6 @@ public class EmailRequest {
 
     public void setCoverTypes(List<String> coverTypes) {
         this.coverTypes = coverTypes;
-    }
-
-    public String getP1ProductName() {
-        return p1ProductName;
-    }
-
-    public void setP1ProductName(String p1ProductName) {
-        this.p1ProductName = p1ProductName;
-    }
-
-    public String getP2ProductName() {
-        return p2ProductName;
-    }
-
-    public void setP2ProductName(String p2ProductName) {
-        this.p2ProductName = p2ProductName;
-    }
-
-    public String getP3ProductName() {
-        return p3ProductName;
-    }
-
-    public void setP3ProductName(String p3ProductName) {
-        this.p3ProductName = p3ProductName;
-    }
-
-    public String getP4ProductName() {
-        return p4ProductName;
-    }
-
-    public void setP4ProductName(String p4ProductName) {
-        this.p4ProductName = p4ProductName;
-    }
-
-    public String getP5ProductName() {
-        return p5ProductName;
-    }
-
-    public void setP5ProductName(String p5ProductName) {
-        this.p5ProductName = p5ProductName;
     }
 
     public List<String> getProvider() {
@@ -299,11 +262,4 @@ public class EmailRequest {
         this.providerSpecialOffer = providerSpecialOffer;
     }
 
-    public HealthEmailModel getHealthEmailModel() {
-        return healthEmailModel;
-    }
-
-    public void setHealthEmailModel(HealthEmailModel healthEmailModel) {
-        this.healthEmailModel = healthEmailModel;
-    }
 }

@@ -2,7 +2,11 @@ package com.ctm.web.email;
 
 import com.ctm.httpclient.RestSettings;
 import com.ctm.web.car.router.CarRouter;
+import com.ctm.web.core.email.services.IncomingEmailService;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.session.SessionData;
+import com.ctm.web.core.results.model.ResultProperty;
+import com.ctm.web.core.services.ResultsService;
 import com.ctm.web.core.services.SessionDataService;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.email.health.HealthEmailModel;
@@ -11,6 +15,7 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,10 +23,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Observable;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import com.ctm.httpclient.Client;
@@ -41,6 +48,8 @@ public class EmailController {
     private Client<EmailRequest,EmailResponse> client;
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailController.class);
 
+    @Value("${marketing.automation.url}")
+    private String url;
 
     @RequestMapping("/sendEmail")
     public void sendEmail(HttpServletRequest request, HttpServletResponse response){
@@ -62,20 +71,18 @@ public class EmailController {
             List<String> providerCodes = buildParameterList(request, "rank_provider");
             emailRequest.setProvider(providerName);
             emailRequest.setPremiumLabel(premiumLabel);
-            emailRequest.setPremium(premium);
             emailRequest.setProviderCode(providerCodes);
             emailRequest.setPremium(premium);
-            emailRequest.setPremiumLabel(premiumLabel);
-            emailRequest.setProviderCode(providerCodes);
             emailRequest.setTransactionId(transactionId);
             setHealthFields(emailRequest, request);
+            setCarFields(emailRequest,transactionId,data);
             setDataFields(emailRequest, data, "health");
             setDataFields(emailRequest, data, "car");
             request.getParameterMap().forEach((s, strings) -> System.out.println("parametersprinted:" + s + ":" + strings));
             LOGGER.info("Sending email request to marketing automation service");
             EmailResponse emailResponse = client.post(RestSettings.<EmailRequest>builder().request(emailRequest).response(EmailResponse.class)
                     .responseType(MediaType.APPLICATION_JSON).header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                    .url("https://marketing-automation-service-dev.ctm.cloud.local/marketing-automation/sendEmailRequest")
+                    .url(url)
                     .timeout(30).retryAttempts(2).build()).observeOn(Schedulers.io()).toBlocking().first();
             LOGGER.info("Email response from marketing automation service" + emailResponse.getSuccess() + emailResponse.getMessage());
         }
@@ -83,6 +90,15 @@ public class EmailController {
             LOGGER.error("Exception: " + e.getMessage());
         }
 
+    }
+
+    private List<ResultProperty> getResultProperties(String tranId) throws DaoException {
+        try {
+            return ResultsService.getResultsPropertiesForTransactionId(Long.parseLong(tranId));
+        } catch (DaoException e) {
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     private void setDataFields(EmailRequest emailRequest, Data data, String vertical){
@@ -96,6 +112,27 @@ public class EmailController {
         emailRequest.setAddress(fullAddress);
         emailRequest.setFirstName(firstName);
         emailRequest.setEmailAddress(email);
+    }
+
+    private void setCarFields(EmailRequest emailRequest, String tranId, Data data) throws DaoException {
+        List<ResultProperty> resultsProperties =  getResultProperties(tranId);
+
+        List<String> providerName = getAllResultProperties(resultsProperties, "productDes");
+        List<String> providerPhoneNumber = getAllResultProperties(resultsProperties, "telNo");
+        //List<String> callCentreHours = getAllResultProperties(resultsProperties, "openingHours");
+
+        resultsProperties.forEach(resultProperty -> {
+            System.out.println("" + resultProperty.getProperty() + ":" +  resultProperty.getValue());
+        } );
+        emailRequest.setProvider(providerName);
+        emailRequest.setProviderPhoneNumber(providerPhoneNumber);
+        String email = getParamSafely(data,  "/quote/contact/email");
+        emailRequest.setEmailAddress(email);
+    }
+
+    private List<String> getAllResultProperties(List<ResultProperty> resultProperties, String property){
+        return resultProperties.stream().filter(resultProperty -> resultProperty.getProperty().equals(property))
+                .map(resultProperty -> resultProperty.getValue()).collect(Collectors.toList());
     }
 
     private void setHealthFields(EmailRequest emailRequest, HttpServletRequest request){
@@ -141,6 +178,151 @@ public class EmailController {
         }
         return null;
     }
+
+    /**
+     * -22 07:55:06.313 DEBUG 28688 --- [bio-8084-exec-6] c.c.w.c.s.tracking.TrackingKeyService    [2527008::car:bd244df7-04c3-4cce-8af8-c78c266cb1f6] : Generated tracking key. key=dab7ac844c03ee967d834f2098ec725eb62e362c
+     brandCode:AI
+     discountOffer:Comprehensive car insurance with the option to add extra cover
+     excess/total:850
+     followupIntended:
+     headline/name:Elegant Comprehensive Cover
+     leadfeedinfo:Compare TheMarket||0755254545||MAZD12EP||QLD
+     leadNo:3093440
+     openingHours:Monday to Friday (9am - 5pm EST)
+     productDes:AI Car Insurance
+     productId:AI-01-01
+     quoteUrl:https://dev.aiinsurance.com.au/buy/disclosure/3093440
+     telNo:1300 284 875
+     validateDate/display:22 October 2017
+     validateDate/normal:2017-10-22
+     brandCode:AI
+     discountOffer:Price shown includes an online discount
+     excess/total:850
+     followupIntended:
+     headline/name:Elegant Plus Comprehensive Cover
+     leadfeedinfo:Compare TheMarket||0755254545||MAZD12EP||QLD
+     leadNo:3093440
+     openingHours:Monday to Friday (9am - 5pm EST)
+     productDes:AI Car Insurance
+     productId:AI-01-03
+     quoteUrl:https://dev.aiinsurance.com.au/buy/disclosure/3093440
+     telNo:1300 284 875
+     validateDate/display:22 October 2017
+     validateDate/normal:2017-10-22
+     brandCode:EXDD
+     discountOffer:<b>Receive a FREE 7" Android Tablet.                                       Price shown includes a 15% Online Discount.</b>
+     excess/total:800
+     followupIntended:Y
+     headline/name:Dodo Comprehensive
+     leadfeedinfo:Compare TheMarket||0755254545||MAZD12EP||QLD
+     leadNo:W7I221830
+     openingHours:Monday - Sunday 8.00am - 11.00pm AEST.
+     productDes:Dodo Gold Comprehensive
+     productId:EXDD-05-04
+     quoteUrl:https://nxq-dodo.disconline.com.au/car/aggregator.jsp?hPID=PCRQSP&hSty=EXDD&afnCde=IHAF&undCpy=05&undPrd=04&ledNo=W7I221830&LinkId=11399&CgpCde=00265&CenCde=10690&vdn=HDAG&addExs=4&ptnId=CTM0000003&srcId=0000000009
+     telNo:1800 003 631
+     validateDate/display:22 October 2017
+     validateDate/normal:2017-10-22
+     brandCode:EXPO
+     discountOffer:15% online discount, included automatically in this quote
+     excess/total:800
+     followupIntended:Y
+     headline/name:Australia Post Gold Comprehensive
+     leadfeedinfo:Compare TheMarket||0755254545||MAZD12EP||QLD
+     leadNo:W7I221826
+     openingHours:
+     productDes:Australia Post Gold Comprehensive
+     productId:EXPO-05-16
+     quoteUrl:https://nxq-austpost.disconline.com.au/car/aggregator.jsp?hPID=PCRQSP&hSty=EXPO&afnCde=IHAF&undCpy=05&undPrd=16&ledNo=W7I221826&LinkId=10710&CgpCde=00253&CenCde=10569&vdn=1855&addExs=4&ptnId=CTM0000003&srcId=0000000008
+     telNo:
+     validateDate/display:22 October 2017
+     validateDate/normal:2017-10-22
+     brandCode:IBOX
+     discountOffer:
+     excess/total:0
+     followupIntended:
+     headline/name:Comprehensive Car Insurance
+     leadfeedinfo:Compare TheMarket||0755254545||MAZD12EP||QLD
+     leadNo:QTE00063048
+     openingHours:
+     productDes:Comprehensive Car Insurance
+     productId:IB-01-01
+     quoteUrl:http://quote-ctm-uat.insurancebox.com.au/Qualification/GetQuote?quoteId=QTE00063048
+     telNo:
+     validateDate/display:22 October 2017
+     validateDate/normal:2017-10-22
+     brandCode:REIN
+     discountOffer:This price includes a discount of up to 10%.
+     excess/total:800
+     followupIntended:
+     headline/name:Real Pay As You Drive
+     leadfeedinfo:Compare TheMarket||0755254545||MAZD12EP||QLD
+     leadNo:101493735
+     openingHours:Mon – Fri (8am – 7pm EST) and Sat (9am-5pm EST)
+     productDes:Real Pay As You Drive
+     productId:REIN-01-01
+     quoteUrl:https://quotesit.realinsurance.com.au/car/ls/comparethemarket?t=4o2hhcSPmcq2a%2fGZ3%2ftYQM4B9wMXcQeunYgfdC5JmIA8%3dY&n=101493735&p=PAYD&utm_source=comparethemarket&utm_medium=referral&utm_campaign=websale
+     telNo:1300 301 918
+     validateDate/display:22 October 2017
+     validateDate/normal:2017-10-22
+     brandCode:REIN
+     discountOffer:This price includes a discount of up to 10%.
+     excess/total:800
+     followupIntended:
+     headline/name:Comprehensive Car Insurance
+     leadfeedinfo:Compare TheMarket||0755254545||MAZD12EP||QLD
+     leadNo:101493735
+     openingHours:Mon – Fri (8am – 7pm EST) and Sat (9am-5pm EST)
+     productDes:Comprehensive Car Insurance
+     productId:REIN-01-02
+     quoteUrl:https://quotesit.realinsurance.com.au/car/ls/comparethemarket?t=4o2hhcSPmcq2a%2fGZ3%2ftYQM4B9wMXcQeunYgfdC5JmIA8%3dY&n=101493735&p=COMP&utm_source=comparethemarket&utm_medium=referral&utm_campaign=websale
+     telNo:1300 301 918
+     validateDate/display:22 October 2017
+     validateDate/normal:2017-10-22
+     brandCode:VIRG
+     discountOffer:<b>Receive 10,000 Velocity Frequent Flyer Points, plus price includes 15%  discount.</b>
+     excess/total:800
+     followupIntended:Y
+     headline/name:Virgin Car Insurance Price Saver
+     leadfeedinfo:Compare TheMarket||0755254545||MAZD12EP||QLD
+     leadNo:W7I221825
+     openingHours:Monday - Friday 8:00am - 8:00pm EST, Sat 8:00am - 5:00pm EST
+     productDes:Virgin Car Insurance Price Saver
+     productId:VIRG-05-17
+     quoteUrl:https://nxq-virgin.disconline.com.au/car/aggregator.jsp?hPID=PCRQSP&hSty=VIRG&afnCde=VIRG&undCpy=05&undPrd=17&ledNo=W7I221825&LinkId=9601&CgpCde=&CenCde=&vdn=1740&addExs=4&ptnId=CTM0000003&srcId=0000000004&hSty=VIRG
+     telNo:1800 010 414
+     validateDate/display:22 October 2017
+     validateDate/normal:2017-10-22
+     brandCode:WOOL
+     discountOffer:This price includes a discount of up to 10% when you purchase a policy online.
+     excess/total:800
+     followupIntended:
+     headline/name:Woolworths Drive Less Pay Less
+     leadfeedinfo:Compare TheMarket||0755254545||MAZD12EP||QLD
+     leadNo:101320384
+     openingHours:Mon – Fri (8am – 8pm EST) and Sat (9am-5pm EST)
+     productDes:Woolworths Drive Less Pay Less
+     productId:WOOL-01-01
+     quoteUrl:https://wowcarsit.realinsurance.com.au/car/ls/comparethemarket?t=8LRJqlOyMdT4YvHlSfZpgqUEO0IFrja2n5Lg1wIrwXUc%3dO&n=101320384&p=PAYD&utm_source=comparethemarket&utm_medium=referral&utm_campaign=websale
+     telNo:1300 782 182
+     validateDate/display:22 October 2017
+     validateDate/normal:2017-10-22
+     brandCode:WOOL
+     discountOffer:If you’re 25 or over and our quote is not cheaper than your current renewal notice we’ll beat it!
+     excess/total:800
+     followupIntended:
+     headline/name:Woolworths Comprehensive
+     leadfeedinfo:Compare TheMarket||0755254545||MAZD12EP||QLD
+     leadNo:101320384
+     openingHours:Mon – Fri (8am – 8pm EST) and Sat (9am-5pm EST)
+     productDes:Woolworths Comprehensive
+     productId:WOOL-01-02
+     quoteUrl:https://wowcarsit.realinsurance.com.au/car/ls/comparethemarket?t=8LRJqlOyMdT4YvHlSfZpgqUEO0IFrja2n5Lg1wIrwXUc%3dO&n=101320384&p=COMP&utm_source=comparethemarket&utm_medium=referral&utm_campaign=websale
+     telNo:1300 782 182
+     validateDate/display:22 October 2017
+     validateDate/normal:2017-10-22
+
+     */
 
     /**
      * parametersprinted:verificationToken:[Ljava.lang.String;@5b6a53e3
