@@ -83,7 +83,7 @@ public class EmailController {
             EmailResponse emailResponse = client.post(RestSettings.<EmailRequest>builder().request(emailRequest).response(EmailResponse.class)
                     .responseType(MediaType.APPLICATION_JSON).header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                     .url(url)
-                    .timeout(60).retryAttempts(2).build()).observeOn(Schedulers.io()).toBlocking().first();
+                    .timeout(30000).retryAttempts(2).build()).observeOn(Schedulers.io()).toBlocking().first();
             LOGGER.info("Email response from marketing automation service" + emailResponse.getSuccess() + emailResponse.getMessage());
         }
         catch(Exception e){
