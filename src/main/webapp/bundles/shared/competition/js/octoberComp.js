@@ -55,13 +55,15 @@
     if ('ontouchstart' in window) {
         /* cache dom references */ 
         var $body = $('body'); 
-
+        
         /* bind events */
+        
+        var inputTypes = 'input[type=tel], input[type=number], input[type=text], select';
         $(document)
-        .on('focus', 'input[type=number], input[type=text]', function() {
+        .on('focus touchstart', inputTypes, function() {
             $body.addClass('fixfixed');
         })
-        .on('blur', 'input', function() {
+        .on('blur touchend', inputTypes, function() {
             $body.removeClass('fixfixed');
         });
     }
