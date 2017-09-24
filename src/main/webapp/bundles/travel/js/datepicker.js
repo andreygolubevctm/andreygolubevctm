@@ -25,6 +25,7 @@
       onChange: function(selectedDates, dateStr, instance) {
         display.departure.value = dateStr;
         elements.hiddenDeparture.value = dateStr;
+        removeValidationErrors(instance);
       },
     	onClose: function(selectedDates, dateStr) {
         display.departure.classList.remove('dp__input__item--active');
@@ -55,6 +56,7 @@
           departurePicker.setDate(dates[0], true);
           display.returned.value = formatDate(dates[1]);
           elements.hiddenReturned.value = formatDate(dates[1]);
+          removeValidationErrors(instance);
         }
       },
       onClose: function() {
@@ -71,6 +73,10 @@
       return day + '/' + month + '/' + year;
     }
     return '';
+  }
+  
+  function removeValidationErrors(target) {
+    
   }
 
   function init() {
