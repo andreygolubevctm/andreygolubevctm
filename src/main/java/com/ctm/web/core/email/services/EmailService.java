@@ -27,7 +27,6 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
@@ -96,7 +95,7 @@ public class EmailService {
      * @param transactionId
      */
     @Deprecated
-    public void sendJsp(HttpServletRequest request, EmailMode mode,
+	public void sendJsp(HttpServletRequest request, EmailMode mode,
 						String emailAddress, long transactionId) throws SendEmailException {
         init(request.getServletContext());
         this.send( request,  mode,emailAddress,  transactionId);
