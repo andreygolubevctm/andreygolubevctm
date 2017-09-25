@@ -21,6 +21,27 @@
       border: 1px solid @theme-secondary;
       background-color: transparent;
       color: @theme-secondary;
+
+      &:before {
+        position: absolute;
+        width: 0;
+        height: 0;
+        bottom: -9px;
+        left: 50%;
+        content: '';
+        margin-left: -@sortbar-arrow-width;
+        border-color: transparent;
+        border-style: solid;
+        border-width: 0 @sortbar-arrow-width @sortbar-arrow-width;
+        border-bottom-color: @theme-light;
+      }
+    }
+    .clt-trip-filter {
+      .icon-angle-down {
+        font-size: 20px;
+        margin-left: 5px;
+        color: @theme-tertiary;
+      }
     }
   }
 

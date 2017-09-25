@@ -247,11 +247,11 @@
 		}
 		out += '<div class="col-xs-2 clt-trip-filter">';
 		out += 		'<div class="col-xs-12"><b>Excess up to</b></div>';
-		out +=		'<div class="col-xs-12">$150</div>';
+		out +=		'<div class="col-xs-12">$150 <i class="icon icon-angle-down"></i></div>';
 		out += '</div>';
         out += '<div class="col-xs-2 clt-trip-filter">';
         out += 		'<div class="col-xs-12">&nbsp;</div>';
-        out +=		'<div class="col-xs-12">More filters</div>';
+        out +=		'<div class="col-xs-12">More filters <i class="icon icon-angle-down"></i></div>';
         out += '</div>';
 
 		$currentTabContainer.empty().html(out);
