@@ -14,6 +14,7 @@ import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.SessionDataService;
 import com.ctm.web.core.services.SettingsService;
+import com.ctm.web.core.utils.RequestUtils;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.email.health.HealthModelTranslator;
 import com.ctm.web.factory.EmailServiceFactory;
@@ -61,12 +62,16 @@ public class EmailController {
             SessionData sessionData = sessionDataService.getSessionDataFromSession(request);
             EmailRequest emailRequest = new EmailRequest();
 
-            String transactionId = request.getParameter("transactionId");
+            //String transactionId = request.getParameter("transactionId");
+            Long transactionId = RequestUtils.getTransactionIdFromRequest(request);
             Data data = sessionData.getSessionDataForTransactionId(transactionId);
             emailRequest.setFirstName(request.getParameter("name"));
             emailRequest.setAddress(request.getParameter("address"));
-            emailRequest.setTransactionId(transactionId);
+            emailRequest.setTransactionId(transactionId.toString());
             emailRequest.setBrand(brand);
+            List<String> quoteRefs = new ArrayList<>();
+            quoteRefs.add(transactionId.toString());
+            emailRequest.setQuoteRef(quoteRefs);
 
             if(VerticalType.HEALTH == VerticalType.valueOf(verticalCode)){
                 healthModelTranslator.setHealthFields(emailRequest, request, data);
