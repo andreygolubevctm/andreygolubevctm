@@ -16,7 +16,14 @@
     <content:get key="websiteTermsUrlConfig"/>
 </c:set>
 
-<c:set var="optInText"><content:get key="optInText" /></c:set>
+<c:choose>
+	<c:when test="${octoberComp}">
+    <c:set var="optInText"><content:get key="octoberCompOptInText" /></c:set>
+	</c:when>
+	<c:otherwise>
+    <c:set var="optInText"><content:get key="optInText" /></c:set>
+  </c:otherwise>
+</c:choose>
 
 <c:set var="websiteTermConfigPlaceHolder">${pageSettings.getSetting(websiteTermConfigToUse)}</c:set>
 <c:set var="privacyStmtPlaceHolder"><form_v1:link_privacy_statement /></c:set>
