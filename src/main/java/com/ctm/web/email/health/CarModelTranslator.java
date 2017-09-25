@@ -31,12 +31,16 @@ public class CarModelTranslator {
         } );
         emailRequest.setProvider(providerName);
         emailRequest.setProviderPhoneNumber(providerPhoneNumber);
-        String email = emailUtils.getParamSafely(data,  "/quote/contact/email");
+        String email = getEmail(data);
         if(!StringUtils.isBlank(email)) emailRequest.setEmailAddress(email);
     }
 
     private List<String> getAllResultProperties(List<ResultProperty> resultProperties, String property){
         return resultProperties.stream().filter(resultProperty -> resultProperty.getProperty().equals(property))
                 .map(resultProperty -> resultProperty.getValue()).collect(Collectors.toList());
+    }
+
+    public String getEmail(Data data){
+        return emailUtils.getParamSafely(data,  "/contact/email");
     }
 }

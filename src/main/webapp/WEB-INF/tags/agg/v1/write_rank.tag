@@ -192,7 +192,7 @@
 		<c:when test="${pageSettings.getVerticalCode() == 'car'}">
 			<%-- Attempt to send email only once and only if not call centre user MUST BE AT LEAST 5 products --%>
 			<c:if test="${empty authenticatedData.login.user.uid and not empty data.quote.contact.email && empty data.userData.emailSent}">
-				<agg_v1:email_send brand="${pageSettings.getBrandCode()}" vertical="${pageSettings.getVerticalCode()}" email="${data.quote.contact.email}" mode="bestprice" tmpl="${pageSettings.getVerticalCode()}" />
+				<%--<agg_v1:email_send brand="${pageSettings.getBrandCode()}" vertical="${pageSettings.getVerticalCode()}" email="${data.quote.contact.email}" mode="bestprice" tmpl="${pageSettings.getVerticalCode()}" />--%>
 			</c:if>
 			<c:if test="${empty data.quote.contact.email}">
 				${logger.error("BPEMAIL Contact email address empty: {} {}", log:kv('transactionId', transactionId), log:kv('verticalType', pageSettings.getVerticalCode()))}

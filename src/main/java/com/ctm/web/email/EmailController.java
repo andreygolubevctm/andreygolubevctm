@@ -12,6 +12,7 @@ import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.SessionDataService;
 import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.core.web.go.Data;
+import com.ctm.web.email.health.CarModelTranslator;
 import com.ctm.web.email.health.HealthModelTranslator;
 import com.ctm.web.factory.EmailServiceFactory;
 import com.ctm.web.health.email.mapping.HealthEmailDetailMappings;
@@ -55,6 +56,8 @@ public class EmailController {
     private HealthModelTranslator healthModelTranslator;
     @Autowired
     protected IPAddressHandler ipAddressHandler;
+    @Autowired
+    private CarModelTranslator carModelTranslator;
 
     @RequestMapping("/sendEmail")
     public void sendEmail(HttpServletRequest request, HttpServletResponse response){
@@ -62,7 +65,7 @@ public class EmailController {
             String dataXml = request.getParameter("data");
             String verticalCode = emailUtils.getParamFromXml(dataXml, "verticalCode", "/current/");
             String brand = emailUtils.getParamFromXml(dataXml, "brandCode", "/current/");
-            if(VerticalType.HEALTH != VerticalType.valueOf(verticalCode)) return;
+            if(VerticalType.HEALTH != VerticalType.valueOf(verticalCode) && VerticalType.CAR != VerticalType.valueOf(verticalCode)) return;
             SessionData sessionData = sessionDataService.getSessionDataFromSession(request);
             EmailRequest emailRequest = new EmailRequest();
 
@@ -76,17 +79,17 @@ public class EmailController {
             String emailAddress = null;
             if(VerticalType.HEALTH == VerticalType.valueOf(verticalCode)) {
                 healthModelTranslator.setHealthFields(emailRequest, request, data);
-                emailAddress = healthModelTranslator.getEmail(emailRequest,data);
+                emailAddress = healthModelTranslator.getEmail(data);
             }
-           /* if(VerticalType.CAR == VerticalType.valueOf(verticalCode)) {
-                setCarFields(emailRequest,transactionId,data);
-                emailAddress = healthModelTranslator.getEmail(emailRequest,data,verticalCode);
-            }*/
+            if(VerticalType.CAR == VerticalType.valueOf(verticalCode)) {
+                carModelTranslator.setCarFields(emailRequest,transactionId,data);
+                emailAddress = carModelTranslator.getEmail(data);
+            }
             //request.getParameterMap().forEach((s, strings) -> System.out.println("parametersprinted:" + s + ":" + strings));
             EmailMaster emailDetails = new EmailMaster();
             emailDetails.setEmailAddress(emailAddress);
             emailDetails.setSource("QUOTE");
-            OptIn optIn = healthModelTranslator.getOptIn(emailRequest,data);
+            OptIn optIn = healthModelTranslator.getOptIn(data);
             emailDetails.setOptedInMarketing(optIn == OptIn.Y, verticalCode);
             EmailDetailsService emailDetailsService = EmailServiceFactory.createEmailDetailsService(SettingsService.getPageSettingsForPage(request),data, Vertical.VerticalType.HEALTH, new HealthEmailDetailMappings());
             EmailMaster emailMaster = emailDetailsService.handleReadAndWriteEmailDetails(Long.parseLong(transactionId), emailDetails, "ONLINE",  ipAddressHandler.getIPAddress(request));
@@ -124,6 +127,7 @@ public class EmailController {
 
         }
         catch(Exception e){
+            e.printStackTrace();
             LOGGER.error("Exception: " + e.getMessage());
         }
     }

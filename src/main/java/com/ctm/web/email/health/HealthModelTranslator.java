@@ -68,10 +68,10 @@ public class HealthModelTranslator {
     }
 
     private void setDataFields(EmailRequest emailRequest, Data data){
-        String email = getEmail(emailRequest,data);
+        String email = getEmail(data);
         String firstName = emailUtils.getParamSafely(data,vertical + "/contactDetails/name");
         String fullAddress = emailUtils.getParamSafely(data,vertical + "/application/address/fullAddress");
-        emailRequest.setOptIn(getOptIn(emailRequest, data));
+        emailRequest.setOptIn(getOptIn(data));
         String phoneNumber = emailUtils.getParamSafely(data,vertical + "/contactDetails/contactNumber/mobile");
         emailRequest.setPhoneNumber(phoneNumber);
 
@@ -80,11 +80,11 @@ public class HealthModelTranslator {
         emailRequest.setEmailAddress(email);
     }
 
-    public String getEmail(EmailRequest emailRequest, Data data){
+    public String getEmail(Data data){
         return emailUtils.getParamSafely(data,vertical + "/contactDetails/email");
     }
 
-    public OptIn getOptIn(EmailRequest emailRequest,Data data){
+    public OptIn getOptIn(Data data){
         String optIn = emailUtils.getParamSafely(data,vertical + "/contactDetails/optInEmail");
         if(optIn!=null){
             return OptIn.valueOf(optIn);
