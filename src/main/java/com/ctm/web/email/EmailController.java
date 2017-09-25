@@ -71,7 +71,7 @@ public class EmailController {
             emailRequest.setBrand(brand);
             List<String> quoteRefs = new ArrayList<>();
             quoteRefs.add(transactionId.toString());
-            emailRequest.setQuoteRef(quoteRefs);
+            emailRequest.setQuoteRefs(quoteRefs);
 
             if(VerticalType.HEALTH == VerticalType.valueOf(verticalCode)){
                 healthModelTranslator.setHealthFields(emailRequest, request, data);
@@ -113,7 +113,7 @@ public class EmailController {
         String applyUrl = urlService.getApplyUrl(emailMaster,emailParameters,otherEmailParameters);
         List<String> applyUrls = new ArrayList<>();
         applyUrls.add(applyUrl);
-        emailRequest.setApplyUrl(applyUrls);
+        emailRequest.setApplyUrls(applyUrls);
         emailRequest.setUnsubscribeURL(unsubscribeUrl);
     }
 }

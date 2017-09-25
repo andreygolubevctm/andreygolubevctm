@@ -15,99 +15,59 @@ import java.util.Optional;
  * Created by akhurana on 8/09/17.
  */
 public class EmailRequest {
-    private String partnersQuoted;
-    private String prospectID;
-    private List<String> coverTypes;
-    private List<String> provider;
-    private List<String> premiumLabel;
-    private OptIn optIn;
-    private List<String> providerPhoneNumber;
+    private String address;
+    private List<String> applyUrls;
+    private String brand;
     private String callCentreHours;
     private String callCentreHoursText;
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime commencementDate;
-    private List<String> applyUrl;
+    private List<String> coverTypes;
     private String emailAddress;
-    private String brand;
-    private List<String> premium;
-    private List<String> quoteRef;
-    private String lastName;
-    private String subscriberKey;
+    private OptIn optIn;
     private String firstName;
-    private String premiumFrequency;
-    private String transactionId;
-    private String address;
-    private String phoneNumber;
-    private List<String> providerCode;
-    private String unsubscribeURL;
     private String gaClientID;
-    private List<String> providerSpecialOffer;
+    private String lastName;
+    private String partnersQuoted;
+    private String phoneNumber;
+    private String premiumFrequency;
+    private List<String> premiumLabels;
+    private List<String> premiums;
+    private List<String> providerCodes;
+    private List<String> providerPhoneNumbers;
+    private List<String> providerSpecialOffers;
+    private String prospectID;
+    private List<String> providers;
+    private List<String> quoteRefs;
+    private String subscriberKey;
+    private String transactionId;
+    private String unsubscribeURL;
 
     private HealthEmailModel healthEmailModel;
 
-    public HealthEmailModel getHealthEmailModel() {
-        return healthEmailModel;
+    public String getAddress() {
+        return address;
     }
 
-    public void setHealthEmailModel(HealthEmailModel healthEmailModel) {
-        this.healthEmailModel = healthEmailModel;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public String getPartnersQuoted() {
-        return partnersQuoted;
+    public List<String> getApplyUrls() {
+        return applyUrls;
     }
 
-    public void setPartnersQuoted(String partnersQuoted) {
-        this.partnersQuoted = partnersQuoted;
+    public void setApplyUrls(List<String> applyUrls) {
+        this.applyUrls = applyUrls;
     }
 
-    public String getProspectID() {
-        return prospectID;
+    public String getBrand() {
+        return brand;
     }
 
-    public void setProspectID(String prospectID) {
-        this.prospectID = prospectID;
-    }
-
-    public List<String> getCoverTypes() {
-        return coverTypes;
-    }
-
-    public void setCoverTypes(List<String> coverTypes) {
-        this.coverTypes = coverTypes;
-    }
-
-    public List<String> getProvider() {
-        return provider;
-    }
-
-    public void setProvider(List<String> provider) {
-        this.provider = provider;
-    }
-
-    public List<String> getPremiumLabel() {
-        return premiumLabel;
-    }
-
-    public void setPremiumLabel(List<String> premiumLabel) {
-        this.premiumLabel = premiumLabel;
-    }
-
-    public OptIn getOptIn() {
-        return optIn;
-    }
-
-    public void setOptIn(OptIn optIn) {
-        this.optIn = optIn;
-    }
-
-    public List<String> getProviderPhoneNumber() {
-        return providerPhoneNumber;
-    }
-
-    public void setProviderPhoneNumber(List<String> providerPhoneNumber) {
-        this.providerPhoneNumber = providerPhoneNumber;
+    public void setBrand(String brand) {
+        this.brand = brand;
     }
 
     public String getCallCentreHours() {
@@ -134,12 +94,12 @@ public class EmailRequest {
         this.commencementDate = commencementDate;
     }
 
-    public List<String> getApplyUrl() {
-        return applyUrl;
+    public List<String> getCoverTypes() {
+        return coverTypes;
     }
 
-    public void setApplyUrl(List<String> applyUrl) {
-        this.applyUrl = applyUrl;
+    public void setCoverTypes(List<String> coverTypes) {
+        this.coverTypes = coverTypes;
     }
 
     public String getEmailAddress() {
@@ -150,44 +110,12 @@ public class EmailRequest {
         this.emailAddress = emailAddress;
     }
 
-    public String getBrand() {
-        return brand;
+    public OptIn getOptIn() {
+        return optIn;
     }
 
-    public void setBrand(String brand) {
-        this.brand = brand;
-    }
-
-    public List<String> getPremium() {
-        return premium;
-    }
-
-    public void setPremium(List<String> premium) {
-        this.premium = premium;
-    }
-
-    public List<String> getQuoteRef() {
-        return quoteRef;
-    }
-
-    public void setQuoteRef(List<String> quoteRef) {
-        this.quoteRef = quoteRef;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getSubscriberKey() {
-        return subscriberKey;
-    }
-
-    public void setSubscriberKey(String subscriberKey) {
-        this.subscriberKey = subscriberKey;
+    public void setOptIn(OptIn optIn) {
+        this.optIn = optIn;
     }
 
     public String getFirstName() {
@@ -198,28 +126,28 @@ public class EmailRequest {
         this.firstName = firstName;
     }
 
-    public String getPremiumFrequency() {
-        return premiumFrequency;
+    public String getGaClientID() {
+        return gaClientID;
     }
 
-    public void setPremiumFrequency(String premiumFrequency) {
-        this.premiumFrequency = premiumFrequency;
+    public void setGaClientID(String gaClientID) {
+        this.gaClientID = gaClientID;
     }
 
-    public String getTransactionId() {
-        return transactionId;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setTransactionId(String transactionId) {
-        this.transactionId = transactionId;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
-    public String getAddress() {
-        return address;
+    public String getPartnersQuoted() {
+        return partnersQuoted;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setPartnersQuoted(String partnersQuoted) {
+        this.partnersQuoted = partnersQuoted;
     }
 
     public String getPhoneNumber() {
@@ -230,12 +158,92 @@ public class EmailRequest {
         this.phoneNumber = phoneNumber;
     }
 
-    public List<String> getProviderCode() {
-        return providerCode;
+    public String getPremiumFrequency() {
+        return premiumFrequency;
     }
 
-    public void setProviderCode(List<String> providerCode) {
-        this.providerCode = providerCode;
+    public void setPremiumFrequency(String premiumFrequency) {
+        this.premiumFrequency = premiumFrequency;
+    }
+
+    public List<String> getPremiumLabels() {
+        return premiumLabels;
+    }
+
+    public void setPremiumLabels(List<String> premiumLabels) {
+        this.premiumLabels = premiumLabels;
+    }
+
+    public List<String> getPremiums() {
+        return premiums;
+    }
+
+    public void setPremiums(List<String> premiums) {
+        this.premiums = premiums;
+    }
+
+    public List<String> getProviderCodes() {
+        return providerCodes;
+    }
+
+    public void setProviderCodes(List<String> providerCodes) {
+        this.providerCodes = providerCodes;
+    }
+
+    public List<String> getProviderPhoneNumbers() {
+        return providerPhoneNumbers;
+    }
+
+    public void setProviderPhoneNumbers(List<String> providerPhoneNumbers) {
+        this.providerPhoneNumbers = providerPhoneNumbers;
+    }
+
+    public List<String> getProviderSpecialOffers() {
+        return providerSpecialOffers;
+    }
+
+    public void setProviderSpecialOffers(List<String> providerSpecialOffers) {
+        this.providerSpecialOffers = providerSpecialOffers;
+    }
+
+    public String getProspectID() {
+        return prospectID;
+    }
+
+    public void setProspectID(String prospectID) {
+        this.prospectID = prospectID;
+    }
+
+    public List<String> getProviders() {
+        return providers;
+    }
+
+    public void setProviders(List<String> providers) {
+        this.providers = providers;
+    }
+
+    public List<String> getQuoteRefs() {
+        return quoteRefs;
+    }
+
+    public void setQuoteRefs(List<String> quoteRefs) {
+        this.quoteRefs = quoteRefs;
+    }
+
+    public String getSubscriberKey() {
+        return subscriberKey;
+    }
+
+    public void setSubscriberKey(String subscriberKey) {
+        this.subscriberKey = subscriberKey;
+    }
+
+    public String getTransactionId() {
+        return transactionId;
+    }
+
+    public void setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
     }
 
     public String getUnsubscribeURL() {
@@ -246,20 +254,11 @@ public class EmailRequest {
         this.unsubscribeURL = unsubscribeURL;
     }
 
-    public String getGaClientID() {
-        return gaClientID;
+    public HealthEmailModel getHealthEmailModel() {
+        return healthEmailModel;
     }
 
-    public void setGaClientID(String gaClientID) {
-        this.gaClientID = gaClientID;
+    public void setHealthEmailModel(HealthEmailModel healthEmailModel) {
+        this.healthEmailModel = healthEmailModel;
     }
-
-    public List<String> getProviderSpecialOffer() {
-        return providerSpecialOffer;
-    }
-
-    public void setProviderSpecialOffer(List<String> providerSpecialOffer) {
-        this.providerSpecialOffer = providerSpecialOffer;
-    }
-
 }
