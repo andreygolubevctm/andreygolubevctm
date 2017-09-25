@@ -9,8 +9,8 @@
     <div class="row">
         <div class="col-xs-6 col-sm-5">
             <field_v2:checkbox
-                    xpath="travel/snowSports"
-                    value="SnowSports"
+                    xpath="travel/activity/snowSports"
+                    value="snowSports"
                     required="false"
                     title="Snow sports"
                     label="true" />
@@ -22,8 +22,8 @@
     <div class="row">
         <div class="col-xs-6 col-sm-5">
             <field_v2:checkbox
-                    xpath="travel/cruising"
-                    value="Cruising"
+                    xpath="travel/activity/cruising"
+                    value="cruising"
                     required="false"
                     title="Cruising"
                     label="true" />
@@ -35,8 +35,8 @@
     <div class="row">
         <div class="col-xs-6 col-sm-5">
             <field_v2:checkbox
-                    xpath="travel/adventureSports"
-                    value="AdventureSports"
+                    xpath="travel/activity/adventureSports"
+                    value="adventureSports"
                     required="false"
                     title="Adventure Sports"
                     label="true" />
