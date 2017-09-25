@@ -1,5 +1,16 @@
 @light: #70d195;
+@errorBg: #ffefef;
 
+
+.dp {
+  .error-field {
+    position: absolute;
+    bottom: -50px;
+  }
+  .row-content {
+    position: relative;
+  }
+}
 
 .dp__input__header {
   font-size: 14px;
@@ -18,6 +29,10 @@
   float: left;
   width: 100%;
   padding: 10px;
+  &.has-error {
+    border-color: red;
+    background-color: @errorBg;
+  }
 }
 
 .dp__input__item--active {

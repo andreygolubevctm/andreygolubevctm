@@ -24,9 +24,15 @@
       },
       onChange: function(selectedDates, dateStr, instance) {
         display.departure.value = dateStr;
-        elements.hiddenDeparture.value = dateStr;
         removeValidationErrors(instance);
+        setValueToHiddenFields(
+          {
+            name: 'fromDate',
+            dateString: dateStr
+          }
+        );
       },
+
     	onClose: function(selectedDates, dateStr) {
         display.departure.classList.remove('dp__input__item--active');
         var dates = returnPicker.selectedDates;
@@ -44,8 +50,11 @@
       dateFormat: "d/m/y",
     	mode: 'range',
       minDate: 'today',
-      onOpen: function() {
+      onOpen: function(selectedDates, dateStr, instance) {
         display.returned.classList.add('dp__input__item--active');
+        if (selectedDates.length === 0 && departurePicker.selectedDates.length === 1) {
+          returnPicker.setDate(elements.departure.value, true);
+        }
       },
       onChange: function(selectedDates, dateStr, instance) {
         if (instance.selectedDates.length > 1) {
@@ -56,6 +65,12 @@
           departurePicker.setDate(dates[0], true);
           display.returned.value = formatDate(dates[1]);
           elements.hiddenReturned.value = formatDate(dates[1]);
+          setValueToHiddenFields(
+            {
+              name: 'toDate',
+              dateString: elements.returned.value
+            }
+          );
           removeValidationErrors(instance);
         }
       },
@@ -76,12 +91,40 @@
   }
   
   function removeValidationErrors(target) {
-    
+    var errorElement = document.getElementById(target.element.id + 'Display-error');
+    var inputElement = document.getElementById(target.element.id + 'Display');
+    if (errorElement && inputElement) {
+      errorElement.parentNode.removeChild(errorElement);
+      inputElement.classList.remove('has-error');
+    }
+  }
+  
+  function setValueToHiddenFields(target) {
+    var dateArray = target.dateString.split('/');
+    document.getElementById('travel_dates_' + target.name).value = target.dateString;
+    if (dateArray.length === 3) {
+      document.getElementById('travel_dates_' + target.name + 'InputD').value = dateArray[0];
+      document.getElementById('travel_dates_' + target.name + 'InputM').value = dateArray[1];
+      document.getElementById('travel_dates_' + target.name + 'InputY').value = (dateArray[2].length === 4 ? dateArray[2] : '20' + dateArray[2]);
+    }
+  }
+  
+  function preloadFields() {
+    var fromDate = document.getElementById('travel_dates_fromDate');
+    var toDate = document.getElementById('travel_dates_toDate');
+    var hasValues = toDate.value.length > 0 && fromDate.value.length > 0;
+    if (hasValues) {
+      setValueToHiddenFields({name: 'fromDate', dateString: fromDate.value });
+      setValueToHiddenFields({name: 'toDate', dateString: toDate.value });
+      display.departure.value = fromDate.value;
+      display.returned.value = toDate.value;
+    }
   }
 
   function init() {
     departurePicker = flatpickr(elements.departure, options.departureOptions);
     returnPicker = flatpickr(elements.returned, options.returnOptions);
+    preloadFields();
   }
 
 meerkat.modules.register("travelDatepicker", {
