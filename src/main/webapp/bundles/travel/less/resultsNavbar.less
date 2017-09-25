@@ -82,3 +82,31 @@
     }
   }
 }
+
+// SM breakpoints
+@media screen and (@md) {
+  .sortbar-children {
+    .active {
+      [data-sort-dir='asc']:before {
+        bottom: 15px;
+      }
+      [data-sort-dir='desc']:before {
+        bottom: 15px;
+      }
+    }
+  }
+}
+
+// LG breakpoints
+@media screen and (@lg) {
+  .sortbar-children {
+    .active {
+      [data-sort-dir='asc']:before {
+        bottom: 25px;
+      }
+      [data-sort-dir='desc']:before {
+        bottom: 25px;
+      }
+    }
+  }
+}
