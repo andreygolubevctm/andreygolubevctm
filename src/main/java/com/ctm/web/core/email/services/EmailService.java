@@ -95,8 +95,8 @@ public class EmailService {
      * @param transactionId
      */
     @Deprecated
-	public void sendJsp(HttpServletRequest request, EmailMode mode,
-						String emailAddress, long transactionId) throws SendEmailException {
+    public void sendJsp(HttpServletRequest request, EmailMode mode,
+                     String emailAddress, long transactionId) throws SendEmailException {
         init(request.getServletContext());
         this.send( request,  mode,emailAddress,  transactionId);
 
