@@ -2,13 +2,19 @@ package com.ctm.web.email;
 
 import com.ctm.httpclient.RestSettings;
 import com.ctm.interfaces.common.types.VerticalType;
-import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.email.services.EmailDetailsService;
+import com.ctm.web.core.email.services.EmailUrlService;
+import com.ctm.web.core.model.EmailMaster;
 import com.ctm.web.core.model.session.SessionData;
-import com.ctm.web.core.results.model.ResultProperty;
+import com.ctm.web.core.model.settings.PageSettings;
+import com.ctm.web.core.model.settings.Vertical;
+import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.SessionDataService;
+import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.email.health.HealthModelTranslator;
-import org.apache.commons.lang3.StringUtils;
+import com.ctm.web.factory.EmailServiceFactory;
+import com.ctm.web.health.email.mapping.HealthEmailDetailMappings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +25,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import com.ctm.httpclient.Client;
 import rx.schedulers.Schedulers;
@@ -44,12 +53,16 @@ public class EmailController {
     private EmailUtils emailUtils;
     @Autowired
     private HealthModelTranslator healthModelTranslator;
+    @Autowired
+    protected IPAddressHandler ipAddressHandler;
 
     @RequestMapping("/sendEmail")
     public void sendEmail(HttpServletRequest request, HttpServletResponse response){
         try {
             String dataXml = request.getParameter("data");
             String verticalCode = emailUtils.getParamFromXml(dataXml, "verticalCode", "/current/");
+            String brand = emailUtils.getParamFromXml(dataXml, "brandCode", "/current/");
+            if(VerticalType.HEALTH != VerticalType.valueOf(verticalCode)) return;
             SessionData sessionData = sessionDataService.getSessionDataFromSession(request);
             EmailRequest emailRequest = new EmailRequest();
 
@@ -59,43 +72,60 @@ public class EmailController {
             emailRequest.setAddress(request.getParameter("address"));
 
             emailRequest.setTransactionId(transactionId);
+
+            String emailAddress = null;
             if(VerticalType.HEALTH == VerticalType.valueOf(verticalCode)) {
                 healthModelTranslator.setHealthFields(emailRequest, request, data);
+                emailAddress = healthModelTranslator.getEmail(emailRequest,data);
             }
-            if(VerticalType.CAR == VerticalType.valueOf(verticalCode)) {
+           /* if(VerticalType.CAR == VerticalType.valueOf(verticalCode)) {
                 setCarFields(emailRequest,transactionId,data);
-            }
-            request.getParameterMap().forEach((s, strings) -> System.out.println("parametersprinted:" + s + ":" + strings));
+                emailAddress = healthModelTranslator.getEmail(emailRequest,data,verticalCode);
+            }*/
+            //request.getParameterMap().forEach((s, strings) -> System.out.println("parametersprinted:" + s + ":" + strings));
+            EmailMaster emailDetails = new EmailMaster();
+            emailDetails.setEmailAddress(emailAddress);
+            emailDetails.setSource("QUOTE");
+            OptIn optIn = healthModelTranslator.getOptIn(emailRequest,data);
+            emailDetails.setOptedInMarketing(optIn == OptIn.Y, verticalCode);
+            EmailDetailsService emailDetailsService = EmailServiceFactory.createEmailDetailsService(SettingsService.getPageSettingsForPage(request),data, Vertical.VerticalType.HEALTH, new HealthEmailDetailMappings());
+            EmailMaster emailMaster = emailDetailsService.handleReadAndWriteEmailDetails(Long.parseLong(transactionId), emailDetails, "ONLINE",  ipAddressHandler.getIPAddress(request));
+            String hashedEmail = emailMaster.getHashedEmail();
+
+            PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
+            Map<String, String> emailParameters = new HashMap<>();
+            Map<String, String> otherEmailParameters = new HashMap<>();
+            otherEmailParameters.put(EmailUrlService.CID, "em:cm:health:300994");
+            otherEmailParameters.put(EmailUrlService.ET_RID, "172883275");
+            otherEmailParameters.put(EmailUrlService.UTM_SOURCE, "health_quote_" + LocalDate.now().getYear());
+            otherEmailParameters.put(EmailUrlService.UTM_MEDIUM, "email");
+            otherEmailParameters.put(EmailUrlService.UTM_CAMPAIGN, "health_quote");
+            emailParameters.put(EmailUrlService.TRANSACTION_ID, transactionId);
+            emailParameters.put(EmailUrlService.HASHED_EMAIL, emailDetails.getHashedEmail());
+            emailParameters.put(EmailUrlService.STYLE_CODE_ID, Integer.toString(pageSettings.getBrandId()));
+            emailParameters.put(EmailUrlService.EMAIL_TOKEN_TYPE, "bestprice");
+            emailParameters.put(EmailUrlService.EMAIL_TOKEN_ACTION, "unsubscribe");
+            emailParameters.put(EmailUrlService.VERTICAL, "health");
+
+            EmailUrlService urlService = EmailServiceFactory.createEmailUrlService(pageSettings, pageSettings.getVertical().getType());
+            String unsubscribeUrl = urlService.getUnsubscribeUrl(emailParameters);
+            String applyUrl = urlService.getApplyUrl(emailMaster,emailParameters,otherEmailParameters);
+            List<String> applyUrls = new ArrayList<>();
+            applyUrls.add(applyUrl);
+            emailRequest.setApplyUrl(applyUrls);
+            emailRequest.setUnsubscribeURL(unsubscribeUrl);
+            emailRequest.setBrand(brand);
             LOGGER.info("Sending email request to marketing automation service" + url);
             EmailResponse emailResponse = client.post(RestSettings.<EmailRequest>builder().request(emailRequest).response(EmailResponse.class)
                     .responseType(MediaType.APPLICATION_JSON).header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                     .url(url)
                     .timeout(30000).retryAttempts(2).build()).observeOn(Schedulers.io()).toBlocking().first();
             LOGGER.info("Email response from marketing automation service" + emailResponse.getSuccess() + emailResponse.getMessage());
+
         }
         catch(Exception e){
             LOGGER.error("Exception: " + e.getMessage());
         }
-
-    }
-
-    private void setCarFields(EmailRequest emailRequest, String tranId, Data data) throws DaoException {
-        List<ResultProperty> resultsProperties =  emailUtils.getResultPropertiesForTransaction(tranId);
-
-        List<String> providerName = getAllResultProperties(resultsProperties, "productDes");
-        List<String> providerPhoneNumber = getAllResultProperties(resultsProperties, "telNo");
-        resultsProperties.forEach(resultProperty -> {
-            System.out.println("" + resultProperty.getProperty() + ":" +  resultProperty.getValue());
-        } );
-        emailRequest.setProvider(providerName);
-        emailRequest.setProviderPhoneNumber(providerPhoneNumber);
-        String email = emailUtils.getParamSafely(data,  "/quote/contact/email");
-        if(!StringUtils.isBlank(email)) emailRequest.setEmailAddress(email);
-    }
-
-    private List<String> getAllResultProperties(List<ResultProperty> resultProperties, String property){
-        return resultProperties.stream().filter(resultProperty -> resultProperty.getProperty().equals(property))
-                .map(resultProperty -> resultProperty.getValue()).collect(Collectors.toList());
     }
 
 

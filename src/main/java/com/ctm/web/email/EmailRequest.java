@@ -41,7 +41,7 @@ public class EmailRequest {
     private String phoneNumber;
     private List<String> providerCode;
     private String unsubscribeURL;
-    private String GaClientID;
+    private String gaClientID;
     private List<String> providerSpecialOffer;
 
     private HealthEmailModel healthEmailModel;
@@ -247,11 +247,11 @@ public class EmailRequest {
     }
 
     public String getGaClientID() {
-        return GaClientID;
+        return gaClientID;
     }
 
     public void setGaClientID(String gaClientID) {
-        GaClientID = gaClientID;
+        this.gaClientID = gaClientID;
     }
 
     public List<String> getProviderSpecialOffer() {
