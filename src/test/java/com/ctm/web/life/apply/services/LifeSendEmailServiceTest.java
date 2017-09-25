@@ -54,7 +54,7 @@ public class LifeSendEmailServiceTest {
         when(transactionDetailsDao.getTransactionDetailWhereXpathLike(transactionId, "%/emailSentBy")).thenReturn(Optional.of(existingDetails));
         lifeSendEmailService.sendEmail( transactionId,  emailAddress,  request);
         verify(emailService).send( request, EmailMode.BEST_PRICE,
-                emailAddress,  transactionId,null);
+                emailAddress,  transactionId);
 
     }
 
@@ -63,7 +63,7 @@ public class LifeSendEmailServiceTest {
         when(transactionDetailsDao.getTransactionDetailWhereXpathLike(transactionId, "%/emailSentBy")).thenReturn(Optional.empty());
         lifeSendEmailService.sendEmail( transactionId,  emailAddress,  request);
         verify(emailService).send( request, EmailMode.BEST_PRICE,
-                 emailAddress,  transactionId, null);
+                 emailAddress,  transactionId);
 
     }
 }

@@ -148,7 +148,7 @@
 				<%-- enums are not will handled in jsp --%>
 				<% request.setAttribute("BEST_PRICE", EmailMode.BEST_PRICE); %>
 				<c:catch var="error">
-					${emailService.sendJsp(pageContext.request, BEST_PRICE , data.travel.email, transactionId,null)}
+					${emailService.sendJsp(pageContext.request, BEST_PRICE , data.travel.email, transactionId)}
 				</c:catch>
 				<go:setData dataVar="data" value="true" xpath="userData/emailSent"/>
 				<%--
@@ -167,7 +167,7 @@
 				<%-- enums are not will handled in jsp --%>
 				<% request.setAttribute("BEST_PRICE", EmailMode.BEST_PRICE); %>
 				<c:catch var="error">
-					${emailService.sendJsp(pageContext.request, BEST_PRICE , data.health.contactDetails.email, transactionId, pageContext.response)}
+					${emailService.sendJsp(pageContext.request, BEST_PRICE , data.health.contactDetails.email, transactionId)}
 				</c:catch>
 				<go:setData dataVar="data" value="true" xpath="userData/emailSent"/>
 				<%--
