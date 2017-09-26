@@ -2,7 +2,6 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-
 <c:set var="fromBrochure" scope="request" value="${false}"/>
 <c:if test="${not empty param.cover || not empty param.situation  || not empty param.health_location}">
 	<c:set var="fromBrochure" scope="request" value="${true}"/>
@@ -53,6 +52,12 @@
 		<c:otherwise>
 			<c:out value="${param.action}"/>
 		</c:otherwise>
+	</c:choose>
+</c:set>
+<c:set var="reviewEdit">
+	<c:choose>
+		<c:when test="${not empty param.reviewedit}">true</c:when>
+		<c:otherwise>false</c:otherwise>
 	</c:choose>
 </c:set>
 <c:set var="defaultToHealthQuote"><content:get key="makeHealthQuoteMainJourney" /></c:set>
@@ -106,13 +111,17 @@
 
 <c:set var="openingHoursTimeZone"><content:get key="openingHoursTimeZone" /></c:set>
 
+<competition:octoberCompSettings />
 <health_v1:dual_pricing_settings />
 <health_v4:pyrr_campaign_settings />
+<agg_v1:remember_me_settings vertical="health" />
 {
+	octoberComp: <c:out value="${octoberComp}" />,
 	isCallCentreUser: <c:out value="${not empty callCentre}"/>,
 	isFromBrochureSite: <c:out value="${fromBrochure}"/>,
 	journeyStage: "<c:out value="${data['health/journey/stage']}"/>",
 	pageAction: '<c:out value="${pageAction}"/>',
+	reviewEdit: <c:out value="${reviewEdit}"/>,
 	previousTransactionId: "<c:out value="${data['current/previousTransactionId']}"/>",
 	isNewQuote: <c:out value="${isNewQuote eq true}" />,
 	productId: '<c:out value="${data.health.application.productId}" />',
@@ -188,5 +197,6 @@
 		phones : {${fund1800Numbers}}
 	}
 	</c:if>
-	,openingHoursTimeZone : '${openingHoursTimeZone}'
+	,openingHoursTimeZone : '${openingHoursTimeZone}',
+	isRememberMe: ${isRememberMe}
 }

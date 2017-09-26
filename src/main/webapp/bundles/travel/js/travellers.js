@@ -1,5 +1,5 @@
 (function ($, undefined) {
-	
+
 	var $elements = {
 		add: $('#plus'),
 		remove: $('.icon-exit'),
@@ -10,15 +10,17 @@
 		travelParty: $('.travel_party input'),
 		travelPartText: $('.traveler-age-label'),
 		hiddenInput: $('#travel_travellers_travellersAge'),
+		travelChildren: $('#travel_children'),
+		travelChildrenDropdown: $('#travel_childrenSelect')
 	};
-	
+
 	var travelText = {
 		S: 'The age of the travelling adult?',
 		C: 'The age of the travelling adults?',
 		F: 'The age of the travelling adults?',
 		G: 'The age of all adults travelling and the age of all children travelling in the group?'
 	};
-	
+
 	var state = {
 		travellers: 1,
 		selection: 'S',
@@ -31,17 +33,17 @@
 
 	var meerkat = window.meerkat,
 		max = $elements.numberOfTravellers.data('max');
-	
+
 	function _disableBtn() {
 		$elements.warning.show();
 		$elements.add.addClass('disabled');
 	}
-	
+
 	function setState(newState, callback) {
 		state = _.extend(state, newState);
 		if (typeof callback === 'function') callback();
 	}
-	
+
 	function getTemplate(index, canDelete, value) {
 		var val = value || '';
 		var className = canDelete ? 'col-lg-4' : 'col-lg-3';
@@ -51,7 +53,7 @@
 			(canDelete ? '<div class="exit-container"> <a href="javascript:;" class="icon-exit"></a> </div>' : '') + '</div></div>'
 		);
 	}
-	
+
 	function _renderCheckboxes() {
 		var container = $('.age-container');
 		var items = container.children().length;
@@ -66,7 +68,7 @@
 		_renderAddBtn();
 		_updateNumber(state.travellers);
 	}
-	
+
 	function _renderAddBtn() {
 		if (state.showAddBtn) {
 			$('#plus').show();
@@ -74,7 +76,7 @@
 			$('#plus').hide();
 		}
 	}
-	
+
 	function _removeExcess() {
 		var items = $('.age-container').children();
 		var lastItem = items.last();
@@ -83,11 +85,11 @@
 			_removeExcess();
 		}
 	}
-	
+
 	function _changeTravelText(travelParty) {
 		$elements.travelPartText.text(travelText[travelParty]);
 	}
-	
+
 	function _travelPartyChange(e, bypass) {
 		var travelParty = bypass || e.target.value;
 		if (travelParty !== state.selection) {
@@ -117,16 +119,16 @@
 		inputs.data('ruleRange', state.minAge + ',' + state.maxAge);
 		inputs.data('msgRange', 'Age must be between ' + ageLabel);
 	}
-	
+
 	function _enableBtn() {
 		$elements.warning.hide();
 		$elements.add.removeClass('disabled');
 	}
-		
+
 	function _updateNumber() {
 		$elements.numberOfTravellers.text(state.travellers + state.addedFields);
 	}
-	
+
 	function _add(e, value) {
 		var number = state.travellers + state.addedFields;
 		if (number < max) {
@@ -137,20 +139,20 @@
 			}
 		}
 	}
-	
+
 	function _remove(e) {
 		$(e.target).closest('.age-item').remove();
 		setState({ addedFields: state.addedFields - 1 });
 		_updateNumber();
 		_enableBtn();
 	}
-	
+
 	function _removeValidationError(e) {
 		if (e.target.value.length > 0 && $(e.target).prev().hasClass('error-field')) {
 			$(e.target).prev().remove();
 		}
 	}
-	
+
 	function mapValuesToInput() {
 		var inputVals = '';
 		$elements.container.find('input').each(function(index) {
@@ -165,18 +167,24 @@
 		setState({ hiddenValues: inputVals });
 		$elements.hiddenInput.val(inputVals);
 	}
-	
+
 	function prefillFields() {
 		var value = $elements.hiddenInput.val();
 		var selected = $('.travel_party input:checked').val();
-		if (value != null && value.length > 0 || selected) {
-			var arrayValues = value.split(/\s*,\s*/);
+
+		if (value != null && value.length > 0) {
+			var arrayValues = typeof JSON.parse(value) === 'object' ? JSON.parse(value) : [JSON.parse(value)];
 			setState({ hiddenValues: arrayValues });
-			_travelPartyChange(this, selected);
-			insertValues();
+
 		}
+
+		if (typeof selected !== 'undefined') {
+			_travelPartyChange(this, selected);
+
+		}
+		insertValues();
 	}
-	
+
 	function insertValues() {
 		values = state.hiddenValues;
 		for (var i = 0; values.length > i; i++) {
@@ -187,6 +195,9 @@
 				_add(null, values[i]);
 			}
 		}
+		if ($elements.travelChildren.val() > 0) {
+				$elements.travelChildrenDropdown.val($elements.travelChildren.val());
+		}
 	}
 
 	function _eventListeners() {
@@ -195,7 +206,7 @@
 		$(document).on('change', '.age-item input', _removeValidationError);
 		$elements.travelParty.on('change', _travelPartyChange);
 	}
-	
+
 	function init() {
 		_eventListeners();
 		prefillFields();

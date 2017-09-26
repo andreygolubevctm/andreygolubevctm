@@ -202,9 +202,7 @@
                         setFilterByExtrasBenefits();
                     }
                 }
-            }
-        },
-        benefitsSwitchModel = {
+            },
             "benefitsHospitalSwitch": {
                 name: 'health_benefits_filters_HospitalSwitch',
                 defaultValueSourceSelector: '#health_benefits_HospitalSwitch',
@@ -293,7 +291,7 @@
 
     function _getCheckedBenefitsFromFilters($container) {
         var array = [];
-        $container.find('input[type="checkbox"]:checked').map(function () {
+        $container.find('input[type="checkbox"]:checked:not([disabled])').map(function () {
             array.push(this.value);
         });
         return array;
@@ -334,7 +332,7 @@
             _placeFrequencyFilters();
             meerkat.modules.filters.initFilters(
                 settings,
-                meerkat.modules.splitTest.isActive(2) ? $.extend({}, model, benefitsSwitchModel) : model
+                model
             );
             applyEventListeners();
             eventSubscriptions();
@@ -366,16 +364,17 @@
             toggleFilterByContainer($('.filter-' + filter));
             toggleFilter($('.health-filter-' + filter), true);
 
-            if (meerkat.modules.splitTest.isActive(2)) {
-                meerkat.modules.benefitsSwitch.toggleFiltersSwitch(filter.replace('-benefits', ''), false);
-            }
+            meerkat.modules.benefitsSwitch.toggleFiltersSwitch(filter.replace('-benefits', ''), false);
         });
 
         $(document).on('shown.bs.tab', '.health-filter-hospital-benefits a[data-toggle="tab"]', function (e) {
-            var $hospitalBenefits = $('input[name=health_filterBar_benefitsHospital]');
+            var $hospitalBenefits = $('input[name=health_filterBar_benefitsHospital]'),
+                $hospitalBenefitsChecked = $hospitalBenefits.filter(':checked');
 
-            if ($(this).attr('href').search(/hospital/) === 1 && $hospitalBenefits.filter(':checked').length === 0) {
+            if ($(this).attr('href').search(/hospital/) === 1 && $hospitalBenefitsChecked.length === 0) {
                 $hospitalBenefits.filter('[data-benefit-code=PrHospital]').trigger('click');
+            } else if ($hospitalBenefitsChecked.length > 0) {
+              $hospitalBenefitsChecked.attr('disabled', $(this).attr('href').search(/limited/) === 1);
             }
 
             meerkat.messaging.publish(meerkatEvents.filters.FILTER_CHANGED, e);
@@ -510,13 +509,11 @@
             }
         });
 
-        if (meerkat.modules.splitTest.isActive(2)) {
-            meerkat.messaging.subscribe(meerkatEvents.benefitsSwitch.FILTERS_SWITCH_CHANGED, function (e) {
-                _toggleFiltersBenefitSelection(e.benefit, e.isSwitchedOn);
-                _toggleFiltersSwitchValidation();
-                _toggleFiltersExtrasMessage();
-            });
-        }
+        meerkat.messaging.subscribe(meerkatEvents.benefitsSwitch.FILTERS_SWITCH_CHANGED, function (e) {
+            _toggleFiltersBenefitSelection(e.benefit, e.isSwitchedOn);
+            _toggleFiltersSwitchValidation();
+            _toggleFiltersExtrasMessage();
+        });
     }
 
     /**

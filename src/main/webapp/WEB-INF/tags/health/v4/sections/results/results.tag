@@ -4,6 +4,7 @@
 
 <jsp:useBean id="healthPriceDetailService" class="com.ctm.web.health.services.HealthPriceDetailService" scope="page" />
 <jsp:useBean id="openingHoursService" class="com.ctm.web.core.openinghours.services.OpeningHoursService" scope="page" />
+<jsp:useBean id="touchService" class="com.ctm.web.core.services.AccessTouchService" scope="page" />
 
 <layout_v1:results_template xsResultsColumns="2" resultsContainerClassName=" affixOnScroll sessioncamignorechanges ">
 
@@ -99,6 +100,10 @@
                 <c:when test="${param.action == 'load' || param.action == 'amend'}">
                     <input type="hidden" name="health_retrieve_savedResults" value="Y" />
                     <input type="hidden" name="health_retrieve_transactionId" value="<c:out value='${param.transactionId}' escapeXml="true" />" />
+                </c:when>
+                 <c:when test="${param.action == 'remember' && not empty param.transactionId}">
+                     <c:set var="touchResponse">${touchService.recordTouch(data['current/transactionId'], "RememberMe", "ONLINE")}</c:set>
+                     <input type="hidden" name="health_previous_transactionId" value="<c:out value='${param.transactionId}' escapeXml="true" />" />
                 </c:when>
             </c:choose>
         </c:if>

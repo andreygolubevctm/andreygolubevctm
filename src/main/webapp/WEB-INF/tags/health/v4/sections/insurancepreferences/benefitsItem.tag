@@ -45,13 +45,9 @@
                 <c:if test="${category != 'Hospital'}">
                     <div class="title <c:if test="${category eq 'Hospital'}">hidden-xs</c:if>">
                         <h2 class="ignore">Extras</h2>
-                        <c:if test="${not empty benefitsSwitchSplitTest and benefitsSwitchSplitTest eq true}">
-                            <field_v2:switch xpath="${pageSettings.getVerticalCode()}/benefits/ExtrasSwitch" value="Y" className="benefits-switch switch-small" onText="On" offText="Off" additionalAttributes="data-benefit='extras' data-attach='true'" />
-                        </c:if>
+                        <field_v2:switch xpath="${pageSettings.getVerticalCode()}/benefits/ExtrasSwitch" value="Y" className="benefits-switch switch-small" onText="On" offText="Off" additionalAttributes="data-benefit='extras' data-attach='true'" />
                         <p>${colContent}</p>
-                        <c:if test="${not empty benefitsSwitchSplitTest and benefitsSwitchSplitTest eq true}">
-                            <health_v4:benefits_switch_extras_message />
-                        </c:if>
+                        <health_v4:benefits_switch_extras_message />
                         <health_v4_insuranceprefs:quick_select
                                 options="Dental:dental|Sports:sports|Peace of Mind:peace" trackingLabel="extras" />
                     </div>
@@ -59,9 +55,7 @@
                 <c:if test="${category eq 'Hospital'}">
                 <div class="title">
                     <h2 class="ignore">Hospital</h2>
-                    <c:if test="${not empty benefitsSwitchSplitTest and benefitsSwitchSplitTest eq true}">
-                        <field_v2:switch xpath="${pageSettings.getVerticalCode()}/benefits/HospitalSwitch" value="Y" className="benefits-switch switch-small" onText="On" offText="Off" additionalAttributes="data-benefit='hospital' data-attach='true'" />
-                    </c:if>
+                    <field_v2:switch xpath="${pageSettings.getVerticalCode()}/benefits/HospitalSwitch" value="Y" className="benefits-switch switch-small" onText="On" offText="Off" additionalAttributes="data-benefit='hospital' data-attach='true'" />
                 </div>
                 <div id="tabs" class="benefitsTab">
                     <ul class="nav nav-tabs tab-count-2">

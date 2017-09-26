@@ -23,7 +23,17 @@
                 <div class="policySummaryTemplateHolder productSummary horizontal hidden-md hidden-lg"></div>
             </c:when>
             <c:otherwise>
-                <h1 class="hidden-xs">Your quote details</h1>
+                <c:set var="policySummaryTitle">
+                    <c:choose>
+                        <c:when test="${priceBreakdownTest}">
+                            Your Chosen Policy
+                        </c:when>
+                        <c:otherwise>
+                            Your quote details
+                        </c:otherwise>
+                    </c:choose>
+                </c:set>
+                <h1 class="hidden-xs">${policySummaryTitle}</h1>
                 <div class="policySummaryTemplateHolder productSummary horizontal"></div>
             </c:otherwise>
         </c:choose>

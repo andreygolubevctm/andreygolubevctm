@@ -267,4 +267,47 @@ public class TransactionDao {
 		return exists;
 	}
 
+	/**
+	 * Get latest transaction id given root id
+	 * @param rootId
+	 * @return Latest transaction id given root id
+	 */
+	public long getLatestTransactionIdByRootId(final long rootId) throws DaoException {
+
+		SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
+		long transactionId = 0;
+		try {
+			PreparedStatement stmt;
+
+			stmt = dbSource.getConnection().prepareStatement(
+					"SELECT MAX(transactionId) as transactionId FROM aggregator.transaction_header WHERE rootId = ? " +
+							"UNION ALL " +
+							"SELECT MAX(transactionId) as transactionId FROM aggregator.transaction_header2_cold WHERE rootId = ?;"
+			);
+			stmt.setLong(1, rootId);
+			stmt.setLong(2, rootId);
+
+			ResultSet results = stmt.executeQuery();
+
+			while (results.next()) {
+				transactionId = results.getLong("transactionId");
+				if(transactionId != 0) {
+					break;
+				}
+			}
+		}
+		catch (SQLException | NamingException e) {
+			throw new DaoException(e);
+		}
+		finally {
+			dbSource.closeConnection();
+		}
+
+		if (transactionId == 0) {
+			throw new DaoException("Unable to find latest transaction id of rootId " + rootId);
+		}
+
+		return transactionId;
+	}
+
 }

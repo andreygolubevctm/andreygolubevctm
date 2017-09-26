@@ -46,9 +46,10 @@ public class AccessCheckService {
         if(transactionLock != null && operatorId != null && !operatorId.isEmpty()) {
             if (!transactionLock.operatorId.equals(operatorId)) {
                 isLocked = true;
+            } else {
+                latestTouch.setLockDateTime(transactionLock.lockDateTime);
+                latestTouch.setOperator(transactionLock.operatorId);
             }
-            latestTouch.setLockDateTime(transactionLock.lockDateTime);
-            latestTouch.setOperator(transactionLock.operatorId);
         }
         return isLocked;
     }
