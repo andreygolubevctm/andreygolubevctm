@@ -1,4 +1,4 @@
-package com.ctm.automation.client.model.car;
+package com.ctm.web.email.car;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -14,5 +14,10 @@ import lombok.ToString;
 @ToString
 public class CarEmailModel {
     private String coverType;
-    private String journeyStatus;
+    private String journeyStatus = "start_car_journey";
+    private String vehicleMake;
+    private String vehicleModel;
+    private String vehicleVariant;
+    private String vehicleYear;
 }
+

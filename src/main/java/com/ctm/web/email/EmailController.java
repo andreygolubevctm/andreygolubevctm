@@ -77,15 +77,10 @@ public class EmailController {
             List<String> quoteRefs = new ArrayList<>();
             quoteRefs.add(transactionId.toString());
             emailRequest.setQuoteRefs(quoteRefs);
-
-            if(VerticalType.HEALTH == VerticalType.valueOf(verticalCode)){
-                healthModelTranslator.setHealthFields(emailRequest, request, data);
-            }
-            if (VerticalType.CAR == VerticalType.valueOf(verticalCode)) {
-                carModelTranslator.setCarFields(emailRequest, transactionId, data);
-                emailAddress = carModelTranslator.getEmail(data);
-            }
-            setUrls(request, emailRequest, data, verticalCode);
+            EmailTranslator emailTranslator = getEmailTranslator(verticalCode);
+            emailTranslator.setVerticalSpecificFields(emailRequest, request, data);
+            emailTranslator.setUrls(request, emailRequest, data, verticalCode);
+            emailRequest.setVertical(verticalCode);
             emailClient.send(emailRequest);
         }
         catch(Exception e){
@@ -94,38 +89,18 @@ public class EmailController {
 
     }
 
-    private void setUrls(HttpServletRequest request, EmailRequest emailRequest, Data data, String verticalCode) throws ConfigSettingException, DaoException, EmailDetailsException, SendEmailException {
-        EmailMaster emailDetails = new EmailMaster();
-        emailDetails.setEmailAddress(emailRequest.getEmailAddress());
-        emailDetails.setSource("QUOTE");
-        OptIn optIn = healthModelTranslator.getOptIn(emailRequest,data);
-        emailDetails.setOptedInMarketing(optIn == OptIn.Y, verticalCode);
-        EmailDetailsService emailDetailsService = EmailServiceFactory.createEmailDetailsService(SettingsService.getPageSettingsForPage(request),data, Vertical.VerticalType.HEALTH, new HealthEmailDetailMappings());
-        EmailMaster emailMaster = emailDetailsService.handleReadAndWriteEmailDetails(Long.parseLong(emailRequest.getTransactionId()), emailDetails, "ONLINE",  ipAddressHandler.getIPAddress(request));
-
-        PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
-        Map<String, String> emailParameters = new HashMap<>();
-        Map<String, String> otherEmailParameters = new HashMap<>();
-        otherEmailParameters.put(EmailUrlService.CID, "em:cm:health:300994");
-        otherEmailParameters.put(EmailUrlService.ET_RID, "172883275");
-        otherEmailParameters.put(EmailUrlService.UTM_SOURCE, "health_quote_" + LocalDate.now().getYear());
-        otherEmailParameters.put(EmailUrlService.UTM_MEDIUM, "email");
-        otherEmailParameters.put(EmailUrlService.UTM_CAMPAIGN, "health_quote");
-        emailParameters.put(EmailUrlService.TRANSACTION_ID, emailRequest.getTransactionId());
-        emailParameters.put(EmailUrlService.HASHED_EMAIL, emailDetails.getHashedEmail());
-        emailParameters.put(EmailUrlService.STYLE_CODE_ID, Integer.toString(pageSettings.getBrandId()));
-        emailParameters.put(EmailUrlService.EMAIL_TOKEN_TYPE, "bestprice");
-        emailParameters.put(EmailUrlService.EMAIL_TOKEN_ACTION, "unsubscribe");
-        emailParameters.put(EmailUrlService.VERTICAL, "health");
-
-        EmailUrlService urlService = EmailServiceFactory.createEmailUrlService(pageSettings, pageSettings.getVertical().getType());
-        String unsubscribeUrl = urlService.getUnsubscribeUrl(emailParameters);
-        String applyUrl = urlService.getApplyUrl(emailMaster,emailParameters,otherEmailParameters);
-        List<String> applyUrls = new ArrayList<>();
-        applyUrls.add(applyUrl);
-        emailRequest.setApplyUrls(applyUrls);
-        emailRequest.setUnsubscribeURL(unsubscribeUrl);
+    private EmailTranslator getEmailTranslator(String verticalCode){
+        VerticalType verticalType = VerticalType.valueOf(verticalCode);
+        if(VerticalType.HEALTH == verticalType){
+            return healthModelTranslator;
+        }
+        else if(VerticalType.CAR == verticalType){
+            return carModelTranslator;
+        }
+        throw new RuntimeException("Vertical not supported");
     }
+
+
 
 
     /**
