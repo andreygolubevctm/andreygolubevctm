@@ -22,18 +22,20 @@
       background-color: transparent;
       color: @theme-secondary;
 
-      &:before {
-        position: absolute;
-        width: 0;
-        height: 0;
-        bottom: -9px;
-        left: 50%;
-        content: '';
-        margin-left: -@sortbar-arrow-width;
-        border-color: transparent;
-        border-style: solid;
-        border-width: 0 @sortbar-arrow-width @sortbar-arrow-width;
-        border-bottom-color: @theme-light;
+      @media screen and (@md) {
+        &:before {
+          position: absolute;
+          width: 0;
+          height: 0;
+          bottom: -9px;
+          left: 50%;
+          content: '';
+          margin-left: -@sortbar-arrow-width;
+          border-color: transparent;
+          border-style: solid;
+          border-width: 0 @sortbar-arrow-width @sortbar-arrow-width;
+          border-bottom-color: @theme-light;
+        }
       }
     }
     .clt-trip-filter {
@@ -83,29 +85,44 @@
   }
 }
 
-// SM breakpoints
-@media screen and (@md) {
-  .sortbar-children {
-    .active {
-      [data-sort-dir='asc']:before {
-        bottom: 15px;
-      }
-      [data-sort-dir='desc']:before {
-        bottom: 15px;
+// LG breakpoint
+@media screen and (@lg) {
+  .travel {
+    .sortbar-children {
+      .active {
+        [data-sort-dir='asc']:before {
+          bottom: 25px;
+        }
+        [data-sort-dir='desc']:before {
+          bottom: 25px;
+        }
       }
     }
   }
 }
 
-// LG breakpoints
-@media screen and (@lg) {
-  .sortbar-children {
-    .active {
-      [data-sort-dir='asc']:before {
-        bottom: 25px;
+// MD breakpoint
+@media screen and (@md-only) {
+  .travel {
+    .sortbar-children {
+      .active {
+        [data-sort-dir='asc']:before {
+          bottom: 15px;
+        }
+        [data-sort-dir='desc']:before {
+          bottom: 15px;
+        }
       }
-      [data-sort-dir='desc']:before {
-        bottom: 25px;
+    }
+  }
+}
+
+// XS breakpoints
+@media screen and (@xs-only) {
+  .travel {
+    .coverLevelTabs {
+      .clt-action, .clt-trip-filter {
+        margin: 10px;
       }
     }
   }

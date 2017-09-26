@@ -236,7 +236,7 @@
 				i = 0; i < tabLength; i ++) {
 			var tab = settings.activeTabSet[i],
 				count = counts[tab.rankingFilter] || null;
-			out += '<div class="col-xs-' + xsCols + ' col-md-' + xsCols + ' text-center clt-action ' + (tab.defaultTab === true ? 'active' : '') + '" data-clt-index="' + i + '">';
+			out += '<div class="col-md-' + xsCols + ' col-xs-5 text-center clt-action ' + (tab.defaultTab === true ? 'active' : 'hidden-xs') + '" data-clt-index="' + i + '">';
 			out += (state === 'lg' ? tab.label : tab.label.replace('Cover', '')) + (state !== 'xs' && tab.showCount === true && count !== null ? ' (' + (count) + ')' : '');
 			out += '</div>';
 
@@ -246,12 +246,11 @@
 				originatingTab = settings.verticalMapping[tab.rankingFilter];
 			}
 		}
-		out += '<div class="col-xs-2 col-md-3 clt-trip-filter">';
+		out += '<div class="col-xs-5 col-md-3 clt-trip-filter text-center">';
 		out += 		'<div class="col-xs-12 col-md-7"><b>Excess up to</b></div>';
 		out +=		'<div class="col-xs-12 col-md-5">$150 <i class="icon icon-angle-down"></i></div>';
 		out += '</div>';
-        out += '<div class="col-xs-2 col-md-2 clt-trip-filter">';
-        out += 		'<div class="col-xs-12 hidden-md">&nbsp;</div>';
+        out += '<div class="col-xs-2 col-md-2 clt-trip-filter hidden-xs text-center">';
         out +=		'<div class="col-xs-12">More filters <i class="icon icon-angle-down"></i></div>';
         out += '</div>';
 
