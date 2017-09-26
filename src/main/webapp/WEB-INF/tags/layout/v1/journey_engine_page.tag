@@ -115,7 +115,7 @@
                         
                         <p class="message">Please wait...</p>
                         <c:choose>
-                          <c:when test="${octoberComp}">
+                          <c:when test="${octoberComp && !callCentre}">
                             <competition:loading vertical="${pageSettings.getVerticalCode()}"/>
                           </c:when >
                           <c:otherwise>
