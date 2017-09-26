@@ -48,13 +48,14 @@ public class ProviderContentDao {
      * @throws DaoException
      */
     @SuppressWarnings("unchecked")
-    public String getProviderContentText(final int providerId, final String providerContentTypeCode, final String verticalCode, final Date currentDate) throws DaoException {
+    public String getProviderContentText(final int providerId, final String providerContentTypeCode, final String verticalCode, final Date currentDate, final String styleCode) throws DaoException {
         DatabaseQueryMapping mapping = new DatabaseQueryMapping() {
             @Override
             public void mapParams() throws SQLException {
                 set(providerId);
                 set(verticalCode);
                 set(providerContentTypeCode);
+                set(styleCode);
                 set( new java.sql.Timestamp(currentDate.getTime()));
             }
 
@@ -67,10 +68,12 @@ public class ProviderContentDao {
                         "FROM ctm.provider_contents pc " +
                         "INNER JOIN ctm.vertical_master vm ON pc.verticalId = vm.verticalId " +
                         "INNER JOIN ctm.provider_content_types pct ON pct.providerContentTypeId = pc.providerContentTypeId " +
+                        "INNER JOIN ctm.stylecodes sc ON pc.styleCodeId = sc.styleCodeId " +
                         "WHERE " +
                         "(pc.providerId = ? OR pc.providerId = '0' ) AND " +
                         "vm.verticalCode = ? AND " +
                         "pct.providerContentTypeCode = ? AND " +
+                        "sc.styleCode = ? AND " +
                         "? between effectiveStart AND effectiveEnd order by providerId desc " +
                         "limit 1";
         //noinspection unchecked
@@ -81,14 +84,16 @@ public class ProviderContentDao {
      * this method will return single record if ID exist else return null
      *
      * @param providerContentId : Unique identifier of provider content record
+     * @param styleCodeId     : brand code id , function also look for default '0' value
      * @return ProviderContent
      * @throws DaoException
      */
-    public ProviderContent fetchSingleProviderContent(int providerContentId) throws DaoException {
+    public ProviderContent fetchSingleProviderContent(int providerContentId, int styleCodeId) throws DaoException {
         DatabaseQueryMapping mapping = new DatabaseQueryMapping() {
             @Override
             public void mapParams() throws SQLException {
                 set(providerContentId);
+                set(styleCodeId);
             }
 
             @Override
@@ -96,15 +101,17 @@ public class ProviderContentDao {
                 return helper.createProviderContentObject(
                         resultSet.getInt("providerContentId"), resultSet.getInt("providerContentTypeId"),
                         resultSet.getString("providerContentText"), resultSet.getDate("effectiveStart"),
-                        resultSet.getDate("effectiveEnd"), resultSet.getInt("providerID"), resultSet.getInt("verticalId")
+                        resultSet.getDate("effectiveEnd"), resultSet.getInt("providerID"), resultSet.getInt("verticalId"),
+                        resultSet.getInt("styleCodeId"), resultSet.getString("styleCodeName")
                 );
             }
         };
 
         String sql = "SELECT    providerContentId,      providerContentTypeId,    providerContentText, " +
-                    "           providerId,     verticalId,     effectiveStart,     effectiveEnd " +
-                    "FROM ctm.provider_contents " +
-                    "WHERE providerContentId = ? ";
+                    "           providerId,     verticalId,     effectiveStart,     effectiveEnd,   pc.styleCodeId,     sc.styleCodeName " +
+                    "FROM ctm.provider_contents pc " +
+                    "INNER JOIN stylecodes sc on pc.styleCodeId = sc.styleCodeId " +
+                    "WHERE providerContentId = ? AND (styleCodeId = ?  OR styleCodeId = 0)";
 
         //noinspection unchecked
         return (ProviderContent) sqlDaoFactory.createDao().get(mapping, sql);
@@ -133,7 +140,8 @@ public class ProviderContentDao {
                         ProviderContent providerContent = helper.createProviderContentObject(
                                 resultSet.getInt("providerContentId"), resultSet.getInt("providerContentTypeId"),
                                 resultSet.getString("providerContentText"), resultSet.getDate("effectiveStart"),
-                                resultSet.getDate("effectiveEnd"), resultSet.getInt("providerID"), resultSet.getInt("verticalId")
+                                resultSet.getDate("effectiveEnd"), resultSet.getInt("providerID"), resultSet.getInt("verticalId"),
+                                resultSet.getInt("styleCodeId"), resultSet.getString("styleCodeName")
                         );
                         list.add(providerContent);
                     }
@@ -142,9 +150,10 @@ public class ProviderContentDao {
             };
 
             String sql = "SELECT    providerContentId,      pc.providerContentTypeId,    providerContentText, " +
-                        "           providerId,     verticalId,     effectiveStart,     effectiveEnd " +
+                        "           providerId,     verticalId,     effectiveStart,     effectiveEnd,   pc.styleCodeId,     sc.styleCodeName " +
                         "FROM ctm.provider_contents pc " +
                         "INNER JOIN ctm.provider_content_types pct ON pct.providerContentTypeId = pc.providerContentTypeId " +
+                        "INNER JOIN stylecodes sc on pc.styleCodeId = sc.styleCodeId " +
                         "WHERE pct.providerContentTypeCode = ? ";
 
             //noinspection unchecked
@@ -200,10 +209,12 @@ public class ProviderContentDao {
      */
     public ProviderContent updateProviderContent(final ProviderContent providerContentParam, String userName, String ipAddress) throws DaoException {
         int providerContentId;
+        int styleCodeId;
         final java.sql.Timestamp startDate = new java.sql.Timestamp(DateUtils.setTimeInDate(providerContentParam.getEffectiveStart(), 0, 0, 1).getTime());
         final java.sql.Timestamp endDate = new java.sql.Timestamp(DateUtils.setTimeInDate(providerContentParam.getEffectiveEnd(), 23, 59, 59).getTime());
         try {
             providerContentId = providerContentParam.getProviderContentId();
+            styleCodeId = providerContentParam.getStyleCodeId();
             if (providerContentId == 0) {
                 throw new DaoException("failed : providerContentId is 0");
             }
@@ -214,6 +225,7 @@ public class ProviderContentDao {
                         "verticalId = ?, " +
                         "effectiveStart = ?, " +
                         "effectiveEnd = ? " +
+                        "styleCodeId = ? " +
                         "WHERE providerContentId = ?";
             final int finalProviderContentId = providerContentId;
             DatabaseUpdateMapping mapping = new DatabaseUpdateMapping() {
@@ -230,11 +242,12 @@ public class ProviderContentDao {
                     set(providerContentParam.getVerticalId());
                     set(startDate);
                     set(endDate);
+                    set(providerContentParam.getStyleCodeId());
                     set(finalProviderContentId);
                 }
             };
             sqlDaoFactory.createDao().executeUpdateAudit(mapping, sql, userName, ipAddress, AuditTableDao.UPDATE, "provider_contents", "providerContentId", providerContentId);
-            return fetchSingleProviderContent(providerContentId);
+            return fetchSingleProviderContent(providerContentId, styleCodeId);
         } catch (DaoException e) {
             logger.error("Failed to update Provider Content Record", e);
             throw e;
@@ -253,13 +266,14 @@ public class ProviderContentDao {
      */
     public ProviderContent createProviderContent(final ProviderContent providerContentParam, String userName, String ipAddress) throws DaoException {
         try {
+            int styleCodeId = providerContentParam.getStyleCodeId();
             final java.sql.Timestamp startDate = new java.sql.Timestamp(DateUtils.setTimeInDate(providerContentParam.getEffectiveStart(), 0, 0, 1).getTime());
             final java.sql.Timestamp endDate = new java.sql.Timestamp(DateUtils.setTimeInDate(providerContentParam.getEffectiveEnd(), 23, 59, 59).getTime());
 
             String sql = " INSERT INTO ctm.provider_contents " +
-                         "(providerContentTypeId, providerContentText, providerId, verticalId, effectiveStart, effectiveEnd)" +
+                         "(providerContentTypeId, providerContentText, providerId, verticalId, effectiveStart, effectiveEnd, styleCodeId)" +
                          " VALUES " +
-                         "(?, ?, ?, ?, ?, ?)";
+                         "(?, ?, ?, ?, ?, ?, ?)";
             DatabaseUpdateMapping mapping = new DatabaseUpdateMapping() {
                 @Override
                 public String getStatement() {
@@ -274,10 +288,11 @@ public class ProviderContentDao {
                     set(providerContentParam.getVerticalId());
                     set(startDate);
                     set(endDate);
+                    set(providerContentParam.getStyleCodeId());
                 }
             };
             int id = sqlDaoFactory.createDao().executeUpdateAudit(mapping, sql, userName, ipAddress, AuditTableDao.CREATE, "provider_contents", "providerContentId", 0);
-            return fetchSingleProviderContent(id);
+            return fetchSingleProviderContent(id, styleCodeId);
         } catch (DaoException e) {
             logger.error("Failed to create Provider Content Record", e);
             throw new DaoException(e.getMessage(), e);

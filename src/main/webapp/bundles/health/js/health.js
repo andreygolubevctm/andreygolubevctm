@@ -613,6 +613,7 @@
 					var data = {};
 					data.providerId = selectedProduct.info.providerId;
 					data.providerContentTypeCode = meerkat.site.isCallCentreUser === true ? 'JDC' : 'JDO';
+					data.styleCode = meerkat.site.tracking.brandCode;
 
 					meerkat.modules.comms.get({
 						url: "health/provider/content/get.json",
