@@ -317,7 +317,7 @@ var ResultsView = {
 				}
 				$(resultRow).attr("id", "result-row-" + index).attr("data-sort", index);
 
-				if (result.info.popularProduct) {
+				if (meerkat.site.showPopularProducts && result.info.popularProduct) {
 					$(resultRow).addClass('result-top-three').prepend('<div class="result-top-three-tag">Popular plan <span class="icon icon-info"></span></div>');
 				}
 

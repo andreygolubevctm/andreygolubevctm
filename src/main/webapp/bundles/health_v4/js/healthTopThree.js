@@ -2,16 +2,27 @@
 
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
-        $elements;
+        $elements,
+        _isEnabled;
 
     function initHealthTopThree() {
-        var template = _.template($('#results-top-three-banner-template').html());
-        if ($('.results-top-three-banner').length === 0) {
-            $('#pageContent').prepend(template);
-        }
+        $(document).ready(function() {
+            _isEnabled = meerkat.site.showPopularProducts;
 
-        _setupFields();
-        _eventSubscriptions();
+            if (!isEnabled()) return;
+
+            var template = _.template($('#results-top-three-banner-template').html());
+            if ($('.results-top-three-banner').length === 0) {
+                $('#pageContent').prepend(template);
+            }
+
+            _setupFields();
+            _eventSubscriptions();
+        });
+    }
+
+    function isEnabled() {
+        return _isEnabled;
     }
 
     function _setupFields() {
@@ -33,21 +44,28 @@
     }
 
     function show() {
-        $elements.banner.removeClass('invisible');
-        $elements.options.toggleClass('hidden', $elements.popularProducts.val() === 'Y');
-        $elements.deciding.toggleClass('hidden', $elements.popularProducts.val() === 'N');
+        if (isEnabled()) {
+            $elements.banner.removeClass('invisible');
+            $elements.options.toggleClass('hidden', $elements.popularProducts.val() === 'Y');
+            $elements.deciding.toggleClass('hidden', $elements.popularProducts.val() === 'N');
+        }
     }
 
     function hide() {
-        $elements.banner.addClass('invisible');
+        if (isEnabled()) {
+            $elements.banner.addClass('invisible');
+        }
     }
 
     function setPopularProducts() {
-        $elements.popularProducts.val('N');
+        if (isEnabled()) {
+            $elements.popularProducts.val('N');
+        }
     }
 
     meerkat.modules.register('healthTopThree', {
         initHealthTopThree: initHealthTopThree,
+        isEnabled: isEnabled,
         show: show,
         hide: hide,
         setPopularProducts: setPopularProducts
