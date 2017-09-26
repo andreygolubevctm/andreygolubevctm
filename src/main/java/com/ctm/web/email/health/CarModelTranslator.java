@@ -29,8 +29,8 @@ public class CarModelTranslator {
         resultsProperties.forEach(resultProperty -> {
             System.out.println("" + resultProperty.getProperty() + ":" +  resultProperty.getValue());
         } );
-        emailRequest.setProvider(providerName);
-        emailRequest.setProviderPhoneNumber(providerPhoneNumber);
+        emailRequest.setProviders(providerName);
+        emailRequest.setProviderPhoneNumbers(providerPhoneNumber);
         String email = getEmail(data);
         if(!StringUtils.isBlank(email)) emailRequest.setEmailAddress(email);
     }

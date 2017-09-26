@@ -29,7 +29,7 @@ public class SessionDataUtils {
     public static void setTransactionId(Data data, String transactionId) {
         data.put(CURRENT_TRANSACTION_ID_XPATH, transactionId);
         try {
-            //LoggingVariables.setTransactionId(TransactionId.instanceOf(parseLong(transactionId)));
+            LoggingVariables.setTransactionId(TransactionId.instanceOf(parseLong(transactionId)));
         } catch (NumberFormatException e) {
             LOGGER.error("Failed to setTransactionId: {}", transactionId, e);
         }

@@ -27,10 +27,10 @@ public class HealthModelTranslator {
         List<String> premiumLabel = emailUtils.buildParameterList(request, "rank_premiumText");
         List<String> premium = emailUtils.buildParameterList(request, "rank_premium");
         List<String> providerCodes = emailUtils.buildParameterList(request, "rank_provider");
-        emailRequest.setProvider(providerName);
-        emailRequest.setPremiumLabel(premiumLabel);
-        emailRequest.setProviderCode(providerCodes);
-        emailRequest.setPremium(premium);
+        emailRequest.setProviders(providerName);
+        emailRequest.setPremiumLabels(premiumLabel);
+        emailRequest.setProviderCodes(providerCodes);
+        emailRequest.setPremiums(premium);
         emailRequest.setPremiumFrequency(request.getParameter("rank_frequency0"));
 
         String benefitCodes = request.getParameter("rank_benefitCodes0");

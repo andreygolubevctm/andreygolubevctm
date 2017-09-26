@@ -58,7 +58,7 @@ public class LifeSendEmailService {
         final boolean[] sendEmail = {true};
         sentBy.ifPresent(td -> sendEmail[0] = !td.getTextValue().equals(OZICARE));
         if( sendEmail[0]) {
-            emailService.send( request, EmailMode.BEST_PRICE,emailAddress, transactionId,null);
+            emailService.send( request, EmailMode.BEST_PRICE,emailAddress, transactionId);
         }
     }
 }
