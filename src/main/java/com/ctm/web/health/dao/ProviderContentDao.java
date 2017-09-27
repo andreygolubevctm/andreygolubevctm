@@ -110,8 +110,8 @@ public class ProviderContentDao {
         String sql = "SELECT    providerContentId,      providerContentTypeId,    providerContentText, " +
                     "           providerId,     verticalId,     effectiveStart,     effectiveEnd,   pc.styleCodeId,     sc.styleCodeName " +
                     "FROM ctm.provider_contents pc " +
-                    "INNER JOIN stylecodes sc on pc.styleCodeId = sc.styleCodeId " +
-                    "WHERE providerContentId = ? AND (styleCodeId = ?  OR styleCodeId = 0)";
+                    "INNER JOIN ctm.stylecodes sc on pc.styleCodeId = sc.styleCodeId " +
+                    "WHERE providerContentId = ? AND sc.styleCodeId = ?";
 
         //noinspection unchecked
         return (ProviderContent) sqlDaoFactory.createDao().get(mapping, sql);
