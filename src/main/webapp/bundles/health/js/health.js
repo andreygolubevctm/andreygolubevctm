@@ -289,7 +289,7 @@
 			},
 			onInitialise: function onResultsInit(event){
 				meerkat.modules.healthResults.initPage();
-
+				meerkat.modules.octoberComp.closeMobileBanner();
 				var $healthSitCoverType = $('#health_situation_coverType');
 				var $hospitalBenefits = $('.Hospital_container  input:checkbox');
 				var $extraBenefits = $('.GeneralHealth_container input:checkbox');
@@ -406,7 +406,7 @@
 				}
 			},
 			onInitialise: function onInitResults(event){
-
+				meerkat.modules.octoberComp.hideMobileBanner();
 				meerkat.modules.healthSafariColumnCountFix.initHealthSafariColumnCountFix();
 				meerkat.modules.healthPriceRangeFilter.initHealthPriceRangeFilter();
 				meerkat.modules.healthAltPricing.initHealthAltPricing();
@@ -491,6 +491,7 @@
 				}
 			},
 			onAfterLeave: function(event){
+				meerkat.modules.octoberComp.showMobileBanner();
 				meerkat.modules.healthResults.recordPreviousBreakpoint();
 			}
 		};
