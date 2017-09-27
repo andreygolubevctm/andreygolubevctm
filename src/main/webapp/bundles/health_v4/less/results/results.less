@@ -634,10 +634,21 @@
   }
 }
 
-body[data-is-single="true"] {
-  .featuresMode {
-    .cell.feature.per-person {
-      display: none;
+body {
+  &[data-step="results"] {
+    .journeyEngineLoader {
+      position: fixed;
+      left: 0;
+      right: 0;
+      width: 100%;
+    }
+  }
+
+  &[data-is-single="true"] {
+    .featuresMode {
+      .cell.feature.per-person {
+        display: none;
+      }
     }
   }
 }

@@ -8,10 +8,13 @@
             tag: '#results-popular-products-tag-template'
         },
         _tagHTML = '',
-        _isEnabled = false;
+        _isEnabled = false,
+        _count = 0;
 
     function initHealthPopularProducts() {
         $(document).ready(function() {
+            if (!meerkat.modules.splitTest.isActive(3)) return;
+
             _isEnabled = meerkat.site.showPopularProducts;
 
             if (!isEnabled()) return;
@@ -57,12 +60,17 @@
             $elements.banner.removeClass('invisible');
             $elements.options.toggleClass('hidden', $elements.popularProducts.val() === 'Y');
             $elements.deciding.toggleClass('hidden', $elements.popularProducts.val() === 'N');
+
+            if (_count > 0) {
+                $('.result-row').addClass('result-has-popular-products');
+            }
         }
     }
 
     function hide() {
         if (isEnabled()) {
             $elements.banner.addClass('invisible');
+            _count = 0;
         }
     }
 
@@ -75,6 +83,7 @@
     function injectTag($resultRow) {
         if (isEnabled()) {
             $resultRow.addClass('result-popular-products').prepend(_tagHTML);
+            _count++;
         }
     }
 
