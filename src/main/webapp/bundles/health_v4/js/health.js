@@ -390,13 +390,13 @@
                 }
             },
             onInitialise: function onResultsInit(event) {
+                meerkat.modules.healthPopularProducts.initHealthPopularProducts();
                 meerkat.modules.healthResults.initPage();
                 meerkat.modules.healthMoreInfo.initMoreInfo();
                 meerkat.modules.healthPriceComponent.initHealthPriceComponent();
                 meerkat.modules.healthDualPricing.initDualPricing();
                 meerkat.modules.healthPyrrCampaign.initPyrrCampaign();
                 meerkat.modules.healthResultsRefineMobile.initHealthResultsRefineMobile();
-                meerkat.modules.healthTopThree.initHealthTopThree();
             },
             onBeforeEnter: function enterResultsStep(event) {
                 meerkat.modules.healthDependants.resetConfig();
@@ -413,7 +413,7 @@
                     meerkat.messaging.publish(meerkatEvents.filters.FILTERS_CANCELLED);
                 });
 
-                meerkat.modules.healthTopThree.setPopularProducts();
+                meerkat.modules.healthPopularProducts.setPopularProducts('N');
             },
             onAfterEnter: function onAfterEnterResultsStep(event) {
                 if (event.isForward === true) {

@@ -317,8 +317,9 @@ var ResultsView = {
 				}
 				$(resultRow).attr("id", "result-row-" + index).attr("data-sort", index);
 
-				if (meerkat.site.showPopularProducts && result.info.popularProduct) {
-					$(resultRow).addClass('result-top-three').prepend('<div class="result-top-three-tag">Popular plan <span class="icon icon-info"></span></div>');
+				if (Results.settings.popularProducts.enabled && result.info.popularProduct) {
+					// Inject Popular Products tag
+					meerkat.modules.healthPopularProducts.injectTag($(resultRow));
 				}
 
 				// if top result, add top result markup

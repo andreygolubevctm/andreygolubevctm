@@ -243,6 +243,9 @@ var Results = {
 			incrementTransactionId : true,
 			balanceCurrentPageRowsHeightOnly: {
 				mobile: false
+			},
+			popularProducts: {
+				enabled: false
 			}
 		};
 		$.extend(true, settings, userSettings);

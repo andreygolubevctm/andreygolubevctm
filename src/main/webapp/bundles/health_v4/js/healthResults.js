@@ -268,6 +268,9 @@
                 incrementTransactionId: false,
                 balanceCurrentPageRowsHeightOnly: {
                     mobile: true
+                },
+                popularProducts: {
+                    enabled: meerkat.modules.healthPopularProducts.isEnabled()
                 }
             });
 
@@ -347,7 +350,7 @@
             $('.results-pagination, .results-filters-frequency').addClass('invisible');
 
             // Hide top three
-            meerkat.modules.healthTopThree.hide();
+            meerkat.modules.healthPopularProducts.hide();
 
             meerkat.modules.coupon.triggerPopup();
         });
@@ -380,7 +383,7 @@
             _.delay(function () {
                 meerkat.modules.journeyEngine.loadingHide();
                 // Show top three
-                meerkat.modules.healthTopThree.show();
+                meerkat.modules.healthPopularProducts.show();
             }, tVariance);
 
 
