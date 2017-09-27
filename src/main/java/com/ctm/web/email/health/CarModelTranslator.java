@@ -26,9 +26,6 @@ public class CarModelTranslator {
 
         List<String> providerName = getAllResultProperties(resultsProperties, "productDes");
         List<String> providerPhoneNumber = getAllResultProperties(resultsProperties, "telNo");
-        resultsProperties.forEach(resultProperty -> {
-            System.out.println("" + resultProperty.getProperty() + ":" +  resultProperty.getValue());
-        } );
         emailRequest.setProviders(providerName);
         emailRequest.setProviderPhoneNumbers(providerPhoneNumber);
         String email = emailUtils.getParamSafely(data,  "/quote/contact/email");

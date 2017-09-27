@@ -27,10 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by akhurana on 15/09/17.
@@ -51,6 +48,13 @@ public class EmailController {
     protected IPAddressHandler ipAddressHandler;
     @Autowired
     private EmailClient emailClient;
+    private static final String CID = "em:cm:health:300994";
+    private static final String ET_RID = "172883275";
+    private static final String HEALTH_UTM_SOURCE = "health_quote_";
+    private static final String UTM_MEDIUM = "email";
+    private static final String CAMPAIGN = "health_quote";
+    private static final String EMAIL_TYPE = "bestprice";
+    private static final String ACTION_UNSUBSCRIBE = "unsubscribe";
 
     @RequestMapping("/sendEmail")
     public void sendEmail(HttpServletRequest request, HttpServletResponse response){
@@ -96,17 +100,17 @@ public class EmailController {
         PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
         Map<String, String> emailParameters = new HashMap<>();
         Map<String, String> otherEmailParameters = new HashMap<>();
-        otherEmailParameters.put(EmailUrlService.CID, "em:cm:health:300994");
-        otherEmailParameters.put(EmailUrlService.ET_RID, "172883275");
-        otherEmailParameters.put(EmailUrlService.UTM_SOURCE, "health_quote_" + LocalDate.now().getYear());
-        otherEmailParameters.put(EmailUrlService.UTM_MEDIUM, "email");
-        otherEmailParameters.put(EmailUrlService.UTM_CAMPAIGN, "health_quote");
+        otherEmailParameters.put(EmailUrlService.CID, CID);
+        otherEmailParameters.put(EmailUrlService.ET_RID, ET_RID);
+        otherEmailParameters.put(EmailUrlService.UTM_SOURCE, HEALTH_UTM_SOURCE + LocalDate.now().getYear());
+        otherEmailParameters.put(EmailUrlService.UTM_MEDIUM, UTM_MEDIUM);
+        otherEmailParameters.put(EmailUrlService.UTM_CAMPAIGN, CAMPAIGN);
         emailParameters.put(EmailUrlService.TRANSACTION_ID, emailRequest.getTransactionId());
         emailParameters.put(EmailUrlService.HASHED_EMAIL, emailDetails.getHashedEmail());
         emailParameters.put(EmailUrlService.STYLE_CODE_ID, Integer.toString(pageSettings.getBrandId()));
-        emailParameters.put(EmailUrlService.EMAIL_TOKEN_TYPE, "bestprice");
-        emailParameters.put(EmailUrlService.EMAIL_TOKEN_ACTION, "unsubscribe");
-        emailParameters.put(EmailUrlService.VERTICAL, "health");
+        emailParameters.put(EmailUrlService.EMAIL_TOKEN_TYPE, EMAIL_TYPE);
+        emailParameters.put(EmailUrlService.EMAIL_TOKEN_ACTION, ACTION_UNSUBSCRIBE);
+        emailParameters.put(EmailUrlService.VERTICAL, Optional.ofNullable(verticalCode).map(s -> s.toLowerCase()).orElse(null));
 
         EmailUrlService urlService = EmailServiceFactory.createEmailUrlService(pageSettings, pageSettings.getVertical().getType());
         String unsubscribeUrl = urlService.getUnsubscribeUrl(emailParameters);
