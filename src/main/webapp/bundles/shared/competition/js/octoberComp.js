@@ -58,9 +58,9 @@
         
         /* bind events */
         
-        var inputTypes = 'input[type=tel], input[type=number], input[type=text], select';
+        var inputTypes = 'input[type=tel], input[type=number], input[type=text], input[type=email], select';
         $(document)
-        .on('focus touchstart', inputTypes, function() {
+        .on('click', inputTypes, function() {
             $body.addClass('fixfixed');
         })
         .on('blur touchend', inputTypes, function() {
