@@ -118,6 +118,9 @@
 					Results.settings.animation.filter.active = false;
 				}
 
+				// populate navbar cover text
+				$('.navbar-cover-text').html('Showing ' + counts[settings.activeTabSet[tabIndex].rankingFilter] + ' ' + settings.activeTabSet[tabIndex].label.toLowerCase().replace('cover', 'plans'));
+
 				// trigger filter call
 				settings.activeTabSet[tabIndex].filter();
 				$el.siblings().removeClass('active').end().addClass('active');
@@ -230,14 +233,13 @@
 		var tabLength = settings.activeTabSet.length,
 		xsCols = parseInt(6 / tabLength, 10),
 		state = meerkat.modules.deviceMediaState.get();
-		console.log(state);
 		var out = '';
 		for(out = '',
 				i = 0; i < tabLength; i ++) {
 			var tab = settings.activeTabSet[i],
 				count = counts[tab.rankingFilter] || null;
-			out += '<div class="col-md-' + xsCols + ' col-xs-5 text-center clt-action ' + (tab.defaultTab === true ? 'active' : 'hidden-xs') + '" data-clt-index="' + i + '">';
-			out += (state === 'lg' ? tab.label : tab.label.replace('Cover', '')) + (state !== 'xs' && tab.showCount === true && count !== null ? ' (' + (count) + ')' : '');
+			out += '<div class="col-sm-' + xsCols + ' col-xs-5 text-center clt-action ' + (tab.defaultTab === true ? 'active' : 'hidden-xs') + '" data-clt-index="' + i + '">';
+			out += (state === 'lg' ? tab.label : tab.label.replace('Cover', '')) + (state !== 'xs' && state !== 'sm' && tab.showCount === true && count !== null ? ' (' + (count) + ')' : '');
 			out += '</div>';
 
 			// set the originatingTab
@@ -246,11 +248,11 @@
 				originatingTab = settings.verticalMapping[tab.rankingFilter];
 			}
 		}
-		out += '<div class="col-xs-5 col-md-3 clt-trip-filter text-center">';
+		out += '<div class="col-xs-5 col-sm-3 col-md-3 clt-trip-filter">';
 		out += 		'<div class="col-xs-12 col-md-7"><b>Excess up to</b></div>';
 		out +=		'<div class="col-xs-12 col-md-5">$150 <i class="icon icon-angle-down"></i></div>';
 		out += '</div>';
-        out += '<div class="col-xs-2 col-md-2 clt-trip-filter hidden-xs text-center">';
+        out += '<div class="col-xs-2 col-sm-2 col-md-2 clt-trip-filter hidden-xs">';
         out +=		'<div class="col-xs-12">More filters <i class="icon icon-angle-down"></i></div>';
         out += '</div>';
 
