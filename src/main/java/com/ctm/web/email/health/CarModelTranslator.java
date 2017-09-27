@@ -9,6 +9,7 @@ import com.ctm.web.core.web.go.Data;
 import com.ctm.web.email.EmailRequest;
 import com.ctm.web.email.EmailTranslator;
 import com.ctm.web.email.EmailUtils;
+import com.ctm.web.email.OptIn;
 import com.ctm.web.email.car.CarEmailModel;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,20 +53,22 @@ public class CarModelTranslator implements EmailTranslator {
         String firstName = emailUtils.getParamSafely(data, "/drivers/regular/firstname");
         String lastName = emailUtils.getParamSafely(data, "/drivers/regular/surname");
         String phoneNumber = emailUtils.getParamSafely(data, "/contact/phone");
-        String typeOfCover = emailUtils.getParamSafely(data, "/optionsTypeOfCover");
-        String make = emailUtils.getParamSafely(data, "vehicle/makeDes");
-        String model = emailUtils.getParamSafely(data, "vehicle/modelDes");
-        String vehicleVariant = emailUtils.getParamSafely(data, "vehicle/variant");
-        String vehicleYear = emailUtils.getParamSafely(data, "vehicle/year");
+        String typeOfCover = emailUtils.getParamSafely(data, "quote/optionsTypeOfCover");
+        String make = emailUtils.getParamSafely(data, "/vehicle/makeDes");
+        String model = emailUtils.getParamSafely(data, "/vehicle/modelDes");
+        String vehicleVariant = emailUtils.getParamSafely(data, "/vehicle/variant");
+        String vehicleYear = emailUtils.getParamSafely(data, "/vehicle/year");
+        String optIn = emailUtils.getParamSafely(data, "/contact/marketing");
         List<String> validDates = getAllResultProperties(resultsProperties, "validateDate/display");
 
-        resultsProperties.forEach(resultProperty -> {
+
+        /*resultsProperties.forEach(resultProperty -> {
             System.out.println("" + resultProperty.getProperty() + ":" + resultProperty.getValue());
-        });
+        });*/
         emailRequest.setProviders(providerNames);
         emailRequest.setProviderPhoneNumbers(providerPhoneNumbers);
         emailRequest.setCommencementDate(LocalDate.parse(commencementDate, dateTimeFormatter));
-        emailRequest.setAddress(emailUtils.getParamSafely(data, "riskAddress/fullAddress"));
+        emailRequest.setAddress(emailUtils.getParamSafely(data, "quote/riskAddress/fullAddress"));
         emailRequest.setApplyUrls(quoteUrls);
         emailRequest.setProductDescriptions(productDes);
         emailRequest.setProviderCodes(brandCodes);
@@ -74,6 +77,8 @@ public class CarModelTranslator implements EmailTranslator {
         emailRequest.setPhoneNumber(phoneNumber);
         emailRequest.setExcesses(excesses);
         emailRequest.setValidDates(validDates);
+        emailRequest.setGaClientID(emailUtils.getParamSafely(data, "/gaclientid"));
+        emailRequest.setOptIn(OptIn.valueOf(optIn));
 
         CarEmailModel carEmailModel = new CarEmailModel();
         carEmailModel.setCoverType(typeOfCover);
@@ -84,7 +89,6 @@ public class CarModelTranslator implements EmailTranslator {
         emailRequest.setCarEmailModel(Optional.of(carEmailModel));
 
         if (!openingHours.isEmpty()) emailRequest.setCallCentreHours(openingHours.get(0));
-
 
         String email = getEmail(data);
         if (!StringUtils.isBlank(email)) emailRequest.setEmailAddress(email);

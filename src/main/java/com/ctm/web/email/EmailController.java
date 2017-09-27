@@ -86,7 +86,6 @@ public class EmailController {
         catch(Exception e){
             LOGGER.error("Exception: " + e.getMessage());
         }
-
     }
 
     private EmailTranslator getEmailTranslator(String verticalCode){
