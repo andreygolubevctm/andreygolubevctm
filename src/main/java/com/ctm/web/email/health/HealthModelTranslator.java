@@ -27,42 +27,48 @@ public class HealthModelTranslator {
         List<String> premiumLabel = emailUtils.buildParameterList(request, "rank_premiumText");
         List<String> premium = emailUtils.buildParameterList(request, "rank_premium");
         List<String> providerCodes = emailUtils.buildParameterList(request, "rank_provider");
+        String gaclientId = emailUtils.getParamFromXml(dataXml, "gaclientid", "/health/");
+        emailRequest.setVertical(vertical);
         emailRequest.setProviders(providerName);
         emailRequest.setPremiumLabels(premiumLabel);
         emailRequest.setProviderCodes(providerCodes);
         emailRequest.setPremiums(premium);
         emailRequest.setPremiumFrequency(request.getParameter("rank_frequency0"));
+        emailRequest.setCoverType(request.getParameter("rank_coverType0"));
+        emailRequest.setGaClientID(gaclientId);
 
         String benefitCodes = request.getParameter("rank_benefitCodes0");
-        String primaryCurrentPHI0 = request.getParameter("rank_primaryCurrentPHI0");
         String extrasPdsUrl = request.getParameter("rank_extrasPdsUrl0");
         String coPayment =  request.getParameter("rank_coPayment0");
         String excessPerPerson = request.getParameter("rank_excessPerPerson0");
         String excessPerPolicy = request.getParameter("rank_excessPerPolicy0");
-        String healthMembership = request.getParameter("rank_healthMembership0");
         String excessPerAdmission = request.getParameter("rank_excessPerAdmission0");
         String hospitalPdsUrl = request.getParameter("rank_hospitalPdsUrl0");
         String healthSituation = request.getParameter("rank_healthSituation0");
-        String coverType = request.getParameter("rank_coverType0");
+
         String dataXml = request.getParameter("data");
-        String gaclientId = emailUtils.getParamFromXml(dataXml, "gaclientid", "/health/");
 
         HealthEmailModel healthEmailModel = new HealthEmailModel();
-        healthEmailModel.setCoverType(coverType);
         healthEmailModel.setBenefitCodes(benefitCodes);
-        healthEmailModel.setPrimaryCurrentPHI(primaryCurrentPHI0);
-        healthEmailModel.setP1ExtrasPdsUrl(extrasPdsUrl);
-        healthEmailModel.setP1Copayment(coPayment);
-        healthEmailModel.setP1ExcessPerPerson(excessPerPerson);
-        healthEmailModel.setP1ExcessPerPolicy(excessPerPolicy);
-        healthEmailModel.setHealthMembership(healthMembership);
-        healthEmailModel.setP1ExcessPerAdmission(excessPerAdmission);
-        healthEmailModel.setP1HospitalPdsUrl(hospitalPdsUrl);
-        healthEmailModel.setSituationType(healthSituation);
-        healthEmailModel.setNumberOfChildren(emailUtils.getParamSafely(data,vertical + "/healthCover/dependants"));
-        healthEmailModel.setSituationType(emailUtils.getParamSafely(data,vertical + "/situation/healthCvr"));
         healthEmailModel.setCurrentCover(emailUtils.getParamSafely(data,vertical + "/healthCover/primary/cover"));
-        emailRequest.setGaClientID(gaclientId);
+        healthEmailModel.setNumberOfChildren(emailUtils.getParamSafely(data,vertical + "/healthCover/dependants"));
+        healthEmailModel.setProvider1Copayment(coPayment);
+        healthEmailModel.setProvider1ExcessPerAdmission(excessPerAdmission);
+        healthEmailModel.setProvider1ExcessPerPolicy(excessPerPolicy);
+        healthEmailModel.setProvider1ExtrasPdsUrl(extrasPdsUrl);
+        healthEmailModel.setProvider1HospitalPdsUrl(hospitalPdsUrl);
+
+        // Not sure why this is here twice.
+        // Not sure why this is here twice.
+        // Not sure why this is here twice.
+        // Not sure why this is here twice.
+        healthEmailModel.setSituationType(healthSituation);
+        healthEmailModel.setSituationType(emailUtils.getParamSafely(data,vertical + "/situation/healthCvr"));
+        // Not sure why this is here twice.
+        // Not sure why this is here twice.
+        // Not sure why this is here twice.
+        // Not sure why this is here twice.
+
         emailRequest.setHealthEmailModel(healthEmailModel);
         setDataFields(emailRequest, data);
     }

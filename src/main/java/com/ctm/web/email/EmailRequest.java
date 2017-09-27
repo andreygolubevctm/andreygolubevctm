@@ -23,13 +23,13 @@ public class EmailRequest {
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime commencementDate;
-    private List<String> coverTypes;
+    private String coverType;
     private String emailAddress;
     private OptIn optIn;
     private String firstName;
     private String gaClientID;
     private String lastName;
-    private String partnersQuoted;
+    private Int partnersQuoted;
     private String phoneNumber;
     private String premiumFrequency;
     private List<String> premiumLabels;
@@ -43,6 +43,7 @@ public class EmailRequest {
     private String subscriberKey;
     private String transactionId;
     private String unsubscribeURL;
+    private String vertical;
 
     private HealthEmailModel healthEmailModel;
 
@@ -94,12 +95,12 @@ public class EmailRequest {
         this.commencementDate = commencementDate;
     }
 
-    public List<String> getCoverTypes() {
-        return coverTypes;
+    public String getCoverType() {
+        return coverType;
     }
 
-    public void setCoverTypes(List<String> coverTypes) {
-        this.coverTypes = coverTypes;
+    public void setCoverType(String coverType) {
+        this.coverType = coverType;
     }
 
     public String getEmailAddress() {
@@ -146,7 +147,7 @@ public class EmailRequest {
         return partnersQuoted;
     }
 
-    public void setPartnersQuoted(String partnersQuoted) {
+    public void setPartnersQuoted(Int partnersQuoted) {
         this.partnersQuoted = partnersQuoted;
     }
 
