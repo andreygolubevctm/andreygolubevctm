@@ -262,4 +262,12 @@ public class EmailRequest {
     public void setHealthEmailModel(HealthEmailModel healthEmailModel) {
         this.healthEmailModel = healthEmailModel;
     }
+
+    public String getVertical() {
+        return vertical;
+    }
+
+    public void setVertical(String vertical) {
+        this.address = address;
+    }
 }
