@@ -54,7 +54,20 @@
 		</ul>
 
 		<div class="coverLevelTabs hidden-xs">
-			<div class="currentTabsContainer">
+			<div class="currentTabsContainer"></div>
+			<div class="col-xs-5 col-sm-3 col-md-3 clt-trip-filter">
+				<div class="col-xs-12 col-md-7"><b>Excess up to</b></div>
+				<div class="col-xs-12 col-md-5">
+					<a type="button" id="excessFilterDropdownBtn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<i class="icon icon-angle-down"></i>
+					</a>
+					<div class="dropdown-menu" aria-labelledby="excessFilterDropdownBtn">
+						<travel_results_filters:excess />
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-2 col-sm-2 col-md-2 clt-trip-filter hidden-xs">
+				<div class="col-xs-12">More filters <i class="icon icon-angle-down"></i></div>
 			</div>
 		</div>
 	</jsp:attribute>

@@ -248,13 +248,6 @@
 				originatingTab = settings.verticalMapping[tab.rankingFilter];
 			}
 		}
-		out += '<div class="col-xs-5 col-sm-3 col-md-3 clt-trip-filter">';
-		out += 		'<div class="col-xs-12 col-md-7"><b>Excess up to</b></div>';
-		out +=		'<div class="col-xs-12 col-md-5">$150 <i class="icon icon-angle-down"></i></div>';
-		out += '</div>';
-        out += '<div class="col-xs-2 col-sm-2 col-md-2 clt-trip-filter hidden-xs">';
-        out +=		'<div class="col-xs-12">More filters <i class="icon icon-angle-down"></i></div>';
-        out += '</div>';
 
 		$currentTabContainer.empty().html(out);
 
