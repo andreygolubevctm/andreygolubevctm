@@ -69,13 +69,9 @@ public class EmailController {
             //String transactionId = request.getParameter("transactionId");
             Long transactionId = RequestUtils.getTransactionIdFromRequest(request);
             Data data = sessionData.getSessionDataForTransactionId(transactionId);
-            emailRequest.setFirstName(request.getParameter("name"));
-            emailRequest.setAddress(request.getParameter("address"));
             emailRequest.setTransactionId(transactionId.toString());
             emailRequest.setBrand(brand);
-            List<String> quoteRefs = new ArrayList<>();
-            quoteRefs.add(transactionId.toString());
-            emailRequest.setQuoteRefs(quoteRefs);
+
 
             if(VerticalType.HEALTH == VerticalType.valueOf(verticalCode)){
                 healthModelTranslator.setHealthFields(emailRequest, request, data);

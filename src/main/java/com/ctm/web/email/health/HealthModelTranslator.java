@@ -1,6 +1,14 @@
 package com.ctm.web.email.health;
 
 import com.ctm.interfaces.common.types.VerticalType;
+import com.ctm.web.core.content.dao.ContentDao;
+import com.ctm.web.core.content.model.Content;
+import com.ctm.web.core.exceptions.ConfigSettingException;
+import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.model.settings.PageSettings;
+import com.ctm.web.core.services.ApplicationService;
+import com.ctm.web.core.services.SettingsService;
+import com.ctm.web.core.utils.RequestUtils;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.email.EmailRequest;
 import com.ctm.web.email.EmailUtils;
@@ -9,7 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 /**
  * Created by akhurana on 22/09/17.
@@ -22,7 +32,7 @@ public class HealthModelTranslator {
     private static final String vertical = VerticalType.HEALTH.name().toLowerCase();
     private static final VerticalType verticalCode = VerticalType.HEALTH;
 
-    public void setHealthFields(EmailRequest emailRequest, HttpServletRequest request, Data data){
+    public void setHealthFields(EmailRequest emailRequest, HttpServletRequest request, Data data) throws DaoException, ConfigSettingException {
         List<String> providerName = emailUtils.buildParameterList(request, "rank_providerName");
         List<String> premiumLabel = emailUtils.buildParameterList(request, "rank_premiumText");
         List<String> premium = emailUtils.buildParameterList(request, "rank_premium");
@@ -44,7 +54,11 @@ public class HealthModelTranslator {
         String excessPerPolicy = request.getParameter("rank_excessPerPolicy0");
         String excessPerAdmission = request.getParameter("rank_excessPerAdmission0");
         String hospitalPdsUrl = request.getParameter("rank_hospitalPdsUrl0");
-
+        String healthSituation = request.getParameter("rank_healthSituation0");
+        String specialOffer = request.getParameter("rank_specialOffer0");
+        List<String> specialOffers = new ArrayList<>();
+        specialOffers.add(specialOffer);
+        String coverType = request.getParameter("rank_coverType0");
         String dataXml = request.getParameter("data");
 
         HealthEmailModel healthEmailModel = new HealthEmailModel();
@@ -59,8 +73,21 @@ public class HealthModelTranslator {
         healthEmailModel.setSituationType(emailUtils.getParamSafely(data,vertical + "/situation/healthCvr"));
 
         emailRequest.setHealthEmailModel(healthEmailModel);
+        emailRequest.setCallCentreHours(getCallCentreNumber(request));
+        List<String> quoteRefs = new ArrayList<>();
+        Long transactionId = RequestUtils.getTransactionIdFromRequest(request);
+        IntStream.range(1,10).forEach(value -> quoteRefs.add(transactionId.toString()));
+        emailRequest.setQuoteRefs(quoteRefs);
+        emailRequest.setProviderSpecialOffers(specialOffers);
         setDataFields(emailRequest, data);
     }
+    private String getCallCentreNumber(HttpServletRequest request) throws DaoException, ConfigSettingException {
+        PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
+        ContentDao contentDao = new ContentDao(pageSettings.getBrandId(), pageSettings.getVertical().getId());
+        Content content = contentDao.getByKey("callCentreNumber", ApplicationService.getServerDate(), false);
+        return content != null ? content.getContentValue() : "";
+    }
+
 
     private void setDataFields(EmailRequest emailRequest, Data data){
         String email = getEmail(emailRequest,data);
