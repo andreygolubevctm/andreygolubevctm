@@ -29,7 +29,7 @@ public class EmailRequest {
     private String firstName;
     private String gaClientID;
     private String lastName;
-    private Int partnersQuoted;
+    private Integer partnersQuoted;
     private String phoneNumber;
     private String premiumFrequency;
     private List<String> premiumLabels;
@@ -143,11 +143,11 @@ public class EmailRequest {
         this.lastName = lastName;
     }
 
-    public String getPartnersQuoted() {
+    public Integer getPartnersQuoted() {
         return partnersQuoted;
     }
 
-    public void setPartnersQuoted(Int partnersQuoted) {
+    public void setPartnersQuoted(Integer partnersQuoted) {
         this.partnersQuoted = partnersQuoted;
     }
 
