@@ -44,7 +44,6 @@ public class HealthModelTranslator {
         String excessPerPolicy = request.getParameter("rank_excessPerPolicy0");
         String excessPerAdmission = request.getParameter("rank_excessPerAdmission0");
         String hospitalPdsUrl = request.getParameter("rank_hospitalPdsUrl0");
-        String healthSituation = request.getParameter("rank_healthSituation0");
 
         String dataXml = request.getParameter("data");
 
@@ -57,17 +56,7 @@ public class HealthModelTranslator {
         healthEmailModel.setProvider1ExcessPerPolicy(excessPerPolicy);
         healthEmailModel.setProvider1ExtrasPdsUrl(extrasPdsUrl);
         healthEmailModel.setProvider1HospitalPdsUrl(hospitalPdsUrl);
-
-        // Not sure why this is here twice.
-        // Not sure why this is here twice.
-        // Not sure why this is here twice.
-        // Not sure why this is here twice.
-        healthEmailModel.setSituationType(healthSituation);
         healthEmailModel.setSituationType(emailUtils.getParamSafely(data,vertical + "/situation/healthCvr"));
-        // Not sure why this is here twice.
-        // Not sure why this is here twice.
-        // Not sure why this is here twice.
-        // Not sure why this is here twice.
 
         emailRequest.setHealthEmailModel(healthEmailModel);
         setDataFields(emailRequest, data);
