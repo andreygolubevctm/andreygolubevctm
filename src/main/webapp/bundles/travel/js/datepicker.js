@@ -2,6 +2,7 @@
 
   var departurePicker;
   var returnPicker;
+  var currentDate = new Date();
 
   var elements = {
     departure: document.getElementById('departure'),
@@ -19,11 +20,14 @@
     departureOptions: {
       dateFormat: "d/m/y",
       minDate: 'today',
+      maxDate: new Date(currentDate.getFullYear() + 1, currentDate.getMonth(), currentDate.getDate()),
       onOpen: function() {
         display.departure.classList.add('dp__input__item--active');
       },
       onChange: function(selectedDates, dateStr, instance) {
-        display.departure.value = dateStr;
+        var dateArray = dateStr.split('/');
+        dateArray[2] = '20' + dateArray[2];
+        display.departure.value = dateArray.join('/');
         removeValidationErrors(instance);
         setValueToHiddenFields(
           {
@@ -40,7 +44,9 @@
           dates.reverse();
         }
         if (dates.length === 0 || selectedDates.length === 0 || dates[0].getTime() !== selectedDates[0].getTime()) {
+          var dateArray = display.departure.value.split('/').reverse();
           returnPicker.set('minDate', dateStr);
+          returnPicker.set('maxDate', new Date(Number(dateArray[0]) + 1, dateArray[1], dateArray[2]));
           returnPicker.setDate(dateStr, true);
           returnPicker.open();
         }
@@ -50,6 +56,7 @@
       dateFormat: "d/m/y",
     	mode: 'range',
       minDate: 'today',
+      maxDate: new Date(currentDate.getFullYear() + 1, currentDate.getMonth(), currentDate.getDate()),
       onOpen: function(selectedDates, dateStr, instance) {
         display.returned.classList.add('dp__input__item--active');
         if (selectedDates.length === 0 && departurePicker.selectedDates.length === 1) {
