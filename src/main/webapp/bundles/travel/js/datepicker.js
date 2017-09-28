@@ -55,8 +55,14 @@
         if (selectedDates.length === 0 && departurePicker.selectedDates.length === 1) {
           returnPicker.setDate(elements.departure.value, true);
         }
+        if (selectedDates.length === 2) {
+          instance.jumpToDate(selectedDates[1]);
+        }
       },
       onChange: function(selectedDates, dateStr, instance) {
+        if (instance.selectedDates.length === 1 && departurePicker.selectedDates.length === 1 && instance.selectedDates[0].toString() !== departurePicker.selectedDates[0].toString()) {
+          returnPicker.setDate([display.departure.value, dateStr], true);
+        }
         if (instance.selectedDates.length > 1) {
           var dates = instance.selectedDates;
           if (dates[0] > dates[1]) {
