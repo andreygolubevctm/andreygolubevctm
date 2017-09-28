@@ -42,12 +42,11 @@ public class HealthModelTranslator implements EmailTranslator{
     public void setVerticalSpecificFields(EmailRequest emailRequest, HttpServletRequest request, Data data){
         List<String> providerName = emailUtils.buildParameterList(request, "rank_providerName");
         List<String> premiumLabel = emailUtils.buildParameterList(request, "rank_premiumText");
-        List<String> premium = emailUtils.buildParameterList(request, "rank_premium");
         List<String> providerCodes = emailUtils.buildParameterList(request, "rank_provider");
         emailRequest.setProviders(providerName);
         emailRequest.setPremiumLabels(premiumLabel);
         emailRequest.setProviderCodes(providerCodes);
-        emailRequest.setPremiums(premium);
+
         emailRequest.setPremiumFrequency(request.getParameter("rank_frequency0"));
 
         String benefitCodes = request.getParameter("rank_benefitCodes0");
@@ -59,7 +58,6 @@ public class HealthModelTranslator implements EmailTranslator{
         String healthMembership = request.getParameter("rank_healthMembership0");
         String excessPerAdmission = request.getParameter("rank_excessPerAdmission0");
         String hospitalPdsUrl = request.getParameter("rank_hospitalPdsUrl0");
-        String healthSituation = request.getParameter("rank_healthSituation0");
         String coverType = request.getParameter("rank_coverType0");
         String dataXml = request.getParameter("data");
         String gaclientId = emailUtils.getParamFromXml(dataXml, "gaclientid", "/health/");
@@ -75,7 +73,6 @@ public class HealthModelTranslator implements EmailTranslator{
         healthEmailModel.setHealthMembership(healthMembership);
         healthEmailModel.setP1ExcessPerAdmission(excessPerAdmission);
         healthEmailModel.setP1HospitalPdsUrl(hospitalPdsUrl);
-        healthEmailModel.setSituationType(healthSituation);
         healthEmailModel.setNumberOfChildren(emailUtils.getParamSafely(data,vertical + "/healthCover/dependants"));
         healthEmailModel.setSituationType(emailUtils.getParamSafely(data,vertical + "/situation/healthCvr"));
         healthEmailModel.setCurrentCover(emailUtils.getParamSafely(data,vertical + "/healthCover/primary/cover"));
