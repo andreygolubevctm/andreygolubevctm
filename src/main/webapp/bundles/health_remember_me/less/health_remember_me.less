@@ -1,0 +1,84 @@
+body.jeinit.remember-me-page {
+	.header-top {
+		.navbar-toggle {
+			display: none;
+		}
+	}
+
+	.journeyEngineLoader {
+		display: none;
+	}
+}
+
+.remember-me {
+	min-height: 500px;
+
+	h1, h2, h3, h4, h5, h6 {
+		color: #333333;
+	}
+
+	h1 {
+		a {
+			font-size: @font-size-h2;
+		}
+	}
+
+	&-form {
+	    margin-bottom: 20px;
+	    .btn {
+			display: block;
+		    width:100%;
+			&.btn-cta {
+				margin-bottom:15px;
+			}
+			&.btn-secondary {
+				padding-top:9px;
+				padding-bottom:9px;
+				margin-right:0;
+			}
+			@media(@sm) {
+				display:inline-block;
+				width:auto;
+				&.btn-cta {
+					margin-bottom:0px;
+				}
+				&.btn-secondary {
+					margin-right:15px;
+				}
+			}
+	    }
+	    .form-group {
+	      border-bottom: 0;
+	    }
+	    .remember-me-dob-group {
+
+			@media (@xs-only) {
+				.control-label {
+			        margin-bottom: 15px;
+			        width: 100%;
+				}
+			}
+
+			label.error {
+				color: @theme-accent-3;
+				font-size: 0.9em;
+				text-align: left;
+				display: block;
+			}
+
+			@media (@sm) {
+
+		        > div.col-sm-4 {
+					width: auto;
+		        }
+
+		        .control-label {
+			        padding-top: 0;
+			        text-align: right;
+			        line-height: 2.5;
+			        width: auto;
+		        }
+			}
+	    }
+	}
+}

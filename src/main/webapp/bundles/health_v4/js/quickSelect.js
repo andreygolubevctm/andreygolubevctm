@@ -32,11 +32,10 @@
         $elements.quickSelect.on('click', 'a', function preSelectBenefits(){
             var $this = $(this),
                 isHospital = $this.closest($elements.hospital).length === 1,
-                isBenefitsSwitchedOn = meerkat.modules.splitTest.isActive(2) ?
-                    (isHospital ? meerkat.modules.benefitsSwitch.isHospitalOn() : meerkat.modules.benefitsSwitch.isExtrasOn()) :
-                    false;
+                isBenefitsSwitchedOn = isHospital ?
+                    meerkat.modules.benefitsSwitch.isHospitalOn() : meerkat.modules.benefitsSwitch.isExtrasOn();
 
-            if (!meerkat.modules.splitTest.isActive(2) || isBenefitsSwitchedOn) {
+            if (isBenefitsSwitchedOn) {
                 var selectedItems = isHospital ? meerkat.modules.benefitsModel.getHospital() : meerkat.modules.benefitsModel.getExtras(),
                     options = {
                         isHospital: isHospital,

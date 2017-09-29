@@ -37,7 +37,7 @@
 
             configureContactDetails();
 
-            if (_.indexOf(['amend', 'latest', 'load', 'start-again'], meerkat.site.pageAction) >= 0) {
+            if (_.indexOf(['remember','amend', 'latest', 'load', 'start-again'], meerkat.site.pageAction) >= 0) {
 
                 // If retrieving a quote and a product had been selected, inject the fund's application set.
                 if (meerkat.modules.healthFunds.checkIfNeedToInjectOnAmend) {
@@ -123,10 +123,23 @@
         if (meerkat.site.isFromBrochureSite === true) {
             startStepId = steps.startStep.navigationId;
         // Use the stage user was on when saving their quote
-        } else if (meerkat.site.journeyStage.length > 0 && _.indexOf(['amend', 'latest'], meerkat.site.pageAction) >= 0) {
+        } else if (meerkat.site.journeyStage.length > 0 && _.indexOf(['remember', 'amend', 'latest'], meerkat.site.pageAction) >= 0) {
             // Do not allow the user to go past the results page on amend.
-            if (meerkat.site.journeyStage === 'apply' || meerkat.site.journeyStage === 'payment') {
-                startStepId = 'results';
+            // If remember me redirect set step to results
+            if (
+                meerkat.site.pageAction === 'latest' ||
+                (meerkat.site.pageAction === 'remember' && meerkat.site.reviewEdit === false) ||
+                (
+                    meerkat.site.pageAction === 'amend' &&
+                    (
+                        meerkat.site.journeyStage === 'apply' ||
+                        meerkat.site.journeyStage === 'payment'
+                    )
+                )
+            ) {
+	            startStepId = 'results';
+            } else if(meerkat.site.pageAction === 'remember' && meerkat.site.reviewEdit === true) {
+	            startStepId = 'start';
             } else {
                 startStepId = meerkat.site.journeyStage;
             }
@@ -239,20 +252,18 @@
                 validate: true,
                 customValidation: function validateSelection(callback) {
                     var areBenefitsSwitchOn = meerkat.modules.benefitsSwitch.isHospitalOn() || meerkat.modules.benefitsSwitch.isExtrasOn(),
-                        success = meerkat.modules.splitTest.isActive(2) ? areBenefitsSwitchOn : true;
+                        success = areBenefitsSwitchOn;
 
-                    if (meerkat.modules.splitTest.isActive(2)) {
-                        if (meerkat.modules.benefitsSwitch.isExtrasOn()) {
-                            if (meerkat.modules.benefitsModel.getExtrasCount() === 0) {
-                                meerkat.modules.benefits.toggleExtrasMessage(false);
-                                meerkat.modules.benefitsSelectionScroller.triggerScroll('extras');
-                                // push error tracking object into CtMDatalayer
-                                meerkat.modules.benefits.errorTracking('benefits-switch-extras');
+                    if (meerkat.modules.benefitsSwitch.isExtrasOn()) {
+                        if (meerkat.modules.benefitsModel.getExtrasCount() === 0) {
+                            meerkat.modules.benefits.toggleExtrasMessage(false);
+                            meerkat.modules.benefitsSelectionScroller.triggerScroll('extras');
+                            // push error tracking object into CtMDatalayer
+                            meerkat.modules.benefits.errorTracking('benefits-switch-extras');
 
-                                success = false;
-                            } else {
-                                meerkat.modules.benefits.toggleExtrasMessage(true);
-                            }
+                            success = false;
+                        } else {
+                            meerkat.modules.benefits.toggleExtrasMessage(true);
                         }
                     }
 
@@ -264,9 +275,7 @@
                 object: meerkat.modules.health.getTrackingFieldsObject
             },
             onInitialise: function onBenefitsInit(event) {
-                if (meerkat.modules.splitTest.isActive(2)) {
-                    meerkat.modules.benefitsSwitch.initBenefitsSwitch();
-                }
+                meerkat.modules.benefitsSwitch.initBenefitsSwitch();
             },
             onBeforeEnter: function enterBenefitsStep(event) {
                 // configure progress bar
@@ -283,6 +292,7 @@
                 _incrementTranIdBeforeEnteringSlide();
             },
             onAfterEnter: function enterBenefitsStep(event) {
+                meerkat.modules.octoberComp.closeMobileBanner();
                 // Note: Not sure if this will be introduced back in a later date
                 // var toggleBarInitSettings = {
                 //     container: 'body[data-step="benefits"]',
@@ -353,6 +363,10 @@
             title: 'Your Results',
             navigationId: 'results',
             slideIndex: 3,
+            tracking: {
+                touchType: 'H',
+                touchComment: 'HLT results'
+            },
             validation: {
                 validate: false,
                 customValidation: function validateSelection(callback) {
@@ -402,7 +416,11 @@
                     // Reset selected product. (should not be inside a forward or backward condition because users can skip steps backwards)
                     meerkat.modules.healthResults.resetSelectedProduct();
                 }
-                meerkat.messaging.publish(meerkatEvents.filters.FILTERS_CANCELLED);
+
+                // Race condition, need to wait for healthFilters module to be ready for Remember Me redirect to results to work
+                meerkat.modules.utils.pluginReady('healthFilters').done(function() {
+                    meerkat.messaging.publish(meerkatEvents.filters.FILTERS_CANCELLED);
+                });
             },
             onAfterEnter: function onAfterEnterResultsStep(event) {
                 if (event.isForward === true) {

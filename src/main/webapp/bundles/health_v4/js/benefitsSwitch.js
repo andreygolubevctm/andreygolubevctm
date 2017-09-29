@@ -22,19 +22,19 @@
     function _setupFields() {
         $elements = {
             hospitalSwitch: $('#health_benefits_HospitalSwitch'),
-            extrasSwitch: $('#health_benefits_ExtrasSwitch')
+            extrasSwitch: $('#health_benefits_ExtrasSwitch'),
+            hiddenHospitalCover: $('input[name="health_benefits_benefitsExtras_Hospital"]'),
+            hiddenExtraCover: $('input[name="health_benefits_benefitsExtras_GeneralHealth"]')
         };
 
-        if (meerkat.site.isNewQuote) {
-            $elements.hospitalSwitch.bootstrapSwitch('setState', _isSwitchedOn.hospital);
-            $elements.extrasSwitch.bootstrapSwitch('setState', _isSwitchedOn.extras);
-        } else {
-            $elements.hospitalSwitch.bootstrapSwitch('setState', $elements.hospitalSwitch.prop('checked'));
-            $elements.extrasSwitch.bootstrapSwitch('setState', $elements.extrasSwitch.prop('checked'));
+        var hasHospitalCover = $elements.hiddenHospitalCover.val() === 'Y',
+            hasExtrasCover = $elements.hiddenExtraCover.val() === 'Y';
 
-            _onBenefitsSwitch('hospital', $elements.hospitalSwitch.prop('checked'));
-            _onBenefitsSwitch('extras', $elements.extrasSwitch.prop('checked'));
-        }
+        $elements.hospitalSwitch.bootstrapSwitch('setState', hasHospitalCover);
+        $elements.extrasSwitch.bootstrapSwitch('setState', hasExtrasCover);
+
+        _onBenefitsSwitch('hospital', hasHospitalCover, false);
+        _onBenefitsSwitch('extras', hasExtrasCover);
     }
 
     function _eventSubscriptions() {
@@ -50,11 +50,13 @@
         });
     }
 
-    function _onBenefitsSwitch(benefit, isSwitched) {
+    function _onBenefitsSwitch(benefit, isSwitched, updateCoverType) {
+        updateCoverType = _.isUndefined(updateCoverType) ? true : false;
         _isSwitchedOn[benefit] = isSwitched;
         meerkat.messaging.publish(moduleEvents.benefitsSwitch.SWITCH_CHANGED, {
             benefit: benefit,
-            isSwitchedOn: isSwitched
+            isSwitchedOn: isSwitched,
+            updateCoverType: updateCoverType
         });
     }
 

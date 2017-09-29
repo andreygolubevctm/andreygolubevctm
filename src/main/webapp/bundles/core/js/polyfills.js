@@ -50,9 +50,9 @@
 
             //Add the needsclick class to an element to prevent the behaviour.
             if (Modernizr.touch) {
-                yepnope.injectJs(meerkat.site.urls.base + 'assets/js/bundles/plugins/fastclick' + meerkat.site.minifiedFileString + '.js', function initFastClick() {
-                    FastClick.attach(document.body);
-                });
+                // yepnope.injectJs(meerkat.site.urls.base + 'assets/js/bundles/plugins/fastclick' + meerkat.site.minifiedFileString + '.js', function initFastClick() {
+                //     FastClick.attach(document.body);
+                // });
             }
 
             // Add the startsWith ES6 prototype method

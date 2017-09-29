@@ -20,14 +20,33 @@
 <c:set var="fsgPlaceHolder">${pageSettings.getSetting('fsgUrl')}</c:set>
 <c:set var="companyNamePlaceHolder"><content:optin key="brandDisplayName" useSpan="true"/></c:set>
 
-<c:set var="optInText" value="${fn:replace(
-									fn:replace(
-										fn:replace(
-											fn:replace(optInText,
-												'%FinancialServicesGuidePlaceHolder%', fsgPlaceHolder),
-												'%privacyStmtPlaceHolder%', privacyStmtPlaceHolder),
-												'%websiteTermConfigPlaceHolder%', websiteTermConfigPlaceHolder),
-												'%companyNamePlaceHolder%', companyNamePlaceHolder)}" />
+
+<c:choose>
+	<c:when test="${octoberComp}">
+		<c:set var="optInText"><content:get key="octoberCompOptInText" /></c:set>
+		<c:set var="optInText" value="${fn:replace(
+											fn:replace(
+												fn:replace(
+													fn:replace(
+													fn:replace(optInText,
+														'%FinancialServicesGuidePlaceHolder%', fsgPlaceHolder),
+														'%vertical%', 'home and/or contents'),
+														'%privacyStmtPlaceHolder%', privacyStmtPlaceHolder),
+														'%websiteTermConfigPlaceHolder%', websiteTermConfigPlaceHolder),
+														'%companyNamePlaceHolder%', companyNamePlaceHolder)}" />
+	</c:when>
+	<c:otherwise>
+		<c:set var="optInText" value="${fn:replace(
+											fn:replace(
+												fn:replace(
+													fn:replace(optInText,
+														'%FinancialServicesGuidePlaceHolder%', fsgPlaceHolder),
+														'%privacyStmtPlaceHolder%', privacyStmtPlaceHolder),
+														'%websiteTermConfigPlaceHolder%', websiteTermConfigPlaceHolder),
+														'%companyNamePlaceHolder%', companyNamePlaceHolder)}" />
+	</c:otherwise>
+</c:choose>
+
 
 <%-- HTML --%>
 <form_v2:fieldset legend="Terms and Conditions" id="${name}FieldSet">
