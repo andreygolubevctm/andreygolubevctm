@@ -81,7 +81,7 @@
           setValueToHiddenFields(
             {
               name: 'toDate',
-              dateString: elements.returned.value
+              dateString: display.returned.value
             }
           );
           removeValidationErrors(instance);
