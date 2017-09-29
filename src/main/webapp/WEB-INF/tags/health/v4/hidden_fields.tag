@@ -36,4 +36,4 @@
 <core_v1:referral_tracking vertical="${pageSettings.getVerticalCode()}" />
 <core_v2:authToken authToken="${param['authToken']}"/>
 
-<field_v1:hidden xpath="health/brochureEmailHistory" />>
+<field_v1:hidden xpath="health/brochureEmailHistory" />
