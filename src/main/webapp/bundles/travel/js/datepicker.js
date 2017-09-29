@@ -68,9 +68,8 @@
       },
       onChange: function(selectedDates, dateStr, instance) {
         if (instance.selectedDates.length === 1 && departurePicker.selectedDates.length === 1 && instance.selectedDates[0].toString() !== departurePicker.selectedDates[0].toString()) {
-          returnPicker.setDate([display.departure.value, dateStr], true);
-        }
-        if (instance.selectedDates.length > 1) {
+          returnPicker.setDate([departurePicker.selectedDates[0], instance.selectedDates[0]], true);
+        } else if (instance.selectedDates.length > 1) {
           var dates = instance.selectedDates;
           if (dates[0] > dates[1]) {
             dates.reverse();
