@@ -61,7 +61,7 @@
 					<a type="button" id="excessFilterDropdownBtn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						<i class="icon icon-angle-down"></i>
 					</a>
-					<div class="dropdown-menu" aria-labelledby="excessFilterDropdownBtn">
+					<div class="dropdown-menu dropdown-menu-excess-filter" aria-labelledby="excessFilterDropdownBtn">
 						<travel_results_filters:excess />
 					</div>
 				</div>

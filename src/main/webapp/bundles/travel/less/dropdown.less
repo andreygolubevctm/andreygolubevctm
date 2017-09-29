@@ -1,0 +1,44 @@
+.dropdown-menu-excess-filter {
+  top: 38px;
+  left: -135px;
+  min-width: 200px;
+
+  /* this CS forms the triangles */
+  &:before,
+  &:after {
+    position: absolute;
+    width: 0;
+    display: block;
+    height: 0;
+    left: 10%;
+    content: '';
+    border-style: solid;
+    border-width: 9px;
+  }
+
+  /* this border color controlls the outside, thin border */
+  &:before {
+    top: -19px;
+    border-color: transparent transparent @dropdown-border-color transparent;
+  }
+
+  /* this border color controlls the color of the triangle */
+  &:after {
+    top: -18px;
+    border-color: transparent transparent @dropdown-bg-color transparent;
+  }
+}
+
+.dropdown-item {
+  display: block;
+  width: 100%;
+  padding: 3px 1.5rem;
+  clear: both;
+  font-weight: 400;
+  color: #292b2c;
+  text-align: inherit;
+  white-space: nowrap;
+  background: 0 0;
+  border: 0;
+}
+
