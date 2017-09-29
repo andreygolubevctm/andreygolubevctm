@@ -31,7 +31,11 @@
 	            'q-jun$200-offer': {
 		            min: 200,
 		            max: 200
-	            }
+	            },
+                '2017oct$100': {
+                    min: 100,
+                    max: 100
+                }
             }
     };
 
@@ -56,7 +60,7 @@
                     approvedby:     $elements.root.find('.healthVoucherApprovedByRow').first(),
                     authorisation:  $elements.root.find('.healthVoucherAuthorisationRow').first(),
                     simples :   {
-                        defaultReason :      $elements.root.find('.dialogue.defaultReason').first(),
+                        defaultReason :      $elements.root.find('.dialogue.defaultReason').first()
                           },
                     messages:       $elements.root.find('.voucher-validation-messages'),
                     disableables:   $elements.root.find('.disableable-fields')
@@ -320,7 +324,7 @@
             $elements.inputs.value.empty().append('<option value="'+giftCardAmount+'">$'+giftCardAmount+'</option>');
         }
 
-        if(_.indexOf(['q-jun$100-offer','q-jun$200-offer'],reason) !== -1) {
+        if(_.indexOf(['q-jun$100-offer','q-jun$200-offer', '2017oct$100'],reason) !== -1) {
             $elements.inputs.value.val(valueRange.custom[reason].max);
         }
     }
