@@ -21,6 +21,7 @@ public class TransactionAccessService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(TransactionAccessService.class);
 
 	public static final String HEALTH_BEST_PRICE_EMAIL_XPATH = "health/contactDetails/email";
+	public static final String HEALTH_BROCHURE_EMAIL_HISTORY_XPATH = "health/brochureEmailHistory";
 
 	private final HashedEmailService hashedEmailService;
 	private final TransactionDetailsDao transactionDetailsDao;
@@ -44,13 +45,15 @@ public class TransactionAccessService {
 			EmailMaster emailRequest = emailData.getEmailMaster();
 			EmailMaster result = hashedEmailService.getEmailDetails(emailRequest.getHashedEmail(), emailRequest.getEmailAddress(), brandId);
 			if(result != null && result.isValid()){
-					if(verticalType == VerticalType.HEALTH) {
-						valid =  healthHasAccessToTransaction(result, emailData.getTransactionId(),  emailData.getEmailType());
-					} else {
-						valid = hasAccessTransactionHeader(result,
-								emailData.getTransactionId());
-					}
-					emailData.setEmailAddress(result.getEmailAddress());
+				if(verticalType == VerticalType.HEALTH) {
+					valid =  healthHasAccessToTransaction(result, emailData.getTransactionId(),  emailData.getEmailType());
+				} else {
+					valid = hasAccessTransactionHeader(result,
+							emailData.getTransactionId());
+				}
+				emailData.setEmailAddress(result.getEmailAddress());
+			} else {
+				LOGGER.debug("HashedEamilService could not find a match {}, {},{},{}", kv("result", result), kv("emailData", emailData), kv("verticalType", verticalType), kv("brandId", brandId));
 			}
 		} catch (DaoException e) {
 			LOGGER.error("Error checking transaction access {},{},{}", kv("emailData", emailData), kv("verticalType", verticalType), kv("brandId", brandId), e);
@@ -63,6 +66,11 @@ public class TransactionAccessService {
 		if(emailMode == EmailMode.BEST_PRICE){
 			TransactionDetail transactionDetail = transactionDetailsDao.getTransactionDetailByXpath(transactionId, HEALTH_BEST_PRICE_EMAIL_XPATH);
 			valid = transactionDetail != null && transactionDetail.getTextValue().equalsIgnoreCase(emailDetails.getEmailAddress());
+		} else if(emailMode == EmailMode.PRODUCT_BROCHURES) {
+			TransactionDetail transactionDetail = transactionDetailsDao.getTransactionDetailByXpath(transactionId,
+					HEALTH_BROCHURE_EMAIL_HISTORY_XPATH);
+			valid = transactionDetail != null && transactionDetail.getTextValue().contains(emailDetails.getEmailAddress
+					());
 		} else {
 			valid = hasAccessTransactionHeader(emailDetails,
 					transactionId);
