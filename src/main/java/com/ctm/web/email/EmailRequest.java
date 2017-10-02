@@ -268,6 +268,6 @@ public class EmailRequest {
     }
 
     public void setVertical(String vertical) {
-        this.address = address;
+        this.vertical = vertical;
     }
 }
