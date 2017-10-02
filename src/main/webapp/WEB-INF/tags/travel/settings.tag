@@ -13,7 +13,7 @@
 <c:if test="${empty isTrackingEnabled}">
 	<c:set var="isTrackingEnabled" value="${false}" />
 </c:if>
-
+<c:set var="octoberComp" scope="application" value="${false}"/>
 <c:set var="PHGPostImpressions">
 	<c:choose>
 		<c:when test="${isTrackingEnabled eq true}">
