@@ -5,7 +5,7 @@
 <%--HTML--%>
 <c:set var="fieldXpath" value="travel/filter/excess"/>
 <div class="dropdown-item">
-    <field_v2:checkbox
+    <field_v2:radio_button
             xpath="${fieldXpath}/all"
             value="all"
             required="false"
@@ -14,7 +14,7 @@
     />
 </div>
 <div class="dropdown-item">
-    <field_v2:checkbox
+    <field_v2:radio_button
             xpath="${fieldXpath}/250"
             value="250"
             required="false"
@@ -23,7 +23,7 @@
     />
 </div>
 <div class="dropdown-item">
-    <field_v2:checkbox
+    <field_v2:radio_button
             xpath="${fieldXpath}/200"
             value="200"
             required="false"
@@ -32,7 +32,7 @@
     />
 </div>
 <div class="dropdown-item">
-    <field_v2:checkbox
+    <field_v2:radio_button
             xpath="${fieldXpath}/150"
             value="150"
             required="false"
@@ -41,7 +41,7 @@
     />
 </div>
 <div class="dropdown-item">
-    <field_v2:checkbox
+    <field_v2:radio_button
             xpath="${fieldXpath}/100"
             value="100"
             required="false"
@@ -50,7 +50,7 @@
     />
 </div>
 <div class="dropdown-item">
-    <field_v2:checkbox
+    <field_v2:radio_button
             xpath="${fieldXpath}/50"
             value="50"
             required="false"
@@ -59,11 +59,11 @@
     />
 </div>
 <div class="dropdown-item">
-    <field_v2:checkbox
+    <field_v2:radio_button
             xpath="${fieldXpath}/nil"
             value="nil"
             required="false"
-            title="NILL"
+            title="NIL"
             label="true"
     />
 </div>
