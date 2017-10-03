@@ -396,16 +396,6 @@
                 meerkat.modules.healthDualPricing.initDualPricing();
                 meerkat.modules.healthPyrrCampaign.initPyrrCampaign();
                 meerkat.modules.healthRefineResultsMobileMenu.initHealthRefineResultsMobileMenu();
-                // meerkat.modules.healthResultsRefineMobile.initHealthResultsRefineMobile();
-                // meerkat.modules.mobileMenu.initMobileMenu({
-                //     title: 'Refine results',
-                //     footerButtonUpdateText: 'Apply filters',
-                //     footerButtonUpdateCB: function() {
-                //         meerkat.modules.journeyEngine.loadingShow('...updating your quotes...', true);
-                //         meerkat.modules.healthResults.get();
-                //     },
-                //     template: $('#refine-results-template')
-                // });
             },
             onBeforeEnter: function enterResultsStep(event) {
                 meerkat.modules.healthDependants.resetConfig();

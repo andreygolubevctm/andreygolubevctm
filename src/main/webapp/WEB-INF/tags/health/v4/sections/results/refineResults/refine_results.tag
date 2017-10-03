@@ -24,24 +24,24 @@
                 title="Apply the Australian Government Rebate to lower my upfront premium"
         />
 
-        <div class="mobile-menu-item-container">
-            <div class="mobile-menu-item" data-slide-panel="Hospital preferences">
+        <div class="mobile-filters-menu-item-container">
+            <div class="mobile-filters-menu-item" data-slide-panel="Hospital preferences">
                 <div>
                     Hospital insurance preferences <span class="icon icon-angle-right"></span>
                     <div class="refine-results-hospital-type">{{= hospitalType }} Cover</div>
                     <div class="refine-results-count-text">{{= hospitalCountText }}</div>
                 </div>
             </div>
-            <div class="mobile-menu-item" data-slide-panel="Extras preferences">
+            <div class="mobile-filters-menu-item" data-slide-panel="Extras preferences">
                 <div>
                     Extras insurance preferences <span class="icon icon-angle-right"></span>
                     <div class="refine-results-count-text">{{= extrasCountText }}</div>
                 </div>
             </div>
-            <div class="mobile-menu-item" data-slide-panel="Excess">
+            <div class="mobile-filters-menu-item" data-slide-panel="Excess">
                 <div>Excess <span class="icon icon-angle-right"></span></div>
             </div>
-            <div class="mobile-menu-item" data-slide-panel="Funds">
+            <div class="mobile-filters-menu-item" data-slide-panel="Funds">
                 <div>Refine funds <span class="icon icon-angle-right"></span></div>
             </div>
         </div>

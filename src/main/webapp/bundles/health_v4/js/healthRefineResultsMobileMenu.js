@@ -3,7 +3,7 @@
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
         moduleEvents = {
-            mobileMenu: {
+            mobileFiltersMenu: {
                 ON_RESET: 'ON_RESET',
                 FOOTER_BUTTON_UPDATE: 'FOOTER_BUTTON_UPDATE',
                 BACK_BUTTON_CLICKED: 'BACK_BUTTON_CLICKED'
@@ -34,7 +34,7 @@
         var htmlTemplate = _.template(settings.template.html());
         settings.htmlContent = htmlTemplate(_getData());
 
-        meerkat.modules.mobileMenu.initMobileMenu(settings);
+        meerkat.modules.mobileFiltersMenu.initMobileFiltersMenu(settings);
     }
 
     function _setupElements() {
@@ -49,7 +49,7 @@
         $elements.refineBtn.on('click', function() {
             if ($(this).hasClass('disabled')) return;
 
-            meerkat.modules.mobileMenu.open();
+            meerkat.modules.mobileFiltersMenu.open();
 
             $('#health_refine_results_discount').prop('checked', $elements.applyDiscount.val() === 'Y');
             $('#health_refine_results_rebate').prop('checked', $elements.applyRebate.val() === 'Y');
@@ -60,19 +60,19 @@
             });
         });
 
-        $(document).on('change', '.mobile-menu-body :input', function() {
-            meerkat.messaging.publish(moduleEvents.mobileMenu.FOOTER_BUTTON_UPDATE);
+        $(document).on('change', '.mobile-filters-menu-body :input', function() {
+            meerkat.messaging.publish(moduleEvents.mobileFiltersMenu.FOOTER_BUTTON_UPDATE);
         });
 
-        $(document).on('click', '.mobile-menu-item', function() {
-            $('.mobile-menu-body section[data-panel=1]').addClass('slide-out');
-            $('.mobile-menu-body section[data-panel="'+ $(this).attr('data-slide-panel') +'"]').addClass('slide-in');
+        $(document).on('click', '.mobile-filters-menu-item', function() {
+            $('.mobile-filters-menu-body section[data-panel=1]').addClass('slide-out');
+            $('.mobile-filters-menu-body section[data-panel="'+ $(this).attr('data-slide-panel') +'"]').addClass('slide-in');
 
-            meerkat.modules.mobileMenu.showBackBtn();
-            meerkat.modules.mobileMenu.updateHeaderTitle($(this).attr('data-slide-panel'));
+            meerkat.modules.mobileFiltersMenu.showBackBtn();
+            meerkat.modules.mobileFiltersMenu.updateHeaderTitle($(this).attr('data-slide-panel'));
         });
 
-        $(document).on('transitionend webkitTransitionEnd oTransitionEnd', '.mobile-menu-body section', function() {
+        $(document).on('transitionend webkitTransitionEnd oTransitionEnd', '.mobile-filters-menu-body section', function() {
             if ($(this).hasClass('slide-out')) {
                 $(this).removeClass('current');
             }
@@ -94,17 +94,17 @@
             enable();
         });
 
-        meerkat.messaging.subscribe(moduleEvents.mobileMenu.BACK_BUTTON_CLICKED, function() {
-            $('.mobile-menu-body section[data-panel=1]')
+        meerkat.messaging.subscribe(moduleEvents.mobileFiltersMenu.BACK_BUTTON_CLICKED, function() {
+            $('.mobile-filters-menu-body section[data-panel=1]')
                 .addClass('current')
                 .removeClass('slide-out');
 
-            $('.mobile-menu-body section:not([data-panel=1])').removeClass('current');
+            $('.mobile-filters-menu-body section:not([data-panel=1])').removeClass('current');
         });
 
         meerkat.messaging.subscribe(meerkatEvents.ON_RESET, function() {
-            $('.mobile-menu-body section').removeClass('current slide-out');
-            $('.mobile-menu-body section[data-panel=1]').addClass('current');
+            $('.mobile-filters-menu-body section').removeClass('current slide-out');
+            $('.mobile-filters-menu-body section[data-panel=1]').addClass('current');
         });
     }
 
