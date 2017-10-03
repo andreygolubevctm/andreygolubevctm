@@ -49,12 +49,12 @@ public class HealthModelTranslator {
         emailRequest.setGaClientID(gaclientId);
 
         String benefitCodes = request.getParameter("rank_benefitCodes0");
-        String extrasPdsUrl = request.getParameter("rank_extrasPdsUrl0");
+        String extrasPds = request.getParameter("rank_extrasPdsUrl0");
         String coPayment =  request.getParameter("rank_coPayment0");
         String excessPerPerson = request.getParameter("rank_excessPerPerson0");
         String excessPerPolicy = request.getParameter("rank_excessPerPolicy0");
         String excessPerAdmission = request.getParameter("rank_excessPerAdmission0");
-        String hospitalPdsUrl = request.getParameter("rank_hospitalPdsUrl0");
+        String hospitalPds = request.getParameter("rank_hospitalPdsUrl0");
         String healthSituation = request.getParameter("rank_healthSituation0");
         String specialOffer = request.getParameter("rank_specialOffer0");
         List<String> specialOffers = new ArrayList<>();
@@ -70,8 +70,8 @@ public class HealthModelTranslator {
         healthEmailModel.setProvider1Copayment(coPayment);
         healthEmailModel.setProvider1ExcessPerAdmission(excessPerAdmission);
         healthEmailModel.setProvider1ExcessPerPolicy(excessPerPolicy);
-        healthEmailModel.setProvider1ExtrasPdsUrl(extrasPdsUrl);
-        healthEmailModel.setProvider1HospitalPdsUrl(hospitalPdsUrl);
+        healthEmailModel.setProvider1ExtrasPds(extrasPds);
+        healthEmailModel.setProvider1HospitalPds(hospitalPds);
         healthEmailModel.setSituationType(emailUtils.getParamSafely(data,vertical + "/situation/healthCvr"));
 
         emailRequest.setHealthEmailModel(healthEmailModel);
