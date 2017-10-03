@@ -10,6 +10,7 @@ import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.core.utils.RequestUtils;
 import com.ctm.web.core.web.go.Data;
+import com.ctm.web.core.openinghours.services.OpeningHoursService;
 import com.ctm.web.email.EmailRequest;
 import com.ctm.web.email.EmailUtils;
 import com.ctm.web.email.OptIn;
@@ -62,6 +63,7 @@ public class HealthModelTranslator {
         String dataXml = request.getParameter("data");
 
         HealthEmailModel healthEmailModel = new HealthEmailModel();
+        OpeningHoursService openingHoursService = new OpeningHoursService();
         healthEmailModel.setBenefitCodes(benefitCodes);
         healthEmailModel.setCurrentCover(emailUtils.getParamSafely(data,vertical + "/healthCover/primary/cover"));
         healthEmailModel.setNumberOfChildren(emailUtils.getParamSafely(data,vertical + "/healthCover/dependants"));
@@ -73,7 +75,7 @@ public class HealthModelTranslator {
         healthEmailModel.setSituationType(emailUtils.getParamSafely(data,vertical + "/situation/healthCvr"));
 
         emailRequest.setHealthEmailModel(healthEmailModel);
-        emailRequest.setCallCentreHours(getCallCentreNumber(request));
+        emailRequest.setCallCentreHours(openingHoursService.getCurrentOpeningHoursForEmail(request));
         List<String> quoteRefs = new ArrayList<>();
         Long transactionId = RequestUtils.getTransactionIdFromRequest(request);
         IntStream.range(1,10).forEach(value -> quoteRefs.add(transactionId.toString()));
@@ -81,13 +83,6 @@ public class HealthModelTranslator {
         emailRequest.setProviderSpecialOffers(specialOffers);
         setDataFields(emailRequest, data);
     }
-    private String getCallCentreNumber(HttpServletRequest request) throws DaoException, ConfigSettingException {
-        PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
-        ContentDao contentDao = new ContentDao(pageSettings.getBrandId(), pageSettings.getVertical().getId());
-        Content content = contentDao.getByKey("callCentreNumber", ApplicationService.getServerDate(), false);
-        return content != null ? content.getContentValue() : "";
-    }
-
 
     private void setDataFields(EmailRequest emailRequest, Data data){
         String email = getEmail(emailRequest,data);
