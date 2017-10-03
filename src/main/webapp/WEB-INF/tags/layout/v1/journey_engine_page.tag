@@ -98,13 +98,17 @@
 
     <jsp:body>
 
-        <div id="pageContent">
 
+        <div id="pageContent">
+          <c:set var="octoberCompRender" value="${false}"></c:set>
+          <c:if test="${octoberComp && (pageSettings.getVerticalCode() eq 'home' || pageSettings.getVerticalCode() eq 'health' || pageSettings.getVerticalCode() eq 'car')}">
+            <c:set var="octoberCompRender" value="${true}"></c:set>
+          </c:if >
                 <%-- <div id="pageContentTop"></div> --%>
             
             <article class="container">
               <c:set var="octoberCompClass" value=""></c:set>
-              <c:if test="${pageSettings.getBrandCode() eq 'ctm' && octoberComp}">
+              <c:if test="${pageSettings.getBrandCode() eq 'ctm' && octoberCompRender}">
                 <c:set var="octoberCompClass" value="octoberComp" />
               </c:if>
                 <div id="journeyEngineContainer" class="${octoberCompClass}">
@@ -115,7 +119,7 @@
                         
                         <p class="message">Please wait...</p>
                         <c:choose>
-                          <c:when test="${octoberComp && !callCentre}">
+                          <c:when test="${octoberCompRender && !callCentre}">
                             <competition:loading vertical="${pageSettings.getVerticalCode()}"/>
                           </c:when >
                           <c:otherwise>

@@ -10,7 +10,7 @@
 <c:if test="${not empty situation or not empty location}">
 	<c:set var="fromBrochure" scope="request" value="${true}"/>
 </c:if>
-<c:set var="octoberComp" scope="application" value="${false}"/>
+
 <c:set var="pageAction">
 	<c:choose>
 		<c:when test="${pageContext.request.servletPath == '/homeloan_confirmation.jsp'}">
