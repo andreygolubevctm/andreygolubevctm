@@ -7,7 +7,7 @@
 <div class="dropdown-item">
     <field_v2:radio_button
             xpath="${fieldXpath}/all"
-            value="all"
+            value="All"
             required="false"
             title="All excess levels"
             label="true"
@@ -16,7 +16,7 @@
 <div class="dropdown-item">
     <field_v2:radio_button
             xpath="${fieldXpath}/250"
-            value="250"
+            value="$250"
             required="false"
             title="up to $250"
             label="true"
@@ -25,7 +25,7 @@
 <div class="dropdown-item">
     <field_v2:radio_button
             xpath="${fieldXpath}/200"
-            value="200"
+            value="$200"
             required="false"
             title="up to $200"
             label="true"
@@ -34,7 +34,7 @@
 <div class="dropdown-item">
     <field_v2:radio_button
             xpath="${fieldXpath}/150"
-            value="150"
+            value="$150"
             required="false"
             title="up to $150"
             label="true"
@@ -43,7 +43,7 @@
 <div class="dropdown-item">
     <field_v2:radio_button
             xpath="${fieldXpath}/100"
-            value="100"
+            value="$100"
             required="false"
             title="up to $100"
             label="true"
@@ -52,7 +52,7 @@
 <div class="dropdown-item">
     <field_v2:radio_button
             xpath="${fieldXpath}/50"
-            value="50"
+            value="$50"
             required="false"
             title="up to $50"
             label="true"
@@ -61,7 +61,7 @@
 <div class="dropdown-item">
     <field_v2:radio_button
             xpath="${fieldXpath}/nil"
-            value="nil"
+            value="NIL"
             required="false"
             title="NIL"
             label="true"
