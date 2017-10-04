@@ -69,11 +69,17 @@ public class TransactionAccessService {
 		} else if(emailMode == EmailMode.PRODUCT_BROCHURES) {
 			TransactionDetail transactionDetail = transactionDetailsDao.getTransactionDetailByXpath(transactionId,
 					HEALTH_BROCHURE_EMAIL_HISTORY_XPATH);
-			valid = transactionDetail != null && transactionDetail.getTextValue().contains(emailDetails.getEmailAddress
-					());
+			valid = transactionDetail != null && transactionDetail.getTextValue().contains(emailDetails.getEmailAddress());
+			if(!valid) {
+				// backup checks for existing emails before the email history record existed
+				transactionDetail = transactionDetailsDao.getTransactionDetailByXpath(transactionId, HEALTH_BEST_PRICE_EMAIL_XPATH);
+				valid = transactionDetail != null && transactionDetail.getTextValue().equalsIgnoreCase(emailDetails.getEmailAddress());
+				if(!valid) {
+					valid = hasAccessTransactionHeader(emailDetails, transactionId);
+				}
+			}
 		} else {
-			valid = hasAccessTransactionHeader(emailDetails,
-					transactionId);
+			valid = hasAccessTransactionHeader(emailDetails, transactionId);
 		}
 		return valid;
 	}
