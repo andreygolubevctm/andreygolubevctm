@@ -519,6 +519,7 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 		HealthProductBrochuresEmailModel emailModel = new HealthProductBrochuresEmailModel();
 		buildEmailModel(emailDetails, emailModel);
 		String productId = request.getParameter("productId");
+		String productCode = request.getParameter("productCode");
 		boolean optedIn = emailDetails.getOptedInMarketing(VERTICAL);
 		OpeningHoursService openingHoursService = new OpeningHoursService();
 
@@ -539,6 +540,7 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 				otherEmailParameters.put(EmailUrlService.UTM_SOURCE, "health_pds_" + LocalDate.now().getYear());
 				otherEmailParameters.put(EmailUrlService.UTM_MEDIUM, "email");
 				otherEmailParameters.put(EmailUrlService.UTM_CAMPAIGN, "health_pds");
+				otherEmailParameters.put(EmailUrlService.PRODUCT_CODE, productCode);
 				emailParameters.put(EmailUrlService.TRANSACTION_ID, Long.toString(emailBrochureRequest.transactionId));
 				emailParameters.put(EmailUrlService.HASHED_EMAIL, emailDetails.getHashedEmail());
 				emailParameters.put(EmailUrlService.STYLE_CODE_ID, Integer.toString(pageSettings.getBrandId()));

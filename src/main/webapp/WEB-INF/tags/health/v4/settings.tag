@@ -127,6 +127,7 @@
 	productId: '<c:out value="${data.health.application.productId}" />',
 	loadProductId: '<c:out value="${param.productId}"/>',
 	loadProductTitle: '<c:out value="${param.productTitle}"/>',
+	loadProductCode: '<c:out value="${param.productCode}"/>',
 	userId: '<c:out value="${authenticatedData.login.user.uid}" />',
 	utm_source: '<c:out value="${utm_source}" />',
 	utm_medium: '<c:out value="${utm_medium}" />',
