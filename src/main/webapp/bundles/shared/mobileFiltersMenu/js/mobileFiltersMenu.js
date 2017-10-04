@@ -51,7 +51,8 @@
         _eventSubscriptions();
         _calcBodyHeight();
 
-        $elements.menuBody.html(_settings.htmlContent);
+        // $elements.menuBody.html(_settings.htmlContent);
+        updateMenuBodyHTML(_settings.htmlContent);
 
         reset();
     }
@@ -158,6 +159,10 @@
         $elements.backBtn.fadeOut();
     }
 
+    function updateMenuBodyHTML(htmlContent) {
+        $elements.menuBody.html(htmlContent);
+    }
+
     meerkat.modules.register('mobileFiltersMenu', {
         initMobileFiltersMenu: initMobileFiltersMenu,
         events: moduleEvents,
@@ -165,6 +170,7 @@
         close: close,
         updateHeaderTitle: updateHeaderTitle,
         showBackBtn: showBackBtn,
-        hideBackBtn: hideBackBtn
+        hideBackBtn: hideBackBtn,
+        updateMenuBodyHTML: updateMenuBodyHTML
     });
 })(jQuery);

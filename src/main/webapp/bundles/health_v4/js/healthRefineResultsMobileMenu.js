@@ -25,7 +25,20 @@
             $elements.applyDiscount.val($('#health_refine_results_discount').is(':checked') ? 'Y' : 'N');
             $elements.applyRebate.val($('#health_refine_results_rebate').is(':checked') ? 'Y': 'N');
 
-            // meerkat.modules.healthFilters.getCheckedBenefitsFromFilters($('.health-refine-results-hospital-benefits'));
+            var selectedBenefits = {
+                hospital: meerkat.modules.healthFilters.getCheckedBenefitsFromFilters($('.health-refine-results-hospital-benefits')),
+                extras: meerkat.modules.healthFilters.getCheckedBenefitsFromFilters($('.health-filter-extras-benefits'))
+            };
+
+            meerkat.modules.healthResults.setSelectedBenefitsList(selectedBenefits.hospital.concat(selectedBenefits.extras));
+
+            meerkat.modules.benefitsModel.setIsHospital(true);
+            meerkat.modules.benefitsModel.setBenefits(selectedBenefits.hospital);
+
+            meerkat.modules.benefitsModel.setIsHospital(false);
+            meerkat.modules.benefitsModel.setBenefits(selectedBenefits.extras);
+
+            meerkat.messaging.publish(meerkatEvents.benefitsModel.BENEFITS_MODEL_UPDATE_COMPLETED);
 
             meerkat.modules.journeyEngine.loadingShow('...updating your quotes...', true);
             meerkat.modules.healthResults.get();
@@ -51,12 +64,19 @@
 
             meerkat.modules.mobileFiltersMenu.open();
 
-            $('#health_refine_results_discount').prop('checked', $elements.applyDiscount.val() === 'Y');
-            $('#health_refine_results_rebate').prop('checked', $elements.applyRebate.val() === 'Y');
+            // update html template content
+            var htmlTemplate = _.template(settings.template.html());
+            settings.htmlContent = htmlTemplate(_getData());
+            meerkat.modules.mobileFiltersMenu.updateMenuBodyHTML(settings.htmlContent);
 
-            // loop through selected hospital benefits
-            _.each(meerkat.modules.benefitsModel.getHospitalBenefitsForFilters(), function(benefit) {
-                $('#health_refineResults_benefits_' + benefit.id).prop('checked', benefit.selected);
+            _.defer(function() {
+                $('#health_refine_results_discount').prop('checked', $elements.applyDiscount.val() === 'Y');
+                $('#health_refine_results_rebate').prop('checked', $elements.applyRebate.val() === 'Y');
+
+                // loop through selected hospital benefits
+                _.each(meerkat.modules.benefitsModel.getHospitalBenefitsForFilters(), function (benefit) {
+                    $('#health_refineResults_benefits_' + benefit.id).prop('checked', benefit.selected);
+                });
             });
         });
 
