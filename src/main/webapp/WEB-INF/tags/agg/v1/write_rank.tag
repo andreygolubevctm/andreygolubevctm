@@ -204,7 +204,9 @@
 	</c:choose>
 
 	<c:catch var ="marketingSendEmailException">
-		<jsp:forward page="/spring/marketing-automation/sendEmail?email=${data.quote.contact.email}&name=${data.quote.contact.name}&address=${data.application.address.fulladdress}&data=${data}"/>
+		<jsp:forward page="/spring/marketing-automation/sendEmail">
+			<jsp:param name="data" value="${data}" />
+		</jsp:forward>
 	</c:catch>
 
 	<c:if test = "${marketingSendEmailException != null}">
