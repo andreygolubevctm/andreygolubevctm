@@ -1,4 +1,4 @@
-<%@ tag description="Travel Single Signup Form" %>
+<%@ tag description="" %>
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 

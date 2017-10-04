@@ -74,23 +74,20 @@
 					</a>
 					<div class="dropdown-menu dropdown-menu-more-filters" aria-labelledby="moreFiltersDropdownBtn">
 						<div class="row">
-							<div class="col-sm-3 text-left more-filter-header">
-								<b>Pre-select</b>
-								<field_v2:help_icon helpId="576" tooltipClassName="" />
-							</div>
-							<div class="col-sm-2 text-left more-filter-header">
-								<b>Excess</b>
-								<field_v2:help_icon helpId="576" tooltipClassName="" />
-							</div>
-							<div class="col-sm-3 text-left more-filter-header">
-								<b>Minimum luggage cover</b>
-								<field_v2:help_icon helpId="576" tooltipClassName="" />
-							</div>
-						</div>
-						<div class="row">
 							<div class="col-sm-3 text-center travel-filters-cover-tabs"></div>
 							<div class="col-sm-2 text-left">
+								<div class="dropdown-item">
+									<b>Excess</b>
+									<field_v2:help_icon helpId="280" tooltipClassName="" />
+								</div>
 								<travel_results_filters:excess />
+							</div>
+							<div class="col-sm-3 text-left">
+								<div class="dropdown-item">
+									<b>Minimum luggage cover</b>
+									<field_v2:help_icon helpId="280" tooltipClassName="" />
+								</div>
+								<travel_results_filters:minimum_luggage />
 							</div>
 						</div>
 					</div>

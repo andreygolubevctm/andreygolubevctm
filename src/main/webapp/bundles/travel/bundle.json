@@ -22,6 +22,7 @@
     "shared/showMoreQuotesPrompt",
     "shared/resultsRankings",
     "shared/phgSalesTracking",
-    "shared/radioButton"
+    "shared/radioButton",
+    "shared/rangeSlider"
   ]
 }
