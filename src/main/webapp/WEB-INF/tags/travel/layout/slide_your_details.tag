@@ -106,6 +106,11 @@
 					</c:if>
 				</c:set>
 
+				<%-- TRIP TYPE SECTION --%>
+				<form_v2:fieldset legend="Trip type" id="triptype">
+					<travel:trip_type />
+				</form_v2:fieldset>
+
 				<%-- YOUR CONTACT DETAILS SECTION --%>
 				<form_v2:fieldset legend="${fieldSetHeading}Contact Details" id="contactDetails">
 					<travel:contact_details />
