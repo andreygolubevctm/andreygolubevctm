@@ -3,12 +3,13 @@
   var departurePicker;
   var returnPicker;
   var currentDate = new Date();
+  var dateDiff = '';
 
   var elements = {
     departure: document.getElementById('departure'),
     returned: document.getElementById('return'),
     hiddenDeparture: document.getElementById('travel_dates_fromDate'),
-    hiddenReturned: document.getElementById('travel_dates_toDate')
+    hiddenReturned: document.getElementById('travel_dates_toDate'),
   };
 
   var display = {
@@ -62,6 +63,9 @@
         if (selectedDates.length === 0 && departurePicker.selectedDates.length === 1) {
           returnPicker.setDate(elements.departure.value, true);
         }
+        if (selectedDates.length > 0 && display.returned.value !== '' && selectedDates[0] > new Date(reverseDateStr(display.returned.value))) {
+          display.returned.value = '';
+        }
         if (selectedDates.length === 2) {
           instance.jumpToDate(selectedDates[1]);
         }
@@ -77,6 +81,7 @@
           departurePicker.setDate(dates[0], true);
           display.returned.value = formatDate(dates[1]);
           elements.hiddenReturned.value = formatDate(dates[1]);
+          dateDiff = calcDatesDifference(dates);
           setValueToHiddenFields(
             {
               name: 'toDate',
@@ -97,9 +102,21 @@
       var day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
       var month = date.getMonth() < 9 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1;
       var year = date.getFullYear();
-      return day + '/' + month + '/' + year;
+      return [day, month, year].join('/');
     }
     return '';
+  }
+  
+  function calcDatesDifference(dates) {
+    var dep = new Date(dates[0]);
+    var ret = new Date(dates[1]);
+    var timeDiff = Math.abs(ret.getTime() - dep.getTime());
+    var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+    return diffDays;
+  }
+  
+  function getDateDiff() {
+    return dateDiff;
   }
   
   function removeValidationErrors(target) {
@@ -121,6 +138,10 @@
     }
   }
   
+  function reverseDateStr(date) {
+    return date.split('/').reverse().join('/');
+  }
+  
   function preloadFields() {
     var fromDate = document.getElementById('travel_dates_fromDate');
     var toDate = document.getElementById('travel_dates_toDate');
@@ -140,7 +161,8 @@
   }
 
 meerkat.modules.register("travelDatepicker", {
-  init: init
+  init: init,
+  getDateDiff: getDateDiff
 });
 
 })(jQuery);
