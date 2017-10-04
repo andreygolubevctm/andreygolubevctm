@@ -10,6 +10,7 @@ import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.core.utils.RequestUtils;
 import com.ctm.web.core.web.go.Data;
+import com.ctm.web.core.openinghours.services.OpeningHoursService;
 import com.ctm.web.email.EmailRequest;
 import com.ctm.web.email.EmailUtils;
 import com.ctm.web.email.OptIn;
@@ -48,12 +49,12 @@ public class HealthModelTranslator {
         emailRequest.setGaClientID(gaclientId);
 
         String benefitCodes = request.getParameter("rank_benefitCodes0");
-        String extrasPdsUrl = request.getParameter("rank_extrasPdsUrl0");
+        String extrasPds = request.getParameter("rank_extrasPdsUrl0");
         String coPayment =  request.getParameter("rank_coPayment0");
         String excessPerPerson = request.getParameter("rank_excessPerPerson0");
         String excessPerPolicy = request.getParameter("rank_excessPerPolicy0");
         String excessPerAdmission = request.getParameter("rank_excessPerAdmission0");
-        String hospitalPdsUrl = request.getParameter("rank_hospitalPdsUrl0");
+        String hospitalPds = request.getParameter("rank_hospitalPdsUrl0");
         String healthSituation = request.getParameter("rank_healthSituation0");
         String specialOffer = request.getParameter("rank_specialOffer0");
         List<String> specialOffers = new ArrayList<>();
@@ -62,18 +63,19 @@ public class HealthModelTranslator {
         String dataXml = request.getParameter("data");
 
         HealthEmailModel healthEmailModel = new HealthEmailModel();
+        OpeningHoursService openingHoursService = new OpeningHoursService();
         healthEmailModel.setBenefitCodes(benefitCodes);
         healthEmailModel.setCurrentCover(emailUtils.getParamSafely(data,vertical + "/healthCover/primary/cover"));
         healthEmailModel.setNumberOfChildren(emailUtils.getParamSafely(data,vertical + "/healthCover/dependants"));
         healthEmailModel.setProvider1Copayment(coPayment);
         healthEmailModel.setProvider1ExcessPerAdmission(excessPerAdmission);
         healthEmailModel.setProvider1ExcessPerPolicy(excessPerPolicy);
-        healthEmailModel.setProvider1ExtrasPdsUrl(extrasPdsUrl);
-        healthEmailModel.setProvider1HospitalPdsUrl(hospitalPdsUrl);
+        healthEmailModel.setProvider1ExtrasPds(extrasPds);
+        healthEmailModel.setProvider1HospitalPds(hospitalPds);
         healthEmailModel.setSituationType(emailUtils.getParamSafely(data,vertical + "/situation/healthCvr"));
 
         emailRequest.setHealthEmailModel(healthEmailModel);
-        emailRequest.setCallCentreHours(getCallCentreNumber(request));
+        emailRequest.setCallCentreHours(openingHoursService.getCurrentOpeningHoursForEmail(request));
         List<String> quoteRefs = new ArrayList<>();
         Long transactionId = RequestUtils.getTransactionIdFromRequest(request);
         IntStream.range(1,10).forEach(value -> quoteRefs.add(transactionId.toString()));
@@ -81,13 +83,6 @@ public class HealthModelTranslator {
         emailRequest.setProviderSpecialOffers(specialOffers);
         setDataFields(emailRequest, data);
     }
-    private String getCallCentreNumber(HttpServletRequest request) throws DaoException, ConfigSettingException {
-        PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
-        ContentDao contentDao = new ContentDao(pageSettings.getBrandId(), pageSettings.getVertical().getId());
-        Content content = contentDao.getByKey("callCentreNumber", ApplicationService.getServerDate(), false);
-        return content != null ? content.getContentValue() : "";
-    }
-
 
     private void setDataFields(EmailRequest emailRequest, Data data){
         String email = getEmail(emailRequest,data);
