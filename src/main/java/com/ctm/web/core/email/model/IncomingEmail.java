@@ -6,6 +6,7 @@ public class IncomingEmail {
 
 	private EmailMode emailType = null;
 	private String productId = null;
+	private String productCode = null;
 	private Long transactionId = null;
 	private String gaclientid = null;
 	private String campaignId = null;
@@ -23,6 +24,10 @@ public class IncomingEmail {
 
 	public void setProductId(String productId) {
 		this.productId = productId;
+	}
+
+	public void setProductCode(String productCode){
+		this.productCode = productCode;
 	}
 
 	public void setTransactionId(Long transactionId) {
@@ -61,6 +66,10 @@ public class IncomingEmail {
 
 	public String getProductId() {
 		return this.productId;
+	}
+
+	public String getProductCode() {
+		return this.productCode;
 	}
 
 	public Long getTransactionId() {
@@ -108,6 +117,7 @@ public class IncomingEmail {
 		return "IncomingEmail{" +
 				"emailType=" + emailType +
 				", productId='" + productId + '\'' +
+				", productCode='" + productCode + '\'' +
 				", transactionId=" + transactionId +
 				", campaignId='" + campaignId + '\'' +
 				", et_rid='" + etRid + '\'' +

@@ -127,6 +127,10 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 					</c:if>
 				</c:set>
 
+				<c:set var="productCode">
+					<c:if test="${not empty param.productCode}">&amp;productCode=<c:out value="${param.productCode}" escapeXml="false"/></c:if>
+				</c:set>
+
 				<c:set var="result">
 					<result>
 						<c:choose>
@@ -137,10 +141,10 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 								<core_v1:transaction touch="L" noResponse="true" />
 								<c:choose>
 									<c:when test="${not empty param.productId and param.productId != '' and not empty param.productTitle and param.productTitle != ''}">
-										<destUrl>${quoteType}_quote.jsp?action=load&amp;transactionId=${param.transactionId}&amp;productId=${param.productId}&amp;productTitle=${param.productTitle}${jParam}</destUrl>
+										<destUrl>${quoteType}_quote.jsp?action=load&amp;transactionId=${param.transactionId}&amp;productId=${param.productId}&amp;productTitle=${param.productTitle}${jParam}${productCode}</destUrl>
 									</c:when>
 									<c:otherwise>
-										<destUrl>${quoteType}_quote.jsp?action=load&amp;transactionId=${param.transactionId}${jParam}${trackingParams}</destUrl>
+										<destUrl>${quoteType}_quote.jsp?action=load&amp;transactionId=${param.transactionId}${jParam}${trackingParams}${productCode}</destUrl>
 									</c:otherwise>
 								</c:choose>
 							</c:when>
