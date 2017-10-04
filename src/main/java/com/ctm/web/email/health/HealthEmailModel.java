@@ -64,19 +64,19 @@ public class HealthEmailModel {
         this.provider1ExcessPerPolicy = provider1ExcessPerPolicy;
     }
 
-    public String getProvider1ExtrasPdsUrl() {
+    public String getProvider1ExtrasPds() {
         return provider1ExtrasPds;
     }
 
-    public void setProvider1ExtrasPdsUrl(String provider1ExtrasPds) {
+    public void setProvider1ExtrasPds(String provider1ExtrasPds) {
         this.provider1ExtrasPds = provider1ExtrasPds;
     }
 
-    public String getProvider1HospitalPdsUrl() {
+    public String getProvider1HospitalPds() {
         return provider1HospitalPds;
     }
 
-    public void setProvider1HospitalPdsUrl(String provider1HospitalPds) {
+    public void setProvider1HospitalPds(String provider1HospitalPds) {
         this.provider1HospitalPds = provider1HospitalPds;
     }
 
