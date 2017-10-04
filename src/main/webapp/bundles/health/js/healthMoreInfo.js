@@ -264,6 +264,7 @@
             submitButton: emailBrochuresElement.find('.btn-email-brochure'),
             form: form,
             marketing: emailBrochuresElement.find('.optInMarketing'),
+	        emailHistoryInput: $('#health_brochureEmailHistory'),
             productData: [
                 {name: "hospitalPDSUrl", value: product.promo.hospitalPDF},
                 {name: "extrasPDSUrl", value: product.promo.extrasPDF},
