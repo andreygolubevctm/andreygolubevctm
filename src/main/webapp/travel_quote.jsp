@@ -67,8 +67,34 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-xs-2 col-sm-2 col-md-2 clt-trip-filter hidden-xs">
-				<div class="col-xs-12">More filters <i class="icon icon-angle-down"></i></div>
+			<div class="col-xs-2 col-sm-2 col-md-2 clt-trip-filter hidden-xs text-right">
+				<div class="col-xs-12">
+					<a type="button" id="moreFiltersDropdownBtn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						More filters&nbsp;<i class="icon icon-angle-down"></i>
+					</a>
+					<div class="dropdown-menu dropdown-menu-more-filters" aria-labelledby="moreFiltersDropdownBtn">
+						<div class="row">
+							<div class="col-sm-3 text-left more-filter-header">
+								<b>Pre-select</b>
+								<field_v2:help_icon helpId="576" tooltipClassName="" />
+							</div>
+							<div class="col-sm-2 text-left more-filter-header">
+								<b>Excess</b>
+								<field_v2:help_icon helpId="576" tooltipClassName="" />
+							</div>
+							<div class="col-sm-3 text-left more-filter-header">
+								<b>Minimum luggage cover</b>
+								<field_v2:help_icon helpId="576" tooltipClassName="" />
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-3 text-center travel-filters-cover-tabs"></div>
+							<div class="col-sm-2 text-left">
+								<travel_results_filters:excess />
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</jsp:attribute>

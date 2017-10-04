@@ -234,13 +234,20 @@
 		xsCols = parseInt(6 / tabLength, 10),
 		state = meerkat.modules.deviceMediaState.get();
 		var out = '';
-		for(out = '',
-				i = 0; i < tabLength; i ++) {
+		var filterTabs = '';
+		for(out = '', i = 0; i < tabLength; i ++) {
 			var tab = settings.activeTabSet[i],
 				count = counts[tab.rankingFilter] || null;
+
+			// results headers
 			out += '<div class="col-sm-' + xsCols + ' col-xs-5 text-center clt-action ' + (tab.defaultTab === true ? 'active' : 'hidden-xs') + '" data-clt-index="' + i + '">';
 			out += (state === 'lg' ? tab.label : tab.label.replace('Cover', '')) + (state !== 'xs' && state !== 'sm' && tab.showCount === true && count !== null ? ' (' + (count) + ')' : '');
 			out += '</div>';
+
+			// filter tabs
+			filterTabs += '<div class="dropdown-item clt-action ' + (tab.defaultTab === true ? 'active' : '') + '" data-clt-index="' + i + '">';
+			filterTabs += tab.label + (state !== 'xs' && tab.showCount === true && count !== null ? ' (' + (count) + ')' : '');
+			filterTabs += '</div>';
 
 			// set the originatingTab
 			if (tab.defaultTab === true) {
@@ -250,6 +257,7 @@
 		}
 
 		$currentTabContainer.empty().html(out);
+		$('.travel-filters-cover-tabs').empty().html(filterTabs);
 
 	}
 

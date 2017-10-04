@@ -1,6 +1,6 @@
 .dropdown-menu-excess-filter {
   top: 38px;
-  left: -135px;
+  left: -150px;
   min-width: 200px;
 
   /* this CS forms the triangles */
@@ -15,7 +15,46 @@
     border-style: solid;
     border-width: 9px;
   }
+}
 
+.dropdown-menu-more-filters {
+  top: 38px;
+  left: -900px;
+  min-width: 1150px;
+
+  input {
+    z-index: 1001;
+  }
+
+  .more-filter-header {
+    margin-left: 15px;
+
+    .help-icon {
+      line-height: inherit;
+      margin-left: 5px;
+    }
+  }
+
+  .clt-action {
+    margin: 10px 15px;
+    font-family: @font-family-sans-serif;
+  }
+
+  /* this CS forms the triangles */
+  &:before,
+  &:after {
+    position: absolute;
+    width: 0;
+    display: block;
+    height: 0;
+    left: 90%;
+    content: '';
+    border-style: solid;
+    border-width: 9px;
+  }
+}
+
+.dropdown-menu-excess-filter, .dropdown-menu-more-filters {
   /* this border color controlls the outside, thin border */
   &:before {
     top: -19px;
@@ -35,7 +74,6 @@
   padding: 3px 1.5rem;
   clear: both;
   font-weight: 400;
-  color: #292b2c;
   text-align: inherit;
   white-space: nowrap;
   background: 0 0;
