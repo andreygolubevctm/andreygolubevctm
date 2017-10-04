@@ -88,6 +88,11 @@
 									<field_v2:help_icon helpId="280" tooltipClassName="" />
 								</div>
 								<travel_results_filters:minimum_luggage />
+								<div class="dropdown-item">
+									<b>Minimum cancellation cover</b>
+									<field_v2:help_icon helpId="280" tooltipClassName="" />
+								</div>
+								<travel_results_filters:minimum_cancellation />
 							</div>
 						</div>
 					</div>
