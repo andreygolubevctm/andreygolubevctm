@@ -205,7 +205,7 @@
                     <field_v1:hidden xpath="health/loading" />
                     <field_v1:hidden xpath="health/primaryCAE" />
                     <field_v1:hidden xpath="health/partnerCAE" />
-
+                    <field_v1:hidden xpath="health/brochureEmailHistory" />
                     <form_v1:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid" />
                     <core_v1:referral_tracking vertical="${pageSettings.getVerticalCode()}" />
                     <core_v2:authToken authToken="${param['authToken']}"/>
