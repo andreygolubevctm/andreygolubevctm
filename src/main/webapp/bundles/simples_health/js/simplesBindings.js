@@ -34,7 +34,9 @@
         $moreInfoDialogue,
         $dialogue36,
         $cashRewardsDialogue,
-        $rewardGatewaryDialogue;
+        $rewardGatewaryDialogue,
+        $nzMedicareRules,
+        $nzMedicareRulesToggle;
 
     function init() {
         $(document).ready(function () {
@@ -73,6 +75,9 @@
             $dialogue36 = $('.simples-dialogue-36');
             $cashRewardsDialogue = $('.simples-dialogue-79');
             $rewardGatewaryDialogue = $('.simples-dialogue-80');
+	        $nzMedicareRules = $('#healthAboutYou .nz-medicare-rules');
+	        $nzMedicareRulesToggle = $nzMedicareRules.find('a:first');
+	        $nzMedicareRulesCopy = $nzMedicareRules.find('.copy:first');
 
             // Handle pre-filled
             populatePrevAssignedRadioBtnGroupValue();
@@ -179,6 +184,14 @@
 
         $dialogue36.find('a').on('click', function toggleMoreText() {
             $dialogue36.find('.simples-dialogue-36-extra-text').toggleClass('hidden');
+        });
+
+	    $nzMedicareRulesToggle.text($nzMedicareRulesToggle.attr('data-copy-off'));
+        $nzMedicareRulesToggle.on('click', function(){
+            var $btn = $(this);
+            var isOn = $nzMedicareRulesCopy.is(':visible');
+            $btn.text($btn.attr('data-copy-' + (isOn?'off':'on')));
+            $nzMedicareRulesCopy.toggle(!isOn);
         });
     }
 
