@@ -9,6 +9,7 @@
         },
         _tagHTML = '',
         _isEnabled = false,
+        _tagShown = false,
         _count = 0;
 
     function initHealthPopularProducts() {
@@ -43,16 +44,26 @@
             options: $('.results-popular-products-banner .popular-products-options'),
             deciding: $('.results-popular-products-banner .popular-products-deciding'),
             button: $('.results-popular-products-banner button'),
-            popularProducts: $(':input[name=health_popularProducts]')
+            popularProducts: $(':input[name=health_popularProducts]'),
+            resultsContainer: $('.resultsContainer')
         };
     }
 
     function _eventSubscriptions() {
         $elements.button.on('click', function() {
-            setPopularProducts($(this).attr('data-popular-products'));
+            var popularProducts = $(this).attr('data-popular-products');
+
+            if (popularProducts === 'Y' && !_tagShown) _showTag();
+
+            setPopularProducts(popularProducts);
             meerkat.modules.journeyEngine.loadingShow('...updating your quotes...', true);
             meerkat.modules.healthResults.get();
         });
+    }
+
+    function _showTag() {
+        _tagShown = true;
+        $elements.resultsContainer.addClass('results-show-popular-products-tag');
     }
 
     function show() {

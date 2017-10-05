@@ -9,36 +9,47 @@ body {
 
 .featuresMode {
   .result-row {
-    &.result-has-popular-products {
-      margin-top: 34px;
-    }
-
     &.result-popular-products {
-      border-color: @theme-secondary;
-
       .result-popular-products-tag {
-        background-color: @theme-secondary;
-        color: #fff;
-        font-size: @font-size-large;
-        line-height: 34px;
-        height: 34px;
-        position: absolute;
-        top: -34px;
-        left: -2px;
-        right: -2px;
-        text-align: center;
+        display: none;
+      }
+    }
+  }
 
-        .icon-info {
-          color: #fff;
-          font-size: @font-size-small;
-          line-height: 22px;
-        }
+  &.results-show-popular-products-tag {
+    .result-row {
+      &.result-has-popular-products {
+        margin-top: 34px;
       }
 
-      .pin-result-icon {
-        background-color: @theme-secondary;
-        &:after {
-          border-color: @theme-secondary transparent transparent transparent;
+      &.result-popular-products {
+        border-color: @theme-secondary;
+
+        .result-popular-products-tag {
+          display: block;
+          background-color: @theme-secondary;
+          color: #fff;
+          font-size: @font-size-large;
+          line-height: 34px;
+          height: 34px;
+          position: absolute;
+          top: -34px;
+          left: -2px;
+          right: -2px;
+          text-align: center;
+
+          .icon-info {
+            color: #fff;
+            font-size: @font-size-small;
+            line-height: 22px;
+          }
+        }
+
+        .pin-result-icon {
+          background-color: @theme-secondary;
+          &:after {
+            border-color: @theme-secondary transparent transparent transparent;
+          }
         }
       }
     }
@@ -83,6 +94,10 @@ body {
   }
 
   .popular-products-deciding {
+    button {
+      margin: 0 auto;
+    }
+
     .icon {
       margin-right: 2px;
 
