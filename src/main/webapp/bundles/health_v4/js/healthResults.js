@@ -283,7 +283,7 @@
     function _massageResultsObject(products) {
         _.each(products, function massageJson(result, index) {
             // Add properties
-            result.isPinned = 'N';
+            result.isPinned = result.productId === pinnedProductId ? 'Y' : 'N';
         });
         return products;
     }

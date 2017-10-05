@@ -97,6 +97,9 @@
   @pin-width: 20px;
   .pin-result-label {
     right: @pin-width + 10px;
+    a {
+      color: @results-border-color;
+    }
   }
 
   .pin-result-icon {
@@ -105,7 +108,7 @@
     right: 10px;
     width: @pin-width;
     height: @pin-height;
-    background: @theme-tertiary;
+    background: @results-border-color;
     .pinned & {
       background: @theme-accent-4;
     }
@@ -116,7 +119,7 @@
       content: "";
       border-style: solid;
       border-width: 5px @pin-width 0 0;
-      border-color: @theme-tertiary transparent transparent transparent;
+      border-color: @results-border-color transparent transparent transparent;
       .pinned & {
         border-top-color: @theme-accent-4;
       }
@@ -221,6 +224,19 @@
 
     &.hovered {
       border: 2px solid @theme-tertiary;
+
+      .pin-result-label {
+        a {
+          color: @link-color;
+        }
+      }
+
+      .pin-result-icon {
+        background: @theme-tertiary;
+        &:after {
+          border-color: @theme-tertiary transparent transparent transparent;
+        }
+      }
     }
 
     &.pinned {
@@ -229,6 +245,19 @@
 
       &.hovered {
         border: 2px solid @theme-accent-4;
+      }
+
+      .pin-result-label {
+        a {
+          color: @theme-accent-4;
+        }
+      }
+
+      .pin-result-icon {
+        background: @theme-accent-4;
+        &:after {
+          border-color: @theme-accent-4 transparent transparent transparent;
+        }
       }
 
       .display-on-hover {
