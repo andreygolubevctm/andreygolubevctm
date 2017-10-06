@@ -48,6 +48,27 @@
     border-style: solid;
     border-width: 9px;
   }
+
+  .range-filter {
+    &:not(:first-of-type) {
+      padding-top: 20px;
+    }
+  }
+
+  .range-value {
+    text-align: center;
+    color: @theme-active;
+  }
+
+  .min-range {
+    float: left;
+    color: @theme-default;
+  }
+
+  .max-range {
+    float: right;
+    color: @gray-light;
+  }
 }
 
 .dropdown-menu-excess-filter, .dropdown-menu-more-filters {

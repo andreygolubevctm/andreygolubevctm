@@ -83,16 +83,21 @@
 								<travel_results_filters:excess />
 							</div>
 							<div class="col-sm-3 text-left">
-								<div class="dropdown-item">
+								<div class="dropdown-item range-filter">
 									<b>Minimum luggage cover</b>
 									<field_v2:help_icon helpId="280" tooltipClassName="" />
 								</div>
 								<travel_results_filters:minimum_luggage />
-								<div class="dropdown-item">
+								<div class="dropdown-item range-filter">
 									<b>Minimum cancellation cover</b>
 									<field_v2:help_icon helpId="280" tooltipClassName="" />
 								</div>
 								<travel_results_filters:minimum_cancellation />
+								<div class="dropdown-item range-filter">
+									<b>Minimum overseas medical cover</b>
+									<field_v2:help_icon helpId="280" tooltipClassName="" />
+								</div>
+								<travel_results_filters:minimum_overseas_medical />
 							</div>
 						</div>
 					</div>
@@ -137,8 +142,8 @@
 						</ul>
 					</li>
 				</ul>
-						</div>
-					</div>
+			</div>
+		</div>
 	</jsp:attribute>
 
 	<jsp:attribute name="form_bottom"></jsp:attribute>

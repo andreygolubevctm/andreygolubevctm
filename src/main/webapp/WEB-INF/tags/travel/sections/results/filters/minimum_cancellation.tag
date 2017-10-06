@@ -1,3 +1,8 @@
+<div class="dropdown-item range-value cancellation-range-value">$50,000</div>
 <div class="dropdown-item range-slider">
-    <input type="range" value="100" min="0" max="500" step="50">
+    <input type="range" name="cancellationRangeSlider" value="500000" min="5000" max="50000000" step="5000">
+</div>
+<div class="dropdown-item">
+    <div class="min-range">< $5,000</div>
+    <div class="max-range">Unlimited</div>
 </div>
