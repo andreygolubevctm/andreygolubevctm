@@ -9,9 +9,11 @@ import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.EmailMaster;
 import com.ctm.web.core.model.session.SessionData;
+import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.security.IPAddressHandler;
+import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SessionDataService;
 import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.core.utils.RequestUtils;
@@ -56,21 +58,22 @@ public class EmailController {
     private static final String EMAIL_TYPE = "bestprice";
     private static final String ACTION_UNSUBSCRIBE = "unsubscribe";
 
-    @RequestMapping("/sendEmail")
+    @RequestMapping("/sendEmail.json")
     public void sendEmail(HttpServletRequest request, HttpServletResponse response){
         try {
-            String dataXml = request.getParameter("data");
-            String verticalCode = emailUtils.getParamFromXml(dataXml, "verticalCode", "/current/");
-            String brand = emailUtils.getParamFromXml(dataXml, "brandCode", "/current/");
+
+            Brand brand = ApplicationService.getBrandFromRequest(request);
+            String verticalCode = ApplicationService.getVerticalCodeFromRequest(request);
+
             if(VerticalType.HEALTH != VerticalType.valueOf(verticalCode)) return;
             SessionData sessionData = sessionDataService.getSessionDataFromSession(request);
             EmailRequest emailRequest = new EmailRequest();
 
-            //String transactionId = request.getParameter("transactionId");
             Long transactionId = RequestUtils.getTransactionIdFromRequest(request);
             Data data = sessionData.getSessionDataForTransactionId(transactionId);
             emailRequest.setTransactionId(transactionId.toString());
-            emailRequest.setBrand(brand);
+
+            emailRequest.setBrand(brand.getCode());
 
 
             if(VerticalType.HEALTH == VerticalType.valueOf(verticalCode)){
