@@ -203,14 +203,16 @@
 		</c:otherwise>
 	</c:choose>
 
-	<c:catch var ="marketingSendEmailException">
-		<jsp:forward page="/spring/marketing-automation/sendEmail">
-			<jsp:param name="data" value="${data}" />
-		</jsp:forward>
-	</c:catch>
+	<c:if test="${pageSettings.getVerticalCode() == 'health'}">
+		<c:catch var ="marketingSendEmailException">
+			<jsp:forward page="/spring/marketing-automation/sendEmail.json" />
+		</c:catch>
 
-	<c:if test = "${marketingSendEmailException != null}">
-		${logger.error('Marketing automation sendEmail exception caught: {} {}', log:kv('exception', marketingSendEmailException))}
+		<c:if test = "${marketingSendEmailException != null}">
+			${logger.error('Marketing automation sendEmail exception caught: {} {}', log:kv('exception', marketingSendEmailException))}
+		</c:if>
 	</c:if>
+
+
 
 </c:if>
