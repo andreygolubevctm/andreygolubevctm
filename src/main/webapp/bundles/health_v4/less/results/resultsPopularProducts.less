@@ -46,9 +46,18 @@ body {
         }
 
         .pin-result-icon {
-          background-color: @theme-secondary;
+          background-color: @results-border-color;
           &:after {
-            border-color: @theme-secondary transparent transparent transparent;
+            border-color: @results-border-color transparent transparent transparent;
+          }
+        }
+
+        &.hovered {
+          .pin-result-icon {
+            background-color: @theme-secondary;
+            &:after {
+              border-color: @theme-secondary transparent transparent transparent;
+            }
           }
         }
       }
