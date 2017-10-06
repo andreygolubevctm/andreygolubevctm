@@ -10,7 +10,12 @@
         _tagHTML = '',
         _isEnabled = false,
         _tagShown = false,
-        _count = 0;
+        _count = 0,
+        _classNames = {
+            popularProducts: 'result-popular-products',
+            hasPopularProducts: 'result-has-popular-products',
+            showPopularProductsTag: 'results-show-popular-products-tag'
+        };
 
     function initHealthPopularProducts() {
         $(document).ready(function() {
@@ -45,7 +50,8 @@
             deciding: $('.results-popular-products-banner .popular-products-deciding'),
             button: $('.results-popular-products-banner button'),
             popularProducts: $(':input[name=health_popularProducts]'),
-            resultsContainer: $('.resultsContainer')
+            resultsContainer: $('.resultsContainer'),
+            resultRow: $('.result-row')
         };
     }
 
@@ -63,7 +69,7 @@
 
     function _showTag() {
         _tagShown = true;
-        $elements.resultsContainer.addClass('results-show-popular-products-tag');
+        $elements.resultsContainer.addClass(_classNames.showPopularProductsTag);
     }
 
     function show() {
@@ -73,7 +79,7 @@
             $elements.deciding.toggleClass('hidden', $elements.popularProducts.val() === 'N');
 
             if (_count > 0) {
-                $('.result-row').addClass('result-has-popular-products');
+                $elements.resultRow.addClass(_classNames.hasPopularProducts);
             }
         }
     }
@@ -93,7 +99,7 @@
 
     function injectTag($resultRow) {
         if (isEnabled()) {
-            $resultRow.addClass('result-popular-products').prepend(_tagHTML);
+            $resultRow.addClass(_classNames.popularProducts).prepend(_tagHTML);
             _count++;
         }
     }
