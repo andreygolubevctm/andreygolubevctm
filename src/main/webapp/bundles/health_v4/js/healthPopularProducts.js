@@ -50,8 +50,7 @@
             deciding: $('.results-popular-products-banner .popular-products-deciding'),
             button: $('.results-popular-products-banner button'),
             popularProducts: $(':input[name=health_popularProducts]'),
-            resultsContainer: $('.resultsContainer'),
-            resultRow: $('.result-row')
+            resultsContainer: $('.resultsContainer')
         };
     }
 
@@ -79,7 +78,7 @@
             $elements.deciding.toggleClass('hidden', $elements.popularProducts.val() === 'N');
 
             if (_count > 0) {
-                $elements.resultRow.addClass(_classNames.hasPopularProducts);
+                $('.result-row').addClass(_classNames.hasPopularProducts);
             }
         }
     }
