@@ -75,7 +75,12 @@
 
                 // loop through selected hospital benefits
                 _.each(meerkat.modules.benefitsModel.getHospitalBenefitsForFilters(), function (benefit) {
-                    $('#health_refineResults_benefits_' + benefit.id).prop('checked', benefit.selected);
+                    $('#health_refineResults_benefits_' + benefit.id).prop('checked', meerkat.modules.benefitsModel.isSelected(benefit.id));
+                });
+
+                // loop through selected extras benefits
+                _.each(meerkat.modules.benefitsModel.getExtrasBenefitsForFilters(), function (benefit) {
+                    $('#health_refineResults_benefits_' + benefit.id).prop('checked', meerkat.modules.benefitsModel.isSelected(benefit.id));
                 });
             });
         });
@@ -149,7 +154,8 @@
                 hospitalCountText: hospitalType === 'customise' ? comprehensiveText : '',
                 extrasBtnText: extrasCount > 0 ? 'Change' : 'Add Extras',
                 extrasCountText: extrasCount > 0 ? extrasCount + ' Extra' + extrasPlural + ' selected' : 'No Extras',
-                benefitsHospital: meerkat.modules.benefitsModel.getHospitalBenefitsForFilters()
+                benefitsHospital: meerkat.modules.benefitsModel.getHospitalBenefitsForFilters(),
+                benefitsExtras: meerkat.modules.benefitsModel.getExtrasBenefitsForFilters()
             };
 
         if (meerkat.modules.splitTest.isActive(2)) {
