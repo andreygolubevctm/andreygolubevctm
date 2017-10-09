@@ -91,7 +91,9 @@
             </jsp:attribute>
 
             <jsp:attribute name="progress_bar">
+
                 <div class="progress-bar-row navbar-affix">
+                  <competition:mobileFooter vertical="health"/>
                     <div class="container">
                         <div class="row">
                             <div class="col-xs-12 col-sm-9">

@@ -296,6 +296,7 @@
                 _incrementTranIdBeforeEnteringSlide();
             },
             onAfterEnter: function enterBenefitsStep(event) {
+                meerkat.modules.octoberComp.closeMobileBanner();
                 // Note: Not sure if this will be introduced back in a later date
                 // var toggleBarInitSettings = {
                 //     container: 'body[data-step="benefits"]',

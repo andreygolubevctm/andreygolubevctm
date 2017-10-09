@@ -222,6 +222,7 @@
                 includeFormData: true
             },
             onInitialise: function () {
+                meerkat.modules.octoberComp.closeMobileBanner();
                 meerkat.modules.carTypeOfCover.initCarTypeOfCover();
                 meerkat.modules.carCommencementDate.initCarCommencementDate();
                 meerkat.modules.carYoungDrivers.initCarYoungDrivers();
@@ -285,6 +286,8 @@
                 object: meerkat.modules.car.getTrackingFieldsObject
             },
             onInitialise: function onResultsInit(event) {
+                meerkat.modules.octoberComp.hideMobileBanner();
+                meerkat.modules.octoberComp.showNav();
                 meerkat.modules.carResults.initPage();
                 meerkat.modules.carMoreInfo.initMoreInfo();
                 meerkat.modules.carFilters.initCarFilters();
@@ -333,7 +336,8 @@
             },
             onAfterLeave: function (event) {
                 meerkat.modules.journeyProgressBar.show();
-
+                meerkat.modules.octoberComp.showMobileBanner();
+                meerkat.modules.octoberComp.hideNav();
                 // Hide the filters bar
                 meerkat.modules.carFilters.hide();
                 meerkat.modules.carEditDetails.hide();

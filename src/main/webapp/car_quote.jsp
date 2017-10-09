@@ -53,7 +53,14 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="header">
-		<car:snapshot label="Vehicle Quoted" isHeader="true" />
+		<c:choose>
+			<c:when test="${octoberComp}">
+				<competition:navSection vertical="car" />
+			</c:when>
+			<c:otherwise>
+				<car:snapshot label="Vehicle Quoted" isHeader="true" />
+			</c:otherwise>
+		</c:choose>
 	</jsp:attribute>
 
 
@@ -66,10 +73,10 @@
     </jsp:attribute>
 
 	<jsp:attribute name="navbar">
-	
+
 		<ul class="nav navbar-nav" role="menu">
 			<core_v2:offcanvas_header />
-	
+
 			<li class="slide-feature-back">
 				<a href="javascript:;" data-slide-control="previous" class="btn-back" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />><span class="icon icon-arrow-left"></span> <span>Back</span></a>
 			</li>
@@ -101,7 +108,7 @@
 					</div>
 				</div>
 			</li>
-		
+
 			<c:if test="${saveQuoteEnabled == 'Y'}">
 			<li class="dropdown dropdown-interactive slide-feature-emailquote hidden-xs" id="email-quote-dropdown">
 				<a class="activator needsclick btn-email dropdown-toggle" data-toggle="dropdown" href="javascript:;" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />><span class="icon icon-envelope"></span> <span><c:choose>
@@ -177,7 +184,7 @@
 				</ul>
 			</div>
 		</nav>
-		
+
 		<nav id="navbar-compare" class="compare-v2 navbar hidden-xs hidden">
 			<div class="navbar-additional clearfix compare-basket">
 			</div>
@@ -204,11 +211,12 @@
 		</div>
 	</jsp:attribute>
 
-			
+
 	<jsp:attribute name="form_bottom">
 	</jsp:attribute>
-			
+
 	<jsp:attribute name="footer">
+		<competition:mobileFooter vertical="car" />
 		<car:footer />
 	</jsp:attribute>
 
@@ -234,12 +242,12 @@
 	<jsp:attribute name="vertical_settings">
 		<car:settings />
 	</jsp:attribute>
-		
+
 	<jsp:attribute name="body_end">
 	</jsp:attribute>
-		
+
 	<jsp:body>
-		
+
 		<div class="hiddenFields">
 			<%-- These should use pageSettings.getVerticalCode() but for now don't want to change xpaths --%>
 			<form_v1:operator_id xpath="quote/operatorid" />
@@ -255,7 +263,7 @@
 			<field_v1:hidden xpath="quote/renderingMode" />
 			<field_v1:hidden xpath="quote/journey/type" defaultValue="${jrny}" />
 		</div>
-	
+
 		<%-- Slides --%>
 		<car_layout:slide_your_car />
 		<car_layout:slide_options />

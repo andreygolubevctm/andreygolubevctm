@@ -67,6 +67,9 @@
                     if (!$elements.generalDentalBenefit.prop('checked')) {
                         _checkGeneralDental();
                     }
+                } else if (meerkat.modules.healthChoices.getCoverType() !== 'H' &&
+                           meerkat.modules.benefitsModel.getExtrasCount() === 0) {
+                    _checkGeneralDental();
                 }
             });
         });
@@ -153,8 +156,18 @@
         meerkat.messaging.subscribe(meerkatEvents.benefitsSwitch.SWITCH_CHANGED, function (e) {
             _toggleBenefitSelection(e.benefit, e.isSwitchedOn);
             _toggleSwitchValidation();
-            _setCoverTypeField();
-            _updateHiddenFields();
+
+            if (e.updateCoverType) {
+                var coverType = 'C';
+                if (!meerkat.modules.benefitsSwitch.isHospitalOn()) {
+                    coverType = 'E';
+                }else if (!meerkat.modules.benefitsSwitch.isExtrasOn()) {
+                    coverType = 'H';
+                }
+                meerkat.modules.healthChoices.setCoverType(coverType);
+
+                _updateHiddenFields();
+            }
 
             if (e.benefit === 'hospital' && e.isSwitchedOn) {
                 _checkPrivateHospital();
@@ -181,28 +194,22 @@
 
     function _setCoverTypeField() {
         // set the hidden field
-        var isLimited = meerkat.modules.benefits.getHospitalType() === 'limited';
-        var coverType = 'C';
-        var hospitalCount = meerkat.modules.benefitsModel.getHospitalCount();
-        var extrasCount = meerkat.modules.benefitsModel.getExtrasCount();
+        var hasHospitalCover = $elements.hiddenHospitalCover.val() === 'Y',
+            hasExtrasCover = $elements.hiddenExtraCover.val() === 'Y',
+            isLimited = meerkat.modules.benefits.getHospitalType() === 'limited',
+            coverType = 'C',
+            hospitalCount = hasHospitalCover ? meerkat.modules.benefitsModel.getHospitalCount() : 0,
+            extrasCount = hasExtrasCover ? meerkat.modules.benefitsModel.getExtrasCount() : 0;
 
         // C = extras AND (hospital OR limited)
-        if(extrasCount > 0 && (hospitalCount > 0 || isLimited)) {
+        if (extrasCount > 0 && (hospitalCount > 0 || isLimited)) {
             coverType = 'C';
             // H = No extras, and Hospital benefits OR limited
-        } else if(extrasCount === 0 && (hospitalCount > 0 || isLimited)) {
+        } else if (extrasCount === 0 && (hospitalCount > 0 || isLimited)) {
             coverType = 'H';
             // E = extras only
-        } else if(extrasCount > 0) {
+        } else if (extrasCount > 0) {
             coverType = 'E';
-        }
-
-        if (!meerkat.modules.benefitsSwitch.isHospitalOn()) {
-            coverType = 'E';
-        }
-
-        if (!meerkat.modules.benefitsSwitch.isExtrasOn()) {
-            coverType = 'H';
         }
 
         meerkat.modules.healthChoices.setCoverType(coverType);
