@@ -19,6 +19,14 @@
         $('input[name="overseasMedicalRangeSlider"]').change(function () {
             $('.overseas-medical-range-value').empty().text('$' + Number($(this).val()).toLocaleString('en'));
         });
+
+        $('.dropdown').on('show.bs.dropdown', function () {
+            $(this).find(".icon").removeClass("icon-angle-down").addClass("icon-angle-up");
+        });
+
+        $('.dropdown').on('hide.bs.dropdown', function () {
+            $(this).find(".icon").removeClass("icon-angle-up").addClass("icon-angle-down");
+        });
     }
 
     meerkat.modules.register("travelResultFilters", {

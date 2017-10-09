@@ -59,45 +59,54 @@
 				<div class="col-xs-12 col-md-7 text-right"><b>Excess up to</b></div>
 				<div class="col-xs-5 col-md-3 text-left selected-excess-value"></div>
 				<div class="col-xs-5 col-md-2 text-left">
-					<a type="button" id="excessFilterDropdownBtn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						<i class="icon icon-angle-down"></i>
-					</a>
-					<div class="dropdown-menu dropdown-menu-excess-filter" aria-labelledby="excessFilterDropdownBtn">
-						<travel_results_filters:excess />
+					<div class="dropdown">
+						<a type="button" id="excessFilterDropdownBtn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<i class="icon icon-angle-down"></i>
+						</a>
+						<div class="dropdown-menu dropdown-menu-excess-filter" aria-labelledby="excessFilterDropdownBtn">
+							<travel_results_filters:excess />
+						</div>
 					</div>
 				</div>
 			</div>
 			<div class="col-xs-2 col-sm-2 col-md-2 clt-trip-filter hidden-xs text-right">
 				<div class="col-xs-12">
-					<a type="button" id="moreFiltersDropdownBtn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						More filters&nbsp;<i class="icon icon-angle-down"></i>
-					</a>
-					<div class="dropdown-menu dropdown-menu-more-filters" aria-labelledby="moreFiltersDropdownBtn">
-						<div class="row">
-							<div class="col-sm-3 text-center travel-filters-cover-tabs"></div>
-							<div class="col-sm-2 text-left">
-								<div class="dropdown-item">
-									<b>Excess</b>
-									<field_v2:help_icon helpId="280" tooltipClassName="" />
+					<div class="dropdown">
+						<a type="button" id="moreFiltersDropdownBtn" class="more-filters-dropdown-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							More filters&nbsp;<i class="icon icon-angle-down"></i>
+						</a>
+						<div class="dropdown-menu dropdown-menu-more-filters" aria-labelledby="moreFiltersDropdownBtn">
+							<div class="row">
+								<div class="col-sm-3 text-center travel-filters-cover-tabs"></div>
+								<div class="col-sm-2 text-left">
+									<div class="dropdown-item">
+										<b>Excess</b>
+										<field_v2:help_icon helpId="280" tooltipClassName="" />
+									</div>
+									<travel_results_filters:excess />
 								</div>
-								<travel_results_filters:excess />
-							</div>
-							<div class="col-sm-3 text-left">
-								<div class="dropdown-item range-filter">
-									<b>Minimum luggage cover</b>
-									<field_v2:help_icon helpId="280" tooltipClassName="" />
+								<div class="col-sm-3 text-left">
+									<div class="dropdown-item range-filter">
+										<b>Minimum luggage cover</b>
+										<field_v2:help_icon helpId="280" tooltipClassName="" />
+									</div>
+									<travel_results_filters:minimum_luggage />
+									<div class="dropdown-item range-filter">
+										<b>Minimum cancellation cover</b>
+										<field_v2:help_icon helpId="280" tooltipClassName="" />
+									</div>
+									<travel_results_filters:minimum_cancellation />
+									<div class="dropdown-item range-filter">
+										<b>Minimum overseas medical cover</b>
+										<field_v2:help_icon helpId="280" tooltipClassName="" />
+									</div>
+									<travel_results_filters:minimum_overseas_medical />
 								</div>
-								<travel_results_filters:minimum_luggage />
-								<div class="dropdown-item range-filter">
-									<b>Minimum cancellation cover</b>
-									<field_v2:help_icon helpId="280" tooltipClassName="" />
+								<div class="col-sm-2 text-left">
+									<div class="dropdown-item">
+										<b>Brands</b>
+									</div>
 								</div>
-								<travel_results_filters:minimum_cancellation />
-								<div class="dropdown-item range-filter">
-									<b>Minimum overseas medical cover</b>
-									<field_v2:help_icon helpId="280" tooltipClassName="" />
-								</div>
-								<travel_results_filters:minimum_overseas_medical />
 							</div>
 						</div>
 					</div>
