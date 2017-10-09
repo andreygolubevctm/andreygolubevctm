@@ -77,7 +77,7 @@
 						</a>
 						<div class="dropdown-menu dropdown-menu-more-filters" aria-labelledby="moreFiltersDropdownBtn">
 							<div class="row">
-								<div class="col-sm-3 text-center travel-filters-cover-tabs"></div>
+								<div class="col-sm-3 text-center coverLevelTabs travel-filters-cover-tabs"></div>
 								<div class="col-sm-2 text-left">
 									<div class="dropdown-item">
 										<b>Excess</b>
