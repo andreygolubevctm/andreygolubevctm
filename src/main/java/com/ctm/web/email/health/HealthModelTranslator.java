@@ -68,9 +68,7 @@ public class HealthModelTranslator implements EmailTranslator {
         String benefitCodes = request.getParameter("rank_benefitCodes0");
         String extrasPds = request.getParameter("rank_extrasPdsUrl0");
         String coPayment =  request.getParameter("rank_coPayment0");
-        String excessPerPerson = request.getParameter("rank_excessPerPerson0");
         String excessPerPolicy = request.getParameter("rank_excessPerPolicy0");
-        String healthMembership = request.getParameter("rank_healthMembership0");
         String excessPerAdmission = request.getParameter("rank_excessPerAdmission0");
         String hospitalPdsUrl = request.getParameter("rank_hospitalPdsUrl0");
         String specialOffer = request.getParameter("rank_specialOffer0");

@@ -203,7 +203,7 @@
 		</c:otherwise>
 	</c:choose>
 
-	<c:if test="${pageSettings.getVerticalCode() == 'health'}">
+	<c:if test="${pageSettings.getVerticalCode() == 'health' || pageSettings.getVerticalCode() == 'car'}">
 		<c:catch var ="marketingSendEmailException">
 			<jsp:forward page="/spring/marketing-automation/sendEmail.json" />
 		</c:catch>
