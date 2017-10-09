@@ -69,7 +69,8 @@ public class EmailController {
         try {
             Brand brand = ApplicationService.getBrandFromRequest(request);
             String verticalCode = ApplicationService.getVerticalCodeFromRequest(request);
-            if(VerticalType.HEALTH != VerticalType.valueOf(verticalCode)) return;
+            if (VerticalType.HEALTH != VerticalType.valueOf(verticalCode) && VerticalType.CAR != VerticalType.valueOf(verticalCode))
+                return;
             SessionData sessionData = sessionDataService.getSessionDataFromSession(request);
             EmailRequest emailRequest = new EmailRequest();
 
@@ -89,10 +90,6 @@ public class EmailController {
             emailRequest.setVertical(verticalCode);
             List<String> premium = emailUtils.buildParameterList(request, "rank_premium");
             emailRequest.setPremiums(premium);
-            if(VerticalType.HEALTH == VerticalType.valueOf(verticalCode)){
-                healthModelTranslator.setHealthFields(emailRequest, request, data);
-            }
-            setUrls(request,emailRequest, data,verticalCode);
             emailClient.send(emailRequest);
         }
         catch(Exception e){
@@ -109,39 +106,6 @@ public class EmailController {
             return carModelTranslator;
         }
         throw new RuntimeException("Vertical not supported");
-    }
-
-    private void setUrls(HttpServletRequest request, EmailRequest emailRequest, Data data, String verticalCode) throws ConfigSettingException, DaoException, EmailDetailsException, SendEmailException {
-        EmailMaster emailDetails = new EmailMaster();
-        emailDetails.setEmailAddress(emailRequest.getEmailAddress());
-        emailDetails.setSource("QUOTE");
-        OptIn optIn = healthModelTranslator.getOptIn(emailRequest,data);
-        emailDetails.setOptedInMarketing(optIn == OptIn.Y, verticalCode);
-        EmailDetailsService emailDetailsService = EmailServiceFactory.createEmailDetailsService(SettingsService.getPageSettingsForPage(request),data, Vertical.VerticalType.HEALTH, new HealthEmailDetailMappings());
-        EmailMaster emailMaster = emailDetailsService.handleReadAndWriteEmailDetails(Long.parseLong(emailRequest.getTransactionId()), emailDetails, "ONLINE",  ipAddressHandler.getIPAddress(request));
-
-        PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
-        Map<String, String> emailParameters = new HashMap<>();
-        Map<String, String> otherEmailParameters = new HashMap<>();
-        otherEmailParameters.put(EmailUrlService.CID, CID);
-        otherEmailParameters.put(EmailUrlService.ET_RID, ET_RID);
-        otherEmailParameters.put(EmailUrlService.UTM_SOURCE, HEALTH_UTM_SOURCE + LocalDate.now().getYear());
-        otherEmailParameters.put(EmailUrlService.UTM_MEDIUM, UTM_MEDIUM);
-        otherEmailParameters.put(EmailUrlService.UTM_CAMPAIGN, CAMPAIGN);
-        emailParameters.put(EmailUrlService.TRANSACTION_ID, emailRequest.getTransactionId());
-        emailParameters.put(EmailUrlService.HASHED_EMAIL, emailDetails.getHashedEmail());
-        emailParameters.put(EmailUrlService.STYLE_CODE_ID, Integer.toString(pageSettings.getBrandId()));
-        emailParameters.put(EmailUrlService.EMAIL_TOKEN_TYPE, EMAIL_TYPE);
-        emailParameters.put(EmailUrlService.EMAIL_TOKEN_ACTION, ACTION_UNSUBSCRIBE);
-        emailParameters.put(EmailUrlService.VERTICAL, Optional.ofNullable(verticalCode).map(s -> s.toLowerCase()).orElse(null));
-
-        EmailUrlService urlService = EmailServiceFactory.createEmailUrlService(pageSettings, pageSettings.getVertical().getType());
-        String unsubscribeUrl = urlService.getUnsubscribeUrl(emailParameters);
-        String applyUrl = urlService.getApplyUrl(emailMaster,emailParameters,otherEmailParameters);
-        List<String> applyUrls = new ArrayList<>();
-        applyUrls.add(applyUrl);
-        emailRequest.setApplyUrls(applyUrls);
-        emailRequest.setUnsubscribeURL(unsubscribeUrl);
     }
 
 

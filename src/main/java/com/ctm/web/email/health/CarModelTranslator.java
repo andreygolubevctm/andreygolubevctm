@@ -100,7 +100,7 @@ public class CarModelTranslator implements EmailTranslator {
         carEmailModel.setVehicleModel(model);
         carEmailModel.setVehicleVariant(vehicleVariant);
         carEmailModel.setVehicleYear(vehicleYear);
-        emailRequest.setCarEmailModel(Optional.of(carEmailModel));
+        emailRequest.setCarEmailModel(carEmailModel);
 
         if (!openingHours.isEmpty()) emailRequest.setCallCentreHours(openingHours.get(0));
 

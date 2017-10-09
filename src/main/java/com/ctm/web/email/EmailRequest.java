@@ -61,6 +61,6 @@ public class EmailRequest {
     private String unsubscribeURL;
     private String vertical;
 
-    private Optional<HealthEmailModel> healthEmailModel;
-    private Optional<CarEmailModel> carEmailModel;
+    private HealthEmailModel healthEmailModel;
+    private CarEmailModel carEmailModel;
 }
