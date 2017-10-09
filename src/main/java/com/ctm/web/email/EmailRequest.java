@@ -36,13 +36,14 @@ public class EmailRequest {
     @JsonSerialize(using = LocalDateSerializer.class)
     @JsonDeserialize(using = LocalDateDeserializer.class)
     private LocalDate commencementDate;
+    private List<String> coverTypes;
     private List<String> productDescriptions;
     private String emailAddress;
     private OptIn optIn;
     private String firstName;
     private String gaClientID;
     private String lastName;
-    private String partnersQuoted;
+    private Integer partnersQuoted;
     private String phoneNumber;
     private String premiumFrequency;
     private List<String> premiumLabels;
