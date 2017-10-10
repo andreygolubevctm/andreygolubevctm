@@ -98,21 +98,37 @@
 
     <jsp:body>
 
+
         <div id="pageContent">
-
+          <c:set var="octoberCompRender" value="${false}"></c:set>
+          <c:if test="${octoberComp && (pageSettings.getVerticalCode() eq 'home' || pageSettings.getVerticalCode() eq 'health' || pageSettings.getVerticalCode() eq 'car')}">
+            <c:set var="octoberCompRender" value="${true}"></c:set>
+          </c:if >
                 <%-- <div id="pageContentTop"></div> --%>
-
+            
             <article class="container">
-
-                <div id="journeyEngineContainer">
+              <c:set var="octoberCompClass" value=""></c:set>
+              <c:if test="${pageSettings.getBrandCode() eq 'ctm' && octoberCompRender}">
+                <c:set var="octoberCompClass" value="octoberComp" />
+              </c:if>
+                <div id="journeyEngineContainer" class="${octoberCompClass}">
+                  
                     <div id="journeyEngineLoading" class="journeyEngineLoader opacityTransitionQuick">
+                      
                         <div class="loading-logo"></div>
+                        
                         <p class="message">Please wait...</p>
-                        <jsp:invoke fragment="results_loading_message" />
+                        <c:choose>
+                          <c:when test="${octoberCompRender && !callCentre}">
+                            <competition:loading vertical="${pageSettings.getVerticalCode()}"/>
+                          </c:when >
+                          <c:otherwise>
+                            <jsp:invoke fragment="results_loading_message" />
+                          </c:otherwise>
+                        </c:choose>          
                     </div>
 
                     <div id="mainform" class="form-horizontal">
-
                         <c:if test="${ignore_journey_tracking != 'true'}">
                             <core_v2:journey_tracking />
                         </c:if>
