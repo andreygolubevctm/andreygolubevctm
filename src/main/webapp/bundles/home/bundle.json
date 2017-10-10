@@ -33,6 +33,7 @@
     "shared/resultsMobileDisplayModeToggle",
     "shared/mobileNavButtons",
     "shared/buttonTileDropdownSelector",
-    "shared/leadCapture"
+    "shared/leadCapture",
+    "shared/competition"
   ]
 }

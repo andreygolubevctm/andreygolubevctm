@@ -40,9 +40,10 @@
 <c:set var="nonStandardAccessories" value="${service.getVehicleNonStandardsJson()}" />
 
 <car:lead_capture_settings />
-
+<competition:octoberCompSettings />
 
 {
+	octoberComp: <c:out value="${octoberComp}" />,
 	isCallCentreUser: <c:out value="${not empty callCentre}"/>,
 	isFromBrochureSite: <c:out value="${fromBrochure}"/>,
 	brochureValues: {},

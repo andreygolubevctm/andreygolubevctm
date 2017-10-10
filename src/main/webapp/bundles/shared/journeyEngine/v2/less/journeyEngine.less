@@ -4,13 +4,16 @@
 
 #journeyEngineContainer {
 	min-height: 500px;
-
 	// Relative required to contain the journeyEngineLoader
 	position: relative;
 
 	@media print {
 		min-height: 0;
 	}
+}
+
+#journeyEngineContainer.octoberComp .loading-logo {
+	display: none;
 }
 
 
