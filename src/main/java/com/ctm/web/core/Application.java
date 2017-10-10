@@ -20,7 +20,7 @@ import javax.servlet.ServletException;
         "com.ctm.commonlogging", "com.ctm.web.core","com.ctm.web.factory", "com.ctm.httpclient",
         "com.ctm.web.car", "com.ctm.web.homecontents",
         "com.ctm.web.travel", "com.ctm.web.life", "com.ctm.web.health",
-        "com.ctm.web.fuel", "com.ctm.web.bsb", "com.ctm.web.reward"})
+        "com.ctm.web.fuel", "com.ctm.web.bsb", "com.ctm.web.reward", "com.ctm.web.email"})
 @EnableAutoConfiguration(exclude = RabbitAutoConfiguration.class)
 @Configuration
 @EnableAsync
