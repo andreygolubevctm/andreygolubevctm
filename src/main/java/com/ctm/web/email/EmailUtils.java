@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
@@ -23,6 +24,9 @@ import java.util.stream.IntStream;
 public class EmailUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailUtils.class);
+
+    public static final String ANNUAL_PREMIUM = "Annual  Premium";
+    public static final String ANNUAL_ONLINE_PREMIUM = "Annual Online Premium";
 
     public List<ResultProperty> getResultPropertiesForTransaction(String tranId) throws DaoException {
         try {
@@ -58,5 +62,12 @@ public class EmailUtils {
             LOGGER.warn("Field " + param + "not found in xml ");
         }
         return null;
+    }
+
+    public List<String> getPremiumLabels(List<String> premiumLabels){
+        return premiumLabels.stream().map(s -> {
+            if(s!=null && s.equals("OFFLINE")) return ANNUAL_PREMIUM;
+            return ANNUAL_ONLINE_PREMIUM;
+        }).collect(Collectors.toList());
     }
 }

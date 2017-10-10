@@ -361,6 +361,12 @@
             <artifactId>cxf-rt-ws-security</artifactId>
             <version>${cxf.version}</version>
         </dependency>
+        <dependency>
+            <groupId>junit-addons</groupId>
+            <artifactId>junit-addons</artifactId>
+            <version>1.4</version>
+            <scope>test</scope>
+        </dependency>
 
         <dependency>
             <groupId>org.apache.cxf</groupId>

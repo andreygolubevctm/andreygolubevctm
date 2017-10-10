@@ -62,6 +62,7 @@ public class CarModelTranslator implements EmailTranslator {
         List<String> brandCodes = getAllResultProperties(resultsProperties, "brandCode");
         List<String> excesses = getAllResultProperties(resultsProperties, "excess/total");
         List<String> discountOffer = getAllResultProperties(resultsProperties,"discountOffer");
+        List<String> headlineOffer = getAllResultProperties(resultsProperties,"headlineOffer");
 
 
         String commencementDate = emailUtils.getParamSafely(data, "/options/commencementDate");
@@ -95,6 +96,7 @@ public class CarModelTranslator implements EmailTranslator {
         emailRequest.setGaClientID(emailUtils.getParamSafely(data, "/gaclientid"));
         emailRequest.setOptIn(OptIn.valueOf(optIn));
         emailRequest.setProviderSpecialOffers(discountOffer);
+        emailRequest.setPremiumLabels(emailUtils.getPremiumLabels(headlineOffer));
 
         CarEmailModel carEmailModel = new CarEmailModel();
         carEmailModel.setCoverType(typeOfCover);
