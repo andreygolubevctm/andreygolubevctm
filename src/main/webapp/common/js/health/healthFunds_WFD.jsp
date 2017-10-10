@@ -39,8 +39,8 @@ var healthFunds_WFD = {
         meerkat.modules.healthFunds._previousfund_authority(true);
 
         <%--credit card & bank account frequency & day frequency--%>
-        meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':false, 'fortnightly': false, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':false });
-        meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':false, 'fortnightly': false, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':false });
+        meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':false, 'fortnightly': false, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true });
+        meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':false, 'fortnightly': false, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true });
 
         <%--claims account--%>
         meerkat.modules.healthPaymentStep.overrideSettings('creditBankQuestions',true);
@@ -102,8 +102,45 @@ var healthFunds_WFD = {
             $('#health_application_partner_genderRow').after('<c:out value="${html}" escapeXml="false" />');
         }
 
+        if (meerkat.site.tracking.brandCode == 'wfdd') {
+            <%-- May need to add remove additional properties from this field see onChangeNoEmailChkBox for example --%>
+            $('#health_application_optInEmail-group').css('display', 'none');
+            $('#applicationForm_1').append('<input type="hidden" name="health_application_optInEmail" value="N" />');
+            $('#health_application_noEmailGroup').css('display', 'block');
+        }
+
+        function onChangeNoEmailChkBox(){
+            var $applicationEmailGroup = $('#health_application_emailGroup'),
+                $applicationEmailField = $("#health_application_email");
+
+            if ( $("#health_application_no_email").is(":checked") ) {
+                $applicationEmailGroup.find('*').removeClass("has-success").removeClass("has-error");
+                $applicationEmailGroup.find('.error-field').remove();
+
+                $applicationEmailField.val('');
+                $applicationEmailField.prop('required', false);
+                $applicationEmailField.prop('disabled', true);
+
+                $('#applicationForm_1').append('<input type="hidden" name="health_application_email" value="email@westfund.com.au" />');
+
+            } else {
+                $('input[type="hidden"][name="health_application_email"]').remove();
+
+                $applicationEmailField.prop('required', true);
+                $applicationEmailField.prop('disabled', false);
+
+            }
+        }
+
+        if (meerkat.site.tracking.brandCode == 'wfdd') {
+            onChangeNoEmailChkBox();
+            $("#health_application_no_email").on("click.WFD",function() {onChangeNoEmailChkBox();});
+        }
+
     },
     renderDeductionMessage: function() {
+
+        <%-- TODO: this will need to be tweaked once we know what WFD's new payment policy will be for annual ########  --%>
         var deductionMsg = meerkat.modules.healthPaymentStep.getSelectedFrequency() === 'monthly' ?
                 'Your first payment will be debited within 48 hours and this will be a pro-rata amount for the remainder of the month. Your regular premium will be deducted from your nominated account on the 1st of every month.' :
                 'Your first payment will be debited within 48 hours and this will be a pro-rata amount until next Thursday. Your regular premium will be deducted from your nominated account on a Thursday.';
@@ -112,9 +149,16 @@ var healthFunds_WFD = {
         healthFunds_WFD.$paymentFrequency.closest('div.row-content').find('.statement').before('<p class="deduction-message" style="margin-top:1em">'+ deductionMsg +'</p>');
     },
     unset: function() {
-        healthFunds_WFD.$paymentFrequency.off('change.WFD');
+
+        if (meerkat.site.tracking.brandCode == 'wfdd') {
+            healthFunds_WFD.$paymentFrequency.off('change.WFD');
+            $('input[type="hidden"][name="health_application_optInEmail"]').remove();
+            $('#health_application_optInEmail-group').css('display', 'block');
+        }
+
         meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), false);
         meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), false);
+        $('#health_application_no_email').off('click.WFD');
 
         meerkat.modules.healthFunds._reset();
 

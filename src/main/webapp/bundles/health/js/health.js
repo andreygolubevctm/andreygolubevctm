@@ -366,6 +366,12 @@
 					}, 1000);
 				}
 				incrementTranIdBeforeEnteringSlide();
+
+                if (meerkat.site.tracking.brandCode == 'wfdd') {
+                    /* TODO: may actually prevent contact details from being stored - if so the optInEmail stuff in healthFunds_WFD.jsp may need to be reversed too! */
+                    $('#health_contactDetails_optInEmail').val('N');
+                }
+
 			},
 			onAfterEnter: function enteredContactStep(event) {
 			},
@@ -506,6 +512,7 @@
 				method:'trackQuoteForms',
 				object:meerkat.modules.health.getTrackingFieldsObject
 			},
+            contactDtlsEmailEventHandle: {},
 			onInitialise: function onInitApplyStep(event){
 
 				meerkat.modules.healthDependants.initHealthDependants();
@@ -576,6 +583,19 @@
 						$("#health_payment_medicare-selection").removeAttr("style");
 					}
 
+                    /* TODO: may actually prevent contact details from being stored - if so the optInEmail stuff in healthFunds_WFD.jsp may need to be reversed too! */
+                    if (meerkat.site.tracking.brandCode == 'wfdd') {
+
+                        contactDtlsEmailEventHandle = meerkat.messaging.subscribe(meerkat.modules.events.contactDetails.email.FIELD_CHANGED, function (fieldDetails) {
+							if (fieldDetails.$field.attr('name') === 'health_application_email') {
+                                _.defer(function(){
+                                    $('#health_application_optInEmail-group').css('display', 'none');
+                                });
+							}
+                        });
+
+                    }
+
                     setHospitalCoverClass(selectedProduct);
                     setExtrasCoverClass(selectedProduct);
 				}
@@ -586,7 +606,12 @@
 				$(".policySummaryContainer").find('.footer').removeClass('hidden');
 
 				adjustLayout();
-			}
+			},
+            onBeforeLeave: function beforeLeaveApplyStep(event) {
+                if (meerkat.site.tracking.brandCode == 'wfdd') {
+                    meerkat.messaging.unsubscribe(meerkat.modules.events.contactDetails.email.FIELD_CHANGED, contactDtlsEmailEventHandle);
+                }
+            }
 		};
 
 		var paymentStep = {
