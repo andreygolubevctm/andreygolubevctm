@@ -224,7 +224,7 @@ public class ProviderContentDao {
                         "providerContentTypeId = ?, " +
                         "verticalId = ?, " +
                         "effectiveStart = ?, " +
-                        "effectiveEnd = ? " +
+                        "effectiveEnd = ? ," +
                         "styleCodeId = ? " +
                         "WHERE providerContentId = ?";
             final int finalProviderContentId = providerContentId;
