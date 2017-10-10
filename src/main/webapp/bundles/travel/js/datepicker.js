@@ -130,7 +130,9 @@
   
   function setValueToHiddenFields(target) {
     var dateArray = target.dateString.split('/');
-    document.getElementById('travel_dates_' + target.name).value = target.dateString;
+    var mainValue = [dateArray[0], dateArray[1], dateArray[2].replace('20', '')].join('/');
+    
+    document.getElementById('travel_dates_' + target.name).value = mainValue;
     if (dateArray.length === 3) {
       document.getElementById('travel_dates_' + target.name + 'InputD').value = dateArray[0];
       document.getElementById('travel_dates_' + target.name + 'InputM').value = dateArray[1];
