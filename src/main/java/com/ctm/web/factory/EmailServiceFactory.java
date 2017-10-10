@@ -127,7 +127,7 @@ public class EmailServiceFactory {
                 applicationService, ipAddressHandler);
 	}
 
-	private static EmailDetailsService createEmailDetailsService(
+	public static EmailDetailsService createEmailDetailsService(
 			PageSettings pageSettings, Data data, VerticalType vertical , EmailDetailsMappings emailDetailsMappings) {
 		EmailMasterDao emailMasterDao = new EmailMasterDao(pageSettings.getBrandId(), pageSettings.getBrandCode() , vertical.getCode());
 		TransactionDao transactionDao = new TransactionDao();
@@ -136,7 +136,7 @@ public class EmailServiceFactory {
 		return emailDetailsService;
 	}
 
-	private static EmailUrlService createEmailUrlService(
+	public static EmailUrlService createEmailUrlService(
 			PageSettings pageSettings, VerticalType vertical)
 			throws SendEmailException {
 		EmailUrlService urlService;
