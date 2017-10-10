@@ -797,6 +797,32 @@
         if (meerkat.site.isCallCentreUser) {
             createPremiumsPopOver();
         }
+        
+        _pinProductFromLoadedProductCode();
+    }
+
+    // Pin product if productId loaded from brochure Email
+    function _pinProductFromLoadedProductCode(){
+        if (meerkat.site.loadProductCode.length > 0) {
+            var loadedProductId = _getProductIdFromProductCode(meerkat.site.loadProductCode);
+
+            if (loadedProductId.length > 0) {
+                _pinProductHelper(loadedProductId);
+            }
+        }
+    }
+
+    // Gets the productId only if the relevant product code exists in the returned results set
+    function _getProductIdFromProductCode(loadedProductCodeStr){
+        var returnStr = "";
+        if (Results.getReturnedResults().length > 0) {
+            for (var i = 0; i < Results.getReturnedResults().length; i++)  {
+                if (Results.getReturnedResults()[i].info.productCode === loadedProductCodeStr){
+                    return Results.getReturnedResults()[i].productId;
+                }
+            }
+        }
+        return returnStr;
     }
 
     function createDiscountPopOver() {

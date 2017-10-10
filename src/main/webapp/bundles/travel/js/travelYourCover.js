@@ -17,7 +17,6 @@
 		$travel_policyType_A,
 		$travel_dates_fromDate_row,
 		$travel_dates_toDate_row,
-		$travelDatePicker,
 		$detailsForm,
 		$resultsContainer,
 		modalId = null,
@@ -39,12 +38,12 @@
 			$travel_dates_toDate_row = $('#travel_dates_toDate_row');
 			$detailsForm = $('#detailsForm');
 			$resultsContainer = $('.resultsContainer');
-			$travelDatePicker = $('#travelDatePicker');
 
 			// hide the destinations section, travellers section, leave date and return date
 			$destinationfs.hide();
 			$datestravellersfs.hide();
-			$travelDatePicker.hide();
+			$travel_dates_toDate_row.hide();
+			$travel_dates_fromDate_row.hide();
 
 			// hide the blue bubble amt and single trip content
 			$detailsForm.find('.well-chatty > .amt, .well-chatty > .single').hide();
@@ -99,10 +98,10 @@
 			// hide the amt and default blue bubble copy
 			$detailsForm.find('.well-chatty > .amt, .well-chatty > .default').hide();
 
-			$destinationfs.add($datestravellersfs).add($travelDatePicker)[showMethod]();
+			$destinationfs.add($datestravellersfs).add($travel_dates_fromDate_row).add($travel_dates_toDate_row)[showMethod]();
 
 			// update section header name for dates & travellers section
-			$datestravellersfs.find('h2').text("Travellers");
+			$datestravellersfs.find('h2').text("Dates & Travellers");
 
 		} else {
 			// AMT
@@ -114,7 +113,7 @@
 			// check if desination is visiable
 			if ($destinationfs.is(':visible'))
 			{
-				$destinationfs.add($travelDatePicker)[hideMethod]();
+				$destinationfs.add($travel_dates_toDate_row).add($travel_dates_fromDate_row)[hideMethod]();
 			} else {
 				// on first load
 				$datestravellersfs.slideDown();

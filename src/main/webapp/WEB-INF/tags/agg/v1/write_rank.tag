@@ -202,6 +202,17 @@
 			${logger.error('BPEMAIL No matching vertical to send email to user: {} {}', log:kv('transactionId', transactionId), log:kv('verticalType', pageSettings.getVerticalCode()))}
 		</c:otherwise>
 	</c:choose>
-	<jsp:forward page="/spring/marketing-automation/sendEmail?email=${data.quote.contact.email}
-	&name=${data.quote.contact.name}&address=${data.application.address.fulladdress}&data=${data}"/>
+
+	<c:if test="${pageSettings.getVerticalCode() == 'health'}">
+		<c:catch var ="marketingSendEmailException">
+			<jsp:forward page="/spring/marketing-automation/sendEmail.json" />
+		</c:catch>
+
+		<c:if test = "${marketingSendEmailException != null}">
+			${logger.error('Marketing automation sendEmail exception caught: {} {}', log:kv('exception', marketingSendEmailException))}
+		</c:if>
+	</c:if>
+
+
+
 </c:if>
