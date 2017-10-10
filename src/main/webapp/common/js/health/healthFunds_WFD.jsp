@@ -150,6 +150,8 @@ var healthFunds_WFD = {
     },
     unset: function() {
 
+        healthFunds_WFD.$paymentFrequency.off('change.WFD');
+
         if (meerkat.site.tracking.brandCode == 'wfdd') {
             healthFunds_WFD.$paymentFrequency.off('change.WFD');
             $('input[type="hidden"][name="health_application_optInEmail"]').remove();
