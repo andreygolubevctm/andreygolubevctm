@@ -367,11 +367,6 @@
 				}
 				incrementTranIdBeforeEnteringSlide();
 
-                if (meerkat.site.tracking.brandCode == 'wfdd') {
-                    /* TODO: may actually prevent contact details from being stored - if so the optInEmail stuff in healthFunds_WFD.jsp may need to be reversed too! */
-                    $('#health_contactDetails_optInEmail').val('N');
-                }
-
 			},
 			onAfterEnter: function enteredContactStep(event) {
 			},
@@ -584,7 +579,10 @@
 						$("#health_payment_medicare-selection").removeAttr("style");
 					}
 
-                    /* TODO: may actually prevent contact details from being stored - if so the optInEmail stuff in healthFunds_WFD.jsp may need to be reversed too! */
+                    /* ***********************************************************************************************************************************************
+                    * TODO: may actually prevent contact details from being stored - if so the optInEmail stuff in healthFunds_WFD.jsp may need to be reversed too!
+                    * previously was forcing #health_contactDetails_optInEmail to 'N' but have since rolled it back due to this
+                    * *********************************************************************************************************************************************** */
                     if (meerkat.site.tracking.brandCode == 'wfdd') {
 
                         contactDtlsEmailEventHandle = meerkat.messaging.subscribe(meerkat.modules.events.contactDetails.email.FIELD_CHANGED, function (fieldDetails) {
