@@ -25,24 +25,24 @@
         />
 
         <div class="mobile-filters-menu-item-container">
-            <div class="mobile-filters-menu-item" data-slide-panel="Hospital preferences">
-                <div>
-                    Hospital insurance preferences <span class="icon icon-angle-right"></span>
-                    <div class="refine-results-hospital-type">{{= hospitalType }} Cover</div>
-                    <div class="refine-results-count-text">{{= hospitalCountText }}</div>
+            <div class="mobile-filters-menu-item" data-menu-id="hospitalPreferences">
+                <div class="mobile-filter-type">Hospital insurance preferences</div>
+                <div class="mobile-filter-type-selection">
+                    <span class="refine-results-hospital-type">{{= hospitalType }} Hospital</span>
+                    <span class="refine-results-count-text">{{= hospitalCountText }}</span>
                 </div>
             </div>
-            <div class="mobile-filters-menu-item" data-slide-panel="Extras preferences">
-                <div>
-                    Extras insurance preferences <span class="icon icon-angle-right"></span>
-                    <div class="refine-results-count-text">{{= extrasCountText }}</div>
+            <div class="mobile-filters-menu-item" data-menu-id="extrasPreferences">
+                <div class="mobile-filter-type">Extras insurance preferences</div>
+                <div class="mobile-filter-type-selection">
+                    <span class="refine-results-count-text">{{= extrasCountText }}</span>
                 </div>
             </div>
-            <div class="mobile-filters-menu-item" data-slide-panel="Excess">
-                <div>Excess <span class="icon icon-angle-right"></span></div>
+            <div class="mobile-filters-menu-item" data-menu-id="excess">
+                <div class="mobile-filter-type">Excess</div>
             </div>
-            <div class="mobile-filters-menu-item" data-slide-panel="Funds">
-                <div>Refine funds <span class="icon icon-angle-right"></span></div>
+            <div class="mobile-filters-menu-item" data-menu-id="funds">
+                <div class="mobile-filter-type">Refine funds</div>
             </div>
         </div>
     </section>

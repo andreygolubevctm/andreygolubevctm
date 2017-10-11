@@ -58,6 +58,15 @@
         line-height: 30px;
         width: 30px;
       }
+
+      .mobile-filters-menu-header-right-btn {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        margin-top: -15px;
+        font-size: 12px;
+        line-height: 30px;
+      }
     }
 
     .mobile-filters-menu-body {
@@ -92,8 +101,25 @@
           margin: 15px -15px;
 
           .mobile-filters-menu-item {
+            position: relative;
             border-top: 1px solid #ddd;
             padding: 15px;
+
+            &::after {
+              content: "\e910";
+              font-family: 'framework_font';
+              color: @theme-tertiary;
+              font-size: 45px;
+              position: absolute;
+              right: 15px;
+              top: 50%;
+              margin-top: -30px;
+            }
+          }
+
+          .mobile-filter-type {
+            color: @theme-tertiary;
+            font-weight: bold;
           }
         }
       }
