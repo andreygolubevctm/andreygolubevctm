@@ -31,6 +31,12 @@
                     </div>
                 </div>
 
+                <div class="row">
+                    <div class="col-sm-12">
+                        <simples:dialogue id="81" vertical="health" />
+                    </div>
+                </div>
+
                 <div class="row accident-only-container">
 
                     <div class="col-sm-12">
