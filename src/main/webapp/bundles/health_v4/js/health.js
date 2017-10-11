@@ -421,12 +421,7 @@
                     meerkat.modules.healthTaxTime.disableFastTrack();
                 }
                 meerkat.modules.healthResults.setCallCentreText();
-
-                if (meerkat.modules.splitTest.isActive(15)) {
-                    $('body.health[data-step="results"]').addClass('split-test-15');
-                }
-
-            },
+	            },
             onBeforeLeave: function beforeLeaveResultsStep(event) {
                 // Increment the transactionId
                 if (event.isBackward === true) {
@@ -582,13 +577,11 @@
             labels.journey.resultsStep = '<span class="hidden-xs">Get </span>Prices';
         }
 
-        if (meerkat.modules.splitTest.isActive(15)) {
-            labels.journey.startStep = 'About<span class="hidden-xs"> You</span>';
-            labels.journey.benefitStep = '<span class="hidden-xs">Your </span>Cover';
-            labels.journey.contactStep = '<span class="hidden-xs">Your </span>Details';
-            labels.journey.resultsStep = 'Compare<span class="hidden-xs"> Cover</span>';
-            labels.application.applyStep = 'Purchase<span class="hidden-xs"> Cover</span>';
-        }
+        labels.journey.startStep = 'About<span class="hidden-xs"> You</span>';
+        labels.journey.benefitStep = '<span class="hidden-xs">Your </span>Cover';
+        labels.journey.contactStep = '<span class="hidden-xs">Your </span>Details';
+        labels.journey.resultsStep = 'Compare<span class="hidden-xs"> Cover</span>';
+        labels.application.applyStep = 'Purchase<span class="hidden-xs"> Cover</span>';
 
         var phase = isJourney ? 'journey' : 'application',
             progressBarSteps = {
@@ -628,41 +621,36 @@
             });
         }
 
-        if (meerkat.modules.splitTest.isActive(15)) {
+        //add 'Application' steps to the end of the 'Journey' breadcrumbs
+        progressBarSteps.journey.push({
+            label: labels.journey.resultsStep,
+            navigationId: steps.resultsStep.navigationId
+        });
+        progressBarSteps.journey.push({
+            label: labels.application.applyStep,
+            navigationId: steps.applyStep.navigationId
+        });
 
-            $('body.health[data-step="results"]').addClass('split-test-15');
+        //add 'Journey' steps to the beginning of the 'Application' breadcrumbs
+        progressBarSteps.application.unshift({
+            label: labels.journey.resultsStep,
+            navigationId: steps.resultsStep.navigationId
+        });
+        progressBarSteps.application.unshift({
+            label: labels.journey.contactStep,
+            navigationId: steps.contactStep.navigationId
+        });
+        progressBarSteps.application.unshift({
+            label: labels.journey.benefitStep,
+            navigationId: steps.benefitsStep.navigationId
+        });
+        progressBarSteps.application.unshift({
+            label: labels.journey.startStep,
+            navigationId: steps.startStep.navigationId
+        });
 
-            //add 'Application' steps to the end of the 'Journey' breadcrumbs
-            progressBarSteps.journey.push({
-                label: labels.journey.resultsStep,
-                navigationId: steps.resultsStep.navigationId
-            });
-            progressBarSteps.journey.push({
-                label: labels.application.applyStep,
-                navigationId: steps.applyStep.navigationId
-            });
-
-            //add 'Journey' steps to the beginning of the 'Application' breadcrumbs
-            progressBarSteps.application.unshift({
-                label: labels.journey.resultsStep,
-                navigationId: steps.resultsStep.navigationId
-            });
-            progressBarSteps.application.unshift({
-                label: labels.journey.contactStep,
-                navigationId: steps.contactStep.navigationId
-            });
-            progressBarSteps.application.unshift({
-                label: labels.journey.benefitStep,
-                navigationId: steps.benefitsStep.navigationId
-            });
-            progressBarSteps.application.unshift({
-                label: labels.journey.startStep,
-                navigationId: steps.startStep.navigationId
-            });
-
-            progressBarSteps.application.pop(); //remove 'Thank You' from the 'Application' breadcrumbs
-            progressBarSteps.application.pop(); //remove 'Payment' from the 'Application' breadcrumbs
-        }
+        progressBarSteps.application.pop(); //remove 'Thank You' from the 'Application' breadcrumbs
+        progressBarSteps.application.pop(); //remove 'Payment' from the 'Application' breadcrumbs
 
         // Better progressBar just works...
         meerkat.modules.journeyProgressBar.changeTargetElement('.journeyProgressBar[data-phase='+phase+']');
