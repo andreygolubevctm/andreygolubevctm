@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.naming.NamingException;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,12 +20,17 @@ import static com.ctm.commonlogging.common.LoggingArguments.kv;
 @Repository
 public class ProviderDao {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProviderDao.class);
+	private SimpleDatabaseConnection dbSource;
+	private int providerNamesSize = 0;
+	private ArrayList<String> providerNames;
 
 	public static enum GetMethod {
 		BY_CODE, BY_ID, BY_NAME
 	};
 
-	public ProviderDao(){
+	public ProviderDao() {
+		dbSource = new SimpleDatabaseConnection();
+		providerNames = new ArrayList<String>();
 	}
 
 	/**
@@ -201,6 +207,51 @@ public class ProviderDao {
 		}
 
 		return providers;
+	}
+
+	/**
+	 * Set names of all providers
+	 * @param verticalType
+	 * @param styleCodeId
+	 * @throws DaoException
+	 */
+	public void setProviderNames (String verticalType, int styleCodeId) throws DaoException {
+		try {
+			PreparedStatement stmt;
+			Connection conn = dbSource.getConnection();
+
+			if (conn != null) {
+				stmt = dbSource.getConnection().prepareStatement(
+						"SELECT Name FROM ctm.stylecode_providers WHERE verticalCode = ? AND stylecodeId = ? AND providerId IN (SELECT DISTINCT (ProviderId) AS providerids FROM ctm.stylecode_products WHERE productCat = ?)"
+				);
+
+				stmt.setString(1, verticalType);
+				stmt.setInt(2, styleCodeId);
+				stmt.setString(3, verticalType);
+
+				ResultSet results = stmt.executeQuery();
+
+				while (results.next()) {
+					providerNames.add(results.getString("Name"));
+				}
+
+				providerNamesSize = providerNames.size();
+			}
+		} catch (SQLException e) {
+			throw new DaoException(e);
+		} catch (NamingException e) {
+			throw new DaoException(e);
+		} finally {
+			dbSource.closeConnection();
+		}
+	}
+
+	/**
+	 * Get provider names
+	 * @return provider names
+	 */
+	public ArrayList<String> getProviderNames() {
+		return providerNames;
 	}
 
 	public Provider getProviderDetails(String providerCode, String propertyId) throws DaoException{

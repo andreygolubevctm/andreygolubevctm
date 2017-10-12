@@ -106,6 +106,7 @@
 									<div class="dropdown-item">
 										<b>Brands</b>
 									</div>
+									<travel_results_filters:brands />
 								</div>
 							</div>
 						</div>
