@@ -14,6 +14,10 @@ var healthFunds_WFD = {
     ajaxJoinDec: false,
     $paymentFrequency : $('#health_payment_details_frequency'),
     $paymentStartDate: $("#health_payment_details_start"),
+    schoolMinAge: 21,
+    schoolMaxAge: 24,
+    extendedFamilyMinAge: 21,
+    extendedFamilyMaxAge: 25,
     set: function(){
         <%--calendar for start cover--%>
 	    if(_.has(meerkat.modules,'healthCoverStartDate')) {
@@ -23,10 +27,19 @@ var healthFunds_WFD = {
 	    }
 
         <%--dependant definition--%>
-        meerkat.modules.healthFunds._dependants('As a member of Westfund, your children aged between 21-24 are entitled to stay on your cover at no extra charge if they are a full time or part-time student at School, college or University TAFE institution or serving an Apprenticeship or Traineeship.');
+        var dependantsString = 'As a member of Westfund, your children aged between 21-24 are entitled to stay on your cover at no extra charge if they are a full time or part-time student at School, college or University TAFE institution or serving an Apprenticeship or Traineeship.<br />Westfund also offer adult dependant coverage at an additional premium for a child of the Principal Member or their Partner, who is not married or living in a de facto relationship, has reached the age of 21 but is under the age of 25, and is not a Student Dependant';
+
+        <%-- Dependant's Age and message --%>
+        var familyCoverType = meerkat.modules.healthChoices.returnCoverCode();
+        if (familyCoverType === 'EF' || familyCoverType === 'ESP') {
+            meerkat.modules.healthFunds._dependants('This product provides cover for Adult Dependants at an additional premium for a child of the Principal Member or their Partner, who is not married or living in a de facto relationship, has reached the age of 21 but is under the age of 25, and is not a Student Dependant');
+            meerkat.modules.healthDependants.updateConfig({extendedFamilyMinAge: healthFunds_WFD.extendedFamilyMinAge, extendedFamilyMaxAge: healthFunds_WFD.extendedFamilyMaxAge});
+        } else {
+            meerkat.modules.healthFunds._dependants(dependantsString);
+        }
 
         <%--schoolgroups and defacto--%>
-        meerkat.modules.healthDependants.updateConfig({showSchoolFields:true, 'schoolMinAge':21, 'schoolMaxAge':24, showSchoolIdField:true });
+        meerkat.modules.healthDependants.updateConfig({showSchoolFields:true, 'schoolMinAge': healthFunds_WFD.schoolMinAge, 'schoolMaxAge': healthFunds_WFD.schoolMaxAge, showSchoolIdField:true });
 
         <%--Adding a statement--%>
         var msg = 'Please note that the LHC amount quoted is an estimate and will be confirmed once Westfund has verified your details.';
