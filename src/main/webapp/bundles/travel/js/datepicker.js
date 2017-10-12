@@ -111,7 +111,7 @@
     var dep = new Date(dates[0]);
     var ret = new Date(dates[1]);
     var timeDiff = Math.abs(ret.getTime() - dep.getTime());
-    var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
+    var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)) + 1;
     return diffDays;
   }
   
