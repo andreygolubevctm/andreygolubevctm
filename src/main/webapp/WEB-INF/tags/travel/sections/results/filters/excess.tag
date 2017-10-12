@@ -3,67 +3,45 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%--HTML--%>
-<c:set var="fieldXpath" value="travel/filter/excess"/>
 <div class="dropdown-item">
-    <field_v2:radio_button
-            xpath="${fieldXpath}/all"
-            value="All"
-            required="false"
-            title="All excess levels"
-            label="true"
-    />
+    <div class="radio">
+        <input type="radio" name="radio-group" id="travel_filter_excess_all" class="radioButton-custom  radio" value="All">
+        <label for="travel_filter_excess_all">All excess levels</label>
+    </div>
 </div>
 <div class="dropdown-item">
-    <field_v2:radio_button
-            xpath="${fieldXpath}/250"
-            value="$250"
-            required="false"
-            title="up to $250"
-            label="true"
-    />
+    <div class="radio">
+        <input type="radio" name="radio-group" id="travel_filter_excess_250" class="radioButton-custom  radio" value="$250">
+        <label for="travel_filter_excess_250">up to $250</label>
+    </div>
 </div>
 <div class="dropdown-item">
-    <field_v2:radio_button
-            xpath="${fieldXpath}/200"
-            value="$200"
-            required="false"
-            title="up to $200"
-            label="true"
-    />
+    <div class="radio">
+        <input type="radio" name="radio-group" id="travel_filter_excess_200" class="radioButton-custom  radio" value="$200">
+        <label for="travel_filter_excess_200">up to $200</label>
+    </div>
 </div>
 <div class="dropdown-item">
-    <field_v2:radio_button
-            xpath="${fieldXpath}/150"
-            value="$150"
-            required="false"
-            title="up to $150"
-            label="true"
-    />
+    <div class="radio">
+        <input type="radio" name="radio-group" id="travel_filter_excess_150" class="radioButton-custom  radio" value="$150">
+        <label for="travel_filter_excess_150">up to $150</label>
+    </div>
 </div>
 <div class="dropdown-item">
-    <field_v2:radio_button
-            xpath="${fieldXpath}/100"
-            value="$100"
-            required="false"
-            title="up to $100"
-            label="true"
-    />
+    <div class="radio">
+        <input type="radio" name="radio-group" id="travel_filter_excess_100" class="radioButton-custom  radio" value="$100">
+        <label for="travel_filter_excess_100">up to $100</label>
+    </div>
 </div>
 <div class="dropdown-item">
-    <field_v2:radio_button
-            xpath="${fieldXpath}/50"
-            value="$50"
-            required="false"
-            title="up to $50"
-            label="true"
-    />
+    <div class="radio">
+        <input type="radio" name="radio-group" id="travel_filter_excess_50" class="radioButton-custom  radio" value="$50">
+        <label for="travel_filter_excess_50">up to $50</label>
+    </div>
 </div>
 <div class="dropdown-item">
-    <field_v2:radio_button
-            xpath="${fieldXpath}/nil"
-            value="NIL"
-            required="false"
-            title="NIL"
-            label="true"
-    />
+    <div class="radio">
+        <input type="radio" name="radio-group" id="travel_filter_excess_nil" class="radioButton-custom  radio" value="NIL">
+        <label for="travel_filter_excess_nil">NIL</label>
+    </div>
 </div>
