@@ -5,14 +5,16 @@
 ${ProviderDetailsService.init(pageContext.request)}
 
 <c:set var="fieldXpath" value="travel/filter/brands"/>
-<c:forEach items="${ProviderDetailsService.getProviderNames()}" var="name">
-    <div class="dropdown-item">
-        <field_v2:checkbox
-                xpath="${fieldXpath}/${name}"
-                value="${name}"
-                required="false"
-                title="${name}"
-                label="true"
-        />
-    </div>
-</c:forEach>
+<div class="row">
+    <c:forEach items="${ProviderDetailsService.getProviderNames()}" var="name">
+        <div class="col-sm-6 text-left">
+            <field_v2:checkbox
+                    xpath="${fieldXpath}/${name}"
+                    value="${name}"
+                    required="false"
+                    title="${name}"
+                    label="true"
+            />
+        </div>
+    </c:forEach>
+</div>

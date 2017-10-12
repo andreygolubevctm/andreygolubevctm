@@ -102,7 +102,7 @@
 									</div>
 									<travel_results_filters:minimum_overseas_medical />
 								</div>
-								<div class="col-sm-2 text-left">
+								<div class="col-sm-4 text-left">
 									<div class="dropdown-item">
 										<b>Brands</b>
 									</div>
