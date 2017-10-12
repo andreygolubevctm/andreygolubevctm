@@ -65,7 +65,7 @@ public class CarModelTranslator implements EmailTranslator {
             String discountOffer = getResultProperty(resultsProperties,"discountOffer", productId);
             String headlineOffer = getResultProperty(resultsProperties,"headlineOffer", productId);
             String validDates = getResultProperty(resultsProperties, "validateDate/display", productId);
-            String quoteRef = getResultProperty(resultsProperties, "quoteRef", productId);
+            String quoteRef = getResultProperty(resultsProperties, "leadNo", productId);
             EmailParameters emailParameter = new EmailParameters();
             emailParameter.setBrandCode(brandCode);
             emailParameter.setDiscountOffer(discountOffer);
