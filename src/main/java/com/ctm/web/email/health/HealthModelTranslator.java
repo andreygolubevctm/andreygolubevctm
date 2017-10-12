@@ -54,14 +54,14 @@ public class HealthModelTranslator implements EmailTranslator {
     public void setVerticalSpecificFields(EmailRequest emailRequest, HttpServletRequest request, Data data) throws ConfigSettingException, DaoException {
         List<String> providerName = emailUtils.buildParameterList(request, "rank_providerName");
         List<String> premiumLabel = emailUtils.buildParameterList(request, "rank_premiumText");
-        List<String> premium = emailUtils.buildParameterList(request, "rank_premium");
         List<String> providerCodes = emailUtils.buildParameterList(request, "rank_provider");
+        List<String> priceShown = emailUtils.buildParameterList(request, "rank_price_shown");
         String gaclientId = emailUtils.getParamFromXml(data.getXML(), "gaclientid", "/health/");
         emailRequest.setVertical(vertical);
         emailRequest.setProviders(providerName);
         emailRequest.setPremiumLabels(premiumLabel);
         emailRequest.setProviderCodes(providerCodes);
-        emailRequest.setPremiums(premium);
+        emailRequest.setPremiums(priceShown);
         emailRequest.setPremiumFrequency(request.getParameter("rank_frequency0"));
         emailRequest.setGaClientID(gaclientId);
 
@@ -151,7 +151,7 @@ public class HealthModelTranslator implements EmailTranslator {
         String unsubscribeUrl = urlService.getUnsubscribeUrl(emailParameters);
         String applyUrl = urlService.getApplyUrl(emailMaster,emailParameters,otherEmailParameters);
         List<String> applyUrls = new ArrayList<>();
-        applyUrls.add(applyUrl);
+        applyUrls.forEach(applyUrl1 -> applyUrls.add(applyUrl));
         emailRequest.setApplyUrls(applyUrls);
         emailRequest.setUnsubscribeURL(unsubscribeUrl);
     }
