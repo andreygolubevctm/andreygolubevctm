@@ -88,8 +88,7 @@ public class EmailController {
             emailTranslator.setVerticalSpecificFields(emailRequest, request, data);
             emailTranslator.setUrls(request, emailRequest, data, verticalCode);
             emailRequest.setVertical(verticalCode);
-            List<String> premium = emailUtils.buildParameterList(request, "rank_premium");
-            emailRequest.setPremiums(premium);
+
             emailClient.send(emailRequest);
         }
         catch(Exception e){

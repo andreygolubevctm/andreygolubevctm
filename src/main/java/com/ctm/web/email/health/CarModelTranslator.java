@@ -30,6 +30,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.security.GeneralSecurityException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -46,24 +48,75 @@ public class CarModelTranslator implements EmailTranslator {
     @Autowired
     protected IPAddressHandler ipAddressHandler;
 
-    public void setVerticalSpecificFields(EmailRequest emailRequest, HttpServletRequest request, Data data) throws RuntimeException {
-        List<ResultProperty> resultsProperties = null;
-        try {
-            resultsProperties = emailUtils.getResultPropertiesForTransaction(emailRequest.getTransactionId());
-        } catch (DaoException e) {
-            e.printStackTrace();
+    public void setVerticalSpecificFields(EmailRequest emailRequest, HttpServletRequest request, Data data) throws RuntimeException, DaoException {
+        final List<ResultProperty> resultsProperties = emailUtils.getResultPropertiesForTransaction(emailRequest.getTransactionId());
+
+        //Get all product ids
+        List<String> productIds = getAllResultProperties(resultsProperties,"productId");
+        //For each product get related details.
+        List<EmailParameters> emailParameters = productIds.stream().map(productId -> {
+            String premium = emailUtils.getParamSafely(data,"tempResultDetails/results/" + productId + "/headline/lumpSumTotal");
+            String providerPhoneNumber = getResultProperty(resultsProperties, "telNo", productId);
+            String quoteUrls = getResultProperty(resultsProperties, "quoteUrl", productId);
+            String openingHour = getResultProperty(resultsProperties, "openingHours", productId);
+            String productDes = getResultProperty(resultsProperties, "productDes", productId);
+            String brandCode = getResultProperty(resultsProperties, "brandCode", productId);
+            String excess =  getResultProperty(resultsProperties, "excess/total", productId);
+            String discountOffer = getResultProperty(resultsProperties,"discountOffer", productId);
+            String headlineOffer = getResultProperty(resultsProperties,"headlineOffer", productId);
+            String validDates = getResultProperty(resultsProperties, "validateDate/display", productId);
+            String quoteRef = getResultProperty(resultsProperties, "quoteRef", productId);
+            EmailParameters emailParameter = new EmailParameters();
+            emailParameter.setBrandCode(brandCode);
+            emailParameter.setDiscountOffer(discountOffer);
+            emailParameter.setHeadlineOffer(headlineOffer);
+            emailParameter.setPremium(premium);
+            emailParameter.setProductId(productId);
+            emailParameter.setProviderName(productDes);
+            emailParameter.setProviderPhoneNumber(providerPhoneNumber);
+            emailParameter.setQuoteUrl(quoteUrls);
+            emailParameter.setExcess(excess);
+            emailParameter.setOpeningHour(openingHour);
+            emailParameter.setValidDate(validDates);
+            emailParameter.setQuoteRef(quoteRef);
+            return emailParameter;
         }
+        ).collect(Collectors.toList());
 
-        List<String> providerNames = getAllResultProperties(resultsProperties, "productDes");
-        List<String> providerPhoneNumbers = getAllResultProperties(resultsProperties, "telNo");
-        List<String> quoteUrls = getAllResultProperties(resultsProperties, "quoteUrl");
-        List<String> openingHours = getAllResultProperties(resultsProperties, "openingHours");
-        List<String> productDes = getAllResultProperties(resultsProperties, "productDes");
-        List<String> brandCodes = getAllResultProperties(resultsProperties, "brandCode");
-        List<String> excesses = getAllResultProperties(resultsProperties, "excess/total");
-        List<String> discountOffer = getAllResultProperties(resultsProperties,"discountOffer");
-        List<String> headlineOffer = getAllResultProperties(resultsProperties,"headlineOffer");
+        Collections.sort(emailParameters);
 
+        List<String> providerNames = new ArrayList<>();
+        List<String> providerPhoneNumbers = new ArrayList<>();
+        List<String> premiums = new ArrayList<>();
+        List<String> quoteUrls = new ArrayList<>();
+        List<String> brandCodes = new ArrayList<>();
+        List<String> excesses = new ArrayList<>();
+        List<String> validDates = new ArrayList<>();
+        List<String> discountOffers = new ArrayList<>();
+        List<String> headlineOffers = new ArrayList<>();
+        List<String> quoteRefs = new ArrayList<>();
+
+        emailParameters.forEach(emailParameter -> providerNames.add(emailParameter.getProviderName()));
+        emailParameters.forEach(emailParameter -> providerPhoneNumbers.add(emailParameter.getProviderPhoneNumber()));
+        emailParameters.forEach(emailParameter -> premiums.add(emailParameter.getPremium()));
+        emailParameters.forEach(emailParameter -> quoteUrls.add(emailParameter.getQuoteUrl()));
+        emailParameters.forEach(emailParameter -> brandCodes.add(emailParameter.getBrandCode()));
+        emailParameters.forEach(emailParameter -> excesses.add(emailParameter.getExcess()));
+        emailParameters.forEach(emailParameter -> validDates.add(emailParameter.getValidDate()));
+        emailParameters.forEach(emailParameter -> discountOffers.add(emailParameter.getDiscountOffer()));
+        emailParameters.forEach(emailParameter -> headlineOffers.add(emailParameter.getHeadlineOffer()));
+        emailParameters.forEach(emailParameter -> quoteRefs.add(emailParameter.getQuoteRef()));
+
+        emailRequest.setProviders(providerNames);
+        emailRequest.setProviderPhoneNumbers(providerPhoneNumbers);
+        emailRequest.setApplyUrls(quoteUrls);
+        emailRequest.setProductDescriptions(providerNames);
+        emailRequest.setProviderCodes(brandCodes);
+        emailRequest.setExcesses(excesses);
+        emailRequest.setValidDates(validDates);
+        emailRequest.setProviderSpecialOffers(discountOffers);
+        emailRequest.setPremiums(premiums);
+        emailRequest.setQuoteRefs(quoteRefs);
 
         String commencementDate = emailUtils.getParamSafely(data, "/options/commencementDate");
         String firstName = emailUtils.getParamSafely(data, "/drivers/regular/firstname");
@@ -75,28 +128,18 @@ public class CarModelTranslator implements EmailTranslator {
         String vehicleVariant = emailUtils.getParamSafely(data, "/vehicle/variant");
         String vehicleYear = emailUtils.getParamSafely(data, "/vehicle/year");
         String optIn = emailUtils.getParamSafely(data, "/contact/marketing");
-        List<String> validDates = getAllResultProperties(resultsProperties, "validateDate/display");
+        String address = emailUtils.getParamSafely(data, "quote/riskAddress/fullAddress");
+        String gaClientId = emailUtils.getParamSafely(data, "/gaclientid");
+        List<String> premiumLables = emailUtils.getPremiumLabels(headlineOffers);
 
-
-        /*resultsProperties.forEach(resultProperty -> {
-            System.out.println("" + resultProperty.getProperty() + ":" + resultProperty.getValue());
-        });*/
-        emailRequest.setProviders(providerNames);
-        emailRequest.setProviderPhoneNumbers(providerPhoneNumbers);
+        emailRequest.setOptIn(OptIn.valueOf(optIn));
         emailRequest.setCommencementDate(LocalDate.parse(commencementDate, dateTimeFormatter));
-        emailRequest.setAddress(emailUtils.getParamSafely(data, "quote/riskAddress/fullAddress"));
-        emailRequest.setApplyUrls(quoteUrls);
-        emailRequest.setProductDescriptions(productDes);
-        emailRequest.setProviderCodes(brandCodes);
         emailRequest.setFirstName(firstName);
         emailRequest.setLastName(lastName);
         emailRequest.setPhoneNumber(phoneNumber);
-        emailRequest.setExcesses(excesses);
-        emailRequest.setValidDates(validDates);
-        emailRequest.setGaClientID(emailUtils.getParamSafely(data, "/gaclientid"));
-        emailRequest.setOptIn(OptIn.valueOf(optIn));
-        emailRequest.setProviderSpecialOffers(discountOffer);
-        emailRequest.setPremiumLabels(emailUtils.getPremiumLabels(headlineOffer));
+        emailRequest.setAddress(address);
+        emailRequest.setGaClientID(gaClientId);
+        emailRequest.setPremiumLabels(premiumLables);
 
         CarEmailModel carEmailModel = new CarEmailModel();
         carEmailModel.setCoverType(typeOfCover);
@@ -106,8 +149,9 @@ public class CarModelTranslator implements EmailTranslator {
         carEmailModel.setVehicleYear(vehicleYear);
         emailRequest.setCarEmailModel(carEmailModel);
 
-        if (!openingHours.isEmpty()) emailRequest.setCallCentreHours(openingHours.get(0));
-
+        if (!emailParameters.isEmpty() && StringUtils.isNotBlank(emailParameters.get(0).getOpeningHour())){
+            emailRequest.setCallCentreHours(emailParameters.get(0).getOpeningHour());
+        }
         String email = getEmail(data);
         if (!StringUtils.isBlank(email)) emailRequest.setEmailAddress(email);
     }
@@ -115,6 +159,11 @@ public class CarModelTranslator implements EmailTranslator {
     private List<String> getAllResultProperties(List<ResultProperty> resultProperties, String property) {
         return resultProperties.stream().filter(resultProperty -> resultProperty.getProperty().equals(property))
                 .map(resultProperty -> resultProperty.getValue()).collect(Collectors.toList());
+    }
+
+    private String getResultProperty(List<ResultProperty> resultProperties, String property, String productId) {
+        return resultProperties.stream().filter(resultProperty -> resultProperty.getProperty().equals(property) && productId.equals(resultProperty.getProductId()))
+                .map(resultProperty -> resultProperty.getValue()).findFirst().orElse(null);
     }
 
     public String getEmail(Data data) {
