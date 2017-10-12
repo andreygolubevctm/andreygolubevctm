@@ -6,8 +6,8 @@ ${ProviderDetailsService.init(pageContext.request)}
 
 <div class="row">
     <c:forEach items="${ProviderDetailsService.getProviderNames()}" var="name">
-        <div class="col-sm-6 text-left">
-            <div class=" checkbox">
+        <div class="col-sm-6 text-left col-brand">
+            <div class="checkbox">
                 <input type="checkbox" name="${name}" id="${name}" class="checkbox-custom  checkbox" value="${name}" checked="checked">
                 <label for="${name}">${name}</label>
             </div>
