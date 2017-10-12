@@ -560,14 +560,18 @@
     function configureProgressBar(isJourney) {
         var labels = {
             journey: {
-                startStep: 'About You',
-                benefitStep: '<span class="hidden-xs">Insurance </span>Preferences',
-                contactStep: 'Contact Details'
+	            startStep : 'About<span class="hidden-xs"> You</span>',
+                benefitStep : '<span class="hidden-xs">Your </span>Cover',
+                contactStep : '<span class="hidden-xs">Your </span>Details',
+                resultsStep : 'Compare<span class="hidden-xs"> Cover</span>',
+                applyStep : 'Purchase<span class="hidden-xs"> Cover</span>'
             },
             application: {
-                applyStep: 'Application',
-                paymentStep: 'Payment',
-                thankYouStep: 'Thank You'
+	            startStep : 'About<span class="hidden-xs"> You</span>',
+	            benefitStep : '<span class="hidden-xs">Your </span>Cover',
+	            contactStep : '<span class="hidden-xs">Your </span>Details',
+	            resultsStep : 'Compare<span class="hidden-xs"> Cover</span>',
+	            applyStep : 'Purchase<span class="hidden-xs"> Cover</span>'
             }
         };
 
@@ -629,24 +633,6 @@
         progressBarSteps.journey.push({
             label: labels.application.applyStep,
             navigationId: steps.applyStep.navigationId
-        });
-
-        //add 'Journey' steps to the beginning of the 'Application' breadcrumbs
-        progressBarSteps.application.unshift({
-            label: labels.journey.resultsStep,
-            navigationId: steps.resultsStep.navigationId
-        });
-        progressBarSteps.application.unshift({
-            label: labels.journey.contactStep,
-            navigationId: steps.contactStep.navigationId
-        });
-        progressBarSteps.application.unshift({
-            label: labels.journey.benefitStep,
-            navigationId: steps.benefitsStep.navigationId
-        });
-        progressBarSteps.application.unshift({
-            label: labels.journey.startStep,
-            navigationId: steps.startStep.navigationId
         });
 
         progressBarSteps.application.pop(); //remove 'Thank You' from the 'Application' breadcrumbs
