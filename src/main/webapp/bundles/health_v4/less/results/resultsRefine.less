@@ -72,28 +72,91 @@
   }
 }
 
-.health-refine-results-hospital-benefits {
-  .nav-tabs {
-    &.health-refineResults-hospital-benefits {
-      background: none;
+.refine-results-mobile {
+  section {
+    background-color: #fff;
+    position: absolute;
+    padding: 15px;
+    transition: transform 150ms ease-in-out;
+    width: 100%;
 
-      li {
-        width: 49%;
-        &.active {
-          display: inline-block;
+    .current {
+      transform: translateX(0);
+    }
+
+    &:not(.current) {
+      transform: translateX(100%);
+      position: fixed;
+    }
+
+    &.sliding {
+      position: absolute;
+    }
+
+    &.slide-in {
+      transform: translateX(0);
+      position: absolute;
+    }
+
+    &.slide-out {
+      transform: translateX(-100%);
+      position: absolute;
+    }
+
+    .refine-results-mobile__sub-heading {
+      font-size: @font-size-large;
+    }
+
+    .refine-results-mobile__item-container {
+      margin: 15px -15px;
+
+      .refine-results-mobile__item {
+        position: relative;
+        border-top: 1px solid #ddd;
+        padding: 15px 40px 15px 15px;
+
+        &::after {
+          content: "\e910";
+          font-family: 'framework_font';
+          color: @theme-tertiary;
+          font-size: 45px;
+          position: absolute;
+          right: 15px;
+          top: 50%;
+          margin-top: -30px;
         }
+      }
+
+      .refine-results-mobile__item-type {
+        color: @theme-tertiary;
+        font-weight: bold;
       }
     }
   }
 
-  .tab-content {
-    margin-top: 10px;
-  }
-}
+  .health-refine-results-hospital-benefits {
+    .nav-tabs {
+      &.health-refineResults-hospital-benefits {
+        background: none;
 
-.refineResults-benefits-list {
-  .checkbox {
-    margin-top: 0;
-    padding-top: 10px;
+        li {
+          width: 49%;
+          &.active {
+            display: inline-block;
+          }
+        }
+      }
+    }
+
+    .tab-content {
+      margin-top: 10px;
+    }
+  }
+
+  .refineResults-benefits-list {
+    .checkbox {
+      margin-top: 0;
+      padding-top: 10px;
+    }
   }
 }

@@ -17,20 +17,19 @@
             footerButtonUpdateText: 'Update..',
             footerButtonUpdateCB: null,
             rightButtonCB: null,
-            htmlContent: '',
             templates: {
                 container:
-                '<div class="mobile-filters-menu-container">' +
+                '<div class="mobile-filters-menu">' +
                     '<div class="overlay"></div>' +
                     '<div class="cross-container"><span class="icon icon-cross"></span></div>' +
-                    '<div class="mobile-filters-menu">' +
-                        '<div class="mobile-filters-menu-header">' +
-                            '<span class="icon icon-angle-left mobile-filters-menu-header-back-btn"></span>' +
-                            '<span class="mobile-filters-menu-header-title">{{= title }}</span>' +
-                            '<span class="mobile-filters-menu-header-right-btn"></span>' +
+                    '<div class="mobile-filters-menu__container">' +
+                        '<div class="mobile-filters-menu__header">' +
+                            '<span class="mobile-filters-menu__header-back-btn icon icon-angle-left fade"></span>' +
+                            '<span class="mobile-filters-menu__header-title">{{= title }}</span>' +
+                            '<span class="mobile-filters-menu__header-right-btn fade"></span>' +
                         '</div>' +
-                        '<div class="mobile-filters-menu-body"></div>' +
-                        '<div class="mobile-filters-menu-footer">' +
+                        '<div class="mobile-filters-menu__body"></div>' +
+                        '<div class="mobile-filters-menu__footer">' +
                         '<button class="btn btn-block btn-back btn-lg" data-action="close">' +
                             '{{= footerButtonCloseText }}' +
                         '</button>' +
@@ -41,7 +40,10 @@
         },
         $elements = {},
         _settings = {},
-        _callUpdateCB = false;
+        _status = {
+            callUpdateCB: false,
+            opened: false
+        };
 
     function initMobileFiltersMenu(instanceSettings) {
         _settings = $.extend({}, defaultSettings, instanceSettings);
@@ -55,25 +57,24 @@
         _eventSubscriptions();
         _calcBodyHeight();
 
-        // $elements.menuBody.html(_settings.htmlContent);
-        updateMenuBodyHTML(_settings.htmlContent);
-
         reset();
+
+        return this;
     }
 
     function _setupElements() {
         $elements = {
             body: $('body'),
-            container: $('.mobile-filters-menu-container'),
-            overlay: $('.mobile-filters-menu-container .overlay'),
-            cross: $('.mobile-filters-menu-container .icon-cross'),
-            header: $('.mobile-filters-menu-header'),
-            backBtn: $('.mobile-filters-menu-header-back-btn'),
-            title: $('.mobile-filters-menu-header-title'),
-            rightBtn: $('.mobile-filters-menu-header-right-btn'),
-            menuBody: $('.mobile-filters-menu-body'),
-            footer: $('.mobile-filters-menu-footer'),
-            footerBtn: $('.mobile-filters-menu-footer button')
+            menu: $('.mobile-filters-menu'),
+            overlay: $('.mobile-filters-menu .overlay'),
+            cross: $('.mobile-filters-menu .icon-cross'),
+            header: $('.mobile-filters-menu__header'),
+            backBtn: $('.mobile-filters-menu__header-back-btn'),
+            title: $('.mobile-filters-menu__header-title'),
+            rightBtn: $('.mobile-filters-menu__header-right-btn'),
+            menuBody: $('.mobile-filters-menu__body'),
+            footer: $('.mobile-filters-menu__footer'),
+            footerBtn: $('.mobile-filters-menu__footer button')
         };
     }
 
@@ -84,15 +85,15 @@
                 close();
             });
 
-        $(document).on('click', '.mobile-filters-menu-footer button[data-action=close]', function() {
+        $(document).on('click', '.mobile-filters-menu__footer button[data-action=close]', function() {
             close();
         });
 
-        $elements.container.on('transitionend webkitTransitionEnd oTransitionEnd', function() {
-            if ($elements.container.hasClass('closing')) {
-                $elements.container.removeClass('opened closing');
+        $elements.menu.on('transitionend webkitTransitionEnd oTransitionEnd', function() {
+            if ($elements.menu.hasClass('closing')) {
+                $elements.menu.removeClass('opened closing');
 
-                if (_callUpdateCB && (_.isFunction(_settings.footerButtonUpdateCB) && _settings.footerButtonUpdateCB)) {
+                if (_status.callUpdateCB && (_.isFunction(_settings.footerButtonUpdateCB) && _settings.footerButtonUpdateCB)) {
                     _settings.footerButtonUpdateCB();
                 }
 
@@ -100,8 +101,8 @@
             }
         });
 
-        $(document).on('click', '.mobile-filters-menu-footer button[data-action=update]', function() {
-            _callUpdateCB = true;
+        $(document).on('click', '.mobile-filters-menu__footer button[data-action=update]', function() {
+            _status.callUpdateCB = true;
             close();
         });
 
@@ -127,6 +128,20 @@
                 .addClass('btn-call')
                 .text(_settings.footerButtonUpdateText);
         });
+
+
+        meerkat.messaging.subscribe(meerkatEvents.ADDRESS_CHANGE, function() {
+            if (_status.open) {
+                close();
+            }
+        });
+
+
+        meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function() {
+            if (_status.open) {
+                close();
+            }
+        });
     }
 
     function _calcBodyHeight() {
@@ -136,15 +151,17 @@
     }
 
     function open() {
+        _status.open = true;
         $elements.body.css('overflow', 'hidden');
-        $elements.container.addClass('opened');
+        $elements.menu.addClass('opened');
 
         return this;
     }
 
     function close() {
+        _status.open = false;
         $elements.body.css('overflow', 'initial');
-        $elements.container.addClass('closing');
+        $elements.menu.addClass('closing');
 
         return this;
     }
@@ -155,7 +172,7 @@
         hideRightBtn();
         updateHeaderTitle(_settings.title);
         _resetFooterButton();
-        _callUpdateCB = false;
+        _status.callUpdateCB = false;
 
         return this;
     }
@@ -174,25 +191,25 @@
     }
 
     function showBackBtn() {
-        $elements.backBtn.fadeIn();
+        $elements.backBtn.addClass('in');
 
         return this;
     }
 
     function hideBackBtn() {
-        $elements.backBtn.fadeOut();
+        $elements.backBtn.removeClass('in');
 
         return this;
     }
 
     function showRightBtn() {
-        $elements.rightBtn.fadeIn();
+        $elements.rightBtn.addClass('in');
 
         return this;
     }
 
     function hideRightBtn() {
-        $elements.rightBtn.fadeOut();
+        $elements.rightBtn.removeClass('in');
 
         return this;
     }
