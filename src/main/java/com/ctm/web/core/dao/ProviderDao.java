@@ -3,6 +3,9 @@ package com.ctm.web.core.dao;
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.provider.model.Provider;
+import com.ctm.web.core.model.ProviderName;
+import org.apache.commons.lang3.StringUtils;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -22,7 +25,7 @@ public class ProviderDao {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProviderDao.class);
 	private SimpleDatabaseConnection dbSource;
 	private int providerNamesSize = 0;
-	private ArrayList<String> providerNames;
+	private ArrayList<ProviderName> providerNames;
 
 	public static enum GetMethod {
 		BY_CODE, BY_ID, BY_NAME
@@ -30,7 +33,7 @@ public class ProviderDao {
 
 	public ProviderDao() {
 		dbSource = new SimpleDatabaseConnection();
-		providerNames = new ArrayList<String>();
+		providerNames = new ArrayList<ProviderName>();
 	}
 
 	/**
@@ -219,6 +222,7 @@ public class ProviderDao {
 		try {
 			PreparedStatement stmt;
 			Connection conn = dbSource.getConnection();
+			JSONObject namesObj = new JSONObject();
 
 			if (conn != null) {
 				stmt = dbSource.getConnection().prepareStatement(
@@ -232,7 +236,14 @@ public class ProviderDao {
 				ResultSet results = stmt.executeQuery();
 
 				while (results.next()) {
-					providerNames.add(results.getString("Name"));
+					ProviderName providerName = new ProviderName();
+					String name = results.getString("Name");
+					if (StringUtils.isNotBlank(name)) {
+						providerName.setName(name);
+						providerName.setDashedName(name.toLowerCase().replaceAll("\\s+", "_"));
+						providerNames.add(providerName);
+					}
+
 				}
 
 				providerNamesSize = providerNames.size();
@@ -250,7 +261,7 @@ public class ProviderDao {
 	 * Get provider names
 	 * @return provider names
 	 */
-	public ArrayList<String> getProviderNames() {
+	public ArrayList<ProviderName> getProviderNames() {
 		return providerNames;
 	}
 

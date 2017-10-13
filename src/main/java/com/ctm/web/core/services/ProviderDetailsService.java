@@ -1,6 +1,7 @@
 package com.ctm.web.core.services;
 
 import com.ctm.web.core.dao.ProviderDao;
+import com.ctm.web.core.model.ProviderName;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.settings.PageSettings;
@@ -27,7 +28,7 @@ public class ProviderDetailsService {
         }
     }
 
-    public ArrayList<String> getProviderNames() {
+    public ArrayList<ProviderName> getProviderNames() {
         return providerNames.getProviderNames();
     }
 }
