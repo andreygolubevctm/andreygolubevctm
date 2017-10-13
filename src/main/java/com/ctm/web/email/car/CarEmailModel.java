@@ -14,7 +14,6 @@ import lombok.ToString;
 @ToString
 public class CarEmailModel {
     private String coverType;
-    private String journeyStatus;
     private String vehicleMake;
     private String vehicleModel;
     private String vehicleVariant;
