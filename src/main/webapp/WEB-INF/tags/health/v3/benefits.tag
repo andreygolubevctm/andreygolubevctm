@@ -60,7 +60,7 @@
 
         <simples:dialogue id="46" className="simples-dialogue-hospital-cover" vertical="health" />
 
-		<simples:dialogue id="81" vertical="health" />
+		<simples:dialogue id="81" className="simples-dialogue-hospital-cover" vertical="health" />
 
 		<%-- TEMPLATES --%>
 		<core_v1:js_template id="benefits-explanation">
