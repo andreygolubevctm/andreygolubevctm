@@ -581,12 +581,6 @@
             labels.journey.resultsStep = '<span class="hidden-xs">Get </span>Prices';
         }
 
-        labels.journey.startStep = 'About<span class="hidden-xs"> You</span>';
-        labels.journey.benefitStep = '<span class="hidden-xs">Your </span>Cover';
-        labels.journey.contactStep = '<span class="hidden-xs">Your </span>Details';
-        labels.journey.resultsStep = 'Compare<span class="hidden-xs"> Cover</span>';
-        labels.application.applyStep = 'Purchase<span class="hidden-xs"> Cover</span>';
-
         var phase = isJourney ? 'journey' : 'application',
             progressBarSteps = {
                 journey: [
