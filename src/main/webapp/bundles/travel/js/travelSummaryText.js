@@ -54,14 +54,7 @@
 			}
 
 			// duration calculation
-			var x=$fromDate.val().split("/"),
-				y=$toDate.val().split("/"),
-				date1=new Date(x[2],(x[1]-1),x[0]),
-				date2=new Date(y[2],(y[1]-1),y[0]);
-
-			var DAY=1000*60*60*24,
-				days=1+Math.ceil((date2.getTime()-date1.getTime())/(DAY));
-
+			var days = meerkat.modules.travelDatepicker.getDateDiff();
 			txt += "</span> for <span class='highlight'>"+days+" days</span>";
 		} else {
 			$summaryHeader.html('Your Annual Multi Trip (AMT) quote is based on');

@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static com.ctm.web.core.leadService.model.LeadStatus.INBOUND_CALL;
+import static com.ctm.web.core.leadService.model.LeadStatus.RETURN_CLI;
+import static java.util.Arrays.asList;
 
 public abstract class LeadService {
     private static final Logger LOGGER = LoggerFactory.getLogger(LeadService.class);
@@ -68,7 +70,8 @@ public abstract class LeadService {
      *    (if customer calls us, we need to knock out any of their leads that might be outbounded)
      */
     public void sendLead(final int verticalId, final Data data, final HttpServletRequest request, final String transactionStatus) {
-        if (!SessionUtils.isCallCentre(request.getSession()) || INBOUND_CALL.name().equals(transactionStatus)) {
+        final LeadStatus leadStatus = LeadStatus.valueOf(transactionStatus);
+        if (!SessionUtils.isCallCentre(request.getSession()) || asList(INBOUND_CALL,RETURN_CLI).contains(leadStatus)) {
             try {
                 ServiceConfiguration serviceConfig = ServiceConfigurationService.getServiceConfiguration("leadService", verticalId);
 
@@ -83,7 +86,7 @@ public abstract class LeadService {
                     leadData.setTransactionId(data.getLong("current/transactionId"));
                     leadData.setBrandCode(data.getString("current/brandCode"));
 
-                    leadData.setStatus(LeadStatus.valueOf(transactionStatus));
+                    leadData.setStatus(leadStatus);
 
                     leadData.setClientIP(ipAddressHandler.getIPAddress(request));
 
