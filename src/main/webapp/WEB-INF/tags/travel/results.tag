@@ -53,7 +53,14 @@
 	{{ logo = logo(obj); }}
     {{ var hasSpecialOffer = !_.isEmpty(obj.offer) && _.isObject(obj.offer) && !_.isEmpty(obj.offer.copy) && !_.isEmpty(obj.offer.terms) }}
 
-	<div class="result-row available result_{{= obj.productId }}" data-productId="{{= obj.productId }}" data-available="Y">
+	<div class="result-row available result_{{= obj.productId }}"
+		 data-productId="{{= obj.productId }}"
+		 data-available="Y"
+		 data-filter-excess="{{= obj.info.excess }}"
+		 data-filter-medical="{{= obj.info.medical }}"
+		 data-filter-cxdfee="{{= obj.info.cxdfee }}"
+		 data-filter-luggage="{{= obj.info.luggage }}"
+	>
 		<div class="result">
 			<div class="resultInsert priceMode">
 				<%-- START SM and Greater --%>

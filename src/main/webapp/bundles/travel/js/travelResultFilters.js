@@ -9,6 +9,7 @@
         // update the excess header when any of the excess option is selected
         $('input[name="radio-group"]').change(function () {
            $('.selected-excess-value').text($(this).val());
+           _updateTravelResults('excess', parseInt($(this).data('excess')));
         });
 
         // update the luggage cover when the slider is moved
@@ -34,6 +35,14 @@
         // show down arrow when the dropdown is hidden
         $('.dropdown').on('hide.bs.dropdown', function () {
             $(this).find(".icon").removeClass("icon-angle-up").addClass("icon-angle-down");
+        });
+    }
+
+    function _updateTravelResults (filter, value) {
+        $('[data-filter-' + filter + ']').each(function() {
+            if (parseInt($(this).data('filter-' + filter).replace(/[^0-9.]/g, '')) > value) {
+                $(this).hide();
+            }
         });
     }
 
