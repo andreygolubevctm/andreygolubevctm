@@ -5,7 +5,7 @@
         log = meerkat.logging.info,
         selectedProduct = null,
         previousBreakpoint,
-        best_price_count = 11,
+        best_price_count = 5,
         isLhcApplicable = 'N',
         selectedBenefitsList,
         premiumIncreaseContent = $('.healthPremiumIncreaseContent'),

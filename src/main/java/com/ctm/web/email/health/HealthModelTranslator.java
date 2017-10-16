@@ -38,7 +38,7 @@ public class HealthModelTranslator implements EmailTranslator {
     @Autowired
     private EmailUtils emailUtils;
     private static final String vertical = VerticalType.HEALTH.name().toLowerCase();
-    private static final VerticalType verticalCode = VerticalType.HEALTH;
+
     @Autowired
     protected IPAddressHandler ipAddressHandler;
 
@@ -64,6 +64,7 @@ public class HealthModelTranslator implements EmailTranslator {
         emailRequest.setPremiums(priceShown);
         emailRequest.setPremiumFrequency(request.getParameter("rank_frequency0"));
         emailRequest.setGaClientID(gaclientId);
+        String callCentreNumber = request.getParameter("callCentreNumber");
 
         String benefitCodes = request.getParameter("rank_benefitCodes0");
         String extrasPds = request.getParameter("rank_extrasPdsUrl0");
@@ -89,9 +90,12 @@ public class HealthModelTranslator implements EmailTranslator {
 
         emailRequest.setHealthEmailModel(healthEmailModel);
         emailRequest.setCallCentreHours(openingHoursService.getCurrentOpeningHoursForEmail(request));
+        List<String> providerPhones = new ArrayList<>();
+        IntStream.range(EmailUtils.START,EmailUtils.END).forEach(value -> providerPhones.add(callCentreNumber));
+        emailRequest.setProviderPhoneNumbers(providerPhones);
         List<String> quoteRefs = new ArrayList<>();
         Long transactionId = RequestUtils.getTransactionIdFromRequest(request);
-        IntStream.range(1,10).forEach(value -> quoteRefs.add(transactionId.toString()));
+        IntStream.range(EmailUtils.START,EmailUtils.END).forEach(value -> quoteRefs.add(transactionId.toString()));
         emailRequest.setQuoteRefs(quoteRefs);
         emailRequest.setProviderSpecialOffers(specialOffers);
         setDataFields(emailRequest, data);
@@ -151,7 +155,7 @@ public class HealthModelTranslator implements EmailTranslator {
         String unsubscribeUrl = urlService.getUnsubscribeUrl(emailParameters);
         String applyUrl = urlService.getApplyUrl(emailMaster,emailParameters,otherEmailParameters);
         List<String> applyUrls = new ArrayList<>();
-        applyUrls.forEach(applyUrl1 -> applyUrls.add(applyUrl));
+        IntStream.range(EmailUtils.START,EmailUtils.END).forEach(applyUrl1 -> applyUrls.add(applyUrl));
         emailRequest.setApplyUrls(applyUrls);
         emailRequest.setUnsubscribeURL(unsubscribeUrl);
     }
