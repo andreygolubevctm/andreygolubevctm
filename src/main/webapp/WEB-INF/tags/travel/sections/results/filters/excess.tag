@@ -11,31 +11,31 @@
 </div>
 <div class="dropdown-item">
     <div class="radio">
-        <input type="radio" name="radio-group" id="travel_filter_excess_250" class="radioButton-custom  radio" value="$250">
+        <input type="radio" name="radio-group" id="travel_filter_excess_250" class="radioButton-custom  radio" value="up to $250">
         <label for="travel_filter_excess_250">up to $250</label>
     </div>
 </div>
 <div class="dropdown-item">
     <div class="radio">
-        <input type="radio" name="radio-group" id="travel_filter_excess_200" class="radioButton-custom  radio" value="$200">
+        <input type="radio" name="radio-group" id="travel_filter_excess_200" class="radioButton-custom  radio" value="up to $200">
         <label for="travel_filter_excess_200">up to $200</label>
     </div>
 </div>
 <div class="dropdown-item">
     <div class="radio">
-        <input type="radio" name="radio-group" id="travel_filter_excess_150" class="radioButton-custom  radio" value="$150">
+        <input type="radio" name="radio-group" id="travel_filter_excess_150" class="radioButton-custom  radio" value="up to $150">
         <label for="travel_filter_excess_150">up to $150</label>
     </div>
 </div>
 <div class="dropdown-item">
     <div class="radio">
-        <input type="radio" name="radio-group" id="travel_filter_excess_100" class="radioButton-custom  radio" value="$100">
+        <input type="radio" name="radio-group" id="travel_filter_excess_100" class="radioButton-custom  radio" value="up to $100">
         <label for="travel_filter_excess_100">up to $100</label>
     </div>
 </div>
 <div class="dropdown-item">
     <div class="radio">
-        <input type="radio" name="radio-group" id="travel_filter_excess_50" class="radioButton-custom  radio" value="$50">
+        <input type="radio" name="radio-group" id="travel_filter_excess_50" class="radioButton-custom  radio" value="up to $50">
         <label for="travel_filter_excess_50">up to $50</label>
     </div>
 </div>

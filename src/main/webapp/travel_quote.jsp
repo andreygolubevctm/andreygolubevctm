@@ -56,8 +56,8 @@
 		<div class="coverLevelTabs hidden-xs">
 			<div class="currentTabsContainer"></div>
 			<div class="col-xs-5 col-sm-3 col-md-3 clt-trip-filter">
-				<div class="col-xs-12 col-md-7 text-right"><b>Excess up to</b></div>
-				<div class="col-xs-5 col-md-3 text-left selected-excess-value"></div>
+				<div class="col-xs-12 col-md-5 text-right"><b>Excess</b></div>
+				<div class="col-xs-5 col-md-5 text-left selected-excess-value"></div>
 				<div class="col-xs-5 col-md-2 text-left">
 					<div class="dropdown">
 						<a type="button" id="excessFilterDropdownBtn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
