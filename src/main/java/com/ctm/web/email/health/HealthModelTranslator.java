@@ -27,6 +27,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
@@ -59,6 +60,8 @@ public class HealthModelTranslator implements EmailTranslator {
         String gaclientId = emailUtils.getParamFromXml(data.getXML(), "gaclientid", "/health/");
         emailRequest.setVertical(vertical);
         emailRequest.setProviders(providerName);
+        //replace span tab with empty string.
+        premiumLabel = premiumLabel.stream().map(s -> s.replaceAll("<span/>","")).collect(Collectors.toList());
         emailRequest.setPremiumLabels(premiumLabel);
         emailRequest.setProviderCodes(providerCodes);
         emailRequest.setPremiums(priceShown);
