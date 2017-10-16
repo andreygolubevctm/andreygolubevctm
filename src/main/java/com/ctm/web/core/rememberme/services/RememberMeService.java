@@ -198,8 +198,8 @@ public class RememberMeService {
 
         if(request.getParameter("cover") == null  && request.getParameter("health_location") == null )
             return true;
-        else if ((healthCvr != null && healthCvr.getTextValue().equals(request.getParameter("cover")))
-                && (postcode != null && request.getParameter("health_location").contains(postcode.getTextValue()))) {
+        else if ((healthCvr != null && (request.getParameter("cover").isEmpty() || healthCvr.getTextValue().equals(request.getParameter("cover"))))
+                && (postcode != null && (request.getParameter("health_location").isEmpty() || request.getParameter("health_location").contains(postcode.getTextValue())))) {
             return true;
         } else
             return false;
