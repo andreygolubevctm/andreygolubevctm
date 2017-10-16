@@ -110,7 +110,7 @@
     height: @pin-height;
     background: @results-border-color;
     .pinned & {
-      background: @theme-accent-4;
+      background: @results-border-color-pinned;
     }
     &:after {
       left: 0;
@@ -121,7 +121,7 @@
       border-width: 5px @pin-width 0 0;
       border-color: @results-border-color transparent transparent transparent;
       .pinned & {
-        border-top-color: @theme-accent-4;
+        border-top-color: @results-border-color-pinned;
       }
     }
   }
@@ -240,23 +240,23 @@
     }
 
     &.pinned {
-      border: 2px solid @theme-accent-4;
+      border: 2px solid @results-border-color-pinned;
       float: left;
 
       &.hovered {
-        border: 2px solid @theme-accent-4;
+        border: 2px solid @results-border-color-pinned;
       }
 
       .pin-result-label {
         a {
-          color: @theme-accent-4;
+          color: @results-border-color-pinned;
         }
       }
 
       .pin-result-icon {
-        background: @theme-accent-4;
+        background: @results-border-color-pinned;
         &:after {
-          border-color: @theme-accent-4 transparent transparent transparent;
+          border-color: @results-border-color-pinned transparent transparent transparent;
         }
       }
 
@@ -267,6 +267,20 @@
       .remove-result {
         display: none;
       }
+    }
+
+    .result-pinned-product-tag {
+      display: block;
+      background-color: @results-border-color-pinned;
+      color: #fff;
+      font-size: @font-size-large;
+      line-height: 34px;
+      height: 34px;
+      position: absolute;
+      top: -34px;
+      left: -2px;
+      right: -2px;
+      text-align: center;
     }
 
     .featuresList {

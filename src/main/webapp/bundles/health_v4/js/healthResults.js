@@ -90,6 +90,7 @@
         // note: this is assignment within an if condition. succeeds if a product id is passed/assigned
         if ((pinnedProductId = passedProductId)) {
             Results.pinProduct(pinnedProductId, function (productId, $pinnedResultRow) {
+                $pinnedResultRow.prepend('<div class="result-pinned-product-tag">Pinned product</div>');
                 $pinnedResultRow.addClass('pinned currentPage').removeClass('not-pinned').css({
                     left: 'auto',
                     top: 'auto'

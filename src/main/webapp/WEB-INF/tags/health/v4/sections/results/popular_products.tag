@@ -6,11 +6,11 @@
     <core_v1:js_template id="results-popular-products-banner-template">
         <div class="results-popular-products-banner invisible">
             <div class="popular-products-options">
-                Need our help to decide?<button class="btn btn-hollow" data-popular-products="Y" <field_v1:analytics_attr analVal="popular filter" quoteChar="\"" />>View the most <span class="popular-plans-text">popular policies</span> people like you buy <span class="icon icon-angle-right"></span></button>
+                Need help to decide? View the <span class="popular-plans-text">most popular product</span> people like you buy<button class="btn btn-hollow" data-popular-products="Y" <field_v1:analytics_attr analVal="popular filter" quoteChar="\"" />>Click here <span class="icon icon-angle-right"></span></button>
             </div>
 
             <div class="popular-products-deciding hidden">
-                <button class="btn btn-hollow" data-popular-products="N" <field_v1:analytics_attr analVal="popular undo" quoteChar="\"" />><span class="icon icon-angle-left"></span> Go back to original results</button>
+                Go back to original results <button class="btn btn-hollow" data-popular-products="N" <field_v1:analytics_attr analVal="popular undo" quoteChar="\"" />><span class="icon icon-angle-left"></span>Click here</button>
             </div>
         </div>
     </core_v1:js_template>
