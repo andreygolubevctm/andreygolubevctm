@@ -84,28 +84,29 @@
 					<form_v3:fieldset legend="" className="confirmation">
 
                         <reward:reward_confirmation_message />
-						{{ var personName = typeof firstName !== 'undefined' && typeof lastName !== 'undefined' ? "Well done <span>" + firstName + " " + lastName + "</span>,<br />": '' }}
+						{{ var personName = typeof firstName !== 'undefined' && typeof lastName !== 'undefined' ? "Well done <span class='important-text'>" + firstName + " " + lastName + "</span>,<br />": '' }}
 						<div class="row confirmation-complete">
 							<div class="col-xs-12">
 								{{ if ( typeof pending !== "undefined" && pending ) { }}
 									<h1 class="pending">Your application is being processed.</h1>
-									<p>Thanks for comparing with <content:get key="brandDisplayName"/>. If you have any further questions, or need any more information about your health insurance policy, please get in touch by calling us on <strong class="callCentreHelpNumber"><content:get key="callCentreHelpNumber"/></strong>.
+									<p><span class="thankyou-pending">Thanks for <span class="compare">comparing with</span><span class="purchase">purchasing from</span> <content:get key="brandDisplayName"/>. </span>If you have any further questions, or need any more information about your health insurance policy, please get in touch by calling us on <strong class="callCentreHelpNumber"><content:get key="callCentreHelpNumber"/></strong>.
 								{{ } else if( whatsNext ) { }}
 									<h1 class="success">Congratulations!</h1>
 								{{ } }}
 
 								<p>{{= personName }}
-								Your Application has been submitted to <span>{{= fundName }}</span> for processing.</p>
+								Your Application has been submitted<span class="submitted-fund-name-visibility"> to <span class="important-text">{{= fundName }}</span></span> for processing.</p>
 
-								<p>Your <content:get key="boldedBrandDisplayName"/> reference number is <span>{{= transID }}</span>.</p>
+								<p class="ref-number-line">Your <content:get key="boldedBrandDisplayName"/> reference number is <span class="important-text">{{= transID }}</span>.</p>
 
 								<p>Please remember to read your policy brochures so that you know exactly what you are covered for.</p>
 
-								<p>Thank you for comparing <span>Health Insurance</span> with <content:get key="boldedBrandDisplayName"/></p>
+								<p class="thankyou-success">Thank you for <span class="compare">comparing</span><span class="purchase">purchasing</span> <span class="important-text">Health Insurance</span> <span class="compare">with</span><span class="purchase">from</span> <content:get key="boldedBrandDisplayName"/>.<span class="success-and-further-questions">{{ if ( !(typeof pending !== "undefined" && pending) ) { }} If you have any further questions, or need any more information about your health insurance policy, please get in touch by calling us on <strong class="callCentreHelpNumber"><content:get key="callCentreHelpNumber"/></strong>.{{ } }}</span></p>
+
 							</div>
 
 							{{ if(typeof providerInfo !== 'undefined') { }}
-								<div class="col-xs-12 hidden-xs">
+								<div class="col-xs-12 hidden-xs fund-details-html">
 									{{= fundDetailsHTML }}
 								</div>
 							{{ } }}
