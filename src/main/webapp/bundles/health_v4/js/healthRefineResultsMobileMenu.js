@@ -26,7 +26,13 @@
         MobileFiltersMenu = null,
         Benefits = null,
         BenefitsModel = null,
-        _currentMenuId = null;
+        _currentMenuId = null,
+        _excessTextMapping = [
+            '$0',
+            '$1 - $250',
+            '$251 - $500',
+            'Maximum excess applied'
+        ];
 
     function initHealthRefineResultsMobileMenu() {
         _setupElements();
@@ -42,7 +48,8 @@
         $elements = {
             refineBtn: $('.refine-results'),
             applyDiscount: $('input[name=health_applyDiscounts]'),
-            applyRebate: $('input[name="health_healthCover_rebate"]')
+            applyRebate: $('input[name="health_healthCover_rebate"]'),
+            excess: $('#health_excess')
         };
     }
 
@@ -63,6 +70,9 @@
             _.defer(function() {
                 $('#health_refine_results_discount').prop('checked', $elements.applyDiscount.val() === 'Y');
                 $('#health_refine_results_rebate').prop('checked', $elements.applyRebate.val() === 'Y');
+                $(':input[name=health_refine_results_excess]')
+                    .filter('[value=' + $elements.excess.val() + ']').prop('checked', true)
+                    .parent().addClass('active');
 
                 // loop through selected hospital benefits
                 _.each(BenefitsModel.getHospitalBenefitsForFilters(), function (benefit) {
@@ -181,6 +191,8 @@
             $('.health-refine-results-extras-benefits')
         );
 
+        $elements.excess.val($(':input[name=health_refine_results_excess]').filter(':checked').val());
+
         _.defer(function() {
             // get new results
             meerkat.modules.journeyEngine.loadingShow('...updating your quotes...', true);
@@ -226,7 +238,8 @@
                 hospitalCountText: hospitalType === 'customise' ? ', ' + comprehensiveText : '',
                 extrasCountText: extrasCount > 0 ? extrasCount + ' extra' + extrasPlural + ' selected' : 'No Extras',
                 benefitsHospital: BenefitsModel.getHospitalBenefitsForFilters(),
-                benefitsExtras: BenefitsModel.getExtrasBenefitsForFilters()
+                benefitsExtras: BenefitsModel.getExtrasBenefitsForFilters(),
+                excessText: _excessTextMapping[$elements.excess.val() - 1]
             };
 
         return data;
