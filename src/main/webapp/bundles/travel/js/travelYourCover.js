@@ -114,7 +114,7 @@
 			// check if desination is visiable
 			if ($destinationfs.is(':visible'))
 			{
-				$destinationfs.add($travel_dates_toDate_row).add($travel_dates_fromDate_row)[hideMethod]();
+				$destinationfs.add($travelDatePicker)[hideMethod]();
 			} else {
 				// on first load
 				$datestravellersfs.slideDown();
