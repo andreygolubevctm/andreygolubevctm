@@ -3,7 +3,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <section data-panel-id="extrasPreferences" class="health-refine-results-extras-benefits">
-    <div class="refineResults-benefits-list">
+    <div class="refine-results-checkbox-list">
         {{ _.each(benefitsExtras, function(object) { }}
         <div class="checkbox {{= object.class }}">
             <input type="checkbox" data-attach="true" name="health_refineResults_benefitsExtras" id="health_refineResults_benefits_{{= object.id }}" value="{{= object.id }}" title="{{= object.label }}" data-benefit-code="{{= object.code }}" />

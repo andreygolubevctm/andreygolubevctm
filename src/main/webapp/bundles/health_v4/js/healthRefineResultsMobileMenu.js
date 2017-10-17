@@ -42,7 +42,8 @@
         $elements = {
             refineBtn: $('.refine-results'),
             applyDiscount: $('input[name=health_applyDiscounts]'),
-            applyRebate: $('input[name="health_healthCover_rebate"]')
+            applyRebate: $('input[name="health_healthCover_rebate"]'),
+            providerExclude: $('#health_filter_providerExclude')
         };
     }
 
@@ -83,6 +84,12 @@
                         $('#refineResultsLimitedHospital').toggleClass('active in', isLimited);
                     });
                 }
+
+                // loop through selected funds
+                var providerExcludedArr = $elements.providerExclude.val().split(',');
+                $(':input[name=health_refine_results_brands]').each(function() {
+                    $(this).prop('checked', !_.contains(providerExcludedArr, $(this).val()));
+                });
             });
         });
 
@@ -117,6 +124,13 @@
                 $hospitalBenefitsChecked.attr('disabled', $(this).attr('href').search(/Limited/) !== -1);
             }
 
+            meerkat.messaging.publish(moduleEvents.mobileFiltersMenu.FOOTER_BUTTON_UPDATE);
+        });
+
+        $(document).on('click', '.refine-results-brands-toggle', function(e) {
+            e.preventDefault();
+
+            $(':input[name=health_refine_results_brands]').prop('checked', $(this).attr('data-toggle') == "true");
             meerkat.messaging.publish(moduleEvents.mobileFiltersMenu.FOOTER_BUTTON_UPDATE);
         });
 
@@ -181,6 +195,14 @@
             $('.health-refine-results-extras-benefits')
         );
 
+        var excluded = [];
+        $('input[name=health_refine_results_brands]').each(function () {
+            if (!$(this).prop('checked')) {
+                excluded.push($(this).val());
+            }
+        });
+        $elements.providerExclude.val(excluded.join(','));
+
         _.defer(function() {
             // get new results
             meerkat.modules.journeyEngine.loadingShow('...updating your quotes...', true);
@@ -226,10 +248,18 @@
                 hospitalCountText: hospitalType === 'customise' ? ', ' + comprehensiveText : '',
                 extrasCountText: extrasCount > 0 ? extrasCount + ' extra' + extrasPlural + ' selected' : 'No Extras',
                 benefitsHospital: BenefitsModel.getHospitalBenefitsForFilters(),
-                benefitsExtras: BenefitsModel.getExtrasBenefitsForFilters()
+                benefitsExtras: BenefitsModel.getExtrasBenefitsForFilters(),
+                fundsText: _getFundsText()
             };
 
         return data;
+    }
+
+    function _getFundsText() {
+        var numBrands = $(':input[name=health_refine_results_brands]').length,
+            numBrandsChecked = $(':input[name=health_refine_results_brands]:checked').length;
+
+        return numBrands === numBrandsChecked ? 'All Funds' : numBrandsChecked + ' Brands selected';
     }
 
     meerkat.modules.register('healthRefineResultsMobileMenu', {

@@ -9,7 +9,7 @@
     </ul>
 
     <div class="tab-content">
-        <div id="refineResultsHospitalBenefits" class="refineResults-benefits-list tab-pane fade active in">
+        <div id="refineResultsHospitalBenefits" class="refine-results-checkbox-list tab-pane fade active in">
             {{ _.each(benefitsHospital, function(object) { }}
             <div class="checkbox {{= object.class }}">
                 <input type="checkbox" data-attach="true" name="health_refineResults_benefitsHospital" id="health_refineResults_benefits_{{= object.id }}" value="{{= object.id }}" title="{{= object.label }}" data-benefit-code="{{= object.code }}" />
