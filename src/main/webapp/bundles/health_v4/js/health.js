@@ -541,7 +541,13 @@
                 }
             },
             onAfterEnter: function afterEnterPaymentStep() {
-                meerkat.modules.coupon.dealWithAddedCouponHeight();
+                _.defer(function() {
+                    // Force step in progress bar to show as active. Current progress bar functionality doesn't
+                    // support 2 steps being represented as a single step in the progress bar
+	                var $li = $('header').find('.journeyProgressBar[data-phase=application] li').eq(4);
+	                var html = $li.find('a').html();
+	                $li.removeClass('complete').addClass('current').empty().append('<div>' + html + '</div>');
+                });
             }
         };
 
@@ -559,78 +565,39 @@
     // @todo review this during progress bar refactor
     function configureProgressBar(isJourney) {
         var labels = {
-            journey: {
-	            startStep : 'About<span class="hidden-xs"> You</span>',
+                startStep : 'About<span class="hidden-xs"> You</span>',
                 benefitStep : '<span class="hidden-xs">Your </span>Cover',
                 contactStep : '<span class="hidden-xs">Your </span>Details',
                 resultsStep : 'Compare<span class="hidden-xs"> Cover</span>',
                 applyStep : 'Purchase<span class="hidden-xs"> Cover</span>'
             },
-            application: {
-	            startStep : 'About<span class="hidden-xs"> You</span>',
-	            benefitStep : '<span class="hidden-xs">Your </span>Cover',
-	            contactStep : '<span class="hidden-xs">Your </span>Details',
-	            resultsStep : 'Compare<span class="hidden-xs"> Cover</span>',
-	            applyStep : 'Purchase<span class="hidden-xs"> Cover</span>'
-            }
-        };
-
-        if (meerkat.modules.splitTest.isActive(4)) {
-            labels.journey.startStep = 'About<span class="hidden-xs"> You</span>';
-            labels.journey.contactStep = '<span class="hidden-xs">Contact </span>Details';
-            labels.journey.resultsStep = '<span class="hidden-xs">Get </span>Prices';
-        }
-
-        var phase = isJourney ? 'journey' : 'application',
+            barSteps = [
+	            {
+		            label: labels.startStep,
+		            navigationId: steps.startStep.navigationId
+	            },
+	            {
+		            label: labels.benefitStep,
+		            navigationId: steps.benefitsStep.navigationId
+	            },
+	            {
+		            label: labels.contactStep,
+		            navigationId: steps.contactStep.navigationId
+	            },
+	            {
+		            label: labels.resultsStep,
+		            navigationId: steps.resultsStep.navigationId
+	            },
+	            {
+		            label: labels.applyStep,
+		            navigationId: steps.applyStep.navigationId
+	            }
+            ],
+            phase = isJourney ? 'journey' : 'application',
             progressBarSteps = {
-                journey: [
-                    {
-                        label: labels.journey.startStep,
-                        navigationId: steps.startStep.navigationId
-                    },
-                    {
-                        label: labels.journey.benefitStep,
-                        navigationId: steps.benefitsStep.navigationId
-                    },
-                    {
-                        label: labels.journey.contactStep,
-                        navigationId: steps.contactStep.navigationId
-                    }
-                ],
-                application: [
-                    {
-                        label: labels.application.applyStep,
-                        navigationId: steps.applyStep.navigationId
-                    },
-                    {
-                        label: labels.application.paymentStep,
-                        navigationId: steps.paymentStep.navigationId
-                    },
-                    {
-                        label: labels.application.thankYouStep
-                    }
-                ]
+                journey: barSteps,
+                application: barSteps
             };
-
-        if (meerkat.modules.splitTest.isActive(4)) {
-            progressBarSteps.journey.push({
-                label: labels.journey.resultsStep,
-                navigationId: steps.resultsStep.navigationId
-            });
-        }
-
-        //add 'Application' steps to the end of the 'Journey' breadcrumbs
-        progressBarSteps.journey.push({
-            label: labels.journey.resultsStep,
-            navigationId: steps.resultsStep.navigationId
-        });
-        progressBarSteps.journey.push({
-            label: labels.application.applyStep,
-            navigationId: steps.applyStep.navigationId
-        });
-
-        progressBarSteps.application.pop(); //remove 'Thank You' from the 'Application' breadcrumbs
-        progressBarSteps.application.pop(); //remove 'Payment' from the 'Application' breadcrumbs
 
         // Better progressBar just works...
         meerkat.modules.journeyProgressBar.changeTargetElement('.journeyProgressBar[data-phase='+phase+']');
