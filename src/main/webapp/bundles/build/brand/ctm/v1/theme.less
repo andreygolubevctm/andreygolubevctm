@@ -1540,3 +1540,23 @@ select.text-placeholder-color {
 	  display: none !important;
 	}
   }
+
+  body.callCentre {
+    &[data-step="benefits"]{
+      .simples-dialogue-81,
+      .simples-dialogue-82 {
+        display: none;
+      }
+    }
+    &[data-step="results"]{
+      .simples-dialogue-83 {
+        display: none;
+      }
+      &.moreInfoVisible{
+        .simples-dialogue-84,
+        .simples-dialogue-85{
+          display: none;
+        }
+      }
+    }
+  }
