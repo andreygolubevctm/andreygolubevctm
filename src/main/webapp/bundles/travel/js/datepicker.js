@@ -22,6 +22,7 @@
       dateFormat: "d/m/y",
       minDate: 'today',
       maxDate: new Date(currentDate.getFullYear() + 1, currentDate.getMonth(), currentDate.getDate()),
+      disableMobile: true,
       onOpen: function() {
         display.departure.classList.add('dp__input__item--active');
       },
@@ -57,6 +58,7 @@
       dateFormat: "d/m/y",
     	mode: 'range',
       minDate: 'today',
+      disableMobile: true,
       maxDate: new Date(currentDate.getFullYear() + 1, currentDate.getMonth(), currentDate.getDate()),
       onOpen: function(selectedDates, dateStr, instance) {
         display.returned.classList.add('dp__input__item--active');
