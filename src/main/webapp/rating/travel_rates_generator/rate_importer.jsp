@@ -42,17 +42,20 @@
             int PROVIDER_SHORT_NAME_COLUMN_NUMBER = 3;
 
             int PRODUCT_ID_COLUMN_NUMBER = 1;
-            int PRODUCT_NAME_COLUMN_NUMBER = 2;
-            int PRODUCT_IS_ACTIVE_ACTION_COLUMN_NUMBER = 3;
-            int PRODUCT_ADD_ACTION_COLUMN_NUMBER = 4;
-            int PRODUCT_RENAME_ACTION_COLUMN_NUMBER = 5;
-            int PRODUCT_INCLUDE_ACTION_COLUMN_NUMBER = 6;
+            int PRODUCT_CODE_COLUMN_NUMBER = 2;
+            int PRODUCT_NAME_COLUMN_NUMBER = 3;
+            int PRODUCT_IS_ACTIVE_ACTION_COLUMN_NUMBER = 4;
+            int PRODUCT_ADD_ACTION_COLUMN_NUMBER = 5;
+            int PRODUCT_RENAME_ACTION_COLUMN_NUMBER = 6;
+            int PRODUCT_INCLUDE_ACTION_COLUMN_NUMBER = 7;
 
             int PROPERTY_PRODUCT_ID_COLUMN_NUMBER = 1;
-            int PROPERTY_PROPERTY_ID_COLUMN_NUMBER = 2;
-            int PROPERTY_VALUE_COLUMN_NUMBER = 3;
-            int PROPERTY_TEXT_COLUMN_NUMBER = 4;
-            int PROPERTY_ORDER_COLUMN_NUMBER = 5;
+            int PROPERTY_PRODUCT_CODE_COLUMN_NUMBER = 2;
+            int PROPERTY_PROPERTY_ID_COLUMN_NUMBER = 3;
+            int PROPERTY_VALUE_COLUMN_NUMBER = 4;
+            int PROPERTY_TEXT_COLUMN_NUMBER = 5;
+            int PROPERTY_ORDER_COLUMN_NUMBER = 6;
+
             ratesImporter.init(request);
             String providerName = "NOT_SET";
             String providerId = "NOT_SET";
@@ -68,6 +71,8 @@
 
             ArrayList<HashMap<String,String>> productsArray = new ArrayList<HashMap<String,String>>();
             ArrayList<String> productIds = new ArrayList<String>();
+            ArrayList<String> productCodes = new ArrayList<String>();
+            ArrayList<String> productIdSets = new ArrayList<String>();
 
             ArrayList<HashMap<String,String>> propertiesArray = new ArrayList<HashMap<String,String>>();
 
@@ -94,36 +99,39 @@
                         if(part[PRODUCT_INCLUDE_ACTION_COLUMN_NUMBER].equals("1")){
 
                             product.put("productId",part[PRODUCT_ID_COLUMN_NUMBER]);
+                            product.put("productCode", part[PRODUCT_CODE_COLUMN_NUMBER]);
                             product.put("name",part[PRODUCT_NAME_COLUMN_NUMBER]);
                             product.put("active",part[PRODUCT_IS_ACTIVE_ACTION_COLUMN_NUMBER]);
 
                             productsArray.add(product);
                             productIds.add(product.get("productId"));
-
+                            productCodes.add(product.get("productCode"));
                             // Rename product?
-                            if(part[PRODUCT_RENAME_ACTION_COLUMN_NUMBER].equals("1")){
+                            if(part[PRODUCT_RENAME_ACTION_COLUMN_NUMBER].equals("1")) {
         %>
         /* Rename product */<br/>
-        UPDATE ctm.product_master SET longTitle = '<%=providerName %>&nbsp;<%=product.get("name") %>' WHERE ProductId = <%=product.get("productId") %>;<br/>
-        UPDATE ctm.product_master SET shortTitle = '<%=providerShortName %>&nbsp;<%=product.get("name") %>' WHERE ProductId = <%=product.get("productId") %>;<br/>
+        SET @product_id = (SELECT ProductId FROM ctm.product_master WHERE ProductCode='<%=product.get("productCode") %>');<br/>
+        UPDATE ctm.product_master SET longTitle = '<%=providerName %>&nbsp;<%=product.get("name") %>' WHERE ProductId = @product_id;<br/>
+        UPDATE ctm.product_master SET shortTitle = '<%=providerShortName %>&nbsp;<%=product.get("name") %>' WHERE ProductId = @product_id;<br/>
         <br/>
         <%
             }
 
             // Delete product?
-            if(part[PRODUCT_IS_ACTIVE_ACTION_COLUMN_NUMBER].equals("1")==false){
+            if(part[PRODUCT_IS_ACTIVE_ACTION_COLUMN_NUMBER].equals("1") == false) {
         %>
         /* Delete existing product master */<br/>
-        DELETE FROM ctm.product_master WHERE ProductId = <%=product.get("productId") %>;<br/>
+        SET @product_id = (SELECT ProductId FROM ctm.product_master WHERE ProductCode='<%=product.get("productCode") %>');<br/>
+        DELETE FROM ctm.product_master WHERE ProductId = @product_id;<br/>
         <br/>
         <%
             }
 
             // Add product?
-            if(part[PRODUCT_ADD_ACTION_COLUMN_NUMBER].equals("1")){
+            if(part[PRODUCT_ADD_ACTION_COLUMN_NUMBER].equals("1")) {
         %>
         /* Add new product master */<br/>
-        INSERT INTO ctm.product_master (ProductId, ProductCat, ProviderId, ShortTitle, LongTitle, EffectiveStart, EffectiveEnd) VALUES (<%=product.get("productId") %>, 'TRAVEL',<%=providerId %>,'<%=providerShortName %>&nbsp;<%=product.get("name") %>','<%=providerName %>&nbsp;<%=product.get("name") %>',curdate(),'2040-12-31');
+        INSERT INTO ctm.product_master (ProductCat, ProductCode, ProviderId, ShortTitle, LongTitle, EffectiveStart, EffectiveEnd) VALUES ('TRAVEL', '<%=product.get("productCode") %>', <%=providerId %>, '<%=providerShortName %>&nbsp;<%=product.get("name") %>', '<%=providerName %>&nbsp;<%=product.get("name") %>', curdate(), '2040-12-31');
         <br/>
         <br/>
         <%
@@ -144,6 +152,7 @@
                                 property.put("text",part[PROPERTY_TEXT_COLUMN_NUMBER]);
                                 property.put("order",part[PROPERTY_ORDER_COLUMN_NUMBER]);
                                 property.put("productId",product.get("productId"));
+                                property.put("productCode", product.get("productCode"));
                                 propertiesArray.add(property);
                             }
                         }else{
@@ -153,8 +162,8 @@
                             property.put("value",part[PROPERTY_VALUE_COLUMN_NUMBER]);
                             property.put("text",part[PROPERTY_TEXT_COLUMN_NUMBER]);
                             property.put("order",part[PROPERTY_ORDER_COLUMN_NUMBER]);
-
                             property.put("productId",part[PROPERTY_PRODUCT_ID_COLUMN_NUMBER]);
+                            property.put("productCode", part[PROPERTY_PRODUCT_CODE_COLUMN_NUMBER]);
                             propertiesArray.add(property);
                         }
 
@@ -171,15 +180,24 @@
             if(propertiesArray.size() > 0){
         %>
         /* Delete existing product properties (including SEQUENCE 0)) */<br/>
-        DELETE FROM ctm.product_properties WHERE ProductId IN(<%=StringUtil.join(productIds, ",")%>);<br/><br/>
+        <%
+            productIdSets.clear();
+            for(String code : productCodes) { %>
+        SET @<%= code.replaceAll("-", "_") %>_property_product_id = (SELECT ProductId FROM ctm.product_master WHERE ProductCode='<%= code %>'); <br/>
+        <%  productIdSets.add("@" + code.replaceAll("-", "_") + "_property_product_id");
+        }
+        %>
+
+        DELETE FROM ctm.product_properties WHERE ProductId IN(<%=StringUtil.join(productIdSets, ",")%>);<br/><br/>
         <br/><br/>/* Insert product properties */<br/><br/>
         <%
 
             for (HashMap<String, String> property : propertiesArray){
+            String propertyProductIdSet = "@" + property.get("productCode").replaceAll("-", "_") + "_property_product_id";
 
         %>
         INSERT INTO ctm.product_properties VALUES(
-        <%=property.get("productId")%>,
+        <%=propertyProductIdSet%>,
         '<%=property.get("propertyId")%>',
         0,
         <%=property.get("value")%>,
@@ -203,11 +221,21 @@
         %>
         -- ================ TESTS =====================<br />
         -- ========= BEFORE INSERT TESTS ==============<br />
-        -- When this is run before anything else on the ctm.product_properties table, query should return <%= initialResultCount %> rows<br />
-        SELECT * FROM ctm.product_properties WHERE ProductId IN(<%=StringUtil.join(productIds, ",")%>) AND SequenceNo > 0 LIMIT 999999;<br/><br/>
+        <br />
+        /* When this is run before anything else on the ctm.product_properties table, query should return <%= initialResultCount %> rows */<br /><br />
+        <%
+        productIdSets.clear();
+        for(String code : productCodes) { %>
+            SET @<%= code.replaceAll("-", "_") %>_product_id = (SELECT ProductId FROM ctm.product_master WHERE ProductCode='<%= code %>'); <br/>
+        <%  productIdSets.add("@" + code.replaceAll("-", "_") + "_product_id");
+         }
+        %>
+
+        <br />
+        SELECT * FROM ctm.product_properties WHERE ProductId IN(<%=StringUtil.join(productIdSets, ",")%>) AND SequenceNo > 0 LIMIT 999999;<br/><br/>
 
         /* Delete existing prices in product properties */<br/>
-        DELETE FROM ctm.product_properties WHERE ProductId IN(<%=StringUtil.join(productIds, ",")%>) AND SequenceNo > 0 LIMIT <%= initialResultCount %>;<br/><br/>
+        DELETE FROM ctm.product_properties WHERE ProductId IN(<%=StringUtil.join(productIdSets, ",")%>) AND SequenceNo > 0 LIMIT 999999;<br/><br/>
         /* Insert product properties pricing*/<br/>
         <%
             }
@@ -227,6 +255,7 @@
             while((line = in.readLine()) != null) {
                 lineNo++;
                 int productId = -1;
+                String productIdSet = "";
 
                 // Remove " chars
                 String[] part = line.split(",(?=(?:(?:[^\"]*\"){2})*[^\"]*$)");
@@ -243,16 +272,17 @@
                             String productNameFromPrice = part[1];
                             if(product.get("name").equals(productNameFromPrice)){
                                 productId = Integer.parseInt(product.get("productId"));
+                                productIdSet = "@" + product.get("productCode").replaceAll("-", "_") + "_product_id";
                                 break;
                             }
                         }
 
 
-                        if (productId > -1){
+                        if (productId > -1) {
 
                             prevProductId = ratesImporter.map(productId,prevProductId, map);
 
-                            for (String key : map.keySet()){
+                            for (String key : map.keySet()) {
                                 int index = 0;
                                 index++;
 
@@ -282,7 +312,7 @@
         INSERT INTO ctm.product_properties VALUES
         <% } %>
         (
-        <%=productId%>,
+        <%=productIdSet%>,
         '<%=key%>',
         <%=ratesImporter.getSequenceNo()%>,
         <%=part[idx]%>,
@@ -292,15 +322,8 @@
         '2040-12-31',
         '',
         0
-        )
-        <% ratesImporter.handleCount(newResultCount,initialResultCount);
-            if(newResultCount <= initialResultCount - 1) {  %>
-        , <!--  put a semi colon or comma here if last one. -->
-        <!--  also report on the nubmer of inserts per product id -->
-        <% } else { %>
-        ;
-        <% } %>
-
+        ),
+        <% ratesImporter.handleCount(newResultCount,initialResultCount);%>
         <br />
         <%
 
@@ -318,7 +341,7 @@
         <br /><br />
         -- ========= AFTER INSERT TESTS ==============<br />
         -- When this is run after the insert statements on the ctm.product_properties table, query should return <%= (newResultCount) %> rows<br />
-        SELECT * FROM ctm.product_properties WHERE ProductId IN(<%=StringUtil.join(productIds, ",")%>) AND SequenceNo > 0 LIMIT 999999;<br />
+        SELECT * FROM ctm.product_properties WHERE ProductId IN(<%=StringUtil.join(productIdSets, ",")%>) AND SequenceNo > 0 LIMIT 999999;<br />
         -- ================ =====================<br /><br />
     </c:otherwise>
 </c:choose>
