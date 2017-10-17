@@ -35,6 +35,8 @@ public class Info {
 
     private Integer rank;
 
+    private Integer popularProductRanking;
+
     private String providerName;
 
     @JsonProperty("OtherProductFeatures")
@@ -178,5 +180,13 @@ public class Info {
 
     public void setPopularProduct(Boolean popularProduct) {
         this.popularProduct = popularProduct;
+    }
+
+    public Integer getPopularProductRanking() {
+        return popularProductRanking;
+    }
+
+    public void setPopularProductRanking(Integer popularProductRanking) {
+        this.popularProductRanking = popularProductRanking;
     }
 }
