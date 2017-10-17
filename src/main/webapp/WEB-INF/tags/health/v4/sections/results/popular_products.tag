@@ -16,6 +16,7 @@
     </core_v1:js_template>
 
     <core_v1:js_template id="results-popular-products-tag-template">
-        <div class="result-popular-products-tag">Popular plan <a href="javascript:;" class="icon icon-info" data-content="helpid:579" data-toggle="popover" <field_v1:analytics_attr analVal="popular help" quoteChar="\"" />></a></div>
+        {{ var popularProductTextTag = rankPos === 1 ? 'Most popular product' : 'Popular product ' + rankPos; }}
+        <div class="result-popular-products-tag">{{= popularProductTextTag }} <a href="javascript:;" class="icon icon-info" data-content="helpid:579" data-toggle="popover" <field_v1:analytics_attr analVal="popular help" quoteChar="\"" />></a></div>
     </core_v1:js_template>
 </c:if>

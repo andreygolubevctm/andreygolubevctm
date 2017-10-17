@@ -96,9 +96,9 @@
         }
     }
 
-    function injectTag($resultRow) {
+    function injectTag($resultRow, rankPos) {
         if (isEnabled()) {
-            $resultRow.addClass(_classNames.popularProducts).prepend(_tagHTML);
+            $resultRow.addClass(_classNames.popularProducts).prepend(_tagHTML({'rankPos': rankPos}));
             _count++;
         }
     }
