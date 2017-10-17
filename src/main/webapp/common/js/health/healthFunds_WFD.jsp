@@ -27,12 +27,12 @@ var healthFunds_WFD = {
 	    }
 
         <%--dependant definition--%>
-        var dependantsString = 'As a member of Westfund, your children aged between 21-24 are entitled to stay on your cover at no extra charge if they are a full time or part-time student at School, college or University TAFE institution or serving an Apprenticeship or Traineeship.<br />Westfund also offer adult dependant coverage at an additional premium for a child of the Principal Member or their Partner, who is not married or living in a de facto relationship, has reached the age of 21 but is under the age of 25, and is not a Student Dependant';
+        var dependantsString = 'As a member of Westfund, your children aged between 21-24 are entitled to stay on your cover at no extra charge if they are a full time or part-time student at School, college or University TAFE institution or serving an Apprenticeship or Traineeship.<br />Westfund also offer adult dependant coverage at an additional premium for your children aged between 21-24(inclusive) who are not receiving full-time or part-time education at a school, college or university.';
 
         <%-- Dependant's Age and message --%>
         var familyCoverType = meerkat.modules.healthChoices.returnCoverCode();
         if (familyCoverType === 'EF' || familyCoverType === 'ESP') {
-            meerkat.modules.healthFunds._dependants('This product provides cover for Adult Dependants at an additional premium for a child of the Principal Member or their Partner, who is not married or living in a de facto relationship, has reached the age of 21 but is under the age of 25, and is not a Student Dependant');
+            meerkat.modules.healthFunds._dependants('This product provides cover for your children aged between 21-24(inclusive) who are not receiving full-time or part-time education at a school, college or university at an additional premium.');
             meerkat.modules.healthDependants.updateConfig({extendedFamilyMinAge: healthFunds_WFD.extendedFamilyMinAge, extendedFamilyMaxAge: healthFunds_WFD.extendedFamilyMaxAge});
         } else {
             meerkat.modules.healthFunds._dependants(dependantsString);
