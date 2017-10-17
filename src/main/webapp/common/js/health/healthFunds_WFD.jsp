@@ -78,26 +78,6 @@ var healthFunds_WFD = {
         healthFunds_WFD.$_dobPrimary.addRule('youngestDOB', 18, "primary person's age cannot be under " + dob_health_application_primary_dob.ageMin);
         healthFunds_WFD.$_dobPartner.addRule('youngestDOB', 18, "partner's age cannot be under " + dob_health_application_partner_dob.ageMin);
 
-        <%-- Load join dec into label--%>
-        healthFunds_WFD.joinDecLabelHtml = $('#health_declaration + label').html();
-        healthFunds_WFD.ajaxJoinDec = $.ajax({
-            url: '/' + meerkat.site.urls.context + 'health/provider/content/get.json?providerId=7&providerContentTypeCode=JDO',
-            type: 'GET',
-            async: true,
-            dataType: 'html',
-            timeout: 20000,
-            cache: true,
-            success: function(htmlResult) {
-                if(typeof htmlResult === 'string')
-                    htmlResult = JSON.parse(htmlResult);
-
-                $('#health_declaration + label').html(htmlResult.providerContentText);
-                $('a#joinDeclarationDialog_link').remove();
-            },
-            error: function(obj,txt) {
-            }
-        });
-
         <%-- Custom question: Partner relationship --%>
         if ($('#wfd_partnerrel').length > 0) {
             $('#wfd_partnerrel').show();
@@ -179,12 +159,6 @@ var healthFunds_WFD = {
 
         <%--dependant definition off--%>
         meerkat.modules.healthFunds._dependants(false);
-
-        <%--reset the join dec to original general label and abort AJAX request--%>
-        if (healthFunds_WFD.ajaxJoinDec) {
-            healthFunds_WFD.ajaxJoinDec.abort();
-        }
-        $('#health_declaration + label').html(healthFunds_WFD.joinDecLabelHtml);
 
         healthFunds_WFD.$paymentFrequency.closest('div.row-content').find('p.deduction-message, p.statement').remove();
 
