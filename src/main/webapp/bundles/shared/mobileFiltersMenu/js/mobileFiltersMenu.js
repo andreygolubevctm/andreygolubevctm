@@ -6,27 +6,30 @@
     var moduleEvents = {
         ON_RESET: 'ON_RESET',
         FOOTER_BUTTON_UPDATE: 'FOOTER_BUTTON_UPDATE',
-        BACK_BUTTON_CLICKED: 'BACK_BUTTON_CLICKED'
+        BACK_BUTTON_CLICKED: 'BACK_BUTTON_CLICKED',
+        RIGHT_BUTTON_CLICKED: 'RIGHT_BUTTON_CLICKED'
     };
 
     var defaultSettings = {
-            title: '',
+            title: 'Mobile Filters Menu',
+            headerRightBtnCB: null,
             footerButtonCloseText: 'Close',
             footerButtonUpdateText: 'Update..',
             footerButtonUpdateCB: null,
-            htmlContent: '',
+            rightButtonCB: null,
             templates: {
                 container:
-                '<div class="mobile-filters-menu-container">' +
+                '<div class="mobile-filters-menu">' +
                 '<div class="overlay"></div>' +
                 '<div class="cross-container"><span class="icon icon-cross"></span></div>' +
-                '<div class="mobile-filters-menu">' +
-                '<div class="mobile-filters-menu-header">' +
-                '<span class="icon icon-angle-left mobile-filters-menu-header-back-btn"></span>' +
-                '<span class="mobile-filters-menu-header-title">{{= title}}</span>' +
+                '<div class="mobile-filters-menu__container">' +
+                '<div class="mobile-filters-menu__header">' +
+                '<span class="mobile-filters-menu__header-back-btn icon icon-angle-left fade"></span>' +
+                '<span class="mobile-filters-menu__header-title">{{= title }}</span>' +
+                '<span class="mobile-filters-menu__header-right-btn fade"></span>' +
                 '</div>' +
-                '<div class="mobile-filters-menu-body"></div>' +
-                '<div class="mobile-filters-menu-footer">' +
+                '<div class="mobile-filters-menu__body"></div>' +
+                '<div class="mobile-filters-menu__footer">' +
                 '<button class="btn btn-block btn-back btn-lg" data-action="close">' +
                 '{{= footerButtonCloseText }}' +
                 '</button>' +
@@ -37,7 +40,10 @@
         },
         $elements = {},
         _settings = {},
-        _callUpdateCB = false;
+        _status = {
+            callUpdateCB: false,
+            opened: false
+        };
 
     function initMobileFiltersMenu(instanceSettings) {
         _settings = $.extend({}, defaultSettings, instanceSettings);
@@ -51,23 +57,24 @@
         _eventSubscriptions();
         _calcBodyHeight();
 
-        $elements.menuBody.html(_settings.htmlContent);
-
         reset();
+
+        return this;
     }
 
     function _setupElements() {
         $elements = {
             body: $('body'),
-            container: $('.mobile-filters-menu-container'),
-            overlay: $('.mobile-filters-menu-container .overlay'),
-            cross: $('.mobile-filters-menu-container .icon-cross'),
-            header: $('.mobile-filters-menu-header'),
-            backBtn: $('.mobile-filters-menu-header-back-btn'),
-            title: $('.mobile-filters-menu-header-title'),
-            menuBody: $('.mobile-filters-menu-body'),
-            footer: $('.mobile-filters-menu-footer'),
-            footerBtn: $('.mobile-filters-menu-footer button')
+            menu: $('.mobile-filters-menu'),
+            overlay: $('.mobile-filters-menu .overlay'),
+            cross: $('.mobile-filters-menu .icon-cross'),
+            header: $('.mobile-filters-menu__header'),
+            backBtn: $('.mobile-filters-menu__header-back-btn'),
+            title: $('.mobile-filters-menu__header-title'),
+            rightBtn: $('.mobile-filters-menu__header-right-btn'),
+            menuBody: $('.mobile-filters-menu__body'),
+            footer: $('.mobile-filters-menu__footer'),
+            footerBtn: $('.mobile-filters-menu__footer button')
         };
     }
 
@@ -78,15 +85,15 @@
                 close();
             });
 
-        $(document).on('click', '.mobile-filters-menu-footer button[data-action=close]', function() {
+        $(document).on('click', '.mobile-filters-menu__footer button[data-action=close]', function() {
             close();
         });
 
-        $elements.container.on('transitionend webkitTransitionEnd oTransitionEnd', function() {
-            if ($elements.container.hasClass('closing')) {
-                $elements.container.removeClass('opened closing');
+        $elements.menu.on('transitionend webkitTransitionEnd oTransitionEnd', function() {
+            if ($elements.menu.hasClass('closing')) {
+                $elements.menu.removeClass('opened closing');
 
-                if (_callUpdateCB && _settings.footerButtonUpdateCB) {
+                if (_status.callUpdateCB && (_.isFunction(_settings.footerButtonUpdateCB) && _settings.footerButtonUpdateCB)) {
                     _settings.footerButtonUpdateCB();
                 }
 
@@ -94,8 +101,8 @@
             }
         });
 
-        $(document).on('click', '.mobile-filters-menu-footer button[data-action=update]', function() {
-            _callUpdateCB = true;
+        $(document).on('click', '.mobile-filters-menu__footer button[data-action=update]', function() {
+            _status.callUpdateCB = true;
             close();
         });
 
@@ -103,6 +110,14 @@
             meerkat.messaging.publish(meerkatEvents.BACK_BUTTON_CLICKED);
             hideBackBtn();
             updateHeaderTitle(_settings.title);
+        });
+
+        $elements.rightBtn.on('click', function() {
+            meerkat.messaging.publish(meerkatEvents.RIGHT_BUTTON_CLICKED);
+
+            if (_.isFunction(_settings.rightButtonCB && _settings.rightButtonCB)) {
+                _settings.rightButtonCB();
+            }
         });
     }
 
@@ -113,6 +128,20 @@
                 .addClass('btn-call')
                 .text(_settings.footerButtonUpdateText);
         });
+
+
+        meerkat.messaging.subscribe(meerkatEvents.ADDRESS_CHANGE, function() {
+            if (_status.open) {
+                close();
+            }
+        });
+
+
+        meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function() {
+            if (_status.open) {
+                close();
+            }
+        });
     }
 
     function _calcBodyHeight() {
@@ -122,21 +151,30 @@
     }
 
     function open() {
+        _status.open = true;
         $elements.body.css('overflow', 'hidden');
-        $elements.container.addClass('opened');
+        $elements.menu.addClass('opened');
+
+        return this;
     }
 
     function close() {
+        _status.open = false;
         $elements.body.css('overflow', 'initial');
-        $elements.container.addClass('closing');
+        $elements.menu.addClass('closing');
+
+        return this;
     }
 
     function reset() {
         meerkat.messaging.publish(meerkatEvents.ON_RESET);
         hideBackBtn();
+        hideRightBtn();
         updateHeaderTitle(_settings.title);
         _resetFooterButton();
-        _callUpdateCB = false;
+        _status.callUpdateCB = false;
+
+        return this;
     }
 
     function _resetFooterButton() {
@@ -148,14 +186,44 @@
 
     function updateHeaderTitle(title) {
         $elements.title.text(title);
+
+        return this;
     }
 
     function showBackBtn() {
-        $elements.backBtn.fadeIn();
+        $elements.backBtn.addClass('in');
+
+        return this;
     }
 
     function hideBackBtn() {
-        $elements.backBtn.fadeOut();
+        $elements.backBtn.removeClass('in');
+
+        return this;
+    }
+
+    function showRightBtn() {
+        $elements.rightBtn.addClass('in');
+
+        return this;
+    }
+
+    function hideRightBtn() {
+        $elements.rightBtn.removeClass('in');
+
+        return this;
+    }
+
+    function updateMenuBodyHTML(htmlContent) {
+        $elements.menuBody.html(htmlContent);
+
+        return this;
+    }
+
+    function updateRightBtnText(text) {
+        $elements.rightBtn.text(text);
+
+        return this;
     }
 
     meerkat.modules.register('mobileFiltersMenu', {
@@ -165,6 +233,10 @@
         close: close,
         updateHeaderTitle: updateHeaderTitle,
         showBackBtn: showBackBtn,
-        hideBackBtn: hideBackBtn
+        hideBackBtn: hideBackBtn,
+        showRightBtn: showRightBtn,
+        hideRightBtn: hideRightBtn,
+        updateRightBtnText: updateRightBtnText,
+        updateMenuBodyHTML: updateMenuBodyHTML
     });
 })(jQuery);
