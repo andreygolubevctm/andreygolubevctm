@@ -25,13 +25,32 @@ body.callCentre {
 
   }
 
-  &.moreInfoVisible[data-step="results"] {
-    .moreInfoEmailBrochures{
-      display: none;
+  &[data-step="benefits"] {
+    .simples-dialogue-81,
+    .simples-dialogue-82 {
+      display: block;
     }
+  }
+
+  &[data-step="results"] {
+
     .simples-dialogue-83 {
-      display: none;
+      display: block;
     }
+
+    &.moreInfoVisible{
+      .moreInfoEmailBrochures{
+        display: none;
+      }
+      .simples-dialogue-83 {
+        display: none;
+      }
+      .simples-dialogue-84,
+      .simples-dialogue-85{
+        display: block;
+      }
+    }
+
   }
 
   &[data-step="apply"]{
