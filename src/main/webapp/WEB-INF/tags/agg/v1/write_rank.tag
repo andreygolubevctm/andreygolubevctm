@@ -203,7 +203,7 @@
 		</c:otherwise>
 	</c:choose>
 
-	<c:if test="${pageSettings.getVerticalCode() == 'health' || pageSettings.getVerticalCode() == 'car'}">
+	<c:if test="${pageSettings.getVerticalCode() == 'health' || pageSettings.getVerticalCode() == 'car' || pageSettings.getVerticalCode() == 'travel'}">
 		<c:set var="number" value="${callCentreNumber}"></c:set>
 		<c:set var="encNumber">${go:urlEncode(number)}</c:set>
 		<c:catch var ="marketingSendEmailException">
