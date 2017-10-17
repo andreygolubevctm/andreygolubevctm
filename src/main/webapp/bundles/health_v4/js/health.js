@@ -541,6 +541,7 @@
                 }
             },
             onAfterEnter: function afterEnterPaymentStep() {
+	            meerkat.modules.coupon.dealWithAddedCouponHeight();
                 _.defer(function() {
                     // Force step in progress bar to show as active. Current progress bar functionality doesn't
                     // support 2 steps being represented as a single step in the progress bar
