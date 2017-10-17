@@ -445,7 +445,7 @@ public class RequestAdapterV2 {
         if (quote.getPopularProducts() != null && quote.getPopularProducts().equals("Y")) {
             filters.setPopularProducts(true);
         } else {
-            filters.setApplyDiscounts(false);
+            filters.setPopularProducts(false);
         }
     }
 }
