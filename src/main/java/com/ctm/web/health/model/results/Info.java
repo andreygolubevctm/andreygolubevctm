@@ -35,7 +35,7 @@ public class Info {
 
     private Integer rank;
 
-    private Integer popularProductsRanking;
+    private Integer popularProductsRank;
 
     private String providerName;
 
@@ -182,11 +182,11 @@ public class Info {
         this.popularProduct = popularProduct;
     }
 
-    public Integer getPopularProductsRanking() {
-        return popularProductsRanking;
+    public Integer getPopularProductsRank() {
+        return popularProductsRank;
     }
 
-    public void setPopularProductsRanking(Integer popularProductsRanking) {
-        this.popularProductsRanking = popularProductsRanking;
+    public void setPopularProductsRank(Integer popularProductsRanking) {
+        this.popularProductsRank = popularProductsRank;
     }
 }

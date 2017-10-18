@@ -293,7 +293,7 @@ public class ResponseAdapterV2 {
         info.setProductType(otherInfoProperties.get("ProductType"));
         info.setState(otherInfoProperties.get("State"));
         info.setPopularProduct(responseInfo.getPopularProduct());
-        info.setPopularProductsRanking(responseInfo.getPopularProductRank());
+        info.setPopularProductsRank(responseInfo.getPopularProductRank());
         return info;
     }
 }
