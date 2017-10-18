@@ -26,18 +26,13 @@
             />
 
             <div class="refine-results-mobile__item-container">
-                <div class="refine-results-mobile__item" data-menu-id="hospitalPreferences">
+                <div class="refine-results-mobile__item" data-menu-id="hospital">
                     <div class="refine-results-mobile__item-type">Hospital insurance preferences</div>
-                    <div class="refine-results-mobile__item-type-selection">
-                        <span class="refine-results-hospital-type">{{= hospitalType }} Hospital</span>
-                        <span class="refine-results-count-text">{{= hospitalCountText }}</span>
-                    </div>
+                    <div class="refine-results-mobile__item-type-selection">{{= hospitalType }} Hospital{{= hospitalCountText }}</div>
                 </div>
-                <div class="refine-results-mobile__item" data-menu-id="extrasPreferences">
+                <div class="refine-results-mobile__item" data-menu-id="extras">
                     <div class="refine-results-mobile__item-type">Extras insurance preferences</div>
-                    <div class="refine-results-mobile__item-type-selection">
-                        <span class="refine-results-count-text">{{= extrasCountText }}</span>
-                    </div>
+                    <div class="refine-results-mobile__item-type-selection">{{= extrasCountText }}</div>
                 </div>
                 <div class="refine-results-mobile__item" data-menu-id="excess">
                     <div class="refine-results-mobile__item-type">Excess</div>
