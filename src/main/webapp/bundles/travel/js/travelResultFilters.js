@@ -9,12 +9,13 @@
         // update the excess header when any of the excess option is selected
         $('input[name="radio-group"]').change(function () {
            $('.selected-excess-value').text($(this).val());
-           _updateTravelResults('EXCESS', parseInt($(this).data('excess')));
+            _updateTravelResults('EXCESS', parseInt($(this).data('excess')));
         });
 
         // update the luggage cover when the slider is moved
         $('input[name="luggageRangeSlider"]').change(function () {
            $('.luggage-range-value').empty().text('$' + Number($(this).val()).toLocaleString('en'));
+            _updateTravelResults('LUGGAGE', parseInt($(this).val()));
         });
 
         // update the cancellation cover when the slider is moved
@@ -39,7 +40,24 @@
     }
 
     function _updateTravelResults (filter, value) {
-        Results.model.filterByInput(filter, value, true, true);
+        var _filters = Results.model.travelFilters;
+
+        switch (filter) {
+            case 'EXCESS':
+                _filters.EXCESS = value;
+                break;
+            case 'LUGGAGE':
+                _filters.LUGGAGE = value;
+                break;
+            case 'CXDFEE':
+                _filters.CXDFEE = value;
+                break;
+            case 'MEDICAL':
+                _filters.MEDICAL = value;
+                break;
+        }
+        Results.model.travelFilters = _filters;
+        Results.model.travelResultFilter(true, true);
     }
 
     meerkat.modules.register("travelResultFilters", {

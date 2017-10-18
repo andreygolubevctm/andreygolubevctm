@@ -241,7 +241,12 @@ var ResultsModel = {
 		Results.model.currentProduct = false;
 		Results.settings.frequency = 'annual';
 		Results.model.filters = [];
-
+        Results.model.travelFilters = {
+            EXCESS: 200,
+            LUGGAGE: 5000,
+            CXDFEE: 20000,
+            MEDICAL: 20000000
+        };
 	},
 
 	flush: function(){
@@ -704,23 +709,40 @@ var ResultsModel = {
 		}
 	},
 
-	filterByInput: function (input, value, renderView, doNotGoToStart) {
+    travelResultFilter: function (renderView, doNotGoToStart) {
 		 var initialProducts = Results.model.sortedProducts.slice();
 		 var finalProducts = [];
+		 var _filters = {
+		 	 EXCESS: 0,
+             LUGGAGE: 0,
+             CXDFEE: 0,
+             MEDICAL: 0
+		 };
+		 var _modelFilters = Results.model.travelFilters;
 
 		 $.each(initialProducts, function (productIndex, product) {
 		 	if (product.available == 'Y' && $.isArray(product.benefits) && product.benefits.length !== 0) {
                 $.each(product.benefits, function (index, benefit) {
-                    switch (input) {
-                        case 'EXCESS':
-                            if (benefit.type == input) {
-                                if (parseInt(benefit.text.replace(/[^0-9.]/g, '')) <= value) {
-                                    finalProducts.push(product);
-                                }
-                            }
+					switch (benefit.type) {
+						case 'EXCESS':
+							_filters.EXCESS = benefit.value;
+							break;
+                        case 'LUGGAGE':
+                            _filters.LUGGAGE = benefit.value;
+                            break;
+                        case 'CXDFEE':
+                            _filters.CXDFEE = benefit.value;
+                            break;
+                        case 'MEDICAL':
+                            _filters.MEDICAL = benefit.value;
                             break;
                     }
                 });
+
+                if ((_filters.EXCESS <= _modelFilters.EXCESS) &&
+                    (_filters.LUGGAGE <= _modelFilters.LUGGAGE)) {
+                    finalProducts.push(product);
+                }
 			}
 		 });
 

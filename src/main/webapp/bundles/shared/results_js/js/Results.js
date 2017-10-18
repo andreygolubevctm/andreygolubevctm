@@ -27,6 +27,12 @@ var Results = {
 		Results.view = ResultsView;
 		Results.model = ResultsModel;
 		Results.pagination = ResultsPagination;
+        Results.model.travelFilters = {
+            EXCESS: 200,
+            LUGGAGE: 5000,
+            CXDFEE: 20000,
+            MEDICAL: 20000000
+        };
 
 		var settings = {
 			url: "ajax/json/results.jsp", // where to get results from
