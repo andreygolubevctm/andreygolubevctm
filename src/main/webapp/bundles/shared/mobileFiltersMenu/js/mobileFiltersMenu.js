@@ -11,7 +11,7 @@
     };
 
     var defaultSettings = {
-            title: '',
+            title: 'Mobile Filters Menu',
             headerRightBtnCB: null,
             footerButtonCloseText: 'Close',
             footerButtonUpdateText: 'Update..',
@@ -20,21 +20,21 @@
             templates: {
                 container:
                 '<div class="mobile-filters-menu">' +
-                    '<div class="overlay"></div>' +
-                    '<div class="cross-container"><span class="icon icon-cross"></span></div>' +
-                    '<div class="mobile-filters-menu__container">' +
-                        '<div class="mobile-filters-menu__header">' +
-                            '<span class="mobile-filters-menu__header-back-btn icon icon-angle-left fade"></span>' +
-                            '<span class="mobile-filters-menu__header-title">{{= title }}</span>' +
-                            '<span class="mobile-filters-menu__header-right-btn fade"></span>' +
-                        '</div>' +
-                        '<div class="mobile-filters-menu__body"></div>' +
-                        '<div class="mobile-filters-menu__footer">' +
-                        '<button class="btn btn-block btn-back btn-lg" data-action="close">' +
-                            '{{= footerButtonCloseText }}' +
-                        '</button>' +
-                        '</div>' +
-                    '</div>' +
+                '<div class="overlay"></div>' +
+                '<div class="cross-container"><span class="icon icon-cross"></span></div>' +
+                '<div class="mobile-filters-menu__container">' +
+                '<div class="mobile-filters-menu__header">' +
+                '<span class="mobile-filters-menu__header-back-btn icon icon-angle-left fade"></span>' +
+                '<span class="mobile-filters-menu__header-title">{{= title }}</span>' +
+                '<span class="mobile-filters-menu__header-right-btn fade"></span>' +
+                '</div>' +
+                '<div class="mobile-filters-menu__body"></div>' +
+                '<div class="mobile-filters-menu__footer">' +
+                '<button class="btn btn-block btn-back btn-lg" data-action="close">' +
+                '{{= footerButtonCloseText }}' +
+                '</button>' +
+                '</div>' +
+                '</div>' +
                 '</div>'
             }
         },

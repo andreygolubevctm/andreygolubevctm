@@ -2,7 +2,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<section data-panel-id="extrasPreferences" class="health-refine-results-extras-benefits">
+<section data-panel-id="extras" class="health-refine-results-extras-benefits">
     <div class="refine-results-checkbox-list">
         {{ _.each(benefitsExtras, function(object) { }}
         <div class="checkbox {{= object.class }}">

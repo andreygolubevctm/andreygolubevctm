@@ -2,7 +2,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<section data-panel-id="hospitalPreferences" class="health-refine-results-hospital-benefits">
+<section data-panel-id="hospital" class="health-refine-results-hospital-benefits">
     <ul class="nav nav-tabs health-refineResults-hospital-benefits">
         <li class="active"><a data-toggle="tab" href="#refineResultsHospitalBenefits" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />>Private Hospital</a></li>
         <li><a data-toggle="tab" href="#refineResultsLimitedHospital" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />>Limited Hospital</a></li>
