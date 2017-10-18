@@ -32,14 +32,8 @@
         Benefits = null,
         BenefitsModel = null,
         MobileBenefits = null,
-        _currentMenuId = null,
-        _currentMenuId = null,
-        _excessTextMapping = [
-            '$0',
-            '$1 - $250',
-            '$251 - $500',
-            'Maximum excess applied'
-        ];
+        MobileExcess =  null,
+        _currentMenuId = null;
 
     function initHealthRefineResultsMobileMenu() {
         _setupElements();
@@ -50,14 +44,14 @@
         Benefits = meerkat.modules.benefits;
         BenefitsModel = meerkat.modules.benefitsModel;
         MobileBenefits = meerkat.modules.healthRefineResultsMobileBenefits.initHealthRefineResultsMobileBenefits();
+        MobileExcess = meerkat.modules.healthRefineResultsMobileExcess.initHealthRefineResultsMobileExcess();
     }
 
     function _setupElements() {
         $elements = {
             refineBtn: $('.refine-results'),
             applyDiscount: $('input[name=health_applyDiscounts]'),
-            applyRebate: $('input[name="health_healthCover_rebate"]'),
-            excess: $('#health_excess')
+            applyRebate: $('input[name="health_healthCover_rebate"]')
         };
     }
 
@@ -78,9 +72,6 @@
             _.defer(function() {
                 $('#health_refine_results_discount').prop('checked', $elements.applyDiscount.val() === 'Y');
                 $('#health_refine_results_rebate').prop('checked', $elements.applyRebate.val() === 'Y');
-                $(':input[name=health_refine_results_excess]')
-                    .filter('[value=' + $elements.excess.val() + ']').prop('checked', true)
-                    .parent().addClass('active');
 
                 meerkat.messaging.publish(moduleEvents.refineResults.REFINE_RESULTS_OPENED);
             });
@@ -158,8 +149,6 @@
 
         meerkat.messaging.publish(moduleEvents.refineResults.REFINE_RESULTS_FOOTER_BUTTON_UPDATE_CALLBACK);
 
-        $elements.excess.val($(':input[name=health_refine_results_excess]').filter(':checked').val());
-
         _.defer(function() {
             // get new results
             meerkat.modules.journeyEngine.loadingShow('...updating your quotes...', true);
@@ -193,7 +182,7 @@
                 extrasCountText: extrasCount > 0 ? extrasCount + ' extra' + extrasPlural + ' selected' : 'No Extras',
                 benefitsHospital: BenefitsModel.getHospitalBenefitsForFilters(),
                 benefitsExtras: BenefitsModel.getExtrasBenefitsForFilters(),
-                excessText: _excessTextMapping[$elements.excess.val() - 1]
+                excessText: MobileExcess.getText()
             };
 
         return data;
