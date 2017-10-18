@@ -186,7 +186,7 @@ public class Info {
         return popularProductsRank;
     }
 
-    public void setPopularProductsRank(Integer popularProductsRanking) {
+    public void setPopularProductsRank(Integer popularProductsRank) {
         this.popularProductsRank = popularProductsRank;
     }
 }
