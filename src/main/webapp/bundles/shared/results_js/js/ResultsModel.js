@@ -704,6 +704,43 @@ var ResultsModel = {
 		}
 	},
 
+	filterByInput: function (input, value, renderView, doNotGoToStart) {
+		 var initialProducts = Results.model.sortedProducts.slice();
+		 var finalProducts = [];
+
+		 $.each(initialProducts, function (productIndex, product) {
+		 	if (product.available == 'Y' && $.isArray(product.benefits) && product.benefits.length !== 0) {
+                $.each(product.benefits, function (index, benefit) {
+                    switch (input) {
+                        case 'EXCESS':
+                            if (benefit.type == input) {
+                                if (parseInt(benefit.text.replace(/[^0-9.]/g, '')) <= value) {
+                                    finalProducts.push(product);
+                                }
+                            }
+                            break;
+                    }
+                });
+			}
+		 });
+
+        Results.model.filteredProducts = finalProducts;
+
+        if( typeof Compare !== "undefined" ) Compare.applyFilters();
+
+        if( renderView !== false ) {
+            if(Results.getFilteredResults().length === 0){
+                Results.view.showNoFilteredResults();
+                $(Results.settings.elements.resultsContainer).trigger("noFilteredResults");
+            }else{
+                Results.view.filter();
+                if (doNotGoToStart === true) { return; }
+                Results.pagination.gotoStart(true);
+            }
+
+        }
+	},
+
 	filterByValue: function(value, options){
 
 		if( !options || typeof options === "undefined" ){
@@ -726,7 +763,6 @@ var ResultsModel = {
 
 		}
 	},
-
 	filterByRange: function( value, options ){
 
 		if( !options || typeof(options) == "undefined" ){

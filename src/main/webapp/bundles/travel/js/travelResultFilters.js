@@ -9,7 +9,7 @@
         // update the excess header when any of the excess option is selected
         $('input[name="radio-group"]').change(function () {
            $('.selected-excess-value').text($(this).val());
-           _updateTravelResults('excess', parseInt($(this).data('excess')));
+           _updateTravelResults('EXCESS', parseInt($(this).data('excess')));
         });
 
         // update the luggage cover when the slider is moved
@@ -39,11 +39,7 @@
     }
 
     function _updateTravelResults (filter, value) {
-        $('[data-filter-' + filter + ']').each(function() {
-            if (parseInt($(this).data('filter-' + filter).replace(/[^0-9.]/g, '')) > value) {
-                $(this).hide();
-            }
-        });
+        Results.model.filterByInput(filter, value, true, true);
     }
 
     meerkat.modules.register("travelResultFilters", {
