@@ -264,7 +264,7 @@ public class ResponseAdapterV2 {
                         .append(StringEscapeUtils.escapeHtml4(specialOffer.getTerms()))
                         .append("\" title=\"Find out more\"")
                         .append(" data-class=\"results-promo-modal\">")
-                        .append("^ Find out more")
+                        .append("^ Terms and Conditions")
                         .append("</a>")
                         .append("</p>");
             }
