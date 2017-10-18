@@ -85,9 +85,6 @@ public class EmailController {
             emailRequest.setAddress(request.getParameter("address"));
             emailRequest.setTransactionId(transactionId.toString());
             emailRequest.setBrand(brand.getCode());
-            List<String> quoteRefs = new ArrayList<>();
-            quoteRefs.add(transactionId.toString());
-            emailRequest.setQuoteRefs(quoteRefs);
             EmailTranslator emailTranslator = getEmailTranslator(verticalCode);
             emailTranslator.setVerticalSpecificFields(emailRequest, request, data);
             emailTranslator.setUrls(request, emailRequest, data, verticalCode);

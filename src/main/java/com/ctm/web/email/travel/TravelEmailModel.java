@@ -22,4 +22,5 @@ public class TravelEmailModel {
     private List<String> cancellation;
     private List<String> medical;
     private List<Integer> travellerAge;
+    private Integer oldestTravellerAge;
 }
