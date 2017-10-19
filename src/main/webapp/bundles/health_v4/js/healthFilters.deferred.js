@@ -521,14 +521,12 @@
      * need to just move them around in the DOM.
      */
     function _placeFrequencyFilters() {
-        if (meerkat.modules.splitTest.isActive(15)) {
-            var $frequency = $('.results-filters-frequency', $navBarFiltersContext);
-             if (meerkat.modules.deviceMediaState.get() === 'xs') {
-                $frequency.detach().insertAfter($paginationWrapper);
-             } else {
-                $frequency.detach().insertBefore($hiddenProductsWrapper);
-             }
-        }
+        var $frequency = $('.results-filters-frequency', $navBarFiltersContext);
+         if (meerkat.modules.deviceMediaState.get() === 'xs') {
+            $frequency.detach().insertAfter($paginationWrapper);
+         } else {
+            $frequency.detach().insertBefore($hiddenProductsWrapper);
+         }
     }
 
     function _toggleFiltersBenefitSelection(benefit, isSwitchedOn) {
