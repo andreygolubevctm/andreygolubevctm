@@ -30,6 +30,7 @@ public class EmailUrlService {
 	public static final String EMAIL_TOKEN_TYPE = "emailTokenType";
 	public static final String EMAIL_TOKEN_ACTION = "action";
 	public static final String PRODUCT_ID = "productId";
+	public static final String PRODUCT_CODE = "productCode";
 	public static final String CAMPAIGN_ID = "campaignId";
 	public static final String VERTICAL = "vertical";
 	public static final String PRODUCT_NAME = "productName";
