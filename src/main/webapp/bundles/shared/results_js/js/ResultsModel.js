@@ -740,7 +740,9 @@ var ResultsModel = {
                 });
 
                 if ((_filters.EXCESS <= _modelFilters.EXCESS) &&
-                    (_filters.LUGGAGE <= _modelFilters.LUGGAGE)) {
+                    (_filters.LUGGAGE >= _modelFilters.LUGGAGE) &&
+                    (_filters.CXDFEE >= _modelFilters.CXDFEE) &&
+                    (_filters.MEDICAL >= _modelFilters.MEDICAL)) {
                     finalProducts.push(product);
                 }
 			}

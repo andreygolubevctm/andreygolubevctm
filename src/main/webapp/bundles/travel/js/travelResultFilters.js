@@ -20,12 +20,22 @@
 
         // update the cancellation cover when the slider is moved
         $('input[name="cancellationRangeSlider"]').change(function () {
-            $('.cancellation-range-value').empty().text('$' + Number($(this).val()).toLocaleString('en'));
+            if (Number($(this).val()) == 30000) {
+                $('.cancellation-range-value').empty().text('Unlimited');
+            } else {
+                $('.cancellation-range-value').empty().text('$' + Number($(this).val()).toLocaleString('en'));
+            }
+            _updateTravelResults('CXDFEE', parseInt($(this).val()));
         });
 
         // update the overseas medical cover when the slider is moved
         $('input[name="overseasMedicalRangeSlider"]').change(function () {
-            $('.overseas-medical-range-value').empty().text('$' + Number($(this).val()).toLocaleString('en'));
+            if (Number($(this).val()) == 50000000) {
+                $('.overseas-medical-range-value').empty().text('Unlimited');
+            } else {
+                $('.overseas-medical-range-value').empty().text('$' + Number($(this).val() / 1000000) + ' millions');
+            }
+            _updateTravelResults('MEDICAL', parseInt($(this).val()));
         });
 
         // show up arrow when the dropdown is shown
@@ -39,6 +49,12 @@
         });
     }
 
+    /**
+     * Set the Result model with the travel filter values & call the travel filter function
+     * @param filter - name of the filter
+     * @param value - value of the filter
+     * @private
+     */
     function _updateTravelResults (filter, value) {
         var _filters = Results.model.travelFilters;
 
