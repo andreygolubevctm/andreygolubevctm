@@ -7,6 +7,7 @@
 <c:set var="callCentreNumber" scope="request"><content:get key="callCentreNumber"/></c:set>
 <c:set var="callCentreAppNumber" scope="request"><content:get key="callCentreAppNumber"/></c:set>
 <c:set var="xpath" value="${pageSettings.getVerticalCode()}/callback" />
+<c:set var="openingHoursTimeZone"><content:get key="openingHoursTimeZone" /></c:set>
 
 <jsp:useBean id="now" class="java.util.Date" />
 <fmt:formatDate var="todays_day" pattern="EEEE" value="${now}" />
@@ -51,6 +52,7 @@
                             </c:forEach>
                         </div>
                         <a href="Javascript:;" class="view-all-times center">View All Times <span class="caret"></span></a>
+                        <p>All Australian based call centre hours are ${openingHoursTimeZone}</p>
                     </div>
                 </div>
                 <div class="row">
@@ -197,6 +199,8 @@
                             </c:forEach>
                         </div>
                         <a href="Javascript:;" class="view-all-times center">View All Times <span class="caret"></span></a>
+                        <br>
+                        <p>All Australian based call centre hours are ${openingHoursTimeZone}</p>
                     </div>
                 </div>
             </div>

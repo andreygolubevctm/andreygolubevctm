@@ -227,6 +227,7 @@
 				cache: false,
 				errorLevel: "warning",
 				onSuccess:  function emailResultsSuccess(result){
+					appendUsedEmail(settings);
 					if(typeof result.transactionId !== 'undefined' && result.transactionId !== "") {
 						meerkat.modules.transactionId.set(result.transactionId);
 					}
@@ -253,6 +254,19 @@
 			}
 		}
 		return dat;
+	}
+
+	function appendUsedEmail(settings) {
+		if(_.has(settings,'emailHistoryInput') && $(settings.emailHistoryInput).length) {
+			var email = $.trim(settings.emailInput.val());
+			var history = $.trim(settings.emailHistoryInput.val());
+			history = !_.isEmpty(history) ? history.split(',') : [];
+			if(_.indexOf(history,email) === -1) {
+				history.push(email);
+				settings.emailHistoryInput.val(history.join(','));
+				_.defer(_.bind(meerkat.modules.writeQuote.write,this,null,false,null));
+			}
+		}
 	}
 
 	function defaultEmailResultsFail(settings){
