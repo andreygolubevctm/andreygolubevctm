@@ -226,7 +226,7 @@ public class ProviderDao {
 
 			if (conn != null) {
 				stmt = dbSource.getConnection().prepareStatement(
-						"SELECT Name FROM ctm.stylecode_providers WHERE verticalCode = ? AND stylecodeId = ? AND providerId IN (SELECT DISTINCT (ProviderId) AS providerids FROM ctm.stylecode_products WHERE productCat = ?)"
+						"SELECT * FROM ctm.stylecode_providers WHERE verticalCode = ? AND stylecodeId = ? AND providerId IN (SELECT DISTINCT (ProviderId) AS providerids FROM ctm.stylecode_products WHERE productCat = ?)"
 				);
 
 				stmt.setString(1, verticalType);
@@ -238,8 +238,10 @@ public class ProviderDao {
 				while (results.next()) {
 					ProviderName providerName = new ProviderName();
 					String name = results.getString("Name");
-					if (StringUtils.isNotBlank(name)) {
+					String code = results.getString("providerCode");
+					if (StringUtils.isNotBlank(name) && StringUtils.isNotBlank(code)) {
 						providerName.setName(name);
+						providerName.setCode(code);
 						providerName.setDashedName(name.toLowerCase().replaceAll("\\s+", "_"));
 						providerNames.add(providerName);
 					}

@@ -5,11 +5,11 @@
 ${ProviderDetailsService.init(pageContext.request)}
 
 <div class="row">
-    <c:forEach items="${ProviderDetailsService.getProviderNames()}" var="nameObj">
+    <c:forEach items="${ProviderDetailsService.getProviderNames()}" var="obj">
         <div class="col-sm-6 text-left col-brand">
             <div class="checkbox">
-                <input type="checkbox" name="${nameObj.dashedName}" id="${nameObj.dashedName}" class="checkbox-custom  checkbox" value="${nameObj.dashedName}" checked="checked">
-                <label for="${nameObj.dashedName}">${nameObj.name}</label>
+                <input type="checkbox" data-provider-code="${obj.code}" name="${obj.dashedName}" id="${obj.dashedName}" class="checkbox-custom  checkbox" value="${obj.dashedName}" checked="checked">
+                <label for="${obj.dashedName}">${obj.name}</label>
             </div>
         </div>
     </c:forEach>

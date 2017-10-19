@@ -38,6 +38,10 @@
             _updateTravelResults('MEDICAL', parseInt($(this).val()));
         });
 
+        $('.col-brand input[type="checkbox"]').change(function () {
+            _updateTravelResults('PROVIDERS', $(this).data('provider-code'));
+        });
+
         // show up arrow when the dropdown is shown
         $('.dropdown').on('show.bs.dropdown', function () {
             $(this).find(".icon").removeClass("icon-angle-down").addClass("icon-angle-up");
@@ -70,6 +74,13 @@
                 break;
             case 'MEDICAL':
                 _filters.MEDICAL = value;
+                break;
+            case 'PROVIDERS':
+                if (_filters.PROVIDERS.indexOf(value) == -1) {
+                    _filters.PROVIDERS.push(value);
+                } else {
+                    _filters.PROVIDERS.splice(_filters.PROVIDERS.indexOf(value), 1);
+                }
                 break;
         }
         Results.model.travelFilters = _filters;

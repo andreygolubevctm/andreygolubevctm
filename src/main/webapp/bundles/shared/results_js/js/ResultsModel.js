@@ -719,6 +719,7 @@ var ResultsModel = {
              MEDICAL: 0
 		 };
 		 var _modelFilters = Results.model.travelFilters;
+		 console.log(_modelFilters.PROVIDERS);
 
 		 $.each(initialProducts, function (productIndex, product) {
 		 	if (product.available == 'Y' && $.isArray(product.benefits) && product.benefits.length !== 0) {
@@ -742,7 +743,8 @@ var ResultsModel = {
                 if ((_filters.EXCESS <= _modelFilters.EXCESS) &&
                     (_filters.LUGGAGE >= _modelFilters.LUGGAGE) &&
                     (_filters.CXDFEE >= _modelFilters.CXDFEE) &&
-                    (_filters.MEDICAL >= _modelFilters.MEDICAL)) {
+                    (_filters.MEDICAL >= _modelFilters.MEDICAL) &&
+                    (_modelFilters.PROVIDERS.indexOf(product.serviceName) == -1)) {
                     finalProducts.push(product);
                 }
 			}
