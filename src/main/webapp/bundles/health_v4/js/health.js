@@ -390,6 +390,7 @@
                 }
             },
             onInitialise: function onResultsInit(event) {
+                meerkat.modules.healthPopularProducts.initHealthPopularProducts();
                 meerkat.modules.healthResults.initPage();
                 meerkat.modules.healthMoreInfo.initMoreInfo();
                 meerkat.modules.healthPriceComponent.initHealthPriceComponent();
@@ -411,6 +412,8 @@
                 meerkat.modules.utils.pluginReady('healthFilters').done(function() {
                     meerkat.messaging.publish(meerkatEvents.filters.FILTERS_CANCELLED);
                 });
+
+                meerkat.modules.healthPopularProducts.setPopularProducts('N');
             },
             onAfterEnter: function onAfterEnterResultsStep(event) {
                 if (event.isForward === true) {

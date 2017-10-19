@@ -58,6 +58,8 @@ public class HealthQuote {
 
     private String applyDiscounts;
 
+    private String popularProducts;
+
     public Application getApplication() {
         return application;
     }
@@ -280,6 +282,14 @@ public class HealthQuote {
 
     public void setApplyDiscounts(String applyDiscounts) {
         this.applyDiscounts = applyDiscounts;
+    }
+
+    public String getPopularProducts() {
+        return popularProducts;
+    }
+
+    public void setPopularProducts(String popularProducts) {
+        this.popularProducts = popularProducts;
     }
 
 }
