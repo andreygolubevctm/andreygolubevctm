@@ -52,6 +52,11 @@ public class ResponseAdapterV2 {
 //                        Optional.ofNullable(request.getQuote().getRebateChangeover())
 //                                                                .map(BigDecimal::new);
 
+                boolean isSimplesUser = false;
+                if (request.getHealth().getSimples().getContactType() != null && !request.getHealth().getSimples().getContactType().isEmpty()) {
+                    isSimplesUser = true;
+                }
+
                 for (final HealthQuote quote : quoteResponse.getQuotes()) {
                     final HealthQuoteResult result = new HealthQuoteResult();
 
@@ -60,7 +65,7 @@ public class ResponseAdapterV2 {
                     result.setServiceName("PHIO");
                     result.setProductId(quote.getProductId());
 
-                    result.setPromo(createPromo(quote.getPromotion(),request.getStaticOverride()));
+                    result.setPromo(createPromo(quote.getPromotion(),request.getStaticOverride(), isSimplesUser));
                     result.setCustom(validateNode(quote.getCustom()));
 
                     result.setDropDeadDate(quote.getDropDeadDate());
@@ -158,9 +163,9 @@ public class ResponseAdapterV2 {
         return new TextNode("");
     }
 
-    private static Promo createPromo(final Promotion quotePromotion, final String staticBranch) {
+    private static Promo createPromo(final Promotion quotePromotion, final String staticBranch, final boolean isSimplesUser) {
         final Promo promo = new Promo();
-        promo.setPromoText(createPromoText(quotePromotion.getSpecialOffer()));
+        promo.setPromoText(createPromoText(quotePromotion.getSpecialOffer(), isSimplesUser));
         promo.setProviderPhoneNumber(quotePromotion.getProviderPhoneNumber());
         promo.setDiscountText(StringUtils.trimToEmpty(quotePromotion.getDiscountDescription()));
         promo.setExtrasPDF(HEALTH_BROCHURE_URL + quotePromotion.getExtrasPDF() + (staticBranch != null ? ("&staticBranch=" + staticBranch) : ""));
@@ -255,7 +260,7 @@ public class ResponseAdapterV2 {
         return form.format(value);
     }
 
-    private static String createPromoText(final SpecialOffer specialOffer) {
+    private static String createPromoText(final SpecialOffer specialOffer, final boolean isSimplesUser) {
         final StringBuilder sb = new StringBuilder("");
         if (specialOffer != null) {
             sb.append(StringUtils.trimToEmpty(specialOffer.getSummary()));
@@ -263,10 +268,15 @@ public class ResponseAdapterV2 {
                 sb.append("<p>").append("<a class=\"dialogPop\" data-content=\"")
                         .append(StringEscapeUtils.escapeHtml4(specialOffer.getTerms()))
                         .append("\" title=\"Find out more\"")
-                        .append(" data-class=\"results-promo-modal\">")
-                        .append("^ Terms and Conditions")
-                        .append("</a>")
-                        .append("</p>");
+                        .append(" data-class=\"results-promo-modal\">");
+
+                if (isSimplesUser) {
+                    sb.append("^ Terms and Conditions");
+                } else {
+                    sb.append("^ Find out more");
+                }
+
+                sb.append("</a>").append("</p>");
             }
         }
         return sb.toString();
