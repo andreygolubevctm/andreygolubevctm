@@ -707,6 +707,8 @@ var ResultsModel = {
 			}
 
 		}
+
+		this.travelResultFilter(true, true);
 	},
 
     travelResultFilter: function (renderView, doNotGoToStart) {
@@ -719,7 +721,6 @@ var ResultsModel = {
              MEDICAL: 0
 		 };
 		 var _modelFilters = Results.model.travelFilters;
-		 console.log(_modelFilters.PROVIDERS);
 
 		 $.each(initialProducts, function (productIndex, product) {
 		 	if (product.available == 'Y' && $.isArray(product.benefits) && product.benefits.length !== 0) {

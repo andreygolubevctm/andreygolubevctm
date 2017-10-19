@@ -6,6 +6,9 @@
             e.stopPropagation();
         });
 
+        // set the excess default
+        $('#travel_filter_excess_200').trigger('click');
+
         // update the excess header when any of the excess option is selected
         $('input[name="radio-group"]').change(function () {
            $('.selected-excess-value').text($(this).val());
