@@ -36,6 +36,9 @@
                 </div>
                 <div class="refine-results-mobile__item" data-menu-id="excess">
                     <div class="refine-results-mobile__item-type">Excess</div>
+                    <div class="refine-results-mobile__item-type-selection">
+                        <span class="refine-results-mobile__">{{= excessText }}</span>
+                    </div>
                 </div>
                 <div class="refine-results-mobile__item" data-menu-id="funds">
                     <div class="refine-results-mobile__item-type">Refine funds</div>
