@@ -21,6 +21,10 @@
     transition: opacity 150ms ease-in-out;
     width: 15%;
 
+    @media (@sm) {
+      width: 100%;
+    }
+
     .icon-cross {
       color: #f0f0f0;
       font-size: 18px;
@@ -28,12 +32,18 @@
       top: 15px;
       left: 50%;
       margin-left: -9px;
+
+      @media (@sm) {
+        left: initial;
+        right: 340px;
+      }
     }
   }
 
   .mobile-filters-menu__container {
     background-color: #fff;
     border-left: 1px solid #eee;
+    max-width: 320px;
     width: 85%;
     height: 100%;
     position: absolute;
