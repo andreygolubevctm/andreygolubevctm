@@ -17,6 +17,10 @@
       padding-top: 0;
     }
 
+    .slide-feature-pagination {
+      line-height: 24px;
+    }
+
     &.split-test-15 {
 
       .results-control-container {
@@ -47,8 +51,13 @@
 }
 
 #resultsPage {
-  padding-top: 20px;
+  padding-top: 6px;
   margin-bottom: 20px;
+
+  @media (@sm) {
+    padding-top: 20px;
+  }
+
   a.dialogPop {
     text-decoration: underline;
     color: #000000;

@@ -9,7 +9,13 @@ body {
 
 .featuresMode {
   .result-row {
-    margin-top: 34px;
+    @media (@lg) {
+      margin-top: 34px;
+    }
+
+    &.result-has-popular-products {
+      margin-top: 34px;
+    }
     &.result-popular-products {
       .result-popular-products-tag {
         display: none;
@@ -73,7 +79,7 @@ body {
 .results-popular-products-banner {
   background-color: @theme-tertiary;
   color: #fff;
-  font-size: 20px;
+  font-size: 18px;
   padding: 10px;
   text-align: center;
 
@@ -96,6 +102,12 @@ body {
   .popular-products-options {
     .popular-plans-text {
       text-decoration: underline;
+    }
+
+    @media (@sm-only) {
+      button {
+        margin-top: 5px;
+      }
     }
 
     .icon {
