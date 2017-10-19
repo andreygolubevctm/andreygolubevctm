@@ -277,6 +277,8 @@
                     meerkat.modules.journeyEngine.loadingShow('...updating your quotes...', true);
                     // Had to use a 100ms delay instead of a defer in order to get the loader to appear on low performance devices.
                     _.delay(function () {
+                        // Update Popular Products to be unfiltered results set
+                        meerkat.modules.healthPopularProducts.setPopularProducts('N');
                         Results.unfilterBy('productId', "value", false);
                         Results.settings.incrementTransactionId = true;
                         meerkat.modules.healthResults.get();
