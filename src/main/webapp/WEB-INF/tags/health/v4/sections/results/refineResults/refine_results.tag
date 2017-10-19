@@ -42,6 +42,7 @@
                 </div>
                 <div class="refine-results-mobile__item" data-menu-id="funds">
                     <div class="refine-results-mobile__item-type">Refine funds</div>
+                    <div class="refine-results-mobile__item-type-selection">{{= fundsText }}</div>
                 </div>
             </div>
         </section>

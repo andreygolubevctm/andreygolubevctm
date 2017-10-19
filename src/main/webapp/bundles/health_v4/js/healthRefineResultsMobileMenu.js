@@ -33,6 +33,7 @@
         BenefitsModel = null,
         MobileBenefits = null,
         MobileExcess =  null,
+        MobileFunds = null,
         _currentMenuId = null;
 
     function initHealthRefineResultsMobileMenu() {
@@ -45,6 +46,7 @@
         BenefitsModel = meerkat.modules.benefitsModel;
         MobileBenefits = meerkat.modules.healthRefineResultsMobileBenefits.initHealthRefineResultsMobileBenefits();
         MobileExcess = meerkat.modules.healthRefineResultsMobileExcess.initHealthRefineResultsMobileExcess();
+        MobileFunds = meerkat.modules.healthRefineResultsMobileFunds.initHealthRefineResultsMobileFunds();
     }
 
     function _setupElements() {
@@ -182,7 +184,8 @@
                 extrasCountText: extrasCount > 0 ? extrasCount + ' extra' + extrasPlural + ' selected' : 'No Extras',
                 benefitsHospital: BenefitsModel.getHospitalBenefitsForFilters(),
                 benefitsExtras: BenefitsModel.getExtrasBenefitsForFilters(),
-                excessText: MobileExcess.getText()
+                excessText: MobileExcess.getText(),
+                fundsText: MobileFunds.getFundsText()
             };
 
         return data;
