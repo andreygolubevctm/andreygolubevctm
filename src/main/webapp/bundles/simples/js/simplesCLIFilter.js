@@ -51,7 +51,7 @@
         if (validateForm()) {
             var formData = {
                 value: $targetForm.find('input[name="phone"]').val().trim().replace(/\s+/g, ''),
-                cliStyleCodeId: filterStylecodeId
+                styleCodeId: filterStylecodeId
             };
 
             var url = baseUrl + 'spring/rest/simples/clifilter/add.json',
