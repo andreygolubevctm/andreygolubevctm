@@ -6,7 +6,8 @@
         successMsgElement = $('.simples-clifilter-pane-body .alert.alert-danger'),
         baseUrl = '';
 
-    var $targetForm = false;
+    var $targetForm = false,
+        $styleCode = false;
 
     function init() {
         $(document).ready(function() {
@@ -35,10 +36,10 @@
 
         if (data.errorMessage && data.errorMessage.length > 0) {
             // Error message has been specified elsewhere
-            $('.simples-clifilter-pane-body .alert.alert-danger').html(data.errorMessage).removeClass('hidden');
+            $('.simples-clifilter-pane-body .alert.alert-danger.alert-danger-' + $styleCode).html(data.errorMessage).removeClass('hidden');
         }
         if (data.successMessage && data.successMessage.length > 0) {
-            $('.simples-clifilter-pane-body .alert.alert-success').html(data.successMessage).removeClass('hidden');
+            $('.simples-clifilter-pane-body .alert.alert-success.alert-success-' + $styleCode).html(data.successMessage).removeClass('hidden');
         }
 
     }
@@ -46,12 +47,13 @@
     function performSubmit(filterStylecodeId) {
 
         //Setup target form
-        $targetForm = $('.add-to-cli-filter #simples-add-clifilter');
+        $targetForm = $('.add-to-cli-filter #simples-add-clifilter-' + filterStylecodeId);
+        $styleCode = filterStylecodeId;
 
         if (validateForm()) {
             var formData = {
                 value: $targetForm.find('input[name="phone"]').val().trim().replace(/\s+/g, ''),
-                cliStyleCodeId: filterStylecodeId
+                styleCodeId: filterStylecodeId
             };
 
             var url = baseUrl + 'spring/rest/simples/clifilter/add.json',
