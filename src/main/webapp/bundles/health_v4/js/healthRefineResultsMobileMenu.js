@@ -72,29 +72,30 @@
                 $('#health_refine_results_rebate').prop('checked', $elements.applyRebate.val() === 'Y');
 
                 meerkat.messaging.publish(moduleEvents.refineResults.REFINE_RESULTS_OPENED);
+
+                // Note added this event handler here fixes for Safari mobile.
+                $('.refine-results-mobile__item').on('click', function() {
+                    _currentMenuId = $(this).attr('data-menu-id');
+                    meerkat.messaging.publish(moduleEvents.refineResults.REFINE_RESULTS_MENU_ITEM_SELECTED, { id: _currentMenuId });
+
+                    $('.refine-results-mobile section[data-panel-id="main"]').addClass('sliding slide-out');
+                    $('.refine-results-mobile section[data-panel-id="' + _currentMenuId + '"]').addClass('sliding slide-in');
+
+                    MobileFiltersMenu
+                        .showBackBtn()
+                        .updateHeaderTitle(menuItems[_currentMenuId].title);
+
+                    if (menuItems[_currentMenuId].rightBtnText) {
+                        MobileFiltersMenu
+                            .updateRightBtnText(menuItems[_currentMenuId].rightBtnText)
+                            .showRightBtn();
+                    }
+                });
             });
         });
 
         $(document).on('change', '.refine-results-mobile :input', function() {
             meerkat.messaging.publish(moduleEvents.mobileFiltersMenu.FOOTER_BUTTON_UPDATE);
-        });
-
-        $(document).on('click', '.refine-results-mobile__item', function() {
-            _currentMenuId = $(this).attr('data-menu-id');
-            meerkat.messaging.publish(moduleEvents.refineResults.REFINE_RESULTS_MENU_ITEM_SELECTED, { id: _currentMenuId });
-
-            $('.refine-results-mobile section[data-panel-id="main"]').addClass('sliding slide-out');
-            $('.refine-results-mobile section[data-panel-id="' + _currentMenuId + '"]').addClass('sliding slide-in');
-
-            MobileFiltersMenu
-                .showBackBtn()
-                .updateHeaderTitle(menuItems[_currentMenuId].title);
-
-            if (menuItems[_currentMenuId].rightBtnText) {
-                MobileFiltersMenu
-                    .updateRightBtnText(menuItems[_currentMenuId].rightBtnText)
-                    .showRightBtn();
-            }
         });
 
         $(document).on('transitionend webkitTransitionEnd oTransitionEnd', '.refine-results-mobile section', function() {
