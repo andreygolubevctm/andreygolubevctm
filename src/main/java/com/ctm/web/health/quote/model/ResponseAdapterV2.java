@@ -219,6 +219,7 @@ public class ResponseAdapterV2 {
                 rebateValue + " Govt Rebate");
 
         price.setRebateValue(rebateValue);
+
         price.setBase(formatCurrency(quotePrice.getBasePremium(), true, true));
         price.setBaseAndLHC(formatCurrency(quotePrice.getBaseAndLHC(), true, true));
 
@@ -291,6 +292,8 @@ public class ResponseAdapterV2 {
         info.setFundCode(otherInfoProperties.get("FundCode"));
         info.setProductType(otherInfoProperties.get("ProductType"));
         info.setState(otherInfoProperties.get("State"));
+        info.setPopularProduct(responseInfo.getPopularProduct());
+        info.setPopularProductsRank(responseInfo.getPopularProductRank());
         return info;
     }
 }

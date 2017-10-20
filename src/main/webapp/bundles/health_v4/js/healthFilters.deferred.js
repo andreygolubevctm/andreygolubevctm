@@ -277,6 +277,8 @@
                     meerkat.modules.journeyEngine.loadingShow('...updating your quotes...', true);
                     // Had to use a 100ms delay instead of a defer in order to get the loader to appear on low performance devices.
                     _.delay(function () {
+                        // Update Popular Products to be unfiltered results set
+                        meerkat.modules.healthPopularProducts.setPopularProducts('N');
                         Results.unfilterBy('productId', "value", false);
                         Results.settings.incrementTransactionId = true;
                         meerkat.modules.healthResults.get();
@@ -521,14 +523,12 @@
      * need to just move them around in the DOM.
      */
     function _placeFrequencyFilters() {
-        if (meerkat.modules.splitTest.isActive(15)) {
-            var $frequency = $('.results-filters-frequency', $navBarFiltersContext);
-             if (meerkat.modules.deviceMediaState.get() === 'xs') {
-                $frequency.detach().insertAfter($paginationWrapper);
-             } else {
-                $frequency.detach().insertBefore($hiddenProductsWrapper);
-             }
-        }
+        var $frequency = $('.results-filters-frequency', $navBarFiltersContext);
+         if (meerkat.modules.deviceMediaState.get() === 'xs') {
+            $frequency.detach().insertAfter($paginationWrapper);
+         } else {
+            $frequency.detach().insertBefore($hiddenProductsWrapper);
+         }
     }
 
     function _toggleFiltersBenefitSelection(benefit, isSwitchedOn) {
