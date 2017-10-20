@@ -29,7 +29,7 @@
         data = data || {};
 
         var errorMsgElement = $('.simples-clifilter-pane-body .alert.alert-danger');
-        var successMsgElement = $('.simples-clifilter-pane-body .alert.alert-danger');
+        var successMsgElement = $('.simples-clifilter-pane-body .alert.alert-success');
 
         errorMsgElement.addClass('hidden').html('');
         successMsgElement.addClass('hidden').html('');
