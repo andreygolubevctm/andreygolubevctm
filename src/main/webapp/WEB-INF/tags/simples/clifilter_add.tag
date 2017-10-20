@@ -2,6 +2,9 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<%-- ATTRIBUTES --%>
+<%@ attribute name="filterStyleCodeId" 			required="true"	 	rtexprvalue="true" 	description="The stylecode to use when popping items off the cli filter stack" %>
+
 <div class="add-to-cli-filter">
 	<h2>Add to CLI Filter</h2>
 	<div class="simples-clifilter-pane-body">
@@ -17,7 +20,7 @@
 			<div class="row text-right">
 				<div class="col-xs-9  text-right">
 					<span class="form-error text-danger"></span>
-					<a data-provide="simples-clifilter-submit" class="btn btn-warning">Add to CLI Filter</a>
+					<a data-provide="simples-clifilter-submit" data-filter-stylecode-id="${filterStyleCodeId}" class="btn btn-warning">Add to CLI Filter</a>
 				</div>
 			</div>
 		</form>

@@ -18,7 +18,7 @@
 
             // Event: CLI Filter form submit (uses #dynamic_dom because that is static on the page so retains the event binds)
             $('.add-to-cli-filter').on('click', '[data-provide="simples-clifilter-submit"]', function(event) {
-                performSubmit();
+                performSubmit($(this).attr("data-filter-stylecode-id"));
             });
 
         });
@@ -43,14 +43,15 @@
 
     }
 
-    function performSubmit() {
+    function performSubmit(filterStylecodeId) {
 
         //Setup target form
         $targetForm = $('.add-to-cli-filter #simples-add-clifilter');
 
         if (validateForm()) {
             var formData = {
-                value: $targetForm.find('input[name="phone"]').val().trim().replace(/\s+/g, '')
+                value: $targetForm.find('input[name="phone"]').val().trim().replace(/\s+/g, ''),
+                cliStyleCodeId: filterStylecodeId
             };
 
             var url = baseUrl + 'spring/rest/simples/clifilter/add.json',
