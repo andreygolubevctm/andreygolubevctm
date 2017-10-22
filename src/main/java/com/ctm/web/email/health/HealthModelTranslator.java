@@ -49,6 +49,7 @@ public class HealthModelTranslator implements EmailTranslator {
     private static final String CAMPAIGN = "health_quote";
     private static final String EMAIL_TYPE = "bestprice";
     private static final String ACTION_UNSUBSCRIBE = "unsubscribe";
+    private static final String ACTION_LOAD = "load";
 
     @Override
     public void setVerticalSpecificFields(EmailRequest emailRequest, HttpServletRequest request, Data data) throws ConfigSettingException, DaoException {
@@ -144,12 +145,18 @@ public class HealthModelTranslator implements EmailTranslator {
         emailParameters.put(EmailUrlService.HASHED_EMAIL, emailDetails.getHashedEmail());
         emailParameters.put(EmailUrlService.STYLE_CODE_ID, Integer.toString(pageSettings.getBrandId()));
         emailParameters.put(EmailUrlService.EMAIL_TOKEN_TYPE, EMAIL_TYPE);
-        emailParameters.put(EmailUrlService.EMAIL_TOKEN_ACTION, ACTION_UNSUBSCRIBE);
         emailParameters.put(EmailUrlService.VERTICAL, Optional.ofNullable(verticalCode).map(s -> s.toLowerCase()).orElse(null));
 
+        // Create Unsubscribe link
+        emailParameters.put(EmailUrlService.EMAIL_TOKEN_ACTION, ACTION_UNSUBSCRIBE);
         EmailUrlService urlService = EmailServiceFactory.createEmailUrlService(pageSettings, pageSettings.getVertical().getType());
         String unsubscribeUrl = urlService.getUnsubscribeUrl(emailParameters);
+
+        // Create Load quote link
+        emailParameters.put(EmailUrlService.EMAIL_TOKEN_ACTION, ACTION_LOAD);
         String applyUrl = urlService.getApplyUrl(emailMaster,emailParameters,otherEmailParameters);
+
+
         List<String> applyUrls = new ArrayList<>();
         applyUrls.add(applyUrl);
         emailRequest.setApplyUrls(applyUrls);
