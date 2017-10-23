@@ -1,0 +1,14 @@
+CtM,provide_id,provider_name,provider_short_name,,,,
+provider,285,Easy Travel Insurance,Easy Travel Insurance,,,,
+products_headings,Product ID,Product Code,ProductName,Is active?,Add?,Rename?,Include In Import?
+product,5954089,EASY-TRAVEL-BUDG150,Budget Comprehensive $150 Excess,1,0,0,1
+product,6645426,EASY-TRAVEL-BUDG0,Budget Comprehensive $0 Excess,1,1,0,1
+product,5954090,EASY-TRAVEL-INT100,International Comprehensive $100 Excess,1,0,0,1
+product,5954091,EASY-TRAVEL-INT0,International Comprehensive $0 Excess,1,0,0,1
+product,5954092,EASY-TRAVEL-AUST,Australian Comprehensive,1,0,0,1
+product,5954093,EASY-TRAVEL-AUSTCAN1000,Australian Cancellation $1000 Cover,1,0,0,1
+product,5954094,EASY-TRAVEL-AUSTCAN3000,Australian Cancellation $3000 Cover,1,0,0,1
+product,5954095,EASY-TRAVEL-AMT-WW200,Annual Multi Trip $200 Excess (60 days per trip) Including USA ,1,0,0,1
+product,5954096,EASY-TRAVEL-AMT-EXUS200,Annual Multi Trip $200 Excess (60 days per trip) Excluding USA ,1,0,0,1
+product,5954097,EASY-TRAVEL-AMT-WW0,Annual Multi Trip $0 Excess (60 days per trip) Including USA ,1,0,0,1
+product,5954098,EASY-TRAVEL-AMT-EXUS0,Annual Multi Trip $0 Excess (60 days per trip) Excluding USA ,1,0,0,1
