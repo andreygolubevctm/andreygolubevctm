@@ -24,11 +24,15 @@ public class Info {
 
     private Integer rank;
 
+    private Integer popularProductRank;
+
     private JsonNode otherProductFeatures;
 
     private Map<String, String> otherInfoProperties;
 
     private String situationFilter;
+
+    private Boolean popularProduct;
 
     public boolean isRestrictedFund() {
         return restrictedFund;
@@ -124,5 +128,21 @@ public class Info {
 
     public void setSituationFilter(String situationFilter) {
         this.situationFilter = situationFilter;
+    }
+
+    public Boolean getPopularProduct() {
+        return popularProduct;
+    }
+
+    public void setPopularProduct(Boolean popularProduct) {
+        this.popularProduct = popularProduct;
+    }
+
+    public Integer getPopularProductRank() {
+        return popularProductRank;
+    }
+
+    public void setPopularProductRank(Integer popularProductRank) {
+        this.popularProductRank = popularProductRank;
     }
 }

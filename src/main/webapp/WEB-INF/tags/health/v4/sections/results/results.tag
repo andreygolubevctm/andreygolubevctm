@@ -86,6 +86,7 @@
 
     <jsp:attribute name="hiddenInputs">
         <%-- Hidden fields necessary for Results page --%>
+        <input type="hidden" name="health_popularProducts" value="N" />
         <input type="hidden" name="health_applyDiscounts" value="Y" />
         <input type="hidden" name="health_showAll" value="Y" />
         <input type="hidden" name="health_onResultsPage" value="Y" />
@@ -142,6 +143,10 @@
         <health_v4_results:product_special_features_template />
         <health_v4_results:extras_list_template />
         <health_v4_results:credit_card_template />
+
+        <c:if test="${popularProductsTest}">
+            <health_v4_results:popular_products />
+        </c:if>
 
     </jsp:body>
 

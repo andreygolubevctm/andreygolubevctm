@@ -193,13 +193,14 @@ public class RememberMeService {
         TransactionDetail healthCvr = transactionDetails.stream().
                 filter(transactionDetail -> transactionDetail.getXPath().equals("health/situation/healthCvr")).findFirst().orElse(null);
 
-        TransactionDetail location = transactionDetails.stream().
-                filter(transactionDetail -> transactionDetail.getXPath().equals("health/situation/location")).findFirst().orElse(null);
+        TransactionDetail postcode = transactionDetails.stream().
+                filter(transactionDetail -> transactionDetail.getXPath().equals("health/situation/postcode")).findFirst().orElse(null);
 
         if(request.getParameter("cover") == null  && request.getParameter("health_location") == null )
             return true;
-        else if ((healthCvr != null && healthCvr.getTextValue().equals(request.getParameter("cover")))
-                && (location != null && location.getTextValue().contains(request.getParameter("health_location")))) {
+        else if ((healthCvr != null && (request.getParameter("cover").isEmpty() || request.getParameter("cover").startsWith("Choose")
+                || healthCvr.getTextValue().equals(request.getParameter("cover"))))
+                && (postcode != null && (request.getParameter("health_location").isEmpty() || request.getParameter("health_location").contains(postcode.getTextValue())))) {
             return true;
         } else
             return false;
