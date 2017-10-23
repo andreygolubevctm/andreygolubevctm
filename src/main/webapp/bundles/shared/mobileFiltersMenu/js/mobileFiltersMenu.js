@@ -64,7 +64,7 @@
 
     function _setupElements() {
         $elements = {
-            body: $('body'),
+            body: $('html, body'),
             menu: $('.mobile-filters-menu'),
             overlay: $('.mobile-filters-menu .overlay'),
             cross: $('.mobile-filters-menu .icon-cross'),
@@ -152,7 +152,7 @@
 
     function open() {
         _status.open = true;
-        $elements.body.css('overflow', 'hidden');
+        $elements.body.css({ overflow: 'hidden', height: $(window).height() });
         $elements.menu.addClass('opened');
 
         return this;
@@ -160,7 +160,7 @@
 
     function close() {
         _status.open = false;
-        $elements.body.css('overflow', 'initial');
+        $elements.body.css({ overflow: 'initial', height: 'initial' });
         $elements.menu.addClass('closing');
 
         return this;
