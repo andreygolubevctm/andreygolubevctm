@@ -90,6 +90,7 @@
         // note: this is assignment within an if condition. succeeds if a product id is passed/assigned
         if ((pinnedProductId = passedProductId)) {
             Results.pinProduct(pinnedProductId, function (productId, $pinnedResultRow) {
+                $pinnedResultRow.prepend('<div class="result-pinned-product-tag">Pinned product</div>');
                 $pinnedResultRow.addClass('pinned currentPage').removeClass('not-pinned').css({
                     left: 'auto',
                     top: 'auto'
@@ -268,6 +269,9 @@
                 incrementTransactionId: false,
                 balanceCurrentPageRowsHeightOnly: {
                     mobile: true
+                },
+                popularProducts: {
+                    enabled: meerkat.modules.healthPopularProducts.isEnabled()
                 }
             });
 
@@ -280,7 +284,7 @@
     function _massageResultsObject(products) {
         _.each(products, function massageJson(result, index) {
             // Add properties
-            result.isPinned = 'N';
+            result.isPinned = result.productId === pinnedProductId ? 'Y' : 'N';
         });
         return products;
     }
@@ -345,6 +349,10 @@
 
             // Hide pagination
             $('.results-pagination, .results-filters-frequency').addClass('invisible');
+
+            // Hide top three
+            meerkat.modules.healthPopularProducts.hide();
+
             meerkat.modules.coupon.triggerPopup();
         });
 
@@ -375,6 +383,8 @@
             }
             _.delay(function () {
                 meerkat.modules.journeyEngine.loadingHide();
+                // Show top three
+                meerkat.modules.healthPopularProducts.show();
             }, tVariance);
 
 

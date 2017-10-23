@@ -9,6 +9,7 @@ var ResultsModel = {
 	hasValidationErrors : false,
 	currentProduct: false,
 	selectedProduct: false,
+	pinnedProduct: false,
 	filters: [],
 	availablePartners: [],
 
@@ -781,10 +782,18 @@ var ResultsModel = {
 		Results.model.selectedProduct = false;
 	},
 
-	getResult: function( identifierPathName, value, returnIndex ){
+	setPinnedProduct: function( product ) {
+		return Results.model.pinnedProduct = product;
+	},
 
+	removePinnedProduct: function() {
+		Results.model.pinnedProduct = false;
+	},
+
+	getResult: function( identifierPathName, value, returnIndex ){
 		var result = false;
 		var resultIndex = false;
+
 		$.each( Results.model.returnedProducts, function(index, product){
 			var productValue = Object.byString( product, Object.byString( Results.settings.paths, identifierPathName ) );
 			if( productValue == value ){
@@ -796,8 +805,10 @@ var ResultsModel = {
 
 		if( returnIndex ){
 			return resultIndex;
-		} else {
+		} else if (result) {
 			return result;
+		} else if (Results.getPinnedProduct().productId === value) {
+			return Results.getPinnedProduct();
 		}
 
 	},
