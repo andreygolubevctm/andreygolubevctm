@@ -118,12 +118,14 @@
         // Initialise the journey engine steps and bar
         initProgressBar(false);
 
+        var isRememberMe = meerkat.site.journeyStage.length > 0 && meerkat.site.pageAction === 'remember';
+
         // Initialise the journey engine
         var startStepId = null;
-        if (meerkat.site.isFromBrochureSite === true) {
+        if (meerkat.site.isFromBrochureSite === true && !isRememberMe) {
             startStepId = steps.startStep.navigationId;
         // Use the stage user was on when saving their quote
-        } else if (meerkat.site.journeyStage.length > 0 && _.indexOf(['remember', 'amend', 'latest'], meerkat.site.pageAction) >= 0) {
+        } else if (isRememberMe || (meerkat.site.journeyStage.length > 0 && _.indexOf(['amend', 'latest'], meerkat.site.pageAction) >= 0)) {
             // Do not allow the user to go past the results page on amend.
             // If remember me redirect set step to results
             if (

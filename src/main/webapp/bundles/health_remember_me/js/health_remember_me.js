@@ -11,7 +11,7 @@
         };
 
     function init() {
-        if (meerkat.site.isRememberMe) {
+    	if (meerkat.site.isRememberMe) {
             meerkat.modules.jqueryValidate.initJourneyValidator();
             _setupFields();
             validateDob();
@@ -53,7 +53,8 @@
             }
         });
 
-        $elements.revieweditButton.on("click", function(){
+        $elements.revieweditButton.on("click", function(event){
+        	event.preventDefault();
             _setReviewEdit();
             $elements.form.trigger("submit");
         });
@@ -128,7 +129,7 @@
                     errorLevel: 'silent',
                     onSuccess: function (result) {
                     	if (result.validAnswer === true && result.transactionId !== "") {
-                            _track('success');
+                    		_track('success - ' + (result.reviewEdit === true ? 'review' : 'results'));
                             meerkat.modules.leavePageWarning.disable();
 		                    if(result.reviewEdit === true) {
 		                    	$elements.loadingMessage.text('Loading your quote... Please wait...');
