@@ -143,8 +143,8 @@
     }
   }
   
-  function reverseDateStr(date) {
-    return date.split('/').reverse().join('/');
+  function reverseDateStr(dateStr) {
+    return dateStr.split('/').reverse().join('/');
   }
   
   function preloadFields() {
@@ -152,6 +152,7 @@
     var toDate = document.getElementById('travel_dates_toDate');
     var hasValues = toDate.value.length > 0 && fromDate.value.length > 0;
     if (hasValues) {
+      dateDiff = calcDatesDifference([ reverseDateStr(fromDate.value), reverseDateStr(toDate.value) ]);
       setValueToHiddenFields({name: 'fromDate', dateString: fromDate.value });
       setValueToHiddenFields({name: 'toDate', dateString: toDate.value });
       display.departure.value = fromDate.value;
