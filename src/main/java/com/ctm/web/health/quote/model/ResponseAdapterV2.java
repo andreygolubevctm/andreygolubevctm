@@ -53,7 +53,7 @@ public class ResponseAdapterV2 {
 //                                                                .map(BigDecimal::new);
 
                 boolean isSimplesUser = false;
-                if (request.getHealth().getSimples().getContactType() != null && !request.getHealth().getSimples().getContactType().isEmpty()) {
+                if (request.getHealth().getSimples() != null) {
                     isSimplesUser = true;
                 }
 
