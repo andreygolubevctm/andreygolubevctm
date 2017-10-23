@@ -5,7 +5,7 @@
 <%--HTML--%>
 <div class="dropdown-item">
     <div class="radio">
-        <input type="radio" name="radio-group" id="travel_filter_excess_all" class="radioButton-custom  radio" data-excess="10000000000" value="All">
+        <input type="radio" name="radio-group" id="travel_filter_excess_all" class="radioButton-custom  radio" data-excess="10000000000" value="All excess levels">
         <label for="travel_filter_excess_all">All excess levels</label>
     </div>
 </div>

@@ -11,14 +11,16 @@
 
         // update the excess header when any of the excess option is selected
         $('input[name="radio-group"]').change(function () {
-           $('.selected-excess-value').text($(this).val());
+           $('.selected-excess-value .filter-excess-value').text($(this).val());
             _updateTravelResults('EXCESS', parseInt($(this).data('excess')));
+            $('#excessFilterDropdownBtn').dropdown('toggle');
         });
 
         // update the luggage cover when the slider is moved
         $('input[name="luggageRangeSlider"]').change(function () {
            $('.luggage-range-value').empty().text('$' + Number($(this).val()).toLocaleString('en'));
             _updateTravelResults('LUGGAGE', parseInt($(this).val()));
+            $('#moreFiltersDropdownBtn').dropdown('toggle');
         });
 
         // update the cancellation cover when the slider is moved
@@ -29,6 +31,7 @@
                 $('.cancellation-range-value').empty().text('$' + Number($(this).val()).toLocaleString('en'));
             }
             _updateTravelResults('CXDFEE', parseInt($(this).val()));
+            $('#moreFiltersDropdownBtn').dropdown('toggle');
         });
 
         // update the overseas medical cover when the slider is moved
@@ -36,13 +39,15 @@
             if (Number($(this).val()) == 50000000) {
                 $('.overseas-medical-range-value').empty().text('Unlimited');
             } else {
-                $('.overseas-medical-range-value').empty().text('$' + Number($(this).val() / 1000000) + ' millions');
+                $('.overseas-medical-range-value').empty().text('$' + Number($(this).val() / 1000000) + ' million');
             }
             _updateTravelResults('MEDICAL', parseInt($(this).val()));
+            $('#moreFiltersDropdownBtn').dropdown('toggle');
         });
 
         $('.col-brand input[type="checkbox"]').change(function () {
             _updateTravelResults('PROVIDERS', $(this).data('provider-code'));
+            $('#moreFiltersDropdownBtn').dropdown('toggle');
         });
 
         // show up arrow when the dropdown is shown
