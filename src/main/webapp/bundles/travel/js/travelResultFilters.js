@@ -14,13 +14,13 @@
            $('.selected-excess-value .filter-excess-value').text($(this).val());
             _updateTravelResults('EXCESS', parseInt($(this).data('excess')));
             $('#excessFilterDropdownBtn').dropdown('toggle');
+            Results.model.travelResultFilter(true, true);
         });
 
         // update the luggage cover when the slider is moved
         $('input[name="luggageRangeSlider"]').change(function () {
            $('.luggage-range-value').empty().text('$' + Number($(this).val()).toLocaleString('en'));
             _updateTravelResults('LUGGAGE', parseInt($(this).val()));
-            $('#moreFiltersDropdownBtn').dropdown('toggle');
         });
 
         // update the cancellation cover when the slider is moved
@@ -31,7 +31,6 @@
                 $('.cancellation-range-value').empty().text('$' + Number($(this).val()).toLocaleString('en'));
             }
             _updateTravelResults('CXDFEE', parseInt($(this).val()));
-            $('#moreFiltersDropdownBtn').dropdown('toggle');
         });
 
         // update the overseas medical cover when the slider is moved
@@ -42,12 +41,16 @@
                 $('.overseas-medical-range-value').empty().text('$' + Number($(this).val() / 1000000) + ' million');
             }
             _updateTravelResults('MEDICAL', parseInt($(this).val()));
+        });
+
+        // display the filtered results
+        $('.more-filters-results-btn').click(function () {
             $('#moreFiltersDropdownBtn').dropdown('toggle');
+            Results.model.travelResultFilter(true, true);
         });
 
         $('.col-brand input[type="checkbox"]').change(function () {
             _updateTravelResults('PROVIDERS', $(this).data('provider-code'));
-            $('#moreFiltersDropdownBtn').dropdown('toggle');
         });
 
         // show up arrow when the dropdown is shown
@@ -92,7 +95,6 @@
                 break;
         }
         Results.model.travelFilters = _filters;
-        Results.model.travelResultFilter(true, true);
     }
 
     meerkat.modules.register("travelResultFilters", {

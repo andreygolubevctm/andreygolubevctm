@@ -241,7 +241,7 @@
 
 			// results headers
 			out += '<div class="col-sm-' + xsCols + ' col-xs-5 text-center clt-action ' + (tab.defaultTab === true ? 'active' : 'hidden-xs') + '" data-clt-index="' + i + '">';
-			out += (state === 'lg' ? tab.label : tab.label.replace('Cover', '')) + (state !== 'xs' && state !== 'sm' && tab.showCount === true && count !== null ? ' (' + (count) + ')' : '');
+			out += (tab.label.replace('Cover', '')) + (state !== 'xs' && state !== 'sm' && tab.showCount === true && count !== null ? ' (' + (count) + ')' : '');
 			out += '</div>';
 
 			// filter tabs
