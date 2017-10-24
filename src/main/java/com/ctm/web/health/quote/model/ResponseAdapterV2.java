@@ -267,14 +267,12 @@ public class ResponseAdapterV2 {
             sb.append(StringUtils.trimToEmpty(specialOffer.getSummary()));
             if (StringUtils.isNotBlank(specialOffer.getTerms())) {
                 sb.append("<p>").append("<a class=\"dialogPop\" data-content=\"")
-                        .append(StringEscapeUtils.escapeHtml4(specialOffer.getTerms()))
-                        .append("\" title=\"Find out more\"")
-                        .append(" data-class=\"results-promo-modal\">");
+                        .append(StringEscapeUtils.escapeHtml4(specialOffer.getTerms()));
 
                 if (isSimplesUser) {
-                    sb.append("^ Terms and Conditions");
+                    sb.append("\" title=\"Terms and Conditions\"").append(" data-class=\"results-promo-modal\">").append("^ Terms and Conditions");
                 } else {
-                    sb.append("^ Find out more");
+                    sb.append("\" title=\"Find out more\"").append(" data-class=\"results-promo-modal\">").append("^ Find out more");
                 }
 
                 sb.append("</a>").append("</p>");
