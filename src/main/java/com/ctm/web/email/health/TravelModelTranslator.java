@@ -111,11 +111,6 @@ public class TravelModelTranslator implements EmailTranslator {
         emailRequest.setPremiums(premium);
         emailRequest.setPremiumFrequency(request.getParameter("rank_frequency0"));
         emailRequest.setGaClientID(gaclientId);
-        String callCentreNumber = request.getParameter("callCentreNumber");
-
-        List<String> providerPhones = new ArrayList<>();
-        IntStream.range(EmailUtils.START,EmailUtils.END).forEach(value -> providerPhones.add(callCentreNumber));
-        emailRequest.setProviderPhoneNumbers(providerPhones);
 
         TravelEmailModel travelEmailModel = new TravelEmailModel();
         travelEmailModel.setMedical(medical);
