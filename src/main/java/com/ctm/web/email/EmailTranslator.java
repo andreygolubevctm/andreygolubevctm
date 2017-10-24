@@ -17,6 +17,6 @@ import java.util.List;
  */
 public interface EmailTranslator {
 
-    void setUrls(HttpServletRequest request, EmailRequest emailRequest, Data data, String verticalCode, List<EmailParameters> emailParametersList) throws ConfigSettingException, DaoException, EmailDetailsException, SendEmailException, GeneralSecurityException;
+    void setUrls(HttpServletRequest request, EmailRequest emailRequest, Data data, String verticalCode) throws ConfigSettingException, DaoException, EmailDetailsException, SendEmailException, GeneralSecurityException;
     void setVerticalSpecificFields(EmailRequest emailRequest, HttpServletRequest request, Data data) throws ConfigSettingException, DaoException;
 }
