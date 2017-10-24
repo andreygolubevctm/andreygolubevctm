@@ -54,17 +54,18 @@ public class ProviderContentService {
      * @throws DaoException
      * @throws ConfigSettingException
      */
-    public String getProviderContentText(HttpServletRequest request, String providerName,
+    public String getProviderContentText(HttpServletRequest request, String providerName, String styleCode,
                                          String providerContentTypeCode) throws DaoException, ConfigSettingException {
         ProviderDao providerDao = new ProviderDao();
         Date currDate = ApplicationService.getApplicationDate(request);
         int providerId = providerDao.getByName(providerName, currDate).getId();
-        return providerContentDao.getProviderContentText(providerId, providerContentTypeCode, "HEALTH", currDate);
+        return providerContentDao.getProviderContentText(providerId, providerContentTypeCode, "HEALTH", currDate, styleCode);
     }
 
     public String getProviderContentText(HttpServletRequest request) throws ServiceException {
         String providerIdString = request.getParameter("providerId");
         String providerContentTypeCode = request.getParameter("providerContentTypeCode");
+        String styleCode = request.getParameter("styleCode");
         Integer providerId;
         try {
             providerId = NumberUtils.parseNumber(providerIdString, Integer.class);
@@ -76,7 +77,7 @@ public class ProviderContentService {
         }
         Date currDate = ApplicationService.getApplicationDate(request);
         try {
-            return providerContentDao.getProviderContentText(providerId, providerContentTypeCode, "HEALTH", currDate);
+            return providerContentDao.getProviderContentText(providerId, providerContentTypeCode, "HEALTH", currDate, styleCode);
         } catch (DaoException e) {
             throw new ServiceException("Failed to get provider content text.", e);
         }

@@ -22,6 +22,7 @@
       dateFormat: "d/m/y",
       minDate: 'today',
       maxDate: new Date(currentDate.getFullYear() + 1, currentDate.getMonth(), currentDate.getDate()),
+      disableMobile: true,
       onOpen: function() {
         display.departure.classList.add('dp__input__item--active');
       },
@@ -57,6 +58,7 @@
       dateFormat: "d/m/y",
     	mode: 'range',
       minDate: 'today',
+      disableMobile: true,
       maxDate: new Date(currentDate.getFullYear() + 1, currentDate.getMonth(), currentDate.getDate()),
       onOpen: function(selectedDates, dateStr, instance) {
         display.returned.classList.add('dp__input__item--active');
@@ -141,8 +143,8 @@
     }
   }
   
-  function reverseDateStr(date) {
-    return date.split('/').reverse().join('/');
+  function reverseDateStr(dateStr) {
+    return dateStr.split('/').reverse().join('/');
   }
   
   function preloadFields() {
@@ -150,6 +152,7 @@
     var toDate = document.getElementById('travel_dates_toDate');
     var hasValues = toDate.value.length > 0 && fromDate.value.length > 0;
     if (hasValues) {
+      dateDiff = calcDatesDifference([ reverseDateStr(fromDate.value), reverseDateStr(toDate.value) ]);
       setValueToHiddenFields({name: 'fromDate', dateString: fromDate.value });
       setValueToHiddenFields({name: 'toDate', dateString: toDate.value });
       display.departure.value = fromDate.value;

@@ -592,6 +592,7 @@
         var data = {};
         data.providerId = product.info.providerId;
         data.providerContentTypeCode = providerContentTypeCode;
+        data.styleCode = meerkat.site.tracking.brandCode;
 
         if (typeof data.providerId === 'undefined' || data.providerId === '') {
             meerkat.modules.errorHandling.error({

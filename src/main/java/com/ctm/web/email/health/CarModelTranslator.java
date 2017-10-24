@@ -22,7 +22,6 @@ import com.ctm.web.email.car.CarEmailModel;
 import com.ctm.web.factory.EmailServiceFactory;
 import com.ctm.web.health.email.mapping.HealthEmailDetailMappings;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.cxf.ws.security.tokenstore.TokenStoreFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -35,6 +34,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static java.lang.Integer.min;
 
 /**
  * Created by akhurana on 25/09/17.
@@ -88,7 +89,6 @@ public class CarModelTranslator implements EmailTranslator {
         List<String> providerNames = new ArrayList<>();
         List<String> providerPhoneNumbers = new ArrayList<>();
         List<String> premiums = new ArrayList<>();
-        List<String> quoteUrls = new ArrayList<>();
         List<String> brandCodes = new ArrayList<>();
         List<String> excesses = new ArrayList<>();
         List<String> validDates = new ArrayList<>();
@@ -96,20 +96,21 @@ public class CarModelTranslator implements EmailTranslator {
         List<String> headlineOffers = new ArrayList<>();
         List<String> quoteRefs = new ArrayList<>();
 
-        emailParameters.forEach(emailParameter -> providerNames.add(emailParameter.getProviderName()));
-        emailParameters.forEach(emailParameter -> providerPhoneNumbers.add(emailParameter.getProviderPhoneNumber()));
-        emailParameters.forEach(emailParameter -> premiums.add(emailParameter.getPremium()));
-        emailParameters.forEach(emailParameter -> quoteUrls.add(emailParameter.getQuoteUrl()));
-        emailParameters.forEach(emailParameter -> brandCodes.add(emailParameter.getBrandCode()));
-        emailParameters.forEach(emailParameter -> excesses.add(emailParameter.getExcess()));
-        emailParameters.forEach(emailParameter -> validDates.add(emailParameter.getValidDate()));
-        emailParameters.forEach(emailParameter -> discountOffers.add(emailParameter.getDiscountOffer()));
-        emailParameters.forEach(emailParameter -> headlineOffers.add(emailParameter.getHeadlineOffer()));
-        emailParameters.forEach(emailParameter -> quoteRefs.add(emailParameter.getQuoteRef()));
+        // Don't send more than 10 items
+        List<EmailParameters> truncatedEmailParameters = emailParameters.subList(0, min(emailParameters.size(), 10));
+
+        truncatedEmailParameters.forEach(emailParameter -> providerNames.add(emailParameter.getProviderName()));
+        truncatedEmailParameters.forEach(emailParameter -> providerPhoneNumbers.add(emailParameter.getProviderPhoneNumber()));
+        truncatedEmailParameters.forEach(emailParameter -> premiums.add(emailParameter.getPremium()));
+        truncatedEmailParameters.forEach(emailParameter -> brandCodes.add(emailParameter.getBrandCode()));
+        truncatedEmailParameters.forEach(emailParameter -> excesses.add(emailParameter.getExcess()));
+        truncatedEmailParameters.forEach(emailParameter -> validDates.add(emailParameter.getValidDate()));
+        truncatedEmailParameters.forEach(emailParameter -> discountOffers.add(emailParameter.getDiscountOffer()));
+        truncatedEmailParameters.forEach(emailParameter -> headlineOffers.add(emailParameter.getHeadlineOffer()));
+        truncatedEmailParameters.forEach(emailParameter -> quoteRefs.add(emailParameter.getQuoteRef()));
 
         emailRequest.setProviders(providerNames);
         emailRequest.setProviderPhoneNumbers(providerPhoneNumbers);
-        emailRequest.setApplyUrls(quoteUrls);
         emailRequest.setProductDescriptions(providerNames);
         emailRequest.setProviderCodes(brandCodes);
         emailRequest.setExcesses(excesses);
@@ -149,8 +150,8 @@ public class CarModelTranslator implements EmailTranslator {
         carEmailModel.setVehicleYear(vehicleYear);
         emailRequest.setCarEmailModel(carEmailModel);
 
-        if (!emailParameters.isEmpty() && StringUtils.isNotBlank(emailParameters.get(0).getOpeningHour())){
-            emailRequest.setCallCentreHours(emailParameters.get(0).getOpeningHour());
+        if (!truncatedEmailParameters.isEmpty() && StringUtils.isNotBlank(truncatedEmailParameters.get(0).getOpeningHour())){
+            emailRequest.setCallCentreHours(truncatedEmailParameters.get(0).getOpeningHour());
         }
         String email = getEmail(data);
         if (!StringUtils.isBlank(email)) emailRequest.setEmailAddress(email);
@@ -180,13 +181,33 @@ public class CarModelTranslator implements EmailTranslator {
         EmailDetailsService emailDetailsService = EmailServiceFactory.createEmailDetailsService(SettingsService.getPageSettingsForPage(request),data, Vertical.VerticalType.HEALTH, new HealthEmailDetailMappings());
         EmailMaster emailMaster = emailDetailsService.handleReadAndWriteEmailDetails(Long.parseLong(emailRequest.getTransactionId()), emailDetails, "ONLINE",  ipAddressHandler.getIPAddress(request));
 
-        String unsubscribeToken = emailTokenService.generateToken(Long.parseLong(emailRequest.getTransactionId()),emailDetails.getHashedEmail(),pageSettings.getBrandId(),
-                "bestprice","unsubscribe", null, null, pageSettings.getVerticalCode(), null, true);
-        emailTokenService.insertEmailTokenRecord(Long.parseLong(emailRequest.getTransactionId()), emailDetails.getHashedEmail(), pageSettings.getBrandId(),
+        emailTokenService.insertEmailTokenRecord(Long.parseLong(emailRequest.getTransactionId()), emailMaster.getHashedEmail(), pageSettings.getBrandId(),
                 "bestprice", "load");
-
         String baseUrl = pageSettings.getBaseUrl();
-        String unsubscribeUrl = baseUrl + "unsubscribe.jsp?token=" + unsubscribeToken;
-        emailRequest.setUnsubscribeURL(unsubscribeUrl);
+
+        final List<ResultProperty> resultsProperties = emailUtils.getResultPropertiesForTransaction(emailRequest.getTransactionId());
+        List<String> productIds = getAllResultProperties(resultsProperties,"productId");
+        List<String> applyUrls = productIds.stream().map(s -> {
+            return generateBestPriceUrl(emailTokenService,emailRequest, emailMaster, pageSettings,s,baseUrl);
+        }).collect(Collectors.toList());
+        emailRequest.setApplyUrls(applyUrls);
+        emailRequest.setUnsubscribeURL(getUnsubscribeUrl(emailTokenService,emailRequest,emailMaster,pageSettings,baseUrl));
     }
+
+
+    private String generateBestPriceUrl(EmailTokenService emailTokenService, EmailRequest emailRequest, EmailMaster emailDetails,
+                                        PageSettings pageSettings, String productId, String baseUrl){
+        String token = emailTokenService.generateToken(Long.parseLong(emailRequest.getTransactionId()),emailDetails.getHashedEmail(),pageSettings.getBrandId(),
+                "bestprice","load", productId, null, pageSettings.getVerticalCode(), null, true);
+        return baseUrl + "email/incoming/gateway.json?gaclientid=" + emailRequest.getGaClientID() + "&cid=em:cm:car:200518:car_bp&et_rid=172883275&utm_source=car_quote_bp&utm_medium=email&utm_campaign=car_quote_bp&token=" + token;
+    }
+
+    private String getUnsubscribeUrl(EmailTokenService emailTokenService, EmailRequest emailRequest, EmailMaster emailDetails, PageSettings pageSettings, String baseUrl) {
+        {
+            String token = emailTokenService.generateToken(Long.parseLong(emailRequest.getTransactionId()), emailDetails.getHashedEmail(), pageSettings.getBrandId(),
+                    "bestprice", "unsubscribe", null, null, pageSettings.getVerticalCode(), null, true);
+            return baseUrl + "unsubscribe.jsp?token=" + token;
+        }
+    }
+
 }

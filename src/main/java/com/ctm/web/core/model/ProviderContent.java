@@ -28,6 +28,11 @@ public class ProviderContent {
 	@Range(min=1, message="Vertical ID must be positive Integer")
 	private int verticalId;
 
+	@Range(min=0, message="StyleCode ID must be a positive Integer")
+	public int styleCodeId;
+
+	public String styleCode;
+
 	public ProviderContent(){	}
 
 	public int getProviderContentId() {
@@ -84,6 +89,22 @@ public class ProviderContent {
 
 	public void setVerticalId(int verticalId) {
 		this.verticalId = verticalId;
+	}
+
+	public int getStyleCodeId() {
+		return styleCodeId;
+	}
+
+	public void setStyleCodeId(int styleCodeId) {
+		this.styleCodeId = styleCodeId;
+	}
+
+	public String getStyleCode() {
+		return styleCode;
+	}
+
+	public void setStyleCode(String styleCode) {
+		this.styleCode = styleCode;
 	}
 
 	@Override
