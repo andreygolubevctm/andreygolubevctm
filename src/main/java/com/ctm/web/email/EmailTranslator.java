@@ -4,13 +4,10 @@ import com.ctm.web.core.email.exceptions.EmailDetailsException;
 import com.ctm.web.core.email.exceptions.SendEmailException;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.web.go.Data;
-import com.ctm.web.email.health.EmailParameters;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.GeneralSecurityException;
-import java.util.List;
 
 /**
  * Created by akhurana on 26/09/17.
