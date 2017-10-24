@@ -75,6 +75,8 @@ public class TravelModelTranslator implements EmailTranslator {
         emailParameters.put(EmailUrlService.VERTICAL, "travel");
         emailParameters.put(EmailUrlService.TRAVEL_POLICY_TYPE, (String) data.get("travel/policyType"));
         String applyUrl = emailUrlService.getApplyUrl(emailDetails,emailParameters,null);
+
+        emailParameters.put(EmailUrlService.EMAIL_TOKEN_ACTION, "unsubscribe");
         String unsubscribeUrl = emailUrlService.getUnsubscribeUrl(emailParameters);
         List<String> applyUrls = new ArrayList<>();
         IntStream.range(EmailUtils.START,EmailUtils.END).forEach(index -> applyUrls.add(applyUrl));
