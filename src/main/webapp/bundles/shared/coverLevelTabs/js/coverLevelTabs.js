@@ -101,6 +101,7 @@
 			var $el = $(this),
 			tabIndex = $el.attr('data-clt-index');
 			log("[coverleveltabs] click", tabIndex);
+			$('[data-reset-filter-index="' + tabIndex + '"]').click();
 
 			if(tabIndex === '' || settings.activeTabIndex === tabIndex) {
 				return;
@@ -234,20 +235,24 @@
 		xsCols = parseInt(6 / tabLength, 10),
 		state = meerkat.modules.deviceMediaState.get();
 		var out = '';
-		var filterTabs = '';
+		var resetFilters = '';
 		for(out = '', i = 0; i < tabLength; i ++) {
 			var tab = settings.activeTabSet[i],
 				count = counts[tab.rankingFilter] || null;
+			var coverTypeValue = tab.label.replace('<span class=\'hidden-xs\'>Cover</span>', '').toLowerCase().trim().replace(' ', '_');
 
 			// results headers
 			out += '<div class="col-sm-' + xsCols + ' col-xs-5 text-center clt-action ' + (tab.defaultTab === true ? 'active' : 'hidden-xs') + '" data-clt-index="' + i + '">';
 			out += (tab.label.replace('Cover', '')) + (state !== 'xs' && state !== 'sm' && tab.showCount === true && count !== null ? ' (' + (count) + ')' : '');
 			out += '</div>';
 
-			// filter tabs
-			filterTabs += '<div class="dropdown-item clt-action ' + (tab.defaultTab === true ? 'active' : '') + '" data-clt-index="' + i + '">';
-			filterTabs += tab.label + (state !== 'xs' && tab.showCount === true && count !== null ? ' (' + (count) + ')' : '');
-			filterTabs += '</div>';
+			// reset filters
+			resetFilters += '<div class="dropdown-item">';
+			resetFilters += 	'<div class="radio">';
+			resetFilters += 		'<input type="radio" name="reset-filters-radio-group" id="reset_filter_' + coverTypeValue + '" class="radioButton-custom  radio" data-reset-filter-index="' + i +'" value="' + coverTypeValue + '"' + (tab.defaultTab === true ? 'checked' : '') +'>';
+			resetFilters += 		'<label for="reset_filter_' + coverTypeValue + '">' + tab.label.replace('<span class=\'hidden-xs\'>Cover</span>', '') + '</label>';
+			resetFilters += 	'</div>';
+            resetFilters += '</div>';
 
 			// set the originatingTab
 			if (tab.defaultTab === true) {
@@ -257,7 +262,7 @@
 		}
 
 		$currentTabContainer.empty().html(out);
-		$('.travel-filters-cover-tabs').empty().html(filterTabs);
+		$('.reset-travel-filters').empty().html(resetFilters);
 
 	}
 

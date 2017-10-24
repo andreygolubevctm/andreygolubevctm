@@ -14,7 +14,6 @@
            $('.selected-excess-value .filter-excess-value').text($(this).val());
             _updateTravelResults('EXCESS', parseInt($(this).data('excess')));
             $('#excessFilterDropdownBtn').dropdown('toggle');
-            Results.model.travelResultFilter(true, true);
         });
 
         // update the luggage cover when the slider is moved
@@ -46,7 +45,6 @@
         // display the filtered results
         $('.more-filters-results-btn').click(function () {
             $('#moreFiltersDropdownBtn').dropdown('toggle');
-            Results.model.travelResultFilter(true, true);
         });
 
         $('.col-brand input[type="checkbox"]').change(function () {
@@ -95,6 +93,7 @@
                 break;
         }
         Results.model.travelFilters = _filters;
+        Results.model.travelResultFilter(true, true);
     }
 
     meerkat.modules.register("travelResultFilters", {

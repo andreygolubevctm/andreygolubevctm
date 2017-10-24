@@ -66,7 +66,13 @@
 								<div class="col-sm-12 text-left more-filters-header">Customise Results</div>
 							</div>
 							<div class="row">
-								<div class="col-sm-3 text-center coverLevelTabs travel-filters-cover-tabs"></div>
+								<div class="col-sm-2 text-left">
+									<div class="dropdown-item range-filter">
+										<b>Reset filters</b>
+										<field_v2:help_icon helpId="280" tooltipClassName="" />
+									</div>
+									<div class="reset-travel-filters"></div>
+								</div>
 								<div class="col-sm-3 text-left">
 									<div class="dropdown-item range-filter">
 										<b>Minimum luggage cover</b>
@@ -84,7 +90,7 @@
 									</div>
 									<travel_results_filters:minimum_overseas_medical />
 								</div>
-								<div class="col-sm-6 text-left">
+								<div class="col-sm-7 text-left">
 									<div class="dropdown-item">
 										<b>Brands</b>
 									</div>
