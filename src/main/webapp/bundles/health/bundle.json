@@ -1,6 +1,7 @@
 {
   "brandCodes": [
-    "ctm"
+    "ctm",
+    "wfdd"
   ],
   "dependencies": [
     "shared/journeyEngine/v2",

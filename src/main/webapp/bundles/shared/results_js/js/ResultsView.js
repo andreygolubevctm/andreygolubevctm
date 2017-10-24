@@ -317,6 +317,13 @@ var ResultsView = {
 				}
 				$(resultRow).attr("id", "result-row-" + index).attr("data-sort", index);
 
+				if (Results.settings.popularProducts.enabled && result.info.popularProduct) {
+					var rankPos = result.info.popularProductsRank || 1;
+
+					// Inject Popular Products tag
+					meerkat.modules.healthPopularProducts.injectTag($(resultRow), rankPos);
+				}
+
 				// if top result, add top result markup
 				if (result == topResult) {
 					topResultRow = "#result-row-" + index;

@@ -50,8 +50,8 @@ public class HealthConfirmationService {
                     StringUtils.removeStart(dataBucket.getString("confirmation/health"), "<![CDATA["),
                     "]]>");
             String frequency = Frequency.findByDescription(data.getQuote().getPayment().getDetails().getFrequency()).getCode();
-            String next = getContent(request, providerName, "NXT");
-            String about = getContent(request, providerName, "ABT");
+            String next = getContent(request, providerName, dataBucket.getString("current/brandCode"),"NXT");
+            String about = getContent(request, providerName, dataBucket.getString("current/brandCode"),"ABT");
             String firstName = data.getQuote().getApplication().getPrimary().getFirstname();
             String surname = data.getQuote().getApplication().getPrimary().getSurname();
             String paymentType =  data.getQuote().getPayment().getDetails().getType();
@@ -80,8 +80,8 @@ public class HealthConfirmationService {
         }
     }
 
-    private String getContent(HttpServletRequest request, String providerName, String key) throws ConfigSettingException, DaoException {
+    private String getContent(HttpServletRequest request, String providerName,  String styleCode, String key) throws ConfigSettingException, DaoException {
         return providerContentService.getProviderContentText(request,
-                providerName, key);
+                providerName, styleCode, key);
     }
 }

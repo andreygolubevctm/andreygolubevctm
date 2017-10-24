@@ -87,6 +87,30 @@ public class RatesImporter {
         map.put("R5_DUO",21);
         map.put("R5_FAM",22);
 
+        map.put("R6_SIN",23);
+        map.put("R6_DUO",24);
+        map.put("R6_FAM",25);
+
+        map.put("R7_SIN",26);
+        map.put("R7_DUO",27);
+        map.put("R7_FAM",28);
+
+        map.put("R8_SIN",29);
+        map.put("R8_DUO",30);
+        map.put("R8_FAM",31);
+
+        map.put("R9_SIN",32);
+        map.put("R9_DUO",33);
+        map.put("R9_FAM",34);
+
+        map.put("R10_SIN",35);
+        map.put("R10_DUO",36);
+        map.put("R10_FAM",37);
+
+        map.put("R11_SIN",38);
+        map.put("R11_DUO",39);
+        map.put("R11_FAM",40);
+
         int sizeOfMap = map.size();
         LOGGER.debug("the size of the map is:" + sizeOfMap);
         return prevProductId;
