@@ -1,6 +1,8 @@
 package com.ctm.web.email.health;
 
 import com.ctm.interfaces.common.types.VerticalType;
+import com.ctm.web.core.content.dao.ContentDao;
+import com.ctm.web.core.content.model.Content;
 import com.ctm.web.core.email.exceptions.EmailDetailsException;
 import com.ctm.web.core.email.exceptions.SendEmailException;
 import com.ctm.web.core.email.services.EmailDetailsService;
@@ -11,6 +13,7 @@ import com.ctm.web.core.model.EmailMaster;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.security.IPAddressHandler;
+import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.core.utils.RequestUtils;
 import com.ctm.web.core.web.go.Data;
@@ -68,7 +71,8 @@ public class HealthModelTranslator implements EmailTranslator {
         emailRequest.setPremiums(priceShown);
         emailRequest.setPremiumFrequency(request.getParameter("rank_frequency0"));
         emailRequest.setGaClientID(gaclientId);
-        String callCentreNumber = request.getParameter("callCentreNumber");
+        PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
+        String callCentreNumber = getCallCentreNumber(pageSettings);
 
         String benefitCodes = request.getParameter("rank_benefitCodes0");
         String extrasPds = request.getParameter("rank_extrasPdsUrl0");
@@ -149,7 +153,7 @@ public class HealthModelTranslator implements EmailTranslator {
         otherEmailParameters.put(EmailUrlService.UTM_MEDIUM, UTM_MEDIUM);
         otherEmailParameters.put(EmailUrlService.UTM_CAMPAIGN, CAMPAIGN);
         emailParameters.put(EmailUrlService.TRANSACTION_ID, emailRequest.getTransactionId());
-        emailParameters.put(EmailUrlService.HASHED_EMAIL, emailDetails.getHashedEmail());
+        emailParameters.put(EmailUrlService.HASHED_EMAIL, emailMaster.getHashedEmail());
         emailParameters.put(EmailUrlService.STYLE_CODE_ID, Integer.toString(pageSettings.getBrandId()));
         emailParameters.put(EmailUrlService.EMAIL_TOKEN_TYPE, EMAIL_TYPE);
         emailParameters.put(EmailUrlService.VERTICAL, Optional.ofNullable(verticalCode).map(s -> s.toLowerCase()).orElse(null));
@@ -168,5 +172,11 @@ public class HealthModelTranslator implements EmailTranslator {
         IntStream.range(EmailUtils.START,EmailUtils.END).forEach(applyUrl1 -> applyUrls.add(applyUrl));
         emailRequest.setApplyUrls(applyUrls);
         emailRequest.setUnsubscribeURL(unsubscribeUrl);
+    }
+
+    private String getCallCentreNumber(PageSettings pageSettings) throws DaoException {
+        ContentDao contentDao = new ContentDao(pageSettings.getBrandId(), pageSettings.getVertical().getId());
+        Content content = contentDao.getByKey("callCentreNumber", ApplicationService.getServerDate(), false);
+        return content != null ? content.getContentValue() : "";
     }
 }
