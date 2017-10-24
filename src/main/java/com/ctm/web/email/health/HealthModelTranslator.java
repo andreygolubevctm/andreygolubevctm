@@ -124,7 +124,7 @@ public class HealthModelTranslator implements EmailTranslator {
     }
 
     @Override
-    public void setUrls(HttpServletRequest request, EmailRequest emailRequest, Data data, String verticalCode) throws ConfigSettingException, DaoException, EmailDetailsException, SendEmailException {
+    public void setUrls(HttpServletRequest request, EmailRequest emailRequest, Data data, String verticalCode, List<EmailParameters> eParameters) throws ConfigSettingException, DaoException, EmailDetailsException, SendEmailException {
         EmailMaster emailDetails = new EmailMaster();
         emailDetails.setEmailAddress(emailRequest.getEmailAddress());
         emailDetails.setSource("QUOTE");

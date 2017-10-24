@@ -6,15 +6,17 @@ import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.web.go.Data;
+import com.ctm.web.email.health.EmailParameters;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.GeneralSecurityException;
+import java.util.List;
 
 /**
  * Created by akhurana on 26/09/17.
  */
 public interface EmailTranslator {
 
-    void setUrls(HttpServletRequest request, EmailRequest emailRequest, Data data, String verticalCode) throws ConfigSettingException, DaoException, EmailDetailsException, SendEmailException, GeneralSecurityException;
+    void setUrls(HttpServletRequest request, EmailRequest emailRequest, Data data, String verticalCode, List<EmailParameters> emailParametersList) throws ConfigSettingException, DaoException, EmailDetailsException, SendEmailException, GeneralSecurityException;
     void setVerticalSpecificFields(EmailRequest emailRequest, HttpServletRequest request, Data data) throws ConfigSettingException, DaoException;
 }

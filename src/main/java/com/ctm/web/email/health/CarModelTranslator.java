@@ -172,7 +172,7 @@ public class CarModelTranslator implements EmailTranslator {
     }
 
     @Override
-    public void setUrls(HttpServletRequest request, EmailRequest emailRequest, Data data, String verticalCode) throws ConfigSettingException, DaoException, EmailDetailsException, SendEmailException, GeneralSecurityException {
+    public void setUrls(HttpServletRequest request, EmailRequest emailRequest, Data data, String verticalCode, List<EmailParameters> emailParameters) throws ConfigSettingException, DaoException, EmailDetailsException, SendEmailException, GeneralSecurityException {
         EmailMaster emailDetails = new EmailMaster();
         emailDetails.setEmailAddress(emailRequest.getEmailAddress());
         emailDetails.setSource("QUOTE");
@@ -186,7 +186,7 @@ public class CarModelTranslator implements EmailTranslator {
         String baseUrl = pageSettings.getBaseUrl();
 
         final List<ResultProperty> resultsProperties = emailUtils.getResultPropertiesForTransaction(emailRequest.getTransactionId());
-        List<String> productIds = getAllResultProperties(resultsProperties,"productId");
+        List<String> productIds = emailParameters.stream().map(emailParameters1 -> emailParameters1.getProductId()).collect(Collectors.toList());
         List<String> applyUrls = productIds.stream().map(s -> {
             return generateBestPriceUrl(emailTokenService,emailRequest, emailMaster, pageSettings,s,baseUrl);
         }).collect(Collectors.toList());
