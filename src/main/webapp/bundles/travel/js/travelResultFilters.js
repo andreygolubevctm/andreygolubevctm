@@ -54,6 +54,11 @@
         // show up arrow when the dropdown is shown
         $('.dropdown').on('show.bs.dropdown', function () {
             $(this).find(".icon").removeClass("icon-angle-down").addClass("icon-angle-up");
+            $('input[name="reset-filters-radio-group"]').change(function () {
+                var id = $(this).data('reset-filter-index');
+                $('[data-clt-index="' + id + '"]').click();
+                $('[data-clt-index="' + id + '"]').siblings().removeClass('active').end().addClass('active');
+            });
         });
 
         // show down arrow when the dropdown is hidden
