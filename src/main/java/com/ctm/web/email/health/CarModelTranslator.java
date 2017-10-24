@@ -87,7 +87,6 @@ public class CarModelTranslator implements EmailTranslator {
         List<String> providerNames = new ArrayList<>();
         List<String> providerPhoneNumbers = new ArrayList<>();
         List<String> premiums = new ArrayList<>();
-        List<String> quoteUrls = new ArrayList<>();
         List<String> brandCodes = new ArrayList<>();
         List<String> excesses = new ArrayList<>();
         List<String> validDates = new ArrayList<>();
@@ -106,11 +105,6 @@ public class CarModelTranslator implements EmailTranslator {
         emailParameters.forEach(emailParameter -> quoteRefs.add(emailParameter.getQuoteRef()));
 
         emailRequest.setProviders(providerNames);
-        List<String> newProvidernames = new ArrayList<>();
-         IntStream.range(0,10).forEach(idx -> {
-            newProvidernames.add(providerNames.get(idx));
-        });
-
         emailRequest.setProviderPhoneNumbers(providerPhoneNumbers);
         emailRequest.setProductDescriptions(providerNames);
         emailRequest.setProviderCodes(brandCodes);
@@ -182,7 +176,7 @@ public class CarModelTranslator implements EmailTranslator {
         EmailDetailsService emailDetailsService = EmailServiceFactory.createEmailDetailsService(SettingsService.getPageSettingsForPage(request),data, Vertical.VerticalType.HEALTH, new HealthEmailDetailMappings());
         EmailMaster emailMaster = emailDetailsService.handleReadAndWriteEmailDetails(Long.parseLong(emailRequest.getTransactionId()), emailDetails, "ONLINE",  ipAddressHandler.getIPAddress(request));
 
-        emailTokenService.insertEmailTokenRecord(Long.parseLong(emailRequest.getTransactionId()), emailDetails.getHashedEmail(), pageSettings.getBrandId(),
+        emailTokenService.insertEmailTokenRecord(Long.parseLong(emailRequest.getTransactionId()), emailMaster.getHashedEmail(), pageSettings.getBrandId(),
                 "bestprice", "load");
         String baseUrl = pageSettings.getBaseUrl();
 
@@ -203,11 +197,12 @@ public class CarModelTranslator implements EmailTranslator {
         return baseUrl + "email/incoming/gateway.json?gaclientid=" + emailRequest.getGaClientID() + "&amp;cid=em:cm:car:200518:car_bp&amp;et_rid=172883275&amp;utm_source=car_quote_bp&amp;utm_medium=email&amp;utm_campaign=car_quote_bp&amp;token=" + token;
     }
 
-    private String getUnsubscribeUrl(EmailTokenService emailTokenService, EmailRequest emailRequest, EmailMaster emailDetails, PageSettings pageSettings, String baseUrl){
-    {
-        String token = emailTokenService.generateToken(Long.parseLong(emailRequest.getTransactionId()),emailDetails.getHashedEmail(),pageSettings.getBrandId(),
-                "bestprice","unsubscribe", null, null, pageSettings.getVerticalCode(), null, true);
-        return baseUrl + "unsubscribe.jsp?token=" + token;
+    private String getUnsubscribeUrl(EmailTokenService emailTokenService, EmailRequest emailRequest, EmailMaster emailDetails, PageSettings pageSettings, String baseUrl) {
+        {
+            String token = emailTokenService.generateToken(Long.parseLong(emailRequest.getTransactionId()), emailDetails.getHashedEmail(), pageSettings.getBrandId(),
+                    "bestprice", "unsubscribe", null, null, pageSettings.getVerticalCode(), null, true);
+            return baseUrl + "unsubscribe.jsp?token=" + token;
+        }
     }
 
 }
