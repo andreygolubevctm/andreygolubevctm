@@ -86,7 +86,7 @@ public class EmailController {
             emailRequest.setQuoteRefs(quoteRefs);
             EmailTranslator emailTranslator = getEmailTranslator(verticalCode);
             emailTranslator.setVerticalSpecificFields(emailRequest, request, data);
-            emailTranslator.setUrls(request, emailRequest, data, verticalCode,null);
+            emailTranslator.setUrls(request, emailRequest, data, verticalCode);
             emailRequest.setVertical(verticalCode);
 
             emailClient.send(emailRequest);
