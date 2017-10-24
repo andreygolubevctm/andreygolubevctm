@@ -39,7 +39,7 @@
                             $(eventObject.currentTarget).closest('.modal').modal('hide');
                         }
                     },
-                    showCloseBtn: false,
+                    showCloseBtn: true,
                     onClose: function () {
                         onBeforeHideTemplate();
                         meerkat.modules.moreInfo.close();
