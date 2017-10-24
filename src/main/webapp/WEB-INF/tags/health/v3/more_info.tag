@@ -120,7 +120,7 @@
 							{{ } else { }}
 							<p class="promoHeading">Great choice!</p>
 							<p class="noPromoText">This policy covers all of the things that you said were important to you.
-								Also, because health insurance prices are regulated, you’re paying no more through us than if you went directly to {{= info.providerName }}.</p>
+								<span class="same-as-going-direct">Also, because health insurance prices are regulated, you’re paying no more through us than if you went directly to {{= info.providerName }}.</span></p>
 							{{ }  }}
 						</div>
                         <c:if test="${empty callCentre or not callCentre}">
