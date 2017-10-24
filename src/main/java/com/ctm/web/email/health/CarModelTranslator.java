@@ -183,18 +183,18 @@ public class CarModelTranslator implements EmailTranslator {
         final List<ResultProperty> resultsProperties = emailUtils.getResultPropertiesForTransaction(emailRequest.getTransactionId());
         List<String> productIds = getAllResultProperties(resultsProperties,"productId");
         List<String> applyUrls = productIds.stream().map(s -> {
-            return generateBestPriceUrl(emailTokenService,emailRequest, emailDetails, pageSettings,s,baseUrl);
+            return generateBestPriceUrl(emailTokenService,emailRequest, emailMaster, pageSettings,s,baseUrl);
         }).collect(Collectors.toList());
         emailRequest.setApplyUrls(applyUrls);
-        emailRequest.setUnsubscribeURL(getUnsubscribeUrl(emailTokenService,emailRequest,emailDetails,pageSettings,baseUrl));
+        emailRequest.setUnsubscribeURL(getUnsubscribeUrl(emailTokenService,emailRequest,emailMaster,pageSettings,baseUrl));
     }
 
 
     private String generateBestPriceUrl(EmailTokenService emailTokenService, EmailRequest emailRequest, EmailMaster emailDetails,
                                         PageSettings pageSettings, String productId, String baseUrl){
         String token = emailTokenService.generateToken(Long.parseLong(emailRequest.getTransactionId()),emailDetails.getHashedEmail(),pageSettings.getBrandId(),
-                "bestprice","unsubscribe", productId, null, pageSettings.getVerticalCode(), null, true);
-        return baseUrl + "email/incoming/gateway.json?gaclientid=" + emailRequest.getGaClientID() + "&amp;cid=em:cm:car:200518:car_bp&amp;et_rid=172883275&amp;utm_source=car_quote_bp&amp;utm_medium=email&amp;utm_campaign=car_quote_bp&amp;token=" + token;
+                "bestprice","load", productId, null, pageSettings.getVerticalCode(), null, true);
+        return baseUrl + "email/incoming/gateway.json?gaclientid=" + emailRequest.getGaClientID() + "&cid=em:cm:car:200518:car_bp&et_rid=172883275&utm_source=car_quote_bp&utm_medium=email&utm_campaign=car_quote_bp&token=" + token;
     }
 
     private String getUnsubscribeUrl(EmailTokenService emailTokenService, EmailRequest emailRequest, EmailMaster emailDetails, PageSettings pageSettings, String baseUrl) {
