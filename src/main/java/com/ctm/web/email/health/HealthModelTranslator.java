@@ -142,7 +142,7 @@ public class HealthModelTranslator implements EmailTranslator {
         otherEmailParameters.put(EmailUrlService.UTM_MEDIUM, UTM_MEDIUM);
         otherEmailParameters.put(EmailUrlService.UTM_CAMPAIGN, CAMPAIGN);
         emailParameters.put(EmailUrlService.TRANSACTION_ID, emailRequest.getTransactionId());
-        emailParameters.put(EmailUrlService.HASHED_EMAIL, emailDetails.getHashedEmail());
+        emailParameters.put(EmailUrlService.HASHED_EMAIL, emailMaster.getHashedEmail());
         emailParameters.put(EmailUrlService.STYLE_CODE_ID, Integer.toString(pageSettings.getBrandId()));
         emailParameters.put(EmailUrlService.EMAIL_TOKEN_TYPE, EMAIL_TYPE);
         emailParameters.put(EmailUrlService.VERTICAL, Optional.ofNullable(verticalCode).map(s -> s.toLowerCase()).orElse(null));
