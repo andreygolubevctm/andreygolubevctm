@@ -19,7 +19,6 @@
 <c:set var="calcSequenceSUFF" value="/calcSequence" />
 <c:set var="prefix"><c:out value="${rootPath}" escapeXml="true"/></c:set>
 <c:set var="calcSequence" value="${prefix}${calcSequenceSUFF}" />
-<c:set var="callCentreNumber" scope="request"><content:get key="callCentreNumber"/></c:set>
 <c:set var="calcSequence" value="${data[calcSequence]}" />
 
 <c:if test="${empty transactionId}">
@@ -204,15 +203,7 @@
 	</c:choose>
 
 	<c:if test="${pageSettings.getVerticalCode() == 'health' || pageSettings.getVerticalCode() == 'car'}">
-		<c:set var="number" value="${callCentreNumber}"></c:set>
-		<c:set var="encNumber">${go:urlEncode(number)}</c:set>
-		<c:catch var ="marketingSendEmailException">
 			<jsp:forward page="/spring/marketing-automation/sendEmail.json?callCentreNumber=${encNumber}" />
-		</c:catch>
-
-		<c:if test = "${marketingSendEmailException != null}">
-			${logger.error('Marketing automation sendEmail exception caught: {} {}', log:kv('exception', marketingSendEmailException))}
-		</c:if>
 	</c:if>
 
 
