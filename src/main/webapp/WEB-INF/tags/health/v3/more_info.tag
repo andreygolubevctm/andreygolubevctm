@@ -182,6 +182,13 @@
 				<simples:dialogue id="76" vertical="health" mandatory="true" />
 			</div>
 
+			<div class="col-xs-12">
+				<simples:dialogue id="84" vertical="health" />
+			</div>
+			<div class="col-xs-12">
+				<simples:dialogue id="85" vertical="health" />
+			</div>
+
 			<div class="policyBrochures col-xs-12">
 				<div class="col-xs-12">
 					<h2>Policy brochures</h2>

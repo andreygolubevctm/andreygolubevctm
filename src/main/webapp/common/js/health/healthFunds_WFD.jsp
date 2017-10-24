@@ -14,6 +14,10 @@ var healthFunds_WFD = {
     ajaxJoinDec: false,
     $paymentFrequency : $('#health_payment_details_frequency'),
     $paymentStartDate: $("#health_payment_details_start"),
+    schoolMinAge: 21,
+    schoolMaxAge: 24,
+    extendedFamilyMinAge: 21,
+    extendedFamilyMaxAge: 25,
     set: function(){
         <%--calendar for start cover--%>
 	    if(_.has(meerkat.modules,'healthCoverStartDate')) {
@@ -23,10 +27,19 @@ var healthFunds_WFD = {
 	    }
 
         <%--dependant definition--%>
-        meerkat.modules.healthFunds._dependants('As a member of Westfund, your children aged between 21-24 are entitled to stay on your cover at no extra charge if they are a full time or part-time student at School, college or University TAFE institution or serving an Apprenticeship or Traineeship.');
+        var dependantsString = 'As a member of Westfund, your children aged between 21-24 are entitled to stay on your cover at no extra charge if they are a full time or part-time student at School, college or University TAFE institution or serving an Apprenticeship or Traineeship.<br />Westfund also offer adult dependant coverage at an additional premium for a child of the Principal Member or their Partner, who is not married or living in a de facto relationship, has reached the age of 21 but is under the age of 25, and is not a Student Dependant';
+
+        <%-- Dependant's Age and message --%>
+        var familyCoverType = meerkat.modules.healthChoices.returnCoverCode();
+        if (familyCoverType === 'EF' || familyCoverType === 'ESP') {
+            meerkat.modules.healthFunds._dependants('This product provides cover for Adult Dependants at an additional premium for a child of the Principal Member or their Partner, who is not married or living in a de facto relationship, has reached the age of 21 but is under the age of 25, and is not a Student Dependant');
+            meerkat.modules.healthDependants.updateConfig({extendedFamilyMinAge: healthFunds_WFD.extendedFamilyMinAge, extendedFamilyMaxAge: healthFunds_WFD.extendedFamilyMaxAge});
+        } else {
+            meerkat.modules.healthFunds._dependants(dependantsString);
+        }
 
         <%--schoolgroups and defacto--%>
-        meerkat.modules.healthDependants.updateConfig({showSchoolFields:true, 'schoolMinAge':21, 'schoolMaxAge':24, showSchoolIdField:true });
+        meerkat.modules.healthDependants.updateConfig({showSchoolFields:true, 'schoolMinAge': healthFunds_WFD.schoolMinAge, 'schoolMaxAge': healthFunds_WFD.schoolMaxAge, showSchoolIdField:true });
 
         <%--Adding a statement--%>
         var msg = 'Please note that the LHC amount quoted is an estimate and will be confirmed once Westfund has verified your details.';
@@ -39,8 +52,8 @@ var healthFunds_WFD = {
         meerkat.modules.healthFunds._previousfund_authority(true);
 
         <%--credit card & bank account frequency & day frequency--%>
-        meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':false, 'fortnightly': false, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':false });
-        meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':false, 'fortnightly': false, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':false });
+        meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':false, 'fortnightly': false, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true });
+        meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':false, 'fortnightly': false, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true });
 
         <%--claims account--%>
         meerkat.modules.healthPaymentStep.overrideSettings('creditBankQuestions',true);
@@ -65,26 +78,6 @@ var healthFunds_WFD = {
         healthFunds_WFD.$_dobPrimary.addRule('youngestDOB', 18, "primary person's age cannot be under " + dob_health_application_primary_dob.ageMin);
         healthFunds_WFD.$_dobPartner.addRule('youngestDOB', 18, "partner's age cannot be under " + dob_health_application_partner_dob.ageMin);
 
-        <%-- Load join dec into label--%>
-        healthFunds_WFD.joinDecLabelHtml = $('#health_declaration + label').html();
-        healthFunds_WFD.ajaxJoinDec = $.ajax({
-            url: '/' + meerkat.site.urls.context + 'health/provider/content/get.json?providerId=7&providerContentTypeCode=JDO',
-            type: 'GET',
-            async: true,
-            dataType: 'html',
-            timeout: 20000,
-            cache: true,
-            success: function(htmlResult) {
-                if(typeof htmlResult === 'string')
-                    htmlResult = JSON.parse(htmlResult);
-
-                $('#health_declaration + label').html(htmlResult.providerContentText);
-                $('a#joinDeclarationDialog_link').remove();
-            },
-            error: function(obj,txt) {
-            }
-        });
-
         <%-- Custom question: Partner relationship --%>
         if ($('#wfd_partnerrel').length > 0) {
             $('#wfd_partnerrel').show();
@@ -102,8 +95,45 @@ var healthFunds_WFD = {
             $('#health_application_partner_genderRow').after('<c:out value="${html}" escapeXml="false" />');
         }
 
+        if (meerkat.site.tracking.brandCode == 'wfdd') {
+            <%-- May need to add remove additional properties from this field see onChangeNoEmailChkBox for example --%>
+            $('#health_application_optInEmail-group').css('display', 'none');
+            $('#applicationForm_1').append('<input type="hidden" name="health_application_optInEmail" value="N" />');
+            $('#health_application_noEmailGroup').css('display', 'block');
+        }
+
+        function onChangeNoEmailChkBox(){
+            var $applicationEmailGroup = $('#health_application_emailGroup'),
+                $applicationEmailField = $("#health_application_email");
+
+            if ( $("#health_application_no_email").is(":checked") ) {
+                $applicationEmailGroup.find('*').removeClass("has-success").removeClass("has-error");
+                $applicationEmailGroup.find('.error-field').remove();
+
+                $applicationEmailField.val('');
+                $applicationEmailField.prop('required', false);
+                $applicationEmailField.prop('disabled', true);
+
+                $('#applicationForm_1').append('<input type="hidden" name="health_application_email" value="email@westfund.com.au" />');
+
+            } else {
+                $('input[type="hidden"][name="health_application_email"]').remove();
+
+                $applicationEmailField.prop('required', true);
+                $applicationEmailField.prop('disabled', false);
+
+            }
+        }
+
+        if (meerkat.site.tracking.brandCode == 'wfdd') {
+            onChangeNoEmailChkBox();
+            $("#health_application_no_email").on("click.WFD",function() {onChangeNoEmailChkBox();});
+        }
+
     },
     renderDeductionMessage: function() {
+
+        <%-- TODO: this will need to be tweaked once we know what WFD's new payment policy will be for annual ########  --%>
         var deductionMsg = meerkat.modules.healthPaymentStep.getSelectedFrequency() === 'monthly' ?
                 'Your first payment will be debited within 48 hours and this will be a pro-rata amount for the remainder of the month. Your regular premium will be deducted from your nominated account on the 1st of every month.' :
                 'Your first payment will be debited within 48 hours and this will be a pro-rata amount until next Thursday. Your regular premium will be deducted from your nominated account on a Thursday.';
@@ -112,20 +142,23 @@ var healthFunds_WFD = {
         healthFunds_WFD.$paymentFrequency.closest('div.row-content').find('.statement').before('<p class="deduction-message" style="margin-top:1em">'+ deductionMsg +'</p>');
     },
     unset: function() {
+
         healthFunds_WFD.$paymentFrequency.off('change.WFD');
+
+        if (meerkat.site.tracking.brandCode == 'wfdd') {
+            healthFunds_WFD.$paymentFrequency.off('change.WFD');
+            $('input[type="hidden"][name="health_application_optInEmail"]').remove();
+            $('#health_application_optInEmail-group').css('display', 'block');
+        }
+
         meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), false);
         meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), false);
+        $('#health_application_no_email').off('click.WFD');
 
         meerkat.modules.healthFunds._reset();
 
         <%--dependant definition off--%>
         meerkat.modules.healthFunds._dependants(false);
-
-        <%--reset the join dec to original general label and abort AJAX request--%>
-        if (healthFunds_WFD.ajaxJoinDec) {
-            healthFunds_WFD.ajaxJoinDec.abort();
-        }
-        $('#health_declaration + label').html(healthFunds_WFD.joinDecLabelHtml);
 
         healthFunds_WFD.$paymentFrequency.closest('div.row-content').find('p.deduction-message, p.statement').remove();
 
