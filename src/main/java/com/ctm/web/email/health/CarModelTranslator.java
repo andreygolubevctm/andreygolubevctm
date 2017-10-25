@@ -36,6 +36,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static java.lang.Integer.min;
+
 /**
  * Created by akhurana on 25/09/17.
  */
@@ -96,16 +98,19 @@ public class CarModelTranslator implements EmailTranslator {
         List<String> headlineOffers = new ArrayList<>();
         List<String> quoteRefs = new ArrayList<>();
 
-        emailParameters.forEach(emailParameter -> providerNames.add(emailParameter.getProviderName()));
-        emailParameters.forEach(emailParameter -> providerPhoneNumbers.add(emailParameter.getProviderPhoneNumber()));
-        emailParameters.forEach(emailParameter -> premiums.add(emailParameter.getPremium()));
-        emailParameters.forEach(emailParameter -> quoteUrls.add(emailParameter.getQuoteUrl()));
-        emailParameters.forEach(emailParameter -> brandCodes.add(emailParameter.getBrandCode()));
-        emailParameters.forEach(emailParameter -> excesses.add(emailParameter.getExcess()));
-        emailParameters.forEach(emailParameter -> validDates.add(emailParameter.getValidDate()));
-        emailParameters.forEach(emailParameter -> discountOffers.add(emailParameter.getDiscountOffer()));
-        emailParameters.forEach(emailParameter -> headlineOffers.add(emailParameter.getHeadlineOffer()));
-        emailParameters.forEach(emailParameter -> quoteRefs.add(emailParameter.getQuoteRef()));
+        // Don't send more than 10 items
+        List<EmailParameters> truncatedEmailParameters = emailParameters.subList(0, min(emailParameters.size(), 10));
+
+        truncatedEmailParameters.forEach(emailParameter -> providerNames.add(emailParameter.getProviderName()));
+        truncatedEmailParameters.forEach(emailParameter -> providerPhoneNumbers.add(emailParameter.getProviderPhoneNumber()));
+        truncatedEmailParameters.forEach(emailParameter -> premiums.add(emailParameter.getPremium()));
+        truncatedEmailParameters.forEach(emailParameter -> quoteUrls.add(emailParameter.getQuoteUrl()));
+        truncatedEmailParameters.forEach(emailParameter -> brandCodes.add(emailParameter.getBrandCode()));
+        truncatedEmailParameters.forEach(emailParameter -> excesses.add(emailParameter.getExcess()));
+        truncatedEmailParameters.forEach(emailParameter -> validDates.add(emailParameter.getValidDate()));
+        truncatedEmailParameters.forEach(emailParameter -> discountOffers.add(emailParameter.getDiscountOffer()));
+        truncatedEmailParameters.forEach(emailParameter -> headlineOffers.add(emailParameter.getHeadlineOffer()));
+        truncatedEmailParameters.forEach(emailParameter -> quoteRefs.add(emailParameter.getQuoteRef()));
 
         emailRequest.setProviders(providerNames);
         emailRequest.setProviderPhoneNumbers(providerPhoneNumbers);
@@ -149,8 +154,8 @@ public class CarModelTranslator implements EmailTranslator {
         carEmailModel.setVehicleYear(vehicleYear);
         emailRequest.setCarEmailModel(carEmailModel);
 
-        if (!emailParameters.isEmpty() && StringUtils.isNotBlank(emailParameters.get(0).getOpeningHour())){
-            emailRequest.setCallCentreHours(emailParameters.get(0).getOpeningHour());
+        if (!truncatedEmailParameters.isEmpty() && StringUtils.isNotBlank(truncatedEmailParameters.get(0).getOpeningHour())){
+            emailRequest.setCallCentreHours(truncatedEmailParameters.get(0).getOpeningHour());
         }
         String email = getEmail(data);
         if (!StringUtils.isBlank(email)) emailRequest.setEmailAddress(email);
@@ -182,8 +187,6 @@ public class CarModelTranslator implements EmailTranslator {
 
         String unsubscribeToken = emailTokenService.generateToken(Long.parseLong(emailRequest.getTransactionId()),emailDetails.getHashedEmail(),pageSettings.getBrandId(),
                 "bestprice","unsubscribe", null, null, pageSettings.getVerticalCode(), null, true);
-        emailTokenService.insertEmailTokenRecord(Long.parseLong(emailRequest.getTransactionId()), emailDetails.getHashedEmail(), pageSettings.getBrandId(),
-                "bestprice", "load");
 
         String baseUrl = pageSettings.getBaseUrl();
         String unsubscribeUrl = baseUrl + "unsubscribe.jsp?token=" + unsubscribeToken;

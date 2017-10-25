@@ -115,6 +115,7 @@
 <health_v1:dual_pricing_settings />
 <health_v4:pyrr_campaign_settings />
 <agg_v1:remember_me_settings vertical="health" />
+<agg_v1:popular_products_settings vertical="health" />
 {
 	octoberComp: <c:out value="${octoberComp}" />,
 	isCallCentreUser: <c:out value="${not empty callCentre}"/>,
@@ -199,5 +200,6 @@
 	}
 	</c:if>
 	,openingHoursTimeZone : '${openingHoursTimeZone}',
-	isRememberMe: ${isRememberMe}
+	isRememberMe: ${isRememberMe},
+	showPopularProducts: ${showPopularProducts}
 }

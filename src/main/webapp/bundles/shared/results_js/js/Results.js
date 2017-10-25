@@ -243,6 +243,9 @@ var Results = {
 			incrementTransactionId : true,
 			balanceCurrentPageRowsHeightOnly: {
 				mobile: false
+			},
+			popularProducts: {
+				enabled: false
 			}
 		};
 		$.extend(true, settings, userSettings);
@@ -577,6 +580,8 @@ var Results = {
         }
         product.isPinned = 'Y';
 
+        Results.setPinnedProduct(product);
+
         // Must copy the element before filtering or it gets unnecessary classes etc.
         Results.$pinnedResultRow = $('.result_' + pinnedProductId).clone(true);
 
@@ -607,9 +612,6 @@ var Results = {
         }
 
         var product = Results.model.getResult("productId", pinnedProductId);
-        if (!product) {
-            return;
-        }
 
         if(Results.$pinnedResultRow) {
             Results.$pinnedResultRow.remove();
@@ -621,5 +623,19 @@ var Results = {
         product.isPinned = 'N';
         $(Results.settings.elements.resultsOverflow).removeClass('product-pinned');
         Results.pagination.hasPinnedProduct = false;
+
+
+	},
+
+	setPinnedProduct: function(product) {
+		Results.model.setPinnedProduct(product);
+	},
+
+    getPinnedProduct: function() {
+        return Results.model.pinnedProduct;
+    },
+
+    removePinnedProduct: function() {
+        Results.model.removePinnedProduct();
 	}
 };
