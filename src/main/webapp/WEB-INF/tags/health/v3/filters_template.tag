@@ -119,7 +119,7 @@
     </div>
 
     {{ if (meerkat.modules.healthCoverDetails.isRebateApplied()) { }}
-    <div class="row filter need-hospital {{=hiddenHospital }}" data-filter-serverside="true">
+    <div class="row filter" data-filter-serverside="true">
         <div class="col-xs-12">
             <div class="sidebar-subtitle-container">
                 <span class="helper-text"><a data-content="helpid:544" data-toggle="popover" tabindex="-1" <field_v1:analytics_attr analVal="filter help modal rebate" quoteChar="\"" />>Help ?</a></span>
