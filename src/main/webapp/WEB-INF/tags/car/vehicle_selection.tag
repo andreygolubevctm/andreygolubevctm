@@ -13,6 +13,7 @@
 <div id="vehicle_selection_wrapper">
     <car:speechBubble />
     <form_v2:fieldset legend="Your Car" id="${name}_selection">
+      <field_v4:address_search_streetsearch xpath="${xpath}" />
         <div id="unableToFindRego" class="hidden">
             <p>Sorry, your car cannot be matched using the registration provided</p>
             <p><em>Please select you car below</em></p>

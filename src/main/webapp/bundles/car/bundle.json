@@ -43,6 +43,7 @@
     "shared/buttonGroupVertical",
     "shared/resultsFilterLabels",
     "shared/leadCapture",
-    "shared/competition"
+    "shared/competition",
+    "shared/addressLookupV2"
   ]
 }
