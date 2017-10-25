@@ -16,6 +16,18 @@
   }
 }
 
+.nav > li > a.refine-results {
+  &:active,
+  &:focus,
+  &:hover {
+    background-color: transparent;
+  }
+
+  @media (@md) {
+    display: none;
+  }
+}
+
 .refine-results-modal {
   .refine-results-discount {
     margin-top: 0;
@@ -69,5 +81,98 @@
       display: block;
       margin-top: 10px;
     }
+  }
+}
+
+.refine-results-mobile {
+  section {
+    background-color: #fff;
+    position: absolute;
+    padding: 15px;
+    transition: transform 150ms ease-in-out;
+    width: 100%;
+
+    .current {
+      transform: translateX(0);
+    }
+
+    &:not(.current) {
+      transform: translateX(100%);
+      position: fixed;
+    }
+
+    &.sliding {
+      position: absolute;
+    }
+
+    &.slide-in {
+      transform: translateX(0);
+      position: absolute;
+    }
+
+    &.slide-out {
+      transform: translateX(-100%);
+      position: absolute;
+    }
+
+    .refine-results-mobile__sub-heading {
+      font-size: @font-size-large;
+    }
+
+    .refine-results-mobile__item-container {
+      margin: 15px -15px;
+
+      .refine-results-mobile__item {
+        position: relative;
+        border-top: 1px solid #ddd;
+        padding: 15px 40px 15px 15px;
+
+        &::after {
+          content: "\e910";
+          font-family: 'framework_font';
+          color: @theme-tertiary;
+          font-size: 45px;
+          position: absolute;
+          right: 15px;
+          top: 50%;
+          margin-top: -30px;
+        }
+      }
+
+      .refine-results-mobile__item-type {
+        color: @theme-tertiary;
+        font-weight: bold;
+      }
+    }
+  }
+
+  .health-refine-results-hospital-benefits {
+    .nav-tabs {
+      &.health-refineResults-hospital-benefits {
+        background: none;
+
+        li {
+          width: 49%;
+          &.active {
+            display: inline-block;
+          }
+        }
+      }
+    }
+
+    .tab-content {
+      margin-top: 10px;
+    }
+  }
+
+  .refine-results-checkbox-list {
+    .checkbox {
+      margin-top: 0;
+      padding-top: 10px;
+    }
+  }
+
+  .refine-results-brands-toggle {
+    margin: 0 5px;
   }
 }
