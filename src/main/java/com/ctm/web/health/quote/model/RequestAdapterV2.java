@@ -1,6 +1,7 @@
 package com.ctm.web.health.quote.model;
 
 import com.ctm.web.core.content.model.Content;
+import com.ctm.web.core.utils.common.utils.DateUtils;
 import com.ctm.web.health.model.Frequency;
 import com.ctm.web.health.model.Membership;
 import com.ctm.web.health.model.PaymentType;
@@ -104,6 +105,8 @@ public class RequestAdapterV2 {
 
         addRebateFilter(quoteRequest, quote);
 
+        addPopularProductsFilter(filters, quote);
+
         quoteRequest.setIncludeSummary(isSimples);
 
         quoteRequest.setIncludeGiftCard(isGiftCardActive);
@@ -120,8 +123,26 @@ public class RequestAdapterV2 {
         }else {
             quoteRequest.setPartnerHealthCover(null);
         }
+        addPrimaryAge(quoteRequest, cover);
+        addFamilyType(quoteRequest, situation);
 
         return quoteRequest;
+    }
+
+    protected static void addPrimaryAge(HealthQuoteRequest quoteRequest, HealthCover healthCover) {
+        try {
+            if (healthCover != null && healthCover.getPrimary() != null) {
+                quoteRequest.setAge(DateUtils.getAgeFromDOBStr(healthCover.getPrimary().getDob()));
+            }
+        } catch (Exception exception) {
+            LOGGER.error("Cannot cover date of birth to age: " + healthCover.getPrimary().getDob());
+        }
+    }
+
+    protected static void addFamilyType(HealthQuoteRequest quoteRequest, Situation situation) {
+            if (situation != null) {
+                quoteRequest.setFamilyType(situation.getHealthCvr());
+            }
     }
 
     protected static void addRebateFilter(HealthQuoteRequest quoteRequest, HealthQuote quote) {
@@ -417,6 +438,14 @@ public class RequestAdapterV2 {
             filters.setApplyDiscounts(true);
         } else {
             filters.setApplyDiscounts(false);
+        }
+    }
+
+    protected static void addPopularProductsFilter(Filters filters, final HealthQuote quote){
+        if (quote.getPopularProducts() != null && quote.getPopularProducts().equals("Y")) {
+            filters.setPopularProducts(true);
+        } else {
+            filters.setPopularProducts(false);
         }
     }
 }
