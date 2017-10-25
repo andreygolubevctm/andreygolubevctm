@@ -99,6 +99,8 @@
         }
         Results.model.travelFilters = _filters;
         Results.model.travelResultFilter(true, true);
+        meerkat.modules.coverLevelTabs.buildCustomTab();
+        $('input[name="reset-filters-radio-group"]').prop('checked', false);
     }
 
     meerkat.modules.register("travelResultFilters", {

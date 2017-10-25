@@ -242,7 +242,7 @@
 			var coverTypeValue = tab.label.replace('<span class=\'hidden-xs\'>Cover</span>', '').toLowerCase().trim().replace(' ', '_');
 
 			// results headers
-			out += '<div class="col-sm-' + xsCols + ' col-xs-5 text-center clt-action ' + (tab.defaultTab === true ? 'active' : 'hidden-xs') + '" data-clt-index="' + i + '">';
+			out += '<div class="col-xs-' + xsCols + ' text-center clt-action ' + (tab.defaultTab === true ? 'active' : 'hidden-xs') + '" data-clt-index="' + i + '">';
 			out += (tab.label.replace('Cover', '')) + (state !== 'xs' && state !== 'sm' && tab.showCount === true && count !== null ? ' (' + (count) + ')' : '');
 			out += '</div>';
 
@@ -264,6 +264,37 @@
 		$currentTabContainer.empty().html(out);
 		$('.reset-travel-filters').empty().html(resetFilters);
 
+	}
+
+    /**
+	 * Build the custom tab as per the filter values
+     */
+	function buildCustomTab() {
+		var customTab = '';
+        var tabLength = settings.activeTabSet.length;
+        var xsCols = parseInt(6 / tabLength, 10);
+        settings.activeTabIndex = -1;
+        $('[data-travel-filter="custom"]').remove();
+        $('.clt-action').removeClass('active');
+        customTab += '<div class="col-xs-' + xsCols + ' text-center clt-action active" data-travel-filter="custom">';
+        customTab += 	'Custom (' + Results.model.travelFilteredProductsCount + ')' ;
+        customTab += '</div>';
+        $('.navbar-cover-text').empty().html('Showing ' + Results.model.travelFilteredProductsCount + ' custom plans');
+        $('.currentTabsContainer').append(customTab);
+        applyCustomResultEventListener();
+	}
+
+    /**
+	 * Add the click event listener for the custom tab
+     */
+	function applyCustomResultEventListener() {
+		$('[data-travel-filter="custom"]').click(function () {
+            settings.activeTabIndex = -1;
+            $(this).siblings().removeClass('active').end().addClass('active');
+            $('.navbar-cover-text').empty().html('Showing ' + Results.model.travelFilteredProductsCount + ' custom plans');
+            $('input[name="reset-filters-radio-group"]').prop('checked', false);
+            Results.model.travelResultFilter(true, true);
+		});
 	}
 
 	// return the originating tab value
@@ -350,7 +381,8 @@
 		isEnabled: isEnabled,
 		incrementCount: incrementCount,
 		getOriginatingTab: getOriginatingTab,
-		getDepartingTabJourney: getDepartingTabJourney
+		getDepartingTabJourney: getDepartingTabJourney,
+		buildCustomTab: buildCustomTab
 	});
 
 })(jQuery);

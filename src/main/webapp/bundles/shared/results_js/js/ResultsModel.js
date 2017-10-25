@@ -247,6 +247,7 @@ var ResultsModel = {
             CXDFEE: 20000,
             MEDICAL: 20000000
         };
+        Results.model.travelFilteredProductsCount = 0;
 	},
 
 	flush: function(){
@@ -255,6 +256,7 @@ var ResultsModel = {
 		Results.model.returnedProducts = [];
 		Results.model.sortedProducts = [];
 		Results.model.filteredProducts = [];
+		Results.model.customFilteredProducts = [];
 
 		Results.view.flush();
 
@@ -707,8 +709,6 @@ var ResultsModel = {
 			}
 
 		}
-
-		this.travelResultFilter(true, true);
 	},
 
     travelResultFilter: function (renderView, doNotGoToStart) {
@@ -752,6 +752,7 @@ var ResultsModel = {
 		 });
 
         Results.model.filteredProducts = finalProducts;
+        Results.model.travelFilteredProductsCount = finalProducts.length;
 
         if( typeof Compare !== "undefined" ) Compare.applyFilters();
 
