@@ -366,6 +366,7 @@
 					}, 1000);
 				}
 				incrementTranIdBeforeEnteringSlide();
+
 			},
 			onAfterEnter: function enteredContactStep(event) {
 			},
@@ -507,6 +508,7 @@
 				method:'trackQuoteForms',
 				object:meerkat.modules.health.getTrackingFieldsObject
 			},
+            contactDtlsEmailEventHandle: {},
 			onInitialise: function onInitApplyStep(event){
 
 				meerkat.modules.healthDependants.initHealthDependants();
@@ -577,6 +579,22 @@
 						$("#health_payment_medicare-selection").removeAttr("style");
 					}
 
+                    /* ***********************************************************************************************************************************************
+                    * TODO: may actually prevent contact details from being stored - if so the optInEmail stuff in healthFunds_WFD.jsp may need to be reversed too!
+                    * previously was forcing #health_contactDetails_optInEmail to 'N' but have since rolled it back due to this
+                    * *********************************************************************************************************************************************** */
+                    if (meerkat.site.tracking.brandCode == 'wfdd') {
+
+                        contactDtlsEmailEventHandle = meerkat.messaging.subscribe(meerkat.modules.events.contactDetails.email.FIELD_CHANGED, function (fieldDetails) {
+							if (fieldDetails.$field.attr('name') === 'health_application_email') {
+                                _.defer(function(){
+                                    $('#health_application_optInEmail-group').css('display', 'none');
+                                });
+							}
+                        });
+
+                    }
+
                     setHospitalCoverClass(selectedProduct);
                     setExtrasCoverClass(selectedProduct);
 				}
@@ -587,7 +605,12 @@
 				$(".policySummaryContainer").find('.footer').removeClass('hidden');
 
 				adjustLayout();
-			}
+			},
+            onBeforeLeave: function beforeLeaveApplyStep(event) {
+                if (meerkat.site.tracking.brandCode == 'wfdd') {
+                    meerkat.messaging.unsubscribe(meerkat.modules.events.contactDetails.email.FIELD_CHANGED, contactDtlsEmailEventHandle);
+                }
+            }
 		};
 
 		var paymentStep = {
@@ -614,6 +637,7 @@
 					var data = {};
 					data.providerId = selectedProduct.info.providerId;
 					data.providerContentTypeCode = meerkat.site.isCallCentreUser === true ? 'JDC' : 'JDO';
+					data.styleCode = meerkat.site.tracking.brandCode;
 
 					meerkat.modules.comms.get({
 						url: "health/provider/content/get.json",
