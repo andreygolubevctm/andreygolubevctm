@@ -215,6 +215,7 @@ public class ResponseAdapterV2 {
         price.setText(formatCurrency(payableAmount, true, true) + (hasDiscount ? "*" : ""));
         price.setValue(payableAmount);
 
+        //If changing/remove span tag underneath, make sure to change HealthModelTranslator premiumlabel translation accordingly.
         price.setLhcfreepricing("excl " + formatCurrency(lhcAmount, true, true) + " LHC<span/> inc " +
                 rebateValue + " Govt Rebate");
 
