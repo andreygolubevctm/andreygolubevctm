@@ -68,6 +68,7 @@
                         <div class="featuresListHospitalSelections"><health_v4_results:limited_cover_label /></div>
                         {{ } }}
                     </div>
+                    <div class="benefits-click-text visible-xs">Click below for cover limits</div>
                     <div class="featuresListHospitalOtherList" data-feature-index="4" data-feature-type="hospital"></div>
                 </div>
                 {{ } if(coverType == 'E' || coverType == 'C') { }}
