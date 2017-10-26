@@ -133,10 +133,10 @@ var healthFunds_WFD = {
     },
     renderDeductionMessage: function() {
 
-        <%-- TODO: this will need to be tweaked once we know what WFD's new payment policy will be for annual ########  --%>
-        var deductionMsg = meerkat.modules.healthPaymentStep.getSelectedFrequency() === 'monthly' ?
+        var deductionMsg = meerkat.modules.healthPaymentStep.getSelectedFrequency() === 'annually' ? 'Your first payment will be debited within 48 hours.<br />Please note that the LHC amount quoted is an estimate and will be confirmed once Westfund has verified your details.' :
+                (meerkat.modules.healthPaymentStep.getSelectedFrequency() === 'monthly' ?
                 'Your first payment will be debited within 48 hours and this will be a pro-rata amount for the remainder of the month. Your regular premium will be deducted from your nominated account on the 1st of every month.' :
-                'Your first payment will be debited within 48 hours and this will be a pro-rata amount until next Thursday. Your regular premium will be deducted from your nominated account on a Thursday.';
+                'Your first payment will be debited within 48 hours and this will be a pro-rata amount until next Thursday. Your regular premium will be deducted from your nominated account on a Thursday.');
 
         healthFunds_WFD.$paymentFrequency.closest('div.row-content').find('.deduction-message').remove();
         healthFunds_WFD.$paymentFrequency.closest('div.row-content').find('.statement').before('<p class="deduction-message" style="margin-top:1em">'+ deductionMsg +'</p>');
