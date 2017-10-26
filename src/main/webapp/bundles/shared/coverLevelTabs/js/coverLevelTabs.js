@@ -242,8 +242,8 @@
 			var coverTypeValue = tab.label.replace('<span class=\'hidden-xs\'>Cover</span>', '').toLowerCase().trim().replace(' ', '_');
 
 			// results headers
-			out += '<div class="col-xs-' + xsCols + ' text-center clt-action ' + (tab.defaultTab === true ? 'active' : 'hidden-xs') + '" data-clt-index="' + i + '">';
-			out += (tab.label.replace('Cover', '')) + (state !== 'xs' && state !== 'sm' && tab.showCount === true && count !== null ? ' (' + (count) + ')' : '');
+			out += '<div class="col-xs-' + xsCols + ' text-center clt-action ' + (tab.defaultTab === true ? 'active' : 'hidden-xs') + '" data-clt-index="' + i + '" data-ranking-filter="' + tab.rankingFilter +'">';
+			out += (tab.label.replace('Cover', '')) + (state !== 'xs' && state !== 'sm' && tab.showCount === true && count !== null ? ' <span class="tabCount">(' + (count) + ')</span>' : '');
 			out += '</div>';
 
 			// reset filters
@@ -264,6 +264,17 @@
 		$currentTabContainer.empty().html(out);
 		$('.reset-travel-filters').empty().html(resetFilters);
 
+	}
+
+	function updateTabCounts() {
+		$('.clt-action').each(function (key, tab) {
+			var ranking = $(tab).data('ranking-filter');
+			$(tab).find('.tabCount').empty().html('(' + counts[ranking] + ')');
+        });
+	}
+
+	function resetTabResultsCount() {
+		counts = {};
 	}
 
     /**
@@ -382,7 +393,9 @@
 		incrementCount: incrementCount,
 		getOriginatingTab: getOriginatingTab,
 		getDepartingTabJourney: getDepartingTabJourney,
-		buildCustomTab: buildCustomTab
+		buildCustomTab: buildCustomTab,
+        updateTabCounts: updateTabCounts,
+        resetTabResultsCount: resetTabResultsCount
 	});
 
 })(jQuery);

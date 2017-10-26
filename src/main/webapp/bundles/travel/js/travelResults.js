@@ -174,18 +174,20 @@
 							medical = 0;
 						}
 
-						if (obj.excessValue <= 250 && obj.medicalValue >= medical
+						if (obj.excessValue <= Results.model.travelFilters.EXCESS && obj.medicalValue >= medical
 							&& obj.cxdfeeValue >= 7500 && obj.luggageValue >= 7500) {
 							obj.coverLevel = 'C';
 							meerkat.modules.coverLevelTabs.incrementCount("C");
-						} else if (obj.excessValue <= 250 && obj.medicalValue >= medical
+						} else if (obj.excessValue <= Results.model.travelFilters.EXCESS && obj.medicalValue >= medical
 							&& obj.cxdfeeValue >= 2500
 							&& obj.luggageValue >= 2500) {
 							obj.coverLevel = 'M';
 							meerkat.modules.coverLevelTabs.incrementCount("M");
-						} else  {
+						} else {
 							obj.coverLevel = 'B';
-							meerkat.modules.coverLevelTabs.incrementCount("B");
+							if (obj.excessValue <= Results.model.travelFilters.EXCESS) {
+                                meerkat.modules.coverLevelTabs.incrementCount("B");
+							}
 						}
 					} else {
 						if (_.isBoolean(result.isDomestic) ) {
