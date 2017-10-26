@@ -58,6 +58,8 @@
 
 		<simples:dialogue id="79" vertical="health" className="hidden" />
 		<simples:dialogue id="80" vertical="health" className="hidden" />
+		<simples:dialogue id="88" vertical="health" className="hidden" />
+		<simples:dialogue id="89" vertical="health" className="hidden" />
 
 		<health_v2:vouchers xpath="health/voucher" />
 
