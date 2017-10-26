@@ -508,8 +508,35 @@
                 $(this).toggleClass('hovered');
             });
 
-            // Default Private Hospital benefit to be expanded
-            $(".privateHospital.cell.category.expandable").addClass("expanded");
+            $(Results.settings.elements.resultsContainer+' '+Results.settings.elements.rows+ ' .cell.category.expandable')
+                .hover(
+                    function() {
+                        $(this).find('div.category').hover();
+
+                        var cellRowClass = this.className.split(' ').filter(function(item) {
+                            return /HLTicon-.+/.test(item);
+                        });
+
+                        $('.cell.category.expandable.' + cellRowClass).addClass('row-hovered');
+                    },
+                    function() {
+                        $('.cell.category.expandable.row-hovered').removeClass('row-hovered');
+                    }
+                );
+
+            if (meerkat.modules.deviceMediaState.get() === 'xs') {
+                var benefitsClickMadeFocus = false,
+                    $benefitsClickText = $('.benefits-click-text');
+
+                $(window).off("scroll.transitionBenefitsClick").on("scroll.transitionBenefitsClick", function () {
+                    if (!benefitsClickMadeFocus) {
+                        if ($benefitsClickText[0].getBoundingClientRect().top < $(window).height()) {
+                            $benefitsClickText.addClass('make-focus');
+                            benefitsClickMadeFocus = true;
+                        }
+                    }
+                });
+            }
         });
     }
 
