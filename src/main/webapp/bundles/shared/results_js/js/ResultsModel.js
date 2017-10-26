@@ -688,8 +688,12 @@ var ResultsModel = {
 
 			});
 
-			if( valid ){
-				finalProducts.push(product);
+			if( valid ) {
+				$.each(product.benefits, function (index, benefit) {
+					if (benefit.type == 'EXCESS' && benefit.value <= Results.model.travelFilters.EXCESS) {
+                        finalProducts.push(product);
+					}
+				});
 			}
 
 		});

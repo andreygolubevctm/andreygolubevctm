@@ -9,20 +9,20 @@
         // set the excess default
         $('#travel_filter_excess_200').trigger('click');
 
-        // update the excess header when any of the excess option is selected
+        // update the results as per the excess filter
         $('input[name="radio-group"]').change(function () {
            $('.selected-excess-value .filter-excess-value').text($(this).val());
-            _updateTravelResults('EXCESS', parseInt($(this).data('excess')));
+            _updateResultsByExcess(parseInt($(this).data('excess')));
             $('#excessFilterDropdownBtn').dropdown('toggle');
         });
 
-        // update the luggage cover when the slider is moved
+        // update the results as per the luggage filter
         $('input[name="luggageRangeSlider"]').change(function () {
            $('.luggage-range-value').empty().text('$' + Number($(this).val()).toLocaleString('en'));
             _updateTravelResults('LUGGAGE', parseInt($(this).val()));
         });
 
-        // update the cancellation cover when the slider is moved
+        // update the results as per the cancellation filter
         $('input[name="cancellationRangeSlider"]').change(function () {
             if (Number($(this).val()) == 30000) {
                 $('.cancellation-range-value').empty().text('Unlimited');
@@ -32,7 +32,7 @@
             _updateTravelResults('CXDFEE', parseInt($(this).val()));
         });
 
-        // update the overseas medical cover when the slider is moved
+        // update the results as per the overseas medical filter
         $('input[name="overseasMedicalRangeSlider"]').change(function () {
             if (Number($(this).val()) == 50000000) {
                 $('.overseas-medical-range-value').empty().text('Unlimited');
@@ -47,6 +47,7 @@
             $('#moreFiltersDropdownBtn').dropdown('toggle');
         });
 
+        // update the results as per the providers
         $('.col-brand input[type="checkbox"]').change(function () {
             _updateTravelResults('PROVIDERS', $(this).data('provider-code'));
         });
@@ -71,15 +72,11 @@
      * Set the Result model with the travel filter values & call the travel filter function
      * @param filter - name of the filter
      * @param value - value of the filter
-     * @private
      */
     function _updateTravelResults (filter, value) {
         var _filters = Results.model.travelFilters;
 
         switch (filter) {
-            case 'EXCESS':
-                _filters.EXCESS = value;
-                break;
             case 'LUGGAGE':
                 _filters.LUGGAGE = value;
                 break;
@@ -101,6 +98,20 @@
         Results.model.travelResultFilter(true, true);
         meerkat.modules.coverLevelTabs.buildCustomTab();
         $('input[name="reset-filters-radio-group"]').prop('checked', false);
+    }
+
+    /**
+     * Update the results as per the excess value
+     * @param value - accept the excess value
+     */
+    function _updateResultsByExcess(value) {
+        Results.model.travelFilters.EXCESS = value;
+        Results.model.filter(true, true);
+
+        if ($('[data-travel-filter="custom"]').hasClass('active')) {
+            Results.model.travelResultFilter(true, true);
+            meerkat.modules.coverLevelTabs.buildCustomTab();
+        }
     }
 
     meerkat.modules.register("travelResultFilters", {
