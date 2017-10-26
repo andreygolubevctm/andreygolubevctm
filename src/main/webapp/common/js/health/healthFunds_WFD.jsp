@@ -133,7 +133,7 @@ var healthFunds_WFD = {
     },
     renderDeductionMessage: function() {
 
-        var deductionMsg = meerkat.modules.healthPaymentStep.getSelectedFrequency() === 'annually' ? 'Your first payment will be debited within 48 hours.' :
+        var deductionMsg = (meerkat.modules.healthPaymentStep.getSelectedFrequency() === 'annually' ? 'Your first payment will be debited within 48 hours.' :
                 (meerkat.modules.healthPaymentStep.getSelectedFrequency() === 'monthly' ?
                 'Your first payment will be debited within 48 hours and this will be a pro-rata amount for the remainder of the month. Your regular premium will be deducted from your nominated account on the 1st of every month.' :
                 'Your first payment will be debited within 48 hours and this will be a pro-rata amount until next Thursday. Your regular premium will be deducted from your nominated account on a Thursday.');
