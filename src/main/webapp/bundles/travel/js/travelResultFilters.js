@@ -107,8 +107,8 @@
     function _updateResultsByExcess(value) {
         Results.model.travelFilters.EXCESS = value;
         meerkat.modules.coverLevelTabs.resetTabResultsCount();
-        Results.model.filter(true, true);
         meerkat.messaging.publish(Results.model.moduleEvents.RESULTS_MODEL_UPDATE_BEFORE_FILTERSHOW);
+        Results.model.filter(true, true);
         meerkat.modules.coverLevelTabs.updateTabCounts();
 
         if ($('[data-travel-filter="custom"]').hasClass('active')) {

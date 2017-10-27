@@ -266,13 +266,25 @@
 
 	}
 
+    /**
+	 * Update the count of the tabs as per changed results
+     */
 	function updateTabCounts() {
-		$('.clt-action').each(function (key, tab) {
+		var currentTabIndex = 0;
+		$('[data-clt-index]').each(function (key, tab) {
+			if ($(tab).hasClass('active')) {
+				currentTabIndex = $(tab).data('clt-index');
+                $('.navbar-cover-text').html('Showing ' + counts[settings.activeTabSet[currentTabIndex].rankingFilter] + ' ' + settings.activeTabSet[currentTabIndex].label.toLowerCase().replace('cover', 'plans'));
+            }
 			var ranking = $(tab).data('ranking-filter');
 			$(tab).find('.tabCount').empty().html('(' + counts[ranking] + ')');
-        });
+		});
+
 	}
 
+    /**
+	 * Reset the tab results count
+     */
 	function resetTabResultsCount() {
 		counts = {};
 	}
