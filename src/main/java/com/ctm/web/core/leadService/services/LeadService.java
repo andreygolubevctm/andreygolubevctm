@@ -69,9 +69,9 @@ public abstract class LeadService {
      * Normally leads will not be processed when triggered by call centre. The exception is for INBOUND_CALL leads.
      *    (if customer calls us, we need to knock out any of their leads that might be outbounded)
      */
-    public void sendLead(final int verticalId, final Data data, final HttpServletRequest request, final String transactionStatus) {
+    public void sendLead(final int verticalId, final Data data, final HttpServletRequest request, final String transactionStatus, final String brand) {
         final LeadStatus leadStatus = LeadStatus.valueOf(transactionStatus);
-        if (!SessionUtils.isCallCentre(request.getSession()) || asList(INBOUND_CALL,RETURN_CLI).contains(leadStatus)) {
+        if (!SessionUtils.isCallCentre(request.getSession()) || (asList(INBOUND_CALL,RETURN_CLI).contains(leadStatus)) && brand.equals("ctm")) {
             try {
                 ServiceConfiguration serviceConfig = ServiceConfigurationService.getServiceConfiguration("leadService", verticalId);
 
