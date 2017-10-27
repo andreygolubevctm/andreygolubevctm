@@ -19,7 +19,6 @@
 <c:set var="calcSequenceSUFF" value="/calcSequence" />
 <c:set var="prefix"><c:out value="${rootPath}" escapeXml="true"/></c:set>
 <c:set var="calcSequence" value="${prefix}${calcSequenceSUFF}" />
-
 <c:set var="calcSequence" value="${data[calcSequence]}" />
 
 <c:if test="${empty transactionId}">
