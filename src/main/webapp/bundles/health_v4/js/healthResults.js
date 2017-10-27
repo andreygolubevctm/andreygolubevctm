@@ -69,7 +69,8 @@
                 key: "weekly",
                 label: "per week"
             }
-        ];
+        ],
+        productPinnedFromProductCode = false;
 
 
     function initPage() {
@@ -801,23 +802,28 @@
 
     function onResultsLoaded() {
         meerkat.modules.coupon.dealWithAddedCouponHeight();
-        if (meerkat.modules.deviceMediaState.get() == "xs") {
+        if (meerkat.modules.deviceMediaState.get() === "xs") {
             startColumnWidthTracking();
         }
         if (meerkat.site.isCallCentreUser) {
             createPremiumsPopOver();
         }
-        
-        _pinProductFromLoadedProductCode();
+
+        if (!productPinnedFromProductCode) {
+            _pinProductFromLoadedProductCode();
+        }
     }
 
     // Pin product if productId loaded from brochure Email
-    function _pinProductFromLoadedProductCode(){
+    function _pinProductFromLoadedProductCode() {
         if (meerkat.site.loadProductCode.length > 0) {
             var loadedProductId = _getProductIdFromProductCode(meerkat.site.loadProductCode);
 
             if (loadedProductId.length > 0) {
                 _pinProductHelper(loadedProductId);
+
+                $(Results.settings.elements.rows).toggleClass('extra-margin-top', meerkat.modules.deviceMediaState.get() === 'xs');
+                productPinnedFromProductCode = true;
             }
         }
     }

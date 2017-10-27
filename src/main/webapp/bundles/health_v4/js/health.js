@@ -426,11 +426,16 @@
                     meerkat.modules.healthTaxTime.disableFastTrack();
                 }
                 meerkat.modules.healthResults.setCallCentreText();
-	            },
+            },
             onBeforeLeave: function beforeLeaveResultsStep(event) {
                 // Increment the transactionId
                 if (event.isBackward === true) {
                     meerkat.modules.transactionId.getNew(3);
+                }
+
+                // Unpin pinned product on results page leave
+                if (Results.getPinnedProduct()) {
+                    Results.unpinProduct(Results.getPinnedProduct().productId);
                 }
 
                 meerkat.modules.healthResults.resetCallCentreText();
