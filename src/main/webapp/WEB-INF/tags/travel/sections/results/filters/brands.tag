@@ -4,7 +4,7 @@
 <jsp:useBean id="ProviderDetailsService" class="com.ctm.web.core.services.ProviderDetailsService" scope="page" />
 ${ProviderDetailsService.init(pageContext.request)}
 
-<div class="row">
+<div class="row" id="travel-filter-brands">
     <c:forEach items="${ProviderDetailsService.getProviderNames()}" var="obj">
         <div class="col-sm-4 text-left col-brand">
             <div class="checkbox">
