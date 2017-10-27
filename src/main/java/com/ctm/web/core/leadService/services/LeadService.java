@@ -71,7 +71,7 @@ public abstract class LeadService {
      */
     public void sendLead(final int verticalId, final Data data, final HttpServletRequest request, final String transactionStatus, final String brand) {
         final LeadStatus leadStatus = LeadStatus.valueOf(transactionStatus);
-        if (!SessionUtils.isCallCentre(request.getSession()) || (asList(INBOUND_CALL,RETURN_CLI).contains(leadStatus)) && brand.equals("ctm")) {
+        if (!SessionUtils.isCallCentre(request.getSession()) || (asList(INBOUND_CALL,RETURN_CLI).contains(leadStatus) && brand.equals("ctm"))) {
             try {
                 ServiceConfiguration serviceConfig = ServiceConfigurationService.getServiceConfiguration("leadService", verticalId);
 
