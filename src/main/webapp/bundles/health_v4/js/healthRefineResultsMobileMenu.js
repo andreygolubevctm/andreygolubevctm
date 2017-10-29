@@ -147,16 +147,25 @@
     }
 
     function _footerButtonUpdateCB() {
+        var delayResultsGet = 0;
+
         $elements.applyDiscount.val($('#health_refine_results_discount').is(':checked') ? 'Y' : 'N');
         $elements.applyRebate.val($('#health_refine_results_rebate').is(':checked') ? 'Y': 'N');
 
         meerkat.messaging.publish(moduleEvents.refineResults.REFINE_RESULTS_FOOTER_BUTTON_UPDATE_CALLBACK);
 
-        _.defer(function() {
+        // if pinned product on xs then unpin the product
+        if (Results.getPinnedProduct()) {
+            Results.unpinProduct(Results.getPinnedProduct().productId);
+            delayResultsGet = 1500;
+        }
+
+        meerkat.modules.journeyEngine.loadingShow('...updating your quotes...', true);
+
+        _.delay(function() {
             // get new results
-            meerkat.modules.journeyEngine.loadingShow('...updating your quotes...', true);
             meerkat.modules.healthResults.get();
-        });
+        }, delayResultsGet);
     }
 
     function _rightButtonCB() {
