@@ -551,7 +551,7 @@
             var state = eventObject.state,
                 previousState = eventObject.previousState;
             // Going between XS and other breakpoints causes issues because of Results.view.stopColumnWidthTracking
-            var allowsPins = (state === 'lg' || state === 'md') && previousState !== 'xs';
+            var allowsPins = (state === 'lg' || state === 'md');
             var prevAnimationState = Results.settings.animation.filter.active;
             Results.settings.animation.filter.active = false;
             if (!allowsPins) {

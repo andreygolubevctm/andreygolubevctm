@@ -216,7 +216,7 @@ var ResultsView = {
 
 		// start tracking the window resize and resize column accordingly
 		$(window).on("resize.ResultsView.columnWidthTracking", _.debounce(function debounceColumnWidthTracking(){
-			if (Results.getPinnedProduct() && meerkat.modules.deviceMediaState.get() === 'xs') return;
+			// if (Results.getPinnedProduct() && meerkat.modules.deviceMediaState.get() === 'xs') return;
 
 			Results.view.setColumnWidth( $container, nbColumns, hasOutsideGutters );
 			Results.view.setOverflowWidthToWindowWidth();
