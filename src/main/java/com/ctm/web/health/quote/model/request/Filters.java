@@ -28,6 +28,8 @@ public class Filters {
 
     private Boolean applyDiscounts;
 
+    private Boolean popularProducts;
+
     public CappingLimit getCappingLimitFilter() {
         return cappingLimitFilter;
     }
@@ -122,5 +124,13 @@ public class Filters {
 
     public void setApplyDiscounts(Boolean applyDiscounts) {
         this.applyDiscounts = applyDiscounts;
+    }
+
+    public Boolean getPopularProducts() {
+        return popularProducts;
+    }
+
+    public void setPopularProducts(Boolean popularProducts) {
+        this.popularProducts = popularProducts;
     }
 }

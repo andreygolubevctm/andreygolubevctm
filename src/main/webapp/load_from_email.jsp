@@ -54,6 +54,10 @@
 <c:set var="utmMedium"><c:out value="${param.utm_medium}" escapeXml="true"/></c:set>
 <c:set var="utmCampaign"><c:out value="${param.utm_campaign}" escapeXml="true"/></c:set>
 
+<c:set var="productCode">
+	<c:if test="${not empty param.productCode}">&productCode=<c:out value="${param.productCode}" escapeXml="false"/></c:if>
+</c:set>
+
 <c:if test="${not empty cid and not empty etRid and not empty utmSource and not empty utmMedium and not empty utmCampaign}">
 	<c:set var="trackingParams" value="&cid=${cid}&etRid=${etRid}&utmSource=${utmSource}&utmMedium=${utmMedium}&utmCampaign=${utmCampaign}" />
 </c:if>
@@ -61,7 +65,7 @@
 <settings:setVertical verticalCode="${fn:toUpperCase(vertical)}" />
 
 <%-- 1. Attempt to load quote into session and get JSON object containing load details --%>
-<c:set var="loadQuoteURL" value="/ajax/json/remote_load_quote.jsp?action=load&vertical=${vertical}&transactionId=${id}&hash=${hash}&type=${type}&productId=${productId}&email=${email}&expired=${expired}&campaignId=${campaignId}${trackingParams}" />
+<c:set var="loadQuoteURL" value="/ajax/json/remote_load_quote.jsp?action=load&vertical=${vertical}&transactionId=${id}&hash=${hash}&type=${type}&productId=${productId}&email=${email}&expired=${expired}&campaignId=${campaignId}${trackingParams}${productCode}" />
 <c:import var="loadQuoteJSON" url="${loadQuoteURL}" />
 
 <%-- 2. Check JSON contains destination URL --%>

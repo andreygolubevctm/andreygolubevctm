@@ -39,7 +39,7 @@
                             $(eventObject.currentTarget).closest('.modal').modal('hide');
                         }
                     },
-                    showCloseBtn: false,
+                    showCloseBtn: true,
                     onClose: function () {
                         onBeforeHideTemplate();
                         meerkat.modules.moreInfo.close();
@@ -442,6 +442,7 @@
             submitButton: emailBrochuresElement.find('.btn-email-brochure'),
             form: form,
             marketing: emailBrochuresElement.find('.optInMarketing'),
+            emailHistoryInput: $('#health_brochureEmailHistory'),
             productData: [
                 { name: "hospitalPDSUrl", value: product.promo.hospitalPDF },
                 { name: "extrasPDSUrl", value: product.promo.extrasPDF },
@@ -591,6 +592,7 @@
         var data = {};
         data.providerId = product.info.providerId;
         data.providerContentTypeCode = providerContentTypeCode;
+        data.styleCode = meerkat.site.tracking.brandCode;
 
         if (typeof data.providerId === 'undefined' || data.providerId === '') {
             meerkat.modules.errorHandling.error({

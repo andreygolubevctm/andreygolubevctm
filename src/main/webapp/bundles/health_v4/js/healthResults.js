@@ -5,7 +5,7 @@
         log = meerkat.logging.info,
         selectedProduct = null,
         previousBreakpoint,
-        best_price_count = 5,
+        best_price_count = 10,
         isLhcApplicable = 'N',
         selectedBenefitsList = [],
         premiumIncreaseContent = $('.healthPremiumIncreaseContent'),
@@ -90,6 +90,7 @@
         // note: this is assignment within an if condition. succeeds if a product id is passed/assigned
         if ((pinnedProductId = passedProductId)) {
             Results.pinProduct(pinnedProductId, function (productId, $pinnedResultRow) {
+                $pinnedResultRow.prepend('<div class="result-pinned-product-tag">Pinned product</div>');
                 $pinnedResultRow.addClass('pinned currentPage').removeClass('not-pinned').css({
                     left: 'auto',
                     top: 'auto'
@@ -268,6 +269,9 @@
                 incrementTransactionId: false,
                 balanceCurrentPageRowsHeightOnly: {
                     mobile: true
+                },
+                popularProducts: {
+                    enabled: meerkat.modules.healthPopularProducts.isEnabled()
                 }
             });
 
@@ -280,7 +284,7 @@
     function _massageResultsObject(products) {
         _.each(products, function massageJson(result, index) {
             // Add properties
-            result.isPinned = 'N';
+            result.isPinned = result.productId === pinnedProductId ? 'Y' : 'N';
         });
         return products;
     }
@@ -345,6 +349,10 @@
 
             // Hide pagination
             $('.results-pagination, .results-filters-frequency').addClass('invisible');
+
+            // Hide top three
+            meerkat.modules.healthPopularProducts.hide();
+
             meerkat.modules.coupon.triggerPopup();
         });
 
@@ -375,6 +383,8 @@
             }
             _.delay(function () {
                 meerkat.modules.journeyEngine.loadingHide();
+                // Show top three
+                meerkat.modules.healthPopularProducts.show();
             }, tVariance);
 
 
@@ -797,6 +807,32 @@
         if (meerkat.site.isCallCentreUser) {
             createPremiumsPopOver();
         }
+        
+        _pinProductFromLoadedProductCode();
+    }
+
+    // Pin product if productId loaded from brochure Email
+    function _pinProductFromLoadedProductCode(){
+        if (meerkat.site.loadProductCode.length > 0) {
+            var loadedProductId = _getProductIdFromProductCode(meerkat.site.loadProductCode);
+
+            if (loadedProductId.length > 0) {
+                _pinProductHelper(loadedProductId);
+            }
+        }
+    }
+
+    // Gets the productId only if the relevant product code exists in the returned results set
+    function _getProductIdFromProductCode(loadedProductCodeStr){
+        var returnStr = "";
+        if (Results.getReturnedResults().length > 0) {
+            for (var i = 0; i < Results.getReturnedResults().length; i++)  {
+                if (Results.getReturnedResults()[i].info.productCode === loadedProductCodeStr){
+                    return Results.getReturnedResults()[i].productId;
+                }
+            }
+        }
+        return returnStr;
     }
 
     function createDiscountPopOver() {
