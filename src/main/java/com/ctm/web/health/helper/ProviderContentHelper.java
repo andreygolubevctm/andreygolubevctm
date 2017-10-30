@@ -17,7 +17,7 @@ public class ProviderContentHelper {
 		}
 	}
 
-	public ProviderContent createProviderContentObject(int providerContentId, int providerContentTypeId, String providerContentText, Date effectiveStart, Date effectiveEnd, int providerId, int verticalId) {
+	public ProviderContent createProviderContentObject(int providerContentId, int providerContentTypeId, String providerContentText, Date effectiveStart, Date effectiveEnd, int providerId, int verticalId, int styleCodeId, String styleCodeName) {
 		ProviderContent providerContent = new ProviderContent();
 		providerContent.setProviderContentId(providerContentId);
 		providerContent.setProviderContentTypeId(providerContentTypeId);
@@ -26,6 +26,8 @@ public class ProviderContentHelper {
 		providerContent.setEffectiveEnd(effectiveEnd);
 		providerContent.setProviderId(providerId);
 		providerContent.setVerticalId(verticalId);
+		providerContent.setStyleCodeId(styleCodeId);
+		providerContent.setStyleCode(styleCodeName);
 		return providerContent;
 	}
 

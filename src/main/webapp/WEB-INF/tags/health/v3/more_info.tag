@@ -120,7 +120,7 @@
 							{{ } else { }}
 							<p class="promoHeading">Great choice!</p>
 							<p class="noPromoText">This policy covers all of the things that you said were important to you.
-								Also, because health insurance prices are regulated, you’re paying no more through us than if you went directly to {{= info.providerName }}.</p>
+								<span>Also, because health insurance prices are regulated, you’re paying no more through us than if you went directly to {{= info.providerName }}.</span></p>
 							{{ }  }}
 						</div>
                         <c:if test="${empty callCentre or not callCentre}">
@@ -180,6 +180,13 @@
 
 			<div class="col-xs-12">
 				<simples:dialogue id="76" vertical="health" mandatory="true" />
+			</div>
+
+			<div class="col-xs-12">
+				<simples:dialogue id="84" vertical="health" />
+			</div>
+			<div class="col-xs-12">
+				<simples:dialogue id="85" vertical="health" />
 			</div>
 
 			<div class="policyBrochures col-xs-12">

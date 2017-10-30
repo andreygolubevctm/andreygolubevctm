@@ -172,7 +172,7 @@
 
                         meerkat.modules.benefits.toggleHospitalTypeTabs();
 
-                        populateSelectedBenefits();
+                        populateSelectedBenefits($('.health-filter-hospital-benefits'), $('.health-filter-extras-benefits'));
                         toggleFilterByContainer($('.filter-hospital-benefits'), false);
                         toggleFilter($('.health-filter-hospital-benefits'), false);
                         setFilterByHospitalBenefits();
@@ -291,7 +291,7 @@
         $hiddenProductsWrapper,
         $paginationWrapper;
 
-    function _getCheckedBenefitsFromFilters($container) {
+    function getCheckedBenefitsFromFilters($container) {
         var array = [];
         $container.find('input[type="checkbox"]:checked:not([disabled])').map(function () {
             array.push(this.value);
@@ -303,12 +303,12 @@
      * This is called just by hospital, as it does both hospital and extras due to the results functionality
      * needing both to set the extras on Features.pageStructure
      */
-    function populateSelectedBenefits() {
+    function populateSelectedBenefits($hospitalBenefits, $extrasBenefits) {
         // this needs to convert the shortlistkey names e.g. PrHospital to its id for it to work...
         // go back up to init filters and try and make it just run off ids.
         var selectedBenefits = {
-            'hospital': _getCheckedBenefitsFromFilters($('.health-filter-hospital-benefits')),
-            'extras': _getCheckedBenefitsFromFilters($('.health-filter-extras-benefits'))
+            'hospital': getCheckedBenefitsFromFilters($hospitalBenefits),
+            'extras': getCheckedBenefitsFromFilters($extrasBenefits)
         };
 
         meerkat.modules.healthResults.setSelectedBenefitsList(selectedBenefits.hospital.concat(selectedBenefits.extras));
@@ -564,9 +564,16 @@
         }
     }
 
+    function getModel() {
+        return model;
+    }
+
     meerkat.modules.register("healthFilters", {
         init: init,
-        events: {}
+        events: {},
+        getModel: getModel,
+        getCheckedBenefitsFromFilters: getCheckedBenefitsFromFilters,
+        populateSelectedBenefits: populateSelectedBenefits
     });
 
 })(jQuery);

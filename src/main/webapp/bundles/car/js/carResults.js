@@ -279,7 +279,7 @@
 
 		// Start fetching results
 		$(document).on("resultsFetchStart", function onResultsFetchStart() {
-			meerkat.modules.journeyEngine.loadingShow('getting your quotes');
+			meerkat.modules.journeyEngine.loadingShow('getting your quotes', null, 'Quotes are indicative and subject to change based on further questions by the insurer.');
 			$('#resultsPage, .loadingDisclaimerText').removeClass('hidden');
 			if (meerkat.site.tracking.brandCode == 'ctm') {
 				$('.loadingQuoteText, .loadingPromise').removeClass('hidden');
