@@ -17,29 +17,21 @@
         });
 
         // update the results as per the luggage filter
-        $('input[name="luggageRangeSlider"]').change(function () {
-           $('.luggage-range-value').empty().text('$' + Number($(this).val()).toLocaleString('en'));
-            _updateTravelResults('LUGGAGE', parseInt($(this).val()));
+        $('input[name="luggageRangeSlider"]').change(function (value) {
+            _displaySliderValue ("LUGGAGE", $(this).val());
+            _updateTravelResults("LUGGAGE", parseInt($(this).val()));
         });
 
         // update the results as per the cancellation filter
         $('input[name="cancellationRangeSlider"]').change(function () {
-            if (Number($(this).val()) == 30000) {
-                $('.cancellation-range-value').empty().text('Unlimited');
-            } else {
-                $('.cancellation-range-value').empty().text('$' + Number($(this).val()).toLocaleString('en'));
-            }
-            _updateTravelResults('CXDFEE', parseInt($(this).val()));
+            _displaySliderValue ("CXDFEE", $(this).val());
+            _updateTravelResults("CXDFEE", parseInt($(this).val()));
         });
 
         // update the results as per the overseas medical filter
         $('input[name="overseasMedicalRangeSlider"]').change(function () {
-            if (Number($(this).val()) == 50000000) {
-                $('.overseas-medical-range-value').empty().text('Unlimited');
-            } else {
-                $('.overseas-medical-range-value').empty().text('$' + Number($(this).val() / 1000000) + ' million');
-            }
-            _updateTravelResults('MEDICAL', parseInt($(this).val()));
+            _displaySliderValue ("MEDICAL", $(this).val());
+            _updateTravelResults("MEDICAL", parseInt($(this).val()));
         });
 
         // display the filtered results
@@ -136,28 +128,51 @@
 
         // update luggage filter
         $('input[name="luggageRangeSlider"]').val(_filters.LUGGAGE);
-        $('.luggage-range-value').empty().text('$' + Number(_filters.LUGGAGE).toLocaleString('en'));
+        _displaySliderValue ("LUGGAGE", _filters.LUGGAGE);
 
         // update cancellation filter
         $('input[name="cancellationRangeSlider"]').val(_filters.CXDFEE);
-        if (Number(_filters.CXDFEE) == 30000) {
-            $('.cancellation-range-value').empty().text('Unlimited');
-        } else {
-            $('.cancellation-range-value').empty().text('$' + Number(_filters.CXDFEE).toLocaleString('en'));
-        }
+        _displaySliderValue ("CXDFEE", _filters.CXDFEE);
 
         // update overseas medical filter
         $('input[name="overseasMedicalRangeSlider"]').val(_filters.MEDICAL);
-        if (Number(_filters.MEDICAL) == 50000000) {
-            $('.overseas-medical-range-value').empty().text('Unlimited');
-        } else {
-            $('.overseas-medical-range-value').empty().text('$' + Number(_filters.MEDICAL / 1000000) + ' million');
-        }
+        _displaySliderValue ("MEDICAL", _filters.MEDICAL);
 
+        meerkat.modules.customRangeSlider.init();
         Results.model.travelFilters = _filters;
         Results.model.travelFilters = _filters;
         Results.model.travelResultFilter(true, true);
         meerkat.modules.coverLevelTabs.buildCustomTab();
+    }
+
+    /**
+     * Display the slider value at the top of the slider
+     * @param slider - which slider
+     * @param value - value of that slider
+     * @private
+     */
+    function _displaySliderValue (slider, value) {
+        switch (slider) {
+            case 'LUGGAGE':
+                $('.luggage-range-value').empty().text('$' + Number(value).toLocaleString('en'));
+                break;
+
+            case 'CXDFEE':
+                if (Number(value) == 30000) {
+                    $('.cancellation-range-value').empty().text('Unlimited');
+                } else {
+                    $('.cancellation-range-value').empty().text('$' + Number(value).toLocaleString('en'));
+                }
+                break;
+
+            case 'MEDICAL':
+                if (Number(value) == 50000000) {
+                    $('.overseas-medical-range-value').empty().text('Unlimited');
+                } else {
+                    $('.overseas-medical-range-value').empty().text('$' + Number(value / 1000000) + ' million');
+                }
+                break;
+        }
     }
 
     /**
