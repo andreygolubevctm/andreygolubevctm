@@ -91,9 +91,11 @@
 								<travel_results_filters:minimum_overseas_medical/>
 							</div>
 							<div class="col-sm-7 text-left">
-								<div class="dropdown-item range-filter">
-									<b>Brands</b>
-									<span class="brands-select-toggle" data-brands-toggle="none">Select none</span>
+								<div class="row">
+									<div class="col-sm-12 no-padding">
+										<b>Brands</b>
+										<span class="brands-select-toggle" data-brands-toggle="none">Select none</span>
+									</div>
 								</div>
 								<travel_results_filters:brands/>
 							</div>

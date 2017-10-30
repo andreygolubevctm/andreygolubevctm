@@ -82,10 +82,7 @@
                 $(this).empty().text('Select none');
             }
 
-            Results.model.isBasicTravelCover = false;
-            Results.model.travelResultFilter(true, true);
-            meerkat.modules.coverLevelTabs.buildCustomTab();
-            $('input[name="reset-filters-radio-group"]').prop('checked', false);
+            _displayCustomResults(true);
         });
     }
 
@@ -116,10 +113,7 @@
                 break;
         }
         Results.model.travelFilters = _filters;
-        Results.model.isBasicTravelCover = false;
-        Results.model.travelResultFilter(true, true);
-        meerkat.modules.coverLevelTabs.buildCustomTab();
-        $('input[name="reset-filters-radio-group"]').prop('checked', false);
+        _displayCustomResults(true);
     }
 
     /**
@@ -165,9 +159,7 @@
 
         meerkat.modules.customRangeSlider.init();
         Results.model.travelFilters = _filters;
-        Results.model.travelFilters = _filters;
-        Results.model.travelResultFilter(true, true);
-        meerkat.modules.coverLevelTabs.buildCustomTab();
+        _displayCustomResults(false);
     }
 
     /**
@@ -212,9 +204,21 @@
         meerkat.modules.coverLevelTabs.updateTabCounts();
 
         if ($('[data-travel-filter="custom"]').hasClass('active')) {
-            Results.model.travelResultFilter(true, true);
-            meerkat.modules.coverLevelTabs.buildCustomTab();
+            _displayCustomResults(true);
         }
+    }
+
+    /**
+     * Display the custom filter results
+     * @param customFilter - boolean value for custom filter
+     * @private
+     */
+    function _displayCustomResults (customFilter) {
+        Results.model.travelResultFilter(true, true);
+        if (customFilter) {
+            $('input[name="reset-filters-radio-group"]').prop('checked', false);
+        }
+        meerkat.modules.coverLevelTabs.buildCustomTab();
     }
 
     meerkat.modules.register("travelResultFilters", {

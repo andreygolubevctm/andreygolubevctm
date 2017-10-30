@@ -783,6 +783,8 @@ var ResultsModel = {
             }
 
         }
+
+        Results.model.isBasicTravelCover = false;
 	},
 
 	filterByValue: function(value, options){
