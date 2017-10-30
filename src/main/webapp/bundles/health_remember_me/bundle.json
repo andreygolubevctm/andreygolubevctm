@@ -11,6 +11,7 @@
     "core",
     "shared/forms/v4",
     "shared/leavePageWarning",
-    "shared/formDateInput"
+    "shared/formDateInput",
+    "shared/competition"
   ]
 }

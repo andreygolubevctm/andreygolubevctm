@@ -39,6 +39,7 @@
             <simples:dialogue id="63" vertical="health" />
             <simples:dialogue id="21" vertical="health" mandatory="true" /> <%-- 3 Point Security Check --%>
             <simples:dialogue id="36" vertical="health" mandatory="true" className="simples-dialog-inbound" />
+            <simples:dialogue id="86" vertical="health" />
 
             <c:set var="subText" value="" />
             <c:if test="${not callCentre}">
@@ -79,10 +80,16 @@
                 <c:if test="${callCentre}">
                     <c:set var="fieldXpath" value="${xpath}/cover" />
                     <c:set var="fieldXpathName" value="${go:nameFromXpath(fieldXpath)}_wrapper" />
-                    <form_v3:row label="Private Health Insurance works in conjunction with Medicare, so just to confirm, do all people to be covered on this policy have a blue or green Medicare card?" fieldXpath="${fieldXpath}" id="${fieldXpathName}" className="health_situation_medicare text-danger" helpId="564">
+                    <c:set var="medicareQuestionLabel"><content:get key="medicareQuestionLabel" /></c:set>
+                    <c:set var="nzMedicareRules"><content:get key="nzMedicareRules" /></c:set>
+                    <form_v3:row label="${medicareQuestionLabel}" fieldXpath="${fieldXpath}" id="${fieldXpathName}" className="health_situation_medicare text-danger" helpId="564">
                         <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}"
                             title="your Medicare card cover" required="true" className="health-medicare_details-card"
                             id="${name}_cover" additionalAttributes="data-rule-isCheckedYes='true' data-msg-isCheckedYes='${ovcScripting}'" />
+                        <div class="nz-medicare-rules">
+                            <a href="javascript:void;" data-copy-on="Hide NZ medicare rules" data-copy-off="Show NZ medicare rules"><!-- empty --></a>
+                            <div class="copy">${nzMedicareRules}</div>
+                        </div>
                     </form_v3:row>
                 </c:if>
 

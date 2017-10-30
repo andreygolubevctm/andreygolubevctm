@@ -23,6 +23,7 @@
     "shared/resultsRankings",
     "shared/phgSalesTracking",
     "shared/radioButton",
-    "shared/rangeSlider"
+    "shared/rangeSlider",
+    "shared/flatpickr"
   ]
 }

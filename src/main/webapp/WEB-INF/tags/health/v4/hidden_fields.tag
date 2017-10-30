@@ -35,3 +35,5 @@
 <form_v1:operator_id xpath="${pageSettings.getVerticalCode()}/operatorid" />
 <core_v1:referral_tracking vertical="${pageSettings.getVerticalCode()}" />
 <core_v2:authToken authToken="${param['authToken']}"/>
+
+<field_v1:hidden xpath="health/brochureEmailHistory" />

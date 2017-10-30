@@ -173,7 +173,8 @@
 		var selected = $('.travel_party input:checked').val();
 
 		if (value != null && value.length > 0) {
-			var arrayValues = typeof JSON.parse(value) === 'object' ? JSON.parse(value) : [JSON.parse(value)];
+			//removes characters [] and whitespace from string and converts to array
+			var arrayValues = value.replace(/[\[\]'\s]+/g,'').split(',');
 			setState({ hiddenValues: arrayValues });
 
 		}

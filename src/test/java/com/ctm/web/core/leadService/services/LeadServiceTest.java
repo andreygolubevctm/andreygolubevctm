@@ -19,8 +19,12 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.ctm.web.core.model.settings.ServiceConfigurationProperty.Scope.SERVICE;
+import static java.util.Arrays.asList;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.times;
@@ -81,7 +85,7 @@ public class LeadServiceTest {
 
     @Test
     public void sendNormalLead() throws Exception {
-        leadService.sendLead(4, mockData, mockRequest, LeadStatus.OPEN.name());
+        leadService.sendLead(4, mockData, mockRequest, LeadStatus.OPEN.name(),"ctm");
         verifyStatic(times(1));
         LeadServiceUtil.sendRequest(any(), eq("url"));
     }
@@ -90,15 +94,15 @@ public class LeadServiceTest {
     public void callcentreShouldNotSendLeads() throws Exception {
         when(SessionUtils.isCallCentre(any())).thenReturn(true);
 
-        leadService.sendLead(4, mockData, mockRequest, LeadStatus.OPEN.name());
+        leadService.sendLead(4, mockData, mockRequest, LeadStatus.OPEN.name(),"ctm");
         verifyStatic(times(0));
         LeadServiceUtil.sendRequest(any(), any());
 
-        leadService.sendLead(4, mockData, mockRequest, LeadStatus.SOLD.name());
+        leadService.sendLead(4, mockData, mockRequest, LeadStatus.SOLD.name(),"ctm");
         verifyStatic(times(0));
         LeadServiceUtil.sendRequest(any(), any());
 
-        leadService.sendLead(4, mockData, mockRequest, LeadStatus.PENDING.name());
+        leadService.sendLead(4, mockData, mockRequest, LeadStatus.PENDING.name(),"ctm");
         verifyStatic(times(0));
         LeadServiceUtil.sendRequest(any(), any());
     }
@@ -107,8 +111,36 @@ public class LeadServiceTest {
     public void callcentreShouldSendInboundLead() throws Exception {
         when(SessionUtils.isCallCentre(any())).thenReturn(true);
 
-        leadService.sendLead(4, mockData, mockRequest, LeadStatus.INBOUND_CALL.name());
+        final List<Object> arguments = new ArrayList<>();
+
+        doAnswer(invocationOnMock -> {
+            arguments.addAll(asList(invocationOnMock.getArguments()));
+            return null;
+        }).when(LeadServiceUtil.class, "sendRequest", any(), any());
+
+        leadService.sendLead(4, mockData, mockRequest, LeadStatus.INBOUND_CALL.name(),"ctm");
         verifyStatic(times(1));
         LeadServiceUtil.sendRequest(any(), any());
+
+        assertEquals(LeadStatus.INBOUND_CALL, ((LeadRequest)arguments.get(0)).getStatus());
+    }
+
+    @Test
+    public void callcentreShouldSendReturnCli() throws Exception {
+        when(SessionUtils.isCallCentre(any())).thenReturn(true);
+
+        final List<Object> arguments = new ArrayList<>();
+
+        doAnswer(invocationOnMock -> {
+            arguments.addAll(asList(invocationOnMock.getArguments()));
+            return null;
+        }).when(LeadServiceUtil.class, "sendRequest", any(), any());
+
+        leadService.sendLead(4, mockData, mockRequest, LeadStatus.RETURN_CLI.name(),"ctm");
+        verifyStatic(times(1));
+        LeadServiceUtil.sendRequest(any(), any());
+
+        assertEquals(LeadStatus.RETURN_CLI, ((LeadRequest)arguments.get(0)).getStatus());
+
     }
 }

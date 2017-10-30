@@ -35,12 +35,16 @@ public class Info {
 
     private Integer rank;
 
+    private Integer popularProductsRank;
+
     private String providerName;
 
     @JsonProperty("OtherProductFeatures")
     private JsonNode otherProductFeatures;
 
     private String situationFilter;
+
+    private Boolean popularProduct;
 
     public String getTrackCode() {
         return trackCode;
@@ -168,5 +172,21 @@ public class Info {
 
     public void setSituationFilter(String situationFilter) {
         this.situationFilter = situationFilter;
+    }
+
+    public Boolean getPopularProduct() {
+        return popularProduct;
+    }
+
+    public void setPopularProduct(Boolean popularProduct) {
+        this.popularProduct = popularProduct;
+    }
+
+    public Integer getPopularProductsRank() {
+        return popularProductsRank;
+    }
+
+    public void setPopularProductsRank(Integer popularProductsRank) {
+        this.popularProductsRank = popularProductsRank;
     }
 }

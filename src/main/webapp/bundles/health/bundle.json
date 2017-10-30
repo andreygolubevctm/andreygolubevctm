@@ -1,6 +1,7 @@
 {
   "brandCodes": [
-    "ctm"
+    "ctm",
+    "wfdd"
   ],
   "dependencies": [
     "shared/journeyEngine/v2",
@@ -48,6 +49,7 @@
     "shared/healthPyrrCampaign",
     "shared/reward",
     "shared/affiliateProperties",
-    "shared/fields"
+    "shared/fields",
+    "shared/competition"
   ]
 }

@@ -19,7 +19,6 @@
 <c:set var="calcSequenceSUFF" value="/calcSequence" />
 <c:set var="prefix"><c:out value="${rootPath}" escapeXml="true"/></c:set>
 <c:set var="calcSequence" value="${prefix}${calcSequenceSUFF}" />
-
 <c:set var="calcSequence" value="${data[calcSequence]}" />
 
 <c:if test="${empty transactionId}">
@@ -202,4 +201,11 @@
 			${logger.error('BPEMAIL No matching vertical to send email to user: {} {}', log:kv('transactionId', transactionId), log:kv('verticalType', pageSettings.getVerticalCode()))}
 		</c:otherwise>
 	</c:choose>
+
+	<c:if test="${pageSettings.getVerticalCode() == 'health' || pageSettings.getVerticalCode() == 'car'}">
+		<jsp:forward page="/spring/marketing-automation/sendEmail.json" />
+	</c:if>
+
+
+
 </c:if>

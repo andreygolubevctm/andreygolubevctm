@@ -215,10 +215,12 @@ public class ResponseAdapterV2 {
         price.setText(formatCurrency(payableAmount, true, true) + (hasDiscount ? "*" : ""));
         price.setValue(payableAmount);
 
+        //If changing/remove span tag underneath, make sure to change HealthModelTranslator premiumlabel translation accordingly.
         price.setLhcfreepricing("excl " + formatCurrency(lhcAmount, true, true) + " LHC<span/> inc " +
                 rebateValue + " Govt Rebate");
 
         price.setRebateValue(rebateValue);
+
         price.setBase(formatCurrency(quotePrice.getBasePremium(), true, true));
         price.setBaseAndLHC(formatCurrency(quotePrice.getBaseAndLHC(), true, true));
 
@@ -291,6 +293,8 @@ public class ResponseAdapterV2 {
         info.setFundCode(otherInfoProperties.get("FundCode"));
         info.setProductType(otherInfoProperties.get("ProductType"));
         info.setState(otherInfoProperties.get("State"));
+        info.setPopularProduct(responseInfo.getPopularProduct());
+        info.setPopularProductsRank(responseInfo.getPopularProductRank());
         return info;
     }
 }
