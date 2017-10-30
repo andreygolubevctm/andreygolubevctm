@@ -101,7 +101,6 @@
 			var $el = $(this),
 			tabIndex = $el.attr('data-clt-index');
 			log("[coverleveltabs] click", tabIndex);
-			$('[data-reset-filter-index="' + tabIndex + '"]').click();
 
 			if(tabIndex === '' || settings.activeTabIndex === tabIndex) {
 				return;
@@ -126,6 +125,7 @@
 				settings.activeTabSet[tabIndex].filter();
 				$el.siblings().removeClass('active').end().addClass('active');
 				settings.activeTabIndex = tabIndex;
+                Results.model.isBasicTravelCover === false;
 				setRankingFilter(settings.activeTabSet[tabIndex].rankingFilter);
 				meerkat.messaging.publish(moduleEvents.CHANGE_COVER_TAB, {
 					activeTab: getRankingFilter()
@@ -249,7 +249,7 @@
 			// reset filters
 			resetFilters += '<div class="dropdown-item">';
 			resetFilters += 	'<div class="radio">';
-			resetFilters += 		'<input type="radio" name="reset-filters-radio-group" id="reset_filter_' + coverTypeValue + '" class="radioButton-custom  radio" data-reset-filter-index="' + i +'" value="' + coverTypeValue + '"' + (tab.defaultTab === true ? 'checked' : '') +'>';
+			resetFilters += 		'<input type="radio" name="reset-filters-radio-group" id="reset_filter_' + coverTypeValue + '" class="radioButton-custom  radio" data-reset-filter-index="' + i +'" value="' + coverTypeValue + '" data-ranking-filter="' + tab.rankingFilter +'">';
 			resetFilters += 		'<label for="reset_filter_' + coverTypeValue + '">' + tab.label.replace('<span class=\'hidden-xs\'>Cover</span>', '') + '</label>';
 			resetFilters += 	'</div>';
             resetFilters += '</div>';
@@ -315,7 +315,6 @@
             settings.activeTabIndex = -1;
             $(this).siblings().removeClass('active').end().addClass('active');
             $('.navbar-cover-text').empty().html('Showing ' + Results.model.travelFilteredProductsCount + ' custom plans');
-            $('input[name="reset-filters-radio-group"]').prop('checked', false);
             Results.model.travelResultFilter(true, true);
 		});
 	}

@@ -248,6 +248,7 @@ var ResultsModel = {
             MEDICAL: 20000000
         };
         Results.model.travelFilteredProductsCount = 0;
+        Results.model.isBasicTravelCover = false;
 	},
 
 	flush: function(){
@@ -745,13 +746,23 @@ var ResultsModel = {
                     }
                 });
 
-                if ((_filters.EXCESS <= _modelFilters.EXCESS) &&
-                    (_filters.LUGGAGE >= _modelFilters.LUGGAGE) &&
-                    (_filters.CXDFEE >= _modelFilters.CXDFEE) &&
-                    (_filters.MEDICAL >= _modelFilters.MEDICAL) &&
-                    (_modelFilters.PROVIDERS.indexOf(product.serviceName) == -1)) {
-                    finalProducts.push(product);
-                }
+                if (Results.model.isBasicTravelCover === true) {
+                    if ((_filters.EXCESS <= _modelFilters.EXCESS) &&
+						((_filters.LUGGAGE < _modelFilters.LUGGAGE) ||
+                        (_filters.CXDFEE < _modelFilters.CXDFEE) ||
+                        (_filters.MEDICAL < _modelFilters.MEDICAL) ||
+                        (_modelFilters.PROVIDERS.indexOf(product.serviceName) == -1))) {
+                        finalProducts.push(product);
+                    }
+				} else {
+                    if ((_filters.EXCESS <= _modelFilters.EXCESS) &&
+                        (_filters.LUGGAGE >= _modelFilters.LUGGAGE) &&
+                        (_filters.CXDFEE >= _modelFilters.CXDFEE) &&
+                        (_filters.MEDICAL >= _modelFilters.MEDICAL) &&
+                        (_modelFilters.PROVIDERS.indexOf(product.serviceName) == -1)) {
+                        finalProducts.push(product);
+                    }
+				}
 			}
 		 });
 

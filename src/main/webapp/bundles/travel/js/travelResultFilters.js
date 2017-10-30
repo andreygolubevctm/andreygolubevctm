@@ -56,9 +56,13 @@
         $('.dropdown').on('show.bs.dropdown', function () {
             $(this).find(".icon").removeClass("icon-angle-down").addClass("icon-angle-up");
             $('input[name="reset-filters-radio-group"]').change(function () {
-                var id = $(this).data('reset-filter-index');
-                $('[data-clt-index="' + id + '"]').click();
-                $('[data-clt-index="' + id + '"]').siblings().removeClass('active').end().addClass('active');
+                var coverType = $(this).data('ranking-filter');
+                if (coverType == 'B') {
+                    Results.model.isBasicTravelCover = true;
+                } else {
+                    Results.model.isBasicTravelCover = false;
+                }
+                _updateTravelResultsByCoverType(coverType);
             });
         });
 
@@ -97,7 +101,63 @@
         Results.model.travelFilters = _filters;
         Results.model.travelResultFilter(true, true);
         meerkat.modules.coverLevelTabs.buildCustomTab();
+        Results.model.isBasicTravelCover = false;
         $('input[name="reset-filters-radio-group"]').prop('checked', false);
+    }
+
+    /**
+     * update travel results by cover type
+     * @param cover - cover type input
+     * @private
+     */
+    function _updateTravelResultsByCoverType(cover) {
+        var _coverTypeValues = {
+            C: {
+                LUGGAGE: 5000,
+                CXDFEE: 20000,
+                MEDICAL: 20000000
+            },
+            M: {
+                LUGGAGE: 2500,
+                CXDFEE: 5000,
+                MEDICAL: 10000000
+            },
+            B: {
+                LUGGAGE: 2500,
+                CXDFEE: 5000,
+                MEDICAL: 10000000
+            }
+        };
+
+        var _filters = Results.model.travelFilters;
+        _filters.LUGGAGE = _coverTypeValues[cover].LUGGAGE;
+        _filters.CXDFEE = _coverTypeValues[cover].CXDFEE;
+        _filters.MEDICAL = _coverTypeValues[cover].MEDICAL;
+
+        // update luggage filter
+        $('input[name="luggageRangeSlider"]').val(_filters.LUGGAGE);
+        $('.luggage-range-value').empty().text('$' + Number(_filters.LUGGAGE).toLocaleString('en'));
+
+        // update cancellation filter
+        $('input[name="cancellationRangeSlider"]').val(_filters.CXDFEE);
+        if (Number(_filters.CXDFEE) == 30000) {
+            $('.cancellation-range-value').empty().text('Unlimited');
+        } else {
+            $('.cancellation-range-value').empty().text('$' + Number(_filters.CXDFEE).toLocaleString('en'));
+        }
+
+        // update overseas medical filter
+        $('input[name="overseasMedicalRangeSlider"]').val(_filters.MEDICAL);
+        if (Number(_filters.MEDICAL) == 50000000) {
+            $('.overseas-medical-range-value').empty().text('Unlimited');
+        } else {
+            $('.overseas-medical-range-value').empty().text('$' + Number(_filters.MEDICAL / 1000000) + ' million');
+        }
+
+        Results.model.travelFilters = _filters;
+        Results.model.travelFilters = _filters;
+        Results.model.travelResultFilter(true, true);
+        meerkat.modules.coverLevelTabs.buildCustomTab();
     }
 
     /**
