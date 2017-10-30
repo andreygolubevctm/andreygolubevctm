@@ -245,7 +245,8 @@ var ResultsModel = {
             EXCESS: 200,
             LUGGAGE: 5000,
             CXDFEE: 20000,
-            MEDICAL: 20000000
+            MEDICAL: 20000000,
+            PROVIDERS: []
         };
         Results.model.travelFilteredProductsCount = 0;
         Results.model.isBasicTravelCover = false;

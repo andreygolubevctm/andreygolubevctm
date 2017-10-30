@@ -62,6 +62,31 @@
         $('.dropdown').on('hide.bs.dropdown', function () {
             $(this).find(".icon").removeClass("icon-angle-up").addClass("icon-angle-down");
         });
+
+        // toggle brands select all/none
+        $('.brands-select-toggle').click(function () {
+            var _providers = [];
+
+            if ($(this).data('brands-toggle') == 'none') {
+                $('[data-provider-code]').each(function (key, provider) {
+                   _providers.push($(provider).data('provider-code'));
+                   $(provider).prop('checked', false);
+                });
+                Results.model.travelFilters.PROVIDERS = _providers;
+                $(this).data('brands-toggle', 'all');
+                $(this).empty().text('Select all');
+            } else {
+                Results.model.travelFilters.PROVIDERS = [];
+                $('[data-provider-code]').prop('checked', true);
+                $(this).data('brands-toggle', 'none');
+                $(this).empty().text('Select none');
+            }
+
+            Results.model.isBasicTravelCover = false;
+            Results.model.travelResultFilter(true, true);
+            meerkat.modules.coverLevelTabs.buildCustomTab();
+            $('input[name="reset-filters-radio-group"]').prop('checked', false);
+        });
     }
 
     /**
@@ -91,9 +116,9 @@
                 break;
         }
         Results.model.travelFilters = _filters;
+        Results.model.isBasicTravelCover = false;
         Results.model.travelResultFilter(true, true);
         meerkat.modules.coverLevelTabs.buildCustomTab();
-        Results.model.isBasicTravelCover = false;
         $('input[name="reset-filters-radio-group"]').prop('checked', false);
     }
 
