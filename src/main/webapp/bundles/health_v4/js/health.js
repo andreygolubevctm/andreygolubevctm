@@ -433,11 +433,6 @@
                     meerkat.modules.transactionId.getNew(3);
                 }
 
-                // Unpin pinned product on results page leave
-                if (Results.getPinnedProduct()) {
-                    Results.unpinProduct(Results.getPinnedProduct().productId);
-                }
-
                 meerkat.modules.healthResults.resetCallCentreText();
             }
         };

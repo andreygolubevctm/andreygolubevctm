@@ -56,24 +56,13 @@
 
     function _eventSubscriptions() {
         $elements.button.on('click', function() {
-            var popularProducts = $(this).attr('data-popular-products'),
-                delayResultsGet = 0;
+            var popularProducts = $(this).attr('data-popular-products');
 
             if (popularProducts === 'Y' && !_tagShown) _showTag();
 
-            // if pinned product on xs then unpin the product
-            if (Results.getPinnedProduct() && meerkat.modules.deviceMediaState.get() === 'xs') {
-                Results.unpinProduct(Results.getPinnedProduct().productId);
-                delayResultsGet = 1500;
-            }
-
             setPopularProducts(popularProducts);
-
             meerkat.modules.journeyEngine.loadingShow('...updating your quotes...', true);
-
-            _.delay(function() {
-                meerkat.modules.healthResults.get();
-            }, delayResultsGet);
+            meerkat.modules.healthResults.get();
         });
     }
 
