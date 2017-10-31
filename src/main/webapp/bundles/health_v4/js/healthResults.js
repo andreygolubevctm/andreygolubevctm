@@ -810,6 +810,8 @@
             createPremiumsPopOver();
         }
 
+        $(Results.settings.elements.rows).removeClass('extra-margin-top');
+
         if (!productSelectedFromProductCode) {
             if (!_.isEmpty(meerkat.site.loadProductCode)) {
                 // Select product from productCode
@@ -832,6 +834,7 @@
 
         // Highlight selected product and add selected tag
         $(Results.settings.elements.rows)
+            .addClass('extra-margin-top')
             .filter('[data-productId=' + _product.obj.productId + ']')
                 .addClass('selected')
                 .prepend('<div class="result-product-tag">Selected product</div>');
