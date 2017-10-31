@@ -218,10 +218,6 @@
       .transition(~"opacity ease-in-out .25s");
     }
 
-    &.extra-margin-top {
-      margin-top: 26px;
-    }
-
     &:hover .display-on-hover {
       .opacity(1);
     }
@@ -273,7 +269,11 @@
       }
     }
 
-    .result-pinned-product-tag {
+    &.selected {
+      border-color: @results-border-color-pinned;
+    }
+
+    .result-product-tag {
       display: block;
       background-color: @results-border-color-pinned;
       color: #fff;

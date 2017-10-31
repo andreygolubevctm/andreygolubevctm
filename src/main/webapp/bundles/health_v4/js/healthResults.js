@@ -70,7 +70,7 @@
                 label: "per week"
             }
         ],
-        productPinnedFromProductCode = false;
+        productSelectedFromProductCode = false;
 
 
     function initPage() {
@@ -91,7 +91,7 @@
         // note: this is assignment within an if condition. succeeds if a product id is passed/assigned
         if ((pinnedProductId = passedProductId)) {
             Results.pinProduct(pinnedProductId, function (productId, $pinnedResultRow) {
-                $pinnedResultRow.prepend('<div class="result-pinned-product-tag">Pinned product</div>');
+                $pinnedResultRow.prepend('<div class="result-product-tag">Pinned product</div>');
                 $pinnedResultRow.addClass('pinned currentPage').removeClass('not-pinned').css({
                     left: 'auto',
                     top: 'auto'
@@ -551,7 +551,7 @@
             var state = eventObject.state,
                 previousState = eventObject.previousState;
             // Going between XS and other breakpoints causes issues because of Results.view.stopColumnWidthTracking
-            var allowsPins = ((state === 'lg' || state === 'md') && previousState !== 'xs' || productPinnedFromProductCode);
+            var allowsPins = (state === 'lg' || state === 'md') && previousState !== 'xs';
             var prevAnimationState = Results.settings.animation.filter.active;
             Results.settings.animation.filter.active = false;
             if (!allowsPins) {
@@ -805,40 +805,48 @@
         if (meerkat.modules.deviceMediaState.get() === "xs") {
             startColumnWidthTracking();
         }
+
         if (meerkat.site.isCallCentreUser) {
             createPremiumsPopOver();
         }
 
-        if (!productPinnedFromProductCode) {
-            _pinProductFromLoadedProductCode();
-        }
-    }
+        if (!productSelectedFromProductCode) {
+            if (!_.isEmpty(meerkat.site.loadProductCode)) {
+                // Select product from productCode
+                _selectProductFromProductCode(meerkat.site.loadProductCode);
 
-    // Pin product if productId loaded from brochure Email
-    function _pinProductFromLoadedProductCode() {
-        if (meerkat.site.loadProductCode.length > 0) {
-            var loadedProductId = _getProductIdFromProductCode(meerkat.site.loadProductCode);
-
-            if (loadedProductId.length > 0) {
-                _pinProductHelper(loadedProductId);
-
-                $(Results.settings.elements.rows).toggleClass('extra-margin-top', meerkat.modules.deviceMediaState.get() === 'xs');
-                productPinnedFromProductCode = true;
+                productSelectedFromProductCode = true;
             }
         }
     }
 
-    // Gets the productId only if the relevant product code exists in the returned results set
-    function _getProductIdFromProductCode(loadedProductCodeStr){
-        var returnStr = "";
-        if (Results.getReturnedResults().length > 0) {
-            for (var i = 0; i < Results.getReturnedResults().length; i++)  {
-                if (Results.getReturnedResults()[i].info.productCode === loadedProductCodeStr){
-                    return Results.getReturnedResults()[i].productId;
-                }
-            }
+    function _selectProductFromProductCode(productCode) {
+        var _product = _getObjAndIndex(Results.getReturnedResults(), function filterProductCode(element) {
+                return element.info.productCode === productCode;
+            });
+
+        if (_.isUndefined(_product.obj)) return;
+
+        var pageMeasurements = Results.pagination.getPageMeasurements(),
+            paginationPage = Math.ceil(_product.index / pageMeasurements.columnsPerPage);
+
+        // Highlight selected product and add selected tag
+        $(Results.settings.elements.rows)
+            .filter('[data-productId=' + _product.obj.productId + ']')
+                .addClass('selected')
+                .prepend('<div class="result-product-tag">Selected product</div>');
+
+        // Goto pagination page
+        if (paginationPage > 1) {
+            Results.pagination.gotoPage(paginationPage);
         }
-        return returnStr;
+    }
+
+    function _getObjAndIndex(arr, cb) {
+        return {
+            obj: arr.find(cb),
+            index: arr.findIndex(cb) + 1
+        };
     }
 
     function createDiscountPopOver() {
