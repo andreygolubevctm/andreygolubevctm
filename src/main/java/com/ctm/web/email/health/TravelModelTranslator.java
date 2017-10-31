@@ -70,7 +70,7 @@ public class TravelModelTranslator implements EmailTranslator {
         emailParameters.put(EmailUrlService.TRANSACTION_ID, Long.toString(transactionId));
         emailParameters.put(EmailUrlService.HASHED_EMAIL, emailDetails.getHashedEmail());
         emailParameters.put(EmailUrlService.STYLE_CODE_ID, Integer.toString(pageSettings.getBrandId()));
-        emailParameters.put(EmailUrlService.EMAIL_TOKEN_TYPE, "bestprice");
+        emailParameters.put(EmailUrlService.EMAIL_TOKEN_TYPE, EMAIL_TYPE);
         emailParameters.put(EmailUrlService.EMAIL_TOKEN_ACTION, "load");
         emailParameters.put(EmailUrlService.VERTICAL, "travel");
         emailParameters.put(EmailUrlService.TRAVEL_POLICY_TYPE, (String) data.get("travel/policyType"));
