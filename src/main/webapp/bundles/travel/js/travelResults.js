@@ -10,7 +10,7 @@
 	};
 	var $component, //Stores the jQuery object for the component group
 	previousBreakpoint,
-	best_price_count = 5, price_log_count = 10,
+	best_price_count = 10, price_log_count = 10,
 	needToBuildFeatures = false,
 	initialised = false;
 

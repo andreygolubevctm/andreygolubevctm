@@ -202,7 +202,7 @@
 		</c:otherwise>
 	</c:choose>
 
-	<c:if test="${pageSettings.getVerticalCode() == 'health' || pageSettings.getVerticalCode() == 'car'}">
+	<c:if test="${pageSettings.getVerticalCode() == 'health' || pageSettings.getVerticalCode() == 'car' || pageSettings.getVerticalCode() == 'travel'}">
 		<jsp:forward page="/spring/marketing-automation/sendEmail.json" />
 	</c:if>
 

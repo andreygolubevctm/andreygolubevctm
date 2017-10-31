@@ -51,7 +51,6 @@ public class HealthModelTranslator implements EmailTranslator {
     private static final String HEALTH_UTM_SOURCE = "health_quote_";
     private static final String UTM_MEDIUM = "email";
     private static final String CAMPAIGN = "health_quote";
-    private static final String EMAIL_TYPE = "bestprice";
     private static final String ACTION_UNSUBSCRIBE = "unsubscribe";
     private static final String ACTION_LOAD = "load";
 

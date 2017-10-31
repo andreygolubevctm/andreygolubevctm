@@ -2,6 +2,7 @@ package com.ctm.web.email;
 
 import com.ctm.web.email.car.CarEmailModel;
 import com.ctm.web.email.health.HealthEmailModel;
+import com.ctm.web.email.travel.TravelEmailModel;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
@@ -63,4 +64,5 @@ public class EmailRequest {
 
     private HealthEmailModel healthEmailModel;
     private CarEmailModel carEmailModel;
+    private TravelEmailModel travelEmailModel;
 }
