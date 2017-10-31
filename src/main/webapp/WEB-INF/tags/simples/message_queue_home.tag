@@ -56,10 +56,15 @@
 </div>
 
 <div class="simples-splashpage-item hidden">
-	<simples:dialogue id="77" vertical="health" className="simples-dialog-inbound" />
-	<simples:clifilter_add />
+	<div class="simples-dialogue">
+		<simples:dialogue id="77" vertical="health" className="simples-dialog-inbound" />
+		<simples:clifilter_add filterStyleCodeId="1"/>
+	</div>
+	<div class="simples-dialogue">
+		<simples:dialogue id="87" vertical="health" className="simples-dialog-inbound wfdd" />
+		<simples:clifilter_add filterStyleCodeId="9"/>
+	</div>
 </div>
-
 <div class="simples-message-details-container">
 
 </div>

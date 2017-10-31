@@ -6,7 +6,8 @@
         successMsgElement = $('.simples-clifilter-pane-body .alert.alert-danger'),
         baseUrl = '';
 
-    var $targetForm = false;
+    var $targetForm = false,
+        $styleCode = false;
 
     function init() {
         $(document).ready(function() {
@@ -18,7 +19,7 @@
 
             // Event: CLI Filter form submit (uses #dynamic_dom because that is static on the page so retains the event binds)
             $('.add-to-cli-filter').on('click', '[data-provide="simples-clifilter-submit"]', function(event) {
-                performSubmit();
+                performSubmit($(this).attr("data-filter-stylecode-id"));
             });
 
         });
@@ -28,29 +29,31 @@
         data = data || {};
 
         var errorMsgElement = $('.simples-clifilter-pane-body .alert.alert-danger');
-        var successMsgElement = $('.simples-clifilter-pane-body .alert.alert-danger');
+        var successMsgElement = $('.simples-clifilter-pane-body .alert.alert-success');
 
         errorMsgElement.addClass('hidden').html('');
         successMsgElement.addClass('hidden').html('');
 
         if (data.errorMessage && data.errorMessage.length > 0) {
             // Error message has been specified elsewhere
-            $('.simples-clifilter-pane-body .alert.alert-danger').html(data.errorMessage).removeClass('hidden');
+            $('.simples-clifilter-pane-body .alert.alert-danger.alert-danger-' + $styleCode).html(data.errorMessage).removeClass('hidden');
         }
         if (data.successMessage && data.successMessage.length > 0) {
-            $('.simples-clifilter-pane-body .alert.alert-success').html(data.successMessage).removeClass('hidden');
+            $('.simples-clifilter-pane-body .alert.alert-success.alert-success-' + $styleCode).html(data.successMessage).removeClass('hidden');
         }
 
     }
 
-    function performSubmit() {
+    function performSubmit(filterStylecodeId) {
 
         //Setup target form
-        $targetForm = $('.add-to-cli-filter #simples-add-clifilter');
+        $targetForm = $('.add-to-cli-filter #simples-add-clifilter-' + filterStylecodeId);
+        $styleCode = filterStylecodeId;
 
         if (validateForm()) {
             var formData = {
-                value: $targetForm.find('input[name="phone"]').val().trim().replace(/\s+/g, '')
+                value: $targetForm.find('input[name="phone"]').val().trim().replace(/\s+/g, ''),
+                styleCodeId: filterStylecodeId
             };
 
             var url = baseUrl + 'spring/rest/simples/clifilter/add.json',

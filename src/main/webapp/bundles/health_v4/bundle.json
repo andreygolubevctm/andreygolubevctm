@@ -50,6 +50,7 @@
     "shared/reward",
     "shared/bootstrapSwitch",
     "shared/affiliateProperties",
-    "shared/competition"
+    "shared/competition",
+    "shared/mobileFiltersMenu"
   ]
 }

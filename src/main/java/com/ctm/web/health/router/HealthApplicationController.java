@@ -232,7 +232,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
 
             sendEmail(request, data, vertical, brand, dataBucket);
 
-            leadService.sendLead(4, dataBucket, request, "SOLD");
+            leadService.sendLead(4, dataBucket, request, "SOLD", brand.getCode());
 
             // Check outcome was ok --%>
             LOGGER.info("Transaction has been set to confirmed. {},{}", kv("transactionId", data.getTransactionId()), kv("confirmationID", confirmationId));
@@ -281,7 +281,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
                 recordTouch(request, data, productId, Touch.TouchType.FAIL);
             }
 
-            leadService.sendLead(4, getDataBucket(request, data.getTransactionId()), request, "PENDING");
+            leadService.sendLead(4, getDataBucket(request, data.getTransactionId()), request, "PENDING",brand.getCode());
         }
 
         LOGGER.debug("Health application complete. {},{}", kv("transactionId", data.getTransactionId()), kv("response", result));
