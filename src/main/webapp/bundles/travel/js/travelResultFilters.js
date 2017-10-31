@@ -49,11 +49,6 @@
             $(this).find(".icon").removeClass("icon-angle-down").addClass("icon-angle-up");
             $('input[name="reset-filters-radio-group"]').change(function () {
                 var coverType = $(this).data('ranking-filter');
-                if (coverType == 'B') {
-                    Results.model.isBasicTravelCover = true;
-                } else {
-                    Results.model.isBasicTravelCover = false;
-                }
                 _updateTravelResultsByCoverType(coverType);
             });
         });
@@ -134,9 +129,9 @@
                 MEDICAL: 10000000
             },
             B: {
-                LUGGAGE: 2500,
-                CXDFEE: 5000,
-                MEDICAL: 10000000
+                LUGGAGE: 0,
+                CXDFEE: 0,
+                MEDICAL: 5000000
             }
         };
 

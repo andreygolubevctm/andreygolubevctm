@@ -250,7 +250,6 @@ var ResultsModel = {
             PROVIDERS: []
         };
         Results.model.travelFilteredProductsCount = 0;
-        Results.model.isBasicTravelCover = false;
 	},
 
 	flush: function(){
@@ -719,23 +718,23 @@ var ResultsModel = {
 	},
 
     travelResultFilter: function (renderView, doNotGoToStart) {
-		 var initialProducts = Results.model.sortedProducts.slice();
-		 var finalProducts = [];
-		 var _filters = {
-		 	 EXCESS: 0,
-             LUGGAGE: 0,
-             CXDFEE: 0,
-             MEDICAL: 0
-		 };
-		 var _modelFilters = Results.model.travelFilters;
+        var initialProducts = Results.model.sortedProducts.slice();
+        var finalProducts = [];
+        var _filters = {
+            EXCESS: 0,
+            LUGGAGE: 0,
+            CXDFEE: 0,
+            MEDICAL: 0
+        };
+        var _modelFilters = Results.model.travelFilters;
 
-		 $.each(initialProducts, function (productIndex, product) {
-		 	if (product.available == 'Y' && $.isArray(product.benefits) && product.benefits.length !== 0) {
+        $.each(initialProducts, function (productIndex, product) {
+            if (product.available == 'Y' && $.isArray(product.benefits) && product.benefits.length !== 0) {
                 $.each(product.benefits, function (index, benefit) {
-					switch (benefit.type) {
-						case 'EXCESS':
-							_filters.EXCESS = benefit.value;
-							break;
+                    switch (benefit.type) {
+                        case 'EXCESS':
+                            _filters.EXCESS = benefit.value;
+                            break;
                         case 'LUGGAGE':
                             _filters.LUGGAGE = benefit.value;
                             break;
@@ -748,45 +747,36 @@ var ResultsModel = {
                     }
                 });
 
-                if (Results.model.isBasicTravelCover === true) {
-                    if ((_filters.EXCESS <= _modelFilters.EXCESS) &&
-						((_filters.LUGGAGE < _modelFilters.LUGGAGE) ||
-                        (_filters.CXDFEE < _modelFilters.CXDFEE) ||
-                        (_filters.MEDICAL < _modelFilters.MEDICAL) ||
-                        (_modelFilters.PROVIDERS.indexOf(product.serviceName) == -1))) {
-                        finalProducts.push(product);
-                    }
-				} else {
-                    if ((_filters.EXCESS <= _modelFilters.EXCESS) &&
-                        (_filters.LUGGAGE >= _modelFilters.LUGGAGE) &&
-                        (_filters.CXDFEE >= _modelFilters.CXDFEE) &&
-                        (_filters.MEDICAL >= _modelFilters.MEDICAL) &&
-                        (_modelFilters.PROVIDERS.indexOf(product.serviceName) == -1)) {
-                        finalProducts.push(product);
-                    }
-				}
-			}
-		 });
+
+                if ((_filters.EXCESS <= _modelFilters.EXCESS) &&
+                    (_filters.LUGGAGE >= _modelFilters.LUGGAGE) &&
+                    (_filters.CXDFEE >= _modelFilters.CXDFEE) &&
+                    (_filters.MEDICAL >= _modelFilters.MEDICAL) &&
+                    (_modelFilters.PROVIDERS.indexOf(product.serviceName) == -1)) {
+                    finalProducts.push(product);
+                }
+            }
+        });
 
         Results.model.filteredProducts = finalProducts;
         Results.model.travelFilteredProductsCount = finalProducts.length;
 
-        if( typeof Compare !== "undefined" ) Compare.applyFilters();
+        if (typeof Compare !== "undefined") Compare.applyFilters();
 
-        if( renderView !== false ) {
-            if(Results.getFilteredResults().length === 0){
+        if (renderView !== false) {
+            if (Results.getFilteredResults().length === 0) {
                 Results.view.showNoFilteredResults();
                 $(Results.settings.elements.resultsContainer).trigger("noFilteredResults");
-            }else{
+            } else {
                 Results.view.filter();
-                if (doNotGoToStart === true) { return; }
+                if (doNotGoToStart === true) {
+                    return;
+                }
                 Results.pagination.gotoStart(true);
             }
 
         }
-
-        Results.model.isBasicTravelCover = false;
-	},
+    },
 
 	filterByValue: function(value, options){
 

@@ -125,7 +125,6 @@
 				settings.activeTabSet[tabIndex].filter();
 				$el.siblings().removeClass('active').end().addClass('active');
 				settings.activeTabIndex = tabIndex;
-                Results.model.isBasicTravelCover === false;
 				setRankingFilter(settings.activeTabSet[tabIndex].rankingFilter);
 				meerkat.messaging.publish(moduleEvents.CHANGE_COVER_TAB, {
 					activeTab: getRankingFilter()
@@ -240,17 +239,31 @@
 			var tab = settings.activeTabSet[i],
 				count = counts[tab.rankingFilter] || null;
 			var coverTypeValue = tab.label.replace('<span class=\'hidden-xs\'>Cover</span>', '').toLowerCase().trim().replace(' ', '_');
+			var coverTypeText = tab.label.replace('<span class=\'hidden-xs\'>Cover</span>', '');
 
 			// results headers
 			out += '<div class="col-xs-' + xsCols + ' text-center clt-action ' + (tab.defaultTab === true ? 'active' : 'hidden-xs') + '" data-clt-index="' + i + '" data-ranking-filter="' + tab.rankingFilter +'">';
 			out += (tab.label.replace('Cover', '')) + (state !== 'xs' && state !== 'sm' && tab.showCount === true && count !== null ? ' <span class="tabCount">(' + (count) + ')</span>' : '');
 			out += '</div>';
 
+			// custom code due to requirement
+			switch (coverTypeValue) {
+				case 'mid_range':
+                    coverTypeValue = 'comprehensive_' + coverTypeValue;
+                    coverTypeText = 'Comprehensive & <br>Mid Range';
+                    break;
+
+				case 'basic':
+					coverTypeValue = 'all';
+					coverTypeText = 'All';
+					break;
+			}
+
 			// reset filters
 			resetFilters += '<div class="dropdown-item">';
 			resetFilters += 	'<div class="radio">';
 			resetFilters += 		'<input type="radio" name="reset-filters-radio-group" id="reset_filter_' + coverTypeValue + '" class="radioButton-custom  radio" data-reset-filter-index="' + i +'" value="' + coverTypeValue + '" data-ranking-filter="' + tab.rankingFilter +'">';
-			resetFilters += 		'<label for="reset_filter_' + coverTypeValue + '">' + tab.label.replace('<span class=\'hidden-xs\'>Cover</span>', '') + '</label>';
+			resetFilters += 		'<label for="reset_filter_' + coverTypeValue + '">' + coverTypeText + '</label>';
 			resetFilters += 	'</div>';
             resetFilters += '</div>';
 
