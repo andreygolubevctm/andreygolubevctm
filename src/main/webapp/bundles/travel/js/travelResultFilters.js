@@ -191,28 +191,24 @@
      * Update the results as per the excess value
      * @param value - accept the excess value
      */
-    function _updateResultsByExcess(value) {
+    function _updateResultsByExcess (value) {
         Results.model.travelFilters.EXCESS = value;
         meerkat.modules.coverLevelTabs.resetTabResultsCount();
         meerkat.messaging.publish(Results.model.moduleEvents.RESULTS_MODEL_UPDATE_BEFORE_FILTERSHOW);
-        Results.model.filter(true, true);
+        Results.model.travelResultFilter(true, true);
         meerkat.modules.coverLevelTabs.updateTabCounts();
-
-        if ($('[data-travel-filter="custom"]').hasClass('active')) {
-            _displayCustomResults(true);
-        }
     }
 
     /**
      * Display the custom filter results
      * @param customFilter - boolean value for custom filter
-     * @private
      */
     function _displayCustomResults (customFilter) {
         Results.model.travelResultFilter(true, true);
         if (customFilter) {
             $('input[name="reset-filters-radio-group"]').prop('checked', false);
         }
+
         meerkat.modules.coverLevelTabs.buildCustomTab();
     }
 

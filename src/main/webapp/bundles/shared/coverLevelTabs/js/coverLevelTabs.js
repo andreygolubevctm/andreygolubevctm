@@ -284,7 +284,7 @@
      */
 	function updateTabCounts() {
 		var currentTabIndex = 0;
-		$('[data-clt-index]').each(function (key, tab) {
+		$('.hidden-xs [data-clt-index]').each(function (key, tab) {
 			if ($(tab).hasClass('active')) {
 				currentTabIndex = $(tab).data('clt-index');
                 $('.navbar-cover-text').html('Showing ' + counts[settings.activeTabSet[currentTabIndex].rankingFilter] + ' ' + settings.activeTabSet[currentTabIndex].label.toLowerCase().replace('cover', 'plans'));
@@ -293,6 +293,20 @@
 			$(tab).find('.tabCount').empty().html('(' + counts[ranking] + ')');
 		});
 
+		updateCustomTabCount();
+	}
+
+    /**
+	 * Update the custom tab count when results change
+     */
+	function updateCustomTabCount() {
+		if ($('[data-travel-filter="custom"]').length) {
+            $('[data-travel-filter="custom"]').empty().html('Custom (' + Results.model.travelFilteredProductsCount + ')');
+
+            if (settings.activeTabIndex === -1) {
+                meerkat.modules.coverLevelTabs.buildCustomTab();
+            }
+        }
 	}
 
     /**
@@ -419,6 +433,7 @@
 		getDepartingTabJourney: getDepartingTabJourney,
 		buildCustomTab: buildCustomTab,
         updateTabCounts: updateTabCounts,
+        updateCustomTabCount: updateCustomTabCount,
         resetTabResultsCount: resetTabResultsCount
 	});
 
