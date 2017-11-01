@@ -3,7 +3,9 @@
 
         // close dropdown only if outside is clicked
         $('.dropdown-menu').click(function(e) {
-            e.stopPropagation();
+            if (e.target.className !== 'help-icon icon-info') {
+                e.stopPropagation();
+            }
         });
 
         // set the excess default

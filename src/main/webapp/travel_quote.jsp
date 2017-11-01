@@ -69,24 +69,24 @@
 							<div class="col-sm-2 text-left">
 								<div class="dropdown-item range-filter">
 									<b>Reset filters</b>
-									<field_v2:help_icon helpId="280" tooltipClassName=""/>
+									<field_v2:help_icon helpId="583" tooltipClassName=""/>
 								</div>
 								<div class="reset-travel-filters"></div>
 							</div>
 							<div class="col-sm-3 text-left">
 								<div class="dropdown-item range-filter">
 									<b>Minimum luggage cover</b>
-									<field_v2:help_icon helpId="280" tooltipClassName=""/>
+									<field_v2:help_icon helpId="580" tooltipClassName=""/>
 								</div>
 								<travel_results_filters:minimum_luggage/>
 								<div class="dropdown-item range-filter">
 									<b>Minimum cancellation cover</b>
-									<field_v2:help_icon helpId="280" tooltipClassName=""/>
+									<field_v2:help_icon helpId="581" tooltipClassName=""/>
 								</div>
 								<travel_results_filters:minimum_cancellation/>
 								<div class="dropdown-item range-filter">
 									<b>Minimum overseas medical cover</b>
-									<field_v2:help_icon helpId="280" tooltipClassName=""/>
+									<field_v2:help_icon helpId="582" tooltipClassName=""/>
 								</div>
 								<travel_results_filters:minimum_overseas_medical/>
 							</div>
