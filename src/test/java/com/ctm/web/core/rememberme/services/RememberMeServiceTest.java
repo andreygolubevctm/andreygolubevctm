@@ -86,7 +86,7 @@ public class RememberMeServiceTest {
     }
 
     @Test
-    public void testRememberMeCookieNotPresent() throws DaoException, ConfigSettingException {
+    public void testRememberMeCookieNotPresent() throws DaoException, ConfigSettingException, GeneralSecurityException {
         final String verticalCode = "health";
         when(request.getCookies()).thenReturn(new Cookie[]{new Cookie("a", "a"), new Cookie("b", "b")});
         PowerMockito.when(SettingsService.getPageSettingsForPage(request, verticalCode)).thenReturn(pageSettings);
