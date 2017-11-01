@@ -242,7 +242,7 @@
 			var coverTypeText = tab.label.replace('<span class=\'hidden-xs\'>Cover</span>', '');
 
 			// results headers
-			out += '<div class="col-xs-' + xsCols + ' text-center clt-action ' + (tab.defaultTab === true ? 'active' : 'hidden-xs') + '" data-clt-index="' + i + '" data-ranking-filter="' + tab.rankingFilter +'">';
+			out += '<div class="col-xs-4 col-sm-' + xsCols + ' text-center clt-action ' + (tab.defaultTab === true ? 'active' : '') + '" data-clt-index="' + i + '" data-ranking-filter="' + tab.rankingFilter +'">';
 			out += (tab.label.replace('Cover', '')) + (state !== 'xs' && state !== 'sm' && tab.showCount === true && count !== null ? ' <span class="tabCount">(' + (count) + ')</span>' : '');
 			out += '</div>';
 

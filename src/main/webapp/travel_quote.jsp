@@ -107,7 +107,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-xs-5 col-sm-2 clt-trip-filter">
+			<div class="col-xs-5 col-sm-2 clt-trip-filter hidden-xs">
 				<div class="col-xs-12 col-md-5 text-right"><b>Excess</b></div>
 				<div class="col-xs-5 col-md-6 text-left selected-excess-value">
 					<div class="dropdown">
