@@ -34,6 +34,7 @@
     "shared/mobileNavButtons",
     "shared/buttonTileDropdownSelector",
     "shared/leadCapture",
-    "shared/competition"
+    "shared/competition",
+    "shared/addressLookupV2"
   ]
 }
