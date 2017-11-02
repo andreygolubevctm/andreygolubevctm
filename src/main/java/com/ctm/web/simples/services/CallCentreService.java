@@ -92,7 +92,7 @@ public class CallCentreService {
 			redirectUrl.append("&transactionId=").append(transactionId);
 		}
 
-		if(EnvironmentService.needsManuallyAddedBrandCodeParam()){
+		if(EnvironmentService.needsManuallyAddedBrandCodeParamWhiteLabel(brand.getCode(), verticalCode)) {
 			redirectUrl.append("&brandCode=").append(brand.getCode());
 		}
 
