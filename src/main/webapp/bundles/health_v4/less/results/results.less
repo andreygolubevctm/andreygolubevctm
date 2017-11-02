@@ -685,6 +685,22 @@ body {
       right: 0;
       width: 100%;
     }
+
+    &:not(.moreInfoVisible) {
+      .price.premium {
+        .frequency {
+          height: 101px;
+
+          @media (@sm) {
+            height: 108px;
+          }
+
+          @media (@md) {
+            height: 61px;
+          }
+        }
+      }
+    }
   }
 
   &[data-is-single="true"] {
