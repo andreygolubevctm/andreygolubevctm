@@ -106,7 +106,7 @@ public class EmailServiceFactory {
 				generalDao, providerContentService);
 	}
 
-	private static EmailServiceHandler getTravelEmailService(
+	public static EmailServiceHandler getTravelEmailService(
 		PageSettings pageSettings, EmailMode mode, Data data, VerticalType vertical) throws SendEmailException {
 		EmailDetailsService emailDetailsService = createEmailDetailsService(
 				pageSettings, data, vertical, new TravelEmailDetailMappings());

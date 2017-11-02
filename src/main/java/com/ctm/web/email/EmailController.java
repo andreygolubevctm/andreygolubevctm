@@ -22,6 +22,7 @@ import com.ctm.web.core.utils.RequestUtils;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.email.health.CarModelTranslator;
 import com.ctm.web.email.health.HealthModelTranslator;
+import com.ctm.web.email.health.TravelModelTranslator;
 import com.ctm.web.factory.EmailServiceFactory;
 import com.ctm.web.health.email.mapping.HealthEmailDetailMappings;
 import org.slf4j.Logger;
@@ -55,6 +56,8 @@ public class EmailController {
     private EmailClient emailClient;
     @Autowired
     private CarModelTranslator carModelTranslator;
+    @Autowired
+    private TravelModelTranslator travelModelTranslator;
 
     private static final String CID = "em:cm:health:300994";
     private static final String ET_RID = "172883275";
@@ -65,25 +68,23 @@ public class EmailController {
     private static final String ACTION_UNSUBSCRIBE = "unsubscribe";
 
     @RequestMapping("/sendEmail.json")
-    public void sendEmail(HttpServletRequest request, HttpServletResponse response){
+    public void sendEmail(HttpServletRequest request){
         try {
             Brand brand = ApplicationService.getBrandFromRequest(request);
             String verticalCode = ApplicationService.getVerticalCodeFromRequest(request);
-            if (VerticalType.HEALTH != VerticalType.valueOf(verticalCode) && VerticalType.CAR != VerticalType.valueOf(verticalCode))
+            if (VerticalType.HEALTH != VerticalType.valueOf(verticalCode)
+                    && VerticalType.CAR != VerticalType.valueOf(verticalCode)
+                    && VerticalType.TRAVEL != VerticalType.valueOf(verticalCode))
                 return;
             SessionData sessionData = sessionDataService.getSessionDataFromSession(request);
             EmailRequest emailRequest = new EmailRequest();
 
-            //String transactionId = request.getParameter("transactionId");
             Long transactionId = RequestUtils.getTransactionIdFromRequest(request);
             Data data = sessionData.getSessionDataForTransactionId(transactionId);
             emailRequest.setFirstName(request.getParameter("name"));
             emailRequest.setAddress(request.getParameter("address"));
             emailRequest.setTransactionId(transactionId.toString());
             emailRequest.setBrand(brand.getCode());
-            List<String> quoteRefs = new ArrayList<>();
-            quoteRefs.add(transactionId.toString());
-            emailRequest.setQuoteRefs(quoteRefs);
             EmailTranslator emailTranslator = getEmailTranslator(verticalCode);
             emailTranslator.setVerticalSpecificFields(emailRequest, request, data);
             emailTranslator.setUrls(request, emailRequest, data, verticalCode);
@@ -103,6 +104,9 @@ public class EmailController {
         }
         else if(VerticalType.CAR == verticalType){
             return carModelTranslator;
+        }
+        else if(VerticalType.TRAVEL == verticalType){
+            return travelModelTranslator;
         }
         throw new RuntimeException("Vertical not supported");
     }

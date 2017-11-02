@@ -66,6 +66,9 @@
 
         meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'submitApplication' });
 
+        // Update popular products purchased xpath
+        meerkat.modules.healthPopularProducts.updatePurchased();
+
         try {
 
             Results.updateApplicationEnvironment();
