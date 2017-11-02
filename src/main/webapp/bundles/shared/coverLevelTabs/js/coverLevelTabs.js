@@ -424,6 +424,8 @@
 	 */
 	function resetView(activeTabSet) {
 		log("[coverleveltabs] resetView");
+        $('.navbar-cover-text').empty();
+        $('.clt-trip-filter').hide();
 		$currentTabContainer.empty();
 		hasRunTrackingCall = [];
 		settings.activeTabIndex = false;
