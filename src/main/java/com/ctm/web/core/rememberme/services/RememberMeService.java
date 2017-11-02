@@ -4,6 +4,8 @@ import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.SessionException;
 import com.ctm.web.core.model.session.SessionData;
+
+import com.ctm.web.core.rememberme.model.RememberMeInfo;
 import com.ctm.web.core.security.StringEncryption;
 import com.ctm.web.core.services.EnvironmentService;
 import com.ctm.web.core.services.SessionDataServiceBean;
@@ -116,32 +118,41 @@ public class RememberMeService {
      * Used in health_quote_v2.jsp
      */
     @SuppressWarnings("unused")
-    public boolean hasRememberMe(final HttpServletRequest request,
-                                 final String vertical) throws DaoException, ConfigSettingException, GeneralSecurityException {
+    public RememberMeInfo loadRememberMeDetails(final HttpServletRequest request,
+                                        final String vertical) throws DaoException, ConfigSettingException, GeneralSecurityException {
+
+        RememberMeInfo rememberMeInfo = new RememberMeInfo();
         try {
             if (isRememberMeEnabled(request, vertical)) {
                 Cookie cookie = getRememberMeCookie(request, vertical);
                 if (cookie != null && !cookie.getValue().isEmpty()) {
                     String cookieValue = StringEncryption.decrypt(SECRET_KEY, cookie.getValue());
+                    String transactionId = getTransactionIdFromCookie(vertical, request).orElse(null);
                     if(cookieValue.indexOf(":") > 0){
+
                         String createdTime = cookieValue.substring(cookieValue.indexOf(":")+1,cookieValue.length());
                         LocalDateTime dateTime = LocalDateTime.parse(createdTime);
 
                         Long createdEpochTime = dateTime.atZone(ZoneId.systemDefault()).toEpochSecond();
                         Long currentEpochTime =  LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond();
-                        if(currentEpochTime - createdEpochTime < 1800)
-                            return false;
-                        else
-                            return true;
+                        if(currentEpochTime - createdEpochTime < 1800) {
+                            rememberMeInfo.setUserVisitedInLast30Minutes(true);
+                            loadSessionData(request,vertical,transactionId,getTransactionDetails(transactionId));
+                        }
+                        else {
+                            rememberMeInfo.setUserVisitedInLast30Minutes(false);
+                        }
                     }
+                    rememberMeInfo.setTransactionId(getTransactionIdFromCookie(vertical, request).orElse(null));
+                    rememberMeInfo.setRememberMe(true);
                 }
-                return true;
 
             }
         } catch (GeneralSecurityException e) {
             LOGGER.error("Error retrieving cookie for remember me {}", kv("vertical", vertical), e);
         }
-        return false;
+
+        return rememberMeInfo;
     }
 
     private Cookie getRememberMeCookie(final HttpServletRequest request,
@@ -161,7 +172,10 @@ public class RememberMeService {
         final Cookie cookie = getRememberMeCookie(request, vertical);
         if (cookie !=null && !cookie.getValue().isEmpty()) {
             String value = StringEncryption.decrypt(SECRET_KEY, cookie.getValue());
-            return Optional.ofNullable(value.substring(0,value.indexOf(":")));
+            if(value.indexOf(":") > 0) {
+                return Optional.ofNullable(value.substring(0, value.indexOf(":")));
+            } else
+                return Optional.ofNullable(value);
         }
         return Optional.empty();
     }
