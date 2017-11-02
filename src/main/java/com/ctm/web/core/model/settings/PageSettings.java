@@ -97,7 +97,8 @@ public class PageSettings {
 
 		// In dev environments, check if the hard-coded context (configured in DB) can be overriden by
 		// a feature branch context
-		if (EnvironmentService.needsManuallyAddedBrandCodeParam()
+		// NOTE: Must ensure that brandCode and vertical are set before calling this!!!!
+		if (EnvironmentService.needsManuallyAddedBrandCodeParamWhiteLabel(brandCode, vertical.getType().getCode())
 				&& !setting.equals(EnvironmentService.getContextPath())
 				&& EnvironmentService.getContextPath().regionMatches(0, setting, 0, setting.length()-1)) {
 			return EnvironmentService.getContextPath();
