@@ -92,7 +92,7 @@ public class RememberMeServiceTest {
         when(request.getCookies()).thenReturn(new Cookie[]{new Cookie("a", "a"), new Cookie("b", "b")});
         PowerMockito.when(SettingsService.getPageSettingsForPage(request, verticalCode)).thenReturn(pageSettings);
         when(pageSettings.getSettingAsBoolean("rememberMeEnabled")).thenReturn(true);
-         assertFalse(service.loadRememberMeDetails(request, "health").isRememberMe());
+         assertFalse(service.hasRememberMe(request, "health"));
     }
 
     @Test
@@ -102,7 +102,7 @@ public class RememberMeServiceTest {
         when(request.getCookies()).thenReturn(new Cookie[]{new Cookie("a", "a"), new Cookie(cookieName, "b"), new Cookie("c", "c")});
         PowerMockito.when(SettingsService.getPageSettingsForPage(request, verticalCode)).thenReturn(pageSettings);
         when(pageSettings.getSettingAsBoolean("rememberMeEnabled")).thenReturn(true);
-        assertTrue(service.loadRememberMeDetails(request, "health").isRememberMe());
+        assertTrue(service.hasRememberMe(request, "health"));
     }
 
     @Test
