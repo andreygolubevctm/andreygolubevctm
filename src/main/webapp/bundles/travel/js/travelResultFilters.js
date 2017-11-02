@@ -94,12 +94,18 @@
         switch (filter) {
             case 'LUGGAGE':
                 _filters.LUGGAGE = value;
+                Results.model.travelFilters = _filters;
+                _displayCustomResults(true, true);
                 break;
             case 'CXDFEE':
                 _filters.CXDFEE = value;
+                Results.model.travelFilters = _filters;
+                _displayCustomResults(true, true);
                 break;
             case 'MEDICAL':
                 _filters.MEDICAL = value;
+                Results.model.travelFilters = _filters;
+                _displayCustomResults(true, true);
                 break;
             case 'PROVIDERS':
                 if (_filters.PROVIDERS.indexOf(value) == -1) {
@@ -107,10 +113,10 @@
                 } else {
                     _filters.PROVIDERS.splice(_filters.PROVIDERS.indexOf(value), 1);
                 }
+                Results.model.travelFilters = _filters;
+                _displayCustomResults(false, true);
                 break;
         }
-        Results.model.travelFilters = _filters;
-        _displayCustomResults(true, true);
     }
 
     /**
@@ -177,19 +183,11 @@
                 break;
 
             case 'CXDFEE':
-                if (Number(value) == 30000) {
-                    $('.cancellation-range-value').empty().text('Unlimited');
-                } else {
-                    $('.cancellation-range-value').empty().text('$' + Number(value).toLocaleString('en'));
-                }
+                $('.cancellation-range-value').empty().text('$' + Number(value).toLocaleString('en'));
                 break;
 
             case 'MEDICAL':
-                if (Number(value) == 50000000) {
-                    $('.overseas-medical-range-value').empty().text('Unlimited');
-                } else {
-                    $('.overseas-medical-range-value').empty().text('$' + Number(value / 1000000) + ' million');
-                }
+                $('.overseas-medical-range-value').empty().text('$' + Number(value / 1000000) + ' million');
                 break;
         }
     }

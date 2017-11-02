@@ -278,6 +278,15 @@
 		$('.reset-travel-filters').empty().html(resetFilters);
 		meerkat.modules.travelResultFilters.resetCustomFilters();
 
+		// hide filters for mobile, tablet & AMT
+		if (state == 'xs' ||
+			state == 'sm' ||
+            tabLength == 2
+		) {
+			$('.clt-trip-filter').hide();
+		} else {
+            $('.clt-trip-filter').show();
+		}
 	}
 
     /**

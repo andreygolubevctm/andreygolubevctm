@@ -4,5 +4,5 @@
 </div>
 <div class="dropdown-item">
     <div class="min-range">$0</div>
-    <div class="max-range">Unlimited</div>
+    <div class="max-range">$30,000+</div>
 </div>
