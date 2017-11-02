@@ -717,7 +717,7 @@ var ResultsModel = {
 		}
 	},
 
-    travelResultFilter: function (renderView, doNotGoToStart) {
+    travelResultFilter: function (renderView, doNotGoToStart, matchAllFilters) {
         var initialProducts = Results.model.sortedProducts.slice();
         var finalProducts = [];
         var _filters = {
@@ -747,14 +747,24 @@ var ResultsModel = {
                     }
                 });
 
+				if (matchAllFilters) {
+                    if ((_filters.EXCESS <= _modelFilters.EXCESS) &&
+						((_filters.LUGGAGE >= _modelFilters.LUGGAGE) &&
+                        (_filters.CXDFEE >= _modelFilters.CXDFEE) &&
+                        (_filters.MEDICAL >= _modelFilters.MEDICAL) &&
+                        (_modelFilters.PROVIDERS.indexOf(product.serviceName) == -1))) {
+                        finalProducts.push(product);
+                    }
+				} else {
+                    if ((_filters.EXCESS <= _modelFilters.EXCESS) &&
+						((_filters.LUGGAGE >= _modelFilters.LUGGAGE) ||
+                        (_filters.CXDFEE >= _modelFilters.CXDFEE) ||
+                        (_filters.MEDICAL >= _modelFilters.MEDICAL) ||
+                        (_modelFilters.PROVIDERS.indexOf(product.serviceName) == -1))) {
+                        finalProducts.push(product);
+                    }
+				}
 
-                if ((_filters.EXCESS <= _modelFilters.EXCESS) &&
-                    (_filters.LUGGAGE >= _modelFilters.LUGGAGE) &&
-                    (_filters.CXDFEE >= _modelFilters.CXDFEE) &&
-                    (_filters.MEDICAL >= _modelFilters.MEDICAL) &&
-                    (_modelFilters.PROVIDERS.indexOf(product.serviceName) == -1)) {
-                    finalProducts.push(product);
-                }
             }
         });
 

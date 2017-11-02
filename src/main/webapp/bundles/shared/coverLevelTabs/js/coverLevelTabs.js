@@ -262,7 +262,7 @@
 			// reset filters
 			resetFilters += '<div class="dropdown-item">';
 			resetFilters += 	'<div class="radio">';
-			resetFilters += 		'<input type="radio" name="reset-filters-radio-group" id="reset_filter_' + coverTypeValue + '" class="radioButton-custom  radio" data-reset-filter-index="' + i +'" value="' + coverTypeValue + '" data-ranking-filter="' + tab.rankingFilter +'">';
+			resetFilters += 		'<input type="radio" name="reset-filters-radio-group" id="reset_filter_' + coverTypeValue + '" class="radioButton-custom  radio" data-reset-filter-index="' + i +'" value="' + coverTypeValue + '" data-ranking-filter="' + tab.rankingFilter +'"' + (tab.defaultTab === true ? 'checked' : '') + '>';
 			resetFilters += 		'<label for="reset_filter_' + coverTypeValue + '">' + coverTypeText + '</label>';
 			resetFilters += 	'</div>';
             resetFilters += '</div>';
