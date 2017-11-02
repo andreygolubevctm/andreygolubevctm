@@ -10,7 +10,7 @@
 
 <%-- the following is for testing only --%>
 <c:set var="brandCodeUrl">
-	<c:if test="${environmentService.needsManuallyAddedBrandCodeParam()}">?brandCode=${pageSettings.getBrandCode()}</c:if>
+	<c:if test="${environmentService.needsManuallyAddedBrandCodeParamWhiteLabel(pageSettings.getBrandCode(), verticalCode)}">?brandCode=${pageSettings.getBrandCode()}</c:if>
 </c:set>
 
 <c:set var="vdnUrl">
