@@ -4,7 +4,8 @@
 
 .addressSearchV2__searchContainer {
   &--hidden {
-    display: none;
+    visibility: hidden;
+    position: absolute;
   }
 }
 
@@ -21,7 +22,8 @@
   line-height: 41px;
   text-transform: uppercase;
   &--hidden {
-    display: none;
+    visibility: hidden;
+    position: absolute;
   }
   button {
     float: left;
@@ -50,7 +52,8 @@
 
 .addressSearchV2__cantFindFields {
   &--hidden {
-    display: none;
+    visibility: hidden;
+    position: absolute;
   }
 }
 
@@ -63,6 +66,7 @@
 
 
 .addressSearchV2__results {
+  min-width: calc(100% - 30px);
   position: absolute;
   top: 41px;
   left: 15px;
@@ -72,11 +76,11 @@
   padding: 5px 0;
   font-size: 14px;
   border-radius: 5px;
-  display: none;
+  visibility: hidden;
   z-index: 10;
   color: #b2b2b2;
   &--active {
-    display: block;
+    visibility: visible;
   }
   div {
     width: 100%;
