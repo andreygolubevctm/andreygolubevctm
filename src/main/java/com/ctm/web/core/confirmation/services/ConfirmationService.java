@@ -128,7 +128,7 @@ public class ConfirmationService {
 						break;
 				}
 
-				if(EnvironmentService.needsManuallyAddedBrandCodeParam()){
+				if(EnvironmentService.needsManuallyAddedBrandCodeParamWhiteLabel(brand.getCode(), details.getVerticalCode())){
 					confirmationUrl.append("&brandCode=").append(brand.getCode());
 				}
 			}
