@@ -228,7 +228,7 @@
       dataType: 'json',
       contentType: 'application/json',
     }
-  }
+  };
   
   //verticals used: health_v4
   var postcode = {
@@ -301,7 +301,7 @@
       dataType: 'json',
       contentType: 'application/json',
     }
-  }
+  };
   
   var smartSearch = {
     init: function(prefix, xpath) {
@@ -404,7 +404,7 @@
       contentType: 'application/json',
       url: addressUrl + '/streetsuburb'
     }
-  }
+  };
   
   function getPostCodeWithBtns() {
     return $.extend(true, {}, postcode);
