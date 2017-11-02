@@ -242,14 +242,6 @@ var ResultsModel = {
 		Results.model.currentProduct = false;
 		Results.settings.frequency = 'annual';
 		Results.model.filters = [];
-        Results.model.travelFilters = {
-            EXCESS: 200,
-            LUGGAGE: 5000,
-            CXDFEE: 20000,
-            MEDICAL: 20000000,
-            PROVIDERS: []
-        };
-        Results.model.travelFilteredProductsCount = 0;
 	},
 
 	flush: function(){

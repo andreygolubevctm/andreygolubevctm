@@ -276,6 +276,7 @@
 
 		$currentTabContainer.empty().html(out);
 		$('.reset-travel-filters').empty().html(resetFilters);
+		meerkat.modules.travelResultFilters.resetCustomFilters();
 
 	}
 

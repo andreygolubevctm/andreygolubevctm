@@ -219,7 +219,34 @@
         meerkat.modules.coverLevelTabs.buildCustomTab();
     }
 
+    /**
+     * Reset all the custom filter functionality
+     */
+    function resetCustomFilters () {
+        Results.model.travelFilters = {
+            EXCESS: 200,
+            LUGGAGE: 5000,
+            CXDFEE: 20000,
+            MEDICAL: 20000000,
+            PROVIDERS: []
+        };
+        Results.model.travelFilteredProductsCount = 0;
+        var _filters = Results.model.travelFilters;
+        $('input[name="luggageRangeSlider"]').val(_filters.LUGGAGE);
+        _displaySliderValue ("LUGGAGE", _filters.LUGGAGE);
+
+        $('input[name="cancellationRangeSlider"]').val(_filters.CXDFEE);
+        _displaySliderValue ("CXDFEE", _filters.CXDFEE);
+
+        $('input[name="overseasMedicalRangeSlider"]').val(_filters.MEDICAL);
+        _displaySliderValue ("MEDICAL", _filters.MEDICAL);
+        meerkat.modules.customRangeSlider.init();
+        $('#travel_filter_excess_200').trigger('click');
+        $('[data-provider-code]').prop('checked', true);
+    }
+
     meerkat.modules.register("travelResultFilters", {
-        init: init
+        init: init,
+        resetCustomFilters: resetCustomFilters
     });
 })(jQuery);
