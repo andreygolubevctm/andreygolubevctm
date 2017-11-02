@@ -21,7 +21,7 @@
 </c:if>
 
 <c:choose>
-    <c:when test="${isRememberMe}">
+    <c:when test="${isRememberMe and !hasUserVisitedInLast30Minutes }">
         <%-- Preserve the query string params and pass them to remember_me.jsp --%>
         <c:set var="redirectURL" value="${pageSettings.getBaseUrl()}remember_me.jsp?" />
         <c:forEach items="${param}" var="currentParam">
