@@ -847,8 +847,8 @@
 
     function _getObjAndIndex(arr, cb) {
         return {
-            obj: arr.find(cb),
-            index: arr.findIndex(cb) + 1
+            obj: _.find(arr, cb),
+            index: _.findIndex(arr, cb) + 1
         };
     }
 
