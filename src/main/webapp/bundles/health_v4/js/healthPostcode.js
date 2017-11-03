@@ -41,6 +41,8 @@
                     _postcode = '';
                 }
 
+                _pendingGet = false;
+
                 // if value valid
                 if ($(this).isValid()) {
                     // clear the results
