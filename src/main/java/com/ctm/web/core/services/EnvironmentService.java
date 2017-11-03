@@ -138,7 +138,7 @@ public class EnvironmentService {
 		return needsManuallyAddedBrandCodeParam();
 	}
 
-	public static boolean needsManuallyAddedBrandCodeParamWhiteLabelByBrandCode(String brandCode) throws EnvironmentException {
+	public static boolean needsManuallyAddedBrandCodeParamWhiteLabel(String brandCode) throws EnvironmentException {
 
 		if (brandCode.equalsIgnoreCase("wfdd")) {
 			return true;

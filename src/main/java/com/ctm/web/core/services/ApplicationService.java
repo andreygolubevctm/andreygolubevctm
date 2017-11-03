@@ -146,13 +146,13 @@ public class ApplicationService {
 				brandCode = "CTM";
 			}
 
-			if (EnvironmentService.needsManuallyAddedBrandCodeParamWhiteLabelByBrandCode(brandCode)) {
+			if (EnvironmentService.needsManuallyAddedBrandCodeParamWhiteLabel(brandCode)) {
 				brand = getBrandByCode(brandCode);
 			}
 
 		}
 
-		if (EnvironmentService.needsManuallyAddedBrandCodeParamWhiteLabelByBrandCode(brand.getCode())) {
+		if (EnvironmentService.needsManuallyAddedBrandCodeParamWhiteLabel(brand.getCode())) {
 			session.setAttribute("lastUsedBrandCode", brand.getCode());
 		}
 
