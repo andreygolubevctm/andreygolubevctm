@@ -138,6 +138,15 @@ public class EnvironmentService {
 		return needsManuallyAddedBrandCodeParam();
 	}
 
+	public static boolean needsManuallyAddedBrandCodeParamWhiteLabel(String brandCode) throws EnvironmentException {
+
+		if (brandCode.equalsIgnoreCase("wfdd")) {
+			return true;
+		}
+
+		return needsManuallyAddedBrandCodeParam();
+	}
+
 	/**
 	 * Load the WAR's manifest.mf file, collect the Identifier property.
 	 *

@@ -130,7 +130,7 @@ public class ApplicationService {
 		brand = getBrandByCode(brandCode);
 
 		// If localhost or NXI, the URL writing is not in place, therefore we have fall back logic...
-		if (brand == null && EnvironmentService.needsManuallyAddedBrandCodeParam()) {
+		if (brand == null) {
 
 			Data sessionData = (Data) request.getAttribute("data");
 			if (sessionData != null) {
@@ -146,11 +146,13 @@ public class ApplicationService {
 				brandCode = "CTM";
 			}
 
-			brand = getBrandByCode(brandCode);
+			if (EnvironmentService.needsManuallyAddedBrandCodeParamWhiteLabel(brandCode)) {
+				brand = getBrandByCode(brandCode);
+			}
 
 		}
 
-		if (EnvironmentService.needsManuallyAddedBrandCodeParam()) {
+		if (EnvironmentService.needsManuallyAddedBrandCodeParamWhiteLabel(brand.getCode())) {
 			session.setAttribute("lastUsedBrandCode", brand.getCode());
 		}
 
