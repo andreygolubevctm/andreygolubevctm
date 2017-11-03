@@ -705,6 +705,68 @@ var ResultsModel = {
 		}
 	},
 
+    filterUsingExcess: function( renderView, doNotGoToStart ){
+
+        var initialProducts = Results.model.sortedProducts.slice();
+        var finalProducts = [];
+
+        var valid, value;
+
+        $.each( initialProducts, function( productIndex, product ){
+
+            valid = true;
+
+            $.each( Results.model.filters, function( filterIndex, filter ){
+
+                value = Object.byString( product, filter.path );
+
+                if( typeof value !== "undefined"){
+                    switch( filter.condition ){
+                        case "value":
+                            valid = Results.model.filterByValue( value, filter.options );
+                            break;
+                        case "range":
+                            valid = Results.model.filterByRange( value, filter.options );
+                            break;
+                        default:
+                            console.log("The filter condition type seems to be erroneous");
+                            break;
+                    }
+                }
+
+                if (!valid) {
+                    return false;
+                }
+
+            });
+
+            if( valid ) {
+                $.each(product.benefits, function (index, benefit) {
+                    if (benefit.type == 'EXCESS' && benefit.value <= Results.model.travelFilters.EXCESS) {
+                        finalProducts.push(product);
+                    }
+                });
+            }
+
+        });
+
+        Results.model.filteredProducts = finalProducts;
+
+        if( typeof Compare !== "undefined" ) Compare.applyFilters();
+
+        if( renderView !== false ) {
+            if(Results.getFilteredResults().length === 0){
+                Results.view.showNoFilteredResults();
+                $(Results.settings.elements.resultsContainer).trigger("noFilteredResults");
+            }else{
+                Results.view.filter();
+                if (doNotGoToStart === true) { return; }
+                Results.pagination.gotoStart(true);
+            }
+
+        }
+    },
+
     travelResultFilter: function (renderView, doNotGoToStart, matchAllFilters) {
         var initialProducts = Results.model.sortedProducts.slice();
         var finalProducts = [];

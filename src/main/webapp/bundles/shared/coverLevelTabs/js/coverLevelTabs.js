@@ -59,7 +59,7 @@
 			 * @param renderView
 			 */
 			filter: function(renderView) {
-				Results.model.travelResultFilter(true, true, true);
+
 			}
 		}]
 	},
