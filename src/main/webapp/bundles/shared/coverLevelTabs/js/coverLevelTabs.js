@@ -59,10 +59,7 @@
 			 * @param renderView
 			 */
 			filter: function(renderView) {
-				/* Example for Travel
-				Results.filterBy("coverLevel", "value", {
-					"equals": "D"
-				}, true);*/
+
 			}
 		}]
 	},
