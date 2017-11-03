@@ -94,10 +94,15 @@ public class PageSettings {
 
 	public String getContextFolder() throws EnvironmentException, VerticalException, ConfigSettingException {
 		String setting = getSetting("contextFolder");
+		String verticalCode = "";
+		
+		if (vertical != null &&  vertical.getType() != null && vertical.getType().getCode() != null ){
+			verticalCode = vertical.getType().getCode();
+		}
 
 		// In dev environments, check if the hard-coded context (configured in DB) can be overriden by
 		// a feature branch context
-		if (EnvironmentService.needsManuallyAddedBrandCodeParamWhiteLabel(getBrandCode(), getVerticalCode())
+		if (EnvironmentService.needsManuallyAddedBrandCodeParamWhiteLabel(brandCode, verticalCode)
 				&& !setting.equals(EnvironmentService.getContextPath())
 				&& EnvironmentService.getContextPath().regionMatches(0, setting, 0, setting.length()-1)) {
 			return EnvironmentService.getContextPath();
