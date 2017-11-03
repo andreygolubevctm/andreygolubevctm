@@ -607,13 +607,13 @@ var Results = {
 	},
 
 	unpinProduct: function(pinnedProductId) {
-        if (!pinnedProductId) {
+        if (!pinnedProductId || (pinnedProductId && !Results.getPinnedProduct())) {
             return;
         }
 
         var product = Results.model.getResult("productId", pinnedProductId);
 
-        if(Results.$pinnedResultRow) {
+        if (Results.$pinnedResultRow) {
             Results.$pinnedResultRow.remove();
             Results.$pinnedResultRow = null;
         }
@@ -621,6 +621,7 @@ var Results = {
         $(Results.settings.elements.resultsOverflow).removeAttr('style');
         Results.unfilterBy('isPinned', "value", true);
         product.isPinned = 'N';
+        Results.removePinnedProduct();
         $(Results.settings.elements.resultsOverflow).removeClass('product-pinned');
         Results.pagination.hasPinnedProduct = false;
 

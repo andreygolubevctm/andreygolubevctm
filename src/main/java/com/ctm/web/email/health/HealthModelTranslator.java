@@ -1,6 +1,8 @@
 package com.ctm.web.email.health;
 
 import com.ctm.interfaces.common.types.VerticalType;
+import com.ctm.web.core.content.dao.ContentDao;
+import com.ctm.web.core.content.model.Content;
 import com.ctm.web.core.email.exceptions.EmailDetailsException;
 import com.ctm.web.core.email.exceptions.SendEmailException;
 import com.ctm.web.core.email.services.EmailDetailsService;
@@ -11,6 +13,7 @@ import com.ctm.web.core.model.EmailMaster;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.security.IPAddressHandler;
+import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.core.utils.RequestUtils;
 import com.ctm.web.core.web.go.Data;
@@ -27,6 +30,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
@@ -38,7 +42,7 @@ public class HealthModelTranslator implements EmailTranslator {
     @Autowired
     private EmailUtils emailUtils;
     private static final String vertical = VerticalType.HEALTH.name().toLowerCase();
-    private static final VerticalType verticalCode = VerticalType.HEALTH;
+
     @Autowired
     protected IPAddressHandler ipAddressHandler;
 
@@ -47,7 +51,6 @@ public class HealthModelTranslator implements EmailTranslator {
     private static final String HEALTH_UTM_SOURCE = "health_quote_";
     private static final String UTM_MEDIUM = "email";
     private static final String CAMPAIGN = "health_quote";
-    private static final String EMAIL_TYPE = "bestprice";
     private static final String ACTION_UNSUBSCRIBE = "unsubscribe";
     private static final String ACTION_LOAD = "load";
 
@@ -55,16 +58,20 @@ public class HealthModelTranslator implements EmailTranslator {
     public void setVerticalSpecificFields(EmailRequest emailRequest, HttpServletRequest request, Data data) throws ConfigSettingException, DaoException {
         List<String> providerName = emailUtils.buildParameterList(request, "rank_providerName");
         List<String> premiumLabel = emailUtils.buildParameterList(request, "rank_premiumText");
-        List<String> premium = emailUtils.buildParameterList(request, "rank_premium");
         List<String> providerCodes = emailUtils.buildParameterList(request, "rank_provider");
+        List<String> priceShown = emailUtils.buildParameterList(request, "rank_price_shown");
         String gaclientId = emailUtils.getParamFromXml(data.getXML(), "gaclientid", "/health/");
         emailRequest.setVertical(vertical);
         emailRequest.setProviders(providerName);
+        //replace span tab with empty string.
+        premiumLabel = premiumLabel.stream().map(s -> s.replaceAll("<span/>","")).collect(Collectors.toList());
         emailRequest.setPremiumLabels(premiumLabel);
         emailRequest.setProviderCodes(providerCodes);
-        emailRequest.setPremiums(premium);
+        emailRequest.setPremiums(priceShown);
         emailRequest.setPremiumFrequency(request.getParameter("rank_frequency0"));
         emailRequest.setGaClientID(gaclientId);
+        PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
+        String callCentreNumber = getCallCentreNumber(pageSettings);
 
         String benefitCodes = request.getParameter("rank_benefitCodes0");
         String extrasPds = request.getParameter("rank_extrasPdsUrl0");
@@ -90,9 +97,12 @@ public class HealthModelTranslator implements EmailTranslator {
 
         emailRequest.setHealthEmailModel(healthEmailModel);
         emailRequest.setCallCentreHours(openingHoursService.getCurrentOpeningHoursForEmail(request));
+        List<String> providerPhones = new ArrayList<>();
+        IntStream.range(EmailUtils.START,EmailUtils.END).forEach(value -> providerPhones.add(callCentreNumber));
+        emailRequest.setProviderPhoneNumbers(providerPhones);
         List<String> quoteRefs = new ArrayList<>();
         Long transactionId = RequestUtils.getTransactionIdFromRequest(request);
-        IntStream.range(1,10).forEach(value -> quoteRefs.add(transactionId.toString()));
+        IntStream.range(EmailUtils.START,EmailUtils.END).forEach(value -> quoteRefs.add(transactionId.toString()));
         emailRequest.setQuoteRefs(quoteRefs);
         emailRequest.setProviderSpecialOffers(specialOffers);
         setDataFields(emailRequest, data);
@@ -158,8 +168,14 @@ public class HealthModelTranslator implements EmailTranslator {
 
 
         List<String> applyUrls = new ArrayList<>();
-        applyUrls.add(applyUrl);
+        IntStream.range(EmailUtils.START,EmailUtils.END).forEach(applyUrl1 -> applyUrls.add(applyUrl));
         emailRequest.setApplyUrls(applyUrls);
         emailRequest.setUnsubscribeURL(unsubscribeUrl);
+    }
+
+    private String getCallCentreNumber(PageSettings pageSettings) throws DaoException {
+        ContentDao contentDao = new ContentDao(pageSettings.getBrandId(), pageSettings.getVertical().getId());
+        Content content = contentDao.getByKey("callCentreNumber", ApplicationService.getServerDate(), false);
+        return content != null ? content.getContentValue() : "";
     }
 }

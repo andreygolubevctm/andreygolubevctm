@@ -5,7 +5,7 @@
         log = meerkat.logging.info,
         selectedProduct = null,
         previousBreakpoint,
-        best_price_count = 5,
+        best_price_count = 10,
         isLhcApplicable = 'N',
         selectedBenefitsList = [],
         premiumIncreaseContent = $('.healthPremiumIncreaseContent'),
@@ -69,7 +69,8 @@
                 key: "weekly",
                 label: "per week"
             }
-        ];
+        ],
+        productSelectedFromProductCode = false;
 
 
     function initPage() {
@@ -90,7 +91,7 @@
         // note: this is assignment within an if condition. succeeds if a product id is passed/assigned
         if ((pinnedProductId = passedProductId)) {
             Results.pinProduct(pinnedProductId, function (productId, $pinnedResultRow) {
-                $pinnedResultRow.prepend('<div class="result-pinned-product-tag">Pinned product</div>');
+                $pinnedResultRow.prepend('<div class="result-product-tag">Pinned product</div>');
                 $pinnedResultRow.addClass('pinned currentPage').removeClass('not-pinned').css({
                     left: 'auto',
                     top: 'auto'
@@ -508,8 +509,35 @@
                 $(this).toggleClass('hovered');
             });
 
-            // Default Private Hospital benefit to be expanded
-            $(".privateHospital.cell.category.expandable").addClass("expanded");
+            $(Results.settings.elements.resultsContainer+' '+Results.settings.elements.rows+ ' .cell.category.expandable')
+                .hover(
+                    function() {
+                        $(this).find('div.category').hover();
+
+                        var cellRowClass = this.className.split(' ').filter(function(item) {
+                            return /HLTicon-.+/.test(item);
+                        });
+
+                        $('.cell.category.expandable.' + cellRowClass).addClass('row-hovered');
+                    },
+                    function() {
+                        $('.cell.category.expandable.row-hovered').removeClass('row-hovered');
+                    }
+                );
+
+            if (meerkat.modules.deviceMediaState.get() === 'xs') {
+                var benefitsClickMadeFocus = false,
+                    $benefitsClickText = $('.benefits-click-text');
+
+                $(window).off("scroll.transitionBenefitsClick").on("scroll.transitionBenefitsClick", function () {
+                    if (!benefitsClickMadeFocus) {
+                        if ($benefitsClickText[0].getBoundingClientRect().top < $(window).height()) {
+                            $benefitsClickText.addClass('make-focus');
+                            benefitsClickMadeFocus = true;
+                        }
+                    }
+                });
+            }
         });
     }
 
@@ -801,38 +829,54 @@
 
     function onResultsLoaded() {
         meerkat.modules.coupon.dealWithAddedCouponHeight();
-        if (meerkat.modules.deviceMediaState.get() == "xs") {
+        if (meerkat.modules.deviceMediaState.get() === "xs") {
             startColumnWidthTracking();
         }
+
         if (meerkat.site.isCallCentreUser) {
             createPremiumsPopOver();
         }
-        
-        _pinProductFromLoadedProductCode();
-    }
 
-    // Pin product if productId loaded from brochure Email
-    function _pinProductFromLoadedProductCode(){
-        if (meerkat.site.loadProductCode.length > 0) {
-            var loadedProductId = _getProductIdFromProductCode(meerkat.site.loadProductCode);
+        $(Results.settings.elements.rows).removeClass('extra-margin-top');
 
-            if (loadedProductId.length > 0) {
-                _pinProductHelper(loadedProductId);
+        if (!productSelectedFromProductCode) {
+            if (!_.isEmpty(meerkat.site.loadProductCode)) {
+                // Select product from productCode
+                _selectProductFromProductCode(meerkat.site.loadProductCode);
+
+                productSelectedFromProductCode = true;
             }
         }
     }
 
-    // Gets the productId only if the relevant product code exists in the returned results set
-    function _getProductIdFromProductCode(loadedProductCodeStr){
-        var returnStr = "";
-        if (Results.getReturnedResults().length > 0) {
-            for (var i = 0; i < Results.getReturnedResults().length; i++)  {
-                if (Results.getReturnedResults()[i].info.productCode === loadedProductCodeStr){
-                    return Results.getReturnedResults()[i].productId;
-                }
-            }
+    function _selectProductFromProductCode(productCode) {
+        var _product = _getObjAndIndex(Results.getReturnedResults(), function filterProductCode(element) {
+                return element.info.productCode === productCode;
+            });
+
+        if (_.isUndefined(_product.obj)) return;
+
+        var pageMeasurements = Results.pagination.getPageMeasurements(),
+            paginationPage = Math.ceil(_product.index / pageMeasurements.columnsPerPage);
+
+        // Highlight selected product and add selected tag
+        $(Results.settings.elements.rows)
+            .addClass('extra-margin-top')
+            .filter('[data-productId=' + _product.obj.productId + ']')
+                .addClass('selected')
+                .prepend('<div class="result-product-tag">Selected product</div>');
+
+        // Goto pagination page
+        if (paginationPage > 1) {
+            Results.pagination.gotoPage(paginationPage);
         }
-        return returnStr;
+    }
+
+    function _getObjAndIndex(arr, cb) {
+        return {
+            obj: _.find(arr, cb),
+            index: _.findIndex(arr, cb) + 1
+        };
     }
 
     function createDiscountPopOver() {
