@@ -143,7 +143,7 @@ public class EnvironmentService {
 		if (verticalCode==null) {
 			testVerticalcode = "";
 		} else {
-			testVerticalcode = brandCode;
+			testVerticalcode = verticalCode;
 		}
 
 		if (testBrandcode.equalsIgnoreCase("wfdd") && (testVerticalcode.equalsIgnoreCase("HEALTH") || testVerticalcode.equalsIgnoreCase("SIMPLES"))) {
