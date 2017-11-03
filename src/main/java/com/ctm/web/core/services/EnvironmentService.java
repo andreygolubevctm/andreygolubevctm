@@ -131,22 +131,7 @@ public class EnvironmentService {
 
 	public static boolean needsManuallyAddedBrandCodeParamWhiteLabel(String brandCode, String verticalCode) throws EnvironmentException {
 
-		String testBrandcode;
-		String testVerticalcode;
-
-		if (brandCode==null) {
-			testBrandcode = "";
-		} else {
-			testBrandcode = brandCode;
-		}
-
-		if (verticalCode==null) {
-			testVerticalcode = "";
-		} else {
-			testVerticalcode = verticalCode;
-		}
-
-		if (testBrandcode.equalsIgnoreCase("wfdd") && (testVerticalcode.equalsIgnoreCase("HEALTH") || testVerticalcode.equalsIgnoreCase("SIMPLES"))) {
+		if ( brandCode != null && verticalCode != null &&  brandCode.equalsIgnoreCase("wfdd") && ( verticalCode.equalsIgnoreCase("HEALTH") || verticalCode.equalsIgnoreCase("SIMPLES"))) {
 			return true;
 		}
 
@@ -155,16 +140,7 @@ public class EnvironmentService {
 
 	public static boolean needsManuallyAddedBrandCodeParamWhiteLabel(String brandCode) throws EnvironmentException {
 
-		String testBrandcode;
-
-		if (brandCode==null) {
-			testBrandcode = "";
-		} else {
-			testBrandcode = brandCode;
-		}
-
-
-		if (testBrandcode.equalsIgnoreCase("wfdd")) {
+		if (brandCode != null && brandCode.equalsIgnoreCase("wfdd")) {
 			return true;
 		}
 
