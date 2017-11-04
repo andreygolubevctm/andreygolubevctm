@@ -105,7 +105,7 @@
 
             var healthQuoteResultsUrl = "ajax/json/health_quote_results.jsp";
             if (meerkat.modules.splitTest.isActive(40) || meerkat.site.isDefaultToHealthQuote) {
-                healthQuoteResultsUrl = "ajax/json/health_quote_results_ws.jsp';
+                healthQuoteResultsUrl = "ajax/json/health_quote_results_ws.jsp";
             }
 
             // Init the main Results object
