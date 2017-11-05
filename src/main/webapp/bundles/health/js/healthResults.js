@@ -110,7 +110,7 @@
 
             // Init the main Results object
             Results.init({
-                url: healthQuoteResultsUrl + "?brandCode=" + meerkat.site.tracking.brandCode,
+                url: healthQuoteResultsUrl,
                 runShowResultsPage: false, // Don't let Results.view do it's normal thing.
                 paths: {
                     results: {
