@@ -119,7 +119,7 @@
 			console.error("Message to dev: please provide an errorLevel to the comms.post() or comms.get() function.");
 		}
 
-		appendBrandcodeToUrl();
+		appendBrandcodeToUrl(settings);
 
 		var usedCache = checkCache(settings);
 		if(usedCache === true) {
