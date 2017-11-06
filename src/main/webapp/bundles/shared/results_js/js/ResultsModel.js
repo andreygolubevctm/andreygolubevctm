@@ -242,7 +242,6 @@ var ResultsModel = {
 		Results.model.currentProduct = false;
 		Results.settings.frequency = 'annual';
 		Results.model.filters = [];
-
 	},
 
 	flush: function(){
@@ -251,6 +250,7 @@ var ResultsModel = {
 		Results.model.returnedProducts = [];
 		Results.model.sortedProducts = [];
 		Results.model.filteredProducts = [];
+		Results.model.customFilteredProducts = [];
 
 		Results.view.flush();
 
@@ -682,8 +682,8 @@ var ResultsModel = {
 
 			});
 
-			if( valid ){
-				finalProducts.push(product);
+			if( valid ) {
+                finalProducts.push(product);
 			}
 
 		});
@@ -704,6 +704,139 @@ var ResultsModel = {
 
 		}
 	},
+
+    filterUsingExcess: function( renderView, doNotGoToStart ){
+
+        var initialProducts = Results.model.sortedProducts.slice();
+        var finalProducts = [];
+
+        var valid, value;
+
+        $.each( initialProducts, function( productIndex, product ){
+
+            valid = true;
+
+            $.each( Results.model.filters, function( filterIndex, filter ){
+
+                value = Object.byString( product, filter.path );
+
+                if( typeof value !== "undefined"){
+                    switch( filter.condition ){
+                        case "value":
+                            valid = Results.model.filterByValue( value, filter.options );
+                            break;
+                        case "range":
+                            valid = Results.model.filterByRange( value, filter.options );
+                            break;
+                        default:
+                            console.log("The filter condition type seems to be erroneous");
+                            break;
+                    }
+                }
+
+                if (!valid) {
+                    return false;
+                }
+
+            });
+
+            if( valid ) {
+                $.each(product.benefits, function (index, benefit) {
+                    if (benefit.type == 'EXCESS' && benefit.value <= Results.model.travelFilters.EXCESS) {
+                        finalProducts.push(product);
+                    }
+                });
+            }
+
+        });
+
+        Results.model.filteredProducts = finalProducts;
+
+        if( typeof Compare !== "undefined" ) Compare.applyFilters();
+
+        if( renderView !== false ) {
+            if(Results.getFilteredResults().length === 0){
+                Results.view.showNoFilteredResults();
+                $(Results.settings.elements.resultsContainer).trigger("noFilteredResults");
+            }else{
+                Results.view.filter();
+                if (doNotGoToStart === true) { return; }
+                Results.pagination.gotoStart(true);
+            }
+
+        }
+    },
+
+    travelResultFilter: function (renderView, doNotGoToStart, matchAllFilters) {
+        var initialProducts = Results.model.sortedProducts.slice();
+        var finalProducts = [];
+        var _filters = {
+            EXCESS: 0,
+            LUGGAGE: 0,
+            CXDFEE: 0,
+            MEDICAL: 0
+        };
+        var _modelFilters = Results.model.travelFilters;
+
+        $.each(initialProducts, function (productIndex, product) {
+            if (product.available == 'Y' && $.isArray(product.benefits) && product.benefits.length !== 0) {
+                $.each(product.benefits, function (index, benefit) {
+                    switch (benefit.type) {
+                        case 'EXCESS':
+                            _filters.EXCESS = benefit.value;
+                            break;
+                        case 'LUGGAGE':
+                            _filters.LUGGAGE = benefit.value;
+                            break;
+                        case 'CXDFEE':
+                            _filters.CXDFEE = benefit.value;
+                            break;
+                        case 'MEDICAL':
+                            _filters.MEDICAL = benefit.value;
+                            break;
+                    }
+                });
+
+				if (matchAllFilters) {
+                    if ((_filters.EXCESS <= _modelFilters.EXCESS) &&
+						((_filters.LUGGAGE >= _modelFilters.LUGGAGE) &&
+                        (_filters.CXDFEE >= _modelFilters.CXDFEE) &&
+                        (_filters.MEDICAL >= _modelFilters.MEDICAL) &&
+                        (_modelFilters.PROVIDERS.indexOf(product.serviceName) == -1))) {
+                        finalProducts.push(product);
+                    }
+				} else {
+                    if ((_filters.EXCESS <= _modelFilters.EXCESS) &&
+						((_filters.LUGGAGE >= _modelFilters.LUGGAGE) ||
+                        (_filters.CXDFEE >= _modelFilters.CXDFEE) ||
+                        (_filters.MEDICAL >= _modelFilters.MEDICAL) ||
+                        (_modelFilters.PROVIDERS.indexOf(product.serviceName) == -1))) {
+                        finalProducts.push(product);
+                    }
+				}
+
+            }
+        });
+
+        Results.model.filteredProducts = finalProducts;
+        Results.model.travelFilteredProductsCount = finalProducts.length;
+
+        if (typeof Compare !== "undefined") Compare.applyFilters();
+
+        if (renderView !== false) {
+            if (Results.getFilteredResults().length === 0) {
+                Results.view.showNoFilteredResults();
+                $(Results.settings.elements.resultsContainer).trigger("noFilteredResults");
+            } else {
+                Results.view.filter();
+                if (doNotGoToStart === true) {
+                    return;
+                }
+                Results.pagination.gotoStart(true);
+            }
+
+        }
+    },
 
 	filterByValue: function(value, options){
 
@@ -727,7 +860,6 @@ var ResultsModel = {
 
 		}
 	},
-
 	filterByRange: function( value, options ){
 
 		if( !options || typeof(options) == "undefined" ){
