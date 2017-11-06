@@ -127,7 +127,25 @@ public class EnvironmentService {
 				getEnvironment() == Environment.NXI || 
 				getEnvironment() == Environment.NXS || 
 				getEnvironment() == Environment.NXQ;
+	}
+
+	public static boolean needsManuallyAddedBrandCodeParamWhiteLabel(String brandCode, String verticalCode) throws EnvironmentException {
+
+		if ( brandCode != null && verticalCode != null &&  brandCode.equalsIgnoreCase("wfdd") && ( verticalCode.equalsIgnoreCase("HEALTH") || verticalCode.equalsIgnoreCase("SIMPLES"))) {
+			return true;
 		}
+
+		return needsManuallyAddedBrandCodeParam();
+	}
+
+	public static boolean needsManuallyAddedBrandCodeParamWhiteLabel(String brandCode) throws EnvironmentException {
+
+		if (brandCode != null && brandCode.equalsIgnoreCase("wfdd")) {
+			return true;
+		}
+
+		return needsManuallyAddedBrandCodeParam();
+	}
 
 	/**
 	 * Load the WAR's manifest.mf file, collect the Identifier property.

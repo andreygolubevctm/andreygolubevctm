@@ -49,6 +49,10 @@ ${newPage.init(pageContext.request, pageSettings)}
 <c:set var="fileName" value="${pageSettings.getVerticalCode()}"/>
 <c:if test="${not empty bundleFileName}"><c:set var="fileName" value="${bundleFileName}" /></c:if>
 
+<c:set var="urlStyleCodeId">
+    <c:if test="${not empty param.brandCode and fn:toLowerCase(param.brandCode) eq 'wfdd'}">${fn:toLowerCase(param.brandCode)}</c:if>
+</c:set>
+
 <!DOCTYPE html>
 <go:html>
     <head>
@@ -289,6 +293,7 @@ ${newPage.init(pageContext.request, pageSettings)}
                             title: '${title} - ${pageSettings.getSetting("windowTitle")}',
                             name: '${pageSettings.getSetting("brandName")}',
                             vertical: '${pageSettings.getVerticalCode()}',
+	                        urlStyleCodeId: "${urlStyleCodeId}",
                             isDev: ${isDev}, <%-- boolean determined from conditions above in this tag --%>
                             minifiedFileString: '${pageSettings.getSetting('minifiedFileString')}',
                             isCallCentreUser: <c:out value="${not empty callCentre}"/>,
