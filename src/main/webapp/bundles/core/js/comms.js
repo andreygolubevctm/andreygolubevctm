@@ -119,7 +119,7 @@
 			console.error("Message to dev: please provide an errorLevel to the comms.post() or comms.get() function.");
 		}
 
-		appendBrandcodeToUrl(settings);
+		settings = appendBrandCodeToUrl(settings);
 
 		var usedCache = checkCache(settings);
 		if(usedCache === true) {
@@ -354,18 +354,19 @@
 		return CHECK_AUTHENTICATED_LABEL;
 	}
 
-	function appendBrandcodeToUrl(settings) {
+	function appendBrandCodeToUrl(settings) {
 		if(forcedStyleCodeId !== false) {
-			if (settings.url.search(/\?/)) {
-				if(settings.url.search(/brandCode=[a-zA-Z]+/)) {
-					settings.url.replace(/brandCode=[a-zA-Z]+/g, "brandCode=" + forcedStyleCodeId);
+			if (settings.url.search(/\?/) !== -1) {
+				if(settings.url.search(/brandCode=[a-zA-Z]+/) !== -1) {
+					settings.url = settings.url.replace(/brandCode=[a-zA-Z]+/g, "brandCode=" + forcedStyleCodeId);
 				} else {
-					settings.url += "?brandCode=" + forcedStyleCodeId;
+					settings.url += "&brandCode=" + forcedStyleCodeId;
 				}
 			} else {
 				settings.url += "?brandCode=" + forcedStyleCodeId;
 			}
 		}
+		return settings;
 	}
 
 	function init() {
