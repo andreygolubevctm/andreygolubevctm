@@ -59,7 +59,10 @@
 			 * @param renderView
 			 */
 			filter: function(renderView) {
-
+				/* Example for Travel
+				Results.filterBy("coverLevel", "value", {
+					"equals": "D"
+				}, true);*/
 			}
 		}]
 	},
@@ -114,9 +117,6 @@
 					// Disable Animation
 					Results.settings.animation.filter.active = false;
 				}
-
-				// populate navbar cover text
-				$('.navbar-cover-text').html('Showing ' + counts[settings.activeTabSet[tabIndex].rankingFilter] + ' ' + settings.activeTabSet[tabIndex].label.toLowerCase().replace('cover', 'plans'));
 
 				// trigger filter call
 				settings.activeTabSet[tabIndex].filter();
@@ -224,45 +224,19 @@
 	function buildTabs() {
 
 		if(typeof settings.activeTabSet === 'undefined') {
-    return;
+			return;
 		}
 		log("[coverleveltabs] buildTabs", settings.activeTabSet);
 		var tabLength = settings.activeTabSet.length,
-		xsCols = parseInt(6 / tabLength, 10),
+		xsCols = parseInt(12 / tabLength, 10),
 		state = meerkat.modules.deviceMediaState.get();
-		var out = '';
-		var resetFilters = '';
-		for(out = '', i = 0; i < tabLength; i ++) {
+		for(var out = '',
+				i = 0; i < tabLength; i ++) {
 			var tab = settings.activeTabSet[i],
 				count = counts[tab.rankingFilter] || null;
-			var coverTypeValue = tab.label.replace('<span class=\'hidden-xs\'>Cover</span>', '').toLowerCase().trim().replace(' ', '_');
-			var coverTypeText = tab.label.replace('<span class=\'hidden-xs\'>Cover</span>', '');
-
-			// results headers
-			out += '<div class="col-xs-4 col-sm-' + xsCols + ' text-center clt-action ' + (tab.defaultTab === true ? 'active' : '') + '" data-clt-index="' + i + '" data-ranking-filter="' + tab.rankingFilter +'">';
-			out += (tab.label.replace('Cover', '')) + (state !== 'xs' && state !== 'sm' && tab.showCount === true && count !== null ? ' <span class="tabCount">(' + (count) + ')</span>' : '');
+			out += '<div class="col-xs-' + xsCols + ' text-center clt-action ' + (tab.defaultTab === true ? 'active' : '') + '" data-clt-index="' + i + '">';
+			out += tab.label + (state !== 'xs' && tab.showCount === true && count !== null ? ' (' + (count) + ')' : '');
 			out += '</div>';
-
-			// custom code due to requirement
-			switch (coverTypeValue) {
-				case 'mid_range':
-                    coverTypeValue = 'comprehensive_' + coverTypeValue;
-                    coverTypeText = 'Comprehensive & <br>Mid Range';
-                    break;
-
-				case 'basic':
-					coverTypeValue = 'all';
-					coverTypeText = 'All';
-					break;
-			}
-
-			// reset filters
-			resetFilters += '<div class="dropdown-item">';
-			resetFilters += 	'<div class="radio">';
-			resetFilters += 		'<input type="radio" name="reset-filters-radio-group" id="reset_filter_' + coverTypeValue + '" class="radioButton-custom  radio" data-reset-filter-index="' + i +'" value="' + coverTypeValue + '" data-ranking-filter="' + tab.rankingFilter +'"' + (tab.defaultTab === true ? 'checked' : '') + '>';
-			resetFilters += 		'<label for="reset_filter_' + coverTypeValue + '">' + coverTypeText + '</label>';
-			resetFilters += 	'</div>';
-            resetFilters += '</div>';
 
 			// set the originatingTab
 			if (tab.defaultTab === true) {
@@ -272,85 +246,7 @@
 		}
 
 		$currentTabContainer.empty().html(out);
-		$('.reset-travel-filters').empty().html(resetFilters);
-		meerkat.modules.travelResultFilters.resetCustomFilters();
 
-		// hide filters for mobile, tablet & AMT
-		if (state == 'xs' ||
-			state == 'sm' ||
-            tabLength == 2
-		) {
-			$('.clt-trip-filter').hide();
-		} else {
-            $('.clt-trip-filter').show();
-		}
-	}
-
-    /**
-	 * Update the count of the tabs as per changed results
-     */
-	function updateTabCounts() {
-		var currentTabIndex = 0;
-		$('.hidden-xs [data-clt-index]').each(function (key, tab) {
-			if ($(tab).hasClass('active')) {
-				currentTabIndex = $(tab).data('clt-index');
-                $('.navbar-cover-text').html('Showing ' + counts[settings.activeTabSet[currentTabIndex].rankingFilter] + ' ' + settings.activeTabSet[currentTabIndex].label.toLowerCase().replace('cover', 'plans'));
-            }
-			var ranking = $(tab).data('ranking-filter');
-			$(tab).find('.tabCount').empty().html('(' + counts[ranking] + ')');
-		});
-
-		updateCustomTabCount();
-	}
-
-    /**
-	 * Update the custom tab count when results change
-     */
-	function updateCustomTabCount() {
-		if ($('[data-travel-filter="custom"]').length) {
-            $('[data-travel-filter="custom"]').empty().html('Custom (' + Results.model.travelFilteredProductsCount + ')');
-
-            if (settings.activeTabIndex === -1) {
-                meerkat.modules.coverLevelTabs.buildCustomTab();
-            }
-        }
-	}
-
-    /**
-	 * Reset the tab results count
-     */
-	function resetTabResultsCount() {
-		counts = {};
-	}
-
-    /**
-	 * Build the custom tab as per the filter values
-     */
-	function buildCustomTab() {
-		var customTab = '';
-        var tabLength = settings.activeTabSet.length;
-        var xsCols = parseInt(6 / tabLength, 10);
-        settings.activeTabIndex = -1;
-        $('[data-travel-filter="custom"]').remove();
-        $('.clt-action').removeClass('active');
-        customTab += '<div class="col-xs-' + xsCols + ' text-center clt-action active" data-travel-filter="custom">';
-        customTab += 	'Custom (' + Results.model.travelFilteredProductsCount + ')' ;
-        customTab += '</div>';
-        $('.navbar-cover-text').empty().html('Showing ' + Results.model.travelFilteredProductsCount + ' custom plans');
-        $('.currentTabsContainer').append(customTab);
-        applyCustomResultEventListener();
-	}
-
-    /**
-	 * Add the click event listener for the custom tab
-     */
-	function applyCustomResultEventListener() {
-		$('[data-travel-filter="custom"]').click(function () {
-            settings.activeTabIndex = -1;
-            $(this).siblings().removeClass('active').end().addClass('active');
-            $('.navbar-cover-text').empty().html('Showing ' + Results.model.travelFilteredProductsCount + ' custom plans');
-            Results.model.travelResultFilter(true, true);
-		});
 	}
 
 	// return the originating tab value
@@ -421,8 +317,6 @@
 	 */
 	function resetView(activeTabSet) {
 		log("[coverleveltabs] resetView");
-        $('.navbar-cover-text').empty();
-        $('.clt-trip-filter').hide();
 		$currentTabContainer.empty();
 		hasRunTrackingCall = [];
 		settings.activeTabIndex = false;
@@ -439,11 +333,7 @@
 		isEnabled: isEnabled,
 		incrementCount: incrementCount,
 		getOriginatingTab: getOriginatingTab,
-		getDepartingTabJourney: getDepartingTabJourney,
-		buildCustomTab: buildCustomTab,
-        updateTabCounts: updateTabCounts,
-        updateCustomTabCount: updateCustomTabCount,
-        resetTabResultsCount: resetTabResultsCount
+		getDepartingTabJourney: getDepartingTabJourney
 	});
 
 })(jQuery);
