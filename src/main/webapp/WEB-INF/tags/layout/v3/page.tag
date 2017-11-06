@@ -71,6 +71,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 	</c:choose>
 </c:set>
 
+<%-- Capture brandCode provided in the URL --%>
 <c:set var="urlStyleCodeId">
 	<c:if test="${not empty param.brandCode and fn:toLowerCase(param.brandCode) eq 'wfdd'}">${fn:toLowerCase(param.brandCode)}</c:if>
 </c:set>
