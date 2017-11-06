@@ -353,7 +353,7 @@ QuoteEngine = {
 
         return $.ajax({
             type: 'POST',
-            url: "logging/validation.json",
+            url: "logging/validation.json?brandCode=" + meerkat.site.urlStyleCodeId,
             data: data,
             dataType: 'json',
             cache: true
