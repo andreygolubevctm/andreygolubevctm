@@ -63,7 +63,7 @@
             };
 
             $.ajax({
-                url: 'common/js/health/healthFunds_' + fund + '.jsp',
+                url: 'common/js/health/healthFunds_' + fund + '.jsp' + '?brandCode=' + meerkat.site.urlStyleCodeId,
                 dataType: 'script',
                 data: data,
                 async: true,
