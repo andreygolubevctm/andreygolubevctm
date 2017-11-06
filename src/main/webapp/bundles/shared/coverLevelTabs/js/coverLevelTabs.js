@@ -349,7 +349,7 @@
             settings.activeTabIndex = -1;
             $(this).siblings().removeClass('active').end().addClass('active');
             $('.navbar-cover-text').empty().html('Showing ' + Results.model.travelFilteredProductsCount + ' custom plans');
-            Results.model.travelResultFilter(true, true);
+            Results.model.travelResultFilter(true, true, true);
 		});
 	}
 
