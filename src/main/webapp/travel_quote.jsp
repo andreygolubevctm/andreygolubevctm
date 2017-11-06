@@ -54,72 +54,7 @@
 		</ul>
 
 		<div class="coverLevelTabs hidden-xs">
-			<div class="col-sm-9 currentTabsContainer"></div>
-			<div class="col-xs-2 col-sm-1 clt-trip-filter hidden-xs">
-				<div class="dropdown">
-					<a type="button" id="moreFiltersDropdownBtn" class="more-filters-dropdown-btn"
-					   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						Filters<i class="icon icon-angle-down"></i>
-					</a>
-					<div class="dropdown-menu dropdown-menu-more-filters" aria-labelledby="moreFiltersDropdownBtn">
-						<div class="row">
-							<div class="col-sm-12 text-left more-filters-header">Customise Results</div>
-						</div>
-						<div class="row">
-							<div class="col-sm-2 text-left">
-								<div class="dropdown-item range-filter">
-									<b>Reset filters</b>
-									<field_v2:help_icon helpId="583" tooltipClassName=""/>
-								</div>
-								<div class="reset-travel-filters"></div>
-							</div>
-							<div class="col-sm-3 text-left">
-								<div class="dropdown-item range-filter">
-									<b>Minimum luggage cover</b>
-									<field_v2:help_icon helpId="580" tooltipClassName=""/>
-								</div>
-								<travel_results_filters:minimum_luggage/>
-								<div class="dropdown-item range-filter">
-									<b>Minimum cancellation cover</b>
-									<field_v2:help_icon helpId="581" tooltipClassName=""/>
-								</div>
-								<travel_results_filters:minimum_cancellation/>
-								<div class="dropdown-item range-filter">
-									<b>Minimum overseas medical cover</b>
-									<field_v2:help_icon helpId="582" tooltipClassName=""/>
-								</div>
-								<travel_results_filters:minimum_overseas_medical/>
-							</div>
-							<div class="col-sm-7 text-left">
-								<div class="row">
-									<div class="col-sm-12 no-padding">
-										<b>Brands</b>
-										<span class="brands-select-toggle" data-brands-toggle="none">Select none</span>
-									</div>
-								</div>
-								<travel_results_filters:brands/>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-sm-9">&nbsp;</div>
-							<div class="col-sm-2 text-center more-filters-results-btn">See Results</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-xs-5 col-sm-2 clt-trip-filter hidden-xs">
-				<div class="col-xs-12 col-md-5 text-right"><b>Excess</b></div>
-				<div class="col-xs-5 col-md-6 text-left selected-excess-value">
-					<div class="dropdown">
-						<a type="button" id="excessFilterDropdownBtn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							<span class="filter-excess-value">up to $200</span>
-							<i class="icon icon-angle-down"></i>
-						</a>
-						<div class="dropdown-menu dropdown-menu-excess-filter" aria-labelledby="excessFilterDropdownBtn">
-							<travel_results_filters:excess />
-						</div>
-					</div>
-				</div>
+			<div class="currentTabsContainer">
 			</div>
 		</div>
 	</jsp:attribute>
@@ -136,11 +71,8 @@
 					</li>
 					<li class="container row sortbar-children">
 						<ul class="nav navbar-nav navbar-inverse col-sm-12">
-							<li class="hidden-xs hidden-sm hidden-md col-sm-1 col-lg-3">
-								<span class="navbar-brand navbar-cover-text"></span>
-							</li>
-							<li class="col-sm-2 col-lg-1">
-								<span class="navbar-brand"><span class="icon-travel-filters-sort"></span> Sort</span>
+							<li class="hidden-xs col-sm-2 col-lg-4">
+								<span class="navbar-brand">Sort <span class="optional-lg">your</span> <span class="optional-md">results</span> by</span>
 							</li>
 							<li class="col-sm-2 col-lg-1">
 								<a href="javascript:;" data-sort-type="benefits.excess" data-sort-dir="asc"><span class="icon"></span> <span>Excess</span></a>
@@ -160,8 +92,8 @@
 						</ul>
 					</li>
 				</ul>
-			</div>
-		</div>
+						</div>
+					</div>
 	</jsp:attribute>
 
 	<jsp:attribute name="form_bottom"></jsp:attribute>

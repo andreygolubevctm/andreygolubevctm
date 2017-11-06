@@ -22,7 +22,7 @@
 		disableAnimationsBetweenTabs : true,
 		showCount : true,
 		filter : function() {
-			Results.filterByExcess("coverLevel", "value", {
+			Results.filterBy("coverLevel", "value", {
 				"equals" : "C"
 			}, true);
 		}
@@ -32,7 +32,7 @@
 		defaultTab : false,
 		showCount : true,
 		filter : function() {
-			Results.filterByExcess("coverLevel", "value", {
+			Results.filterBy("coverLevel", "value", {
 				"equals" : "M"
 			}, true);
 
@@ -43,7 +43,7 @@
 		showCount : true,
 		defaultTab : false,
 		filter : function() {
-			Results.filterByExcess("coverLevel", "value", {
+			Results.filterBy("coverLevel", "value", {
 					"equals": "B"
 				}, true);
 			}
@@ -54,7 +54,7 @@
 			defaultTab: true,
 			showCount: true,
 			filter: function() {
-				Results.filterByExcess("coverLevel", "value", {
+				Results.filterBy("coverLevel", "value", {
 					"equals": "I"
 				}, true);
 			}
@@ -65,7 +65,7 @@
 			defaultTab: false,
 			showCount: true,
 			filter: function() {
-				Results.filterByExcess("coverLevel", "value", {
+				Results.filterBy("coverLevel", "value", {
 					"equals": "D"
 				}, true);
 			}
