@@ -27,6 +27,8 @@ public class EmailUtils {
 
     public static final String ANNUAL_PREMIUM = "Annual  Premium";
     public static final String ANNUAL_ONLINE_PREMIUM = "Annual Online Premium";
+    public final static int START = 0;
+    public final static int END = 10;
 
     public List<ResultProperty> getResultPropertiesForTransaction(String tranId) throws DaoException {
         try {
@@ -39,7 +41,7 @@ public class EmailUtils {
 
     public List<String> buildParameterList(HttpServletRequest httpServletRequest, String paramName){
         List params = new ArrayList();
-        IntStream.range(0,10).forEach(idx -> {
+        IntStream.range(START,END).forEach(idx -> {
             String parameter = httpServletRequest.getParameter(paramName + idx);
             if(parameter != null)params.add(parameter);
         });
@@ -78,7 +80,7 @@ public class EmailUtils {
 
     private List<String> createEmptyListWithAnnualOnlinePremium(){
         List<String> premiumList = new ArrayList<>();
-        IntStream.range(0,10).forEach(value -> {
+        IntStream.range(START,END).forEach(value -> {
             premiumList.add(ANNUAL_ONLINE_PREMIUM);
         });
         return premiumList;
