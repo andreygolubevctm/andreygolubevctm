@@ -33,10 +33,15 @@
         $limitedCoverHidden,
         $moreInfoDialogue,
         $dialogue36,
-        $cashRewardsDialogue,
-        $rewardGatewaryDialogue,
         $nzMedicareRules,
         $nzMedicareRulesToggle;
+
+    var affiliates = [
+        {dialogue:79,affiliate:'cashRewards',element:null},
+	    {dialogue:80,affiliate:'rewardGateway',element:null},
+	    {dialogue:88,affiliate:'pricepal',element:null},
+	    {dialogue:89,affiliate:'lyoness',element:null}
+    ];
 
     function init() {
         $(document).ready(function () {
@@ -73,11 +78,13 @@
 	        $privatePatientDialogue = $('.simples-dialogue-24');
             $limitedCoverHidden = $("input[name='health_situation_accidentOnlyCover']");
             $dialogue36 = $('.simples-dialogue-36');
-            $cashRewardsDialogue = $('.simples-dialogue-79');
-            $rewardGatewaryDialogue = $('.simples-dialogue-80');
-	        $nzMedicareRules = $('#healthAboutYou .nz-medicare-rules');
+            $nzMedicareRules = $('#healthAboutYou .nz-medicare-rules');
 	        $nzMedicareRulesToggle = $nzMedicareRules.find('a:first');
 	        $nzMedicareRulesCopy = $nzMedicareRules.find('.copy:first');
+	        for(var i=0; i<affiliates.length; i++) {
+	            var row = affiliates[i];
+	            row.element = $('.simples-dialogue-' + row.dialogue);
+            }
 
             // Handle pre-filled
             populatePrevAssignedRadioBtnGroupValue();
@@ -384,8 +391,10 @@
     }
 
     function toggleAffiliateRewardsDialogue(affiliateId) {
-        $cashRewardsDialogue.toggleClass('hidden', affiliateId !== 'cashRewards');
-        $rewardGatewaryDialogue.toggleClass('hidden', affiliateId !== 'rewardGateway');
+	    for(var i=0; i<affiliates.length; i++) {
+		    var row = affiliates[i];
+		    row.element.toggleClass('hidden', affiliateId !== row.affiliate);
+	    }
     }
 
     meerkat.modules.register("simplesBindings", {
