@@ -363,7 +363,8 @@ var ResultsPagination = {
 		var columnWidth = 0;
 		var columnsPerPage = 0;
 		var mediaState = typeof meerkat != 'undefined' ? meerkat.modules.deviceMediaState.get().toLowerCase() : false;
-		if(mediaState !== false && mediaState !== "xs" && Results.pagination.hasLessDrivenColumns(mediaState)) {
+		if (mediaState !== false && mediaState !== "xs" && Results.pagination.hasLessDrivenColumns(mediaState)) {
+
 			columnsPerPage = Results.pagination.getColumnCountFromContainer(mediaState);
 			columnWidth = Math.round((viewableArea / columnsPerPage) * 100) / 100;
 		} else {

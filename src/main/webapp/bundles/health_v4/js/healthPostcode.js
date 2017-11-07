@@ -8,7 +8,8 @@
             }
         },
         $elements = {},
-        _postcode = '';
+        _postcode = '',
+        _pendingGet = false;
 
     function initPostcode() {
         _setupFields();
@@ -40,6 +41,8 @@
                     _postcode = '';
                 }
 
+                _pendingGet = false;
+
                 // if value valid
                 if ($(this).isValid()) {
                     // clear the results
@@ -63,6 +66,15 @@
                 var location = _createLocationArray(_getLocationState($suburbItem.attr('data-location')));
                 _setLocation(location);
             });
+
+        $(document).on('click', 'body[data-step=contact] .journeyEngineSlide.active .journeyNavButton, .slide-control-get-prices', function() {
+            if (_pendingGet) {
+                var $this = $(this);
+                _.delay(function() {
+                    $this.trigger('click');
+                }, 300);
+            }
+        });
     }
 
     function _eventSubscriptions() {
@@ -79,6 +91,8 @@
         _postcode = postcode;
         meerkat.modules.loadingAnimation.showAfter($elements.input);
         $elements.results.hide();
+
+        _pendingGet = true;
 
         var data = { term: postcode },
             request_obj = {
@@ -103,6 +117,8 @@
                 },
                 onComplete: function() {
                     meerkat.modules.loadingAnimation.hide($elements.input);
+
+                    _pendingGet = false;
                 }
             };
 
