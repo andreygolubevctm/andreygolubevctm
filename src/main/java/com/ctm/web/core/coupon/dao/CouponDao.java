@@ -295,6 +295,8 @@ public class CouponDao {
 		coupon.setStyleCodeId(results.getInt("styleCodeId"));
 		coupon.setVerticalId(results.getInt("verticalId"));
 		coupon.setCouponId(results.getInt("couponId"));
+		coupon.setCampaignName(results.getString("campaignName"));
+		coupon.setCouponValue(results.getDouble("couponValue"));
 		coupon.setExclusive(results.getBoolean("isExclusive"));
 		coupon.setShowPopup(results.getBoolean("showPopup"));
 		coupon.setPrePopulate(results.getBoolean("canPrePopulate"));

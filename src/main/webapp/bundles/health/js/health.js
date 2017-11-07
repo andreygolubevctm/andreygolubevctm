@@ -709,6 +709,9 @@
 					$('#mainform').find('.health_contact_authority span').text( selectedProduct.info.providerName  );
 
 					meerkat.modules.healthPaymentStep.updatePremium();
+
+					// toggle coupon seen online
+					meerkat.modules.healthPaymentStep.toggleCouponSeenText();
 				}
 			}
 		};

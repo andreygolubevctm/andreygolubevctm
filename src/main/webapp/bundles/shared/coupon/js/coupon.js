@@ -14,6 +14,7 @@
 	};
 
 	var $couponIdField,
+		$couponInfoField,
 		$couponCodeField,
 		$couponOptinField,
 		$couponOptinGroup,
@@ -36,6 +37,7 @@
 			if (isAvailable === true) {
 				$couponIdField = $('.coupon-id-field'),
 				$couponCodeField = $('.coupon-code-field'),
+				$couponInfoField = $('.coupon-info-field'),
 				$couponOptinField = $('.coupon-optin-field').find('input'),
 				$couponOptinGroup = $('.coupon-optin-group'),
 				$couponErrorContainer = $('.coupon-error-container'),
@@ -339,6 +341,7 @@
 		if (isCurrentCouponValid() === true && currentCoupon.canPrePopulate === true) {
 			$couponIdField.val(currentCoupon.couponId);
 			$couponCodeField.val(currentCoupon.couponCode);
+            $couponInfoField.val(JSON.stringify({ campaignName: currentCoupon.campaignName, couponValue: currentCoupon.couponValue }));
 		} else {
             $couponIdField.val('');
             $couponCodeField.val('');
@@ -375,6 +378,11 @@
 		currentCoupon = coupon;
 	}
 
+	function getCouponInfoJSON() {
+		$couponInfoField = $couponInfoField || $('.coupon-info-field');
+		return $couponInfoField.length === 1 && $couponInfoField.val() !== '' ? JSON.parse($couponInfoField.val()) : '';
+	}
+
 	meerkat.modules.register("coupon", {
 		init: init,
 		events: events,
@@ -383,7 +391,8 @@
 		validateCouponCode: validateCouponCode,
 		renderCouponBanner: renderCouponBanner,
         triggerPopup: triggerPopup,
-        dealWithAddedCouponHeight: dealWithAddedCouponHeight
+        dealWithAddedCouponHeight: dealWithAddedCouponHeight,
+        getCouponInfoJSON: getCouponInfoJSON
 	});
 
 })(jQuery);

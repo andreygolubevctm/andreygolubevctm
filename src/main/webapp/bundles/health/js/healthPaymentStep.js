@@ -528,6 +528,22 @@
         $('#health_payment_details_start').off('changeDate.' + name);
 	}
 
+	function toggleCouponSeenText() {
+        var $couponCampaignSeen = $('.coupon-campaign-seen');
+        if ($('#health_simples_contactTypeRadio_outbound').is(':checked') || $('#health_simples_contactTypeRadio_trialcampaign').is(':checked')) {
+            var couponInfo = meerkat.modules.coupon.getCouponInfoJSON();
+            if (_.isObject(couponInfo)) {
+                if ($couponCampaignSeen.length === 0) {
+                    $('<div class="coupon-campaign-seen alert alert-info">Coupon Campaign: ' + couponInfo.campaignName + ' | Coupon Value: $' + couponInfo.couponValue + '</div>').insertAfter($('#healthVouchers'));
+                } else {
+                    $couponCampaignSeen.show();
+                }
+            }
+        } else {
+            $couponCampaignSeen.hide();
+        }
+	}
+
 	meerkat.modules.register("healthPaymentStep", {
 		init: initHealthPaymentStep,
 		initFields: initFields,
@@ -541,7 +557,8 @@
 		getPaymentMethodNode: getPaymentMethodNode,
 		rebindCreditCardRules: rebindCreditCardRules,
 		updateValidationSelectorsPaymentGateway : updateValidationSelectorsPaymentGateway,
-		resetValidationSelectorsPaymentGateway : resetValidationSelectorsPaymentGateway
+		resetValidationSelectorsPaymentGateway : resetValidationSelectorsPaymentGateway,
+        toggleCouponSeenText: toggleCouponSeenText
 	});
 
 })(jQuery);

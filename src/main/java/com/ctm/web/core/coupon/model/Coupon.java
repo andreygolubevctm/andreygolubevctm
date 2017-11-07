@@ -17,8 +17,10 @@ public class Coupon extends AbstractJsonModel {
 	private int couponId;
 	private int styleCodeId;
 	private int verticalId;
+	private String campaignName;
 	@JsonView(Views.ForWordpressSite.class)
 	private String couponCode;
+	private double couponValue;
 	private boolean isExclusive;
 	private boolean showPopup;
 	private boolean canPrePopulate;
@@ -55,11 +57,23 @@ public class Coupon extends AbstractJsonModel {
 	public void setVerticalId(int verticalId) {
 		this.verticalId = verticalId;
 	}
+	public String getCampaignName() {
+		return campaignName;
+	}
+	public void setCampaignName(String campaignName) {
+		this.campaignName = campaignName;
+	}
 	public String getCouponCode() {
 		return couponCode;
 	}
 	public void setCouponCode(String couponCode) {
 		this.couponCode = couponCode;
+	}
+	public double getCouponValue() {
+		return couponValue;
+	}
+	public void setCouponValue(double couponValue) {
+		this.couponValue = couponValue;
 	}
 	public boolean isExclusive() {
 		return isExclusive;
@@ -169,7 +183,9 @@ public class Coupon extends AbstractJsonModel {
 		JSONObject json = new JSONObject();
 
 		json.put("couponId", getCouponId());
+		json.put("campaignName", getCampaignName());
 		json.put("couponCode", getCouponCode());
+		json.put("couponValue", getCouponValue());
         json.put("contentTile", getContentTile());
 		json.put("contentBanner", getContentBanner());
 		json.put("contentSuccess", getContentSuccess());
@@ -187,7 +203,9 @@ public class Coupon extends AbstractJsonModel {
 				"couponId=" + couponId +
 				", styleCodeId=" + styleCodeId +
 				", verticalId=" + verticalId +
+				", campaignName=" + campaignName + '\'' +
 				", couponCode='" + couponCode + '\'' +
+				", couponValue=" + couponValue +
 				", isExclusive=" + isExclusive +
 				", showPopup=" + showPopup +
 				", canPrePopulate=" + canPrePopulate +
