@@ -205,7 +205,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 								</c:when>
 								<c:otherwise>
 									<%-- Show only if it's not health OR it's health and the call back functionality is disabled --%>
-									<c:if test="${ pageSettings.getVerticalCode() ne 'health' or (pageSettings.hasSetting('callbackPopupEnabled') and pageSettings.getSetting('callbackPopupEnabled') eq 'N' and pageSettings.getVerticalCode() eq 'health')}">
+									<c:if test="${ (pageSettings.getVerticalCode() ne 'health' and pageSettings.getVerticalCode() ne 'travel') or (pageSettings.hasSetting('callbackPopupEnabled') and pageSettings.getSetting('callbackPopupEnabled') eq 'N' and pageSettings.getVerticalCode() eq 'health')}">
 										<button type="button" class="navbar-toggle hamburger collapsed disabled" data-toggle="navMenuOpen" data-target=".navbar-collapse-menu">
 											<span class="sr-only">Toggle Navigation</span>
 											<span class="icon icon-reorder"></span>
@@ -245,6 +245,14 @@ ${newPage.init(pageContext.request, pageSettings)}
 
 						<jsp:invoke fragment="header" />
 					</div>
+
+					<c:if test="${pageSettings.getVerticalCode() eq 'travel'}">
+						<div class="row hidden-sm">
+							<div class="col-xs-6 clt-action active">Comprehensive</div>
+							<div class="col-xs-2 clt-trip-filter">Filter</div>
+							<div class="col-xs-4 clt-trip-filter">Excess</div>
+						</div>
+					</c:if>
 
 				</div>
 				<jsp:invoke fragment="progress_bar" />
