@@ -40,7 +40,10 @@
         {dialogue:79,affiliate:'cashRewards',element:null},
 	    {dialogue:80,affiliate:'rewardGateway',element:null},
 	    {dialogue:88,affiliate:'pricepal',element:null},
-	    {dialogue:89,affiliate:'lyoness',element:null}
+	    {dialogue:89,affiliate:'lyoness',element:null},
+        {dialogue:90,affiliate:'ozbargain',element:null},
+        {dialogue:91,affiliate:'dubli',element:null},
+        {dialogue:92,affiliate:'pegasusgroupaustralia',element:null}
     ];
 
     function init() {
