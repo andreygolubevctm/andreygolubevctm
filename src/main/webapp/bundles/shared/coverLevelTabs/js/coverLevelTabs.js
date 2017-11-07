@@ -271,7 +271,10 @@
 			}
 		}
 
-		$currentTabContainer.empty().html(out);
+		if (state != 'xs') {
+            $currentTabContainer.empty().html(out);
+		}
+
 		$('.reset-travel-filters').empty().html(resetFilters);
 		meerkat.modules.travelResultFilters.resetCustomFilters();
 

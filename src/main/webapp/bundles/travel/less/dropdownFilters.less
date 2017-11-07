@@ -1,7 +1,9 @@
 .dropdown-menu-excess-filter {
-  top: 38px;
-  left: -55px;
-  min-width: 200px;
+  @media screen and (@sm) {
+    top: 38px;
+    left: -55px;
+    min-width: 200px;
+  }
 
   /* this CS forms the triangles */
   &:before,
@@ -123,5 +125,29 @@
 
 .no-padding {
   padding: 0;
+}
+
+// XS breakpoints
+@media screen and (@xs-only) {
+  .navbar-mobile {
+    padding: 10px 0;
+
+    .selected-excess-value {
+      padding-top: 10px;
+    }
+
+    .dropdown-menu {
+      position: fixed;
+      top: 110px;
+      width: 100%;
+    }
+
+    .dropdown-menu-excess-filter {
+      &:before,
+      &:after {
+        left: 80%;
+      }
+    }
+  }
 }
 

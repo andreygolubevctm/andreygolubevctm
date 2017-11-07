@@ -247,10 +247,23 @@ ${newPage.init(pageContext.request, pageSettings)}
 					</div>
 
 					<c:if test="${pageSettings.getVerticalCode() eq 'travel'}">
-						<div class="row hidden-sm">
+						<div class="row navbar-mobile coverLevelTabs visible-xs hidden-sm hidden-md hidden-lg">
 							<div class="col-xs-6 clt-action active">Comprehensive</div>
-							<div class="col-xs-2 clt-trip-filter">Filter</div>
-							<div class="col-xs-4 clt-trip-filter">Excess</div>
+							<div class="col-xs-2 clt-trip-filter"></div>
+							<div class="col-xs-4 clt-trip-filter">
+								<div class="col-xs-12 col-md-5 text-left no-padding"><b>Excess</b></div>
+								<div class="col-xs-5 col-md-6 text-left selected-excess-value">
+									<div class="dropdown">
+										<a type="button" id="excessFilterDropdownBtn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											<span class="filter-excess-value">up to $200</span>
+											<i class="icon icon-angle-down"></i>
+										</a>
+										<div class="dropdown-menu dropdown-menu-excess-filter" aria-labelledby="excessFilterDropdownBtn">
+											<travel_results_filters:excess />
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
 					</c:if>
 
