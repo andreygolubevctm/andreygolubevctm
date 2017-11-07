@@ -20,9 +20,11 @@
 }
 
 .dropdown-menu-more-filters {
-  top: 38px;
-  left: -870px;
-  min-width: 1150px;
+  @media screen and (@sm) {
+    top: 38px;
+    left: -870px;
+    min-width: 1150px;
+  }
 
   .help-icon {
     line-height: inherit;
@@ -132,13 +134,13 @@
   .navbar-mobile {
     padding: 10px 0;
 
-    .selected-excess-value {
+    .clt-trip-filter {
       padding-top: 10px;
     }
 
     .dropdown-menu {
       position: fixed;
-      top: 110px;
+      top: 95px;
       width: 100%;
     }
 
@@ -146,6 +148,13 @@
       &:before,
       &:after {
         left: 80%;
+      }
+    }
+
+    .dropdown-menu-more-filters {
+      &:before,
+      &:after {
+        left: 48%;
       }
     }
   }
