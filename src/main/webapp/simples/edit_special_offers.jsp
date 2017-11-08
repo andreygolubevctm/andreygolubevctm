@@ -33,7 +33,7 @@
 								<span>Offer</span>
 							</a>
 						</li>
-						<li class="col-lg-3">
+						<li class="col-lg-<c:if test="${isRoleElevatedSupervisor ne true}">4</c:if><c:if test="${isRoleElevatedSupervisor}">3</c:if>">
 							<a href="javascript:;">
 								<span class="icon"></span>
 								<span>Conditions</span>
@@ -69,9 +69,11 @@
 								<span>End Date</span>
 							</a>
 						</li>
-						<li class="col-lg-1">
-							<button type="button" class="crud-new-entry btn btn-secondary btn-sm">Add New Offer</button>
-						</li>
+						<c:if test="${isRoleElevatedSupervisor}">
+							<li class="col-lg-1">
+								<button type="button" class="crud-new-entry btn btn-secondary btn-sm">Add New Offer</button>
+							</li>
+						</c:if>
 					</ul>
 				</div>
 			</div>
@@ -127,19 +129,22 @@
 </script>
 
 <script id="special-offers-modal-template" class="crud-modal-template" type="text/html">
-	<div class="row">
-		<div class="col-sm-12">
-			<br>
-			{{ if(data.modalAction === "edit") { }}
+
+	<c:if test="${isRoleElevatedSupervisor}">
+		<div class="row">
+			<div class="col-sm-12">
+				<br>
+				{{ if(data.modalAction === "edit") { }}
 				<h1>Edit Special Offer</h1>
 				<input type="hidden" name="offerId" value="{{= data.offerId }}">
-			{{ } else if(data.modalAction === "clone") { }}
+				{{ } else if(data.modalAction === "clone") { }}
 				<h1>Clone Special Offer</h1>
-			{{ } else { }}
+				{{ } else { }}
 				<h1>Create Special Offer</h1>
-			{{ } }}
+				{{ } }}
+			</div>
 		</div>
-	</div>
+	</c:if>
 
 	<div class="row">
 		<div class="col-sm-12">
@@ -217,9 +222,11 @@
 		</div>
 	</div>
 
-	<div class="form-group">
-		<button type="button" class="crud-save-entry btn btn-secondary">Save</button>
-	</div>
+	<c:if test="${isRoleElevatedSupervisor}">
+		<div class="form-group">
+			<button type="button" class="crud-save-entry btn btn-secondary">Save</button>
+		</div>
+	</c:if>
 </script>
 
 <script id="special-offers-row-template" class="crud-row-template" type="text/html">
@@ -230,7 +237,7 @@
 		<div class="col-lg-2">
 			{{= data.content }}
 		</div>
-		<div class="col-lg-3">
+		<div class="col-lg-{{= '${isRoleElevatedSupervisor}' === 'true' ? 3 : 4 }}">
 			{{= data.terms }}
 		</div>
 		<div class="col-lg-1">
@@ -248,17 +255,19 @@
 		<div class="col-lg-1">
 			{{= new Date(data.effectiveEnd).toLocaleDateString('en-GB') }}
 		</div>
-		<div class="col-lg-1">
-			{{ if(data.type === "current" || data.type === "future") { }}
+		<c:if test="${isRoleElevatedSupervisor}">
+			<div class="col-lg-1">
+				{{ if(data.type === "current" || data.type === "future") { }}
 				<button type="button" class="crud-edit-entry btn btn-secondary btn-sm">Edit</button>
 				<button type="button" class="crud-clone-entry btn btn-secondary btn-sm">Clone</button>
 
 				{{ if(data.type === "future") { }}
-					<button type="button" class="crud-delete-entry btn btn-primary btn-sm">Delete</button>
+				<button type="button" class="crud-delete-entry btn btn-primary btn-sm">Delete</button>
 				{{ } }}
-			{{ } else { }}
+				{{ } else { }}
 				<button type="button" class="crud-clone-entry btn btn-secondary btn-sm">Clone</button>
-			{{ } }}
-		</div>
+				{{ } }}
+			</div>
+		</c:if>
 	</div>
 </script>

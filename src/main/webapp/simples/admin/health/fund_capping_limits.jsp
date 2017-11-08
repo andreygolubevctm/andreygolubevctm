@@ -12,7 +12,7 @@
 			<div class="container">
 				<div class="row">
 					<ul>
-						<li class="col-lg-2">
+						<li class="col-lg-<c:if test="${isRoleElevatedSupervisor ne true}">4</c:if><c:if test="${isRoleElevatedSupervisor}">2</c:if>">
 							<a href="javascript:;" class="toggle sort-by" data-sortkey="data.providerName,data.effectiveStart" data-sortdir="asc">
 								<span class="icon"></span>
 								<span>Provider</span>
@@ -60,9 +60,11 @@
 								<span>Category</span>
 							</a>
 						</li>
+						<c:if test="${isRoleElevatedSupervisor}">
 						<li class="col-lg-2">
 							<button type="button" class="crud-new-entry btn btn-secondary btn-sm">Add New Cap</button>
 						</li>
+						</c:if>
 					</ul>
 				</div>
 			</div>
@@ -169,7 +171,7 @@
 
 <script class="crud-row-template" type="text/html">
 	<div class="sortable-results-row row" data-id="{{= data.cappingLimitsKey }}">
-		<div class="col-lg-2">
+		<div class="col-lg-<c:if test="${isRoleElevatedSupervisor ne true}">4</c:if><c:if test="${isRoleElevatedSupervisor}">2</c:if>">
 			{{= data.providerName }}
 		</div>
 		<div class="col-lg-2">
@@ -193,6 +195,7 @@
 		<div class="col-lg-1">
 			{{= data.category }}
 		</div>
+		<c:if test="${isRoleElevatedSupervisor}">
 		<div class="col-lg-2">
 			<button type="button" class="crud-clone-entry btn btn-secondary btn-sm">Clone</button>
 			{{ if(data.type === "current"){ }}
@@ -200,5 +203,6 @@
 				<button type="button" class="crud-delete-entry btn btn-primary btn-sm">Delete</button>
 			{{ } }}
 		</div>
+		</c:if>
 	</div>
 </script>

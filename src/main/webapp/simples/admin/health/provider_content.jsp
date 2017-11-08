@@ -37,7 +37,7 @@
                 <span>Type</span>
               </a>
             </li>
-            <li class="col-lg-4">
+            <li class="col-lg-<c:if test="${isRoleElevatedSupervisor ne true}">5</c:if><c:if test="${isRoleElevatedSupervisor}">4</c:if>">
               <a href="javascript:;">
                 <span class="icon"></span>
                 <span>Text</span>
@@ -61,9 +61,11 @@
                 <span>Effective End</span>
               </a>
             </li>
+            <c:if test="${isRoleElevatedSupervisor}">
             <li class="col-lg-1">
               <button type="button" class="crud-new-entry btn btn-secondary btn-sm">Add New</button>
             </li>
+            </c:if>
           </ul>
         </div>
       </div>
@@ -199,7 +201,7 @@
     <div class="col-lg-1">
       {{= data.providerContentTypeCode }}
     </div>
-    <div class="col-lg-4">
+    <div class="col-lg-<c:if test="${isRoleElevatedSupervisor ne true}">5</c:if><c:if test="${isRoleElevatedSupervisor}">4</c:if>">
       {{= data.providerContentText }}
     </div>
     <div class="col-lg-1">
@@ -211,10 +213,12 @@
     <div class="col-lg-2">
       {{= new Date(data.effectiveEnd).toLocaleDateString('en-GB') }}
     </div>
+    <c:if test="${isRoleElevatedSupervisor}">
     <div class="col-lg-1">
       <button type="button" class="crud-edit-entry btn btn-secondary btn-sm">Edit</button>
       <button type="button" class="crud-clone-entry btn btn-secondary btn-sm">Clone</button>
       <button type="button" class="crud-delete-entry btn btn-primary btn-sm">Delete</button>
     </div>
+    </c:if>
   </div>
 </script>

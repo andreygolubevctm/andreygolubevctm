@@ -54,6 +54,11 @@
 					<c:set var="securityDescLevel" value="Supervisor" />
 				</c:if>
 
+				<c:set var="elevatedsupervisor" value="N" />
+				<c:if test="${ pageContext.request.isUserInRole('CTM-HLT-SIMPLES-ELEVATED-SUPERVISOR')}"><!-- todo: change this to the right role level jira-developers CTM-HLT-SIMPLES-ELEVATED-SUPERVISOR  -->
+					<c:set var="elevatedsupervisor" value="Y" />
+				</c:if>
+
 				<!-- Restricting 'browsertest' accessing simples in production environment. -->
 				<c:if test="${userId == 'browsertest' and com.ctm.web.core.services.EnvironmentService.getEnvironmentAsString() == 'PRO'}">
 					<c:set var="callCentre" value="N" />
@@ -109,6 +114,7 @@
                         <ccRewardsGroup>${ccRewardsGroup}</ccRewardsGroup>
 						<IT>${IT}</IT>
 						<supervisor>${supervisor}</supervisor>
+						<elevatedsupervisor>${elevatedsupervisor}</elevatedsupervisor>
 					</security>
 				</c:set>
 				<go:setData dataVar="authenticatedData" xpath="login" xml="${securityXML}" />
