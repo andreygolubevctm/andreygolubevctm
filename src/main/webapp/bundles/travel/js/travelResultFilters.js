@@ -60,6 +60,17 @@
             $(this).find(".icon").removeClass("icon-angle-up").addClass("icon-angle-down");
         });
 
+        // mobile brands show/hide
+        $('.filter-brands-toggle').click(function () {
+            if ($('.filter-brands-container').hasClass('hide')) {
+                $('.filter-brands-container').removeClass('hide');
+                $(this).find('.icon').removeClass('icon-angle-down').addClass('icon-angle-up');
+            } else {
+                $('.filter-brands-container').addClass('hide');
+                $(this).find('.icon').removeClass('icon-angle-up').addClass('icon-angle-down');
+            }
+        });
+
         // toggle brands select all/none
         $('.brands-select-toggle').click(function () {
             var _providers = [];

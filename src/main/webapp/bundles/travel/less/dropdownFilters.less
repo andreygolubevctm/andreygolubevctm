@@ -26,6 +26,11 @@
     min-width: 1150px;
   }
 
+  .row {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
   .help-icon {
     line-height: inherit;
     margin-left: 5px;
@@ -155,6 +160,15 @@
       &:before,
       &:after {
         left: 48%;
+      }
+
+      .filter-section {
+        padding-top: 10px;
+        padding-bottom: 10px;
+
+        &:last-of-type {
+          border-top: 1px solid @theme-default;
+        }
       }
     }
   }
