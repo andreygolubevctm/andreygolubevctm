@@ -248,10 +248,10 @@ ${newPage.init(pageContext.request, pageSettings)}
 
 					<c:if test="${pageSettings.getVerticalCode() eq 'travel'}">
 						<div class="row navbar-mobile coverLevelTabs visible-xs hidden-sm hidden-md hidden-lg">
-							<div class="col-xs-5">
+							<div class="col-xs-5 clt-trip-filter">
 								<div class="dropdown cover-type-mobile-active">
 									<a type="button" id="coverTypeDropdownBtn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										<span class="mobile-active-cover-type">Cover Type</span>
+										<span class="mobile-active-cover-type"></span>
 										<i class="icon icon-angle-down"></i>
 									</a>
 									<div class="dropdown-menu dropdown-menu-excess-filter dropdown-menu-mobile-cover-types" aria-labelledby="coverTypeDropdownBtn">

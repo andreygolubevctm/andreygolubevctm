@@ -189,7 +189,11 @@
 
         $tabsContainer.off('change', '.cover-type-mobile').on('change', '.cover-type-mobile', function(e) {
             _coverTypeEvent(this);
-
+            var $el = $(this),
+                tabIndex = $el.attr('data-clt-index'),
+            	coverLevelText = settings.activeTabSet[tabIndex].label.replace('<span class=\'hidden-xs\'>Cover</span>', '');
+				$('.mobile-active-cover-type').empty().text(coverLevelText);
+				$('#coverTypeDropdownBtn').dropdown('toggle');
         });
 	}
 
@@ -245,6 +249,10 @@
 				count = counts[tab.rankingFilter] || null;
 			var coverTypeValue = tab.label.replace('<span class=\'hidden-xs\'>Cover</span>', '').toLowerCase().trim().replace(' ', '_');
 			var coverTypeText = tab.label.replace('<span class=\'hidden-xs\'>Cover</span>', '');
+
+			if (tab.defaultTab) {
+                $('.mobile-active-cover-type').empty().text(coverTypeText);
+			}
 
 			// results headers
 			out += '<div class="col-xs-4 col-sm-' + xsCols + ' text-center clt-action ' + (tab.defaultTab === true ? 'active' : '') + '" data-clt-index="' + i + '" data-ranking-filter="' + tab.rankingFilter +'">';
@@ -345,29 +353,44 @@
      */
 	function buildCustomTab() {
 		var customTab = '';
+		var customRadioMobile = '';
         var tabLength = settings.activeTabSet.length;
         var xsCols = parseInt(6 / tabLength, 10);
         settings.activeTabIndex = -1;
         $('[data-travel-filter="custom"]').remove();
         $('.clt-action').removeClass('active');
-        customTab += '<div class="col-xs-' + xsCols + ' text-center clt-action active" data-travel-filter="custom">';
-        customTab += 	'Custom (' + Results.model.travelFilteredProductsCount + ')' ;
-        customTab += '</div>';
-        $('.navbar-cover-text').empty().html('Showing ' + Results.model.travelFilteredProductsCount + ' custom plans');
-        $('.currentTabsContainer').append(customTab);
-        applyCustomResultEventListener();
-	}
 
-    /**
-	 * Add the click event listener for the custom tab
-     */
-	function applyCustomResultEventListener() {
-		$('[data-travel-filter="custom"]').click(function () {
-            settings.activeTabIndex = -1;
-            $(this).siblings().removeClass('active').end().addClass('active');
+        if (state !== 'xs') {
+            customTab += '<div class="col-xs-' + xsCols + ' text-center clt-action active" data-travel-filter="custom">';
+            customTab += 	'Custom (' + Results.model.travelFilteredProductsCount + ')' ;
+            customTab += '</div>';
             $('.navbar-cover-text').empty().html('Showing ' + Results.model.travelFilteredProductsCount + ' custom plans');
-            Results.model.travelResultFilter(true, true, true);
-		});
+            $('.currentTabsContainer').append(customTab);
+            $('[data-travel-filter="custom"]').click(function () {
+                settings.activeTabIndex = -1;
+                $(this).siblings().removeClass('active').end().addClass('active');
+                $('.navbar-cover-text').empty().html('Showing ' + Results.model.travelFilteredProductsCount + ' custom plans');
+                Results.model.travelResultFilter(true, true, true);
+            });
+		} else {
+            if ($('[data-travel-filter="custom-mobile"]').length === 0) {
+                customRadioMobile += '<div class="dropdown-item">';
+                customRadioMobile += 	'<div class="radio">';
+                customRadioMobile += 		'<input type="radio" name="cover-type-mobile-radio-group" id="mobile_cover_type_custom" class="radioButton-custom cover-type-mobile radio" data-travel-filter="custom-mobile">';
+                customRadioMobile += 		'<label for="mobile_cover_type_custom">Custom</label>';
+                customRadioMobile += 	'</div>';
+                customRadioMobile += '</div>';
+                $('.mobile-cover-types').append(customRadioMobile);
+			}
+            $('.mobile-active-cover-type').empty().text('Custom');
+
+            $('[data-travel-filter="custom-mobile"]').change(function () {
+                $('.mobile-active-cover-type').empty().text('Custom');
+                settings.activeTabIndex = -1;
+                Results.model.travelResultFilter(true, true, true);
+                $('#coverTypeDropdownBtn').dropdown('toggle');
+			});
+		}
 	}
 
 	// return the originating tab value

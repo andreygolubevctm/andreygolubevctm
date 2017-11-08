@@ -218,6 +218,7 @@
     /**
      * Display the custom filter results
      * @param customFilter - boolean value for custom filter
+     * @param matchAllFilter - boolean value to match ALL or ONE filter
      */
     function _displayCustomResults (customFilter, matchAllFilter) {
         Results.model.travelResultFilter(true, true, matchAllFilter);
