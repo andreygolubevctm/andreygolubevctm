@@ -87,103 +87,110 @@
 		}
 	}
 
+	function _coverTypeEvent (element) {
+        var $el = $(element),
+            tabIndex = $el.attr('data-clt-index');
+        log("[coverleveltabs] click", tabIndex);
+
+        if(tabIndex === '' || settings.activeTabIndex === tabIndex) {
+            return;
+        }
+        if(typeof settings.activeTabSet[tabIndex] === 'undefined') {
+            return;
+        }
+
+        if(typeof settings.activeTabSet[tabIndex].filter === 'function') {
+
+            var filterAnimate = Results.settings.animation.filter.active;
+
+            if(settings.disableAnimationsBetweenTabs === true) {
+                // Disable Animation
+                Results.settings.animation.filter.active = false;
+            }
+
+            // populate navbar cover text
+            $('.navbar-cover-text').html('Showing ' + counts[settings.activeTabSet[tabIndex].rankingFilter] + ' ' + settings.activeTabSet[tabIndex].label.toLowerCase().replace('cover', 'plans'));
+
+            // trigger filter call
+            settings.activeTabSet[tabIndex].filter();
+            $el.siblings().removeClass('active').end().addClass('active');
+            settings.activeTabIndex = tabIndex;
+            setRankingFilter(settings.activeTabSet[tabIndex].rankingFilter);
+            meerkat.messaging.publish(moduleEvents.CHANGE_COVER_TAB, {
+                activeTab: getRankingFilter()
+            });
+
+            if(settings.disableAnimationsBetweenTabs === true) {
+                // Re-Enable Animation, or set to whatever it was before.
+                Results.settings.animation.filter.active = filterAnimate;
+            }
+
+
+            var additionalData = {
+                    'recordRanking': 'Y'
+                },
+                hasTrackedThisTab = hasRunTrackingCall.indexOf(getRankingFilter()) !== -1;
+            // todo: above will not work on IE8 unless we have that shim for indexOf on array.
+
+            if(hasTrackedThisTab) {
+                additionalData.recordRanking = 'N';
+                additionalData.products = [];
+            }
+
+            // grab the tab they've clicked on
+            // recordFullTabJourney gives us the option to record all the other tab clicks in between
+            if (!recordFullTabJourney){
+                departingTab = [];
+            }
+
+            departingTab.push(getRankingFilter());
+
+            // reset it for the next "filter"
+            meerkat.modules.resultsRankings.resetTrackingProductObject();
+            // run the trackQuoteResultsList event again, with new products/rankingFilter
+            meerkat.messaging.publish(meerkatEvents.resultsTracking.TRACK_QUOTE_RESULTS_LIST, {
+                additionalData: additionalData,
+                onAfterEventMode: meerkat.modules.resultsTracking.getResultsEventMode()
+            });
+            if(meerkat.modules.resultsTracking.getResultsEventMode().toLowerCase() == "load") {
+                meerkat.modules.resultsTracking.setResultsEventMode("Refresh");
+            }
+
+            // Never write quote_ranking more than once for each Load event.
+            // Never write if the hasRunTrackingCall is empty, as it means its the first time.
+            // The first time is run by resultsRankings.js
+            if(!hasTrackedThisTab && hasRunTrackingCall.length) {
+                var rankingData = meerkat.modules.resultsRankings.getWriteRankData(Results.settings.rankings, meerkat.modules.resultsRankings.fetchProductsToRank(true));
+                meerkat.modules.resultsRankings.sendQuoteRanking("Cover Level Tabs", rankingData);
+            }
+
+            // No need to append twice!
+            if(!hasTrackedThisTab) {
+                hasRunTrackingCall.push(getRankingFilter());
+            }
+
+            // scroll back to the top of the page
+            meerkat.modules.utils.scrollPageTo("html body", 350, 0, function() {
+                meerkat.modules.journeyEngine.sessionCamRecorder({"navigationId":"CoverLevel"+getRankingFilter()});
+            });
+        }
+	}
+
 	function applyEventListeners() {
 
 		// Unnecessary if it doesn't exist in the page
 		if(!$tabsContainer.length) {
 			return;
 		}
+
 		$tabsContainer.off('click', '.clt-action').on('click', '.clt-action', function(e) {
-
-			var $el = $(this),
-			tabIndex = $el.attr('data-clt-index');
-			log("[coverleveltabs] click", tabIndex);
-
-			if(tabIndex === '' || settings.activeTabIndex === tabIndex) {
-				return;
-			}
-			if(typeof settings.activeTabSet[tabIndex] === 'undefined') {
-				return;
-			}
-
-			if(typeof settings.activeTabSet[tabIndex].filter === 'function') {
-
-				var filterAnimate = Results.settings.animation.filter.active;
-
-				if(settings.disableAnimationsBetweenTabs === true) {
-					// Disable Animation
-					Results.settings.animation.filter.active = false;
-				}
-
-				// populate navbar cover text
-				$('.navbar-cover-text').html('Showing ' + counts[settings.activeTabSet[tabIndex].rankingFilter] + ' ' + settings.activeTabSet[tabIndex].label.toLowerCase().replace('cover', 'plans'));
-
-				// trigger filter call
-				settings.activeTabSet[tabIndex].filter();
-				$el.siblings().removeClass('active').end().addClass('active');
-				settings.activeTabIndex = tabIndex;
-				setRankingFilter(settings.activeTabSet[tabIndex].rankingFilter);
-				meerkat.messaging.publish(moduleEvents.CHANGE_COVER_TAB, {
-					activeTab: getRankingFilter()
-				});
-
-				if(settings.disableAnimationsBetweenTabs === true) {
-					// Re-Enable Animation, or set to whatever it was before.
-					Results.settings.animation.filter.active = filterAnimate;
-				}
-
-
-				var additionalData = {
-						'recordRanking': 'Y'
-					},
-				hasTrackedThisTab = hasRunTrackingCall.indexOf(getRankingFilter()) !== -1;
-				// todo: above will not work on IE8 unless we have that shim for indexOf on array.
-
-				if(hasTrackedThisTab) {
-					additionalData.recordRanking = 'N';
-					additionalData.products = [];
-				}
-
-				// grab the tab they've clicked on
-				// recordFullTabJourney gives us the option to record all the other tab clicks in between
-				if (!recordFullTabJourney){
-					departingTab = [];
-				}
-
-				departingTab.push(getRankingFilter());
-
-				// reset it for the next "filter"
-				meerkat.modules.resultsRankings.resetTrackingProductObject();
-				// run the trackQuoteResultsList event again, with new products/rankingFilter
-				meerkat.messaging.publish(meerkatEvents.resultsTracking.TRACK_QUOTE_RESULTS_LIST, {
-					additionalData: additionalData,
-					onAfterEventMode: meerkat.modules.resultsTracking.getResultsEventMode()
-				});
-				if(meerkat.modules.resultsTracking.getResultsEventMode().toLowerCase() == "load") {
-					meerkat.modules.resultsTracking.setResultsEventMode("Refresh");
-				}
-
-				// Never write quote_ranking more than once for each Load event.
-				// Never write if the hasRunTrackingCall is empty, as it means its the first time.
-				// The first time is run by resultsRankings.js
-				if(!hasTrackedThisTab && hasRunTrackingCall.length) {
-					var rankingData = meerkat.modules.resultsRankings.getWriteRankData(Results.settings.rankings, meerkat.modules.resultsRankings.fetchProductsToRank(true));
-					meerkat.modules.resultsRankings.sendQuoteRanking("Cover Level Tabs", rankingData);
-				}
-
-				// No need to append twice!
-				if(!hasTrackedThisTab) {
-					hasRunTrackingCall.push(getRankingFilter());
-				}
-
-				// scroll back to the top of the page
-				meerkat.modules.utils.scrollPageTo("html body", 350, 0, function() {
-					meerkat.modules.journeyEngine.sessionCamRecorder({"navigationId":"CoverLevel"+getRankingFilter()});
-				});
-			}
-
-
+			_coverTypeEvent(this);
 		});
+
+        $tabsContainer.off('change', '.cover-type-mobile').on('change', '.cover-type-mobile', function(e) {
+            _coverTypeEvent(this);
+
+        });
 	}
 
 	function eventSubscriptions() {
@@ -232,6 +239,7 @@
 		state = meerkat.modules.deviceMediaState.get();
 		var out = '';
 		var resetFilters = '';
+		var mobileCoverTypes = '';
 		for(out = '', i = 0; i < tabLength; i ++) {
 			var tab = settings.activeTabSet[i],
 				count = counts[tab.rankingFilter] || null;
@@ -242,6 +250,14 @@
 			out += '<div class="col-xs-4 col-sm-' + xsCols + ' text-center clt-action ' + (tab.defaultTab === true ? 'active' : '') + '" data-clt-index="' + i + '" data-ranking-filter="' + tab.rankingFilter +'">';
 			out += (tab.label.replace('Cover', '')) + (state !== 'xs' && state !== 'sm' && tab.showCount === true && count !== null ? ' <span class="tabCount">(' + (count) + ')</span>' : '');
 			out += '</div>';
+
+			// mobile cover types
+            mobileCoverTypes += '<div class="dropdown-item">';
+            mobileCoverTypes += 	'<div class="radio">';
+            mobileCoverTypes += 		'<input type="radio" name="cover-type-mobile-radio-group" id="reset_filter_' + coverTypeValue + '" class="radioButton-custom  cover-type-mobile radio" data-clt-index="' + i +'" value="' + coverTypeValue + '" data-ranking-filter="' + tab.rankingFilter +'"' + (tab.defaultTab === true ? 'checked' : '') + '>';
+            mobileCoverTypes += 		'<label for="reset_filter_' + coverTypeValue + '">' + coverTypeText + '</label>';
+            mobileCoverTypes += 	'</div>';
+            mobileCoverTypes += '</div>';
 
 			// custom code due to requirement
 			switch (coverTypeValue) {
@@ -276,6 +292,7 @@
 		}
 
 		$('.reset-travel-filters').empty().html(resetFilters);
+		$('.mobile-cover-types').empty().html(mobileCoverTypes);
 		meerkat.modules.travelResultFilters.resetCustomFilters();
 
 		// hide filters for mobile, tablet & AMT

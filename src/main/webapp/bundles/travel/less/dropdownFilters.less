@@ -138,6 +138,8 @@
 @media screen and (@xs-only) {
   .navbar-mobile {
     padding: 10px 0;
+    margin-left: 0;
+    margin-right: 0;
 
     .clt-trip-filter {
       padding-top: 10px;
@@ -149,10 +151,45 @@
       width: 100%;
     }
 
+    .cover-type-mobile-active {
+      padding: 4px 0;
+      cursor: pointer;
+      font-size: 14px;
+      line-height: 14px;
+      border-radius: 4px;
+      border: 1px solid @theme-secondary;
+      background-color: transparent;
+      color: @theme-secondary;
+      text-align: center;
+
+      a {
+        text-decoration: none;
+        color: @theme-secondary;
+      }
+
+      i {
+        line-height: normal;
+        font-size: 20px;
+        margin: 0 5px;
+        color: @theme-secondary;
+      }
+    }
+
     .dropdown-menu-excess-filter {
       &:before,
       &:after {
         left: 80%;
+      }
+    }
+
+    .dropdown-menu-mobile-cover-types {
+      &:before,
+      &:after {
+        left: 15%;
+      }
+
+      .mobile-cover-types {
+        text-align: left;
       }
     }
 
