@@ -22,8 +22,6 @@
     "shared/showMoreQuotesPrompt",
     "shared/resultsRankings",
     "shared/phgSalesTracking",
-    "shared/radioButton",
-    "shared/rangeSlider",
     "shared/flatpickr"
   ]
 }
