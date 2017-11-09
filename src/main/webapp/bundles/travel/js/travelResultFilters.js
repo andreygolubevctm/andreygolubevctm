@@ -61,7 +61,7 @@
         });
 
         // toggle brands select all/none
-        $('.brands-select-toggle').click(function () {
+        $('.brands-select-toggle').on("click", function () {
             var _providers = [];
 
             if ($(this).data('brands-toggle') == 'none') {
@@ -79,7 +79,10 @@
                 $(this).empty().text('Select none');
             }
 
-            _displayCustomResults(false, true);
+            setTimeout(function () {
+                _displayCustomResults(false, true);
+            }, 1000);
+
         });
     }
 
