@@ -1,6 +1,10 @@
 (function ($) {
     function init () {
 
+        var init = {
+            cover: ''
+        };
+
         // close dropdown only if outside is clicked
         $('.dropdown-menu').click(function(e) {
             if (e.target.className !== 'help-icon icon-info') {
@@ -51,6 +55,7 @@
             $(this).find(".icon").removeClass("icon-angle-down").addClass("icon-angle-up");
             $('input[name="reset-filters-radio-group"]').change(function () {
                 var coverType = $(this).data('ranking-filter');
+                init.cover = coverType;
                 _updateTravelResultsByCoverType(coverType);
             });
         });
@@ -72,7 +77,7 @@
         });
 
         // toggle brands select all/none
-        $('.brands-select-toggle').click(function () {
+        $('.brands-select-toggle').on("click", function () {
             var _providers = [];
 
             if ($(this).data('brands-toggle') == 'none') {
@@ -90,7 +95,10 @@
                 $(this).empty().text('Select none');
             }
 
-            _displayCustomResults(false, true);
+            setTimeout(function () {
+                _displayCustomResults(false, true);
+            }, 1000);
+
         });
     }
 
@@ -211,7 +219,13 @@
         Results.model.travelFilters.EXCESS = value;
         meerkat.modules.coverLevelTabs.resetTabResultsCount();
         meerkat.messaging.publish(Results.model.moduleEvents.RESULTS_MODEL_UPDATE_BEFORE_FILTERSHOW);
-        Results.model.travelResultFilter(true, true, true);
+
+        if (init.cover === 'B') {
+            Results.model.travelResultFilter(true, true, false);
+        } else {
+            Results.model.travelResultFilter(true, true, true);
+        }
+
         meerkat.modules.coverLevelTabs.updateTabCounts();
     }
 
@@ -221,6 +235,7 @@
      * @param matchAllFilter - boolean value to match ALL or ONE filter
      */
     function _displayCustomResults (customFilter, matchAllFilter) {
+        init.cover === '';
         Results.model.travelResultFilter(true, true, matchAllFilter);
         if (customFilter) {
             $('input[name="reset-filters-radio-group"]').prop('checked', false);
@@ -241,6 +256,7 @@
             PROVIDERS: []
         };
         Results.model.travelFilteredProductsCount = 0;
+        init.cover = '';
         var _filters = Results.model.travelFilters;
         $('input[name="luggageRangeSlider"]').val(_filters.LUGGAGE);
         _displaySliderValue ("LUGGAGE", _filters.LUGGAGE);
