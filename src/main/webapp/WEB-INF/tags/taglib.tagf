@@ -59,6 +59,7 @@
 <%@ taglib tagdir="/WEB-INF/tags/simples"				prefix="simples" %>
 <%@ taglib tagdir="/WEB-INF/tags/travel"				prefix="travel" %>
 <%@ taglib tagdir="/WEB-INF/tags/travel/layout"			prefix="travel_layout" %>
+<%@ taglib tagdir="/WEB-INF/tags/travel/sections/results/filters"   prefix="travel_results_filters"%>
 <%@ taglib tagdir="/WEB-INF/tags/fuel"				    prefix="fuel" %>
 <%@ taglib tagdir="/WEB-INF/tags/roadside"			    prefix="roadside" %>
 <%@ taglib tagdir="/WEB-INF/tags/roadside/layout"	    prefix="roadside_layout" %>

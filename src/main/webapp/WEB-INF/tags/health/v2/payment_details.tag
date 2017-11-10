@@ -58,6 +58,8 @@
 
 		<simples:dialogue id="79" vertical="health" className="hidden" />
 		<simples:dialogue id="80" vertical="health" className="hidden" />
+		<simples:dialogue id="88" vertical="health" className="hidden" />
+		<simples:dialogue id="89" vertical="health" className="hidden" />
 		<simples:dialogue id="90" vertical="health" className="hidden" />
 		<simples:dialogue id="91" vertical="health" className="hidden" />
 		<simples:dialogue id="92" vertical="health" className="hidden" />
