@@ -85,7 +85,7 @@ public class LeadServiceTest {
 
     @Test
     public void sendNormalLead() throws Exception {
-        leadService.sendLead(4, mockData, mockRequest, LeadStatus.OPEN.name());
+        leadService.sendLead(4, mockData, mockRequest, LeadStatus.OPEN.name(),"ctm");
         verifyStatic(times(1));
         LeadServiceUtil.sendRequest(any(), eq("url"));
     }
@@ -94,15 +94,15 @@ public class LeadServiceTest {
     public void callcentreShouldNotSendLeads() throws Exception {
         when(SessionUtils.isCallCentre(any())).thenReturn(true);
 
-        leadService.sendLead(4, mockData, mockRequest, LeadStatus.OPEN.name());
+        leadService.sendLead(4, mockData, mockRequest, LeadStatus.OPEN.name(),"ctm");
         verifyStatic(times(0));
         LeadServiceUtil.sendRequest(any(), any());
 
-        leadService.sendLead(4, mockData, mockRequest, LeadStatus.SOLD.name());
+        leadService.sendLead(4, mockData, mockRequest, LeadStatus.SOLD.name(),"ctm");
         verifyStatic(times(0));
         LeadServiceUtil.sendRequest(any(), any());
 
-        leadService.sendLead(4, mockData, mockRequest, LeadStatus.PENDING.name());
+        leadService.sendLead(4, mockData, mockRequest, LeadStatus.PENDING.name(),"ctm");
         verifyStatic(times(0));
         LeadServiceUtil.sendRequest(any(), any());
     }
@@ -118,7 +118,7 @@ public class LeadServiceTest {
             return null;
         }).when(LeadServiceUtil.class, "sendRequest", any(), any());
 
-        leadService.sendLead(4, mockData, mockRequest, LeadStatus.INBOUND_CALL.name());
+        leadService.sendLead(4, mockData, mockRequest, LeadStatus.INBOUND_CALL.name(),"ctm");
         verifyStatic(times(1));
         LeadServiceUtil.sendRequest(any(), any());
 
@@ -136,7 +136,7 @@ public class LeadServiceTest {
             return null;
         }).when(LeadServiceUtil.class, "sendRequest", any(), any());
 
-        leadService.sendLead(4, mockData, mockRequest, LeadStatus.RETURN_CLI.name());
+        leadService.sendLead(4, mockData, mockRequest, LeadStatus.RETURN_CLI.name(),"ctm");
         verifyStatic(times(1));
         LeadServiceUtil.sendRequest(any(), any());
 

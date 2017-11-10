@@ -12,7 +12,8 @@
 	var AJAX_REQUEST_ABORTED = "abort";
 	var CHECK_AUTHENTICATED_LABEL = "checkAuthenticated";
 
-	var requestPool = [];
+	// Needed specifically for Westfund white label
+	var forcedStyleCodeId = false;
 
 	var defaultSettings = {
 		url: 'not-set',
@@ -117,6 +118,8 @@
 		if( typeof instanceSettings.errorLevel === "undefined" || instanceSettings.errorLevel === null){
 			console.error("Message to dev: please provide an errorLevel to the comms.post() or comms.get() function.");
 		}
+
+		settings = appendBrandCodeToUrl(settings);
 
 		var usedCache = checkCache(settings);
 		if(usedCache === true) {
@@ -351,8 +354,31 @@
 		return CHECK_AUTHENTICATED_LABEL;
 	}
 
+	function appendBrandCodeToUrl(settings) {
+		if(forcedStyleCodeId !== false) {
+			if (settings.url.search(/\?/) !== -1) {
+				if(settings.url.search(/brandCode=[a-zA-Z]+/) !== -1) {
+					settings.url = settings.url.replace(/brandCode=[a-zA-Z]+/g, "brandCode=" + forcedStyleCodeId);
+				} else {
+					settings.url += "&brandCode=" + forcedStyleCodeId;
+				}
+			} else {
+				settings.url += "?brandCode=" + forcedStyleCodeId;
+			}
+		}
+		return settings;
+	}
+
+	function init() {
+		jQuery(document).ready(function ($) {
+			if(!_.isUndefined(meerkat.site.urlStyleCodeId) && !_.isEmpty(meerkat.site.urlStyleCodeId)) {
+				forcedStyleCodeId = meerkat.site.urlStyleCodeId;
+			}
+		});
+	}
 
 	meerkat.modules.register("comms", {
+		init: init,
 		post: post,
 		get: get,
 		getCheckAuthenticatedLabel: getCheckAuthenticatedLabel

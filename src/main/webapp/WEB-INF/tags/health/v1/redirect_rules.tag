@@ -22,7 +22,12 @@
 			</c:when>
 		</c:choose>
 
-		<c:redirect url="${pageSettings.getBaseUrl()}health_confirmation.jsp">
+		<c:set var="confirmUrl" value="health_confirmation.jsp" />
+		<c:if test="${not empty param.brandCode and fn:toLowerCase(param.brandCode) eq 'wfdd'}">
+			<c:set var="confirmUrl">${confirmUrl}?brandCode=wfdd</c:set>
+		</c:if>
+
+		<c:redirect url="${pageSettings.getBaseUrl()}${confirmUrl}">
 			<c:param name="action" value="confirmation" />
 			<c:param name="token" value="${token}" />
 		</c:redirect>

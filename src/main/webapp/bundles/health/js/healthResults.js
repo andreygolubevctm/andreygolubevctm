@@ -110,7 +110,7 @@
 
             // Init the main Results object
             Results.init({
-                url: healthQuoteResultsUrl,
+                url: healthQuoteResultsUrl + (!_.isEmpty(meerkat.site.urlStyleCodeId) && meerkat.site.urlStyleCodeId === "wfdd" ? "?brandCode=" + meerkat.site.urlStyleCodeId : ""),
                 runShowResultsPage: false, // Don't let Results.view do it's normal thing.
                 paths: {
                     results: {
