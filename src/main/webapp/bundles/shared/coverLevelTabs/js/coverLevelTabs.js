@@ -187,7 +187,7 @@
 			_coverTypeEvent(this);
 		});
 
-        $tabsContainer.off('change', '.cover-type-mobile').on('change', '.cover-type-mobile', function(e) {
+        $tabsContainer.off('change', 'input[name="cover-type-mobile-radio-group"]').on('change', 'input[name="cover-type-mobile-radio-group"]', function(e) {
             _coverTypeEvent(this);
             var $el = $(this),
                 tabIndex = $el.attr('data-clt-index'),
@@ -376,7 +376,7 @@
             if ($('[data-travel-filter="custom-mobile"]').length === 0) {
                 customRadioMobile += '<div class="dropdown-item">';
                 customRadioMobile += 	'<div class="radio">';
-                customRadioMobile += 		'<input type="radio" name="cover-type-mobile-radio-group" id="mobile_cover_type_custom" class="radioButton-custom cover-type-mobile radio" data-travel-filter="custom-mobile">';
+                customRadioMobile += 		'<input type="radio" name="cover-type-mobile-radio-group" id="mobile_cover_type_custom" class="radioButton-custom radio" data-travel-filter="custom-mobile">';
                 customRadioMobile += 		'<label for="mobile_cover_type_custom">Custom</label>';
                 customRadioMobile += 	'</div>';
                 customRadioMobile += '</div>';
