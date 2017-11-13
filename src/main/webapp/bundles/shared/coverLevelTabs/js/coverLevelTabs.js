@@ -187,13 +187,16 @@
 			_coverTypeEvent(this);
 		});
 
-        $tabsContainer.off('change', 'input[name="cover-type-mobile-radio-group"]').on('change', 'input[name="cover-type-mobile-radio-group"]', function(e) {
+        $tabsContainer.off('change', 'input[name="cover-type-mobile-radio-group"]').on('change', 'input[name="cover-type-mobile-radio-group"]', function (e) {
             _coverTypeEvent(this);
             var $el = $(this),
-                tabIndex = $el.attr('data-clt-index'),
-            	coverLevelText = settings.activeTabSet[tabIndex].label.replace('<span class=\'hidden-xs\'>Cover</span>', '');
-				$('.mobile-active-cover-type').empty().text(coverLevelText);
-				$('#coverTypeDropdownBtn').dropdown('toggle');
+                tabIndex = $el.attr('data-clt-index');
+
+            if (tabIndex) {
+                var coverLevelText = settings.activeTabSet[tabIndex].label.replace('<span class=\'hidden-xs\'>Cover</span>', '');
+                $('.mobile-active-cover-type').empty().text(coverLevelText);
+            }
+            $('#coverTypeDropdownBtn').dropdown('toggle');
         });
 	}
 
@@ -297,6 +300,7 @@
 
 		if (state != 'xs') {
             $currentTabContainer.empty().html(out);
+            $('.navbar-mobile').empty();
 		}
 
 		$('.reset-travel-filters').empty().html(resetFilters);
@@ -383,6 +387,7 @@
                 $('.mobile-cover-types').append(customRadioMobile);
 			}
             $('.mobile-active-cover-type').empty().text('Custom');
+            $('[data-travel-filter="custom-mobile"]').prop("checked", true);
 
             $('[data-travel-filter="custom-mobile"]').change(function () {
                 $('.mobile-active-cover-type').empty().text('Custom');

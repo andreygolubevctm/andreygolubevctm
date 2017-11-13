@@ -56,6 +56,7 @@
             $('input[name="reset-filters-radio-group"]').change(function () {
                 var coverType = $(this).data('ranking-filter');
                 init.cover = coverType;
+                $('[data-travel-filter="custom-mobile"]').prop("checked", true);
                 _updateTravelResultsByCoverType(coverType);
             });
         });
@@ -235,7 +236,7 @@
      * @param matchAllFilter - boolean value to match ALL or ONE filter
      */
     function _displayCustomResults (customFilter, matchAllFilter) {
-        init.cover === '';
+        init.cover == '';
         Results.model.travelResultFilter(true, true, matchAllFilter);
         if (customFilter) {
             $('input[name="reset-filters-radio-group"]').prop('checked', false);
