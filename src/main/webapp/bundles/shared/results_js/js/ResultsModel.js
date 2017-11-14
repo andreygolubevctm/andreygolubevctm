@@ -345,7 +345,7 @@ var ResultsModel = {
 						// sort the products by cover level first and if need be, sort by price
 						Results.model.sortedProducts = Results.model.sortedProducts.sort(function(a, b) {
 							if ((typeof a !== 'undefined' && typeof b !== 'undefined') && (a.available === 'Y' && b.available === 'Y')) {
-								return a.info.coverLevel.localeCompare(b.info.coverLevel) || a[priceNode] - b[priceNode];
+								return (a[priceNode] - b[priceNode]);
 							}
 
 							return 0;
