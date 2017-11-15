@@ -51,7 +51,6 @@ public class HealthModelTranslator implements EmailTranslator {
     private static final String HEALTH_UTM_SOURCE = "health_quote_";
     private static final String UTM_MEDIUM = "email";
     private static final String CAMPAIGN = "health_quote";
-    private static final String EMAIL_TYPE = "bestprice";
     private static final String ACTION_UNSUBSCRIBE = "unsubscribe";
     private static final String ACTION_LOAD = "load";
 
@@ -60,7 +59,7 @@ public class HealthModelTranslator implements EmailTranslator {
         List<String> providerName = emailUtils.buildParameterList(request, "rank_providerName");
         List<String> premiumLabel = emailUtils.buildParameterList(request, "rank_premiumText");
         List<String> providerCodes = emailUtils.buildParameterList(request, "rank_provider");
-        List<String> priceShown = emailUtils.buildParameterList(request, "rank_price_shown");
+        List<String> premium = emailUtils.buildParameterList(request, "rank_premium");
         String gaclientId = emailUtils.getParamFromXml(data.getXML(), "gaclientid", "/health/");
         emailRequest.setVertical(vertical);
         emailRequest.setProviders(providerName);
@@ -68,7 +67,7 @@ public class HealthModelTranslator implements EmailTranslator {
         premiumLabel = premiumLabel.stream().map(s -> s.replaceAll("<span/>","")).collect(Collectors.toList());
         emailRequest.setPremiumLabels(premiumLabel);
         emailRequest.setProviderCodes(providerCodes);
-        emailRequest.setPremiums(priceShown);
+        emailRequest.setPremiums(premium);
         emailRequest.setPremiumFrequency(request.getParameter("rank_frequency0"));
         emailRequest.setGaClientID(gaclientId);
         PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);

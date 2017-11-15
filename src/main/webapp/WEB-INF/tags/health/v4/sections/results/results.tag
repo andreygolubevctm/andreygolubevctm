@@ -68,11 +68,13 @@
                         <div class="featuresListHospitalSelections"><health_v4_results:limited_cover_label /></div>
                         {{ } }}
                     </div>
+                    <div class="benefits-click-text visible-xs">Click below for cover limits</div>
                     <div class="featuresListHospitalOtherList" data-feature-index="4" data-feature-type="hospital"></div>
                 </div>
                 {{ } if(coverType == 'E' || coverType == 'C') { }}
                 <div class="extrasCoverSection">
                     <h2>Extras</h2>
+                    <div class="benefits-click-text visible-xs">Click below for cover limits</div>
                     <div class="featuresListExtrasOtherList" data-feature-index="5" data-feature-type="extras"></div>
                 </div>
                 {{ } }}
@@ -87,6 +89,7 @@
     <jsp:attribute name="hiddenInputs">
         <%-- Hidden fields necessary for Results page --%>
         <input type="hidden" name="health_popularProducts" value="N" />
+        <input type="hidden" name="health_popularProducts_purchased" value="0" />
         <input type="hidden" name="health_applyDiscounts" value="Y" />
         <input type="hidden" name="health_showAll" value="Y" />
         <input type="hidden" name="health_onResultsPage" value="Y" />

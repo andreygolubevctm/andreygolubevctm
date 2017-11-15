@@ -212,10 +212,30 @@
   .result-row {
     border: 2px solid @results-border-color;
 
+    .benefits-click-text {
+      background-color: #eee;
+      border-top: 1px solid @gray-light;
+      border-bottom: 1px solid @gray-light;
+      font-size: @font-size-small;
+      line-height: 30px;
+      margin: 0 -15px;
+      text-align: center;
+      .transition(~"background-color 1.5s ease-in-out, color 1.5s ease-in-out");
+
+      &.make-focus {
+        background-color: @theme-dark;
+        color: #fff;
+      }
+    }
+
     /* Display Utilities only on hover of result insert */
     .display-on-hover {
       .opacity(0);
       .transition(~"opacity ease-in-out .25s");
+    }
+
+    &.extra-margin-top {
+      margin-top: 34px;
     }
 
     &:hover .display-on-hover {
@@ -269,7 +289,11 @@
       }
     }
 
-    .result-pinned-product-tag {
+    &.selected {
+      border-color: @results-border-color-pinned;
+    }
+
+    .result-product-tag {
       display: block;
       background-color: @results-border-color-pinned;
       color: #fff;
@@ -307,7 +331,16 @@
           margin-top: 5px;
         }
         &.expandable {
-          border-bottom: 1px solid @gray;
+          border-top: 1px solid transparent;
+          border-bottom: 1px solid @gray-light;
+          margin: 0 -15px;
+          padding: 0 15px;
+
+          &.row-hovered {
+            background-color: #f3f3f3;
+            border-top: 1px solid #fff;
+          }
+
           &.ambulanceSection {
             border-bottom: 0;
           }

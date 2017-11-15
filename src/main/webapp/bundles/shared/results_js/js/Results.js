@@ -27,6 +27,13 @@ var Results = {
 		Results.view = ResultsView;
 		Results.model = ResultsModel;
 		Results.pagination = ResultsPagination;
+        Results.model.travelFilters = {
+            EXCESS: 200,
+            LUGGAGE: 5000,
+            CXDFEE: 20000,
+            MEDICAL: 20000000,
+			PROVIDERS: []
+        };
 
 		var settings = {
 			url: "ajax/json/results.jsp", // where to get results from
@@ -364,6 +371,15 @@ var Results = {
 		}
 	},
 
+    filterByExcess: function( filterBy, condition, options, renderView, doNotGoToStart ){
+        if( typeof Object.byString( Results.settings.paths, filterBy ) !== "undefined" ){
+            Results.model.addFilter( filterBy, condition, options );
+            Results.model.filterUsingExcess(renderView, doNotGoToStart);
+        } else {
+            console.log("This filter could not find the path to the property it should be filtered by: filterBy= filterBy=", filterBy, "| condition=", condition, "| options=", options);
+        }
+    },
+
 	unfilterBy: function( filterBy, condition, renderView ){
 
 		if( typeof Object.byString( Results.settings.paths, filterBy ) !== "undefined" ){
@@ -607,13 +623,13 @@ var Results = {
 	},
 
 	unpinProduct: function(pinnedProductId) {
-        if (!pinnedProductId) {
+        if (!pinnedProductId || (pinnedProductId && !Results.getPinnedProduct())) {
             return;
         }
 
         var product = Results.model.getResult("productId", pinnedProductId);
 
-        if(Results.$pinnedResultRow) {
+        if (Results.$pinnedResultRow) {
             Results.$pinnedResultRow.remove();
             Results.$pinnedResultRow = null;
         }
@@ -621,6 +637,7 @@ var Results = {
         $(Results.settings.elements.resultsOverflow).removeAttr('style');
         Results.unfilterBy('isPinned', "value", true);
         product.isPinned = 'N';
+        Results.removePinnedProduct();
         $(Results.settings.elements.resultsOverflow).removeClass('product-pinned');
         Results.pagination.hasPinnedProduct = false;
 
