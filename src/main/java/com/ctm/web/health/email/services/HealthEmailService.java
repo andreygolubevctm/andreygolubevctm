@@ -102,7 +102,11 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 				sendBestPriceEmail(request, emailAddress,transactionId);
 				break;
 			case PRODUCT_BROCHURES:
-				sendProductBrochureEmail(request, emailAddress,transactionId);
+				if (request.getRequestURI().toLowerCase().contains("selectedproductbrochures")) {
+					return sendEmailUnlessStatedOtherwise(request, emailAddress, transactionId, true);
+				} else {
+					sendProductBrochureEmail(request, emailAddress,transactionId);
+				}
 				break;
 			case APP:
 				return sendApplicationEmail(request, emailAddress, transactionId);
@@ -173,6 +177,11 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 	@Override
 	public void sendProductBrochureEmail(HttpServletRequest request, String emailAddress,
 			long transactionId) throws SendEmailException {
+
+		String x = sendEmailUnlessStatedOtherwise(request, emailAddress, transactionId, false);
+	}
+
+	private String sendEmailUnlessStatedOtherwise(HttpServletRequest request, String emailAddress, long transactionId, boolean blockEmailSending) throws SendEmailException {
 		HealthEmailBrochureRequest emailBrochureRequest = new HealthEmailBrochureRequest();
 		emailBrochureRequest.provider = request.getParameter("provider");
 		emailBrochureRequest.productName = request.getParameter("productName");
@@ -187,6 +196,8 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 		mailingName = getPageSetting(ProductBrochuresEmailHandler.MAILING_NAME_KEY);
 		ExactTargetEmailSender<HealthProductBrochuresEmailModel> emailSender = new ExactTargetEmailSender<>(pageSettings,transactionId);
 		try {
+			String returnStr = "";
+
 			EmailMaster emailDetails = new EmailMaster();
 
 			emailDetails.setEmailAddress(emailAddress);
@@ -198,12 +209,21 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 			emailDetails.setSource("BROCHURE");
 
 			emailDetails = emailDetailsService.handleReadAndWriteEmailDetails(emailBrochureRequest.transactionId, emailDetails, "ONLINE" ,  ipAddressHandler.getIPAddress(request));
-			if(!isTestEmailAddress) {
-				emailSender.sendToExactTarget(new HealthProductBrochuresExactTargetFormatter(), buildProductBrochureEmailModel(emailDetails, request, emailBrochureRequest));
+
+			if (blockEmailSending) {
+				HealthProductBrochuresEmailModel hpbem = buildProductBrochureEmailModel(emailDetails, request, emailBrochureRequest);
+				return hpbem.getApplyURL();
+			} else {
+				if(!isTestEmailAddress) {
+					emailSender.sendToExactTarget(new HealthProductBrochuresExactTargetFormatter(), buildProductBrochureEmailModel(emailDetails, request, emailBrochureRequest));
+				}
 			}
+
+			return returnStr;
+
 		} catch (EmailDetailsException e) {
 			throw new SendEmailException("failed to handleReadAndWriteEmailDetails emailAddress:" + emailAddress +
-						" transactionId:" +  emailBrochureRequest.transactionId  ,  e);
+					" transactionId:" +  emailBrochureRequest.transactionId  ,  e);
 		}
 	}
 

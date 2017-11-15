@@ -291,7 +291,7 @@
             identifier: "SEND_BROCHURES" + product.productId,
             emailResultsSuccessCallback: function onSendBrochuresCallback(result, settings) {
                 if (result.success) {
-                    parent.find('.formInput').hide();
+                    settings.submitButton.addClass("hidden");
                     parent.find('.moreInfoEmailBrochuresSuccess').removeClass("hidden");
                     meerkat.modules.emailBrochures.tearDown(settings);
                     meerkat.modules.healthResults.setSelectedProduct(product);
@@ -307,6 +307,82 @@
                 }
             }
         });
+
+        meerkat.modules.emailBrochures.setup({
+            emailInput: emailBrochuresElement.find('.sendBrochureEmailAddress'),
+            submitButton: emailBrochuresElement.find('.btn-get-pinned-product-url'),
+            submitUrl : "selectedProductBrochures/get/link.json",
+            form: form,
+            marketing: emailBrochuresElement.find('.optInMarketing'),
+            emailHistoryInput: $('#health_brochureEmailHistory'),
+            productData: [
+                {name: "hospitalPDSUrl", value: product.promo.hospitalPDF},
+                {name: "extrasPDSUrl", value: product.promo.extrasPDF},
+                {name: "provider", value: product.info.provider},
+                {name: "providerName", value: product.info.providerName},
+                {name: "productName", value: product.info.productTitle},
+                {name: "productId", value: product.productId},
+                {name: "productCode", value: product.info.productCode},
+                {name: "premium", value: product.premium[Results.settings.frequency].lhcfreetext},
+                {name: "premiumText", value: product.premium[Results.settings.frequency].lhcfreepricing},
+                // Additional information
+                {name: "healthSituation", value: situation},
+                {name: "primaryCurrentPHI", value: currentPHI},
+                {name: "coverType", value: product.info.ProductType},
+                {name: "benefitCodes", value: benefitCodes.join(',')},
+                {name: "specialOffer", value: specialOffer.specialOffer},
+                {name: "specialOfferTerms", value: specialOffer.specialOfferTerms},
+                {name: "excessPerAdmission", value: excessesAndCoPayment.excessPerAdmission},
+                {name: "excessPerPerson", value: excessesAndCoPayment.excessPerPerson},
+                {name: "excessPerPolicy", value: excessesAndCoPayment.excessPerPolicy},
+                {name: "coPayment", value: excessesAndCoPayment.coPayment}
+            ],
+            product: product,
+            identifier: "GET_PINNED_PRODUCT" + product.productId,
+            emailResultsSuccessCallback: function onSendBrochuresCallback(result, settings) {
+                if (result.success) {
+                    var theUrlTextArea = $('#pinnedProductUrlTextArea');
+                    var copyBtn = $('.btn-copy-pinned-product-url');
+                    settings.submitButton.addClass("hidden");
+                    theUrlTextArea.removeClass("hidden");
+                    copyBtn.removeClass("hidden");
+                    theUrlTextArea.append(result.message);
+
+                    copyBtn.click(function(){
+
+                        $('#pinnedProductUrlTextArea').select();
+
+                        // Copy to clipboard functionality is supported by the following browsers:
+                        // IE10+ (although this document indicates some support was there from IE5.5+).
+                        // Google Chrome 43+ (~April 2015)
+                        // Mozilla Firefox 41+ (~September 2015)
+                        // Opera 29+ (based on Chromium 42, ~April 2015)
+
+                        try {
+                            var successful = document.execCommand('copy');
+                            var msg = successful ? 'successful' : 'unsuccessful';
+                            //console.log('Copying text command was ' + msg);
+                        } catch (err) {
+                            //console.log('Oops, unable to copy');
+                        }
+                    });
+
+                    meerkat.modules.emailBrochures.tearDown(settings);
+
+                    meerkat.modules.healthResults.setSelectedProduct(product);
+                } else {
+                    meerkat.modules.errorHandling.error({
+                        errorLevel: 'warning',
+                        message: 'Oops! Something seems to have gone wrong. Please try again by re-entering your email address or ' +
+                        'alternatively contact our call centre on <span class=\"callCentreHelpNumber\">' + meerkat.site.content.callCentreHelpNumber + '</span> and they\'ll be able to assist you further.',
+                        page: 'healthMoreInfo.js:onSendBrochuresCallback',
+                        description: result.message,
+                        data: product
+                    });
+                }
+            }
+        });
+
     }
 
     /**

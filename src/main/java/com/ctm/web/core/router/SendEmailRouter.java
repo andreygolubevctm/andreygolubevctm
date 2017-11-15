@@ -17,7 +17,8 @@ import java.io.PrintWriter;
 
 @WebServlet(urlPatterns = {
 	"/bestprice/send/email.json",
-	"/productBrochures/send/email.json"
+	"/productBrochures/send/email.json",
+	"/selectedProductBrochures/get/link.json"
 })
 public class SendEmailRouter extends HttpServlet {
 	private static final long serialVersionUID = 66L;

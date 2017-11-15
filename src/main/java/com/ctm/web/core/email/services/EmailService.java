@@ -66,7 +66,7 @@ public class EmailService {
 	 * @param emailAddress
 	 * @return JSONObject whether sending email was successful
 	 */
-	public JSONObject send(HttpServletRequest request, EmailMode mode , String emailAddress) {
+	public JSONObject send(HttpServletRequest request, EmailMode mode, String emailAddress) {
 		fatalErrorService.sessionId  = request.getSession().getId();
 		fatalErrorService.page = request.getRequestURI();
 		Long transactionId = RequestUtils.getTransactionIdFromRequest(request);
@@ -74,9 +74,15 @@ public class EmailService {
 		EmailResponse emailResponse = new EmailResponse();
 		emailResponse.setTransactionId(transactionId);
 		emailResponse.setSuccessful(false);
+
 		try {
-			send(request, mode , emailAddress, transactionId);
+			if (mode == EmailMode.PRODUCT_BROCHURES && request.getRequestURI().toLowerCase().contains("selectedproductbrochures")) {
+				emailResponse.setMessage(getSelectedProductUrl(request, mode, emailAddress, transactionId));
+			} else {
+				send(request, mode, emailAddress, transactionId);
+			}
 			emailResponse.setSuccessful(true);
+
 		} catch (SendEmailException e) {
 			fatalErrorService.logFatalError(e, "failed to send " + mode + " to " + emailAddress, true);
 			LOGGER.error("failed to send email {}, {}", kv("mode", mode), kv("emailAddress", emailAddress), e);
@@ -115,36 +121,8 @@ public class EmailService {
 		boolean isValid = EmailValidation.validate(emailAddress);
 		if(isValid) {
 			Utils.createBPTouches(transactionId, Touch.TouchType.BP_EMAIL_STARTED, emailAddress,false);
-			Data data = null;
-				try {
-					if(transactionId > 0) {
-						try {
-							data = sessionDataService.getDataForTransactionId(request, String.valueOf(transactionId), false);
-						} catch (SessionException e) {
-							LOGGER.warn("Failed to get session data {}, {}, {}", kv("mode", mode), kv("emailAddress", emailAddress),
-								kv("transactionId", transactionId), e);
-						}
-					}
-					if(data == null) {
-						String vertical = request.getParameter("vertical");
-						if(vertical == null || vertical.isEmpty()){
-							LOGGER.debug("Defaulting to generic vertical {}, {}, {}", kv("mode", mode), kv("emailAddress", emailAddress),
-								kv("transactionId", transactionId));
-							vertical = VerticalType.GENERIC.getCode();
-						} else {
-							vertical = vertical.toUpperCase();
-						}
-						pageSettings = SettingsService.setVerticalAndGetSettingsForPage(request, vertical);
-					} else {
-						pageSettings = SettingsService.getPageSettingsForPage(request);
-					}
-					fatalErrorService.styleCodeId = pageSettings.getBrandId();
-					if(pageSettings.getBrandCode() != null){
-						fatalErrorService.property = pageSettings.getBrandCode().toLowerCase();
-					}
-				} catch (DaoException | ConfigSettingException  e) {
-					throw new SendEmailException("failed to get settings", e);
-				}
+
+			Data data = getData(request, mode, emailAddress, transactionId);
 
 			EmailServiceHandler emailService = this.emailServiceFactory.newInstance(pageSettings, mode, data);
 			emailService.send(request, emailAddress, transactionId);
@@ -153,6 +131,63 @@ public class EmailService {
 			LOGGER.info("BPEMAIL Email Validation failed, skipping send.");
 			throw new SendEmailException(transactionId + ": invalid email received emailAddress:" +  emailAddress);
 		}
-
 	}
+
+	//currently only implemented for health vertical
+	public String getSelectedProductUrl(HttpServletRequest request, EmailMode mode, String emailAddress, long transactionId) throws SendEmailException {
+
+		String pinnedProductUrl = "";
+		boolean isValid = EmailValidation.validate(emailAddress);
+		if(isValid) {
+			Utils.createBPTouches(transactionId, Touch.TouchType.BP_EMAIL_STARTED, emailAddress,false);
+
+			Data data = getData(request, mode, emailAddress, transactionId);
+
+			EmailServiceHandler emailService = this.emailServiceFactory.newInstance(pageSettings, mode, data);
+			pinnedProductUrl = emailService.send(request, emailAddress, transactionId);
+			Utils.createBPTouches(transactionId, Touch.TouchType.BP_EMAIL_END, emailAddress,false);
+		} else {
+			LOGGER.info("BPEMAIL Email Validation failed, cannot encode url.");
+			throw new SendEmailException(transactionId + ": invalid email received emailAddress:" +  emailAddress);
+		}
+		return pinnedProductUrl;
+	}
+
+	private Data getData(HttpServletRequest request, EmailMode mode, String emailAddress, long transactionId) throws SendEmailException {
+
+		Data data = null;
+
+		try {
+			if(transactionId > 0) {
+				try {
+					data = sessionDataService.getDataForTransactionId(request, String.valueOf(transactionId), false);
+				} catch (SessionException e) {
+					LOGGER.warn("Failed to get session data {}, {}, {}", kv("mode", mode), kv("emailAddress", emailAddress),
+							kv("transactionId", transactionId), e);
+				}
+			}
+			if(data == null) {
+				String vertical = request.getParameter("vertical");
+				if(vertical == null || vertical.isEmpty()){
+					LOGGER.debug("Defaulting to generic vertical {}, {}, {}", kv("mode", mode), kv("emailAddress", emailAddress),
+							kv("transactionId", transactionId));
+					vertical = VerticalType.GENERIC.getCode();
+				} else {
+					vertical = vertical.toUpperCase();
+				}
+				pageSettings = SettingsService.setVerticalAndGetSettingsForPage(request, vertical);
+			} else {
+				pageSettings = SettingsService.getPageSettingsForPage(request);
+			}
+			fatalErrorService.styleCodeId = pageSettings.getBrandId();
+			if(pageSettings.getBrandCode() != null){
+				fatalErrorService.property = pageSettings.getBrandCode().toLowerCase();
+			}
+		} catch (DaoException | ConfigSettingException  e) {
+			throw new SendEmailException("failed to get settings", e);
+		}
+
+		return data;
+	}
+
 }
