@@ -31,13 +31,14 @@
         schoolMinAge: 21,
         schoolMaxAge: 24,
         $paymentStartDate: $('#health_payment_details_start'),
+        $paymentType : $('#health_payment_details_type input'),
         $paymentFrequency : $('#health_payment_details_frequency'),
         set: function() {
             <%--Build Primary emigrate question --%>
             if (!_.isNull(healthFunds_HIF.$emigrateRow.primary)) {
                 healthFunds_HIF.$emigrateRow.primary.show();
             } else {
-                <c:set var="fieldXpath" value="health/application/primary/emigrate" />
+                <c:set var="fieldXpath" value="health/application/hif/primaryemigrate" />
                 <c:set var="id" value="health_application_primary_emigrateRow" />
 
                 <c:set var="html">
@@ -90,7 +91,7 @@
             if (!_.isNull(healthFunds_HIF.$emigrateRow.partner)) {
                 healthFunds_HIF.$emigrateRow.partner.show();
             } else {
-                <c:set var="fieldXpath" value="health/application/partner/emigrate" />
+                <c:set var="fieldXpath" value="health/application/hif/partneremigrate" />
                 <c:set var="id" value="health_application_partner_emigrateRow" />
 
                 <c:set var="html">
@@ -121,7 +122,7 @@
             if (!_.isNull(healthFunds_HIF.$partnerAuthLevelRow)) {
                 healthFunds_HIF.$partnerAuthLevelRow.show();
             } else {
-                <c:set var="fieldXpath" value="health/application/partner/authorityLevel" />
+                <c:set var="fieldXpath" value="health/application/hif/partnerAuthorityLevel" />
                 <c:set var="id" value="health_application_partner_authorityLevelRow" />
 
                 <c:set var="html">
@@ -184,16 +185,46 @@
             healthFunds_HIF.$_dobPrimary.addRule('youngestDOB', 18, "primary person's age cannot be under " + dob_health_application_primary_dob.ageMin);
             healthFunds_HIF.$_dobPartner.addRule('youngestDOB', 18, "partner's age cannot be under " + dob_health_application_partner_dob.ageMin);
 
-            <%--credit card & bank account frequency & day frequency--%>
-            meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':false, 'fortnightly': false, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true });
-            meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':false, 'fortnightly': false, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true });
+            healthFunds_HIF.$paymentType.on('change.HIF', function renderPaymentDaysPaymentType(){
+                healthFunds_HIF.renderPaymentDays();
+            });
 
-            <%--claims account--%>
-            meerkat.modules.healthPaymentStep.overrideSettings('creditBankQuestions',true);
+            healthFunds_HIF.$paymentFrequency.on('change.HIF', function renderPaymentDaysFrequency(){
+                healthFunds_HIF.renderPaymentDays();
+            });
+
+            <%--credit card & bank account frequency & day frequency--%>
+            meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly': true, 'fortnightly': true, 'monthly': true, 'quarterly': true, 'halfyearly': true, 'annually': true });
+            meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly': true, 'fortnightly': true, 'monthly': true, 'quarterly': true, 'halfyearly': true, 'annually': true });
 
             <%--credit card options--%>
             meerkat.modules.healthCreditCard.setCreditCardConfig({ 'visa':true, 'mc':true, 'amex':false, 'diners':false });
             meerkat.modules.healthCreditCard.render();
+
+            meerkat.modules.paymentGateway.setup({
+                "paymentEngine" : meerkat.modules.healthPaymentGatewayNAB,
+                "name" : 'health_payment_gateway',
+                "src": '${ctmSettings.getBaseUrl()}', <%-- the CTM iframe source URL --%>
+                "origin": '${hostOrigin}', <%-- the CTM host origin --%>
+                "providerCode": 'hif',
+                "brandCode": '${pageSettings.getBrandCode()}',
+                "handledType" :  {
+                    "credit" : true,
+                    "bank" : false
+                },
+                "paymentTypeSelector" : $("input[name='health_payment_details_type']:checked"),
+                "updateValidationSelectors" : meerkat.modules.healthPaymentStep.updateValidationSelectorsPaymentGateway,
+                "resetValidationSelectors" : meerkat.modules.healthPaymentStep.resetValidationSelectorsPaymentGateway,
+                "getSelectedPaymentMethod" :  meerkat.modules.healthPaymentStep.getSelectedPaymentMethod
+            });
+        },
+        renderPaymentDays: function() {
+            meerkat.modules.healthFunds.setPayments({ 'min':0, 'max':14, 'weekends':true });
+            healthFunds_HIF.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
+
+            var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
+            meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), _html);
+            meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), _html);
         },
         unset: function() {
             meerkat.modules.healthFunds._reset();
@@ -231,6 +262,8 @@
                 $('.health_dependant_details input[name*="_firstName"]').attr('maxlength', 24);
                 $('.health_dependant_details input[name*="_lastname"]').attr('maxlength', 20);
             });
+
+            meerkat.modules.paymentGateway.reset();
         }
     };
     </c:set>
