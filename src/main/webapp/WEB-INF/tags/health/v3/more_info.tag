@@ -220,10 +220,10 @@
 
 					<div class="row">
 						<div class="col-xs-12">
-							<textarea rows="10" id="pinnedProductUrlTextArea" class="col-xs-12 hidden addTopMargin" aria-invalid="false"></textarea>
+							<textarea rows="10" id="selectedProductUrlTextArea" class="col-xs-12 hidden addTopMargin" aria-invalid="false"></textarea>
 						</div>
 						<div class="col-xs-6 align-self-center">
-							<a href="javascript:;" class="btn btn-save hidden btn-copy-pinned-product-url addTopMargin" <field_v1:analytics_attr analVal="Copy Product Link button" quoteChar="\"" />>Copy Link</a>
+							<a href="javascript:;" class="btn btn-save hidden btn-copy-selected-product-url addTopMargin" <field_v1:analytics_attr analVal="Copy Product Link button" quoteChar="\"" />>Copy Link</a>
 						</div>
 					</div>
 
@@ -242,7 +242,7 @@
 						</div>
 
 						<div class="col-sm-5 hidden-xs">
-							<a href="javascript:;" class="btn btn-save disabled btn-get-pinned-product-url btn-block addTopMargin" <field_v1:analytics_attr analVal="Get Product Link button" quoteChar="\"" />>Get Product Link</a>
+							<a href="javascript:;" class="btn btn-save disabled btn-get-selected-product-url btn-block addTopMargin" <field_v1:analytics_attr analVal="Get Product Link button" quoteChar="\"" />>Get Product Link</a>
 						</div>
 					</div>
 					<div class="row row-content formInput optInMarketingRow">

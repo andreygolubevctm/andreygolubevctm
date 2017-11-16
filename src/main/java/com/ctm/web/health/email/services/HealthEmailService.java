@@ -102,8 +102,8 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 				sendBestPriceEmail(request, emailAddress,transactionId);
 				break;
 			case PRODUCT_BROCHURES:
-				if (request.getRequestURI().toLowerCase().contains("selectedproductbrochures")) {
-					return sendEmailUnlessStatedOtherwise(request, emailAddress, transactionId, true);
+				if (request.getRequestURI().toLowerCase().contains("get/link")) {
+					return sendProductBrochureEmail(request, emailAddress, transactionId, true);
 				} else {
 					sendProductBrochureEmail(request, emailAddress,transactionId);
 				}
@@ -178,10 +178,10 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 	public void sendProductBrochureEmail(HttpServletRequest request, String emailAddress,
 			long transactionId) throws SendEmailException {
 
-		String x = sendEmailUnlessStatedOtherwise(request, emailAddress, transactionId, false);
+		String x = sendProductBrochureEmail(request, emailAddress, transactionId, false);
 	}
 
-	private String sendEmailUnlessStatedOtherwise(HttpServletRequest request, String emailAddress, long transactionId, boolean blockEmailSending) throws SendEmailException {
+	private String sendProductBrochureEmail(HttpServletRequest request, String emailAddress, long transactionId, boolean blockEmailSending) throws SendEmailException {
 		HealthEmailBrochureRequest emailBrochureRequest = new HealthEmailBrochureRequest();
 		emailBrochureRequest.provider = request.getParameter("provider");
 		emailBrochureRequest.productName = request.getParameter("productName");
@@ -211,12 +211,9 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 			emailDetails = emailDetailsService.handleReadAndWriteEmailDetails(emailBrochureRequest.transactionId, emailDetails, "ONLINE" ,  ipAddressHandler.getIPAddress(request));
 
 			if (blockEmailSending) {
-				HealthProductBrochuresEmailModel hpbem = buildProductBrochureEmailModel(emailDetails, request, emailBrochureRequest);
-				return hpbem.getApplyURL();
-			} else {
-				if(!isTestEmailAddress) {
-					emailSender.sendToExactTarget(new HealthProductBrochuresExactTargetFormatter(), buildProductBrochureEmailModel(emailDetails, request, emailBrochureRequest));
-				}
+				return buildProductBrochureEmailModel(emailDetails, request, emailBrochureRequest).getApplyURL();
+			} else if(!isTestEmailAddress) {
+				emailSender.sendToExactTarget(new HealthProductBrochuresExactTargetFormatter(), buildProductBrochureEmailModel(emailDetails, request, emailBrochureRequest));
 			}
 
 			return returnStr;

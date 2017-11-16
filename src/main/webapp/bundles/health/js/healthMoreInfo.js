@@ -291,7 +291,7 @@
             identifier: "SEND_BROCHURES" + product.productId,
             emailResultsSuccessCallback: function onSendBrochuresCallback(result, settings) {
                 if (result.success) {
-                    settings.submitButton.addClass("hidden");
+                    settings.submitButton.addClass("invisible");
                     parent.find('.moreInfoEmailBrochuresSuccess').removeClass("hidden");
                     meerkat.modules.emailBrochures.tearDown(settings);
                     meerkat.modules.healthResults.setSelectedProduct(product);
@@ -310,8 +310,8 @@
 
         meerkat.modules.emailBrochures.setup({
             emailInput: emailBrochuresElement.find('.sendBrochureEmailAddress'),
-            submitButton: emailBrochuresElement.find('.btn-get-pinned-product-url'),
-            submitUrl : "selectedProductBrochures/get/link.json",
+            submitButton: emailBrochuresElement.find('.btn-get-selected-product-url'),
+            submitUrl : "productBrochures/get/link.json",
             form: form,
             marketing: emailBrochuresElement.find('.optInMarketing'),
             emailHistoryInput: $('#health_brochureEmailHistory'),
@@ -338,11 +338,11 @@
                 {name: "coPayment", value: excessesAndCoPayment.coPayment}
             ],
             product: product,
-            identifier: "GET_PINNED_PRODUCT" + product.productId,
+            identifier: "GET_SELECTED_PRODUCT" + product.productId,
             emailResultsSuccessCallback: function onSendBrochuresCallback(result, settings) {
                 if (result.success) {
-                    var theUrlTextArea = $('#pinnedProductUrlTextArea');
-                    var copyBtn = $('.btn-copy-pinned-product-url');
+                    var theUrlTextArea = $('#selectedProductUrlTextArea');
+                    var copyBtn = $('.btn-copy-selected-product-url');
                     settings.submitButton.addClass("hidden");
                     theUrlTextArea.removeClass("hidden");
                     copyBtn.removeClass("hidden");
@@ -350,7 +350,7 @@
 
                     copyBtn.click(function(){
 
-                        $('#pinnedProductUrlTextArea').select();
+                        $('#selectedProductUrlTextArea').select();
 
                         // Copy to clipboard functionality is supported by the following browsers:
                         // IE10+ (although this document indicates some support was there from IE5.5+).

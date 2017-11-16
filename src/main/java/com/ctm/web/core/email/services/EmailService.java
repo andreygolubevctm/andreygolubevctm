@@ -76,7 +76,7 @@ public class EmailService {
 		emailResponse.setSuccessful(false);
 
 		try {
-			if (mode == EmailMode.PRODUCT_BROCHURES && request.getRequestURI().toLowerCase().contains("selectedproductbrochures")) {
+			if (mode == EmailMode.PRODUCT_BROCHURES && request.getRequestURI().toLowerCase().contains("get/link")) {
 				emailResponse.setMessage(getSelectedProductUrl(request, mode, emailAddress, transactionId));
 			} else {
 				send(request, mode, emailAddress, transactionId);
@@ -136,7 +136,7 @@ public class EmailService {
 	//currently only implemented for health vertical
 	public String getSelectedProductUrl(HttpServletRequest request, EmailMode mode, String emailAddress, long transactionId) throws SendEmailException {
 
-		String pinnedProductUrl = "";
+		String selectedProductUrl = "";
 		boolean isValid = EmailValidation.validate(emailAddress);
 		if(isValid) {
 			Utils.createBPTouches(transactionId, Touch.TouchType.BP_EMAIL_STARTED, emailAddress,false);
@@ -144,13 +144,13 @@ public class EmailService {
 			Data data = getData(request, mode, emailAddress, transactionId);
 
 			EmailServiceHandler emailService = this.emailServiceFactory.newInstance(pageSettings, mode, data);
-			pinnedProductUrl = emailService.send(request, emailAddress, transactionId);
+			selectedProductUrl = emailService.send(request, emailAddress, transactionId);
 			Utils.createBPTouches(transactionId, Touch.TouchType.BP_EMAIL_END, emailAddress,false);
 		} else {
 			LOGGER.info("BPEMAIL Email Validation failed, cannot encode url.");
 			throw new SendEmailException(transactionId + ": invalid email received emailAddress:" +  emailAddress);
 		}
-		return pinnedProductUrl;
+		return selectedProductUrl;
 	}
 
 	private Data getData(HttpServletRequest request, EmailMode mode, String emailAddress, long transactionId) throws SendEmailException {
