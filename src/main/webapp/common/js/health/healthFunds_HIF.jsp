@@ -65,6 +65,8 @@
                 healthFunds_HIF.$emigrateYesTextHTML.primary.toggleClass('hidden', $(this).val() !== 'Y');
             });
 
+            healthFunds_HIF.$emigrateYesTextHTML.primary.toggleClass('hidden', !healthFunds_HIF.$emigrate.primary.filter('[value=Y]').is(':checked'));
+
             <%-- Contact Point question--%>
             meerkat.modules.healthFunds.showHowToSendInfo('HIF', true);
 
@@ -117,6 +119,8 @@
             healthFunds_HIF.$emigrate.partner.on('change.HIF', function() {
                 healthFunds_HIF.$emigrateYesTextHTML.partner.toggleClass('hidden', $(this).val() !== 'Y');
             });
+
+            healthFunds_HIF.$emigrateYesTextHTML.partner.toggleClass('hidden', !healthFunds_HIF.$emigrate.partner.filter('[value=Y]').is(':checked'));
 
             <%-- Build Partner authority level question --%>
             if (!_.isNull(healthFunds_HIF.$partnerAuthLevelRow)) {
