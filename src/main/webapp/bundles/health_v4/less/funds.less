@@ -594,10 +594,10 @@ body{
   &.HIF{
 
     .health-credit_card_details .fieldrow {
-      display:none;
+      display: none;
     }
 
-    .health_person-details_authority_group {
+    .health_payment_medicare_cardPosition-group {
       display: block !important;
     }
     .health_payment_credit-details_day_group, .health_payment_bank-details_day-group {
@@ -606,7 +606,7 @@ body{
 
     .health_payment_bank-details_policyDay-group,
     .health_payment_credit-details_policyDay-group{
-      display:block !important;
+      display: block !important;
     }
 
     .payment-deduction-about {
@@ -614,8 +614,16 @@ body{
       font-family: @font-family-theme-bold;
       margin-top: 1em;
     }
-    .health_contact_authority{
-      display:none !important;
+
+    .health_contact_authority,
+    .health_dependant_details_relationshipGroup {
+      display: none !important;
+    }
+
+    #emigrate-primary-yes-text {
+      span {
+        display: none;
+      }
     }
   }
 
