@@ -205,6 +205,7 @@
      * @param value - accept the excess value
      */
     function _updateResultsByExcess (value) {
+        var destination = $('#travel_destination').val();
         Results.model.travelFilters.EXCESS = value;
         meerkat.modules.coverLevelTabs.resetTabResultsCount();
         meerkat.messaging.publish(Results.model.moduleEvents.RESULTS_MODEL_UPDATE_BEFORE_FILTERSHOW);
@@ -213,6 +214,10 @@
             Results.model.travelResultFilter(true, true, false);
         } else {
             Results.model.travelResultFilter(true, true, true);
+        }
+
+        if (destination == 'AUS') {
+            Results.model.filterUsingExcess(true, true);
         }
 
         meerkat.modules.coverLevelTabs.updateTabCounts();
