@@ -218,6 +218,15 @@
 						{{ } }}
 					</div>
 
+					<div class="row">
+						<div class="col-xs-12">
+							<textarea rows="10" id="selectedProductUrlTextArea" class="col-xs-12 hidden addTopMargin" aria-invalid="false"></textarea>
+						</div>
+						<div class="col-xs-6 align-self-center">
+							<a href="javascript:;" class="btn btn-save hidden btn-copy-selected-product-url addTopMargin" <field_v1:analytics_attr analVal="Copy Product Link button" quoteChar="\"" />>Copy Link</a>
+						</div>
+					</div>
+
 				</div>
 
 				<div class="col-xs-12 col-md-6 moreInfoEmailBrochures" novalidate="novalidate">
@@ -229,7 +238,11 @@
 											placeHolder="${emailPlaceHolder}" />
 						</div>
 						<div class="col-sm-5 hidden-xs">
-							<a href="javascript:;" class="btn btn-save disabled btn-email-brochure" <field_v1:analytics_attr analVal="email button" quoteChar="\"" />>Email Brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' && promo.hospitalPDF != promo.extrasPDF ? "s" : "" }}</a>
+							<a href="javascript:;" class="btn btn-save disabled btn-email-brochure btn-block" <field_v1:analytics_attr analVal="email button" quoteChar="\"" />>Email Brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' && promo.hospitalPDF != promo.extrasPDF ? "s" : "" }}</a>
+						</div>
+
+						<div class="col-sm-5 hidden-xs">
+							<a href="javascript:;" class="btn btn-save disabled btn-get-selected-product-url btn-block addTopMargin" <field_v1:analytics_attr analVal="Get Product Link button" quoteChar="\"" />>Get Product Link</a>
 						</div>
 					</div>
 					<div class="row row-content formInput optInMarketingRow">
@@ -246,7 +259,7 @@
 							<a href="javascript:;" class="btn btn-save disabled btn-email-brochure" <field_v1:analytics_attr analVal="email button" quoteChar="\"" />>Email Brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' ? "s" : "" }}</a>
 						</div>
 					</div>
-					<div class="row row-content moreInfoEmailBrochuresSuccess hidden">
+					<div class="row row-content moreInfoEmailBrochuresSuccess hidden addTopMargin">
 						<div class="col-xs-12">
 							<div class="success alert alert-success">
 								Success! Your policy brochure{{= typeof hospitalCover !== 'undefined' &&  typeof extrasCover !== 'undefined' ? "s have" : " has" }} been emailed to you.
