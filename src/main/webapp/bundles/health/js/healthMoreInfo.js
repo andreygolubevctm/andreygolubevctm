@@ -259,34 +259,36 @@
         var specialOffer = meerkat.modules.healthUtils.getSpecialOffer(product);
         var excessesAndCoPayment = meerkat.modules.healthUtils.getExcessesAndCoPayment(product);
 
+        var emailBrochuresProductData = [
+            {name: "hospitalPDSUrl", value: product.promo.hospitalPDF},
+            {name: "extrasPDSUrl", value: product.promo.extrasPDF},
+            {name: "provider", value: product.info.provider},
+            {name: "providerName", value: product.info.providerName},
+            {name: "productName", value: product.info.productTitle},
+            {name: "productId", value: product.productId},
+            {name: "productCode", value: product.info.productCode},
+            {name: "premium", value: product.premium[Results.settings.frequency].lhcfreetext},
+            {name: "premiumText", value: product.premium[Results.settings.frequency].lhcfreepricing},
+            // Additional information
+            {name: "healthSituation", value: situation},
+            {name: "primaryCurrentPHI", value: currentPHI},
+            {name: "coverType", value: product.info.ProductType},
+            {name: "benefitCodes", value: benefitCodes.join(',')},
+            {name: "specialOffer", value: specialOffer.specialOffer},
+            {name: "specialOfferTerms", value: specialOffer.specialOfferTerms},
+            {name: "excessPerAdmission", value: excessesAndCoPayment.excessPerAdmission},
+            {name: "excessPerPerson", value: excessesAndCoPayment.excessPerPerson},
+            {name: "excessPerPolicy", value: excessesAndCoPayment.excessPerPolicy},
+            {name: "coPayment", value: excessesAndCoPayment.coPayment}
+        ],
+
         meerkat.modules.emailBrochures.setup({
             emailInput: emailBrochuresElement.find('.sendBrochureEmailAddress'),
             submitButton: emailBrochuresElement.find('.btn-email-brochure'),
             form: form,
             marketing: emailBrochuresElement.find('.optInMarketing'),
 	        emailHistoryInput: $('#health_brochureEmailHistory'),
-            productData: [
-                {name: "hospitalPDSUrl", value: product.promo.hospitalPDF},
-                {name: "extrasPDSUrl", value: product.promo.extrasPDF},
-                {name: "provider", value: product.info.provider},
-                {name: "providerName", value: product.info.providerName},
-                {name: "productName", value: product.info.productTitle},
-                {name: "productId", value: product.productId},
-                {name: "productCode", value: product.info.productCode},
-                {name: "premium", value: product.premium[Results.settings.frequency].lhcfreetext},
-                {name: "premiumText", value: product.premium[Results.settings.frequency].lhcfreepricing},
-                // Additional information
-                {name: "healthSituation", value: situation},
-                {name: "primaryCurrentPHI", value: currentPHI},
-                {name: "coverType", value: product.info.ProductType},
-                {name: "benefitCodes", value: benefitCodes.join(',')},
-                {name: "specialOffer", value: specialOffer.specialOffer},
-                {name: "specialOfferTerms", value: specialOffer.specialOfferTerms},
-                {name: "excessPerAdmission", value: excessesAndCoPayment.excessPerAdmission},
-                {name: "excessPerPerson", value: excessesAndCoPayment.excessPerPerson},
-                {name: "excessPerPolicy", value: excessesAndCoPayment.excessPerPolicy},
-                {name: "coPayment", value: excessesAndCoPayment.coPayment}
-            ],
+            productData: emailBrochuresProductData,
             product: product,
             identifier: "SEND_BROCHURES" + product.productId,
             emailResultsSuccessCallback: function onSendBrochuresCallback(result, settings) {
@@ -315,28 +317,7 @@
             form: form,
             marketing: emailBrochuresElement.find('.optInMarketing'),
             emailHistoryInput: $('#health_brochureEmailHistory'),
-            productData: [
-                {name: "hospitalPDSUrl", value: product.promo.hospitalPDF},
-                {name: "extrasPDSUrl", value: product.promo.extrasPDF},
-                {name: "provider", value: product.info.provider},
-                {name: "providerName", value: product.info.providerName},
-                {name: "productName", value: product.info.productTitle},
-                {name: "productId", value: product.productId},
-                {name: "productCode", value: product.info.productCode},
-                {name: "premium", value: product.premium[Results.settings.frequency].lhcfreetext},
-                {name: "premiumText", value: product.premium[Results.settings.frequency].lhcfreepricing},
-                // Additional information
-                {name: "healthSituation", value: situation},
-                {name: "primaryCurrentPHI", value: currentPHI},
-                {name: "coverType", value: product.info.ProductType},
-                {name: "benefitCodes", value: benefitCodes.join(',')},
-                {name: "specialOffer", value: specialOffer.specialOffer},
-                {name: "specialOfferTerms", value: specialOffer.specialOfferTerms},
-                {name: "excessPerAdmission", value: excessesAndCoPayment.excessPerAdmission},
-                {name: "excessPerPerson", value: excessesAndCoPayment.excessPerPerson},
-                {name: "excessPerPolicy", value: excessesAndCoPayment.excessPerPolicy},
-                {name: "coPayment", value: excessesAndCoPayment.coPayment}
-            ],
+            productData: emailBrochuresProductData,
             product: product,
             identifier: "GET_SELECTED_PRODUCT" + product.productId,
             emailResultsSuccessCallback: function onSendBrochuresCallback(result, settings) {
