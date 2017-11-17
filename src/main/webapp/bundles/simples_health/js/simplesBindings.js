@@ -360,7 +360,8 @@
 
 	// Toggle visibility on referral call dialogs based on if NOT inbound call
 	function toggleReferralCallDialog() {
-    	var validCallType = getCallType() !== 'inbound';
+    	var callType = getCallType();
+    	var validCallType = !_.isEmpty(callType) && callType !== 'inbound';
 		$referralCallCheckboxDialogue.toggle(validCallType);
 		if(!validCallType && $referralCallCheckbox.is(':checked')) {
 			$referralCallCheckbox.prop("checked", null).trigger("change");
