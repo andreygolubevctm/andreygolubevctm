@@ -366,6 +366,7 @@
 		if(!validCallType && $referralCallCheckbox.is(':checked')) {
 			$referralCallCheckbox.prop("checked", null).trigger("change");
 		}
+		toggleReferralCallCheckbox();
 	}
 	// Toggle visibility of referral related dialogs when referral selected
 	function toggleReferralCallCheckbox() {
