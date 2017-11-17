@@ -280,7 +280,7 @@
             {name: "excessPerPerson", value: excessesAndCoPayment.excessPerPerson},
             {name: "excessPerPolicy", value: excessesAndCoPayment.excessPerPolicy},
             {name: "coPayment", value: excessesAndCoPayment.coPayment}
-        ],
+        ];
 
         meerkat.modules.emailBrochures.setup({
             emailInput: emailBrochuresElement.find('.sendBrochureEmailAddress'),
