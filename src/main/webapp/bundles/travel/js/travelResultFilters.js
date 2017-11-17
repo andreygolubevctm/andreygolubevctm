@@ -223,7 +223,7 @@
      * @param customFilter - boolean value for custom filter
      */
     function _displayCustomResults (customFilter, matchAllFilter) {
-        init.cover === '';
+        init.cover = '';
         Results.model.travelResultFilter(true, true, matchAllFilter);
         if (customFilter) {
             $('input[name="reset-filters-radio-group"]').prop('checked', false);

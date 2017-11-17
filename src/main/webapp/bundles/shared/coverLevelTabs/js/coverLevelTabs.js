@@ -227,6 +227,7 @@
     return;
 		}
 		log("[coverleveltabs] buildTabs", settings.activeTabSet);
+        var destination = $('#travel_destination').val();
 		var tabLength = settings.activeTabSet.length,
 		xsCols = parseInt(6 / tabLength, 10),
 		state = meerkat.modules.deviceMediaState.get();
@@ -280,7 +281,8 @@
 		if (state == 'xs' ||
 			state == 'sm' ||
 			state == 'md' ||
-            tabLength == 2
+            tabLength == 2 ||
+            destination == 'AUS'
 		) {
 			$('.clt-trip-filter').hide();
 		} else {
