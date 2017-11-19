@@ -16,8 +16,12 @@
         $healthSituationMedicare,
         $aboutYouFieldset,
         $yourDetailsFieldset,
-        $followupCallCheckboxDialogue,
-        $followupCallCheckbox,
+	    $followupCallCheckboxDialogue,
+	    $followupCallCheckbox,
+	    $referralCallCheckboxDialogue,
+	    $referralCallCheckbox,
+	    $referralCallPaymentStepDialogue1,
+	    $referralCallPaymentStepDialogue2,
         $cliCallCheckboxDialogue,
         $nonCliCallCheckboxDialogue,
         $outboundFollowupDialogue,
@@ -66,6 +70,10 @@
             $yourDetailsFieldset = $('#health-contact-fieldset .content');
             $followupCallCheckboxDialogue = $('.simples-dialogue-68');
             $followupCallCheckbox = $('#health_simples_dialogue-checkbox-68');
+	        $referralCallCheckboxDialogue = $('.simples-dialogue-93');
+	        $referralCallCheckbox = $('#health_simples_dialogue-checkbox-93');
+	        $referralCallPaymentStepDialogue1 = $('.simples-dialogue-94');
+	        $referralCallPaymentStepDialogue2 = $('.simples-dialogue-95');
             $cliCallCheckboxDialogue = $('.simples-dialogue-78');
             $nonCliCallCheckboxDialogue = $('.simples-dialogue-20');
             $outboundFollowupDialogue = $('.simples-dialogue-69');
@@ -95,6 +103,7 @@
             toggleBenefitsDialogue();
             initDBDrivenCheckboxes();
             toggleFollowupCallDialog();
+	        toggleReferralCallDialog();
 
             applyEventListeners();
             eventSubscriptions();
@@ -177,9 +186,13 @@
         $healthContactTypeRadio.on('change', function(){
             toggleInboundOutbound();
             toggleFollowupCallDialog();
+            toggleReferralCallDialog();
+
         });
         // Handle callback checkbox 68
         $followupCallCheckbox.on('change', toggleFollowupCallDialog);
+	    // Handle callback checkbox 93
+	    $referralCallCheckbox.on('change', toggleReferralCallCheckbox);
         // Handle toggle rebateDialogue
         $healthCoverRebate.add($healthSituationCvr).on('change', toggleRebateDialogue);
         // Handle toggle benefitsDialogue
@@ -344,6 +357,24 @@
                 .addClass('hidden');
         }
     }
+
+	// Toggle visibility on referral call dialogs based on if NOT inbound call
+	function toggleReferralCallDialog() {
+    	var callType = getCallType();
+    	var validCallType = !_.isEmpty(callType) && callType !== 'inbound';
+		$referralCallCheckboxDialogue.toggle(validCallType);
+		if(!validCallType && $referralCallCheckbox.is(':checked')) {
+			$referralCallCheckbox.prop("checked", null).trigger("change");
+		}
+		toggleReferralCallCheckbox();
+	}
+	// Toggle visibility of referral related dialogs when referral selected
+	function toggleReferralCallCheckbox() {
+		$dialogue36
+			.add($referralCallPaymentStepDialogue1)
+			.add($referralCallPaymentStepDialogue2)
+			.toggle($referralCallCheckbox.is(':checked'));
+	}
 
     function toggleRebateDialogue() {
 
