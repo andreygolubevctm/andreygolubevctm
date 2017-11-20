@@ -2,6 +2,14 @@
     <%@ include file="/WEB-INF/tags/taglib.tagf" %>
     <session:get settings="true" />
     <c:set var="whiteSpaceRegex" value="[\\r\\n\\t]+"/>
+
+    <%-- Because of cross domain issues with the payment gateway, we always use a CTM iframe to proxy to HAMBS' iframes so we need iframe src URL and hostOrigin to be pulled from CTM's settings (not the base and root URLs of the current brand) --%>
+    <c:set var="ctmSettings" value="${settingsService.getPageSettingsByCode('CTM','HEALTH')}"/>
+    <c:set var="hostOrigin">${ctmSettings.getRootUrl()}</c:set>
+    <c:if test="${fn:endsWith(hostOrigin, '/')}">
+    <c:set var="hostOrigin">${fn:substring( hostOrigin, 0, fn:length(hostOrigin)-1 )}</c:set>
+    </c:if>
+
     <c:set var="content">
     <%--Important use JSP comments as whitespace is being removed--%>
     <%--
@@ -97,7 +105,7 @@
                 <c:set var="id" value="health_application_partner_emigrateRow" />
 
                 <c:set var="html">
-                    <form_v2:row fieldXpath="${fieldXpath}" id="${id}" label="Has your partner immigrated to Australia since 1 July 2000 or since your 31st birthday?">
+                    <form_v2:row fieldXpath="${fieldXpath}" id="${id}" label="Has your partner immigrated to Australia since 1 July 2000 or since their 31st birthday?">
                         <field_v2:array_radio xpath="${fieldXpath}" required="true" title="" items="Y=Yes,N=No" />
                     </form_v2:row>
                 </c:set>
