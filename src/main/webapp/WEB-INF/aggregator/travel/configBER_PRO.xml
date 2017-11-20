@@ -10,7 +10,7 @@
 	<validation-file>WEB-INF/xsd/travel/travelQuoteResults.xsd</validation-file>
 
 	<service name="CTMT" type="soap">
-		<soap-url>http://ecommerce.disconline.com.au:8080/travel-quote/quote</soap-url>
+		<soap-url>http://127.0.0.1:8080/travel-quote/quote</soap-url>
 		<outbound-xsl>CTMT_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms />
 		<inbound-xsl>CTMT_inbound.xsl</inbound-xsl>

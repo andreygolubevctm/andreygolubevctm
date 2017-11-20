@@ -169,24 +169,22 @@
 						/**
 						 * Currently ignore medical if destination country is JUST AU.
 						 */
-						if (destinations == "AUS") {
-							medical = 0;
-						}
 
 						if (obj.excessValue <= Results.model.travelFilters.EXCESS &&
-							obj.medicalValue >= 20000000 &&
+							(obj.medicalValue >= (destinations == "AUS" ? 0 : 20000000)) &&
 							obj.cxdfeeValue >= 20000 &&
 							obj.luggageValue >= 5000
 						) {
 							obj.coverLevel = 'C';
 							meerkat.modules.coverLevelTabs.incrementCount("C");
 						} else if (obj.excessValue <= Results.model.travelFilters.EXCESS &&
-							obj.medicalValue >= 10000000
+							(obj.medicalValue >= (destinations == "AUS" ? 0 : 10000000))
 							&& obj.cxdfeeValue >= 5000
 							&& obj.luggageValue >= 2500) {
 							obj.coverLevel = 'M';
 							meerkat.modules.coverLevelTabs.incrementCount("M");
-						} else if (obj.medicalValue < 10000000 ||
+						} else if (
+							(obj.medicalValue < (destinations == "AUS" ? 0 : 10000000)) ||
                             obj.cxdfeeValue < 5000 ||
                             obj.luggageValue < 2500
 						)  {

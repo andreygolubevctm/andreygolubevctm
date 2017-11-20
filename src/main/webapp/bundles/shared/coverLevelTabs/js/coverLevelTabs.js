@@ -241,6 +241,7 @@
     return;
 		}
 		log("[coverleveltabs] buildTabs", settings.activeTabSet);
+        var destination = $('#travel_destination').val();
 		var tabLength = settings.activeTabSet.length,
 		xsCols = parseInt(6 / tabLength, 10),
 		state = meerkat.modules.deviceMediaState.get();
@@ -308,7 +309,7 @@
 		meerkat.modules.travelResultFilters.resetCustomFilters();
 
 		// hide filters for mobile, tablet & AMT
-		if (tabLength == 2) {
+		if (tabLength == 2 || destination == 'AUS') {
 			$('.clt-trip-filter').hide();
 		} else {
             $('.clt-trip-filter').show();
