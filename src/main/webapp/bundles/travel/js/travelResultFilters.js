@@ -1,10 +1,17 @@
 (function ($) {
     function init () {
 
-        var init = {
-            cover: ''
-        };
+        _setupElements();
+        _applyEventListeners();
+    }
 
+    function _setupElements () {
+        var init = {
+            cover: null
+        };
+    }
+
+    function _applyEventListeners () {
         // close dropdown only if outside is clicked
         $('.dropdown-menu').click(function(e) {
             if (e.target.className !== 'help-icon icon-info') {
@@ -17,7 +24,7 @@
 
         // update the results as per the excess filter
         $('input[name="radio-group"]').change(function () {
-           $('.selected-excess-value .filter-excess-value').text($(this).val());
+            $('.selected-excess-value .filter-excess-value').text($(this).val());
             _updateResultsByExcess(parseInt($(this).data('excess')));
             $('#excessFilterDropdownBtn').dropdown('toggle');
         });
@@ -83,8 +90,8 @@
 
             if ($(this).data('brands-toggle') == 'none') {
                 $('[data-provider-code]').each(function (key, provider) {
-                   _providers.push($(provider).data('provider-code'));
-                   $(provider).prop('checked', false);
+                    _providers.push($(provider).data('provider-code'));
+                    $(provider).prop('checked', false);
                 });
                 Results.model.travelFilters.PROVIDERS = _providers;
                 $(this).data('brands-toggle', 'all');

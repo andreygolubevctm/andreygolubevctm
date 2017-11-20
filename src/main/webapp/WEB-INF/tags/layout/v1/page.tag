@@ -236,6 +236,11 @@ ${newPage.init(pageContext.request, pageSettings)}
 								<a class="refine-results" href="javascript:;">Refine</a>
 							</c:if>
 
+							<c:if test="${pageSettings.getVerticalCode() eq 'travel'}">
+								<a class="edit-details-travel-mobile" href="javascript:;">Edit details</a>
+								<a class="sort-results-travel-mobile" href="javascript:;">Sort</a>
+							</c:if>
+
 							<c:set var="exitUrl" value="" />
 							<c:if test="${pageSettings.hasSetting('exitUrl')}">
 							<c:set var="exitUrl" value="${fn:toLowerCase(pageSettings.getSetting('exitUrl'))}" />
