@@ -1,19 +1,50 @@
 (function ($) {
-    function init () {
 
+    var meerkatEvents = meerkat.modules.events,
+        moduleEvents = {
+            mobileFiltersMenu: {
+                ON_RESET: 'ON_RESET',
+                FOOTER_BUTTON_UPDATE: 'FOOTER_BUTTON_UPDATE',
+                BACK_BUTTON_CLICKED: 'BACK_BUTTON_CLICKED'
+            }
+        },
+        settings = {
+            title: 'Sort results',
+            template: $('.sortbar-container')
+        },
+        $elements = {},
+        MobileFiltersMenu = null;
+
+    function init() {
         _setupElements();
         _applyEventListeners();
+
+        MobileFiltersMenu = meerkat.modules.mobileFiltersMenu.initMobileFiltersMenu(settings);
     }
 
-    function _setupElements () {
+    function _setupElements() {
         var init = {
             cover: null
         };
+
+        $elements = {
+            sortBtn: $('.sort-results-travel-mobile')
+        };
     }
 
-    function _applyEventListeners () {
+    function _applyEventListeners() {
+        $elements.sortBtn.on('click', function () {
+            if ($(this).hasClass('disabled')) return;
+
+            var htmlTemplate = _.template(settings.template.html());
+
+            MobileFiltersMenu
+                .open()
+                .updateMenuBodyHTML(htmlTemplate);
+        });
+
         // close dropdown only if outside is clicked
-        $('.dropdown-menu').click(function(e) {
+        $('.dropdown-menu').click(function (e) {
             if (e.target.className !== 'help-icon icon-info') {
                 e.stopPropagation();
             }
@@ -31,19 +62,19 @@
 
         // update the results as per the luggage filter
         $('input[name="luggageRangeSlider"]').change(function (value) {
-            _displaySliderValue ("LUGGAGE", $(this).val());
+            _displaySliderValue("LUGGAGE", $(this).val());
             _updateTravelResults("LUGGAGE", parseInt($(this).val()));
         });
 
         // update the results as per the cancellation filter
         $('input[name="cancellationRangeSlider"]').change(function () {
-            _displaySliderValue ("CXDFEE", $(this).val());
+            _displaySliderValue("CXDFEE", $(this).val());
             _updateTravelResults("CXDFEE", parseInt($(this).val()));
         });
 
         // update the results as per the overseas medical filter
         $('input[name="overseasMedicalRangeSlider"]').change(function () {
-            _displaySliderValue ("MEDICAL", $(this).val());
+            _displaySliderValue("MEDICAL", $(this).val());
             _updateTravelResults("MEDICAL", parseInt($(this).val()));
         });
 
@@ -115,7 +146,7 @@
      * @param filter - name of the filter
      * @param value - value of the filter
      */
-    function _updateTravelResults (filter, value) {
+    function _updateTravelResults(filter, value) {
         var _filters = Results.model.travelFilters;
 
         switch (filter) {
@@ -177,15 +208,15 @@
 
         // update luggage filter
         $('input[name="luggageRangeSlider"]').val(_filters.LUGGAGE);
-        _displaySliderValue ("LUGGAGE", _filters.LUGGAGE);
+        _displaySliderValue("LUGGAGE", _filters.LUGGAGE);
 
         // update cancellation filter
         $('input[name="cancellationRangeSlider"]').val(_filters.CXDFEE);
-        _displaySliderValue ("CXDFEE", _filters.CXDFEE);
+        _displaySliderValue("CXDFEE", _filters.CXDFEE);
 
         // update overseas medical filter
         $('input[name="overseasMedicalRangeSlider"]').val(_filters.MEDICAL);
-        _displaySliderValue ("MEDICAL", _filters.MEDICAL);
+        _displaySliderValue("MEDICAL", _filters.MEDICAL);
 
         meerkat.modules.customRangeSlider.init();
         Results.model.travelFilters = _filters;
@@ -203,7 +234,7 @@
      * @param value - value of that slider
      * @private
      */
-    function _displaySliderValue (slider, value) {
+    function _displaySliderValue(slider, value) {
         switch (slider) {
             case 'LUGGAGE':
                 $('.luggage-range-value').empty().text('$' + Number(value).toLocaleString('en'));
@@ -223,7 +254,7 @@
      * Update the results as per the excess value
      * @param value - accept the excess value
      */
-    function _updateResultsByExcess (value) {
+    function _updateResultsByExcess(value) {
         Results.model.travelFilters.EXCESS = value;
         meerkat.modules.coverLevelTabs.resetTabResultsCount();
         meerkat.messaging.publish(Results.model.moduleEvents.RESULTS_MODEL_UPDATE_BEFORE_FILTERSHOW);
@@ -242,7 +273,7 @@
      * @param customFilter - boolean value for custom filter
      * @param matchAllFilter - boolean value to match ALL or ONE filter
      */
-    function _displayCustomResults (customFilter, matchAllFilter) {
+    function _displayCustomResults(customFilter, matchAllFilter) {
         init.cover = '';
         Results.model.travelResultFilter(true, true, matchAllFilter);
         if (customFilter) {
@@ -255,7 +286,7 @@
     /**
      * Reset all the custom filter functionality
      */
-    function resetCustomFilters () {
+    function resetCustomFilters() {
         Results.model.travelFilters = {
             EXCESS: 200,
             LUGGAGE: 5000,
@@ -267,13 +298,13 @@
         init.cover = '';
         var _filters = Results.model.travelFilters;
         $('input[name="luggageRangeSlider"]').val(_filters.LUGGAGE);
-        _displaySliderValue ("LUGGAGE", _filters.LUGGAGE);
+        _displaySliderValue("LUGGAGE", _filters.LUGGAGE);
 
         $('input[name="cancellationRangeSlider"]').val(_filters.CXDFEE);
-        _displaySliderValue ("CXDFEE", _filters.CXDFEE);
+        _displaySliderValue("CXDFEE", _filters.CXDFEE);
 
         $('input[name="overseasMedicalRangeSlider"]').val(_filters.MEDICAL);
-        _displaySliderValue ("MEDICAL", _filters.MEDICAL);
+        _displaySliderValue("MEDICAL", _filters.MEDICAL);
         meerkat.modules.customRangeSlider.init();
         $('#travel_filter_excess_200').trigger('click');
         $('[data-provider-code]').prop('checked', true);
