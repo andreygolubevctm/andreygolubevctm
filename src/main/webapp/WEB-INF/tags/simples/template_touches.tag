@@ -6,7 +6,7 @@
 
 
 <c:choose>
-	<c:when test="${isRoleSupervisor or isRoleIT}">{{ var isAdmin = true; }}</c:when>
+	<c:when test="${isRoleSupervisor or isRoleIT or isRoleViewAllTouchesTouches}">{{ var isAdmin = true; }}</c:when>
 	<c:otherwise>{{ var isAdmin = false; }}</c:otherwise>
 </c:choose>
 

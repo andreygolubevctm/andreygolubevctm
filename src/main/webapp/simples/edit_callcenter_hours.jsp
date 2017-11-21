@@ -20,7 +20,7 @@
 					<h1>Opening Hours</h1>
 				</div>
 				<div class="col-sm-2">
-					<c:if test="${isRoleElevatedSupervisor}">
+					<c:if test="${isRoleReadOnlySupervisor}">
 						<button type="button" class="btn btn-sm btn-info opening-hours opening-hours-refresh right">Refresh</button>
 					</c:if>
 				</div>
@@ -28,7 +28,7 @@
 			<div id="hours-normal" class="row">
 				<h2 class="col-sm-10">Normal Hours</h2>
 				<div class="col-sm-2">
-					<c:if test="${isRoleElevatedSupervisor}">
+					<c:if test="${isRoleReadOnlySupervisor}">
 						<button type="button" class="btn btn-sm btn-default opening-hours opening-hours-new right">New Normal Hours</button>
 					</c:if>
 				</div>
@@ -43,7 +43,7 @@
 								<th>Vertical</th>
 								<th>Effective Start</th>
 								<th>Effective End</th>
-								<c:if test="${isRoleElevatedSupervisor}">
+								<c:if test="${isRoleReadOnlySupervisor}">
 									<th colspan="2">Actions</th>
 								</c:if>
 							</tr>
@@ -55,7 +55,7 @@
 			<div id="hours-special" class="row">
 				<h2 class="col-sm-10">Special Hours</h2>
 				<div class="col-sm-2">
-					<c:if test="${isRoleElevatedSupervisor}">
+					<c:if test="${isRoleReadOnlySupervisor}">
 						<button type="button" class="btn btn-sm btn-default opening-hours opening-hours-new right">New Special Hours</button>
 					</c:if>
 				</div>
@@ -70,7 +70,7 @@
 								<th>Vertical</th>
 								<th>Effective Start</th>
 								<th>Effective End</th>
-								<c:if test="${isRoleElevatedSupervisor}">
+								<c:if test="${isRoleReadOnlySupervisor}">
 									<th colspan="2">Actions</th>
 								</c:if>
 							</tr>
@@ -94,7 +94,7 @@
 <script id="opening-hours-row-noresults-template" type="text/html">
 	<tr id="opening-hours-noresults">
 		<td colspan="100">Tick, tock. No hours are available.
-			<c:if test="${isRoleElevatedSupervisor}">
+			<c:if test="${isRoleReadOnlySupervisor}">
 				Why not <a href="javascript:;" class="opening-hours-new">add some?</a>
 			</c:if>
 		</td>
@@ -154,7 +154,7 @@
 			<input type="date" class="hidden" value="{{= effectiveEnd }}" />
 			<span>{{= new Date(effectiveEnd).toLocaleDateString('en-GB') }}</span>
 		</td>
-		<c:if test="${isRoleElevatedSupervisor}">
+		<c:if test="${isRoleReadOnlySupervisor}">
 			<td>
 				<button class="btn btn-sm btn-success save hidden" type="button" data-id="{{= openingHoursId }}">Save</button>
 				<button class="btn btn-sm btn-primary edit" type="button" data-id="{{= openingHoursId }}">Edit</button>

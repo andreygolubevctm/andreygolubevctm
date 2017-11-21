@@ -33,7 +33,7 @@
 								<span>Offer</span>
 							</a>
 						</li>
-						<li class="col-lg-<c:if test="${isRoleElevatedSupervisor ne true}">4</c:if><c:if test="${isRoleElevatedSupervisor}">3</c:if>">
+						<li class="col-lg-<c:if test="${isRoleReadOnlySupervisor ne true}">4</c:if><c:if test="${isRoleReadOnlySupervisor}">3</c:if>">
 							<a href="javascript:;">
 								<span class="icon"></span>
 								<span>Conditions</span>
@@ -69,7 +69,7 @@
 								<span>End Date</span>
 							</a>
 						</li>
-						<c:if test="${isRoleElevatedSupervisor}">
+						<c:if test="${isRoleReadOnlySupervisor}">
 							<li class="col-lg-1">
 								<button type="button" class="crud-new-entry btn btn-secondary btn-sm">Add New Offer</button>
 							</li>
@@ -130,7 +130,7 @@
 
 <script id="special-offers-modal-template" class="crud-modal-template" type="text/html">
 
-	<c:if test="${isRoleElevatedSupervisor}">
+	<c:if test="${isRoleReadOnlySupervisor}">
 		<div class="row">
 			<div class="col-sm-12">
 				<br>
@@ -222,7 +222,7 @@
 		</div>
 	</div>
 
-	<c:if test="${isRoleElevatedSupervisor}">
+	<c:if test="${isRoleReadOnlySupervisor}">
 		<div class="form-group">
 			<button type="button" class="crud-save-entry btn btn-secondary">Save</button>
 		</div>
@@ -237,7 +237,7 @@
 		<div class="col-lg-2">
 			{{= data.content }}
 		</div>
-		<div class="col-lg-{{= '${isRoleElevatedSupervisor}' === 'true' ? 3 : 4 }}">
+		<div class="col-lg-{{= '${isRoleReadOnlySupervisor}' === 'true' ? 3 : 4 }}">
 			{{= data.terms }}
 		</div>
 		<div class="col-lg-1">
@@ -255,7 +255,7 @@
 		<div class="col-lg-1">
 			{{= new Date(data.effectiveEnd).toLocaleDateString('en-GB') }}
 		</div>
-		<c:if test="${isRoleElevatedSupervisor}">
+		<c:if test="${isRoleReadOnlySupervisor}">
 			<div class="col-lg-1">
 				{{ if(data.type === "current" || data.type === "future") { }}
 				<button type="button" class="crud-edit-entry btn btn-secondary btn-sm">Edit</button>

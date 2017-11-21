@@ -14,7 +14,9 @@
 <c:set var="isRoleSupervisor" scope="session"><simples:security key="supervisor" /></c:set>
 <c:set var="isRoleIT" scope="session"><simples:security key="IT" /></c:set>
 <c:set var="isRoleCcRewards" scope="session"><simples:security key="ccRewardsGroup" /></c:set>
-<c:set var="isRoleElevatedSupervisor" scope="session"><simples:security key="elevatedsupervisor" /></c:set>
+<c:set var="isRoleReadOnlySupervisor" scope="session"><simples:security key="readOnlySupervisor" /></c:set>
+<c:set var="isRoleReadWriteSupervisor" scope="session"><simples:security key="readWriteSupervisor" /></c:set>
+<c:set var="isRoleViewAllTouchesTouches" scope="session"><simples:security key="viewAllTouchesTouches" /></c:set>
 
 <c:set var="assetUrl" value="/${pageSettings.getContextFolder()}" />
 

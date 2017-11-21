@@ -54,9 +54,19 @@
 					<c:set var="securityDescLevel" value="Supervisor" />
 				</c:if>
 
-				<c:set var="elevatedsupervisor" value="N" />
-				<c:if test="${ pageContext.request.isUserInRole('CTM-HLT-SIMPLES-ELEVATED-SUPERVISOR')}"><!-- todo: change this to the right role level jira-developers CTM-HLT-SIMPLES-ELEVATED-SUPERVISOR  -->
-					<c:set var="elevatedsupervisor" value="Y" />
+				<c:set var="readWriteSupervisor" value="N" />
+				<c:if test="${ pageContext.request.isUserInRole('CTM-HLT-SIMPLES-READWRITE-SUPERVISOR')}">
+					<c:set var="readWriteSupervisor" value="Y" />
+				</c:if>
+
+				<c:set var="readOnlySupervisor" value="N" />
+				<c:if test="${ pageContext.request.isUserInRole('CTM-HLT-SIMPLES-READONLY-SUPERVISOR')}">
+					<c:set var="readOnlySupervisor" value="Y" />
+				</c:if>
+
+				<c:set var="viewAllTouchesTouches" value="N" />
+				<c:if test="${ pageContext.request.isUserInRole('CTM-HLT-SIMPLES-VIEW-TOUCHES')}">
+					<c:set var="viewAllTouchesTouches" value="Y" />
 				</c:if>
 
 				<!-- Restricting 'browsertest' accessing simples in production environment. -->
@@ -114,7 +124,9 @@
                         <ccRewardsGroup>${ccRewardsGroup}</ccRewardsGroup>
 						<IT>${IT}</IT>
 						<supervisor>${supervisor}</supervisor>
-						<elevatedsupervisor>${elevatedsupervisor}</elevatedsupervisor>
+						<readWriteSupervisor>${readWriteSupervisor}</readWriteSupervisor>
+						<readOnlySupervisor>${readOnlySupervisor}</readOnlySupervisor>
+						<viewAllTouchesTouches>${viewAllTouchesTouches}</viewAllTouchesTouches>
 					</security>
 				</c:set>
 				<go:setData dataVar="authenticatedData" xpath="login" xml="${securityXML}" />
