@@ -8,9 +8,15 @@
                 BACK_BUTTON_CLICKED: 'BACK_BUTTON_CLICKED'
             }
         },
-        settings = {
+        sortSettings = {
             title: 'Sort results',
+            footerButtonCloseText: 'Back to results',
             template: $('.sortbar-container')
+        },
+        editDetailsSettings = {
+            title: 'Edit Details',
+            footerButtonCloseText: 'Back to results',
+            template: $('.resultsSummary')
         },
         $elements = {},
         MobileFiltersMenu = null;
@@ -19,7 +25,8 @@
         _setupElements();
         _applyEventListeners();
 
-        MobileFiltersMenu = meerkat.modules.mobileFiltersMenu.initMobileFiltersMenu(settings);
+        MobileFiltersMenuForSort = meerkat.modules.mobileFiltersMenu.initMobileFiltersMenu(sortSettings);
+        MobileFiltersMenuForEditDetails = meerkat.modules.mobileFiltersMenu.initMobileFiltersMenu(editDetailsSettings);
     }
 
     function _setupElements() {
@@ -28,17 +35,37 @@
         };
 
         $elements = {
-            sortBtn: $('.sort-results-travel-mobile')
+            sortBtn: $('.sort-results-travel-mobile'),
+            editDetailsBtn: $('.edit-details-travel-mobile')
         };
     }
 
     function _applyEventListeners() {
-        $elements.sortBtn.on('click', function () {
+        var sortTabInit = false;
+        $elements.sortBtn.on('click', function (e) {
+            if ($(this).hasClass('disabled')) return;
+            if (!sortTabInit) {
+                sortTabInit = true;
+                var htmlTemplate = _.template(sortSettings.template.html());
+
+                MobileFiltersMenuForSort
+                    .open()
+                    .updateMenuBodyHTML(htmlTemplate);
+                meerkat.modules.travelSorting.initSorting(true);
+            } else {
+                MobileFiltersMenuForSort.open();
+            }
+        });
+
+        $elements.editDetailsBtn.on('click', function (e) {
             if ($(this).hasClass('disabled')) return;
 
-            var htmlTemplate = _.template(settings.template.html());
+            var content = '<h5 class="resultsSummaryPlaceholder">Your quote is based on</h5>' +
+                            editDetailsSettings.template.html();
 
-            MobileFiltersMenu
+            var htmlTemplate = _.template(content);
+
+            MobileFiltersMenuForEditDetails
                 .open()
                 .updateMenuBodyHTML(htmlTemplate);
         });
@@ -274,7 +301,7 @@
      * @param matchAllFilter - boolean value to match ALL or ONE filter
      */
     function _displayCustomResults(customFilter, matchAllFilter) {
-        init.cover = '';
+        init.cover = null;
         Results.model.travelResultFilter(true, true, matchAllFilter);
         if (customFilter) {
             $('input[name="reset-filters-radio-group"]').prop('checked', false);
@@ -295,7 +322,7 @@
             PROVIDERS: []
         };
         Results.model.travelFilteredProductsCount = 0;
-        init.cover = '';
+        init.cover = null;
         var _filters = Results.model.travelFilters;
         $('input[name="luggageRangeSlider"]').val(_filters.LUGGAGE);
         _displaySliderValue("LUGGAGE", _filters.LUGGAGE);
