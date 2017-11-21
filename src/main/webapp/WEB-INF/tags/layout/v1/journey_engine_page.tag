@@ -111,7 +111,17 @@
               <c:if test="${pageSettings.getBrandCode() eq 'ctm' && octoberCompRender}">
                 <c:set var="octoberCompClass" value="octoberComp" />
               </c:if>
-                <div id="journeyEngineContainer" class="${octoberCompClass}">
+
+              <c:set var="renderAdditionalLoadingHtml" value="${false}"></c:set>
+              <c:set var="additionalLoadingHtmlClass" value=""></c:set>
+              <c:if test="${pageSettings.getBrandCode() eq 'ctm' && !callCentre}">
+                  <c:if test="${fn:length(contentService.getContentValue(pageContext.getRequest(), 'additionalWaitMessageHtml')) gt 0}">
+                      <c:set var="additionalLoadingHtmlClass" value="additionalWaitMsgActive" />
+                      <c:set var="renderAdditionalLoadingHtml" value="${true}"></c:set>
+                  </c:if>
+              </c:if>
+
+                <div id="journeyEngineContainer" class="${octoberCompClass} ${additionalLoadingHtmlClass}">
                   
                     <div id="journeyEngineLoading" class="journeyEngineLoader opacityTransitionQuick">
                       
@@ -124,6 +134,9 @@
                           </c:when >
                           <c:otherwise>
                             <jsp:invoke fragment="results_loading_message" />
+                            <c:if test="${renderAdditionalLoadingHtml}">
+                                <div id="additionalWaitMessage"><content:get key='additionalWaitMessageHtml'/></div>
+                            </c:if>
                           </c:otherwise>
                         </c:choose>          
                     </div>
