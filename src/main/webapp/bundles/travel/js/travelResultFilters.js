@@ -9,12 +9,12 @@
             }
         },
         sortSettings = {
-            title: 'Sort results',
+            title: '',
             footerButtonCloseText: 'Back to results',
             template: $('.sortbar-container')
         },
         editDetailsSettings = {
-            title: 'Edit Details',
+            title: '',
             footerButtonCloseText: 'Back to results',
             template: $('.resultsSummary')
         },
@@ -27,11 +27,7 @@
         _setupElements();
         _applyEventListeners();
 
-        MobileFiltersMenuForSort = meerkat.modules.mobileFiltersMenu.initMobileFiltersMenu(sortSettings);
-        MobileFiltersMenuForEditDetails = meerkat.modules.mobileFiltersMenu.initMobileFiltersMenu(editDetailsSettings);
-
-        // hack to change color of back button in mobile menu
-        $('.mobile-filters-menu__footer button').addClass('btn-call');
+        MobileFiltersMenu = meerkat.modules.mobileFiltersMenu.initMobileFiltersMenu(sortSettings);
     }
 
     function _setupElements() {
@@ -53,6 +49,7 @@
         var sortTabInit = false;
         $elements.sortBtn.on('click', function (e) {
             if ($(this).hasClass('disabled')) return;
+
             if (!sortTabInit) {
                 sortTabInit = true;
 
@@ -70,14 +67,17 @@
 
                 var htmlTemplate = _.template(mobileHamBurgerContent);
 
-                MobileFiltersMenuForSort
+                MobileFiltersMenu
                     .open()
                     .updateMenuBodyHTML(htmlTemplate);
                 meerkat.modules.travelSorting.initSorting(true);
 
             } else {
-                MobileFiltersMenuForSort.open();
+                MobileFiltersMenu.open();
             }
+            $('.mobile-filters-menu__header-title').text('Sort results');
+            // hack to change color of back button in mobile menu
+            $('.mobile-filters-menu__footer button').addClass('btn-call');
             $('.sortbar-mobile').show();
             $('.travelQuoteSummary').hide();
         });
@@ -85,8 +85,10 @@
         // click the edit details button in mobile navbar
         $elements.editDetailsBtn.on('click', function (e) {
             if ($(this).hasClass('disabled')) return;
-
-            MobileFiltersMenuForEditDetails.open();
+            MobileFiltersMenu.open();
+            $('.mobile-filters-menu__header-title').text('Edit Details');
+            // hack to change color of back button in mobile menu
+            $('.mobile-filters-menu__footer button').addClass('btn-call');
             $('.sortbar-mobile').hide();
             $('.travelQuoteSummary').show();
         });
