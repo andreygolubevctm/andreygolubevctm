@@ -37,7 +37,7 @@
         <c:forEach items="${param}" var="currentParam">
             <c:set var="redirectURL">${redirectURL}${currentParam.key}=${currentParam.value}&</c:set>
         </c:forEach>
-        <c:redirect url="${redirectURL}transactionId=${rememberMeTransactionId}&reviewedit=true" />
+        <c:redirect url="${redirectURL}transactionId=${rememberMeTransactionId}&action=remember&reviewedit=true" />
     </c:when>
 
     <c:when test="${not callCentre}">

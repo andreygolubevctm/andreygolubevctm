@@ -104,7 +104,7 @@
                     <input type="hidden" name="health_retrieve_savedResults" value="Y" />
                     <input type="hidden" name="health_retrieve_transactionId" value="<c:out value='${param.transactionId}' escapeXml="true" />" />
                 </c:when>
-                 <c:when test="${(param.action == 'remember' or param.action == 'reviewedit') && not empty param.transactionId}">
+                 <c:when test="${param.action == 'remember' && not empty param.transactionId}">
                      <c:set var="touchResponse">${touchService.recordTouch(data['current/transactionId'], "RememberMe", "ONLINE")}</c:set>
                      <input type="hidden" name="health_previous_transactionId" value="<c:out value='${param.transactionId}' escapeXml="true" />" />
                 </c:when>
