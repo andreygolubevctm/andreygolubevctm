@@ -20,17 +20,13 @@
 					<h1>Opening Hours</h1>
 				</div>
 				<div class="col-sm-2">
-					<c:if test="${isRoleReadOnlySupervisor}">
-						<button type="button" class="btn btn-sm btn-info opening-hours opening-hours-refresh right">Refresh</button>
-					</c:if>
+					<button type="button" class="btn btn-sm btn-info opening-hours opening-hours-refresh right">Refresh</button>
 				</div>
 			</div>
 			<div id="hours-normal" class="row">
 				<h2 class="col-sm-10">Normal Hours</h2>
 				<div class="col-sm-2">
-					<c:if test="${isRoleReadOnlySupervisor}">
-						<button type="button" class="btn btn-sm btn-default opening-hours opening-hours-new right">New Normal Hours</button>
-					</c:if>
+					<button type="button" class="btn btn-sm btn-default opening-hours opening-hours-new right">New Normal Hours</button>
 				</div>
 				<div class="col-sm-12">
 					<table id="hours-normal-row-container" class="opening-hours-table table table-hover" data-hourstype="N">
@@ -43,9 +39,7 @@
 								<th>Vertical</th>
 								<th>Effective Start</th>
 								<th>Effective End</th>
-								<c:if test="${isRoleReadOnlySupervisor}">
-									<th colspan="2">Actions</th>
-								</c:if>
+								<th colspan="2">Actions</th>
 							</tr>
 						</thead>
 						<tbody></tbody>
@@ -55,9 +49,7 @@
 			<div id="hours-special" class="row">
 				<h2 class="col-sm-10">Special Hours</h2>
 				<div class="col-sm-2">
-					<c:if test="${isRoleReadOnlySupervisor}">
-						<button type="button" class="btn btn-sm btn-default opening-hours opening-hours-new right">New Special Hours</button>
-					</c:if>
+					<button type="button" class="btn btn-sm btn-default opening-hours opening-hours-new right">New Special Hours</button>
 				</div>
 				<div class="col-sm-12">
 					<table id="hours-special-row-container" class="opening-hours-table table table-hover" data-hourstype="S">
@@ -70,9 +62,7 @@
 								<th>Vertical</th>
 								<th>Effective Start</th>
 								<th>Effective End</th>
-								<c:if test="${isRoleReadOnlySupervisor}">
-									<th colspan="2">Actions</th>
-								</c:if>
+								<th colspan="2">Actions</th>
 							</tr>
 						</thead>
 						<tbody></tbody>
@@ -93,11 +83,7 @@
 
 <script id="opening-hours-row-noresults-template" type="text/html">
 	<tr id="opening-hours-noresults">
-		<td colspan="100">Tick, tock. No hours are available.
-			<c:if test="${isRoleReadOnlySupervisor}">
-				Why not <a href="javascript:;" class="opening-hours-new">add some?</a>
-			</c:if>
-		</td>
+		<td colspan="100">Tick, tock. No hours are available. Why not <a href="javascript:;" class="opening-hours-new">add some?</a></td>
 	</tr>
 </script>
 
@@ -154,15 +140,13 @@
 			<input type="date" class="hidden" value="{{= effectiveEnd }}" />
 			<span>{{= new Date(effectiveEnd).toLocaleDateString('en-GB') }}</span>
 		</td>
-		<c:if test="${isRoleReadOnlySupervisor}">
-			<td>
-				<button class="btn btn-sm btn-success save hidden" type="button" data-id="{{= openingHoursId }}">Save</button>
-				<button class="btn btn-sm btn-primary edit" type="button" data-id="{{= openingHoursId }}">Edit</button>
-			</td>
-			<td>
-				<button class="btn btn-sm btn-info cancel hidden" type="button" data-id="{{= openingHoursId }}">Cancel</button>
-				<button class="btn btn-sm btn-danger delete" type="button" data-id="{{= openingHoursId }}">Delete</button>
-			</td>
-		</c:if>
+		<td>
+			<button class="btn btn-sm btn-success save hidden" type="button" data-id="{{= openingHoursId }}">Save</button>
+			<button class="btn btn-sm btn-primary edit" type="button" data-id="{{= openingHoursId }}">Edit</button>
+		</td>
+		<td>
+			<button class="btn btn-sm btn-info cancel hidden" type="button" data-id="{{= openingHoursId }}">Cancel</button>
+			<button class="btn btn-sm btn-danger delete" type="button" data-id="{{= openingHoursId }}">Delete</button>
+		</td>
 	</tr>
 </script>

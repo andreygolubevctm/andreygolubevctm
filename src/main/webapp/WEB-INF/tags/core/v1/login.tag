@@ -54,19 +54,9 @@
 					<c:set var="securityDescLevel" value="Supervisor" />
 				</c:if>
 
-				<c:set var="readWriteSupervisor" value="N" />
-				<c:if test="${ pageContext.request.isUserInRole('CTM-HLT-SIMPLES-READWRITE-SUPERVISOR')}">
-					<c:set var="readWriteSupervisor" value="Y" />
-				</c:if>
-
-				<c:set var="readOnlySupervisor" value="N" />
-				<c:if test="${ pageContext.request.isUserInRole('CTM-HLT-SIMPLES-READONLY-SUPERVISOR')}">
-					<c:set var="readOnlySupervisor" value="Y" />
-				</c:if>
-
-				<c:set var="viewAllTouchesTouches" value="N" />
-				<c:if test="${ pageContext.request.isUserInRole('CTM-HLT-SIMPLES-VIEW-TOUCHES')}">
-					<c:set var="viewAllTouchesTouches" value="Y" />
+				<c:set var="editAdminMenuAuth" value="N" />
+				<c:if test="${ pageContext.request.isUserInRole('CTM-HLT-SIMPLES-EDIT-ADMIN-MENU')}">
+					<c:set var="editAdminMenuAuth" value="Y" />
 				</c:if>
 
 				<!-- Restricting 'browsertest' accessing simples in production environment. -->
