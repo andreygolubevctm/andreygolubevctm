@@ -33,9 +33,12 @@
 
     <c:when test="${isRememberMe and hasUserVisitedInLast30Minutes and empty param.reviewedit}">
         <c:set var="redirectURL" value="${pageSettings.getBaseUrl()}health_quote_v4.jsp?" />
-        <%-- Preserve the query string params and pass them to remember_me.jsp --%>
         <c:forEach items="${param}" var="currentParam">
-            <c:set var="redirectURL">${redirectURL}${currentParam.key}=${currentParam.value}&</c:set>
+            <%-- Removing j params split test from occuring on remember me within 30 minutes;
+                 This prevents potential journey errors --%>
+            <c:if test="${currentParam.key ne 'j'}">
+                <c:set var="redirectURL">${redirectURL}${currentParam.key}=${currentParam.value}&</c:set>
+            </c:if>
         </c:forEach>
         <c:redirect url="${redirectURL}transactionId=${rememberMeTransactionId}&reviewedit=true" />
     </c:when>
