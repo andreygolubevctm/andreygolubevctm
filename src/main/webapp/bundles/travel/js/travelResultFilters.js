@@ -1,14 +1,6 @@
 (function ($) {
 
-    var meerkatEvents = meerkat.modules.events,
-        moduleEvents = {
-            mobileFiltersMenu: {
-                ON_RESET: 'ON_RESET',
-                FOOTER_BUTTON_UPDATE: 'FOOTER_BUTTON_UPDATE',
-                BACK_BUTTON_CLICKED: 'BACK_BUTTON_CLICKED'
-            }
-        },
-        sortSettings = {
+    var sortSettings = {
             title: '',
             footerButtonCloseText: 'Back to results',
             template: $('.sortbar-container')
@@ -20,13 +12,11 @@
         },
         $elements = {},
         $init = {},
-        MobileFiltersMenuForSort = null,
-        MobileFiltersMenuForEditDetails = null;
+        MobileFiltersMenu = null;
 
     function init() {
         _setupElements();
         _applyEventListeners();
-
         MobileFiltersMenu = meerkat.modules.mobileFiltersMenu.initMobileFiltersMenu(sortSettings);
     }
 
@@ -39,12 +29,9 @@
             sortBtn: $('.sort-results-travel-mobile'),
             editDetailsBtn: $('.edit-details-travel-mobile')
         };
-
-
     }
 
     function _applyEventListeners() {
-
         // click the sort button in mobile navbar
         var sortTabInit = false;
         $elements.sortBtn.on('click', function (e) {
@@ -270,12 +257,7 @@
 
         meerkat.modules.customRangeSlider.init();
         Results.model.travelFilters = _filters;
-
-        if (cover == 'B') {
-            _displayCustomResults(false, false);
-        } else {
-            _displayCustomResults(false, true);
-        }
+        _displayCustomResults(false, (cover === 'B' ? false : true));
     }
 
     /**
@@ -308,13 +290,7 @@
         Results.model.travelFilters.EXCESS = value;
         meerkat.modules.coverLevelTabs.resetTabResultsCount();
         meerkat.messaging.publish(Results.model.moduleEvents.RESULTS_MODEL_UPDATE_BEFORE_FILTERSHOW);
-
-        if ($init.cover === 'B') {
-            Results.model.travelResultFilter(true, true, false);
-        } else {
-            Results.model.travelResultFilter(true, true, true);
-        }
-
+        Results.model.travelResultFilter(true, true, ($init.cover === 'B' ? false : true));
         meerkat.modules.coverLevelTabs.updateTabCounts();
     }
 
@@ -329,7 +305,6 @@
         if (customFilter) {
             $('input[name="reset-filters-radio-group"]').prop('checked', false);
         }
-
         meerkat.modules.coverLevelTabs.buildCustomTab();
     }
 
