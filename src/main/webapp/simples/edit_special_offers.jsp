@@ -127,7 +127,6 @@
 </script>
 
 <script id="special-offers-modal-template" class="crud-modal-template" type="text/html">
-
 	<div class="row">
 		<div class="col-sm-12">
 			<br>

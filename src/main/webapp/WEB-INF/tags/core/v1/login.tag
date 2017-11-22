@@ -114,9 +114,7 @@
                         <ccRewardsGroup>${ccRewardsGroup}</ccRewardsGroup>
 						<IT>${IT}</IT>
 						<supervisor>${supervisor}</supervisor>
-						<readWriteSupervisor>${readWriteSupervisor}</readWriteSupervisor>
-						<readOnlySupervisor>${readOnlySupervisor}</readOnlySupervisor>
-						<viewAllTouchesTouches>${viewAllTouchesTouches}</viewAllTouchesTouches>
+						<editAdminMenuAuth>${editAdminMenuAuth}</editAdminMenuAuth>
 					</security>
 				</c:set>
 				<go:setData dataVar="authenticatedData" xpath="login" xml="${securityXML}" />
