@@ -20,7 +20,6 @@
         },
         $elements = {},
         $init = {},
-        mobileHamBurgerContent = null,
         MobileFiltersMenuForSort = null,
         MobileFiltersMenuForEditDetails = null;
 
@@ -45,24 +44,29 @@
             editDetailsBtn: $('.edit-details-travel-mobile')
         };
 
-        mobileHamBurgerContent =    '<div class="sortbar-mobile">'                                      +
-                                        sortSettings.template.html()                                    +
-                                    '</div>'                                                            +
-                                    '<div class="travelQuoteSummary">'                                  +
-                                        '<h5>Your quote is based on</h5>'                               +
-                                        editDetailsSettings.template.html()                             +
-                                        '<a href="javascript:;" data-slide-control="previous">'         +
-                                            '<span class="icon icon-pencil"></span> Edit your details'  +
-                                        '</a>'                                                          +
-                                    '</div>';
+
     }
 
     function _applyEventListeners() {
+
+        // click the sort button in mobile navbar
         var sortTabInit = false;
         $elements.sortBtn.on('click', function (e) {
             if ($(this).hasClass('disabled')) return;
             if (!sortTabInit) {
                 sortTabInit = true;
+
+                var mobileHamBurgerContent =
+                    '<div class="sortbar-mobile">' +
+                        sortSettings.template.html() +
+                    '</div>' +
+                    '<div class="travelQuoteSummary">' +
+                        '<h5>Your quote is based on</h5>' +
+                        editDetailsSettings.template.html() +
+                        '<a href="javascript:;" data-slide-control="previous">' +
+                            '<span class="icon icon-pencil"></span> Edit your details' +
+                        '</a>' +
+                    '</div>';
 
                 var htmlTemplate = _.template(mobileHamBurgerContent);
 
@@ -78,6 +82,7 @@
             $('.travelQuoteSummary').hide();
         });
 
+        // click the edit details button in mobile navbar
         $elements.editDetailsBtn.on('click', function (e) {
             if ($(this).hasClass('disabled')) return;
 
