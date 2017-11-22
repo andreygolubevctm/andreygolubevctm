@@ -19,7 +19,10 @@
             template: $('.resultsSummary')
         },
         $elements = {},
-        MobileFiltersMenu = null;
+        $init = {},
+        mobileHamBurgerContent = null,
+        MobileFiltersMenuForSort = null,
+        MobileFiltersMenuForEditDetails = null;
 
     function init() {
         _setupElements();
@@ -27,10 +30,13 @@
 
         MobileFiltersMenuForSort = meerkat.modules.mobileFiltersMenu.initMobileFiltersMenu(sortSettings);
         MobileFiltersMenuForEditDetails = meerkat.modules.mobileFiltersMenu.initMobileFiltersMenu(editDetailsSettings);
+
+        // hack to change color of back button in mobile menu
+        $('.mobile-filters-menu__footer button').addClass('btn-call');
     }
 
     function _setupElements() {
-        var init = {
+        $init = {
             cover: null
         };
 
@@ -38,6 +44,17 @@
             sortBtn: $('.sort-results-travel-mobile'),
             editDetailsBtn: $('.edit-details-travel-mobile')
         };
+
+        mobileHamBurgerContent =    '<div class="sortbar-mobile">'                                      +
+                                        sortSettings.template.html()                                    +
+                                    '</div>'                                                            +
+                                    '<div class="travelQuoteSummary">'                                  +
+                                        '<h5>Your quote is based on</h5>'                               +
+                                        editDetailsSettings.template.html()                             +
+                                        '<a href="javascript:;" data-slide-control="previous">'         +
+                                            '<span class="icon icon-pencil"></span> Edit your details'  +
+                                        '</a>'                                                          +
+                                    '</div>';
     }
 
     function _applyEventListeners() {
@@ -46,28 +63,27 @@
             if ($(this).hasClass('disabled')) return;
             if (!sortTabInit) {
                 sortTabInit = true;
-                var htmlTemplate = _.template(sortSettings.template.html());
+
+                var htmlTemplate = _.template(mobileHamBurgerContent);
 
                 MobileFiltersMenuForSort
                     .open()
                     .updateMenuBodyHTML(htmlTemplate);
                 meerkat.modules.travelSorting.initSorting(true);
+
             } else {
                 MobileFiltersMenuForSort.open();
             }
+            $('.sortbar-mobile').show();
+            $('.travelQuoteSummary').hide();
         });
 
         $elements.editDetailsBtn.on('click', function (e) {
             if ($(this).hasClass('disabled')) return;
 
-            var content = '<h5 class="resultsSummaryPlaceholder">Your quote is based on</h5>' +
-                            editDetailsSettings.template.html();
-
-            var htmlTemplate = _.template(content);
-
-            MobileFiltersMenuForEditDetails
-                .open()
-                .updateMenuBodyHTML(htmlTemplate);
+            MobileFiltersMenuForEditDetails.open();
+            $('.sortbar-mobile').hide();
+            $('.travelQuoteSummary').show();
         });
 
         // close dropdown only if outside is clicked
@@ -120,7 +136,7 @@
             $(this).find(".icon").removeClass("icon-angle-down").addClass("icon-angle-up");
             $('input[name="reset-filters-radio-group"]').change(function () {
                 var coverType = $(this).data('ranking-filter');
-                init.cover = coverType;
+                $init.cover = coverType;
                 $('[data-travel-filter="custom-mobile"]').prop("checked", true);
                 _updateTravelResultsByCoverType(coverType);
             });
@@ -286,7 +302,7 @@
         meerkat.modules.coverLevelTabs.resetTabResultsCount();
         meerkat.messaging.publish(Results.model.moduleEvents.RESULTS_MODEL_UPDATE_BEFORE_FILTERSHOW);
 
-        if (init.cover === 'B') {
+        if ($init.cover === 'B') {
             Results.model.travelResultFilter(true, true, false);
         } else {
             Results.model.travelResultFilter(true, true, true);
@@ -301,7 +317,7 @@
      * @param matchAllFilter - boolean value to match ALL or ONE filter
      */
     function _displayCustomResults(customFilter, matchAllFilter) {
-        init.cover = null;
+        $init.cover = null;
         Results.model.travelResultFilter(true, true, matchAllFilter);
         if (customFilter) {
             $('input[name="reset-filters-radio-group"]').prop('checked', false);
@@ -322,7 +338,7 @@
             PROVIDERS: []
         };
         Results.model.travelFilteredProductsCount = 0;
-        init.cover = null;
+        $init.cover = null;
         var _filters = Results.model.travelFilters;
         $('input[name="luggageRangeSlider"]').val(_filters.LUGGAGE);
         _displaySliderValue("LUGGAGE", _filters.LUGGAGE);
