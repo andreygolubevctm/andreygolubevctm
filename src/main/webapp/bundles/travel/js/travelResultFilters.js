@@ -134,10 +134,10 @@
         $('.filter-brands-toggle').click(function () {
             if ($('.filter-brands-container').hasClass('hide')) {
                 $('.filter-brands-container').removeClass('hide');
-                $(this).find('.icon').removeClass('icon-angle-down').addClass('icon-angle-up');
+                $(this).find('.icon-brand').removeClass('icon-angle-down').addClass('icon-angle-up');
             } else {
                 $('.filter-brands-container').addClass('hide');
-                $(this).find('.icon').removeClass('icon-angle-up').addClass('icon-angle-down');
+                $(this).find('.icon-brand').removeClass('icon-angle-up').addClass('icon-angle-down');
             }
         });
 

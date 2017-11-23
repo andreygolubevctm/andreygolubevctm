@@ -37,13 +37,32 @@
                 <travel_results_filters:minimum_overseas_medical/>
             </div>
             <div class="col-xs-12 col-sm-7 text-left filter-section">
-                <div class="row">
-                    <div class="col-sm-12 no-padding">
-                        <span class="hidden-xs"><b>Brands</b></span>
-                        <span class="brands-select-toggle" data-brands-toggle="none">Select none</span>
+                <div class="hidden-xs">
+                    <div class="row">
+                        <div class="col-sm-12 no-padding">
+                            <span><b>Brands</b></span>
+                            <span class="brands-select-toggle" data-brands-toggle="none">Select none</span>
+                        </div>
+                    </div>
+                    <div class="filter-brands-container">
+                        <travel_results_filters:brands />
                     </div>
                 </div>
-                <travel_results_filters:brands/>
+                <div class="visible-xs hidden-sm">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <span class="filter-brands-toggle">
+                                <b>Filter brands</b> <i class="icon-brand icon-angle-down"></i>
+                            </span>
+                        </div>
+                        <div class="col-xs-6 text-right">
+                            <span class="brands-select-toggle" data-brands-toggle="none">Select none</span>
+                        </div>
+                    </div>
+                    <div class="filter-brands-container hide">
+                        <travel_results_filters:brands />
+                    </div>
+                </div>
             </div>
         </div>
         <div class="row">
