@@ -372,14 +372,13 @@
 	function toggleReferralCallCheckbox(callType) {
         callType = callType || false;
         var isInbound = callType === "inbound";
-        var isReferral = $referralCallCheckbox.is(':checked');
-        var $elements = $referralCallPaymentStepDialogue1.add($referralCallPaymentStepDialogue2);
-        if(!isInbound) {
-	        $elements.add($dialogue36);
+        var isReferral = callType !== false && isInbound === false && $referralCallCheckbox.is(':checked');
+        if(!isInbound && isReferral) {
+        	$dialogue36.add($referralCallPaymentStepDialogue1).add($referralCallPaymentStepDialogue2).toggle(isReferral);
         } else {
+	        $referralCallPaymentStepDialogue1.add($referralCallPaymentStepDialogue2).toggle(isReferral);
 	        $dialogue36.toggle(isInbound);
         }
-		$elements.toggle(isReferral);
 	}
 
     function toggleRebateDialogue() {
