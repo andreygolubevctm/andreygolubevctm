@@ -366,14 +366,20 @@
 		if(!validCallType && $referralCallCheckbox.is(':checked')) {
 			$referralCallCheckbox.prop("checked", null).trigger("change");
 		}
-		toggleReferralCallCheckbox();
+		toggleReferralCallCheckbox(callType);
 	}
 	// Toggle visibility of referral related dialogs when referral selected
-	function toggleReferralCallCheckbox() {
-		$dialogue36
-			.add($referralCallPaymentStepDialogue1)
-			.add($referralCallPaymentStepDialogue2)
-			.toggle($referralCallCheckbox.is(':checked'));
+	function toggleReferralCallCheckbox(callType) {
+        callType = callType || false;
+        var isInbound = callType !== "inbound";
+        var isReferral = $referralCallCheckbox.is(':checked');
+        $elements = $referralCallPaymentStepDialogue1.add($referralCallPaymentStepDialogue2);
+        if(!isInbound) {
+	        $elements.add($dialogue36);
+        } else {
+	        $dialogue36.toggle(isInbound);
+        }
+		$elements.toggle(isReferral);
 	}
 
     function toggleRebateDialogue() {
