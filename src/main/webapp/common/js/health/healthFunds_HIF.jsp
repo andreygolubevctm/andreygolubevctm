@@ -183,7 +183,9 @@
             healthFunds_HIF.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
 
             <%-- Previous fund --%>
-            $('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').attr('maxlength', '10');
+            $('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID')
+                .setRequired(false)
+                .attr('maxlength', '10');
 
             <%-- Authority --%>
             meerkat.modules.healthFunds._previousfund_authority(true);
@@ -250,7 +252,9 @@
             meerkat.modules.healthFunds._dependants(false);
 
             <%--Previous fund--%>
-            $('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').removeAttr('maxlength');
+            $('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID')
+                .setRequired(true)
+                .removeAttr('maxlength');
 
             <%--Authority Off--%>
             meerkat.modules.healthFunds._previousfund_authority(false);
