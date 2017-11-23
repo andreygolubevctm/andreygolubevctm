@@ -373,7 +373,7 @@
         callType = callType || false;
         var isInbound = callType !== "inbound";
         var isReferral = $referralCallCheckbox.is(':checked');
-        $elements = $referralCallPaymentStepDialogue1.add($referralCallPaymentStepDialogue2);
+        var $elements = $referralCallPaymentStepDialogue1.add($referralCallPaymentStepDialogue2);
         if(!isInbound) {
 	        $elements.add($dialogue36);
         } else {
