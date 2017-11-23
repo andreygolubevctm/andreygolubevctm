@@ -371,7 +371,7 @@
 	// Toggle visibility of referral related dialogs when referral selected
 	function toggleReferralCallCheckbox(callType) {
         callType = callType || false;
-        var isInbound = callType !== "inbound";
+        var isInbound = callType === "inbound";
         var isReferral = $referralCallCheckbox.is(':checked');
         var $elements = $referralCallPaymentStepDialogue1.add($referralCallPaymentStepDialogue2);
         if(!isInbound) {
