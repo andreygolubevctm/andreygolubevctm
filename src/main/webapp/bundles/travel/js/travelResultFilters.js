@@ -132,11 +132,11 @@
 
         // mobile brands show/hide
         $('.filter-brands-toggle').click(function () {
-            if ($('.filter-brands-container').hasClass('hide')) {
-                $('.filter-brands-container').removeClass('hide');
+            if (!$('.filter-brands-container').is(':visible')) {
+                $('.filter-brands-container').show();
                 $(this).find('.icon-brand').removeClass('icon-angle-down').addClass('icon-angle-up');
             } else {
-                $('.filter-brands-container').addClass('hide');
+                $('.filter-brands-container').hide();
                 $(this).find('.icon-brand').removeClass('icon-angle-up').addClass('icon-angle-down');
             }
         });
