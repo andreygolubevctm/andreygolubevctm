@@ -33,7 +33,6 @@
 
     <c:when test="${isRememberMe and hasUserVisitedInLast30Minutes and empty param.reviewedit}">
         <c:set var="redirectURL" value="${pageSettings.getBaseUrl()}health_quote_v4.jsp?" />
-        <%-- Preserve the query string params and pass them to remember_me.jsp --%>
         <c:forEach items="${param}" var="currentParam">
             <c:set var="redirectURL">${redirectURL}${currentParam.key}=${currentParam.value}&</c:set>
         </c:forEach>
