@@ -266,8 +266,8 @@
 			// mobile cover types
             mobileCoverTypes += '<div class="dropdown-item">';
             mobileCoverTypes += 	'<div class="radio">';
-            mobileCoverTypes += 		'<input type="radio" name="cover-type-mobile-radio-group" id="reset_filter_' + coverTypeValue + '" class="radioButton-custom  cover-type-mobile radio" data-clt-index="' + i +'" value="' + coverTypeValue + '" data-ranking-filter="' + tab.rankingFilter +'"' + (tab.defaultTab === true ? 'checked' : '') + '>';
-            mobileCoverTypes += 		'<label for="reset_filter_' + coverTypeValue + '">' + coverTypeText + '</label>';
+            mobileCoverTypes += 		'<input type="radio" name="cover-type-mobile-radio-group" id="mobile_reset_filter_' + coverTypeValue + '" class="radioButton-custom  cover-type-mobile radio" data-clt-index="' + i +'" value="' + coverTypeValue + '" data-ranking-filter="' + tab.rankingFilter +'"' + (tab.defaultTab === true ? 'checked' : '') + '>';
+            mobileCoverTypes += 		'<label for="mobile_reset_filter_' + coverTypeValue + '">' + coverTypeText + '</label>';
             mobileCoverTypes += 	'</div>';
             mobileCoverTypes += '</div>';
 
@@ -299,13 +299,15 @@
 			}
 		}
 
+        $('.reset-travel-filters').empty().html(resetFilters);
+
 		if (state != 'xs') {
             $currentTabContainer.empty().html(out);
             $('.navbar-mobile').empty();
+		} else {
+            $('.mobile-cover-types').empty().html(mobileCoverTypes);
 		}
 
-		$('.reset-travel-filters').empty().html(resetFilters);
-		$('.mobile-cover-types').empty().html(mobileCoverTypes);
 		meerkat.modules.travelResultFilters.resetCustomFilters();
 
 		// hide filters for mobile, tablet & AMT

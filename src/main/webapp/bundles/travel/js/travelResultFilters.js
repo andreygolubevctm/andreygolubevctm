@@ -10,6 +10,7 @@
             footerButtonCloseText: 'Back to results',
             template: $('.resultsSummary')
         },
+        mobileHamBurgerContent = null,
         $elements = {},
         $init = {},
         MobileFiltersMenu = null;
@@ -18,6 +19,7 @@
         _setupElements();
         _applyEventListeners();
         MobileFiltersMenu = meerkat.modules.mobileFiltersMenu.initMobileFiltersMenu(sortSettings);
+        MobileFiltersMenu.updateMenuBodyHTML(_.template(mobileHamBurgerContent));
     }
 
     function _setupElements() {
@@ -29,39 +31,26 @@
             sortBtn: $('.sort-results-travel-mobile'),
             editDetailsBtn: $('.edit-details-travel-mobile')
         };
+
+        mobileHamBurgerContent =
+            '<div class="sortbar-mobile">' +
+                sortSettings.template.html() +
+            '</div>' +
+            '<div class="travelQuoteSummary">' +
+                '<h5>Your quote is based on</h5>' +
+                editDetailsSettings.template.html() +
+                '<a href="javascript:;" data-slide-control="previous">' +
+                    '<span class="icon icon-pencil"></span> Edit your details' +
+                '</a>' +
+            '</div>';
     }
 
     function _applyEventListeners() {
         // click the sort button in mobile navbar
-        var sortTabInit = false;
         $elements.sortBtn.on('click', function (e) {
             if ($(this).hasClass('disabled')) return;
-
-            if (!sortTabInit) {
-                sortTabInit = true;
-
-                var mobileHamBurgerContent =
-                    '<div class="sortbar-mobile">' +
-                        sortSettings.template.html() +
-                    '</div>' +
-                    '<div class="travelQuoteSummary">' +
-                        '<h5>Your quote is based on</h5>' +
-                        editDetailsSettings.template.html() +
-                        '<a href="javascript:;" data-slide-control="previous">' +
-                            '<span class="icon icon-pencil"></span> Edit your details' +
-                        '</a>' +
-                    '</div>';
-
-                var htmlTemplate = _.template(mobileHamBurgerContent);
-
-                MobileFiltersMenu
-                    .open()
-                    .updateMenuBodyHTML(htmlTemplate);
-                meerkat.modules.travelSorting.initSorting(true);
-
-            } else {
-                MobileFiltersMenu.open();
-            }
+            MobileFiltersMenu.open();
+            meerkat.modules.travelSorting.initSorting(true);
             $('.mobile-filters-menu__header-title').text('Sort results');
             // hack to change color of back button in mobile menu
             $('.mobile-filters-menu__footer button').addClass('btn-call');
