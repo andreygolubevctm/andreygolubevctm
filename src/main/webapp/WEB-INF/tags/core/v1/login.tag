@@ -64,6 +64,7 @@
 					<c:set var="callCentre" value="N" />
 					<c:set var="supervisor" value="N" />
 					<c:set var="IT" value="N" />
+					<c:set var="editAdminMenuAuth" value="N" />
 					<c:set var="securityDescGroup" value="Unknown" />
 				</c:if>
 
