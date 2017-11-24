@@ -112,9 +112,9 @@
                 <c:set var="octoberCompClass" value="octoberComp" />
               </c:if>
 
-                <c:set var="additionalLoadingCssClassName"><content:get key="additionalWaitMessageHtml" suppKey="additionalLoadingCssClass"/></c:set>
+                <c:set var="additionalLoadingPageContent">${getContentWithSupplementary(pageContext.getRequest(), "additionalWaitMessageHtml")}</c:set>
 
-                <div id="journeyEngineContainer" class="${octoberCompClass} ${additionalLoadingCssClassName}">
+                <div id="journeyEngineContainer" class="${octoberCompClass} ${additionalLoadingPageContent.getSupplementaryValueByKey("className")}">
                   
                     <div id="journeyEngineLoading" class="journeyEngineLoader opacityTransitionQuick">
 
@@ -127,7 +127,7 @@
                           </c:when >
                           <c:otherwise>
                             <jsp:invoke fragment="results_loading_message" />
-                            <content:get key='additionalWaitMessageHtml'/>
+                              ${additionalLoadingPageContent.getSupplementaryValueByKey("htmlContent")}
                           </c:otherwise>
                         </c:choose>          
                     </div>
