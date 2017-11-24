@@ -112,9 +112,9 @@
                 <c:set var="octoberCompClass" value="octoberComp" />
               </c:if>
 
-                <c:set var="additionalLoadingCss"><content:get key="additionalWaitMessageHtml" suppKey="additionalLoadingCssClass"/></c:set>
+                <c:set var="additionalLoadingCssClassName"><content:get key="additionalWaitMessageHtml" suppKey="additionalLoadingCssClass"/></c:set>
 
-                <div id="journeyEngineContainer" class="${octoberCompClass} ${additionalLoadingCss}">
+                <div id="journeyEngineContainer" class="${octoberCompClass} ${additionalLoadingCssClassName}">
                   
                     <div id="journeyEngineLoading" class="journeyEngineLoader opacityTransitionQuick">
 
