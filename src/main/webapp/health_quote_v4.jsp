@@ -33,7 +33,6 @@
 
     <c:when test="${isRememberMe and hasUserVisitedInLast30Minutes and empty param.reviewedit}">
         <c:set var="redirectURL" value="${pageSettings.getBaseUrl()}health_quote_v4.jsp?" />
-        <%-- Preserve the query string params and pass them to remember_me.jsp --%>
         <c:forEach items="${param}" var="currentParam">
             <c:set var="redirectURL">${redirectURL}${currentParam.key}=${currentParam.value}&</c:set>
         </c:forEach>
@@ -41,6 +40,12 @@
     </c:when>
 
     <c:when test="${not callCentre}">
+
+		<c:if test="${isRememberMe and hasUserVisitedInLast30Minutes and not empty param.reviewedit}">
+			  <%-- Record rememberme touch against transaction --%>
+			  <jsp:useBean id="touchService" class="com.ctm.web.core.services.AccessTouchService" scope="page" />
+	          <c:set var="touchResponse">${touchService.recordTouch(data['current/transactionId'], "RememberMe", "ONLINE")}</c:set>
+		</c:if>
 
         <%-- ####### PRE JOURNEY SETUP ####### --%>
 
