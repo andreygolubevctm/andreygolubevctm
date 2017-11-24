@@ -2,6 +2,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 <jsp:useBean id="webUtils" class="com.ctm.web.core.web.Utils" scope="request" />
+<jsp:useBean id="contentService" class="com.ctm.web.core.content.services.ContentService" scope="page" />
 
 <%@ attribute name="title" required="false" rtexprvalue="true" description="Page title" %>
 <%@ attribute required="false" name="body_class_name" description="Allow extra styles to be added to the rendered body tag" %>
@@ -112,7 +113,7 @@
                 <c:set var="octoberCompClass" value="octoberComp" />
               </c:if>
 
-                <c:set var="additionalLoadingPageContent">${contentService.getContentWithSupplementary(pageContext.getRequest(), "additionalWaitMessageHtml")}</c:set>
+                <c:set var="additionalLoadingPageContent" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "additionalWaitMessageHtml")}'/>
 
                 <div id="journeyEngineContainer" class="${octoberCompClass} ${additionalLoadingPageContent.getSupplementaryValueByKey("className")}">
                   
