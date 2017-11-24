@@ -112,7 +112,7 @@
                 <c:set var="octoberCompClass" value="octoberComp" />
               </c:if>
 
-                <c:set var="additionalLoadingPageContent">${getContentWithSupplementary(pageContext.getRequest(), "additionalWaitMessageHtml")}</c:set>
+                <c:set var="additionalLoadingPageContent">${contentService.getContentWithSupplementary(pageContext.getRequest(), "additionalWaitMessageHtml")}</c:set>
 
                 <div id="journeyEngineContainer" class="${octoberCompClass} ${additionalLoadingPageContent.getSupplementaryValueByKey("className")}">
                   
