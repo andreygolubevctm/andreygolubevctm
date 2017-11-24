@@ -277,13 +277,6 @@
                     </ul>
                 </div>
 
-                <div class="sidebar-widget sidebar-widget-padded">
-                    <h3>What is the Benefit Limitation Period?</h3>
-                    <p>If your policy has benefit limitation periods, you will only be entitled to restricted benefits (as described above) for a set time. For example, you may decide to take out a policy that only pays restricted benefits for Heart surgery for the first two years membership of the policy. After two years membership, you would then normally be entitled to full benefits for Heart surgery.</p>
-                    <p>
-                        Where a waiting period already applies for a particular condition or treatment, funds may begin the benefit limitation period from the end of the normal waiting period.</p>
-                </div>
-
             </div>
 		</div>
 	</div>
