@@ -13,14 +13,14 @@
                 <div class="col-sm-12 text-left more-filters-header">Customise Results</div>
             </div>
             <div class="row">
-                <div class="col-xs-12 col-sm-2 text-left filter-section">
+                <div class="col-xs-12 col-sm-3 col-md-2 text-left filter-section">
                     <div class="dropdown-item range-filter">
                         <b>Reset filters</b>
                         <field_v2:help_icon helpId="583" tooltipClassName=""/>
                     </div>
                     <div class="reset-travel-filters"></div>
                 </div>
-                <div class="col-xs-12 col-sm-3 text-left filter-section">
+                <div class="col-xs-12 col-sm-4 col-md-3 text-left filter-section">
                     <div class="dropdown-item range-filter">
                         <b>Minimum luggage cover</b>
                         <field_v2:help_icon helpId="580" tooltipClassName=""/>
@@ -37,7 +37,7 @@
                     </div>
                     <travel_results_filters:minimum_overseas_medical/>
                 </div>
-                <div class="col-xs-12 col-sm-7 text-left filter-section">
+                <div class="col-xs-12 col-sm-5 col-md-7 text-left filter-section">
                     <div class="row">
                         <div class="col-sm-12 no-padding">
                             <span class="hidden-xs"><b>Brands</b></span>
