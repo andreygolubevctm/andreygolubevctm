@@ -41,12 +41,6 @@
 
     <c:when test="${not callCentre}">
 
-		<c:if test="${isRememberMe and hasUserVisitedInLast30Minutes and not empty param.reviewedit}">
-			  <%-- Record rememberme touch against transaction --%>
-			  <jsp:useBean id="touchService" class="com.ctm.web.core.services.AccessTouchService" scope="page" />
-	          <c:set var="touchResponse">${touchService.recordTouch(data['current/transactionId'], "RememberMe", "ONLINE")}</c:set>
-		</c:if>
-
         <%-- ####### PRE JOURNEY SETUP ####### --%>
 
         <%-- Set global variable to flags for active split tests --%>
@@ -69,6 +63,13 @@
 
         <c:set var="callCentreHoursModal" scope="request"><content:getOpeningHoursModal /></c:set>
         <c:set var="callCentreCBModal" scope="request"><health_v4:callback_modal /></c:set>
+
+        <%-- Record remember touch if remembered in last 30mins --%>
+        <c:if test="${isRememberMe and hasUserVisitedInLast30Minutes and not empty param.reviewedit}">
+            <%-- Record rememberme touch against transaction --%>
+            <jsp:useBean id="touchService" class="com.ctm.web.core.services.AccessTouchService" scope="page" />
+            <c:set var="touchResponse">${touchService.recordTouch(data['current/transactionId'], "RememberMe", "ONLINE")}</c:set>
+        </c:if>
 
         <%-- ####### PRE JOURNEY SETUP --%>
 
