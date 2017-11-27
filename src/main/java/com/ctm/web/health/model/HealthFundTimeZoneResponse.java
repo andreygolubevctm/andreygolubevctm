@@ -8,10 +8,12 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 @JsonAutoDetect(fieldVisibility= JsonAutoDetect.Visibility.ANY)
 public class HealthFundTimeZoneResponse {
 
+    private String timezone;
     private boolean application;
     private boolean submit;
 
-    public HealthFundTimeZoneResponse(boolean application, boolean submit) {
+    public HealthFundTimeZoneResponse(String timezone, boolean application, boolean submit) {
+        this.timezone = timezone;
         this.application = application;
         this.submit = submit;
     }

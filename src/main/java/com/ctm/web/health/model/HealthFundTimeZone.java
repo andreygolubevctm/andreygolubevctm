@@ -24,25 +24,31 @@ public enum HealthFundTimeZone {
     WFD("Australia/NSW"),
     DEFAULT("Australia/Queensland");
 
-    private final ZoneId timezone;
+    private final String timezone;
+    private final ZoneId zoneId;
 
     HealthFundTimeZone(final String timezone) {
-        this.timezone = ZoneId.of(timezone);
+        this.timezone = timezone;
+        this.zoneId = ZoneId.of(timezone);
     }
 
     public ZoneId get() {
-        return timezone;
+        return this.zoneId;
     }
 
-    public static ZoneId getByCode(final String code) {
+    public static HealthFundTimeZone getByCode(final String code) {
         if(code == null) {
             return null;
         }
         for (final HealthFundTimeZone fund : HealthFundTimeZone.values()) {
             if (code.equalsIgnoreCase(fund.name())) {
-                return fund.get();
+                return fund;
             }
         }
         return null;
+    }
+
+    public String getTimeZone() {
+        return this.timezone;
     }
 }

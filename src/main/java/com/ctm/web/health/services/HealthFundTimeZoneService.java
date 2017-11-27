@@ -25,13 +25,15 @@ public class HealthFundTimeZoneService {
      * @return
      */
     public HealthFundTimeZoneResponse get(String fundCode) throws Exception {
-        ZoneId zoneId = HealthFundTimeZone.getByCode(fundCode);
-        if(zoneId == null) {
+        HealthFundTimeZone fundZone = HealthFundTimeZone.getByCode(fundCode);
+        if(fundZone == null) {
             String copy = "Invalid fund code (" + fundCode + ") received by HealthFundTimeZoneService";
             LOGGER.error(copy);
             throw new Exception(copy);
         }
-        return new HealthFundTimeZoneResponse(isApplicationTimeValid(zoneId), isSubmitTimeValid(zoneId));
+        ZoneId zoneId = fundZone.get();
+        return new HealthFundTimeZoneResponse(fundZone.getTimeZone(), isApplicationTimeValid(zoneId), isSubmitTimeValid
+                (zoneId));
     }
 
     private boolean isApplicationTimeValid(ZoneId zoneId) {
