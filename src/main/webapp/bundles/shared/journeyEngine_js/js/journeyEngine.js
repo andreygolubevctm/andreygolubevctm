@@ -217,7 +217,7 @@
                         // continue to next step...
                         _.delay(function () {
                             processStep(index + 1, callback);
-                        },200);
+                        }, 300);
 
                     });
                 }catch(e){
