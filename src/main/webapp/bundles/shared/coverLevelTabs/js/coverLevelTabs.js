@@ -306,6 +306,7 @@
             $('.navbar-mobile').empty();
 		} else {
             $('.mobile-cover-types').empty().html(mobileCoverTypes);
+            $('.navbar-desktop').empty();
 		}
 
 		meerkat.modules.travelResultFilters.resetCustomFilters();
