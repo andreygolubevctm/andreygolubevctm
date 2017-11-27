@@ -50,6 +50,10 @@ body.travel {
         padding-left: 0;
         padding-right: 0;
 
+        @media screen and (@md-only) {
+          padding-left: inherit;
+        }
+
         a {
           text-decoration: none;
           padding: 5px 10px;
@@ -128,6 +132,21 @@ body.travel {
         }
         [data-sort-dir='desc']:before {
           bottom: 15px;
+        }
+      }
+    }
+  }
+}
+
+// SM breakpoint
+@media screen and (@sm-only) {
+  .travel {
+    .coverLevelTabs {
+      .currentTabsContainer {
+        padding-left: 0;
+        padding-right: 0;
+        .clt-action {
+          margin: 8px 8px 8px 0 !important;
         }
       }
     }
