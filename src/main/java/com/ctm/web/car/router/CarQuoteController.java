@@ -15,6 +15,7 @@ import com.ctm.web.core.router.CommonQuoteRouter;
 import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SessionDataServiceBean;
+import com.ctm.web.email.EmailUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +36,10 @@ public class CarQuoteController extends CommonQuoteRouter<CarRequest> {
 
     @Autowired
     private CarQuoteService carService;
+    @Autowired
+    private EmailUtils emailUtils;
+
+    private String RANK_PRODUCT_ID = "rank.productId";
 
     @Autowired
     public CarQuoteController(SessionDataServiceBean sessionDataServiceBean, IPAddressHandler ipAddressHandler) {
@@ -77,5 +82,31 @@ public class CarQuoteController extends CommonQuoteRouter<CarRequest> {
 
         Date applicationDate = ApplicationService.getApplicationDate(request);
         return CarVehicleSelectionService.getCarProduct(applicationDate, productId, brand.getId());
+    }
+
+    /**
+     * request mapping to retrieve, and persist propensity score for a particular transaction.
+     * propensity score is purchase probability score, that will be used by lead service, and dialer service to prioritize leads.
+     *
+     * @param request
+     * @throws DaoException when unable to get property from request
+     */
+    @RequestMapping(value = "/propensity_score/get.json",
+            method = RequestMethod.POST,
+            consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE, "application/x-www-form-urlencoded;charset=UTF-8"}
+    )
+    public void storePropensityScore(HttpServletRequest request) throws DaoException {
+        List<String> rankProductIds = emailUtils.buildParameterList(request, RANK_PRODUCT_ID);
+        Long transactionId = Long.parseLong(request.getParameter("transactionId"));
+
+        if(transactionId == null){
+            throw new IllegalArgumentException("Invalid TransactionId: " + transactionId);
+        }
+
+        if(rankProductIds == null){
+            throw new IllegalArgumentException("rank_productId can't be null");
+        }
+
+        this.carService.retrieveAndStoreCarQuotePropensityScore(rankProductIds, transactionId);
     }
 }
