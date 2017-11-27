@@ -226,7 +226,8 @@
 	function activateDefault() {
 		state = meerkat.modules.deviceMediaState.get();
 		if(state === 'xs') {
-			$('.visible-xs .clt-action.active').click();
+			$('.visible-xs .cover-type-mobile.active').click();
+			$('#coverTypeDropdownBtn').dropdown('toggle');
 		} else {
 			$('.hidden-xs .clt-action.active').click();
 		}
@@ -266,7 +267,7 @@
 			// mobile cover types
             mobileCoverTypes += '<div class="dropdown-item">';
             mobileCoverTypes += 	'<div class="radio">';
-            mobileCoverTypes += 		'<input type="radio" name="cover-type-mobile-radio-group" id="mobile_reset_filter_' + coverTypeValue + '" class="radioButton-custom  cover-type-mobile radio" data-clt-index="' + i +'" value="' + coverTypeValue + '" data-ranking-filter="' + tab.rankingFilter +'"' + (tab.defaultTab === true ? 'checked' : '') + '>';
+            mobileCoverTypes += 		'<input type="radio" name="cover-type-mobile-radio-group" id="mobile_reset_filter_' + coverTypeValue + '" class="radioButton-custom  cover-type-mobile radio '+ (tab.defaultTab === true ? 'active' : '') +'" data-clt-index="' + i +'" value="' + coverTypeValue + '" data-ranking-filter="' + tab.rankingFilter +'">';
             mobileCoverTypes += 		'<label for="mobile_reset_filter_' + coverTypeValue + '">' + coverTypeText + '</label>';
             mobileCoverTypes += 	'</div>';
             mobileCoverTypes += '</div>';
@@ -314,6 +315,7 @@
 		// hide filters for mobile, tablet & AMT
 		if (tabLength == 2 || destination == 'AUS') {
 			$('.clt-trip-filter').hide();
+			$('.mobile-cover-type').show();
 		} else {
             $('.clt-trip-filter').show();
 		}
