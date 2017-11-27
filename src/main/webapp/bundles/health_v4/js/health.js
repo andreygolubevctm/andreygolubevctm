@@ -469,6 +469,7 @@
                 meerkat.modules.healthCoverStartDate.onInitialise();
                 meerkat.modules.healthApplyStep.onInitialise();
                 meerkat.modules.healthAGRModal.onInitialise();
+                meerkat.modules.healthFundTimeOffset.onInitialise();
             },
             onBeforeEnter: function beforeEnterApplyStep(event) {
                 meerkat.modules.benefitsToggleBar.deRegisterScroll();
