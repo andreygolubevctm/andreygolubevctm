@@ -251,29 +251,25 @@ ${logger.info('Checking if user is authenticated. {},{}',log:kv('isOperator',isO
 
 						<%-- BACK TO START IF PRIVACYOPTIN HASN'T BEEN TICKED FOR OLD QUOTES (HEALTH)--%>
 						<c:when test="${param.action=='amend' && param.vertical=='health' && data.health.privacyoptin!='Y'}">
-
+							<core_v1:transaction touch="L" noResponse="true" />
 							<c:choose>
 								<c:when test="${not empty param.brandCode and fn:toLowerCase(param.brandCode) eq 'wfdd'}">
-									<core_v1:transaction touch="L" noResponse="true" />
 									<destUrl>${pageName}?action=start-again&amp;brandCode=${param.brandCode}&amp;transactionId=${data.current.transactionId}${jParam}</destUrl>
 								</c:when>
 								<c:otherwise>
-									<core_v1:transaction touch="L" noResponse="true" />
 									<destUrl>${pageName}?action=start-again&amp;transactionId=${data.current.transactionId}${jParam}</destUrl>
 								</c:otherwise>
 							</c:choose>
-
 						</c:when>
 
 						<%-- AMEND QUOTE --%>
 						<c:when test="${param.action=='amend' || param.action=='start-again'}">
+							<core_v1:transaction touch="L" noResponse="true" />
 							<c:choose>
 								<c:when test="${not empty param.brandCode and fn:toLowerCase(param.brandCode) eq 'wfdd'}">
-									<core_v1:transaction touch="L" noResponse="true" />
 									<destUrl>${pageName}?action=${param.action}&amp;brandCode=${param.brandCode}&amp;transactionId=${data.current.transactionId}${jParam}</destUrl>
 								</c:when>
 								<c:otherwise>
-									<core_v1:transaction touch="L" noResponse="true" />
 									<destUrl>${pageName}?action=${param.action}&amp;transactionId=${data.current.transactionId}${jParam}</destUrl>
 								</c:otherwise>
 							</c:choose>
