@@ -69,7 +69,9 @@ public class CallCentreService {
 
 		Brand currentBrand = ApplicationService.getBrandFromRequest(request);
 		Brand brand = ApplicationService.getBrandById(brandId);
-
+		if(brandId == 9) {
+			brand.setCode("wfdd");
+		}
 		PageSettings settings = SettingsService.getPageSettings(brandId, verticalCode);
 		String brandRootUrl = settings.getBaseUrl();
 
@@ -92,9 +94,7 @@ public class CallCentreService {
 			redirectUrl.append("&transactionId=").append(transactionId);
 		}
 
-		if (brandId == 9) {
-			redirectUrl.append("&brandCode=").append("wfdd");
-		} else if (EnvironmentService.needsManuallyAddedBrandCodeParamWhiteLabel(brand.getCode(), verticalCode)) {
+		if (EnvironmentService.needsManuallyAddedBrandCodeParamWhiteLabel(brand.getCode(), verticalCode)) {
 			redirectUrl.append("&brandCode=").append(brand.getCode());
 		}
 
