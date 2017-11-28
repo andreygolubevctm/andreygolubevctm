@@ -294,6 +294,10 @@ public class CarQuoteService extends CommonRequestServiceV2 {
 
     /**
      * build `result_propensity` with propensity score to be stored in the database.
+     * <p>
+     * Notes:
+     * get propensity score from Data Robot or leave it null instead of throwing error.
+     * This is so lead service would know propensity score was requested but something went wrong.
      *
      * @param productIdsOrderedByRank
      * @param transactionId
@@ -313,8 +317,15 @@ public class CarQuoteService extends CommonRequestServiceV2 {
                     //Currently only woolworths have duplicate product_code hence this won't affect BUDD data robot call.
                     final Integer productRank = productIdsOrderedByRank.indexOf(filteredProductId);
 
-                    //get propensity score from Data Robot
-                    final String propensityScore = getPropensityScoreFromDataRobot(buildQuotePropensityScoreRequest(productRank, transactionId));
+                    //get propensity score from Data Robot or leave it null instead of throwing error. This is so lead service
+                    //would know propensity score was requested but something went wrong.
+                    String propensityScore = null;
+                    try {
+                        propensityScore = getPropensityScoreFromDataRobot(buildQuotePropensityScoreRequest(productRank, transactionId));
+                    } catch (Exception e) {
+                        LOGGER.error("Error while trying to get propensity score. Setting it to null", e.getMessage());
+                    }
+
                     final ResultProperty resultProperty = new ResultProperty();
                     resultProperty.setProductId(filteredProductId);
                     resultProperty.setTransactionId(transactionId);

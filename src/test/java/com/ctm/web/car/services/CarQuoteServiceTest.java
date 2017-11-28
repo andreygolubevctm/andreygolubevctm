@@ -186,7 +186,7 @@ public class CarQuoteServiceTest {
         assertEquals(null, resultProperties.iterator().next().getValue());
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void retrieveAndStoreCarQuotePropensityScore_emptyTransactionDetails() throws Exception {
         // Given
         final List<String> productIdsOrderedByRank = Arrays.asList("WOOL-01-01", "BUDD-05-01", "WOOL-05-05", "IB-01-01");
@@ -195,11 +195,13 @@ public class CarQuoteServiceTest {
         // When
         final List<ResultProperty> resultProperties = service.buildResultPropertiesWithPropensityScore(productIdsOrderedByRank, TRANSACTION_ID);
 
-        //Then exception expected
+        //Then
+        assertFalse(resultProperties.isEmpty());
+        assertEquals(null, resultProperties.iterator().next().getValue());
     }
 
-    @Test(expected = NullPointerException.class)
-    public void retrieveAndStoreCarQuotePropensityScore_nullDate() throws Exception {
+    @Test
+    public void retrieveAndStoreCarQuotePropensityScore_invalidTransactionDetails_nullDate() throws Exception {
         // Given
         final List<String> productIdsOrderedByRank = Arrays.asList("WOOL-01-01", "BUDD-05-01", "WOOL-05-05", "IB-01-01");
         Data transactionDetails = getTransactionDetails(true, false);
@@ -207,7 +209,9 @@ public class CarQuoteServiceTest {
         when(transactionDetailService.getTransactionDetailsInXmlData(anyObject())).thenReturn(transactionDetails);
         // When
         final List<ResultProperty> resultProperties = service.buildResultPropertiesWithPropensityScore(productIdsOrderedByRank, TRANSACTION_ID);
-        //Then exception expected
+        //Then
+        assertFalse(resultProperties.isEmpty());
+        assertEquals(null, resultProperties.iterator().next().getValue());
     }
 
     @Test
