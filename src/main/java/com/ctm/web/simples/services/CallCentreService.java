@@ -94,7 +94,9 @@ public class CallCentreService {
 			redirectUrl.append("&transactionId=").append(transactionId);
 		}
 
-		if (EnvironmentService.needsManuallyAddedBrandCodeParamWhiteLabel(brand.getCode(), verticalCode)) {
+		if(brandId == 9) {
+			brand.setCode("wfdd");
+		} else if(EnvironmentService.needsManuallyAddedBrandCodeParamWhiteLabel(brand.getCode(), verticalCode)) {
 			redirectUrl.append("&brandCode=").append(brand.getCode());
 		}
 
