@@ -12,12 +12,15 @@ import com.ctm.web.core.services.SessionDataService;
 import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.simples.model.InboundPhoneNumber;
 import com.ctm.web.simples.phone.verint.CtiPhoneService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.URLEncoder;
 
 public class CallCentreService {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(CallCentreService.class);
 	/**
 	 * If operator is on a call, collect the details such as VDN.
 	 *
@@ -104,6 +107,8 @@ public class CallCentreService {
 		if(vdn != null && !vdn.equals("")){
 			redirectUrl.append("&vdn=").append(vdn);
 		}
+
+        LOGGER.debug("CallCentreService createHandoverUrl {}, {}",kv("redirectUrl",redirectUrl.toString()),kv("brandCode",brand.getCode()),kv("transactionId",transactionId));
 
 		return redirectUrl.toString();
 	}
