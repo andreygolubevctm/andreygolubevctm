@@ -47,6 +47,12 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 <c:set var="loadAction" value="${fn:toLowerCase(param.action)}" />
 <c:set var="loadType" value="${fn:toLowerCase(param.type)}" />
 
+<c:set var="forcedBrandCode">
+	<c:choose>
+		<c:when test="${not empty param.brandCode}">${param.brandCode}</c:when>
+	</c:choose>
+</c:set>
+
 <c:set var="xpathQuoteType">
 	<c:choose>
 		<c:when test="${quoteType eq 'car'}">quote</c:when>
@@ -150,8 +156,13 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 							</c:when>
 
 						<%-- AMEND QUOTE --%>
+						<c:when test="${(loadAction eq 'amend' || loadAction eq 'start-again') and (forcedBrandCode eq 'wfdd')}">
+								<destUrl>${remoteLoadQuoteService.getActionQuoteUrlForcedBrandCode(quoteType, loadAction, data.current.transactionId, jParam, trackingParams, forcedBrandCode)}</destUrl>
+						</c:when>
+
+						<%-- AMEND QUOTE --%>
 						<c:when test="${loadAction eq 'amend' || loadAction eq 'start-again'}">
-								<destUrl>${remoteLoadQuoteService.getActionQuoteUrl(quoteType, loadAction, data.current.transactionId, jParam, trackingParams)}</destUrl>
+						        <destUrl>${remoteLoadQuoteService.getActionQuoteUrl(quoteType, loadAction, data.current.transactionId, jParam, trackingParams)}</destUrl>
 						</c:when>
 
 						<%-- BACK TO START IF PRIVACYOPTIN HASN'T BEEN TICKED FOR OLD QUOTES --%>
