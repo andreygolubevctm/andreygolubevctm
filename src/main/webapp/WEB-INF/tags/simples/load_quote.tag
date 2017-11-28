@@ -26,6 +26,7 @@
 			<c:param name="vertical" value="${param.verticalCode}" />
 			<c:param name="simples" value="true" />
 			<c:param name="dataFormat" value="xml" />
+			<c:param name="brandCode" value="${param.brandCode}" />
 		</c:import>
 
 		<x:parse xml="${loadQuoteUrl}" var="output"/>
