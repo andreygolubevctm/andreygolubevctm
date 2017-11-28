@@ -48,9 +48,7 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 <c:set var="loadType" value="${fn:toLowerCase(param.type)}" />
 
 <c:set var="forcedBrandCode">
-	<c:choose>
-		<c:when test="${not empty param.brandCode}">${param.brandCode}</c:when>
-	</c:choose>
+    <c:if test="${not empty param.brandCode}">${param.brandCode}</c:if>
 </c:set>
 
 <c:set var="xpathQuoteType">
