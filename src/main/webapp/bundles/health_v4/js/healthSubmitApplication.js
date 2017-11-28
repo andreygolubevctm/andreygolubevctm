@@ -50,7 +50,7 @@
 		                _submitApplication();
 	                }
                 } else {
-	                _submitApplication();
+	                meerkat.modules.healthFundTimeOffset.checkBeforeSubmit(_submitApplication);
                 }
             }
         });
