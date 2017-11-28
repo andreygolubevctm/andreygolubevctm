@@ -96,6 +96,7 @@ public class CallCentreService {
 
 		if(brandId == 9) {
 			brand.setCode("wfdd");
+			redirectUrl.append("&brandCode=").append("wfdd");
 		} else if(EnvironmentService.needsManuallyAddedBrandCodeParamWhiteLabel(brand.getCode(), verticalCode)) {
 			redirectUrl.append("&brandCode=").append(brand.getCode());
 		}
