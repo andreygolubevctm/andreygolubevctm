@@ -30,7 +30,8 @@
 		maxStartDate: ''
 	};
 
-	var currentCoupon = false;
+	var currentCoupon = false,
+        _startDateWeekends;
 
 	function initHealthPaymentStep() {
 
@@ -528,6 +529,31 @@
         $('#health_payment_details_start').off('changeDate.' + name);
 	}
 
+    function setCoverStartToNextDay() {
+        var today = new Date(),
+            nextDay = today.setDate(today.getDate() + 1);
+
+        nextDay = new Date(nextDay);
+
+        var day = nextDay.getDay();
+
+        if (!_startDateWeekends && _.indexOf([0,6], day) !== -1) {
+            nextDay.setDate(nextDay.getDate() + (day === 0 ? 1 : 2));
+        }
+
+        $paymentCalendar.datepicker("update", nextDay);
+    }
+
+	function setCoverStartDaysOfWeekDisabled(daysOfWeekDisabled) {
+        _startDateWeekends = daysOfWeekDisabled === "";
+
+        $paymentCalendar.datepicker('setDaysOfWeekDisabled', daysOfWeekDisabled);
+	}
+
+	function getCoverStartVal() {
+        return $paymentCalendar.val();
+	}
+
 	meerkat.modules.register("healthPaymentStep", {
 		init: initHealthPaymentStep,
 		initFields: initFields,
@@ -541,7 +567,10 @@
 		getPaymentMethodNode: getPaymentMethodNode,
 		rebindCreditCardRules: rebindCreditCardRules,
 		updateValidationSelectorsPaymentGateway : updateValidationSelectorsPaymentGateway,
-		resetValidationSelectorsPaymentGateway : resetValidationSelectorsPaymentGateway
+		resetValidationSelectorsPaymentGateway : resetValidationSelectorsPaymentGateway,
+        setCoverStartToNextDay: setCoverStartToNextDay,
+		setCoverStartDaysOfWeekDisabled: setCoverStartDaysOfWeekDisabled,
+        getCoverStartVal: getCoverStartVal
 	});
 
 })(jQuery);

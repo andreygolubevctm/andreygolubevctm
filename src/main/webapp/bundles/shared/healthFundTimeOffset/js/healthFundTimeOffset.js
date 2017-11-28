@@ -3,6 +3,7 @@
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
         _settings = {
+            weekends: true,
             coverStartRange: {
                 min: 0,
                 max: 30
@@ -10,6 +11,7 @@
             renderPaymentDaysCb: null
         },
         _fundCode = null,
+        _deductionDate = null,
         _getFundTimeZoneAjax = null,
         _formattedUTCToday,
         _isWithinTime = {
@@ -19,17 +21,44 @@
         _dialogId = null,
         _timezone = null,
         _timezoneStateMapping = {
-            'Australia/NSW': 'NSW',
-            'Australia/Queensland': 'QLD',
-            'Australia/Victoria': 'VIC',
-            'Australia/West': 'WEST'
+            'Australia/NSW': 'New South Wales',
+            'Australia/Queensland': 'Queensland',
+            'Australia/Victoria': 'Victoria',
+            'Australia/West': 'West Australia'
+        },
+        _fn = {
+            setDaysOfWeekDisabled: 'setDaysOfWeekDisabled',
+            setToNextDay: 'setToNextDay',
+            getVal: 'getVal'
+        },
+        _template = null,
+        CoverStartDate = null,
+        SubmitApplication = null;
+
+    function init() {
+        _template = _.template($('#fund-timezone-offset-modal-template').html());
+        CoverStartDate = meerkat.modules.healthCoverStartDate;
+        SubmitApplication = meerkat.modules.healthSubmitApplication;
+        var extraFuncString = '';
+
+        if (meerkat.site.isCallCentreUser) {
+            extraFuncString = 'CoverStart';
+            CoverStartDate = meerkat.modules.healthPaymentStep;
+            SubmitApplication = meerkat.modules.health;
+        }
+
+        _fn = {
+            setDaysOfWeekDisabled: 'set'+extraFuncString+'DaysOfWeekDisabled',
+            setToNextDay: 'set'+extraFuncString+'ToNextDay',
+            getVal: 'get'+extraFuncString+'Val'
         };
+    }
 
     function onInitialise(settings) {
         _settings = settings;
         _fundCode = Results.getSelectedProduct().info.provider;
-
-        meerkat.modules.healthCoverStartDate.setDaysOfWeekDisabled(_settings.weekends ? '' : '06');
+        _deductionDate = null;
+        CoverStartDate[_fn.setDaysOfWeekDisabled](_settings.weekends ? '' : '06');
 
         checkOffset('application');
     }
@@ -43,32 +72,30 @@
             if (_isWithinTime[typeOfCheck] === false) {
                 _settings.coverStartRange.min++;
                 _settings.coverStartRange.max--;
-                meerkat.modules.healthCoverStartDate.setToNextDay();
+                CoverStartDate[_fn.setToNextDay]();
             }
 
-            meerkat.modules.healthCoverStartDate.setCoverStartRange(_settings.coverStartRange.min, _settings.coverStartRange.max);
+            CoverStartDate.setCoverStartRange(_settings.coverStartRange.min, _settings.coverStartRange.max);
         });
     }
 
     function checkBeforeSubmit(submitCB) {
         // check only if startDate is today
-        if (meerkat.modules.healthCoverStartDate.getVal() !== _formattedUTCToday) {
+        if (CoverStartDate[_fn.getVal]() !== _formattedUTCToday) {
             submitCB();
             return;
         }
 
         checkOffset('submit');
 
-        meerkat.modules.healthSubmitApplication.disableSubmitApplication(true);
+        SubmitApplication.disableSubmitApplication(true);
 
         _getFundTimeZoneAjax && _getFundTimeZoneAjax.done(function() {
-            meerkat.modules.healthSubmitApplication.enableSubmitApplication();
+            SubmitApplication.enableSubmitApplication();
 
             if (_isWithinTime['submit'] === false) {
                 var paymentMethod = meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() === 'cc' ? 'credit' : 'bank',
-                    $paymentSelection = $('.health_payment_' + paymentMethod + '-selection select:visible'),
-                    coverStartDate = meerkat.modules.healthCoverStartDate.getVal(),
-                    deductionDateMsg = '';
+                    $paymentSelection = $('.health_payment_' + paymentMethod + '-selection select:visible');
 
                 if ($paymentSelection.length > 0) {
                     var paymentSelectionValue = $paymentSelection.val();
@@ -80,20 +107,16 @@
                     // update only if deduction day is today
                     if (meerkat.modules.dateUtils.format(new Date(paymentSelectionValue), 'DD/MM/YYYY') === _formattedUTCToday) {
                         $paymentSelection.prop('selectedIndex', 1);
-                        deductionDateMsg = ' and your payment will be deducted on ' +
-                            meerkat.modules.dateUtils.format(new Date($paymentSelection.val()), 'DD/MM/YYYY');
+                        _deductionDate = meerkat.modules.dateUtils.format(new Date($paymentSelection.val()), 'DD/MM/YYYY');
                     } else {
                         $paymentSelection.val(paymentSelectionValue);
                     }
                 }
 
-                var htmlContent = "Hi " + meerkat.modules.healthApplyStep.getPrimaryFirstname() + ", " + _fundCode + " is based in " + _timezoneStateMapping[_timezone] + ", the date here is now " + coverStartDate +
-                        " your policy will therefore commence on " + coverStartDate + deductionDateMsg + ". Click submit to take out this policy.";
-
                 // open popup message
                 _dialogId = meerkat.modules.dialogs.show({
-                    id: 'fund-time-offset',
-                    htmlContent: htmlContent,
+                    id: 'fund-timezone-offset',
+                    htmlContent: _getHTMLContent(),
                     showCloseBtn: false,
                     buttons: [{
                         label: "Submit Application",
@@ -129,7 +152,23 @@
         });
     }
 
+    function _getHTMLContent() {
+        var data = {
+            fundCode: _fundCode,
+            timezone: _timezoneStateMapping[_timezone],
+            coverStartDate: CoverStartDate[_fn.getVal](),
+            deductionDate: _deductionDate
+        };
+
+        if (!meerkat.site.isCallCentreUser) {
+            data.firstname = meerkat.modules.healthApplyStep.getPrimaryFirstname();
+        }
+
+        return _template(data);
+    }
+
     meerkat.modules.register('healthFundTimeOffset', {
+        init: init,
         onInitialise: onInitialise,
         checkBeforeSubmit: checkBeforeSubmit
     });
