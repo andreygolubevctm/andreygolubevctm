@@ -1,15 +1,8 @@
 ;(function($, undefined) {
   var noAddressFound = "Can't find address? <span class=\"underline\">click here</span>";
   var doneTypingTime = 250;
-  var addressUrl = meerkat.site.environment === 'pro' ? 'https://secure.comparethemarket.com.au/address/' : 'https://nxi.secure.comparethemarket.com.au/address/';
-  
-  function getTemplate(value) {
-    return '<div>'+ value + '</div>';
-  }
-  
-  function getTemplateOptions(text) {
-    return '<option value="'+ text + '">'+ text + '</option>';
-  }
+  var addressUrl = meerkat.site.urls.base + 'address/';
+  var createElement = document.meerkat.modules.utils.createElement;
   
   function setValues($element, value) {
     $element.val(value);
@@ -31,26 +24,30 @@
       this.$search = this.$searchContainer.find('input');
     },
     bindEvents: function() {
-      this.$search.on('keyup focus', this.search.bind(this));
-      this.$search.on('blur', this.clearResults.bind(this));
+      this.$search
+        .on('keyup focus', this.search.bind(this))
+        .on('blur', this.clearResults.bind(this));
       this.$checkbox.on('change', this.toggleCheckbox.bind(this));
-      $(document).on('mousedown', '.addressSearchV2--street .addressSearchV2__results div', this.clickHandler.bind(this));
+      $(document).on('mousedown touchstart', '.addressSearchV2--street .addressSearchV2__results div', this.clickHandler.bind(this));
     },
     clearResults: function() {
-      this.$results.removeClass('addressSearchV2__results--active');
-      this.$results.empty();
+      this.$results
+        .removeClass('addressSearchV2__results--active')
+        .empty();
     },
     renderDropdown: function() {
        if (this.htmlElements.length > 0) {
-         this.$results.append(this.htmlElements);
-         this.$results.addClass('addressSearchV2__results--active');
+         this.$results
+           .append(this.htmlElements)
+           .addClass('addressSearchV2__results--active');
        } 
     },
     handleData: function(data) {
       this.results = data;
       this.htmlElements = [];
       for (var i = 0; i < data.length; i++) {
-        this.htmlElements.push(getTemplate(data[i].text));
+        var element = createElement('div', { innerHTML: data[i].text });
+        this.htmlElements.push(element);
       }
       this.clearResults();
       this.renderDropdown();
@@ -58,7 +55,8 @@
     fillFields: function(data) {
       $(this.xpath + '_state').val(data.state);
       if ($(this.xpath + '_suburbName').find('option[value="'+ data.suburbName +'"]').length === 0) {
-        $(this.xpath + '_suburbName').append(getTemplateOptions(data.suburbName));
+        var element = createElement('option', { innerHTML: data.suburbName, value: data.suburbName });
+        $(this.xpath + '_suburbName').append(element);
       }
       $(this.xpath + '_postCode').val(data.postCode);
       $(this.xpath + '_suburb').val(data.suburbName);
@@ -80,24 +78,20 @@
       if (this.query.length > 4) {
         this.settings.data = JSON.stringify({ addressLine: this.query });
         this.typingTimer = setTimeout(function() {
-          $.ajax(_this.settings).done(function(data) { _this.handleData(data); });
+          meerkat.modules.comms.post(_this.settings.bind(_this));
         }, doneTypingTime);
       }
     },
     toggleCheckbox: function(event) {
-      if (event.target.checked) {
-        this.$searchContainer.addClass('addressSearchV2__searchContainer--hidden');
-        this.$cantFindField.removeClass('addressSearchV2__cantFindFields--hidden');
-      } else {
-        this.$searchContainer.removeClass('addressSearchV2__searchContainer--hidden');
-        this.$cantFindField.addClass('addressSearchV2__cantFindFields--hidden');
-      }
+      this.$searchContainer.toggleClass('addressSearchV2__searchContainer--hidden', event.target.checked);
+      this.$cantFindField.toggleClass('addressSearchV2__cantFindFields--hidden', !event.target.checked);
     },
     clickHandler: function(event) {
       var text = event.target.innerHTML;
       if (text.indexOf('click here') > 0) {
-        this.$checkbox.prop('checked', true);
-        this.$checkbox.change();
+        this.$checkbox
+          .prop('checked', true)
+          .change();
       } else {
         setValues(this.$search, text);
         var addressObj = this.results.find(function(result) {
@@ -108,10 +102,10 @@
     },
     settings: {
       data: {},
-      type: 'POST',
       url: addressUrl + 'street',
       dataType: 'json',
-      contentType: 'application/json'
+      contentType: 'application/json',
+      onSuccess: function(data) { this.handleData(data); }
     }
   };
   
@@ -140,9 +134,10 @@
       this.$suburbDropdown.empty();
       if (data.length > 0) {
         this.$suburbDropdown.prop('disabled', false);
-        this.htmlElements.push(getTemplateOptions('Select suburb'));
+        this.htmlElements.push(createEl('option', { text: 'Select suburb', value: '' }));
         for (var i = 0; i < data.length; i++) {
-          this.htmlElements.push(getTemplateOptions(data[i].suburb));
+          var element = createElement('option', { innerHTML: data[i].suburb, value: data[i].suburb });
+          this.htmlElements.push(element);
         }
       } else {
         this.htmlElements.push('Enter Postcode');
@@ -150,21 +145,19 @@
       }
       this.renderDropdown(this.htmlElements);
     },
-    preloadFields: function() {
-    },
     search: function(event) {
       this.query = event.target.value;
       var _this = this;
       if (this.query.length === 4 && this.$postcodeLastSearch.val() !== this.query) {
         this.$postcodeLastSearch.val(this.query);
         this.settings.url = addressUrl + 'suburbpostcode/' + this.query;
-        $.ajax(this.settings).done(this.handleData.bind(_this));
+        meerkat.modules.comms.get(this.settings.bind(_this));
       }
     },
     settings: {
-      type: 'GET',
       dataType: 'json',
       contentType: 'application/json',
+      onSuccess: function(data) { this.handleData(data); }
     }
   };
   
@@ -180,28 +173,31 @@
       this.$results = this.$el.find('.addressSearchV2__results');
     },
     bindEvents: function() {
-      this.$postcodeInput.on('focus keyup', this.search.bind(this));
-      this.$postcodeInput.on('blur', this.clearResults.bind(this));
-      $(document).on('mousedown', '.addressSearchV2--postcodeSearch .addressSearchV2__results div', this.clickHandler.bind(this));
+      this.$postcodeInput
+        .on('focus keyup', this.search.bind(this))
+        .on('blur', this.clearResults.bind(this));
+      $(document).on('mousedown touchstart', '.addressSearchV2--postcodeSearch .addressSearchV2__results div', this.clickHandler.bind(this));
     },
     handleData: function(data) {
       this.results = data;
       this.htmlElements = [];
       for (var i = 0; i < data.length; i++) {
-        var displayPostcode = data[i].suburb + ' ' + data[i].postcode + ' ' + data[i].state;
-        this.htmlElements.push(getTemplate(displayPostcode));
+        var props = { innerHTML: data[i].suburb + ' ' + data[i].postcode + ' ' + data[i].state };
+        this.htmlElements.push(createElement('div', props));
       }
       this.clearResults();
       this.renderDropdown();
     },
     clearResults: function() {
-      this.$results.removeClass('addressSearchV2__results--active');
-      this.$results.empty();
+      this.$results
+        .removeClass('addressSearchV2__results--active')
+        .empty();
     },
     renderDropdown: function() {
       if (this.htmlElements.length > 0) {
-        this.$results.append(this.htmlElements);
-        this.$results.addClass('addressSearchV2__results--active');
+        this.$results
+          .append(this.htmlElements)
+          .addClass('addressSearchV2__results--active');
       }
     },
     fillFields: function(data) {
@@ -220,13 +216,13 @@
       this.query = event.target.value;
       if (this.query.length === 4) {
         this.settings.url = addressUrl + 'suburbpostcode/' + this.query;
-        $.ajax(this.settings).done(this.handleData.bind(this));
+        meerkat.modules.comms.get(this.settings.bind(this));
       }
     },
     settings: {
-      type: 'GET',
       dataType: 'json',
       contentType: 'application/json',
+      onSuccess: function(data) { this.handleData(data); }
     }
   };
   
@@ -261,11 +257,7 @@
       }
     },
     showButtons: function(show) {
-      if (show) {
-        this.$buttonContainer.removeClass('addressSearchV2__buttons--hidden');
-      } else {
-        this.$buttonContainer.addClass('addressSearchV2__buttons--hidden');
-      }
+      this.$buttonContainer.toggleClass('addressSearchV2__buttons--hidden', !show);
     },
     appendState: function(state) {
       this.$stateValue.val(state);
@@ -293,13 +285,13 @@
       this.showButtons(false);
       if (this.query.length === 4) {
         this.settings.url = addressUrl + 'suburbpostcode/' + this.query;
-        $.ajax(this.settings).done(this.handleData.bind(this));
+        meerkat.modules.comms.get(this.settings.bind(this));
       }
     },
     settings: {
-      type: 'GET',
       dataType: 'json',
       contentType: 'application/json',
+      onSuccess: function(data) { this.handleData(data); }
     }
   };
   
@@ -323,28 +315,33 @@
     },
     bindEvents: function() {
       this.$checkbox.on('change', this.toggleCheckbox.bind(this));
-      this.$searchField.on('keyup focus', this.search.bind(this));
-      this.$searchField.on('blur', this.clearResults.bind(this));
-      $(document).on('mousedown', '.addressSearchV2--' + this.prefix + ' .addressSearchV2__results div', this.clickResults.bind(this));
+      this.$searchField
+        .on('keyup focus', this.search.bind(this))
+        .on('blur', this.clearResults.bind(this));
+      
+      $(document).on('mousedown touchstart', '.addressSearchV2--' + this.prefix + ' .addressSearchV2__results div', this.clickResults.bind(this));
     },
     handleData: function(data) {
       this.results = data;
       this.htmlElements = [];
       for (var i = 0; i < data.length; i++) {
-        this.htmlElements.push(getTemplate(data[i].text));
+        var element = createElement('div', { innerHTML: data[i].text });
+        this.htmlElements.push(element);
       }
-      this.htmlElements.push(getTemplate(noAddressFound));
+      this.htmlElements.push(createElement('div', { innerHTML: noAddressFound }));
       this.clearResults();
       this.renderDropdown();
     },
     clearResults: function() {
-      this.$results.removeClass('addressSearchV2__results--active');
-      this.$results.empty();
+      this.$results
+        .removeClass('addressSearchV2__results--active')
+        .empty();
     },
     renderDropdown: function() {
       if (this.htmlElements.length > 0) {
-        this.$results.append(this.htmlElements);
-        this.$results.addClass('addressSearchV2__results--active');
+        this.$results
+          .append(this.htmlElements)
+          .addClass('addressSearchV2__results--active');
       }
     },
     search: function(event) {
@@ -354,7 +351,7 @@
       if (this.query.length > 4 && this.$postcodeInput.val().length === 4) {
         this.settings.data = JSON.stringify({ addressLine: this.query, postCodeOrSuburb: this.$postcodeInput.val() });
         this.typingTimer = setTimeout(function() {
-          $.ajax(_this.settings).done(function(data) { _this.handleData(data); });
+          meerkat.modules.comms.post(_this.settings.bind(_this));
         }, doneTypingTime);
       }
     },
@@ -362,8 +359,9 @@
       if (this.prefix === 'Residential') {
         this.$postcodeInput.val($('#health_situation_postcode').val());
       } else {
-        this.$checkbox.prop('checked', true);
-        this.$checkbox.change();
+        this.$checkbox
+          .prop('checked', true)
+          .change();
       }
     },
     fillFields: function(data) {
@@ -379,8 +377,9 @@
     clickResults: function(event) {
       var text = event.target.innerHTML;
       if (text.indexOf('click here') > 0) {
-        this.$checkbox.prop('checked', true);
-        this.$checkbox.change();
+        this.$checkbox
+          .prop('checked', true)
+          .change();
       } else {
         setValues(this.$searchField, text);
         var addressObj = this.results.find(function(result) {
@@ -390,19 +389,14 @@
       }
     },
     toggleCheckbox: function(event) {
-      if (event.target.checked) {
-        this.$searchContainer.addClass('addressSearchV2__searchContainer--hidden');
-        this.$cantFindField.removeClass('addressSearchV2__cantFindFields--hidden');
-      } else {
-        this.$searchContainer.removeClass('addressSearchV2__searchContainer--hidden');
-        this.$cantFindField.addClass('addressSearchV2__cantFindFields--hidden');
-      }
+      this.$searchContainer.toggleClass('addressSearchV2__searchContainer--hidden', event.target.checked);
+      this.$cantFindField.toggleClass('addressSearchV2__cantFindFields--hidden', !event.target.checked);
     },
     settings: {
-      type: 'POST',
       dataType: 'json',
       contentType: 'application/json',
-      url: addressUrl + '/streetsuburb'
+      url: addressUrl + '/streetsuburb',
+      onSuccess: function(data) { this.handleData(data); }
     }
   };
   

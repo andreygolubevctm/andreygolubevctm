@@ -29,15 +29,15 @@
     float: left;
     margin-left: 10px;
     background-color: transparent;
-    color: #1c3f94;
-    border-color: #1c3f94;
+    color: @theme-tertiary;
+    border-color: @theme-tertiary;
     border-width: 1px;
     border-style: solid;
   }
   button.selected, button:hover {
     color: #fff;
-    background-color: #0db14b;
-    border-color: #0db14b;
+    background-color: @theme-secondary;
+    border-color: @theme-secondary;
   }
 }
 
@@ -47,7 +47,7 @@
   border-radius: 5px;
   height: 41px;
   font-size: 14px;
-  border: #0db14b 1px solid;
+  border: @theme-secondary 1px solid;
 }
 
 .addressSearchV2__cantFindFields {
@@ -88,7 +88,7 @@
     white-space: nowrap;
     cursor: pointer;
     &:hover {
-      background-color: #0db14b;
+      background-color: @theme-secondary;
       color: white;
     }
     span {

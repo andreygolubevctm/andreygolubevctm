@@ -9,7 +9,7 @@
 <%@ attribute name="unitTypes" required="true" rtexprvalue="true" description="Used for passing in additional attributes" %>
 
 <div class="addressSearchV2 addressSearchV2--${prefix}">
-  <form_v2:row fieldXpath="${fieldXpath}" labelTag="h5" label="${prefix} Address" id="22" className="addressHeading" hideHelpIconCol="true"></form_v2:row>
+  <form_v2:row fieldXpath="${fieldXpath}" labelTag="h5" label="${prefix} Address" className="addressHeading" hideHelpIconCol="true"></form_v2:row>
   
   <%-- Postcode --%>
   <form_v2:row label="Postcode" className="addressSearchV2__postcodeSearch">
@@ -60,14 +60,3 @@
     <label for="hide_search_field_${prefix}">Tick here if you are unable to find the address</label>
   </form_v2:row>
 </div>
-
-<script type="text/javascript">
-  document.addEventListener("DOMContentLoaded", function() {
-    var addressLookup = window.meerkat.modules.addressLookupV2.getSmartSearch();
-    var postcodeSearch = window.meerkat.modules.addressLookupV2.getHiddenPostcodeSearch();
-    var prefix = '<c:out value="${prefix}" />';
-    var xpath = '<c:out value="${xpath}" />';
-    addressLookup.init(prefix, xpath);
-    postcodeSearch.init(prefix);
-  });
-</script>
