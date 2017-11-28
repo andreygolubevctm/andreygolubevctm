@@ -216,9 +216,6 @@ var healthFunds_CBH = {
 			<c:set var="html" value="${go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(go:replaceAll(html, slashChar, slashChar2), newLineChar, ''), newLineChar2, ''), aposChar, aposChar2), '	', '')}" />
 			$('#health_application_optInEmail-group').after('<c:out value="${html}" escapeXml="false" />');
 		}
-
-		<%--allow weekend selection from the datepicker--%>
-		healthFunds_CBH.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
 		
 		<%-- Run these if not loading a quote --%>
 		if (!$('body').hasClass('injectingFund')) {
@@ -231,12 +228,14 @@ var healthFunds_CBH = {
 			<%-- Partner authority --%>
             meerkat.modules.healthFunds._partner_authority(true);
 
-			<%-- Calendar for start cover --%>
-			if(_.has(meerkat.modules,'healthCoverStartDate')) {
-				meerkat.modules.healthCoverStartDate.setCoverStartRange(0, 29);
-			} else {
-				meerkat.modules.healthPaymentStep.setCoverStartRange(0, 29);
-			}
+            <%--fund offset check--%>
+            meerkat.modules.healthFundTimeOffset.onInitialise({
+				weekends: true,
+				coverStartRange: {
+					min: 0,
+					max: 29
+				}
+			});
 
 			<%-- Payments --%>
 			healthFunds_CBH.paymentLabelOriginal = $('#health_payment_details_type label:first').text();

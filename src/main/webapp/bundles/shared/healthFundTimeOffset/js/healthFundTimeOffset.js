@@ -67,21 +67,24 @@
             if (_isWithinTime['submit'] === false) {
                 var paymentMethod = meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() === 'cc' ? 'credit' : 'bank',
                     $paymentSelection = $('.health_payment_' + paymentMethod + '-selection select:visible'),
-                    paymentSelectionValue = $paymentSelection.val(),
                     coverStartDate = meerkat.modules.healthCoverStartDate.getVal(),
                     deductionDateMsg = '';
 
-                if (_.isFunction(_settings.renderPaymentDaysCb)) {
-                    _settings.renderPaymentDaysCb();
-                }
+                if ($paymentSelection.length > 0) {
+                    var paymentSelectionValue = $paymentSelection.val();
 
-                // update only if deduction day is today
-                if (meerkat.modules.dateUtils.format(new Date(paymentSelectionValue), 'DD/MM/YYYY') === _formattedUTCToday) {
-                    $paymentSelection.prop('selectedIndex', 1);
-                    deductionDateMsg = ' and your payment will be deducted on ' +
-                        meerkat.modules.dateUtils.format(new Date($paymentSelection.val()), 'DD/MM/YYYY');
-                } else {
-                    $paymentSelection.val(paymentSelectionValue);
+                    if (_.isFunction(_settings.renderPaymentDaysCb)) {
+                        _settings.renderPaymentDaysCb();
+                    }
+
+                    // update only if deduction day is today
+                    if (meerkat.modules.dateUtils.format(new Date(paymentSelectionValue), 'DD/MM/YYYY') === _formattedUTCToday) {
+                        $paymentSelection.prop('selectedIndex', 1);
+                        deductionDateMsg = ' and your payment will be deducted on ' +
+                            meerkat.modules.dateUtils.format(new Date($paymentSelection.val()), 'DD/MM/YYYY');
+                    } else {
+                        $paymentSelection.val(paymentSelectionValue);
+                    }
                 }
 
                 var htmlContent = "Hi " + meerkat.modules.healthApplyStep.getPrimaryFirstname() + ", " + _fundCode + " is based in " + _timezoneStateMapping[_timezone] + ", the date here is now " + coverStartDate +

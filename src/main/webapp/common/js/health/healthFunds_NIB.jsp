@@ -35,12 +35,15 @@ var healthFunds_NIB = {
 
         meerkat.modules.healthFunds._previousfund_authority(true);
 
-        <%--calendar for start cover--%>
-	    if(_.has(meerkat.modules,'healthCoverStartDate')) {
-		    meerkat.modules.healthCoverStartDate.setCoverStartRange(0, 29);
-        } else {
-		    meerkat.modules.healthPaymentStep.setCoverStartRange(0, 29);
-	    }
+        <%--fund offset check--%>
+        meerkat.modules.healthFundTimeOffset.onInitialise({
+            weekends: true,
+            coverStartRange: {
+                min: 0,
+                max: 29
+            },
+            renderPaymentDaysCb: healthFunds_NIB.renderPaymentDays
+        });
 
         <%--credit card & bank account frequency & day frequency--%>
         meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':false, 'fortnightly': true, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true });
