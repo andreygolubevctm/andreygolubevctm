@@ -344,9 +344,11 @@ public class CarQuoteService extends CommonRequestServiceV2 {
 
     /**
      * call Data Robot api to get propensity score.
+     * <p>
+     * Note: returns null instead of throwing error so lead service knows invalid score was returned by data robot.
      *
      * @param carQuotePropensityScoreRequest
-     * @return propensity score
+     * @return propensity score or null
      */
     private String getPropensityScoreFromDataRobot(CarQuotePropensityScoreRequest carQuotePropensityScoreRequest) {
         LOGGER.info("Sending request to Data Robot {}", getJsonString(carQuotePropensityScoreRequest));
@@ -363,15 +365,22 @@ public class CarQuoteService extends CommonRequestServiceV2 {
 
         //get propensity score from data robot response, ready to be stored in `result_property` table.
         return Optional.ofNullable(responseEntity.getBody()).map(response -> {
-            if (!response.getPredictions().isEmpty() && response.getPredictions().iterator().hasNext()) {
-                LOGGER.info("Data robot car quote propensity score response: {}", getJsonString(response));
+            LOGGER.info("Data robot car quote propensity score response: {}", getJsonString(response));
+
+            if (response.getCode() == 200
+                    && response.getPredictions() != null
+                    && response.getPredictions().iterator().hasNext()
+                    && response.getPredictions().iterator().next().getClassProbabilities() != null
+                    && response.getPredictions().iterator().next().getClassProbabilities().getOne() != null) {
                 return Double.toString(response.getPredictions().iterator().next().getClassProbabilities().getOne());
             }
-            LOGGER.error("Invalid or null Data robot car quote propensity score response: {}. Setting propensity score to null", new JSONObject(response).toString());
-            throw new IllegalStateException("Invalid or empty propensity score value returned by Data Robot");
-        }).orElseThrow(() -> {
+
+            //sending null instead of throwing error so lead service knows invalid score was returned by data robot.
+            LOGGER.error("Invalid or empty propensity score returned by Data Robot.");
+            return null;
+        }).orElseGet(() -> {
             LOGGER.error("Invalid or empty response from Data Robot");
-            return new IllegalStateException("Invalid or empty response from Data Robot");
+            return null;
         });
     }
 

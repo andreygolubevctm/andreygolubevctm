@@ -110,12 +110,12 @@ public class CarQuoteServiceTest {
     }
 
     @Test
-    public void retrieveAndStoreCarQuotePropensityScore_success() throws Exception {
+    public void retrieveAndStoreCarQuotePropensityScore_with200Response() throws Exception {
         // Given
         final List<String> productIdsOrderedByRank = Arrays.asList("WOOL-01-01", "BUDD-05-01", "WOOL-05-05", "IB-01-01");
         when(transactionDetailService.getTransactionDetailsInXmlData(anyObject())).thenReturn(getTransactionDetails(false, false));
 
-        ResponseEntity<Object> responseEntity = new ResponseEntity<Object>(getResponse(), HttpStatus.OK);
+        ResponseEntity<Object> responseEntity = new ResponseEntity<Object>(get200Response(true), HttpStatus.OK);
         ArgumentCaptor<HttpEntity> argumentCaptor = ArgumentCaptor.forClass(HttpEntity.class);
         when(restTemplate.postForEntity(anyObject(), argumentCaptor.capture(), any())).thenReturn(responseEntity);
 
@@ -132,6 +132,58 @@ public class CarQuoteServiceTest {
 
         assertFalse(resultProperties.isEmpty());
         assertEquals("0.45", resultProperties.iterator().next().getValue());
+    }
+
+    @Test
+    public void retrieveAndStoreCarQuotePropensityScore_with200Response_NoScore() throws Exception {
+        // Given
+        final List<String> productIdsOrderedByRank = Arrays.asList("WOOL-01-01", "BUDD-05-01", "WOOL-05-05", "IB-01-01");
+        when(transactionDetailService.getTransactionDetailsInXmlData(anyObject())).thenReturn(getTransactionDetails(false, false));
+
+        ResponseEntity<Object> responseEntity = new ResponseEntity<Object>(get200Response(false), HttpStatus.OK);
+        ArgumentCaptor<HttpEntity> argumentCaptor = ArgumentCaptor.forClass(HttpEntity.class);
+        when(restTemplate.postForEntity(anyObject(), argumentCaptor.capture(), any())).thenReturn(responseEntity);
+
+        // When
+        final List<ResultProperty> resultProperties = service.buildResultPropertiesWithPropensityScore(productIdsOrderedByRank, TRANSACTION_ID);
+
+        //Then
+        assertFalse(resultProperties.isEmpty());
+        assertEquals(null, resultProperties.iterator().next().getValue());
+    }
+
+    @Test
+    public void retrieveAndStoreCarQuotePropensityScore_noResponse() throws Exception {
+        // Given (valid request, but no response from data robot)
+        final List<String> productIdsOrderedByRank = Arrays.asList("WOOL-01-01", "BUDD-05-01", "WOOL-05-05", "IB-01-01");
+        when(transactionDetailService.getTransactionDetailsInXmlData(anyObject())).thenReturn(getTransactionDetails(false, false));
+
+        ResponseEntity<Object> responseEntity = new ResponseEntity<Object>(null, HttpStatus.OK);
+        when(restTemplate.postForEntity(anyObject(), anyObject(), any())).thenReturn(responseEntity);
+
+        // When
+        final List<ResultProperty> resultProperties = service.buildResultPropertiesWithPropensityScore(productIdsOrderedByRank, TRANSACTION_ID);
+
+        //Then
+        assertFalse(resultProperties.isEmpty());
+        assertEquals(null, resultProperties.iterator().next().getValue());
+    }
+
+    @Test
+    public void retrieveAndStoreCarQuotePropensityScore_with400Response() throws Exception {
+        // Given (valid request, but no response from data robot)
+        final List<String> productIdsOrderedByRank = Arrays.asList("WOOL-01-01", "BUDD-05-01", "WOOL-05-05", "IB-01-01");
+        when(transactionDetailService.getTransactionDetailsInXmlData(anyObject())).thenReturn(getTransactionDetails(false, false));
+
+        ResponseEntity<Object> responseEntity = new ResponseEntity<Object>(get400Response(), HttpStatus.BAD_REQUEST);
+        when(restTemplate.postForEntity(anyObject(), anyObject(), any())).thenReturn(responseEntity);
+
+        // When
+        final List<ResultProperty> resultProperties = service.buildResultPropertiesWithPropensityScore(productIdsOrderedByRank, TRANSACTION_ID);
+
+        //Then
+        assertFalse(resultProperties.isEmpty());
+        assertEquals(null, resultProperties.iterator().next().getValue());
     }
 
     @Test(expected = IllegalStateException.class)
@@ -166,7 +218,7 @@ public class CarQuoteServiceTest {
         when(transactionDetailService.getTransactionDetailsInXmlData(anyObject())).thenReturn(transactionDetails);
 
 
-        ResponseEntity<Object> responseEntity = new ResponseEntity<Object>(getResponse(), HttpStatus.OK);
+        ResponseEntity<Object> responseEntity = new ResponseEntity<Object>(get200Response(true), HttpStatus.OK);
         ArgumentCaptor<HttpEntity> argumentCaptor = ArgumentCaptor.forClass(HttpEntity.class);
         when(restTemplate.postForEntity(anyObject(), argumentCaptor.capture(), any())).thenReturn(responseEntity);
         // When
@@ -185,8 +237,10 @@ public class CarQuoteServiceTest {
     }
 
 
-    private Object getResponse() {
+    private DataRobotCarQuotePropensityScoreResponse get200Response(final boolean withPropensityScore) {
         DataRobotCarQuotePropensityScoreResponse response = new DataRobotCarQuotePropensityScoreResponse();
+        response.setCode(200);
+        if(!withPropensityScore) return response;
 
         ClassProbability classProbability = new ClassProbability();
         classProbability.setOne(0.45);
@@ -195,6 +249,14 @@ public class CarQuoteServiceTest {
         prediction.setClassProbabilities(classProbability);
         List<Prediction> predictions = Arrays.asList(prediction);
         response.setPredictions(predictions);
+        return response;
+    }
+
+    private DataRobotCarQuotePropensityScoreResponse get400Response() {
+        DataRobotCarQuotePropensityScoreResponse response = new DataRobotCarQuotePropensityScoreResponse();
+        response.setStatus("Bad JSON Format");
+        response.setCode(400);
+        response.setVersion("v1");
         return response;
     }
 
