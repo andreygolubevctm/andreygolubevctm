@@ -83,6 +83,10 @@ public class RemoteLoadQuoteService {
         return VerticalSettings.getHomePageJsp(vertical) + "?action=" + action + "&amp;transactionId=" + transactionId + jParam + trackingParams;
     }
 
+    public String getActionQuoteUrlForcedBrandCode(String vertical, String action, Long transactionId, String jParam, String trackingParams, String forcedBrandCode) {
+        return VerticalSettings.getHomePageJsp(vertical) + "?action=" + action + "&amp;transactionId=" + transactionId + "&amp;brandCode=" + forcedBrandCode + jParam + trackingParams;
+    }
+
     public String getStartAgainQuoteUrl(String vertical, Long transactionId, String jParam, String trackingParams) {
         return getActionQuoteUrl(vertical, "start-again", transactionId, jParam, trackingParams);
     }
