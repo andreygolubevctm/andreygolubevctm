@@ -31,8 +31,8 @@
 		</sift>
 	</appender>
 
-	<if condition='p("LOG_JSON").equals("true")'>
-		<then>
+	<!--<if condition='p("LOG_JSON").equals("true")'>-->
+		<!--<then>-->
 			<appender name="JSON_FILE" class="ch.qos.logback.core.FileAppender">
 				<prudent>false</prudent>
 				<!-- ${logLocation} comes from environmentConfigLocation properties file -->
@@ -59,8 +59,8 @@
 					</layout>
 				</encoder>
 			</appender>
-		</then>
-	</if>
+		<!--</then>-->
+	<!--</if>-->
 
 	<appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
 		<queueSize>500</queueSize>
