@@ -22,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,6 +36,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 public class CarQuoteServiceTest {
 
     private static final Long TRANSACTION_ID = 1L;
+    private static final LocalDate FROM_DATE = LocalDate.parse("27/11/2017", DateTimeFormatter.ofPattern(DD_MM_YYYY));
 
     private CarQuoteService service;
     @Mock
@@ -293,23 +295,57 @@ public class CarQuoteServiceTest {
     }
 
     @Test
-    public void buildAge() throws Exception {
+    public void yearsBetween() throws Exception {
         //Given
-        final java.time.LocalDate fromDate = java.time.LocalDate.parse("27/11/2017", DateTimeFormatter.ofPattern(DD_MM_YYYY));
         //When
-        final Long age = service.buildAge(fromDate, "05/05/1979");
+        final Long age = service.yearsBetween(FROM_DATE, "05/05/1979");
         //Then
-        assertEquals(38, age.intValue());
+        assertEquals(38, age.longValue());
     }
 
-    @Test(expected = NullPointerException.class)
-    public void buildAge_null(){
+    @Test
+    public void yearsBetween_null(){
         //Given
-        final java.time.LocalDate fromDate = java.time.LocalDate.parse("27/11/2017", DateTimeFormatter.ofPattern(DD_MM_YYYY));
         //When
-        final Long age = service.buildAge(fromDate, null);
+        final Long age = service.yearsBetween(FROM_DATE, null);
         //Then
-        assertEquals(38, age.intValue());
+        assertEquals(null, age);
+    }
+
+    @Test
+    public void yearsBetween_whitespace(){
+        //Given
+        //When
+        final Long age = service.yearsBetween(FROM_DATE, " ");
+        //Then
+        assertEquals(null, age);
+    }
+
+    @Test
+    public void daysBetween() throws Exception {
+        //Given
+        //when
+        Long days = service.daysBetween(FROM_DATE, "20/11/2017");
+        //then
+        assertEquals(7, days.longValue());
+    }
+
+    @Test
+    public void daysBetween_null(){
+        //Given
+        //when
+        Long days = service.daysBetween(FROM_DATE, null);
+        //then
+        assertEquals(null, days);
+    }
+
+    @Test
+    public void daysBetween_whitespace(){
+        //Given
+        //when
+        Long days = service.daysBetween(FROM_DATE, " ");
+        //then
+        assertEquals(null, days);
     }
 
     @Test
@@ -328,26 +364,6 @@ public class CarQuoteServiceTest {
         YesNo emailFlag = service.buildEmailFlag(null);
         //Then
         assertEquals(YesNo.N, emailFlag);
-    }
-
-    @Test
-    public void daysBetween() throws Exception {
-        //Given
-        final java.time.LocalDate fromDate = java.time.LocalDate.parse("27/11/2017", DateTimeFormatter.ofPattern(DD_MM_YYYY));
-        //when
-        Long days = service.daysBetween(fromDate, "20/11/2017");
-        //then
-        assertEquals(7, days.intValue());
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void daysBetween_null(){
-        //Given
-        final java.time.LocalDate fromDate = java.time.LocalDate.parse("27/11/2017", DateTimeFormatter.ofPattern(DD_MM_YYYY));
-        //when
-        Long days = service.daysBetween(fromDate, null);
-        //then
-        assertEquals(7, days.intValue());
     }
 
     @Test

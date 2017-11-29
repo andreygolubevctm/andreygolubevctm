@@ -39,7 +39,7 @@ public class CarQuoteController extends CommonQuoteRouter<CarRequest> {
     @Autowired
     private EmailUtils emailUtils;
 
-    private String RANK_PRODUCT_ID = "rank.productId";
+    private static final String RANK_PRODUCT_ID = "rank.productId";
 
     @Autowired
     public CarQuoteController(SessionDataServiceBean sessionDataServiceBean, IPAddressHandler ipAddressHandler) {
@@ -47,8 +47,8 @@ public class CarQuoteController extends CommonQuoteRouter<CarRequest> {
     }
 
     @RequestMapping(value = "/quote/get.json",
-            method= RequestMethod.POST,
-            consumes={MediaType.APPLICATION_FORM_URLENCODED_VALUE, "application/x-www-form-urlencoded;charset=UTF-8"},
+            method = RequestMethod.POST,
+            consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE, "application/x-www-form-urlencoded;charset=UTF-8"},
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResultsWrapper getCarQuote(@Valid final CarRequest data, HttpServletRequest request) throws Exception {
 
@@ -70,7 +70,7 @@ public class CarQuoteController extends CommonQuoteRouter<CarRequest> {
     }
 
     @RequestMapping(value = "/more_info/get.json",
-            method= RequestMethod.GET,
+            method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public CarProduct moreInfo(@RequestParam("code") String productId, HttpServletRequest request) throws DaoException {
 
@@ -85,28 +85,16 @@ public class CarQuoteController extends CommonQuoteRouter<CarRequest> {
     }
 
     /**
-     * request mapping to retrieve, and persist propensity score for a particular transaction.
+     * Request mapping to retrieve, and persist propensity score for a particular transaction.
      * propensity score is purchase probability score, that will be used by lead service, and dialer service to prioritize leads.
      *
      * @param request
-     * @throws DaoException when unable to get property from request
      */
-    @RequestMapping(value = "/propensity_score/get.json",
+    @RequestMapping(value = "/propensityScore.json",
             method = RequestMethod.POST,
             consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE, "application/x-www-form-urlencoded;charset=UTF-8"}
     )
-    public void storePropensityScore(HttpServletRequest request) throws DaoException {
-        List<String> rankProductIds = emailUtils.buildParameterList(request, RANK_PRODUCT_ID);
-        Long transactionId = Long.parseLong(request.getParameter("transactionId"));
-
-        if(transactionId == null){
-            throw new IllegalArgumentException("Invalid TransactionId: " + transactionId);
-        }
-
-        if(rankProductIds == null){
-            throw new IllegalArgumentException("rank_productId can't be null");
-        }
-
-        this.carService.retrieveAndStoreCarQuotePropensityScore(rankProductIds, transactionId);
+    public void storePropensityScore(HttpServletRequest request, @RequestParam(value = "transactionId") final Long transactionId){
+        this.carService.retrieveAndStoreCarQuotePropensityScore(emailUtils.buildParameterList(request, RANK_PRODUCT_ID), transactionId);
     }
 }

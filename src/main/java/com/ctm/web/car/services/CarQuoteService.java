@@ -38,9 +38,7 @@ import com.ctm.web.simples.services.TransactionDetailService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.Validate;
 import org.joda.time.LocalDate;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +57,6 @@ import java.net.URI;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static com.ctm.web.core.model.settings.Vertical.VerticalType.CAR;
 import static java.util.stream.Collectors.toList;
@@ -95,13 +92,12 @@ public class CarQuoteService extends CommonRequestServiceV2 {
 
     private SessionDataServiceBean sessionDataServiceBean;
     private TransactionDetailService transactionDetailService;
+    private RestTemplate restTemplate;
 
     @Autowired
     private Client<Request<CarQuoteRequest>, CarResponse> clientQuotes;
     @Autowired
     private Client<AggregateOutgoingRequest<CarQuoteRequest>, CarResponseV2> clientQuotesV2;
-    @Autowired
-    private RestTemplate restTemplate;
     @Value("${data.robot.url}")
     private String dataRobotUrl;
     @Value("${data.robot.key}")
@@ -270,7 +266,7 @@ public class CarQuoteService extends CommonRequestServiceV2 {
     }
 
     /**
-     * retrieve, and store propensity score for BUDD (Budget Direct) for given transaction.
+     * Retrieve, and store propensity score for BUDD (Budget Direct) for given transaction.
      * <p>
      * <pre>
      * Notes:
@@ -293,7 +289,7 @@ public class CarQuoteService extends CommonRequestServiceV2 {
     }
 
     /**
-     * build `result_propensity` with propensity score to be stored in the database.
+     * Build `result_propensity` with propensity score to be stored in the database.
      * <p>
      * Notes:
      * get propensity score from Data Robot or leave it null instead of throwing error.
@@ -304,14 +300,11 @@ public class CarQuoteService extends CommonRequestServiceV2 {
      * @return list of result_property
      */
     protected List<ResultProperty> buildResultPropertiesWithPropensityScore(List<String> productIdsOrderedByRank, Long transactionId) {
-        final List<ResultProperty> resultProperties = new ArrayList<>();
-
         //Data Robot is designed only for BUDD (Budget Direct)
-        productIdsOrderedByRank
+        final List<ResultProperty> resultProperties = productIdsOrderedByRank
                 .stream()
                 .filter(productId -> productId.contains(BUDD_PRODUCT_ID_PREFIX))
-                .collect(Collectors.toList())
-                .forEach(filteredProductId -> {
+                .map(filteredProductId -> {
 
                     //front end sends rank by position in list. This won't work if we have duplicate productIds.
                     //Currently only woolworths have duplicate product_code hence this won't affect BUDD data robot call.
@@ -331,13 +324,14 @@ public class CarQuoteService extends CommonRequestServiceV2 {
                     resultProperty.setTransactionId(transactionId);
                     resultProperty.setProperty(PROPENSITY_SCORE);
                     resultProperty.setValue(propensityScore);
-                    resultProperties.add(resultProperty);
-                });
+                    return resultProperty;
+                }).collect(toList());
+
         return resultProperties;
     }
 
     /**
-     * store `result_property` to db.
+     * Store `result_property` to db.
      * <p>
      * Note: Unable to @Mock this because mockito doesn't support static mocks.
      *
@@ -354,7 +348,7 @@ public class CarQuoteService extends CommonRequestServiceV2 {
     }
 
     /**
-     * call Data Robot api to get propensity score.
+     * Call Data Robot api to get propensity score.
      * <p>
      * Note: returns null instead of throwing error so lead service knows invalid score was returned by data robot.
      *
@@ -396,35 +390,32 @@ public class CarQuoteService extends CommonRequestServiceV2 {
     }
 
     /**
-     * get `transaction_details` from db, and create a request to be send to Data Robot.
+     * Get `transaction_details` from db, and create a request to be send to Data Robot.
      *
      * @param rankPosition
      * @param transactionId
      * @return request to be send to data robot.
+     * @throws DaoException when retrieving transaction details
      */
-    private CarQuotePropensityScoreRequest buildQuotePropensityScoreRequest(int rankPosition, Long transactionId) {
+    private CarQuotePropensityScoreRequest buildQuotePropensityScoreRequest(int rankPosition, Long transactionId) throws DaoException {
 
         //get `transaction_detail` from db for transaction id, contains person, vehicle data.
-        Data transactionDetailsInXmlData = null;
-        try {
-            transactionDetailsInXmlData = this.transactionDetailService.getTransactionDetailsInXmlData(transactionId);
-        } catch (DaoException e) {
-            throw new IllegalStateException("Exception while trying to load transaction details for transaction id: " + transactionId, e);
-        }
+        Data transactionDetailsInXmlData = this.transactionDetailService.getTransactionDetailsInXmlData(transactionId);
 
         if (transactionDetailsInXmlData == null || transactionDetailsInXmlData.isEmpty()) {
             throw new IllegalStateException("Expected non null or empty transaction_details for transactionId: " + transactionId);
         }
 
-        // Build the request to be send to Data Robot
+        // Build the request to be send to Data Robot. Data Robot can handle null values hence avoid Exception propagation.
         final CarQuotePropensityScoreRequest carQuotePropensityScoreRequest = new CarQuotePropensityScoreRequest();
         carQuotePropensityScoreRequest.setRankPosition(rankPosition);
         carQuotePropensityScoreRequest.setPhoneFlag(buildPhoneFlag(transactionDetailsInXmlData.getString(QUOTE_CONTACT_PHONE), transactionDetailsInXmlData.getString(QUOTE_CONTACT_PHONEINPUT)));
         carQuotePropensityScoreRequest.setCommencementDays(daysBetween(java.time.LocalDate.now(), transactionDetailsInXmlData.getString(QUOTE_OPTIONS_COMMENCEMENT_DATE)));
         carQuotePropensityScoreRequest.setEmailFlag(buildEmailFlag(transactionDetailsInXmlData.getString(QUOTE_CONTACT_EMAIL)));
-        carQuotePropensityScoreRequest.setAge(buildAge(java.time.LocalDate.now(), transactionDetailsInXmlData.getString(QUOTE_DRIVERS_REGULAR_DOB)));
+        carQuotePropensityScoreRequest.setAge(yearsBetween(java.time.LocalDate.now(), transactionDetailsInXmlData.getString(QUOTE_DRIVERS_REGULAR_DOB)));
         carQuotePropensityScoreRequest.setDeviceType(DeviceType.getDeviceType(transactionDetailsInXmlData.getString(QUOTE_CLIENT_USER_AGENT)));
         carQuotePropensityScoreRequest.setHourCompleted(java.time.LocalTime.now().getHour());
+
         carQuotePropensityScoreRequest.setDriverRegularClaims(transactionDetailsInXmlData.getString(QUOTE_DRIVERS_REGULAR_CLAIMS));
         carQuotePropensityScoreRequest.setDriverRegularNcd(transactionDetailsInXmlData.getString(QUOTE_DRIVERS_REGULAR_NCD));
         carQuotePropensityScoreRequest.setDriverRegularEmploymentStatus(transactionDetailsInXmlData.getString(QUOTE_DRIVERS_REGULAR_EMPLOYMENT_STATUS));
@@ -443,7 +434,7 @@ public class CarQuoteService extends CommonRequestServiceV2 {
     }
 
     /**
-     * returns json string of given object.
+     * Returns json string of given object.
      *
      * @param obj
      * @return json string
@@ -458,21 +449,47 @@ public class CarQuoteService extends CommonRequestServiceV2 {
     }
 
     /**
-     * returns years between fromDate, and toDate.
+     * Returns years between fromDate, and toDate.
+     * <p>
+     * Note:
+     * - uses system default timezone.
+     * - return null instead of throwing error. Data Robot can handle null values in request.
      *
      * @param fromDate
      * @param toDate
-     * @return years between fromDate, and toDate
+     * @return years between fromDate, and toDate or null
      */
-    protected Long buildAge(final java.time.LocalDate fromDate, final String toDate) {
-        Validate.notBlank(toDate);
-
-        final java.time.LocalDate driverDob = java.time.LocalDate.parse(toDate, DateTimeFormatter.ofPattern(DD_MM_YYYY));
-        return ChronoUnit.YEARS.between(driverDob, fromDate);
+    protected Long yearsBetween(final java.time.LocalDate fromDate, final String toDate) {
+        try {
+            return ChronoUnit.YEARS.between(java.time.LocalDate.parse(toDate, DateTimeFormatter.ofPattern(DD_MM_YYYY)), fromDate);
+        } catch (Exception e) {
+            LOGGER.error("Exception while trying to get yearsBetween {}", e.getMessage());
+            return null;
+        }
     }
 
     /**
-     * returns flag if given email is not blank.
+     * Returns number of days between fromDate, and toDate
+     * <p>
+     * Note:
+     * - uses system default timezone.
+     * - return null instead of throwing error. Data Robot can handle null values in request.
+     *
+     * @param fromDate
+     * @param toDate
+     * @return days between fromDate, and toDate
+     */
+    protected Long daysBetween(java.time.LocalDate fromDate, final String toDate) {
+        try {
+            return ChronoUnit.DAYS.between(java.time.LocalDate.parse(toDate, DateTimeFormatter.ofPattern(DD_MM_YYYY)), fromDate);
+        } catch (Exception e) {
+            LOGGER.error("Exception while trying to get daysBetween {}", e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Returns flag if given email is not blank.
      *
      * @param email string
      * @return email flag
@@ -481,24 +498,9 @@ public class CarQuoteService extends CommonRequestServiceV2 {
         return StringUtils.isNotBlank(email) ? YesNo.Y : YesNo.N;
     }
 
-    /**
-     * returns number of days between fromDate, and toDate
-     * <p>
-     * Note: uses system default timezone
-     *
-     * @param fromDate
-     * @param toDate
-     * @return days between fromDate, and toDate
-     */
-    protected Long daysBetween(java.time.LocalDate fromDate, final String toDate) {
-        Validate.notBlank(toDate, "toDate can't be null");
-
-        final java.time.LocalDate commencementDate = java.time.LocalDate.parse(toDate, DateTimeFormatter.ofPattern(DD_MM_YYYY));
-        return ChronoUnit.DAYS.between(commencementDate, fromDate);
-    }
 
     /**
-     * returns flag if given phone, or phoneInput is not blank.
+     * Returns flag if given phone, or phoneInput is not blank.
      * <p>
      * Note: uses system default timezone
      *

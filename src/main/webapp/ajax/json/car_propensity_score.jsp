@@ -4,4 +4,4 @@
 <session:get settings="true" authenticated="true" verticalCode="CAR" />
 
 <%-- Foward the request to CarQuoteController --%>
-<jsp:forward page="/spring/rest/car/propensity_score/get.json"/>
+<jsp:forward page="/spring//rest/car/propensityScore.json"/>
