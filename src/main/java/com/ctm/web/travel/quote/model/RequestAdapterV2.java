@@ -2,7 +2,9 @@ package com.ctm.web.travel.quote.model;
 
 import com.ctm.web.travel.model.form.TravelQuote;
 import com.ctm.web.travel.model.form.TravelRequest;
+import com.ctm.web.travel.model.form.TripType;
 import com.ctm.web.travel.quote.model.request.*;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,8 +65,31 @@ public class RequestAdapterV2 {
 
         quoteRequest.setClientIp(travelRequest.getClientIpAddress());
 
+        if(travelRequest.getTravel() != null && travelRequest.getTravel().getTripType() !=null){
+            quoteRequest.setTripType(translateTripType(travelRequest.getTravel().getTripType()));
+        }
+
         return quoteRequest;
 
+    }
+
+    private static com.ctm.web.travel.quote.model.request.TripType translateTripType(TripType formTripType){
+        if(formTripType != null){
+            com.ctm.web.travel.quote.model.request.TripType tripTypeRequest = new com.ctm.web.travel.quote.model.request.TripType();
+            if(StringUtils.isNotBlank(formTripType.getAdventureSports())){
+                tripTypeRequest.setAdventureSports(true);
+            }
+
+            if(StringUtils.isNotBlank(formTripType.getCruising())){
+                tripTypeRequest.setCruising(true);
+            }
+
+            if(StringUtils.isNotBlank(formTripType.getSnowSports())){
+                tripTypeRequest.setSnowSports(true);
+            }
+            return tripTypeRequest;
+        }
+        return null;
     }
 
     protected static Traveller createTraveller(TravellerType travellerType, Optional<Integer> age) {
