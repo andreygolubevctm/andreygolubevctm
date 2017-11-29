@@ -41,6 +41,7 @@
         $paymentStartDate: $('#health_payment_details_start'),
         $paymentType : $('#health_payment_details_type input'),
         $paymentFrequency : $('#health_payment_details_frequency'),
+        $claimsY: $('#health_payment_details_claims_Y'),
         set: function() {
             <%--Build Primary emigrate question --%>
             if (!_.isNull(healthFunds_HIF.$emigrateRow.primary)) {
@@ -188,6 +189,9 @@
                 .attr('maxlength', '10');
 
             <%-- Authority --%>
+            $('#health_previousfund_primary_authority').setRequired(true, 'HIF require authorisation to contact your previous fund');
+            $('#health_previousfund_partner_authority').setRequired(true, 'HIF require authorisation to contact your partner\'s previous fund');
+
             meerkat.modules.healthFunds._previousfund_authority(true);
 
             <%--Age requirements for applicants--%>
@@ -231,6 +235,9 @@
                 "resetValidationSelectors" : meerkat.modules.healthPaymentStep.resetValidationSelectorsPaymentGateway,
                 "getSelectedPaymentMethod" :  meerkat.modules.healthPaymentStep.getSelectedPaymentMethod
             });
+
+            <%--trigger claims yes--%>
+            healthFunds_HIF.$claimsY.trigger('click');
         },
         renderPaymentDays: function() {
             meerkat.modules.healthFunds.setPayments({ 'min':0, 'max':14, 'weekends':true });
@@ -256,6 +263,8 @@
                 .setRequired(true)
                 .removeAttr('maxlength');
 
+            $('#health_previousfund_primary_authority, #health_previousfund_partner_authority').setRequired(false);
+
             <%--Authority Off--%>
             meerkat.modules.healthFunds._previousfund_authority(false);
 
@@ -280,6 +289,9 @@
             });
 
             meerkat.modules.paymentGateway.reset();
+
+            <%--reset claims yes selection--%>
+            healthFunds_HIF.$claimsY.prop('checked', false).parent().removeClass('active');
         }
     };
     </c:set>
