@@ -128,12 +128,12 @@ public class PhoneController extends CommonQuoteRouter {
 
         if (StringUtils.isEmpty(postOperatorId)) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            pauseResumeResponse = PauseResumeResponse.fail("Post request missing operatorId param");
+            pauseResumeResponse = PauseResumeResponse.fail("GET request missing operatorId param");
 
         } else {
             if (StringUtils.isEmpty(postAction)) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                pauseResumeResponse = PauseResumeResponse.fail("Post request missing action param");
+                pauseResumeResponse = PauseResumeResponse.fail("GET request missing action param");
 
             } else if (postAction.toUpperCase().equals("PAUSE")) {
                 pauseResumeResponse = inInIcwsService.pause(postOperatorId.toUpperCase(), Optional.empty()).observeOn(Schedulers.io()).toBlocking().first();
