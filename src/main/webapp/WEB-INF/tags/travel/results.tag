@@ -52,6 +52,10 @@
 	{{ var logo = _.template(template); }}
 	{{ logo = logo(obj); }}
     {{ var hasSpecialOffer = !_.isEmpty(obj.offer) && _.isObject(obj.offer) && !_.isEmpty(obj.offer.copy) && !_.isEmpty(obj.offer.terms) }}
+	{{ var isTripType = meerkat.modules.tripType.exists(); }}
+	{{ var tripTypes = meerkat.modules.tripType.get(); }}
+	{{ var tripTypeClass = isTripType ? "trip-type-container" : ""; }}
+	{{ var specialOfferClass = !isTripType && hasSpecialOffer ? "specialOffer" : ""; }}
 
 	<div class="result-row available result_{{= obj.productId }}"
 		 data-productId="{{= obj.productId }}"
@@ -60,24 +64,27 @@
 		<div class="result">
 			<div class="resultInsert priceMode">
 				<%-- START SM and Greater --%>
-				<div class="row column-banded-row vertical-center-row hidden-xs">
+				<div class="row column-banded-row vertical-center-row {{= tripTypeClass }} hidden-xs">
 					<div class="col-sm-2 col-lg-1">
 						<div>{{= logo }}</div>
 					</div>
 
-					<div class="col-lg-3 visible-lg productTitle {{= hasSpecialOffer ? 'specialOffer' : ''}}">
-						{{ if(hasSpecialOffer) { }}
+					<div class="col-lg-3 visible-lg productTitle {{= tripTypeClass }} {{= specialOfferClass}}">
+						{{ if(!isTripType && hasSpecialOffer) { }}
 						<div class="innertube">
 						{{ } }}
-							<div><span>{{= productTitle }}</span></div>
-							{{ if (hasSpecialOffer) { }}
+							<div>
+								<span>{{= productTitle }}</span>
+								<travel:results_triptype_icons />
+							</div>
+							{{ if (!isTripType && hasSpecialOffer) { }}
 							<div class="promotion hidden-sm">
 								<span class="icon icon-tag"></span> {{= obj.offer.copy }}
 								<a class="small hidden-xs offerTerms" href="javascript:;">Offer terms</a>
 								<div class="offerTerms-content hidden">{{= obj.offer.terms }}</div>
 							</div>
 							{{ } }}
-						{{ if(hasSpecialOffer) { }}
+						{{ if(!isTripType && hasSpecialOffer) { }}
 						</div>
 						{{ } }}
 					</div>
@@ -98,9 +105,12 @@
 					<div class="col-sm-2 col-lg-2 priceAmount">
 						<div><span>{{= obj.priceText }}</span></div>
 					</div>
-					<div class="col-sm-12 hidden-lg productTitle {{= hasSpecialOffer ? 'specialOffer' : ''}}">
-						<div><span>{{= productTitle }}</span></div>
-						{{ if (hasSpecialOffer) { }}
+					<div class="col-sm-12 hidden-lg productTitle {{= specialOfferClass}}">
+						<div>
+							<span>{{= productTitle }}</span>
+							<travel:results_triptype_icons />
+						</div>
+						{{ if (!isTripType && hasSpecialOffer) { }}
 						<div class="promotion">
 							<span class="icon icon-tag"></span> {{= obj.offer.copy }}
 							<a class="small hidden-xs offerTerms" href="javascript:;">Offer terms</a>
@@ -171,6 +181,9 @@
 				</div><%-- END XS Top Row --%>
 
 			</div><%-- /resultInsert --%>
+			<div class="{{= tripTypeClass}} visible-xs">
+				<travel:results_triptype_icons />
+			</div>
 			<%-- START XS Bottom Row --%>
 			<div class="row container visible-xs mainBenefitsContainer clearfix">
 				<div class="row mainBenefitsHeading">
