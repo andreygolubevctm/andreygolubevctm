@@ -16,4 +16,6 @@
 <%-- HTML --%>
 <core_v1:js_template id="fund-timezone-offset-modal-template">
     <p>${message}</p>
+
+    <a class="visible-xs btn btn-cta">Submit Application</a>
 </core_v1:js_template>

@@ -47,7 +47,7 @@
             if (valid) {
                 if(meerkat.site.environmentCode.toLowerCase() === 'pro' && meerkat.modules.performanceProfiling.amILocal()) {
                 	if(confirm("WARNING: PLEASE BE AWARE THAT YOU ARE IN PRODUCTION. DO NOT SUBMIT A PRODUCTION JOIN UNLESS REQUIRED. OK to submit sale, CANCEL to cancel")) {
-		                _submitApplication();
+                        meerkat.modules.healthFundTimeOffset.checkBeforeSubmit(_submitApplication);
 	                }
                 } else {
 	                meerkat.modules.healthFundTimeOffset.checkBeforeSubmit(_submitApplication);

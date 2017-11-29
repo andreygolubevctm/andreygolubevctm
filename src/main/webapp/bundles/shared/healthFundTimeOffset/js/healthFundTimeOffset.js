@@ -32,6 +32,7 @@
             getVal: 'getVal'
         },
         _template = null,
+        _submitCB = null,
         CoverStartDate = null,
         SubmitApplication = null;
 
@@ -94,6 +95,8 @@
             SubmitApplication.enableSubmitApplication();
 
             if (_isWithinTime['submit'] === false) {
+                _submitCB = _submitCB || submitCB;
+
                 var paymentMethod = meerkat.modules.healthPaymentStep.getSelectedPaymentMethod() === 'cc' ? 'credit' : 'bank',
                     $paymentSelection = $('.health_payment_' + paymentMethod + '-selection select:visible');
 
@@ -121,9 +124,18 @@
                     buttons: [{
                         label: "Submit Application",
                         className: "btn btn-cta",
-                        closeWindow: true,
-                        action: submitCB
-                    }]
+                        // closeWindow: true,
+                        action: function(e) {
+                            _onSubmit($(e.target));
+                        }
+                    }],
+                    onOpen: function() {
+                        if (meerkat.modules.deviceMediaState.get() === 'xs') {
+                            $(document).on('click', '#fund-timezone-offset a.btn-cta', function() {
+                                _onSubmit($(this));
+                            });
+                        }
+                    }
                 });
             } else {
                 submitCB();
@@ -165,6 +177,14 @@
         }
 
         return _template(data);
+    }
+
+    function _onSubmit($btn) {
+        // Disable button, show spinner
+        $btn.addClass('disabled');
+        meerkat.modules.loadingAnimation.showInside($btn, true);
+
+        _submitCB();
     }
 
     meerkat.modules.register('healthFundTimeOffset', {
