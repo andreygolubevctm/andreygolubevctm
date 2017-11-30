@@ -4,8 +4,7 @@
 	<springProperty scope="context" name="ctmLoggingPath" source="logging.path"
 					defaultValue="localhost"/>
 
-	<springProperty scope="context" name="jsonFileLoggingPath" source="ctm.logging.json.file.path"
-					defaultValue="/var/log"/>
+	<springProperty scope="context" name="jsonFileLoggingPath" source="ctm.logging.json.file.path"/>
 
 
 	<property name="APPNAME" value="webctm"/>
