@@ -55,7 +55,7 @@
 			</li>
 		</ul>
 
-		<div class="coverLevelTabs hidden-xs">
+		<div class="navbar-desktop coverLevelTabs hidden-xs">
 			<div class="col-sm-8 col-md-9 currentTabsContainer"></div>
 			<div class="col-xs-2 col-sm-2 col-md-1 clt-trip-filter hidden-xs">
 				<travel_results_filter_types:more_filters />

@@ -223,7 +223,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 											<a class="sort-results-travel-mobile" href="javascript:;">Sort</a>
 
 											<div class="row navbar-mobile coverLevelTabs visible-xs hidden-sm hidden-md hidden-lg">
-												<div class="col-xs-5 clt-trip-filter">
+												<div class="col-xs-5 clt-trip-filter mobile-cover-type">
 													<div class="dropdown cover-type-mobile-active">
 														<a type="button" id="coverTypeDropdownBtn"
 														   data-toggle="dropdown" aria-haspopup="true"
