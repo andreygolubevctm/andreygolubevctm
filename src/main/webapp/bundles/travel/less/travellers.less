@@ -6,8 +6,12 @@
   font-size: 16px;
 }
 
-.travel_party {
+.travel_party, .trip_type {
   display: flex;
+}
+
+.trip_type input {
+  display: none;
 }
 
 #num-travellers {
@@ -109,7 +113,7 @@
 }
 
 @media(@md-only) {
-  .travel_party.roundedCheckboxIcons label:before {
+  .travel_party.roundedCheckboxIcons label:before, .trip_type.roundedCheckboxIcons label:before {
     line-height: 63px;
     width: 63px;
     font-size: 40px;
@@ -117,7 +121,7 @@
 }
 
 @media(@sm-only) {
-  .travel_party.roundedCheckboxIcons label:before {
+  .travel_party.roundedCheckboxIcons label:before, .trip_type.roundedCheckboxIcons label:before {
     line-height: 43px;
     width: 45px;
     font-size: 30px;
@@ -131,7 +135,7 @@
   .age-container {
     padding: 15px;
   }
-  .travel_party {
+  .travel_party, .trip_type {
     display: block;
   }
 }
