@@ -13,7 +13,7 @@
                     <input type="checkbox" name="travel_tripType_cruising" id="travel_tripType_cruising" value="cruising" data-msg-required="Please choose trip types" aria-required="true">
                     Cruising
                 </label>
-                <field_v2:help_icon helpId="577" position="top" tooltipClassName="" />
+                <field_v2:help_icon helpId="577" tooltipClassName="" />
                 <label class="btn btn-form-inverse icon-trip-type-snow">
                     <input type="checkbox" name="travel_tripType_snowSports" id="travel_tripType_snowSports" value="snowSports" data-msg-required="Please choose trip types" aria-required="true">
                     Snow sports
