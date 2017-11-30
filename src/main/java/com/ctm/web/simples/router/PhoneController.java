@@ -159,7 +159,7 @@ public class PhoneController extends CommonQuoteRouter {
         } else if (!pauseResumeResponse.isSuccess() && !ininRequestMade) {
             LOGGER.error("apiDiallerRecording, pauseResumeResponse failed with {}", kv("errors", pauseResumeResponse.getErrors().getMessage()));
 
-        else {
+        } else {
             LOGGER.info("apiDiallerRecording, pauseResumeResponse success {}", kv("interactionId", pauseResumeResponse.getInteractionId()));
 
         }
