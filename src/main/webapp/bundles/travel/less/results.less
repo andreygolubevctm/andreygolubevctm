@@ -60,6 +60,41 @@
 	float: none;
 }
 
+.result {
+	.trip-type-list {
+		display:block;
+		margin-top:5px;
+		.trip-type {
+			display:inline-block;
+			margin-right:1em;
+			.icon {
+				float:left;
+				font-size:16px;
+				border-radius:50%;
+				color:#FFF;
+				background:@theme-tertiary;
+				border: 8px solid @theme-tertiary;
+				margin-right:5px;
+			}
+			.type {
+				float:right;
+				font-size:12px;
+				color:@theme-dark;
+				line-height:30px;
+			}
+			&.cruise {
+
+			}
+			&.snow {
+
+			}
+			&.adventure {
+
+			}
+		}
+	}
+}
+
 
 //-------------------------------------------------------------------------------------------
 //XS ONLY breakpoints
@@ -367,6 +402,80 @@
 			text-align: center;
 			div:before {
 				height: auto;
+			}
+		}
+	}
+}
+
+.vertical-center-row.trip-type-container > div {
+	@media (@sm) {
+		height: 130px;
+	}
+
+	@media(@sm-md-only) {
+		&.productTitle {
+			//min-height: 70px; //freaks out IE8
+			height: 70px;
+			> span:first-of-type {
+				float: left;
+				margin-top: 5px;
+			}
+		}
+		&.cta {
+			//min-height: 70px; //freaks out IE8
+			height: 70px;
+			text-align: center;
+		}
+		.trip-type-list {
+			float: right;
+			.trip-type {
+				margin-right: 0;
+				margin-left: 1em;
+			}
+		}
+	}
+
+	@media(@sm-only) {
+		.trip-type-list {
+			.trip-type {
+				margin-left: 5px;
+			}
+		}
+	}
+}
+
+.result {
+	.trip-type-container {
+		@media (@xs-only) {
+			.trip-type-list {
+				margin: 10px auto;
+				.trip-type {
+					margin: 0 5px 0 0;
+					.type {
+						font-size: @font-size-base;
+					}
+				}
+			}
+		}
+	}
+}
+
+.vertical-center-row > div.trip-type-container {
+	@media(@sm) {
+		& > div {
+			height: auto;
+			&:first-of-type {
+				margin-top:-8px;
+			}
+			> span:first-of-type {
+				display:inline;
+			}
+		}
+	}
+	@media(@lg) {
+		& > div {
+			> span:first-of-type {
+				line-height:16px;
 			}
 		}
 	}
