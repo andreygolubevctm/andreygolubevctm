@@ -31,9 +31,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Collections;
 import java.util.Optional;
 
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static com.ctm.web.simples.router.PhoneController.pauseResumeActions.PauseRecord;
 import static com.ctm.web.simples.router.PhoneController.pauseResumeActions.ResumeRecord;
-
 
 @RestController
 @RequestMapping("/rest/simples")
@@ -114,6 +114,50 @@ public class PhoneController extends CommonQuoteRouter {
         return pauseResumeResponse;
     }
 
+    @RequestMapping(
+            value = "/apiDiallerRecording",
+            method = RequestMethod.GET,
+            consumes = MediaType.ALL_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public PauseResumeResponse apiDiallerRecording(HttpServletRequest request, HttpServletResponse response) throws ConfigSettingException, DaoException, ServletException {
+        final String postOperatorId = request.getParameter("operatorId");
+        final String postAction = request.getParameter("action");
+        PauseResumeResponse pauseResumeResponse;
+        LOGGER.info("apiDiallerRecording, request made {}, {}. Request params will be converted to upperCase", kv("action", postAction), kv("operatorId", postOperatorId));
+
+        if (StringUtils.isEmpty(postOperatorId)) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            pauseResumeResponse = PauseResumeResponse.fail("GET request missing operatorId param");
+
+        } else {
+            if (StringUtils.isEmpty(postAction)) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                pauseResumeResponse = PauseResumeResponse.fail("GET request missing action param");
+
+            } else if (postAction.toUpperCase().equals("PAUSE")) {
+                pauseResumeResponse = inInIcwsService.pause(postOperatorId.toUpperCase(), Optional.empty()).observeOn(Schedulers.io()).toBlocking().first();
+
+            } else if (postAction.toUpperCase().equals("RESUME")) {
+                pauseResumeResponse = inInIcwsService.resume(postOperatorId.toUpperCase(), Optional.empty()).observeOn(Schedulers.io()).toBlocking().first();
+
+            } else {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                pauseResumeResponse = PauseResumeResponse.fail("Unknown action: " + postAction);
+
+            }
+        }
+
+        if (!pauseResumeResponse.isSuccess()) {
+            response.setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+            LOGGER.error("apiDiallerRecording, pauseResumeResponse failed with {}", kv("errors", pauseResumeResponse.getErrors().getMessage()));
+
+        } else {
+            LOGGER.info("apiDiallerRecording, pauseResumeResponse success {}", kv("interactionId", pauseResumeResponse.getInteractionId()));
+
+        }
+        return pauseResumeResponse;
+    }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
