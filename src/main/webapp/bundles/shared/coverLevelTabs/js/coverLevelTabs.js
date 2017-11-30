@@ -308,6 +308,7 @@
 		} else {
             $('.mobile-cover-types').empty().html(mobileCoverTypes);
             $('.navbar-desktop').empty();
+            $('.navbar__travel-filters').show();
 		}
 
 		meerkat.modules.travelResultFilters.resetCustomFilters();
@@ -473,6 +474,7 @@
 	function resetView(activeTabSet) {
 		log("[coverleveltabs] resetView");
         $('.navbar-cover-text').empty();
+        $('.navbar__travel-filters').hide();
         $('.clt-trip-filter').hide();
 		$currentTabContainer.empty();
 		hasRunTrackingCall = [];
