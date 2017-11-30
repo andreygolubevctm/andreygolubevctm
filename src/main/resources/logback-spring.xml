@@ -70,7 +70,7 @@
 		<appender-ref ref="ASYNC" />
 	</logger>
 
-	<logger name="com.ctm.web.jsonfilelogger" level="INFO">
+	<logger name="com.ctm" level="INFO">
 		<appender-ref ref="JSON_FILE" />
 	</logger>
 
