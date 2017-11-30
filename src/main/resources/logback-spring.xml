@@ -70,6 +70,10 @@
 		<appender-ref ref="ASYNC" />
 	</logger>
 
+	<logger name="com.ctm.web.jsonfilelogger" level="INFO">
+		<appender-ref ref="JSON_FILE" />
+	</logger>
+
 	<!-- 3rd Party Loggers -->
 	<logger name="log4j.logger.org.elasticsearch" level="INFO"/>
 	<!-- Change this to DEBUG if you need the request and response from the backend services -->
