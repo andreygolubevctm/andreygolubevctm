@@ -5,44 +5,17 @@
 
 <%--HTML--%>
 <c:set var="fieldXpath" value="travel/tripType" />
-<form_v2:row label="Will you be participating in any of the following activities?" fieldXpath="${fieldXpath}" className="clear trip-type">
+<form_v2:row label="Will you be participating in any of the following activities?" className="clear trip-type">
     <div class="row">
-        <div class="col-xs-6 col-sm-5">
-            <field_v2:checkbox
-                    xpath="${fieldXpath}/snowSports"
-                    value="snowSports"
-                    required="false"
-                    title="Snow sports"
-                    label="true" />
-        </div>
-        <div class="col-xs-6 col-sm-7">
-            <field_v2:help_icon helpId="576" tooltipClassName="" />
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-6 col-sm-5">
-            <field_v2:checkbox
-                    xpath="${fieldXpath}/cruising"
-                    value="cruising"
-                    required="false"
-                    title="Cruising"
-                    label="true" />
-        </div>
-        <div class="col-xs-6 col-sm-7">
-            <field_v2:help_icon helpId="577" tooltipClassName="" />
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-6 col-sm-5">
-            <field_v2:checkbox
-                    xpath="${fieldXpath}/adventureSports"
-                    value="adventureSports"
-                    required="false"
-                    title="Adventure Sports"
-                    label="true" />
-        </div>
-        <div class="col-xs-6 col-sm-7">
-            <field_v2:help_icon helpId="578" tooltipClassName="" />
+        <div class="col-xs-12 row-content">
+            <div class="btn-group btn-group-justified thinner_input travel_party roundedCheckboxIcons" data-toggle="radio">
+                <label class="btn btn-form-inverse icon-trip-type-cruise">
+                    <input type="radio" name="travel_tripType_cruising" id="travel_tripType_cruising" value="cruising" data-msg-required="Please choose trip types" required="required" aria-required="true">
+                </label>
+                <label class="btn btn-form-inverse icon-trip-type-snow">
+                    <input type="radio" name="travel_tripType_snowSports" id="travel_tripType_snowSports" value="snowSports" data-msg-required="Please choose trip types" required="required" aria-required="true">
+                </label>
+            </div>
         </div>
     </div>
 </form_v2:row>
