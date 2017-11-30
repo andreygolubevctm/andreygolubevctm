@@ -2,6 +2,7 @@ package com.ctm.web.car.router;
 
 import com.ctm.web.car.model.CarProduct;
 import com.ctm.web.car.model.form.CarRequest;
+import com.ctm.web.car.model.request.propensityscore.Response;
 import com.ctm.web.car.model.results.CarResult;
 import com.ctm.web.car.services.CarQuoteService;
 import com.ctm.web.car.services.CarVehicleSelectionService;
@@ -16,7 +17,10 @@ import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.email.EmailUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,6 +38,7 @@ import static com.ctm.web.core.model.settings.Vertical.VerticalType.CAR;
 @RequestMapping("/rest/car")
 public class CarQuoteController extends CommonQuoteRouter<CarRequest> {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(CarQuoteController.class);
     @Autowired
     private CarQuoteService carService;
     @Autowired
@@ -92,9 +97,16 @@ public class CarQuoteController extends CommonQuoteRouter<CarRequest> {
      */
     @RequestMapping(value = "/propensityScore.json",
             method = RequestMethod.POST,
-            consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE, "application/x-www-form-urlencoded;charset=UTF-8"}
+            consumes = {MediaType.APPLICATION_FORM_URLENCODED_VALUE, "application/x-www-form-urlencoded;charset=UTF-8"},
+            produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public void storePropensityScore(HttpServletRequest request, @RequestParam(value = "transactionId") final Long transactionId){
-        this.carService.retrieveAndStoreCarQuotePropensityScore(emailUtils.buildParameterList(request, RANK_PRODUCT_ID), transactionId);
+    public Response storePropensityScore(HttpServletRequest request, @RequestParam(value = "transactionId") final Long transactionId){
+        try {
+            this.carService.retrieveAndStoreCarQuotePropensityScore(emailUtils.buildParameterList(request, RANK_PRODUCT_ID), transactionId);
+        } catch (Exception e){
+            LOGGER.error("Exception when trying to save propensity score. {}", e.getMessage());
+            return new Response(HttpStatus.INTERNAL_SERVER_ERROR, "Something went wrong. That's all we know");
+        }
+        return new Response(HttpStatus.OK, "Success");
     }
 }

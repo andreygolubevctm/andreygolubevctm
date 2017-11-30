@@ -102,8 +102,11 @@
                 data: rankingData,
                 cache: false,
                 errorLevel: "silent",
-                onError: function onWriteRankingsError(jqXHR, textStatus, errorThrown, settings, resultData) {
-                    log("[resultsRankingsPropensityScores] Failed to savePropensityScore");
+                onError: function onWriteError() {
+                    log("[resultsRankingsPropensityScores] Failed");
+                },
+                onSuccess: function onWriteSuccess() {
+                    log("[resultsRankingsPropensityScores] Success");
                 }
             });
         }
