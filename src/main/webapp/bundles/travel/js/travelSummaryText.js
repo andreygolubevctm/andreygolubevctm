@@ -63,7 +63,7 @@
 		}
 
 		if(meerkat.modules.tripType.exists()) {
-			var triptypes = meerka.modules.tripType.get();
+			var triptypes = meerkat.modules.tripType.get();
 			var copy = [];
 			for(var i in triptypes) {
 				if(_.has(triptypes, i)) {
