@@ -43,7 +43,7 @@
 
                 <div class="row">
                     <div class="col-sm-12">
-                        <simples:dialogue id="45" vertical="health" />
+                        <%--<simples:dialogue id="45" vertical="health" />--%>
                     </div>
                 </div>
             </div>
