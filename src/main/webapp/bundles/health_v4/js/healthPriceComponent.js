@@ -108,10 +108,9 @@
             meerkat.modules.healthDualPricing.renderTemplate('.policySummary.dualPricing', product, false, true);
         } else {
             product.displayLogo = true;
-            product.priceBreakdown = (meerkat.modules.splitTest.isActive(5) &&
-                meerkat.modules.journeyEngine.getCurrentStep().navigationId !== 'results') ? true : false;
+            product.priceBreakdown = meerkat.modules.journeyEngine.getCurrentStep().navigationId !== 'results' ? true : false;
 
-            if (meerkat.modules.splitTest.isActive(5) && product.premium[product._selectedFrequency].lhc !== '$0.00') {
+            if (product.premium[product._selectedFrequency].lhc !== '$0.00') {
                 meerkat.modules.comms.get({
                     url: 'spring/content/get.json',
                     data: {

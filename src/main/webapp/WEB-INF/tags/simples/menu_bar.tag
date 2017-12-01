@@ -41,7 +41,7 @@
 				<li data-provide="simples-quote-finder"><a href="javascript:void(0);">Quote details</a></li>
 
 				<%-- Only show the Config pages if user is a supervisor role --%>
-				<c:if test="${isRoleSupervisor}">
+				<c:if test="${isRoleEditAdminMenu}">
 					<li class="dropdown">
 						<a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">Admin <b class="caret"></b></a>
 						<ul class="dropdown-menu">
