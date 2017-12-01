@@ -38,7 +38,20 @@
 					optins.adventure.active = optins.adventure.$e.is(":checked");
 				});
 			optins.cruise.$e.trigger("change.triptype");
+			_addEventListener();
 		});
+	}
+
+	function _addEventListener() {
+        $('.trip_type input').click(function () {
+            if ($(this).closest('label').hasClass('active')) {
+                $(this).closest('label').removeClass('active');
+                $(this).prop('checked', false);
+            } else {
+                $(this).closest('label').addClass('active');
+                $(this).prop('checked', true);
+            }
+        });
 	}
 
 	function exists() {
