@@ -73,7 +73,7 @@
 					}
 				}
 			}
-			txt+=". </span><em class=\"hidden-xs hidden-sm\"><br></em>Covered for <span class='highlight "+blockClass+"'>" + copy.join(", ");
+			txt+=". </span><em class=\"hidden-xs hidden-sm\"><br></em>Covered for <span class='highlight'>" + copy.join(", ");
 		}
 
 		$resultsSummaryPlaceholder.html(txt+'</span>').fadeIn();
