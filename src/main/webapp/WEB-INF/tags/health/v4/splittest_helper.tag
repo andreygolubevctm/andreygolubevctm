@@ -40,11 +40,3 @@
         <c:otherwise>${false}</c:otherwise>
     </c:choose>
 </c:set>
-
-<%-- HLT-4680 Split Test J=5 test --%>
-<c:set var="priceBreakdownTest" scope="request">
-    <c:choose>
-        <c:when test="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 5)}">${true}</c:when>
-        <c:otherwise>${false}</c:otherwise>
-    </c:choose>
-</c:set>
