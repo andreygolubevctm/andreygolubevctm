@@ -19,8 +19,6 @@
 
     function initHealthPopularProducts() {
         $(document).ready(function() {
-            if (!meerkat.modules.splitTest.isActive(3)) return;
-
             _isEnabled = meerkat.site.showPopularProducts;
 
             if (!isEnabled()) return;
