@@ -6,8 +6,7 @@ body.travel {
   .coverLevelTabs {
     .clt-action {
       padding: 8px 0;
-      margin-bottom: 8px;
-      margin-right: 10px;
+      margin: 8px 10px 8px 0;
       cursor: pointer;
       font-size: 14px;
       line-height: 14px;
@@ -39,6 +38,7 @@ body.travel {
       }
     }
     .clt-trip-filter {
+      margin-top: 15px;
       i {
         line-height: normal;
         font-size: 20px;
@@ -49,6 +49,10 @@ body.travel {
         color: @theme-tertiary;
         padding-left: 0;
         padding-right: 0;
+
+        @media screen and (@md-only) {
+          padding-left: inherit;
+        }
 
         a {
           text-decoration: none;
@@ -128,6 +132,21 @@ body.travel {
         }
         [data-sort-dir='desc']:before {
           bottom: 15px;
+        }
+      }
+    }
+  }
+}
+
+// SM breakpoint
+@media screen and (@sm-only) {
+  .travel {
+    .coverLevelTabs {
+      .currentTabsContainer {
+        padding-left: 0;
+        padding-right: 0;
+        .clt-action {
+          margin: 8px 8px 8px 0 !important;
         }
       }
     }

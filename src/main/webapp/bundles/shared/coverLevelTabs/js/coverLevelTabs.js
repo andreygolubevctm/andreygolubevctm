@@ -259,10 +259,11 @@
                 $('.mobile-active-cover-type').empty().text(coverTypeText);
 			}
 
-			// results headers
-			out += '<div class="col-xs-4 col-sm-3 col-md-' + xsCols + ' text-center clt-action ' + (tab.defaultTab === true ? 'active' : '') + '" data-clt-index="' + i + '" data-ranking-filter="' + tab.rankingFilter +'">';
-			out += (tab.label.replace('Cover', '')) + (state !== 'xs' && state !== 'sm' && state !== 'md' && tab.showCount === true && count !== null ? ' <span class="tabCount">(' + (count) + ')</span>' : '');
-			out += '</div>';
+            // results headers
+            out += '<div class="col-xs-4 col-sm-3 col-md-3 col-lg-' + xsCols + ' text-center clt-action ' + (tab.defaultTab === true ? 'active' : '') + '" data-clt-index="' + i + '" data-ranking-filter="' + tab.rankingFilter + '">';
+            out += (tab.label.replace('Cover', '')) + (state !== 'xs' && tab.showCount === true && count !== null ? ' <span class="tabCount">(' + (count) + ')</span>' : '');
+            out += '</div>';
+
 
 			// mobile cover types
             mobileCoverTypes += '<div class="dropdown-item">';
@@ -373,7 +374,7 @@
 
         if (state !== 'xs') {
             customTab += '<div class="col-xs-' + xsCols + ' text-center clt-action active" data-travel-filter="custom">';
-            customTab += 	'Custom (' + Results.model.travelFilteredProductsCount + ')' ;
+            customTab += 	'Custom (' + Results.model.travelFilteredProductsCount + ')';
             customTab += '</div>';
             $('.navbar-cover-text').empty().html('Showing ' + Results.model.travelFilteredProductsCount + ' custom plans');
             $('.currentTabsContainer').append(customTab);
