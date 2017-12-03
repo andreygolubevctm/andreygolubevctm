@@ -124,7 +124,6 @@
 	<logger name="net.sf.ehcache" level="WARN"/>
 	<logger name="org.hibernate" level="INFO" />
 	<logger name="org.quartz" level="INFO" />
-	<logger name="log4j.logger.org.elasticsearch" level="INFO"/>
 	<!-- Change this to DEBUG if you need the request and response from the backend services -->
 	<logger name="com.ctm.web.email" level="INFO"/>
 	<logger name="com.ctm.web.core.services.CommonRequestService" level="INFO"/>
@@ -139,11 +138,6 @@
 			<else>
 				<appender-ref ref="CONSOLE" />
 				<appender-ref ref="FILE" />
-				<if condition='isDefined("QUEUE_ALWAYS_ENABLED") || !p("ENV").contains("LOCALHOST")'>
-					<then>
-						<appender-ref ref="WRAPPED_QUEUE" />
-					</then>
-				</if>
 			</else>
 		</if>
 	</root>
