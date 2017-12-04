@@ -5,6 +5,8 @@
 	<include resource="org/springframework/boot/logging/logback/console-appender.xml" />
 	<include resource="org/springframework/boot/logging/logback/file-appender.xml" />
 
+	<springProperty scope="context" name="LOG_JSON" source="ctm.logging.format.json" defaultValue="false"/>
+
 	<springProperty scope="context" name="ctmLoggingPath" source="logging.path"
 					defaultValue="localhost"/>
 
