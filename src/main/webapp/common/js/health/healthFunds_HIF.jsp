@@ -42,6 +42,7 @@
         $paymentType : $('#health_payment_details_type input'),
         $paymentFrequency : $('#health_payment_details_frequency'),
         $claimsY: $('#health_payment_details_claims_Y'),
+        $paymentTypeContainer: $('div.health-payment_details-type').siblings('div.fieldrow_legend'),
         set: function() {
             <%--Build Primary emigrate question --%>
             if (!_.isNull(healthFunds_HIF.$emigrateRow.primary)) {
@@ -238,6 +239,9 @@
 
             <%--trigger claims yes--%>
             healthFunds_HIF.$claimsY.trigger('click');
+
+            <%--set discount text--%>
+            healthFunds_HIF.$paymentTypeContainer.text('HIF offers a 4% discount for annual payments or 2% discount for half-yearly payments');
         },
         renderPaymentDays: function() {
             meerkat.modules.healthFunds.setPayments({ 'min':0, 'max':14, 'weekends':true });
@@ -292,6 +296,9 @@
 
             <%--reset claims yes selection--%>
             healthFunds_HIF.$claimsY.prop('checked', false).parent().removeClass('active');
+
+            <%--reset discount text--%>
+            healthFunds_HIF.$paymentTypeContainer.text('');
         }
     };
     </c:set>
