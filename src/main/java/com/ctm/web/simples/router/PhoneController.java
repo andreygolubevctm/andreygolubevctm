@@ -124,6 +124,7 @@ public class PhoneController extends CommonQuoteRouter {
         final String postOperatorId = request.getParameter("operatorId");
         final String postAction = request.getParameter("action");
         PauseResumeResponse pauseResumeResponse;
+        Boolean ininRequestMade = false;
         LOGGER.info("apiDiallerRecording, request made {}, {}. Request params will be converted to upperCase", kv("action", postAction), kv("operatorId", postOperatorId));
 
         if (StringUtils.isEmpty(postOperatorId)) {
@@ -137,9 +138,11 @@ public class PhoneController extends CommonQuoteRouter {
 
             } else if (postAction.toUpperCase().equals("PAUSE")) {
                 pauseResumeResponse = inInIcwsService.pause(postOperatorId.toUpperCase(), Optional.empty()).observeOn(Schedulers.io()).toBlocking().first();
+                ininRequestMade = true;
 
             } else if (postAction.toUpperCase().equals("RESUME")) {
                 pauseResumeResponse = inInIcwsService.resume(postOperatorId.toUpperCase(), Optional.empty()).observeOn(Schedulers.io()).toBlocking().first();
+                ininRequestMade = true;
 
             } else {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -148,8 +151,12 @@ public class PhoneController extends CommonQuoteRouter {
             }
         }
 
-        if (!pauseResumeResponse.isSuccess()) {
+        // If we attempted to pause/resume call and we have a fail status us 503, else if one of the other conditions failed status = 400, else success!
+        if (!pauseResumeResponse.isSuccess() && ininRequestMade) {
             response.setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+            LOGGER.error("apiDiallerRecording, pauseResumeResponse failed with {}", kv("errors", pauseResumeResponse.getErrors().getMessage()));
+
+        } else if (!pauseResumeResponse.isSuccess() && !ininRequestMade) {
             LOGGER.error("apiDiallerRecording, pauseResumeResponse failed with {}", kv("errors", pauseResumeResponse.getErrors().getMessage()));
 
         } else {
