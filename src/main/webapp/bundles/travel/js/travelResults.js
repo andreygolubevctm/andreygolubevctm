@@ -169,23 +169,29 @@
 						/**
 						 * Currently ignore medical if destination country is JUST AU.
 						 */
-						var medical = 5000000;
-						if (destinations == "AUS") {
-							medical = 0;
-						}
 
-						if (obj.excessValue <= 250 && obj.medicalValue >= medical
-							&& obj.cxdfeeValue >= 7500 && obj.luggageValue >= 7500) {
+						if (obj.excessValue <= Results.model.travelFilters.EXCESS &&
+							(obj.medicalValue >= (destinations == "AUS" ? 0 : 20000000)) &&
+							obj.cxdfeeValue >= 20000 &&
+							obj.luggageValue >= 5000
+						) {
 							obj.coverLevel = 'C';
 							meerkat.modules.coverLevelTabs.incrementCount("C");
-						} else if (obj.excessValue <= 250 && obj.medicalValue >= medical
-							&& obj.cxdfeeValue >= 2500
+						} else if (obj.excessValue <= Results.model.travelFilters.EXCESS &&
+							(obj.medicalValue >= (destinations == "AUS" ? 0 : 10000000))
+							&& obj.cxdfeeValue >= 5000
 							&& obj.luggageValue >= 2500) {
 							obj.coverLevel = 'M';
 							meerkat.modules.coverLevelTabs.incrementCount("M");
-						} else  {
+						} else if (
+							(obj.medicalValue < (destinations == "AUS" ? 0 : 10000000)) ||
+                            obj.cxdfeeValue < 5000 ||
+                            obj.luggageValue < 2500
+						)  {
 							obj.coverLevel = 'B';
-							meerkat.modules.coverLevelTabs.incrementCount("B");
+							if (obj.excessValue <= Results.model.travelFilters.EXCESS) {
+                                meerkat.modules.coverLevelTabs.incrementCount("B");
+							}
 						}
 					} else {
 						if (_.isBoolean(result.isDomestic) ) {

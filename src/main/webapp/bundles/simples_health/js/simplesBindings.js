@@ -16,8 +16,12 @@
         $healthSituationMedicare,
         $aboutYouFieldset,
         $yourDetailsFieldset,
-        $followupCallCheckboxDialogue,
-        $followupCallCheckbox,
+	    $followupCallCheckboxDialogue,
+	    $followupCallCheckbox,
+	    $referralCallCheckboxDialogue,
+	    $referralCallCheckbox,
+	    $referralCallPaymentStepDialogue1,
+	    $referralCallPaymentStepDialogue2,
         $cliCallCheckboxDialogue,
         $nonCliCallCheckboxDialogue,
         $outboundFollowupDialogue,
@@ -33,10 +37,18 @@
         $limitedCoverHidden,
         $moreInfoDialogue,
         $dialogue36,
-        $cashRewardsDialogue,
-        $rewardGatewaryDialogue,
         $nzMedicareRules,
         $nzMedicareRulesToggle;
+
+    var affiliates = [
+        {dialogue:79,affiliate:'cashRewards',element:null},
+	    {dialogue:80,affiliate:'rewardGateway',element:null},
+	    {dialogue:88,affiliate:'pricepal',element:null},
+	    {dialogue:89,affiliate:'lyoness',element:null},
+        {dialogue:90,affiliate:'ozbargain',element:null},
+        {dialogue:91,affiliate:'dubli',element:null},
+        {dialogue:92,affiliate:'pegasusgroupaustralia',element:null}
+    ];
 
     function init() {
         $(document).ready(function () {
@@ -58,6 +70,10 @@
             $yourDetailsFieldset = $('#health-contact-fieldset .content');
             $followupCallCheckboxDialogue = $('.simples-dialogue-68');
             $followupCallCheckbox = $('#health_simples_dialogue-checkbox-68');
+	        $referralCallCheckboxDialogue = $('.simples-dialogue-93');
+	        $referralCallCheckbox = $('#health_simples_dialogue-checkbox-93');
+	        $referralCallPaymentStepDialogue1 = $('.simples-dialogue-94');
+	        $referralCallPaymentStepDialogue2 = $('.simples-dialogue-95');
             $cliCallCheckboxDialogue = $('.simples-dialogue-78');
             $nonCliCallCheckboxDialogue = $('.simples-dialogue-20');
             $outboundFollowupDialogue = $('.simples-dialogue-69');
@@ -73,11 +89,13 @@
 	        $privatePatientDialogue = $('.simples-dialogue-24');
             $limitedCoverHidden = $("input[name='health_situation_accidentOnlyCover']");
             $dialogue36 = $('.simples-dialogue-36');
-            $cashRewardsDialogue = $('.simples-dialogue-79');
-            $rewardGatewaryDialogue = $('.simples-dialogue-80');
-	        $nzMedicareRules = $('#healthAboutYou .nz-medicare-rules');
+            $nzMedicareRules = $('#healthAboutYou .nz-medicare-rules');
 	        $nzMedicareRulesToggle = $nzMedicareRules.find('a:first');
 	        $nzMedicareRulesCopy = $nzMedicareRules.find('.copy:first');
+	        for(var i=0; i<affiliates.length; i++) {
+	            var row = affiliates[i];
+	            row.element = $('.simples-dialogue-' + row.dialogue);
+            }
 
             // Handle pre-filled
             populatePrevAssignedRadioBtnGroupValue();
@@ -85,6 +103,7 @@
             toggleBenefitsDialogue();
             initDBDrivenCheckboxes();
             toggleFollowupCallDialog();
+	        toggleReferralCallDialog();
 
             applyEventListeners();
             eventSubscriptions();
@@ -167,9 +186,13 @@
         $healthContactTypeRadio.on('change', function(){
             toggleInboundOutbound();
             toggleFollowupCallDialog();
+            toggleReferralCallDialog();
+
         });
         // Handle callback checkbox 68
         $followupCallCheckbox.on('change', toggleFollowupCallDialog);
+	    // Handle callback checkbox 93
+	    $referralCallCheckbox.on('change', toggleReferralCallCheckbox);
         // Handle toggle rebateDialogue
         $healthCoverRebate.add($healthSituationCvr).on('change', toggleRebateDialogue);
         // Handle toggle benefitsDialogue
@@ -335,6 +358,29 @@
         }
     }
 
+	// Toggle visibility on referral call dialogs based on if NOT inbound call
+	function toggleReferralCallDialog() {
+    	var callType = getCallType();
+    	var validCallType = !_.isEmpty(callType) && callType !== 'inbound';
+		$referralCallCheckboxDialogue.toggle(validCallType);
+		if(!validCallType && $referralCallCheckbox.is(':checked')) {
+			$referralCallCheckbox.prop("checked", null).trigger("change");
+		}
+		toggleReferralCallCheckbox(callType);
+	}
+	// Toggle visibility of referral related dialogs when referral selected
+	function toggleReferralCallCheckbox(callType) {
+        callType = callType || false;
+        var isInbound = callType === "inbound";
+        var isReferral = callType !== false && isInbound === false && $referralCallCheckbox.is(':checked');
+        if(!isInbound && isReferral) {
+        	$dialogue36.add($referralCallPaymentStepDialogue1).add($referralCallPaymentStepDialogue2).toggle(isReferral);
+        } else {
+	        $referralCallPaymentStepDialogue1.add($referralCallPaymentStepDialogue2).toggle(isReferral);
+	        $dialogue36.toggle(isInbound);
+        }
+	}
+
     function toggleRebateDialogue() {
 
         var healthSituationCover = $healthSituationCvr.val();
@@ -384,8 +430,10 @@
     }
 
     function toggleAffiliateRewardsDialogue(affiliateId) {
-        $cashRewardsDialogue.toggleClass('hidden', affiliateId !== 'cashRewards');
-        $rewardGatewaryDialogue.toggleClass('hidden', affiliateId !== 'rewardGateway');
+	    for(var i=0; i<affiliates.length; i++) {
+		    var row = affiliates[i];
+		    row.element.toggleClass('hidden', affiliateId !== row.affiliate);
+	    }
     }
 
     meerkat.modules.register("simplesBindings", {
