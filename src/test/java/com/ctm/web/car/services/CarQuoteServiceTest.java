@@ -10,6 +10,7 @@ import com.ctm.web.core.results.model.ResultProperty;
 import com.ctm.web.core.resultsData.model.AvailableType;
 import com.ctm.web.core.services.ServiceConfigurationServiceBean;
 import com.ctm.web.core.services.SessionDataServiceBean;
+import com.ctm.web.core.utils.common.utils.StringUtils;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.simples.services.TransactionDetailService;
 import org.junit.Before;
@@ -59,6 +60,9 @@ public class CarQuoteServiceTest {
         initMocks(this);
         service = new CarQuoteService(providerFilterDao, serviceConfigurationServiceBean, sessionDataServiceBean, transactionDetailService, restTemplate);
         ReflectionTestUtils.setField(service, "dataRobotUrl", "http://test.com");
+        ReflectionTestUtils.setField(service, "dataRobotUsername", "test@test.com");
+        ReflectionTestUtils.setField(service, "dataRobotApiToken", "xyz");
+
     }
 
     @Test
@@ -128,9 +132,9 @@ public class CarQuoteServiceTest {
         List<CarQuotePropensityScoreRequest> requestList = (List<CarQuotePropensityScoreRequest>) argumentCaptor.getValue().getBody();
         CarQuotePropensityScoreRequest carQuotePropensityScoreRequest = requestList.iterator().next();
         assertEquals(1, carQuotePropensityScoreRequest.getRankPosition().intValue());
-        assertEquals(YesNo.Y, carQuotePropensityScoreRequest.getPhoneFlag());
-        assertEquals(YesNo.Y, carQuotePropensityScoreRequest.getEmailFlag());
-        assertEquals(DeviceType.DESKTOP, carQuotePropensityScoreRequest.getDeviceType());
+        assertEquals("y", carQuotePropensityScoreRequest.getPhoneFlag());
+        assertEquals("y", carQuotePropensityScoreRequest.getEmailFlag());
+        assertEquals(DeviceType.DESKTOP.getName(), carQuotePropensityScoreRequest.getDeviceType());
 
         assertFalse(resultProperties.isEmpty());
         assertEquals("0.45", resultProperties.iterator().next().getValue());
@@ -234,9 +238,9 @@ public class CarQuoteServiceTest {
         List<CarQuotePropensityScoreRequest> requestList = (List<CarQuotePropensityScoreRequest>) argumentCaptor.getValue().getBody();
         CarQuotePropensityScoreRequest carQuotePropensityScoreRequest = requestList.iterator().next();
         assertEquals(1, carQuotePropensityScoreRequest.getRankPosition().intValue());
-        assertEquals(YesNo.Y, carQuotePropensityScoreRequest.getPhoneFlag());
-        assertEquals(YesNo.Y, carQuotePropensityScoreRequest.getEmailFlag());
-        assertEquals(DeviceType.DESKTOP, carQuotePropensityScoreRequest.getDeviceType());
+        assertEquals("y", carQuotePropensityScoreRequest.getPhoneFlag());
+        assertEquals("y", carQuotePropensityScoreRequest.getEmailFlag());
+        assertEquals(DeviceType.DESKTOP.getName(), carQuotePropensityScoreRequest.getDeviceType());
 
         assertFalse(resultProperties.isEmpty());
         assertEquals("0.45", resultProperties.iterator().next().getValue());
@@ -276,13 +280,13 @@ public class CarQuoteServiceTest {
         transactionDetailsInXmlData.put(QUOTE_CONTACT_PHONE, "0000000");
         transactionDetailsInXmlData.put(QUOTE_CONTACT_PHONEINPUT, "");
         transactionDetailsInXmlData.put(QUOTE_CLIENT_USER_AGENT, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36");
+        transactionDetailsInXmlData.put(QUOTE_VEHICLE_BODY, "4SED");
 
         if(partialData) return transactionDetailsInXmlData;
         transactionDetailsInXmlData.put(QUOTE_DRIVERS_REGULAR_CLAIMS, "N");
         transactionDetailsInXmlData.put(QUOTE_DRIVERS_REGULAR_NCD, "5");
         transactionDetailsInXmlData.put(QUOTE_DRIVERS_REGULAR_EMPLOYMENT_STATUS, "E");
         transactionDetailsInXmlData.put(QUOTE_RISK_ADDRESS_STATE, "QLD");
-        transactionDetailsInXmlData.put(QUOTE_VEHICLE_BODY, "4SED");
         transactionDetailsInXmlData.put(QUOTE_VEHICLE_COLOUR, "Black");
         transactionDetailsInXmlData.put(QUOTE_VEHICLE_FINANCE, "HP");
         transactionDetailsInXmlData.put(QUOTE_VEHICLE_ANNUAL_KILOMETRES, "10000");
@@ -292,6 +296,33 @@ public class CarQuoteServiceTest {
         transactionDetailsInXmlData.put(QUOTE_VEHICLE_MAKE_DES, "Mazda");
         transactionDetailsInXmlData.put(QUOTE_VEHICLE_DAMAGE, "N");
         return transactionDetailsInXmlData;
+    }
+
+    @Test
+    public void GivenValidUsernamePassword_WhenGetHeaderValue_ThenReturnValidBasicAuthHeaderValue() {
+        //Given
+        //When
+        final String response = service.getDataRobotBasicAuthHeaderValue();
+        //Then
+        assertEquals("Basic dGVzdEB0ZXN0LmNvbTp4eXo=", response);
+    }
+
+    @Test
+    public void GivenValidVehicleBody_whendBuildVehicleBody_ThenReturnStringWithStripedDigitsAndLowerCase() {
+        //Given
+        //When
+        final String response = service.buildVehicleBody("4SED");
+        //Then
+        assertEquals("sed", response);
+    }
+
+    @Test
+    public void GivenNullVehicleBody_whendBuildVehicleBody_ThenReturnNull() {
+        //Given
+        //When
+        final String response = service.buildVehicleBody(null);
+        //Then
+        assertEquals(null, response);
     }
 
     @Test
@@ -352,35 +383,35 @@ public class CarQuoteServiceTest {
     public void buildEmailFlag() throws Exception {
         //Given
         //When
-        YesNo emailFlag = service.buildEmailFlag("test@gmail.com");
+        String emailFlag = service.buildEmailFlag("test@gmail.com");
         //Then
-        assertEquals(YesNo.Y, emailFlag);
+        assertEquals("y", emailFlag);
     }
 
     @Test
     public void buildEmailFlag_null() throws Exception {
         //Given
         //When
-        YesNo emailFlag = service.buildEmailFlag(null);
+        String emailFlag = service.buildEmailFlag(null);
         //Then
-        assertEquals(YesNo.N, emailFlag);
+        assertEquals("n", emailFlag);
     }
 
     @Test
     public void buildPhoneFlag() {
         //Given
         //when
-        YesNo phoneFlag = service.buildPhoneFlag("0000", "1111");
+        String phoneFlag = service.buildPhoneFlag("0000", "1111");
         //Then
-        assertEquals(YesNo.Y, phoneFlag);
+        assertEquals("y", phoneFlag);
     }
 
     @Test
     public void buildPhoneFlag_null() {
         //Given
         //when
-        YesNo phoneFlag = service.buildPhoneFlag(" ", null);
+        String phoneFlag = service.buildPhoneFlag(" ", null);
         //Then
-        assertEquals(YesNo.N, phoneFlag);
+        assertEquals("n", phoneFlag);
     }
 }

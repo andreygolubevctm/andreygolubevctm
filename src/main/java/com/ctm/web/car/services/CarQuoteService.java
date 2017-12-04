@@ -37,6 +37,7 @@ import com.ctm.web.core.web.go.xml.XmlNode;
 import com.ctm.web.simples.services.TransactionDetailService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.LocalDate;
 import org.slf4j.Logger;
@@ -89,6 +90,7 @@ public class CarQuoteService extends CommonRequestServiceV2 {
     public static final String QUOTE_VEHICLE_FACTORY_OPTIONS = "quote/vehicle/factoryOptions";
     public static final String QUOTE_VEHICLE_MAKE_DES = "quote/vehicle/makeDes";
     public static final String QUOTE_VEHICLE_DAMAGE = "quote/vehicle/damage";
+    public static final String BASIC = "Basic";
 
     private SessionDataServiceBean sessionDataServiceBean;
     private TransactionDetailService transactionDetailService;
@@ -102,8 +104,10 @@ public class CarQuoteService extends CommonRequestServiceV2 {
     private String dataRobotUrl;
     @Value("${data.robot.key}")
     private String dataRobotKey;
-    @Value("${data.robot.authorization.token}")
-    private String dataRobotAuthorizationToken;
+    @Value("${data.robot.username}")
+    private String dataRobotUsername;
+    @Value("${data.robot.api.token}")
+    private String dataRobotApiToken;
 
     @Autowired
     public CarQuoteService(ProviderFilterDao providerFilterDAO, ServiceConfigurationServiceBean serviceConfigurationServiceBean,
@@ -361,7 +365,7 @@ public class CarQuoteService extends CommonRequestServiceV2 {
         final HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-        headers.set(HttpHeaders.AUTHORIZATION, dataRobotAuthorizationToken);
+        headers.set(HttpHeaders.AUTHORIZATION, getDataRobotBasicAuthHeaderValue());
         headers.setCacheControl(NO_CACHE);
         headers.set(DATA_ROBOT_KEY, dataRobotKey);
 
@@ -389,6 +393,11 @@ public class CarQuoteService extends CommonRequestServiceV2 {
         });
     }
 
+    protected String getDataRobotBasicAuthHeaderValue() {
+        final String userPassword = dataRobotUsername + ":" + dataRobotApiToken;
+        return BASIC + " " + Base64.encodeBase64String(userPassword.getBytes());
+    }
+
     /**
      * Get `transaction_details` from db, and create a request to be send to Data Robot.
      *
@@ -407,6 +416,7 @@ public class CarQuoteService extends CommonRequestServiceV2 {
         }
 
         // Build the request to be send to Data Robot. Data Robot can handle null values hence avoid Exception propagation.
+        // Data Robot requires lowercase string.
         final CarQuotePropensityScoreRequest carQuotePropensityScoreRequest = new CarQuotePropensityScoreRequest();
         carQuotePropensityScoreRequest.setRankPosition(rankPosition);
         carQuotePropensityScoreRequest.setPhoneFlag(buildPhoneFlag(transactionDetailsInXmlData.getString(QUOTE_CONTACT_PHONE), transactionDetailsInXmlData.getString(QUOTE_CONTACT_PHONEINPUT)));
@@ -415,22 +425,35 @@ public class CarQuoteService extends CommonRequestServiceV2 {
         carQuotePropensityScoreRequest.setAge(yearsBetween(java.time.LocalDate.now(), transactionDetailsInXmlData.getString(QUOTE_DRIVERS_REGULAR_DOB)));
         carQuotePropensityScoreRequest.setDeviceType(DeviceType.getDeviceType(transactionDetailsInXmlData.getString(QUOTE_CLIENT_USER_AGENT)));
         carQuotePropensityScoreRequest.setHourCompleted(java.time.LocalTime.now().getHour());
+        carQuotePropensityScoreRequest.setVehicleBody(buildVehicleBody(transactionDetailsInXmlData.getString(QUOTE_VEHICLE_BODY)));
 
-        carQuotePropensityScoreRequest.setDriverRegularClaims(transactionDetailsInXmlData.getString(QUOTE_DRIVERS_REGULAR_CLAIMS));
-        carQuotePropensityScoreRequest.setDriverRegularNcd(transactionDetailsInXmlData.getString(QUOTE_DRIVERS_REGULAR_NCD));
-        carQuotePropensityScoreRequest.setDriverRegularEmploymentStatus(transactionDetailsInXmlData.getString(QUOTE_DRIVERS_REGULAR_EMPLOYMENT_STATUS));
-        carQuotePropensityScoreRequest.setRiskAddressState(transactionDetailsInXmlData.getString(QUOTE_RISK_ADDRESS_STATE));
-        carQuotePropensityScoreRequest.setVehicleBody(transactionDetailsInXmlData.getString(QUOTE_VEHICLE_BODY));
-        carQuotePropensityScoreRequest.setVehicleColour(transactionDetailsInXmlData.getString(QUOTE_VEHICLE_COLOUR));
-        carQuotePropensityScoreRequest.setVehicleFinance(transactionDetailsInXmlData.getString(QUOTE_VEHICLE_FINANCE));
-        carQuotePropensityScoreRequest.setVehicleAnnualKilometers(transactionDetailsInXmlData.getString(QUOTE_VEHICLE_ANNUAL_KILOMETRES));
-        carQuotePropensityScoreRequest.setVehicleUse(transactionDetailsInXmlData.getString(QUOTE_VEHICLE_USE));
-        carQuotePropensityScoreRequest.setVehicleMarketValue(transactionDetailsInXmlData.getString(QUOTE_VEHICLE_MARKET_VALUE));
-        carQuotePropensityScoreRequest.setVehicleFactoryOptions(transactionDetailsInXmlData.getString(QUOTE_VEHICLE_FACTORY_OPTIONS));
-        carQuotePropensityScoreRequest.setVehicleMakeDescription(transactionDetailsInXmlData.getString(QUOTE_VEHICLE_MAKE_DES));
-        carQuotePropensityScoreRequest.setVehicleDamage(transactionDetailsInXmlData.getString(QUOTE_VEHICLE_DAMAGE));
+        carQuotePropensityScoreRequest.setDriverRegularClaims(StringUtils.lowerCase(transactionDetailsInXmlData.getString(QUOTE_DRIVERS_REGULAR_CLAIMS)));
+        carQuotePropensityScoreRequest.setDriverRegularNcd(StringUtils.lowerCase(transactionDetailsInXmlData.getString(QUOTE_DRIVERS_REGULAR_NCD)));
+        carQuotePropensityScoreRequest.setDriverRegularEmploymentStatus(StringUtils.lowerCase(transactionDetailsInXmlData.getString(QUOTE_DRIVERS_REGULAR_EMPLOYMENT_STATUS)));
+        carQuotePropensityScoreRequest.setRiskAddressState(StringUtils.lowerCase(transactionDetailsInXmlData.getString(QUOTE_RISK_ADDRESS_STATE)));
+        carQuotePropensityScoreRequest.setVehicleColour(StringUtils.lowerCase(transactionDetailsInXmlData.getString(QUOTE_VEHICLE_COLOUR)));
+        carQuotePropensityScoreRequest.setVehicleFinance(StringUtils.lowerCase(transactionDetailsInXmlData.getString(QUOTE_VEHICLE_FINANCE)));
+        carQuotePropensityScoreRequest.setVehicleAnnualKilometers(StringUtils.lowerCase(transactionDetailsInXmlData.getString(QUOTE_VEHICLE_ANNUAL_KILOMETRES)));
+        carQuotePropensityScoreRequest.setVehicleUse(StringUtils.lowerCase(transactionDetailsInXmlData.getString(QUOTE_VEHICLE_USE)));
+        carQuotePropensityScoreRequest.setVehicleMarketValue(StringUtils.lowerCase(transactionDetailsInXmlData.getString(QUOTE_VEHICLE_MARKET_VALUE)));
+        carQuotePropensityScoreRequest.setVehicleFactoryOptions(StringUtils.lowerCase(transactionDetailsInXmlData.getString(QUOTE_VEHICLE_FACTORY_OPTIONS)));
+        carQuotePropensityScoreRequest.setVehicleMakeDescription(StringUtils.lowerCase(transactionDetailsInXmlData.getString(QUOTE_VEHICLE_MAKE_DES)));
+        carQuotePropensityScoreRequest.setVehicleDamage(StringUtils.lowerCase(transactionDetailsInXmlData.getString(QUOTE_VEHICLE_DAMAGE)));
 
         return carQuotePropensityScoreRequest;
+    }
+
+    /**
+     * Strips all numbers, and returns the string.
+     * NOTE: Data robot expects all strings to be lower case.
+     *
+     *  @param quoteVehicleBody
+     * @return vehicle body without numbers.
+     */
+    protected String buildVehicleBody(final String quoteVehicleBody) {
+        if(StringUtils.isBlank(quoteVehicleBody)) return quoteVehicleBody;
+        //replace all digits with empty string.
+         return quoteVehicleBody.replaceAll("[\\d.]", "").toLowerCase();
     }
 
     /**
@@ -490,29 +513,30 @@ public class CarQuoteService extends CommonRequestServiceV2 {
 
     /**
      * Returns flag if given email is not blank.
-     *
+     * NOTE: Data robot expects all strings to be lower case.
      * @param email string
      * @return email flag
      */
-    protected YesNo buildEmailFlag(final String email) {
-        return StringUtils.isNotBlank(email) ? YesNo.Y : YesNo.N;
+    protected String buildEmailFlag(final String email) {
+        final YesNo emailFlag = StringUtils.isNotBlank(email) ? YesNo.Y : YesNo.N;
+        return emailFlag.toString().toLowerCase();
     }
 
 
     /**
      * Returns flag if given phone, or phoneInput is not blank.
      * <p>
-     * Note: uses system default timezone
+     * NOTE: Data robot expects all strings to be lower case.
      *
      * @param phone
      * @param phoneInput
      * @return Y if phone or phoneInput is not blank, else N
      */
-    protected YesNo buildPhoneFlag(final String phone, final String phoneInput) {
+    protected String buildPhoneFlag(final String phone, final String phoneInput) {
         YesNo phoneFlag = YesNo.N;
         if (StringUtils.isNotBlank(phone) || StringUtils.isNotBlank(phoneInput)) {
             phoneFlag = YesNo.Y;
         }
-        return phoneFlag;
+        return phoneFlag.toString().toLowerCase();
     }
 }

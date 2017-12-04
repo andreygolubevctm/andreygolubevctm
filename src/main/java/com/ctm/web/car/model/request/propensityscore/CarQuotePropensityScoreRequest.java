@@ -16,17 +16,20 @@ public class CarQuotePropensityScoreRequest implements Serializable
     @JsonProperty(value = "CD_RankPosition", required = true)
     private Integer rankPosition;
     @JsonProperty(value = "CD_PhoneFlag", required = true)
-    private YesNo phoneFlag;
+    private String phoneFlag;
     @JsonProperty(value = "CD_CommencementDays", required = true)
     private Long commencementDays;
     @JsonProperty(value = "CD_EmailFlag", required = true)
-    private YesNo emailFlag;
+    private String emailFlag;
     @JsonProperty(value = "CD_Age", required = true)
     private Long age;
     @JsonProperty(value = "CD_DeviceType", required = true)
-    private DeviceType deviceType;
+    private String deviceType;
     @JsonProperty(value = "CD_Hr", required = true)
     private Integer hourCompleted;
+    @JsonProperty(value = "CD_quote_vehicle_body", required = true)
+    private String vehicleBody;
+
     //Keeping below data types as String to keep it same as `transaction_details` in db.
     @JsonProperty(value = "quote_drivers_regular_ncd", required = true)
     private String driverRegularNcd;
@@ -36,8 +39,6 @@ public class CarQuotePropensityScoreRequest implements Serializable
     private String driverRegularEmploymentStatus;
     @JsonProperty(value = "quote_riskAddress_state", required = true)
     private String riskAddressState;
-    @JsonProperty(value = "quote_vehicle_body", required = true)
-    private String vehicleBody;
     @JsonProperty(value = "quote_vehicle_colour", required = true)
     private String vehicleColour;
     @JsonProperty(value = "quote_vehicle_finance", required = true)
@@ -63,11 +64,11 @@ public class CarQuotePropensityScoreRequest implements Serializable
         this.rankPosition = rankPosition;
     }
 
-    public YesNo getPhoneFlag() {
+    public String getPhoneFlag() {
         return phoneFlag;
     }
 
-    public void setPhoneFlag(YesNo phoneFlag) {
+    public void setPhoneFlag(String phoneFlag) {
         this.phoneFlag = phoneFlag;
     }
 
@@ -79,11 +80,11 @@ public class CarQuotePropensityScoreRequest implements Serializable
         this.commencementDays = commencementDays;
     }
 
-    public YesNo getEmailFlag() {
+    public String getEmailFlag() {
         return emailFlag;
     }
 
-    public void setEmailFlag(YesNo emailFlag) {
+    public void setEmailFlag(String emailFlag) {
         this.emailFlag = emailFlag;
     }
 
@@ -95,11 +96,11 @@ public class CarQuotePropensityScoreRequest implements Serializable
         this.age = age;
     }
 
-    public DeviceType getDeviceType() {
+    public String getDeviceType() {
         return deviceType;
     }
 
-    public void setDeviceType(DeviceType deviceType) {
+    public void setDeviceType(String deviceType) {
         this.deviceType = deviceType;
     }
 
