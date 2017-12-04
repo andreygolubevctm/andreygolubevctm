@@ -65,6 +65,13 @@ public class FundDataAdapter {
                     .map(FundDataAdapter::createMembership);
         }
 
+        // Check for Hif
+        if (!membership.isPresent()) {
+            membership = quote.map(HealthQuote::getApplication)
+                    .map(Application::getHif)
+                    .map(FundDataAdapter::createMembership);
+        }
+
         return membership.orElse(null);
     }
 
@@ -254,7 +261,7 @@ public class FundDataAdapter {
                             .orElse(null),
                     cbh.map(Cbh::getPartneremployee)
                             .map(SameGroupMember::valueOf)
-                            .orElse(null));
+                            .orElse(null),null);
         } else {
             return null;
         }
@@ -268,7 +275,7 @@ public class FundDataAdapter {
                             .map(Relationship::toString)
                             .map(RelationshipToPrimary::new)
                             .orElse(null),
-                    null);
+                    null, null);
         } else {
             return null;
         }
@@ -296,7 +303,37 @@ public class FundDataAdapter {
                     wfd.map(Wfd::getPartnerrel)
                             .map(RelationshipToPrimary::new)
                             .orElse(null),
+                    null, null);
+        } else {
+            return null;
+        }
+    }
+
+    protected static Membership createMembership(Hif theHif) {
+        Optional<Hif> hif = Optional.ofNullable(theHif);
+        if (hif.isPresent()) {
+            return new Membership(
+                    null,
+                    null,
+                    null,
+                    null,
+                    createPartnerDetailsHIF(hif),
+                    null,
                     null);
+        } else {
+            return null;
+        }
+    }
+
+    private static PartnerDetails createPartnerDetailsHIF(Optional<Hif> hif) {
+        if (hif.isPresent()) {
+            return new PartnerDetails(
+                    hif.map(Hif::getPartnerrel)
+                            .map(RelationshipToPrimary::new)
+                            .orElse(null),
+                    null,
+                    hif.map(Hif::getPartnerAuthorityLevel)
+                            .orElse(null));
         } else {
             return null;
         }

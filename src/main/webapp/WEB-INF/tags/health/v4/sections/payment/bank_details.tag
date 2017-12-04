@@ -16,7 +16,7 @@
 
     <c:set var="fieldXpath" value="${xpath}/claims" />
     <form_v4:row fieldXpath="${fieldXpath}" label="Would you like your claim refunds paid into the same account?" className="health_bank-details_claims_group">
-        <field_v2:array_radio items="Y=Yes,N=No" xpath="${fieldXpath}" title="would you like your claim refunds paid into the same account" required="true" className="health-bank_details-claims" id="${name}_claims"/>
+        <field_v2:array_radio items="Y=Yes,N=No" xpath="${fieldXpath}" title="would you like your claim refunds paid into the same account" required="true" className="health-bank_details-claims" id="${name}_claims" additionalAttributes="data-attach='true'"/>
     </form_v4:row>
 
 
