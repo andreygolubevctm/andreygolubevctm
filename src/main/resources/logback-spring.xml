@@ -10,7 +10,8 @@
 	<springProperty scope="context" name="ctmLoggingPath" source="logging.path"
 					defaultValue="localhost"/>
 
-	<springProperty scope="context" name="jsonFileLoggingPath" source="ctm.logging.json.file.path"/>
+	<springProperty scope="context" name="jsonFileLoggingPath" source="ctm.logging.json.file.path"
+					defaultValue="/usr/aih/app-logs/ctm/WEB-INF/elasticstream/"/>
 
 	<springProperty scope="context" name="maxFileSize" source="ctm.logging.json.file.maxsize"
 					defaultValue="5MB"/>

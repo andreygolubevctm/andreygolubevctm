@@ -42,6 +42,8 @@ public class TravelQuoteRequest {
 
     private ArrayList<String> providerFilter = new ArrayList<String>();
     private SingleTripDetails singleTripDetails;
+    private TripType tripType;
+
 
     public TravelQuoteRequest(){
     }
@@ -140,5 +142,13 @@ public class TravelQuoteRequest {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public TripType getTripType() {
+        return tripType;
+    }
+
+    public void setTripType(TripType tripType) {
+        this.tripType = tripType;
     }
 }
