@@ -6,12 +6,9 @@ Handling of the callback popup
 ;(function($, undefined) {
 
 	var meerkat = window.meerkat,
-		meerkatEvents = meerkat.modules.events,
-		log = meerkat.logging.info,
 		day,
 		timezone = '',
 		hours = [],
-		times = [],
 		firstDay = '',
 		$pickATimeLabel,
 		origLabel = '',
@@ -28,11 +25,10 @@ Handling of the callback popup
 		$lbContactEmail,
         $lbContactTransactionId,
 
-		/* $callbackName, */
 		_isClosed = false,
 		aedtOffset = 600;
 
-    initLifeBrokerCallback =  function(){
+    function initLifeBrokerCallback(){
          jQuery(document).ready(function($) {
             if (typeof meerkat.site === 'undefined') return;
             if (meerkat.site.pageAction !== "confirmation") return;
@@ -79,8 +75,7 @@ Handling of the callback popup
 				_isClosed = false;
 				$(options).each(function(index, val) {
 					var option = document.createElement('option');
-					/* option.value = date + 'T' + convertTo24Hour(val) + ':00' + offset; */
-                    option.value = date + ' ' + convertTo24Hour(val) + ':00';
+					option.value = date + ' ' + convertTo24Hour(val) + ':00';
 					option.text = val + " AEDT";
 					$callbackTime.append(option);
 				});
@@ -91,8 +86,7 @@ Handling of the callback popup
 				options = getDailyHours($tomorrow.data('dayname'));
 
 				var option = document.createElement('option');
-				/* option.value = $tomorrow.data('date') + 'T' + convertTo24Hour(options[0]) + ':00' + offset; */
-                option.value = $tomorrow.data('date') + ' ' + convertTo24Hour(options[0]) + ':00';
+				option.value = $tomorrow.data('date') + ' ' + convertTo24Hour(options[0]) + ':00';
 				option.text = 'Call me at next available time';
 				$callbackTime.append(option);
 
@@ -104,10 +98,7 @@ Handling of the callback popup
         $(document).on('click', '#lb-callBackNow', function(e) {
         	e.preventDefault();
 
-			/* var settings = { url : "spring/lifebroker/lead/send.json"},
-			                   $this = $(this);
-			*/
-            var settings = {
+			var settings = {
                     url : "spring/lifebroker/lead/send",
                     scheduledTime : rightNow()
                 },
@@ -140,7 +131,6 @@ Handling of the callback popup
 
             initComplete = false;
 
-
             _initFields();
         });
 
@@ -150,11 +140,8 @@ Handling of the callback popup
 		// init fields
 		$pickATimeLabel = $('#lb-pickATimeLabel').find('label');
 		origLabel = $.trim($pickATimeLabel.text());
-		//$pickATimeLabel.text(origLabel + " today:");
-
 		$callbackTime = $('.lb-callbackTime'); // call me back later select box
-
-        $lbContactName = $('.lbContactName');
+		$lbContactName = $('.lbContactName');
         $lbContactDOB = $('.lbContactDOB');
         $lbContactGender = $('.lbContactGender');
         $lbContactState = $('.lbContactState');
@@ -162,21 +149,10 @@ Handling of the callback popup
         $lbContactPhone = $('.lbContactPhone');
         $lbContactEmail = $('.lbContactEmail');
         $lbContactTransactionId = $('.lbContactTransactionId');
-
 	}
-
-
-
-
 
 	function setPickATimeLabel($target) {
 		selectedDateObj = getSelectedCallbackDate($target);
-		if (selectedDateObj.setHours(0, 0, 0, 0) == new Date().setHours(0, 0, 0, 0)) {
-			//$pickATimeLabel.html(origLabel+" today:");
-		} else {
-			var formattedDate = getLabelFormattedDate(selectedDateObj);
-			//$pickATimeLabel.html(origLabel+"<span class='selectedOpeningHoursLabel'>"+formattedDate+"</span>");
-		}
 	}
 
 	function getSelectedCallbackDate($target) {
@@ -190,7 +166,15 @@ Handling of the callback popup
 
 	function getCallCentreTimes() {
 
-		var lifeBrokerCallCentreTimes = {"openingHours":[{"openingHoursId":0,"startTime":"09:00 am","endTime":"08:00 pm","description":"Monday","date":"","daySequence":null,"hoursType":null,"effectiveStart":null,"effectiveEnd":null,"verticalId":0},{"openingHoursId":0,"startTime":"09:00 am","endTime":"08:00 pm","description":"Tuesday","date":"","daySequence":null,"hoursType":null,"effectiveStart":null,"effectiveEnd":null,"verticalId":0},{"openingHoursId":0,"startTime":"09:00 am","endTime":"08:00 pm","description":"Wednesday","date":"","daySequence":null,"hoursType":null,"effectiveStart":null,"effectiveEnd":null,"verticalId":0},{"openingHoursId":0,"startTime":"09:00 am","endTime":"08:00 pm","description":"Thursday","date":"","daySequence":null,"hoursType":null,"effectiveStart":null,"effectiveEnd":null,"verticalId":0},{"openingHoursId":0,"startTime":"09:00 am","endTime":"08:00 pm","description":"Friday","date":"","daySequence":null,"hoursType":null,"effectiveStart":null,"effectiveEnd":null,"verticalId":0},{"openingHoursId":0,"startTime":"09:00 am","endTime":"08:00 pm","description":"Saturday","date":"","daySequence":null,"hoursType":null,"effectiveStart":null,"effectiveEnd":null,"verticalId":0},{"openingHoursId":0,"startTime":"09:00 am","endTime":"08:00 pm","description":"Sunday","date":"","daySequence":null,"hoursType":null,"effectiveStart":null,"effectiveEnd":null,"verticalId":0}]};
+		var lifeBrokerCallCentreTimes = {"openingHours":[
+			{"openingHoursId":0,"startTime":"09:00 am","endTime":"08:00 pm","description":"Monday","date":"","daySequence":null,"hoursType":null,"effectiveStart":null,"effectiveEnd":null,"verticalId":0},
+			{"openingHoursId":0,"startTime":"09:00 am","endTime":"08:00 pm","description":"Tuesday","date":"","daySequence":null,"hoursType":null,"effectiveStart":null,"effectiveEnd":null,"verticalId":0},
+			{"openingHoursId":0,"startTime":"09:00 am","endTime":"08:00 pm","description":"Wednesday","date":"","daySequence":null,"hoursType":null,"effectiveStart":null,"effectiveEnd":null,"verticalId":0},
+			{"openingHoursId":0,"startTime":"09:00 am","endTime":"08:00 pm","description":"Thursday","date":"","daySequence":null,"hoursType":null,"effectiveStart":null,"effectiveEnd":null,"verticalId":0},
+			{"openingHoursId":0,"startTime":"09:00 am","endTime":"08:00 pm","description":"Friday","date":"","daySequence":null,"hoursType":null,"effectiveStart":null,"effectiveEnd":null,"verticalId":0},
+			{"openingHoursId":0,"startTime":"09:00 am","endTime":"08:00 pm","description":"Saturday","date":"","daySequence":null,"hoursType":null,"effectiveStart":null,"effectiveEnd":null,"verticalId":0},
+			{"openingHoursId":0,"startTime":"09:00 am","endTime":"08:00 pm","description":"Sunday","date":"","daySequence":null,"hoursType":null,"effectiveStart":null,"effectiveEnd":null,"verticalId":0}
+		]};
 
 		hours = [];
 		$.each(lifeBrokerCallCentreTimes.openingHours, function() {
@@ -224,39 +208,11 @@ Handling of the callback popup
 		var data = 'name=' + name,
             phone = $lbContactPhone.text(),
 			email = $lbContactEmail.text(),
-            postcode = $lbContactPostCode.text(),
-            state = $lbContactState.text(),
-            dob = $lbContactDOB.text(),
-            gender = $lbContactGender.text(),
-            lbTransId = $lbContactTransactionId.text();
-
-		var age = getAge(dob);
-
-		/*
-		if (phone) {
-			data += '&phone=' + phone;
-		}
-		if (email) {
-			data += '&email=' + email;
-		}
-        if (postcode) {
-            data += '&postcode=' + postcode;
-        }
-        if (gender) {
-            data += '&gender=' + gender;
-        }
-        */
+            postcode = $lbContactPostCode.text();
 
         data += '&email=' + email;
         data += '&phone=' + phone;
         data += '&postcode=' + postcode;
-
-        /*
-		data += '&transactionId=' + lbTransId;
-		data += '&gender=' + gender;
-		data += '&age=' + age;
-		*/
-
 
         if (settings.scheduledTime) {
 			data += '&call_time=' + settings.scheduledTime;
@@ -272,8 +228,7 @@ Handling of the callback popup
 				$('.simples-lifebroker-leads').addClass('hidden');
                 $('.callbackLeadsContent').addClass('hidden');
 
-				var obj = {},
-					today = new Date();
+				var today = new Date();
 				if (result.status == 200) {
 
 					if (result.responseJSON.success) {
@@ -284,7 +239,7 @@ Handling of the callback popup
 
                         if (selectedDateObj == null) {
                             selectedDate = "Today, ";
-                            selectedDate = "within 30 mins";
+                            selectedTime = "within 30 mins";
 						} else {
                             selectedDate = settings.scheduledTime ? getLabelFormattedDate(selectedDateObj) : "Today, " + getLabelFormattedDate(today);
                             selectedTime = settings.scheduledTime ? $callbackTime.children('option:selected').text() : "within 30 mins";   /* within 30 mins was used when a time was not required for an immediate callback  */
