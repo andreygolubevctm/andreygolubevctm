@@ -95,6 +95,7 @@
 				<includeContext>false</includeContext>
 				<provider class="net.logstash.logback.composite.loggingevent.LoggingEventPatternJsonProvider">
 					<pattern>{
+						"awsTimestamp":"%d{yyyy-MM-dd'T'HH:mm:ss.SSSZZ}",
 						"accountId":"%logcxt{a}",
 						"hostname":"${HOSTNAME}",
 						"appname":"${APPNAME}",
