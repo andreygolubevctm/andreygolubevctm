@@ -21,6 +21,7 @@ import org.springframework.web.client.AsyncRestTemplate;
 
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withServerError;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -37,8 +38,6 @@ public class LifebrokerLeadsServiceTest {
 
     @Test
     public void getLeadResponse() {
-
-
         mockRestServiceServer.expect(requestTo("/2-7-0/lead/new"))
                 .andExpect(method(HttpMethod.POST))
                 .andRespond(withSuccess().contentType(MediaType.TEXT_XML).body("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
@@ -51,6 +50,33 @@ public class LifebrokerLeadsServiceTest {
         LifebrokerLeadResponse lifebrokerLeadResponse = lifeBrokerLeadsService.getLeadResponse("1234567", "john.doe@email.com", "123456789", "4037", "John Doe", "CTMREF01");
         Assert.assertNull(lifebrokerLeadResponse.getMessage());
         Assert.assertNotNull(lifebrokerLeadResponse.getClientReference());
+        Assert.assertEquals("fea7c00759ebc77fd3bb0a", lifebrokerLeadResponse.getClientReference());
+    }
+
+    @Test
+    public void getLeadResponseError() {
+        mockRestServiceServer.expect(requestTo("/2-7-0/lead/new"))
+                .andExpect(method(HttpMethod.POST))
+                .andRespond(withSuccess().contentType(MediaType.TEXT_XML).body("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+                        "<results xmlns=\"urn:Lifebroker.EnterpriseAPI\">\n" +
+                        "    <contact error=\"Email is required.\"/>\n" +
+                        "</results>"));
+
+        LifebrokerLeadResponse lifebrokerLeadResponse = lifeBrokerLeadsService.getLeadResponse("1234567", "", "123456789", "4037", "John Doe", "CTMREF01");
+        Assert.assertNotNull(lifebrokerLeadResponse.getMessage());
+        Assert.assertNull(lifebrokerLeadResponse.getClientReference());
+        Assert.assertEquals("Email is required.", lifebrokerLeadResponse.getMessage());
+    }
+
+    @Test
+    public void getLeadResponseErrorException() {
+        mockRestServiceServer.expect(requestTo("/2-7-0/lead/new"))
+                .andRespond(withServerError());
+
+        LifebrokerLeadResponse lifebrokerLeadResponse = lifeBrokerLeadsService.getLeadResponse("1234567", "", "123456789", "4037", "John Doe", "CTMREF01");
+        Assert.assertNotNull(lifebrokerLeadResponse.getMessage());
+        Assert.assertNull(lifebrokerLeadResponse.getClientReference());
+        Assert.assertEquals("org.springframework.web.client.HttpServerErrorException: 500 Internal Server Error", lifebrokerLeadResponse.getMessage());
     }
 
     @Configuration
