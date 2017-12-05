@@ -137,7 +137,7 @@
             <form_v4:row fieldXpath="${fieldXpath}"
                          label="Relationship"
                          id="${name}_relationshipGroup" className="health_dependant_details_relationshipGroup">
-                <field_v2:general_select type="healthNavQuestion_relationship" xpath="${fieldXpath}" title="Relationship to you" required="true" initialText="Please select" disableErrorContainer="${true}" />
+                <field_v2:general_select type="healthNavQuestion_relationship" xpath="${fieldXpath}" title="Relationship to you" required="true" initialText="Please select" disableErrorContainer="${true}" additionalAttributes=" data-attach='true'" />
             </form_v4:row>
             {{ } }}
 
