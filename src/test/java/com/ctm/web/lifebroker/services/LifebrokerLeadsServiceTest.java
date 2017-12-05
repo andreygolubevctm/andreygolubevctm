@@ -4,6 +4,7 @@ import com.ctm.httpclient.jackson.DefaultJacksonMappers;
 import com.ctm.web.core.config.AsyncRestTemplateConfig;
 import com.ctm.web.lifebroker.model.LifebrokerLeadResponse;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.AsyncRestTemplate;
 
+import javax.faces.render.FacesBehaviorRenderer;
+
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withServerError;
@@ -29,11 +32,20 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 @TestPropertySource(properties = {"lifebroker.lead.endpoint=/2-7-0/lead/new", "lifebroker.lead.username=UATcompthemkt", "lifebroker.lead.password=lI9hW2qIlx2f4G"})
 public class LifebrokerLeadsServiceTest {
 
-    @Autowired
+
     private MockRestServiceServer mockRestServiceServer;
 
     @Autowired
     private LifebrokerLeadsService lifeBrokerLeadsService;
+
+    @Autowired
+    private AsyncRestTemplate asyncRestTemplate;
+
+
+    @Before
+    public void setup() {
+        mockRestServiceServer = MockRestServiceServer.createServer(asyncRestTemplate);
+    }
 
 
     @Test
@@ -82,10 +94,7 @@ public class LifebrokerLeadsServiceTest {
     @Configuration
     static class Config {
 
-        @Bean
-        public MockRestServiceServer mockRestServiceServer(AsyncRestTemplate asyncRestTemplate) {
-            return MockRestServiceServer.createServer(asyncRestTemplate);
-        }
+
 
 
         @Bean
