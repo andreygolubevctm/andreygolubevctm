@@ -10,22 +10,26 @@ import org.json.XML;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class LifebrokerLeadResponse {
 
-    private final boolean success;
-    private final String message;
+    private boolean success;
+    private String message;
 
     @JsonProperty("client_reference")
-    private final String clientReference;
+    private String clientReference;
 
-    public LifebrokerLeadResponse(String clientReference) {
-        this.message = null;
-        this.success = true;
+    public LifebrokerLeadResponse withClientReference(String clientReference) {
         this.clientReference = clientReference;
+        this.success = true;
+        return this;
     }
 
-    public LifebrokerLeadResponse(Exception e) {
-        this.message = e.getMessage();
+    public LifebrokerLeadResponse withMessage(String message) {
+        this.message = message;
         this.success = false;
-        this.clientReference = null;
+        return this;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public boolean isSuccess() {

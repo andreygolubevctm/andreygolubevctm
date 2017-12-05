@@ -7,6 +7,8 @@ public class LifebrokerLeadResults {
 
     private LifebrokerLeadResultsClient client;
 
+    private LifebrokerLeadResultsContact contact;
+
     public void setClient(LifebrokerLeadResultsClient client) {
         this.client = client;
     }
@@ -20,16 +22,34 @@ public class LifebrokerLeadResults {
         return client;
     }
 
+    public LifebrokerLeadResultsContact getContact() {
+        return contact;
+    }
+
+    public void setContact(LifebrokerLeadResultsContact contact) {
+        this.contact = contact;
+    }
+
+    public LifebrokerLeadResults withContact(LifebrokerLeadResultsContact contact) {
+        this.contact = contact;
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         LifebrokerLeadResults that = (LifebrokerLeadResults) o;
-        return client != null ? client.equals(that.client) : that.client == null;
+
+        if (client != null ? !client.equals(that.client) : that.client != null) return false;
+        return contact != null ? contact.equals(that.contact) : that.contact == null;
     }
 
     @Override
     public int hashCode() {
-        return client != null ? client.hashCode() : 0;
+        int result = client != null ? client.hashCode() : 0;
+        result = 31 * result + (contact != null ? contact.hashCode() : 0);
+        return result;
     }
 }

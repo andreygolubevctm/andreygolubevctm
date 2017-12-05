@@ -66,7 +66,8 @@ public class Touch extends AbstractJsonModel {
         MORE_INFO("More Info", "MoreInfo"),
 		REMEMBER_ME("RememberMe","RememberMe"),
 		BP_EMAIL_STARTED("Email sent started", "BPSTART"),
-		BP_EMAIL_END("Email sent started", "BPEND");
+		BP_EMAIL_END("Email sent started", "BPEND"),
+		SIMPLES_LIFEBROKER_LEAD("Simples Lifebroker Lead","SLBL");
 
 		private final String description, code;
 

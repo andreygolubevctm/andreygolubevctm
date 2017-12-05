@@ -66,11 +66,15 @@ public class LifebrokerLeadsService {
             HttpHeaders headers = getHeaders();
             HttpEntity<LifebrokerLeadRequest> lifebrokerLeadRequestEntity = new HttpEntity<LifebrokerLeadRequest>(lifebrokerLeadRequest, headers);
             ListenableFuture<ResponseEntity<LifebrokerLeadResults>> listenableFuture = asyncRestTemplate.exchange(endpoint, HttpMethod.POST, lifebrokerLeadRequestEntity, LifebrokerLeadResults.class);
-            final ResponseEntity<LifebrokerLeadResults> lifebrokerLeadResults = listenableFuture.get(timeout, TimeUnit.SECONDS);
-            return new LifebrokerLeadResponse(lifebrokerLeadResults.getBody().getClient().getReference());
+            final ResponseEntity<LifebrokerLeadResults> lifebrokerLeadResultsEntity = listenableFuture.get(timeout, TimeUnit.SECONDS);
+            final LifebrokerLeadResults lifebrokerLeadResults = lifebrokerLeadResultsEntity.getBody();
+            if (lifebrokerLeadResults.getContact() == null) {
+                return new LifebrokerLeadResponse().withClientReference(lifebrokerLeadResults.getClient().getReference());
+            }
+            return new LifebrokerLeadResponse().withMessage(lifebrokerLeadResults.getContact().getError());
         } catch (Exception e) {
-            LOGGER.error("Exception occured gettings Lifebroker lead: {}", e.getMessage(), e);
-            return new LifebrokerLeadResponse(e);
+            LOGGER.error("Exception occured getting Lifebroker lead: {}", e.getMessage(), e);
+            return new LifebrokerLeadResponse().withMessage(e.getMessage());
         }
     }
 
