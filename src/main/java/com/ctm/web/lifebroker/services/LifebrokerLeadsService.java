@@ -46,7 +46,7 @@ public class LifebrokerLeadsService {
     private AsyncRestTemplate asyncRestTemplate;
 
     public static final String BASIC_AUTHORIZATION_PREFIX = "Basic ";
-    public static final String AUTHORIZATION_HEADER = "Basic ";
+    public static final String AUTHORIZATION_HEADER = "Authorization";
 
     HttpHeaders getHeaders() {
         return new HttpHeaders() {{
@@ -63,7 +63,8 @@ public class LifebrokerLeadsService {
     public LifebrokerLeadResponse getLeadResponse(final String transactionId, final String email, final String phone, final String postcode, final String name, final String callTime) {
         try {
             final LifebrokerLeadRequest lifebrokerLeadRequest = new LifebrokerLeadRequest(transactionId, email, phone, postcode, name, mediaCode, callTime);
-            HttpEntity<LifebrokerLeadRequest> lifebrokerLeadRequestEntity = new HttpEntity<LifebrokerLeadRequest>(lifebrokerLeadRequest, getHeaders());
+            HttpHeaders headers = getHeaders();
+            HttpEntity<LifebrokerLeadRequest> lifebrokerLeadRequestEntity = new HttpEntity<LifebrokerLeadRequest>(lifebrokerLeadRequest, headers);
             ListenableFuture<ResponseEntity<LifebrokerLeadResults>> listenableFuture = asyncRestTemplate.exchange(endpoint, HttpMethod.POST, lifebrokerLeadRequestEntity, LifebrokerLeadResults.class);
             final ResponseEntity<LifebrokerLeadResults> lifebrokerLeadResults = listenableFuture.get(timeout, TimeUnit.SECONDS);
             return new LifebrokerLeadResponse(lifebrokerLeadResults.getBody().getClient().getReference());
