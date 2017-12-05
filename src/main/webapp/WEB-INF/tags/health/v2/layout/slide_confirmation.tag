@@ -173,7 +173,6 @@
 
 						</div>
 
-						<!-- todo: confirm css to hide this dialogue from wimples works -->
 						<div class="row confirmation-complete no-wimples">
 							<div class="callbackLeads simples-dialogue yellow">
 
@@ -192,8 +191,6 @@
 
 									<div class="call-now-panel">
 										<div class="col-xs-6">
-
-											<!-- todo: add js to swap call me now/later btn as required - note call me later should be shown if call centre is closed -->
 
 											<a href="javascript:;" class="lb-switch lb-call-type">Choose another time for a call?</a>
 										</div>
@@ -217,7 +214,6 @@
 																	  title="" wrapCopyInSpan="true" />
 											</form_v4:row>
 
-											<!-- todo label font size approx 16px?  -->
 											<form_v4:row label="Pick a time for " id="lb-pickATimeLabel">
 												<field_v2:array_select xpath="${xpath}/lb-time" required="true" className="callbackTime lb-callbackTime"
 																	   items="="
