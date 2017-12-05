@@ -1,5 +1,7 @@
 package com.ctm.web.lifebroker.router;
 
+import com.ctm.web.core.model.Touch;
+import com.ctm.web.core.services.TouchService;
 import com.ctm.web.lifebroker.model.LifebrokerLeadResponse;
 import com.ctm.web.lifebroker.services.LifebrokerLeadsService;
 import com.sun.istack.NotNull;
@@ -27,6 +29,14 @@ public class LifebrokerLeadsController {
     @ApiOperation(value = "lead/send", notes = "Simples Lifebroker Lead", produces = "text/html")
     @RequestMapping(value = "/lead/send", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public LifebrokerLeadResponse sendLead(@RequestParam @NotNull final String transactionId, @RequestParam @NotNull final String email, @RequestParam @NotNull final String phone, @RequestParam @NotNull final String postcode, @RequestParam @NotNull final String name, @RequestParam @NotNull final String call_time) throws Exception {
-        return lifebrokerLeadsService.getLeadResponse(transactionId, email, phone, postcode, name, call_time);
+        LifebrokerLeadResponse lifebrokerResponse = lifebrokerLeadsService.getLeadResponse(transactionId, email, phone, postcode, name, call_time);
+        if(lifebrokerResponse.isSuccess()) {
+            TouchService touchService = new TouchService();
+            Touch touch = new Touch();
+            touch.setType(Touch.TouchType.SIMPLES_LIFEBROKER_LEAD);
+            touch.setTransactionId(Long.parseLong(transactionId));
+            touchService.recordTouchWithLifebrokerReference(touch, lifebrokerResponse.getClientReference());
+        }
+        return lifebrokerResponse;
     }
 }

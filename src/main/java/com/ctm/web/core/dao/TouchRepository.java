@@ -24,8 +24,8 @@ public class TouchRepository {
             "INSERT INTO ctm.touches_comments (touchesId, comment) " +
             "VALUES (:touchesId, :comment)";
     public static final String INSERT_TOUCH_LIFEBROKER_PROPERTY =
-            "INSERT INTO ctm.touches_lifebroker (touchesId, client_reference) " +
-                    "VALUES (:touchesId, :client_reference)";
+            "INSERT INTO ctm.touches_lifebroker (touchesId, clientReference) " +
+                    "VALUES (:touchesId, :clientReference)";
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
 

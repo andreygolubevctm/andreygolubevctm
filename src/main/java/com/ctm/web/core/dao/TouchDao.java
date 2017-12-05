@@ -330,6 +330,23 @@ public class TouchDao {
 					touch.getTouchCommentProperty().setId(rs.getLong(1));
 				}
 			}
+
+			if (touch.getTouchLifebrokerProperty() != null) {
+				stmt = dbSource.getConnection().prepareStatement(
+						"INSERT INTO ctm.touches_lifebroker (touchesId, clientReference) " +
+								"VALUES (?, ?);", Statement.RETURN_GENERATED_KEYS
+				);
+
+				stmt.setLong(1, touch.getId());
+				stmt.setString(2, touch.getTouchLifebrokerProperty().getClientReference());
+
+				stmt.executeUpdate();
+				// Update the comment model with the insert ID
+				rs = stmt.getGeneratedKeys();
+				if (rs != null && rs.next()) {
+					touch.getTouchLifebrokerProperty().setId(rs.getLong(1));
+				}
+			}
 		} catch (SQLException | NamingException e) {
 			throw new DaoException(e);
 		} finally {
