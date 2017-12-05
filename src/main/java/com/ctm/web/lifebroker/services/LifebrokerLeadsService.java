@@ -1,43 +1,77 @@
 package com.ctm.web.lifebroker.services;
 
-import com.ctm.web.lifebroker.model.LifebrokerLead;
-import com.ctm.web.lifebroker.model.LifebrokerLeadOutcome;
-import com.ctm.web.lifebroker.services.LifebrokerLeadsServiceUtil;
-import org.apache.commons.lang3.StringUtils;
+
+import com.ctm.web.lifebroker.model.LifebrokerLeadRequest;
+import com.ctm.web.lifebroker.model.LifebrokerLeadResponse;
+import com.ctm.web.lifebroker.model.LifebrokerLeadResults;
+import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.concurrent.ListenableFuture;
+import org.springframework.web.client.AsyncRestTemplate;
 
-import java.util.Optional;
+import java.nio.charset.Charset;
+import java.util.Collections;
 import java.util.concurrent.TimeUnit;
+
 
 /**
  * Created by msmerdon on 04/12/2017.
  */
 @Service
 public class LifebrokerLeadsService {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(LifebrokerLeadsService.class);
-    public static final String LIFEBROKER_URL = "https://enterpriseapi.lifebroker.com.au/2-7-0/lead/new";
-    public static final int REQUEST_TIMEOUT = 10;
 
-    public String sendLead(final String transactionId, final String email, final String phone, final String postcode, final String name, final String call_time) throws Exception {
-        LifebrokerLead lifebrokerLead = new LifebrokerLead(transactionId, email, phone, postcode, name, call_time);
+    @Value("${lifebroker.lead.endpoint}")
+    private String endpoint;
 
+    @Value("${lifebroker.lead.username}")
+    private String username;
 
-        final ListenableFuture<ResponseEntity<LifebrokerLeadOutcome>> sendRequestListenable = LifebrokerLeadsServiceUtil.sendLifebrokerLeadRequest(lifebrokerLead, LIFEBROKER_URL);
+    @Value("${lifebroker.lead.password}")
+    private String password;
 
-        final ResponseEntity<LifebrokerLeadOutcome> responseEntity = sendRequestListenable.get(REQUEST_TIMEOUT,
-                TimeUnit.SECONDS);
-        LOGGER.debug(responseEntity.getBody());
-        final CliReturnResponse response = createResponse(responseEntity);
-        LOGGER.info("CliReturn phoneNumber {} response {}", data, response);
-        return response;
+    @Value("${lifebroker.lead.mediaCode:CTMREF01}")
+    private String mediaCode;
+
+    @Value("${lifebroker.lead.timeout:10}")
+    private Long timeout;
+
+    @Autowired
+    private AsyncRestTemplate asyncRestTemplate;
+
+    public static final String BASIC_AUTHORIZATION_PREFIX = "Basic ";
+    public static final String AUTHORIZATION_HEADER = "Basic ";
+
+    HttpHeaders getHeaders() {
+        return new HttpHeaders() {{
+            String auth = username + ":" + password;
+            byte[] encodedAuth = Base64.encodeBase64(
+                    auth.getBytes(Charset.forName("US-ASCII")));
+            String authorizationHeader = BASIC_AUTHORIZATION_PREFIX + new String(encodedAuth);
+            set(AUTHORIZATION_HEADER, authorizationHeader);
+            setContentType(MediaType.TEXT_XML);
+            setAccept(Collections.singletonList(MediaType.APPLICATION_XML));
+        }};
     }
 
-    private CliReturnResponse createResponse(ResponseEntity<LifebrokerLeadOutcome> responseEntity) {
-        final LifebrokerLeadOutcome outcome = Optional.ofNullable(responseEntity.getBody()).orElse(LifebrokerLeadOutcome.FAIL);
-        return new CliReturnResponse(StringUtils.lowerCase(outcome.name()));
+    public LifebrokerLeadResponse getLeadResponse(final String transactionId, final String email, final String phone, final String postcode, final String name, final String callTime) {
+        try {
+            final LifebrokerLeadRequest lifebrokerLeadRequest = new LifebrokerLeadRequest(transactionId, email, phone, postcode, name, mediaCode);
+            HttpEntity<LifebrokerLeadRequest> lifebrokerLeadRequestEntity = new HttpEntity<LifebrokerLeadRequest>(lifebrokerLeadRequest, getHeaders());
+            ListenableFuture<ResponseEntity<LifebrokerLeadResults>> listenableFuture = asyncRestTemplate.exchange(endpoint, HttpMethod.POST, lifebrokerLeadRequestEntity, LifebrokerLeadResults.class);
+            final ResponseEntity<LifebrokerLeadResults> lifebrokerLeadResults = listenableFuture.get(timeout, TimeUnit.SECONDS);
+            return new LifebrokerLeadResponse(lifebrokerLeadResults.getBody().getClient().getReference());
+        } catch (Exception e) {
+            LOGGER.error("Exception occured gettings Lifebroker lead: {}", e.getMessage(), e);
+            return new LifebrokerLeadResponse(e);
+        }
     }
+
+
 }
