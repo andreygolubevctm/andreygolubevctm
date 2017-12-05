@@ -13,17 +13,21 @@ class LifebrokerLeadRequestContact {
 
     private final String postcode;
 
+    @JsonProperty("Call_time")
+    private final String callTime;
+
     private final LifebrokerLeadRequestClient client;
 
     private final LifebrokerLeadRequestAdditional additional;
 
-    LifebrokerLeadRequestContact(String affiliateId, String email, String phone, String postcode, LifebrokerLeadRequestClient client, LifebrokerLeadRequestAdditional additional) {
+    LifebrokerLeadRequestContact(String affiliateId, String email, String phone, String postcode, String callTime, LifebrokerLeadRequestClient client, LifebrokerLeadRequestAdditional additional) {
         this.affiliateId = affiliateId;
         this.email = email;
         this.phone = phone;
         this.postcode = postcode;
         this.client = client;
         this.additional = additional;
+        this.callTime = callTime;
     }
 
     public String getAffiliateId() {
@@ -40,6 +44,10 @@ class LifebrokerLeadRequestContact {
 
     public String getPostcode() {
         return postcode;
+    }
+
+    public String getCallTime() {
+        return callTime;
     }
 
     public LifebrokerLeadRequestClient getClient() {

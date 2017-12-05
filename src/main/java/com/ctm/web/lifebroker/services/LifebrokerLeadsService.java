@@ -62,7 +62,7 @@ public class LifebrokerLeadsService {
 
     public LifebrokerLeadResponse getLeadResponse(final String transactionId, final String email, final String phone, final String postcode, final String name, final String callTime) {
         try {
-            final LifebrokerLeadRequest lifebrokerLeadRequest = new LifebrokerLeadRequest(transactionId, email, phone, postcode, name, mediaCode);
+            final LifebrokerLeadRequest lifebrokerLeadRequest = new LifebrokerLeadRequest(transactionId, email, phone, postcode, name, mediaCode, callTime);
             HttpEntity<LifebrokerLeadRequest> lifebrokerLeadRequestEntity = new HttpEntity<LifebrokerLeadRequest>(lifebrokerLeadRequest, getHeaders());
             ListenableFuture<ResponseEntity<LifebrokerLeadResults>> listenableFuture = asyncRestTemplate.exchange(endpoint, HttpMethod.POST, lifebrokerLeadRequestEntity, LifebrokerLeadResults.class);
             final ResponseEntity<LifebrokerLeadResults> lifebrokerLeadResults = listenableFuture.get(timeout, TimeUnit.SECONDS);
