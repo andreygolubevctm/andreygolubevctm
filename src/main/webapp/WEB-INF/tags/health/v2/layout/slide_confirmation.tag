@@ -186,7 +186,6 @@
 								<div class="lbContactEmail hidden">${lbContactEmail}</div>
 								<div class="lbContactTransactionId hidden"><c:out value="${data['current/transactionId']}"/></div>
 
-								<!-- todo: commit the dialog sql -->
 								<simples:dialogue id="98" vertical="health" mandatory="true" className="simples-lifebroker-leads yellow" />
 
 								<div class="callbackLeadsContent hidden">
