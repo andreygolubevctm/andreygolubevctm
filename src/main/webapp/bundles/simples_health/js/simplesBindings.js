@@ -442,7 +442,8 @@
         toggleLimitedCoverDialogue: toggleLimitedCoverDialogue,
         toggleRebateDialogue: toggleRebateDialogue,
         toggleMoreInfoDialogue: toggleMoreInfoDialogue,
-        toggleAffiliateRewardsDialogue: toggleAffiliateRewardsDialogue
+        toggleAffiliateRewardsDialogue: toggleAffiliateRewardsDialogue,
+        getCallType: getCallType
     });
 
 })(jQuery);

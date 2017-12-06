@@ -38,8 +38,6 @@
 			</div>
 		</div>
 
-		<field_v1:hidden xpath="health/coupon/info" className="coupon-info-field" />
-
 	</c:when>
 	<c:otherwise>
 		<%-- if not call centre user then coupon:fields

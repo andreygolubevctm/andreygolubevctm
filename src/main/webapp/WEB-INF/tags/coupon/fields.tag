@@ -34,7 +34,7 @@
         <c:otherwise>
             <field_v1:hidden xpath="${xpath}/coupon/code" className="coupon-code-field" />
             <field_v1:hidden xpath="${xpath}/coupon/id" className="coupon-id-field" />
-            <field_v1:hidden xpath="${xpath}/coupon/info" className="coupon-info-field" />
+            <field_v1:hidden xpath="${xpath}/coupon/viewed" className="coupon-viewed-field" />
         </c:otherwise>
     </c:choose>
 
