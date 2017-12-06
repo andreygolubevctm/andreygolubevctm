@@ -40,12 +40,6 @@
                         <simples:dialogue id="44" vertical="health" mandatory="true" />
                     </div>
                 </div>
-
-                <div class="row">
-                    <div class="col-sm-12">
-                        <simples:dialogue id="45" vertical="health" />
-                    </div>
-                </div>
             </div>
 
             <div class="ambulance col-sm-12">
