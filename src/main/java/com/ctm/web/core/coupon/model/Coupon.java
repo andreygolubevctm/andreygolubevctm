@@ -24,6 +24,7 @@ public class Coupon extends AbstractJsonModel {
 	private boolean isExclusive;
 	private boolean showPopup;
 	private boolean canPrePopulate;
+	private boolean showCouponSeen;
     private String contentTile;
 	private String contentBanner;
 	private String contentSuccess;
@@ -92,6 +93,12 @@ public class Coupon extends AbstractJsonModel {
 	}
 	public void setPrePopulate(boolean canPrePopulate) {
 		this.canPrePopulate = canPrePopulate;
+	}
+	public boolean isShowCouponSeen() {
+		return showCouponSeen;
+	}
+	public void setShowCouponSeen(boolean showCouponSeen) {
+		this.showCouponSeen = showCouponSeen;
 	}
     public String getContentTile() {
         return contentTile;
@@ -193,6 +200,7 @@ public class Coupon extends AbstractJsonModel {
 		json.put("contentConfirmation", getContentConfirmation());
 		json.put("showPopup", isShowPopup());
 		json.put("canPrePopulate", canPrePopulate());
+		json.put("showCouponSeen", isShowCouponSeen());
 
 		return json;
 	}
@@ -209,6 +217,7 @@ public class Coupon extends AbstractJsonModel {
 				", isExclusive=" + isExclusive +
 				", showPopup=" + showPopup +
 				", canPrePopulate=" + canPrePopulate +
+				", showCouponSeen=" + showCouponSeen +
 				", contentTile='" + contentTile + '\'' +
 				", contentBanner='" + contentBanner + '\'' +
 				", contentSuccess='" + contentSuccess + '\'' +

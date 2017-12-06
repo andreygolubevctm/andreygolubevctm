@@ -12,6 +12,7 @@ public class CouponRequest {
 	public int couponId;
 	public String campaignName;
 	public String couponCode;
+	public int showCouponSeen;
 	public double couponValue;
 	public CouponChannel couponChannel;
 	public Date effectiveDate;

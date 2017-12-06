@@ -529,16 +529,27 @@
 	}
 
 	function toggleCouponSeenText() {
-        var $couponCampaignSeen = $('.coupon-campaign-seen');
-        if ($('#health_simples_contactTypeRadio_outbound').is(':checked') || $('#health_simples_contactTypeRadio_trialcampaign').is(':checked')) {
-            var couponInfo = meerkat.modules.coupon.getCouponInfoJSON();
-            if (_.isObject(couponInfo)) {
-                if ($couponCampaignSeen.length === 0) {
-                    $('<div class="coupon-campaign-seen alert alert-info">Coupon Campaign: ' + couponInfo.campaignName + ' | Coupon Value: $' + couponInfo.couponValue + '</div>').insertAfter($('#healthVouchers'));
-                } else {
-                    $couponCampaignSeen.show();
-                }
-            }
+        var Coupon = meerkat.modules.coupon,
+			$couponCampaignSeen = $('.coupon-campaign-seen'),
+        	couponId = Coupon.getCouponViewedId(),
+			coupon = null;
+
+        // show only if outbound or trial campaign
+		if (!_.isNull(couponId) && meerkat.modules.simplesBindings.getCallType() === 'outbound') {
+        	if ($couponCampaignSeen.length === 1) {
+                $couponCampaignSeen.show();
+			} else {
+                Coupon.loadCoupon('simplesCouponLoad', couponId, function() {
+                    coupon = Coupon.getCurrentCoupon();
+
+                    if (_.isObject(coupon) && coupon.showCouponSeen) {
+						$('<div class="coupon-campaign-seen alert alert-info">Coupon Campaign: ' + coupon.campaignName + ' | Coupon Value: $' + coupon.couponValue + '</div>')
+							.insertAfter($('#healthVouchers'));
+                    } else {
+                        $couponCampaignSeen.hide();
+					}
+                });
+			}
         } else {
             $couponCampaignSeen.hide();
         }
