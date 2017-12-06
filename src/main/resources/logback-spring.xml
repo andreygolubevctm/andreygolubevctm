@@ -94,7 +94,6 @@
 					<pattern>
 						<pattern>
 							{"timestamp":"%d{yyyy-MM-dd'T'HH:mm:ss.SSSZZ}",
-							<!--"version": "%version",-->
 							"logger": "%logger",
 							"level": "%level",
 							"thread": "%thread",
