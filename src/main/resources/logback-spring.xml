@@ -88,27 +88,29 @@
 			<!-- keep 30 days' worth of history -->
 			<maxHistory>${maxHistory}</maxHistory>
 		</rollingPolicy>
-		<encoder class="com.ctm.commonlogging.logback.ExtLayoutWrappingEncoder">
-			<layout class="net.logstash.logback.layout.LogstashLayout">
+		<encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
 				<jsonFactoryDecorator class="com.ctm.commonlogging.common.LogstashFactoryDecorator"/>
-				<fieldNames class="net.logstash.logback.fieldnames.ShortenedFieldNames"/>
-				<includeContext>false</includeContext>
-				<provider class="net.logstash.logback.composite.loggingevent.LoggingEventPatternJsonProvider">
-					<pattern>{
-						"awsTimestamp":"%d{yyyy-MM-dd'T'HH:mm:ss.SSSZZ}",
-						"accountId":"%logcxt{a}",
-						"hostname":"${HOSTNAME}",
-						"appname":"${APPNAME}",
-						"env":"${ENV}",
-						"context":"%servletctx",
-						"transactionId":"%logcxt{t}",
-						"brandCode":"%logcxt{b}",
-						"verticalType":"${VERTICAL_TYPE:-%logcxt{v}}",
-						"correlationId":"%logcxt{c}"}
+				<providers>
+					<pattern>
+						<pattern>
+							{"timestamp":"%d{yyyy-MM-dd'T'HH:mm:ss.SSSZZ}",
+							"version": "%version",
+							"logger": "%logger",
+							"level": "%level",
+							"thread": "%thread",
+							"message": "%message",
+							"accountId":"%logcxt{a}",
+							"hostname":"${HOSTNAME}",
+							"appname":"${APPNAME}",
+							"env":"${ENV}",
+							"context":"%servletctx",
+							"transactionId":"%logcxt{t}",
+							"brandCode":"%logcxt{b}",
+							"verticalType":"${VERTICAL_TYPE:-%logcxt{v}}",
+							"correlationId":"%logcxt{c}"}
+						</pattern>
 					</pattern>
-				</provider>
-				<provider class="net.logstash.logback.composite.loggingevent.ArgumentsJsonProvider"/>
-			</layout>
+				</providers>
 		</encoder>
 	</appender>
 
