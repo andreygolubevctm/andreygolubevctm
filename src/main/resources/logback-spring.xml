@@ -2,8 +2,10 @@
 <configuration>
 
 	<include resource="org/springframework/boot/logging/logback/defaults.xml" />
-	<include resource="org/springframework/boot/logging/logback/console-appender.xml" />
-	<include resource="org/springframework/boot/logging/logback/file-appender.xml" />
+
+	<conversionRule conversionWord="logcxt" converterClass="com.ctm.commonlogging.context.LoggingContextConverter" />
+	<conversionRule conversionWord="servletctx" converterClass="com.ctm.commonlogging.context.ContextPathConverter" />
+	<property name="LOG_CTX_PATTERN" value="[%logcxt{t}:%logcxt{b}:${VERTICAL_TYPE:-%logcxt{v}}:%logcxt{c}]"/>
 
 	<springProperty scope="context" name="LOG_JSON" source="ctm.logging.format.json" defaultValue="false"/>
 
@@ -22,12 +24,12 @@
 
 
 	<property name="APPNAME" value="webctm"/>
-	<conversionRule conversionWord="logcxt" converterClass="com.ctm.commonlogging.context.LoggingContextConverter" />
-	<conversionRule conversionWord="servletctx" converterClass="com.ctm.commonlogging.context.ContextPathConverter" />
-	<property name="LOG_CTX_PATTERN" value="[%logcxt{t}:%logcxt{b}:${VERTICAL_TYPE:-%logcxt{v}}:%logcxt{c}]"/>
 	<property name="ENV" value="${spring.profiles.active:-LOCALHOST}"/>
 	<property name="CONSOLE_LOG_PATTERN" value="%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%5p) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} ${LOG_CTX_PATTERN} %clr(:){faint} %m%n%wex"/>
 	<property name="FILE_LOG_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${PID:- } --- [%t] %-40.40logger{39} ${LOG_CTX_PATTERN} : %m%n%wex"/>
+
+	<include resource="org/springframework/boot/logging/logback/console-appender.xml" />
+	<include resource="org/springframework/boot/logging/logback/file-appender.xml" />
 
 	<appender name="SIFT" class="ch.qos.logback.classic.sift.SiftingAppender">
 		<!-- in the absence of the class attribute, it is assumed that the
@@ -93,7 +95,7 @@
 				<providers>
 					<pattern>
 						<pattern>
-							{"timestamp":"%d{yyyy-MM-dd'T'HH:mm:ss.SSSZZ}",
+							{"@timestamp":"%d{yyyy-MM-dd'T'HH:mm:ss.SSSZZ}",
 							"logger": "%logger",
 							"level": "%level",
 							"thread": "%thread",
