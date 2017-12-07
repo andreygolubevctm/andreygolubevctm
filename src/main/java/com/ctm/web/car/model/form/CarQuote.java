@@ -1,11 +1,19 @@
 package com.ctm.web.car.model.form;
 
+import com.ctm.energy.apply.model.request.application.address.State;
 import com.ctm.web.car.quote.model.request.Filter;
+import com.ctm.web.core.leadfeed.model.Address;
+import com.ctm.web.core.leadfeed.model.CTMCarLeadFeedRequestMetadata;
+import com.ctm.web.core.leadfeed.model.Person;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.validation.Valid;
 
+import static com.ctm.web.car.leadfeed.services.CTM.CTMCarLeadFeedService.getJsonString;
+
 public class CarQuote {
+
+    public static final int LEAD_FEED_INFO_SIZE = 6;
 
     private Accs accs;
 
@@ -185,6 +193,15 @@ public class CarQuote {
     }
 
 
+    /**
+     * builds a string with lead feed info
+     *
+     * Note: update LEAD_FEED_INFO_SIZE constant when adding/removing appends.
+     *
+     * {@linkplain com.ctm.web.core.leadfeed.dao.BestPriceLeadsDao} will use this info to send leads.
+     *
+     * @return
+     */
     public String createLeadFeedInfo() {
         String separator = "||";
 
@@ -212,8 +229,60 @@ public class CarQuote {
         if (okToCall && riskAddress != null) {
             sb.append(StringUtils.trimToEmpty(riskAddress.getState()));
         }
+
+        //additional info required by lead feeds send to `ctm-leads`
+        //Validation will be done when we send the lead. We don't have all required fields here (e.g., propensityScore)
+        sb.append(separator);
+        sb.append(getJsonString(getPerson(regular, contact, riskAddress)));
+        sb.append(separator);
+        sb.append(getJsonString(getCtmCarLeadFeedRequestMetadata(regular, options, vehicle, quoteReferenceNumber)));
+
         return sb.toString();
     }
+
+    protected CTMCarLeadFeedRequestMetadata getCtmCarLeadFeedRequestMetadata(final Regular regular, final Options options, final Vehicle vehicle, final String quoteReferenceNumber) {
+
+        final CTMCarLeadFeedRequestMetadata metadata = new CTMCarLeadFeedRequestMetadata();
+
+        metadata.setType(CTMCarLeadFeedRequestMetadata.MetadataType.CAR);
+        if(options != null) metadata.setAgeRestriction(options.getDriverOption());
+        if(regular != null) metadata.setNcdRating(regular.getNcd());
+        if(vehicle != null) metadata.setVehicleDescription(vehicle.getMakeDes());
+        //Below values will only be available after results, and ranking
+        metadata.setProviderQuoteRef(null);
+        metadata.setProviderCode(null);
+        metadata.setPropensityScore(null);
+        return metadata;
+    }
+
+    protected Person getPerson(final Regular regular, final Contact contact, final RiskAddress riskAddress) {
+
+        final Person person = new Person();
+
+        if (regular != null) {
+            person.setFirstName(regular.getFirstname());
+            person.setLastName(regular.getSurname());
+            person.setDob(regular.getDob());
+        }
+
+        if(contact != null) {
+            person.setEmail(contact.getEmail());
+            //contact.getPhone is same as contact.getPhoneInput except later is escaped.
+            person.setPhone(contact.getPhoneinput());
+            person.setMobile(contact.getPhoneinput());
+        }
+
+        if(riskAddress != null){
+            final Address address = new Address();
+            address.setState(State.valueOf(riskAddress.getState()));
+            address.setSuburb(riskAddress.getSuburbName());
+            address.setPostcode(riskAddress.getPostCode());
+            person.setAddress(address);
+        }
+
+        return person;
+    }
+
 
     private String fullName(Regular regular) {
         if (regular == null) return null;

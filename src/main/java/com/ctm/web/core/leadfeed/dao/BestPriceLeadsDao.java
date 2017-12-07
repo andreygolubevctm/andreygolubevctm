@@ -1,21 +1,27 @@
 package com.ctm.web.core.leadfeed.dao;
 
+import com.ctm.web.car.model.form.CarQuote;
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.content.model.Content;
 import com.ctm.web.core.content.model.ContentSupplement;
 import com.ctm.web.core.content.services.ContentService;
 import com.ctm.web.core.dao.VerticalsDao;
 import com.ctm.web.core.exceptions.DaoException;
+
+import com.ctm.web.core.leadfeed.model.CTMCarLeadFeedRequestMetadata;
 import com.ctm.web.core.leadfeed.model.LeadFeedData;
+import com.ctm.web.core.leadfeed.model.Person;
 import com.ctm.web.core.model.leadfeed.LeadFeedRootTransaction;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.services.ApplicationService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.naming.NamingException;
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -27,6 +33,7 @@ import static com.ctm.commonlogging.common.LoggingArguments.kv;
 public class BestPriceLeadsDao {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(BestPriceLeadsDao.class);
+	private static final CharSequence BUDD = "BUDD";
 
 	private ArrayList<LeadFeedRootTransaction> transactions = null;
 	private ArrayList<LeadFeedData> leads = null;
@@ -134,7 +141,7 @@ public class BestPriceLeadsDao {
 
 									Long transactionId = resultSet.getLong("transactionId");
 									String[] leadConcat = resultSet.getString("leadInfo").split("\\|\\|", -1);
-									if(leadConcat.length == 4) {
+									if(leadConcat.length == CarQuote.LEAD_FEED_INFO_SIZE) {
 										String curLeadNumber = resultSet.getString("leadNo");
 										String curIdentifier = leadConcat[2];
 										String phoneNumber = leadConcat[1];
@@ -171,6 +178,12 @@ public class BestPriceLeadsDao {
 												leadData.setBrandCode(brand.getCode());
 												leadData.setVerticalCode(verticalCode);
 												leadData.setVerticalId(brand.getVerticalByCode(verticalCode).getId());
+
+												//TODO add config check if go to agi or ctm-leads
+												if(isCarBestPriceLeadFeedForBUDD(leadData)){
+                                                    updateLeadFeedDataWithPersonInfo(leadData, leadConcat[4]);
+                                                    updateLeadFeedDataWithMetadata(leadData, leadConcat[5]);
+                                                }
 
 											// Escape current loop as the identifier has changed and we already have our lead data
 											} else {
@@ -240,6 +253,50 @@ public class BestPriceLeadsDao {
 
 		return leads;
 	}
+
+	private void updateLeadFeedDataWithMetadata(LeadFeedData leadData, String metadataJsonString) {
+        if(StringUtils.isBlank(metadataJsonString)){
+            return;
+        }
+        CTMCarLeadFeedRequestMetadata metadata = new CTMCarLeadFeedRequestMetadata();
+        try {
+            final ObjectMapper mapper = new ObjectMapper();
+            metadata = mapper.readValue(metadataJsonString, CTMCarLeadFeedRequestMetadata.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        metadata.setProviderQuoteRef(leadData.getPartnerReference());
+        metadata.setProviderCode(leadData.getPartnerBrand());
+        metadata.setPropensityScore(" ");
+        leadData.setMetadata(metadata);
+    }
+
+    private void updateLeadFeedDataWithPersonInfo(LeadFeedData leadData, String personJsonString) {
+
+        if (StringUtils.isBlank(personJsonString)) {
+            return;
+        }
+
+        Person person = null;
+        try {
+            final ObjectMapper mapper = new ObjectMapper();
+            person = mapper.readValue(personJsonString, Person.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        leadData.setPerson(person);
+    }
+
+    private boolean isCarBestPriceLeadFeedForBUDD(LeadFeedData leadFeedData) {
+        if (StringUtils.equalsIgnoreCase(leadFeedData.getVerticalCode(), Vertical.VerticalType.CAR.toString())
+                && StringUtils.equals(leadFeedData.getPartnerBrand(), BUDD)) {
+            return true;
+        }
+        return false;
+    }
+
 
 	private void addTransaction(ResultSet set) {
 		try {
