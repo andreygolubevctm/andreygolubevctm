@@ -109,8 +109,9 @@
         // display the filtered results
         $('.more-filters-results-btn').click(function () {
             $('#moreFiltersDropdownBtn').dropdown('toggle');
-            if (state === 'xs') {
+            if (['xs', 'sm', 'md'].indexOf(state) !== -1) {
                 Results.model.travelResultFilter(true, true, ($init.cover === 'B' ? false : true));
+                meerkat.modules.coverLevelTabs.buildCustomTab();
             }
         });
 
@@ -294,13 +295,13 @@
      * @param matchAllFilter - boolean value to match ALL or ONE filter
      */
     function _displayCustomResults(customFilter, matchAllFilter) {
-        if (state !== 'xs') {
+        if (state === 'lg') {
             Results.model.travelResultFilter(true, true, matchAllFilter);
+            meerkat.modules.coverLevelTabs.buildCustomTab();
         }
         if (customFilter) {
             $('input[name="reset-filters-radio-group"]').prop('checked', false);
         }
-        meerkat.modules.coverLevelTabs.buildCustomTab();
     }
 
     /**
