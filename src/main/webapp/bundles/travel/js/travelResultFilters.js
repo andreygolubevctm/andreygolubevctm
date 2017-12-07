@@ -13,13 +13,15 @@
         mobileHamBurgerContent = null,
         $elements = {},
         $init = {},
-        MobileFiltersMenu = null;
+        MobileFiltersMenu = null,
+        state = null;
 
     function init() {
         _setupElements();
         _applyEventListeners();
         MobileFiltersMenu = meerkat.modules.mobileFiltersMenu.initMobileFiltersMenu(sortSettings);
         MobileFiltersMenu.updateMenuBodyHTML(_.template(mobileHamBurgerContent));
+        state = meerkat.modules.deviceMediaState.get();
     }
 
     function _setupElements() {
@@ -107,6 +109,9 @@
         // display the filtered results
         $('.more-filters-results-btn').click(function () {
             $('#moreFiltersDropdownBtn').dropdown('toggle');
+            if (state === 'xs') {
+                Results.model.travelResultFilter(true, true, ($init.cover === 'B' ? false : true));
+            }
         });
 
         // update the results as per the providers
@@ -289,8 +294,9 @@
      * @param matchAllFilter - boolean value to match ALL or ONE filter
      */
     function _displayCustomResults(customFilter, matchAllFilter) {
-        $init.cover = null;
-        Results.model.travelResultFilter(true, true, matchAllFilter);
+        if (state !== 'xs') {
+            Results.model.travelResultFilter(true, true, matchAllFilter);
+        }
         if (customFilter) {
             $('input[name="reset-filters-radio-group"]').prop('checked', false);
         }
