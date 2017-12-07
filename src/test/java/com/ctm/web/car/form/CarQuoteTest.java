@@ -24,11 +24,11 @@ public class CarQuoteTest {
 
         carQuote.createLeadFeedInfo();
         verify(contact, times(1)).getOktocall();
-        verify(regular, times(1)).getFirstname();
-        verify(regular, times(1)).getSurname();
+        verify(regular, times(2)).getFirstname();
+        verify(regular, times(2)).getSurname();
         verify(contact, times(1)).getPhone();
         verify(vehicle, times(1)).getRedbookCode();
-        verify(riskAddress, times(1)).getState();
+        verify(riskAddress, times(2)).getState();
     }
 
     @Test

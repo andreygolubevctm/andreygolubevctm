@@ -233,9 +233,9 @@ public class CarQuote {
         //additional info required by lead feeds send to `ctm-leads`
         //Validation will be done when we send the lead. We don't have all required fields here (e.g., propensityScore)
         sb.append(separator);
-        sb.append(getJsonString(getPerson(regular, contact, riskAddress)));
+        if(okToCall)sb.append(getJsonString(getPerson(regular, contact, riskAddress)));
         sb.append(separator);
-        sb.append(getJsonString(getCtmCarLeadFeedRequestMetadata(regular, options, vehicle, quoteReferenceNumber)));
+        if(okToCall)sb.append(getJsonString(getCtmCarLeadFeedRequestMetadata(regular, options, vehicle, quoteReferenceNumber)));
 
         return sb.toString();
     }
@@ -274,7 +274,7 @@ public class CarQuote {
 
         if(riskAddress != null){
             final Address address = new Address();
-            address.setState(State.valueOf(riskAddress.getState()));
+            address.setState(riskAddress.getState() == null ? null : State.valueOf(riskAddress.getState()));
             address.setSuburb(riskAddress.getSuburbName());
             address.setPostcode(riskAddress.getPostCode());
             person.setAddress(address);
