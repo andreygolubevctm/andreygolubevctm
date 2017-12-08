@@ -41,6 +41,22 @@
     top: 120px;
     width: 100%;
   }
+
+  .dropdown-menu-more-filters {
+    height: 100%;
+    .more-filters-container {
+      height: auto;
+      max-height: 900px;
+      overflow-y: scroll;
+
+      .more-filters-results-btn {
+        margin: 0;
+        position: fixed;
+        bottom: 0px;
+        width: 100%;
+      }
+    }
+  }
 }
 
 @media screen and (@md-only) {
@@ -48,6 +64,20 @@
     position: fixed;
     top: 140px;
     width: 100%;
+  }
+
+  .dropdown-menu-more-filters {
+    .more-filters-container {
+      height: 700px;
+      overflow-y: scroll;
+
+      .more-filters-results-btn {
+        margin: 0;
+        position: fixed;
+        bottom: 0px;
+        width: 100%;
+      }
+    }
   }
 }
 
