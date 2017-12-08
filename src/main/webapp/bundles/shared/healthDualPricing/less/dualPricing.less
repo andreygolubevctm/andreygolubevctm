@@ -66,6 +66,12 @@
       height: 210px;
     }
 
+    &.compressed {
+      .companyLogo {
+        display: none;
+      }
+    }
+
     .dual-pricing-container {
 
       @media(@sm) {
@@ -73,9 +79,9 @@
       }
 
       .april-pricing {
-        border-bottom: 1px solid @dual-pricing-border-colour;
-        padding-bottom: 10px;
-        margin-bottom: 10px;
+        border-top: 1px solid @dual-pricing-border-colour;
+        padding-top: 10px;
+        margin-top: 10px;
 
 
         .deadline,
