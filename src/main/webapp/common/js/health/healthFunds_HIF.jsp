@@ -244,7 +244,7 @@
             healthFunds_HIF.$paymentTypeContainer.text('HIF offers a 4% discount for annual payments or 2% discount for half-yearly payments');
         },
         renderPaymentDays: function() {
-            meerkat.modules.healthFunds.setPayments({ 'min':5, 'max':7, 'weekends':true });
+            meerkat.modules.healthFunds.setPayments({ 'min':5, 'max':12, 'weekends':true }); // 7 payment option days
             healthFunds_HIF.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
 
             var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
