@@ -10,6 +10,7 @@
             footerButtonCloseText: 'Back to results',
             template: $('.resultsSummary')
         },
+        meerkatEvents = meerkat.modules.events,
         mobileHamBurgerContent = null,
         $elements = {},
         $init = {},
@@ -122,7 +123,7 @@
 
         // show up arrow when the dropdown is shown
         $('.dropdown').on('show.bs.dropdown', function () {
-            if (state === 'xs') {
+            if (['xs', 'sm', 'md'].indexOf(state) !== -1) {
                 $('.morePromptContainer').hide();
             }
 
@@ -137,7 +138,7 @@
 
         // show down arrow when the dropdown is hidden
         $('.dropdown').on('hide.bs.dropdown', function () {
-            if (state === 'xs') {
+            if (['xs', 'sm', 'md'].indexOf(state) !== -1) {
                 $('.morePromptContainer').show();
             }
             $(this).find(".icon").removeClass("icon-angle-up").addClass("icon-angle-down");
@@ -177,6 +178,19 @@
                 _displayCustomResults(false, true);
             }, 1000);
 
+        });
+
+        // When the navar docks/undocks
+        meerkat.messaging.subscribe(meerkatEvents.affix.AFFIXED, function navbarFixed() {
+            $('.clt-trip-filter .dropdown-menu').css('top', '50px');
+        });
+
+        meerkat.messaging.subscribe(meerkatEvents.affix.UNAFFIXED, function navbarUnfixed() {
+            if (state === 'md') {
+                $('.clt-trip-filter .dropdown-menu').css('top', '140px');
+            } else if (state === 'sm') {
+                $('.clt-trip-filter .dropdown-menu').css('top', '120px');
+            }
         });
     }
 

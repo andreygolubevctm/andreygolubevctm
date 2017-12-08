@@ -19,23 +19,38 @@
   }
 
   @media screen and (@sm-only) {
-    left: -85px;
-
+    left: 0;
     &:before,
     &:after {
-      left: 60%;
+      left: 88%;
     }
   }
 
   @media screen and (@md-only) {
-    left: -85px;
-
+    left: 0;
     &:before,
     &:after {
-      left: 60%;
+      left: 93%;
     }
   }
 }
+
+@media screen and (@sm-only) {
+  .dropdown-menu {
+    position: fixed;
+    top: 120px;
+    width: 100%;
+  }
+}
+
+@media screen and (@md-only) {
+  .dropdown-menu {
+    position: fixed;
+    top: 140px;
+    width: 100%;
+  }
+}
+
 
 .dropdown-menu-more-filters {
   @media screen and (@lg) {
@@ -44,17 +59,7 @@
     min-width: 1150px;
   }
 
-  @media screen and (@md-only) {
-    top: 38px;
-    left: -750px;
-    min-width: 1000px;
-  }
-
   @media screen and (@sm-only) {
-    top: 38px;
-    left: -510px;
-    min-width: 750px;
-
     &:before,
     &:after {
       left: 72% !important;

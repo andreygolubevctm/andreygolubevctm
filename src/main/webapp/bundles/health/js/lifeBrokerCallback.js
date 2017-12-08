@@ -42,7 +42,7 @@ Handling of the callback popup
 			offset = direction + ('00'+(timezone / 60)).slice(-2) + ':' + ('00'+(timezone % 60)).slice(-2);
 
          });
-	};
+	}
 
     function applyEventListeners() {
 
