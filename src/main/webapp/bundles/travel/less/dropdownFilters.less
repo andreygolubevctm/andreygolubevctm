@@ -38,8 +38,37 @@
 @media screen and (@sm-only) {
   .dropdown-menu {
     position: fixed;
-    top: 120px;
     width: 100%;
+  }
+
+  .dropdown {
+    &.open {
+      .morePromptContainer {
+        display: none;
+      }
+    }
+  }
+
+  .affix {
+    .dropdown-menu {
+      top: 50px;
+    }
+
+    .more-filters-results-btn {
+      position: relative !important;
+      left: 0 !important;
+    }
+  }
+
+  .affix-top {
+    .dropdown-menu {
+      top: 120px;
+    }
+
+    .more-filters-results-btn {
+      position: fixed;
+      left: 25%;
+    }
   }
 
   .dropdown-backdrop {
@@ -65,8 +94,37 @@
 @media screen and (@md-only) {
   .dropdown-menu {
     position: fixed;
-    top: 140px;
     width: 100%;
+  }
+
+  .dropdown {
+    &.open {
+      .morePromptContainer {
+        display: none;
+      }
+    }
+  }
+
+  .affix {
+    .dropdown-menu {
+      top: 50px;
+    }
+
+    .more-filters-results-btn {
+      position: relative !important;
+      left: 0 !important;
+    }
+  }
+
+  .affix-top {
+    .dropdown-menu {
+      top: 140px;
+    }
+
+    .more-filters-results-btn {
+      position: fixed;
+      left: 25%;
+    }
   }
 
   .dropdown-backdrop {

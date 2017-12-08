@@ -179,23 +179,6 @@
             }, 1000);
 
         });
-
-        // When the navar docks/undocks
-        meerkat.messaging.subscribe(meerkatEvents.affix.AFFIXED, function navbarFixed() {
-            $('.clt-trip-filter .dropdown-menu').css('top', '50px');
-            $('.clt-trip-filter .more-filters-results-btn').css('position', 'relative');
-            $('.clt-trip-filter .more-filters-results-btn').css('left', '0');
-        });
-
-        meerkat.messaging.subscribe(meerkatEvents.affix.UNAFFIXED, function navbarUnfixed() {
-            if (state === 'md') {
-                $('.clt-trip-filter .dropdown-menu').css('top', '140px');
-            } else if (state === 'sm') {
-                $('.clt-trip-filter .dropdown-menu').css('top', '120px');
-            }
-            $('.clt-trip-filter .more-filters-results-btn').css('position', 'fixed');
-            $('.clt-trip-filter .more-filters-results-btn').css('left', '25%');
-        });
     }
 
     /**
