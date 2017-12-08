@@ -415,7 +415,10 @@
                     meerkat.messaging.publish(meerkatEvents.filters.FILTERS_CANCELLED);
                 });
 
-                meerkat.modules.healthPopularProducts.setPopularProducts('N');
+                // defer added to make sure initHealthPopularProducts is properly setup for the first time run
+                _.defer(function() {
+                    meerkat.modules.healthPopularProducts.setPopularProducts('N');
+                });
             },
             onAfterEnter: function onAfterEnterResultsStep(event) {
                 if (event.isForward === true) {
