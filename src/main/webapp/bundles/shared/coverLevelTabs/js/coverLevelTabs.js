@@ -440,6 +440,11 @@
 		log("[coverleveltabs] activeTabSet", activeTabSet);
 		settings.activeTabSet = activeTabSet;
 	}
+
+	function getActiveTabIndex () {
+		return settings.activeTabIndex;
+	}
+
 	/**
 	 * Increment a counter for each result as we massage, so we don't have to filter again.
 	 * If we remove massaging to add the cover level into backend, results would need to return the count.
@@ -488,6 +493,7 @@
 		initCoverLevelTabs: initCoverLevelTabs,
 		events: events,
 		setActiveTabSet: setActiveTabSet,
+		getActiveTabIndex: getActiveTabIndex,
 		resetView: resetView,
 		getRankingFilter: getRankingFilter,
 		isEnabled: isEnabled,

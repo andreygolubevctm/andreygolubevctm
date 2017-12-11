@@ -286,7 +286,13 @@
         Results.model.travelFilters.EXCESS = value;
         meerkat.modules.coverLevelTabs.resetTabResultsCount();
         meerkat.messaging.publish(Results.model.moduleEvents.RESULTS_MODEL_UPDATE_BEFORE_FILTERSHOW);
-        Results.model.travelResultFilter(true, true, ($init.cover === 'B' ? false : true));
+
+        if (meerkat.modules.coverLevelTabs.getActiveTabIndex() === -1) {
+            Results.model.travelResultFilter(true, true, ($init.cover === 'B' ? false : true));
+        } else {
+            Results.model.filterUsingExcess(true, true);
+        }
+
         meerkat.modules.coverLevelTabs.updateTabCounts();
     }
 
