@@ -5,7 +5,11 @@
     "shared/journeyEngine/v2",
     "shared/fonts/v1",
     "shared/headerBar/v1",
-	"core",
-    "shared/forms/v1"
+    "shared/moreInfo",
+    "shared/forms/v1",
+    "shared/crud",
+    "shared/validation",
+    "shared/addressLookup",
+    "shared/radioGroupTile"
   ]
 }

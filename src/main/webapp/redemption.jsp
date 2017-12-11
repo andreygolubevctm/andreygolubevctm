@@ -8,6 +8,8 @@ Redemption Page for Toy Promo 2018
 
 <session:new verticalCode="GENERIC"/>
 
+<session:getAuthenticated />
+
 <%-- VARS --%>
 <c:set var="assetUrl" value="/${pageSettings.getContextFolder()}"/>
 <c:set var="revision" value="${webUtils.buildRevisionAsQuerystringParam()}"/>
@@ -40,7 +42,11 @@ Redemption Page for Toy Promo 2018
 	</jsp:attribute>
 
     <jsp:body>
-        Reward Page with Forms
+        <redemption:generic_redemption/>
+
+        <script class="crud-modal-template" type="text/html">
+            <redemption:redemption_reward_form isSimplesAdmin="true" />
+        </script>
     </jsp:body>
 
 </layout_v1:generic_page>
