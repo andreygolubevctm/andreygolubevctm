@@ -120,7 +120,7 @@ public class CallCentreService {
 	 * @param request
 	 * @return
 	 */
-	public static String getConsultantStyleCodeId(HttpServletRequest request) {
+	public static String getConsultantStyleCodeId(HttpServletRequest request) throws Exception {
 		SessionDataService sessionDataService = new SessionDataService();
 		SessionData sessionData = sessionDataService.getSessionDataFromSession(request);
 		AuthenticatedData authData = sessionData.getAuthenticatedSessionData();
