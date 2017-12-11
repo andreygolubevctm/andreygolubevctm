@@ -71,7 +71,9 @@
                     pricingDate = new Date(selectedProduct.pricingDate),
                     obj = {
                         frequency: freqTextMapping[frequency],
-                        pricingDateFormatted: meerkat.modules.dateUtils.format(pricingDate, "Do MMMM")
+                        pricingDateFormatted: meerkat.modules.dateUtils.format(pricingDate, "Do MMMM"),
+                        premium: selectedProduct.premium[frequency].text,
+                        altPremium: selectedProduct.altPremium[frequency].text
                     };
 
                 $elements.frequencyWarning.html(template(obj)).removeClass("hidden").slideDown();
@@ -125,9 +127,11 @@
 
     function _updatePricingDate() {
         var product = Results.getSelectedProduct(),
+            dropDeadDate = new Date(product.dropDeadDate),
             pricingDate = new Date(product.pricingDate);
 
-        $('.pricingDate').text(meerkat.modules.dateUtils.format(pricingDate, "Do MMMM"));
+        $('.pricingDateText').text(meerkat.modules.dateUtils.format(pricingDate, "Do MMMM"));
+        $('.dropDeadDateText').text(meerkat.modules.dateUtils.format(dropDeadDate, "Do MMMM"));
     }
 
     function renderTemplate(target, product, returnTemplate, isForSidebar, page) {
@@ -151,6 +155,7 @@
         // this is only for simples users and regardless of what season we're in
         if (meerkat.site.isCallCentreUser === true) {
             product.mode = "lhcInc";
+            product.showCurrPremText = isForSidebar;
         }
 
         product.showAltPremium = false;
@@ -167,6 +172,7 @@
 
         product.showAltPremium = true;
         product.displayLogo = false;
+        product.showCurrPremText = false;
         htmlTemplate = _.template($elements.logoPriceTemplate.html());
         product.renderedAltPriceTemplate = htmlTemplate(product);
         product.dropDeadDate = meerkat.modules.dropDeadDate.getDropDeadDate(product);
