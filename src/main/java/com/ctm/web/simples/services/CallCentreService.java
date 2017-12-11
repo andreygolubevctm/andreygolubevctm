@@ -21,10 +21,11 @@ import java.net.URLEncoder;
 
 public class CallCentreService {
     private static final Logger LOGGER = LoggerFactory.getLogger(CallCentreService.class);
+    private static Boolean consultantIsAdmin = null;
 	/**
 	 * If operator is on a call, collect the details such as VDN.
 	 *
-	 * @param pageContext
+	 * @param request
 	 * @return
 	 */
 	public static InboundPhoneNumber getInboundPhoneDetails(HttpServletRequest request) throws DaoException, ConfigSettingException {
@@ -41,8 +42,7 @@ public class CallCentreService {
 	/**
 	 * Start a new quote, either redirect to the brand selection page or automatically detect the brand from the current phone call.
 	 *
-	 * @param pageContext
-	 * @param VERTICAL_CODE
+	 * @param request
 	 * @return styleCodeId
 	 */
 	public static int getBrandIdForNewQuote(HttpServletRequest request) throws DaoException, ConfigSettingException {
@@ -61,7 +61,7 @@ public class CallCentreService {
 	 * Create link for simples users to swap primary domains.
 	 * This will land on a page which will attempt to use the token to log the user back in.
 	 *
-	 * @param pageContext
+	 * @param request
 	 * @param brandId
 	 * @param verticalCode
 	 * @return redirectUrl
@@ -119,16 +119,25 @@ public class CallCentreService {
 	 * @param request
 	 * @return
 	 */
-	public static int getConsultantStyleCodeId(HttpServletRequest request) {
+	public static String getConsultantStyleCodeId(HttpServletRequest request) {
 		SessionDataService sessionDataService = new SessionDataService();
 		SessionData sessionData = sessionDataService.getSessionDataFromSession(request);
 		AuthenticatedData authData = sessionData.getAuthenticatedSessionData();
 		String uid = authData.getUid().toLowerCase();
-		int styleCodeId = 1;
-		if(uid.startsWith("wfd")) {
-			styleCodeId = 9;
+		String styleCodeId = "1";
+		if(getConsultantIsAdmin(request)) {
+			styleCodeId = "1,9";
+		} else if(uid.startsWith("wfd")) {
+			styleCodeId = "9";
 		}
 		return styleCodeId;
 	}
 
+	public static boolean getConsultantIsAdmin(HttpServletRequest request) {
+		if(consultantIsAdmin == null) {
+			consultantIsAdmin = request.isUserInRole("BD-HCC-MGR") || request.isUserInRole("BC-IT-ECOM-RPT") ||
+					request.isUserInRole("CTM-IT-USR") || request.isUserInRole("jira-ctm-projmgr");
+		}
+		return consultantIsAdmin.booleanValue();
+	}
 }
