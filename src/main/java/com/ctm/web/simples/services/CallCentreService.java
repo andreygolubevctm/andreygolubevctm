@@ -116,20 +116,29 @@ public class CallCentreService {
 
 	/**
 	 * Westfund usernames are prefixed with wfd. This message is used to determine which styleCode should be used
-	 * when performing transaction searches.
+	 * when performing transaction searches. The default is CTM otherwise is based on whether you are an admin or
+	 * a WFDD consultant.
 	 * @param request
 	 * @return
 	 */
-	public static String getConsultantStyleCodeId(HttpServletRequest request) throws Exception {
+	public static String getConsultantStyleCodeId(HttpServletRequest request) {
+		String styleCodeId = String.valueOf(Integer.MAX_VALUE); // Default to impossible value
 		SessionDataService sessionDataService = new SessionDataService();
 		SessionData sessionData = sessionDataService.getSessionDataFromSession(request);
-		AuthenticatedData authData = sessionData.getAuthenticatedSessionData();
-		String uid = authData.getUid().toLowerCase();
-		String styleCodeId = "1";
-		if(getConsultantIsAdmin(request)) {
-			styleCodeId = "1,9";
-		} else if(uid.startsWith("wfd")) {
-			styleCodeId = "9";
+		try {
+			AuthenticatedData authData = sessionData.getAuthenticatedSessionData();
+			String uid = authData.getUid();
+			if (uid != null) {
+				if (getConsultantIsAdmin(request)) {
+					styleCodeId = "1,9";
+				} else if (uid.toLowerCase().startsWith("wfd")) {
+					styleCodeId = "9";
+				} else {
+					styleCodeId = "1";
+				}
+			}
+		} catch(Exception e) {
+			LOGGER.error("No authenticated session exists. Default search styleCodeId of " + styleCodeId + " to be used.");
 		}
 		return styleCodeId;
 	}
