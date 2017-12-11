@@ -71,8 +71,6 @@
             }
         });
 
-        console.log(CRUD);
-
         CRUD.getSaveRequestData = function($modal) {
 
             // Abort if form is invalid
@@ -149,17 +147,11 @@
     }
 
     function renderRewardOrder() {
-        console.log("generalStatus", rewardOrder.generalStatus);
         switch (rewardOrder.generalStatus) {
-            // TODO: Handle other statuses once business provide designs/messages for each status
-            // case 'ALREADY_REDEEMED':
-            //     renderSuccessMessage();
-            //     break;
             case 'OK_TO_REDEEM':
                 CRUD.appendToMainForm();
         }
     }
-
 
     function getContentHtml() {
         return $contentHtml;
