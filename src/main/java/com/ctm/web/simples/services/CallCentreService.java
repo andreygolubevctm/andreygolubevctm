@@ -123,9 +123,9 @@ public class CallCentreService {
 	 */
 	public static String getConsultantStyleCodeId(HttpServletRequest request) {
 		String styleCodeId = String.valueOf(Integer.MAX_VALUE); // Default to impossible value
-		SessionDataService sessionDataService = new SessionDataService();
-		SessionData sessionData = sessionDataService.getSessionDataFromSession(request);
 		try {
+			SessionDataService sessionDataService = new SessionDataService();
+			SessionData sessionData = sessionDataService.getSessionDataFromSession(request);
 			AuthenticatedData authData = sessionData.getAuthenticatedSessionData();
 			String uid = authData.getUid();
 			if (uid != null) {
