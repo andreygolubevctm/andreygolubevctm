@@ -6,7 +6,7 @@
     width: 0;
     display: block;
     height: 0;
-    left: 10%;
+    left: 50%;
     content: '';
     border-style: solid;
     border-width: 9px;
@@ -18,11 +18,18 @@
     min-width: 200px;
   }
 
+  @media screen and (@xs-only) {
+    &:before,
+    &:after {
+      left: 68%;
+    }
+  }
+
   @media screen and (@sm-only) {
     left: 0;
     &:before,
     &:after {
-      left: 88%;
+      left: 84%;
     }
   }
 
@@ -30,7 +37,7 @@
     left: 0;
     &:before,
     &:after {
-      left: 93%;
+      left: 86%;
     }
   }
 }
@@ -39,6 +46,12 @@
   .dropdown-menu {
     position: fixed;
     width: 100%;
+  }
+
+  .clt-trip-filter {
+    &:last-of-type {
+      padding-left: 0;
+    }
   }
 
   .affix {
@@ -265,6 +278,7 @@
     .clt-trip-filter {
       &:not(:first-of-type) {
         padding-top: 10px;
+        padding-left: 0;
       }
     }
 
@@ -299,13 +313,6 @@
         font-size: 20px;
         margin: 0 5px;
         color: @theme-secondary;
-      }
-    }
-
-    .dropdown-menu-excess-filter {
-      &:before,
-      &:after {
-        left: 80%;
       }
     }
 
