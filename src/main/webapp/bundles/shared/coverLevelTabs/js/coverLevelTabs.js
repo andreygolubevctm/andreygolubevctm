@@ -195,8 +195,8 @@
             if (tabIndex) {
                 var coverLevelText = settings.activeTabSet[tabIndex].label.replace('<span class=\'hidden-xs\'>Cover</span>', '');
                 $('.mobile-active-cover-type').empty().text(coverLevelText);
+                $('#coverTypeDropdownBtn').dropdown('toggle');
             }
-            $('#coverTypeDropdownBtn').dropdown('toggle');
         });
 	}
 
