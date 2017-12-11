@@ -9,7 +9,7 @@
     function initCallMeBack() {
     }
 
-    meerkat.modules.register("callMeBack", {
+    meerkat.modules.register("call_me_back", {
         init: initCallMeBack,
         events: moduleEvents
     });
