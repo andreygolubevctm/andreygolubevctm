@@ -42,6 +42,6 @@
 <div class="dropdown-item">
     <div class="radio">
         <input type="radio" name="radio-group" id="travel_filter_excess_nil" class="radioButton-custom  radio" data-excess="0" value="NIL">
-        <label for="travel_filter_excess_nil">NIL</label>
+        <label for="travel_filter_excess_nil">Nil excess</label>
     </div>
 </div>
