@@ -8,7 +8,7 @@
 <session:new verticalCode="GENERIC" authenticated="${true}"/>
 
 <c:set var="logger" value="${log:getLogger('jsp.call_me_back')}" />
-<layout_v1:journey_engine_page title="Call Me Back">
+<layout_v1:journey_engine_page title="Call Me Back" ignorePageHeader="${true}">
 
     <jsp:attribute name="head">
         <link rel="stylesheet" href="${assetUrl}assets/brand/${pageSettings.getBrandCode()}/css/call_me_back${pageSettings.getSetting('minifiedFileString')}.css?${revision}" media="all">
@@ -33,7 +33,7 @@
     </jsp:attribute>
 
     <jsp:attribute name="vertical_settings">
-        <retrievequotes:settings />
+        <call_me_back:settings />
     </jsp:attribute>
 
     <jsp:attribute name="body_end"></jsp:attribute>
