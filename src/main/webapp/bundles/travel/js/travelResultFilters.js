@@ -123,10 +123,6 @@
 
         // show up arrow when the dropdown is shown
         $('.dropdown').on('show.bs.dropdown', function () {
-            if (['xs', 'sm', 'md'].indexOf(state) !== -1) {
-                $('.morePromptContainer').hide();
-            }
-
             $(this).find(".icon").removeClass("icon-angle-down").addClass("icon-angle-up");
             $('input[name="reset-filters-radio-group"]').change(function () {
                 var coverType = $(this).data('ranking-filter');
@@ -138,9 +134,6 @@
 
         // show down arrow when the dropdown is hidden
         $('.dropdown').on('hide.bs.dropdown', function () {
-            if (['xs', 'sm', 'md'].indexOf(state) !== -1) {
-                $('.morePromptContainer').show();
-            }
             $(this).find(".icon").removeClass("icon-angle-up").addClass("icon-angle-down");
         });
 
