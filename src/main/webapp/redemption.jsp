@@ -15,7 +15,7 @@ Redemption Page for Toy Promo 2018
 <c:set var="revision" value="${webUtils.buildRevisionAsQuerystringParam()}"/>
 
 <%-- HTML --%>
-<layout_v1:generic_page title="Redemption">
+<layout_v1:generic_page title="Toy Redemption">
 
     <jsp:attribute name="head">
         <link rel="stylesheet"
