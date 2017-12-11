@@ -10,16 +10,19 @@
             footerButtonCloseText: 'Back to results',
             template: $('.resultsSummary')
         },
+        meerkatEvents = meerkat.modules.events,
         mobileHamBurgerContent = null,
         $elements = {},
         $init = {},
-        MobileFiltersMenu = null;
+        MobileFiltersMenu = null,
+        state = null;
 
     function init() {
         _setupElements();
         _applyEventListeners();
         MobileFiltersMenu = meerkat.modules.mobileFiltersMenu.initMobileFiltersMenu(sortSettings);
         MobileFiltersMenu.updateMenuBodyHTML(_.template(mobileHamBurgerContent));
+        state = meerkat.modules.deviceMediaState.get();
     }
 
     function _setupElements() {
@@ -107,6 +110,10 @@
         // display the filtered results
         $('.more-filters-results-btn').click(function () {
             $('#moreFiltersDropdownBtn').dropdown('toggle');
+            if (['xs', 'sm', 'md'].indexOf(state) !== -1) {
+                Results.model.travelResultFilter(true, true, ($init.cover === 'B' ? false : true));
+                meerkat.modules.coverLevelTabs.buildCustomTab();
+            }
         });
 
         // update the results as per the providers
@@ -279,7 +286,13 @@
         Results.model.travelFilters.EXCESS = value;
         meerkat.modules.coverLevelTabs.resetTabResultsCount();
         meerkat.messaging.publish(Results.model.moduleEvents.RESULTS_MODEL_UPDATE_BEFORE_FILTERSHOW);
-        Results.model.travelResultFilter(true, true, ($init.cover === 'B' ? false : true));
+
+        if (meerkat.modules.coverLevelTabs.getActiveTabIndex() === -1) {
+            Results.model.travelResultFilter(true, true, ($init.cover === 'B' ? false : true));
+        } else {
+            Results.model.filterUsingExcess(true, true);
+        }
+
         meerkat.modules.coverLevelTabs.updateTabCounts();
     }
 
@@ -289,12 +302,13 @@
      * @param matchAllFilter - boolean value to match ALL or ONE filter
      */
     function _displayCustomResults(customFilter, matchAllFilter) {
-        $init.cover = null;
-        Results.model.travelResultFilter(true, true, matchAllFilter);
+        if (state === 'lg') {
+            Results.model.travelResultFilter(true, true, matchAllFilter);
+            meerkat.modules.coverLevelTabs.buildCustomTab();
+        }
         if (customFilter) {
             $('input[name="reset-filters-radio-group"]').prop('checked', false);
         }
-        meerkat.modules.coverLevelTabs.buildCustomTab();
     }
 
     /**
