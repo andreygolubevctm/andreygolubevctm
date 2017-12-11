@@ -35,6 +35,7 @@ public class SimplesSearchService {
     private String coldTransactionIdsCsv = "";
     private SearchMode searchMode;
     private String searchString;
+    private int consultantStyleCodeId;
     private final SimpleDatabaseConnection dbcon = new SimpleDatabaseConnection();
     private PageContext pageContext;
     private String error;
@@ -148,12 +149,14 @@ public class SimplesSearchService {
         sql = "SELECT rootId AS id\n" +
                 "\t\t\t\t\tFROM aggregator.transaction_header\n" +
                 "\t\t\t\t\tWHERE  TransactionID = ?\n" +
-                "\t\t\t\t\tAND productType = 'HEALTH'\n" +
+                "\t\t\t\t\t\t\tAND productType = 'HEALTH'\n" +
+                "\t\t\t\t\t\t\tAND styleCodeId = '" + consultantStyleCodeId + "'\n" +
                 "\t\t\t\t\tUNION ALL\n" +
                 "\t\t\t\t\tSELECT  rootId AS id\n" +
                 "\t\t\t\t\tFROM aggregator.transaction_header2_cold\n" +
                 "\t\t\t\t\tWHERE  TransactionID = ?\n" +
-                "\t\t\t\t\tAND verticalId = 4;";
+                "\t\t\t\t\t\t\tAND verticalId = 4\n" +
+                "\t\t\t\t\t\t\tAND styleCodeId = '" + consultantStyleCodeId + "';";
         mapping = new DatabaseQueryMapping<Object>() {
             @Override
             protected void mapParams() throws SQLException {
@@ -422,6 +425,7 @@ public class SimplesSearchService {
      */
     private void readRequestParams(HttpServletRequest request) {
         searchString = request.getParameter("search_terms") != null ? request.getParameter("search_terms").trim() : null;
+        consultantStyleCodeId = CallCentreService.getConsultantStyleCodeId(request);
     }
 
     /**
@@ -447,7 +451,8 @@ public class SimplesSearchService {
                     "\t\t\t\t\t\tLEFT JOIN ctm.touches t2 ON  (th.TransactionId = t2.transaction_id) AND (t2.type = 'F')\n" +
                     "\t\t\t\t\t\tLEFT JOIN aggregator.transaction_header th2 ON th2.rootId = th.rootId\n" +
                     "\t\t\t\t\t\tWHERE th.TransactionId IN (" + hotTransactionIdsCsv + ")\n " +
-                    "AND th.productType='HEALTH'" +
+                    "\t\t\t\t\t\t\t\t\tAND th.productType='HEALTH'" +
+                    "\t\t\t\t\t\t\t\t\tAND th.styleCodeId = '" + consultantStyleCodeId + "'\n" +
                     "\t\t\t\t\t\tGROUP BY id\n";
         }
         if (!hotTransactionIdsCsv.trim().equalsIgnoreCase("") && !coldTransactionIdsCsv.trim().equalsIgnoreCase("")) {
@@ -472,7 +477,8 @@ public class SimplesSearchService {
                     "\t\t\t\t\t\tLEFT JOIN ctm.touches t2 ON (th.TransactionId = t2.transaction_id) AND (t2.type = 'F')\n" +
                     "\t\t\t\t\t\tLEFT JOIN aggregator.transaction_header2_cold th2 ON th2.rootId = th.rootId\n" +
                     "\t\t\t\t\t\tWHERE th.TransactionId IN (" + coldTransactionIdsCsv + ")\n" +
-                    "AND th.verticalId='4'" +
+                    "\t\t\t\t\t\t\t\t\tAND th.verticalId='4'" +
+                    "\t\t\t\t\t\t\t\t\tAND th.styleCodeId = '" + consultantStyleCodeId + "'\n" +
                     "\t\t\t\t\t\tGROUP BY id";
         }
         sql += " ORDER BY id DESC; ";

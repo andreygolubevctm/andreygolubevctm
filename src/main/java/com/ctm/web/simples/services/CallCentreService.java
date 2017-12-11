@@ -113,4 +113,22 @@ public class CallCentreService {
 		return redirectUrl.toString();
 	}
 
+	/**
+	 * Westfund usernames are prefixed with wfd. This message is used to determine which styleCode should be used
+	 * when performing transaction searches.
+	 * @param request
+	 * @return
+	 */
+	public static int getConsultantStyleCodeId(HttpServletRequest request) {
+		SessionDataService sessionDataService = new SessionDataService();
+		SessionData sessionData = sessionDataService.getSessionDataFromSession(request);
+		AuthenticatedData authData = sessionData.getAuthenticatedSessionData();
+		String uid = authData.getUid().toLowerCase();
+		int styleCodeId = 1;
+		if(uid.startsWith("wfd")) {
+			styleCodeId = 9;
+		}
+		return styleCodeId;
+	}
+
 }
