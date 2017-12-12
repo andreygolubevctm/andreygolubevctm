@@ -1,5 +1,6 @@
 package com.ctm.web.core.leadfeed.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.apache.commons.lang3.StringUtils;
@@ -7,8 +8,18 @@ import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Arrays;
 
+/**
+ * DTO for storing in db, and sending to `ctm-leads` as part of best price lead feed request.
+ * <p>
+ * Notes:
+ * This DTO must support multiple serialization/deserialization.
+ * <p>
+ * This DTO gets serialized to json when stored in db by {@linkplain com.ctm.web.car.model.form.CarQuote} createLeadFeedInfo method.
+ * Later we deserialize that json to DTO again to be able to send to `ctm-leads`.
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(value = JsonInclude.Include.ALWAYS)
 public class Person implements Serializable {
@@ -32,7 +43,8 @@ public class Person implements Serializable {
     //Optional properties
     private String email;
     private String lastName;
-    private String dob;
+    //ctm-leads expects format yyyy-MM-dd.
+    private LocalDate dob;
 
     public String getFirstName() {
         return firstName;
@@ -76,11 +88,12 @@ public class Person implements Serializable {
         this.lastName = lastName;
     }
 
-    public String getDob() {
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    public LocalDate getDob() {
         return dob;
     }
 
-    public void setDob(String dob) {
+    public void setDob(LocalDate dob) {
         this.dob = dob;
     }
 

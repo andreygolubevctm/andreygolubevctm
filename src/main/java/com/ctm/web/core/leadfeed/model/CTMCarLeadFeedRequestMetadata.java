@@ -1,11 +1,10 @@
 package com.ctm.web.core.leadfeed.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.hibernate.validator.constraints.NotBlank;
+import org.immutables.value.internal.$processor$.meta.$JacksonMirrors;
 
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
@@ -23,6 +22,7 @@ public class CTMCarLeadFeedRequestMetadata implements Serializable {
     private static final String RATING = "Rating ";
 
     @NotNull
+    @JsonProperty(value = "@type")
     private MetadataType type;
     @NotBlank
     private String providerCode;
@@ -38,7 +38,23 @@ public class CTMCarLeadFeedRequestMetadata implements Serializable {
     private String ageRestriction;
 
     public enum MetadataType {
-        CAR;
+        CAR("car");
+
+        private String label;
+
+        MetadataType(final String label) {
+            this.label = label;
+        }
+
+        @JsonCreator
+        public static MetadataType fromString(String label) {
+            return label == null ? null : MetadataType.valueOf(label.toUpperCase());
+        }
+
+        @JsonValue
+        public String getLabel() {
+            return label;
+        }
     }
 
     public MetadataType getType() {

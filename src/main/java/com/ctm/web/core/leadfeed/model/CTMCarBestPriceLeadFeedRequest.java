@@ -32,7 +32,7 @@ public class CTMCarBestPriceLeadFeedRequest implements Serializable {
     @NotNull
     private CTMCarLeadFeedRequestMetadata metadata;
     @Nullable
-    private Long trasactionId;
+    private Long transactionId;
     @Nullable
     private String rootId;
 
@@ -76,12 +76,12 @@ public class CTMCarBestPriceLeadFeedRequest implements Serializable {
         this.status = status;
     }
 
-    public Long getTrasactionId() {
-        return trasactionId;
+    public Long getTransactionId() {
+        return transactionId;
     }
 
-    public void setTrasactionId(Long trasactionId) {
-        this.trasactionId = trasactionId;
+    public void setTransactionId(Long transactionId) {
+        this.transactionId = transactionId;
     }
 
     public VerticalType getVerticalType() {

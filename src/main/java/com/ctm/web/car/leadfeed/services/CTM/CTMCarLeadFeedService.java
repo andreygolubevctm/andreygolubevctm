@@ -12,9 +12,19 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
 
 import javax.validation.Valid;
 import javax.validation.ValidationException;
+import java.net.URI;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 import static com.ctm.web.core.leadfeed.services.LeadFeedService.LeadResponseStatus.FAILURE;
 import static com.ctm.web.core.leadfeed.services.LeadFeedService.LeadResponseStatus.SUCCESS;
@@ -30,8 +40,21 @@ public class CTMCarLeadFeedService implements IProviderLeadFeedService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CTMCarLeadFeedService.class);
     private static final String SECURE = "Secure"; //This is equal to `ctm`
-    //TODO make this config
-    private static final String CAMPAIGN_ID = "CAR_TestCampaign";
+    private static final String BUDD = "BUDD";
+    private static final String CAR = "CAR";
+    public static final int CAR_VERTICAL_ID = 3;
+
+    private String ctmLeadsUrl;
+    private RestTemplate restTemplate;
+
+    /**
+     * unable to use @Autowired because of current design of {@linkplain com.ctm.web.car.leadfeed.services.CarLeadFeedService}
+     * which calls new CTMCarLeadFeedService.
+     */
+    public CTMCarLeadFeedService(final String ctmLeadsUrl, final RestTemplate restTemplate) {
+        this.ctmLeadsUrl = ctmLeadsUrl;
+        this.restTemplate = restTemplate;
+    }
 
     /**
      * process car lead.
@@ -47,22 +70,54 @@ public class CTMCarLeadFeedService implements IProviderLeadFeedService {
     public LeadFeedService.LeadResponseStatus process(LeadFeedService.LeadType leadType, LeadFeedData leadData) throws LeadFeedException {
         LOGGER.info("[lead feed] Start processing car best price lead.");
 
-        LeadFeedService.LeadResponseStatus feedResponse = FAILURE;
-        //Lead must be best price only
-        if (leadType != LeadFeedService.LeadType.BEST_PRICE) return feedResponse;
+        //Lead must be car, best price, for BUDD only
+        if (leadType != LeadFeedService.LeadType.BEST_PRICE
+                || !org.apache.commons.lang3.StringUtils.equalsIgnoreCase(leadData.getPartnerBrand(), BUDD)
+                || !org.apache.commons.lang3.StringUtils.equalsIgnoreCase(leadData.getVerticalCode(), CAR)) {
+            LOGGER.error("Unable to process lead feed. Supported lead feeds are: CAR, BEST_PRICE, BUDD (Budget Direct) ONLY. Invalid leadData: {}", getJsonString(leadData));
+            return FAILURE;
+        }
 
         CTMCarBestPriceLeadFeedRequest request = null;
         try {
             request = buildCtmCarBestPriceLeadFeedRequest(leadData);
             validateRequest(request);
         } catch (Exception e) {
-            LOGGER.error("[lead feed] Skipping lead feed. Reason: {}. Request: {}", e.getLocalizedMessage(), getJsonString(request), e);
-            return feedResponse;
+            LOGGER.error("[lead feed] Exception while processing lead feed. Reason: {}. Request: {}", e.getLocalizedMessage(), getJsonString(request), e);
+            return FAILURE;
         }
 
+        return sendLeadFeedRequestToCtmLeads(request);
+    }
+
+    protected LeadFeedService.LeadResponseStatus sendLeadFeedRequestToCtmLeads(final CTMCarBestPriceLeadFeedRequest request) {
         LOGGER.info("[lead feed] Sending car lead feed request to ctm-leads: {}", getJsonString(request));
 
-        return SUCCESS;
+        final HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        final HttpEntity<List<CTMCarBestPriceLeadFeedRequest>> entity = new HttpEntity(request, headers);
+
+        ResponseEntity<Object> responseEntity = null;
+        try {
+            responseEntity = restTemplate.postForEntity(URI.create(ctmLeadsUrl), entity, Object.class);
+        } catch (HttpClientErrorException e){
+            final String response = e.getResponseBodyAsString();
+            LOGGER.error("[lead feed] Exception in response from ctm-leads. Reason: {}. Request: {}", response, getJsonString(request), e);
+            return FAILURE;
+        } catch (Exception e){
+            LOGGER.error("[lead feed] Exception while sending lead feed. Reason: {}. Request: {}", e.getLocalizedMessage(), getJsonString(request), e);
+            return FAILURE;
+        }
+
+        return Optional.ofNullable(responseEntity).map(response -> {
+            LOGGER.info("Response from ctm-leads: {}", getJsonString(response.getBody()));
+            return SUCCESS;
+
+        }).orElseGet(() -> {
+            LOGGER.error("Invalid or empty response from ctm-leads");
+            return FAILURE;
+        });
     }
 
     /**
@@ -71,7 +126,7 @@ public class CTMCarLeadFeedService implements IProviderLeadFeedService {
      *
      * @param request
      */
-    private void validateRequest(@Valid CTMCarBestPriceLeadFeedRequest request) {
+    protected void validateRequest(@Valid CTMCarBestPriceLeadFeedRequest request) {
         if (!Person.hasValidMobileOrPhone(request.getPerson())) {
             throw new ValidationException("Invalid request. Must have valid phone or mobile");
         }
@@ -93,11 +148,10 @@ public class CTMCarLeadFeedService implements IProviderLeadFeedService {
         CTMCarBestPriceLeadFeedRequest request = new CTMCarBestPriceLeadFeedRequest();
         request.setBrandCode(leadData.getBrandCode());
         request.setClientIP(leadData.getClientIpAddress());
-        //TODO verify this
-        //request.setRootId(leadData.getr);
+        request.setRootId(leadData.getRootId());
         request.setSource(SECURE);
         request.setStatus(LeadStatus.OPEN);
-        request.setTrasactionId(leadData.getTransactionId());
+        request.setTransactionId(leadData.getTransactionId());
         request.setVerticalType(VerticalType.findByCode(leadData.getVerticalCode()));
 
         final Person person = leadData.getPerson();
@@ -146,7 +200,6 @@ public class CTMCarLeadFeedService implements IProviderLeadFeedService {
         return request;
     }
 
-    //TODO move this to some util
     public static String getJsonString(final Object obj) {
         final ObjectMapper objectMapper = new ObjectMapper();
         try {

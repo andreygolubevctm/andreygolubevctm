@@ -26,7 +26,7 @@ public class CarQuoteTest {
         verify(contact, times(1)).getOktocall();
         verify(regular, times(2)).getFirstname();
         verify(regular, times(2)).getSurname();
-        verify(contact, times(1)).getPhone();
+        verify(contact, times(3)).getPhone();
         verify(vehicle, times(1)).getRedbookCode();
         verify(riskAddress, times(2)).getState();
     }

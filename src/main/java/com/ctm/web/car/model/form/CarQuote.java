@@ -5,15 +5,22 @@ import com.ctm.web.car.quote.model.request.Filter;
 import com.ctm.web.core.leadfeed.model.Address;
 import com.ctm.web.core.leadfeed.model.CTMCarLeadFeedRequestMetadata;
 import com.ctm.web.core.leadfeed.model.Person;
+import com.jcraft.jsch.Logger;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.validation.Valid;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 import static com.ctm.web.car.leadfeed.services.CTM.CTMCarLeadFeedService.getJsonString;
 
 public class CarQuote {
 
-    public static final int LEAD_FEED_INFO_SIZE = 6;
+    public static final int LEAD_FEED_INFO_SIZE_V1 = 4;
+    public static final int LEAD_FEED_INFO_SIZE_V2 = 6;
+    public static final String YYYY_MM_DD = "yyyy/MM/dd";
 
     private Accs accs;
 
@@ -262,14 +269,14 @@ public class CarQuote {
         if (regular != null) {
             person.setFirstName(regular.getFirstname());
             person.setLastName(regular.getSurname());
-            person.setDob(regular.getDob());
+            person.setDob(buildDob(regular.getDob()));
         }
 
         if(contact != null) {
             person.setEmail(contact.getEmail());
-            //contact.getPhone is same as contact.getPhoneInput except later is escaped.
-            person.setPhone(contact.getPhoneinput());
-            person.setMobile(contact.getPhoneinput());
+            //contact.getPhone is same as contact.getPhoneInput except prior is escaped.
+            person.setPhone(contact.getPhone());
+            person.setMobile(contact.getPhone());
         }
 
         if(riskAddress != null){
@@ -283,6 +290,24 @@ public class CarQuote {
         return person;
     }
 
+    /**
+     * parse string with format `yyyy/MM/dd` to LocalDate
+     *
+     * @param dob string
+     * @return dob in LocalDate format or null if unable to parse.
+     */
+    private LocalDate buildDob(final String dob) {
+
+        if(StringUtils.isBlank(dob)){
+            return null;
+        }
+
+        try {
+            return LocalDate.parse(dob, DateTimeFormatter.ofPattern(YYYY_MM_DD));
+        }catch (DateTimeParseException e){
+            return null;
+        }
+    }
 
     private String fullName(Regular regular) {
         if (regular == null) return null;
