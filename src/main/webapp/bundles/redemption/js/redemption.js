@@ -164,6 +164,10 @@
         meerkat.modules.address_lookup.setBaseURL(baseURL);
         $form = $('#mainform').find('.redemptionForm');
 
+        $('.toy-radio-tiles').on('click', function() {
+            $('#order_rewardType-error').remove();
+        });
+
         $('.crud-save-entry').on('click', function() {
             $("label.error").hide();
             $(".error").removeClass("error");
