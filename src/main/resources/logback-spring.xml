@@ -76,7 +76,8 @@
 	</appender>
 
 	<appender name="JSON_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<prudent>false</prudent>
+		<prudent>true</prudent>
+		<append>false</append>
 		<!-- ${logLocation} comes from environmentConfigLocation properties file -->
 		<file>${jsonFileLoggingPath}/ctmJson.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
