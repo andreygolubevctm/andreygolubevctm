@@ -19,7 +19,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {LifebrokerLeadsServiceIntegrationTest.Config.class, Jackson2ObjectMapperBuilder.class, DefaultJacksonMappers.class, AsyncRestTemplateConfig.class})
 @TestPropertySource("classpath:application.properties")
-@Ignore
 public class LifebrokerLeadsServiceIntegrationTest {
 
     @Autowired

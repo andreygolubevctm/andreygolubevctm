@@ -1,10 +1,10 @@
 package com.ctm.web.lifebroker.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 class LifebrokerLeadRequestAdditional {
 
-    @JsonProperty("media_code")
+    @JacksonXmlProperty(namespace = LifebrokerLeadRequest.LIFEBROKER_NAMESPACE, localName = "media_code")
     private final String mediaCode;
 
     LifebrokerLeadRequestAdditional(String mediaCode) {
