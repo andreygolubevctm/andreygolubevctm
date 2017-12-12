@@ -45,7 +45,8 @@ public class HealthApplicationService extends CTMEndpointService {
 	public static final String MEDICARE_NUMBER_XPATH = PREFIX + "/payment/medicare/number";
 	public static final String REBATE_HIDDEN_XPATH = PREFIX + "/rebate";
 	public static final String LOADING_XPATH = PREFIX + "/loading";
-	private boolean valid;
+    public static final String HEALTH_COVER_XPATH = PREFIX + "/healthCover/partner";
+    private boolean valid;
 	private boolean isCallCentre;
 	private RequestService requestService;
 
