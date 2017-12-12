@@ -3,9 +3,6 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- ATTRIBUTES --%>
-<%@ attribute name="isSimplesAdmin" required="false" rtexprvalue="true"
-              description="Boolean to indicate if to use the form in simples admin area" %>
-
 {{ var currentCampaign = data.eligibleCampaigns[0] || {}; }}
 
 <form class="redemptionForm form-horizontal">
@@ -112,28 +109,6 @@
                 <span class="fieldrow_legend"><small>If you choose this option, you accept full responsibility upon the delivery of your reward and acknowledge it will not be replaced under any circumstances.</small></span>
             </div>
         </div>
-
-        <c:if test="${isSimplesAdmin ne true}">
-            <div class="form-group row fieldrow clear required_input">
-                <div class="col-sm-6 col-xs-10 col-sm-offset-4 row-content">
-                    <div class="checkbox">
-                        <input type="checkbox" name="order_privacyOptin" id="order_privacyOptin"
-                               class="checkbox-custom checkbox" value="Y" required="required"
-                               data-msg-required="Please agree to the Terms & Conditions">
-                        <label for="order_privacyOptin">
-                            <c:choose>
-                                <c:when test="${empty callCentre}">
-                                    {{= meerkat.modules.rewardConfirmation.getContentHtml().find('.reward-optin-text').html() }}
-                                </c:when>
-                                <c:otherwise>
-                                    Terms and conditions apply. Please go onto our website for further information.
-                                </c:otherwise>
-                            </c:choose>
-                        </label>
-                    </div>
-                </div>
-            </div>
-        </c:if>
 
         <div class="row">
             <div class="col-sm-12">

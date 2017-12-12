@@ -45,7 +45,7 @@ Redemption Page for Toy Promo 2018
         <redemption:generic_redemption/>
 
         <script class="crud-modal-template" type="text/html">
-            <redemption:redemption_reward_form isSimplesAdmin="true" />
+            <redemption:redemption_reward_form />
         </script>
     </jsp:body>
 
