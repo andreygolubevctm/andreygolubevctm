@@ -35,10 +35,6 @@
 			<div class="altPriceContainer">
 				{{= renderedAltPriceTemplate }}
 			</div>
-			<div class="altPriceDetailsContainer">
-				<span class="deadline">Premium rise ${april1Header}</span>
-				<a href="javascript:;" class="dual-pricing-learn-more" data-dropDeadDate="{{= obj.dropDeadDate }}">Learn more</a>
-			</div>
 		</div>
 	</div>
 </core_v1:js_template>
