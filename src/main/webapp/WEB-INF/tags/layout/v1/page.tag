@@ -240,7 +240,6 @@ ${newPage.init(pageContext.request, pageSettings)}
 												<div class="col-xs-2 clt-trip-filter">
 													<travel_results_filter_types:more_filters/>
 												</div>
-												<div class="col-xs-1">&nbsp;</div>
 												<div class="col-xs-4 clt-trip-filter">
 													<travel_results_filter_types:excess_filter/>
 												</div>
