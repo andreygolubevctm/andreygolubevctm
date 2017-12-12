@@ -5,7 +5,8 @@
         debug = meerkat.logging.debug,
         exception = meerkat.logging.exception;
 
-    var CRUD,
+    var baseURL = '/ctm/',
+        CRUD,
         rewardData,
         $form,
         $contentHtml,
@@ -71,51 +72,6 @@
             }
         });
 
-        CRUD.getSaveRequestData = function($modal) {
-
-            // Abort if form is invalid
-            if ( $form.valid() !== true ) return;
-
-            var orderForm = rewardData.orderForm,
-                orderLine = orderForm.orderHeader.orderLine || {},
-                orderAddress = orderLine.orderAddresses[0] || {};
-
-            selectedRewardTypeId = $form.find('input[name="order_rewardType"]:checked').val();
-
-            orderLine.campaignCode = currentCampaign.campaignCode;
-            orderLine.rewardTypeId = selectedRewardTypeId || null;
-            orderLine.firstName = $form.find('input[name="order_firstName"]').val();
-            orderLine.lastName = $form.find('input[name="order_lastName"]').val();
-            orderLine.contactEmail = $form.find('input[name="order_contactEmail"]').val();
-            orderLine.phoneNumber = $form.find('input[name="order_phoneNumber"]').val();
-            orderLine.signOnReceipt = $form.find('input[name="order_signOnReceipt"]:checked').val() === 'Y';
-            orderLine.trackerOptIn = true; // defaulting to true as Product team told to remove the field
-            orderLine.orderStatus = $form.find('input[name="order_orderStatus"]:checked').val() || 'Scheduled';
-
-            //addresses
-            orderAddress.dpid = $form.find('input[name="order_address_dpId"]').val();
-            orderAddress.businessName = $form.find('input[name="order_address_businessName"]').val();
-            orderAddress.state = $form.find('input[name="order_address_state"]').val();
-            orderAddress.postcode = $form.find('input[name="order_address_postCode"]').val();
-            orderAddress.suburb = $form.find('input[name="order_address_suburbName"]').val()
-                || $form.find('input[name="order_address_suburbNamePrefill"]').val();
-            orderAddress.streetName = $form.find('input[name="order_address_streetName"]').val()
-                || $form.find('input[name="order_address_nonStdStreet"]').val();
-            orderAddress.streetNumber = $form.find('input[name="order_address_streetNum"]').val()
-                || $form.find('input[name="order_address_houseNoSel"]').val();
-            orderAddress.unitNumber = $form.find('input[name="order_address_unitSel"]').val()
-                || $form.find('input[name="order_address_unitShop"]').val();
-            orderAddress.unitType = $form.find('input[name="order_address_unitType"]').val()
-                || $form.find(':input[name="order_address_nonStdUnitType"]').val();
-            orderAddress.fullAddress = $form.find('input[name="order_address_fullAddress"]').val();
-
-            // Safe guard in case the order/get gets incomplete data
-            orderForm.orderHeader.orderLine = orderLine;
-            orderForm.orderHeader.orderLine.orderAddresses[0] = orderAddress;
-
-            return orderForm;
-        };
-
         CRUD.save = function (data) {
             var that = this,
                 onSuccess = function (response) {
@@ -146,11 +102,87 @@
         });
     }
 
+    function getSaveRequestData () {
+        console.log($form);
+
+        // Abort if form is invalid
+        if ( $form.valid() !== true ) return;
+
+        var orderForm = rewardData.orderForm,
+            orderLine = orderForm.orderHeader.orderLine || {},
+            orderAddress = orderLine.orderAddresses[0] || {};
+
+        selectedRewardTypeId = $form.find('input[name="order_rewardType"]:checked').val();
+
+        console.log(selectedRewardTypeId);
+
+        orderLine.campaignCode = currentCampaign.campaignCode;
+        orderLine.rewardTypeId = selectedRewardTypeId || null;
+        orderLine.firstName = $form.find('input[name="order_firstName"]').val();
+        orderLine.lastName = $form.find('input[name="order_lastName"]').val();
+        orderLine.contactEmail = $form.find('input[name="order_contactEmail"]').val();
+        orderLine.phoneNumber = $form.find('input[name="order_phoneNumber"]').val();
+        orderLine.signOnReceipt = $form.find('input[name="order_signOnReceipt"]:checked').val() === 'Y';
+        orderLine.trackerOptIn = true; // defaulting to true as Product team told to remove the field
+        orderLine.orderStatus = $form.find('input[name="order_orderStatus"]:checked').val() || 'Scheduled';
+
+        //addresses
+        orderAddress.dpid = $form.find('input[name="order_address_dpId"]').val();
+        orderAddress.businessName = $form.find('input[name="order_address_businessName"]').val();
+        orderAddress.state = $form.find('input[name="order_address_state"]').val();
+        orderAddress.postcode = $form.find('input[name="order_address_postCode"]').val();
+        orderAddress.suburb = $form.find('input[name="order_address_suburbName"]').val()
+            || $form.find('input[name="order_address_suburbNamePrefill"]').val();
+        orderAddress.streetName = $form.find('input[name="order_address_streetName"]').val()
+            || $form.find('input[name="order_address_nonStdStreet"]').val();
+        orderAddress.streetNumber = $form.find('input[name="order_address_streetNum"]').val()
+            || $form.find('input[name="order_address_houseNoSel"]').val();
+        orderAddress.unitNumber = $form.find('input[name="order_address_unitSel"]').val()
+            || $form.find('input[name="order_address_unitShop"]').val();
+        orderAddress.unitType = $form.find('input[name="order_address_unitType"]').val()
+            || $form.find(':input[name="order_address_nonStdUnitType"]').val();
+        orderAddress.fullAddress = $form.find('input[name="order_address_fullAddress"]').val();
+
+        // Safe guard in case the order/get gets incomplete data
+        orderForm.orderHeader.orderLine = orderLine;
+        orderForm.orderHeader.orderLine.orderAddresses[0] = orderAddress;
+
+        console.log('orderForm', orderForm);
+
+        return orderForm;
+    }
+
     function renderRewardOrder() {
         switch (rewardOrder.generalStatus) {
             case 'OK_TO_REDEEM':
                 CRUD.appendToMainForm();
         }
+        // meerkat.modules.jqueryValidate.setupDefaultValidationOnForm($form);
+        meerkat.modules.elasticAddress.setupElasticAddressPlugin(baseURL);
+        meerkat.modules.autocomplete.setBaseURL(baseURL);
+        meerkat.modules.autocomplete.setTypeahead();
+        meerkat.modules.address_lookup.setBaseURL(baseURL);
+        $form = $('#mainform').find('.redemptionForm');
+
+        $('.crud-save-entry').on('click', function() {
+            $("label.error").hide();
+            $(".error").removeClass("error");
+            $('#order_rewardType-error').remove();
+
+            console.log('test1');
+            var data = getSaveRequestData();
+
+            console.log('submit', data);
+
+            $('.toy-radio-tiles').after($('#order_rewardType-error'));
+
+            // // If we are cloning, don't pass the target row so that we can force a new
+            // // record instead of an update
+            // if(isClone)
+            //     that.save(data);
+            // else
+            //     that.save(data, $targetRow);
+        });
     }
 
     function getContentHtml() {

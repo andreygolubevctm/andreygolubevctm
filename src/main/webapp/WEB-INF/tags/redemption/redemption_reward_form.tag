@@ -22,7 +22,7 @@
         <div class="form-group row fieldrow clear required_input rewardType">
             <label for="order_rewardType" class="col-sm-4 col-xs-10 control-label">Please select your reward</label>
             <div class="col-sm-8 col-xs-12 row-content">
-                <div class="btn-tile" data-toggle="radio">
+                <div class="btn-tile toy-radio-tiles" data-toggle="radio">
                     {{ var rewards = currentCampaign.rewards.filter(function(reward) { }}
                     {{ return reward.active === true; }}
                     {{ }); }}
@@ -33,7 +33,7 @@
                            data-analytics="reward type {{= reward.rewardType}}">
                         <input type="radio" name="order_rewardType" id="order_rewardType_{{= reward.rewardType}}"
                                value="{{= reward.rewardTypeId}}"
-                               data-msg-required="Please choose the reward you'd like to redeem"
+                               data-msg-required="Please choose the Toy you'd like to redeem"
                                required="required" {{=reward.stockLevel == 'NO_STOCK' ? 'disabled' : '' }} {{=
                         orderLine.rewardType.rewardTypeId == reward.rewardTypeId ? 'checked' : '' }} />
                     </label>

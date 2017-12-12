@@ -1,22 +1,22 @@
 // Journey campagin style
 .campaign-tile-container {
-  .image-tile{
-    height:400px;
+  .image-tile {
+    height: 400px;
     background-repeat: no-repeat;
     background-position: center top;
 
     @media (@md-only) {
-      height:360px;
+      height: 360px;
       background-size: contain;
     }
 
     @media (@sm-only) {
-      height:320px;
+      height: 320px;
     }
   }
 
   .aleks-1 {
-    background-image: url("../graphics/reward/toy/aleks-1-lg.png");  // banner 220x360px
+    background-image: url("../graphics/reward/toy/aleks-1-lg.png"); // banner 220x360px
   }
   .aleks-2 {
     background-image: url("../graphics/reward/toy/aleks-2-lg.png");
@@ -40,7 +40,7 @@
     background-image: url("../graphics/reward/toy/sergei-2-lg.png");
   }
   .aleks-1-sm {
-    background-image: url("../graphics/reward/toy/aleks-1-sm.png");  // banner 140x300px
+    background-image: url("../graphics/reward/toy/aleks-1-sm.png"); // banner 140x300px
   }
   .aleks-2-sm {
     background-image: url("../graphics/reward/toy/aleks-2-sm.png");
@@ -65,61 +65,8 @@
   }
 }
 
-body {
-  &[data-step=start],
-  &[data-step=contact],
-  &[data-step=payment],
-  &.moreInfoVisible {
-    .campaign-tile-container-xs {
-      .image-tile{
-        background-repeat: no-repeat;
-        background-position: center top;
-        margin: 20px 0 30px;
-      }
-      .aleks-xs,
-      .sergei-xs {
-        height: 200px;
-        .highResImg('../graphics/reward/toy/toy-xs.png'; '../graphics/reward/toy/toy-xs@2x.png'; 300px; 200px);   // banners 300x200px and 600x400px
-      }
-    }
-  }
-}
-
-.cross-sell {
-  clear: both;
-}
-// SVG icons for rewards
-[class*="icon-zeus"] {
-  background-image: url("../graphics/reward/toy/crest.svg");
-  background-repeat: no-repeat;
-  background-position: center top;
-  background-size: 16px;
-
-  &:before { content: "\00a0 \00a0"; }
-}
-
-.reward-more-info {
-  display: flex;
-  .icon-zeus{
-    width: 60px;
-    background-size: contain;
-    margin-right: 15px;
-  }
-}
-
 // Form styles
-.redemptionForm{
-  .form-heading{
-    margin: 10px 25px 15px 25px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #b3b3b3;
-  }
-  .required_input label.control-label:after {
-    content: "\002A";
-    color: @required-color;
-    padding-left: 2px;
-  }
-
+.redemptionForm {
   .rewardType {
     .btn-tile {
       label {
@@ -134,7 +81,7 @@ body {
         }
 
         &:before {
-          content:"";
+          content: "";
           background-size: contain;
           background-repeat: no-repeat;
           background-position: center top;
@@ -147,21 +94,33 @@ body {
           border-width: 5px;
         }
 
-        &.aleks:before { background-image: url("../graphics/reward/toy/aleks-form.jpg"); }
-        &.sergei:before { background-image: url("../graphics/reward/toy/sergei-form.jpg"); }
+        &.aleks:before {
+          background-image: url("../graphics/reward/toy/aleks-form.jpg");
+        }
+        &.sergei:before {
+          background-image: url("../graphics/reward/toy/sergei-form.jpg");
+        }
       }
     }
   }
-
   .text-right .btn {
     display: inline-block;
   }
-
-  .divider{
+  .divider {
     width: 80%;
+  }
+  .toy-subtitle {
+    margin-bottom: 30px;
+  }
+  .error {
+    color: #ef425e;
+  }
+  .crud-save-entry:focus,
+  .crud-save-entry:active {
+    background-color: #0db14b;
+  }
+  .cross-sell {
+    clear: both;
   }
 }
 
-.toy-subtitle {
-  margin-bottom: 30px;
-}

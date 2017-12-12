@@ -6,9 +6,10 @@
     "shared/fonts/v1",
     "shared/headerBar/v1",
     "shared/moreInfo",
-    "shared/forms/v1",
+    "shared/forms/v2",
     "shared/crud",
     "shared/validation",
+    "shared/autocomplete",
     "shared/addressLookup",
     "shared/radioGroupTile"
   ]
