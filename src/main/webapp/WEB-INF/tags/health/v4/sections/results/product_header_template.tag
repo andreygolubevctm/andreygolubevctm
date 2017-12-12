@@ -16,7 +16,7 @@
             </div>
         </div>
         {{ if (meerkat.modules.healthDualPricing.isDualPricingActive() === true) { }}
-            <div class="result-premium-rising-tag visible-lg"><span class="text-bold">Premiums Rise</span> from April 1st <a href="javascript:;" class="dual-pricing-learn-more">Learn more</a></div>
+            <div class="result-premium-rising-tag visible-lg"><span class="text-bold">Premiums Rise</span> from April 1st <a href="javascript:;" class="dual-pricing-learn-more" data-dropDeadDate="{{= obj.dropDeadDate }}">Learn more</a></div>
         {{ } }}
         <div class="results-header-inner-container">
             <div class="productSummary vertical results{{ if (meerkat.modules.healthDualPricing.isDualPricingActive() === true) { }} hasDualPricing{{ } }}">
@@ -31,7 +31,7 @@
                 </div>
 
                 {{ if (meerkat.modules.healthDualPricing.isDualPricingActive() === true) { }}
-                    <div class="result-premium-rising-tag hidden-lg"><span class="text-bold">Premiums Rise</span> from April 1st <a href="javascript:;" class="dual-pricing-learn-more">Learn more</a></div>
+                    <div class="result-premium-rising-tag hidden-lg"><span class="text-bold">Premiums Rise</span> from April 1st <a href="javascript:;" class="dual-pricing-learn-more" data-dropDeadDate="{{= obj.dropDeadDate }}">Learn more</a></div>
                     <div class="dual-pricing-before-after-text"><span class="text-bold">After</span> April 1st</div>
                     {{= meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false, 'results') }}
                 {{ } }}

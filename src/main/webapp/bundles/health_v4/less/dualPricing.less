@@ -1,14 +1,24 @@
 .dual-pricing-modal {
   color: #666;
 
+  @media (@sm) {
+    font-size: @font-size-large;
+  }
+
   h1 {
     font-family: @font-family-theme-regular;
   }
 
   h2 {
-    color: @theme-dark;
+    background-color: @theme-accent-3;
+    color: #fff;
     font-family: @font-family-theme-bold;
-    margin-bottom: 0;
+    margin: -20px -20px 20px -20px;
+    padding: 10px;
+    .icon-arrow-thick-up {
+      margin-top: 5px;
+      margin-right: 5px;
+    }
   }
 
   .need-to-review-cover {
@@ -36,6 +46,26 @@
   .dual-pricing-date {
     font-size: 21px;
     font-family: @font-family-theme-bold;
+    @media (@sm) {
+      border-top: 4px solid;
+      box-shadow: -1px 0px 5px rgba(0, 0, 0, 0.15), 1px 1px 5px rgba(0, 0, 0, 0.15);
+      display: block;
+      margin: 10px 20px;
+      padding: 5px 0 10px 0;
+      span {
+        display: block;
+        &.dual-pricing-date-month {
+          font-size: 18px;
+        }
+        &.dual-pricing-date-day {
+          font-size: 35px;
+          line-height: 35px;
+          sup {
+            font-size: 20px;
+          }
+        }
+      }
+    }
   }
 
   .rounded-gray-bg {
@@ -43,12 +73,54 @@
     border-radius: 100%;
     color: #fff;
     display: inline-block;
+    font-size: 24px;
     height: 40px;
+    margin-top: 30px;
     width: 40px;
     line-height: 40px;
 
     @media (@xs-only) {
       margin: 10px 0;
+    }
+  }
+
+  .dual-pricing-modal-frequency {
+    margin: 15px 0;
+  }
+
+  .dual-pricing-update-frequency-btn {
+    background-color: @gray;
+    color: #fff;
+
+    @media (@sm) {
+      margin: 0 30px;
+    }
+
+    .dual-pricing-frequency-ok-text {
+      display: block;
+    }
+
+    .dual-pricing-frequency-updated-text {
+      display: none;
+    }
+
+    &.dual-pricing-frequency-updated {
+      background-color: @theme-accent-1;
+
+      .dual-pricing-frequency-ok-text {
+        display: none;
+      }
+
+      .dual-pricing-frequency-updated-text {
+        display: block;
+      }
+    }
+  }
+
+  a[href^="tel"] {
+    @media (@xs-only) {
+      display: block;
+      font-size: 30px;
     }
   }
 }
