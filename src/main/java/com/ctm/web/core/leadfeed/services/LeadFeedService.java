@@ -3,6 +3,7 @@ package com.ctm.web.core.leadfeed.services;
 import com.ctm.web.core.content.model.Content;
 import com.ctm.web.core.content.services.ContentService;
 import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.exceptions.ServiceConfigurationException;
 import com.ctm.web.core.leadfeed.dao.BestPriceLeadsDao;
 import com.ctm.web.core.leadfeed.exceptions.LeadFeedException;
 import com.ctm.web.core.leadfeed.model.LeadFeedData;
@@ -126,7 +127,7 @@ public abstract class LeadFeedService {
 		}
 	}
 
-	abstract protected LeadResponseStatus process(LeadType leadType, LeadFeedData leadData, TouchType touchType);
+	abstract protected LeadResponseStatus process(LeadType leadType, LeadFeedData leadData, TouchType touchType) throws LeadFeedException;
 
 	public String processBestPriceLeads (int brandCodeId, String verticalCode, int frequency, Date serverDate){
 		Integer successCount = 0;
