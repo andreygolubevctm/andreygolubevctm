@@ -227,6 +227,7 @@
                 <field_v1:hidden xpath="environmentOverride" />
                 <field_v1:hidden xpath="staticOverride" />
                 <field_v1:hidden xpath="environmentValidatorOverride" />
+                <field_v1:hidden xpath="health/coupon/viewed" className="coupon-viewed-field" />
                 <input type="hidden" name="transcheck" id="transcheck" value="1" />
             </jsp:body>
         </layout_v1:journey_engine_page>

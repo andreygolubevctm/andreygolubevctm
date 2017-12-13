@@ -69,27 +69,42 @@ public class CouponDao {
 	}
 
 	public Coupon getCouponById(CouponRequest couponRequest) throws DaoException{
-		return getCouponById(couponRequest.couponId, couponRequest.styleCodeId, couponRequest.verticalId, couponRequest.couponChannel, couponRequest.effectiveDate);
+		return getCouponById(couponRequest.couponId, couponRequest.styleCodeId, couponRequest.verticalId, couponRequest.couponChannel, couponRequest.showCouponSeen, couponRequest.effectiveDate);
 	}
 
-	public Coupon getCouponById(int couponId, int styleCodeId, int verticalId, CouponChannel couponChannel, Date effectiveDate) throws DaoException {
+	private final static String GET_COUPON_BY_ID_QUERY =
+			"SELECT * " +
+			"FROM ctm.coupons " +
+			"WHERE couponId = ? " +
+			"AND styleCodeId = ? " +
+			"AND verticalId = ? " +
+			"AND couponChannel IN (?, '') " +
+			"AND ? BETWEEN effectiveStart AND effectiveEnd;";
+
+	private final static String GET_COUPON_BY_ID_QUERY_SHOW_COUPON_SEEN =
+			"SELECT * " +
+			"FROM ctm.coupons " +
+			"WHERE couponId = ? " +
+			"AND styleCodeId = ? " +
+			"AND verticalId = ? " +
+			"AND showCouponSeen = ? " +
+			"AND ? BETWEEN effectiveStart AND effectiveEnd;";
+
+	public Coupon getCouponById(int couponId, int styleCodeId, int verticalId, CouponChannel couponChannel, int showCouponSeen, Date effectiveDate) throws DaoException {
 		final SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
 
 		try{
-			PreparedStatement stmt = dbSource.getConnection().prepareStatement(
-					"SELECT * " +
-					"FROM ctm.coupons " +
-					"WHERE couponId = ? " +
-					"AND styleCodeId = ? " +
-					"AND verticalId = ? " +
-					"AND couponChannel IN (?, '') " +
-					"AND ? BETWEEN effectiveStart AND effectiveEnd;"
-			);
+			String sql = showCouponSeen == 1 ? GET_COUPON_BY_ID_QUERY_SHOW_COUPON_SEEN : GET_COUPON_BY_ID_QUERY;
+			PreparedStatement stmt = dbSource.getConnection().prepareStatement(sql);
 
 			stmt.setInt(1, couponId);
 			stmt.setInt(2, styleCodeId);
 			stmt.setInt(3, verticalId);
-			stmt.setString(4, couponChannel.getCode());
+			if (showCouponSeen == 1) {
+				stmt.setInt(4, showCouponSeen);
+			} else {
+				stmt.setString(4, couponChannel.getCode());
+			}
 			stmt.setTimestamp(5, new Timestamp(effectiveDate.getTime()));
 
 			List<Coupon> coupons = mapFieldsFromResultsToCoupon(stmt.executeQuery());
@@ -295,8 +310,11 @@ public class CouponDao {
 		coupon.setStyleCodeId(results.getInt("styleCodeId"));
 		coupon.setVerticalId(results.getInt("verticalId"));
 		coupon.setCouponId(results.getInt("couponId"));
+		coupon.setCampaignName(results.getString("campaignName"));
+		coupon.setCouponValue(results.getDouble("couponValue"));
 		coupon.setExclusive(results.getBoolean("isExclusive"));
 		coupon.setShowPopup(results.getBoolean("showPopup"));
+		coupon.setShowCouponSeen(results.getBoolean("showCouponSeen"));
 		coupon.setPrePopulate(results.getBoolean("canPrePopulate"));
         coupon.setContentTile(results.getString("contentTile"));
 		coupon.setContentBanner(results.getString("contentBanner"));
