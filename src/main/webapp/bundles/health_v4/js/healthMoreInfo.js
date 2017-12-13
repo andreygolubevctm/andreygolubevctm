@@ -251,7 +251,7 @@
 
     function _setupDualPricing(product) {
         if (meerkat.modules.healthDualPricing.isDualPricingActive() === true) {
-            $('.april-pricing').addClass('april-pricing-done');
+            // $('.april-pricing').addClass('april-pricing-done');
             $('.current-pricing').addClass('current-pricing-done');
 
             var productPremium = product.altPremium,
@@ -261,7 +261,7 @@
 
             // update the dropdeaddate. Tried in _getAffixedMobileHeaderData but that returns undefined
             if (!_.isUndefined($elements.applyBy)) {
-                $elements.applyBy.text('Apply by ' + product.dropDeadDateFormatted);
+                $elements.applyBy.text('Must Apply by ' + product.dropDeadDateFormatted);
             }
         }
     }
