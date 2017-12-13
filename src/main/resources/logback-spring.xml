@@ -9,6 +9,8 @@
 
 	<springProperty scope="context" name="LOG_JSON" source="ctm.logging.format.json" defaultValue="false"/>
 
+	<springProperty scope="context" name="LOG_JSON_FILE" source="ctm.logging.format.jsonfile" defaultValue="false"/>
+
 	<springProperty scope="context" name="ctmLoggingPath" source="logging.path"
 					defaultValue="localhost"/>
 
@@ -75,22 +77,10 @@
 		</encoder>
 	</appender>
 
-	<appender name="JSON_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+	<appender name="JSON_FILE" class="ch.qos.logback.core.FileAppender">
 		<prudent>true</prudent>
-		<append>false</append>
 		<!-- ${logLocation} comes from environmentConfigLocation properties file -->
 		<file>${jsonFileLoggingPath}/ctmJson.log</file>
-		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<!-- daily rollover. Make sure the path matches the one in the file element or else
-             the rollover logs are placed in the working directory. -->
-			<fileNamePattern>${jsonFileLoggingPath}/ctmJson_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
-
-			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-				<maxFileSize>${maxFileSize}</maxFileSize>
-			</timeBasedFileNamingAndTriggeringPolicy>
-			<!-- keep 30 days' worth of history -->
-			<maxHistory>${maxHistory}</maxHistory>
-		</rollingPolicy>
 		<encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
 				<jsonFactoryDecorator class="com.ctm.commonlogging.common.LogstashFactoryDecorator"/>
 				<providers>
@@ -138,10 +128,14 @@
 	<logger name="com.ctm.web.core.intercepter.SpringFormParamMapInInterceptor" level="INFO"/>
 
 	<root level="INFO">
+		<if condition='p("LOG_JSON_FILE").equals("true")'>
+		<then>
+			<appender-ref ref="JSON_FILE" />
+		</then>
+		</if>
 		<if condition='p("LOG_JSON").equals("true")'>
 			<then>
 				<appender-ref ref="JSON_CONSOLE" />
-				<appender-ref ref="JSON_FILE" />
 			</then>
 			<else>
 				<appender-ref ref="CONSOLE" />
