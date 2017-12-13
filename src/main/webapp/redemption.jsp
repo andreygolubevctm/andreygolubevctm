@@ -42,10 +42,10 @@ Redemption Page for Toy Promo 2018
 	</jsp:attribute>
 
     <jsp:body>
-        <redemption:generic_redemption/>
+        <redemption:redemption_setup/>
 
         <script class="crud-modal-template" type="text/html">
-            <redemption:redemption_reward_form />
+            <redemption:redemption_form />
         </script>
     </jsp:body>
 

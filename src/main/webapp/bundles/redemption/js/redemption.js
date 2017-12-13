@@ -11,12 +11,11 @@
         $form,
         $contentHtml,
         currentCampaign,
+        rewardGeneralStatus,
         selectedRewardTypeId,
-        $redemptionErrorExpired = $('.redemption-error-expired'),
-        $redemptionErrorSubtitle = $('.redemption-error-subtitle'),
-        $redemptionBackContainer = $('.redemption-back-container'),
-        $redemptionErrorTitle = $('.redemption-error-title'),
-        $redemptionErrorContainer = $('.redemption-error-container');
+        $redemptionMessageContainer = $('.redemption-message-container'),
+        $redemptionTitle = $('.redemption-title'),
+        $redemptionLead = $('.redemption-lead');
 
     function initRedemptionComponent() {
         $(document).ready(function() {
@@ -24,12 +23,15 @@
 
             // Bad response, abort
             if (!rewardOrder || rewardOrder.status !== true || !rewardOrder.orderHeader) {
-                $redemptionErrorTitle.text('Error: Invalid Redemption Link');
-                $redemptionErrorContainer.removeClass('hide');
+                $redemptionTitle.text('Error: Invalid Redemption Link');
+                $redemptionLead.removeClass('hide');
+                $redemptionMessageContainer.removeClass('hide');
                 return;
             }
 
-            if (rewardOrder.generalStatus !== 'OK_TO_REDEEM') {
+            rewardGeneralStatus = rewardOrder.generalStatus;
+
+            if (rewardGeneralStatus !== 'OK_TO_REDEEM') {
                 return displayErrorPage();
             }
 
@@ -43,23 +45,20 @@
     }
 
     function displayErrorPage(){
-        switch (rewardOrder.generalStatus) {
+        switch (rewardGeneralStatus) {
             case "ALREADY_REDEEMED":
-                $redemptionErrorTitle.text("Hmmm... It appears that you have already redeemed your toy.");
+                $redemptionTitle.text("Hmmm... It appears that you have already redeemed your toy.");
+                $redemptionLead.removeClass('hide');
                 break;
             case "NO_STOCK":
-                $redemptionErrorTitle.text("We're sorry we are sold out of toys");
-                $redemptionErrorSubtitle.addClass('hide');
-                $redemptionErrorExpired.removeClass('hide');
-                $redemptionBackContainer.removeClass('hide');
+                $redemptionTitle.text("We're sorry we are sold out of toys");
                 break;
             case "NOT_ELIGIBLE":
-                $redemptionErrorTitle.text("We're sorry");
-                $redemptionErrorExpired.removeClass('hide');
-                $redemptionBackContainer.removeClass('hide');
+                $redemptionTitle.text("We're sorry");
+                $redemptionLead.html("The 28 day redemption window has expired.").removeClass('hide');
                 break;
         }
-        $redemptionErrorContainer.removeClass('hide');
+        $redemptionMessageContainer.removeClass('hide');
     }
 
     function initCRUD(){
@@ -72,39 +71,48 @@
             }
         });
 
-        CRUD.save = function (data) {
-            var that = this,
-                onSuccess = function (response) {
-                    if (response.status && response.status === true) {
-                        renderSuccessMessage();
-                        meerkat.modules.dialogs.close(that.modalId);
-                        meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-                            method:'trackQuoteReward',
-                            object: {
-                                action: 'Reward Redeemed',
-                                redeemedCampaignCode: currentCampaign.campaignCode,
-                                redeemedRewardTypeId: selectedRewardTypeId || $form.find('input[name="order_orderStatus"]:checked').val()
-                            }
-                        });
-                    } else if (response.message) {
-                        $form.find(".error-message").html('Something went wrong, please try again. If the error persists, please call 1800 Meerkat (1800 633 752) for help.');
-                    }
-                };
-
-            if ( $form.valid() ) {
-                this.promise("update", data, onSuccess, 'post', true);
-            }
-        };
-
-        // defer rendering because confirmation page is a template
+        // defer rendering because redemption form is a CRUD template
         _.defer(function() {
             renderRewardOrder();
+            setupForm();
         });
     }
 
-    function getSaveRequestData () {
-        console.log($form);
+    function setupForm() {
+        meerkat.modules.elasticAddress.setupElasticAddressPlugin(baseURL);
+        meerkat.modules.autocomplete.setBaseURL(baseURL);
+        meerkat.modules.autocomplete.setTypeahead();
+        meerkat.modules.address_lookup.setBaseURL(baseURL);
+        $form = $('#mainform').find('.redemptionForm');
+        applyEventListeners();
+    }
 
+    function applyEventListeners() {
+        // Remove Toy Tiles errors on click.
+        $('.toy-radio-tiles').on('click', function() {
+            $('#order_rewardType-error').remove();
+        });
+
+        // Process redemption form on click
+        $('#redemption-submit-button').on('click', function() {
+            // Remove validation errors
+            $("label.error").hide();
+            $(".error").removeClass("error");
+            $('#order_rewardType-error').remove();
+
+            // Validate Form
+            var data = validateForm();
+
+            // Move Toy Radio Titles error to after question
+            $('.toy-radio-tiles').after($('#order_rewardType-error'));
+
+            if(data){
+                submitForm(data);
+            }
+        });
+    }
+
+    function validateForm() {
         // Abort if form is invalid
         if ( $form.valid() !== true ) return;
 
@@ -114,7 +122,7 @@
 
         selectedRewardTypeId = $form.find('input[name="order_rewardType"]:checked').val();
 
-        console.log(selectedRewardTypeId);
+        orderForm.orderHeader.reasonCode = null;
 
         orderLine.campaignCode = currentCampaign.campaignCode;
         orderLine.rewardTypeId = selectedRewardTypeId || null;
@@ -126,7 +134,6 @@
         orderLine.trackerOptIn = true; // defaulting to true as Product team told to remove the field
         orderLine.orderStatus = $form.find('input[name="order_orderStatus"]:checked').val() || 'Scheduled';
 
-        //addresses
         orderAddress.dpid = $form.find('input[name="order_address_dpId"]').val();
         orderAddress.businessName = $form.find('input[name="order_address_businessName"]').val();
         orderAddress.state = $form.find('input[name="order_address_state"]').val();
@@ -153,39 +160,35 @@
     }
 
     function renderRewardOrder() {
-        switch (rewardOrder.generalStatus) {
-            case 'OK_TO_REDEEM':
-                CRUD.appendToMainForm();
+        if (rewardGeneralStatus === 'OK_TO_REDEEM') {
+            CRUD.appendToMainForm();
         }
-        // meerkat.modules.jqueryValidate.setupDefaultValidationOnForm($form);
-        meerkat.modules.elasticAddress.setupElasticAddressPlugin(baseURL);
-        meerkat.modules.autocomplete.setBaseURL(baseURL);
-        meerkat.modules.autocomplete.setTypeahead();
-        meerkat.modules.address_lookup.setBaseURL(baseURL);
-        $form = $('#mainform').find('.redemptionForm');
+    }
 
-        $('.toy-radio-tiles').on('click', function() {
-            $('#order_rewardType-error').remove();
-        });
-
-        $('.crud-save-entry').on('click', function() {
-            $("label.error").hide();
-            $(".error").removeClass("error");
-            $('#order_rewardType-error').remove();
-
-            console.log('test1');
-            var data = getSaveRequestData();
-
-            console.log('submit', data);
-
-            $('.toy-radio-tiles').after($('#order_rewardType-error'));
-
-            // // If we are cloning, don't pass the target row so that we can force a new
-            // // record instead of an update
-            // if(isClone)
-            //     that.save(data);
-            // else
-            //     that.save(data, $targetRow);
+    function submitForm(data) {
+        meerkat.modules.comms.post({
+            url: "spring/rest/reward/order/update.json",
+            data: data,
+            cache: false,
+            errorLevel: "warning",
+            contentType: "application/json; charset=utf-8",
+            doStringify: true,
+            onSuccess: function(data, textStatus, jqXHR) {
+                console.log(data);
+                if (data.status && data.status === true) {
+                    renderSuccessMessage();
+                    meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+                        method:'trackQuoteReward',
+                        object: {
+                            action: 'Reward Redeemed',
+                            redeemedCampaignCode: currentCampaign.campaignCode,
+                            redeemedRewardTypeId: selectedRewardTypeId || $form.find('input[name="order_orderStatus"]:checked').val()
+                        }
+                    });
+                } else if (data.message || data.status === false) {
+                    renderErrorAJAXMessage();
+                }
+            }
         });
     }
 
@@ -193,13 +196,14 @@
         return $contentHtml;
     }
 
+    function renderErrorAJAXMessage() {
+        $form.find(".error-message").html("Something went wrong, please try again. If the error persists, please contact us at <a href='mailto:toys@comparethemarket.com.au' target='_top'>toys@comparethemarket.com.au</a>");
+    }
+
     function renderSuccessMessage() {
-        // Don't render if user never selected a reward (i.e. choose not to redeem)
-        if (selectedRewardTypeId && $contentHtml) {
-            $('.reward-confirmation-message-container').html(
-                $contentHtml.find('.reward-confirmation-message').prop('outerHTML')
-            );
-        }
+        $redemptionTitle.text('Congratulations! Your toy has been redeemed.');
+        $form.addClass('hide');
+        $redemptionMessageContainer.removeClass('hide');
     }
 
     function _transformRewardOrder() {

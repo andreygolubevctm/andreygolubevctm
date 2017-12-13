@@ -5,6 +5,7 @@
 <%-- ATTRIBUTES --%>
 {{ var currentCampaign = data.eligibleCampaigns[0] || {}; }}
 
+<%-- Form Structure - initalise with CRUD.js --%>
 <form class="redemptionForm form-horizontal">
     <fieldset class="qe-window fieldset">
         <div class="row">
@@ -110,15 +111,16 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-sm-12">
+        <div class="form-group row fieldrow clear">
+            <div class="col-sm-4 col-xs-10"></div>
+            <div class="col-sm-6 col-xs-12">
                 <p class="error-message text-warning"></p>
             </div>
         </div>
 
         <div class="row text-right">
             <div class="col-sm-10">
-                <button type="button" class="crud-save-entry btn btn-secondary">Submit</button>
+                <button id="redemption-submit-button" type="button" class="btn btn-secondary">Submit</button>
             </div>
         </div>
     </fieldset>
