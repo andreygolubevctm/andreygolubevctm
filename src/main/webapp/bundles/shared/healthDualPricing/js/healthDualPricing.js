@@ -192,6 +192,8 @@
         product.showAltPremium = false;
         product.displayLogo = isForSidebar;
         product.showRoundingText = false;
+        product.showRisingTag = isForSidebar;
+        product.showBeforeAfterText = isForSidebar;
 
         var pricingDate = new Date(selectedProduct.pricingDate);
         // named pricingDateFormatted because inside _updatePricingDate function it throws an invalid date when creating a new Date object with pricingDate,
@@ -203,6 +205,7 @@
 
         product.showAltPremium = true;
         product.displayLogo = false;
+        product.showRisingTag = false;
         htmlTemplate = _.template($elements.logoPriceTemplate.html());
         product.renderedAltPriceTemplate = htmlTemplate(product);
         product.dropDeadDate = meerkat.modules.dropDeadDate.getDropDeadDate(product);

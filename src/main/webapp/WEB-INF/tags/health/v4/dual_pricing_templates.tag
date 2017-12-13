@@ -66,7 +66,7 @@
 			</div>
 		</div>
 
-		<div class="row april-pricing">
+		<div class="row april-pricing premium-rising-tag">
 			<div class="premium-rising"><span class="icon-arrow-thick-up"></span> Premiums are rising from April 1st, 2017</div>
 			{{= renderedAltPriceTemplate }}
 			{{ if (comingSoonClass === '' && !_.isUndefined(obj.altPremium[obj._selectedFrequency]) && !_.isUndefined(obj.altPremium[obj._selectedFrequency][lhcText])) { }}
@@ -89,7 +89,7 @@
 		<div class="row">
 			<div class="col-xs-6 current-container">
 				<div class="current-pricing">
-					<div class="dual-pricing-before-after-textCurrent">Before April 1st</div>
+					<div class="dual-pricing-before-after-text"><span class="text-bold">Before</span> April 1st</div>
 					{{= renderedPriceTemplate }}
 
 					<div>Current {{= obj._selectedFrequency }} Price</div>
@@ -103,7 +103,7 @@
 			</div>
 			<div class="col-xs-6 april-container">
 				<div class="april-pricing">
-					<div class="dual-pricing-before-after-textCurrent">After April 1st</div>
+					<div class="dual-pricing-before-after-text"><span class="text-bold">After</span> April 1st</div>
 					{{= renderedAltPriceTemplate }}
 					<span class="premiumsRising">Premiums are rising<br/> from April 1st</span>
 					<a href="javascript:;" class="dual-pricing-learn-more" data-dropDeadDate="{{= obj.dropDeadDate }}">Learn more</a>
@@ -123,11 +123,8 @@
 		<div class="current-pricing">
 			{{= renderedPriceTemplate }}
 		</div>
-		<div class="down-arrow"></div>
 		<div class="april-pricing">
-			<p>Premiums are rising</p>
 			{{= renderedAltPriceTemplate }}
-			<p>from {{= pricingDateFormatted }}</p>
 		</div>
 	</div>
 </core_v1:js_template>

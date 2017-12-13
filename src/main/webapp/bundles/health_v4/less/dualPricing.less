@@ -125,14 +125,22 @@
   }
 }
 
+.premium-rising-tag {
+  background-color: @theme-accent-3;
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+
+  .dual-pricing-learn-more {
+    color: #fff;
+    text-decoration: underline;
+  }
+}
+
 /* Results Page */
 [data-step="results"]:not(.moreInfoVisible) {
-  .result-premium-rising-tag {
-    background-color: @theme-accent-3;
-    color: #fff;
+  .premium-rising-tag {
     margin-bottom: 10px;
-    padding: 10px;
-    text-align: center;
 
     @media (@xs-only) {
       font-size: @font-size-small;
@@ -155,9 +163,6 @@
   }
 
   .dual-pricing-learn-more {
-    color: #fff;
-    text-decoration: underline;
-
     @media (@lg) {
       margin-left: 10px;
     }
@@ -695,26 +700,25 @@
   h1 {
     margin-top: 0;
   }
-  .productSummary {
-    &.dualPricing {
-      .down-arrow {
-        @media (@lg) {
-          margin-top: 20px;
-          margin-bottom: 50px;
-        }
-        &:after,
-        &:before {
-          left: 28px;
 
-          @media (@md) {
-            left: 35px;
-          }
+  .premium-rising-tag {
+    font-size: @font-size-small;
+    margin: 10px -10px;
+  }
 
-          @media (@lg) {
-            left: 41px;
-          }
-        }
-      }
+  .dual-pricing-before-after-text {
+    color: @gray;
+    font-size: @font-size-small;
+    text-align: center;
+  }
+
+  .april-pricing {
+    margin-top: 5px;
+    .frequencyAmount {
+      color: @theme-accent-3;
+    }
+    .lhcText {
+      line-height: initial;
     }
   }
 }
