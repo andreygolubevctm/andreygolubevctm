@@ -122,8 +122,6 @@
 
         selectedRewardTypeId = $form.find('input[name="order_rewardType"]:checked').val();
 
-        orderForm.orderHeader.reasonCode = null;
-
         orderLine.campaignCode = currentCampaign.campaignCode;
         orderLine.rewardTypeId = selectedRewardTypeId || null;
         orderLine.firstName = $form.find('input[name="order_firstName"]').val();
