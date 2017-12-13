@@ -34,6 +34,9 @@
 <%-- RESULTS TEMPLATES --%>
 <core_v1:js_template id="dual-pricing-results-template">
 	<div class="dual-pricing-container {{ if (obj.dropDatePassed === true) { }}dropDatePassed{{ } }}">
+		<div class="current-pricing">
+			{{= renderedPriceTemplate }}
+		</div>
 		<div class="april-pricing">
 			<div class="altPriceContainer">
 				{{= renderedAltPriceTemplate }}
@@ -42,9 +45,6 @@
 				<span class="deadline">${april1Header}</span>
 				<a href="javascript:;" class="dual-pricing-learn-more" data-dropDeadDate="{{= obj.dropDeadDate }}">learn more</a>
 			</div>
-		</div>
-		<div class="current-pricing">
-			{{= renderedPriceTemplate }}
 		</div>
 	</div>
 </core_v1:js_template>

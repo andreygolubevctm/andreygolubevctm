@@ -1,14 +1,24 @@
 .dual-pricing-modal {
   color: #666;
 
+  @media (@sm) {
+    font-size: @font-size-large;
+  }
+
   h1 {
     font-family: @font-family-theme-regular;
   }
 
   h2 {
-    color: @theme-dark;
+    background-color: @theme-accent-3;
+    color: #fff;
     font-family: @font-family-theme-bold;
-    margin-bottom: 0;
+    margin: -20px -20px 20px -20px;
+    padding: 10px;
+    .icon-arrow-thick-up {
+      margin-top: 5px;
+      margin-right: 5px;
+    }
   }
 
   .need-to-review-cover {
@@ -36,6 +46,26 @@
   .dual-pricing-date {
     font-size: 21px;
     font-family: @font-family-theme-bold;
+    @media (@sm) {
+      border-top: 4px solid;
+      box-shadow: -1px 0px 5px rgba(0, 0, 0, 0.15), 1px 1px 5px rgba(0, 0, 0, 0.15);
+      display: block;
+      margin: 10px 20px;
+      padding: 5px 0 10px 0;
+      span {
+        display: block;
+        &.dual-pricing-date-month {
+          font-size: 18px;
+        }
+        &.dual-pricing-date-day {
+          font-size: 35px;
+          line-height: 35px;
+          sup {
+            font-size: 20px;
+          }
+        }
+      }
+    }
   }
 
   .rounded-gray-bg {
@@ -43,7 +73,9 @@
     border-radius: 100%;
     color: #fff;
     display: inline-block;
+    font-size: 24px;
     height: 40px;
+    margin-top: 30px;
     width: 40px;
     line-height: 40px;
 
@@ -51,115 +83,222 @@
       margin: 10px 0;
     }
   }
-}
 
-/* Results Page */
-[data-step="results"] {
-
-  .resultInsert .productSummary {
-    height: initial;
+  .dual-pricing-modal-frequency {
+    margin: 15px 0;
   }
 
-  .resultInsert .dual-pricing-container {
-    .april-pricing {
-      @media (@xs-only) {
-        height: 81px;
-      }
-      margin-top: 15px;
+  .dual-pricing-update-frequency-btn {
+    background-color: @gray;
+    color: #fff;
 
-      .deadline,
-      .frequencyAmount,
-      .dollarSign,
-      .cents {
-        color: @gray;
-      }
+    @media (@sm) {
+      margin: 0 30px;
+    }
 
-      .price.premium {
-        .frequencyAmount {
-          font-size: 28px;
-        }
-      }
+    .dual-pricing-frequency-ok-text {
+      display: block;
+    }
 
-      .dollarSign {
-        font-size: 15px;
-        vertical-align: super;
-      }
+    .dual-pricing-frequency-updated-text {
+      display: none;
+    }
 
-      .cents {
-        font-size: 14px;
-        vertical-align: super;
-      }
+    &.dual-pricing-frequency-updated {
+      background-color: @theme-accent-1;
 
-      .frequencyTitle,
-      .lhcText {
+      .dual-pricing-frequency-ok-text {
         display: none;
       }
 
-      .altPriceContainer {
-        text-align: center;
-
-        @media (@sm) {
-          display: inline-block;
-          float: left;
-          width: 55%;
-        }
+      .dual-pricing-frequency-updated-text {
+        display: block;
       }
+    }
+  }
 
-      .altPriceDetailsContainer {
-        color:#ccc;
-        font-size: @font-size-base;
-        text-align: left;
+  a[href^="tel"] {
+    @media (@xs-only) {
+      display: block;
+      font-size: 30px;
+    }
+  }
+}
 
-        .deadline {
-          color:#333;
-        }
+/* Results Page */
+[data-step="results"]:not(.moreInfoVisible) {
+  .result-premium-rising-tag {
+    background-color: @theme-accent-3;
+    color: #fff;
+    margin-bottom: 10px;
+    padding: 10px;
+    text-align: center;
 
-        .dual-pricing-learn-more {
-          display: block;
-        }
+    @media (@xs-only) {
+      font-size: @font-size-small;
+      margin-left: -10px;
+      margin-right: -10px;
+    }
 
-        @media (@sm) {
-          display: inline-block;
-          width: 45%;
+    @media (@sm) {
+      margin-left: -15px;
+      margin-right: -15px;
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+
+    @media (@lg) {
+      margin: 30px 0 0 0;
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+  }
+
+  .dual-pricing-learn-more {
+    color: #fff;
+    text-decoration: underline;
+
+    @media (@lg) {
+      margin-left: 10px;
+    }
+  }
+
+  .dual-pricing-before-after-text {
+    color: @gray;
+    font-size: @font-size-small;
+    text-align: center;
+  }
+
+  .resultInsert .productSummary.hasDualPricing {
+    height: initial;
+
+    .open-more-info {
+      @media (@lg) {
+        width: 60%;
+        float: left;
+
+        .lhcText {
+          margin-top: -10px;
         }
       }
     }
 
-    .current-pricing {
-      .frequencyTitle {
-        text-transform: lowercase;
+    .price.premium {
+      .frequency {
+        height: initial;
+      }
+
+      .lhcText {
+        min-height: 52px;
+        padding-bottom: 10px;
+      }
+
+      @media (@lg) {
+        .frequencyAmount,
+        .lhcText {
+          float: none;
+          text-align: center;
+          width: auto;
+        }
       }
     }
 
-    /* coming soon styles */
-    &.comingsoon {
+    .dual-pricing-container {
+      @media (@lg) {
+        width: 40%;
+        float: left;
+      }
       .april-pricing {
         @media (@xs-only) {
-          padding-top: 20px;
+          height: 81px;
         }
 
-        padding-bottom: initial;
-        margin-bottom: initial;
-
-        @media (@sm) {
-          height: 61px;
-          line-height: 61px;
+        .deadline,
+        .frequencyAmount,
+        .dollarSign,
+        .cents {
+          color: @theme-accent-3;
         }
 
-        @media (@lg) {
-          height: 46px;
-          line-height: 46px;
-        }
-
-        .altPriceContainer {
-          width: 100%;
-          .price.premium .frequencyAmount {
-            font-size: 16px;
+        .price.premium {
+          .frequencyAmount {
+            font-size: 28px;
           }
         }
 
-        .altPriceDetailsContainer {
+        .dollarSign {
+          font-size: 15px;
+          vertical-align: super;
+        }
+
+        .cents {
+          font-size: 14px;
+          vertical-align: super;
+        }
+
+        .frequencyTitle {
           display: none;
+        }
+
+        .altPriceContainer {
+          text-align: center;
+        }
+
+        .altPriceDetailsContainer {
+          color:#ccc;
+          font-size: @font-size-base;
+          text-align: left;
+
+          .deadline {
+            color:#333;
+          }
+
+          .dual-pricing-learn-more {
+            display: block;
+          }
+
+          @media (@sm) {
+            display: inline-block;
+            width: 45%;
+          }
+        }
+      }
+
+      .current-pricing {
+        .frequencyTitle {
+          text-transform: lowercase;
+        }
+      }
+
+      /* coming soon styles */
+      &.comingsoon {
+        .april-pricing {
+          @media (@xs-only) {
+            padding-top: 20px;
+          }
+
+          padding-bottom: initial;
+          margin-bottom: initial;
+
+          @media (@sm) {
+            height: 88px;
+            line-height: 88px;
+          }
+
+          @media (@lg) {
+            line-height: 20px;
+          }
+
+          .altPriceContainer {
+            width: 100%;
+            .price.premium .frequencyAmount {
+              font-size: 16px;
+            }
+          }
+
+          .altPriceDetailsContainer {
+            display: none;
+          }
         }
       }
     }

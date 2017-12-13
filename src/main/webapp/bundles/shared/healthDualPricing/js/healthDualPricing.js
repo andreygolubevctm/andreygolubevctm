@@ -85,6 +85,19 @@
         $(document).on('click', 'a.live-chat', function() {
             $('.LPMcontainer').trigger('click');
         });
+
+        $(document).on('change', 'input[name=health_dual_pricing_frequency]', function() {
+            $('.dual-pricing-update-frequency-btn').toggleClass('dual-pricing-frequency-updated', $(this).val() !== $('#health_filter_frequency').val());
+        });
+
+        $(document).on('click', '.dual-pricing-update-frequency-btn', function() {
+            if ($(this).hasClass('dual-pricing-frequency-updated')) {
+                var newFrequency = $('input[name=health_dual_pricing_frequency]').filter(':checked').val();
+                $('input[name=health_filterBar_frequency]').filter('[value='+newFrequency+']').trigger('click');
+            }
+
+            _hideModal();
+        });
     }
 
     function _eventSubscriptions() {
@@ -102,12 +115,35 @@
     }
 
     function _showModal(dropDeadDate) {
-        var template = _.template($elements.modalTemplate.html());
+        var template = _.template($elements.modalTemplate.html()),
+            hiddenFreqVal = $('#health_filter_frequency').val(),
+            ddd = new Date(dropDeadDate),
+            dddDay = meerkat.modules.dateUtils.format(ddd, "D"),
+            dddSuffix = meerkat.modules.dateUtils.format(ddd, "Do").replace(dddDay, '');
 
         modalId = meerkat.modules.dialogs.show({
             className: 'dual-pricing-modal',
             htmlContent: template({
-                dropDeadDate: meerkat.modules.dateUtils.format(new Date(dropDeadDate), "MMMM Do")
+                dddMonth: meerkat.modules.dateUtils.format(ddd, "MMMM"),
+                dddDay: dddDay,
+                dddSuffix: dddSuffix,
+                frequency: [
+                    {
+                        value: 'F',
+                        label: 'Fortnightly',
+                        selected: hiddenFreqVal === 'F'
+                    },
+                    {
+                        value: 'M',
+                        label: 'Monthly',
+                        selected: hiddenFreqVal === 'M'
+                    },
+                    {
+                        value: 'A',
+                        label: 'Annually',
+                        selected: hiddenFreqVal === 'A'
+                    }
+                ]
             }),
             onOpen : function() {
                 $('a.live-chat').toggleClass('hidden', $('.LPMcontainer').length === 0);
