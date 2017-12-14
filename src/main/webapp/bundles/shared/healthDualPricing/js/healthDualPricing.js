@@ -216,7 +216,7 @@
             product.dropDeadDatePassed = selectedProduct.dropDeadDatePassed;
         }
 
-        product._selectedFrequency = typeof product._selectedFrequency === 'undefined' ? Results.getFrequency() : product._selectedFrequency;
+        product._selectedFrequency = Results.getFrequency();
         product.mode = product.mode !== '' ? product.mode : '';
 
         // this is only for simples users and regardless of what season we're in
