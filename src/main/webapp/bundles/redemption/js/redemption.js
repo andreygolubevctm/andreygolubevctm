@@ -147,12 +147,11 @@
         orderAddress.unitType = $form.find('input[name="order_address_unitType"]').val()
             || $form.find(':input[name="order_address_nonStdUnitType"]').val();
         orderAddress.fullAddress = $form.find('input[name="order_address_fullAddress"]').val();
+        orderAddress.addressType = 'P';
 
         // Safe guard in case the order/get gets incomplete data
         orderForm.orderHeader.orderLine = orderLine;
         orderForm.orderHeader.orderLine.orderAddresses[0] = orderAddress;
-
-        console.log('orderForm', orderForm);
 
         return orderForm;
     }
@@ -172,7 +171,6 @@
             contentType: "application/json; charset=utf-8",
             doStringify: true,
             onSuccess: function(data, textStatus, jqXHR) {
-                console.log(data);
                 if (data.status && data.status === true) {
                     renderSuccessMessage();
                     meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
