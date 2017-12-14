@@ -37,7 +37,6 @@ import com.ctm.web.core.web.go.xml.XmlNode;
 import com.ctm.web.simples.services.TransactionDetailService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.javaws.exceptions.InvalidArgumentException;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.LocalDate;
