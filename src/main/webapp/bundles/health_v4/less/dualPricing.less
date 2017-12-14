@@ -138,7 +138,7 @@
 }
 
 /* Results Page */
-[data-step="results"]:not(.moreInfoVisible) {
+body[data-step="results"]:not(.moreInfoVisible) {
   .premium-rising-tag {
     margin-bottom: 10px;
 
@@ -723,6 +723,10 @@
     }
   }
 
+  .lhcText {
+    color: @gray;
+  }
+
   @media (@xs-only) {
     .current-pricing {
       .clearfix;
@@ -764,5 +768,28 @@
     .priceSaved {
       font-size: 18px;
     }
+  }
+}
+
+body[data-step=apply],
+body[data-step=payment] {
+  .policySummary-sidebar.hasDualPricing {
+    .current-pricing {
+      @media (@md-only) {
+        .annually {
+          .frequencyTitle {
+            display: block;
+            left: initial;
+            top: -11px;
+          }
+        }
+      }
+    }
+  }
+}
+
+body[data-step="payment"] {
+  .dual-pricing-frequency-row {
+    display: none;
   }
 }

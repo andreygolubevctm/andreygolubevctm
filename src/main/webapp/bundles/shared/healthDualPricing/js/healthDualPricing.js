@@ -12,6 +12,11 @@
             'fortnightly': 'fortnightly',
             'weekly': 'weekly'
         },
+        freqValuesMapping = {
+            'F': 'fortnightly',
+            'M': 'monthly',
+            'A': 'annual'
+        },
         isActive = null,
         _aprilFirst = '04/01/2018';
 
@@ -74,6 +79,8 @@
 
             var frequency = $(this).val().toLowerCase(),
                 selectedProduct = Results.getSelectedProduct(),
+                pricingDate = new Date(selectedProduct.pricingDate),
+                pricingDateFormatted = meerkat.modules.dateUtils.format(pricingDate, "Do MMMM"),
                 template = null,
                 obj = null;
 
@@ -81,19 +88,18 @@
                 if ($elements.priceCongratsTemplate.length === 1) {
                     template = _.template($elements.priceCongratsTemplate.html());
                     obj = {
-                        priceSaved: '$' + (parseFloat(selectedProduct.altPremium[frequency].value - selectedProduct.premium[frequency].value)).toFixed(2)
+                        priceSaved: '$' + (parseFloat(selectedProduct.altPremium[frequency].value - selectedProduct.premium[frequency].value)).toFixed(2),
+                        pricingDateFormatted: pricingDateFormatted
                     };
                 } else {
                     $elements.frequencyWarning.slideUp().html("");
                     return;
                 }
             } else {
-                var pricingDate = new Date(selectedProduct.pricingDate);
-
                 template = _.template($elements.priceFrequencyTemplate.html());
                 obj = {
                     frequency: freqTextMapping[frequency],
-                    pricingDateFormatted: meerkat.modules.dateUtils.format(pricingDate, "Do MMMM"),
+                    pricingDateFormatted: pricingDateFormatted,
                     premium: selectedProduct.premium[frequency].text,
                     altPremium: selectedProduct.altPremium[frequency].text
                 };
@@ -118,6 +124,7 @@
             if ($(this).hasClass('dual-pricing-frequency-updated')) {
                 var newFrequency = $('input[name=health_dual_pricing_frequency]').filter(':checked').val();
                 $('input[name=health_filterBar_frequency]').filter('[value='+newFrequency+']').trigger('click');
+                $('.current-frequency').text(freqValuesMapping[newFrequency]);
             }
 
             _hideModal();
@@ -148,6 +155,7 @@
         modalId = meerkat.modules.dialogs.show({
             className: 'dual-pricing-modal',
             htmlContent: template({
+                dropDeadDate: meerkat.modules.dateUtils.format(ddd, "Do MMMM"),
                 dddMonth: meerkat.modules.dateUtils.format(ddd, "MMMM"),
                 dddDay: dddDay,
                 dddSuffix: dddSuffix,

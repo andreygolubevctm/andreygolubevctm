@@ -12,7 +12,7 @@
 <core_v1:js_template id="price-congratulations-template">
 	<div class="price-congratulations-copy">
 		<h4>Congratulations</h4>
-		<p>Paying annually means you will save <span class="priceSaved">{{= priceSaved }}!</span> You must choose a payment date before <span class="text-bold">1st April</span> to lock in this premium.</p>
+		<p>Paying annually means you will save <span class="priceSaved">{{= priceSaved }}!</span> You must choose a payment date before <span class="text-bold">{{= pricingDateFormatted }}</span> to lock in this premium.</p>
 	</div>
 </core_v1:js_template>
 
@@ -51,6 +51,7 @@
 	{{ var comingSoonClass = ''; }}
 	{{ var alternatePremium = obj.altPremium[obj._selectedFrequency]; }}
 	{{ var lhcText = meerkat.site.isCallCentreUser ? 'pricing' : 'lhcfreepricing'; }}
+	{{ var currFreq = obj._selectedFrequency === 'annually' ? 'annual' : obj._selectedFrequency; }}
 
 	{{ if (!_.isUndefined(alternatePremium)) { }}
 		{{ var productPremium = alternatePremium }}
@@ -59,7 +60,7 @@
 	<div class="dual-pricing-container {{ if (obj.dropDatePassed === true) { }}dropDatePassed{{ } }} {{= comingSoonClass }}">
 		<div class="row current-pricing">
 			<div class="col-sm-4">
-				<h3>Current {{= obj._selectedFrequency }} Price</h3>
+				<h3>Current <span class="current-frequency">{{= obj._selectedFrequency }}</span> price</h3>
 				<span class="applyBy">Must apply by <span class="text-bold">{{= obj.dropDeadDateFormatted }}</span></span>
 			</div>
 			<div class="col-sm-5">

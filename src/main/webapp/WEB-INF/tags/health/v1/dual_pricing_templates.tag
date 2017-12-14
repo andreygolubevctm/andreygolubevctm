@@ -63,7 +63,8 @@
 <core_v1:js_template id="dual-pricing-moreinfo-template">
 	<div class="dual-pricing-container {{ if (obj.dropDatePassed === true) { }}dropDatePassed{{ } }} ">
 		<div class="current-pricing">
-			<h3>Current {{= obj._selectedFrequency }} Pricing</h3>
+			{{ var currFreq = obj._selectedFrequency === 'annually' ? 'annual' : obj._selectedFrequency; }}
+			<h3>Current {{= currFreq }} pricing</h3>
 			{{= renderedPriceTemplate }}
 			<span class="applyBy">Apply by {{= obj.dropDeadDateFormatted }}</span>
 		</div>

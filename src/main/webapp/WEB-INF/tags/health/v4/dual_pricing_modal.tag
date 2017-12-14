@@ -28,8 +28,9 @@
             Start your <br class="hidden-xs"/>cover before
             <br>
             <span class="dual-pricing-highlight dual-pricing-date">
-                <span class="dual-pricing-date-month">April</span>
-                <span class="dual-pricing-date-day">1<sup>st</sup></span>
+                <span class="dual-pricing-date-month">{{= obj.dddMonth }}</span>
+                <span class="dual-pricing-date-day">{{= obj.dddDay }}<sup>{{= obj.dddSuffix }}</sup></span>
+            </span>
         </div>
 
         <div class="col-sm-2">
@@ -40,8 +41,8 @@
             Pay your annual  <br class="hidden-xs"/>premium in full by
             <br>
             <span class="dual-pricing-highlight dual-pricing-date">
-                <span class="dual-pricing-date-month">{{= obj.dddMonth }}</span>
-                <span class="dual-pricing-date-day">{{= obj.dddDay }}<sup>{{= obj.dddSuffix }}</sup></span>
+                <span class="dual-pricing-date-month">April</span>
+                <span class="dual-pricing-date-day">1<sup>st</sup></span>
             </span>
         </div>
     </div>
@@ -54,7 +55,7 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row dual-pricing-frequency-row">
         <div class="col-xs-12 col-sm-6 col-sm-offset-3">
             <div class="text-center text-bold">Change payment frequency</div>
             <div class="dual-pricing-modal-frequency" data-dont-toggle-update="true">
