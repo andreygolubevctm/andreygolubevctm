@@ -11,6 +11,11 @@
     {{ if(typeof obj.displayLogo === 'undefined' || obj.displayLogo == true) { }}
     <div class="companyLogo {{= info.provider ? info.provider : info.fundCode }}"></div>
     {{ } }}
+
+    {{ if(typeof obj.hasOwnProperty('showCurrPremText') && obj.showCurrPremText === true) { }}
+    <p>Current premium</p>
+    {{ } }}
+
     {{ var pyrrClass = meerkat.modules.healthPyrrCampaign.isPyrrActive(true) ? " pyrrMoreInfoInline" : ""; }}
     <div class="price premium{{= pyrrClass}}">
         {{ var formatCurrency = meerkat.modules.currencyField.formatCurrency }}

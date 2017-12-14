@@ -6,7 +6,17 @@
 <c:set var="thisYear"><fmt:formatDate value="${now}" pattern="yyyy" /></c:set>
 
 <core_v1:js_template id="price-frequency-template">
-	If you elect to pay your premium {{= frequency }}, only payments made by {{= pricingDateFormatted }} will be at the current amount, thereafter the new premium will apply.
+	<c:set var="dialogueText">
+		You've chosen to pay {{= frequency }}, which means premiums paid before 1st April will be {{= premium }} and then your ongoing premiums will be {{= altPremium }}
+	</c:set>
+	<field_v2:checkbox
+			xpath="health/simples/dialogue-checkbox-dual-pricing-frequency"
+			value="Y"
+			required="true"
+			label="true"
+			errorMsg="Please confirm each mandatory dialog has been read to the client"
+			className="checkbox-custom simples_dialogue-checkbox-dual-pricing-frequency"
+			title="${dialogueText}" />
 </core_v1:js_template>
 
 <%-- Working on the assumption there's going to be text changes so put this in the db --%>
@@ -52,34 +62,22 @@
 <%-- MORE INFO TEMPLATES --%>
 <core_v1:js_template id="dual-pricing-moreinfo-template">
 	<div class="dual-pricing-container {{ if (obj.dropDatePassed === true) { }}dropDatePassed{{ } }} ">
-		<div class="april-pricing">
-			<h3>${april1HeaderNoSup}</h3>
-			{{= renderedAltPriceTemplate }}
-			<span class="premiumsRising">Premiums are rising</span>
-			<a href="javascript:;" class="dual-pricing-learn-more" data-dropDeadDate="{{= obj.dropDeadDate }}">learn more</a>
-		</div>
 		<div class="current-pricing">
 			<h3>Current {{= obj._selectedFrequency }} Pricing</h3>
 			{{= renderedPriceTemplate }}
 			<span class="applyBy">Apply by {{= obj.dropDeadDateFormatted }}</span>
+		</div>
+		<div class="april-pricing">
+			<h3>{{= obj._selectedFrequency }} premium<br/>${april1HeaderNoSup}</h3>
+			{{= renderedAltPriceTemplate }}
+			<span class="premiumsRising">Premiums are rising</span>
+			<a href="javascript:;" class="dual-pricing-learn-more" data-dropDeadDate="{{= obj.dropDeadDate }}">learn more</a>
 		</div>
 	</div>
 </core_v1:js_template>
 
 <core_v1:js_template id="dual-pricing-moreinfo-xs-template">
 	<div class="dual-pricing-container {{ if (obj.dropDatePassed === true) { }}dropDatePassed{{ } }}">
-		<div class="april-pricing">
-			<div class="row">
-				<div class="col-xs-6 priceContainer">
-					<span class="heading">${april1HeaderNoSup}</span>
-					{{= renderedAltPriceTemplate }}
-				</div>
-				<div class="col-xs-6 detailsContainer">
-					<span class="premiumsRising">Premiums are rising</span>
-					<a href="javascript:;" class="dual-pricing-learn-more" data-dropDeadDate="{{= obj.dropDeadDate }}">learn more</a>
-				</div>
-			</div>
-		</div>
 		<div class="current-pricing">
 			<div class="row">
 				<div class="col-xs-6 priceContainer">
@@ -91,6 +89,18 @@
 				</div>
 			</div>
 		</div>
+		<div class="april-pricing">
+			<div class="row">
+				<div class="col-xs-6 priceContainer">
+					<span class="heading">{{= obj._selectedFrequency }} premium<br/>${april1HeaderNoSup}</span>
+					{{= renderedAltPriceTemplate }}
+				</div>
+				<div class="col-xs-6 detailsContainer">
+					<span class="premiumsRising">Premiums are rising</span>
+					<a href="javascript:;" class="dual-pricing-learn-more" data-dropDeadDate="{{= obj.dropDeadDate }}">learn more</a>
+				</div>
+			</div>
+		</div>
 	</div>
 </core_v1:js_template>
 
@@ -99,11 +109,10 @@
 		<div class="current-pricing">
 			{{= renderedPriceTemplate }}
 		</div>
-		<div class="down-arrow"></div>
+		<hr />
 		<div class="april-pricing">
-			<p>Premiums are rising</p>
+			<p>Premiums ${april1HeaderNoSup}</p>
 			{{= renderedAltPriceTemplate }}
-			<p>from {{= pricingDateFormatted }}</p>
 		</div>
 	</div>
 </core_v1:js_template>
