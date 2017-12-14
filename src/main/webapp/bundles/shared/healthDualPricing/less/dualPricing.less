@@ -143,18 +143,6 @@
         }
 
         .current-pricing {
-          @media (@sm) {
-            border-left: 1px solid @dual-pricing-border-colour;
-            padding-left: 20px;
-            margin-left: 20px;
-          }
-
-          @media (@xs-only) {
-            border-top: 1px solid @dual-pricing-border-colour;
-            padding-top: 20px;
-            margin-top: 20px;
-          }
-
           h3 {
             margin-bottom: 0;
           }
@@ -170,6 +158,18 @@
 
         // halve all the font sizes for april pricing
         .april-pricing {
+          @media (@sm) {
+            border-left: 1px solid @dual-pricing-border-colour;
+            padding-left: 20px;
+            margin-left: 20px;
+          }
+
+          @media (@xs-only) {
+            border-top: 1px solid @dual-pricing-border-colour;
+            padding-top: 20px;
+            margin-top: 20px;
+          }
+
           .frequencyAmount {
             font-size: 40px;
             color: @dual-pricing-light-gray;
