@@ -37,6 +37,7 @@ import com.ctm.web.core.web.go.xml.XmlNode;
 import com.ctm.web.simples.services.TransactionDetailService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sun.javaws.exceptions.InvalidArgumentException;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.LocalDate;
@@ -53,6 +54,8 @@ import org.springframework.web.client.RestTemplate;
 import rx.schedulers.Schedulers;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.InternalServerErrorException;
+import javax.xml.bind.ValidationException;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.time.format.DateTimeFormatter;
@@ -275,7 +278,10 @@ public class CarQuoteService extends CommonRequestServiceV2 {
      * <pre>
      * Notes:
      *  - front end sends product ids which are ranked based on `rankBy` criteria e.g., price.annual-asc.
-     *  - 'DUPLICATE' value in db.`result_properties` if try to insert value for same composite primary key.
+     *  - Skip if have existing propensity score for given transactionId, product, and property.
+     *      If we try to update the propensity score, the value will be written as DUPLICATE.
+     *      Also, we should only save propensity score when user get quote results, and not when they sort results as
+     *      only on results, best price leads are send.
      *  - Woolworths have duplicate `product_code` e.g., WOOL-01-01 represent multiple products on car quote results.
      *  - Only stores propensity score for BUDD as Data Robot is only designed for BUDD. lead service would have to be
      *      configured the same, and only look for propensity score for BUDD only.
@@ -285,9 +291,27 @@ public class CarQuoteService extends CommonRequestServiceV2 {
      *
      * @param productIdsOrderedByRank
      * @param transactionId
+     * @throws InternalServerErrorException when unable to read `result_properties.
+     * @throws IllegalArgumentException when transaction, and product already has propensity score.
      */
-    public void retrieveAndStoreCarQuotePropensityScore(final List<String> productIdsOrderedByRank, final Long transactionId) {
+    public void retrieveAndStoreCarQuotePropensityScore(final List<String> productIdsOrderedByRank, final Long transactionId) throws InternalServerErrorException, ValidationException {
         LOGGER.info("Received request for get propensity score for transactionId: {}", transactionId);
+
+        if(productIdsOrderedByRank.isEmpty() || StringUtils.isBlank(productIdsOrderedByRank.get(0))){
+            return;
+        }
+
+        try {
+            final String propensityScore = ResultsService.getSingleResultPropertyValue(transactionId, productIdsOrderedByRank.get(0), PROPENSITY_SCORE);
+            if(!StringUtils.isBlank(propensityScore)){
+                LOGGER.warn("Multiple calls for propensity score. Existing propensityScore found for transaction: {}, product: {}", transactionId, productIdsOrderedByRank.get(0));
+                throw new IllegalArgumentException("Propensity score already exists for transaction, and product");
+            }
+        } catch (DaoException e) {
+            LOGGER.error("Exception while trying to read result_properties", e);
+            throw new InternalServerErrorException("Something went wrong. That's all we know.");
+        }
+
         final List<ResultProperty> resultProperties = buildResultPropertiesWithPropensityScore(productIdsOrderedByRank, transactionId);
         savePropensityScoreAsResultProperties(transactionId, resultProperties);
     }
