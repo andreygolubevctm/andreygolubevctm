@@ -12,7 +12,8 @@
             'fortnightly': 'fortnightly',
             'weekly': 'weekly'
         },
-        isActive = null;
+        isActive = null,
+        _aprilFirst = '04/01/2018';
 
     function initDualPricing() {
         if (!isDualPricingActive()) {
@@ -42,7 +43,8 @@
                     default: $('#dual-pricing-moreinfo-template'),
                     xs : $('#dual-pricing-moreinfo-xs-template')
                 },
-                sidebar: $('#dual-pricing-template-sidebar')
+                sidebar: $('#dual-pricing-template-sidebar'),
+                applicationXS: $('#dual-pricing-application-xs-template')
             },
             modalTemplate: $('#dual-pricing-modal-template'),
             sideBarFrequency: $('.sidebarFrequency'),
@@ -51,7 +53,8 @@
             paymentDetailsFrequency: $('#health_payment_details-selection').find('#health_payment_details_frequency'),
             priceFrequencyTemplate: $('#price-frequency-template'),
             frequencyWarning: $('#health_payment_details-selection').find('.frequencyWarning'),
-            quoterefTemplate: $('#quoteref-template')
+            quoterefTemplate: $('#quoteref-template'),
+            priceCongratsTemplate: $('#price-congratulations-template')
         };
 
         $elements.sideBarFrequency.hide();
@@ -59,25 +62,44 @@
 
     function _applyEventListeners() {
         $elements.paymentDetailsFrequency.on('change.healthDualPricing', function updateWarningLabel() {
+            var coverStartDateTime = meerkat.modules.dateUtils.parse($("#health_payment_details_start").val(), 'DD/MM/YYYY').getTime(),
+                aprilFirstTime = new Date(_aprilFirst).getTime();
+
             if (_.isEmpty($(this).val())) return;
 
-            var frequency = $(this).val().toLowerCase();
+            if (coverStartDateTime >= aprilFirstTime) {
+                $elements.frequencyWarning.slideUp();
+                return;
+            }
+
+            var frequency = $(this).val().toLowerCase(),
+                selectedProduct = Results.getSelectedProduct(),
+                template = null,
+                obj = null;
 
             if (frequency === 'annually') {
-                $elements.frequencyWarning.slideUp().html("");
-            } else {
-                var selectedProduct = Results.getSelectedProduct(),
-                    template = _.template($elements.priceFrequencyTemplate.html()),
-                    pricingDate = new Date(selectedProduct.pricingDate),
+                if ($elements.priceCongratsTemplate.length === 1) {
+                    template = _.template($elements.priceCongratsTemplate.html());
                     obj = {
-                        frequency: freqTextMapping[frequency],
-                        pricingDateFormatted: meerkat.modules.dateUtils.format(pricingDate, "Do MMMM"),
-                        premium: selectedProduct.premium[frequency].text,
-                        altPremium: selectedProduct.altPremium[frequency].text
+                        priceSaved: '$' + (parseFloat(selectedProduct.altPremium[frequency].value - selectedProduct.premium[frequency].value)).toFixed(2)
                     };
+                } else {
+                    $elements.frequencyWarning.slideUp().html("");
+                    return;
+                }
+            } else {
+                var pricingDate = new Date(selectedProduct.pricingDate);
 
-                $elements.frequencyWarning.html(template(obj)).removeClass("hidden").slideDown();
+                template = _.template($elements.priceFrequencyTemplate.html());
+                obj = {
+                    frequency: freqTextMapping[frequency],
+                    pricingDateFormatted: meerkat.modules.dateUtils.format(pricingDate, "Do MMMM"),
+                    premium: selectedProduct.premium[frequency].text,
+                    altPremium: selectedProduct.altPremium[frequency].text
+                };
             }
+
+            $elements.frequencyWarning.html(template(obj)).removeClass("hidden").slideDown();
         });
 
         $(document).on('click', '.dual-pricing-learn-more', function(e) {
@@ -171,6 +193,7 @@
     }
 
     function renderTemplate(target, product, returnTemplate, isForSidebar, page) {
+        var deviceMediaState = meerkat.modules.deviceMediaState.get();
 
         selectedProduct = product;
 
@@ -197,6 +220,8 @@
         product.showAltPremium = false;
         product.displayLogo = isForSidebar;
         product.showRoundingText = false;
+        product.showRisingTag = isForSidebar && deviceMediaState !== 'xs';
+        product.showBeforeAfterText = isForSidebar && deviceMediaState !== 'xs';
 
         var pricingDate = new Date(selectedProduct.pricingDate);
         // named pricingDateFormatted because inside _updatePricingDate function it throws an invalid date when creating a new Date object with pricingDate,
@@ -209,6 +234,7 @@
         product.showAltPremium = true;
         product.displayLogo = false;
         product.showCurrPremText = false;
+        product.showRisingTag = false;
         htmlTemplate = _.template($elements.logoPriceTemplate.html());
         product.renderedAltPriceTemplate = htmlTemplate(product);
         product.dropDeadDate = meerkat.modules.dropDeadDate.getDropDeadDate(product);
@@ -230,13 +256,13 @@
     }
 
     function _getTemplate(isForSidebar, page) {
+        var deviceMediaState = meerkat.modules.deviceMediaState.get();
+
         if (isForSidebar) {
-            return $elements.template.sidebar;
+            return deviceMediaState !== 'xs' ? $elements.template.sidebar : $elements.template.applicationXS;
         }
 
         page  = page || 'moreinfo';
-
-        var deviceMediaState = meerkat.modules.deviceMediaState.get();
 
         return $elements.template[page][deviceMediaState] || $elements.template[page]['default'];
     }
