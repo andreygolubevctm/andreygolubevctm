@@ -77,4 +77,17 @@ public class HealthCallBackController extends CommonQuoteRouter {
         return new Error("error", ex.getMessage(), null, new ErrorDetails(ex.getClass().getCanonicalName()));
     }
 
+    @RequestMapping(value = "/callMeBackWidget.json",
+            method= RequestMethod.POST,
+            consumes={MediaType.APPLICATION_FORM_URLENCODED_VALUE, "application/x-www-form-urlencoded;charset=UTF-8"})
+    public void callMeBackWidget(@Valid @NotNull final HealthCallBackData data, HttpServletRequest request) throws Exception {
+        if (StringUtils.isBlank(data.getScheduledDateTime())) {
+            SchemaValidationError schemaValidationError = new SchemaValidationError();
+            schemaValidationError.setMessage("Scheduled date time is mandatory");
+            throw new RouterException(data.getTransactionId(), Collections.singletonList(schemaValidationError));
+        }
+
+        healthCallBackService.sendLead(data, null, request, CALL_ME_BACK);
+    }
+
 }

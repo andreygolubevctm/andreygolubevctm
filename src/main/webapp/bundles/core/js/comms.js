@@ -35,6 +35,7 @@
 		useDefaultErrorHandling: true,
 		// returnAjaxObject: By default the comms.ajax() function will return the Deferred .then object. Set this to true to return the parent ajax object.
 		returnAjaxObject: true,
+		sendTransIdWithRequest: true,
 		onSuccess: function(result, textStatus, jqXHR){
 			//
 		},
@@ -155,7 +156,10 @@
 			}
 
 			if (_.isString(ajaxProperties.data)) {
-				ajaxProperties.data += '&transactionId=' + tranId;
+
+				if (settings.sendTransIdWithRequest) {
+                    ajaxProperties.data += '&transactionId=' + tranId;
+				}
 
 				if(meerkat.site.isCallCentreUser) {
 					ajaxProperties.data += "&" + CHECK_AUTHENTICATED_LABEL + "=true";
@@ -165,13 +169,15 @@
 				// We have to clone it so that JS is not referencing the original object
 				ajaxProperties.data = $.merge([], settings.data);
 
-				// Add the transaction ID to the data payload if it's not already set
-				if (_.indexOf(ajaxProperties.data, 'transactionId') === -1) {
-					ajaxProperties.data.push({
-						name: 'transactionId',
-						value: tranId
-					});
+				if (settings.sendTransIdWithRequest) {
+                    // Add the transaction ID to the data payload if it's not already set
+                    if (_.indexOf(ajaxProperties.data, 'transactionId') === -1) {
+                        ajaxProperties.data.push({
+                            name: 'transactionId',
+                            value: tranId
+                        });
 
+                    }
 				}
 
 				if(meerkat.site.isCallCentreUser) {
@@ -185,9 +191,11 @@
 				// We have to clone it so that JS is not referencing the original object
 				ajaxProperties.data = $.extend(true, {}, settings.data);
 
-				// Add the transaction ID to the data payload if it's not already set
-				if (ajaxProperties.data.hasOwnProperty('transactionId') === false) {
-					ajaxProperties.data.transactionId = tranId;
+				if (settings.sendTransIdWithRequest) {
+                    // Add the transaction ID to the data payload if it's not already set
+                    if (ajaxProperties.data.hasOwnProperty('transactionId') === false) {
+                        ajaxProperties.data.transactionId = tranId;
+                    }
 				}
 
 				if(meerkat.site.isCallCentreUser) {
