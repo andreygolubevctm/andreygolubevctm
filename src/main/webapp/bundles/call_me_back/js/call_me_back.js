@@ -14,6 +14,12 @@
         initComplete = false,
         $callbackTime,
 
+        $callbackLater,
+        $callmebackForm,
+        $scheduledTime,
+        $callbackStandAloneContent,
+        $cmbsaError,
+
         $contactName,
         $contactPhone,
         $openingHoursTimeZone,
@@ -32,6 +38,11 @@
     function initCallMeBack() {
         jQuery(document).ready(function($) {
             if (!$('body.call-me-back-stand-alone').length) return;
+
+
+            $callbackLater = $('#cmb-sa-callBackLater');
+            $callmebackForm = $('#standalone-callback-form');
+            $scheduledTime = $('#callmeback_sa_time');
 
             applyEventListeners();
 
@@ -68,7 +79,7 @@
             _now = false;
             _dayString = "";
 
-            $('#cmb-sa-callBackLater').html('Call Me Later <span class="icon icon-arrow-right">&nbsp;</span>');
+            $callbackLater.html('Call Me Later <span class="icon icon-arrow-right">&nbsp;</span>');
             if(options.length > 2) {
                 _isClosed = false;
                 $(options).each(function(index, val) {
@@ -78,7 +89,7 @@
 
                     if (index === 0 && _isOpenRightNow && $this.val() === 'Today') {
                         option.text = "Now";
-                        $('#cmb-sa-callBackLater').html('Call Me Now <span class="icon icon-arrow-right">&nbsp;</span>');
+                        $callbackLater.html('Call Me Now <span class="icon icon-arrow-right">&nbsp;</span>');
                         _now = true;
                         _dayString = $this.val();
                     } else if ($this.val() === 'Today' || $this.val() === 'Tomorrow') {
@@ -110,21 +121,21 @@
             _now = false;
 
             if ($(this).find("option:selected").text() == "Now") {
-                $('#cmb-sa-callBackLater').html('Call Me Now <span class="icon icon-arrow-right">&nbsp;</span>');
+                $callbackLater.html('Call Me Now <span class="icon icon-arrow-right">&nbsp;</span>');
                 _now;
             } else {
-                $('#cmb-sa-callBackLater').html('Call Me Later <span class="icon icon-arrow-right">&nbsp;</span>');
+                $callbackLater.html('Call Me Later <span class="icon icon-arrow-right">&nbsp;</span>');
             }
         });
 
         $(document).on('click', '#cmb-sa-callBackLater', function(e) {
             // .valid() needs to be called twice to ensure click is not ignored if validation was initially false but now true
-            $('#standalone-callback-form').valid();
-            if ($('#standalone-callback-form').valid()) {
+            $callmebackForm.valid();
+            if ($callmebackForm.valid()) {
 
                 var settings = {
                         url : "spring/rest/health/callMeBackWidget.json",
-                        scheduledTime : $('#callmeback_sa_time').val()
+                        scheduledTime : $scheduledTime.val()
                     },
                     $this = $(this);
 
@@ -145,8 +156,10 @@
 
         $contactName = $('#callmeback_sa_name');    // name field
         $contactPhone = $('#callmeback_sa_mobileinput');
+        $callbackStandAloneContent = $('.callmeNowStandaloneContent');
+        $cmbsaError = $('.cmb-sa-error');
 
-        meerkat.modules.jqueryValidate.setupDefaultValidationOnForm($('#standalone-callback-form'));
+        meerkat.modules.jqueryValidate.setupDefaultValidationOnForm($callmebackForm);
     }
 
     function setPickATimeLabel($target) {
@@ -188,8 +201,8 @@
                 if(!meerkat.modules.dialogs.isDialogOpen("openingHoursErrorDialog") && errorMessage) {
                     meerkat.modules.errorHandling.error(errorObject);
 
-                    $('.callmeNowStandaloneContent').addClass('hidden');
-                    $('.cmb-sa-error').removeClass('hidden');
+                    $callbackStandAloneContent.addClass('hidden');
+                    $cmbsaError.removeClass('hidden');
                 }
             },
             onSuccess: function(result) {
@@ -234,7 +247,7 @@
             useDefaultErrorHandling: false,
             sendTransIdWithRequest: false,
             onComplete: function (result) {
-                $('.callmeNowStandaloneContent').addClass('hidden');
+                $callbackStandAloneContent.addClass('hidden');
 
                 var today = new Date();
                 if (result.status == 200) {
@@ -272,7 +285,7 @@
                     $('.returnCallTime').text(selectedTime);
 
                 } else {
-                    $('.cmb-sa-error').removeClass('hidden');
+                    $cmbsaError.removeClass('hidden');
                 }
             }
         });
