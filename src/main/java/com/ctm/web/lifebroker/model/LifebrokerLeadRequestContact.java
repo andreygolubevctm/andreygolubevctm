@@ -1,23 +1,29 @@
 package com.ctm.web.lifebroker.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+
 
 class LifebrokerLeadRequestContact {
 
-    @JsonProperty("affiliate_id")
+    @JacksonXmlProperty(namespace = LifebrokerLeadRequest.LIFEBROKER_NAMESPACE, localName = "affiliate_id")
     private final String affiliateId;
 
+    @JacksonXmlProperty(namespace = LifebrokerLeadRequest.LIFEBROKER_NAMESPACE)
     private final String email;
 
+    @JacksonXmlProperty(namespace = LifebrokerLeadRequest.LIFEBROKER_NAMESPACE)
     private final String phone;
 
+    @JacksonXmlProperty(namespace = LifebrokerLeadRequest.LIFEBROKER_NAMESPACE)
     private final String postcode;
 
-    @JsonProperty("Call_time")
+    @JacksonXmlProperty(namespace = LifebrokerLeadRequest.LIFEBROKER_NAMESPACE, localName = "Call_time")
     private final String callTime;
 
+    @JacksonXmlProperty(namespace = LifebrokerLeadRequest.LIFEBROKER_NAMESPACE)
     private final LifebrokerLeadRequestClient client;
 
+    @JacksonXmlProperty(namespace = LifebrokerLeadRequest.LIFEBROKER_NAMESPACE)
     private final LifebrokerLeadRequestAdditional additional;
 
     LifebrokerLeadRequestContact(String affiliateId, String email, String phone, String postcode, String callTime, LifebrokerLeadRequestClient client, LifebrokerLeadRequestAdditional additional) {

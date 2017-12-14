@@ -78,7 +78,10 @@
             });
         }
 
-        savePropensityScore(trigger, rankingData);
+        if (meerkat.site.vertical === 'car') {
+            savePropensityScore(trigger, rankingData);
+
+        }
     }
 
     /**
