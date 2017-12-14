@@ -106,8 +106,8 @@
             $elements.sideBarFrequency.hide();
             $elements.frequencyWarning.hide();
 
-            // update pricing date
-            _updatePricingDate();
+            // update drop dead date date
+            _updateDDDDate();
         });
 
         meerkat.messaging.subscribe(meerkatEvents.device.DEVICE_MEDIA_STATE_CHANGE, function editDetailsEnterXsState() {
@@ -160,11 +160,11 @@
         }
     }
 
-    function _updatePricingDate() {
+    function _updateDDDDate() {
         var product = Results.getSelectedProduct(),
-            pricingDate = new Date(product.pricingDate);
+            dddDate = new Date(product.dropDeadDate);
 
-        $('.pricingDate').text(meerkat.modules.dateUtils.format(pricingDate, "Do MMMM"));
+        $('.dddDate').text(meerkat.modules.dateUtils.format(dddDate, "Do MMMM"));
     }
 
     function renderTemplate(target, product, returnTemplate, isForSidebar, page) {

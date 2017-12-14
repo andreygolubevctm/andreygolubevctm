@@ -23,12 +23,6 @@
 
     <form_v4:fieldset legend="Payment Details" >
 
-        <c:if test="${isDualPriceActive eq true}">
-            <div class="alert alert-info">
-                Remember: Premiums will rise from <span class="pricingDate"></span>. You <b>must</b> select a cover start date <b>before <span class="pricingDate"></span></b> to be eligible for the lower rate.
-            </div>
-        </c:if>
-
         <div class="fundWarning alert alert-danger">
                 <%-- insert fund warning data --%>
         </div>

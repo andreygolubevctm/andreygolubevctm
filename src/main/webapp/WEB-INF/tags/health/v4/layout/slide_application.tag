@@ -32,6 +32,12 @@
                 <health_v4_application:partner_details />
                 <health_v4_application:dependants xpath="${pageSettings.getVerticalCode()}/application/dependants" />
 
+                <c:if test="${isDualPriceActive eq true}">
+                    <div class="alert alert-info text-center">
+                        Remember: Premiums will rise from <span class="dddDate"></span>. You must select a cover start date before <span class="dddDate"></span> to be eligible for the lower rate.
+                    </div>
+                </c:if>
+
                 <%-- Policy Start Date moved from payment_details.tag --%>
                 <form_v4:fieldset legend="When to start your cover"
                                   className="cover-start-date-on-application-step" >
