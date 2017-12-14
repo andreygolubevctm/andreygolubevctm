@@ -19,8 +19,6 @@ import java.io.Serializable;
 @JsonInclude(value = JsonInclude.Include.ALWAYS)
 public class CTMCarLeadFeedRequestMetadata implements Serializable {
 
-    private static final String RATING = "Rating ";
-
     @NotNull
     @JsonProperty(value = "@type")
     private MetadataType type;
@@ -102,19 +100,23 @@ public class CTMCarLeadFeedRequestMetadata implements Serializable {
     }
 
     /**
-     * Custom setter with suffix as a readable label for call center agents.
+     * Custom setter with prefix as a readable label for call center agents.
      *
-     * @param ncdRating
+     * @param ncdRating could be value or label of {@linkplain NcdPlainText} in plain string.
      */
     public void setNcdRating(String ncdRating) {
 
-        if (StringUtils.isBlank(ncdRating)) {
+        final NcdPlainText ncdPlainTextByValue = NcdPlainText.getNcdPlainTextByValue(ncdRating);
+        final NcdPlainText ncdPlainTextByLabel = NcdPlainText.getNcdPlainTextByLabel(ncdRating);
+
+        if (ncdPlainTextByValue == null && ncdPlainTextByLabel == null) {
             this.ncdRating = null;
-        } else if (!StringUtils.contains(ncdRating, RATING)) {
-            this.ncdRating = RATING + ncdRating;
+        } else if (ncdPlainTextByValue != null) {
+            this.ncdRating = ncdPlainTextByValue.getLabel();
         } else {
-            this.ncdRating = ncdRating;
+            this.ncdRating = ncdPlainTextByLabel.getLabel();
         }
+
     }
 
     public String getAgeRestriction() {
@@ -214,6 +216,86 @@ public class CTMCarLeadFeedRequestMetadata implements Serializable {
                     return FORTY_YEARS_AND_OVER;
                 case LABEL_FIFTY_YEARS_AND_OVER:
                     return FIFTY_YEARS_AND_OVER;
+                default:
+                    return null;
+            }
+        }
+
+    }
+
+    public enum NcdPlainText {
+
+        RATING_ONE("5", "Rating 1 (5+ Years NCD)"),
+        RATING_TWO("4", "Rating 2 (4 Years NCD)"),
+        RATING_THREE("3", "Rating 3 (3 Years NCD)"),
+        RATING_FOUR("2", "Rating 4 (2 Years NCD)"),
+        RATING_FIVE("1", "Rating 5 (1 Year NCD)"),
+        RATING_SIX("0", "Rating 6 (None)");
+
+        private static final String LABEL_RATING_ONE = "Rating 1 (5+ Years NCD)";
+        private static final String LABEL_RATING_TWO = "Rating 2 (4 Years NCD)";
+        private static final String LABEL_RATING_THREE = "Rating 3 (3 Years NCD)";
+        private static final String LABEL_RATING_FOUR = "Rating 4 (2 Years NCD)";
+        private static final String LABEL_RATING_FIVE = "Rating 5 (1 Year NCD)";
+        private static final String LABEL_RATING_SIX = "Rating 6 (None)";
+
+        private String value;
+        private String label;
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
+
+        public String getLabel() {
+            return label;
+        }
+
+        public void setLabel(String label) {
+            this.label = label;
+        }
+
+        NcdPlainText(String value, String label) {
+            this.value = value;
+            this.label = label;
+        }
+
+        public static NcdPlainText getNcdPlainTextByValue(final String value) {
+            switch (value) {
+                case "5":
+                    return RATING_ONE;
+                case "4":
+                    return RATING_TWO;
+                case "3":
+                    return RATING_THREE;
+                case "2":
+                    return RATING_FOUR;
+                case "1":
+                    return RATING_FIVE;
+                case "0":
+                    return RATING_SIX;
+                default:
+                    return null;
+            }
+        }
+
+        public static NcdPlainText getNcdPlainTextByLabel(final String label) {
+            switch (label) {
+                case LABEL_RATING_ONE:
+                    return RATING_ONE;
+                case LABEL_RATING_TWO:
+                    return RATING_TWO;
+                case LABEL_RATING_THREE:
+                    return RATING_THREE;
+                case LABEL_RATING_FOUR:
+                    return RATING_FOUR;
+                case LABEL_RATING_FIVE:
+                    return RATING_FIVE;
+                case LABEL_RATING_SIX:
+                    return RATING_SIX;
                 default:
                     return null;
             }
