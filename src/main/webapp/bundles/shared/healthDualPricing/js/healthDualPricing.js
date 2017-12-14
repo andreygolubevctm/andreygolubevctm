@@ -81,7 +81,7 @@
                 if ($elements.priceCongratsTemplate.length === 1) {
                     template = _.template($elements.priceCongratsTemplate.html());
                     obj = {
-                        priceSaved: '$' + parseFloat(selectedProduct.altPremium[frequency].value - selectedProduct.premium[frequency].value)
+                        priceSaved: '$' + (parseFloat(selectedProduct.altPremium[frequency].value - selectedProduct.premium[frequency].value)).toFixed(2)
                     };
                 } else {
                     $elements.frequencyWarning.slideUp().html("");
