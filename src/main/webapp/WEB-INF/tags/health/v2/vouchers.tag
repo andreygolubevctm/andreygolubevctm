@@ -37,6 +37,7 @@
 				</div>
 			</div>
 		</div>
+
 	</c:when>
 	<c:otherwise>
 		<%-- if not call centre user then coupon:fields
