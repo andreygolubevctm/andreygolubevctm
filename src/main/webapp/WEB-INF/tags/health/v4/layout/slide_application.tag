@@ -16,7 +16,7 @@
                 <health_v1:dual_pricing_settings />
 
                 <%-- Product summary header for mobile --%>
-                <div class="row productSummary-parent <c:choose><c:when test="${isDualPriceActive eq true}">hidden</c:when><c:otherwise>visible-xs</c:otherwise></c:choose>">
+                <div class="row productSummary-parent visible-xs">
                     <div class="productSummary visible-xs">
                         <health_v4_payment:policySummary />
                     </div>

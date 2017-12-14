@@ -42,7 +42,8 @@
                     default: $('#dual-pricing-moreinfo-template'),
                     xs : $('#dual-pricing-moreinfo-xs-template')
                 },
-                sidebar: $('#dual-pricing-template-sidebar')
+                sidebar: $('#dual-pricing-template-sidebar'),
+                applicationXS: $('#dual-pricing-application-xs-template')
             },
             modalTemplate: $('#dual-pricing-modal-template'),
             sideBarFrequency: $('.sidebarFrequency'),
@@ -167,6 +168,7 @@
     }
 
     function renderTemplate(target, product, returnTemplate, isForSidebar, page) {
+        var deviceMediaState = meerkat.modules.deviceMediaState.get();
 
         selectedProduct = product;
 
@@ -192,8 +194,8 @@
         product.showAltPremium = false;
         product.displayLogo = isForSidebar;
         product.showRoundingText = false;
-        product.showRisingTag = isForSidebar;
-        product.showBeforeAfterText = isForSidebar;
+        product.showRisingTag = isForSidebar && deviceMediaState !== 'xs';
+        product.showBeforeAfterText = isForSidebar && deviceMediaState !== 'xs';
 
         var pricingDate = new Date(selectedProduct.pricingDate);
         // named pricingDateFormatted because inside _updatePricingDate function it throws an invalid date when creating a new Date object with pricingDate,
@@ -227,13 +229,13 @@
     }
 
     function _getTemplate(isForSidebar, page) {
+        var deviceMediaState = meerkat.modules.deviceMediaState.get();
+
         if (isForSidebar) {
-            return $elements.template.sidebar;
+            return deviceMediaState !== 'xs' ? $elements.template.sidebar : $elements.template.applicationXS;
         }
 
         page  = page || 'moreinfo';
-
-        var deviceMediaState = meerkat.modules.deviceMediaState.get();
 
         return $elements.template[page][deviceMediaState] || $elements.template[page]['default'];
     }

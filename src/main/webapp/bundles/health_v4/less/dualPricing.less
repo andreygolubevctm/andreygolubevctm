@@ -721,4 +721,37 @@
       line-height: initial;
     }
   }
+
+  @media (@xs-only) {
+    .current-pricing {
+      .clearfix;
+
+      .companyLogo {
+        float: left;
+        width: 40%;
+      }
+
+      .price.premium {
+        float: left;
+        width: 60%;
+      }
+
+      .frequencyTitle {
+        top: initial;
+        left: -25px;
+        bottom: -11px;
+        display: inline;
+      }
+    }
+
+    .premium-rising-tag {
+      margin-bottom: 0;
+      padding-left: 20px;
+      padding-right: 20px;
+      text-align: left;
+      a {
+        float: right;
+      }
+    }
+  }
 }

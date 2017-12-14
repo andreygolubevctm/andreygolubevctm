@@ -128,3 +128,12 @@
 		</div>
 	</div>
 </core_v1:js_template>
+
+<core_v1:js_template id="dual-pricing-application-xs-template">
+	<div class="dual-pricing-container {{ if (obj.dropDatePassed === true) { }}dropDatePassed{{ } }}">
+		<div class="current-pricing">
+			{{= renderedPriceTemplate }}
+		</div>
+		<div class="premium-rising-tag">Premiums are rising from April 1st, 2017 <a href="javascript:;" class="dual-pricing-learn-more" data-dropDeadDate="{{= obj.dropDeadDate }}">Learn more</a></div>
+	</div>
+</core_v1:js_template>
