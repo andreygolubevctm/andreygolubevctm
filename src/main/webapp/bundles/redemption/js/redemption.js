@@ -131,6 +131,7 @@
         orderLine.signOnReceipt = $form.find('input[name="order_signOnReceipt"]:checked').val() === 'Y';
         orderLine.trackerOptIn = true; // defaulting to true as Product team told to remove the field
         orderLine.orderStatus = $form.find('input[name="order_orderStatus"]:checked').val() || 'Scheduled';
+        orderLine.updatedByOperator = 'ONLINE';
 
         orderAddress.dpid = $form.find('input[name="order_address_dpId"]').val();
         orderAddress.businessName = $form.find('input[name="order_address_businessName"]').val();
@@ -152,6 +153,9 @@
         // Safe guard in case the order/get gets incomplete data
         orderForm.orderHeader.orderLine = orderLine;
         orderForm.orderHeader.orderLine.orderAddresses[0] = orderAddress;
+
+        // Add in custom reason code
+        orderForm.orderHeader.reasonCode = 'ToysHnc2018Jan';
 
         return orderForm;
     }

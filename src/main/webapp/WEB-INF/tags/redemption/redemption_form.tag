@@ -120,7 +120,7 @@
 
         <div class="row text-right">
             <div class="col-sm-10">
-                <button id="redemption-submit-button" type="button" class="btn btn-secondary">Submit</button>
+                <button id="redemption-submit-button" type="button" class="btn btn-secondary crud-save-entry">Submit</button>
             </div>
         </div>
     </fieldset>
