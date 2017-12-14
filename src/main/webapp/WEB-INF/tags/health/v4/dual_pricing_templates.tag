@@ -60,7 +60,7 @@
 	<div class="dual-pricing-container {{ if (obj.dropDatePassed === true) { }}dropDatePassed{{ } }} {{= comingSoonClass }}">
 		<div class="row current-pricing">
 			<div class="col-sm-4">
-				<h3>Current <span class="current-frequency">{{= obj._selectedFrequency }}</span> price</h3>
+				<h3>Current <span class="current-frequency">{{= currFreq }}</span> price</h3>
 				<span class="applyBy">Must apply by <span class="text-bold">{{= obj.dropDeadDateFormatted }}</span></span>
 			</div>
 			<div class="col-sm-5">
@@ -88,6 +88,7 @@
 <core_v1:js_template id="dual-pricing-moreinfo-xs-template">
 	{{ var comingSoonClass = ''; }}
 	{{ var lhcText = meerkat.site.isCallCentreUser ? 'pricing' : 'lhcfreepricing'; }}
+	{{ var currFreq = obj._selectedFrequency === 'annually' ? 'annual' : obj._selectedFrequency; }}
 
 	{{ if (!_.isUndefined(obj.altPremium[obj._selectedFrequency])) { }}
 		{{ var productPremium = obj.altPremium[obj._selectedFrequency] }}
@@ -100,7 +101,7 @@
 					<div class="dual-pricing-before-after-text"><span class="text-bold">Before</span> April 1st</div>
 					{{= renderedPriceTemplate }}
 
-					<div>Current {{= obj._selectedFrequency }} Price</div>
+					<div>Current <span class="current-frequency">{{= currFreq }}</span> price</div>
 					<span class="applyBy">Must apply by <span class="text-bold">{{= obj.dropDeadDateFormatted }}</span></span>
 				</div>
 				<div class="current-pricing-details">
