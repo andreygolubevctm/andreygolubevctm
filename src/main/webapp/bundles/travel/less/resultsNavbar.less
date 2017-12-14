@@ -158,14 +158,17 @@ body.travel {
   .travel {
     .coverLevelTabs {
       .clt-action, .clt-trip-filter {
-        margin-right: 0 !important;
         border-radius: 0 !important;
-        -webkit-border-radius: 0 !important;;
-        -moz-border-radius: 0 !important;;
+        -webkit-border-radius: 0 !important;
+        -moz-border-radius: 0 !important;
       }
 
       .clt-trip-filter {
         margin-top: 0 !important;
+
+        &:last-of-type {
+          margin-left: 15px !important;
+        }
       }
     }
 

@@ -528,6 +528,33 @@
         $('#health_payment_details_start').off('changeDate.' + name);
 	}
 
+	function toggleCouponSeenText() {
+        var Coupon = meerkat.modules.coupon,
+			$couponCampaignSeen = $('.coupon-campaign-seen'),
+        	couponId = Coupon.getCouponViewedId(),
+			coupon = null;
+
+        // show only if outbound or trial campaign
+		if (!_.isNull(couponId) && meerkat.modules.simplesBindings.getCallType() === 'outbound') {
+        	if ($couponCampaignSeen.length === 1) {
+                $couponCampaignSeen.show();
+			} else {
+                Coupon.loadCoupon('simplesCouponLoad', couponId, function() {
+                    coupon = Coupon.getCurrentCoupon();
+
+                    if (_.isObject(coupon) && coupon.showCouponSeen) {
+						$('<div class="coupon-campaign-seen alert alert-info">Coupon Campaign: ' + coupon.campaignName + ' | Coupon Value: $' + coupon.couponValue + '</div>')
+							.insertAfter($('#healthVouchers'));
+                    } else {
+                        $couponCampaignSeen.hide();
+					}
+                });
+			}
+        } else {
+            $couponCampaignSeen.hide();
+        }
+	}
+
 	meerkat.modules.register("healthPaymentStep", {
 		init: initHealthPaymentStep,
 		initFields: initFields,
@@ -541,7 +568,8 @@
 		getPaymentMethodNode: getPaymentMethodNode,
 		rebindCreditCardRules: rebindCreditCardRules,
 		updateValidationSelectorsPaymentGateway : updateValidationSelectorsPaymentGateway,
-		resetValidationSelectorsPaymentGateway : resetValidationSelectorsPaymentGateway
+		resetValidationSelectorsPaymentGateway : resetValidationSelectorsPaymentGateway,
+        toggleCouponSeenText: toggleCouponSeenText
 	});
 
 })(jQuery);

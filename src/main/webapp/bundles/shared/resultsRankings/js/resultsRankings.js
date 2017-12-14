@@ -77,6 +77,42 @@
                 }
             });
         }
+
+        if (meerkat.site.vertical === 'car') {
+            savePropensityScore(trigger, rankingData);
+
+        }
+    }
+
+    /**
+     * send an api call to backend with product rank. Backend will get the propensity score for given
+     * transaction, and store in database.
+     * @See CarQuoteController.storePropensityScore()
+     *
+     * @param trigger
+     * @param rankingData
+     */
+    function savePropensityScore(trigger, rankingData) {
+
+        log("[resultsRankingsPropensityScores] savePropensityScore", {
+            trigger: trigger,
+            data: rankingData
+        });
+
+        if (Results.getFilteredResults().length) {
+            meerkat.modules.comms.post({
+                url: "ajax/json/car_propensity_score.jsp",
+                data: rankingData,
+                cache: false,
+                errorLevel: "silent",
+                onError: function onWriteError() {
+                    log("[resultsRankingsPropensityScores] Failed");
+                },
+                onSuccess: function onWriteSuccess() {
+                    log("[resultsRankingsPropensityScores] Success");
+                }
+            });
+        }
     }
 
     /**

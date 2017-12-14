@@ -179,7 +179,7 @@
 			</c:choose>
 
 			<div class="col-xs-12">
-				<simples:dialogue id="76" vertical="health" mandatory="true" />
+				<simples:dialogue id="99" vertical="health" />
 			</div>
 
 			<div class="col-xs-12">
