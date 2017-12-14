@@ -77,7 +77,7 @@
 
     <div class="row text-center">
         <div class="col-xs-12">
-            Need to review your cover? <span class="text-bold">Call our experts on </span><a href="tel: ${callCentreNumber}"">${callCentreNumber}</a>
+            Need to review your cover? <span class="text-bold">Call our experts on </span><a href="tel: ${callCentreNumber}">${callCentreNumber}</a>
         </div>
     </div>
 </core_v1:js_template>
