@@ -202,10 +202,13 @@ public class BestPriceLeadsDao {
 														LOGGER.error("[lead feed] Exception while reading service config. Message: {}", e.getMessage(), e);
 														throw new DaoException(e.getMessage(), e);
 													}
-													final Boolean carCtmLeadsEnabled = Boolean.valueOf(serviceConfig.getPropertyValueByKey("enabled", 0, 0, ServiceConfigurationProperty.Scope.SERVICE));
+													LOGGER.info("APPLE: "+ brand.getId());
+													LOGGER.info("PEAR: "+ brandCodeId);
+													final Boolean carCtmLeadsEnabled = Boolean.valueOf(serviceConfig.getPropertyValueByKey("enabled", brandCodeId, 0, ServiceConfigurationProperty.Scope.SERVICE));
 
 													if (carCtmLeadsEnabled) {
 														if (leadConcat.length >= CarQuote.LEAD_FEED_INFO_SIZE_V2) {
+															leadData.setRootId(tran.getMinTransactionId().toString());
 															updateLeadFeedDataWithPersonInfo(leadData, leadConcat[4]);
 															updateLeadFeedDataWithMetadata(leadData, leadConcat[5], propensityScore);
 														} else {

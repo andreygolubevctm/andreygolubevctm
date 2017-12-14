@@ -50,7 +50,7 @@ public class CarLeadFeedService extends LeadFeedService {
 			switch(leadData.getPartnerBrand()) {
 
 				case "BUDD":
-					providerLeadFeedService = getProviderLeadFeedServiceForBudd(leadType);
+					providerLeadFeedService = getProviderLeadFeedServiceForBudd(leadType, leadData);
 					break;
 				case "EXPO":
 				case "VIRG":
@@ -89,7 +89,7 @@ public class CarLeadFeedService extends LeadFeedService {
 	 * @param leadType
 	 * @return
 	 */
-	private IProviderLeadFeedService getProviderLeadFeedServiceForBudd(final LeadType leadType) throws LeadFeedException {
+	private IProviderLeadFeedService getProviderLeadFeedServiceForBudd(final LeadType leadType, final LeadFeedData leadData) throws LeadFeedException {
 		ServiceConfiguration serviceConfig = null;
 		try {
 			serviceConfig = ServiceConfigurationService.getServiceConfiguration("leadService", CTMCarLeadFeedService.CAR_VERTICAL_ID);
@@ -99,8 +99,10 @@ public class CarLeadFeedService extends LeadFeedService {
 			throw new LeadFeedException(e.getMessage(), e);
 		}
 
-		final Boolean carCtmLeadsEnabled = Boolean.valueOf(serviceConfig.getPropertyValueByKey("enabled", 0, 0, ServiceConfigurationProperty.Scope.SERVICE));
-		final String ctmLeadsUrl = serviceConfig.getPropertyValueByKey("url", 0, 0, ServiceConfigurationProperty.Scope.SERVICE);
+		LOGGER.info("BANANA: " + leadData.getBrandId());
+
+		final Boolean carCtmLeadsEnabled = Boolean.valueOf(serviceConfig.getPropertyValueByKey("enabled", leadData.getBrandId(), 0, ServiceConfigurationProperty.Scope.SERVICE));
+		final String ctmLeadsUrl = serviceConfig.getPropertyValueByKey("url", leadData.getBrandId(), 0, ServiceConfigurationProperty.Scope.SERVICE);
 
 		if(carCtmLeadsEnabled && leadType == LeadType.BEST_PRICE) {
 			return new CTMCarLeadFeedService(ctmLeadsUrl, new RestTemplate(clientHttpRequestFactory()));
