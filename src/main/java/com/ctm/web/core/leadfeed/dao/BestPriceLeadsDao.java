@@ -202,8 +202,7 @@ public class BestPriceLeadsDao {
 														LOGGER.error("[lead feed] Exception while reading service config. Message: {}", e.getMessage(), e);
 														throw new DaoException(e.getMessage(), e);
 													}
-													LOGGER.info("APPLE: "+ brand.getId());
-													LOGGER.info("PEAR: "+ brandCodeId);
+
 													final Boolean carCtmLeadsEnabled = Boolean.valueOf(serviceConfig.getPropertyValueByKey("enabled", brandCodeId, 0, ServiceConfigurationProperty.Scope.SERVICE));
 
 													if (carCtmLeadsEnabled) {
