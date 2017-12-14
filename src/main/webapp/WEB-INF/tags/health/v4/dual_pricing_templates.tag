@@ -9,6 +9,13 @@
 	If you elect to pay your premium {{= frequency }}, only payments made by {{= pricingDateFormatted }} will be at the current amount, thereafter the new premium will apply.
 </core_v1:js_template>
 
+<core_v1:js_template id="price-congratulations-template">
+	<div class="price-congratulations-copy">
+		<h4>Congratulations</h4>
+		<p>Paying annually means you will save <span class="priceSaved">{{= priceSaved }}!</span> You must choose a payment date before <span class="text-bold">1st April</span> to lock in this premium.</p>
+	</div>
+</core_v1:js_template>
+
 <core_v1:js_template id="sideBarFrequency">
 	{{ if (obj.frequency !== 'annually') { }}
 	<h5 class="heading">If you pay {{= obj.frequency }} before {{= obj.dropDeadDateFormatted }}:</h5>

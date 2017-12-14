@@ -34,7 +34,7 @@
 
                 <c:if test="${isDualPriceActive eq true}">
                     <div class="alert alert-info text-center">
-                        Remember: Premiums will rise from <span class="dddDate"></span>. You must select a cover start date before <span class="dddDate"></span> to be eligible for the lower rate.
+                        Remember: Premiums will rise from <span class="dropDeadDateText"></span>. You must select a cover start date before <span class="dropDeadDateText"></span> to be eligible for the lower rate.
                     </div>
                 </c:if>
 
