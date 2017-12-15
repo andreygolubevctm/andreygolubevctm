@@ -210,6 +210,7 @@
             obj = Results.getSelectedProduct();
 
         if (meerkat.modules.healthDualPricing.isDualPricingActive()) {
+            obj._selectedFrequency = Results.getFrequency();
             obj.renderedPriceTemplate = meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false);
         } else if (meerkat.modules.healthPyrrCampaign.isPyrrActive()) {
             obj.renderedPyrrCampaign = meerkat.modules.healthPyrrCampaign.renderTemplate('', obj, true, false);
