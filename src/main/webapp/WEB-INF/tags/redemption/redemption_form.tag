@@ -94,23 +94,6 @@
             </div>
         </div>
 
-        <div class="form-group row fieldrow clear required_input signature">
-            <label for="order_signOnReceipt" class="col-sm-4 col-xs-10 control-label">Signature on delivery?</label>
-            <div class="col-sm-6 col-xs-12 row-content">
-                <div class="btn-group btn-group-justified btn-group-wrap" data-toggle="radio">
-                    <label class="btn btn-form-inverse {{= orderLine.signOnReceipt === true ? 'active' : '' }}">
-                        <input type="radio" name="order_signOnReceipt" id="order_signOnReceipt_Y" value="Y"
-                               data-msg-required="Please tell us if want signature on delivery" required="required"
-                               {{=orderLine.signOnReceipt === true ? "checked" : "" }}>Yes</label>
-                    <label class="btn btn-form-inverse {{= orderLine.signOnReceipt === false ? 'active' : '' }}">
-                        <input type="radio" name="order_signOnReceipt" id="order_signOnReceipt_N" value="N"
-                               data-msg-required="Please tell us if want signature on delivery" required="required"
-                               {{=orderLine.signOnReceipt === false ? "checked" : "" }}>No</label>
-                </div>
-                <span class="fieldrow_legend"><small>If you choose this option, you accept full responsibility upon the delivery of your reward and acknowledge it will not be replaced under any circumstances.</small></span>
-            </div>
-        </div>
-
         <div class="form-group row fieldrow clear">
             <div class="col-sm-4 col-xs-10"></div>
             <div class="col-sm-6 col-xs-12">

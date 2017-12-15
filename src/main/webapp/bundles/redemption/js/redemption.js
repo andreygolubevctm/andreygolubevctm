@@ -47,8 +47,8 @@
     function displayErrorPage(){
         switch (rewardGeneralStatus) {
             case "ALREADY_REDEEMED":
-                $redemptionTitle.text("Hmmm... It appears that you have already redeemed your toy.");
-                $redemptionLead.removeClass('hide');
+                var orderStatus = rewardOrder.orderHeader.orderLines[0].orderStatus.toUpperCase();
+                renderStatusMessages(orderStatus);
                 break;
             case "NO_STOCK":
                 $redemptionTitle.text("We're sorry we are sold out of toys");
@@ -59,6 +59,23 @@
                 break;
         }
         $redemptionMessageContainer.removeClass('hide');
+    }
+
+    function renderStatusMessages(orderStatus){
+        switch(orderStatus){
+            case "CANCELLED":
+                $redemptionTitle.text("We're Sorry");
+                $redemptionLead.html("You are no longer eligible to redeem a toy.").removeClass('hide');
+                break;
+            case "DECLINED":
+            case "EXPIRED":
+                $redemptionTitle.text("We're sorry");
+                $redemptionLead.html("The 28 day redemption window has expired.").removeClass('hide');
+                break;
+            default:
+                $redemptionTitle.text("Hmmm... It appears that you have already redeemed your toy.");
+        }
+        $redemptionLead.removeClass('hide');
     }
 
     function initCRUD(){
@@ -128,8 +145,8 @@
         orderLine.lastName = $form.find('input[name="order_lastName"]').val();
         orderLine.contactEmail = $form.find('input[name="order_contactEmail"]').val();
         orderLine.phoneNumber = $form.find('input[name="order_phoneNumber"]').val();
-        orderLine.signOnReceipt = $form.find('input[name="order_signOnReceipt"]:checked').val() === 'Y';
-        orderLine.trackerOptIn = true; // defaulting to true as Product team told to remove the field
+        orderLine.signOnReceipt = true;
+        orderLine.trackerOptIn = true;
         orderLine.orderStatus = $form.find('input[name="order_orderStatus"]:checked').val() || 'Scheduled';
         orderLine.updatedByOperator = 'ONLINE';
 
