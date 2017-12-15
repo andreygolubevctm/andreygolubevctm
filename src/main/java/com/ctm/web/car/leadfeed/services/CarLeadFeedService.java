@@ -99,8 +99,6 @@ public class CarLeadFeedService extends LeadFeedService {
 			throw new LeadFeedException(e.getMessage(), e);
 		}
 
-		LOGGER.info("BANANA: " + leadData.getBrandId());
-
 		final Boolean carCtmLeadsEnabled = Boolean.valueOf(serviceConfig.getPropertyValueByKey("enabled", leadData.getBrandId(), 0, ServiceConfigurationProperty.Scope.SERVICE));
 		final String ctmLeadsUrl = serviceConfig.getPropertyValueByKey("url", leadData.getBrandId(), 0, ServiceConfigurationProperty.Scope.SERVICE);
 
