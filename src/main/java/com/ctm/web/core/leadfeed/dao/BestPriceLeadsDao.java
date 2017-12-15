@@ -208,7 +208,7 @@ public class BestPriceLeadsDao {
 
 													if (carCtmLeadsEnabled) {
 														if (leadConcat.length >= CarQuote.LEAD_FEED_INFO_SIZE_V2) {
-															leadData.setRootId(tran.getMinTransactionId().toString());
+															leadData.setRootId(tran.getMinTransactionId());
 															updateLeadFeedDataWithPersonInfo(leadData, leadConcat[4]);
 															updateLeadFeedDataWithMetadata(leadData, leadConcat[5], propensityScore);
 														} else {

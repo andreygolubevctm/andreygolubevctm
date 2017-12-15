@@ -184,6 +184,9 @@ public class CTMCarLeadFeedRequestMetadata implements Serializable {
         }
 
         public static DriverOption getDriverOptionByValue(final String value) {
+
+            if(StringUtils.isBlank(value)) return null;
+
             switch (value) {
                 case "3":
                     return NO_RESTRICTIONS;
@@ -203,6 +206,9 @@ public class CTMCarLeadFeedRequestMetadata implements Serializable {
         }
 
         public static DriverOption getDriverOptionByLabel(final String label) {
+
+            if(StringUtils.isBlank(label)) return null;
+
             switch (label) {
                 case LABEL_NO_RESTRICTIONS:
                     return NO_RESTRICTIONS;
@@ -264,6 +270,9 @@ public class CTMCarLeadFeedRequestMetadata implements Serializable {
         }
 
         public static NcdPlainText getNcdPlainTextByValue(final String value) {
+
+            if(StringUtils.isBlank(value)) return null;
+
             switch (value) {
                 case "5":
                     return RATING_ONE;
@@ -283,6 +292,9 @@ public class CTMCarLeadFeedRequestMetadata implements Serializable {
         }
 
         public static NcdPlainText getNcdPlainTextByLabel(final String label) {
+
+            if(StringUtils.isBlank(label)) return null;
+
             switch (label) {
                 case LABEL_RATING_ONE:
                     return RATING_ONE;

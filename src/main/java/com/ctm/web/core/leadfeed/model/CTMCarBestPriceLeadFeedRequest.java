@@ -34,7 +34,7 @@ public class CTMCarBestPriceLeadFeedRequest implements Serializable {
     @Nullable
     private Long transactionId;
     @Nullable
-    private String rootId;
+    private Long rootId;
 
     public String getBrandCode() {
         return brandCode;
@@ -52,11 +52,11 @@ public class CTMCarBestPriceLeadFeedRequest implements Serializable {
         this.clientIP = clientIP;
     }
 
-    public String getRootId() {
+    public Long getRootId() {
         return rootId;
     }
 
-    public void setRootId(String rootId) {
+    public void setRootId(Long rootId) {
         this.rootId = rootId;
     }
 
