@@ -103,6 +103,8 @@ public class CarQuoteController extends CommonQuoteRouter<CarRequest> {
     public Response storePropensityScore(HttpServletRequest request, @RequestParam(value = "transactionId") final Long transactionId){
         try {
             this.carService.retrieveAndStoreCarQuotePropensityScore(emailUtils.buildParameterList(request, RANK_PRODUCT_ID), transactionId);
+        }catch (IllegalArgumentException e){
+            return new Response(HttpStatus.CONFLICT, "Propensity score already exists for transaction, and product");
         } catch (Exception e){
             LOGGER.error("Exception when trying to save propensity score. {}", e.getMessage());
             return new Response(HttpStatus.INTERNAL_SERVER_ERROR, "Something went wrong. That's all we know");

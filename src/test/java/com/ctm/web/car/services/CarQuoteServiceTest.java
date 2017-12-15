@@ -5,18 +5,17 @@ import com.ctm.web.car.model.form.CarRequest;
 import com.ctm.web.car.model.request.propensityscore.*;
 import com.ctm.web.car.model.results.CarResult;
 import com.ctm.web.core.dao.ProviderFilterDao;
-import com.ctm.web.core.model.formData.YesNo;
 import com.ctm.web.core.results.model.ResultProperty;
 import com.ctm.web.core.resultsData.model.AvailableType;
 import com.ctm.web.core.services.ServiceConfigurationServiceBean;
 import com.ctm.web.core.services.SessionDataServiceBean;
-import com.ctm.web.core.utils.common.utils.StringUtils;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.simples.services.TransactionDetailService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -246,6 +245,15 @@ public class CarQuoteServiceTest {
         assertEquals("0.45", resultProperties.iterator().next().getValue());
     }
 
+    @Test
+    public void givenEmptyProductRankList_whenRetrieveAndStoreCarQuotePropensityScore_ThenDoNothing() throws Exception {
+        // Given
+        final List<String> productIdsOrderedByRank = Mockito.mock(List.class);
+        // When
+        service.retrieveAndStoreCarQuotePropensityScore(productIdsOrderedByRank, TRANSACTION_ID);
+        //Then
+        verify(productIdsOrderedByRank, times(1)).get(0);
+    }
 
     private DataRobotCarQuotePropensityScoreResponse get200Response(final boolean withPropensityScore) {
         DataRobotCarQuotePropensityScoreResponse response = new DataRobotCarQuotePropensityScoreResponse();
