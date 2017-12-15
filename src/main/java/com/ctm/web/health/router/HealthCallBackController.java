@@ -77,6 +77,13 @@ public class HealthCallBackController extends CommonQuoteRouter {
         return new Error("error", ex.getMessage(), null, new ErrorDetails(ex.getClass().getCanonicalName()));
     }
 
+    @RequestMapping(value = "/callMeNow.json",
+            method= RequestMethod.POST,
+            consumes={MediaType.APPLICATION_FORM_URLENCODED_VALUE, "application/x-www-form-urlencoded;charset=UTF-8"})
+    public void callMeNowWidget(@Valid @NotNull final HealthCallBackData data, HttpServletRequest request) throws Exception {
+        healthCallBackService.sendLead(data, null, request, CALL_ME_NOW);
+    }
+
     @RequestMapping(value = "/callMeBackWidget.json",
             method= RequestMethod.POST,
             consumes={MediaType.APPLICATION_FORM_URLENCODED_VALUE, "application/x-www-form-urlencoded;charset=UTF-8"})

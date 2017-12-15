@@ -133,11 +133,20 @@
             $callmebackForm.valid();
             if ($callmebackForm.valid()) {
 
-                var settings = {
+                var settings,
+                    $this = $(this);
+
+
+                if (_now) {
+                    settings = {
+                        url : "spring/rest/health/callMeNowWidget.json"
+                    }
+                } else {
+                    settings = {
                         url : "spring/rest/health/callMeBackWidget.json",
                         scheduledTime : $scheduledTime.val()
-                    },
-                    $this = $(this);
+                    }
+                }
 
                 $this.addClass('inactive disabled');
                 meerkat.modules.loadingAnimation.showInside($this, true);
@@ -245,7 +254,6 @@
             dataType: 'json',
             errorLevel: "silent",
             useDefaultErrorHandling: false,
-            sendTransIdWithRequest: false,
             onComplete: function (result) {
                 $callbackStandAloneContent.addClass('hidden');
 
@@ -257,7 +265,7 @@
                     var selectedDate, selectedTime;
 
                     if (selectedDateObj == null) {
-                        selectedDate = "Today, ";
+                        selectedDate = "Today, " + getLabelFormattedDate(today);
                         selectedTime = "within 30 mins";
                     } else {
 
