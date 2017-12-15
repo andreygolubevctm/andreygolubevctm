@@ -299,6 +299,7 @@ public class BestPriceLeadsDao {
         if(StringUtils.isBlank(metadataJsonString)){
             return;
         }
+        LOGGER.info("BANANA: "+ metadataJsonString);
         CTMCarLeadFeedRequestMetadata metadata = new CTMCarLeadFeedRequestMetadata();
         try {
             final ObjectMapper mapper = new ObjectMapper();

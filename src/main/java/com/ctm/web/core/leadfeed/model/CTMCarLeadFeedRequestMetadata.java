@@ -106,17 +106,21 @@ public class CTMCarLeadFeedRequestMetadata implements Serializable {
      */
     public void setNcdRating(String ncdRating) {
 
-        final NcdPlainText ncdPlainTextByValue = NcdPlainText.getNcdPlainTextByValue(ncdRating);
-        final NcdPlainText ncdPlainTextByLabel = NcdPlainText.getNcdPlainTextByLabel(ncdRating);
-
-        if (ncdPlainTextByValue == null && ncdPlainTextByLabel == null) {
+        if (StringUtils.isBlank(ncdRating)) {
             this.ncdRating = null;
-        } else if (ncdPlainTextByValue != null) {
-            this.ncdRating = ncdPlainTextByValue.getLabel();
-        } else {
-            this.ncdRating = ncdPlainTextByLabel.getLabel();
-        }
 
+        } else {
+            final NcdPlainText ncdPlainTextByValue = NcdPlainText.getNcdPlainTextByValue(ncdRating);
+            final NcdPlainText ncdPlainTextByLabel = NcdPlainText.getNcdPlainTextByLabel(ncdRating);
+
+            if (ncdPlainTextByValue == null && ncdPlainTextByLabel == null) {
+                this.ncdRating = null;
+            } else if (ncdPlainTextByValue != null) {
+                this.ncdRating = ncdPlainTextByValue.getLabel();
+            } else {
+                this.ncdRating = ncdPlainTextByLabel.getLabel();
+            }
+        }
     }
 
     public String getAgeRestriction() {
@@ -130,17 +134,20 @@ public class CTMCarLeadFeedRequestMetadata implements Serializable {
      */
     public void setAgeRestriction(String ageRestriction) {
 
-        final DriverOption driverOptionByValue = DriverOption.getDriverOptionByValue(ageRestriction);
-        final DriverOption driverOptionByLabel = DriverOption.getDriverOptionByLabel(ageRestriction);
-
-        if (driverOptionByValue == null && driverOptionByLabel == null) {
+        if (StringUtils.isBlank(ageRestriction)) {
             this.ageRestriction = null;
-        } else if (driverOptionByValue != null) {
-            this.ageRestriction = driverOptionByValue.getLabel();
         } else {
-            this.ageRestriction = driverOptionByLabel.getLabel();
-        }
+            final DriverOption driverOptionByValue = DriverOption.getDriverOptionByValue(ageRestriction);
+            final DriverOption driverOptionByLabel = DriverOption.getDriverOptionByLabel(ageRestriction);
 
+            if (driverOptionByValue == null && driverOptionByLabel == null) {
+                this.ageRestriction = null;
+            } else if (driverOptionByValue != null) {
+                this.ageRestriction = driverOptionByValue.getLabel();
+            } else {
+                this.ageRestriction = driverOptionByLabel.getLabel();
+            }
+        }
     }
 
     public enum DriverOption {
@@ -183,7 +190,7 @@ public class CTMCarLeadFeedRequestMetadata implements Serializable {
             this.label = label;
         }
 
-        public static DriverOption getDriverOptionByValue(final String value) {
+        private static DriverOption getDriverOptionByValue(final String value) {
             switch (value) {
                 case "3":
                     return NO_RESTRICTIONS;
@@ -263,7 +270,7 @@ public class CTMCarLeadFeedRequestMetadata implements Serializable {
             this.label = label;
         }
 
-        public static NcdPlainText getNcdPlainTextByValue(final String value) {
+        private static NcdPlainText getNcdPlainTextByValue(final String value) {
             switch (value) {
                 case "5":
                     return RATING_ONE;
