@@ -20,16 +20,12 @@ class LifebrokerLeadRequestContact {
     @JacksonXmlProperty(namespace = LifebrokerLeadRequest.LIFEBROKER_NAMESPACE)
     private final LifebrokerLeadRequestClient client;
 
-    @JacksonXmlProperty(namespace = LifebrokerLeadRequest.LIFEBROKER_NAMESPACE)
-    private final LifebrokerLeadRequestAdditional additional;
-
-    LifebrokerLeadRequestContact(String affiliateId, String email, String phone, String postcode, LifebrokerLeadRequestClient client, LifebrokerLeadRequestAdditional additional) {
+    LifebrokerLeadRequestContact(String affiliateId, String email, String phone, String postcode, LifebrokerLeadRequestClient client) {
         this.affiliateId = affiliateId;
         this.email = email;
         this.phone = phone;
         this.postcode = postcode;
         this.client = client;
-        this.additional = additional;
     }
 
     public String getAffiliateId() {
@@ -50,9 +46,5 @@ class LifebrokerLeadRequestContact {
 
     public LifebrokerLeadRequestClient getClient() {
         return client;
-    }
-
-    public LifebrokerLeadRequestAdditional getAdditional() {
-        return additional;
     }
 }
