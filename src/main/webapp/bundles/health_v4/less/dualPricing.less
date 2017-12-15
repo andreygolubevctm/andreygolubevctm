@@ -436,7 +436,11 @@ body[data-step="results"]:not(.moreInfoVisible) {
 
       .price.premium {
         .lhcText {
-          display: none;
+          margin-top: 5px;
+
+          @media (@xs-only) {
+            display: none;
+          }
         }
       }
 
@@ -462,7 +466,12 @@ body[data-step="results"]:not(.moreInfoVisible) {
 
       .price.premium {
         .lhcText {
-          display: none;
+          float: right;
+          margin-left: 10px;
+
+          @media (@xs-only) {
+            display: none;
+          }
         }
       }
 

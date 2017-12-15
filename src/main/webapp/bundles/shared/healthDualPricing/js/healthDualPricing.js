@@ -68,21 +68,21 @@
     function _applyEventListeners() {
         $elements.paymentDetailsFrequency.on('change.healthDualPricing', function updateWarningLabel() {
             var coverStartDateTime = meerkat.modules.dateUtils.parse($("#health_payment_details_start").val(), 'DD/MM/YYYY').getTime(),
-                aprilFirstTime = new Date(_aprilFirst).getTime();
-
-            if (_.isEmpty($(this).val())) return;
-
-            if (coverStartDateTime >= aprilFirstTime) {
-                $elements.frequencyWarning.slideUp();
-                return;
-            }
-
-            var frequency = $(this).val().toLowerCase(),
+                aprilFirstTime = new Date(_aprilFirst).getTime(),
+                frequency = $(this).val().toLowerCase(),
                 selectedProduct = Results.getSelectedProduct(),
                 pricingDate = new Date(selectedProduct.pricingDate),
                 pricingDateFormatted = meerkat.modules.dateUtils.format(pricingDate, "Do MMMM"),
                 template = null,
                 obj = null;
+
+            if (_.isEmpty($(this).val())) return;
+
+            // hide if cover start date after or on April 1st or altPremium price is $0 on online journey
+            if (coverStartDateTime >= aprilFirstTime || (!meerkat.site.isCallCentreUser && selectedProduct.altPremium[frequency].value === 0)) {
+                $elements.frequencyWarning.slideUp();
+                return;
+            }
 
             if (frequency === 'annually') {
                 if ($elements.priceCongratsTemplate.length === 1) {
@@ -196,8 +196,10 @@
             dropDeadDate = new Date(product.dropDeadDate),
             pricingDate = new Date(product.pricingDate);
 
-        $('.pricingDateText').text(meerkat.modules.dateUtils.format(pricingDate, "Do MMMM"));
-        $('.dropDeadDateText').text(meerkat.modules.dateUtils.format(dropDeadDate, "Do MMMM"));
+        if (!isNaN(dropDeadDate.getTime()) && !isNaN(pricingDate.getTime())) {
+            $('.pricingDateText').text(meerkat.modules.dateUtils.format(pricingDate, "Do MMMM"));
+            $('.dropDeadDateText').text(meerkat.modules.dateUtils.format(dropDeadDate, "Do MMMM"));
+        }
     }
 
     function renderTemplate(target, product, returnTemplate, isForSidebar, page) {

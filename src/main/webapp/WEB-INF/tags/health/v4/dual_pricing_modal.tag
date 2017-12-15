@@ -55,7 +55,7 @@
         </div>
     </div>
 
-    <div class="row dual-pricing-frequency-row">
+    <div class="row dual-pricing-frequency-row hidden-xs">
         <div class="col-xs-12 col-sm-6 col-sm-offset-3">
             <div class="text-center text-bold">Change payment frequency</div>
             <div class="dual-pricing-modal-frequency" data-dont-toggle-update="true">

@@ -50,7 +50,6 @@
 <core_v1:js_template id="dual-pricing-moreinfo-template">
 	{{ var comingSoonClass = ''; }}
 	{{ var alternatePremium = obj.altPremium[obj._selectedFrequency]; }}
-	{{ var lhcText = meerkat.site.isCallCentreUser ? 'pricing' : 'lhcfreepricing'; }}
 	{{ var currFreq = obj._selectedFrequency === 'annually' ? 'annual' : obj._selectedFrequency; }}
 
 	{{ if (!_.isUndefined(alternatePremium)) { }}
@@ -65,9 +64,6 @@
 			</div>
 			<div class="col-sm-5">
 				{{= renderedPriceTemplate }}
-				{{ if (!_.isUndefined(obj.premium[obj._selectedFrequency][lhcText])) { }}
-				<div class="lhcText">{{= obj.premium[obj._selectedFrequency][lhcText] }}</div>
-				{{ } }}
 			</div>
 			<div class="col-sm-3 btn-container">
 				<a href="javascript:;" class="btn btn-cta btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Apply Online<span class="icon-arrow-right" /></a>
@@ -77,9 +73,6 @@
 		<div class="row april-pricing premium-rising-tag">
 			<div class="premium-rising"><span class="icon-arrow-thick-up"></span> Premiums are rising from April 1st, 2017</div>
 			{{= renderedAltPriceTemplate }}
-			{{ if (comingSoonClass === '' && !_.isUndefined(obj.altPremium[obj._selectedFrequency]) && !_.isUndefined(obj.altPremium[obj._selectedFrequency][lhcText])) { }}
-			<div class="lhcText">{{= obj.altPremium[obj._selectedFrequency][lhcText] }}</div>
-			{{ } }}
 			<a href="javascript:;" class="dual-pricing-learn-more" data-dropDeadDate="{{= obj.dropDeadDate }}">Learn more</a>
 		</div>
 	</div>
