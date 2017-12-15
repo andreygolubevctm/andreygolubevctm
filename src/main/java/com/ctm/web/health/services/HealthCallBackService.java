@@ -84,9 +84,16 @@ public class HealthCallBackService {
         leadData.setVerticalType("HEALTH");
 
         leadData.setSource("SECURE");
-        leadData.setRootId(dataBucket.getLong("current/rootId"));
-        leadData.setTransactionId(dataBucket.getLong("current/transactionId"));
-        leadData.setBrandCode(dataBucket.getString("current/brandCode"));
+
+        if (dataBucket != null) {
+            leadData.setRootId(dataBucket.getLong("current/rootId"));
+            leadData.setTransactionId(dataBucket.getLong("current/transactionId"));
+            leadData.setBrandCode(dataBucket.getString("current/brandCode"));
+        } else {
+            leadData.setBrandCode("ctm");
+            leadData.setRootId(Long.parseLong("-1"));
+            leadData.setTransactionId(Long.parseLong("-1"));
+        }
 
         leadData.setStatus(LeadStatus.OPEN);
         leadData.setLeadType(leadType);

@@ -12,6 +12,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 <%@ attribute required="false" name="body_class_name" description="Allow extra styles to be added to the rendered body tag" %>
 <%@ attribute required="false" name="bundleFileName" description="Pass in alternate bundle file name" %>
 <%@ attribute required="false" name="displayNavigationBar" description="Whether to display the navigation bar" %>
+<%@ attribute name="ignorePageHeader" required="false" rtexprvalue="true" description="Pass true/false to remove the page header bar" %>
 
 <%@ attribute fragment="true" required="true" name="head" %>
 <%@ attribute fragment="true" required="true" name="head_meta" %>
@@ -155,6 +156,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 
 	<div class="navMenu-row">
 	<!-- body content -->
+		<c:if test="${empty ignorePageHeader or (not empty ignorePageHeader and ignorePageHeader eq false)}">
 		<header class="header-wrap">
 
 			<div class="header-top dropdown-interactive-base navMenu-row-fixed">
@@ -301,7 +303,7 @@ ${newPage.init(pageContext.request, pageSettings)}
         <jsp:invoke fragment="xs_results_pagination" />
 
 		</header>
-
+		</c:if>
 			<%--  Supertag --%>
 			<c:if test="${superTagEnabled eq true and not empty pageSettings and pageSettings.hasSetting('supertagInitialPageName')}">
 				<agg_v2:supertag />
