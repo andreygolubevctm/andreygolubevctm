@@ -155,7 +155,6 @@
 			}
 
 			if (_.isString(ajaxProperties.data)) {
-
                 ajaxProperties.data += '&transactionId=' + tranId;
 
 				if(meerkat.site.isCallCentreUser) {
