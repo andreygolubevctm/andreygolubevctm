@@ -281,7 +281,6 @@
                         }
                     }
 
-
                     if (_isClosed) {
                         var tomorrow = new Date();
                         tomorrow.setDate(today.getDate()+1);
