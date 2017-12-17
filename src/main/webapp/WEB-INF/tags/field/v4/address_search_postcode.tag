@@ -13,10 +13,3 @@
     <button type="button" class="btn btn-secondary"></button>
   </div>
 </form_v2:row>
-
-<script type="text/javascript">
-  document.addEventListener("DOMContentLoaded", function() {
-    var postcodeSearch = window.meerkat.modules.addressLookupV2.getPostCodeWithBtns();
-    postcodeSearch.init();
-  });
-</script>

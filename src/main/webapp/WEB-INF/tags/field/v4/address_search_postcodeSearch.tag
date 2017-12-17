@@ -12,11 +12,3 @@
   <field_v1:hidden xpath="${xpath}/state" defaultValue="" />
   <div class="addressSearchV2__results"></div>
 </form_v2:row>
-
-<script type="text/javascript">
-  document.addEventListener("DOMContentLoaded", function() {
-    var postcodeSearch = window.meerkat.modules.addressLookupV2.getPostCodeSearch();
-    var xpath = '<c:out value="${xpath}" />';
-    postcodeSearch.init(xpath);
-  });
-</script>

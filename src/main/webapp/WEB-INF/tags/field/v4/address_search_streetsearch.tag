@@ -59,14 +59,3 @@
     <label for="hide_search_field">Tick here if you are unable to find the address</label>
   </form_v2:row>
 </div>
-
-
-<script type="text/javascript">
-  document.addEventListener("DOMContentLoaded", function() {
-    var streetSearch = window.meerkat.modules.addressLookupV2.getStreetSearch();
-    var postcodeSearch = window.meerkat.modules.addressLookupV2.getHiddenPostcodeSearch();
-    var xpath = '<c:out value="${xpath}" />';
-    postcodeSearch.init('street');
-    streetSearch.init(xpath);
-  });
-</script>

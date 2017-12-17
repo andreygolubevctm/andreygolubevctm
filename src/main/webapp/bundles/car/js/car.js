@@ -142,6 +142,11 @@
             meerkat.modules.journeyProgressBar.render(true);
         }
     }
+    
+    function initAddressSearch() {
+      meerkat.modules.addressLookupV2.getStreetSearch().init('quote/riskAddress');
+      meerkat.modules.addressLookupV2.getHiddenPostcodeSearch().init('street');
+    }
 
     function setJourneyEngineSteps() {
 
@@ -154,6 +159,7 @@
                 object: meerkat.modules.car.getTrackingFieldsObject
             },
             onInitialise: function onStartInit(event) {
+                initAddressSearch();
                 meerkat.modules.jqueryValidate.initJourneyValidator();
                 meerkat.modules.currencyField.initCurrency();
                 // Hook up privacy optin to Email Quote button

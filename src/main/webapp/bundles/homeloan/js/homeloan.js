@@ -46,6 +46,10 @@
 				meerkat.modules.journeyProgressBar.render(true);
 		}
 	}
+	
+	function initHealthSearch() {
+		meerkat.modules.addressLookupV2.getPostCodeSearch().init('homeloan/details');
+	}
 
 	function setJourneyEngineSteps(){
 
@@ -58,7 +62,7 @@
 				object: meerkat.modules.homeloan.getTrackingFieldsObject
 			},
 			onInitialise: function initStartStep(event) {
-
+				initHealthSearch();
 				// Init the results objects required for next step
 				meerkat.modules.homeloanResults.initPage();
 				meerkat.modules.currencyField.initCurrency();
