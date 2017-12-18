@@ -1,12 +1,12 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
-<%@ tag description="Group for non standard address"%>
+<%@ tag description="Smart Search"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%@ attribute name="xpath" required="true" rtexprvalue="true"
               description="field group's xpath" %>
               
 <%@ attribute name="prefix" required="true" rtexprvalue="true" description="Used for passing in additional attributes" %>
-<%@ attribute name="unitTypes" required="true" rtexprvalue="true" description="Used for passing in additional attributes" %>
+<%@ attribute name="unitTypes" required="true" rtexprvalue="true" description="Unit Type" %>
 
 <div class="addressSearchV2 addressSearchV2--${prefix}">
   <form_v2:row fieldXpath="${fieldXpath}" labelTag="h5" label="${prefix} Address" className="addressHeading" hideHelpIconCol="true"></form_v2:row>

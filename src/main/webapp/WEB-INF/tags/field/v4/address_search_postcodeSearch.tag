@@ -1,5 +1,5 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
-<%@ tag description="Group for non standard address"%>
+<%@ tag description="Postcode Search"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%@ attribute name="xpath" required="true" rtexprvalue="true" description="field group's xpath" %>

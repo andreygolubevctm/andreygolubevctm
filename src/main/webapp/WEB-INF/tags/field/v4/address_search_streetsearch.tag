@@ -1,5 +1,5 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
-<%@ tag description="Group for non standard address"%>
+<%@ tag description="Street search"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%@ attribute name="xpath" 		required="true"	 rtexprvalue="true"	 description="field group's xpath" %>
@@ -12,7 +12,7 @@
   
   <%-- Street Search --%>
   <form_v2:row label="Street Search" className="addressSearchV2__searchContainer">
-    <field_v2:input xpath="${xpath}/streetSearch" required="true" title="postcode" additionalAttributes=" data-rule-validAddress='${name}' data-msg-validAddress='Please enter a valid postcode' data-validation-position='append'" disableErrorContainer="${false}" />
+    <field_v2:input xpath="${xpath}/streetSearch" required="true" title="streetSearch" additionalAttributes=" data-rule-validAddress='${name}' data-msg-validAddress='Please enter a valid address' data-validation-position='append'" disableErrorContainer="${false}" />
     <div class="addressSearchV2__results"></div>
   </form_v2:row>
   <field_v1:hidden xpath="${xpath}/fullAddressLineOne" />
