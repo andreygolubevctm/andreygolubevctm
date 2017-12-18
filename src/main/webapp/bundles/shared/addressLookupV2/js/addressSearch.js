@@ -1,8 +1,10 @@
 ;(function($, undefined) {
-  var noAddressFound = "Can't find address? <span class=\"underline\">click here</span>";
-  var doneTypingTime = 250;
-  var addressUrl = meerkat.site.urls.base + 'address/';
-  var createElement = document.meerkat.modules.utils.createElement;
+
+  const meerkat = window.meerkat;
+  const noAddressFound = "Can't find address? <span class=\"underline\">click here</span>";
+  const doneTypingTime = 250;
+  const addressUrl = meerkat.site.urls.base + 'address/';
+  const createElement = meerkat.modules.utils.createElement;
   
   function setValues($element, value) {
     $element.val(value);
