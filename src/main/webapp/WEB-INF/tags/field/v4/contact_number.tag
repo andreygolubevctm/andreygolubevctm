@@ -6,7 +6,7 @@
 <%@ attribute name="className" required="false" rtexprvalue="true" description="additional css class attribute" %>
 <%@ attribute name="mobileXpath" required="true" rtexprvalue="true" description="mobile field's xpath" %>
 <%@ attribute name="otherXpath" required="true" rtexprvalue="true" description="other field's xpath" %>
-<%@ attribute name="checkMobileBlacklist" required="false" rtexprvalue="false" description="Boolean as to validate mobile against blacklist" %>
+<%@ attribute name="checkMobileBlacklist" required="false" rtexprvalue="true" description="Boolean as to validate mobile against blacklist" %>
 
 <div class="contact-number ${className}" data-contact-by="mobile">
     <c:set var="fieldXPath" value="${mobileXpath}" />

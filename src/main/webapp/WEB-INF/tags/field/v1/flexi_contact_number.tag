@@ -18,7 +18,7 @@
 <%@ attribute name="phoneType"				required="false" rtexprvalue="true"	 description="'Flexi'|'Mobile'|'LandLine' Phone Type for Validation" %>
 <%@ attribute name="additionalAttributes"	required="false" rtexprvalue="true"	 description="Used for passing in additional attributes" %>
 <%@ attribute name="requireOnePlusNumber"	required="false" rtexprvalue="true"	 description="true|false if two fields, require at least one" %>
-<%@ attribute name="checkMobileBlacklist"   required="false" rtexprvalue="false" description="Boolean as to validate mobile against blacklist" %>
+<%@ attribute name="checkMobileBlacklist"   required="false" rtexprvalue="true" description="Boolean as to validate mobile against blacklist" %>
 
 <c:if test="${callCentre}">
 	<c:set var="required" value="${false}" />
