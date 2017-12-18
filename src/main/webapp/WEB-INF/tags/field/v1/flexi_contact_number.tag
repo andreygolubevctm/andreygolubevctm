@@ -51,7 +51,10 @@
 		<c:if test="${empty placeHolder}">
 			<c:set var="placeHolder">04xx xxx xxx</c:set>
 		</c:if>
-		<c:set var="additionalAttributes"> data-rule-validate${phoneType}TelNo='true' data-msg-validate${phoneType}TelNo='Please enter the ${labelText} in the format 04xx xxx xxx for mobile' ${additionalAttributes}</c:set>
+		<c:set var="blacklistRules">
+			<c:if test="${fn:startsWith(xpath, 'health/')}"> data-rule-validate${phoneType}TelNoWithBlacklist='true' data-msg-validate${phoneType}TelNoWithBlacklist='This ${labelText} appears to be invalid, please enter a valid ${labelText}</c:if>
+		</c:set>
+		<c:set var="additionalAttributes"> data-rule-validate${phoneType}TelNo='true' data-msg-validate${phoneType}TelNo='Please enter the ${labelText} in the format 04xx xxx xxx for mobile' ${blacklistRules} ${additionalAttributes}</c:set>
 		<c:set var="allowMobile" value="true"/>
 		<c:set var="allowLandLine" value="false"/>
 	</c:when>
