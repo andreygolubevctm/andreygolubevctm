@@ -140,12 +140,12 @@
                 if (_now) {
                     settings = {
                         url : "spring/rest/health/callMeNowWidget.json"
-                    }
+                    };
                 } else {
                     settings = {
                         url : "spring/rest/health/callMeBackWidget.json",
                         scheduledTime : $scheduledTime.val()
-                    }
+                    };
                 }
 
                 $this.addClass('inactive disabled');
