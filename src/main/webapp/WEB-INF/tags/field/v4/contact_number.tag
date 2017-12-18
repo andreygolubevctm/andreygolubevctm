@@ -6,6 +6,7 @@
 <%@ attribute name="className" required="false" rtexprvalue="true" description="additional css class attribute" %>
 <%@ attribute name="mobileXpath" required="true" rtexprvalue="true" description="mobile field's xpath" %>
 <%@ attribute name="otherXpath" required="true" rtexprvalue="true" description="other field's xpath" %>
+<%@ attribute name="checkMobileBlacklist" required="false" rtexprvalue="false" description="Boolean as to validate mobile against blacklist" %>
 
 <div class="contact-number ${className}" data-contact-by="mobile">
     <c:set var="fieldXPath" value="${mobileXpath}" />
@@ -16,7 +17,8 @@
                                        className="contact-number-field sessioncamexclude"
                                        labelName="mobile number"
                                        phoneType="Mobile"
-                                       requireOnePlusNumber="true"/>
+                                       requireOnePlusNumber="true"
+                                       checkMobileBlacklist="${checkMobileBlacklist}"/>
     </form_v4:row>
 
     <c:set var="fieldXPath" value="${otherXpath}" />
