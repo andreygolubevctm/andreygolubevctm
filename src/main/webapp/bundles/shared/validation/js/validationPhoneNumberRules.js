@@ -43,8 +43,7 @@
      * Validate mobile phone numbers.
      */
     $.validator.addMethod('validateMobileTelNo', function (value, element) {
-	    console.info("### validateMobileTelNo",value,element);
-        if (!value.length) return true;
+	    if (!value.length) return true;
         return formattedNumber = validateNumber (element,'mobile');
     });
 	/**
