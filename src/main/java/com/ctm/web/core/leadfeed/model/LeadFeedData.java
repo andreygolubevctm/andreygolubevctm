@@ -64,7 +64,7 @@ public class LeadFeedData {
 	private String newPartnerReference;
 	private String newPartnerBrand;
 	private String newProductId = null;
-	private String rootId;
+	private Long rootId;
 	//lead feed data for leads being sending to `ctm-leads` instead of AGI or others.
 	private Person person;
 	//any additional data which is not generic but required by specific lead feed service.
@@ -242,11 +242,11 @@ public class LeadFeedData {
 		this.newProductId = newProductId;
 	}
 
-	public String getRootId() {
+	public Long getRootId() {
 		return rootId;
 	}
 
-	public void setRootId(String rootId) {
+	public void setRootId(Long rootId) {
 		this.rootId = rootId;
 	}
 
