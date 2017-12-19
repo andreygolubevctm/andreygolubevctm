@@ -21,10 +21,12 @@ import java.net.URLEncoder;
 
 public class CallCentreService {
     private static final Logger LOGGER = LoggerFactory.getLogger(CallCentreService.class);
+    private static boolean consultantIsAdminChecked = false;
+	private static boolean consultantIsAdmin = false;
 	/**
 	 * If operator is on a call, collect the details such as VDN.
 	 *
-	 * @param pageContext
+	 * @param request
 	 * @return
 	 */
 	public static InboundPhoneNumber getInboundPhoneDetails(HttpServletRequest request) throws DaoException, ConfigSettingException {
@@ -41,8 +43,7 @@ public class CallCentreService {
 	/**
 	 * Start a new quote, either redirect to the brand selection page or automatically detect the brand from the current phone call.
 	 *
-	 * @param pageContext
-	 * @param VERTICAL_CODE
+	 * @param request
 	 * @return styleCodeId
 	 */
 	public static int getBrandIdForNewQuote(HttpServletRequest request) throws DaoException, ConfigSettingException {
@@ -61,7 +62,7 @@ public class CallCentreService {
 	 * Create link for simples users to swap primary domains.
 	 * This will land on a page which will attempt to use the token to log the user back in.
 	 *
-	 * @param pageContext
+	 * @param request
 	 * @param brandId
 	 * @param verticalCode
 	 * @return redirectUrl
@@ -113,4 +114,41 @@ public class CallCentreService {
 		return redirectUrl.toString();
 	}
 
+	/**
+	 * Westfund usernames are prefixed with wfd. This message is used to determine which styleCode should be used
+	 * when performing transaction searches. The default is CTM otherwise is based on whether you are an admin or
+	 * a WFDD consultant.
+	 * @param request
+	 * @return
+	 */
+	public static String getConsultantStyleCodeId(HttpServletRequest request) {
+		String styleCodeId = String.valueOf(Integer.MAX_VALUE); // Default to impossible value
+		try {
+			SessionDataService sessionDataService = new SessionDataService();
+			SessionData sessionData = sessionDataService.getSessionDataFromSession(request);
+			AuthenticatedData authData = sessionData.getAuthenticatedSessionData();
+			String uid = authData.getUid();
+			if (uid != null) {
+				if (getConsultantIsAdmin(request)) {
+					styleCodeId = "1,9";
+				} else if (uid.toLowerCase().startsWith("wfd")) {
+					styleCodeId = "9";
+				} else {
+					styleCodeId = "1";
+				}
+			}
+		} catch(Exception e) {
+			LOGGER.error("No authenticated session exists. Default search styleCodeId of " + styleCodeId + " to be used.");
+		}
+		return styleCodeId;
+	}
+
+	public static boolean getConsultantIsAdmin(HttpServletRequest request) {
+		if(consultantIsAdminChecked == false) {
+			consultantIsAdmin = request.isUserInRole("BD-HCC-MGR") || request.isUserInRole("BC-IT-ECOM-RPT") ||
+					request.isUserInRole("CTM-IT-USR") || request.isUserInRole("jira-ctm-projmgr");
+			consultantIsAdminChecked = true;
+		}
+		return consultantIsAdmin;
+	}
 }

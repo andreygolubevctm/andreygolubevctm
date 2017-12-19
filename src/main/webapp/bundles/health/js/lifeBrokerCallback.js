@@ -76,7 +76,7 @@ Handling of the callback popup
 				$(options).each(function(index, val) {
 					var option = document.createElement('option');
 					option.value = date + ' ' + convertTo24Hour(val) + ':00';
-					option.text = val + " AEDT";
+					option.text = val + " - " + _add30Mins(val) + " AEDT";
 					$callbackTime.append(option);
 				});
 			} else {
@@ -134,6 +134,16 @@ Handling of the callback popup
             _initFields();
         });
 
+    }
+
+    function _add30Mins(twelveHrTimeStr) {
+        var now = new Date();
+        now.setMinutes(now.getMinutes()+now.getTimezoneOffset()+aedtOffset);
+        var suppliedTime = convertTo24Hour(twelveHrTimeStr);
+        var timePlus30 = Date.parse(meerkat.modules.dateUtils.format(now, "YYYY/MM/DD") + " " + suppliedTime);
+        timePlus30 = new Date(timePlus30);
+        timePlus30.setMinutes(timePlus30.getMinutes() + 30); // advance 30 minutes
+        return formatTime(timePlus30);
     }
 
 	function _initFields() {
@@ -334,7 +344,14 @@ Handling of the callback popup
 						startOffset = '30';
 					}
 
-					startTime = ('00' + (now.getHours() + 1)).slice(-2) + ':' + startOffset;
+                    var rightNowStartTime = ('00' + (now.getHours() + 1)).slice(-2) + ':' + startOffset;
+
+                    // use current time - if current time is after the call centre start time
+                    var rightNow = Date.parse(meerkat.modules.dateUtils.format(now, "YYYY/MM/DD") + " " + rightNowStartTime);
+                    var openingTime = Date.parse(meerkat.modules.dateUtils.format(now, "YYYY/MM/DD") + " " + startTime);
+                    if (rightNow > openingTime) {
+                        startTime = rightNowStartTime;
+                    }
 				}
 
 				// NOTE: format must use the YYYY/MM/DD pattern otherwise it breaks mobile. Desktop is too lenient

@@ -9,9 +9,9 @@
     <p class="traveler-heading"> 
       When are you travelling? 
     </p> 
-    <span class="traveler-age-label"> 
+    <span class="traveler-dates-label">
       When do you leave and on what date will you return? 
-    </span> 
+    </span>
   </div> 
   <div class="col-sm-6 col-xs-12 row-content dp__inputFields"> 
     <div class="dp__input dp__input--left"> 

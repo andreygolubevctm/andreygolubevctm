@@ -16,7 +16,7 @@
                 <health_v1:dual_pricing_settings />
 
                 <%-- Product summary header for mobile --%>
-                <div class="row productSummary-parent <c:choose><c:when test="${isDualPriceActive eq true}">hidden</c:when><c:otherwise>visible-xs</c:otherwise></c:choose>">
+                <div class="row productSummary-parent visible-xs">
                     <div class="productSummary visible-xs">
                         <health_v4_payment:policySummary />
                     </div>
@@ -31,6 +31,12 @@
                 <health_v4_application:your_details />
                 <health_v4_application:partner_details />
                 <health_v4_application:dependants xpath="${pageSettings.getVerticalCode()}/application/dependants" />
+
+                <c:if test="${isDualPriceActive eq true}">
+                    <div class="alert alert-info text-center">
+                        Remember: Premiums will rise from <span class="dropDeadDateText"></span>. You must select a cover start date before <span class="dropDeadDateText"></span> to be eligible for the lower rate.
+                    </div>
+                </c:if>
 
                 <%-- Policy Start Date moved from payment_details.tag --%>
                 <form_v4:fieldset legend="When to start your cover"
