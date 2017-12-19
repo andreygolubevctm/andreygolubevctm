@@ -12,12 +12,12 @@ import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.EmailMaster;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical;
+import com.ctm.web.core.openinghours.services.OpeningHoursService;
 import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.core.utils.RequestUtils;
 import com.ctm.web.core.web.go.Data;
-import com.ctm.web.core.openinghours.services.OpeningHoursService;
 import com.ctm.web.email.EmailRequest;
 import com.ctm.web.email.EmailTranslator;
 import com.ctm.web.email.EmailUtils;
@@ -28,8 +28,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -54,22 +56,26 @@ public class HealthModelTranslator implements EmailTranslator {
     private static final String ACTION_UNSUBSCRIBE = "unsubscribe";
     private static final String ACTION_LOAD = "load";
 
+    public static final Function<List<String>, List<String>> removeEmptySpanTags = l -> l.stream().map(s -> s.replaceAll("<span/>","")).collect(Collectors.toList());
+
     @Override
     public void setVerticalSpecificFields(EmailRequest emailRequest, HttpServletRequest request, Data data) throws ConfigSettingException, DaoException {
         List<String> providerName = emailUtils.buildParameterList(request, "rank_providerName");
-        List<String> premiumLabel = emailUtils.buildParameterList(request, "rank_premiumText");
+        List<String> premiumLabel = removeEmptySpanTags.apply(emailUtils.buildParameterList(request, "rank_premiumText"));
         List<String> providerCodes = emailUtils.buildParameterList(request, "rank_provider");
         List<String> premium = emailUtils.buildParameterList(request, "rank_premium");
         String gaclientId = emailUtils.getParamFromXml(data.getXML(), "gaclientid", "/health/");
         emailRequest.setVertical(vertical);
         emailRequest.setProviders(providerName);
-        //replace span tab with empty string.
-        premiumLabel = premiumLabel.stream().map(s -> s.replaceAll("<span/>","")).collect(Collectors.toList());
         emailRequest.setPremiumLabels(premiumLabel);
         emailRequest.setProviderCodes(providerCodes);
         emailRequest.setPremiums(premium);
         emailRequest.setPremiumFrequency(request.getParameter("rank_frequency0"));
         emailRequest.setGaClientID(gaclientId);
+
+        List<BigDecimal> premiumDiscountPercentage  = emailUtils.buildParameterList(request, "rank_premiumDiscountPercentage").stream().map(BigDecimal::new).collect(Collectors.toList());
+        emailRequest.setPremiumDiscountPercentage(premiumDiscountPercentage);
+
         PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
         String callCentreNumber = getCallCentreNumber(pageSettings);
 
@@ -79,12 +85,11 @@ public class HealthModelTranslator implements EmailTranslator {
         String excessPerPolicy = request.getParameter("rank_excessPerPolicy0");
         String excessPerAdmission = request.getParameter("rank_excessPerAdmission0");
         String hospitalPdsUrl = request.getParameter("rank_hospitalPdsUrl0");
-        String specialOffer = request.getParameter("rank_specialOffer0");
-        List<String> specialOffers = new ArrayList<>();
-        specialOffers.add(specialOffer);
+
+        List<String> altPremium = emailUtils.buildParameterList(request, "rank_altPremium");
+        List<String> altPremiumLabel = removeEmptySpanTags.apply(emailUtils.buildParameterList(request, "rank_altPremiumText"));
 
         HealthEmailModel healthEmailModel = new HealthEmailModel();
-        OpeningHoursService openingHoursService = new OpeningHoursService();
         healthEmailModel.setBenefitCodes(benefitCodes);
         healthEmailModel.setCurrentCover(emailUtils.getParamSafely(data,vertical + "/healthCover/primary/cover"));
         healthEmailModel.setNumberOfChildren(emailUtils.getParamSafely(data,vertical + "/healthCover/dependants"));
@@ -94,16 +99,23 @@ public class HealthModelTranslator implements EmailTranslator {
         healthEmailModel.setProvider1ExtrasPds(extrasPds);
         healthEmailModel.setProvider1HospitalPds(hospitalPdsUrl);
         healthEmailModel.setSituationType(emailUtils.getParamSafely(data,vertical + "/situation/healthCvr"));
-
+        healthEmailModel.setAltPremiumLabels(altPremiumLabel);
+        healthEmailModel.setAltPremiums(altPremium);
         emailRequest.setHealthEmailModel(healthEmailModel);
+
+        OpeningHoursService openingHoursService = new OpeningHoursService();
         emailRequest.setCallCentreHours(openingHoursService.getCurrentOpeningHoursForEmail(request));
+
         List<String> providerPhones = new ArrayList<>();
         IntStream.range(EmailUtils.START,EmailUtils.END).forEach(value -> providerPhones.add(callCentreNumber));
         emailRequest.setProviderPhoneNumbers(providerPhones);
+
         List<String> quoteRefs = new ArrayList<>();
         Long transactionId = RequestUtils.getTransactionIdFromRequest(request);
         IntStream.range(EmailUtils.START,EmailUtils.END).forEach(value -> quoteRefs.add(transactionId.toString()));
         emailRequest.setQuoteRefs(quoteRefs);
+
+        List<String> specialOffers = emailUtils.buildParameterList(request, "rank_specialOffer");
         emailRequest.setProviderSpecialOffers(specialOffers);
         setDataFields(emailRequest, data);
     }
