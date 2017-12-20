@@ -823,7 +823,7 @@
         <profile>
             <id>embedded-tomcat7-run</id>
             <properties>
-                <cargo.maven.containerUrl>http://nexusctm.budgetdirect.com.au/content/repositories/central/org/apache/tomcat/tomcat/${tomcat.version}/tomcat-${tomcat.version}.zip</cargo.maven.containerUrl>
+                <cargo.maven.containerUrl>https://nexus.comparethemarket.com.au/repository/maven-central/org/apache/tomcat/tomcat/${tomcat.version}/tomcat-${tomcat.version}.zip</cargo.maven.containerUrl>
                 <javaagent.args></javaagent.args>
                 <!--<cargo.maven.containerId>tomcat7x</cargo.maven.containerId> defined in developer-properties profile -->
                 <!--<javaagent.args>-javaagent:${project.build.directory}/embedded_jars/springloaded.jar -noverify</javaagent.args>-->
