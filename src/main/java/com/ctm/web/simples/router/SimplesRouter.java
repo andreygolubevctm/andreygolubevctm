@@ -12,6 +12,7 @@ import com.ctm.web.core.utils.RequestUtils;
 import com.ctm.web.core.validation.SchemaValidationError;
 import com.ctm.web.simples.admin.openinghours.services.OpeningHoursAdminService;
 import com.ctm.web.simples.admin.router.AdminRouter;
+import com.ctm.web.simples.admin.services.HelpBoxService;
 import com.ctm.web.simples.admin.services.SpecialOffersService;
 import com.ctm.web.simples.dao.UserDao;
 import com.ctm.web.simples.model.Message;
@@ -65,6 +66,11 @@ import static javax.servlet.http.HttpServletResponse.*;
 		"/simples/admin/offers/create.json",
 		"/simples/admin/offers/delete.json",
 		"/simples/admin/offers/getAllRecords.json",
+		"/simples/admin/helpbox/update.json",
+		"/simples/admin/helpbox/create.json",
+		"/simples/admin/helpbox/delete.json",
+		"/simples/admin/helpbox/getAllRecords.json",
+		"/simples/admin/helpbox/getCurrentRecords.json",
 		"/simples/admin/providerContent/getAllRecords.json",
 		"/simples/admin/providerContent/update.json",
 		"/simples/admin/providerContent/create.json",
@@ -187,6 +193,10 @@ public class SimplesRouter extends HttpServlet {
 			objectMapper.writeValue(writer, new OpeningHoursAdminService(ipAddressHandler).getAllHours(request));
 		} else if (uri.endsWith("/simples/admin/offers/getAllRecords.json")) {
 			objectMapper.writeValue(writer, new SpecialOffersService().getAllOffers());
+		} else if (uri.endsWith("/simples/admin/helpbox/getAllRecords.json")) {
+			objectMapper.writeValue(writer, new HelpBoxService().getAllHelpBox());
+		} else if (uri.endsWith("/simples/admin/helpbox/getCurrentRecords.json")) {
+			objectMapper.writeValue(writer, new HelpBoxService().getCurrentHelpBox(request));
 		} else if(uri.contains("/simples/admin/")) {
 			AdminRouter adminRouter = new AdminRouter(request, response,ipAddressHandler);
 			adminRouter.doGet(uri.split("/simples/admin/")[1]);
@@ -252,14 +262,40 @@ public class SimplesRouter extends HttpServlet {
                 response.setStatus(400);
 				objectMapper.writeValue(writer,jsonObjectNode("error",errors));
 			}
-		} else if(uri.endsWith("/simples/admin/offers/delete.json")){
-            String result = new SpecialOffersService().deleteSpecialOffers(request, authenticatedData);
-            if (!result.equalsIgnoreCase("success")) {
-                response.setStatus(400);
-                objectMapper.writeValue(writer, jsonObjectNode("error", result));
-		}else {
-                objectMapper.writeValue(writer, jsonObjectNode("result", result));
-            }
+		} else if(uri.endsWith("/simples/admin/offers/delete.json")) {
+			String result = new SpecialOffersService().deleteSpecialOffers(request, authenticatedData);
+			if (!result.equalsIgnoreCase("success")) {
+				response.setStatus(400);
+				objectMapper.writeValue(writer, jsonObjectNode("error", result));
+			} else {
+				objectMapper.writeValue(writer, jsonObjectNode("result", result));
+			}
+		}else if(uri.endsWith("/simples/admin/helpbox/update.json")) {
+			HelpBoxService service = new HelpBoxService();
+			List<SchemaValidationError> errors = service.validateHelpBoxData(request, authenticatedData);
+			if(errors==null || errors.isEmpty()){
+				objectMapper.writeValue(writer,service.updateHelpBox(request,authenticatedData));
+			} else {
+				response.setStatus(400);
+				objectMapper.writeValue(writer,jsonObjectNode("error",errors));
+			}
+		}else if(uri.endsWith("/simples/admin/helpbox/create.json")) {
+			HelpBoxService service = new HelpBoxService();
+			List<SchemaValidationError> errors = service.validateHelpBoxData(request, authenticatedData);
+			if (errors == null || errors.isEmpty()) {
+				objectMapper.writeValue(writer, service.createHelpBox(request, authenticatedData));
+			} else {
+				response.setStatus(400);
+
+			}
+		}else if(uri.endsWith("/simples/admin/helpbox/delete.json")) {
+			String result = new HelpBoxService().deleteHelpBox(request, authenticatedData);
+			if (!result.equalsIgnoreCase("success")) {
+				response.setStatus(400);
+				objectMapper.writeValue(writer, jsonObjectNode("error", result));
+			} else {
+				objectMapper.writeValue(writer, jsonObjectNode("result", result));
+			}
 		}else if(uri.contains("/simples/admin/")){
 			AdminRouter adminRouter = new AdminRouter(request, response, ipAddressHandler);
 			adminRouter.doPost(uri.split("/simples/admin/")[1]);
