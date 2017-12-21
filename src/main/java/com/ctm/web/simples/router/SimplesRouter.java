@@ -1,6 +1,7 @@
 package com.ctm.web.simples.router;
 
 import com.ctm.web.core.exceptions.ConfigSettingException;
+import com.ctm.web.core.exceptions.CrudValidationException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.Error;
 import com.ctm.web.core.model.session.AuthenticatedData;
@@ -281,7 +282,11 @@ public class SimplesRouter extends HttpServlet {
 			HelpBoxService service = new HelpBoxService();
 			List<SchemaValidationError> errors = service.validateHelpBoxData(request, authenticatedData);
 			if (errors == null || errors.isEmpty()) {
-				objectMapper.writeValue(writer, service.createHelpBox(request, authenticatedData));
+				try {
+					objectMapper.writeValue(writer, service.createHelpBox(request, authenticatedData));
+				} catch (CrudValidationException e) {
+					objectMapper.writeValue(writer,jsonObjectNode("error",e.getValidationErrors()));
+				}
 			} else {
 				response.setStatus(400);
 

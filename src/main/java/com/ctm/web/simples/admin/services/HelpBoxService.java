@@ -1,9 +1,9 @@
 package com.ctm.web.simples.admin.services;
 
+import com.ctm.web.core.exceptions.CrudValidationException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.session.AuthenticatedData;
 import com.ctm.web.core.security.IPAddressHandler;
-import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.utils.RequestUtils;
 import com.ctm.web.core.utils.common.utils.DateUtils;
 import com.ctm.web.core.validation.SchemaValidationError;
@@ -14,6 +14,7 @@ import com.ctm.web.simples.helper.HelpBoxHelper;
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -57,7 +58,7 @@ public class HelpBoxService {
         }
     }
 
-    public HelpBox createHelpBox(HttpServletRequest request, AuthenticatedData authenticatedData) {
+    public HelpBox createHelpBox(HttpServletRequest request, AuthenticatedData authenticatedData) throws CrudValidationException {
         try {
             HelpBox helpBox = new HelpBox();
             helpBox = RequestUtils.createObjectFromRequest(request, helpBox);
@@ -65,12 +66,21 @@ public class HelpBoxService {
             final String userName = authenticatedData.getUid();
             final String ipAddress = ipAddressHandler.getIPAddress(request);
 
+            List<SchemaValidationError> validationErrors = new ArrayList<>();
+
             HelpBox helpBox1 = helpBoxDao.fetchSingleRecHelpBox(helpBox.getEffectiveStart(), helpBox.getEffectiveEnd(), helpBox.getStyleCodeId());
 
-            if (helpBox1 == null) {
-                return helpBoxDao.createHelpBox(helpBox, userName, ipAddress);
+            if (helpBox1 != null) {
+                SchemaValidationError error = new SchemaValidationError();
+                error.setElements("effectiveStart , effectiveEnd");
+                error.setMessage("Help Box effective date range invalid");
+                validationErrors.add(error);
+            }
+
+            if (!validationErrors.isEmpty()) {
+                throw new CrudValidationException(validationErrors);
             } else {
-                return null;
+                return helpBoxDao.createHelpBox(helpBox, userName, ipAddress);
             }
         } catch (DaoException d) {
             throw new RuntimeException(d);
