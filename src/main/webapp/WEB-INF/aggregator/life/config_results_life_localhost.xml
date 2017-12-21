@@ -9,27 +9,6 @@
 	<debug-dir>life/app-logs-debug</debug-dir>
 	<validation-file>WEB-INF/xsd/life/lifeQuoteResults.xsd</validation-file>
 
-<!-- 
-	<service name="BUDD_RESULTS" type="SOAP">
-		<soap-url>https://nxq.ecommerce.disconline.com.au/services/3.1/getLifeQuotes</soap-url>
-		<soap-action>https://nxq.ecommerce.disconline.com.au/services/3.1/getLifeQuote</soap-action>
-		<outbound-xsl>life_results_AGIS_outbound.xsl</outbound-xsl>
-		<outbound-xsl-parms>sourceId=0000000001</outbound-xsl-parms>
-		<inbound-xsl>life_results_AGIS_inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>company=budget_direct,companyCode=BUDD</inbound-xsl-parms>
-		<timeoutMillis>20000</timeoutMillis>
-	</service>
--->
-
-	<service name="OZIC_RESULTS" type="SOAP">
-		<soap-url>https://nxq.ecommerce.disconline.com.au/services/3.1/getLifeQuotes</soap-url>
-		<soap-action>https://nxq.ecommerce.disconline.com.au/services/3.1/getLifeQuotes</soap-action>
-		<outbound-xsl>life_results_AGIS_outbound.xsl</outbound-xsl>
-		<outbound-xsl-parms>sourceId=0000000002</outbound-xsl-parms>
-		<inbound-xsl>life_results_AGIS_inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>company=ozicare,companyCode=OZIC</inbound-xsl-parms>
-		<timeoutMillis>20000</timeoutMillis>
-	</service>
 
 	<service name="LB_RESULTS" type="SOAP">
 		<soap-url>https://enterpriseapi.lifebroker.com.au/2-7-0/term-quote/new</soap-url>
