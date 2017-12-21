@@ -350,8 +350,12 @@
 			$couponCodeField.val(currentCoupon.couponCode);
             $couponViewedField.val(currentCoupon.couponId);
 		} else {
-            $couponIdField.val('');
-            $couponCodeField.val('');
+            if ($couponIdField) {
+                $couponIdField.val('');
+            }
+            if ($couponCodeField) {
+                $couponCodeField.val('');
+            }
         }
 	}
 
