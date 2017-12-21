@@ -195,8 +195,6 @@ public class SimplesRouter extends HttpServlet {
 			objectMapper.writeValue(writer, new SpecialOffersService().getAllOffers());
 		} else if (uri.endsWith("/simples/admin/helpbox/getAllRecords.json")) {
 			objectMapper.writeValue(writer, new HelpBoxService().getAllHelpBox());
-		} else if (uri.endsWith("/simples/admin/helpbox/getCurrentRecords.json")) {
-			objectMapper.writeValue(writer, new HelpBoxService().getCurrentHelpBox(request));
 		} else if(uri.contains("/simples/admin/")) {
 			AdminRouter adminRouter = new AdminRouter(request, response,ipAddressHandler);
 			adminRouter.doGet(uri.split("/simples/admin/")[1]);

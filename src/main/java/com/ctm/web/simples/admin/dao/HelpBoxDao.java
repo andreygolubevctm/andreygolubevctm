@@ -31,19 +31,19 @@ public class HelpBoxDao {
 
     private HelpBox fetchSingleRecHelpBox(int helpBoxId) throws DaoException {
         HelpBox helpBox;
-        List<HelpBox> helpBoxList = fetchHelpBox(helpBoxId, "", "");
+        List<HelpBox> helpBoxList = fetchHelpBox(helpBoxId, "", "", -1);
         helpBox = helpBoxList.isEmpty() ? null : helpBoxList.get(0);
         return helpBox;
     }
 
-    public HelpBox fetchSingleRecHelpBox(String effectiveStart, String effectiveEnd) throws DaoException {
+    public HelpBox fetchSingleRecHelpBox(String effectiveStart, String effectiveEnd, int styleCodeId) throws DaoException {
         HelpBox helpBox;
-        List<HelpBox> helpBoxList = fetchHelpBox(0, effectiveStart, effectiveEnd);
+        List<HelpBox> helpBoxList = fetchHelpBox(0, effectiveStart, effectiveEnd, styleCodeId);
         helpBox = helpBoxList.isEmpty() ? null : helpBoxList.get(0);
         return helpBox;
     }
 
-    public List<HelpBox> fetchHelpBox(int helpBoxId, String effectiveStart, String effectiveEnd) throws DaoException {
+    public List<HelpBox> fetchHelpBox(int helpBoxId, String effectiveStart, String effectiveEnd, int styleCodeId) throws DaoException {
         SimpleDatabaseConnection dbSource;
         List<HelpBox> helpBoxList = new ArrayList<>();
         PreparedStatement stmt;
@@ -58,11 +58,15 @@ public class HelpBoxDao {
             if (helpBoxId != 0) {
                 sql.append(" WHERE helpBoxId = ?");
             } else if (!effectiveStart.isEmpty()) {
-                sql.append(" WHERE (? BETWEEN effectiveStart AND effectiveEnd ");
+                sql.append(" WHERE (? BETWEEN effectiveStart AND effectiveEnd");
                 if (!effectiveEnd.isEmpty()) {
-                    sql.append("AND ? BETWEEN effectiveStart AND effectiveEnd ");
+                    sql.append(" AND ? BETWEEN effectiveStart AND effectiveEnd");
                 }
                 sql.append(")");
+
+                if (styleCodeId >= 0) {
+                    sql.append(" AND hb.styleCodeId = ?");
+                }
             }
 
 //            sql.append(" ORDER BY providerName, so.styleCodeId, so.state, so.coverType, so.effectiveStart, so.effectiveEnd");
@@ -72,11 +76,18 @@ public class HelpBoxDao {
             if (helpBoxId != 0) {
                 stmt.setInt(1, helpBoxId);
             } else if (!effectiveStart.isEmpty()) {
-                java.sql.Date effectiveStartDate = new java.sql.Date(DateUtils.setTimeInDate(sdf.parse(effectiveStart), 0, 0, 1).getTime());
-                stmt.setDate(1, effectiveStartDate);
+                int styleCodeIdParameterIndex = 2;
+                java.sql.Timestamp effectiveStartTS = new java.sql.Timestamp(DateUtils.setTimeInDate(sdf.parse(effectiveStart), 0, 0, 1).getTime());
+                stmt.setTimestamp(1, effectiveStartTS);
+
                 if (!effectiveEnd.isEmpty()) {
-                    java.sql.Date effectiveEndDate = new java.sql.Date(DateUtils.setTimeInDate(sdf.parse(effectiveEnd), 23, 59, 59).getTime());
-                    stmt.setDate(2, effectiveEndDate);
+                    styleCodeIdParameterIndex = 3;
+                    java.sql.Timestamp effectiveEndTS = new java.sql.Timestamp(DateUtils.setTimeInDate(sdf.parse(effectiveEnd), 23, 59, 59).getTime());
+                    stmt.setTimestamp(2, effectiveEndTS);
+                }
+
+                if (styleCodeId >= 0) {
+                    stmt.setInt(styleCodeIdParameterIndex, styleCodeId);
                 }
             }
 

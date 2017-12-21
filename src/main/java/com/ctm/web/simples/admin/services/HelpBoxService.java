@@ -41,18 +41,17 @@ public class HelpBoxService {
     public List<HelpBox> getAllHelpBox() {
         try {
             List<HelpBox> helpBoxList;
-            helpBoxList = helpBoxDao.fetchHelpBox( 0, "","");
+            helpBoxList = helpBoxDao.fetchHelpBox( 0, "","", -1);
             return helpBoxList;
         } catch (DaoException d) {
             throw new RuntimeException(d);
         }
     }
 
-    public HelpBox getCurrentHelpBox(HttpServletRequest request) {
+    public HelpBox getCurrentHelpBox(int styleCodeId, Date applicationDate) {
         try {
-            Date serverDate = ApplicationService.getApplicationDate(request);
-            java.sql.Date serverDateString = new java.sql.Date(DateUtils.setTimeInDate(sdf.parse(serverDate.toString()), 0, 0, 1).getTime());
-            return helpBoxDao.fetchSingleRecHelpBox(serverDateString.toString(),"");
+            java.sql.Date serverDate = new java.sql.Date(DateUtils.setTimeInDate(sdf.parse(applicationDate.toString()), 0, 0, 1).getTime());
+            return helpBoxDao.fetchSingleRecHelpBox(serverDate.toString(),"", styleCodeId);
         } catch (DaoException | ParseException d) {
             throw new RuntimeException(d);
         }
@@ -66,10 +65,10 @@ public class HelpBoxService {
             final String userName = authenticatedData.getUid();
             final String ipAddress = ipAddressHandler.getIPAddress(request);
 
-            HelpBox helpBox1 = helpBoxDao.fetchSingleRecHelpBox(helpBox.getEffectiveStart(), helpBox.getEffectiveEnd());
+            HelpBox helpBox1 = helpBoxDao.fetchSingleRecHelpBox(helpBox.getEffectiveStart(), helpBox.getEffectiveEnd(), helpBox.getStyleCodeId());
 
             if (helpBox1 == null) {
-                return helpBoxDao.createHelpBox(helpBox,userName,ipAddress);
+                return helpBoxDao.createHelpBox(helpBox, userName, ipAddress);
             } else {
                 return null;
             }
@@ -86,7 +85,7 @@ public class HelpBoxService {
             final String userName = authenticatedData.getUid();
             final String ipAddress = ipAddressHandler.getIPAddress(request);
 
-            return helpBoxDao.updateHelpBox(helpBox,userName,ipAddress);
+            return helpBoxDao.updateHelpBox(helpBox, userName, ipAddress);
         } catch (DaoException d) {
             throw new RuntimeException(d);
         }
@@ -96,7 +95,7 @@ public class HelpBoxService {
         try {
             final String userName = authenticatedData.getUid();
             final String ipAddress = ipAddressHandler.getIPAddress(request);
-            return helpBoxDao.deleteHelpBox(request.getParameter("helpBoxId"),userName,ipAddress);
+            return helpBoxDao.deleteHelpBox(request.getParameter("helpBoxId"), userName, ipAddress);
         } catch (DaoException d) {
             throw new RuntimeException(d);
         }
