@@ -60,7 +60,7 @@ public class HelpBoxDao {
             } else if (!effectiveStart.isEmpty()) {
                 sql.append(" WHERE (? BETWEEN effectiveStart AND effectiveEnd");
                 if (!effectiveEnd.isEmpty()) {
-                    sql.append(" AND ? BETWEEN effectiveStart AND effectiveEnd");
+                    sql.append(" OR ? BETWEEN effectiveStart AND effectiveEnd");
                 }
                 sql.append(")");
 
