@@ -206,17 +206,13 @@
             </form_v3:row>
 
             <c:set var="fieldXpath" value="${xpath}/rebate" />
-
             <form_v3:row label="Do you want to claim the Government Rebate?" fieldXpath="${fieldXpath}" helpId="240" className="health_cover_details_rebate hidden">
                 <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="Do you want to claim the Government Rebate?" required="true" id="${name}_health_cover_rebate" className="rebate btn-group-wrap" additionalAttributes=" data-attach='true'"/>
             </form_v3:row>
 
-
             <form_v3:row label="&nbsp;" fieldXpath="${fieldXpath}" helpId="240" className="health_cover_details_rebate">
                 <field_v2:checkbox xpath="${fieldXpath}/dontApplyRebate" value="N" id="${name}_health_cover_rebate_dontApplyRebate" title="Tick here if your customer doesn't want to claim the Government Rebate." required="false" label="Tick here if your customer doesn't want to claim the Government Rebate." className="rebate btn-group-wrap"/>
             </form_v3:row>
-
-
 
         </form_v3:fieldset>
 
