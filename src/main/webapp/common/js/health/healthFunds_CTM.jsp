@@ -97,11 +97,16 @@ set: function () {
 			meerkat.modules.healthDependants.updateConfig({ showSchoolFields: true, useSchoolDropdownMenu: true, schoolIdMaxLength: 10, 'schoolMinAge': 23, 'schoolMaxAge': 25, showSchoolIdField: true, 'schoolIdRequired': true, showSchoolCommencementField: true, 'schoolDateRequired': true });
 		</c:if>
 
+		<%-- set cover start date to be application date, useful for dual pricing testing --%>
+		if (!_.isEmpty($('#health_searchDate').val())) {
+            healthFunds_CTM.$paymentStartDate.datepicker("update", $('#health_searchDate').val());
+        }
+
 		<%--calendar for start cover--%>
 		if(_.has(meerkat.modules,'healthCoverStartDate')) {
-			meerkat.modules.healthCoverStartDate.setCoverStartRange(0, 90);
+			meerkat.modules.healthCoverStartDate.setCoverStartRange(0, 120);
 		} else {
-			meerkat.modules.healthPaymentStep.setCoverStartRange(0, 90);
+			meerkat.modules.healthPaymentStep.setCoverStartRange(0, 120);
 		}
 		dob_health_application_primary_dob.ageMax = 99;
 		dob_health_application_partner_dob.ageMax = 99;

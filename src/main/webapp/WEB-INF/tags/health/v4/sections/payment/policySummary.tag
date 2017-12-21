@@ -10,7 +10,7 @@
 <%-- Setup variables needed for dual pricing --%>
 <health_v1:dual_pricing_settings />
 
-<div class="sidebar-box<c:if test="${isDualPriceActive eq true}"> hasDualPricing hidden-xs</c:if> policySummary-sidebar">
+<div class="sidebar-box<c:if test="${isDualPriceActive eq true}"> hasDualPricing</c:if> policySummary-sidebar">
 <c:if test="${isDualPriceActive eq false}">
     <div class="policySummaryContainer ${className}">
         <c:choose>
