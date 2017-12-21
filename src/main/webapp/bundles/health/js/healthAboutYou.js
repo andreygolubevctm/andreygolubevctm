@@ -134,8 +134,12 @@
 
 		var rebateIncomeBracket = $healthCoverIncome.find('option#health_healthCover_income_0').text().replace(/\s(.*)/g,'');
 
+		var rebateIncomeBracketQuestionStartText = 'This is based on your taxable income, so can i confirm do you earn above or below ';
+
 		switch($healthSituationHealthCvr.val()) {
 			case 'C':
+				$healthCoverIncomeFieldLabel.text(rebateIncomeBracketQuestionStartText + rebateIncomeBracket + ' a year as a household?');
+				break;
 			case 'F':
 			case 'EF':
 			case 'SPF':
@@ -143,8 +147,8 @@
 				$healthCoverIncomeFieldLabel.text('And do you earn above or below ' + rebateIncomeBracket + ' a year as a household?');
 				break;
 			default:
-				var rebateIncomeBracketQuestionText = ($incomeBase.is(':visible') && $incomeBase.find('#health_healthCover_incomeBasedOn_H:checked').length > 0) ? " a year as a household?" : " a year?";
-				$healthCoverIncomeFieldLabel.text('And do you earn above or below ' + rebateIncomeBracket + rebateIncomeBracketQuestionText);
+				var rebateIncomeBracketQuestionEndText = ($incomeBase.is(':visible') && $incomeBase.find('#health_healthCover_incomeBasedOn_H:checked').length > 0) ? " a year as a household?" : " a year?";
+				$healthCoverIncomeFieldLabel.text(rebateIncomeBracketQuestionStartText + rebateIncomeBracket + rebateIncomeBracketQuestionEndText);
 				break;
 		}
 	}
