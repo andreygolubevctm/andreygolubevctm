@@ -65,7 +65,7 @@ public class HelpBoxDao {
                 sql.append(")");
 
                 if (styleCodeId >= 0) {
-                    sql.append(" AND hb.styleCodeId = ?");
+                    sql.append(" AND (hb.styleCodeId = ? OR hb.styleCodeId = 0)");
                 }
             }
 

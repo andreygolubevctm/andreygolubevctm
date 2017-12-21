@@ -273,7 +273,11 @@ public class SimplesRouter extends HttpServlet {
 			HelpBoxService service = new HelpBoxService();
 			List<SchemaValidationError> errors = service.validateHelpBoxData(request, authenticatedData);
 			if(errors==null || errors.isEmpty()){
-				objectMapper.writeValue(writer,service.updateHelpBox(request,authenticatedData));
+				try {
+					objectMapper.writeValue(writer,service.updateHelpBox(request,authenticatedData));
+				} catch (CrudValidationException e) {
+					objectMapper.writeValue(writer,jsonObjectNode("error",e.getValidationErrors()));
+				}
 			} else {
 				response.setStatus(400);
 				objectMapper.writeValue(writer,jsonObjectNode("error",errors));

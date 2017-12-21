@@ -66,28 +66,15 @@ public class HelpBoxService {
             final String userName = authenticatedData.getUid();
             final String ipAddress = ipAddressHandler.getIPAddress(request);
 
-            List<SchemaValidationError> validationErrors = new ArrayList<>();
+            checkHelpBoxValidation(helpBox);
 
-            HelpBox helpBox1 = helpBoxDao.fetchSingleRecHelpBox(helpBox.getEffectiveStart(), helpBox.getEffectiveEnd(), helpBox.getStyleCodeId());
-
-            if (helpBox1 != null) {
-                SchemaValidationError error = new SchemaValidationError();
-                error.setElements("effectiveStart , effectiveEnd");
-                error.setMessage("Help Box effective date range invalid");
-                validationErrors.add(error);
-            }
-
-            if (!validationErrors.isEmpty()) {
-                throw new CrudValidationException(validationErrors);
-            } else {
-                return helpBoxDao.createHelpBox(helpBox, userName, ipAddress);
-            }
+            return helpBoxDao.createHelpBox(helpBox, userName, ipAddress);
         } catch (DaoException d) {
             throw new RuntimeException(d);
         }
     }
 
-    public HelpBox updateHelpBox(HttpServletRequest request, AuthenticatedData authenticatedData) {
+    public HelpBox updateHelpBox(HttpServletRequest request, AuthenticatedData authenticatedData) throws CrudValidationException {
         try {
             HelpBox helpBox = new HelpBox();
             helpBox = RequestUtils.createObjectFromRequest(request, helpBox);
@@ -95,10 +82,30 @@ public class HelpBoxService {
             final String userName = authenticatedData.getUid();
             final String ipAddress = ipAddressHandler.getIPAddress(request);
 
+            checkHelpBoxValidation(helpBox);
+
             return helpBoxDao.updateHelpBox(helpBox, userName, ipAddress);
         } catch (DaoException d) {
             throw new RuntimeException(d);
         }
+    }
+
+    private List<SchemaValidationError> checkHelpBoxValidation(HelpBox helpBox) throws DaoException, CrudValidationException {
+        HelpBox helpBox1 = helpBoxDao.fetchSingleRecHelpBox(helpBox.getEffectiveStart(), helpBox.getEffectiveEnd(), helpBox.getStyleCodeId());
+        List<SchemaValidationError> validationErrors = new ArrayList<>();
+
+        if (helpBox1 != null) {
+            SchemaValidationError error = new SchemaValidationError();
+            error.setElements("effectiveStart , effectiveEnd");
+            error.setMessage("Help Box effective date range invalid");
+            validationErrors.add(error);
+        }
+
+        if (!validationErrors.isEmpty()) {
+            throw new CrudValidationException(validationErrors);
+        }
+
+        return validationErrors;
     }
 
     public String deleteHelpBox(HttpServletRequest request, AuthenticatedData authenticatedData) {
