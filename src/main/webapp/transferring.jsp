@@ -46,7 +46,7 @@
 
 			var returnedResult = {
 				<c:forEach items="${resultsService.getResultsPropertiesForTransactionId(transactionId, productId)}" var="result" varStatus="status">
-					<c:if test="${result.value != 'leadfeedinfo' && result.value != 'discountOffer'}">
+					<c:if test="${result.property != 'leadfeedinfo' && result.property != 'discountOffer'}">
 						"${result.property}":"${result.value}" <c:if test="${!status.last}">,</c:if>
 					</c:if>
 				</c:forEach>
