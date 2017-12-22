@@ -983,7 +983,7 @@
             default:
                 break;
         }
-        return usefulLinks;
+        return extraPopOverData;
     }
 
     function getUsefulLinks(fundCode){
