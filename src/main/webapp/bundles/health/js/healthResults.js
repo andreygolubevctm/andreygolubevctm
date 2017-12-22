@@ -18,6 +18,10 @@
 
         templates = {
             premiumsPopOver:
+            '{{ if(extraPopOverData.length > 0) { }}'+
+                '<span class="providerSpecificContent">{{= usefulLinks[i].providerBlurb}}</span>' +
+                '<hr/>'+
+            '{{ } }}'+
             '{{ if(product.premium.hasOwnProperty(frequency)) { }}' +
                 '<h6>Customer Pays:</h6>'+
                 '<ul class="price-list">'+
@@ -893,6 +897,95 @@
         });
     }
 
+    function getProviderSpecificPopoverData(fundCode){
+        var extraPopOverData = [];
+        switch(fundCode){
+            case 'AHM':
+                extraPopOverData.push(
+                    {"providerBlurb" : "AHM are affiliated with Medibank health insurance who are one of Australia's biggest brands. You will get a fresh approach to health insurance, mixed with the big brand agreements of Medibank and for what you need they are giving really great value."}
+                );
+                break;
+            case 'AUF':
+                extraPopOverData.push(
+                    {"providerBlurb" : "Australian Unity are Australia's oldest health fund, starting in 1870, so you will be looked after by a fund with more experience than any other, and for what you need they are giving really great value."}
+                );
+                break;
+            case 'BUP':
+                extraPopOverData.push(
+                    {"providerBlurb" : "Bupa are Australia’s largest health fund in terms of members. They will give you some really great member benefits and the security of a being with an industry leader, and for what you need they are giving really great value."}
+                );
+                break;
+            case 'CBH':
+                extraPopOverData.push(
+                    {"providerBlurb" : "Being aligned with such a big financial institution means CBHS can give great returns and for what you need they are giving really great value."}
+                );
+                break;
+            case 'CUA':
+                extraPopOverData.push(
+                    {"providerBlurb" : "CUA Health are part of Credit Union Australia – Australia’s largest member owned financial institution, so you know you’re in good hands, and for what you need they are giving really great value."}
+                );
+                break;
+            case 'FRA':
+                extraPopOverData.push(
+                    {"providerBlurb" : "Frank are a non for profit health fund, backed by a major player, GMHBA who have been around for over 80 years. Frank like to keep health insurance as simple as possible and for what you need they are giving really great value."}
+                );
+                break;
+            case 'GMH':
+                extraPopOverData.push(
+                    {"providerBlurb" : "GMHBA are proudly Victorian, giving you the peace of mind to know you are dealing with a local fund with over 80 years’ experience, and for what you need they are giving really great value."}
+                );
+                break;
+            case 'HBF':
+                extraPopOverData.push(
+                    {"providerBlurb" : "HBF are a non for profit health fund, with over a million members mostly based in Western Australia they are spreading rapidly across Australia and for what you need they are giving really great value."}
+                );
+                break;
+            case 'HCF':
+                extraPopOverData.push(
+                    {"providerBlurb" : "HCF are Australia’s third largest fund and the largest non for profit health fund in Australia. So you’ll be covered by a fund that puts its members first and for what you need they are giving really great value."}
+                );
+                break;
+            case 'HIF':
+                extraPopOverData.push(
+                    {"providerBlurb" : "HIF are a not for profit health fund who have award winning hospital cover, and for what you're after they are giving you really great value."}
+                );
+                break;
+            case 'MYO':
+                extraPopOverData.push(
+                    {"providerBlurb" : "My Own are partnered by the AIA insurance group who are one of the biggest in the world. They have a really different approach to health insurance which is a mixture of great returns and rewarding their members for leading a healthy lifestyle and for what you need they are giving really great value."}
+                );
+                break;
+            case 'NHB':
+                extraPopOverData.push(
+                    {"providerBlurb" : "Navy Health design their policies to give back as much as they can to the family members of former defence force members and for what you need they are giving really great value."}
+                );
+                break;
+            case 'NIB':
+                extraPopOverData.push(
+                    {"providerBlurb" :"NIB are one of Australia’s largest health funds, providing health insurance to over 1 million Australian and New Zealand residents. Their hospital and extras benefits are really easy to understand and for what you need they are giving really great value."}
+                );
+                break;
+            case 'QCH':
+                extraPopOverData.push(
+                    {"providerBlurb" :"Queensland Country Health are a non for profit fund based here in Queensland, giving you the peace of mind you are dealing with a local fund, and for what you need they are giving really great value."}
+                );
+                break;
+            case 'TUH':
+                extraPopOverData.push(
+                    {"providerBlurb" : "TUH was started by a group of teachers over 40 years ago to ensure that their members were getting the best returns available from their health insurance and for what you need they are giving really great value."}
+                );
+                break;
+            case 'WFD':
+                extraPopOverData.push(
+                    {"providerBlurb" : "Westfund are a not for profit health fund who are really highly rated in terms of customer satisfaction, and for what you need they are giving really great value."}
+                );
+                break;
+            default:
+                break;
+        }
+        return usefulLinks;
+    }
+
     function getUsefulLinks(fundCode){
         var usefulLinks = [];
         switch(fundCode){
@@ -933,7 +1026,6 @@
                     {"name" : "Dental Agreement", "url": "https://www.cbhs.com.au/members/member-information/choice-network-providers/find-your-provider"},
                     {"name" : "Optical Agreement", "url": "https://www.cbhs.com.au/members/member-information/choice-network-providers/find-your-provider"},
                     {"name" : "Eligibility", "url": "https://www.cbhs.com.au/join-cbhs/joining-cbhs/who-can-join-"}
-
                 );
                 break;
             case 'CUA':
@@ -967,6 +1059,20 @@
                     {"name" : "Dental Agreement", "url": ""}
                 );
                 break;
+            case 'HIF':
+                usefulLinks.push(
+                    {"name" : "Privatehealth.gov.au", "url": "http://www.privatehealth.gov.au/dynamic/InsurerDetails.aspx?code=HIF"},
+                    {"name" : "Hospital Network", "url": "https://www.hif.com.au/health-insurance/useful-links/find-a-private-hospital"},
+                    {"name" : "Gap Cover Doctors", "url": "https://www.hif.com.au/health-insurance/useful-links/find-a-no-gap-specialist"}
+                );
+                break;
+            case 'MYO':
+                usefulLinks.push(
+                    {"name" : "Privatehealth.gov.au", "url": "http://www.privatehealth.gov.au/dynamic/InsurerDetails.aspx?code=MYO"},
+                    {"name" : "Hospital Network", "url": "http://confluence:8090/display/CTMKB/MYO+Agreement+Hospitals"},
+                    {"name" : "Gap Cover Doctors", "url": "https://www.ahsa.com.au/web/doctors/information/doctor_search"}
+                );
+                break;
             case 'NHB':
                 usefulLinks.push(
                     {"name" : "Privatehealth.gov.au", "url": "http://www.privatehealth.gov.au/dynamic/InsurerDetails.aspx?code=NHB"},
@@ -995,6 +1101,14 @@
                     {"name" : "Eligibility", "url": "http://tuh.com.au/why-tuh/who-can-join-tuh/"}
                 );
                 break;
+            case 'WFD':
+                usefulLinks.push(
+                    {"name" : "Privatehealth.gov.au", "url": "http://www.privatehealth.gov.au/dynamic/insurerdetails.aspx?code=WFD"},
+                    {"name" : "Hospital Network", "url": "https://www.westfund.com.au/health-services/find-a-hospital/"},
+                    {"name" : "Gap Cover Doctors", "url": "https://www.westfund.com.au/health-services/find-a-doctor/"},
+                    {"name" : "Dental Providers", "url": "https://www.westfund.com.au/health-services/provider-of-choice/"}
+                );
+                break;
             default:
                 break;
         }
@@ -1016,6 +1130,7 @@
                 var htmlTemplate = _.template(templates.premiumsPopOver);
 
                 var text = htmlTemplate({
+                    extraPopOverData: getProviderSpecificPopoverData(product.info.FundCode),
                     product: product,
                     usefulLinks: getUsefulLinks(product.info.FundCode),
                     frequency: Results.getFrequency()
