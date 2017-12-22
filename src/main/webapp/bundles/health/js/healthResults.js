@@ -19,8 +19,10 @@
         templates = {
             premiumsPopOver:
             '{{ if(extraPopOverData.length > 0) { }}'+
-                '<span class="providerSpecificContent">{{= usefulLinks[i].providerBlurb}}</span>' +
+                '{{ for(var i in extraPopOverData) { }}'+
+                '<span class="providerSpecificContent">{{= extraPopOverData[i].providerBlurb}}</span>' +
                 '<hr/>'+
+                '{{ } }}' +
             '{{ } }}'+
             '{{ if(product.premium.hasOwnProperty(frequency)) { }}' +
                 '<h6>Customer Pays:</h6>'+
@@ -902,17 +904,17 @@
         switch(fundCode){
             case 'AHM':
                 extraPopOverData.push(
-                    {"providerBlurb" : "AHM are affiliated with Medibank health insurance who are one of Australia's biggest brands. You will get a fresh approach to health insurance, mixed with the big brand agreements of Medibank and for what you need they are giving really great value."}
+                    {"providerBlurb" : "AHM are affiliated with Medibank health insurance who are one of Australia&apos;s biggest brands. You will get a fresh approach to health insurance, mixed with the big brand agreements of Medibank and for what you need they are giving really great value."}
                 );
                 break;
             case 'AUF':
                 extraPopOverData.push(
-                    {"providerBlurb" : "Australian Unity are Australia's oldest health fund, starting in 1870, so you will be looked after by a fund with more experience than any other, and for what you need they are giving really great value."}
+                    {"providerBlurb" : "Australian Unity are Australia&apos;s oldest health fund, starting in 1870, so you will be looked after by a fund with more experience than any other, and for what you need they are giving really great value."}
                 );
                 break;
             case 'BUP':
                 extraPopOverData.push(
-                    {"providerBlurb" : "Bupa are Australia’s largest health fund in terms of members. They will give you some really great member benefits and the security of a being with an industry leader, and for what you need they are giving really great value."}
+                    {"providerBlurb" : "Bupa are Australia&apos;s largest health fund in terms of members. They will give you some really great member benefits and the security of a being with an industry leader, and for what you need they are giving really great value."}
                 );
                 break;
             case 'CBH':
@@ -922,7 +924,7 @@
                 break;
             case 'CUA':
                 extraPopOverData.push(
-                    {"providerBlurb" : "CUA Health are part of Credit Union Australia – Australia’s largest member owned financial institution, so you know you’re in good hands, and for what you need they are giving really great value."}
+                    {"providerBlurb" : "CUA Health are part of Credit Union Australia – Australia&apos;s largest member owned financial institution, so you know you&apos;re in good hands, and for what you need they are giving really great value."}
                 );
                 break;
             case 'FRA':
@@ -932,7 +934,7 @@
                 break;
             case 'GMH':
                 extraPopOverData.push(
-                    {"providerBlurb" : "GMHBA are proudly Victorian, giving you the peace of mind to know you are dealing with a local fund with over 80 years’ experience, and for what you need they are giving really great value."}
+                    {"providerBlurb" : "GMHBA are proudly Victorian, giving you the peace of mind to know you are dealing with a local fund with over 80 years&apos; experience, and for what you need they are giving really great value."}
                 );
                 break;
             case 'HBF':
@@ -942,12 +944,12 @@
                 break;
             case 'HCF':
                 extraPopOverData.push(
-                    {"providerBlurb" : "HCF are Australia’s third largest fund and the largest non for profit health fund in Australia. So you’ll be covered by a fund that puts its members first and for what you need they are giving really great value."}
+                    {"providerBlurb" : "HCF are Australia&apos;s third largest fund and the largest non for profit health fund in Australia. So you&apos;ll be covered by a fund that puts its members first and for what you need they are giving really great value."}
                 );
                 break;
             case 'HIF':
                 extraPopOverData.push(
-                    {"providerBlurb" : "HIF are a not for profit health fund who have award winning hospital cover, and for what you're after they are giving you really great value."}
+                    {"providerBlurb" : "HIF are a not for profit health fund who have award winning hospital cover, and for what you&apos;re after they are giving you really great value."}
                 );
                 break;
             case 'MYO':
@@ -962,7 +964,7 @@
                 break;
             case 'NIB':
                 extraPopOverData.push(
-                    {"providerBlurb" :"NIB are one of Australia’s largest health funds, providing health insurance to over 1 million Australian and New Zealand residents. Their hospital and extras benefits are really easy to understand and for what you need they are giving really great value."}
+                    {"providerBlurb" :"NIB are one of Australia&apos;s largest health funds, providing health insurance to over 1 million Australian and New Zealand residents. Their hospital and extras benefits are really easy to understand and for what you need they are giving really great value."}
                 );
                 break;
             case 'QCH':
