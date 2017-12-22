@@ -50,6 +50,7 @@
     "shared/reward",
     "shared/affiliateProperties",
     "shared/fields",
-    "shared/competition"
+    "shared/competition",
+    "shared/addressLookupV2"
   ]
 }

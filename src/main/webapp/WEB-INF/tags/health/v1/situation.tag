@@ -59,22 +59,7 @@
                 <c:set var="state" value="${data['health/situation/state']}" />
                 <c:set var="location" value="${data['health/situation/location']}" />
 
-                <form_v3:row label="Living in" fieldXpath="${fieldXpath}" className="health-location">
-
-                    <c:choose>
-                        <c:when test="${not empty param.state || (not empty state && empty location && (param.action == 'amend' || param.action == 'load'))}">
-                            <field_v1:state_select xpath="${xpath}/state" useFullNames="true" title="State" required="true" />
-                        </c:when>
-                        <c:otherwise>
-                            <field_v2:lookup_suburb_postcode xpath="${fieldXpath}" required="true" placeholder="Suburb / Postcode" extraDataAttributes=" data-rule-validateLocation='true' " />
-                            <field_v1:hidden xpath="${xpath}/state" />
-                        </c:otherwise>
-                    </c:choose>
-
-                    <field_v1:hidden xpath="${xpath}/suburb" />
-                    <field_v1:hidden xpath="${xpath}/postcode" />
-
-                </form_v3:row>
+                <field_v4:address_search_postcodeSearch label="Living in" xpath="${fieldXpath}" />
 
                 <%-- Medicare card question --%>
                 <c:if test="${callCentre}">

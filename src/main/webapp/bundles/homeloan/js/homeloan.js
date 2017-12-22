@@ -1,3 +1,4 @@
+
 ;(function($, undefined){
 
 	var meerkat = window.meerkat,
@@ -47,7 +48,7 @@
 		}
 	}
 	
-	function initHealthSearch() {
+	function initAddressSearch() {
 		meerkat.modules.addressLookupV2.getPostCodeSearch().init('homeloan/details');
 	}
 
@@ -62,7 +63,6 @@
 				object: meerkat.modules.homeloan.getTrackingFieldsObject
 			},
 			onInitialise: function initStartStep(event) {
-				initHealthSearch();
 				// Init the results objects required for next step
 				meerkat.modules.homeloanResults.initPage();
 				meerkat.modules.currencyField.initCurrency();
@@ -83,7 +83,7 @@
 						$emailQuoteBtn.removeClass("privacyOptinChecked");
 					}
 				});
-
+				initAddressSearch();
 				meerkat.modules.resultsFeatures.fetchStructure('hmlams');
 			},
 			onBeforeLeave: function(event) {

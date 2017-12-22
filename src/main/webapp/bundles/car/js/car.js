@@ -159,7 +159,6 @@
                 object: meerkat.modules.car.getTrackingFieldsObject
             },
             onInitialise: function onStartInit(event) {
-                initAddressSearch();
                 meerkat.modules.jqueryValidate.initJourneyValidator();
                 meerkat.modules.currencyField.initCurrency();
                 // Hook up privacy optin to Email Quote button
@@ -189,6 +188,7 @@
                 }
 
                 configureContactDetails();
+                initAddressSearch();
             },
             validation: {
                 validate: true,
