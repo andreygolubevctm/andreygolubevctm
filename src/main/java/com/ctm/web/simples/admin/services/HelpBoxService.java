@@ -52,7 +52,7 @@ public class HelpBoxService {
     public HelpBox getCurrentHelpBox(int styleCodeId, Date applicationDate) {
         try {
             java.sql.Date serverDate = new java.sql.Date(DateUtils.setTimeInDate(sdf.parse(applicationDate.toString()), 0, 0, 1).getTime());
-            return helpBoxDao.fetchSingleRecHelpBox(serverDate.toString(),"", styleCodeId);
+            return helpBoxDao.fetchSingleRecHelpBox(serverDate.toString(), styleCodeId);
         } catch (DaoException | ParseException d) {
             throw new RuntimeException(d);
         }
@@ -66,7 +66,7 @@ public class HelpBoxService {
             final String userName = authenticatedData.getUid();
             final String ipAddress = ipAddressHandler.getIPAddress(request);
 
-            checkHelpBoxValidation(helpBox);
+            checkHelpBoxValidation(helpBox, false);
 
             return helpBoxDao.createHelpBox(helpBox, userName, ipAddress);
         } catch (DaoException d) {
@@ -82,7 +82,7 @@ public class HelpBoxService {
             final String userName = authenticatedData.getUid();
             final String ipAddress = ipAddressHandler.getIPAddress(request);
 
-            checkHelpBoxValidation(helpBox);
+            checkHelpBoxValidation(helpBox, true);
 
             return helpBoxDao.updateHelpBox(helpBox, userName, ipAddress);
         } catch (DaoException d) {
@@ -90,11 +90,25 @@ public class HelpBoxService {
         }
     }
 
-    private List<SchemaValidationError> checkHelpBoxValidation(HelpBox helpBox) throws DaoException, CrudValidationException {
-        HelpBox helpBox1 = helpBoxDao.fetchSingleRecHelpBox(helpBox.getEffectiveStart(), helpBox.getEffectiveEnd(), helpBox.getStyleCodeId());
+    private List<SchemaValidationError> checkHelpBoxValidation(HelpBox helpBox, Boolean isUpdate) throws DaoException, CrudValidationException {
+        List<HelpBox> helpBoxList = helpBoxDao.fetchHelpBox(0, helpBox.getEffectiveStart(), helpBox.getEffectiveEnd(), helpBox.getStyleCodeId());
         List<SchemaValidationError> validationErrors = new ArrayList<>();
+        Boolean addValidation = false;
 
-        if (helpBox1 != null) {
+        if (!helpBoxList.isEmpty()) {
+            if (isUpdate) {
+                // loop through found helpBox and if there's one that is not the updated record.. add the validation
+                for (HelpBox hb : helpBoxList) {
+                    if (helpBox.getHelpBoxId() != hb.getHelpBoxId()) {
+                        addValidation = true;
+                    }
+                }
+            } else {
+                addValidation = true;
+            }
+        }
+
+        if (addValidation) {
             SchemaValidationError error = new SchemaValidationError();
             error.setElements("effectiveStart , effectiveEnd");
             error.setMessage("Help Box effective date range invalid");

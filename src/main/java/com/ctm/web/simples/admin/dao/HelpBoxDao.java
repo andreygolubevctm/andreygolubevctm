@@ -36,9 +36,9 @@ public class HelpBoxDao {
         return helpBox;
     }
 
-    public HelpBox fetchSingleRecHelpBox(String effectiveStart, String effectiveEnd, int styleCodeId) throws DaoException {
+    public HelpBox fetchSingleRecHelpBox(String effectiveStart, int styleCodeId) throws DaoException {
         HelpBox helpBox;
-        List<HelpBox> helpBoxList = fetchHelpBox(0, effectiveStart, effectiveEnd, styleCodeId);
+        List<HelpBox> helpBoxList = fetchHelpBox(0, effectiveStart, "", styleCodeId);
         helpBox = helpBoxList.isEmpty() ? null : helpBoxList.get(0);
         return helpBox;
     }
@@ -144,7 +144,7 @@ public class HelpBoxDao {
             if (rsKey.next()) {
                 helpBoxId = rsKey.getInt(1);
             }
-            // auditTableDao.auditAction("helpbox_master", "helpBoxId", helpBoxId, userName, ipAddress, AuditTableDao.CREATE, dbSource.getConnection());
+            auditTableDao.auditAction("helpbox_master", "helpBoxId", helpBoxId, userName, ipAddress, AuditTableDao.CREATE, dbSource.getConnection());
             // Commit these records to the DB before fetching them
             dbSource.getConnection().commit();
             helpBox = fetchSingleRecHelpBox(helpBoxId);
@@ -185,7 +185,7 @@ public class HelpBoxDao {
             stmt.setTimestamp(5, endDate);
             stmt.setInt(6, helpBoxId);
             stmt.executeUpdate();
-//            auditTableDao.auditAction("helpbox_master", "helpBoxId", helpBoxId, userName, ipAddress, AuditTableDao.UPDATE, dbSource.getConnection());
+            auditTableDao.auditAction("helpbox_master", "helpBoxId", helpBoxId, userName, ipAddress, AuditTableDao.UPDATE, dbSource.getConnection());
             // Commit these records to the DB before fetching them
             dbSource.getConnection().commit();
             helpBox = fetchSingleRecHelpBox(helpBoxId);
@@ -214,7 +214,7 @@ public class HelpBoxDao {
             if (helpBox == null) {
                 return "Help Box doesn't exist with id : " + helpBoxId;
             }
-//            auditTableDao.auditAction("helpbox_master", "helpBoxId", Integer.parseInt(helpBoxId.trim()), userName, ipAddress, AuditTableDao.DELETE, dbSource.getConnection());
+            auditTableDao.auditAction("helpbox_master", "helpBoxId", Integer.parseInt(helpBoxId.trim()), userName, ipAddress, AuditTableDao.DELETE, dbSource.getConnection());
 
             stmt = dbSource.getConnection().prepareStatement("DELETE FROM ctm.helpbox_master WHERE helpBoxId = ? LIMIT 1");
             stmt.setInt(1, Integer.parseInt(helpBoxId.trim()));
