@@ -367,15 +367,7 @@
 					{{ if((!_.isEmpty(info.situationFilter)) && info.situationFilter === 'Y') { }}
 						<%-- if limited hospital cover and has exclusions START --%>
                             <span class="text-danger">All other services not listed as included or restricted are excluded.</span>
-				            <%--
-							{{ if (typeof custom !== 'undefined' && custom.info && custom.info.exclusions && custom.info.exclusions.cover) { }}
-								{{ _.each(custom.info.exclusions.cover.split('|'), function(exclusionsFrmRateSheet){ }}
-									<p class="text-danger exclusion fromRatesheet"><span>{{= exclusionsFrmRateSheet }}</span></p>
-								{{ }) }}
-							{{ } }}
-							%>
-
-						<%-- if limited hospital cover and has exclusions END --%>
+                        <%-- if limited hospital cover and has exclusions END --%>
 					{{ } else { }}
 						<%-- else regular hospital cover and has exclusions START --%>
 
