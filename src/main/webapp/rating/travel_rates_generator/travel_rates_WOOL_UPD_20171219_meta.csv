@@ -1,0 +1,12 @@
+CtM,provide_id,provider_name,provider_short_name,,,,
+provider,80,Woolworths Travel Insurance,Woolworths Travel Insurance,,,,
+products_headings,Product ID,Product Code,ProductName,Is active?,Add?,Rename?,Include In Import?
+product,188,WOOL-TRAVEL-188,Woolworths_Travel_Insurance_Basic,1,0,0,1
+product,189,WOOL-TRAVEL-189,Woolworths_Travel_Insurance_Comprehensive,1,0,0,1
+product,284,WOOL-TRAVEL-284,Woolworths_Travel_Insurance_Saver,1,0,0,1
+product,6757917,WOOL-TRAVEL-SAVER-0,Woolworths_Travel_Insurance_Saver_0_Excess,1,0,0,1
+product,6757918,WOOL-TRAVEL-BASIC-0,Woolworths_Travel_Insurance_0_excess_Basic,1,0,0,1
+product,6757919,WOOL-TRAVEL-COMPREHENSIVE-0,Woolworths_Travel_Insurance_Comprehensive_0_Excess,1,0,0,1
+product,6757920,WOOL-TRAVEL-SAVER-200,Woolworths_Travel_Insurance_Saver_200_Excess,1,0,0,1
+product,6757921,WOOL-TRAVEL-BASIC-200,Woolworths_Travel_Insurance_Basic_200_Excess,1,0,0,1
+product,6757916,WOOL-TRAVEL-COMPREHENSIVE-200,Woolworths_Travel_Insurance_Comprehensive_200_Excess,1,0,0,1
