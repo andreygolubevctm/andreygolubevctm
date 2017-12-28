@@ -59,7 +59,8 @@
             priceFrequencyTemplate: $('#price-frequency-template'),
             frequencyWarning: $('#health_payment_details-selection').find('.frequencyWarning'),
             quoterefTemplate: $('#quoteref-template'),
-            priceCongratsTemplate: $('#price-congratulations-template')
+            priceCongratsTemplate: $('#price-congratulations-template'),
+            priceBreakdownLHCCopyTemplate: $('#price-breakdown-lhc-template')
         };
 
         $elements.sideBarFrequency.hide();
@@ -211,6 +212,12 @@
             return "";
         }
 
+        product.priceBreakdownLHCCopy = '';
+        if ($elements.priceBreakdownLHCCopyTemplate.length && meerkat.modules.healthPriceBreakdown.showBreakdown()) {
+            var LHCCopy = _.template($elements.priceBreakdownLHCCopyTemplate.html());
+            product.priceBreakdownLHCCopy = LHCCopy(product);
+        }
+
         if (typeof product.dropDeadDate === 'undefined') {
             selectedProduct = Results.getSelectedProduct();
             product.dropDeadDate = selectedProduct.dropDeadDate;
@@ -232,6 +239,7 @@
         product.showRoundingText = false;
         product.showRisingTag = isForSidebar && deviceMediaState !== 'xs';
         product.showBeforeAfterText = isForSidebar && deviceMediaState !== 'xs';
+        product.priceBreakdown = meerkat.modules.healthPriceBreakdown.showBreakdown();
 
         var pricingDate = new Date(selectedProduct.pricingDate);
         // named pricingDateFormatted because inside _updatePricingDate function it throws an invalid date when creating a new Date object with pricingDate,
@@ -245,6 +253,7 @@
         product.displayLogo = false;
         product.showCurrPremText = false;
         product.showRisingTag = false;
+        product.priceBreakdown = false;
         htmlTemplate = _.template($elements.logoPriceTemplate.html());
         product.renderedAltPriceTemplate = htmlTemplate(product);
         product.dropDeadDate = meerkat.modules.dropDeadDate.getDropDeadDate(product);

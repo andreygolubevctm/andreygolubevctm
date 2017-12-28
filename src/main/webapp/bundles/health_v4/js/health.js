@@ -396,6 +396,7 @@
                 meerkat.modules.healthResults.initPage();
                 meerkat.modules.healthMoreInfo.initMoreInfo();
                 meerkat.modules.healthPriceComponent.initHealthPriceComponent();
+                meerkat.modules.healthPriceBreakdown.initHealthPriceBreakdown();
                 meerkat.modules.healthDualPricing.initDualPricing();
                 meerkat.modules.healthPyrrCampaign.initPyrrCampaign();
                 meerkat.modules.healthRefineResultsMobileMenu.initHealthRefineResultsMobileMenu();
