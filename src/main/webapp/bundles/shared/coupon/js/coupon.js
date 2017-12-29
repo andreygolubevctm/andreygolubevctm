@@ -26,7 +26,8 @@
         isPreload = false,
 		isCouponValidAndSubmitted = false,
         subscriptionHandles = {},
-		defaultResultsDockedTop = 147; // Hard coded in: health_v4\less\results\resultsHeaderBar.less applied to ".result"
+		defaultResultsDockedTop = 147, // Hard coded in: health_v4\less\results\resultsHeaderBar.less applied to ".result"
+		forceFilter = true; // Set to true to allow filter on coupons email campaigns
 
 	function init() {
 
@@ -117,13 +118,15 @@
                 data.showCouponSeen = 1;
             	break;
 			case "filter":
-				// if already have a coupon (most likely from email campaign or vdn prefill), do not filter
-				if (isCurrentCouponValid() === true && isPreload === true) {
-					if (typeof successCallBack === 'function') {
-						successCallBack();
-					}
-					return;
-				}
+				if (!forceFilter) {
+                    // if already have a coupon (most likely from email campaign or vdn prefill), do not filter
+                    if (isCurrentCouponValid() === true && isPreload === true) {
+                        if (typeof successCallBack === 'function') {
+                            successCallBack();
+                        }
+                        return;
+                    }
+                }
                 isPreload = false;
 				url = 'coupon/filter.json';
 				break;
