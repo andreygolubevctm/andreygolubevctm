@@ -15,7 +15,9 @@
     }
 
     function showBreakdown() {
-        return meerkat.modules.journeyEngine.getCurrentStep().navigationId !== 'results';
+        return (!_.isNull(meerkat.modules.journeyEngine.getCurrentStep()) &&
+                meerkat.modules.journeyEngine.getCurrentStep().navigationId !== 'results') ||
+                meerkat.site.pageAction === 'confirmation';
     }
 
     function _applyEventListeners() {
