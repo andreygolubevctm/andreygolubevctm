@@ -254,7 +254,6 @@
 				});
 				toggleRebate();
 
-
 			},
 			onBeforeEnter: incrementTranIdBeforeEnteringSlide,
 			onAfterEnter: function healthV2AfterEnter() {
@@ -1469,10 +1468,19 @@
 			if(situation === 'F' || situation === 'SPF' || situation === 'EF' || situation === 'ESP'){
 				$('.health_cover_details_dependants').show();
 			}
+			$('.simples-dialogue-37').show();
 		} else {
 			$('#health_healthCover_tier').hide();
 			$('.health_cover_details_dependants').hide();
+			$('.simples-dialogue-37').hide();
 		}
+
+		if($('#health_healthCover_health_cover_rebate').find('input:checked').val() !== 'N'){
+			$('#health_healthCover_health_cover_rebate_dontApplyRebate').prop("checked", false);
+		} else {
+			$('#health_healthCover_health_cover_rebate_dontApplyRebate').prop("checked", true);
+		}
+
 		meerkat.modules.healthCoverDetails.setIncomeBase();
 	}
 
