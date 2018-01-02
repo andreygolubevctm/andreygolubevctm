@@ -78,55 +78,59 @@ body {
 }
 
 .results-popular-products-banner {
-  background-color: @theme-tertiary;
+  background-color: @gray-lighter;
+  border-bottom: 1px solid @gray-light;
   color: #fff;
-  font-size: 18px;
-  padding: 10px;
+  font-size: @font-size-large;
+  padding-top: 5px;
   text-align: center;
 
-  @media (@sm) {
-    font-size: 24px;
-    padding: 15px;
+  .nav-tabs {
+    background-color: transparent;
+    border: none;
+
+    > li {
+      display: inline-block;
+      float: left;
+      width: 50%;
+      max-width: 180px;
+
+      &.active {
+        a,
+        a:focus,
+        a:hover {
+          background-color: #fff;
+          border: 1px solid @gray-light;
+          border-bottom: 1px solid #fff;
+          color: @text-color;
+        }
+      }
+
+      a {
+        background-color: @theme-tertiary;
+        border: 1px solid @theme-tertiary;
+        border-radius: 0;
+        color: #fff;
+        padding: 7px;
+
+        &:hover {
+          background-color: @theme-tertiary;
+        }
+      }
+    }
   }
 
-  button {
-    .button-size(@padding-small-vertical; @padding-small-horizontal; @font-size-small; @line-height-small; @btn-border-radius-small);
-    margin: 5px auto 0;
+  .popular-products-text {
+    color: @text-color;
+    font-size: @font-size-base;
+    line-height: 32px;
 
     @media (@sm) {
-      .button-size(@btn-padding-base-vertical; @btn-padding-base-horizontal; @font-size-base; @line-height-base; @btn-border-radius-base);
-      display: inline-block;
-      margin: 0 auto 0 30px;
-    }
-  }
-
-  .popular-products-options {
-    .popular-plans-text {
-      text-decoration: underline;
+      text-align: left;
     }
 
-    @media (@sm-only) {
-      button {
-        margin-top: 5px;
-      }
-    }
-
-    .icon {
-      margin-left: 2px;
-
-      @media (@sm) {
-        margin-left: 5px;
-      }
-    }
-  }
-
-  .popular-products-deciding {
-    .icon {
-      margin-right: 2px;
-
-      @media (@sm) {
-        margin-right: 5px;
-      }
+    @media (@md) {
+      font-size: 18px;
     }
   }
 }
