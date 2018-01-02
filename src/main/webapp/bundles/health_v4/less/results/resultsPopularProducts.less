@@ -107,6 +107,7 @@ body {
       }
 
       a {
+        transition: background-color 150ms ease-in-out, border-color 150ms ease-in-out;
         background-color: @theme-tertiary;
         border: 1px solid @theme-tertiary;
         border-radius: 0;
@@ -114,7 +115,8 @@ body {
         padding: 7px;
 
         &:hover {
-          background-color: @theme-tertiary;
+          background-color: #4965a9;
+          border-color: #4965a9;
         }
       }
     }
