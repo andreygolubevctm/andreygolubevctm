@@ -1132,9 +1132,9 @@
                 var htmlTemplate = _.template(templates.premiumsPopOver);
 
                 var text = htmlTemplate({
-                    extraPopOverData: getProviderSpecificPopoverData(product.info.FundCode),
+                    extraPopOverData: getProviderSpecificPopoverData(product.info.provider),
                     product: product,
-                    usefulLinks: getUsefulLinks(product.info.FundCode),
+                    usefulLinks: getUsefulLinks(product.info.provider),
                     frequency: Results.getFrequency()
                 });
 
