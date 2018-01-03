@@ -1123,7 +1123,7 @@
                         </goals>
                         <phase>package</phase>
                         <configuration>
-                            <classifier>${branch.classifier}</classifier>
+                            <classifier>${feature.classifier}</classifier>
                             <mainClass>com.ctm.web.core.Application</mainClass>
                         </configuration>
                     </execution>
