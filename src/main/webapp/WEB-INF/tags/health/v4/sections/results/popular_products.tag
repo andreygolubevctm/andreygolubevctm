@@ -20,10 +20,10 @@
                     <div class="col-sm-6 col-md-5 col-lg-4 col-sm-pull-6 col-md-pull-7 col-lg-pull-8">
                         <ul class="nav nav-tabs">
                             <li class="active">
-                                <a href="javascript:;" data-popular-products="N" <field_v1:analytics_attr analVal="popular filter" quoteChar="\"" />>All plans</a>
+                                <a href="javascript:;" data-popular-products="N" <field_v1:analytics_attr analVal="popular filter" quoteChar="\"" />>All products</a>
                             </li>
                             <li>
-                                <a href="javascript:;" data-popular-products="Y" <field_v1:analytics_attr analVal="popular undo" quoteChar="\"" />>Popular Products <span class="icon icon-info" <field_v1:analytics_attr analVal="popular help" quoteChar="\"" />></span></a>
+                                <a href="javascript:;" data-popular-products="Y" <field_v1:analytics_attr analVal="popular undo" quoteChar="\"" />>Popular products <span class="icon icon-info" <field_v1:analytics_attr analVal="popular help" quoteChar="\"" />></span></a>
                             </li>
                         </ul>
                     </div>
