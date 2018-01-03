@@ -85,6 +85,10 @@ body {
   padding-top: 5px;
   text-align: center;
 
+  @media (@xs-sm-only) {
+    border-top: 1px solid @gray-light;
+  }
+
   .nav-tabs {
     background-color: transparent;
     border: none;
@@ -95,7 +99,21 @@ body {
       width: 50%;
       max-width: 180px;
 
+      &:first-child {
+        a {
+          margin-right: 3px;
+        }
+      }
+
+      &:last-child {
+        a {
+          margin-left: 3px;
+        }
+      }
+
       &.active {
+        margin-top: 1px;
+
         a,
         a:focus,
         a:hover {
@@ -103,6 +121,15 @@ body {
           border: 1px solid @gray-light;
           border-bottom: 1px solid #fff;
           color: @text-color;
+        }
+      }
+
+      &:not(.active) {
+        font-size: @font-size-base;
+        margin-top: 7px;
+
+        a {
+          padding: 5px;
         }
       }
 
