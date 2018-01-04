@@ -301,7 +301,8 @@
 					{{ if(!_.isEmpty(obj.accident) && obj.accident.covered === 'Y') { }}
 					{{= obj.accident.overrideDetails }}</p>
 					{{ }else{ }}
-					-
+						<strong>Covered: No</strong><br>
+						{{= obj.accident.overrideDetails }}</p>
 					{{ } }}
 				{{ } }}
 				{{ if(hospitalCover.inclusions.length > 0) { }}
