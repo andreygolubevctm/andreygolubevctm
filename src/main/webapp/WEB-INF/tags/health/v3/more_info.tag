@@ -311,7 +311,7 @@
 					{{ if((!_.isEmpty(info.situationFilter)) && info.situationFilter === 'Y') { }}
 					<%-- if limited hospital cover and has inclusions START --%>
 
-						<h5 class="text-danger">You will be covered for the following services only</h5>
+                <h5 class="text-danger">You will be covered for the following services only <span class="icon-tick text-success">&nbsp;</span></h5>
 
 						<ul class="exclusions inclusions">
 						{{ _.each(hospitalCover.inclusions, function(inclusion){ }}
@@ -329,7 +329,7 @@
 					{{ } else { }}
 					<%-- else regular hospital cover and has inclusions START --%>
 
-						<h5>You will be covered for the following services</h5>
+                        <h5>Inclusions <span class="icon-tick text-success">&nbsp;</span></h5>
 
 						<ul class="exclusions inclusions">
 							{{ _.each(hospitalCover.inclusions, function(inclusion){ }}
@@ -344,7 +344,7 @@
 				{{ } }}
 
 				{{ if(hospitalCover.restrictions.length > 0) { }}
-					<h5>You will have restricted cover for the following services</h5>
+                <h5>Restrictions <span class="icon-tick restrictions-icon">&nbsp;</span></h5>
 					<ul class="exclusions restrictions">
 						{{ _.each(hospitalCover.restrictions, function(restriction){ }}
 							<li class="simplesMoreInfoRestrictions"><span>{{= restriction.name }}</span></li>
@@ -363,18 +363,12 @@
 				{{ if(hospitalCover.exclusions.length > 0) { }}
 					<%-- has exclusions START --%>
 
-					<h5>You will not be covered for the following services</h5>
+                <h5>Exclusions <span class="icon-cross text-danger">&nbsp;</span></h5>
 
 					{{ if((!_.isEmpty(info.situationFilter)) && info.situationFilter === 'Y') { }}
 						<%-- if limited hospital cover and has exclusions START --%>
-
-							{{ if (typeof custom !== 'undefined' && custom.info && custom.info.exclusions && custom.info.exclusions.cover) { }}
-								{{ _.each(custom.info.exclusions.cover.split('|'), function(exclusionsFrmRateSheet){ }}
-									<p class="text-danger exclusion fromRatesheet"><span>{{= exclusionsFrmRateSheet }}</span></p>
-								{{ }) }}
-							{{ } }}
-
-						<%-- if limited hospital cover and has exclusions END --%>
+                            <span class="text-danger">All other services not listed as included or restricted are excluded.</span>
+                        <%-- if limited hospital cover and has exclusions END --%>
 					{{ } else { }}
 						<%-- else regular hospital cover and has exclusions START --%>
 
