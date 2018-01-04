@@ -127,7 +127,11 @@
                         return;
                     }
                 }
-                isPreload = false;
+
+                if (isPreload) {
+					data.couponId = meerkat.site.couponId;
+				}
+
 				url = 'coupon/filter.json';
 				break;
 			default:
