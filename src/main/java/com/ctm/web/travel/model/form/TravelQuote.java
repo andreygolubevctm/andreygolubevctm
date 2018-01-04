@@ -24,6 +24,7 @@ public class TravelQuote {
     private Filter filter;
     private String unknownDestinations; // For logging destinations the user has entered which did not match any
     private String gaClientId;
+    private TripType tripType;
 
 
     @Destinations
@@ -206,4 +207,12 @@ public class TravelQuote {
     }
 
     public void setGaclientid(String gaClientId) { this.gaClientId = gaClientId; }
+
+    public TripType getTripType() {
+        return tripType;
+    }
+
+    public void setTripType(TripType tripType) {
+        this.tripType = tripType;
+    }
 }

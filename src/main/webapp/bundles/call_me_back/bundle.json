@@ -1,0 +1,11 @@
+{
+  "brandCodes": "all",
+  "dependencies": [
+    "shared/journeyEngine/v4",
+    "shared/validation",
+    "shared/dateUtils",
+    "shared/fonts/v2",
+    "core",
+    "shared/forms/v4"
+  ]
+}

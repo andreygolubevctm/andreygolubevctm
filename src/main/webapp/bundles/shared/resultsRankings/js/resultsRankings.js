@@ -77,6 +77,45 @@
                 }
             });
         }
+
+        // only get propensity score (ONCE) after getting the results, and not when results are sorted (re-ranked)
+        if (meerkat.site.vertical === 'car' && trigger === defaultRankingTriggers[0]) {
+            savePropensityScore(trigger, rankingData);
+        }
+    }
+
+    /**
+     * send an api call to backend with product rank. Backend will get the propensity score for given
+     * transaction, and store in database.
+     * @See CarQuoteController.storePropensityScore()
+     *
+     * Note: Make sure to only call this once. If you try to update the propensity score, the value
+     * of propensity score in `result_properties` will be 'DUPLICATE'.
+     *
+     * @param trigger
+     * @param rankingData
+     */
+    function savePropensityScore(trigger, rankingData) {
+
+        log("[resultsRankingsPropensityScores] Calling backend to save propensity score", {
+            trigger: trigger,
+            data: rankingData
+        });
+
+        if (Results.getFilteredResults().length) {
+            meerkat.modules.comms.post({
+                url: "ajax/json/car_propensity_score.jsp",
+                data: rankingData,
+                cache: false,
+                errorLevel: "silent",
+                onError: function onWriteError() {
+                    log("[resultsRankingsPropensityScores] Failed");
+                },
+                onSuccess: function onWriteSuccess() {
+                    log("[resultsRankingsPropensityScores] Success");
+                }
+            });
+        }
     }
 
     /**

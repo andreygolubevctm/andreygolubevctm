@@ -1,8 +1,4 @@
 .dropdown-menu-excess-filter {
-  top: 38px;
-  left: -55px;
-  min-width: 200px;
-
   /* this CS forms the triangles */
   &:before,
   &:after {
@@ -10,17 +6,163 @@
     width: 0;
     display: block;
     height: 0;
-    left: 10%;
+    left: 50%;
     content: '';
     border-style: solid;
     border-width: 9px;
   }
+
+  @media screen and (@sm) {
+    top: 38px;
+    left: -55px;
+    min-width: 200px;
+  }
+
+  @media screen and (@xs-only) {
+    &:before,
+    &:after {
+      left: 68%;
+    }
+  }
+
+  @media screen and (@sm-only) {
+    left: 0;
+    &:before,
+    &:after {
+      left: 84%;
+    }
+  }
+
+  @media screen and (@md-only) {
+    left: 0;
+    &:before,
+    &:after {
+      left: 86%;
+    }
+  }
 }
 
+@media screen and (@sm-only) {
+  .dropdown-menu {
+    position: fixed;
+    width: 100%;
+  }
+
+  .clt-trip-filter {
+    &:last-of-type {
+      padding-left: 0;
+    }
+  }
+
+  .affix {
+    .dropdown-menu {
+      top: 50px;
+    }
+
+    .more-filters-results-btn {
+      position: relative !important;
+      left: 0 !important;
+    }
+  }
+
+  .affix-top {
+    .dropdown-menu {
+      top: 120px;
+    }
+
+    .more-filters-results-btn {
+      position: fixed;
+      left: 25%;
+    }
+  }
+
+  .dropdown-backdrop {
+    position: static;
+  }
+
+  .dropdown-menu-more-filters {
+    .more-filters-container {
+      height: 1000px;
+      overflow-y: scroll;
+
+      .more-filters-results-btn {
+        margin: 0;
+        position: fixed;
+        bottom: 0px;
+        left: 25%;
+        width: 50%;
+      }
+    }
+  }
+}
+
+@media screen and (@md-only) {
+  .dropdown-menu {
+    position: fixed;
+    width: 100%;
+  }
+
+  .affix {
+    .dropdown-menu {
+      top: 50px;
+    }
+
+    .more-filters-results-btn {
+      position: relative !important;
+      left: 0 !important;
+    }
+  }
+
+  .affix-top {
+    .dropdown-menu {
+      top: 140px;
+    }
+
+    .more-filters-results-btn {
+      position: fixed;
+      left: 25%;
+    }
+  }
+
+  .dropdown-backdrop {
+    position: static;
+  }
+
+  .dropdown-menu-more-filters {
+    .more-filters-container {
+      height: 800px;
+      overflow-y: scroll;
+
+      .more-filters-results-btn {
+        margin: 20px 0 0 0;
+        position: fixed;
+        bottom: 0px;
+        left: 25%;
+        width: 50%;
+      }
+    }
+  }
+}
+
+
 .dropdown-menu-more-filters {
-  top: 38px;
-  left: -870px;
-  min-width: 1150px;
+  @media screen and (@lg) {
+    top: 38px;
+    left: -870px;
+    min-width: 1150px;
+  }
+
+  @media screen and (@sm-only) {
+    &:before,
+    &:after {
+      left: 72% !important;
+    }
+  }
+
+  .row {
+    margin-left: 0;
+    margin-right: 0;
+  }
 
   .help-icon {
     line-height: inherit;
@@ -123,5 +265,108 @@
 
 .no-padding {
   padding: 0;
+}
+
+// XS breakpoints
+@media screen and (@xs-only) {
+  .navbar-mobile {
+    padding: 10px 0;
+    margin-left: 0;
+    margin-right: 0;
+    border-bottom: 1px solid @theme-light;
+
+    .clt-trip-filter {
+      &:not(:first-of-type) {
+        padding-top: 10px;
+        padding-left: 0;
+      }
+    }
+
+    .dropdown-menu {
+      position: fixed;
+      top: 95px;
+      width: 100%;
+    }
+
+    .dropdown-backdrop {
+      position: static;
+    }
+
+    .cover-type-mobile-active {
+      padding: 4px 0;
+      cursor: pointer;
+      font-size: 14px;
+      line-height: 14px;
+      border-radius: 4px;
+      border: 1px solid @theme-secondary;
+      background-color: transparent;
+      color: @theme-secondary;
+      text-align: center;
+
+      a {
+        text-decoration: none;
+        color: @theme-secondary;
+      }
+
+      i {
+        line-height: normal;
+        font-size: 20px;
+        margin: 0 5px;
+        color: @theme-secondary;
+      }
+    }
+
+    .more-filters-results-btn {
+      margin: 0;
+      position: fixed;
+      bottom: 0px;
+      width: 100%;
+    }
+
+    .dropdown-menu-mobile-cover-types {
+      &:before,
+      &:after {
+        left: 15%;
+      }
+
+      .mobile-cover-types {
+        text-align: left;
+      }
+    }
+
+    .dropdown-menu-more-filters {
+      height: 100%;
+      .more-filters-container {
+        height: auto;
+        max-height: 500px;
+        overflow-y: scroll;
+      }
+      &:before,
+      &:after {
+        left: 48%;
+      }
+
+      .filter-section {
+        padding-top: 10px;
+        padding-bottom: 10px;
+
+        &:last-of-type {
+          border-top: 1px solid @theme-default;
+        }
+
+        .filter-brands-container {
+          display: none;
+        }
+
+        .filter-brands-toggle {
+          float: left;
+        }
+
+        .brands-select-toggle {
+          float: right;
+        }
+      }
+    }
+  }
 }
 

@@ -212,14 +212,8 @@
 		<%--<div class="situation-wrapper"></div>--%>
 	</form_v2:fieldset>
 
-	<c:choose>
-        <c:when test="${coverType == 'Hospital'}">
-            <simples:dialogue id="45" className="simples-dialogue-hospital-cover" vertical="health" />
-            <simples:dialogue id="50" className="simples-dialogue-extras-cover" vertical="health" />
-			<simples:dialogue id="82" className="simples-dialogue-extras-cover" vertical="health" />
-        </c:when>
-        <c:otherwise>
-            <simples:dialogue id="51" className="simples-dialogue-extras-cover" vertical="health" />
-        </c:otherwise>
-    </c:choose>
+	<c:if test="${coverType == 'Hospital'}">
+		<simples:dialogue id="50" className="simples-dialogue-extras-cover" vertical="health" />
+		<simples:dialogue id="82" className="simples-dialogue-extras-cover" vertical="health" />
+	</c:if>
 </c:if>

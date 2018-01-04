@@ -54,11 +54,17 @@
 					<c:set var="securityDescLevel" value="Supervisor" />
 				</c:if>
 
+				<c:set var="editAdminMenuAuth" value="N" />
+				<c:if test="${ pageContext.request.isUserInRole('CTM-HLT-SIMPLES-EDIT-ADMIN-MENU')}">
+					<c:set var="editAdminMenuAuth" value="Y" />
+				</c:if>
+
 				<!-- Restricting 'browsertest' accessing simples in production environment. -->
 				<c:if test="${userId == 'browsertest' and com.ctm.web.core.services.EnvironmentService.getEnvironmentAsString() == 'PRO'}">
 					<c:set var="callCentre" value="N" />
 					<c:set var="supervisor" value="N" />
 					<c:set var="IT" value="N" />
+					<c:set var="editAdminMenuAuth" value="N" />
 					<c:set var="securityDescGroup" value="Unknown" />
 				</c:if>
 
@@ -109,6 +115,7 @@
                         <ccRewardsGroup>${ccRewardsGroup}</ccRewardsGroup>
 						<IT>${IT}</IT>
 						<supervisor>${supervisor}</supervisor>
+						<editAdminMenuAuth>${editAdminMenuAuth}</editAdminMenuAuth>
 					</security>
 				</c:set>
 				<go:setData dataVar="authenticatedData" xpath="login" xml="${securityXML}" />

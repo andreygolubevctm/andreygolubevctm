@@ -52,6 +52,7 @@
     "shared/affiliateProperties",
     "shared/competition",
     "shared/mobileFiltersMenu",
-    "shared/healthFundTimeOffset"
+    "shared/healthFundTimeOffset",
+    "shared/healthPriceBreakdown"
   ]
 }

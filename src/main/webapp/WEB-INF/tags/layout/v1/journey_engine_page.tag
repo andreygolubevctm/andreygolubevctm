@@ -8,6 +8,7 @@
 <%@ attribute name="ignore_journey_tracking" required="false" rtexprvalue="true" description="Ignore Journey Tracking" %>
 <%@ attribute name="bundleFileName" required="false" rtexprvalue="true" description="Pass in an alternate file name" %>
 <%@ attribute name="displayNavigationBar" required="false" rtexprvalue="true" description="Pass false to remove the navigation bar" %>
+<%@ attribute name="ignorePageHeader" required="false" rtexprvalue="true" description="Pass true/false to remove the page header bar" %>
 
 <%@ attribute fragment="true" required="true" name="head" %>
 <%@ attribute fragment="true" required="true" name="head_meta" %>
@@ -37,7 +38,7 @@
 
 <c:if test="${empty sessionPop}"><c:set var="sessionPop" value="true" /></c:if>
 
-<layout_v1:page title="${title}" body_class_name="${body_class_name}" bundleFileName="${bundleFileName}" displayNavigationBar="${displayNavigationBar}">
+<layout_v1:page title="${title}" body_class_name="${body_class_name}" bundleFileName="${bundleFileName}" displayNavigationBar="${displayNavigationBar}" ignorePageHeader="${ignorePageHeader}">
 
 	<jsp:attribute name="head">
 		<jsp:invoke fragment="head" />
@@ -111,10 +112,13 @@
               <c:if test="${pageSettings.getBrandCode() eq 'ctm' && octoberCompRender}">
                 <c:set var="octoberCompClass" value="octoberComp" />
               </c:if>
-                <div id="journeyEngineContainer" class="${octoberCompClass}">
+
+                <c:set var="additionalLoadingPageContent" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "additionalWaitMessageHtml")}'/>
+
+                <div id="journeyEngineContainer" class="${octoberCompClass} ${additionalLoadingPageContent.getSupplementaryValueByKey("className")}">
                   
                     <div id="journeyEngineLoading" class="journeyEngineLoader opacityTransitionQuick">
-                      
+
                         <div class="loading-logo"></div>
                         
                         <p class="message">Please wait...</p>
@@ -124,6 +128,7 @@
                           </c:when >
                           <c:otherwise>
                             <jsp:invoke fragment="results_loading_message" />
+                              ${additionalLoadingPageContent.getSupplementaryValueByKey("htmlContent")}
                           </c:otherwise>
                         </c:choose>          
                     </div>

@@ -4,6 +4,9 @@
 <session:new verticalCode="GENERIC" forceNew="true" authenticated="true" />
 
 <jsp:useBean id="accessCheckService" class="com.ctm.web.core.services.AccessCheckService" scope="page" />
+
+<c:set var="env" value="${environmentService.getEnvironmentAsString()}" />
+
 <c:choose>
 	<c:when test="${accessCheckService.isLocked(param.transactionId , authenticatedData.login.user.uid, param.verticalCode)}">
 		<c:set var="accessTouch"  value="${accessCheckService.getLatestTouch()}" scope="request" />
@@ -20,13 +23,28 @@
 		</div>
 	</c:when>
 	<c:otherwise>
-		<c:import var="loadQuoteUrl" url="/ajax/json/load_quote.jsp">
-			<c:param name="id" value="${param.transactionId}" />
-			<c:param name="action" value="amend" />
-			<c:param name="vertical" value="${param.verticalCode}" />
-			<c:param name="simples" value="true" />
-			<c:param name="dataFormat" value="xml" />
-		</c:import>
+		<c:choose>
+			<c:when test="${env eq 'PRO'}">
+				<%--Only add brandCode param in PRO, adding this breaks in dev, nxi, nxq environment--%>
+				<c:import var="loadQuoteUrl" url="/ajax/json/load_quote.jsp">
+					<c:param name="id" value="${param.transactionId}" />
+					<c:param name="action" value="amend" />
+					<c:param name="vertical" value="${param.verticalCode}" />
+					<c:param name="simples" value="true" />
+					<c:param name="dataFormat" value="xml" />
+					<c:param name="brandCode" value="${param.brandCode}" />
+				</c:import>
+			</c:when>
+			<c:otherwise>
+				<c:import var="loadQuoteUrl" url="/ajax/json/load_quote.jsp">
+					<c:param name="id" value="${param.transactionId}" />
+					<c:param name="action" value="amend" />
+					<c:param name="vertical" value="${param.verticalCode}" />
+					<c:param name="simples" value="true" />
+					<c:param name="dataFormat" value="xml" />
+				</c:import>
+			</c:otherwise>
+		</c:choose>
 
 		<x:parse xml="${loadQuoteUrl}" var="output"/>
 

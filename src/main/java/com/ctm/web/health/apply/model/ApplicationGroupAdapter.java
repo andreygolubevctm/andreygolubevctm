@@ -38,7 +38,12 @@ public class ApplicationGroupAdapter {
                                 .map(com.ctm.web.health.model.form.PreviousFund::getPrimary),
                         quote.map(HealthQuote::getPrimaryCAE),
                         quote.map(HealthQuote::getHealthCover)
-                                .map(com.ctm.web.health.model.form.HealthCover::getPrimary)),
+                                .map(com.ctm.web.health.model.form.HealthCover::getPrimary),
+                        quote.map(HealthQuote::getApplication)
+                                .map(Application::getHif)
+                                .map(Hif::getPrimaryemigrate)
+                                .map(Emigrate::valueOf)
+                                .orElse(null)),
                 quote.map(HealthQuote::getApplication)
                         .map(Application::getPartner)
                         .map(Person::getTitle).isPresent()
@@ -49,19 +54,20 @@ public class ApplicationGroupAdapter {
                                 .map(com.ctm.web.health.model.form.PreviousFund::getPartner),
                         quote.map(HealthQuote::getPartnerCAE),
                         quote.map(HealthQuote::getHealthCover)
-                                .map(com.ctm.web.health.model.form.HealthCover::getPartner)) : null,
+                                .map(com.ctm.web.health.model.form.HealthCover::getPartner),
+                        quote.map(HealthQuote::getApplication)
+                                .map(Application::getHif)
+                                .map(Hif::getPartneremigrate)
+                                .map(Emigrate::valueOf)
+                                .orElse(null)) : null,
                 createDependants(quote.map(HealthQuote::getApplication)
                         .map(Application::getDependants)),
                 createSituation(quote.map(HealthQuote::getSituation)),
                 quote.map(HealthQuote::getApplication)
-                        .map(Application::getHif)
-                        .map(Hif::getEmigrate)
+                        .map(Application::getQch)
+                        .map(Qch::getEmigrate)
                         .map(Emigrate::valueOf)
-                        .orElse(quote.map(HealthQuote::getApplication)
-                                .map(Application::getQch)
-                                .map(Qch::getEmigrate)
-                                .map(Emigrate::valueOf)
-                                .orElse(null)),
+                        .orElse(null),
                 createGovernmentRebateAck(quote.map(HealthQuote::getApplication)
                         .map(Application::getGovtRebateDeclaration))
         );
@@ -99,7 +105,7 @@ public class ApplicationGroupAdapter {
         }
     }
 
-    protected static Applicant createApplicant(Optional<Person> person, Optional<Fund> previousFund, Optional<Integer> certifiedAgeEntry, Optional<Insured> insured) {
+    protected static Applicant createApplicant(Optional<Person> person, Optional<Fund> previousFund, Optional<Integer> certifiedAgeEntry, Optional<Insured> insured, Emigrate emigrate) {
         if (person.isPresent()) {
             return new Applicant(
                     person.map(Person::getTitle)
@@ -134,7 +140,8 @@ public class ApplicationGroupAdapter {
                             .orElse(null),
                     person.map(Person::getEmail)
                             .map(Email::new)
-                            .orElse(null));
+                            .orElse(null),
+                    emigrate);
         }
         return null;
     }

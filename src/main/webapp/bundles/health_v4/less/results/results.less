@@ -142,9 +142,8 @@
   .productSummary {
     margin-bottom: 10px;
     height: 150px;
-    overflow: hidden;
     @media (@lg-only) {
-      height: 125px;
+      height: initial;
     }
 
     .frequencyAmount {
@@ -741,6 +740,26 @@ body {
       .cell.feature.per-person {
         display: none;
       }
+    }
+  }
+}
+
+@media (max-width: @screen-xs-max) {
+  body.health {
+    &[data-step="results"] {
+
+      #journeyEngineContainer.additionalWaitMsgActive {
+        p.message {
+          font-size: @font-size-large;
+        }
+
+        & .results-loading-additional-text {
+          padding-top: 0px;
+          padding-left: 40px;
+          padding-right: 40px;
+        }
+      }
+
     }
   }
 }

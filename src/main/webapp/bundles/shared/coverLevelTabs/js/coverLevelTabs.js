@@ -87,103 +87,117 @@
 		}
 	}
 
+	function _coverTypeEvent (element) {
+        var $el = $(element),
+            tabIndex = $el.attr('data-clt-index');
+        log("[coverleveltabs] click", tabIndex);
+
+        if(tabIndex === '' || settings.activeTabIndex === tabIndex) {
+            return;
+        }
+        if(typeof settings.activeTabSet[tabIndex] === 'undefined') {
+            return;
+        }
+
+        if(typeof settings.activeTabSet[tabIndex].filter === 'function') {
+
+            var filterAnimate = Results.settings.animation.filter.active;
+
+            if(settings.disableAnimationsBetweenTabs === true) {
+                // Disable Animation
+                Results.settings.animation.filter.active = false;
+            }
+
+            // populate navbar cover text
+            $('.navbar-cover-text').html('Showing ' + counts[settings.activeTabSet[tabIndex].rankingFilter] + ' ' + settings.activeTabSet[tabIndex].label.toLowerCase().replace('cover', 'plans'));
+
+            // trigger filter call
+            settings.activeTabSet[tabIndex].filter();
+            $el.siblings().removeClass('active').end().addClass('active');
+            settings.activeTabIndex = tabIndex;
+            setRankingFilter(settings.activeTabSet[tabIndex].rankingFilter);
+            meerkat.messaging.publish(moduleEvents.CHANGE_COVER_TAB, {
+                activeTab: getRankingFilter()
+            });
+
+            if(settings.disableAnimationsBetweenTabs === true) {
+                // Re-Enable Animation, or set to whatever it was before.
+                Results.settings.animation.filter.active = filterAnimate;
+            }
+
+
+            var additionalData = {
+                    'recordRanking': 'Y'
+                },
+                hasTrackedThisTab = hasRunTrackingCall.indexOf(getRankingFilter()) !== -1;
+            // todo: above will not work on IE8 unless we have that shim for indexOf on array.
+
+            if(hasTrackedThisTab) {
+                additionalData.recordRanking = 'N';
+                additionalData.products = [];
+            }
+
+            // grab the tab they've clicked on
+            // recordFullTabJourney gives us the option to record all the other tab clicks in between
+            if (!recordFullTabJourney){
+                departingTab = [];
+            }
+
+            departingTab.push(getRankingFilter());
+
+            // reset it for the next "filter"
+            meerkat.modules.resultsRankings.resetTrackingProductObject();
+            // run the trackQuoteResultsList event again, with new products/rankingFilter
+            meerkat.messaging.publish(meerkatEvents.resultsTracking.TRACK_QUOTE_RESULTS_LIST, {
+                additionalData: additionalData,
+                onAfterEventMode: meerkat.modules.resultsTracking.getResultsEventMode()
+            });
+            if(meerkat.modules.resultsTracking.getResultsEventMode().toLowerCase() == "load") {
+                meerkat.modules.resultsTracking.setResultsEventMode("Refresh");
+            }
+
+            // Never write quote_ranking more than once for each Load event.
+            // Never write if the hasRunTrackingCall is empty, as it means its the first time.
+            // The first time is run by resultsRankings.js
+            if(!hasTrackedThisTab && hasRunTrackingCall.length) {
+                var rankingData = meerkat.modules.resultsRankings.getWriteRankData(Results.settings.rankings, meerkat.modules.resultsRankings.fetchProductsToRank(true));
+                meerkat.modules.resultsRankings.sendQuoteRanking("Cover Level Tabs", rankingData);
+            }
+
+            // No need to append twice!
+            if(!hasTrackedThisTab) {
+                hasRunTrackingCall.push(getRankingFilter());
+            }
+
+            // scroll back to the top of the page
+            meerkat.modules.utils.scrollPageTo("html body", 350, 0, function() {
+                meerkat.modules.journeyEngine.sessionCamRecorder({"navigationId":"CoverLevel"+getRankingFilter()});
+            });
+        }
+	}
+
 	function applyEventListeners() {
 
 		// Unnecessary if it doesn't exist in the page
 		if(!$tabsContainer.length) {
 			return;
 		}
+
 		$tabsContainer.off('click', '.clt-action').on('click', '.clt-action', function(e) {
-
-			var $el = $(this),
-			tabIndex = $el.attr('data-clt-index');
-			log("[coverleveltabs] click", tabIndex);
-
-			if(tabIndex === '' || settings.activeTabIndex === tabIndex) {
-				return;
-			}
-			if(typeof settings.activeTabSet[tabIndex] === 'undefined') {
-				return;
-			}
-
-			if(typeof settings.activeTabSet[tabIndex].filter === 'function') {
-
-				var filterAnimate = Results.settings.animation.filter.active;
-
-				if(settings.disableAnimationsBetweenTabs === true) {
-					// Disable Animation
-					Results.settings.animation.filter.active = false;
-				}
-
-				// populate navbar cover text
-				$('.navbar-cover-text').html('Showing ' + counts[settings.activeTabSet[tabIndex].rankingFilter] + ' ' + settings.activeTabSet[tabIndex].label.toLowerCase().replace('cover', 'plans'));
-
-				// trigger filter call
-				settings.activeTabSet[tabIndex].filter();
-				$el.siblings().removeClass('active').end().addClass('active');
-				settings.activeTabIndex = tabIndex;
-				setRankingFilter(settings.activeTabSet[tabIndex].rankingFilter);
-				meerkat.messaging.publish(moduleEvents.CHANGE_COVER_TAB, {
-					activeTab: getRankingFilter()
-				});
-
-				if(settings.disableAnimationsBetweenTabs === true) {
-					// Re-Enable Animation, or set to whatever it was before.
-					Results.settings.animation.filter.active = filterAnimate;
-				}
-
-
-				var additionalData = {
-						'recordRanking': 'Y'
-					},
-				hasTrackedThisTab = hasRunTrackingCall.indexOf(getRankingFilter()) !== -1;
-				// todo: above will not work on IE8 unless we have that shim for indexOf on array.
-
-				if(hasTrackedThisTab) {
-					additionalData.recordRanking = 'N';
-					additionalData.products = [];
-				}
-
-				// grab the tab they've clicked on
-				// recordFullTabJourney gives us the option to record all the other tab clicks in between
-				if (!recordFullTabJourney){
-					departingTab = [];
-				}
-
-				departingTab.push(getRankingFilter());
-
-				// reset it for the next "filter"
-				meerkat.modules.resultsRankings.resetTrackingProductObject();
-				// run the trackQuoteResultsList event again, with new products/rankingFilter
-				meerkat.messaging.publish(meerkatEvents.resultsTracking.TRACK_QUOTE_RESULTS_LIST, {
-					additionalData: additionalData,
-					onAfterEventMode: meerkat.modules.resultsTracking.getResultsEventMode()
-				});
-				if(meerkat.modules.resultsTracking.getResultsEventMode().toLowerCase() == "load") {
-					meerkat.modules.resultsTracking.setResultsEventMode("Refresh");
-				}
-
-				// Never write quote_ranking more than once for each Load event.
-				// Never write if the hasRunTrackingCall is empty, as it means its the first time.
-				// The first time is run by resultsRankings.js
-				if(!hasTrackedThisTab && hasRunTrackingCall.length) {
-					var rankingData = meerkat.modules.resultsRankings.getWriteRankData(Results.settings.rankings, meerkat.modules.resultsRankings.fetchProductsToRank(true));
-					meerkat.modules.resultsRankings.sendQuoteRanking("Cover Level Tabs", rankingData);
-				}
-
-				// No need to append twice!
-				if(!hasTrackedThisTab) {
-					hasRunTrackingCall.push(getRankingFilter());
-				}
-
-				// scroll back to the top of the page
-				meerkat.modules.utils.scrollPageTo("html body", 350, 0, function() {
-					meerkat.modules.journeyEngine.sessionCamRecorder({"navigationId":"CoverLevel"+getRankingFilter()});
-				});
-			}
-
-
+			_coverTypeEvent(this);
 		});
+
+        $tabsContainer.off('change', 'input[name="cover-type-mobile-radio-group"]').on('change', 'input[name="cover-type-mobile-radio-group"]', function (e) {
+            _coverTypeEvent(this);
+            var $el = $(this),
+                tabIndex = $el.attr('data-clt-index');
+
+            if (tabIndex) {
+                var coverLevelText = settings.activeTabSet[tabIndex].label.replace('<span class=\'hidden-xs\'>Cover</span>', '');
+                $('.mobile-active-cover-type').empty().text(coverLevelText);
+                $('#coverTypeDropdownBtn').dropdown('toggle');
+            }
+        });
 	}
 
 	function eventSubscriptions() {
@@ -212,7 +226,8 @@
 	function activateDefault() {
 		state = meerkat.modules.deviceMediaState.get();
 		if(state === 'xs') {
-			$('.visible-xs .clt-action.active').click();
+			$('.visible-xs .cover-type-mobile.active').click();
+			$('#coverTypeDropdownBtn').dropdown('toggle');
 		} else {
 			$('.hidden-xs .clt-action.active').click();
 		}
@@ -233,16 +248,30 @@
 		state = meerkat.modules.deviceMediaState.get();
 		var out = '';
 		var resetFilters = '';
+		var mobileCoverTypes = '';
 		for(out = '', i = 0; i < tabLength; i ++) {
 			var tab = settings.activeTabSet[i],
 				count = counts[tab.rankingFilter] || null;
 			var coverTypeValue = tab.label.replace('<span class=\'hidden-xs\'>Cover</span>', '').toLowerCase().trim().replace(' ', '_');
 			var coverTypeText = tab.label.replace('<span class=\'hidden-xs\'>Cover</span>', '');
 
-			// results headers
-			out += '<div class="col-xs-4 col-sm-3 col-md-' + xsCols + ' text-center clt-action ' + (tab.defaultTab === true ? 'active' : '') + '" data-clt-index="' + i + '" data-ranking-filter="' + tab.rankingFilter +'">';
-			out += (tab.label.replace('Cover', '')) + (state !== 'xs' && state !== 'sm' && state !== 'md' && tab.showCount === true && count !== null ? ' <span class="tabCount">(' + (count) + ')</span>' : '');
-			out += '</div>';
+			if (tab.defaultTab) {
+                $('.mobile-active-cover-type').empty().text(coverTypeText);
+			}
+
+            // results headers
+            out += '<div class="col-xs-4 col-sm-3 col-md-3 col-lg-' + xsCols + ' text-center clt-action ' + (tab.defaultTab === true ? 'active' : '') + '" data-clt-index="' + i + '" data-ranking-filter="' + tab.rankingFilter + '">';
+            out += (tab.label.replace('Cover', '')) + (state !== 'xs' && tab.showCount === true && count !== null ? ' <span class="tabCount">(' + (count) + ')</span>' : '');
+            out += '</div>';
+
+
+			// mobile cover types
+            mobileCoverTypes += '<div class="dropdown-item">';
+            mobileCoverTypes += 	'<div class="radio">';
+            mobileCoverTypes += 		'<input type="radio" name="cover-type-mobile-radio-group" id="mobile_reset_filter_' + coverTypeValue + '" class="radioButton-custom  cover-type-mobile radio '+ (tab.defaultTab === true ? 'active' : '') +'" data-clt-index="' + i +'" value="' + coverTypeValue + '" data-ranking-filter="' + tab.rankingFilter +'">';
+            mobileCoverTypes += 		'<label for="mobile_reset_filter_' + coverTypeValue + '">' + coverTypeText + '</label>';
+            mobileCoverTypes += 	'</div>';
+            mobileCoverTypes += '</div>';
 
 			// custom code due to requirement
 			switch (coverTypeValue) {
@@ -272,19 +301,23 @@
 			}
 		}
 
-		$currentTabContainer.empty().html(out);
+        $('.reset-travel-filters').empty().html(resetFilters);
 
-		$('.reset-travel-filters').empty().html(resetFilters);
+		if (state != 'xs') {
+            $currentTabContainer.empty().html(out);
+            $('.navbar-mobile').empty();
+		} else {
+            $('.mobile-cover-types').empty().html(mobileCoverTypes);
+            $('.navbar-desktop').empty();
+            $('.navbar__travel-filters').show();
+		}
+
 		meerkat.modules.travelResultFilters.resetCustomFilters();
 
 		// hide filters for mobile, tablet & AMT
-		if (state == 'xs' ||
-			state == 'sm' ||
-			state == 'md' ||
-            tabLength == 2 ||
-            destination == 'AUS'
-		) {
+		if (tabLength == 2 || destination == 'AUS') {
 			$('.clt-trip-filter').hide();
+			$('.mobile-cover-type').show();
 		} else {
             $('.clt-trip-filter').show();
 		}
@@ -332,29 +365,45 @@
      */
 	function buildCustomTab() {
 		var customTab = '';
+		var customRadioMobile = '';
         var tabLength = settings.activeTabSet.length;
         var xsCols = parseInt(6 / tabLength, 10);
         settings.activeTabIndex = -1;
         $('[data-travel-filter="custom"]').remove();
         $('.clt-action').removeClass('active');
-        customTab += '<div class="col-xs-' + xsCols + ' text-center clt-action active" data-travel-filter="custom">';
-        customTab += 	'Custom (' + Results.model.travelFilteredProductsCount + ')' ;
-        customTab += '</div>';
-        $('.navbar-cover-text').empty().html('Showing ' + Results.model.travelFilteredProductsCount + ' custom plans');
-        $('.currentTabsContainer').append(customTab);
-        applyCustomResultEventListener();
-	}
 
-    /**
-	 * Add the click event listener for the custom tab
-     */
-	function applyCustomResultEventListener() {
-		$('[data-travel-filter="custom"]').click(function () {
-            settings.activeTabIndex = -1;
-            $(this).siblings().removeClass('active').end().addClass('active');
+        if (state !== 'xs') {
+            customTab += '<div class="col-xs-' + xsCols + ' text-center clt-action active" data-travel-filter="custom">';
+            customTab += 	'Custom (' + Results.model.travelFilteredProductsCount + ')';
+            customTab += '</div>';
             $('.navbar-cover-text').empty().html('Showing ' + Results.model.travelFilteredProductsCount + ' custom plans');
-            Results.model.travelResultFilter(true, true, true);
-		});
+            $('.currentTabsContainer').append(customTab);
+            $('[data-travel-filter="custom"]').click(function () {
+                settings.activeTabIndex = -1;
+                $(this).siblings().removeClass('active').end().addClass('active');
+                $('.navbar-cover-text').empty().html('Showing ' + Results.model.travelFilteredProductsCount + ' custom plans');
+                Results.model.travelResultFilter(true, true, true);
+            });
+		} else {
+            if ($('[data-travel-filter="custom-mobile"]').length === 0) {
+                customRadioMobile += '<div class="dropdown-item">';
+                customRadioMobile += 	'<div class="radio">';
+                customRadioMobile += 		'<input type="radio" name="cover-type-mobile-radio-group" id="mobile_cover_type_custom" class="radioButton-custom radio" data-travel-filter="custom-mobile">';
+                customRadioMobile += 		'<label for="mobile_cover_type_custom">Custom</label>';
+                customRadioMobile += 	'</div>';
+                customRadioMobile += '</div>';
+                $('.mobile-cover-types').append(customRadioMobile);
+			}
+            $('.mobile-active-cover-type').empty().text('Custom');
+            $('[data-travel-filter="custom-mobile"]').prop("checked", true);
+
+            $('[data-travel-filter="custom-mobile"]').change(function () {
+                $('.mobile-active-cover-type').empty().text('Custom');
+                settings.activeTabIndex = -1;
+                Results.model.travelResultFilter(true, true, true);
+                $('#coverTypeDropdownBtn').dropdown('toggle');
+			});
+		}
 	}
 
 	// return the originating tab value
@@ -391,6 +440,11 @@
 		log("[coverleveltabs] activeTabSet", activeTabSet);
 		settings.activeTabSet = activeTabSet;
 	}
+
+	function getActiveTabIndex () {
+		return settings.activeTabIndex;
+	}
+
 	/**
 	 * Increment a counter for each result as we massage, so we don't have to filter again.
 	 * If we remove massaging to add the cover level into backend, results would need to return the count.
@@ -426,6 +480,7 @@
 	function resetView(activeTabSet) {
 		log("[coverleveltabs] resetView");
         $('.navbar-cover-text').empty();
+        $('.navbar__travel-filters').hide();
         $('.clt-trip-filter').hide();
 		$currentTabContainer.empty();
 		hasRunTrackingCall = [];
@@ -438,6 +493,7 @@
 		initCoverLevelTabs: initCoverLevelTabs,
 		events: events,
 		setActiveTabSet: setActiveTabSet,
+		getActiveTabIndex: getActiveTabIndex,
 		resetView: resetView,
 		getRankingFilter: getRankingFilter,
 		isEnabled: isEnabled,

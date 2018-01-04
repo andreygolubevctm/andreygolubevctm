@@ -102,10 +102,15 @@ set: function () {
 			weekends: true,
 			coverStartRange: {
 				min: 0,
-				max: 90
+				max: 120
 			},
             renderPaymentDaysCb: healthFunds_CTM.renderPaymentDays
 		});
+
+		<%-- set cover start date to be application date, useful for dual pricing testing --%>
+		if (!_.isEmpty($('#health_searchDate').val())) {
+            healthFunds_CTM.$paymentStartDate.datepicker("update", $('#health_searchDate').val());
+        }
 
 		dob_health_application_primary_dob.ageMax = 99;
 		dob_health_application_partner_dob.ageMax = 99;

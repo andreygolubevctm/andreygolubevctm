@@ -11,6 +11,10 @@
 	}
 	&.yellow {
 		.alert-warning;
+
+		&.mandatory{
+			.alert-warning;
+		}
 	}
 	&.red, &.mandatory {
 		.alert-danger;
@@ -128,5 +132,27 @@
 
 	.simples-dialog-referral {
 		display:none;
+	}
+
+	#collapseDialogue62 {
+		margin-top: 10px;
+	}
+
+	&.moreInfoVisible {
+		.simples-dialogue-96,
+		.simples-dialogue-76 {
+			display: none;
+		}
+
+		.simples-dialogue-99 {
+			p {
+				font-size: 14px;
+			}
+
+			ul {
+				list-style: disc;
+				padding-left: 40px;
+			}
+		}
 	}
 }

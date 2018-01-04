@@ -19,8 +19,6 @@
 
     function initHealthPopularProducts() {
         $(document).ready(function() {
-            if (!meerkat.modules.splitTest.isActive(3)) return;
-
             _isEnabled = meerkat.site.showPopularProducts;
 
             if (!isEnabled()) return;
@@ -46,9 +44,10 @@
     function _setupFields() {
         $elements = {
             banner: $('.results-popular-products-banner'),
-            options: $('.results-popular-products-banner .popular-products-options'),
-            deciding: $('.results-popular-products-banner .popular-products-deciding'),
-            button: $('.results-popular-products-banner button'),
+            navTabsLi: $('.results-popular-products-banner .nav-tabs li'),
+            navTabsA: $('.results-popular-products-banner .nav-tabs a'),
+            iconInfo: $('.results-popular-products-banner .icon-info'),
+            text: $('.results-popular-products-banner .popular-products-text'),
             popularProducts: $(':input[name=health_popularProducts]'),
             resultsContainer: $('.resultsContainer'),
             purchased: $(':input[name=health_popularProducts_purchased]')
@@ -56,7 +55,9 @@
     }
 
     function _eventSubscriptions() {
-        $elements.button.on('click', function() {
+        $elements.navTabsA.on('click', function() {
+            if ($(this).parent().hasClass('active')) return;
+
             var popularProducts = $(this).attr('data-popular-products');
 
             if (popularProducts === 'Y' && !_tagShown) _showTag();
@@ -64,6 +65,22 @@
             setPopularProducts(popularProducts);
             meerkat.modules.journeyEngine.loadingShow('...updating your quotes...', true);
             meerkat.modules.healthResults.get();
+
+            _.defer(function() {
+                _updateTabActive();
+                _toggleText();
+            });
+        });
+
+        $elements.iconInfo.on('click', function(event) {
+            event.stopPropagation();
+
+            meerkat.messaging.publish('DYNAMIC_CONTENT_PARSED_POPOVER', {
+                element: $elements.iconInfo,
+                contentType: 'url',
+                contentValue: 'ajax/xml/help.jsp?id=579',
+                contentReplace: null
+            });
         });
     }
 
@@ -72,11 +89,23 @@
         $elements.resultsContainer.addClass(_classNames.showPopularProductsTag);
     }
 
+    function _updateTabActive() {
+        $elements.navTabsLi.removeClass('active');
+        $elements.navTabsA
+            .filter('[data-popular-products=' + $elements.popularProducts.val() + ']')
+            .parent()
+            .addClass('active');
+    }
+
+    function _toggleText() {
+        $elements.text.toggleClass('hidden', $elements.popularProducts.val() === 'N');
+    }
+
     function show() {
         if (isEnabled()) {
             $elements.banner.removeClass('invisible');
-            $elements.options.toggleClass('hidden', $elements.popularProducts.val() === 'Y');
-            $elements.deciding.toggleClass('hidden', $elements.popularProducts.val() === 'N');
+            _updateTabActive();
+            _toggleText();
 
             if (_count > 0) {
                 $('.result-row').addClass(_classNames.hasPopularProducts);
