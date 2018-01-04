@@ -972,7 +972,7 @@
                     {"providerBlurb" :"Queensland Country Health are a non for profit fund based here in Queensland, giving you the peace of mind you are dealing with a local fund, and for what you need they are giving really great value."}
                 );
                 break;
-            case 'TUH':
+            case 'QTU':
                 extraPopOverData.push(
                     {"providerBlurb" : "TUH was started by a group of teachers over 40 years ago to ensure that their members were getting the best returns available from their health insurance and for what you need they are giving really great value."}
                 );
@@ -1095,7 +1095,7 @@
                     {"name" : "Hospital Network", "url": "http://www.qldcountryhealth.com.au/find-a-hospital"}
                 );
                 break;
-            case 'TUH':
+            case 'QTU':
                 usefulLinks.push(
                     {"name" : "Privatehealth.gov.au", "url": "http://www.privatehealth.gov.au/dynamic/insurerdetails.aspx?code=QTU"},
                     {"name" : "Hospital Network", "url": "http://tuh.com.au/understanding-health-insurance/about-hospital-cover/hospital-types-and-why-it-matters/"},
