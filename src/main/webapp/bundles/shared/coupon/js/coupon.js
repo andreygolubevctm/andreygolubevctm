@@ -184,8 +184,9 @@
 		if (isCurrentCouponValid() === true && currentCoupon.hasOwnProperty('contentBanner')) {
             $('#contactForm').find('.quoteSnapshot').hide();
             $('.callCentreHelp').hide();
-			$('.coupon-banner-container').html(currentCoupon.contentBanner);
-            $('.coupon-tile-container').html(currentCoupon.contentTile);
+			// $('.coupon-banner-container').html(currentCoupon.contentBanner);
+			$('.'+currentCoupon.bannerPlacementClassName).addClass('coupon-banner-container').html(currentCoupon.contentBanner);
+            // $('.coupon-tile-container').html(currentCoupon.contentTile);
             $('body').addClass('couponShown');
 
             meerkat.modules.healthMoreInfo.dynamicPyrrBanner();

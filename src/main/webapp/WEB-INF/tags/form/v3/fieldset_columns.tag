@@ -17,7 +17,7 @@
 <c:if test="${ empty displayFullWidth or displayFullWidth eq false}">
 	<%--The below isnt formatted nicely for readability (on separate lines) because we want the --%>
 	<%--fragment to be empty (no whitespace) if its actually empty so we can hide it--%>
-	<div class="fieldset-column-side col-sm-3<c:if test="${not empty sideAbove}"> col-sm-push-9</c:if><c:if test="${not empty sideHidden}"> hidden-xs</c:if>"><jsp:invoke fragment="rightColumn" /></div>
+	<div class="fieldset-column-side col-sm-3<c:if test="${not empty sideAbove}"> col-sm-push-9</c:if><c:if test="${not empty sideHidden}"> hidden-xs</c:if>"><jsp:invoke fragment="rightColumn" /><banners:banner-tile /></div>
 </c:if>
 <c:if test="${not empty sideAbove and empty displayFullWidth or displayFullWidth eq false}">
 	<div class="col-sm-9 col-sm-pull-3">

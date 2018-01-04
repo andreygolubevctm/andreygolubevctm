@@ -39,6 +39,7 @@ public class Coupon extends AbstractJsonModel {
 	private boolean removeFromLeads;
 	private int vdn;
 	private List<CouponRule> couponRules;
+	private String bannerPlacementClassName;
 
 	public int getCouponId() {
 		return couponId;
@@ -184,6 +185,12 @@ public class Coupon extends AbstractJsonModel {
 	public void setCouponRules(List<CouponRule> couponRules) {
 		this.couponRules = couponRules;
 	}
+	public void setBannerPlacementClassName(String bannerPlacementClassName) {
+		this.bannerPlacementClassName = bannerPlacementClassName.isEmpty() ? "" : bannerPlacementClassName;
+	}
+	public String getBannerPlacementClassName() {
+		return bannerPlacementClassName;
+	}
 
 	@Override
 	protected JSONObject getJsonObject() throws JSONException {
@@ -201,6 +208,7 @@ public class Coupon extends AbstractJsonModel {
 		json.put("showPopup", isShowPopup());
 		json.put("canPrePopulate", canPrePopulate());
 		json.put("showCouponSeen", isShowCouponSeen());
+		json.put("bannerPlacementClassName", getBannerPlacementClassName());
 
 		return json;
 	}
@@ -231,6 +239,7 @@ public class Coupon extends AbstractJsonModel {
 				", removeFromLeads=" + removeFromLeads +
 				", vdn=" + vdn +
 				", couponRules=" + couponRules +
+				", bannerPlacementClassName=" + bannerPlacementClassName +
 				'}';
 	}
 }
