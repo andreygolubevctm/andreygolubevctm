@@ -70,6 +70,7 @@ public class CouponRouter extends HttpServlet {
 			couponRequest.effectiveDate = ApplicationService.getApplicationDate(request);
 			couponRequest.couponChannel = authenticatedData.isLoggedIn() ? CouponChannel.CALL_CENTRE : CouponChannel.ONLINE;
 			couponRequest.showCouponSeen = request.getParameter("showCouponSeen") == null || request.getParameter("showCouponSeen").isEmpty() ? 0 : 1;
+			couponRequest.couponId = request.getParameter("couponId") == null || request.getParameter("couponId").isEmpty() ? 0 : Integer.parseInt(request.getParameter("couponId"));
 
 			if (uri.endsWith("/coupon/id/get.json")) {
 				getCouponById(couponRequest, writer, request, response);
