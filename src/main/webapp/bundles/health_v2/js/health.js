@@ -1046,6 +1046,8 @@
                 } else if ($('#health_simples_contactType_trialcampaign').is(':checked')) {
                     contactType = 'outbound';
                     contactTypeTrial = 'Trial Campaign';
+				} else if ($('#health_simples_contactTypeRadio_chat').is(':checked')) {
+					contactType = 'webchat';
                 }
 
                 $.extend(response, {

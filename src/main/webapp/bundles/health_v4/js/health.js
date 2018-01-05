@@ -799,6 +799,8 @@
                     contactType = 'inbound';
                 } else if ($('#health_simples_contactType_outbound').is(':checked')) {
                     contactType = 'outbound';
+				} else if ($('#health_simples_contactType_chat').is(':checked')) {
+					contactType = 'webchat';
                 }
 
                 $.extend(response, {

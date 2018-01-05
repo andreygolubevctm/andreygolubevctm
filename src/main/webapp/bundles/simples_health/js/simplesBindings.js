@@ -36,7 +36,10 @@
         currentFamilyType = null,
         $limitedCoverHidden,
         $moreInfoDialogue,
+        $dialogue21,
+        $dialogue26,
         $dialogue36,
+        $dialogue37,
         $nzMedicareRules,
         $nzMedicareRulesToggle;
 
@@ -88,7 +91,11 @@
             $applicantWrappers.partner = $('#partner-health-cover .content:first');
 	        $privatePatientDialogue = $('.simples-dialogue-24');
             $limitedCoverHidden = $("input[name='health_situation_accidentOnlyCover']");
+            $dialogue21 = $('.simples-dialogue-21');
+            $dialogue26 = $('.simples-dialogue-26');
             $dialogue36 = $('.simples-dialogue-36');
+            $dialogue37 = $('.simples-dialogue-37');
+            $moreInfoDialogue = $('.simples-dialogue-76');
             $nzMedicareRules = $('#healthAboutYou .nz-medicare-rules');
 	        $nzMedicareRulesToggle = $nzMedicareRules.find('a:first');
 	        $nzMedicareRulesCopy = $nzMedicareRules.find('.copy:first');
@@ -126,9 +133,12 @@
                     $('#health_simples_contactTypeRadio_outbound').prop("checked", true).change();
                 } else if (contactType === 'cli') {
                     $('#health_simples_contactTypeRadio_clioutbound').prop("checked", true).change();
+                } else if (contactType === 'webchat') {
+                    $('#health_simples_contactTypeRadio_webchat').prop("checked", true).change();
                 }
             }
         }
+        toggleWebChatDialog();
     }
 
     function _moveSituationMedicareField() {
@@ -187,6 +197,7 @@
             toggleInboundOutbound();
             toggleFollowupCallDialog();
             toggleReferralCallDialog();
+            toggleWebChatDialog();
 
         });
         // Handle callback checkbox 68
@@ -222,7 +233,7 @@
         var i = 0,
             needsValidation;
 
-        $('#resultsForm .simples-dialogue').find('input[type=checkbox]').each(function() {
+        $('#resultsForm .simples-dialogue').not('.hidden').find('input[type=checkbox]').each(function() {
             if (!$(this).prop('checked')) {
                 i++;
             }
@@ -287,9 +298,14 @@
                 }
 
             } else {
-                // cli outbound
                 $healthContactTypeTrial.val('');
-                $healthContactType.val('cli');
+
+                if ($('#health_simples_contactTypeRadio_webchat').is(':checked')) {
+                    $healthContactType.val('webchat');
+                } else {
+                    // cli outbound
+                    $healthContactType.val('cli');
+                }
             }
 
         }
@@ -381,6 +397,26 @@
         }
 	}
 
+	function toggleWebChatDialog() {
+        var isWebChat = webChatInProgress();
+        $dialogue21.toggle(!isWebChat);
+        $dialogue26.toggle(!isWebChat);
+        $dialogue37.toggle(!isWebChat);
+        $moreInfoDialogue.toggleClass('hidden', isWebChat);
+
+        if (isWebChat) {
+            $referralCallCheckboxDialogue.toggle(!isWebChat);
+        }
+    }
+
+	function webChatInProgress() {
+
+		var callType = getCallType();
+		var isWebChat = !_.isEmpty(callType) && callType === 'webchat';
+
+		return isWebChat;
+	}
+
     function toggleRebateDialogue() {
 
         var healthSituationCover = $healthSituationCvr.val();
@@ -425,8 +461,11 @@
     }
 
     function toggleMoreInfoDialogue() {
-        $moreInfoDialogue = $('.simples-dialogue-76');
-        $moreInfoDialogue.toggleClass('hidden', $healthSitCoverType.find('input:checked').val().toLowerCase() === "e");
+        if (webChatInProgress()) {
+            $moreInfoDialogue.toggleClass('hidden', true);
+        } else {
+             $moreInfoDialogue.toggleClass('hidden', $healthSitCoverType.find('input:checked').val().toLowerCase() === "e");
+        }
     }
 
     function toggleAffiliateRewardsDialogue(affiliateId) {
