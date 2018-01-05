@@ -376,9 +376,7 @@
 				 slide. Manually forcing it to run so that the contact details are saved into the session and subsequently to
 				 the transaction_details table.
 				 */
-				webChatHideFields();
 				meerkat.messaging.publish(meerkat.modules.tracking.events.tracking.TOUCH, this);
-				webChatHideFields();
 			}
 		};
 
@@ -1498,9 +1496,10 @@
 	function webChatHideFields() {
 		var isWebChat = webChatInProgress();
 
-		$('.simples-dialogue-26').toggle(!isWebChat);
-		$('.simples-dialogue-37').toggle(!isWebChat);
+		$('.simples-dialogue-26').toggleClass('hidden', isWebChat);
+		$('.simples-dialogue-37').toggleClass('hidden', isWebChat);
 		$('.simples-dialogue-76').toggleClass('hidden', isWebChat);
+		$('.health_situation_medicare').toggleClass('hidden', isWebChat);
 
 	}
 

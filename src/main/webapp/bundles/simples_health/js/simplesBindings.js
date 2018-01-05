@@ -400,9 +400,10 @@
 	function toggleWebChatDialog() {
         var isWebChat = webChatInProgress();
         $dialogue21.toggle(!isWebChat);
-        $dialogue26.toggle(!isWebChat);
-        $dialogue37.toggle(!isWebChat);
+        $dialogue26.toggleClass('hidden', isWebChat);
+        $dialogue37.toggleClass('hidden', isWebChat);
         $moreInfoDialogue.toggleClass('hidden', isWebChat);
+        $healthSituationMedicare.toggleClass('hidden', isWebChat);
 
         if (isWebChat) {
             $referralCallCheckboxDialogue.toggle(!isWebChat);
