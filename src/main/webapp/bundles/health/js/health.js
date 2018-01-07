@@ -1639,7 +1639,9 @@
 		fetchRates: fetchRates,
 		loadRates: loadRates,
 		loadRatesBeforeResultsPage: loadRatesBeforeResultsPage,
-		hasPartner: hasPartner
+		hasPartner: hasPartner,
+        enableSubmitApplication: enableSubmitApplication,
+        disableSubmitApplication: disableSubmitApplication
 	});
 
 })(jQuery);

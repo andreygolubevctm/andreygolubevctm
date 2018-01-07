@@ -151,13 +151,15 @@ var healthFunds_BUP = {
 		healthFunds_BUP.$primaryMiddleName.setRequired(false);
 		healthFunds_BUP.$partnerMiddleName.setRequired(false);
 
-		<%-- calendar for start cover --%>
-		if(_.has(meerkat.modules,'healthCoverStartDate')) {
-			meerkat.modules.healthCoverStartDate.setCoverStartRange(0, 60);
-		} else {
-			meerkat.modules.healthPaymentStep.setCoverStartRange(0, 60);
-		}
-		healthFunds_BUP.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '0,6');
+		<%--fund offset check--%>
+		meerkat.modules.healthFundTimeOffset.onInitialise({
+			weekends: false,
+			coverStartRange: {
+				min: 0,
+				max: 60
+			},
+			renderPaymentDaysCb: healthFunds_BUP.updateMessage
+		});
 
 		<%-- Increase minimum age requirement for applicants from 16 to 17 --%>
 		healthFunds_BUP.$_dobPrimary = $('#health_application_primary_dob');

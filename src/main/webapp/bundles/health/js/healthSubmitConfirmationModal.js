@@ -277,7 +277,7 @@
         close();
 
         //trigger submitApplication() in health.js
-        _submitCallback();
+        meerkat.modules.healthFundTimeOffset.checkBeforeSubmit(_submitCallback);
     }
 
     meerkat.modules.register('healthPayConfDetailsModal', {
