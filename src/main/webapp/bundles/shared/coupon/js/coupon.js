@@ -189,11 +189,15 @@
 
 	function renderCouponBanner() {
 		if (isCurrentCouponValid() === true && currentCoupon.hasOwnProperty('contentBanner')) {
+			var placement = currentCoupon.bannerPlacementClassName.search('banner-top-container') !== -1 ? 'Banner' : 'Tile';
+
             $('#contactForm').find('.quoteSnapshot').hide();
             $('.callCentreHelp').hide();
-			// $('.coupon-banner-container').html(currentCoupon.contentBanner);
-			$('.'+currentCoupon.bannerPlacementClassName).addClass('coupon-banner-container').html(currentCoupon.contentBanner);
-            // $('.coupon-tile-container').html(currentCoupon.contentTile);
+
+			$('.'+currentCoupon.bannerPlacementClassName)
+				.addClass('coupon-'+placement.toLowerCase()+'-container')
+				.html(currentCoupon['content'+placement]);
+
             $('body').addClass('couponShown');
 
             meerkat.modules.healthMoreInfo.dynamicPyrrBanner();
@@ -278,6 +282,21 @@
 			debug("No valid coupon found - can not render");
 			return false;
 		}
+
+		if (_.isEmpty(currentCoupon.bannerPlacementClassName)) {
+            debug("No banner placement found - can not render");
+            return false;
+		}
+
+		if (currentCoupon.bannerPlacementClassName.search('banner-top-container') !== -1 && currentCoupon.hasOwnProperty('contentBanner')) {
+            debug("No banner top content found - can not render");
+            return false;
+		}
+
+        if (currentCoupon.bannerPlacementClassName.search('banner-tile-container') !== -1 && !currentCoupon.hasOwnProperty('contentTile')) {
+            debug("No banner tile content found - can not render");
+            return false;
+        }
 
 		return true;
 	}
