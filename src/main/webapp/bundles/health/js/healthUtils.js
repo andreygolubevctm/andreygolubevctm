@@ -58,9 +58,8 @@
         return $('[name="health_healthCover_primary_cover"]:checked').val();
     }
 
-    // TODO Fix this promo text regex (it doesn't match the format coming from the health quote service)
     function getSpecialOffer(product) {
-        var promoText = /^(.+)<p><a class="dialogPop" data-content="(.+)" title="Conditions".+$/g.exec(product.promo.promoText);
+        var promoText = /^(.+)<p><a class="dialogPop" data-content="([\s\S]+)" title=.+$/g.exec(product.promo.promoText);
         var specialOffer = promoText && promoText[1];
         // Convert this back to html
         var specialOfferTerms = promoText && promoText[2] && $('<div/>').html(promoText[2]).text();

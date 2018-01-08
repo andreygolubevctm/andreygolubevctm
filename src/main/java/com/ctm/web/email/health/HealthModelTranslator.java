@@ -18,10 +18,7 @@ import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.core.utils.RequestUtils;
 import com.ctm.web.core.web.go.Data;
-import com.ctm.web.email.EmailRequest;
-import com.ctm.web.email.EmailTranslator;
-import com.ctm.web.email.EmailUtils;
-import com.ctm.web.email.OptIn;
+import com.ctm.web.email.*;
 import com.ctm.web.factory.EmailServiceFactory;
 import com.ctm.web.health.email.mapping.HealthEmailDetailMappings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +28,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -56,12 +52,10 @@ public class HealthModelTranslator implements EmailTranslator {
     private static final String ACTION_UNSUBSCRIBE = "unsubscribe";
     private static final String ACTION_LOAD = "load";
 
-    public static final Function<List<String>, List<String>> removeEmptySpanTags = l -> l.stream().map(s -> s.replaceAll("<span/>","")).collect(Collectors.toList());
-
     @Override
     public void setVerticalSpecificFields(EmailRequest emailRequest, HttpServletRequest request, Data data) throws ConfigSettingException, DaoException {
         List<String> providerName = emailUtils.buildParameterList(request, "rank_providerName");
-        List<String> premiumLabel = removeEmptySpanTags.apply(emailUtils.buildParameterList(request, "rank_premiumText"));
+        List<String> premiumLabel = Functions.stripHtmlFromStrings.apply(emailUtils.buildParameterList(request, "rank_premiumText"));
         List<String> providerCodes = emailUtils.buildParameterList(request, "rank_provider");
         List<String> premium = emailUtils.buildParameterList(request, "rank_premium");
         String gaclientId = emailUtils.getParamFromXml(data.getXML(), "gaclientid", "/health/");
@@ -87,7 +81,7 @@ public class HealthModelTranslator implements EmailTranslator {
         String hospitalPdsUrl = request.getParameter("rank_hospitalPdsUrl0");
 
         List<String> altPremium = emailUtils.buildParameterList(request, "rank_altPremium");
-        List<String> altPremiumLabel = removeEmptySpanTags.apply(emailUtils.buildParameterList(request, "rank_altPremiumText"));
+        List<String> altPremiumLabel = Functions.stripHtmlFromStrings.apply(emailUtils.buildParameterList(request, "rank_altPremiumText"));
 
         HealthEmailModel healthEmailModel = new HealthEmailModel();
         healthEmailModel.setBenefitCodes(benefitCodes);
@@ -115,7 +109,7 @@ public class HealthModelTranslator implements EmailTranslator {
         IntStream.range(EmailUtils.START,EmailUtils.END).forEach(value -> quoteRefs.add(transactionId.toString()));
         emailRequest.setQuoteRefs(quoteRefs);
 
-        List<String> specialOffers = emailUtils.buildParameterList(request, "rank_specialOffer");
+        List<String> specialOffers = Functions.stripHtmlFromStrings.apply(emailUtils.buildParameterList(request, "rank_specialOffer"));
         emailRequest.setProviderSpecialOffers(specialOffers);
         setDataFields(emailRequest, data);
     }
