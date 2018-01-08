@@ -8,6 +8,7 @@
         $healthCoverRebate,
         $healthSituationCvr,
         $healthSitCoverType,
+        $healthCvrDtlsIncomeBasedOn,
         $healthPrimaryCover,
         $healthPartnerCover,
         $dialoguePrimaryCover,
@@ -63,6 +64,7 @@
             $healthCoverRebate = $('input[name=health_healthCover_rebate]');
             $healthSituationCvr = $('select[name=health_situation_healthCvr]');
             $healthSitCoverType = $('#health_situation_coverType');
+            $healthCvrDtlsIncomeBasedOn = $('.health_cover_details_incomeBasedOn');
             $healthPrimaryCover = $('input[name=health_healthCover_primary_cover]');
             $healthPartnerCover = $('input[name=health_healthCover_partner_cover]');
             $dialoguePrimaryCover = $('.simples-dialogue-primary-current-cover');
@@ -404,6 +406,7 @@
         $dialogue37.toggleClass('hidden', isWebChat);
         $moreInfoDialogue.toggleClass('hidden', isWebChat);
         $healthSituationMedicare.toggleClass('hidden', isWebChat);
+        $healthCvrDtlsIncomeBasedOn.toggleClass('hidden', isWebChat);
 
         if (isWebChat) {
             $referralCallCheckboxDialogue.toggle(!isWebChat);

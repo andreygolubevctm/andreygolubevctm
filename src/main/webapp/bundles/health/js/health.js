@@ -1500,6 +1500,7 @@
 		$('.simples-dialogue-37').toggleClass('hidden', isWebChat);
 		$('.simples-dialogue-76').toggleClass('hidden', isWebChat);
 		$('.health_situation_medicare').toggleClass('hidden', isWebChat);
+		$('.health_cover_details_incomeBasedOn').toggleClass('hidden', isWebChat);
 
 	}
 
