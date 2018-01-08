@@ -83,6 +83,13 @@
 					</c:catch>
 				</c:if>
 
+				<c:set var="simplesChatUserGroup" value="N" />
+				<c:set var="simplesChatUser"><content:get key="simplesChatUser" suppKey="${userId}"/></c:set>
+
+				<c:if test="${not empty simplesChatUser and simplesChatUser eq 'simplesChatUser'}">
+					<c:set var="simplesChatUserGroup" value="Y" />
+				</c:if>
+
 				<c:set var="userXML">
 					<user>
 						<uid><c:out value="${sessionScope.userDetails['uid']}" /></uid>
@@ -116,6 +123,7 @@
 						<IT>${IT}</IT>
 						<supervisor>${supervisor}</supervisor>
 						<editAdminMenuAuth>${editAdminMenuAuth}</editAdminMenuAuth>
+						<simplesChatGroup>${simplesChatUserGroup}</simplesChatGroup>
 					</security>
 				</c:set>
 				<go:setData dataVar="authenticatedData" xpath="login" xml="${securityXML}" />
