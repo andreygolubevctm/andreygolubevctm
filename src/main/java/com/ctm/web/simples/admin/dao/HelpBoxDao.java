@@ -69,7 +69,7 @@ public class HelpBoxDao {
                 }
             }
 
-//            sql.append(" ORDER BY providerName, so.styleCodeId, so.state, so.coverType, so.effectiveStart, so.effectiveEnd");
+            sql.append(" ORDER BY hb.content, hb.styleCodeId, hb.effectiveStart, hb.effectiveEnd");
 
             stmt = dbSource.getConnection().prepareStatement(sql.toString());
 

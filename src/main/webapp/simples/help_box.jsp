@@ -21,7 +21,7 @@
                 <div class="row">
                     <ul>
                         <li class="col-lg-6">
-                            <a href="javascript:;" class="toggle sort-by" data-sortkey="data.effectiveStart" data-sortdir="asc">
+                                <a href="javascript:;" class="toggle sort-by" data-sortkey="data.content" data-sortdir="asc">
                                 <span class="icon"></span>
                                 <span>Text</span>
                             </a>
