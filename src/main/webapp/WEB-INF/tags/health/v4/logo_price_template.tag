@@ -11,6 +11,21 @@
 	{{ if(typeof obj.displayLogo === 'undefined' || obj.displayLogo == true) { }}
 	<div class="companyLogo {{= info.provider ? info.provider : info.fundCode }}"></div>
 	{{ } }}
+
+	{{ if(typeof obj.showRisingTag === 'undefined' || obj.showRisingTag == true) { }}
+	<div class="premium-rising-tag">
+		<span class="icon-arrow-thick-up"></span> Premiums are rising from April 1st, 2018<br/>
+		<a href="javascript:;" class="dual-pricing-learn-more" data-dropDeadDate="{{= obj.dropDeadDate }}">Learn more</a>
+	</div>
+	{{ } }}
+
+	{{ if(typeof obj.hasOwnProperty('showBeforeAfterText') && obj.showBeforeAfterText === true) { }}
+	<div class="dual-pricing-before-after-text">
+		<span class="text-bold">
+		{{ if (obj.hasOwnProperty('showAltPremium') && obj.showAltPremium === true) { }}After{{ } else { }}Before{{ } }}
+		</span> April 1st</div>
+	{{ } }}
+
 	<div class="price premium">
 		{{ var formatCurrency = meerkat.modules.currencyField.formatCurrency }}
 		{{ _.each(['annually','halfyearly','halfYearly','quarterly','monthly','fortnightly','weekly'], function(freq){ }}
@@ -34,7 +49,11 @@
                                 {{= freq === 'fortnightly' ? 'per f/night' : '' }}
                                 {{= freq === 'weekly' ? 'per week' : '' }}
                             </span>
-                            <div class="lhcText">{{= typeof mode === "undefined" || mode != "lhcInc" ? textLhcFreePricing : textPricing }}</div>
+							{{ if (!obj.hasOwnProperty('priceBreakdown') || (obj.hasOwnProperty('priceBreakdown') && !obj.priceBreakdown)) { }}
+                            	<div class="lhcText">{{= typeof mode === "undefined" || mode != "lhcInc" ? textLhcFreePricing : textPricing }}</div>
+							{{ } else { }}
+								{{= meerkat.modules.healthPriceBreakdown.renderTemplate(property, freq, false) }}
+							{{ } }}
                         </span>
 					{{ } else { }}
 					<div class="frequencyAmount comingSoon">New price not yet released</div>

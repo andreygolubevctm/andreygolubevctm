@@ -119,6 +119,12 @@
                 _settings.rightButtonCB();
             }
         });
+
+        $(window).on("resize.mobileFiltersMenu", _.debounce(function() {
+            if (_status.open) {
+                _calcBodyHeight();
+            }
+        }));
     }
 
     function _eventSubscriptions() {
@@ -154,6 +160,8 @@
         _status.open = true;
         $elements.body.css({ overflow: 'hidden', height: $(window).height() });
         $elements.menu.addClass('opened');
+
+        _calcBodyHeight();
 
         return this;
     }

@@ -62,6 +62,20 @@
 			txt+="</span> travelling <span class='highlight "+blockClass+"'>multiple times in one year";
 		}
 
+		if(meerkat.modules.tripType.exists()) {
+			var triptypes = meerkat.modules.tripType.get();
+			var copy = [];
+			for(var i in triptypes) {
+				if(_.has(triptypes, i)) {
+					var type = triptypes[i];
+					if(type.active) {
+						copy.push(type.label);
+					}
+				}
+			}
+			txt+=". </span><em class=\"hidden-xs hidden-sm\"><br></em>Covered for <span class='highlight'>" + copy.join(", ");
+		}
+
 		$resultsSummaryPlaceholder.html(txt+'</span>').fadeIn();
 	}
 

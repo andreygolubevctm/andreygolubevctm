@@ -258,7 +258,6 @@
 				});
 				toggleRebate();
 
-
 			},
 			onBeforeEnter: incrementTranIdBeforeEnteringSlide,
 			onAfterEnter: function healthV2AfterEnter() {
@@ -464,21 +463,13 @@
 							});
 
 							// Check dynamic checkboxes depending on hidden values
-							$('#health_simples_dialogue-checkbox-62a-modal')
-								.prop('checked', $('#health_simples_dialogue-checkbox-62a').val() === 'Y');
-							$('#health_simples_dialogue-checkbox-62b-modal')
-								.prop('checked', $('#health_simples_dialogue-checkbox-62b').val() === 'Y');
-							$('#health_simples_dialogue-checkbox-62c-modal')
-								.prop('checked', $('#health_simples_dialogue-checkbox-62c').val() === 'Y');
+							$('#health_simples_dialogue-checkbox-62-modal')
+								.prop('checked', $('#health_simples_dialogue-checkbox-62').val() === 'Y');
 						},
 						onClose: function(modalId) {
 							// Save the checkbox values to hidden inputs as Y/N
-							$('#health_simples_dialogue-checkbox-62a')
-								.val($('#health_simples_dialogue-checkbox-62a-modal').prop('checked') ? 'Y' : 'N');
-							$('#health_simples_dialogue-checkbox-62b')
-								.val($('#health_simples_dialogue-checkbox-62b-modal').prop('checked') ? 'Y' : 'N');
-							$('#health_simples_dialogue-checkbox-62c')
-								.val($('#health_simples_dialogue-checkbox-62c-modal').prop('checked') ? 'Y' : 'N');
+							$('#health_simples_dialogue-checkbox-62')
+								.val($('#health_simples_dialogue-checkbox-62-modal').prop('checked') ? 'Y' : 'N');
 						}
 					});
 				}
@@ -713,6 +704,9 @@
 					$('#mainform').find('.health_contact_authority span').text( selectedProduct.info.providerName  );
 
 					meerkat.modules.healthPaymentStep.updatePremium();
+
+					// toggle coupon seen online
+					meerkat.modules.healthPaymentStep.toggleCouponSeenText();
 				}
 			}
 		};
@@ -1294,7 +1288,7 @@
 
 					meerkat.modules.leavePageWarning.disable();
 
-					var redirectURL = "health_confirmation.jsp?action=confirmation&transactionId="+meerkat.modules.transactionId.get()+"&token=";
+					var redirectURL = "health_confirmation.jsp?action=confirmation&transactionId="+meerkat.modules.transactionId.get()+(!_.isEmpty(meerkat.site.urlStyleCodeId) && meerkat.site.urlStyleCodeId === "wfdd" ? "&brandCode=" + meerkat.site.urlStyleCodeId : "")+"&token=";
 					var extraParameters = "";
 
 					if (meerkat.site.utm_source !== '' && meerkat.site.utm_medium !== '' && meerkat.site.utm_campaign !== ''){
@@ -1478,10 +1472,19 @@
 			if(situation === 'F' || situation === 'SPF' || situation === 'EF' || situation === 'ESP'){
 				$('.health_cover_details_dependants').show();
 			}
+			$('.simples-dialogue-37').show();
 		} else {
 			$('#health_healthCover_tier').hide();
 			$('.health_cover_details_dependants').hide();
+			$('.simples-dialogue-37').hide();
 		}
+
+		if($('#health_healthCover_health_cover_rebate').find('input:checked').val() !== 'N'){
+			$('#health_healthCover_health_cover_rebate_dontApplyRebate').prop("checked", false);
+		} else {
+			$('#health_healthCover_health_cover_rebate_dontApplyRebate').prop("checked", true);
+		}
+
 		meerkat.modules.healthCoverDetails.setIncomeBase();
 	}
 

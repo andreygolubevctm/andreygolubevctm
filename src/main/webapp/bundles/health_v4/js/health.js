@@ -405,6 +405,7 @@
                 meerkat.modules.healthResults.initPage();
                 meerkat.modules.healthMoreInfo.initMoreInfo();
                 meerkat.modules.healthPriceComponent.initHealthPriceComponent();
+                meerkat.modules.healthPriceBreakdown.initHealthPriceBreakdown();
                 meerkat.modules.healthDualPricing.initDualPricing();
                 meerkat.modules.healthPyrrCampaign.initPyrrCampaign();
                 meerkat.modules.healthRefineResultsMobileMenu.initHealthRefineResultsMobileMenu();
@@ -435,7 +436,7 @@
                     meerkat.modules.healthTaxTime.disableFastTrack();
                 }
                 meerkat.modules.healthResults.setCallCentreText();
-	            },
+            },
             onBeforeLeave: function beforeLeaveResultsStep(event) {
                 // Increment the transactionId
                 if (event.isBackward === true) {

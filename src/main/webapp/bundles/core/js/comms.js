@@ -12,7 +12,8 @@
 	var AJAX_REQUEST_ABORTED = "abort";
 	var CHECK_AUTHENTICATED_LABEL = "checkAuthenticated";
 
-	var requestPool = [];
+	// Needed specifically for Westfund white label
+	var forcedStyleCodeId = false;
 
 	var defaultSettings = {
 		url: 'not-set',
@@ -118,6 +119,8 @@
 			console.error("Message to dev: please provide an errorLevel to the comms.post() or comms.get() function.");
 		}
 
+		settings = appendBrandCodeToUrl(settings);
+
 		var usedCache = checkCache(settings);
 		if(usedCache === true) {
 			var cachedResult = findInCache(settings);
@@ -152,7 +155,7 @@
 			}
 
 			if (_.isString(ajaxProperties.data)) {
-				ajaxProperties.data += '&transactionId=' + tranId;
+                ajaxProperties.data += '&transactionId=' + tranId;
 
 				if(meerkat.site.isCallCentreUser) {
 					ajaxProperties.data += "&" + CHECK_AUTHENTICATED_LABEL + "=true";
@@ -162,14 +165,14 @@
 				// We have to clone it so that JS is not referencing the original object
 				ajaxProperties.data = $.merge([], settings.data);
 
-				// Add the transaction ID to the data payload if it's not already set
-				if (_.indexOf(ajaxProperties.data, 'transactionId') === -1) {
-					ajaxProperties.data.push({
-						name: 'transactionId',
-						value: tranId
-					});
+                // Add the transaction ID to the data payload if it's not already set
+                if (_.indexOf(ajaxProperties.data, 'transactionId') === -1) {
+                    ajaxProperties.data.push({
+                        name: 'transactionId',
+                        value: tranId
+                    });
 
-				}
+                }
 
 				if(meerkat.site.isCallCentreUser) {
 					ajaxProperties.data.push({
@@ -182,10 +185,10 @@
 				// We have to clone it so that JS is not referencing the original object
 				ajaxProperties.data = $.extend(true, {}, settings.data);
 
-				// Add the transaction ID to the data payload if it's not already set
-				if (ajaxProperties.data.hasOwnProperty('transactionId') === false) {
-					ajaxProperties.data.transactionId = tranId;
-				}
+                // Add the transaction ID to the data payload if it's not already set
+                if (ajaxProperties.data.hasOwnProperty('transactionId') === false) {
+                    ajaxProperties.data.transactionId = tranId;
+                }
 
 				if(meerkat.site.isCallCentreUser) {
 					ajaxProperties.data[CHECK_AUTHENTICATED_LABEL] = true;
@@ -351,8 +354,31 @@
 		return CHECK_AUTHENTICATED_LABEL;
 	}
 
+	function appendBrandCodeToUrl(settings) {
+		if(forcedStyleCodeId !== false) {
+			if (settings.url.search(/\?/) !== -1) {
+				if(settings.url.search(/brandCode=[a-zA-Z]+/) !== -1) {
+					settings.url = settings.url.replace(/brandCode=[a-zA-Z]+/g, "brandCode=" + forcedStyleCodeId);
+				} else {
+					settings.url += "&brandCode=" + forcedStyleCodeId;
+				}
+			} else {
+				settings.url += "?brandCode=" + forcedStyleCodeId;
+			}
+		}
+		return settings;
+	}
+
+	function init() {
+		jQuery(document).ready(function ($) {
+			if(!_.isUndefined(meerkat.site.urlStyleCodeId) && !_.isEmpty(meerkat.site.urlStyleCodeId)) {
+				forcedStyleCodeId = meerkat.site.urlStyleCodeId;
+			}
+		});
+	}
 
 	meerkat.modules.register("comms", {
+		init: init,
 		post: post,
 		get: get,
 		getCheckAuthenticatedLabel: getCheckAuthenticatedLabel

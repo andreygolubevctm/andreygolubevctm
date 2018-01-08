@@ -1,0 +1,16 @@
+{
+  "brandCodes": "all",
+  "dependencies": [
+    "shared/results/v2",
+    "shared/journeyEngine/v2",
+    "shared/fonts/v1",
+    "shared/headerBar/v1",
+    "shared/moreInfo",
+    "shared/forms/v2",
+    "shared/crud",
+    "shared/validation",
+    "shared/autocomplete",
+    "shared/addressLookup",
+    "shared/radioGroupTile"
+  ]
+}

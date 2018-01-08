@@ -23,6 +23,7 @@ body.callCentre {
       }
     }
 
+    .simples-dialogue-49,
     .simples-dialogue-86 {
       display: block;
     }
@@ -34,6 +35,10 @@ body.callCentre {
     .simples-dialogue-82 {
       display: block;
     }
+
+    .simples-dialogue-49 {
+      display: none;
+    }
   }
 
   &[data-step="results"] {
@@ -42,17 +47,25 @@ body.callCentre {
       display: block;
     }
 
+    .simples-dialogue-96 {
+      display: none;
+    }
+
     &.moreInfoVisible{
       .moreInfoEmailBrochures{
         display: none;
       }
-      .simples-dialogue-83 {
+
+      .simples-dialogue-83,
+      .simples-dialogue-99 {
         display: none;
       }
+
       .simples-dialogue-84,
-      .simples-dialogue-85{
+      .simples-dialogue-85 {
         display: block;
       }
+      
       .noPromoText span {
         display: none;
       }
@@ -79,7 +92,8 @@ body.callCentre {
       .compare,
       .fund-details-html,
       .confirmation-other-products,
-      .simples-dialogue-41 {
+      .simples-dialogue-41,
+      .confirmation-complete.no-wimples {
         display: none;
       }
 
@@ -97,4 +111,10 @@ body.callCentre {
     }
   }
 
+}
+
+.simples {
+  .simples-dialog-referral {
+    display:none !important;
+  }
 }
