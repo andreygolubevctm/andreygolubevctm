@@ -1496,11 +1496,7 @@
 	function webChatHideFields() {
 		var isWebChat = webChatInProgress();
 
-		$('.simples-dialogue-26').toggleClass('hidden', isWebChat);
-		$('.simples-dialogue-37').toggleClass('hidden', isWebChat);
-		$('.simples-dialogue-76').toggleClass('hidden', isWebChat);
-		$('.health_situation_medicare').toggleClass('hidden', isWebChat);
-		$('.health_cover_details_incomeBasedOn').toggleClass('hidden', isWebChat);
+		$('.simples-dialogue-26, .simples-dialogue-37, .simples-dialogue-76, .health_situation_medicare, .health_cover_details_incomeBasedOn').toggleClass('hidden', isWebChat);
 
 	}
 
