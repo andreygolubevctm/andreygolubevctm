@@ -67,15 +67,15 @@ var healthFunds_QCH = {
 			<%-- Fund IDs become optional --%>
 			$('#clientMemberID input, #partnerMemberID input').setRequired(false);
 
-			<%-- Calendar for start cover --%>
-			if(_.has(meerkat.modules,'healthCoverStartDate')) {
-				meerkat.modules.healthCoverStartDate.setCoverStartRange(0, 29);
-			} else {
-				meerkat.modules.healthPaymentStep.setCoverStartRange(0, 29);
-			}
-
-			<%--allow weekend selection from the datepicker--%>
-			healthFunds_QCH.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
+            <%--fund offset check--%>
+            meerkat.modules.healthFundTimeOffset.onInitialise({
+                weekends: true,
+                coverStartRange: {
+                    min: 0,
+                    max: 29
+                },
+                renderPaymentDaysCb: healthFunds_QCH.renderPaymentDays
+            });
 
 			<%-- Payments --%>
 			meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':true, 	'fortnightly':true, 'monthly':true, 'quarterly':true, 'halfyearly':true, 'annually':true });

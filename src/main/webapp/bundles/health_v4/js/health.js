@@ -396,6 +396,7 @@
                 meerkat.modules.healthResults.initPage();
                 meerkat.modules.healthMoreInfo.initMoreInfo();
                 meerkat.modules.healthPriceComponent.initHealthPriceComponent();
+                meerkat.modules.healthPriceBreakdown.initHealthPriceBreakdown();
                 meerkat.modules.healthDualPricing.initDualPricing();
                 meerkat.modules.healthPyrrCampaign.initPyrrCampaign();
                 meerkat.modules.healthRefineResultsMobileMenu.initHealthRefineResultsMobileMenu();
@@ -798,6 +799,8 @@
                     contactType = 'inbound';
                 } else if ($('#health_simples_contactType_outbound').is(':checked')) {
                     contactType = 'outbound';
+				} else if ($('#health_simples_contactType_chat').is(':checked')) {
+					contactType = 'webchat';
                 }
 
                 $.extend(response, {

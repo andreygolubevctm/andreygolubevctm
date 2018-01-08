@@ -123,8 +123,10 @@
 <core_v1:js_template id="dual-pricing-template-sidebar">
 	<div class="dual-pricing-container {{ if (obj.dropDatePassed === true) { }}dropDatePassed{{ } }}">
 		<div class="current-pricing">
+			{{= priceBreakdownLHCCopy }}
 			{{= renderedPriceTemplate }}
 		</div>
+		<hr />
 		<div class="april-pricing">
 			{{= renderedAltPriceTemplate }}
 		</div>
