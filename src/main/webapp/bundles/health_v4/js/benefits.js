@@ -194,12 +194,10 @@
 
     function _setCoverTypeField() {
         // set the hidden field
-        var hasHospitalCover = $elements.hiddenHospitalCover.val() === 'Y',
-            hasExtrasCover = $elements.hiddenExtraCover.val() === 'Y',
-            isLimited = meerkat.modules.benefits.getHospitalType() === 'limited',
+        var isLimited = meerkat.modules.benefits.getHospitalType() === 'limited',
             coverType = 'C',
-            hospitalCount = hasHospitalCover ? meerkat.modules.benefitsModel.getHospitalCount() : 0,
-            extrasCount = hasExtrasCover ? meerkat.modules.benefitsModel.getExtrasCount() : 0;
+            hospitalCount = meerkat.modules.benefitsSwitch.isHospitalOn() ? meerkat.modules.benefitsModel.getHospitalCount() : 0,
+            extrasCount = meerkat.modules.benefitsSwitch.isExtrasOn() ? meerkat.modules.benefitsModel.getExtrasCount() : 0;
 
         // C = extras AND (hospital OR limited)
         if (extrasCount > 0 && (hospitalCount > 0 || isLimited)) {
