@@ -4,6 +4,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.safety.Whitelist;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -25,6 +26,17 @@ public class Functions {
     public static final Function<String, String> stripHtml = s -> Optional.ofNullable(s)
             .map(htmlString -> Jsoup.clean(htmlString, "", Whitelist.none(), new Document.OutputSettings().prettyPrint(false)))
             .orElse("");
+
+    /**
+     * Function to return a String as a BigDecimal, or if the String cannot be parsed, return {@link BigDecimal#ZERO}
+     */
+    public static final Function<String, BigDecimal> bigDecimalOrZero = s -> {
+        try {
+            return new BigDecimal(s);
+        } catch (NumberFormatException nfe) {
+            return BigDecimal.ZERO;
+        }
+    };
 
     private Functions() { /* Private constructor to prevent instantiation. Intentionally Empty. */}
 }

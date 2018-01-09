@@ -3,6 +3,7 @@ package com.ctm.web.email;
 import com.google.common.collect.ImmutableList;
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
@@ -37,6 +38,17 @@ public class FunctionsTest {
         List<String> result = Functions.stripHtmlFromStrings.apply(Arrays.asList(testStrings));
 
         assertThat(result, equalTo(expectedResult));
+    }
+
+
+    @Test
+    public void givenAnInvalidBigDecimalString_thenReturnZero() {
+        assertThat(Functions.bigDecimalOrZero.apply("NaN"), equalTo(BigDecimal.ZERO));
+    }
+
+    @Test
+    public void givenAvalidBigDecimalString_thenReturnAsBigDecimal() {
+        assertThat(Functions.bigDecimalOrZero.apply("3.14"), equalTo(BigDecimal.valueOf(3.14)));
     }
 
 }
