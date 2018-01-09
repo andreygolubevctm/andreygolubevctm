@@ -59,7 +59,7 @@ public class HealthModelTranslator implements EmailTranslator {
     @Override
     public void setVerticalSpecificFields(EmailRequest emailRequest, HttpServletRequest request, Data data) throws ConfigSettingException, DaoException {
         List<String> providerName = emailUtils.buildParameterList(request, "rank_providerName");
-        List<String> premiumLabel = Functions.stripHtmlFromStrings.apply(emailUtils.buildParameterList(request, "rank_premiumText"));
+        List<String> premiumLabel = EmailFunctions.stripHtmlFromStrings.apply(emailUtils.buildParameterList(request, "rank_premiumText"));
         List<String> providerCodes = emailUtils.buildParameterList(request, "rank_provider");
         List<String> premium = emailUtils.buildParameterList(request, "rank_premium");
         String gaclientId = emailUtils.getParamFromXml(data.getXML(), "gaclientid", "/health/");
@@ -71,7 +71,7 @@ public class HealthModelTranslator implements EmailTranslator {
         emailRequest.setPremiumFrequency(request.getParameter("rank_frequency0"));
         emailRequest.setGaClientID(gaclientId);
 
-        List<BigDecimal> premiumDiscountPercentage = emailUtils.buildParameterList(request, "rank_premiumDiscountPercentage").stream().map(Functions.bigDecimalOrZero).collect(Collectors.toList());
+        List<BigDecimal> premiumDiscountPercentage = emailUtils.buildParameterList(request, "rank_premiumDiscountPercentage").stream().map(EmailFunctions.bigDecimalOrZero).collect(Collectors.toList());
         emailRequest.setPremiumDiscountPercentage(premiumDiscountPercentage);
 
         PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
@@ -85,7 +85,7 @@ public class HealthModelTranslator implements EmailTranslator {
         String hospitalPdsUrl = request.getParameter("rank_hospitalPdsUrl0");
 
         List<String> altPremium = emailUtils.buildParameterList(request, "rank_altPremium");
-        List<String> altPremiumLabel = Functions.stripHtmlFromStrings.apply(emailUtils.buildParameterList(request, "rank_altPremiumText"));
+        List<String> altPremiumLabel = EmailFunctions.stripHtmlFromStrings.apply(emailUtils.buildParameterList(request, "rank_altPremiumText"));
 
         HealthEmailModel healthEmailModel = new HealthEmailModel();
         healthEmailModel.setBenefitCodes(benefitCodes);
@@ -112,7 +112,7 @@ public class HealthModelTranslator implements EmailTranslator {
         IntStream.range(EmailUtils.START, EmailUtils.END).forEach(value -> quoteRefs.add(transactionId.toString()));
         emailRequest.setQuoteRefs(quoteRefs);
 
-        List<String> specialOffers = Functions.stripHtmlFromStrings.apply(emailUtils.buildParameterList(request, "rank_specialOffer"));
+        List<String> specialOffers = EmailFunctions.stripHtmlFromStrings.apply(emailUtils.buildParameterList(request, "rank_specialOffer"));
         emailRequest.setProviderSpecialOffers(specialOffers);
         setDataFields(emailRequest, data);
     }
