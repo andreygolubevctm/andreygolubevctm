@@ -554,6 +554,20 @@
         return $paymentCalendar.val();
 	}
 
+	function setCoverStartValues() {
+        // Change min and max dates for start date picker based on current stored values from healthPaymentStep module which can change based on selected fund
+        var min = settings.minStartDate,
+			max = settings.maxStartDate;
+
+        $paymentCalendar
+            .removeRule('earliestDateEUR')
+            .removeRule('latestDateEUR')
+            .addRule('earliestDateEUR', min, 'Please enter a date on or after ' + min)
+            .addRule('latestDateEUR', max, 'Please enter a date on or before ' + max)
+            .datepicker('setStartDate', min)
+            .datepicker('setEndDate', max);
+	}
+
 	function toggleCouponSeenText() {
         var Coupon = meerkat.modules.coupon,
 			$couponCampaignSeen = $('.coupon-campaign-seen'),
@@ -598,6 +612,7 @@
         setCoverStartToNextDay: setCoverStartToNextDay,
 		setCoverStartDaysOfWeekDisabled: setCoverStartDaysOfWeekDisabled,
         getCoverStartVal: getCoverStartVal,
+		setCoverStartValues: setCoverStartValues,
         toggleCouponSeenText: toggleCouponSeenText
 	});
 
