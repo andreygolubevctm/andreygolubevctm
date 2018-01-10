@@ -43,7 +43,7 @@
 	    setDefault();
     }
 
-    function onBeforeEnter() {
+    function setValues() {
 	    var min = settings.minStartDate,
 		    max = settings.maxStartDate;
 
@@ -154,7 +154,7 @@
     meerkat.modules.register('healthCoverStartDate', {
         init :               init,
 	    onInitialise :       onInitialise,
-	    onBeforeEnter :      onBeforeEnter,
+        setValues: setValues,
 	    setCoverStartRange : setCoverStartRange,
 	    enable :             enable,
 	    disable :            disable,
