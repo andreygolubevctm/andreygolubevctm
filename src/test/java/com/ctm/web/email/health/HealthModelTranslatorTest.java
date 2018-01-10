@@ -248,6 +248,17 @@ public class HealthModelTranslatorTest {
         assertThat(emailRequest.getProviderSpecialOffers(), equalTo(expected));
     }
 
+    @Test
+    public void givenDataXml_thenSetGaClientIDInEmailRequest() throws ConfigSettingException, DaoException {
+
+        EmailRequest emailRequest = new EmailRequest();
+        MockHttpServletRequest request = getMockHttpServletRequest();
+
+        testInstance.setVerticalSpecificFields(emailRequest, request, new DataStub());
+        assertThat(emailRequest.getGaClientID(), equalTo(DataStub.STUB_GA_CLIENT_ID));
+
+    }
+
     private MockHttpServletRequest getMockHttpServletRequest() {
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.setAttribute("verticalCode", HealthModelTranslator.VERTICAL_CODE);
@@ -263,9 +274,14 @@ public class HealthModelTranslatorTest {
     }
 
     private static class DataStub extends Data {
+        private static final String STUB_GA_CLIENT_ID = "1139575501.1515372592";
+        private static final String STUB_DATA_XML = String.format("<this><gaclientid>%1$s</gaclientid></this>", STUB_GA_CLIENT_ID);
 
+        @Override
+        public String getXML() {
+            return STUB_DATA_XML;
+        }
     }
-
     @Configuration
     public static class TestConfiguration {
 
