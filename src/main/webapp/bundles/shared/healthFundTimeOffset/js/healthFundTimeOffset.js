@@ -29,7 +29,8 @@
         _fn = {
             setDaysOfWeekDisabled: 'setDaysOfWeekDisabled',
             setToNextDay: 'setToNextDay',
-            getVal: 'getVal'
+            getVal: 'getVal',
+            setValues: 'setValues'
         },
         _template = null,
         _submitCB = null,
@@ -51,7 +52,8 @@
         _fn = {
             setDaysOfWeekDisabled: 'set'+extraFuncString+'DaysOfWeekDisabled',
             setToNextDay: 'set'+extraFuncString+'ToNextDay',
-            getVal: 'get'+extraFuncString+'Val'
+            getVal: 'get'+extraFuncString+'Val',
+            setValues: 'set'+extraFuncString+'Values'
         };
     }
 
@@ -77,6 +79,7 @@
             }
 
             CoverStartDate.setCoverStartRange(_settings.coverStartRange.min, _settings.coverStartRange.max);
+            CoverStartDate[_fn.setValues]();
         });
     }
 

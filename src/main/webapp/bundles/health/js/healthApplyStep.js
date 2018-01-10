@@ -45,18 +45,6 @@
 
     // Get the selected benefits from the forms hidden fields (the source of truth! - not the checkboxes)
     function onBeforeEnter(){
-        // Change min and max dates for start date picker based on current stored values from healthPaymentStep module which can change based on selected fund
-        var min = meerkat.modules.healthPaymentStep.getSetting('minStartDate');
-        var max = meerkat.modules.healthPaymentStep.getSetting('maxStartDate');
-
-        $paymentDetailsStart
-            .removeRule('earliestDateEUR')
-            .removeRule('latestDateEUR')
-            .addRule('earliestDateEUR', min, 'Please enter a date on or after ' + min)
-            .addRule('latestDateEUR', max, 'Please enter a date on or before ' + max)
-            .datepicker('setStartDate', min)
-            .datepicker('setEndDate', max);
-
         // validate at least 1 contact number is entered
         $('#health_application_mobileinput').addRule('requireOneContactNumber', true, 'Please include at least one phone number');
 
