@@ -172,7 +172,7 @@
         orderForm.orderHeader.orderLine.orderAddresses[0] = orderAddress;
 
         // Add in custom reason code
-        orderForm.orderHeader.reasonCode = 'ToysHnc2018Jan';
+        orderForm.orderHeader.reasonCode = currentCampaign.campaignCode;
 
         return orderForm;
     }

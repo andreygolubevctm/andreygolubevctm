@@ -10,6 +10,7 @@
     function init(){
         $(document).ready(function () {
             $elements = {
+                primaryFirstname: $('#health_application_primary_firstname'),
                 paymentMedicareColour: $("#health_payment_medicare_colour"),
                 paymentMedicareCover: $("#health_payment_medicare_cover"),
                 medicareYellowMessage: $("#health_medicareDetails_yellowCardMessage"),
@@ -23,7 +24,6 @@
                 healthSituationState: $('#health_situation_state'),
                 healthProductHospitalClass: $('#health_application_productClassification_hospital'),
                 healthProductExtrasClass: $('#health_application_productClassification_extras')
-
             };
 
             $unitElements = {
@@ -240,11 +240,16 @@
         $elements.healthProductExtrasClass.val(returnVal);
     }
 
+    function getPrimaryFirstname() {
+        return $elements.primaryFirstname.val();
+    }
+
     meerkat.modules.register('healthApplyStep', {
         init: init,
         onBeforeEnter: onBeforeEnter,
         onInitialise: onInitialise,
-        testStatesParity: testStatesParity
+        testStatesParity: testStatesParity,
+        getPrimaryFirstname: getPrimaryFirstname
     });
 
 })(jQuery);

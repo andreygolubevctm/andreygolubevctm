@@ -49,7 +49,11 @@
                                 {{= freq === 'fortnightly' ? 'per f/night' : '' }}
                                 {{= freq === 'weekly' ? 'per week' : '' }}
                             </span>
-                            <div class="lhcText">{{= typeof mode === "undefined" || mode != "lhcInc" ? textLhcFreePricing : textPricing }}</div>
+							{{ if (!obj.hasOwnProperty('priceBreakdown') || (obj.hasOwnProperty('priceBreakdown') && !obj.priceBreakdown)) { }}
+                            	<div class="lhcText">{{= typeof mode === "undefined" || mode != "lhcInc" ? textLhcFreePricing : textPricing }}</div>
+							{{ } else { }}
+								{{= meerkat.modules.healthPriceBreakdown.renderTemplate(property, freq, false) }}
+							{{ } }}
                         </span>
 					{{ } else { }}
 					<div class="frequencyAmount comingSoon">New price not yet released</div>

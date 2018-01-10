@@ -51,6 +51,8 @@
     "shared/bootstrapSwitch",
     "shared/affiliateProperties",
     "shared/competition",
-    "shared/mobileFiltersMenu"
+    "shared/mobileFiltersMenu",
+    "shared/healthFundTimeOffset",
+    "shared/healthPriceBreakdown"
   ]
 }

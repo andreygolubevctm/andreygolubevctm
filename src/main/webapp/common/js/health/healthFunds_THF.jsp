@@ -155,6 +155,16 @@ var healthFunds_THF = {
 		}
 		healthFunds_THF.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '0,6');
 
+        <%--fund offset check--%>
+        meerkat.modules.healthFundTimeOffset.onInitialise({
+            weekends: false,
+            coverStartRange: {
+                min: 0,
+                max: 60
+            },
+            renderPaymentDaysCb: healthFunds_THF.renderPaymentDays
+        });
+
 		<%-- elegibility --%>
 		healthFunds_THF.unionMembershipFld.on('change', function unionMembershipChange() {
 			employmentRow.slideUp(200);

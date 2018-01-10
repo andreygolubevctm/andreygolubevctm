@@ -11,7 +11,8 @@
         $elements = {
     	    input : null,
 	        row : null
-        };
+        },
+		_weekends = true;
 
     function init(){
         $(document).ready(function () {
@@ -62,6 +63,21 @@
 		    $elements.input.datepicker("update", new Date());
 	    }
     }
+
+    function setToNextDay() {
+    	var today = new Date(),
+			nextDay = today.setDate(today.getDate() + 1);
+
+    	nextDay = new Date(nextDay);
+
+    	var day = nextDay.getDay();
+
+    	if (!_weekends && _.indexOf([0,6], day) !== -1) {
+    		nextDay.setDate(nextDay.getDate() + (day === 0 ? 1 : 2));
+		}
+
+    	$elements.input.datepicker("update", nextDay);
+	}
 
     function flush() {
 	    $elements.input.val('');
@@ -129,6 +145,12 @@
 		return {name:$elements.input.attr("id"),value:$elements.input.val()};
 	}
 
+    function setDaysOfWeekDisabled(daysOfWeekDisabled) {
+		_weekends = daysOfWeekDisabled === "";
+
+        $elements.input.datepicker('setDaysOfWeekDisabled', daysOfWeekDisabled);
+	}
+
     meerkat.modules.register('healthCoverStartDate', {
         init :               init,
 	    onInitialise :       onInitialise,
@@ -141,7 +163,9 @@
 	    getVal :             getVal,
 	    getNameValue :       getNameValue,
 	    updateValidationSelectorsPaymentGateway : updateValidationSelectorsPaymentGateway,
-	    resetValidationSelectorsPaymentGateway : resetValidationSelectorsPaymentGateway
+	    resetValidationSelectorsPaymentGateway : resetValidationSelectorsPaymentGateway,
+		setDaysOfWeekDisabled: setDaysOfWeekDisabled,
+        setToNextDay: setToNextDay
 
     });
 

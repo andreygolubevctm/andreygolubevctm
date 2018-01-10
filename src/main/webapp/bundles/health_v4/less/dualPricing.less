@@ -736,17 +736,29 @@ body[data-step="results"]:not(.moreInfoVisible) {
     color: @gray;
   }
 
+  .productSummary {
+    p {
+      &.price-breakdown-lhc-copy {
+        margin-bottom: 9px;
+      }
+    }
+  }
+
+  hr {
+    margin-top: 9px;
+    margin-bottom: 9px;
+  }
+
   @media (@xs-only) {
     .current-pricing {
       .clearfix;
 
       .companyLogo {
         float: left;
-        width: 40%;
       }
 
       .price.premium {
-        float: left;
+        float: right;
         width: 60%;
       }
 
