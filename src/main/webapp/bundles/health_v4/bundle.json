@@ -52,6 +52,7 @@
     "shared/affiliateProperties",
     "shared/competition",
     "shared/mobileFiltersMenu",
-    "shared/addressLookupV2"
+    "shared/addressLookupV2",
+    "shared/healthPriceBreakdown"
   ]
 }

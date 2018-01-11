@@ -47,6 +47,7 @@
                 <input type="hidden" id="${pageSettings.getVerticalCode()}_application_productClassification_hospital" name="${pageSettings.getVerticalCode()}_application_productClassification_hospital" value="">
                 <input type="hidden" id="${pageSettings.getVerticalCode()}_application_productClassification_extras" name="${pageSettings.getVerticalCode()}_application_productClassification_extras" value="">
 
+                <health_v4:price_breakdown_templates />
                 <health_v4_agr:modal />
             </jsp:body>
         </form_v3:fieldset_columns>

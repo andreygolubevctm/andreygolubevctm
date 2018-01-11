@@ -70,13 +70,19 @@ public class CouponService {
 
 	public Coupon filterCouponForUser(CouponRequest couponRequest, Data data) throws DaoException {
 		CouponRulesService couponRulesService = new CouponRulesService();
-		List<Coupon> coupons = getActiveCoupons(couponRequest.styleCodeId, couponRequest.verticalId,
-				couponRequest.couponChannel, DateUtils.toLocalDateTime(couponRequest.effectiveDate));
 
-		if(!coupons.isEmpty()){
-			for(Coupon coupon : coupons){
-				// Only non-exclusive coupon can be filtered and shown
-				if (!coupon.isExclusive()){
+		if (couponRequest.couponId > 0) {
+			Coupon coupon = getCouponById(couponRequest);
+			couponDao.setRulesForCoupon(coupon);
+			if (couponRulesService.filterAllRules(coupon, data)) {
+				return coupon;
+			}
+		} else {
+			List<Coupon> coupons = getActiveCoupons(couponRequest.styleCodeId, couponRequest.verticalId,
+					couponRequest.couponChannel, DateUtils.toLocalDateTime(couponRequest.effectiveDate));
+
+			if (!coupons.isEmpty()) {
+				for (Coupon coupon : coupons) {
 					couponDao.setRulesForCoupon(coupon);
 					if (couponRulesService.filterAllRules(coupon, data)) {
 						return coupon;
@@ -84,6 +90,7 @@ public class CouponService {
 				}
 			}
 		}
+
 		return new Coupon();
 	}
 
