@@ -29,7 +29,7 @@ Handling of the callback popup
 		$contactDetailsNumberInput,
 		$contactDetailsNumberHiddenInput,
 		_isClosed = false,
-		aedtOffset = 600;
+		aestOffset = 600;  // this offset is AEST, not the AEDT offset... as it would be 660 while daylight saving is in play
 
 	var events = {
         callbackModal: {
@@ -174,6 +174,16 @@ Handling of the callback popup
 
 				_initFields();
 				updateCBModalFields();
+
+				getCallCentreTimes();
+				initComplete = true;
+
+				if(storeOpenStatus(getShortDayOfWeekName(day.getDay())) === 1) {
+					$('#callBackNow span').html('Call me now');
+				} else {
+					$('#callBackNow span').html('Call me ASAP');
+				}
+
 			}
 
 		});
@@ -181,7 +191,7 @@ Handling of the callback popup
 
     function _add30Mins(twelveHrTimeStr) {
         var now = new Date();
-        now.setMinutes(now.getMinutes()+now.getTimezoneOffset()+aedtOffset);
+        now.setMinutes(now.getMinutes()+now.getTimezoneOffset()+aestOffset);
         var suppliedTime = convertTo24Hour(twelveHrTimeStr);
         var timePlus30 = Date.parse(meerkat.modules.dateUtils.format(now, "YYYY/MM/DD") + " " + suppliedTime);
         timePlus30 = new Date(timePlus30);
@@ -380,7 +390,7 @@ Handling of the callback popup
 
 			dayName = getShortDayOfWeekName((day.getDay() + i) % 7);
 
-			if(checkOpen(dayName)) {
+			if(checkStartTimeSupplied(dayName)) {
 				var dayDate = new Date();
 				dayDate.setDate(dayDate.getDate() + i);
 
@@ -397,7 +407,8 @@ Handling of the callback popup
 		}
 	}
 
-	function checkOpen(dayName) {
+	// this just checks if the call center opens on a particular day - not if the call centre is currently open or has already closed
+	function checkStartTimeSupplied(dayName) {
 		var open = false;
 		$.each(hours, function() {
 			if(this.description.substring(0, 3) === dayName) {
@@ -409,14 +420,58 @@ Handling of the callback popup
 		return open;
 	}
 
+	// This Checks if a store is 'Yet to open'/'Open'/'Closed for the day'/'Does not open today'
+	// usage: var storeOpenStsVal = storeOpenStatus('Wed')
+	// 0, 1, 2, 3, 4  :    error, open, no hours supplied, yetToOpen, shut
+	function storeOpenStatus(dayName) {
+		var dailyStatus = 0;
+		$.each(hours, function() {
+			if(this.description.substring(0, 3) === dayName) {
+				if(this.startTime) {
+
+					var now = new Date();
+
+					now.setMinutes(now.getMinutes()+now.getTimezoneOffset()+aestOffset);
+
+					var startTime = convertTo24Hour(this.startTime);
+					var endTime = convertTo24Hour(this.endTime);
+					var openingTime = Date.parse(meerkat.modules.dateUtils.format(now, "YYYY/MM/DD") + " " + startTime);
+					var closingSoon = Date.parse(meerkat.modules.dateUtils.format(now, "YYYY/MM/DD") + " " + endTime);
+
+					// deduct 30 minutes so that people are not calling a few minutes before closing time
+					closingSoon.setMinutes(closingSoon.getMinutes() - 30);
+
+					if (now >= openingTime) {
+
+						if (now < closingSoon) {
+							// the call centre is open now
+							dailyStatus = 1;
+						} else {
+							// the call centre has closed for the day or is closing within the next half hour
+							dailyStatus = 4;
+						}
+					} else {
+						// the call centre has not opened yet
+						dailyStatus = 3;
+					}
+
+				} else {
+					//no opening hours supplied for the specified day
+					dailyStatus = 2;
+				}
+			}
+		});
+		return dailyStatus;
+	}
+
 	function getDailyHours(dayName) {
 		var startTime, endTime, currentTime,
 		    startOffset = '00',
 			now = new Date(),
 			options = []; //(timezone/60) - 10;
 
-		// set to brisbane AEDT
-		now.setMinutes(now.getMinutes()+now.getTimezoneOffset()+aedtOffset);
+		// set to brisbane AEST
+		now.setMinutes(now.getMinutes()+now.getTimezoneOffset()+aestOffset);
 
 		$.each(hours, function() {
 
