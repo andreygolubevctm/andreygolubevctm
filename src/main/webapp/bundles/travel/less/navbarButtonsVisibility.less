@@ -13,6 +13,10 @@
 		}
 	}
 
+	.navbar__travel-filters {
+		display: none;
+	}
+
 	.sortbar-container {
 		display: none;
 	}
@@ -54,6 +58,16 @@
 			#navbar-main {
 				//max-height: (@navbar-height * 2);
 				max-height: 100px; //TODO: tweak for the sort bar.
+			}
+		}
+
+		@media screen and (@xs-only) {
+			.navbar__travel-filters {
+				display: block;
+
+				.navbar-mobile {
+					border-top: 1px solid @theme-light;
+				}
 			}
 		}
 	}

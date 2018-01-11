@@ -8,7 +8,7 @@
     {{ var module = meerkat.modules.healthResultsTemplate; }}
     {{ for(var i = 0; i < featureIterator.length; i++) { var ft = module.getItem(obj, featureIterator[i]); }}
     {{ if(ft.classStringForInlineLabel.indexOf('more-info-only') != -1) { continue; } }}
-    <div class="cell {{= ft.classString }}">
+    <div class="cell {{= ft.classString }}" title="Click on each benefit to learn about what level of cover this policy offers.">
         {{ if(ft.displayItem) { }}
         {{ if(ft.type == 'category') { }}
         {{ var resultPath = ft.resultPath; }}

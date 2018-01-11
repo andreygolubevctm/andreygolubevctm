@@ -19,8 +19,6 @@
 
     function initHealthPopularProducts() {
         $(document).ready(function() {
-            if (!meerkat.modules.splitTest.isActive(3)) return;
-
             _isEnabled = meerkat.site.showPopularProducts;
 
             if (!isEnabled()) return;
@@ -50,7 +48,8 @@
             deciding: $('.results-popular-products-banner .popular-products-deciding'),
             button: $('.results-popular-products-banner button'),
             popularProducts: $(':input[name=health_popularProducts]'),
-            resultsContainer: $('.resultsContainer')
+            resultsContainer: $('.resultsContainer'),
+            purchased: $(':input[name=health_popularProducts_purchased]')
         };
     }
 
@@ -103,13 +102,26 @@
         }
     }
 
+    function updatePurchased() {
+        if (isEnabled()) {
+            // Update if popular products tag has been shown
+            if (_tagShown) {
+                var selectedProduct = Results.getSelectedProduct();
+
+                // Set value to be popular products rank otherwise 0 for non popular product
+                $elements.purchased.val(selectedProduct.info.popularProduct ? selectedProduct.info.popularProductsRank : 0);
+            }
+        }
+    }
+
     meerkat.modules.register('healthPopularProducts', {
         initHealthPopularProducts: initHealthPopularProducts,
         isEnabled: isEnabled,
         show: show,
         hide: hide,
         setPopularProducts: setPopularProducts,
-        injectTag: injectTag
+        injectTag: injectTag,
+        updatePurchased: updatePurchased
     });
 
 })(jQuery);

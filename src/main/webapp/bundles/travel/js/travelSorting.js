@@ -76,9 +76,10 @@
 	}
 
 
-	function initSorting() {
-		if(!initialised) {
+	function initSorting(flag) {
+		if(!initialised || flag) {
 			initialised = true;
+            $sortElements = $('[data-sort-type]');
 
 			//debug('[travelSorting]','initSorting now');
 

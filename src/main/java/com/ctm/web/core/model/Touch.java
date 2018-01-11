@@ -20,6 +20,7 @@ public class Touch extends AbstractJsonModel {
 
 	private TouchProductProperty touchProductProperty;
 	private TouchCommentProperty touchCommentProperty;
+	private TouchLifebrokerProperty touchLifebrokerProperty;
 
 	public TouchProductProperty getTouchProductProperty() {
 		return touchProductProperty;
@@ -35,6 +36,14 @@ public class Touch extends AbstractJsonModel {
 
 	public void setTouchCommentProperty(TouchCommentProperty touchCommentProperty) {
 		this.touchCommentProperty = touchCommentProperty;
+	}
+
+	public TouchLifebrokerProperty getTouchLifebrokerProperty() {
+		return touchLifebrokerProperty;
+	}
+
+	public void setTouchLifebrokerProperty(TouchLifebrokerProperty touchLifebrokerProperty) {
+		this.touchLifebrokerProperty = touchLifebrokerProperty;
 	}
 
 	@JsonFormat(shape = JsonFormat.Shape.OBJECT)
@@ -66,7 +75,8 @@ public class Touch extends AbstractJsonModel {
         MORE_INFO("More Info", "MoreInfo"),
 		REMEMBER_ME("RememberMe","RememberMe"),
 		BP_EMAIL_STARTED("Email sent started", "BPSTART"),
-		BP_EMAIL_END("Email sent started", "BPEND");
+		BP_EMAIL_END("Email sent started", "BPEND"),
+		SIMPLES_LIFEBROKER_LEAD("Simples Lead to Lifebroker", "SLBL");
 
 		private final String description, code;
 

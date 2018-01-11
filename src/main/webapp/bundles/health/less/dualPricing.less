@@ -1,0 +1,128 @@
+body[data-step="results"] {
+  .resultInsert .productSummary.hasDualPricing {
+    height: 240px;
+    @media(@xs-only) {
+      height: 210px;
+    }
+
+    &.compressed {
+      .companyLogo {
+        display: none;
+      }
+    }
+
+    .dual-pricing-container {
+
+      @media(@sm) {
+        margin-top: 10px;
+      }
+
+      .april-pricing {
+        border-top: 1px solid @dual-pricing-border-colour;
+        padding-top: 10px;
+        margin-top: 10px;
+
+
+        .deadline,
+        .frequencyAmount,
+        .dollarSign,
+        .cents {
+          color: @dual-pricing-border-colour;
+        }
+
+        .deadline,
+        .dual-pricing-learn-more {
+          @media(@xs-only) {
+            font-size: 12px;
+          }
+        }
+
+        .price.premium {
+          padding-right: 15px;
+
+          .frequencyAmount {
+            font-size: 28px;
+            font-family: inherit;
+            text-align:right;
+
+            @media(@xs-only) {
+              text-align:center;
+            }
+          }
+        }
+
+        .dollarSign {
+          font-size: 15px;
+        }
+
+        .cents {
+          font-size: 14px;
+        }
+
+        .frequencyTitle,
+        .lhcText {
+          display: none;
+        }
+
+        .altPriceContainer {
+          width: 50%;
+          display: inline-block;
+
+          @media (@sm-only) {
+            width: 100%;
+          }
+        }
+
+        .altPriceDetailsContainer {
+          width: 45%;
+          display: inline-block;
+
+          @media (@sm-only) {
+            width: 100%;
+            text-align: center;
+          }
+        }
+      }
+    }
+
+    .current-pricing {
+      .frequencyTitle {
+        text-transform: lowercase;
+      }
+    }
+  }
+}
+
+body[data-step=apply],
+body[data-step=payment] {
+  .policySummary-sidebar.hasDualPricing {
+    .current-pricing {
+      .quarterly,
+      .halfyearly {
+        .frequencyAmount {
+          @media (@md) {
+            line-height: 38px;
+          }
+
+          .frequencyTitle {
+            top: -8px;
+            left: 0;
+          }
+        }
+      }
+
+      @media (@md-only) {
+        .annually {
+          .frequencyAmount {
+            line-height: 38px;
+
+            .frequencyTitle {
+              top: -8px;
+              left: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+}

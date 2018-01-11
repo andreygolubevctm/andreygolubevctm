@@ -23,6 +23,7 @@ body.callCentre {
       }
     }
 
+    .simples-dialogue-49,
     .simples-dialogue-86 {
       display: block;
     }
@@ -34,12 +35,20 @@ body.callCentre {
     .simples-dialogue-82 {
       display: block;
     }
+
+    .simples-dialogue-49 {
+      display: none;
+    }
   }
 
   &[data-step="results"] {
 
     .simples-dialogue-83 {
       display: block;
+    }
+
+    .simples-dialogue-96 {
+      display: none;
     }
 
     &.moreInfoVisible{
@@ -79,7 +88,8 @@ body.callCentre {
       .compare,
       .fund-details-html,
       .confirmation-other-products,
-      .simples-dialogue-41 {
+      .simples-dialogue-41,
+      .confirmation-complete.no-wimples {
         display: none;
       }
 
@@ -97,4 +107,10 @@ body.callCentre {
     }
   }
 
+}
+
+.simples {
+  .simples-dialog-referral {
+    display:none !important;
+  }
 }

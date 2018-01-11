@@ -435,7 +435,7 @@
                     meerkat.modules.healthTaxTime.disableFastTrack();
                 }
                 meerkat.modules.healthResults.setCallCentreText();
-	            },
+            },
             onBeforeLeave: function beforeLeaveResultsStep(event) {
                 // Increment the transactionId
                 if (event.isBackward === true) {

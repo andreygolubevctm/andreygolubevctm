@@ -23,12 +23,6 @@
 
     <form_v4:fieldset legend="Payment Details" >
 
-        <c:if test="${isDualPriceActive eq true}">
-            <div class="alert alert-info">
-                Remember: Premiums will rise from <span class="pricingDate"></span>. You <b>must</b> select a cover start date <b>before <span class="pricingDate"></span></b> to be eligible for the lower rate.
-            </div>
-        </c:if>
-
         <div class="fundWarning alert alert-danger">
                 <%-- insert fund warning data --%>
         </div>
@@ -52,7 +46,7 @@
 
         <c:set var="fieldXpath" value="${xpath}/claims" />
         <form_v4:row fieldXpath="${fieldXpath}" label="Do you want to supply bank account details for claims to be paid into" className="health-payment_details-claims-group">
-            <field_v2:array_radio items="Y=Yes,N=No" xpath="${fieldXpath}" title="if you want to supply bank account details for claims to be paid into" required="true" className="health-payment_details-claims" id="${name}_claims"/>
+            <field_v2:array_radio items="Y=Yes,N=No" xpath="${fieldXpath}" title="if you want to supply bank account details for claims to be paid into" required="true" className="health-payment_details-claims" id="${name}_claims" additionalAttributes="data-attach='true'"/>
         </form_v4:row>
 
         <health_v4_payment:vouchers xpath="health/voucher" />

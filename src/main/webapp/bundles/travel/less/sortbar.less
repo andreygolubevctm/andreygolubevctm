@@ -30,10 +30,31 @@
 
 //Kind of hacking and overriding the modifications we made below to defaults that the navbar makes, in order to support grids inside the navbar.
 @media screen and (@xs-only) {
-	.sortbar-parent { padding-right: 0; }
-	.sortbar-children > ul.navbar-nav {
+	.navbar-inverse {
+		background-color: transparent !important;
+	}
+	.sortbar-parent {
 		padding-right: 0;
-		margin-right: 15px;
+		.sortbar-children {
+			margin-left: 0;
+			margin-right: 0;
+
+			ul.navbar-nav {
+				li {
+					a {
+						text-align: left !important;
+					}
+
+					&.active {
+						background-color: @theme-light;
+						[data-sort-dir='asc']:before, [data-sort-dir='desc']:before {
+							bottom: 18px;
+							margin-left: -80px;
+						}
+					}
+				}
+			}
+		}
 	}
 }
 
@@ -58,7 +79,7 @@
 	}
 }
 
-@media screen and (@sm) {
+@media screen and (@xs) {
 
 	.sortbar-children {
 
@@ -114,21 +135,21 @@
 				position: absolute;
 				width: 0;
 				height: 0;
-				bottom: 0;
-				left: 50%;
+				bottom: 25px;
+				left: 100%;
 				content: '';
 				margin-left: -@sortbar-arrow-width;
 				border-color: transparent;
 				border-style: solid;
 				border-width: 0 @sortbar-arrow-width @sortbar-arrow-width;
-				border-bottom-color: @sortbar-arrow-asc-color;
+				border-bottom-color: @sortbar-arrow-desc-color;
 			}
 			[data-sort-dir='desc']:before {
 				position: absolute;
 				width: 0;
 				height: 0;
-				bottom: -@sortbar-arrow-width;
-				left: 50%;
+				bottom: 25px;
+				left: 100%;
 				content: '';
 				margin-left: -@sortbar-arrow-width;
 				border-color: transparent;

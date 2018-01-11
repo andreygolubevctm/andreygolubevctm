@@ -2,6 +2,8 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
+<agg_v1:popular_products_settings vertical="health" />
+
 <c:if test="${not empty showPopularProducts and showPopularProducts eq true}">
     <core_v1:js_template id="results-popular-products-banner-template">
         <div class="results-popular-products-banner invisible">

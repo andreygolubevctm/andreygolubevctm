@@ -29,6 +29,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.security.GeneralSecurityException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,12 +87,12 @@ public class RememberMeServiceTest {
     }
 
     @Test
-    public void testRememberMeCookieNotPresent() throws DaoException, ConfigSettingException {
+    public void testRememberMeCookieNotPresent() throws DaoException, ConfigSettingException, GeneralSecurityException {
         final String verticalCode = "health";
         when(request.getCookies()).thenReturn(new Cookie[]{new Cookie("a", "a"), new Cookie("b", "b")});
         PowerMockito.when(SettingsService.getPageSettingsForPage(request, verticalCode)).thenReturn(pageSettings);
         when(pageSettings.getSettingAsBoolean("rememberMeEnabled")).thenReturn(true);
-        assertFalse(service.hasRememberMe(request, "health"));
+         assertFalse(service.hasRememberMe(request, "health"));
     }
 
     @Test
@@ -112,7 +113,6 @@ public class RememberMeServiceTest {
         verify(response, only()).addCookie(argumentCaptor.capture());
         final Cookie cookie = argumentCaptor.getValue();
         assertEquals("/", cookie.getPath());
-        assertEquals(getTransactionId(), cookie.getValue());
         assertEquals(2592000, cookie.getMaxAge()); // 30 days
     }
 
@@ -127,7 +127,6 @@ public class RememberMeServiceTest {
 
         final Cookie cookie = argumentCaptor.getValue();
         assertEquals("/", cookie.getPath());
-        assertEquals(getTransactionId(), cookie.getValue());
         assertEquals(2592000, cookie.getMaxAge()); // 30populateDataBucket days
         assertTrue(cookie.getSecure());
         assertEquals("secure.comparethemarket.com.au", cookie.getDomain());
@@ -148,7 +147,8 @@ public class RememberMeServiceTest {
 
         final Cookie cookie = argumentCaptor.getValue();
         assertEquals(2592000, cookie.getMaxAge()); // 30 days
-        assertEquals("12345678", StringEncryption.decrypt(RememberMeService.getSecretKey(), cookie.getValue()));
+        String decryptValue = StringEncryption.decrypt(RememberMeService.getSecretKey(), cookie.getValue());
+        assertEquals("12345678", decryptValue.substring(0,decryptValue.indexOf(":")));
     }
 
     @Test
@@ -184,6 +184,7 @@ public class RememberMeServiceTest {
     }
 
     private String getTransactionId() throws GeneralSecurityException {
-        return StringEncryption.encrypt(RememberMeService.getSecretKey(), "12345678");
+       // return StringEncryption.encrypt(RememberMeService.getSecretKey(), "12345678");
+        return StringEncryption.encrypt(RememberMeService.getSecretKey(), "12345678"+":"+ LocalDateTime.now().toString());
     }
 }

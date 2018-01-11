@@ -4,6 +4,7 @@ import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.SessionException;
 import com.ctm.web.core.model.session.SessionData;
+
 import com.ctm.web.core.security.StringEncryption;
 import com.ctm.web.core.services.EnvironmentService;
 import com.ctm.web.core.services.SessionDataServiceBean;
@@ -22,6 +23,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.security.GeneralSecurityException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -75,7 +78,7 @@ public class RememberMeService {
     }
 
     private static void addCookie(HttpServletResponse response, final Long transactionId, final String cookieName) throws GeneralSecurityException {
-        final Cookie cookie = new Cookie(cookieName, StringEncryption.encrypt(SECRET_KEY, transactionId.toString()));
+        final Cookie cookie = new Cookie(cookieName, StringEncryption.encrypt(SECRET_KEY, transactionId.toString()+":"+LocalDateTime.now().toString()));
         cookie.setMaxAge(MAX_AGE); // 30 days
         cookie.setPath("/");
         cookie.setHttpOnly(true);
@@ -128,6 +131,70 @@ public class RememberMeService {
         return false;
     }
 
+
+    /**
+     * Used in health_quote_v2.jsp
+     */
+    @SuppressWarnings("unused")
+    public Boolean hasUserVisitedInLast30Minutes(final HttpServletRequest request,
+                                                final String vertical) throws DaoException, ConfigSettingException, GeneralSecurityException {
+        try {
+            if (isRememberMeEnabled(request, vertical)) {
+                Cookie cookie = getRememberMeCookie(request, vertical);
+                if (cookie != null && !cookie.getValue().isEmpty()) {
+                    String cookieValue = StringEncryption.decrypt(SECRET_KEY, cookie.getValue());
+                    String transactionId = getTransactionIdFromCookie(vertical, request).orElse(null);
+                    if(cookieValue.indexOf(":") > 0){
+
+                        String createdTime = cookieValue.substring(cookieValue.indexOf(":")+1,cookieValue.length());
+                        LocalDateTime dateTime = LocalDateTime.parse(createdTime);
+
+                        Long createdEpochTime = dateTime.atZone(ZoneId.systemDefault()).toEpochSecond();
+                        Long currentEpochTime =  LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond();
+                        if(currentEpochTime - createdEpochTime < 1800) {
+
+                            loadSessionData(request,vertical,transactionId,getTransactionDetails(transactionId));
+                            return true;
+                        }
+                        else {
+                            return false;
+                        }
+                    }
+
+                }
+
+            }
+        } catch (GeneralSecurityException e) {
+            LOGGER.error("Error retrieving cookie for remember me {}", kv("vertical", vertical), e);
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Used in health_quote_v2.jsp
+     */
+    @SuppressWarnings("unused")
+    public String retrieveTransactionId(final HttpServletRequest request,
+                                                 final String vertical) throws DaoException, ConfigSettingException, GeneralSecurityException {
+        try {
+            if (isRememberMeEnabled(request, vertical)) {
+                Cookie cookie = getRememberMeCookie(request, vertical);
+                if (cookie != null && !cookie.getValue().isEmpty()) {
+                    String cookieValue = StringEncryption.decrypt(SECRET_KEY, cookie.getValue());
+                    String transactionId = getTransactionIdFromCookie(vertical, request).orElse(null);
+                    return getTransactionIdFromCookie(vertical, request).orElse(null);
+                }
+
+            }
+        } catch (GeneralSecurityException e) {
+            LOGGER.error("Error retrieving cookie for remember me {}", kv("vertical", vertical), e);
+        }
+
+        return "";
+    }
+
     private Cookie getRememberMeCookie(final HttpServletRequest request,
                                        final String vertical) throws GeneralSecurityException {
         final String cookieName = getCookieName(vertical.toLowerCase() + COOKIE_SUFFIX);
@@ -144,7 +211,11 @@ public class RememberMeService {
     public Optional<String> getTransactionIdFromCookie(final String vertical, final HttpServletRequest request) throws GeneralSecurityException {
         final Cookie cookie = getRememberMeCookie(request, vertical);
         if (cookie !=null && !cookie.getValue().isEmpty()) {
-            return Optional.ofNullable(StringEncryption.decrypt(SECRET_KEY, cookie.getValue()));
+            String value = StringEncryption.decrypt(SECRET_KEY, cookie.getValue());
+            if(value.indexOf(":") > 0) {
+                return Optional.ofNullable(value.substring(0, value.indexOf(":")));
+            } else
+                return Optional.ofNullable(value);
         }
         return Optional.empty();
     }
