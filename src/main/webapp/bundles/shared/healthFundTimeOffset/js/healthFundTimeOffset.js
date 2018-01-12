@@ -91,6 +91,7 @@
         // ## hack is simply to skip over this code.
         // ##
         submitCB();
+        return;
         // ##
         // ## End HACK ###############################
 
