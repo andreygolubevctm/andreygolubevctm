@@ -69,7 +69,7 @@
                 <c:set var="state" value="${data['health/situation/state']}" />
                 <c:set var="location" value="${data['health/situation/location']}" />
 
-                <field_v4:address_search_postcodeSearch label="Living in" xpath="${fieldXpath}" />
+                <field_v4:address_search_postcodeSearch simples="${true}" label="Living in" xpath="${xpath}" />
 
                 <%-- Medicare card question --%>
                 <c:if test="${callCentre}">
