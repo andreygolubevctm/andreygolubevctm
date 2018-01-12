@@ -13,7 +13,7 @@
 
 <form_v2:fieldset legend="Address" id="${name}FieldSet">
 
-    <group_v2:elastic_address xpath="${xpath}" type="R" />
+    <field_v4:address_search_streetsearch xpath="${xpath}" />
 
     <c:set var="analAttribute"><field_v1:analytics_attr analVal="park at night - Tool Tip" quoteChar="\"" /></c:set>
     <form_v2:row label="Where is the car parked at night" helpId="7" tooltipAttributes="${analAttribute}">

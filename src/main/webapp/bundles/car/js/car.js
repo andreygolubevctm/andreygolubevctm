@@ -142,6 +142,11 @@
             meerkat.modules.journeyProgressBar.render(true);
         }
     }
+    
+    function initAddressSearch() {
+      meerkat.modules.addressLookupV2.getStreetSearch().init('quote/riskAddress');
+      meerkat.modules.addressLookupV2.getHiddenPostcodeSearch().init('street');
+    }
 
     function setJourneyEngineSteps() {
 
@@ -183,6 +188,7 @@
                 }
 
                 configureContactDetails();
+                initAddressSearch();
             },
             validation: {
                 validate: true,

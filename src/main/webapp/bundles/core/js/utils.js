@@ -201,6 +201,18 @@
 
 		return Math.floor(seconds) + " seconds";
 	}
+	
+	/**
+	 * Returns a html node
+	 * @param string elementType
+	 * @param object props
+	 * @returns {node}
+	 */
+
+	
+	function createElement(elementType, props) {
+		return $.extend(true, document.createElement(elementType), props);
+	}
 
 	meerkat.modules.register('utils', {
 		slugify: slugify,
@@ -211,7 +223,8 @@
 		pluginReady: pluginReady,
 		calcWorkingDays: calcWorkingDays,
 		getTimeAgo: getTimeAgo,
-		formatUKToUSDate: formatUKToUSDate
+		formatUKToUSDate: formatUKToUSDate,
+		createElement: createElement
 	});
 
 })(jQuery);

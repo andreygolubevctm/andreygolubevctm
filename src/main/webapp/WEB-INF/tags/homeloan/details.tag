@@ -36,13 +36,7 @@ TODO F=Looking to Re-enter the Market to be added post relaunch
 	<form_v2:row label="I am looking to">
 		<field_v2:array_select items="=Please choose...,FH=Buy my first home,APL=Buy another property to live in,IP=Buy an investment property,REP=Renovate my existing property,CD=Consolidate my debt,CL=Compare better home loan options" xpath="${xpath}/goal" title="your situation" required="true" />
 	</form_v2:row>
-
-	<form_v2:row label="I live in">
-		<field_v2:lookup_suburb_postcode xpath="${xpath}/location" required="true" placeholder="Suburb / Postcode" extraDataAttributes=" data-rule-validateSuburbPostcodeState='true' data-msg-validateSuburbPostcodeState='Please select a valid suburb / postcode'" />
-		<field_v1:hidden xpath="${xpath}/suburb" defaultValue="" />
-		<field_v1:hidden xpath="${xpath}/postcode" defaultValue="" />
-		<field_v1:hidden xpath="${xpath}/state" defaultValue="" />
-	</form_v2:row>
+	<field_v4:address_search_postcodeSearch label="I live in" xpath="${xpath}" />
 
 	<div id="${name}_existingToggleArea" class="${name}_existingToggleArea show_${displayCurrentLoan}">
 		<form_v2:row label="Do you currently have a home loan?">
