@@ -73,9 +73,11 @@ public class CouponService {
 
 		if (couponRequest.couponId > 0) {
 			Coupon coupon = getCouponById(couponRequest);
-			couponDao.setRulesForCoupon(coupon);
-			if (couponRulesService.filterAllRules(coupon, data)) {
-				return coupon;
+			if(coupon.isExclusive()) {
+				couponDao.setRulesForCoupon(coupon);
+				if (couponRulesService.filterAllRules(coupon, data)) {
+					return coupon;
+				}
 			}
 		} else {
 			List<Coupon> coupons = getActiveCoupons(couponRequest.styleCodeId, couponRequest.verticalId,
@@ -83,9 +85,11 @@ public class CouponService {
 
 			if (!coupons.isEmpty()) {
 				for (Coupon coupon : coupons) {
-					couponDao.setRulesForCoupon(coupon);
-					if (couponRulesService.filterAllRules(coupon, data)) {
-						return coupon;
+					if(!coupon.isExclusive()) {
+						couponDao.setRulesForCoupon(coupon);
+						if (couponRulesService.filterAllRules(coupon, data)) {
+							return coupon;
+						}
 					}
 				}
 			}
