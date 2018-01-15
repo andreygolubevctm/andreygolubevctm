@@ -10,7 +10,7 @@
 
     <groupId>com.ctm.web</groupId>
     <artifactId>ctm</artifactId>
-    <version>1.93.4-SNAPSHOT</version>
+    <version>1.93.0-RC5</version>
     <name>ctm</name>
     <description>Main web application</description>
     <packaging>war</packaging>
