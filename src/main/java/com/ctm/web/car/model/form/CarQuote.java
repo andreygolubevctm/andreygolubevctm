@@ -242,12 +242,12 @@ public class CarQuote {
         sb.append(separator);
         if(okToCall)sb.append(getJsonString(getPerson(regular, contact, riskAddress)));
         sb.append(separator);
-        if(okToCall)sb.append(getJsonString(getCtmCarLeadFeedRequestMetadata(regular, options, vehicle, quoteReferenceNumber)));
+        if(okToCall)sb.append(getJsonString(getCtmCarLeadFeedRequestMetadata(regular, options, vehicle, typeOfCover)));
 
         return sb.toString();
     }
 
-    protected CTMCarLeadFeedRequestMetadata getCtmCarLeadFeedRequestMetadata(final Regular regular, final Options options, final Vehicle vehicle, final String quoteReferenceNumber) {
+    protected static CTMCarLeadFeedRequestMetadata getCtmCarLeadFeedRequestMetadata(final Regular regular, final Options options, final Vehicle vehicle, final String typeOfCover) {
 
         final CTMCarLeadFeedRequestMetadata metadata = new CTMCarLeadFeedRequestMetadata();
 
@@ -255,6 +255,7 @@ public class CarQuote {
         if(options != null) metadata.setAgeRestriction(options.getDriverOption());
         if(regular != null) metadata.setNcdRating(regular.getNcd());
         if(vehicle != null) metadata.setVehicleDescription(vehicle.getMakeDes());
+        metadata.setCoverType(typeOfCover);
         //Below values will only be available after results, and ranking
         metadata.setProviderQuoteRef(null);
         metadata.setProviderCode(null);
