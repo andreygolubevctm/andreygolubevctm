@@ -6,12 +6,12 @@
 	<contactDetails>
 		<name>Guybrush</name>
 		<contactNumber>
-			<mobileinput>0404 040 000</mobileinput>
-			<mobile>0404040000</mobile>
+			<mobileinput>0444 258 369</mobileinput>
+			<mobile>0444258369</mobile>
 			<otherinput>(07) 3333 4444</otherinput>
 			<other>0733334444</other>
 		</contactNumber>
-		<flexiContactNumber>0404 123 123</flexiContactNumber>
+		<flexiContactNumber>0444258369</flexiContactNumber>
 		<email>preload.testing@comparethemarket.com.au</email>
 		<postcode>4000</postcode>
 		<optInEmail>Y</optInEmail>
@@ -285,8 +285,8 @@
 				<maritalincomestatus>Y</maritalincomestatus>
 			</dependant12>
 		</dependants>
-		<mobileinput>(0404) 000 000</mobileinput>
-		<mobile>0404000000</mobile>
+		<mobileinput>(0444) 258 369</mobileinput>
+		<mobile>0444258369</mobile>
 	</application>
 	<declaration>Y</declaration>
 	<simples>
