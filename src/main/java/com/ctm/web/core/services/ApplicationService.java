@@ -6,7 +6,6 @@ import com.ctm.web.core.cache.ApplicationCacheManager;
 import com.ctm.web.core.dao.BrandsDao;
 import com.ctm.web.core.dao.ConfigSettingsDao;
 import com.ctm.web.core.dao.VerticalsDao;
-import com.ctm.web.core.elasticsearch.services.AddressSearchService;
 import com.ctm.web.core.exceptions.BrandException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.exceptions.RouterException;
