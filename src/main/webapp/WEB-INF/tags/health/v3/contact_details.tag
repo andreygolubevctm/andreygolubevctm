@@ -27,9 +27,10 @@
 	</c:if>
 
 	<form_v4:row>
-			<field_v2:checkbox xpath="${xpath}/postalMatch" value="Y" title="My postal address is the same" required="false" label="I agree to receive news &amp; offer emails from Compare the Market" />
+			<div id="simples-postcode-toggle">
+				<field_v2:checkbox xpath="${xpath}/postalMatch" value="Y" title="My postal address is the same" required="false" label="I agree to receive news &amp; offer emails from Compare the Market" />
+			</div>
 	</form_v4:row>
-
 	<div id="${name}_postalGroup">
 				<c:set var="fieldXpath" value="${xpath}/postal" />
 				<c:set var="unitTypes">=Select unit type if applicable, UN=Unit, PO=PO Box, L=Level, TO=Townhouse, SH=Shop, OT=Other</c:set>

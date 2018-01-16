@@ -8,7 +8,8 @@
     streetSearch: {},
     postcodeSearchInCantFindFields: {},
     postCodeWithBtns: {},
-    postcodeSearch: {}
+    postcodeSearch: {},
+    toggleBtns: {}
   }; 
   
   function getURL() {
@@ -112,7 +113,7 @@
       },
       clickHandler: function(event) {
         var text = event.target.innerHTML;
-        if (text.indexOf('click here') > 0) {
+        if (text.indexOf('click here') !== -1) {
           this.$checkbox
             .prop('checked', true)
             .change();
@@ -399,7 +400,7 @@
       },
       clickResults: function(event) {
         var text = event.target.innerHTML;
-        if (text.indexOf('click here') > 0) {
+        if (text.indexOf('click here') !== -1) {
           this.$checkbox
             .prop('checked', true)
             .change();
@@ -422,6 +423,36 @@
         contentType: 'application/json'
       }
     };
+    
+    addressService.toggleBtns = {
+      init: function(checkboxId, targetId) {
+        this.targetId = '#' + targetId;
+        this.checkboxId = '#' + checkboxId;
+        this.cacheDom();
+        this.bindEvents();
+        this.toggleCheckbox(this.checkboxInput);
+      },
+      cacheDom: function() {
+        this.$target = $(this.targetId);
+        this.$checkbox = $(this.checkboxId);
+        this.checkboxInput = this.$checkbox.find('input[type=checkbox]');
+      },
+      bindEvents: function() {
+        var _this = this;
+        this.checkboxInput.change(function(e) { _this.toggleCheckbox(e.target); });
+      },
+      toggleCheckbox: function(target) {
+        if (target.checked) {
+          this.$target.hide();
+        } else {
+          this.$target.show();
+        }
+      }
+    }
+  }
+  
+  function getToggleBtn() {
+    return $.extend(true, {}, addressService.toggleBtns);
   }
   
   function getPostCodeWithBtns() {
@@ -450,7 +481,8 @@
     getHiddenPostcodeSearch: getHiddenPostcodeSearch,
     getStreetSearch: getStreetSearch,
     getPostCodeSearch: getPostCodeSearch,
-    getPostCodeWithBtns: getPostCodeWithBtns
+    getPostCodeWithBtns: getPostCodeWithBtns,
+    getToggleBtn: getToggleBtn
 	});
 
 })(jQuery);

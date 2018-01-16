@@ -74,7 +74,7 @@ var healthApplicationDetails = {
 	periods: 1,
 
 	init: function(){
-		postalMatchHandler.init('health_application');
+		//postalMatchHandler.init('health_application');
 	},
 	addOption: function(labelText, formValue) {
 		var el = $('#health_application_contactPoint');

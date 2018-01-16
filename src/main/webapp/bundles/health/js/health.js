@@ -158,7 +158,14 @@
 	}
 	
 	function initAddressSearch() {
-		meerkat.modules.addressLookupV2.getPostCodeSearch().init('health/situation');
+		var addressLookupV2 = meerkat.modules.addressLookupV2;
+		addressLookupV2.getPostCodeSearch().init('health/situation');
+		addressLookupV2.getSmartSearch().init('Residential', 'health/application/address');
+		addressLookupV2.getHiddenPostcodeSearch().init('Residential');
+		addressLookupV2.getSmartSearch().init('Postal', 'health/application/postal');
+		addressLookupV2.getHiddenPostcodeSearch().init('Postal');
+		
+		addressLookupV2.getToggleBtn().init('simples-postcode-toggle', 'health_application_postalGroup');
 	}
 
 	function setJourneyEngineSteps(){
