@@ -82,27 +82,36 @@
 		<!-- ${logLocation} comes from environmentConfigLocation properties file -->
 		<file>${jsonFileLoggingPath}/ctmJson.log</file>
 		<encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
-				<jsonFactoryDecorator class="com.ctm.commonlogging.common.LogstashFactoryDecorator"/>
-				<providers>
+			<jsonFactoryDecorator class="com.ctm.commonlogging.common.LogstashFactoryDecorator"/>
+			<providers>
+				<logstashMarkers/>
+				<pattern>
 					<pattern>
-						<pattern>
-							{"@timestamp":"%d{yyyy-MM-dd'T'HH:mm:ss.SSSZZ}",
-							"logger": "%logger",
-							"level": "%level",
-							"thread": "%thread",
-							"message": "%message",
-							"accountId":"%logcxt{a}",
-							"hostname":"${HOSTNAME}",
-							"appname":"${APPNAME}",
-							"env":"${ENV}",
-							"context":"%servletctx",
-							"transactionId":"%logcxt{t}",
-							"brandCode":"%logcxt{b}",
-							"verticalType":"${VERTICAL_TYPE:-%logcxt{v}}",
-							"correlationId":"%logcxt{c}"}
-						</pattern>
+						{"@timestamp":"%d{yyyy-MM-dd'T'HH:mm:ss.SSSZZ}",
+						"logger": "%logger",
+						"level": "%level",
+						"thread": "%thread",
+						"caller": "%caller",
+						"class": "%class",
+						"line_number":"#asLong{%line}",
+						"method": "%method",
+						"message": "%message",
+						"accountId":"%logcxt{a}",
+						"hostname":"${HOSTNAME}",
+						"appname":"${APPNAME}",
+						"env":"${ENV}",
+						"context":"%servletctx",
+						"transactionId":"%logcxt{t}",
+						"brandCode":"%logcxt{b}",
+						"verticalType":"${VERTICAL_TYPE:-%logcxt{v}}",
+						"correlationId":"%logcxt{c}"}
 					</pattern>
-				</providers>
+				</pattern>
+				<arguments>
+					<includeNonStructuredArguments>true</includeNonStructuredArguments>
+					<nonStructuredArgumentsFieldPrefix>prefix</nonStructuredArgumentsFieldPrefix>
+				</arguments>
+			</providers>
 		</encoder>
 	</appender>
 
