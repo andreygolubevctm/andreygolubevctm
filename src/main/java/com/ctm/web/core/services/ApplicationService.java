@@ -375,8 +375,6 @@ public class ApplicationService {
 		brands = new ArrayList<>();
 		getBrands();
 		ServiceConfigurationService.clearCache();
-		AddressSearchService.destroy();
-		AddressSearchService.init();
 		ApplicationCacheManager.clearAll();
 		return true;
 	}
