@@ -80,7 +80,7 @@
                     </div>
                     <div class="col-sm-5">
                         <c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Call Request" quoteChar="\"" /></c:set>
-                        <button id="callBackNow" class="btn btn-secondary btn-lg btn-block" ${analyticsAttr}>Call me now</button><small>within 30 mins, during call centre opening hours</small>
+                        <button id="callBackNow" class="btn btn-secondary btn-lg btn-block" ${analyticsAttr}><span>Call me now</span></button><small>within 30 mins, during call centre opening hours</small>
                     </div>
                 </div>
                 <div class="row hidden">
@@ -130,7 +130,7 @@
                     </div>
                     <div class="col-sm-5">
                         <c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Call Request" quoteChar="\"" /></c:set>
-                        <button id="callBackNow" class="btn btn-secondary btn-lg btn-block" ${analyticsAttr}>Call me now</button><small>within 30 mins, during call centre opening hours</small>
+                        <button id="callBackNow" class="btn btn-secondary btn-lg btn-block" ${analyticsAttr}><span>Call me now</span></button><small>within 30 mins, during call centre opening hours</small>
                     </div>
                 </div>
                 <div class="row hidden">
