@@ -6,9 +6,10 @@
               description="field group's xpath" %>
               
 <%@ attribute name="prefix" required="true" rtexprvalue="true" description="Used for passing in additional attributes" %>
+<%@ attribute name="className" required="false" rtexprvalue="true" description="Used for passing in additional attributes" %>
 <%@ attribute name="unitTypes" required="true" rtexprvalue="true" description="Unit Type" %>
 
-<div class="addressSearchV2 addressSearchV2--${prefix}">
+<div class="addressSearchV2 addressSearchV2--${prefix} addressSearchV2--${className}">
   <form_v2:row fieldXpath="${fieldXpath}" labelTag="h5" label="${prefix} Address" className="addressHeading" hideHelpIconCol="true"></form_v2:row>
   
   <%-- Postcode --%>
