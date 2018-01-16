@@ -20,7 +20,7 @@
 <div id="${name}-selection" class="health_application-details">
 	<c:set var="fieldXpath" value="${xpath}/address" />
 	<c:set var="unitTypes">=Select unit type if applicable, UN=Unit, L=Level, TO=Townhouse, SH=Shop, OT=Other</c:set>
-	<field_v4:address_search_smartsearch xpath="${fieldXpath}" prefix="Residential" unitTypes="${unitTypes}" />
+	<field_v4:address_search_smartsearch xpath="${fieldXpath}" className="simples-smart-search" prefix="Residential" unitTypes="${unitTypes}" />
 
 	<c:if test="${empty callCentre && empty data[xpath].postalMatch}">
 			<go:setData dataVar="data" xpath="${xpath}/postalMatch" value="Y" />
@@ -34,7 +34,7 @@
 	<div id="${name}_postalGroup">
 				<c:set var="fieldXpath" value="${xpath}/postal" />
 				<c:set var="unitTypes">=Select unit type if applicable, UN=Unit, PO=PO Box, L=Level, TO=Townhouse, SH=Shop, OT=Other</c:set>
-				<field_v4:address_search_smartsearch xpath="${fieldXpath}" prefix="Postal" unitTypes="${unitTypes}" />
+				<field_v4:address_search_smartsearch xpath="${fieldXpath}" prefix="Postal" className="simples-smart-search" unitTypes="${unitTypes}" />
 	</div>
 
 		<group_v2:contact_numbers xpath="${xpath}" required="true" />
