@@ -11,6 +11,8 @@
 <c:set var="fieldXpath" value="${xpath}/healthCvr" />
 <c:set var="analyticsAttr"><field_v1:analytics_attr analVal="about you" quoteChar="\"" /></c:set>
 
+<c:set var="specialOptInKey" value="" />
+
 <%-- Get current  --%>
 <c:set var="websiteTermConfigToUse">
     <content:get key="websiteTermsUrlConfig"/>
@@ -18,12 +20,31 @@
 
 <c:choose>
 	<c:when test="${octoberComp}">
-    <c:set var="optInText"><content:get key="octoberCompOptInText" /></c:set>
+        <c:set var="optInText"><content:get key="octoberCompOptInText" /></c:set>
 	</c:when>
 	<c:otherwise>
-    <c:set var="optInText"><content:get key="optInText" /></c:set>
-  </c:otherwise>
+        <c:set var="specialOptInText">
+            <content:get key="specialOptInText" />
+        </c:set>
+        <c:set var="optInText">
+            <c:choose>
+                <c:when test="${specialOptInText ne ''}">
+                    ${specialOptInText}
+                    <c:set var="specialOptInKey">
+                        <content:get key="specialOptInText" suppKey="specialOptInKey" />
+                    </c:set>
+                </c:when>
+                <c:otherwise>
+                    <content:get key="optInText" />
+                </c:otherwise>
+            </c:choose>
+        </c:set>
+    </c:otherwise>
 </c:choose>
+
+<c:if test="${specialOptInKey ne ''}">
+    <field_v1:hidden xpath="${pageSettings.getVerticalCode()}/contactDetails/optin/key" constantValue="${specialOptInKey}" />
+</c:if>
 
 <c:set var="websiteTermConfigPlaceHolder">${pageSettings.getSetting(websiteTermConfigToUse)}</c:set>
 <c:set var="privacyStmtPlaceHolder"><form_v1:link_privacy_statement /></c:set>
