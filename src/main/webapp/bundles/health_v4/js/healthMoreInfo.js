@@ -90,7 +90,8 @@
         });
 
         $(document.body).off('click.emailBrochures').on('click.emailBrochures', '.getPrintableBrochures', function () {
-            var product = Results.getSelectedProduct(),
+            var product = !_.isUndefined($(this).attr('data-productId')) ?
+                    Results.setSelectedProduct($(this).attr('data-productId')) : Results.getSelectedProduct(),
                 brochureTemplate = meerkat.modules.templateCache.getTemplate($('#emailBrochuresTemplate'));
 
             // init the validation
@@ -106,7 +107,7 @@
                     onOpen: function (modalId) {
                         if (meerkat.site.emailBrochures.enabled) {
                             // initialise send brochure email button functionality
-                            initialiseBrochureEmailForm(Results.getSelectedProduct(), $('#' + modalId), $('#emailBrochuresForm'));
+                            initialiseBrochureEmailForm(product, $('#' + modalId), $('#emailBrochuresForm'));
                             populateBrochureEmail();
                         }
                     }
