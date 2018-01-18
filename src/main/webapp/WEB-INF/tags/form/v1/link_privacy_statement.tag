@@ -26,7 +26,7 @@
 	<c:otherwise>
 		<c:choose>
 			<c:when test="${pageSettings.getBrandCode() eq 'choo'}">
-				<a href='/static/legal/choo/privacy_policy.pdf' target='_blank'>${anchorLabel}</a>
+				<a href='${pageSettings.getSetting('privacyPolicyUrl')}' target='_blank' data-title="Privacy Policy" class="termsLink showDoc">${anchorLabel}</a>
 			</c:when>
 			<c:when test="${pageSettings.getBrandCode() eq 'wfdd'}">
 				<a href='/static/legal/wfdd/privacy_policy.pdf' target='_blank'>${anchorLabel}</a>
