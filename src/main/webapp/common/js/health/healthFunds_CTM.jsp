@@ -97,17 +97,21 @@ set: function () {
 			meerkat.modules.healthDependants.updateConfig({ showSchoolFields: true, useSchoolDropdownMenu: true, schoolIdMaxLength: 10, 'schoolMinAge': 23, 'schoolMaxAge': 25, showSchoolIdField: true, 'schoolIdRequired': true, showSchoolCommencementField: true, 'schoolDateRequired': true });
 		</c:if>
 
+		<%--fund offset check--%>
+		meerkat.modules.healthFundTimeOffset.onInitialise({
+			weekends: true,
+			coverStartRange: {
+				min: 0,
+				max: 120
+			},
+            renderPaymentDaysCb: healthFunds_CTM.renderPaymentDays
+		});
+
 		<%-- set cover start date to be application date, useful for dual pricing testing --%>
 		if (!_.isEmpty($('#health_searchDate').val())) {
             healthFunds_CTM.$paymentStartDate.datepicker("update", $('#health_searchDate').val());
         }
 
-		<%--calendar for start cover--%>
-		if(_.has(meerkat.modules,'healthCoverStartDate')) {
-			meerkat.modules.healthCoverStartDate.setCoverStartRange(0, 120);
-		} else {
-			meerkat.modules.healthPaymentStep.setCoverStartRange(0, 120);
-		}
 		dob_health_application_primary_dob.ageMax = 99;
 		dob_health_application_partner_dob.ageMax = 99;
 
@@ -136,7 +140,6 @@ set: function () {
 	},
 	renderPaymentDays: function (){
 		meerkat.modules.healthFunds.setPayments({ 'min':0, 'max':14, 'weekends':true, 'countFrom' : meerkat.modules.healthPaymentDay.EFFECTIVE_DATE, 'maxDay' : 28});
-		healthFunds_CTM.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
 		var _html = meerkat.modules.healthPaymentDay.paymentDays( $('#health_payment_details_start').val() );
 		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_bank_details-policyDay'), _html);
 		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), _html);

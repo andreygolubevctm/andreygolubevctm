@@ -27,7 +27,7 @@
             '{{ if(product.premium.hasOwnProperty(frequency)) { }}' +
                 '<h6>Customer Pays:</h6>'+
                 '<ul class="price-list">'+
-                    '<li><strong>Base Premium: </strong>'+'<span>{{= product.premium[frequency].base }}</span></li>'+
+                    '<li><strong>Base Premium{{= (product.info.provider == "MYO" ? " (excl Vitality)" : "") }}: </strong>'+'<span>{{= product.premium[frequency].base }}</span></li>'+
                     '<li><strong>Fortnightly Premium: </strong>'+'<span>{{= product.premium.fortnightly.text }}</span></li>'+
                     '<li><strong>Monthly Premium: </strong>'+'<span>{{= product.premium.monthly.text }}</span></li>'+
                     '<li><strong>Annual Premium: </strong>'+'<span>{{= product.premium.annually.text }}</span></li>'+

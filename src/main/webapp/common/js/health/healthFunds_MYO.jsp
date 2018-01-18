@@ -79,13 +79,14 @@ var healthFunds_MYO = {
         meerkat.modules.healthCreditCard.setCreditCardConfig({ 'visa':true, 'mc':true, 'amex':false, 'diners':false });
         meerkat.modules.healthCreditCard.render();
 
-        <%--calendar for start cover--%>
-        if(_.has(meerkat.modules,'healthCoverStartDate')) {
-            meerkat.modules.healthCoverStartDate.setCoverStartRange(0, 30);
-        } else {
-            meerkat.modules.healthPaymentStep.setCoverStartRange(0, 30);
-        }
-        healthFunds_MYO.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '0,6');
+        <%--fund offset check--%>
+        meerkat.modules.healthFundTimeOffset.onInitialise({
+            weekends: false,
+            coverStartRange: {
+                min: 0,
+                max: 30
+            }
+        });
 
         meerkat.messaging.subscribe(meerkat.modules.healthPaymentDate.events.POLICY_DATE_CHANGE, healthFunds_MYO.paymentDayChange);
 

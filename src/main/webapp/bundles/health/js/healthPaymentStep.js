@@ -30,7 +30,8 @@
 		maxStartDate: ''
 	};
 
-	var currentCoupon = false;
+	var currentCoupon = false,
+        _startDateWeekends;
 
 	function initHealthPaymentStep() {
 
@@ -528,6 +529,45 @@
         $('#health_payment_details_start').off('changeDate.' + name);
 	}
 
+    function setCoverStartToNextDay() {
+        var today = new Date(),
+            nextDay = today.setDate(today.getDate() + 1);
+
+        nextDay = new Date(nextDay);
+
+        var day = nextDay.getDay();
+
+        if (!_startDateWeekends && _.indexOf([0,6], day) !== -1) {
+            nextDay.setDate(nextDay.getDate() + (day === 0 ? 1 : 2));
+        }
+
+        $paymentCalendar.datepicker("update", nextDay);
+    }
+
+	function setCoverStartDaysOfWeekDisabled(daysOfWeekDisabled) {
+        _startDateWeekends = daysOfWeekDisabled === "";
+
+        $paymentCalendar.datepicker('setDaysOfWeekDisabled', daysOfWeekDisabled);
+	}
+
+	function getCoverStartVal() {
+        return $paymentCalendar.val();
+	}
+
+	function setCoverStartValues() {
+        // Change min and max dates for start date picker based on current stored values from healthPaymentStep module which can change based on selected fund
+        var min = settings.minStartDate,
+			max = settings.maxStartDate;
+
+        $paymentCalendar
+            .removeRule('earliestDateEUR')
+            .removeRule('latestDateEUR')
+            .addRule('earliestDateEUR', min, 'Please enter a date on or after ' + min)
+            .addRule('latestDateEUR', max, 'Please enter a date on or before ' + max)
+            .datepicker('setStartDate', min)
+            .datepicker('setEndDate', max);
+	}
+
 	function toggleCouponSeenText() {
         var Coupon = meerkat.modules.coupon,
 			$couponCampaignSeen = $('.coupon-campaign-seen'),
@@ -569,6 +609,10 @@
 		rebindCreditCardRules: rebindCreditCardRules,
 		updateValidationSelectorsPaymentGateway : updateValidationSelectorsPaymentGateway,
 		resetValidationSelectorsPaymentGateway : resetValidationSelectorsPaymentGateway,
+        setCoverStartToNextDay: setCoverStartToNextDay,
+		setCoverStartDaysOfWeekDisabled: setCoverStartDaysOfWeekDisabled,
+        getCoverStartVal: getCoverStartVal,
+		setCoverStartValues: setCoverStartValues,
         toggleCouponSeenText: toggleCouponSeenText
 	});
 

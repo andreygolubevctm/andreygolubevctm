@@ -184,12 +184,14 @@ var healthFunds_HBF = {
             healthFunds_HBF.$partnerAuthorityInput.prop('required',true).attr('data-msg-required','Your authorisation is required');
         }
 
-        <%-- Calendar for start cover --%>
-	    if(_.has(meerkat.modules,'healthCoverStartDate')) {
-		    meerkat.modules.healthCoverStartDate.setCoverStartRange(0, 30);
-	    } else {
-		    meerkat.modules.healthPaymentStep.setCoverStartRange(0, 30);
-	    }
+        <%--fund offset check--%>
+        meerkat.modules.healthFundTimeOffset.onInitialise({
+            weekends: false,
+            coverStartRange: {
+                min: 0,
+                max: 30
+            }
+        });
 
         <%--credit card & bank account frequency & day frequency--%>
         meerkat.modules.healthPaymentStep.overrideSettings('bank',{ 'weekly':false, 'fortnightly': true, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true });

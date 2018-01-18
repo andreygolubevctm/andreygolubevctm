@@ -471,6 +471,8 @@
 				meerkat.modules.errorHandling.error(errorObject);
 			}
 		}
+
+        _hideLoading();
 	}
 	
 	meerkat.modules.register('crud', {

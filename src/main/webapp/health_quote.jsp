@@ -126,6 +126,7 @@
 
         <jsp:attribute name="footer">
             <health_v1:footer />
+            <health_v1:help_box />
         </jsp:attribute>
 
         <jsp:attribute name="xs_results_pagination">
