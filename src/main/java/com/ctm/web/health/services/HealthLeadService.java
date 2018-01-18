@@ -148,6 +148,7 @@ public class HealthLeadService extends LeadService {
         String rebateTier = data.getString("health/healthCover/income");
         String gender = data.getString("health/application/primary/gender");
         String partnerGender = data.getString("health/application/partner/gender");
+        String leadOptinCopy = data.getString("health/contactDetails/leadOptinCopy");
 
         // Metadata
         HealthMetadata healthMetadata = new HealthMetadata(
@@ -161,7 +162,8 @@ public class HealthLeadService extends LeadService {
                 StringUtils.isEmpty(dependants) ? null : dependants,
                 StringUtils.isEmpty(rebateTier) ? null : rebateTier,
                 gender,
-                partnerGender
+                partnerGender,
+				StringUtils.isEmpty(leadOptinCopy) ? null : leadOptinCopy
         );
         leadData.setMetadata(healthMetadata);
         return leadData;
