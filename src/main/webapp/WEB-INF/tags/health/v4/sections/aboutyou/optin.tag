@@ -42,8 +42,8 @@
     </c:otherwise>
 </c:choose>
 
-<c:if test="${specialOptInKey ne ''}">
-    <field_v1:hidden xpath="${pageSettings.getVerticalCode()}/contactDetails/optin/key" constantValue="${specialOptInKey}" />
+<c:if test="${not empty specialOptInKey and specialOptInKey ne ''}">
+    <field_v1:hidden xpath="${pageSettings.getVerticalCode()}/contactDetails/optinLeadCopy" constantValue="${specialOptInKey}" />
 </c:if>
 
 <c:set var="websiteTermConfigPlaceHolder">${pageSettings.getSetting(websiteTermConfigToUse)}</c:set>
