@@ -79,22 +79,16 @@
             }
 
             CoverStartDate.setCoverStartRange(_settings.coverStartRange.min, _settings.coverStartRange.max);
-            CoverStartDate[_fn.setValues]();
+
+            if (typeOfCheck === 'application') {
+                _.defer(function() {
+                    CoverStartDate[_fn.setValues]();
+                });
+            }
         });
     }
 
     function checkBeforeSubmit(submitCB) {
-        // ## Start HACK #############################
-        // ##
-        // ## Something below this hack is breaking
-        // ## joins and needs to be resolved. This
-        // ## hack is simply to skip over this code.
-        // ##
-        submitCB();
-        return;
-        // ##
-        // ## End HACK ###############################
-
         // check only if startDate is today
         if (CoverStartDate[_fn.getVal]() !== _formattedUTCToday) {
             submitCB();
