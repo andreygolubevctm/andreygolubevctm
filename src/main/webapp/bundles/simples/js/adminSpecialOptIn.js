@@ -22,13 +22,13 @@
                             return {
                                 extraData: {
                                     type: function () {
-                                        var curDate = new Date(),
-                                            startDate = new Date(specialOptIn.effectiveStart).setHours(0, 0, 0, 0),
-                                            endDate = new Date(specialOptIn.effectiveEnd).setHours(23, 59, 59, 0);
+                                        var curDate = new Date().getTime(),
+                                            startDate = new Date(specialOptIn.effectiveStart).getTime(),
+                                            endDate = new Date(specialOptIn.effectiveEnd).getTime();
 
-                                        if (startDate > curDate.setHours(0, 0, 0, 0)) {
+                                        if (startDate > curDate) {
                                             return "future";
-                                        } else if (startDate <= curDate.setHours(0, 0, 0, 0) && endDate >= curDate.setHours(23, 59, 59, 0)) {
+                                        } else if (startDate <= curDate && endDate >= curDate) {
                                             return "current";
                                         } else {
                                             return "past";

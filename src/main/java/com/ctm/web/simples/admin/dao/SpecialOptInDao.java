@@ -2,8 +2,10 @@ package com.ctm.web.simples.admin.dao;
 
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.simples.admin.model.SpecialOptIn;
 import com.ctm.web.simples.helper.SpecialOptInHelper;
+import com.ctm.web.core.services.ApplicationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -129,6 +131,7 @@ public class SpecialOptInDao {
 
             dbSource.getConnection().commit();
             specialOptIn = fetchSingleRecSpecialOptIn(specialOptInId);
+            ApplicationService.clearCache();
         } catch (SQLException | NamingException e) {
             LOGGER.error("Failed to update Help Box {}, {}, {}", kv("specialOptInParams", specialOptInParams), kv("userName", userName), kv("ipAddress", ipAddress), e);
             rollbackTransaction(dbSource);

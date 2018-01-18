@@ -179,10 +179,10 @@
             {{= data.styleCode }}
         </div>
         <div class="col-lg-2">
-            {{= new Date(data.effectiveStart).toLocaleString('en-GB') }}
+            {{= new Date(data.effectiveStart).toLocaleString('en-GB', { hour12: true }) }}
         </div>
         <div class="col-lg-2">
-            {{= new Date(data.effectiveEnd).toLocaleString('en-GB') }}
+            {{= new Date(data.effectiveEnd).toLocaleString('en-GB', { hour12: true }) }}
         </div>
         <div class="col-lg-1">
             {{ if(data.type === "current" || data.type === "future") { }}
