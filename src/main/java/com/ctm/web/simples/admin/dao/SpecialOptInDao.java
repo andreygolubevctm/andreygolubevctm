@@ -5,7 +5,6 @@ import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.simples.admin.model.SpecialOptIn;
 import com.ctm.web.simples.helper.SpecialOptInHelper;
-import com.ctm.web.core.services.ApplicationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
