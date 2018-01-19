@@ -346,17 +346,18 @@ Handling of the callback popup
 
 					now.setMinutes(now.getMinutes()+now.getTimezoneOffset()+aestOffset);
 
+					// add 30 minutes to current time
+					var nowPlus30min = new Date();
+					nowPlus30min.setMinutes(nowPlus30min.getMinutes()+nowPlus30min.getTimezoneOffset()+aestOffset+30);
+
 					var startTime = convertTo24Hour(this.startTime);
 					var endTime = convertTo24Hour(this.endTime);
 					var openingTime = Date.parse(meerkat.modules.dateUtils.format(now, "YYYY/MM/DD") + " " + startTime);
-					var closingSoon = Date.parse(meerkat.modules.dateUtils.format(now, "YYYY/MM/DD") + " " + endTime);
-
-					// deduct 30 minutes so that people are not calling a few minutes before closing time
-					closingSoon.setMinutes(closingSoon.getMinutes() - 30);
+					var closingTime = Date.parse(meerkat.modules.dateUtils.format(now, "YYYY/MM/DD") + " " + endTime);
 
 					if (now >= openingTime) {
 
-						if (now < closingSoon) {
+						if (nowPlus30min < closingTime) {
 							// the call centre is open now
 							dailyStatus = 1;
 						} else {
