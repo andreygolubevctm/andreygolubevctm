@@ -1,7 +1,6 @@
 ;(function ($, undefined) {
 
     var meerkat = window.meerkat,
-        //meerkatEvents = meerkat.modules.events,
 
         day,
         timezone = '',
@@ -31,9 +30,7 @@
 
         _isClosed = false,
         _isOpenRightNow = false,   /* false if it is before the store opening time */
-        aedtOffset = 600;
-
-    //var moduleEvents = {};
+        aestOffset = 600;  // this offset is AEST, not the AEDT offset... as it would be 660 while daylight saving is in play
 
     function initCallMeBack() {
         jQuery(document).ready(function($) {
@@ -311,7 +308,7 @@
 
             dayName = getShortDayOfWeekName((day.getDay() + i) % 7);
 
-            if(checkOpen(dayName)) {
+            if(checkStartTimeSupplied(dayName)) {
                 var dayDate = new Date();
                 dayDate.setDate(dayDate.getDate() + i);
                 $('.cmb-sa-callbackDayDD option:nth-child('+(count+1)+'n)').attr('data-dayname',dayName).attr('data-date', meerkat.modules.dateUtils.dateValueServerFormat(dayDate));
@@ -328,7 +325,8 @@
         }
     }
 
-    function checkOpen(dayName) {
+    // this just checks if the call center opens on a particular day - not if the call centre is currently open or has already closed
+    function checkStartTimeSupplied(dayName) {
         var open = false;
         $.each(hours, function() {
             if(this.description.substring(0, 3) === dayName) {
@@ -346,8 +344,8 @@
             now = new Date(),
             options = []; //(timezone/60) - 10;
 
-        // set to brisbane AEDT
-        now.setMinutes(now.getMinutes()+now.getTimezoneOffset()+aedtOffset);
+        // set to brisbane AEST
+        now.setMinutes(now.getMinutes()+now.getTimezoneOffset()+aestOffset);
 
         $.each(hours, function() {
 
@@ -425,8 +423,7 @@
     }
 
     meerkat.modules.register("call_me_back", {
-        init: initCallMeBack //,
-        // events: moduleEvents
+        init: initCallMeBack
     });
 
 })(jQuery);

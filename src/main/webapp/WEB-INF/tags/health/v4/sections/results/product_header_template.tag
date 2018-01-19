@@ -42,6 +42,12 @@
             <a class="btn btn-cta btn-block btn-more-info more-info-showapply hide-on-affix" href="javascript:;" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>
                 <div class="more-info-text">View Product <span class="icon icon-angle-right"></span></div>
             </a>
+
+            <c:if test="${not empty resultsBrochuresSplitTest and resultsBrochuresSplitTest eq true}">
+                <a href="javascript:;" class="btn btn-secondary getPrintableBrochures" data-productId="{{= productId }}">Email <span class="hidden-xs">myself </span>brochures</a>
+            </c:if>
+
+
             {{ if (meerkat.modules.healthPyrrCampaign.isPyrrActive() === true) { }}
                 {{= meerkat.modules.healthPyrrCampaign.renderTemplate('', obj, true, false, 'results') }}
             {{ } }}

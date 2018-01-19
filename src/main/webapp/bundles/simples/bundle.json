@@ -12,6 +12,7 @@
         "shared/datepicker",
         "shared/crud",
         "shared/reward",
-        "shared/timeDate"
+        "shared/timeDate",
+        "shared/dateUtils"
     ]
 }
