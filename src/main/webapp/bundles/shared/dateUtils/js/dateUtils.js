@@ -46,10 +46,10 @@
                 return dayNames[dateObj.getDay()];
             },
             HH: function(dateObj) {
-                return pad(dateObj.getHours())
+                return pad(dateObj.getHours());
             },
             mm: function(dateObj) {
-                return pad(dateObj.getMinutes())
+                return pad(dateObj.getMinutes());
             }
         },
         masks = {

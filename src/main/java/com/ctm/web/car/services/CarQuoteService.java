@@ -93,6 +93,8 @@ public class CarQuoteService extends CommonRequestServiceV2 {
     public static final String QUOTE_VEHICLE_MAKE_DES = "quote/vehicle/makeDes";
     public static final String QUOTE_VEHICLE_DAMAGE = "quote/vehicle/damage";
     public static final String BASIC = "Basic";
+    public static final String QUOTE_TYPE_OF_COVER = "quote/typeOfCover";
+    public static final String COVER_TYPE_COMPREHENSIVE = "COMPREHENSIVE";
 
     private SessionDataServiceBean sessionDataServiceBean;
     private TransactionDetailService transactionDetailService;
@@ -311,6 +313,8 @@ public class CarQuoteService extends CommonRequestServiceV2 {
             throw new InternalServerErrorException("Something went wrong. That's all we know.");
         }
 
+
+
         final List<ResultProperty> resultProperties = buildResultPropertiesWithPropensityScore(productIdsOrderedByRank, transactionId);
         savePropensityScoreAsResultProperties(transactionId, resultProperties);
     }
@@ -341,7 +345,16 @@ public class CarQuoteService extends CommonRequestServiceV2 {
                     //would know propensity score was requested but something went wrong.
                     String propensityScore = null;
                     try {
-                        propensityScore = getPropensityScoreFromDataRobot(buildQuotePropensityScoreRequest(productRank, transactionId));
+                        final Data transactionDetailsInXmlData = getTransactionDetails(transactionId);
+
+                        //only call data robot if comprehensive cover. other cover types leads are not send to
+                        // either CTM or A&G call centers; hence no need to score those leads.
+                        if(isComprehensiveCoverQuote(transactionDetailsInXmlData)) {
+                            propensityScore = getPropensityScoreFromDataRobot(buildQuotePropensityScoreRequest(productRank, transactionDetailsInXmlData));
+                        }else {
+                            LOGGER.debug("Setting propensity score to null. Quote is for non comprehensive cover BUDD, BEST_PRICE");
+                        }
+
                     } catch (Exception e) {
                         LOGGER.error("Error while trying to get propensity score. Setting it to null", e.getMessage());
                     }
@@ -355,6 +368,19 @@ public class CarQuoteService extends CommonRequestServiceV2 {
                 }).collect(toList());
 
         return resultProperties;
+    }
+
+    private static boolean isComprehensiveCoverQuote(final Data transactionDetailsInXmlData) {
+
+        if (transactionDetailsInXmlData == null || transactionDetailsInXmlData.isEmpty()) {
+            return false;
+        }
+
+        if(StringUtils.equalsIgnoreCase(COVER_TYPE_COMPREHENSIVE, transactionDetailsInXmlData.getString(QUOTE_TYPE_OF_COVER))) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -424,19 +450,12 @@ public class CarQuoteService extends CommonRequestServiceV2 {
     /**
      * Get `transaction_details` from db, and create a request to be send to Data Robot.
      *
-     * @param rankPosition
-     * @param transactionId
+     * @param rankPosition position of product after product ranking.
+     * @param transactionDetailsInXmlData transaction details i.e., journey input from user.
      * @return request to be send to data robot.
      * @throws DaoException when retrieving transaction details
      */
-    private CarQuotePropensityScoreRequest buildQuotePropensityScoreRequest(int rankPosition, Long transactionId) throws DaoException {
-
-        //get `transaction_detail` from db for transaction id, contains person, vehicle data.
-        Data transactionDetailsInXmlData = this.transactionDetailService.getTransactionDetailsInXmlData(transactionId);
-
-        if (transactionDetailsInXmlData == null || transactionDetailsInXmlData.isEmpty()) {
-            throw new IllegalStateException("Expected non null or empty transaction_details for transactionId: " + transactionId);
-        }
+    private CarQuotePropensityScoreRequest buildQuotePropensityScoreRequest(int rankPosition, final Data transactionDetailsInXmlData) {
 
         // Build the request to be send to Data Robot. Data Robot can handle null values hence avoid Exception propagation.
         // Data Robot requires lowercase string.
@@ -464,6 +483,17 @@ public class CarQuoteService extends CommonRequestServiceV2 {
         carQuotePropensityScoreRequest.setVehicleDamage(StringUtils.lowerCase(transactionDetailsInXmlData.getString(QUOTE_VEHICLE_DAMAGE)));
 
         return carQuotePropensityScoreRequest;
+    }
+
+    private Data getTransactionDetails(Long transactionId) throws DaoException {
+        //get `transaction_detail` from db for transaction id, contains person, vehicle data.
+        Data transactionDetailsInXmlData = this.transactionDetailService.getTransactionDetailsInXmlData(transactionId);
+
+        if (transactionDetailsInXmlData == null || transactionDetailsInXmlData.isEmpty()) {
+            throw new IllegalStateException("Expected non null or empty transaction_details for transactionId: " + transactionId);
+        }
+
+        return transactionDetailsInXmlData;
     }
 
     /**
