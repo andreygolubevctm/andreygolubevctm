@@ -59,8 +59,12 @@
 #results-sidebar {
   // need to remove this columns padding so we can apply left margin to all result-rows.
   padding: 0;
-  border: 1px solid @results-border-color;
-  border-left-color: @gray;
+
+  .results-sidebar-inner {
+    border: 1px solid @results-border-color;
+    border-left-color: @gray;
+    margin-bottom: 15px;
+  }
 }
 
 .noResults {

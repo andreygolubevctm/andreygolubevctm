@@ -78,8 +78,6 @@ public class CouponDao {
 			"FROM ctm.coupons c " +
 			"INNER JOIN ctm.coupon_campaigns cc " +
 			"ON cc.campaignId = c.campaignId " +
-			"INNER JOIN ctm.banner_placement bp " +
-			"ON bp.bannerPlacementId = cc.bannerPlacementId " +
 			"WHERE c.couponId = ? " +
 			"AND c.styleCodeId = ? " +
 			"AND c.verticalId = ? " +
@@ -232,8 +230,6 @@ public class CouponDao {
 				"SELECT * FROM ctm.coupons c " +
 				"INNER JOIN ctm.coupon_campaigns cc " +
 				"ON cc.campaignId = c.campaignId " +
-				"INNER JOIN ctm.banner_placement bp " +
-				"ON bp.bannerPlacementId = cc.bannerPlacementId " +
 				"WHERE c.styleCodeId = ? " +
 				"AND c.verticalId = ? " +
 				"AND c.couponChannel IN (?, '') " +
