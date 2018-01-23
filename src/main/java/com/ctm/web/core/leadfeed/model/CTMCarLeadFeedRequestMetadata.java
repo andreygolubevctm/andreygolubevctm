@@ -24,7 +24,7 @@ public class CTMCarLeadFeedRequestMetadata implements Serializable {
     private MetadataType type;
     @NotBlank
     private String providerCode;
-    @Nullable
+    @NotNull
     private String propensityScore;
     @Nullable
     private String providerQuoteRef;
@@ -34,6 +34,8 @@ public class CTMCarLeadFeedRequestMetadata implements Serializable {
     private String ncdRating;
     @Nullable
     private String ageRestriction;
+    @Nullable
+    private String coverType;
 
     public enum MetadataType {
         CAR("car");
@@ -148,6 +150,15 @@ public class CTMCarLeadFeedRequestMetadata implements Serializable {
                 this.ageRestriction = driverOptionByLabel.getLabel();
             }
         }
+    }
+
+    @Nullable
+    public String getCoverType() {
+        return coverType;
+    }
+
+    public void setCoverType(@Nullable String coverType) {
+        this.coverType = coverType;
     }
 
     public enum DriverOption {
