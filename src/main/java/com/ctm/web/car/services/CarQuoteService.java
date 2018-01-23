@@ -343,7 +343,7 @@ public class CarQuoteService extends CommonRequestServiceV2 {
 
                     //get propensity score from Data Robot or leave it null instead of throwing error. This is so lead service
                     //would know propensity score was requested but something went wrong.
-                    String propensityScore = null;
+                    String propensityScore = "";
                     try {
                         final Data transactionDetailsInXmlData = getTransactionDetails(transactionId);
 
@@ -352,11 +352,11 @@ public class CarQuoteService extends CommonRequestServiceV2 {
                         if(isComprehensiveCoverQuote(transactionDetailsInXmlData)) {
                             propensityScore = getPropensityScoreFromDataRobot(buildQuotePropensityScoreRequest(productRank, transactionDetailsInXmlData));
                         }else {
-                            LOGGER.debug("Setting propensity score to null. Quote is for non comprehensive cover BUDD, BEST_PRICE");
+                            LOGGER.debug("Setting propensity score to empty string. Quote is for non comprehensive cover BUDD, BEST_PRICE");
                         }
 
                     } catch (Exception e) {
-                        LOGGER.error("Error while trying to get propensity score. Setting it to null", e.getMessage());
+                        LOGGER.error("Error while trying to get propensity score. Setting it to empty string", e.getMessage());
                     }
 
                     final ResultProperty resultProperty = new ResultProperty();
