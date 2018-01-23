@@ -6,7 +6,10 @@ import com.ctm.web.core.marketingContent.model.MarketingContent;
 import com.ctm.web.core.marketingContent.model.request.MarketingContentRequest;
 
 import javax.naming.NamingException;
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
