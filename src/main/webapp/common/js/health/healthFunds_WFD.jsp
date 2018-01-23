@@ -49,7 +49,8 @@ var healthFunds_WFD = {
         meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':false, 'fortnightly': false, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true });
 
         <%--claims account--%>
-        meerkat.modules.healthPaymentStep.overrideSettings('creditBankQuestions',true);
+	    meerkat.modules.healthPaymentStep.overrideSettings('creditBankSupply',true);
+	    meerkat.modules.healthPaymentStep.overrideSettings('creditBankQuestions',true);
 
         <%--credit card options--%>
         meerkat.modules.healthCreditCard.setCreditCardConfig({ 'visa':true, 'mc':true, 'amex':false, 'diners':false });

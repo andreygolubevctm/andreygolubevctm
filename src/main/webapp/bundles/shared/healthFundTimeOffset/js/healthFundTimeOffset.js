@@ -38,6 +38,10 @@
         SubmitApplication = null;
 
     function init() {
+
+        // prevent error caused if template unavailable
+        if ($('#fund-timezone-offset-modal-template').length === 0) return;
+
         _template = _.template($('#fund-timezone-offset-modal-template').html());
         CoverStartDate = meerkat.modules.healthCoverStartDate;
         SubmitApplication = meerkat.modules.healthSubmitApplication;
@@ -79,7 +83,12 @@
             }
 
             CoverStartDate.setCoverStartRange(_settings.coverStartRange.min, _settings.coverStartRange.max);
-            CoverStartDate[_fn.setValues]();
+
+            if (typeOfCheck === 'application') {
+                _.defer(function() {
+                    CoverStartDate[_fn.setValues]();
+                });
+            }
         });
     }
 

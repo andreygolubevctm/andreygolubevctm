@@ -15,6 +15,7 @@ import com.ctm.web.simples.admin.openinghours.services.OpeningHoursAdminService;
 import com.ctm.web.simples.admin.router.AdminRouter;
 import com.ctm.web.simples.admin.services.HelpBoxService;
 import com.ctm.web.simples.admin.services.SpecialOffersService;
+import com.ctm.web.simples.admin.services.SpecialOptInService;
 import com.ctm.web.simples.dao.UserDao;
 import com.ctm.web.simples.model.Message;
 import com.ctm.web.simples.phone.verint.CtiPhoneService;
@@ -72,6 +73,8 @@ import static javax.servlet.http.HttpServletResponse.*;
 		"/simples/admin/helpbox/delete.json",
 		"/simples/admin/helpbox/getAllRecords.json",
 		"/simples/admin/helpbox/getCurrentRecords.json",
+		"/simples/admin/specialOptIn/update.json",
+		"/simples/admin/specialOptIn/getAllRecords.json",
 		"/simples/admin/providerContent/getAllRecords.json",
 		"/simples/admin/providerContent/update.json",
 		"/simples/admin/providerContent/create.json",
@@ -196,6 +199,8 @@ public class SimplesRouter extends HttpServlet {
 			objectMapper.writeValue(writer, new SpecialOffersService().getAllOffers());
 		} else if (uri.endsWith("/simples/admin/helpbox/getAllRecords.json")) {
 			objectMapper.writeValue(writer, new HelpBoxService().getAllHelpBox());
+		} else if (uri.endsWith("/simples/admin/specialOptIn/getAllRecords.json")) {
+			objectMapper.writeValue(writer, new SpecialOptInService().getAllSpecialOptIn());
 		} else if(uri.contains("/simples/admin/")) {
 			AdminRouter adminRouter = new AdminRouter(request, response,ipAddressHandler);
 			adminRouter.doGet(uri.split("/simples/admin/")[1]);
@@ -302,6 +307,19 @@ public class SimplesRouter extends HttpServlet {
 				objectMapper.writeValue(writer, jsonObjectNode("error", result));
 			} else {
 				objectMapper.writeValue(writer, jsonObjectNode("result", result));
+			}
+		}else if(uri.contains("/simples/admin/specialOptIn/update.json")) {
+			SpecialOptInService service = new SpecialOptInService();
+			List<SchemaValidationError> errors = service.validateSpecialOptInData(request, authenticatedData);
+			if(errors==null || errors.isEmpty()){
+				try {
+					objectMapper.writeValue(writer,service.updateSpecialOptIn(request,authenticatedData));
+				} catch (CrudValidationException e) {
+					objectMapper.writeValue(writer,jsonObjectNode("error",e.getValidationErrors()));
+				}
+			} else {
+				response.setStatus(400);
+				objectMapper.writeValue(writer,jsonObjectNode("error",errors));
 			}
 		}else if(uri.contains("/simples/admin/")){
 			AdminRouter adminRouter = new AdminRouter(request, response, ipAddressHandler);
