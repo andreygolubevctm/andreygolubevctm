@@ -16,7 +16,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.sql.ResultSetMetaData;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -75,14 +74,12 @@ public class CouponDao {
 
 	private final static String GET_COUPON_BY_ID_QUERY =
 			"SELECT * " +
-			"FROM ctm.coupons c " +
-			"INNER JOIN ctm.coupon_campaigns cc " +
-			"ON cc.campaignId = c.campaignId " +
-			"WHERE c.couponId = ? " +
-			"AND c.styleCodeId = ? " +
-			"AND c.verticalId = ? " +
-			"AND c.couponChannel IN (?, '') " +
-			"AND ? BETWEEN c.effectiveStart AND c.effectiveEnd;";
+			"FROM ctm.coupons " +
+			"WHERE couponId = ? " +
+			"AND styleCodeId = ? " +
+			"AND verticalId = ? " +
+			"AND couponChannel IN (?, '') " +
+			"AND ? BETWEEN effectiveStart AND effectiveEnd;";
 
 	private final static String GET_COUPON_BY_ID_QUERY_SHOW_COUPON_SEEN =
 			"SELECT * " +
@@ -227,15 +224,13 @@ public class CouponDao {
 
 		try {
 			PreparedStatement stmt = dbSource.getConnection().prepareStatement(
-				"SELECT * FROM ctm.coupons c " +
-				"INNER JOIN ctm.coupon_campaigns cc " +
-				"ON cc.campaignId = c.campaignId " +
-				"WHERE c.styleCodeId = ? " +
-				"AND c.verticalId = ? " +
-				"AND c.couponChannel IN (?, '') " +
-				"AND ? BETWEEN c.effectiveStart AND c.effectiveEnd " +
-				"AND c.openHoursCond IN ('" + UNRESTRICTED.name() + "', ?) " +
-				"ORDER BY c.orderSeq ASC"
+				"SELECT * FROM ctm.coupons " +
+				"WHERE styleCodeId = ? " +
+				"AND verticalId = ? " +
+				"AND couponChannel IN (?, '') " +
+				"AND ? BETWEEN effectiveStart AND effectiveEnd " +
+				"AND openHoursCond IN ('" + UNRESTRICTED.name() + "', ?) " +
+				"ORDER BY orderSeq ASC"
 			);
 
 			stmt.setInt(1, styleCodeId);
@@ -302,23 +297,13 @@ public class CouponDao {
 	 */
 	private List<Coupon> mapFieldsFromResultsToCoupon(final ResultSet results) throws SQLException {
 		final List<Coupon> coupons = new ArrayList<>();
-
-		ResultSetMetaData resultSetMetaData = results.getMetaData();
-		Boolean setBannerPlacementClassName = false;
-		int columns = resultSetMetaData.getColumnCount();
-		for (int x = 1; x <= columns; x++) {
-			if ("className".equals(resultSetMetaData.getColumnName(x))) {
-				setBannerPlacementClassName = true;
-			}
-		}
-
 		while (results.next()) {
-			coupons.add(coupon(results, setBannerPlacementClassName));
+			coupons.add(coupon(results));
 		}
 		return coupons;
 	}
 
-	private Coupon coupon(final ResultSet results, Boolean setBannerPlacementClassName) throws SQLException {
+	private Coupon coupon(final ResultSet results) throws SQLException {
 		final Coupon coupon = new Coupon();
 
 		coupon.setCouponCode(results.getString("couponCode"));
@@ -343,9 +328,6 @@ public class CouponDao {
 		coupon.setOpenHoursCond(CouponOpenHoursCondition.valueOf(results.getString("openHoursCond")));
 		coupon.setRemoveFromLeads(results.getBoolean("removeFromLeads"));
 		coupon.setVdn(results.getInt("vdn"));
-		if (setBannerPlacementClassName) {
-			coupon.setBannerPlacementClassName(results.getString("className"));
-		}
 		return coupon;
 	}
 }
