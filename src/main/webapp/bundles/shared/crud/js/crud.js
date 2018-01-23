@@ -272,6 +272,31 @@
 		
 		return this.promise("getAllRecords", data, onSuccess, "get");
 	};
+
+	dataCRUD.prototype.getSummary = function(data) {
+		this.dataSet.empty();
+
+		data = data || {};
+
+		var that = this,
+			onSuccess = function(response) {
+				if(typeof response === "string")
+					response = JSON.parse(response);
+
+				if(response.length) {
+					for (var i = 0; i < response.length; i++) {
+						var datum = response[i],
+							obj = new crudModel.datumModel(that.primaryKey, that.models.datum, datum, that.views.row);
+						that.dataSet.push(obj);
+					}
+				}
+
+				that.sortRenderResults();
+			};
+
+		return this.promise("getSummary", data, onSuccess, "get");
+	};
+
 	
 	/**
 	 * Triggers a create / update depending on the passed content
@@ -384,6 +409,7 @@
 
 		switch(action) {
 			case "getAllRecords":
+			case "getSummary":
             case "find":
 				loadingText = "Fetching Records";
 				break;
@@ -402,6 +428,10 @@
 
 		_showLoading(loadingText);
 
+
+
+
+/*
 		var ajaxSettings = {
             url: finalURL,
             data: data,
@@ -430,6 +460,128 @@
         }
 
 		return meerkat.modules.comms[method](ajaxSettings);
+*/
+
+
+		if (this.baseURL === "../../admin/productCappingLimits") {
+
+			//var data;
+
+			if (action === "getSummary") {
+
+				data = [
+					{"providerId":9,"providerName":"AHM","currentProductCapCount":0, "providerCode":"AHM"},
+					{"providerId":1,"providerName":"Australian Unity","currentProductCapCount":35, "providerCode":"AUF"},
+					{"providerId":15,"providerName":"Bupa","currentProductCapCount":6, "providerCode":"BUP"},
+					{"providerId":5,"providerName":"GMHBA","currentProductCapCount":2, "providerCode":"GMH"},
+					{"providerId":7,"providerName":"Westfund","currentProductCapCount":5, "providerCode":"WFD"}
+				];
+
+			} else if (action === "getAllRecords") {
+
+				data = [
+					{"cappingLimitId":10,"productCode":"H42A/QIWV10^I16/QBMB10","state":"QLD","healthCvr":"S","limitType":"Daily","cappingAmount":10,"effectiveStart":"2018-01-07","effectiveEnd":"2018-04-18","cappingLimitCategory":"S","sequenceNo":1,"productName":"Basic Hospital with $250 Excess & Gold Extras","currentJoinCount":0,"current":true,"cappingLimitsKey":"54#H42A/QIWV10^I16/QBMB10#1#Daily"},
+					{"cappingLimitId":9,"productCode":"H42A/TIWF1D","state":"TAS","healthCvr":"SP","limitType":"Daily","cappingAmount":15,"effectiveStart":"2018-03-07","effectiveEnd":"2018-04-18","cappingLimitCategory":"S","sequenceNo":1,"productName":"Basic Hospital with $250 Excess & Gold Extras","currentJoinCount":0,"current":false,"cappingLimitsKey":"54#H42A/TIWF1D#1#Daily"},
+                    {"cappingLimitId":8,"productCode":"J62/NGBG20","state":"NSW","healthCvr":"C","limitType":"Daily","cappingAmount":10,"effectiveStart":"2018-03-07","effectiveEnd":"2018-04-18","cappingLimitCategory":"S","sequenceNo":1,"productName":"Basic Hospital","currentJoinCount":0,"current":true,"cappingLimitsKey":"54#J62/NGBG20#1#Daily"},
+                    {"cappingLimitId":7,"productCode":"J62/NGBG20^I20/NFUU20","state":"NSW","healthCvr":"C","limitType":"Monthly","cappingAmount":5000,"effectiveStart":"2018-02-02","effectiveEnd":"2018-03-02","cappingLimitCategory":"S","sequenceNo":5,"productName":"Basic Hospital & Basic Extras 55%","currentJoinCount":0,"current":true,"cappingLimitsKey":"54#J62/NGBG20^I20/NFUU20#5#Monthly"},
+                    {"cappingLimitId":6,"productCode":"J62/NGBG20^I20/NFUU20","state":"NSW","healthCvr":"C","limitType":"Monthly","cappingAmount":1024,"effectiveStart":"2017-02-01","effectiveEnd":"2017-02-28","cappingLimitCategory":"H","sequenceNo":3,"productName":"Basic Hospital & Basic Extras 55%","currentJoinCount":0,"current":false,"cappingLimitsKey":"54#J62/NGBG20^I20/NFUU20#3#Monthly"},
+                    {"cappingLimitId":5,"productCode":"J62/NGBG20^I20/NFUU20","state":"NSW","healthCvr":"C","limitType":"Monthly","cappingAmount":5000,"effectiveStart":"2017-12-01","effectiveEnd":"2018-01-01","cappingLimitCategory":"S","sequenceNo":4,"productName":"Basic Hospital & Basic Extras 55%","currentJoinCount":0,"current":false,"cappingLimitsKey":"54#J62/NGBG20^I20/NFUU20#4#Monthly"},
+                    {"cappingLimitId":4,"productCode":"J62/NGBG20^I22/NFWY20","state":"NSW","healthCvr":"C","limitType":"Monthly","cappingAmount":551,"effectiveStart":"2016-11-01","effectiveEnd":"2016-11-30","cappingLimitCategory":"S","sequenceNo":0,"productName":"Basic Hospital & Top Extras 55%","currentJoinCount":0,"current":false,"cappingLimitsKey":"54#J62/NGBG20^I22/NFWY20#0#Monthly"},
+                    {"cappingLimitId":3,"productCode":"J62/NGBG20^I22/NFWY20","state":"NSW","healthCvr":"C","limitType":"Monthly","cappingAmount":5000,"effectiveStart":"2017-01-01","effectiveEnd":"2017-02-01","cappingLimitCategory":"S","sequenceNo":1,"productName":"Basic Hospital & Top Extras 55%","currentJoinCount":0,"current":false,"cappingLimitsKey":"54#J62/NGBG20^I22/NFWY20#1#Monthly"},
+                    {"cappingLimitId":2,"productCode":"J62/NGBG20","state":"NSW","healthCvr":"C","limitType":"Daily","cappingAmount":200,"effectiveStart":"2017-08-25","effectiveEnd":"2017-08-26","cappingLimitCategory":"S","sequenceNo":0,"productName":"Basic Hospital","currentJoinCount":0,"current":false,"cappingLimitsKey":"54#J62/NGBG20#0#Daily"},
+                    {"cappingLimitId":1,"productCode":"J62/NGBG20","state":"NSW","healthCvr":"C","limitType":"Monthly","cappingAmount":5000,"effectiveStart":"2017-11-01","effectiveEnd":"2017-12-01","cappingLimitCategory":"S","sequenceNo":0,"productName":"Basic Hospital","currentJoinCount":0,"current":false,"cappingLimitsKey":"54#J62/NGBG20#0#Monthly"}
+				];
+
+			} else if (action === "create") {
+				data = {
+					"cappingLimitId":11,
+					"providerId":15,
+					"productCode":"J62/NGBG20",
+                    "productName":"Basic Hospital",
+                    "state":"NSW",
+                    "healthCvr":"C",
+                    "limitType":"Daily",
+                    "cappingAmount":155,
+					"currentJoinCount":0,
+                    "cappingLimitCategory":"S",
+                    "effectiveStart":"2018-02-15",
+                    "effectiveEnd":"2018-02-18"
+                    //, "cappingLimitsKey":"54#J62/NGBG20#0#Daily"
+                };
+
+			} else if (action === "update") {
+				data = {
+					"cappingLimitId":10,
+					"providerId":15,
+					"productCode":"J62/NGBG20",
+                    "productName":"Basic Hospital",
+                    "state":"NSW",
+                    "healthCvr":"C",
+                    "limitType":"Daily",
+                    "cappingAmount":12,
+					"currentJoinCount":0,
+				    "cappingLimitCategory":"S",
+                    "effectiveStart":"2018-01-15",
+                    "effectiveEnd":"2018-01-18"
+                    //, "sequenceNo":0
+                    //, "cappingLimitsKey":"54#J62/NGBG20#0#Daily"
+                    //, "current":true
+                };
+			} else if (action === "delete") {
+				data = "success";
+
+				/*
+				// an example error
+				data = { "error": [
+					    {"message": "Something went wrong"},
+					    {"message": "What were you thinking?"},
+					    {"message": "Why did you do that!"},
+				     ]
+                };
+                */
+			} else {
+				alert("Something went wrong!!!!!");
+			}
+
+			_hideLoading();
+
+			if(onSuccess) {
+				return onSuccess(data);
+			}
+
+			//return data;
+
+		} else {
+			var ajaxSettings = {
+				url: finalURL,
+				data: data,
+				errorLevel: "warning",
+				onSuccess: function(data, textStatus, jqXHR) {
+					if(typeof data === "string" && data !== "success")
+						data = JSON.parse(data);
+
+					if(data && !data.hasOwnProperty("error")) {
+						if(onSuccess)
+							onSuccess(data);
+					} else {
+						var error = (typeof data !== "undefined" && data !== null && typeof data.error !== "undefined") ? data.error : [];
+						_handleErrorObject(error);
+					}
+				},
+				onComplete: function() {
+					_hideLoading();
+				},
+				onErrorDefaultHandling: _handleAJAXError
+			};
+
+			if(forceJson === true) {
+				ajaxSettings.contentType = 'application/json; charset=utf-8';
+				ajaxSettings.doStringify = true;
+			}
+
+			return meerkat.modules.comms[method](ajaxSettings);
+
+		}
 	};
 	
 	function _handleErrorObject(error) {
