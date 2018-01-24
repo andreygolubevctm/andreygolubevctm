@@ -52,7 +52,7 @@
     <%-- Suburb --%>
     <c:set var="postCode">=Enter Postcode</c:set>
     <form_v2:row fieldXpath="${xpath}" label="Suburb" className="addressSearchV2__suburbSelect">
-      <field_v2:array_select items="${postCode}" xpath="${xpath}/suburb" title="the unit type" required="true" includeInForm="true"  placeHolder="Enter Postcode" extraDataAttributes="data-validation-position='append'" />
+      <field_v2:array_select items="${postCode}" xpath="${xpath}/suburb" title="the suburb" required="true" includeInForm="true"  placeHolder="Enter Postcode" extraDataAttributes="data-validation-position='append'" />
     </form_v2:row>
   </div>
 

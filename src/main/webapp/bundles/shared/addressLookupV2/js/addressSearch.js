@@ -369,7 +369,9 @@
       setUpDefault: function() {
         if (this.prefix === 'Residential') {
           this.$postcodeInput.val($('#health_situation_postcode').val());
+          $(this.xpath + '_suburb').attr("disabled", true);
         } else {
+          $(this.xpath + '_suburb').attr("disabled", false);
           this.$checkbox
             .prop('checked', true)
             .change();
