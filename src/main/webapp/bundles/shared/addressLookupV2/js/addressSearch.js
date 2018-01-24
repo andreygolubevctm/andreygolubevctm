@@ -97,18 +97,21 @@
           var element = createElement('option', { innerHTML: data.suburbName, value: data.suburbName });
           $(this.xpath + '_suburbName').append(element);
         }
+        $(this.xpath + '_nonStdPostCode').val(data.postCode);
         $(this.xpath + '_postCode').val(data.postCode);
         $(this.xpath + '_suburb').val(data.suburbName);
         $(this.xpath + '_suburbName').find('option[value="'+ data.suburbName +'"]').prop('selected', true);
         $(this.xpath + '_streetName').val(data.streetName);
+        $(this.xpath + '_nonStdStreet').val(data.streetName);
         $(this.xpath + '_streetNum').val(data.houseNoSel);
-        $(this.xpath + '_unitType').val(data.unitSel);
+        $(this.xpath + '_unitSel').val(data.unitSel);
+        $(this.xpath + '_fullAddress').val(data.text);
         $(this.xpath + '_fullAddressLineOne').val(data.text);
         $(this.xpath + '_gnafID').val(data.gnafId);
         if (data.unitType.length > 0) {
           var str = data.unitType.toLowerCase();
           var fixStringFormat = str.charAt(0).toUpperCase() + str.slice(1);
-          $(this.xpath + '_unitType').find('option[text="'+ fixStringFormat +'"]').prop('selected', true);
+          $(this.xpath + '_unitType').find('option:contains("'+ fixStringFormat +'")').prop('selected', true);
         }
       },
       toggleCheckbox: function(event) {
@@ -385,7 +388,7 @@
         $(this.xpath + '_unitShop').val(data.unitSel);
         $(this.xpath + '_gnafid').val(data.gnafid);
         if (data.unitType.length > 0) {
-          $(this.xpath + '_unitType').find('option[text="'+ data.unitType +'"]').prop('selected', true);
+          $(this.xpath + '_unitType').find('option:contains("'+ data.unitType +'")').prop('selected', true);
         }
       },
       toggleCheckbox: function(event) {

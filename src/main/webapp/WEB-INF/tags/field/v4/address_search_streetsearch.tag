@@ -20,7 +20,9 @@
   <field_v1:hidden xpath="${xpath}/state" />
   <field_v1:hidden xpath="${xpath}/suburb" />
   <field_v1:hidden xpath="${xpath}/gnafID" />
-  
+  <field_v1:hidden xpath="${xpath}/unitSel" />
+  <field_v1:hidden xpath="${xpath}/type" constantValue="R" />
+  <field_v1:hidden xpath="${xpath}/elasticSearch" constantValue="N" />
   <%-- Postcode --%>
   <div class="addressSearchV2__cantFindFields addressSearchV2__cantFindFields--hidden">
     <form_v2:row fieldXpath="${xpath}" label="Postcode" className="addressSearchV2__postcodeSearch">

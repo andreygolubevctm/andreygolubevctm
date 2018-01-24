@@ -4,7 +4,8 @@
 
 <%@ attribute name="xpath" required="true" rtexprvalue="true"
               description="field group's xpath" %>
-              
+
+<%@ attribute name="type" required="true" rtexprvalue="true" description="type" %>
 <%@ attribute name="prefix" required="true" rtexprvalue="true" description="Used for passing in additional attributes" %>
 <%@ attribute name="className" required="false" rtexprvalue="true" description="Used for passing in additional attributes" %>
 <%@ attribute name="unitTypes" required="true" rtexprvalue="true" description="Unit Type" %>
@@ -26,6 +27,10 @@
   <field_v1:hidden xpath="${xpath}/streetName" />
   <field_v1:hidden xpath="${xpath}/state" />
   <field_v1:hidden xpath="${xpath}/gnafid" />
+  <field_v1:hidden xpath="${xpath}/nonStdPostCode" />
+  <field_v1:hidden xpath="${xpath}/nonStdStreet" />
+  <field_v1:hidden xpath="${xpath}/type" constantValue="${type}"/>
+  <field_v1:hidden xpath="${xpath}/elasticSearch" constantValue="N" />
   
   <div class="addressSearchV2__cantFindFields addressSearchV2__cantFindFields--hidden">
     <%-- Unit Type  --%>
