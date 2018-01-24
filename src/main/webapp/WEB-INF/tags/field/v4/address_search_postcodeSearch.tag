@@ -10,7 +10,7 @@
 <c:choose>
   <c:when test="${simples eq true}">
     <form_v3:row label="${label}" className="addressSearchV2 addressSearchV2--postcodeSearch">
-      <field_v2:input className="addressSearchV2__inputField" xpath="${xpath}/location" title="postcode" required="${true}" />
+      <field_v2:input className="addressSearchV2__inputField" additionalAttributes="autocomplete='off'" xpath="${xpath}/location" title="postcode" required="${true}" />
       <field_v1:hidden xpath="${xpath}/suburb" defaultValue="" />
       <field_v1:hidden xpath="${xpath}/postcode" defaultValue="" />
       <field_v1:hidden xpath="${xpath}/state" defaultValue="" />

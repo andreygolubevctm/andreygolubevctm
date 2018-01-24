@@ -12,13 +12,14 @@
   
   <%-- Street Search --%>
   <form_v2:row label="Street Search" className="addressSearchV2__searchContainer">
-    <field_v2:input xpath="${xpath}/streetSearch" required="true" title="streetSearch" additionalAttributes=" data-rule-validAddress='${name}' data-msg-validAddress='Please enter a valid address' data-validation-position='append'" disableErrorContainer="${false}" />
+    <field_v2:input xpath="${xpath}/streetSearch" required="true" title="streetSearch" additionalAttributes="autocomplete='off' data-rule-validAddress='${name}' data-msg-validAddress='Please enter a valid address' data-validation-position='append'" disableErrorContainer="${false}" />
     <div class="addressSearchV2__results"></div>
   </form_v2:row>
   <field_v1:hidden xpath="${xpath}/fullAddress" />
   <field_v1:hidden xpath="${xpath}/fullAddressLineOne" />
   <field_v1:hidden xpath="${xpath}/state" />
   <field_v1:hidden xpath="${xpath}/suburb" />
+  <field_v1:hidden xpath="${xpath}/gnafID" />
   
   <%-- Postcode --%>
   <div class="addressSearchV2__cantFindFields addressSearchV2__cantFindFields--hidden">

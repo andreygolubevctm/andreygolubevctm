@@ -1,4 +1,4 @@
-;(function($, undefined) {
+;(function ($, undefined) {
   var noAddressFound = "Can't find address? <span class=\"underline\">click here</span>";
   var doneTypingTime = 250;
   var createElement = meerkat.modules.utils.createElement;
@@ -12,7 +12,7 @@
     toggleBtns: {}
   }; 
   
-  function getURL() {
+  function getURL() { 
     switch(meerkat.site.environment) {
       case 'nxi':
       case 'localhost': return 'https://nxi.secure.comparethemarket.com.au/address/';
@@ -31,51 +31,65 @@
   
   function init() {
     addressBase = getURL();
-    
     addressService.streetSearch = {
       results: [],
       init: function(xpath) {
         this.xpath = formatXpath(xpath);
         this.cacheDom();
         this.bindEvents();
+        this.setupAutocomplete();
+      },
+      setupAutocomplete: function() {
+        var _this = this;
+        this.autocomplete = new meerkat.modules.autocompleteV2.initInput({
+              selector: _this.searchInput,
+              minChars: 4,
+              delay: 250,
+              cache: false,
+              source: function(term, response) {
+                  _this.settings.data = JSON.stringify({ addressLine: term });
+                  $.ajax(_this.settings).done(function(data) {
+                    response(_this.handleData(data)); 
+                  });
+              },
+              renderItem: function (item, search) {
+                  if (item === noAddressFound) { return '<div class="autocomplete-suggestion" data-val="">' + item + '</div>'; }
+                  return '<div class="autocomplete-suggestion" data-val="' + item + '">' + item + '</div>';
+              },
+              onSelect: function(event, term, item) {
+                _this.handleSelect(term);
+              }
+          });
+      },
+      handleSelect: function(text) {
+        if (text === '') {
+          this.$checkbox.prop('checked', true).change();
+        } else {
+          var selectedData = this.results.find(function(result) {
+            return result.text === text;
+          });
+          this.fillFields(selectedData);
+        }
+      },
+      handleData: function(data) {
+        this.results = data;
+        var displayData = [];
+        for (var i = 0; i < data.length; i++) {
+          displayData.push(data[i].text);
+        }
+        displayData.push(noAddressFound);
+        return displayData;
       },
       cacheDom: function() {
+        this.searchInput = '.addressSearchV2--street .addressSearchV2__searchContainer input';
         this.$el = $('.addressSearchV2--street');
         this.$searchContainer = this.$el.find('.addressSearchV2__searchContainer');
         this.$cantFindField = this.$el.find('.addressSearchV2__cantFindFields');
-        this.$results = this.$el.find('.addressSearchV2__results');
         this.$checkbox = this.$el.find('.addressSearchV2__checkbox input');
         this.$search = this.$searchContainer.find('input');
       },
       bindEvents: function() {
-        this.$search
-          .on('keyup focus', this.search.bind(this))
-          .on('blur', this.clearResults.bind(this));
         this.$checkbox.on('change', this.toggleCheckbox.bind(this));
-        $(document).on('mousedown touchstart', '.addressSearchV2--street .addressSearchV2__results div', this.clickHandler.bind(this));
-      },
-      clearResults: function() {
-        this.$results
-          .removeClass('addressSearchV2__results--active')
-          .empty();
-      },
-      renderDropdown: function() {
-         if (this.htmlElements.length > 0) {
-           this.$results
-             .append(this.htmlElements)
-             .addClass('addressSearchV2__results--active');
-         } 
-      },
-      handleData: function(data) {
-        this.results = data;
-        this.htmlElements = [];
-        for (var i = 0; i < data.length; i++) {
-          var element = createElement('div', { innerHTML: data[i].text });
-          this.htmlElements.push(element);
-        }
-        this.htmlElements.push(createElement('div', { innerHTML: noAddressFound }));
-        this.clearResults();
-        this.renderDropdown();
       },
       fillFields: function(data) {
         $(this.xpath + '_state').val(data.state);
@@ -90,40 +104,16 @@
         $(this.xpath + '_streetNum').val(data.houseNoSel);
         $(this.xpath + '_unitType').val(data.unitSel);
         $(this.xpath + '_fullAddressLineOne').val(data.text);
+        $(this.xpath + '_gnafID').val(data.gnafId);
         if (data.unitType.length > 0) {
           var str = data.unitType.toLowerCase();
           var fixStringFormat = str.charAt(0).toUpperCase() + str.slice(1);
           $(this.xpath + '_unitType').find('option[text="'+ fixStringFormat +'"]').prop('selected', true);
         }
       },
-      search: function(event) {
-        this.query = event.target.value;
-        clearTimeout(this.typingTimer);
-        var _this = this;
-        if (this.query.length > 4) {
-          this.settings.data = JSON.stringify({ addressLine: this.query });
-          this.typingTimer = setTimeout(function() {
-            $.ajax(_this.settings).done(function(data) { _this.handleData(data); });
-          }, doneTypingTime);
-        }
-      },
       toggleCheckbox: function(event) {
         this.$searchContainer.toggleClass('addressSearchV2__searchContainer--hidden', event.target.checked);
         this.$cantFindField.toggleClass('addressSearchV2__cantFindFields--hidden', !event.target.checked);
-      },
-      clickHandler: function(event) {
-        var text = event.target.innerHTML;
-        if (text.indexOf('click here') !== -1) {
-          this.$checkbox
-            .prop('checked', true)
-            .change();
-        } else {
-          setValues(this.$search, text);
-          var addressObj = this.results.find(function(result) {
-            return result.text === text;
-          });
-          this.fillFields(addressObj);
-        }
       },
       settings: {
         method: 'POST',
@@ -189,60 +179,53 @@
       init: function(xpath) {
         this.xpath = formatXpath(xpath);
         this.cacheDom();
-        this.bindEvents();
+        this.setupAutocomplete();
       },
       cacheDom: function() {
+        this.searchInput = '.addressSearchV2--postcodeSearch .addressSearchV2__inputField';
         this.$el = $('.addressSearchV2--postcodeSearch');
         this.$postcodeInput = this.$el.find('.addressSearchV2__inputField');
         this.$results = this.$el.find('.addressSearchV2__results');
       },
-      bindEvents: function() {
-        this.$postcodeInput
-          .on('focus keyup', this.search.bind(this))
-          .on('blur', this.clearResults.bind(this));
-        $(document).on('mousedown touchstart', '.addressSearchV2--postcodeSearch .addressSearchV2__results div', this.clickHandler.bind(this));
+      setupAutocomplete: function() {
+        var _this = this;
+        this.autocomplete = new meerkat.modules.autocompleteV2.initInput({
+              selector: _this.searchInput,
+              minChars: 4,
+              delay: 250,
+              cache: false,
+              source: function(term, response) {
+                  _this.settings.url = addressBase + 'suburbpostcode/' + term;
+                  $.ajax(_this.settings).done(function(data) {
+                    response(_this.handleData(data)); 
+                  });
+              },
+              renderItem: function (item, search) {
+                  return '<div class="autocomplete-suggestion" data-val="' + item + '">' + item + '</div>';
+              },
+              onSelect: function(event, term, item) {
+                _this.handleSelect(term);
+              }
+          });
       },
       handleData: function(data) {
         this.results = data;
-        this.htmlElements = [];
+        var handleResult = [];
         for (var i = 0; i < data.length; i++) {
-          var props = { innerHTML: data[i].suburb + ' ' + data[i].postcode + ' ' + data[i].state };
-          this.htmlElements.push(createElement('div', props));
+          handleResult.push(data[i].suburb + ' ' + data[i].postcode + ' ' + data[i].state);
         }
-        this.clearResults();
-        this.renderDropdown();
+        return handleResult;
       },
-      clearResults: function() {
-        this.$results
-          .removeClass('addressSearchV2__results--active')
-          .empty();
-      },
-      renderDropdown: function() {
-        if (this.htmlElements.length > 0) {
-          this.$results
-            .append(this.htmlElements)
-            .addClass('addressSearchV2__results--active');
-        }
+      handleSelect: function(text) {
+        var addressObj = this.results.find(function(result) {
+          return text.indexOf(result.suburb) === 0;
+        });
+        this.fillFields(addressObj);
       },
       fillFields: function(data) {
         $(this.xpath + '_suburb').val(data.suburb);
         $(this.xpath + '_state').val(data.state);
         $(this.xpath + '_postcode').val(data.postcode);
-      },
-      clickHandler: function(event) {
-        this.$postcodeInput.val(event.target.innerHTML);
-        var addressObj = this.results.find(function(result) {
-          return event.target.innerHTML.indexOf(result.suburb) === 0;
-        });
-        this.fillFields(addressObj);
-      },
-      search: function() {
-        var _this = this;
-        this.query = event.target.value;
-        if (this.query.length > 3) {
-          this.settings.url = addressBase + 'suburbpostcode/' + this.query;
-          $.ajax(this.settings).done(function(data) { _this.handleData(data); });
-        }
       },
       settings: {
         dataType: 'json',
@@ -326,8 +309,10 @@
         this.cacheDom();
         this.bindEvents();
         this.setUpDefault();
+        this.setupAutocomplete();
       },
       cacheDom: function() {
+        this.searchInput = '.addressSearchV2--' + this.prefix + ' .addressSearchV2__searchContainer input';
         this.$el = $('.addressSearchV2--' + this.prefix);
         this.$postcode = this.$el.find('.addressSearchV2__postcodeSearch');
         this.$postcodeInput = this.$postcode.find('input');
@@ -335,49 +320,51 @@
         this.$searchContainer = this.$el.find('.addressSearchV2__searchContainer');
         this.$searchField = this.$searchContainer.find('input');
         this.$cantFindField = this.$el.find('.addressSearchV2__cantFindFields');
-        this.$results = this.$el.find('.addressSearchV2__results');
       },
       bindEvents: function() {
         this.$checkbox.on('change', this.toggleCheckbox.bind(this));
-        this.$searchField
-          .on('keyup focus', this.search.bind(this))
-          .on('blur', this.clearResults.bind(this));
-        
-        $(document).on('mousedown touchstart', '.addressSearchV2--' + this.prefix + ' .addressSearchV2__results div', this.clickResults.bind(this));
+      },
+      setupAutocomplete: function() {
+        var _this = this;
+        this.autocomplete = new meerkat.modules.autocompleteV2.initInput({
+              selector: _this.searchInput,
+              minChars: 4,
+              delay: 250,
+              cache: false,
+              source: function(term, response) {
+                  _this.settings.data = JSON.stringify({ addressLine: term, postCodeOrSuburb: _this.$postcodeInput.val() });
+                  $.ajax(_this.settings).done(function(data) {
+                    response(_this.handleData(data)); 
+                  });
+              },
+              renderItem: function (item, search) {
+                  if (item === noAddressFound) { return '<div class="autocomplete-suggestion" data-val="">' + item + '</div>'; }
+                  return '<div class="autocomplete-suggestion" data-val="' + item + '">' + item + '</div>';
+              },
+              onSelect: function(event, term, item) {
+                _this.handleSelect(term);
+              }
+          });
+      },
+      handleSelect: function(text) {
+        if (text === '') {
+          this.$searchField.val('');
+          this.$checkbox.prop('checked', true).change();
+        } else {
+          var selectedData = this.results.find(function(result) {
+            return result.text === text;
+          });
+          this.fillFields(selectedData);
+        }
       },
       handleData: function(data) {
         this.results = data;
-        this.htmlElements = [];
+        var displayData = [];
         for (var i = 0; i < data.length; i++) {
-          var element = createElement('div', { innerHTML: data[i].text });
-          this.htmlElements.push(element);
+          displayData.push(data[i].text);
         }
-        this.htmlElements.push(createElement('div', { innerHTML: noAddressFound }));
-        this.clearResults();
-        this.renderDropdown();
-      },
-      clearResults: function() {
-        this.$results
-          .removeClass('addressSearchV2__results--active')
-          .empty();
-      },
-      renderDropdown: function() {
-        if (this.htmlElements.length > 0) {
-          this.$results
-            .append(this.htmlElements)
-            .addClass('addressSearchV2__results--active');
-        }
-      },
-      search: function(event) {
-        this.query = event.target.value;
-        clearTimeout(this.typingTimer);
-        var _this = this;
-        if (this.query.length > 4 && this.$postcodeInput.val().length === 4) {
-          this.settings.data = JSON.stringify({ addressLine: this.query, postCodeOrSuburb: this.$postcodeInput.val() });
-          this.typingTimer = setTimeout(function() {
-            $.ajax(_this.settings).done(function(data) { _this.handleData(data); });
-          }, doneTypingTime);
-        }
+        displayData.push(noAddressFound);
+        return displayData;
       },
       setUpDefault: function() {
         if (this.prefix === 'Residential') {
@@ -394,22 +381,9 @@
         $(this.xpath + '_nonStdStreet').val(data.streetName);
         $(this.xpath + '_streetNum').val(data.houseNoSel);
         $(this.xpath + '_unitShop').val(data.unitSel);
+        $(this.xpath + '_gnafid').val(data.gnafid);
         if (data.unitType.length > 0) {
           $(this.xpath + '_unitType').find('option[text="'+ data.unitType +'"]').prop('selected', true);
-        }
-      },
-      clickResults: function(event) {
-        var text = event.target.innerHTML;
-        if (text.indexOf('click here') !== -1) {
-          this.$checkbox
-            .prop('checked', true)
-            .change();
-        } else {
-          setValues(this.$searchField, text);
-          var addressObj = this.results.find(function(result) {
-            return result.text === text;
-          });
-          this.fillFields(addressObj);
         }
       },
       toggleCheckbox: function(event) {
@@ -448,7 +422,7 @@
           this.$target.show();
         }
       }
-    }
+    };
   }
   
   function getToggleBtn() {

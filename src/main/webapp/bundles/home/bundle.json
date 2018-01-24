@@ -35,6 +35,7 @@
     "shared/buttonTileDropdownSelector",
     "shared/leadCapture",
     "shared/competition",
-    "shared/addressLookupV2"
+    "shared/addressLookupV2",
+    "shared/autocompleteV2"
   ]
 }
