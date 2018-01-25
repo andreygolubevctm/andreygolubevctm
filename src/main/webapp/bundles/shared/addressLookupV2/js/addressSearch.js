@@ -152,7 +152,7 @@
         this.$suburbDropdown.empty();
         if (data.length > 0) {
           this.$suburbDropdown.prop('disabled', false);
-          this.htmlElements.push(createElement('option', { text: 'Select suburb', value: '' }));
+          this.htmlElements.push(createElement('option', { innerHTML: 'Select suburb', value: '' }));
           for (var i = 0; i < data.length; i++) {
             var element = createElement('option', { innerHTML: data[i].suburb, value: data[i].suburb });
             this.htmlElements.push(element);
@@ -372,18 +372,22 @@
       setUpDefault: function() {
         if (this.prefix === 'Residential') {
           this.$postcodeInput.val($('#health_situation_postcode').val());
-          $(this.xpath + '_suburb').attr("disabled", true);
         } else {
-          $(this.xpath + '_suburb').attr("disabled", false);
           this.$checkbox
             .prop('checked', true)
             .change();
         }
       },
       fillFields: function(data) {
-        $(this.xpath + '_state').val(data.state);
+        if ($(this.xpath + '_suburb').find('option[value="'+ data.suburbName +'"]').length === 0) {
+          $(this.xpath + '_suburb').append(meerkat.modules.utils.createElement('option', { innerHTML: data.suburbName, value: data.suburbName }));
+        }
+        $(this.xpath + '_suburbName').val(data.suburbName);
         $(this.xpath + '_suburb').find('option[value="'+ data.suburbName +'"]').prop('selected', true);
+        $(this.xpath + '_fullAddress').val(data.text);
+        $(this.xpath + '_state').val(data.state);
         $(this.xpath + '_nonStdStreet').val(data.streetName);
+        $(this.xpath + '_streetName').val(data.streetName);
         $(this.xpath + '_streetNum').val(data.houseNoSel);
         $(this.xpath + '_unitShop').val(data.unitSel);
         $(this.xpath + '_gnafid').val(data.gnafid);

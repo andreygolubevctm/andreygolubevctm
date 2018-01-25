@@ -1,5 +1,5 @@
+/* jshint ignore:start */
 ;(function($, undefined){
-
 	var meerkat = window.meerkat,
 		meerkatEvents = meerkat.modules.events,
 		log = meerkat.logging.info;
@@ -86,7 +86,7 @@
 		                                that.sc.scrollTop = selTop + scrTop;
 		                        }
 		                }
-		            }
+		            };
 		            addEvent(window, 'resize', that.updateSC);
 		            document.body.appendChild(that.sc);
 
@@ -131,7 +131,7 @@
 		                }
 		                else
 		                    that.sc.style.display = 'none';
-		            }
+		            };
 
 		            that.keydownHandler = function(e){
 		                var key = window.event ? e.keyCode : e.which;
@@ -180,7 +180,7 @@
 		                                    if (part in that.cache && !that.cache[part].length) { suggest([]); return; }
 		                                }
 		                            }
-		                            that.timer = setTimeout(function(){ o.source(val, suggest) }, o.delay);
+		                            that.timer = setTimeout(function(){ o.source(val, suggest); }, o.delay);
 		                        }
 		                    } else {
 		                        that.last_val = val;
@@ -192,7 +192,7 @@
 
 		            that.focusHandler = function(e){
 		                that.last_val = '\n';
-		                that.keyupHandler(e)
+		                that.keyupHandler(e);
 		            };
 		            if (!o.minChars) addEvent(that, 'focus', that.focusHandler);
 		        }
@@ -217,11 +217,9 @@
 		    }
 		    return autoComplete;
 		})();
-	
-	
 
 	meerkat.modules.register("autocompleteV2", {
 		initInput: autoComplete
-	})
-
+	});
+	
 })(jQuery);
