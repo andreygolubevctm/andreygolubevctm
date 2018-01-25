@@ -1,5 +1,5 @@
 ;(function ($, undefined) {
-  var noAddressFound = "Can't find address? <span class=\"underline\">click here</span>";
+  var noAddressFound = "Can't find address? <span class=\"underline\">Click here.</span>";
   var doneTypingTime = 250;
   var createElement = meerkat.modules.utils.createElement;
   
@@ -360,11 +360,16 @@
           this.fillFields(selectedData);
         }
       },
+      displayTextFix: function(text, postcode) {
+        var postcodeString = ', ' + postcode;
+        var stringFix = text.replace(postcodeString, '');
+        return stringFix;
+      },
       handleData: function(data) {
         this.results = data;
         var displayData = [];
         for (var i = 0; i < data.length; i++) {
-          displayData.push(data[i].text);
+          displayData.push(this.displayTextFix(data[i].text, data[i].postCode));
         }
         displayData.push(noAddressFound);
         return displayData;
@@ -379,13 +384,14 @@
         }
       },
       fillFields: function(data) {
+        var streetSearch = data.houseNoSel + ' ' + data.streetName + ', ' + data.suburbName + ' ' + data.state;
         if ($(this.xpath + '_suburb').find('option[value="'+ data.suburbName +'"]').length === 0) {
           $(this.xpath + '_suburb').append(meerkat.modules.utils.createElement('option', { innerHTML: data.suburbName, value: data.suburbName }));
         }
         $(this.xpath + '_suburbName').val(data.suburbName);
         $(this.xpath + '_suburb').find('option[value="'+ data.suburbName +'"]').prop('selected', true);
         $(this.xpath + '_fullAddress').val(data.text);
-        $(this.xpath + '_streetSearch').val(data.text);
+        $(this.xpath + '_streetSearch').val(streetSearch);
         $(this.xpath + '_state').val(data.state);
         $(this.xpath + '_nonStdStreet').val(data.streetName);
         $(this.xpath + '_streetName').val(data.streetName);
@@ -394,7 +400,9 @@
         $(this.xpath + '_unitShop').val(data.unitSel);
         $(this.xpath + '_gnafid').val(data.gnafid);
         if (data.unitType.length > 0) {
-          $(this.xpath + '_unitType').find('option:contains("'+ data.unitType +'")').prop('selected', true);
+          var str = data.unitType.toLowerCase();
+          var fixStringFormat = str.charAt(0).toUpperCase() + str.slice(1);
+          $(this.xpath + '_unitType').find('option:contains("'+ fixStringFormat +'")').prop('selected', true);
         }
       },
       toggleCheckbox: function(event) {
