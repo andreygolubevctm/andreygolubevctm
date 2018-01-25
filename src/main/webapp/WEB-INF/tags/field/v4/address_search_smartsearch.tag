@@ -26,8 +26,10 @@
   </form_v2:row>
   <field_v1:hidden xpath="${xpath}/fullAddress" />
   <field_v1:hidden xpath="${xpath}/streetName" />
+  <field_v1:hidden xpath="${xpath}/streetSearch" />
   <field_v1:hidden xpath="${xpath}/state" />
   <field_v1:hidden xpath="${xpath}/suburbName" />
+  <field_v1:hidden xpath="${xpath}/houseNoSel" />
   <field_v1:hidden xpath="${xpath}/gnafid" />
   <field_v1:hidden xpath="${xpath}/nonStdPostCode" />
   <field_v1:hidden xpath="${xpath}/type" constantValue="${type}"/>

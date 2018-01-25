@@ -385,10 +385,12 @@
         $(this.xpath + '_suburbName').val(data.suburbName);
         $(this.xpath + '_suburb').find('option[value="'+ data.suburbName +'"]').prop('selected', true);
         $(this.xpath + '_fullAddress').val(data.text);
+        $(this.xpath + '_streetSearch').val(data.text);
         $(this.xpath + '_state').val(data.state);
         $(this.xpath + '_nonStdStreet').val(data.streetName);
         $(this.xpath + '_streetName').val(data.streetName);
         $(this.xpath + '_streetNum').val(data.houseNoSel);
+        $(this.xpath + '_houseNoSel').val(data.houseNoSel);
         $(this.xpath + '_unitShop').val(data.unitSel);
         $(this.xpath + '_gnafid').val(data.gnafid);
         if (data.unitType.length > 0) {
