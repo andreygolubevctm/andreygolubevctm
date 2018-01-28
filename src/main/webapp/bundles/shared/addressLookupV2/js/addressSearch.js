@@ -385,7 +385,6 @@
         }
       },
       fillFields: function(data) {
-        console.log(data);
         var streetSearch = data.houseNoSel + ' ' + data.streetName + ', ' + data.suburbName + ' ' + data.state;
         if ($(this.xpath + '_suburb').find('option[value="'+ data.suburbName +'"]').length === 0) {
           $(this.xpath + '_suburb').append(meerkat.modules.utils.createElement('option', { innerHTML: data.suburbName, value: data.suburbName }));
