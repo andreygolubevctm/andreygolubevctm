@@ -350,12 +350,13 @@
           });
       },
       handleSelect: function(text) {
+
         if (text === '') {
           this.$searchField.val('');
           this.$checkbox.prop('checked', true).change();
         } else {
           var selectedData = this.results.find(function(result) {
-            return result.text === text;
+            return result.text.indexOf(text) > -1;
           });
           this.fillFields(selectedData);
         }
@@ -384,6 +385,7 @@
         }
       },
       fillFields: function(data) {
+        console.log(data);
         var streetSearch = data.houseNoSel + ' ' + data.streetName + ', ' + data.suburbName + ' ' + data.state;
         if ($(this.xpath + '_suburb').find('option[value="'+ data.suburbName +'"]').length === 0) {
           $(this.xpath + '_suburb').append(meerkat.modules.utils.createElement('option', { innerHTML: data.suburbName, value: data.suburbName }));
