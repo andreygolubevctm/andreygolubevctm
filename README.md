@@ -1,14 +1,10 @@
-# Compare The Market Technology Platform
+# Compare The Market Web Technology Platform
 
-The CTM platform began life from the original Auto & General technology stack, used in budget direct web quote and sale, but has since diverged and evolved into it's own entity.
+The web CTM platform began life from the original Auto & General technology stack, used in budget direct web quote and sale, but has since diverged and evolved into it's own entity.
 
-As the pace of development and evolution for the CTM IT platform is extremely high, and demands increased flexibility and performance for frontend design and code.
+Web CTM is a Java Spring Boot application which consists of a front-end is built from a combination of Java Server Pages (JSP) and Scriptlets (Tags), [LESS](http://lesscss.org/), [Bootstrap3](http://getbootstrap.com) and CTM's custom ES5 modular JS framework (Meerkat Modules).
 
-Now we move into an era of developing on a frontend framework diverging into our own design, which is starting based off [LESS](http://lesscss.org/) + [Bootstrap3](http://getbootstrap.com) with a mix of our own modular JS framework. It is a refactor and evolution 'in the making'.
-
-## Documentation
-
-Documentation for framework and platform is in this readme or otherwise more extensively located on the [CTM Architecture](http://confluence:8090/display/CM/CtM+Architecture) confluence wiki directory.
+You can read more about the project on our confluence: [CTM Architecture](http://confluence:8090/display/CM/CtM+Architecture).
 
 ## Getting Started
 
