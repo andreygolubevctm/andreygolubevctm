@@ -15,6 +15,8 @@
 	var $bankSection;
 	var $creditCardSection;
 	var $paymentCalendar;
+	var $pricePromiseMentioned;
+	var $pricePromisePromotionRow;
 
 	var $frequencySelect;
 
@@ -122,6 +124,18 @@
 
 			resetSettings();
 
+            $pricePromiseMentioned.on('change', function() {
+            	var pricePromiseMentioned = $pricePromiseMentioned.is(':checked');
+
+                if (pricePromiseMentioned) {
+                    $pricePromisePromotionRow.slideDown();
+				} else {
+                    $pricePromisePromotionRow.slideUp();
+				}
+
+                meerkat.modules.simplesBindings.togglePricePromisePromoDialogue(pricePromiseMentioned);
+			});
+
 			// Set Dom state
 			$paymentContainer.hide();
 
@@ -137,6 +151,8 @@
 		$bankSection = $('.health_payment_bank-selection');
 		$creditCardSection = $('.health_payment_credit-selection');
 		$paymentCalendar = $('#health_payment_details_start');
+		$pricePromiseMentioned = $('#health_price_promise_mentioned');
+        $pricePromisePromotionRow = $('.healthPricePromisePromotionRow');
 
 		// Containers
 		$paymentContainer = $(".update-content");

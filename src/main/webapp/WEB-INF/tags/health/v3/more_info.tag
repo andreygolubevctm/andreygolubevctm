@@ -6,6 +6,8 @@
 	<content:get key="emailPlaceHolder"/>
 </c:set>
 
+<c:set var="brand" value="${pageSettings.getBrandCode()}" />
+
 <%-- Setup variables needed for dual pricing --%>
 <health_v1:dual_pricing_settings />
 <health_v1:pyrr_campaign_settings />
@@ -181,6 +183,12 @@
 			<div class="col-xs-12">
 				<simples:dialogue id="99" vertical="health" />
 			</div>
+
+			<c:if test="${brand eq 'ctm'}">
+				<div class="col-xs-12">
+					<simples:dialogue id="100" vertical="health" />
+				</div>
+			</c:if>
 
 			<div class="col-xs-12">
 				<simples:dialogue id="84" vertical="health" />
