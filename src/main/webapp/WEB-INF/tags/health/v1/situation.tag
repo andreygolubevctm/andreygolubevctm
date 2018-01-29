@@ -31,7 +31,10 @@
             <simples:dialogue id="0" vertical="health" className="red">
                 <div class="row">
                     <div class="col-sm-12">
-                        <field_v2:array_radio xpath="health/simples/contactTypeRadio" items="outbound=Outbound quote,inbound=Inbound quote,cli=CLI,trialcampaign=Trial Campaign${showChatOption ? ',webchat=Web Chat' : ''}" required="true" title="contact type (outbound/inbound)" />
+                        <c:set var="fieldXpath" value="health/simples/contactTypeRadio" />
+                        <form_v3:row label="Contact type (outbound/inbound)" fieldXpath="${fieldXpath}" className="health-contactType">
+                            <field_v2:general_select xpath="${fieldXpath}" type="contactType" className="health-situation-contactType" required="true" title="Contact type (outbound/inbound)" additionalOptions="${showChatOption ? ',webchat=Web Chat' : ''}" />
+                        </form_v3:row>
                         <field_v1:hidden xpath="health/simples/contactType" />
                         <field_v1:hidden xpath="health/simples/contactTypeTrial" />
                     </div>

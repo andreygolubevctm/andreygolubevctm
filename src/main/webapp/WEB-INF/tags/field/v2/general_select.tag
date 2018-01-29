@@ -14,6 +14,7 @@
 <%@ attribute name="additionalAttributes" required="false"	rtexprvalue="true"	 description="additional attributes to apply to the select" %>
 <%@ attribute name="disableErrorContainer" 	required="false" 	rtexprvalue="true"    	 description="Show or hide the error message container" %>
 <%@ attribute name="additionalLabelAttributes" required="false"	rtexprvalue="true"	 description="additional attributes to apply to the select" %>
+<%@ attribute name="additionalOptions" required="false"	rtexprvalue="true"	 description="additional options to add to the select if required. Format: value1=des 1,value2=des 2" %>
 
 <%-- VARIABLES --%>
 <c:set var="name" value="${go:nameFromXpath(xpath)}"/>
@@ -42,6 +43,10 @@
     <c:set var="additionalAttributes" value='${additionalAttributes}  data-disable-error-container="true" '/>
 </c:if>
 
+<c:if test="${empty additionalOptions}">
+    <c:set var="additionalOptions" value=""/>
+</c:if>
+
 <%-- HTML --%>
 <sql:setDataSource dataSource="${datasource:getDataSource()}"/>
 
@@ -67,6 +72,14 @@
                     ${row.description}
             </option>
         </c:forEach>
+        <c:forTokens items="${additionalOptions}" delims="," var="optionItem">
+            <c:set var="val" value="${fn:substringBefore(optionItem,'=')}" />
+            <c:set var="des" value="${fn:substringAfter(optionItem,'=')}" />
+            <option value="${val}"
+                    <c:if test="${val == value}"> selected="selected" </c:if>>
+                    ${des}
+            </option>
+        </c:forTokens>
     </select>
 </div>
 

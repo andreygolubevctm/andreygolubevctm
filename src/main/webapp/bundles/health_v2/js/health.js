@@ -1035,6 +1035,8 @@
 
             // Push in values from 1st slide only when have been beyond it
             if (furtherest_step > meerkat.modules.journeyEngine.getStepIndex('start')) {
+
+                // #health_simples_contactType_* is no longer used
                 var contactType = null;
                 var contactTypeTrial = '';
                 if ($('#health_simples_contactType_inbound').is(':checked')) {
@@ -1046,7 +1048,7 @@
                 } else if ($('#health_simples_contactType_trialcampaign').is(':checked')) {
                     contactType = 'outbound';
                     contactTypeTrial = 'Trial Campaign';
-				} else if ($('#health_simples_contactTypeRadio_chat').is(':checked')) {
+				} else if ($('#health_simples_contactType_chat').is(':checked')) {
 					contactType = 'webchat';
                 }
 
