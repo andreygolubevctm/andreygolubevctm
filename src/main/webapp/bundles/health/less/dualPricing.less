@@ -1,20 +1,21 @@
 body[data-step="results"] {
   .resultInsert .productSummary.hasDualPricing {
-    height: 240px;
+    height: 250px;
     @media(@xs-only) {
       height: 210px;
     }
 
     &.compressed {
+      height: 185px;
       .companyLogo {
-        display: none;
+        display: block;
       }
     }
 
     .dual-pricing-container {
 
       @media(@sm) {
-        margin-top: 10px;
+        margin-top: 0px;
       }
 
       .april-pricing {
