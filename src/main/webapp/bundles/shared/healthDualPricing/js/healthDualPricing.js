@@ -255,7 +255,11 @@
         product.showRisingTag = false;
         product.priceBreakdown = false;
         htmlTemplate = _.template($elements.logoPriceTemplate.html());
-        product.renderedAltPriceTemplate = htmlTemplate(product);
+        try {
+            product.renderedAltPriceTemplate = htmlTemplate(product);
+        } catch(e) {
+	        product.renderedAltPriceTemplate = meerkat.site.isCallCentreUser ? "<h5>April price not available</h5>" : "";
+        }
         product.dropDeadDate = meerkat.modules.dropDeadDate.getDropDeadDate(product);
         product.dropDatePassed = meerkat.modules.dropDeadDate.getDropDatePassed(product);
         $elements.mainDualPricingTemplate = _getTemplate(isForSidebar, page);
