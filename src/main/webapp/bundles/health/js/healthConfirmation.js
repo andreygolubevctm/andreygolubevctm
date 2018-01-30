@@ -212,7 +212,7 @@
 		});
 
 		adjustLayout();
-		meerkat.logging.debug(confirmationProduct);
+
 		if (meerkat.modules.healthDualPricing.isDualPricingActive()) {
 			// render dual pricing
 			meerkat.modules.healthDualPricing.initDualPricing();
