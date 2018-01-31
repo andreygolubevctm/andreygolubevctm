@@ -50,13 +50,13 @@ public class MarketingContentDao {
         final List<MarketingContent> marketingContents = new ArrayList<>();
 
         while (results.next()) {
-            marketingContents.add(marketingContent(results));
+            marketingContents.add(getMarketingContentModel(results));
         }
 
         return marketingContents;
     }
 
-    private MarketingContent marketingContent(final ResultSet results) throws SQLException {
+    private MarketingContent getMarketingContentModel(final ResultSet results) throws SQLException {
         final MarketingContent marketingContent = new MarketingContent();
 
         marketingContent.setMarketingContentId(results.getInt("marketingContentId"));

@@ -17,22 +17,12 @@
         };
 
         _applyEventListeners();
-        _eventSubscriptions();
     }
 
     function _applyEventListeners() {
         $elements.showPromos.on('click', function() {
             $elements.bannerTop.find('.marketing-content-container, .coupon-banner-container').show();
             $elements.showPromos.hide();
-        });
-    }
-
-    function _eventSubscriptions() {
-        meerkat.messaging.subscribe(meerkatEvents.ADDRESS_CHANGE, function (event) {
-            if (meerkat.modules.deviceMediaState.get() === 'xs' && event.hash.indexOf('contact') !== -1) {
-                $elements.bannerTop.find('.marketing-content-container, .coupon-banner-container').hide();
-                $elements.showPromos.show();
-            }
         });
     }
 
@@ -67,9 +57,17 @@
         }
     }
 
+    function xsLayout() {
+        if (meerkat.modules.deviceMediaState.get() === 'xs') {
+            $elements.bannerTop.find('.marketing-content-container, .coupon-banner-container').hide();
+            $elements.showPromos.show();
+        }
+    }
+
     meerkat.modules.register('bannerPlacement', {
         init: init,
         render: render,
+        xsLayout: xsLayout,
         events: moduleEvents
     });
 })(jQuery);
