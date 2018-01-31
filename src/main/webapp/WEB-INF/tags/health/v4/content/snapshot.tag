@@ -91,5 +91,5 @@
         </div>
     </div>
     <a href="javascript:;" class="icon-pencil btn-edit" data-slide-control="start"></a>
-    <a href="javascript:;" data-opensavequote="true" class="pull-right" <field_v1:analytics_attr analVal="save button" quoteChar="\"" />>Save for later</a>
+    <a href="javascript:;" data-opensavequote="true" class="pull-right hide-on-contact-page" <field_v1:analytics_attr analVal="save button" quoteChar="\"" />>Save for later</a>
 </fieldset>
