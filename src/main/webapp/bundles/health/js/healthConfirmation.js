@@ -213,7 +213,7 @@
 
 		adjustLayout();
 
-		if (meerkat.modules.healthDualPricing.isDualPricingActive() && !_.isUndefined(confirmationProduct.paymentTypeAltPremiums)) {
+		if (meerkat.modules.healthDualPricing.isDualPricingActive() && _.has(confirmationProduct, 'paymentTypeAltPremiums')) {
 			// render dual pricing
 			meerkat.modules.healthDualPricing.initDualPricing();
 			confirmationProduct.altPremium = confirmationProduct.paymentTypeAltPremiums[meerkat.modules.healthPaymentStep.getPaymentMethodNode(confirmationProduct.paymentType)];
