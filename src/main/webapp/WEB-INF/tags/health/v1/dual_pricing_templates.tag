@@ -112,9 +112,11 @@
 			{{= renderedPriceTemplate }}
 		</div>
 		<hr />
+		{{ if (showAltPremium) { }}
 		<div class="april-pricing">
 			<p>Premiums ${april1HeaderNoSup}</p>
 			{{= renderedAltPriceTemplate }}
 		</div>
+		{{ } }}
 	</div>
 </core_v1:js_template>

@@ -6,19 +6,16 @@ import com.ctm.web.email.travel.TravelEmailModel;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import io.swagger.annotations.ApiModel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Created by akhurana on 8/09/17.
@@ -27,7 +24,7 @@ import java.util.Optional;
 @Setter
 @EqualsAndHashCode
 @ToString
-@ApiModel( value = "EmailRequest", description = "Email request object" )
+@ApiModel(value = "EmailRequest", description = "Email request object")
 public class EmailRequest {
     private String address;
     private List<String> applyUrls;
@@ -61,6 +58,7 @@ public class EmailRequest {
     private String transactionId;
     private String unsubscribeURL;
     private String vertical;
+    private List<BigDecimal> premiumDiscountPercentage;
 
     private HealthEmailModel healthEmailModel;
     private CarEmailModel carEmailModel;
