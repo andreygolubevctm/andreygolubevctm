@@ -103,6 +103,7 @@
 				product.dropDeadDateFormatted = selectedProduct.dropDeadDateFormatted;
 				product.dropDeadDatePassed = selectedProduct.dropDeadDatePassed;
 			}
+			meerkat.modules.healthDualPricing.initDualPricing();
 			meerkat.modules.healthDualPricing.renderTemplate('.policySummary.dualPricing', product, false, true);
 		} else {
 			product.displayLogo = true;
