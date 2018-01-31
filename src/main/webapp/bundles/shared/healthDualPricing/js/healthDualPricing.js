@@ -249,7 +249,7 @@
         var htmlTemplate = _.template($elements.logoPriceTemplate.html());
         product.renderedPriceTemplate = htmlTemplate(product);
 
-        product.showAltPremium = true;
+        product.showAltPremium = _.has(product, 'altPremium');
         product.displayLogo = false;
         product.showCurrPremText = false;
         product.showRisingTag = false;
