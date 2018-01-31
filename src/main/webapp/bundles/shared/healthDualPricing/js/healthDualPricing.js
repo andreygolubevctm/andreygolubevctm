@@ -123,23 +123,25 @@
         });
 
         $(document).on('click', '.dual-pricing-update-frequency-btn', function() {
+            var $filterBarFrequency = $('input[name=health_filterBar_frequency]'),
+                currFrequency = $filterBarFrequency.filter(':checked').val(),
+                newFrequency = currFrequency;
+
             if ($(this).hasClass('dual-pricing-frequency-updated')) {
-                var newFrequency = $('input[name=health_dual_pricing_frequency]').filter(':checked').val(),
-                    $filterBarFrequency = $('input[name=health_filterBar_frequency]'),
-                    currFrequency = $filterBarFrequency.filter(':checked').val();
+                newFrequency = $('input[name=health_dual_pricing_frequency]').filter(':checked').val();
 
                 $filterBarFrequency.filter('[value='+newFrequency+']').trigger('click');
                 $('.current-frequency').text(freqValuesMapping[newFrequency]);
-
-                meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
-                    method: 'trackRateRise',
-                    object: {
-                        category: 'Health Rate Rise Modal',
-                        action: 'Learn More Engaged',
-                        label: freqValuesMapping[currFrequency] + ':' + freqValuesMapping[newFrequency]
-                    }
-                });
             }
+
+            meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+                method: 'trackRateRise',
+                object: {
+                    category: 'Health Rate Rise Modal',
+                    action: 'Learn More Engaged',
+                    label: freqValuesMapping[currFrequency] + ':' + freqValuesMapping[newFrequency]
+                }
+            });
 
             _trackModalClose = false;
             _hideModal();
