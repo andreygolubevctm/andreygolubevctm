@@ -58,7 +58,7 @@
     ORDER BY orderSeq
 <sql:param>${type}</sql:param>
 <c:if test="${not empty excludeCodes}">
-    <sql:param>${additionalOptions}</sql:param>
+    <sql:param>${excludeCodes}</sql:param>
 </c:if>
 </sql:query>
 
