@@ -795,15 +795,6 @@
             if (furtherest_step > meerkat.modules.journeyEngine.getStepIndex('start')) {
                 var contactType = null;
 
-                // This code is being hit but these fields are not populated anymore
-                if ($('#health_simples_contactType_inbound').is(':checked')) {
-                    contactType = 'inbound';
-                } else if ($('#health_simples_contactType_outbound').is(':checked')) {
-                    contactType = 'outbound';
-				} else if ($('#health_simples_contactType_chat').is(':checked')) {
-					contactType = 'webchat';
-                }
-
                 $.extend(response, {
                     postCode: $("#health_application_address_postCode").val(),
                     state: state,

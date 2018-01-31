@@ -12,9 +12,9 @@
 <%-- Dialog is not mandatory for callcentre chat users --%>
 <c:set var="isRoleSimplesChatGroup" scope="session"><simples:security key="simplesChatGroup" /></c:set>
 
-<c:set var="showChatOption" value="false" />
+<c:set var="hideChatOption" value="true" />
 <c:if test="${isRoleSimplesChatGroup and callCentre}">
-	<c:set var="showChatOption" value="true" />
+	<c:set var="hideChatOption" value="false" />
 </c:if>
 
 <%-- HTML --%>
@@ -33,7 +33,7 @@
                     <div class="col-sm-12">
                         <c:set var="fieldXpath" value="health/simples/contactTypeRadio" />
                         <form_v3:row label="Contact type (outbound/inbound)" fieldXpath="${fieldXpath}" className="health-contactType">
-                            <field_v2:general_select xpath="${fieldXpath}" type="contactType" className="health-situation-contactType" required="true" title="Contact type (outbound/inbound)" additionalOptions="${showChatOption ? ',webchat=Web Chat' : ''}" />
+                            <field_v2:general_select xpath="${fieldXpath}" type="contactType" className="health-situation-contactType" required="true" title="Contact type (outbound/inbound)" excludeCodes="${hideChatOption ? 'webchat' : ''}" />
                         </form_v3:row>
                         <field_v1:hidden xpath="health/simples/contactType" />
                         <field_v1:hidden xpath="health/simples/contactTypeTrial" />
