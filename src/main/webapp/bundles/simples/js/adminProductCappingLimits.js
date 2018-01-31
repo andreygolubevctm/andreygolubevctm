@@ -11,7 +11,6 @@
 			if($("#product-capping-limits-container").length) {
 				CRUD = new meerkat.modules.crud.newCRUD({
 					baseURL: "../../admin/productCappingLimits",
-					//primaryKey: "cappingLimitsKey",  todo: DELETE this line!!!! ############################
 					primaryKey: "cappingLimitId",
 					models: {
 						datum: function(data) {
@@ -45,7 +44,7 @@
 					return CRUD.dataSet.get($row.data("id")).data;
 				};
  
-				CRUD.get();
+				CRUD.get({providerId: $('.sortable-header').attr( "data-providerId")});
 
 			}
 		});

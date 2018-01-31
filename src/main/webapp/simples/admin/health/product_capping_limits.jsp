@@ -13,7 +13,7 @@
 <layout_v1:simples_page fullWidth="true">
 	<jsp:attribute name="head"></jsp:attribute>
 	<jsp:body>
-		<div class="sortable-header data-sorter container-fluid" data-refreshcallback="meerkat.modules.adminProductCappingLimits.refresh">
+		<div class="sortable-header data-sorter container-fluid" data-refreshcallback="meerkat.modules.adminProductCappingLimits.refresh" data-providerId="${param.providerId}">
 			<div class="container">
 				<div class="row">
 					<ul>
@@ -142,16 +142,10 @@
 	<div class="row">
 		<div class="col-sm-12">
 			<br>
+			<input type="hidden" name="providerId" value="${providerId}">
 			{{ if(data.modalAction === "edit") { }}
 				<h1>Edit Record</h1>
-
 				<input type="hidden" name="cappingLimitId" value="{{= data.cappingLimitId }}">
-<%-- TODO delete these:
-				<input type="hidden" name="providerId" value="{{= data.providerId }}">
-				<input type="hidden" name="productCode" value="{{= data.productCode }}">
-				<input type="hidden" name="sequenceNo" value="{{= data.sequenceNo }}">
-				<input type="hidden" name="status" value="{{= data.status }}">
---%>
 			{{ } else if(data.modalAction === "clone") { }}
 				<h1>Clone Record</h1>
 			{{ } else { }}
