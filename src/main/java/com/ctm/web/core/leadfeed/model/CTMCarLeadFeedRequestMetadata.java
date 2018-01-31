@@ -24,7 +24,7 @@ public class CTMCarLeadFeedRequestMetadata implements Serializable {
     private MetadataType type;
     @NotBlank
     private String providerCode;
-    @Nullable
+    @NotNull
     private String propensityScore;
     @Nullable
     private String providerQuoteRef;

@@ -205,7 +205,7 @@ public class CarQuoteServiceTest {
 
         //Then
         assertFalse(resultProperties.isEmpty());
-        assertEquals(null, resultProperties.iterator().next().getValue());
+        assertEquals("", resultProperties.iterator().next().getValue());
     }
 
     @Test
@@ -219,7 +219,7 @@ public class CarQuoteServiceTest {
         final List<ResultProperty> resultProperties = service.buildResultPropertiesWithPropensityScore(productIdsOrderedByRank, TRANSACTION_ID);
         //Then
         assertFalse(resultProperties.isEmpty());
-        assertEquals(null, resultProperties.iterator().next().getValue());
+        assertEquals("", resultProperties.iterator().next().getValue());
     }
 
     @Test
