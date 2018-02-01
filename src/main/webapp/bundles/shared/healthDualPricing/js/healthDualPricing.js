@@ -273,7 +273,6 @@
 
         product.showAltPremium = false;
         product.displayLogo = isForSidebar;
-        // product.showAboutFund = (typeof product.aboutFund !== 'undefined' && product.aboutFund !== '');
         product.showRoundingText = false;
         product.showRisingTag = isForSidebar && deviceMediaState !== 'xs';
         product.showBeforeAfterText = isForSidebar && deviceMediaState !== 'xs';
@@ -289,7 +288,6 @@
 
         product.showAltPremium = _.has(product, 'altPremium');
         product.displayLogo = false;
-        // product.showAboutFund = false;
         product.showCurrPremText = false;
         product.showRisingTag = false;
         product.priceBreakdown = false;
