@@ -2,7 +2,8 @@
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events;
 
-    var $healthContactTypeRadio,
+    var $healthContactTypeField,
+        $healthContactTypeSelectOption,
         $healthContactType,
         $healthContactTypeTrial,
         $healthCoverRebate,
@@ -58,7 +59,8 @@
         $(document).ready(function () {
 
             // cache selectors
-            $healthContactTypeRadio = $('input[name=health_simples_contactTypeRadio]');
+            $healthContactTypeField = $(':input[name="health_simples_contactTypeRadio"]');
+            $healthContactTypeSelectOption = $(':input[name="health_simples_contactTypeRadio"] option');
             $healthContactType = $('#health_simples_contactType');
             $healthContactTypeTrial = $('#health_simples_contactTypeTrial');
             $healthCoverRebate = $('input[name=health_healthCover_rebate]');
@@ -126,18 +128,17 @@
         // if data already exists for xpath load data into radio btn
 	    var contactType = $healthContactType.val();
         if (!_.isEmpty(contactType)) {
-            if ($healthContactTypeTrial.val() === 'Trial Campaign') {
-                $('#health_simples_contactTypeRadio_trialcampaign').prop("checked", true).change();
+
+            if ($healthContactTypeTrial.val().length > 0) {
+                // trial campaigns
+                $healthContactTypeSelectOption.filter(function() {
+                    return ($(this).text().trim() === $healthContactTypeTrial.val());
+                }).prop('selected', true).change();
             } else {
-                if (contactType === 'inbound') {
-                    $('#health_simples_contactTypeRadio_inbound').prop("checked", true).change();
-                } else if (contactType === 'outbound') {
-                    $('#health_simples_contactTypeRadio_outbound').prop("checked", true).change();
-                } else if (contactType === 'cli') {
-                    $('#health_simples_contactTypeRadio_clioutbound').prop("checked", true).change();
-                } else if (contactType === 'webchat') {
-                    $('#health_simples_contactTypeRadio_webchat').prop("checked", true).change();
-                }
+                // inbound / outbound / cli / webchat
+                $(':input[name="health_simples_contactTypeRadio"] option').filter(function() {
+                    return ($(this).val() === contactType);
+                }).prop('selected', true);
             }
         }
         toggleWebChatDialog();
@@ -195,7 +196,7 @@
         });
 
         // Handle toggle inbound/outbound
-        $healthContactTypeRadio.on('change', function(){
+        $healthContactTypeField.on('change', function(){
             toggleInboundOutbound();
             toggleFollowupCallDialog();
             toggleReferralCallDialog();
@@ -269,9 +270,10 @@
     // Hide/show simple dialogues when toggle inbound/outbound in simples journey
     function toggleInboundOutbound() {
         var $body = $('body');
+        var healthContactTypeSelection = $healthContactTypeField.val();
 
         // Inbound
-        if ($('#health_simples_contactTypeRadio_inbound').is(':checked')) {
+        if (healthContactTypeSelection === 'inbound') {
 
             $healthContactType.val('inbound');
             $healthContactTypeTrial.val('');
@@ -288,21 +290,24 @@
                 .removeClass('inbound')
                 .addClass('outbound');
 
-            if (($('#health_simples_contactTypeRadio_outbound').is(':checked')) || ($('#health_simples_contactTypeRadio_trialcampaign').is(':checked'))) {
+            var contatTypeTrialRegex = new RegExp('trial','i');
+
+            if ((healthContactTypeSelection === 'outbound') || (contatTypeTrialRegex.test(healthContactTypeSelection))) {
                 _moveSituationMedicareField();
 
+                //contact type is set to outbound when Outbound or a trial is selected
                 $healthContactType.val('outbound');
 
-                if ($('#health_simples_contactTypeRadio_outbound').is(':checked')) {
+                if (healthContactTypeSelection === 'outbound') {
                     $healthContactTypeTrial.val('');
                 } else {
-                    $healthContactTypeTrial.val('Trial Campaign');
+                    $healthContactTypeTrial.val($healthContactTypeSelectOption.filter(':selected').text().trim());
                 }
 
             } else {
                 $healthContactTypeTrial.val('');
 
-                if ($('#health_simples_contactTypeRadio_webchat').is(':checked')) {
+                if (healthContactTypeSelection === 'webchat') {
                     $healthContactType.val('webchat');
                 } else {
                     // cli outbound
@@ -314,13 +319,17 @@
     }
 
     function getCallType() {
-        var callTypeToBeReturned = $healthContactTypeRadio.is(':checked') ? $healthContactTypeRadio.filter(':checked').val() : null;
+        var healthContactTypeSelection = $healthContactTypeField.val();
+        var callTypeToBeReturned = $healthContactTypeSelectOption.is(':selected') ? (healthContactTypeSelection != "" ? healthContactTypeSelection : null) : null;
+        var contatTypeTrialRegex = new RegExp('trial','i');
 
-        // treat trial campaign as outbound
+        // treat trial campaigns as outbound
         // for all intents and purposes trial campaign should be handled as an outbound call type - just have a different value stored in the DB
         // unsure if cli outbound should be handled here too
-        if (callTypeToBeReturned === 'trialcampaign') {
-            callTypeToBeReturned = 'outbound';
+        if (callTypeToBeReturned !== null) {
+            if (contatTypeTrialRegex.test(callTypeToBeReturned)){
+                callTypeToBeReturned = 'outbound';
+            }
         }
 
         return callTypeToBeReturned;

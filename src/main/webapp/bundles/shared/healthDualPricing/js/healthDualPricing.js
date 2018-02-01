@@ -18,7 +18,8 @@
             'A': 'annual'
         },
         isActive = null,
-        _aprilFirst = '04/01/2018';
+        _aprilFirst = '04/01/2018',
+        _trackModalClose = true;
 
     function initDualPricing() {
         if (!isDualPricingActive()) {
@@ -122,12 +123,27 @@
         });
 
         $(document).on('click', '.dual-pricing-update-frequency-btn', function() {
+            var $filterBarFrequency = $('input[name=health_filterBar_frequency]'),
+                currFrequency = $filterBarFrequency.filter(':checked').val(),
+                newFrequency = currFrequency;
+
             if ($(this).hasClass('dual-pricing-frequency-updated')) {
-                var newFrequency = $('input[name=health_dual_pricing_frequency]').filter(':checked').val();
-                $('input[name=health_filterBar_frequency]').filter('[value='+newFrequency+']').trigger('click');
+                newFrequency = $('input[name=health_dual_pricing_frequency]').filter(':checked').val();
+
+                $filterBarFrequency.filter('[value='+newFrequency+']').trigger('click');
                 $('.current-frequency').text(freqValuesMapping[newFrequency]);
             }
 
+            meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+                method: 'trackRateRise',
+                object: {
+                    category: 'Health Rate Rise Modal',
+                    action: 'Learn More Engaged',
+                    label: freqValuesMapping[currFrequency] + ':' + freqValuesMapping[newFrequency]
+                }
+            });
+
+            _trackModalClose = false;
             _hideModal();
         });
     }
@@ -152,6 +168,8 @@
             ddd = new Date(dropDeadDate),
             dddDay = meerkat.modules.dateUtils.format(ddd, "D"),
             dddSuffix = meerkat.modules.dateUtils.format(ddd, "Do").replace(dddDay, '');
+
+        _trackModalClose = true;
 
         modalId = meerkat.modules.dialogs.show({
             className: 'dual-pricing-modal',
@@ -180,6 +198,25 @@
             }),
             onOpen : function() {
                 $('a.live-chat').toggleClass('hidden', $('.LPMcontainer').length === 0);
+
+                meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+                    method: 'trackRateRise',
+                    object: {
+                        category: 'Health Rate Rise Modal',
+                        action: 'Learn More Selected'
+                    }
+                });
+            },
+            onClose: function () {
+                if (_trackModalClose) {
+                    meerkat.messaging.publish(meerkatEvents.tracking.EXTERNAL, {
+                        method: 'trackRateRise',
+                        object: {
+                            category: 'Health Rate Rise Modal',
+                            action: 'Learn More Closed'
+                        }
+                    });
+                }
             }
         });
 
@@ -188,7 +225,7 @@
 
     function _hideModal() {
         if (modalId !== null) {
-            $('#' + modalId).modal('hide');
+            meerkat.modules.dialogs.close(modalId);
         }
     }
 

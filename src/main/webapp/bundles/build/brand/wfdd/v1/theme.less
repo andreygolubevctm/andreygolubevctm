@@ -8,17 +8,12 @@
 body.callCentre {
   &[data-step="start"] {
     #health_situation-selection{
-      .simples-dialogue-0 .btn-group-justified {
+      .simples-dialogue-0 #health_simples_contactTypeRadio {
 
         // hide 'Outbound Quote' and 'Inbound quote' buttons For 'Westfund Direct' Simples
-        & label:first-child,
-        & label:nth-child(2) {
+        & option:nth-child(2),
+        & option:nth-child(3) {
           display: none;
-        }
-        & label:nth-child(3) {
-          border-top-left-radius: 5px;
-          border-bottom-left-radius: 5px;
-          border-left-width: 1px;
         }
       }
     }
