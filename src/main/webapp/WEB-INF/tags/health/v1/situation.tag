@@ -8,6 +8,7 @@
 <%-- VARIABLES --%>
 <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
 <c:set var="ovcScripting"><content:get key="simplesOVCCopy" /></c:set>
+<c:set var="brandCode">${pageSettings.getBrandCode()}</c:set>
 
 <%-- Dialog is not mandatory for callcentre chat users --%>
 <c:set var="isRoleSimplesChatGroup" scope="session"><simples:security key="simplesChatGroup" /></c:set>
@@ -16,6 +17,21 @@
 <c:if test="${isRoleSimplesChatGroup and callCentre}">
 	<c:set var="hideChatOption" value="false" />
 </c:if>
+
+<c:set var="excludeItems" value="" />
+<c:choose>
+    <c:when test="${brandCode eq 'wfdd'}">
+        <c:set var="excludeItems" value="outbound" />
+        <c:if test="${hideChatOption}">
+            <c:set var="excludeItems" value="outbound,webchat" />
+        </c:if>
+    </c:when>
+    <c:otherwise>
+        <c:if test="${hideChatOption}">
+            <c:set var="excludeItems" value="webchat" />
+        </c:if>
+    </c:otherwise>
+</c:choose>
 
 <%-- HTML --%>
 <div id="${name}-selection" class="health-situation">
@@ -33,7 +49,7 @@
                     <div class="col-sm-12">
                         <c:set var="fieldXpath" value="health/simples/contactTypeRadio" />
                         <form_v3:row label="Contact type (outbound/inbound)" fieldXpath="${fieldXpath}" className="health-contactType">
-                            <field_v2:general_select xpath="${fieldXpath}" type="contactType" className="health-situation-contactType" required="true" title="Contact type (outbound/inbound)" excludeCodes="${hideChatOption ? 'webchat' : ''}" />
+                            <field_v2:general_select xpath="${fieldXpath}" type="contactType" className="health-situation-contactType" required="true" title="Contact type (outbound/inbound)" excludeCodes="${excludeItems}" />
                         </form_v3:row>
                         <field_v1:hidden xpath="health/simples/contactType" />
                         <field_v1:hidden xpath="health/simples/contactTypeTrial" />
