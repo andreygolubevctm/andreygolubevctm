@@ -238,7 +238,7 @@
 		var isCallCentre = meerkat.site.isCallCentreUser;
 		var isWebChat = false;
 		if (isCallCentre) {
-			var callType = $('input[name=health_simples_contactTypeRadio]').is(':checked') ? $('input[name=health_simples_contactTypeRadio]').filter(':checked').val() : null;
+			var callType = $(':input[name="health_simples_contactTypeRadio"] option').is(':selected') ? $(':input[name="health_simples_contactTypeRadio"]').val() : null;
 			isWebChat = !_.isEmpty(callType) && callType === 'webchat';
 		}
 
