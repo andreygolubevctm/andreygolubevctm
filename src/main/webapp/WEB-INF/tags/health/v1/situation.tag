@@ -120,6 +120,21 @@
                             <div class="copy">${nzMedicareRules}</div>
                         </div>
                     </form_v3:row>
+                    <c:set var="fieldXpath" value="${xpath}/internationalstudent" />
+                    <c:set var="fieldXpathName" value="${go:nameFromXpath(fieldXpath)}_wrapper" />
+                    <c:set var="internationalStudentY"><content:get key="healthInternationalStudentY" /></c:set>
+                    <c:set var="internationalStudentN"><content:get key="healthInternationalStudentN" /></c:set>
+                    <form_v3:row label="Are you an international student studying here in Australia?" fieldXpath="${fieldXpath}" id="${fieldXpathName}" className="health_situation_internationalstudent text-danger hidden">
+                        <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}"
+                            title="Are you an international student studying here in Australia?" required="true" className="health-international_student"
+                            id="${name}_ovc_international_student" additionalAttributes="data-rule-isCheckedYes='true' data-msg-isCheckedYes=' '" />
+                        <div class="healthInternationalStudentMsg1 hidden">
+                            <div>${internationalStudentY}</div>
+                        </div>
+                        <div class="healthInternationalStudentMsg2 hidden">
+                            <div>${internationalStudentN}</div>
+                        </div>
+                    </form_v3:row>
                 </c:if>
 
                 <%-- health situation used be radio buttons, hidden in call centre as requested --%>
