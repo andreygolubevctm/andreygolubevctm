@@ -23,7 +23,8 @@ public class MarketingContentDao {
                     "FROM ctm.marketing_content " +
                     "WHERE (styleCodeId = ? OR styleCodeId = 0) " +
                     "AND verticalId = ? " +
-                    "AND ? BETWEEN effectiveStart AND effectiveEnd;";
+                    "AND ? BETWEEN effectiveStart AND effectiveEnd " +
+                    "AND status = 1;";
 
             PreparedStatement stmt = dbSource.getConnection().prepareStatement(sql);
 
