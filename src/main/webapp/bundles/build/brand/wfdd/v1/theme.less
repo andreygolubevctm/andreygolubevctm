@@ -7,21 +7,6 @@
 
 body.callCentre {
   &[data-step="start"] {
-    #health_situation-selection{
-      .simples-dialogue-0 .btn-group-justified {
-
-        // hide 'Outbound Quote' and 'Inbound quote' buttons For 'Westfund Direct' Simples
-        & label:first-child,
-        & label:nth-child(2) {
-          display: none;
-        }
-        & label:nth-child(3) {
-          border-top-left-radius: 5px;
-          border-bottom-left-radius: 5px;
-          border-left-width: 1px;
-        }
-      }
-    }
 
     .simples-dialogue-49,
     .simples-dialogue-86 {
@@ -73,6 +58,15 @@ body.callCentre {
 
   }
 
+  &[data-step="payment"]{
+    .simples-dialogue-38,
+    .simples-dialogue-40,
+    .simples-dialogue-94,
+    .simples-dialogue-95 {
+      display: none !important;
+    }
+  }
+
   &[data-step="apply"]{
     .simples-dialogue-61 {
       display: none;
@@ -111,10 +105,4 @@ body.callCentre {
     }
   }
 
-}
-
-.simples {
-  .simples-dialog-referral {
-    display:none !important;
-  }
 }

@@ -1194,17 +1194,28 @@
 			if(furtherest_step > meerkat.modules.journeyEngine.getStepIndex('start')) {
 				var contactType = null;
 				var contactTypeTrial = '';
-				if ($('#health_simples_contactTypeRadio_inbound').is(':checked')) {
-					contactType = 'inbound';
-				} else if ($('#health_simples_contactTypeRadio_outbound').is(':checked')) {
-					contactType = 'outbound';
-				} else if ($('#health_simples_contactTypeRadio_clioutbound').is(':checked')) {
-					contactType = 'clioutbound';
-				} else if ($('#health_simples_contactTypeRadio_trialcampaign').is(':checked')) {
-					contactType = 'outbound';
-                    contactTypeTrial = 'Trial Campaign';
-				} else if ($('#health_simples_contactTypeRadio_webchat').is(':checked')) {
-					contactType = 'webchat';
+
+				if ($(':input[name="health_simples_contactTypeRadio"] option').is(':selected')) {
+					var selectedContatTypeOption = $(':input[name="health_simples_contactTypeRadio"]').val();
+
+					// Trial contact types need to be able to be dynamically added without developer interaction - all future trial types will be added via the default option
+					switch (selectedContatTypeOption) {
+						case '':
+							contactType = null;
+							break;
+						case 'inbound':
+						case 'outbound':
+						case 'webchat':
+							contactType = selectedContatTypeOption;
+							break;
+						case 'cli':
+							contactType = 'clioutbound';
+							break;
+						default:
+							contactType = 'outbound';
+							contactTypeTrial = $(':input[name="health_simples_contactTypeRadio"] option').filter(':selected').text().trim();
+							break;
+					}
 				}
 
 				$.extend(response, {
@@ -1504,7 +1515,8 @@
 		var isCallCentre = meerkat.site.isCallCentreUser;
 		var isWebChat = false;
 		if (isCallCentre) {
-			var callType = $('input[name=health_simples_contactTypeRadio]').is(':checked') ? $('input[name=health_simples_contactTypeRadio]').filter(':checked').val() : null;
+			var selectedContatTypeOption = $(':input[name="health_simples_contactTypeRadio"]').val();
+			var callType = $(':input[name="health_simples_contactTypeRadio"] option').is(':selected') ? (selectedContatTypeOption != "" ? selectedContatTypeOption: null) : null;
 			isWebChat = !_.isEmpty(callType) && callType === 'webchat';
 		}
 		return isWebChat;

@@ -290,7 +290,10 @@
 			object:	data
 		});
 
-		meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'healthPaymentStep', disableFields:true });
+		// Do not lock if on the results step
+		if (meerkat.modules.journeyEngine.getCurrentStep().navigationId !== 'results') {
+            meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, {source: 'healthPaymentStep', disableFields: true});
+        }
 
 		// Defer so we don't lock up the browser
 		_.defer(function() {

@@ -10,7 +10,7 @@
 
     <groupId>com.ctm.web</groupId>
     <artifactId>ctm</artifactId>
-    <version>1.94.4</version>
+    <version>1.95.0-RC4</version>
     <name>ctm</name>
     <description>Main web application</description>
     <packaging>war</packaging>
@@ -516,7 +516,7 @@
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
-            <version>1.6.3</version>
+            <version>1.11.2</version>
         </dependency>
 
         <dependency>
