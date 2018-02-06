@@ -234,11 +234,15 @@ Process:
 	}
 
 	function disable() {
-        settings.paymentEngine.disable();
+        if (settings.paymentEngine !== null && !_.isUndefined(settings.paymentEngine.disable)) {
+        	settings.paymentEngine.disable();
+        }
 	}
 
     function enable() {
-        settings.paymentEngine.enable();
+        if (settings.paymentEngine !== null && !_.isUndefined(settings.paymentEngine.enable)) {
+            settings.paymentEngine.enable();
+        }
     }
 
 	meerkat.modules.register("paymentGateway", {
