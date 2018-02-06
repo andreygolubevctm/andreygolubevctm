@@ -173,18 +173,6 @@
             $healthInternationalStudent.appendTo($aboutYouFieldset);
 
             _toggleInternationalStudentField();
-
-            //var medicareCoverVal = $('input[name=health_situation_cover]').is(':checked') ? $('input[name=health_situation_cover]').filter(':checked').val() : null;
-
-            // need to add a toggle for the medicare thingy
-            //$healthInternationalStudent.toggleClass('hidden', medicareCoverVal === 'Y');
-
-            /*
-            if (medicareCoverVal === 'N') {
-
-            }
-            */
-
         }
     }
 
