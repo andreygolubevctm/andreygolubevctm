@@ -43,7 +43,8 @@
         $dialogue36,
         $dialogue37,
         $nzMedicareRules,
-        $nzMedicareRulesToggle;
+        $nzMedicareRulesToggle,
+        $pricePromisePromotionDialogue;
 
     var affiliates = [
         {dialogue:79,affiliate:'cashRewards',element:null},
@@ -101,11 +102,13 @@
             $dialogue37 = $('.simples-dialogue-37');
             $moreInfoDialogue = $('.simples-dialogue-76');
             $nzMedicareRules = $('#healthAboutYou .nz-medicare-rules');
-	        $nzMedicareRulesToggle = $nzMedicareRules.find('a:first');
-	        $nzMedicareRulesCopy = $nzMedicareRules.find('.copy:first');
-	        for(var i=0; i<affiliates.length; i++) {
-	            var row = affiliates[i];
-	            row.element = $('.simples-dialogue-' + row.dialogue);
+            $nzMedicareRulesToggle = $nzMedicareRules.find('a:first');
+            $nzMedicareRulesCopy = $nzMedicareRules.find('.copy:first');
+            $pricePromisePromotionDialogue = $('.simples-dialogue-101');
+
+            for (var i = 0; i < affiliates.length; i++) {
+                var row = affiliates[i];
+                row.element = $('.simples-dialogue-' + row.dialogue);
             }
 
             // Handle pre-filled
@@ -488,6 +491,14 @@
 	    }
     }
 
+    function togglePricePromisePromoDialogue(pricePromiseMentioned) {
+        if (pricePromiseMentioned) {
+            $pricePromisePromotionDialogue.slideDown();
+        } else {
+            $pricePromisePromotionDialogue.slideUp();
+        }
+    }
+
     meerkat.modules.register("simplesBindings", {
         init: init,
         updateSimplesMedicareCoverQuestionPosition: updateSimplesMedicareCoverQuestionPosition,
@@ -495,7 +506,8 @@
         toggleRebateDialogue: toggleRebateDialogue,
         toggleMoreInfoDialogue: toggleMoreInfoDialogue,
         toggleAffiliateRewardsDialogue: toggleAffiliateRewardsDialogue,
-        getCallType: getCallType
+        getCallType: getCallType,
+        togglePricePromisePromoDialogue: togglePricePromisePromoDialogue
     });
 
 })(jQuery);
