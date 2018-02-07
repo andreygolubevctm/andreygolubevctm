@@ -182,9 +182,9 @@
     }
 
     function _toggleInternationalStudentFieldMsg() {
-        var InternationalStudentVal = $healthInternationalStudentField.is(':checked') ? $healthInternationalStudentField.filter(':checked').val() : null;
-        $healthInternationalStudentMsg1.toggleClass('hidden', InternationalStudentVal !== 'Y');
-        $healthInternationalStudentMsg2.toggleClass('hidden', InternationalStudentVal !== 'N');
+        var internationalStudentVal = $healthInternationalStudentField.is(':checked') ? $healthInternationalStudentField.filter(':checked').val() : null;
+        $healthInternationalStudentMsg1.toggleClass('hidden', internationalStudentVal !== 'Y');
+        $healthInternationalStudentMsg2.toggleClass('hidden', internationalStudentVal !== 'N');
     }
 
     /**
