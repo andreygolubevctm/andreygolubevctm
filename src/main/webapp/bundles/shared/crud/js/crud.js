@@ -269,34 +269,14 @@
 				
 				that.sortRenderResults();
 			};
-		
-		return this.promise("getAllRecords", data, onSuccess, "get");
+
+		if (data.crudAction === "getSummary") {
+			delete data.crudAction;
+			return this.promise("getSummary", data, onSuccess, "get");
+		} else {
+			return this.promise("getAllRecords", data, onSuccess, "get");
+		}
 	};
-
-	dataCRUD.prototype.getSummary = function(data) {
-		this.dataSet.empty();
-
-		data = data || {};
-
-		var that = this,
-			onSuccess = function(response) {
-				if(typeof response === "string")
-					response = JSON.parse(response);
-
-				if(response.length) {
-					for (var i = 0; i < response.length; i++) {
-						var datum = response[i],
-							obj = new crudModel.datumModel(that.primaryKey, that.models.datum, datum, that.views.row);
-						that.dataSet.push(obj);
-					}
-				}
-
-				that.sortRenderResults();
-			};
-
-		return this.promise("getSummary", data, onSuccess, "get");
-	};
-
 	
 	/**
 	 * Triggers a create / update depending on the passed content

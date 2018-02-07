@@ -16,7 +16,7 @@
 					renderResults: renderCappingsHTML
 				});
 
-				CRUD.getSummary();
+				CRUD.get({crudAction: "getSummary"});
 
 			}
 		});
