@@ -46,7 +46,7 @@
             case 'marketing-content':
                 placement = !_.isUndefined(placement) ? placement : 'top';
                 $banner = $(_placementClassName[placement]);
-                content = '<iframe class="marketing-content-container" src="' + banner.url + '"></iframe>';
+                content = '<div class="marketing-content-container"><iframe src="' + banner.url + '"></iframe></div>';
                 break;
         }
 
