@@ -270,14 +270,14 @@
 				that.sortRenderResults();
 			};
 
-		var promiseAction = "getAllRecords";
+		var crudAction = "getAllRecords";
 
-		if (typeof data.crudAction !== "undefined") {
-			promiseAction = data.crudAction;
+		if (_.has(data,"crudAction")) {
+			crudAction = data.crudAction;
 			delete data.crudAction;
 		}
 
-		return this.promise(promiseAction, data, onSuccess, "get");
+		return this.promise(crudAction, data, onSuccess, "get");
 	};
 	
 	/**
