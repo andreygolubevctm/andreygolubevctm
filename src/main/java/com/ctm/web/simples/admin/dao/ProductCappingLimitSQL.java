@@ -3,16 +3,22 @@ package com.ctm.web.simples.admin.dao;
 public class ProductCappingLimitSQL {
 
     public static final String GET_PROVIDER_SUMMARY = "SELECT providers.ProviderId,\n" +
-            "       providers.providerCode,\n" +
+            "       providerCodes.`Text` AS providerCode,\n" +
             "       providers.Name AS providerName,\n" +
             "       ifnull(capCount, 0) AS currentProductCapCount\n" +
             "FROM provider_master providers\n" +
+            "INNER JOIN (SELECT `ProviderId`, `Text` FROM provider_properties WHERE PropertyId ='FundCode') providerCodes on providers.providerId = providerCodes.providerId\n" +
             "LEFT JOIN\n" +
             "  (SELECT count(id) AS capCount,\n" +
             "          provider_id\n" +
             "   FROM health_product_capping_limit h\n" +
             "   WHERE curdate() BETWEEN h.effective_start_date AND h.effective_end_date\n" +
             "   GROUP BY h.provider_id) limits ON limits.provider_id = providers.providerId\n" +
+            "WHERE providers.ProviderId IN (\n" +
+            "   SELECT DISTINCT providerId\n" +
+            "   FROM product_master\n" +
+            "   WHERE productCat = 'HEALTH'\n" +
+            ")\n" +
             "ORDER BY providerName ASC ;";
 
     public static final String GET_PRODUCT_CODE = "SELECT productCode\n" +
