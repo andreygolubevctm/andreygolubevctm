@@ -866,6 +866,11 @@
                 .addClass('selected')
                 .prepend('<div class="result-product-tag">Selected product</div>');
 
+        // Pin the product to make it first positioned desktop only
+        if (meerkat.modules.deviceMediaState.get() === 'lg') {
+            _pinProductHelper(_product.obj.productId);
+        }
+
         // Goto pagination page
         if (paginationPage > 1) {
             Results.pagination.gotoPage(paginationPage);
