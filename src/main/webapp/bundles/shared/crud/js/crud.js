@@ -270,12 +270,14 @@
 				that.sortRenderResults();
 			};
 
-		if (data.crudAction === "getSummary") {
+		var promiseAction = "getAllRecords";
+
+		if (typeof data.crudAction !== "undefined") {
+			promiseAction = data.crudAction;
 			delete data.crudAction;
-			return this.promise("getSummary", data, onSuccess, "get");
-		} else {
-			return this.promise("getAllRecords", data, onSuccess, "get");
 		}
+
+		return this.promise(promiseAction, data, onSuccess, "get");
 	};
 	
 	/**
