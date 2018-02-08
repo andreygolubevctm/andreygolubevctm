@@ -166,7 +166,6 @@
         if ($aboutYouFieldset.find($healthSituationMedicare).length === 1) {
             $healthSituationMedicare.appendTo($yourDetailsFieldset);
             $healthInternationalStudent.appendTo($yourDetailsFieldset);
-            //$simplesinternationalStudentForm.detach();
         }
     }
 
