@@ -165,7 +165,8 @@
         // check if the field is still on the About you fieldset on  step 1
         if ($aboutYouFieldset.find($healthSituationMedicare).length === 1) {
             $healthSituationMedicare.appendTo($yourDetailsFieldset);
-            $simplesinternationalStudentForm.detach();
+            $healthInternationalStudent.appendTo($yourDetailsFieldset);
+            //$simplesinternationalStudentForm.detach();
         }
     }
 
@@ -199,9 +200,10 @@
             var familyType = meerkat.modules.health.getSituation();
             if (!_.isEmpty(familyType) && (_.isNull(currentFamilyType) || familyType !== currentFamilyType)) {
                 var $tempMedicareForm = $simplesMedicareCoverForm.detach();
-                $simplesinternationalStudentForm.detach();
+                var $tempInternatStudentForm = $simplesinternationalStudentForm.detach();
                 var $wrapperToUse = $applicantWrappers[_.indexOf(['F', 'C', 'EF'], familyType) > -1 ? 'partner' : 'primary'];
                 $wrapperToUse.append($tempMedicareForm);
+                $wrapperToUse.append($tempInternatStudentForm);
                 currentFamilyType = familyType;
             }
         }
