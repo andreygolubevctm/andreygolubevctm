@@ -2,7 +2,8 @@
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events;
 
-    var $healthContactTypeRadio,
+    var $healthContactTypeField,
+        $healthContactTypeSelectOption,
         $healthContactType,
         $healthContactTypeTrial,
         $healthCoverRebate,
@@ -15,6 +16,11 @@
         $dialoguePartnerCover,
         $dialogue74,
         $healthSituationMedicare,
+        $healthSituationMedicareField,
+        $healthInternationalStudent,
+        $healthInternationalStudentField,
+        $healthInternationalStudentMsg1,
+        $healthInternationalStudentMsg2,
         $aboutYouFieldset,
         $yourDetailsFieldset,
 	    $followupCallCheckboxDialogue,
@@ -33,6 +39,7 @@
         $inboundApplicationFollowupToggles,
         $followupDialogueContentContainers,
         $simplesMedicareCoverForm = null,
+        $simplesinternationalStudentForm = null,
         $applicantWrappers = {},
         currentFamilyType = null,
         $limitedCoverHidden,
@@ -42,7 +49,9 @@
         $dialogue36,
         $dialogue37,
         $nzMedicareRules,
-        $nzMedicareRulesToggle;
+        $nzMedicareRulesToggle,
+        $nzMedicareRulesCopy;
+        $pricePromisePromotionDialogue;
 
     var affiliates = [
         {dialogue:79,affiliate:'cashRewards',element:null},
@@ -58,7 +67,8 @@
         $(document).ready(function () {
 
             // cache selectors
-            $healthContactTypeRadio = $('input[name=health_simples_contactTypeRadio]');
+            $healthContactTypeField = $(':input[name="health_simples_contactTypeRadio"]');
+            $healthContactTypeSelectOption = $(':input[name="health_simples_contactTypeRadio"] option');
             $healthContactType = $('#health_simples_contactType');
             $healthContactTypeTrial = $('#health_simples_contactTypeTrial');
             $healthCoverRebate = $('input[name=health_healthCover_rebate]');
@@ -71,6 +81,11 @@
             $dialoguePartnerCover = $('.simples-dialogue-partner-current-cover');
             $dialogue74 = $('.simples-dialogue-74');
             $healthSituationMedicare = $('.health_situation_medicare');
+            $healthSituationMedicareField = $('input[name=health_situation_cover]');
+            $healthInternationalStudent = $('.health_situation_internationalstudent');
+            $healthInternationalStudentField = $('input[name=health_situation_internationalstudent]');
+            $healthInternationalStudentMsg1 = $('.healthInternationalStudentMsg1');
+            $healthInternationalStudentMsg2 = $('.healthInternationalStudentMsg2');
             $aboutYouFieldset = $('#healthAboutYou > .content');
             $yourDetailsFieldset = $('#health-contact-fieldset .content');
             $followupCallCheckboxDialogue = $('.simples-dialogue-68');
@@ -89,6 +104,7 @@
             $followupDialogueContentContainers = $inboundQuestionsetFollowupDialogue
                 .add($inboundApplicationFollowupDialogue).find('div[class]');
             $simplesMedicareCoverForm = $('#health_situation_cover_wrapper');
+            $simplesinternationalStudentForm = $('#health_situation_internationalstudent_wrapper');
             $applicantWrappers.primary = $('#health-contact-fieldset .content:first');
             $applicantWrappers.partner = $('#partner-health-cover .content:first');
 	        $privatePatientDialogue = $('.simples-dialogue-24');
@@ -99,11 +115,13 @@
             $dialogue37 = $('.simples-dialogue-37');
             $moreInfoDialogue = $('.simples-dialogue-76');
             $nzMedicareRules = $('#healthAboutYou .nz-medicare-rules');
-	        $nzMedicareRulesToggle = $nzMedicareRules.find('a:first');
-	        $nzMedicareRulesCopy = $nzMedicareRules.find('.copy:first');
-	        for(var i=0; i<affiliates.length; i++) {
-	            var row = affiliates[i];
-	            row.element = $('.simples-dialogue-' + row.dialogue);
+            $nzMedicareRulesToggle = $nzMedicareRules.find('a:first');
+            $nzMedicareRulesCopy = $nzMedicareRules.find('.copy:first');
+            $pricePromisePromotionDialogue = $('.simples-dialogue-101');
+
+            for (var i = 0; i < affiliates.length; i++) {
+                var row = affiliates[i];
+                row.element = $('.simples-dialogue-' + row.dialogue);
             }
 
             // Handle pre-filled
@@ -116,6 +134,7 @@
 
             applyEventListeners();
             eventSubscriptions();
+            _toggleInternationalStudentField();
 
             meerkat.modules.provider_testing.setApplicationDateCalendar();
         });
@@ -126,18 +145,17 @@
         // if data already exists for xpath load data into radio btn
 	    var contactType = $healthContactType.val();
         if (!_.isEmpty(contactType)) {
-            if ($healthContactTypeTrial.val() === 'Trial Campaign') {
-                $('#health_simples_contactTypeRadio_trialcampaign').prop("checked", true).change();
+
+            if ($healthContactTypeTrial.val().length > 0) {
+                // trial campaigns
+                $healthContactTypeSelectOption.filter(function() {
+                    return ($(this).text().trim() === $healthContactTypeTrial.val());
+                }).prop('selected', true).change();
             } else {
-                if (contactType === 'inbound') {
-                    $('#health_simples_contactTypeRadio_inbound').prop("checked", true).change();
-                } else if (contactType === 'outbound') {
-                    $('#health_simples_contactTypeRadio_outbound').prop("checked", true).change();
-                } else if (contactType === 'cli') {
-                    $('#health_simples_contactTypeRadio_clioutbound').prop("checked", true).change();
-                } else if (contactType === 'webchat') {
-                    $('#health_simples_contactTypeRadio_webchat').prop("checked", true).change();
-                }
+                // inbound / outbound / cli / webchat
+                $(':input[name="health_simples_contactTypeRadio"] option').filter(function() {
+                    return ($(this).val() === contactType);
+                }).prop('selected', true);
             }
         }
         toggleWebChatDialog();
@@ -147,6 +165,7 @@
         // check if the field is still on the About you fieldset on  step 1
         if ($aboutYouFieldset.find($healthSituationMedicare).length === 1) {
             $healthSituationMedicare.appendTo($yourDetailsFieldset);
+            $simplesinternationalStudentForm.detach();
         }
     }
 
@@ -154,7 +173,21 @@
         // check if the field is still on the About you fieldset on  step 1
         if ($aboutYouFieldset.find($healthSituationMedicare).length === 0) {
             $healthSituationMedicare.appendTo($aboutYouFieldset);
+            $healthInternationalStudent.appendTo($aboutYouFieldset);
+
+            _toggleInternationalStudentField();
         }
+    }
+
+    function _toggleInternationalStudentField() {
+        var medicareCoverVal = $healthSituationMedicareField.is(':checked') ? $healthSituationMedicareField.filter(':checked').val() : null;
+        $healthInternationalStudent.toggleClass('hidden', medicareCoverVal !== 'N');
+    }
+
+    function _toggleInternationalStudentFieldMsg() {
+        var internationalStudentVal = $healthInternationalStudentField.is(':checked') ? $healthInternationalStudentField.filter(':checked').val() : null;
+        $healthInternationalStudentMsg1.toggleClass('hidden', internationalStudentVal !== 'Y');
+        $healthInternationalStudentMsg2.toggleClass('hidden', internationalStudentVal !== 'N');
     }
 
     /**
@@ -166,6 +199,7 @@
             var familyType = meerkat.modules.health.getSituation();
             if (!_.isEmpty(familyType) && (_.isNull(currentFamilyType) || familyType !== currentFamilyType)) {
                 var $tempMedicareForm = $simplesMedicareCoverForm.detach();
+                $simplesinternationalStudentForm.detach();
                 var $wrapperToUse = $applicantWrappers[_.indexOf(['F', 'C', 'EF'], familyType) > -1 ? 'partner' : 'primary'];
                 $wrapperToUse.append($tempMedicareForm);
                 currentFamilyType = familyType;
@@ -195,7 +229,7 @@
         });
 
         // Handle toggle inbound/outbound
-        $healthContactTypeRadio.on('change', function(){
+        $healthContactTypeField.on('change', function(){
             toggleInboundOutbound();
             toggleFollowupCallDialog();
             toggleReferralCallDialog();
@@ -228,6 +262,14 @@
             var isOn = $nzMedicareRulesCopy.is(':visible');
             $btn.text($btn.attr('data-copy-' + (isOn?'off':'on')));
             $nzMedicareRulesCopy.toggle(!isOn);
+        });
+
+        $healthSituationMedicareField.on('change', function(){
+            _toggleInternationalStudentField();
+        });
+
+        $healthInternationalStudentField.on('change', function(){
+            _toggleInternationalStudentFieldMsg();
         });
     }
 
@@ -269,9 +311,10 @@
     // Hide/show simple dialogues when toggle inbound/outbound in simples journey
     function toggleInboundOutbound() {
         var $body = $('body');
+        var healthContactTypeSelection = $healthContactTypeField.val();
 
         // Inbound
-        if ($('#health_simples_contactTypeRadio_inbound').is(':checked')) {
+        if (healthContactTypeSelection === 'inbound') {
 
             $healthContactType.val('inbound');
             $healthContactTypeTrial.val('');
@@ -288,21 +331,24 @@
                 .removeClass('inbound')
                 .addClass('outbound');
 
-            if (($('#health_simples_contactTypeRadio_outbound').is(':checked')) || ($('#health_simples_contactTypeRadio_trialcampaign').is(':checked'))) {
+            var contatTypeTrialRegex = new RegExp('trial','i');
+
+            if ((healthContactTypeSelection === 'outbound') || (contatTypeTrialRegex.test(healthContactTypeSelection))) {
                 _moveSituationMedicareField();
 
+                //contact type is set to outbound when Outbound or a trial is selected
                 $healthContactType.val('outbound');
 
-                if ($('#health_simples_contactTypeRadio_outbound').is(':checked')) {
+                if (healthContactTypeSelection === 'outbound') {
                     $healthContactTypeTrial.val('');
                 } else {
-                    $healthContactTypeTrial.val('Trial Campaign');
+                    $healthContactTypeTrial.val($healthContactTypeSelectOption.filter(':selected').text().trim());
                 }
 
             } else {
                 $healthContactTypeTrial.val('');
 
-                if ($('#health_simples_contactTypeRadio_webchat').is(':checked')) {
+                if (healthContactTypeSelection === 'webchat') {
                     $healthContactType.val('webchat');
                 } else {
                     // cli outbound
@@ -314,13 +360,17 @@
     }
 
     function getCallType() {
-        var callTypeToBeReturned = $healthContactTypeRadio.is(':checked') ? $healthContactTypeRadio.filter(':checked').val() : null;
+        var healthContactTypeSelection = $healthContactTypeField.val();
+        var callTypeToBeReturned = $healthContactTypeSelectOption.is(':selected') ? (healthContactTypeSelection != "" ? healthContactTypeSelection : null) : null;
+        var contatTypeTrialRegex = new RegExp('trial','i');
 
-        // treat trial campaign as outbound
+        // treat trial campaigns as outbound
         // for all intents and purposes trial campaign should be handled as an outbound call type - just have a different value stored in the DB
         // unsure if cli outbound should be handled here too
-        if (callTypeToBeReturned === 'trialcampaign') {
-            callTypeToBeReturned = 'outbound';
+        if (callTypeToBeReturned !== null) {
+            if (contatTypeTrialRegex.test(callTypeToBeReturned)){
+                callTypeToBeReturned = 'outbound';
+            }
         }
 
         return callTypeToBeReturned;
@@ -479,6 +529,14 @@
 	    }
     }
 
+    function togglePricePromisePromoDialogue(pricePromiseMentioned) {
+        if (pricePromiseMentioned) {
+            $pricePromisePromotionDialogue.slideDown();
+        } else {
+            $pricePromisePromotionDialogue.slideUp();
+        }
+    }
+
     meerkat.modules.register("simplesBindings", {
         init: init,
         updateSimplesMedicareCoverQuestionPosition: updateSimplesMedicareCoverQuestionPosition,
@@ -486,7 +544,8 @@
         toggleRebateDialogue: toggleRebateDialogue,
         toggleMoreInfoDialogue: toggleMoreInfoDialogue,
         toggleAffiliateRewardsDialogue: toggleAffiliateRewardsDialogue,
-        getCallType: getCallType
+        getCallType: getCallType,
+        togglePricePromisePromoDialogue: togglePricePromisePromoDialogue
     });
 
 })(jQuery);
