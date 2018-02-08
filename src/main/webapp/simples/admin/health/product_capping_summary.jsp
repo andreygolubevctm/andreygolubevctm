@@ -33,7 +33,7 @@
 		<div id="fund-product-capping-summary-container" class="container sortable-results-container">
 			<div class="row">
 				<div class="col-sm-12 header">
-					<h1>Fund Capping Summary</h1>
+					<h1>Product Capping Summary</h1>
 				</div>
 				<div class="col-sm-12">
 					<div id="product-capping-summary-container" class="sortable-results-table"></div>
