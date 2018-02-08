@@ -50,7 +50,7 @@
         $dialogue37,
         $nzMedicareRules,
         $nzMedicareRulesToggle,
-        $nzMedicareRulesCopy;
+        $nzMedicareRulesCopy,
         $pricePromisePromotionDialogue;
 
     var affiliates = [
