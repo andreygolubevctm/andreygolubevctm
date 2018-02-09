@@ -53,6 +53,8 @@
     "shared/competition",
     "shared/mobileFiltersMenu",
     "shared/healthFundTimeOffset",
-    "shared/healthPriceBreakdown"
+    "shared/healthPriceBreakdown",
+    "shared/marketingContent",
+    "shared/bannerPlacement"
   ]
 }
