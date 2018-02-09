@@ -430,6 +430,8 @@
 					// Reset selected product. (should not be inside a forward or backward condition because users can skip steps backwards)
 					meerkat.modules.healthResults.resetSelectedProduct();
 				}
+
+                meerkat.modules.paymentGateway.disable();
 			},
 			onAfterEnter: function(event){
 

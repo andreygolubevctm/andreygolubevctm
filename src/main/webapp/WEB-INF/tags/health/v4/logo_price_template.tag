@@ -12,6 +12,8 @@
 	<div class="companyLogo {{= info.provider ? info.provider : info.fundCode }}"></div>
 	{{ } }}
 
+	<a href="javascript:;" class="about-this-fund hidden-xs">About this fund</a>
+
 	{{ if(typeof obj.showRisingTag === 'undefined' || obj.showRisingTag == true) { }}
 	<div class="premium-rising-tag">
 		<span class="icon-arrow-thick-up"></span> Premiums are rising from April 1st, 2018<br/>
