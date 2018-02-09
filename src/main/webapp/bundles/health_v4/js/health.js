@@ -423,6 +423,7 @@
                 });
 
                 meerkat.modules.healthPopularProducts.setPopularProducts('N');
+                meerkat.modules.paymentGateway.disable();
             },
             onAfterEnter: function onAfterEnterResultsStep(event) {
                 if (event.isForward === true) {
