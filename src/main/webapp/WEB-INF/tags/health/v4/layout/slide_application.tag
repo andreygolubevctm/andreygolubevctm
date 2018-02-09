@@ -8,8 +8,9 @@
         <form_v3:fieldset_columns sideHidden="true">
 
             <jsp:attribute name="rightColumn">
-              <competition:snapshot vertical="health" />
-			        <health_v4_payment:policySummary showProductDetails="true" />
+                <competition:snapshot vertical="health" />
+                <health_v4_payment:policySummary showProductDetails="true" />
+                <health_v4:price_promise />
             </jsp:attribute>
 
             <jsp:body>

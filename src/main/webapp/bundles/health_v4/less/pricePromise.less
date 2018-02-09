@@ -1,0 +1,21 @@
+.price-promise-container {
+  width: 100%;
+  height: 108px;
+
+  @media (@sm) {
+    height: 150px;
+  }
+
+  iframe {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+@media (@xs-only) {
+  body[data-step=results] {
+    .price-promise-container {
+      display: none;
+    }
+  }
+}
