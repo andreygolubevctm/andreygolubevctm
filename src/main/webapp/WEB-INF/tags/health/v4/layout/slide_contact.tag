@@ -13,9 +13,6 @@
                 <competition:snapshot vertical="health" />
                 <health_v4:cta_panel />
                 <reward:campaign_tile_container />
-                <c:if test="${octoberComp eq false}">
-                    <health_v4_content:snapshot/>
-                </c:if>
                 <health_v4:price_promise />
             </jsp:attribute>
 
