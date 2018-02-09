@@ -1,16 +1,11 @@
 ;(function ($, undefined) {
 
     var meerkat = window.meerkat,
-        meerkatEvents = meerkat.modules.events,
-        $pricePromise = $('.price-promise-container');
+        meerkatEvents = meerkat.modules.events;
 
     function init() {
-        if (_.has(meerkat.site, 'pricePromiseHeights') && $pricePromise.length) {
-            var state = meerkat.modules.deviceMediaState.get();
-            _applyHeight(state);
-
-            $pricePromise.removeClass('hidden');
-
+        if (_.has(meerkat.site, 'pricePromiseHeights') && $('.price-promise-container').length) {
+            applyHeight();
             _eventSubscriptions();
         }
     }
@@ -18,17 +13,20 @@
     function _eventSubscriptions() {
         meerkat.messaging.subscribe(meerkatEvents.device.STATE_CHANGE, function(eventObject) {
             var state = eventObject.state;
-            _applyHeight(state);
+            applyHeight(state);
         });
-
     }
 
-    function _applyHeight(state) {
-        $pricePromise.height(meerkat.site.pricePromiseHeights[state]);
+    function applyHeight(state) {
+        var _state = state || meerkat.modules.deviceMediaState.get();
+        $('.price-promise-container')
+            .height(meerkat.site.pricePromiseHeights[_state])
+            .removeClass('hidden');
     }
 
     meerkat.modules.register('healthPricePromise', {
-        init: init
+        init: init,
+        applyHeight: applyHeight
     });
 
 })(jQuery);

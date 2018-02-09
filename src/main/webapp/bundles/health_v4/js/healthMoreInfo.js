@@ -249,6 +249,8 @@
         if (product.info.FundCode === 'AUF') {
             $('.productExtraInfo .discountText').text(meerkat.modules.healthResultsTemplate.getDiscountText(product));
         }
+
+        meerkat.modules.healthPricePromise.applyHeight();
     }
 
     function _setupDualPricing(product) {

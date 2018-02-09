@@ -6,6 +6,6 @@
 
 <c:if test="${pageSettings.getSetting('pricePromiseEnabled') eq 'Y' and iframeUrl ne ''}">
     <div class="price-promise-container hidden">
-        <iframe src="${iframeUrl}" frameborder="0"></iframe>
+        <iframe src="${iframeUrl}" frameborder="0" scrolling="no"></iframe>
     </div>
 </c:if>
