@@ -199,6 +199,8 @@ Process:
 		$name = $('#' + settings.name + '_name');
 		settings.paymentEngine.setup(settings);
 
+		enable();
+
 		$('body').addClass(settings.name + '-active');
 
 		// Hook into: (replacement) "update premium" button to determine which panels to display
@@ -231,11 +233,25 @@ Process:
 		});
 	}
 
+	function disable() {
+       if (settings.paymentEngine !== null && !_.isUndefined(settings.paymentEngine.disable)) {
+           settings.paymentEngine.disable();
+       }
+    }
+
+   function enable() {
+       if (settings.paymentEngine !== null && !_.isUndefined(settings.paymentEngine.enable)) {
+           settings.paymentEngine.enable();
+       }
+   }
+
 	meerkat.modules.register("paymentGateway", {
 		init: init,
 		events: events,
 		reset: reset,
-		setup : setup
+		setup : setup,
+		disable: disable,
+		enable: enable
 	});
 
 })(jQuery);
