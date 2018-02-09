@@ -10,6 +10,7 @@
         <health_v4_results:prices_have_changed_notification />
         <health_v4:dual_pricing_modal />
         <health_v4:logo_price_template />
+        <health_v4:about_the_fund_template />
     </layout_v3:slide_content>
 
 </layout_v3:slide>
