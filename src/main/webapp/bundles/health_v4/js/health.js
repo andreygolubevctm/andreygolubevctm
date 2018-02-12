@@ -84,6 +84,12 @@
             meerkat.modules.healthSubmitApplication.enableSubmitApplication();
         });
 
+        meerkat.messaging.subscribe(meerkatEvents.ADDRESS_CHANGE, function (event) {
+            if (meerkat.modules.journeyEngine.getCurrentStep().navigationId === 'contact') {
+                meerkat.modules.bannerPlacement.xsLayout();
+            }
+        });
+
     }
 
     function applyEventListeners() {
@@ -417,6 +423,7 @@
                 });
 
                 meerkat.modules.healthPopularProducts.setPopularProducts('N');
+                meerkat.modules.paymentGateway.disable();
             },
             onAfterEnter: function onAfterEnterResultsStep(event) {
                 if (event.isForward === true) {
