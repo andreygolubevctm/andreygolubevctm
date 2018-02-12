@@ -1,7 +1,6 @@
 ;(function ($, undefined) {
 
-    var meerkat = window.meerkat,
-        meerkatEvents = meerkat.modules.events;
+    var meerkat = window.meerkat;
 
     var $elements = {},
         _hasPromo,
@@ -67,7 +66,6 @@
     meerkat.modules.register('bannerPlacement', {
         init: init,
         render: render,
-        xsLayout: xsLayout,
-        events: moduleEvents
+        xsLayout: xsLayout
     });
 })(jQuery);
