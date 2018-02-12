@@ -23,8 +23,12 @@
 									type: function(){
 										var curDate = new Date().setHours(0,0,0,0);
 
+										var futureDate = new Date(curDate);
+										futureDate.setDate(futureDate.getDate() + 1);
+										futureDate = futureDate.getTime();
+
 										if(new Date(data.effectiveEnd).setHours(0,0,0,0) >= curDate) {
-											if(new Date(data.effectiveStart).setHours(0,0,0,0) >= curDate) {
+											if(new Date(data.effectiveStart).setHours(0,0,0,0) >= futureDate) {
 												return "future";
 											} else {
 												return "current";

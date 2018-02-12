@@ -23,10 +23,13 @@
                                 extraData: {
                                     type: function () {
                                         var curDate = new Date(),
+                                            futureDate = new Date(),
                                             startDate = new Date(helpBox.effectiveStart).setHours(0, 0, 0, 0),
                                             endDate = new Date(helpBox.effectiveEnd).setHours(23, 59, 59, 0);
 
-                                        if (startDate > curDate.setHours(0, 0, 0, 0)) {
+                                        futureDate.setDate(futureDate.getDate() + 1);
+
+                                        if (startDate >= futureDate.setHours(0, 0, 0, 0)) {
                                             return "future";
                                         } else if (startDate <= curDate.setHours(0, 0, 0, 0) && endDate >= curDate.setHours(23, 59, 59, 0)) {
                                             return "current";

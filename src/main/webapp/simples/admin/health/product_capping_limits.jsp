@@ -131,6 +131,7 @@
 <script>
 	var familyType = [
 			{ value: '-1', text: "Select Family type" },
+			{ value: '0', text: "All" },
 			<c:set var="familyType" value="${familyTypeDao.getFamilyTypes(false)}" />
 			<c:forEach items="${familyType}" var="item">
 			{ value: "${item.getCode()}", text: "${item.getDescription()}" },
