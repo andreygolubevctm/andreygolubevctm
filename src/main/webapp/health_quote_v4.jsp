@@ -194,6 +194,11 @@
                 <health_v4_layout:slide_results />
                 <health_v4_layout:slide_application />
                 <health_v4_layout:slide_payment />
+
+                <div class="visible-xs">
+                    <health_v4:price_promise />
+                </div>
+
                 <health_v4:dual_pricing_templates />
                 <c:if test="${isPyrrActive eq true}">
                     <health_v4:pyrr_campaign_templates />

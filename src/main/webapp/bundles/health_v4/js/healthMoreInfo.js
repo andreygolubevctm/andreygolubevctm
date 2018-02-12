@@ -260,6 +260,8 @@
         if (!_.has(product, 'aboutFund')) {
             $('.about-this-fund-row').hide();
         }
+
+        meerkat.modules.healthPricePromise.applyHeight();
     }
 
     function _setupDualPricing(product) {
