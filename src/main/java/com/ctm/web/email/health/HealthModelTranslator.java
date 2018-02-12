@@ -21,6 +21,7 @@ import com.ctm.web.core.web.go.Data;
 import com.ctm.web.email.*;
 import com.ctm.web.factory.EmailServiceFactory;
 import com.ctm.web.health.email.mapping.HealthEmailDetailMappings;
+import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -70,6 +71,9 @@ public class HealthModelTranslator implements EmailTranslator {
         emailRequest.setPremiums(premium);
         emailRequest.setPremiumFrequency(request.getParameter("rank_frequency0"));
         emailRequest.setGaClientID(gaclientId);
+        boolean isPopularProductsSelected = Optional.ofNullable(request.getParameter("isPopularProductsSelected")).map(BooleanUtils::toBoolean).orElse(false);
+        emailRequest.setPopularProductsSelected(isPopularProductsSelected);
+        emailRequest.setPopularProducts(emailUtils.buildParameterList(request, "rank_isPopularProduct").stream().map(BooleanUtils::toBoolean).collect(Collectors.toList()));
 
         List<BigDecimal> premiumDiscountPercentage = emailUtils.buildParameterList(request, "rank_premiumDiscountPercentage").stream().map(EmailUtils.bigDecimalOrZero).collect(Collectors.toList());
         emailRequest.setPremiumDiscountPercentage(premiumDiscountPercentage);

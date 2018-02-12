@@ -58,6 +58,8 @@ public class EmailRequest {
     private String transactionId;
     private String unsubscribeURL;
     private String vertical;
+    private boolean isPopularProductsSelected;
+    List<Boolean> popularProducts;
     private List<BigDecimal> premiumDiscountPercentage;
 
     private HealthEmailModel healthEmailModel;

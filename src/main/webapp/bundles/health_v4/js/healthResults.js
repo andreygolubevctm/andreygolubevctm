@@ -294,6 +294,7 @@
 
         // Model updated, make changes before rendering
         meerkat.messaging.subscribe(Results.model.moduleEvents.RESULTS_MODEL_UPDATE_BEFORE_FILTERSHOW, function modelUpdated() {
+            Results.model.popularProducts = Results.model.returnedProducts.filter(function(product) { return product.info && true === product.info.popularProduct; });
             Results.model.returnedProducts = _massageResultsObject(Results.model.returnedProducts);
 
             // Populating sorted products is a trick for HML due to setting sortBy:false
@@ -970,10 +971,11 @@
         data["rank_discounted" + position] = product.premium[frequency].discounted;
         data["rank_premiumDiscountPercentage" + position] = product.premium[frequency].discountPercentage;
 
+        data["rank_isPopularProduct" + position] = product.info.popularProduct;
+
         var specialOffer = meerkat.modules.healthUtils.getSpecialOffer(product);
         data["rank_specialOffer" + position] = specialOffer.specialOffer;
         data["rank_specialOfferTerms" + position] = specialOffer.specialOfferTerms;
-        
 
         if (_.isNumber(best_price_count) && position < best_price_count) {
             data["rank_provider" + position] = product.info.provider;
@@ -1010,6 +1012,7 @@
             data["rank_excessPerPerson" + position] = excessesAndCoPayment.excessPerPerson;
             data["rank_excessPerPolicy" + position] = excessesAndCoPayment.excessPerPolicy;
             data["rank_coPayment" + position] = excessesAndCoPayment.coPayment;
+            data["isPopularProductsSelected"] = $(':input[name=health_popularProducts]').val();
         }
 
         return data;

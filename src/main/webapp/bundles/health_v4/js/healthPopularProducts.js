@@ -64,11 +64,34 @@
 
             setPopularProducts(popularProducts);
             meerkat.modules.journeyEngine.loadingShow('...updating your quotes...', true);
-            meerkat.modules.healthResults.get();
+
+            if (popularProducts === 'Y') {
+                console.error('popular products');
+                var popularResults =
+                    function () {
+                        if (Results.model && Results.model.popularProducts.length > 0) {
+                            return {
+                                results: {
+                                    price: Results.model.popularProducts
+                                }
+                            };
+                        } else {
+                            return {};
+
+                        }
+                    }();
+
+                Results.model.update( popularResults );
+                Results.model.triggerEventsFromResult(popularResults);
+                meerkat.modules.journeyEngine.loadingHide();
+            } else {
+                meerkat.modules.healthResults.get();
+            }
 
             _.defer(function() {
                 _updateTabActive();
                 _toggleText();
+
             });
         });
 
