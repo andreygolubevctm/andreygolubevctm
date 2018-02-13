@@ -7,11 +7,12 @@
     <layout_v3:slide_content>
         <form_v3:fieldset_columns sideHidden="true">
 
-        <jsp:attribute name="rightColumn">
-          <competition:snapshot vertical="health" />
-          <simples:snapshot />
-          <health_v4_content:snapshot/>
-        </jsp:attribute>
+            <jsp:attribute name="rightColumn">
+                <competition:snapshot vertical="health" />
+                <simples:snapshot />
+                <health_v4_content:snapshot/>
+                <health_v4:price_promise />
+            </jsp:attribute>
             <jsp:body>
                 <form_v4:fieldset
                         legend=""

@@ -191,8 +191,12 @@
 		if (isCurrentCouponValid() === true && currentCoupon.hasOwnProperty('contentBanner')) {
             $('#contactForm').find('.quoteSnapshot').hide();
             $('.callCentreHelp').hide();
-			$('.coupon-banner-container').html(currentCoupon.contentBanner);
-            $('.coupon-tile-container').html(currentCoupon.contentTile);
+
+            meerkat.modules.bannerPlacement.render({
+                content: { top: currentCoupon['contentBanner'], tile: currentCoupon['contentTile'] },
+				type: 'coupon'
+            });
+
             $('body').addClass('couponShown');
 
             meerkat.modules.healthMoreInfo.dynamicPyrrBanner();

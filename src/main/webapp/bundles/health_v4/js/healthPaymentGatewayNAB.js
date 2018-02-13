@@ -128,12 +128,36 @@ Process:
 
 	}
 
+	function disable() {
+        $cardNumber.prop('disabled', true);
+        $cardName.prop('disabled', true);
+        $crn.prop('disabled', true);
+        $rescode.prop('disabled', true);
+        $restext.prop('disabled', true);
+        $expiryMonth.prop('disabled', true);
+        $expiryYear.prop('disabled', true);
+        $cardType.prop('disabled', true);
+	}
+
+    function enable() {
+        $cardNumber.prop('disabled', false);
+        $cardName.prop('disabled', false);
+        $crn.prop('disabled', false);
+        $rescode.prop('disabled', false);
+        $restext.prop('disabled', false);
+        $expiryMonth.prop('disabled', false);
+        $expiryYear.prop('disabled', false);
+        $cardType.prop('disabled', false);
+    }
+
 	meerkat.modules.register("healthPaymentGatewayNAB", {
 		init : init,
 		success: success,
 		fail: fail,
 		onOpen : onOpen,
-		setup : setup
+		setup : setup,
+		disable: disable,
+		enable: enable
 	});
 
 })(jQuery);

@@ -914,7 +914,7 @@
                 break;
             case 'BUP':
                 extraPopOverData.push(
-                    {"providerBlurb" : "Bupa are Australia&apos;s largest health fund in terms of members. They will give you some really great member benefits and the security of a being with an industry leader, and for what you need they are giving really great value."}
+                    {"providerBlurb" : "Bupa are Australia&apos;s largest health fund in terms of members. They will give you some really great member benefits and the security of being with an industry leader, and for what you need they are giving really great value."}
                 );
                 break;
             case 'CBH':

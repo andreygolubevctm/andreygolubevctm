@@ -11,7 +11,7 @@
         },
         moduleEvents = events.healthPriceComponent;
 
-    var quoteRefTemplate, priceTemplate, logoTemplate, lhcTemplate;
+    var quoteRefTemplate, priceTemplate, logoTemplate, lhcTemplate, aboutTemplate;
 
     var $policySummaryContainer;
     var $policySummaryTemplateHolder;
@@ -33,6 +33,7 @@
             priceTemplate = $("#price-template").html();
             logoTemplate = $('#logo-template').html();
             lhcTemplate = $('#price-breakdown-lhc-template').html();
+            aboutTemplate = $('#about-this-fund-link-template').html();
 
             $policySummaryContainer = $(".policySummaryContainer");
             $policySummaryTemplateHolder = $(".policySummaryTemplateHolder");
@@ -113,7 +114,9 @@
             var lhcHtml = _.template(lhcTemplate);
             var priceHtmlTemplate = _.template(priceTemplate);
             var logoHtmlTemplate = _.template(logoTemplate);
-            var htmlString = (typeof quoteRefHtmlTemplate === 'function' ? quoteRefHtmlTemplate({}) : "") + lhcHtml(product) + logoHtmlTemplate(product) + priceHtmlTemplate(product);
+            var aboutHtml = _.has(Results.getSelectedProduct(), 'aboutFund') ? _.template(aboutTemplate)() : '';
+            var htmlString = (typeof quoteRefHtmlTemplate === 'function' ? quoteRefHtmlTemplate({}) : "")
+                + lhcHtml(product) + logoHtmlTemplate(product) + aboutHtml + priceHtmlTemplate(product);
 
             $policySummaryTemplateHolder.html(htmlString);
             $policySummaryContainer.find(".policyPriceWarning").hide();

@@ -182,7 +182,7 @@
     }
 
     function isRebateApplied() {
-        return $elements.applyRebate.prop('checked');
+        return $elements.applyRebate.filter(':checked').val() === 'Y';
     }
 
     function toggleIncomeLabel() {

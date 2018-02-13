@@ -20,4 +20,7 @@
         </c:if>
         <a href="javascript:;" class="btn btn-secondary btn-sm btn-block narrowMarginTop getPrintableBrochures">Email myself brochures</a>
     </div>
+    <div class="col-xs-12 about-this-fund-row">
+        <a href="javascript:;" class="about-this-fund">About this fund</a>
+    </div>
 </div>

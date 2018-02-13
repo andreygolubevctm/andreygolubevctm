@@ -115,6 +115,13 @@
 
             var callbackModalId = meerkat.modules.dialogs.show(modalOptions);
         });
+
+        $(document).on('click', '.about-this-fund', function() {
+            meerkat.modules.dialogs.show({
+                title: 'About the fund',
+                htmlContent: Results.getSelectedProduct().aboutFund
+            });
+        });
     }
 
     function _setTabs() {
@@ -249,6 +256,12 @@
         if (product.info.FundCode === 'AUF') {
             $('.productExtraInfo .discountText').text(meerkat.modules.healthResultsTemplate.getDiscountText(product));
         }
+
+        if (!_.has(product, 'aboutFund')) {
+            $('.about-this-fund-row').hide();
+        }
+
+        meerkat.modules.healthPricePromise.applyHeight();
     }
 
     function _setupDualPricing(product) {

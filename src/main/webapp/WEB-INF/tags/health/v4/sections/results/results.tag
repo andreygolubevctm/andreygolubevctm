@@ -14,11 +14,13 @@
     </jsp:attribute>
 
     <jsp:attribute name="sidebarColumnRight">
-        <coupon:promo_tile />
-        <div class="sidebar-widget sidebar-widget-padded results-filters-discount"></div>
-        <div class="sidebar-widget sidebar-widget-padded results-filters-rebate"></div>
-        <div class="sidebar-widget sidebar-widget-padded results-filters-benefits"></div>
-        <div class="sidebar-widget sidebar-widget-padded results-filters"></div>
+        <div class="results-sidebar-inner">
+            <div class="sidebar-widget sidebar-widget-padded results-filters-discount"></div>
+            <div class="sidebar-widget sidebar-widget-padded results-filters-rebate"></div>
+            <div class="sidebar-widget sidebar-widget-padded results-filters-benefits"></div>
+            <div class="sidebar-widget sidebar-widget-padded results-filters"></div>
+        </div>
+        <banners:banner-tile />
         <health_v4_results:filters_discount />
         <health_v4_results:filters_rebate />
         <health_v4_results:filters_benefits />

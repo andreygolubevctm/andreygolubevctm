@@ -11,6 +11,7 @@
                 <competition:snapshot vertical="health" />
                 <reward:campaign_tile_container />
                 <health_v4_payment:policySummary showProductDetails="true" />
+                <health_v4:price_promise />
             </jsp:attribute>
 
             <jsp:body>
