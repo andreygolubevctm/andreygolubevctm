@@ -39,7 +39,12 @@
                 $banner = $(_placementClassName[placement]);
                 className = 'coupon-' + (placement === 'top' ? 'banner' : 'tile') + '-container';
                 $banner.find('.'+className).remove();
-                content = '<div class="'+className+'">'+banner.content[placement]+'</div>';
+
+                if (_.isUndefined(banner.content[placement]) || _.isEmpty(banner.content[placement])) {
+                    return;
+                }
+
+                content = '<div class="'+className+'">' + banner.content[placement] + '</div>';
                 break;
 
             case 'marketing-content':
