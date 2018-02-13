@@ -42,7 +42,8 @@ public class ProductCappingLimitSQL {
             "WHERE limit_type = ?\n" +
             "  AND product_code = ?\n" +
             "  AND ((? BETWEEN limits.effective_start_date AND limits.effective_end_date)\n" +
-            "       OR (? BETWEEN limits.effective_start_date AND limits.effective_end_date));";
+            "       OR (? BETWEEN limits.effective_start_date AND limits.effective_end_date))\n" +
+            "  AND limits.effective_end_date >= curDate();";
     public static final String CREATE =
             "INSERT INTO health_product_capping_limit (cap_limit, limit_type, limit_category, effective_start_date, effective_end_date, product_code, provider_id, membership, state)\n" +
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
