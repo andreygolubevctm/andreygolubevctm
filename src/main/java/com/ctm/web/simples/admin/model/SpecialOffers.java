@@ -36,6 +36,9 @@ public class SpecialOffers {
     public String coverType;
 
 	public String providerName;
+
+	public String offerType;
+
 	public SpecialOffers(){
 
 	}
@@ -124,5 +127,13 @@ public class SpecialOffers {
 
 	public void setProviderName(String providerName) {
 		this.providerName = providerName;
+	}
+
+	public String getOfferType() {
+		return offerType;
+	}
+
+	public void setOfferType(String offerType) {
+		this.offerType = offerType;
 	}
 }
