@@ -84,9 +84,9 @@
 
 	// Check the value of the hidden field, if it matches the correct value, toggle the active State on the ui element
 	function _updateActiveStateFromPrefill() {
-		if (optins.cruise.$eHidden.val() == optins.cruise.value) toggleActiveState(optins.cruise.$e);
-		if (optins.snow.$eHidden.val() == optins.snow.value) toggleActiveState(optins.snow.$e);
-		if (optins.adventure.$eHidden.val() == optins.adventure.value) toggleActiveState(optins.adventure.$e);
+		if (optins.cruise.$eHidden.val() === optins.cruise.value) toggleActiveState(optins.cruise.$e);
+		if (optins.snow.$eHidden.val() === optins.snow.value) toggleActiveState(optins.snow.$e);
+		if (optins.adventure.$eHidden.val() === optins.adventure.value) toggleActiveState(optins.adventure.$e);
 	}
 
 	function setActiveFlags() {
