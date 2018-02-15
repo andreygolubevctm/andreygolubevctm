@@ -106,6 +106,21 @@
                     }
                 }
             },
+            "awardsScheme": {
+                name: 'health_filterBar_awardsScheme',
+                defaultValueSourceSelector: 'input[name="health_rewardsSchemeFirst"]',
+                defaultValue: '',
+                events: {
+                    init: function (filterObject) {
+                        var isChecked = $(filterObject.defaultValueSourceSelector).val() === 'Y';
+                        $('input[name=' + filterObject.name + ']').prop('checked', isChecked);
+                    },
+                    update: function (filterObject) {
+                        var isChecked = $('input[name=' + filterObject.name + ']').is(':checked');
+                        $(filterObject.defaultValueSourceSelector).val(isChecked ? 'Y' : 'N');
+                    }
+                }
+            },
             "brands": {
                 name: 'health_filterBar_brands',
                 values: meerkat.site.providerList,
@@ -258,6 +273,11 @@
                 {
                     template: '#filter-rebate-template',
                     container: '.results-filters-rebate',
+                    context: '#results-sidebar'
+                },
+                {
+                    template: '#filter-awards-scheme-template',
+                    container: '.results-filters-awards-scheme',
                     context: '#results-sidebar'
                 },
                 {

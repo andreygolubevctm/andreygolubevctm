@@ -25,6 +25,16 @@
                     title="Apply the Australian Government Rebate to lower my upfront premium"
             />
 
+            <span class="refine-results-mobile__sub-heading">Awards Schemes</span>
+            <field_v2:checkbox
+                    xpath="health_refine_results_awards_scheme"
+                    className="refine-results-awards-scheme"
+                    value="Y"
+                    required="true"
+                    label="${true}"
+                    title="Show products with connected rewards schemes first"
+            />
+
             <div class="refine-results-mobile__item-container">
                 <div class="refine-results-mobile__item" data-menu-id="hospital">
                     <div class="refine-results-mobile__item-type">Hospital insurance preferences</div>
