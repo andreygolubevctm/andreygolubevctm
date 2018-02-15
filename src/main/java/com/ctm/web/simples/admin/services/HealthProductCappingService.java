@@ -10,7 +10,6 @@ import com.ctm.web.simples.admin.dao.ProviderSummaryDao;
 import com.ctm.web.simples.admin.helper.ValidationHelper;
 import com.ctm.web.simples.admin.model.capping.product.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.elasticsearch.common.collect.ImmutableList;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -76,7 +75,7 @@ public class HealthProductCappingService implements CrudService<ProductCappingLi
         ValidationHelper.validate(fromRequest);
 
         ProductCappingLimit byId = productCappingLimitDao.findById(fromRequest.getCappingLimitId());
-        Optional<String> productCode = productCappingLimitDao.findProductCode(byId.getProviderId(), byId.getProductName(), byId.getState(), byId.getHealthCvr(), fromRequest.getEffectiveStart(), fromRequest.getEffectiveEnd());
+        Optional<String> productCode = productCappingLimitDao.findProductName(byId.getProviderId(), byId.getProductName(), Optional.ofNullable(byId.getState()), Optional.ofNullable(byId.getHealthCvr()), fromRequest.getEffectiveStart(), fromRequest.getEffectiveEnd());
 
         List<SchemaValidationError> validationErrors = new ArrayList<>();
         if (!productCode.isPresent()) {
@@ -106,7 +105,7 @@ public class HealthProductCappingService implements CrudService<ProductCappingLi
     public ProductCappingLimit create(HttpServletRequest request) throws DaoException, CrudValidationException {
         CreateProductCappingLimitDTO fromRequest = RequestUtils.createObjectFromRequest(request, new CreateProductCappingLimitDTO());
         ValidationHelper.validate(fromRequest);
-        Optional<String> productCode = productCappingLimitDao.findProductCode(fromRequest.getProviderId(), fromRequest.getProductName(), fromRequest.getState(), fromRequest.getHealthCvr(), fromRequest.getEffectiveStart(), fromRequest.getEffectiveEnd());
+        Optional<String> productCode = productCappingLimitDao.findProductName(fromRequest.getProviderId(), fromRequest.getProductName(), Optional.ofNullable(fromRequest.getState()), Optional.ofNullable(fromRequest.getHealthCvr()), fromRequest.getEffectiveStart(), fromRequest.getEffectiveEnd());
         List<SchemaValidationError> validationErrors = new ArrayList<>();
 
         if (!productCode.isPresent()) {

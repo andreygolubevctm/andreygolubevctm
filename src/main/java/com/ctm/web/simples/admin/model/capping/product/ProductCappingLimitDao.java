@@ -8,7 +8,6 @@ import com.ctm.web.core.exceptions.DaoException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -61,15 +60,15 @@ public class ProductCappingLimitDao {
 
     public ProductCappingLimit create(CreateProductCappingLimitDTO fromRequest) throws DaoException {
 
-        Integer providerId = fromRequest.getProviderId();
-        String productName = fromRequest.getProductName();
-        String state = fromRequest.getState();
-        String healthCvr = fromRequest.getHealthCvr();
-        LocalDate effectiveStart = fromRequest.getEffectiveStart();
-        LocalDate effectiveEnd = fromRequest.getEffectiveEnd();
+//        Integer providerId = fromRequest.getProviderId();
+//        String productName = fromRequest.getProductName();
+//        String state = fromRequest.getState();
+//        String healthCvr = fromRequest.getHealthCvr();
+//        LocalDate effectiveStart = fromRequest.getEffectiveStart();
+//        LocalDate effectiveEnd = fromRequest.getEffectiveEnd();
+//
 
-
-        final Optional<String> productCode = findProductCode(providerId, productName, state, healthCvr, effectiveStart, effectiveEnd);
+//        final Optional<String> productCode = findProductName(providerId, productName, state, healthCvr, effectiveStart, effectiveEnd);
 
         DatabaseQueryMapping databaseMapping = new DatabaseQueryMapping() {
 
@@ -80,7 +79,7 @@ public class ProductCappingLimitDao {
                 set(fromRequest.getCappingLimitCategory());
                 set(fromRequest.getEffectiveStart());
                 set(fromRequest.getEffectiveEnd());
-                set(productCode.orElse(""));
+                set(fromRequest.getProductName());
                 set(fromRequest.getProviderId());
                 set(fromRequest.getHealthCvr());
                 set(fromRequest.getState());
@@ -145,40 +144,58 @@ public class ProductCappingLimitDao {
     public List<ProductCappingLimit> findOverlappingProductLimits(UpdateProductCappingLimitDTO updateDto) throws DaoException {
         ProductCappingLimit byId = this.findById(updateDto.getCappingLimitId());
 
-        DatabaseQueryMapping<Integer> databaseQueryMapping = getOverlappingProductCapQueryMapping(byId.getProductCode(), updateDto.getLimitType(), updateDto.getEffectiveStart(), updateDto.getEffectiveEnd());
+        DatabaseQueryMapping<Integer> databaseQueryMapping = getOverlappingProductCapQueryMapping(byId.getProductName(), updateDto.getLimitType(), updateDto.getEffectiveStart(), updateDto.getEffectiveEnd());
         List<Integer> idList = cappingIdLookup.getList(databaseQueryMapping, FIND_BY_LIMIT_PARAMS).stream().filter(i -> !i.equals(updateDto.getCappingLimitId())).collect(Collectors.toList());
         return findAllByCappingLimitId(idList);
     }
 
 
     public List<ProductCappingLimit> findOverlappingProductLimits(CreateProductCappingLimitDTO createDto) throws DaoException {
-        Optional<String> productCode = this.findProductCode(createDto.getProviderId(), createDto.getProductName(), createDto.getState(), createDto.getHealthCvr(), createDto.getEffectiveStart(), createDto.getEffectiveEnd());
-        DatabaseQueryMapping<Integer> databaseQueryMapping = getOverlappingProductCapQueryMapping(productCode.orElse(""), createDto.getLimitType(), createDto.getEffectiveStart(), createDto.getEffectiveEnd());
+        Optional<String> productName = this.findProductName(createDto.getProviderId(), createDto.getProductName(), Optional.ofNullable(createDto.getState()), Optional.ofNullable(createDto.getHealthCvr()), createDto.getEffectiveStart(), createDto.getEffectiveEnd());
+        DatabaseQueryMapping<Integer> databaseQueryMapping = getOverlappingProductCapQueryMapping(productName.orElse(""), createDto.getLimitType(), createDto.getEffectiveStart(), createDto.getEffectiveEnd());
         List<Integer> idList = cappingIdLookup.getList(databaseQueryMapping, FIND_BY_LIMIT_PARAMS);
         return findAllByCappingLimitId(idList);
     }
 
-    public Optional<String> findProductCode(Integer providerId, String productName, String state, String healthCvr, LocalDate effectiveStart, LocalDate effectiveEnd) throws DaoException {
-        DatabaseQueryMapping<String> productCodeDatabaseMapping = getProductCodeDatabaseMapping(
+    public Optional<String> findProductName(Integer providerId, String productName, Optional<String> state, Optional<String> healthCvr, LocalDate effectiveStart, LocalDate effectiveEnd) throws DaoException {
+
+        final String lookupProductNameStatement;
+        if (state.filter(s -> !"0".equalsIgnoreCase(s)).isPresent() && healthCvr.filter(s -> !"0".equalsIgnoreCase(s)).isPresent()) {
+            lookupProductNameStatement = GET_PRODUCT_NAME_WITH_STATE_AND_MEMBERSHIP;
+        }
+        else if (state.filter(s -> !"0".equalsIgnoreCase(s)).isPresent() && !healthCvr.filter(s -> !"0".equalsIgnoreCase(s)).isPresent()) {
+            lookupProductNameStatement = GET_PRODUCT_NAME_WITH_STATE;
+        }
+        else if (!state.filter(s -> !"0".equalsIgnoreCase(s)).isPresent() && healthCvr.filter(s -> !"0".equalsIgnoreCase(s)).isPresent()) {
+            lookupProductNameStatement = GET_PRODUCT_NAME_WITH_MEMBERSHIP;
+        }  else {
+            lookupProductNameStatement = GET_PRODUCT_NAME;
+        }
+        DatabaseQueryMapping<String> productCodeDatabaseMapping = getProductNameDatabaseMapping(
                 providerId, productName, state, healthCvr, effectiveStart, effectiveEnd);
-        return Optional.ofNullable(productCodeLookup.get(productCodeDatabaseMapping, GET_PRODUCT_CODE));
+        return Optional.ofNullable(productCodeLookup.get(productCodeDatabaseMapping, lookupProductNameStatement));
     }
 
-    private DatabaseQueryMapping<String> getProductCodeDatabaseMapping(Integer providerId, String productName, String state, String healthCvr, LocalDate effectiveStart, LocalDate effectiveEnd) {
+    private DatabaseQueryMapping<String> getProductNameDatabaseMapping(Integer providerId, String productName, Optional<String> state, Optional<String> healthCvr, LocalDate effectiveStart, LocalDate effectiveEnd) {
         return new DatabaseQueryMapping<String>() {
             @Override
             protected void mapParams() throws SQLException {
                 set(providerId);
                 set(productName);
-                set(state);
-                set(healthCvr);
                 set(effectiveStart);
                 set(effectiveEnd);
+                if (state.filter(s -> !"0".equalsIgnoreCase(s)).isPresent()) {
+                    set(state.get());
+                }
+                if (healthCvr.filter(s -> !"0".equalsIgnoreCase(s)).isPresent()) {
+                    set(healthCvr.get());
+                }
+
             }
 
             @Override
             public String handleResult(ResultSet rs) throws SQLException {
-                return rs.getString("productCode");
+                return rs.getString("productName");
             }
         };
     }
@@ -205,8 +222,7 @@ public class ProductCappingLimitDao {
         return new ProductCappingLimit(
                 rs.getInt("providerId"),
                 rs.getInt("cappingLimitId"),
-                rs.getString("productCode"),
-                rs.getString("productName"),
+                rs.getString("product_name"),
                 rs.getString("state"),
                 rs.getString("healthCvr"),
                 rs.getString("limitType"),

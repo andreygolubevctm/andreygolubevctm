@@ -8,7 +8,6 @@ import java.time.LocalDate;
 public class ProductCappingLimit {
     private Integer providerId;
     private Integer cappingLimitId;
-    private String productCode;
     private String productName;
     private String state;
     private String healthCvr;
@@ -20,10 +19,9 @@ public class ProductCappingLimit {
     private String cappingLimitCategory;
     private Boolean current;
 
-    public ProductCappingLimit(Integer providerId, Integer cappingLimitId, String productCode, String productName, String state, String healthCvr, String limitType, Integer cappingAmount, Integer currentJoinCount, LocalDate effectiveStart, LocalDate effectiveEnd, String cappingLimitCategory, Boolean current) {
+    public ProductCappingLimit(Integer providerId, Integer cappingLimitId, String productName, String state, String healthCvr, String limitType, Integer cappingAmount, Integer currentJoinCount, LocalDate effectiveStart, LocalDate effectiveEnd, String cappingLimitCategory, Boolean current) {
         this.providerId = providerId;
         this.cappingLimitId = cappingLimitId;
-        this.productCode = productCode;
         this.productName = productName;
         this.state = state;
         this.healthCvr = healthCvr;
@@ -47,10 +45,6 @@ public class ProductCappingLimit {
 
     public Integer getCappingLimitId() {
         return cappingLimitId;
-    }
-
-    public String getProductCode() {
-        return productCode;
     }
 
     public String getState() {
@@ -97,10 +91,6 @@ public class ProductCappingLimit {
 
     public void setCappingLimitId(Integer cappingLimitId) {
         this.cappingLimitId = cappingLimitId;
-    }
-
-    public void setProductCode(String productCode) {
-        this.productCode = productCode;
     }
 
     public void setProductName(String productName) {
