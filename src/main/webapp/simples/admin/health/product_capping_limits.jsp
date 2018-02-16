@@ -131,7 +131,7 @@
 <script>
 	var familyType = [
 			{ value: '-1', text: "Select Family type" },
-			{ value: '0', text: "All" },
+			{ value: 'All', text: "All" },
 			<c:set var="familyType" value="${familyTypeDao.getFamilyTypes(false)}" />
 			<c:forEach items="${familyType}" var="item">
 			{ value: "${item.getCode()}", text: "${item.getDescription()}" },
@@ -173,7 +173,7 @@
 		<div class="form-group col-sm-4">
 			<label>State</label>
 			<select name="state" class="form-control" {{= data.modalAction === "edit" ? "disabled" : "" }}>
-				<c:set var="stateOptions" value="=Select a State,0=All,ACT=Australian Capital Territory,NSW=New South Wales,NT=Northern Territory,QLD=Queensland,SA=South Australia,TAS=Tasmania,VIC=Victoria,WA=Western Australia" />
+				<c:set var="stateOptions" value="=Select a State,All=All,ACT=Australian Capital Territory,NSW=New South Wales,NT=Northern Territory,QLD=Queensland,SA=South Australia,TAS=Tasmania,VIC=Victoria,WA=Western Australia" />
 				<c:forTokens items="${stateOptions}" delims="," var="state">
 					<c:set var="val" value="${fn:substringBefore(state,'=')}" />
 					<c:set var="des" value="${fn:substringAfter(state,'=')}" />

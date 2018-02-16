@@ -39,7 +39,7 @@ public class ProductCappingLimitSQL {
             "  AND props.state = ?\n";
 
     public static final String GET_PRODUCT_NAME_WITH_MEMBERSHIP = GET_PRODUCT_NAME +
-            "  AND props.state = ?\n";
+            "  AND props.membership = ?\n";
 
     public static final String DELETE_BY_ID = "DELETE\n" +
             "FROM health_product_capping_limit\n" +
@@ -49,6 +49,8 @@ public class ProductCappingLimitSQL {
             "FROM health_product_capping_limit limits\n" +
             "WHERE limit_type = ?\n" +
             "  AND product_name = ?\n" +
+            "  AND (limits.state = 'All' OR limits.state = ?)\n" +
+            "  AND (limits.membership = 'All' OR limits.membership = ?)" +
             "  AND ((? BETWEEN limits.effective_start_date AND limits.effective_end_date)\n" +
             "       OR (? BETWEEN limits.effective_start_date AND limits.effective_end_date))\n" +
             "  AND limits.effective_end_date >= curDate();";
@@ -63,160 +65,160 @@ public class ProductCappingLimitSQL {
             "    cap_limit = ?\n" +
             "WHERE id = ?;";
     private static final String GET_ALL_RECORDS_SNIPPET = "SELECT id AS cappingLimitId,\n" +
-            "       provider_id AS providerId,\n" +
-            "       providerName,\n" +
-            "       product_name,\n" +
-            "       state,\n" +
-            "       membership AS healthCvr,\n" +
-            "       limit_type AS limitType,\n" +
-            "       cap_limit AS cappingAmount,\n" +
-            "       ifnull(currentJoinCount, 0) AS currentJoinCount,\n" +
-            "       effective_start_date AS effectiveStart,\n" +
-            "       effective_end_date AS effectiveEnd,\n" +
-            "       limit_category AS cappingLimitCategory,\n" +
-            "       (curDate() BETWEEN effective_start_date AND effective_end_date) AS isCurrent\n" +
-            "FROM (\n" +
-            "        (SELECT limits.*,\n" +
-            "                providers.Name AS providerName,\n" +
-            "                product_joins.currentJoinCount\n" +
-            "         FROM health_product_capping_limit limits\n" +
-            "         INNER JOIN provider_master providers ON providers.providerId = limits.provider_id\n" +
-            "         LEFT JOIN\n" +
-            "           (SELECT date(joins.joinDate),\n" +
-            "                   count(rootId) AS currentJoinCount,\n" +
-            "                   products.LongTitle,\n" +
-            "                   products.providerId,\n" +
-            "                   props.state,\n" +
-            "                   props.membership\n" +
-            "            FROM product_master products\n" +
-            "            INNER JOIN joins ON products.productId = joins.productId\n" +
-            "            INNER JOIN product_properties_search props ON props.productId = products.productId\n" +
-            "            WHERE date(joins.joinDate) = date(curDate())\n" +
-            "            GROUP BY products.LongTitle,\n" +
-            "                     products.providerId,\n" +
-            "                     props.state,\n" +
-            "                     props.membership,\n" +
-            "                     date(joins.joinDate) DESC\n" +
-            "            UNION SELECT date(joins.joinDate),\n" +
-            "                         count(rootId) AS currentJoinCount,\n" +
-            "                         products.LongTitle,\n" +
-            "                         products.providerId,\n" +
-            "                         0 AS state,\n" +
-            "                         0 AS membership\n" +
-            "            FROM product_master products\n" +
-            "            INNER JOIN joins ON products.productId = joins.productId\n" +
-            "            INNER JOIN product_properties_search props ON props.productId = products.productId\n" +
-            "            WHERE date(joins.joinDate) = date(curDate())\n" +
-            "            GROUP BY products.LongTitle,\n" +
-            "                     products.providerId,\n" +
-            "                     date(joins.joinDate) DESC\n" +
-            "            UNION SELECT date(joins.joinDate),\n" +
-            "                         count(rootId) AS currentJoinCount,\n" +
-            "                         products.LongTitle,\n" +
-            "                         products.providerId,\n" +
-            "                         0 AS state,\n" +
-            "                         props.membership\n" +
-            "            FROM product_master products\n" +
-            "            INNER JOIN joins ON products.productId = joins.productId\n" +
-            "            INNER JOIN product_properties_search props ON props.productId = products.productId\n" +
-            "            WHERE date(joins.joinDate) = date(curDate())\n" +
-            "            GROUP BY products.LongTitle,\n" +
-            "                     products.providerId,\n" +
-            "                     props.membership,\n" +
-            "                     date(joins.joinDate) DESC\n" +
-            "            UNION SELECT date(joins.joinDate),\n" +
-            "                         count(rootId) AS currentJoinCount,\n" +
-            "                         products.LongTitle,\n" +
-            "                         products.providerId,\n" +
-            "                         props.state,\n" +
-            "                         0 AS membership\n" +
-            "            FROM product_master products\n" +
-            "            INNER JOIN joins ON products.productId = joins.productId\n" +
-            "            INNER JOIN product_properties_search props ON props.productId = products.productId\n" +
-            "            WHERE date(joins.joinDate) = date(curDate())\n" +
-            "            GROUP BY products.LongTitle,\n" +
-            "                     products.providerId,\n" +
-            "                     props.state,\n" +
-            "                           date(joins.joinDate) DESC) product_joins ON product_joins.LongTitle = limits.product_name\n" +
-            "         AND product_joins.state = limits.state\n" +
-            "         AND product_joins.membership = limits.membership\n" +
-            "         WHERE limits.limit_type = 'Daily'\n" +
-            "           AND limits.effective_end_date >= DATE_ADD(CURDATE(), INTERVAL -3 MONTH))\n" +
-            "      UNION\n" +
-            "        (SELECT limits.*,\n" +
-            "                providers.Name AS providerName,\n" +
-            "                product_joins.currentJoinCount\n" +
-            "         FROM health_product_capping_limit limits\n" +
-            "         INNER JOIN provider_master providers ON providers.providerId = limits.provider_id\n" +
-            "         LEFT JOIN\n" +
-            "           (SELECT year(joins.joinDate),\n" +
-            "                   month(joins.joinDate),\n" +
-            "                   count(rootId) AS currentJoinCount,\n" +
-            "                   products.LongTitle,\n" +
-            "                   products.providerId,\n" +
-            "                   props.state,\n" +
-            "                   props.membership\n" +
-            "            FROM product_master products\n" +
-            "            INNER JOIN joins ON products.productId = joins.productId\n" +
-            "            INNER JOIN product_properties_search props ON props.productId = products.productId\n" +
-            "            WHERE year(joins.joinDate) = year(curDate())\n" +
-            "              AND month(joins.joinDate) = month(curDate())\n" +
-            "            GROUP BY products.LongTitle,\n" +
-            "                     products.providerId,\n" +
-            "                     props.state,\n" +
-            "                     props.membership,\n" +
-            "                     year(joins.joinDate) DESC, month(joins.joinDate) DESC\n" +
-            "            UNION SELECT year(joins.joinDate),\n" +
-            "                         month(joins.joinDate),\n" +
-            "                         count(rootId) AS currentJoinCount,\n" +
-            "                         products.LongTitle,\n" +
-            "                         products.providerId,\n" +
-            "                         0 AS state,\n" +
-            "                         0 AS membership\n" +
-            "            FROM product_master products\n" +
-            "            INNER JOIN joins ON products.productId = joins.productId\n" +
-            "            INNER JOIN product_properties_search props ON props.productId = products.productId\n" +
-            "            WHERE year(joins.joinDate) = year(curDate())\n" +
-            "              AND month(joins.joinDate) = month(curDate())\n" +
-            "            GROUP BY products.LongTitle,\n" +
-            "                     products.providerId,\n" +
-            "                     year(joins.joinDate) DESC, month(joins.joinDate) DESC\n" +
-            "            UNION SELECT year(joins.joinDate),\n" +
-            "                         month(joins.joinDate),\n" +
-            "                         count(rootId) AS currentJoinCount,\n" +
-            "                         products.LongTitle,\n" +
-            "                         products.providerId,\n" +
-            "                         0 AS state,\n" +
-            "                         props.membership\n" +
-            "            FROM product_master products\n" +
-            "            INNER JOIN joins ON products.productId = joins.productId\n" +
-            "            INNER JOIN product_properties_search props ON props.productId = products.productId\n" +
-            "            WHERE year(joins.joinDate) = year(curDate())\n" +
-            "              AND month(joins.joinDate) = month(curDate())\n" +
-            "            GROUP BY products.LongTitle,\n" +
-            "                     products.providerId,\n" +
-            "                     props.membership,\n" +
-            "                     year(joins.joinDate) DESC, month(joins.joinDate) DESC\n" +
-            "            UNION SELECT year(joins.joinDate),\n" +
-            "                         month(joins.joinDate),\n" +
-            "                         count(rootId) AS currentJoinCount,\n" +
-            "                         products.LongTitle,\n" +
-            "                         products.providerId,\n" +
-            "                         props.state,\n" +
-            "                         0 AS membership\n" +
-            "            FROM product_master products\n" +
-            "            INNER JOIN joins ON products.productId = joins.productId\n" +
-            "            INNER JOIN product_properties_search props ON props.productId = products.productId\n" +
-            "            WHERE year(joins.joinDate) = year(curDate())\n" +
-            "              AND month(joins.joinDate) = month(curDate())\n" +
-            "            GROUP BY products.LongTitle,\n" +
-            "                     products.providerId,\n" +
-            "                     props.state,\n" +
-            "                     year(joins.joinDate) DESC, month(joins.joinDate) DESC) product_joins ON product_joins.LongTitle = limits.product_name\n" +
-            "         AND product_joins.state = limits.state\n" +
-            "         AND product_joins.membership = limits.membership\n" +
-            "         WHERE limits.limit_type = 'Monthly'\n" +
-            "           AND limits.effective_end_date >= DATE_ADD(CURDATE(), INTERVAL -3 MONTH))) AS capped_join_data\n";
+            "          provider_id AS providerId,\n" +
+            "          providerName,\n" +
+            "          product_name,\n" +
+            "          state,\n" +
+            "          membership AS healthCvr,\n" +
+            "          limit_type AS limitType,\n" +
+            "          cap_limit AS cappingAmount,\n" +
+            "          ifnull(currentJoinCount, 0) AS currentJoinCount,\n" +
+            "          effective_start_date AS effectiveStart,\n" +
+            "          effective_end_date AS effectiveEnd,\n" +
+            "          limit_category AS cappingLimitCategory,\n" +
+            "          (curDate() BETWEEN effective_start_date AND effective_end_date) AS isCurrent\n" +
+            "   FROM (\n" +
+            "           (SELECT limits.*,\n" +
+            "                   providers.Name AS providerName,\n" +
+            "                   product_joins.currentJoinCount\n" +
+            "            FROM health_product_capping_limit limits\n" +
+            "            INNER JOIN provider_master providers ON providers.providerId = limits.provider_id\n" +
+            "            LEFT JOIN\n" +
+            "              (SELECT date(joins.joinDate),\n" +
+            "                      count(rootId) AS currentJoinCount,\n" +
+            "                      products.LongTitle,\n" +
+            "                      products.providerId,\n" +
+            "                      props.state,\n" +
+            "                      props.membership\n" +
+            "               FROM product_master products\n" +
+            "               INNER JOIN joins ON products.productId = joins.productId\n" +
+            "               INNER JOIN product_properties_search props ON props.productId = products.productId\n" +
+            "               WHERE date(joins.joinDate) = date(curDate())\n" +
+            "               GROUP BY products.LongTitle,\n" +
+            "                        products.providerId,\n" +
+            "                        props.state,\n" +
+            "                        props.membership,\n" +
+            "                        date(joins.joinDate) DESC\n" +
+            "               UNION SELECT date(joins.joinDate),\n" +
+            "                            count(rootId) AS currentJoinCount,\n" +
+            "                            products.LongTitle,\n" +
+            "                            products.providerId,\n" +
+            "                            'All' AS state,\n" +
+            "                            'All' AS membership\n" +
+            "               FROM product_master products\n" +
+            "               INNER JOIN joins ON products.productId = joins.productId\n" +
+            "               INNER JOIN product_properties_search props ON props.productId = products.productId\n" +
+            "               WHERE date(joins.joinDate) = date(curDate())\n" +
+            "               GROUP BY products.LongTitle,\n" +
+            "                        products.providerId,\n" +
+            "                        date(joins.joinDate) DESC\n" +
+            "               UNION SELECT date(joins.joinDate),\n" +
+            "                            count(rootId) AS currentJoinCount,\n" +
+            "                            products.LongTitle,\n" +
+            "                            products.providerId,\n" +
+            "                            'All' AS state,\n" +
+            "                            props.membership\n" +
+            "               FROM product_master products\n" +
+            "               INNER JOIN joins ON products.productId = joins.productId\n" +
+            "               INNER JOIN product_properties_search props ON props.productId = products.productId\n" +
+            "               WHERE date(joins.joinDate) = date(curDate())\n" +
+            "               GROUP BY products.LongTitle,\n" +
+            "                        products.providerId,\n" +
+            "                        props.membership,\n" +
+            "                        date(joins.joinDate) DESC\n" +
+            "               UNION SELECT date(joins.joinDate),\n" +
+            "                            count(rootId) AS currentJoinCount,\n" +
+            "                            products.LongTitle,\n" +
+            "                            products.providerId,\n" +
+            "                            props.state,\n" +
+            "                            'All' AS membership\n" +
+            "               FROM product_master products\n" +
+            "               INNER JOIN joins ON products.productId = joins.productId\n" +
+            "               INNER JOIN product_properties_search props ON props.productId = products.productId\n" +
+            "               WHERE date(joins.joinDate) = date(curDate())\n" +
+            "               GROUP BY products.LongTitle,\n" +
+            "                        products.providerId,\n" +
+            "                        props.state,\n" +
+            "                        date(joins.joinDate) DESC) product_joins ON product_joins.LongTitle = limits.product_name\n" +
+            "            AND product_joins.state = limits.state\n" +
+            "            AND product_joins.membership = limits.membership\n" +
+            "            WHERE limits.limit_type = 'Daily'\n" +
+            "              AND limits.effective_end_date >= DATE_ADD(CURDATE(), INTERVAL -3 MONTH))\n" +
+            "         UNION\n" +
+            "           (SELECT limits.*,\n" +
+            "                   providers.Name AS providerName,\n" +
+            "                   product_joins.currentJoinCount\n" +
+            "            FROM health_product_capping_limit limits\n" +
+            "            INNER JOIN provider_master providers ON providers.providerId = limits.provider_id\n" +
+            "            LEFT JOIN\n" +
+            "              (SELECT year(joins.joinDate),\n" +
+            "                      month(joins.joinDate),\n" +
+            "                      count(rootId) AS currentJoinCount,\n" +
+            "                      products.LongTitle,\n" +
+            "                      products.providerId,\n" +
+            "                      props.state,\n" +
+            "                      props.membership\n" +
+            "               FROM product_master products\n" +
+            "               INNER JOIN joins ON products.productId = joins.productId\n" +
+            "               INNER JOIN product_properties_search props ON props.productId = products.productId\n" +
+            "               WHERE year(joins.joinDate) = year(curDate())\n" +
+            "                 AND month(joins.joinDate) = month(curDate())\n" +
+            "               GROUP BY products.LongTitle,\n" +
+            "                        products.providerId,\n" +
+            "                        props.state,\n" +
+            "                        props.membership,\n" +
+            "                        year(joins.joinDate) DESC, month(joins.joinDate) DESC\n" +
+            "               UNION SELECT year(joins.joinDate),\n" +
+            "                            month(joins.joinDate),\n" +
+            "                            count(rootId) AS currentJoinCount,\n" +
+            "                            products.LongTitle,\n" +
+            "                            products.providerId,\n" +
+            "                            'All' AS state,\n" +
+            "                            'All' AS membership\n" +
+            "               FROM product_master products\n" +
+            "               INNER JOIN joins ON products.productId = joins.productId\n" +
+            "               INNER JOIN product_properties_search props ON props.productId = products.productId\n" +
+            "               WHERE year(joins.joinDate) = year(curDate())\n" +
+            "                 AND month(joins.joinDate) = month(curDate())\n" +
+            "               GROUP BY products.LongTitle,\n" +
+            "                        products.providerId,\n" +
+            "                        year(joins.joinDate) DESC, month(joins.joinDate) DESC\n" +
+            "               UNION SELECT year(joins.joinDate),\n" +
+            "                            month(joins.joinDate),\n" +
+            "                            count(rootId) AS currentJoinCount,\n" +
+            "                            products.LongTitle,\n" +
+            "                            products.providerId,\n" +
+            "                            'All' AS state,\n" +
+            "                            props.membership\n" +
+            "               FROM product_master products\n" +
+            "               INNER JOIN joins ON products.productId = joins.productId\n" +
+            "               INNER JOIN product_properties_search props ON props.productId = products.productId\n" +
+            "               WHERE year(joins.joinDate) = year(curDate())\n" +
+            "                 AND month(joins.joinDate) = month(curDate())\n" +
+            "               GROUP BY products.LongTitle,\n" +
+            "                        products.providerId,\n" +
+            "                        props.membership,\n" +
+            "                        year(joins.joinDate) DESC, month(joins.joinDate) DESC\n" +
+            "               UNION SELECT year(joins.joinDate),\n" +
+            "                            month(joins.joinDate),\n" +
+            "                            count(rootId) AS currentJoinCount,\n" +
+            "                            products.LongTitle,\n" +
+            "                            products.providerId,\n" +
+            "                            props.state,\n" +
+            "                            'All' AS membership\n" +
+            "               FROM product_master products\n" +
+            "               INNER JOIN joins ON products.productId = joins.productId\n" +
+            "               INNER JOIN product_properties_search props ON props.productId = products.productId\n" +
+            "               WHERE year(joins.joinDate) = year(curDate())\n" +
+            "                 AND month(joins.joinDate) = month(curDate())\n" +
+            "               GROUP BY products.LongTitle,\n" +
+            "                        products.providerId,\n" +
+            "                        props.state,\n" +
+            "                        year(joins.joinDate) DESC, month(joins.joinDate) DESC) product_joins ON product_joins.LongTitle = limits.product_name\n" +
+            "            AND product_joins.state = limits.state\n" +
+            "            AND product_joins.membership = limits.membership\n" +
+            "            WHERE limits.limit_type = 'Monthly'\n" +
+            "              AND limits.effective_end_date >= DATE_ADD(CURDATE(), INTERVAL -3 MONTH))) AS capped_join_data\n";
     public static final String GET_ALL_RECORDS_BY_PROVIDER_ID = GET_ALL_RECORDS_SNIPPET
             + "WHERE capped_join_data.provider_id = ?;";
     public static final String GET_RECORDS_BY_ID = GET_ALL_RECORDS_SNIPPET

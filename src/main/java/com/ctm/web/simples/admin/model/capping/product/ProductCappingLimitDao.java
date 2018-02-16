@@ -17,6 +17,7 @@ import static com.ctm.web.simples.admin.dao.ProductCappingLimitSQL.*;
 
 public class ProductCappingLimitDao {
 
+    public static final String ALL_WILDCARD = "All";
     private final SqlDao<ProductCappingLimit> sqlDao = new SqlDao<>();
 
     private final SqlDao<String> productCodeLookup = new SqlDao<>();
@@ -59,16 +60,6 @@ public class ProductCappingLimitDao {
     }
 
     public ProductCappingLimit create(CreateProductCappingLimitDTO fromRequest) throws DaoException {
-
-//        Integer providerId = fromRequest.getProviderId();
-//        String productName = fromRequest.getProductName();
-//        String state = fromRequest.getState();
-//        String healthCvr = fromRequest.getHealthCvr();
-//        LocalDate effectiveStart = fromRequest.getEffectiveStart();
-//        LocalDate effectiveEnd = fromRequest.getEffectiveEnd();
-//
-
-//        final Optional<String> productCode = findProductName(providerId, productName, state, healthCvr, effectiveStart, effectiveEnd);
 
         DatabaseQueryMapping databaseMapping = new DatabaseQueryMapping() {
 
@@ -144,7 +135,7 @@ public class ProductCappingLimitDao {
     public List<ProductCappingLimit> findOverlappingProductLimits(UpdateProductCappingLimitDTO updateDto) throws DaoException {
         ProductCappingLimit byId = this.findById(updateDto.getCappingLimitId());
 
-        DatabaseQueryMapping<Integer> databaseQueryMapping = getOverlappingProductCapQueryMapping(byId.getProductName(), updateDto.getLimitType(), updateDto.getEffectiveStart(), updateDto.getEffectiveEnd());
+        DatabaseQueryMapping<Integer> databaseQueryMapping = getOverlappingProductCapQueryMapping(byId.getProductName(), updateDto.getLimitType(), Optional.ofNullable(byId.getState()), Optional.ofNullable(byId.getHealthCvr()), updateDto.getEffectiveStart(), updateDto.getEffectiveEnd());
         List<Integer> idList = cappingIdLookup.getList(databaseQueryMapping, FIND_BY_LIMIT_PARAMS).stream().filter(i -> !i.equals(updateDto.getCappingLimitId())).collect(Collectors.toList());
         return findAllByCappingLimitId(idList);
     }
@@ -152,7 +143,7 @@ public class ProductCappingLimitDao {
 
     public List<ProductCappingLimit> findOverlappingProductLimits(CreateProductCappingLimitDTO createDto) throws DaoException {
         Optional<String> productName = this.findProductName(createDto.getProviderId(), createDto.getProductName(), Optional.ofNullable(createDto.getState()), Optional.ofNullable(createDto.getHealthCvr()), createDto.getEffectiveStart(), createDto.getEffectiveEnd());
-        DatabaseQueryMapping<Integer> databaseQueryMapping = getOverlappingProductCapQueryMapping(productName.orElse(""), createDto.getLimitType(), createDto.getEffectiveStart(), createDto.getEffectiveEnd());
+        DatabaseQueryMapping<Integer> databaseQueryMapping = getOverlappingProductCapQueryMapping(productName.orElse(""), createDto.getLimitType(), Optional.ofNullable(createDto.getState()), Optional.ofNullable(createDto.getHealthCvr()), createDto.getEffectiveStart(), createDto.getEffectiveEnd());
         List<Integer> idList = cappingIdLookup.getList(databaseQueryMapping, FIND_BY_LIMIT_PARAMS);
         return findAllByCappingLimitId(idList);
     }
@@ -160,13 +151,16 @@ public class ProductCappingLimitDao {
     public Optional<String> findProductName(Integer providerId, String productName, Optional<String> state, Optional<String> healthCvr, LocalDate effectiveStart, LocalDate effectiveEnd) throws DaoException {
 
         final String lookupProductNameStatement;
-        if (state.filter(s -> !"0".equalsIgnoreCase(s)).isPresent() && healthCvr.filter(s -> !"0".equalsIgnoreCase(s)).isPresent()) {
+        boolean isStateSelected = state.filter(s -> !ALL_WILDCARD.equalsIgnoreCase(s)).isPresent();
+        boolean isMembershipSelected = healthCvr.filter(s -> !ALL_WILDCARD.equalsIgnoreCase(s)).isPresent();
+
+        if (isStateSelected && isMembershipSelected) {
             lookupProductNameStatement = GET_PRODUCT_NAME_WITH_STATE_AND_MEMBERSHIP;
         }
-        else if (state.filter(s -> !"0".equalsIgnoreCase(s)).isPresent() && !healthCvr.filter(s -> !"0".equalsIgnoreCase(s)).isPresent()) {
+        else if (isStateSelected && !isMembershipSelected) {
             lookupProductNameStatement = GET_PRODUCT_NAME_WITH_STATE;
         }
-        else if (!state.filter(s -> !"0".equalsIgnoreCase(s)).isPresent() && healthCvr.filter(s -> !"0".equalsIgnoreCase(s)).isPresent()) {
+        else if (!isStateSelected && isMembershipSelected) {
             lookupProductNameStatement = GET_PRODUCT_NAME_WITH_MEMBERSHIP;
         }  else {
             lookupProductNameStatement = GET_PRODUCT_NAME;
@@ -184,10 +178,14 @@ public class ProductCappingLimitDao {
                 set(productName);
                 set(effectiveStart);
                 set(effectiveEnd);
-                if (state.filter(s -> !"0".equalsIgnoreCase(s)).isPresent()) {
+                boolean isStateSelected = state.filter(s -> !ALL_WILDCARD.equalsIgnoreCase(s)).isPresent();
+                boolean isMembershipSelected = healthCvr.filter(s -> !ALL_WILDCARD.equalsIgnoreCase(s)).isPresent();
+
+                if (isStateSelected) {
                     set(state.get());
                 }
-                if (healthCvr.filter(s -> !"0".equalsIgnoreCase(s)).isPresent()) {
+
+                if (isMembershipSelected) {
                     set(healthCvr.get());
                 }
 
@@ -201,12 +199,14 @@ public class ProductCappingLimitDao {
     }
 
 
-    private DatabaseQueryMapping<Integer> getOverlappingProductCapQueryMapping(String productCode, final String limitType, final LocalDate effectiveStart, final LocalDate effectiveEnd) {
+    private DatabaseQueryMapping<Integer> getOverlappingProductCapQueryMapping(String productCode, final String limitType, final Optional<String> state, final Optional<String> membership, final LocalDate effectiveStart, final LocalDate effectiveEnd) {
         return new DatabaseQueryMapping<Integer>() {
             @Override
             protected void mapParams() throws SQLException {
                 set(limitType);
                 set(productCode);
+                set(state.orElse(ALL_WILDCARD));
+                set(membership.orElse(ALL_WILDCARD));
                 set(effectiveStart);
                 set(effectiveEnd);
             }
