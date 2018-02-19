@@ -64,12 +64,28 @@ Process:
 		}, 1000);
 	}
 
+	function disable() {
+        $number.prop('disabled', true);
+        $type.prop('disabled', true);
+        $expiry.prop('disabled', true);
+        $name.prop('disabled', true);
+	}
+
+    function enable() {
+        $number.prop('disabled', false);
+        $type.prop('disabled', false);
+        $expiry.prop('disabled', false);
+        $name.prop('disabled', false);
+    }
+
 	meerkat.modules.register("healthPaymentGatewayWestpac", {
 		success: success,
 		fail: fail,
 		onOpen : onOpen,
 		init: init,
-		setup : setup
+		setup : setup,
+        disable: disable,
+        enable: enable
 	});
 
 })(jQuery);

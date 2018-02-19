@@ -59,7 +59,7 @@
     }
 
     function getSpecialOffer(product) {
-        var promoText = /^(.+)<p><a class="dialogPop" data-content="(.+)" title="Conditions".+$/g.exec(product.promo.promoText);
+        var promoText = /^(.+)<p><a class="dialogPop" data-content="([\s\S]+)" title=.+$/g.exec(product.promo.promoText);
         var specialOffer = promoText && promoText[1];
         // Convert this back to html
         var specialOfferTerms = promoText && promoText[2] && $('<div/>').html(promoText[2]).text();

@@ -1,21 +1,33 @@
 package com.ctm.web.core.leadfeed.dao;
 
+import com.ctm.web.car.leadfeed.services.CTM.CTMCarLeadFeedService;
+import com.ctm.web.car.model.form.CarQuote;
 import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.content.model.Content;
 import com.ctm.web.core.content.model.ContentSupplement;
 import com.ctm.web.core.content.services.ContentService;
 import com.ctm.web.core.dao.VerticalsDao;
 import com.ctm.web.core.exceptions.DaoException;
+
+import com.ctm.web.core.exceptions.ServiceConfigurationException;
+import com.ctm.web.core.leadfeed.model.CTMCarLeadFeedRequestMetadata;
 import com.ctm.web.core.leadfeed.model.LeadFeedData;
+import com.ctm.web.core.leadfeed.model.Person;
 import com.ctm.web.core.model.leadfeed.LeadFeedRootTransaction;
 import com.ctm.web.core.model.settings.Brand;
+import com.ctm.web.core.model.settings.ServiceConfiguration;
+import com.ctm.web.core.model.settings.ServiceConfigurationProperty;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.services.ApplicationService;
+import com.ctm.web.core.services.ServiceConfigurationService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 
 import javax.naming.NamingException;
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -27,6 +39,7 @@ import static com.ctm.commonlogging.common.LoggingArguments.kv;
 public class BestPriceLeadsDao {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(BestPriceLeadsDao.class);
+	private static final CharSequence BUDD = "BUDD";
 
 	private ArrayList<LeadFeedRootTransaction> transactions = null;
 	private ArrayList<LeadFeedData> leads = null;
@@ -41,7 +54,7 @@ public class BestPriceLeadsDao {
 	 * @return
 	 * @throws DaoException
 	 */
-	public ArrayList<LeadFeedData> getLeads(int brandCodeId, String verticalCode, Integer minutes, Date serverDate) throws DaoException{
+	public ArrayList<LeadFeedData> getLeads(int brandCodeId, String verticalCode, Integer minutes, Date serverDate) throws DaoException {
 
 		SimpleDatabaseConnection dbSource = null;
 
@@ -93,7 +106,7 @@ public class BestPriceLeadsDao {
 							if(tran.getHasLeadFeed() == false) {
 								stmt = dbSource.getConnection().prepareStatement(
 									"SELECT r.TransactionId AS transactionId, p1.Value AS leadNo, " +
-									"p2.Value AS leadInfo, p3.Value AS brandCode, p4.Value AS followupIntended, " +
+									"p2.Value AS leadInfo, p3.Value AS brandCode, p4.Value AS followupIntended, p5.Value AS propensityScore," +
 									"p1.productId, t.productCode AS moreInfoProductCode, " +
 									// This sub-select will count all leads for the rootID which will eliminate
 									// sending duplicates for transactions that span more than one reporting
@@ -105,6 +118,8 @@ public class BestPriceLeadsDao {
 									"	AND type IN ('BP','CB','A', 'CD', 'BPDD')" +
 									") AS existingLeadCount " +
 									"FROM aggregator.ranking_details AS r " +
+									"LEFT JOIN aggregator.results_properties AS p5 " +
+									"	ON p5.transactionId = r.TransactionId AND p5.productId = r.Value AND p5.property = 'propensityScore' " +
 									"LEFT JOIN aggregator.results_properties AS p1 " +
 									"	ON p1.transactionId = r.TransactionId AND p1.productId = r.Value AND p1.property = 'leadNo' " +
 									"LEFT JOIN aggregator.results_properties AS p2  " +
@@ -134,8 +149,11 @@ public class BestPriceLeadsDao {
 
 									Long transactionId = resultSet.getLong("transactionId");
 									String[] leadConcat = resultSet.getString("leadInfo").split("\\|\\|", -1);
-									if(leadConcat.length == 4) {
+
+									// old leadfeedinfo will have 4 elements, and new once will have 6.
+									if(leadConcat.length >= CarQuote.LEAD_FEED_INFO_SIZE_V1) {
 										String curLeadNumber = resultSet.getString("leadNo");
+										String propensityScore = resultSet.getString("propensityScore");
 										String curIdentifier = leadConcat[2];
 										String phoneNumber = leadConcat[1];
 										// Only proceed if a phone number has been provided otherwise the
@@ -171,6 +189,34 @@ public class BestPriceLeadsDao {
 												leadData.setBrandCode(brand.getCode());
 												leadData.setVerticalCode(verticalCode);
 												leadData.setVerticalId(brand.getVerticalByCode(verticalCode).getId());
+
+												/**
+												 * CAR-1524: Send all CAR BestPrice leads for Budget Direct to `ctm-leads` instead of A&G.
+												 * To be able to process leads, `ctm-leads` require more info (person, metadata) as part of lead feed data.
+												 */
+												if (isCarBestPriceLeadFeedForBUDD(leadData)) {
+													final ServiceConfiguration serviceConfig;
+													try {
+														serviceConfig = ServiceConfigurationService.getServiceConfiguration("leadService", CTMCarLeadFeedService.CAR_VERTICAL_ID);
+													} catch (ServiceConfigurationException e) {
+														LOGGER.error("[lead feed] Exception while reading service config. Message: {}", e.getMessage(), e);
+														throw new DaoException(e.getMessage(), e);
+													}
+
+													final Boolean carCtmLeadsEnabled = Boolean.valueOf(serviceConfig.getPropertyValueByKey("enabled", brandCodeId, 0, ServiceConfigurationProperty.Scope.SERVICE));
+
+													if (carCtmLeadsEnabled) {
+														if (leadConcat.length >= CarQuote.LEAD_FEED_INFO_SIZE_V2) {
+															leadData.setRootId(tran.getMinTransactionId());
+															updateLeadFeedDataWithPersonInfo(leadData, leadConcat[4]);
+															updateLeadFeedDataWithMetadata(leadData, leadConcat[5], propensityScore);
+														} else {
+															//log and skip this lead as its un-processable.
+															LOGGER.error("[Lead info] lead info has invalid number of elements {}, {}, {}, {}, {}, {}", kv("transactionId", transactionId), kv("leadConcatLength", leadConcat.length), kv("brandCodeId", brandCodeId), kv("verticalCode", verticalCode), kv("minutes", minutes), kv("serverDate", serverDate));
+															leadData = null;
+														}
+													}
+												}
 
 											// Escape current loop as the identifier has changed and we already have our lead data
 											} else {
@@ -240,6 +286,74 @@ public class BestPriceLeadsDao {
 
 		return leads;
 	}
+
+	/**
+	 * Update lead feed data with meta data as required by `ctm-leads`
+	 *
+	 * Note: do not throw any exception here.
+	 * @param leadData
+	 * @param metadataJsonString
+	 * @param propensityScore
+	 */
+	private void updateLeadFeedDataWithMetadata(LeadFeedData leadData, String metadataJsonString, final String propensityScore) {
+        if(StringUtils.isBlank(metadataJsonString)){
+            return;
+        }
+        LOGGER.info("BANANA: "+ metadataJsonString);
+        CTMCarLeadFeedRequestMetadata metadata = new CTMCarLeadFeedRequestMetadata();
+        try {
+            final ObjectMapper mapper = new ObjectMapper();
+            metadata = mapper.readValue(metadataJsonString, CTMCarLeadFeedRequestMetadata.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        metadata.setProviderQuoteRef(leadData.getPartnerReference());
+        metadata.setProviderCode(leadData.getPartnerBrand());
+        //propensity score could be null, DUPLICATE, double, string. `ctm-leads` is responsible for it to convert it to usable form.
+        metadata.setPropensityScore(propensityScore);
+        leadData.setMetadata(metadata);
+    }
+
+	/**
+	 * Updates lead feed data with person as required by `ctm-leads`
+	 *
+	 * Note: do not throw any exception here.
+	 * @param leadData
+	 * @param personJsonString
+	 */
+	private void updateLeadFeedDataWithPersonInfo(LeadFeedData leadData, String personJsonString) {
+
+        if (StringUtils.isBlank(personJsonString)) {
+            return;
+        }
+
+        Person person = null;
+        try {
+            final ObjectMapper mapper = new ObjectMapper();
+            person = mapper.readValue(personJsonString, Person.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        leadData.setPerson(person);
+    }
+
+	/**
+	 * returns true if lead feed data is for Car, best price, for Budget Direct, else false.
+	 *
+	 * Note: do not throw any exception here.
+	 * @param leadFeedData
+	 * @return
+	 */
+	private boolean isCarBestPriceLeadFeedForBUDD(LeadFeedData leadFeedData) {
+        if (StringUtils.equalsIgnoreCase(leadFeedData.getVerticalCode(), Vertical.VerticalType.CAR.toString())
+                && StringUtils.equals(leadFeedData.getPartnerBrand(), BUDD)) {
+            return true;
+        }
+        return false;
+    }
+
 
 	private void addTransaction(ResultSet set) {
 		try {

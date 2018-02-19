@@ -90,7 +90,8 @@
         });
 
         $(document.body).off('click.emailBrochures').on('click.emailBrochures', '.getPrintableBrochures', function () {
-            var product = Results.getSelectedProduct(),
+            var product = !_.isUndefined($(this).attr('data-productId')) ?
+                    Results.setSelectedProduct($(this).attr('data-productId')) : Results.getSelectedProduct(),
                 brochureTemplate = meerkat.modules.templateCache.getTemplate($('#emailBrochuresTemplate'));
 
             // init the validation
@@ -106,13 +107,20 @@
                     onOpen: function (modalId) {
                         if (meerkat.site.emailBrochures.enabled) {
                             // initialise send brochure email button functionality
-                            initialiseBrochureEmailForm(Results.getSelectedProduct(), $('#' + modalId), $('#emailBrochuresForm'));
+                            initialiseBrochureEmailForm(product, $('#' + modalId), $('#emailBrochuresForm'));
                             populateBrochureEmail();
                         }
                     }
                 };
 
             var callbackModalId = meerkat.modules.dialogs.show(modalOptions);
+        });
+
+        $(document).on('click', '.about-this-fund', function() {
+            meerkat.modules.dialogs.show({
+                title: 'About the fund',
+                htmlContent: Results.getSelectedProduct().aboutFund
+            });
         });
     }
 
@@ -210,6 +218,7 @@
             obj = Results.getSelectedProduct();
 
         if (meerkat.modules.healthDualPricing.isDualPricingActive()) {
+            obj._selectedFrequency = Results.getFrequency();
             obj.renderedPriceTemplate = meerkat.modules.healthDualPricing.renderTemplate('', obj, true, false);
         } else if (meerkat.modules.healthPyrrCampaign.isPyrrActive()) {
             obj.renderedPyrrCampaign = meerkat.modules.healthPyrrCampaign.renderTemplate('', obj, true, false);
@@ -247,11 +256,17 @@
         if (product.info.FundCode === 'AUF') {
             $('.productExtraInfo .discountText').text(meerkat.modules.healthResultsTemplate.getDiscountText(product));
         }
+
+        if (!_.has(product, 'aboutFund')) {
+            $('.about-this-fund-row').hide();
+        }
+
+        meerkat.modules.healthPricePromise.applyHeight();
     }
 
     function _setupDualPricing(product) {
         if (meerkat.modules.healthDualPricing.isDualPricingActive() === true) {
-            $('.april-pricing').addClass('april-pricing-done');
+            // $('.april-pricing').addClass('april-pricing-done');
             $('.current-pricing').addClass('current-pricing-done');
 
             var productPremium = product.altPremium,
@@ -261,7 +276,7 @@
 
             // update the dropdeaddate. Tried in _getAffixedMobileHeaderData but that returns undefined
             if (!_.isUndefined($elements.applyBy)) {
-                $elements.applyBy.text('Apply by ' + product.dropDeadDateFormatted);
+                $elements.applyBy.text('Must Apply by ' + product.dropDeadDateFormatted);
             }
         }
     }

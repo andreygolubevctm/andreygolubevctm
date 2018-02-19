@@ -53,8 +53,9 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-9">&nbsp;</div>
-                <div class="col-sm-2 text-center more-filters-results-btn">See Results</div>
+                <div class="col-sm-3">&nbsp;</div>
+                <div class="col-sm-6 text-center more-filters-results-btn">See Results</div>
+                <div class="col-sm-3">&nbsp;</div>
             </div>
         </div>
     </div>

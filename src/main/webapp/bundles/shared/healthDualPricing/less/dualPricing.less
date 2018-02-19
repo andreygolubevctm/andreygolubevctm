@@ -60,93 +60,6 @@
 }
 
 [data-step="results"] {
-  .resultInsert .productSummary.hasDualPricing {
-    height: 240px;
-    @media(@xs-only) {
-      height: 210px;
-    }
-
-    .dual-pricing-container {
-
-      @media(@sm) {
-        margin-top: 10px;
-      }
-
-      .april-pricing {
-        border-bottom: 1px solid @dual-pricing-border-colour;
-        padding-bottom: 10px;
-        margin-bottom: 10px;
-
-
-        .deadline,
-        .frequencyAmount,
-        .dollarSign,
-        .cents {
-          color: @dual-pricing-border-colour;
-        }
-
-        .deadline,
-        .dual-pricing-learn-more {
-          @media(@xs-only) {
-            font-size: 12px;
-          }
-        }
-
-        .price.premium {
-          padding-right: 15px;
-
-          .frequencyAmount {
-            font-size: 28px;
-            font-family: inherit;
-            text-align:right;
-
-            @media(@xs-only) {
-              text-align:center;
-            }
-          }
-        }
-
-        .dollarSign {
-          font-size: 15px;
-        }
-
-        .cents {
-          font-size: 14px;
-        }
-
-        .frequencyTitle,
-        .lhcText {
-          display: none;
-        }
-
-        .altPriceContainer {
-          width: 50%;
-          display: inline-block;
-
-          @media (@sm-only) {
-            width: 100%;
-          }
-        }
-
-        .altPriceDetailsContainer {
-          width: 45%;
-          display: inline-block;
-
-          @media (@sm-only) {
-            width: 100%;
-            text-align: center;
-          }
-        }
-      }
-    }
-
-    .current-pricing {
-      .frequencyTitle {
-        text-transform: lowercase;
-      }
-    }
-  }
-
   /* coming soon styles */
   .resultInsert .results-header-inner-container.comingsoon {
 
@@ -158,12 +71,12 @@
         .altPriceContainer {
           width: 100%;
           height: 51px;
-          padding-top: 12px;
+          padding-top: 0px;
           .price.premium .frequencyAmount {
             font-size: 16px;
             color: @dual-pricing-dark-font-colour;
             padding-bottom: 10px;
-            padding-top: 5px;
+            padding-top: 0px;
 
             @media(@xs-only) {
               font-size: 12px;
@@ -230,18 +143,6 @@
         }
 
         .current-pricing {
-          @media (@sm) {
-            border-left: 1px solid @dual-pricing-border-colour;
-            padding-left: 20px;
-            margin-left: 20px;
-          }
-
-          @media (@xs-only) {
-            border-top: 1px solid @dual-pricing-border-colour;
-            padding-top: 20px;
-            margin-top: 20px;
-          }
-
           h3 {
             margin-bottom: 0;
           }
@@ -257,6 +158,18 @@
 
         // halve all the font sizes for april pricing
         .april-pricing {
+          @media (@sm) {
+            border-left: 1px solid @dual-pricing-border-colour;
+            padding-left: 20px;
+            margin-left: 20px;
+          }
+
+          @media (@xs-only) {
+            border-top: 1px solid @dual-pricing-border-colour;
+            padding-top: 20px;
+            margin-top: 20px;
+          }
+
           .frequencyAmount {
             font-size: 40px;
             color: @dual-pricing-light-gray;
@@ -434,10 +347,15 @@
       .downArrow();
     }
 
+    .current-pricing {
+      p {
+        margin-bottom: 0;
+      }
+    }
+
     .april-pricing {
       p {
         margin-bottom: 0;
-        text-align: center;
       }
 
       .frequencyAmount {
@@ -471,40 +389,6 @@
 
       .lhcText {
         font-size: 11px;
-      }
-    }
-  }
-}
-
-body[data-step=apply],
-body[data-step=payment] {
-  .policySummary-sidebar.hasDualPricing {
-    .current-pricing {
-      .quarterly,
-      .halfyearly {
-        .frequencyAmount {
-          @media (@md) {
-            line-height: 38px;
-          }
-
-          .frequencyTitle {
-            top: -8px;
-            left: 0;
-          }
-        }
-      }
-
-      @media (@md-only) {
-        .annually {
-          .frequencyAmount {
-            line-height: 38px;
-
-            .frequencyTitle {
-              top: -8px;
-              left: 0;
-            }
-          }
-        }
       }
     }
   }

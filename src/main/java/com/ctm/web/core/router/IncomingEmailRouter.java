@@ -1,17 +1,25 @@
 package com.ctm.web.core.router;
 
+import com.ctm.interfaces.common.types.VerticalType;
+import com.ctm.web.core.dao.EmailMasterDao;
 import com.ctm.web.core.email.model.EmailMode;
 import com.ctm.web.core.email.model.IncomingEmail;
 import com.ctm.web.core.email.services.EmailUrlService;
 import com.ctm.web.core.email.services.IncomingEmailService;
 import com.ctm.web.core.email.services.token.EmailTokenService;
-import com.ctm.web.core.email.services.token.EmailTokenServiceFactory;
 import com.ctm.web.core.exceptions.ConfigSettingException;
+import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.model.EmailMaster;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.services.AccessTouchService;
 import com.ctm.web.core.services.SettingsService;
+import com.ctm.web.email.integration.emailservice.EmailServiceClient;
+import com.ctm.web.email.integration.emailservice.TokenResponse;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,8 +28,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
+import static com.ctm.interfaces.common.types.VerticalType.HOME;
+import static com.ctm.web.core.email.services.token.EmailTokenServiceFactory.getEmailTokenServiceInstance;
+import static com.ctm.web.email.integration.emailservice.EmailTokenAction.LOAD;
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
+import static java.util.Collections.emptyMap;
+import static java.util.Optional.empty;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.springframework.util.CollectionUtils.isEmpty;
+import static org.springframework.web.context.support.WebApplicationContextUtils.getWebApplicationContext;
 
 @WebServlet(urlPatterns = {
 	"/email/incoming/gateway.json"
@@ -34,8 +55,13 @@ public class IncomingEmailRouter extends HttpServlet {
 
 	private static final String TOUCH_TYPE = "EmlGateway";
 
+	private EmailServiceClient emailServiceClient;
+
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+
+        final Boolean canBeRedirectToEvtJourney = this.redirectToEverestJourney(request, response);
+        if (canBeRedirectToEvtJourney) return;
 
 		// Get common parameters ////////////////////////////////////////////////////////////////////////////
 		IncomingEmail emailData = null;
@@ -45,7 +71,7 @@ public class IncomingEmailRouter extends HttpServlet {
 			PageSettings settings = null;
 			try {
 				settings = SettingsService.getPageSettings(0, "GENERIC");
-				EmailTokenService emailTokenService = EmailTokenServiceFactory.getEmailTokenServiceInstance(settings);
+				EmailTokenService emailTokenService = getEmailTokenServiceInstance(settings);
 				emailData = emailTokenService.getIncomingEmailDetails(request.getParameter("token"));
 			} catch (ConfigSettingException e) {
 				LOGGER.error("Error getting base url {}", kv("settings", settings));
@@ -116,7 +142,7 @@ public class IncomingEmailRouter extends HttpServlet {
 		} else {
 			PageSettings settings = null;
 			try {
-				EmailTokenService emailTokenService = EmailTokenServiceFactory.getEmailTokenServiceInstance(SettingsService.getPageSettings(0, "GENERIC"));
+				EmailTokenService emailTokenService = getEmailTokenServiceInstance(SettingsService.getPageSettings(0, "GENERIC"));
 				Map<String, String> params = emailTokenService.decryptToken(token);
 
 				String styleCodeId = params.get("styleCodeId");
@@ -140,5 +166,84 @@ public class IncomingEmailRouter extends HttpServlet {
 				LOGGER.error("Error getting base url {}", kv("settings", settings));
 			}
 		}
+	}
+
+	private Boolean redirectToEverestJourney(final HttpServletRequest request,
+											 final HttpServletResponse response) throws IOException, ServletException {
+
+		// check and retrieve token from request
+		final String token = request.getParameter("token");
+		if (StringUtils.isBlank(token)) {
+			LOGGER.error("Not found token from request");
+			return FALSE;
+		}
+
+		// decrypt email token to a map of params
+		final Supplier<Map<String, String>> supEmailTokenParams = () -> {
+			try {
+				EmailTokenService emailTokenService = getEmailTokenServiceInstance(SettingsService.getPageSettings(0, "GENERIC"));
+				Map<String, String> params = emailTokenService.decryptToken(token);
+				return params;
+			} catch (ConfigSettingException ex) {
+				LOGGER.error("Failed to decrypt email token [{}]", token);
+				return emptyMap();
+			}
+		};
+
+		// early exit if unable to decrypt token
+		final Map<String, String> params = supEmailTokenParams.get();
+		if (isEmpty(params)) return FALSE;
+
+		// util function: get param value by name
+		final Function<String, Optional<String>> getParam = (paramName) -> Optional.ofNullable(params.get(paramName))
+				.filter(StringUtils::isNotBlank);
+
+		// get vertical type first for early exit
+		final VerticalType verticalType = getParam.apply("vertical")
+				.map(String::toUpperCase)
+				.map(VerticalType::valueOf)
+				.orElse(null);
+		if (verticalType != HOME) return FALSE;
+
+		// preparing values to generate EVT email token
+		final Optional<Integer> optStyleCodeId = getParam.apply("styleCodeId").map(NumberUtils::toInt);
+		final Optional<Long> optTransactionId = getParam.apply("transactionId").map(NumberUtils::toLong);
+		final Optional<Integer> optEmailId = getParam.apply("emailId").map(NumberUtils::toInt);
+
+		// supply injected emailServiceClient
+		final Supplier<EmailServiceClient> supEmailServiceClient = () -> {
+			final WebApplicationContext applicationContext = getWebApplicationContext(request.getServletContext());
+			final EmailServiceClient emailServiceClient = applicationContext.getBean(EmailServiceClient.class);
+			return emailServiceClient;
+		};
+
+		// supply a new EmailMasterDao with default styleCodeId = 1
+		final Supplier<EmailMasterDao> supEmailMasterDao = () -> new EmailMasterDao(optStyleCodeId.orElse(1));
+
+		// retrieve emailMaster
+		final Optional<EmailMaster> optEmailMaster = optEmailId.flatMap(emailId -> {
+			try {
+				return Optional.ofNullable(supEmailMasterDao.get().getEmailMasterById(emailId))
+						.filter(emailMaster -> isNotBlank(emailMaster.getEmailAddress()));
+			} catch (DaoException ex) {
+				LOGGER.error(ex.getMessage(), ex);
+				return empty();
+			}
+		});
+
+		// integrate with email-service to generate EVT load-dispatcher url
+		if (optStyleCodeId.isPresent() && optTransactionId.isPresent() && optEmailMaster.isPresent()) {
+			if (emailServiceClient == null) emailServiceClient = supEmailServiceClient.get();
+			final Optional<String> optEvtRedirectUrl = emailServiceClient
+					.createEmailToken(optStyleCodeId.get(), verticalType, optTransactionId.get(), LOAD, optEmailMaster.get())
+					.map(TokenResponse::getUrl);
+			if (optEvtRedirectUrl.isPresent()) {
+				LOGGER.info("Redirecting HNC Transaction to EVT journey {}", kv("parameters", params));
+				response.sendRedirect(optEvtRedirectUrl.get());
+				return TRUE;
+			}
+		}
+
+		return FALSE;
 	}
 }

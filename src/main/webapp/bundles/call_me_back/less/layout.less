@@ -1,0 +1,147 @@
+.roundedContainer {
+  padding: 15px 30px;
+  @media (@sm) {
+    border-radius: 15px;
+    border: 1px solid #ccc;
+
+  }
+  margin-bottom: 40px;
+}
+
+.datepicker {
+  z-index: 1060 !important;
+}
+
+.new-quote-dialog {
+  .modal-body {
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    a .icon {
+      background-color: transparent !important;
+      color: @theme-tertiary !important;
+      font-size: 58px !important;
+    }
+
+    a:hover .icon {
+      color: @theme-tertiary !important;
+      background-color: transparent !important;
+    }
+  }
+}
+
+#confirmation-compare-options {
+  a {
+    .icon {
+      width:60px;
+      border-radius:60px;
+    }
+  }
+}
+@media(@xs-only) {
+  #confirmation-compare-options {
+    .options-list {
+      & > div {
+        min-height:unset;
+      }
+    }
+  }
+}
+
+.form-group,
+.form-group:last-child {
+  border-bottom: none;
+}
+
+.form-group {
+  margin-bottom: 0;
+}
+.time-and-date-form-fields{
+  margin-left: -15px;
+  margin-right: -15px;
+  width: 100%;
+  box-sizing: content-box;
+}
+
+.cbContactNumber {
+  padding-top: 0;
+}
+
+.form-group:last-child {
+  padding-top: 0;
+}
+
+#cmb-sa-pickADayLabel{
+  padding-top: 0px;
+  padding-left: 0;
+  padding-right: 0;
+  margin-right: -15px;
+  min-width: 124px;
+}
+
+#cmb-sa-pickATimeLabel{
+  padding-top: 0px;
+  float: right;
+  padding-left: 0;
+  padding-right: 0;
+  min-width: 173px;
+}
+
+.control-label,
+.schedule-call-group-label {
+  color: #666666 !important;
+  font-size: 14px !important;
+  font-weight: 900 !important;
+}
+
+
+.call-me-back-stand-alone .select .input-group-addon {
+  border-left: 0;
+}
+
+.call-me-back-stand-alone .fieldrow input[type="text"],
+.call-me-back-stand-alone .fieldrow input[type="email"],
+.call-me-back-stand-alone .fieldrow input[type="number"],
+.call-me-back-stand-alone .form-control {
+  border-radius: 0;
+  border-color: #666666;
+}
+
+.call-me-back-stand-alone .header-second-row.center-text {
+  line-height: 1.5;
+}
+
+.call-me-back-stand-alone .cmb-sa-thankyou {
+  color: #666666 !important;
+
+  & div h4 {
+    &:first-of-type {
+      padding-top: 16px;
+      font-size: 26px;
+      color: #666666 !important;
+    }
+  }
+
+  & div.callDate h4 {
+    padding-top: 11px;
+    font-size: 21px;
+    color: #666666 !important;
+    padding-bottom: 30px;
+  }
+  p {
+    line-height: 1.75;
+    font-size: 16px;
+  }
+}
+
+
+
+
+
+/*  // remove McAfee logo
+footer#footer.clearfix {
+    display: none;
+}
+*/

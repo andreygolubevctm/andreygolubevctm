@@ -5,7 +5,8 @@
     var flexiRegex = new RegExp('^[(]*((?:\\+?61|0)[\\s]*[234785\\s]{1}[)]*)((([\\s]{1})([0-9\\s]{9}))|([0-9\\s]{10}))$');
     var landLineRegex = new RegExp('^[(]*((?:\\+?61|0)[\\s]*[23785\\s]{1}[)]*([\\s]{1})([0-9\\s]{9}))$');
     var mobileRegex = new RegExp('^[(]*((?:\\+?61|0)[\\s]*[4\\s]{1}[)]*[\\s]*[0-9\\s]{10})$');
-
+	var mobileBlacklist = ["0400 123 456","0400 000 000","0411 111 111","0412 345 678","0444 444 444","0404 040 404","0499 999 999","0422 222 222","0412 123 123","0455 555 555","0433 333 333","0411 222 333","0400 000 001","0488 888 888","0412 312 312"];
+	var mobileBlacklistErrorShown = false;
 
     /**
      * Validate the number
@@ -42,9 +43,24 @@
      * Validate mobile phone numbers.
      */
     $.validator.addMethod('validateMobileTelNo', function (value, element) {
-        if (!value.length) return true;
+	    if (!value.length) return true;
         return formattedNumber = validateNumber (element,'mobile');
     });
+	/**
+	 * Validate mobile phone number against blacklist.
+	 */
+	$.validator.addMethod('validateMobileTelNoWithBlacklist', function (value, element) {
+		var is_valid = true;
+		if (!value.length) {
+			return is_valid;
+		} else if(!mobileBlacklistErrorShown && _.indexOf(mobileBlacklist,value) >= 0) {
+			if($(element).closest('.row-content.has-error').length) {
+				mobileBlacklistErrorShown = true;
+			}
+			is_valid = false;
+		}
+		return is_valid;
+	});
 
     /**
      * Must have at least one number.

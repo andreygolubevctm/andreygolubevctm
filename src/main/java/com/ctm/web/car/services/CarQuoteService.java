@@ -53,6 +53,8 @@ import org.springframework.web.client.RestTemplate;
 import rx.schedulers.Schedulers;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.InternalServerErrorException;
+import javax.xml.bind.ValidationException;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.time.format.DateTimeFormatter;
@@ -91,6 +93,8 @@ public class CarQuoteService extends CommonRequestServiceV2 {
     public static final String QUOTE_VEHICLE_MAKE_DES = "quote/vehicle/makeDes";
     public static final String QUOTE_VEHICLE_DAMAGE = "quote/vehicle/damage";
     public static final String BASIC = "Basic";
+    public static final String QUOTE_TYPE_OF_COVER = "quote/typeOfCover";
+    public static final String COVER_TYPE_COMPREHENSIVE = "COMPREHENSIVE";
 
     private SessionDataServiceBean sessionDataServiceBean;
     private TransactionDetailService transactionDetailService;
@@ -275,7 +279,10 @@ public class CarQuoteService extends CommonRequestServiceV2 {
      * <pre>
      * Notes:
      *  - front end sends product ids which are ranked based on `rankBy` criteria e.g., price.annual-asc.
-     *  - 'DUPLICATE' value in db.`result_properties` if try to insert value for same composite primary key.
+     *  - Skip if have existing propensity score for given transactionId, product, and property.
+     *      If we try to update the propensity score, the value will be written as DUPLICATE.
+     *      Also, we should only save propensity score when user get quote results, and not when they sort results as
+     *      only on results, best price leads are send.
      *  - Woolworths have duplicate `product_code` e.g., WOOL-01-01 represent multiple products on car quote results.
      *  - Only stores propensity score for BUDD as Data Robot is only designed for BUDD. lead service would have to be
      *      configured the same, and only look for propensity score for BUDD only.
@@ -285,9 +292,29 @@ public class CarQuoteService extends CommonRequestServiceV2 {
      *
      * @param productIdsOrderedByRank
      * @param transactionId
+     * @throws InternalServerErrorException when unable to read `result_properties.
+     * @throws IllegalArgumentException when transaction, and product already has propensity score.
      */
-    public void retrieveAndStoreCarQuotePropensityScore(final List<String> productIdsOrderedByRank, final Long transactionId) {
+    public void retrieveAndStoreCarQuotePropensityScore(final List<String> productIdsOrderedByRank, final Long transactionId) throws InternalServerErrorException, ValidationException {
         LOGGER.info("Received request for get propensity score for transactionId: {}", transactionId);
+
+        if(productIdsOrderedByRank.isEmpty() || StringUtils.isBlank(productIdsOrderedByRank.get(0))){
+            return;
+        }
+
+        try {
+            final String propensityScore = ResultsService.getSingleResultPropertyValue(transactionId, productIdsOrderedByRank.get(0), PROPENSITY_SCORE);
+            if(!StringUtils.isBlank(propensityScore)){
+                LOGGER.warn("Multiple calls for propensity score. Existing propensityScore found for transaction: {}, product: {}", transactionId, productIdsOrderedByRank.get(0));
+                throw new IllegalArgumentException("Propensity score already exists for transaction, and product");
+            }
+        } catch (DaoException e) {
+            LOGGER.error("Exception while trying to read result_properties", e);
+            throw new InternalServerErrorException("Something went wrong. That's all we know.");
+        }
+
+
+
         final List<ResultProperty> resultProperties = buildResultPropertiesWithPropensityScore(productIdsOrderedByRank, transactionId);
         savePropensityScoreAsResultProperties(transactionId, resultProperties);
     }
@@ -316,11 +343,20 @@ public class CarQuoteService extends CommonRequestServiceV2 {
 
                     //get propensity score from Data Robot or leave it null instead of throwing error. This is so lead service
                     //would know propensity score was requested but something went wrong.
-                    String propensityScore = null;
+                    String propensityScore = "";
                     try {
-                        propensityScore = getPropensityScoreFromDataRobot(buildQuotePropensityScoreRequest(productRank, transactionId));
+                        final Data transactionDetailsInXmlData = getTransactionDetails(transactionId);
+
+                        //only call data robot if comprehensive cover. other cover types leads are not send to
+                        // either CTM or A&G call centers; hence no need to score those leads.
+                        if(isComprehensiveCoverQuote(transactionDetailsInXmlData)) {
+                            propensityScore = getPropensityScoreFromDataRobot(buildQuotePropensityScoreRequest(productRank, transactionDetailsInXmlData));
+                        }else {
+                            LOGGER.debug("Setting propensity score to empty string. Quote is for non comprehensive cover BUDD, BEST_PRICE");
+                        }
+
                     } catch (Exception e) {
-                        LOGGER.error("Error while trying to get propensity score. Setting it to null", e.getMessage());
+                        LOGGER.error("Error while trying to get propensity score. Setting it to empty string", e.getMessage());
                     }
 
                     final ResultProperty resultProperty = new ResultProperty();
@@ -332,6 +368,19 @@ public class CarQuoteService extends CommonRequestServiceV2 {
                 }).collect(toList());
 
         return resultProperties;
+    }
+
+    private static boolean isComprehensiveCoverQuote(final Data transactionDetailsInXmlData) {
+
+        if (transactionDetailsInXmlData == null || transactionDetailsInXmlData.isEmpty()) {
+            return false;
+        }
+
+        if(StringUtils.equalsIgnoreCase(COVER_TYPE_COMPREHENSIVE, transactionDetailsInXmlData.getString(QUOTE_TYPE_OF_COVER))) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -401,19 +450,12 @@ public class CarQuoteService extends CommonRequestServiceV2 {
     /**
      * Get `transaction_details` from db, and create a request to be send to Data Robot.
      *
-     * @param rankPosition
-     * @param transactionId
+     * @param rankPosition position of product after product ranking.
+     * @param transactionDetailsInXmlData transaction details i.e., journey input from user.
      * @return request to be send to data robot.
      * @throws DaoException when retrieving transaction details
      */
-    private CarQuotePropensityScoreRequest buildQuotePropensityScoreRequest(int rankPosition, Long transactionId) throws DaoException {
-
-        //get `transaction_detail` from db for transaction id, contains person, vehicle data.
-        Data transactionDetailsInXmlData = this.transactionDetailService.getTransactionDetailsInXmlData(transactionId);
-
-        if (transactionDetailsInXmlData == null || transactionDetailsInXmlData.isEmpty()) {
-            throw new IllegalStateException("Expected non null or empty transaction_details for transactionId: " + transactionId);
-        }
+    private CarQuotePropensityScoreRequest buildQuotePropensityScoreRequest(int rankPosition, final Data transactionDetailsInXmlData) {
 
         // Build the request to be send to Data Robot. Data Robot can handle null values hence avoid Exception propagation.
         // Data Robot requires lowercase string.
@@ -441,6 +483,17 @@ public class CarQuoteService extends CommonRequestServiceV2 {
         carQuotePropensityScoreRequest.setVehicleDamage(StringUtils.lowerCase(transactionDetailsInXmlData.getString(QUOTE_VEHICLE_DAMAGE)));
 
         return carQuotePropensityScoreRequest;
+    }
+
+    private Data getTransactionDetails(Long transactionId) throws DaoException {
+        //get `transaction_detail` from db for transaction id, contains person, vehicle data.
+        Data transactionDetailsInXmlData = this.transactionDetailService.getTransactionDetailsInXmlData(transactionId);
+
+        if (transactionDetailsInXmlData == null || transactionDetailsInXmlData.isEmpty()) {
+            throw new IllegalStateException("Expected non null or empty transaction_details for transactionId: " + transactionId);
+        }
+
+        return transactionDetailsInXmlData;
     }
 
     /**

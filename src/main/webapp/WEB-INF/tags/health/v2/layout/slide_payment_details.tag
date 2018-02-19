@@ -25,6 +25,7 @@
 				<health_v2:declaration xpath="${pageSettings.getVerticalCode()}/declaration" />
 				<health_v1:contactAuthority xpath="${pageSettings.getVerticalCode()}/contactAuthority" />
 				<health_v2:whats-next />
+				<health_v1:fund_timezone_message_modal />
 
 				<c:if test="${callCentre and not empty worryFreePromo and worryFreePromo eq '35'}">
 					<div class="simples-dialogue row-content  optionalDialogue">

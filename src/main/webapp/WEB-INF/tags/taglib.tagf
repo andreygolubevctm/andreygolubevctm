@@ -108,5 +108,8 @@
 <%@ taglib tagdir="/WEB-INF/tags/lmi/layout" 	        prefix="lmi_layout" %>
 <%@ taglib tagdir="/WEB-INF/tags/distil"                prefix="distil" %>
 <%@ taglib tagdir="/WEB-INF/tags/reward"			    prefix="reward" %>
+<%@ taglib tagdir="/WEB-INF/tags/redemption"			prefix="redemption" %>
 <%@ taglib tagdir="/WEB-INF/tags/zeus"			    	prefix="zeus" %>
 <%@ taglib tagdir="/WEB-INF/tags/health/v2/sections/payment/confirmation"	prefix="health_v2_confirmation" %>
+<%@ taglib tagdir="/WEB-INF/tags/call_me_back"			prefix="call_me_back" %>
+<%@ taglib tagdir="/WEB-INF/tags/banners"				prefix="banners" %>

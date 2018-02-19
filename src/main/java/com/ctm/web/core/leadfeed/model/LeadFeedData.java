@@ -1,6 +1,8 @@
 package com.ctm.web.core.leadfeed.model;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * Generic container for CtM data
@@ -62,6 +64,11 @@ public class LeadFeedData {
 	private String newPartnerReference;
 	private String newPartnerBrand;
 	private String newProductId = null;
+	private Long rootId;
+	//lead feed data for leads being sending to `ctm-leads` instead of AGI or others.
+	private Person person;
+	//any additional data which is not generic but required by specific lead feed service.
+	private Object metadata;
 
 	public LeadFeedData(){
 
@@ -235,6 +242,30 @@ public class LeadFeedData {
 		this.newProductId = newProductId;
 	}
 
+	public Long getRootId() {
+		return rootId;
+	}
+
+	public void setRootId(Long rootId) {
+		this.rootId = rootId;
+	}
+
+	public Person getPerson() {
+		return person;
+	}
+
+	public void setPerson(Person person) {
+		this.person = person;
+	}
+
+	public Object getMetadata() {
+		return metadata;
+	}
+
+	public void setMetadata(Object metadata) {
+		this.metadata = metadata;
+	}
+
 	@Override
 	public String toString() {
 		return "LeadFeedData{" +
@@ -259,6 +290,9 @@ public class LeadFeedData {
 				", newPartnerReference='" + newPartnerReference + '\'' +
 				", newPartnerBrand='" + newPartnerBrand + '\'' +
 				", newProductId='" + newProductId + '\'' +
+				", rootId='" + rootId + '\'' +
+				", person='" + person + '\'' +
+				", metadata='" + metadata + '\'' +
 				'}';
 	}
 }

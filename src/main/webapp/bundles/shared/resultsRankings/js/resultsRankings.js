@@ -78,7 +78,10 @@
             });
         }
 
-        savePropensityScore(trigger, rankingData);
+        // only get propensity score (ONCE) after getting the results, and not when results are sorted (re-ranked)
+        if (meerkat.site.vertical === 'car' && trigger === defaultRankingTriggers[0]) {
+            savePropensityScore(trigger, rankingData);
+        }
     }
 
     /**
@@ -86,12 +89,15 @@
      * transaction, and store in database.
      * @See CarQuoteController.storePropensityScore()
      *
+     * Note: Make sure to only call this once. If you try to update the propensity score, the value
+     * of propensity score in `result_properties` will be 'DUPLICATE'.
+     *
      * @param trigger
      * @param rankingData
      */
     function savePropensityScore(trigger, rankingData) {
 
-        log("[resultsRankingsPropensityScores] savePropensityScore", {
+        log("[resultsRankingsPropensityScores] Calling backend to save propensity score", {
             trigger: trigger,
             data: rankingData
         });

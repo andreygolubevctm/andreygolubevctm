@@ -267,6 +267,8 @@
 
                 <reward:campaign_tile_container />
 
+				<health_v4:price_promise />
+
                 <div class="sidebar-widget sidebar-widget-padded sidebar-widget-background-contained">
                     <h3>Switching is simple!</h3>
                     <ul>

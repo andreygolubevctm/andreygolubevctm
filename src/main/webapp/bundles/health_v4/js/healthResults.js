@@ -866,6 +866,11 @@
                 .addClass('selected')
                 .prepend('<div class="result-product-tag">Selected product</div>');
 
+        // Pin the product to make it first positioned desktop only
+        if (meerkat.modules.deviceMediaState.get() === 'lg') {
+            _pinProductHelper(_product.obj.productId);
+        }
+
         // Goto pagination page
         if (paginationPage > 1) {
             Results.pagination.gotoPage(paginationPage);
@@ -963,6 +968,12 @@
         data["rank_lhc" + position] = product.premium[frequency].lhc;
         data["rank_rebate" + position] = product.premium[frequency].rebate;
         data["rank_discounted" + position] = product.premium[frequency].discounted;
+        data["rank_premiumDiscountPercentage" + position] = product.premium[frequency].discountPercentage;
+
+        var specialOffer = meerkat.modules.healthUtils.getSpecialOffer(product);
+        data["rank_specialOffer" + position] = specialOffer.specialOffer;
+        data["rank_specialOfferTerms" + position] = specialOffer.specialOfferTerms;
+        
 
         if (_.isNumber(best_price_count) && position < best_price_count) {
             data["rank_provider" + position] = product.info.provider;
@@ -971,6 +982,8 @@
             data["rank_productCode" + position] = product.info.productCode;
             data["rank_premium" + position] = product.premium[Results.settings.frequency].lhcfreetext;
             data["rank_premiumText" + position] = product.premium[Results.settings.frequency].lhcfreepricing;
+            data["rank_altPremium" + position] = product.altPremium[Results.settings.frequency].lhcfreetext;
+            data["rank_altPremiumText" + position] = product.altPremium[Results.settings.frequency].lhcfreepricing;
 
         }
 
@@ -979,7 +992,6 @@
             // todo this could just be replaced with a new method from benefitsModel
             var benefitCodes = meerkat.modules.benefitsModel.getCodesForSelectedBenefits();
             var currentPHI = meerkat.modules.healthUtils.getPrimaryCurrentPHI();
-            var specialOffer = meerkat.modules.healthUtils.getSpecialOffer(product);
             var excessesAndCoPayment = meerkat.modules.healthUtils.getExcessesAndCoPayment(product);
 
             data["rank_healthMembership" + position] = meerkat.modules.healthSituation.getSituationAsText();
@@ -994,8 +1006,6 @@
             if (product.promo.extrasPDF != 'health_brochure.jsp?pdf=') {
                 data["rank_extrasPdsUrl" + position] = product.promo.extrasPDF;
             }
-            data["rank_specialOffer" + position] = specialOffer.specialOffer;
-            data["rank_specialOfferTerms" + position] = specialOffer.specialOfferTerms;
             data["rank_excessPerAdmission" + position] = excessesAndCoPayment.excessPerAdmission;
             data["rank_excessPerPerson" + position] = excessesAndCoPayment.excessPerPerson;
             data["rank_excessPerPolicy" + position] = excessesAndCoPayment.excessPerPolicy;

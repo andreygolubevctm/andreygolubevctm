@@ -59,8 +59,12 @@
 #results-sidebar {
   // need to remove this columns padding so we can apply left margin to all result-rows.
   padding: 0;
-  border: 1px solid @results-border-color;
-  border-left-color: @gray;
+
+  .results-sidebar-inner {
+    border: 1px solid @results-border-color;
+    border-left-color: @gray;
+    margin-bottom: 15px;
+  }
 }
 
 .noResults {
@@ -138,13 +142,16 @@
         padding-top: 15px;
       }
     }
+
+    .btn.getPrintableBrochures {
+      margin-top: 15px;
+    }
   }
   .productSummary {
     margin-bottom: 10px;
     height: 150px;
-    overflow: hidden;
     @media (@lg-only) {
-      height: 125px;
+      height: initial;
     }
 
     .frequencyAmount {
@@ -309,6 +316,21 @@
 
     .featuresList {
       margin: auto 15px;
+
+      @media (@lg) {
+        .hospitalCoverSection,
+        .extrasCoverSection {
+          h2 {
+            float: left;
+          }
+          .results-download-brochure {
+            float: right;
+            font-size: @font-size-small;
+            margin-top: 23px;
+            text-decoration: underline;
+          }
+        }
+      }
     }
     // .cell is used as parent wrapper as .category is re-used on non-cell divs.
     .cell {

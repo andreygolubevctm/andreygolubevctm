@@ -12,7 +12,11 @@
 		$healthCoverDependants,
 		$healthCoverRebate,
 		$healthSituationHealthCvr,
+		$heathClaimHealthCoverRebate,
+		$dontClaimHealthRebate,
+		$incomeBase,
 		$healthCoverIncome,
+        $healthCoverIncomeFieldLabel,
 		$healthCoverIncomeLabel,
 		$partnerHealthCoverHealthCoverLoading,
 		$tierDropdowns,
@@ -50,9 +54,13 @@
 		$partnerDOB = $('#health_healthCover_partner_dob'),
 		$healthCoverDependants = $('#health_healthCover_dependants'),
 		$healthCoverRebate = $('.health_cover_details_rebate'),
+		$heathClaimHealthCoverRebate = $('#health_healthCover_health_cover_rebate'),
+		$dontClaimHealthRebate = $('#health_healthCover_health_cover_rebate_dontApplyRebate'),
 		$healthSituationHealthCvr = $('#health_situation_healthCvr'),
 		$healthCoverIncome = $('#health_healthCover_income'),
+		$healthCoverIncomeFieldLabel = $("label[for='health_healthCover_income']"),
 		$healthCoverIncomeLabel = $('#health_healthCover_incomelabel'),
+		$incomeBase = $('#health_healthCover_incomeBase'),
 		$tierDropdowns = $('#health_situation_healthCvr, #health_healthCover_dependants'),
 		$primaryDOB = $('#health_healthCover_primary_dob'),
 		$rebateLegend = $('#health_healthCover_tier_row_legend'),
@@ -70,6 +78,11 @@
 	}
 
 	function eventSubscriptions() {
+
+		$dontClaimHealthRebate.on('change', function dontClaimHealthRebateUpdated(){
+			updateClaimHealthRebate();
+		});
+
 		$tierDropdowns.on('change', function updateRebateTiers(){
 			meerkat.modules.healthTiers.setTiers();
 		});
@@ -82,6 +95,7 @@
 			} else {
 				$healthCoverIncomeMessage.hide();
 			}
+			updateDynamicIncomeFieldText();
 		});
 
 		$healthSituationHealthCvr.on('change', function toggleAboutYouFields() {
@@ -107,11 +121,44 @@
 		$healthSituation.add($healthCoverIncome).on('change', toggleMlsMessage);
 
         if(meerkat.site.isCallCentreUser === true){
-            $('#health_healthCover_incomeBase').find('input').on('change', function(){
+            $incomeBase.find('input').on('change', function(){
                 $healthCoverIncome.prop('selectedIndex',0);
                 meerkat.modules.healthTiers.setTiers();
+
+                updateDynamicIncomeFieldText();
             });
         }
+	}
+
+	function updateDynamicIncomeFieldText() {
+
+		var rebateIncomeBracket = $healthCoverIncome.find('option#health_healthCover_income_0').text().replace(/\s(.*)/g,'');
+
+		var rebateIncomeBracketQuestionStartText = 'This is based on your taxable income, so can i confirm do you earn above or below ';
+
+		switch($healthSituationHealthCvr.val()) {
+			case 'C':
+				$healthCoverIncomeFieldLabel.text(rebateIncomeBracketQuestionStartText + rebateIncomeBracket + ' a year as a household?');
+				break;
+			case 'F':
+			case 'EF':
+			case 'SPF':
+			case 'ESP':
+				$healthCoverIncomeFieldLabel.text('And do you earn above or below ' + rebateIncomeBracket + ' a year as a household?');
+				break;
+			default:
+				var rebateIncomeBracketQuestionEndText = ($incomeBase.is(':visible') && $incomeBase.find('#health_healthCover_incomeBasedOn_H:checked').length > 0) ? " a year as a household?" : " a year?";
+				$healthCoverIncomeFieldLabel.text(rebateIncomeBracketQuestionStartText + rebateIncomeBracket + rebateIncomeBracketQuestionEndText);
+				break;
+		}
+	}
+
+	function updateClaimHealthRebate(){
+        if(!$dontClaimHealthRebate.is(':checked')){
+			$heathClaimHealthCoverRebate.find("input[value='Y']").prop('checked',true).trigger('change');
+		} else {
+			$heathClaimHealthCoverRebate.find("input[value='N']").prop('checked', true).trigger('change');
+		}
 	}
 
 	function togglePrimaryContinuousCover(isInitMode) {
@@ -131,6 +178,9 @@
 	}
 
 	function setupForm(isInitMode) {
+
+		updateClaimHealthRebate();
+
 		switch($healthSituationHealthCvr.val())
 		{
 			case 'F':
@@ -138,7 +188,7 @@
 				$partnerContainer.slideDown();
 				$healthCoverIncomeMessage.show();
 
-				if($('#health_healthCover_health_cover_rebate').find('input:checked').val() !== 'N'){
+				if($heathClaimHealthCoverRebate.find('input:checked').val() !== 'N'){
 					$healthCoverDetailsDependants.slideDown();
 				}
 				$partnerContainer.slideDown();
@@ -148,7 +198,7 @@
             case 'ESP':
 				$partnerContainer.slideUp();
 
-				if($('#health_healthCover_health_cover_rebate').find('input:checked').val() !== 'N'){
+				if($heathClaimHealthCoverRebate.find('input:checked').val() !== 'N'){
 					$healthCoverDetailsDependants.slideDown();
 				}
 				$partnersDetails.hide();
@@ -168,32 +218,7 @@
 		}
 
 		if(meerkat.site.isCallCentreUser === true){
-			var $rebateLabel = $('.health_cover_details_rebate > label');
-
-
-			/*
-			 * The $rebateLabel.text that is set below is flat out wrong and misleading the question should read 'Do you wish to claim the rebate?'
-			 *
-			 * or the single one could read:
-			 *   The Government provides a rebate which is based on your taxable income. So can I just confirm,
-			 *   do you earn below $140,001 a year?
-			 *
-			 * but the family one would always be wrong once dependents come into the picture:
-			 *    The Government provides a rebate which is based on your taxable income. So can I just confirm,
-			 *    do you earn below $280,001 a year as a household?
-			 */
-			switch($healthSituationHealthCvr.val()) {
-				case 'C':
-				case 'F':
-				case 'EF':
-                case 'SPF':
-                case 'ESP':
-					$rebateLabel.text('The Government provides a rebate which is based on your taxable income. So can I just confirm, do you earn below $180,000 a year as a household?');
-					break;
-				default:
-	                $rebateLabel.text('The Government provides a rebate which is based on your taxable income. So can I just confirm, do you earn below $90,000 a year?');
-					break;
-			}
+			updateDynamicIncomeFieldText();
 		}
 
 		togglePrimaryContinuousCover();

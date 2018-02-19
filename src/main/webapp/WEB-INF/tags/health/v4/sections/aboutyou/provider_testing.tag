@@ -19,7 +19,7 @@ ${logger.debug('Checking environment. {},{}', log:kv('ENVIRONMENT', environmentS
 		<c:when test="${empty param.providerKey}">
 			<c:if test="${fn:startsWith(remoteaddr,'192.168.') or fn:startsWith(remoteaddr,'10.4') or fn:startsWith(remoteaddr,'0:0:0:') or fn:startsWith(remoteaddr,'127.0.0.1')}">
 
-				<form_v3:fieldset_columns>
+				<form_v3:fieldset_columns hideRightCol="true">
 					<jsp:attribute name="rightColumn">
 					</jsp:attribute>
 					<jsp:body>
@@ -54,7 +54,7 @@ ${logger.debug('Checking environment. {},{}', log:kv('ENVIRONMENT', environmentS
 	</c:choose>
 
 	<%-- This is separate and always available to internal and external --%>
-	<form_v3:fieldset_columns>
+	<form_v3:fieldset_columns hideRightCol="true">
 		<jsp:attribute name="rightColumn">
 		</jsp:attribute>
 		<jsp:body>

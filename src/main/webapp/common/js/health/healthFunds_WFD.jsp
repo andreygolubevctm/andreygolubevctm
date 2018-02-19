@@ -19,13 +19,6 @@ var healthFunds_WFD = {
     extendedFamilyMinAge: 21,
     extendedFamilyMaxAge: 25,
     set: function(){
-        <%--calendar for start cover--%>
-	    if(_.has(meerkat.modules,'healthCoverStartDate')) {
-		    meerkat.modules.healthCoverStartDate.setCoverStartRange(0, 29);
-	    } else {
-		    meerkat.modules.healthPaymentStep.setCoverStartRange(0, 29);
-	    }
-
         <%--dependant definition--%>
         var dependantsString = 'As a member of Westfund, your children aged between 21-24 are entitled to stay on your cover at no extra charge if they are a full time or part-time student at School, college or University TAFE institution or serving an Apprenticeship or Traineeship.<br />Westfund also offer adult dependant coverage at an additional premium for a child of the Principal Member or their Partner, who is not married or living in a de facto relationship, has reached the age of 21 but is under the age of 25, and is not a Student Dependant';
 
@@ -56,7 +49,8 @@ var healthFunds_WFD = {
         meerkat.modules.healthPaymentStep.overrideSettings('credit',{ 'weekly':false, 'fortnightly': false, 'monthly': true, 'quarterly':false, 'halfyearly':false, 'annually':true });
 
         <%--claims account--%>
-        meerkat.modules.healthPaymentStep.overrideSettings('creditBankQuestions',true);
+	    meerkat.modules.healthPaymentStep.overrideSettings('creditBankSupply',true);
+	    meerkat.modules.healthPaymentStep.overrideSettings('creditBankQuestions',true);
 
         <%--credit card options--%>
         meerkat.modules.healthCreditCard.setCreditCardConfig({ 'visa':true, 'mc':true, 'amex':false, 'diners':false });
@@ -66,8 +60,14 @@ var healthFunds_WFD = {
             healthFunds_WFD.renderDeductionMessage();
         });
 
-        <%--allow weekend selection from the datepicker--%>
-        healthFunds_WFD.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
+        <%--fund offset check--%>
+        meerkat.modules.healthFundTimeOffset.onInitialise({
+            weekends: true,
+            coverStartRange: {
+                min: 0,
+                max: 29
+            }
+        });
 
         <%--Age requirements for applicants--%>
         <%--primary--%>

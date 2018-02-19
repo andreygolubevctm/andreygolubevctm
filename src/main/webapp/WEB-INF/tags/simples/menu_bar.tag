@@ -52,6 +52,8 @@
 							<li><a target="simplesiframe" href="simples/admin/health/provider_content.jsp?contentType=ABT">Provider Content</a></li>           <c:if test="${isRoleCcRewards}">
                             <li><a target="simplesiframe" href="simples/admin/reward.jsp">Reward</a></li>
                             </c:if>
+							<li><a target="simplesiframe" href="simples/help_box.jsp">Help Box</a></li>
+							<li><a target="simplesiframe" href="simples/special_opt_in.jsp">Special opt in</a></li>
 							<%-- DISABLED UNTIL CAN BE WORKED ON
 							<li><a target="simplesiframe" href="simples/report_managerOpEnq.jsp">Manager - Operator enquires</a></li>
 							--%>

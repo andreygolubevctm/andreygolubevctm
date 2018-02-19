@@ -111,15 +111,15 @@ var healthFunds_QTU = {
         meerkat.modules.healthFunds._dependants('This policy provides cover for your children up to their 21st birthday and dependants aged between 21 and 25 who are studying full time. Adult dependants outside these criteria can still be covered by applying for a separate policy.');
         meerkat.modules.healthDependants.updateConfig({showFullTimeField:true, showSchoolFields:false, 'schoolMinAge':21, 'schoolMaxAge':25 });
 
-        <%--allow weekend selection from the datepicker--%>
-        healthFunds_QTU.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');
-
-        <%--set start date within the next 3 months--%>
-	    if(_.has(meerkat.modules,'healthCoverStartDate')) {
-		    meerkat.modules.healthCoverStartDate.setCoverStartRange(0, 90);
-	    } else {
-		    meerkat.modules.healthPaymentStep.setCoverStartRange(0, 90);
-	    }
+        <%--fund offset check--%>
+        meerkat.modules.healthFundTimeOffset.onInitialise({
+            weekends: true,
+            coverStartRange: {
+                min: 0,
+                max: 90
+            },
+            renderPaymentDaysCb: healthFunds_QTU.renderPaymentDays
+        });
 
         healthFunds_QTU.$paymentType.on('change.QTU', function renderPaymentDaysPaymentType(){
             healthFunds_QTU.renderPaymentDays();

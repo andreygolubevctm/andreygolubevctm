@@ -15,6 +15,8 @@
 	var $bankSection;
 	var $creditCardSection;
 	var $paymentCalendar;
+	var $pricePromiseMentioned;
+	var $pricePromisePromotionRow;
 
 	var $frequencySelect;
 
@@ -30,7 +32,8 @@
 		maxStartDate: ''
 	};
 
-	var currentCoupon = false;
+	var currentCoupon = false,
+        _startDateWeekends;
 
 	function initHealthPaymentStep() {
 
@@ -121,6 +124,18 @@
 
 			resetSettings();
 
+            $pricePromiseMentioned.on('change', function() {
+            	var pricePromiseMentioned = $pricePromiseMentioned.is(':checked');
+
+                if (pricePromiseMentioned) {
+                    $pricePromisePromotionRow.slideDown();
+				} else {
+                    $pricePromisePromotionRow.slideUp();
+				}
+
+                meerkat.modules.simplesBindings.togglePricePromisePromoDialogue(pricePromiseMentioned);
+			});
+
 			// Set Dom state
 			$paymentContainer.hide();
 
@@ -136,6 +151,8 @@
 		$bankSection = $('.health_payment_bank-selection');
 		$creditCardSection = $('.health_payment_credit-selection');
 		$paymentCalendar = $('#health_payment_details_start');
+		$pricePromiseMentioned = $('#health_price_promise_mentioned');
+        $pricePromisePromotionRow = $('.healthPricePromisePromotionRow');
 
 		// Containers
 		$paymentContainer = $(".update-content");
@@ -289,7 +306,10 @@
 			object:	data
 		});
 
-		meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, { source: 'healthPaymentStep', disableFields:true });
+		// Do not lock if on the results step
+		if (meerkat.modules.journeyEngine.getCurrentStep().navigationId !== 'results') {
+            meerkat.messaging.publish(moduleEvents.WEBAPP_LOCK, {source: 'healthPaymentStep', disableFields: true});
+        }
 
 		// Defer so we don't lock up the browser
 		_.defer(function() {
@@ -528,6 +548,72 @@
         $('#health_payment_details_start').off('changeDate.' + name);
 	}
 
+    function setCoverStartToNextDay() {
+        var today = new Date(),
+            nextDay = today.setDate(today.getDate() + 1);
+
+        nextDay = new Date(nextDay);
+
+        var day = nextDay.getDay();
+
+        if (!_startDateWeekends && _.indexOf([0,6], day) !== -1) {
+            nextDay.setDate(nextDay.getDate() + (day === 0 ? 1 : 2));
+        }
+
+        $paymentCalendar.datepicker("update", nextDay);
+    }
+
+	function setCoverStartDaysOfWeekDisabled(daysOfWeekDisabled) {
+        _startDateWeekends = daysOfWeekDisabled === "";
+
+        $paymentCalendar.datepicker('setDaysOfWeekDisabled', daysOfWeekDisabled);
+	}
+
+	function getCoverStartVal() {
+        return $paymentCalendar.val();
+	}
+
+	function setCoverStartValues() {
+        // Change min and max dates for start date picker based on current stored values from healthPaymentStep module which can change based on selected fund
+        var min = settings.minStartDate,
+			max = settings.maxStartDate;
+
+        $paymentCalendar
+            .removeRule('earliestDateEUR')
+            .removeRule('latestDateEUR')
+            .addRule('earliestDateEUR', min, 'Please enter a date on or after ' + min)
+            .addRule('latestDateEUR', max, 'Please enter a date on or before ' + max)
+            .datepicker('setStartDate', min)
+            .datepicker('setEndDate', max);
+	}
+
+	function toggleCouponSeenText() {
+        var Coupon = meerkat.modules.coupon,
+			$couponCampaignSeen = $('.coupon-campaign-seen'),
+        	couponId = Coupon.getCouponViewedId(),
+			coupon = null;
+
+        // show only if outbound or trial campaign
+		if (!_.isNull(couponId) && meerkat.modules.simplesBindings.getCallType() === 'outbound') {
+        	if ($couponCampaignSeen.length === 1) {
+                $couponCampaignSeen.show();
+			} else {
+                Coupon.loadCoupon('simplesCouponLoad', couponId, function() {
+                    coupon = Coupon.getCurrentCoupon();
+
+                    if (_.isObject(coupon) && coupon.showCouponSeen) {
+						$('<div class="coupon-campaign-seen alert alert-info">Coupon Campaign: ' + coupon.campaignName + ' | Coupon Value: $' + coupon.couponValue + '</div>')
+							.insertAfter($('#healthVouchers'));
+                    } else {
+                        $couponCampaignSeen.hide();
+					}
+                });
+			}
+        } else {
+            $couponCampaignSeen.hide();
+        }
+	}
+
 	meerkat.modules.register("healthPaymentStep", {
 		init: initHealthPaymentStep,
 		initFields: initFields,
@@ -541,7 +627,12 @@
 		getPaymentMethodNode: getPaymentMethodNode,
 		rebindCreditCardRules: rebindCreditCardRules,
 		updateValidationSelectorsPaymentGateway : updateValidationSelectorsPaymentGateway,
-		resetValidationSelectorsPaymentGateway : resetValidationSelectorsPaymentGateway
+		resetValidationSelectorsPaymentGateway : resetValidationSelectorsPaymentGateway,
+        setCoverStartToNextDay: setCoverStartToNextDay,
+		setCoverStartDaysOfWeekDisabled: setCoverStartDaysOfWeekDisabled,
+        getCoverStartVal: getCoverStartVal,
+		setCoverStartValues: setCoverStartValues,
+        toggleCouponSeenText: toggleCouponSeenText
 	});
 
 })(jQuery);

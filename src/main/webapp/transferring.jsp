@@ -39,16 +39,17 @@
 		<script>
 			<%-- In case we want to turn off looped URI Decoding --%>
 			window.useLoopedTransferringURIDecoding = ${pageSettings.getSetting("useLoopedTransferringURIDecoding")};
-			
 
 			<%-- Mock results objects because same reason as above --%>
 			window.ResultsModel = { moduleEvents: { WEBAPP_LOCK: 'WEBAPP_LOCK' } };
 			window.ResultsView = { moduleEvents: { RESULTS_TOGGLE_MODE: 'RESULTS_TOGGLE_MODE' } };
 
 			var returnedResult = {
-                <c:forEach items="${resultsService.getResultsPropertiesForTransactionId(transactionId, productId)}" var="result" varStatus="status">
-                	"${result.property}":"${result.value}" <c:if test="${!status.last}">,</c:if>
-                </c:forEach>
+				<c:forEach items="${resultsService.getResultsPropertiesForTransactionId(transactionId, productId)}" var="result" varStatus="status">
+					<c:if test="${result.property != 'leadfeedinfo' && result.property != 'discountOffer'}">
+						"${result.property}":"${result.value}" <c:if test="${!status.last}">,</c:if>
+					</c:if>
+				</c:forEach>
             };
 		</script>
 

@@ -84,6 +84,12 @@
             meerkat.modules.healthSubmitApplication.enableSubmitApplication();
         });
 
+        meerkat.messaging.subscribe(meerkatEvents.ADDRESS_CHANGE, function (event) {
+            if (meerkat.modules.journeyEngine.getCurrentStep().navigationId === 'contact') {
+                meerkat.modules.bannerPlacement.xsLayout();
+            }
+        });
+
     }
 
     function applyEventListeners() {
@@ -396,6 +402,7 @@
                 meerkat.modules.healthResults.initPage();
                 meerkat.modules.healthMoreInfo.initMoreInfo();
                 meerkat.modules.healthPriceComponent.initHealthPriceComponent();
+                meerkat.modules.healthPriceBreakdown.initHealthPriceBreakdown();
                 meerkat.modules.healthDualPricing.initDualPricing();
                 meerkat.modules.healthPyrrCampaign.initPyrrCampaign();
                 meerkat.modules.healthRefineResultsMobileMenu.initHealthRefineResultsMobileMenu();
@@ -416,6 +423,7 @@
                 });
 
                 meerkat.modules.healthPopularProducts.setPopularProducts('N');
+                meerkat.modules.paymentGateway.disable();
             },
             onAfterEnter: function onAfterEnterResultsStep(event) {
                 if (event.isForward === true) {
@@ -495,7 +503,6 @@
                     // Unset the Health Declaration checkbox (could be refactored to only uncheck if the fund changes)
                     $('#health_declaration input:checked').prop('checked', false).change();
 
-                    meerkat.modules.healthCoverStartDate.onBeforeEnter();
                     meerkat.modules.healthApplyStep.onBeforeEnter();
                     meerkat.modules.healthDependants.updateDependantConfiguration();
                     meerkat.modules.healthMedicare.onBeforeEnterApply();
@@ -794,11 +801,6 @@
             // Push in values from 1st slide only when have been beyond it
             if (furtherest_step > meerkat.modules.journeyEngine.getStepIndex('start')) {
                 var contactType = null;
-                if ($('#health_simples_contactType_inbound').is(':checked')) {
-                    contactType = 'inbound';
-                } else if ($('#health_simples_contactType_outbound').is(':checked')) {
-                    contactType = 'outbound';
-                }
 
                 $.extend(response, {
                     postCode: $("#health_application_address_postCode").val(),

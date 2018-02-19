@@ -11,6 +11,7 @@
                 <competition:snapshot vertical="health" />
                 <reward:campaign_tile_container />
                 <health_v4_payment:policySummary showProductDetails="true" />
+                <health_v4:price_promise />
             </jsp:attribute>
 
             <jsp:body>
@@ -18,6 +19,7 @@
                 <health_v4_payment:declaration xpath="${pageSettings.getVerticalCode()}/declaration" />
                 <health_v4_payment:contactAuthority xpath="${pageSettings.getVerticalCode()}/contactAuthority" />
                 <health_v4_payment:whatsNext />
+                <health_v1:fund_timezone_message_modal />
 
                 <c:if test="${callCentre and not empty worryFreePromo and worryFreePromo eq '35'}">
                     <div class="simples-dialogue row-content  optionalDialogue">

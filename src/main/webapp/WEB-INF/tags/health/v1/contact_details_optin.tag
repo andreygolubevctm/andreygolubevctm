@@ -175,16 +175,11 @@
         <simples:dialogue id="26" vertical="health" mandatory="true" />
 
         <form_v3:fieldset id="australian-government-rebate" legend="Australian Government Rebate" postLegend="Most Australians can reduce their upfront health insurance costs by applying the Government Rebate.">
-            <c:set var="fieldXpath" value="${xpath}/rebate" />
             <c:set var="mandatory" value=""/>
 
             <c:if test="${callCentre}">
                 <c:set var="mandatory" value=" text-danger"/>
             </c:if>
-
-            <form_v3:row label="Would you like to reduce your upfront premium by applying the rebate?" fieldXpath="${fieldXpath}" helpId="240" className="health_cover_details_rebate${mandatory}">
-                <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your private health cover rebate" required="true" id="${name}_health_cover_rebate" className="rebate btn-group-wrap"/>
-            </form_v3:row>
 
             <c:if test="${callCentre}">
                 <c:set var="fieldXpath" value="${xpath}/incomeBasedOn" />
@@ -194,12 +189,12 @@
             </c:if>
 
             <c:set var="fieldXpath" value="${xpath}/dependants" />
-            <form_v3:row label="How many dependent children do you have?" fieldXpath="${fieldXpath}" helpId="241" className="health_cover_details_dependants">
+            <form_v3:row label="This is based on your taxable income and number of dependants, so can I confirm, how many dependent children do you have?" fieldXpath="${fieldXpath}" helpId="241" className="health_cover_details_dependants ${mandatory}">
                 <field_v2:count_select xpath="${fieldXpath}" max="12" min="1" title="number of dependants" required="true"  className="${name}_health_cover_dependants dependants"/>
             </form_v3:row>
 
             <c:set var="fieldXpath" value="${xpath}/income" />
-            <form_v3:row label="To receive the correct rebate, please select your expected annual income?" fieldXpath="${fieldXpath}" id="${name}_tier">
+            <form_v3:row label="To receive the correct rebate, please select your expected annual income?" fieldXpath="${fieldXpath}" id="${name}_tier" className="${mandatory}">
                 <field_v2:array_select xpath="${fieldXpath}" title="your household income" required="true" items="=Please choose...||0=Tier 0||1=Tier 1||2=Tier 2||3=Tier 3" delims="||" className="income health_cover_details_income"/>
                 <span class="fieldrow_legend" id="${name}_incomeMessage"></span>
                 <c:set var="income_label_xpath" value="${xpath}/incomelabel" />
@@ -208,6 +203,15 @@
                     If you earn under $90,000 (or $180,000 total, for couples or families) in any financial year, you won’t be liable to pay the Medicare Levy Surcharge in that financial year. For help or further information call us on ${callCentreNumber}.
                 </div>
                 <input type="hidden" name="${go:nameFromXpath(xpath)}_incomelabel" id="${go:nameFromXpath(xpath)}_incomelabel" value="${data[income_label_xpath]}" />
+            </form_v3:row>
+
+            <c:set var="fieldXpath" value="${xpath}/rebate" />
+            <form_v3:row label="Do you want to claim the Government Rebate?" fieldXpath="${fieldXpath}" helpId="240" className="health_cover_details_rebate hidden">
+                <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="Do you want to claim the Government Rebate?" required="true" id="${name}_health_cover_rebate" className="rebate btn-group-wrap" additionalAttributes=" data-attach='true'"/>
+            </form_v3:row>
+
+            <form_v3:row label="&nbsp;" fieldXpath="${fieldXpath}" helpId="240" className="health_cover_details_rebate">
+                <field_v2:checkbox xpath="${fieldXpath}/dontApplyRebate" value="N" id="${name}_health_cover_rebate_dontApplyRebate" title="Tick here if your customer doesn't want to claim the Government Rebate." required="false" label="Tick here if your customer doesn't want to claim the Government Rebate." className="rebate btn-group-wrap"/>
             </form_v3:row>
 
         </form_v3:fieldset>

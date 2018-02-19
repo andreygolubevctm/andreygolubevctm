@@ -1541,13 +1541,6 @@ select.text-placeholder-color {
 	}
   }
 
-  // Fund specific code - where it is different to WFDD
-  body.WFD {
-	#health_declaration-selection {
-		display:none !important;
-	}
-  }
-
   body.callCentre {
     &[data-step="start"]{
 	  .simples-dialogue-49,
@@ -1582,6 +1575,13 @@ select.text-placeholder-color {
       color: #9C0058;
 	}
 
+	&.outbound,
+	&.inbound {
+	  #health_situation_cover-error {
+	    display: none !important;
+	  }
+	}
+
   }
 
 
@@ -1590,3 +1590,7 @@ select.text-placeholder-color {
 		display: none;
   	}
   }
+
+#kampyle {
+	display: none;
+}
