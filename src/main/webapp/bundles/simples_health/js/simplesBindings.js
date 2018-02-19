@@ -481,15 +481,24 @@
 
     function toggleBenefitsDialogue() {
         var $hospitalScripts = $('.simples-dialogue-hospital-cover'),
-            $extrasScripts = $('.simples-dialogue-extras-cover');
+            $hospitalNonPublic = $hospitalScripts.filter('.classification-nonPublic'),
+            $hospitalPublic = $hospitalScripts.filter('.classification-public'),
+            $extrasScripts = $('.simples-dialogue-extras-cover'),
+            selectedProduct = Results.getSelectedProduct(),
+            isHospitalPublic = !_.isUndefined(selectedProduct) && _.has(selectedProduct, 'hospital') &&
+                _.has(selectedProduct.hospital, 'ClassificationHospital') && selectedProduct.hospital.ClassificationHospital === 'Public';
 
         switch ($healthSitCoverType.find('input:checked').val().toLowerCase()) {
             case 'c':
                 $hospitalScripts.show();
+                $hospitalNonPublic.toggleClass('hidden', isHospitalPublic);
+                $hospitalPublic.toggleClass('hidden', !isHospitalPublic);
                 $extrasScripts.show();
                 break;
             case 'h':
                 $hospitalScripts.show();
+                $hospitalNonPublic.toggleClass('hidden', isHospitalPublic);
+                $hospitalPublic.toggleClass('hidden', !isHospitalPublic);
                 $extrasScripts.hide();
                 break;
             case 'e':
@@ -546,7 +555,8 @@
         toggleMoreInfoDialogue: toggleMoreInfoDialogue,
         toggleAffiliateRewardsDialogue: toggleAffiliateRewardsDialogue,
         getCallType: getCallType,
-        togglePricePromisePromoDialogue: togglePricePromisePromoDialogue
+        togglePricePromisePromoDialogue: togglePricePromisePromoDialogue,
+        toggleBenefitsDialogue: toggleBenefitsDialogue
     });
 
 })(jQuery);
