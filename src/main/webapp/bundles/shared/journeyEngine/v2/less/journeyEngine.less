@@ -10,6 +10,14 @@
 	@media print {
 		min-height: 0;
 	}
+
+	.iframeURLActive {
+		#journeyEngineLoading {
+			.message {
+				display: none;
+			}
+		}
+	}
 }
 
 #journeyEngineContainer.octoberComp .loading-logo {
@@ -52,6 +60,15 @@
 		width: (@container-lg - @grid-gutter-width);
 	}
 
+	iframe {
+		width: 300px;
+		height: 422px;
+
+		@media (@md) {
+			width: 452px;
+			height: 380px;
+		}
+	}
 }
 
 .additionalWaitMsgActive {

@@ -38,13 +38,27 @@
 
 <c:if test="${empty sessionPop}"><c:set var="sessionPop" value="true" /></c:if>
 
+<c:set var="env" value="${environmentService.getEnvironmentAsString()}" />
+
+<c:set var="envKey">
+    <c:choose>
+        <c:when test="${env eq 'localhost' || env eq 'NXI'}">
+            DEV
+        </c:when>
+        <c:when test="${env eq 'NXQ' || env eq 'NXS'}">
+            UAT
+        </c:when>
+        <c:otherwise>
+            PRO
+        </c:otherwise>
+    </c:choose>
+</c:set>
+
 <layout_v1:page title="${title}" body_class_name="${body_class_name}" bundleFileName="${bundleFileName}" displayNavigationBar="${displayNavigationBar}" ignorePageHeader="${ignorePageHeader}">
 
 	<jsp:attribute name="head">
 		<jsp:invoke fragment="head" />
-        <c:set var="isDev" value="${environmentService.getEnvironmentAsString() eq 'localhost' || environmentService.getEnvironmentAsString() eq 'NXI' || environmentService.getEnvironmentAsString() eq 'NXQ'}" />
-
-        <c:if test="${isDev eq true && !param['automated-test']}">
+        <c:if test="${(envKey eq 'DEV' || env eq 'NXQ') && !param['automated-test']}">
             <%-- <script src="https://cdn.logrocket.com/LogRocket.min.js"></script>
             <script>window.LogRocket && window.LogRocket.init('compare-the-market/web-ctm');</script> --%>
         </c:if>
@@ -105,7 +119,6 @@
           <c:if test="${octoberComp && (pageSettings.getVerticalCode() eq 'home' || pageSettings.getVerticalCode() eq 'health' || pageSettings.getVerticalCode() eq 'car')}">
             <c:set var="octoberCompRender" value="${true}"></c:set>
           </c:if >
-                <%-- <div id="pageContentTop"></div> --%>
             
             <article class="container">
               <c:set var="octoberCompClass" value=""></c:set>
@@ -114,8 +127,10 @@
               </c:if>
 
                 <c:set var="additionalLoadingPageContent" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "additionalWaitMessageHtml")}'/>
+                <c:set var="additionWaitMessageIframeURL" value='${contentService.getContentWithSupplementary(pageContext.getRequest(), "additionWaitMessageIframeURL")}'/>
+                <c:set var="iframeURL" value="${additionWaitMessageIframeURL.getSupplementaryValueByKey(envKey)}" />
 
-                <div id="journeyEngineContainer" class="${octoberCompClass} ${additionalLoadingPageContent.getSupplementaryValueByKey("className")}">
+                <div id="journeyEngineContainer" class="${octoberCompClass} ${additionalLoadingPageContent.getSupplementaryValueByKey("className")}<c:if test="${iframeURL ne null}"> iframeURLActive</c:if>">
                   
                     <div id="journeyEngineLoading" class="journeyEngineLoader opacityTransitionQuick">
 
@@ -123,13 +138,16 @@
                         
                         <p class="message">Please wait...</p>
                         <c:choose>
-                          <c:when test="${octoberCompRender && !callCentre}">
-                            <competition:loading vertical="${pageSettings.getVerticalCode()}"/>
-                          </c:when >
-                          <c:otherwise>
-                            <jsp:invoke fragment="results_loading_message" />
-                              ${additionalLoadingPageContent.getSupplementaryValueByKey("htmlContent")}
-                          </c:otherwise>
+                            <c:when test="${octoberCompRender && !callCentre}">
+                                <competition:loading vertical="${pageSettings.getVerticalCode()}"/>
+                            </c:when>
+                            <c:when test="${iframeURL ne null}">
+                                <iframe src="${iframeURL}" frameborder="0" scrolling="no"></iframe>
+                            </c:when>
+                            <c:otherwise>
+                                <jsp:invoke fragment="results_loading_message" />
+                                ${additionalLoadingPageContent.getSupplementaryValueByKey("htmlContent")}
+                            </c:otherwise>
                         </c:choose>          
                     </div>
 
