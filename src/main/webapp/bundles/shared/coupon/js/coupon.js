@@ -208,9 +208,11 @@
             $('.coupon-banner-container, .coupon-tile-container').html('');
             $('body').removeClass('couponShown');
 
-            meerkat.modules.bannerPlacement.unRender({
-				type: 'coupon'
-			});
+            if (_.has(meerkat.modules, 'bannerPlacement')) {
+                meerkat.modules.bannerPlacement.unRender({
+                    type: 'coupon'
+                });
+            }
         }
 
 		dealWithAddedCouponHeight();
