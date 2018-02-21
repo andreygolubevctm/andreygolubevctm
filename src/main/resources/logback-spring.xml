@@ -108,8 +108,7 @@
 					</pattern>
 				</pattern>
 				<arguments>
-					<includeNonStructuredArguments>true</includeNonStructuredArguments>
-					<nonStructuredArgumentsFieldPrefix>prefix</nonStructuredArgumentsFieldPrefix>
+				    <includeNonStructuredArguments>false</includeNonStructuredArguments>
 				</arguments>
 			</providers>
 		</encoder>

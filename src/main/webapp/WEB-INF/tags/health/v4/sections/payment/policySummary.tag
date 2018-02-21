@@ -64,7 +64,7 @@
 
         </p>
         <div class="footer">
-            <a href="javascript:;" class="open-more-info" <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />>view more info</a>
+            <a href="javascript:;" class="open-more-info hidden" <field_v1:analytics_attr analVal="nav link" quoteChar="\"" />>view more info</a>
         </div>
     </div>
 
