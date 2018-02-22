@@ -230,8 +230,17 @@
 						<div class="col-xs-12">
 							<textarea rows="10" id="selectedProductUrlTextArea" class="col-xs-12 hidden addTopMargin" aria-invalid="false"></textarea>
 						</div>
-						<div class="col-xs-6 align-self-center">
-							<a href="javascript:;" class="btn btn-save hidden btn-copy-selected-product-url addTopMargin" <field_v1:analytics_attr analVal="Copy Product Link button" quoteChar="\"" />>Copy Link</a>
+					</div>
+
+					<div class="row hidden copy-append-offer-row addTopMargin">
+						<div class="col-xs-6">
+							<a href="javascript:;" class="btn btn-save btn-copy-selected-product-url" <field_v1:analytics_attr analVal="Copy Product Link button" quoteChar="\"" />>Copy Link</a>
+						</div>
+						<div class="col-xs-6">
+							<field_v2:checkbox className="checkbox-custom pull-right hidden"
+											   xpath="health/sendBrochures/appendOffer" required="false"
+											   value="Y" label="true"
+											   title="Append Offer" />
 						</div>
 					</div>
 

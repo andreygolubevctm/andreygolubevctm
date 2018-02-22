@@ -14,6 +14,7 @@ public class IncomingEmail {
 	private String utmSource = null;
 	private String utmMedium = null;
 	private String utmCampaign = null;
+	 private int couponId;
 	EmailMaster emailMaster = new EmailMaster();
 
 	public IncomingEmail() {}
@@ -60,6 +61,10 @@ public class IncomingEmail {
 
 	public void setUTMCampaign(String utmCampaign) { this.utmCampaign = utmCampaign; }
 
+	public void setCouponId(int couponId) {
+		this.couponId = couponId;
+	}
+
 	public EmailMode getEmailType() {
 		return this.emailType;
 	}
@@ -104,6 +109,10 @@ public class IncomingEmail {
 		return this.utmCampaign;
 	}
 
+	public int getCouponId() {
+		return this.couponId;
+	}
+
 	public void setEmailAddress(String emailAddress) {
 		emailMaster.setEmailAddress(emailAddress);
 	}
@@ -125,7 +134,8 @@ public class IncomingEmail {
 				", utm_medium='" + utmMedium + '\'' +
 				", utm_campaign='" + utmCampaign + '\'' +
                 ", gaclientid='" + gaclientid + '\'' +
-				", emailMaster=" + emailMaster +
+				", emailMaster=" + emailMaster + '\'' +
+				", couponId=" + couponId +
 				'}';
 	}
 }
