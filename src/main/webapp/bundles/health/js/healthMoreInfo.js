@@ -191,6 +191,8 @@
         $('.whatsNext li').each(function () {
             $(this).prepend('<span class="icon icon-angle-right"></span>');
         });
+
+        meerkat.modules.simplesBindings.toggleLimitedCoverDialogue();
     }
 
     function onBeforeShowModal(jsonResult, dialogId) {
