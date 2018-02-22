@@ -196,7 +196,7 @@
                 <health_v4_layout:slide_payment />
 
                 <div class="visible-xs">
-                    <health_v4:price_promise />
+                    <health_v4:price_promise step="start" />
                 </div>
 
                 <health_v4:dual_pricing_templates />
