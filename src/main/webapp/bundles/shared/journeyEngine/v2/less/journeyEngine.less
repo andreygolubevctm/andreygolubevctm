@@ -11,8 +11,10 @@
 		min-height: 0;
 	}
 
-	.iframeURLActive {
+	&.iframeURLActive {
 		#journeyEngineLoading {
+			padding-top: 0;
+			.loading-logo,
 			.message {
 				display: none;
 			}
@@ -62,11 +64,11 @@
 
 	iframe {
 		width: 300px;
-		height: 422px;
+		height: 320px;
 
 		@media (@md) {
-			width: 452px;
-			height: 380px;
+			width: 400px;
+			height: 400px;
 		}
 	}
 }
