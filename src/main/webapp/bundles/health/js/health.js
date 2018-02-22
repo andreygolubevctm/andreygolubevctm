@@ -711,6 +711,8 @@
 
 					// toggle coupon seen online
 					meerkat.modules.healthPaymentStep.toggleCouponSeenText();
+
+					meerkat.modules.simplesBindings.toggleBenefitsDialogue();
 				}
 			}
 		};
