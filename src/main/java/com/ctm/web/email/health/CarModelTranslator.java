@@ -14,7 +14,6 @@ import com.ctm.web.core.results.model.ResultProperty;
 import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.core.web.go.Data;
-import com.ctm.web.email.EmailController;
 import com.ctm.web.email.EmailRequest;
 import com.ctm.web.email.EmailTranslator;
 import com.ctm.web.email.EmailUtils;
@@ -36,7 +35,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.lang.Integer.min;
