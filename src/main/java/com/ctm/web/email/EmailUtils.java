@@ -15,6 +15,8 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -79,6 +81,14 @@ public class EmailUtils {
             LOGGER.warn("Field " + param + " not found before sending email");
         }
         return null;
+    }
+
+    public static String getStringData(Data data, String xPath) throws ClassCastException{
+        return (String) data.get(xPath);
+    }
+
+    public static List getListData(Data data, String xPath) throws ClassCastException{
+        return (ArrayList) data.get(xPath);
     }
 
     public String getParamFromXml(String xml, String param, String baseUri){

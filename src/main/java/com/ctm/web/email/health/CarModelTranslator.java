@@ -14,6 +14,7 @@ import com.ctm.web.core.results.model.ResultProperty;
 import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.core.web.go.Data;
+import com.ctm.web.email.EmailController;
 import com.ctm.web.email.EmailRequest;
 import com.ctm.web.email.EmailTranslator;
 import com.ctm.web.email.EmailUtils;
@@ -22,10 +23,13 @@ import com.ctm.web.email.car.CarEmailModel;
 import com.ctm.web.factory.EmailServiceFactory;
 import com.ctm.web.health.email.mapping.HealthEmailDetailMappings;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ValidationException;
 import java.security.GeneralSecurityException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -48,6 +52,8 @@ public class CarModelTranslator implements EmailTranslator {
     private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     @Autowired
     protected IPAddressHandler ipAddressHandler;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(CarModelTranslator.class);
 
     public void setVerticalSpecificFields(EmailRequest emailRequest, HttpServletRequest request, Data data) throws RuntimeException, DaoException {
 
@@ -140,6 +146,7 @@ public class CarModelTranslator implements EmailTranslator {
         EmailMaster emailDetails = new EmailMaster();
         emailDetails.setEmailAddress(emailRequest.getEmailAddress());
         emailDetails.setSource("QUOTE");
+
         PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
         EmailTokenService emailTokenService = EmailTokenServiceFactory.getEmailTokenServiceInstance(pageSettings);
         EmailDetailsService emailDetailsService = EmailServiceFactory.createEmailDetailsService(SettingsService.getPageSettingsForPage(request),data, Vertical.VerticalType.HEALTH, new HealthEmailDetailMappings());
@@ -177,21 +184,23 @@ public class CarModelTranslator implements EmailTranslator {
         final List<ResultProperty> resultsProperties = emailUtils.getResultPropertiesForTransaction(emailRequest.getTransactionId());
 
         //Get all product ids
-        List<String> productIds = getAllResultProperties(resultsProperties,"productId");
+        List<String> productIds = getAllResultProperties(resultsProperties, "productId");
 
         //For each product get related details.
         List<EmailParameters> emailParameters = productIds.stream().map(productId -> {
-                    String premium = emailUtils.getParamSafely(data,"tempResultDetails/results/" + productId + "/headline/lumpSumTotal");
+
+                    String premium = getPremiumFromSessionData(data, productId);
                     String providerPhoneNumber = getResultProperty(resultsProperties, "telNo", productId);
                     String quoteUrls = getResultProperty(resultsProperties, "quoteUrl", productId);
                     String openingHour = getResultProperty(resultsProperties, "openingHours", productId);
                     String productDes = getResultProperty(resultsProperties, "productDes", productId);
                     String brandCode = getResultProperty(resultsProperties, "brandCode", productId);
-                    String excess =  getResultProperty(resultsProperties, "excess/total", productId);
-                    String discountOffer = getResultProperty(resultsProperties,"discountOffer", productId);
-                    String headlineOffer = getResultProperty(resultsProperties,"headlineOffer", productId);
+                    String excess = getResultProperty(resultsProperties, "excess/total", productId);
+                    String discountOffer = getResultProperty(resultsProperties, "discountOffer", productId);
+                    String headlineOffer = getResultProperty(resultsProperties, "headlineOffer", productId);
                     String validDates = getResultProperty(resultsProperties, "validateDate/display", productId);
                     String quoteRef = getResultProperty(resultsProperties, "leadNo", productId);
+
                     EmailParameters emailParameter = new EmailParameters();
                     emailParameter.setBrandCode(brandCode);
                     emailParameter.setDiscountOffer(discountOffer);
@@ -213,6 +222,60 @@ public class CarModelTranslator implements EmailTranslator {
 
         // Don't send more than 10 items
         return emailParameters.subList(0, min(emailParameters.size(), 10));
+    }
+
+    /**
+     * get premium from session data.
+     * <p>
+     * session data has root, and all child transaction details. There will be multiple result details in case
+     * of multiple transactions, and the LAST transaction detail is for the current transaction.
+     * <p>
+     * <pre>
+     * @See test/resources/email/car for sample session data for below cases:
+     *
+     * CASE-1: User got single quote result e.g., BUDD-05-04
+     *  SessionData will have SINGLE value for xPathLumsumtotal xpath.
+     *
+     * CASE-2: User got quote result, which they edited including the cover type. e.g., BUDD-05-04_TPPD
+     *  SessionData will have SINGLE value for xPathLumsumtotal xpath.
+     *
+     * CASE-3: User got quote result, which they edited but kept the cover type same. e.g., multiple BUDD-05-04
+     *  SessionData will have MULTIPLE value for xPathLumsumtotal xpath.
+     * </pre>
+     *
+     * @param sessionDataAsXml
+     * @param productId
+     * @return String
+     * @throws ValidationException when premium is null.
+     */
+    protected static String getPremiumFromSessionData(Data sessionDataAsXml, String productId) throws ValidationException {
+
+        //productId e.g., BUDD-05-04 or BUDD-05-04_TPPD
+        final String xPathProductLumsumtotal = "tempResultDetails/results/" + productId + "/headline/lumpSumTotal";
+
+        String premium;
+        try {
+            //single transaction (comprehensive or 3rd party)
+            premium = EmailUtils.getStringData(sessionDataAsXml, xPathProductLumsumtotal);
+        } catch (ClassCastException e) {
+            LOGGER.debug("Multiple premiums found in session data for xpath: {}", xPathProductLumsumtotal);
+            //multiple transactions for a cover type
+            final List<String> premiums = EmailUtils.getListData(sessionDataAsXml, xPathProductLumsumtotal);
+
+            if (premiums.isEmpty()) {
+                return null;
+            }
+
+            final int lastElementIndex = premiums.size() - 1;
+            premium = premiums.get(lastElementIndex);
+        }
+
+        if (StringUtils.isBlank(premium)) {
+            LOGGER.error("Session data missing premium(s). Session data: {}", sessionDataAsXml.toString());
+            throw new ValidationException("Unable to build email parameters. No premium(s) in session data");
+        }
+
+        return premium;
     }
 
 }
