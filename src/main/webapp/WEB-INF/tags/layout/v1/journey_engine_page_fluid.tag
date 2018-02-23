@@ -107,16 +107,9 @@
 
         <div id="pageContent">
 
-                <%-- <div id="pageContentTop"></div> --%>
-
             <article class="container-fluid no-padding">
 
                 <div id="journeyEngineContainer">
-                        <%--<div id="journeyEngineLoading" class="journeyEngineLoader opacityTransitionQuick">--%>
-                        <%--<div class="loading-logo"></div>--%>
-                        <%--<p class="message">Please wait...</p>--%>
-                        <%--<jsp:invoke fragment="results_loading_message" />--%>
-                        <%--</div>--%>
 
                     <div id="mainform" class="form-horizontal">
 
