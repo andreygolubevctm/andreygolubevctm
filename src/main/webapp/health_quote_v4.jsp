@@ -86,16 +86,17 @@
                     <div class="navbar-collapse header-collapse-contact collapse">
                         <ul class="nav navbar-nav navbar-right callCentreNumberSection">
                             <li><a href="javascript:;" class="refine-results">Refine</a></li>
-                            <li class="navbar-text hidden-sm">Confused? Talk to our experts now.</li>
+                            <li class="navbar-text hidden-sm confused-text">Confused? Talk to our experts now.</li>
                             <li>
                                 <div class="navbar-text hidden-xs" data-livechat="target">
-                                    Call <a href="javascript:;" data-toggle="dialog"
-                                               data-content="#view_all_hours"
-                                               data-dialog-hash-id="view_all_hours"
-                                               data-title="Call Centre Hours" data-cache="true">
-                                    <span class="noWrap callCentreNumber">${callCentreNumber}</span>
-                                    <span class="noWrap callCentreAppNumber">${callCentreAppNumber}</span>
-                                </a> or <health_v4:callback_link /> ${callCentreCBModal}
+                                    <div class="callCentreNumber-container">
+                                        <span class="icon icon-phone"></span> <a href="javascript:;" data-toggle="dialog"
+                                                   data-content="#view_all_hours"
+                                                   data-dialog-hash-id="view_all_hours"
+                                                   data-title="Call Centre Hours" data-cache="true">
+                                        <span class="noWrap callCentreNumber">${callCentreNumber}</span>
+                                        <span class="noWrap callCentreAppNumber">${callCentreAppNumber}</span></a>
+                                    </div> or <health_v4:callback_link /> ${callCentreCBModal}
                                 </div>
 
                                 <div id="view_all_hours" class="hidden">${callCentreHoursModal}</div>
