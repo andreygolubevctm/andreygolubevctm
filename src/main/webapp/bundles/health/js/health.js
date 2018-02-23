@@ -481,8 +481,6 @@
 				if (meerkat.modules.healthTaxTime.isFastTrack()) {
 					meerkat.modules.healthTaxTime.disableFastTrack();
 				}
-
-				meerkat.modules.simplesBindings.toggleLimitedCoverDialogue();
 			},
 			onBeforeLeave: function(event) {
 				// Increment the transactionId

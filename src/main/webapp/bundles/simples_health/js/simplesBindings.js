@@ -521,7 +521,9 @@
     }
 
     function toggleLimitedCoverDialogue() {
-        $privatePatientDialogue.toggleClass('hidden', $limitedCoverHidden.val() !== 'Y');
+        var _toggle = $limitedCoverHidden.val() === 'N' || ($limitedCoverHidden.val() === 'Y' && _isHospitalPublic() === false);
+
+        $privatePatientDialogue.toggleClass('hidden', _toggle);
     }
 
     function toggleMoreInfoDialogue() {
@@ -545,6 +547,13 @@
         } else {
             $pricePromisePromotionDialogue.slideUp();
         }
+    }
+
+    function _isHospitalPublic() {
+        var selectedProduct = Results.getSelectedProduct();
+
+        return (!_.isUndefined(selectedProduct) && _.has(selectedProduct, 'hospital') &&
+                _.has(selectedProduct.hospital, 'ClassificationHospital') && selectedProduct.hospital.ClassificationHospital === 'Public');
     }
 
     meerkat.modules.register("simplesBindings", {
