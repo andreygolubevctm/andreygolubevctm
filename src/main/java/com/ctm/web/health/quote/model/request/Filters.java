@@ -1,5 +1,7 @@
 package com.ctm.web.health.quote.model.request;
 
+import com.ctm.web.simples.admin.model.capping.product.ProductCappingLimitCategory;
+
 import java.util.List;
 
 public class Filters {
@@ -29,6 +31,7 @@ public class Filters {
     private Boolean applyDiscounts;
 
     private Boolean popularProducts;
+    private ProductCappingLimitCategory productCappingLimitFilter;
 
     public CappingLimit getCappingLimitFilter() {
         return cappingLimitFilter;
@@ -132,5 +135,13 @@ public class Filters {
 
     public void setPopularProducts(Boolean popularProducts) {
         this.popularProducts = popularProducts;
+    }
+
+    public void setProductCappingLimitFilter(ProductCappingLimitCategory productCappingLimitFilter) {
+        this.productCappingLimitFilter = productCappingLimitFilter;
+    }
+
+    public ProductCappingLimitCategory getProductCappingLimitFilter() {
+        return productCappingLimitFilter;
     }
 }
