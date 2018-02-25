@@ -10,7 +10,7 @@
             <jsp:attribute name="rightColumn">
                 <competition:snapshot vertical="health" />
                 <health_v4_payment:policySummary showProductDetails="true" />
-                <health_v4:price_promise />
+                <health_v4:price_promise step="apply" />
             </jsp:attribute>
 
             <jsp:body>

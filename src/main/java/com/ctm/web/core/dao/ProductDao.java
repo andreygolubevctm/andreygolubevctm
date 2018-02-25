@@ -13,7 +13,12 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
+
 public class ProductDao {
+	private static final Logger LOGGER = LoggerFactory.getLogger(ProductDao.class);
 
 
 		public ProductDao() {
@@ -482,5 +487,64 @@ public class ProductDao {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Returns distinct list of all products for a specified provider -
+	 *    getActiveAndFutureProducts = true - return names of products that are currently active and names of products available in the future
+	 *    getActiveAndFutureProducts = false - return names of products that are currently active only
+	 *
+	 * @param verticalCode
+	 * @param providerId
+	 * @param getActiveAndFutureProducts
+	 * @return
+	 * @throws DaoException
+	 */
+	public ArrayList<ProductName> getProductNames(String verticalCode, int providerId, Boolean getActiveAndFutureProducts) throws DaoException{
+		SimpleDatabaseConnection dbSource = null;
+
+		ArrayList<ProductName> productNames = new ArrayList<>();
+
+		try{
+			dbSource = new SimpleDatabaseConnection();
+			PreparedStatement stmt;
+
+			String statementSQL = "SELECT DISTINCT ShortTitle, LongTitle " +
+				"FROM ctm.product_master " +
+				"WHERE ProductCat = ? " +
+				"AND ProviderId = ? " +
+				"AND (CURDATE() BETWEEN EffectiveStart AND EffectiveEnd ";
+
+			if (getActiveAndFutureProducts) {
+				statementSQL += "OR CURDATE() < EffectiveStart ";
+			}
+
+			statementSQL += ") AND Status != 'X' ORDER BY ShortTitle ASC";
+
+			stmt = dbSource.getConnection().prepareStatement(statementSQL);
+
+			stmt.setString(1, verticalCode);
+			stmt.setInt(2, providerId);
+
+			ResultSet productResult = stmt.executeQuery();
+
+			while (productResult.next()) {
+
+				ProductName productNm = new ProductName();
+				productNm.setShortTitle(productResult.getString("ShortTitle"));
+				productNm.setLongTitle(productResult.getString("LongTitle"));
+				productNames.add(productNm);
+
+			}
+
+		} catch (SQLException | NamingException e) {
+			LOGGER.error("Failed to retrieve products for vertical {}, {}, {}, {}", kv("verticalCode", verticalCode),
+				kv("providerId", providerId), kv("getActiveAndFutureProducts", getActiveAndFutureProducts));
+			throw new DaoException(e);
+		} finally {
+			dbSource.closeConnection();
+		}
+
+		return productNames;
 	}
 }

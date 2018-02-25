@@ -61,6 +61,26 @@
         }
     }
 
+    function unRender(banner, placementOverride) {
+        var placement = placementOverride,
+            $banner = null;
+
+        switch (banner.type) {
+            case 'coupon':
+                _hasPromo = _hasPromo || meerkat.modules.marketingContent.hasContent();
+                placement = !_.isUndefined(placement) ? placement :
+                    (_hasPromo ? 'tile' : (banner.placement ? banner.placement : 'top'));
+                $banner = $(_placementClassName[placement]);
+                break;
+        }
+
+        $banner.empty();
+
+        if (banner.type === 'coupon' && meerkat.modules.deviceMediaState.get() === 'xs' && _hasPromo && $('.coupon-banner-container').length === 1) {
+            $('.coupon-banner-container').remove();
+        }
+    }
+
     function xsLayout() {
         if (meerkat.modules.deviceMediaState.get() === 'xs') {
             $elements.bannerTop.find('.marketing-content-container, .coupon-banner-container').hide();
@@ -71,6 +91,7 @@
     meerkat.modules.register('bannerPlacement', {
         init: init,
         render: render,
+        unRender: unRender,
         xsLayout: xsLayout
     });
 })(jQuery);

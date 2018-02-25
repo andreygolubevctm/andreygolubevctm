@@ -7,6 +7,7 @@ import com.ctm.web.health.model.Membership;
 import com.ctm.web.health.model.PaymentType;
 import com.ctm.web.health.model.form.*;
 import com.ctm.web.health.quote.model.request.*;
+import com.ctm.web.simples.admin.model.capping.product.ProductCappingLimitCategory;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -96,6 +97,7 @@ public class RequestAdapterV2 {
         addCompareResultsFilter(filters, quote);
         addIncludeProductIfNotFound(filters, quote, isSimples, isDirectApplication);
         addCappingLimitFilter(filters, quote);
+        addProductCappingLimitFilter(filters, quote);
 
         addSearchDateFilter(quoteRequest, quote, isShowAll);
 
@@ -185,6 +187,14 @@ public class RequestAdapterV2 {
             filters.setCappingLimitFilter(CappingLimit.SOFT);
         } else {
             filters.setCappingLimitFilter(CappingLimit.HARD);
+        }
+    }
+
+    protected static void addProductCappingLimitFilter(Filters filters, HealthQuote quote) {
+        if (toBoolean(quote.getOnResultsPage())) {
+            filters.setProductCappingLimitFilter(ProductCappingLimitCategory.SOFT);
+        } else {
+            filters.setProductCappingLimitFilter(ProductCappingLimitCategory.HARD);
         }
     }
 

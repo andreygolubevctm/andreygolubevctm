@@ -50,6 +50,15 @@ To setup and build:
 4. Install Project dependencies by entering `npm install`.
 5. Then run `gulp --fast --disableNotify`. Always have this running when making Frontend changes. The build has finished when `Finished 'default` is displayed.
 
+## Updating Partner Logo Sprite Sheets
+Partner logos are generated with a gulp task which creates a sprite sheet from single logos and generates less. To update partmer logos:
+1. Replace the existing original and retina artwork in your verticals logo src folder - `web_ctm/src/main/webapp/assets/graphics/logos/{vertical}/` using the same name. Eg. `ING.png` and `ING@2x.png`. Keep the image size the same as other images within the vertical and the retina image `@2x` needs to be twice the size.
+2. Open your terminal in the root `web_ctm` folder of the project enter `cd src/main/pipeline`.
+3. Run the gulp task to build sprites for the corresponding vertical eg `gulp sprite:health`.
+4. Confirm that the sprite sheet and less file have been generated for the vertical and test on the frontend.
+
+See [Logo Sprites - Web CTM](http://confluence:8090/display/CM/Logo+Sprites+-+Web+CTM) for more information.
+
 ## Environments
 WebCTM has a number of build environments. When code is pushed to a feature branch and a Pull Request is opened this will trigger a feature branch being built.
 
