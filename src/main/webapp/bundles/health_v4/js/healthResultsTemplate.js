@@ -270,7 +270,7 @@
                 title: "Award Scheme",
                 className: "icon-ribbon",
                 text: Object.byString(product, 'awardScheme.text'),
-                active: _.has(product, 'awardScheme'),
+                active: _.has(product, 'awardScheme') && _.has(product.awardScheme, 'text') && !_.isEmpty(product.awardScheme.text),
                 productId: product.productId
             }
         ];
