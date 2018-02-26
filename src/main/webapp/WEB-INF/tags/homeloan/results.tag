@@ -304,7 +304,7 @@
 	{{ if (obj.lender === 'Heritage Bank') img = 'HERITAGE'; }}
 	{{ if (obj.lender === 'HomeStart Finance') img = 'HOMESTART'; }}
 	{{ if (obj.lender === 'Homeside Lending') img = 'HOMESIDE'; }}
-	{{ if (obj.lender === 'ING Direct') img = 'ING'; }}
+	{{ if (obj.lender === 'ING') img = 'ING'; }}
 	{{ if (obj.lender === 'Keystart') img = 'KEY'; }}
 	{{ if (obj.lender === 'La Trobe Financial') img = 'LATROBE'; }}
 	{{ if (obj.lender === 'Liberty Financial') img = 'LIBERTY'; }}
