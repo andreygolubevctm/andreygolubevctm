@@ -288,8 +288,6 @@
                         Results.unfilterBy('productId', "value", false);
                         Results.settings.incrementTransactionId = true;
                         meerkat.modules.healthResults.get();
-
-                        meerkat.modules.simplesBindings.toggleLimitedCoverDialogue();
                     },100);
                 }
             }

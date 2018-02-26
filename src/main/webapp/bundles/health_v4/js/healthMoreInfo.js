@@ -261,6 +261,7 @@
             $('.about-this-fund-row').hide();
         }
 
+        meerkat.modules.healthPricePromise.updateIframeSrc();
         meerkat.modules.healthPricePromise.applyHeight();
     }
 

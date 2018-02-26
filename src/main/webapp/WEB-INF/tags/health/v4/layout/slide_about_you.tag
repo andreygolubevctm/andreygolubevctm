@@ -28,7 +28,7 @@
                     <reward:campaign_tile_container />
                     <health_v4_aboutyou:retrievequotes />
                     <health_v4_aboutyou:medicarecheck />
-                    <health_v4:price_promise />
+                    <health_v4:price_promise step="start" />
                 </jsp:attribute>
                     <jsp:body>
 

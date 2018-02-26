@@ -26,15 +26,18 @@
         <c:if test="${not empty callCentreNumber}">
             <div class="navbar-collapse header-collapse-contact collapse">
                 <ul class="nav navbar-nav navbar-right callCentreNumberSection">
-                    <li class="navbar-text">Confused? Talk to our experts now.</li>
+                    <li class="navbar-text confused-text">Confused? Talk to our experts now.</li>
                     <li>
                         <div class="navbar-text hidden-xs" data-livechat="target">
-                            Call <a href="javascript:;" data-toggle="dialog"
+                            <div class="callCentreNumber-container">
+                                <span class="icon icon-phone"></span>
+                                <a href="javascript:;" data-toggle="dialog"
                                     data-content="#view_all_hours"
                                     data-title="Call Centre Hours" data-cache="true">
-                            <span class="noWrap callCentreNumber">${callCentreNumber}</span>
-                            <span class="noWrap callCentreAppNumber">${callCentreAppNumber}</span>
-                        </a>
+                                    <span class="noWrap callCentreNumber">${callCentreNumber}</span>
+                                    <span class="noWrap callCentreAppNumber">${callCentreAppNumber}</span>
+                                </a>
+                            </div>
                         </div>
                         <div id="view_all_hours" class="hidden">${callCentreHoursModal}</div>
                     </li>

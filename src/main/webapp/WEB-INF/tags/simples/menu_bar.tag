@@ -49,7 +49,9 @@
 							<li><a target="simplesiframe" href="simples/edit_callcenter_hours.jsp">Opening Hours</a></li>
 							<li><a target="simplesiframe" href="simples/edit_special_offers.jsp">Special Offers</a></li>
 							<li><a target="simplesiframe" href="simples/admin/health/fund_capping_limits.jsp">Fund Capping Limits</a></li>
-							<li><a target="simplesiframe" href="simples/admin/health/provider_content.jsp?contentType=ABT">Provider Content</a></li>           <c:if test="${isRoleCcRewards}">
+							<li><a target="simplesiframe" href="simples/admin/health/product_capping_summary.jsp">Product Capping Summary</a></li>
+							<li><a target="simplesiframe" href="simples/admin/health/provider_content.jsp?contentType=ABT">Provider Content</a></li>
+							<c:if test="${isRoleCcRewards}">
                             <li><a target="simplesiframe" href="simples/admin/reward.jsp">Reward</a></li>
                             </c:if>
 							<li><a target="simplesiframe" href="simples/help_box.jsp">Help Box</a></li>

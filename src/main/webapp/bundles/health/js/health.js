@@ -481,8 +481,6 @@
 				if (meerkat.modules.healthTaxTime.isFastTrack()) {
 					meerkat.modules.healthTaxTime.disableFastTrack();
 				}
-
-				meerkat.modules.simplesBindings.toggleLimitedCoverDialogue();
 			},
 			onBeforeLeave: function(event) {
 				// Increment the transactionId
@@ -711,6 +709,8 @@
 
 					// toggle coupon seen online
 					meerkat.modules.healthPaymentStep.toggleCouponSeenText();
+
+					meerkat.modules.simplesBindings.toggleBenefitsDialogue();
 				}
 			}
 		};

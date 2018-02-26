@@ -4,11 +4,11 @@ import com.ctm.web.core.exceptions.CrudValidationException;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.services.CrudService;
 import com.ctm.web.core.utils.RequestUtils;
-import com.ctm.web.core.validation.FormValidation;
 import com.ctm.web.core.validation.SchemaValidationError;
 import com.ctm.web.health.model.request.CappingLimit;
 import com.ctm.web.simples.admin.dao.CappingLimitsDao;
 import com.ctm.web.simples.admin.helper.CappingLimitsHelper;
+import com.ctm.web.simples.admin.helper.ValidationHelper;
 import com.ctm.web.simples.admin.model.request.CappingLimitDeleteRequest;
 import com.ctm.web.simples.admin.model.response.CappingLimitInformation;
 
@@ -34,7 +34,7 @@ public class CappingLimitsService implements CrudService<CappingLimit> {
     @Override
     public CappingLimit update(HttpServletRequest request) throws DaoException, CrudValidationException {
         CappingLimit requestObj = RequestUtils.createObjectFromRequest(request, new CappingLimit());
-        validate(requestObj);
+        ValidationHelper.validate(requestObj);
         List<SchemaValidationError> validationErrors = new ArrayList<>();
         cappingLimitsHelper.validateCappingLimitCategory(requestObj, validationErrors);
         List<CappingLimit> clashingCappingLimit = cappingLimitsDao.fetchCappingLimitsWithMatchingFields(requestObj);
@@ -56,7 +56,7 @@ public class CappingLimitsService implements CrudService<CappingLimit> {
     @Override
     public CappingLimit create(HttpServletRequest request) throws DaoException, CrudValidationException {
         CappingLimit requestObj = RequestUtils.createObjectFromRequest(request, new CappingLimit());
-        validate(requestObj);
+        ValidationHelper.validate(requestObj);
         List<SchemaValidationError> validationErrors = new ArrayList<>();
         cappingLimitsHelper.validateCappingLimitCategory(requestObj, validationErrors);
         List<CappingLimit> clashingCappingLimit = cappingLimitsDao.fetchCappingLimits(requestObj);
@@ -77,22 +77,15 @@ public class CappingLimitsService implements CrudService<CappingLimit> {
     @Override
     public String delete(HttpServletRequest request) throws DaoException, CrudValidationException {
         CappingLimitDeleteRequest requestObj = RequestUtils.createObjectFromRequest(request, new CappingLimitDeleteRequest());
-        validate(requestObj);
+        ValidationHelper.validate(requestObj);
         return cappingLimitsDao.deleteCappingLimits(requestObj);
     }
 
     @Override
     public CappingLimit get(HttpServletRequest request) throws DaoException, CrudValidationException {
         CappingLimit requestObj = RequestUtils.createObjectFromRequest(request, new CappingLimit());
-        validate(request);
+        ValidationHelper.validate(request);
         return cappingLimitsDao.fetchCappingInformation(requestObj);
-    }
-
-    private void validate(Object request) throws CrudValidationException {
-        List<SchemaValidationError> validationErrors = FormValidation.validate(request, "");
-        if (!validationErrors.isEmpty()) {
-            throw new CrudValidationException(validationErrors);
-        }
     }
 
 }
