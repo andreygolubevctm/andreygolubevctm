@@ -151,7 +151,7 @@
             } else {
                 startStepId = meerkat.site.journeyStage;
             }
-        } else if (meerkat.site.utm_medium === 'email') {
+        } else if (_.indexOf(['email', 'livechat'], meerkat.site.utm_medium) >= 0) {
             startStepId = 'results';
         }
 
