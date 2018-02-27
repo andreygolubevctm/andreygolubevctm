@@ -127,8 +127,6 @@
 
         <div id="pageContent">
 
-                <%-- <div id="pageContentTop"></div> --%>
-
             <article class="container">
 
                 <div id="journeyEngineContainer">

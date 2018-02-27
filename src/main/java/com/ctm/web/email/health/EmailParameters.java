@@ -27,7 +27,7 @@ public class EmailParameters implements Comparable<EmailParameters> {
 
     @Override
     public int compareTo(EmailParameters that) {
-        if(StringUtils.isNotBlank(this.getPremium()) && StringUtils.isNotBlank(premium)) {
+        if(StringUtils.isNotBlank(this.getPremium()) && StringUtils.isNotBlank(that.getPremium())) {
             Integer thisPremium = Integer.parseInt(this.getPremium());
             Integer thatPremium = Integer.parseInt(that.getPremium());
             if(thisPremium > thatPremium) return 1;

@@ -481,15 +481,24 @@
 
     function toggleBenefitsDialogue() {
         var $hospitalScripts = $('.simples-dialogue-hospital-cover'),
-            $extrasScripts = $('.simples-dialogue-extras-cover');
+            $hospitalNonPublic = $hospitalScripts.filter('.classification-nonPublic'),
+            $hospitalPublic = $hospitalScripts.filter('.classification-public'),
+            $extrasScripts = $('.simples-dialogue-extras-cover'),
+            selectedProduct = Results.getSelectedProduct(),
+            isHospitalPublic = !_.isUndefined(selectedProduct) && _.has(selectedProduct, 'hospital') &&
+                _.has(selectedProduct.hospital, 'ClassificationHospital') && selectedProduct.hospital.ClassificationHospital === 'Public';
 
         switch ($healthSitCoverType.find('input:checked').val().toLowerCase()) {
             case 'c':
                 $hospitalScripts.show();
+                $hospitalNonPublic.toggleClass('hidden', isHospitalPublic);
+                $hospitalPublic.toggleClass('hidden', !isHospitalPublic);
                 $extrasScripts.show();
                 break;
             case 'h':
                 $hospitalScripts.show();
+                $hospitalNonPublic.toggleClass('hidden', isHospitalPublic);
+                $hospitalPublic.toggleClass('hidden', !isHospitalPublic);
                 $extrasScripts.hide();
                 break;
             case 'e':
@@ -512,7 +521,9 @@
     }
 
     function toggleLimitedCoverDialogue() {
-        $privatePatientDialogue.toggleClass('hidden', $limitedCoverHidden.val() !== 'Y');
+        var _toggle = $limitedCoverHidden.val() === 'N' || ($limitedCoverHidden.val() === 'Y' && _isHospitalPublic() === false);
+
+        $privatePatientDialogue.toggleClass('hidden', _toggle);
     }
 
     function toggleMoreInfoDialogue() {
@@ -538,6 +549,13 @@
         }
     }
 
+    function _isHospitalPublic() {
+        var selectedProduct = Results.getSelectedProduct();
+
+        return (!_.isUndefined(selectedProduct) && _.has(selectedProduct, 'hospital') &&
+                _.has(selectedProduct.hospital, 'ClassificationHospital') && selectedProduct.hospital.ClassificationHospital === 'Public');
+    }
+
     meerkat.modules.register("simplesBindings", {
         init: init,
         updateSimplesMedicareCoverQuestionPosition: updateSimplesMedicareCoverQuestionPosition,
@@ -546,7 +564,8 @@
         toggleMoreInfoDialogue: toggleMoreInfoDialogue,
         toggleAffiliateRewardsDialogue: toggleAffiliateRewardsDialogue,
         getCallType: getCallType,
-        togglePricePromisePromoDialogue: togglePricePromisePromoDialogue
+        togglePricePromisePromoDialogue: togglePricePromisePromoDialogue,
+        toggleBenefitsDialogue: toggleBenefitsDialogue
     });
 
 })(jQuery);

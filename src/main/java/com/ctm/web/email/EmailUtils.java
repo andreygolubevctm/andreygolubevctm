@@ -81,6 +81,14 @@ public class EmailUtils {
         return null;
     }
 
+    public static String getStringData(Data data, String xPath) throws ClassCastException{
+        return (String) data.get(xPath);
+    }
+
+    public static List getListData(Data data, String xPath) throws ClassCastException{
+        return (ArrayList) data.get(xPath);
+    }
+
     public String getParamFromXml(String xml, String param, String baseUri){
         try {
             Document document = Jsoup.parse(xml, baseUri, Parser.xmlParser());

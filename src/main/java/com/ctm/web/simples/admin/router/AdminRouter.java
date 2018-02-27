@@ -6,6 +6,8 @@ import com.ctm.web.core.services.CrudService;
 import com.ctm.web.simples.admin.dao.CappingLimitsDao;
 import com.ctm.web.simples.admin.services.AdminProviderContentService;
 import com.ctm.web.simples.admin.services.CappingLimitsService;
+import com.ctm.web.simples.admin.services.HealthProductCappingService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,14 +28,17 @@ public class AdminRouter {
     private final HttpServletResponse response;
     private final CrudRouter crudRouter;
     private final IPAddressHandler ipAddressHandler;
+    private ObjectMapper objectMapper;
     CrudService crudService = null;
     //mention your Interface name here that has been used in CMS URL
+    private static final String PRODUCT_CAPPING_LIMIT = "productCappingLimits";
     private static final String CAPPING_LIMIT = "cappingLimits";
     private static final String PROVIDER_CONTENT = "providerContent";
 
-    public AdminRouter(HttpServletRequest request , HttpServletResponse response, IPAddressHandler ipAddressHandler) {
+    public AdminRouter(HttpServletRequest request, HttpServletResponse response, IPAddressHandler ipAddressHandler, ObjectMapper objectMapper) {
         this.response= response;
         this.ipAddressHandler = ipAddressHandler;
+        this.objectMapper = objectMapper;
         this.crudRouter = new CrudRouter(request ,  response);
     }
 
@@ -46,6 +51,10 @@ public class AdminRouter {
         PrintWriter writer = response.getWriter();
         try {
             switch(getInterfaceName(uri)){
+                case PRODUCT_CAPPING_LIMIT:
+                    HealthProductCappingService productCappingService = new HealthProductCappingService(writer, objectMapper, crudRouter);
+                    productCappingService.routePostRequest(getAction(uri));
+                    break;
                 case CAPPING_LIMIT:
                         crudService = new CappingLimitsService(new CappingLimitsDao());
                         crudRouter.routePostRequest(writer, getAction(uri), crudService);
@@ -72,6 +81,10 @@ public class AdminRouter {
         PrintWriter writer = response.getWriter();
         try {
             switch(getInterfaceName(uri)){
+                case PRODUCT_CAPPING_LIMIT:
+                    HealthProductCappingService productCappingService = new HealthProductCappingService(writer, objectMapper, crudRouter);
+                    productCappingService.routeGetRequest(getAction(uri));
+                    break;
                 case CAPPING_LIMIT:
                     crudService = new CappingLimitsService(new CappingLimitsDao());
                     crudRouter.routGetRequest(writer, getAction(uri), crudService);
@@ -81,7 +94,7 @@ public class AdminRouter {
                     crudRouter.routGetRequest(writer, getAction(uri), crudService);
                     break;
                 default:
-                    response.sendError(SC_NOT_FOUND);
+                    response.sendError(SC_NOT_FOUND );
             }
         } catch (Exception e) {
             LOGGER.error("Admin get request failed", kv("uri", uri), e);

@@ -42,57 +42,54 @@ public class CappingLimitsDao {
             }
         };
         return cappingLimitInformationDao.getList(databaseMapping,
-                "(SELECT 1                              AS isCurrent, \n" +
-                        "        pp.providerId, \n" +
-                        "        pm.Name                        AS providerName, \n" +
-                        "        pp.PropertyId, \n" +
-                        "        sequenceNo, \n" +
-                        "        Text                           AS cappingAmount, \n" +
-                        "        if(curDate() between pp.EffectiveStart and pp.EffectiveEnd , IFNULL(sc.currentJoinCount, 0) ,0 ) AS currentJoinCount , \n" +
-                        "        pp.effectiveStart, \n" +
-                        "        pp.effectiveEnd, \n" +
-                        "        pp.Status \n" +
-                        " FROM   ctm.provider_properties pp \n" +
-                        "        LEFT JOIN (SELECT 'MonthlyLimit' AS PropertyId, \n" +
-                        "                          msc.currentJoinCount, \n" +
-                        "                          msc.providerId \n" +
-                        "                   FROM   ctm.vw_monthlySalesCount msc \n" +
-                        "                   UNION ALL \n" +
-                        "                   SELECT 'DailyLimit' AS PropertyId, \n" +
-                        "                          dsc.currentJoinCount, \n" +
-                        "                          dsc.providerId \n" +
-                        "                   FROM   ctm.vw_dailySalesCount dsc) AS sc \n" +
-                        "               ON pp.EffectiveEnd >= curDate() \n" +
-                        "                  AND sc.providerId = pp.ProviderId \n" +
-                        "                  AND sc.PropertyId = pp.PropertyId \n" +
-                        "        INNER JOIN ctm.provider_master pm \n" +
-                        "                ON pm.ProviderId = pp.ProviderId \n" +
-                        " WHERE  pp.propertyId IN ( 'DailyLimit', 'MonthlyLimit' ) \n" +
-                        "        AND pp.EffectiveEnd >= curDate() \n" +
-                        " ORDER  BY pp.ProviderId, \n" +
-                        "           pp.PropertyId) \n" +
-                        "UNION ALL \n" +
-                        "(SELECT 0       AS isCurrent, \n" +
-                        "        pp.ProviderId, \n" +
-                        "        pm.Name AS providerName, \n" +
-                        "        pp.PropertyId, \n" +
-                        "        sequenceNo, \n" +
-                        "        Text    AS cappingAmount, \n" +
-                        "        0       AS currentJoinCount, \n" +
-                        "        pp.EffectiveStart, \n" +
-                        "        pp.EffectiveEnd, \n" +
-                        "        pp.Status \n" +
-                        " FROM   ctm.provider_properties pp \n" +
-                        "        INNER JOIN ctm.provider_master pm \n" +
-                        "                ON pm.providerID = pp.providerID \n" +
-                        " WHERE  pp.propertyId IN ( 'DailyLimit', 'MonthlyLimit' ) \n" +
-                        "        AND pp.EffectiveStart > DATE_ADD(NOW(), INTERVAL -15 MONTH) \n" +
-                        "        AND pp.EffectiveEnd <= curDate() \n" +
-                        " ORDER  BY providerName, \n" +
-                        "           pp.PropertyId, \n" +
-                        "           pp.EffectiveStart, \n" +
-                        "           pp.EffectiveEnd \n" +
-                        " LIMIT  999)  "); /* This limit isnt actually needed however without it the above ORDER BY clauses break */
+                "SELECT *\n" +
+                        "FROM (\n" +
+                        "        (SELECT 1 AS isCurrent,\n" +
+                        "                pp.providerId,\n" +
+                        "                pm.Name AS providerName,\n" +
+                        "                pp.PropertyId,\n" +
+                        "                sequenceNo,\n" +
+                        "                Text AS cappingAmount,\n" +
+                        "                if(curDate() BETWEEN pp.EffectiveStart AND pp.EffectiveEnd , IFNULL(sc.currentJoinCount, 0) ,0) AS currentJoinCount ,\n" +
+                        "                pp.effectiveStart,\n" +
+                        "                pp.effectiveEnd,\n" +
+                        "                pp.Status\n" +
+                        "         FROM ctm.provider_properties pp\n" +
+                        "         LEFT JOIN\n" +
+                        "           (SELECT 'MonthlyLimit' AS PropertyId,\n" +
+                        "                   msc.currentJoinCount,\n" +
+                        "                   msc.providerId\n" +
+                        "            FROM ctm.vw_monthlySalesCount msc\n" +
+                        "            UNION ALL SELECT 'DailyLimit' AS PropertyId,\n" +
+                        "                             dsc.currentJoinCount,\n" +
+                        "                             dsc.providerId\n" +
+                        "            FROM ctm.vw_dailySalesCount dsc) AS sc ON pp.EffectiveEnd >= curDate()\n" +
+                        "         AND sc.providerId = pp.ProviderId\n" +
+                        "         AND sc.PropertyId = pp.PropertyId\n" +
+                        "         INNER JOIN ctm.provider_master pm ON pm.ProviderId = pp.ProviderId\n" +
+                        "         WHERE pp.propertyId IN ('DailyLimit',\n" +
+                        "                                 'MonthlyLimit')\n" +
+                        "           AND pp.EffectiveEnd >= curDate())\n" +
+                        "      UNION ALL\n" +
+                        "        (SELECT 0 AS isCurrent,\n" +
+                        "                pp.ProviderId,\n" +
+                        "                pm.Name AS providerName,\n" +
+                        "                pp.PropertyId,\n" +
+                        "                sequenceNo,\n" +
+                        "                Text AS cappingAmount,\n" +
+                        "                0 AS currentJoinCount,\n" +
+                        "                pp.EffectiveStart,\n" +
+                        "                pp.EffectiveEnd,\n" +
+                        "                pp.Status\n" +
+                        "         FROM ctm.provider_properties pp\n" +
+                        "         INNER JOIN ctm.provider_master pm ON pm.providerID = pp.providerID\n" +
+                        "         WHERE pp.propertyId IN ('DailyLimit',\n" +
+                        "                                 'MonthlyLimit')\n" +
+                        "           AND pp.EffectiveStart > DATE_ADD(NOW(), INTERVAL -15 MONTH)\n" +
+                        "           AND pp.EffectiveEnd <= curDate())) capped_data\n" +
+                        "ORDER BY capped_data.isCurrent DESC,\n" +
+                        "         capped_data.providerName,\n" +
+                        "         capped_data.effectiveEnd DESC;");
 
     }
 
