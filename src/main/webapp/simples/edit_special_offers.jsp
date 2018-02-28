@@ -129,7 +129,10 @@
 			<c:forEach items="${brands}" var="brand">
 				{ value: ${brand.getId()}, text: "${brand.getName()}" },
 			</c:forEach>
-		];
+		],
+		offerTypes = {
+	    	awardScheme: 'Award Scheme'
+		};
 </script>
 
 <script id="special-offers-modal-template" class="crud-modal-template" type="text/html">
@@ -262,7 +265,7 @@
 			{{= data.styleCode }}
 		</div>
 		<div class="col-lg-1">
-			{{= data.offerType }}
+			{{= offerTypes[data.offerType] }}
 		</div>
 		<div class="col-lg-1">
 			{{= new Date(data.effectiveStart).toLocaleDateString('en-GB') }}
