@@ -63,7 +63,7 @@
             };
 
             $.ajax({
-                url: 'common/js/health/healthFunds_' + fund + '.jsp' + (!_.isEmpty(meerkat.site.urlStyleCodeId) && meerkat.site.urlStyleCodeId === "wfdd" ? '?brandCode=' + meerkat.site.urlStyleCodeId : ""),
+                url: 'common/js/health/healthFunds_' + fund + '.jsp' + (!_.isEmpty(meerkat.site.urlStyleCodeId) && (meerkat.site.urlStyleCodeId === "wfdd" || meerkat.site.urlStyleCodeId === "bddd") ? '?brandCode=' + meerkat.site.urlStyleCodeId : ""),
                 dataType: 'script',
                 data: data,
                 async: true,
