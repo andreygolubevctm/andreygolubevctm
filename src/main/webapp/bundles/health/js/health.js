@@ -580,7 +580,7 @@
                     * TODO: may actually prevent contact details from being stored - if so the optInEmail stuff in healthFunds_WFD.jsp may need to be reversed too!
                     * previously was forcing #health_contactDetails_optInEmail to 'N' but have since rolled it back due to this
                     * *********************************************************************************************************************************************** */
-                    if (meerkat.site.tracking.brandCode == 'wfdd') {
+                    if (meerkat.site.tracking.brandCode == 'wfdd' || meerkat.site.tracking.brandCode == 'bddd') {
 
                         contactDtlsEmailEventHandle = meerkat.messaging.subscribe(meerkat.modules.events.contactDetails.email.FIELD_CHANGED, function (fieldDetails) {
 							if (fieldDetails.$field.attr('name') === 'health_application_email') {
@@ -604,7 +604,7 @@
 				adjustLayout();
 			},
             onBeforeLeave: function beforeLeaveApplyStep(event) {
-                if (meerkat.site.tracking.brandCode == 'wfdd') {
+                if (meerkat.site.tracking.brandCode == 'wfdd' || meerkat.site.tracking.brandCode == 'bddd') {
                     meerkat.messaging.unsubscribe(meerkat.modules.events.contactDetails.email.FIELD_CHANGED, contactDtlsEmailEventHandle);
                 }
             }
