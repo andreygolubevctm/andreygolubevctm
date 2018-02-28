@@ -73,7 +73,7 @@ public class EmailController {
 
             emailClient.send(emailRequest);
         } catch (Exception e) {
-            LOGGER.error("Exception while creating email request for marketing automation service", e);
+            LOGGER.error(String.format("Unable to send email request for marketing automation service - Exception (%1$s): %2$s", e.getClass(), e.getMessage()));
         }
     }
 
