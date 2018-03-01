@@ -64,18 +64,6 @@ var healthFunds_BUD = {
             }
         });
 
-        <%--
-        if (meerkat.site.tracking.brandCode == 'bddd') {
-            < %- - May need to add remove additional properties from this field see onChangeNoEmailChkBox for example - - % >
-            $('#health_application_optInEmail-group').css('display', 'none');
-            $('#applicationForm_1').append('<input type="hidden" name="health_application_optInEmail" value="N" />');
-            $('#health_application_noEmailGroup').css('display', 'block');
-
-            //onChangeNoEmailChkBox();
-            // $("#health_application_no_email").on("click.BUD",function() {onChangeNoEmailChkBox();});
-        }
-        --%>
-
 		<%-- Unset the refund optin radio buttons --%>
 		healthFunds_BUD.$claimsAccountOptin.find("input:checked").each(function(){
 		  $(this).prop("checked",null).trigger("change");
@@ -111,14 +99,6 @@ var healthFunds_BUD = {
 		messageField.text(messageText);
 	},
 	unset: function(){
-
-	    <%--
-        if (meerkat.site.tracking.brandCode == 'bddd') {
-            healthFunds_BUD.$paymentFrequency.off('change.BUD');
-            $('input[type="hidden"][name="health_application_optInEmail"]').remove();
-            $('#health_application_optInEmail-group').css('display', 'block');
-        }
-        --%>
 
         meerkat.modules.healthFunds._reset();
 
