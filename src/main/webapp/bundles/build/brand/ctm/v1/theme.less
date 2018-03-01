@@ -1584,14 +1584,16 @@ select.text-placeholder-color {
 	.simples-dialogue-77,
 	.simples-dialogue-87,
 	.simples-dialogue-104 {
-		padding-top: 0 !important;
-		padding-bottom: 0 !important;
-		margin-bottom: 0 !important;
+		&.simples-dialogue {
+			padding-top: 0;
+			padding-bottom: 0;
+			margin-bottom: 0;
 
-		&+.add-to-cli-filter {
-			padding-top: 0 !important;
-			padding-bottom: 0 !important;
-			margin-top: 0 !important;
+			& + .add-to-cli-filter {
+				padding-top: 0;
+				padding-bottom: 0;
+				margin-top: 0;
+			}
 		}
 	}
 
