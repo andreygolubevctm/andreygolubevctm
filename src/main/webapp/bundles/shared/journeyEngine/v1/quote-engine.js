@@ -353,7 +353,7 @@ QuoteEngine = {
 
         return $.ajax({
             type: 'POST',
-            url: "logging/validation.json" + (!_.isEmpty(meerkat.site.urlStyleCodeId) && (meerkat.site.urlStyleCodeId === "wfdd" || meerkat.site.urlStyleCodeId === "bddd") ? "?brandCode=" + meerkat.site.urlStyleCodeId : ""),
+            url: "logging/validation.json" + (!_.isEmpty(meerkat.site.urlStyleCodeId) && (_.indexOf(["wfdd", "bddd"], meerkat.site.urlStyleCodeId) >= 0) ? "?brandCode=" + meerkat.site.urlStyleCodeId : ""),
             data: data,
             dataType: 'json',
             cache: true
