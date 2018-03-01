@@ -116,7 +116,7 @@
 
             // Init the main Results object
             Results.init({
-                url: healthQuoteResultsUrl + (!_.isEmpty(meerkat.site.urlStyleCodeId) && (meerkat.site.urlStyleCodeId === "wfdd" || meerkat.site.urlStyleCodeId === "bddd") ? "?brandCode=" + meerkat.site.urlStyleCodeId : ""),
+                url: healthQuoteResultsUrl + (!_.isEmpty(meerkat.site.urlStyleCodeId) && (_.indexOf(["wfdd", "bddd"], meerkat.site.urlStyleCodeId) >= 0) ? "?brandCode=" + meerkat.site.urlStyleCodeId : ""),
                 runShowResultsPage: false, // Don't let Results.view do it's normal thing.
                 paths: {
                     results: {
