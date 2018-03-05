@@ -26,8 +26,18 @@
 			<c:set var="control_label_makeHidden" value="Resume Recording" />
 		</c:if>
 
-		<div class="agg_privacy" id="${name}">
+		<c:set var="previousTransactionId" value="${data['current/previousTransactionId']}" />
+		<c:set var="paymentDetailsType" value="${data['health/payment/details/type']}" />
+
+		<jsp:useBean id="touchService" class="com.ctm.web.core.services.AccessTouchService" scope="request" />
+		<c:set var="hasTouchF" value="${touchService.touchCheck(previousTransactionId, 'F')}" scope="request"  />
+
+		<div class="agg_privacy<c:if test="${hasTouchF eq true}"> has-field-values-${paymentDetailsType}</c:if>" id="${name}">
 			<button class="agg_privacy_button btn btn-save"><span>${control_label_makeVisible}</span></button>
+
+			<c:if test="${hasTouchF eq true}">
+				<span class="payment-complete-text">Payment details are complete</span>
+			</c:if>
 
 			<div class="agg_privacy_container invisible">
 				<jsp:doBody />

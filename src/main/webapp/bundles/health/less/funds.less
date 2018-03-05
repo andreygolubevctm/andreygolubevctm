@@ -74,6 +74,24 @@ body.health_payment_gateway-active #health_payment_gateway-content {
 	display: none;
 }
 
+.agg_privacy {
+	&.has-field-values-cc {
+		.payment-complete-text {
+			display: none;
+		}
+	}
+}
+
+.agg-privacy-cc-has-values-styles() {
+	.agg_privacy {
+		&.has-field-values-cc {
+			background-color: @alert-success-bg;
+			.payment-complete-text {
+				display: block;
+			}
+		}
+	}
+}
 
 /* HEALTH FUND SPECIFIC CSS CODES */
 body{
@@ -126,6 +144,8 @@ body{
 	  	.health_contact_authority{
 		  display:none !important;
 		}
+
+		.agg-privacy-cc-has-values-styles();
 	}
 
 	/* MYO */
@@ -184,6 +204,8 @@ body{
 		.health_payment_bank-details_policyDay-group label {
 			visibility:hidden !important;
 		}
+
+		.agg-privacy-cc-has-values-styles();
 	}
 
 	/* FRANK */
@@ -330,10 +352,12 @@ body{
 		.health-credit_card_details .fieldrow.nestedGroup,
 		.health-credit_card_details .payment_assurance_message {
 			display: block !important;
-	}
+		}
 		.health_contact_authority{
 		  display:none !important;
 		}
+
+		.agg-privacy-cc-has-values-styles();
 	}
 
 
@@ -370,6 +394,8 @@ body{
 	.health_contact_authority{
 	  display: block;
 	}
+
+  	.agg-privacy-cc-has-values-styles();
   }
 
 
@@ -390,6 +416,8 @@ body{
 		.health_contact_authority{
 			display:none !important;
 		}
+
+
 	}
 
 	/* AUF */
@@ -552,6 +580,8 @@ body{
 		.health_contact_authority{
 		  display:none !important;
 		}
+
+		.agg-privacy-cc-has-values-styles();
 	}
 
 
@@ -618,6 +648,8 @@ body{
 			font-family: @font-family-theme-bold;
 			margin-top: 1em;
 		}
+
+		.agg-privacy-cc-has-values-styles();
 	}
 
 	/* THF */
@@ -689,6 +721,7 @@ body{
 		.health_contact_authority{
 		  display: block;
 		}
+		.agg-privacy-cc-has-values-styles();
 	}
   	&.HCF {
 		.health_payment_credit-details_paymentDay_group,
@@ -776,6 +809,7 @@ body{
 		.health_bank-details_claims_group {
 			display: block !important;
 		}
+		.agg-privacy-cc-has-values-styles();
 	}
 }
 
