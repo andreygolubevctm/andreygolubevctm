@@ -1,6 +1,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ tag description="Your Details group"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
+<jsp:useBean id="financialYearUtils" class="com.ctm.web.health.utils.FinancialYearUtils" />
 
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath" 		required="true"	 rtexprvalue="true"	 description="field group's xpath" %>
@@ -13,6 +14,9 @@
 
 <c:set var="val_optin"				value="Y" />
 <c:set var="val_optout"				value="N" />
+
+<%-- Calculate the year for continuous cover - changes on 1st July each year --%>
+<c:set var="continuousCoverYear" value="${financialYearUtils.getContinuousCoverYear()}" />
 
 <%-- Vars for competition --%>
 <c:set var="competitionEnabledSetting"><content:get key="competitionEnabled"/></c:set>
@@ -128,7 +132,7 @@
             </form_v3:row>
 
             <c:set var="fieldXpath" value="${xpath}/primary/healthCoverLoading" />
-            <form_v3:row label="Have you had continuous Hospital cover for the last 10 years/since 1st July of turning 31?" fieldXpath="${fieldXpath}" id="health-continuous-cover-primary" className="health-your_details-opt-group text-danger" helpId="239">
+            <form_v3:row label="Have you had continuous Hospital cover for the last 10 years/since 1st July of turning 31?" fieldXpath="${fieldXpath}" id="health-continuous-cover-primary" className="health-your_details-opt-group text-danger"  helpId="239" helpReplaceText='{{year}},${continuousCoverYear}'>
                 <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your health cover loading" required="true" id="${name}_health_cover_loading" className="loading"/>
             </form_v3:row>
 
@@ -157,7 +161,7 @@
             </form_v3:row>
 
             <c:set var="fieldXpath" value="${xpath}/partner/healthCoverLoading" />
-            <form_v3:row label="Has your partner had continuous Hospital cover for the last 10 years/since 1st July of turning 31?" fieldXpath="${fieldXpath}" id="health-continuous-cover-partner" className="health-your_details-opt-group text-danger" helpId="239">
+            <form_v3:row label="Has your partner had continuous Hospital cover for the last 10 years/since 1st July of turning 31?" fieldXpath="${fieldXpath}" id="health-continuous-cover-partner" className="health-your_details-opt-group text-danger" helpId="239" helpReplaceText='{{year}},${continuousCoverYear}'>
                 <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your partner's health cover loading" required="true" id="${name}_partner_health_cover_loading" className="loading"/>
             </form_v3:row>
 
