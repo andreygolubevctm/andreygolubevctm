@@ -367,6 +367,7 @@
 				webChatHideFields();
 				incrementTranIdBeforeEnteringSlide();
 
+				meerkat.modules.healthContactType.togglePhoneEmailRequired();
 			},
 			onAfterEnter: function enteredContactStep(event) {
 			},
