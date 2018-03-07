@@ -7,6 +7,7 @@ import com.ctm.web.core.dao.SqlDao;
 import com.ctm.web.core.dao.SqlDaoFactory;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.transaction.model.TransactionDetail;
+import com.ctm.healthcommon.security.HealthSecurity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,13 @@ public class TransactionDetailsDao {
 
 	private final SqlDaoFactory sqlDaoFactory;
 
+	public static final String DESCRIPTION = "infoDes";
+
+	private static final String SECURE_XPATH_KEY = "xCaSdPTgv-@Ss8@C&3Bns6A_F$t^k34nCSK#7B+wHuQ_Yr2%";
+	private static HealthSecurity XPATH_SECURITY = null;
+	// Don't panic - this is shortterm solution. The intention is to re-work this using AWS
+	// so that key rolling is available.
+
     /**
 	 * Constructor
 	 */
@@ -51,14 +59,33 @@ public class TransactionDetailsDao {
 		jdbcTemplate = new NamedParameterJdbcTemplate(SimpleDatabaseConnection.getDataSourceJdbcCtm());
 	}
 
-	public static final String DESCRIPTION = "infoDes";
-
 
 	@Autowired
 	@SuppressWarnings("SpringJavaAutowiringInspection")
 	public TransactionDetailsDao(final NamedParameterJdbcTemplate jdbcTemplate, SqlDaoFactory sqlDaoFactory) {
         this.sqlDaoFactory = sqlDaoFactory;
 		this.jdbcTemplate = jdbcTemplate;
+	}
+
+	/**
+	 * initialiseSecureString setup object which provides methods to encrypt/decrypt strings.
+	 */
+	private static void initialiseXpathSecurity() {
+		if(!hasXpathSecurity()) {
+			try {
+				XPATH_SECURITY = new HealthSecurity(SECURE_XPATH_KEY);
+			} catch (Exception e) {
+				LOGGER.error("[xpath security] Failed to initialise HealthSecurity: {}", e.getMessage(), e);
+			}
+		}
+	}
+
+	/**
+	 * hasSecureString confirms HealthSecurity has been instantiated.
+	 * @return
+	 */
+	private static boolean hasXpathSecurity() {
+		return XPATH_SECURITY != null && XPATH_SECURITY instanceof HealthSecurity;
 	}
 
     /**
@@ -114,6 +141,8 @@ public class TransactionDetailsDao {
 
 			if(!hasCheckedPrivacyOptin) {
 				paramValue = maskPrivateFields(xpath, paramValue);
+			} else {
+				paramValue = encryptBlacklistFields(xpath, paramValue);
 			}
 
 			try {
@@ -147,13 +176,76 @@ public class TransactionDetailsDao {
 		}
 		return paramValue;
 	}
+
+	/**
+	 * Decrypt private data fields.
+	 * @param xpath
+	 * @param paramValue
+	 * @return String paramValue masked or not masked.
+	 */
+	public static String decryptBlacklistFields(String xpath, String paramValue) {
+		initialiseXpathSecurity();
+		if(hasXpathSecurity()) {
+			if (isEncryptableInfo(xpath) && looksEncrypted(paramValue)) {
+				try {
+					return XPATH_SECURITY.decrypt(paramValue);
+				} catch (Exception e) {
+					LOGGER.error("[xpath security] Failed to decrypt xpath {} so defaulting to empty string: {}", xpath, e.getMessage(), e);
+				}
+			}
+		}
+		return paramValue;
+	}
+
+	/**
+	 * Encrypt private data fields.
+	 * @param xpath
+	 * @param paramValue
+	 * @return String paramValue masked or not masked.
+	 */
+	public static String encryptBlacklistFields(String xpath, String paramValue) {
+		initialiseXpathSecurity();
+		if(hasXpathSecurity()) {
+			if (isEncryptableInfo(xpath) && !looksEncrypted(paramValue)) {
+				try {
+					return XPATH_SECURITY.encrypt(paramValue);
+				} catch (Exception e) {
+					LOGGER.error("[xpath security] Failed to encrypt xpath {} so defaulting to empty string: {}", xpath, e.getMessage(), e);
+				}
+			}
+		}
+		return paramValue;
+	}
+
+	/**
+	 * looksEncrypted does a sanity check to confirm whether the value is already encrypted
+	 * @param value
+	 * @return
+	 */
+	public static boolean looksEncrypted(String value) {
+		return value != null && !value.isEmpty() && value.matches("^\\S+(=){2}(:){1}\\S+(=){2}$");
+	}
+
 	/**
 	 * Blacklist of xpaths to NEVER store in transaction details
 	 * @param xpath
 	 * @return true if is blacklisted
 	 */
 	public static boolean isPersonallyIdentifiableInfo(String xpath) {
-		for(String xpathToCheck : PrivacyBlacklist.PERSONALLY_IDENTIFIABLE_INFORMATION_BLACKLIST) {
+		for (String xpathToCheck : PrivacyBlacklist.PERSONALLY_IDENTIFIABLE_INFORMATION_BLACKLIST) {
+			if (xpath.contains(xpathToCheck)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	/**
+	 * Blacklist of xpaths that must be encrypted to store in transaction details
+	 * @param xpath
+	 * @return true if is blacklisted
+	 */
+	public static boolean isEncryptableInfo(String xpath) {
+		for(String xpathToCheck : PrivacyBlacklist.MANDATORY_ENCRYPTION_BLACKLIST) {
 			if(xpath.contains(xpathToCheck)) {
 				return true;
 			}

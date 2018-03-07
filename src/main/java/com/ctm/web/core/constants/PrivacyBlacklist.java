@@ -15,13 +15,26 @@ public final class PrivacyBlacklist {
 			"credit/ccv",
 			"maskedNumber", // payment_ipp
 			"credit/number",
-			"bank/number",
-			"claim/number",
+			//"bank/number",
+			//"claim/number",
 			"password",
 			"save/confirm",
 			// necessary for write quote lite, but don't want to save.
 			"hasPrivacyOptin"
 	};
+
+	/**
+	 * These fields should must be encrypted when stored in any logs or transaction details.
+	 */
+	public static final String[] MANDATORY_ENCRYPTION_BLACKLIST  = new String[]{
+			"medicare/number",
+			"bank/number",
+			"claim/number",
+			"gateway/number",
+			"gateway/nab/cardNumber",
+			"credit/ipp/tokenisation"
+	};
+
 	/**
 	 * Fields in the journey that contain personally identifiable information.
 	 * This should be updated as part of journey development.
