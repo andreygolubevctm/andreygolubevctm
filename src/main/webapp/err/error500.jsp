@@ -12,6 +12,8 @@
     ${logger.error('Error Page Hit. {},{}' ,  log:kv('requestUri', requestUri) , log:kv('brandCode',brandCode ), pageContext.exception)}
 </c:catch>
 
+<c:set var="referer"><%=request.getHeader("Referer")%></c:set>
+
 <c:choose>
     <c:when test="${not empty error}">
         <h1>Whoops, sorry... 500 Internal server error. Looks like something went wrong.</h1>
@@ -55,24 +57,35 @@
 
                     <div role="form" class="journeyEngineSlide active unsubscribeForm">
                         <layout_v1:slide_center xsWidth="12" mdWidth="10">
-                            <h1 class="error_title">Whoops, sorry... 500 Internal server error </h1>
 
-                            <div class="error_message">
-                                <h2>looks like something went wrong.</h2>
+                            <c:choose>
+                                <c:when test="${fn:contains('health_quote', $referer)}">
+                                    <c:set var="errorPageHTML">
+                                        <content:get key="ErrorPageHTML" />
+                                    </c:set>
+                                    ${fn:replace(errorPageHTML,'[[error_code]]','500')}
+                                </c:when>
+                                <c:otherwise>
+                                    <h1 class="error_title">Whoops, sorry... 500 Internal server error </h1>
 
-                                <p>You have experienced a technical error. We apologise. </p>
+                                    <div class="error_message">
+                                        <h2>looks like something went wrong.</h2>
 
-                                <c:choose>
-                                    <c:when test="${pageSettings.getBrandCode() != 'ctm'}">
-                                        <p>We are working to correct this issue. Please wait a few moments and try again, or continue browsing our comparison services below.</p>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <p>We are working to correct this issue. Please wait a few moments and try again, or continue browsing our range of comparison services below.</p>
-                                    </c:otherwise>
-                                </c:choose>
-                            </div>
+                                        <p>You have experienced a technical error. We apologise. </p>
 
-                            <confirmation:other_products/>
+                                        <c:choose>
+                                            <c:when test="${pageSettings.getBrandCode() != 'ctm'}">
+                                                <p>We are working to correct this issue. Please wait a few moments and try again, or continue browsing our comparison services below.</p>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <p>We are working to correct this issue. Please wait a few moments and try again, or continue browsing our range of comparison services below.</p>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </div>
+                                    <confirmation:other_products/>
+                                </c:otherwise>
+                            </c:choose>
+
                         </layout_v1:slide_center>
                     </div>
 
