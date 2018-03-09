@@ -120,3 +120,18 @@
 		{{ } }}
 	</div>
 </core_v1:js_template>
+
+<core_v1:js_template id="dual-pricing-application-xs-template">
+	<div class="dual-pricing-container {{ if (obj.dropDatePassed === true) { }}dropDatePassed{{ } }}">
+		<div class="current-pricing">
+			{{= renderedPriceTemplate }}
+		</div>
+		<hr />
+		{{ if (showAltPremium) { }}
+		<div class="april-pricing">
+			<p>Premiums ${april1HeaderNoSup}</p>
+			{{= renderedAltPriceTemplate }}
+		</div>
+		{{ } }}
+	</div>
+</core_v1:js_template>
