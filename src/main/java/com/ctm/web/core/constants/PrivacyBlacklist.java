@@ -79,11 +79,13 @@ public final class PrivacyBlacklist {
 			"autofilllessSearch", // Elastic search input
 			"lastSearch",
 			/**
-			 * Bank details
+			 * Bank details / payment gateway
 			 */
 			"/account",
 			"/bsb",
 			"/number",
+			"gateway",
+			"token",
 			/**
 			 * School
 			 */

@@ -184,17 +184,34 @@ public class TransactionDetailsDao {
 	 * @return String paramValue masked or not masked.
 	 */
 	public static String decryptBlacklistFields(String xpath, String paramValue) {
-		initialiseXpathSecurity();
-		if(hasXpathSecurity()) {
-			if (isEncryptableInfo(xpath) && looksEncrypted(paramValue)) {
-				try {
-					return XPATH_SECURITY.decrypt(paramValue);
-				} catch (Exception e) {
-					LOGGER.error("[xpath security] Failed to decrypt xpath {} so defaulting to empty string: {}", xpath, e.getMessage(), e);
+		return decryptBlacklistFields(true, xpath, paramValue);
+	}
+
+	/**
+	 * Decrypt private data fields.
+	 * @param isOperator
+	 * @param xpath
+	 * @param paramValue
+	 * @return String paramValue masked or not masked.
+	 */
+	public static String decryptBlacklistFields(boolean isOperator, String xpath, String paramValue) {
+		String returnValue = paramValue;
+		if(isEncryptableInfo(xpath)) {
+			returnValue = "";
+			if(isOperator) {
+				initialiseXpathSecurity();
+				if (hasXpathSecurity()) {
+					if (looksEncrypted(paramValue)) {
+						try {
+							returnValue = XPATH_SECURITY.decrypt(paramValue);
+						} catch (Exception e) {
+							LOGGER.error("[xpath security] Failed to decrypt xpath {} so defaulting to empty string: {}", xpath, e.getMessage(), e);
+						}
+					}
 				}
 			}
 		}
-		return paramValue;
+		return returnValue;
 	}
 
 	/**
