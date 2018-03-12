@@ -387,10 +387,6 @@
                 meerkat.modules.benefitsSwitch.switchOffHospitalFilters();
             }
         });
-
-        $(document).on('click', 'input[name=health_filterBar_benefitsExtras]', function () {
-            _toggleFiltersExtrasMessage();
-        });
     }
 
     function toggleFilterByContainer($filter, toggle) {
@@ -514,7 +510,6 @@
         meerkat.messaging.subscribe(meerkatEvents.benefitsSwitch.FILTERS_SWITCH_CHANGED, function (e) {
             _toggleFiltersBenefitSelection(e.benefit, e.isSwitchedOn);
             _toggleFiltersSwitchValidation();
-            _toggleFiltersExtrasMessage();
         });
     }
 
@@ -547,20 +542,6 @@
         // push error tracking object into CtMDatalayer
         if (!areBenefitsSwitchOn) {
             meerkat.modules.benefits.errorTracking('benefits-switch-off');
-        }
-    }
-
-    function _toggleFiltersExtrasMessage() {
-        var hide = $('input[name=health_filterBar_benefitsExtras]:checked').length !== 0 || !meerkat.modules.benefitsSwitch.isFiltersExtrasOn();
-        $('.results-filters-benefits .benefits-switch-extras-message').toggleClass('hidden', hide);
-        if (meerkat.modules.benefitsSwitch.isFiltersHospitalOn() || meerkat.modules.benefitsSwitch.isFiltersExtrasOn()) {
-            $('.results-filters-benefits .benefits-switch-off-message').addClass('hidden');
-            $('.filter-update-changes').attr('disabled', !hide).prop('disabled', !hide);
-        }
-
-        // push error tracking object into CtMDatalayer
-        if (!hide) {
-            meerkat.modules.benefits.errorTracking('benefits-switch-extras');
         }
     }
 
