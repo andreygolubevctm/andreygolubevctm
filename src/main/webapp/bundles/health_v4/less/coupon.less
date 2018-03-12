@@ -27,10 +27,6 @@
 				padding: 10px 15px;
 			}
 
-			@media (@md-only) {
-				padding-left: 19px;
-			}
-
 			.coupon-heading {
 				color: @theme-accent-4;
 				font-size: 16px;
@@ -77,6 +73,10 @@
 	}
 
 	.coupon-text-col {
+		@media (@md-only) {
+			padding-left: 19px;
+		}
+
 		.coupon-heading {
 			color: @theme-accent-4;
 			font-size: 16px;
