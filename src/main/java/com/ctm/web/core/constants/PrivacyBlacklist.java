@@ -15,8 +15,6 @@ public final class PrivacyBlacklist {
 			"credit/ccv",
 			"maskedNumber", // payment_ipp
 			"credit/number",
-			//"bank/number",
-			//"claim/number",
 			"password",
 			"save/confirm",
 			// necessary for write quote lite, but don't want to save.
