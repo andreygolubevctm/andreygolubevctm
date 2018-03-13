@@ -92,7 +92,18 @@ public class HealthRebate {
         }
         String rebatePercentage= rebate.multiply(multiplier).setScale(3, BigDecimal.ROUND_HALF_DOWN).toString();
         //hardcoding as there is no common formula to get exact decimal precision value
-        if(rebatePercentage.equals("8.472"))
+
+        // Pre April 2018
+        if(rebatePercentage.equals("34.578"))
+            rebatePercentage = "34.579";
+        else if(rebatePercentage.equals("12.967"))
+            rebatePercentage = "12.966";
+        else if(rebatePercentage.equals("21.611"))
+            rebatePercentage = "21.612";
+        else if(rebatePercentage.equals("8.645"))
+            rebatePercentage = "8.644";
+        // Post April 2018
+        else if(rebatePercentage.equals("8.472"))
             rebatePercentage = "8.472";
         else if(rebatePercentage.equals("21.179"))
             rebatePercentage = "21.180";
