@@ -15,7 +15,6 @@
         $destinationsPopover,
         $destinationsList,
         $travel_policyType_S,
-        $travel_policyType_A,
         $fromTravelDates;
 
     function initTravelPopularDestinations() {
@@ -25,15 +24,9 @@
         $destinationsPopover = $('#destinations-popover');
         $destinationsList = $('#destinations-list');
         $travel_policyType_S = $('#travel_policyType_S');
-        $travel_policyType_A = $('#travel_policyType_A');
         $fromTravelDates = $('#travel_dates_fromDateInputD, #travel_dates_fromDateInputM, #travel_dates_fromDateInputY');
         initTravelPopularDestPopover();
         eventSubscriptions();
-        eventListeners();
-    }
-    
-    function eventListeners() {
-      $travel_policyType_A.on('click', _hideDestPopover);
     }
 
     function eventSubscriptions() {
@@ -99,12 +92,10 @@
     function showTravelPopularDestPopover() {
         $travelDestinations.focus();
         setTimeout(function() {
-            $travelDestinations.qtip('toggle', true);
+            if ($travel_policyType_S.parent().hasClass('active')) {
+                $travelDestinations.qtip('toggle', true);
+            }
         }, 750);
-    }
-    
-    function _hideDestPopover() {
-        $travelDestinations.qtip('toggle', false);
     }
 
     function applyTravelDestinationDisplayListeners(api) {
