@@ -83,11 +83,11 @@ public class TransactionDetailsDao {
 	}
 
 	/**
-	 * hasSecureString confirms HealthSecurity has been instantiated.
+	 * hasSecureString confirms XPathSecurity has been instantiated.
 	 * @return
 	 */
 	private static boolean hasXpathSecurity() {
-		return XPATH_SECURITY != null && XPATH_SECURITY instanceof HealthSecurity;
+		return XPATH_SECURITY != null && XPATH_SECURITY instanceof XPathSecurity;
 	}
 
     /**
