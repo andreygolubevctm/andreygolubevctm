@@ -7,10 +7,11 @@ import com.ctm.web.core.dao.SqlDao;
 import com.ctm.web.core.dao.SqlDaoFactory;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.transaction.model.TransactionDetail;
-import com.ctm.healthcommon.security.HealthSecurity;
+import com.ctm.healthcommon.security.XPathSecurity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -45,10 +46,11 @@ public class TransactionDetailsDao {
 
 	public static final String DESCRIPTION = "infoDes";
 
-	private static final String SECURE_XPATH_KEY = "xCaSdPTgv-@Ss8@C&3Bns6A_F$t^k34nCSK#7B+wHuQ_Yr2%";
-	private static HealthSecurity XPATH_SECURITY = null;
-	// Don't panic - this is shortterm solution. The intention is to re-work this using AWS
-	// so that key rolling is available.
+	@Value("${-Dcom.ctm.healthcommon.security.xpathsecurity.salt}")
+	private static String SECURE_XPATH_SALT;
+	@Value("${-Dcom.ctm.healthcommon.security.xpathsecurity.key}")
+	private static String SECURE_XPATH_KEY;
+	private static XPathSecurity XPATH_SECURITY = null;
 
     /**
 	 * Constructor
@@ -73,9 +75,9 @@ public class TransactionDetailsDao {
 	private static void initialiseXpathSecurity() {
 		if(!hasXpathSecurity()) {
 			try {
-				XPATH_SECURITY = new HealthSecurity(SECURE_XPATH_KEY);
+				XPATH_SECURITY = new XPathSecurity(SECURE_XPATH_KEY, SECURE_XPATH_SALT);
 			} catch (Exception e) {
-				LOGGER.error("[xpath security] Failed to initialise HealthSecurity: {}", e.getMessage(), e);
+				LOGGER.error("[xpath security] Failed to initialise XPAthSecurity: {}", e.getMessage(), e);
 			}
 		}
 	}
