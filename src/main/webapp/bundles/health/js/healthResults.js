@@ -912,6 +912,11 @@
                     {"providerBlurb" : "Australian Unity are Australia&apos;s oldest health fund, starting in 1870, so you will be looked after by a fund with more experience than any other, and for what you need they are giving really great value."}
                 );
                 break;
+            case 'BUD':
+                extraPopOverData.push(
+                    {"providerBlurb" : "<ul><li>We are backed by GHMBA who have over 80 years&apos; experience and cover more than 230,000 Australians nationally.</li><li>We offer Hospital In The Home and Rehabilitation In The Home programs, meaning you could receive treatment at home rather than in hospital.</li><li>Our Gap Cover scheme covers you for up to 20% above the MBS fee.</li></ul>"}
+                );
+                break;
             case 'BUP':
                 extraPopOverData.push(
                     {"providerBlurb" : "Bupa are Australia&apos;s largest health fund in terms of members. They will give you some really great member benefits and the security of being with an industry leader, and for what you need they are giving really great value."}
@@ -1009,7 +1014,8 @@
             case 'BUD':
                 usefulLinks.push(
                     {"name" : "Privatehealth.gov.au", "url": "http://www.privatehealth.gov.au/dynamic/InsurerDetails.aspx?code=GMH"},
-                    {"name" : "Hospital Network", "url": "https://www.budgetdirect.com.au/content/dam/budgetdirect/website-assets/participating-private-hospitals.pdf"}
+                    {"name" : "Hospital Network", "url": "https://www.budgetdirect.com.au/content/dam/budgetdirect/website-assets/participating-private-hospitals.pdf"},
+                    {"name" : "Travel Vaccines", "url": "https://www.budgetdirect.com.au/content/dam/budgetdirect/website-assets/approved-travel-vaccinations.pdf"}
                 );
                 break;
             case 'BUP':
