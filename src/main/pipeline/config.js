@@ -36,7 +36,7 @@ var Config = {
     },
     brand: {
         dir: rootDir + "/../webapp/brand",
-        all: ['ctm', 'choo', 'wfdd'/*, 'amcl','guar'*/]
+        all: ['ctm', 'choo', 'wfdd', 'bddd'/*, 'amcl','guar'*/]
     },
     bundles: {
         dir: rootDir + "/../webapp/bundles",
