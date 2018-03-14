@@ -104,7 +104,7 @@ public class HealthRebate {
             rebatePercentage = "8.644";
         // Post April 2018
         else if(rebatePercentage.equals("8.472"))
-            rebatePercentage = "8.472";
+            rebatePercentage = "8.471";
         else if(rebatePercentage.equals("21.179"))
             rebatePercentage = "21.180";
 
