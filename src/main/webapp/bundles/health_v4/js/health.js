@@ -316,7 +316,12 @@
                 object: meerkat.modules.health.getTrackingFieldsObject
             },
             validation: {
-                validate: true
+                validate: true,
+                customValidation: function validateSelection(callback) {
+                    var areBenefitsSwitchOn = meerkat.modules.benefitsSwitch.isHospitalOn() || meerkat.modules.benefitsSwitch.isExtrasOn();
+
+                    callback(areBenefitsSwitchOn);
+                }
             },
             onInitialise: function onContactInit(event) {
                 meerkat.modules.resultsFeatures.fetchStructure('health_v4');
