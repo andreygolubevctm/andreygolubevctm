@@ -16,7 +16,8 @@
         $init = {},
         MobileFiltersMenu = null,
         state = null;
-
+    
+    var toggleTimeout;
     function init() {
         _setupElements();
         _applyEventListeners();
@@ -150,6 +151,7 @@
 
         // toggle brands select all/none
         $('.brands-select-toggle').on("click", function () {
+            clearTimeout(toggleTimeout);
             var _providers = [];
 
             if ($(this).data('brands-toggle') == 'none') {
@@ -167,7 +169,7 @@
                 $(this).empty().text('Select none');
             }
 
-            setTimeout(function () {
+            toggleTimeout = setTimeout(function () {
                 _displayCustomResults(false, true);
             }, 1000);
 
