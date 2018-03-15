@@ -134,23 +134,77 @@
 			Results.onError('Sorry, an error occurred initialising page', 'results.tag', 'meerkat.modules.travelResults.initResults(); '+e.message, e);
 		}
 	}
-	/**
-	 * Pre-filter the results object to add another parameter. This will be unnecessary when the field comes back from Java.
-	 */
-	function massageResultsObject(products) {
+	 
+	 function getDestinationsValue(isAus, isComprehensive) {
+		 if (isAus) {
+			 return 0;
+		 } else if (isComprehensive) {
+			 return 20000000;
+		 }
+		 return 10000000;
+	 }
+	 
+	 function getCoverLevelForSingleTrip(tripInfo, isAus) {
+		 var excessValue = tripInfo.excessValue <= Results.model.travelFilters.EXCESS;
+		 var medicalValue = tripInfo.medicalValue;
+		 var cxdfeeValue = tripInfo.cxdfeeValue;
+		 var luggageValue = tripInfo.luggageValue;
+		
+		 var compCancelValue = isAus ? 10000 : 20000;
+		 var isComprehensive = excessValue && cxdfeeValue >= compCancelValue && luggageValue >= 5000;
+		 var isMidRange = excessValue && cxdfeeValue >= 5000 && luggageValue >= 2500;
+		 var isBase = cxdfeeValue < 5000 || luggageValue < 2500;
+		 var destinationsValue = getDestinationsValue(isAus, isComprehensive);
 
-		var policyType = meerkat.modules.travel.getVerticalFilter(),
-			destinations = $('#travel_destination').val(),
-			isCoverLevelTabsEnabled = meerkat.modules.coverLevelTabs.isEnabled();
+		 if (isComprehensive && medicalValue >= destinationsValue) {
+			 meerkat.modules.coverLevelTabs.incrementCount('C');
+			 return 'C';
+		 } else if (isMidRange && medicalValue >= destinationsValue) {
+			 meerkat.modules.coverLevelTabs.incrementCount('M');
+			 return 'M';
+		 } else if (isBase || (medicalValue < destinationsValue))  {
+			 if (excessValue) {
+					meerkat.modules.coverLevelTabs.incrementCount('B');
+			 }
+			 return 'B';
+		 }
+	 }
+	 
+	 function getCoverLevelForMultiTrip(tripInfo, result) {
+		 if (_.isBoolean(result.isDomestic) ) {
+			 var level = result.isDomestic === true ? 'D' : 'I';
+			 meerkat.modules.coverLevelTabs.incrementCount(level);
+			 return level;
+		 } else  {
+			 if (result.des.indexOf('Australia') == -1 && result.des.indexOf('Domestic') == -1) {
+				 var level = 'I';
+				 meerkat.modules.coverLevelTabs.incrementCount(level);
+				 return level;
+			 } else {
+				 var level = 'D';
+				 meerkat.modules.coverLevelTabs.incrementCount(level);
+				 return level;
+			 }
+		 }
+	 }
+	 
+	/**
+	* Pre-filter the results object to add another parameter. This will be unnecessary when the field comes back from Java.
+	*/
+	function massageResultsObject(products) {
+		var policyType = meerkat.modules.travel.getVerticalFilter();
+		var isAus = $('#travel_destination').val() === 'AUS';
+		var isCoverLevelTabsEnabled = meerkat.modules.coverLevelTabs.isEnabled();
+
 		_.each(products, function massageJson(result, index) {
-			if(result.available == 'Y') {
+			if (result.available == 'Y') {
 
 				if (typeof result.info !== 'object') {
 					return;
 				}
 				var obj = result.info;
 				// Add provider property (for tracking purposes)
-				if(_.isUndefined(result.provider) || _.isEmpty(result.provider)) {
+				if (_.isUndefined(result.provider) || _.isEmpty(result.provider)) {
 					result.provider = result.service;
 				}
 				// TRV-667: replace any non digit words with $0 e.g. Optional Extra
@@ -158,60 +212,18 @@
 					obj.luggage = "$0";
 				}
 				// TRV-769 Set value and text to $0 for quotes for JUST Australia.
-				if (destinations == 'AUS') {
+				if (isAus) {
 					obj.medicalValue = 0;
 					obj.medical = "N/A";
 				}
 				if (isCoverLevelTabsEnabled === true) {
-
 					if (policyType == 'Single Trip') {
-
-						/**
-						 * Currently ignore medical if destination country is JUST AU.
-						 */
-
-						if (obj.excessValue <= Results.model.travelFilters.EXCESS &&
-							(obj.medicalValue >= (destinations == "AUS" ? 0 : 20000000)) &&
-							obj.cxdfeeValue >= 20000 &&
-							obj.luggageValue >= 5000
-						) {
-							obj.coverLevel = 'C';
-							meerkat.modules.coverLevelTabs.incrementCount("C");
-						} else if (obj.excessValue <= Results.model.travelFilters.EXCESS &&
-							(obj.medicalValue >= (destinations == "AUS" ? 0 : 10000000))
-							&& obj.cxdfeeValue >= 5000
-							&& obj.luggageValue >= 2500) {
-							obj.coverLevel = 'M';
-							meerkat.modules.coverLevelTabs.incrementCount("M");
-						} else if (
-							(obj.medicalValue < (destinations == "AUS" ? 0 : 10000000)) ||
-                            obj.cxdfeeValue < 5000 ||
-                            obj.luggageValue < 2500
-						)  {
-							obj.coverLevel = 'B';
-							if (obj.excessValue <= Results.model.travelFilters.EXCESS) {
-                                meerkat.modules.coverLevelTabs.incrementCount("B");
-							}
-						}
+						obj.coverLevel = getCoverLevelForSingleTrip(obj, isAus);
 					} else {
-						if (_.isBoolean(result.isDomestic) ) {
-							var level = result.isDomestic === true ? "D" : "I";
-							obj.coverLevel = level;
-							meerkat.modules.coverLevelTabs.incrementCount(level);
-						} else  {
-							if (result.des.indexOf('Australia') == -1 && result.des.indexOf('Domestic') == -1) {
-								obj.coverLevel = 'I';
-								meerkat.modules.coverLevelTabs.incrementCount("I");
-							} else {
-								obj.coverLevel = 'D';
-								meerkat.modules.coverLevelTabs.incrementCount("D");
-							}
-						}
+						obj.coverLevel = getCoverLevelForMultiTrip(obj, result);
 					}
 				}
 			}
-
-
 		});
 		return products;
 	}
