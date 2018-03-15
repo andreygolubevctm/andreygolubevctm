@@ -116,7 +116,6 @@
             _updateTravelResults("MEDICAL", parseInt($(this).val()));
         });
         
-        
         $('input[name="overseasMedicalRangeSlider"]').on('input', function() {
             _displaySliderValue("MEDICAL", $(this).val());
         });
