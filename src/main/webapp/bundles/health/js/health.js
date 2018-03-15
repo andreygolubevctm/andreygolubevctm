@@ -1063,12 +1063,12 @@
 		if(coverTypeHasPartner && !postData.partner_dob.match(dateRegex))  return false;
 
 		postData.commencementDate = null;
-		var commencementDate = meerkat.modules.healthCoverStartDate.getVal();
-		var searchDate = $('#health_searchDate').val();
-		if(!_.isEmpty(commencementDate)) {
-			postData.commencementDate = commencementDate;
-		} else if (!_.isEmpty(searchDate)) {
-			postData.commencementDate = searchDate;
+		var commencementDate = $('#health_payment_details_start');
+		var searchDate = $('#health_searchDate');
+		if(commencementDate.length && !_.isEmpty(commencementDate.val())) {
+			postData.commencementDate = commencementDate.val();
+		} else if (searchDate.length && !_.isEmpty(searchDate.val())) {
+			postData.commencementDate = searchDate.val();
 		}
 
 		return meerkat.modules.comms.post({
