@@ -908,6 +908,15 @@
         if (!postData.primary_dob.match(dateRegex)) return false;
         if (coverTypeHasPartner && !postData.partner_dob.match(dateRegex))  return false;
 
+	    postData.commencementDate = null;
+	    var commencementDate = meerkat.modules.healthCoverStartDate.getVal();
+	    var searchDate = $('#health_searchDate').val();
+	    if(!_.isEmpty(commencementDate)) {
+		    postData.commencementDate = commencementDate;
+	    } else if (!_.isEmpty(searchDate)) {
+		    postData.commencementDate = searchDate;
+	    }
+
         return meerkat.modules.comms.post({
             url: "ajax/json/health_rebate.jsp",
             data: postData,
