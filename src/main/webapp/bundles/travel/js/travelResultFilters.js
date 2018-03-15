@@ -89,6 +89,10 @@
             _updateResultsByExcess(parseInt($(this).data('excess')));
             $('#excessFilterDropdownBtn').dropdown('toggle');
         });
+        
+        $('input[name="luggageRangeSlider"]').on('input', function() {
+            _displaySliderValue("LUGGAGE", $(this).val());
+        });
 
         // update the results as per the luggage filter
         $('input[name="luggageRangeSlider"]').change(function (value) {
@@ -101,11 +105,20 @@
             _displaySliderValue("CXDFEE", $(this).val());
             _updateTravelResults("CXDFEE", parseInt($(this).val()));
         });
+        
+        $('input[name="cancellationRangeSlider"]').on('input', function() {
+            _displaySliderValue("CXDFEE", $(this).val());
+        });
 
         // update the results as per the overseas medical filter
         $('input[name="overseasMedicalRangeSlider"]').change(function () {
             _displaySliderValue("MEDICAL", $(this).val());
             _updateTravelResults("MEDICAL", parseInt($(this).val()));
+        });
+        
+        
+        $('input[name="overseasMedicalRangeSlider"]').on('input', function() {
+            _displaySliderValue("MEDICAL", $(this).val());
         });
 
         // display the filtered results
