@@ -175,4 +175,39 @@
   .refine-results-brands-toggle {
     margin: 0 5px;
   }
+
+  //Benefits Switched Off
+  .benefits-switched-off {
+    &.health-refine-results-hospital-benefits,
+    &.health-refine-results-extras-benefits {
+      .nav-tabs,
+      .tab-content,
+      .benefits-list {
+        .opacity(0.3);
+
+        a {
+          pointer-events: none;
+          cursor: default;
+        }
+      }
+    }
+  }
+
+  .benefits-switch-alert {
+    position: fixed;
+    margin-top: 0;
+    margin-right: 15px;
+    z-index: 1;
+  }
+}
+
+.mobile-filters-menu {
+  .mobile-filters-menu__container {
+    .mobile-filters-menu__header {
+      .mobile-filters-menu__header-right-btn {
+        right: 5px;
+        margin-top: -12px;
+      }
+    }
+  }
 }

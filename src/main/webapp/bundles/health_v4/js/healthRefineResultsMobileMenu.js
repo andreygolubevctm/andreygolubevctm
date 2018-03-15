@@ -6,25 +6,36 @@
             refineResults: {
                 REFINE_RESULTS_OPENED: 'REFINE_RESULTS_OPENED',
                 REFINE_RESULTS_MENU_ITEM_SELECTED: 'REFINE_RESULTS_MENU_ITEM_SELECTED',
-                REFINE_RESULTS_FOOTER_BUTTON_UPDATE_CALLBACK: 'REFINE_RESULTS_FOOTER_BUTTON_UPDATE_CALLBACK'
+                REFINE_RESULTS_FOOTER_BUTTON_UPDATE_CALLBACK: 'REFINE_RESULTS_FOOTER_BUTTON_UPDATE_CALLBACK',
+                REFINE_RESULTS_UPDATABLE: 'REFINE_RESULTS_UPDATABLE'
             },
             mobileFiltersMenu: {
                 ON_RESET: 'ON_RESET',
+                RIGHT_BUTTON_INIT: 'RIGHT_BUTTON_INIT',
                 FOOTER_BUTTON_UPDATE: 'FOOTER_BUTTON_UPDATE',
-                BACK_BUTTON_CLICKED: 'BACK_BUTTON_CLICKED'
+                FOOTER_BUTTON_TOGGLE_DISABLED: 'FOOTER_BUTTON_TOGGLE_DISABLED',
+                BACK_BUTTON_CLICKED: 'BACK_BUTTON_CLICKED',
+                RIGHT_BUTTON_ON_CHANGE: 'RIGHT_BUTTON_ON_CHANGE'
             }
         },
         settings = {
             title: 'Refine results',
             footerButtonUpdateText: 'Apply filters',
             template: $('#refine-results-template'),
-            footerButtonUpdateCB: _footerButtonUpdateCB,
-            rightButtonCB: _rightButtonCB
+            footerButtonUpdateCB: _footerButtonUpdateCB
         },
         $elements = {},
         menuItems = {
-            hospital: { title: 'Hospital preferences', rightBtnText: 'Clear all' },
-            extras: { title: 'Extras preferences', rightBtnText: 'Clear all' },
+            hospital: {
+                title: 'Hospital preferences',
+                rightBtnInitCB: _hospitalBenefitsSwitchInit,
+                rightBtnInitialised: false
+            },
+            extras: {
+                title: 'Extras preferences',
+                rightBtnInitCB: _extrasBenefitsSwitchInit,
+                rightBtnInitialised: false
+            },
             excess: { title: 'Excess' },
             funds: { title: 'Funds' }
         },
@@ -47,6 +58,9 @@
         MobileBenefits = meerkat.modules.healthRefineResultsMobileBenefits.initHealthRefineResultsMobileBenefits();
         MobileExcess = meerkat.modules.healthRefineResultsMobileExcess.initHealthRefineResultsMobileExcess();
         MobileFunds = meerkat.modules.healthRefineResultsMobileFunds.initHealthRefineResultsMobileFunds();
+
+        menuItems.hospital.rightBtn = MobileBenefits.getSwitchHTML('hospital');
+        menuItems.extras.rightBtn = MobileBenefits.getSwitchHTML('extras');
     }
 
     function _setupElements() {
@@ -89,16 +103,16 @@
                         .showBackBtn()
                         .updateHeaderTitle(menuItems[_currentMenuId].title);
 
-                    if (menuItems[_currentMenuId].rightBtnText) {
+                    if (menuItems[_currentMenuId].rightBtn) {
                         MobileFiltersMenu
-                            .updateRightBtnText(menuItems[_currentMenuId].rightBtnText)
+                            .updateRightBtn(menuItems[_currentMenuId].rightBtn)
                             .showRightBtn();
                     }
                 });
             });
         });
 
-        $(document).on('change', '.refine-results-mobile :input', function() {
+        $(document).on('change', '.mobile-filters-menu__container :input', function() {
             meerkat.messaging.publish(moduleEvents.mobileFiltersMenu.FOOTER_BUTTON_UPDATE);
         });
 
@@ -126,6 +140,13 @@
             enable();
         });
 
+        meerkat.messaging.subscribe(moduleEvents.mobileFiltersMenu.RIGHT_BUTTON_INIT, function() {
+            if (_.isFunction(menuItems[_currentMenuId].rightBtnInitCB) && menuItems[_currentMenuId].rightBtnInitCB) {
+                menuItems[_currentMenuId].rightBtnInitCB();
+                menuItems[_currentMenuId].rightBtnInitialised = true;
+            }
+        });
+
         meerkat.messaging.subscribe(moduleEvents.mobileFiltersMenu.BACK_BUTTON_CLICKED, function() {
             $('.refine-results-mobile section.current')
                 .addClass('sliding')
@@ -143,7 +164,26 @@
         meerkat.messaging.subscribe(meerkatEvents.mobileFiltersMenu.ON_RESET, function() {
             $('.refine-results-mobile section').removeClass('current slide-out');
             $('.refine-results-mobile section[data-panel-id="main"]').addClass('current');
+
+            menuItems.hospital.rightBtnInitialised = false;
+            menuItems.extras.rightBtnInitialised = false;
         });
+
+        meerkat.messaging.subscribe(moduleEvents.refineResults.REFINE_RESULTS_UPDATABLE, function(e) {
+            meerkat.messaging.publish(moduleEvents.mobileFiltersMenu.FOOTER_BUTTON_TOGGLE_DISABLED, { toggle: e.updatable });
+        });
+    }
+
+    function _hospitalBenefitsSwitchInit() {
+        var isSwitchedOn = menuItems.hospital.rightBtnInitialised ? meerkat.modules.benefitsSwitch.isFiltersHospitalOn(true) : meerkat.modules.benefitsSwitch.isHospitalOn();
+
+        MobileBenefits.switchInit('hospital', menuItems.hospital.rightBtnInitialised, isSwitchedOn);
+    }
+
+    function _extrasBenefitsSwitchInit() {
+        var isSwitchedOn = menuItems.extras.rightBtnInitialised ? meerkat.modules.benefitsSwitch.isFiltersExtrasOn(true) : meerkat.modules.benefitsSwitch.isExtrasOn();
+
+        MobileBenefits.switchInit('extras', menuItems.extras.rightBtnInitialised, isSwitchedOn);
     }
 
     function _footerButtonUpdateCB() {
@@ -159,11 +199,6 @@
         });
     }
 
-    function _rightButtonCB() {
-        MobileBenefits.benefitsCheckState(_currentMenuId, true);
-        meerkat.messaging.publish(moduleEvents.mobileFiltersMenu.FOOTER_BUTTON_UPDATE);
-    }
-
     function disable() {
         $elements.refineBtn.addClass('disabled');
     }
@@ -173,16 +208,16 @@
     }
 
     function _getData() {
-        var hospitalType = Benefits.getHospitalType(),
+        var hospitalType = Benefits.getHospitalType() === 'customise' ? 'Comprehensive' : 'Limited',
             hospitalCount = BenefitsModel.getHospitalCount(),
             hospitalPlural = hospitalCount > 1 ? 's' : '',
             comprehensiveText = hospitalCount > 0 ? hospitalCount + ' benefit' + hospitalPlural + ' selected' : 'No Hospital',
+            hospitalCountText = Benefits.getHospitalType() === 'customise' ? ', ' + comprehensiveText : '',
             extrasCount = BenefitsModel.getExtrasCount(),
             extrasPlural = extrasCount > 1 ? 's' : '',
             data = {
-                hospitalType: hospitalType === 'customise' ? 'Comprehensive' : 'Limited',
-                hospitalCountText: hospitalType === 'customise' ? ', ' + comprehensiveText : '',
-                extrasCountText: extrasCount > 0 ? extrasCount + ' extra' + extrasPlural + ' selected' : 'No Extras',
+                hospitalText: meerkat.modules.benefitsSwitch.isHospitalOn() ? hospitalType + ' Hospital' + hospitalCountText : 'No Hospital',
+                extrasCountText: meerkat.modules.benefitsSwitch.isExtrasOn() && extrasCount > 0 ? extrasCount + ' extra' + extrasPlural + ' selected' : 'No Extras',
                 benefitsHospital: BenefitsModel.getHospitalBenefitsForFilters(),
                 benefitsExtras: BenefitsModel.getExtrasBenefitsForFilters(),
                 excessText: MobileExcess.getText(),
