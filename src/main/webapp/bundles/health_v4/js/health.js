@@ -257,7 +257,12 @@
                 includeFormData: true
             },
             validation: {
-                validate: true
+                validate: true,
+                customValidation: function validateSelection(callback) {
+                    var areBenefitsSwitchOn = meerkat.modules.benefitsSwitch.isHospitalOn() || meerkat.modules.benefitsSwitch.isExtrasOn();
+
+                    callback(areBenefitsSwitchOn);
+                }
             },
             externalTracking: {
                 method: 'trackQuoteForms',
@@ -316,12 +321,7 @@
                 object: meerkat.modules.health.getTrackingFieldsObject
             },
             validation: {
-                validate: true,
-                customValidation: function validateSelection(callback) {
-                    var areBenefitsSwitchOn = meerkat.modules.benefitsSwitch.isHospitalOn() || meerkat.modules.benefitsSwitch.isExtrasOn();
-
-                    callback(areBenefitsSwitchOn);
-                }
+                validate: true
             },
             onInitialise: function onContactInit(event) {
                 meerkat.modules.resultsFeatures.fetchStructure('health_v4');
