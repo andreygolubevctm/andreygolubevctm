@@ -155,18 +155,22 @@
 		 var isMidRange = excessValue && cxdfeeValue >= 5000 && luggageValue >= 2500;
 		 var isBase = cxdfeeValue < 5000 || luggageValue < 2500;
 		 var destinationsValue = getDestinationsValue(isAus, isComprehensive);
-
+		 var level;
+		 
 		 if (isComprehensive && medicalValue >= destinationsValue) {
-			 meerkat.modules.coverLevelTabs.incrementCount('C');
-			 return 'C';
+			 level = 'C';
+			 meerkat.modules.coverLevelTabs.incrementCount(level);
+			 return level;
 		 } else if (isMidRange && medicalValue >= destinationsValue) {
-			 meerkat.modules.coverLevelTabs.incrementCount('M');
-			 return 'M';
+			 level = 'M';
+			 meerkat.modules.coverLevelTabs.incrementCount(level);
+			 return level;
 		 } else if (isBase || (medicalValue < destinationsValue))  {
+			 level = 'B';
 			 if (excessValue) {
-					meerkat.modules.coverLevelTabs.incrementCount('B');
+					meerkat.modules.coverLevelTabs.incrementCount(level);
 			 }
-			 return 'B';
+			 return level;
 		 }
 	 }
 	 
