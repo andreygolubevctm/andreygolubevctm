@@ -120,7 +120,12 @@ public class CommonRequestServiceV2 {
                     kv("httpStatusText", exception.getStatusText()),
                     kv("message", exception.getResponseBodyAsString()));
         } else {
-            LOGGER.error("Backend Exception thrown", t);
+            LOGGER.error("Backend Exception thrown {} {} {} {} {}",
+                    kv("class",t.getClass()),
+                    kv("message",t.getMessage()),
+                    kv("cause",t.getCause()),
+                    kv("stacktrace",t.getStackTrace()),
+                    t);
         }
     }
 
