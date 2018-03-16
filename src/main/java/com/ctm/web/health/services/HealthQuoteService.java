@@ -107,7 +107,7 @@ public class HealthQuoteService extends CommonRequestServiceV2 implements Initia
                     .payload(quoteRequest)
                     .build();
 
-            LOGGER.info("Attempting to call clientQuotesV2.post (HealthResponseV2)  {} {} {}", kv("url", properties.getServiceUrl()+"/quote"), kv("timeout", properties.getTimeout()), kv("request", request));
+            LOGGER.info("Attempting to call clientQuotesV2.post (HealthResponseV2)  {} {} {}", kv("url", properties.getServiceUrl()+"/quote"), kv("timeout", properties.getTimeout()), kv("request", request.getPayload().toString()));
 
             final HealthResponseV2 healthResponse = clientQuotesV2.post(RestSettings.<RatesheetOutgoingRequest<HealthQuoteRequest>>builder()
                     .request(request)
