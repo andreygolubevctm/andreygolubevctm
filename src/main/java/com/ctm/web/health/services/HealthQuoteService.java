@@ -47,6 +47,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 
+import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static com.ctm.web.core.model.settings.Vertical.VerticalType.HEALTH;
 import static com.ctm.web.simples.services.TransactionService.writeTransactionDetail;
 import static java.util.Optional.ofNullable;
@@ -105,6 +106,8 @@ public class HealthQuoteService extends CommonRequestServiceV2 implements Initia
                     .requestAt(data.getRequestAt())
                     .payload(quoteRequest)
                     .build();
+
+            LOGGER.info("Attempting to call clientQuotesV2.post (HealthResponseV2)  {} {} {}", kv("url", properties.getServiceUrl()+"/quote"), kv("timeout", properties.getTimeout()), kv("request", request));
 
             final HealthResponseV2 healthResponse = clientQuotesV2.post(RestSettings.<RatesheetOutgoingRequest<HealthQuoteRequest>>builder()
                     .request(request)
