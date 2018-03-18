@@ -274,7 +274,7 @@
         product.showAltPremium = false;
         product.displayLogo = isForSidebar;
         product.showRoundingText = false;
-        product.showRisingTag = isForSidebar && deviceMediaState !== 'xs';
+        product.showRisingTag = (isForSidebar && deviceMediaState !== 'xs') || (meerkat.site.pageAction === 'confirmation');
         product.showBeforeAfterText = isForSidebar && deviceMediaState !== 'xs';
         product.priceBreakdown = meerkat.modules.healthPriceBreakdown.showBreakdown();
 
@@ -318,7 +318,7 @@
             return deviceMediaState !== 'xs' ? $elements.template.sidebar : $elements.template.applicationXS;
         }
 
-        page  = page || 'moreinfo';
+        page = page || 'moreinfo';
 
         return $elements.template[page][deviceMediaState] || $elements.template[page]['default'];
     }
