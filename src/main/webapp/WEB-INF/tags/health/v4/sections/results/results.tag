@@ -14,18 +14,25 @@
     </jsp:attribute>
 
     <jsp:attribute name="sidebarColumnRight">
-        <div class="results-sidebar-inner">
+        <div class="hidden-xs hidden-sm results-sidebar-inner">
             <div class="sidebar-widget sidebar-widget-padded results-filters-discount"></div>
             <div class="sidebar-widget sidebar-widget-padded results-filters-rebate"></div>
             <div class="sidebar-widget sidebar-widget-padded results-filters-benefits"></div>
             <div class="sidebar-widget sidebar-widget-padded results-filters"></div>
         </div>
-        <banners:banner-tile />
+
+        <div class="clearfix"></div>
+
+        <health_v4_results:results_legend />
         <health_v4_results:filters_discount />
         <health_v4_results:filters_rebate />
         <health_v4_results:filters_benefits />
         <health_v4_results:filters_template />
         <health_v4_results:filters_update_widget_template />
+
+        <div class="hidden-xs hidden-sm">
+            <banners:banner-tile />
+        </div>
     </jsp:attribute>
 
     <jsp:attribute name="resultsErrorMessage">
