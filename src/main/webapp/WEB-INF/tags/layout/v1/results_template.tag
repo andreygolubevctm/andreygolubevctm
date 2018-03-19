@@ -114,7 +114,7 @@
     </div>
     <%-- Currently applied on Health V4 --%>
     <c:if test="${not empty sidebarColumnRight}">
-        <div class="hidden-xs hidden-sm col-md-3" id="results-sidebar">
+        <div class="col-md-3" id="results-sidebar">
                 ${sidebarColumnRight}
         </div>
     </c:if>

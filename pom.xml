@@ -10,7 +10,7 @@
 
     <groupId>com.ctm.web</groupId>
     <artifactId>ctm</artifactId>
-    <version>1.100.0-SNAPSHOT</version>
+    <version>1.101.0-SNAPSHOT</version>
     <name>ctm</name>
     <description>Main web application</description>
     <packaging>war</packaging>
@@ -963,16 +963,6 @@
                                     <nxi.db.username>${nxi.db.username}</nxi.db.username>
                                     <nxi.db.password>${nxi.db.password}</nxi.db.password>
 
-                                    <https.proxyHost>192.168.130.20</https.proxyHost>
-                                    <https.proxyPort>8080</https.proxyPort>
-                                    <https.proxyUser>ittest</https.proxyUser>
-                                    <https.proxyPassword>1tt3st</https.proxyPassword>
-
-                                    <http.proxyHost>192.168.130.20</http.proxyHost>
-                                    <http.proxyPort>8080</http.proxyPort>
-                                    <http.proxyUser>ittest</http.proxyUser>
-                                    <http.proxyPassword>1tt3st</http.proxyPassword>
-                                    <http.nonProxyHosts>*.ecommerce.disconline.com.au|*.captaincompare.com.au|*.intranet|localhost|127.0.0.1</http.nonProxyHosts>
                                 </systemProperties>
                             </container>
 
@@ -1131,7 +1121,7 @@
                 <configuration>
                     <addResources>false</addResources>
                     <jvmArguments>
-                        -Dhttps.proxyHost=192.168.130.20 -Dhttps.proxyPort=8080 -Dhttp.proxyHost=192.168.130.20 -Dhttp.proxyPort=8080 -Dhttp.nonProxyHosts="*.ecommerce.disconline.com.au|*.captaincompare.com.au|*.intranet|localhost|127.0.0.1" -Dhttps.proxyUser=ittest -Dhttps.proxyPassword=1tt3st -Dspring.datasource.username=${nxi.db.username} -Dspring.datasource.password=${nxi.db.password} -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005
+                        -Dspring.datasource.username=${nxi.db.username} -Dspring.datasource.password=${nxi.db.password} -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005
                     </jvmArguments>
                 </configuration>
             </plugin>

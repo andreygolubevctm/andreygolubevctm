@@ -63,6 +63,7 @@
 		<simples:dialogue id="90" vertical="health" className="hidden" />
 		<simples:dialogue id="91" vertical="health" className="hidden" />
 		<simples:dialogue id="92" vertical="health" className="hidden" />
+		<simples:dialogue id="103" vertical="health" className="hidden" />
 
 		<health_v2:price_promise_check xpath="health/price_promise" />
 

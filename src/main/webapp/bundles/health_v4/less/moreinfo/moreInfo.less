@@ -194,7 +194,7 @@
     border-bottom: 2px solid @gray;
   }
 
-  .btn-more-info-call-now {
+  .btn-cta.btn-more-info-call-now {
     margin-bottom: 10px;
     font-size: 20px;
   }
@@ -591,8 +591,11 @@ body[data-is-single="true"] {
         .getPrintableBrochures {
           text-align:left;
         }
-        .btn-more-info-apply {
-          float: right;
+        .btn-more-info-apply,
+        .btn-more-info-call-now {
+          &:not(.btn-cta) {
+            float: right;
+          }
         }
       }
     }

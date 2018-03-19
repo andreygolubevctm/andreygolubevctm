@@ -367,6 +367,7 @@
 				webChatHideFields();
 				incrementTranIdBeforeEnteringSlide();
 
+				meerkat.modules.healthContactType.togglePhoneEmailRequired();
 			},
 			onAfterEnter: function enteredContactStep(event) {
 			},
@@ -1062,9 +1063,12 @@
 		if(coverTypeHasPartner && !postData.partner_dob.match(dateRegex))  return false;
 
 		postData.commencementDate = null;
-		var commencementDate = $('#health_payment_details_start').val();
-		if(!_.isEmpty(commencementDate)) {
-			postData.commencementDate = commencementDate;
+		var commencementDate = $('#health_payment_details_start');
+		var searchDate = $('#health_searchDate');
+		if(commencementDate.length && !_.isEmpty(commencementDate.val())) {
+			postData.commencementDate = commencementDate.val();
+		} else if (searchDate.length && !_.isEmpty(searchDate.val())) {
+			postData.commencementDate = searchDate.val();
 		}
 
 		return meerkat.modules.comms.post({
