@@ -87,7 +87,7 @@
 				 
 				<form_v2:fieldset legend="Travellers" className="travel_details_datesTravellers" id="datestravellersfs">
 					<form_v2:row label="Who's travelling?" className="smallWidth" helpId="216">
-						<field_v2:array_radio items="S=Single,C=Couple,F=Family,G=Group" xpath="travel/party" title="who is travelling" required="true" className="thinner_input travel_party roundedCheckboxIcons" />
+						<field_v2:array_radio items="S=Single,C=Couple,SF=Single Family,F=Family,G=Group" xpath="travel/party" title="who is travelling" required="true" className="thinner_input travel_party roundedCheckboxIcons" />
 					</form_v2:row>
 
 					<travel:travellers />

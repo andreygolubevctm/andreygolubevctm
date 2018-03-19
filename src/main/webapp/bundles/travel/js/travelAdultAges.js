@@ -20,8 +20,9 @@
 
 			$travel_party.find('label:nth-child(1)').addClass('icon-single');
 			$travel_party.find('label:nth-child(2)').addClass('icon-couple');
-			$travel_party.find('label:nth-child(3)').addClass('icon-family');
-			$travel_party.find('label:nth-child(4)').addClass('icon-group-travel');
+			$travel_party.find('label:nth-child(3)').addClass('icon-single-family');
+			$travel_party.find('label:nth-child(4)').addClass('icon-family');
+			$travel_party.find('label:nth-child(5)').addClass('icon-group-travel');
 
 			$single_parent = $('.single_parent');
 			$single_parent_row = $('.single_parent_row');
@@ -30,30 +31,42 @@
 			initEventListeners();
 		});
 	}
+	
+	function _handleTravelPartyChange() {
+			var selected = $(this).find("input[type='radio']:checked").val();
+			switch(selected) {
+				case 'S':
+					$single_parent_row[showMethod]();
+					$single_parent.trigger("change");
+					$travel_adults.val(1);
+				break;
+				case 'C':
+					$children_row[hideMethod]();
+					$('#travel_childrenSelect').val(0);
+					$single_parent_row[hideMethod]();
+					$travel_adults.val(2);
+				break;
+				case 'SF':
+					$children_row[hideMethod]();
+					$single_parent_row[hideMethod]();
+					$travel_adults.val(1);
+				break;
+				case 'F':
+					$children_row[showMethod]();
+					$single_parent_row[hideMethod]();
+					$travel_adults.val(2);
+				break;
+				case 'G':
+					$children_row[hideMethod]();
+					$single_parent_row[hideMethod]();
+					$('#travel_childrenSelect').val(0);
+				break;
+			}
+	}
 
 	function initEventListeners() {
 		var isIe8 = meerkat.modules.performanceProfiling.isIE8(), showMethod = isIe8 ? 'show' : 'slideDown', hideMethod = isIe8 ? 'hide' : 'slideUp';
-		$travel_party.off().on("change", function changeAdultCount() {
-			var selected = $(this).find("input[type='radio']:checked").val();
-			if (selected === "S") {
-				$single_parent_row[showMethod]();
-				$single_parent.trigger("change");
-				$travel_adults.val(1);
-			} else if (selected === "C") {
-				$children_row[hideMethod]();
-				$('#travel_childrenSelect').val(0);
-				$single_parent_row[hideMethod]();
-				$travel_adults.val(2);
-			} else if (selected === "F") {
-				$children_row[showMethod]();
-				$single_parent_row[hideMethod]();
-				$travel_adults.val(2);
-			} else if(selected === "G") {
-				$children_row[hideMethod]();
-				$single_parent_row[hideMethod]();
-				$('#travel_childrenSelect').val(0);
-			}
-		});
+		$travel_party.off().on("change", _handleTravelPartyChange);
 
 		$travel_party.trigger("change");
 
