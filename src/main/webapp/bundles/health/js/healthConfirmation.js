@@ -217,8 +217,11 @@
 			// render dual pricing
 			meerkat.modules.healthDualPricing.initDualPricing();
 			confirmationProduct.altPremium = confirmationProduct.paymentTypeAltPremiums[meerkat.modules.healthPaymentStep.getPaymentMethodNode(confirmationProduct.paymentType)];
-			meerkat.modules.healthDualPricing.renderTemplate('.policySummary.dualPricing', confirmationProduct, false, true);
+			meerkat.modules.healthDualPricing.renderTemplate('.policySummary.dualPricing', confirmationProduct, false, true, 'confirmation');
 		}
+
+		// show dual pricing on xs devices
+		$('.hasDualPricing').removeClass('hidden-xs');
 
 		// hide the sidebar frequncy. only needed for payment page
 		$('.hasDualPricing .sidebarFrequency').hide();

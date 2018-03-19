@@ -252,6 +252,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 							</c:choose>
 
 							<c:if test="${pageSettings.getVerticalCode() eq 'health' and pageSettings.getSetting('callbackPopupEnabled') eq 'Y'}">
+								<health_v4:opening_text />
 								<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Call Request" quoteChar="\"" /></c:set>
 								<a class="navbar-toggle wide phone collapsed" data-toggle="dialog"
 									data-content="#view_all_hours_cb"
@@ -259,7 +260,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 									data-title="Request a Call" data-cache="true"
 									${analyticsAttr}>
 									<span class="icon icon-phone" ${analyticsAttr}></span>
-									<span ${analyticsAttr}>Talk to our experts</span>
+									<span ${analyticsAttr}>${mobileOpenText}</span>
 								</a>
 							</c:if>
 
