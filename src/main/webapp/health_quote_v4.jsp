@@ -11,6 +11,8 @@
 <%-- Redirect if Confirmation Page --%>
 <health_v1:redirect_rules />
 
+<health_v4:opening_text />
+
 <%-- Redirect call centre consultants out of V4 --%>
 <c:if test="${callCentre && journeyOverride eq true}">
     <c:set var="redirectURL" value="${pageSettings.getBaseUrl()}health_quote.jsp?" />
@@ -86,10 +88,15 @@
                     <div class="navbar-collapse header-collapse-contact collapse">
                         <ul class="nav navbar-nav navbar-right callCentreNumberSection">
                             <li><a href="javascript:;" class="refine-results">Refine</a></li>
-                            <li class="navbar-text hidden-sm confused-text">Confused? Talk to our experts now.</li>
+                            <li class="navbar-text hidden-sm call-opening-text">
+                                ${desktopOpenText}
+                            </li>
                             <li>
                                 <div class="navbar-text hidden-xs" data-livechat="target">
                                     <div class="callCentreNumber-container">
+                                        <span class="hidden-md hidden-lg call-opening-text">
+                                            ${tabletOpenText}
+                                        </span>
                                         <span class="icon icon-phone"></span> <a href="javascript:;" data-toggle="dialog"
                                                    data-content="#view_all_hours"
                                                    data-dialog-hash-id="view_all_hours"
