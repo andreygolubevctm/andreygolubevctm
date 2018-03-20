@@ -7,7 +7,6 @@ import com.ctm.web.core.dao.SqlDao;
 import com.ctm.web.core.dao.SqlDaoFactory;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.transaction.model.TransactionDetail;
-import com.ctm.web.core.model.settings.Vertical.VerticalType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
