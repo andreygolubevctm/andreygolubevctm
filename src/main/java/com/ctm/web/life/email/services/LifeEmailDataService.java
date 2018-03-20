@@ -44,7 +44,7 @@ public class LifeEmailDataService {
         Data data = new Data();
         List<TransactionDetail> transactionDetails = null;
         try {
-            transactionDetails = tdDao.getTransactionDetails(transactionId, null);
+            transactionDetails = tdDao.getTransactionDetails(transactionId);
         } catch (DaoException e1) {
             LOGGER.error("Could not populate life email data object with transaction details {}", kv("transactionId", transactionId), e1);
         }

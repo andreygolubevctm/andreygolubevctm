@@ -1,5 +1,6 @@
 package com.ctm.web.core.services;
 
+import com.ctm.web.core.connectivity.SimpleDatabaseConnection;
 import com.ctm.web.core.email.model.EmailMode;
 import com.ctm.web.core.email.model.IncomingEmail;
 import com.ctm.web.core.email.services.EmailUrlService;
@@ -15,6 +16,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -43,6 +47,30 @@ public class RemoteLoadQuoteService {
         this.transactionDetailsDao = transactionDetailsDao;
     }
 
+    TransactionDetail getCoverLevelType(long transactionId) {
+        SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
+        try {
+            PreparedStatement stmt;
+            Connection conn = dbSource.getConnection();
+            String sql = "SELECT * FROM aggregator.ranking_details WHERE transactionId = ? AND Property = 'coverLevelType' AND rankSequence IN (SELECT MAX(RankSequence) FROM aggregator.ranking_details WHERE transactionId = ? AND Property = 'coverLevelType');";
+            stmt = conn.prepareStatement(sql);
+            stmt.setLong(1, transactionId);
+            stmt.setLong(2, transactionId);
+            ResultSet results = stmt.executeQuery();
+            while (results.next()) {
+                TransactionDetail transactionDetail = new TransactionDetail();
+                transactionDetail.setXPath("travel/lastCoverTabLevel");
+                transactionDetail.setTextValue(results.getString("Value"));
+                return transactionDetail;
+            }
+        } catch(Exception e) {
+            System.out.println(e.getStackTrace());
+        } finally {
+            dbSource.closeConnection();
+        }
+        return new TransactionDetail();
+    }
+
     public List<TransactionDetail> getTransactionDetails(String hashedEmail, String vertical, String type, String emailAddress, long transactionId, int brandId) throws DaoException {
         List<TransactionDetail> transactionDetails = new ArrayList<>();
         emailAddress = EmailUrlService.decodeEmailAddress(emailAddress);
@@ -56,10 +84,10 @@ public class RemoteLoadQuoteService {
         emailData.setTransactionId(transactionId);
         emailData.setEmailType(emailMode);
         if (transactionAccessService.hasAccessToTransaction(emailData, brandId, verticalType)) {
-            transactionDetails = transactionDetailsDao.getTransactionDetails(transactionId, vertical);
+            transactionDetails = transactionDetailsDao.getTransactionDetails(transactionId);
             // Get DOBs and generate ages for new xpath
             if (VerticalType.TRAVEL == verticalType) {
-
+                transactionDetails.add(getCoverLevelType(transactionId));
                 TransactionDetail newTransactionDetail = transactionDetails.stream()
                         .filter(td -> Arrays.asList("travel/travellers/traveller1DOB", "travel/travellers/traveller2DOB").contains(td.getXPath()))
                         .filter(td -> StringUtils.isNotBlank(td.getTextValue()))

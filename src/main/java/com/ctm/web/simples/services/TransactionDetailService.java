@@ -37,7 +37,7 @@ public class TransactionDetailService {
      */
     public Data getTransactionDetailsInXmlData(Long transactionId) throws DaoException {
         final Data data = new Data();
-        transactionDetailsDao.getTransactionDetails(transactionId, null)
+        transactionDetailsDao.getTransactionDetails(transactionId)
                 .forEach(txnDetail -> data.put(txnDetail.getXPath(), txnDetail.getTextValue()));
         return data;
     }

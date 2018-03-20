@@ -384,7 +384,7 @@ public class RememberMeService {
 
     private List<TransactionDetail> getTransactionDetails(final String transactionId) {
         try {
-            return transactionDetailsDao.getTransactionDetails(Long.valueOf(transactionId), null);
+            return transactionDetailsDao.getTransactionDetails(Long.valueOf(transactionId));
         } catch (DaoException e) {
             LOGGER.error("populateDataBucket: Error getting transaction details for transactionId {}", kv("transactionId", transactionId), e);
             throw new RuntimeException(e);

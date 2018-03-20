@@ -53,7 +53,7 @@ public class RemoteLoadQuoteServiceTest {
 		emailMaster.setEmailAddress(email);
 		emailMaster.setHashedEmail(hashedEmail);
 		when(emailMasterDao.getEmailMaster(email, brandId)).thenReturn(emailMaster );
-		when(transactionDetailsDao.getTransactionDetails(transactionId, null)).thenReturn(transactionDetails );
+		when(transactionDetailsDao.getTransactionDetails(transactionId)).thenReturn(transactionDetails );
 		
 		remoteLoadQuoteService = new RemoteLoadQuoteService(transactionAccessService, transactionDetailsDao);
 	}

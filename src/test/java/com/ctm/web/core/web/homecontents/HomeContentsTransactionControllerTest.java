@@ -99,7 +99,7 @@ public class HomeContentsTransactionControllerTest extends BaseControllerTest {
     @Test
     public void givenEncryptedTransationId_whenGettingTransaction_thenDetailsReturnedInJson() throws Exception {
 
-        given(this.transactionDetailsDao.getTransactionDetails(transactionId, null)).willReturn(transactionDetails);
+        given(this.transactionDetailsDao.getTransactionDetails(transactionId)).willReturn(transactionDetails);
 
         // encrypt transaction id
         final Optional<String> optEncryptedTransactionId = this.encrypt(transactionId);
@@ -120,7 +120,7 @@ public class HomeContentsTransactionControllerTest extends BaseControllerTest {
     @Test
     public void givenEmptyTransactionDetails_whenGettingTransaction_thenIs404NotFound() throws Exception {
 
-        given(this.transactionDetailsDao.getTransactionDetails(transactionId, null)).willReturn(Collections.emptyList());
+        given(this.transactionDetailsDao.getTransactionDetails(transactionId)).willReturn(Collections.emptyList());
 
         // encrypt transaction id
         final Optional<String> optEncryptedTransactionId = this.encrypt(transactionId);
