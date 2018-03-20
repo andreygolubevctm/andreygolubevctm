@@ -153,7 +153,7 @@ public class TransactionService {
 		message.setMessageId(-1);
 		message.setCanPostpone(true); // So that we can hook into the InIn services
 
-		Map<String, String> transactionDetails = transactionDetailsDao.getTransactionDetails(transaction.getNewestTransactionId())
+		Map<String, String> transactionDetails = transactionDetailsDao.getTransactionDetails(transaction.getNewestTransactionId(), null)
 				.stream()
 				.collect(Collectors.toMap(TransactionDetail::getXPath, TransactionDetail::getTextValue));
 

@@ -7,6 +7,7 @@ import com.ctm.web.core.dao.SqlDao;
 import com.ctm.web.core.dao.SqlDaoFactory;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.transaction.model.TransactionDetail;
+import com.ctm.web.core.model.settings.Vertical.VerticalType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -400,12 +401,37 @@ public class TransactionDetailsDao {
 		sqlDao.update(databaseMapping);
 
 	}
+  
+  TransactionDetail getCoverLevelType(long transactionId) {
+	  SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
+	  try {
+		  PreparedStatement stmt;
+		  Connection conn = dbSource.getConnection();
+		  String sql = "SELECT * FROM aggregator.ranking_details WHERE transactionId = ? AND Property = 'coverLevelType' AND rankSequence IN (SELECT MAX(RankSequence) FROM aggregator.ranking_details WHERE transactionId = ? AND Property = 'coverLevelType');";
+		  stmt = conn.prepareStatement(sql);
+		  stmt.setLong(1, transactionId);
+		  stmt.setLong(2, transactionId);
+		  ResultSet results = stmt.executeQuery();
+		  while (results.next()) {
+			TransactionDetail transactionDetail = new TransactionDetail();
+			transactionDetail.setXPath("travel/lastCoverTabLevel");
+			transactionDetail.setTextValue(results.getString("Value"));
+			return transactionDetail;
+		  }
+	  } catch(Exception e) {
+	  	System.out.println(e.getStackTrace());
+	  } finally {
+		  dbSource.closeConnection();
+	  }
+	  return new TransactionDetail();
+  }
 
 	/** returns transaction details based off transactionId.
 	 * @param transactionId
+	 * @param vertical
 	 * @throws DaoException
 	 */
-	public List<TransactionDetail> getTransactionDetails(long transactionId) throws DaoException {
+	public List<TransactionDetail> getTransactionDetails(long transactionId, String vertical) throws DaoException {
 		List<TransactionDetail> transactionDetails = new  ArrayList<TransactionDetail>();
 		SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
 		try {
@@ -430,6 +456,9 @@ public class TransactionDetailsDao {
 					transactionDetail.setXPath(results.getString("xpath"));
 					transactionDetail.setTextValue(results.getString("textValue"));
 					transactionDetails.add(transactionDetail);
+				}
+				if (vertical != null && VerticalType.findByCode(vertical) == VerticalType.TRAVEL) {
+					transactionDetails.add(getCoverLevelType(transactionId));
 				}
 		} catch (SQLException | NamingException e) {
 			throw new DaoException(e);

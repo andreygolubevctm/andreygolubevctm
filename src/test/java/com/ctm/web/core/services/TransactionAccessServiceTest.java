@@ -54,7 +54,7 @@ public class TransactionAccessServiceTest {
 		emailData.setEmailType(emailMode);
 		emailData.setTransactionId(transactionId);
 		when(emailMasterDao.getEmailMaster(emailAddress, brandId)).thenReturn(emailData.getEmailMaster() );
-		when(transactionDetailsDao.getTransactionDetails(transactionId)).thenReturn(transactionDetails );
+		when(transactionDetailsDao.getTransactionDetails(transactionId, null)).thenReturn(transactionDetails );
 		transaction = new Transaction();
 		transaction.setEmailAddress(emailAddress);
 		when(transactionDao.getCoreInformation((Transaction)anyObject())).thenReturn(transaction  );

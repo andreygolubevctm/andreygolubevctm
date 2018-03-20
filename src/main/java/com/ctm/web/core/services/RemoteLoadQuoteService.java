@@ -56,9 +56,10 @@ public class RemoteLoadQuoteService {
         emailData.setTransactionId(transactionId);
         emailData.setEmailType(emailMode);
         if (transactionAccessService.hasAccessToTransaction(emailData, brandId, verticalType)) {
-            transactionDetails = transactionDetailsDao.getTransactionDetails(transactionId);
+            transactionDetails = transactionDetailsDao.getTransactionDetails(transactionId, vertical);
             // Get DOBs and generate ages for new xpath
             if (VerticalType.TRAVEL == verticalType) {
+
                 TransactionDetail newTransactionDetail = transactionDetails.stream()
                         .filter(td -> Arrays.asList("travel/travellers/traveller1DOB", "travel/travellers/traveller2DOB").contains(td.getXPath()))
                         .filter(td -> StringUtils.isNotBlank(td.getTextValue()))

@@ -161,7 +161,7 @@ public class RememberMeServiceTest {
         when(request.getSession().getAttribute("sessionData")).thenReturn(new SessionData());
         when(request.getCookies()).thenReturn(new Cookie[]{new Cookie(getCookieName(), getTransactionId())});
         when(sessionDataServiceBean.getDataForTransactionId(request, "12345678", true)).thenReturn(data);
-        when(transactionDetailsDao.getTransactionDetails(cookieTransactionId)).thenReturn(createTransactionDetails());
+        when(transactionDetailsDao.getTransactionDetails(cookieTransactionId, null)).thenReturn(createTransactionDetails());
         assertTrue(service.validateAnswerAndLoadData(Vertical.VerticalType.HEALTH.name().toLowerCase(), validAnswer, request));
         assertEquals("<this><health><situation><healthCvr>F</healthCvr><location>Brisbane</location></situation><contactDetails>" +
                         "<name>aName</name></contactDetails><healthCover><primary><dob>01/02/1985</dob></primary></healthCover></health>" +

@@ -24,7 +24,7 @@ public class TransactionServiceTest {
 		TransactionDetailsDao mockTranDetailsDao = mock(TransactionDetailsDao.class);
 
 		List<TransactionDetail> transactionDetails = new ArrayList<>();
-		when(mockTranDetailsDao.getTransactionDetails(anyLong())).thenReturn(transactionDetails);
+		when(mockTranDetailsDao.getTransactionDetails(anyLong(), null)).thenReturn(transactionDetails);
 
 		Message message = TransactionService.getTransactionMessage(tranId, mockTranDao, mockTranDetailsDao);
 		assertEquals(-1, message.getMessageId());
@@ -49,7 +49,7 @@ public class TransactionServiceTest {
 				new TransactionDetail("health/contactDetails/contactNumber/other", "contactOther"),
 				new TransactionDetail("health/application/other", "appOther")
 		);
-		when(mockTranDetailsDao.getTransactionDetails(anyLong())).thenReturn(transactionDetails);
+		when(mockTranDetailsDao.getTransactionDetails(anyLong(), null)).thenReturn(transactionDetails);
 
 		Message message = TransactionService.getTransactionMessage(tranId, mockTranDao, mockTranDetailsDao);
 		assertEquals("QLD", message.getState());
@@ -63,7 +63,7 @@ public class TransactionServiceTest {
 				new TransactionDetail("health/contactDetails/contactNumber/mobile", "contactMobile"),
 				new TransactionDetail("health/contactDetails/contactNumber/other", "contactOther")
 		);
-		when(mockTranDetailsDao.getTransactionDetails(anyLong())).thenReturn(transactionDetails);
+		when(mockTranDetailsDao.getTransactionDetails(anyLong(), null)).thenReturn(transactionDetails);
 		message = TransactionService.getTransactionMessage(tranId, mockTranDao, mockTranDetailsDao);
 		assertEquals("Firstname Surname", message.getContactName());
 		assertEquals("contactMobile", message.getPhoneNumber1());

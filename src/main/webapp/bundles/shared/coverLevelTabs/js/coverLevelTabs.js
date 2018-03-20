@@ -52,8 +52,8 @@
 		activeTabSet: [{
 			label: "Comprehensive",
 			rankingFilter: "C",
-			defaultTab: true, // true|false true for default, false for not default/
-			showCount: true, // true|false show the count or not
+			defaultTab: true, 
+			showCount: true,
 			/**
 			 * The set of Results filters you want to add to the model based off your tab criteria.
 			 * @param renderView
@@ -156,13 +156,8 @@
                 meerkat.modules.resultsTracking.setResultsEventMode("Refresh");
             }
 
-            // Never write quote_ranking more than once for each Load event.
-            // Never write if the hasRunTrackingCall is empty, as it means its the first time.
-            // The first time is run by resultsRankings.js
-            if(!hasTrackedThisTab && hasRunTrackingCall.length) {
-                var rankingData = meerkat.modules.resultsRankings.getWriteRankData(Results.settings.rankings, meerkat.modules.resultsRankings.fetchProductsToRank(true));
-                meerkat.modules.resultsRankings.sendQuoteRanking("Cover Level Tabs", rankingData);
-            }
+						var rankingData = meerkat.modules.resultsRankings.getWriteRankData(Results.settings.rankings, meerkat.modules.resultsRankings.fetchProductsToRank(true));
+						meerkat.modules.resultsRankings.sendQuoteRanking("Cover Level Tabs", rankingData);
 
             // No need to append twice!
             if(!hasTrackedThisTab) {
@@ -232,12 +227,22 @@
 			$('.hidden-xs .clt-action.active').click();
 		}
 	}
+	
+	function transformTabs(tabs) {
+		var lastCoverTabLevel = $('#' + meerkat.site.vertical + '_lastCoverTabLevel').val();
+		if (lastCoverTabLevel == null) return tabs;
+		for (var i = 0; i < tabs.length; i++) {
+			var rankingFilter = tabs[i].rankingFilter;
+			tabs[i].defaultTab = rankingFilter === lastCoverTabLevel;
+		}
+		return tabs;
+	}
 
 	/**
 	 * Build the DOM structure for the current tabs.
 	 */
 	function buildTabs() {
-
+		settings.activeTabSet = transformTabs(settings.activeTabSet);
 		if(typeof settings.activeTabSet === 'undefined') {
     return;
 		}
