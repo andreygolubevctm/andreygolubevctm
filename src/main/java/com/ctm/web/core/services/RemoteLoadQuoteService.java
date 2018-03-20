@@ -52,7 +52,7 @@ public class RemoteLoadQuoteService {
         try {
             PreparedStatement stmt;
             Connection conn = dbSource.getConnection();
-            String sql = "SELECT * FROM aggregator.ranking_details WHERE transactionId = ? AND Property = 'coverLevelType' AND rankSequence IN (SELECT MAX(RankSequence) FROM aggregator.ranking_details WHERE transactionId = ? AND Property = 'coverLevelType');";
+            String sql = "SELECT Value FROM aggregator.ranking_details WHERE transactionId = ? AND Property = 'coverLevelType' AND rankSequence IN (SELECT MAX(RankSequence) FROM aggregator.ranking_details WHERE transactionId = ? AND Property = 'coverLevelType');";
             stmt = conn.prepareStatement(sql);
             stmt.setLong(1, transactionId);
             stmt.setLong(2, transactionId);
