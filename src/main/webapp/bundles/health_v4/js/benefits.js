@@ -179,7 +179,7 @@
         // toggle the quick select data in the hospital container
         $elements.hospital.find('.nav-tabs a').on('click', function toggleQuickSelect() {
             var target = $(this).attr('href'),
-                limitedSelected = target === '.limited-pane';
+                limitedSelected = target === '#limited-pane';
 
             // Check the input so it remains a green tick.
             $elements.limitedCoverIcon.prop('checked', true);

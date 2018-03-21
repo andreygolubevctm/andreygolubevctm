@@ -59,11 +59,11 @@
                 </div>
                 <div id="tabs" class="benefitsTab">
                     <ul class="nav nav-tabs tab-count-2">
-                        <li id="comprehensiveBenefitTab" class="active"><a data-toggle="tab" href=".comprehensive-pane" data-benefit-cover-type="customise" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />><h2 class="ignore" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />>${benefitsContent.getSupplementaryValueByKey('comprehensiveTabCopy')}</h2></a></li>
-                        <li><a data-toggle="tab" href=".limited-pane" data-benefit-cover-type="limited" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />><h2 class="ignore" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />>${benefitsContent.getSupplementaryValueByKey('limitedTabCopy')}</h2></a></li>
+                        <li id="comprehensiveBenefitTab" class="active"><a data-toggle="tab" href="#comprehensive-pane" data-benefit-cover-type="customise" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />><h2 class="ignore" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />>${benefitsContent.getSupplementaryValueByKey('comprehensiveTabCopy')}</h2></a></li>
+                        <li><a data-toggle="tab" href="#limited-pane" data-benefit-cover-type="limited" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />><h2 class="ignore" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />>${benefitsContent.getSupplementaryValueByKey('limitedTabCopy')}</h2></a></li>
                     </ul>
                     <div class="tab-content">
-                        <div class="tab-pane comprehensive-pane active in">
+                        <div class="tab-pane active in" id="comprehensive-pane">
                             <health_v4_insuranceprefs:quick_select
                                     options="Start a Family:family|Ageing Gracefully:ageing" trackingLabel="hospital" />
                  </c:if>
@@ -135,7 +135,7 @@
                                 <c:if test="${category eq 'Hospital'}">
                             </div>
                         </div>
-                        <div class="tab-pane limited-pane">
+                        <div class="tab-pane" id="limited-pane">
                             <div class="Extras-wrapper">
                                 <div class="children healthBenefits">
                                     <div class="hasIcons">
