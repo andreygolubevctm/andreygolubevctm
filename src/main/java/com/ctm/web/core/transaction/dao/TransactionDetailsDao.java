@@ -46,11 +46,11 @@ public class TransactionDetailsDao {
 
 	public static final String DESCRIPTION = "infoDes";
 
-	@Value("${-Dcom.ctm.healthcommon.security.xpathsecurity.salt}")
-	private static String SECURE_XPATH_SALT;
-	@Value("${-Dcom.ctm.healthcommon.security.xpathsecurity.key}")
-	private static String SECURE_XPATH_KEY;
-	private static XPathSecurity XPATH_SECURITY = null;
+	@Value("com.ctm.healthcommon.security.xpathsecurity.salt")
+	private String secureXPathSalt;
+	@Value("com.ctm.healthcommon.security.xpathsecurity.key")
+	private String secureXPathKey;
+	private static XPathSecurity xpathSecurity = null;
 
     /**
 	 * Constructor
@@ -72,12 +72,12 @@ public class TransactionDetailsDao {
 	/**
 	 * initialiseSecureString setup object which provides methods to encrypt/decrypt strings.
 	 */
-	private static void initialiseXpathSecurity() {
+	private void initialiseXpathSecurity() {
 		if(!hasXpathSecurity()) {
 			try {
-				XPATH_SECURITY = new XPathSecurity(SECURE_XPATH_KEY, SECURE_XPATH_SALT);
+				xpathSecurity = new XPathSecurity(secureXPathKey, secureXPathSalt);
 			} catch (Exception e) {
-				LOGGER.error("[xpath security] Failed to initialise XPAthSecurity: {}", e.getMessage(), e);
+				LOGGER.error("[xpath security] Failed to initialise XPAthSecurity: {}", kv("message",e.getMessage()), e);
 			}
 		}
 	}
@@ -86,8 +86,8 @@ public class TransactionDetailsDao {
 	 * hasSecureString confirms XPathSecurity has been instantiated.
 	 * @return
 	 */
-	private static boolean hasXpathSecurity() {
-		return XPATH_SECURITY != null && XPATH_SECURITY instanceof XPathSecurity;
+	private boolean hasXpathSecurity() {
+		return xpathSecurity != null && xpathSecurity instanceof XPathSecurity;
 	}
 
     /**
@@ -185,7 +185,7 @@ public class TransactionDetailsDao {
 	 * @param paramValue
 	 * @return String paramValue masked or not masked.
 	 */
-	public static String decryptBlacklistFields(String xpath, String paramValue) {
+	public String decryptBlacklistFields(String xpath, String paramValue) {
 		return decryptBlacklistFields(true, xpath, paramValue);
 	}
 
@@ -196,7 +196,7 @@ public class TransactionDetailsDao {
 	 * @param paramValue
 	 * @return String paramValue masked or not masked.
 	 */
-	public static String decryptBlacklistFields(boolean isOperator, String xpath, String paramValue) {
+	public String decryptBlacklistFields(boolean isOperator, String xpath, String paramValue) {
 		String returnValue = paramValue;
 		if(isEncryptableInfo(xpath)) {
 			returnValue = "";
@@ -205,9 +205,9 @@ public class TransactionDetailsDao {
 				if (hasXpathSecurity()) {
 					if (looksEncrypted(paramValue)) {
 						try {
-							returnValue = XPATH_SECURITY.decrypt(paramValue);
+							returnValue = xpathSecurity.decrypt(paramValue);
 						} catch (Exception e) {
-							LOGGER.error("[xpath security] Failed to decrypt xpath {} so defaulting to empty string: {}", xpath, e.getMessage(), e);
+							LOGGER.error("[xpath security] Failed to decrypt xpath {} so defaulting to empty string: {}", kv("xpath", xpath), kv("message", e.getMessage()), e);
 						}
 					}
 				}
@@ -222,14 +222,14 @@ public class TransactionDetailsDao {
 	 * @param paramValue
 	 * @return String paramValue masked or not masked.
 	 */
-	public static String encryptBlacklistFields(String xpath, String paramValue) {
+	public String encryptBlacklistFields(String xpath, String paramValue) {
 		initialiseXpathSecurity();
 		if(hasXpathSecurity()) {
 			if (isEncryptableInfo(xpath) && !looksEncrypted(paramValue)) {
 				try {
-					return XPATH_SECURITY.encrypt(paramValue);
+					return xpathSecurity.encrypt(paramValue);
 				} catch (Exception e) {
-					LOGGER.error("[xpath security] Failed to encrypt xpath {} so defaulting to empty string: {}", xpath, e.getMessage(), e);
+					LOGGER.error("[xpath security] Failed to encrypt xpath {} so defaulting to empty string: {}", kv("xpath", xpath), kv("message", e.getMessage()), e);
 				}
 			}
 		}
