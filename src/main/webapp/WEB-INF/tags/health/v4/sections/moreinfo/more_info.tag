@@ -55,6 +55,10 @@
 	{{ var callToActionBarHtml = htmlTemplate(obj); }}
 	{{ var product = Results.getSelectedProduct(); }}
 	{{ var benefitTemplate = meerkat.modules.templateCache.getTemplate($("#benefitLimitsTemplate")); }}
+
+	<%-- Get the HTML header for mobile --%>
+	{{ var headerMobileHtml = meerkat.modules.healthMoreInfo.getAffixedMobileHeaderData(); }}
+
 	<c:set var="buyNowHeadingClass">
 		<c:choose>
 			<c:when test="${isDualPriceActive eq true}">hidden-xs</c:when>
@@ -64,6 +68,9 @@
 	<c:set var="variantClassName">
 		<c:if test="${moreinfo_splittest_default eq false}">more-info-content-variant</c:if>
 	</c:set>
+
+	{{= headerMobileHtml }}
+
 	<div data-product-type="{{= info.ProductType }}" class="displayNone more-info-content ${variantClassName}">
 
 		<div class="fieldset-card row price-card <c:if test="${isDualPriceActive eq true}">hasDualPricing</c:if>">
