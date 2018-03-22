@@ -6,33 +6,8 @@
   <div class="form-group row fieldrow smallWidth">
     
     <%--labels  --%>
-    <div class="col-sm-4 col-xs-10">
-        <p class="traveler-heading">
-          Who's travelling?
-        </p>
-      <span class="traveler-age-label">
-        The age of the travelling adult?
-      </span>
-    </div>
-    
-    <%-- controls --%>
-    <div class="col-sm-3 col-xs-12 traveler-controls">
-      <div class="clearfix">
-        <span class="col-md-6 controls-heading">
-          Number of travellers
-        </span>
-      </div>
-      <div class="col-xs-6" id="num-travellers" data-max="25">
-        1
-      </div>
-      <div class="col-xs-6" id="plus">
-        <a href="javascript:;" class="icon-add"></a>
-      </div>
-      <div class="warning-label-hidden">
-        Maximum number of travellers is 25
-      </div>
-    </div>
-    
+    <label class="col-sm-4 col-xs-10 control-label">The age of the travelling adult?</label>
+
     <%-- default age box --%>
     <div class="col-sm-5 col-xs-12 age-container">
       <div class="age-item col-md-5 col-lg-3">
@@ -44,5 +19,23 @@
         </div>
       </div>
     </div>
-     <field_v1:hidden xpath="travel/travellers/travellersAge" />
+    <field_v1:hidden xpath="travel/travellers/travellersAge" />
+
+    <%-- controls --%>
+    <div class="col-sm-3 col-xs-12 traveller-num-controls">
+      <div class="clearfix">
+      <span class="col-md-6 controls-heading">
+        Number of travellers
+      </span>
+      </div>
+      <div class="col-xs-6" id="num-travellers" data-max="25">
+        1
+      </div>
+      <div class="col-xs-6" id="plus">
+        <a href="javascript:;" class="icon-add"></a>
+      </div>
+      <div class="warning-label-hidden">
+        Maximum number of travellers is 25
+      </div>
+    </div>
   </div>

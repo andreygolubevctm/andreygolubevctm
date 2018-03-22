@@ -7,16 +7,19 @@
 	var meerkat = window.meerkat,
 		$travel_party,
 		$travel_adults,
-		$adult_dob_2_row,
-		$adult_dob_2,
 		$single_parent,
 		$single_parent_row,
-		$children_row;
+		$children_row,
+		$travellerNumControls,
+		isIe8 = meerkat.modules.performanceProfiling.isIE8(),
+        showMethod = isIe8 ? 'show' : 'slideDown',
+        hideMethod = isIe8 ? 'hide' : 'slideUp';
 
 	function initAdultAges() {
 		$(document).ready(function travelSortingInitDomready() {
-			$travel_party = $('.travel_party'),
-			$travel_adults = $('#travel_adults'),
+			$travel_party = $('.travel_party');
+			$travel_adults = $('#travel_adults');
+            $travellerNumControls= $('.traveller-num-controls');
 
 			$travel_party.find('label:nth-child(1)').addClass('icon-single');
 			$travel_party.find('label:nth-child(2)').addClass('icon-couple');
@@ -36,36 +39,46 @@
 			var selected = $(this).find("input[type='radio']:checked").val();
 			switch(selected) {
 				case 'S':
+                    $children_row[hideMethod]();
 					$single_parent_row[showMethod]();
-					$single_parent.trigger("change");
+					$travellerNumControls[hideMethod]();
+                    $single_parent.find("#travel_singleParent_N").prop('checked', true).trigger('change');
 					$travel_adults.val(1);
-				break;
+					break;
 				case 'C':
 					$children_row[hideMethod]();
 					$('#travel_childrenSelect').val(0);
 					$single_parent_row[hideMethod]();
-					$travel_adults.val(2);
-				break;
+                    $travellerNumControls[hideMethod]();
+                    $travel_adults.val(2);
+					break;
 				case 'SF':
-					$children_row[hideMethod]();
+					$children_row[showMethod]();
 					$single_parent_row[hideMethod]();
-					$travel_adults.val(1);
-				break;
+                    $travellerNumControls[hideMethod]();
+                    $travel_adults.val(1);
+					break;
 				case 'F':
 					$children_row[showMethod]();
 					$single_parent_row[hideMethod]();
-					$travel_adults.val(2);
-				break;
+                    $travellerNumControls[hideMethod]();
+                    $travel_adults.val(2);
+					break;
 				case 'G':
 					$children_row[hideMethod]();
 					$single_parent_row[hideMethod]();
-					$('#travel_childrenSelect').val(0);
-				break;
+                    $travellerNumControls[showMethod]();
+                    $('#travel_childrenSelect').val(0);
+					break;
+				default:
+                    $single_parent_row[hideMethod]();
+                    $children_row[hideMethod]();
+                    $travellerNumControls[hideMethod]();
+
 			}
 	}
 
 	function initEventListeners() {
-		var isIe8 = meerkat.modules.performanceProfiling.isIE8(), showMethod = isIe8 ? 'show' : 'slideDown', hideMethod = isIe8 ? 'hide' : 'slideUp';
 		$travel_party.off().on("change", _handleTravelPartyChange);
 
 		$travel_party.trigger("change");
@@ -73,18 +86,15 @@
 		$single_parent.off().on("change", function showSingleParent() {
 			var selected = $(this).find("input[type='radio']:checked").val();
 			if (selected === "Y") {
-				$children_row[showMethod]();
-			} else {
-				$children_row[hideMethod]();
+                $travel_party.find('.icon-single-family input').prop('checked', true).trigger('change');
 			}
 		});
 
 	}
 
 	function updateHiddenField() {
-		var totalAdults = parseInt($('#travel_adults').val()),
-				numAdults = $('.age-container input').length,
-				numChildren = parseInt($('#travel_childrenSelect').val()) || 0;
+		var numAdults = $('.age-container input').length,
+			numChildren = parseInt($('#travel_childrenSelect').val()) || 0;
 				
 		$('#travel_adults').val(numAdults);
 		$('#travel_children').val(numChildren);

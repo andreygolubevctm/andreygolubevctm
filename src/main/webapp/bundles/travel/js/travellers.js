@@ -187,11 +187,12 @@
 	}
 
 	function insertValues() {
-		values = state.hiddenValues;
+		var values = state.hiddenValues;
 		for (var i = 0; values.length > i; i++) {
-			var indexFix = i + 1;
-			if ($('input[name=travellers-age-'+ indexFix +']').length > 0) {
-				$('input[name=travellers-age-'+ indexFix +']').val(values[i]);
+			var indexFix = i + 1,
+				$travellerAgeElement = $('input[name=travellers-age-'+ indexFix +']');
+			if ($travellerAgeElement.length > 0) {
+                $travellerAgeElement.val(values[i]);
 			} else {
 				_add(null, values[i]);
 			}
