@@ -44,8 +44,6 @@ public class TransactionDetailsDao {
 
 	private final SqlDaoFactory sqlDaoFactory;
 
-	public static final String DESCRIPTION = "infoDes";
-
 	@Value("com.ctm.healthcommon.security.xpathsecurity.salt")
 	private String secureXPathSalt;
 	@Value("com.ctm.healthcommon.security.xpathsecurity.key")
@@ -59,6 +57,8 @@ public class TransactionDetailsDao {
 	public TransactionDetailsDao() {
 		sqlDaoFactory = new SqlDaoFactory(SimpleDatabaseConnection.getInstance());
 		jdbcTemplate = new NamedParameterJdbcTemplate(SimpleDatabaseConnection.getDataSourceJdbcCtm());
+		secureXPathSalt = System.getProperty("com.ctm.healthcommon.security.xpathsecurity.salt");
+		secureXPathKey = System.getProperty("com.ctm.healthcommon.security.xpathsecurity.key");
 	}
 
 
@@ -202,8 +202,8 @@ public class TransactionDetailsDao {
 			returnValue = "";
 			if(isOperator) {
 				initialiseXpathSecurity();
-				if (hasXpathSecurity()) {
-					if (looksEncrypted(paramValue)) {
+				if (looksEncrypted(paramValue)) {
+					if (hasXpathSecurity()) {
 						try {
 							returnValue = xpathSecurity.decrypt(paramValue);
 						} catch (Exception e) {
@@ -223,15 +223,17 @@ public class TransactionDetailsDao {
 	 * @return String paramValue masked or not masked.
 	 */
 	public String encryptBlacklistFields(String xpath, String paramValue) {
-		initialiseXpathSecurity();
-		if(hasXpathSecurity()) {
-			if (isEncryptableInfo(xpath) && !looksEncrypted(paramValue)) {
+		if (isEncryptableInfo(xpath) && !looksEncrypted(paramValue)) {
+			initialiseXpathSecurity();
+			if(hasXpathSecurity()) {
 				try {
 					return xpathSecurity.encrypt(paramValue);
 				} catch (Exception e) {
-					LOGGER.error("[xpath security] Failed to encrypt xpath {} so defaulting to empty string: {}", kv("xpath", xpath), kv("message", e.getMessage()), e);
+					LOGGER.error("[xpath security] Failed to encrypt {} so defaulting to empty string: {}", kv("xpath", xpath), kv("message", e.getMessage()), e);
 				}
 			}
+			// If it's supposed to be encrypted but errors then it must become an empty string
+			paramValue = "";
 		}
 		return paramValue;
 	}
