@@ -12,7 +12,7 @@
 <health_v1:dual_pricing_settings />
 
 <script id="moreInfoAffixedHeaderMobileTemplate" type="text/html">
-	<div class="container <c:if test="${isDualPriceActive eq true}">hasDualPricing</c:if>">
+	<div class="container <c:if test="${isDualPriceActive eq true}">hasDualPricing</c:if> visible-xs">
 		<div class="row dockedHdr dockedHeaderLarge">
 			<div class="col-xs-6">
 				<div class="logo-header hidden-slim">
