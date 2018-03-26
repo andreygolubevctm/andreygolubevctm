@@ -6,6 +6,7 @@ import com.ctm.web.core.dao.DatabaseUpdateMapping;
 import com.ctm.web.core.dao.SqlDao;
 import com.ctm.web.core.dao.SqlDaoFactory;
 import com.ctm.web.core.exceptions.DaoException;
+import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.core.transaction.model.TransactionDetail;
 import com.ctm.healthcommon.security.XPathSecurity;
 import org.slf4j.Logger;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
+import java.security.InvalidParameterException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -44,8 +46,6 @@ public class TransactionDetailsDao {
 
 	private final SqlDaoFactory sqlDaoFactory;
 
-	@Value("com.ctm.healthcommon.security.xpathsecurity.salt")
-	private String secureXPathSalt;
 	@Value("com.ctm.healthcommon.security.xpathsecurity.key")
 	private String secureXPathKey;
 	private static XPathSecurity xpathSecurity = null;
@@ -57,7 +57,6 @@ public class TransactionDetailsDao {
 	public TransactionDetailsDao() {
 		sqlDaoFactory = new SqlDaoFactory(SimpleDatabaseConnection.getInstance());
 		jdbcTemplate = new NamedParameterJdbcTemplate(SimpleDatabaseConnection.getDataSourceJdbcCtm());
-		secureXPathSalt = System.getProperty("com.ctm.healthcommon.security.xpathsecurity.salt");
 		secureXPathKey = System.getProperty("com.ctm.healthcommon.security.xpathsecurity.key");
 	}
 
@@ -72,12 +71,16 @@ public class TransactionDetailsDao {
 	/**
 	 * initialiseSecureString setup object which provides methods to encrypt/decrypt strings.
 	 */
-	private void initialiseXpathSecurity() {
+	private void initialiseXpathSecurity(long transactionId) {
 		if(!hasXpathSecurity()) {
 			try {
-				xpathSecurity = new XPathSecurity(secureXPathKey, secureXPathSalt);
+				TransactionDao transactionDao = new TransactionDao();
+				long rootId = transactionDao.getRootIdOfTransactionId(transactionId);
+				xpathSecurity = new XPathSecurity(secureXPathKey, Long.toString(rootId));
+			} catch (DaoException e) {
+				LOGGER.error("[xpath security] Failed to locate rootID for {}: {}", kv("transaction",transactionId), kv("message",e.getMessage()), e);
 			} catch (Exception e) {
-				LOGGER.error("[xpath security] Failed to initialise XPAthSecurity: {}", kv("message",e.getMessage()), e);
+				LOGGER.error("[xpath security] Failed to initialise XPAthSecurity: {}", kv("message", e.getMessage()), e);
 			}
 		}
 	}
@@ -97,6 +100,8 @@ public class TransactionDetailsDao {
      * @return
      */
 	public Boolean insertOrUpdate(HttpServletRequest request, long transactionId) {
+
+
 
 		/**
 		 * Retrieve the parameter names as an Enumerated array of strings to iterate over.
@@ -144,7 +149,7 @@ public class TransactionDetailsDao {
 			if(!hasCheckedPrivacyOptin) {
 				paramValue = maskPrivateFields(xpath, paramValue);
 			} else {
-				paramValue = encryptBlacklistFields(xpath, paramValue);
+				paramValue = encryptBlacklistFields(transactionId, xpath, paramValue);
 			}
 
 			try {
@@ -185,8 +190,8 @@ public class TransactionDetailsDao {
 	 * @param paramValue
 	 * @return String paramValue masked or not masked.
 	 */
-	public String decryptBlacklistFields(String xpath, String paramValue) {
-		return decryptBlacklistFields(true, xpath, paramValue);
+	public String decryptBlacklistFields(long transactionId, String xpath, String paramValue) {
+		return decryptBlacklistFields(transactionId, true, xpath, paramValue);
 	}
 
 	/**
@@ -196,12 +201,12 @@ public class TransactionDetailsDao {
 	 * @param paramValue
 	 * @return String paramValue masked or not masked.
 	 */
-	public String decryptBlacklistFields(boolean isOperator, String xpath, String paramValue) {
+	public String decryptBlacklistFields(long transactionId, boolean isOperator, String xpath, String paramValue) {
 		String returnValue = paramValue;
 		if(isEncryptableInfo(xpath)) {
 			returnValue = "";
 			if(isOperator) {
-				initialiseXpathSecurity();
+				initialiseXpathSecurity(transactionId);
 				if (looksEncrypted(paramValue)) {
 					if (hasXpathSecurity()) {
 						try {
@@ -222,9 +227,9 @@ public class TransactionDetailsDao {
 	 * @param paramValue
 	 * @return String paramValue masked or not masked.
 	 */
-	public String encryptBlacklistFields(String xpath, String paramValue) {
+	public String encryptBlacklistFields(long transactionId, String xpath, String paramValue) {
 		if (isEncryptableInfo(xpath) && !looksEncrypted(paramValue)) {
-			initialiseXpathSecurity();
+			initialiseXpathSecurity(transactionId);
 			if(hasXpathSecurity()) {
 				try {
 					return xpathSecurity.encrypt(paramValue);
