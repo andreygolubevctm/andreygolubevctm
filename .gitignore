@@ -14,6 +14,7 @@
 /src/main/pipeline/node_modules
 /src/main/pipeline/npm-debug.log
 /src/main/pipeline/yarn.lock
+/src/main/pipeline/yarn-error.log
 /src/test/frontend/node
 /src/test/frontend/node_modules
 /src/test/frontend/npm-debug.log
