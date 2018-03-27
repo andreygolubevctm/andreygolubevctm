@@ -6,7 +6,6 @@ import com.ctm.web.core.dao.DatabaseUpdateMapping;
 import com.ctm.web.core.dao.SqlDao;
 import com.ctm.web.core.dao.SqlDaoFactory;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.core.transaction.model.TransactionDetail;
 import com.ctm.healthcommon.security.XPathSecurity;
 import org.slf4j.Logger;
@@ -20,7 +19,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
-import java.security.InvalidParameterException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -70,6 +68,7 @@ public class TransactionDetailsDao {
 
 	/**
 	 * initialiseSecureString setup object which provides methods to encrypt/decrypt strings.
+	 * @param transactionId
 	 */
 	private void initialiseXpathSecurity(long transactionId) {
 		if(!hasXPathSecurity()) {
@@ -186,6 +185,7 @@ public class TransactionDetailsDao {
 
 	/**
 	 * Decrypt private data fields.
+	 * @param transactionId
 	 * @param xpath
 	 * @param paramValue
 	 * @return String paramValue masked or not masked.
@@ -196,6 +196,7 @@ public class TransactionDetailsDao {
 
 	/**
 	 * Decrypt private data fields.
+	 * @param transactionId
 	 * @param isOperator
 	 * @param xpath
 	 * @param paramValue
@@ -223,6 +224,7 @@ public class TransactionDetailsDao {
 
 	/**
 	 * Encrypt private data fields.
+	 * @param transactionId 
 	 * @param xpath
 	 * @param paramValue
 	 * @return String paramValue masked or not masked.
