@@ -28,7 +28,7 @@
             <div class="refine-results-mobile__item-container">
                 <div class="refine-results-mobile__item" data-menu-id="hospital">
                     <div class="refine-results-mobile__item-type">Hospital insurance preferences</div>
-                    <div class="refine-results-mobile__item-type-selection">{{= hospitalType }} Hospital{{= hospitalCountText }}</div>
+                    <div class="refine-results-mobile__item-type-selection">{{= hospitalText }}</div>
                 </div>
                 <div class="refine-results-mobile__item" data-menu-id="extras">
                     <div class="refine-results-mobile__item-type">Extras insurance preferences</div>
@@ -52,4 +52,12 @@
         <health_v4_refine_results:excess />
         <health_v4_refine_results:funds />
     </div>
+</core_v1:js_template>
+
+<core_v1:js_template id="refineResultsHospitalBenefitsSwitch">
+    <field_v2:switch xpath="${pageSettings.getVerticalCode()}/benefits/refineResults/HospitalSwitch" value="Y" className="benefits-switch switch-small" onText="On" offText="Off" />
+</core_v1:js_template>
+
+<core_v1:js_template id="refineResultsExtrasBenefitsSwitch">
+    <field_v2:switch xpath="${pageSettings.getVerticalCode()}/benefits/refineResults/ExtrasSwitch" value="Y" className="benefits-switch switch-small" onText="On" offText="Off" />
 </core_v1:js_template>

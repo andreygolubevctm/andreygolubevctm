@@ -210,7 +210,7 @@
                 events: {
                     init: function (filterObject) {
                         meerkat.modules.benefitsSwitch.initHospitalFilters();
-                        _toggleFiltersBenefitSelection('hospital', meerkat.modules.benefitsSwitch.isHospitalOn());
+                        toggleFiltersBenefitSelection('hospital', meerkat.modules.benefitsSwitch.isHospitalOn());
                     },
                     update: function (filterObject) {
                         var isSwitchedOn = $('input[name=' + filterObject.name + ']').bootstrapSwitch('state');
@@ -231,7 +231,7 @@
                 events: {
                     init: function (filterObject) {
                         meerkat.modules.benefitsSwitch.initExtrasFilters();
-                        _toggleFiltersBenefitSelection('extras', meerkat.modules.benefitsSwitch.isExtrasOn());
+                        toggleFiltersBenefitSelection('extras', meerkat.modules.benefitsSwitch.isExtrasOn());
                     },
                     update: function (filterObject) {
                         var isSwitchedOn = $('input[name=' + filterObject.name + ']').bootstrapSwitch('state');
@@ -387,10 +387,6 @@
                 meerkat.modules.benefitsSwitch.switchOffHospitalFilters();
             }
         });
-
-        $(document).on('click', 'input[name=health_filterBar_benefitsExtras]', function () {
-            _toggleFiltersExtrasMessage();
-        });
     }
 
     function toggleFilterByContainer($filter, toggle) {
@@ -512,9 +508,12 @@
         });
 
         meerkat.messaging.subscribe(meerkatEvents.benefitsSwitch.FILTERS_SWITCH_CHANGED, function (e) {
-            _toggleFiltersBenefitSelection(e.benefit, e.isSwitchedOn);
-            _toggleFiltersSwitchValidation();
-            _toggleFiltersExtrasMessage();
+            toggleFiltersBenefitSelection(e.benefit, e.isSwitchedOn, e.isMobile);
+
+            // defer so switch values get populated within healthRefineResultsMobileBenefits FILTERS_SWITCH_CHANGED
+            _.defer(function() {
+                _toggleFiltersSwitchValidation(e.isMobile);
+            });
         });
     }
 
@@ -531,36 +530,28 @@
          }
     }
 
-    function _toggleFiltersBenefitSelection(benefit, isSwitchedOn) {
-        $('.filter-' + benefit + '-benefits')
+    function toggleFiltersBenefitSelection(benefit, isSwitchedOn, isMobile) {
+        var $benefits = isMobile ? $('.health-refine-results-' + benefit + '-benefits') : $('.filter-' + benefit + '-benefits');
+
+        $benefits
             .toggleClass('benefits-switched-off', !isSwitchedOn)
             .find('.benefits-list input[type=checkbox]').prop('disabled', !isSwitchedOn);
     }
 
-    function _toggleFiltersSwitchValidation() {
-        var areBenefitsSwitchOn = meerkat.modules.benefitsSwitch.isFiltersHospitalOn() || meerkat.modules.benefitsSwitch.isFiltersExtrasOn();
-        $('.results-filters-benefits .benefits-switch-off-message').toggleClass('hidden', areBenefitsSwitchOn);
-        $('.results-filters-benefits .benefits-switch-extras-message').addClass('hidden');
-        $('.filter-update-changes').attr('disabled', !areBenefitsSwitchOn).prop('disabled', !areBenefitsSwitchOn);
-        $('.filter.benefits-switched-off').attr('data-dontToggleUpdate', !areBenefitsSwitchOn);
+    function _toggleFiltersSwitchValidation(isMobile) {
+        var areBenefitsSwitchOn = meerkat.modules.benefitsSwitch.isFiltersHospitalOn(isMobile) || meerkat.modules.benefitsSwitch.isFiltersExtrasOn(isMobile),
+            $switchMessage = isMobile ? $('.refine-results-mobile .benefits-switch-off-message') : $('.results-filters-benefits .benefits-switch-off-message');
+
+        $switchMessage.toggleClass('hidden', areBenefitsSwitchOn);
+
+        if (!isMobile) {
+            $('.filter-update-changes').attr('disabled', !areBenefitsSwitchOn).prop('disabled', !areBenefitsSwitchOn);
+            $('.filter.benefits-switched-off').attr('data-dontToggleUpdate', !areBenefitsSwitchOn);
+        }
 
         // push error tracking object into CtMDatalayer
         if (!areBenefitsSwitchOn) {
             meerkat.modules.benefits.errorTracking('benefits-switch-off');
-        }
-    }
-
-    function _toggleFiltersExtrasMessage() {
-        var hide = $('input[name=health_filterBar_benefitsExtras]:checked').length !== 0 || !meerkat.modules.benefitsSwitch.isFiltersExtrasOn();
-        $('.results-filters-benefits .benefits-switch-extras-message').toggleClass('hidden', hide);
-        if (meerkat.modules.benefitsSwitch.isFiltersHospitalOn() || meerkat.modules.benefitsSwitch.isFiltersExtrasOn()) {
-            $('.results-filters-benefits .benefits-switch-off-message').addClass('hidden');
-            $('.filter-update-changes').attr('disabled', !hide).prop('disabled', !hide);
-        }
-
-        // push error tracking object into CtMDatalayer
-        if (!hide) {
-            meerkat.modules.benefits.errorTracking('benefits-switch-extras');
         }
     }
 
@@ -572,8 +563,8 @@
         init: init,
         events: {},
         getModel: getModel,
-        getCheckedBenefitsFromFilters: getCheckedBenefitsFromFilters,
-        populateSelectedBenefits: populateSelectedBenefits
+        populateSelectedBenefits: populateSelectedBenefits,
+        toggleFiltersBenefitSelection: toggleFiltersBenefitSelection
     });
 
 })(jQuery);
