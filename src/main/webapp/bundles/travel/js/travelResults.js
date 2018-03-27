@@ -178,7 +178,7 @@
 		 var level;
 
 		 if (_.isBoolean(result.isDomestic) ) {
-			 var level = result.isDomestic === true ? 'D' : 'I';
+			 level = result.isDomestic === true ? 'D' : 'I';
 			 meerkat.modules.coverLevelTabs.incrementCount(level);
 			 return level;
 		 }
