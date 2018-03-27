@@ -48,7 +48,7 @@ public class TransactionDetailsDao {
 
 	@Value("com.ctm.healthcommon.security.xpathsecurity.key")
 	private String secureXPathKey;
-	private static XPathSecurity xpathSecurity = null;
+	private XPathSecurity xpathSecurity = null;
 
     /**
 	 * Constructor
@@ -72,7 +72,7 @@ public class TransactionDetailsDao {
 	 * initialiseSecureString setup object which provides methods to encrypt/decrypt strings.
 	 */
 	private void initialiseXpathSecurity(long transactionId) {
-		if(!hasXpathSecurity()) {
+		if(!hasXPathSecurity()) {
 			try {
 				TransactionDao transactionDao = new TransactionDao();
 				long rootId = transactionDao.getRootIdOfTransactionId(transactionId);
@@ -89,7 +89,7 @@ public class TransactionDetailsDao {
 	 * hasSecureString confirms XPathSecurity has been instantiated.
 	 * @return
 	 */
-	private boolean hasXpathSecurity() {
+	private boolean hasXPathSecurity() {
 		return xpathSecurity != null && xpathSecurity instanceof XPathSecurity;
 	}
 
@@ -208,7 +208,7 @@ public class TransactionDetailsDao {
 			if(isOperator) {
 				initialiseXpathSecurity(transactionId);
 				if (looksEncrypted(paramValue)) {
-					if (hasXpathSecurity()) {
+					if (hasXPathSecurity()) {
 						try {
 							returnValue = xpathSecurity.decrypt(paramValue);
 						} catch (Exception e) {
@@ -230,7 +230,7 @@ public class TransactionDetailsDao {
 	public String encryptBlacklistFields(long transactionId, String xpath, String paramValue) {
 		if (isEncryptableInfo(xpath) && !looksEncrypted(paramValue)) {
 			initialiseXpathSecurity(transactionId);
-			if(hasXpathSecurity()) {
+			if(hasXPathSecurity()) {
 				try {
 					return xpathSecurity.encrypt(paramValue);
 				} catch (Exception e) {

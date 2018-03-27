@@ -634,7 +634,7 @@
 							<c:set var="ignore">
 								${insertParams.add(counter)};
 								${insertParams.add(xpath)};
-								${insertParams.add(tranDao.encryptBlacklistFields(xpath,rowVal))};
+								${insertParams.add(tranDao.encryptBlacklistFields(transactionId, xpath, rowVal))};
 							</c:set>
 	</c:otherwise>
 	</c:choose>
