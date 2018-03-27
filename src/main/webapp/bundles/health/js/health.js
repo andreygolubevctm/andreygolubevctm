@@ -469,11 +469,19 @@
 								// Check dynamic checkboxes depending on hidden values
 								$('#health_simples_dialogue-checkbox-62-modal')
 									.prop('checked', $('#health_simples_dialogue-checkbox-62').val() === 'Y');
+
+                                if (meerkat.site.tracking.brandCode === 'wfdd') {
+                                    $('#health_simples_heardAboutSelect').val($('#health_simples_heardAbout').val());
+                                }
 							},
 							onClose: function(modalId) {
 								// Save the checkbox values to hidden inputs as Y/N
 								$('#health_simples_dialogue-checkbox-62')
 									.val($('#health_simples_dialogue-checkbox-62-modal').prop('checked') ? 'Y' : 'N');
+
+                                if (meerkat.site.tracking.brandCode === 'wfdd') {
+                                    $('#health_simples_heardAbout').val($('#health_simples_heardAboutSelect').val());
+                                }
 							}
 						});
 					}

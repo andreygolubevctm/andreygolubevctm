@@ -176,19 +176,21 @@
 	 
 	 function getCoverLevelForMultiTrip(tripInfo, result) {
 		 var level;
+
 		 if (_.isBoolean(result.isDomestic) ) {
-			 level = result.isDomestic === true ? 'D' : 'I';
+			 var level = result.isDomestic === true ? 'D' : 'I';
 			 meerkat.modules.coverLevelTabs.incrementCount(level);
-		 } else  {
-			 if (result.des.indexOf('Australia') == -1 && result.des.indexOf('Domestic') == -1) {
-				 level = 'I';
-				 meerkat.modules.coverLevelTabs.incrementCount(level);
-			 } else {
-				 level = 'D';
-				 meerkat.modules.coverLevelTabs.incrementCount(level);
-			 }
+			 return level;
 		 }
 
+         if (result.des.indexOf('Australia') == -1 && result.des.indexOf('Domestic') == -1) {
+             level = 'I';
+             meerkat.modules.coverLevelTabs.incrementCount(level);
+             return level;
+         }
+
+         level = 'D';
+         meerkat.modules.coverLevelTabs.incrementCount(level);
          return level;
 	 }
 	 
