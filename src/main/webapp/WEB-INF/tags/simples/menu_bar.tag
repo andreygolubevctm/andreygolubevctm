@@ -34,7 +34,6 @@
 			<%-- Menu options --%>
 			<ul class="nav navbar-nav">
 				<c:set var="consultantStyleCodeId">${callCentreService.getConsultantStyleCodeId(pageContext.getRequest())}</c:set>
-				<script>console.log(${consultantStyleCodeId});</script>
 				<c:choose>
 					<c:when test="${fn:contains(consultantStyleCodeId,',')}">
 						<li class="dropdown">
