@@ -5,6 +5,7 @@
 
 <session:new verticalCode="${fn:toUpperCase(param.vertical)}" forceNew="true" authenticated="true" />
 <jsp:useBean id="verticalSettings" class="com.ctm.web.core.model.settings.VerticalSettings" scope="page" />
+<jsp:useBean id="tranDao" class="com.ctm.web.core.transaction.dao.TransactionDetailsDao" scope="request" />
 
 <%--
 	load_quote.jsp
@@ -190,7 +191,7 @@ ${logger.info('Checking if user is authenticated. {},{}',log:kv('isOperator',isO
 									<c:set var="textVal">
 										<c:choose>
 											<c:when test="${fn:contains(row.textValue,'Please choose')}"></c:when>
-											<c:otherwise>${row.textValue}</c:otherwise>
+											<c:otherwise>${tranDao.decryptBlacklistFields(requestedTransaction, not empty isOperator, row.xpath, row.textValue)}</c:otherwise>
 										</c:choose>
 									</c:set>
 								<c:choose>

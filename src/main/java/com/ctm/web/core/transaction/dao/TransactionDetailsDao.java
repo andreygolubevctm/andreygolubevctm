@@ -7,9 +7,11 @@ import com.ctm.web.core.dao.SqlDao;
 import com.ctm.web.core.dao.SqlDaoFactory;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.transaction.model.TransactionDetail;
+import com.ctm.healthcommon.security.XPathSecurity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -42,6 +44,10 @@ public class TransactionDetailsDao {
 
 	private final SqlDaoFactory sqlDaoFactory;
 
+	@Value("com.ctm.healthcommon.security.xpathsecurity.key")
+	private String secureXPathKey;
+	private XPathSecurity xpathSecurity = null;
+
     /**
 	 * Constructor
 	 */
@@ -49,9 +55,8 @@ public class TransactionDetailsDao {
 	public TransactionDetailsDao() {
 		sqlDaoFactory = new SqlDaoFactory(SimpleDatabaseConnection.getInstance());
 		jdbcTemplate = new NamedParameterJdbcTemplate(SimpleDatabaseConnection.getDataSourceJdbcCtm());
+		secureXPathKey = System.getProperty("com.ctm.healthcommon.security.xpathsecurity.key");
 	}
-
-	public static final String DESCRIPTION = "infoDes";
 
 
 	@Autowired
@@ -61,6 +66,32 @@ public class TransactionDetailsDao {
 		this.jdbcTemplate = jdbcTemplate;
 	}
 
+	/**
+	 * initialiseSecureString setup object which provides methods to encrypt/decrypt strings.
+	 * @param transactionId
+	 */
+	private void initialiseXpathSecurity(long transactionId) {
+		if(!hasXPathSecurity()) {
+			try {
+				TransactionDao transactionDao = new TransactionDao();
+				long rootId = transactionDao.getRootIdOfTransactionId(transactionId);
+				xpathSecurity = new XPathSecurity(secureXPathKey, Long.toString(rootId));
+			} catch (DaoException e) {
+				LOGGER.error("[xpath security] Failed to locate rootID for {}: {}", kv("transaction",transactionId), kv("message",e.getMessage()), e);
+			} catch (Exception e) {
+				LOGGER.error("[xpath security] Failed to initialise XPAthSecurity: {}", kv("message", e.getMessage()), e);
+			}
+		}
+	}
+
+	/**
+	 * hasSecureString confirms XPathSecurity has been instantiated.
+	 * @return
+	 */
+	private boolean hasXPathSecurity() {
+		return xpathSecurity != null && xpathSecurity instanceof XPathSecurity;
+	}
+
     /**
      * Handles all the parameters. Determines whether to insert a new transaction detail or update the existing one.
      * @param request HttpServletRequest
@@ -68,6 +99,8 @@ public class TransactionDetailsDao {
      * @return
      */
 	public Boolean insertOrUpdate(HttpServletRequest request, long transactionId) {
+
+
 
 		/**
 		 * Retrieve the parameter names as an Enumerated array of strings to iterate over.
@@ -114,6 +147,8 @@ public class TransactionDetailsDao {
 
 			if(!hasCheckedPrivacyOptin) {
 				paramValue = maskPrivateFields(xpath, paramValue);
+			} else {
+				paramValue = encryptBlacklistFields(transactionId, xpath, paramValue);
 			}
 
 			try {
@@ -147,13 +182,98 @@ public class TransactionDetailsDao {
 		}
 		return paramValue;
 	}
+
+	/**
+	 * Decrypt private data fields.
+	 * @param transactionId
+	 * @param xpath
+	 * @param paramValue
+	 * @return String paramValue masked or not masked.
+	 */
+	public String decryptBlacklistFields(long transactionId, String xpath, String paramValue) {
+		return decryptBlacklistFields(transactionId, true, xpath, paramValue);
+	}
+
+	/**
+	 * Decrypt private data fields.
+	 * @param transactionId
+	 * @param isOperator
+	 * @param xpath
+	 * @param paramValue
+	 * @return String paramValue masked or not masked.
+	 */
+	public String decryptBlacklistFields(long transactionId, boolean isOperator, String xpath, String paramValue) {
+		String returnValue = paramValue;
+		if(isEncryptableInfo(xpath)) {
+			returnValue = "";
+			if(isOperator) {
+				initialiseXpathSecurity(transactionId);
+				if (looksEncrypted(paramValue)) {
+					if (hasXPathSecurity()) {
+						try {
+							returnValue = xpathSecurity.decrypt(paramValue);
+						} catch (Exception e) {
+							LOGGER.error("[xpath security] Failed to decrypt xpath {} so defaulting to empty string: {}", kv("xpath", xpath), kv("message", e.getMessage()), e);
+						}
+					}
+				}
+			}
+		}
+		return returnValue;
+	}
+
+	/**
+	 * Encrypt private data fields.
+	 * @param transactionId 
+	 * @param xpath
+	 * @param paramValue
+	 * @return String paramValue masked or not masked.
+	 */
+	public String encryptBlacklistFields(long transactionId, String xpath, String paramValue) {
+		if (isEncryptableInfo(xpath) && !looksEncrypted(paramValue)) {
+			initialiseXpathSecurity(transactionId);
+			if(hasXPathSecurity()) {
+				try {
+					return xpathSecurity.encrypt(paramValue);
+				} catch (Exception e) {
+					LOGGER.error("[xpath security] Failed to encrypt {} so defaulting to empty string: {}", kv("xpath", xpath), kv("message", e.getMessage()), e);
+				}
+			}
+			// If it's supposed to be encrypted but errors then it must become an empty string
+			paramValue = "";
+		}
+		return paramValue;
+	}
+
+	/**
+	 * looksEncrypted does a sanity check to confirm whether the value is already encrypted
+	 * @param value
+	 * @return
+	 */
+	public static boolean looksEncrypted(String value) {
+		return value != null && !value.isEmpty() && value.matches("^\\S+(=){2}(:){1}\\S+(=){2}$");
+	}
+
 	/**
 	 * Blacklist of xpaths to NEVER store in transaction details
 	 * @param xpath
 	 * @return true if is blacklisted
 	 */
 	public static boolean isPersonallyIdentifiableInfo(String xpath) {
-		for(String xpathToCheck : PrivacyBlacklist.PERSONALLY_IDENTIFIABLE_INFORMATION_BLACKLIST) {
+		for (String xpathToCheck : PrivacyBlacklist.PERSONALLY_IDENTIFIABLE_INFORMATION_BLACKLIST) {
+			if (xpath.contains(xpathToCheck)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	/**
+	 * Blacklist of xpaths that must be encrypted to store in transaction details
+	 * @param xpath
+	 * @return true if is blacklisted
+	 */
+	public static boolean isEncryptableInfo(String xpath) {
+		for(String xpathToCheck : PrivacyBlacklist.MANDATORY_ENCRYPTION_BLACKLIST) {
 			if(xpath.contains(xpathToCheck)) {
 				return true;
 			}
