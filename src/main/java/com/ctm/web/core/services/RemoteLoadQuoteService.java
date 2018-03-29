@@ -49,6 +49,7 @@ public class RemoteLoadQuoteService {
 
     TransactionDetail getCoverLevelType(long transactionId) {
         SimpleDatabaseConnection dbSource = new SimpleDatabaseConnection();
+        TransactionDetail transactionDetail = new TransactionDetail();
         try {
             PreparedStatement stmt;
             Connection conn = dbSource.getConnection();
@@ -57,18 +58,16 @@ public class RemoteLoadQuoteService {
             stmt.setLong(1, transactionId);
             stmt.setLong(2, transactionId);
             ResultSet results = stmt.executeQuery();
-            while (results.next()) {
-                TransactionDetail transactionDetail = new TransactionDetail();
+            if (results.next()) {
                 transactionDetail.setXPath("travel/lastCoverTabLevel");
                 transactionDetail.setTextValue(results.getString("Value"));
-                return transactionDetail;
             }
         } catch(Exception e) {
-            System.out.println(e.getStackTrace());
+            LOGGER.error("Exception caught retrieving CoverLevelType {}", kv("errorMessage", e.getMessage()));
         } finally {
             dbSource.closeConnection();
         }
-        return new TransactionDetail();
+        return transactionDetail;
     }
 
     public List<TransactionDetail> getTransactionDetails(String hashedEmail, String vertical, String type, String emailAddress, long transactionId, int brandId) throws DaoException {

@@ -227,13 +227,14 @@
 			$('.hidden-xs .clt-action.active').click();
 		}
 	}
-	
+
 	function transformTabs(tabs) {
 		var lastCoverTabLevel = $('#' + meerkat.site.vertical + '_lastCoverTabLevel').val();
-		if (lastCoverTabLevel == null) return tabs;
-		for (var i = 0; i < tabs.length; i++) {
-			var rankingFilter = tabs[i].rankingFilter;
-			tabs[i].defaultTab = rankingFilter === lastCoverTabLevel;
+		if (lastCoverTabLevel != null) {
+			for (var i = 0; i < tabs.length; i++) {
+				var rankingFilter = tabs[i].rankingFilter;
+				tabs[i].defaultTab = rankingFilter === lastCoverTabLevel;
+			}
 		}
 		return tabs;
 	}
@@ -244,7 +245,7 @@
 	function buildTabs() {
 		settings.activeTabSet = transformTabs(settings.activeTabSet);
 		if(typeof settings.activeTabSet === 'undefined') {
-    return;
+			return;
 		}
 		log("[coverleveltabs] buildTabs", settings.activeTabSet);
         var destination = $('#travel_destination').val();
