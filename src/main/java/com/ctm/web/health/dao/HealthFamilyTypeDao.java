@@ -48,7 +48,8 @@ public class HealthFamilyTypeDao {
 			if (getGender) {
 				statementSQL += "AND (status IS NULL OR status != 0) ";
 			} else {
-				statementSQL += "AND code NOT IN ('SF', 'SM') ";
+				// return alternate values that have a status of zero
+				statementSQL += "AND code NOT IN ('SF', 'SM', 'SPF') ";
 			}
 
 			statementSQL += " ORDER BY orderSeq";
