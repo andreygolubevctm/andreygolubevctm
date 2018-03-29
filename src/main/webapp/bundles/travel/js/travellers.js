@@ -16,6 +16,7 @@
 
 	var travelText = {
 		S: 'The age of the travelling adult?',
+		SF: 'The age of the travelling adult?',
 		C: 'The age of the travelling adults?',
 		F: 'The age of the travelling adults?',
 		G: 'The age of all adults travelling and the age of all children travelling in the group?'

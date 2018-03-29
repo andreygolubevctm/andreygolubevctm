@@ -5,7 +5,7 @@
 <%-- Number of travellers row --%>
 <div class="form-group row fieldrow smallWidth traveller-num-controls">
   <%-- label --%>
-  <label class="col-sm-4 col-xs-10 control-label">Number of travellers</label>
+  <label class="col-sm-4 col-xs-10 control-label">Number of travellers?</label>
 
   <%-- controls --%>
   <div class="col-sm-3 col-xs-12">
