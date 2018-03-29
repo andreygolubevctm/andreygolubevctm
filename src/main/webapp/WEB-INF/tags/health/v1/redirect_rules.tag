@@ -27,6 +27,10 @@
 			<c:set var="confirmUrl">${confirmUrl}?brandCode=wfdd</c:set>
 		</c:if>
 
+		<c:if test="${not empty param.brandCode and fn:toLowerCase(param.brandCode) eq 'bddd'}">
+			<c:set var="confirmUrl">${confirmUrl}?brandCode=bddd</c:set>
+		</c:if>
+
 		<c:redirect url="${pageSettings.getBaseUrl()}${confirmUrl}">
 			<c:param name="action" value="confirmation" />
 			<c:param name="token" value="${token}" />

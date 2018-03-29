@@ -589,7 +589,7 @@
                     * TODO: may actually prevent contact details from being stored - if so the optInEmail stuff in healthFunds_WFD.jsp may need to be reversed too!
                     * previously was forcing #health_contactDetails_optInEmail to 'N' but have since rolled it back due to this
                     * *********************************************************************************************************************************************** */
-                    if (meerkat.site.tracking.brandCode == 'wfdd') {
+                    if (_.indexOf(['wfdd', 'bddd'], meerkat.site.tracking.brandCode) >= 0) {
 
                         contactDtlsEmailEventHandle = meerkat.messaging.subscribe(meerkat.modules.events.contactDetails.email.FIELD_CHANGED, function (fieldDetails) {
 							if (fieldDetails.$field.attr('name') === 'health_application_email') {
@@ -613,7 +613,7 @@
 				adjustLayout();
 			},
             onBeforeLeave: function beforeLeaveApplyStep(event) {
-                if (meerkat.site.tracking.brandCode == 'wfdd') {
+                if (_.indexOf(['wfdd', 'bddd'], meerkat.site.tracking.brandCode) >= 0) {
                     meerkat.messaging.unsubscribe(meerkat.modules.events.contactDetails.email.FIELD_CHANGED, contactDtlsEmailEventHandle);
                 }
             }
@@ -1317,7 +1317,7 @@
 
 					meerkat.modules.leavePageWarning.disable();
 
-					var redirectURL = "health_confirmation.jsp?action=confirmation&transactionId="+meerkat.modules.transactionId.get()+(!_.isEmpty(meerkat.site.urlStyleCodeId) && meerkat.site.urlStyleCodeId === "wfdd" ? "&brandCode=" + meerkat.site.urlStyleCodeId : "")+"&token=";
+					var redirectURL = "health_confirmation.jsp?action=confirmation&transactionId="+meerkat.modules.transactionId.get()+(!_.isEmpty(meerkat.site.urlStyleCodeId) && (_.indexOf(['wfdd', 'bddd'], meerkat.site.urlStyleCodeId) >= 0) ? "&brandCode=" + meerkat.site.urlStyleCodeId : "")+"&token=";
 					var extraParameters = "";
 
 					if (meerkat.site.utm_source !== '' && meerkat.site.utm_medium !== '' && meerkat.site.utm_campaign !== ''){
