@@ -22,8 +22,8 @@
             $travellerNumControls= $('.traveller-num-controls');
 
 			$travel_party.find('label:nth-child(1)').addClass('icon-single');
-			$travel_party.find('label:nth-child(2)').addClass('icon-couple');
-			$travel_party.find('label:nth-child(3)').addClass('icon-single-family');
+			$travel_party.find('label:nth-child(2)').addClass('icon-single-family');
+			$travel_party.find('label:nth-child(3)').addClass('icon-couple');
 			$travel_party.find('label:nth-child(4)').addClass('icon-family');
 			$travel_party.find('label:nth-child(5)').addClass('icon-group-travel');
 
