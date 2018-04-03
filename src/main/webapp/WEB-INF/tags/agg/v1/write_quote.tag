@@ -464,6 +464,10 @@
 			<%-- Consultant has flagged this transaction as an return cli --%>
 			${leadService.sendLead(4, data, pageContext.getRequest(), 'RETURN_CLI', brand)}
 		</c:when>
+		<c:when test="${not empty data['health/simples/contactType'] && (data['health/simples/contactType'] == 'outbound' || data['health/simples/contactType'].match('^trialcampaign'))}">
+			<%-- Consultant has flagged this transaction as an outbound or a trial campaign --%>
+			${leadService.sendLead(4, data, pageContext.getRequest(), 'OUTBOUND', brand)}
+		</c:when>
 		<c:otherwise>
 			${leadService.sendLead(4, data, pageContext.getRequest(), 'OPEN', brand)}
 		</c:otherwise>

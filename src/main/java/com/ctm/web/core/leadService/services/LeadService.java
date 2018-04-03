@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 import static com.ctm.web.core.leadService.model.LeadStatus.INBOUND_CALL;
-import static com.ctm.web.core.leadService.model.LeadStatus.OPEN;
+import static com.ctm.web.core.leadService.model.LeadStatus.OUTBOUND;
 import static com.ctm.web.core.leadService.model.LeadStatus.RETURN_CLI;
 import static java.util.Arrays.asList;
 
@@ -72,7 +72,7 @@ public abstract class LeadService {
      */
     public void sendLead(final int verticalId, final Data data, final HttpServletRequest request, final String transactionStatus, final String brand) {
         final LeadStatus leadStatus = LeadStatus.valueOf(transactionStatus);
-        if (!SessionUtils.isCallCentre(request.getSession()) || (asList(INBOUND_CALL,RETURN_CLI,OPEN).contains(leadStatus) && (brand.equalsIgnoreCase("ctm") || brand.equalsIgnoreCase("wfdd") || brand.equalsIgnoreCase("bddd")))) {
+        if (!SessionUtils.isCallCentre(request.getSession()) || (asList(INBOUND_CALL,RETURN_CLI,OUTBOUND).contains(leadStatus) && (brand.equalsIgnoreCase("ctm") || brand.equalsIgnoreCase("wfdd") || brand.equalsIgnoreCase("bddd")))) {
             try {
                 ServiceConfiguration serviceConfig = ServiceConfigurationService.getServiceConfiguration("leadService", verticalId);
 
