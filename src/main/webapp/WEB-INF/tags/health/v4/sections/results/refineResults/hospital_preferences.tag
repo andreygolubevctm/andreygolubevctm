@@ -3,13 +3,14 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <section data-panel-id="hospital" class="health-refine-results-hospital-benefits">
+    <health_v4:benefits_switch_off_message />
     <ul class="nav nav-tabs health-refineResults-hospital-benefits">
         <li class="active"><a data-toggle="tab" href="#refineResultsHospitalBenefits" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />>Private Hospital</a></li>
         <li><a data-toggle="tab" href="#refineResultsLimitedHospital" <field_v1:analytics_attr analVal="hospital cover type" quoteChar="\"" />>Limited Hospital</a></li>
     </ul>
 
     <div class="tab-content">
-        <div id="refineResultsHospitalBenefits" class="refine-results-checkbox-list tab-pane fade active in">
+        <div id="refineResultsHospitalBenefits" class="refine-results-checkbox-list benefits-list tab-pane fade active in">
             {{ _.each(benefitsHospital, function(object) { }}
             <div class="checkbox {{= object.class }}">
                 <input type="checkbox" data-attach="true" name="health_refineResults_benefitsHospital" id="health_refineResults_benefits_{{= object.id }}" value="{{= object.id }}" title="{{= object.label }}" data-benefit-code="{{= object.code }}" />
