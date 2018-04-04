@@ -158,7 +158,7 @@ ${logger.debug('LOAD QUOTE: {}', log:kv('param', param))}
 							</c:when>
 
 						<%-- AMEND QUOTE --%>
-						<c:when test="${(loadAction eq 'amend' || loadAction eq 'start-again') and (forcedBrandCode eq 'wfdd')}">
+						<c:when test="${(loadAction eq 'amend' || loadAction eq 'start-again') and (forcedBrandCode eq 'wfdd' or forcedBrandCode eq 'bddd')}">
 								<destUrl>${remoteLoadQuoteService.getActionQuoteUrlForcedBrandCode(quoteType, loadAction, data.current.transactionId, jParam, trackingParams, forcedBrandCode)}</destUrl>
 						</c:when>
 

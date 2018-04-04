@@ -51,18 +51,8 @@
         $nzMedicareRules,
         $nzMedicareRulesToggle,
         $nzMedicareRulesCopy,
-        $pricePromisePromotionDialogue;
-
-    var affiliates = [
-        {dialogue:79,affiliate:'cashRewards',element:null},
-	    {dialogue:80,affiliate:'rewardGateway',element:null},
-	    {dialogue:88,affiliate:'pricepal',element:null},
-	    {dialogue:89,affiliate:'lyoness',element:null},
-        {dialogue:90,affiliate:'ozbargain',element:null},
-        {dialogue:91,affiliate:'dubli',element:null},
-        {dialogue:92,affiliate:'pegasusgroupaustralia',element:null},
-        {dialogue:103,affiliate:'acorns',element:null}
-    ];
+        $pricePromisePromotionDialogue,
+        $affiliatesDialogue;
 
     function init() {
         $(document).ready(function () {
@@ -119,11 +109,7 @@
             $nzMedicareRulesToggle = $nzMedicareRules.find('a:first');
             $nzMedicareRulesCopy = $nzMedicareRules.find('.copy:first');
             $pricePromisePromotionDialogue = $('.simples-dialogue-101');
-
-            for (var i = 0; i < affiliates.length; i++) {
-                var row = affiliates[i];
-                row.element = $('.simples-dialogue-' + row.dialogue);
-            }
+            $affiliatesDialogue = $('.simples-dialogue-105');
 
             // Handle pre-filled
             populatePrevAssignedRadioBtnGroupValue();
@@ -535,11 +521,14 @@
         }
     }
 
-    function toggleAffiliateRewardsDialogue(affiliateId) {
-	    for(var i=0; i<affiliates.length; i++) {
-		    var row = affiliates[i];
-		    row.element.toggleClass('hidden', affiliateId !== row.affiliate);
-	    }
+    function toggleAffiliateRewardsDialogue() {
+        var dialogueHTML = $affiliatesDialogue.html();
+
+        dialogueHTML = dialogueHTML.replace(/affiliateName/g, meerkat.site.affiliate_details.name).replace(/affiliateURL/g, meerkat.site.affiliate_details.url);
+
+        $affiliatesDialogue
+            .removeClass('hidden')
+            .html(dialogueHTML);
     }
 
     function togglePricePromisePromoDialogue(pricePromiseMentioned) {

@@ -26,6 +26,12 @@
             <c:set var="excludeItems" value="outbound,webchat" />
         </c:if>
     </c:when>
+    <c:when test="${brandCode eq 'bddd'}">
+        <c:set var="excludeItems" value="outbound" />
+        <c:if test="${hideChatOption}">
+            <c:set var="excludeItems" value="outbound,webchat" />
+        </c:if>
+    </c:when>
     <c:otherwise>
         <c:if test="${hideChatOption}">
             <c:set var="excludeItems" value="webchat" />

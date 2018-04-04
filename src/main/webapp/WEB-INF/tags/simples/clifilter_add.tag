@@ -16,9 +16,7 @@
 				<div class="row-content col-xs-6">
 					<input type="text" name="phone" class="form-control phone" placeholder="0x xxxx xxxx" size="10">
 				</div>
-			</div>
-			<div class="row text-right">
-				<div class="col-xs-9  text-right">
+				<div class="row-content col-xs-3">
 					<span class="form-error text-danger"></span>
 					<a data-provide="simples-clifilter-submit" data-filter-stylecode-id="${filterStyleCodeId}" class="btn btn-warning">Add to CLI Filter</a>
 				</div>

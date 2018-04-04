@@ -1,0 +1,126 @@
+//
+// themes Specific to Brand
+// --------------------------------------------------
+
+@import '../../ctm/v1/theme.less';
+
+
+body.callCentre {
+  &[data-step="start"] {
+
+    .simples-dialogue-86 {
+      display: none;
+    }
+
+    .simples-dialogue-49 {
+      display: block;
+    }
+
+  }
+
+  &[data-step="benefits"] {
+    .simples-dialogue-81,
+    .simples-dialogue-82 {
+      display: block;
+    }
+
+    .simples-dialogue-49 {
+      display: none;
+    }
+  }
+
+  &[data-step="results"] {
+
+    .simples-dialogue-83 {
+      display: block;
+    }
+
+    .simples-dialogue-24,
+    .simples-dialogue-96 {
+      display: none;
+    }
+
+    &.moreInfoVisible{
+      .moreInfoEmailBrochures{
+        display: none;
+      }
+
+      .simples-dialogue-83,
+      .simples-dialogue-85,
+      .simples-dialogue-99 {
+        display: none;
+      }
+
+      .simples-dialogue-24,
+      .simples-dialogue-84 {
+        display: block;
+      }
+      
+      .noPromoText span {
+        display: none;
+      }
+    }
+
+  }
+
+  &[data-step="payment"]{
+    .simples-dialogue-38,
+    .simples-dialogue-40,
+    .simples-dialogue-94,
+    .simples-dialogue-95 {
+      display: none !important;
+    }
+  }
+
+  &[data-step="apply"]{
+    .simples-dialogue-85,
+    .simples-dialogue-61 {
+      display: none;
+    }
+    .simples-dialogue-84{
+      display: block;
+    }
+  }
+
+  & #confirmationForm {
+
+    div#confirmation {
+      .thankyou-pending,
+      .ref-number-line,
+      .submitted-fund-name-visibility,
+      .compare,
+      .fund-details-html,
+      .confirmation-other-products,
+      .simples-dialogue-41,
+      .confirmation-complete.no-wimples {
+        display: none;
+      }
+
+      .purchase,
+      .success-and-further-questions {
+        display: inline;
+      }
+    }
+
+  }
+
+  &.BUD {
+    #health_declaration-selection {
+      display:block !important;
+    }
+  }
+
+  &.inbound,
+  &.outbound {
+    #health_situation_internationalstudent_wrapper {
+      display: none;
+    }
+  }
+
+}
+
+.simples {
+  .simples-dialog-referral {
+    display:none !important;
+  }
+}

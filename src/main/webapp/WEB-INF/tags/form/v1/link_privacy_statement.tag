@@ -31,6 +31,9 @@
 			<c:when test="${pageSettings.getBrandCode() eq 'wfdd'}">
 				<a href='/static/legal/wfdd/privacy_policy.pdf' target='_blank'>${anchorLabel}</a>
 			</c:when>
+			<c:when test="${pageSettings.getBrandCode() eq 'bddd'}">
+				<a href='/static/legal/bddd/privacy_policy.pdf' target='_blank'>${anchorLabel}</a>
+			</c:when>
 			<c:otherwise>
 				<a href='/static/legal/privacy_policy.pdf' target='_blank'>${anchorLabel}</a>
 			</c:otherwise>
