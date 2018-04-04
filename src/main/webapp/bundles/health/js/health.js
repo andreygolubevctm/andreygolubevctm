@@ -695,7 +695,7 @@
 
 				var $affiliateId = $('#health_affiliate_id');
 				if ($affiliateId.length > 0) {
-					meerkat.modules.simplesBindings.toggleAffiliateRewardsDialogue($affiliateId.val());
+					meerkat.modules.simplesBindings.toggleAffiliateRewardsDialogue();
 					meerkat.modules.fieldUtilities.hide($('input[name=health_voucher_available]'));
 				}
 			},
