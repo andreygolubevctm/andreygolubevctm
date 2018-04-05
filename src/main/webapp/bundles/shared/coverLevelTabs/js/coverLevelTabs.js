@@ -246,7 +246,7 @@
 		if (typeof settings.activeTabSet === 'undefined') return;
 		settings.activeTabSet = transformTabs(settings.activeTabSet);
 		log("[coverleveltabs] buildTabs", settings.activeTabSet);
-    var destination = $('#travel_destination').val();
+        var destination = $('#travel_destination').val();
 		var tabLength = settings.activeTabSet.length,
 		xsCols = parseInt(6 / tabLength, 10),
 		state = meerkat.modules.deviceMediaState.get();
