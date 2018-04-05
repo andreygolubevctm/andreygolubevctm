@@ -17,8 +17,9 @@
 	var $paymentCalendar;
 	var $pricePromiseMentioned;
 	var $pricePromisePromotionRow;
-
 	var $frequencySelect;
+	var $bankAccountDetailsRadioGroup;
+	var $sameBankAccountRadioGroup;
 
 	var settings = {
 		bank: [],
@@ -179,14 +180,18 @@
 		$paymentCalendar.val('');
 
 		// Clear payment method selection
-		$paymentRadioGroup.find('input').prop('checked', false).change();
-		$paymentRadioGroup.find('label').removeClass('active');
+        if (!$('.agg_privacy').hasClass('has-field-values-cc') && !$('.agg_privacy').hasClass('has-field-values-ba')) {
+            $paymentRadioGroup.find('input').prop('checked', false).change();
+            $paymentRadioGroup.find('label').removeClass('active');
+        }
 
 		// Clear frequency selection
 		$frequencySelect.val('');
 
 		// Clear bank account details selection
-		$("#health_payment_details_claims input").prop('checked', false).change().find('label').removeClass('active');
+        if (!$('.agg_privacy').hasClass('has-field-values-cc') && !$('.agg_privacy').hasClass('has-field-values-ba')) {
+            $("#health_payment_details_claims input").prop('checked', false).change().find('label').removeClass('active');
+        }
 
 		setCoverStartRange(0, 90);
 
@@ -439,9 +444,12 @@
 			$paymentCalendar.datepicker("update", new Date());
 		}
 
-		if (!$("#health_payment_details_type_cc").is(':checked')) {
+		// if (!$("#health_payment_details_type_cc").is(':checked')) {
+		if (!$('.agg_privacy').hasClass('has-field-values-cc') && !$('.agg_privacy').hasClass('has-field-values-ba')) {
 			// had to revert this back to a trigger as fund messaging wasn't being set otherwise
-			$paymentRadioGroup.find('input').filter('[value=ba]').trigger('click');
+            $paymentRadioGroup.find('input').filter('[value=ba]').trigger('click');
+		} else {
+            $paymentRadioGroup.find('input').filter(':checked').trigger('click');
 		}
 
 		// Essential to ensure default copy if shown when loading a quote
@@ -546,6 +554,12 @@
         $('#health_payment_details_type input').off('click.' + name);
         $('#health_payment_details_frequency').off('change.' + name);
         $('#health_payment_details_start').off('changeDate.' + name);
+
+        if (_.has(meerkat.site, 'hasTouchF') && meerkat.site.hasTouchF) {
+            $('.agg_privacy')
+				.removeClass('has-field-values-cc')
+				.find('.payment-complete-text').remove();
+		}
 	}
 
     function setCoverStartToNextDay() {
