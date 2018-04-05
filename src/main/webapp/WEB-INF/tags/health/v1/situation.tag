@@ -20,16 +20,22 @@
 
 <c:set var="excludeItems" value="" />
 <c:choose>
-    <c:when test="${brandCode eq 'wfdd'}">
-        <c:set var="excludeItems" value="outbound" />
+    <c:when test="${brandCode eq 'ctm'}">
+        <c:set var="excludeItems" value="magpie,trial1,trial2,trial3" />
         <c:if test="${hideChatOption}">
-            <c:set var="excludeItems" value="outbound,webchat" />
+            <c:set var="excludeItems" value="webchat,magpie,trial1,trial2,trial3" />
+        </c:if>
+    </c:when>
+    <c:when test="${brandCode eq 'wfdd'}">
+        <c:set var="excludeItems" value="outbound,magpie,trial1,trial2,trial3" />
+        <c:if test="${hideChatOption}">
+            <c:set var="excludeItems" value="outbound,webchat,magpie,trial1,trial2,trial3" />
         </c:if>
     </c:when>
     <c:when test="${brandCode eq 'bddd'}">
-        <c:set var="excludeItems" value="outbound" />
+        <c:set var="excludeItems" value="trialcampaign,trialcampaignBroadband,trialcampaignHealthEngine,trialcampaignJackMedia,trialcampaignLifebrokerLnIP,trialcampaignTWE,trialcampaignXSellCar,trialcampaignXSellHnC" />
         <c:if test="${hideChatOption}">
-            <c:set var="excludeItems" value="outbound,webchat" />
+            <c:set var="excludeItems" value="webchat,trialcampaign,trialcampaignBroadband,trialcampaignHealthEngine,trialcampaignJackMedia,trialcampaignLifebrokerLnIP,trialcampaignTWE,trialcampaignXSellCar,trialcampaignXSellHnC" />
         </c:if>
     </c:when>
     <c:otherwise>
