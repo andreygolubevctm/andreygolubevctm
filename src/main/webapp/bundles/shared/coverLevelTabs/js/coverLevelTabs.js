@@ -243,7 +243,7 @@
 	 * Build the DOM structure for the current tabs.
 	 */
 	function buildTabs() {
-		if (typeof settings.activeTabSet === 'undefined') return;
+		if (settings.activeTabSet == null) return;
 		settings.activeTabSet = transformTabs(settings.activeTabSet);
 		log("[coverleveltabs] buildTabs", settings.activeTabSet);
         var destination = $('#travel_destination').val();
