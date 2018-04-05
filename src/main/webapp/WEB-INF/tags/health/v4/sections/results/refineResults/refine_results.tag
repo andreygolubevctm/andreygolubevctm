@@ -32,7 +32,7 @@
                     value="Y"
                     required="true"
                     label="${true}"
-                    title="Show products with connected rewards schemes"
+                    title="Show products with connected rewards programmes"
             />
 
             <div class="refine-results-mobile__item-container">
