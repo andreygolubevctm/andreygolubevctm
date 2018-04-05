@@ -547,8 +547,10 @@ public class TransactionDetailsDao {
 				ResultSet results = stmt.executeQuery();
 				while (results.next()) {
 					TransactionDetail transactionDetail = new TransactionDetail();
-					transactionDetail.setXPath(results.getString("xpath"));
-					transactionDetail.setTextValue(results.getString("textValue"));
+					String xpath = results.getString("xpath");
+					transactionDetail.setXPath(xpath);
+					String textValue = results.getString("textValue");
+					transactionDetail.setTextValue(decryptBlacklistFields(transactionId, xpath, textValue));
 					transactionDetails.add(transactionDetail);
 				}
 		} catch (SQLException | NamingException e) {
