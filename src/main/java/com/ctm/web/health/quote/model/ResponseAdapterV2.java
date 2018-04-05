@@ -66,6 +66,7 @@ public class ResponseAdapterV2 {
                     result.setProductId(quote.getProductId());
 
                     result.setPromo(createPromo(quote.getPromotion(),request.getStaticOverride(), isSimplesUser));
+                    result.setAwardScheme(createAwardScheme(quote.getPromotion(), isSimplesUser));
                     result.setCustom(validateNode(quote.getCustom()));
 
                     result.setDropDeadDate(quote.getDropDeadDate());
@@ -171,6 +172,12 @@ public class ResponseAdapterV2 {
         promo.setExtrasPDF(HEALTH_BROCHURE_URL + quotePromotion.getExtrasPDF() + (staticBranch != null ? ("&staticBranch=" + staticBranch) : ""));
         promo.setHospitalPDF(HEALTH_BROCHURE_URL + quotePromotion.getHospitalPDF() + (staticBranch != null ? ("&staticBranch=" + staticBranch) : ""));
         return promo;
+    }
+
+    private static AwardScheme createAwardScheme(final Promotion quotePromotion, boolean isSimplesUser) {
+        final AwardScheme awardScheme = new AwardScheme();
+        awardScheme.setText(createPromoText(quotePromotion.getAwardScheme(), isSimplesUser));
+        return awardScheme;
     }
 
     private static Premium createPremium(final com.ctm.web.health.quote.model.response.Premium quotePremium,
