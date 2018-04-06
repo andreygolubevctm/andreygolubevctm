@@ -19,6 +19,7 @@
 </c:if>
 
 <c:set var="excludeItems" value="" />
+<c:set var="healthCvrExcludeItems" value="" />
 <c:choose>
     <c:when test="${brandCode eq 'wfdd'}">
         <c:set var="excludeItems" value="outbound" />
@@ -28,6 +29,7 @@
     </c:when>
     <c:when test="${brandCode eq 'bddd'}">
         <c:set var="excludeItems" value="outbound" />
+        <c:set var="healthCvrExcludeItems" value="'EF','ESP'" />
         <c:if test="${hideChatOption}">
             <c:set var="excludeItems" value="outbound,webchat" />
         </c:if>
@@ -84,7 +86,7 @@
 
                 <c:set var="fieldXpath" value="${xpath}/healthCvr" />
                 <form_v3:row label="You are a" fieldXpath="${fieldXpath}" className="health-cover">
-                    <field_v2:general_select xpath="${fieldXpath}" type="healthCvr" className="health-situation-healthCvr" required="true" title="situation you are in" />
+                    <field_v2:general_select xpath="${fieldXpath}" type="healthCvr" className="health-situation-healthCvr" required="true" title="situation you are in" excludeCodes="${healthCvrExcludeItems}" />
                 </form_v3:row>
 
                 <%-- If the user is coming via a broucherware site where by a state is passed in instead of a postcode, then only show state selection --%>
