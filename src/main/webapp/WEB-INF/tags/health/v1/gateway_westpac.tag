@@ -8,6 +8,8 @@
 	<%-- VARIABLES --%>
 	<c:set var="name" value="${go:nameFromXpath(xpath)}" />
 
+	Westpac number: ${data['health/payment/gateway/number']}
+
 	<field_v1:hidden xpath="${xpath}/number" />
 	<field_v1:hidden xpath="${xpath}/type" />
 	<field_v1:hidden xpath="${xpath}/expiry" />
