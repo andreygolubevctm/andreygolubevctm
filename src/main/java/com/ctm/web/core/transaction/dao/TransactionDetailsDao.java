@@ -251,7 +251,7 @@ public class TransactionDetailsDao {
 	 * @return
 	 */
 	public static boolean looksEncrypted(String value) {
-		return value != null && !value.isEmpty() && value.matches("^\\S+(=){1,2}(:){1}\\S+(=){1,2}$");
+		return value != null && !value.isEmpty() && value.matches("^\\S+(=){2}(:){1}\\S+(=){1,2}$");
 	}
 
 	/**
