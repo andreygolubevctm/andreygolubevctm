@@ -550,7 +550,8 @@ public class TransactionDetailsDao {
 					String xpath = results.getString("xpath");
 					transactionDetail.setXPath(xpath);
 					String textValue = results.getString("textValue");
-					transactionDetail.setTextValue(decryptBlacklistFields(transactionId, xpath, textValue));
+					// Note: we should pass in a flag for the second param 'isOperator' to indicate if values should return decrypted or empty
+					transactionDetail.setTextValue(decryptBlacklistFields(transactionId, false, xpath, textValue));
 					transactionDetails.add(transactionDetail);
 				}
 		} catch (SQLException | NamingException e) {

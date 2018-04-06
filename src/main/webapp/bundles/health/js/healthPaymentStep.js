@@ -444,7 +444,6 @@
 			$paymentCalendar.datepicker("update", new Date());
 		}
 
-		// if (!$("#health_payment_details_type_cc").is(':checked')) {
 		if (!$('.agg_privacy').hasClass('has-field-values-cc') && !$('.agg_privacy').hasClass('has-field-values-ba')) {
 			// had to revert this back to a trigger as fund messaging wasn't being set otherwise
             $paymentRadioGroup.find('input').filter('[value=ba]').trigger('click');
