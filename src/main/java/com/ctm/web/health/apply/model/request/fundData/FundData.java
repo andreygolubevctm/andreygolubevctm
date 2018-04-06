@@ -31,14 +31,18 @@ public class FundData {
 
     private final Membership membership;
 
+    private final Referrer referrer;
+
     public FundData(final Provider provider, final ProductId product, final Declaration declaration,
-                    final LocalDate startDate, final Benefits benefits, final Membership membership) {
+                    final LocalDate startDate, final Benefits benefits, final Membership membership,
+                    final Referrer referrer) {
         this.provider = provider;
         this.product = product;
         this.declaration = declaration;
         this.startDate = startDate;
         this.benefits = benefits;
         this.membership = membership;
+        this.referrer = referrer;
     }
 
     public Provider getProvider() {
@@ -63,5 +67,9 @@ public class FundData {
 
     public Membership getMembership() {
         return membership;
+    }
+
+    public Referrer getReferrer() {
+        return referrer;
     }
 }

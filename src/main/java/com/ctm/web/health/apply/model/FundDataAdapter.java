@@ -6,6 +6,7 @@ import com.ctm.web.health.apply.model.request.fundData.Declaration;
 import com.ctm.web.health.apply.model.request.fundData.FundData;
 import com.ctm.web.health.apply.model.request.fundData.ProductId;
 import com.ctm.web.health.apply.model.request.fundData.Provider;
+import com.ctm.web.health.apply.model.request.fundData.Referrer;
 import com.ctm.web.health.apply.model.request.fundData.benefits.Benefits;
 import com.ctm.web.health.apply.model.request.fundData.membership.*;
 import com.ctm.web.health.apply.model.request.fundData.membership.eligibility.*;
@@ -38,7 +39,17 @@ public class FundDataAdapter {
                         .map(LocalDateUtils::parseAUSLocalDate)
                         .orElse(null),
                 createBenefits(quote),
-                createMembership(quote));
+                createMembership(quote),
+                createReferrer(quote));
+    }
+
+    protected static Referrer createReferrer(Optional<HealthQuote> quote) {
+        // Check WFD
+        Optional<Referrer> referrer = quote.map(HealthQuote::getApplication)
+                .map(Application::getWfd)
+                .map(FundDataAdapter::createReferrer);
+
+        return referrer.orElse(null);
     }
 
     protected static Membership createMembership(Optional<HealthQuote> quote) {
@@ -334,6 +345,27 @@ public class FundDataAdapter {
                     null,
                     hif.map(Hif::getPartnerAuthorityLevel)
                             .orElse(null));
+        } else {
+            return null;
+        }
+    }
+
+    protected static Referrer createReferrer(Wfd theWfd) {
+        Optional<Wfd> wfd = Optional.ofNullable(theWfd);
+        if(wfd.isPresent()) {
+            return createReferrerWFD(wfd);
+        } else {
+            return null;
+        }
+    }
+
+    private static Referrer createReferrerWFD(Optional<Wfd> wfd) {
+        if (wfd.isPresent()) {
+            return new Referrer(
+                    wfd.map(Wfd::getReferrer)
+                            .map(Referrer::get)
+                            .orElse(null)
+            );
         } else {
             return null;
         }
