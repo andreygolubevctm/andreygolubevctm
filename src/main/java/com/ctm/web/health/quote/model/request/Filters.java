@@ -33,6 +33,8 @@ public class Filters {
     private Boolean popularProducts;
     private ProductCappingLimitCategory productCappingLimitFilter;
 
+    private Boolean limitToProvidersWithRewardsSchemeFilter;
+
     public CappingLimit getCappingLimitFilter() {
         return cappingLimitFilter;
     }
@@ -135,6 +137,14 @@ public class Filters {
 
     public void setPopularProducts(Boolean popularProducts) {
         this.popularProducts = popularProducts;
+    }
+
+    public Boolean getLimitToProvidersWithRewardsSchemeFilter() {
+        return limitToProvidersWithRewardsSchemeFilter;
+    }
+
+    public void setLimitToProvidersWithRewardsSchemeFilter(Boolean limitToProvidersWithRewardsSchemeFilter) {
+        this.limitToProvidersWithRewardsSchemeFilter = limitToProvidersWithRewardsSchemeFilter;
     }
 
     public void setProductCappingLimitFilter(ProductCappingLimitCategory productCappingLimitFilter) {

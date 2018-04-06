@@ -4,8 +4,8 @@
  
 <%@ attribute name="xpath" required="true" rtexprvalue="true" description="field group's xpath"%> 
  
-<div class="clear select-tags-row dp"> 
-  <div class="col-sm-4 col-xs-12 row-content dp__textContainer"> 
+<div class="form-group row fieldrow smallWidth select-tags-row dp">
+  <div class="col-sm-4 col-xs-12 row-content custom-label-block">
     <p class="traveler-heading"> 
       When are you travelling? 
     </p> 

@@ -189,7 +189,6 @@
 							<h4>&nbsp;</h4>
 							<p>Underwriter: {{= underwriter.name }}</p>
 							<p>AFS Licence No: {{= underwriter.afsLicenceNo }}</p>
-							<car:price_promise className="inverted" />
 						</div>
 					</div>
 				</div>
@@ -223,8 +222,6 @@
 					<p>Underwriter: {{= underwriter.name }}</p>
 					<p>AFS Licence No: {{= underwriter.afsLicenceNo }}</p>
 				</div>
-
-				<car:price_promise />
 			</div>
 
 		</div>

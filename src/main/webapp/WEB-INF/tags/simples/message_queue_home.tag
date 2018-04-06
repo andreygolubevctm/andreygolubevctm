@@ -56,14 +56,7 @@
 </div>
 
 <div class="simples-splashpage-item hidden">
-	<div class="simples-dialogue">
-		<simples:dialogue id="77" vertical="health" className="simples-dialog-inbound" />
-		<simples:clifilter_add filterStyleCodeId="1"/>
-	</div>
-	<div class="simples-dialogue">
-		<simples:dialogue id="87" vertical="health" className="simples-dialog-inbound wfdd" />
-		<simples:clifilter_add filterStyleCodeId="9"/>
-	</div>
+	<%-- THIS DIV CAN BE USED TO ADD CONTENT TO BE DISPLAYED TO THE USER UPON OPENING SIMPLES --%>
 </div>
 <div class="simples-message-details-container">
 

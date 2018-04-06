@@ -26,6 +26,12 @@
             <c:set var="excludeItems" value="outbound,webchat" />
         </c:if>
     </c:when>
+    <c:when test="${brandCode eq 'bddd'}">
+        <c:set var="excludeItems" value="outbound" />
+        <c:if test="${hideChatOption}">
+            <c:set var="excludeItems" value="outbound,webchat" />
+        </c:if>
+    </c:when>
     <c:otherwise>
         <c:if test="${hideChatOption}">
             <c:set var="excludeItems" value="webchat" />
@@ -68,7 +74,6 @@
             <simples:dialogue id="49" vertical="health" />
             <simples:dialogue id="21" vertical="health" mandatory="true" /> <%-- 3 Point Security Check --%>
             <simples:dialogue id="36" vertical="health" mandatory="true" className="simples-dialog-inbound" />
-            <simples:dialogue id="86" vertical="health" />
 
             <c:set var="subText" value="" />
             <c:if test="${not callCentre}">
