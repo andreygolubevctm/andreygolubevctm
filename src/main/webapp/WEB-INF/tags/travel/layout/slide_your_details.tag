@@ -50,7 +50,7 @@
 			<layout_v1:slide_content>
 				<%-- PROVIDER TESTING --%>
 				<agg_v1:provider_testing xpath="${pageSettings.getVerticalCode()}" displayFullWidth="true" />
-
+				<field_v1:hidden xpath="travel/lastCoverTabLevel" />
 				<%-- YOUR CONTACT DETAILS SECTION --%>
 				<form_v2:fieldset legend="Your Cover" id="yourcoverfs">
 					<travel:your_cover />
@@ -62,7 +62,7 @@
 
 						<jsp:useBean id="locationsService" class="com.ctm.web.travel.services.TravelIsoLocationsService"
 												 scope="page"/>
-
+											 
 						<travel:destinations />
 
 						<core_v1:select_tags
