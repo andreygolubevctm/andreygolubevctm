@@ -135,12 +135,16 @@ public class CallCentreService {
 			String uid = authData.getUid();
 			if (uid != null) {
 				if (getConsultantIsAdmin(request)) {
+					LOGGER.debug("####### isAdmin ########");
 					styleCodeId = "1,9,10";
 				} else if (uid.toLowerCase().startsWith("wfd")) {
+					LOGGER.debug("####### isWfd ########");
 					styleCodeId = "9";
 				} else if (uid.toLowerCase().startsWith("bud")) {
+					LOGGER.debug("####### isBud ########");
 					styleCodeId = "10";
 				} else {
+					LOGGER.debug("####### isCTM ########");
 					styleCodeId = "1";
 				}
 			}
