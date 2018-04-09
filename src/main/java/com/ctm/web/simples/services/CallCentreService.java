@@ -143,6 +143,7 @@ public class CallCentreService {
 				} else {
 					styleCodeId = "1";
 				}
+				LOGGER.info("Authenticated user uid of " + uid + " has styleCodeId of " + styleCodeId);
 			}
 		} catch(Exception e) {
 			LOGGER.error("No authenticated session exists. Default search styleCodeId of " + styleCodeId + " to be used.");
