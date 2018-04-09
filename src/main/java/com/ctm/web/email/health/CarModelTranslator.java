@@ -20,7 +20,7 @@ import com.ctm.web.email.EmailUtils;
 import com.ctm.web.email.OptIn;
 import com.ctm.web.email.car.CarEmailModel;
 import com.ctm.web.factory.EmailServiceFactory;
-import com.ctm.web.health.email.mapping.HealthEmailDetailMappings;
+import com.ctm.web.car.services.email.CarEmailDetailMappings;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -147,7 +147,7 @@ public class CarModelTranslator implements EmailTranslator {
 
         PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
         EmailTokenService emailTokenService = EmailTokenServiceFactory.getEmailTokenServiceInstance(pageSettings);
-        EmailDetailsService emailDetailsService = EmailServiceFactory.createEmailDetailsService(SettingsService.getPageSettingsForPage(request),data, Vertical.VerticalType.HEALTH, new HealthEmailDetailMappings());
+        EmailDetailsService emailDetailsService = EmailServiceFactory.createEmailDetailsService(SettingsService.getPageSettingsForPage(request),data, Vertical.VerticalType.CAR, new CarEmailDetailMappings());
         EmailMaster emailMaster = emailDetailsService.handleReadAndWriteEmailDetails(Long.parseLong(emailRequest.getTransactionId()), emailDetails, "ONLINE",  ipAddressHandler.getIPAddress(request));
 
         emailTokenService.insertEmailTokenRecord(Long.parseLong(emailRequest.getTransactionId()), emailMaster.getHashedEmail(), pageSettings.getBrandId(),
