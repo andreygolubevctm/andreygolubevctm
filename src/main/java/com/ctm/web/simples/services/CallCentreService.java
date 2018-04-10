@@ -21,8 +21,6 @@ import java.net.URLEncoder;
 
 public class CallCentreService {
     private static final Logger LOGGER = LoggerFactory.getLogger(CallCentreService.class);
-    private static boolean consultantIsAdminChecked = false;
-	private static boolean consultantIsAdmin = false;
 	/**
 	 * If operator is on a call, collect the details such as VDN.
 	 *
@@ -152,11 +150,7 @@ public class CallCentreService {
 	}
 
 	public static boolean getConsultantIsAdmin(HttpServletRequest request) {
-		if(consultantIsAdminChecked == false) {
-			consultantIsAdmin = request.isUserInRole("BD-HCC-MGR") || request.isUserInRole("BC-IT-ECOM-RPT") ||
-					request.isUserInRole("CTM-IT-USR") || request.isUserInRole("jira-ctm-projmgr");
-			consultantIsAdminChecked = true;
-		}
-		return consultantIsAdmin;
+		return request.isUserInRole("BD-HCC-MGR") || request.isUserInRole("BC-IT-ECOM-RPT") ||
+				request.isUserInRole("CTM-IT-USR") || request.isUserInRole("jira-ctm-projmgr");
 	}
 }
