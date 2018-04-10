@@ -46,7 +46,13 @@ public class StartQuoteService {
         }
         try {
             if (phoneDetails == null) {
-                response.sendRedirect(pageSettings.getBaseUrl()+"simples/selectBrand.jsp?verticalCode=" + verticalCode);
+                String brandString = CallCentreService.getConsultantStyleCodeId(request);
+
+                if (brandString.contains(",")) {
+                    response.sendRedirect(pageSettings.getBaseUrl()+"simples/selectBrand.jsp?verticalCode=" + verticalCode);
+                } else {
+                    response.sendRedirect(CallCentreService.createHandoverUrl(request, Integer.parseInt(brandString), verticalCode, null, null));
+                }
             }
             if (phoneDetails != null) {
                 brand = ApplicationService.getBrandById(phoneDetails.getStyleCodeId());

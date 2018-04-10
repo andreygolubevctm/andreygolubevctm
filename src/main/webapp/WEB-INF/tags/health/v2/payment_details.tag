@@ -56,14 +56,7 @@
 			<field_v2:array_radio items="Y=Yes,N=No" xpath="${fieldXpath}" title="if you want to supply bank account details for claims to be paid into" required="true" className="health-payment_details-claims" id="${name}_claims"/>
 		</form_v3:row>
 
-		<simples:dialogue id="79" vertical="health" className="hidden" />
-		<simples:dialogue id="80" vertical="health" className="hidden" />
-		<simples:dialogue id="88" vertical="health" className="hidden" />
-		<simples:dialogue id="89" vertical="health" className="hidden" />
-		<simples:dialogue id="90" vertical="health" className="hidden" />
-		<simples:dialogue id="91" vertical="health" className="hidden" />
-		<simples:dialogue id="92" vertical="health" className="hidden" />
-		<simples:dialogue id="103" vertical="health" className="hidden" />
+		<simples:dialogue id="105" vertical="health" className="hidden simples-affiliate-dialogue" />
 
 		<health_v2:price_promise_check xpath="health/price_promise" />
 

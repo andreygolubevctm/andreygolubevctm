@@ -4,10 +4,10 @@
 
 <health_v4_contact:page_settings />
 
-<layout_v3:slide formId="contactForm" nextLabel="Get Prices">
+<layout_v3:slide formId="contactForm">
 
     <layout_v3:slide_content>
-        <form_v3:fieldset_columns sideHidden="true">
+        <form_v3:fieldset_columns nextLabel="Get Prices" sideHidden="true">
 
             <jsp:attribute name="rightColumn">
                 <competition:snapshot vertical="health" />

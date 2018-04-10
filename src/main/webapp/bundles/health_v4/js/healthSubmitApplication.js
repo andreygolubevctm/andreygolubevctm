@@ -8,7 +8,7 @@
             WEBAPP_UNLOCK: 'WEBAPP_UNLOCK'
         },
         stateSubmitInProgress = false,
-        $submitBtns = $('.slide-control-submit-application, #paymentDetailsForm + .row .journeyNavButton');
+        $submitBtns = $('.slide-control-submit-application, #paymentDetailsForm .journeyNavButton');
 
     function initHealthSubmitApplication() {
         _applyEventListeners();

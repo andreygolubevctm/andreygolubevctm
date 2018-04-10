@@ -17,8 +17,14 @@
         <c:if test="${callCentre}">
             <core_v1:js_template id="simples-dialogue-62-template">
                 <simples:dialogue id="62" vertical="health" className="hidden" />
+                <c:if test="${pageSettings.getBrandCode() eq 'wfdd'}">
+                    <field_v2:general_select xpath="health/simples/heardAboutSelect" type="wimplesHeardAbout" required="false" initialText="How did you hear about Westfund?" />
+                </c:if>
             </core_v1:js_template>
             <field_v1:hidden xpath="health/simples/dialogue-checkbox-62" />
+            <c:if test="${pageSettings.getBrandCode() eq 'wfdd'}">
+                <field_v1:hidden xpath="health/simples/heardAbout" />
+            </c:if>
         </c:if>
     </layout_v3:slide_content>
 

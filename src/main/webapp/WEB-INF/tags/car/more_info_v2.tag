@@ -270,9 +270,6 @@
             <div class="col-sm-6">
                 {{= PdsHtml }}
             </div>
-            <div class="col-sm-6">
-                <car:price_promise className="inverted" />
-            </div>
         </div>
 
         <div class="disclaimer">

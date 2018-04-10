@@ -75,6 +75,8 @@ public class CallCentreService {
 		Brand brand = ApplicationService.getBrandById(brandId);
 		if(brandId == 9) {
 			brand.setCode("wfdd");
+		} else if(brandId == 10) {
+			brand.setCode("bddd");
 		}
 		PageSettings settings = SettingsService.getPageSettings(brandId, verticalCode);
 		String brandRootUrl = settings.getBaseUrl();
@@ -101,6 +103,9 @@ public class CallCentreService {
 		if(brandId == 9) {
 			brand.setCode("wfdd");
 			redirectUrl.append("&brandCode=wfdd");
+		} else if(brandId == 10) {
+			brand.setCode("bddd");
+			redirectUrl.append("&brandCode=bddd");
 		} else if(EnvironmentService.needsManuallyAddedBrandCodeParamWhiteLabel(brand.getCode(), verticalCode)) {
 			redirectUrl.append("&brandCode=").append(brand.getCode());
 		}
@@ -130,12 +135,15 @@ public class CallCentreService {
 			String uid = authData.getUid();
 			if (uid != null) {
 				if (getConsultantIsAdmin(request)) {
-					styleCodeId = "1,9";
+					styleCodeId = "1,9,10";
 				} else if (uid.toLowerCase().startsWith("wfd")) {
 					styleCodeId = "9";
+				} else if (uid.toLowerCase().startsWith("bud")) {
+					styleCodeId = "10";
 				} else {
 					styleCodeId = "1";
 				}
+				LOGGER.info("Authenticated user uid of " + uid + " has styleCodeId of " + styleCodeId);
 			}
 		} catch(Exception e) {
 			LOGGER.error("No authenticated session exists. Default search styleCodeId of " + styleCodeId + " to be used.");

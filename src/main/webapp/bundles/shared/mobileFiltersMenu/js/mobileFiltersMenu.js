@@ -6,7 +6,9 @@
     var moduleEvents = {
         ON_RESET: 'ON_RESET',
         FOOTER_BUTTON_UPDATE: 'FOOTER_BUTTON_UPDATE',
+        FOOTER_BUTTON_TOGGLE_DISABLED: 'FOOTER_BUTTON_TOGGLE_DISABLED',
         BACK_BUTTON_CLICKED: 'BACK_BUTTON_CLICKED',
+        RIGHT_BUTTON_INIT: 'RIGHT_BUTTON_INIT',
         RIGHT_BUTTON_CLICKED: 'RIGHT_BUTTON_CLICKED'
     };
 
@@ -115,7 +117,7 @@
         $elements.rightBtn.on('click', function() {
             meerkat.messaging.publish(meerkatEvents.RIGHT_BUTTON_CLICKED);
 
-            if (_.isFunction(_settings.rightButtonCB && _settings.rightButtonCB)) {
+            if (_.isFunction(_settings.rightButtonCB) && _settings.rightButtonCB) {
                 _settings.rightButtonCB();
             }
         });
@@ -135,13 +137,17 @@
                 .text(_settings.footerButtonUpdateText);
         });
 
+        meerkat.messaging.subscribe(meerkatEvents.FOOTER_BUTTON_TOGGLE_DISABLED, function(e) {
+            $elements.footerBtn
+                .attr('data-action', 'update')
+                .attr('disabled', !e.toggle);
+        });
 
         meerkat.messaging.subscribe(meerkatEvents.ADDRESS_CHANGE, function() {
             if (_status.open) {
                 close();
             }
         });
-
 
         meerkat.messaging.subscribe(meerkatEvents.device.STATE_LEAVE_XS, function() {
             if (_status.open) {
@@ -228,8 +234,10 @@
         return this;
     }
 
-    function updateRightBtnText(text) {
-        $elements.rightBtn.text(text);
+    function updateRightBtn(rightBtn) {
+        $elements.rightBtn.html(rightBtn);
+
+        meerkat.messaging.publish(meerkatEvents.RIGHT_BUTTON_INIT);
 
         return this;
     }
@@ -244,7 +252,7 @@
         hideBackBtn: hideBackBtn,
         showRightBtn: showRightBtn,
         hideRightBtn: hideRightBtn,
-        updateRightBtnText: updateRightBtnText,
+        updateRightBtn: updateRightBtn,
         updateMenuBodyHTML: updateMenuBodyHTML
     });
 })(jQuery);

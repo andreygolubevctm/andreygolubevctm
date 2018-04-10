@@ -14,7 +14,6 @@
 		<jsp:body>
 
 			<simples:dialogue id="84" vertical="health" />
-			<simples:dialogue id="85" vertical="health" />
 			<simples:dialogue id="71" vertical="health" />
 			<simples:dialogue id="61" vertical="health" />
 
