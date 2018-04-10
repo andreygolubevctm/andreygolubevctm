@@ -14,9 +14,9 @@ public class SpecialOffersHelper {
 		return validationErrors;
 	}
 
-	public SpecialOffers createSpecialOffersObject(int offerId, String content, String terms,
+	public SpecialOffers  createSpecialOffersObject(int offerId, String content, String terms,
 			String effectiveEnd, String effectiveStart, int providerId,
-			int styleCodeId,String state,String coverType,String styleCodeName,String providerName) {
+			int styleCodeId,String state,String coverType,String styleCodeName,String providerName,String offerType) {
 		SpecialOffers specialOffers = new SpecialOffers();
 		specialOffers.setContent(content);
 		specialOffers.setTerms(terms);
@@ -29,6 +29,7 @@ public class SpecialOffersHelper {
         specialOffers.setCoverType(coverType);
 		specialOffers.setStyleCode(styleCodeName);
 		specialOffers.setProviderName(providerName);
+		specialOffers.setOfferType(offerType);
 		return specialOffers;
 	}
 

@@ -36,7 +36,7 @@ div.roundedCheckboxIcons {
   float:left;
   padding: 0px;
   text-align: center;
-
+  overflow: visible;
   > label.btn {
 	padding:0;
 	border: none;
@@ -72,7 +72,7 @@ div.roundedCheckboxIcons {
   }
 
   @media (@xs) {
-	.roundIconSize(50px, @font-size-base, 0, 15, label);
+	.roundIconSize(40px, @font-size-base, 0, 15, label);
   }
   @media (@sm-only) {
 	.roundIconSize(40px, @font-size-small, 1, 15, label);
@@ -100,4 +100,5 @@ div.roundedCheckboxIcons {
 
 .btn-group-justified > .btn, .btn-group-justified > .btn-group {
   width: auto !important;
+  max-width: 76px;
 }

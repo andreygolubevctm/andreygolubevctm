@@ -9,6 +9,8 @@
     <c:set var="pageTitle" value="404"/>
 </c:catch>
 
+<c:set var="referer"><%=request.getHeader("Referer")%></c:set>
+
 <c:choose>
     <c:when test="${not empty error or empty brandCode}">
         <h1>Whoops, sorry... looks like you're looking for something that isn't there!</h1>
@@ -51,24 +53,36 @@
 
                     <div role="form" class="journeyEngineSlide active unsubscribeForm">
                         <layout_v1:slide_center xsWidth="12" mdWidth="10">
-                            <h1 class="error_title">Whoops, sorry... looks like you're looking for something that isn't there!</h1>
 
-                            <div class="error_message">
+                            <c:choose>
+                                <c:when test="${fn:contains('health_quote', $referer)}">
+                                    <c:set var="errorPageHTML">
+                                        <content:get key="ErrorPageHTML" />
+                                    </c:set>
+                                    ${fn:replace(errorPageHTML,'[[error_code]]','404')}
+                                </c:when>
+                                <c:otherwise>
+                                    <h1 class="error_title">Whoops, sorry... looks like you're looking for something that isn't there!!!</h1>
 
-                                <p>Sorry about that, but the page you're looking for can't be found. Either you've typed the web address incorrectly, or the page you were looking for has been moved or
-                                    deleted.</p>
-                                <c:choose>
-                                    <c:when test="${pageSettings.getBrandCode() != 'ctm'}">
-                                        <p>Try checking the URL you used for errors, or continue browsing our comparison services below.</p>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <p>Try checking the URL you used for errors, or continue browsing our range of comparison services below.</p>
-                                    </c:otherwise>
-                                </c:choose>
+                                    <div class="error_message">
 
-                            </div>
+                                        <p>Sorry about that, but the page you're looking for can't be found. Either you've typed the web address incorrectly, or the page you were looking for has been moved or
+                                            deleted.</p>
+                                        <c:choose>
+                                            <c:when test="${pageSettings.getBrandCode() != 'ctm'}">
+                                                <p>Try checking the URL you used for errors, or continue browsing our comparison services below.</p>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <p>Try checking the URL you used for errors, or continue browsing our range of comparison services below.</p>
+                                            </c:otherwise>
+                                        </c:choose>
 
-                            <confirmation:other_products/>
+                                    </div>
+
+                                    <confirmation:other_products/>
+                                </c:otherwise>
+                            </c:choose>
+
                         </layout_v1:slide_center>
                     </div>
 

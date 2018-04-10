@@ -99,6 +99,7 @@ var healthFunds_BUD = {
 		messageField.text(messageText);
 	},
 	unset: function(){
+
         meerkat.modules.healthFunds._reset();
 
 		<%-- dependant definition off --%>

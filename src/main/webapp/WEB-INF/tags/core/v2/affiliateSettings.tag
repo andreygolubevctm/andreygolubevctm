@@ -13,6 +13,7 @@
 
 <c:if test="${not empty data[fieldXpath]}">
 	affiliate_id: "<c:out value="${data[fieldXpath]}"/>",
+	affiliate_details: <content:get key="affiliateDetails" suppKey="${data[fieldXpath]}"/>,
 </c:if>
 <c:set var="fieldXpath" value="${journeyVertical}/affiliate/campaign" />
 <c:if test="${not empty data[fieldXpath]}">

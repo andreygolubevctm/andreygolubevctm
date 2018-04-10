@@ -7,6 +7,7 @@ import com.ctm.web.health.model.Membership;
 import com.ctm.web.health.model.PaymentType;
 import com.ctm.web.health.model.form.*;
 import com.ctm.web.health.quote.model.request.*;
+import org.apache.commons.lang3.BooleanUtils;
 import com.ctm.web.simples.admin.model.capping.product.ProductCappingLimitCategory;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -108,6 +109,8 @@ public class RequestAdapterV2 {
         addRebateFilter(quoteRequest, quote);
 
         addPopularProductsFilter(filters, quote);
+
+        addLimitToRewardsSchemeFilter(filters, quote);
 
         quoteRequest.setIncludeSummary(isSimples);
 
@@ -457,5 +460,10 @@ public class RequestAdapterV2 {
         } else {
             filters.setPopularProducts(false);
         }
+    }
+
+    protected static void addLimitToRewardsSchemeFilter(Filters filters, final HealthQuote quote) {
+        Boolean applyRewardsSchemeFilter = Optional.ofNullable(quote.getRewardsSchemeFirst()).map(BooleanUtils::toBoolean).orElse(false);
+        filters.setLimitToProvidersWithRewardsSchemeFilter(applyRewardsSchemeFilter);
     }
 }

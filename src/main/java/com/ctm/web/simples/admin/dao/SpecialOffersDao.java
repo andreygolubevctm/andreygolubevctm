@@ -56,7 +56,7 @@ public class SpecialOffersDao {
         try {
             StringBuilder sql = new StringBuilder(
                     "SELECT offerId,content, terms,so.providerId,  so.effectiveStart, so.effectiveEnd," +
-                            "so.styleCodeId,state,so.coverType, sc.styleCodeName ,pm.Name providerName  " +
+                            "so.styleCodeId,state,so.coverType, sc.styleCodeName ,pm.Name providerName, so.offerType  " +
                             "from ctm.hlt_specialoffer_master so inner join stylecodes sc on so.styleCodeId = sc.styleCodeId " +
                             "inner join provider_master pm on pm.ProviderId = so.providerId");
             if (offerId != 0) {
@@ -82,7 +82,8 @@ public class SpecialOffersDao {
                         resultSet.getString("state"),
                         resultSet.getString("coverType"),
                         resultSet.getString("styleCodeName"),
-                        resultSet.getString("providerName")
+                        resultSet.getString("providerName"),
+                        resultSet.getString("offerType")
                     );
                 specialOffersList.add(specialOffers);
             }
@@ -122,7 +123,7 @@ public class SpecialOffersDao {
             ResultSet resultSet = stmt.executeQuery();
             while (resultSet.next()) {
                 SpecialOffers specialOffers = helper.createSpecialOffersObject(0,
-                        resultSet.getString("content"), resultSet.getString("terms"), null, null, 0, 0, null, null, null, null);
+                        resultSet.getString("content"), resultSet.getString("terms"), null, null, 0, 0, null, null, null, null, null);
                 specialOffersList.add(specialOffers);
             }
             return specialOffersList;
@@ -198,7 +199,7 @@ public class SpecialOffersDao {
                 throw new DaoException("failed : offerId is null");
             }
             stmt = dbSource.getConnection().prepareStatement(" UPDATE ctm.hlt_specialoffer_master SET  " +
-                    "content = ?,terms=?, providerId = ?,effectiveStart = ?, effectiveEnd = ?,styleCodeId=?,state=?,coverType=? " +
+                    "content = ?,terms=?, providerId = ?,effectiveStart = ?, effectiveEnd = ?,styleCodeId=?,state=?,coverType=?,offerType=? " +
                     " WHERE offerId= ?");
             if (specialOffersParams.getContent() != null && !specialOffersParams.getContent().equals(""))
                 stmt.setString(1, specialOffersParams.getContent());
@@ -214,7 +215,8 @@ public class SpecialOffersDao {
             stmt.setInt(6, specialOffersParams.getStyleCodeId());
             stmt.setString(7, specialOffersParams.getState().toUpperCase());
             stmt.setString(8, specialOffersParams.getCoverType().toUpperCase());
-            stmt.setInt(9, offerId);
+            stmt.setString(9,specialOffersParams.getOfferType());
+            stmt.setInt(10, offerId);
             stmt.executeUpdate();
             auditTableDao.auditAction("hlt_specialoffer_master", "offerId", offerId, userName, ipAddress, AuditTableDao.UPDATE, dbSource.getConnection());
             // Commit these records to the DB before fetching them
@@ -253,8 +255,8 @@ public class SpecialOffersDao {
 
             stmt = dbSource.getConnection().prepareStatement(
                     " INSERT INTO ctm.hlt_specialoffer_master " +
-                            "( content, terms,providerId,  effectiveStart, effectiveEnd,styleCodeId,state,coverType ) VALUES " +
-                            "(?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+                            "( content, terms,providerId,  effectiveStart, effectiveEnd,styleCodeId,state,coverType,offerType ) VALUES " +
+                            "(?,?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
             if (specialOffersParams.getContent() != null && !specialOffersParams.getContent().equals(""))
                 stmt.setString(1, specialOffersParams.getContent());
             else
@@ -269,6 +271,7 @@ public class SpecialOffersDao {
             stmt.setInt(6, specialOffersParams.getStyleCodeId());
             stmt.setString(7, specialOffersParams.getState());
             stmt.setString(8, specialOffersParams.getCoverType());
+            stmt.setString(9, specialOffersParams.getOfferType());
             stmt.executeUpdate();
             ResultSet rsKey = stmt.getGeneratedKeys();
             if (rsKey.next()) {

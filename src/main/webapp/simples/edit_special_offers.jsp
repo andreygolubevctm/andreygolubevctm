@@ -27,7 +27,7 @@
 								<span>Fund</span>
 							</a>
 						</li>
-						<li class="col-lg-2">
+						<li class="col-lg-1">
 							<a href="javascript:;">
 								<span class="icon"></span>
 								<span>Offer</span>
@@ -55,6 +55,12 @@
 							<a href="javascript:;">
 								<span class="icon"></span>
 								<span>Brand Code</span>
+							</a>
+						</li>
+						<li class="col-lg-1">
+							<a href="javascript:;">
+								<span class="icon"></span>
+								<span>Offer Type</span>
 							</a>
 						</li>
 						<li class="col-lg-1">
@@ -123,7 +129,10 @@
 			<c:forEach items="${brands}" var="brand">
 				{ value: ${brand.getId()}, text: "${brand.getName()}" },
 			</c:forEach>
-		];
+		],
+		offerTypes = {
+	    	awardScheme: 'Award Scheme'
+		};
 </script>
 
 <script id="special-offers-modal-template" class="crud-modal-template" type="text/html">
@@ -206,12 +215,25 @@
 	</div>
 
 	<div class="row">
-		<div class="form-group col-sm-6">
+		<div class="form-group col-sm-4">
+			<label>Offer Type (optional)</label>
+			<select name="offerType" class="form-control" >
+				<c:set var="offerTypeOptions" value="=Select a Offer Type,awardScheme=Award Scheme" />
+				<c:forTokens items="${offerTypeOptions}" delims="," var="offerType">
+					<c:set var="val" value="${fn:substringBefore(offerType,'=')}" />
+					<c:set var="des" value="${fn:substringAfter(offerType,'=')}" />
+
+					<option value="${val}" {{= "${val}" === data.offerType ? "selected" : "" }}>${des}</option>
+				</c:forTokens>
+			</select>
+		</div>
+
+		<div class="form-group col-sm-4">
 			<label>Effective Start</label>
 			<input type="date" name="effectiveStart" class="form-control" value="{{= data.modalAction === "edit" ? data.effectiveStart : "" }}">
 		</div>
 
-		<div class="form-group col-sm-6">
+		<div class="form-group col-sm-4">
 			<label>Effective End</label>
 			<input type="date" name="effectiveEnd" class="form-control" value="{{= data.modalAction === "edit" ? data.effectiveEnd : "" }}">
 		</div>
@@ -227,7 +249,7 @@
 		<div class="col-lg-1">
 			{{= data.providerName }}
 		</div>
-		<div class="col-lg-2">
+		<div class="col-lg-1">
 			{{= data.content }}
 		</div>
 		<div class="col-lg-3">
@@ -241,6 +263,9 @@
         </div>
 		<div class="col-lg-1">
 			{{= data.styleCode }}
+		</div>
+		<div class="col-lg-1">
+			{{= offerTypes[data.offerType] }}
 		</div>
 		<div class="col-lg-1">
 			{{= new Date(data.effectiveStart).toLocaleDateString('en-GB') }}
