@@ -1,13 +1,11 @@
 package com.ctm.web.email.health;
 
-import com.ctm.web.core.email.exceptions.EmailDetailsException;
-import com.ctm.web.core.email.exceptions.SendEmailException;
+import com.ctm.web.car.email.CarEmailDetailMappings;
 import com.ctm.web.core.email.services.EmailDetailsService;
 import com.ctm.web.core.email.services.token.EmailTokenService;
 import com.ctm.web.core.email.services.token.EmailTokenServiceFactory;
 import com.ctm.web.core.exceptions.ConfigSettingException;
 import com.ctm.web.core.exceptions.DaoException;
-import com.ctm.web.core.model.EmailMaster;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.results.model.ResultProperty;
@@ -20,13 +18,11 @@ import com.ctm.web.email.EmailUtils;
 import com.ctm.web.email.OptIn;
 import com.ctm.web.email.car.CarEmailModel;
 import com.ctm.web.factory.EmailServiceFactory;
-import com.ctm.web.health.email.mapping.HealthEmailDetailMappings;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ValidationException;
 import java.security.GeneralSecurityException;
@@ -65,7 +61,7 @@ public class CarModelTranslator implements EmailTranslator {
         List<String> headlineOffers = new ArrayList<>();
         List<String> quoteRefs = new ArrayList<>();
 
-        List<EmailParameters> truncatedEmailParameters = getSortedTruncatedEmailParameters(emailRequest,data);
+        List<EmailParameters> truncatedEmailParameters = getSortedTruncatedEmailParameters(emailRequest,data, emailUtils);
 
         truncatedEmailParameters.forEach(emailParameter -> providerNames.add(emailParameter.getProviderName()));
         truncatedEmailParameters.forEach(emailParameter -> providerPhoneNumbers.add(emailParameter.getProviderPhoneNumber()));
@@ -125,12 +121,12 @@ public class CarModelTranslator implements EmailTranslator {
         if (!StringUtils.isBlank(email)) emailRequest.setEmailAddress(email);
     }
 
-    private List<String> getAllResultProperties(List<ResultProperty> resultProperties, String property) {
+    private static List<String> getAllResultProperties(List<ResultProperty> resultProperties, String property) {
         return resultProperties.stream().filter(resultProperty -> resultProperty.getProperty().equals(property))
                 .map(resultProperty -> resultProperty.getValue()).collect(Collectors.toList());
     }
 
-    private String getResultProperty(List<ResultProperty> resultProperties, String property, String productId) {
+    private static String getResultProperty(List<ResultProperty> resultProperties, String property, String productId) {
         return resultProperties.stream().filter(resultProperty -> resultProperty.getProperty().equals(property) && productId.equals(resultProperty.getProductId()))
                 .map(resultProperty -> resultProperty.getValue()).findFirst().orElse(null);
     }
@@ -140,45 +136,50 @@ public class CarModelTranslator implements EmailTranslator {
     }
 
     @Override
-    public void setUrls(HttpServletRequest request, EmailRequest emailRequest, Data data, String verticalCode) throws ConfigSettingException, DaoException, EmailDetailsException, SendEmailException, GeneralSecurityException {
-        EmailMaster emailDetails = new EmailMaster();
-        emailDetails.setEmailAddress(emailRequest.getEmailAddress());
-        emailDetails.setSource("QUOTE");
+    public void setUrls(HttpServletRequest httpServletRequest, EmailRequest emailRequest, Data data, String verticalCode) throws ConfigSettingException, DaoException, GeneralSecurityException {
+        final PageSettings pageSettings = SettingsService.getPageSettingsForPage(httpServletRequest);
+        final EmailTokenService emailTokenService = EmailTokenServiceFactory.getEmailTokenServiceInstance(pageSettings);
+        final EmailDetailsService emailDetailsService = EmailServiceFactory.createEmailDetailsService(SettingsService.getPageSettingsForPage(httpServletRequest), data, Vertical.VerticalType.CAR, new CarEmailDetailMappings());
+        final String hashedEmail = emailDetailsService.getHashedEmail(emailRequest.getEmailAddress());
 
-        PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
-        EmailTokenService emailTokenService = EmailTokenServiceFactory.getEmailTokenServiceInstance(pageSettings);
-        EmailDetailsService emailDetailsService = EmailServiceFactory.createEmailDetailsService(SettingsService.getPageSettingsForPage(request),data, Vertical.VerticalType.HEALTH, new HealthEmailDetailMappings());
-        EmailMaster emailMaster = emailDetailsService.handleReadAndWriteEmailDetails(Long.parseLong(emailRequest.getTransactionId()), emailDetails, "ONLINE",  ipAddressHandler.getIPAddress(request));
-
-        emailTokenService.insertEmailTokenRecord(Long.parseLong(emailRequest.getTransactionId()), emailMaster.getHashedEmail(), pageSettings.getBrandId(),
-                "bestprice", "load");
-        String baseUrl = pageSettings.getBaseUrl();
-
-        List<String> productIds = getSortedTruncatedEmailParameters(emailRequest,data).stream().map(emailParameters -> emailParameters.getProductId()).collect(Collectors.toList());
-        List<String> applyUrls = productIds.stream().map(s -> {
-            return generateBestPriceUrl(emailTokenService,emailRequest, emailMaster, pageSettings,s,baseUrl);
-        }).collect(Collectors.toList());
-        emailRequest.setApplyUrls(applyUrls);
-        emailRequest.setUnsubscribeURL(getUnsubscribeUrl(emailTokenService,emailRequest,emailMaster,pageSettings,baseUrl));
+        emailRequest.setApplyUrls(getApplyUrls(emailTokenService, hashedEmail, pageSettings, emailRequest, data, this.emailUtils));
+        emailRequest.setUnsubscribeURL(getUnsubscribeUrl(emailTokenService, emailRequest, hashedEmail, pageSettings));
     }
 
+    protected static List getApplyUrls(final EmailTokenService emailTokenService, final String hashedEmail, final PageSettings pageSettings, final EmailRequest emailRequest, final Data data, final EmailUtils emailUtils) throws ConfigSettingException, DaoException, GeneralSecurityException {
 
-    private String generateBestPriceUrl(EmailTokenService emailTokenService, EmailRequest emailRequest, EmailMaster emailDetails,
+        emailTokenService.insertEmailTokenRecord(Long.parseLong(emailRequest.getTransactionId()), hashedEmail, pageSettings.getBrandId(),
+                "bestprice", "load");
+
+        final List<String> productIds = getSortedTruncatedEmailParameters(emailRequest, data, emailUtils)
+                .stream()
+                .map(emailParameters -> emailParameters.getProductId())
+                .collect(Collectors.toList());
+
+        final String baseUrl = pageSettings.getBaseUrl();
+        final List<String> applyUrls = productIds.stream().map(productId -> {
+            return generateBestPriceUrl(emailTokenService, emailRequest, hashedEmail, pageSettings, productId, baseUrl);
+        }).collect(Collectors.toList());
+
+        return applyUrls;
+    }
+
+    protected static String generateBestPriceUrl(EmailTokenService emailTokenService, EmailRequest emailRequest, final String hashedEmail,
                                         PageSettings pageSettings, String productId, String baseUrl){
-        String token = emailTokenService.generateToken(Long.parseLong(emailRequest.getTransactionId()),emailDetails.getHashedEmail(),pageSettings.getBrandId(),
+        String token = emailTokenService.generateToken(Long.parseLong(emailRequest.getTransactionId()),hashedEmail,pageSettings.getBrandId(),
                 "bestprice","load", productId, null, pageSettings.getVerticalCode(), null, true);
         return baseUrl + "email/incoming/gateway.json?gaclientid=" + emailRequest.getGaClientID() + "&cid=em:cm:car:200518:car_bp&et_rid=172883275&utm_source=car_quote_bp&utm_medium=email&utm_campaign=car_quote_bp&token=" + token;
     }
 
-    private String getUnsubscribeUrl(EmailTokenService emailTokenService, EmailRequest emailRequest, EmailMaster emailDetails, PageSettings pageSettings, String baseUrl) {
+    protected static String getUnsubscribeUrl(EmailTokenService emailTokenService, EmailRequest emailRequest, final String hashedEmail, PageSettings pageSettings) throws ConfigSettingException {
         {
-            String token = emailTokenService.generateToken(Long.parseLong(emailRequest.getTransactionId()), emailDetails.getHashedEmail(), pageSettings.getBrandId(),
+            String token = emailTokenService.generateToken(Long.parseLong(emailRequest.getTransactionId()), hashedEmail, pageSettings.getBrandId(),
                     "bestprice", "unsubscribe", null, null, pageSettings.getVerticalCode(), null, true);
-            return baseUrl + "unsubscribe.jsp?token=" + token;
+            return pageSettings.getBaseUrl() + "unsubscribe.jsp?token=" + token;
         }
     }
 
-    private List<EmailParameters> getSortedTruncatedEmailParameters(EmailRequest emailRequest, Data data) throws DaoException {
+    private static List<EmailParameters> getSortedTruncatedEmailParameters(EmailRequest emailRequest, Data data, final EmailUtils emailUtils) throws DaoException {
         final List<ResultProperty> resultsProperties = emailUtils.getResultPropertiesForTransaction(emailRequest.getTransactionId());
 
         //Get all product ids
