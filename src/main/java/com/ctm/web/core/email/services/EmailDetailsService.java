@@ -12,10 +12,10 @@ import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.core.transaction.model.Transaction;
 import com.ctm.web.core.validation.EmailValidation;
 import com.ctm.web.core.web.go.Data;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import java.security.GeneralSecurityException;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
@@ -98,6 +98,23 @@ public class EmailDetailsService {
 		return emailDetails;
 	}
 
+	/**
+	 * returns hashed email for given email address from db.
+	 *
+	 * @param emailAddress
+	 * @return hashed email OR empty string if no hashed email found in db.
+	 * @throws DaoException when reading `email_master` record.
+	 */
+	public String getHashedEmail(String emailAddress) throws DaoException {
+		final EmailMaster emailMasterFromDb = emailMasterDao.getEmailDetails(emailAddress);
+
+		if (emailMasterFromDb == null) {
+			LOGGER.error("Returning empty hashed email. Unable to find email master record for email: {}", emailAddress);
+			return StringUtils.EMPTY;
+		}
+
+		return emailMasterFromDb.getHashedEmail();
+	}
 
 	/**
 	 * TODO: this is used my write_email.tag refactor write_email and remove this method
