@@ -5,11 +5,11 @@ import java.util.function.Supplier;
 /**
  * Created by msmerdon on 6/4/18.
  */
-public class Referrer implements Supplier<String> {
+public class HeardAbout implements Supplier<String> {
 
 	private final String value;
 
-	public Referrer(final String value) {
+	public HeardAbout(final String value) {
 		this.value = value;
 	}
 
