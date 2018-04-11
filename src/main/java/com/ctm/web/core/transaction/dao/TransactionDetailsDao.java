@@ -251,7 +251,7 @@ public class TransactionDetailsDao {
 	 * @return
 	 */
 	public static boolean looksEncrypted(String value) {
-		return value != null && !value.isEmpty() && value.matches("^\\S+(=){2}(:){1}\\S+(=){2}$");
+		return value != null && !value.isEmpty() && value.matches("^\\S+(=){2}(:){1}\\S+(=){1,2}$");
 	}
 
 	/**
@@ -547,8 +547,11 @@ public class TransactionDetailsDao {
 				ResultSet results = stmt.executeQuery();
 				while (results.next()) {
 					TransactionDetail transactionDetail = new TransactionDetail();
-					transactionDetail.setXPath(results.getString("xpath"));
-					transactionDetail.setTextValue(results.getString("textValue"));
+					String xpath = results.getString("xpath");
+					transactionDetail.setXPath(xpath);
+					String textValue = results.getString("textValue");
+					// Note: we should pass in a flag for the second param 'isOperator' to indicate if values should return decrypted or empty
+					transactionDetail.setTextValue(decryptBlacklistFields(transactionId, false, xpath, textValue));
 					transactionDetails.add(transactionDetail);
 				}
 		} catch (SQLException | NamingException e) {
