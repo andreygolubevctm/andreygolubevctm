@@ -21,8 +21,6 @@ import java.net.URLEncoder;
 
 public class CallCentreService {
     private static final Logger LOGGER = LoggerFactory.getLogger(CallCentreService.class);
-    private static boolean consultantIsAdminChecked = false;
-	private static boolean consultantIsAdmin = false;
 	/**
 	 * If operator is on a call, collect the details such as VDN.
 	 *
@@ -75,6 +73,8 @@ public class CallCentreService {
 		Brand brand = ApplicationService.getBrandById(brandId);
 		if(brandId == 9) {
 			brand.setCode("wfdd");
+		} else if(brandId == 10) {
+			brand.setCode("bddd");
 		}
 		PageSettings settings = SettingsService.getPageSettings(brandId, verticalCode);
 		String brandRootUrl = settings.getBaseUrl();
@@ -101,6 +101,9 @@ public class CallCentreService {
 		if(brandId == 9) {
 			brand.setCode("wfdd");
 			redirectUrl.append("&brandCode=wfdd");
+		} else if(brandId == 10) {
+			brand.setCode("bddd");
+			redirectUrl.append("&brandCode=bddd");
 		} else if(EnvironmentService.needsManuallyAddedBrandCodeParamWhiteLabel(brand.getCode(), verticalCode)) {
 			redirectUrl.append("&brandCode=").append(brand.getCode());
 		}
@@ -130,12 +133,15 @@ public class CallCentreService {
 			String uid = authData.getUid();
 			if (uid != null) {
 				if (getConsultantIsAdmin(request)) {
-					styleCodeId = "1,9";
+					styleCodeId = "1,9,10";
 				} else if (uid.toLowerCase().startsWith("wfd")) {
 					styleCodeId = "9";
+				} else if (uid.toLowerCase().startsWith("bud")) {
+					styleCodeId = "10";
 				} else {
 					styleCodeId = "1";
 				}
+				LOGGER.info("Authenticated user uid of " + uid + " has styleCodeId of " + styleCodeId);
 			}
 		} catch(Exception e) {
 			LOGGER.error("No authenticated session exists. Default search styleCodeId of " + styleCodeId + " to be used.");
@@ -144,11 +150,7 @@ public class CallCentreService {
 	}
 
 	public static boolean getConsultantIsAdmin(HttpServletRequest request) {
-		if(consultantIsAdminChecked == false) {
-			consultantIsAdmin = request.isUserInRole("BD-HCC-MGR") || request.isUserInRole("BC-IT-ECOM-RPT") ||
-					request.isUserInRole("CTM-IT-USR") || request.isUserInRole("jira-ctm-projmgr");
-			consultantIsAdminChecked = true;
-		}
-		return consultantIsAdmin;
+		return request.isUserInRole("BD-HCC-MGR") || request.isUserInRole("BC-IT-ECOM-RPT") ||
+				request.isUserInRole("CTM-IT-USR") || request.isUserInRole("jira-ctm-projmgr");
 	}
 }

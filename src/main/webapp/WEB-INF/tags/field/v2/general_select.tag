@@ -53,13 +53,10 @@
 <sql:query var="result">
     SELECT code, description FROM aggregator.general WHERE type = ? AND (status IS NULL OR status != 0)
     <c:if test="${not empty excludeCodes}">
-        AND code NOT IN (?)
+        AND code NOT IN (${excludeCodes})
     </c:if>
     ORDER BY orderSeq
 <sql:param>${type}</sql:param>
-<c:if test="${not empty excludeCodes}">
-    <sql:param>${excludeCodes}</sql:param>
-</c:if>
 </sql:query>
 
 

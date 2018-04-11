@@ -254,7 +254,7 @@ ${logger.info('Checking if user is authenticated. {},{}',log:kv('isOperator',isO
 						<c:when test="${param.action=='amend' && param.vertical=='health' && data.health.privacyoptin!='Y'}">
 							<core_v1:transaction touch="L" noResponse="true" />
 							<c:choose>
-								<c:when test="${not empty param.brandCode and fn:toLowerCase(param.brandCode) eq 'wfdd'}">
+								<c:when test="${not empty param.brandCode and (fn:toLowerCase(param.brandCode) eq 'wfdd' or fn:toLowerCase(param.brandCode) eq 'bddd')}">
 									<destUrl>${pageName}?action=start-again&amp;brandCode=${param.brandCode}&amp;transactionId=${data.current.transactionId}${jParam}</destUrl>
 								</c:when>
 								<c:otherwise>
@@ -267,7 +267,7 @@ ${logger.info('Checking if user is authenticated. {},{}',log:kv('isOperator',isO
 						<c:when test="${param.action=='amend' || param.action=='start-again'}">
 							<core_v1:transaction touch="L" noResponse="true" />
 							<c:choose>
-								<c:when test="${not empty param.brandCode and fn:toLowerCase(param.brandCode) eq 'wfdd'}">
+								<c:when test="${not empty param.brandCode and (fn:toLowerCase(param.brandCode) eq 'wfdd' or fn:toLowerCase(param.brandCode) eq 'bddd')}">
 									<destUrl>${pageName}?action=${param.action}&amp;brandCode=${param.brandCode}&amp;transactionId=${data.current.transactionId}${jParam}</destUrl>
 								</c:when>
 								<c:otherwise>

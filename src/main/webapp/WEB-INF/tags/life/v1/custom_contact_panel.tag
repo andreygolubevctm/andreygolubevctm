@@ -10,14 +10,14 @@
 			simple = simple || false;
 
 			var contactPanelHTML = [
-				"<div class='lifebroker-contact-panel'>",
-					"<div class='option call-us-now'>",
-						"<p class='call-provider-message' data-original='Lifebroker'>Call <span>Lifebroker</span> Now</p>",
-						"<p class='provider-phone-number' data-original='1800 204 124'>1800 204 124</p>",
-					"</div>",
-					"<a href='javascript:void(0);' data-lifequote='true' class='option call-me-back'></a>",
-				"</div>"
-			].join("");
+				'<div class="lifebroker-contact-panel">',
+					'<div class="option call-us-now">',
+						'<p class="call-provider-message" data-original="Lifebroker">Call <span>Lifebroker</span> Now</p>',
+						'<p class="provider-phone-number" data-original="1800 204 124">1800 204 124</p>',
+					'</div>',
+					'<a href="javascript:void(0);" data-lifequote="true" class="option call-me-back"></a>',
+				'</div>'
+			].join('');
 
 			$("#contact-panel").find(".row.mid").first().empty().append(contactPanelHTML);
 

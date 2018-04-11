@@ -11,7 +11,7 @@
 <%-- the following is for testing only --%>
 <c:set var="brandCodeUrl">
 	<c:choose>
-		<c:when test="${not empty param.brandCode and fn:toLowerCase(param.brandCode) eq 'wfdd'}">?brandCode=${param.brandCode}</c:when>
+		<c:when test="${not empty param.brandCode and (fn:toLowerCase(param.brandCode) eq 'wfdd' or fn:toLowerCase(param.brandCode) eq 'bddd')}">?brandCode=${param.brandCode}</c:when>
 		<c:when test="${environmentService.needsManuallyAddedBrandCodeParamWhiteLabel(pageSettings.getBrandCode(), verticalCode)}">?brandCode=${pageSettings.getBrandCode()}</c:when>
 	</c:choose>
 </c:set>
