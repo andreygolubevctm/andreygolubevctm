@@ -68,7 +68,7 @@ public class HealthConfirmationService {
                     .policyNo(response.getProductId())
                     .paymentType(paymentType)
                     .redemptionId(Optional.ofNullable((String) dataBucket.get(XPATH_CURRENT_ENCRYPTED_ORDER_LINE_ID)).orElse(""))
-                    .voucherValue(voucherValue)
+                    .voucherValue(Optional.ofNullable(voucherValue).orElse(""))
                     .build();
 
             Confirmation confirmation = new Confirmation();
