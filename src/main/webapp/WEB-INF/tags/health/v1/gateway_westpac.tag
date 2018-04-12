@@ -8,7 +8,7 @@
 	<%-- VARIABLES --%>
 	<c:set var="name" value="${go:nameFromXpath(xpath)}" />
 
-	<input type="hidden" id="${name}_number" name="${name}_number" value="" />
-	<input type="hidden" id="${name}_type" name="${name}_type" value="" />
-	<input type="hidden" id="${name}_expiry" name="${name}_expiry" value="" />
-	<input type="hidden" id="${name}_name" name="${name}_name" value="" />
+	<field_v1:hidden xpath="${xpath}/number" />
+	<field_v1:hidden xpath="${xpath}/type" />
+	<field_v1:hidden xpath="${xpath}/expiry" />
+	<field_v1:hidden xpath="${xpath}/name" />
