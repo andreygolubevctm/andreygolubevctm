@@ -10,7 +10,7 @@
 
     <groupId>com.ctm.web</groupId>
     <artifactId>ctm</artifactId>
-    <version>1.101.0-RC3</version>
+    <version>1.102.0-RC0</version>
     <name>ctm</name>
     <description>Main web application</description>
     <packaging>war</packaging>
@@ -23,6 +23,7 @@
         <contact-validator-model.version>1.0.0-RC1</contact-validator-model.version>
         <life-common.version>1.1.0-RC1</life-common.version>
         <reward-model.version>1.9.0</reward-model.version>
+        <health-common.version>1.11.1-RC2</health-common.version>
 
         <!-- 3rd party -->
         <guava.version>18.0</guava.version>
@@ -398,6 +399,12 @@
             <groupId>com.ctm.validator</groupId>
             <artifactId>contact-validator-model</artifactId>
             <version>${contact-validator-model.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ctm.health</groupId>
+            <artifactId>health-common</artifactId>
+            <version>${health-common.version}</version>
         </dependency>
 
         <!-- Other 3rd Party -->

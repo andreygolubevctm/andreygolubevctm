@@ -143,6 +143,10 @@
 			<c:otherwise>false</c:otherwise>
 		</c:choose>
 	</c:set>
+
+	<jsp:useBean id="touchService" class="com.ctm.web.core.services.AccessTouchService" scope="request" />
+	<c:set var="previousTransactionId" value="${data['current/previousTransactionId']}" />
+	<c:set var="hasTouchF" value="${touchService.touchCheck(previousTransactionId, 'F')}" scope="request"  />
 {
 	isCallCentreUser: <c:out value="${not empty callCentre}"/>,
 	<c:if test="${not empty callCentre}">
@@ -287,5 +291,6 @@
 	ccOpeningHoursText : "<content:get key="ccHoursText" />",
 	situationHealthCvr: "<c:out value="${data['health/situation/healthCvr']}"/>",
 	hasPrimaryCover: "<c:out value="${data['health/healthCover/primary/cover']}"/>",
-	hasPartnerCover: "<c:out value="${data['health/healthCover/partner/cover']}"/>"
+	hasPartnerCover: "<c:out value="${data['health/healthCover/partner/cover']}"/>",
+	hasTouchF: ${hasTouchF}
 }
