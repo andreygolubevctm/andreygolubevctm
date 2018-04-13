@@ -105,16 +105,19 @@ Process:
 	}
 
 	function showSuccessPanel(){
+		meerkat.logging.debug("paymentGateway: showSuccessPanel");
 		$success.slideDown();
 		$fail.slideUp();
 	}
 
 	function showFailPanel(){
+		meerkat.logging.debug("paymentGateway: showFailPanel");
 		$success.slideUp();
 		$fail.slideDown();
 	}
 
 	function hideStatusesPanels(){
+		meerkat.logging.debug("paymentGateway: hideStatusesPanels");
 		$success.slideUp();
 		$fail.slideUp();
 	}
