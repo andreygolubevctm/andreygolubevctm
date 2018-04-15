@@ -37,7 +37,7 @@ Process:
 	function onMessage(e) {
 		meerkat.logging.debug("healthPaymentGatewayNAB: NAB IFrame onMessage window event triggered");
 		if (e.origin !== settings.origin){
-			console.error("domain name mismatch");
+			meerkat.logging.error("domain name mismatch");
 			meerkat.logging.debug("healthPaymentGatewayNAB: NAB domain Origin " + e.origin + "\nNAB origin settings settings " + settings.origin);
 			return;
 		} else {
