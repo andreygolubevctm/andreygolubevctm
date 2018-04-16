@@ -10,6 +10,8 @@
 	<c:set var="isInInEnabled" value="${true}" />
 </c:if>
 
+<jsp:useBean id="callCentreService" class="com.ctm.web.simples.services.CallCentreService" scope="application" />
+
 <%--
 
 	See framework/modules/js/simples/* for corresponding code.
@@ -31,12 +33,20 @@
 		<div class="collapse navbar-collapse" id="simples-navbar-collapse-1">
 			<%-- Menu options --%>
 			<ul class="nav navbar-nav">
-				<li class="dropdown">
-					<a href="javascript:void(0);" class="dropdown-toggle active" data-toggle="dropdown">New <b class="caret"></b></a>
-					<ul class="dropdown-menu">
-						<li><a class="newquote needs-loadsafe" href="${assetUrl}simples/startQuote.jsp?verticalCode=HEALTH">Health quote</a></li>
-					</ul>
-				</li>
+				<c:set var="consultantStyleCodeId">${callCentreService.getConsultantStyleCodeId(pageContext.getRequest())}</c:set>
+				<c:choose>
+					<c:when test="${fn:contains(consultantStyleCodeId,',')}">
+						<li class="dropdown">
+							<a href="javascript:void(0);" class="dropdown-toggle active" data-toggle="dropdown">New <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a class="newquote needs-loadsafe" href="${assetUrl}simples/startQuote.jsp?verticalCode=HEALTH">Health quote</a></li>
+							</ul>
+						</li>
+					</c:when>
+					<c:otherwise>
+						<li><a class="needs-loadsafe" href="${assetUrl}simples/redirectToBrand.jsp?brandId=${consultantStyleCodeId}&verticalCode=HEALTH&vdn=">New</a></li>
+					</c:otherwise>
+				</c:choose>
 
 				<li data-provide="simples-quote-finder"><a href="javascript:void(0);">Quote details</a></li>
 

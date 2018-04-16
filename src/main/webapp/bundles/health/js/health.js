@@ -684,6 +684,11 @@
 							$this.find('.error-count').remove();
 							var $errors = $this.find('.error-field label');
 							$this.children('button').after('<span class="error-count' + (($errors.length>0) ? ' error-field' : '') + '" style="margin-left:10px">' + $errors.length + ' validation errors in this panel.</span>');
+
+							if ($errors.length > 0) {
+								$this.removeClass('has-field-values-ba has-field-values-cc');
+								$this.find('.payment-complete-text').remove();
+							}
 						});
 					}
 
@@ -695,7 +700,7 @@
 
 				var $affiliateId = $('#health_affiliate_id');
 				if ($affiliateId.length > 0) {
-					meerkat.modules.simplesBindings.toggleAffiliateRewardsDialogue($affiliateId.val());
+					meerkat.modules.simplesBindings.toggleAffiliateRewardsDialogue();
 					meerkat.modules.fieldUtilities.hide($('input[name=health_voucher_available]'));
 				}
 			},

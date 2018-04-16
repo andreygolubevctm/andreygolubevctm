@@ -329,6 +329,9 @@
 	{{ if (obj.lender === 'UniBank') img = 'UNIBANK'; }}
 	{{ if (obj.lender === 'Westpac') img = 'WESTPAC'; }}
 	{{ if (obj.lender === 'Wide Bay Australia') img = 'WIDE'; }}
+	{{ if (obj.lender === 'Homeloans') img = 'HOMELOANS'; }}
+	{{ if (obj.lender === 'Virgin Money	') img = 'VIRG'; }}
+
 
 
 	<div class="companyLogo logo_{{= img }} noshrink"></div>
