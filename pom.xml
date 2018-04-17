@@ -44,6 +44,8 @@
         <mysql.connector.version>5.1.29</mysql.connector.version>
         <org.mapstruct.version>1.0.0.CR1</org.mapstruct.version>
         <swagger-annotations.version>1.5.4</swagger-annotations.version>
+        <hazelcast-all.version>3.9.2</hazelcast-all.version>
+        <hazelcast-tomcat7-sessionmanager.version>1.1.3</hazelcast-tomcat7-sessionmanager.version>
 
         <!-- Compile as this version -->
         <java.version>1.8</java.version>
@@ -329,6 +331,20 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql.connector.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Hazelcast Dependencies -->
+        <!--<dependency>-->
+            <!--<groupId>com.hazelcast</groupId>-->
+            <!--<artifactId>hazelcast-tomcat7-sessionmanager</artifactId>-->
+            <!--<version>${hazelcast-tomcat7-sessionmanager.version}</version>-->
+            <!--<scope>provided</scope>-->
+        <!--</dependency>-->
+        <dependency>
+            <groupId>com.hazelcast</groupId>
+            <artifactId>hazelcast-all</artifactId>
+            <version>${hazelcast-all.version}</version>
             <scope>provided</scope>
         </dependency>
 

@@ -2,7 +2,7 @@
 
 <Context>
 
-<!--
+	<!--
 	CTM Active Directory Login Realm
 -->
 	<Realm className="org.apache.catalina.realm.JNDIRealm" debug="99"
@@ -19,4 +19,5 @@
 		roleSearch="(member={0})"
 	/>
 
+	<Valve className="com.ctm.tomcat.authenticator.HazelcastFormAuthenticator"/>
 </Context>
