@@ -20,4 +20,5 @@
 	/>
 
 	<Valve className="com.ctm.tomcat.authenticator.HazelcastFormAuthenticator"/>
+	<Manager className="com.hazelcast.session.HazelcastSessionManager" sticky="false" deferredWrite="true" writeStrategy="twoPhaseCommit"/>
 </Context>
