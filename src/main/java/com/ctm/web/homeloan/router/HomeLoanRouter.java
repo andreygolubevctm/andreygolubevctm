@@ -123,7 +123,7 @@ public class HomeLoanRouter extends HttpServlet {
 
 				json = service.scheduledLeadGenerator(request);
 
-				if (!json.has("flexOutboundLeads") || json.getJSONArray("flexOutboundLeads").length() == 0) {
+				if (!json.has("flexOutboundLeads") ) {
 					throw new DaoException("HomeLoan scheduledLeadGenerator returned an empty JSON object");
 				}
 			}
