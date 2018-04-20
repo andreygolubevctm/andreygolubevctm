@@ -347,7 +347,7 @@
         }
     }
 
-    function getCallType() {
+    function getRawCallType() {
         var healthContactTypeSelection = $healthContactTypeField.val();
         var callTypeToBeReturned = $healthContactTypeSelectOption.is(':selected') ? (healthContactTypeSelection != "" ? healthContactTypeSelection : null) : null;
         var contatTypeTrialRegex = new RegExp('trial','i');
@@ -357,8 +357,18 @@
         // unsure if cli outbound should be handled here too
         if (callTypeToBeReturned !== null) {
             if (contatTypeTrialRegex.test(callTypeToBeReturned)){
-                callTypeToBeReturned = 'outbound';
+                callTypeToBeReturned = 'trial';
             }
+        }
+
+        return callTypeToBeReturned;
+    }
+
+    function getCallType() {
+        var callTypeToBeReturned = getRawCallType();
+
+        if (callTypeToBeReturned === 'trial') {
+            callTypeToBeReturned = 'outbound';
         }
 
         return callTypeToBeReturned;
@@ -416,7 +426,7 @@
 
 	// Toggle visibility on referral call dialogs based on if NOT inbound call
 	function toggleReferralCallDialog() {
-    	var callType = getCallType();
+    	var callType = getRawCallType();
     	var validCallType = !_.isEmpty(callType) && callType !== 'inbound';
 		$referralCallCheckboxDialogue.toggle(validCallType);
 		if(!validCallType && $referralCallCheckbox.is(':checked')) {
@@ -428,13 +438,38 @@
 	function toggleReferralCallCheckbox(callType) {
         callType = callType || false;
         var isInbound = callType === "inbound";
-        var isReferral = callType !== false && isInbound === false && $referralCallCheckbox.is(':checked');
-        if(!isInbound && isReferral) {
-        	$dialogue36.add($referralCallPaymentStepDialogue1).add($referralCallPaymentStepDialogue2).toggle(isReferral);
-        } else {
-	        $referralCallPaymentStepDialogue1.add($referralCallPaymentStepDialogue2).toggle(isReferral);
-	        $dialogue36.toggle(isInbound);
+        var suppressTrialToggle = false;
+        var dblChkCallType = "";
+        var brandCodeIsCtm = meerkat.site.tracking.brandCode === 'ctm';
+
+        if (brandCodeIsCtm && Object(callType)) {
+            dblChkCallType = getRawCallType();
+            if (dblChkCallType === "trial") {
+                callType = dblChkCallType;
+                suppressTrialToggle = true;
+            }
         }
+
+        if (brandCodeIsCtm && callType === "trial") {
+            $referralCallCheckbox.prop("checked", true);
+
+            if (!suppressTrialToggle){
+                $referralCallCheckbox.trigger("change");
+            }
+        }
+
+        var isReferral = callType !== false && isInbound === false && $referralCallCheckbox.is(':checked');
+
+        if (!isInbound && isReferral) {
+            $dialogue36.add($referralCallPaymentStepDialogue1).add($referralCallPaymentStepDialogue2).toggle(isReferral);
+        } else {
+            $referralCallPaymentStepDialogue1.add($referralCallPaymentStepDialogue2).toggle(isReferral);
+            $dialogue36.toggle(isInbound);
+            if (brandCodeIsCtm && callType === "trial") {
+                $dialogue36.add($referralCallPaymentStepDialogue1).add($referralCallPaymentStepDialogue2).toggle(true);
+            }
+        }
+
 	}
 
 	function toggleWebChatDialog() {
