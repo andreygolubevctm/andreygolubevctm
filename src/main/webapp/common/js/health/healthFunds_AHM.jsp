@@ -126,7 +126,6 @@ var healthFunds_AHM = {
     list += '<option value="VIC">Victorian High Schools</option>';
     list += '<option value="VICT">VIC TAFE</option>';
     list += '<option value="VU">Victoria University</option>';
-    list += '<option value="VUT">Victoria University of Technology</option>';
     list += '<option value="WA">Western Australia-High Schools</option>';
     list += '<option value="WAT">WA TAFE</option>';
     list += '</select>';
