@@ -56,6 +56,7 @@ public class HealthConfirmationService {
             String surname = data.getQuote().getApplication().getPrimary().getSurname();
             String paymentType =  data.getQuote().getPayment().getDetails().getType();
             ProviderInfo providerInfo = providerContentService.getProviderInfo(request, providerName);
+            String voucherValue = dataBucket.getString("health/voucher/value");
             final ConfirmationData confirmationData = ConfirmationData.newConfirmationData()
                     .about(about)
                     .transID(data.getTransactionId().toString())
@@ -67,6 +68,7 @@ public class HealthConfirmationService {
                     .policyNo(response.getProductId())
                     .paymentType(paymentType)
                     .redemptionId(Optional.ofNullable((String) dataBucket.get(XPATH_CURRENT_ENCRYPTED_ORDER_LINE_ID)).orElse(""))
+                    .voucherValue(Optional.ofNullable(voucherValue).orElse(""))
                     .build();
 
             Confirmation confirmation = new Confirmation();

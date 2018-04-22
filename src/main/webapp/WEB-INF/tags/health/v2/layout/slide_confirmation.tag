@@ -84,6 +84,7 @@
 <c:set var="transactionId"><x:out select="$confirmationDataXML/data/transID" /></c:set>
 <c:set var="status"><x:out select="$confirmationDataXML/data/status" /></c:set>
 <c:set var="redemptionId"><x:out select="$confirmationDataXML/data/redemptionId" /></c:set>
+<c:set var="voucherValue"><x:out select="$confirmationDataXML/data/voucherValue" /></c:set>
 <c:choose>
 	<c:when test="${not empty redemptionId}">
 		<c:set var="rewardOrder" value="${rewardService.getOrderAsJson(redemptionId, pageContext.request)}" />
@@ -139,6 +140,16 @@
 				<form_v3:fieldset legend="">
 					${coupon}
 				</form_v3:fieldset>
+				</c:if>
+
+				<c:set var="voucherConfirmationMessage">
+					<content:get key="voucherConfirmationMessage"/>
+				</c:set>
+
+				<c:if test="${not empty voucherValue and not empty voucherConfirmationMessage}">
+					<form_v3:fieldset legend="">
+						${fn:replace(voucherConfirmationMessage, 'voucherValue', voucherValue)}
+					</form_v3:fieldset>
 				</c:if>
 
 			</jsp:attribute>
