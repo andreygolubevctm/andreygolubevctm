@@ -120,7 +120,7 @@ public class HealthQuoteService extends CommonRequestServiceV2 implements Initia
                     .doOnError(this::logHttpClientError)
                     .observeOn(Schedulers.io()).toBlocking().single();
 
-            final ResponseAdapterModel responseAdapterModel = ResponseAdapterV2.adapt(data, healthResponse, alternatePricingContent);
+            final ResponseAdapterModel responseAdapterModel = ResponseAdapterV2.adapt(data, healthResponse, alternatePricingContent, brand.getCode());
 
             final boolean isShowAll = "Y".equals(data.getQuote().getShowAll()); //showAll = true means they're looking at quotes and the healthResponse.getPayload.getQuotes will contain all the quote entries
             if (!isShowAll) { //showAll = false means they're paying and the healthResponse.getPayload.getQuotes will only contain one entry- the one they're paying for
