@@ -166,11 +166,14 @@ public class ResponseAdapterV2 {
 
     private static Promo createPromo(final Promotion quotePromotion, final String staticBranch, final boolean isSimplesUser, final String brandCode) {
         final Promo promo = new Promo();
+        String staticBranchQS = staticBranch != null ? "&staticBranch=" + staticBranch : "";
+        String brandCodeQS = brandCode != null && brandCode.length() > 0 ? "&brandCode=" + brandCode.toLowerCase() : "";
+
         promo.setPromoText(createPromoText(quotePromotion.getSpecialOffer(), isSimplesUser));
         promo.setProviderPhoneNumber(quotePromotion.getProviderPhoneNumber());
         promo.setDiscountText(StringUtils.trimToEmpty(quotePromotion.getDiscountDescription()));
-        promo.setExtrasPDF(HEALTH_BROCHURE_URL + quotePromotion.getExtrasPDF() + (staticBranch != null ? ("&staticBranch=" + staticBranch) : "") + (brandCode != null ? (brandCode.length() > 0 ? ("&brandCode=" + brandCode.toLowerCase()) : "") : ""));
-        promo.setHospitalPDF(HEALTH_BROCHURE_URL + quotePromotion.getHospitalPDF() + (staticBranch != null ? ("&staticBranch=" + staticBranch) : "") + (brandCode != null ? (brandCode.length() > 0 ? ("&brandCode=" + brandCode.toLowerCase()) : "") : ""));
+        promo.setExtrasPDF(HEALTH_BROCHURE_URL + quotePromotion.getExtrasPDF() + staticBranchQS + brandCodeQS);
+        promo.setHospitalPDF(HEALTH_BROCHURE_URL + quotePromotion.getHospitalPDF() + staticBranchQS + brandCodeQS);
         return promo;
     }
 
