@@ -10,6 +10,8 @@
 	<c:set var="isInInEnabled" value="${true}" />
 </c:if>
 
+<jsp:useBean id="callCentreService" class="com.ctm.web.simples.services.CallCentreService" scope="application" />
+
 <%--
 
 	See framework/modules/js/simples/* for corresponding code.
@@ -31,12 +33,20 @@
 		<div class="collapse navbar-collapse" id="simples-navbar-collapse-1">
 			<%-- Menu options --%>
 			<ul class="nav navbar-nav">
-				<li class="dropdown">
-					<a href="javascript:void(0);" class="dropdown-toggle active" data-toggle="dropdown">New <b class="caret"></b></a>
-					<ul class="dropdown-menu">
-						<li><a class="newquote needs-loadsafe" href="${assetUrl}simples/startQuote.jsp?verticalCode=HEALTH">Health quote</a></li>
-					</ul>
-				</li>
+				<c:set var="consultantStyleCodeId">${callCentreService.getConsultantStyleCodeId(pageContext.getRequest())}</c:set>
+				<c:choose>
+					<c:when test="${fn:contains(consultantStyleCodeId,',')}">
+						<li class="dropdown">
+							<a href="javascript:void(0);" class="dropdown-toggle active" data-toggle="dropdown">New <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a class="newquote needs-loadsafe" href="${assetUrl}simples/startQuote.jsp?verticalCode=HEALTH">Health quote</a></li>
+							</ul>
+						</li>
+					</c:when>
+					<c:otherwise>
+						<li><a class="needs-loadsafe" href="${assetUrl}simples/redirectToBrand.jsp?brandId=${consultantStyleCodeId}&verticalCode=HEALTH&vdn=">New</a></li>
+					</c:otherwise>
+				</c:choose>
 
 				<li data-provide="simples-quote-finder"><a href="javascript:void(0);">Quote details</a></li>
 
@@ -49,10 +59,13 @@
 							<li><a target="simplesiframe" href="simples/edit_callcenter_hours.jsp">Opening Hours</a></li>
 							<li><a target="simplesiframe" href="simples/edit_special_offers.jsp">Special Offers</a></li>
 							<li><a target="simplesiframe" href="simples/admin/health/fund_capping_limits.jsp">Fund Capping Limits</a></li>
-							<li><a target="simplesiframe" href="simples/admin/health/provider_content.jsp?contentType=ABT">Provider Content</a></li>           <c:if test="${isRoleCcRewards}">
+							<li><a target="simplesiframe" href="simples/admin/health/product_capping_summary.jsp">Product Capping Summary</a></li>
+							<li><a target="simplesiframe" href="simples/admin/health/provider_content.jsp?contentType=ABT">Provider Content</a></li>
+							<c:if test="${isRoleCcRewards}">
                             <li><a target="simplesiframe" href="simples/admin/reward.jsp">Reward</a></li>
                             </c:if>
 							<li><a target="simplesiframe" href="simples/help_box.jsp">Help Box</a></li>
+							<li><a target="simplesiframe" href="simples/special_opt_in.jsp">Special opt in</a></li>
 							<%-- DISABLED UNTIL CAN BE WORKED ON
 							<li><a target="simplesiframe" href="simples/report_managerOpEnq.jsp">Manager - Operator enquires</a></li>
 							--%>

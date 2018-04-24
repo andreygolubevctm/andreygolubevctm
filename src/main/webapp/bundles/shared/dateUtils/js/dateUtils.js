@@ -44,12 +44,19 @@
             },
             dddd: function(dateObj) {
                 return dayNames[dateObj.getDay()];
+            },
+            HH: function(dateObj) {
+                return pad(dateObj.getHours());
+            },
+            mm: function(dateObj) {
+                return pad(dateObj.getMinutes());
             }
         },
         masks = {
             formDate: "DD/MM/YYYY",
             serverDate : "YYYY-MM-DD",
-            longDate : "dddd, D MMMM YYYY"
+            longDate : "dddd, D MMMM YYYY",
+            dateTime : "YYYY-MM-DDTHH:mm"
         },
         parseFlags = {
             D: [twoDigits, function (d, v) {
@@ -167,13 +174,21 @@
         }
     }
 
+    // return date string in the following format:
+    // YYYY-MM-DDTHH:mm
+    // Useful for <input type="datetime"> element
+    function returnDateTimeString(dateObj) {
+        return format(dateObj, masks.dateTime);
+    }
+
     meerkat.modules.register('dateUtils', {
         format  : format,
         parse : parse,
         returnDate: returnDate,
         dateValueLongFormat : dateValueLongFormat,
         dateValueServerFormat : dateValueServerFormat,
-        dateValueFormFormat : dateValueFormFormat
+        dateValueFormFormat : dateValueFormFormat,
+        returnDateTimeString: returnDateTimeString
     });
 
 })(jQuery);

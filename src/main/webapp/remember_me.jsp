@@ -14,6 +14,8 @@
 <c:set var="callCentreHelpNumber" scope="request"><content:get key="callCentreHelpNumber" /></c:set>
 <c:set var="callCentreHoursModal" scope="request"><content:getOpeningHoursModal /></c:set>
 
+<health_v4:opening_text />
+
 <layout_v1:journey_engine_page title="Remember Me" ignore_journey_tracking="${true}" bundleFileName="health_remember_me" displayNavigationBar="${false}" body_class_name="remember-me-page">
 
     <jsp:attribute name="head">
@@ -26,15 +28,18 @@
         <c:if test="${not empty callCentreNumber}">
             <div class="navbar-collapse header-collapse-contact collapse">
                 <ul class="nav navbar-nav navbar-right callCentreNumberSection">
-                    <li class="navbar-text">Confused? Talk to our experts now.</li>
+                    <li class="navbar-text call-opening-text">${desktopOpenText}</li>
                     <li>
                         <div class="navbar-text hidden-xs" data-livechat="target">
-                            Call <a href="javascript:;" data-toggle="dialog"
+                            <div class="callCentreNumber-container">
+                                <span class="icon icon-phone"></span>
+                                <a href="javascript:;" data-toggle="dialog"
                                     data-content="#view_all_hours"
                                     data-title="Call Centre Hours" data-cache="true">
-                            <span class="noWrap callCentreNumber">${callCentreNumber}</span>
-                            <span class="noWrap callCentreAppNumber">${callCentreAppNumber}</span>
-                        </a>
+                                    <span class="noWrap callCentreNumber">${callCentreNumber}</span>
+                                    <span class="noWrap callCentreAppNumber">${callCentreAppNumber}</span>
+                                </a>
+                            </div>
                         </div>
                         <div id="view_all_hours" class="hidden">${callCentreHoursModal}</div>
                     </li>

@@ -16,6 +16,7 @@
 
 	var travelText = {
 		S: 'The age of the travelling adult?',
+		SF: 'The age of the travelling adult?',
 		C: 'The age of the travelling adults?',
 		F: 'The age of the travelling adults?',
 		G: 'The age of all adults travelling and the age of all children travelling in the group?'
@@ -95,6 +96,7 @@
 		if (travelParty !== state.selection) {
 			switch (travelParty) {
 				case "S":
+				case "SF":
 						setState({ travellers: 1, showAddBtn: false, selection: travelParty, addedFields: 0, minAge: 16 });
 					break;
 				case "C":
@@ -187,11 +189,12 @@
 	}
 
 	function insertValues() {
-		values = state.hiddenValues;
+		var values = state.hiddenValues;
 		for (var i = 0; values.length > i; i++) {
-			var indexFix = i + 1;
-			if ($('input[name=travellers-age-'+ indexFix +']').length > 0) {
-				$('input[name=travellers-age-'+ indexFix +']').val(values[i]);
+			var indexFix = i + 1,
+				$travellerAgeElement = $('input[name=travellers-age-'+ indexFix +']');
+			if ($travellerAgeElement.length > 0) {
+                $travellerAgeElement.val(values[i]);
 			} else {
 				_add(null, values[i]);
 			}

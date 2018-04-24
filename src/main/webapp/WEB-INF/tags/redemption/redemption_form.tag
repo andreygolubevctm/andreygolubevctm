@@ -18,8 +18,9 @@
 
         {{ var orderLine = data.orderForm.orderHeader.orderLine || {}; }}
         <div class="form-group row fieldrow clear required_input rewardType">
-            <label for="order_rewardType" class="col-sm-4 col-xs-10 control-label">Please select your reward</label>
+            <label for="order_rewardType" class="col-sm-4 col-xs-10 control-label"></label>
             <div class="col-sm-8 col-xs-12 row-content">
+                <h3 class="redemption-subtitle">Please select your reward</h3>
                 <div class="btn-tile toy-radio-tiles" data-toggle="radio">
                     {{ var rewards = currentCampaign.rewards.filter(function(reward) { }}
                     {{ return reward.active === true; }}

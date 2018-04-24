@@ -5,7 +5,7 @@
 <jsp:useBean id="rememberMeService" class="com.ctm.web.core.rememberme.services.RememberMeService" />
 <agg_v1:remember_me_settings vertical="health" />
 
-<layout_v3:slide formId="startForm" firstSlide="true" nextLabel="Insurance preferences">
+<layout_v3:slide formId="startForm" firstSlide="true">
 
     <layout_v3:slide_content>
 
@@ -21,14 +21,15 @@
 
                 <%-- HTML --%>
             <div id="${name}-selection" class="health-situation">
-                <form_v3:fieldset_columns sideHidden="true">
+                <form_v3:fieldset_columns nextLabel="Insurance preferences" sideHidden="true">
 
-                <jsp:attribute name="rightColumn">
-                    <competition:snapshot vertical="health" />
-                    <reward:campaign_tile_container />
-                    <health_v4_aboutyou:retrievequotes />
-                    <health_v4_aboutyou:medicarecheck />
-                </jsp:attribute>
+                    <jsp:attribute name="rightColumn">
+                        <competition:snapshot vertical="health" />
+                        <reward:campaign_tile_container />
+                        <health_v4_aboutyou:retrievequotes />
+                        <health_v4_aboutyou:medicarecheck />
+                        <health_v4:price_promise step="start" />
+                    </jsp:attribute>
                     <jsp:body>
 
                         <%-- PROVIDER TESTING --%>

@@ -55,6 +55,8 @@
     "shared/addressLookupV2",
     "shared/autocompleteV2",
     "shared/healthFundTimeOffset",
-    "shared/healthPriceBreakdown"
+    "shared/healthPriceBreakdown",
+    "shared/marketingContent",
+    "shared/bannerPlacement"
   ]
 }

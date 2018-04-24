@@ -94,7 +94,6 @@
 
         $unitElements.appPostalUnitType.on('change', function toggleUnitRequiredFields() {
             _changeStreetNoLabel(this.value);
-            _toggleStreetRules(this.value);
         });
 
         $unitElements.appAddressUnitShop.add($unitElements.appPostalUnitShop).on('change', function toggleUnitShopRequiredFields() {
@@ -161,18 +160,6 @@
 
         if ($errorField.length > 0) {
             $errorField.text(msgRequired);
-        }
-    }
-
-    function _toggleStreetRules(unitType) {
-        if (unitType === 'PO') {
-            $unitElements.appPostalNonStdStreet
-                .removeRule('regex')
-                .removeRule('validAddress');
-        } else {
-            $unitElements.appPostalNonStdStreet
-                .addRule('regex', '[a-zA-Z0-9 ]+')
-                .addRule('validAddress', 'health_application_postal');
         }
     }
 

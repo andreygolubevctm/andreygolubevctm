@@ -56,11 +56,61 @@
   }
 }
 
+.icon-r {
+  color: #f6b14b;
+  content: 'R';
+  font-family: @font-family-theme-semibold;
+  font-size: 18px;
+  font-weight: bold;
+}
+
 #results-sidebar {
   // need to remove this columns padding so we can apply left margin to all result-rows.
   padding: 0;
-  border: 1px solid @results-border-color;
-  border-left-color: @gray;
+
+  .results-sidebar-inner {
+    border: 1px solid @results-border-color;
+    border-left-color: @gray;
+    margin-bottom: 15px;
+  }
+
+  .results-legend {
+    padding: 15px;
+
+    @media (@xs-sm-only) {
+      border: none;
+      margin-bottom: 0;
+    }
+
+    .results-legend-row {
+      margin-bottom: 5px;
+
+      .icon {
+        margin-top: 2px;
+        margin-right: 4px;
+        &.icon-tick {
+          &:before {
+            color: @theme-secondary;
+          }
+        }
+
+        &.icon-restricted {
+          margin-top: 0;
+          margin-right: 6px;
+          margin-left: 1px;
+          &:before {
+            .icon-r();
+          }
+        }
+
+        &.icon-cross {
+          &:before {
+            color: @theme-accent-3;
+          }
+        }
+      }
+    }
+  }
 }
 
 .noResults {
@@ -137,6 +187,10 @@
         min-height: 48px;
         padding-top: 15px;
       }
+    }
+
+    .btn.getPrintableBrochures {
+      margin-top: 15px;
     }
   }
   .productSummary {
@@ -308,6 +362,21 @@
 
     .featuresList {
       margin: auto 15px;
+
+      @media (@lg) {
+        .hospitalCoverSection,
+        .extrasCoverSection {
+          h2 {
+            float: left;
+          }
+          .results-download-brochure {
+            float: right;
+            font-size: @font-size-small;
+            margin-top: 23px;
+            text-decoration: underline;
+          }
+        }
+      }
     }
     // .cell is used as parent wrapper as .category is re-used on non-cell divs.
     .cell {
@@ -524,7 +593,9 @@
           &.restrictedCover {
             .contentInner {
               &::after {
-                color: #f6b14b;
+                .icon-r();
+                right: 2px;
+                margin-top: -12px;
               }
             }
           }

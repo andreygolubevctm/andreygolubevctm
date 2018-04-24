@@ -1,69 +1,71 @@
-# Compare The Market Technology Platform
+# Compare The Market Web Technology Platform (WebCTM)
 
-The CTM platform began life from the original Auto & General technology stack, used in budget direct web quote and sale, but has since diverged and evolved into it's own entity.
+![Compare The Market](https://i.imgur.com/AprqyZd.png "Compare The Market Logo")
 
-As the pace of development and evolution for the CTM IT platform is extremely high, and demands increased flexibility and performance for frontend design and code.
+The WebCTM platform began life from the original Auto & General technology stack, used in budget direct web quote and sale, but has since diverged and evolved into it's own entity.
 
-Now we move into an era of developing on a frontend framework diverging into our own design, which is starting based off [LESS](http://lesscss.org/) + [Bootstrap3](http://getbootstrap.com) with a mix of our own modular JS framework. It is a refactor and evolution 'in the making'.
+WebCTM is a Java Spring Boot application which consists of a front-end is built from a combination of Java Server Pages (JSP) and Scriptlets (Tags), [LESS](http://lesscss.org/), [Bootstrap3](http://getbootstrap.com) and CTM's custom ES5 modular JS framework (Meerkat Modules). Some Java Back-end code still exists in the project but majority of core vertical services have been moved into their own Java micro services. See [CTM Architecture](http://confluence:8090/display/CM/CtM+Architecture) and [Microservices overview](http://confluence:8090/display/CM/Microservices+overview) for more details on CTM's Architecture and the various micros services used within CTM.
 
-## Documentation
+The Insurance verticals currently using WebCTM include:
+* [Health](https://secure.comparethemarket.com.au/ctm/health_quote_v4.jsp)
+* [Simples (Health Internal Call Centre Application)](https://secure.comparethemarket.com.au/ctm/simples.jsp) (Currently been migrated to Everest Project)
+* [Travel](https://secure.comparethemarket.com.au/ctm/travel_quote.jsp)
+* [Car](https://secure.comparethemarket.com.au/ctm/car_quote.jsp) (Currently been migrated to Everest Project)
+* [Fuel](https://secure.comparethemarket.com.au/ctm/fuel_quote.jsp)
+* [Roadside](https://secure.comparethemarket.com.au/ctm/roadside_quote.jsp)
+* [Life](https://secure.comparethemarket.com.au/ctm/life_quote.jsp)
+* [Income](https://secure.comparethemarket.com.au/ctm/ip_quote.jsp)
+* [Homeloan](https://secure.comparethemarket.com.au/ctm/homeloan_quote.jsp)
 
-Documentation for framework and platform is in this readme or otherwise more extensively located on the [CTM Architecture](http://confluence:8090/display/CM/CtM+Architecture) confluence wiki directory.
+## Prerequisites
+* [Java](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+* [Maven](https://maven.apache.org/download.cgi)
+* [Tomcat](https://archive.apache.org/dist/tomcat/tomcat-7/v7.0.65/bin/)
+* [Git](https://git-scm.com/) with [Bitbucket SSH Keys](http://confluence:8090/display/CM/Setting+up+GIT+and+SourceTree+with+SSH+access+to+Bitbucket+Repositories) to pull down repositories.
+* [NodeJS](https://nodejs.org/en/)
+* [Gulp](https://gulpjs.com/)
+* NXI (Dev) database credentials to add to your `settings.xml` for Maven. Speak to your manager if you haven't got them yet.
 
 ## Getting Started
 
-If you are a new starter, you should setup your IDE. Most of us use [IntelliJ](http://confluence:8090/display/CM/Setting+Up+IntelliJ).  To get started with a web_ctm project, checkout a branch from http://gitstash/ using cli, source tree, or intellij's built in options.
+To get started with WebCTM you will need to pull down the [WebCTM](http://bitbucket.budgetdirect.com.au/projects/CW/repos/web_ctm/browse) repository locally and setup your IDE. As this is a Java Springboot application it is recommended to use IntelliJ configured with Tomcat and Maven. We currently have a license generator for developers to activate IntelliJ.
 
+Please follow these steps very closely for your OS to get WebCTM running on your machine successfully:
 
-## Compiling CSS and JavaScript
+* [Setting up IntelliJ & WebCTM (Windows)](http://confluence:8090/pages/viewpage.action?pageId=42769127)
+* [Setting up IntelliJ & WebCTM (Mac OS X & Ubuntu 16.04)](http://confluence:8090/pages/viewpage.action?pageId=128976322)
 
-The platform frontend uses [Grunt](http://gruntjs.com/) with convenient methods for working with the framework. It's how we compile our code, run tests, and more. To use it, install the required dependencies as directed and then run some Grunt commands:
+Once IntelliJ and WebCTM have been configured it is recommended to run the application in debug mode.
 
-### Install the build chain:
+Those documents also contain troubleshooting information on resolving issues with building WebCTM.
 
-From the command line:
+## Compiling The Frontend
 
-0. You must have nodejs installed.
-1. Install `grunt-cli` globally with `npm install -g grunt-cli`.
-2. Navigate to src/main/javascript of your checkout, then run `npm install`. npm will look at [package.json](package.json) and automatically install the necessary local dependencies listed there.
+WebCTM uses [Gulp.js](https://gulpjs.com/) to compile and build the Frontend CSS and JS. Gulp compiles and watches for LESS and JS changes.
 
-When completed, you'll be able to run the various Grunt commands provided from the command line.
+To setup and build:
+1. Install the [Latest stable (LTS) NodeJS](https://nodejs.org/en/download/). You can also use [Node Version Management](https://github.com/creationix/nvm) to switch between Node versions.
+2. Open your terminal and install [Gulp.js](https://gulpjs.com/) `npm install gulp-cli -g`.
+3. Open your terminal in the root `web_ctm` folder of the project enter `cd src/main/pipeline`.
+4. Install Project dependencies by entering `npm install`.
+5. Then run `gulp --fast --disableNotify`. Always have this running when making Frontend changes. The build has finished when `Finished 'default` is displayed.
 
-Notifications for builds, errors, task responses will be pushed through [grunt-notify](https://github.com/dylang/grunt-notify) which will show Growl Notifications on your desktop (though you'll probably need growl for windows installed).
+## Updating Partner Logo Sprite Sheets
+Partner logos are generated with a gulp task which creates a sprite sheet from single logos and generates less. To update partmer logos:
+1. Replace the existing original and retina artwork in your verticals logo src folder - `web_ctm/src/main/webapp/assets/graphics/logos/{vertical}/` using the same name. Eg. `ING.png` and `ING@2x.png`. Keep the image size the same as other images within the vertical and the retina image `@2x` needs to be twice the size.
+2. Open your terminal in the root `web_ctm` folder of the project enter `cd src/main/pipeline`.
+3. Run the gulp task to build sprites for the corresponding vertical eg `gulp sprite:health`.
+4. Confirm that the sprite sheet and less file have been generated for the vertical and test on the frontend.
 
-### Available Grunt commands
+See [Logo Sprites - Web CTM](http://confluence:8090/display/CM/Logo+Sprites+-+Web+CTM) for more information.
 
-#### Build - `grunt`
-Run `grunt` to run tests locally and compile the CSS and JavaScript into the appropriate `/src/main/webapp/brand` subfolder (whitelabeling support) and common `src/main/webapp/framework/build` folders for other shared resourced. **Uses [recess](http://twitter.github.io/recess/) and [UglifyJS](http://lisperator.net/uglifyjs/) for compilation and minification respectively.**
+## Environments
+WebCTM has a number of build environments. When code is pushed to a feature branch and a Pull Request is opened this will trigger a feature branch being built.
 
-#### Only compile CSS and JavaScript - `grunt build`
-`grunt build` creates the `/src/main/webapp/framework/build` directory with compiled files. **Uses [recess](http://twitter.github.io/recess/) and [UglifyJS](http://lisperator.net/uglifyjs/) for compilation and minification respectively.**
-
-#### Tests - test/javascript `grunt test`
-Runs [JSHint](http://jshint.com) and [QUnit](http://qunitjs.com/) tests headlessly in [PhantomJS](http://phantomjs.org/) (used for CI).
-
-#### Watch - `grunt watch`
-This is a convenience method for watching just Less files and automatically building them whenever you save.
-
-### Troubleshooting dependencies
-
-Should you encounter problems with installing dependencies or running Grunt commands, As dependencies are installed locally for the project - that's going to be located in the node_modules directory which will be built inside your branches src\main\frontend directory. Deleting that, and rerunning `npm install` in that directory should solve most catastrophies. If all else fails uninstall all previous dependency versions (global and local). Then `npm install` in the root again.
-
-## Versioning
-
-At the moment, there's only a minor concern with versioning builds as they are purely for internal build tracking purposes or to see 'which build is released to x'. It would be prudent to develop a method to sync to the release numbering of 'week x' which is happening for 'one click deploys' at CTM. However in lieu of that i've implemented the Semantic Versioning guidelines as much as possible.
-
-Until some common ground is required or created, releases will be numbered with the following format:
-`<major>.<minor>.<patch>`
-
-And constructed with the following guidelines:
-
-* Breaking backward compatibility bumps the major (and resets the minor and patch)
-* New additions without breaking backward compatibility bumps the minor (and resets the patch)
-* Bug fixes and misc changes bumps the patch
+* [DEV (NXI)](http://web-ctm-dev.ctm.cloud.local/launcher/)
+* [UAT (NXQ)](http://nxq.secure.comparethemarket.com.au/ctm/)
+* [PREPROD (PRELIVE)](https://prelive.secure.comparethemarket.com.au/ctm/)
+* [PROD](https://secure.comparethemarket.com.au/ctm/)
 
 ## Copyright and license
-
-
-Copyright 2015 Compare The Market PTY LTD, all rights reserved. Privately owned project. No Public Licence.
-
+Copyright 2018 Compare The Market PTY LTD, all rights reserved. Privately owned project. No Public Licence.

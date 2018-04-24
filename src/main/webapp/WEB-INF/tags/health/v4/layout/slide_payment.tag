@@ -2,15 +2,16 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<layout_v3:slide formId="paymentDetailsForm" nextLabel="Submit Application">
+<layout_v3:slide formId="paymentDetailsForm">
 
     <layout_v3:slide_content>
-        <form_v3:fieldset_columns sideHidden="true">
+        <form_v3:fieldset_columns nextLabel="Submit Application" sideHidden="true">
 
             <jsp:attribute name="rightColumn">
                 <competition:snapshot vertical="health" />
                 <reward:campaign_tile_container />
                 <health_v4_payment:policySummary showProductDetails="true" />
+                <health_v4:price_promise step="payment" />
             </jsp:attribute>
 
             <jsp:body>

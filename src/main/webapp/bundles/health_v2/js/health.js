@@ -908,6 +908,15 @@
         if (!postData.primary_dob.match(dateRegex)) return false;
         if (coverTypeHasPartner && !postData.partner_dob.match(dateRegex))  return false;
 
+	    postData.commencementDate = null;
+	    var commencementDate = $('#health_payment_details_start');
+	    var searchDate = $('#health_searchDate');
+	    if(commencementDate.length && !_.isEmpty(commencementDate.val())) {
+		    postData.commencementDate = commencementDate.val();
+	    } else if (searchDate.length && !_.isEmpty(searchDate.val())) {
+		    postData.commencementDate = searchDate.val();
+	    }
+
         return meerkat.modules.comms.post({
             url: "ajax/json/health_rebate.jsp",
             data: postData,
@@ -1035,6 +1044,7 @@
 
             // Push in values from 1st slide only when have been beyond it
             if (furtherest_step > meerkat.modules.journeyEngine.getStepIndex('start')) {
+
                 var contactType = null;
                 var contactTypeTrial = '';
                 if ($('#health_simples_contactType_inbound').is(':checked')) {
@@ -1046,7 +1056,7 @@
                 } else if ($('#health_simples_contactType_trialcampaign').is(':checked')) {
                     contactType = 'outbound';
                     contactTypeTrial = 'Trial Campaign';
-				} else if ($('#health_simples_contactTypeRadio_chat').is(':checked')) {
+				} else if ($('#health_simples_contactType_chat').is(':checked')) {
 					contactType = 'webchat';
                 }
 

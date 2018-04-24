@@ -194,7 +194,7 @@
     border-bottom: 2px solid @gray;
   }
 
-  .btn-more-info-call-now {
+  .btn-cta.btn-more-info-call-now {
     margin-bottom: 10px;
     font-size: 20px;
   }
@@ -526,6 +526,18 @@ body[data-is-single="true"] {
       float: right;
     }
 
+    .dockedHdr {
+      &.cloned-docked-header {
+        background: #fff;
+        padding-top: 0;
+        position: fixed;
+        width: 100%;
+        z-index: 1;
+        top: 40px;
+        left: 15px;
+      }
+    }
+
     .dockedHeaderLarge {
       .hidden-large {
         display: none;
@@ -553,8 +565,6 @@ body[data-is-single="true"] {
     }
 
     .dockedHeaderBottom{
-      margin-bottom: -15px;
-
       .btn-cta.btn-more-info-apply,
       .btn-cta.btn-more-info-call-now {
         margin-top: 5px;
@@ -591,8 +601,11 @@ body[data-is-single="true"] {
         .getPrintableBrochures {
           text-align:left;
         }
-        .btn-more-info-apply {
-          float: right;
+        .btn-more-info-apply,
+        .btn-more-info-call-now {
+          &:not(.btn-cta) {
+            float: right;
+          }
         }
       }
     }

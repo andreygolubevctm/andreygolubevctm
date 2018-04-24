@@ -116,7 +116,7 @@
 
             // Init the main Results object
             Results.init({
-                url: healthQuoteResultsUrl + (!_.isEmpty(meerkat.site.urlStyleCodeId) && meerkat.site.urlStyleCodeId === "wfdd" ? "?brandCode=" + meerkat.site.urlStyleCodeId : ""),
+                url: healthQuoteResultsUrl + (!_.isEmpty(meerkat.site.urlStyleCodeId) && (_.indexOf(["wfdd", "bddd"], meerkat.site.urlStyleCodeId) >= 0) ? "?brandCode=" + meerkat.site.urlStyleCodeId : ""),
                 runShowResultsPage: false, // Don't let Results.view do it's normal thing.
                 paths: {
                     results: {
@@ -912,9 +912,14 @@
                     {"providerBlurb" : "Australian Unity are Australia&apos;s oldest health fund, starting in 1870, so you will be looked after by a fund with more experience than any other, and for what you need they are giving really great value."}
                 );
                 break;
+            case 'BUD':
+                extraPopOverData.push(
+                    {"providerBlurb" : "<ul><li>We are backed by GHMBA who have over 80 years&apos; experience and cover more than 230,000 Australians nationally.</li><li>We offer Hospital In The Home and Rehabilitation In The Home programs, meaning you could receive treatment at home rather than in hospital.</li><li>Our Gap Cover scheme covers you for up to 20% above the MBS fee.</li></ul>"}
+                );
+                break;
             case 'BUP':
                 extraPopOverData.push(
-                    {"providerBlurb" : "Bupa are Australia&apos;s largest health fund in terms of members. They will give you some really great member benefits and the security of a being with an industry leader, and for what you need they are giving really great value."}
+                    {"providerBlurb" : "Bupa are Australia&apos;s largest health fund in terms of members. They will give you some really great member benefits and the security of being with an industry leader, and for what you need they are giving really great value."}
                 );
                 break;
             case 'CBH':
@@ -1009,7 +1014,8 @@
             case 'BUD':
                 usefulLinks.push(
                     {"name" : "Privatehealth.gov.au", "url": "http://www.privatehealth.gov.au/dynamic/InsurerDetails.aspx?code=GMH"},
-                    {"name" : "Hospital Network", "url": "https://www.budgetdirect.com.au/content/dam/budgetdirect/website-assets/participating-private-hospitals.pdf"}
+                    {"name" : "Hospital Network", "url": "https://www.budgetdirect.com.au/content/dam/budgetdirect/website-assets/participating-private-hospitals.pdf"},
+                    {"name" : "Travel Vaccines", "url": "https://www.budgetdirect.com.au/content/dam/budgetdirect/website-assets/approved-travel-vaccinations.pdf"}
                 );
                 break;
             case 'BUP':
@@ -1176,6 +1182,11 @@
         data["rank_lhc" + position] = product.premium[frequency].lhc;
         data["rank_rebate" + position] = product.premium[frequency].rebate;
         data["rank_discounted" + position] = product.premium[frequency].discounted;
+        data["rank_premiumDiscountPercentage" + position] = product.premium[frequency].discountPercentage;
+        data["rank_premiumDiscountPercentage" + position] = product.premium[frequency].discountPercentage;
+        var specialOffer = meerkat.modules.healthUtils.getSpecialOffer(product);
+        data["rank_specialOffer" + position] = specialOffer.specialOffer;
+        data["rank_specialOfferTerms" + position] = specialOffer.specialOfferTerms;
 
         if (_.isNumber(best_price_count) && position < best_price_count) {
             data["rank_provider" + position] = product.info.provider;
@@ -1184,6 +1195,9 @@
             data["rank_productCode" + position] = product.info.productCode;
             data["rank_premium" + position] = product.premium[Results.settings.frequency].lhcfreetext;
             data["rank_premiumText" + position] = product.premium[Results.settings.frequency].lhcfreepricing;
+            data["rank_altPremium" + position] = product.altPremium[Results.settings.frequency].lhcfreetext;
+            data["rank_altPremiumText" + position] = product.altPremium[Results.settings.frequency].lhcfreepricing;
+
         }
 
         return data;

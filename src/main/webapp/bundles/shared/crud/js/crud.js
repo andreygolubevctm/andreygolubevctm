@@ -269,8 +269,15 @@
 				
 				that.sortRenderResults();
 			};
-		
-		return this.promise("getAllRecords", data, onSuccess, "get");
+
+		var crudAction = "getAllRecords";
+
+		if (_.has(data,"crudAction")) {
+			crudAction = data.crudAction;
+			delete data.crudAction;
+		}
+
+		return this.promise(crudAction, data, onSuccess, "get");
 	};
 	
 	/**
@@ -384,6 +391,7 @@
 
 		switch(action) {
 			case "getAllRecords":
+			case "getSummary":
             case "find":
 				loadingText = "Fetching Records";
 				break;
@@ -430,6 +438,7 @@
         }
 
 		return meerkat.modules.comms[method](ajaxSettings);
+
 	};
 	
 	function _handleErrorObject(error) {

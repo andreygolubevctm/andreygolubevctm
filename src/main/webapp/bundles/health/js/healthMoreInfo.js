@@ -191,6 +191,8 @@
         $('.whatsNext li').each(function () {
             $(this).prepend('<span class="icon icon-angle-right"></span>');
         });
+
+        meerkat.modules.simplesBindings.toggleLimitedCoverDialogue();
     }
 
     function onBeforeShowModal(jsonResult, dialogId) {
@@ -322,16 +324,20 @@
             identifier: "GET_SELECTED_PRODUCT" + product.productId,
             emailResultsSuccessCallback: function onSendBrochuresCallback(result, settings) {
                 if (result.success) {
-                    var theUrlTextArea = $('#selectedProductUrlTextArea');
-                    var copyBtn = $('.btn-copy-selected-product-url');
+                    var $theUrlTextArea = $('#selectedProductUrlTextArea'),
+                        $copyAppendOffRow = $('.copy-append-offer-row'),
+                        $copyBtn = $('.btn-copy-selected-product-url'),
+                        $appendOffer = $('#health_sendBrochures_appendOffer'),
+                        $contactType = $('#health_simples_contactType').val();
+
                     settings.submitButton.addClass("hidden");
-                    theUrlTextArea.removeClass("hidden");
-                    copyBtn.removeClass("hidden");
-                    theUrlTextArea.append(result.message);
+                    $theUrlTextArea.add($copyAppendOffRow).removeClass("hidden");
+                    $theUrlTextArea.html(result.message);
 
-                    copyBtn.click(function(){
+                    $appendOffer.parent().toggleClass('hidden', $contactType !== 'webchat');
 
-                        $('#selectedProductUrlTextArea').select();
+                    $copyBtn.click(function(){
+                        $theUrlTextArea.select();
 
                         // Copy to clipboard functionality is supported by the following browsers:
                         // IE10+ (although this document indicates some support was there from IE5.5+).
@@ -346,6 +352,12 @@
                         } catch (err) {
                             //console.log('Oops, unable to copy');
                         }
+                    });
+
+                    $appendOffer.on('change', function() {
+                        $theUrlTextArea.html(
+                            result.message + ($contactType === 'webchat' && $appendOffer.is(':checked') ? '&amp;couponid=149' : '')
+                        );
                     });
 
                     meerkat.modules.emailBrochures.tearDown(settings);

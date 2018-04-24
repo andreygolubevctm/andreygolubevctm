@@ -11,6 +11,8 @@
 <%-- Redirect if Confirmation Page --%>
 <health_v1:redirect_rules />
 
+<health_v4:opening_text />
+
 <%-- Redirect call centre consultants out of V4 --%>
 <c:if test="${callCentre && journeyOverride eq true}">
     <c:set var="redirectURL" value="${pageSettings.getBaseUrl()}health_quote.jsp?" />
@@ -86,16 +88,22 @@
                     <div class="navbar-collapse header-collapse-contact collapse">
                         <ul class="nav navbar-nav navbar-right callCentreNumberSection">
                             <li><a href="javascript:;" class="refine-results">Refine</a></li>
-                            <li class="navbar-text hidden-sm">Confused? Talk to our experts now.</li>
+                            <li class="navbar-text hidden-sm call-opening-text">
+                                ${desktopOpenText}
+                            </li>
                             <li>
                                 <div class="navbar-text hidden-xs" data-livechat="target">
-                                    Call <a href="javascript:;" data-toggle="dialog"
-                                               data-content="#view_all_hours"
-                                               data-dialog-hash-id="view_all_hours"
-                                               data-title="Call Centre Hours" data-cache="true">
-                                    <span class="noWrap callCentreNumber">${callCentreNumber}</span>
-                                    <span class="noWrap callCentreAppNumber">${callCentreAppNumber}</span>
-                                </a> or <health_v4:callback_link /> ${callCentreCBModal}
+                                    <div class="callCentreNumber-container">
+                                        <span class="hidden-md hidden-lg call-opening-text">
+                                            ${tabletOpenText}
+                                        </span>
+                                        <span class="icon icon-phone"></span> <a href="javascript:;" data-toggle="dialog"
+                                                   data-content="#view_all_hours"
+                                                   data-dialog-hash-id="view_all_hours"
+                                                   data-title="Call Centre Hours" data-cache="true">
+                                        <span class="noWrap callCentreNumber">${callCentreNumber}</span>
+                                        <span class="noWrap callCentreAppNumber">${callCentreAppNumber}</span></a>
+                                    </div> or <health_v4:callback_link /> ${callCentreCBModal}
                                 </div>
 
                                 <div id="view_all_hours" class="hidden">${callCentreHoursModal}</div>
@@ -137,7 +145,7 @@
                         <div class="row">
                             <div class="col-xs-12 col-sm-6 col-md-4 results-filters-frequency"></div>
                             <div class="hidden-xs hidden-sm col-md-2 text-center small filter-results-hidden-products"></div>
-                            <div class="col-sm-9 more-info-return-to-results text-left"><a data-slide-control="prev" href="javascript:;" class="btn-close-more-info" data-analytics="nav button"><span class="icon icon-angle-left"></span> Back to results</a> | <c:if test="${empty callCentre}"><a href="javascript:;" data-opensavequote="true" class="btn-save-quote-trigge" data-analytics="save button">Save for later</a></c:if></div>
+                            <div class="col-sm-9 more-info-return-to-results text-left"><a data-slide-control="prev" href="javascript:;" class="btn-close-more-info" data-analytics="nav button"><span class="icon icon-angle-left"></span> Back to results</a> </div>
                             <div class="col-xs-12 col-sm-6 col-md-3 results-pagination">
                                 <div class="navbar-collapse">
                                     <ul class="nav navbar-nav slide-feature-pagination" data-results-pagination-pages-cell="true"></ul>
@@ -194,6 +202,11 @@
                 <health_v4_layout:slide_results />
                 <health_v4_layout:slide_application />
                 <health_v4_layout:slide_payment />
+
+                <div class="visible-xs">
+                    <health_v4:price_promise step="start" />
+                </div>
+
                 <health_v4:dual_pricing_templates />
                 <c:if test="${isPyrrActive eq true}">
                     <health_v4:pyrr_campaign_templates />

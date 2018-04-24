@@ -1,0 +1,135 @@
+<!-- session data when user get quotes for comprehensive cover -->
+<this>
+    <current>
+        <verticalCode>CAR</verticalCode>
+        <brandCode>ctm</brandCode>
+        <transactionId>2560432</transactionId>
+        <rootId>2560432</rootId>
+    </current>
+    <quote>
+        <vehicle>
+            <securityOptionCheck>Y</securityOptionCheck>
+            <year>2014</year>
+            <modelDes>Viano</modelDes>
+            <accessories>N</accessories>
+            <securityOption>I</securityOption>
+            <fuel>D</fuel>
+            <makeDes>Mercedes Benz</makeDes>
+            <damage>N</damage>
+            <redbookCode>MERC142S</redbookCode>
+            <use>02</use>
+            <factoryOptions>N</factoryOptions>
+            <marketValue>54050</marketValue>
+            <factoryOptionsRadioBtns>N</factoryOptionsRadioBtns>
+            <model>VIANO</model>
+            <trans>A</trans>
+            <colour>black</colour>
+            <make>MERC</make>
+            <accessoriesRadioBtns>N</accessoriesRadioBtns>
+            <annualKilometres>15000</annualKilometres>
+            <variant>Viano Avantgarde Grand edition 3.0turbo 639 Automatic 5gr rwd 165kW</variant>
+            <parking>1</parking>
+            <finance>NO</finance>
+            <body>5WAG</body>
+            <registrationYear>2014</registrationYear>
+            <modifications>N</modifications>
+        </vehicle>
+        <lastFieldTouch>next-address</lastFieldTouch>
+        <optionsTypeOfCover>COMPREHENSIVE</optionsTypeOfCover>
+        <drivers>
+            <regular>
+                <ncd>5</ncd>
+                <ownsAnotherCar>N</ownsAnotherCar>
+                <gender>M</gender>
+                <dobInputM>08</dobInputM>
+                <dobInputY>1986</dobInputY>
+                <firstname>Rick</firstname>
+                <dob>11/08/1986</dob>
+                <dobInputD>11</dobInputD>
+                <claims>N</claims>
+                <employmentStatus>S</employmentStatus>
+                <surname>test</surname>
+                <licenceAge>19</licenceAge>
+            </regular>
+            <young>
+                <exists>N</exists>
+            </young>
+        </drivers>
+        <journey>
+            <stage>results</stage>
+            <type>1</type>
+        </journey>
+        <options>
+            <commencementDateInputD>22</commencementDateInputD>
+            <commencementDate>22/02/2018</commencementDate>
+            <commencementDateInputM>02</commencementDateInputM>
+            <commencementDateInputY>2018</commencementDateInputY>
+            <driverOption>H</driverOption>
+        </options>
+        <contact>
+            <phone>0400000000</phone>
+            <marketing>Y</marketing>
+            <email>test@gmail.com</email>
+            <oktocall>Y</oktocall>
+            <phoneinput>0400 000 000</phoneinput>
+        </contact>
+        <currentJourney>1</currentJourney>
+        <paymentType>annual</paymentType>
+        <riskAddress>
+            <fullAddressLineOne>21 Lissner Street</fullAddressLineOne>
+            <type>R</type>
+            <dpId>62713744</dpId>
+            <unitSel>0</unitSel>
+            <suburbName>Toowong</suburbName>
+            <state>QLD</state>
+            <elasticSearch>Y</elasticSearch>
+            <fullAddress>21 Lissner Street, Toowong, QLD, 4066</fullAddress>
+            <autofilllessSearch>21 Lissner Street, Toowong, QLD, 4066</autofilllessSearch>
+            <lastSearch>21 Lissner Street, Toowong, QLD, 4066</lastSearch>
+            <postCode>4066</postCode>
+            <streetId>247579</streetId>
+            <houseNoSel>21</houseNoSel>
+            <streetName>Lissner St.</streetName>
+        </riskAddress>
+        <terms>Y</terms>
+        <privacyoptin>Y</privacyoptin>
+        <typeOfCover>COMPREHENSIVE</typeOfCover>
+        <renderingMode>lg</renderingMode>
+        <fsg>Y</fsg>
+        <gaclientid>1239441495.1510535629</gaclientid>
+        <baseExcess>800</baseExcess>
+        <trackingKey>b437160d8baa4aefe5535dad6773d926a81c0464</trackingKey>
+        <clientIpAddress>0:0:0:0:0:0:0:1</clientIpAddress>
+        <clientUserAgent>Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko)
+            Chrome/64.0.3282.167 Safari/537.36
+        </clientUserAgent>
+        <transactionId>2560432</transactionId>
+    </quote>
+    <tempResultDetails>
+        <results>
+            <EXPO-05-16>
+                <headline>
+                    <lumpSumTotal>1244</lumpSumTotal>
+                </headline>
+            </EXPO-05-16>
+            <VIRG-05-17>
+                <headline>
+                    <lumpSumTotal>1232</lumpSumTotal>
+                </headline>
+            </VIRG-05-17>
+            <BUDD-05-04>
+                <headline>
+                    <lumpSumTotal>1184</lumpSumTotal>
+                </headline>
+            </BUDD-05-04>
+            <OZIC-05-01>
+                <headline>
+                    <lumpSumTotal>1376</lumpSumTotal>
+                </headline>
+            </OZIC-05-01>
+        </results>
+    </tempResultDetails>
+    <userData>
+        <emailSent>true</emailSent>
+    </userData>
+</this>

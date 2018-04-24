@@ -14,7 +14,7 @@
 		<outbound-xsl>AGIS_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000001,sourceId=TEST000001</outbound-xsl-parms>
 		<inbound-xsl>AGIS_inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=AGIS,quoteRoot=https://ecommerce.disconline.com.au</inbound-xsl-parms>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=AGIS,quoteRoot=https://secure.budgetdirect.com.au</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 
@@ -23,7 +23,7 @@
 		<outbound-xsl>1FOW_outbound.xsl</outbound-xsl>
 		<outbound-xsl-parms>partnerId=CC00000004,sourceId=TEST000004</outbound-xsl-parms>
 		<inbound-xsl>1FOW_inbound.xsl</inbound-xsl>
-		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=1FOW,quoteRoot=https://ecommerce.disconline.com.au</inbound-xsl-parms>
+		<inbound-xsl-parms>defaultProductId=NODEFAULT,service=1FOW,quoteRoot=https://1stforwomen.disconline.com.au</inbound-xsl-parms>
 		<timeoutMillis>20000</timeoutMillis>
 	</service>
 

@@ -1541,17 +1541,9 @@ select.text-placeholder-color {
 	}
   }
 
-  // Fund specific code - where it is different to WFDD
-  body.WFD {
-	#health_declaration-selection {
-		display:none !important;
-	}
-  }
-
   body.callCentre {
     &[data-step="start"]{
-	  .simples-dialogue-49,
-      .simples-dialogue-86 {
+	  .simples-dialogue-49 {
         display: none;
       }
     }
@@ -1562,24 +1554,51 @@ select.text-placeholder-color {
       }
     }
     &[data-step="results"]{
+	  .simples-dialogue-24,
       .simples-dialogue-83 {
         display: none;
       }
       &.moreInfoVisible{
-        .simples-dialogue-84,
-        .simples-dialogue-85{
+        .simples-dialogue-84 {
           display: none;
         }
+	    .simples-dialogue-24 {
+			display: block;
+		}
       }
     }
     &[data-step="apply"]{
-      .simples-dialogue-84,
-      .simples-dialogue-85{
+      .simples-dialogue-84 {
         display: none;
       }
     }
     .simples-dialogue-87.wfdd {
       color: #9C0058;
+	}
+	.simples-dialogue-104.bddd {
+      color: #3c4449;
+	}
+	.simples-dialogue-77,
+	.simples-dialogue-87,
+	.simples-dialogue-104 {
+		&.simples-dialogue {
+			padding-top: 0;
+			padding-bottom: 0;
+			margin-bottom: 0;
+
+			& + .add-to-cli-filter {
+				padding-top: 0;
+				padding-bottom: 0;
+				margin-top: 0;
+			}
+		}
+	}
+
+	&.outbound,
+	&.inbound {
+	  #health_situation_cover-error {
+	    display: none !important;
+	  }
 	}
 
   }

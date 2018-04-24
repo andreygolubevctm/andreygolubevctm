@@ -1,5 +1,6 @@
 .policySummary-sidebar {
   border: 1px solid @gray-light;
+  margin-bottom: 15px;
   padding: 10px;
 
   h1 {
@@ -68,6 +69,12 @@
     padding-left: 2px;
     padding-top: 2px;
   }
+
+  .about-this-fund {
+    display: block;
+    font-size: 12px;
+    text-align: right;
+  }
 }
 
 body[data-step="apply"] {
@@ -76,6 +83,14 @@ body[data-step="apply"] {
       .startDate-wrapper {
         display: none;
       }
+    }
+  }
+}
+
+body[data-step="results"] {
+  .dual-pricing-container {
+    .about-this-fund {
+      display: none;
     }
   }
 }

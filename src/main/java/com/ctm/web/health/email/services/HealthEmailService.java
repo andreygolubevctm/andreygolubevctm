@@ -23,6 +23,7 @@ import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.EnvironmentService;
 import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.transaction.dao.TransactionDao;
+import com.ctm.web.core.utils.SessionUtils;
 import com.ctm.web.core.web.go.Data;
 import com.ctm.web.health.apply.model.response.HealthApplicationResponse;
 import com.ctm.web.health.apply.model.response.HealthApplyResponse;
@@ -211,9 +212,9 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 			emailDetails = emailDetailsService.handleReadAndWriteEmailDetails(emailBrochureRequest.transactionId, emailDetails, "ONLINE" ,  ipAddressHandler.getIPAddress(request));
 
 			if (blockEmailSending) {
-				return buildProductBrochureEmailModel(emailDetails, request, emailBrochureRequest).getApplyURL();
+				return buildProductBrochureEmailModel(emailDetails, request, emailBrochureRequest, true).getApplyURL();
 			} else if(!isTestEmailAddress) {
-				emailSender.sendToExactTarget(new HealthProductBrochuresExactTargetFormatter(), buildProductBrochureEmailModel(emailDetails, request, emailBrochureRequest));
+				emailSender.sendToExactTarget(new HealthProductBrochuresExactTargetFormatter(), buildProductBrochureEmailModel(emailDetails, request, emailBrochureRequest, false));
 			}
 
 			return returnStr;
@@ -532,15 +533,29 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 	}
 
 
-	private HealthProductBrochuresEmailModel buildProductBrochureEmailModel(EmailMaster emailDetails, HttpServletRequest request, HealthEmailBrochureRequest emailBrochureRequest) throws SendEmailException {
+	private HealthProductBrochuresEmailModel buildProductBrochureEmailModel(EmailMaster emailDetails, HttpServletRequest request, HealthEmailBrochureRequest emailBrochureRequest, boolean blockEmailSending) throws SendEmailException {
 		HealthProductBrochuresEmailModel emailModel = new HealthProductBrochuresEmailModel();
 		buildEmailModel(emailDetails, emailModel);
 		String productId = request.getParameter("productId");
 		String productCode = request.getParameter("productCode");
 		boolean optedIn = emailDetails.getOptedInMarketing(VERTICAL);
 		OpeningHoursService openingHoursService = new OpeningHoursService();
+		String cid = "em:cm:health:301005";
+		String utmSource = "health_pds_" + LocalDate.now().getYear();
+		String utmMedium = "email";
+		String utmCampaign = "health_pds";
+		boolean isCallCenter = SessionUtils.isCallCentre(request.getSession());
 
 		try {
+			final Data dataBucket = sessionDataService.getDataForTransactionId(request, Long.toString(emailBrochureRequest.transactionId), false);
+
+			if (isCallCenter && dataBucket.getString("health/simples/contactType").equals("webchat") && blockEmailSending) {
+				cid = "livechat";
+				utmSource = "livechat";
+				utmMedium = "livechat";
+				utmCampaign = "livechat";
+			}
+
 			emailModel.setPhoneNumber(getCallCentreNumber());
 
 			emailModel.setCallcentreHours(openingHoursService.getCurrentOpeningHoursForEmail(request));
@@ -552,11 +567,11 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 			if(Boolean.valueOf(getPageSetting("emailTokenEnabled"))) {
 				Map<String, String> emailParameters = new HashMap<>();
 				Map<String, String> otherEmailParameters = new HashMap<>();
-				otherEmailParameters.put(EmailUrlService.CID, "em:cm:health:301005");
+				otherEmailParameters.put(EmailUrlService.CID, cid);
 				otherEmailParameters.put(EmailUrlService.ET_RID, "172883275");
-				otherEmailParameters.put(EmailUrlService.UTM_SOURCE, "health_pds_" + LocalDate.now().getYear());
-				otherEmailParameters.put(EmailUrlService.UTM_MEDIUM, "email");
-				otherEmailParameters.put(EmailUrlService.UTM_CAMPAIGN, "health_pds");
+				otherEmailParameters.put(EmailUrlService.UTM_SOURCE, utmSource);
+				otherEmailParameters.put(EmailUrlService.UTM_MEDIUM, utmMedium);
+				otherEmailParameters.put(EmailUrlService.UTM_CAMPAIGN, utmCampaign);
 				otherEmailParameters.put(EmailUrlService.PRODUCT_CODE, productCode);
 				emailParameters.put(EmailUrlService.TRANSACTION_ID, Long.toString(emailBrochureRequest.transactionId));
 				emailParameters.put(EmailUrlService.HASHED_EMAIL, emailDetails.getHashedEmail());
@@ -576,7 +591,7 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 				emailModel.setUnsubscribeURL(urlServiceOld.getUnsubscribeUrl(emailDetails));
 			}
 		} catch (DaoException|EnvironmentException | VerticalException
-				| ConfigSettingException e) {
+				| ConfigSettingException | SessionException e) {
 			throw new SendEmailException("failed to buildBestPriceEmailModel emailAddress:" + emailDetails.getEmailAddress() +
 					" transactionId:" +  emailBrochureRequest.transactionId  ,  e);
 		}

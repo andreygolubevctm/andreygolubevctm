@@ -304,7 +304,7 @@
 	{{ if (obj.lender === 'Heritage Bank') img = 'HERITAGE'; }}
 	{{ if (obj.lender === 'HomeStart Finance') img = 'HOMESTART'; }}
 	{{ if (obj.lender === 'Homeside Lending') img = 'HOMESIDE'; }}
-	{{ if (obj.lender === 'ING Direct') img = 'ING'; }}
+	{{ if (obj.lender === 'ING') img = 'ING'; }}
 	{{ if (obj.lender === 'Keystart') img = 'KEY'; }}
 	{{ if (obj.lender === 'La Trobe Financial') img = 'LATROBE'; }}
 	{{ if (obj.lender === 'Liberty Financial') img = 'LIBERTY'; }}
@@ -329,6 +329,9 @@
 	{{ if (obj.lender === 'UniBank') img = 'UNIBANK'; }}
 	{{ if (obj.lender === 'Westpac') img = 'WESTPAC'; }}
 	{{ if (obj.lender === 'Wide Bay Australia') img = 'WIDE'; }}
+	{{ if (obj.lender === 'Homeloans') img = 'HOMELOANS'; }}
+	{{ if (obj.lender === 'Virgin Money	') img = 'VIRG'; }}
+
 
 
 	<div class="companyLogo logo_{{= img }} noshrink"></div>

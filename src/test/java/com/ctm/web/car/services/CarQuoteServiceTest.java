@@ -5,6 +5,7 @@ import com.ctm.web.car.model.form.CarRequest;
 import com.ctm.web.car.model.request.propensityscore.*;
 import com.ctm.web.car.model.results.CarResult;
 import com.ctm.web.core.dao.ProviderFilterDao;
+import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.results.model.ResultProperty;
 import com.ctm.web.core.resultsData.model.AvailableType;
 import com.ctm.web.core.services.ServiceConfigurationServiceBean;
@@ -37,6 +38,8 @@ public class CarQuoteServiceTest {
 
     private static final Long TRANSACTION_ID = 1L;
     private static final LocalDate FROM_DATE = LocalDate.parse("27/11/2017", DateTimeFormatter.ofPattern(DD_MM_YYYY));
+    public static final String QUOTE_TYPE_OF_COVER = "quote/typeOfCover";
+    public static final String COVER_TYPE_TPPD = "TPPD";
 
     private CarQuoteService service;
     @Mock
@@ -202,7 +205,7 @@ public class CarQuoteServiceTest {
 
         //Then
         assertFalse(resultProperties.isEmpty());
-        assertEquals(null, resultProperties.iterator().next().getValue());
+        assertEquals("", resultProperties.iterator().next().getValue());
     }
 
     @Test
@@ -216,7 +219,7 @@ public class CarQuoteServiceTest {
         final List<ResultProperty> resultProperties = service.buildResultPropertiesWithPropensityScore(productIdsOrderedByRank, TRANSACTION_ID);
         //Then
         assertFalse(resultProperties.isEmpty());
-        assertEquals(null, resultProperties.iterator().next().getValue());
+        assertEquals("", resultProperties.iterator().next().getValue());
     }
 
     @Test
@@ -255,6 +258,43 @@ public class CarQuoteServiceTest {
         verify(productIdsOrderedByRank, times(1)).get(0);
     }
 
+    @Test
+    public void givenComprehensiveCoverType_whenRetrieveAndStoreCarQuotePropensityScore_ThenDataRobotIsCalled() throws Exception {
+        verifyDataRobotCalls(COVER_TYPE_COMPREHENSIVE, 1);
+    }
+
+    @Test
+    public void givenNonComprehensiveCoverType_whenRetrieveAndStoreCarQuotePropensityScore_ThenDataRobotIsNotCalled() throws Exception {
+        verifyDataRobotCalls(COVER_TYPE_TPPD, 0);
+    }
+
+    @Test
+    public void givenNullCoverType_whenRetrieveAndStoreCarQuotePropensityScore_ThenDataRobotIsNotCalled() throws Exception {
+        verifyDataRobotCalls(null, 0);
+    }
+
+    /**
+     * verifies data robot is called or not based on cover type in transaction_details.
+     *
+     * @param coverType
+     * @param timesCalled
+     * @throws DaoException
+     */
+    private void verifyDataRobotCalls(final String coverType, final int timesCalled) throws DaoException {
+        // Given
+        final List<String> productIdsOrderedByRank = Arrays.asList("WOOL-01-01", "BUDD-05-01", "WOOL-05-05", "IB-01-01");
+
+        final Data transactionDetails = getTransactionDetails(false, false);
+        transactionDetails.put(QUOTE_TYPE_OF_COVER, coverType);
+        when(transactionDetailService.getTransactionDetailsInXmlData(anyObject())).thenReturn(transactionDetails);
+
+        // When
+        final List<ResultProperty> resultProperties = service.buildResultPropertiesWithPropensityScore(productIdsOrderedByRank, TRANSACTION_ID);
+
+        //Then
+        verify(restTemplate, times(timesCalled)).postForEntity(anyObject(), anyObject(), any());
+    }
+
     private DataRobotCarQuotePropensityScoreResponse get200Response(final boolean withPropensityScore) {
         DataRobotCarQuotePropensityScoreResponse response = new DataRobotCarQuotePropensityScoreResponse();
         response.setCode(200);
@@ -289,6 +329,7 @@ public class CarQuoteServiceTest {
         transactionDetailsInXmlData.put(QUOTE_CONTACT_PHONEINPUT, "");
         transactionDetailsInXmlData.put(QUOTE_CLIENT_USER_AGENT, "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36");
         transactionDetailsInXmlData.put(QUOTE_VEHICLE_BODY, "4SED");
+        transactionDetailsInXmlData.put(QUOTE_TYPE_OF_COVER, COVER_TYPE_COMPREHENSIVE);
 
         if(partialData) return transactionDetailsInXmlData;
         transactionDetailsInXmlData.put(QUOTE_DRIVERS_REGULAR_CLAIMS, "N");

@@ -193,17 +193,6 @@
 	</jsp:attribute>
 
 	<jsp:attribute name="results_loading_message">
-		<div class="row loadingPromise hidden">
-			<div class="col-xs-12">
-				<br><img src="" data-defer-src="assets/brand/ctm/images/price_promise/Price-Promise-Blue.png">
-			</div>
-		</div>
-		<div class="row loadingQuoteText hidden">
-			<div class="col-xs-12 col-sm-8 col-sm-offset-2 col-lg-6 col-lg-offset-3">
-				<br>
-				<p><content:get key="priceGuarantee" /></p>
-			</div>
-		</div>
 		<div class="row loadingDisclaimerText hidden">
 			<div class="col-xs-12 col-sm-8 col-sm-offset-2 col-lg-6 col-lg-offset-3">
 				<p>Each brand may have differing terms as well as price. Please consider the Product Disclosure Statement for each brand before making any decisions to buy.</p>

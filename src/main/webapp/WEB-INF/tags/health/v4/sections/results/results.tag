@@ -14,16 +14,25 @@
     </jsp:attribute>
 
     <jsp:attribute name="sidebarColumnRight">
-        <coupon:promo_tile />
-        <div class="sidebar-widget sidebar-widget-padded results-filters-discount"></div>
-        <div class="sidebar-widget sidebar-widget-padded results-filters-rebate"></div>
-        <div class="sidebar-widget sidebar-widget-padded results-filters-benefits"></div>
-        <div class="sidebar-widget sidebar-widget-padded results-filters"></div>
+        <div class="hidden-xs hidden-sm results-sidebar-inner">
+            <div class="sidebar-widget sidebar-widget-padded results-filters-discount"></div>
+            <div class="sidebar-widget sidebar-widget-padded results-filters-rebate"></div>
+            <div class="sidebar-widget sidebar-widget-padded results-filters-benefits"></div>
+            <div class="sidebar-widget sidebar-widget-padded results-filters"></div>
+        </div>
+
+        <div class="clearfix"></div>
+
+        <health_v4_results:results_legend />
         <health_v4_results:filters_discount />
         <health_v4_results:filters_rebate />
         <health_v4_results:filters_benefits />
         <health_v4_results:filters_template />
         <health_v4_results:filters_update_widget_template />
+
+        <div class="hidden-xs hidden-sm">
+            <banners:banner-tile />
+        </div>
     </jsp:attribute>
 
     <jsp:attribute name="resultsErrorMessage">
@@ -59,7 +68,12 @@
             <div class="featuresList featuresElements">{{ if(coverType == 'H' || coverType == 'C') { }}
                 {{= specialFeaturesHtml }}
                 <div class="hospitalCoverSection">
-                    <h2>Hospital</h2>
+                    <div class="clearfix">
+                        <h2>Hospital</h2>
+                        <c:if test="${not empty resultsBrochuresSplitTest and resultsBrochuresSplitTest eq true}">
+                            <a class="results-download-brochure" href="${pageSettings.getBaseUrl()}{{= promo.hospitalPDF }}" target="_blank" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />><span class="icon icon-download"></span> View <span class="hidden-xs">hospital </span>brochure</a>
+                        </c:if>
+                    </div>
                     <div class="hospitalSelectionsExcessContainer">
                         <div class="hospitalExcessSectionBorder">
                             <div class="featuresListExcess" data-feature-template="#results-features-excess-template" data-feature-index="1" data-feature-type="excess"></div>
@@ -73,7 +87,12 @@
                 </div>
                 {{ } if(coverType == 'E' || coverType == 'C') { }}
                 <div class="extrasCoverSection">
-                    <h2>Extras</h2>
+                    <div class="clearfix">
+                        <h2>Extras</h2>
+                        <c:if test="${not empty resultsBrochuresSplitTest and resultsBrochuresSplitTest eq true}">
+                            <a class="results-download-brochure" href="${pageSettings.getBaseUrl()}{{= promo.extrasPDF }}" target="_blank" <field_v1:analytics_attr analVal="dl brochure" quoteChar="\"" />><span class="icon icon-download"></span> View <span class="hidden-xs">extras </span>brochure</a>
+                        </c:if>
+                    </div>
                     <div class="benefits-click-text visible-xs">Click below for cover limits</div>
                     <div class="featuresListExtrasOtherList" data-feature-index="5" data-feature-type="extras"></div>
                 </div>
