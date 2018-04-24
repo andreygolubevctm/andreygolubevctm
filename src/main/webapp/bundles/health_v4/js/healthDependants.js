@@ -560,7 +560,6 @@
             "VIC": "Victorian High Schools",
             "VICT": "VIC TAFE",
             "VU": "Victoria University",
-            "VUT": "Victoria University of Technology",
             "WA": "Western Australia-High Schools",
             "WAT": "WA TAFE"
         },
