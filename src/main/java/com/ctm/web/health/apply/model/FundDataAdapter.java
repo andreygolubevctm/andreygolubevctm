@@ -48,7 +48,7 @@ public class FundDataAdapter {
         Optional<HeardAbout> heardAbout = quote.map(HealthQuote::getApplication)
                 .map(Application::getWfd)
                 .map(FundDataAdapter::createHeardAbout);
-        return heardAbout.isPresent() ? heardAbout.get() : null;
+        return heardAbout.orElse(null);
     }
 
     protected static Membership createMembership(Optional<HealthQuote> quote) {
@@ -350,22 +350,9 @@ public class FundDataAdapter {
     }
 
     protected static HeardAbout createHeardAbout(Wfd theWfd) {
-        Optional<Wfd> wfd = Optional.ofNullable(theWfd);
-        if(wfd.isPresent()) {
-            return createHeardAboutWFD(wfd);
-        } else {
-            return null;
-        }
-    }
-
-    private static HeardAbout createHeardAboutWFD(Optional<Wfd> wfd) {
-        if (wfd.isPresent()) {
-            return new HeardAbout(
-                    wfd.map(Wfd::getHeardAbout)
-                        .orElse(null)
-            );
-        } else {
-            return null;
-        }
+        return Optional.ofNullable(theWfd)
+                .map(Wfd::getHeardAbout)
+                .map(HeardAbout::new)
+                .orElse(null);
     }
 }
