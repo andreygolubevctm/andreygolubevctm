@@ -1,6 +1,5 @@
 package com.ctm.web.health.model.form;
 
-
 public class Wfd {
 
     private String partnerrel;
