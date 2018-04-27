@@ -471,7 +471,7 @@
 									.prop('checked', $('#health_simples_dialogue-checkbox-62').val() === 'Y');
 
                                 if (meerkat.site.tracking.brandCode === 'wfdd') {
-                                    $('#health_simples_heardAboutSelect').val($('#health_simples_heardAbout').val());
+                                    $('#health_application_wfd_heardAboutSelect').val($('#health_application_wfd_heardAbout').val());
                                 }
 							},
 							onClose: function(modalId) {
@@ -480,7 +480,7 @@
 									.val($('#health_simples_dialogue-checkbox-62-modal').prop('checked') ? 'Y' : 'N');
 
                                 if (meerkat.site.tracking.brandCode === 'wfdd') {
-                                    $('#health_simples_heardAbout').val($('#health_simples_heardAboutSelect').val());
+                                    $('#health_application_wfd_heardAbout').val($('#health_application_wfd_heardAboutSelect').val());
                                 }
 							}
 						});

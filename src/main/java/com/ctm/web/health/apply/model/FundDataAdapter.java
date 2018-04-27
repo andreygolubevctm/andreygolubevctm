@@ -6,6 +6,7 @@ import com.ctm.web.health.apply.model.request.fundData.Declaration;
 import com.ctm.web.health.apply.model.request.fundData.FundData;
 import com.ctm.web.health.apply.model.request.fundData.ProductId;
 import com.ctm.web.health.apply.model.request.fundData.Provider;
+import com.ctm.web.health.apply.model.request.fundData.HeardAbout;
 import com.ctm.web.health.apply.model.request.fundData.benefits.Benefits;
 import com.ctm.web.health.apply.model.request.fundData.membership.*;
 import com.ctm.web.health.apply.model.request.fundData.membership.eligibility.*;
@@ -38,7 +39,16 @@ public class FundDataAdapter {
                         .map(LocalDateUtils::parseAUSLocalDate)
                         .orElse(null),
                 createBenefits(quote),
-                createMembership(quote));
+                createMembership(quote),
+                createHeardAbout(quote));
+    }
+
+    protected static HeardAbout createHeardAbout(Optional<HealthQuote> quote) {
+        // Check WFD
+        Optional<HeardAbout> heardAbout = quote.map(HealthQuote::getApplication)
+                .map(Application::getWfd)
+                .map(FundDataAdapter::createHeardAbout);
+        return heardAbout.orElse(null);
     }
 
     protected static Membership createMembership(Optional<HealthQuote> quote) {
@@ -337,5 +347,12 @@ public class FundDataAdapter {
         } else {
             return null;
         }
+    }
+
+    protected static HeardAbout createHeardAbout(Wfd theWfd) {
+        return Optional.ofNullable(theWfd)
+                .map(Wfd::getHeardAbout)
+                .map(HeardAbout::new)
+                .orElse(null);
     }
 }
