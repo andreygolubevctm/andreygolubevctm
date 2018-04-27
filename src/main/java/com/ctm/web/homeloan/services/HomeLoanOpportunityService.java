@@ -133,7 +133,7 @@ public class HomeLoanOpportunityService {
 		jsonConn.conn.setContentType("application/json");
 
 		String postBody = hlorModel.toJsonObject().toString();
-		LOGGER.debug("Opportunity submit details {}, {}, {}, {}", kv("timeoutConnect", timeoutConnect), kv("timeoutRead", timeoutRead), kv("serviceUrl", serviceUrl), kv("postBody", postBody));
+		LOGGER.info("Opportunity submit details {}, {}", kv("serviceUrl", serviceUrl), kv("postBody", postBody));
 		return jsonConn.post(serviceUrl, postBody);
 	}
 
