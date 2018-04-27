@@ -140,7 +140,7 @@ Process:
 		// local alternative to bypass HAMBS' iframe for testing purposes
 		//settings.hambsIframe.src = 'http://localhost:8080/ctm/external/hambs/mockPaymentGateway.html'; settings.hambsIframe.remote = 'http://localhost:8080';
 
-		var iframe = '<iframe width="100%" height="390" frameBorder="0" src="'+ settings.src + 'external/hambs/nab_ctm_iframe.jsp?providerCode=' + settings.providerCode + '&b=' + settings.brandCode + '"></iframe>';
+		var iframe = '<iframe id="nabPaymentGatewayIframe" scrolling="no" width="100%" height="390" frameBorder="0" src="'+ settings.src + 'external/hambs/nab_ctm_iframe.jsp?providerCode=' + settings.providerCode + '&b=' + settings.brandCode + '"></iframe>';
 		meerkat.modules.dialogs.changeContent(id, iframe);
 
 		if (window.addEventListener) {
