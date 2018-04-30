@@ -40,7 +40,7 @@
                     min: 100,
                     max: 100
                 },
-                'booster-bonus': {
+                '2018-booster-bonus': {
                     min: 100,
                     max: 100
                 }
@@ -332,7 +332,7 @@
             $elements.inputs.value.empty().append('<option value="'+giftCardAmount+'">$'+giftCardAmount+'</option>');
         }
 
-        if(_.indexOf(['q-jun$100-offer','q-jun$200-offer', '2017oct$100', '2018Seniors$100-offer', 'booster-bonus'],reason) !== -1) {
+        if(_.indexOf(['q-jun$100-offer','q-jun$200-offer', '2017oct$100', '2018Seniors$100-offer', '2018-booster-bonus'],reason) !== -1) {
             $elements.inputs.value.val(valueRange.custom[reason].max);
         }
     }
