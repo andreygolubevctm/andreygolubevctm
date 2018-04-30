@@ -14,10 +14,10 @@
   
   function getURL() { 
     switch(meerkat.site.environment) {
-      case 'nxi':
-      case 'localhost': return 'https://nxi.secure.comparethemarket.com.au/address/';
-      case 'nxq': return 'https://nxq.secure.comparethemarket.com.au/address/';
-      default: return 'https://secure.comparethemarket.com.au/address/';
+      case 'nxi': return 'https://dev.comparethemarket.com.au/api/address/';
+      case 'localhost': return 'https://dev.comparethemarket.com.au/api/address/';
+      case 'nxq': return 'https://uat.comparethemarket.com.au/api/address/';
+      default: return 'https://www.comparethemarket.com.au/api/address/';
     }
   }
 
