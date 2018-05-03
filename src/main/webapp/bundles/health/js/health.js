@@ -444,7 +444,7 @@
 					// show modal on results page if web chat is not in progress
 					if (!isWebChat) {
 						// show the bulky text script to call centre
-						var htmlTemplate = _.template($('#simples-dialogue-62-template').html());
+						var htmlTemplate = _.template($('#simples-dialogue-popup-template').html());
 						meerkat.modules.dialogs.show({
 							htmlContent : htmlTemplate(),
 							closeOnHashChange : true,
