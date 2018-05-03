@@ -25,6 +25,14 @@
 				<health_v2:declaration xpath="${pageSettings.getVerticalCode()}/declaration" />
 				<health_v1:contactAuthority xpath="${pageSettings.getVerticalCode()}/contactAuthority" />
 				<health_v2:whats-next />
+
+				<simples:dialogue id="107" vertical="health" />
+
+				<competition:africaCompSettings />
+				<c:if test="${africaComp}">
+					<simples:dialogue id="108" vertical="health" />
+				</c:if>
+
 				<health_v1:fund_timezone_message_modal />
 
 				<c:if test="${callCentre and not empty worryFreePromo and worryFreePromo eq '35'}">
