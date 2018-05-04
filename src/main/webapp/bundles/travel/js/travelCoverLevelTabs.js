@@ -100,6 +100,7 @@
 		if(!initialised || reInit) {
 			initialised = true;
 
+            var destination = $('#travel_destination').val();
 			var options = {
 				enabled: true,
 				tabCount: 3,
@@ -114,14 +115,11 @@
                     } else {
                         $('.clt-trip-filter').show();
                     }
-
+                    // show amt filter if in AMT journey
                     $('.amt-filter').toggle(isAMT());
                 }
 			};
 			meerkat.modules.coverLevelTabs.initCoverLevelTabs(options, reInit);
-
-            var destination = $('#travel_destination').val();
-
 
 			meerkat.messaging.subscribe(meerkatEvents.coverLevelTabs.CHANGE_COVER_TAB, function onTabChange(eventObject) {
 				if (eventObject.activeTab == "D") {
