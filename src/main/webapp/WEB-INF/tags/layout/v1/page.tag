@@ -239,6 +239,9 @@ ${newPage.init(pageContext.request, pageSettings)}
 														</div>
 													</div>
 												</div>
+												<div class="col-xs-7 clt-trip-filter amt-filter">
+													<travel_results_filter_types:amt_filter />
+												</div>
 												<div class="col-xs-2 clt-trip-filter">
 													<travel_results_filter_types:more_filters/>
 												</div>
