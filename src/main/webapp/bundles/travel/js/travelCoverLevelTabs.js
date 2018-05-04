@@ -183,8 +183,6 @@
 		initTravelCoverLevelTabs : initTravelCoverLevelTabs,
 		events : events,
 		updateSettings : updateSettings,
-		setDefaultSingleCoverLevelTab : setDefaultSingleCoverLevelTab,
-		setDefaultMultiCoverLevelTab : setDefaultMultiCoverLevelTab,
 		getCurrentCoverLevelTab : getCurrentCoverLevelTab
 	});
 
