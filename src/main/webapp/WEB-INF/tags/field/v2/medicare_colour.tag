@@ -47,7 +47,7 @@
 </c:if>
 
 <c:set var="val4" value="none" />
-<c:set var="des4" value="None of the above" />
+<c:set var="des4" value="I don&apos;t have a Medicare card" />
 <c:set var="checked4" value="" />
 <c:set var="active4" value="" />
 
