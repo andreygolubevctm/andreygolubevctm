@@ -29,7 +29,7 @@ public class ResponseAdapterV2 {
 
     public static final String HEALTH_BROCHURE_URL = "health_brochure.jsp?pdf=";
 
-    public static ResponseAdapterModel adapt(final HealthRequest request, final HealthResponseV2 healthResponse, final Content alternatePricingContent) {
+    public static ResponseAdapterModel adapt(final HealthRequest request, final HealthResponseV2 healthResponse, final Content alternatePricingContent, final String brandCode) {
         boolean hasPriceChanged = false;
         final List<HealthQuoteResult> results = new ArrayList<>();
         final IncomingQuotesResponse.Payload<HealthQuote> quoteResponse = healthResponse.getPayload();
@@ -65,7 +65,8 @@ public class ResponseAdapterV2 {
                     result.setServiceName("PHIO");
                     result.setProductId(quote.getProductId());
 
-                    result.setPromo(createPromo(quote.getPromotion(),request.getStaticOverride(), isSimplesUser));
+                    result.setPromo(createPromo(quote.getPromotion(),request.getStaticOverride(), isSimplesUser, brandCode));
+                    result.setAwardScheme(createAwardScheme(quote.getPromotion(), isSimplesUser));
                     result.setCustom(validateNode(quote.getCustom()));
 
                     result.setDropDeadDate(quote.getDropDeadDate());
@@ -163,14 +164,23 @@ public class ResponseAdapterV2 {
         return new TextNode("");
     }
 
-    private static Promo createPromo(final Promotion quotePromotion, final String staticBranch, final boolean isSimplesUser) {
+    private static Promo createPromo(final Promotion quotePromotion, final String staticBranch, final boolean isSimplesUser, final String brandCode) {
         final Promo promo = new Promo();
+        String staticBranchQS = staticBranch != null ? "&staticBranch=" + staticBranch : "";
+        String brandCodeQS = brandCode != null && brandCode.length() > 0 ? "&brandCode=" + brandCode.toLowerCase() : "";
+
         promo.setPromoText(createPromoText(quotePromotion.getSpecialOffer(), isSimplesUser));
         promo.setProviderPhoneNumber(quotePromotion.getProviderPhoneNumber());
         promo.setDiscountText(StringUtils.trimToEmpty(quotePromotion.getDiscountDescription()));
-        promo.setExtrasPDF(HEALTH_BROCHURE_URL + quotePromotion.getExtrasPDF() + (staticBranch != null ? ("&staticBranch=" + staticBranch) : ""));
-        promo.setHospitalPDF(HEALTH_BROCHURE_URL + quotePromotion.getHospitalPDF() + (staticBranch != null ? ("&staticBranch=" + staticBranch) : ""));
+        promo.setExtrasPDF(HEALTH_BROCHURE_URL + quotePromotion.getExtrasPDF() + staticBranchQS + brandCodeQS);
+        promo.setHospitalPDF(HEALTH_BROCHURE_URL + quotePromotion.getHospitalPDF() + staticBranchQS + brandCodeQS);
         return promo;
+    }
+
+    private static AwardScheme createAwardScheme(final Promotion quotePromotion, boolean isSimplesUser) {
+        final AwardScheme awardScheme = new AwardScheme();
+        awardScheme.setText(createPromoText(quotePromotion.getAwardScheme(), isSimplesUser));
+        return awardScheme;
     }
 
     private static Premium createPremium(final com.ctm.web.health.quote.model.response.Premium quotePremium,

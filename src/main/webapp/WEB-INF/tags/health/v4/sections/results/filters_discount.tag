@@ -3,6 +3,7 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <core_v1:js_template id="filter-discount-template">
+    <div class="filter-heading">Optional Filters</div>
     <div class="filter" data-filter-serverside="true">
         <div class="checkbox">
             <input type="checkbox" name="{{= model.discount.name }}" id="{{= model.discount.name }}" class="checkbox-custom checkbox" value="Y" />

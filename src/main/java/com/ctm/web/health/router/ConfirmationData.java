@@ -41,6 +41,8 @@ public class ConfirmationData {
 
     private final String redemptionId;
 
+    private final String voucherValue;
+
     private ConfirmationData(Builder builder) {
         this.transID = builder.transID;
         this.startDate = builder.startDate;
@@ -54,6 +56,7 @@ public class ConfirmationData {
         this.policyNo = builder.policyNo;
         this.paymentType = builder.paymentType;
         this.redemptionId = builder.redemptionId;
+        this.voucherValue = builder.voucherValue;
     }
 
     public static Builder newConfirmationData() {
@@ -116,6 +119,10 @@ public class ConfirmationData {
         return redemptionId;
     }
 
+    public String getVoucherValue() {
+        return voucherValue;
+    }
+
     public static final class Builder {
         private String transID;
         private LocalDate startDate;
@@ -129,6 +136,7 @@ public class ConfirmationData {
         private String policyNo;
         private String paymentType;
         private String redemptionId;
+        private String voucherValue;
 
         private Builder() {
         }
@@ -194,6 +202,11 @@ public class ConfirmationData {
 
         public Builder redemptionId(String redemptionId) {
             this.redemptionId = redemptionId;
+            return this;
+        }
+
+        public Builder voucherValue(String voucherValue) {
+            this.voucherValue = voucherValue;
             return this;
         }
     }

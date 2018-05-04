@@ -45,6 +45,7 @@
                     <field_v1:hidden xpath="${xpath}/skippedContact" defaultValue="N" />
                     <health_v4_contact:skip_contact_details_modal xpath="${xpath}" />
 
+                    <ad_containers:custom customId="contact-details"/>
                 </form_v4:fieldset>
 
                 <health_v4_contact:testimonial />

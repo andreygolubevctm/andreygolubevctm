@@ -634,7 +634,7 @@
 							<c:set var="ignore">
 								${insertParams.add(counter)};
 								${insertParams.add(xpath)};
-								${insertParams.add(rowVal)};
+								${insertParams.add(tranDao.encryptBlacklistFields(transactionId, xpath, rowVal))};
 							</c:set>
 	</c:otherwise>
 	</c:choose>
@@ -662,22 +662,23 @@
 							<sql:param value="${item}" />
 						</c:forEach>
 					</sql:update>
-	<sql:update>
-						DELETE FROM aggregator.transaction_details
-						WHERE transactionId = ${transactionId}
-							AND sequenceNo > ${counter}
-							AND sequenceNo < 300;
-	</sql:update>
-					<%--
-					See JIRA CTMIT-721 for the below logic
-					--%>
-					<c:if test="${rootPath eq 'health'}">
-						<sql:update>
-							DELETE FROM aggregator.transaction_details
-							WHERE transactionId = ${transactionId}
-							AND sequenceNo > 299;
-						</sql:update>
-					</c:if>
+					<c:choose>
+						<c:when test="${rootPath eq 'health'}">
+							<sql:update>
+								DELETE FROM aggregator.transaction_details
+								WHERE transactionId = ${transactionId}
+								AND sequenceNo > ${counter};
+							</sql:update>
+						</c:when>
+						<c:otherwise>
+							<sql:update>
+								DELETE FROM aggregator.transaction_details
+								WHERE transactionId = ${transactionId}
+								AND sequenceNo > ${counter}
+								AND sequenceNo < 300;
+							</sql:update>
+						</c:otherwise>
+					</c:choose>
 				</c:if>
 					</c:when>
 					<c:otherwise>

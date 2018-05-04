@@ -15,6 +15,8 @@ public class HealthQuoteResult extends Result {
 
     private Promo promo;
 
+    private AwardScheme awardScheme;
+
     private Premium premium;
 
     private Premium altPremium;
@@ -51,6 +53,14 @@ public class HealthQuoteResult extends Result {
 
     public void setPromo(Promo promo) {
         this.promo = promo;
+    }
+
+    public AwardScheme getAwardScheme() {
+        return awardScheme;
+    }
+
+    public void setAwardScheme(AwardScheme awardScheme) {
+        this.awardScheme = awardScheme;
     }
 
     public Premium getPremium() {

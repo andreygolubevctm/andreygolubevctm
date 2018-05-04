@@ -67,7 +67,8 @@
         $elements = {
             refineBtn: $('.refine-results'),
             applyDiscount: $('input[name=health_applyDiscounts]'),
-            applyRebate: $('input[name="health_healthCover_rebate"]')
+            applyRebate: $('input[name="health_healthCover_rebate"]'),
+            awardsScheme: $('input[name="health_rewardsSchemeFirst"]')
         };
     }
 
@@ -88,6 +89,7 @@
             _.defer(function() {
                 $('#health_refine_results_discount').prop('checked', $elements.applyDiscount.val() === 'Y');
                 $('#health_refine_results_rebate').prop('checked', $elements.applyRebate.val() === 'Y');
+                $('#health_refine_results_awards_scheme').prop('checked', $elements.awardsScheme.val() === 'Y');
 
                 meerkat.messaging.publish(moduleEvents.refineResults.REFINE_RESULTS_OPENED);
 
@@ -189,6 +191,7 @@
     function _footerButtonUpdateCB() {
         $elements.applyDiscount.val($('#health_refine_results_discount').is(':checked') ? 'Y' : 'N');
         $elements.applyRebate.val($('#health_refine_results_rebate').is(':checked') ? 'Y': 'N');
+        $elements.awardsScheme.val($('#health_refine_results_awards_scheme').is(':checked') ? 'Y' : 'N');
 
         meerkat.messaging.publish(moduleEvents.refineResults.REFINE_RESULTS_FOOTER_BUTTON_UPDATE_CALLBACK);
 

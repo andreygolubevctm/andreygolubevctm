@@ -54,6 +54,8 @@
 										labelName="your contact number"/>
 		</form_v2:row>
 
+		<ad_containers:custom customId="contact-details" />
+
 		<form_v2:row label="" className="email-optin-row clear closer">
 			<%-- Mandatory agreement to OptIn to email  --%>
 			<field_v1:hidden xpath="${xpath}/optIn" defaultValue="Y" constantValue="Y" />

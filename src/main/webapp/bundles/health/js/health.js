@@ -455,7 +455,7 @@
 					// show modal on results page if web chat is not in progress
 					if (!isWebChat) {
 						// show the bulky text script to call centre
-						var htmlTemplate = _.template($('#simples-dialogue-62-template').html());
+						var htmlTemplate = _.template($('#simples-dialogue-popup-template').html());
 						meerkat.modules.dialogs.show({
 							htmlContent : htmlTemplate(),
 							closeOnHashChange : true,
@@ -482,7 +482,7 @@
 									.prop('checked', $('#health_simples_dialogue-checkbox-62').val() === 'Y');
 
                                 if (meerkat.site.tracking.brandCode === 'wfdd') {
-                                    $('#health_simples_heardAboutSelect').val($('#health_simples_heardAbout').val());
+                                    $('#health_application_wfd_heardAboutSelect').val($('#health_application_wfd_heardAbout').val());
                                 }
 							},
 							onClose: function(modalId) {
@@ -491,7 +491,7 @@
 									.val($('#health_simples_dialogue-checkbox-62-modal').prop('checked') ? 'Y' : 'N');
 
                                 if (meerkat.site.tracking.brandCode === 'wfdd') {
-                                    $('#health_simples_heardAbout').val($('#health_simples_heardAboutSelect').val());
+                                    $('#health_application_wfd_heardAbout').val($('#health_application_wfd_heardAboutSelect').val());
                                 }
 							}
 						});
@@ -695,6 +695,11 @@
 							$this.find('.error-count').remove();
 							var $errors = $this.find('.error-field label');
 							$this.children('button').after('<span class="error-count' + (($errors.length>0) ? ' error-field' : '') + '" style="margin-left:10px">' + $errors.length + ' validation errors in this panel.</span>');
+
+							if ($errors.length > 0) {
+								$this.removeClass('has-field-values-ba has-field-values-cc');
+								$this.find('.payment-complete-text').remove();
+							}
 						});
 					}
 

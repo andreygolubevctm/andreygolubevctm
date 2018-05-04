@@ -18,23 +18,31 @@
 	<c:set var="hideChatOption" value="false" />
 </c:if>
 
-<c:set var="excludeItems" value="" />
+<c:set var="excludeItemsContactType" value="" />
+<c:set var="healthCvrExcludeItems" value="" />
 <c:choose>
-    <c:when test="${brandCode eq 'wfdd'}">
-        <c:set var="excludeItems" value="outbound" />
+    <c:when test="${brandCode eq 'ctm'}">
+        <c:set var="excludeItemsContactType" value="'trialcampaignMagpie','trialcampaign1','trialcampaign2','trialcampaign3'" />
         <c:if test="${hideChatOption}">
-            <c:set var="excludeItems" value="outbound,webchat" />
+            <c:set var="excludeItemsContactType" value="'webchat','trialcampaignMagpie','trialcampaign1','trialcampaign2','trialcampaign3'" />
+        </c:if>
+    </c:when>
+    <c:when test="${brandCode eq 'wfdd'}">
+        <c:set var="excludeItemsContactType" value="'outbound','trialcampaignMagpie','trialcampaign1','trialcampaign2','trialcampaign3'" />
+        <c:if test="${hideChatOption}">
+            <c:set var="excludeItemsContactType" value="'outbound','webchat','trialcampaignMagpie','trialcampaign1','trialcampaign2','trialcampaign3'" />
         </c:if>
     </c:when>
     <c:when test="${brandCode eq 'bddd'}">
-        <c:set var="excludeItems" value="outbound" />
+        <c:set var="healthCvrExcludeItems" value="'EF','ESP'" />
+        <c:set var="excludeItemsContactType" value="'trialcampaign','trialcampaignBroadband','trialcampaignHealthEngine','trialcampaignJackMedia','trialcampaignLifebrokerLnIP','trialcampaignTWE','trialcampaignXSellCar','trialcampaignXSellHnC'" />
         <c:if test="${hideChatOption}">
-            <c:set var="excludeItems" value="outbound,webchat" />
+            <c:set var="excludeItemsContactType" value="'webchat','trialcampaign','trialcampaignBroadband','trialcampaignHealthEngine','trialcampaignJackMedia','trialcampaignLifebrokerLnIP','trialcampaignTWE','trialcampaignXSellCar','trialcampaignXSellHnC'" />
         </c:if>
     </c:when>
     <c:otherwise>
         <c:if test="${hideChatOption}">
-            <c:set var="excludeItems" value="webchat" />
+            <c:set var="excludeItemsContactType" value="'webchat'" />
         </c:if>
     </c:otherwise>
 </c:choose>
@@ -55,7 +63,7 @@
                     <div class="col-sm-12">
                         <c:set var="fieldXpath" value="health/simples/contactTypeRadio" />
                         <form_v3:row label="Contact type (outbound/inbound)" fieldXpath="${fieldXpath}" className="health-contactType">
-                            <field_v2:general_select xpath="${fieldXpath}" type="contactType" className="health-situation-contactType" required="true" title="Contact type (outbound/inbound)" excludeCodes="${excludeItems}" />
+                            <field_v2:general_select xpath="${fieldXpath}" type="contactType" className="health-situation-contactType" required="true" title="Contact type (outbound/inbound)" excludeCodes="${excludeItemsContactType}" />
                         </form_v3:row>
                         <field_v1:hidden xpath="health/simples/contactType" />
                         <field_v1:hidden xpath="health/simples/contactTypeTrial" />
@@ -84,7 +92,7 @@
 
                 <c:set var="fieldXpath" value="${xpath}/healthCvr" />
                 <form_v3:row label="You are a" fieldXpath="${fieldXpath}" className="health-cover">
-                    <field_v2:general_select xpath="${fieldXpath}" type="healthCvr" className="health-situation-healthCvr" required="true" title="situation you are in" />
+                    <field_v2:general_select xpath="${fieldXpath}" type="healthCvr" className="health-situation-healthCvr" required="true" title="situation you are in" excludeCodes="${healthCvrExcludeItems}" />
                 </form_v3:row>
 
                 <%-- If the user is coming via a broucherware site where by a state is passed in instead of a postcode, then only show state selection --%>

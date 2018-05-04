@@ -35,13 +35,16 @@ Process:
 
 
 	function onMessage(e) {
+		meerkat.logging.debug("healthPaymentGatewayNAB: NAB IFrame onMessage window event triggered");
 		if (e.origin !== settings.origin){
 			meerkat.logging.error("domain name mismatch");
+			meerkat.logging.debug("healthPaymentGatewayNAB: NAB domain Origin " + e.origin + "\nNAB origin settings settings " + settings.origin);
 			return;
 		} else {
 			// we are expecting the iframe to return a load success message
-			// if we get it, we kill the timeout interval that would trigger he fail after a while
+			// if we get it, we kill the timeout interval that would trigger the fail after a while
 			if(typeof e.data === "string" && e.data === "page loaded"){
+				meerkat.logging.debug("healthPaymentGatewayNAB: NAB IFrame page Loaded");
 				clearTimeout(timeout);
 			} else {
 				onPaymentResponse(e.data);
@@ -66,21 +69,36 @@ Process:
 	}
 
 	function onPaymentResponse(data) {
+
+		meerkat.logging.debug("healthPaymentGatewayNAB: Raw payment response: \n" + data + "\n\nAttempting to parse response into a JSON Object");
+
 		var json = JSON.parse(data);
+
+		meerkat.logging.debug("healthPaymentGatewayNAB: Response parsed into JSON Object");
+
 		if (validatePaymentResponse(json)) {
+			meerkat.logging.debug("healthPaymentGatewayNAB: Publish meerkat.modules.events.paymentGateway.SUCCESS");
 			meerkat.messaging.publish(meerkat.modules.events.paymentGateway.SUCCESS,json);
 		} else {
+			meerkat.logging.debug("healthPaymentGatewayNAB: Publish meerkat.modules.events.paymentGateway.FAIL");
 			meerkat.messaging.publish(meerkat.modules.events.paymentGateway.FAIL,json);
 		}
 	}
 
 	function validatePaymentResponse(response) {
+		meerkat.logging.debug("Payment response validation tests");
+
 		var valid = response && response.CRN && response.CRN !== '';
 		valid = valid && response.rescode == "00";
+
+		meerkat.logging.debug("healthPaymentGatewayNAB: Payment response CRN: " + response.CRN + "\nPayment response CRN Valid: " + valid + "\nPayment response rescode: " + response.rescode + "\nPayment response valid: " + valid);
 		return valid;
 	}
 
 	function success(params) {
+
+		meerkat.logging.debug("healthPaymentGatewayNAB: Success function called");
+
 		$cardNumber.val(params.pan);
 		$cardName.val(params.cardName);
 		$crn.val(params.CRN);
@@ -93,6 +111,9 @@ Process:
 	}
 
 	function fail(params) {
+
+		meerkat.logging.debug("healthPaymentGatewayNAB: Fail function called");
+
 		if(typeof params !== 'undefined') {
 			$rescode.val(params.rescode);
 			$restext.val(params.restext);
@@ -111,13 +132,14 @@ Process:
 
 		clearTimeout(timeout);
 		timeout = _.delay(function onOpenTimout() {
+			meerkat.logging.debug("healthPaymentGatewayNAB: NAB IFrame timed out\nhealthPaymentGatewayNAB: Publish meerkat.modules.events.paymentGateway.FAIL");
 			meerkat.messaging.publish(meerkatEvents.paymentGateway.FAIL);
 		}, 45000);
 
 		// local alternative to bypass HAMBS' iframe for testing purposes
 		//settings.hambsIframe.src = 'http://localhost:8080/ctm/external/hambs/mockPaymentGateway.html'; settings.hambsIframe.remote = 'http://localhost:8080';
 
-		var iframe = '<iframe width="100%" height="390" frameBorder="0" src="'+ settings.src + 'external/hambs/nab_ctm_iframe.jsp?providerCode=' + settings.providerCode + '&b=' + settings.brandCode + '"></iframe>';
+		var iframe = '<iframe id="nabPaymentGatewayIframe" scrolling="no" width="100%" height="390" frameBorder="0" src="'+ settings.src + 'external/hambs/nab_ctm_iframe.jsp?providerCode=' + settings.providerCode + '&b=' + settings.brandCode + '"></iframe>';
 		meerkat.modules.dialogs.changeContent(id, iframe);
 
 		if (window.addEventListener) {
