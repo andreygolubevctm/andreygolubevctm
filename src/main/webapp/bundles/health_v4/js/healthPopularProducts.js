@@ -66,7 +66,6 @@
             meerkat.modules.journeyEngine.loadingShow('...updating your quotes...', true);
 
             if (popularProducts === 'Y') {
-                console.error('popular products');
                 var popularResults =
                     function () {
                         if (Results.model && Results.model.popularProducts.length > 0) {

@@ -265,7 +265,9 @@
                 rankings: {
                     triggers: ['RESULTS_DATA_READY'],
                     callback: meerkat.modules.healthResults.rankingCallback,
-                    forceIdNumeric: true
+                    forceIdNumeric: true,
+	                resultsSortedModelToUse: "sortedProductsAll",
+	                resultsFilteredModelToUse: "filteredProductsAll"
                 },
                 incrementTransactionId: false,
                 balanceCurrentPageRowsHeightOnly: {
@@ -294,11 +296,13 @@
 
         // Model updated, make changes before rendering
         meerkat.messaging.subscribe(Results.model.moduleEvents.RESULTS_MODEL_UPDATE_BEFORE_FILTERSHOW, function modelUpdated() {
-            Results.model.popularProducts = Results.model.returnedProducts.filter(function(product) { return product.info && true === product.info.popularProduct; });
+        	Results.model.popularProducts = Results.model.returnedProducts.filter(function(product) { return product.info && true === product.info.popularProduct; });
             Results.model.returnedProducts = _massageResultsObject(Results.model.returnedProducts);
+            Results.model.sortedProductsAll = Results.model.returnedProducts;
+	        Results.model.filteredProductsAll = Results.model.returnedProducts;
+	        Results.model.returnedProducts = Results.model.returnedProducts.filter(function(product,index){return index < 12;});
+	        Results.model.availableCounts = Results.model.returnedProducts.length;
 
-            // Populating sorted products is a trick for HML due to setting sortBy:false
-            Results.model.sortedProducts = Results.model.returnedProducts;
         });
 
         var tStart = 0;

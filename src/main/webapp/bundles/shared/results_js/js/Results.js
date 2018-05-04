@@ -227,6 +227,10 @@ var Results = {
 				 *    By default it will occur on RESULTS_DATA_READY and RESULTS_SORTED but can be overridden
 				 *    by providing your own list.
 				 * b] forceIdNumeric will force the productId to be trimmed of any non-numeric characters (for health)
+				 * c] resultsSortedModelToUse provide a string reference to an alternate list of sorted products (Results.model["resultsSortedModelToUse"])
+				 *    to be used for calculating/returning the ranking data.
+				 * d] resultsFilteredModelToUse provide a string reference to an alternate list of filtered products (Results.model["resultsFilteredModelToUse"])
+				 *    to be used for calculating/returning the ranking data.
 
 				paths : {
 					rank_productId : "productId",
@@ -242,6 +246,10 @@ var Results = {
 				triggers : ['RESULTS_DATA_READY','RESULTS_SORTED']
 
 				forceIdNumeric : boolean
+
+				resultsSortedModelToUse : string
+
+				resultsFilteredModelToUse : string
 
 				*/
 				filterUnavailableProducts: true
