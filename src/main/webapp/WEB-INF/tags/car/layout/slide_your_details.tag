@@ -11,6 +11,7 @@
 		<form_v2:fieldset_columns sideHidden="false" force4ColSide="true">
 
 			<jsp:attribute name="rightColumn">
+				<ad_containers:sidebar_top />
 				<car:snapshot />
 			</jsp:attribute>
 
