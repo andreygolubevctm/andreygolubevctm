@@ -158,12 +158,14 @@
 	}
 	
 	function initAddressSearch() {
-		var addressLookupV2 = meerkat.modules.addressLookupV2;
+		var addressLookupV2 = meerkat.modules.addressLookupV2,
+        	resXpath = 'health/application/address',
+            postXpath = 'health/application/postal';
 		addressLookupV2.getPostCodeSearch().init('health/situation');
-		addressLookupV2.getSmartSearch().init('Residential', 'health/application/address');
-		addressLookupV2.getHiddenPostcodeSearch().init('Residential');
-		addressLookupV2.getSmartSearch().init('Postal', 'health/application/postal');
-		addressLookupV2.getHiddenPostcodeSearch().init('Postal');
+		addressLookupV2.getSmartSearch().init('Residential', resXpath);
+		addressLookupV2.getHiddenPostcodeSearch().init('Residential', resXpath);
+		addressLookupV2.getSmartSearch().init('Postal', postXpath);
+		addressLookupV2.getHiddenPostcodeSearch().init('Postal', postXpath);
 		
 		addressLookupV2.getToggleBtn().init('simples-postcode-toggle', 'health_application_postalGroup');
 	}

@@ -30,7 +30,7 @@
   }
   
   function init() {
-    addressBase = getURL();
+    var addressBase = getURL();
     addressService.streetSearch = {
       results: [],
       init: function(xpath) {
@@ -92,6 +92,8 @@
         this.$checkbox.on('change', this.toggleCheckbox.bind(this));
       },
       fillFields: function(data) {
+          console.log('DATA [streetSearch]', data);
+          console.log('this.xpath', this.xpath);
         $(this.xpath + '_state').val(data.state);
         if ($(this.xpath + '_suburbName').find('option[value="'+ data.suburbName +'"]').length === 0) {
           var element = createElement('option', { innerHTML: data.suburbName, value: data.suburbName });
@@ -129,8 +131,9 @@
     
     addressService.postcodeSearchInCantFindFields = {
       results: [],
-      init: function(prefix) {
+      init: function(prefix, xpath) {
         this.prefix = prefix;
+        this.xpath = formatXpath(xpath);
         this.cacheDom();
         this.bindEvents();
       },
@@ -147,6 +150,7 @@
         this.$suburbDropdown.append(this.htmlElements);
       },
       handleData: function(data) {
+        console.log('DATA [postcodeSearchInCantFindFields]', data);
         this.results = data;
         this.htmlElements = [];
         this.$suburbDropdown.empty();
@@ -157,6 +161,7 @@
             var element = createElement('option', { innerHTML: data[i].suburb, value: data[i].suburb });
             this.htmlElements.push(element);
           }
+          $(this.xpath + '_state').val(data[0].state);
         } else {
           this.htmlElements.push('Enter Postcode');
           this.$suburbDropdown.prop('disabled', true);
@@ -226,6 +231,8 @@
         this.fillFields(addressObj);
       },
       fillFields: function(data) {
+        console.log('DATA [postcodeSearch]', data);
+        console.log('this.xpath', this.xpath);
         $(this.xpath + '_suburb').val(data.suburb);
         $(this.xpath + '_state').val(data.state);
         $(this.xpath + '_postcode').val(data.postcode);
@@ -385,6 +392,8 @@
         }
       },
       fillFields: function(data) {
+        console.log('DATA [smartSearch]', data);
+        console.log('this.xpath', this.xpath);
         var streetSearch = data.houseNoSel + ' ' + data.streetName + ', ' + data.suburbName + ' ' + data.state;
         if ($(this.xpath + '_suburb').find('option[value="'+ data.suburbName +'"]').length === 0) {
           $(this.xpath + '_suburb').append(meerkat.modules.utils.createElement('option', { innerHTML: data.suburbName, value: data.suburbName }));

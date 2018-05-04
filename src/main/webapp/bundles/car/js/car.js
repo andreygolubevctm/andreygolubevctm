@@ -144,8 +144,9 @@
     }
     
     function initAddressSearch() {
-      meerkat.modules.addressLookupV2.getStreetSearch().init('quote/riskAddress');
-      meerkat.modules.addressLookupV2.getHiddenPostcodeSearch().init('street');
+      var xpath = 'quote/riskAddress';
+      meerkat.modules.addressLookupV2.getStreetSearch().init(xpath);
+      meerkat.modules.addressLookupV2.getHiddenPostcodeSearch().init('street', xpath);
     }
 
     function setJourneyEngineSteps() {
