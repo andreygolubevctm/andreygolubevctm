@@ -60,6 +60,35 @@
   }
 }
 
+.btn-tile.medicare {
+  position: relative;
+  display: block;
+  vertical-align: middle; // match .btn alignment given font-size hack above
+
+  label {
+
+    @media(@md) {
+      width: 220px;
+      height: 170px;
+      //font-size: 14px;
+    }
+
+    @media(@xs) {
+      width: 220px;
+      height: 170px;
+      // font-size: 12px;
+    }
+
+    @media(@md) {
+      margin-right: 15px;
+    }
+
+    @media(@xs) {
+      margin-right: 10px;
+    }
+  }
+}
+
 // Prevent double borders when buttons are next to each other
 .btn-tile {
   .btn + .btn-tile,
