@@ -72,4 +72,6 @@
 	</c:if>
 	<%-- COMPETITION END --%>
 
+	<ad_containers:custom customId="contact-details" />
+
 </form_v2:fieldset>
