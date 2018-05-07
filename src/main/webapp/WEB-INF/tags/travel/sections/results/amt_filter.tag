@@ -12,7 +12,7 @@
         <div class="dropdown-menu dropdown-menu-excess-filter" aria-labelledby="amtFilterDropdownBtn">
             <div class="dropdown-item">
                 <div class="radio">
-                    <input type="radio" name="amt-toggle" id="travel_filter_international" class="radioButton-custom radio" data-label="International" value="I">
+                    <input type="radio" name="amt-toggle" id="travel_filter_international" class="radioButton-custom radio" data-label="International" value="I" checked>
                     <label for="travel_filter_international">International</label>
                 </div>
             </div>
