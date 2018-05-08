@@ -400,9 +400,8 @@
     function getDiscountPercentage(fundCode, result) {
         var discountPercentage = !_.isUndefined(result) && result.hasOwnProperty('discountPercentage') ? result.discountPercentage : '';
 
-        if (_.isEmpty(discountPercentage) && fundCode === 'AUF') {
-            if (!meerkat.modules.healthCoverDetails.hasPrimaryCover() ||
-                (_.indexOf(['C','F'], meerkat.site.situationHealthCvr) !== -1 && !meerkat.modules.healthCoverDetails.hasPartnerCover())) {
+        if (fundCode === 'AUF') {
+            if (!meerkat.modules.healthCoverDetails.hasPrimaryCover() || !meerkat.modules.healthCoverDetails.hasPartnerCover()) {
                 discountPercentage = '7.5';
             } else {
                 discountPercentage = '4';
