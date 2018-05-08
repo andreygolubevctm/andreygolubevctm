@@ -112,4 +112,4 @@
 <%@ taglib tagdir="/WEB-INF/tags/zeus"			    	prefix="zeus" %>
 <%@ taglib tagdir="/WEB-INF/tags/health/v2/sections/payment/confirmation"	prefix="health_v2_confirmation" %>
 <%@ taglib tagdir="/WEB-INF/tags/call_me_back"			prefix="call_me_back" %>
-<%@ taglib tagdir="/WEB-INF/tags/banners"				prefix="banners" %>
+<%@ taglib tagdir="/WEB-INF/tags/ad_containers"			prefix="ad_containers" %>

@@ -184,7 +184,8 @@ ${newPage.init(pageContext.request, pageSettings)}
 						<content:get key="premiumIncreaseContent" />
 					</c:if>
 
-				<banners:banner_top />
+				<ad_containers:main_top />
+				<coupon:banner />
 			</div>
 
 				<div class="container">

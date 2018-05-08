@@ -1,9 +1,8 @@
 // Custom health v4 coupon styles for the 2017 peak.
 
 .coupon-banner-container {
-	border-top: 4px solid @theme-accent-4;
-
 	.coupon-banner-v4 {
+		border-top: 4px solid @theme-accent-4;
 		width: 100%;
 		text-align: center;
 		background-color: @gray-lighter;
@@ -62,25 +61,34 @@
 }
 
 .coupon-tile-container {
-	border: 1px solid @gray-light;
-	border-top: 4px solid @theme-accent-4;
-	margin-bottom: 15px;
-	padding: 15px;
+	margin-left: 15px;
+	margin-right: 15px;
 
-	.coupon-icon-col {
-		color: @theme-accent-4;
-		font-size: 36px;
-	}
+	.row {
+		border: 1px solid @gray-light;
+		border-top: 4px solid @theme-accent-4;
+		margin-bottom: 15px;
+		padding: 15px;
 
-	.coupon-text-col {
-		@media (@md-only) {
-			padding-left: 19px;
+		@media (@sm) {
+			padding: 15px 0;
 		}
 
-		.coupon-heading {
+		.coupon-icon-col {
 			color: @theme-accent-4;
-			font-size: 16px;
-			margin-bottom: 5px;
+			font-size: 36px;
+		}
+
+		.coupon-text-col {
+			@media (@md-only) {
+				padding-left: 19px;
+			}
+
+			.coupon-heading {
+				color: @theme-accent-4;
+				font-size: 16px;
+				margin-bottom: 5px;
+			}
 		}
 	}
 }

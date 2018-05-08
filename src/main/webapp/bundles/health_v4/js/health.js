@@ -225,10 +225,12 @@
                 if (event.isForward) {
                     // Delay 1 sec to make sure we have the data bucket saved in to DB, then filter coupon
                     _.delay(function () {
-                        // coupon logic, filter for user, then render banner
-                        meerkat.modules.coupon.loadCoupon('filter', null, function successCallBack() {
-                            meerkat.modules.coupon.renderCouponBanner();
-                        });
+                        if (meerkat.modules.coupon.doRenderAfterAds() === false) {
+                            // coupon logic, filter for user, then render banner
+                            meerkat.modules.coupon.loadCoupon('filter', null, function successCallBack() {
+                                meerkat.modules.coupon.renderCouponBanner();
+                            });
+                        }
                     }, 1000);
                 }
                 _incrementTranIdBeforeEnteringSlide();
@@ -277,10 +279,12 @@
                 if (event.isForward) {
                     // Delay 1 sec to make sure we have the data bucket saved in to DB, then filter coupon
                     _.delay(function () {
-                        // coupon logic, filter for user, then render banner
-                        meerkat.modules.coupon.loadCoupon('filter', null, function successCallBack() {
-                            meerkat.modules.coupon.renderCouponBanner();
-                        });
+                        if (meerkat.modules.coupon.doRenderAfterAds() === false) {
+                            // coupon logic, filter for user, then render banner
+                            meerkat.modules.coupon.loadCoupon('filter', null, function successCallBack() {
+                                meerkat.modules.coupon.renderCouponBanner();
+                            });
+                        }
                     }, 1000);
                 }
                 _incrementTranIdBeforeEnteringSlide();
@@ -333,10 +337,12 @@
                 if (event.isForward) {
                     // Delay 1 sec to make sure we have the data bucket saved in to DB, then filter coupon
                     _.delay(function () {
-                        // coupon logic, filter for user, then render banner
-                        meerkat.modules.coupon.loadCoupon('filter', null, function successCallBack() {
-                            meerkat.modules.coupon.renderCouponBanner();
-                        });
+                        if (meerkat.modules.coupon.doRenderAfterAds() === false) {
+                            // coupon logic, filter for user, then render banner
+                            meerkat.modules.coupon.loadCoupon('filter', null, function successCallBack() {
+                                meerkat.modules.coupon.renderCouponBanner();
+                            });
+                        }
                     }, 1000);
                 }
                 _incrementTranIdBeforeEnteringSlide();
@@ -410,6 +416,18 @@
 
                 meerkat.modules.healthPopularProducts.setPopularProducts('N');
                 meerkat.modules.paymentGateway.disable();
+
+                if (event.isForward) {
+                    // Delay 1 sec to make sure we have the data bucket saved in to DB, then filter coupon
+                    _.delay(function () {
+                        if (meerkat.modules.coupon.doRenderAfterAds() === false) {
+                            // coupon logic, filter for user, then render banner
+                            meerkat.modules.coupon.loadCoupon('filter', null, function successCallBack() {
+                                meerkat.modules.coupon.renderCouponBanner();
+                            });
+                        }
+                    }, 1000);
+                }
             },
             onAfterEnter: function onAfterEnterResultsStep(event) {
                 if (event.isForward === true) {
