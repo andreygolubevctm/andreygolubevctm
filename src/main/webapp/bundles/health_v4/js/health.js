@@ -83,13 +83,6 @@
         meerkat.messaging.subscribe(meerkatEvents.WEBAPP_UNLOCK, function unlockHealth(obj) {
             meerkat.modules.healthSubmitApplication.enableSubmitApplication();
         });
-
-        meerkat.messaging.subscribe(meerkatEvents.ADDRESS_CHANGE, function (event) {
-            if (meerkat.modules.journeyEngine.getCurrentStep().navigationId === 'contact') {
-                meerkat.modules.bannerPlacement.xsLayout();
-            }
-        });
-
     }
 
     function applyEventListeners() {
