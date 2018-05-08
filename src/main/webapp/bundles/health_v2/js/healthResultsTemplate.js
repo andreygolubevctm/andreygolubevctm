@@ -390,7 +390,7 @@
     function getDiscountText(result) {
         var discountText = result.hasOwnProperty('promo') && result.promo.hasOwnProperty('discountText') ? result.promo.discountText : '';
 
-        if (!_.isEmpty(discountText) && result.info.FundCode === 'AUF') {
+        if (_.isEmpty(discountText) && result.info.FundCode === 'AUF') {
             discountText = discountText.replace('%%discountPercentage%%', getDiscountPercentage('AUF')+'%');
         }
 
@@ -400,7 +400,7 @@
     function getDiscountPercentage(fundCode, result) {
         var discountPercentage = !_.isUndefined(result) && result.hasOwnProperty('discountPercentage') ? result.discountPercentage : '';
 
-        if (!_.isEmpty(discountPercentage) && fundCode === 'AUF') {
+        if (_.isEmpty(discountPercentage) && fundCode === 'AUF') {
             if (!meerkat.modules.healthCoverDetails.hasPrimaryCover() ||
                 (_.indexOf(['C','F'], meerkat.site.situationHealthCvr) !== -1 && !meerkat.modules.healthCoverDetails.hasPartnerCover())) {
                 discountPercentage = '7.5';
