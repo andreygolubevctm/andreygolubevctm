@@ -112,6 +112,7 @@
 <c:set var="openingHoursTimeZone"><content:get key="openingHoursTimeZone" /></c:set>
 
 <competition:octoberCompSettings />
+<competition:africaCompSettings />
 <health_v1:dual_pricing_settings />
 <health_v4:pyrr_campaign_settings />
 <agg_v1:remember_me_settings vertical="health" />
@@ -208,5 +209,6 @@
 		sm: '${pricePromiseSMHeight}',
 		md: '${pricePromiseMDHeight}',
 		lg: '${pricePromiseLGHeight}'
-	}
+	},
+	africaComp: <c:out value="${africaComp}" />
 }

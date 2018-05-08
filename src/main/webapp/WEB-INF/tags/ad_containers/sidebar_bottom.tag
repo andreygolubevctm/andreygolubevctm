@@ -2,4 +2,4 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<div class="ad-square" data-id="ad-sidebar-bottom"></div>
+<div class="ad-sidebar-bottom" data-id="ad-sidebar-bottom"></div>

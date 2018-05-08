@@ -5,4 +5,4 @@
 
 <%@ attribute name="customId" required="true"  rtexprvalue="true" description="The unique id of the custom ad container"%>
 
-<div class="ad-leaderboard" data-id="ad-custom-${customId}"></div>
+<div class="ad-custom-${customId}" data-id="ad-custom-${customId}"></div>
