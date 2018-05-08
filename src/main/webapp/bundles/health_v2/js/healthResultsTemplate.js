@@ -390,8 +390,8 @@
     function getDiscountText(result) {
         var discountText = result.hasOwnProperty('promo') && result.promo.hasOwnProperty('discountText') ? result.promo.discountText : '';
 
-        if (_.isEmpty(discountText) && result.info.FundCode === 'AUF') {
-            discountText = discountText.replace('%%discountPercentage%%', getDiscountPercentage('AUF')+'%');
+        if (result.info.FundCode === 'AUF') {
+            discountText = discountText.replace('%%discountPercentage%%', getDiscountPercentage(result.info.FundCode)+'%');
         }
 
         return discountText;

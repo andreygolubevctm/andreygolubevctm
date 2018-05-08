@@ -399,7 +399,7 @@
         var discountText = result.hasOwnProperty('promo') && result.promo.hasOwnProperty('discountText') ? result.promo.discountText : '';
 
         if (result.info.FundCode === 'AUF') {
-            discountText = discountText.replace('%%discountPercentage%%', getDiscountPercentage('AUF')+'%');
+            discountText = discountText.replace('%%discountPercentage%%', getDiscountPercentage(result.info.FundCode)+'%');
         }
 
         return discountText;
