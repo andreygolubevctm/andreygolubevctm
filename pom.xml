@@ -10,7 +10,11 @@
 
     <groupId>com.ctm.web</groupId>
     <artifactId>ctm</artifactId>
+<<<<<<< HEAD
     <version>1.105.0-RC0</version>
+=======
+    <version>1.105.0-RC2</version>
+>>>>>>> parent of 6c45db42c5... Merge pull request #2804 in CW/web_ctm from bugfix/HLT-5515-turn-off-distil to release
     <name>ctm</name>
     <description>Main web application</description>
     <packaging>war</packaging>
