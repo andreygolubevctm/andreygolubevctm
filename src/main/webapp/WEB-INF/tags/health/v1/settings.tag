@@ -145,7 +145,7 @@
 	</c:set>
 
 	<%-- Check and list funds who have special discount functionality required --%>
-	<jsp:useBean id="providersService" class="com.ctm.web.core.provider.services.ProviderService"/>
+	<jsp:useBean id="providerService" class="com.ctm.web.core.provider.services.ProviderService"/>
 	<c:set var="providerPropertyId" value="discountActive" />
 	<c:set var="AUFDiscount" value="${providerService.getProperty(pageContext.request, 1, providerPropertyId)}"/>
 
