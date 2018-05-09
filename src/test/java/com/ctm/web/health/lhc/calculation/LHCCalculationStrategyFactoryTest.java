@@ -18,6 +18,16 @@ public class LHCCalculationStrategyFactoryTest {
     private static final LocalDate DATE_OF_BIRTH = LocalDate.of(1981, 4, 1);
     private static final LocalDate BASE_DATE = LocalDate.of(2012, 7, 1);
 
+    public static LHCCalculationDetails getValidCalculationDetails() {
+        return new LHCCalculationDetails()
+                .age(Constants.LHC_EXEMPT_AGE_CUT_OFF)
+                .dateOfBirth(DATE_OF_BIRTH)
+                .baseDate(BASE_DATE)
+                .isContinuousCover(true)
+                .lhcDaysApplicable(365)
+                .isNeverHadCover(false);
+    }
+
     @Test
     public void givenDetails_whenContinuousCoverIsTrue_thenReturnCorrectCalculator() {
         LHCCalculationDetails lhcCalculationDetails = getValidCalculationDetails()
@@ -65,17 +75,6 @@ public class LHCCalculationStrategyFactoryTest {
 
         assertEquals(calculator.getClass(), NoCoverOnBaseDateCalculator.class);
     }
-
-    public static LHCCalculationDetails getValidCalculationDetails() {
-        return new LHCCalculationDetails()
-                .age(Constants.LHC_EXEMPT_AGE_CUT_OFF)
-                .dateOfBirth(DATE_OF_BIRTH)
-                .baseDate(BASE_DATE)
-                .isContinuousCover(true)
-                .lhcDaysApplicable(365)
-                .isNeverHadCover(false);
-    }
-
 
 
 }

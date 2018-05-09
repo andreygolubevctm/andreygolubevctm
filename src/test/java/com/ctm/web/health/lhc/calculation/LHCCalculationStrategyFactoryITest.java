@@ -8,9 +8,7 @@ import org.junit.Test;
 import java.time.LocalDate;
 import java.util.List;
 
-import static com.ctm.web.health.lhc.calculation.Constants.LHC_DAYS_WITHOUT_COVER_THRESHOLD;
-import static com.ctm.web.health.lhc.calculation.Constants.MAX_LHC_PERCENTAGE;
-import static com.ctm.web.health.lhc.calculation.Constants.MIN_LHC_PERCENTAGE;
+import static com.ctm.web.health.lhc.calculation.Constants.*;
 import static org.junit.Assert.assertEquals;
 
 public class LHCCalculationStrategyFactoryITest {

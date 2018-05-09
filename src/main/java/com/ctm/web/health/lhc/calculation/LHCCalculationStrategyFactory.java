@@ -17,9 +17,9 @@ public class LHCCalculationStrategyFactory {
     public static LHCCalculationStrategy getInstance(LHCCalculationDetails details) {
         LHCCalculationDetails updatedDetails = recalculateLHCDetails(details);
 
-        if (updatedDetails.isContinuousCover()) {
+        if (updatedDetails.getContinuousCover()) {
             return new AlwaysHeldContinuousCoverCalculator();
-        } else if (details.isNeverHadCover()) {
+        } else if (details.getNeverHadCover()) {
             return new NeverHeldCoverCalculator(updatedDetails.getAge());
         } else if (LHCDateCalculationSupport.heldCoverOnBaseDate(updatedDetails.getBaseDate(), updatedDetails.getCoverDates())) {
             return new HeldCoverOnBaseDateCalculator(updatedDetails.getLhcDaysApplicable(), updatedDetails.getCoverDates());

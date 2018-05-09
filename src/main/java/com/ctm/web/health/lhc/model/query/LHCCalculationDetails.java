@@ -25,9 +25,9 @@ public class LHCCalculationDetails {
     @Min(0)
     private long lhcDaysApplicable;
     @NotNull
-    private boolean continuousCover;
+    private Boolean continuousCover;
     @NotNull
-    private boolean neverHadCover;
+    private Boolean neverHadCover;
 
     public long getAge() {
         return age;
@@ -81,28 +81,28 @@ public class LHCCalculationDetails {
         return this;
     }
 
-    public boolean isContinuousCover() {
+    public Boolean getContinuousCover() {
         return continuousCover;
     }
 
-    public void setContinuousCover(boolean continuousCover) {
+    public void setContinuousCover(Boolean continuousCover) {
         this.continuousCover = continuousCover;
     }
 
-    public LHCCalculationDetails isContinuousCover(boolean continuousCover) {
+    public LHCCalculationDetails isContinuousCover(Boolean continuousCover) {
         setContinuousCover(continuousCover);
         return this;
     }
 
-    public boolean isNeverHadCover() {
+    public Boolean getNeverHadCover() {
         return neverHadCover;
     }
 
-    public void setNeverHadCover(boolean neverHadCover) {
+    public void setNeverHadCover(Boolean neverHadCover) {
         this.neverHadCover = neverHadCover;
     }
 
-    public LHCCalculationDetails isNeverHadCover(boolean neverHadCover) {
+    public LHCCalculationDetails isNeverHadCover(Boolean neverHadCover) {
         setNeverHadCover(neverHadCover);
         return this;
     }

@@ -59,7 +59,6 @@ public class LHCCalculationControllerITest {
             throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-
         JavaTimeModule module = new JavaTimeModule();
         mapper.registerModule(module);
 
@@ -214,6 +213,30 @@ public class LHCCalculationControllerITest {
                 .primary(getValidCalculationDetails())
                 .partner(getValidCalculationDetails().isContinuousCover(true)
                         .isNeverHadCover(true));
+
+        mockMvc.perform(post("/lhc/calculate/post.json")
+                .contentType(APPLICATION_JSON_UTF8)
+                .content(convertObjectToJsonBytes(lhcCalculationQuery)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void givenLHCCalculationRequest_whenPrimaryApplicantHasHadContinuousCoverNull_then400() throws Exception {
+
+        LHCCalculationQuery lhcCalculationQuery = new LHCCalculationQuery()
+                .primary(getValidCalculationDetails().isContinuousCover(null));
+
+        mockMvc.perform(post("/lhc/calculate/post.json")
+                .contentType(APPLICATION_JSON_UTF8)
+                .content(convertObjectToJsonBytes(lhcCalculationQuery)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void givenLHCCalculationRequest_whenPrimaryApplicantHasHadContinuousCover_neverHadCoverIsNull_then400() throws Exception {
+
+        LHCCalculationQuery lhcCalculationQuery = new LHCCalculationQuery()
+                .primary(getValidCalculationDetails().isNeverHadCover(null));
 
         mockMvc.perform(post("/lhc/calculate/post.json")
                 .contentType(APPLICATION_JSON_UTF8)
