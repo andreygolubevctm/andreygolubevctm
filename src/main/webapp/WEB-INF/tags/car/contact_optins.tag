@@ -8,44 +8,32 @@
 <%-- VARIABLES --%>
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
 
-<%-- Get Opt-in text from db and replace placeholders as required --%>
-<c:set var="optInText"><content:get key="optInText" /></c:set>
-
 <c:set var="websiteTermConfigToUse">
 	<content:get key="websiteTermsUrlConfig"/>
 </c:set>
+
+<c:choose>
+	<c:when test="${octoberComp}">
+		<c:set var="optInText"><content:get key="octoberCompOptInText" /></c:set>
+	</c:when>
+	<c:when test="${africaComp}">
+		<c:set var="optInText"><content:get key="africaCompOptInText" /></c:set>
+	</c:when>
+	<c:otherwise>
+		<c:set var="optInText"><content:get key="optInText" /></c:set>
+	</c:otherwise>
+</c:choose>
 
 <c:set var="websiteTermConfigPlaceHolder">${pageSettings.getSetting(websiteTermConfigToUse)}</c:set>
 <c:set var="privacyStmtPlaceHolder"><form_v1:link_privacy_statement overrideLabel="Privacy Policy<span class='sr-only'>Opens in new window</span>" /></c:set>
 <c:set var="fsgPlaceHolder">${pageSettings.getSetting('fsgUrl')}</c:set>
 <c:set var="companyNamePlaceHolder"><content:optin key="brandDisplayName" useSpan="true"/></c:set>
 
-<c:choose>
-	<c:when test="${octoberComp}">
-		<c:set var="optInText"><content:get key="octoberCompOptInText" /></c:set>
-		<c:set var="optInText" value="${fn:replace(
-											fn:replace(
-												fn:replace(
-													fn:replace(
-														fn:replace(optInText,
-															'%FinancialServicesGuidePlaceHolder%', fsgPlaceHolder),
-															'%vertical%', 'car'),
-															'%privacyStmtPlaceHolder%', privacyStmtPlaceHolder),
-															'%websiteTermConfigPlaceHolder%', websiteTermConfigPlaceHolder),
-															'%companyNamePlaceHolder%', companyNamePlaceHolder)}" />
-	</c:when>
-	<c:otherwise>
-		<c:set var="optInText" value="${fn:replace(
-											fn:replace(
-												fn:replace(
-													fn:replace(optInText,
-														'%FinancialServicesGuidePlaceHolder%', fsgPlaceHolder),
-														'%privacyStmtPlaceHolder%', privacyStmtPlaceHolder),
-														'%websiteTermConfigPlaceHolder%', websiteTermConfigPlaceHolder),
-														'%companyNamePlaceHolder%', companyNamePlaceHolder)}" />
-	</c:otherwise>
-</c:choose>
-
+<c:set var="optInText" value="${fn:replace(optInText, '%FinancialServicesGuidePlaceHolder%', fsgPlaceHolder)}" />
+<c:set var="optInText" value="${fn:replace(optInText, '%vertical%', 'car')}" />
+<c:set var="optInText" value="${fn:replace(optInText, '%privacyStmtPlaceHolder%', privacyStmtPlaceHolder)}" />
+<c:set var="optInText" value="${fn:replace(optInText, '%websiteTermConfigPlaceHolder%', websiteTermConfigPlaceHolder)}" />
+<c:set var="optInText" value="${fn:replace(optInText, '%companyNamePlaceHolder%', companyNamePlaceHolder)}" />
 
 <%-- HTML --%>
 <form_v2:fieldset legend="Terms and Conditions" id="${name}FieldSet">

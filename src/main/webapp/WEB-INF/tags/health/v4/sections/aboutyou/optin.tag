@@ -22,6 +22,9 @@
 	<c:when test="${octoberComp}">
         <c:set var="optInText"><content:get key="octoberCompOptInText" /></c:set>
 	</c:when>
+    <c:when test="${africaComp}">
+        <c:set var="optInText"><content:get key="africaCompOptInText" /></c:set>
+    </c:when>
 	<c:otherwise>
         <c:set var="specialOptInText">
             <content:get key="specialOptInText" />
