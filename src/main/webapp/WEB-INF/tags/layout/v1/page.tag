@@ -82,10 +82,6 @@ ${newPage.init(pageContext.request, pageSettings)}
 <!DOCTYPE html>
 <go:html>
 <head>
-<<<<<<< HEAD
-
-=======
->>>>>>> parent of 6c45db42c5... Merge pull request #2804 in CW/web_ctm from bugfix/HLT-5515-turn-off-distil to release
 	<%-- Google Optimise 360 --%>
 	<c:if test="${empty callCentre or not callCentre}">
 		<content:get key="googleOptimise360" />
