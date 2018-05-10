@@ -185,7 +185,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 					</c:if>
 
 				<ad_containers:main_top />
-				<banners:banner_top />
+				<coupon:banner />
 			</div>
 
 				<div class="container">

@@ -22,6 +22,8 @@
 		<c:otherwise>''</c:otherwise>
 	</c:choose>
 </c:set>
+
+<competition:africaCompSettings />
 {
 	isFromBrochureSite: <c:out value="${fromBrochure}"/>,
 	journeyStage: "<c:out value="${data['travel/journey/stage']}"/>",
@@ -39,5 +41,6 @@
 	},
 	ctmh: {
 		fBase: "${pageSettings.getSetting("handoverRootUrl")}${pageSettings.getContextFolder()}"
-	}
+	},
+	africaComp: <c:out value="${africaComp}" />
 }

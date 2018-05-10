@@ -1,11 +1,12 @@
 package com.ctm.web.core.web.go.xml;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * The Class SearchTerm.
  */
-public class SearchTerm {
+public class SearchTerm implements Serializable {
 	
 	/** The node name. */
 	String nodeName;

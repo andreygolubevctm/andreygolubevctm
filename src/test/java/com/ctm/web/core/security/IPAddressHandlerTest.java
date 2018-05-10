@@ -67,4 +67,52 @@ public class IPAddressHandlerTest {
         String result = ipAddressHandler.getIPAddress(request);
         assertEquals(remoteIP, result);
     }
+
+    @Test
+    public void testIsLocalIP1() throws Exception {
+        boolean result = ipAddressHandler.isLocalIP("127.0.0.1");
+        assertEquals(true, result);
+    }
+
+    @Test
+    public void testIsLocalIP2() throws Exception {
+        boolean result = ipAddressHandler.isLocalIP("0.0.0.0");
+        assertEquals(true, result);
+    }
+
+    @Test
+    public void testIsLocalIP3() throws Exception {
+        boolean result = ipAddressHandler.isLocalIP("0:0:0:0:0:0:0:1");
+        assertEquals(true, result);
+    }
+
+    @Test
+    public void testIsIPInRange1() throws Exception {
+        boolean result = ipAddressHandler.isIPInRange("202.56.60.0");
+        assertEquals(true, result);
+    }
+
+    @Test
+    public void testIsIPInRange2() throws Exception {
+        boolean result = ipAddressHandler.isIPInRange("202.56.60.120");
+        assertEquals(true, result);
+    }
+
+    @Test
+    public void testIsIPInRange3() throws Exception {
+        boolean result = ipAddressHandler.isIPInRange("202.56.61.255");
+        assertEquals(true, result);
+    }
+
+    @Test
+    public void testBelowMinIPInRange() throws Exception {
+        boolean result = ipAddressHandler.isIPInRange("202.56.59.255");
+        assertEquals(false, result);
+    }
+
+    @Test
+    public void testAboveMaxIPInRange() throws Exception {
+        boolean result = ipAddressHandler.isIPInRange("202.56.62.000");
+        assertEquals(false, result);
+    }
 }

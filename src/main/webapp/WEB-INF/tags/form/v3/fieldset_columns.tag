@@ -38,7 +38,7 @@
 	<div class="fieldset-column-side col-sm-3<c:if test="${not empty sideAbove}"> col-sm-push-9</c:if><c:if test="${not empty sideHidden}"> hidden-xs</c:if>">
 		<ad_containers:sidebar_top />
 		<jsp:invoke fragment="rightColumn" />
-		<banners:banner-tile />
+		<coupon:promo_tile />
 		<ad_containers:sidebar_bottom />
 	</div>
 </c:if>

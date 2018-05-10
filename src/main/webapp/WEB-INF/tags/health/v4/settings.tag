@@ -117,6 +117,7 @@
 <c:set var="AUFDiscount" value="${providerService.getProperty(pageContext.request, 1, providerPropertyId)}"/>
 
 <competition:octoberCompSettings />
+<competition:africaCompSettings />
 <health_v1:dual_pricing_settings />
 <health_v4:pyrr_campaign_settings />
 <agg_v1:remember_me_settings vertical="health" />
@@ -216,5 +217,6 @@
 	},
 	fundDiscounts : {
 		AUF : "${AUFDiscount}"
-	}
+	},
+	africaComp: <c:out value="${africaComp}" />
 }

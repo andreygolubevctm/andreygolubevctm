@@ -6,6 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration;
+import org.springframework.boot.autoconfigure.hazelcast.HazelcastAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
@@ -24,7 +25,7 @@ import javax.servlet.ServletException;
         "com.ctm.web.travel", "com.ctm.web.life", "com.ctm.web.health",
         "com.ctm.web.fuel", "com.ctm.web.bsb", "com.ctm.web.reward", "com.ctm.web.email",
         "com.ctm.web.lifebroker"})
-@EnableAutoConfiguration(exclude = RabbitAutoConfiguration.class)
+@EnableAutoConfiguration(exclude = { RabbitAutoConfiguration.class, HazelcastAutoConfiguration.class})
 @Configuration
 @EnableAsync
 public class Application extends SpringBootServletInitializer {
