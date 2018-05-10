@@ -27,7 +27,7 @@ public class IPAddressHandler {
     private int minIPAddress = 0;
     private int maxIPAddress = 0;
 	private static final List<String> LOCAL_IPS = Arrays.asList("127.0.0.1", "0.0.0.0", "0:0:0:0:0:0:0:1");
-	private static final List<String> LOCAL_IPS_PARTIAL = Arrays.asList("192.168.", "10.41.");
+	private static final List<String> LOCAL_IPS_PARTIAL = Arrays.asList("192.168.");
     private final ConfigService configService;
 
     @Autowired
@@ -79,12 +79,6 @@ public class IPAddressHandler {
 
 	public boolean isIPInRange(String ipStr) {
 		int ip = getIPAsInt(ipStr);
-		LOGGER.info("=====================================");
-		LOGGER.info("== IP: " + ipStr);
-		LOGGER.info("== INT: " + ip);
-		LOGGER.info("== MIN: " + minIPAddress);
-		LOGGER.info("== MAX: " + maxIPAddress);
-		LOGGER.info("=====================================");
 		return ip != 0 && (isLocalIP(ipStr) || (ip >= minIPAddress && ip <= maxIPAddress));
 	}
 
