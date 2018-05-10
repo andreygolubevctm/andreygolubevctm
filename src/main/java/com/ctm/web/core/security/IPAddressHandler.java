@@ -24,20 +24,21 @@ public class IPAddressHandler {
 
     private final static IPAddressHandler instance = new IPAddressHandler(new ConfigService());
     private final static String CIDR = "202.56.60.0/23";
-    private static int MIN_IP_ADDR = 0;
-    private static int MAX_IP_ADDR = 0;
+    private int minIPAddress = 0;
+    private int maxIPAddress = 0;
 	List<String> localIps = Arrays.asList("127.0.0.1", "0.0.0.0", "0:0:0:0:0:0:0:1");
     private final ConfigService configService;
 
     @Autowired
     public IPAddressHandler(ConfigService configService) {
-        this.configService = configService;
+    	this.configService = configService;
+    	setMinMaxIPs();
     }
 
     @SuppressWarnings("unused")
     @Deprecated
     public IPAddressHandler() {
-        this.configService = new ConfigService();
+        this(new ConfigService());
     }
 
     public static IPAddressHandler getInstance() {
@@ -76,9 +77,8 @@ public class IPAddressHandler {
     }
 
 	public boolean isIPInRange(String ipStr) {
-		setMinMaxIPs();
 		int ip = getIPAsInt(ipStr);
-		return ip > 0 && (isLocalIP(ipStr) || (ip >= MIN_IP_ADDR && ip <= MAX_IP_ADDR));
+		return ip > 0 && (isLocalIP(ipStr) || (ip >= minIPAddress && ip <= maxIPAddress));
 	}
 
     public boolean isLocalIP(String ip) {
@@ -106,14 +106,12 @@ public class IPAddressHandler {
 	}
 
 	private void setMinMaxIPs() {
-		if(MIN_IP_ADDR == 0 || MAX_IP_ADDR == 0) {
-			String ip = CIDR.split("/")[0];
-			int range = Integer.valueOf(CIDR.split("/")[1]);
-			int addr = getIPAsInt(ip);
-			int mask = (-1) << (32 - range);
-			MIN_IP_ADDR = addr & mask;
-			MAX_IP_ADDR = MIN_IP_ADDR + (~mask);
-		}
+		String ip = CIDR.split("/")[0];
+		int range = Integer.valueOf(CIDR.split("/")[1]);
+		int addr = getIPAsInt(ip);
+		int mask = (-1) << (32 - range);
+		minIPAddress = addr & mask;
+		maxIPAddress = minIPAddress + (~mask);
 	}
 
     private boolean returnFromXForward(HttpServletRequest request) {
