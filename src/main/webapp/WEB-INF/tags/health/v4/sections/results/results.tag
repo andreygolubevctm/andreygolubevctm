@@ -33,7 +33,7 @@
         <health_v4_results:filters_update_widget_template />
 
         <div class="hidden-xs hidden-sm">
-            <banners:banner-tile />
+            <coupon:promo_tile />
         </div>
     </jsp:attribute>
 
