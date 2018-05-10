@@ -24,6 +24,8 @@
 	</c:when>
     <c:when test="${africaComp}">
         <c:set var="optInText"><content:get key="africaCompOptInText" /></c:set>
+        <agg_v1:safari_promo_terms_link />
+        <c:set var="optInText" value="${fn:replace(optInText, '%winSafariPromoTermsPlaceHolder%', winSafariPromoTermsPlaceHolder)}" />
     </c:when>
 	<c:otherwise>
         <c:set var="specialOptInText">
