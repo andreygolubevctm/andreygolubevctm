@@ -27,9 +27,9 @@ public class LifebrokerLeadsServiceIT {
 
     @Test
     public void getLeadResponse() {
-        LifebrokerLeadResponse lifebrokerLeadResponse = lifeBrokerLeadsService.getLeadResponse("1234567", "john.doe@email.com", "123456789", "4037", "John Doe", "CTMREF01");
-        Assert.assertNull(lifebrokerLeadResponse.getMessage());
-        Assert.assertNotNull(lifebrokerLeadResponse.getClientReference());
+            LifebrokerLeadResponse lifebrokerLeadResponse = lifeBrokerLeadsService.getLeadResponse("1234567", "john.doe@email.com", "123456789", "4037", "John Doe", "CTMREF01");
+            Assert.assertNull(lifebrokerLeadResponse.getMessage());
+            Assert.assertNotNull(lifebrokerLeadResponse.getClientReference());
     }
 
     @Configuration
