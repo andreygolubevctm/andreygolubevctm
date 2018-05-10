@@ -19,6 +19,7 @@
 		roleSearch="(member={0})"
 	/>
 
-	<Valve className="com.ctm.tomcat.authenticator.HazelcastFormAuthenticator"/>
-	<Manager className="com.hazelcast.session.HazelcastSessionManager" sticky="false" deferredWrite="true" writeStrategy="twoPhaseCommit"/>
+	<!-- This is deployed on environments that require hazelcast session replication -->
+	<!--<Valve className="com.ctm.tomcat.authenticator.HazelcastFormAuthenticator"/>-->
+	<!--<Manager className="com.hazelcast.session.HazelcastSessionManager" sticky="false" deferredWrite="true" writeStrategy="twoPhaseCommit"/>-->
 </Context>
