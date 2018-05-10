@@ -22,11 +22,11 @@ public class IPAddressHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IPAddressHandler.class);
 
-    private final static IPAddressHandler instance = new IPAddressHandler(new ConfigService());
-    private final static String CIDR = "202.56.60.0/23";
+    private static final IPAddressHandler instance = new IPAddressHandler(new ConfigService());
+    private static final String CIDR = "202.56.60.0/23";
     private int minIPAddress = 0;
     private int maxIPAddress = 0;
-	List<String> localIps = Arrays.asList("127.0.0.1", "0.0.0.0", "0:0:0:0:0:0:0:1");
+	private static final List<String> LOCAL_IPS = Arrays.asList("127.0.0.1", "0.0.0.0", "0:0:0:0:0:0:0:1");
     private final ConfigService configService;
 
     @Autowired
@@ -82,7 +82,7 @@ public class IPAddressHandler {
 	}
 
     public boolean isLocalIP(String ip) {
-    	return ip.startsWith("192.168.") || localIps.stream().anyMatch(ips -> ips.equals(ip));
+    	return ip.startsWith("192.168.") || LOCAL_IPS.stream().anyMatch(ips -> ips.equals(ip));
 	}
 
     public int getIPAsInt(String ipStr) {
