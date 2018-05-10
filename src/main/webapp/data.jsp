@@ -8,7 +8,6 @@
 
 <c:import var="manifestContent" url="/META-INF/MANIFEST.MF"/>
 <c:set var="buildIdentifier"><core_v1:buildIdentifier></core_v1:buildIdentifier></c:set>
-<c:set var="remoteAddr" value="${ipAddressHandler.getIPAddress(pageContext.request)}"/>
 
 <jsp:useBean id="sessionDataService" class="com.ctm.web.core.services.SessionDataService" scope="application"/>
 <jsp:useBean id="applicationService" class="com.ctm.web.core.services.ApplicationService" scope="page"/>

@@ -72,7 +72,7 @@ public class IPAddressHandler {
 
     public boolean isLocalRequest(HttpServletRequest request) {
         String ip = getIPAddress(request);
-        return ipIsValid(ip) && (isLocalIP(ip) || isIPInRange(ip));
+        return isLocalIP(ip) || isIPInRange(ip);
     }
 
 	public boolean isIPInRange(String ipStr) {
@@ -97,7 +97,7 @@ public class IPAddressHandler {
 					| ((ip[2] << 8) & 0xFF00)
 					| (ip[3] & 0xFF);
 		} else {
-    		return 01;
+    		return 0;
 		}
 	}
 
