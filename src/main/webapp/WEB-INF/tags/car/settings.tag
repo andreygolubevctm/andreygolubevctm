@@ -41,6 +41,7 @@
 
 <car:lead_capture_settings />
 <competition:octoberCompSettings />
+<competition:africaCompSettings />
 
 {
 	octoberComp: <c:out value="${octoberComp}" />,
@@ -99,5 +100,6 @@
 		exoticHeading : <c:choose><c:when test="${not empty exoticHeading}">"${exoticHeading}"</c:when><c:otherwise>""</c:otherwise></c:choose>,
 		exoticCopy : <c:choose><c:when test="${not empty exoticCopy}">"${exoticCopy}"</c:when><c:otherwise>""</c:otherwise></c:choose>
 	},
-	IBOXquoteNumber: null
+	IBOXquoteNumber: null,
+	africaComp: <c:out value="${africaComp}" />
 }
