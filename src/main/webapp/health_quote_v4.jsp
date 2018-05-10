@@ -205,6 +205,9 @@
 
                 <div class="visible-xs">
                     <health_v4:price_promise step="start" />
+                    <div class="coupon-tile-xs">
+                        <coupon:promo_tile />
+                    </div>
                 </div>
 
                 <health_v4:dual_pricing_templates />

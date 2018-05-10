@@ -9,7 +9,8 @@
 	var events = {
 		coupon: {
 			COUPON_LOADED : "COUPON_LOADED",
-            PADDING_TOP_CHANGED : "PADDING_TOP_CHANGED"
+            PADDING_TOP_CHANGED : "PADDING_TOP_CHANGED",
+            COUPON_RENDER_AFTER_ADS: "COUPON_RENDER_AFTER_ADS"
 		}
 	};
 
@@ -27,7 +28,8 @@
 		isCouponValidAndSubmitted = false,
         subscriptionHandles = {},
 		defaultResultsDockedTop = 147, // Hard coded in: health_v4\less\results\resultsHeaderBar.less applied to ".result"
-		forceFilter = true; // Set to true to allow filter on coupons email campaigns
+		forceFilter = true, // Set to true to allow filter on coupons email campaigns
+		renderAfterAds = false;
 
 	function init() {
 
@@ -76,6 +78,13 @@
 			meerkat.messaging.unsubscribe(meerkatEvents.device.RESIZE_DEBOUNCED);
 			dealWithAddedCouponHeight();
 		});
+
+        meerkat.messaging.subscribe(events.coupon.COUPON_RENDER_AFTER_ADS, function() {
+            renderAfterAds = true;
+            loadCoupon('filter', null, function successCallBack() {
+                renderCouponBanner();
+            });
+        });
 
 		$(document).on('headerAffixed', function() {
 			dealWithAddedCouponHeight();
@@ -192,10 +201,7 @@
             $('#contactForm').find('.quoteSnapshot').hide();
             $('.callCentreHelp').hide();
 
-            meerkat.modules.bannerPlacement.render({
-                content: { top: currentCoupon['contentBanner'], tile: currentCoupon['contentTile'] },
-				type: 'coupon'
-            });
+            _renderCoupon();
 
             $('body').addClass('couponShown');
 
@@ -208,16 +214,36 @@
             $('.coupon-banner-container, .coupon-tile-container').html('');
             $('body').removeClass('couponShown');
 
-            if (_.has(meerkat.modules, 'bannerPlacement')) {
-                meerkat.modules.bannerPlacement.unRender({
-                    type: 'coupon'
-                });
-            }
+            _unRenderCoupon();
         }
 
 		dealWithAddedCouponHeight();
 
 	}
+
+	function _renderCoupon() {
+		var hasPromo = $('.ad-main-top[data-id=ad-main-top]:visible').children().length === 1,
+			$bannerTop = $('.coupon-banner-container'),
+			$bannerTile = meerkat.modules.deviceMediaState.get() === 'xs' ? $('.coupon-tile-xs .coupon-tile-container') : $('.journeyEngineSlide.active').find('.coupon-tile-container'),
+			$banner = hasPromo ? $bannerTile : $bannerTop,
+			content = hasPromo ? currentCoupon['contentTile'] : currentCoupon['contentBanner'];
+
+		$banner.html(content);
+
+		if (hasPromo) {
+			_unRenderCoupon('top');
+		}
+	}
+
+    function _unRenderCoupon(placement) {
+        var hasPromo = $('.ad-main-top[data-id=ad-main-top]:visible').children().length === 1,
+			$bannerTop = $('.coupon-banner-container'),
+            $bannerTile = $('.journeyEngineSlide.active').find('.coupon-tile-container'),
+			$banner = !_.isUndefined(placement) ? (placement === 'top' ? $bannerTop : $bannerTile) :
+            	(hasPromo ? $bannerTile : $bannerTop);
+
+        $banner.empty();
+    }
 
 	function dealWithAddedCouponHeight() {
 		// If we have a visible coupon.
@@ -410,6 +436,10 @@
         return $couponViewedField.length === 1 && $couponViewedField.val() !== '' ? $couponViewedField.val() : null;
 	}
 
+	function doRenderAfterAds() {
+		return renderAfterAds;
+	}
+
 	meerkat.modules.register("coupon", {
 		init: init,
 		events: events,
@@ -419,7 +449,8 @@
 		renderCouponBanner: renderCouponBanner,
         triggerPopup: triggerPopup,
         dealWithAddedCouponHeight: dealWithAddedCouponHeight,
-        getCouponViewedId: getCouponViewedId
+        getCouponViewedId: getCouponViewedId,
+        doRenderAfterAds: doRenderAfterAds
 	});
 
 })(jQuery);

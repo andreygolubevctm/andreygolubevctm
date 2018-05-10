@@ -41,6 +41,9 @@ ${newPage.init(pageContext.request, pageSettings)}
 <c:if test="${empty displayNavigationBar}"><c:set var="displayNavigationBar" value="${true}" /></c:if>
 <c:set var="separateJS" value="${param.separateJS eq 'true'}"/>
 
+<%-- Comment to render Distils script injection harmless as presently breaking NXQ/UAT (HLT-5515) --%>
+<c:set var="distilKillerComment" value="${pageSettings.getSetting('distilKillerComment')}" />
+
 <%-- Whether we want to show logging or not (for use on Production) --%>
 <c:set var="showLogging" value="${isDev or (not empty param.showLogging && param.showLogging == 'true')}" />
 
@@ -82,6 +85,11 @@ ${newPage.init(pageContext.request, pageSettings)}
 <!DOCTYPE html>
 <go:html>
 <head>
+	<%-- Include comment which make Distils code injection on NXQ harmless (HLT-5515) --%>
+	<c:if test="${not empty distilKillerComment}">
+		<c:out value="${distilKillerComment}" />
+	</c:if>
+
 	<%-- Google Optimise 360 --%>
 	<c:if test="${empty callCentre or not callCentre}">
 		<content:get key="googleOptimise360" />
@@ -184,7 +192,8 @@ ${newPage.init(pageContext.request, pageSettings)}
 						<content:get key="premiumIncreaseContent" />
 					</c:if>
 
-				<banners:banner_top />
+				<ad_containers:main_top />
+				<coupon:banner />
 			</div>
 
 				<div class="container">

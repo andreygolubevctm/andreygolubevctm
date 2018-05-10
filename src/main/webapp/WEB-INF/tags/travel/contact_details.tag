@@ -40,7 +40,9 @@
 	</form_v2:row>
 </c:if>
 
-<form_v2:row className="travel-contact-details-optin-sgroup">
+<ad_containers:custom customId="contact-details" />
+
+ <form_v2:row className="travel-contact-details-optin-sgroup">
 	<%-- Mandatory agreement to privacy policy --%>
 	<c:set var="brandedName"><content:optin key="brandDisplayName" useSpan="true"/></c:set>
 	<c:set var="optinCopy">
