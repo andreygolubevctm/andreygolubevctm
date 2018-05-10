@@ -230,7 +230,7 @@
 	
 	function transformTabs(tabs) {
 		var lastCoverTabLevel = $('#' + meerkat.site.vertical + '_lastCoverTabLevel').val();
-		if (lastCoverTabLevel) {
+		if (lastCoverTabLevel && isTabValueInTabs(lastCoverTabLevel, tabs)) {
 			for (var i = 0; i < tabs.length; i++) {
 				var rankingFilter = tabs[i].rankingFilter;
 				tabs[i].defaultTab = rankingFilter === lastCoverTabLevel;
@@ -238,6 +238,12 @@
 		}
 		return tabs;
 	}
+
+    function isTabValueInTabs(value, tabs) {
+        return tabs.filter(function (tab) {
+            return tab.rankingFilter === value;
+        }).length > 0;
+    }
 
 	/**
 	 * Build the DOM structure for the current tabs.

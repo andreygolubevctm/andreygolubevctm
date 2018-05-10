@@ -138,7 +138,9 @@
 			C: 'Comprehensive',
 			M: 'Mid Range',
 			B: 'Basic',
-			I: 'International',
+			CI: 'Comprehensive',
+            MI: 'Mid Range',
+            BI: 'Basic',
 			D: 'Domestic'
 		};
 	}
@@ -175,7 +177,7 @@
 	 */
 	function updateSettings() {
 		if(meerkat.modules.coverLevelTabs.isEnabled()) {
-			meerkat.modules.coverLevelTabs.resetView(getActiveTabSet());
+			meerkat.modules.coverLevelTabs.resetView(getActiveTabSet(meerkat.modules.travel.isAmtDomesticOnLoadJourney()));
 		}
 	}
 
