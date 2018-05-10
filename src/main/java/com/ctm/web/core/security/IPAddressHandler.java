@@ -79,6 +79,12 @@ public class IPAddressHandler {
 
 	public boolean isIPInRange(String ipStr) {
 		int ip = getIPAsInt(ipStr);
+		LOGGER.info("=====================================");
+		LOGGER.info("== IP: " + ipStr);
+		LOGGER.info("== INT: " + ip);
+		LOGGER.info("== MIN: " + minIPAddress);
+		LOGGER.info("== MAX: " + maxIPAddress);
+		LOGGER.info("=====================================");
 		return ip != 0 && (isLocalIP(ipStr) || (ip >= minIPAddress && ip <= maxIPAddress));
 	}
 
