@@ -39,6 +39,8 @@
 				WHEN a.ProviderCode = 'FAME' THEN 'Famous'
 				WHEN a.ProviderCode = 'ENSU' THEN 'Ensurance'
 				WHEN a.ProviderCode = 'IBOX' THEN 'Insurance Box'
+		        WHEN a.ProviderCode = 'PROG' THEN 'Progressive'
+                WHEN a.ProviderCode = 'HUDD' THEN 'Huddle'
 				ELSE 'Budget'
 				END
 			) AS Name
