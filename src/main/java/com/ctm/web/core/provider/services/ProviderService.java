@@ -69,7 +69,8 @@ public class ProviderService {
 
 		ProviderDao providerDao = new ProviderDao();
 		try {
-			return providerDao.getById(providerId, currDate);
+			Provider provider = providerDao.getById(providerId, currDate);
+			return providerDao.applyProviderProperties(provider, currDate);
 		}
 		catch (DaoException e) {
 			LOGGER.error("Error fetching provider by ID {}", kv("providerId", providerId), e);
@@ -81,6 +82,8 @@ public class ProviderService {
 	public static String getProperty(HttpServletRequest request, int providerId, String propertyId) {
 		Provider provider = getProvider(request, providerId);
 		if(provider != null) {
+			System.out.println("@@@ Provider FOund: " + providerId + ", " + propertyId);
+			System.out.println("@@@ Provider: " + provider.getPropertyDetail(propertyId));
 			return provider.getPropertyDetail(propertyId);
 		}
 		return null;

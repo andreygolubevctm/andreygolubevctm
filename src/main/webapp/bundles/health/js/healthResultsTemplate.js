@@ -391,7 +391,8 @@
             result.promo.discountText : '';
 
         if (result.info.FundCode === 'AUF') {
-            discountText = !fundDiscountExists(result.info.FundCode) ? '' : discountText.replace('%%discountPercentage%%', getDiscountPercentage(result.info.FundCode)+'%');
+        	var discount = getDiscountPercentage(result.info.FundCode);
+            discountText = _.isEmpty(discount) || !fundDiscountExists(result.info.FundCode) ? '' : discountText.replace('%%discountPercentage%%', discount+'%');
         }
 
         return discountText;
