@@ -178,13 +178,13 @@
 		 var level;
 
 		 if (_.isBoolean(result.isDomestic) ) {
-			 level = result.isDomestic === true ? 'D' : 'I';
+			 level = result.isDomestic === true ? 'D' : getCoverLevelForSingleTrip(tripInfo, false) + 'I';
 			 meerkat.modules.coverLevelTabs.incrementCount(level);
 			 return level;
 		 }
 
          if (result.des.indexOf('Australia') == -1 && result.des.indexOf('Domestic') == -1) {
-             level = 'I';
+             level = getCoverLevelForSingleTrip(tripInfo, false) + 'I';
              meerkat.modules.coverLevelTabs.incrementCount(level);
              return level;
          }
