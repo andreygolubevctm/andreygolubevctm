@@ -82,8 +82,6 @@ public class ProviderService {
 	public static String getProperty(HttpServletRequest request, int providerId, String propertyId) {
 		Provider provider = getProvider(request, providerId);
 		if(provider != null) {
-			System.out.println("@@@ Provider FOund: " + providerId + ", " + propertyId);
-			System.out.println("@@@ Provider: " + provider.getPropertyDetail(propertyId));
 			return provider.getPropertyDetail(propertyId);
 		}
 		return null;
