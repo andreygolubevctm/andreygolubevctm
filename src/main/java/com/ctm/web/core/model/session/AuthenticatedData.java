@@ -6,8 +6,13 @@ import com.ctm.web.core.web.go.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
@@ -16,8 +21,9 @@ import static com.ctm.commonlogging.common.LoggingArguments.kv;
  *
  */
 
-public class AuthenticatedData extends Data {
+public class AuthenticatedData extends Data implements Serializable {
 
+	private static final long serialVersionUID = 1L;
 	private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticatedData.class);
 
 	// store the roles in java instead of data bucket
@@ -99,4 +105,20 @@ public class AuthenticatedData extends Data {
 				", xml=" + this.getXML() +
 				'}';
 	}
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AuthenticatedData)) return false;
+        if (!super.equals(o)) return false;
+        AuthenticatedData that = (AuthenticatedData) o;
+        return Objects.equals(getSimplesUserRoles(), that.getSimplesUserRoles()) &&
+                Objects.equals(getGetNextMessageRules(), that.getGetNextMessageRules());
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(super.hashCode(), getSimplesUserRoles(), getGetNextMessageRules());
+    }
 }
