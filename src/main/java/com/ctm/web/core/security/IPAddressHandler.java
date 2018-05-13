@@ -11,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-import java.util.Arrays;
 
 @Component
 public class IPAddressHandler {
@@ -22,23 +20,18 @@ public class IPAddressHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IPAddressHandler.class);
 
-    private static final IPAddressHandler instance = new IPAddressHandler(new ConfigService());
-    private static final String CIDR = "202.56.60.0/23";
-    private int minIPAddress = 0;
-    private int maxIPAddress = 0;
-	private static final List<String> LOCAL_IPS = Arrays.asList("127.0.0.1", "0.0.0.0", "0:0:0:0:0:0:0:1");
+    private final static IPAddressHandler instance = new IPAddressHandler(new ConfigService());
     private final ConfigService configService;
 
     @Autowired
     public IPAddressHandler(ConfigService configService) {
-    	this.configService = configService;
-    	setMinMaxIPs();
+        this.configService = configService;
     }
 
     @SuppressWarnings("unused")
     @Deprecated
     public IPAddressHandler() {
-        this(new ConfigService());
+        this.configService = new ConfigService();
     }
 
     public static IPAddressHandler getInstance() {
@@ -70,49 +63,6 @@ public class IPAddressHandler {
             return request.getRemoteAddr();
         }
     }
-
-    public boolean isLocalRequest(HttpServletRequest request) {
-        String ip = getIPAddress(request);
-        return isLocalIP(ip) || isIPInRange(ip);
-    }
-
-	public boolean isIPInRange(String ipStr) {
-		int ip = getIPAsInt(ipStr);
-		return ip > 0 && (isLocalIP(ipStr) || (ip >= minIPAddress && ip <= maxIPAddress));
-	}
-
-    public boolean isLocalIP(String ip) {
-    	return ip.startsWith("192.168.") || LOCAL_IPS.stream().anyMatch(ips -> ips.equals(ip));
-	}
-
-    public int getIPAsInt(String ipStr) {
-    	if(ipIsValid(ipStr)) {
-			int[] ip = new int[4];
-			String[] parts = ipStr.split("\\.");
-			for (int i = 0; i < 4; i++) {
-				ip[i] = Integer.parseInt(parts[i]);
-			}
-			return ((ip[0] << 24) & 0xFF000000)
-					| ((ip[1] << 16) & 0xFF0000)
-					| ((ip[2] << 8) & 0xFF00)
-					| (ip[3] & 0xFF);
-		} else {
-    		return 0;
-		}
-	}
-
-	private boolean ipIsValid(String ip) {
-    	return ip.matches("^(\\d{1,3}\\.){3}(\\d{1,3})$");
-	}
-
-	private void setMinMaxIPs() {
-		String ip = CIDR.split("/")[0];
-		int range = Integer.valueOf(CIDR.split("/")[1]);
-		int addr = getIPAsInt(ip);
-		int mask = (-1) << (32 - range);
-		minIPAddress = addr & mask;
-		maxIPAddress = minIPAddress + (~mask);
-	}
 
     private boolean returnFromXForward(HttpServletRequest request) {
         try {
