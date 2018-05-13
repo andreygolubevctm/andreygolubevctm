@@ -78,7 +78,7 @@ public class IPAddressHandler {
 
 	public boolean isIPInRange(String ipStr) {
 		int ip = getIPAsInt(ipStr);
-		return ip != 0 && (isLocalIP(ipStr) || (ip >= minIPAddress && ip <= maxIPAddress));
+		return ip > 0 && (isLocalIP(ipStr) || (ip >= minIPAddress && ip <= maxIPAddress));
 	}
 
     public boolean isLocalIP(String ip) {
