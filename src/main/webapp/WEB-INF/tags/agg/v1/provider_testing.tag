@@ -23,7 +23,7 @@
 <%-- Make sure we're in a proper environment to test this --%>
 <c:choose>
 	<c:when test="${empty param[keyLabel] && (environmentService.getEnvironmentAsString() == 'localhost' || environmentService.getEnvironmentAsString() == 'NXI')}">
-		<c:if test="${ipAddressHandler.isLocalRequest(pageContext.request)}">
+		<c:if test="${fn:startsWith(ipAddressHandler.getIPAddress(pageContext.request),'192.168.') or fn:startsWith(ipAddressHandler.getIPAddress(pageContext.request),'10.4') or fn:startsWith(ipAddressHandler.getIPAddress(pageContext.request),'0:0:0:') or ipAddressHandler.getIPAddress(pageContext.request) == '127.0.0.1'}">
 			<c:if test="${hideSelector eq false}">
 				<form_v2:fieldset_columns displayFullWidth="${false}">
 					<jsp:attribute name="rightColumn">

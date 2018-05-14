@@ -17,10 +17,9 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {LifebrokerLeadsServiceIT.Config.class, Jackson2ObjectMapperBuilder.class, DefaultJacksonMappers.class, AsyncRestTemplateConfig.class})
+@ContextConfiguration(classes = {LifebrokerLeadsServiceIntegrationTest.Config.class, Jackson2ObjectMapperBuilder.class, DefaultJacksonMappers.class, AsyncRestTemplateConfig.class})
 @TestPropertySource("classpath:application.properties")
-@Ignore // If lifebroker is down then this test fails builds
-public class LifebrokerLeadsServiceIT {
+public class LifebrokerLeadsServiceIntegrationTest {
 
     @Autowired
     private LifebrokerLeadsService lifeBrokerLeadsService;
