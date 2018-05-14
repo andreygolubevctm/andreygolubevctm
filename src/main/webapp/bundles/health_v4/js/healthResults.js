@@ -5,7 +5,7 @@
         log = meerkat.logging.info,
         selectedProduct = null,
         previousBreakpoint,
-        best_price_count = 10,
+        best_price_count = 14,
         isLhcApplicable = 'N',
         selectedBenefitsList = [],
         premiumIncreaseContent = $('.healthPremiumIncreaseContent'),
@@ -296,7 +296,13 @@
 
         // Model updated, make changes before rendering
         meerkat.messaging.subscribe(Results.model.moduleEvents.RESULTS_MODEL_UPDATE_BEFORE_FILTERSHOW, function modelUpdated() {
-        	Results.model.popularProducts = Results.model.returnedProducts.filter(function(product) { return product.info && true === product.info.popularProduct; });
+        	Results.model.popularProducts = Results.model.returnedProducts
+                .filter(function(product) { return product.info && true === product.info.popularProduct; })
+                .map(function(popularProduct, index) {
+                    var updatedProduct = Object.assign({}, popularProduct);
+                    updatedProduct.info.rank = popularProduct.info.popularProductsRank;
+                    return updatedProduct;
+                });
             Results.model.returnedProducts = _massageResultsObject(Results.model.returnedProducts);
             Results.model.sortedProductsAll = Results.model.returnedProducts;
 	        Results.model.filteredProductsAll = Results.model.returnedProducts;
@@ -1018,7 +1024,7 @@
             data["rank_coPayment" + position] = excessesAndCoPayment.coPayment;
             data["isPopularProductsSelected"] = $(':input[name=health_popularProducts]').val();
         }
-
+        console.warn('preparing rank data');
         return data;
     }
 

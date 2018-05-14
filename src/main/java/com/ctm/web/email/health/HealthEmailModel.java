@@ -28,5 +28,6 @@ public class HealthEmailModel {
     private String situationType;
     private List<String> altPremiums;
     private List<String> altPremiumLabels;
+    private List<Boolean> popularProducts;
 }
 
