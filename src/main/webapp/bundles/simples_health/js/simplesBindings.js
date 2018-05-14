@@ -52,7 +52,8 @@
         $nzMedicareRulesToggle,
         $nzMedicareRulesCopy,
         $pricePromisePromotionDialogue,
-        $affiliatesDialogue;
+        $affiliatesDialogue,
+        $dialogue106;
 
     function init() {
         $(document).ready(function () {
@@ -110,6 +111,7 @@
             $nzMedicareRulesCopy = $nzMedicareRules.find('.copy:first');
             $pricePromisePromotionDialogue = $('.simples-dialogue-101');
             $affiliatesDialogue = $('.simples-dialogue-105');
+            $dialogue106 = $('.simples-dialogue-106');
 
             // Handle pre-filled
             populatePrevAssignedRadioBtnGroupValue();
@@ -222,7 +224,7 @@
             toggleFollowupCallDialog();
             toggleReferralCallDialog();
             toggleWebChatDialog();
-
+            toggleAfricaCompDialog();
         });
         // Handle callback checkbox 68
         $followupCallCheckbox.on('change', toggleFollowupCallDialog);
@@ -484,6 +486,11 @@
         if (isWebChat) {
             $referralCallCheckboxDialogue.toggle(!isWebChat);
         }
+    }
+
+    function toggleAfricaCompDialog() {
+        var healthContactTypeSelection = $healthContactTypeField.val();
+        $dialogue106.toggle(healthContactTypeSelection === 'inbound' || healthContactTypeSelection.indexOf('trail'));
     }
 
 	function webChatInProgress() {
