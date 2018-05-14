@@ -62,7 +62,7 @@ See [Logo Sprites - Web CTM](http://confluence:8090/display/CM/Logo+Sprites+-+We
 ## Environments
 WebCTM has a number of build environments. When code is pushed to a feature branch and a Pull Request is opened this will trigger a feature branch being built.
 
-* [DEV (NXI)](http://web-ctm-dev.ctm.cloud.local/launcher/)
+* [DEV (NXI)](http://ctm-vpc-41-web-ctm-01.dev.comparethemarket.cloud/launcher/)
 * [UAT (NXQ)](http://nxq.secure.comparethemarket.com.au/ctm/)
 * [PREPROD (PRELIVE)](https://prelive.secure.comparethemarket.com.au/ctm/)
 * [PROD](https://secure.comparethemarket.com.au/ctm/)
