@@ -3,6 +3,8 @@ package com.ctm.web.health.lhc.calculation;
 import com.ctm.web.health.lhc.model.query.LHCCalculationDetails;
 import com.ctm.web.health.lhc.model.response.LHCBaseDateDetails;
 
+import java.time.LocalDate;
+
 /**
  * Factory for creating instances of {@link LHCCalculationStrategy} from the given {@link LHCCalculationDetails}.
  *
@@ -24,7 +26,7 @@ public class LHCCalculationStrategyFactory {
         } else if (LHCDateCalculationSupport.heldCoverOnBaseDate(updatedDetails.getBaseDate(), updatedDetails.getCoverDates())) {
             return new HeldCoverOnBaseDateCalculator(updatedDetails.getLhcDaysApplicable(), updatedDetails.getCoverDates());
         } else {
-            return new NoCoverOnBaseDateCalculator(updatedDetails.getLhcDaysApplicable(), updatedDetails.getAge(), updatedDetails.getCoverDates());
+            return new NoCoverOnBaseDateCalculator(updatedDetails.getBaseDate(), updatedDetails.getCoverDates(),LocalDate.now());
         }
     }
 

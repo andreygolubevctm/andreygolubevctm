@@ -24,8 +24,8 @@ public class NeverHeldCoverCalculator implements LHCCalculationStrategy {
     }
 
     @Override
-    public int calculateLHCPercentage() {
+    public long calculateLHCPercentage() {
         long lhcPercentage = Math.max(0, (applicantAge - Constants.LHC_REQUIREMENT_AGE) * 2);
-        return Long.valueOf(Math.min(lhcPercentage, MAX_LHC_PERCENTAGE)).intValue();
+        return Math.min(lhcPercentage, MAX_LHC_PERCENTAGE);
     }
 }

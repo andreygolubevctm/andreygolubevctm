@@ -10,5 +10,5 @@ public interface LHCCalculationStrategy {
      *
      * @return the LHC Percentage
      */
-    int calculateLHCPercentage();
+    long calculateLHCPercentage();
 }

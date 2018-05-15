@@ -8,14 +8,14 @@ import com.ctm.web.health.lhc.model.query.LHCCalculationDetails;
  * <p>
  * This implementation always returns {@link Constants#MIN_LHC_PERCENTAGE}.
  *
- * @see LHCCalculationDetails#isContinuousCover()
+ * @see LHCCalculationDetails#getContinuousCover()
  */
 public class AlwaysHeldContinuousCoverCalculator implements LHCCalculationStrategy {
 
     AlwaysHeldContinuousCoverCalculator() { /* Intentionally Empty package private constructor. */ }
 
     @Override
-    public int calculateLHCPercentage() {
+    public long calculateLHCPercentage() {
         return Constants.MIN_LHC_PERCENTAGE;
     }
 }

@@ -22,7 +22,7 @@ public class HeldCoverOnBaseDateCalculatorTest {
                 new CoverDateRange(LocalDate.of(2016, 5, 10), LocalDate.of(2017, 5, 9))
         );
 
-        int lhcPercentage = new HeldCoverOnBaseDateCalculator(730 + LHC_DAYS_WITHOUT_COVER_THRESHOLD, threeSixtyFiveDaysOfCover).calculateLHCPercentage();
+        long lhcPercentage = new HeldCoverOnBaseDateCalculator(730 + LHC_DAYS_WITHOUT_COVER_THRESHOLD, threeSixtyFiveDaysOfCover).calculateLHCPercentage();
 
         assertEquals(2, lhcPercentage);
     }
@@ -33,7 +33,7 @@ public class HeldCoverOnBaseDateCalculatorTest {
                 new CoverDateRange(LocalDate.of(2016, 5, 10), LocalDate.of(2017, 5, 9))
         );
 
-        int lhcPercentage = new HeldCoverOnBaseDateCalculator(LHC_DAYS_WITHOUT_COVER_THRESHOLD - 1, threeSixtyFiveDaysOfCover).calculateLHCPercentage();
+        long lhcPercentage = new HeldCoverOnBaseDateCalculator(LHC_DAYS_WITHOUT_COVER_THRESHOLD - 1, threeSixtyFiveDaysOfCover).calculateLHCPercentage();
 
         assertEquals(MIN_LHC_PERCENTAGE, lhcPercentage);
     }
@@ -44,7 +44,7 @@ public class HeldCoverOnBaseDateCalculatorTest {
                 new CoverDateRange(LocalDate.of(2007, 5, 10), LocalDate.of(2017, 5, 9))
         );
 
-        int lhcPercentage = new HeldCoverOnBaseDateCalculator(730 + LHC_DAYS_WITHOUT_COVER_THRESHOLD, tenYearsContiguousCover).calculateLHCPercentage();
+        long lhcPercentage = new HeldCoverOnBaseDateCalculator(730 + LHC_DAYS_WITHOUT_COVER_THRESHOLD, tenYearsContiguousCover).calculateLHCPercentage();
 
         assertEquals(MIN_LHC_PERCENTAGE, lhcPercentage);
     }
@@ -56,7 +56,7 @@ public class HeldCoverOnBaseDateCalculatorTest {
                 new CoverDateRange(LocalDate.of(2016, 5, 10), LocalDate.of(2017, 5, 9))
         );
 
-        int lhcPercentage = new HeldCoverOnBaseDateCalculator(Integer.MAX_VALUE, oneYearOfCover).calculateLHCPercentage();
+        long lhcPercentage = new HeldCoverOnBaseDateCalculator(Integer.MAX_VALUE, oneYearOfCover).calculateLHCPercentage();
         assertEquals(MAX_LHC_PERCENTAGE, lhcPercentage);
     }
 

@@ -35,7 +35,7 @@ public class HeldCoverOnBaseDateCalculator implements LHCCalculationStrategy {
     }
 
     @Override
-    public int calculateLHCPercentage() {
+    public long calculateLHCPercentage() {
         int totalDaysOfCover = getNumberOfDaysCovered(coverDates);
         long applicableDaysWithoutCover = Math.max(0, lhcDaysApplicable - totalDaysOfCover);
         boolean hasExceededUncoveredThreshold = applicableDaysWithoutCover > LHC_DAYS_WITHOUT_COVER_THRESHOLD;
@@ -50,6 +50,6 @@ public class HeldCoverOnBaseDateCalculator implements LHCCalculationStrategy {
             lhcPercentage = yearsCovered * 2;
         }
 
-        return Long.valueOf(Math.min(lhcPercentage, MAX_LHC_PERCENTAGE)).intValue();
+        return Math.min(lhcPercentage, MAX_LHC_PERCENTAGE);
     }
 }

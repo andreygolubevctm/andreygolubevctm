@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.chrono.ChronoLocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -68,20 +69,11 @@ public class LHCDateCalculationSupport {
                 .mapToObj(startInclusive::plusDays);
     };
 
-    /**
-     * Calculate the number of years from the {@code dateOfBirth} until today. {@code today} is determined by
-     * {@link LocalDate#now()}.
-     *
-     * @param dateOfBirth
-     * @return the number of years from the {@code dateOfBirth} until today.
-     * @see LocalDate#now()
-     * @see LHCDateCalculationSupport#calculateAgeInYearsFrom(LocalDate, LocalDate)
-     */
-    public static long calculateAgeInYears(LocalDate dateOfBirth) {
-        return calculateAgeInYearsFrom(dateOfBirth, LocalDate.now());
+    public static long getDaysBetween(LocalDate startInclusive, LocalDate endInclusive)  {
+        return getCoveredDaysInRange(ImmutableList.of(new CoverDateRange(startInclusive, endInclusive))).size();
     }
 
-    /**
+     /**
      * Calculate the number of years from {@code dateOfBirth} until {@code untilDay}.
      * If a the {@code dateOfBirth} is not before {@code untilDay}, zero will be returned.
      *
@@ -124,10 +116,6 @@ public class LHCDateCalculationSupport {
         return lhcDaysApplicable.size();
     }
 
-    public static long getLhcDaysApplicable(LocalDate dateOfBirth) {
-        return getLhcDaysApplicable(dateOfBirth, LocalDate.now());
-    }
-
     /**
      * Return whether the given {@code baseDate} is contained within at least one of the instances of
      * {@link CoverDateRange} contained in the {@code coverDates} collection.
@@ -161,7 +149,7 @@ public class LHCDateCalculationSupport {
      * @return a set of unique days included in a collection of {@link CoverDateRange} instances.
      */
     public static Set<LocalDate> getCoveredDaysInRange(List<CoverDateRange> coverDateRanges) {
-        return Optional.of(coverDateRanges).orElse(Collections.emptyList())
+        return Optional.ofNullable(coverDateRanges).orElse(Collections.emptyList())
                 .stream()
                 .flatMap(r -> daysInclusive.apply(r.getFrom(), r.getTo()))
                 .collect(Collectors.toCollection(TreeSet::new));
@@ -243,5 +231,35 @@ public class LHCDateCalculationSupport {
                 .filter(l -> isInRange.apply(l, contiguousCoverDateRange))
                 .collect(Collectors.toCollection(TreeSet::new));
         return contiguousDatesInRangeForLastNYears.equals(coveredDaysInLastNYears);
+    }
+
+    /**
+     * Given a collection of {@link CoverDateRange}, then return the chronologically earliest end date of all the
+     * {@link CoverDateRange} instances.
+     *
+     * @param coverDateRanges the range of dates.
+     * @return the chronologically earliest {@link CoverDateRange#getTo()}.
+     * @see CoverDateRange#getTo()
+     */
+    public static Optional<LocalDate> getEarliestEndDate(List<CoverDateRange> coverDateRanges) {
+        return coverDateRanges.stream()
+                .sorted(Comparator.comparing(CoverDateRange::getTo))
+                .map(CoverDateRange::getTo)
+                .findFirst();
+    }
+
+    /**
+     * Given a collection of {@link CoverDateRange}, then return the chronologically earliest start date of all the
+     * {@link CoverDateRange} instances.
+     *
+     * @param coverDateRanges the range of dates.
+     * @return the chronologically earliest {@link CoverDateRange#getFrom()} ()}.
+     * @see CoverDateRange#getFrom()
+     */
+    public static Optional<LocalDate> getEarliestStartDate(List<CoverDateRange> coverDateRanges) {
+        return coverDateRanges.stream()
+                .sorted(Comparator.comparing(CoverDateRange::getFrom))
+                .map(CoverDateRange::getFrom)
+                .findFirst();
     }
 }

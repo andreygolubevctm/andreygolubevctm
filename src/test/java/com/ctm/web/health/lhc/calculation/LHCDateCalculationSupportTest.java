@@ -34,7 +34,7 @@ public class LHCDateCalculationSupportTest {
     @Test
     public void givenDateOfBirth_thenCalculateAgeInYears() {
         LocalDate turnedOneToday = LocalDate.now().minusYears(1);
-        long ageInYears = LHCDateCalculationSupport.calculateAgeInYears(turnedOneToday);
+        long ageInYears = LHCDateCalculationSupport.calculateAgeInYearsFrom(turnedOneToday, LocalDate.now());
         assertEquals(1, ageInYears);
     }
 
@@ -293,5 +293,37 @@ public class LHCDateCalculationSupportTest {
         List<CoverDateRange> emptyDateRanges = Collections.emptyList();
         Optional<LocalDate> lastDayInRange = LHCDateCalculationSupport.getLastDayInRange(emptyDateRanges);
         assertFalse(lastDayInRange.isPresent());
+    }
+
+    @Test
+    public void givenCoverDateRange_thenReturnTheEarliestRangeEndDate() {
+        ImmutableList<CoverDateRange> coverDateRanges = ImmutableList.of(
+                new CoverDateRange(LocalDate.of(2016, 5, 10), LocalDate.of(2017, 5, 10)),
+                new CoverDateRange(LocalDate.of(2012, 1, 1), LocalDate.of(2012, 10, 5)),
+                new CoverDateRange(LocalDate.of(2015, 11, 18), LocalDate.of(2016, 5, 10))
+        );
+
+        Optional<LocalDate> earliestEndDate = LHCDateCalculationSupport.getEarliestEndDate(coverDateRanges);
+
+        assertEquals(Optional.of(LocalDate.of(2012, 10, 5)), earliestEndDate);
+    }
+
+    @Test
+    public void givenCoverDateRange_thenReturnTheEarliestRangeStartDate() {
+        ImmutableList<CoverDateRange> coverDateRanges = ImmutableList.of(
+                new CoverDateRange(LocalDate.of(2016, 5, 10), LocalDate.of(2017, 5, 10)),
+                new CoverDateRange(LocalDate.of(2012, 1, 1), LocalDate.of(2012, 10, 5)),
+                new CoverDateRange(LocalDate.of(2015, 11, 18), LocalDate.of(2016, 5, 10))
+        );
+
+        Optional<LocalDate> earliestStartDate = LHCDateCalculationSupport.getEarliestStartDate(coverDateRanges);
+
+        assertEquals(Optional.of(LocalDate.of(2012, 1, 1)), earliestStartDate);
+    }
+
+    @Test
+    public void givenEmptyCoverDateRange_thenReturnEmpty() {
+        Optional<LocalDate> earliestEndDate = LHCDateCalculationSupport.getEarliestEndDate(Collections.emptyList());
+        assertFalse(earliestEndDate.isPresent());
     }
 }

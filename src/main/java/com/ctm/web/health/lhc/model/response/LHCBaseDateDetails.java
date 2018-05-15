@@ -22,9 +22,9 @@ public final class LHCBaseDateDetails {
     }
 
     public static LHCBaseDateDetails createFrom(LocalDate dateOfBirth) {
-        long age = LHCDateCalculationSupport.calculateAgeInYears(dateOfBirth);
+        long age = LHCDateCalculationSupport.calculateAgeInYearsFrom(dateOfBirth, LocalDate.now());
         LocalDate baseDate = LHCDateCalculationSupport.getBaseDate(dateOfBirth);
-        Long lhcDaysApplicable = LHCDateCalculationSupport.getLhcDaysApplicable(dateOfBirth);
+        Long lhcDaysApplicable = LHCDateCalculationSupport.getLhcDaysApplicable(dateOfBirth, LocalDate.now());
         return new LHCBaseDateDetails(age, dateOfBirth, baseDate, lhcDaysApplicable);
     }
 

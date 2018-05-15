@@ -1,13 +1,13 @@
 package com.ctm.web.health.lhc.model.response;
 
 public class LHCCalculation {
-    private Integer lhcPercentage;
+    private long lhcPercentage;
 
-    public LHCCalculation(Integer lhcPercentage) {
+    public LHCCalculation(long lhcPercentage) {
         this.lhcPercentage = lhcPercentage;
     }
 
-    public Integer getLhcPercentage() {
+    public long getLhcPercentage() {
         return lhcPercentage;
     }
 }

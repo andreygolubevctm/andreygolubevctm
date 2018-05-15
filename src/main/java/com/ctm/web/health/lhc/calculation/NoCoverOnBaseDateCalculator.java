@@ -15,44 +15,60 @@ import static com.ctm.web.health.lhc.calculation.LHCDateCalculationSupport.hasYe
  */
 public class NoCoverOnBaseDateCalculator implements LHCCalculationStrategy {
 
-    private final long applicantAge;
     private final List<CoverDateRange> coverDates;
-    private final long lhcDaysApplicable;
+    private final LocalDate baseDate;
+    private LocalDate now;
 
     /**
      * Constructs an instance of {@link NoCoverOnBaseDateCalculator} with the specified applicantAge.
      *
-     * @param applicantAge the age of the applicant - cannot be less than zero.
-     * @param coverDates   a collection of date ranges for which the applicant held valid cover.
+     * @param coverDates a collection of date ranges for which the applicant held valid cover.
+     * @param now
      * @throws IllegalArgumentException if applicantAge is less than zero.
      */
-    public NoCoverOnBaseDateCalculator(long lhcDaysApplicable, long applicantAge, List<CoverDateRange> coverDates) {
-        if (lhcDaysApplicable < 0) {
-            throw new IllegalArgumentException("lhcDaysApplicable cannot be less than zero");
-        }
-        if (applicantAge < 0) {
-            throw new IllegalArgumentException("applicant age cannot be less than zero");
-        }
-        this.lhcDaysApplicable = lhcDaysApplicable;
-        this.applicantAge = applicantAge;
+    public NoCoverOnBaseDateCalculator(LocalDate baseDate, List<CoverDateRange> coverDates, LocalDate now) {
+        this.baseDate = baseDate;
         this.coverDates = coverDates;
+        this.now = now;
     }
 
     @Override
-    public int calculateLHCPercentage() {
-        long totalDaysOfCover = LHCDateCalculationSupport.getNumberOfDaysCovered(coverDates);
-        long lhcApplicableYears = Math.max(0, applicantAge - LHC_REQUIREMENT_AGE);
-        long yearsCovered = totalDaysOfCover / 365;
-        long applicableDaysWithoutCover = Math.max(0, lhcDaysApplicable - totalDaysOfCover);
-        boolean hasExceededUncoveredThreshold = applicableDaysWithoutCover > LHC_DAYS_WITHOUT_COVER_THRESHOLD;
-        boolean hasTenYearsContiguousCover = hasYearsContiguousCover(CONTIGUOUS_YEARS_COVER_LHC_RESET_THRESHOLD, coverDates, LocalDate.now());
+    public long calculateLHCPercentage() {
+        final long interimDaysLHCPercentage = getInterimDaysLHCPercentage();
+        final long baseDateToCoverStartLHCPercentage = getCoverStartLHCPercentage();
 
-        final long lhcPercentage;
-        if (!hasExceededUncoveredThreshold || hasTenYearsContiguousCover) {
-            lhcPercentage = MIN_LHC_PERCENTAGE;
+        boolean hasTenYearsContiguousCover = hasYearsContiguousCover(CONTIGUOUS_YEARS_COVER_LHC_RESET_THRESHOLD, coverDates, now);
+
+        if (!hasTenYearsContiguousCover) {
+            return Math.min(interimDaysLHCPercentage + baseDateToCoverStartLHCPercentage, Constants.MAX_LHC_PERCENTAGE);
         } else {
-            lhcPercentage = (lhcApplicableYears - yearsCovered) * 2;
+            return MIN_LHC_PERCENTAGE;
         }
-        return Math.toIntExact(Math.min(lhcPercentage, Constants.MAX_LHC_PERCENTAGE));
+    }
+
+    private long getCoverStartLHCPercentage() {
+        LocalDate minCoverStartDate = LHCDateCalculationSupport.getEarliestStartDate(coverDates).orElse(now);
+        long daysBetweenBaseDateAndMinStart = LHCDateCalculationSupport.getDaysBetween(baseDate, minCoverStartDate);
+        long yearsBetweenBaseDateAndMinStart = daysBetweenBaseDateAndMinStart / 365;
+        return yearsBetweenBaseDateAndMinStart * 2;
+    }
+
+    private long getInterimDaysLHCPercentage() {
+        LocalDate minCoverEndDate = LHCDateCalculationSupport.getEarliestEndDate(coverDates).orElse(now);
+
+        long lhcInterimDays = LHCDateCalculationSupport.getDaysBetween(minCoverEndDate, now);
+        long totalDaysOfCover = LHCDateCalculationSupport.getNumberOfDaysCovered(coverDates);
+        long nonCoverDays = Math.max(0, lhcInterimDays - totalDaysOfCover);
+        boolean hasExceededUncoveredThreshold = nonCoverDays > LHC_DAYS_WITHOUT_COVER_THRESHOLD;
+
+
+        final long interimDaysLHCPercentage;
+        if (!hasExceededUncoveredThreshold) {
+            interimDaysLHCPercentage = MIN_LHC_PERCENTAGE;
+        } else {
+            long thresholdOffsetYearsWithoutCover = (nonCoverDays - LHC_DAYS_WITHOUT_COVER_THRESHOLD) / 365;
+            interimDaysLHCPercentage = thresholdOffsetYearsWithoutCover * 2;
+        }
+        return interimDaysLHCPercentage;
     }
 }

@@ -5,11 +5,11 @@ import com.google.common.collect.ImmutableList;
 import org.junit.Test;
 
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.List;
 
 import static com.ctm.web.health.lhc.calculation.Constants.*;
-import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertEquals;
+
 
 /**
  * Unit test for {@link NoCoverOnBaseDateCalculator}.
@@ -17,95 +17,114 @@ import static junit.framework.Assert.assertEquals;
 public class NoCoverOnBaseDateCalculatorTest {
 
     public static final int LHC_DAYS_APPLICABLE = LHC_DAYS_WITHOUT_COVER_THRESHOLD * 2;
-
-    @Test(expected = IllegalArgumentException.class)
-    public void givenNegativeApplicableLHCDays_thenThrowIllegalArgumentException() {
-        new NoCoverOnBaseDateCalculator(Integer.MIN_VALUE, 1, Collections.emptyList());
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void givenNegativeApplicantAge_thenThrowIllegalArgumentException() {
-        new NoCoverOnBaseDateCalculator(1, Integer.MIN_VALUE, Collections.emptyList());
-    }
+    public static final LocalDate TEST_CALCULATION_DATE = LocalDate.of(2018, 7, 15);
 
     @Test
     public void givenOneYearCoverage_whenAged32_thenReturnLHCPercentage() {
+        LocalDate thirtySecondBirthday = TEST_CALCULATION_DATE.minusYears(32);
+        LocalDate baseDate = LHCDateCalculationSupport.getBaseDate(thirtySecondBirthday);
+
+        LocalDate coverStartDate = TEST_CALCULATION_DATE.minusYears(2);
+        LocalDate coverEndDate = coverStartDate.plusYears(1);
+
         List<CoverDateRange> threeSixtyFiveDaysOfCover = ImmutableList.of(
-                new CoverDateRange(LocalDate.of(2016, 5, 10), LocalDate.of(2017, 5, 9))
+                new CoverDateRange(coverStartDate, coverEndDate)
         );
+        long lhcPercentage = new NoCoverOnBaseDateCalculator(baseDate, threeSixtyFiveDaysOfCover, TEST_CALCULATION_DATE).calculateLHCPercentage();
 
-        int lhcPercentage = new NoCoverOnBaseDateCalculator(LHC_DAYS_APPLICABLE, 32, threeSixtyFiveDaysOfCover).calculateLHCPercentage();
-
-        assertEquals(2, lhcPercentage);
+        assertEquals(0, lhcPercentage);
     }
 
     @Test
-    public void givenOneYearCoverage_whenAged33_thenReturnLHCPercentage() {
+    public void givenOneYearCoverage_whenAged40_thenReturnLHCPercentage() {
+        LocalDate birthday = TEST_CALCULATION_DATE.minusYears(40);
+        LocalDate baseDate = LHCDateCalculationSupport.getBaseDate(birthday);
+        LocalDate coverStartDate = baseDate.plusYears(2);
+        LocalDate coverEndDate = coverStartDate.plusYears(1);
+
         List<CoverDateRange> threeSixtyFiveDaysOfCover = ImmutableList.of(
-                new CoverDateRange(LocalDate.of(2016, 5, 10), LocalDate.of(2017, 5, 9))
+                new CoverDateRange(coverStartDate, coverEndDate)
         );
 
-        int lhcPercentage = new NoCoverOnBaseDateCalculator(LHC_DAYS_APPLICABLE, 33, threeSixtyFiveDaysOfCover).calculateLHCPercentage();
+        long lhcPercentage= new NoCoverOnBaseDateCalculator(baseDate, threeSixtyFiveDaysOfCover, TEST_CALCULATION_DATE).calculateLHCPercentage();
 
-        assertEquals(4, lhcPercentage);
+        assertEquals(6, lhcPercentage);
     }
 
     @Test
-    public void givenOneYearCoverage_whenAccruedMaxPercentage_thenReturnMaxLHCPercentage() {
-        List<CoverDateRange> threeSixtyFiveDaysOfCover = ImmutableList.of(
-                new CoverDateRange(LocalDate.of(2016, 5, 10), LocalDate.of(2017, 5, 9))
+    public void givenImplementation_testCase_thenCalculate16PercentLHC() {
+        LocalDate birthday = Constants.JULY_FIRST_2000.minusYears(Constants.LHC_EXEMPT_AGE_CUT_OFF);
+        LocalDate baseDate = LHCDateCalculationSupport.getBaseDate(birthday);
+        assertEquals(Constants.JULY_FIRST_2000, baseDate);
+        LocalDate coverStartDate = LocalDate.of(2005,10,15);
+        LocalDate coverEndDate = LocalDate.of(2008,10,15);
+
+        List<CoverDateRange> coverRange = ImmutableList.of(
+                new CoverDateRange(coverStartDate, coverEndDate)
         );
 
-        int lhcPercentage = new NoCoverOnBaseDateCalculator(LHC_DAYS_APPLICABLE, 70, threeSixtyFiveDaysOfCover).calculateLHCPercentage();
+        long lhcPercentage= new NoCoverOnBaseDateCalculator(baseDate, coverRange, TEST_CALCULATION_DATE).calculateLHCPercentage();
 
-        assertEquals(MAX_LHC_PERCENTAGE, lhcPercentage);
+        assertEquals(16, lhcPercentage);
     }
 
     @Test
     public void givenOneYearCoverage_whenAged65_thenReturn68LHCPercentage() {
+        LocalDate coverStartDate = TEST_CALCULATION_DATE.minusYears(2);
+        LocalDate coverEndDate = coverStartDate.plusYears(1);
+        LocalDate birthday = TEST_CALCULATION_DATE.minusYears(65);
+        LocalDate baseDate = LHCDateCalculationSupport.getBaseDate(birthday);
+
         List<CoverDateRange> threeSixtyFiveDaysOfCover = ImmutableList.of(
-                new CoverDateRange(LocalDate.of(2016, 5, 10), LocalDate.of(2017, 5, 9))
+                new CoverDateRange(coverStartDate, coverEndDate)
         );
 
-        int lhcPercentage = new NoCoverOnBaseDateCalculator(LHC_DAYS_APPLICABLE, 65, threeSixtyFiveDaysOfCover).calculateLHCPercentage();
+        long lhcPercentage= new NoCoverOnBaseDateCalculator(baseDate, threeSixtyFiveDaysOfCover, TEST_CALCULATION_DATE).calculateLHCPercentage();
 
-        assertEquals(68, lhcPercentage);
+        assertEquals(32, lhcPercentage);
     }
 
     @Test
     public void givenTwoYearsCoverage_whenAged65_thenReturn66LHCPercentage() {
-        LocalDate toDate = LocalDate.now();
+        LocalDate toDate = TEST_CALCULATION_DATE;
         LocalDate fromDate = toDate.minusYears(2);
+        LocalDate birthday = TEST_CALCULATION_DATE.minusYears(65);
+        LocalDate baseDate = LHCDateCalculationSupport.getBaseDate(birthday);
+
         List<CoverDateRange> twoYearsOfCoverage = ImmutableList.of(
                 new CoverDateRange(fromDate, toDate)
         );
-        int lhcPercentage = new NoCoverOnBaseDateCalculator(LHC_DAYS_APPLICABLE, 65, twoYearsOfCoverage).calculateLHCPercentage();
-        assertEquals(66, lhcPercentage);
+        long lhcPercentage= new NoCoverOnBaseDateCalculator(baseDate, twoYearsOfCoverage, TEST_CALCULATION_DATE).calculateLHCPercentage();
+        assertEquals(32, lhcPercentage);
     }
 
     @Test
     public void givenTenYearsContiguousCover_thenReturnLHCPercentageOfZero() {
-        LocalDate toDate = LocalDate.now();
+        LocalDate birthday = TEST_CALCULATION_DATE.minusYears(65);
+        LocalDate baseDate = LHCDateCalculationSupport.getBaseDate(birthday);
+        LocalDate toDate = TEST_CALCULATION_DATE;
         LocalDate fromDate = toDate.minusYears(10);
         List<CoverDateRange> tenYearsCover = ImmutableList.of(
                 new CoverDateRange(fromDate, toDate)
         );
 
-        int lhcPercentage = new NoCoverOnBaseDateCalculator(LHC_DAYS_APPLICABLE, 65, tenYearsCover).calculateLHCPercentage();
+        long lhcPercentage= new NoCoverOnBaseDateCalculator(baseDate, tenYearsCover, TEST_CALCULATION_DATE).calculateLHCPercentage();
 
         assertEquals(MIN_LHC_PERCENTAGE, lhcPercentage);
     }
 
     @Test
     public void givenOneDayLessThanTenYearsContiguousCover_thenReturnCalculatedLHCPercentage() {
-        LocalDate today = LocalDate.now();
+        LocalDate birthday = TEST_CALCULATION_DATE.minusYears(55);
+        LocalDate baseDate = LHCDateCalculationSupport.getBaseDate(birthday);
+        LocalDate today = TEST_CALCULATION_DATE;
         LocalDate yesterday = today.minusDays(1);
         List<CoverDateRange> tenYearsCover = ImmutableList.of(
                 new CoverDateRange(yesterday, today)
         );
 
-        int lhcPercentage = new NoCoverOnBaseDateCalculator(LHC_DAYS_APPLICABLE, 55, tenYearsCover).calculateLHCPercentage();
+        long lhcPercentage= new NoCoverOnBaseDateCalculator(baseDate, tenYearsCover, TEST_CALCULATION_DATE).calculateLHCPercentage();
 
-        assertEquals(50, lhcPercentage);
+        assertEquals(36, lhcPercentage);
     }
 }
