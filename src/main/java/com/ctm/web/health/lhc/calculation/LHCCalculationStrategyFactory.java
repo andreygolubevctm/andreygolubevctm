@@ -14,19 +14,21 @@ public class LHCCalculationStrategyFactory {
 
     /**
      * @param details the {@link LHCCalculationDetails}.
+     * @param now
      * @return an instance of the applicable LHC calculation strategy.
      */
-    public static LHCCalculationStrategy getInstance(LHCCalculationDetails details) {
+    public static LHCCalculationStrategy getInstance(LHCCalculationDetails details, LocalDate now) {
         LHCCalculationDetails updatedDetails = recalculateLHCDetails(details);
-
         if (updatedDetails.getContinuousCover()) {
             return new AlwaysHeldContinuousCoverCalculator();
         } else if (details.getNeverHadCover()) {
             return new NeverHeldCoverCalculator(updatedDetails.getAge());
-        } else if (LHCDateCalculationSupport.heldCoverOnBaseDate(updatedDetails.getBaseDate(), updatedDetails.getCoverDates())) {
-            return new HeldCoverOnBaseDateCalculator(updatedDetails.getLhcDaysApplicable(), updatedDetails.getCoverDates());
         } else {
-            return new NoCoverOnBaseDateCalculator(updatedDetails.getBaseDate(), updatedDetails.getCoverDates(),LocalDate.now());
+            if (LHCDateCalculationSupport.heldCoverOnBaseDate(updatedDetails.getBaseDate(), updatedDetails.getCoverDates())) {
+                return new HeldCoverOnBaseDateCalculator(updatedDetails.getLhcDaysApplicable(), updatedDetails.getCoverDates(), now);
+            } else {
+                return new NoCoverOnBaseDateCalculator(updatedDetails.getBaseDate(), updatedDetails.getCoverDates(), now);
+            }
         }
     }
 

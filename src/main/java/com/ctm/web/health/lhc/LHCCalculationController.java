@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Api(basePath = "/lhc", value = "LHC Calculation API")
@@ -38,9 +39,10 @@ public class LHCCalculationController {
             consumes = {MediaType.APPLICATION_JSON_VALUE},
             produces = MediaType.APPLICATION_JSON_VALUE)
     public LHCCalculationResponse calculateLHC(@RequestBody @Valid LHCCalculationQuery queryWrapper) {
-        LHCCalculation primary = new LHCCalculation(LHCCalculationStrategyFactory.getInstance(queryWrapper.getPrimary()).calculateLHCPercentage());
+        LocalDate today = LocalDate.now();
+        LHCCalculation primary = new LHCCalculation(LHCCalculationStrategyFactory.getInstance(queryWrapper.getPrimary(), today).calculateLHCPercentage());
         Optional<LHCCalculation> partner = Optional.ofNullable(queryWrapper.getPartner())
-                .map(LHCCalculationStrategyFactory::getInstance)
+                .map(details -> LHCCalculationStrategyFactory.getInstance(details, today))
                 .map(LHCCalculationStrategy::calculateLHCPercentage)
                 .map(LHCCalculation::new);
         return new LHCCalculationResponse(primary, partner);

@@ -18,6 +18,7 @@ public class HeldCoverOnBaseDateCalculator implements LHCCalculationStrategy {
 
     private final long lhcDaysApplicable;
     private final List<CoverDateRange> coverDates;
+    private final LocalDate now;
 
     /**
      * Constructs an instance of {@link HeldCoverOnBaseDateCalculator} with the specified number of LHC applicable days
@@ -25,13 +26,15 @@ public class HeldCoverOnBaseDateCalculator implements LHCCalculationStrategy {
      *
      * @param lhcDaysApplicable the number of days an applicant was required to hold cover to avoid LHC loading.
      * @param coverDates        a collection of date ranges for which the applicant held valid cover.
+     * @param now
      */
-    HeldCoverOnBaseDateCalculator(long lhcDaysApplicable, List<CoverDateRange> coverDates) {
+    HeldCoverOnBaseDateCalculator(long lhcDaysApplicable, List<CoverDateRange> coverDates, LocalDate now) {
         if (lhcDaysApplicable < 0) {
             throw new IllegalArgumentException("lhcDaysApplicable cannot be less than zero");
         }
         this.lhcDaysApplicable = lhcDaysApplicable;
         this.coverDates = coverDates;
+        this.now = now;
     }
 
     @Override
@@ -39,7 +42,7 @@ public class HeldCoverOnBaseDateCalculator implements LHCCalculationStrategy {
         int totalDaysOfCover = getNumberOfDaysCovered(coverDates);
         long applicableDaysWithoutCover = Math.max(0, lhcDaysApplicable - totalDaysOfCover);
         boolean hasExceededUncoveredThreshold = applicableDaysWithoutCover > LHC_DAYS_WITHOUT_COVER_THRESHOLD;
-        boolean hasTenYearsContiguousCover = hasYearsContiguousCover(CONTIGUOUS_YEARS_COVER_LHC_RESET_THRESHOLD, coverDates, LocalDate.now());
+        boolean hasTenYearsContiguousCover = hasYearsContiguousCover(CONTIGUOUS_YEARS_COVER_LHC_RESET_THRESHOLD, coverDates, now);
 
         final long lhcPercentage;
 

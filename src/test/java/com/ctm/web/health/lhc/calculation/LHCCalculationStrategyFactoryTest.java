@@ -17,6 +17,7 @@ public class LHCCalculationStrategyFactoryTest {
 
     private static final LocalDate DATE_OF_BIRTH = LocalDate.of(1981, 4, 1);
     private static final LocalDate BASE_DATE = LocalDate.of(2012, 7, 1);
+    public static final LocalDate TEST_CALCULATION_DATE = LocalDate.of(2018, 7, 15);
 
     public static LHCCalculationDetails getValidCalculationDetails() {
         return new LHCCalculationDetails()
@@ -33,7 +34,7 @@ public class LHCCalculationStrategyFactoryTest {
         LHCCalculationDetails lhcCalculationDetails = getValidCalculationDetails()
                 .isContinuousCover(true);
 
-        LHCCalculationStrategy calculator = LHCCalculationStrategyFactory.getInstance(lhcCalculationDetails);
+        LHCCalculationStrategy calculator = LHCCalculationStrategyFactory.getInstance(lhcCalculationDetails, TEST_CALCULATION_DATE);
 
         assertEquals(calculator.getClass(), AlwaysHeldContinuousCoverCalculator.class);
     }
@@ -44,7 +45,7 @@ public class LHCCalculationStrategyFactoryTest {
                 .isContinuousCover(false)
                 .isNeverHadCover(true);
 
-        LHCCalculationStrategy calculator = LHCCalculationStrategyFactory.getInstance(lhcCalculationDetails);
+        LHCCalculationStrategy calculator = LHCCalculationStrategyFactory.getInstance(lhcCalculationDetails, LocalDate.now());
 
         assertEquals(calculator.getClass(), NeverHeldCoverCalculator.class);
     }
@@ -58,7 +59,7 @@ public class LHCCalculationStrategyFactoryTest {
                 .isContinuousCover(false)
                 .coverDates(coverRange);
 
-        LHCCalculationStrategy calculator = LHCCalculationStrategyFactory.getInstance(lhcCalculationDetails);
+        LHCCalculationStrategy calculator = LHCCalculationStrategyFactory.getInstance(lhcCalculationDetails, LocalDate.now());
 
         assertEquals(calculator.getClass(), HeldCoverOnBaseDateCalculator.class);
     }
@@ -71,7 +72,7 @@ public class LHCCalculationStrategyFactoryTest {
         LHCCalculationDetails lhcCalculationDetails = getValidCalculationDetails()
                 .isContinuousCover(false)
                 .coverDates(threeSixtyFiveDaysOfCover);
-        LHCCalculationStrategy calculator = LHCCalculationStrategyFactory.getInstance(lhcCalculationDetails);
+        LHCCalculationStrategy calculator = LHCCalculationStrategyFactory.getInstance(lhcCalculationDetails, LocalDate.now());
 
         assertEquals(calculator.getClass(), NoCoverOnBaseDateCalculator.class);
     }
