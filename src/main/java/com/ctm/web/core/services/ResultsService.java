@@ -7,7 +7,6 @@ import com.ctm.web.core.model.RankingDetail;
 import com.ctm.web.core.results.dao.ResultsDao;
 import com.ctm.web.core.results.model.ResultProperty;
 import com.ctm.web.core.results.model.ResultRanking;
-import com.sun.media.jfxmedia.logging.Logger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
