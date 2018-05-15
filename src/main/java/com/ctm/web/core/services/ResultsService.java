@@ -1,16 +1,25 @@
 package com.ctm.web.core.services;
 
 import com.ctm.web.core.dao.RankingDetailsDao;
+import com.ctm.web.core.dao.RankingMasterDao;
 import com.ctm.web.core.exceptions.DaoException;
 import com.ctm.web.core.model.RankingDetail;
 import com.ctm.web.core.results.dao.ResultsDao;
 import com.ctm.web.core.results.model.ResultProperty;
 import com.ctm.web.core.results.model.ResultRanking;
+import com.sun.media.jfxmedia.logging.Logger;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.StringJoiner;
 
 public class ResultsService {
+
+    public static final String CAR_VERTICAL = "car";
+    public static final List<String> CAR_PROVIDER_LIST = Arrays.asList("REIN","WOOL");
+    public static final String MONTHLY_PAYMENT_FREQUENCY = "monthly";
+    public static final String RANKED_BY_PRICE = "price";
 
     /**
      * Returns an array of product properties stored against a transaction id.
@@ -42,6 +51,24 @@ public class ResultsService {
         ArrayList<ResultProperty> properties = resultsDao.getResultPropertiesForTransaction(transactionId, productId);
         return properties;
 
+    }
+
+    public static String getQuoteUrl(Long transactionId, String productId, String property, String providerCode, String vertical) throws DaoException {
+        String propertyValue = getSingleResultPropertyValue(transactionId, productId, property);
+        StringJoiner sj = new StringJoiner("&");
+        sj.add(propertyValue);
+        if(vertical.equals(CAR_VERTICAL) && CAR_PROVIDER_LIST.contains(providerCode)){
+            //get latest payment frequency selected by user
+            RankingMasterDao rankingMasterDao = new RankingMasterDao();
+            String paymentFrequency = null;
+            try {
+                paymentFrequency = rankingMasterDao.getLatestRankingMasterValue(transactionId, RANKED_BY_PRICE);
+            } catch(DaoException de) {
+                paymentFrequency = "";
+            }
+            sj.add(paymentFrequency.toLowerCase().contains(MONTHLY_PAYMENT_FREQUENCY) ? "pf=m" : "pf=a");
+        }
+        return sj.toString();
     }
 
     /**
