@@ -23,6 +23,7 @@
                     <c:set var="xpath" value="${pageSettings.getVerticalCode()}/healthCover" />
                     <health_v4_insuranceprefs:partner_dob xpath="${xpath}" />
                     <health_v4_insuranceprefs:partner_cover xpath="${xpath}" />
+                    <health_v4_insuranceprefs:partner_current_fund xpath="${xpath}" />
                     <health_v4_insuranceprefs:partner_cover_loading xpath="${xpath}" />
                     <health_v4_insuranceprefs:partner_cover_ever_owned xpath="${xpath}" />
 

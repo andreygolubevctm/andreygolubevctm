@@ -19,6 +19,7 @@
             dob: $('#health_healthCover_partner_dob'),
             currentCover: $('input[name=health_healthCover_partner_cover]'),
             partnerEverHadCover: $(':input[name=health_healthCover_partner_everHadCover]'),
+            partnerCurrentFundName: $(':input[name=health_healthCover_partner_fundName]'),
             appFields: $('#partnerFund, #partnerMemberID, #partnerContainer'),
             benefitsScrollerLinks: $('.benefitsScroller'),
             coverLoadingHeading: $('.benefitsContainer').find('h3:first-child')
@@ -52,6 +53,17 @@
 
             meerkat.modules.fieldUtilities.toggleVisible(
                 $elements.partnerEverHadCover,
+                hideField
+            );
+        });
+
+        $elements.currentCover.on('change', function toggleCurrentHealthFund() {
+            var $checked = $elements.currentCover.filter(':checked'),
+                hasPartner = meerkat.modules.healthChoices.hasPartner(),
+                hideField = !$checked.length || !hasPartner || ($checked.val() === 'N');
+
+            meerkat.modules.fieldUtilities.toggleVisible(
+                $elements.partnerCurrentFundName,
                 hideField
             );
         });
@@ -90,6 +102,11 @@
 
             meerkat.modules.fieldUtilities.toggleVisible(
                 $elements.partnerEverHadCover,
+                true
+            );
+
+            meerkat.modules.fieldUtilities.toggleVisible(
+                $elements.partnerCurrentFundName,
                 true
             );
 
