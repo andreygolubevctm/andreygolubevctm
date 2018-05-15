@@ -100,7 +100,19 @@ public class IPAddressHandlerTest {
 
     @Test
     public void testIsIPInRange3() throws Exception {
-        boolean result = ipAddressHandler.isIPInRange("202.56.60.255");
+        boolean result = ipAddressHandler.isIPInRange("202.56.61.255");
+        assertEquals(true, result);
+    }
+
+    @Test
+    public void testIsLocalIP4() throws Exception {
+        boolean result = ipAddressHandler.isLocalIP("192.168.1.116");
+        assertEquals(true, result);
+    }
+
+    @Test
+    public void testIsLocalIP5() throws Exception {
+        boolean result = ipAddressHandler.isLocalIP("10.46.41.235");
         assertEquals(true, result);
     }
 
@@ -112,7 +124,7 @@ public class IPAddressHandlerTest {
 
     @Test
     public void testAboveMaxIPInRange() throws Exception {
-        boolean result = ipAddressHandler.isIPInRange("202.56.61.000");
+        boolean result = ipAddressHandler.isIPInRange("202.56.62.000");
         assertEquals(false, result);
     }
 }
