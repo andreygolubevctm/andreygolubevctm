@@ -54,6 +54,7 @@
                             <c:set var="xpath" value="${pageSettings.getVerticalCode()}/healthCover" />
                             <health_v4_aboutyou:dob xpath="${xpath}" />
                             <health_v4_aboutyou:currentlyowninsurance xpath="${xpath}" />
+                            <health_v4_aboutyou:current_health_fund xpath="${xpath}" />
                             <health_v4_aboutyou:continuous_cover xpath="${xpath}" />
                             <health_v4_aboutyou:everownedinsurance xpath="${xpath}" />
                             <health_v4_aboutyou:applyrebate xpath="${xpath}" />
