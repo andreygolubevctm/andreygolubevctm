@@ -6,9 +6,11 @@
 package com.ctm.web.core.web.go.xml;
 
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.elasticsearch.common.collect.HashMultiset;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Serializable;
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 import java.util.*;
@@ -24,7 +26,7 @@ import static com.ctm.commonlogging.common.LoggingArguments.kv;
  */
 
 @SuppressWarnings("unchecked")
-public class XmlNode implements Map<Object, Object> {
+public class XmlNode implements Map<Object, Object>, Serializable {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(XmlNode.class);
 
@@ -832,5 +834,22 @@ public class XmlNode implements Map<Object, Object> {
 			removeChild(node.getNodeName());
 }
 		addChild(node);
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof XmlNode)) return false;
+		XmlNode xmlNode = (XmlNode) o;
+		return Objects.equals(getNodeName(), xmlNode.getNodeName()) &&
+				Objects.equals(attributes, xmlNode.attributes) &&
+				Objects.equals(getXML(), xmlNode.getXML()) &&
+				Objects.equals(getText(), xmlNode.getText()) &&
+				Objects.equals(getParent(), xmlNode.getParent());
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(getNodeName(), attributes, getChildren(), getText(), getParent());
 	}
 }

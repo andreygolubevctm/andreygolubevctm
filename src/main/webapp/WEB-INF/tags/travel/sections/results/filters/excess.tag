@@ -17,7 +17,7 @@
 </div>
 <div class="dropdown-item">
     <div class="radio">
-        <input type="radio" name="radio-group" id="travel_filter_excess_200" class="radioButton-custom  radio" data-excess="200" value="Excess up to $200">
+        <input type="radio" name="radio-group" id="travel_filter_excess_200" class="radioButton-custom  radio" data-excess="200" value="Excess up to $200" checked>
         <label for="travel_filter_excess_200">Excess up to $200</label>
     </div>
 </div>
