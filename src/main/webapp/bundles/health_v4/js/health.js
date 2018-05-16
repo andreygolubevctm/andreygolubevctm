@@ -549,10 +549,13 @@
                     meerkat.modules.fieldUtilities.toggleSelectsPlaceholderColor();
 
                     meerkat.modules.healthLHC.onInitialise();
-                    meerkat.modules.healthLHC.getBaseDates();
-                    _.defer(function() {
+                    meerkat.modules.healthLHC.getBaseDates().done(function() {
                         meerkat.modules.healthLHC.setCoverDates('primary', [{from: '2017-04-17', to: '2018-03-31'}]);
-                        meerkat.modules.healthLHC.getLHC();
+                        meerkat.modules.healthLHC.getLHC().done(function(response) {
+                            console.log('response getLHC', response);
+
+                            // do injection to price breakdown lhc part
+                        });
                     });
                 }
             },

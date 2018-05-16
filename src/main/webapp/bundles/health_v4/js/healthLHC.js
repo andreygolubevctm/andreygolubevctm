@@ -45,7 +45,7 @@
     }
 
     function getBaseDates() {
-        meerkat.modules.comms.post({
+        return meerkat.modules.comms.post({
             url: 'spring/lhc/base-dates/post.json',
             contentType: 'application/json;',
             dataType: 'json',
@@ -69,7 +69,7 @@
     }
 
     function getLHC() {
-        meerkat.modules.comms.post({
+        return meerkat.modules.comms.post({
             url: 'spring/lhc/calculate/post.json',
             contentType: 'application/json;',
             dataType: 'json',
