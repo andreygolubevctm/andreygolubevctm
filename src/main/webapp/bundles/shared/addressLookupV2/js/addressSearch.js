@@ -24,11 +24,23 @@
   function setValues($element, value) {
     $element.val(value);
   }
-  
+
   function formatXpath(xpath) {
     return '#' + xpath.replace(/\//g, '_');
   }
-  
+
+  function buildOptions(arrayOptions, valueKey, labelKey, placeholderOption) {
+    var options = [];
+    if (placeholderOption) {
+      options.push(createElement('option', { innerHTML: placeholderOption, value: '' }));
+    }
+    for (var i = 0; i < arrayOptions.length; i++) {
+      var option = createElement('option', { innerHTML: arrayOptions[i][labelKey], value: arrayOptions[i][valueKey] });
+      options.push(option);
+    }
+    return options;
+  }
+
   function init() {
     var addressBase = getURL();
     addressService.streetSearch = {
@@ -49,7 +61,7 @@
               source: function(term, response) {
                   _this.settings.data = JSON.stringify({ addressLine: term });
                   $.ajax(_this.settings).done(function(data) {
-                    response(_this.handleData(data)); 
+                    response(_this.handleData(data));
                   });
               },
               renderItem: function (item, search) {
@@ -156,11 +168,7 @@
         this.$suburbDropdown.empty();
         if (data.length > 0) {
           this.$suburbDropdown.prop('disabled', false);
-          this.htmlElements.push(createElement('option', { innerHTML: 'Select suburb', value: '' }));
-          for (var i = 0; i < data.length; i++) {
-            var element = createElement('option', { innerHTML: data[i].suburb, value: data[i].suburb });
-            this.htmlElements.push(element);
-          }
+          this.htmlElements = buildOptions(data, 'suburb', 'suburb', 'Select suburb');
           $(this.xpath + '_state').val(data[0].state);
         } else {
           this.htmlElements.push('Enter Postcode');
@@ -205,7 +213,7 @@
               source: function(term, response) {
                   _this.settings.url = addressBase + 'suburbpostcode/' + term;
                   $.ajax(_this.settings).done(function(data) {
-                    response(_this.handleData(data)); 
+                    response(_this.handleData(data));
                   });
               },
               renderItem: function (item, search) {
@@ -242,10 +250,11 @@
         contentType: 'application/json'
       }
     };
-    
+
     //verticals used: health_v4
     addressService.postCodeWithBtns = {
-      init: function() {
+      init: function(xpath) {
+        this.xpath = formatXpath(xpath);
         this.cacheDom();
         this.bindEvents();
       },
@@ -255,6 +264,7 @@
         this.$buttonContainer = this.$el.find('.addressSearchV2__buttons');
         this.$buttons = this.$el.find('.addressSearchV2__buttons button');
         this.$stateValue = this.$el.find('.addressSearchV2__stateValue');
+        this.$suburbDropdown = $(this.xpath + '_suburb');
       },
       bindEvents: function() {
         this.$postcodeInput.on('focus keyup', this.search.bind(this));
@@ -270,6 +280,7 @@
         if (!$target.hasClass('selected')) {
           this.$buttons.removeClass('selected');
           $target.addClass('selected');
+          this.appendSuburbDropdown(this.data);
           this.appendState(event.target.textContent);
         }
       },
@@ -278,6 +289,12 @@
       },
       appendState: function(state) {
         this.$stateValue.val(state);
+      },
+      appendSuburbDropdown: function(suburbData) {
+        if (suburbData.length > 0) {
+          this.$suburbDropdown.empty();
+          this.$suburbDropdown.append(buildOptions(suburbData, 'suburb', 'suburb', 'Select suburb'));
+        }
       },
       checkMultipleState: function(data) {
         var states = [data[0].state];
@@ -290,10 +307,12 @@
         }
         if (states.length === 1) {
           this.appendState(states[0]);
+          this.appendSuburbDropdown(data);
         }
       },
       handleData: function(data) {
         if (data.length > 0) {
+          this.data = data;
           this.checkMultipleState(data);
         }
       },
@@ -344,7 +363,7 @@
               source: function(term, response) {
                   _this.settings.data = JSON.stringify({ addressLine: term, postCodeOrSuburb: _this.$postcodeInput.val() });
                   $.ajax(_this.settings).done(function(data) {
-                    response(_this.handleData(data)); 
+                    response(_this.handleData(data));
                   });
               },
               renderItem: function (item, search) {

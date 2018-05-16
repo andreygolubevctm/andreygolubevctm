@@ -36,7 +36,7 @@ TODO F=Looking to Re-enter the Market to be added post relaunch
 	<form_v2:row label="I am looking to">
 		<field_v2:array_select items="=Please choose...,FH=Buy my first home,APL=Buy another property to live in,IP=Buy an investment property,REP=Renovate my existing property,CD=Consolidate my debt,CL=Compare better home loan options" xpath="${xpath}/goal" title="your situation" required="true" />
 	</form_v2:row>
-	<field_v4:address_search_postcodeSearch label="I live in" xpath="${xpath}" />
+	<field_v4:address_search_postcodeSearch label="I live in" placeholder="Suburb / Postcode" xpath="${xpath}" />
 
 	<div id="${name}_existingToggleArea" class="${name}_existingToggleArea show_${displayCurrentLoan}">
 		<form_v2:row label="Do you currently have a home loan?">

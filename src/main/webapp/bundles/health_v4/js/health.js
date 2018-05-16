@@ -194,7 +194,7 @@
       meerkat.modules.addressLookupV2.getHiddenPostcodeSearch().init('Residential', resXpath);
       meerkat.modules.addressLookupV2.getSmartSearch().init('Postal', postXpath);
       meerkat.modules.addressLookupV2.getHiddenPostcodeSearch().init('Postal', postXpath);
-      meerkat.modules.addressLookupV2.getPostCodeWithBtns().init();
+      meerkat.modules.addressLookupV2.getPostCodeWithBtns().init('health/application/address');
     }
 
     function setJourneyEngineSteps() {
