@@ -8,7 +8,6 @@
 
 <c:import var="manifestContent" url="/META-INF/MANIFEST.MF"/>
 <c:set var="buildIdentifier"><core_v1:buildIdentifier></core_v1:buildIdentifier></c:set>
-<c:set var="remoteAddr" value="${ipAddressHandler.getIPAddress(pageContext.request)}"/>
 
 <jsp:useBean id="sessionDataService" class="com.ctm.web.core.services.SessionDataService" scope="application"/>
 <jsp:useBean id="applicationService" class="com.ctm.web.core.services.ApplicationService" scope="page"/>
@@ -24,7 +23,7 @@
         value="${buildIdentifier}"/></span></p>
 
 <%-- SECURITY  FEATURE --%>
-<c:if test="${ remoteAddr == '127.0.0.1' or remoteAddr == '0.0.0.0' or remoteAddr == '0:0:0:0:0:0:0:1' or fn:startsWith(remoteAddr, '192.168.') or fn:startsWith(remoteAddr, '10.4') or (not empty(param.bucket) and param.bucket == '1') or (not empty(param.preload) and param.preload == '2') }">
+<c:if test="${ipAddressHandler.isLocalRequest(pageContext.request)}">
 
     <%-- APPLICATION DATE OVERRIDE --%>
     <p>
