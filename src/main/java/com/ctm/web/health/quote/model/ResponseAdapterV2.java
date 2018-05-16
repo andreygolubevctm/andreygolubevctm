@@ -3,8 +3,11 @@ package com.ctm.web.health.quote.model;
 import com.ctm.web.core.content.model.Content;
 import com.ctm.web.core.providers.model.IncomingQuotesResponse;
 import com.ctm.web.core.resultsData.model.AvailableType;
+import com.ctm.web.health.lhc.calculation.LHCDateCalculationSupport;
 import com.ctm.web.health.model.PaymentType;
+import com.ctm.web.health.model.form.HealthCover;
 import com.ctm.web.health.model.form.HealthRequest;
+import com.ctm.web.health.model.form.Insured;
 import com.ctm.web.health.model.results.*;
 import com.ctm.web.health.model.results.Info;
 import com.ctm.web.health.model.results.Premium;
@@ -18,6 +21,8 @@ import org.apache.commons.lang3.StringUtils;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import static com.ctm.web.health.quote.model.response.Price.DEFAULT_PRICE;
@@ -231,8 +236,7 @@ public class ResponseAdapterV2 {
         price.setValue(payableAmount);
 
         //If changing/remove span tag underneath, make sure to change HealthModelTranslator premiumlabel translation accordingly.
-        price.setLhcfreepricing("excl " + formatCurrency(lhcAmount, true, true) + " LHC<span/> inc " +
-                rebateValue + " Govt Rebate");
+        price.setLhcfreepricing(getLhcFreePricing(healthQuote, lhcAmount) + "Inc. " + rebateValue + " Govt Rebate");
 
         price.setRebateValue(rebateValue);
 
@@ -245,6 +249,43 @@ public class ResponseAdapterV2 {
         price.setLhc(formatCurrency(lhcAmount, true, true));
         price.setGrossPremium(formatCurrency(quotePrice.getGrossPremium(), true, true));
         return price;
+    }
+
+    private static String getLhcFreePricing(final com.ctm.web.health.model.form.HealthQuote healthQuote, final BigDecimal lhcAmount) {
+        HealthCover healthCover = healthQuote.getHealthCover();
+        Insured primary = healthCover.getPrimary();
+        Insured partner = healthCover.getPartner();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate primaryDOB = LocalDate.parse(primary.getDob(), formatter);
+        Long primaryLhcDays = LHCDateCalculationSupport.getLhcDaysApplicable(primaryDOB, LocalDate.now());
+
+        Boolean primaryHasCover = StringUtils.equalsIgnoreCase(primary.getCover(), "Y");
+        Boolean primaryHasCoverLoading = StringUtils.equalsIgnoreCase(primary.getHealthCoverLoading(), "Y");
+        Boolean primaryHasEverHadCover = StringUtils.equalsIgnoreCase(primary.getEverHadCover(), "Y");
+
+        Long partnerLhcDays = null;
+        Boolean partnerHasCover = null;
+        Boolean partnerHasCoverLoading = null;
+        Boolean partnerHasEverHadCover = null;
+        if (partner != null) {
+            LocalDate partnerDOB = LocalDate.parse(partner.getDob(), formatter);
+            partnerLhcDays = LHCDateCalculationSupport.getLhcDaysApplicable(partnerDOB, LocalDate.now());
+            partnerHasCover = StringUtils.equalsIgnoreCase(partner.getCover(), "Y");
+            partnerHasCoverLoading = StringUtils.equalsIgnoreCase(partner.getHealthCoverLoading(), "Y");
+            partnerHasEverHadCover = StringUtils.equalsIgnoreCase(partner.getEverHadCover(), "Y");
+        }
+
+        String lhcFreePricing = "";
+        if ( (primaryLhcDays > 0 && ((!primaryHasCover && primaryHasEverHadCover) || (primaryHasCover && !primaryHasCoverLoading))) ||
+                (partner != null && partnerLhcDays > 0 && ((!partnerHasCover && partnerHasEverHadCover) || (partnerHasCover && !partnerHasCoverLoading))) ) {
+
+            lhcFreePricing = "The premium may be affected by LHC<br/>";
+        } else if (lhcAmount.compareTo(BigDecimal.ZERO) > 0) {
+            lhcFreePricing = "excl " + formatCurrency(lhcAmount, true, true) + " LHC<span/> ";
+        }
+
+        return lhcFreePricing;
     }
 
     protected static BigDecimal calculateRebateValue(final Optional<BigDecimal> rebate, final BigDecimal basePremium, final BigDecimal calculatedRebateValue) {

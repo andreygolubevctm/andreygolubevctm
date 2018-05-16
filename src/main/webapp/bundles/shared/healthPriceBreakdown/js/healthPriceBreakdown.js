@@ -58,7 +58,7 @@
     }
 
     function showLHC(product, frequency) {
-        return product.premium[frequency].lhc !== '$0.00';
+        return (product.premium[frequency].lhc !== '$0.00' && product.premium[frequency].lhcfreepricing.indexOf('The premium may be affected by LHC<br/>') < 0);
     }
 
     meerkat.modules.register('healthPriceBreakdown', {
