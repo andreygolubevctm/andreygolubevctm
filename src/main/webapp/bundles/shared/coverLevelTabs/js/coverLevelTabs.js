@@ -72,8 +72,8 @@
 	 * Needs to:
 	 * 1. Initialise on resultsFetchFinish or resultsLoaded
 	 */
-	function initCoverLevelTabs(options) {
-		if(!initialised) {
+	function initCoverLevelTabs(options, reInit) {
+		if(!initialised || reInit) {
 			initialised = true;
 
 			settings = $.extend(true, {}, defaults, options);
@@ -219,7 +219,7 @@
 	 * activation should be separate to template rendering
 	 */
 	function activateDefault() {
-		state = meerkat.modules.deviceMediaState.get();
+		var state = meerkat.modules.deviceMediaState.get();
 		if(state === 'xs') {
 			$('.visible-xs .cover-type-mobile.active').click();
 			$('#coverTypeDropdownBtn').dropdown('toggle');
@@ -230,7 +230,7 @@
 	
 	function transformTabs(tabs) {
 		var lastCoverTabLevel = $('#' + meerkat.site.vertical + '_lastCoverTabLevel').val();
-		if (lastCoverTabLevel) {
+		if (lastCoverTabLevel && isTabValueInTabs(lastCoverTabLevel, tabs)) {
 			for (var i = 0; i < tabs.length; i++) {
 				var rankingFilter = tabs[i].rankingFilter;
 				tabs[i].defaultTab = rankingFilter === lastCoverTabLevel;
@@ -239,6 +239,12 @@
 		return tabs;
 	}
 
+    function isTabValueInTabs(value, tabs) {
+        return tabs.filter(function (tab) {
+            return tab.rankingFilter === value;
+        }).length > 0;
+    }
+
 	/**
 	 * Build the DOM structure for the current tabs.
 	 */
@@ -246,7 +252,6 @@
 		if (settings.activeTabSet == null) return;
 		settings.activeTabSet = transformTabs(settings.activeTabSet);
 		log("[coverleveltabs] buildTabs", settings.activeTabSet);
-        var destination = $('#travel_destination').val();
 		var tabLength = settings.activeTabSet.length,
 		xsCols = parseInt(6 / tabLength, 10),
 		state = meerkat.modules.deviceMediaState.get();
@@ -318,12 +323,8 @@
 
 		meerkat.modules.travelResultFilters.resetCustomFilters();
 
-		// hide filters for mobile, tablet & AMT
-		if (tabLength == 2 || destination == 'AUS') {
-			$('.clt-trip-filter').hide();
-			$('.mobile-cover-type').show();
-		} else {
-            $('.clt-trip-filter').show();
+		if (settings.callback && typeof settings.callback === 'function') {
+			settings.callback();
 		}
 	}
 

@@ -175,7 +175,7 @@
 				meerkat.modules.showMoreQuotesPrompt.initPromptBar();
 				meerkat.modules.travelSorting.initSorting();
 				meerkat.modules.partnerTransfer.initTransfer();
-				meerkat.modules.travelCoverLevelTabs.initTravelCoverLevelTabs();
+				meerkat.modules.travelCoverLevelTabs.initTravelCoverLevelTabs(isAmtDomesticOnLoadJourney());
 			},
 			onBeforeEnter: function enterResultsStep(event) {
 				meerkat.modules.travellers.mapValues();
@@ -201,6 +201,10 @@
 			resultsStep: resultsStep
 		};
 
+	}
+
+	function isAmtDomesticOnLoadJourney() {
+        return $('#travel_lastCoverTabLevel').val() === 'D';
 	}
 
 	// returns the value considered the vertical filter for travel
@@ -327,7 +331,8 @@
 		init: initJourneyEngine,
 		events: moduleEvents,
 		getTrackingFieldsObject: getTrackingFieldsObject,
-		getVerticalFilter: getVerticalFilter
+		getVerticalFilter: getVerticalFilter,
+        isAmtDomesticOnLoadJourney: isAmtDomesticOnLoadJourney
 	});
 
 })(jQuery);
