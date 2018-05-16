@@ -547,6 +547,13 @@
 
                     meerkat.messaging.publish(meerkatEvents.TRIGGER_UPDATE_PREMIUM);
                     meerkat.modules.fieldUtilities.toggleSelectsPlaceholderColor();
+
+                    meerkat.modules.healthLHC.onInitialise();
+                    meerkat.modules.healthLHC.getBaseDates();
+                    _.defer(function() {
+                        meerkat.modules.healthLHC.setCoverDates('primary', [{from: '2017-04-17', to: '2018-03-31'}]);
+                        meerkat.modules.healthLHC.getLHC();
+                    });
                 }
             },
             onAfterEnter: function afterEnterPaymentStep() {
