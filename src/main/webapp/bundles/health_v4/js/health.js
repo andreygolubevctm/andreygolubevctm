@@ -420,6 +420,8 @@
                             });
                         }
                     }, 1000);
+
+                    meerkat.modules.healthLHC.resetNewLHC();
                 }
             },
             onAfterEnter: function onAfterEnterResultsStep(event) {
@@ -545,18 +547,13 @@
                     // Insert fund into Contact Authority
                     $('#mainform').find('.health_contact_authority span').text( selectedProduct.info.providerName  );
 
-                    meerkat.messaging.publish(meerkatEvents.TRIGGER_UPDATE_PREMIUM);
-                    meerkat.modules.fieldUtilities.toggleSelectsPlaceholderColor();
-
                     meerkat.modules.healthLHC.onInitialise();
-                    meerkat.modules.healthLHC.getBaseDates().done(function() {
-                        meerkat.modules.healthLHC.setCoverDates('primary', [{from: '2017-04-17', to: '2018-03-31'}]);
-                        meerkat.modules.healthLHC.getLHC().done(function(response) {
-                            console.log('response getLHC', response);
 
-                            // do injection to price breakdown lhc part
-                        });
+                    _.defer(function() {
+                        meerkat.messaging.publish(meerkatEvents.TRIGGER_UPDATE_PREMIUM);
                     });
+
+                    meerkat.modules.fieldUtilities.toggleSelectsPlaceholderColor();
                 }
             },
             onAfterEnter: function afterEnterPaymentStep() {

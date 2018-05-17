@@ -10,7 +10,8 @@
         _calculateRequestData = {
             primary: {},
             partner: {}
-        };
+        },
+        _newLhc = null;
 
     function onInitialise() {
         var dob = meerkat.modules.dateUtils.returnDate(meerkat.modules.healthPrimary.getDOB()),
@@ -23,7 +24,7 @@
 
         _calculateRequestData = {
             primary: {
-                continuousCover: meerkat.modules.healthPrimary.getContinuousCover(),
+                continuousCover: !!meerkat.modules.healthPrimary.getContinuousCover(),
                 neverHadCover: meerkat.modules.healthPrimary.getNeverHadCover(),
                 coverDates: []
             }
@@ -31,11 +32,21 @@
 
         if (meerkat.modules.healthChoices.hasPartner()) {
             _calculateRequestData.partner = {
-                continuousCover: meerkat.modules.healthPartner.getContinuousCover(),
+                continuousCover: !!meerkat.modules.healthPartner.getContinuousCover(),
                 neverHadCover: meerkat.modules.healthPartner.getNeverHadCover(),
                 coverDates: []
             };
         }
+
+        getBaseDates().done(function(res) {
+            if ( (res.primary.lhcDaysApplicable > 0 && (meerkat.modules.healthPrimary.getUnsureCover() || meerkat.modules.healthPrimary.getContinuousCover() === false)) ||
+                 (meerkat.modules.healthChoices.hasPartner() && res.partner.lhcDaysApplicable > 0 && (meerkat.modules.healthPartner.getUnsureCover() || meerkat.modules.healthPartner.getContinuousCover() === false)) ) {
+
+                getLHC();
+            } else {
+                resetNewLHC();
+            }
+        });
     }
 
     // applicant is either 'primary' || 'partner'
@@ -52,15 +63,12 @@
             errorLevel: 'silent',
             data: JSON.stringify(_baseDatesRequestData),
             onSuccess: function(json) {
-                console.log(json);
                 _baseDatesResponseData = json;
                 _calculateRequestData.primary = $.extend({}, _baseDatesResponseData.primary, _calculateRequestData.primary);
 
                 if (meerkat.modules.healthChoices.hasPartner()) {
                     _calculateRequestData.partner = $.extend({}, _baseDatesResponseData.partner, _calculateRequestData.partner);
                 }
-
-                console.log('_calculateRequestData', _calculateRequestData);
             },
             onError: function onError(obj, txt, errorThrown) {
                 console.log({errorMessage: txt + ': ' + errorThrown});
@@ -76,7 +84,7 @@
             errorLevel: 'silent',
             data: JSON.stringify(_calculateRequestData),
             onSuccess: function(json) {
-                console.log('getLHC', json);
+                _newLhc = meerkat.modules.healthChoices.hasPartner() ? json.combined.lhcPercentage : json.primary.lhcPercentage;
             },
             onError: function onError(obj, txt, errorThrown) {
                 console.log({errorMessage: txt + ': ' + errorThrown});
@@ -88,12 +96,22 @@
         return _calculateRequestData.primary;
     }
 
+    function getNewLHC() {
+        return _newLhc;
+    }
+
+    function resetNewLHC() {
+        _newLhc = null;
+    }
+
     meerkat.modules.register('healthLHC', {
         onInitialise: onInitialise,
         setCoverDates: setCoverDates,
         getBaseDates: getBaseDates,
         getLHC: getLHC,
-        getPrimary: getPrimary
+        getPrimary: getPrimary,
+        getNewLHC: getNewLHC,
+        resetNewLHC: resetNewLHC
     });
 
 })(jQuery);

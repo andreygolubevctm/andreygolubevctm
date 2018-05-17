@@ -88,11 +88,15 @@
     }
 
     function getContinuousCover() {
-        return $elements.primaryCoverLoading.filter(':checked').val() === 'Y';
+        return $elements.currentCover.filter(':checked').val() === 'Y' ? $elements.primaryCoverLoading.filter(':checked').val() === 'Y' : null;
     }
 
     function getNeverHadCover() {
         return $elements.currentCover.filter(':checked').val() === 'N' && $elements.primaryEverHadCover.filter(':checked').val() === 'N';
+    }
+
+    function getUnsureCover() {
+        return $elements.currentCover.filter(':checked').val() === 'N' && $elements.primaryEverHadCover.filter(':checked').val() === 'Y';
     }
 
     meerkat.modules.register('healthPrimary', {
@@ -101,7 +105,8 @@
         onStartInit: onStartInit,
         getDOB: getDOB,
         getContinuousCover: getContinuousCover,
-        getNeverHadCover: getNeverHadCover
+        getNeverHadCover: getNeverHadCover,
+        getUnsureCover: getUnsureCover
     });
 
 })(jQuery);

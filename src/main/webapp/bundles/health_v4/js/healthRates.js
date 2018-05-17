@@ -182,7 +182,7 @@
         $("#health_rebate").val((rates.rebate || ''));
         $("#health_rebateChangeover").val((rates.rebateChangeover || ''));
         $("#health_previousRebate").val((rates.previousRebate || ''));
-        $("#health_loading").val((rates.loading || ''));
+        $("#health_loading").val(!_.isNull(meerkat.modules.healthLHC.getNewLHC()) ? meerkat.modules.healthLHC.getNewLHC() : (rates.loading || ''));
         $("#health_primaryCAE").val((rates.primaryCAE || ''));
         $("#health_partnerCAE").val((rates.partnerCAE || ''));
 
