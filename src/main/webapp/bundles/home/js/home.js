@@ -173,7 +173,7 @@
 	function initAddressSearch() {
 		var xpath = 'home/property/address';
 		meerkat.modules.addressLookupV2.getStreetSearch().init(xpath);
-		meerkat.modules.addressLookupV2.getHiddenPostcodeSearch().init('street', xpath);
+		meerkat.modules.addressLookupV2.getManualPostcodeSearch().init('street', xpath);
 	}
 
 	function setJourneyEngineSteps() {

@@ -186,14 +186,14 @@
             meerkat.modules.journeyProgressBar.render(true);
         }
     }
-    
+
     function initAddressSearch() {
       var resXpath = 'health/application/address',
           postXpath = 'health/application/postal';
       meerkat.modules.addressLookupV2.getSmartSearch().init('Residential', resXpath);
-      meerkat.modules.addressLookupV2.getHiddenPostcodeSearch().init('Residential', resXpath);
+      meerkat.modules.addressLookupV2.getManualPostcodeSearch().init('Residential', resXpath);
       meerkat.modules.addressLookupV2.getSmartSearch().init('Postal', postXpath);
-      meerkat.modules.addressLookupV2.getHiddenPostcodeSearch().init('Postal', postXpath);
+      meerkat.modules.addressLookupV2.getManualPostcodeSearch().init('Postal', postXpath);
       meerkat.modules.addressLookupV2.getPostCodeWithBtns().init('health/application/address');
     }
 

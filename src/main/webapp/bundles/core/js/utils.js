@@ -201,7 +201,7 @@
 
 		return Math.floor(seconds) + " seconds";
 	}
-	
+
 	/**
 	 * Returns a html node
 	 * @param string elementType
@@ -209,9 +209,18 @@
 	 * @returns {node}
 	 */
 
-	
+
 	function createElement(elementType, props) {
-		return $.extend(true, document.createElement(elementType), props);
+		var element = document.createElement(elementType);
+		if (props && props.children) {
+			element.append(props.children);
+			delete props.children;
+		}
+
+		for (var key in props) {
+			element.setAttribute(key, props[key]);
+		}
+		return element;
 	}
 
 	meerkat.modules.register('utils', {

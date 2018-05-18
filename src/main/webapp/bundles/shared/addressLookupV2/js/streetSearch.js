@@ -1,27 +1,14 @@
 ;(function ($, undefined) {
 
   var base = meerkat.modules.addressLookupV2.base;
-  var smartSearch = {
-    init: function(prefix, xpath) {
-      this.prefix = prefix;
+
+  var streetSearch = {
+    results: [],
+    init: function(xpath) {
       this.xpath = base.formatXpath(xpath);
       this.cacheDom();
       this.bindEvents();
-      this.setUpDefault();
       this.setupAutocomplete();
-    },
-    cacheDom: function() {
-      this.searchInput = '.addressSearchV2--' + this.prefix + ' .addressSearchV2__searchContainer input';
-      this.$el = $('.addressSearchV2--' + this.prefix);
-      this.$postcode = this.$el.find('.addressSearchV2__postcodeSearch');
-      this.$postcodeInput = this.$postcode.find('input');
-      this.$checkbox = this.$el.find('.addressSearchV2__checkbox input');
-      this.$searchContainer = this.$el.find('.addressSearchV2__searchContainer');
-      this.$searchField = this.$searchContainer.find('input');
-      this.$cantFindField = this.$el.find('.addressSearchV2__cantFindFields');
-    },
-    bindEvents: function() {
-      this.$checkbox.on('change', this.toggleCheckbox.bind(this));
     },
     setupAutocomplete: function() {
       var _this = this;
@@ -32,7 +19,7 @@
             cache: false,
             source: function(term, response) {
                 var settings = _this.getSettings();
-                settings.data = JSON.stringify({ addressLine: term, postCodeOrSuburb: _this.$postcodeInput.val() });
+                settings.data = JSON.stringify({ addressLine: term });
                 $.ajax(settings).done(function(data) {
                   response(_this.handleData(data));
                 });
@@ -47,58 +34,55 @@
         });
     },
     handleSelect: function(text) {
-
       if (text === '') {
-        this.$searchField.val('');
         this.$checkbox.prop('checked', true).change();
       } else {
         var selectedData = this.results.find(function(result) {
-          return result.text.indexOf(text) > -1;
+          return result.text === text;
         });
         this.fillFields(selectedData);
       }
-    },
-    displayTextFix: function(text, postcode) {
-      var postcodeString = ', ' + postcode;
-      var stringFix = text.replace(postcodeString, '');
-      return stringFix;
     },
     handleData: function(data) {
       this.results = data;
       var displayData = [];
       for (var i = 0; i < data.length; i++) {
-        displayData.push(this.displayTextFix(data[i].text, data[i].postCode));
+        displayData.push(data[i].text);
       }
       displayData.push(base.noAddressFound);
       return displayData;
     },
-    setUpDefault: function() {
-      if (this.prefix === 'Residential') {
-        this.$postcodeInput.val($('#health_situation_postcode').val());
-      } else {
-        this.$checkbox
-          .prop('checked', true)
-          .change();
-      }
+    cacheDom: function() {
+      this.searchInput = '.addressSearchV2--street .addressSearchV2__searchContainer input';
+      this.$el = $('.addressSearchV2--street');
+      this.$searchContainer = this.$el.find('.addressSearchV2__searchContainer');
+      this.$cantFindField = this.$el.find('.addressSearchV2__cantFindFields');
+      this.$checkbox = this.$el.find('.addressSearchV2__checkbox input');
+      this.$search = this.$searchContainer.find('input');
+    },
+    bindEvents: function() {
+      this.$checkbox.on('change', this.toggleCheckbox.bind(this));
     },
     fillFields: function(data) {
-      console.log('DATA [smartSearch]', data);
-      console.log('this.xpath', this.xpath);
-      var streetSearch = data.houseNoSel + ' ' + data.streetName + ', ' + data.suburbName + ' ' + data.state;
-      if ($(this.xpath + '_suburb').find('option[value="'+ data.suburbName +'"]').length === 0) {
-        $(this.xpath + '_suburb').append(meerkat.modules.utils.createElement('option', { children: data.suburbName, value: data.suburbName }));
-      }
-      $(this.xpath + '_suburbName').val(data.suburbName);
-      $(this.xpath + '_suburb').find('option[value="'+ data.suburbName +'"]').prop('selected', true);
-      $(this.xpath + '_fullAddress').val(data.text);
-      $(this.xpath + '_streetSearch').val(streetSearch);
+        console.log('DATA [streetSearch]', data);
+        console.log('this.xpath', this.xpath);
       $(this.xpath + '_state').val(data.state);
-      $(this.xpath + '_nonStdStreet').val(data.streetName);
+      if ($(this.xpath + '_suburbName').find('option[value="'+ data.suburbName +'"]').length === 0) {
+        var element = meerkat.modules.utils.createElement('option', { children: data.suburbName, value: data.suburbName });
+        $(this.xpath + '_suburbName').append(element);
+      }
+      $(this.xpath + '_nonStdPostCode').val(data.postCode);
+      $(this.xpath + '_postCode').val(data.postCode);
+      $(this.xpath + '_suburb').val(data.suburbName);
+      $(this.xpath + '_suburbName').find('option[value="'+ data.suburbName +'"]').prop('selected', true);
       $(this.xpath + '_streetName').val(data.streetName);
+      $(this.xpath + '_nonStdStreet').val(data.streetName);
       $(this.xpath + '_streetNum').val(data.houseNoSel);
       $(this.xpath + '_houseNoSel').val(data.houseNoSel);
-      $(this.xpath + '_unitShop').val(data.unitSel);
-      $(this.xpath + '_gnafid').val(data.gnafid);
+      $(this.xpath + '_unitSel').val(data.unitSel);
+      $(this.xpath + '_fullAddress').val(data.text);
+      $(this.xpath + '_fullAddressLineOne').val(data.text);
+      $(this.xpath + '_gnafID').val(data.gnafId);
       if (data.unitType.length > 0) {
         var str = data.unitType.toLowerCase();
         var fixStringFormat = str.charAt(0).toUpperCase() + str.slice(1);
@@ -112,19 +96,20 @@
     getSettings: function() {
       return {
         method: 'POST',
-        url: base.getURL() + 'streetsuburb',
+        url: base.getURL() + 'street',
+        data: {},
         dataType: 'json',
         contentType: 'application/json'
       }
     }
   };
 
-  function getSmartSearch() {
-    return $.extend(true, {}, smartSearch);
+  function getStreetSearch() {
+    return $.extend(true, {}, streetSearch);
   }
 
   meerkat.modules.extend("addressLookupV2", {
-    getSmartSearch: getSmartSearch
+    getStreetSearch: getStreetSearch
   });
 
 })(jQuery);

@@ -163,9 +163,9 @@
             postXpath = 'health/application/postal';
 		addressLookupV2.getPostCodeSearch().init('health/situation');
 		addressLookupV2.getSmartSearch().init('Residential', resXpath);
-		addressLookupV2.getHiddenPostcodeSearch().init('Residential', resXpath);
+		addressLookupV2.getManualPostcodeSearch().init('Residential', resXpath);
 		addressLookupV2.getSmartSearch().init('Postal', postXpath);
-		addressLookupV2.getHiddenPostcodeSearch().init('Postal', postXpath);
+		addressLookupV2.getManualPostcodeSearch().init('Postal', postXpath);
 		
 		addressLookupV2.getToggleBtn().init('simples-postcode-toggle', 'health_application_postalGroup');
 	}

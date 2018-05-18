@@ -12,10 +12,10 @@
   function buildOptions(arrayOptions, valueKey, labelKey, placeholderOption) {
     var options = [];
     if (placeholderOption) {
-      options.push(createElement('option', { innerHTML: placeholderOption, value: '' }));
+      options.push(meerkat.modules.utils.createElement('option', { children: placeholderOption, value: '' }));
     }
     for (var i = 0; i < arrayOptions.length; i++) {
-      var option = createElement('option', { innerHTML: arrayOptions[i][labelKey], value: arrayOptions[i][valueKey] });
+      var option = meerkat.modules.utils.createElement('option', { children: arrayOptions[i][labelKey], value: arrayOptions[i][valueKey] });
       options.push(option);
     }
     return options;
@@ -29,11 +29,10 @@
     getURL: getURL,
     formatXpath: formatXpath,
     buildOptions: buildOptions,
-    noAddressFound: "Can't find address? <span class=\"underline\">Click here.</span>",
-    doneTypingTime: 250
+    noAddressFound: "Can't find address? <span class=\"underline\">Click here.</span>"
   };
 
-  meerkat.modules.extend("addressLookupV2", {
+  meerkat.modules.register("addressLookupV2", {
     base: base
   });
 
