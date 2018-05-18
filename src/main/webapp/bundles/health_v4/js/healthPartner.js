@@ -22,7 +22,8 @@
             partnerCurrentFundName: $(':input[name=health_healthCover_partner_fundName]'),
             appFields: $('#partnerFund, #partnerMemberID, #partnerContainer'),
             benefitsScrollerLinks: $('.benefitsScroller'),
-            coverLoadingHeading: $('.benefitsContainer').find('h3:first-child')
+            coverLoadingHeading: $('.benefitsContainer').find('h3:first-child'),
+            appDob: $('#health_application_partner_dob')
         };
 
         $elements.partnerCoverLoading.add($elements.dob).add($elements.currentCover).attr('data-attach','true');
@@ -113,8 +114,8 @@
         }
     }
 
-    function getDOB() {
-        return $elements.dob.val();
+    function getAppDob() {
+        return $elements.appDob.val();
     }
 
     function getContinuousCover() {
@@ -133,7 +134,7 @@
         init: initHealthPartner,
         getCurrentCover: getCurrentCover,
         onStartInit: onStartInit,
-        getDOB: getDOB,
+        getAppDob: getAppDob,
         getContinuousCover: getContinuousCover,
         getNeverHadCover: getNeverHadCover,
         getUnsureCover: getUnsureCover

@@ -6,16 +6,19 @@
             primaryDOB: null,
             partnerDOB: null
         },
-        _baseDatesResponseData = {},
-        _calculateRequestData = {
+        _baseDatesResponseData = {}, // request object for 'lhc/base-dates/post.json'
+        _calculateRequestData = {    // request object for 'lhc/calculate/post.json'
             primary: {},
             partner: {}
         },
         _newLhc = null;
 
     function onInitialise() {
-        var dob = meerkat.modules.dateUtils.returnDate(meerkat.modules.healthPrimary.getDOB()),
-            partnerDOB = meerkat.modules.healthChoices.hasPartner() ? meerkat.modules.dateUtils.returnDate(meerkat.modules.healthPartner.getDOB()) : null;
+        var hasPartner = meerkat.modules.healthChoices.hasPartner(),
+            dob = meerkat.modules.dateUtils.returnDate(meerkat.modules.healthPrimary.getAppDob()),
+            partnerDOB = hasPartner ? meerkat.modules.dateUtils.returnDate(meerkat.modules.healthPartner.getAppDob()) : null,
+            primaryGetContCover = meerkat.modules.healthPrimary.getContinuousCover(),
+            partnerGetContCover = null;
 
         _baseDatesRequestData = {
             primaryDOB: meerkat.modules.dateUtils.format(dob, 'YYYY-MM-DD'),
@@ -24,23 +27,25 @@
 
         _calculateRequestData = {
             primary: {
-                continuousCover: !!meerkat.modules.healthPrimary.getContinuousCover(),
+                continuousCover: !!primaryGetContCover,
                 neverHadCover: meerkat.modules.healthPrimary.getNeverHadCover(),
                 coverDates: []
             }
         };
 
-        if (meerkat.modules.healthChoices.hasPartner()) {
+        if (hasPartner) {
+            partnerGetContCover = meerkat.modules.healthPartner.getContinuousCover();
+
             _calculateRequestData.partner = {
-                continuousCover: !!meerkat.modules.healthPartner.getContinuousCover(),
+                continuousCover: !!partnerGetContCover,
                 neverHadCover: meerkat.modules.healthPartner.getNeverHadCover(),
                 coverDates: []
             };
         }
 
         getBaseDates().done(function(res) {
-            if ( (res.primary.lhcDaysApplicable > 0 && (meerkat.modules.healthPrimary.getUnsureCover() || meerkat.modules.healthPrimary.getContinuousCover() === false)) ||
-                 (meerkat.modules.healthChoices.hasPartner() && res.partner.lhcDaysApplicable > 0 && (meerkat.modules.healthPartner.getUnsureCover() || meerkat.modules.healthPartner.getContinuousCover() === false)) ) {
+            if ( (res.primary.lhcDaysApplicable > 0 && (meerkat.modules.healthPrimary.getUnsureCover() || primaryGetContCover === false)) ||
+                 (hasPartner && res.partner.lhcDaysApplicable > 0 && (meerkat.modules.healthPartner.getUnsureCover() || partnerGetContCover === false)) ) {
 
                 getLHC();
             } else {
@@ -62,8 +67,8 @@
             dataType: 'json',
             errorLevel: 'silent',
             data: JSON.stringify(_baseDatesRequestData),
-            onSuccess: function(json) {
-                _baseDatesResponseData = json;
+            onSuccess: function(res) {
+                _baseDatesResponseData = res;
                 _calculateRequestData.primary = $.extend({}, _baseDatesResponseData.primary, _calculateRequestData.primary);
 
                 if (meerkat.modules.healthChoices.hasPartner()) {
@@ -83,8 +88,8 @@
             dataType: 'json',
             errorLevel: 'silent',
             data: JSON.stringify(_calculateRequestData),
-            onSuccess: function(json) {
-                _newLhc = meerkat.modules.healthChoices.hasPartner() ? json.combined.lhcPercentage : json.primary.lhcPercentage;
+            onSuccess: function(res) {
+                _newLhc = meerkat.modules.healthChoices.hasPartner() ? res.combined.lhcPercentage : res.primary.lhcPercentage;
             },
             onError: function onError(obj, txt, errorThrown) {
                 console.log({errorMessage: txt + ': ' + errorThrown});

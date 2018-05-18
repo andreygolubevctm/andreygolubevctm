@@ -17,7 +17,8 @@
             primaryEverHadCover: $(':input[name=health_healthCover_primary_everHadCover]'),
             primaryCurrentFundName: $(':input[name=health_healthCover_primary_fundName]'),
             dob: $('#health_healthCover_primary_dob'),
-            partnerDOB: $('#benefits_partner_dob')
+            partnerDOB: $('#benefits_partner_dob'),
+            appDob: $('#health_application_primary_dob')
         };
 
 	    $elements.primaryCoverLoading.add($elements.dob).add($elements.currentCover).attr('data-attach','true');
@@ -83,8 +84,8 @@
         }
     }
 
-    function getDOB() {
-        return $elements.dob.val();
+    function getAppDob() {
+        return $elements.appDob.val();
     }
 
     function getContinuousCover() {
@@ -103,7 +104,7 @@
         init: initHealthPrimary,
         getCurrentCover: getCurrentCover,
         onStartInit: onStartInit,
-        getDOB: getDOB,
+        getAppDob: getAppDob,
         getContinuousCover: getContinuousCover,
         getNeverHadCover: getNeverHadCover,
         getUnsureCover: getUnsureCover
