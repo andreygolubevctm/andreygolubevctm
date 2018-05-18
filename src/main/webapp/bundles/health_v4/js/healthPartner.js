@@ -22,7 +22,8 @@
             partnerCurrentFundName: $(':input[name=health_healthCover_partner_fundName]'),
             appFields: $('#partnerFund, #partnerMemberID, #partnerContainer'),
             benefitsScrollerLinks: $('.benefitsScroller'),
-            coverLoadingHeading: $('.benefitsContainer').find('h3:first-child')
+            coverLoadingHeading: $('.benefitsContainer').find('h3:first-child'),
+            appDob: $('#health_application_partner_dob')
         };
 
         $elements.partnerCoverLoading.add($elements.dob).add($elements.currentCover).attr('data-attach','true');
@@ -113,10 +114,30 @@
         }
     }
 
+    function getAppDob() {
+        return $elements.appDob.val();
+    }
+
+    function getContinuousCover() {
+        return $elements.currentCover.filter(':checked').val() === 'Y' ? $elements.partnerCoverLoading.filter(':checked').val() === 'Y' : null;
+    }
+
+    function getNeverHadCover() {
+        return $elements.currentCover.filter(':checked').val() === 'N' && $elements.partnerEverHadCover.filter(':checked').val() === 'N';
+    }
+
+    function getUnsureCover() {
+        return $elements.currentCover.filter(':checked').val() === 'N' && $elements.partnerEverHadCover.filter(':checked').val() === 'Y';
+    }
+
     meerkat.modules.register('healthPartner', {
         init: initHealthPartner,
         getCurrentCover: getCurrentCover,
-        onStartInit: onStartInit
+        onStartInit: onStartInit,
+        getAppDob: getAppDob,
+        getContinuousCover: getContinuousCover,
+        getNeverHadCover: getNeverHadCover,
+        getUnsureCover: getUnsureCover
     });
 
 })(jQuery);
