@@ -4,7 +4,6 @@
 <%@ taglib uri="/WEB-INF/tlds/url.tld" prefix="url" %>
 <%@ taglib uri="/WEB-INF/tlds/miscUtils.tld" prefix="miscUtils" %>
 <%@ taglib uri="/WEB-INF/tlds/datasource.tld" prefix="datasource" %>
-<%@ taglib uri="/WEB-INF/tlds/contactValidator.tld" prefix="cv" %>
 <%@ taglib uri="/WEB-INF/tlds/lifeUtil.tld" prefix="life_util" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" 		prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/xml" 		prefix="x" %>
