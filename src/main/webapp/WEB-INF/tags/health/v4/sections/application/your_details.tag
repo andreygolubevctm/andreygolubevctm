@@ -12,16 +12,11 @@
 
         <health_v4_aboutyou:everownedinsurance xpath="${xpath}" />
 
-        <%--replace with the real one--%>
-        <div class="fieldrow" id="primaryFundHistory">
-            <h2>Fund history</h2>
-        </div>
-
         <%-- HTML --%>
         <c:set var="xpath" value="${pageSettings.getVerticalCode()}/previousfund" />
 
         <c:set var="fieldXpath" value="${xpath}/primary/fundHistory" />
-        <form_v4:row fieldXpath="${fieldXpath}" label="Tell us the periods in the past where you have held private hospital cover, and we will calculate any Lifetime Health Cover that may that may be applied to your premium" id="clientFundHistory" className="changes-premium" rowContentClass="row">
+        <form_v4:row fieldXpath="${fieldXpath}" label="Tell us the periods in the past where you have held private hospital cover, and we will calculate any Lifetime Health Cover that may that may be applied to your premium" id="primaryFundHistory" className="changes-premium" rowContentClass="row">
             <field_v1:coverage_dates_input xpath="${fieldXpath}" />
         </form_v4:row>
 

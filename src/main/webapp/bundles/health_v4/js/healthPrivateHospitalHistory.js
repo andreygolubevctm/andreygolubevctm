@@ -67,12 +67,12 @@
 
             primarySelectedRowId = -1;
 
-            var myEntry = { "start": $elements.primary.startDate.val(), "end": $elements.primary.endDate.val()};
+            var myEntry = { "from": $elements.primary.startDate.val(), "to": $elements.primary.endDate.val()};
 
             if (_validatePrimaryCoverDatesDataTable($elements.primary.startDate.val(), $elements.primary.endDate.val())) {
                 primaryCoverDates.push(myEntry);
                 primaryCoverDates.sort(function(a, b){
-                    return (b["end"] > a["end"]);
+                    return (b["to"] > a["to"]);
                 });
 
                 $elements.primary.startDate.val("");
@@ -87,14 +87,14 @@
         $elements.primary.editBtn.on('click', function primaryEditPrivateHospitalHistoryRow() {
             event.preventDefault();
 
-            var myEntry = { "start": $elements.primary.startDate.val(), "end": $elements.primary.endDate.val()};
+            var myEntry = { "from": $elements.primary.startDate.val(), "to": $elements.primary.endDate.val()};
 
             if (_validatePrimaryCoverDatesDataTable($elements.primary.startDate.val(), $elements.primary.endDate.val())) {
                 primaryCoverDates.splice(primarySelectedRowId, 1);
                 primaryCoverDates.push(myEntry);
                 primarySelectedRowId = -1;
                 primaryCoverDates.sort(function(a, b){
-                    return (b["end"] > a["end"]);
+                    return (b["to"] > a["to"]);
                 });
 
                 $elements.primary.startDate.val("");
@@ -132,12 +132,12 @@
 
             partnerSelectedRowId = -1;
 
-            var myEntry = { "start": $elements.partner.startDate.val(), "end": $elements.partner.endDate.val()};
+            var myEntry = { "from": $elements.partner.startDate.val(), "to": $elements.partner.endDate.val()};
 
             if (_validatePartnerCoverDatesDataTable($elements.partner.startDate.val(), $elements.partner.endDate.val())) {
                 partnerCoverDates.push(myEntry);
                 partnerCoverDates.sort(function(a, b){
-                    return (b["end"] > a["end"]);
+                    return (b["to"] > a["to"]);
                 });
 
                 $elements.partner.startDate.val("");
@@ -152,14 +152,14 @@
         $elements.partner.editBtn.on('click', function partnerEditPrivateHospitalHistoryRow() {
             event.preventDefault();
 
-            var myEntry = { "start": $elements.partner.startDate.val(), "end": $elements.partner.endDate.val()};
+            var myEntry = { "from": $elements.partner.startDate.val(), "to": $elements.partner.endDate.val()};
 
             if (_validatePartnerCoverDatesDataTable($elements.partner.startDate.val(), $elements.partner.endDate.val())) {
                 partnerCoverDates.splice(partnerSelectedRowId, 1);
                 partnerCoverDates.push(myEntry);
                 partnerSelectedRowId = -1;
                 partnerCoverDates.sort(function(a, b){
-                    return (b["end"] > a["end"]);
+                    return (b["to"] > a["to"]);
                 });
 
                 $elements.partner.startDate.val("");
@@ -326,11 +326,11 @@
 			for (var i = 0; i < primaryCoverDates.length; i++) {
 
     			var row = "<tr id='" + $elements.primary.idPrefix + "row_" + i + "'>";
-    			row += "<td>" + primaryCoverDates[i]["start"] +"</td>";
-    			row += "<td>" + primaryCoverDates[i]["end"] + "</td>";
-    			row += "<td>" + _daysBetween((primaryCoverDates[i]["start"]), (primaryCoverDates[i]["end"])) +"</td>";
-    			row += "<td class='editCoverDatesRow'><a href='javascript:;'><span class='icon icon-pencil' title='Edit Row'><span class='sr-only'>Click here to edit row for " + primaryCoverDates[i]["start"] + " to " + primaryCoverDates[i]["end"] + "</span></span></a></td>";
-    			row += "<td class='delCoverDatesRow'><a href='javascript:;'><span class='icon icon-cross' title='Delete Row'><span class='sr-only'>Click here to delete row for " + primaryCoverDates[i]["start"] + " to " + primaryCoverDates[i]["end"] + "</span></span></a></td>";
+    			row += "<td>" + primaryCoverDates[i]["from"] +"</td>";
+    			row += "<td>" + primaryCoverDates[i]["to"] + "</td>";
+    			row += "<td>" + _daysBetween((primaryCoverDates[i]["from"]), (primaryCoverDates[i]["to"])) +"</td>";
+    			row += "<td class='editCoverDatesRow'><a href='javascript:;'><span class='icon icon-pencil' title='Edit Row'><span class='sr-only'>Click here to edit row for " + primaryCoverDates[i]["from"] + " to " + primaryCoverDates[i]["to"] + "</span></span></a></td>";
+    			row += "<td class='delCoverDatesRow'><a href='javascript:;'><span class='icon icon-cross' title='Delete Row'><span class='sr-only'>Click here to delete row for " + primaryCoverDates[i]["from"] + " to " + primaryCoverDates[i]["to"] + "</span></span></a></td>";
     			row += "</tr>";
 
         		tableHtmlStr += row;
@@ -347,8 +347,8 @@
 
                 $(this).parent().addClass("editRow info");
 
-                $elements.primary.startDate.val(primaryCoverDates[primarySelectedRowId]["start"]);
-                $elements.primary.endDate.val(primaryCoverDates[primarySelectedRowId]["end"]);
+                $elements.primary.startDate.val(primaryCoverDates[primarySelectedRowId]["from"]);
+                $elements.primary.endDate.val(primaryCoverDates[primarySelectedRowId]["to"]);
                 $elements.primary.addBtn.hide();
                 $elements.primary.editBtn.toggleClass( "hidden", false );
                 $elements.primary.cancelBtn.toggleClass( "hidden", false );
@@ -391,11 +391,11 @@
 			for (var i = 0; i < partnerCoverDates.length; i++) {
 
     			var row = "<tr id='" + $elements.partner.idPrefix + "row_" + i + "'>";
-    			row += "<td>" + partnerCoverDates[i]["start"] +"</td>";
-    			row += "<td>" + partnerCoverDates[i]["end"] + "</td>";
-    			row += "<td>" + _daysBetween((partnerCoverDates[i]["start"]), (partnerCoverDates[i]["end"])) +"</td>";
-    			row += "<td class='editCoverDatesRow'><a href='javascript:;'><span class='icon icon-pencil' title='Edit Row'><span class='sr-only'>Click here to edit row for " + partnerCoverDates[i]["start"] + " to " + partnerCoverDates[i]["end"] + "</span></span></a></td>";
-    			row += "<td class='delCoverDatesRow'><a href='javascript:;'><span class='icon icon-cross' title='Delete Row'><span class='sr-only'>Click here to delete row for " + partnerCoverDates[i]["start"] + " to " + partnerCoverDates[i]["end"] + "</span></span></a></td>";
+    			row += "<td>" + partnerCoverDates[i]["from"] +"</td>";
+    			row += "<td>" + partnerCoverDates[i]["to"] + "</td>";
+    			row += "<td>" + _daysBetween((partnerCoverDates[i]["from"]), (partnerCoverDates[i]["to"])) +"</td>";
+    			row += "<td class='editCoverDatesRow'><a href='javascript:;'><span class='icon icon-pencil' title='Edit Row'><span class='sr-only'>Click here to edit row for " + partnerCoverDates[i]["from"] + " to " + partnerCoverDates[i]["to"] + "</span></span></a></td>";
+    			row += "<td class='delCoverDatesRow'><a href='javascript:;'><span class='icon icon-cross' title='Delete Row'><span class='sr-only'>Click here to delete row for " + partnerCoverDates[i]["from"] + " to " + partnerCoverDates[i]["to"] + "</span></span></a></td>";
     			row += "</tr>";
 
         		tableHtmlStr += row;
@@ -412,8 +412,8 @@
 
                 $(this).parent().addClass("editRow info");
 
-                $elements.partner.startDate.val(partnerCoverDates[partnerSelectedRowId]["start"]);
-                $elements.partner.endDate.val(partnerCoverDates[partnerSelectedRowId]["end"]);
+                $elements.partner.startDate.val(partnerCoverDates[partnerSelectedRowId]["from"]);
+                $elements.partner.endDate.val(partnerCoverDates[partnerSelectedRowId]["to"]);
                 $elements.partner.addBtn.hide();
                 $elements.partner.editBtn.toggleClass( "hidden", false );
                 $elements.partner.cancelBtn.toggleClass( "hidden", false );

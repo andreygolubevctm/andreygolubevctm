@@ -47,9 +47,18 @@
             if ( (res.primary.lhcDaysApplicable > 0 && (meerkat.modules.healthPrimary.getUnsureCover() || primaryGetContCover === false)) ||
                  (hasPartner && res.partner.lhcDaysApplicable > 0 && (meerkat.modules.healthPartner.getUnsureCover() || partnerGetContCover === false)) ) {
 
-                getLHC();
+                setCoverDates('primary', meerkat.modules.healthPrivateHospitalHistory.getPrimaryCoverDates());
+
+                if (hasPartner) {
+                    setCoverDates('partner', meerkat.modules.healthPrivateHospitalHistory.getPartnerCoverDates());
+                }
+
+                getLHC().done(function() {
+                    meerkat.messaging.publish(meerkatEvents.TRIGGER_UPDATE_PREMIUM);
+                });
             } else {
                 resetNewLHC();
+                meerkat.messaging.publish(meerkatEvents.TRIGGER_UPDATE_PREMIUM);
             }
         });
     }

@@ -11,11 +11,6 @@
 
     <health_v4_insuranceprefs:partner_cover_ever_owned xpath="${xpath}" />
 
-    <%--replace with the real one--%>
-    <div class="fieldrow" id="partnerFundHistory">
-        <h2>Fund history</h2>
-    </div>
-
     <%-- HTML --%>
     <c:set var="xpath" value="${pageSettings.getVerticalCode()}/previousfund" />
     <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />

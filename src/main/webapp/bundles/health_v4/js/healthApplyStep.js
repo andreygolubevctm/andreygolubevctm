@@ -167,7 +167,7 @@
 
     function _toggleEverHad(personDetailType) {
         var captializePersonDetailType = personDetailType.charAt(0).toUpperCase() + personDetailType.slice(1),
-            visibleState = personDetailType === 'primary' ? meerkat.modules.healthPrimary.getUnsurishCover() === false :
+            visibleState = personDetailType === 'primary' ? meerkat.modules.healthPrimary.getUnsurishCover() === false:
             meerkat.modules.healthPartner.getUnsurishCover() === false;
 
         meerkat.modules.fieldUtilities.toggleVisible(
