@@ -10,6 +10,13 @@
         <health_v4_application:person_details xpath="${xpath}/primary" title="Your" id="primary" />
         <health_v4_application:contact_details xpath="${pageSettings.getVerticalCode()}/application" />
 
+        <health_v4_aboutyou:everownedinsurance xpath="${xpath}" />
+
+        <%--replace with the real one--%>
+        <div class="fieldrow" id="primaryFundHistory">
+            <h2>Fund history</h2>
+        </div>
+
         <%-- HTML --%>
         <c:set var="xpath" value="${pageSettings.getVerticalCode()}/previousfund" />
         <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />

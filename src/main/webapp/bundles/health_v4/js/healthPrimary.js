@@ -100,6 +100,10 @@
         return $elements.currentCover.filter(':checked').val() === 'N' && $elements.primaryEverHadCover.filter(':checked').val() === 'Y';
     }
 
+    function getUnsurishCover() {
+        return $elements.currentCover.filter(':checked').val() === 'Y' && $elements.primaryCoverLoading.filter(':checked').val() === 'N';
+    }
+
     meerkat.modules.register('healthPrimary', {
         init: initHealthPrimary,
         getCurrentCover: getCurrentCover,
@@ -107,7 +111,8 @@
         getAppDob: getAppDob,
         getContinuousCover: getContinuousCover,
         getNeverHadCover: getNeverHadCover,
-        getUnsureCover: getUnsureCover
+        getUnsureCover: getUnsureCover,
+        getUnsurishCover: getUnsurishCover
     });
 
 })(jQuery);

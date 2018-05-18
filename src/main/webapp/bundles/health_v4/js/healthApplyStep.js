@@ -23,7 +23,11 @@
                 appState: $('#health_application_address_state'),
                 healthSituationState: $('#health_situation_state'),
                 healthProductHospitalClass: $('#health_application_productClassification_hospital'),
-                healthProductExtrasClass: $('#health_application_productClassification_extras')
+                healthProductExtrasClass: $('#health_application_productClassification_extras'),
+                healthPrimaryCoverEverHadRow: $('#health_application_primaryCoverEverHad'),
+                healthPartnerCoverEverHadRow: $('#health_application_partnerCoverEverHad'),
+                healthPrimaryFundHistoryRow: $('#primaryFundHistory'),
+                healthPartnerFundHistoryRow: $('#partnerFundHistory')
             };
 
             $unitElements = {
@@ -50,9 +54,13 @@
             meerkat.modules.healthPartner.getCurrentCover());
 
         _toggleSelectGender('primary');
+        _toggleEverHad('primary');
+        _toggleFundHistory('primary', !($elements.healthPrimaryCoverEverHadRow.hasClass('hidden-toggle') === false && $elements.healthPrimaryCoverEverHadRow.find(':input').filter(':checked').val() === 'Y'));
 
         if (meerkat.modules.healthChoices.hasPartner()) {
             _toggleSelectGender('partner');
+            _toggleEverHad('partner');
+            _toggleFundHistory('partner', !($elements.healthPartnerCoverEverHadRow.hasClass('hidden-toggle') === false && $elements.healthPartnerCoverEverHadRow.find(':input').filter(':checked').val() === 'Y'));
         }
 
         setHospitalCoverClass();
@@ -95,6 +103,14 @@
                 gender = $(this).val();
 
             $('#health_application_' + personDetailType + '_gender').val(gender);
+        });
+
+        $elements.healthPrimaryCoverEverHadRow.find(':input').on('change', function() {
+            _toggleFundHistory('primary', $(this).val() === 'N');
+        });
+
+        $elements.healthPartnerCoverEverHadRow.find(':input').on('change', function() {
+            _toggleFundHistory('partner', $(this).val() === 'N');
         });
 
         $unitElements.appPostalUnitType.on('change', function toggleUnitRequiredFields() {
@@ -147,6 +163,26 @@
         } else {
             $genderRow.slideUp();
         }
+    }
+
+    function _toggleEverHad(personDetailType) {
+        var captializePersonDetailType = personDetailType.charAt(0).toUpperCase() + personDetailType.slice(1),
+            visibleState = personDetailType === 'primary' ? meerkat.modules.healthPrimary.getUnsurishCover() === false :
+            meerkat.modules.healthPartner.getUnsurishCover() === false;
+
+        meerkat.modules.fieldUtilities.toggleVisible(
+            $elements['health' + captializePersonDetailType + 'CoverEverHadRow'],
+            visibleState
+        );
+    }
+
+    function _toggleFundHistory(personDetailType, visibleState) {
+        var captializePersonDetailType = personDetailType.charAt(0).toUpperCase() + personDetailType.slice(1);
+
+        meerkat.modules.fieldUtilities.toggleVisible(
+            $elements['health' + captializePersonDetailType + 'FundHistoryRow'],
+            visibleState
+        );
     }
 
     function _changeStreetNoLabel(unitType) {
