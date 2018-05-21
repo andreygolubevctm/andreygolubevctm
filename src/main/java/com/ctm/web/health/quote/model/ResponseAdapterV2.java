@@ -8,23 +8,33 @@ import com.ctm.web.health.model.PaymentType;
 import com.ctm.web.health.model.form.HealthCover;
 import com.ctm.web.health.model.form.HealthRequest;
 import com.ctm.web.health.model.form.Insured;
-import com.ctm.web.health.model.results.*;
+import com.ctm.web.health.model.results.AwardScheme;
+import com.ctm.web.health.model.results.HealthQuoteResult;
 import com.ctm.web.health.model.results.Info;
 import com.ctm.web.health.model.results.Premium;
 import com.ctm.web.health.model.results.Price;
-import com.ctm.web.health.quote.model.response.*;
+import com.ctm.web.health.model.results.Promo;
+import com.ctm.web.health.quote.model.response.GiftCard;
+import com.ctm.web.health.quote.model.response.HealthQuote;
+import com.ctm.web.health.quote.model.response.HealthResponseV2;
+import com.ctm.web.health.quote.model.response.Promotion;
+import com.ctm.web.health.quote.model.response.SpecialOffer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.TextNode;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.BooleanUtils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import static com.ctm.web.health.quote.model.response.Price.DEFAULT_PRICE;
 import static java.util.Collections.emptyList;
@@ -267,7 +277,7 @@ public class ResponseAdapterV2 {
         return lhcFreePricing;
     }
 
-    private static boolean isInsuredAffectedByLHC(Insured insured) {
+    public static boolean isInsuredAffectedByLHC(Insured insured) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate insuredDob = LocalDate.parse(insured.getDob(), formatter);
         long insuredLHCDays = LHCDateCalculationSupport.getLhcDaysApplicable(insuredDob, LocalDate.now());
