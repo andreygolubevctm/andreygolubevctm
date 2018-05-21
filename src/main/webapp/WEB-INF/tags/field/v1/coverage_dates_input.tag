@@ -6,8 +6,11 @@
 
 <div>
 
+	<%-- holds json array object data --%>
+	<field_v2:validatedHiddenField xpath="${xpath}/dates/coverDates" title="Insurance Cover history is required" additionalAttributes=" required " />
+
 	<c:set var="fieldxpathname" value="${xpath}/dates/controls/datesEntryValidationContainer" />
-	<div id="${go:nameFromXpath(fieldxpathname)}" class="col-xs-12 row-content hidden"></div>
+	<div id="${go:nameFromXpath(fieldxpathname)}" class="col-xs-12 row-content"></div>
 	<div>
 		<div class="fieldrow">
 			<div class="col-xs-12 col-sm-6 col-lg-4   row-content">
@@ -39,8 +42,5 @@
 
 	<c:set var="fieldxpathname" value="${xpath}/dates/dataTableContainer" />
 	<div id="${go:nameFromXpath(fieldxpathname)}" class="col-xs-12 row-content"></div>
-
-	<%-- holds json array object data --%>
-	<field_v1:hidden xpath="${xpath}/dates/coverDates" defaultValue="" />
 
 </div>

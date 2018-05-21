@@ -18,6 +18,9 @@
         primarySelectedRowId = -1;
         partnerCoverDates = [];
         partnerSelectedRowId = -1;
+
+       addPrimaryCoverDatesTableValidation();
+       addPartnerCoverDatesTableValidation();
     }
 
     function _setupFields() {
@@ -37,9 +40,12 @@
                 addBtn: $('#' + xpath1 + 'dates_controls_add'),
                 editBtn: $('#' + xpath1 + 'dates_controls_edit'),
                 cancelBtn: $('#' + xpath1 + 'dates_controls_cancel'),
+                startDateValidationLabel: $('#' + xpath1 + 'dates_controls_startDateInput-error'),
+                endDateValidationLabel: $('#' + xpath1 + 'dates_controls_endDateInput-error'),
                 validationContainer: $('#' + xpath1 + 'dates_controls_datesEntryValidationContainer'),
+                validationContainerId: xpath1 + 'dates_controls_datesEntryValidationContainer',
                 coverHistoryTableContainer: $('#' + xpath1 + 'dates_dataTableContainer'),
-                idPrefix: "primary_",
+                idPrefix: 'primary_',
                 coverDatesHiddenField: $('input[name=' + xpath1 + 'dates_coverDates]')
             },
             partner: {
@@ -52,9 +58,12 @@
                 addBtn: $('#' + xpath2 + 'dates_controls_add'),
                 editBtn: $('#' + xpath2 + 'dates_controls_edit'),
                 cancelBtn: $('#' + xpath2 + 'dates_controls_cancel'),
+                startDateValidationLabel: $('#' + xpath2 + 'dates_controls_startDateInput-error'),
+                endDateValidationLabel: $('#' + xpath2 + 'dates_controls_endDateInput-error'),
                 validationContainer: $('#' + xpath2 + 'dates_controls_datesEntryValidationContainer'),
+                validationContainerId: xpath2 + 'dates_controls_datesEntryValidationContainer',
                 coverHistoryTableContainer: $('#' + xpath2 + 'dates_dataTableContainer'),
-                idPrefix: "partner_",
+                idPrefix: 'partner_',
                 coverDatesHiddenField: $('input[name=' + xpath2 + 'dates_coverDates]')
             }
         };
@@ -228,6 +237,10 @@
         var lblStartDt = "";
         var lblEndDt = "";
         var errorMsgTxt = "";
+
+        $elements.primary.startDateValidationLabel.parent().remove();
+        $elements.primary.endDateValidationLabel.parent().remove();
+
         if (!(startDt)) {
             errorMsgTxt = "Please enter a start date";
             lblStartDt = _createValidationTag('error', $elements.primary.startDateFieldName, $elements.primary.idPrefix, errorMsgTxt);
@@ -251,7 +264,6 @@
             $elements.primary.endDate.parent().toggleClass( "has-error", false );
             $elements.primary.startDate.toggleClass( "has-success", true );
             $elements.primary.endDate.toggleClass( "has-success", true );
-            $elements.primary.validationContainer.toggleClass( "hidden", true );
             $elements.primary.validationContainer.html("");
 
             return true;
@@ -264,7 +276,6 @@
             $elements.primary.endDate.parent().toggleClass( "has-error", true );
             $elements.primary.validationContainer.html(lblEndDt);
         }
-        $elements.primary.validationContainer.toggleClass( "hidden", false );
 
         return false;
     }
@@ -274,6 +285,10 @@
         var lblStartDt = "";
         var lblEndDt = "";
         var errorMsgTxt = "";
+
+        $elements.partner.startDateValidationLabel.parent().remove();
+        $elements.partner.endDateValidationLabel.parent().remove();
+
         if (!(startDt)) {
             errorMsgTxt = "Please enter a start date";
             lblStartDt = _createValidationTag('error', $elements.partner.startDateFieldName, $elements.partner.idPrefix, errorMsgTxt);
@@ -297,7 +312,6 @@
             $elements.partner.endDate.parent().toggleClass( "has-error", false );
             $elements.partner.startDate.toggleClass( "has-success", true );
             $elements.partner.endDate.toggleClass( "has-success", true );
-            $elements.partner.validationContainer.toggleClass( "hidden", true );
             $elements.partner.validationContainer.html("");
 
             return true;
@@ -310,7 +324,6 @@
             $elements.partner.endDate.parent().toggleClass( "has-error", true );
             $elements.partner.validationContainer.html(lblEndDt);
         }
-        $elements.partner.validationContainer.toggleClass( "hidden", false );
 
         return false;
     }
@@ -377,6 +390,7 @@
             $elements.primary.coverHistoryTableContainer.hide();
             $elements.primary.coverDatesHiddenField.val("");
         }
+        addPrimaryCoverDatesTableValidation();
 
 	}
 
@@ -442,6 +456,7 @@
             $elements.partner.coverHistoryTableContainer.hide();
             $elements.partner.coverDatesHiddenField.val("");
         }
+        addPartnerCoverDatesTableValidation();
 
 	}
 
@@ -469,6 +484,94 @@
         return ((typeof $elements.partner.coverDatesHiddenField !== 'undefined') && $elements.partner.coverDatesHiddenField.val().length > 0) ? $elements.partner.coverDatesHiddenField.val() : '';
     }
 
+    function addPrimaryCoverDatesTableValidation() {
+
+        if (primaryCoverDates.length > 0) {
+            removePrimaryCoverDatesTableValidation();
+        } else {
+            $elements.primary.startDate.prop('required',true);
+            $elements.primary.endDate.prop('required',true);
+
+            $elements.primary.coverDatesHiddenField.toggleClass( 'validate', true );
+            $elements.primary.coverDatesHiddenField.prop('required', true);
+
+            $elements.primary.coverDatesHiddenField.attr({
+                'data-validation-placement' : '#' + $elements.primary.validationContainerId,
+                'title' : 'Please add your private health insurance cover history',
+                'aria-required': 'true'
+            });
+
+            $elements.primary.coverDatesHiddenField.rules( 'add', {
+                required: true,
+                minlength: 3,
+                messages: {
+                    required: 'Please add your private health insurance cover history',
+                    minlength: 'Please add your private health insurance cover history'
+                }
+            });
+
+        }
+    }
+
+    function removePrimaryCoverDatesTableValidation() {
+        $elements.primary.startDate.prop('required',false);
+        $elements.primary.endDate.prop('required',false);
+
+        $elements.primary.validationContainer.html("");
+        $elements.primary.validationContainer.parent().parent().toggleClass( 'has-error', false );
+
+        $elements.primary.coverDatesHiddenField.rules( 'remove' );
+        $elements.primary.coverDatesHiddenField.toggleClass( 'validate', false );
+        $elements.primary.coverDatesHiddenField.toggleClass( 'has-error', false );
+        $elements.primary.coverDatesHiddenField.prop('required',false);
+        $elements.primary.coverDatesHiddenField.removeAttr('aria-required');
+        $elements.primary.coverDatesHiddenField.removeAttr('data-validation-placement');
+    }
+
+    function addPartnerCoverDatesTableValidation() {
+
+        if (partnerCoverDates.length > 0) {
+            removePartnerCoverDatesTableValidation();
+        } else {
+            $elements.partner.startDate.prop('required', true);
+            $elements.partner.endDate.prop('required', true);
+
+            $elements.partner.coverDatesHiddenField.toggleClass( 'validate', true );
+            $elements.partner.coverDatesHiddenField.prop('required',true);
+
+            $elements.partner.coverDatesHiddenField.attr({
+                'data-validation-placement' : '#' + $elements.partner.validationContainerId,
+                'title' : 'Please add your partner&apos;s private health insurance cover history',
+                'aria-required': 'true'
+            });
+
+            $elements.partner.coverDatesHiddenField.rules( 'add', {
+                required: true,
+                minlength: 3,
+                messages: {
+                    required: 'Please add your private health insurance cover history',
+                    minlength: 'Please add your private health insurance cover history'
+                }
+            });
+
+        }
+    }
+
+    function removePartnerCoverDatesTableValidation() {
+        $elements.partner.startDate.prop('required', false);
+        $elements.partner.endDate.prop('required', false);
+
+        $elements.partner.validationContainer.html("");
+        $elements.partner.validationContainer.parent().parent().toggleClass( 'has-error', false );
+
+        $elements.partner.coverDatesHiddenField.rules( 'remove' );
+        $elements.partner.coverDatesHiddenField.toggleClass( 'validate', false );
+        $elements.partner.coverDatesHiddenField.toggleClass( 'has-error', false );
+        $elements.partner.coverDatesHiddenField.prop('required', false);
+        $elements.partner.coverDatesHiddenField.removeAttr('aria-required');
+        $elements.partner.coverDatesHiddenField.removeAttr('data-validation-placement');
+    }
+
 	meerkat.modules.register("healthPrivateHospitalHistory", {
 		init: init,
         getPrimaryCoverDates: getPrimaryCoverDates,
@@ -476,8 +579,11 @@
         getPrimaryCoverDatesJSONstringify: getPrimaryCoverDatesJSONstringify,
         getPartnerCoverDatesJSONstringify: getPartnerCoverDatesJSONstringify,
         getPrimaryCoverDatesFromHiddenField: getPrimaryCoverDatesFromHiddenField,
-        getPartnerCoverDatesFromHiddenField: getPartnerCoverDatesFromHiddenField
-
+        getPartnerCoverDatesFromHiddenField: getPartnerCoverDatesFromHiddenField,
+        addPrimaryValidation: addPrimaryCoverDatesTableValidation,
+        removePrimaryValidation: removePrimaryCoverDatesTableValidation,
+        addPartnerValidation: addPartnerCoverDatesTableValidation,
+        removePartnerValidation: removePartnerCoverDatesTableValidation
 	});
 
 })(jQuery);
