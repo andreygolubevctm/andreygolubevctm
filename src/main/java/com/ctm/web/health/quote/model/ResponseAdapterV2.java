@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.TextNode;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.BooleanUtils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -254,38 +255,27 @@ public class ResponseAdapterV2 {
     private static String getLhcFreePricing(final com.ctm.web.health.model.form.HealthQuote healthQuote, final BigDecimal lhcAmount) {
         HealthCover healthCover = healthQuote.getHealthCover();
         Insured primary = healthCover.getPrimary();
-        Insured partner = healthCover.getPartner();
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDate primaryDOB = LocalDate.parse(primary.getDob(), formatter);
-        Long primaryLhcDays = LHCDateCalculationSupport.getLhcDaysApplicable(primaryDOB, LocalDate.now());
-
-        Boolean primaryHasCover = StringUtils.equalsIgnoreCase(primary.getCover(), "Y");
-        Boolean primaryHasCoverLoading = StringUtils.equalsIgnoreCase(primary.getHealthCoverLoading(), "Y");
-        Boolean primaryHasEverHadCover = StringUtils.equalsIgnoreCase(primary.getEverHadCover(), "Y");
-
-        Long partnerLhcDays = null;
-        Boolean partnerHasCover = null;
-        Boolean partnerHasCoverLoading = null;
-        Boolean partnerHasEverHadCover = null;
-        if (partner != null) {
-            LocalDate partnerDOB = LocalDate.parse(partner.getDob(), formatter);
-            partnerLhcDays = LHCDateCalculationSupport.getLhcDaysApplicable(partnerDOB, LocalDate.now());
-            partnerHasCover = StringUtils.equalsIgnoreCase(partner.getCover(), "Y");
-            partnerHasCoverLoading = StringUtils.equalsIgnoreCase(partner.getHealthCoverLoading(), "Y");
-            partnerHasEverHadCover = StringUtils.equalsIgnoreCase(partner.getEverHadCover(), "Y");
-        }
+        Optional<Insured> partner = Optional.ofNullable(healthCover.getPartner());
 
         String lhcFreePricing = "";
-        if ( (primaryLhcDays > 0 && ((!primaryHasCover && primaryHasEverHadCover) || (primaryHasCover && !primaryHasCoverLoading))) ||
-                (partner != null && partnerLhcDays > 0 && ((!partnerHasCover && partnerHasEverHadCover) || (partnerHasCover && !partnerHasCoverLoading))) ) {
-
+        if (isInsuredAffectedByLHC(primary) || partner.map(ResponseAdapterV2::isInsuredAffectedByLHC).orElse(false)) {
             lhcFreePricing = "The premium may be affected by LHC<br/>";
         } else if (lhcAmount.compareTo(BigDecimal.ZERO) > 0) {
             lhcFreePricing = "excl " + formatCurrency(lhcAmount, true, true) + " LHC<span/> ";
         }
 
         return lhcFreePricing;
+    }
+
+    private static boolean isInsuredAffectedByLHC(Insured insured) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate insuredDob = LocalDate.parse(insured.getDob(), formatter);
+        long insuredLHCDays = LHCDateCalculationSupport.getLhcDaysApplicable(insuredDob, LocalDate.now());
+        boolean insuredHasCover = BooleanUtils.toBoolean(insured.getCover());
+        boolean insuredHasHealthCoverLoading = BooleanUtils.toBoolean(insured.getHealthCoverLoading());
+        boolean insuredHasEverHadCover = BooleanUtils.toBoolean(insured.getEverHadCover());
+
+        return insuredLHCDays > 0 && ((!insuredHasCover && insuredHasEverHadCover) || (insuredHasCover && !insuredHasHealthCoverLoading));
     }
 
     protected static BigDecimal calculateRebateValue(final Optional<BigDecimal> rebate, final BigDecimal basePremium, final BigDecimal calculatedRebateValue) {
