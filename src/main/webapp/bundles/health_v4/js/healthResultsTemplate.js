@@ -451,7 +451,8 @@
         parseSpecialFeatures: parseSpecialFeatures,
         unhideFilteredProducts: unhideFilteredProducts,
         getDiscountText: getDiscountText,
-        getDiscountPercentage: getDiscountPercentage
+        getDiscountPercentage: getDiscountPercentage,
+	    fundDiscountExists: fundDiscountExists
     });
 
 })(jQuery);

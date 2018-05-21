@@ -437,7 +437,8 @@
         numberOfSelectedExtras: numberOfSelectedExtras,
         toggleRemoveResultPagination: toggleRemoveResultPagination,
         getDiscountText: getDiscountText,
-        getDiscountPercentage: getDiscountPercentage
+        getDiscountPercentage: getDiscountPercentage,
+	    fundDiscountExists: fundDiscountExists
     });
 
 })(jQuery);
