@@ -18,7 +18,7 @@
             <core_v1:js_template id="simples-dialogue-popup-template">
                 <competition:africaCompSettings />
                 <c:if test="${africaComp}">
-                    <simples:dialogue id="106" vertical="health" className="simples-dialog-inbound" />
+                    <simples:dialogue id="106" vertical="health" />
                 </c:if>
                 <simples:dialogue id="62" vertical="health" className="hidden" />
                 <c:if test="${pageSettings.getBrandCode() eq 'wfdd'}">

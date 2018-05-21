@@ -27,7 +27,8 @@ public class IPAddressHandler {
     private int minIPAddress = 0;
     private int maxIPAddress = 0;
 	private static final List<String> LOCAL_IPS = Arrays.asList("127.0.0.1", "0.0.0.0", "0:0:0:0:0:0:0:1");
-	private static final List<String> LOCAL_IPS_PARTIAL = Arrays.asList("192.168.");
+    private static final List<String> QA_IPS = Arrays.asList("13.54.55.150", "13.54.250.208");
+	private static final List<String> PERMITTED_IP_PREFIXES = Arrays.asList("10.","192.168.");
     private final ConfigService configService;
 
     @Autowired
@@ -83,7 +84,9 @@ public class IPAddressHandler {
 	}
 
     public boolean isLocalIP(String ip) {
-    	return LOCAL_IPS_PARTIAL.stream().anyMatch(ips -> ip.startsWith(ips)) || LOCAL_IPS.stream().anyMatch(ips -> ips.equals(ip));
+		return  PERMITTED_IP_PREFIXES.stream().anyMatch(ips -> ip.startsWith(ips)) ||
+                LOCAL_IPS.stream().anyMatch(ips -> ips.equals(ip)) ||
+                QA_IPS.stream().anyMatch(ips -> ips.equals(ip));
 	}
 
     public int getIPAsInt(String ipStr) {

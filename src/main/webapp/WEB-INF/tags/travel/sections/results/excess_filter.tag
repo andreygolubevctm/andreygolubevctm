@@ -2,7 +2,7 @@
 <%@ tag language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
-<div class="col-xs-12 col-md-12 text-left selected-excess-value">
+<div class="col-xs-12 col-md-12 text-left selected-excess-value drop-down-filter">
     <div class="dropdown">
         <a type="button" id="excessFilterDropdownBtn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="filter-excess-value">Excess up to $200</span>

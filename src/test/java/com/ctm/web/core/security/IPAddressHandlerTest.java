@@ -93,6 +93,24 @@ public class IPAddressHandlerTest {
     }
 
     @Test
+    public void testIsLocalIP5() throws Exception {
+        boolean result = ipAddressHandler.isLocalIP("10.46.41.235");
+        assertEquals(true, result);
+    }
+
+    @Test
+    public void testIsQAIP1() throws Exception {
+        boolean result = ipAddressHandler.isLocalIP("13.54.55.150");
+        assertEquals(true, result);
+    }
+
+    @Test
+    public void testIsQAIP2() throws Exception {
+        boolean result = ipAddressHandler.isLocalIP("13.54.250.208");
+        assertEquals(true, result);
+    }
+
+    @Test
     public void testIsIPInRange1() throws Exception {
         boolean result = ipAddressHandler.isIPInRange("202.56.60.0");
         assertEquals(true, result);

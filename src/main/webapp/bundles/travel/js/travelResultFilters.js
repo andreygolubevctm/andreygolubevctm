@@ -85,9 +85,17 @@
 
         // update the results as per the excess filter
         $('input[name="radio-group"]').change(function () {
-            $('.selected-excess-value .filter-excess-value').text($(this).val());
+            var $excessFilterDropdownBtn = $('#excessFilterDropdownBtn');
+            $excessFilterDropdownBtn.find('.filter-excess-value').text($(this).val());
             _updateResultsByExcess(parseInt($(this).data('excess')));
-            $('#excessFilterDropdownBtn').dropdown('toggle');
+            $excessFilterDropdownBtn.dropdown('toggle');
+        });
+
+        $('input[name="amt-toggle"]').change(function () {
+            var $amtFilterDropdownBtn = $('#amtFilterDropdownBtn');
+            $amtFilterDropdownBtn.find('.filter-excess-value').text($(this).data('label'));
+            $amtFilterDropdownBtn.dropdown('toggle');
+            _toggleAmtType($(this).val());
         });
         
         $('input[name="luggageRangeSlider"]').on('input', function() {
@@ -308,6 +316,17 @@
         }
 
         meerkat.modules.coverLevelTabs.updateTabCounts();
+    }
+
+    /**
+     * Toggle AMT between Domestic and International
+     * @param {String} type - AMT Type, either 'D' (Domestic) or 'I' (International)
+     * @private
+     */
+    function _toggleAmtType(type) {
+        var isAmtDomestic = type === 'D';
+        meerkat.modules.travelCoverLevelTabs.initTravelCoverLevelTabs(isAmtDomestic, true);
+        meerkat.messaging.publish(Results.model.moduleEvents.RESULTS_BEFORE_DATA_READY);
     }
 
     /**
