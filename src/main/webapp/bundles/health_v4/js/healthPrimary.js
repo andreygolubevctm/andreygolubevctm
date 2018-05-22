@@ -88,19 +88,26 @@
         return $elements.appDob.val();
     }
 
-    function getContinuousCover() {
-        return $elements.currentCover.filter(':checked').val() === 'Y' ? $elements.primaryCoverLoading.filter(':checked').val() === 'Y' : null;
-    }
-
+    // iff true, the applicant has never held 'Private Hospital Cover'
     function getNeverHadCover() {
         return $elements.currentCover.filter(':checked').val() === 'N' && $elements.primaryEverHadCover.filter(':checked').val() === 'N';
     }
 
-    function getUnsureCover() {
+    // iff true, the applicant does not currently have any cover but has held 'Private Hospital Cover' in the past
+    function getHeldPrivateHealthInsuranceBeforeButNotCurrently() {
         return $elements.currentCover.filter(':checked').val() === 'N' && $elements.primaryEverHadCover.filter(':checked').val() === 'Y';
     }
 
-    function getUnsurishCover() {
+    // iff true, the applicant currently has and has always had continuous 'Private Hospital Cover'
+    // iff false, (the test below is a better indicator) the primary applicant currently has (either Private Hospital or Extras cover) && has not had continuous Private Hospital, but has never explicitly been asked if they have ever held Private Hospital Cover
+    // iff null, the applicant has selected that they do not currently have (either 'Private Hospital' or 'Extras cover')
+    function getContinuousCover() {
+        return $elements.currentCover.filter(':checked').val() === 'Y' ? $elements.primaryCoverLoading.filter(':checked').val() === 'Y' : null;
+    }
+
+    // if true, the primary applicant currently has (either Private Hospital or Extras cover) && has not had continuous Private hospital,
+    // but has never explicitly been asked if they have ever held Private Hospital Cover
+    function getNeverExplicitlyAskedIfHeldPrivateHospitalCover() {
         return $elements.currentCover.filter(':checked').val() === 'Y' && $elements.primaryCoverLoading.filter(':checked').val() === 'N';
     }
 
@@ -111,8 +118,8 @@
         getAppDob: getAppDob,
         getContinuousCover: getContinuousCover,
         getNeverHadCover: getNeverHadCover,
-        getUnsureCover: getUnsureCover,
-        getUnsurishCover: getUnsurishCover
+        getHeldPrivateHealthInsuranceBeforeButNotCurrently: getHeldPrivateHealthInsuranceBeforeButNotCurrently,
+        getNeverExplicitlyAskedIfHeldPrivateHospitalCover: getNeverExplicitlyAskedIfHeldPrivateHospitalCover
     });
 
 })(jQuery);

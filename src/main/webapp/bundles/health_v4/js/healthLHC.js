@@ -44,8 +44,8 @@
         }
 
         getBaseDates().done(function(res) {
-            if ( (res.primary.lhcDaysApplicable > 0 && (meerkat.modules.healthPrimary.getUnsureCover() || primaryGetContCover === false)) ||
-                 (hasPartner && res.partner.lhcDaysApplicable > 0 && (meerkat.modules.healthPartner.getUnsureCover() || partnerGetContCover === false)) ) {
+            if ( (res.primary.lhcDaysApplicable > 0 && (meerkat.modules.healthPrimary.getHeldPrivateHealthInsuranceBeforeButNotCurrently() || primaryGetContCover === false)) ||
+                 (hasPartner && res.partner.lhcDaysApplicable > 0 && (meerkat.modules.healthPartner.getHeldPrivateHealthInsuranceBeforeButNotCurrently() || partnerGetContCover === false)) ) {
 
                 setCoverDates('primary', meerkat.modules.healthPrivateHospitalHistory.getPrimaryCoverDates());
 

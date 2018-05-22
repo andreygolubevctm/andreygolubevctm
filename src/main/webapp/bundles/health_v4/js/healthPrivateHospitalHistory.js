@@ -18,9 +18,6 @@
         primarySelectedRowId = -1;
         partnerCoverDates = [];
         partnerSelectedRowId = -1;
-
-       addPrimaryCoverDatesTableValidation();
-       addPartnerCoverDatesTableValidation();
     }
 
     function _setupFields() {
@@ -396,7 +393,7 @@
 
     function _displayPartnerCoverDatesDataTable() {
 
-        if (partnerCoverDates.length > 0) {
+        if (partnerCoverDates.length > 0 && meerkat.modules.healthChoices.hasPartner()) {
 
         	var tableId = $elements.partner.idPrefix + "CoverDatesDataTable";
 
@@ -530,46 +527,51 @@
 
     function addPartnerCoverDatesTableValidation() {
 
-        if (partnerCoverDates.length > 0) {
-            removePartnerCoverDatesTableValidation();
-        } else {
-            $elements.partner.startDate.prop('required', true);
-            $elements.partner.endDate.prop('required', true);
+        if (meerkat.modules.healthChoices.hasPartner()) {
+            if (partnerCoverDates.length > 0) {
+                removePartnerCoverDatesTableValidation();
+            } else {
+                $elements.partner.startDate.prop('required', true);
+                $elements.partner.endDate.prop('required', true);
 
-            $elements.partner.coverDatesHiddenField.toggleClass( 'validate', true );
-            $elements.partner.coverDatesHiddenField.prop('required',true);
+                $elements.partner.coverDatesHiddenField.toggleClass( 'validate', true );
+                $elements.partner.coverDatesHiddenField.prop('required',true);
 
-            $elements.partner.coverDatesHiddenField.attr({
-                'data-validation-placement' : '#' + $elements.partner.validationContainerId,
-                'title' : 'Please add your partner&apos;s private health insurance cover history',
-                'aria-required': 'true'
-            });
+                $elements.partner.coverDatesHiddenField.attr({
+                    'data-validation-placement' : '#' + $elements.partner.validationContainerId,
+                    'title' : 'Please add your partner&apos;s private health insurance cover history',
+                    'aria-required': 'true'
+                });
 
-            $elements.partner.coverDatesHiddenField.rules( 'add', {
-                required: true,
-                minlength: 3,
-                messages: {
-                    required: 'Please add your private health insurance cover history',
-                    minlength: 'Please add your private health insurance cover history'
-                }
-            });
+                $elements.partner.coverDatesHiddenField.rules( 'add', {
+                    required: true,
+                    minlength: 3,
+                    messages: {
+                        required: 'Please add your private health insurance cover history',
+                        minlength: 'Please add your private health insurance cover history'
+                    }
+                });
 
+            }
         }
     }
 
     function removePartnerCoverDatesTableValidation() {
-        $elements.partner.startDate.prop('required', false);
-        $elements.partner.endDate.prop('required', false);
 
-        $elements.partner.validationContainer.html("");
-        $elements.partner.validationContainer.parent().parent().toggleClass( 'has-error', false );
+        if (meerkat.modules.healthChoices.hasPartner()) {
+            $elements.partner.startDate.prop('required', false);
+            $elements.partner.endDate.prop('required', false);
 
-        $elements.partner.coverDatesHiddenField.rules( 'remove' );
-        $elements.partner.coverDatesHiddenField.toggleClass( 'validate', false );
-        $elements.partner.coverDatesHiddenField.toggleClass( 'has-error', false );
-        $elements.partner.coverDatesHiddenField.prop('required', false);
-        $elements.partner.coverDatesHiddenField.removeAttr('aria-required');
-        $elements.partner.coverDatesHiddenField.removeAttr('data-validation-placement');
+            $elements.partner.validationContainer.html("");
+            $elements.partner.validationContainer.parent().parent().toggleClass('has-error', false);
+
+            $elements.partner.coverDatesHiddenField.rules('remove');
+            $elements.partner.coverDatesHiddenField.toggleClass('validate', false);
+            $elements.partner.coverDatesHiddenField.toggleClass('has-error', false);
+            $elements.partner.coverDatesHiddenField.prop('required', false);
+            $elements.partner.coverDatesHiddenField.removeAttr('aria-required');
+            $elements.partner.coverDatesHiddenField.removeAttr('data-validation-placement');
+        }
     }
 
 	meerkat.modules.register("healthPrivateHospitalHistory", {

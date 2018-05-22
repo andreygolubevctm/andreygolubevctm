@@ -14,13 +14,13 @@
 
         <%-- HTML --%>
         <c:set var="xpath" value="${pageSettings.getVerticalCode()}/previousfund" />
+        <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
 
         <c:set var="fieldXpath" value="${xpath}/primary/fundHistory" />
-        <form_v4:row fieldXpath="${fieldXpath}" label="Tell us the periods in the past where you have held private hospital cover, and we will calculate any Lifetime Health Cover that may that may be applied to your premium" id="primaryFundHistory" className="changes-premium" rowContentClass="row">
+        <form_v4:row fieldXpath="${fieldXpath}" label="Tell us the periods in the past where you have held private hospital cover, and we will calculate any Lifetime Health Cover that may that may be applied to your premium" id="primaryFundHistory" className="changes-premium hidden-toggle" rowContentClass="row">
             <field_v1:coverage_dates_input xpath="${fieldXpath}" />
         </form_v4:row>
 
-        <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
         <div id="${name}">
 
             <div id="yourpreviousfund" legend="Previous Fund Details" class="health-previous_fund">
