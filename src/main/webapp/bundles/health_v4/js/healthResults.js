@@ -164,6 +164,7 @@
                             fortnightly: "premium.fortnightly.lhcfreevalue"
                         }
                     },
+                    popularProductsRank: 'info.popularProductsRank',
                     benefitsSort: 'info.rank'
                 },
                 show: {
@@ -297,12 +298,7 @@
         // Model updated, make changes before rendering
         meerkat.messaging.subscribe(Results.model.moduleEvents.RESULTS_MODEL_UPDATE_BEFORE_FILTERSHOW, function modelUpdated() {
         	Results.model.popularProducts = Results.model.returnedProducts
-                .filter(function(product) { return product.info && true === product.info.popularProduct; })
-                .map(function(popularProduct, index) {
-                    var updatedProduct = Object.assign({}, popularProduct);
-                    updatedProduct.info.rank = popularProduct.info.popularProductsRank;
-                    return updatedProduct;
-                });
+                .filter(function(product) { return product.info && true === product.info.popularProduct; });
             Results.model.returnedProducts = _massageResultsObject(Results.model.returnedProducts);
             Results.model.sortedProductsAll = Results.model.returnedProducts;
 	        Results.model.filteredProductsAll = Results.model.returnedProducts;

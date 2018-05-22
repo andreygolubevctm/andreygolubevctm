@@ -66,6 +66,7 @@
             meerkat.modules.journeyEngine.loadingShow('...updating your quotes...', true);
 
             if (popularProducts === 'Y') {
+                Results.setSortBy('popularProductsRank');
                 var popularResults =
                     function () {
                         if (Results.model && Results.model.popularProducts.length > 0) {
@@ -84,6 +85,7 @@
                 Results.model.triggerEventsFromResult(popularResults);
                 meerkat.modules.journeyEngine.loadingHide();
             } else {
+                Results.setSortBy('benefitsSort');
                 meerkat.modules.healthResults.get();
             }
 
