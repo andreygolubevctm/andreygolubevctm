@@ -1,6 +1,7 @@
 package com.ctm.web.health.services;
 
 import com.ctm.web.core.leadService.model.CliReturnRequest;
+import com.ctm.web.core.leadService.model.DelayLeadRequest;
 import com.ctm.web.core.leadService.model.LeadOutcome;
 import com.ctm.web.core.leadService.services.LeadServiceUtil;
 import com.ctm.web.core.model.settings.ServiceConfiguration;
@@ -8,6 +9,8 @@ import com.ctm.web.core.model.settings.ServiceConfigurationProperty;
 import com.ctm.web.core.services.ServiceConfigurationService;
 import com.ctm.web.health.simples.model.CliReturn;
 import com.ctm.web.health.simples.model.CliReturnResponse;
+import com.ctm.web.health.model.leadservice.DelayLead;
+import com.ctm.web.health.model.leadservice.DelayLeadResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +30,26 @@ public class HealthSimplesLeadService {
     private static final Logger LOGGER = LoggerFactory.getLogger(HealthSimplesLeadService.class);
 
 
+    public DelayLeadResponse sendDelayLead(DelayLead data) throws Exception {
+        final ServiceConfiguration serviceConfig = ServiceConfigurationService.getServiceConfiguration("leadService", HEALTH_VERTICAL_ID);
+
+        final Boolean enabled = Boolean.valueOf(serviceConfig.getPropertyValueByKey("enabled", 0, 0, ServiceConfigurationProperty.Scope.SERVICE));
+        final String url = serviceConfig.getPropertyValueByKey("url", 0, 0, ServiceConfigurationProperty.Scope.SERVICE) + "cliReturn";
+
+        if (enabled) {
+            final ListenableFuture<ResponseEntity<LeadOutcome>> sendRequestListenable = LeadServiceUtil.sendDelayLeadRequest(new DelayLeadRequest(data.getPhone(), data.getStyleCodeId()), url);
+
+            final ResponseEntity<LeadOutcome> responseEntity = sendRequestListenable.get(LEAD_SERVICE_TIMEOUT, TimeUnit.SECONDS);
+            final DelayLeadResponse response = createDelayResponse(responseEntity);
+            LOGGER.info("DelayLead phoneNumber {} response {}", data, response);
+            return response;
+        }
+
+        LOGGER.info("LeadService is disabled");
+        return new DelayLeadResponse("success");
+    }
+
+
     public CliReturnResponse sendCliReturnNote(CliReturn data) throws Exception {
         final ServiceConfiguration serviceConfig = ServiceConfigurationService.getServiceConfiguration("leadService", HEALTH_VERTICAL_ID);
 
@@ -37,7 +60,7 @@ public class HealthSimplesLeadService {
             final ListenableFuture<ResponseEntity<LeadOutcome>> sendRequestListenable = LeadServiceUtil.sendCliReturnRequest(new CliReturnRequest(data.getValue(), data.getStyleCodeId()), url);
 
             final ResponseEntity<LeadOutcome> responseEntity = sendRequestListenable.get(LEAD_SERVICE_TIMEOUT, TimeUnit.SECONDS);
-            final CliReturnResponse response = createResponse(responseEntity);
+            final CliReturnResponse response = createCLIResponse(responseEntity);
             LOGGER.info("CliReturn phoneNumber {} response {}", data, response);
             return response;
         }
@@ -46,9 +69,14 @@ public class HealthSimplesLeadService {
         return new CliReturnResponse("success");
     }
 
-    private CliReturnResponse createResponse(ResponseEntity<LeadOutcome> responseEntity) {
+    private CliReturnResponse createCLIResponse(ResponseEntity<LeadOutcome> responseEntity) {
         final LeadOutcome outcome = Optional.ofNullable(responseEntity.getBody()).orElse(LeadOutcome.FAIL);
         return new CliReturnResponse(StringUtils.lowerCase(outcome.name()));
+    }
+
+    private DelayLeadResponse createDelayResponse(ResponseEntity<LeadOutcome> responseEntity) {
+        final LeadOutcome outcome = Optional.ofNullable(responseEntity.getBody()).orElse(LeadOutcome.FAIL);
+        return new DelayLeadResponse(StringUtils.lowerCase(outcome.name()));
     }
 
 }

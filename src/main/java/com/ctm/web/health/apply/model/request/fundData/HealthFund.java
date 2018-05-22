@@ -1,6 +1,6 @@
 package com.ctm.web.health.apply.model.request.fundData;
 
-public enum HealthFund {
+public  enum HealthFund {
 
     ACA ("ACA Health Benefits Fund"),
     AHM ("ahm - Aust Health Management Ins"),
