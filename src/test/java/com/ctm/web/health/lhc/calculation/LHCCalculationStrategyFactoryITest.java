@@ -70,7 +70,7 @@ public class LHCCalculationStrategyFactoryITest {
 
         long lhc = LHCCalculationStrategyFactory.getInstance(lhcCalculationDetails, TEST_CALCULATION_DATE).calculateLHCPercentage();
 
-        assertEquals(MIN_LHC_PERCENTAGE, lhc);
+        assertEquals(NO_COVER_LHC_BASE_PERCENTAGE, lhc);
     }
 
     @Test
@@ -85,7 +85,7 @@ public class LHCCalculationStrategyFactoryITest {
 
         long lhc = LHCCalculationStrategyFactory.getInstance(lhcCalculationDetails, TEST_CALCULATION_DATE).calculateLHCPercentage();
 
-        assertEquals(32, lhc);
+        assertEquals(34, lhc);
     }
 
     @Test
@@ -174,5 +174,41 @@ public class LHCCalculationStrategyFactoryITest {
         long lhc = LHCCalculationStrategyFactory.getInstance(lhcCalculationDetails, TEST_CALCULATION_DATE).calculateLHCPercentage();
 
         assertEquals(0, lhc);
+    }
+
+    @Test
+    public void givenNoCoverOnBaseDate_whenUsingTestExample2_thenCalculateLHC() {
+        LocalDate birthday = LocalDate.of(1980,8,6);
+        List<CoverDateRange> coverDates = ImmutableList.of(
+                new CoverDateRange(LocalDate.of(2014,3,11), LocalDate.of(2018,5,24))
+        );
+
+        LHCCalculationDetails lhcCalculationDetails = new LHCCalculationDetails()
+                .dateOfBirth(birthday)
+                .isContinuousCover(false)
+                .isNeverHadCover(false)
+                .coverDates(coverDates);
+
+        long lhc = LHCCalculationStrategyFactory.getInstance(lhcCalculationDetails, LocalDate.of(2018,5,23)).calculateLHCPercentage();
+
+        assertEquals(4, lhc);
+    }
+
+    @Test
+    public void givenNoCoverOnBaseDate_whenUsingTestExample1_thenCalculateLHC() {
+        LocalDate birthday = LocalDate.of(1964,11,1);
+        List<CoverDateRange> coverDates = ImmutableList.of(
+                new CoverDateRange(LocalDate.of(2005,10,15), LocalDate.of(2008,10,15))
+        );
+
+        LHCCalculationDetails lhcCalculationDetails = new LHCCalculationDetails()
+                .dateOfBirth(birthday)
+                .isContinuousCover(false)
+                .isNeverHadCover(false)
+                .coverDates(coverDates);
+
+        long lhc = LHCCalculationStrategyFactory.getInstance(lhcCalculationDetails, TEST_CALCULATION_DATE).calculateLHCPercentage();
+
+        assertEquals(18, lhc);
     }
 }

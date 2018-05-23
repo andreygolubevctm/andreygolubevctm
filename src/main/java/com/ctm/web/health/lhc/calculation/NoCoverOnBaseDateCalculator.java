@@ -35,7 +35,7 @@ public class NoCoverOnBaseDateCalculator implements LHCCalculationStrategy {
     @Override
     public long calculateLHCPercentage() {
         final long interimDaysLHCPercentage = getInterimDaysLHCPercentage();
-        final long baseDateToCoverStartLHCPercentage = getCoverStartLHCPercentage();
+        final long baseDateToCoverStartLHCPercentage = NO_COVER_LHC_BASE_PERCENTAGE + getCoverStartLHCPercentage();
 
         boolean hasTenYearsContiguousCover = hasYearsContiguousCover(CONTIGUOUS_YEARS_COVER_LHC_RESET_THRESHOLD, coverDates, now);
 
