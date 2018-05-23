@@ -977,8 +977,6 @@
         data["rank_discounted" + position] = product.premium[frequency].discounted;
         data["rank_premiumDiscountPercentage" + position] = product.premium[frequency].discountPercentage;
 
-        data["rank_isPopularProduct" + position] = product.info.popularProduct;
-
         var specialOffer = meerkat.modules.healthUtils.getSpecialOffer(product);
         data["rank_specialOffer" + position] = specialOffer.specialOffer;
         data["rank_specialOfferTerms" + position] = specialOffer.specialOfferTerms;
@@ -992,7 +990,18 @@
             data["rank_premiumText" + position] = product.premium[Results.settings.frequency].lhcfreepricing;
             data["rank_altPremium" + position] = product.altPremium[Results.settings.frequency].lhcfreetext;
             data["rank_altPremiumText" + position] = product.altPremium[Results.settings.frequency].lhcfreepricing;
-
+            if (_.isNumber(product.info.popularProductsRank)) {
+                data["rank_popPremium" + product.info.popularProductsRank] = data["rank_premium" + position];
+                data["rank_popPremiumLabel" + product.info.popularProductsRank] = data["rank_premiumText" + position];
+                data["rank_popProvider" + product.info.popularProductsRank] = data["rank_providerName" + position];
+                data["rank_popProviderCode" + product.info.popularProductsRank] = data["rank_provider" + position];
+                if (product.info.popularProductsRank === 1 && product.promo.hospitalPDF !== 'health_brochure.jsp?pdf=') {
+                    data["rank_popProvider1HospitalPds"] = product.promo.hospitalPDF;
+                }
+                if (product.info.popularProductsRank === 1 &&product.promo.extrasPDF !== 'health_brochure.jsp?pdf=') {
+                    data["rank_popProvider1ExtrasPds"] = product.promo.extrasPDF;
+                }
+            }
         }
 
         // Do this only for the best price product
@@ -1014,6 +1023,7 @@
             if (product.promo.extrasPDF != 'health_brochure.jsp?pdf=') {
                 data["rank_extrasPdsUrl" + position] = product.promo.extrasPDF;
             }
+
             data["rank_excessPerAdmission" + position] = excessesAndCoPayment.excessPerAdmission;
             data["rank_excessPerPerson" + position] = excessesAndCoPayment.excessPerPerson;
             data["rank_excessPerPolicy" + position] = excessesAndCoPayment.excessPerPolicy;

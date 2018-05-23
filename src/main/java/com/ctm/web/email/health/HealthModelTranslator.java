@@ -109,7 +109,12 @@ public class HealthModelTranslator implements EmailTranslator {
         healthEmailModel.setSituationType(emailUtils.getParamSafely(data, VERTICAL_CODE + "/situation/healthCvr"));
         healthEmailModel.setAltPremiumLabels(altPremiumLabel);
         healthEmailModel.setAltPremiums(altPremium);
-        healthEmailModel.setPopularProducts(emailUtils.buildParameterList(request, "rank_isPopularProduct").stream().map(BooleanUtils::toBoolean).collect(Collectors.toList()));
+        healthEmailModel.setPopPremiums(emailUtils.buildParameterList(request, "rank_popPremium"));
+        healthEmailModel.setPopPremiumLabels(emailUtils.buildParameterList(request, "rank_popPremiumLabel"));
+        healthEmailModel.setPopProviders(emailUtils.buildParameterList(request, "rank_popProvider"));
+        healthEmailModel.setPopProviderCodes(emailUtils.buildParameterList(request, "rank_popProviderCode"));
+        healthEmailModel.setPopProvider1HospitalPds(request.getParameter("rank_popProvider1HospitalPds"));
+        healthEmailModel.setPopProvider1ExtrasPds(request.getParameter("rank_popProvider1ExtrasPds"));
         emailRequest.setHealthEmailModel(healthEmailModel);
 
         emailRequest.setCallCentreHours(openingHoursService.getCurrentOpeningHoursForEmail(request));
