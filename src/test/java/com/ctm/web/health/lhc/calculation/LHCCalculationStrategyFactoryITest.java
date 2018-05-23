@@ -155,4 +155,24 @@ public class LHCCalculationStrategyFactoryITest {
 
         assertEquals(22, lhc);
     }
+
+    @Test
+    public void givenNoCoverOnBaseDate_whenApplicantHasZeroApplicableLHCDays_thenReturnZeroLHC() {
+        LocalDate birthday = LocalDate.of(1998,7,1);
+        List<CoverDateRange> coverDates = ImmutableList.of(
+                new CoverDateRange(LocalDate.of(2009,4,17), LocalDate.of(2010,3,31)),
+                new CoverDateRange(LocalDate.of(2015,4,17), LocalDate.of(2016,3,31)),
+                new CoverDateRange(LocalDate.of(2016,4,17), LocalDate.of(2017,3,31))
+                );
+
+        LHCCalculationDetails lhcCalculationDetails = new LHCCalculationDetails()
+                .dateOfBirth(birthday)
+                .isContinuousCover(false)
+                .isNeverHadCover(false)
+                .coverDates(coverDates);
+
+        long lhc = LHCCalculationStrategyFactory.getInstance(lhcCalculationDetails, TEST_CALCULATION_DATE).calculateLHCPercentage();
+
+        assertEquals(0, lhc);
+    }
 }
