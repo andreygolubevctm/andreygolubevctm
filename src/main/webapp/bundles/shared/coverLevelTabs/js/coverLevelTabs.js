@@ -369,6 +369,7 @@
 	 * Build the custom tab as per the filter values
      */
 	function buildCustomTab() {
+		var state = meerkat.modules.deviceMediaState.get();
 		var customTab = '';
 		var customRadioMobile = '';
         var tabLength = settings.activeTabSet.length;
