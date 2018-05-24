@@ -35,9 +35,9 @@
     </c:when>
     <c:when test="${brandCode eq 'bddd'}">
         <c:set var="healthCvrExcludeItems" value="'EF','ESP'" />
-        <c:set var="excludeItemsContactType" value="'trialcampaign','trialcampaignBroadband','trialcampaignHealthEngine','trialcampaignJackMedia','trialcampaignLifebrokerLnIP','trialcampaignTWE','trialcampaignXSellCar','trialcampaignXSellHnC'" />
+        <c:set var="excludeItemsContactType" value="'trialcampaign','trialcampaignBroadband','trialcampaignHealthEngine','trialcampaignJackMedia','trialcampaignLifebrokerLnIP','trialcampaignTWE','trialcampaignXSellCar','trialcampaignXSellHnC','trialcampaignOmnilead'" />
         <c:if test="${hideChatOption}">
-            <c:set var="excludeItemsContactType" value="'webchat','trialcampaign','trialcampaignBroadband','trialcampaignHealthEngine','trialcampaignJackMedia','trialcampaignLifebrokerLnIP','trialcampaignTWE','trialcampaignXSellCar','trialcampaignXSellHnC'" />
+            <c:set var="excludeItemsContactType" value="'webchat','trialcampaign','trialcampaignBroadband','trialcampaignHealthEngine','trialcampaignJackMedia','trialcampaignLifebrokerLnIP','trialcampaignTWE','trialcampaignXSellCar','trialcampaignXSellHnC','trialcampaignOmnilead'" />
         </c:if>
     </c:when>
     <c:otherwise>
