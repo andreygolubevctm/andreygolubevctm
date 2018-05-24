@@ -498,6 +498,8 @@
                 'aria-required': 'true'
             });
 
+            // because the result is using JSON.stringify an empty array will look like this '[]' and wont contain any usable data until at is much longer than 3 characters
+            // Note that the webservice that uses this data expects an array || null, it will throw an error if it is sent a string
             $elements.primary.coverDatesHiddenField.rules( 'add', {
                 required: true,
                 minlength: 3,
@@ -543,6 +545,8 @@
                     'aria-required': 'true'
                 });
 
+                // because the result is using JSON.stringify an empty array will look like this '[]' and wont contain any usable data until at is much longer than 3 characters
+                // Note that the webservice that uses this data expects an array || null, it will throw an error if it is sent a string
                 $elements.partner.coverDatesHiddenField.rules( 'add', {
                     required: true,
                     minlength: 3,

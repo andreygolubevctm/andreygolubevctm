@@ -207,7 +207,7 @@
     */
     function _toggleEverHad(personDetailType) {
 
-        var captializePersonDetailType = personDetailType.charAt(0).toUpperCase() + personDetailType.slice(1);
+        var capitalisePersonDetailType = personDetailType.charAt(0).toUpperCase() + personDetailType.slice(1);
         var hideRow = true;
 
         if (_isLookingToPurchasePrivateHospitalCover()) {
@@ -225,7 +225,7 @@
         }
 
         meerkat.modules.fieldUtilities.toggleVisible(
-            $elements['health' + captializePersonDetailType + 'CoverEverHadRow'],
+            $elements['health' + capitalisePersonDetailType + 'CoverEverHadRow'],
             hideRow
         );
     }
@@ -252,7 +252,7 @@
     */
     function _toggleFundHistory(personDetailType) {
 
-        var captializePersonDetailType = personDetailType.charAt(0).toUpperCase() + personDetailType.slice(1);
+        var capitalisePersonDetailType = personDetailType.charAt(0).toUpperCase() + personDetailType.slice(1);
         var hideRow = true;
 
         if (_isLookingToPurchasePrivateHospitalCover()) {
@@ -296,7 +296,7 @@
         }
 
         meerkat.modules.fieldUtilities.toggleVisible(
-            $elements['health' + captializePersonDetailType + 'FundHistoryRow'],
+            $elements['health' + capitalisePersonDetailType + 'FundHistoryRow'],
             hideRow
         );
     }
