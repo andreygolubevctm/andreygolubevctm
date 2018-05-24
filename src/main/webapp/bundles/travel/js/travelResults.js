@@ -143,8 +143,8 @@
 		 }
 		 return 10000000;
 	 }
-	 
-	 function getCoverLevelForSingleTrip(tripInfo, isAus) {
+
+	 function getCoverLevel(tripInfo, isAus) {
 		 var excessValue = tripInfo.excessValue <= Results.model.travelFilters.EXCESS;
 		 var medicalValue = tripInfo.medicalValue;
 		 var cxdfeeValue = tripInfo.cxdfeeValue;
@@ -178,20 +178,20 @@
 		 var level;
 
 		 if (_.isBoolean(result.isDomestic) ) {
-			 level = result.isDomestic === true ? 'D' : getCoverLevelForSingleTrip(tripInfo, false) + 'I';
+			 level = result.isDomestic === true ? 'D' : getCoverLevel(tripInfo, false) + 'I';
 			 meerkat.modules.coverLevelTabs.incrementCount(level);
 			 return level;
 		 }
 
-         if (result.des.indexOf('Australia') == -1 && result.des.indexOf('Domestic') == -1) {
-             level = getCoverLevelForSingleTrip(tripInfo, false) + 'I';
-             meerkat.modules.coverLevelTabs.incrementCount(level);
-             return level;
-         }
-
-         level = 'D';
+     if (result.des.indexOf('Australia') == -1 && result.des.indexOf('Domestic') == -1) {
+			 	 level = getCoverLevel(tripInfo, false) + 'I';
          meerkat.modules.coverLevelTabs.incrementCount(level);
          return level;
+     }
+
+     level = 'D';
+     meerkat.modules.coverLevelTabs.incrementCount(level);
+     return level;
 	 }
 	 
 	/**
@@ -218,13 +218,16 @@
 					obj.luggage = "$0";
 				}
 				// TRV-769 Set value and text to $0 for quotes for JUST Australia.
-				if (isAus) {
+				// added the policyType check because it was causing a bug
+				// the bus is caused by the user selecting Aus for single trip then selecting AMT
+				// BTW not a huge fan of this, the backend should of probably handled setting the medicalValue to 0
+				if (isAus && policyType == 'Single Trip') {
 					obj.medicalValue = 0;
 					obj.medical = "N/A";
 				}
 				if (isCoverLevelTabsEnabled === true) {
 					if (policyType == 'Single Trip') {
-						obj.coverLevel = getCoverLevelForSingleTrip(obj, isAus);
+						obj.coverLevel = getCoverLevel(obj, isAus);
 					} else {
 						obj.coverLevel = getCoverLevelForMultiTrip(obj, result);
 					}
