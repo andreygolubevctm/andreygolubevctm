@@ -251,11 +251,11 @@
 			for (var i = 0; i < $elements[applicant].coverDates.length; i++) {
 
     			var row = "<tr id='" + $elements[applicant].idPrefix + "row_" + i + "'>";
-    			row += "<td>" + $elements[applicant].coverDates[i]["from"] +"</td>";
-    			row += "<td>" + $elements[applicant].coverDates[i]["to"] + "</td>";
+    			row += "<td>" + meerkat.modules.dateUtils.format($elements[applicant].coverDates[i]["from"], 'DD-MM-YYYY') +"</td>";
+    			row += "<td>" + meerkat.modules.dateUtils.format($elements[applicant].coverDates[i]["to"], 'DD-MM-YYYY') + "</td>";
     			row += "<td>" + _daysBetween(($elements[applicant].coverDates[i]["from"]), ($elements[applicant].coverDates[i]["to"])) +"</td>";
-    			row += "<td class='editCoverDatesRow'><a href='javascript:;'><span class='icon icon-pencil' title='Edit Row'><span class='sr-only'>Click here to edit row for " + $elements[applicant].coverDates[i]["from"] + " to " + $elements[applicant].coverDates[i]["to"] + "</span></span></a></td>";
-    			row += "<td class='delCoverDatesRow'><a href='javascript:;'><span class='icon icon-cross' title='Delete Row'><span class='sr-only'>Click here to delete row for " + $elements[applicant].coverDates[i]["from"] + " to " + $elements[applicant].coverDates[i]["to"] + "</span></span></a></td>";
+    			row += "<td class='editCoverDatesRow'><a href='javascript:;'><span class='icon icon-pencil' title='Edit Row'><span class='sr-only'>Click here to edit row for " + meerkat.modules.dateUtils.format($elements[applicant].coverDates[i]["from"], 'DD-MM-YYYY') + " to " + meerkat.modules.dateUtils.format($elements[applicant].coverDates[i]["to"], 'DD-MM-YYYY') + "</span></span></a></td>";
+    			row += "<td class='delCoverDatesRow'><a href='javascript:;'><span class='icon icon-cross' title='Delete Row'><span class='sr-only'>Click here to delete row for " + meerkat.modules.dateUtils.format($elements[applicant].coverDates[i]["from"], 'DD-MM-YYYY') + " to " + meerkat.modules.dateUtils.format($elements[applicant].coverDates[i]["to"], 'DD-MM-YYYY') + "</span></span></a></td>";
     			row += "</tr>";
 
         		tableHtmlStr += row;
