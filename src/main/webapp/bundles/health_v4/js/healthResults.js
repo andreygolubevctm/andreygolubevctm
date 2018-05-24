@@ -1030,7 +1030,6 @@
             data["rank_coPayment" + position] = excessesAndCoPayment.coPayment;
             data["isPopularProductsSelected"] = $(':input[name=health_popularProducts]').val();
         }
-        console.warn('preparing rank data');
         return data;
     }
 
