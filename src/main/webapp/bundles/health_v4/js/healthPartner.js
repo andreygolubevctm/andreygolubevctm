@@ -18,6 +18,8 @@
             partnerCoverLoading: $(':input[name=health_healthCover_partner_healthCoverLoading]'),
             dob: $('#health_healthCover_partner_dob'),
             currentCover: $('input[name=health_healthCover_partner_cover]'),
+            partnerEverHadCover: $(':input[name=health_healthCover_partner_everHadCover]'),
+            partnerCurrentFundName: $(':input[name=health_healthCover_partner_fundName]'),
             appFields: $('#partnerFund, #partnerMemberID, #partnerContainer'),
             benefitsScrollerLinks: $('.benefitsScroller'),
             coverLoadingHeading: $('.benefitsContainer').find('h3:first-child')
@@ -43,6 +45,29 @@
         $elements.dob.on('change', function updateSnapshot() {
             meerkat.messaging.publish(meerkatEvents.health.SNAPSHOT_FIELDS_CHANGE);
         });
+
+        $elements.currentCover.on('change', function toggleEverHadCover() {
+            var $checked = $elements.currentCover.filter(':checked'),
+                hasPartner = meerkat.modules.healthChoices.hasPartner(),
+                hideField = !$checked.length || !hasPartner || ($checked.val() === 'Y');
+
+            meerkat.modules.fieldUtilities.toggleVisible(
+                $elements.partnerEverHadCover,
+                hideField
+            );
+        });
+
+        $elements.currentCover.on('change', function toggleCurrentHealthFund() {
+            var $checked = $elements.currentCover.filter(':checked'),
+                hasPartner = meerkat.modules.healthChoices.hasPartner(),
+                hideField = !$checked.length || !hasPartner || ($checked.val() === 'N');
+
+            meerkat.modules.fieldUtilities.toggleVisible(
+                $elements.partnerCurrentFundName,
+                hideField
+            );
+        });
+
     }
 
     function _eventSubscriptions() {
@@ -74,6 +99,17 @@
                 $elements.partnerCoverLoading,
                 true
             );
+
+            meerkat.modules.fieldUtilities.toggleVisible(
+                $elements.partnerEverHadCover,
+                true
+            );
+
+            meerkat.modules.fieldUtilities.toggleVisible(
+                $elements.partnerCurrentFundName,
+                true
+            );
+
         }
     }
 

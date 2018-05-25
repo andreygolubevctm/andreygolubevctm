@@ -486,6 +486,10 @@ var ResultsModel = {
 
 			Results.pagination.gotoStart(true);
 
+			var config = Results.settings.rankings;
+			if(_.isObject(config) && config.hasOwnProperty("resultsSortedModelToUse") && !_.isUndefined(Results.model[config.resultsSortedModelToUse]) && _.isArray(Results.model[config.resultsSortedModelToUse])) {
+				Results.model[config.resultsSortedModelToUse] = Results.model[config.resultsSortedModelToUse].sort(sortByMethod);
+			}
 		}
 
 	},
@@ -649,46 +653,50 @@ var ResultsModel = {
 
 	filter: function( renderView, doNotGoToStart ){
 
-		var initialProducts = Results.model.sortedProducts.slice();
-		var finalProducts = [];
+		var getFilteredProducts = function(products) {
 
-		var valid, value;
+			var filteredProducts=[], valid, value;
 
-		$.each( initialProducts, function( productIndex, product ){
+			$.each(products, function (productIndex, product) {
 
-			valid = true;
+				valid = true;
 
-			$.each( Results.model.filters, function( filterIndex, filter ){
+				$.each(Results.model.filters, function (filterIndex, filter) {
 
-				value = Object.byString( product, filter.path );
+					value = Object.byString(product, filter.path);
 
-				if( typeof value !== "undefined"){
-					switch( filter.condition ){
-						case "value":
-							valid = Results.model.filterByValue( value, filter.options );
-							break;
-						case "range":
-							valid = Results.model.filterByRange( value, filter.options );
-							break;
-						default:
-							console.log("The filter condition type seems to be erroneous");
-							break;
+					if (typeof value !== "undefined") {
+						switch (filter.condition) {
+							case "value":
+								valid = Results.model.filterByValue(value, filter.options);
+								break;
+							case "range":
+								valid = Results.model.filterByRange(value, filter.options);
+								break;
+							default:
+								console.log("The filter condition type seems to be erroneous");
+								break;
+						}
 					}
-				}
 
-				if (!valid) {
-					return false;
+					if (!valid) {
+						return false;
+					}
+
+				});
+
+				if (valid) {
+					filteredProducts.push(product);
 				}
 
 			});
 
-			if( valid ) {
-                finalProducts.push(product);
-			}
+			return filteredProducts;
+		};
 
-		});
 
-		Results.model.filteredProducts = finalProducts;
+		var initialProducts = Results.model.sortedProducts.slice();
+		Results.model.filteredProducts = getFilteredProducts(initialProducts);
 
 		if( typeof Compare !== "undefined" ) Compare.applyFilters();
 
@@ -703,6 +711,13 @@ var ResultsModel = {
 			}
 
 		}
+
+		var config = Results.settings.rankings;
+		if(_.isObject(config) && config.hasOwnProperty("resultsFilteredModelToUse") && !_.isUndefined(Results.model[config.resultsFilteredModelToUse]) && _.isArray(Results.model[config.resultsFilteredModelToUse])) {
+			initialProducts = Results.model[config.resultsFilteredModelToUse];
+			Results.model[config.resultsFilteredModelToUse] = getFilteredProducts(initialProducts);
+		}
+
 	},
 
     filterUsingExcess: function( renderView, doNotGoToStart ){

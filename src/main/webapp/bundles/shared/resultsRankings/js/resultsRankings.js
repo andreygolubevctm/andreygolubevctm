@@ -126,11 +126,13 @@
      * @param {Bool} includeOnlyFilteredResults
      */
     function fetchProductsToRank(includeOnlyFilteredResults) {
-        var sortedAndFiltered = [],
-            sorted = Results.getSortedResults(),
-            filtered = Results.getFilteredResults();
+        var config = Results.settings.rankings,
+            useAltResults = _.isObject(config) && config.hasOwnProperty("resultsFilteredModelToUse") && !_.isUndefined(Results.model[config.resultsFilteredModelToUse]) && _.isArray(Results.model[config.resultsFilteredModelToUse]),
+            sortedAndFiltered = [],
+            sorted = useAltResults ? Results.model[config.resultsSortedModelToUse] : Results.getSortedResults(),
+            filtered = useAltResults ? Results.model[config.resultsFilteredModelToUse] : Results.getFilteredResults();
 
-        if (includeOnlyFilteredResults === true) {
+	    if (includeOnlyFilteredResults === true) {
             for (var i = 0; i < sorted.length; i++) {
                 for (var j = 0; j < filtered.length; j++) {
                     if (sorted[i] == filtered[j]) {

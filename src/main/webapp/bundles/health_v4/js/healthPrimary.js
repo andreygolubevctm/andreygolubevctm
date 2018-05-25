@@ -14,6 +14,8 @@
             primaryCoverLoading: $(':input[name=health_healthCover_primary_healthCoverLoading]'),
             primaryCoverRow: $('#health_healthCover_primaryCover'),
             currentCover: $('input[name=health_healthCover_primary_cover]'),
+            primaryEverHadCover: $(':input[name=health_healthCover_primary_everHadCover]'),
+            primaryCurrentFundName: $(':input[name=health_healthCover_primary_fundName]'),
             dob: $('#health_healthCover_primary_dob'),
             partnerDOB: $('#benefits_partner_dob')
         };
@@ -31,6 +33,27 @@
                 hideField
             );
         });
+
+        $elements.currentCover.on('change', function toggleEverHadCover() {
+            var $checked = $elements.currentCover.filter(':checked'),
+                hideField = !$checked.length || ($checked.val() === 'Y');
+
+            meerkat.modules.fieldUtilities.toggleVisible(
+                $elements.primaryEverHadCover,
+                hideField
+            );
+        });
+
+        $elements.currentCover.on('change', function toggleCurrentHealthFund() {
+            var $checked = $elements.currentCover.filter(':checked'),
+                hideField = !$checked.length || ($checked.val() === 'N');
+
+            meerkat.modules.fieldUtilities.toggleVisible(
+                $elements.primaryCurrentFundName,
+                hideField
+            );
+        });
+
     }
 
     function getCurrentCover() {
@@ -46,6 +69,17 @@
                 $elements.primaryCoverLoading,
                 true
             );
+
+            meerkat.modules.fieldUtilities.toggleVisible(
+                $elements.primaryEverHadCover,
+                true
+            );
+
+            meerkat.modules.fieldUtilities.toggleVisible(
+                $elements.primaryCurrentFundName,
+                true
+            );
+
         }
     }
 

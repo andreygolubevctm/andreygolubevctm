@@ -3,22 +3,38 @@ package com.ctm.web.health.quote.model;
 import com.ctm.web.core.content.model.Content;
 import com.ctm.web.core.providers.model.IncomingQuotesResponse;
 import com.ctm.web.core.resultsData.model.AvailableType;
+import com.ctm.web.health.lhc.calculation.LHCDateCalculationSupport;
 import com.ctm.web.health.model.PaymentType;
+import com.ctm.web.health.model.form.HealthCover;
 import com.ctm.web.health.model.form.HealthRequest;
-import com.ctm.web.health.model.results.*;
+import com.ctm.web.health.model.form.Insured;
+import com.ctm.web.health.model.results.AwardScheme;
+import com.ctm.web.health.model.results.HealthQuoteResult;
 import com.ctm.web.health.model.results.Info;
 import com.ctm.web.health.model.results.Premium;
 import com.ctm.web.health.model.results.Price;
-import com.ctm.web.health.quote.model.response.*;
+import com.ctm.web.health.model.results.Promo;
+import com.ctm.web.health.quote.model.response.GiftCard;
+import com.ctm.web.health.quote.model.response.HealthQuote;
+import com.ctm.web.health.quote.model.response.HealthResponseV2;
+import com.ctm.web.health.quote.model.response.Promotion;
+import com.ctm.web.health.quote.model.response.SpecialOffer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.TextNode;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.NumberFormat;
-import java.util.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import static com.ctm.web.health.quote.model.response.Price.DEFAULT_PRICE;
 import static java.util.Collections.emptyList;
@@ -231,8 +247,7 @@ public class ResponseAdapterV2 {
         price.setValue(payableAmount);
 
         //If changing/remove span tag underneath, make sure to change HealthModelTranslator premiumlabel translation accordingly.
-        price.setLhcfreepricing("excl " + formatCurrency(lhcAmount, true, true) + " LHC<span/> inc " +
-                rebateValue + " Govt Rebate");
+        price.setLhcfreepricing(getLhcFreePricing(healthQuote, lhcAmount) + "Inc. " + rebateValue + " Govt Rebate");
 
         price.setRebateValue(rebateValue);
 
@@ -245,6 +260,32 @@ public class ResponseAdapterV2 {
         price.setLhc(formatCurrency(lhcAmount, true, true));
         price.setGrossPremium(formatCurrency(quotePrice.getGrossPremium(), true, true));
         return price;
+    }
+
+    private static String getLhcFreePricing(final com.ctm.web.health.model.form.HealthQuote healthQuote, final BigDecimal lhcAmount) {
+        HealthCover healthCover = healthQuote.getHealthCover();
+        Insured primary = healthCover.getPrimary();
+        Optional<Insured> partner = Optional.ofNullable(healthCover.getPartner());
+
+        String lhcFreePricing = "";
+        if (isInsuredAffectedByLHC(primary) || partner.map(ResponseAdapterV2::isInsuredAffectedByLHC).orElse(false)) {
+            lhcFreePricing = "The premium may be affected by LHC<br/>";
+        } else if (lhcAmount.compareTo(BigDecimal.ZERO) > 0) {
+            lhcFreePricing = "excl " + formatCurrency(lhcAmount, true, true) + " LHC<span/> ";
+        }
+
+        return lhcFreePricing;
+    }
+
+    public static boolean isInsuredAffectedByLHC(Insured insured) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate insuredDob = LocalDate.parse(insured.getDob(), formatter);
+        long insuredLHCDays = LHCDateCalculationSupport.getLhcDaysApplicable(insuredDob, LocalDate.now());
+        boolean insuredHasCover = BooleanUtils.toBoolean(insured.getCover());
+        boolean insuredHasHealthCoverLoading = BooleanUtils.toBoolean(insured.getHealthCoverLoading());
+        boolean insuredHasEverHadCover = BooleanUtils.toBoolean(insured.getEverHadCover());
+
+        return insuredLHCDays > 0 && ((!insuredHasCover && insuredHasEverHadCover) || (insuredHasCover && !insuredHasHealthCoverLoading));
     }
 
     protected static BigDecimal calculateRebateValue(final Optional<BigDecimal> rebate, final BigDecimal basePremium, final BigDecimal calculatedRebateValue) {
