@@ -18,16 +18,24 @@ import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SettingsService;
 import com.ctm.web.core.utils.RequestUtils;
 import com.ctm.web.core.web.go.Data;
-import com.ctm.web.email.*;
+import com.ctm.web.email.EmailRequest;
+import com.ctm.web.email.EmailTranslator;
+import com.ctm.web.email.EmailUtils;
+import com.ctm.web.email.OptIn;
 import com.ctm.web.factory.EmailServiceFactory;
 import com.ctm.web.health.email.mapping.HealthEmailDetailMappings;
+import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -70,6 +78,8 @@ public class HealthModelTranslator implements EmailTranslator {
         emailRequest.setPremiums(premium);
         emailRequest.setPremiumFrequency(request.getParameter("rank_frequency0"));
         emailRequest.setGaClientID(gaclientId);
+        boolean isPopularProductsSelected = Optional.ofNullable(request.getParameter("isPopularProductsSelected")).map(BooleanUtils::toBoolean).orElse(false);
+        emailRequest.setPopularProductsSelected(isPopularProductsSelected);
 
         List<BigDecimal> premiumDiscountPercentage = emailUtils.buildParameterList(request, "rank_premiumDiscountPercentage").stream().map(EmailUtils.bigDecimalOrZero).collect(Collectors.toList());
         emailRequest.setPremiumDiscountPercentage(premiumDiscountPercentage);
@@ -99,6 +109,12 @@ public class HealthModelTranslator implements EmailTranslator {
         healthEmailModel.setSituationType(emailUtils.getParamSafely(data, VERTICAL_CODE + "/situation/healthCvr"));
         healthEmailModel.setAltPremiumLabels(altPremiumLabel);
         healthEmailModel.setAltPremiums(altPremium);
+        healthEmailModel.setPopPremiums(emailUtils.buildParameterList(request, "rank_popPremium"));
+        healthEmailModel.setPopPremiumLabels(emailUtils.buildParameterList(request, "rank_popPremiumLabel"));
+        healthEmailModel.setPopProviders(emailUtils.buildParameterList(request, "rank_popProvider"));
+        healthEmailModel.setPopProviderCodes(emailUtils.buildParameterList(request, "rank_popProviderCode"));
+        healthEmailModel.setPopProvider1HospitalPds(request.getParameter("rank_popProvider1HospitalPds"));
+        healthEmailModel.setPopProvider1ExtrasPds(request.getParameter("rank_popProvider1ExtrasPds"));
         emailRequest.setHealthEmailModel(healthEmailModel);
 
         emailRequest.setCallCentreHours(openingHoursService.getCurrentOpeningHoursForEmail(request));
