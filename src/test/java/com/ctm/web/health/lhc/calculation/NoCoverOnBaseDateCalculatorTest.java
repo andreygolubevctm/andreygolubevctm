@@ -32,7 +32,7 @@ public class NoCoverOnBaseDateCalculatorTest {
         );
         long lhcPercentage = new NoCoverOnBaseDateCalculator(baseDate, threeSixtyFiveDaysOfCover, TEST_CALCULATION_DATE).calculateLHCPercentage();
 
-        assertEquals(0, lhcPercentage);
+        assertEquals(NO_COVER_LHC_BASE_PERCENTAGE, lhcPercentage);
     }
 
     @Test
@@ -48,7 +48,7 @@ public class NoCoverOnBaseDateCalculatorTest {
 
         long lhcPercentage= new NoCoverOnBaseDateCalculator(baseDate, threeSixtyFiveDaysOfCover, TEST_CALCULATION_DATE).calculateLHCPercentage();
 
-        assertEquals(6, lhcPercentage);
+        assertEquals(8, lhcPercentage);
     }
 
     @Test
@@ -65,7 +65,7 @@ public class NoCoverOnBaseDateCalculatorTest {
 
         long lhcPercentage= new NoCoverOnBaseDateCalculator(baseDate, coverRange, TEST_CALCULATION_DATE).calculateLHCPercentage();
 
-        assertEquals(16, lhcPercentage);
+        assertEquals(18, lhcPercentage);
     }
 
     @Test
@@ -81,7 +81,7 @@ public class NoCoverOnBaseDateCalculatorTest {
 
         long lhcPercentage= new NoCoverOnBaseDateCalculator(baseDate, threeSixtyFiveDaysOfCover, TEST_CALCULATION_DATE).calculateLHCPercentage();
 
-        assertEquals(32, lhcPercentage);
+        assertEquals(34, lhcPercentage);
     }
 
     @Test
@@ -95,7 +95,7 @@ public class NoCoverOnBaseDateCalculatorTest {
                 new CoverDateRange(fromDate, toDate)
         );
         long lhcPercentage= new NoCoverOnBaseDateCalculator(baseDate, twoYearsOfCoverage, TEST_CALCULATION_DATE).calculateLHCPercentage();
-        assertEquals(32, lhcPercentage);
+        assertEquals(34, lhcPercentage);
     }
 
     @Test
@@ -125,6 +125,6 @@ public class NoCoverOnBaseDateCalculatorTest {
 
         long lhcPercentage= new NoCoverOnBaseDateCalculator(baseDate, tenYearsCover, TEST_CALCULATION_DATE).calculateLHCPercentage();
 
-        assertEquals(36, lhcPercentage);
+        assertEquals(38, lhcPercentage);
     }
 }

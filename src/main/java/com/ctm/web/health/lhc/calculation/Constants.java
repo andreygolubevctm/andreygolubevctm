@@ -23,6 +23,12 @@ public final class Constants {
      * The age in years after which LHC becomes applicable.
      */
     public static final int LHC_EXEMPT_AGE_CUT_OFF = 31;
+
+    /**
+     * The base percentage if coverage begins after the calculated LHC Base date
+     */
+    public static final int NO_COVER_LHC_BASE_PERCENTAGE = 2;
+
     /**
      * The age in years from which health cover must be obtained.
      */
