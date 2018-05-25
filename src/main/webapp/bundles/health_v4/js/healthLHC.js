@@ -14,14 +14,12 @@
         _newLhc = null,
         _newLhcCompleteResult = null;
 
-
         //todo delete after calculation method decided - start
         var calculateLhcOnlyWhenNeverHeldBefore_Or_HeldBeforeButNotCurrently = false;
         var calculateLhcOnlyWhenHeldBeforeButNotCurrently = false;
         var calculateLhcOnlyWhenHeldBeforeButNotCurrently_Or_HeldContinuousCover = false;
         var alwaysCalculateLHC = true;
         //todo delete after calculation method decided - end
-
 
     function onInitialise() {
         var hasPartner = meerkat.modules.healthChoices.hasPartner(),
@@ -68,10 +66,6 @@
                     setCoverDates('primary', meerkat.modules.healthPrivateHospitalHistory.getPrimaryCoverDates());
                 }
 
-
-                //JSON.stringify($elements[applicant].coverDates)
-                //alert("Primary flags: " + JSON.stringify(primaryFlags));
-
                 //todo delete after calculation method decided - start
                 var partnerContinuousCover = false;
                 var partnerNeverHadPrivateHospitalCover = false;
@@ -84,9 +78,6 @@
                     if (partnerFlags.requirePrivateHospitalCoverHistory) {
                         setCoverDates('partner', meerkat.modules.healthPrivateHospitalHistory.getPartnerCoverDates());
                     }
-
-                    //alert("Partner flags: " + JSON.stringify(partnerFlags));
-
 
                     //todo delete after calculation method decided - start
                     partnerContinuousCover = partnerFlags.continuousCover;
@@ -287,11 +278,6 @@
             onSuccess: function(res) {
                 _newLhc = meerkat.modules.healthChoices.hasPartner() ? res.combined.lhcPercentage : res.primary.lhcPercentage;
                 _newLhcCompleteResult = res;
-
-
-                //alert("Request data 2: " + JSON.stringify(_calculateRequestData));
-                //alert("Result: " + JSON.stringify(_newLhcCompleteResult));
-
             },
             onError: function onError(obj, txt, errorThrown) {
                 console.log({errorMessage: txt + ': ' + errorThrown});
@@ -321,7 +307,7 @@
     }
 
     // todo: delete after testing - start
-    // tdo also get the references to these functions below
+    // todo also get the references to these functions below
     function calculateLhcOnly_WhenNeverHeldBefore_Or_HeldBeforeButNotCurrently(boolValue) {
         calculateLhcOnlyWhenNeverHeldBefore_Or_HeldBeforeButNotCurrently = boolValue;
     }
