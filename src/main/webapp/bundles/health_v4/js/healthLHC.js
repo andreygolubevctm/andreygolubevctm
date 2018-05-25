@@ -325,9 +325,6 @@
     }
     // todo: delete after testing - end
 
-
-
-
     meerkat.modules.register('healthLHC', {
         onInitialise: onInitialise,
         setCoverDates: setCoverDates,

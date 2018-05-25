@@ -181,6 +181,24 @@
         return [year, month, day].join('-');
     }
 
+    function _formatDate_dd_mm_yyyy(date) {
+        var d = new Date(date),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+        if (month.length < 2) {
+            month = '0' + month;
+        }
+        if (day.length < 2) {
+            day = '0' + day;
+        }
+
+        return day + '-' + month +'-' + year;
+    }
+
+
+
     //type - "start" or "end"
     function _createValidationTag(type, fieldname, identifier, msg) {
         return '<div class="' + type + '-field  ' + identifier + 'validation" style="display: block;"><label id="' + fieldname + '-' + type + '" class="has-' + type + '" for="' + fieldname + '">' + msg + '</label></div>';
@@ -251,11 +269,11 @@
 			for (var i = 0; i < $elements[applicant].coverDates.length; i++) {
 
     			var row = "<tr id='" + $elements[applicant].idPrefix + "row_" + i + "'>";
-    			row += "<td>" + meerkat.modules.dateUtils.format($elements[applicant].coverDates[i]["from"], 'DD-MM-YYYY') +"</td>";
-    			row += "<td>" + meerkat.modules.dateUtils.format($elements[applicant].coverDates[i]["to"], 'DD-MM-YYYY') + "</td>";
+    			row += "<td>" + _formatDate_dd_mm_yyyy($elements[applicant].coverDates[i]["from"]) +"</td>";
+    			row += "<td>" + _formatDate_dd_mm_yyyy($elements[applicant].coverDates[i]["to"]) + "</td>";
     			row += "<td>" + _daysBetween(($elements[applicant].coverDates[i]["from"]), ($elements[applicant].coverDates[i]["to"])) +"</td>";
-    			row += "<td class='editCoverDatesRow'><a href='javascript:;'><span class='icon icon-pencil' title='Edit Row'><span class='sr-only'>Click here to edit row for " + meerkat.modules.dateUtils.format($elements[applicant].coverDates[i]["from"], 'DD-MM-YYYY') + " to " + meerkat.modules.dateUtils.format($elements[applicant].coverDates[i]["to"], 'DD-MM-YYYY') + "</span></span></a></td>";
-    			row += "<td class='delCoverDatesRow'><a href='javascript:;'><span class='icon icon-cross' title='Delete Row'><span class='sr-only'>Click here to delete row for " + meerkat.modules.dateUtils.format($elements[applicant].coverDates[i]["from"], 'DD-MM-YYYY') + " to " + meerkat.modules.dateUtils.format($elements[applicant].coverDates[i]["to"], 'DD-MM-YYYY') + "</span></span></a></td>";
+    			row += "<td class='editCoverDatesRow'><a href='javascript:;'><span class='icon icon-pencil' title='Edit Row'><span class='sr-only'>Click here to edit row for " + _formatDate_dd_mm_yyyy($elements[applicant].coverDates[i]["from"]) + " to " + _formatDate_dd_mm_yyyy($elements[applicant].coverDates[i]["to"]) + "</span></span></a></td>";
+    			row += "<td class='delCoverDatesRow'><a href='javascript:;'><span class='icon icon-cross' title='Delete Row'><span class='sr-only'>Click here to delete row for " + _formatDate_dd_mm_yyyy($elements[applicant].coverDates[i]["from"]) + " to " + _formatDate_dd_mm_yyyy($elements[applicant].coverDates[i]["to"]) + "</span></span></a></td>";
     			row += "</tr>";
 
         		tableHtmlStr += row;
