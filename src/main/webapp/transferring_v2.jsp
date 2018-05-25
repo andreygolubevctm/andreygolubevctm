@@ -15,8 +15,8 @@
 <jsp:useBean id="configurationService" class="com.ctm.web.core.services.ServiceConfigurationService" scope="request" />
 <c:set var="providerCode" value="brandCode" /> <%-- prefer to use providerCode which makes more sense than brandCode --%>
 <c:if test="${param.vertical eq 'travel'}"><c:set var="providerCode" value="providerCode" /></c:if>
-<c:set var="quoteUrl" value="${fn:replace(resultsService.getSingleResultPropertyValue(transactionId, productId, 'quoteUrl'),'%26','&') }" />
 <c:set var="providerCode" value="${fn:replace(resultsService.getSingleResultPropertyValue(transactionId, productId, providerCode),'%26','&') }" />
+<c:set var="quoteUrl" value="${fn:replace(resultsService.getQuoteUrl(transactionId, productId, 'quoteUrl', providerCode, param.vertical),'%26','&') }" />
 
 <c:set var="verticalBrandCode" value="${pageSettings.getBrandCode()}" />
 <c:set var="trackingEnabled" value="${contentService.getContentValue(pageContext.getRequest(), 'trackingEnabled', verticalBrandCode, param.vertical)}" />
