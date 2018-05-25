@@ -53,40 +53,6 @@
             _calculateRequestData.partner = null;
         }
 
-        //     see below for basic implementation of the logic
-        /*
-
-                var needToCalcPartialLHC = false;
-                var lhcApplicable = false;
-                var maxLHC = false;
-                var continuousCover = false;
-
-                if _isBuyingPrivateHospitalCover && _isOfLhcAge {
-                    lhcApplicable = true;
-
-                    if (meerkat.modules.healthPrimary.getContinuousCover()) {
-
-                        //held continuous Private Health Insurance cover including prior to LHC base date
-                        continuousCover = true;
-                    } else {
-                        if (meerkat.modules.healthPrimary.getNeverHadCover() || (meerkat.modules.healthPrimary.getNeverExplicitlyAskedIfHeldPrivateHospitalCover() === true && $(':input[name=health_application_primary_everHadCover]').filter(':checked').val() === 'N')) {
-
-                            //never held Private Health Insurance cover!!!
-                            maxLHC = true;
-
-                        } else {
-
-                            // Has indicated that they have had Private Hospital Insurance in the past but not currently
-                            //( (meerkat.modules.healthPrimary.getHeldPrivateHealthInsuranceBeforeButNotCurrently() === true) || (meerkat.modules.healthPrimary.getNeverExplicitlyAskedIfHeldPrivateHospitalCover() === true && $(':input[name=health_application_primary_everHadCover]').filter(':checked').val() === 'Y') )
-                            needToCalcPartialLHC = true;
-
-                        }
-
-                    }
-
-                }
-
-         */
         getBaseDates().done(function(res) {
 
             if (_isBuyingPrivateHospitalCover()) {
@@ -374,9 +340,7 @@
 
 
 
-
-    // todo: comment out getLHC and set setCoverDates
-    // todo may need to make a getPartner or just a return LHC amount to get primary || combined depending on situation
+    
     meerkat.modules.register('healthLHC', {
         onInitialise: onInitialise,
         setCoverDates: setCoverDates,
