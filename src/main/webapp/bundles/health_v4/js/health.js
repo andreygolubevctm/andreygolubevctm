@@ -549,9 +549,6 @@
 
                     meerkat.modules.healthLHC.onInitialise();
 
-                    // Moved this within the healthLHC.onInitialise().
-                    // meerkat.messaging.publish(meerkatEvents.TRIGGER_UPDATE_PREMIUM);
-
                     meerkat.modules.fieldUtilities.toggleSelectsPlaceholderColor();
                 }
             },

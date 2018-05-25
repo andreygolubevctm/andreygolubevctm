@@ -159,6 +159,7 @@
 
     function _isBuyingPrivateHospitalCover() {
         // C == Combined, H = Hospital only, E = Extras only
+        // if we start selling Private Hospital insurance where the excess is more than $500 or does not qualify for LHC in some other way then this might need to check the status of the individual policy selected
         return meerkat.modules.healthChoices.getCoverType() !== 'E';
     }
 
@@ -340,7 +341,7 @@
 
 
 
-    
+
     meerkat.modules.register('healthLHC', {
         onInitialise: onInitialise,
         setCoverDates: setCoverDates,
