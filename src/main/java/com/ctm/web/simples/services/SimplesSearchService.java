@@ -670,7 +670,6 @@ public class SimplesSearchService {
      * @return
      */
     private boolean isLikeTransactionId(String str) {
-        LOGGER.info("@@@ isLikeTransactionId");
         return isMatch("^[0-9]+$", str);
     }
 
