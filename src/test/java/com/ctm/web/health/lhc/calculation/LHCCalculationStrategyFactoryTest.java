@@ -30,13 +30,24 @@ public class LHCCalculationStrategyFactoryTest {
     }
 
     @Test
+    public void givenDetails_whenBornPriorToFirstJuly1934_thenReturnMinLHCCalculator() {
+        LHCCalculationDetails lhcCalculationDetails = getValidCalculationDetails()
+                .dateOfBirth(Constants.LHC_BIRTHDAY_APPLICABILITY_DATE.minusDays(1))
+                .isContinuousCover(false);
+
+        LHCCalculationStrategy calculator = LHCCalculationStrategyFactory.getInstance(lhcCalculationDetails, TEST_CALCULATION_DATE);
+
+        assertEquals(calculator.getClass(), MinimumLHCCalculationStrategy.class);
+    }
+
+    @Test
     public void givenDetails_whenContinuousCoverIsTrue_thenReturnCorrectCalculator() {
         LHCCalculationDetails lhcCalculationDetails = getValidCalculationDetails()
                 .isContinuousCover(true);
 
         LHCCalculationStrategy calculator = LHCCalculationStrategyFactory.getInstance(lhcCalculationDetails, TEST_CALCULATION_DATE);
 
-        assertEquals(calculator.getClass(), AlwaysHeldContinuousCoverCalculator.class);
+        assertEquals(calculator.getClass(), MinimumLHCCalculationStrategy.class);
     }
 
     @Test
@@ -76,6 +87,4 @@ public class LHCCalculationStrategyFactoryTest {
 
         assertEquals(calculator.getClass(), NoCoverOnBaseDateCalculator.class);
     }
-
-
 }

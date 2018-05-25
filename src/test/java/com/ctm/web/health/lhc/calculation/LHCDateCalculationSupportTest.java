@@ -21,9 +21,9 @@ public class LHCDateCalculationSupportTest {
     public static final LocalDate FIRST_JULY_BIRTHDAY = LocalDate.of(1981, 7, 1);
     public static final LocalDate SECOND_JULY_BIRTHDAY = FIRST_JULY_BIRTHDAY.plusDays(1);
     public static final LocalDate THIRTIETH_JUNE_BIRTHDAY = LocalDate.of(1981, 6, 30);
-    public static final LocalDate THIRTY_ONE_YEARS_OLD = LocalDate.of(1969, 7, 1);
+    public static final LocalDate FIRST_JULY_1969 = LocalDate.of(1969, 7, 1);
     public static final LocalDate TEST_DATE = LocalDate.of(2018, 5, 2);
-    public static final int DAYS_BETWEEN_TEST_DATE_AND_FIRST_JULY_2000 = 6515;
+    public static final int MAX_LHC_APPLICABLE_DAYS = 6515;
 
     @Test
     public void givenDateAndDateOfBirth_thenCalculateAgeInYears() {
@@ -82,15 +82,15 @@ public class LHCDateCalculationSupportTest {
 
     @Test
     public void givenAgedGreaterThan31_onJulyFirst2000_thenReturnJulyFirst2000() {
-        long ageInYearsAtJulyFirst2000 = LHCDateCalculationSupport.calculateAgeInYearsAtJulyFirst2000(THIRTY_ONE_YEARS_OLD);
+        long ageInYearsAtJulyFirst2000 = LHCDateCalculationSupport.calculateAgeInYearsAtJulyFirst2000(FIRST_JULY_1969);
         assertEquals(31, ageInYearsAtJulyFirst2000);
-        LocalDate baseDate = LHCDateCalculationSupport.getBaseDate(THIRTY_ONE_YEARS_OLD);
+        LocalDate baseDate = LHCDateCalculationSupport.getBaseDate(FIRST_JULY_1969);
         assertEquals(JULY_FIRST_2000, baseDate);
     }
 
     @Test
     public void givenAged30_onJulyFirst2000_thenReturnJulyFirst2001() {
-        LocalDate notQuiteThirty = THIRTY_ONE_YEARS_OLD.plusDays(1);
+        LocalDate notQuiteThirty = FIRST_JULY_1969.plusDays(1);
         long ageInYearsAtJulyFirst2000 = LHCDateCalculationSupport.calculateAgeInYearsAtJulyFirst2000(notQuiteThirty);
         assertEquals(30, ageInYearsAtJulyFirst2000);
         LocalDate baseDate = LHCDateCalculationSupport.getBaseDate(notQuiteThirty);
@@ -104,17 +104,25 @@ public class LHCDateCalculationSupportTest {
     }
 
     @Test
-    public void givenAgedGreaterThan31_onJulyFirst2000_thenReturn6514() {
-        long lhcDaysApplicable = LHCDateCalculationSupport.getLhcDaysApplicable(THIRTY_ONE_YEARS_OLD, TEST_DATE);
-        assertEquals(DAYS_BETWEEN_TEST_DATE_AND_FIRST_JULY_2000, lhcDaysApplicable);
+    public void givenAgedGreaterThan31_onJulyFirst2000_thenReturnMAXLHCDays() {
+        long lhcDaysApplicable = LHCDateCalculationSupport.getLhcDaysApplicable(FIRST_JULY_1969, TEST_DATE);
+        assertEquals(MAX_LHC_APPLICABLE_DAYS, lhcDaysApplicable);
     }
 
     @Test
-    public void givenExtremeAgeValues__whenUsingTestDate_thenAlwaysReturnMaximumOf6514() {
-        for (int ageOffset = 1; ageOffset < 1000; ageOffset++) {
-            long lhcDaysApplicable = LHCDateCalculationSupport.getLhcDaysApplicable(THIRTY_ONE_YEARS_OLD.minusYears(ageOffset), TEST_DATE);
-            assertEquals(DAYS_BETWEEN_TEST_DATE_AND_FIRST_JULY_2000, lhcDaysApplicable);
-        }
+    public void givenBirthday_whenBornBeforeJulyFirst1934_thenReturnZeroLHCApplicableDays() {
+
+        LocalDate beforeLHCApplicabilityDate = Constants.LHC_BIRTHDAY_APPLICABILITY_DATE.minusDays(1);
+        long lhcDaysApplicable = LHCDateCalculationSupport.getLhcDaysApplicable(beforeLHCApplicabilityDate, TEST_DATE);
+        assertEquals(0, lhcDaysApplicable);
+    }
+
+    @Test
+    public void givenBirthday_whenBornOnJulyFirst1934_thenReturnZeroLHCApplicableDays() {
+
+        LocalDate beforeLHCApplicabilityDate = Constants.LHC_BIRTHDAY_APPLICABILITY_DATE;
+        long lhcDaysApplicable = LHCDateCalculationSupport.getLhcDaysApplicable(beforeLHCApplicabilityDate, TEST_DATE);
+        assertEquals(MAX_LHC_APPLICABLE_DAYS, lhcDaysApplicable);
     }
 
     @Test

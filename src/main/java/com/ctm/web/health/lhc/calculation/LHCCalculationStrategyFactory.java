@@ -18,16 +18,17 @@ public class LHCCalculationStrategyFactory {
      * @return an instance of the applicable LHC calculation strategy.
      */
     public static LHCCalculationStrategy getInstance(LHCCalculationDetails details, LocalDate now) {
-        LHCCalculationDetails updatedDetails = recalculateLHCDetails(details);
-        if (updatedDetails.getContinuousCover() || updatedDetails.getLhcDaysApplicable() == 0) {
-            return new AlwaysHeldContinuousCoverCalculator();
+        LHCCalculationDetails lhcCalculationDetails = recalculateLHCDetails(details);
+
+        if (LHCDateCalculationSupport.isEligibleForMinimumLHC(lhcCalculationDetails, now)) {
+            return new MinimumLHCCalculationStrategy();
         } else if (details.getNeverHadCover()) {
-            return new NeverHeldCoverCalculator(updatedDetails.getAge());
+            return new NeverHeldCoverCalculator(lhcCalculationDetails.getAge());
         } else {
-            if (LHCDateCalculationSupport.heldCoverOnBaseDate(updatedDetails.getBaseDate(), updatedDetails.getCoverDates())) {
-                return new HeldCoverOnBaseDateCalculator(updatedDetails.getLhcDaysApplicable(), updatedDetails.getCoverDates(), now);
+            if (LHCDateCalculationSupport.heldCoverOnBaseDate(lhcCalculationDetails.getBaseDate(), lhcCalculationDetails.getCoverDates())) {
+                return new HeldCoverOnBaseDateCalculator(lhcCalculationDetails.getLhcDaysApplicable(), lhcCalculationDetails.getCoverDates(), now);
             } else {
-                return new NoCoverOnBaseDateCalculator(updatedDetails.getBaseDate(), updatedDetails.getCoverDates(), now);
+                return new NoCoverOnBaseDateCalculator(lhcCalculationDetails.getBaseDate(), lhcCalculationDetails.getCoverDates(), now);
             }
         }
     }
