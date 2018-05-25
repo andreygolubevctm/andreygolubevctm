@@ -50,7 +50,7 @@ public class EmailUtils {
     public static final String ANNUAL_PREMIUM = "Annual  Premium";
     public static final String ANNUAL_ONLINE_PREMIUM = "Annual Online Premium";
     public final static int START = 0;
-    public final static int END = 10;
+    public final static int END = 14;
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailUtils.class);
 
     public List<ResultProperty> getResultPropertiesForTransaction(String tranId) throws DaoException {
@@ -63,10 +63,9 @@ public class EmailUtils {
     }
 
     public List<String> buildParameterList(HttpServletRequest httpServletRequest, String paramName){
-        List params = new ArrayList();
+        List<String> params = new ArrayList<>();
         IntStream.range(START,END).forEach(idx -> {
-            String parameter = httpServletRequest.getParameter(paramName + idx);
-            if(parameter != null)params.add(parameter);
+            Optional.ofNullable(httpServletRequest.getParameter(paramName + idx)).ifPresent(params::add);
         });
         return params;
     }

@@ -28,5 +28,11 @@ public class HealthEmailModel {
     private String situationType;
     private List<String> altPremiums;
     private List<String> altPremiumLabels;
+    private List<String> popPremiums;
+    private List<String> popPremiumLabels;
+    private List<String> popProviders;
+    private List<String> popProviderCodes;
+    private String popProvider1HospitalPds;
+    private String popProvider1ExtrasPds;
 }
 

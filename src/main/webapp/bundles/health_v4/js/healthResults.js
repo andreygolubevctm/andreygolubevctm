@@ -5,7 +5,7 @@
         log = meerkat.logging.info,
         selectedProduct = null,
         previousBreakpoint,
-        best_price_count = 10,
+        best_price_count = 14,
         isLhcApplicable = 'N',
         selectedBenefitsList = [],
         premiumIncreaseContent = $('.healthPremiumIncreaseContent'),
@@ -164,6 +164,7 @@
                             fortnightly: "premium.fortnightly.lhcfreevalue"
                         }
                     },
+                    popularProductsRank: 'info.popularProductsRank',
                     benefitsSort: 'info.rank'
                 },
                 show: {
@@ -265,7 +266,9 @@
                 rankings: {
                     triggers: ['RESULTS_DATA_READY'],
                     callback: meerkat.modules.healthResults.rankingCallback,
-                    forceIdNumeric: true
+                    forceIdNumeric: true,
+	                resultsSortedModelToUse: "sortedProductsAll",
+	                resultsFilteredModelToUse: "filteredProductsAll"
                 },
                 incrementTransactionId: false,
                 balanceCurrentPageRowsHeightOnly: {
@@ -294,10 +297,14 @@
 
         // Model updated, make changes before rendering
         meerkat.messaging.subscribe(Results.model.moduleEvents.RESULTS_MODEL_UPDATE_BEFORE_FILTERSHOW, function modelUpdated() {
+        	Results.model.popularProducts = Results.model.returnedProducts
+                .filter(function(product) { return product.info && true === product.info.popularProduct; });
             Results.model.returnedProducts = _massageResultsObject(Results.model.returnedProducts);
+            Results.model.sortedProductsAll = Results.model.returnedProducts;
+	        Results.model.filteredProductsAll = Results.model.returnedProducts;
+	        Results.model.returnedProducts = Results.model.returnedProducts.filter(function(product,index){return index < 12;});
+	        Results.model.availableCounts = Results.model.returnedProducts.length;
 
-            // Populating sorted products is a trick for HML due to setting sortBy:false
-            Results.model.sortedProducts = Results.model.returnedProducts;
         });
 
         var tStart = 0;
@@ -973,7 +980,6 @@
         var specialOffer = meerkat.modules.healthUtils.getSpecialOffer(product);
         data["rank_specialOffer" + position] = specialOffer.specialOffer;
         data["rank_specialOfferTerms" + position] = specialOffer.specialOfferTerms;
-        
 
         if (_.isNumber(best_price_count) && position < best_price_count) {
             data["rank_provider" + position] = product.info.provider;
@@ -984,7 +990,18 @@
             data["rank_premiumText" + position] = product.premium[Results.settings.frequency].lhcfreepricing;
             data["rank_altPremium" + position] = product.altPremium[Results.settings.frequency].lhcfreetext;
             data["rank_altPremiumText" + position] = product.altPremium[Results.settings.frequency].lhcfreepricing;
-
+            if (_.isNumber(product.info.popularProductsRank)) {
+                data["rank_popPremium" + product.info.popularProductsRank] = data["rank_premium" + position];
+                data["rank_popPremiumLabel" + product.info.popularProductsRank] = data["rank_premiumText" + position];
+                data["rank_popProvider" + product.info.popularProductsRank] = data["rank_providerName" + position];
+                data["rank_popProviderCode" + product.info.popularProductsRank] = data["rank_provider" + position];
+                if (product.info.popularProductsRank === 1 && product.promo.hospitalPDF !== 'health_brochure.jsp?pdf=') {
+                    data["rank_popProvider1HospitalPds"] = product.promo.hospitalPDF;
+                }
+                if (product.info.popularProductsRank === 1 &&product.promo.extrasPDF !== 'health_brochure.jsp?pdf=') {
+                    data["rank_popProvider1ExtrasPds"] = product.promo.extrasPDF;
+                }
+            }
         }
 
         // Do this only for the best price product
@@ -1006,12 +1023,13 @@
             if (product.promo.extrasPDF != 'health_brochure.jsp?pdf=') {
                 data["rank_extrasPdsUrl" + position] = product.promo.extrasPDF;
             }
+
             data["rank_excessPerAdmission" + position] = excessesAndCoPayment.excessPerAdmission;
             data["rank_excessPerPerson" + position] = excessesAndCoPayment.excessPerPerson;
             data["rank_excessPerPolicy" + position] = excessesAndCoPayment.excessPerPolicy;
             data["rank_coPayment" + position] = excessesAndCoPayment.coPayment;
+            data["isPopularProductsSelected"] = $(':input[name=health_popularProducts]').val();
         }
-
         return data;
     }
 
