@@ -1,6 +1,7 @@
 package com.ctm.web.health.lhc.calculation;
 
 import com.ctm.web.health.lhc.model.query.CoverDateRange;
+import com.ctm.web.health.lhc.model.query.LHCCalculationDetails;
 import org.elasticsearch.common.collect.ImmutableList;
 
 import java.time.LocalDate;
@@ -107,8 +108,22 @@ public class LHCDateCalculationSupport {
         }
     }
 
+    /**
+     * Return the unique number of LHC applicable days between a date of birth and the specified date
+     * <p>
+     * On the specified {@code onDay}, if a person born on {@code dateOfBirth}, calculate the number of days between
+     * those two dates;
+     * <p>
+     * Unless the date of birth is before 01/07/1934, or the person is aged less than 31, in which case the days
+     * applicable is ZERO.
+     *
+     * @param dateOfBirth the date of birth
+     * @param onDay       the specified day for calculation.
+     * @return the number of LHC applicable days.
+     */
     public static long getLhcDaysApplicable(LocalDate dateOfBirth, LocalDate onDay) {
-        if (dateOfBirth.isAfter(LocalDate.now().plusDays(1))) {
+        if (calculateAgeInYearsFrom(dateOfBirth, onDay) < Constants.LHC_EXEMPT_AGE_CUT_OFF
+                || dateOfBirth.isBefore(Constants.LHC_BIRTHDAY_APPLICABILITY_DATE)) {
             return 0;
         }
         LocalDate baseDate = getBaseDate(dateOfBirth);
@@ -261,5 +276,24 @@ public class LHCDateCalculationSupport {
                 .sorted(Comparator.comparing(CoverDateRange::getFrom))
                 .map(CoverDateRange::getFrom)
                 .findFirst();
+    }
+
+    /**
+     * Given {@link LHCCalculationDetails}, return whether or not the respective applicant is eligible for minimum LHC.
+     * <p>
+     * Eligibility is true if an applicant
+     * <ul>
+     * <li>has stated they have always held continuous cover</li>
+     * <li>has no applicable LHC cover days (i.e. aged less than 30 - {@link Constants#LHC_REQUIREMENT_AGE})</li>
+     * <li>was born prior to the 1st June 1934 - {@link Constants#LHC_BIRTHDAY_APPLICABILITY_DATE}</li>
+     * </ul>
+     *
+     * @param details the {@link LHCCalculationDetails}
+     * @param onDay   the date of calculation.
+     * @return true an applicant meets the above criteria.
+     * @see #getLhcDaysApplicable(LocalDate, LocalDate)
+     */
+    public static boolean isEligibleForMinimumLHC(LHCCalculationDetails details, LocalDate onDay) {
+        return details.getContinuousCover() || getLhcDaysApplicable(details.getDateOfBirth(), onDay) == 0;
     }
 }

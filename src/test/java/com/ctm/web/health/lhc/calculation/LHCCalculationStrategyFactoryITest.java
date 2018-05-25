@@ -173,7 +173,7 @@ public class LHCCalculationStrategyFactoryITest {
 
         long lhc = LHCCalculationStrategyFactory.getInstance(lhcCalculationDetails, TEST_CALCULATION_DATE).calculateLHCPercentage();
 
-        assertEquals(0, lhc);
+        assertEquals(MIN_LHC_PERCENTAGE, lhc);
     }
 
     @Test
@@ -210,5 +210,20 @@ public class LHCCalculationStrategyFactoryITest {
         long lhc = LHCCalculationStrategyFactory.getInstance(lhcCalculationDetails, TEST_CALCULATION_DATE).calculateLHCPercentage();
 
         assertEquals(18, lhc);
+    }
+
+
+    @Test
+    public void givenApplicante_whenBirthdayPriorToLHCApplicabilityDate_thenReturnMinimumLHC() {
+        LocalDate preLHCBirthday = Constants.LHC_BIRTHDAY_APPLICABILITY_DATE.minusDays(1);
+
+        LHCCalculationDetails lhcCalculationDetails = new LHCCalculationDetails()
+                .dateOfBirth(preLHCBirthday)
+                .isContinuousCover(false)
+                .isNeverHadCover(false);
+
+        long lhc = LHCCalculationStrategyFactory.getInstance(lhcCalculationDetails, TEST_CALCULATION_DATE).calculateLHCPercentage();
+
+        assertEquals(MIN_LHC_PERCENTAGE, lhc);
     }
 }
