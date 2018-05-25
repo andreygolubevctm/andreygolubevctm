@@ -163,7 +163,7 @@
         result.priceText = prem.text ? prem.text : formatCurrency(prem.payableAmount);
         result.priceLhcfreetext = prem.lhcfreetext ? prem.lhcfreetext : formatCurrency(prem.lhcFreeAmount);
         result.textLhcFreePricing = prem.lhcfreepricing ? prem.lhcfreepricing.replace('<span/>', '<br>') : 'excl ' + formatCurrency(prem.lhcAmount) +
-            'LHC<br>inc ' +
+            'LHC<br>Inc. ' +
             formatCurrency(prem.rebateAmount) + ' Govt Rebate';
         result.textPricing = prem.pricing ? prem.pricing : 'Includes rebate of ' + formatCurrency(prem.rebateAmount) +
             ' & LHC loading of ' + formatCurrency(prem.lhcAmount);
