@@ -25,7 +25,6 @@
     }
 
     function _phoneticAlphabetSetup() {
-      console.log($('#payment-confirm-details-modal .modal-dialog').width());
         var list = [
           "A:	Alpha",
           "B:	Bravo",
@@ -59,13 +58,13 @@
         var listElement = $parentElement.find('ul');
         var $modal = $('#payment-confirm-details-modal .modal-dialog');
         var childElements = [];
-
+        
         listElement.empty();
         for (var i = 0; i < list.length; i++) {
           childElements.push(getListElement(list[i]));
         }
         listElement.append(childElements);
-
+        // adds some spacing between the two modals
         $parentElement.css({ left: $modal.width() + 10 });
         $modal.append($parentElement);
     }
