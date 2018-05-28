@@ -24,6 +24,56 @@
         _template = _.template($('#payment-confirm-details-modal-template').html());
     }
 
+    function _phoneticAlphabetSetup() {
+      console.log($('#payment-confirm-details-modal .modal-dialog').width());
+        var list = [
+          "A:	Alpha",
+          "B:	Bravo",
+          "C:	Charlie",
+          "D:	Delta",
+          "E:	Echo",
+          "F:	Foxtrot",
+          "G:	Golf",
+          "H:	Hotel",
+          "I:	India",
+          "J:	Juliet",
+          "K:	Kilo",
+          "L:	Lima",
+          "M:	Mike",
+          "N:	November",
+          "O:	Oscar",
+          "P:	Papa",
+          "Q:	Quebec",
+          "R:	Romeo",
+          "S:	Sierra",
+          "T:	Tango",
+          "U:	Uniform",
+          "V:	Victor",
+          "W:	Whisky",
+          "X:	X-Ray",
+          "Y:	Yankee",
+          "Z:	Zulu"
+        ];
+
+        var $parentElement = $('.phonetic-alphabet');
+        var listElement = $parentElement.find('ul');
+        var $modal = $('#payment-confirm-details-modal .modal-dialog');
+        var childElements = [];
+
+        listElement.empty();
+        for (var i = 0; i < list.length; i++) {
+          childElements.push(getListElement(list[i]));
+        }
+        listElement.append(childElements);
+
+        $parentElement.css({ left: $modal.width() + 10 });
+        $modal.append($parentElement);
+    }
+
+    function getListElement(text) {
+        return '<li>' + text + '</li>';
+    }
+
     function _setupFields() {
         $fields = {
             primary: {
@@ -147,7 +197,7 @@
             onOpen: function (dialogId) {
                 _setupElements();
                 _applyFormEventListeners();
-
+                _phoneticAlphabetSetup();
                 meerkat.modules.jqueryValidate.setupDefaultValidationOnForm($elements.form);
             },
             onClose: function (dialogId) {
