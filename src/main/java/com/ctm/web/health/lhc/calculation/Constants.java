@@ -42,6 +42,11 @@ public final class Constants {
      */
     public static final int MIN_LHC_PERCENTAGE = 0;
 
+    /**
+     * People born before the LHC birthday applicability date are exempt from LHC.
+     */
+    public static final LocalDate LHC_BIRTHDAY_APPLICABILITY_DATE = LocalDate.of(1934, 7, 1);
+
 
     private Constants() { /* Intentionally Empty to prevent instantiation. */}
 }
