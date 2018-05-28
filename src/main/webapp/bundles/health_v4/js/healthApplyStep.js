@@ -32,6 +32,14 @@
                 healthPartnerFundHistoryRow: $('#partnerFundHistory'),
                 healthApplicationPrimaryDOB: $('#health_application_primary_dob'),
                 healthApplicationPartnerDOB: $('#health_application_partner_dob'),
+                primary: {
+                    aboutYouPreviousFund: $(':input[name=health_healthCover_primary_fundName]').children('option'),
+                    healthApplicationPreviousFund: $(':input[name=health_previousfund_primary_fundName]').children('option')
+                },
+                partner: {
+                    aboutYouPreviousFund: $(':input[name=health_healthCover_partner_fundName]').children('option'),
+                    healthApplicationPreviousFund: $(':input[name=health_previousfund_partner_fundName]').children('option')
+                }
             };
 
             $unitElements = {
@@ -51,9 +59,13 @@
         // validate at least 1 contact number is entered
         $elements.appMobile.addRule('requireOneContactNumber', true, 'Please include at least one phone number');
 
+        _prefillPreviousFund('primary');
         meerkat.messaging.publish(meerkatEvents.healthPreviousFund.POPULATE_PRIMARY,
             meerkat.modules.healthPrimary.getCurrentCover());
 
+        if (meerkat.modules.healthChoices.hasPartner()) {
+            _prefillPreviousFund('partner');
+        }
         meerkat.messaging.publish(meerkatEvents.healthPreviousFund.POPULATE_PARTNER,
             meerkat.modules.healthPartner.getCurrentCover());
 
@@ -381,6 +393,35 @@
 
     function getPrimaryFirstname() {
         return $elements.primaryFirstname.val();
+    }
+
+    function _prefillPreviousFund(applicant) {
+
+        if (typeof $elements[applicant].healthApplicationPreviousFund.filter(':selected').val() !== 'undefined') {
+
+            // get value if not undefined, '', NONE
+            var appPageSelectedVal = ((($elements[applicant].healthApplicationPreviousFund.filter(':selected').val() === '') || (typeof $elements[applicant].healthApplicationPreviousFund.filter(':selected').val() === 'undefined') || ($elements[applicant].healthApplicationPreviousFund.filter(':selected').val() === 'NONE') || ($elements[applicant].healthApplicationPreviousFund.filter(':selected').val() === 'OTHER')) ? '' : $elements[applicant].healthApplicationPreviousFund.filter(':selected').val() );
+
+            if (appPageSelectedVal === ''){
+                if (typeof $elements[applicant].aboutYouPreviousFund.filter(':selected').val() !== 'undefined') {
+
+                    // get value if not undefined, '', NONE
+                    var selectedFieldCurrentVal = ((($elements[applicant].healthApplicationPreviousFund.filter(':selected').val() === '') || (typeof $elements[applicant].healthApplicationPreviousFund.filter(':selected').val() === 'undefined') || ($elements[applicant].healthApplicationPreviousFund.filter(':selected').val() === 'NONE') || ($elements[applicant].healthApplicationPreviousFund.filter(':selected').val() === 'OTHER')) ? ((($elements[applicant].aboutYouPreviousFund.filter(':selected').val() === '') || (typeof $elements[applicant].aboutYouPreviousFund.filter(':selected').val() === 'undefined') || ($elements[applicant].aboutYouPreviousFund.filter(':selected').val() === 'NONE') || ($elements[applicant].aboutYouPreviousFund.filter(':selected').val() === 'OTHER')) ? '' : $elements[applicant].aboutYouPreviousFund.filter(':selected').val() ) : $elements[applicant].healthApplicationPreviousFund.filter(':selected').val() );
+                    if (selectedFieldCurrentVal !== ''){
+
+                        // if there is matching non duplicate value in drop down on the Application page
+                        if  ($(':input[name=health_previousfund_' + applicant + '_fundName] > option[value="' + selectedFieldCurrentVal +'"]').length === 1) {
+                            // if there are no duplicate entries on the about you(primary)/insurance preferences(partner) page
+                            if ($(':input[name=health_healthCover_' + applicant + '_fundName] > option[value="' + selectedFieldCurrentVal +'"]').length == 1)  {
+
+                                //populate field
+                                $(':input[name=health_previousfund_' + applicant + '_fundName]').find('option[value="' + selectedFieldCurrentVal + '"]').attr("selected", true);
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     meerkat.modules.register('healthApplyStep', {

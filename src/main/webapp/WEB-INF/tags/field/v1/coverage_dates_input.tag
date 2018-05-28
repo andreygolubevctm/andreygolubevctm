@@ -19,13 +19,13 @@
 			</div>
 		</div>
 		<div class="fieldrow">
-			<div class="col-xs-12 col-sm-6 col-lg-4   row-content">
+			<div class="col-xs-12 col-sm-6 col-lg-4   row-content buffertop-xs">
 				<c:set var="fieldxpathname" value="${xpath}/dates/controls/endDateInput" />
 				<input type="date" name="${go:nameFromXpath(fieldxpathname)}" id="${go:nameFromXpath(fieldxpathname)}" class="form-control " value="" required="" aria-required="true">
 			</div>
 		</div>
 		<div class="fieldrow">
-			<div class="col-xs-12 col-sm-6 col-lg-2   row-content">
+			<div class="col-xs-12 col-sm-6 col-lg-2   row-content buffertop-sm">
 				<c:set var="fieldxpathname" value="${xpath}/dates/controls/add" />
 				<button id="${go:nameFromXpath(fieldxpathname)}" class="btn btn-form coverdates-add">Add</button>
 				<c:set var="fieldxpathname" value="${xpath}/dates/controls/edit" />
@@ -33,7 +33,7 @@
 			</div>
 		</div>
 		<div class="fieldrow">
-			<div class="col-xs-12 col-sm-6 col-lg-2   row-content">
+			<div class="col-xs-12 col-sm-6 col-lg-2   row-content buffertop-sm">
 				<c:set var="fieldxpathname" value="${xpath}/dates/controls/cancel" />
 				<button id="${go:nameFromXpath(fieldxpathname)}" class="btn btn-danger coverdates-cancel hidden">Cancel</button>
 			</div>

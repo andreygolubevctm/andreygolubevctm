@@ -18,7 +18,9 @@
             primaryCurrentFundName: $(':input[name=health_healthCover_primary_fundName]'),
             dob: $('#health_healthCover_primary_dob'),
             partnerDOB: $('#benefits_partner_dob'),
-            appDob: $('#health_application_primary_dob')
+            appDob: $('#health_application_primary_dob'),
+            healthAboutYouPrimaryPreviousFund: $(':input[name=health_healthCover_primary_fundName]').children('option'),
+            healthApplicationPrimaryPreviousFund: $(':input[name=health_previousfund_primary_fundName]').children('option')
         };
 
 	    $elements.primaryCoverLoading.add($elements.dob).add($elements.currentCover).attr('data-attach','true');
@@ -111,6 +113,14 @@
         return $elements.currentCover.filter(':checked').val() === 'Y' && $elements.primaryCoverLoading.filter(':checked').val() === 'N';
     }
 
+    function getHealthPreviousFund() {
+        return ((($elements.healthApplicationPrimaryPreviousFund.filter(':selected').val() === '') || (typeof $elements.healthApplicationPrimaryPreviousFund.filter(':selected').val() === 'undefined') || ($elements.healthApplicationPrimaryPreviousFund.filter(':selected').val() === 'NONE') || ($elements.healthApplicationPrimaryPreviousFund.filter(':selected').val() === 'OTHER')) ? ((($elements.healthAboutYouPrimaryPreviousFund.filter(':selected').val() === '') || (typeof $elements.healthAboutYouPrimaryPreviousFund.filter(':selected').val() === 'undefined') || ($elements.healthAboutYouPrimaryPreviousFund.filter(':selected').val() === 'NONE') || ($elements.healthAboutYouPrimaryPreviousFund.filter(':selected').val() === 'OTHER')) ? '' : $elements.healthAboutYouPrimaryPreviousFund.filter(':selected').val() ) : $elements.healthApplicationPrimaryPreviousFund.filter(':selected').val() );
+    }
+
+    function getHealthPreviousFundDescription() {
+        return ((($elements.healthApplicationPrimaryPreviousFund.filter(':selected').val() === '') || (typeof $elements.healthApplicationPrimaryPreviousFund.filter(':selected').val() === 'undefined') || ($elements.healthApplicationPrimaryPreviousFund.filter(':selected').val() === 'NONE') || ($elements.healthApplicationPrimaryPreviousFund.filter(':selected').val() === 'OTHER')) ? ((($elements.healthAboutYouPrimaryPreviousFund.filter(':selected').val() === '') || (typeof $elements.healthAboutYouPrimaryPreviousFund.filter(':selected').val() === 'undefined') || ($elements.healthAboutYouPrimaryPreviousFund.filter(':selected').val() === 'NONE') || ($elements.healthAboutYouPrimaryPreviousFund.filter(':selected').val() === 'OTHER')) ? '' : $elements.healthAboutYouPrimaryPreviousFund.filter(':selected').text() ) : $elements.healthApplicationPrimaryPreviousFund.filter(':selected').text() );
+    }
+
     meerkat.modules.register('healthPrimary', {
         init: initHealthPrimary,
         getCurrentCover: getCurrentCover,
@@ -119,7 +129,9 @@
         getContinuousCover: getContinuousCover,
         getNeverHadCover: getNeverHadCover,
         getHeldPrivateHealthInsuranceBeforeButNotCurrently: getHeldPrivateHealthInsuranceBeforeButNotCurrently,
-        getNeverExplicitlyAskedIfHeldPrivateHospitalCover: getNeverExplicitlyAskedIfHeldPrivateHospitalCover
+        getNeverExplicitlyAskedIfHeldPrivateHospitalCover: getNeverExplicitlyAskedIfHeldPrivateHospitalCover,
+        getHealthPreviousFund: getHealthPreviousFund,
+        getHealthPreviousFundDescription: getHealthPreviousFundDescription
     });
 
 })(jQuery);

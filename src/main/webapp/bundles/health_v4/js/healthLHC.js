@@ -14,12 +14,10 @@
         _newLhc = null,
         _newLhcCompleteResult = null;
 
-        //todo delete after calculation method decided - start
         var calculateLhcOnlyWhenNeverHeldBefore_Or_HeldBeforeButNotCurrently = false;
         var calculateLhcOnlyWhenHeldBeforeButNotCurrently = false;
         var calculateLhcOnlyWhenHeldBeforeButNotCurrently_Or_HeldContinuousCover = false;
         var alwaysCalculateLHC = true;
-        //todo delete after calculation method decided - end
 
     function onInitialise() {
         var hasPartner = meerkat.modules.healthChoices.hasPartner(),
@@ -66,11 +64,9 @@
                     setCoverDates('primary', meerkat.modules.healthPrivateHospitalHistory.getPrimaryCoverDates());
                 }
 
-                //todo delete after calculation method decided - start
                 var partnerContinuousCover = false;
                 var partnerNeverHadPrivateHospitalCover = false;
                 var partnerRequirePrivateHospitalCoverHistory = false;
-                //todo delete after calculation method decided - end
 
                 if (hasPartner) {
                     var partnerFlags = _getLhcConditionsFlags('partner', res.partner.lhcDaysApplicable);
@@ -79,15 +75,10 @@
                         setCoverDates('partner', meerkat.modules.healthPrivateHospitalHistory.getPartnerCoverDates());
                     }
 
-                    //todo delete after calculation method decided - start
                     partnerContinuousCover = partnerFlags.continuousCover;
                     partnerNeverHadPrivateHospitalCover = partnerFlags.neverHadPrivateHospitalCover;
                     partnerRequirePrivateHospitalCoverHistory = partnerFlags.requirePrivateHospitalCoverHistory;
-                    //todo delete after calculation method decided - end
                 }
-
-                // TODO ***********************************************************************
-                // TODO  pick one
 
                 // override previously existing LHC calculation method when ( Max LHC Applied || when previous private hospital cover array is required to calculate amount)
                 if (calculateLhcOnlyWhenNeverHeldBefore_Or_HeldBeforeButNotCurrently) {
@@ -138,7 +129,6 @@
                         meerkat.messaging.publish(meerkatEvents.TRIGGER_UPDATE_PREMIUM);
                     });
                 }
-                // TODO ***********************************************************************
 
             } else {
                 resetNewLHC();
@@ -212,7 +202,6 @@
             // 0% LHC
             lhcApplicable = continuousCover;
         } else {
-            //todo maybe cache reference to   ':input[name=health_application_' + applicant + '_everHadCover]'
             if (meerkat.modules['health' + capitalisePersonDetailType].getNeverHadCover() || (meerkat.modules['health' + capitalisePersonDetailType].getNeverExplicitlyAskedIfHeldPrivateHospitalCover() === true && $(':input[name=health_application_' + applicant + '_everHadCover]').filter(':checked').val() === 'N')) {
 
                 //never actually had cover!!!
@@ -306,8 +295,6 @@
         _newLhcCompleteResult = null;
     }
 
-    // todo: delete after testing - start
-    // todo also get the references to these functions below
     function calculateLhcOnly_WhenNeverHeldBefore_Or_HeldBeforeButNotCurrently(boolValue) {
         calculateLhcOnlyWhenNeverHeldBefore_Or_HeldBeforeButNotCurrently = boolValue;
     }
@@ -323,7 +310,6 @@
     function always_CalculateLHC(boolValue) {
         return alwaysCalculateLHC = boolValue;
     }
-    // todo: delete after testing - end
 
     meerkat.modules.register('healthLHC', {
         onInitialise: onInitialise,

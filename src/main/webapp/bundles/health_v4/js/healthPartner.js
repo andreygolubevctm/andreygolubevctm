@@ -21,9 +21,12 @@
             partnerEverHadCover: $(':input[name=health_healthCover_partner_everHadCover]'),
             partnerCurrentFundName: $(':input[name=health_healthCover_partner_fundName]'),
             appFields: $('#partnerFund, #partnerMemberID, #partnerContainer'),
+            additionalFieldsToHide: $('#health_insurance_preferences_additional_partner_fields'),
             benefitsScrollerLinks: $('.benefitsScroller'),
             coverLoadingHeading: $('.benefitsContainer').find('h3:first-child'),
-            appDob: $('#health_application_partner_dob')
+            appDob: $('#health_application_partner_dob'),
+            healthInsurancePreferencesPartnerPreviousFund: $(':input[name=health_healthCover_partner_fundName]').children('option'),
+            healthApplicationPartnerPreviousFund: $(':input[name=health_previousfund_partner_fundName]').children('option')
         };
 
         $elements.partnerCoverLoading.add($elements.dob).add($elements.currentCover).attr('data-attach','true');
@@ -85,6 +88,7 @@
 
     function _setupAppFields() {
         $elements.appFields.toggleClass('hidden', meerkat.modules.healthChoices.hasPartner() === false);
+        $elements.additionalFieldsToHide.toggleClass('hidden', meerkat.modules.healthChoices.hasPartner() === false);
     }
 
     function getCurrentCover() {
@@ -141,6 +145,14 @@
         return $elements.currentCover.filter(':checked').val() === 'Y' && $elements.partnerCoverLoading.filter(':checked').val() === 'N';
     }
 
+    function getHealthPreviousFund() {
+        return ((($elements.healthApplicationPartnerPreviousFund.filter(':selected').val() === '') || (typeof $elements.healthApplicationPartnerPreviousFund.filter(':selected').val() === 'undefined') || ($elements.healthApplicationPartnerPreviousFund.filter(':selected').val() === 'NONE') || ($elements.healthApplicationPartnerPreviousFund.filter(':selected').val() === 'OTHER')) ? ((($elements.healthInsurancePreferencesPartnerPreviousFund.filter(':selected').val() === '') || (typeof $elements.healthInsurancePreferencesPartnerPreviousFund.filter(':selected').val() === 'undefined') || ($elements.healthInsurancePreferencesPartnerPreviousFund.filter(':selected').val() === 'NONE') || ($elements.healthInsurancePreferencesPartnerPreviousFund.filter(':selected').val() === 'OTHER')) ? '' : $elements.healthInsurancePreferencesPartnerPreviousFund.filter(':selected').val() ) : $elements.healthApplicationPartnerPreviousFund.filter(':selected').val() );
+    }
+
+    function getHealthPreviousFundDescription() {
+        return ((($elements.healthApplicationPartnerPreviousFund.filter(':selected').val() === '') || (typeof $elements.healthApplicationPartnerPreviousFund.filter(':selected').val() === 'undefined') || ($elements.healthApplicationPartnerPreviousFund.filter(':selected').val() === 'NONE') || ($elements.healthApplicationPartnerPreviousFund.filter(':selected').val() === 'OTHER')) ? ((($elements.healthInsurancePreferencesPartnerPreviousFund.filter(':selected').val() === '') || (typeof $elements.healthInsurancePreferencesPartnerPreviousFund.filter(':selected').val() === 'undefined') || ($elements.healthInsurancePreferencesPartnerPreviousFund.filter(':selected').val() === 'NONE') || ($elements.healthInsurancePreferencesPartnerPreviousFund.filter(':selected').val() === 'OTHER')) ? '' : $elements.healthInsurancePreferencesPartnerPreviousFund.filter(':selected').text() ) : $elements.healthApplicationPartnerPreviousFund.filter(':selected').text() );
+    }
+
     meerkat.modules.register('healthPartner', {
         init: initHealthPartner,
         getCurrentCover: getCurrentCover,
@@ -149,7 +161,9 @@
         getContinuousCover: getContinuousCover,
         getNeverHadCover: getNeverHadCover,
         getHeldPrivateHealthInsuranceBeforeButNotCurrently: getHeldPrivateHealthInsuranceBeforeButNotCurrently,
-        getNeverExplicitlyAskedIfHeldPrivateHospitalCover: getNeverExplicitlyAskedIfHeldPrivateHospitalCover
+        getNeverExplicitlyAskedIfHeldPrivateHospitalCover: getNeverExplicitlyAskedIfHeldPrivateHospitalCover,
+        getHealthPreviousFund: getHealthPreviousFund,
+        getHealthPreviousFundDescription: getHealthPreviousFundDescription
     });
 
 })(jQuery);
