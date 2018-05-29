@@ -123,10 +123,9 @@ public class EnvironmentService {
 	 * Developers should NEVER specific a brand code param on an environment controlled by the F5 gateway!
 	 */
 	public static boolean needsManuallyAddedBrandCodeParam() throws EnvironmentException {
-		return getEnvironment() == Environment.LOCALHOST || 
-				getEnvironment() == Environment.NXI || 
-				getEnvironment() == Environment.NXS || 
-				getEnvironment() == Environment.NXQ;
+		return getEnvironment() == Environment.LOCALHOST ||
+				getEnvironment() == Environment.NXI ||
+				getEnvironment() == Environment.NXS;
 	}
 
 	public static boolean needsManuallyAddedBrandCodeParamWhiteLabel(String brandCode, String verticalCode) throws EnvironmentException {
