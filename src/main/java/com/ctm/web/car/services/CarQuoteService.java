@@ -57,9 +57,14 @@ import javax.ws.rs.InternalServerErrorException;
 import javax.xml.bind.ValidationException;
 import java.math.BigDecimal;
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 import static com.ctm.web.core.model.settings.Vertical.VerticalType.CAR;
 import static java.util.stream.Collectors.toList;
@@ -270,6 +275,8 @@ public class CarQuoteService extends CommonRequestServiceV2 {
                             }
 
                     );
+            request.getSession(false).setAttribute("redirect-session-commit", LocalDateTime.now());
+            request.getSession(false).removeAttribute("redirect-session-commit");
         }
     }
 
