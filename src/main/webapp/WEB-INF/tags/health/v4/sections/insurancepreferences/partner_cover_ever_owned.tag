@@ -5,6 +5,8 @@
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath" 		required="true"	 rtexprvalue="true"	 description="partner's ever had private hospital insurance status xpath" %>
 
+<c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
+
 <c:set var="fieldXpath" value="${xpath}/partner/everHadCover" />
 <c:set var="analyticsAttr"><field_v1:analytics_attr analVal="partner ever had private hospital insurance status" quoteChar="\"" /></c:set>
 

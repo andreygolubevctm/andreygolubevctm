@@ -21,8 +21,12 @@
             partnerEverHadCover: $(':input[name=health_healthCover_partner_everHadCover]'),
             partnerCurrentFundName: $(':input[name=health_healthCover_partner_fundName]'),
             appFields: $('#partnerFund, #partnerMemberID, #partnerContainer'),
+            additionalFieldsToHide: $('#health_insurance_preferences_additional_partner_fields'),
             benefitsScrollerLinks: $('.benefitsScroller'),
-            coverLoadingHeading: $('.benefitsContainer').find('h3:first-child')
+            coverLoadingHeading: $('.benefitsContainer').find('h3:first-child'),
+            appDob: $('#health_application_partner_dob'),
+            healthInsurancePreferencesPartnerPreviousFund: $(':input[name=health_healthCover_partner_fundName]').children('option'),
+            healthApplicationPartnerPreviousFund: $(':input[name=health_previousfund_partner_fundName]').children('option')
         };
 
         $elements.partnerCoverLoading.add($elements.dob).add($elements.currentCover).attr('data-attach','true');
@@ -84,6 +88,7 @@
 
     function _setupAppFields() {
         $elements.appFields.toggleClass('hidden', meerkat.modules.healthChoices.hasPartner() === false);
+        $elements.additionalFieldsToHide.toggleClass('hidden', meerkat.modules.healthChoices.hasPartner() === false);
     }
 
     function getCurrentCover() {
@@ -113,10 +118,52 @@
         }
     }
 
+    function getAppDob() {
+        return $elements.appDob.val();
+    }
+
+    // iff true, the applicant's partner has never held 'Private Hospital Cover'
+    function getNeverHadCover() {
+        return $elements.currentCover.filter(':checked').val() === 'N' && $elements.partnerEverHadCover.filter(':checked').val() === 'N';
+    }
+
+    // iff true, the applicant's partner does not currently have any cover but has held 'Private Hospital Cover' in the past
+    function getHeldPrivateHealthInsuranceBeforeButNotCurrently() {
+        return $elements.currentCover.filter(':checked').val() === 'N' && $elements.partnerEverHadCover.filter(':checked').val() === 'Y';
+    }
+
+    // iff true, the applicant's partner currently has and has always had continuous 'Private Hospital Cover'
+    // iff false, (the test below is a better indicator) the applicant's partner currently has (either Private Hospital or Extras cover) && has not had continuous Private Hospital, but has never explicitly been asked if they have ever held Private Hospital Cover
+    // iff null, the applicant's partner has selected that they do not currently have (either 'Private Hospital' or 'Extras cover')
+    function getContinuousCover() {
+        return $elements.currentCover.filter(':checked').val() === 'Y' ? $elements.partnerCoverLoading.filter(':checked').val() === 'Y' : null;
+    }
+
+    // if true, the applicant's partner currently has (either 'Private Hospital' or 'Extras cover') && has not had continuous Private hospital,
+    // but has never explicitly been asked if they have ever held 'Private Hospital Cover'
+    function getNeverExplicitlyAskedIfHeldPrivateHospitalCover() {
+        return $elements.currentCover.filter(':checked').val() === 'Y' && $elements.partnerCoverLoading.filter(':checked').val() === 'N';
+    }
+
+    function getHealthPreviousFund() {
+        return (((_.isUndefined($elements.healthApplicationPartnerPreviousFund.filter(':selected').val())) || ($elements.healthApplicationPartnerPreviousFund.filter(':selected').val() === '') || ($elements.healthApplicationPartnerPreviousFund.filter(':selected').val() === 'NONE') || ($elements.healthApplicationPartnerPreviousFund.filter(':selected').val() === 'OTHER')) ? (((_.isUndefined($elements.healthInsurancePreferencesPartnerPreviousFund.filter(':selected').val())) || ($elements.healthInsurancePreferencesPartnerPreviousFund.filter(':selected').val() === '') || ($elements.healthInsurancePreferencesPartnerPreviousFund.filter(':selected').val() === 'NONE') || ($elements.healthInsurancePreferencesPartnerPreviousFund.filter(':selected').val() === 'OTHER')) ? '' : $elements.healthInsurancePreferencesPartnerPreviousFund.filter(':selected').val() ) : $elements.healthApplicationPartnerPreviousFund.filter(':selected').val() );
+    }
+
+    function getHealthPreviousFundDescription() {
+        return (((_.isUndefined($elements.healthApplicationPartnerPreviousFund.filter(':selected').val())) || ($elements.healthApplicationPartnerPreviousFund.filter(':selected').val() === '') || ($elements.healthApplicationPartnerPreviousFund.filter(':selected').val() === 'NONE') || ($elements.healthApplicationPartnerPreviousFund.filter(':selected').val() === 'OTHER')) ? (((_.isUndefined($elements.healthInsurancePreferencesPartnerPreviousFund.filter(':selected').val())) || ($elements.healthInsurancePreferencesPartnerPreviousFund.filter(':selected').val() === '') || ($elements.healthInsurancePreferencesPartnerPreviousFund.filter(':selected').val() === 'NONE') || ($elements.healthInsurancePreferencesPartnerPreviousFund.filter(':selected').val() === 'OTHER')) ? '' : $elements.healthInsurancePreferencesPartnerPreviousFund.filter(':selected').text() ) : $elements.healthApplicationPartnerPreviousFund.filter(':selected').text() );
+    }
+
     meerkat.modules.register('healthPartner', {
         init: initHealthPartner,
         getCurrentCover: getCurrentCover,
-        onStartInit: onStartInit
+        onStartInit: onStartInit,
+        getAppDob: getAppDob,
+        getContinuousCover: getContinuousCover,
+        getNeverHadCover: getNeverHadCover,
+        getHeldPrivateHealthInsuranceBeforeButNotCurrently: getHeldPrivateHealthInsuranceBeforeButNotCurrently,
+        getNeverExplicitlyAskedIfHeldPrivateHospitalCover: getNeverExplicitlyAskedIfHeldPrivateHospitalCover,
+        getHealthPreviousFund: getHealthPreviousFund,
+        getHealthPreviousFundDescription: getHealthPreviousFundDescription
     });
 
 })(jQuery);

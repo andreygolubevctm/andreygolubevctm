@@ -23,7 +23,9 @@
                 appState: $('#health_application_address_state'),
                 healthSituationState: $('#health_situation_state'),
                 healthProductHospitalClass: $('#health_application_productClassification_hospital'),
-                healthProductExtrasClass: $('#health_application_productClassification_extras')
+                healthProductExtrasClass: $('#health_application_productClassification_extras'),
+                primary: _createFieldReferences('primary'),
+                partner: _createFieldReferences('partner')
             };
 
             $unitElements = {
@@ -38,21 +40,40 @@
         });
     }
 
+    function _createFieldReferences (applicant) {
+        return {
+            healthCoverEverHadRow: $('#health_application_' + applicant + 'CoverEverHad'),
+            healthApplicationCoverEverHad: $(':input[name=health_application_' + applicant + '_everHadCover]'),
+            healthFundHistoryRow: $('#' + applicant + 'FundHistory'),
+            healthApplicationDOB: $('#health_application_' + applicant + '_dob'),
+            aboutYouPreviousFund: $(':input[name=health_healthCover_' + applicant + '_fundName]').children('option'),
+            healthApplicationPreviousFund: $(':input[name=health_previousfund_' + applicant + '_fundName]').children('option')
+        };
+    }
+
     // Get the selected benefits from the forms hidden fields (the source of truth! - not the checkboxes)
     function onBeforeEnter() {
         // validate at least 1 contact number is entered
         $elements.appMobile.addRule('requireOneContactNumber', true, 'Please include at least one phone number');
 
+        _prefillPreviousFund('primary');
         meerkat.messaging.publish(meerkatEvents.healthPreviousFund.POPULATE_PRIMARY,
             meerkat.modules.healthPrimary.getCurrentCover());
 
+        if (meerkat.modules.healthChoices.hasPartner()) {
+            _prefillPreviousFund('partner');
+        }
         meerkat.messaging.publish(meerkatEvents.healthPreviousFund.POPULATE_PARTNER,
             meerkat.modules.healthPartner.getCurrentCover());
 
         _toggleSelectGender('primary');
+        _toggleEverHad('primary');
+        _toggleFundHistory('primary');
 
         if (meerkat.modules.healthChoices.hasPartner()) {
             _toggleSelectGender('partner');
+            _toggleEverHad('partner');
+            _toggleFundHistory('partner');
         }
 
         setHospitalCoverClass();
@@ -60,6 +81,13 @@
     }
 
     function onInitialise() {
+        _applyEventListeners();
+        _applyEventListenersByApplicant('primary');
+        _applyEventListenersByApplicant('partner');
+    }
+
+    function _applyEventListeners() {
+
         // Listen to any input field which could change the premium. (on step 4 and 5)
         $(".changes-premium :input").on('change', function(){
             meerkat.messaging.publish(meerkatEvents.health.CHANGE_MAY_AFFECT_PREMIUM);
@@ -104,6 +132,19 @@
         $unitElements.appAddressUnitShop.add($unitElements.appPostalUnitShop).on('change', function toggleUnitShopRequiredFields() {
             _toggleUnitShopRequired(this.id.indexOf('address') !== -1 ? 'Address' : 'Postal', !_.isEmpty(this.value));
         });
+
+    }
+
+    function _applyEventListenersByApplicant(applicant) {
+
+        $elements[applicant].healthApplicationDOB.on('change', function() {
+            _toggleFundHistory(applicant);
+        });
+
+        $elements[applicant].healthCoverEverHadRow.find(':input').on('change', function() {
+            _toggleFundHistory(applicant);
+        });
+
     }
 
     function _toggleSelectGender(personDetailType) {
@@ -147,6 +188,100 @@
         } else {
             $genderRow.slideUp();
         }
+    }
+
+    function _isLookingToPurchasePrivateHospitalCover() {
+        return (meerkat.modules.healthChoices.getCoverType() !== 'E');
+    }
+
+    /*
+    *  Outputs the negated value of isLessThan31Or31AndBeforeJuly1
+    *  NOTE: There is a possibility that this may not work as expected if locale is set to US
+    *  it might be better to use the designated websevice for this purpose or explicitly build the date string to ensure the correct format
+    */
+    function _isOfLhcAge(personDetailType) {
+
+        var isOfLhcAge = false;
+
+        if (!meerkat.modules.age.isLessThan31Or31AndBeforeJuly1($elements[personDetailType].healthApplicationDOB.val())) {
+            isOfLhcAge = true;
+        }
+
+        return isOfLhcAge;
+    }
+
+    /*
+     * Controls visibility for 'Ever held private hospital cover'
+     *      Only displayed if all of the following conditions are met:
+     *
+     *         -  Must be purchasing health insurance that includes Private hospital cover ( Not an extras only policy)
+     *         -  selected person (partner/primary) must be old enough so that LHC is applicable
+     *         -  Has not already been explicitly asked if the selected person has ever held 'Private Hospital' cover on the about you / insurance preferences pages
+     *               (health_healthCover_XXX_cover === 'Y' && health_healthCover_XXX_healthCoverLoading === 'N' )
+     *
+    */
+    function _toggleEverHad(personDetailType) {
+
+        var capitalisePersonDetailType = personDetailType.charAt(0).toUpperCase() + personDetailType.slice(1);
+        var hideRow = true;
+
+        if (_isLookingToPurchasePrivateHospitalCover() && _isOfLhcAge(personDetailType)) {
+            if (meerkat.modules['health' + capitalisePersonDetailType].getNeverExplicitlyAskedIfHeldPrivateHospitalCover() === true) {
+                hideRow = false;
+            }
+        }
+
+        meerkat.modules.fieldUtilities.toggleVisible(
+            $elements[personDetailType].healthCoverEverHadRow,
+            hideRow
+        );
+    }
+
+    /*
+     * Controls visibility for 'Private hospital coverage history' widget
+     *      Only displayed if all of the following conditions are met:
+     *
+     *         -  Must be purchasing health insurance that includes Private hospital cover ( Not an extras only policy)
+     *         -  selected person (partner/primary) must be old enough so that LHC is applicable
+     *         -  Has indicated that they have held Private hospital Cover but not continuously for the entire time required to prevent LHC
+     *                This means they have either indicated:
+     *
+     *                    -- 'they DO NOT currently hold either private hospital or extras cover' && 'they HAVE previously held Private Hospital cover'
+     *                         (health_healthCover_XXX_cover === 'N' && health_healthCover_XXX_everHadCover === 'Y' )
+     *
+     *                                       OR
+     *
+     *                    -- 'they DO currently hold either private hospital or extras cover'
+     *                       && 'they HAVE NOT continuously held Private Hospital cover for the entire duration to be exempt from LHC'
+     *                       && 'they HAVE previously held Private Hospital cover'
+     *
+     *                         (health_healthCover_XXX_cover === 'Y' && health_healthCover_XXX_healthCoverLoading === 'N' && health_application_XXX_everHadCover === 'Y')
+    */
+    function _toggleFundHistory(personDetailType) {
+
+        var capitalisePersonDetailType = personDetailType.charAt(0).toUpperCase() + personDetailType.slice(1);
+        var hideRow = true;
+
+        if (_isLookingToPurchasePrivateHospitalCover() && _isOfLhcAge(personDetailType)) {
+            if (meerkat.modules['health' + capitalisePersonDetailType].getHeldPrivateHealthInsuranceBeforeButNotCurrently() === true) {
+                hideRow = false;
+            } else {
+                if (meerkat.modules['health' + capitalisePersonDetailType].getNeverExplicitlyAskedIfHeldPrivateHospitalCover() === true) {
+
+                    if ($elements[personDetailType].healthApplicationCoverEverHad.filter(':checked').val() === 'Y') {
+                        hideRow = false;
+                    }
+                }
+            }
+        }
+
+        var showHide = hideRow ? 'remove' : 'add';
+        meerkat.modules.healthPrivateHospitalHistory[showHide + capitalisePersonDetailType + 'Validation']();
+
+        meerkat.modules.fieldUtilities.toggleVisible(
+            $elements[personDetailType].healthFundHistoryRow,
+            hideRow
+        );
     }
 
     function _changeStreetNoLabel(unitType) {
@@ -229,6 +364,35 @@
 
     function getPrimaryFirstname() {
         return $elements.primaryFirstname.val();
+    }
+
+    function _prefillPreviousFund(applicant) {
+
+        if (!_.isUndefined($elements[applicant].healthApplicationPreviousFund.filter(':selected').val())) {
+
+            // get value if not undefined, '', NONE
+            var appPageSelectedVal = (((_.isUndefined($elements[applicant].healthApplicationPreviousFund.filter(':selected').val())) || ($elements[applicant].healthApplicationPreviousFund.filter(':selected').val() === '') || ($elements[applicant].healthApplicationPreviousFund.filter(':selected').val() === 'NONE') || ($elements[applicant].healthApplicationPreviousFund.filter(':selected').val() === 'OTHER')) ? '' : $elements[applicant].healthApplicationPreviousFund.filter(':selected').val() );
+
+            if (appPageSelectedVal === ''){
+                if (!_.isUndefined($elements[applicant].aboutYouPreviousFund.filter(':selected').val())) {
+
+                    // get value if not undefined, '', NONE
+                    var selectedFieldCurrentVal = (((_.isUndefined($elements[applicant].healthApplicationPreviousFund.filter(':selected').val())) || ($elements[applicant].healthApplicationPreviousFund.filter(':selected').val() === '') || ($elements[applicant].healthApplicationPreviousFund.filter(':selected').val() === 'NONE') || ($elements[applicant].healthApplicationPreviousFund.filter(':selected').val() === 'OTHER')) ? (((_.isUndefined($elements[applicant].aboutYouPreviousFund.filter(':selected').val())) || ($elements[applicant].aboutYouPreviousFund.filter(':selected').val() === '') || ($elements[applicant].aboutYouPreviousFund.filter(':selected').val() === 'NONE') || ($elements[applicant].aboutYouPreviousFund.filter(':selected').val() === 'OTHER')) ? '' : $elements[applicant].aboutYouPreviousFund.filter(':selected').val() ) : $elements[applicant].healthApplicationPreviousFund.filter(':selected').val() );
+                    if (selectedFieldCurrentVal !== ''){
+
+                        // if there is matching non duplicate value in drop down on the Application page
+                        if  ($(':input[name=health_previousfund_' + applicant + '_fundName] > option[value="' + selectedFieldCurrentVal +'"]').length === 1) {
+                            // if there are no duplicate entries on the about you(primary)/insurance preferences(partner) page
+                            if ($(':input[name=health_healthCover_' + applicant + '_fundName] > option[value="' + selectedFieldCurrentVal +'"]').length == 1)  {
+
+                                //populate field
+                                $(':input[name=health_previousfund_' + applicant + '_fundName]').find('option[value="' + selectedFieldCurrentVal + '"]').attr("selected", true);
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     meerkat.modules.register('healthApplyStep', {
