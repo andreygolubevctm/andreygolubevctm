@@ -81,6 +81,13 @@
     }
 
     function onInitialise() {
+        _applyEventListeners();
+        _applyEventListenersByApplicant('primary');
+        _applyEventListenersByApplicant('partner');
+    }
+
+    function _applyEventListeners() {
+
         // Listen to any input field which could change the premium. (on step 4 and 5)
         $(".changes-premium :input").on('change', function(){
             meerkat.messaging.publish(meerkatEvents.health.CHANGE_MAY_AFFECT_PREMIUM);
@@ -118,14 +125,6 @@
             $('#health_application_' + personDetailType + '_gender').val(gender);
         });
 
-        $elements['primary'].healthCoverEverHadRow.find(':input').on('change', function() {
-            _toggleFundHistory('primary');
-        });
-
-        $elements['partner'].healthCoverEverHadRow.find(':input').on('change', function() {
-            _toggleFundHistory('partner');
-        });
-
         $unitElements.appPostalUnitType.on('change', function toggleUnitRequiredFields() {
             _changeStreetNoLabel(this.value);
         });
@@ -133,6 +132,19 @@
         $unitElements.appAddressUnitShop.add($unitElements.appPostalUnitShop).on('change', function toggleUnitShopRequiredFields() {
             _toggleUnitShopRequired(this.id.indexOf('address') !== -1 ? 'Address' : 'Postal', !_.isEmpty(this.value));
         });
+
+    }
+
+    function _applyEventListenersByApplicant(applicant) {
+
+        $elements[applicant].healthApplicationDOB.on('change', function() {
+            _toggleFundHistory(applicant);
+        });
+
+        $elements[applicant].healthCoverEverHadRow.find(':input').on('change', function() {
+            _toggleFundHistory(applicant);
+        });
+
     }
 
     function _toggleSelectGender(personDetailType) {
