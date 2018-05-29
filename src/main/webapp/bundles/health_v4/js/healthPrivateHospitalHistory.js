@@ -327,15 +327,15 @@
 	}
 
     function getCoverDates(applicant){
-        return typeof $elements[applicant].coverDates !== 'undefined' ? $elements[applicant].coverDates : '';
+        return !_.isUndefined($elements[applicant].coverDates) ? $elements[applicant].coverDates : '';
     }
 
     function getCoverDatesJSONstringify(applicant){
-        return typeof $elements[applicant].coverDates !== 'undefined' ? JSON.stringify($elements[applicant].coverDates) : '';
+        return !_.isUndefined($elements[applicant].coverDates) ? JSON.stringify($elements[applicant].coverDates) : '';
     }
 
     function getCoverDatesFromHiddenField(applicant){
-        return ((typeof $elements[applicant].coverDatesHiddenField !== 'undefined') && $elements[applicant].coverDatesHiddenField.val().length > 0) ? $elements[applicant].coverDatesHiddenField.val() : '';
+        return ((!_.isUndefined($elements[applicant].coverDatesHiddenField)) && $elements[applicant].coverDatesHiddenField.val().length > 0) ? $elements[applicant].coverDatesHiddenField.val() : '';
     }
 
 

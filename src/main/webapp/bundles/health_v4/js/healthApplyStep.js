@@ -24,22 +24,8 @@
                 healthSituationState: $('#health_situation_state'),
                 healthProductHospitalClass: $('#health_application_productClassification_hospital'),
                 healthProductExtrasClass: $('#health_application_productClassification_extras'),
-                healthPrimaryCoverEverHadRow: $('#health_application_primaryCoverEverHad'),
-                healthApplicationPrimaryCoverEverHad: $(':input[name=health_application_primary_everHadCover]'),
-                healthPartnerCoverEverHadRow: $('#health_application_partnerCoverEverHad'),
-                healthApplicationPartnerCoverEverHad: $(':input[name=health_application_partner_everHadCover]'),
-                healthPrimaryFundHistoryRow: $('#primaryFundHistory'),
-                healthPartnerFundHistoryRow: $('#partnerFundHistory'),
-                healthApplicationPrimaryDOB: $('#health_application_primary_dob'),
-                healthApplicationPartnerDOB: $('#health_application_partner_dob'),
-                primary: {
-                    aboutYouPreviousFund: $(':input[name=health_healthCover_primary_fundName]').children('option'),
-                    healthApplicationPreviousFund: $(':input[name=health_previousfund_primary_fundName]').children('option')
-                },
-                partner: {
-                    aboutYouPreviousFund: $(':input[name=health_healthCover_partner_fundName]').children('option'),
-                    healthApplicationPreviousFund: $(':input[name=health_previousfund_partner_fundName]').children('option')
-                }
+                primary: _createFieldReferences('primary'),
+                partner: _createFieldReferences('partner')
             };
 
             $unitElements = {
@@ -52,6 +38,17 @@
                 appPostalNonStdStreet: $('#health_application_postal_nonStdStreet')
             };
         });
+    }
+
+    function _createFieldReferences (applicant) {
+        return {
+            healthCoverEverHadRow: $('#health_application_' + applicant + 'CoverEverHad'),
+            healthApplicationCoverEverHad: $(':input[name=health_application_' + applicant + '_everHadCover]'),
+            healthFundHistoryRow: $('#' + applicant + 'FundHistory'),
+            healthApplicationDOB: $('#health_application_' + applicant + '_dob'),
+            aboutYouPreviousFund: $(':input[name=health_healthCover_' + applicant + '_fundName]').children('option'),
+            healthApplicationPreviousFund: $(':input[name=health_previousfund_' + applicant + '_fundName]').children('option')
+        };
     }
 
     // Get the selected benefits from the forms hidden fields (the source of truth! - not the checkboxes)
@@ -121,11 +118,11 @@
             $('#health_application_' + personDetailType + '_gender').val(gender);
         });
 
-        $elements.healthPrimaryCoverEverHadRow.find(':input').on('change', function() {
+        $elements['primary'].healthCoverEverHadRow.find(':input').on('change', function() {
             _toggleFundHistory('primary');
         });
 
-        $elements.healthPartnerCoverEverHadRow.find(':input').on('change', function() {
+        $elements['partner'].healthCoverEverHadRow.find(':input').on('change', function() {
             _toggleFundHistory('partner');
         });
 
@@ -194,14 +191,8 @@
 
         var isOfLhcAge = false;
 
-        if (personDetailType === 'primary') {
-            if (!meerkat.modules.age.isLessThan31Or31AndBeforeJuly1($elements.healthApplicationPrimaryDOB.val())) {
-                isOfLhcAge = true;
-            }
-        } else {
-            if (!meerkat.modules.age.isLessThan31Or31AndBeforeJuly1($elements.healthApplicationPartnerDOB.val())) {
-                isOfLhcAge = true;
-            }
+        if (!meerkat.modules.age.isLessThan31Or31AndBeforeJuly1($elements[personDetailType].healthApplicationDOB.val())) {
+            isOfLhcAge = true;
         }
 
         return isOfLhcAge;
@@ -222,22 +213,14 @@
         var capitalisePersonDetailType = personDetailType.charAt(0).toUpperCase() + personDetailType.slice(1);
         var hideRow = true;
 
-        if (_isLookingToPurchasePrivateHospitalCover()) {
-            if (_isOfLhcAge(personDetailType)) {
-                if (personDetailType === 'primary') {
-                    if (meerkat.modules.healthPrimary.getNeverExplicitlyAskedIfHeldPrivateHospitalCover() === true) {
-                        hideRow = false;
-                    }
-                } else {
-                    if (meerkat.modules.healthPartner.getNeverExplicitlyAskedIfHeldPrivateHospitalCover() === true) {
-                        hideRow = false;
-                    }
-                }
+        if (_isLookingToPurchasePrivateHospitalCover() && _isOfLhcAge(personDetailType)) {
+            if (meerkat.modules['health' + capitalisePersonDetailType].getNeverExplicitlyAskedIfHeldPrivateHospitalCover() === true) {
+                hideRow = false;
             }
         }
 
         meerkat.modules.fieldUtilities.toggleVisible(
-            $elements['health' + capitalisePersonDetailType + 'CoverEverHadRow'],
+            $elements[personDetailType].healthCoverEverHadRow,
             hideRow
         );
     }
@@ -267,48 +250,24 @@
         var capitalisePersonDetailType = personDetailType.charAt(0).toUpperCase() + personDetailType.slice(1);
         var hideRow = true;
 
-        if (_isLookingToPurchasePrivateHospitalCover()) {
-            if (_isOfLhcAge(personDetailType)) {
-                if (personDetailType === 'primary') {
-                    if (meerkat.modules.healthPrimary.getHeldPrivateHealthInsuranceBeforeButNotCurrently() === true) {
+        if (_isLookingToPurchasePrivateHospitalCover() && _isOfLhcAge(personDetailType)) {
+            if (meerkat.modules['health' + capitalisePersonDetailType].getHeldPrivateHealthInsuranceBeforeButNotCurrently() === true) {
+                hideRow = false;
+            } else {
+                if (meerkat.modules['health' + capitalisePersonDetailType].getNeverExplicitlyAskedIfHeldPrivateHospitalCover() === true) {
+
+                    if ($elements[personDetailType].healthApplicationCoverEverHad.filter(':checked').val() === 'Y') {
                         hideRow = false;
-                    } else {
-                        if (meerkat.modules.healthPrimary.getNeverExplicitlyAskedIfHeldPrivateHospitalCover() === true) {
-                            if ($elements.healthApplicationPrimaryCoverEverHad.filter(':checked').val() === 'Y') {
-                                hideRow = false;
-                            }
-                        }
-                    }
-                } else {
-                    if (meerkat.modules.healthPartner.getHeldPrivateHealthInsuranceBeforeButNotCurrently() === true) {
-                        hideRow = false;
-                    } else {
-                        if (meerkat.modules.healthPartner.getNeverExplicitlyAskedIfHeldPrivateHospitalCover() === true) {
-                            if ($elements.healthApplicationPartnerCoverEverHad.filter(':checked').val() === 'Y') {
-                                hideRow = false;
-                            }
-                        }
                     }
                 }
             }
         }
 
-        if (!hideRow) {
-            if (personDetailType === 'primary') {
-                meerkat.modules.healthPrivateHospitalHistory.addPrimaryValidation();
-            } else {
-                meerkat.modules.healthPrivateHospitalHistory.addPartnerValidation();
-            }
-        } else {
-            if (personDetailType === 'primary') {
-                meerkat.modules.healthPrivateHospitalHistory.removePrimaryValidation();
-            } else {
-                meerkat.modules.healthPrivateHospitalHistory.removePartnerValidation();
-            }
-        }
+        var showHide = hideRow ? 'remove' : 'add';
+        meerkat.modules.healthPrivateHospitalHistory[showHide + capitalisePersonDetailType + 'Validation']();
 
         meerkat.modules.fieldUtilities.toggleVisible(
-            $elements['health' + capitalisePersonDetailType + 'FundHistoryRow'],
+            $elements[personDetailType].healthFundHistoryRow,
             hideRow
         );
     }
@@ -397,16 +356,16 @@
 
     function _prefillPreviousFund(applicant) {
 
-        if (typeof $elements[applicant].healthApplicationPreviousFund.filter(':selected').val() !== 'undefined') {
+        if (!_.isUndefined($elements[applicant].healthApplicationPreviousFund.filter(':selected').val())) {
 
             // get value if not undefined, '', NONE
-            var appPageSelectedVal = ((($elements[applicant].healthApplicationPreviousFund.filter(':selected').val() === '') || (typeof $elements[applicant].healthApplicationPreviousFund.filter(':selected').val() === 'undefined') || ($elements[applicant].healthApplicationPreviousFund.filter(':selected').val() === 'NONE') || ($elements[applicant].healthApplicationPreviousFund.filter(':selected').val() === 'OTHER')) ? '' : $elements[applicant].healthApplicationPreviousFund.filter(':selected').val() );
+            var appPageSelectedVal = (((_.isUndefined($elements[applicant].healthApplicationPreviousFund.filter(':selected').val())) || ($elements[applicant].healthApplicationPreviousFund.filter(':selected').val() === '') || ($elements[applicant].healthApplicationPreviousFund.filter(':selected').val() === 'NONE') || ($elements[applicant].healthApplicationPreviousFund.filter(':selected').val() === 'OTHER')) ? '' : $elements[applicant].healthApplicationPreviousFund.filter(':selected').val() );
 
             if (appPageSelectedVal === ''){
-                if (typeof $elements[applicant].aboutYouPreviousFund.filter(':selected').val() !== 'undefined') {
+                if (!_.isUndefined($elements[applicant].aboutYouPreviousFund.filter(':selected').val())) {
 
                     // get value if not undefined, '', NONE
-                    var selectedFieldCurrentVal = ((($elements[applicant].healthApplicationPreviousFund.filter(':selected').val() === '') || (typeof $elements[applicant].healthApplicationPreviousFund.filter(':selected').val() === 'undefined') || ($elements[applicant].healthApplicationPreviousFund.filter(':selected').val() === 'NONE') || ($elements[applicant].healthApplicationPreviousFund.filter(':selected').val() === 'OTHER')) ? ((($elements[applicant].aboutYouPreviousFund.filter(':selected').val() === '') || (typeof $elements[applicant].aboutYouPreviousFund.filter(':selected').val() === 'undefined') || ($elements[applicant].aboutYouPreviousFund.filter(':selected').val() === 'NONE') || ($elements[applicant].aboutYouPreviousFund.filter(':selected').val() === 'OTHER')) ? '' : $elements[applicant].aboutYouPreviousFund.filter(':selected').val() ) : $elements[applicant].healthApplicationPreviousFund.filter(':selected').val() );
+                    var selectedFieldCurrentVal = (((_.isUndefined($elements[applicant].healthApplicationPreviousFund.filter(':selected').val())) || ($elements[applicant].healthApplicationPreviousFund.filter(':selected').val() === '') || ($elements[applicant].healthApplicationPreviousFund.filter(':selected').val() === 'NONE') || ($elements[applicant].healthApplicationPreviousFund.filter(':selected').val() === 'OTHER')) ? (((_.isUndefined($elements[applicant].aboutYouPreviousFund.filter(':selected').val())) || ($elements[applicant].aboutYouPreviousFund.filter(':selected').val() === '') || ($elements[applicant].aboutYouPreviousFund.filter(':selected').val() === 'NONE') || ($elements[applicant].aboutYouPreviousFund.filter(':selected').val() === 'OTHER')) ? '' : $elements[applicant].aboutYouPreviousFund.filter(':selected').val() ) : $elements[applicant].healthApplicationPreviousFund.filter(':selected').val() );
                     if (selectedFieldCurrentVal !== ''){
 
                         // if there is matching non duplicate value in drop down on the Application page
