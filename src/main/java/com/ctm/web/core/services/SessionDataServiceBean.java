@@ -64,7 +64,11 @@ public class SessionDataServiceBean {
 	 * @param request
 	 */
 	public SessionData getSessionDataFromSession(HttpServletRequest request) {
-		return getSessionDataFromSession(request, true);
+		try {
+			return getSessionDataFromSession(request, true);
+		} finally {
+			SessionData.markSessionForCommit(request);
+		}
 	}
 
 	/**
@@ -81,8 +85,11 @@ public class SessionDataServiceBean {
 		if(sessionData != null && touchSession && !sessionData.getTransactionSessionData().isEmpty()) {
 			sessionData.setLastSessionTouch(new Date());
 		}
-
-		return sessionData;
+		try {
+			return sessionData;
+		} finally {
+			SessionData.markSessionForCommit(request);
+		}
 	}
 
 	/**
