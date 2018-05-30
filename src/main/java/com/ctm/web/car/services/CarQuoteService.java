@@ -21,6 +21,7 @@ import com.ctm.web.core.exceptions.RouterException;
 import com.ctm.web.core.exceptions.SessionException;
 import com.ctm.web.core.model.QuoteServiceProperties;
 import com.ctm.web.core.model.formData.YesNo;
+import com.ctm.web.core.model.session.SessionData;
 import com.ctm.web.core.model.settings.Brand;
 import com.ctm.web.core.providers.model.AggregateOutgoingRequest;
 import com.ctm.web.core.providers.model.Request;
@@ -275,8 +276,7 @@ public class CarQuoteService extends CommonRequestServiceV2 {
                             }
 
                     );
-            request.getSession(false).setAttribute("redirect-session-commit", LocalDateTime.now());
-            request.getSession(false).removeAttribute("redirect-session-commit");
+            SessionData.markSessionForCommit(request);
         }
     }
 
