@@ -17,8 +17,8 @@
         <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
 
         <c:set var="fieldXpath" value="${xpath}/primary/fundHistory" />
-        <form_v4:row fieldXpath="${fieldXpath}" label="Tell us the periods in the past where you have held private hospital cover, and we will calculate any Lifetime Health Cover that may that may be applied to your premium" id="primaryFundHistory" className="changes-premium hidden-toggle" rowContentClass="row">
-            <field_v1:coverage_dates_input xpath="${fieldXpath}" />
+        <form_v4:row fieldXpath="${fieldXpath}" label="Tell us the start and end dates of private hospital cover you have held in the past, and we will calculate any Lifetime Health Cover that may that may be applied to your premium" id="primaryFundHistory" className="changes-premium hidden-toggle" rowContentClass="row">
+            <field_v2:coverage_dates_input xpath="${fieldXpath}" />
         </form_v4:row>
 
         <div id="${name}">
