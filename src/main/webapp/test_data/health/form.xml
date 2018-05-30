@@ -119,7 +119,7 @@
 		<primary>
 			<title>MR</title>
 			<firstname>Lechuck</firstname>
-			<middleName>Middle</middleName>
+			<middleName></middleName>
 			<surname>O'User-User</surname>
 			<dob>25/01/1967</dob>
 			<gender>M</gender>
@@ -127,7 +127,7 @@
 		<partner>
 			<title>MRS</title>
 			<firstname>Elayne</firstname>
-			<middleName>Middlepa</middleName>
+			<middleName></middleName>
 			<surname>O'User-User</surname>
 			<dob>31/12/1979</dob>
 			<gender>F</gender>
