@@ -34,7 +34,7 @@
 	<c:if test="${showInitial eq true}">
 		<c:set var="fieldXpath" value="${xpath}/middleName" />
 		<form_v2:row fieldXpath="${fieldXpath}" label="Middle Name" hideHelpIconCol="true" smRowOverride="2" isNestedField="${true}" className="nameGroupMiddleNameRow">
-			<field_v1:person_name xpath="${fieldXpath}" required="true" title="${title} middle name" className="contactField" placeholder="M" disableErrorContainer="${true}" maxlength="${middleInitialMaxlength}" />
+			<field_v1:person_name xpath="${fieldXpath}" required="false" title="${title} middle name" className="contactField" placeholder="M" disableErrorContainer="${true}" maxlength="${middleInitialMaxlength}" />
 		</form_v2:row>
 	</c:if>
 	<c:set var="fieldXpath" value="${xpath}/surname" />

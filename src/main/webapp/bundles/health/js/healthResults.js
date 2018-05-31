@@ -234,6 +234,7 @@
                 rankings: {
                     triggers: ['RESULTS_DATA_READY'],
                     callback: meerkat.modules.healthResults.rankingCallback,
+                    filterUnavailableProducts: false,
                     forceIdNumeric: true
                 },
                 incrementTransactionId: false,

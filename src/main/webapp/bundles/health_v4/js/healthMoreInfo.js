@@ -246,7 +246,7 @@
         _setTabs();
 
         // HLT-4339: AUF discount override
-        if (product.info.FundCode === 'AUF') {
+        if (product.info.FundCode === 'AUF' && meerkat.modules.healthResultsTemplate.fundDiscountExists(product.info.FundCode)) {
             $('.productExtraInfo .discountText').text(meerkat.modules.healthResultsTemplate.getDiscountText(product));
         }
 

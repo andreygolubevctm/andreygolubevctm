@@ -64,7 +64,9 @@ public class MarketingAutomationEmailService {
         emailTranslator.setUrls(request, emailRequest, data, verticalCode);
         emailRequest.setVertical(verticalCode);
 
-        emailClient.send(emailRequest);
+        if (VerticalType.HEALTH != VerticalType.valueOf(verticalCode) || !emailRequest.isPopularProductsSelected()) {
+            emailClient.send(emailRequest);
+        }
     }
 
     protected static boolean isValidRequest(final String verticalCode, final Brand brand, final Long transactionId) {
