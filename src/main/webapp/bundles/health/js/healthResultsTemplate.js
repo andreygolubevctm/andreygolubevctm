@@ -3,7 +3,8 @@
         LABEL_ON_LEFT = 2,
         HIDE_LABEL = 1,
         $resultsPagination,
-        filteredOutResults = []; // this is used for removing the results when clicking the "x";
+        filteredOutResults = [], // this is used for removing the results when clicking the "x";
+	    fundDiscounts = null;
 
     /**
      * Get the list of available extras.
@@ -299,6 +300,9 @@
     function init() {
         $(document).ready(function () {
             $resultsPagination = $('.results-pagination');
+	        if(fundDiscounts === null && meerkat.site.hasOwnProperty("fundDiscounts") && !_.isEmpty(meerkat.site.fundDiscounts)) {
+		        fundDiscounts = meerkat.site.fundDiscounts;
+	        }
         });
     }
 
@@ -378,12 +382,17 @@
         }
     }
 
+	function fundDiscountExists(fundCode) {
+		return fundDiscounts !== null && fundDiscounts.hasOwnProperty(fundCode) && !_.isEmpty(fundDiscounts[fundCode]) && fundDiscounts[fundCode] === "Y";
+	}
+
     function getDiscountText(result) {
         var discountText = result.hasOwnProperty('promo') && result.promo.hasOwnProperty('discountText') ?
             result.promo.discountText : '';
 
         if (result.info.FundCode === 'AUF') {
-            discountText = discountText.replace('%%discountPercentage%%', getDiscountPercentage('AUF')+'%');
+        	var discount = getDiscountPercentage(result.info.FundCode);
+            discountText = _.isEmpty(discount) || !fundDiscountExists(result.info.FundCode) ? '' : discountText.replace('%%discountPercentage%%', discount+'%');
         }
 
         return discountText;
@@ -393,12 +402,15 @@
         var discountPercentage = !_.isUndefined(result) && result.hasOwnProperty('discountPercentage') ? result.discountPercentage : '';
 
         if (fundCode === 'AUF') {
-            if (!meerkat.modules.healthCoverDetails.hasPrimaryCover() ||
-                (_.indexOf(['C','F','EF'], meerkat.site.situationHealthCvr) !== -1 && !meerkat.modules.healthCoverDetails.hasPartnerCover())) {
-                discountPercentage = '7.5';
-            } else {
-                discountPercentage = '4';
-            }
+	        if(!fundDiscountExists(fundCode)) {
+		        discountPercentage = '';
+	        } else {
+		        if (!meerkat.modules.healthCoverDetails.hasPrimaryCover() || !meerkat.modules.healthCoverDetails.hasPartnerCover()) {
+			        discountPercentage = '7.5';
+		        } else {
+			        discountPercentage = '4';
+		        }
+	        }
         }
 
         return discountPercentage;
@@ -417,7 +429,8 @@
         numberOfSelectedExtras: numberOfSelectedExtras,
         toggleRemoveResultPagination: toggleRemoveResultPagination,
         getDiscountText: getDiscountText,
-        getDiscountPercentage: getDiscountPercentage
+        getDiscountPercentage: getDiscountPercentage,
+	    fundDiscountExists: fundDiscountExists
     });
 
 })(jQuery);

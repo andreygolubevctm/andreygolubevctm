@@ -18,4 +18,8 @@
     <%--the form--%>
     <health_v2_confirmation:form />
 
+    <div class="phonetic-alphabet">
+      <ul></ul>
+    </div>
+
 </core_v1:js_template>

@@ -1,3 +1,5 @@
+<%@ tag import="java.time.LocalDateTime" %>
+<%@ tag import="com.ctm.web.core.model.session.SessionData" %>
 <%@ tag language="java" pageEncoding="UTF-8"%>
 <%@ tag description="Redirects back to unsubscribe.jsp with details"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
@@ -16,6 +18,8 @@
     <c:set var="unsubscribe"
            value="${unsubscribeService.getUnsubscribeDetails(param.vertical, brandId, fn:substring(param.unsubscribe_email, 0, 256), param.email, false, pageSettings, param.token)}"
            scope="session"/>
+
+    <% SessionData.markSessionForCommit(request); %>
 
     <%-- #WHITELABEL TODO: support meerkat brand--%>
     <c:if test="${fn:toUpperCase(param.brand) == 'MEER'}">

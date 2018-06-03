@@ -304,4 +304,37 @@ public class ProviderDao {
 
 		return provider;
 	}
+
+	public Provider applyProviderProperties(Provider provider, Date serverDate) throws DaoException{
+		SimpleDatabaseConnection dbSource = null;
+
+		try{
+
+			dbSource = new SimpleDatabaseConnection();
+			PreparedStatement stmt;
+
+			stmt = dbSource.getConnection().prepareStatement(
+					"SELECT pp.PropertyId, pp.Text\n" +
+							"FROM ctm.provider_properties AS pp\n" +
+							"WHERE providerId = ? AND ? BETWEEN EffectiveStart AND EffectiveEnd;"
+			);
+
+			stmt.setInt(1, provider.getId());
+			stmt.setDate(2, new java.sql.Date(serverDate.getTime()));
+
+			ResultSet providerResult = stmt.executeQuery();
+
+			while (providerResult.next()) {
+				provider.setPropertyDetail(providerResult.getString("PropertyId"), providerResult.getString("Text"));
+			}
+
+		} catch (SQLException | NamingException e) {
+			LOGGER.error("Failed to apply provider properties {}, {}", kv("providerId", provider.getId()), kv("Name", provider.getName()));
+			throw new DaoException(e);
+		} finally {
+			dbSource.closeConnection();
+		}
+
+		return provider;
+	}
 }
