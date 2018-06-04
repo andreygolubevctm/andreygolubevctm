@@ -1,5 +1,7 @@
 package com.ctm.web.health.lhc.calculation;
 
+import java.time.LocalDate;
+
 import static com.ctm.web.health.lhc.calculation.Constants.MAX_LHC_PERCENTAGE;
 
 /**
@@ -21,6 +23,15 @@ public class NeverHeldCoverCalculator implements LHCCalculationStrategy {
             throw new IllegalArgumentException("applicant age cannot be less than zero");
         }
         this.applicantAgeAtBeginningOfFinYear = applicantAgeAtBeginningOfFinancialYear;
+    }
+
+    /**
+     * Constructs an instance of {@link NeverHeldCoverCalculator} with the specified applicantAgeAtBeginningOfFinancialYear.
+     *
+     * @param dateOfBirth applicants date of birth.
+     */
+    public NeverHeldCoverCalculator(LocalDate dateOfBirth, LocalDate now) {
+        this.applicantAgeAtBeginningOfFinYear = LHCDateCalculationSupport.calculateAgeInYearsFrom(dateOfBirth, LHCDateCalculationSupport.getFinancialYearStart(now));
     }
 
     @Override

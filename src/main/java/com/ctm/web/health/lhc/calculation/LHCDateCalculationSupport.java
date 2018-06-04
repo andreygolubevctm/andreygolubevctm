@@ -100,10 +100,21 @@ public class LHCDateCalculationSupport {
         return calculateAgeInYearsFrom(dateOfBirth, Constants.JULY_FIRST_2000);
     }
 
+    /**
+     * Utility function to calculate an applicant's base date from their date of birth.
+     *
+     * The base date is the start of the financial year "after" (not after or equal to) their 31st birthday.
+     * For example, with a date of July 1st, the start of the financial year following their 31st birthday, is in fact
+     * their 32nd birthday.
+     *
+     * @param dateOfBirth the applicant's date of birth.
+     * @return the start of the financial year following the 31st anniversary of a birthday.
+     */
     public static LocalDate getBaseDate(LocalDate dateOfBirth) {
         long ageInYearsAtJulyFirst2000 = calculateAgeInYearsAtJulyFirst2000(dateOfBirth);
+
         if (ageInYearsAtJulyFirst2000 < Constants.LHC_EXEMPT_AGE_CUT_OFF) {
-            return Constants.JULY_FIRST_2000.plusYears(Constants.LHC_EXEMPT_AGE_CUT_OFF - ageInYearsAtJulyFirst2000);
+            return getFinancialYearStart(dateOfBirth.plusYears(Constants.LHC_EXEMPT_AGE_CUT_OFF + 1));
         } else {
             return Constants.JULY_FIRST_2000;
         }

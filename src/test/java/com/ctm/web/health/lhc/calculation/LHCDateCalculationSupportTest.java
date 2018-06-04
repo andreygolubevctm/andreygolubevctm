@@ -337,7 +337,7 @@ public class LHCDateCalculationSupportTest {
     }
 
     @Test
-    public void givenDate_whenFinYearStartedLastYear_thenReturnStartOfFincancialYear() {
+    public void givenDate_whenFinYearStartedLastYear_thenReturnStartOfFinancialYear() {
         LocalDate testDate = LocalDate.of(2018, Month.JUNE, 30);
 
         LocalDate financialYearStart = LHCDateCalculationSupport.getFinancialYearStart(testDate);
@@ -346,7 +346,7 @@ public class LHCDateCalculationSupportTest {
     }
 
     @Test
-    public void givenDate_whenFinYearStartedThisYear_thenReturnStartOfFincancialYear() {
+    public void givenDate_whenFinYearStartedThisYear_thenReturnStartOfFinancialYear() {
         LocalDate testDate = LocalDate.of(2018, Month.AUGUST, 15);
 
         LocalDate financialYearStart = LHCDateCalculationSupport.getFinancialYearStart(testDate);
@@ -361,5 +361,32 @@ public class LHCDateCalculationSupportTest {
         LocalDate financialYearStart = LHCDateCalculationSupport.getFinancialYearStart(testDate);
 
         assertEquals(LocalDate.of(2018, Month.JULY, 1), financialYearStart);
+    }
+
+    @Test
+    public void givenBirthdayOnFirstJuly_thenBaseDateCalculatedFromFollowingFirstJuly() {
+        LocalDate birthday = LocalDate.of(1979, Month.JULY, 1);
+
+        LocalDate baseDate = LHCDateCalculationSupport.getBaseDate(birthday);
+
+        assertEquals(LocalDate.of(2011, Month.JULY, 1), baseDate);
+    }
+
+    @Test
+    public void givenBirthdayOnSecondJuly_thenBaseDateCalculatedFromFollowingFirstJuly() {
+        LocalDate birthday = LocalDate.of(1979, Month.JULY, 2);
+
+        LocalDate baseDate = LHCDateCalculationSupport.getBaseDate(birthday);
+
+        assertEquals(LocalDate.of(2011, Month.JULY, 1), baseDate);
+    }
+
+    @Test
+    public void givenBirthdayOnThirtyJune_thenBaseDateCalculatedFromFollowingFirstJuly() {
+        LocalDate birthday = LocalDate.of(1979, Month.JUNE, 30);
+
+        LocalDate baseDate = LHCDateCalculationSupport.getBaseDate(birthday);
+
+        assertEquals(LocalDate.of(2010, Month.JULY, 1), baseDate);
     }
 }
