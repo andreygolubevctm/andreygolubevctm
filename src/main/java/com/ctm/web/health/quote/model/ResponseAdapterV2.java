@@ -247,7 +247,7 @@ public class ResponseAdapterV2 {
         price.setValue(payableAmount);
 
         //If changing/remove span tag underneath, make sure to change HealthModelTranslator premiumlabel translation accordingly.
-        price.setLhcfreepricing(getLhcFreePricing(healthQuote, lhcAmount) + "Inc. " + rebateValue + " Govt Rebate");
+        price.setLhcfreepricing("Inc. " + rebateValue + " Govt Rebate<br>" + getLhcFreePricing(healthQuote, lhcAmount));
 
         price.setRebateValue(rebateValue);
 
@@ -271,7 +271,7 @@ public class ResponseAdapterV2 {
         if (isInsuredAffectedByLHC(primary) || partner.map(ResponseAdapterV2::isInsuredAffectedByLHC).orElse(false)) {
             lhcFreePricing = "The premium may be affected by LHC<br/>";
         } else if (lhcAmount.compareTo(BigDecimal.ZERO) > 0) {
-            lhcFreePricing = "excl " + formatCurrency(lhcAmount, true, true) + " LHC<span/> ";
+            lhcFreePricing = "price excl " + formatCurrency(lhcAmount, true, true) + " LHC<span/> ";
         }
 
         return lhcFreePricing;
