@@ -16,7 +16,7 @@
 			} else {
 				$('#reference_number').fadeIn('fast');
 			}
-			
+
 			if(LifeQuote._vertical == "life") {
 				var $contactPanel = $('.lifebroker-contact-panel');
 				var primaryResult = Results.getPrimarySelectedProduct();
@@ -29,7 +29,7 @@
 					var $providerName = $contactPanel.find('.call-provider-message');
 					$providerName.find('span').text($contactPanel.data('original'));
 		}
-				
+
 				if(QuoteEngine._options.currentSlide == 3) {
 					if(LifeQuote.isOzicare(primaryResult.company)) {
 						$('#life-confirmation .column.left .inner.left .panel p:nth-child(2)').hide();
@@ -37,17 +37,17 @@
 						$('#life-confirmation .column.left .inner.left .panel p:nth-child(2)').show();
 					}
 				}
-				
+
 				if(QuoteEngine._options.currentSlide == 0 && LifeQuote._vertical == 'life') {
 					$('#reference_number').hide();
 				} else {
 					$('#reference_number').show();
 				}
-				
+
 				if(QuoteEngine._options.currentSlide == 2) {
 					$('.what-next .phone-no-replace').text(primaryResult.insurer_contact);
 				}
-			
+
 				if(QuoteEngine._options.currentSlide == 1) {
 					$('#contact-panel').hide();
 				} else {
@@ -89,7 +89,7 @@
 			}
 		} );
 	});
-	
+
 	$(document).on('click','a[data-savequote=true]',function(){
 
 		SaveQuote.show();
@@ -152,7 +152,13 @@
 			<c:otherwise>${false}</c:otherwise>
 		</c:choose>
 	</c:set>
-	window.gtmInternalUser = <c:choose><c:when test="${localIP eq true or isPreload eq true}">true</c:when><c:otherwise>false</c:otherwise></c:choose>;
+	<c:set var="isGtmInternalUser">
+		<c:choose>
+			<c:when test="${not empty param.gtmInternaluser}">${true}</c:when>
+			<c:otherwise>${false}</c:otherwise>
+		</c:choose>
+	</c:set>
+	window.at = <c:choose><c:when test="${localIP eq true or isGtmInternalUser eq true or isPreload eq true}">true</c:when><c:otherwise>false</c:otherwise></c:choose>;
 	<%-- END GLOBAL JS VARIABLE --%>
 
     </go:script>
