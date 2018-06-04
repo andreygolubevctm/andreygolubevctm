@@ -5,6 +5,7 @@ import com.ctm.web.health.lhc.model.query.LHCCalculationDetails;
 import org.elasticsearch.common.collect.ImmutableList;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.time.chrono.ChronoLocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
@@ -295,5 +296,21 @@ public class LHCDateCalculationSupport {
      */
     public static boolean isEligibleForMinimumLHC(LHCCalculationDetails details, LocalDate onDay) {
         return details.getContinuousCover() || getLhcDaysApplicable(details.getDateOfBirth(), onDay) == 0;
+    }
+
+
+    /**
+     * Returns July First (Start of the Financial Year) for the specified Date.
+     *
+     * @param date the date to find the beginning of the financial year for.
+     * @return the date of the beginning of the financial year.
+     */
+    public static LocalDate getFinancialYearStart(LocalDate date) {
+        final LocalDate newFinancialYear = date.withDayOfMonth(1).withMonth(Month.JULY.getValue());
+        if (newFinancialYear.isBefore(date) || newFinancialYear.equals(date)) {
+            return newFinancialYear;
+        } else {
+            return newFinancialYear.minusYears(1);
+        }
     }
 }

@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableList;
 import org.junit.Test;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -333,5 +334,32 @@ public class LHCDateCalculationSupportTest {
     public void givenEmptyCoverDateRange_thenReturnEmpty() {
         Optional<LocalDate> earliestEndDate = LHCDateCalculationSupport.getEarliestEndDate(Collections.emptyList());
         assertFalse(earliestEndDate.isPresent());
+    }
+
+    @Test
+    public void givenDate_whenFinYearStartedLastYear_thenReturnStartOfFincancialYear() {
+        LocalDate testDate = LocalDate.of(2018, Month.JUNE, 30);
+
+        LocalDate financialYearStart = LHCDateCalculationSupport.getFinancialYearStart(testDate);
+
+        assertEquals(LocalDate.of(2017, Month.JULY, 1), financialYearStart);
+    }
+
+    @Test
+    public void givenDate_whenFinYearStartedThisYear_thenReturnStartOfFincancialYear() {
+        LocalDate testDate = LocalDate.of(2018, Month.AUGUST, 15);
+
+        LocalDate financialYearStart = LHCDateCalculationSupport.getFinancialYearStart(testDate);
+
+        assertEquals(LocalDate.of(2018, Month.JULY, 1), financialYearStart);
+    }
+
+    @Test
+    public void givenDate_whenFinYearStartsToday_thenReturnStartOfFincancialYear() {
+        LocalDate testDate = LocalDate.of(2018, Month.JULY, 1);
+
+        LocalDate financialYearStart = LHCDateCalculationSupport.getFinancialYearStart(testDate);
+
+        assertEquals(LocalDate.of(2018, Month.JULY, 1), financialYearStart);
     }
 }
