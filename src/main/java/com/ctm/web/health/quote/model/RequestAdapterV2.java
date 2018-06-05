@@ -35,6 +35,9 @@ public class RequestAdapterV2 {
     public static HealthQuoteRequest adapt(HealthRequest request, Content alternatePricingContent, boolean isSimples, final boolean isGiftCardActive) {
 
         HealthQuoteRequest quoteRequest = new HealthQuoteRequest();
+
+		quoteRequest.setIsSimples(isSimples);
+
         Filters filters = new Filters();
         quoteRequest.setFilters(filters);
 

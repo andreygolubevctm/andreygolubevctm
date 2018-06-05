@@ -14,6 +14,8 @@ import java.util.List;
 public class HealthQuoteRequest
 {
 
+    private boolean isSimples;
+
     private String state;
 
     private Membership membership;
@@ -56,6 +58,14 @@ public class HealthQuoteRequest
     private Boolean includeSummary;
 
     private List<PaymentType> paymentTypes;
+
+    public boolean getIsSimples() {
+        return isSimples;
+    }
+
+    public void setIsSimples(boolean isSimples) {
+        this.isSimples = isSimples;
+    }
 
     public String getState() {
         return state;
