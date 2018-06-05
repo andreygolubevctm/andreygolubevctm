@@ -4,12 +4,21 @@
   var url;
 
   var postcode = {
-    init: function(xpath) {
+    init: function(xpath, fallbackXpath) {
       url = base.getURL();
+      this.fallbackXpath = fallbackXpath ? base.formatXpath(fallbackXpath) : null;
       this.xpath = base.formatXpath(xpath);
       this.cacheDom();
       this.setupAutocomplete();
+      this.prefillFix();
       this.retrieveQuote();
+    },
+    prefillFix: function() {
+      var suburbVal = $(this.xpath + '_suburb').val();
+      var fallbackSuburb = $(this.fallbackXpath + '_suburbName').val();
+      if (!suburbVal && fallbackSuburb) {
+        $(this.xpath + '_suburb').val(fallbackSuburb);
+      }
     },
     retrieveQuote: function() {
       var suburb = $(this.xpath + '_suburb').val();
