@@ -9,6 +9,16 @@
       this.xpath = base.formatXpath(xpath);
       this.cacheDom();
       this.setupAutocomplete();
+      this.retrieveQuote();
+    },
+    retrieveQuote: function() {
+      var suburb = $(this.xpath + '_suburb').val();
+      var state = $(this.xpath + '_state').val();
+      var postcode = $(this.xpath + '_postcode').val();
+      if (postcode && suburb && state) {
+        var inputValue = suburb + ' ' + postcode + ' ' + state;
+        this.$postcodeInput.val(inputValue);
+      }
     },
     cacheDom: function() {
       this.searchInput = '.addressSearchV2--postcodeSearch .addressSearchV2__inputField';

@@ -7,21 +7,11 @@
 <%@ attribute name="simples" required="false" rtexprvalue="true" description="use form_v3" %>
 <%@ attribute name="placeholder" required="false" rtexprvalue="true" description="field group's placeholder" %>
 
-<c:set var="fieldXpath" value="${xpath}/state" />
-<c:set var="stateVal"  value="${data[fieldXpath]}" />
-
 <c:choose>
   <c:when test="${simples eq true}">
     <form_v3:row label="${label}" className="addressSearchV2 addressSearchV2--postcodeSearch">
-      <c:choose>
-        <c:when test="${not empty stateVal}">
-          <field_v1:state_select xpath="${xpath}/state" useFullNames="true" required="true" />
-        </c:when>
-        <c:otherwise>
-          <field_v2:input placeHolder="${placeholder}" className="addressSearchV2__inputField" additionalAttributes="autocomplete='off'" xpath="${xpath}/location" title="postcode" required="${true}" />
-          <field_v1:hidden xpath="${xpath}/state" defaultValue="" />
-        </c:otherwise>
-      </c:choose>
+      <field_v2:input placeHolder="${placeholder}" className="addressSearchV2__inputField" additionalAttributes="autocomplete='off'" xpath="${xpath}/location" title="postcode" required="${true}" />
+      <field_v1:hidden xpath="${xpath}/state" defaultValue="" />
       <field_v1:hidden xpath="${xpath}/suburb" defaultValue="" />
       <field_v1:hidden xpath="${xpath}/postcode" defaultValue="" />
 
