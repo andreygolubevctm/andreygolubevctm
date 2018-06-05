@@ -64,79 +64,72 @@ var ${name}__PostCodeStateHandler = {
 
 <go:script marker="onready">
 	$("#${name}").on("change", function(){
-		$(this).valid();
+	  $(this).valid();
 	});
 
 	$.validator.addMethod("${name}__validateState",
-		function(value, element) {
-			var passed = true;
+	  function(value, element) {
+	    var passed = true;
+	    var url = window.location.href.indexOf('localhost') !== -1 ? 'https://nxi.secure.comparethemarket.com.au/address/suburbpostcode/' : '../address/suburbpostcode/';
+	    if( String(value).length > 3 && value != ${name}__PostCodeStateHandler.current_state )
+	    {
+	      $.ajax({
+	        url: url + value,
+	        type: "GET",
+	        cache: true,
+	        success: function(data) {
+	          var states = [data[0].state];
+	          var multiStates = false;
+	          for (var i = 1; i < data.length; i++) {
+	            if (states[0] !== data[i].state) {
+	              states.push(data[i].state);
+	              multiStates = true;
+	              break;
+	            }
+	          }
+	          
+	          if (multiStates) {
+	            if( $('#${parentName}_stateRefine').length == 0){
+	              if( $('#${name}').parents('.fieldrow').length != 0 ){
+	                $('#${name}').parents('.fieldrow').after(${name}__PostCodeStateHandler.state_html);
+	              } else {
+	                $('#${name}').after(${name}__PostCodeStateHandler.state_html);
+	              }
+	            }
 
-			if( String(value).length > 3 && value != ${name}__PostCodeStateHandler.current_state )
-			{
-				$.ajax({
-					url: "ajax/json/get_state.jsp",
-					data: {postCode:value},
-					type: "POST",
-					async: false,
-					cache: true,
-					success: function(jsonResult){
-						var count = Number(jsonResult[0].count);
-						var state = jsonResult[0].state;
-						${name}__PostCodeStateHandler.current_state = state;
-						switch( count )
-						{
-							case 2:
-								if( $('#${parentName}_stateRefine').length == 0){
-									if( $('#${name}').parents('.fieldrow').length != 0 ){
-										$('#${name}').parents('.fieldrow').after(${name}__PostCodeStateHandler.state_html);
-									} else {
-										$('#${name}').after(${name}__PostCodeStateHandler.state_html);
-									}
-								}
+	            $("#${parentName}_stateRefine").parents(".fieldrow").show('fast', function(){
+	              $("#${parentName}_stateRefine").buttonset();
+	            });
 
-								$("#${parentName}_stateRefine").parents(".fieldrow").show('fast', function(){
-									$("#${parentName}_stateRefine").buttonset();
-								});
+	            $("#${parentName}_stateRefine_A").val(states[0]);
+	            $('#${parentName}_stateRefine label:first span').empty().append(states[0]);
 
-								var states = state.split(", ");
+	            $("#${parentName}_stateRefine_B").val(states[1]);
+	            $('#${parentName}_stateRefine label:last span').empty().append(states[1]);
 
-								$("#${parentName}_stateRefine_A").val(states[0]);
-								$('#${parentName}_stateRefine label:first span').empty().append(states[0]);
+	            $("input[name=${parentName}_stateRefine]").on('change', function(){
+	              $("#${parentName}_state").val($(this).val()).trigger('change');
+	            });
+	            passed = true;
+	          } else {
+	            $("#${parentName}_state").val( states[0] );
+	            $("#${parentName}_stateRefine").parents(".fieldrow").hide();
+	            passed = true;
+	          }
+	        },
+	        dataType: "json",
+	        error: function(obj,txt){
+	          passed = false;
+	        },
+	        timeout:60000
+	      });
+	    } else {
+	      $("#${parentName}_stateRefine").parents(".fieldrow").hide();
+	      $("#${parentName}_state").val("").trigger('change');
+	    }
 
-								$("#${parentName}_stateRefine_B").val(states[1]);
-								$('#${parentName}_stateRefine label:last span').empty().append(states[1]);
-
-								$("input[name=${parentName}_stateRefine]").on('change', function(){
-									$("#${parentName}_state").val($(this).val()).trigger('change');
-								});
-								passed = true;
-							break;
-							case 1:
-								$("#${parentName}_state").val( state );
-								$("#${parentName}_stateRefine").parents(".fieldrow").hide();
-								passed = true;
-							break;
-							default:
-								$("#${parentName}_state").val("");
-								$("#${parentName}_stateRefine").parents(".fieldrow").hide();
-								passed = false;
-							break;
-						}
-						$("#${parentName}_state").trigger('change');
-					},
-					dataType: "json",
-					error: function(obj,txt){
-						passed = false;
-					},
-					timeout:60000
-				});
-			} else {
-				$("#${parentName}_stateRefine").parents(".fieldrow").hide();
-				$("#${parentName}_state").val("").trigger('change');
-			}
-
-			return passed;
-		},
-		"Replace this message with something else"
+	    return passed;
+	  },
+	  "Replace this message with something else"
 	);
 </go:script>

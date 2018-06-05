@@ -268,7 +268,7 @@ public class HealthModelTranslatorTest {
     }
 
     private void setParamWithValue(MockHttpServletRequest request, int num, String paramName, String patternFormat) {
-        IntStream.rangeClosed(0, num).forEach(i -> {
+        IntStream.rangeClosed(0, num - 1).forEach(i -> {
             request.setParameter(String.format("%1$s%2$d", paramName, i), String.format(patternFormat, i));
         });
     }

@@ -374,6 +374,7 @@ public class RememberMeService {
             data.put("current/transactionId", transactionId);
             data.put("rootId", transactionId);
             sessionData.addTransactionData(data);
+            SessionData.markSessionForCommit(request);
         }
     }
 
@@ -397,6 +398,8 @@ public class RememberMeService {
         } catch (DaoException | SessionException e) {
             LOGGER.error("Error getting data for transactionId {}", kv("transactionId", transactionId), e);
             throw new RuntimeException(e);
+        } finally {
+            SessionData.markSessionForCommit(request);
         }
     }
 
