@@ -1,4 +1,4 @@
-/**
+ /**
  * Description: Health setup
  */
 ;(function ($, undefined) {
@@ -187,6 +187,16 @@
         }
     }
 
+    function initAddressSearch() {
+      var resXpath = 'health/application/address',
+          postXpath = 'health/application/postal';
+      meerkat.modules.addressLookupV2.getSmartSearch().init('Residential', resXpath);
+      meerkat.modules.addressLookupV2.getManualPostcodeSearch().init('Residential', resXpath);
+      meerkat.modules.addressLookupV2.getSmartSearch().init('Postal', postXpath);
+      meerkat.modules.addressLookupV2.getManualPostcodeSearch().init('Postal', postXpath);
+      meerkat.modules.addressLookupV2.getPostCodeWithBtns().init('health/application/address');
+    }
+
     function setJourneyEngineSteps() {
 
         var startStep = {
@@ -198,6 +208,7 @@
                 object: meerkat.modules.health.getTrackingFieldsObject
             },
             onInitialise: function onStartInit(event) {
+                initAddressSearch();
                 meerkat.modules.jqueryValidate.initJourneyValidator();
 
                 meerkat.modules.healthLocation.initHealthLocation();

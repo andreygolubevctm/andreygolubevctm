@@ -17,7 +17,7 @@
 		stateSubmitInProgress = false;
 
 	function initJourneyEngine(){
-
+		
 		if(meerkat.site.pageAction === "confirmation"){
 
 			meerkat.modules.journeyEngine.configure(null);
@@ -156,6 +156,19 @@
 			}
 		}
 	}
+	
+	function initAddressSearch() {
+		var addressLookupV2 = meerkat.modules.addressLookupV2,
+        	resXpath = 'health/application/address',
+            postXpath = 'health/application/postal';
+		addressLookupV2.getPostCodeSearch().init('health/situation');
+		addressLookupV2.getSmartSearch().init('Residential', resXpath);
+		addressLookupV2.getManualPostcodeSearch().init('Residential', resXpath);
+		addressLookupV2.getSmartSearch().init('Postal', postXpath);
+		addressLookupV2.getManualPostcodeSearch().init('Postal', postXpath);
+		
+		addressLookupV2.getToggleBtn().init('simples-postcode-toggle', 'health_application_postalGroup');
+	}
 
 	function setJourneyEngineSteps(){
 
@@ -168,7 +181,7 @@
 				object:meerkat.modules.health.getTrackingFieldsObject
 			},
 			onInitialise: function onStartInit(event){
-
+				initAddressSearch();
 				meerkat.modules.jqueryValidate.initJourneyValidator();
                 if(meerkat.site.isCallCentreUser) {
                     meerkat.modules.simplesInteraction.storeCallId(meerkat.modules.transactionId.get());
