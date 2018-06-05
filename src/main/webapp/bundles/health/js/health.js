@@ -161,7 +161,7 @@
 		var addressLookupV2 = meerkat.modules.addressLookupV2,
         	resXpath = 'health/application/address',
             postXpath = 'health/application/postal';
-		addressLookupV2.getPostCodeSearch().init('health/situation');
+		addressLookupV2.getPostCodeSearch().init('health/situation', 'health/application/address');
 		addressLookupV2.getSmartSearch().init('Residential', resXpath);
 		addressLookupV2.getManualPostcodeSearch().init('Residential', resXpath);
 		addressLookupV2.getSmartSearch().init('Postal', postXpath);
