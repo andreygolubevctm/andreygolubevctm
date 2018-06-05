@@ -59,7 +59,7 @@ public class HealthQuoteRequest
 
     private List<PaymentType> paymentTypes;
 
-    public boolean isSimples() {
+    public boolean getIsSimples() {
         return isSimples;
     }
 
