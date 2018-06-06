@@ -185,7 +185,7 @@ ${newPage.init(pageContext.request, pageSettings)}
 					</c:if>
 
 				<ad_containers:main_top />
-				<banners:banner_top />
+				<coupon:banner />
 			</div>
 
 				<div class="container">
@@ -239,6 +239,9 @@ ${newPage.init(pageContext.request, pageSettings)}
 															<div class="mobile-cover-types"></div>
 														</div>
 													</div>
+												</div>
+												<div class="col-xs-7 clt-trip-filter amt-filter">
+													<travel_results_filter_types:amt_filter />
 												</div>
 												<div class="col-xs-2 clt-trip-filter">
 													<travel_results_filter_types:more_filters/>

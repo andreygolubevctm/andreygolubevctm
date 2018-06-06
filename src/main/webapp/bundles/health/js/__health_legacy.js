@@ -74,7 +74,7 @@ var healthApplicationDetails = {
 	periods: 1,
 
 	init: function(){
-		postalMatchHandler.init('health_application');
+		//postalMatchHandler.init('health_application');
 	},
 	addOption: function(labelText, formValue) {
 		var el = $('#health_application_contactPoint');
@@ -93,7 +93,7 @@ var healthApplicationDetails = {
 		var element = $('#health_application_address_state');
 		if( element.val() != $('#health_situation_state').val() ){
 
-			var suburb = $('#health_application_address_suburbName').val();
+			var suburb = $('#health_application_address_suburb').val();
 			var postcode = $('#health_application_address_postCode').val();
 			var state = $('#health_application_address_state').val();
 			if( suburb.length && suburb.indexOf('Please select') < 0 && postcode.length == 4 && state.length ) {

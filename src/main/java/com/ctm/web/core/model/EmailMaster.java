@@ -1,10 +1,13 @@
 package com.ctm.web.core.model;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 
-public class EmailMaster implements Cloneable {
+public class EmailMaster implements Cloneable, Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private String lastName = "";
 	private String firstName = "";

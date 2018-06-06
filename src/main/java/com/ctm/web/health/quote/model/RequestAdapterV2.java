@@ -7,8 +7,8 @@ import com.ctm.web.health.model.Membership;
 import com.ctm.web.health.model.PaymentType;
 import com.ctm.web.health.model.form.*;
 import com.ctm.web.health.quote.model.request.*;
-import org.apache.commons.lang3.BooleanUtils;
 import com.ctm.web.simples.admin.model.capping.product.ProductCappingLimitCategory;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +35,9 @@ public class RequestAdapterV2 {
     public static HealthQuoteRequest adapt(HealthRequest request, Content alternatePricingContent, boolean isSimples, final boolean isGiftCardActive) {
 
         HealthQuoteRequest quoteRequest = new HealthQuoteRequest();
+
+		quoteRequest.setIsSimples(isSimples);
+
         Filters filters = new Filters();
         quoteRequest.setFilters(filters);
 
@@ -454,12 +457,9 @@ public class RequestAdapterV2 {
         }
     }
 
-    protected static void addPopularProductsFilter(Filters filters, final HealthQuote quote){
-        if (quote.getPopularProducts() != null && quote.getPopularProducts().equals("Y")) {
-            filters.setPopularProducts(true);
-        } else {
-            filters.setPopularProducts(false);
-        }
+    protected static void addPopularProductsFilter(Filters filters, final HealthQuote quote) {
+        boolean isPopularProducts = Optional.ofNullable(quote.getPopularProducts()).map(BooleanUtils::toBoolean).orElse(false);
+        filters.setPopularProducts(isPopularProducts);
     }
 
     protected static void addLimitToRewardsSchemeFilter(Filters filters, final HealthQuote quote) {

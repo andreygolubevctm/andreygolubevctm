@@ -18,16 +18,23 @@ import com.ctm.web.core.web.go.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 import static com.ctm.web.core.utils.SessionDataUtils.getTransactionId;
 
-public class SessionData {
+public class SessionData implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SessionData.class);
 
-	final private ArrayList<Data> transactionSessionData;
+	private ArrayList<Data> transactionSessionData;
 	private AuthenticatedData authenticatedSessionData;
 
 	private Date lastSessionTouch;
@@ -187,4 +194,35 @@ public class SessionData {
 		this.shouldEndSession = shouldEnd;
 	}
 
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof SessionData)) return false;
+		SessionData that = (SessionData) o;
+		return isShouldEndSession() == that.isShouldEndSession() &&
+				Objects.equals(getTransactionSessionData(), that.getTransactionSessionData()) &&
+				Objects.equals(getAuthenticatedSessionData(), that.getAuthenticatedSessionData()) &&
+				Objects.equals(getLastSessionTouch(), that.getLastSessionTouch());
+	}
+
+	@Override
+	public int hashCode() {
+
+		return Objects.hash(getTransactionSessionData(), getAuthenticatedSessionData(), getLastSessionTouch(), isShouldEndSession());
+	}
+
+	/**
+	 * Modifying objects inside a session, will not mark the session object itself as modified, and therefore Hazelcast
+	 * will not replicate changes. The method is a utility method to indicate that data inside a session has been
+	 * modified and therefore Hazelcast should replicate the session at the end of the request.
+	 *
+	 * @param request the request belonging the to the Session which requires modification.
+	 */
+	public static void markSessionForCommit(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		LOGGER.info(String.format("Marking session '%1$s' for commit", session.getId()));
+		session.setAttribute("mark-session-for-commit", LocalDateTime.now());
+		session.removeAttribute("mark-session-for-commit");
+	}
 }

@@ -18,6 +18,12 @@
 		<c:otherwise>${false}</c:otherwise>
 	</c:choose>
 </c:set>
+<c:set var="isGtmInternalUser">
+	<c:choose>
+		<c:when test="${not empty param.gtmInternaluser}">${true}</c:when>
+		<c:otherwise>${false}</c:otherwise>
+	</c:choose>
+</c:set>
 
 <%-- JS OBJECT --%>
-,gtmInternalUser : <c:choose><c:when test="${localIP eq true or isPreload eq true}">true</c:when><c:otherwise>false</c:otherwise></c:choose>
+,gtmInternalUser : <c:choose><c:when test="${localIP eq true or isPreload or isGtmInternalUser eq true}">true</c:when><c:otherwise>false</c:otherwise></c:choose>
