@@ -78,3 +78,7 @@
 		<br />None of the above
 	</label>
 </div>
+
+<div class="medicare-disclaimer">
+Use of the Medicare card image is for demonstrative purposes only and is not an endorsement from the Commonwealth.
+</div>
