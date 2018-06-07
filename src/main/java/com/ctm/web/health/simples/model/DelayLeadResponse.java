@@ -1,12 +1,14 @@
-package com.ctm.web.health.model.leadservice;
+package com.ctm.web.health.simples.model;
 
 public class DelayLeadResponse {
+
+    private String outcome;
+
+    public DelayLeadResponse(){}
 
     public DelayLeadResponse(final String outcome) {
         this.outcome = outcome;
     }
-
-    private final String outcome;
 
     public String getOutcome() {
         return outcome;
