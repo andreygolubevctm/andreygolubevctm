@@ -14,6 +14,7 @@ import com.ctm.web.core.model.EmailMaster;
 import com.ctm.web.core.model.RankingDetail;
 import com.ctm.web.core.model.settings.PageSettings;
 import com.ctm.web.core.model.settings.Vertical;
+import com.ctm.web.core.provider.model.Provider;
 import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.SettingsService;
@@ -57,6 +58,7 @@ public class TravelModelTranslator implements EmailTranslator {
     public void setUrls(HttpServletRequest request, EmailRequest emailRequest, Data data, String verticalCode) throws ConfigSettingException, DaoException, EmailDetailsException, SendEmailException, GeneralSecurityException {
         PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
         String emailAddress = getEmail(data);
+        LOGGER.info("emailAddress retrieved from SessionData is: {}", emailAddress);
         EmailMaster emailDetails = new EmailMaster();
         emailDetails.setEmailAddress(emailAddress);
         emailDetails.setSource("QUOTE");
@@ -97,14 +99,16 @@ public class TravelModelTranslator implements EmailTranslator {
         List<String> medical = getRankingProperties(ranking,"medical");
         List<String> excesses = getRankingProperties(ranking,"excess");
         String gaclientId = emailUtils.getParamFromXml(data.getXML(), "gaclientid", "/travel/");
-        List<String> providerNames = providerCodes.stream().map(providerCode -> {
-            try {
-                return providerDao.getByCode(providerCode, ApplicationService.getServerDate());
-            } catch (DaoException e) {
-                LOGGER.error(e.getMessage());
-            }
-            return null;
-        } ).map(provider -> provider.getName()).collect(Collectors.toList());
+        List<String> providerNames = providerCodes.stream()
+                .map(providerCode -> {
+                    try {
+                        return providerDao.getByCode(providerCode, ApplicationService.getServerDate()).getName();
+                    } catch (Exception e) {
+                        LOGGER.error(e.getMessage());
+                    }
+                    return "";
+                } )
+                .collect(Collectors.toList());
         emailRequest.setVertical(vertical);
         emailRequest.setProviders(providerNames);
         emailRequest.setProviderCodes(providerCodes);
@@ -131,6 +135,7 @@ public class TravelModelTranslator implements EmailTranslator {
 
     private void setDataFields(EmailRequest emailRequest, Data data, TravelEmailModel travelEmailModel){
         String email = getEmail(data);
+        LOGGER.info("email retrieved from SessionData is: {}", email);
         String firstName =  emailUtils.getParamSafely(data,vertical + "/firstName");
         String surname =  emailUtils.getParamSafely(data,vertical + "/surname");
         String adultsTravelling = emailUtils.getParamSafely(data,vertical + "/adults");
