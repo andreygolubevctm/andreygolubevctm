@@ -13,12 +13,7 @@
 <c:set var="value"><c:out value="${data[xpath]}" escapeXml="true"/></c:set>
 <c:set var="id" value="${name}_${val}" />
 
-<c:set var="additionalBrandSpecificErrorMsg" value="" />
-<c:if test="${pageSettings.getBrandCode() eq 'ctm'}">
-	<c:set var="additionalBrandSpecificErrorMsg" value=", please <a href='https://www.comparethemarket.com.au/health-insurance/health-insurance-overseas-visitors/'>click here</a>" />
-</c:if>
-
-<c:set var="title" value="your Medicare card colour. To proceed with this policy, you must have a green, blue or yellow medicare card. To proceed with this policy, you must have a green, blue or yellow medicare card. For overseas visitor cover${additionalBrandSpecificErrorMsg}."  />
+<c:set var="title" value="your Medicare card colour. To proceed with this policy, you must have a green, blue or yellow medicare card. To proceed with this policy, you must have a green, blue or yellow medicare card. For overseas visitor cover."  />
 
 <c:set var="val1" value="green" />
 <c:set var="des1" value="Green" />
