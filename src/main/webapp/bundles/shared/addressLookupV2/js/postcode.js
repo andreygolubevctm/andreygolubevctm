@@ -11,7 +11,7 @@
       this.cacheDom();
       this.setupAutocomplete();
       this.prefillFix();
-      this.retrieveQuote();
+      this.prefill();
     },
     prefillFix: function() {
       var suburbVal = $(this.xpath + '_suburb').val();
@@ -20,15 +20,17 @@
         $(this.xpath + '_suburb').val(fallbackSuburb);
       }
     },
-    retrieveQuote: function() {
-      var suburb = $(this.xpath + '_suburb').val();
-      var state = $(this.xpath + '_state').val();
-      var postcode = $(this.xpath + '_postcode').val();
-      if (postcode && suburb && state) {
-        var inputValue = suburb + ' ' + postcode + ' ' + state;
-        this.$postcodeInput.val(inputValue);
-      } else if(postcode) {
-        this.$postcodeInput.val(postcode);
+    prefill: function() {
+      if (!this.$postcodeInput.val()) {
+        var suburb = $(this.xpath + '_suburb').val();
+        var state = $(this.xpath + '_state').val();
+        var postcode = $(this.xpath + '_postcode').val();
+        if (postcode && suburb && state) {
+          var inputValue = suburb + ' ' + postcode + ' ' + state;
+          this.$postcodeInput.val(inputValue);
+        } else if(postcode) {
+          this.$postcodeInput.val(postcode);
+        }
       }
     },
     cacheDom: function() {
