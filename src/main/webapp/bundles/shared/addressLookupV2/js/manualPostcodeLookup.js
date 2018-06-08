@@ -16,7 +16,6 @@
       this.$el = $('.addressSearchV2--' + this.prefix);
       this.$postcodeInput = this.$el.find('.addressSearchV2__postcodeSearch input');
       this.$suburbDropdown = this.$el.find('.addressSearchV2__suburbSelect select');
-      this.$postcodeLastSearch = this.$el.find('.addressSearchV2__lastPostcodeSearch');
     },
     bindEvents: function() {
       this.$postcodeInput.on('focus keyup', this.search.bind(this));
@@ -42,8 +41,7 @@
     search: function(event) {
       this.query = event.target.value;
       var _this = this;
-      if (this.query.length === 4 && this.$postcodeLastSearch.val() !== this.query) {
-        this.$postcodeLastSearch.val(this.query);
+      if (this.query.length === 4) {
         this.settings.url = url + 'suburbpostcode/' + this.query;
         $.ajax(this.settings).done(function(data) { _this.handleData(data); });
       }
