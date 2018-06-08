@@ -201,6 +201,7 @@
 		var policyType = meerkat.modules.travel.getVerticalFilter();
 		var isAus = $('#travel_destination').val() === 'AUS';
 		var isCoverLevelTabsEnabled = meerkat.modules.coverLevelTabs.isEnabled();
+		var isCruise = meerkat.modules.tripType.get().cruise.active;
 
 		_.each(products, function massageJson(result, index) {
 			if (result.available == 'Y') {
@@ -221,10 +222,12 @@
 				// added the policyType check because it was causing a bug
 				// the bus is caused by the user selecting Aus for single trip then selecting AMT
 				// BTW not a huge fan of this, the backend should of probably handled setting the medicalValue to 0
-				if (isAus && policyType == 'Single Trip') {
-					obj.medicalValue = 0;
-					obj.medical = "N/A";
-				}
+				//CTM-204 added the test for non cruise trip Types
+				// ie do not override medicalValues when cruise trip type is selected
+				 if (isAus && policyType == 'Single Trip' && !isCruise) {
+				 	obj.medicalValue = 0;
+				 	obj.medical = "N/A";
+				 }
 				if (isCoverLevelTabsEnabled === true) {
 					if (policyType == 'Single Trip') {
 						obj.coverLevel = getCoverLevel(obj, isAus);
