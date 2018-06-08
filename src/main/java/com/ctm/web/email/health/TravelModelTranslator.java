@@ -104,7 +104,7 @@ public class TravelModelTranslator implements EmailTranslator {
                     try {
                         return providerDao.getByCode(providerCode, ApplicationService.getServerDate()).getName();
                     } catch (Exception e) {
-                        LOGGER.error(e.getMessage());
+                        LOGGER.debug(e.getMessage());
                     }
                     return "";
                 } )
