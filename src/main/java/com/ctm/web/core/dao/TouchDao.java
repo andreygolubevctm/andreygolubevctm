@@ -136,7 +136,6 @@ public class TouchDao {
 		touches.add(touch);
 	}
 
-
 	public ArrayList<Touch> getTouchesForRootId(long transactionId) throws DaoException {
 		List<Long> transactionIds = new ArrayList<Long>();
 		transactionIds.add(transactionId);
@@ -150,7 +149,7 @@ public class TouchDao {
 
 		String sql = " SELECT" +
 				" 	DISTINCT t.touchId, t.transaction_id, t.dateTime, t.operator_id, t.type,  " +
-				"     tp.productCode, pm.shortTitle as productName, pp.providerCode, pp.name as providerName" +
+				"     tp.productCode, pm.LongTitle as productName,  pp.providerCode, pp.name as providerName " +
 				" FROM" +
 				" 	(SELECT " +
 				" 		DISTINCT t.id as touchId, t.transaction_id, CONCAT(t.date, ' ', t.time) as dateTime, " +
