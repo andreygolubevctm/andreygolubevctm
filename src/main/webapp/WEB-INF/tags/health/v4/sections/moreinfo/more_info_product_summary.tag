@@ -19,6 +19,7 @@
         {{= renderedPriceTemplate }}
         </c:if>
         <a href="javascript:;" class="btn btn-secondary btn-sm btn-block narrowMarginTop getPrintableBrochures">Email myself brochures</a>
+        <a href="javascript:;" class="btn btn-cta btn-sm btn-more-info-apply" data-productId="{{= productId }}" <field_v1:analytics_attr analVal="nav button" quoteChar="\"" />>Apply Online<span class="icon-arrow-right" /></a>
     </div>
     <div class="col-xs-12 about-this-fund-row">
         <a href="javascript:;" class="about-this-fund">About this fund</a>
