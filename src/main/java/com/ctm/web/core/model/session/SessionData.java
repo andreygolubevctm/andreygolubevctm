@@ -221,7 +221,6 @@ public class SessionData implements Serializable {
 	 */
 	public static void markSessionForCommit(HttpServletRequest request) {
 		HttpSession session = request.getSession();
-		LOGGER.info(String.format("Marking session '%1$s' for commit", session.getId()));
 		session.setAttribute("mark-session-for-commit", LocalDateTime.now());
 		session.removeAttribute("mark-session-for-commit");
 	}
