@@ -11,7 +11,7 @@
       this.cacheDom();
       this.setupAutocomplete();
       this.prefillFix();
-      this.retrieveQuote();
+      this.prefill();
     },
     prefillFix: function() {
       var suburbVal = $(this.xpath + '_suburb').val();
@@ -20,13 +20,17 @@
         $(this.xpath + '_suburb').val(fallbackSuburb);
       }
     },
-    retrieveQuote: function() {
-      var suburb = $(this.xpath + '_suburb').val();
-      var state = $(this.xpath + '_state').val();
-      var postcode = $(this.xpath + '_postcode').val();
-      if (postcode && suburb && state) {
-        var inputValue = suburb + ' ' + postcode + ' ' + state;
-        this.$postcodeInput.val(inputValue);
+    prefill: function() {
+      if (!this.$postcodeInput.val()) {
+        var suburb = $(this.xpath + '_suburb').val();
+        var state = $(this.xpath + '_state').val();
+        var postcode = $(this.xpath + '_postcode').val();
+        if (postcode && suburb && state) {
+          var inputValue = suburb + ' ' + postcode + ' ' + state;
+          this.$postcodeInput.val(inputValue);
+        } else if(postcode) {
+          this.$postcodeInput.val(postcode);
+        }
       }
     },
     cacheDom: function() {
@@ -39,14 +43,16 @@
       var _this = this;
       this.autocomplete = new meerkat.modules.autocompleteV2.initInput({
             selector: _this.searchInput,
-            minChars: 4,
+            minChars: 0,
             delay: 250,
             cache: false,
             source: function(term, response) {
                 _this.settings.url = url + 'suburbpostcode/' + term;
-                $.ajax(_this.settings).done(function(data) {
-                  response(_this.handleData(data));
-                });
+                if (term) {
+                  $.ajax(_this.settings).done(function(data) {
+                    response(_this.handleData(data));
+                  });
+                }
             },
             renderItem: function (item, search) {
                 return '<div class="autocomplete-suggestion" data-val="' + item + '">' + item + '</div>';
