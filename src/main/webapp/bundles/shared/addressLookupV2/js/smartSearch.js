@@ -9,6 +9,7 @@
       this.bindEvents();
       this.setUpDefault();
       this.setupAutocomplete();
+      this.prefill();
     },
     cacheDom: function() {
       this.searchInput = '.addressSearchV2--' + this.prefix + ' .addressSearchV2__searchContainer input';
@@ -19,9 +20,23 @@
       this.$searchContainer = this.$el.find('.addressSearchV2__searchContainer');
       this.$searchField = this.$searchContainer.find('input');
       this.$cantFindField = this.$el.find('.addressSearchV2__cantFindFields');
+      this.suburbDropdown = this.$cantFindField.find('.addressSearchV2__suburbSelect select')[0];
     },
     bindEvents: function() {
       this.$checkbox.on('change', this.toggleCheckbox.bind(this));
+    },
+    prefill: function() {
+      if (meerkat.site.location) {
+          var postcode = base.getPostcodeFromLocation(meerkat.site.location);
+          this.$postcodeInput.val(postcode);
+      }
+    },
+    toggleValidation: function() {
+      if (this.$cantFindField.hasClass('addressSearchV2__cantFindFields--hidden')) {
+          this.suburbDropdown.required = false;
+      } else {
+          this.suburbDropdown.required = true;
+      }
     },
     setupAutocomplete: function() {
       var _this = this;
@@ -108,6 +123,7 @@
     toggleCheckbox: function(event) {
       this.$searchContainer.toggleClass('addressSearchV2__searchContainer--hidden', event.target.checked);
       this.$cantFindField.toggleClass('addressSearchV2__cantFindFields--hidden', !event.target.checked);
+      this.toggleValidation();
     },
     getSettings: function() {
       return {

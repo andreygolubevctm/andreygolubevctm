@@ -218,5 +218,6 @@
 	fundDiscounts : {
 		AUF : "${AUFDiscount}"
 	},
-	africaComp: <c:out value="${africaComp}" />
+	africaComp: <c:out value="${africaComp}" />,
+	location: '<c:out value="${param.health_location}" escapeXml="false" />'
 }
