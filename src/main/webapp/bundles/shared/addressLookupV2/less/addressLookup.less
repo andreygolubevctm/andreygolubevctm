@@ -1,0 +1,106 @@
+.addressSearchV2 .row-content{
+  position: relative;
+}
+
+.addressSearchV2__searchContainer {
+  &--hidden {
+    visibility: hidden;
+    position: absolute;
+  }
+}
+
+.addressSearchV2--postcode {
+  .addressSearchV2__input {
+    width: 100px;
+    float: left;
+  }
+}
+
+.addressSearchV2--street {
+  margin-bottom: 15px;
+}
+
+.addressSearchV2--simples-smart-search {
+  margin-bottom: 15px;
+}
+
+.addressSearchV2__buttons {
+  float: left;
+  height: 41px;
+  line-height: 41px;
+  text-transform: uppercase;
+  &--hidden {
+    visibility: hidden;
+    position: absolute;
+  }
+  button {
+    float: left;
+    margin-left: 10px;
+    background-color: transparent;
+    color: @theme-tertiary;
+    border-color: @theme-tertiary;
+    border-width: 1px;
+    border-style: solid;
+  }
+  button.selected, button:hover {
+    color: #fff;
+    background-color: @theme-secondary;
+    border-color: @theme-secondary;
+  }
+}
+
+.addressSearchV2__input {
+  padding: 10px 15px;
+  width: 100%;
+  border-radius: 5px;
+  height: 41px;
+  font-size: 14px;
+  border: @theme-secondary 1px solid;
+}
+
+.addressSearchV2__cantFindFields {
+  &--hidden {
+    visibility: hidden;
+    position: absolute;
+  }
+}
+
+.addressSearchV2__checkbox {
+  label {
+    padding-left: 11px;
+  }
+}
+
+
+
+.addressSearchV2__results {
+  min-width: calc(100% - 30px);
+  position: absolute;
+  top: 41px;
+  left: 15px;
+  border: 1px solid #b2b2b2;
+  background-color: white;
+  margin-top: 2px;
+  padding: 5px 0;
+  font-size: 14px;
+  border-radius: 5px;
+  visibility: hidden;
+  z-index: 10;
+  color: #b2b2b2;
+  &--active {
+    visibility: visible;
+  }
+  div {
+    width: 100%;
+    padding: 3px 20px;
+    white-space: nowrap;
+    cursor: pointer;
+    &:hover {
+      background-color: @theme-secondary;
+      color: white;
+    }
+    span {
+      text-decoration: underline;
+    }
+  }
+}
