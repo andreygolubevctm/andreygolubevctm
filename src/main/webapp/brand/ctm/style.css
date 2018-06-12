@@ -425,14 +425,14 @@ h4, h5 {
 	box-shadow: 0px 1px 5px rgba(0,0,0,0.4);
 }
 .normal-header h1 a {
-	background: transparent url('images/logo.png') no-repeat center left;
+	background: transparent url('../../assets/brand/ctm/graphics/logo.svg') no-repeat center left;
 	height:72px;
 	width:420px;
 	display: block;
 	text-indent: -9999px;
 }
 .narrow-header h1 a {
-	background: transparent url('images/narrow-logo.png') no-repeat top left;
+	background: transparent url('../../assets/brand/ctm/graphics/logo.svg') no-repeat top left;
 	height: 39px;
 	width:420px;
 	display: block;
