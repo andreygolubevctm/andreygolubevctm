@@ -65,6 +65,11 @@
             meerkat.messaging.publish(meerkatEvents.health.CHANGE_MAY_AFFECT_PREMIUM);
         });
 
+        // Check state selection
+        $elements.appPostcode.add($elements.appStreetSearch).add($elements.appSuburb).on('change', function() {
+            testStatesParity();
+        });
+
         $elements.paymentMedicareColour
             .addRule('medicareCardColour')
             .on('change', function() {

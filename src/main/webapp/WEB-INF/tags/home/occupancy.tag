@@ -26,7 +26,7 @@
 
 	<%-- Address --%>
 	<c:set var="fieldXpath" value="${baseXpath}/property/address" />
-	<field_v4:address_search_streetsearch xpath="${fieldXpath}" />
+	<group_v2:elastic_address xpath="${fieldXpath}" type="R" />
 
 
 	<%-- MoP --%>

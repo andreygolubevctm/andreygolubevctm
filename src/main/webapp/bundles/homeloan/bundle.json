@@ -22,8 +22,6 @@
     "shared/contentPopulation",
     "shared/leavePageWarning",
     "shared/ie8SelectMenuAutoExpand",
-    "shared/radioRounded",
-    "shared/addressLookupV2",
-    "shared/autocompleteV2"
+    "shared/radioRounded"
   ]
 }
