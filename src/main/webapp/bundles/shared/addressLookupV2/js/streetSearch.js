@@ -100,7 +100,7 @@
         data: {},
         dataType: 'json',
         contentType: 'application/json'
-      };
+      }
     }
   };
 

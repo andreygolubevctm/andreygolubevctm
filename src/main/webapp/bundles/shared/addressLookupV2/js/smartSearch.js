@@ -115,7 +115,7 @@
         url: base.getURL() + 'streetsuburb',
         dataType: 'json',
         contentType: 'application/json'
-      };
+      }
     }
   };
 
