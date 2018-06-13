@@ -4,13 +4,12 @@
  * @author Mark Smerdon <mark.smerdon@comparethemarket.com.au>
  * @author Christopher Dingli <christopher.dingli@comparethemarket.com.au>
  */
-
 var path = require("path"),
     fs = require("graceful-fs-extra");
 
 var spritesmith = require("gulp.spritesmith"),
     imagemin = require('gulp-imagemin'),
-    buffer = require('vinyl-buffer'),
+    buffer = require('vinyl-buffer');
     merge = require("merge-stream");
 
 function SpriteTasks(gulp) {

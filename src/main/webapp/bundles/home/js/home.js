@@ -169,12 +169,6 @@
 			meerkat.modules.journeyProgressBar.render(true);
 		}
 	}
-	
-	function initAddressSearch() {
-		var xpath = 'home/property/address';
-		meerkat.modules.addressLookupV2.getStreetSearch().init(xpath);
-		meerkat.modules.addressLookupV2.getManualPostcodeSearch().init('street', xpath);
-	}
 
 	function setJourneyEngineSteps() {
 
@@ -197,7 +191,6 @@
 				}
 			},
 			onInitialise: function onStartInit(event) {
-				initAddressSearch();
 				meerkat.modules.jqueryValidate.initJourneyValidator();
 				// Hook up privacy optin to Email Quote button
 				var $emailQuoteBtn = $(".slide-feature-emailquote, .save-quote");
