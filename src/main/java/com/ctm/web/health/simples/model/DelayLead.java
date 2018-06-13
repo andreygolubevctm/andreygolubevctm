@@ -13,6 +13,14 @@ public class DelayLead {
     @NotNull
     private String source;
 
+    public DelayLead() {}
+
+    public DelayLead(Integer styleCodeId, String phone, String source) {
+        this.styleCodeId = styleCodeId;
+        this.phone = phone;
+        this.source = source;
+    }
+
     public String getPhone() {
         return phone;
     }

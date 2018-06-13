@@ -29,6 +29,11 @@ public class HealthSimplesLeadService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HealthSimplesLeadService.class);
 
+    public DelayLeadResponse delayLeadAsEnteredApplicationStep(String styleCodeId, String phone) throws Exception {
+        DelayLead data = new DelayLead(Integer.getInteger(styleCodeId), phone, "application");
+        return sendDelayLead(data);
+    }
+
     public DelayLeadResponse sendDelayLead(DelayLead data) throws Exception {
         final ServiceConfiguration serviceConfig = ServiceConfigurationService.getServiceConfiguration("leadService", HEALTH_VERTICAL_ID);
         final Boolean enabled = Boolean.valueOf(serviceConfig.getPropertyValueByKey("enabled", 0, 0, ServiceConfigurationProperty.Scope.SERVICE));

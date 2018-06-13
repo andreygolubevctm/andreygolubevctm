@@ -30,7 +30,7 @@ public class HealthSimplesLeadController {
         return healthSimplesLeadService.sendCliReturnNote(data);
     }
 
-    @RequestMapping(value = "/delaylead/chat.json",
+    @RequestMapping(value = "/delaylead/webchat.json",
             method= RequestMethod.POST,
             consumes={MediaType.APPLICATION_FORM_URLENCODED_VALUE, "application/x-www-form-urlencoded;charset=UTF-8"})
     public DelayLeadResponse delayLead(@Valid @NotNull final DelayLead data) throws Exception {

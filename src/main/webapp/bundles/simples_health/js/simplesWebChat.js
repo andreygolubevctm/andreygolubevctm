@@ -45,7 +45,7 @@
 	function requestDelay() {
 		var phone = getPhone();
 		if(!_.isNull(phone)) {
-			var ajaxURL = "spring/rest/simples/delaylead/chat.json";
+			var ajaxURL = "spring/rest/simples/delaylead/webchat.json";
 			return meerkat.modules.comms.post({
 				url: ajaxURL,
 				dataType: "json",
