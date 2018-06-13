@@ -9,7 +9,6 @@
       this.xpath = base.formatXpath(xpath);
       this.cacheDom();
       this.bindEvents();
-      this.prefill();
     },
     cacheDom: function() {
       this.$el = $('.addressSearchV2--postcode');
@@ -19,15 +18,8 @@
       this.$stateValue = this.$el.find('.addressSearchV2__stateValue');
       this.$suburbDropdown = $(this.xpath + '_suburb');
     },
-    prefill: function() {
-      if (meerkat.site.location) {
-          var postcode = base.getPostcodeFromLocation(meerkat.site.location);
-          this.$postcodeInput.val(postcode);
-          this.search(postcode);
-      }
-    },
     bindEvents: function() {
-      this.$postcodeInput.on('focus keyup', this.inputEvent.bind(this));
+      this.$postcodeInput.on('focus keyup', this.search.bind(this));
       this.$buttons.on('click', this.buttonClick.bind(this));
     },
     renderStateButtons: function(states) {
@@ -76,12 +68,9 @@
         this.checkMultipleState(data);
       }
     },
-    inputEvent: function(event) {
-      this.search(event.target.value);
-    },
-    search: function(query) {
+    search: function(event) {
       var _this = this;
-      this.query = query;
+      this.query = event.target.value;
       this.showButtons(false);
       if (this.query.length === 4) {
         this.settings.url = url + 'suburbpostcode/' + this.query;

@@ -21,32 +21,11 @@
     return options;
   }
 
-  function isValidLocation(location) {
-      var search_match = new RegExp(/^((\s)*([^~,])+\s+)+\d{4}((\s)+(ACT|NSW|QLD|TAS|SA|NT|VIC|WA)(\s)*)$/);
-      value = $.trim(String(location));
-      if (value !== '') {
-          if (value.match(search_match)) {
-              return true;
-          }
-      }
-      return false;
-  }
-
-  function getPostcodeFromLocation(location) {
-    if (isValidLocation(location)) {
-      // location should be like: "Upper Kedron 4055 QLD"
-      var postcode = location.match(/\d+/g)[0];
-      return postcode;
-    }
-    return '';
-  }
-
   function formatXpath(xpath) {
     return '#' + xpath.replace(/\//g, '_');
   }
 
   var base = {
-    getPostcodeFromLocation: getPostcodeFromLocation,
     getURL: getURL,
     formatXpath: formatXpath,
     buildOptions: buildOptions,
