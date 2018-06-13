@@ -52,8 +52,6 @@
     "shared/affiliateProperties",
     "shared/fields",
     "shared/competition",
-    "shared/addressLookupV2",
-    "shared/autocompleteV2",
     "shared/healthFundTimeOffset",
     "shared/healthPriceBreakdown"
   ]

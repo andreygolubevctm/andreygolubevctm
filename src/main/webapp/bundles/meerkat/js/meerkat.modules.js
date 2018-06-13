@@ -51,10 +51,6 @@
 		}
 	}
 
-	function extend(moduleName, module) {
-		modules[moduleName] = $.extend(modules[moduleName], module);
-	}
-
 
 	///////////////////////////////////////////////////////////////////
 	// Initialise Modules
@@ -75,8 +71,7 @@
 
 	modules = meerkat.modules = {
 		register: register,
-		init: initialiseModules,
-		extend: extend
+		init: initialiseModules
 	};
 
 	meerkat.modules.events = events;

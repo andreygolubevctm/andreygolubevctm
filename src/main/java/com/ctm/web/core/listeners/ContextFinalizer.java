@@ -3,6 +3,7 @@ package com.ctm.web.core.listeners;
 import ch.qos.logback.classic.LoggerContext;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.services.EnvironmentService;
+import com.ctm.web.core.elasticsearch.services.AddressSearchService;
 import com.mysql.jdbc.AbandonedConnectionCleanupThread;
 import org.slf4j.ILoggerFactory;
 import org.slf4j.Logger;
@@ -38,6 +39,7 @@ public class ContextFinalizer implements ServletContextListener {
 			EnvironmentService environmentService = new EnvironmentService();
 			environmentService.getBuildDetailsFromManifest(servletContext);
 
+			AddressSearchService.init();
 		}
 		catch (Exception e) {
 			LOGGER.error("Unable initialize application", e);
@@ -46,6 +48,7 @@ public class ContextFinalizer implements ServletContextListener {
 	}
 
 	public void contextDestroyed(ServletContextEvent sce) {
+		AddressSearchService.destroy();
 		shutdownDB();
 		shutdownLogback();
 	}
