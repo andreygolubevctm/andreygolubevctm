@@ -9,8 +9,14 @@
 			$elements = {
 				snapshot:   $(".simplesSnapshot"),
 				phone: {
-					mobile: $("#health_contactDetails_contactNumber_mobile"),
-					other: $("#health_contactDetails_contactNumber_other")
+					quote: {
+						mobile: $("#health_contactDetails_contactNumber_mobile"),
+						other: $("#health_contactDetails_contactNumber_other")
+					},
+					application: {
+						mobile: $("#health_application_mobile"),
+						other: $("#health_application_other")
+					}
 				}
 			};
 
@@ -84,11 +90,18 @@
 	}
 
 	function getPhone(){
-		var mobile = $elements.phone.mobile.val();
+		var mobile = $elements.phone.application.mobile.val();
 		if(_.isEmpty(mobile)) {
-			var other = $elements.phone.other.val();
-			if(_.isEmpty(mobile)) {
-				return null;
+			var other = $elements.phone.appliction.other.val();
+			if(_.isEmpty(other)) {
+				mobile = $elements.phone.quote.mobile.val();
+				if(_.isEmpty(mobile)) {
+					other = $elements.phone.quote.other.val();
+					if(_.isEmpty(other)) {
+						return null;
+					}
+					return other;
+				}
 			}
 			return other;
 		}
