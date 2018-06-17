@@ -35,30 +35,9 @@
     }
 
     function _applyEventListeners() {
-        $elements.currentCover.add($elements.dob).on('change', function toggleContinuousCover() {
-            var $checked = $elements.currentCover.filter(':checked'),
-                hasPartner = meerkat.modules.healthChoices.hasPartner(),
-                hideField = !$checked.length || !hasPartner || $checked.val() === 'N' || ($checked.val() === 'Y' && !_.isEmpty($elements.dob.val()) && meerkat.modules.age.isLessThan31Or31AndBeforeJuly1($elements.dob.val()));
-
-            meerkat.modules.fieldUtilities.toggleVisible(
-                $elements.partnerCoverLoading,
-                hideField
-            );
-        });
 
         $elements.dob.on('change', function updateSnapshot() {
             meerkat.messaging.publish(meerkatEvents.health.SNAPSHOT_FIELDS_CHANGE);
-        });
-
-        $elements.currentCover.on('change', function toggleEverHadCover() {
-            var $checked = $elements.currentCover.filter(':checked'),
-                hasPartner = meerkat.modules.healthChoices.hasPartner(),
-                hideField = !$checked.length || !hasPartner || ($checked.val() === 'Y');
-
-            meerkat.modules.fieldUtilities.toggleVisible(
-                $elements.partnerEverHadCover,
-                hideField
-            );
         });
 
         $elements.currentCover.on('change', function toggleCurrentHealthFund() {
@@ -100,15 +79,6 @@
         if ($checked.length) {
             $checked.change();
         } else {
-            meerkat.modules.fieldUtilities.toggleVisible(
-                $elements.partnerCoverLoading,
-                true
-            );
-
-            meerkat.modules.fieldUtilities.toggleVisible(
-                $elements.partnerEverHadCover,
-                true
-            );
 
             meerkat.modules.fieldUtilities.toggleVisible(
                 $elements.partnerCurrentFundName,
@@ -120,29 +90,6 @@
 
     function getAppDob() {
         return $elements.appDob.val();
-    }
-
-    // iff true, the applicant's partner has never held 'Private Hospital Cover'
-    function getNeverHadCover() {
-        return $elements.currentCover.filter(':checked').val() === 'N' && $elements.partnerEverHadCover.filter(':checked').val() === 'N';
-    }
-
-    // iff true, the applicant's partner does not currently have any cover but has held 'Private Hospital Cover' in the past
-    function getHeldPrivateHealthInsuranceBeforeButNotCurrently() {
-        return $elements.currentCover.filter(':checked').val() === 'N' && $elements.partnerEverHadCover.filter(':checked').val() === 'Y';
-    }
-
-    // iff true, the applicant's partner currently has and has always had continuous 'Private Hospital Cover'
-    // iff false, (the test below is a better indicator) the applicant's partner currently has (either Private Hospital or Extras cover) && has not had continuous Private Hospital, but has never explicitly been asked if they have ever held Private Hospital Cover
-    // iff null, the applicant's partner has selected that they do not currently have (either 'Private Hospital' or 'Extras cover')
-    function getContinuousCover() {
-        return $elements.currentCover.filter(':checked').val() === 'Y' ? $elements.partnerCoverLoading.filter(':checked').val() === 'Y' : null;
-    }
-
-    // if true, the applicant's partner currently has (either 'Private Hospital' or 'Extras cover') && has not had continuous Private hospital,
-    // but has never explicitly been asked if they have ever held 'Private Hospital Cover'
-    function getNeverExplicitlyAskedIfHeldPrivateHospitalCover() {
-        return $elements.currentCover.filter(':checked').val() === 'Y' && $elements.partnerCoverLoading.filter(':checked').val() === 'N';
     }
 
     function getHealthPreviousFund() {
@@ -158,10 +105,6 @@
         getCurrentCover: getCurrentCover,
         onStartInit: onStartInit,
         getAppDob: getAppDob,
-        getContinuousCover: getContinuousCover,
-        getNeverHadCover: getNeverHadCover,
-        getHeldPrivateHealthInsuranceBeforeButNotCurrently: getHeldPrivateHealthInsuranceBeforeButNotCurrently,
-        getNeverExplicitlyAskedIfHeldPrivateHospitalCover: getNeverExplicitlyAskedIfHeldPrivateHospitalCover,
         getHealthPreviousFund: getHealthPreviousFund,
         getHealthPreviousFundDescription: getHealthPreviousFundDescription
     });

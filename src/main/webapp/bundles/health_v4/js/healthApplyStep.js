@@ -40,15 +40,43 @@
         });
     }
 
+    //TODO ensure that the pre results value for primary vs partner show the correct value  currentlyHaveAnyKindOfCoverPreResults:
+    // vs post results
     function _createFieldReferences (applicant) {
-        return {
-            healthCoverEverHadRow: $('#health_application_' + applicant + 'CoverEverHad'),
-            healthApplicationCoverEverHad: $(':input[name=health_application_' + applicant + '_everHadCover]'),
+        var applicantFields = {
+            currentlyHaveAnyKindOfCoverPreResults: $(':input[name=health_healthCover_' + applicant + '_cover]'),
+            currentlyHaveAnyKindOfCoverPreResultsBtnGroup: $('#_' + applicant + '_health_cover'),
+            currentlyHaveAnyKindOfCoverApplyPage: $('#health_application_' + applicant + '_health_cover'),
             healthFundHistoryRow: $('#' + applicant + 'FundHistory'),
             healthApplicationDOB: $('#health_application_' + applicant + '_dob'),
             aboutYouPreviousFund: $(':input[name=health_healthCover_' + applicant + '_fundName]').children('option'),
-            healthApplicationPreviousFund: $(':input[name=health_previousfund_' + applicant + '_fundName]').children('option')
+            healthApplicationPreviousFundRow: $('#' + applicant + 'previousfund'),
+            healthApplicationPreviousFund: $(':input[name=health_previousfund_' + applicant + '_fundName]').children('option'),
+            healthApplicationPreviousFundLabel: $('[for=health_previousfund_' + applicant + '_fundName]'),
+            everHadPrivateHospitalRow_1: $('#health_healthCover_' + applicant + 'CoverEverHad'),
+            everHadPrivateHospitalBtnGroup_1: $('#health_healthCover_' + applicant + '_ever_had_health_cover'),
+            everHadPrivateHospital_1: $(':input[name=health_healthCover_' + applicant + '_everHadCover]'),
+            everHadPrivateHospitalRow_2: $('#health_application_' + applicant + 'CoverEverHad'),
+            everHadPrivateHospitalBtnGroup_2: $('#health_application_' + applicant + '_ever_had_health_cover'),
+            everHadPrivateHospital_2: $(':input[name=health_application_' + applicant + '_everHadCover]'),
+            healthContinuousCoverRow: $('#health-continuous-cover-' + applicant),
+            healthContinuousCoverBtnGroup: $('#_' + applicant + '_health_cover_loading'),
+            healthContinuousCover:  $(':input[name=health_healthCover_' + applicant + '_healthCoverLoading]'),
+            iDontKnowMyDateRangesRow:  $('#' + applicant + 'LhcDatesUnsureApplyFullLHC'),
+            iDontKnowMyDateRanges:  $(':input[name=health_previousfund_' + applicant + '_fundHistory_dates_unsure]'),
+            iDontKnowMyDateRangesPromptText: $('#' + applicant + 'LhcDatesUnsureApplyFullLHC .applyFullLHCAdditionalText')
         };
+
+        if (applicant === 'primary') {
+            applicantFields['currentlyHaveAnyKindOfCoverPreResultsBtnGroup'] = $('#health_healthCover_health_cover');
+            applicantFields['currentlyHaveAnyKindOfCoverApplyPage'] = $('#health_application_health_cover');
+            applicantFields['healthApplicationPreviousFundRow'] = $('#yourpreviousfund');
+            applicantFields['everHadPrivateHospitalBtnGroup_1'] = $('#health_healthCover_ever_had_health_cover');
+            applicantFields['everHadPrivateHospitalBtnGroup_2'] = $('#health_application_ever_had_health_cover');
+            applicantFields['healthContinuousCoverBtnGroup'] = $('#health_healthCover_health_cover_loading');
+        }
+
+        return applicantFields;
     }
 
     // Get the selected benefits from the forms hidden fields (the source of truth! - not the checkboxes)
@@ -56,24 +84,26 @@
         // validate at least 1 contact number is entered
         $elements.appMobile.addRule('requireOneContactNumber', true, 'Please include at least one phone number');
 
+        _prefill_currentlyHaveAnyKindOfCover('primary');
         _prefillPreviousFund('primary');
+
         meerkat.messaging.publish(meerkatEvents.healthPreviousFund.POPULATE_PRIMARY,
-            meerkat.modules.healthPrimary.getCurrentCover());
+            getCurrentCover('primary'));
 
         if (meerkat.modules.healthChoices.hasPartner()) {
+            _prefill_currentlyHaveAnyKindOfCover('partner');
             _prefillPreviousFund('partner');
         }
+
         meerkat.messaging.publish(meerkatEvents.healthPreviousFund.POPULATE_PARTNER,
-            meerkat.modules.healthPartner.getCurrentCover());
+            getCurrentCover('partner'));
 
         _toggleSelectGender('primary');
-        _toggleEverHad('primary');
-        _toggleFundHistory('primary');
+        _toggleCurrentlyHaveAnyKindOfCover('primary');
 
         if (meerkat.modules.healthChoices.hasPartner()) {
             _toggleSelectGender('partner');
-            _toggleEverHad('partner');
-            _toggleFundHistory('partner');
+            _toggleCurrentlyHaveAnyKindOfCover('partner');
         }
 
         setHospitalCoverClass();
@@ -138,13 +168,264 @@
     function _applyEventListenersByApplicant(applicant) {
 
         $elements[applicant].healthApplicationDOB.on('change', function() {
-            _toggleFundHistory(applicant);
+            _toggleCurrentlyHaveAnyKindOfCover(applicant);
         });
 
-        $elements[applicant].healthCoverEverHadRow.find(':input').on('change', function() {
-            _toggleFundHistory(applicant);
+        $elements[applicant].currentlyHaveAnyKindOfCoverApplyPage.find(':input').on('change', function() {
+            _toggleCurrentlyHaveAnyKindOfCover(applicant);
         });
 
+        $elements[applicant].everHadPrivateHospitalBtnGroup_1.find(':input').on('change', function() {
+            _toggleEverHadPrivateHospital_1(applicant);
+        });
+
+        $elements[applicant].everHadPrivateHospitalBtnGroup_2.find(':input').on('change', function() {
+            _toggleEverHadPrivateHospital_2(applicant);
+        });
+
+        $elements[applicant].healthContinuousCoverBtnGroup.find(':input').on('change', function() {
+            _toggleContinuousCover(applicant);
+        });
+
+        $elements[applicant].iDontKnowMyDateRanges.on('change', function() {
+            _toggleDontKnowMyDateRanges(applicant);
+        });
+
+    }
+
+    function _toggleDontKnowMyDateRanges(personDetailType) {
+        var hideRowFundHistory = true,
+            hideDontKnowMyDateRanges = true,
+            hideDontKnowMyDateRangesPromptText = true;
+
+        if (_isLHCPossiblyApplicable(personDetailType)) {
+            if ($elements[personDetailType].currentlyHaveAnyKindOfCoverApplyPage.find('input').filter(':checked').val() === 'N') {
+                if ($elements[personDetailType].everHadPrivateHospital_1.filter(':checked').val() === 'Y') {
+                    hideDontKnowMyDateRanges = false;
+
+                    if ($elements[personDetailType].iDontKnowMyDateRanges.is(":checked")) {
+                        hideDontKnowMyDateRangesPromptText = false;
+                    } else {
+                        hideRowFundHistory = false;
+                    }
+                }
+            } else if ($elements[personDetailType].currentlyHaveAnyKindOfCoverApplyPage.find('input').filter(':checked').val() === 'Y') {
+                if (($elements[personDetailType].healthContinuousCover.filter(':checked').val() === 'N') && ($elements[personDetailType].everHadPrivateHospital_2.filter(':checked').val() === 'Y')) {
+                    hideDontKnowMyDateRanges = false;
+
+                    if ($elements[personDetailType].iDontKnowMyDateRanges.is(":checked")) {
+                        hideDontKnowMyDateRangesPromptText = false;
+                    } else {
+                        hideRowFundHistory = false;
+                    }
+                }
+            }
+        }
+
+        meerkat.modules.fieldUtilities.toggleVisible(
+            $elements[personDetailType].healthFundHistoryRow,
+            hideRowFundHistory
+        );
+
+        $elements[personDetailType].iDontKnowMyDateRangesRow.toggleClass('hidden', hideDontKnowMyDateRanges);
+        $elements[personDetailType].iDontKnowMyDateRangesPromptText.toggleClass('hidden', hideDontKnowMyDateRangesPromptText);
+    }
+
+    function _toggleEverHadPrivateHospital_1(personDetailType) {
+        var hideRowFundHistory = true,
+            hideDontKnowMyDateRanges = true,
+            hideDontKnowMyDateRangesPromptText = true;
+
+        if (_isLHCPossiblyApplicable(personDetailType) && ($elements[personDetailType].currentlyHaveAnyKindOfCoverApplyPage.find('input').filter(':checked').val() === 'N')) {
+            if ($elements[personDetailType].everHadPrivateHospital_1.filter(':checked').val() === 'Y') {
+                hideDontKnowMyDateRanges = false;
+
+                if ($elements[personDetailType].iDontKnowMyDateRanges.is(":checked")) {
+                    hideDontKnowMyDateRangesPromptText = false;
+                } else {
+                    hideRowFundHistory = false;
+                }
+            }
+        }
+
+        meerkat.modules.fieldUtilities.toggleVisible(
+            $elements[personDetailType].healthFundHistoryRow,
+            hideRowFundHistory
+        );
+
+        $elements[personDetailType].iDontKnowMyDateRangesRow.toggleClass('hidden', hideDontKnowMyDateRanges);
+        $elements[personDetailType].iDontKnowMyDateRangesPromptText.toggleClass('hidden', hideDontKnowMyDateRangesPromptText);
+    }
+
+    function _toggleEverHadPrivateHospital_2(personDetailType) {
+        var hideRowFundHistory = true,
+            hideDontKnowMyDateRanges = true,
+            hideDontKnowMyDateRangesPromptText = true;
+
+        if (_isLHCPossiblyApplicable(personDetailType) && ($elements[personDetailType].currentlyHaveAnyKindOfCoverApplyPage.find('input').filter(':checked').val() === 'Y')) {
+            if (($elements[personDetailType].healthContinuousCover.filter(':checked').val() === 'N') && ($elements[personDetailType].everHadPrivateHospital_2.filter(':checked').val() === 'Y')) {
+                hideDontKnowMyDateRanges = false;
+
+                if ($elements[personDetailType].iDontKnowMyDateRanges.is(":checked")) {
+                    hideDontKnowMyDateRangesPromptText = false;
+                } else {
+                    hideRowFundHistory = false;
+                }
+            }
+        }
+
+        meerkat.modules.fieldUtilities.toggleVisible(
+            $elements[personDetailType].healthFundHistoryRow,
+            hideRowFundHistory
+        );
+
+        meerkat.modules.fieldUtilities.toggleVisible(
+            $elements[personDetailType].iDontKnowMyDateRangesRow,
+            hideDontKnowMyDateRanges
+        );
+
+        $elements[personDetailType].iDontKnowMyDateRangesRow.toggleClass('hidden', hideDontKnowMyDateRanges);
+        $elements[personDetailType].iDontKnowMyDateRangesPromptText.toggleClass('hidden', hideDontKnowMyDateRangesPromptText);
+    }
+
+    function _toggleContinuousCover(personDetailType) {
+        var hideRowPrivateHospital2 = true,
+            hideRowFundHistory = true,
+            hideDontKnowMyDateRanges = true,
+            hideDontKnowMyDateRangesPromptText = true;
+
+        if (_isLHCPossiblyApplicable(personDetailType) && ($elements[personDetailType].currentlyHaveAnyKindOfCoverApplyPage.find('input').filter(':checked').val() === 'Y')) {
+            if (($elements[personDetailType].healthContinuousCover.filter(':checked').val() === 'N')) {
+                hideRowPrivateHospital2 = false;
+
+                if ($elements[personDetailType].everHadPrivateHospital_2.filter(':checked').val() === 'Y') {
+                    hideDontKnowMyDateRanges = false;
+
+                    if ($elements[personDetailType].iDontKnowMyDateRanges.is(":checked")) {
+                        hideDontKnowMyDateRangesPromptText = false;
+                    } else {
+                        hideRowFundHistory = false;
+                    }
+                }
+
+                //todo create a hidden xpath for the private hospital field and set at the time that the backend lhc service is called!!!
+            }
+        }
+
+        meerkat.modules.fieldUtilities.toggleVisible(
+            $elements[personDetailType].everHadPrivateHospitalRow_2,
+            hideRowPrivateHospital2
+        );
+
+        meerkat.modules.fieldUtilities.toggleVisible(
+            $elements[personDetailType].healthFundHistoryRow,
+            hideRowFundHistory
+        );
+
+        $elements[personDetailType].iDontKnowMyDateRangesRow.toggleClass('hidden', hideDontKnowMyDateRanges);
+        $elements[personDetailType].iDontKnowMyDateRangesPromptText.toggleClass('hidden', hideDontKnowMyDateRangesPromptText);
+    }
+
+    function _isLHCPossiblyApplicable(applicant) {
+        return (_isLookingToPurchasePrivateHospitalCover() && _isOfLhcAge(applicant));
+    }
+
+
+    function _toggleCurrentlyHaveAnyKindOfCover(personDetailType) {
+        var hideRowPrivateHospital1 = true,
+            hideRowContinuousCover = true,
+            changeCurrentFundLabelToPreviousFund = true,
+            hideRowPrivateHospital2 = true,
+            hideRowFundHistory = true,
+            hideDontKnowMyDateRanges = true,
+            hideDontKnowMyDateRangesPromptText = true;
+
+        var applicantPrefix = ((personDetailType === 'primary') ? "Your" : "Partner's");
+        var isLHCPossiblyApplicable = _isLHCPossiblyApplicable(personDetailType);
+
+        //meerkat.messaging.publish(meerkatEvents.healthPreviousFund['POPULATE_' + personDetailType.toUpperCase()],
+        //        getCurrentCover(personDetailType));
+
+        if ($elements[personDetailType].currentlyHaveAnyKindOfCoverApplyPage.find('input').filter(':checked').val() === 'Y') {
+
+            // set pre results value with new value
+            // TODO this sometimes triggers a 500 error from health_rebate.jsp followed by - failed to fetch health rebate rates....
+            $elements[personDetailType].currentlyHaveAnyKindOfCoverPreResultsBtnGroup.find("input[value='Y']").prop('checked',true).trigger('change');
+
+            changeCurrentFundLabelToPreviousFund = false;
+            if (isLHCPossiblyApplicable) {
+                hideRowContinuousCover = false;
+
+                if (($elements[personDetailType].healthContinuousCover.filter(':checked').val() === 'N')) {
+                    hideRowPrivateHospital2 = false;
+
+                    if ($elements[personDetailType].everHadPrivateHospital_2.filter(':checked').val() === 'Y') {
+                        hideDontKnowMyDateRanges = false;
+
+                        if ($elements[personDetailType].iDontKnowMyDateRanges.is(":checked")) {
+                            hideDontKnowMyDateRangesPromptText = false;
+                        } else {
+                            hideRowFundHistory = false;
+                        }
+                    }
+                }
+            }
+        } else {
+            // set pre results value with new value
+            // TODO this sometimes triggers a 500 error from health_rebate.jsp followed by - failed to fetch health rebate rates.... maybe there is a better way to do this - it may only be happening when there is a partner?
+            // it could be cause due to non unique IDs
+            // it might be better to call an existing meerkat get or set method to do it?
+            // it also may have something to do with the code that lives in health primary /health partner that still may need to be removed
+            // need to look at the rebate code and see how that works!!!  /ctm/ajax/json/health_rebate.jsp
+            // also need to rip out the existing LHC calc stuff
+            $elements[personDetailType].currentlyHaveAnyKindOfCoverPreResultsBtnGroup.find("input[value='N']").prop('checked', true).trigger('change');
+
+            if ($elements[personDetailType].currentlyHaveAnyKindOfCoverApplyPage.find('input').filter(':checked').val() === 'N') {
+                hideRowPrivateHospital1 = false;
+
+                if ($elements[personDetailType].everHadPrivateHospital_1.filter(':checked').val() === 'Y') {
+
+                    if (isLHCPossiblyApplicable) {
+                        hideDontKnowMyDateRanges = false;
+
+                        if ($elements[personDetailType].iDontKnowMyDateRanges.is(":checked")) {
+                            hideDontKnowMyDateRangesPromptText = false;
+                        } else {
+                            hideRowFundHistory = false;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (changeCurrentFundLabelToPreviousFund) {
+            $elements[personDetailType].healthApplicationPreviousFundLabel.html(applicantPrefix + " Previous Health Fund");
+        } else {
+            $elements[personDetailType].healthApplicationPreviousFundLabel.html(applicantPrefix + " Current Health Fund");
+        }
+
+        meerkat.modules.fieldUtilities.toggleVisible(
+            $elements[personDetailType].everHadPrivateHospitalRow_1,
+            hideRowPrivateHospital1
+        );
+
+        meerkat.modules.fieldUtilities.toggleVisible(
+            $elements[personDetailType].healthContinuousCoverRow,
+            hideRowContinuousCover
+        );
+
+        meerkat.modules.fieldUtilities.toggleVisible(
+            $elements[personDetailType].everHadPrivateHospitalRow_2,
+            hideRowPrivateHospital2
+        );
+
+        meerkat.modules.fieldUtilities.toggleVisible(
+            $elements[personDetailType].healthFundHistoryRow,
+            hideRowFundHistory
+        );
+
+        $elements[personDetailType].iDontKnowMyDateRangesRow.toggleClass('hidden', hideDontKnowMyDateRanges);
+        $elements[personDetailType].iDontKnowMyDateRangesPromptText.toggleClass('hidden', hideDontKnowMyDateRangesPromptText);
     }
 
     function _toggleSelectGender(personDetailType) {
@@ -195,93 +476,12 @@
     }
 
     /*
-    *  Outputs the negated value of isLessThan31Or31AndBeforeJuly1
+    *  Checks if isLessThan31Or31AndBeforeJuly1 && if is born on or before 1/07/1934
     *  NOTE: There is a possibility that this may not work as expected if locale is set to US
     *  it might be better to use the designated websevice for this purpose or explicitly build the date string to ensure the correct format
     */
     function _isOfLhcAge(personDetailType) {
-
-        var isOfLhcAge = false;
-
-        if (!meerkat.modules.age.isLessThan31Or31AndBeforeJuly1($elements[personDetailType].healthApplicationDOB.val())) {
-            isOfLhcAge = true;
-        }
-
-        return isOfLhcAge;
-    }
-
-    /*
-     * Controls visibility for 'Ever held private hospital cover'
-     *      Only displayed if all of the following conditions are met:
-     *
-     *         -  Must be purchasing health insurance that includes Private hospital cover ( Not an extras only policy)
-     *         -  selected person (partner/primary) must be old enough so that LHC is applicable
-     *         -  Has not already been explicitly asked if the selected person has ever held 'Private Hospital' cover on the about you / insurance preferences pages
-     *               (health_healthCover_XXX_cover === 'Y' && health_healthCover_XXX_healthCoverLoading === 'N' )
-     *
-    */
-    function _toggleEverHad(personDetailType) {
-
-        var capitalisePersonDetailType = personDetailType.charAt(0).toUpperCase() + personDetailType.slice(1);
-        var hideRow = true;
-
-        if (_isLookingToPurchasePrivateHospitalCover() && _isOfLhcAge(personDetailType)) {
-            if (meerkat.modules['health' + capitalisePersonDetailType].getNeverExplicitlyAskedIfHeldPrivateHospitalCover() === true) {
-                hideRow = false;
-            }
-        }
-
-        meerkat.modules.fieldUtilities.toggleVisible(
-            $elements[personDetailType].healthCoverEverHadRow,
-            hideRow
-        );
-    }
-
-    /*
-     * Controls visibility for 'Private hospital coverage history' widget
-     *      Only displayed if all of the following conditions are met:
-     *
-     *         -  Must be purchasing health insurance that includes Private hospital cover ( Not an extras only policy)
-     *         -  selected person (partner/primary) must be old enough so that LHC is applicable
-     *         -  Has indicated that they have held Private hospital Cover but not continuously for the entire time required to prevent LHC
-     *                This means they have either indicated:
-     *
-     *                    -- 'they DO NOT currently hold either private hospital or extras cover' && 'they HAVE previously held Private Hospital cover'
-     *                         (health_healthCover_XXX_cover === 'N' && health_healthCover_XXX_everHadCover === 'Y' )
-     *
-     *                                       OR
-     *
-     *                    -- 'they DO currently hold either private hospital or extras cover'
-     *                       && 'they HAVE NOT continuously held Private Hospital cover for the entire duration to be exempt from LHC'
-     *                       && 'they HAVE previously held Private Hospital cover'
-     *
-     *                         (health_healthCover_XXX_cover === 'Y' && health_healthCover_XXX_healthCoverLoading === 'N' && health_application_XXX_everHadCover === 'Y')
-    */
-    function _toggleFundHistory(personDetailType) {
-
-        var capitalisePersonDetailType = personDetailType.charAt(0).toUpperCase() + personDetailType.slice(1);
-        var hideRow = true;
-
-        if (_isLookingToPurchasePrivateHospitalCover() && _isOfLhcAge(personDetailType)) {
-            if (meerkat.modules['health' + capitalisePersonDetailType].getHeldPrivateHealthInsuranceBeforeButNotCurrently() === true) {
-                hideRow = false;
-            } else {
-                if (meerkat.modules['health' + capitalisePersonDetailType].getNeverExplicitlyAskedIfHeldPrivateHospitalCover() === true) {
-
-                    if ($elements[personDetailType].healthApplicationCoverEverHad.filter(':checked').val() === 'Y') {
-                        hideRow = false;
-                    }
-                }
-            }
-        }
-
-        var showHide = hideRow ? 'remove' : 'add';
-        meerkat.modules.healthPrivateHospitalHistory[showHide + capitalisePersonDetailType + 'Validation']();
-
-        meerkat.modules.fieldUtilities.toggleVisible(
-            $elements[personDetailType].healthFundHistoryRow,
-            hideRow
-        );
+        return meerkat.modules.age.isAgeLhcApplicable($elements[personDetailType].healthApplicationDOB.val());
     }
 
     function _changeStreetNoLabel(unitType) {
@@ -366,6 +566,10 @@
         return $elements.primaryFirstname.val();
     }
 
+    // this only pre fills the field if it has not already been populated.
+    // the fields on the about you/insurance preferences page only contains current funds as it is geared towards the user's CURRENT fund
+    // the fields on the Application page are geared to capture the users previous fund or current fund for the purposes of clearance certificates or for getting information concerning pre served waiting periods
+    // it will only forward populate the field if the selected item does not have a duplicate value (eg CBHS) and it must exist in the second list
     function _prefillPreviousFund(applicant) {
 
         if (!_.isUndefined($elements[applicant].healthApplicationPreviousFund.filter(':selected').val())) {
@@ -395,12 +599,114 @@
         }
     }
 
+    function _prefill_currentlyHaveAnyKindOfCover(applicant) {
+        if ((!_.isUndefined($elements[applicant].currentlyHaveAnyKindOfCoverPreResults)) && (!_.isUndefined($elements[applicant].currentlyHaveAnyKindOfCoverApplyPage))) {
+
+            if ($elements[applicant].currentlyHaveAnyKindOfCoverPreResults.filter(':checked').val() === 'Y') {
+                $elements[applicant].currentlyHaveAnyKindOfCoverApplyPage.find("input[value='Y']").prop('checked',true).trigger('change');
+            } else {
+                $elements[applicant].currentlyHaveAnyKindOfCoverApplyPage.find("input[value='N']").prop('checked', true).trigger('change');
+            }
+        }
+    }
+
+    function getCurrentCover(applicant) {
+        return $elements[applicant].currentlyHaveAnyKindOfCoverApplyPage.find('input').filter(':checked').val();
+    }
+
+    //Apply Max LHC
+    // iff true, the applicant has never held 'Private Hospital Cover' or has indicated that the don't know there previous health cover date ranges
+    function getNeverHadCoverBeforeOrDoesNotKnowPreviousCoverPeriods(applicant) {
+        var returnVal = false;
+
+        if ($elements[personDetailType].currentlyHaveAnyKindOfCoverApplyPage.find('input').filter(':checked').val() === 'Y') {
+            if (isLHCPossiblyApplicable) {
+                if (($elements[personDetailType].healthContinuousCover.filter(':checked').val() === 'N')) {
+                    if ($elements[personDetailType].everHadPrivateHospital_2.filter(':checked').val() === 'Y') {
+                        if ($elements[personDetailType].iDontKnowMyDateRanges.is(":checked")) {
+                            returnVal = true;
+                        }
+                    } else if ($elements[personDetailType].everHadPrivateHospital_2.filter(':checked').val() === 'N') {
+                        returnVal = true;
+                    }
+                }
+            }
+        } else {
+            if ($elements[personDetailType].currentlyHaveAnyKindOfCoverApplyPage.find('input').filter(':checked').val() === 'N') {
+                if ($elements[personDetailType].everHadPrivateHospital_1.filter(':checked').val() === 'Y') {
+                    if (isLHCPossiblyApplicable) {
+                        if ($elements[personDetailType].iDontKnowMyDateRanges.is(":checked")) {
+                            returnVal = true;
+                        }
+                    }
+                } else if (isLHCPossiblyApplicable && $elements[personDetailType].everHadPrivateHospital_1.filter(':checked').val() === 'N') {
+                    returnVal = true;
+                }
+            }
+        }
+
+        return returnVal;
+    }
+
+    // 0% LHC
+    // iff true, the applicant has indicated that they have had 'Private Hospital Cover' continuously for the required period of time
+    function getHeldContinuousPrivateHospitalCover(applicant) {
+        var returnVal = false;
+
+        if (isLHCPossiblyApplicable) {
+            if ($elements[personDetailType].currentlyHaveAnyKindOfCoverApplyPage.find('input').filter(':checked').val() === 'Y') {
+                if (($elements[personDetailType].healthContinuousCover.filter(':checked').val() === 'Y')) {
+                    returnVal = true;
+                }
+            }
+        } else {
+            returnVal = true;
+        }
+
+        return returnVal;
+    }
+
+    // Further LHC Calculation required
+    // iff true, the applicant has indicated that they have not held 'Private Hospital Cover' continuously for the required period of time and have
+    // supplied their previous private health insurance cover periods to calculate/estimate their current LHC %
+    function getHeldPrivateHealthInsuranceBeforeButNotContinuously(applicant) {
+        var returnVal = false;
+
+        if ($elements[personDetailType].currentlyHaveAnyKindOfCoverApplyPage.find('input').filter(':checked').val() === 'Y') {
+            if (isLHCPossiblyApplicable) {
+                if (($elements[personDetailType].healthContinuousCover.filter(':checked').val() === 'N')) {
+                    if ($elements[personDetailType].everHadPrivateHospital_2.filter(':checked').val() === 'Y') {
+                        if (!$elements[personDetailType].iDontKnowMyDateRanges.is(":checked")) {
+                            returnVal = true;
+                        }
+                    }
+                }
+            }
+        } else {
+            if ($elements[personDetailType].currentlyHaveAnyKindOfCoverApplyPage.find('input').filter(':checked').val() === 'N') {
+                if ($elements[personDetailType].everHadPrivateHospital_1.filter(':checked').val() === 'Y') {
+                    if (isLHCPossiblyApplicable) {
+                        if (!$elements[personDetailType].iDontKnowMyDateRanges.is(":checked")) {
+                            returnVal = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return returnVal;
+    }
+
     meerkat.modules.register('healthApplyStep', {
         init: init,
         onBeforeEnter: onBeforeEnter,
         onInitialise: onInitialise,
         testStatesParity: testStatesParity,
-        getPrimaryFirstname: getPrimaryFirstname
+        getPrimaryFirstname: getPrimaryFirstname,
+        getCurrentCover: getCurrentCover,
+        getNeverHadCoverBeforeOrDoesNotKnowPreviousCoverPeriods: getNeverHadCoverBeforeOrDoesNotKnowPreviousCoverPeriods,
+        getHeldContinuousPrivateHospitalCover: getHeldContinuousPrivateHospitalCover,
+        getHeldPrivateHealthInsuranceBeforeButNotContinuously: getHeldPrivateHealthInsuranceBeforeButNotContinuously
     });
 
 })(jQuery);

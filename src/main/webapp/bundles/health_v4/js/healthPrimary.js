@@ -27,25 +27,6 @@
     }
 
     function _applyEventListeners() {
-        $elements.currentCover.add($elements.dob).on('change', function toggleContinuousCover() {
-            var $checked = $elements.currentCover.filter(':checked'),
-                hideField = !$checked.length || ($checked.val() === 'N') || ($checked.val() === 'Y' && meerkat.modules.age.isLessThan31Or31AndBeforeJuly1($elements.dob.val()));
-
-            meerkat.modules.fieldUtilities.toggleVisible(
-                $elements.primaryCoverLoading,
-                hideField
-            );
-        });
-
-        $elements.currentCover.on('change', function toggleEverHadCover() {
-            var $checked = $elements.currentCover.filter(':checked'),
-                hideField = !$checked.length || ($checked.val() === 'Y');
-
-            meerkat.modules.fieldUtilities.toggleVisible(
-                $elements.primaryEverHadCover,
-                hideField
-            );
-        });
 
         $elements.currentCover.on('change', function toggleCurrentHealthFund() {
             var $checked = $elements.currentCover.filter(':checked'),
@@ -68,15 +49,6 @@
         if ($checked.length) {
             $checked.change();
         } else {
-            meerkat.modules.fieldUtilities.toggleVisible(
-                $elements.primaryCoverLoading,
-                true
-            );
-
-            meerkat.modules.fieldUtilities.toggleVisible(
-                $elements.primaryEverHadCover,
-                true
-            );
 
             meerkat.modules.fieldUtilities.toggleVisible(
                 $elements.primaryCurrentFundName,
@@ -88,29 +60,6 @@
 
     function getAppDob() {
         return $elements.appDob.val();
-    }
-
-    // iff true, the applicant has never held 'Private Hospital Cover'
-    function getNeverHadCover() {
-        return $elements.currentCover.filter(':checked').val() === 'N' && $elements.primaryEverHadCover.filter(':checked').val() === 'N';
-    }
-
-    // iff true, the applicant does not currently have any cover but has held 'Private Hospital Cover' in the past
-    function getHeldPrivateHealthInsuranceBeforeButNotCurrently() {
-        return $elements.currentCover.filter(':checked').val() === 'N' && $elements.primaryEverHadCover.filter(':checked').val() === 'Y';
-    }
-
-    // iff true, the applicant currently has and has always had continuous 'Private Hospital Cover'
-    // iff false, (the test below is a better indicator) the primary applicant currently has (either Private Hospital or Extras cover) && has not had continuous Private Hospital, but has never explicitly been asked if they have ever held Private Hospital Cover
-    // iff null, the applicant has selected that they do not currently have (either 'Private Hospital' or 'Extras cover')
-    function getContinuousCover() {
-        return $elements.currentCover.filter(':checked').val() === 'Y' ? $elements.primaryCoverLoading.filter(':checked').val() === 'Y' : null;
-    }
-
-    // if true, the primary applicant currently has (either Private Hospital or Extras cover) && has not had continuous Private hospital,
-    // but has never explicitly been asked if they have ever held Private Hospital Cover
-    function getNeverExplicitlyAskedIfHeldPrivateHospitalCover() {
-        return $elements.currentCover.filter(':checked').val() === 'Y' && $elements.primaryCoverLoading.filter(':checked').val() === 'N';
     }
 
     function getHealthPreviousFund() {
@@ -126,10 +75,6 @@
         getCurrentCover: getCurrentCover,
         onStartInit: onStartInit,
         getAppDob: getAppDob,
-        getContinuousCover: getContinuousCover,
-        getNeverHadCover: getNeverHadCover,
-        getHeldPrivateHealthInsuranceBeforeButNotCurrently: getHeldPrivateHealthInsuranceBeforeButNotCurrently,
-        getNeverExplicitlyAskedIfHeldPrivateHospitalCover: getNeverExplicitlyAskedIfHeldPrivateHospitalCover,
         getHealthPreviousFund: getHealthPreviousFund,
         getHealthPreviousFundDescription: getHealthPreviousFundDescription
     });

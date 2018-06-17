@@ -16,6 +16,7 @@ public class ResponseAdapterV2Test {
 
     private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private static final String JOHNS_BIRTHDAY = "25/07/1983";
+    private static final String LHC_EXEMPT_BIRTHDATE = "01/07/1934";
 
     @Test
     public void testCalculateRebateValueWithEmptyRebate() {
@@ -29,41 +30,57 @@ public class ResponseAdapterV2Test {
 
 
     @Test
-    public void givenInsured_whenHasCover_andNoHealthCoverLoading_thenInsuredIsAffectedByLHC() {
+    public void givenInsured_isOldEnoughForLHC_andWantsHospitalCover_thenInsuredIsAffectedByLHC() {
         Insured testInsured = new Insured();
+        boolean islookingForHospitalCover = true;
         testInsured.setDob(JOHNS_BIRTHDAY);
-        testInsured.setCover("Y");
-        testInsured.setHealthCoverLoading("N");
 
-        assertTrue(ResponseAdapterV2.isInsuredAffectedByLHC(testInsured));
+        assertTrue(ResponseAdapterV2.isInsuredAffectedByLHC(testInsured, islookingForHospitalCover));
     }
 
     @Test
-    public void givenInsured_whenHasNoCover_andHasPreviouslyHasCover_thenInsuredIsAffectedByLHC() {
+    public void givenInsured_isOldEnoughForLHC_andWantsExtrasCoverOnly_thenInsuredIsNotAffectedByLHC() {
         Insured testInsured = new Insured();
+        boolean islookingForHospitalCover = true;
         testInsured.setDob(JOHNS_BIRTHDAY);
-        testInsured.setCover("N");
-        testInsured.setEverHadCover("Y");
 
-        assertTrue(ResponseAdapterV2.isInsuredAffectedByLHC(testInsured));
+        assertFalse(ResponseAdapterV2.isInsuredAffectedByLHC(testInsured, islookingForHospitalCover));
     }
 
     @Test
-    public void givenInsured_whenHasNoApplicableLHCCoverDays_thenInsuredIsNotAffectedByLHC() {
+    public void givenInsured_whenHasNoApplicableLHCCoverDays_andWantsExtrasCoverOnly_thenInsuredIsNotAffectedByLHC() {
         Insured testInsured = new Insured();
+        boolean islookingForHospitalCover = false;
         testInsured.setDob(LocalDate.now().plusDays(1).format(formatter));
 
-        assertFalse(ResponseAdapterV2.isInsuredAffectedByLHC(testInsured));
+        assertFalse(ResponseAdapterV2.isInsuredAffectedByLHC(testInsured, islookingForHospitalCover));
     }
 
     @Test
-    public void givenInsured_whenHasNoCover_andNoHealthCoverLoading_thenInsuredIsNotAffectedByLHC() {
+    public void givenInsured_whenHasNoApplicableLHCCoverDays_andWantsHospitalCover_thenInsuredIsNotAffectedByLHC() {
         Insured testInsured = new Insured();
+        boolean islookingForHospitalCover = true;
         testInsured.setDob(LocalDate.now().plusDays(1).format(formatter));
-        testInsured.setCover("N");
-        testInsured.setEverHadCover("N");
 
-        assertFalse(ResponseAdapterV2.isInsuredAffectedByLHC(testInsured));
+        assertFalse(ResponseAdapterV2.isInsuredAffectedByLHC(testInsured, islookingForHospitalCover));
+    }
+
+    @Test
+    public void givenInsured_isTooOldForLHC_andWantsExtrasCoverOnly_thenInsuredIsNotAffectedByLHC() {
+        Insured testInsured = new Insured();
+        boolean islookingForHospitalCover = false;
+        testInsured.setDob(LHC_EXEMPT_BIRTHDATE);
+
+        assertFalse(ResponseAdapterV2.isInsuredAffectedByLHC(testInsured, islookingForHospitalCover));
+    }
+
+    @Test
+    public void givenInsured_isTooOldForLHC_andWantsHospitalCover_thenInsuredIsNotAffectedByLHC() {
+        Insured testInsured = new Insured();
+        boolean islookingForHospitalCover = true;
+        testInsured.setDob(LHC_EXEMPT_BIRTHDATE);
+
+        assertFalse(ResponseAdapterV2.isInsuredAffectedByLHC(testInsured, islookingForHospitalCover));
     }
 
 }

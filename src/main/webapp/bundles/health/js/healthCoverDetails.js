@@ -53,7 +53,7 @@
 
     function setHealthFundsForPerson(initMode, $healthCover , $continuousCover, $dob, $lhcRow){
 
-        var lessThan31Or31AndBeforeJuly1 = meerkat.modules.age.isLessThan31Or31AndBeforeJuly1($dob.val());
+        var lessThan31Or31AndBeforeJuly1 = !meerkat.modules.age.isAgeLhcApplicable($dob.val());
         var healthCoverValue = $healthCover.find(':checked').val();
         if( healthCoverValue == 'Y' ) {
             if( lessThan31Or31AndBeforeJuly1 ) {

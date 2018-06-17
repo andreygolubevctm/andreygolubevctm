@@ -3,9 +3,20 @@
 <%@ include file="/WEB-INF/tags/taglib.tagf"%>
 
 <%@ attribute name="xpath" required="true" rtexprvalue="true" description="field group's xpath"%>
+<%@ attribute name="headerText" required="false" rtexprvalue="true" description="field's header text"%>
+<%@ attribute name="footerText" required="false" rtexprvalue="true" description="field's footer text"%>
+
+<c:if test="${empty headerText}">
+	<c:set var="headerText" value="" />
+</c:if>
+
+<c:if test="${empty footerText}">
+	<c:set var="footerText" value="" />
+</c:if>
 
 <div>
 
+	<div class="fundHistoryFieldHeaderText col-xs-12 row-content">${headerText}</div>
 	<%-- holds json array object data --%>
 	<field_v2:validatedHiddenField xpath="${xpath}/dates/coverDates" title="Insurance Cover history is required" additionalAttributes=" required " />
 
@@ -42,5 +53,7 @@
 
 	<c:set var="fieldxpathname" value="${xpath}/dates/dataTableContainer" />
 	<div id="${go:nameFromXpath(fieldxpathname)}" class="col-xs-12 row-content"></div>
+
+	<div class="fundHistoryFieldFooterText col-xs-12 row-content">${footerText}</div>
 
 </div>
