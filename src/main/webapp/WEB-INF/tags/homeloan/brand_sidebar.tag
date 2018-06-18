@@ -5,7 +5,7 @@
 <form_v2:fieldset legend="Our Lenders">
 <div class="row">
 	<div class="col-xs-12">
-		<p>Compare Home Loans from over 30 lenders</p>
+		<p>Compare Home Loans from over 45 lenders</p>
 	</div>
 
 	<c:set var="brands" value="${fn:split('ANZ,BOQ,CBA,MACQ,NAB,GEORGE,ING,SUNCORP,WESTPAC',',')}" />
