@@ -331,6 +331,7 @@
 	{{ if (obj.lender === 'Wide Bay Australia') img = 'WIDE'; }}
 	{{ if (obj.lender === 'Homeloans') img = 'HOMELOANS'; }}
 	{{ if (obj.lender === 'Virgin Money	') img = 'VIRG'; }}
+	{{ if (obj.lender === 'IMB') img = 'IMB'; }}
 
 
 
