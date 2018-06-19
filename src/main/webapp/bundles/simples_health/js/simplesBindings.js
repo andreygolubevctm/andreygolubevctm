@@ -318,7 +318,7 @@
         // Outbound
         else {
             $body
-                .removeClass('inbound')
+                .removeClass('inbound trial')
                 .addClass('outbound');
 
             var contatTypeTrialRegex = new RegExp('trial','i');
