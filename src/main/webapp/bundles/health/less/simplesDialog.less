@@ -89,21 +89,26 @@
 				background-color: darkgrey;
 			}
 		}
-
+		
 		&[data-step=results] {
 			#pageContent {
 				background-color: rgba(249,196,119,0.3);
 			}
 		}
-
+		
 		&[data-step=results].moreInfoVisible,
 		&[data-step=payment],
 		&[data-step=apply] {
 			#pageContent {
 				background-color: indianred;
 			}
+			&.trial {
+				#pageContent {
+					background-color: #c18eda;
+				}
+			}
 		}
-
+		
 		.simples-dialog-inbound {
 			display: none;
 		}
