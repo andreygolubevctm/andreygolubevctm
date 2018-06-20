@@ -23,7 +23,7 @@ public class LHCCalculationStrategyFactory {
         if (LHCDateCalculationSupport.isEligibleForMinimumLHC(lhcCalculationDetails, now)) {
             return new MinimumLHCCalculationStrategy();
         } else if (details.getNeverHadCover()) {
-            return new NeverHeldCoverCalculator(lhcCalculationDetails.getAge());
+            return new NeverHeldCoverCalculator(lhcCalculationDetails.getDateOfBirth(), now);
         } else {
             if (LHCDateCalculationSupport.heldCoverOnBaseDate(lhcCalculationDetails.getBaseDate(), lhcCalculationDetails.getCoverDates())) {
                 return new HeldCoverOnBaseDateCalculator(lhcCalculationDetails.getLhcDaysApplicable(), lhcCalculationDetails.getCoverDates(), now);

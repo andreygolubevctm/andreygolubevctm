@@ -3,13 +3,18 @@ package com.ctm.web.health.lhc.calculation;
 import com.ctm.web.health.lhc.model.query.CoverDateRange;
 import com.ctm.web.health.lhc.model.query.LHCCalculationDetails;
 import com.google.common.collect.ImmutableList;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.time.LocalDate;
+import java.time.Month;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import static com.ctm.web.health.lhc.calculation.Constants.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class LHCCalculationStrategyFactoryITest {
 
@@ -39,7 +44,7 @@ public class LHCCalculationStrategyFactoryITest {
 
         long lhc = LHCCalculationStrategyFactory.getInstance(lhcCalculationDetails, TEST_CALCULATION_DATE).calculateLHCPercentage();
 
-        assertEquals(14, lhc);
+        assertEquals(12, lhc);
 
     }
 
@@ -214,7 +219,7 @@ public class LHCCalculationStrategyFactoryITest {
 
 
     @Test
-    public void givenApplicante_whenBirthdayPriorToLHCApplicabilityDate_thenReturnMinimumLHC() {
+    public void givenApplicant_whenBirthdayPriorToLHCApplicabilityDate_thenReturnMinimumLHC() {
         LocalDate preLHCBirthday = Constants.LHC_BIRTHDAY_APPLICABILITY_DATE.minusDays(1);
 
         LHCCalculationDetails lhcCalculationDetails = new LHCCalculationDetails()
@@ -225,5 +230,168 @@ public class LHCCalculationStrategyFactoryITest {
         long lhc = LHCCalculationStrategyFactory.getInstance(lhcCalculationDetails, TEST_CALCULATION_DATE).calculateLHCPercentage();
 
         assertEquals(MIN_LHC_PERCENTAGE, lhc);
+    }
+
+
+    @Test
+    public void givenBdayThisFinYear_whenAlreadyOccured_thenCalculateCorrectLHC() {
+        LocalDate juneFirst = LocalDate.of(2018, 6, 1);
+
+        LHCCalculationDetails lhcCalculationDetails = new LHCCalculationDetails()
+                .dateOfBirth(LocalDate.of(1980, 3, 31))
+                .isContinuousCover(false)
+                .isNeverHadCover(true);
+
+        long lhc = LHCCalculationStrategyFactory.getInstance(lhcCalculationDetails, juneFirst).calculateLHCPercentage();
+
+        assertEquals(14, lhc);
+    }
+
+
+    @Ignore("Long Execution time - but proves LHC Correctness for all values of a birthday in a given financial year")
+    @Test
+    public void givenNeverHeldCover_whenAged36OnFirstDayOfFinancialYear_thenLHCRemainsTheSame() {
+        Set<LocalDate> daysInFinancialYear = LHCDateCalculationSupport.getCoveredDaysInRange(Collections.singletonList(new CoverDateRange(LocalDate.of(2017, Month.JULY, 1), LocalDate.of(2018, Month.JUNE, 30))));
+        Set<LocalDate> daysAged36ForFinYear = LHCDateCalculationSupport.getCoveredDaysInRange(Collections.singletonList(new CoverDateRange(LocalDate.of(1980, Month.JULY, 2), LocalDate.of(1981, Month.JULY, 1))));
+
+        daysAged36ForFinYear.forEach(birthday -> {
+            daysInFinancialYear.forEach(lhcCheckDate -> {
+                LHCCalculationDetails neverHadCover = new LHCCalculationDetails()
+                        .dateOfBirth(birthday)
+                        .isContinuousCover(false)
+                        .isNeverHadCover(true);
+                long lhc = LHCCalculationStrategyFactory.getInstance(neverHadCover, lhcCheckDate).calculateLHCPercentage();
+                int expectedLHC = 12;
+                if (lhc != expectedLHC) {
+                    fail(String.format("Expected LHC to be '%1$d', but was '%2$d'. Birthday: '%3$s', LHC Check Date: '%4$s'", expectedLHC, lhc, birthday, lhcCheckDate));
+                }
+            });
+        });
+    }
+
+    @Ignore("Long Execution time - but proves LHC Correctness for all values of a birthday in a given financial year")
+    @Test
+    public void givenNeverHeldCover_whenAged37OnFirstDayOfFinancialYear_thenLHCRemainsTheSame() {
+        Set<LocalDate> daysInFinancialYear = LHCDateCalculationSupport.getCoveredDaysInRange(Collections.singletonList(new CoverDateRange(LocalDate.of(2017, Month.JULY, 1), LocalDate.of(2018, Month.JUNE, 30))));
+        Set<LocalDate> daysAged37ForFinYear = LHCDateCalculationSupport.getCoveredDaysInRange(Collections.singletonList(new CoverDateRange(LocalDate.of(1979, Month.JULY, 2), LocalDate.of(1980, Month.JULY, 1))));
+
+        daysAged37ForFinYear.forEach(birthday -> {
+            daysInFinancialYear.forEach(lhcCheckDate -> {
+                LHCCalculationDetails neverHadCover = new LHCCalculationDetails()
+                        .dateOfBirth(birthday)
+                        .isContinuousCover(false)
+                        .isNeverHadCover(true);
+                long lhc = LHCCalculationStrategyFactory.getInstance(neverHadCover, lhcCheckDate).calculateLHCPercentage();
+                int expectedLHC = 14;
+                if (lhc != expectedLHC) {
+                    fail(String.format("Expected LHC to be '%1$d', but was '%2$d'. Birthday: '%3$s', LHC Check Date: '%4$s'", expectedLHC, lhc, birthday, lhcCheckDate));
+                }
+            });
+        });
+    }
+
+
+    @Test
+    public void givenNeverHeldCover_whenBirthdayOnSameDayAsCheck_thenLHCIs14() {
+        LocalDate birthday = LocalDate.of(1980, 7, 1);
+        LocalDate lhcCheckDate = LocalDate.of(2017, 7, 1);
+        LHCCalculationDetails neverHadCover = new LHCCalculationDetails()
+                .dateOfBirth(birthday)
+                .isContinuousCover(false)
+                .isNeverHadCover(true);
+
+        long lhc = LHCCalculationStrategyFactory.getInstance(neverHadCover, lhcCheckDate).calculateLHCPercentage();
+        assertEquals(14, lhc);
+    }
+
+    @Test
+    public void givenNeverHeldCover_whenBirthdayIsDayAfterCheck_thenLHCIs12() {
+        LocalDate birthday = LocalDate.of(1980, 7, 2);
+        LocalDate lhcCheckDate = LocalDate.of(2017, 7, 1);
+        LHCCalculationDetails neverHadCover = new LHCCalculationDetails()
+                .dateOfBirth(birthday)
+                .isContinuousCover(false)
+                .isNeverHadCover(true);
+
+        long lhc = LHCCalculationStrategyFactory.getInstance(neverHadCover, lhcCheckDate).calculateLHCPercentage();
+        assertEquals(12, lhc);
+    }
+
+    @Test
+    public void givenNeverHeldCover_whenBirthdayIsDayBeforeCheck_thenLHCIs14() {
+        LocalDate birthday = LocalDate.of(1980, 6, 30);
+        LocalDate lhcCheckDate = LocalDate.of(2017, 7, 1);
+        LHCCalculationDetails neverHadCover = new LHCCalculationDetails()
+                .dateOfBirth(birthday)
+                .isContinuousCover(false)
+                .isNeverHadCover(true);
+
+        long lhc = LHCCalculationStrategyFactory.getInstance(neverHadCover, lhcCheckDate).calculateLHCPercentage();
+        assertEquals(14, lhc);
+    }
+
+    @Test
+    public void givenNeverHeldCover_whenBornBeforeJulyFirstIn1962_thenReturn50PercentLHC() {
+        LocalDate birthday = LocalDate.of(1962, 6, 15);
+        LocalDate lhcCheckDate = LocalDate.of(2018, 6, 30);
+        LHCCalculationDetails neverHadCover = new LHCCalculationDetails()
+                .dateOfBirth(birthday)
+                .isContinuousCover(false)
+                .isNeverHadCover(true);
+
+        long lhc = LHCCalculationStrategyFactory.getInstance(neverHadCover, lhcCheckDate).calculateLHCPercentage();
+        assertEquals(50, lhc);
+    }
+
+    @Test
+    public void givenNeverHeldCover_whenBornOnJulyFirstIn1961_thenReturn52PercentLHC() {
+        LocalDate birthday = LocalDate.of(1961, 7, 1);
+        LocalDate lhcCheckDate = LocalDate.of(2018, 6, 30);
+        LHCCalculationDetails neverHadCover = new LHCCalculationDetails()
+                .dateOfBirth(birthday)
+                .isContinuousCover(false)
+                .isNeverHadCover(true);
+
+        long lhc = LHCCalculationStrategyFactory.getInstance(neverHadCover, lhcCheckDate).calculateLHCPercentage();
+        assertEquals(52, lhc);
+    }
+
+    @Test
+    public void givenNeverHeldCover_whenBornAfterJulyFirstIn1961_thenReturn50PercentLHC() {
+        LocalDate birthday = LocalDate.of(1961, 7, 2);
+        LocalDate lhcCheckDate = LocalDate.of(2018, 6, 30);
+        LHCCalculationDetails neverHadCover = new LHCCalculationDetails()
+                .dateOfBirth(birthday)
+                .isContinuousCover(false)
+                .isNeverHadCover(true);
+
+        long lhc = LHCCalculationStrategyFactory.getInstance(neverHadCover, lhcCheckDate).calculateLHCPercentage();
+        assertEquals(50, lhc);
+    }
+
+    @Test
+    public void givenNeverHeldCover_whenBornAfterJulyFirstIn1961_andBeforeJulyFirst1962_thenReturn50PercentLHC() {
+        LocalDate birthday = LocalDate.of(1962, 3, 15);
+        LocalDate lhcCheckDate = LocalDate.of(2018, 6, 30);
+        LHCCalculationDetails neverHadCover = new LHCCalculationDetails()
+                .dateOfBirth(birthday)
+                .isContinuousCover(false)
+                .isNeverHadCover(true);
+
+        long lhc = LHCCalculationStrategyFactory.getInstance(neverHadCover, lhcCheckDate).calculateLHCPercentage();
+        assertEquals(50, lhc);
+    }
+
+    @Test
+    public void givenNeverHeldCover_whenBornOnJulyFirstIn1962_thenReturn50PercentLHC() {
+        LocalDate birthday = LocalDate.of(1962, 7, 1);
+        LocalDate lhcCheckDate = LocalDate.of(2018, 6, 30);
+        LHCCalculationDetails neverHadCover = new LHCCalculationDetails()
+                .dateOfBirth(birthday)
+                .isContinuousCover(false)
+                .isNeverHadCover(true);
+
+        long lhc = LHCCalculationStrategyFactory.getInstance(neverHadCover, lhcCheckDate).calculateLHCPercentage();
+        assertEquals(50, lhc);
     }
 }

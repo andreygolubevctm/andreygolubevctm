@@ -5,6 +5,7 @@ import com.ctm.web.health.lhc.model.query.LHCCalculationDetails;
 import org.elasticsearch.common.collect.ImmutableList;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.time.chrono.ChronoLocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Collections;
@@ -99,10 +100,21 @@ public class LHCDateCalculationSupport {
         return calculateAgeInYearsFrom(dateOfBirth, Constants.JULY_FIRST_2000);
     }
 
+    /**
+     * Utility function to calculate an applicant's base date from their date of birth.
+     *
+     * The base date is the start of the financial year "after" (not after or equal to) their 31st birthday.
+     * For example, with a date of July 1st, the start of the financial year following their 31st birthday, is in fact
+     * their 32nd birthday.
+     *
+     * @param dateOfBirth the applicant's date of birth.
+     * @return the start of the financial year following the 31st anniversary of a birthday.
+     */
     public static LocalDate getBaseDate(LocalDate dateOfBirth) {
         long ageInYearsAtJulyFirst2000 = calculateAgeInYearsAtJulyFirst2000(dateOfBirth);
+
         if (ageInYearsAtJulyFirst2000 < Constants.LHC_EXEMPT_AGE_CUT_OFF) {
-            return Constants.JULY_FIRST_2000.plusYears(Constants.LHC_EXEMPT_AGE_CUT_OFF - ageInYearsAtJulyFirst2000);
+            return getFinancialYearStart(dateOfBirth.plusYears(Constants.LHC_EXEMPT_AGE_CUT_OFF + 1));
         } else {
             return Constants.JULY_FIRST_2000;
         }
@@ -295,5 +307,21 @@ public class LHCDateCalculationSupport {
      */
     public static boolean isEligibleForMinimumLHC(LHCCalculationDetails details, LocalDate onDay) {
         return details.getContinuousCover() || getLhcDaysApplicable(details.getDateOfBirth(), onDay) == 0;
+    }
+
+
+    /**
+     * Returns July First (Start of the Financial Year) for the specified Date.
+     *
+     * @param date the date to find the beginning of the financial year for.
+     * @return the date of the beginning of the financial year.
+     */
+    public static LocalDate getFinancialYearStart(LocalDate date) {
+        final LocalDate newFinancialYear = date.withDayOfMonth(1).withMonth(Month.JULY.getValue());
+        if (newFinancialYear.isBefore(date) || newFinancialYear.equals(date)) {
+            return newFinancialYear;
+        } else {
+            return newFinancialYear.minusYears(1);
+        }
     }
 }
