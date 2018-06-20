@@ -27,10 +27,12 @@
             primary: {
                 fund: $('#clientFund').find('select'),
                 fundContainer: $('#health_previousfund'),
+                everHadPrivateHospital_1: $(':input[name=health_application_primary_everHadCoverPrivateHospital1]')
             },
             partner: {
                 fund: $('#partnerFund').find('select'),
-                fundContainer: $('#partnerpreviousfund')
+                fundContainer: $('#partnerpreviousfund'),
+                everHadPrivateHospital_1: $(':input[name=health_application_partner_everHadCoverPrivateHospital1]')
             }
         };
     }
@@ -65,16 +67,26 @@
             }
             noneOption.remove();
         } else if (hasCover == 'N') {
-            if (noneOption.length === 0) {
-                 element.append(
-                    $("<option/>",{
-                        value:	noCurrentFund,
-                        text:	"No current health fund"
-                    })
-                );
+
+            // This inserts 'No current health fund' it is displayed so that users can select their previous fund - there are many reasons users may want
+            // to add their previous fund even though they may not currently have health insurance including waiting periods served for health insurance or
+            // applicable LHC info for private hospital insurance
+            if ($elements[person].everHadPrivateHospital_1.filter(':checked').val() === 'N') {
+                if (noneOption.length === 0) {
+                     element.append(
+                        $("<option/>",{
+                            value:	noCurrentFund,
+                            text:	"No current health fund"
+                        })
+                    );
+                }
+                element.val(noCurrentFund);
             }
-            element.val(noCurrentFund);
-            $fundFields.hide();
+
+            // This hides the previous fund field - this field is hidden but not mutated if does not currently have health insurance but has not selected an answer for previous health insurance
+            if (_.isUndefined($elements[person].everHadPrivateHospital_1.filter(':checked').val())) {
+                $fundFields.hide();
+            }
         }
         meerkat.modules.healthCoverDetails.displayHealthFunds();
     }

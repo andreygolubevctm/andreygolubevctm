@@ -636,7 +636,7 @@
         meerkat.modules.healthRates.loadRates(afterFetchRates);
     }
 
-    // Wrapper around results component, load results data beofore result page
+    // Wrapper around results component, load results data before result page
     function getBeforeResultsPage() {
         // Load rates before loading the results data (hidden fields are populated when rates are loaded).
         var afterFetchRates = function() {

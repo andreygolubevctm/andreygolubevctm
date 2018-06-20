@@ -20,13 +20,9 @@
             rebate: $('input[name="health_healthCover_rebate"]'),
             primaryDob: $('#health_healthCover_primary_dob'),
             primaryAppDob: $('#health_application_primary_dob'),
-            primaryLoading: $('input[name="health_healthCover_primary_healthCoverLoading"]'),   //this is/was the have you had continuous cover question?  (it was doing if yes 0% else full LHC)
-            primaryCurrent: $('input[name="health_healthCover_primary_cover"]'),                //this is/was the have you had any kind of health cover question that was always treated as if it was do you have HOSPITAL cover question!
             primaryLoadingManual: $('.primary-lhc'),
             partnerDob: $('#health_healthCover_partner_dob'),
             partnerAppDob: $('#health_application_partner_dob'),
-            partnerLoading: $('input[name="health_healthCover_partner_healthCoverLoading"]'),   //this is/was the have you had continuous cover question?  (it was doing if yes 0% else full LHC)
-            partnerCurrent: $('input[name="health_healthCover_partner_cover"]'),                //this is/was the have you had any kind of health cover question that was always treated as if it was do you have HOSPITAL cover question!
             partnerLoadingManual: $('input[name="health_healthCover_partner_lhc"]'),
             dependants: $('#health_healthCover_dependants'),
             searchDate: $('#health_searchDate')
@@ -37,33 +33,64 @@
         }
     }
 
+    // this is to make this meerkat module compatible with the new fields as a temp fix
+    function _getEverHadAnyCover_and_ContinuousCover_Equivalent(applicant) {
+
+        var oldEverHadAnyCoverEquivalent,
+            oldContinuousCoverEquivalent;
+
+        var capitalisePersonDetailType = applicant.charAt(0).toUpperCase() + applicant.slice(1);
+        var currentlyHaveAnyKindOfCoverPreResults = meerkat.modules['health' + capitalisePersonDetailType].getCurrentlyHaveAnyKindOfCoverPreResults();
+        var everHadPrivateHospital_1 = $(':input[name=health_application_' + applicant + '_everHadCoverPrivateHospital1]').filter(':checked').val();
+        var healthContinuousCover = $(':input[name=health_healthCover_' + applicant + '_healthCoverLoading]').filter(':checked').val();
+
+        if (_.isUndefined(everHadPrivateHospital_1) && _.isUndefined(healthContinuousCover)) {
+            //pre-results
+            //treat it as full results
+            oldEverHadAnyCoverEquivalent = 'Y';
+            oldContinuousCoverEquivalent = 'N';
+        } else {
+
+            if ((currentlyHaveAnyKindOfCoverPreResults === 'N' && everHadPrivateHospital_1 === 'Y') || (currentlyHaveAnyKindOfCoverPreResults === 'Y' && healthContinuousCover === 'N')) {
+                //Full LHC  (use Calc)  Pass Fund Data
+                oldEverHadAnyCoverEquivalent = 'Y';
+                oldContinuousCoverEquivalent = 'N';
+            } else if (currentlyHaveAnyKindOfCoverPreResults === 'Y' && healthContinuousCover === 'Y') {
+                //LHC 0%
+                oldEverHadAnyCoverEquivalent = 'Y';
+                oldContinuousCoverEquivalent = 'Y';
+            } else if (currentlyHaveAnyKindOfCoverPreResults === 'N' && everHadPrivateHospital_1 === 'N') {
+                //Full LHC        (use Calc)  Dont pass fund data
+                oldEverHadAnyCoverEquivalent = 'N';
+                //oldContinuousCoverEquivalent = UNDEFINED
+            } else {
+                //treat it as full results
+                oldEverHadAnyCoverEquivalent = 'Y';
+                oldContinuousCoverEquivalent = 'N';
+            }
+
+        }
+
+        return {"oldEverHadAnyCoverEquivalent": oldEverHadAnyCoverEquivalent, "oldContinuousCoverEquivalent" : oldContinuousCoverEquivalent };
+    }
+
     function loadRatesBeforeResultsPage(forceRebate, callback) {
         _.defer(function(){
-
-            var oldPrimaryObj,
-                oldPrimaryEverHadAnyCoverEquivalent,
-                oldPrimaryContinuousCoverEquivalent,
-                oldPartnerObj,
-                oldPartnerEverHadAnyCoverEquivalent,
-                oldPartnerContinuousCoverEquivalent;
-
-            oldPrimaryObj = _getPrimary_EverHadAnyCover_and_ContinuousCover_Equivalent();
-            oldPartnerObj = _getPartner_EverHadAnyCover_and_ContinuousCover_Equivalent();
-            oldPrimaryEverHadAnyCoverEquivalent = oldPrimaryObj.oldEverHadAnyCoverEquivalent;
-            oldPrimaryContinuousCoverEquivalent = oldPrimaryObj.oldContinuousCoverEquivalent;
-            oldPartnerEverHadAnyCoverEquivalent = oldPartnerObj.oldEverHadAnyCoverEquivalent;
-            oldPartnerContinuousCoverEquivalent = oldPartnerObj.oldContinuousCoverEquivalent;
-
             var postData = {
                 dependants: $elements.dependants.val(),
                 income: $elements.income.val() || 0,
                 rebate_choice: forceRebate === true ? 'Y' : $elements.rebate.filter(':checked').val(),
                 primary_dob: $elements.primaryDob.val(),
-                primary_loading: oldPrimaryContinuousCoverEquivalent,
-                primary_current: oldPrimaryEverHadAnyCoverEquivalent,
+                primary_loading: '',
+                primary_current: '',
                 primary_loading_manual: $elements.primaryLoadingManual.val(),
                 cover: meerkat.modules.healthSituation.getSituation()
             };
+
+            var oldPrimaryObj = _getEverHadAnyCover_and_ContinuousCover_Equivalent('primary');
+
+            postData.primary_current = oldPrimaryObj.oldEverHadAnyCoverEquivalent;
+            postData.primary_loading = oldPrimaryObj.oldContinuousCoverEquivalent;
 
             // If the customer answers Yes for current health insurance, assume 0% LHC
             if (postData.primary_current === 'Y' && postData.primary_loading !== 'N') {
@@ -72,8 +99,11 @@
 
             if (meerkat.modules.healthRebate.hasPartner() && !_.isEmpty($elements.partnerDob.val())) {
                 postData.partner_dob = $elements.partnerDob.val();
-                postData.partner_current = oldPartnerEverHadAnyCoverEquivalent || 'N';
-                postData.partner_loading = oldPartnerContinuousCoverEquivalent || 'N';
+
+                var oldPartnerObj = _getEverHadAnyCover_and_ContinuousCover_Equivalent('partner');
+
+                postData.partner_current = oldPartnerObj.oldEverHadAnyCoverEquivalent || 'N';
+                postData.partner_loading = oldPartnerObj.oldContinuousCoverEquivalent || 'N';
                 postData.partner_loading_manual = $elements.partnerLoadingManual.val();
             }
 
@@ -81,102 +111,32 @@
         });
     }
 
-    // this is to make this meerkat module compatible with the new fields as a temp fix
-    function _getPrimary_EverHadAnyCover_and_ContinuousCover_Equivalent() {
-
-        var oldEverHadAnyCoverEquivalent,
-            oldContinuousCoverEquivalent;
-
-        var currentlyHaveAnyKindOfCoverApplyPage_primary = $('#health_application_health_cover').find('input').filter(':checked').val();
-        var everHadPrivateHospital_1_primary = $(':input[name=health_healthCover_primary_everHadCover]').filter(':checked').val();
-        var healthContinuousCover_primary = $(':input[name=health_healthCover_primary_healthCoverLoading]').filter(':checked').val();
-
-        if ((currentlyHaveAnyKindOfCoverApplyPage_primary === 'N' && everHadPrivateHospital_1_primary === 'Y') || (currentlyHaveAnyKindOfCoverApplyPage_primary === 'Y' && healthContinuousCover_primary === 'N')) {
-            //Full LHC  (use Calc)  Pass Fund Data
-            oldEverHadAnyCoverEquivalent = 'Y';
-            oldContinuousCoverEquivalent = 'N';
-        } else if (currentlyHaveAnyKindOfCoverApplyPage_primary === 'Y' && healthContinuousCover_primary === 'Y') {
-            //LHC 0%
-            oldEverHadAnyCoverEquivalent = 'Y';
-            oldContinuousCoverEquivalent = 'Y';
-        } else if (currentlyHaveAnyKindOfCoverApplyPage_primary === 'N' && everHadPrivateHospital_1_primary === 'N') {
-            //Full LHC        (use Calc)  Dont pass fund data
-
-            oldEverHadAnyCoverEquivalent = 'N';
-            //oldContinuousCoverEquivalent = UNDEFINED
-        } else {
-            //pre-results
-            //treat it as full results
-            oldEverHadAnyCoverEquivalent = 'Y';
-            oldContinuousCoverEquivalent = 'N';
-        }
-
-        return {"oldEverHadAnyCoverEquivalent": oldEverHadAnyCoverEquivalent, "oldContinuousCoverEquivalent" : oldContinuousCoverEquivalent };
-    }
-
-    function _getPartner_EverHadAnyCover_and_ContinuousCover_Equivalent() {
-        var oldEverHadAnyCoverEquivalent,
-            oldContinuousCoverEquivalent;
-
-        var currentlyHaveAnyKindOfCoverApplyPage_partner = $('#health_application_partner_health_cover').find('input').filter(':checked').val();
-        var everHadPrivateHospital_1_partner = $(':input[name=health_healthCover_partner_everHadCover]').filter(':checked').val();
-        var healthContinuousCover_partner = $(':input[name=health_healthCover_partner_healthCoverLoading]').filter(':checked').val();
-
-        if ((currentlyHaveAnyKindOfCoverApplyPage_partner === 'N' && everHadPrivateHospital_1_partner === 'Y') || (currentlyHaveAnyKindOfCoverApplyPage_partner === 'Y' && healthContinuousCover_partner === 'N')) {
-            //Full LHC  (use Calc)  Pass Fund Data
-            oldEverHadAnyCoverEquivalent = 'Y';
-            oldContinuousCoverEquivalent = 'N';
-        } else if (currentlyHaveAnyKindOfCoverApplyPage_partner === 'Y' && healthContinuousCover_partner === 'Y') {
-            //LHC 0%
-            oldEverHadAnyCoverEquivalent = 'Y';
-            oldContinuousCoverEquivalent = 'Y';
-        } else if (currentlyHaveAnyKindOfCoverApplyPage_partner === 'N' && everHadPrivateHospital_1_partner === 'N') {
-            //Full LHC        (use Calc)  Dont pass fund data
-            oldEverHadAnyCoverEquivalent = 'N';
-            //oldContinuousCoverEquivalent = UNDEFINED
-        } else {
-            //pre-results
-            //treat it as full results
-            oldEverHadAnyCoverEquivalent = 'Y';
-            oldContinuousCoverEquivalent = 'N';
-        }
-
-        return {"oldEverHadAnyCoverEquivalent": oldEverHadAnyCoverEquivalent, "oldContinuousCoverEquivalent" : oldContinuousCoverEquivalent };
-    }
-
-// Load the rates object via ajax. Also validates currently filled in fields to ensure only valid attempts are made.
+    // Load the rates object via ajax. Also validates currently filled in fields to ensure only valid attempts are made.
     function loadRates(callback) {
         _.defer(function() {
-
-            var oldPrimaryObj,
-                oldPrimaryEverHadAnyCoverEquivalent,
-                oldPrimaryContinuousCoverEquivalent,
-                oldPartnerObj,
-                oldPartnerEverHadAnyCoverEquivalent,
-                oldPartnerContinuousCoverEquivalent;
-
-            oldPrimaryObj = _getPrimary_EverHadAnyCover_and_ContinuousCover_Equivalent();
-            oldPartnerObj = _getPartner_EverHadAnyCover_and_ContinuousCover_Equivalent();
-            oldPrimaryEverHadAnyCoverEquivalent = oldPrimaryObj.oldEverHadAnyCoverEquivalent;
-            oldPrimaryContinuousCoverEquivalent = oldPrimaryObj.oldContinuousCoverEquivalent;
-            oldPartnerEverHadAnyCoverEquivalent = oldPartnerObj.oldEverHadAnyCoverEquivalent;
-            oldPartnerContinuousCoverEquivalent = oldPartnerObj.oldContinuousCoverEquivalent;
-
             var postData = {
                 dependants: $elements.dependants.val(),
                 income: $elements.income.val() || 0,
                 rebate_choice: $elements.rebate.filter(':checked').val(),
                 primary_dob: $elements.primaryDob.val(),
-                primary_loading: oldPrimaryContinuousCoverEquivalent,
-                primary_current: oldPrimaryEverHadAnyCoverEquivalent,
+                primary_loading: '',
+                primary_current: '',
                 primary_loading_manual: $elements.primaryLoadingManual.val(),
                 cover: meerkat.modules.healthSituation.getSituation()
             };
 
+            var oldPrimaryObj = _getEverHadAnyCover_and_ContinuousCover_Equivalent('primary');
+
+            postData.primary_current = oldPrimaryObj.oldEverHadAnyCoverEquivalent;
+            postData.primary_loading = oldPrimaryObj.oldContinuousCoverEquivalent;
+
             if (meerkat.modules.healthRebate.hasPartner() && !_.isEmpty($elements.partnerDob.val())) {
                 postData.partner_dob = $elements.partnerDob.val();
-                postData.partner_current = oldPartnerEverHadAnyCoverEquivalent || 'N';
-                postData.partner_loading = oldPartnerContinuousCoverEquivalent || 'N';
+
+                var oldPartnerObj = _getEverHadAnyCover_and_ContinuousCover_Equivalent('partner');
+
+                postData.partner_current = oldPartnerObj.oldEverHadAnyCoverEquivalent || 'N';
+                postData.partner_loading = oldPartnerObj.oldContinuousCoverEquivalent || 'N';
                 postData.partner_loading_manual = $elements.partnerLoadingManual.val();
             }
 
@@ -185,8 +145,10 @@
                 // in application stage
                 postData.primary_dob = $elements.primaryAppDob.val();
                 postData.partner_dob = $elements.partnerAppDob.val() || postData.primary_dob;  // must default, otherwise fetchRates fails.
-                postData.primary_current = ( meerkat.modules.healthPreviousFund.getPrimaryFund() == 'NONE' ) ? 'N' : 'Y';
-                postData.partner_current = ( meerkat.modules.healthPreviousFund.getPartnerFund() == 'NONE' ) ? 'N' : 'Y';
+
+                // if 'NONE' is selected for previous fund  only set current to 'N' otherwise use whatever it is currently set to
+                postData.primary_current = ( meerkat.modules.healthPreviousFund.getPrimaryFund() == 'NONE' ) ? 'N' : postData.primary_current;
+                postData.partner_current = ( meerkat.modules.healthPreviousFund.getPartnerFund() == 'NONE' ) ? 'N' : postData.partner_current;
 
             }
 

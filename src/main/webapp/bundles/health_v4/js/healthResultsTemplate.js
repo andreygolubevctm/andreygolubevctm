@@ -417,8 +417,8 @@
          * Remove AUF discount amount: HLT-4562
          * Temporary commented it out for future use
         if (fundCode === 'AUF') {
-            if (meerkat.modules.healthPrimary.getCurrentCover() === 'N' ||
-                (meerkat.modules.healthChoices.hasPartner() && meerkat.modules.healthPartner.getCurrentCover() === 'N')) {
+            if (meerkat.modules.healthPrimary.getCurrentlyHaveAnyKindOfCoverPreResults() === 'N' ||
+                (meerkat.modules.healthChoices.hasPartner() && meerkat.modules.healthPartner.getCurrentlyHaveAnyKindOfCoverPreResults() === 'N')) {
                 discountPercentage = '7.5';
             } else {
                 discountPercentage = '4';

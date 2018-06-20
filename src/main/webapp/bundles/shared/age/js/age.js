@@ -59,7 +59,7 @@
 
     /**
      * isLessThan31Or31AndBeforeJuly1() test whether the dob provided makes the user less than
-     * 31 or is currently 31 but the current date is before 1st July following their birthday.
+     * 31 or is currently 31 but the current datea is before 1st July following their birthday.
      *
      * @param _dobString	String representation of a birthday (eg 24/02/1986)
      * @returns {Boolean}
@@ -87,7 +87,6 @@
             return false;
         }
     }
-
 
     /**
      * isTooOldForLHC() test whether the dob provided makes the user too old for LHC
@@ -133,7 +132,6 @@
     function isAgeLhcApplicable(_dobString) {
         return ((!isTooOldForLHC(_dobString)) && (!isLessThan31Or31AndBeforeJuly1(_dobString)));
     }
-
 
     meerkat.modules.register("age", {
         init: initAge,

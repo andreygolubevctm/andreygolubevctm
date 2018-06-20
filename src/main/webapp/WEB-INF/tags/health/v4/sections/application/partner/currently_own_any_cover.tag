@@ -1,9 +1,9 @@
-<%@ tag description="Does your partner have private health insurance row"%>
 <%@ tag language="java" pageEncoding="UTF-8" %>
+<%@ tag description="Does your partner have private health insurance row"%>
 <%@ include file="/WEB-INF/tags/taglib.tagf" %>
 
 <%-- ATTRIBUTES --%>
-<%@ attribute name="xpath" 		required="true"	 rtexprvalue="true"	 description="partner's health insurance status xpath" %>
+<%@ attribute name="xpath" 		required="true"	 rtexprvalue="true"	 description="field group's xpath" %>
 
 <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
 

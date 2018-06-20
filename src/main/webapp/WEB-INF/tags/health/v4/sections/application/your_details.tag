@@ -4,14 +4,15 @@
 
 <c:set var="xpath" value="${pageSettings.getVerticalCode()}/application" />
 <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
-<div id="partner_${name}" class="health_application">
+<%-- HTML --%>
+<div id="${name}" class="health_application">
     <form_v4:fieldset legend="Your Details">
 
-        <%-- VARIABLES --%>
         <health_v4_application:person_details xpath="${xpath}/primary" title="Your" id="primary" />
         <health_v4_application:contact_details xpath="${pageSettings.getVerticalCode()}/application" />
 
         <health_v4_application_primary:currently_own_any_cover xpath="${xpath}" />
+        <health_v4_application_primary:ever_owned_hospital_cover xpath="${xpath}" variant="PrivateHospital1" />
 
         <c:set var="xpath" value="${pageSettings.getVerticalCode()}/previousfund" />
         <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
@@ -39,17 +40,15 @@
             </div>
         </div>
 
-        <%-- reset xpath to situation --%>
+        <%-- reset xpath to the same as used on About You page --%>
         <c:set var="xpath" 			value="${pageSettings.getVerticalCode()}/healthCover" />
         <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
-        <health_v4_application_primary:ever_owned_hospital_cover xpath="${xpath}" />
         <health_v4_application_primary:continuous_hospital_cover xpath="${xpath}" />
 
-
-        <%-- reset xpath to application --%>
+        <%-- reset xpath back to application --%>
         <c:set var="xpath" 			value="${pageSettings.getVerticalCode()}/application" />
         <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
-        <health_v4_application_primary:ever_owned_hospital_cover xpath="${xpath}" />
+        <health_v4_application_primary:ever_owned_hospital_cover xpath="${xpath}" variant="PrivateHospital2" />
 
         <c:set var="xpath" value="${pageSettings.getVerticalCode()}/previousfund" />
         <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
