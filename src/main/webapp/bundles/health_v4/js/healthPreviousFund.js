@@ -68,9 +68,8 @@
             noneOption.remove();
         } else if (hasCover == 'N') {
 
-            // This inserts 'No current health fund' it is displayed so that users can select their previous fund - there are many reasons users may want
-            // to add their previous fund even though they may not currently have health insurance including waiting periods served for health insurance or
-            // applicable LHC info for private hospital insurance
+            // This inserts 'No current health fund', in future it could be displayed at this point, so that users could select their previous fund
+            // if they have previously had extras cover and previously served waiting periods etc.. but dont currently have cover
             if ($elements[person].everHadPrivateHospital_1.filter(':checked').val() === 'N') {
                 if (noneOption.length === 0) {
                      element.append(
@@ -83,8 +82,9 @@
                 element.val(noCurrentFund);
             }
 
-            // This hides the previous fund field - this field is hidden but not mutated if does not currently have health insurance but has not selected an answer for previous health insurance
-            if (_.isUndefined($elements[person].everHadPrivateHospital_1.filter(':checked').val())) {
+            // This hides the previous fund field - this field is hidden but not mutated if does not currently have health insurance but has not selected
+            // an answer for previous health insurance it is hidden and updated to NONE if No cover and no previous Hospital cover is selected
+            if (_.isUndefined($elements[person].everHadPrivateHospital_1.filter(':checked').val()) || $elements[person].everHadPrivateHospital_1.filter(':checked').val() === 'N') {
                 $fundFields.hide();
             }
         }
