@@ -17,7 +17,7 @@
         <c:set var="name" 			value="${go:nameFromXpath(xpath)}" />
 
         <c:set var="fieldXpath" value="${xpath}/primary/fundHistory" />
-        <form_v4:row fieldXpath="${fieldXpath}" label="Tell us the start and end dates of private hospital cover you have held in the past, and we will calculate any Lifetime Health Cover that may be applied to your premium" id="primaryFundHistory" className="changes-premium hidden-toggle" rowContentClass="row">
+        <form_v4:row fieldXpath="${fieldXpath}" label="Based on your answers it looks like you may be affected by the Government Lifetime Health Cover loading, please enter the approximate date ranges you have held <span class='text-bold'>private hospital</span> cover so we can estimate the impact on your premiums." id="primaryFundHistory" className="changes-premium hidden-toggle" rowContentClass="row">
             <field_v2:coverage_dates_input xpath="${fieldXpath}" />
         </form_v4:row>
 

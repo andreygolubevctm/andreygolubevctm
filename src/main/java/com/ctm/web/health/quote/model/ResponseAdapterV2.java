@@ -271,7 +271,7 @@ public class ResponseAdapterV2 {
         if (isInsuredAffectedByLHC(primary) || partner.map(ResponseAdapterV2::isInsuredAffectedByLHC).orElse(false)) {
             lhcFreePricing = "The premium may be affected by LHC<br/>";
         } else if (lhcAmount.compareTo(BigDecimal.ZERO) > 0) {
-            lhcFreePricing = "excl " + formatCurrency(lhcAmount, true, true) + " LHC<span/> ";
+            lhcFreePricing = "price excl " + formatCurrency(lhcAmount, true, true) + " LHC<span/> ";
         }
 
         return lhcFreePricing;
