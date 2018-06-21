@@ -1052,7 +1052,7 @@
             case 'GMH':
                 usefulLinks.push(
                     {"name" : "Privatehealth.gov.au", "url": "http://www.privatehealth.gov.au/dynamic/InsurerDetails.aspx?code=GMH"},
-                    {"name" : "Hospital Network", "url": "https://www.gmhba.com.au/documents/GMHBA%20Participating%20Private%20Hospitals.pdf"}
+                    {"name" : "Hospital Network", "url": "https://www.gmhba.com.au/health-insurance/participating-private-hospitals"}
                 );
                 break;
             case 'HBF':
@@ -1099,7 +1099,7 @@
             case 'QCH':
                 usefulLinks.push(
                     {"name" : "Privatehealth.gov.au", "url": "http://www.privatehealth.gov.au/dynamic/InsurerDetails.aspx?code=QCH"},
-                    {"name" : "Hospital Network", "url": "http://www.qldcountryhealth.com.au/find-a-hospital"}
+                    {"name" : "Hospital Network", "url": "https://www.qldcountryhealth.com.au/members/hospital-network/find-a-hospital"}
                 );
                 break;
             case 'QTU':
