@@ -20,8 +20,8 @@ even though they might have extras cover.
 A better way to capture this information would be to ask the same question and let the user select one of three options (Private Hospital/Extras Only/None) or (Yes/No/Extras Only)
 --%>
 
-<form_v4:row label="Does your partner currently hold Private Health Insurance?" fieldXpath="${fieldXpath}"  id="${name}_partnerCover" className="lhcRebateCalcTrigger" helpId="572">
-	<field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="- Does your partner currently hold Private Health Insurance?" required="true" className="health-cover_details" id="${name}_partner_health_cover" additionalLabelAttributes="${analyticsAttr}" />
+<form_v4:row label="Does your partner currently hold private health insurance?" fieldXpath="${fieldXpath}"  id="${name}_partnerCover" className="lhcRebateCalcTrigger" helpId="572">
+	<field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="- Does your partner currently hold private health insurance?" required="true" className="health-cover_details" id="${name}_partner_health_cover" additionalLabelAttributes="${analyticsAttr}" />
 
 	<c:set var="fieldXpathName" value="${go:nameFromXpath(fieldXpath)}" />
 	<div class="${fieldXpathName}-help-text help-text success yes-help hidden">
