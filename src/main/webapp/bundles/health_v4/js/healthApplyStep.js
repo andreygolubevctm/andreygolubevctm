@@ -11,7 +11,7 @@
         $(document).ready(function () {
             $elements = {
                 primaryFirstname: $('#health_application_primary_firstname'),
-                paymentMedicareColour: $(':input[name=health_payment_medicare_colour]'),
+                paymentMedicareColour: $('input[name=health_payment_medicare_colour]'),
                 paymentMedicareCover: $("#health_payment_medicare_cover"),
                 medicareYellowMessage: $("#health_medicareDetails_yellowCardMessage"),
                 genderToggle: $('.person-gender-toggle input[type=radio]'),
