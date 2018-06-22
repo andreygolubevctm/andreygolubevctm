@@ -54,9 +54,11 @@
             everHadPrivateHospitalRow_1: $('#health_application_' + applicant + 'CoverEverHadPrivateHospital1'),
             everHadPrivateHospitalBtnGroup_1: $('#health_application_' + applicant + '_ever_had_health_coverPrivateHospital1'),
             everHadPrivateHospital_1: $(':input[name=health_application_' + applicant + '_everHadCoverPrivateHospital1]'),
+            publicHospital1NoCoverText: $('#health_application_' + applicant + 'CoverEverHadPrivateHospital1').find('.applyFullLHCAdditionalText'),
             everHadPrivateHospitalRow_2: $('#health_application_' + applicant + 'CoverEverHadPrivateHospital2'),
             everHadPrivateHospitalBtnGroup_2: $('#health_application_' + applicant + '_ever_had_health_coverPrivateHospital2'),
             everHadPrivateHospital_2: $(':input[name=health_application_' + applicant + '_everHadCoverPrivateHospital2]'),
+            publicHospital2NoCoverText: $('#health_application_' + applicant + 'CoverEverHadPrivateHospital2').find('.applyFullLHCAdditionalText'),
             healthContinuousCoverRow: $('#health-continuous-cover-' + applicant),
             healthContinuousCoverBtnGroup: $('#_' + applicant + '_health_cover_loading'),
             healthContinuousCover:  $(':input[name=health_healthCover_' + applicant + '_healthCoverLoading]'),
@@ -198,7 +200,9 @@
             hideRowPrivateHospital2 = true,
             hideRowFundHistory = true,
             hideDontKnowMyDateRanges = true,
-            hideDontKnowMyDateRangesPromptText = true;
+            hideDontKnowMyDateRangesPromptText = true,
+            hideNoHospitalAdditionalTextPH1 = true,
+            hideNoHospitalAdditionalTextPH2 = true;
 
         var applicantPrefix = ((applicant === 'primary') ? "Your" : "Partner's");
         var isLHCPossiblyApplicable = _isLHCPossiblyApplicable(applicant);
@@ -224,6 +228,8 @@
                         } else {
                             hideRowFundHistory = false;
                         }
+                    } else if ($elements[applicant].everHadPrivateHospital_2.filter(':checked').val() === 'N') {
+                        hideNoHospitalAdditionalTextPH2 = false;
                     }
                 }
             }
@@ -235,9 +241,10 @@
 
                 meerkat.messaging.publish(meerkatEvents.healthPreviousFund['POPULATE_' + applicant.toUpperCase()], ($elements[applicant].everHadPrivateHospital_1.filter(':checked').val() === 'Y' ? 'Y' : 'N' ));
 
-                if ($elements[applicant].everHadPrivateHospital_1.filter(':checked').val() === 'Y') {
 
-                    if (isLHCPossiblyApplicable) {
+                if (isLHCPossiblyApplicable) {
+                    if ($elements[applicant].everHadPrivateHospital_1.filter(':checked').val() === 'Y') {
+
                         hideDontKnowMyDateRanges = false;
 
                         if ($elements[applicant].iDontKnowMyDateRanges.is(":checked")) {
@@ -245,6 +252,9 @@
                         } else {
                             hideRowFundHistory = false;
                         }
+
+                    } else if ($elements[applicant].everHadPrivateHospital_1.filter(':checked').val() === 'N') {
+                        hideNoHospitalAdditionalTextPH1 = false;
                     }
                 }
             }
@@ -278,6 +288,8 @@
 
         $elements[applicant].iDontKnowMyDateRangesRow.toggleClass('hidden', hideDontKnowMyDateRanges);
         $elements[applicant].iDontKnowMyDateRangesPromptText.toggleClass('hidden', hideDontKnowMyDateRangesPromptText);
+        $elements[applicant].publicHospital1NoCoverText.toggleClass('hidden', hideNoHospitalAdditionalTextPH1);
+        $elements[applicant].publicHospital2NoCoverText.toggleClass('hidden', hideNoHospitalAdditionalTextPH2);
     }
 
     function _toggleSelectGender(applicant) {
@@ -355,12 +367,19 @@
 
         var capitalisePersonDetailType = applicant.charAt(0).toUpperCase() + applicant.slice(1);
         var hideRow = true;
+        var hideNoHospitalAdditionalTextPH2 = true;
 
         if (_isLHCPossiblyApplicable(applicant)) {
             if (meerkat.modules['health' + capitalisePersonDetailType].getNeverExplicitlyAskedIfHeldPrivateHospitalCover() === true) {
                 hideRow = false;
+
+                if ($elements[applicant].everHadPrivateHospital_2.filter(':checked').val() === 'N') {
+                    hideNoHospitalAdditionalTextPH2 = false;
+                }
             }
         }
+
+        $elements[applicant].publicHospital2NoCoverText.toggleClass('hidden', hideNoHospitalAdditionalTextPH2);
 
         meerkat.modules.fieldUtilities.toggleVisible(
             $elements[applicant].everHadPrivateHospitalRow_2,
@@ -392,6 +411,9 @@
 
         var capitalisePersonDetailType = applicant.charAt(0).toUpperCase() + applicant.slice(1);
         var hideRow = true;
+        var hideDontKnowMyDateRangesPromptText = true;
+        var hideNoHospitalAdditionalTextPH1 = true;
+        var hideNoHospitalAdditionalTextPH2 = true;
 
         if (_isLHCPossiblyApplicable(applicant)) {
             if (meerkat.modules['health' + capitalisePersonDetailType].getHeldPrivateHealthInsuranceBeforeButNotCurrently() === true) {
@@ -401,6 +423,8 @@
 
                     if ($elements[applicant].everHadPrivateHospital_2.filter(':checked').val() === 'Y') {
                         hideRow = false;
+                    } else if ($elements[applicant].everHadPrivateHospital_2.filter(':checked').val() === 'N') {
+                        hideNoHospitalAdditionalTextPH2 = false;
                     }
                 }
             }
@@ -408,9 +432,15 @@
 
         $elements[applicant].iDontKnowMyDateRangesRow.toggleClass('hidden', hideRow);
 
-        var hideDontKnowMyDateRangesPromptText = true;
-
-        if (!hideRow) {
+        if (hideRow) {
+            if (_isLHCPossiblyApplicable(applicant)) {
+                if (hideNoHospitalAdditionalTextPH2) {
+                    if (meerkat.modules['health' + capitalisePersonDetailType].getNeverHadPrivateHospital_1() === true) {
+                        hideNoHospitalAdditionalTextPH1 = false;
+                    }
+                }
+            }
+        } else {
             if ($elements[applicant].iDontKnowMyDateRanges.is(":checked")) {
                 hideDontKnowMyDateRangesPromptText = false;
                 hideRow = true;
@@ -418,6 +448,8 @@
         }
 
         $elements[applicant].iDontKnowMyDateRangesPromptText.toggleClass('hidden', hideDontKnowMyDateRangesPromptText);
+        $elements[applicant].publicHospital1NoCoverText.toggleClass('hidden', hideNoHospitalAdditionalTextPH1);
+        $elements[applicant].publicHospital2NoCoverText.toggleClass('hidden', hideNoHospitalAdditionalTextPH2);
 
         var showHide = hideRow ? 'remove' : 'add';
         meerkat.modules.healthPrivateHospitalHistory[showHide + capitalisePersonDetailType + 'Validation']();

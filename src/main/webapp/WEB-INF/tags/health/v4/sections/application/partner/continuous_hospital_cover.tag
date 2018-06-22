@@ -5,6 +5,7 @@
 <%-- ATTRIBUTES --%>
 <%@ attribute name="xpath" 		required="true"	 rtexprvalue="true"	 description="partner's health insurance status xpath" %>
 
+<%-- VARIABLES --%>
 <jsp:useBean id="financialYearUtils" class="com.ctm.web.health.utils.FinancialYearUtils" />
 <c:set var="continuousCoverYear" value="${financialYearUtils.getContinuousCoverYear()}" />
 

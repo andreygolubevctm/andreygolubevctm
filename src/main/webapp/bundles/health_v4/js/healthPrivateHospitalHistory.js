@@ -264,7 +264,7 @@
 
         	var tableId = $elements[applicant].idPrefix + "CoverDatesDataTable";
 
-        	var tableHtmlStr = "<br /><table id='" + tableId + "' class='table table-striped'><thead><tr><th>Start</th><th>End</th><th>Days</th><th>Edit</th><th>Delete</th></tr></thead><tbody>";
+        	var tableHtmlStr = "<table id='" + tableId + "' class='table table-striped'><thead><tr><th>Start</th><th>End</th><th>Days</th><th>Edit</th><th>Delete</th></tr></thead><tbody>";
 
 			for (var i = 0; i < $elements[applicant].coverDates.length; i++) {
 

@@ -61,7 +61,7 @@
                 <c:set var="fieldXpath" value="${xpath}/partner/fundHistory/dates/unsure" />
                 <form_v4:row fieldXpath="${fieldXpath}">
                     <field_v2:checkbox xpath="${fieldXpath}" value="Y" title="I don&apos;t know the date ranges for the periods that my partner has held private hospital insurance in the past" label="I don&apos;t know my partner&apos;s date ranges" required="false" helpId="586" />
-                    <div class="applyFullLHCAdditionalText hidden">Full applicable LHC will be applied to your policy until your new fund receives a transfer certificate from your partner&apos;s previous fund. It will then be adjusted from the start date of your policy and you will be credited any amount you have overpaid.</div>
+                    <div class="applyFullLHCAdditionalText matchCheckboxLabelStyles hidden">Full applicable LHC will be applied to your policy until your new fund receives a transfer certificate from your partner&apos;s previous fund, it will then be adjusted from the start date of your policy and you will be credited any amount you have overpaid.</div>
                 </form_v4:row>
             </div>
 	    </div>
