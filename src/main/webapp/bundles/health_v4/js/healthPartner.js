@@ -13,21 +13,21 @@
 
     function _setupFields() {
         $elements = {
-            partnerDOBD: $(':input[name=health_healthCover_partner_dobInputD]'),
+            partnerDOBD: $('input[name=health_healthCover_partner_dobInputD]'),
             partnerHeading: $('.healthCoverPartnerHeading'),
-            partnerCoverLoading: $(':input[name=health_healthCover_partner_healthCoverLoading]'),
+            partnerCoverLoading: $('input[name=health_healthCover_partner_healthCoverLoading]'),
             dob: $('#health_healthCover_partner_dob'),
             currentlyHaveAnyKindOfCoverPreResults: $('input[name=health_healthCover_partner_cover]'),
-            partnerEverHadPrivateHospital_1: $(':input[name=health_application_partner_everHadCoverPrivateHospital1]'),
-            partnerEverHadPrivateHospital_2: $(':input[name=health_application_partner_everHadCoverPrivateHospital2]'),
-            partnerCurrentFundName: $(':input[name=health_healthCover_partner_fundName]'),
+            partnerEverHadPrivateHospital_1: $('input[name=health_application_partner_everHadCoverPrivateHospital1]'),
+            partnerEverHadPrivateHospital_2: $('input[name=health_application_partner_everHadCoverPrivateHospital2]'),
+            partnerCurrentFundName: $('input[name=health_healthCover_partner_fundName]'),
             appFields: $('#partnerFund, #partnerMemberID, #partnerContainer'),
             additionalFieldsToHide: $('#health_insurance_preferences_additional_partner_fields'),
             benefitsScrollerLinks: $('.benefitsScroller'),
             coverLoadingHeading: $('.benefitsContainer').find('h3:first-child'),
             appDob: $('#health_application_partner_dob'),
-            healthInsurancePreferencesPartnerPreviousFund: $(':input[name=health_healthCover_partner_fundName]').children('option'),
-            healthApplicationPartnerPreviousFund: $(':input[name=health_previousfund_partner_fundName]').children('option')
+            healthInsurancePreferencesPartnerPreviousFund: $('input[name=health_healthCover_partner_fundName]').children('option'),
+            healthApplicationPartnerPreviousFund: $('input[name=health_previousfund_partner_fundName]').children('option')
         };
 
         $elements.partnerCoverLoading.add($elements.dob).add($elements.currentlyHaveAnyKindOfCoverPreResults).attr('data-attach','true');

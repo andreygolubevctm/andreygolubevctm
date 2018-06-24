@@ -11,17 +11,17 @@
 
     function _setupFields() {
         $elements = {
-            primaryCoverLoading: $(':input[name=health_healthCover_primary_healthCoverLoading]'),
+            primaryCoverLoading: $('input[name=health_healthCover_primary_healthCoverLoading]'),
             primaryCoverRow: $('#health_healthCover_primaryCover'),
             currentlyHaveAnyKindOfCoverPreResults: $('input[name=health_healthCover_primary_cover]'),
-            primaryEverHadPrivateHospital_1: $(':input[name=health_application_primary_everHadCoverPrivateHospital1]'),
-            primaryEverHadPrivateHospital_2: $(':input[name=health_application_primary_everHadCoverPrivateHospital2]'),
-            primaryCurrentFundName: $(':input[name=health_healthCover_primary_fundName]'),
+            primaryEverHadPrivateHospital_1: $('input[name=health_application_primary_everHadCoverPrivateHospital1]'),
+            primaryEverHadPrivateHospital_2: $('input[name=health_application_primary_everHadCoverPrivateHospital2]'),
+            primaryCurrentFundName: $('input[name=health_healthCover_primary_fundName]'),
             dob: $('#health_healthCover_primary_dob'),
             partnerDOB: $('#benefits_partner_dob'),
             appDob: $('#health_application_primary_dob'),
-            healthAboutYouPrimaryPreviousFund: $(':input[name=health_healthCover_primary_fundName]').children('option'),
-            healthApplicationPrimaryPreviousFund: $(':input[name=health_previousfund_primary_fundName]').children('option')
+            healthAboutYouPrimaryPreviousFund: $('input[name=health_healthCover_primary_fundName]').children('option'),
+            healthApplicationPrimaryPreviousFund: $('input[name=health_previousfund_primary_fundName]').children('option')
         };
 
 	    $elements.primaryCoverLoading.add($elements.dob).add($elements.currentlyHaveAnyKindOfCoverPreResults).attr('data-attach','true');

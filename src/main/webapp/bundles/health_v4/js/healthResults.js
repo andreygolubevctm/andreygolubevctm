@@ -1028,7 +1028,7 @@
             data["rank_excessPerPerson" + position] = excessesAndCoPayment.excessPerPerson;
             data["rank_excessPerPolicy" + position] = excessesAndCoPayment.excessPerPolicy;
             data["rank_coPayment" + position] = excessesAndCoPayment.coPayment;
-            data["isPopularProductsSelected"] = $(':input[name=health_popularProducts]').val();
+            data["isPopularProductsSelected"] = $('input[name=health_popularProducts]').val();
         }
         return data;
     }
