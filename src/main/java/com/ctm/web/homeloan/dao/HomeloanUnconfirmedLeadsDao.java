@@ -44,7 +44,7 @@ public class HomeloanUnconfirmedLeadsDao {
 					+ " WHERE productType = 'HOMELOAN'"
 					+ "   AND previousId = 0"
 					+ "   AND styleCodeId = 1"
-					+ "   AND CONCAT(startDate, ' ', startTime) <= NOW() - INTERVAL 3 HOUR "
+					+ "   AND CONCAT(startDate, ' ', startTime) <= NOW() - INTERVAL 1 HOUR "
 					+ "   AND startDate > CURDATE() - INTERVAL 7 DAY"
 					+ "   AND th.transactionid IN("
 					+ "   	SELECT MIN(ith.transactionId) "
