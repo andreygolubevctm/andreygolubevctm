@@ -188,7 +188,7 @@
         var template = _.template($('#brands-template').html());
         var obj = {};
 
-        obj.pretext = "<h2>Our Home Loan Lender Panel</h2><p>We can help you find a loan to suit your needs. With access to home loan products from over 30 of Australia's reputable lenders, finding a tailored loan to suit your needs has never been so easy.</p>";
+        obj.pretext = "<h2>Our Home Loan Lender Panel</h2><p>We can help you find a loan to suit your needs. With access to home loan products from over 45 of Australia's reputable lenders, finding a tailored loan to suit your needs has never been so easy.</p>";
 
         var htmlContent = template(obj);
 
