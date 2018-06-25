@@ -329,9 +329,9 @@
 	{{ if (obj.lender === 'The Rock') img = 'ROCK'; }}
 	{{ if (obj.lender === 'The Rock Building Society Limited') img = 'ROCK'; }}
 	{{ if (obj.lender === 'UniBank') img = 'UNIBANK'; }}
+	{{ if (obj.lender === 'Virgin Money	') img = 'VIRG'; }}
 	{{ if (obj.lender === 'Westpac') img = 'WESTPAC'; }}
 	{{ if (obj.lender === 'Wide Bay Australia') img = 'WIDE'; }}
-	{{ if (obj.lender === 'Virgin Money	') img = 'VIRG'; }}
 
 
 
