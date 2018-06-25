@@ -10,7 +10,6 @@
             "HIF",
             "QCHF",
             "Navy Health",
-            "HBF",
             "TUH",
             "myOwn"
         ];
