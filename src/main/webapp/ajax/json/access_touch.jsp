@@ -42,7 +42,7 @@
 			</c:set>
 
 			<c:choose>
-				<c:when test="${verticalCode eq 'health' and empty authenticatedData.login.user.uid and param.touchtype eq 'A' and not empty param.phone}">
+				<c:when test="${verticalCode eq 'health' and empty authenticatedData.login.user.uid and param.touchtype eq 'A' and not empty param.phone and pageSettings.hasSetting('delayLeadOnApplicationStep') and pageSettings.getSetting('delayLeadOnApplicationStep') eq 'Y'}">
 					<jsp:useBean id="simplesLeadService" class="com.ctm.web.health.services.HealthSimplesLeadService" scope="application" />
 					<c:set var="delayResult" value="${simplesLeadService.delayLeadAsEnteredApplicationStep(pageContext.request, param.phone)}" />
 				</c:when>
