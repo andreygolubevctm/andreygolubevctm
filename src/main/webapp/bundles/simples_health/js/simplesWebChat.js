@@ -62,15 +62,15 @@
 				},
 				onSuccess: function onRequestDelaySuccess(data) {
 					if(!_.isEmpty(data) && _.isObject(data) && data.hasOwnProperty("outcome") && data.outcome === "SUCCESS") {
-						meerkat.modules.dialogs.show({htmlContent: "<h4>Dialler has been delayed 30 minutes</h4>"});
+						meerkat.modules.dialogs.show(getDialog("<h4>Dialler has been delayed 30 minutes</h4>"));
 					} else {
-						meerkat.modules.dialogs.show({htmlContent: "<h4>Dialler delay was unsuccessful</h4>"});
+						meerkat.modules.dialogs.show(getDialog("<h4>Dialler delay was unsuccessful</h4>"));
 					}
 				},
 				useDefaultErrorHandling: false,
 				errorLevel: "silent",
 				onError: function onRequestDelayError(obj, txt, errorThrown) {
-					meerkat.modules.dialogs.show({htmlContent:"<h4>An error occured attempting to delay the dialler</h4><p>" + errorThrown + "</p>"});
+					meerkat.modules.dialogs.show(getDialog("<h4>An error occured attempting to delay the dialler</h4><p>" + errorThrown + "</p>"));
 					var transactionId = meerkat.modules.transactionId.get();
 					meerkat.modules.errorHandling.error({
 						errorLevel: "silent",
@@ -89,10 +89,18 @@
 		}
 	}
 
+	function getDialog(copy) {
+		return {htmlContent:copy, className:"webchat-delay-dialog", buttons:[{
+			label: "Close",
+			className: 'btn-default',
+			closeWindow:true
+		}]};
+	}
+
 	function getPhone(){
 		var mobile = $elements.phone.application.mobile.val();
 		if(_.isEmpty(mobile)) {
-			var other = $elements.phone.appliction.other.val();
+			var other = $elements.phone.application.other.val();
 			if(_.isEmpty(other)) {
 				mobile = $elements.phone.quote.mobile.val();
 				if(_.isEmpty(mobile)) {
