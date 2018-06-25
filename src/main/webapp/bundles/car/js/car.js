@@ -142,12 +142,6 @@
             meerkat.modules.journeyProgressBar.render(true);
         }
     }
-    
-    function initAddressSearch() {
-      var xpath = 'quote/riskAddress';
-      meerkat.modules.addressLookupV2.getStreetSearch().init(xpath);
-      meerkat.modules.addressLookupV2.getManualPostcodeSearch().init('street', xpath);
-    }
 
     function setJourneyEngineSteps() {
 
@@ -189,7 +183,6 @@
                 }
 
                 configureContactDetails();
-                initAddressSearch();
             },
             validation: {
                 validate: true,

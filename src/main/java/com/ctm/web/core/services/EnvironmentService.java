@@ -125,7 +125,8 @@ public class EnvironmentService {
 	public static boolean needsManuallyAddedBrandCodeParam() throws EnvironmentException {
 		return getEnvironment() == Environment.LOCALHOST ||
 				getEnvironment() == Environment.NXI ||
-				getEnvironment() == Environment.NXS;
+				getEnvironment() == Environment.NXS ||
+				getEnvironment() == Environment.NXQ;
 	}
 
 	public static boolean needsManuallyAddedBrandCodeParamWhiteLabel(String brandCode, String verticalCode) throws EnvironmentException {

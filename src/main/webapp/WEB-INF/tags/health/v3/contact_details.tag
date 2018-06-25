@@ -18,24 +18,50 @@
 
 <%-- HTML --%>
 <div id="${name}-selection" class="health_application-details">
-	<c:set var="fieldXpath" value="${xpath}/address" />
-	<c:set var="unitTypes">=Select unit type if applicable, UN=Unit, L=Level, TO=Townhouse, SH=Shop, OT=Other</c:set>
-	<field_v4:address_search_smartsearch xpath="${fieldXpath}" className="simples-smart-search" type="R" prefix="Residential" unitTypes="${unitTypes}" />
+
+	<c:choose>
+		<c:when test="${useElasticSearch eq true}">
+			<group_v3:elastic_address
+					xpath="${xpath}/address"
+					type="R"
+					suburbAdditionalAttributes=" data-rule-validateSelectedResidentialSuburb='true' data-msg-validateSelectedResidentialSuburb='Your address does not match the original suburb provided.' autocomplete='false'"
+					suburbNameAdditionalAttributes=" data-rule-validateSelectedResidentialSuburb='true' data-msg-validateSelectedResidentialSuburb='The selected suburb does not match the original suburb selected.' autocomplete='false'"
+					postCodeAdditionalAttributes=" data-rule-validateSelectedResidentialPostCode='true' data-msg-validateSelectedResidentialPostCode='Your address does not match the original postcode provided.' autocomplete='false'"
+					postCodeNameAdditionalAttributes=" data-rule-validateSelectedResidentialPostCode='true' data-msg-validateSelectedResidentialPostCode='The entered postcode does not match the original postcode provided.' autocomplete='false'"
+					disableErrorContainer="${true}"
+			/>
+		</c:when>
+		<c:otherwise>
+			<group_v2:address xpath="${xpath}/address" type="R" stateValidationField="#health_application-selection .content"  disableErrorContainer="${true}"/>
+		</c:otherwise>
+	</c:choose>
 
 	<c:if test="${empty callCentre && empty data[xpath].postalMatch}">
-			<go:setData dataVar="data" xpath="${xpath}/postalMatch" value="Y" />
+		<go:setData dataVar="data" xpath="${xpath}/postalMatch" value="Y" />
 	</c:if>
 
-	<form_v4:row>
-			<div id="simples-postcode-toggle">
-				<field_v2:checkbox xpath="${xpath}/postalMatch" value="Y" title="My postal address is the same" required="false" label="I agree to receive news &amp; offer emails from Compare the Market" />
-			</div>
-	</form_v4:row>
-	<div id="${name}_postalGroup">
-				<c:set var="fieldXpath" value="${xpath}/postal" />
-				<c:set var="unitTypes">=Select unit type if applicable, UN=Unit, PO=PO Box, L=Level, TO=Townhouse, SH=Shop, OT=Other</c:set>
-				<field_v4:address_search_smartsearch xpath="${fieldXpath}" prefix="Postal" type="P" className="simples-smart-search" unitTypes="${unitTypes}" />
-	</div>
+		<form_v2:row>
+			<field_v2:checkbox xpath="${xpath}/postalMatch" value="Y" title="My postal address is the same" required="false" label="I agree to receive news &amp; offer emails from Compare the Market" />
+		</form_v2:row>
+
+		<div id="${name}_postalGroup">
+			<c:choose>
+				<c:when test="${useElasticSearch eq true}">
+					<group_v3:elastic_address
+							xpath="${xpath}/postal"
+							type="P"
+							suburbNameAdditionalAttributes=" autocomplete='false'"
+							suburbAdditionalAttributes=" autocomplete='false'"
+							postCodeNameAdditionalAttributes=" autocomplete='false'"
+							postCodeAdditionalAttributes=" autocomplete='false'"
+							disableErrorContainer="${true}"
+					/>
+				</c:when>
+				<c:otherwise>
+					<group_v2:address xpath="${xpath}/postal" type="P" stateValidationField="#health_application-selection .content" disableErrorContainer="${true}" nonStdStreetAdditionalAttributes=" maxlength='29'"/>
+				</c:otherwise>
+			</c:choose>
+		</div>
 
 		<group_v2:contact_numbers xpath="${xpath}" required="true" />
 
