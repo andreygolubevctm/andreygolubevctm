@@ -15,8 +15,8 @@ import java.util.StringJoiner;
 
 public class ResultsService {
 
-    public static final String CAR_VERTICAL = "car";
-    public static final List<String> CAR_PROVIDER_LIST = Arrays.asList("REIN","WOOL");
+    public static final List<String> VERTICAL_LIST = Arrays.asList("CAR", "HOME");
+    public static final List<String> PROVIDER_LIST = Arrays.asList("REIN","WOOL");
     public static final String MONTHLY_PAYMENT_FREQUENCY = "monthly";
     public static final String RANKED_BY_PRICE = "price";
 
@@ -56,7 +56,9 @@ public class ResultsService {
         String propertyValue = getSingleResultPropertyValue(transactionId, productId, property);
         StringJoiner sj = new StringJoiner("&");
         sj.add(propertyValue);
-        if(vertical.equals(CAR_VERTICAL) && CAR_PROVIDER_LIST.contains(providerCode)){
+        String verticalStr = ( vertical != null ? vertical.toUpperCase() : vertical );
+        String providerCodeStr = ( providerCode != null ? providerCode.toUpperCase() : providerCode );
+        if(VERTICAL_LIST.contains(verticalStr) && PROVIDER_LIST.contains(providerCodeStr)){
             //get latest payment frequency selected by user
             RankingMasterDao rankingMasterDao = new RankingMasterDao();
             String paymentFrequency = null;

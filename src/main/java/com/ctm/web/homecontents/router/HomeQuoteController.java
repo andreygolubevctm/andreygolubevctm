@@ -2,7 +2,6 @@ package com.ctm.web.homecontents.router;
 
 import com.ctm.interfaces.common.types.VerticalType;
 import com.ctm.web.core.model.settings.Brand;
-import com.ctm.web.core.model.settings.Vertical;
 import com.ctm.web.core.resultsData.model.ResultsObj;
 import com.ctm.web.core.resultsData.model.ResultsWrapper;
 import com.ctm.web.core.router.CommonQuoteRouter;
