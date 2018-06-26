@@ -310,7 +310,7 @@
             $healthContactTypeTrial.val('');
 
             $body
-                .removeClass('outbound')
+                .removeClass('outbound trial')
                 .addClass('inbound');
 
             _resetSituationMedicareField();
@@ -318,12 +318,17 @@
         // Outbound
         else {
             $body
-                .removeClass('inbound')
+                .removeClass('inbound trial')
                 .addClass('outbound');
 
             var contatTypeTrialRegex = new RegExp('trial','i');
+            var isTrialContactType = contatTypeTrialRegex.test(healthContactTypeSelection);
 
-            if ((healthContactTypeSelection === 'outbound') || (contatTypeTrialRegex.test(healthContactTypeSelection))) {
+            if (isTrialContactType) {
+                $body.addClass('trial');
+            }
+
+            if ((healthContactTypeSelection === 'outbound') || isTrialContactType) {
                 _moveSituationMedicareField();
 
                 //contact type is set to outbound when Outbound or a trial is selected
