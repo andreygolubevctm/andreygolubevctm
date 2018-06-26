@@ -58,8 +58,8 @@
     }
 
     function showLHC(product, frequency) {
-        return (product.premium[frequency].lhc !== '$0.00' && product.premium[frequency].lhcfreepricing.indexOf('The premium may be affected by LHC<br/>') < 0) ||
-            (!_.isNull(meerkat.modules.healthLHC.getNewLHC()) && meerkat.modules.healthLHC.getNewLHC() > 0);
+        return (((product.premium[frequency].lhc !== '$0.00' && product.premium[frequency].lhcfreepricing.indexOf('The premium may be affected by LHC<br/>') < 0) ||
+            (!_.isNull(meerkat.modules.healthLHC.getNewLHC()) && meerkat.modules.healthLHC.getNewLHC() > 0)) && meerkat.modules.journeyEngine.getCurrentStep().navigationId !=='apply');
     }
 
     meerkat.modules.register('healthPriceBreakdown', {

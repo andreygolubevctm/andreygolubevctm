@@ -162,7 +162,7 @@
 	}
 
 	function togglePrimaryContinuousCover(isInitMode) {
-		if ($primaryCurrentCover.find('input').filter(':checked').val() === 'Y' && !meerkat.modules.age.isLessThan31Or31AndBeforeJuly1($primaryDOB.val())) {
+		if ($primaryCurrentCover.find('input').filter(':checked').val() === 'Y' && meerkat.modules.age.isAgeLhcApplicable($primaryDOB.val())) {
 			$primaryContinuousCoverContainer.slideDown();
 		} else {
 			isInitMode === true ? $primaryContinuousCoverContainer.hide() : $primaryContinuousCoverContainer.find('input[name=health_healthCover_primary_healthCoverLoading]:checked').prop('checked', false).parent().removeClass('active').end().end().slideUp();
@@ -170,7 +170,7 @@
 	}
 
 	function togglePartnerContinuousCover(isInitMode) {
-		if ($partnerCurrentCover.find('input').filter(':checked').val() === 'Y' && !meerkat.modules.age.isLessThan31Or31AndBeforeJuly1($partnerDOB.val())) {
+		if ($partnerCurrentCover.find('input').filter(':checked').val() === 'Y' && meerkat.modules.age.isAgeLhcApplicable($partnerDOB.val())) {
 			$partnerContinuousCoverContainer.slideDown();
 		} else {
 			isInitMode === true ? $partnerContinuousCoverContainer.hide() : $partnerContinuousCoverContainer.find('input[name=health_healthCover_partner_healthCoverLoading]:checked').prop('checked', false).parent().removeClass('active').end().end().slideUp();

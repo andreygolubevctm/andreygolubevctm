@@ -53,6 +53,8 @@
 <%@ taglib tagdir="/WEB-INF/tags/health/v4/sections/moreinfo"	    prefix="health_v4_moreinfo" %>
 <%@ taglib tagdir="/WEB-INF/tags/health/v4/sections/application"	prefix="health_v4_application" %>
 <%@ taglib tagdir="/WEB-INF/tags/health/v4/sections/application/agr"	prefix="health_v4_agr" %>
+<%@ taglib tagdir="/WEB-INF/tags/health/v4/sections/application/partner"	prefix="health_v4_application_partner" %>
+<%@ taglib tagdir="/WEB-INF/tags/health/v4/sections/application/primary"	prefix="health_v4_application_primary" %>
 <%@ taglib tagdir="/WEB-INF/tags/health/v4/sections/payment"	prefix="health_v4_payment" %>
 <%@ taglib tagdir="/WEB-INF/tags/health/v4/sections/results/refineResults"	prefix="health_v4_refine_results" %>
 <%@ taglib tagdir="/WEB-INF/tags/simples"				prefix="simples" %>

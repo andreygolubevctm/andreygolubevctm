@@ -14,11 +14,6 @@
         _newLhc = null,
         _newLhcCompleteResult = null;
 
-        var calculateLhcOnlyWhenNeverHeldBefore_Or_HeldBeforeButNotCurrently = false;
-        var calculateLhcOnlyWhenHeldBeforeButNotCurrently = false;
-        var calculateLhcOnlyWhenHeldBeforeButNotCurrently_Or_HeldContinuousCover = false;
-        var alwaysCalculateLHC = true;
-
     function onInitialise() {
         var hasPartner = meerkat.modules.healthChoices.hasPartner(),
             dob = meerkat.modules.dateUtils.returnDate(meerkat.modules.healthPrimary.getAppDob()),
@@ -54,85 +49,45 @@
             if (_isBuyingPrivateHospitalCover()) {
 
                 // primaryFlags.lhcApplicableEnum Values:           (int)  {lhcDaysApplicableEqToZero: -2, continuousCover: 0, needToCalcPartialLHC: 1, MaxLHC, 2}
-                // primaryFlags.checksRequired:                     (bool) indicates that there is a good chance that the LHC will be greater than zero - (isOfLHCAge && (neverHadCover || hasHadCoverButNotCurrently))
+                // primaryFlags.checksRequired:                     (bool) indicates that there is a good chance that the LHC will be greater than zero - (isOfLHCAge && (neverHadPrivateHospitalCover || hasHadCoverButNotCurrently))
                 // primaryFlags.neverHadPrivateHospitalCover:       (bool)
                 // primaryFlags.continuousCover:                    (bool)
                 // primaryFlags.requirePrivateHospitalCoverHistory: (bool) if true, will need to examine private health cover coverage history to determine LHC
                 var primaryFlags = _getLhcConditionsFlags('primary', res.primary.lhcDaysApplicable);
                 _setLhcConditionsflags('primary', primaryFlags.neverHadPrivateHospitalCover, primaryFlags.continuousCover);
-                if (primaryFlags.requirePrivateHospitalCoverHistory) {
+
+                // only use coverage dates info if if health_previousfund_primary_fundHistory_dates_unsure checkbox is not checked
+                if (primaryFlags.requirePrivateHospitalCoverHistory && !$(':input[name=health_previousfund_primary_fundHistory_dates_unsure]').is(":checked")) {
                     setCoverDates('primary', meerkat.modules.healthPrivateHospitalHistory.getPrimaryCoverDates());
                 }
-
-                var partnerContinuousCover = false;
-                var partnerNeverHadPrivateHospitalCover = false;
-                var partnerRequirePrivateHospitalCoverHistory = false;
 
                 if (hasPartner) {
                     var partnerFlags = _getLhcConditionsFlags('partner', res.partner.lhcDaysApplicable);
                     _setLhcConditionsflags('partner', partnerFlags.neverHadPrivateHospitalCover, partnerFlags.continuousCover);
-                    if (partnerFlags.requirePrivateHospitalCoverHistory) {
+
+                    // only use coverage dates info if if health_previousfund_partner_fundHistory_dates_unsure checkbox is not checked
+                    if (partnerFlags.requirePrivateHospitalCoverHistory && !$(':input[name=health_previousfund_partner_fundHistory_dates_unsure]').is(":checked")) {
                         setCoverDates('partner', meerkat.modules.healthPrivateHospitalHistory.getPartnerCoverDates());
                     }
-
-                    partnerContinuousCover = partnerFlags.continuousCover;
-                    partnerNeverHadPrivateHospitalCover = partnerFlags.neverHadPrivateHospitalCover;
-                    partnerRequirePrivateHospitalCoverHistory = partnerFlags.requirePrivateHospitalCoverHistory;
                 }
 
-                // override previously existing LHC calculation method when ( Max LHC Applied || when previous private hospital cover array is required to calculate amount)
-                if (calculateLhcOnlyWhenNeverHeldBefore_Or_HeldBeforeButNotCurrently) {
-                    if ((primaryFlags.neverHadPrivateHospitalCover || primaryFlags.requirePrivateHospitalCoverHistory) || (partnerNeverHadPrivateHospitalCover || partnerRequirePrivateHospitalCoverHistory)) {
-                        getLHC().done(function() {
-                            meerkat.messaging.publish(meerkatEvents.TRIGGER_UPDATE_PREMIUM);
-                        });
-                    } else {
-                        resetNewLHC();
-                        meerkat.messaging.publish(meerkatEvents.TRIGGER_UPDATE_PREMIUM);
-                    }
-                }
-
-                // override previously existing LHC calculation method when ( previous private hospital cover array is required to calculate amount )
-                if (calculateLhcOnlyWhenHeldBeforeButNotCurrently) {
-
-                    if (primaryFlags.requirePrivateHospitalCoverHistory || partnerRequirePrivateHospitalCoverHistory) {
-                        getLHC().done(function() {
-                            meerkat.messaging.publish(meerkatEvents.TRIGGER_UPDATE_PREMIUM);
-                        });
-                    } else {
-                        resetNewLHC();
-                        meerkat.messaging.publish(meerkatEvents.TRIGGER_UPDATE_PREMIUM);
-                    }
-
-                }
-
-                // override previously existing LHC calculation method when ( Continuous Cover (0%) || when previous private hospital cover array is required to calculate amount)
-                if (calculateLhcOnlyWhenHeldBeforeButNotCurrently_Or_HeldContinuousCover) {
-
-                    if ((primaryFlags.requirePrivateHospitalCoverHistory || primaryFlags.continuousCover) || (partnerRequirePrivateHospitalCoverHistory || partnerContinuousCover)) {
-                        getLHC().done(function() {
-                            meerkat.messaging.publish(meerkatEvents.TRIGGER_UPDATE_PREMIUM);
-                        });
-                    } else {
-                        resetNewLHC();
-                        meerkat.messaging.publish(meerkatEvents.TRIGGER_UPDATE_PREMIUM);
-                    }
-
-                }
-
-                // override previously existing LHC calculation method - ALWAYS
-                if (alwaysCalculateLHC) {
-
-                    //alert("Partner flags: " + JSON.stringify(_calculateRequestData));
-
-                    getLHC().done(function() {
-                        meerkat.messaging.publish(meerkatEvents.TRIGGER_UPDATE_PREMIUM);
-                    });
-                }
+                getLHC().done(function() {
+                    meerkat.messaging.publish(meerkatEvents.TRIGGER_UPDATE_PREMIUM);
+                });
 
             } else {
-                resetNewLHC();
-                meerkat.messaging.publish(meerkatEvents.TRIGGER_UPDATE_PREMIUM);
+
+                _setLhcConditionsflags('primary', false, true);
+                setCoverDates('primary', "");
+                if (hasPartner) {
+                    _setLhcConditionsflags('partner', false, true);
+                    setCoverDates('partner', "");
+                }
+
+                getLHC().done(function() {
+                    meerkat.messaging.publish(meerkatEvents.TRIGGER_UPDATE_PREMIUM);
+                });
+
             }
 
         });
@@ -148,7 +103,7 @@
     // assumes that policy being purchased is for Private hospital / combined
     // returns JSON object
     //     lhcApplicableEnum Values:           (int)  {lhcDaysApplicableEqToZero: -2, continuousCover: 0, needToCalcPartialLHC: 1, MaxLHC, 2}
-    //     checksRequired:                     (bool) indicates that there is a good chance that the LHC will be greater than zero - (isOfLHCAge && (neverHadCover || hasHadCoverButNotCurrently))
+    //     checksRequired:                     (bool) indicates that there is a good chance that the LHC will be greater than zero - (isOfLHCAge && (neverHadPrivateHospitalCover || hasHadCoverButNotCurrently))
     //     neverHadPrivateHospitalCover:       (bool)
     //     continuousCover:                    (bool)
     //     requirePrivateHospitalCoverHistory: (bool) if true, will need to examine private health cover coverage history to determine LHC
@@ -193,23 +148,19 @@
             needToCalcPartialLHC = 1,
             maxLHC = 2;
 
-        // if (!_isOfLhcAge || !_isBuyingPrivateHospitalCover) {
-        //     return lhcApplicable;
-        // }
-
         if (meerkat.modules['health' + capitalisePersonDetailType].getContinuousCover()) {
 
             // 0% LHC
             lhcApplicable = continuousCover;
         } else {
-            if (meerkat.modules['health' + capitalisePersonDetailType].getNeverHadCover() || (meerkat.modules['health' + capitalisePersonDetailType].getNeverExplicitlyAskedIfHeldPrivateHospitalCover() === true && $(':input[name=health_application_' + applicant + '_everHadCover]').filter(':checked').val() === 'N')) {
+            if (meerkat.modules['health' + capitalisePersonDetailType].getNeverHadPrivateHospital_1() || meerkat.modules['health' + capitalisePersonDetailType].getNeverHadPrivateHospital_2() === true) {
 
                 //never actually had cover!!!
                 lhcApplicable = maxLHC;
             } else {
 
-                // Has indicated that they have had Private Hospital Insurance in the past but don't currently have cover
-                //( (meerkat.modules['health' + capitalisePersonDetailType].getHeldPrivateHealthInsuranceBeforeButNotCurrently() === true) || (meerkat.modules['health' + capitalisePersonDetailType].getNeverExplicitlyAskedIfHeldPrivateHospitalCover() === true && $(':input[name=health_application_' + applicant + '_everHadCover]').filter(':checked').val() === 'Y') )
+                // Either it is too early to tell OR Has indicated that they have had Private Hospital Insurance in the past but don't currently have cover
+                //( (meerkat.modules['health' + capitalisePersonDetailType].getHeldPrivateHealthInsuranceBeforeButNotCurrently() === true) || (meerkat.modules['health' + capitalisePersonDetailType].getNeverExplicitlyAskedIfHeldPrivateHospitalCover() === true && $elements[applicant].everHadPrivateHospital_2.filter(':checked').val() === 'Y') )
                 lhcApplicable = needToCalcPartialLHC;
             }
         }
@@ -218,9 +169,9 @@
     }
 
     // applicant is either 'primary' || 'partner'
-    // neverHadCover & continuousCover should be set with either: true | false | null
-    function _setLhcConditionsflags (applicant, neverHadCover, continuousCover) {
-        _calculateRequestData[applicant].neverHadCover = neverHadCover;
+    // neverHadPrivateHospitalCover & continuousCover should be set with either: true | false | null
+    function _setLhcConditionsflags (applicant, neverHadPrivateHospitalCover, continuousCover) {
+        _calculateRequestData[applicant].neverHadCover = neverHadPrivateHospitalCover;
         _calculateRequestData[applicant].continuousCover = continuousCover;
     }
 
@@ -295,22 +246,6 @@
         _newLhcCompleteResult = null;
     }
 
-    function calculateLhcOnly_WhenNeverHeldBefore_Or_HeldBeforeButNotCurrently(boolValue) {
-        calculateLhcOnlyWhenNeverHeldBefore_Or_HeldBeforeButNotCurrently = boolValue;
-    }
-
-    function calculateLhcOnly_WhenHeldBeforeButNotCurrently(boolValue) {
-        return calculateLhcOnlyWhenHeldBeforeButNotCurrently = boolValue;
-    }
-
-    function calculateLhcOnly_WhenHeldBeforeButNotCurrently_Or_HeldContinuousCover(boolValue) {
-        return calculateLhcOnlyWhenHeldBeforeButNotCurrently_Or_HeldContinuousCover = boolValue;
-    }
-
-    function always_CalculateLHC(boolValue) {
-        return alwaysCalculateLHC = boolValue;
-    }
-
     meerkat.modules.register('healthLHC', {
         onInitialise: onInitialise,
         setCoverDates: setCoverDates,
@@ -319,10 +254,6 @@
         getPrimary: getPrimary,
         getPartner: getPartner,
         getCompleteLhcResult: getCompleteLhcResult,
-        calculateLhcOnlyWhen_NeverHeldBefore_Or_HeldBeforeButNotCurrently: calculateLhcOnly_WhenNeverHeldBefore_Or_HeldBeforeButNotCurrently,
-        calculateLhcOnlyWhen_HeldBeforeButNotCurrently: calculateLhcOnly_WhenHeldBeforeButNotCurrently,
-        calculateLhcOnlyWhen_HeldBeforeButNotCurrently_Or_HeldContinuousCover: calculateLhcOnly_WhenHeldBeforeButNotCurrently_Or_HeldContinuousCover,
-        alwaysCalculateLHC: always_CalculateLHC,
         getNewLHC: getNewLHC,
         resetNewLHC: resetNewLHC
     });

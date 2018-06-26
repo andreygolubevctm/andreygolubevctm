@@ -1,8 +1,8 @@
 ;(function ($) {
     var meerkat = window.meerkat,
         $resultsPagination,
-        filteredOutResults = [],
-        fundDiscounts = null; // this is used for removing the results when clicking the "x";
+        filteredOutResults = [],  // this is used for removing the results when clicking the "x";
+        fundDiscounts = null;
 
     /**
      * Get the list of available extras.
@@ -421,8 +421,8 @@
         	if(!fundDiscountExists(fundCode)) {
 		        discountPercentage = '';
 	        } else {
-		        if (meerkat.modules.healthPrimary.getCurrentCover() === 'N' ||
-			        (meerkat.modules.healthChoices.hasPartner() && meerkat.modules.healthPartner.getCurrentCover() === 'N')) {
+		        if (meerkat.modules.healthPrimary.getCurrentlyHaveAnyKindOfCoverPreResults() === 'N' ||
+			        (meerkat.modules.healthChoices.hasPartner() && meerkat.modules.healthPartner.getCurrentlyHaveAnyKindOfCoverPreResults() === 'N')) {
 			        discountPercentage = '7.5';
 		        } else {
 			        discountPercentage = '4';

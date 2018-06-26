@@ -89,23 +89,23 @@ public class ResponseAdapterV2 {
                     result.setPricingDate(quote.getPricingDate());
 
                     if (quote.getPremium() != null) {
-                        result.setPremium(createPremium(quote.getPremium(), quote.getInfo(), request.getQuote()));
+                        result.setPremium(createPremium(quote.getPremium(), quote.getInfo(), request.getQuote(), policyTypeExists(quote.getHospital())));
                         if (isAlternatePricingContent) {
                             final com.ctm.web.health.quote.model.response.Premium alternativePremium = quote.getAlternativePremium();
                             if (alternativePremium != null) {
-                                result.setAltPremium(createPremium(alternativePremium, quote.getInfo(), request.getQuote(), rebateChangeover));
+                                result.setAltPremium(createPremium(alternativePremium, quote.getInfo(), request.getQuote(), policyTypeExists(quote.getHospital()), rebateChangeover));
                             } else {
-                                result.setAltPremium(createPremium(createDefaultPremium(), quote.getInfo(), request.getQuote(), rebateChangeover));
+                                result.setAltPremium(createPremium(createDefaultPremium(), quote.getInfo(), request.getQuote(), policyTypeExists(quote.getHospital()), rebateChangeover));
                             }
                         } else {
-                            result.setAltPremium(createPremium(quote.getPremium(), quote.getInfo(), request.getQuote(), rebateChangeover));
+                            result.setAltPremium(createPremium(quote.getPremium(), quote.getInfo(), request.getQuote(), policyTypeExists(quote.getHospital()), rebateChangeover));
                         }
                     } else if (quote.getPaymentTypePremiums() != null) {
                         final HashMap<String, Premium> paymentTypePremiums = new HashMap<>();
                         quote.getPaymentTypePremiums().entrySet()
                                 .stream()
                                 .forEach(entry -> {
-                                    paymentTypePremiums.put(getPaymentType(entry.getKey()), createPremium(entry.getValue(), quote.getInfo(), request.getQuote()));
+                                    paymentTypePremiums.put(getPaymentType(entry.getKey()), createPremium(entry.getValue(), quote.getInfo(), request.getQuote(), policyTypeExists(quote.getHospital())));
                                 });
                         result.setPaymentTypePremiums(paymentTypePremiums);
                         if (isAlternatePricingContent) {
@@ -114,19 +114,18 @@ public class ResponseAdapterV2 {
                                 quote.getPaymentTypeAltPremiums().entrySet()
                                         .stream()
                                         .forEach(entry -> {
-                                            paymentTypeAltPremiums.put(getPaymentType(entry.getKey()), createPremium(entry.getValue(), quote.getInfo(), request.getQuote(), rebateChangeover));
+                                            paymentTypeAltPremiums.put(getPaymentType(entry.getKey()), createPremium(entry.getValue(), quote.getInfo(), request.getQuote(), policyTypeExists(quote.getHospital()), rebateChangeover));
                                         });
                             } else {
                                 quote.getPaymentTypePremiums().entrySet()
                                         .stream()
                                         .forEach(entry -> {
-                                            paymentTypeAltPremiums.put(getPaymentType(entry.getKey()), createPremium(createDefaultPremium(), quote.getInfo(), request.getQuote(), rebateChangeover));
+                                            paymentTypeAltPremiums.put(getPaymentType(entry.getKey()), createPremium(createDefaultPremium(), quote.getInfo(), request.getQuote(), policyTypeExists(quote.getHospital()), rebateChangeover));
                                         });
                             }
                             result.setPaymentTypeAltPremiums(paymentTypeAltPremiums);
                         }
                     }
-
 
                     quote.getGiftCard().map(GiftCard::getAmount).ifPresent(result::setGiftCardAmount); //otherwise it will be null in order for web-ctm to parse correctly (web-ctm can't parse Optional.empty)
 
@@ -143,7 +142,6 @@ public class ResponseAdapterV2 {
                 }
 
             }
-
 
             return new ResponseAdapterModel(hasPriceChanged, results,
                     ofNullable(healthResponse.getSummary())
@@ -180,6 +178,17 @@ public class ResponseAdapterV2 {
         return new TextNode("");
     }
 
+    private static boolean policyTypeExists(final JsonNode jsonNode) {
+
+        JsonNode nonNullNode = validateNode(jsonNode);
+        if (nonNullNode.toString().length() > 2) {
+            // This assumes that if the hospital node is an empty string it is an extras only policy, should the situation change the commented out line below should be sufficient
+            //return !(nonNullNode.path("info").path("inclusions").path("cover").isNull());
+            return true;
+        }
+        return false;
+    }
+
     private static Promo createPromo(final Promotion quotePromotion, final String staticBranch, final boolean isSimplesUser, final String brandCode) {
         final Promo promo = new Promo();
         String staticBranchQS = staticBranch != null ? "&staticBranch=" + staticBranch : "";
@@ -201,26 +210,29 @@ public class ResponseAdapterV2 {
 
     private static Premium createPremium(final com.ctm.web.health.quote.model.response.Premium quotePremium,
                                          final com.ctm.web.health.quote.model.response.Info info,
-                                         final com.ctm.web.health.model.form.HealthQuote healthQuote) {
-        return createPremium(quotePremium, info, healthQuote, empty());
+                                         final com.ctm.web.health.model.form.HealthQuote healthQuote,
+                                         final boolean lookingForPrivateHospitalCover) {
+        return createPremium(quotePremium, info, healthQuote, lookingForPrivateHospitalCover, empty());
     }
 
     private static Premium createPremium(final com.ctm.web.health.quote.model.response.Premium quotePremium,
                                          final com.ctm.web.health.quote.model.response.Info info,
                                          final com.ctm.web.health.model.form.HealthQuote healthQuote,
+                                         final boolean lookingForPrivateHospitalCover,
                                          final Optional<BigDecimal> rebatePercentage) {
         final Premium premium = new Premium();
-        premium.setAnnually(createPrice(quotePremium.getAnnually(), healthQuote, rebatePercentage));
-        premium.setMonthly(createPrice(quotePremium.getMonthly(), healthQuote, rebatePercentage));
-        premium.setFortnightly(createPrice(quotePremium.getFortnightly(), healthQuote, rebatePercentage));
-        premium.setWeekly(createPrice(quotePremium.getWeekly(), healthQuote, rebatePercentage));
-        premium.setHalfyearly(createPrice(quotePremium.getHalfYearly(), healthQuote, rebatePercentage));
-        premium.setQuarterly(createPrice(quotePremium.getQuarterly(), healthQuote, rebatePercentage));
+        premium.setAnnually(createPrice(quotePremium.getAnnually(), healthQuote, lookingForPrivateHospitalCover, rebatePercentage));
+        premium.setMonthly(createPrice(quotePremium.getMonthly(), healthQuote, lookingForPrivateHospitalCover, rebatePercentage));
+        premium.setFortnightly(createPrice(quotePremium.getFortnightly(), healthQuote, lookingForPrivateHospitalCover, rebatePercentage));
+        premium.setWeekly(createPrice(quotePremium.getWeekly(), healthQuote, lookingForPrivateHospitalCover, rebatePercentage));
+        premium.setHalfyearly(createPrice(quotePremium.getHalfYearly(), healthQuote, lookingForPrivateHospitalCover, rebatePercentage));
+        premium.setQuarterly(createPrice(quotePremium.getQuarterly(), healthQuote, lookingForPrivateHospitalCover, rebatePercentage));
         return premium;
     }
 
     private static Price createPrice(final com.ctm.web.health.quote.model.response.Price quotePrice,
                                      final com.ctm.web.health.model.form.HealthQuote healthQuote,
+                                     final boolean lookingForPrivateHospitalCover,
                                      final Optional<BigDecimal> rebatePercentage) {
 
         if (quotePrice == null) return null;
@@ -247,7 +259,7 @@ public class ResponseAdapterV2 {
         price.setValue(payableAmount);
 
         //If changing/remove span tag underneath, make sure to change HealthModelTranslator premiumlabel translation accordingly.
-        price.setLhcfreepricing(getLhcFreePricing(healthQuote, lhcAmount) + "Inc. " + rebateValue + " Govt Rebate");
+        price.setLhcfreepricing(getLhcFreePricing(healthQuote, lhcAmount, lookingForPrivateHospitalCover) + "Inc. " + rebateValue + " Govt Rebate");
 
         price.setRebateValue(rebateValue);
 
@@ -262,30 +274,25 @@ public class ResponseAdapterV2 {
         return price;
     }
 
-    private static String getLhcFreePricing(final com.ctm.web.health.model.form.HealthQuote healthQuote, final BigDecimal lhcAmount) {
+    private static String getLhcFreePricing(final com.ctm.web.health.model.form.HealthQuote healthQuote, final BigDecimal lhcAmount, final boolean lookingForPrivateHospitalCover) {
         HealthCover healthCover = healthQuote.getHealthCover();
         Insured primary = healthCover.getPrimary();
         Optional<Insured> partner = Optional.ofNullable(healthCover.getPartner());
 
         String lhcFreePricing = "";
-        if (isInsuredAffectedByLHC(primary) || partner.map(ResponseAdapterV2::isInsuredAffectedByLHC).orElse(false)) {
+        if (isInsuredAffectedByLHC(primary, lookingForPrivateHospitalCover) || partner.map(optionalPartner -> ResponseAdapterV2.isInsuredAffectedByLHC(optionalPartner, lookingForPrivateHospitalCover)).orElse(false)) {
             lhcFreePricing = "The premium may be affected by LHC<br/>";
-        } else if (lhcAmount.compareTo(BigDecimal.ZERO) > 0) {
-            lhcFreePricing = "price excl " + formatCurrency(lhcAmount, true, true) + " LHC<span/> ";
         }
 
         return lhcFreePricing;
     }
 
-    public static boolean isInsuredAffectedByLHC(Insured insured) {
+    public static boolean isInsuredAffectedByLHC(Insured insured, boolean lookingForPrivateHospitalCover) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate insuredDob = LocalDate.parse(insured.getDob(), formatter);
         long insuredLHCDays = LHCDateCalculationSupport.getLhcDaysApplicable(insuredDob, LocalDate.now());
-        boolean insuredHasCover = BooleanUtils.toBoolean(insured.getCover());
-        boolean insuredHasHealthCoverLoading = BooleanUtils.toBoolean(insured.getHealthCoverLoading());
-        boolean insuredHasEverHadCover = BooleanUtils.toBoolean(insured.getEverHadCover());
 
-        return insuredLHCDays > 0 && ((!insuredHasCover && insuredHasEverHadCover) || (insuredHasCover && !insuredHasHealthCoverLoading));
+        return insuredLHCDays > 0 && lookingForPrivateHospitalCover;
     }
 
     protected static BigDecimal calculateRebateValue(final Optional<BigDecimal> rebate, final BigDecimal basePremium, final BigDecimal calculatedRebateValue) {
