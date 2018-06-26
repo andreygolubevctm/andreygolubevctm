@@ -205,7 +205,6 @@
 
             var includeFormData = false;
             if (typeof eventObject.includeFormData !== 'undefined' && eventObject.includeFormData === true) includeFormData = true;
-            console.info("@@@ tracking MODULE EVENT: ", eventObject);
             recordTouch(eventObject.touchType, eventObject.touchComment, eventObject.productId, includeFormData, eventObject.callback, eventObject.customFields);
         });
 
