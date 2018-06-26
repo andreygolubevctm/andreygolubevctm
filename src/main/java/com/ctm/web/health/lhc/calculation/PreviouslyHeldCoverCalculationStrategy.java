@@ -87,19 +87,15 @@ public class PreviouslyHeldCoverCalculationStrategy implements LHCCalculationStr
      * @return the set of dates for which an applicant was not covered.
      */
     private static Set<LocalDate> getDatesForLHCCalculation(Set<LocalDate> coveredOrGapDays, Set<LocalDate> availableDatesForLHCCalculation, Optional<LocalDate> lhc10YearResetDate) {
-        availableDatesForLHCCalculation.removeAll(coveredOrGapDays);
-        final Set<LocalDate> daysWithoutCover;
-        if (lhc10YearResetDate.isPresent()) {
-            LocalDate resetDate = lhc10YearResetDate.get();
-            Predicate<LocalDate> onlyDatesAfterResetDate = localDate -> localDate.isAfter(resetDate) || localDate.isEqual(resetDate);
-            daysWithoutCover = availableDatesForLHCCalculation.stream()
-                    .filter(onlyDatesAfterResetDate)
-                    .collect(Collectors.toCollection(TreeSet::new));
-        } else {
-            daysWithoutCover = availableDatesForLHCCalculation;
-        }
+        Predicate<LocalDate> includeOnlyNonCoveredDays = localDate -> !coveredOrGapDays.contains(localDate);
 
-        return daysWithoutCover;
+        Predicate<LocalDate> daysAfterResetDateIfApplicable = lhc10YearResetDate.map(resetDate -> (Predicate<LocalDate>) localDate -> localDate.isAfter(resetDate) || localDate.isEqual(resetDate))
+                .orElse(localDate -> true);
+
+        return availableDatesForLHCCalculation
+                .stream()
+                .filter(includeOnlyNonCoveredDays.and(daysAfterResetDateIfApplicable))
+                .collect(Collectors.toCollection(TreeSet::new));
     }
 
     /**
