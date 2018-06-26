@@ -18,7 +18,10 @@ import com.ctm.web.core.web.go.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
@@ -207,5 +210,18 @@ public class SessionData implements Serializable {
 	public int hashCode() {
 
 		return Objects.hash(getTransactionSessionData(), getAuthenticatedSessionData(), getLastSessionTouch(), isShouldEndSession());
+	}
+
+	/**
+	 * Modifying objects inside a session, will not mark the session object itself as modified, and therefore Hazelcast
+	 * will not replicate changes. The method is a utility method to indicate that data inside a session has been
+	 * modified and therefore Hazelcast should replicate the session at the end of the request.
+	 *
+	 * @param request the request belonging the to the Session which requires modification.
+	 */
+	public static void markSessionForCommit(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		session.setAttribute("mark-session-for-commit", LocalDateTime.now());
+		session.removeAttribute("mark-session-for-commit");
 	}
 }

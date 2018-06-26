@@ -27,7 +27,7 @@ import static com.ctm.commonlogging.common.LoggingArguments.kv;
 
 @SuppressWarnings("unchecked")
 public class XmlNode implements Map<Object, Object>, Serializable {
-
+	private static final long serialVersionUID = 1L;
     private static final Logger LOGGER = LoggerFactory.getLogger(XmlNode.class);
 
 	/** The text value of the node. */

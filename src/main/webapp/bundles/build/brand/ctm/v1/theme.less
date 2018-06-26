@@ -920,10 +920,10 @@ a{
 	display: inline-block;
 
 	//XS Mobile first base
-	width: 136px;
-	height: 24px;
+	width: 43px;
+	height: 32px;
 
-	margin: 8px auto 0 8px;
+	margin: 0px auto 0 8px;
 	@media only screen and (@xs-only) {
 		line-height: @font-size-small;
 		font-size: 0;
@@ -932,24 +932,24 @@ a{
 		}
 	}
 
-	background-size: 136px 24px;
-	.highResImg('../graphics/logo-xs.png'; '../graphics/logo-xs@2x.png'; 136px; 24px);
+	background-size: 43px 32px;
+	.highResImg('../graphics/logo-dollar-xs.png'; '../graphics/logo-dollar-xs@2x.png'; 43px; 32px);
 
 	@media only screen and (min-width: @screen-sm-min) {
 		width: 216px;
-		height: 38px;
-		margin: 14px 0 10px 0;
-		background-size: 216px 38px;
-		.highResImg('../graphics/logo-sm.png'; '../graphics/logo-sm@2x.png'; 216px; 38px; ~"");
+		height: 28px;
+		margin: 24px 0 10px 0;
+		background-size: 216px 28px;
+		.highResImg('../graphics/logo-sm.png'; '../graphics/logo-sm@2x.png'; 216px; 28px; ~"");
 	}
 
 	//Scale up override for MD & LG logo and retina support
 	@media (min-width: @screen-md-min) {
-		width: 278px;
-		height: 49px;
+		width: 273px;
+		height: 35px;
 		margin: 24px 0 18px 0;
-		background-size: 278px 49px;
-		.highResImg('../graphics/logo.png'; '../graphics/logo@2x.png'; 278px; 49px; ~"");
+		background-size: 273px 35px;
+		.highResImg('../graphics/logo.png'; '../graphics/logo@2x.png'; 273px; 35px; ~"");
 	}
 
 	@media print {
