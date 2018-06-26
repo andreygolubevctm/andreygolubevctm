@@ -64,7 +64,8 @@ public class MarketingAutomationEmailService {
         emailTranslator.setUrls(request, emailRequest, data, verticalCode);
         emailRequest.setVertical(verticalCode);
 
-        if (VerticalType.HEALTH != VerticalType.valueOf(verticalCode) || !emailRequest.isPopularProductsSelected()) {
+        if (VerticalType.HEALTH != VerticalType.fromValue(verticalCode) || !emailRequest.isPopularProductsSelected()) {
+            LOGGER.info("Marketing Automation Service request payload: {}", emailRequest.toString());
             emailClient.send(emailRequest);
         }
     }
