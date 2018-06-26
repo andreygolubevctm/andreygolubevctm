@@ -19,7 +19,7 @@
 	<c:set var="fieldXpath" value="${xpath}/colour" />
 	<form_v2:row fieldXpath="${fieldXpath}" label="What colour is your Medicare card?" id="medicareCoveredRow" helpId="291" smRowOverride="5">
 		<p id="health_medicareDetails_coverMessage"></p>
-		<field_v2:medicare_colour xpath="${fieldXpath}" />
+		<field_v1:medicare_colour xpath="${fieldXpath}" />
 	</form_v2:row>
 
 	<form_v2:row label="Medicare card number and expiry" hideHelpIconCol="true" className="row" isNestedStyleGroup="${true}">

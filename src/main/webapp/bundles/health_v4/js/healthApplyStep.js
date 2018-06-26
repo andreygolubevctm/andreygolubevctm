@@ -11,7 +11,7 @@
         $(document).ready(function () {
             $elements = {
                 primaryFirstname: $('#health_application_primary_firstname'),
-                paymentMedicareColour: $("#health_payment_medicare_colour"),
+                paymentMedicareColour: $('input[name=health_payment_medicare_colour]'),
                 paymentMedicareCover: $("#health_payment_medicare_cover"),
                 medicareYellowMessage: $("#health_medicareDetails_yellowCardMessage"),
                 genderToggle: $('.person-gender-toggle input[type=radio]'),
@@ -127,7 +127,7 @@
         $elements.paymentMedicareColour
             .addRule('medicareCardColour')
             .on('change', function() {
-                var value = $(this).val();
+                var value = $elements.paymentMedicareColour.filter(':checked').val();
                 // set hidden Medicare cover value
                 $elements.paymentMedicareCover.val(value === 'none' ? 'N' : 'Y');
 
