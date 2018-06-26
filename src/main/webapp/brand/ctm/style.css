@@ -426,15 +426,15 @@ h4, h5 {
 }
 .normal-header h1 a {
 	background: transparent url('images/logo.png') no-repeat center left;
-	height:72px;
-	width:420px;
+	height: 72px;
+	width: 420px;
 	display: block;
 	text-indent: -9999px;
 }
 .narrow-header h1 a {
-	background: transparent url('images/narrow-logo.png') no-repeat top left;
+	background: transparent url('images/logo.png') no-repeat top left;
 	height: 39px;
-	width:420px;
+	width: 420px;
 	display: block;
 	text-indent: -9999px;
     margin-top: 8px;
