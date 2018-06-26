@@ -83,5 +83,4 @@ public class ResponseAdapterV2Test {
 
         assertFalse(ResponseAdapterV2.isInsuredAffectedByLHC(testInsured, islookingForHospitalCover));
     }
-
 }
