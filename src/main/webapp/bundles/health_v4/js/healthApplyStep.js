@@ -250,11 +250,7 @@
             }
         }
 
-        if (changeCurrentFundLabelToPreviousFund) {
-            $elements[applicant].healthApplicationPreviousFundLabel.html(applicantPrefix + " Previous Health Fund");
-        } else {
-            $elements[applicant].healthApplicationPreviousFundLabel.html(applicantPrefix + " Current Health Fund");
-        }
+        $elements[applicant].healthApplicationPreviousFundLabel.html(applicantPrefix + (changeCurrentFundLabelToPreviousFund ? " Previous" : " Current") + " Health Fund");
 
         meerkat.modules.fieldUtilities.toggleVisible(
             $elements[applicant].everHadPrivateHospitalRow_1,
@@ -338,7 +334,7 @@
     }
 
     function _isLHCPossiblyApplicable(applicant) {
-        return (_isLookingToPurchasePrivateHospitalCover() && _isOfLhcAge(applicant));
+        return _isLookingToPurchasePrivateHospitalCover() && _isOfLhcAge(applicant);
     }
 
     /*

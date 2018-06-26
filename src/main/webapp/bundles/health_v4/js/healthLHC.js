@@ -56,7 +56,7 @@
                 var primaryFlags = _getLhcConditionsFlags('primary', res.primary.lhcDaysApplicable);
                 _setLhcConditionsflags('primary', primaryFlags.neverHadPrivateHospitalCover, primaryFlags.continuousCover);
 
-                //if health_previousfund_primary_fundHistory_dates_unsure checkbox is checked don't use coverage dates info
+                // only use coverage dates info if if health_previousfund_primary_fundHistory_dates_unsure checkbox is not checked
                 if (primaryFlags.requirePrivateHospitalCoverHistory && !$(':input[name=health_previousfund_primary_fundHistory_dates_unsure]').is(":checked")) {
                     setCoverDates('primary', meerkat.modules.healthPrivateHospitalHistory.getPrimaryCoverDates());
                 }
@@ -65,7 +65,7 @@
                     var partnerFlags = _getLhcConditionsFlags('partner', res.partner.lhcDaysApplicable);
                     _setLhcConditionsflags('partner', partnerFlags.neverHadPrivateHospitalCover, partnerFlags.continuousCover);
 
-                    //if health_previousfund_partner_fundHistory_dates_unsure checkbox is checked don't use coverage dates info
+                    // only use coverage dates info if if health_previousfund_partner_fundHistory_dates_unsure checkbox is not checked
                     if (partnerFlags.requirePrivateHospitalCoverHistory && !$(':input[name=health_previousfund_partner_fundHistory_dates_unsure]').is(":checked")) {
                         setCoverDates('partner', meerkat.modules.healthPrivateHospitalHistory.getPartnerCoverDates());
                     }
