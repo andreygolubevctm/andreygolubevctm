@@ -12,7 +12,7 @@
     }
 
     function _setupFields() {
-        $elements = { //g
+        $elements = {
             partnerDOBD: $('select[name=health_healthCover_partner_dobInputD]'),
             partnerHeading: $('.healthCoverPartnerHeading'),
             partnerCoverLoading: $('input[name=health_healthCover_partner_healthCoverLoading]'),
