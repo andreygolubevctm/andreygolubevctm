@@ -16,7 +16,7 @@
 
     function _setupFields() {
         $elements = {
-            income: $(':input[name="health_healthCover_income"]'),
+            income: $('select[name="health_healthCover_income"]'),
             rebate: $('input[name="health_healthCover_rebate"]'),
             primaryDob: $('#health_healthCover_primary_dob'),
             primaryAppDob: $('#health_application_primary_dob'),
@@ -41,8 +41,8 @@
 
         var capitalisePersonDetailType = applicant.charAt(0).toUpperCase() + applicant.slice(1);
         var currentlyHaveAnyKindOfCoverPreResults = meerkat.modules['health' + capitalisePersonDetailType].getCurrentlyHaveAnyKindOfCoverPreResults();
-        var everHadPrivateHospital_1 = $(':input[name=health_application_' + applicant + '_everHadCoverPrivateHospital1]').filter(':checked').val();
-        var healthContinuousCover = $(':input[name=health_healthCover_' + applicant + '_healthCoverLoading]').filter(':checked').val();
+        var everHadPrivateHospital_1 = $('input[name=health_application_' + applicant + '_everHadCoverPrivateHospital1]').filter(':checked').val();
+        var healthContinuousCover = $('input[name=health_healthCover_' + applicant + '_healthCoverLoading]').filter(':checked').val();
 
         if (_.isUndefined(everHadPrivateHospital_1) && _.isUndefined(healthContinuousCover)) {
             //pre-results

@@ -27,12 +27,12 @@
             primary: {
                 fund: $('#clientFund').find('select'),
                 fundContainer: $('#health_previousfund'),
-                everHadPrivateHospital_1: $(':input[name=health_application_primary_everHadCoverPrivateHospital1]')
+                everHadPrivateHospital_1: $('input[name=health_application_primary_everHadCoverPrivateHospital1]')
             },
             partner: {
                 fund: $('#partnerFund').find('select'),
                 fundContainer: $('#partnerpreviousfund'),
-                everHadPrivateHospital_1: $(':input[name=health_application_partner_everHadCoverPrivateHospital1]')
+                everHadPrivateHospital_1: $('input[name=health_application_partner_everHadCoverPrivateHospital1]')
             }
         };
     }
