@@ -75,7 +75,6 @@ public class ResponseAdapterV2Test {
         assertFalse(ResponseAdapterV2.isInsuredAffectedByLHC(testInsured, islookingForHospitalCover));
     }
 
-    /*   this test should pass once all changes for HLT-5541 are merged in
     @Test
     public void givenInsured_isTooOldForLHC_andWantsHospitalCover_thenInsuredIsNotAffectedByLHC() {
         Insured testInsured = new Insured();
@@ -84,6 +83,5 @@ public class ResponseAdapterV2Test {
 
         assertFalse(ResponseAdapterV2.isInsuredAffectedByLHC(testInsured, islookingForHospitalCover));
     }
-    */
 
 }

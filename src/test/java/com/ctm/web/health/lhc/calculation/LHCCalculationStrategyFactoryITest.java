@@ -144,7 +144,6 @@ public class LHCCalculationStrategyFactoryITest {
         assertEquals(MIN_LHC_PERCENTAGE, lhc);
     }
 
-    /*
     @Test
     public void givenCoverOnBaseDate_whenExceededUncoveredThreshold_andNotHadTenYearsContiguousCover_thenCalculateLHC() {
         LocalDate birthday = TEST_CALCULATION_DATE.minusYears(65);
@@ -161,7 +160,6 @@ public class LHCCalculationStrategyFactoryITest {
 
         assertEquals(22, lhc);
     }
-    */
 
     @Test
     public void givenNoCoverOnBaseDate_whenApplicantHasZeroApplicableLHCDays_thenReturnZeroLHC() {
