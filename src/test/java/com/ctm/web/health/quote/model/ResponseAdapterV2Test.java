@@ -75,7 +75,6 @@ public class ResponseAdapterV2Test {
         assertFalse(ResponseAdapterV2.isInsuredAffectedByLHC(testInsured, islookingForHospitalCover));
     }
 
-    /* TODO This test seems to still be breaking need to investigate if LHC Calc is working correctly
     @Test
     public void givenInsured_isTooOldForLHC_andWantsHospitalCover_thenInsuredIsNotAffectedByLHC() {
         Insured testInsured = new Insured();
@@ -84,5 +83,4 @@ public class ResponseAdapterV2Test {
 
         assertFalse(ResponseAdapterV2.isInsuredAffectedByLHC(testInsured, islookingForHospitalCover));
     }
-    */
 }
