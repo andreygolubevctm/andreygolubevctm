@@ -47,9 +47,9 @@
             currentlyHaveAnyKindOfCoverApplyPage: $('#health_application_' + applicant + '_health_cover'),
             healthFundHistoryRow: $('#' + applicant + 'FundHistory'),
             healthApplicationDOB: $('#health_application_' + applicant + '_dob'),
-            aboutYouPreviousFund: $('input[name=health_healthCover_' + applicant + '_fundName]').children('option'),
+            aboutYouPreviousFund: $('select[name=health_healthCover_' + applicant + '_fundName]').children('option'),
             healthApplicationPreviousFundRow: $('#' + applicant + 'previousfund'),
-            healthApplicationPreviousFund: $('input[name=health_previousfund_' + applicant + '_fundName]').children('option'),
+            healthApplicationPreviousFund: $('select[name=health_previousfund_' + applicant + '_fundName]').children('option'),
             healthApplicationPreviousFundLabel: $('[for=health_previousfund_' + applicant + '_fundName]'),
             everHadPrivateHospitalRow_1: $('#health_application_' + applicant + 'CoverEverHadPrivateHospital1'),
             everHadPrivateHospitalBtnGroup_1: $('#health_application_' + applicant + '_ever_had_health_coverPrivateHospital1'),
@@ -561,12 +561,12 @@
                     if (selectedFieldCurrentVal !== ''){
 
                         // if there is matching non duplicate value in drop down on the Application page
-                        if  ($('input[name=health_previousfund_' + applicant + '_fundName] > option[value="' + selectedFieldCurrentVal +'"]').length === 1) {
+                        if  ($('select[name=health_previousfund_' + applicant + '_fundName] > option[value="' + selectedFieldCurrentVal +'"]').length === 1) {
                             // if there are no duplicate entries on the about you(primary)/insurance preferences(partner) page
-                            if ($('input[name=health_healthCover_' + applicant + '_fundName] > option[value="' + selectedFieldCurrentVal +'"]').length == 1)  {
+                            if ($('select[name=health_healthCover_' + applicant + '_fundName] > option[value="' + selectedFieldCurrentVal +'"]').length == 1)  {
 
                                 //populate field
-                                $('input[name=health_previousfund_' + applicant + '_fundName]').find('option[value="' + selectedFieldCurrentVal + '"]').attr("selected", true);
+                                $('select[name=health_previousfund_' + applicant + '_fundName]').find('option[value="' + selectedFieldCurrentVal + '"]').attr("selected", true);
                             }
                         }
                     }
