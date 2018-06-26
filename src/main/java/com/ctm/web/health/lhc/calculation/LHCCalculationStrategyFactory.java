@@ -18,22 +18,18 @@ public class LHCCalculationStrategyFactory {
      * @return an instance of the applicable LHC calculation strategy.
      */
     public static LHCCalculationStrategy getInstance(LHCCalculationDetails details, LocalDate now) {
-        LHCCalculationDetails lhcCalculationDetails = recalculateLHCDetails(details);
+        LHCCalculationDetails lhcCalculationDetails = reapplyBaseDateCalculations(details);
 
-        if (LHCDateCalculationSupport.isEligibleForMinimumLHC(lhcCalculationDetails, now)) {
+        if (lhcCalculationDetails.getContinuousCover() || LHCDateCalculationSupport.calculateAgeInYearsFrom(lhcCalculationDetails.getDateOfBirth(), now) < Constants.LHC_EXEMPT_AGE_CUT_OFF || lhcCalculationDetails.getDateOfBirth().isBefore(Constants.LHC_BIRTHDAY_APPLICABILITY_DATE)) {
             return new MinimumLHCCalculationStrategy();
-        } else if (details.getNeverHadCover()) {
-            return new NeverHeldCoverCalculator(lhcCalculationDetails.getAge());
+        } else if (details.getNeverHadCover() || lhcCalculationDetails.getCoverDates().isEmpty()) {
+            return new NeverHeldCoverCalculator(lhcCalculationDetails.getDateOfBirth(), now);
         } else {
-            if (LHCDateCalculationSupport.heldCoverOnBaseDate(lhcCalculationDetails.getBaseDate(), lhcCalculationDetails.getCoverDates())) {
-                return new HeldCoverOnBaseDateCalculator(lhcCalculationDetails.getLhcDaysApplicable(), lhcCalculationDetails.getCoverDates(), now);
-            } else {
-                return new NoCoverOnBaseDateCalculator(lhcCalculationDetails.getBaseDate(), lhcCalculationDetails.getCoverDates(), now);
-            }
+            return new PreviouslyHeldCoverCalculationStrategy(lhcCalculationDetails.getDateOfBirth(), lhcCalculationDetails.getBaseDate(), lhcCalculationDetails.getCoverDates(), now);
         }
     }
 
-    private static LHCCalculationDetails recalculateLHCDetails(LHCCalculationDetails details) {
+    private static LHCCalculationDetails reapplyBaseDateCalculations(LHCCalculationDetails details) {
         LHCBaseDateDetails baseDateDetails = LHCBaseDateDetails.createFrom(details.getDateOfBirth());
         return details.lhcDaysApplicable(baseDateDetails.getLhcDaysApplicable())
                 .baseDate(baseDateDetails.getBaseDate())

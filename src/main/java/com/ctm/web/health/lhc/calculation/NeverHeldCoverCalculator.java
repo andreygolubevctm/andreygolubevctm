@@ -1,5 +1,7 @@
 package com.ctm.web.health.lhc.calculation;
 
+import java.time.LocalDate;
+
 import static com.ctm.web.health.lhc.calculation.Constants.MAX_LHC_PERCENTAGE;
 
 /**
@@ -8,24 +10,24 @@ import static com.ctm.web.health.lhc.calculation.Constants.MAX_LHC_PERCENTAGE;
  */
 public class NeverHeldCoverCalculator implements LHCCalculationStrategy {
 
-    private final long applicantAge;
+    private final long lhcAge;
 
     /**
-     * Constructs an instance of {@link NeverHeldCoverCalculator} with the specified applicantAge.
+     * Constructs an instance of {@link NeverHeldCoverCalculator} with the specified date of birth and calculation date.
+     * <p>
+     * NB: the applicant's LHC age is calculated from the date of birth on the most recent 1st JULY to {@code when}.
      *
-     * @param applicantAge the age of the applicant - cannot be less than zero.
-     * @throws IllegalArgumentException if applicantAge is less than zero.
+     * @param dateOfBirth applicants date of birth.
+     * @param when        when the LHC Calculation is being performed.
+     * @see LHCDateCalculationSupport#getFinancialYearStart(LocalDate)
      */
-    public NeverHeldCoverCalculator(long applicantAge) {
-        if (applicantAge < 0) {
-            throw new IllegalArgumentException("applicant age cannot be less than zero");
-        }
-        this.applicantAge = applicantAge;
+    public NeverHeldCoverCalculator(LocalDate dateOfBirth, LocalDate when) {
+        this.lhcAge = LHCDateCalculationSupport.calculateAgeInYearsFrom(dateOfBirth, LHCDateCalculationSupport.getFinancialYearStart(when));
     }
 
     @Override
     public long calculateLHCPercentage() {
-        long lhcPercentage = Math.max(0, (applicantAge - Constants.LHC_REQUIREMENT_AGE) * 2);
+        long lhcPercentage = Math.max(0, (lhcAge - Constants.LHC_REQUIREMENT_AGE) * 2);
         return Math.min(lhcPercentage, MAX_LHC_PERCENTAGE);
     }
 }

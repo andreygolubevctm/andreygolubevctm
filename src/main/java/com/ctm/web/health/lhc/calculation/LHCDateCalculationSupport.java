@@ -1,12 +1,13 @@
 package com.ctm.web.health.lhc.calculation;
 
 import com.ctm.web.health.lhc.model.query.CoverDateRange;
-import com.ctm.web.health.lhc.model.query.LHCCalculationDetails;
 import org.elasticsearch.common.collect.ImmutableList;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.time.chrono.ChronoLocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -70,11 +71,7 @@ public class LHCDateCalculationSupport {
                 .mapToObj(startInclusive::plusDays);
     };
 
-    public static long getDaysBetween(LocalDate startInclusive, LocalDate endInclusive)  {
-        return getCoveredDaysInRange(ImmutableList.of(new CoverDateRange(startInclusive, endInclusive))).size();
-    }
-
-     /**
+    /**
      * Calculate the number of years from {@code dateOfBirth} until {@code untilDay}.
      * If a the {@code dateOfBirth} is not before {@code untilDay}, zero will be returned.
      *
@@ -99,20 +96,32 @@ public class LHCDateCalculationSupport {
         return calculateAgeInYearsFrom(dateOfBirth, Constants.JULY_FIRST_2000);
     }
 
+    /**
+     * Calculate an applicant's base date from their date of birth.
+     *
+     * The base date is the start of the financial year "after" (not after or equal to) their 31st birthday.
+     * For example, with a date of July 1st, the start of the financial year following their 31st birthday, is in fact
+     * their 32nd birthday.
+     *
+     * @param dateOfBirth the applicant's date of birth.
+     * @return the start of the financial year following the 31st anniversary of a birthday.
+     */
     public static LocalDate getBaseDate(LocalDate dateOfBirth) {
         long ageInYearsAtJulyFirst2000 = calculateAgeInYearsAtJulyFirst2000(dateOfBirth);
+
         if (ageInYearsAtJulyFirst2000 < Constants.LHC_EXEMPT_AGE_CUT_OFF) {
-            return Constants.JULY_FIRST_2000.plusYears(Constants.LHC_EXEMPT_AGE_CUT_OFF - ageInYearsAtJulyFirst2000);
+            return getFinancialYearStart(dateOfBirth.plusYears(Constants.LHC_EXEMPT_AGE_CUT_OFF + 1));
         } else {
             return Constants.JULY_FIRST_2000;
         }
     }
 
     /**
-     * Return the unique number of LHC applicable days between a date of birth and the specified date
+     * Return the unique number of days between a date of birth and the specified date that are applicable for LHC,
+     * (between base date and now).
      * <p>
      * On the specified {@code onDay}, if a person born on {@code dateOfBirth}, calculate the number of days between
-     * those two dates;
+     * those two dates that occur between the calculated base date and {@code onDay}.
      * <p>
      * Unless the date of birth is before 01/07/1934, or the person is aged less than 31, in which case the days
      * applicable is ZERO.
@@ -120,6 +129,7 @@ public class LHCDateCalculationSupport {
      * @param dateOfBirth the date of birth
      * @param onDay       the specified day for calculation.
      * @return the number of LHC applicable days.
+     * @see #getBaseDate(LocalDate)
      */
     public static long getLhcDaysApplicable(LocalDate dateOfBirth, LocalDate onDay) {
         if (calculateAgeInYearsFrom(dateOfBirth, onDay) < Constants.LHC_EXEMPT_AGE_CUT_OFF
@@ -145,18 +155,6 @@ public class LHCDateCalculationSupport {
     }
 
     /**
-     * Calculates the number of unique days included in a collection of {@link CoverDateRange} instances. Overlapping dates
-     * between {@link CoverDateRange} instances will be ignored.
-     *
-     * @param coverDateRanges the collection of {@link CoverDateRange} instances.
-     * @return the number of unique days included in a collection of {@link CoverDateRange} instances.
-     */
-    public static int getNumberOfDaysCovered(List<CoverDateRange> coverDateRanges) {
-        Set<LocalDate> uniqueDatesInRange = getCoveredDaysInRange(coverDateRanges);
-        return uniqueDatesInRange.size();
-    }
-
-    /**
      * Return a set of unique days included in a collection of {@link CoverDateRange} instances. Overlapping dates
      * between {@link CoverDateRange} instances will be ignored.
      *
@@ -171,65 +169,6 @@ public class LHCDateCalculationSupport {
     }
 
     /**
-     * Returns the earliest {@link CoverDateRange#getFrom()} date from a collection of {@link CoverDateRange} instances.
-     *
-     * @param coverDateRanges the collection of {@link CoverDateRange} instances.
-     * @return the earliest {@link CoverDateRange#getFrom()} date from a collection of {@link CoverDateRange} instances.
-     */
-    public static Optional<LocalDate> getFirstDayInRange(List<CoverDateRange> coverDateRanges) {
-        return getCoveredDaysInRange(coverDateRanges).stream().limit(1).findFirst();
-    }
-
-    /**
-     * Returns the max {@link CoverDateRange#getTo()} date from a collection of {@link CoverDateRange} instances.
-     *
-     * @param coverDateRanges the collection of {@link CoverDateRange} instances.
-     * @return the max {@link CoverDateRange#getTo()} date from a collection of {@link CoverDateRange} instances.
-     */
-    public static Optional<LocalDate> getLastDayInRange(List<CoverDateRange> coverDateRanges) {
-        Set<LocalDate> daysInRange = getCoveredDaysInRange(coverDateRanges);
-        int n = Math.max(0, daysInRange.size() - 1);
-        return daysInRange.stream().skip(n).findFirst();
-    }
-
-    /**
-     * Calculates if a collection of {@link CoverDateRange} instances are contiguous.
-     *
-     * @param coverDateRanges the collection of {@link CoverDateRange}.
-     * @return true if a collection of {@link CoverDateRange} instances is contiguous.
-     */
-    public static boolean isContiguous(List<CoverDateRange> coverDateRanges) {
-        Set<LocalDate> contiguousDatesInRange = getContiguousDateRange(coverDateRanges)
-                .map(ImmutableList::of)
-                .map(LHCDateCalculationSupport::getCoveredDaysInRange)
-                .orElse(Collections.emptySet());
-        Set<LocalDate> coveredDaysInRange = getCoveredDaysInRange(coverDateRanges);
-        return contiguousDatesInRange.equals(coveredDaysInRange);
-    }
-
-    /**
-     * Calculate a {@link CoverDateRange} using the earliest {@link CoverDateRange#getFrom()} and maximum
-     * {@link CoverDateRange#getTo()} regardless of contiguity.
-     *
-     * @param coverDateRanges the collection of {@link CoverDateRange}.
-     * @return a {@link CoverDateRange} encapsulating all dates within the collection of {@code coverDateRanges}.
-     */
-    public static Optional<CoverDateRange> getContiguousDateRange(List<CoverDateRange> coverDateRanges) {
-        Optional<LocalDate> firstDay = getFirstDayInRange(coverDateRanges);
-        Optional<LocalDate> lastDay = getLastDayInRange(coverDateRanges);
-        final Optional<CoverDateRange> range;
-        if (firstDay.isPresent() && lastDay.isPresent()) {
-            LocalDate rangeStart = firstDay.get();
-            LocalDate rangeEndInclusive = lastDay.get();
-            range = Optional.of(new CoverDateRange(rangeStart, rangeEndInclusive));
-
-        } else {
-            range = Optional.empty();
-        }
-        return range;
-    }
-
-    /**
      * Given a collection of {@link CoverDateRange}, calculate whether the entire coverage date range is contiguous from
      * the coverage end date for at least the given number of years.
      *
@@ -239,61 +178,146 @@ public class LHCDateCalculationSupport {
      * @return true if the date range contains contiguous cover from the maximum cover date minus {@code numberOfYears}.
      */
     public static boolean hasYearsContiguousCover(int numberOfYears, List<CoverDateRange> coverDateRanges, LocalDate toDate) {
-        LocalDate nYearsAgo = toDate.minusYears(numberOfYears);
+        return hasYearsContiguousCover(numberOfYears, toDate, getCoveredDaysInRange(coverDateRanges), Collections.emptyList());
+    }
+
+    /**
+     * Given a collection of {@link CoverDateRange}, calculate whether the entire coverage date range is contiguous from
+     * the coverage end date for at least the given number of years (accommodating for permitted gaps).
+     *
+     * @param numberOfYears   the number of years from the coverage end date (inclusive)
+     * @param coverDateRanges the range of dates to check for contiguous cover.
+     * @param toDate          the end date for the coverage range.
+     * @param permittedGapDays the permitted gap days calculated as part of the cover date range.
+     * @return true if the date range contains contiguous cover from the maximum cover date minus {@code numberOfYears},
+     * accommodating permitted gaps up to a maximum of {@link Constants#LHC_DAYS_WITHOUT_COVER_THRESHOLD}.
+     */
+    public static boolean hasYearsContiguousCover(int numberOfYears, List<CoverDateRange> coverDateRanges, LocalDate toDate, List<LocalDate> permittedGapDays) {
+        return hasYearsContiguousCover(numberOfYears, toDate, getCoveredDaysInRange(coverDateRanges), permittedGapDays);
+    }
+
+    /**
+     * Given a collection of {@link CoverDateRange}, calculate whether the entire coverage date range is contiguous from
+     * the coverage end date for at least the given number of years (accommodating for permitted gaps).
+     *
+     * @param numberOfYears the number of years from the coverage end date (inclusive)
+     * @param toDate        the end date for the coverage range.
+     * @param coverDates    the set of dates to check for contiguous cover.
+     * @return true if the date range contains contiguous cover from the maximum cover date minus {@code numberOfYears}.
+     */
+    public static boolean hasYearsContiguousCover(int numberOfYears, LocalDate toDate, Set<LocalDate> coverDates) {
+        return hasYearsContiguousCover(numberOfYears, toDate, coverDates, Collections.emptyList());
+    }
+
+    /**
+     * Given a collection of {@link CoverDateRange}, calculate whether the entire coverage date range is contiguous from
+     * the coverage end date for at least the given number of years (accommodating for permitted gaps).
+     *
+     * @param numberOfYears   the number of years from the coverage end date (inclusive)
+     * @param toDate          the end date for the coverage range.
+     * @param coverDates      the set of dates to check for contiguous cover.
+     * @param permittedGapDays the permitted gap days calculated as part of the cover date range.
+     * @return true if the date range contains contiguous cover from the maximum cover date minus {@code numberOfYears},
+     * accommodating permitted gaps up to a maximum of {@link Constants#LHC_DAYS_WITHOUT_COVER_THRESHOLD}.
+     */
+    public static boolean hasYearsContiguousCover(int numberOfYears, LocalDate toDate, Set<LocalDate> coverDates, List<LocalDate> permittedGapDays) {
+        coverDates.removeAll(permittedGapDays);
+        LocalDate nYearsAgo = toDate.minusYears(numberOfYears).minusDays(Math.min(permittedGapDays.size(), Constants.LHC_DAYS_WITHOUT_COVER_THRESHOLD));
         CoverDateRange contiguousCoverDateRange = new CoverDateRange(nYearsAgo, toDate);
         Set<LocalDate> contiguousDatesInRangeForLastNYears = getCoveredDaysInRange(ImmutableList.of(contiguousCoverDateRange));
-        Set<LocalDate> coveredDaysInLastNYears = getCoveredDaysInRange(coverDateRanges).stream()
+        Set<LocalDate> coveredDaysInLastNYears = coverDates.stream()
                 .filter(l -> isInRange.apply(l, contiguousCoverDateRange))
                 .collect(Collectors.toCollection(TreeSet::new));
+        coveredDaysInLastNYears.addAll(permittedGapDays);
         return contiguousDatesInRangeForLastNYears.equals(coveredDaysInLastNYears);
     }
 
     /**
-     * Given a collection of {@link CoverDateRange}, then return the chronologically earliest end date of all the
-     * {@link CoverDateRange} instances.
+     * Returns July First (Start of the Financial Year) for the specified Date.
      *
-     * @param coverDateRanges the range of dates.
-     * @return the chronologically earliest {@link CoverDateRange#getTo()}.
-     * @see CoverDateRange#getTo()
+     * @param date the date to find the beginning of the financial year for.
+     * @return the date of the beginning of the financial year.
      */
-    public static Optional<LocalDate> getEarliestEndDate(List<CoverDateRange> coverDateRanges) {
-        return coverDateRanges.stream()
-                .sorted(Comparator.comparing(CoverDateRange::getTo))
-                .map(CoverDateRange::getTo)
-                .findFirst();
+    public static LocalDate getFinancialYearStart(LocalDate date) {
+        final LocalDate newFinancialYear = date.withDayOfMonth(1).withMonth(Month.JULY.getValue());
+        if (newFinancialYear.isBefore(date) || newFinancialYear.equals(date)) {
+            return newFinancialYear;
+        } else {
+            return newFinancialYear.minusYears(1);
+        }
     }
 
     /**
-     * Given a collection of {@link CoverDateRange}, then return the chronologically earliest start date of all the
-     * {@link CoverDateRange} instances.
+     * Return the date from which LHC calculation should begin. If a date of birth falls within a cover date range,
+     * return {@link #getBaseDate(LocalDate)}, otherwise, return the start of the financial year after their 31st
+     * Birthday.
      *
-     * @param coverDateRanges the range of dates.
-     * @return the chronologically earliest {@link CoverDateRange#getFrom()} ()}.
-     * @see CoverDateRange#getFrom()
+     * @param dateOfBirth the applicants date of birth
+     * @param coverDates  the list of dates ranges for which an applicant held cover.
+     * @return their LHC calculation start date.
+     * @see #heldCoverOnBaseDate(LocalDate, List)
      */
-    public static Optional<LocalDate> getEarliestStartDate(List<CoverDateRange> coverDateRanges) {
-        return coverDateRanges.stream()
-                .sorted(Comparator.comparing(CoverDateRange::getFrom))
-                .map(CoverDateRange::getFrom)
-                .findFirst();
+    public static LocalDate getLHCCalculationStartDate(List<CoverDateRange> coverDates, LocalDate dateOfBirth) {
+        final LocalDate baseDate = getBaseDate(dateOfBirth);
+        final LocalDate lhcBeginDate;
+        if (heldCoverOnBaseDate(baseDate, coverDates)) {
+            lhcBeginDate = baseDate;
+        } else {
+            lhcBeginDate = getFinancialYearStart(dateOfBirth.plusYears(Constants.LHC_EXEMPT_AGE_CUT_OFF + 1));
+        }
+        return lhcBeginDate;
     }
 
     /**
-     * Given {@link LHCCalculationDetails}, return whether or not the respective applicant is eligible for minimum LHC.
-     * <p>
-     * Eligibility is true if an applicant
-     * <ul>
-     * <li>has stated they have always held continuous cover</li>
-     * <li>has no applicable LHC cover days (i.e. aged less than 30 - {@link Constants#LHC_REQUIREMENT_AGE})</li>
-     * <li>was born prior to the 1st June 1934 - {@link Constants#LHC_BIRTHDAY_APPLICABILITY_DATE}</li>
-     * </ul>
+     * Return the most recent date for which an applicant has held at least 10 years contiguous cover. This implementation
+     * expects that any relevant gap days are included within the {@code allCoveredDaysAfterBaseDate} Set.
      *
-     * @param details the {@link LHCCalculationDetails}
-     * @param onDay   the date of calculation.
-     * @return true an applicant meets the above criteria.
-     * @see #getLhcDaysApplicable(LocalDate, LocalDate)
+     * @param allCoveredDaysAfterBaseDate all covered days (including permitted gap days).
+     * @param firstNonGapDay              the first non permitted gap day.
+     * @return either the most recent day for which an applicant had held 10 years cover, or {@link Optional#empty()}
      */
-    public static boolean isEligibleForMinimumLHC(LHCCalculationDetails details, LocalDate onDay) {
-        return details.getContinuousCover() || getLhcDaysApplicable(details.getDateOfBirth(), onDay) == 0;
+    public static Optional<LocalDate> getMostRecentLHCResetDate(Set<LocalDate> allCoveredDaysAfterBaseDate, LocalDate firstNonGapDay) {
+        Optional<LocalDate> resetDate = Optional.empty();
+
+        List<LocalDate> potentialLHCResetDates = allCoveredDaysAfterBaseDate.stream()
+                .sorted(Comparator.reverseOrder())
+                .filter(localDate -> localDate.isAfter(firstNonGapDay) || localDate.isEqual(firstNonGapDay))
+                .collect(Collectors.toList());
+
+        if (!potentialLHCResetDates.isEmpty()) {
+            LocalDate earliestDate = potentialLHCResetDates.get(potentialLHCResetDates.size() - 1);
+
+            for (LocalDate last : potentialLHCResetDates) {
+                LocalDate tenYearsAgo = last.minusYears(Constants.CONTIGUOUS_YEARS_COVER_LHC_RESET_THRESHOLD);
+                if (tenYearsAgo.isBefore(earliestDate)) {
+                    break;
+                } else {
+                    List<LocalDate> localDates = potentialLHCResetDates.subList(potentialLHCResetDates.indexOf(last), potentialLHCResetDates.size() - 1);
+//                    List<CoverDateRange> coverDateRanges = Collections.singletonList(new CoverDateRange(earliestDate, last));
+                    if (hasYearsContiguousCover(Constants.CONTIGUOUS_YEARS_COVER_LHC_RESET_THRESHOLD, last, new TreeSet<>(localDates))) {
+                        resetDate = Optional.of(last.plusDays(1));
+                        break;
+                    }
+                }
+            }
+        }
+        return resetDate;
+    }
+
+    public static Optional<LocalDate> getFirstNonCoveredDay(LocalDate initDate, LocalDate terminateDate, Set<LocalDate> coverDates) {
+        return daysInclusive.apply(initDate, terminateDate).filter(localDate -> !coverDates.contains(localDate)).findFirst();
+    }
+
+    public static List<LocalDate> calculatePermittedGapDays(LocalDate initDate, LocalDate terminateDate, Set<LocalDate> coverDates) {
+        final List<LocalDate> permittedGapDays = new ArrayList<>();
+        LocalDate lastGapDay = initDate;
+        int i = 0;
+        while (lastGapDay.isBefore(terminateDate) && permittedGapDays.size() < Constants.LHC_DAYS_WITHOUT_COVER_THRESHOLD) {
+            lastGapDay = initDate.plusDays(i++);
+            if (!coverDates.contains(lastGapDay)) {
+                permittedGapDays.add(lastGapDay);
+            }
+        }
+        return permittedGapDays;
     }
 }

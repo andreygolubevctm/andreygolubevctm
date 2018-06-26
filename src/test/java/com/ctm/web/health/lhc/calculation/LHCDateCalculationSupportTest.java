@@ -5,25 +5,19 @@ import com.google.common.collect.ImmutableList;
 import org.junit.Test;
 
 import java.time.LocalDate;
+import java.time.Month;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 
 import static com.ctm.web.health.lhc.calculation.Constants.JULY_FIRST_2000;
+import static com.ctm.web.health.lhc.calculation.TestScenarioConstants.*;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 public class LHCDateCalculationSupportTest {
-
-    public static final LocalDate MIKES_BIRTHDAY = LocalDate.of(1981, 12, 23);
-    public static final LocalDate MATTS_BIRTHDAY = LocalDate.of(1981, 5, 9);
-    public static final LocalDate FIRST_JULY_BIRTHDAY = LocalDate.of(1981, 7, 1);
-    public static final LocalDate SECOND_JULY_BIRTHDAY = FIRST_JULY_BIRTHDAY.plusDays(1);
-    public static final LocalDate THIRTIETH_JUNE_BIRTHDAY = LocalDate.of(1981, 6, 30);
-    public static final LocalDate FIRST_JULY_1969 = LocalDate.of(1969, 7, 1);
-    public static final LocalDate TEST_DATE = LocalDate.of(2018, 5, 2);
-    public static final int MAX_LHC_APPLICABLE_DAYS = 6515;
 
     @Test
     public void givenDateAndDateOfBirth_thenCalculateAgeInYears() {
@@ -187,94 +181,6 @@ public class LHCDateCalculationSupportTest {
     }
 
     @Test
-    public void givenCoverDateRangeOfOneYear_then365Days() {
-        List<CoverDateRange> coverDates = ImmutableList.of(
-                new CoverDateRange(LocalDate.of(2016, 5, 10), LocalDate.of(2017, 5, 9))
-        );
-        long daysCovered = LHCDateCalculationSupport.getNumberOfDaysCovered(coverDates);
-
-        assertEquals(365, daysCovered);
-    }
-
-    @Test
-    public void givenCoverDateRangeOfOneYear_whenSpanningLeapYear_then366Days() {
-        List<CoverDateRange> coverDates = ImmutableList.of(
-                new CoverDateRange(LocalDate.of(2016, 1, 1), LocalDate.of(2016, 12, 31))
-        );
-        long daysCovered = LHCDateCalculationSupport.getNumberOfDaysCovered(coverDates);
-
-        assertEquals(366, daysCovered);
-    }
-
-    @Test
-    public void givenCoverDateRangeOfTwoYears_whenSpanningLeapYear_then731Days() {
-        List<CoverDateRange> coverDates = ImmutableList.of(
-                new CoverDateRange(LocalDate.of(2015, 5, 10), LocalDate.of(2016, 5, 9)),
-                new CoverDateRange(LocalDate.of(2016, 5, 10), LocalDate.of(2017, 5, 9))
-        );
-        long daysCovered = LHCDateCalculationSupport.getNumberOfDaysCovered(coverDates);
-        assertEquals(731, daysCovered);
-    }
-
-    @Test
-    public void givenCoverDateRangeOfTwoYears_whenRangeIsNotContiguous_then730Days() {
-        List<CoverDateRange> coverDates = ImmutableList.of(
-                new CoverDateRange(LocalDate.of(2014, 5, 10), LocalDate.of(2015, 5, 9)),
-                new CoverDateRange(LocalDate.of(2017, 5, 10), LocalDate.of(2018, 5, 9))
-        );
-        long daysCovered = LHCDateCalculationSupport.getNumberOfDaysCovered(coverDates);
-        assertEquals(730, daysCovered);
-    }
-
-    @Test
-    public void givenCoverDateRange_whenGettingTheFirstDate_thenReturn() {
-        List<CoverDateRange> coverDates = ImmutableList.of(
-                new CoverDateRange(LocalDate.of(2014, 5, 10), LocalDate.of(2015, 5, 9)),
-                new CoverDateRange(LocalDate.of(2017, 5, 10), LocalDate.of(2018, 5, 9))
-        );
-        Optional<LocalDate> firstDayInRangeMaybe = LHCDateCalculationSupport.getFirstDayInRange(coverDates);
-
-        assertTrue(firstDayInRangeMaybe.isPresent());
-        LocalDate firstDayInRange = firstDayInRangeMaybe.get();
-        assertEquals(LocalDate.of(2014, 5, 10), firstDayInRange);
-    }
-
-
-    @Test
-    public void givenCoverDateRange_whenGettingTheLastDate_thenReturn() {
-        List<CoverDateRange> coverDates = ImmutableList.of(
-                new CoverDateRange(LocalDate.of(2014, 5, 10), LocalDate.of(2015, 5, 9)),
-                new CoverDateRange(LocalDate.of(2017, 5, 10), LocalDate.of(2018, 5, 9))
-        );
-        Optional<LocalDate> lastDayInRangeMaybe = LHCDateCalculationSupport.getLastDayInRange(coverDates);
-
-        assertTrue(lastDayInRangeMaybe.isPresent());
-        LocalDate lastDayInRange = lastDayInRangeMaybe.get();
-        assertEquals(LocalDate.of(2018, 5, 9), lastDayInRange);
-    }
-
-
-    @Test
-    public void givenContinousCoverDateRange_whenCheckingContiguousDates_thenReturnTrue() {
-        List<CoverDateRange> contiguousCoverDates = ImmutableList.of(
-                new CoverDateRange(LocalDate.of(2014, 5, 10), LocalDate.of(2024, 5, 9)),
-                new CoverDateRange(LocalDate.of(2010, 5, 10), LocalDate.of(2014, 5, 9))
-        );
-
-        assertTrue(LHCDateCalculationSupport.isContiguous(contiguousCoverDates));
-    }
-
-    @Test
-    public void givenNonContiguousCoverDateRange_whenCheckingContiguousDates_thenReturnFalse() {
-        List<CoverDateRange> nonContiguousCoverDates = ImmutableList.of(
-                new CoverDateRange(LocalDate.of(2014, 5, 10), LocalDate.of(2024, 5, 9)),
-                new CoverDateRange(LocalDate.of(2010, 5, 10), LocalDate.of(2014, 5, 8))
-        );
-        assertFalse(LHCDateCalculationSupport.isContiguous(nonContiguousCoverDates));
-    }
-
-
-    @Test
     public void givenNYearsOfContiguousCoverDateRange_whenCheckingContiguousDates_thenEvaluateContiguity() {
         List<CoverDateRange> tenYrsContiguousWithABreak = ImmutableList.of(
                 new CoverDateRange(LocalDate.now().minusYears(10), LocalDate.of(2024, 5, 9)),
@@ -284,6 +190,36 @@ public class LHCDateCalculationSupportTest {
         assertTrue(LHCDateCalculationSupport.hasYearsContiguousCover(10, tenYrsContiguousWithABreak, LocalDate.now()));
         assertFalse(LHCDateCalculationSupport.hasYearsContiguousCover(20, tenYrsContiguousWithABreak, LocalDate.now()));
     }
+
+    @Test
+    public void givenInterruptedCover_whenPermittedGapDays_thenReturnTrue() {
+        List<CoverDateRange> tenYrsContiguousWithAPermittedBreak = ImmutableList.of(
+                new CoverDateRange(LocalDate.of(2005, Month.SEPTEMBER, 26), LocalDate.of(2010, Month.SEPTEMBER, 26)),
+                new CoverDateRange(LocalDate.of(2013, Month.JUNE, 22), LocalDate.of(2018, Month.JUNE, 22))
+        );
+
+        Set<LocalDate> permittedGaps = LHCDateCalculationSupport.getCoveredDaysInRange(Collections.singletonList(
+                new CoverDateRange(LocalDate.of(2010, Month.SEPTEMBER, 27), LocalDate.of(2013, Month.JUNE, 21))
+        ));
+
+        assertTrue(LHCDateCalculationSupport.hasYearsContiguousCover(10, tenYrsContiguousWithAPermittedBreak, LocalDate.of(2018, Month.JUNE, 22), new ArrayList(permittedGaps)) );
+    }
+
+    @Test
+    public void givenInterruptedCover_whenPermittedGapDays_andNonPermittedGapDays_thenReturnFalse() {
+        List<CoverDateRange> tenYrsContiguousWithAPermittedBreak = ImmutableList.of(
+                new CoverDateRange(LocalDate.of(2005, Month.SEPTEMBER, 26), LocalDate.of(2010, Month.SEPTEMBER, 26)),
+                new CoverDateRange(LocalDate.of(2015, Month.JUNE, 22), LocalDate.of(2018, Month.JUNE, 22))
+        );
+
+        Set<LocalDate> exceededGaps = LHCDateCalculationSupport.getCoveredDaysInRange(Collections.singletonList(
+                new CoverDateRange(LocalDate.of(2010, Month.SEPTEMBER, 27), LocalDate.of(2015, Month.JUNE, 21))
+        ));
+
+        assertFalse(LHCDateCalculationSupport.hasYearsContiguousCover(10, tenYrsContiguousWithAPermittedBreak, LocalDate.of(2018, Month.JUNE, 22), new ArrayList(exceededGaps)) );
+    }
+
+
 
     @Test
     public void given10YearsCover_thenEvaluateContiguity() {
@@ -297,41 +233,56 @@ public class LHCDateCalculationSupportTest {
     }
 
     @Test
-    public void givenEmptyCoverDateRange_thenReturnEmptyLastDayInRange() {
-        List<CoverDateRange> emptyDateRanges = Collections.emptyList();
-        Optional<LocalDate> lastDayInRange = LHCDateCalculationSupport.getLastDayInRange(emptyDateRanges);
-        assertFalse(lastDayInRange.isPresent());
+    public void givenDate_whenFinYearStartedLastYear_thenReturnStartOfFinancialYear() {
+        LocalDate testDate = LocalDate.of(2018, Month.JUNE, 30);
+
+        LocalDate financialYearStart = LHCDateCalculationSupport.getFinancialYearStart(testDate);
+
+        assertEquals(LocalDate.of(2017, Month.JULY, 1), financialYearStart);
     }
 
     @Test
-    public void givenCoverDateRange_thenReturnTheEarliestRangeEndDate() {
-        ImmutableList<CoverDateRange> coverDateRanges = ImmutableList.of(
-                new CoverDateRange(LocalDate.of(2016, 5, 10), LocalDate.of(2017, 5, 10)),
-                new CoverDateRange(LocalDate.of(2012, 1, 1), LocalDate.of(2012, 10, 5)),
-                new CoverDateRange(LocalDate.of(2015, 11, 18), LocalDate.of(2016, 5, 10))
-        );
+    public void givenDate_whenFinYearStartedThisYear_thenReturnStartOfFinancialYear() {
+        LocalDate testDate = LocalDate.of(2018, Month.AUGUST, 15);
 
-        Optional<LocalDate> earliestEndDate = LHCDateCalculationSupport.getEarliestEndDate(coverDateRanges);
+        LocalDate financialYearStart = LHCDateCalculationSupport.getFinancialYearStart(testDate);
 
-        assertEquals(Optional.of(LocalDate.of(2012, 10, 5)), earliestEndDate);
+        assertEquals(LocalDate.of(2018, Month.JULY, 1), financialYearStart);
     }
 
     @Test
-    public void givenCoverDateRange_thenReturnTheEarliestRangeStartDate() {
-        ImmutableList<CoverDateRange> coverDateRanges = ImmutableList.of(
-                new CoverDateRange(LocalDate.of(2016, 5, 10), LocalDate.of(2017, 5, 10)),
-                new CoverDateRange(LocalDate.of(2012, 1, 1), LocalDate.of(2012, 10, 5)),
-                new CoverDateRange(LocalDate.of(2015, 11, 18), LocalDate.of(2016, 5, 10))
-        );
+    public void givenDate_whenFinYearStartsToday_thenReturnStartOfFincancialYear() {
+        LocalDate testDate = LocalDate.of(2018, Month.JULY, 1);
 
-        Optional<LocalDate> earliestStartDate = LHCDateCalculationSupport.getEarliestStartDate(coverDateRanges);
+        LocalDate financialYearStart = LHCDateCalculationSupport.getFinancialYearStart(testDate);
 
-        assertEquals(Optional.of(LocalDate.of(2012, 1, 1)), earliestStartDate);
+        assertEquals(LocalDate.of(2018, Month.JULY, 1), financialYearStart);
     }
 
     @Test
-    public void givenEmptyCoverDateRange_thenReturnEmpty() {
-        Optional<LocalDate> earliestEndDate = LHCDateCalculationSupport.getEarliestEndDate(Collections.emptyList());
-        assertFalse(earliestEndDate.isPresent());
+    public void givenBirthdayOnFirstJuly_thenBaseDateCalculatedFromFollowingFirstJuly() {
+        LocalDate birthday = LocalDate.of(1979, Month.JULY, 1);
+
+        LocalDate baseDate = LHCDateCalculationSupport.getBaseDate(birthday);
+
+        assertEquals(LocalDate.of(2011, Month.JULY, 1), baseDate);
+    }
+
+    @Test
+    public void givenBirthdayOnSecondJuly_thenBaseDateCalculatedFromFollowingFirstJuly() {
+        LocalDate birthday = LocalDate.of(1979, Month.JULY, 2);
+
+        LocalDate baseDate = LHCDateCalculationSupport.getBaseDate(birthday);
+
+        assertEquals(LocalDate.of(2011, Month.JULY, 1), baseDate);
+    }
+
+    @Test
+    public void givenBirthdayOnThirtyJune_thenBaseDateCalculatedFromFollowingFirstJuly() {
+        LocalDate birthday = LocalDate.of(1979, Month.JUNE, 30);
+
+        LocalDate baseDate = LHCDateCalculationSupport.getBaseDate(birthday);
+
+        assertEquals(LocalDate.of(2010, Month.JULY, 1), baseDate);
     }
 }
