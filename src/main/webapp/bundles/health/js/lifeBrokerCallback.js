@@ -188,13 +188,11 @@ Handling of the callback popup
 	function getCallCentreTimes() {
 
 		var lifeBrokerCallCentreTimes = {"openingHours":[
-			{"openingHoursId":0,"startTime":"09:00 am","endTime":"08:00 pm","description":"Monday","date":"","daySequence":null,"hoursType":null,"effectiveStart":null,"effectiveEnd":null,"verticalId":0},
-			{"openingHoursId":0,"startTime":"09:00 am","endTime":"08:00 pm","description":"Tuesday","date":"","daySequence":null,"hoursType":null,"effectiveStart":null,"effectiveEnd":null,"verticalId":0},
-			{"openingHoursId":0,"startTime":"09:00 am","endTime":"08:00 pm","description":"Wednesday","date":"","daySequence":null,"hoursType":null,"effectiveStart":null,"effectiveEnd":null,"verticalId":0},
-			{"openingHoursId":0,"startTime":"09:00 am","endTime":"08:00 pm","description":"Thursday","date":"","daySequence":null,"hoursType":null,"effectiveStart":null,"effectiveEnd":null,"verticalId":0},
-			{"openingHoursId":0,"startTime":"09:00 am","endTime":"08:00 pm","description":"Friday","date":"","daySequence":null,"hoursType":null,"effectiveStart":null,"effectiveEnd":null,"verticalId":0},
-			{"openingHoursId":0,"startTime":"09:00 am","endTime":"08:00 pm","description":"Saturday","date":"","daySequence":null,"hoursType":null,"effectiveStart":null,"effectiveEnd":null,"verticalId":0},
-			{"openingHoursId":0,"startTime":"09:00 am","endTime":"08:00 pm","description":"Sunday","date":"","daySequence":null,"hoursType":null,"effectiveStart":null,"effectiveEnd":null,"verticalId":0}
+			{"openingHoursId":0,"startTime":"09:00 am","endTime":"06:30 pm","description":"Monday","date":"","daySequence":null,"hoursType":null,"effectiveStart":null,"effectiveEnd":null,"verticalId":0},
+			{"openingHoursId":0,"startTime":"09:00 am","endTime":"06:30 pm","description":"Tuesday","date":"","daySequence":null,"hoursType":null,"effectiveStart":null,"effectiveEnd":null,"verticalId":0},
+			{"openingHoursId":0,"startTime":"09:00 am","endTime":"06:30 pm","description":"Wednesday","date":"","daySequence":null,"hoursType":null,"effectiveStart":null,"effectiveEnd":null,"verticalId":0},
+			{"openingHoursId":0,"startTime":"09:00 am","endTime":"06:30 pm","description":"Thursday","date":"","daySequence":null,"hoursType":null,"effectiveStart":null,"effectiveEnd":null,"verticalId":0},
+			{"openingHoursId":0,"startTime":"09:00 am","endTime":"05:30 pm","description":"Friday","date":"","daySequence":null,"hoursType":null,"effectiveStart":null,"effectiveEnd":null,"verticalId":0}
 		]};
 
 		hours = [];
