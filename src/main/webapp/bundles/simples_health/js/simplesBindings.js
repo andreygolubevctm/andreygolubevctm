@@ -491,6 +491,8 @@
         if (isWebChat) {
             $referralCallCheckboxDialogue.toggle(!isWebChat);
         }
+
+		meerkat.modules.simplesWebChat.setup(isWebChat);
     }
 
     function toggleAfricaCompDialog() {
