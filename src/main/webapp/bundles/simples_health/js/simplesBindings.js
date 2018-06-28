@@ -53,7 +53,8 @@
         $nzMedicareRulesCopy,
         $pricePromisePromotionDialogue,
         $affiliatesDialogue,
-        $dialogue106;
+        $dialogue106,
+        $dialogue109;
 
     function init() {
         $(document).ready(function () {
@@ -112,6 +113,7 @@
             $pricePromisePromotionDialogue = $('.simples-dialogue-101');
             $affiliatesDialogue = $('.simples-dialogue-105');
             $dialogue106 = $('.simples-dialogue-106');
+            $dialogue109 = $('.simples-dialogue-109');
 
             // Handle pre-filled
             populatePrevAssignedRadioBtnGroupValue();
@@ -595,6 +597,10 @@
                 _.has(selectedProduct.hospital, 'ClassificationHospital') && selectedProduct.hospital.ClassificationHospital === 'Public');
     }
 
+    function toggleLimitedCoverResultsDialogue() {
+        $dialogue109.toggleClass('hidden', $limitedCoverHidden.val() === 'N');
+    }
+
     meerkat.modules.register("simplesBindings", {
         init: init,
         updateSimplesMedicareCoverQuestionPosition: updateSimplesMedicareCoverQuestionPosition,
@@ -604,7 +610,8 @@
         toggleAffiliateRewardsDialogue: toggleAffiliateRewardsDialogue,
         getCallType: getCallType,
         togglePricePromisePromoDialogue: togglePricePromisePromoDialogue,
-        toggleBenefitsDialogue: toggleBenefitsDialogue
+        toggleBenefitsDialogue: toggleBenefitsDialogue,
+        toggleLimitedCoverResultsDialogue: toggleLimitedCoverResultsDialogue
     });
 
 })(jQuery);
