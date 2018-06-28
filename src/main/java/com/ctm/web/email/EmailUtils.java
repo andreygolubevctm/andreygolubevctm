@@ -62,9 +62,9 @@ public class EmailUtils {
         }
     }
 
-    public List<String> buildParameterList(HttpServletRequest httpServletRequest, String paramName){
+    public List<String> buildParameterList(HttpServletRequest httpServletRequest, String paramName, int end) {
         List<String> params = new ArrayList<>();
-        IntStream.range(START,END).forEach(idx -> {
+        IntStream.range(START, end).forEach(idx -> {
             Optional.ofNullable(httpServletRequest.getParameter(paramName + idx)).ifPresent(params::add);
         });
         return params;
@@ -99,8 +99,8 @@ public class EmailUtils {
         return null;
     }
 
-    public List<String> getPremiumLabels(List<String> premiumLabels){
-        if(premiumLabels.isEmpty())return createEmptyListWithAnnualOnlinePremium();
+    public List<String> getPremiumLabels(List<String> premiumLabels, int end){
+        if(premiumLabels.isEmpty())return createEmptyListWithAnnualOnlinePremium(end);
 
         return premiumLabels.stream().map(s -> {
             if(s!=null && s.equals("OFFLINE")) return ANNUAL_PREMIUM;
@@ -108,9 +108,9 @@ public class EmailUtils {
         }).collect(Collectors.toList());
     }
 
-    private List<String> createEmptyListWithAnnualOnlinePremium(){
+    private List<String> createEmptyListWithAnnualOnlinePremium(int end){
         List<String> premiumList = new ArrayList<>();
-        IntStream.range(START,END).forEach(value -> {
+        IntStream.range(START,end).forEach(value -> {
             premiumList.add(ANNUAL_ONLINE_PREMIUM);
         });
         return premiumList;

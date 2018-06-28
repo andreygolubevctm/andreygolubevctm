@@ -50,6 +50,7 @@ public class HealthModelTranslator implements EmailTranslator {
     private static final String CAMPAIGN = "health_quote";
     private static final String ACTION_UNSUBSCRIBE = "unsubscribe";
     private static final String ACTION_LOAD = "load";
+    public static final int NUM_RESULTS = 14;
 
     private final EmailUtils emailUtils;
     private final ContentDao contentDao;
@@ -66,10 +67,10 @@ public class HealthModelTranslator implements EmailTranslator {
 
     @Override
     public void setVerticalSpecificFields(EmailRequest emailRequest, HttpServletRequest request, Data data) throws ConfigSettingException, DaoException {
-        List<String> providerName = emailUtils.buildParameterList(request, "rank_providerName");
-        List<String> premiumLabel = EmailUtils.stripHtmlFromStrings.apply(emailUtils.buildParameterList(request, "rank_premiumText"));
-        List<String> providerCodes = emailUtils.buildParameterList(request, "rank_provider");
-        List<String> premium = emailUtils.buildParameterList(request, "rank_premium");
+        List<String> providerName = emailUtils.buildParameterList(request, "rank_providerName", NUM_RESULTS);
+        List<String> premiumLabel = EmailUtils.stripHtmlFromStrings.apply(emailUtils.buildParameterList(request, "rank_premiumText", NUM_RESULTS));
+        List<String> providerCodes = emailUtils.buildParameterList(request, "rank_provider", NUM_RESULTS);
+        List<String> premium = emailUtils.buildParameterList(request, "rank_premium", NUM_RESULTS);
         String gaclientId = emailUtils.getParamFromXml(data.getXML(), "gaclientid", "/health/");
         emailRequest.setVertical(VERTICAL_CODE);
         emailRequest.setProviders(providerName);
@@ -81,7 +82,7 @@ public class HealthModelTranslator implements EmailTranslator {
         boolean isPopularProductsSelected = Optional.ofNullable(request.getParameter("isPopularProductsSelected")).map(BooleanUtils::toBoolean).orElse(false);
         emailRequest.setPopularProductsSelected(isPopularProductsSelected);
 
-        List<BigDecimal> premiumDiscountPercentage = emailUtils.buildParameterList(request, "rank_premiumDiscountPercentage").stream().map(EmailUtils.bigDecimalOrZero).collect(Collectors.toList());
+        List<BigDecimal> premiumDiscountPercentage = emailUtils.buildParameterList(request, "rank_premiumDiscountPercentage", NUM_RESULTS).stream().map(EmailUtils.bigDecimalOrZero).collect(Collectors.toList());
         emailRequest.setPremiumDiscountPercentage(premiumDiscountPercentage);
 
         PageSettings pageSettings = SettingsService.getPageSettingsForPage(request);
@@ -94,8 +95,8 @@ public class HealthModelTranslator implements EmailTranslator {
         String excessPerAdmission = request.getParameter("rank_excessPerAdmission0");
         String hospitalPdsUrl = request.getParameter("rank_hospitalPdsUrl0");
 
-        List<String> altPremium = emailUtils.buildParameterList(request, "rank_altPremium");
-        List<String> altPremiumLabel = EmailUtils.stripHtmlFromStrings.apply(emailUtils.buildParameterList(request, "rank_altPremiumText"));
+        List<String> altPremium = emailUtils.buildParameterList(request, "rank_altPremium", NUM_RESULTS);
+        List<String> altPremiumLabel = EmailUtils.stripHtmlFromStrings.apply(emailUtils.buildParameterList(request, "rank_altPremiumText", NUM_RESULTS));
 
         HealthEmailModel healthEmailModel = new HealthEmailModel();
         healthEmailModel.setBenefitCodes(benefitCodes);
@@ -109,10 +110,10 @@ public class HealthModelTranslator implements EmailTranslator {
         healthEmailModel.setSituationType(emailUtils.getParamSafely(data, VERTICAL_CODE + "/situation/healthCvr"));
         healthEmailModel.setAltPremiumLabels(altPremiumLabel);
         healthEmailModel.setAltPremiums(altPremium);
-        healthEmailModel.setPopPremiums(emailUtils.buildParameterList(request, "rank_popPremium"));
-        healthEmailModel.setPopPremiumLabels(emailUtils.buildParameterList(request, "rank_popPremiumLabel"));
-        healthEmailModel.setPopProviders(emailUtils.buildParameterList(request, "rank_popProvider"));
-        healthEmailModel.setPopProviderCodes(emailUtils.buildParameterList(request, "rank_popProviderCode"));
+        healthEmailModel.setPopPremiums(emailUtils.buildParameterList(request, "rank_popPremium", NUM_RESULTS));
+        healthEmailModel.setPopPremiumLabels(emailUtils.buildParameterList(request, "rank_popPremiumLabel", NUM_RESULTS));
+        healthEmailModel.setPopProviders(emailUtils.buildParameterList(request, "rank_popProvider", NUM_RESULTS));
+        healthEmailModel.setPopProviderCodes(emailUtils.buildParameterList(request, "rank_popProviderCode", NUM_RESULTS));
         healthEmailModel.setPopProvider1HospitalPds(request.getParameter("rank_popProvider1HospitalPds"));
         healthEmailModel.setPopProvider1ExtrasPds(request.getParameter("rank_popProvider1ExtrasPds"));
         emailRequest.setHealthEmailModel(healthEmailModel);
@@ -120,15 +121,15 @@ public class HealthModelTranslator implements EmailTranslator {
         emailRequest.setCallCentreHours(openingHoursService.getCurrentOpeningHoursForEmail(request));
 
         List<String> providerPhones = new ArrayList<>();
-        IntStream.range(EmailUtils.START, EmailUtils.END).forEach(value -> providerPhones.add(callCentreNumber));
+        IntStream.range(EmailUtils.START, NUM_RESULTS).forEach(value -> providerPhones.add(callCentreNumber));
         emailRequest.setProviderPhoneNumbers(providerPhones);
 
         List<String> quoteRefs = new ArrayList<>();
         Long transactionId = RequestUtils.getTransactionIdFromRequest(request);
-        IntStream.range(EmailUtils.START, EmailUtils.END).forEach(value -> quoteRefs.add(transactionId.toString()));
+        IntStream.range(EmailUtils.START, NUM_RESULTS).forEach(value -> quoteRefs.add(transactionId.toString()));
         emailRequest.setQuoteRefs(quoteRefs);
 
-        List<String> specialOffers = EmailUtils.stripHtmlFromStrings.apply(emailUtils.buildParameterList(request, "rank_specialOffer"));
+        List<String> specialOffers = EmailUtils.stripHtmlFromStrings.apply(emailUtils.buildParameterList(request, "rank_specialOffer", NUM_RESULTS));
         emailRequest.setProviderSpecialOffers(specialOffers);
         setDataFields(emailRequest, data);
     }
@@ -193,7 +194,7 @@ public class HealthModelTranslator implements EmailTranslator {
 
 
         List<String> applyUrls = new ArrayList<>();
-        IntStream.range(EmailUtils.START, EmailUtils.END).forEach(applyUrl1 -> applyUrls.add(applyUrl));
+        IntStream.range(EmailUtils.START, NUM_RESULTS).forEach(applyUrl1 -> applyUrls.add(applyUrl));
         emailRequest.setApplyUrls(applyUrls);
         emailRequest.setUnsubscribeURL(unsubscribeUrl);
     }
