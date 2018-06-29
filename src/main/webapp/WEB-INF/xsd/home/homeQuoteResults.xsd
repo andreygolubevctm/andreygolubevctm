@@ -14,7 +14,7 @@
 							<xs:element name="dob" type="date" maxOccurs="1" minOccurs="1" />
 							<xs:element name="phone" type="phone" maxOccurs="1" minOccurs="0" />
 							<xs:element name="phoneinput" type="xs:string" maxOccurs="1" minOccurs="0" />
-							<xs:element name="over55" type="YN" maxOccurs="1" minOccurs="0" />
+							<xs:element name="retired" type="YN" maxOccurs="1" minOccurs="0" />
 							<xs:element name="title" type="xs:string" maxOccurs="1" minOccurs="0" />
 							<xs:element name="jointTitle" type="xs:string" maxOccurs="1" minOccurs="0" />
 							<xs:element name="jointFirstName" type="xs:string" maxOccurs="1" minOccurs="0" />
@@ -22,23 +22,6 @@
 							<xs:element name="jointDob" type="date" maxOccurs="1" minOccurs="0" />
 							<xs:element name="marketing" type="YN" maxOccurs="1" minOccurs="0" />
 							<xs:element name="oktocall" type="YN" maxOccurs="1" minOccurs="0" />
-							<xs:element name="oldestPersonDobInputY" type="xs:string" maxOccurs="1" minOccurs="0"/>
-							<xs:element name="oldestPersonDobInputM" maxOccurs="1" minOccurs="0">
-								<xs:simpleType>
-									<xs:restriction base="xs:integer">
-										<xs:minInclusive value="1" />
-										<xs:maxInclusive value="12" />
-									</xs:restriction>
-								</xs:simpleType>
-							</xs:element>
-							<xs:element name="oldestPersonDobInputD" maxOccurs="1" minOccurs="0">
-								<xs:simpleType>
-									<xs:restriction base="xs:integer">
-										<xs:minInclusive value="1" />
-										<xs:maxInclusive value="31" />
-									</xs:restriction>
-								</xs:simpleType>
-							</xs:element>
 							<xs:element name="dobInputY" type="xs:string" maxOccurs="1" minOccurs="0"/>
 							<xs:element name="dobInputM" maxOccurs="1" minOccurs="0">
 								<xs:simpleType>

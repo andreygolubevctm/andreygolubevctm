@@ -41,7 +41,7 @@
 			jewellery: hasPersonalEffects("#home_coverAmounts_specifiedPersonalEffects_jewelleryentry"),
 			sporting: hasPersonalEffects("#home_coverAmounts_specifiedPersonalEffects_sportingentry"),
 			photography: hasPersonalEffects("#home_coverAmounts_specifiedPersonalEffects_photoentry"),
-			hasRetiredOver55: $('#home_policyHolder_over55_Y').is(':checked'),
+			hasRetiredOver55: $('#home_policyHolder_retired_Y').is(':checked'),
 			previousClaims: $('#home_disclosures_claims_Y').is(':checked')
 		};
 	}

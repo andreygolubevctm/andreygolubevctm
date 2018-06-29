@@ -13,7 +13,6 @@
 				<policyHolder>
 								<title>MR</title>
 								<surname>User</surname>
-								<anyoneOlder>Y</anyoneOlder>
 								<jointTitle>MRS</jointTitle>
 								<jointFirstName>Test2</jointFirstName>
 								<dob>05/05/1979</dob>
@@ -24,7 +23,7 @@
 								<jointSurname>User2</jointSurname>
 								<email>aih.iia.triage@gmail.com</email>
 								<phone>0712345678</phone>
-								<over55>Y</over55>
+								<retired>Y</retired>
 				</policyHolder>
 				<property>
 								<features>

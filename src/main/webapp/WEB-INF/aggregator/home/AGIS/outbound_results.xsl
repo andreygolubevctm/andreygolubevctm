@@ -446,8 +446,8 @@
 					<olderResident>
 						<olderResidentRetired>
 							<xsl:choose>
-								<xsl:when test="policyHolder/over55 !=''">
-									<xsl:value-of select="policyHolder/over55" />
+								<xsl:when test="policyHolder/retired !=''">
+									<xsl:value-of select="policyHolder/retired" />
 								</xsl:when>
 								<xsl:otherwise>N</xsl:otherwise>
 							</xsl:choose>

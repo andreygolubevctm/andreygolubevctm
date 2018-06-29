@@ -15,65 +15,45 @@
         hasJointHolder = false;
 	var elements = {
 			name:						'home_policyHolder',
-			anyoneOlder:				'home_policyHolder_anyoneOlder',
-			oldestDOBRow:				'#oldest_person_DOB',
-			anyoneOlderRow:				'#anyoneOlder',
 			principalResidence:			"home_occupancy_principalResidence",
-			over55:						".over55",
+        	retired:					".retired",
 			otherOccupantsRow:			"#home_policyHolder_other_occupants",
 			toggleJointPolicyHolder:	$(".toggleJointPolicyHolder"),
 			jointPolicyHolder:			$("#jointPolicyHolder"),
-			addPolicyHolderBtn:			$(".addPolicyHolderBtn"),
-			oldestPersonDob:			$('#home_policyHolder_oldestPersonDob')
-
+			addPolicyHolderBtn:			$(".addPolicyHolderBtn")
 	};
 
-	function toggleOldestPerson(speed){
-		var isPrincipalResidence = meerkat.modules.homeOccupancy.isPrincipalResidence();
-		if( $('input[name='+elements.anyoneOlder+']:checked').val() == 'Y' && isPrincipalResidence){
-			$(elements.oldestDOBRow).slideDown(speed);
-		} else {
-			$(elements.oldestDOBRow).slideUp(speed);
-		}
-		toggleOver55(speed);
-	}
+
 
 	function togglePolicyHolderFields(speed){
 		var isPrincipalResidence = meerkat.modules.homeOccupancy.isPrincipalResidence();
 		if(isPrincipalResidence){
-			$(elements.anyoneOlderRow+', '+elements.otherOccupantsRow).slideDown(speed);
-			toggleOldestPerson(speed);
-			toggleOver55(speed);
+			$(elements.otherOccupantsRow).slideDown(speed);
+			toggleRetired(speed);
 		} else {
-			$(elements.anyoneOlderRow+', '+elements.over55+', '+elements.oldestDOBRow+', '+elements.otherOccupantsRow).slideUp(speed);
+			$(elements.retired+', '+elements.otherOccupantsRow).slideUp(speed);
 		}
 
 	}
 
-	function toggleOver55(speed){
+	function toggleRetired(speed){
 		var isPrincipalResidence = meerkat.modules.homeOccupancy.isPrincipalResidence();
 		var dateFormat = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/;
-
 		var dob = $("#"+elements.name+"_dob");
 		var jointDob = $("#"+elements.name+"_jointDob");
-		var anyoneOlder =  $('input[name='+elements.anyoneOlder+']:checked').val();
 
 		if(isPrincipalResidence &&
 			(
 				( dob.val().match(dateFormat) && getAge( dob.val() ) >= 55 ) ||
-				( jointDob.val().match(dateFormat) && getAge( jointDob.val() ) >= 55 ) ||
-				( anyoneOlder === 'Y' && elements.oldestPersonDob.val().match(dateFormat) && getAge( elements.oldestPersonDob.val() ) >= 55 )
+				( jointDob.val().match(dateFormat) && getAge( jointDob.val() ) >= 55 )
 			)
 		) {
-			$(elements.over55).slideDown(speed, function() {
-				blurOldestPersonField();
-			});
+			$(elements.retired).slideDown(speed);
 		} else {
-			$(elements.over55).slideUp(speed, function() {
-				blurOldestPersonField();
-			});
+			$(elements.retired).slideUp(speed);
 		}
 	}
+
 	function getAge (dateString) {
 		var today = new Date();
 		var dateSplit = dateString.split("/").reverse();
@@ -84,34 +64,23 @@
 		}
 		return age;
 	}
-	function blurOldestPersonField () {
-		elements.oldestPersonDob.trigger('blur');
-	}
+
 	function applyEventListeners() {
 		$(document).ready(function() {
-			$('input[name='+elements.anyoneOlder+']').on('change', function() {
-				toggleOldestPerson();
-			});
-
-			$("#"+elements.name+"_dob, #"+elements.name+"_jointDob").add(elements.oldestPersonDob).on('change', function(){
-				toggleOldestPerson();
-				toggleOver55();
+			$("#"+elements.name+"_dob, #"+elements.name+"_jointDob").on('change', function(){
+				toggleRetired();
 			});
 			elements.toggleJointPolicyHolder.on("click", function(){
 				if ( elements.jointPolicyHolder.is(":visible") ){
                     hasJointHolder = false;
-					elements.jointPolicyHolder.slideUp(400, function() {
-						blurOldestPersonField();
-					});
+					elements.jointPolicyHolder.slideUp(400);
 					elements.addPolicyHolderBtn.slideDown();
 				} else {
                     hasJointHolder = true;
-					elements.jointPolicyHolder.slideDown(400, function() {
-						blurOldestPersonField();
-					});
+					elements.jointPolicyHolder.slideDown(400);
 					elements.addPolicyHolderBtn.slideUp();
 				}
-				toggleOver55();
+				toggleRetired();
 			});
 		});
 	}
@@ -125,10 +94,9 @@
 			log("[HomePolicyHolder] Initialised"); //purely informational
 			applyEventListeners();
 			togglePolicyHolderFields(0);
-			toggleOldestPerson(0);
-			toggleOver55(0);
+			toggleRetired(0);
 			elements.jointPolicyHolder.hide();
-			if ($("#home_policyHolder_jointFirstName").val() !== "" || $("#home_policyHolder_jointLastName").val() !== "" || $("#home_policyHolder_jointDob").val() !== "" || $("#home_policyHolder_jointDob").val() !== "") {
+			if ($("#home_policyHolder_jointFirstName").val() !== "" || $("#home_policyHolder_jointLastName").val() !== "" || $("#home_policyHolder_jointDob").val() !== "") {
 				elements.toggleJointPolicyHolder.click();
 			}
 		}

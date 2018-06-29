@@ -72,7 +72,7 @@ public class RequestAdapter {
             quoteRequest.setJointPolicyHolder(createJointPolicyHolder(quote.getPolicyHolder()));
         }
 
-        quoteRequest.setRetiredResident(convertToOptionalBoolean(quote.getPolicyHolder().getOver55()));
+        quoteRequest.setRetiredResident(convertToOptionalBoolean(quote.getPolicyHolder().getRetired()));
         quoteRequest.setContact(createContact(quote.getPolicyHolder()));
         quoteRequest.setHadClaims(convertToBoolean(quote.getDisclosures().getClaims()));
         quoteRequest.setUnderFinance(convertToOptionalBoolean(quote.isUnderFinance()));

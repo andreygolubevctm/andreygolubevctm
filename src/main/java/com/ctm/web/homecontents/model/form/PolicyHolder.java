@@ -28,7 +28,7 @@ public class PolicyHolder {
 
     private String oktocall;
 
-    private String over55;
+    private String retired;
 
     private String phone;
 
@@ -115,12 +115,12 @@ public class PolicyHolder {
         this.oktocall = oktocall;
     }
 
-    public String getOver55() {
-        return over55;
+    public String getRetired() {
+        return retired;
     }
 
-    public void setOver55(String over55) {
-        this.over55 = over55;
+    public void setRetired(String retired) {
+        this.retired = retired;
     }
 
     public String getPhone() {

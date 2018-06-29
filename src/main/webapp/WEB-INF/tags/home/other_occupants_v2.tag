@@ -9,8 +9,8 @@
 <c:set var="name"  value="${go:nameFromXpath(xpath)}" />
 
 <%-- Is anyone over 55? --%>
-<c:set var="fieldXpath" value="${xpath}/over55" />
-<form_v2:row fieldXpath="${fieldXpath}" label="Is any person living in the home over 55 and retired?" className="over55">
+<c:set var="fieldXpath" value="${xpath}/retired" />
+<form_v2:row fieldXpath="${fieldXpath}" label="Is any person living in the home over 55 and retired?" className="retired">
 	<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Retired Person Living" quoteChar="\"" /></c:set>
 	<field_v2:array_radio xpath="${fieldXpath}"
 		items="Y=Yes,N=No"

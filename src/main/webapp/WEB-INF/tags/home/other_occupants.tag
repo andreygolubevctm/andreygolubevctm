@@ -14,8 +14,8 @@
 		<jsp:body>
 
 			<%-- Is anyone over 55? --%>
-			<c:set var="fieldXpath" value="${xpath}/over55" />
-			<form_v2:row fieldXpath="${fieldXpath}" label="Is any person living in the home over 55 and retired?" className="over55">
+			<c:set var="fieldXpath" value="${xpath}/retired" />
+			<form_v2:row fieldXpath="${fieldXpath}" label="Is any person living in the home over 55 and retired?" className="retired">
 				<field_v2:array_radio xpath="${fieldXpath}"
 					items="Y=Yes,N=No"
 					className="pretty_buttons"
