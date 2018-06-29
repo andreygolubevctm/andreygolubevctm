@@ -14,13 +14,13 @@
 	/* Variables */
 	var initialised = false;
 	var elements = {
-			name:				"home_businessActivity",
-			businessRooms:		".businessRooms",
-			employees:			".hasEmployees",
-			dayCareChildren:	".dayCareChildren",
-			registeredDayCare:	".registeredDayCare",
-			businessType:		".businessType",
-			employeeAmount:		".employeeAmount"
+			name:					"home_businessActivity",
+			businessRooms:			".businessRooms",
+			employees:				".hasEmployees",
+        	childcareChildren:		".childcareChildren",
+        	registeredChildcare:	".registeredChildcare",
+			businessType:			".businessType",
+			employeeAmount:			".employeeAmount"
 	};
 	
 	function businessFieldChange() {
@@ -38,13 +38,13 @@
 		var businessTypeValue = $('#'+elements.name+'_businessType').find('option:selected').val().toLowerCase();
 		if ( businessTypeValue === 'home office' || businessTypeValue === 'surgery/consulting rooms') {
 			$(elements.businessRooms+', '+elements.employees).slideDown(speed);
-			$(elements.dayCareChildren+', '+elements.registeredDayCare).slideUp(speed);
+			$(elements.childcareChildren+', '+elements.registeredChildcare).slideUp(speed);
 			toggleEmployeeAmount();
-		} else if ( businessTypeValue === 'day care') {
-			$(elements.dayCareChildren+', '+elements.registeredDayCare).slideDown(speed);
+		} else if ( businessTypeValue === 'childcare') {
+			$(elements.childcareChildren+', '+elements.registeredChildcare).slideDown(speed);
 			$(elements.businessRooms+', '+elements.employees+', '+elements.employeeAmount).slideUp(speed);
 		} else {
-			$(elements.businessRooms+', '+elements.employees+', '+elements.employeeAmount+', '+elements.dayCareChildren+', '+elements.registeredDayCare).slideUp(speed);
+			$(elements.businessRooms+', '+elements.employees+', '+elements.employeeAmount+', '+elements.childcareChildren+', '+elements.registeredChildcare).slideUp(speed);
 		}
 
 	}
@@ -56,7 +56,6 @@
 		} else {
 			hideBusinessActivityFields(speed);
 		}
-
 	}
 
 	function toggleEmployeeAmount(speed){
@@ -65,11 +64,10 @@
 		} else {
 			$(elements.employeeAmount).slideUp(speed);
 		}
-
 	}
 
 	function hideBusinessActivityFields (speed) {
-		$(elements.businessType+', '+elements.businessRooms+', '+elements.employees+', '+elements.employeeAmount+', '+elements.dayCareChildren+', '+elements.registeredDayCare).slideUp(speed);
+		$(elements.businessType+', '+elements.businessRooms+', '+elements.employees+', '+elements.employeeAmount+', '+elements.childcareChildren+', '+elements.registeredChildcare).slideUp(speed);
 	}
 	function applyEventListeners() {
 		businessFieldChange();

@@ -4,8 +4,6 @@ import com.ctm.web.core.validation.Name;
 
 public class PolicyHolder {
 
-    private String anyoneOlder;
-
     private String dob;
 
     private String email;
@@ -30,27 +28,12 @@ public class PolicyHolder {
 
     private String oktocall;
 
-    private String oldestPersonDob;
-
-    private String oldestPersonDobInputD;
-
-    private String oldestPersonDobInputM;
-
-    private String oldestPersonDobInputY;
-
     private String over55;
 
     private String phone;
 
     private String title;
 
-    public String getAnyoneOlder() {
-        return anyoneOlder;
-    }
-
-    public void setAnyoneOlder(String anyoneOlder) {
-        this.anyoneOlder = anyoneOlder;
-    }
 
     public String getDob() {
         return dob;
@@ -130,38 +113,6 @@ public class PolicyHolder {
 
     public void setOktocall(String oktocall) {
         this.oktocall = oktocall;
-    }
-
-    public String getOldestPersonDob() {
-        return oldestPersonDob;
-    }
-
-    public void setOldestPersonDob(String oldestPersonDob) {
-        this.oldestPersonDob = oldestPersonDob;
-    }
-
-    public String getOldestPersonDobInputD() {
-        return oldestPersonDobInputD;
-    }
-
-    public void setOldestPersonDobInputD(String oldestPersonDobInputD) {
-        this.oldestPersonDobInputD = oldestPersonDobInputD;
-    }
-
-    public String getOldestPersonDobInputM() {
-        return oldestPersonDobInputM;
-    }
-
-    public void setOldestPersonDobInputM(String oldestPersonDobInputM) {
-        this.oldestPersonDobInputM = oldestPersonDobInputM;
-    }
-
-    public String getOldestPersonDobInputY() {
-        return oldestPersonDobInputY;
-    }
-
-    public void setOldestPersonDobInputY(String oldestPersonDobInputY) {
-        this.oldestPersonDobInputY = oldestPersonDobInputY;
     }
 
     public String getOver55() {

@@ -146,7 +146,7 @@
 					env:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
 		<env:Header />
 		<env:Body>
-			<ns2:request xmlns:ns2="https://ecommerce.disconline.com.au/services/schema/3.1/home_quote">
+			<ns2:request xmlns:ns2="https://ecommerce.disconline.com.au/services/schema/5.0/home_quote">
 
 <!-- HEADER ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 				<header>
@@ -225,8 +225,9 @@
 								<xsl:when test="property/wallMaterial='Cladding'">04</xsl:when>
 								<xsl:when test="property/wallMaterial='Besser Block/Cement'">07</xsl:when>
 								<xsl:when test="property/wallMaterial='Brick Veneer'">06</xsl:when>
-								<xsl:when test="property/wallMaterial='Brick'">02</xsl:when>
-								<xsl:when test="property/wallMaterial='Fibro'">03</xsl:when>
+								<xsl:when test="property/wallMaterial='Double Brick'">02</xsl:when>
+								<xsl:when test="property/wallMaterial='Asbestos Fibro'">08</xsl:when>
+								<xsl:when test="property/wallMaterial='Non-asbestos Fibro'">10</xsl:when>
 								<xsl:when test="property/wallMaterial='Stone'">05</xsl:when>
 								<xsl:when test="property/wallMaterial='Weatherboard'">01</xsl:when>
 								<xsl:otherwise>99</xsl:otherwise>
@@ -236,7 +237,7 @@
 							<xsl:choose>
 								<xsl:when test="property/roofMaterial='Cement Tiles'">01</xsl:when>
 								<xsl:when test="property/roofMaterial='Clay/Terracotta Tiles'">04</xsl:when>
-								<xsl:when test="property/roofMaterial='Colourbond'">02</xsl:when>
+								<xsl:when test="property/roofMaterial='Colorbond'">02</xsl:when>
 								<xsl:when test="property/roofMaterial='Metal Other'">03</xsl:when>
 								<xsl:when test="property/roofMaterial='Slate'">05</xsl:when>
 								<xsl:when test="property/roofMaterial='Thatch'">TH</xsl:when>
@@ -401,12 +402,12 @@
 								</surgery>
 							</xsl:when>
 
-							<xsl:when test="businessActivity/businessType='Day care'">
+							<xsl:when test="businessActivity/businessType='Childcare'">
 								<dayCare>
-									<childrenNumbers><xsl:value-of select="businessActivity/children" /></childrenNumbers>
+									<childrenNumbers><xsl:value-of select="businessActivity/childcareChildren" /></childrenNumbers>
 									<registeredOrganisation>
 										<xsl:choose>
-											<xsl:when test="businessActivity/registeredDayCare='Y'">Y</xsl:when>
+											<xsl:when test="businessActivity/registeredChildcare='Y'">Y</xsl:when>
 											<xsl:otherwise>N</xsl:otherwise>
 										</xsl:choose>
 									</registeredOrganisation>
@@ -443,18 +444,9 @@
 					</policyHolder>
 
 					<olderResident>
-						<olderResidentDob>
-							<xsl:choose>
-								<xsl:when test="policyHolder/anyoneOlder = 'Y' ">
-									<xsl:call-template name="util_isoDate">
-										<xsl:with-param name="eurDate" select="policyHolder/oldestPersonDob" />
-									</xsl:call-template></xsl:when>
-								<xsl:otherwise>0001-01-01</xsl:otherwise>
-							</xsl:choose>
-						</olderResidentDob>
 						<olderResidentRetired>
 							<xsl:choose>
-								<xsl:when test="policyHolder/over55 ! =''">
+								<xsl:when test="policyHolder/over55 !=''">
 									<xsl:value-of select="policyHolder/over55" />
 								</xsl:when>
 								<xsl:otherwise>N</xsl:otherwise>
@@ -463,76 +455,6 @@
 					</olderResident>
 
 					<personalHistory >
-						<xsl:choose>
-							<xsl:when test="disclosures/previousInsurance='Y'">
-								<previousPolicy>
-									<sameAddress>
-										<xsl:choose>
-											<xsl:when test="disclosures/atCurrentAddress='Y'">Y</xsl:when>
-											<xsl:otherwise>N</xsl:otherwise>
-										</xsl:choose>
-									</sameAddress>
-									<insuranceCompany>
-										<xsl:choose>
-											<xsl:when test="disclosures/insurer='AAMI'">7111</xsl:when>
-											<xsl:when test="disclosures/insurer='AI Insurance'">7773</xsl:when>
-											<xsl:when test="disclosures/insurer='Allianz'">7316</xsl:when>
-											<xsl:when test="disclosures/insurer='ANZ'">7778</xsl:when>
-											<xsl:when test="disclosures/insurer='APIA'">7326</xsl:when>
-											<xsl:when test="disclosures/insurer='Auto &amp; General'">7127</xsl:when>
-											<xsl:when test="disclosures/insurer='Australia Post Insurance'">7379</xsl:when>
-											<xsl:when test="disclosures/insurer='Bank of Queensland Insurance'">8040</xsl:when>
-											<xsl:when test="disclosures/insurer='Bingle'">7669</xsl:when>
-											<xsl:when test="disclosures/insurer='Budget Direct'">7387</xsl:when>
-											<xsl:when test="disclosures/insurer='BUPA Insurance'">7941</xsl:when>
-											<xsl:when test="disclosures/insurer='CGU'">7130</xsl:when>
-											<xsl:when test="disclosures/insurer='Coles Insurance'">7875</xsl:when>
-											<xsl:when test="disclosures/insurer='Comminsure'">7402</xsl:when>
-											<xsl:when test="disclosures/insurer='Elders Insurance'">7323</xsl:when>
-											<xsl:when test="disclosures/insurer='GIO'">7315</xsl:when>
-											<xsl:when test="disclosures/insurer='HBF Insurance'">7157</xsl:when>
-											<xsl:when test="disclosures/insurer='Hollard'">7406</xsl:when>
-											<xsl:when test="disclosures/insurer='iSelect'">7800</xsl:when>
-											<xsl:when test="disclosures/insurer='Just Car Insurance'">7335</xsl:when>
-											<xsl:when test="disclosures/insurer='Kmart Insurance'">7874</xsl:when>
-											<xsl:when test="disclosures/insurer='Lumley'">7165</xsl:when>
-											<xsl:when test="disclosures/insurer='NAB'">7786</xsl:when>
-											<xsl:when test="disclosures/insurer='NRMA'">7176</xsl:when>
-											<xsl:when test="disclosures/insurer='Other'">7824</xsl:when>
-											<xsl:when test="disclosures/insurer='Progressive'">7894</xsl:when>
-											<xsl:when test="disclosures/insurer='QBE'">7181</xsl:when>
-											<xsl:when test="disclosures/insurer='RAA'">7183</xsl:when>
-											<xsl:when test="disclosures/insurer='RACQ'">7219</xsl:when>
-											<xsl:when test="disclosures/insurer='RACV'">7314</xsl:when>
-											<xsl:when test="disclosures/insurer='RACW'">7184</xsl:when>
-											<xsl:when test="disclosures/insurer='Real Insurance'">7663</xsl:when>
-											<xsl:when test="disclosures/insurer='SGIC'">7189</xsl:when>
-											<xsl:when test="disclosures/insurer='SGIO'">7190</xsl:when>
-											<xsl:when test="disclosures/insurer='Shannons'">7334</xsl:when>
-											<xsl:when test="disclosures/insurer='Suncorp'">7197</xsl:when>
-											<xsl:when test="disclosures/insurer='The Buzz'">7825</xsl:when>
-											<xsl:when test="disclosures/insurer='Vero'">7386</xsl:when>
-											<xsl:when test="disclosures/insurer='Virgin Money Insurance'">7808</xsl:when>
-											<xsl:when test="disclosures/insurer='Wesfarmers'">7213</xsl:when>
-											<xsl:when test="disclosures/insurer='Westpac'">7434</xsl:when>
-											<xsl:when test="disclosures/insurer='Woolworths Insurance'">8026</xsl:when>
-											<xsl:when test="disclosures/insurer='YOUI'">7766</xsl:when>
-										</xsl:choose>
-									</insuranceCompany>
-									<expiryDate>
-										<xsl:call-template name="util_isoDate">
-											<xsl:with-param name="eurDate" select="disclosures/expiry" />
-										</xsl:call-template>
-									</expiryDate>
-									<yearsInsured>
-										<xsl:value-of select="disclosures/coverLength" />
-									</yearsInsured>
-								</previousPolicy>
-							</xsl:when>
-							<xsl:otherwise>
-								<noPreviousPolicy />
-							</xsl:otherwise>
-						</xsl:choose>
 						<previousClaims>
 							<xsl:choose>
 								<xsl:when test="disclosures/claims='Y'">Y</xsl:when>

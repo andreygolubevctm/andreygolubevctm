@@ -1,19 +1,14 @@
 <home>
 				<disclosures>
 								<criminalOffence>Y</criminalOffence>
-								<previousInsurance>Y</previousInsurance>
-								<coverLength>4 Years</coverLength>
-								<expiry>05/04/2012</expiry>
 								<refusalYear>2012</refusalYear>
 								<criminalOffenceNumber>2</criminalOffenceNumber>
 								<claims>Y</claims>
 								<deniedClaim>N</deniedClaim>
-								<insurer>AAMI</insurer>
 								<refusalReason>Fraud</refusalReason>
 								<claimNumber>1</claimNumber>
 								<refusalInsurer>ANZ</refusalInsurer>
 								<insuranceRefusal>Y</insuranceRefusal>
-								<atCurrentAddress>N</atCurrentAddress>
 				</disclosures>
 				<policyHolder>
 								<title>MR</title>
@@ -29,7 +24,6 @@
 								<jointSurname>User2</jointSurname>
 								<email>aih.iia.triage@gmail.com</email>
 								<phone>0712345678</phone>
-								<oldestPersonDob>12/05/1945</oldestPersonDob>
 								<over55>Y</over55>
 				</policyHolder>
 				<property>
@@ -41,7 +35,7 @@
 												<waterTanks>Y</waterTanks>
 												<airConditionners>Y</airConditionners>
 								</features>
-								<wallMaterial>Brick</wallMaterial>
+								<wallMaterial>Double Brick</wallMaterial>
 								<address>
 												<nonStd>Y</nonStd>
 												<type>R</type>
@@ -117,9 +111,9 @@
 				</occupancy>
 				<startDate>15/08/2013</startDate>
 				<businessActivity>
-								<businessType>Day care</businessType>
-								<children>2</children>
-								<registeredDayCare>Y</registeredDayCare>
+								<businessType>Childcare</businessType>
+								<childcareChildren>2</childcareChildren>
+								<registeredChildcare>Y</registeredChildcare>
 								<conducted>Y</conducted>
 				</businessActivity>
 				<termsAccepted>Y</termsAccepted>

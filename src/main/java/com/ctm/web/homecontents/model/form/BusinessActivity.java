@@ -3,15 +3,10 @@ package com.ctm.web.homecontents.model.form;
 public class BusinessActivity {
 
     private String conducted;
-
     private String businessType;
-
-    private String children;
-
-    private String registeredDayCare;
-
+    private String childcareChildren;
+    private String registeredChildcare;
     private String rooms;
-
     private String employeeAmount;
 
     public String getConducted() {
@@ -30,20 +25,20 @@ public class BusinessActivity {
         this.businessType = businessType;
     }
 
-    public String getChildren() {
-        return children;
+    public String getChildcareChildren() {
+        return childcareChildren;
     }
 
-    public void setChildren(String children) {
-        this.children = children;
+    public void setChildcareChildren(String childcareChildren) {
+        this.childcareChildren = childcareChildren;
     }
 
-    public String getRegisteredDayCare() {
-        return registeredDayCare;
+    public String getRegisteredChildcare() {
+        return registeredChildcare;
     }
 
-    public void setRegisteredDayCare(String registeredDayCare) {
-        this.registeredDayCare = registeredDayCare;
+    public void setRegisteredChildcare(String registeredChildcare) {
+        this.registeredChildcare = registeredChildcare;
     }
 
     public String getRooms() {

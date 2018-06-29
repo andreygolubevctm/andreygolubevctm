@@ -71,25 +71,25 @@
 			additionalLabelAttributes="${analyticsAttr}" />
 	</form_v2:row>
 
-	<%-- Day Care Children--%>
-	<c:set var="fieldXpath" value="${xpath}/children" />
-	<form_v2:row fieldXpath="${fieldXpath}" label="How many children are cared for at any one time?" className="dayCareChildren">
-		<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="How many daycare children" quoteChar="\"" /></c:set>
+	<%-- Childcare Children --%>
+	<c:set var="fieldXpath" value="${xpath}/childcareChildren" />
+	<form_v2:row fieldXpath="${fieldXpath}" label="What is the maximum number of children cared for at the property at any one time?" className="childcareChildren">
+		<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="How many childcare children" quoteChar="\"" /></c:set>
 		<field_v2:array_select xpath="${fieldXpath}"
 			required="true"
-			title="how many children are cared for at any one time"
+			title="maximum number of children cared for at the property at any one time"
 			items="=Please select...,1=1,2=2,3=3,4=4,5=5,6=6,7=7+"
 			extraDataAttributes="${analyticsAttr}" />
 	</form_v2:row>
 
-	<%-- Registered Day Care --%>
-	<c:set var="fieldXpath" value="${xpath}/registeredDayCare" />
-	<form_v2:row fieldXpath="${fieldXpath}" label="Is the day care registered with an organisation?" className="registeredDayCare">
-		<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Registered daycare" quoteChar="\"" /></c:set>
+	<%-- Registered Childcare --%>
+	<c:set var="fieldXpath" value="${xpath}/registeredChildcare" />
+	<form_v2:row fieldXpath="${fieldXpath}" label="Is the Childcare service registered?" className="registeredChildcare">
+		<c:set var="analyticsAttr"><field_v1:analytics_attr analVal="Registered childcare" quoteChar="\"" /></c:set>
 		<field_v2:array_radio xpath="${fieldXpath}"
 			required="true"
 			className="pretty_buttons"
-			title="if the day care is registered with an organisation"
+			title="childcare service registered"
 			items="Y=Yes,N=No"
 			additionalLabelAttributes="${analyticsAttr}" />
 	</form_v2:row>
