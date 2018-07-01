@@ -55,7 +55,6 @@ public class MarketingAutomationEmailService {
 
         final SessionData sessionData = sessionDataService.getSessionDataFromSession(request);
         final Data data = sessionData.getSessionDataForTransactionId(transactionId);
-        LOGGER.info("Session data: {}, for transaction: {}", data.toString(), transactionId);
 
         EmailRequest emailRequest = getEmailRequest(request, brand, transactionId);
 
