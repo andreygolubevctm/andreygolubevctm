@@ -109,6 +109,9 @@
 			// Don't action on the DOB input fields; wait until it's serialised to the hidden field.
 			if ($this.hasClass('dateinput-day') || $this.hasClass('dateinput-month') || $this.hasClass('dateinput-year') || ($this.attr('name').indexOf('primary_dob') >= 0 && $this.val() === "") || ($this.attr('name').indexOf('partner_dob') >= 0 && $this.val() === "")) return;
 
+			// Don't action on situation cover and international student field
+			if (_.indexOf(['health_situation_cover', 'health_situation_internationalstudent'], $this.attr('name')) > -1) return;
+
 			togglePrimaryContinuousCover();
 			togglePartnerContinuousCover();
 

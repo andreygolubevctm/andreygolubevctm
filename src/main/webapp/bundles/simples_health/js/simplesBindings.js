@@ -21,8 +21,6 @@
         $healthInternationalStudentField,
         $healthInternationalStudentMsg1,
         $healthInternationalStudentMsg2,
-        $aboutYouFieldset,
-        $yourDetailsFieldset,
 	    $followupCallCheckboxDialogue,
 	    $followupCallCheckbox,
 	    $referralCallCheckboxDialogue,
@@ -79,8 +77,6 @@
             $healthInternationalStudentField = $('input[name=health_situation_internationalstudent]');
             $healthInternationalStudentMsg1 = $('.healthInternationalStudentMsg1');
             $healthInternationalStudentMsg2 = $('.healthInternationalStudentMsg2');
-            $aboutYouFieldset = $('#healthAboutYou > .content');
-            $yourDetailsFieldset = $('#health-contact-fieldset .content');
             $followupCallCheckboxDialogue = $('.simples-dialogue-68');
             $followupCallCheckbox = $('#health_simples_dialogue-checkbox-68');
 	        $referralCallCheckboxDialogue = $('.simples-dialogue-93');
@@ -107,7 +103,7 @@
             $dialogue36 = $('.simples-dialogue-36');
             $dialogue37 = $('.simples-dialogue-37');
             $moreInfoDialogue = $('.simples-dialogue-76');
-            $nzMedicareRules = $('#healthAboutYou .nz-medicare-rules');
+            $nzMedicareRules = $('#health_situation_cover_wrapper .nz-medicare-rules');
             $nzMedicareRulesToggle = $nzMedicareRules.find('a:first');
             $nzMedicareRulesCopy = $nzMedicareRules.find('.copy:first');
             $pricePromisePromotionDialogue = $('.simples-dialogue-101');
@@ -150,24 +146,6 @@
             }
         }
         toggleWebChatDialog();
-    }
-
-    function _moveSituationMedicareField() {
-        // check if the field is still on the About you fieldset on  step 1
-        if ($aboutYouFieldset.find($healthSituationMedicare).length === 1) {
-            $healthSituationMedicare.appendTo($yourDetailsFieldset);
-            $healthInternationalStudent.appendTo($yourDetailsFieldset);
-        }
-    }
-
-    function _resetSituationMedicareField() {
-        // check if the field is still on the About you fieldset on  step 1
-        if ($aboutYouFieldset.find($healthSituationMedicare).length === 0) {
-            $healthSituationMedicare.appendTo($aboutYouFieldset);
-            $healthInternationalStudent.appendTo($aboutYouFieldset);
-
-            _toggleInternationalStudentField();
-        }
     }
 
     function _toggleInternationalStudentField() {
@@ -314,8 +292,6 @@
             $body
                 .removeClass('outbound trial')
                 .addClass('inbound');
-
-            _resetSituationMedicareField();
         }
         // Outbound
         else {
@@ -331,8 +307,6 @@
             }
 
             if ((healthContactTypeSelection === 'outbound') || isTrialContactType) {
-                _moveSituationMedicareField();
-
                 //contact type is set to outbound when Outbound or a trial is selected
                 $healthContactType.val('outbound');
 
