@@ -58,22 +58,22 @@
 
 <div class="btn-tile dontSubmit medicare" data-toggle="radio" id="${name}">
 	<label class="btn btn-form-inverse ${active1}" >
-		<div class="medicare_green"><span class="sr-only">Medicare Card Green</span></div>
+		<div class="medicare-img-style medicare_green"><span class="sr-only">Medicare Card Green</span></div>
 		<input type="radio" name="${name}" id="${name}_${val1}" value="${val1}" ${checked1} data-msg-required="Please choose ${title}" required="required" >
 		Green
 	</label>
 	<label class="btn btn-form-inverse ${active2}" >
-		<div class="medicare_blue"><span class="sr-only">Medicare Card Blue Interim</span></div>
+		<div class="medicare-img-style medicare_blue"><span class="sr-only">Medicare Card Blue Interim</span></div>
 		<input type="radio" name="${name}" id="${name}_${val2}" value="${val2}" ${checked2} data-msg-required="Please choose ${title}" required="required" >
 		Blue<br />(Interim card)
 	</label>
 	<label class="btn btn-form-inverse ${active3}" >
-		<div class="medicare_yellow"><span class="sr-only">Medicare Card Green/Yellow Reciprocal</span></div>
+		<div class="medicare-img-style medicare_yellow"><span class="sr-only">Medicare Card Green/Yellow Reciprocal</span></div>
 		<input type="radio" name="${name}" id="${name}_${val3}" value="${val3}" ${checked3} data-msg-required="Please choose ${title}" required="required" >
 		Green/Yellow<br />(Reciprocal health care - Visitor)
 	</label>
 	<label class="btn btn-form-inverse ${active4}" >
-		<div class="medicare_none"><span class="sr-only">No Medicare card</span></div>
+		<div class="medicare-img-style medicare_none"><span class="sr-only">No Medicare card</span></div>
 		<input type="radio" name="${name}" id="${name}_${val4}" value="${val4}" ${checked4} data-msg-required="Please choose ${title}" required="required" >
 		None of the above
 	</label>
