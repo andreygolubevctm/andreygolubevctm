@@ -51,7 +51,8 @@
         $nzMedicareRulesCopy,
         $pricePromisePromotionDialogue,
         $affiliatesDialogue,
-        $dialogue106;
+        $dialogue106,
+        $dialogue109;
 
     function init() {
         $(document).ready(function () {
@@ -108,6 +109,7 @@
             $pricePromisePromotionDialogue = $('.simples-dialogue-101');
             $affiliatesDialogue = $('.simples-dialogue-105');
             $dialogue106 = $('.simples-dialogue-106');
+            $dialogue109 = $('.simples-dialogue-109');
 
             // Handle pre-filled
             populatePrevAssignedRadioBtnGroupValue();
@@ -441,6 +443,7 @@
         $dialogue26.toggleClass('hidden', isWebChat);
         $dialogue37.toggleClass('hidden', isWebChat);
         $moreInfoDialogue.toggleClass('hidden', isWebChat);
+        $dialogue109.toggleClass('hidden', isWebChat);
         $healthSituationMedicare.toggleClass('hidden', isWebChat);
         $healthCvrDtlsIncomeBasedOn.toggleClass('hidden', isWebChat);
 
@@ -522,7 +525,7 @@
         if (webChatInProgress()) {
             $moreInfoDialogue.toggleClass('hidden', true);
         } else {
-             $moreInfoDialogue.toggleClass('hidden', $healthSitCoverType.find('input:checked').val().toLowerCase() === "e");
+            toggleResultsMandatoryDialogue();
         }
     }
 
@@ -551,6 +554,11 @@
                 _.has(selectedProduct.hospital, 'ClassificationHospital') && selectedProduct.hospital.ClassificationHospital === 'Public');
     }
 
+    function toggleResultsMandatoryDialogue() {
+        $moreInfoDialogue.toggleClass('hidden', $limitedCoverHidden.val() === 'Y');
+        $dialogue109.toggleClass('hidden', $limitedCoverHidden.val() === 'N');
+    }
+
     meerkat.modules.register("simplesBindings", {
         init: init,
         toggleLimitedCoverDialogue: toggleLimitedCoverDialogue,
@@ -559,7 +567,8 @@
         toggleAffiliateRewardsDialogue: toggleAffiliateRewardsDialogue,
         getCallType: getCallType,
         togglePricePromisePromoDialogue: togglePricePromisePromoDialogue,
-        toggleBenefitsDialogue: toggleBenefitsDialogue
+        toggleBenefitsDialogue: toggleBenefitsDialogue,
+        toggleResultsMandatoryDialogue: toggleResultsMandatoryDialogue
     });
 
 })(jQuery);

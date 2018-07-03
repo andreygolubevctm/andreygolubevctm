@@ -431,6 +431,8 @@
 				}
 
                 meerkat.modules.paymentGateway.disable();
+
+                meerkat.modules.simplesBindings.toggleResultsMandatoryDialogue();
 			},
 			onAfterEnter: function(event){
 
