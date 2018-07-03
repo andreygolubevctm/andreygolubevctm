@@ -7,7 +7,8 @@
     <layout_v3:slide_content>
         <simples:dialogue id="83" className="" vertical="health" />
         <simples:dialogue id="96" className="" vertical="health" />
-        <simples:dialogue id="76" vertical="health" mandatory="true" />
+        <simples:dialogue id="109" className="hidden" vertical="health" mandatory="true" />
+        <simples:dialogue id="76" className="hidden" vertical="health" mandatory="true" />
         <simples:dialogue id="24" className="" vertical="health" />
         <simples:dialogue id="74" className="extendedFamilyRules hidden" vertical="health"/>
         <health_v3:results />
