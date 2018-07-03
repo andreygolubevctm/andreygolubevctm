@@ -92,6 +92,10 @@ public class TravelModelTranslator implements EmailTranslator {
         RankingDetailsDao rankingDetailsDao = new RankingDetailsDao();
         Long transactionId = RequestUtils.getTransactionIdFromRequest(request);
         List<RankingDetail> ranking = rankingDetailsDao.getLastestTopRankings(transactionId, NUM_RESULTS);
+        if(ranking.size() < NUM_RESULTS){
+            List<RankingDetail> emptyList = Arrays.asList(new RankingDetail[NUM_RESULTS - ranking.size()]);
+            ranking.addAll(emptyList);
+        }
 
         List<String> providerCodes = getRankingProperties(ranking,"providerName");
         List<String> premium = getRankingProperties(ranking,"price");
@@ -128,7 +132,7 @@ public class TravelModelTranslator implements EmailTranslator {
 
     private List<String> getRankingProperties(List<RankingDetail> rankingDetails, String property){
         return rankingDetails.stream().map(rankingDetail -> {
-            String value = rankingDetail.getProperty(property);
+            String value = rankingDetail != null ? rankingDetail.getProperty(property) : null;
             if(value == null) value = "";
             return value;
         }).collect(Collectors.toList());
