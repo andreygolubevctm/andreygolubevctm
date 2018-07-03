@@ -331,9 +331,6 @@
             },
             onBeforeEnter: function enterBenefitsStep(event) {
                 if (event.isForward) {
-
-                    // if (meerkat.site.isCallCentreUser) meerkat.modules.simplesBindings.updateSimplesMedicareCoverQuestionPosition();
-
                     // Delay 1 sec to make sure we have the data bucket saved in to DB, then filter coupon
                     _.delay(function () {
                         // coupon logic, filter for user, then render banner

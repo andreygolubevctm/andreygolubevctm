@@ -159,24 +159,6 @@
         $healthInternationalStudentMsg2.toggleClass('hidden', internationalStudentVal !== 'N');
     }
 
-    /**
-     * Move the medicare fields to sit under partner fieldset if family/couple otherwise
-     * the default is under primary fieldset
-     */
-    function updateSimplesMedicareCoverQuestionPosition() {
-        if(getCallType() === 'outbound') {
-            var familyType = meerkat.modules.health.getSituation();
-            if (!_.isEmpty(familyType) && (_.isNull(currentFamilyType) || familyType !== currentFamilyType)) {
-                var $tempMedicareForm = $simplesMedicareCoverForm.detach();
-                var $tempInternatStudentForm = $simplesinternationalStudentForm.detach();
-                var $wrapperToUse = $applicantWrappers[_.indexOf(['F', 'C', 'EF'], familyType) > -1 ? 'partner' : 'primary'];
-                $wrapperToUse.append($tempMedicareForm);
-                $wrapperToUse.append($tempInternatStudentForm);
-                currentFamilyType = familyType;
-            }
-        }
-    }
-
     // Check dynamic checkboxes on preload=true
     function initDBDrivenCheckboxes() {
         if (!meerkat.site.hasOwnProperty('simplesCheckboxes')) return;
@@ -577,7 +559,6 @@
 
     meerkat.modules.register("simplesBindings", {
         init: init,
-        updateSimplesMedicareCoverQuestionPosition: updateSimplesMedicareCoverQuestionPosition,
         toggleLimitedCoverDialogue: toggleLimitedCoverDialogue,
         toggleRebateDialogue: toggleRebateDialogue,
         toggleMoreInfoDialogue: toggleMoreInfoDialogue,
