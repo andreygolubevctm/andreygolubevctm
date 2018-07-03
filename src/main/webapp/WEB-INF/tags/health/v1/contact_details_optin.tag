@@ -126,6 +126,38 @@
                 <field_v2:person_dob xpath="${fieldXpath}" title="primary person's" required="true" ageMin="16" ageMax="120" />
             </form_v3:row>
 
+            <%-- Medicare card question --%>
+            <c:if test="${callCentre}">
+                <c:set var="fieldXpath" value="${pageSettings.getVerticalCode()}/situation/cover" />
+                <c:set var="fieldXpathName" value="${go:nameFromXpath(fieldXpath)}_wrapper" />
+                <c:set var="medicareQuestionLabel"><content:get key="medicareQuestionLabel" /></c:set>
+                <c:set var="nzMedicareRules"><content:get key="nzMedicareRules" /></c:set>
+                <form_v3:row label="${medicareQuestionLabel}" fieldXpath="${fieldXpath}" id="${fieldXpathName}" className="health_situation_medicare text-danger" helpId="564">
+                    <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}"
+                                          title="your Medicare card cover" required="true" className="health-medicare_details-card"
+                                          id="${name}_cover" additionalAttributes="data-rule-isCheckedYes='true' data-msg-isCheckedYes='${ovcScripting}'" />
+                    <div class="nz-medicare-rules">
+                        <a href="javascript:void;" data-copy-on="Hide NZ medicare rules" data-copy-off="Show NZ medicare rules"><!-- empty --></a>
+                        <div class="copy">${nzMedicareRules}</div>
+                    </div>
+                </form_v3:row>
+                <c:set var="fieldXpath" value="${pageSettings.getVerticalCode()}/situation/internationalstudent" />
+                <c:set var="fieldXpathName" value="${go:nameFromXpath(fieldXpath)}_wrapper" />
+                <c:set var="internationalStudentY"><content:get key="healthInternationalStudentY" /></c:set>
+                <c:set var="internationalStudentN"><content:get key="healthInternationalStudentN" /></c:set>
+                <form_v3:row label="Are you an international student studying here in Australia?" fieldXpath="${fieldXpath}" id="${fieldXpathName}" className="health_situation_internationalstudent text-danger hidden">
+                    <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}"
+                                          title="Are you an international student studying here in Australia?" required="true" className="health-international_student"
+                                          id="${name}_ovc_international_student" additionalAttributes="data-rule-isCheckedYes='true' data-msg-isCheckedYes=' '" />
+                    <div class="healthInternationalStudentMsg1 hidden">
+                        <div>${internationalStudentY}</div>
+                    </div>
+                    <div class="healthInternationalStudentMsg2 hidden">
+                        <div>${internationalStudentN}</div>
+                    </div>
+                </form_v3:row>
+            </c:if>
+
             <c:set var="fieldXpath" value="${xpath}/primary/cover" />
             <form_v3:row label="Do you currently hold private Hospital insurance?" fieldXpath="${fieldXpath}" id="${name}_primaryCover">
                 <field_v2:array_radio items="Y=Yes,N=No" style="group" xpath="${fieldXpath}" title="your private health cover" required="true" className="health-cover_details" id="${name}_health_cover"/>
