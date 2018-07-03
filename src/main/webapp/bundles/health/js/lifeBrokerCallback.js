@@ -67,7 +67,7 @@ Handling of the callback popup
 		$(document).on('click', '.lb-callbackDay .btn', function() {
 			var $this = $(this).find('input');
 			var date = $this.data('date');
-			var options = getDailyHours($this.data('dayname'));
+			var options = getDailyHours($this.data('dayname'), $this.val());
 
 			$callbackTime.children('option').remove();
 
@@ -83,7 +83,7 @@ Handling of the callback popup
 				/** TODO: Original architecture is too inflexible and needs to be re-written from the ground up */
 				// get tomorrow
 				var $tomorrow = $(this).next().find('input');
-				options = getDailyHours($tomorrow.data('dayname'));
+				options = getDailyHours($tomorrow.data('dayname'), $tomorrow.val());
 
 				var option = document.createElement('option');
 				option.value = $tomorrow.data('date') + ' ' + convertTo24Hour(options[0]) + ':00';
@@ -188,13 +188,11 @@ Handling of the callback popup
 	function getCallCentreTimes() {
 
 		var lifeBrokerCallCentreTimes = {"openingHours":[
-			{"openingHoursId":0,"startTime":"09:00 am","endTime":"08:00 pm","description":"Monday","date":"","daySequence":null,"hoursType":null,"effectiveStart":null,"effectiveEnd":null,"verticalId":0},
-			{"openingHoursId":0,"startTime":"09:00 am","endTime":"08:00 pm","description":"Tuesday","date":"","daySequence":null,"hoursType":null,"effectiveStart":null,"effectiveEnd":null,"verticalId":0},
-			{"openingHoursId":0,"startTime":"09:00 am","endTime":"08:00 pm","description":"Wednesday","date":"","daySequence":null,"hoursType":null,"effectiveStart":null,"effectiveEnd":null,"verticalId":0},
-			{"openingHoursId":0,"startTime":"09:00 am","endTime":"08:00 pm","description":"Thursday","date":"","daySequence":null,"hoursType":null,"effectiveStart":null,"effectiveEnd":null,"verticalId":0},
-			{"openingHoursId":0,"startTime":"09:00 am","endTime":"08:00 pm","description":"Friday","date":"","daySequence":null,"hoursType":null,"effectiveStart":null,"effectiveEnd":null,"verticalId":0},
-			{"openingHoursId":0,"startTime":"09:00 am","endTime":"08:00 pm","description":"Saturday","date":"","daySequence":null,"hoursType":null,"effectiveStart":null,"effectiveEnd":null,"verticalId":0},
-			{"openingHoursId":0,"startTime":"09:00 am","endTime":"08:00 pm","description":"Sunday","date":"","daySequence":null,"hoursType":null,"effectiveStart":null,"effectiveEnd":null,"verticalId":0}
+			{"openingHoursId":0,"startTime":"09:00 am","endTime":"06:30 pm","description":"Monday","date":"","daySequence":null,"hoursType":null,"effectiveStart":null,"effectiveEnd":null,"verticalId":0},
+			{"openingHoursId":0,"startTime":"09:00 am","endTime":"06:30 pm","description":"Tuesday","date":"","daySequence":null,"hoursType":null,"effectiveStart":null,"effectiveEnd":null,"verticalId":0},
+			{"openingHoursId":0,"startTime":"09:00 am","endTime":"06:30 pm","description":"Wednesday","date":"","daySequence":null,"hoursType":null,"effectiveStart":null,"effectiveEnd":null,"verticalId":0},
+			{"openingHoursId":0,"startTime":"09:00 am","endTime":"06:30 pm","description":"Thursday","date":"","daySequence":null,"hoursType":null,"effectiveStart":null,"effectiveEnd":null,"verticalId":0},
+			{"openingHoursId":0,"startTime":"09:00 am","endTime":"05:30 pm","description":"Friday","date":"","daySequence":null,"hoursType":null,"effectiveStart":null,"effectiveEnd":null,"verticalId":0}
 		]};
 
 		hours = [];
@@ -299,7 +297,7 @@ Handling of the callback popup
 
 		firstDay = getShortDayOfWeekName(day.getDay());
 
-		while(count < 5) {
+		while(count < 6) {
 
 			dayName = getShortDayOfWeekName((day.getDay() + i) % 7);
 
@@ -313,7 +311,7 @@ Handling of the callback popup
 					dayName = 'Today';
 				}
 				$('.lb-callbackDay .btn:nth-child('+(count+1)+'n) span').text(dayName);
-				count++; // counting to 4
+				count++; // counting to 5
 			}
 
 			i++;
@@ -378,7 +376,7 @@ Handling of the callback popup
 		return dailyStatus;
 	}
 
-	function getDailyHours(dayName) {
+	function getDailyHours(dayName, btnValue) {
 		var startTime, endTime, currentTime,
 		    startOffset = '00',
 			now = new Date(),
@@ -396,7 +394,7 @@ Handling of the callback popup
 					return options;
 				}
 
-				if(dayName == firstDay) {
+				if(btnValue == "Today") {
 					if(now.getMinutes() > 30) {
 						startOffset = '30';
 					}
