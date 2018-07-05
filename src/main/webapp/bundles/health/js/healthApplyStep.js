@@ -10,7 +10,8 @@
         $medicareYellowMessage,
         $unitElements,
         $personName,
-        $primaryName;
+        $primaryName,
+        _postalNonStdStreetRegexRule;
 
     function init(){
         $(document).ready(function () {
@@ -40,6 +41,7 @@
                 }
             };
 
+            _postalNonStdStreetRegexRule = $unitElements.appPostalNonStdStreet.attr('data-rule-regex');
         });
     }
 
@@ -82,6 +84,7 @@
 
         $unitElements.appPostalUnitType.on('change', function toggleUnitRequiredFields() {
             _changeStreetNoLabel(this.value);
+            _toggleRegexValidation(this.value);
         });
 
         $unitElements.appAddressUnitShop.add($unitElements.appPostalUnitShop).on('change', function toggleUnitShopRequiredFields() {
@@ -140,6 +143,15 @@
 
         if ($errorField.length > 0) {
             $errorField.text(msgRequired);
+        }
+    }
+
+    function _toggleRegexValidation(unitType) {
+        if (unitType === 'PO') {
+            $unitElements.appPostalNonStdStreet.removeRule('regex');
+            $unitElements.appPostalNonStdStreet.blur();
+        } else {
+            $unitElements.appPostalNonStdStreet.addRule('regex', _postalNonStdStreetRegexRule);
         }
     }
 
