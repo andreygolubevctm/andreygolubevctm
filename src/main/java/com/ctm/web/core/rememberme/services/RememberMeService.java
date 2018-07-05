@@ -141,6 +141,7 @@ public class RememberMeService {
         try {
             if (isRememberMeEnabled(request, vertical)) {
                 Cookie cookie = getRememberMeCookie(request, vertical);
+                LOGGER.info("getRememberMeCookie(): {}", kv("cookie", cookie));
                 if (cookie != null && !cookie.getValue().isEmpty()) {
                     String cookieValue = StringEncryption.decrypt(SECRET_KEY, cookie.getValue());
                     String transactionId = getTransactionIdFromCookie(vertical, request).orElse(null);
@@ -154,6 +155,7 @@ public class RememberMeService {
                         if(currentEpochTime - createdEpochTime < 1800) {
 
                             loadSessionData(request,vertical,transactionId,getTransactionDetails(transactionId));
+                            LOGGER.info("session is within 30minutes");
                             return true;
                         }
                         else {
@@ -167,7 +169,7 @@ public class RememberMeService {
         } catch (GeneralSecurityException e) {
             LOGGER.error("Error retrieving cookie for remember me {}", kv("vertical", vertical), e);
         }
-
+        LOGGER.info("isRememberMeEnabled(): {}", isRememberMeEnabled(request, vertical));
         return false;
     }
 
@@ -336,8 +338,14 @@ public class RememberMeService {
 
     public Boolean removeAttemptsSessionAttribute(final HttpServletRequest request, final String vertical) {
         HttpSession session = request.getSession();
+        LOGGER.info("RememberMe Service removeAttemptsSessionAttribute(): {}", kv("session", session));
         if (session != null) {
-            session.removeAttribute(getAttemptsSessionAttributeName(vertical));
+            String attemptsSessionAttributeName = getAttemptsSessionAttributeName(vertical);
+            Object expectedRemoveAttemptsSessionVar = session.getAttribute(attemptsSessionAttributeName);
+            if (expectedRemoveAttemptsSessionVar == null) {
+                LOGGER.info("Expected session var {} is null", attemptsSessionAttributeName);
+            }
+            session.removeAttribute(attemptsSessionAttributeName);
             return true;
         }
         return false;
@@ -405,6 +413,7 @@ public class RememberMeService {
 
     public Boolean deleteCookie(final String vertical, final HttpServletResponse response) throws GeneralSecurityException {
         final String cookieName = getCookieName(vertical.toLowerCase() + COOKIE_SUFFIX);
+        LOGGER.info("RememberMe Service deleteCookie: {}", kv("cookieName", cookieName));
         if (cookieName != null) {
             final Cookie cookie = new Cookie(cookieName, "");
             cookie.setMaxAge(0);

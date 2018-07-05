@@ -158,6 +158,7 @@
 	<c:if test="${not empty callCentre}">
 		contactType: "<c:out value="${data['health/simples/contactType']}"/>",
 		isContactTypeTrialCampaign: ${isContactTypeTrialCampaign},
+		styleCodeId: "<c:out value="${pageSettings.getBrandId()}"/>",
 	</c:if>
 	gaClientId: "<c:out value="${data['health/gaclientid']}"/>",
 	<core_v2:affiliateSettings />
