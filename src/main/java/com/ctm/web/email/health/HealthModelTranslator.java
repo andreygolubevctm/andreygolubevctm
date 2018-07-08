@@ -50,7 +50,7 @@ public class HealthModelTranslator implements EmailTranslator {
     private static final String CAMPAIGN = "health_quote";
     private static final String ACTION_UNSUBSCRIBE = "unsubscribe";
     private static final String ACTION_LOAD = "load";
-    public static final int NUM_RESULTS = 14;
+    public static final int NUM_RESULTS = 15;
 
     private final EmailUtils emailUtils;
     private final ContentDao contentDao;
