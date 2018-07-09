@@ -100,7 +100,6 @@
 		if(!initialised || reInit) {
 			initialised = true;
 
-            var destination = $('#travel_destination').val();
 			var options = {
 				enabled: true,
 				tabCount: 3,
@@ -108,8 +107,9 @@
 				hasMultipleTabTypes: true,
 				verticalMapping: tabMapping(),
 				callback: function () {
+                    var destination = $('#travel_destination').val().split(',');
                     // hide filters for mobile, tablet & AMT
-                    if (isAMT() || destination === 'AUS') {
+                    if (isAMT() || (_.indexOf(destination, 'AUS') > -1 && destination.length === 1)) {
                         $('.clt-trip-filter').hide();
                         $('.mobile-cover-type').show();
                     } else {
