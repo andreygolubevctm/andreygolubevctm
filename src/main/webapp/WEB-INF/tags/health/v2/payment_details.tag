@@ -33,6 +33,8 @@
 				<%-- insert fund warning data --%>
 		</div>
 
+		<simples:dialogue id="110" vertical="health" className="red" />
+
 		<health_v2:calendar xpath="${xpath}" />
 
 		<c:set var="fieldXpath" value="${xpath}/type" />
