@@ -402,12 +402,12 @@
 								</surgery>
 							</xsl:when>
 
-							<xsl:when test="businessActivity/businessType='Childcare'">
+							<xsl:when test="businessActivity/businessType='Day care'">
 								<dayCare>
-									<childrenNumbers><xsl:value-of select="businessActivity/childcareChildren" /></childrenNumbers>
+									<childrenNumbers><xsl:value-of select="businessActivity/children" /></childrenNumbers>
 									<registeredOrganisation>
 										<xsl:choose>
-											<xsl:when test="businessActivity/registeredChildcare='Y'">Y</xsl:when>
+											<xsl:when test="businessActivity/registeredDayCare='Y'">Y</xsl:when>
 											<xsl:otherwise>N</xsl:otherwise>
 										</xsl:choose>
 									</registeredOrganisation>

@@ -17,8 +17,8 @@
 			name:					"home_businessActivity",
 			businessRooms:			".businessRooms",
 			employees:				".hasEmployees",
-        	childcareChildren:		".childcareChildren",
-        	registeredChildcare:	".registeredChildcare",
+        	dayCarChildren:		    ".dayCareChildren",
+        	registeredDayCare:	    ".registeredDayCare",
 			businessType:			".businessType",
 			employeeAmount:			".employeeAmount"
 	};
@@ -38,13 +38,13 @@
 		var businessTypeValue = $('#'+elements.name+'_businessType').find('option:selected').val().toLowerCase();
 		if ( businessTypeValue === 'home office' || businessTypeValue === 'surgery/consulting rooms') {
 			$(elements.businessRooms+', '+elements.employees).slideDown(speed);
-			$(elements.childcareChildren+', '+elements.registeredChildcare).slideUp(speed);
+			$(elements.dayCarChildren+', '+elements.registeredDayCare).slideUp(speed);
 			toggleEmployeeAmount();
-		} else if ( businessTypeValue === 'childcare') {
-			$(elements.childcareChildren+', '+elements.registeredChildcare).slideDown(speed);
+		} else if ( businessTypeValue === 'day care') {
+			$(elements.dayCarChildren+', '+elements.registeredDayCare).slideDown(speed);
 			$(elements.businessRooms+', '+elements.employees+', '+elements.employeeAmount).slideUp(speed);
 		} else {
-			$(elements.businessRooms+', '+elements.employees+', '+elements.employeeAmount+', '+elements.childcareChildren+', '+elements.registeredChildcare).slideUp(speed);
+			$(elements.businessRooms+', '+elements.employees+', '+elements.employeeAmount+', '+elements.dayCarChildren+', '+elements.registeredDayCare).slideUp(speed);
 		}
 
 	}
@@ -67,7 +67,7 @@
 	}
 
 	function hideBusinessActivityFields (speed) {
-		$(elements.businessType+', '+elements.businessRooms+', '+elements.employees+', '+elements.employeeAmount+', '+elements.childcareChildren+', '+elements.registeredChildcare).slideUp(speed);
+		$(elements.businessType+', '+elements.businessRooms+', '+elements.employees+', '+elements.employeeAmount+', '+elements.dayCarChildren+', '+elements.registeredDayCare).slideUp(speed);
 	}
 	function applyEventListeners() {
 		businessFieldChange();

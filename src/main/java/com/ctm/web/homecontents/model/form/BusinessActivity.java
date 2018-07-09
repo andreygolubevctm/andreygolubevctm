@@ -4,8 +4,8 @@ public class BusinessActivity {
 
     private String conducted;
     private String businessType;
-    private String childcareChildren;
-    private String registeredChildcare;
+    private String children;
+    private String registeredDayCare;
     private String rooms;
     private String employeeAmount;
 
@@ -25,20 +25,20 @@ public class BusinessActivity {
         this.businessType = businessType;
     }
 
-    public String getChildcareChildren() {
-        return childcareChildren;
+    public String getChildren() {
+        return children;
     }
 
-    public void setChildcareChildren(String childcareChildren) {
-        this.childcareChildren = childcareChildren;
+    public void setChildren(String children) {
+        this.children = children;
     }
 
-    public String getRegisteredChildcare() {
-        return registeredChildcare;
+    public String getRegisteredDayCare() {
+        return registeredDayCare;
     }
 
-    public void setRegisteredChildcare(String registeredChildcare) {
-        this.registeredChildcare = registeredChildcare;
+    public void setRegisteredDayCare(String registeredDayCare) {
+        this.registeredDayCare = registeredDayCare;
     }
 
     public String getRooms() {

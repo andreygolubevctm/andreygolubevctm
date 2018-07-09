@@ -171,10 +171,10 @@ public class RequestAdapter {
                     businessActivityWithRoomQuantity.setNumberOfEmployees(Integer.parseInt(formBusinessActivity.getEmployeeAmount()));
                 }
                 businessActivity = businessActivityWithRoomQuantity;
-            } else if ("Childcare".equals(formBusinessActivity.getBusinessType())) {
+            } else if ("Day care".equalsIgnoreCase(formBusinessActivity.getBusinessType())) {
                 BusinessActivityWithPersonCapacity businessActivityWithPersonCapacity = new BusinessActivityWithPersonCapacity();
-                businessActivityWithPersonCapacity.setNumberOfOccupants(Integer.parseInt(formBusinessActivity.getChildcareChildren()));
-                businessActivityWithPersonCapacity.setRegistered(convertToBoolean(formBusinessActivity.getRegisteredChildcare()));
+                businessActivityWithPersonCapacity.setNumberOfOccupants(Integer.parseInt(formBusinessActivity.getChildren()));
+                businessActivityWithPersonCapacity.setRegistered(convertToBoolean(formBusinessActivity.getRegisteredDayCare()));
                 businessActivity = businessActivityWithPersonCapacity;
             } else {
                 businessActivity = new BusinessActivity();

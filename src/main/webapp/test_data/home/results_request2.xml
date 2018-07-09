@@ -110,9 +110,9 @@
 				</occupancy>
 				<startDate>15/08/2013</startDate>
 				<businessActivity>
-								<businessType>Childcare</businessType>
-								<childcareChildren>2</childcareChildren>
-								<registeredChildcare>Y</registeredChildcare>
+								<businessType>Day care</businessType>
+								<children>2</children>
+								<registeredDayCare>Y</registeredDayCare>
 								<conducted>Y</conducted>
 				</businessActivity>
 				<termsAccepted>Y</termsAccepted>
