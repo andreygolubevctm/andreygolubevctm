@@ -48,6 +48,7 @@ public class CarModelTranslator implements EmailTranslator {
     protected IPAddressHandler ipAddressHandler;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CarModelTranslator.class);
+    public static final int NUM_RESULTS = 10;
 
     public void setVerticalSpecificFields(EmailRequest emailRequest, HttpServletRequest request, Data data) throws RuntimeException, DaoException {
 
@@ -95,7 +96,7 @@ public class CarModelTranslator implements EmailTranslator {
         String optIn = emailUtils.getParamSafely(data, "/contact/marketing");
         String address = emailUtils.getParamSafely(data, "quote/riskAddress/fullAddress");
         String gaClientId = emailUtils.getParamSafely(data, "/gaclientid");
-        List<String> premiumLables = emailUtils.getPremiumLabels(headlineOffers);
+        List<String> premiumLabels = emailUtils.getPremiumLabels(headlineOffers, NUM_RESULTS);
 
         emailRequest.setOptIn(OptIn.valueOf(optIn));
         emailRequest.setCommencementDate(LocalDate.parse(commencementDate, dateTimeFormatter));
@@ -104,7 +105,7 @@ public class CarModelTranslator implements EmailTranslator {
         emailRequest.setPhoneNumber(phoneNumber);
         emailRequest.setAddress(address);
         emailRequest.setGaClientID(gaClientId);
-        emailRequest.setPremiumLabels(premiumLables);
+        emailRequest.setPremiumLabels(premiumLabels);
 
         CarEmailModel carEmailModel = new CarEmailModel();
         carEmailModel.setCoverType(typeOfCover);
