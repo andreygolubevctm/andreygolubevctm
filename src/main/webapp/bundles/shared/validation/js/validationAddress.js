@@ -166,7 +166,7 @@
                     }
                     break;
                 case "_nonStdStreet":
-                    if (!$ele.is(":visible")) {
+                    if (!$ele.is(":visible") || (type === 'P' && $unitTypeElement.val() === 'PO')) {
                         return true;
                     }
 
