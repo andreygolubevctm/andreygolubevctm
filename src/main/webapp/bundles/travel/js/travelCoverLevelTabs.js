@@ -107,9 +107,9 @@
 				hasMultipleTabTypes: true,
 				verticalMapping: tabMapping(),
 				callback: function () {
-                    var destination = $('#travel_destination').val().split(',');
+                    var destination = $('#travel_destination').val();
                     // hide filters for mobile, tablet & AMT
-                    if (isAMT() || (_.indexOf(destination, 'AUS') > -1 && destination.length === 1)) {
+                    if (isAMT() || destination === 'AUS') {
                         $('.clt-trip-filter').hide();
                         $('.mobile-cover-type').show();
                     } else {
