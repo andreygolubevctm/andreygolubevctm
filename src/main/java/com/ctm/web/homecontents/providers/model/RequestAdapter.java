@@ -74,7 +74,7 @@ public class RequestAdapter {
 
         quoteRequest.setRetiredResident(convertToOptionalBoolean(quote.getPolicyHolder().getRetired()));
         quoteRequest.setContact(createContact(quote.getPolicyHolder()));
-        quoteRequest.setHadClaims(convertToBoolean(quote.getDisclosures().getClaims()));
+        quoteRequest.setHadClaims(convertToBoolean(quote.hasDisclosures() ? quote.getDisclosures().getClaims() : "N"));
         quoteRequest.setUnderFinance(convertToOptionalBoolean(quote.isUnderFinance()));
         quoteRequest.setClientIp(homeRequest.getClientIpAddress());
 

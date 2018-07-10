@@ -180,7 +180,7 @@
 							<xs:element name="businessType" type="xs:string" maxOccurs="1" minOccurs="0" />
 							<xs:element name="employees" type="YN" maxOccurs="1" minOccurs="0" />
 							<xs:element name="children" type="xs:integer" maxOccurs="1" minOccurs="0" />
-							<xs:element name="registeredDaycare" type="YN" maxOccurs="1" minOccurs="0" />
+							<xs:element name="registeredDayCare" type="YN" maxOccurs="1" minOccurs="0" />
 						</xs:all>
 					</xs:complexType>
 				</xs:element>
