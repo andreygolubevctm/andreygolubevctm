@@ -222,7 +222,7 @@
 												<form_v4:row label=" ">
 
 													<field_v2:array_radio xpath="${xpath}/lb-day" required="true" className="lb-callbackDay"
-																		  items="Today=,Tomorrow=,NextDay=,DayAfterThat=,LastDay="
+																		  items="Today=,Tomorrow=,NextDay=,TheFollowingDay=,DayAfterThat=,LastDay="
 																		  title="" wrapCopyInSpan="true" />
 												</form_v4:row>
 

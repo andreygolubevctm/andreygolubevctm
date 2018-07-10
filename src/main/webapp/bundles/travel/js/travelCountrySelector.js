@@ -20,7 +20,7 @@
         selectedTextHTML,
         showingError = false,
         initialised = false,
-        inputPlaceholder = meerkat.modules.deviceMediaState.get() !== 'xs' ? 'Please select or type in your destination(s)' : 'Please type in your destination(s)';
+        inputPlaceholder = meerkat.modules.deviceMediaState.get() !== 'xs' ? 'Please select or start typing country name.' : 'Please start typing country name.';
 
     function findCountryNameByIsoCode(isoCode) {
         var countryList = window.countrySelectionList.isoLocations;

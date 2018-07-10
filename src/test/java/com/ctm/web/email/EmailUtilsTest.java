@@ -33,7 +33,7 @@ public class EmailUtilsTest {
         expected.add(EmailUtils.ANNUAL_ONLINE_PREMIUM);
         expected.add(EmailUtils.ANNUAL_PREMIUM);
 
-        List<String> actual = testInstance.getPremiumLabels(premiumLables);
+        List<String> actual = testInstance.getPremiumLabels(premiumLables, 14);
         ListAssert.assertEquals(expected, actual);
     }
 

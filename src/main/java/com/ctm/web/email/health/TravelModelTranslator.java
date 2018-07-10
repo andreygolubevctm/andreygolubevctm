@@ -43,6 +43,7 @@ import java.util.stream.IntStream;
 @Component
 public class TravelModelTranslator implements EmailTranslator {
 
+    public static final int NUM_RESULTS = 10;
     @Autowired
     private EmailUtils emailUtils;
     private static final String vertical = VerticalType.TRAVEL.name().toLowerCase();
@@ -81,7 +82,7 @@ public class TravelModelTranslator implements EmailTranslator {
         emailParameters.put(EmailUrlService.EMAIL_TOKEN_ACTION, "unsubscribe");
         String unsubscribeUrl = emailUrlService.getUnsubscribeUrl(emailParameters);
         List<String> applyUrls = new ArrayList<>();
-        IntStream.range(EmailUtils.START,EmailUtils.END).forEach(index -> applyUrls.add(applyUrl));
+        IntStream.range(EmailUtils.START, NUM_RESULTS).forEach(index -> applyUrls.add(applyUrl));
         emailRequest.setApplyUrls(applyUrls);
         emailRequest.setUnsubscribeURL(unsubscribeUrl);
     }
@@ -90,7 +91,11 @@ public class TravelModelTranslator implements EmailTranslator {
     public void setVerticalSpecificFields(EmailRequest emailRequest, HttpServletRequest request, Data data) throws ConfigSettingException, DaoException {
         RankingDetailsDao rankingDetailsDao = new RankingDetailsDao();
         Long transactionId = RequestUtils.getTransactionIdFromRequest(request);
-        List<RankingDetail> ranking = rankingDetailsDao.getLastestTopRankings(transactionId, EmailUtils.END);
+        List<RankingDetail> ranking = rankingDetailsDao.getLastestTopRankings(transactionId, NUM_RESULTS);
+        if(ranking.size() < NUM_RESULTS){
+            List<RankingDetail> emptyList = Arrays.asList(new RankingDetail[NUM_RESULTS - ranking.size()]);
+            ranking.addAll(emptyList);
+        }
 
         List<String> providerCodes = getRankingProperties(ranking,"providerName");
         List<String> premium = getRankingProperties(ranking,"price");
@@ -127,7 +132,7 @@ public class TravelModelTranslator implements EmailTranslator {
 
     private List<String> getRankingProperties(List<RankingDetail> rankingDetails, String property){
         return rankingDetails.stream().map(rankingDetail -> {
-            String value = rankingDetail.getProperty(property);
+            String value = rankingDetail != null ? rankingDetail.getProperty(property) : null;
             if(value == null) value = "";
             return value;
         }).collect(Collectors.toList());
