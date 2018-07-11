@@ -555,8 +555,11 @@
     }
 
     function toggleResultsMandatoryDialogue() {
-        $moreInfoDialogue.toggleClass('hidden', $limitedCoverHidden.val() === 'Y');
-        $dialogue109.toggleClass('hidden', $limitedCoverHidden.val() === 'N');
+        // needs to be deferred, when retrieving limited cover quote
+        _.defer(function() {
+            $moreInfoDialogue.toggleClass('hidden', $limitedCoverHidden.val() === 'Y');
+            $dialogue109.toggleClass('hidden', $limitedCoverHidden.val() === 'N');
+        });
     }
 
     meerkat.modules.register("simplesBindings", {
