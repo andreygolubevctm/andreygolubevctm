@@ -251,7 +251,10 @@
             $hospitalCover.find('.coverExplanation.' + previousCover + 'Cover').addClass('hidden').end().find('.coverExplanation.' + currentCover + 'Cover').removeClass('hidden');
             previousCover = currentCover;
 
-            meerkat.modules.simplesBindings.toggleResultsMandatoryDialogue();
+            // needs to be deferred, when retrieving limited cover quote
+            _.defer(function() {
+                meerkat.modules.simplesBindings.toggleResultsMandatoryDialogue();
+            });
         });
 
         $allHospitalButtons.on('change', function onHospitalBenefitsChange() {
