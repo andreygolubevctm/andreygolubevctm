@@ -100,7 +100,6 @@
 		if(!initialised || reInit) {
 			initialised = true;
 
-            var destination = $('#travel_destination').val();
 			var options = {
 				enabled: true,
 				tabCount: 3,
@@ -108,6 +107,7 @@
 				hasMultipleTabTypes: true,
 				verticalMapping: tabMapping(),
 				callback: function () {
+                    var destination = $('#travel_destination').val();
                     // hide filters for mobile, tablet & AMT
                     if (isAMT() || destination === 'AUS') {
                         $('.clt-trip-filter').hide();
