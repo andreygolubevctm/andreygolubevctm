@@ -11,6 +11,8 @@
         </form_v2:row>
     {{ }); }}
 
+    <span class="payment-confirm-warning-text">Check start date of policy still falls within fund promo dates</span>
+
     <hr />
 
     {{ if (obj.showRebateData === 'Y') { }}
