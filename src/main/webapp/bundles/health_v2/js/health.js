@@ -1374,7 +1374,7 @@
     }
 
     function initHealth() {
-console.info("2");
+
         var self = this;
 
         $(document).ready(function () {

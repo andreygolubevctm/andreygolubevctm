@@ -1545,7 +1545,7 @@
 	function initHealth() {
 
 		var self = this;
-console.info("1");
+
 		$(document).ready(function() {
 
 			// Only init if health... obviously...
