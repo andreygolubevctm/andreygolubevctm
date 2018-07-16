@@ -165,6 +165,11 @@
         if(_.has(ft,'className') && !_.isEmpty(ft.className) && ft.className.search(/containsSubAndServiceLimits/) >= 0) {
             displayValue = getLimitsCopy(displayValue,ft,obj);
         }
+
+        if(_.has(ft,'className') && !_.isEmpty(ft.className) && ft.className.search(/benefitsSum/) >= 0) {
+            displayValue = meerkat.modules.healthResultsDentalSum.getValue(obj);
+        }
+
         if(!_.isEmpty(displayValue)) {
             return getTitleBefore(ft) + displayValue + _getExtraText(ft) + getTitleAfter(ft) + _getHelpTooltip(ft);
         }
