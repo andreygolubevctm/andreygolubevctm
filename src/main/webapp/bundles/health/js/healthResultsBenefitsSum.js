@@ -1,17 +1,12 @@
 ;(function ($, undefined) {
 
-    var meerkat = window.meerkat,
-        _dentalArr = [
-            'extras.DentalGeneral.benefits.DentalGeneral012PeriodicExam',
-            'extras.DentalGeneral.benefits.DentalGeneral114ScaleClean',
-            'extras.DentalGeneral.benefits.DentalGeneral121Fluoride'
-        ]; // general dental resultPath to sum
+    var meerkat = window.meerkat;
 
     /**
-     * Gets dental item value in $ or %
+     * Gets benefit item value in $ or %
      * @param benefit {string} The benefit resultPath ie. `extras.DentalGeneral.benefits.DentalGeneral012PeriodicExam`
      * @param product {object} The product object
-     * @returns {string} The dental value in $ or %
+     * @returns {string} The benefit value in $ or %
      * @private
      */
     function _getBenefitValue(benefit, product) {
@@ -21,8 +16,8 @@
     }
 
     /**
-     * Gets the sum of dental items value in $
-     * @param values {array} General Dental values
+     * Gets the sum of benefit items value in $
+     * @param values {array} Benefit values
      * @returns {string} The sum in $
      * @private
      */
@@ -33,8 +28,8 @@
     }
 
     /**
-     * Gets the minimum dental items value in %
-     * @param values {array} General Dental values
+     * Gets the minimum benefit items value in %
+     * @param values {array} Benefit values
      * @returns {string} The minimum value in %
      * @private
      */
@@ -43,14 +38,15 @@
     }
 
     /**
-     * Used to get the sum total or percentage of general dental items
-     * @param product
+     * Used to get the sum total or percentage of benefit items
+     * @param product {object} The product
+     * @param benefitsResultsPaths {array} Benefit resultsPath to sum
      * @returns {string} The total sum in $ or the minimum %
      */
-    function getValue(product) {
+    function getValue(product, benefitsResultsPaths) {
         var toSumValues = null,
-            values = _dentalArr.map(function(dental) {
-                var val = _getBenefitValue(dental, product),
+            values = benefitsResultsPaths.map(function(benefit) {
+                var val = _getBenefitValue(benefit, product),
                     valLen = val.length;
 
                 toSumValues = (val.slice(0, 1) === '$');
@@ -60,7 +56,7 @@
         return toSumValues ? _getSum(values) : _getMinPercentage(values);
     }
 
-    meerkat.modules.register('healthResultsDentalSum', {
+    meerkat.modules.register('healthResultsBenefitsSum', {
         getValue: getValue
     });
 

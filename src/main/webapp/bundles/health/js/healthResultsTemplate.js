@@ -167,7 +167,12 @@
         }
 
         if(_.has(ft,'className') && !_.isEmpty(ft.className) && ft.className.search(/benefitsSum/) >= 0) {
-            displayValue = meerkat.modules.healthResultsDentalSum.getValue(obj);
+            var _dentalArr = [
+                'extras.DentalGeneral.benefits.DentalGeneral012PeriodicExam',
+                'extras.DentalGeneral.benefits.DentalGeneral114ScaleClean',
+                'extras.DentalGeneral.benefits.DentalGeneral121Fluoride'
+            ]; // general dental resultPath to sum;
+            displayValue = meerkat.modules.healthResultsBenefitsSum.getValue(obj, _dentalArr);
         }
 
         if(!_.isEmpty(displayValue)) {
