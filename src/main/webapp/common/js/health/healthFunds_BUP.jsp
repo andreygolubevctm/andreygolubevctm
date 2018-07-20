@@ -232,8 +232,8 @@ var healthFunds_BUP = {
 		meerkat.modules.healthPaymentDay.paymentDaysRender( $('.health_payment_credit_details-policyDay'), _html);
 
 		<%-- Select the only option --%>
-		$('.health_payment_credit_details-policyDay').prop('selectedIndex',0);
-		$('.health_payment_bank_details-policyDay').prop('selectedIndex',0);
+		$('.health_payment_credit_details-policyDay').prop('selectedIndex',1);
+		$('.health_payment_bank_details-policyDay').prop('selectedIndex',1);
 		<%-- Change the deduction rate --%>
 
 		$('.health_payment_credit-details_policyDay-message').text( deductionText);
