@@ -52,7 +52,7 @@
 <%-- POSTCODE --%>
 <c:set var="fieldXpath" value="${xpath}/postCode" />
 <form_v3:row fieldXpath="${fieldXpath}" label="Postcode" id="${name}_postCode_suburb">
-	<field_v1:post_code xpath="${fieldXpath}" required="true" title="postcode" additionalAttributes=" data-rule-validAddress='${name}' data-msg-validAddress='Please enter a valid postcode' " />
+	<field_v1:post_code xpath="${fieldXpath}" required="true" title="postcode" additionalAttributes=" autocomplete='no' data-rule-validAddress='${name}' data-msg-validAddress='Please enter a valid postcode' " />
 </form_v3:row>
 
 <%-- SUBURB DROPDOWN (NON STD) --%>
@@ -121,7 +121,7 @@
 		<input type="text" title="${addressTitle}" name="${name}_streetSearch" id="${name}_streetSearch" class="streetSearch" value="${address.streetSearch}"></div>
 	<div class="ui-corner-all ajaxdrop_streetSearch" id="ajaxdrop_${name}_streetSearch" style="display:none;"></div>
 	--%>
-	<field_v2:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetSearch show-loading sessioncamexclude" title="${addressTitle}" placeHolder="${placeholder}" required="false" additionalAttributes=" data-rule-validAddress='${name}' data-msg-validAddress='We can&#39;t seem to find that address&#46;<br /><br />Let&#39;s try again&#58; Please start typing your street address and then select your address from our drop-down box&#46;<br /><br />If you cannot find your address in our drop down&#44; please tick the &#39;Unable to find the address&#39; checkbox to manually enter your address&#46;' "/>
+	<field_v2:input xpath="${fieldXpath}" className="typeahead typeahead-address typeahead-streetSearch show-loading sessioncamexclude" title="${addressTitle}" placeHolder="${placeholder}" required="false" additionalAttributes=" data-rule-validAddress='${name}' data-msg-validAddress='We can&#39;t seem to find that address&#46;<br /><br />Let&#39;s try again&#58; Please start typing your street address and then select your address from our drop-down box&#46;<br /><br />If you cannot find your address in our drop down&#44; please tick the &#39;Unable to find the address&#39; checkbox to manually enter your address&#46;' autocomplete='no' "/>
 </form_v3:row>
 
 

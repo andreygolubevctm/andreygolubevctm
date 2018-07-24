@@ -72,6 +72,7 @@
 										xpath="travel/destinations"
 										xpathhidden="travel/destination"
 										label="Your selected Countries"
+                                        additionalAttributes="autocomplete='no'"
 										title="Where are you travelling?"
 										validationErrorPlacementSelector=".travel_details_destinations"
 										helpId="213"
