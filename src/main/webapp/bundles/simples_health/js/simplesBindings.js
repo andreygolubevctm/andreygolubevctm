@@ -589,7 +589,8 @@
         getCallType: getCallType,
         togglePricePromisePromoDialogue: togglePricePromisePromoDialogue,
         toggleBenefitsDialogue: toggleBenefitsDialogue,
-        toggleResultsMandatoryDialogue: toggleResultsMandatoryDialogue
+        toggleResultsMandatoryDialogue: toggleResultsMandatoryDialogue,
+		webChatInProgress: webChatInProgress
     });
 
 })(jQuery);
