@@ -8,7 +8,18 @@
         <simples:dialogue id="83" className="" vertical="health" />
         <simples:dialogue id="96" className="" vertical="health" />
         <simples:dialogue id="109" className="hidden" vertical="health" mandatory="true" />
-        <simples:dialogue id="76" className="hidden" vertical="health" mandatory="true" />
+
+        <field_v1:hidden xpath="health/simples/notifyInclusionsExclusionsVia" />
+        <div class="simples-dialogue-76 simples-dialogue row-content mandatory hidden" mandatory="true">
+            <div class="wrapper">
+                <p>This policy also gives additional coverage for a wide range of other services but like most policies there are some things that are restricted and excluded, but <strong>none</strong> of which you mentioned as being important,</p>
+                <div data-toggle="radio" id="health_simples_dialogue-radio-76">
+                    <div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-76" id="health_simples_dialogue-radio-76-READNOW" class="checkbox-custom checkbox" value="READNOW" data-msg-required="Please choose the method that the client would like to be informed of the inclusions and exclusions" required="required"><label for="health_simples_dialogue-radio-76-READNOW">would you like me to read through them now?</label></div>
+                    <div class="checkbox"><input type="radio" name="health_simples_dialogue-radio-76" id="health_simples_dialogue-radio-76-WELCOMEPACK" class="checkbox-custom checkbox" value="WELCOMEPACK" data-msg-required="Please choose the method that the client would like to be informed of the inclusions and exclusions" required="required"><label for="health_simples_dialogue-radio-76-WELCOMEPACK">or are you happy to read them in your welcome pack?</label></div>
+                </div>
+            </div>
+        </div>
+
         <simples:dialogue id="24" className="" vertical="health" />
         <simples:dialogue id="74" className="extendedFamilyRules hidden" vertical="health"/>
         <health_v3:results />

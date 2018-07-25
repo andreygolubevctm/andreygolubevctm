@@ -42,6 +42,8 @@
         currentFamilyType = null,
         $limitedCoverHidden,
         $moreInfoDialogue,
+        $moreInfoDialogueRadio,
+        $notifyInclusionsExclusionsVia,
         $dialogue21,
         $dialogue26,
         $dialogue36,
@@ -103,6 +105,8 @@
             $dialogue36 = $('.simples-dialogue-36');
             $dialogue37 = $('.simples-dialogue-37');
             $moreInfoDialogue = $('.simples-dialogue-76');
+            $moreInfoDialogueRadio = $('input[name=health_simples_dialogue-radio-76]');
+            $notifyInclusionsExclusionsVia = $('#health_simples_notifyInclusionsExclusionsVia');
             $nzMedicareRules = $('#health_situation_cover_wrapper .nz-medicare-rules');
             $nzMedicareRulesToggle = $nzMedicareRules.find('a:first');
             $nzMedicareRulesCopy = $nzMedicareRules.find('.copy:first');
@@ -223,6 +227,14 @@
         $healthInternationalStudentField.on('change', function(){
             _toggleInternationalStudentFieldMsg();
         });
+
+        $moreInfoDialogueRadio
+            .on('change', function() {
+                var value = $moreInfoDialogueRadio.filter(':checked').val();
+
+                $notifyInclusionsExclusionsVia.val(value);
+            })
+            .trigger('change');
     }
 
     function openBridgingPage(e) {
@@ -234,6 +246,12 @@
                 i++;
             }
         });
+
+        if ($('#resultsForm .simples-dialogue-76').not('.hidden').length === 1) {
+            if (_.isUndefined($moreInfoDialogueRadio.filter(':checked').val())) {
+                i++;
+            }
+        }
 
         needsValidation = i !== 0;
 

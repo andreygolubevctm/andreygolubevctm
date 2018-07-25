@@ -57,7 +57,7 @@
 						className="checkbox-custom simples_dialogue-checkbox-${id}"
 						title="${dialogueText}" />
 
-					</div>
+				</div>
 			</c:when>
 			<c:otherwise>
 				${dialogueText}
