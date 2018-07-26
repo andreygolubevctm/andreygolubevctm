@@ -44,6 +44,8 @@
         $moreInfoDialogue,
         $moreInfoDialogueRadio,
         $notifyInclusionsExclusionsVia,
+        $dialogue111,
+        $dialogue112,
         $dialogue21,
         $dialogue26,
         $dialogue36,
@@ -114,6 +116,8 @@
             $affiliatesDialogue = $('.simples-dialogue-105');
             $dialogue106 = $('.simples-dialogue-106');
             $dialogue109 = $('.simples-dialogue-109');
+            $dialogue111 = $('.simples-dialogue-111');
+            $dialogue112 = $('.simples-dialogue-112');
 
             // Handle pre-filled
             populatePrevAssignedRadioBtnGroupValue();
@@ -233,6 +237,15 @@
                 var value = $moreInfoDialogueRadio.filter(':checked').val();
 
                 $notifyInclusionsExclusionsVia.val(value);
+
+                if (value === 'READNOW') {
+                    $dialogue111.toggleClass('hidden', false);
+                    $dialogue112.toggleClass('hidden', true);
+                } else if (value === 'WELCOMEPACK') {
+                    $dialogue111.toggleClass('hidden', true);
+                    $dialogue112.toggleClass('hidden', false);
+                }
+
             })
             .trigger('change');
     }
