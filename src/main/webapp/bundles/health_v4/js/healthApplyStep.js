@@ -85,6 +85,10 @@
             })
             .trigger('change');
 
+        if ($elements.paymentMedicareColour.val().length > 0) {
+            $('input[name=health_payment_medicare_colour][value=' + $elements.paymentMedicareColour.val() + ']').attr('checked', 'checked').trigger('change');
+        }
+
         $(document.body).on('change', '.selectContainerTitle select', function onTitleChange() {
             var personDetailType = $(this).closest('.qe-window').find('.health-person-details')
                                        .hasClass('primary') ? 'primary' : 'partner';
