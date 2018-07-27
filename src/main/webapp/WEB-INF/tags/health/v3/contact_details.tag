@@ -24,10 +24,10 @@
 			<group_v3:elastic_address
 					xpath="${xpath}/address"
 					type="R"
-					suburbAdditionalAttributes=" data-rule-validateSelectedResidentialSuburb='true' data-msg-validateSelectedResidentialSuburb='Your address does not match the original suburb provided.' autocomplete='false'"
-					suburbNameAdditionalAttributes=" data-rule-validateSelectedResidentialSuburb='true' data-msg-validateSelectedResidentialSuburb='The selected suburb does not match the original suburb selected.' autocomplete='false'"
-					postCodeAdditionalAttributes=" data-rule-validateSelectedResidentialPostCode='true' data-msg-validateSelectedResidentialPostCode='Your address does not match the original postcode provided.' autocomplete='false'"
-					postCodeNameAdditionalAttributes=" data-rule-validateSelectedResidentialPostCode='true' data-msg-validateSelectedResidentialPostCode='The entered postcode does not match the original postcode provided.' autocomplete='false'"
+					suburbAdditionalAttributes=" data-rule-validateSelectedResidentialSuburb='true' data-msg-validateSelectedResidentialSuburb='Your address does not match the original suburb provided.' autocomplete='no'"
+					suburbNameAdditionalAttributes=" data-rule-validateSelectedResidentialSuburb='true' data-msg-validateSelectedResidentialSuburb='The selected suburb does not match the original suburb selected.' autocomplete='no'"
+					postCodeAdditionalAttributes=" data-rule-validateSelectedResidentialPostCode='true' data-msg-validateSelectedResidentialPostCode='Your address does not match the original postcode provided.' autocomplete='no'"
+					postCodeNameAdditionalAttributes=" data-rule-validateSelectedResidentialPostCode='true' data-msg-validateSelectedResidentialPostCode='The entered postcode does not match the original postcode provided.' autocomplete='no'"
 					disableErrorContainer="${true}"
 			/>
 		</c:when>
@@ -50,10 +50,10 @@
 					<group_v3:elastic_address
 							xpath="${xpath}/postal"
 							type="P"
-							suburbNameAdditionalAttributes=" autocomplete='false'"
-							suburbAdditionalAttributes=" autocomplete='false'"
-							postCodeNameAdditionalAttributes=" autocomplete='false'"
-							postCodeAdditionalAttributes=" autocomplete='false'"
+							suburbNameAdditionalAttributes=" autocomplete='no'"
+							suburbAdditionalAttributes=" autocomplete='no'"
+							postCodeNameAdditionalAttributes=" autocomplete='no'"
+							postCodeAdditionalAttributes=" autocomplete='no'"
 							disableErrorContainer="${true}"
 					/>
 				</c:when>
