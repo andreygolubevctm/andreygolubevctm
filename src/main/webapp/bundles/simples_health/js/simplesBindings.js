@@ -238,12 +238,10 @@
 
                 $notifyInclusionsExclusionsVia.val(value);
 
-                if (value === 'READNOW') {
-                    $dialogue111.toggleClass('hidden', false);
-                    $dialogue112.toggleClass('hidden', true);
-                } else if (value === 'WELCOMEPACK') {
-                    $dialogue111.toggleClass('hidden', true);
-                    $dialogue112.toggleClass('hidden', false);
+                if (value.length > 0) {
+                    var isReadNow = value === 'READNOW';
+                    $dialogue111.toggleClass('hidden', !isReadNow);
+                    $dialogue112.toggleClass('hidden', isReadNow);
                 }
 
             })
