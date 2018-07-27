@@ -85,7 +85,7 @@
             })
             .trigger('change');
 
-        if ($elements.paymentMedicareColour.val().length > 0) {
+        if ($elements.paymentMedicareColour.is(":checked")) {
             $('input[name=health_payment_medicare_colour][value=' + $elements.paymentMedicareColour.val() + ']').attr('checked', 'checked').trigger('change');
         }
 
