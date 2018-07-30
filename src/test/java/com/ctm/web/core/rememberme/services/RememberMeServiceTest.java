@@ -68,6 +68,7 @@ public class RememberMeServiceTest {
 
     @Before
     public void setUp() throws Exception {
+        EnvironmentService.setEnvironment("NXI");
         initMocks(this);
         PowerMockito.mockStatic(ApplicationService.class);
         PowerMockito.mockStatic(SettingsService.class);
