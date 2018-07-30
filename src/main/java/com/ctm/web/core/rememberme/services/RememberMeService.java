@@ -88,10 +88,8 @@ public class RememberMeService {
     }
 
     private static void setCookieDomain(final Cookie cookie) {
-        switch (EnvironmentService.getEnvironment()) {
-            case PRO:
-                cookie.setDomain("secure.comparethemarket.com.au");
-                break;
+        if (EnvironmentService.getEnvironment() ==  EnvironmentService.Environment.PRO) {
+			cookie.setDomain("secure.comparethemarket.com.au");
         }
     }
 
@@ -104,12 +102,8 @@ public class RememberMeService {
      * except LOCALHOST and NXI
      */
     private static void setCookieSecure(final Cookie cookie) {
-        switch (EnvironmentService.getEnvironment()) {
-            case LOCALHOST:
-            case NXI:
-                break;
-            default:
-                cookie.setSecure(true);
+        if (EnvironmentService.getEnvironment() != EnvironmentService.Environment.LOCALHOST) {
+			cookie.setSecure(true);
         }
     }
 
@@ -418,6 +412,7 @@ public class RememberMeService {
             final Cookie cookie = new Cookie(cookieName, "");
             cookie.setMaxAge(0);
             cookie.setPath("/");
+			setCookieDomain(cookie);
             response.addCookie(cookie);
             return true;
         }
