@@ -238,7 +238,7 @@
 
                 $notifyInclusionsExclusionsVia.val(value);
 
-                if (value.length > 0) {
+                if (!_.isUndefined(value) && value.length > 0) {
                     var isReadNow = value === 'READNOW';
                     $dialogue111.toggleClass('hidden', !isReadNow);
                     $dialogue112.toggleClass('hidden', isReadNow);
