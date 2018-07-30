@@ -358,15 +358,7 @@
 				{{ } }}
 
 				{{ if(hospitalCover.restrictions.length > 0) { }}
-                <h5>Restrictions <span class="icon-tick restrictions-icon">&nbsp;</span><div class="inline-block"><field_v2:checkbox
-						xpath="health/simples/restrictions/verified"
-						value="Y"
-						required="true"
-						label=""
-						errorMsg="Please confirm all restrictions have been read to the client"
-						className="checkbox-custom simples_dialogue-checkbox-restrictions-verified"
-						title="Please confirm all restrictions have been read to the client" /></div>
-				</h5>
+                <h5>Restrictions <span class="icon-tick restrictions-icon">&nbsp;</span></h5>
 					<ul class="exclusions restrictions">
 						{{ _.each(hospitalCover.restrictions, function(restriction){ }}
 							<li class="simplesMoreInfoRestrictions"><span>{{= restriction.name }}</span></li>
@@ -385,15 +377,7 @@
 				{{ if(hospitalCover.exclusions.length > 0) { }}
 					<%-- has exclusions START --%>
 
-                <h5>Exclusions <span class="icon-cross text-danger">&nbsp;</span><div class="inline-block"><field_v2:checkbox
-						xpath="health/simples/exclusions/verified"
-						value="Y"
-						required="true"
-						label=""
-						errorMsg="Please confirm all exclusions have been read to the client"
-						className="checkbox-custom simples_dialogue-checkbox-exclusions-verified"
-						title="Please confirm all exclusions have been read to the client" /></div>
-				</h5>
+                <h5>Exclusions <span class="icon-cross text-danger">&nbsp;</span></h5>
 
 					{{ if((!_.isEmpty(info.situationFilter)) && info.situationFilter === 'Y') { }}
 						<%-- if limited hospital cover and has exclusions START --%>
