@@ -107,25 +107,28 @@
 
             event.preventDefault();
 
-            var $this = $(this);
-            $this.addClass('inactive').addClass('disabled');
-            meerkat.modules.loadingAnimation.showInside($this, true);
+            if ($('#resultsForm').valid()) {
 
-            if (typeof settings.onBeforeApply == 'function') {
-                settings.onBeforeApply($this);
-            }
+                var $this = $(this);
+                $this.addClass('inactive').addClass('disabled');
+                meerkat.modules.loadingAnimation.showInside($this, true);
 
-            // Set selected product
-            Results.setSelectedProduct($this.attr("data-productId"));
-            var product = Results.getSelectedProduct();
-
-            if (product) {
-                if (typeof settings.onClickApplyNow == 'function') {
-                    return settings.onClickApplyNow(product, applyCallback);
+                if (typeof settings.onBeforeApply == 'function') {
+                    settings.onBeforeApply($this);
                 }
-            } else {
-                applyCallback(false);
-                return false;
+
+                // Set selected product
+                Results.setSelectedProduct($this.attr("data-productId"));
+                var product = Results.getSelectedProduct();
+
+                if (product) {
+                    if (typeof settings.onClickApplyNow == 'function') {
+                        return settings.onClickApplyNow(product, applyCallback);
+                    }
+                } else {
+                    applyCallback(false);
+                    return false;
+                }
             }
 
         });

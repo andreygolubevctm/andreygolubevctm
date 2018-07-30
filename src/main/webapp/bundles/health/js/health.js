@@ -1528,7 +1528,7 @@
 
 		$('.simples-dialogue-26, .simples-dialogue-37, .simples-dialogue-76, .health_situation_medicare, .health_cover_details_incomeBasedOn').toggleClass('hidden', isWebChat);
 		$('#health_healthCover_health_cover_rebate_dontApplyRebate, .health_cover_details_rebate_chkbx').toggleClass('hidden', isWebChat);
-
+		$('.simples_dialogue-checkbox-restrictions-verified, .simples_dialogue-checkbox-exclusions-verified').toggleClass('hidden', isWebChat);
 	}
 
 	function webChatInProgress() {
