@@ -176,6 +176,7 @@ public class HealthApplicationController extends CommonQuoteRouter {
             request.setAttribute("applicationResponse", applyResponse);
             request.setAttribute("requestData", data);
             request.setAttribute("confirmationId", confirmationId);
+            request.setAttribute("providerQuoteId", response.getProductId());
 
             // Record Confirmation touch
             recordTouch(request, data, productId, Touch.TouchType.SOLD);

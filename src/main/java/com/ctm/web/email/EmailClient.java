@@ -18,8 +18,12 @@ import rx.schedulers.Schedulers;
 public class EmailClient {
     @Autowired
     private Client<EmailRequest,EmailResponse> client;
+    @Autowired
+    private Client<EmailEventRequest,EmailResponse> eventClient;
     @Value("${marketing.automation.url}")
     private String url;
+    @Value("${marketing.automation.eventUrl}")
+    private String eventUrl;
     @Value("${marketing.automation.timeout.millis}")
     private Long timeout;
 
@@ -32,5 +36,20 @@ public class EmailClient {
                 .url(url)
                 .timeout(timeout).retryAttempts(2).build()).observeOn(Schedulers.io()).toBlocking().first();
         LOGGER.info("Email response from marketing automation service" + emailResponse.getSuccess() + emailResponse.getMessage());
+    }
+
+    public EmailResponse send(EmailEventRequest emailEventRequest){
+        LOGGER.info("Sending email event request to marketing automation service" + eventUrl);
+        EmailResponse emailResponse = eventClient.post(RestSettings.<EmailEventRequest>builder()
+                .request(emailEventRequest)
+                .response(EmailResponse.class)
+                .responseType(MediaType.APPLICATION_JSON).header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .url(eventUrl)
+                .timeout(timeout)
+                .retryAttempts(2)
+                .build())
+                .observeOn(Schedulers.io()).toBlocking().first();
+        LOGGER.info("Email event response from marketing automation service: Success {}; Message: {}", emailResponse.getSuccess(), emailResponse.getMessage());
+        return emailResponse;
     }
 }

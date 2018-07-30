@@ -1,5 +1,6 @@
 package com.ctm.web.email;
 
+import com.ctm.interfaces.common.types.VerticalType;
 import com.ctm.web.core.model.settings.Brand;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
@@ -7,6 +8,9 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import javax.servlet.http.HttpServletRequest;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static org.mockito.Mockito.when;
 
@@ -41,32 +45,37 @@ public class MarketingAutomationEmailServiceTest {
 
     @Test
     public void givenValidVerticalCodeBrandTranId_whenValidateRequest_thenReturnTrue() {
-        testValidateRequest(CAR, getBrand(), TRANSACTION_ID, true);
+        testValidateRequest(CAR, getBrand().getCode(), TRANSACTION_ID, true, MarketingAutomationEmailService.VALID_EMAIL_VERTICAL_LIST);
     }
 
     @Test
     public void givenEmptyVerticalCode_whenValidateRequest_thenReturnFalse() {
-        testValidateRequest(StringUtils.EMPTY, getBrand(), TRANSACTION_ID,false);
+        testValidateRequest(StringUtils.EMPTY, getBrand().getCode(), TRANSACTION_ID,false, MarketingAutomationEmailService.VALID_EMAIL_VERTICAL_LIST);
     }
 
     @Test
     public void givenInvalidVerticalCode_whenValidateRequest_thenReturnFalse() {
-        testValidateRequest(TEST, getBrand(), TRANSACTION_ID, false);
+        testValidateRequest(TEST, getBrand().getCode(), TRANSACTION_ID, false, MarketingAutomationEmailService.VALID_EMAIL_VERTICAL_LIST);
     }
 
     @Test
     public void givenInvalidBrand_whenValidateRequest_thenReturnFalse() {
-        testValidateRequest(CAR, null, TRANSACTION_ID, false);
+        testValidateRequest(CAR, null, TRANSACTION_ID, false, MarketingAutomationEmailService.VALID_EMAIL_VERTICAL_LIST);
     }
 
     @Test
     public void givenInvalidTranId_whenValidateRequest_thenReturnFalse() {
-        testValidateRequest(CAR, getBrand(), null, false);
+        testValidateRequest(CAR, getBrand().getCode(), null, false, MarketingAutomationEmailService.VALID_EMAIL_VERTICAL_LIST);
     }
 
-    private static void testValidateRequest(final String verticalCode, final Brand brand, final Long transactionId, final boolean isValid) {
+    @Test
+    public void givenInvalidEmailEventVertical_whenValidateRequest_thenReturnFalse() {
+        testValidateRequest(CAR, getBrand().getCode(), TRANSACTION_ID, false, MarketingAutomationEmailService.VALID_EMAIL_EVENT_VERTICAL_LIST);
+    }
+
+    private static void testValidateRequest(final String verticalCode, final String brandCode, final Long transactionId, final boolean isValid, final List<VerticalType> validVerticalList) {
         //when
-        boolean isValidRequest = MarketingAutomationEmailService.isValidRequest(verticalCode, brand, transactionId);
+        boolean isValidRequest = MarketingAutomationEmailService.isValidRequest(verticalCode, brandCode, transactionId, validVerticalList);
         //then
         if (isValid) {
             Assert.assertTrue(isValidRequest);

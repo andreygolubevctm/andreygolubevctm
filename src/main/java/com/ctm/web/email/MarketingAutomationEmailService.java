@@ -23,6 +23,9 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.GeneralSecurityException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MarketingAutomationEmailService {
@@ -30,6 +33,8 @@ public class MarketingAutomationEmailService {
     private static final Logger LOGGER = LoggerFactory.getLogger(MarketingAutomationEmailService.class);
     private static final String NAME = "name";
     private static final String ADDRESS = "address";
+    public static List<VerticalType> VALID_EMAIL_VERTICAL_LIST = Arrays.asList(VerticalType.HEALTH, VerticalType.TRAVEL, VerticalType.CAR);
+    public static List<VerticalType> VALID_EMAIL_EVENT_VERTICAL_LIST = Arrays.asList(VerticalType.HEALTH);
 
     private final SessionDataService sessionDataService = new SessionDataService();
     @Autowired
@@ -46,18 +51,18 @@ public class MarketingAutomationEmailService {
     public void sendEmail(HttpServletRequest request) throws DaoException, ConfigSettingException, EmailDetailsException, SendEmailException, GeneralSecurityException {
         LOGGER.info("Request received");
 
-        final Brand brand = ApplicationService.getBrandFromRequest(request);
+        final Optional<Brand> brand = Optional.ofNullable(ApplicationService.getBrandFromRequest(request));
         final String verticalCode = ApplicationService.getVerticalCodeFromRequest(request);
         final Long transactionId = RequestUtils.getTransactionIdFromRequest(request);
-        if (!isValidRequest(verticalCode, brand, transactionId)) return;
+        if (!isValidRequest(verticalCode, brand.map(s->s.getCode()).orElse(null), transactionId, VALID_EMAIL_VERTICAL_LIST)) return;
 
-        LOGGER.info("Request received for brand: {}, vertical: {}, transaction: {}", brand.getCode(), verticalCode, transactionId);
+        LOGGER.info("Request received for brand: {}, vertical: {}, transaction: {}", brand.map(s->s.getCode()).orElse(null), verticalCode, transactionId);
 
         final SessionData sessionData = sessionDataService.getSessionDataFromSession(request);
         final Data data = sessionData.getSessionDataForTransactionId(transactionId);
         LOGGER.info("Session data: {}, for transaction: {}", data.toString(), transactionId);
 
-        EmailRequest emailRequest = getEmailRequest(request, brand, transactionId);
+        EmailRequest emailRequest = getEmailRequest(request, brand.get(), transactionId);
 
         EmailTranslator emailTranslator = getEmailTranslator(verticalCode);
         emailTranslator.setVerticalSpecificFields(emailRequest, request, data);
@@ -70,8 +75,17 @@ public class MarketingAutomationEmailService {
         }
     }
 
-    protected static boolean isValidRequest(final String verticalCode, final Brand brand, final Long transactionId) {
+    public EmailResponse sendEventEmail(EmailEventRequest emailEventRequest){
+        if (!isValidRequest(emailEventRequest.getVerticalCode(), emailEventRequest.getBrand(), Long.valueOf(emailEventRequest.getTransactionId()), VALID_EMAIL_EVENT_VERTICAL_LIST)) {
+           final EmailResponse response = new EmailResponse();
+           response.setSuccess(false);
+           response.setMessage("Invalid request. Vertical, Brand or transactionId is invalid or unsupported.");
+           return response;
+        }
+        return emailClient.send(emailEventRequest);
+    }
 
+    protected static boolean isValidRequest(final String verticalCode, final String brand, final Long transactionId, List<VerticalType> validVerticalList) {
         final VerticalType verticalType = getVerticalType(verticalCode);
 
         if (StringUtils.isBlank(verticalCode) || brand == null || transactionId == null) {
@@ -79,9 +93,7 @@ public class MarketingAutomationEmailService {
             return false;
         }
 
-        if (VerticalType.HEALTH != verticalType
-                && VerticalType.CAR != verticalType
-                && VerticalType.TRAVEL != verticalType) {
+        if (!validVerticalList.contains(verticalType)) {
             LOGGER.info("Unsupported vertical: {}. Not sending email request to marketing automation service.", verticalCode);
             return false;
         }
@@ -123,4 +135,7 @@ public class MarketingAutomationEmailService {
         }
         throw new RuntimeException("Vertical not supported");
     }
+
+
+
 }

@@ -9,6 +9,7 @@ import com.ctm.web.core.security.IPAddressHandler;
 import com.ctm.web.core.services.ApplicationService;
 import com.ctm.web.core.transaction.dao.TransactionDetailsDao;
 import com.ctm.web.core.web.go.Data;
+import com.ctm.web.email.MarketingAutomationEmailService;
 import com.ctm.web.health.email.services.HealthEmailService;
 import com.ctm.web.health.services.ProviderContentService;
 import com.ctm.web.life.dao.OccupationsDao;
@@ -33,13 +34,15 @@ public class EmailServiceFactoryTest {
     private GeneralDao generalDao;
     @Mock
     private ProviderContentService providerContentService;
+    @Mock
+    MarketingAutomationEmailService marketingAutomationEmailService;
 
     private EmailServiceFactory emailServiceFactory;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-		 emailServiceFactory = new EmailServiceFactory(occupationsDao, ipHandler,transactionDetailsDao,applicationService, generalDao, providerContentService);
+		 emailServiceFactory = new EmailServiceFactory(occupationsDao, ipHandler,transactionDetailsDao,applicationService, generalDao, providerContentService, marketingAutomationEmailService);
     }
 
     @Test
