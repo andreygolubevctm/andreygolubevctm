@@ -88,6 +88,7 @@ public class RememberMeService {
     }
 
     private static void setCookieDomain(final Cookie cookie) {
+		LOGGER.info("RememberMeService - setCookieDomain - Environment: " + EnvironmentService.getEnvironment().name());
         if (EnvironmentService.getEnvironment() ==  EnvironmentService.Environment.PRO) {
 			cookie.setDomain("secure.comparethemarket.com.au");
         }
@@ -102,6 +103,7 @@ public class RememberMeService {
      * except LOCALHOST and NXI
      */
     private static void setCookieSecure(final Cookie cookie) {
+    	LOGGER.info("RememberMeService - setCookieSecure - Environment: " + EnvironmentService.getEnvironment().name());
         if (EnvironmentService.getEnvironment() != EnvironmentService.Environment.LOCALHOST) {
 			cookie.setSecure(true);
         }
