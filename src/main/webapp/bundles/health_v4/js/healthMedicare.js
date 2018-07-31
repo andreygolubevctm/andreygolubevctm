@@ -3,15 +3,16 @@
     var meerkat = window.meerkat,
         $elements = {},
         _mustShowList = [
-            "GMHBA",
-            "Frank",
-            "Budget Direct",
-            "Bupa",
-            "HIF",
-            "QCHF",
-            "Navy Health",
-            "TUH",
-            "myOwn"
+            "gmhba",
+            "frank",
+            "budget direct",
+            "bupa",
+            "hif",
+            "qchf",
+            "navy health",
+            "tuh",
+            "myown",
+            "nib"
         ];
 
     function initHealthMedicare() {
@@ -69,7 +70,7 @@
 
     function _toggleSelectionNestedGroups() {
         var product = meerkat.modules.healthResults.getSelectedProduct(),
-            toggle = !meerkat.modules.healthRebate.isRebateApplied() && $.inArray(product.info.providerName, _mustShowList) === -1;
+            toggle = !meerkat.modules.healthRebate.isRebateApplied() && $.inArray(product.info.providerName.toLowerCase(), _mustShowList) === -1;
 
         $elements.selectionNestedGroups.toggleClass('hidden', toggle);
     }

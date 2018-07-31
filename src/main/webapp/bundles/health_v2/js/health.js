@@ -499,9 +499,9 @@
                     meerkat.modules.healthMedicare.updateMedicareLabel();
 
                     var product = meerkat.modules.healthResults.getSelectedProduct();
-                    var mustShowList = ["GMHBA", "Frank", "Budget Direct", "Bupa", "HIF", "QCHF", "Navy Health", "TUH"];
+                    var mustShowList = ["gmhba", "frank", "budget direct", "bupa", "hif", "qchf", "navy health", "tuh", "nib"];
 
-                    if (!meerkat.modules.healthCoverDetails.isRebateApplied() && $.inArray(product.info.providerName, mustShowList) == -1) {
+	                if (!meerkat.modules.healthCoverDetails.isRebateApplied() && $.inArray(product.info.providerName.toLowerCase(), mustShowList) == -1) {
                         $("#health_payment_medicare-selection > .nestedGroup").hide().attr("style", "display:none !important");
                     } else {
                         $("#health_payment_medicare-selection > .nestedGroup").removeAttr("style");

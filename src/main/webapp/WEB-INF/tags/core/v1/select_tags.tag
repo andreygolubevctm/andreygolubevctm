@@ -13,6 +13,8 @@
 <%@ attribute name="fieldType" required="false" rtexprvalue="true" description="Which field type to use. Default is select" %>
 <%@ attribute name="source" required="false" rtexprvalue="true" description="The URL for the Ajax call or a function that will handle the call (and potentially a callback) for autocomplete types only" %>
 <%@ attribute name="limit" required="false" rtexprvalue="true" description="A number representing the maximum number of items that may be selected. Defaults to 0 for unlimited" %>
+<%@ attribute name="additionalAttributes" 		required="false"	 rtexprvalue="true"	 description="Additional Attributes" %>
+
 <c:if test="${empty fieldType}">
 	<c:set var="fieldType" value="select" />
 </c:if>
@@ -33,7 +35,7 @@
 
 	<c:choose>
 		<c:when test="${fieldType eq 'autocomplete'}">
-			<field_v2:autocomplete xpath="${xpath}" className="blur-on-select show-loading select-tags" title="Postcode/Suburb" required="${required}" source="${source}" placeholder="${placeholder}" extraDataAttributes="data-varname='${variableListName}' data-transactionid='true'" />
+			<field_v2:autocomplete xpath="${xpath}" className="blur-on-select show-loading select-tags" title="Postcode/Suburb" required="${required}" source="${source}" placeholder="${placeholder}" additionalAttributes="${additionalAttributes}"  extraDataAttributes="data-varname='${variableListName}' data-transactionid='true'" />
 		</c:when>
 		<c:otherwise>
 			<field_v2:array_select items="" xpath="${xpath}" title="${title}" required="true" className="select-tags" extraDataAttributes="data-varname='${variableListName}'" />
