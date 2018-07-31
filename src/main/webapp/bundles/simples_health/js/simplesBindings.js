@@ -231,21 +231,6 @@
         $healthInternationalStudentField.on('change', function(){
             _toggleInternationalStudentFieldMsg();
         });
-
-        $moreInfoDialogueRadio
-            .on('change', function() {
-                var value = $moreInfoDialogueRadio.filter(':checked').val();
-
-                $notifyInclusionsExclusionsVia.val(value);
-
-                if (!_.isUndefined(value) && value.length > 0) {
-                    var isReadNow = value === 'READNOW';
-                    $dialogue111.toggleClass('hidden', !isReadNow);
-                    $dialogue112.toggleClass('hidden', isReadNow);
-                }
-
-            })
-            .trigger('change');
     }
 
     function openBridgingPage(e) {
