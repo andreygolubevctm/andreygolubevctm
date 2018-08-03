@@ -124,6 +124,29 @@
   h5 {
     margin-top: 20px;
     margin-bottom: 20px;
+
+    div.inline-block {
+      display: inline-block;
+
+      .checkbox-custom {
+        display: inline-block;
+        vertical-align: middle;
+        height: 25px;
+
+        .error-field {
+          display: inline-block;
+          word-wrap: normal;
+          width: auto;
+          font-size: 0.9em;
+          line-height: 0px;
+        }
+
+        div.error-field + input.has-success + label:before,
+        input.has-error + label:before {
+          margin-top: -30px;
+        }
+      }
+    }
   }
   p, ol, blockquote {
     font-size: 16px;
