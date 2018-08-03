@@ -25,6 +25,7 @@ import com.ctm.web.core.services.SessionDataService;
 import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.core.transaction.dao.TransactionDetailsDao;
 import com.ctm.web.core.web.go.Data;
+import com.ctm.web.email.MarketingAutomationEmailService;
 import com.ctm.web.health.email.mapping.HealthEmailDetailMappings;
 import com.ctm.web.health.email.services.HealthEmailService;
 import com.ctm.web.health.services.ProviderContentService;
@@ -45,6 +46,7 @@ public class EmailServiceFactory {
     private final ApplicationService applicationService;
 	private final GeneralDao generalDao;
 	private final ProviderContentService providerContentService;
+	private final MarketingAutomationEmailService marketingAutomationEmailService;
 
     @Autowired
 	EmailServiceFactory(OccupationsDao occupationsDao,
@@ -52,13 +54,15 @@ public class EmailServiceFactory {
                         TransactionDetailsDao transactionDetailsDao,
                         ApplicationService applicationService,
 						GeneralDao generalDao,
-						ProviderContentService providerContentService) {
+						ProviderContentService providerContentService,
+						MarketingAutomationEmailService marketingAutomationEmailService) {
 		this.occupationsDao = occupationsDao;
         this.ipAddressHandler = ipAddressHandler;
         this.transactionDetailsDao = transactionDetailsDao;
         this.applicationService = applicationService;
 		this.generalDao = generalDao;
 		this.providerContentService = providerContentService;
+		this.marketingAutomationEmailService = marketingAutomationEmailService;
 	}
 
 
@@ -103,7 +107,7 @@ public class EmailServiceFactory {
 		AccessTouchService accessTouchService = new AccessTouchService(dao , sessionDataService);
 		return new HealthEmailService(pageSettings, mode , emailDetailsService, contentDao, urlService ,
 				accessTouchService, urlServiceOld, sessionDataService, IPAddressHandler.getInstance(),
-				generalDao, providerContentService);
+				generalDao, providerContentService, marketingAutomationEmailService);
 	}
 
 	public static EmailServiceHandler getTravelEmailService(
@@ -150,7 +154,7 @@ public class EmailServiceFactory {
 		return urlService;
 	}
 
-	private static EmailUrlServiceOld createEmailUrlServiceOld(
+	public static EmailUrlServiceOld createEmailUrlServiceOld(
 			PageSettings pageSettings, VerticalType vertical)
 			throws SendEmailException {
 		EmailUrlServiceOld urlService;
