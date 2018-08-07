@@ -247,7 +247,7 @@
 
 					<div class="row formInput">
 						<div class="col-sm-7 col-xs-12">
-							<field_v2:email xpath="emailAddress"  required="true"
+							<field_v2:email xpath="emailAddress"  required="false"
 											className="sendBrochureEmailAddress"
 											placeHolder="${emailPlaceHolder}" />
 						</div>
