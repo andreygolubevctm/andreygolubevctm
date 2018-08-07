@@ -95,6 +95,17 @@
             });
         });
 
+        $(document.body).on("mouseenter focusin", ".btn-email-brochure", function emailBtnClick(event) {
+            $("#emailAddress").toggleClass("email", true).attr('aria-required', true).attr("required", "required");
+            $("#health_simples_restrictions_verified, #health_simples_exclusions_verified").removeAttr('aria-required').removeAttr("required");
+
+        });
+
+        $(document.body).on("mouseenter focusin", ".btn-more-info-apply", function applyBtnClick(event) {
+            $("#emailAddress").toggleClass("email", false).removeAttr('aria-required').removeAttr("required");
+            $("#health_simples_restrictions_verified, #health_simples_exclusions_verified").attr('aria-required', true).attr("required", "required");
+        });
+
     }
 
     function onApplySuccess() {
@@ -172,6 +183,9 @@
         }
 
         meerkat.modules.simplesBindings.toggleMoreInfoDialogue();
+
+        var showReadNowChecks =  (($('#health_simples_notifyInclusionsExclusionsVia').val() === 'READNOW' ? true : false ) && !meerkat.modules.simplesBindings.webChatInProgress() );
+        $('.simples_dialogue-checkbox-restrictions-verified, .simples_dialogue-checkbox-exclusions-verified').toggleClass('hidden', !showReadNowChecks);
     }
 
     function onAfterShowTemplate() {
