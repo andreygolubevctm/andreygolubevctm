@@ -10,24 +10,24 @@ import static com.ctm.web.health.lhc.calculation.Constants.MAX_LHC_PERCENTAGE;
  */
 public class NeverHeldCoverCalculator implements LHCCalculationStrategy {
 
-    private final long lhcAge;
+    private final long ageAtStartOfFinYear;
 
     /**
      * Constructs an instance of {@link NeverHeldCoverCalculator} with the specified date of birth and calculation date.
      * <p>
-     * NB: the applicant's LHC age is calculated from the date of birth on the most recent 1st JULY to {@code when}.
+     * NB: The applicant's LHC age is calculated from their age at the start of the financial year.
      *
      * @param dateOfBirth applicants date of birth.
      * @param when        when the LHC Calculation is being performed.
      * @see LHCDateCalculationSupport#getFinancialYearStart(LocalDate)
      */
     public NeverHeldCoverCalculator(LocalDate dateOfBirth, LocalDate when) {
-        this.lhcAge = LHCDateCalculationSupport.calculateAgeInYearsFrom(dateOfBirth, LHCDateCalculationSupport.getFinancialYearStart(when));
+        this.ageAtStartOfFinYear = LHCDateCalculationSupport.calculateAgeInYearsFrom(dateOfBirth, LHCDateCalculationSupport.getFinancialYearStart(when));
     }
 
     @Override
     public long calculateLHCPercentage() {
-        long lhcPercentage = Math.max(0, (lhcAge - Constants.LHC_REQUIREMENT_AGE) * 2);
+        long lhcPercentage = Math.max(0, (ageAtStartOfFinYear - Constants.LHC_REQUIREMENT_AGE) * 2);
         return Math.min(lhcPercentage, MAX_LHC_PERCENTAGE);
     }
 }

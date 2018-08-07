@@ -23,13 +23,13 @@ public class NeverHeldCoverTest {
      */
     @Test
     public void givenNeverHadCover_thenCalculateLHC() {
-        LocalDate thirtySeventhBirthday = LocalDate.of(1981, 6, 22);
-        LHCBaseDateDetails baseDateDetails = LHCBaseDateDetails.createFrom(thirtySeventhBirthday);
+        LocalDate bday = LocalDate.of(1981, 6, 22);
+        LHCBaseDateDetails baseDateDetails = LHCBaseDateDetails.createFrom(bday);
         LHCCalculationDetails testCalcDetails = new LHCCalculationDetails()
                 .lhcDaysApplicable(baseDateDetails.getLhcDaysApplicable())
                 .baseDate(baseDateDetails.getBaseDate())
                 .age(baseDateDetails.getAge())
-                .dateOfBirth(thirtySeventhBirthday)
+                .dateOfBirth(bday)
                 .isContinuousCover(false)
                 .isNeverHadCover(true);
 

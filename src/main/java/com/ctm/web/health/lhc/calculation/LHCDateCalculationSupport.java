@@ -123,7 +123,7 @@ public class LHCDateCalculationSupport {
      * On the specified {@code onDay}, if a person born on {@code dateOfBirth}, calculate the number of days between
      * those two dates that occur between the calculated base date and {@code onDay}.
      * <p>
-     * Unless the date of birth is before 01/07/1934, or the person is aged less than 31, in which case the days
+     * Unless the date of birth is on or before 01/07/1934, or the person is aged less than 31, in which case the days
      * applicable is ZERO.
      *
      * @param dateOfBirth the date of birth
@@ -132,8 +132,11 @@ public class LHCDateCalculationSupport {
      * @see #getBaseDate(LocalDate)
      */
     public static long getLhcDaysApplicable(LocalDate dateOfBirth, LocalDate onDay) {
-        if (calculateAgeInYearsFrom(dateOfBirth, onDay) < Constants.LHC_EXEMPT_AGE_CUT_OFF
-                || dateOfBirth.isBefore(Constants.LHC_BIRTHDAY_APPLICABILITY_DATE)) {
+        boolean agedLessThan31 = calculateAgeInYearsFrom(dateOfBirth, onDay) < Constants.LHC_EXEMPT_AGE_CUT_OFF;
+        boolean bornOnOrBefore1934 = dateOfBirth.isBefore(Constants.LHC_BIRTHDAY_APPLICABILITY_DATE) ||
+                dateOfBirth.isEqual(Constants.LHC_BIRTHDAY_APPLICABILITY_DATE);
+
+        if (agedLessThan31 || bornOnOrBefore1934) {
             return 0;
         }
         LocalDate baseDate = getBaseDate(dateOfBirth);
@@ -293,7 +296,6 @@ public class LHCDateCalculationSupport {
                     break;
                 } else {
                     List<LocalDate> localDates = potentialLHCResetDates.subList(potentialLHCResetDates.indexOf(last), potentialLHCResetDates.size() - 1);
-//                    List<CoverDateRange> coverDateRanges = Collections.singletonList(new CoverDateRange(earliestDate, last));
                     if (hasYearsContiguousCover(Constants.CONTIGUOUS_YEARS_COVER_LHC_RESET_THRESHOLD, last, new TreeSet<>(localDates))) {
                         resetDate = Optional.of(last.plusDays(1));
                         break;

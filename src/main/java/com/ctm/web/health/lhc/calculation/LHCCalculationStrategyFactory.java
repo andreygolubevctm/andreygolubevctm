@@ -20,7 +20,11 @@ public class LHCCalculationStrategyFactory {
     public static LHCCalculationStrategy getInstance(LHCCalculationDetails details, LocalDate now) {
         LHCCalculationDetails lhcCalculationDetails = reapplyBaseDateCalculations(details);
 
-        if (lhcCalculationDetails.getContinuousCover() || LHCDateCalculationSupport.calculateAgeInYearsFrom(lhcCalculationDetails.getDateOfBirth(), now) < Constants.LHC_EXEMPT_AGE_CUT_OFF || lhcCalculationDetails.getDateOfBirth().isBefore(Constants.LHC_BIRTHDAY_APPLICABILITY_DATE)) {
+        boolean agedLessThan31 = LHCDateCalculationSupport.calculateAgeInYearsFrom(lhcCalculationDetails.getDateOfBirth(), now) < Constants.LHC_EXEMPT_AGE_CUT_OFF;
+        boolean bornOnOrBefore1934 = lhcCalculationDetails.getDateOfBirth().isBefore(Constants.LHC_BIRTHDAY_APPLICABILITY_DATE) ||
+                lhcCalculationDetails.getDateOfBirth().isEqual(Constants.LHC_BIRTHDAY_APPLICABILITY_DATE);
+
+        if (lhcCalculationDetails.getContinuousCover() || agedLessThan31 || bornOnOrBefore1934) {
             return new MinimumLHCCalculationStrategy();
         } else if (details.getNeverHadCover() || lhcCalculationDetails.getCoverDates().isEmpty()) {
             return new NeverHeldCoverCalculator(lhcCalculationDetails.getDateOfBirth(), now);

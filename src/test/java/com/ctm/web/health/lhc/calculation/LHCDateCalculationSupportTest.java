@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Set;
 
 import static com.ctm.web.health.lhc.calculation.Constants.JULY_FIRST_2000;
+import static com.ctm.web.health.lhc.calculation.Constants.MIN_LHC_PERCENTAGE;
 import static com.ctm.web.health.lhc.calculation.TestScenarioConstants.*;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertEquals;
@@ -108,13 +109,21 @@ public class LHCDateCalculationSupportTest {
 
         LocalDate beforeLHCApplicabilityDate = Constants.LHC_BIRTHDAY_APPLICABILITY_DATE.minusDays(1);
         long lhcDaysApplicable = LHCDateCalculationSupport.getLhcDaysApplicable(beforeLHCApplicabilityDate, TEST_DATE);
-        assertEquals(0, lhcDaysApplicable);
+        assertEquals(MIN_LHC_PERCENTAGE, lhcDaysApplicable);
     }
 
     @Test
     public void givenBirthday_whenBornOnJulyFirst1934_thenReturnZeroLHCApplicableDays() {
 
         LocalDate beforeLHCApplicabilityDate = Constants.LHC_BIRTHDAY_APPLICABILITY_DATE;
+        long lhcDaysApplicable = LHCDateCalculationSupport.getLhcDaysApplicable(beforeLHCApplicabilityDate, TEST_DATE);
+        assertEquals(MIN_LHC_PERCENTAGE, lhcDaysApplicable);
+    }
+
+    @Test
+    public void givenBirthday_whenBornAfterJulyFirst1934_thenReturnZeroLHCApplicableDays() {
+
+        LocalDate beforeLHCApplicabilityDate = Constants.LHC_BIRTHDAY_APPLICABILITY_DATE.plusDays(1);
         long lhcDaysApplicable = LHCDateCalculationSupport.getLhcDaysApplicable(beforeLHCApplicabilityDate, TEST_DATE);
         assertEquals(MAX_LHC_APPLICABLE_DAYS, lhcDaysApplicable);
     }
