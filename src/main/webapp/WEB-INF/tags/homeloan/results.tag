@@ -320,7 +320,7 @@
 	{{ if (obj.lender === 'National Australia Bank') img = 'NAB'; }}
 	{{ if (obj.lender === 'Newcastle Permanent') img = 'NP'; }}
 	{{ if (obj.lender === 'P&N Bank') img = 'PN'; }}
-	{{ if (obj.lender === 'Pepper Homeloans') img = 'PEPPER'; }}
+	{{ if (obj.lender === 'Pepper Money') img = 'PEPPER'; }}
 	{{ if (obj.lender === 'QBANK') img = 'QBANK'; }}
 	{{ if (obj.lender === 'QPCU') img = 'QPCU'; }}
 	{{ if (obj.lender === 'St George Bank') img = 'GEORGE'; }}
