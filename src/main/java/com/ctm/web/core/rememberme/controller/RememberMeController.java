@@ -72,7 +72,11 @@ public class RememberMeController {
     public boolean deleteCookie(@RequestParam(QUOTE_TYPE) final String vertical,
                                 final HttpServletRequest request,
                                 final HttpServletResponse response) throws IOException, GeneralSecurityException {
-
-        return rememberMeService.deleteCookie(vertical, response) && rememberMeService.removeAttemptsSessionAttribute(request, vertical);
+        LOGGER.info("RememberMe request deleteCookie");
+        Boolean cookieDeleted = rememberMeService.deleteCookie(vertical, response);
+        LOGGER.info("RememberMe cookie deleted? {}", cookieDeleted);
+        Boolean removeAttemptsSessionAttributeDeleted = cookieDeleted ? rememberMeService.removeAttemptsSessionAttribute(request, vertical) : false;
+        LOGGER.info("removeAttemptsSessionAttribute? {}", removeAttemptsSessionAttributeDeleted);
+        return cookieDeleted && removeAttemptsSessionAttributeDeleted;
     }
 }

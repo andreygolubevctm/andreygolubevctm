@@ -21,8 +21,6 @@
         $healthInternationalStudentField,
         $healthInternationalStudentMsg1,
         $healthInternationalStudentMsg2,
-        $aboutYouFieldset,
-        $yourDetailsFieldset,
 	    $followupCallCheckboxDialogue,
 	    $followupCallCheckbox,
 	    $referralCallCheckboxDialogue,
@@ -44,6 +42,10 @@
         currentFamilyType = null,
         $limitedCoverHidden,
         $moreInfoDialogue,
+        $moreInfoDialogueRadio,
+        $notifyInclusionsExclusionsVia,
+        $dialogue111,
+        $dialogue112,
         $dialogue21,
         $dialogue26,
         $dialogue36,
@@ -53,7 +55,8 @@
         $nzMedicareRulesCopy,
         $pricePromisePromotionDialogue,
         $affiliatesDialogue,
-        $dialogue106;
+        $dialogue106,
+        $dialogue109;
 
     function init() {
         $(document).ready(function () {
@@ -78,8 +81,6 @@
             $healthInternationalStudentField = $('input[name=health_situation_internationalstudent]');
             $healthInternationalStudentMsg1 = $('.healthInternationalStudentMsg1');
             $healthInternationalStudentMsg2 = $('.healthInternationalStudentMsg2');
-            $aboutYouFieldset = $('#healthAboutYou > .content');
-            $yourDetailsFieldset = $('#health-contact-fieldset .content');
             $followupCallCheckboxDialogue = $('.simples-dialogue-68');
             $followupCallCheckbox = $('#health_simples_dialogue-checkbox-68');
 	        $referralCallCheckboxDialogue = $('.simples-dialogue-93');
@@ -106,12 +107,17 @@
             $dialogue36 = $('.simples-dialogue-36');
             $dialogue37 = $('.simples-dialogue-37');
             $moreInfoDialogue = $('.simples-dialogue-76');
-            $nzMedicareRules = $('#healthAboutYou .nz-medicare-rules');
+            $moreInfoDialogueRadio = $('input[name=health_simples_dialogue-radio-76]');
+            $notifyInclusionsExclusionsVia = $('#health_simples_notifyInclusionsExclusionsVia');
+            $nzMedicareRules = $('#health_situation_cover_wrapper .nz-medicare-rules');
             $nzMedicareRulesToggle = $nzMedicareRules.find('a:first');
             $nzMedicareRulesCopy = $nzMedicareRules.find('.copy:first');
             $pricePromisePromotionDialogue = $('.simples-dialogue-101');
             $affiliatesDialogue = $('.simples-dialogue-105');
             $dialogue106 = $('.simples-dialogue-106');
+            $dialogue109 = $('.simples-dialogue-109');
+            $dialogue111 = $('.simples-dialogue-111');
+            $dialogue112 = $('.simples-dialogue-112');
 
             // Handle pre-filled
             populatePrevAssignedRadioBtnGroupValue();
@@ -150,24 +156,6 @@
         toggleWebChatDialog();
     }
 
-    function _moveSituationMedicareField() {
-        // check if the field is still on the About you fieldset on  step 1
-        if ($aboutYouFieldset.find($healthSituationMedicare).length === 1) {
-            $healthSituationMedicare.appendTo($yourDetailsFieldset);
-            $healthInternationalStudent.appendTo($yourDetailsFieldset);
-        }
-    }
-
-    function _resetSituationMedicareField() {
-        // check if the field is still on the About you fieldset on  step 1
-        if ($aboutYouFieldset.find($healthSituationMedicare).length === 0) {
-            $healthSituationMedicare.appendTo($aboutYouFieldset);
-            $healthInternationalStudent.appendTo($aboutYouFieldset);
-
-            _toggleInternationalStudentField();
-        }
-    }
-
     function _toggleInternationalStudentField() {
         var medicareCoverVal = $healthSituationMedicareField.is(':checked') ? $healthSituationMedicareField.filter(':checked').val() : null;
         $healthInternationalStudent.toggleClass('hidden', medicareCoverVal !== 'N');
@@ -177,24 +165,6 @@
         var internationalStudentVal = $healthInternationalStudentField.is(':checked') ? $healthInternationalStudentField.filter(':checked').val() : null;
         $healthInternationalStudentMsg1.toggleClass('hidden', internationalStudentVal !== 'Y');
         $healthInternationalStudentMsg2.toggleClass('hidden', internationalStudentVal !== 'N');
-    }
-
-    /**
-     * Move the medicare fields to sit under partner fieldset if family/couple otherwise
-     * the default is under primary fieldset
-     */
-    function updateSimplesMedicareCoverQuestionPosition() {
-        if(getCallType() === 'outbound') {
-            var familyType = meerkat.modules.health.getSituation();
-            if (!_.isEmpty(familyType) && (_.isNull(currentFamilyType) || familyType !== currentFamilyType)) {
-                var $tempMedicareForm = $simplesMedicareCoverForm.detach();
-                var $tempInternatStudentForm = $simplesinternationalStudentForm.detach();
-                var $wrapperToUse = $applicantWrappers[_.indexOf(['F', 'C', 'EF'], familyType) > -1 ? 'partner' : 'primary'];
-                $wrapperToUse.append($tempMedicareForm);
-                $wrapperToUse.append($tempInternatStudentForm);
-                currentFamilyType = familyType;
-            }
-        }
     }
 
     // Check dynamic checkboxes on preload=true
@@ -261,6 +231,21 @@
         $healthInternationalStudentField.on('change', function(){
             _toggleInternationalStudentFieldMsg();
         });
+
+        $moreInfoDialogueRadio
+            .on('change', function() {
+                var value = $moreInfoDialogueRadio.filter(':checked').val();
+
+                $notifyInclusionsExclusionsVia.val(value);
+
+                if (!_.isUndefined(value) && value.length > 0) {
+                    var isReadNow = value === 'READNOW';
+                    $dialogue111.toggleClass('hidden', !isReadNow);
+                    $dialogue112.toggleClass('hidden', isReadNow);
+                }
+
+            })
+            .trigger('change');
     }
 
     function openBridgingPage(e) {
@@ -272,6 +257,12 @@
                 i++;
             }
         });
+
+        if ($('#resultsForm .simples-dialogue-76').not('.hidden').length === 1) {
+            if (_.isUndefined($moreInfoDialogueRadio.filter(':checked').val())) {
+                i++;
+            }
+        }
 
         needsValidation = i !== 0;
 
@@ -310,22 +301,23 @@
             $healthContactTypeTrial.val('');
 
             $body
-                .removeClass('outbound')
+                .removeClass('outbound trial')
                 .addClass('inbound');
-
-            _resetSituationMedicareField();
         }
         // Outbound
         else {
             $body
-                .removeClass('inbound')
+                .removeClass('inbound trial')
                 .addClass('outbound');
 
             var contatTypeTrialRegex = new RegExp('trial','i');
+            var isTrialContactType = contatTypeTrialRegex.test(healthContactTypeSelection);
 
-            if ((healthContactTypeSelection === 'outbound') || (contatTypeTrialRegex.test(healthContactTypeSelection))) {
-                _moveSituationMedicareField();
+            if (isTrialContactType) {
+                $body.addClass('trial');
+            }
 
+            if ((healthContactTypeSelection === 'outbound') || isTrialContactType) {
                 //contact type is set to outbound when Outbound or a trial is selected
                 $healthContactType.val('outbound');
 
@@ -480,12 +472,15 @@
         $dialogue26.toggleClass('hidden', isWebChat);
         $dialogue37.toggleClass('hidden', isWebChat);
         $moreInfoDialogue.toggleClass('hidden', isWebChat);
+        $dialogue109.toggleClass('hidden', isWebChat);
         $healthSituationMedicare.toggleClass('hidden', isWebChat);
         $healthCvrDtlsIncomeBasedOn.toggleClass('hidden', isWebChat);
 
         if (isWebChat) {
             $referralCallCheckboxDialogue.toggle(!isWebChat);
         }
+
+		meerkat.modules.simplesWebChat.setup(isWebChat);
     }
 
     function toggleAfricaCompDialog() {
@@ -559,7 +554,7 @@
         if (webChatInProgress()) {
             $moreInfoDialogue.toggleClass('hidden', true);
         } else {
-             $moreInfoDialogue.toggleClass('hidden', $healthSitCoverType.find('input:checked').val().toLowerCase() === "e");
+            toggleResultsMandatoryDialogue();
         }
     }
 
@@ -588,16 +583,25 @@
                 _.has(selectedProduct.hospital, 'ClassificationHospital') && selectedProduct.hospital.ClassificationHospital === 'Public');
     }
 
+    function toggleResultsMandatoryDialogue() {
+        // needs to be deferred, when retrieving limited cover quote
+        _.defer(function() {
+            $moreInfoDialogue.toggleClass('hidden', $limitedCoverHidden.val() === 'Y');
+            $dialogue109.toggleClass('hidden', $limitedCoverHidden.val() === 'N');
+        });
+    }
+
     meerkat.modules.register("simplesBindings", {
         init: init,
-        updateSimplesMedicareCoverQuestionPosition: updateSimplesMedicareCoverQuestionPosition,
         toggleLimitedCoverDialogue: toggleLimitedCoverDialogue,
         toggleRebateDialogue: toggleRebateDialogue,
         toggleMoreInfoDialogue: toggleMoreInfoDialogue,
         toggleAffiliateRewardsDialogue: toggleAffiliateRewardsDialogue,
         getCallType: getCallType,
         togglePricePromisePromoDialogue: togglePricePromisePromoDialogue,
-        toggleBenefitsDialogue: toggleBenefitsDialogue
+        toggleBenefitsDialogue: toggleBenefitsDialogue,
+        toggleResultsMandatoryDialogue: toggleResultsMandatoryDialogue,
+		webChatInProgress: webChatInProgress
     });
 
 })(jQuery);

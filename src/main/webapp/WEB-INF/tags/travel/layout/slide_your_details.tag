@@ -57,7 +57,7 @@
 				</form_v2:fieldset>
 
 				<%-- COUNTRY SECTION --%>
-				<form_v2:fieldset showHelpText="true" legend="Where are you going?"
+				<form_v2:fieldset showHelpText="true" legend="What countries are you going to?"
 													className="travel_details_destinations" id="destinationsfs">
 
 						<jsp:useBean id="locationsService" class="com.ctm.web.travel.services.TravelIsoLocationsService"
@@ -72,6 +72,7 @@
 										xpath="travel/destinations"
 										xpathhidden="travel/destination"
 										label="Your selected Countries"
+                                        additionalAttributes="autocomplete='no'"
 										title="Where are you travelling?"
 										validationErrorPlacementSelector=".travel_details_destinations"
 										helpId="213"

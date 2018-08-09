@@ -490,6 +490,9 @@
 
                     this.tracking.touchComment =  selectedProduct.info.provider + ' ' + selectedProduct.info.des;
                     this.tracking.productId = selectedProduct.productId.replace("PHIO-HEALTH-", "");
+	                this.tracking.customFields = [
+	                    {name:"phone",value:meerkat.modules.healthContactNumber.getPhone()}
+                    ];
 
                     // Load the selected product details.
                     meerkat.modules.healthFunds.load(selectedProduct.info.provider);

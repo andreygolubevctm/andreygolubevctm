@@ -39,6 +39,7 @@ import static com.ctm.web.core.model.settings.Vertical.VerticalType.CAR;
 public class CarQuoteController extends CommonQuoteRouter<CarRequest> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CarQuoteController.class);
+    public static final int NUM_RESULTS = 10;
     @Autowired
     private CarQuoteService carService;
     @Autowired
@@ -102,7 +103,7 @@ public class CarQuoteController extends CommonQuoteRouter<CarRequest> {
     )
     public Response storePropensityScore(HttpServletRequest request, @RequestParam(value = "transactionId") final Long transactionId){
         try {
-            this.carService.retrieveAndStoreCarQuotePropensityScore(emailUtils.buildParameterList(request, RANK_PRODUCT_ID), transactionId);
+            this.carService.retrieveAndStoreCarQuotePropensityScore(emailUtils.buildParameterList(request, RANK_PRODUCT_ID, NUM_RESULTS), transactionId);
         }catch (IllegalArgumentException e){
             return new Response(HttpStatus.CONFLICT, "Propensity score already exists for transaction, and product");
         } catch (Exception e){

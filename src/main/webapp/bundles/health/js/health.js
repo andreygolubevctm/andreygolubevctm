@@ -354,8 +354,6 @@
 			},
 			onBeforeEnter:function enterBenefitsStep(event) {
 				if (event.isForward) {
-					if(meerkat.site.isCallCentreUser) meerkat.modules.simplesBindings.updateSimplesMedicareCoverQuestionPosition();
-
 					// Delay 1 sec to make sure we have the data bucket saved in to DB, then filter coupon
 					_.delay(function() {
 						// coupon logic, filter for user, then render banner
@@ -433,6 +431,8 @@
 				}
 
                 meerkat.modules.paymentGateway.disable();
+
+                meerkat.modules.simplesBindings.toggleResultsMandatoryDialogue();
 			},
 			onAfterEnter: function(event){
 
@@ -577,9 +577,9 @@
 					meerkat.modules.healthMedicare.updateMedicareLabel();
 
 					var product = meerkat.modules.healthResults.getSelectedProduct();
-					var mustShowList = ["GMHBA","Frank","Budget Direct","Bupa","HIF","QCHF","Navy Health","HBF","TUH","myOwn"];
+					var mustShowList = ["gmhba","frank","budget direct","bupa","hif","qchf","navy health","tuh","myown","nib"];
 
-					if( !meerkat.modules.healthCoverDetails.isRebateApplied() && $.inArray(product.info.providerName, mustShowList) == -1) {
+					if( !meerkat.modules.healthCoverDetails.isRebateApplied() && $.inArray(product.info.providerName.toLowerCase(), mustShowList) == -1) {
 						$("#health_payment_medicare-selection").hide().attr("style", "display:none !important");
 					} else {
 						$("#health_payment_medicare-selection").removeAttr("style");
@@ -1528,7 +1528,7 @@
 
 		$('.simples-dialogue-26, .simples-dialogue-37, .simples-dialogue-76, .health_situation_medicare, .health_cover_details_incomeBasedOn').toggleClass('hidden', isWebChat);
 		$('#health_healthCover_health_cover_rebate_dontApplyRebate, .health_cover_details_rebate_chkbx').toggleClass('hidden', isWebChat);
-
+		$('.simples_dialogue-checkbox-restrictions-verified, .simples_dialogue-checkbox-exclusions-verified').toggleClass('hidden', isWebChat);
 	}
 
 	function webChatInProgress() {

@@ -112,7 +112,7 @@ var healthFunds_NIB = {
                  calendar on the application step, due to the cover start date being moved to the application step. --%>
             <%--healthFunds_NIB.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '0,6');--%>
         } else {
-            meerkat.modules.healthFunds.setPayments({ 'min':0, 'max':27, 'weekends':true , 'countFrom' : 'today', 'maxDay' : 27});
+            meerkat.modules.healthFunds.setPayments({ 'min':0, 'max':27, 'weekends':true , 'countFrom' : 'effectiveDate', 'maxDay' : 27});
             <%-- Redundant code, due to the fact that rules are getting triggered on the payment step for cover start date
                  calendar on the application step, due to the cover start date being moved to the application step. --%>
             <%--healthFunds_NIB.$paymentStartDate.datepicker('setDaysOfWeekDisabled', '');--%>

@@ -5,7 +5,8 @@
     var meerkat = window.meerkat,
         meerkatEvents = meerkat.modules.events,
         $elements = {},
-        $unitElements;
+        $unitElements,
+        _postalNonStdStreetRegexRule;
 
     function init(){
         $(document).ready(function () {
@@ -37,6 +38,8 @@
                 appPostalUnitType: $('#health_application_postal_unitType'),
                 appPostalNonStdStreet: $('#health_application_postal_nonStdStreet')
             };
+
+            _postalNonStdStreetRegexRule = $unitElements.appPostalNonStdStreet.attr('data-rule-regex');
         });
     }
 
@@ -138,6 +141,10 @@
             })
             .trigger('change');
 
+        if ($elements.paymentMedicareColour.is(":checked")) {
+            $('input[name=health_payment_medicare_colour][value=' + $elements.paymentMedicareColour.val() + ']').attr('checked', 'checked').trigger('change');
+        }
+
         $(document.body).on('change', '.selectContainerTitle select', function onTitleChange() {
             var applicant = $(this).closest('.qe-window').find('.health-person-details').hasClass('primary') ? 'primary' : 'partner';
 
@@ -154,6 +161,7 @@
 
         $unitElements.appPostalUnitType.on('change', function toggleUnitRequiredFields() {
             _changeStreetNoLabel(this.value);
+            _toggleRegexValidation(this.value);
         });
 
         $unitElements.appAddressUnitShop.add($unitElements.appPostalUnitShop).on('change', function toggleUnitShopRequiredFields() {
@@ -472,6 +480,15 @@
 
         if ($errorField.length > 0) {
             $errorField.text(msgRequired);
+        }
+    }
+
+    function _toggleRegexValidation(unitType) {
+        if (unitType === 'PO') {
+            $unitElements.appPostalNonStdStreet.removeRule('regex');
+            $unitElements.appPostalNonStdStreet.blur();
+        } else {
+            $unitElements.appPostalNonStdStreet.addRule('regex', _postalNonStdStreetRegexRule);
         }
     }
 
