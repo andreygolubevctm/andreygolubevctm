@@ -42,6 +42,10 @@
         currentFamilyType = null,
         $limitedCoverHidden,
         $moreInfoDialogue,
+        $moreInfoDialogueRadio,
+        $notifyInclusionsExclusionsVia,
+        $dialogue111,
+        $dialogue112,
         $dialogue21,
         $dialogue26,
         $dialogue36,
@@ -103,6 +107,8 @@
             $dialogue36 = $('.simples-dialogue-36');
             $dialogue37 = $('.simples-dialogue-37');
             $moreInfoDialogue = $('.simples-dialogue-76');
+            $moreInfoDialogueRadio = $('input[name=health_simples_dialogue-radio-76]');
+            $notifyInclusionsExclusionsVia = $('#health_simples_notifyInclusionsExclusionsVia');
             $nzMedicareRules = $('#health_situation_cover_wrapper .nz-medicare-rules');
             $nzMedicareRulesToggle = $nzMedicareRules.find('a:first');
             $nzMedicareRulesCopy = $nzMedicareRules.find('.copy:first');
@@ -110,6 +116,8 @@
             $affiliatesDialogue = $('.simples-dialogue-105');
             $dialogue106 = $('.simples-dialogue-106');
             $dialogue109 = $('.simples-dialogue-109');
+            $dialogue111 = $('.simples-dialogue-111');
+            $dialogue112 = $('.simples-dialogue-112');
 
             // Handle pre-filled
             populatePrevAssignedRadioBtnGroupValue();
@@ -223,6 +231,21 @@
         $healthInternationalStudentField.on('change', function(){
             _toggleInternationalStudentFieldMsg();
         });
+
+        $moreInfoDialogueRadio
+            .on('change', function() {
+                var value = $moreInfoDialogueRadio.filter(':checked').val();
+
+                $notifyInclusionsExclusionsVia.val(value);
+
+                if (!_.isUndefined(value) && value.length > 0) {
+                    var isReadNow = value === 'READNOW';
+                    $dialogue111.toggleClass('hidden', !isReadNow);
+                    $dialogue112.toggleClass('hidden', isReadNow);
+                }
+
+            })
+            .trigger('change');
     }
 
     function openBridgingPage(e) {
@@ -234,6 +257,12 @@
                 i++;
             }
         });
+
+        if ($('#resultsForm .simples-dialogue-76').not('.hidden').length === 1) {
+            if (_.isUndefined($moreInfoDialogueRadio.filter(':checked').val())) {
+                i++;
+            }
+        }
 
         needsValidation = i !== 0;
 
@@ -555,8 +584,11 @@
     }
 
     function toggleResultsMandatoryDialogue() {
-        $moreInfoDialogue.toggleClass('hidden', $limitedCoverHidden.val() === 'Y');
-        $dialogue109.toggleClass('hidden', $limitedCoverHidden.val() === 'N');
+        // needs to be deferred, when retrieving limited cover quote
+        _.defer(function() {
+            $moreInfoDialogue.toggleClass('hidden', $limitedCoverHidden.val() === 'Y');
+            $dialogue109.toggleClass('hidden', $limitedCoverHidden.val() === 'N');
+        });
     }
 
     meerkat.modules.register("simplesBindings", {
@@ -568,7 +600,8 @@
         getCallType: getCallType,
         togglePricePromisePromoDialogue: togglePricePromisePromoDialogue,
         toggleBenefitsDialogue: toggleBenefitsDialogue,
-        toggleResultsMandatoryDialogue: toggleResultsMandatoryDialogue
+        toggleResultsMandatoryDialogue: toggleResultsMandatoryDialogue,
+		webChatInProgress: webChatInProgress
     });
 
 })(jQuery);

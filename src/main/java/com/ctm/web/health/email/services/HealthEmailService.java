@@ -25,12 +25,11 @@ import com.ctm.web.core.services.SessionDataServiceBean;
 import com.ctm.web.core.transaction.dao.TransactionDao;
 import com.ctm.web.core.utils.SessionUtils;
 import com.ctm.web.core.web.go.Data;
-import com.ctm.web.health.apply.model.response.HealthApplicationResponse;
-import com.ctm.web.health.apply.model.response.HealthApplyResponse;
-import com.ctm.web.health.email.formatter.HealthApplicationExactTargetFormatter;
+import com.ctm.web.email.EmailEventRequest;
+import com.ctm.web.email.EmailEventType;
+import com.ctm.web.email.EmailResponse;
+import com.ctm.web.email.MarketingAutomationEmailService;
 import com.ctm.web.health.email.formatter.HealthBestPriceExactTargetFormatter;
-import com.ctm.web.health.email.formatter.HealthProductBrochuresExactTargetFormatter;
-import com.ctm.web.health.email.model.HealthApplicationEmailModel;
 import com.ctm.web.health.email.model.HealthBestPriceEmailModel;
 import com.ctm.web.health.email.model.HealthBestPriceRanking;
 import com.ctm.web.health.email.model.HealthProductBrochuresEmailModel;
@@ -52,8 +51,6 @@ import java.time.LocalDate;
 import java.util.*;
 
 import static com.ctm.commonlogging.common.LoggingArguments.kv;
-import static java.util.Collections.emptyList;
-import static java.util.stream.Collectors.toList;
 
 public class HealthEmailService extends EmailServiceHandler implements BestPriceEmailHandler, ProductBrochuresEmailHandler, ApplicationEmailHandler {
 
@@ -63,6 +60,7 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 
 	private final AccessTouchService accessTouchService;
 	private final SessionDataServiceBean sessionDataService;
+	private MarketingAutomationEmailService marketingAutomationEmailService;
 
 	EmailDetailsService emailDetailsService;
 	protected TransactionDao transactionDao = new TransactionDao();
@@ -83,7 +81,8 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 							  SessionDataServiceBean sessionDataService,
 							  IPAddressHandler ipAddressHandler,
 							  GeneralDao generalDao,
-							  ProviderContentService providerContentService) {
+							  ProviderContentService providerContentService,
+							  MarketingAutomationEmailService marketingAutomationEmailService) {
 		super(pageSettings, emailMode,ipAddressHandler);
 		this.emailDetailsService = emailDetailsService;
 		this.contentDao = contentDao;
@@ -93,6 +92,7 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 		this.sessionDataService = sessionDataService;
 		this.generalDao = generalDao;
 		this.providerContentService = providerContentService;
+		this.marketingAutomationEmailService = marketingAutomationEmailService;
 	}
 
 	@Override
@@ -141,37 +141,27 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 	}
 
 	@Override
-	public String sendApplicationEmail(HttpServletRequest request, String emailAddress,
-								   long transactionId) throws SendEmailException {
+	public String sendApplicationEmail(HttpServletRequest request, String emailAddress, long transactionId) throws SendEmailException {
 		boolean isTestEmailAddress = isTestEmailAddress(emailAddress);
 		mailingName = getPageSetting(ApplicationEmailHandler.MAILING_NAME_KEY);
-		ExactTargetEmailSender<HealthApplicationEmailModel> emailSender = new ExactTargetEmailSender<>(pageSettings, transactionId);
 		try {
 			EmailMaster emailDetails = new EmailMaster();
 			emailDetails.setEmailAddress(emailAddress);
 			emailDetails.setSource("APPLICATION");
 
-			final String operator;
-			if (request != null && request.getSession() != null) {
-				AuthenticatedData authenticatedData = sessionDataService.getAuthenticatedSessionData(request);
-				if(authenticatedData != null && StringUtils.isNotBlank(authenticatedData.getUid())) {
-					operator = authenticatedData.getUid();
-				} else {
-					operator = "ONLINE";
-				}
-			} else {
-				operator = "ONLINE";
-			}
-
-			emailDetails = emailDetailsService.handleReadAndWriteEmailDetails(transactionId, emailDetails, operator,  ipAddressHandler.getIPAddress(request));
+			emailDetails = emailDetailsService.handleReadAndWriteEmailDetails(transactionId, emailDetails, getOperatorFromRequest(request),  ipAddressHandler.getIPAddress(request));
 			if(!isTestEmailAddress) {
-				return emailSender.sendToExactTarget(new HealthApplicationExactTargetFormatter(), buildApplicationEmailModel(emailDetails, transactionId, request));
+				EmailResponse response = marketingAutomationEmailService.sendEventEmail(buildApplicationEmailModel(emailDetails, transactionId, request));
+				if(!response.getSuccess()){
+					LOGGER.info("An error occurred sending the Health application confirmation email via the marketing automation service - Reason: {}", response.getMessage());
+					return "0";
+				}
+				return response.getMessage();
 			} else {
 				return "";
 			}
 		} catch (EmailDetailsException e) {
-			throw new SendEmailException("failed to handleReadAndWriteEmailDetails emailAddress:" + emailAddress +
-					" transactionId:" +  transactionId  ,  e);
+			throw new SendEmailException("failed to handleReadAndWriteEmailDetails emailAddress:" + emailAddress + " transactionId:" +  transactionId  ,  e);
 		}
 	}
 
@@ -179,7 +169,7 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 	public void sendProductBrochureEmail(HttpServletRequest request, String emailAddress,
 			long transactionId) throws SendEmailException {
 
-		String x = sendProductBrochureEmail(request, emailAddress, transactionId, false);
+		sendProductBrochureEmail(request, emailAddress, transactionId, false);
 	}
 
 	private String sendProductBrochureEmail(HttpServletRequest request, String emailAddress, long transactionId, boolean blockEmailSending) throws SendEmailException {
@@ -197,27 +187,23 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 		mailingName = getPageSetting(ProductBrochuresEmailHandler.MAILING_NAME_KEY);
 		ExactTargetEmailSender<HealthProductBrochuresEmailModel> emailSender = new ExactTargetEmailSender<>(pageSettings,transactionId);
 		try {
-			String returnStr = "";
-
 			EmailMaster emailDetails = new EmailMaster();
-
 			emailDetails.setEmailAddress(emailAddress);
 			emailDetails.setOptedInMarketing("Y".equals(request.getParameter("marketing")), VERTICAL);
-
 			emailDetails.setFirstName(request.getParameter("firstName"));
 			emailDetails.setLastName(request.getParameter("lastName"));
-
 			emailDetails.setSource("BROCHURE");
-
 			emailDetails = emailDetailsService.handleReadAndWriteEmailDetails(emailBrochureRequest.transactionId, emailDetails, "ONLINE" ,  ipAddressHandler.getIPAddress(request));
 
 			if (blockEmailSending) {
-				return buildProductBrochureEmailModel(emailDetails, request, emailBrochureRequest, true).getApplyURL();
+				return buildProductBrochureEmailModel(emailDetails, request, emailBrochureRequest, true).getApplyUrl();
 			} else if(!isTestEmailAddress) {
-				emailSender.sendToExactTarget(new HealthProductBrochuresExactTargetFormatter(), buildProductBrochureEmailModel(emailDetails, request, emailBrochureRequest, false));
+				EmailResponse response = marketingAutomationEmailService.sendEventEmail(buildProductBrochureEmailModel(emailDetails, request, emailBrochureRequest, false));
+				if(!response.getSuccess()){
+					LOGGER.info("An error occurred sending the Health brochure email via the marketing automation service - Reason: {}", response.getMessage());
+				}
 			}
-
-			return returnStr;
+			return "";
 
 		} catch (EmailDetailsException e) {
 			throw new SendEmailException("failed to handleReadAndWriteEmailDetails emailAddress:" + emailAddress +
@@ -274,18 +260,13 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 		return emailModel;
 	}
 
-	private HealthApplicationEmailModel buildApplicationEmailModel(EmailMaster emailDetails, long transactionId, HttpServletRequest request) throws SendEmailException {
-
-		HealthApplyResponse applicationResponse = (HealthApplyResponse)request.getAttribute("applicationResponse");
-
-		final HealthApplicationResponse response = applicationResponse.getPayload();
+	private EmailEventRequest buildApplicationEmailModel(EmailMaster emailDetails, long transactionId, HttpServletRequest request) throws SendEmailException {
 
 		Optional<HealthRequest> data = Optional.ofNullable((HealthRequest) request.getAttribute("requestData"));
-
-
+		final Data dataBucket;
 		final JSONObject productJSON;
 		try {
-			final Data dataBucket = sessionDataService.getDataForTransactionId(request, Long.toString(transactionId), true);
+			dataBucket = sessionDataService.getDataForTransactionId(request, Long.toString(transactionId), true);
 			final String productSelected = StringUtils.removeEnd(
 					StringUtils.removeStart(dataBucket.getString("confirmation/health"), "<![CDATA["),
 					"]]>");
@@ -295,101 +276,31 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 			throw new SendEmailException("Failed to buildApplicationEmailModel", e);
 		}
 
-
 		final String confirmationId = (String)request.getAttribute("confirmationId");
 
-		HealthApplicationEmailModel emailModel = new HealthApplicationEmailModel();
-		emailModel.setEmailAddress(emailDetails.getEmailAddress());
-		emailModel.setFirstName(HealthEmailMapper.getFirstName(emailDetails, data));
-		emailModel.setBccEmail(response.getBccEmail());
-		emailModel.setOptIn("Y".equals(data.map(HealthRequest::getQuote)
-				.map(HealthQuote::getApplication)
-				.map(Application::getOptInEmail)
-				.orElseGet(() -> data.map(HealthRequest::getQuote)
-						.map(HealthQuote::getSave)
-						.map(Save::getMarketing)
-						.orElse("N"))));
-		emailModel.setOkToCall(data.map(HealthRequest::getQuote)
-				.map(HealthQuote::getContactDetails)
-				.map(ContactDetails::getCall)
-				.orElse("N"));
-		emailModel.setTransactionId(transactionId);
-		try {
-			emailModel.setPhoneNumber(getCallCentreNumber());
-		    emailModel.setActionUrl(createActionUrl(confirmationId));
-		} catch (ConfigSettingException | DaoException e) {
-			LOGGER.error("Failed to buildApplicationEmailModel {} ", kv("emailAddress", emailDetails.getEmailAddress()));
-			throw new SendEmailException("Failed to buildApplicationEmailModel", e);
-		}
+		EmailEventRequest emailEventRequest = new EmailEventRequest();
+		emailEventRequest.setVerticalCode(VERTICAL);
 
-		try {
-			if (Boolean.valueOf(getPageSetting("emailTokenEnabled"))) {
-				Map<String, String> emailParameters = new HashMap<>();
-				emailParameters.put(EmailUrlService.TRANSACTION_ID, Long.toString(transactionId));
-				emailParameters.put(EmailUrlService.HASHED_EMAIL, emailDetails.getHashedEmail());
-				emailParameters.put(EmailUrlService.STYLE_CODE_ID, Integer.toString(pageSettings.getBrandId()));
-				emailParameters.put(EmailUrlService.EMAIL_TOKEN_TYPE, "app");
-				emailParameters.put(EmailUrlService.EMAIL_TOKEN_ACTION, "unsubscribe");
-				emailParameters.put(EmailUrlService.VERTICAL, "health");
-				emailModel.setUnsubscribeURL(urlService.getUnsubscribeUrl(emailParameters));
-			} else {
-				emailModel.setUnsubscribeURL(urlServiceOld.getUnsubscribeUrl(emailDetails));
-			}
-		} catch (ConfigSettingException e) {
-			throw new SendEmailException("failed to buildBestPriceEmailModel emailAddress:" + emailDetails.getEmailAddress() +
-					" transactionId:" +  transactionId  ,  e);
-		}
-
-		emailModel.setProductName(data.map(HealthRequest::getQuote)
-				.map(HealthQuote::getApplication)
-				.map(Application::getProductTitle)
-				.orElse(""));
-		final String providerName = data.map(HealthRequest::getQuote)
-				.map(HealthQuote::getApplication)
-				.map(Application::getProviderName)
-				.orElse("");
-		emailModel.setHealthFund(providerName);
-		emailModel.setProviderPhoneNumber(data.map(HealthRequest::getQuote)
-				.map(HealthQuote::getFundData)
-				.map(FundData::getProviderPhoneNumber)
-				.orElse(""));
-		emailModel.setHospitalPdsUrl(data.map(HealthRequest::getQuote)
-				.map(HealthQuote::getFundData)
-				.map(FundData::getHospitalPDF)
-				.orElse(""));
-		emailModel.setExtrasPdsUrl(data.map(HealthRequest::getQuote)
-				.map(HealthQuote::getFundData)
-				.map(FundData::getExtrasPDF)
-				.orElse(""));
-
-		// HLT-3676
 		final String premiumFrequency = data.map(HealthRequest::getQuote)
 				.map(HealthQuote::getPayment)
 				.map(Payment::getDetails)
 				.map(PaymentDetails::getFrequency)
 				.orElse("");
-		emailModel.setPremiumFrequency(premiumFrequency);
-
-		emailModel.setProviderLogo(data.map(HealthRequest::getQuote)
-				.map(HealthQuote::getApplication)
-				.map(Application::getProvider)
-				.map(p -> p.toLowerCase() + ".png")
-				.orElse(""));
+		emailEventRequest.setPremiumFrequency(premiumFrequency);
 
 		try {
-
 			final PaymentType paymentType = data.map(HealthRequest::getQuote)
 					.map(HealthQuote::getPayment)
 					.map(Payment::getDetails)
 					.map(PaymentDetails::getType)
 					.map(PaymentType::findByCode)
-					.orElseThrow(() -> new SendEmailException("Failed to buildApplicationEmailModel: PaymentType not set"));
+					.orElseThrow(() -> new SendEmailException("Failed to build emailEventRequest: PaymentType not set"));
 
 			JSONObject pricing = getJsonObject(productJSON, "price", 0)
 					.flatMap(j -> getJsonObject(j, "paymentTypePremiums"))
 					.flatMap(j -> getJsonObject(j, ResponseAdapterV2.getPaymentType(paymentType)))
 					.flatMap(j -> getJsonObject(j, premiumFrequency))
-					.orElseThrow(() -> new SendEmailException("Unable to find premium"));
+					.orElseThrow(() -> new SendEmailException("Failed to build emailEventRequest: Unable to find premium"));
 
 			String productType = getJsonObject(productJSON, "price", 0)
 					.flatMap(j -> getJsonObject(j,"info")).map(x -> {
@@ -399,69 +310,66 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 							return "";
 						}
 					}).orElse("");
-
-			emailModel.setCoverType(productType);
-			emailModel.setPremium(pricing.getString("text"));
-			emailModel.setPremiumLabel(pricing.getString("pricing"));
-			emailModel.setPremiumTotal(pricing.getString("text"));
+			emailEventRequest.setCoverType(productType);
+			//emailEventRequest.setCoverType(getParamSafely(dataBucket, "health/situation/coverType"));
+			emailEventRequest.setPremium(pricing.getString("text"));
+			emailEventRequest.setPremiumLabel(pricing.getString("pricing"));
 		} catch (JSONException e) {
-			throw new SendEmailException("Failed to buildApplicationEmailModel", e);
+			throw new SendEmailException("Failed to build emailEventRequest", e);
 		}
 
-		emailModel.setHealthMembership(data.map(HealthRequest::getQuote)
-				.map(HealthQuote::getSituation)
-				.map(Situation::getHealthCvr)
-				.map(c -> generalDao.getValuesOrdered("healthCvr").getOrDefault(c, ""))
+		emailEventRequest.setEventType(EmailEventType.HEALTH_APPLICATION);
+		emailEventRequest.setEmailAddress(emailDetails.getEmailAddress());
+		emailEventRequest.setEstablishContactKey(true);
+		emailEventRequest.setFirstName(HealthEmailMapper.getFirstName(emailDetails, data));
+		emailEventRequest.setTransactionId(String.valueOf(transactionId));
+		final String providerName = data.map(HealthRequest::getQuote)
+				.map(HealthQuote::getApplication)
+				.map(Application::getProviderName)
+				.orElse("");
+		emailEventRequest.setProviderName(providerName);
+		emailEventRequest.setProviderCode(providerName);
+		emailEventRequest.setProviderPhone(data.map(HealthRequest::getQuote)
+				.map(HealthQuote::getFundData)
+				.map(FundData::getProviderPhoneNumber)
 				.orElse(""));
 
-
-		emailModel.setHealthSituation(data.map(HealthRequest::getQuote)
-				.map(HealthQuote::getSituation)
-				.map(Situation::getHealthSitu)
-				.map(c -> generalDao.getValuesOrdered("healthSitu").getOrDefault(c, ""))
+		emailEventRequest.setQuoteRef((String)request.getAttribute("providerQuoteId"));
+		emailEventRequest.setBrand(pageSettings.getBrandCode());
+		emailEventRequest.setExtrasPds(data.map(HealthRequest::getQuote)
+				.map(HealthQuote::getFundData)
+				.map(FundData::getExtrasPDF)
 				.orElse(""));
-
-		emailModel.setPolicyStartDate(data.map(HealthRequest::getQuote)
-				.map(HealthQuote::getPayment)
-				.map(com.ctm.web.health.model.form.Payment::getDetails)
-				.map(PaymentDetails::getStart)
+		emailEventRequest.setHospitalPds(data.map(HealthRequest::getQuote)
+				.map(HealthQuote::getFundData)
+				.map(FundData::getHospitalPDF)
 				.orElse(""));
-
-		emailModel.setPrimary(data.map(HealthRequest::getQuote)
+		emailEventRequest.setProductDescription(data.map(HealthRequest::getQuote)
 				.map(HealthQuote::getApplication)
-				.map(Application::getPrimary)
-				.map(this::createPolicyHolderModel)
-				.orElseThrow(() -> new SendEmailException("failed to buildBestPriceEmailModel emailAddress:" + emailDetails.getEmailAddress() +
-						" transactionId:" +  transactionId + " missing Primary applicant")));
-
-		emailModel.setPartner(data.map(HealthRequest::getQuote)
-				.map(HealthQuote::getApplication)
-				.map(Application::getPartner)
-				.map(this::createPolicyHolderModel)
-				.orElse(null));
-
-		emailModel.setDependants(data.map(HealthRequest::getQuote)
-				.map(HealthQuote::getApplication)
-				.map(Application::getDependants)
-				.map(Dependants::getDependant)
-				.orElse(emptyList())
-				.stream()
-				.filter(d -> d != null && d.getLastname() != null)
-				.map(this::createPolicyHolderModel)
-				.collect(toList()));
+				.map(Application::getProductTitle)
+				.orElse(""));
 
 		try {
-			emailModel.setProviderEmail(providerContentService.getProviderEmail(request, providerName));
-		} catch (DaoException e) {
-			LOGGER.error("Exception for " + emailDetails.getEmailAddress() +
-					" transactionId:" +  transactionId  ,  e);
+			emailEventRequest.setConfirmationUrl(createActionUrl(confirmationId));
+		} catch (ConfigSettingException e) {
+			LOGGER.error("Failed to build emailEventRequest {} ", kv("emailAddress", emailDetails.getEmailAddress()));
+			throw new SendEmailException("Failed to build emailEventRequest - unable to retrieve confirmation url.", e);
 		}
+		String gaClientId = getParamSafely(dataBucket, "health/gaclientid");
+		emailEventRequest.setGaClientId(gaClientId);
 
-		setCustomerKey(emailModel, mailingName);
-		return emailModel;
+		return emailEventRequest;
 	}
 
-
+	private String getParamSafely(Data data, String param) {
+		try {
+			return (String) data.get(param);
+		}
+		catch(Exception e){
+			LOGGER.warn("Field " + param + " not found before sending email");
+		}
+		return null;
+	}
 
 	private Optional<JSONObject> getJsonObject(JSONObject jsonObject, String key) {
 		if (jsonObject.has(key)) {
@@ -533,20 +441,40 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 	}
 
 
-	private HealthProductBrochuresEmailModel buildProductBrochureEmailModel(EmailMaster emailDetails, HttpServletRequest request, HealthEmailBrochureRequest emailBrochureRequest, boolean blockEmailSending) throws SendEmailException {
-		HealthProductBrochuresEmailModel emailModel = new HealthProductBrochuresEmailModel();
-		buildEmailModel(emailDetails, emailModel);
-		String productId = request.getParameter("productId");
-		String productCode = request.getParameter("productCode");
-		boolean optedIn = emailDetails.getOptedInMarketing(VERTICAL);
-		OpeningHoursService openingHoursService = new OpeningHoursService();
-		String cid = "em:cm:health:301005";
-		String utmSource = "health_pds_" + LocalDate.now().getYear();
-		String utmMedium = "email";
-		String utmCampaign = "health_pds";
-		boolean isCallCenter = SessionUtils.isCallCentre(request.getSession());
+	private EmailEventRequest buildProductBrochureEmailModel(EmailMaster emailDetails, HttpServletRequest request, HealthEmailBrochureRequest emailBrochureRequest, boolean blockEmailSending) throws SendEmailException {
+		EmailEventRequest emailEventRequest = new EmailEventRequest();
+		emailEventRequest.setEmailAddress(emailDetails.getEmailAddress());
+		emailEventRequest.setEventType(EmailEventType.HEALTH_PDS);
+		emailEventRequest.setEstablishContactKey(true);
+		emailEventRequest.setFirstName(emailDetails.getFirstName());
+		emailEventRequest.setLastName(emailDetails.getLastName());
+		emailEventRequest.setTransactionId(Long.toString(emailBrochureRequest.transactionId));
+		emailEventRequest.setProviderName(emailBrochureRequest.provider);
+		emailEventRequest.setProviderCode(emailBrochureRequest.provider);
+		emailEventRequest.setProviderPhone(null);
+		emailEventRequest.setQuoteRef(Long.toString(emailBrochureRequest.transactionId));
+		emailEventRequest.setBrand(pageSettings.getBrandCode());
+		emailEventRequest.setCoverType(request.getParameter("coverType"));
+		emailEventRequest.setPremium(request.getParameter("premium"));
+		emailEventRequest.setPremiumLabel(request.getParameter("premiumText"));
+		emailEventRequest.setPremiumFrequency(request.getParameter("premiumFrequency"));
+		emailEventRequest.setProductDescription(emailBrochureRequest.productName);
+		emailEventRequest.setVerticalCode(VERTICAL);
 
 		try {
+			OpeningHoursService openingHoursService = new OpeningHoursService();
+			emailEventRequest.setCallCentreHours(openingHoursService.getCurrentOpeningHoursForEmail(request));
+			emailEventRequest.setHospitalPds( pageSettings.getBaseUrl() + request.getParameter("hospitalPDSUrl"));
+			emailEventRequest.setExtrasPds(pageSettings.getBaseUrl() + request.getParameter("extrasPDSUrl"));
+			emailEventRequest.setPhoneNumber(getCallCentreNumber());
+
+			String productId = request.getParameter("productId");
+			String productCode = request.getParameter("productCode");
+			String cid = "em:cm:health:301005";
+			String utmSource = "health_pds_" + LocalDate.now().getYear();
+			String utmMedium = "email";
+			String utmCampaign = "health_pds";
+			boolean isCallCenter = SessionUtils.isCallCentre(request.getSession());
 			final Data dataBucket = sessionDataService.getDataForTransactionId(request, Long.toString(emailBrochureRequest.transactionId), false);
 
 			if (isCallCenter && dataBucket.getString("health/simples/contactType").equals("webchat") && blockEmailSending) {
@@ -555,14 +483,7 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 				utmMedium = "livechat";
 				utmCampaign = "livechat";
 			}
-
-			emailModel.setPhoneNumber(getCallCentreNumber());
-
-			emailModel.setCallcentreHours(openingHoursService.getCurrentOpeningHoursForEmail(request));
-			emailModel.setTransactionId(emailBrochureRequest.transactionId);
-			emailModel.setFirstName(emailDetails.getFirstName());
-			emailModel.setLastName(emailDetails.getLastName());
-			emailModel.setOptIn(optedIn);
+			emailEventRequest.setSource(isCallCenter ? "simples" : "ONLINE");
 
 			if(Boolean.valueOf(getPageSetting("emailTokenEnabled"))) {
 				Map<String, String> emailParameters = new HashMap<>();
@@ -581,47 +502,17 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 				emailParameters.put(EmailUrlService.VERTICAL, "health");
 				emailParameters.put(EmailUrlService.PRODUCT_ID, productId);
 				EmailTokenService.setProductName(emailBrochureRequest.productName, emailParameters);
-				emailModel.setApplyUrl(urlService.getApplyUrl(emailDetails, emailParameters, otherEmailParameters));
-
-				emailParameters.put(EmailUrlService.EMAIL_TOKEN_ACTION, "unsubscribe");
-				emailParameters.remove(EmailUrlService.PRODUCT_ID);
-				emailModel.setUnsubscribeURL(urlService.getUnsubscribeUrl(emailParameters));
+				emailEventRequest.setApplyUrl(urlService.getApplyUrl(emailDetails, emailParameters, otherEmailParameters));
 			} else {
-				emailModel.setApplyUrl(urlServiceOld.getApplyUrl(emailDetails, emailBrochureRequest.transactionId, "bestprice", productId, emailBrochureRequest.productName));
-				emailModel.setUnsubscribeURL(urlServiceOld.getUnsubscribeUrl(emailDetails));
+				emailEventRequest.setApplyUrl(urlServiceOld.getApplyUrl(emailDetails, emailBrochureRequest.transactionId, "bestprice", productId, emailBrochureRequest.productName));
 			}
-		} catch (DaoException|EnvironmentException | VerticalException
-				| ConfigSettingException | SessionException e) {
-			throw new SendEmailException("failed to buildBestPriceEmailModel emailAddress:" + emailDetails.getEmailAddress() +
-					" transactionId:" +  emailBrochureRequest.transactionId  ,  e);
-		}
-		setCustomerKey(emailModel, mailingName);
-
-		emailModel.setProductName(request.getParameter("productName"));
-		emailModel.setPremium(request.getParameter("premium"));
-		emailModel.setPremiumFrequency(request.getParameter("premiumFrequency"));
-		emailModel.setPremiumText(request.getParameter("premiumText"));
-		emailModel.setProvider(emailBrochureRequest.provider);
-		emailModel.setSmallLogo(emailBrochureRequest.provider.toLowerCase() + ".png");
-		try {
-			emailModel.setHospitalPDSUrl( pageSettings.getBaseUrl() + request.getParameter("hospitalPDSUrl"));
-			emailModel.setExtrasPDSUrl(pageSettings.getBaseUrl() + request.getParameter("extrasPDSUrl"));
-		} catch (EnvironmentException | VerticalException
-				| ConfigSettingException e) {
-			throw new SendEmailException("failed to get base url", e);
+		} catch (EnvironmentException | VerticalException | ConfigSettingException | DaoException | SessionException e) {
+			throw new SendEmailException("An error occurred retrieving parameters for Health PDS email", e);
 		}
 
-		emailModel.setHealthSituation(request.getParameter("healthSituation"));
-		emailModel.setPrimaryCurrentPHI(request.getParameter("primaryCurrentPHI"));
-		emailModel.setCoverType(request.getParameter("coverType"));
-		emailModel.setBenefitCodes(request.getParameter("benefitCodes"));
-		emailModel.setSpecialOffer(request.getParameter("specialOffer"));
-		emailModel.setSpecialOfferTerms(request.getParameter("specialOfferTerms"));
-		emailModel.setExcessPerAdmission(request.getParameter("excessPerAdmission"));
-		emailModel.setExcessPerPerson(request.getParameter("excessPerPerson"));
-		emailModel.setExcessPerPolicy(request.getParameter("excessPerPolicy"));
-		emailModel.setCoPayment(request.getParameter("coPayment"));
-		return emailModel;
+		emailEventRequest.setOptIn(emailDetails.getOptedInMarketing(VERTICAL) ? "Y" : "N");
+		emailEventRequest.setUid(getOperatorFromRequest(request));
+		return emailEventRequest;
 	}
 
 	private void setupRankingDetails(HealthBestPriceEmailModel emailModel, Long transactionId) throws DaoException, SendEmailException, ConfigSettingException {
@@ -668,6 +559,19 @@ public class HealthEmailService extends EmailServiceHandler implements BestPrice
 	private String getCallCentreNumber() throws DaoException {
 		Content content = contentDao.getByKey("callCentreNumber", ApplicationService.getServerDate(), false);
 		return content != null ? content.getContentValue() : "";
+	}
+
+	private String getOperatorFromRequest(HttpServletRequest request){
+		if (request != null && request.getSession() != null) {
+			AuthenticatedData authenticatedData = sessionDataService.getAuthenticatedSessionData(request);
+			if(authenticatedData != null && StringUtils.isNotBlank(authenticatedData.getUid())) {
+				return authenticatedData.getUid();
+			} else {
+				return "ONLINE";
+			}
+		} else {
+			return "ONLINE";
+		}
 	}
 
 }

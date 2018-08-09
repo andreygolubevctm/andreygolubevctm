@@ -251,6 +251,7 @@ var ResultsModel = {
 		Results.model.sortedProducts = [];
 		Results.model.filteredProducts = [];
 		Results.model.customFilteredProducts = [];
+		Results.model.popularProducts = [];
 
 		Results.view.flush();
 
