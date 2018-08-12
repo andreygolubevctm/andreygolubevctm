@@ -22,7 +22,7 @@
 			<div id="partnerMemberID" class="membership">
 				<c:set var="fieldXpath" value="${xpath}/partner/memberID" />
 				<form_v2:row fieldXpath="${fieldXpath}" label="Membership Number" className="partnerMemberID" smRowOverride="3">
-					<field_v2:input xpath="${fieldXpath}" title="partner's member ID" required="true" className="sessioncamexclude" additionalAttributes=" data-attach='true' data-rule-digits='true' data-msg-digits='Letters are not allowed' " disableErrorContainer="${false}" placeHolder="Membership No." />
+					<field_v2:input xpath="${fieldXpath}" title="partner's member ID" required="true" className="sessioncamexclude" additionalAttributes=" data-attach='true' " disableErrorContainer="${false}" placeHolder="Membership No." />
 				</form_v2:row>
 
 				<c:set var="fieldXpath" value="${xpath}/partner/authority" />
