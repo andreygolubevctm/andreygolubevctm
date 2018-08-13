@@ -460,10 +460,12 @@
 			<%-- Consultant has flagged this transaction as an inbound call --%>
 			${leadService.sendLead(4, data, pageContext.getRequest(), 'INBOUND_CALL', brand)}
 		</c:when>
+		<%--
 		<c:when test="${not empty data['health/simples/contactType'] && data['health/simples/contactType'] == 'cli'}">
-			<%-- Consultant has flagged this transaction as an return cli --%>
+			< % - - Consultant has flagged this transaction as an return cli - - % >
 			${leadService.sendLead(4, data, pageContext.getRequest(), 'RETURN_CLI', brand)}
 		</c:when>
+		--%>
 		<c:otherwise>
 			${leadService.sendLead(4, data, pageContext.getRequest(), 'OPEN', brand)}
 		</c:otherwise>
