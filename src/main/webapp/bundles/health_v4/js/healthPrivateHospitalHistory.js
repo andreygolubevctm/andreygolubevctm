@@ -164,40 +164,26 @@
        return (Math.ceil((d2 - d1) / milliSecondsPerDay));
     }
 
-    // It may be better to use a library like moment to do this
-    function _formatDate(date) {
+    function _dateParts(date){
         var d = new Date(date),
-            month = '' + (d.getMonth() + 1),
-            day = '' + d.getDate(),
-            year = d.getFullYear();
+            leadingZero = function(number){return ('0' + number).slice(-2);};
 
-        if (month.length < 2) {
-            month = '0' + month;
-        }
-        if (day.length < 2) {
-            day = '0' + day;
-        }
+        return {
+            year: d.getFullYear(),
+            month: leadingZero(d.getMonth()+1),
+            day: leadingZero(d.getDate())
+        };
+    }
 
-        return [year, month, day].join('-');
+    function _formatDate(date){
+        var d	= _dateParts(date);
+        return [d.year,d.month,d.day].join('-');
     }
 
     function _formatDate_dd_mm_yyyy(date) {
-        var d = new Date(date),
-            month = '' + (d.getMonth() + 1),
-            day = '' + d.getDate(),
-            year = d.getFullYear();
-
-        if (month.length < 2) {
-            month = '0' + month;
-        }
-        if (day.length < 2) {
-            day = '0' + day;
-        }
-
-        return day + '-' + month +'-' + year;
+        var d	= _dateParts(date);
+        return [d.day,d.month,d.year].join('-');
     }
-
-
 
     //type - "start" or "end"
     function _createValidationTag(type, fieldname, identifier, msg) {
