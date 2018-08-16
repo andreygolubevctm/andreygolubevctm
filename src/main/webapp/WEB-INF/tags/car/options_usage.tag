@@ -34,7 +34,7 @@
 	</form_v2:row>
 
 
-	<form_v2:row label="Will the car be used for carrying passengers for payment, providing paid driving instruction or hiring out to other people?" className="passengerPayment">
+	<form_v2:row label="Will the car be used for carrying passengers for payment (including taxis and/or ridesharing, e.g. Uber), providing paid driving tuition or hiring out to other people?" className="passengerPayment">
 		<c:set var="analAttribute"><field_v1:analytics_attr analVal="Paid to drive" quoteChar="\"" /></c:set>
 		<field_v2:array_radio xpath="${xpath}/passengerPayment" required="true"
 							   className="quote_passengerPayment" id="quote_passengerPayment" items="Y=Yes,N=No"
@@ -42,7 +42,7 @@
 							   additionalLabelAttributes="${analAttribute}"/>
 	</form_v2:row>
 
-	<form_v2:row label="Will the car be used for carrying goods for payment?" className="goodsPayment"  helpId="541">
+	<form_v2:row label="Will the car be used for making deliveries or carrying goods for payment (whether as a contractor or otherwise)?" className="goodsPayment"  helpId="541">
 		<c:set var="analAttribute"><field_v1:analytics_attr analVal="Paid for transporting" quoteChar="\"" /></c:set>
 		<field_v2:array_radio xpath="${xpath}/goodsPayment" required="true"
 							   className="quote_goodsPayment" id="quote_goodsPayment" items="Y=Yes,N=No"
