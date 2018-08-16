@@ -22,7 +22,7 @@ var healthFunds_NIB = {
         meerkat.modules.healthFunds.showHowToSendInfo('NIB', true);
 
         <%-- Previous funds --%>
-        $('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').attr('maxlength', '10');
+        $('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').attr({'maxlength': '10', 'data-rule-digits': true, 'data-msg-digits': 'Letters not allowed'});
             
         <%-- Partner authority--%>
         meerkat.modules.healthFunds._partner_authority(true);
@@ -155,6 +155,9 @@ var healthFunds_NIB = {
         <%--credit card options--%>
         meerkat.modules.healthCreditCard.resetConfig();
         meerkat.modules.healthCreditCard.render();
+
+        <%-- Previous fund details --%>
+        $('#health_previousfund_primary_memberID, #health_previousfund_partner_memberID').removeAttr('maxlength').removeAttr('data-rule-digits').removeAttr('data-msg-digits');
 
         <%-- Medicare Fields --%>
         healthFunds_NIB.$medicareFirstname.add(healthFunds_NIB.$medicareLastname).removeAttr('maxlength').removeAttr('data-rule-personNameLtd').attr('data-rule-personName','true');
