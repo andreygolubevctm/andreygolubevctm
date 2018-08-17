@@ -41,7 +41,7 @@
     </c:choose>
 </c:set>
 
-<%-- HLT-4740  Split Test J=5 test --%>
+<%-- HLT-4740 Split Test J=5 test --%>
 <c:set var="resultsBrochuresSplitTest" scope="request">
     <c:choose>
         <c:when test="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 5)}">${true}</c:when>
