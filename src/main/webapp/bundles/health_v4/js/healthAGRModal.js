@@ -410,14 +410,57 @@
             suburb = $fields.address[returnAddrType].suburbName.val(),
             state = $fields.address[returnAddrType].state.val(),
             postcode = $fields.address[returnAddrType].postcode.val(),
+            isNonStdAddress = $fields.address[returnAddrType].nonStd.val(),
+            nonStdStreet = $fields.address[returnAddrType].nonStdStreet.val(),
+            unitType = $fields.address[returnAddrType].unitType.val(),
+            unitNo = $fields.address[returnAddrType].unitShop.val(),
+            streetNum = $fields.address[returnAddrType].streetNum.val(),
             addrLn1 = '';
 
-        if (fullAddress.lastIndexOf(suburb) > 1) {
-            addrLn1 = fullAddress.substr(0, (fullAddress.lastIndexOf(suburb) - 1));
-        } else if (fullAddress.lastIndexOf(state) > 1) {
-            addrLn1 = fullAddress.substr(0, (fullAddress.lastIndexOf(state) - 1));
+        if (isNonStdAddress === 'Y' && unitType !== 'UN') {
+            // Add specific prefix if required
+            if (unitType === 'PO') {
+                addrLn1 = "PO BOX ";
+            } else if (unitType === 'SH') {
+                addrLn1 = "Shop ";
+            } else if (unitType === 'L') {
+                addrLn1 = "Level ";
+            }
+
+            if (unitType === 'PO') {
+                // There should not be a situation where both of these fields are populated (it would be better to hide the unit number field if PO is chosen to avoid confusion)
+                // none the less should the situation arise somehow the 'po box No' should be displayed first
+                if (streetNum.length > 0) {
+                    addrLn1 += streetNum + "  ";
+                }
+
+                if (unitNo.length > 0) {
+                    addrLn1 += unitNo + "  ";
+                }
+
+            } else {
+                if (unitNo.length > 0) {
+                    addrLn1 += unitNo + "  ";
+                }
+
+                // for clarity a slash could be added here if both exist
+
+                if (streetNum.length > 0) {
+                    addrLn1 += streetNum + " ";
+                }
+            }
+
+            if (nonStdStreet.length > 0) {
+                addrLn1 += nonStdStreet + " ";
+            }
         } else {
-            addrLn1 = fullAddress.substr(0, (fullAddress.lastIndexOf(postcode) - 1));
+            if (fullAddress.lastIndexOf(suburb) > 1) {
+                addrLn1 = fullAddress.substr(0, (fullAddress.lastIndexOf(suburb) - 1));
+            } else if (fullAddress.lastIndexOf(state) > 1) {
+                addrLn1 = fullAddress.substr(0, (fullAddress.lastIndexOf(state) - 1));
+            } else {
+                addrLn1 = fullAddress.substr(0, (fullAddress.lastIndexOf(postcode) - 1));
+            }
         }
 
         return addrLn1 + '<br/>'
