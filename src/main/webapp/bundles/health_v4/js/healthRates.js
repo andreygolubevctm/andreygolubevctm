@@ -42,7 +42,6 @@
         _.defer(function(){
             var postData = {
                 dependants: $elements.dependants.val(),
-                /* TODO This is a check for  HLT-4717 Split Test J=16 -  meerkat.modules.splitTest.isActive(16) */
                 income: ($elements.income.filter(':checked').val() || 0),
                 rebate_choice: forceRebate === true ? 'Y' : $elements.rebate.filter(':checked').val(),
                 primary_dob: $elements.primaryDob.val(),
@@ -73,7 +72,6 @@
         _.defer(function() {
             var postData = {
                 dependants: $elements.dependants.val(),
-                /* TODO This is a check for  HLT-4717 Split Test J=16 -  meerkat.modules.splitTest.isActive(16) */
                 income: ($elements.income.filter(':checked').val() || 0),
                 rebate_choice: $elements.rebate.filter(':checked').val(),
                 primary_dob: $elements.primaryDob.val(),

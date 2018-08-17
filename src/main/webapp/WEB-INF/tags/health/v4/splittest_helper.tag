@@ -41,15 +41,6 @@
     </c:choose>
 </c:set>
 
-
-<%-- HLT-4717 Split Test J=16 test --%>
-<c:set var="taxableIncomeSplitTest" scope="request">
-    <c:choose>
-        <c:when test="${splitTestService.isActive(pageContext.getRequest(), data.current.transactionId, 16)}">${true}</c:when>
-        <c:otherwise>${false}</c:otherwise>
-    </c:choose>
-</c:set>
-
 <%-- HLT-4740  Split Test J=5 test --%>
 <c:set var="resultsBrochuresSplitTest" scope="request">
     <c:choose>
